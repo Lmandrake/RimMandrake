@@ -182,6 +182,22 @@ exactly what "frozen" wants — but vanilla never stress-tests it across years. 
 in a world object through a save/load and 100+ in-game days and confirm they return
 intact.** Cheap test; everything rests on it.
 
+> 🔴 **CORRECTED BY BUILD, 2026-08-20, off the 1.6 decompile: "pawns held in a `ThingOwner`
+> off-map are not ticked" IS FALSE for a custom holder, and copying `Caravan` literally
+> would have deleted every cast in the game.** `WorldObject.DoTick` walks its child holders
+> and calls `ThingOwner.DoTick` on each, skipping only owners that are `is Map` or
+> `is Caravan` — a hardcoded type test a mod cannot join. And `Caravan.pawns` is
+> `LookMode.Reference`, which is safe only because caravan pawns live in `WorldPawns` and
+> `WorldPawnGC.GetCriticalPawnReason` carries an explicit `p.IsCaravanMember()` test; a
+> custom holder matches none of that method's tests, so the collector would take the roster
+> between visits.
+> ⇒ **The shipped code diverges deliberately in exactly two places** —
+> `IThingHolderTickable` with `ShouldTickContents => false`, and `LookMode.Deep` with the
+> roster kept OUT of `WorldPawns`. Both are commented at the divergence in
+> `src/Jawa/Inhabited/Source/WorldObject_Inhabited.cs`.
+> 🔑 **The soak in §7 still stands and is still the gate** — this fixes the two failures
+> that were findable on disk; it does not prove the third one that is not.
+
 ---
 
 # 4. The displaced pool — how people come back

@@ -74,6 +74,30 @@ it does not belong here.
   have no lord and idle. Blocks every combat test. *2026-08-15,
   `bridge-cannot-order-a-melee-attack-3f8c21`.*
 
+- 🔴 **A `ThingOwner<Pawn>` on a custom `WorldObject` IS TICKED, and copying `Caravan`
+  literally would delete the cast.** Two shipped mechanisms bite, and neither is
+  documented anywhere: (1) `WorldObject.DoTick` walks its child holders and calls
+  `ThingOwner.DoTick` on each, skipping only owners that are `is Map` or `is Caravan`
+  — a hardcoded type test a mod cannot join, so an off-map roster's needs fall and it
+  starves in a box. The supported opt-out is `IThingHolderTickable` with
+  `ShouldTickContents => false`. (2) `Caravan.pawns` uses `LookMode.Reference` and is
+  safe only because caravan pawns are registered with `WorldPawns` AND
+  `WorldPawnGC.GetCriticalPawnReason` carries an explicit `p.IsCaravanMember()` test;
+  a custom holder matches none of that method's tests, so every pawn would be
+  collected between visits. Use `LookMode.Deep` and keep them out of `WorldPawns`.
+  *Read off the 1.6 decompile 2026-08-20 — `RimWorld.Planet/WorldObject.cs` DoTick,
+  `RimWorld.Planet/WorldPawnGC.cs` GetCriticalPawnReason — while building `Inhabited`.*
+- **The last moment a departing map's pawns are still enumerable is a prefix on
+  `Verse.Game.DeinitAndRemoveMap`.** It runs `Notify_MyMapAboutToBeRemoved()`, then
+  `MapDeiniter.Deinit`, whose FIRST act is `PassPawnsToWorld` — which despawns every
+  pawn and hands it to `WorldPawns`. `MapComponentUtility.MapRemoved` fires after
+  that and is too late to recover anybody. *1.6 decompile, 2026-08-20.*
+- **`Lord.ExposeData_StateGraph` saves the current toil and each toil's data by
+  POSITIONAL INDEX**, then re-runs `CreateGraph()` on load and looks those indices up
+  in the freshly built graph. Any `LordJob` we intend to re-tune must therefore return
+  a graph of exactly one toil, forever, and put the schedule in ordinary C# inside it.
+  *`Verse.AI.Group/Lord.cs`, 1.6 decompile, 2026-08-20.*
+
 ## Deploy targets that are not `Mods/`
 
 - **`Xenotypes/*.xtp` and `Ideos/*.rid` are deploy targets.** They live under

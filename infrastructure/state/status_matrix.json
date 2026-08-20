@@ -17,14 +17,14 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline",
+     "total": 2,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 2
      }
     },
     "CHECK": {
@@ -58,14 +58,14 @@
     },
     "BUILD": {
      "done": 1,
-     "total": 2,
+     "total": 4,
      "state": "idle",
      "mix": {
       "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 3
      }
     },
     "CHECK": {
@@ -291,18 +291,6 @@
    "name": "7 Pawntypes",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 2,
-     "state": "idle",
-     "mix": {
-      "closed": 1,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    },
-    "BUILD": {
      "done": 2,
      "total": 2,
      "state": "idle",
@@ -314,16 +302,28 @@
       "ready": 0
      }
     },
+    "BUILD": {
+     "done": 2,
+     "total": 3,
+     "state": "idle",
+     "mix": {
+      "closed": 2,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    },
     "CHECK": {
      "done": 0,
-     "total": 0,
-     "state": "offline",
+     "total": 1,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 1
      }
     }
    }
@@ -373,15 +373,15 @@
    "name": "9 Factions",
    "cells": {
     "DECIDE": {
-     "done": 3,
+     "done": 4,
      "total": 4,
      "state": "idle",
      "mix": {
-      "closed": 3,
+      "closed": 4,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     },
     "BUILD": {
@@ -398,14 +398,14 @@
     },
     "CHECK": {
      "done": 1,
-     "total": 3,
+     "total": 4,
      "state": "idle",
      "mix": {
       "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 3
      }
     }
    }
@@ -575,662 +575,6 @@
    }
   },
   {
-   "name": "bridge-1",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-10",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-11",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-12",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-13",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-14",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-15",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-16",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-17",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-18",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-19",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-2",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-20",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-3",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-4",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-5",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
    "name": "bridge-6",
    "cells": {
     "DECIDE": {
@@ -1258,15 +602,15 @@
      }
     },
     "CHECK": {
-     "done": 0,
+     "done": 1,
      "total": 1,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     }
    }
@@ -1299,56 +643,15 @@
      }
     },
     "CHECK": {
-     "done": 0,
+     "done": 1,
      "total": 1,
      "state": "idle",
      "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-8",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
       "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
      }
     }
    }
@@ -1382,14 +685,14 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 1,
+     "total": 2,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 2
      }
     }
    }
@@ -1422,15 +725,179 @@
      }
     },
     "CHECK": {
-     "done": 0,
+     "done": 1,
      "total": 2,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "inhabited-1",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "inhabited-2",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "inhabited-3",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "inhabited-4",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
      }
     }
    }
@@ -1480,11 +947,11 @@
    "name": "unassigned",
    "cells": {
     "DECIDE": {
-     "done": 6,
-     "total": 10,
+     "done": 8,
+     "total": 12,
      "state": "idle",
      "mix": {
-      "closed": 6,
+      "closed": 8,
       "done": 0,
       "doing": 0,
       "blocked": 0,
@@ -1492,27 +959,27 @@
      }
     },
     "BUILD": {
-     "done": 0,
-     "total": 1,
+     "done": 1,
+     "total": 11,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 10
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 2,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
       "ready": 1
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 2,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 2
      }
     }
    }
@@ -1545,15 +1012,15 @@
      }
     },
     "CHECK": {
-     "done": 0,
-     "total": 1,
+     "done": 1,
+     "total": 3,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 2
      }
     }
    }
@@ -1591,6 +1058,703 @@
      "state": "offline",
      "mix": {
       "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-1",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-10",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-11",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-12",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-13",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-14",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-15",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-16",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-17",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-18",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-19",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-2",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-20",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-3",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-4",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-5",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-8",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
@@ -1772,7 +1936,7 @@
     "count": 1
    },
    {
-    "label": "raised by REP, 2026-08-20.",
+    "label": "no `InhabitedPlaceDef`/`InhabitedCastDef` instances exist",
     "count": 1
    }
   ]
@@ -1793,12 +1957,12 @@
    },
    {
     "d": "2026-08-20",
-    "n": 1
+    "n": 28
    }
   ],
-  "per_day": 11.14,
-  "closed": 78,
-  "remaining": 50,
-  "eta_days": 4
+  "per_day": 15.0,
+  "closed": 105,
+  "remaining": 49,
+  "eta_days": 3
  }
 }

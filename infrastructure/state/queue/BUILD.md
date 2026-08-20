@@ -179,6 +179,7 @@ state:    done 2026-08-20. 48 kinds in
           Trade Moot's three authored `Jawa_Tribal_*` kinds were KEPT alongside the roster
           kinds rather than replaced — deleting authored content is not a build decision.
           Live half filed to `queue/CHECK.md`.
+
 ## B55 Build the campaign start — fixed map, fixed ship, fixed pawns
 row:      12
 spec:     ⏭️ CARRIED IN FROM B63, 2026-08-19: **"The Sundered" must appear in
@@ -333,6 +334,7 @@ state:    done 2026-08-20 — carried out by the OWNER, with one correction from
           written from outside. Removing the three `noxilie.regrow.wmb.*` mods did NOT
           address it — those are separate mods from `regrowth.botr.core`, which is still
           active at 459.
+
 ## the-eyeling-becomes-the-ikee-rename-and-place-it-6f2b81
 row:      12
 from:     DECIDE, 2026-08-19, closing D26 on the owner's 2026-08-15 ruling
@@ -364,7 +366,6 @@ verify:   `validate_patch.py --defs` clean on the patch; the live def's label re
 criteria: the clan starts with a bonded ikee; it reads as belonging to this campaign rather
           than to Alpha Animals; and a player can find another one in the waste.
 state:    ready
-
 
 ## B-EMP1 Stale Empire-vessel prose in `Jawa_Patches/About/About.xml`
 row:      1
@@ -682,7 +683,20 @@ verify:   the build produces `src/Jawa/Inhabited/Assemblies/Inhabited.dll` and
           copy with no `-` lines. ⚠️ A mod with no About.xml or packageId is not
           deployable and deploy will say so rather than failing loudly.
 criteria: the mod appears in RimSort / the in-game mod list under `mandrake.inhabited`.
-state:    ready
+state:    done 2026-08-20, `f0a9f6c`. Built at `src/Jawa/Inhabited/`, deployed, in sync.
+          ⚠️ **Two deviations from the spec text, both deliberate and both mine to make:**
+          (a) `<name>Inhabited (local)</name>` as specified, but the mod carries a real
+          `Defs/` tree already rather than an empty one — the core landed in the same pass.
+          (b) `EnableDefaultCompileItems` is left ON rather than listing every `.cs`
+          explicitly as `JawaPlantGrowth` does; this project grows files weekly and an
+          explicit list is a silent-omission machine. `CopyLocalLockFileAssemblies` is
+          `false` as required and `Assemblies/` holds **only** `Inhabited.dll`.
+          verify output:
+            `Inhabited -> ...\Assemblies\Inhabited.dll   Build succeeded. 0 Warning(s) 0 Error(s)`
+            `deploy_custom_mods.py --mod Inhabited` -> 6 `+` lines, **no `-` lines**,
+            then `--apply` -> `-> VERIFIED in sync`
+          ⚠️ It is **not in ModsConfig.xml**, so the game will not load it until it is
+          enabled. That is a start-prep step, not a deploy step.
 
 ## INHABITED_WORLD_OBJECT_CORE_1 `WorldObject_Inhabited` — the roster is real pawns
 spec:     `src/Jawa/Inhabited/Source/WorldObject_Inhabited.cs`. Model on `RimWorld.Planet.Caravan`,
@@ -710,7 +724,21 @@ verify:   `dotnet build` clean; the def loads with 0 errors in a def-dump refres
           appears in the dump.
 criteria: a `WorldObject_Inhabited` spawned on the world map via the bridge draws its icon
           and its inspect string on the planet view.
-state:    ready
+state:    built 2026-08-20, `f0a9f6c` — offline verify passes; **the def-dump half is owed
+          and needs a load.** Filed to CHECK as `INHABITED_DEFS_LOAD_CLEAN_1`.
+          🔴 **THREE DEVIATIONS FROM THE SPEC, and DECIDE should overrule any it dislikes:**
+          (a) **`InhabitedPlaceDef` / `InhabitedCastDef`, not the bare `PlaceDef` / `CastDef`
+              the spec wrote.** A def type name IS the XML element name and is shared across
+              the whole load order; this build set carries 577 mods. `PlaceDef` is a
+              coin-flip collision and a collision here is silent.
+          (b) **`stock` is an `InhabitedStock` sub-holder, not a second `ThingOwner<Thing>`
+              on the world object.** `IThingHolder.GetDirectlyHeldThings` returns exactly
+              one owner, so a second one has to hang off a child holder. This is the shape
+              `Caravan` uses for `pather` / `needs` / `beds` / `trader`.
+          (c) **the larder and the trade goods are one container**, as the spec asked, and
+              the census line reads them: `12 souls . oil . will trade`.
+          ⛔ No death record, no memorial, no ledger, no counter exists anywhere in the mod.
+          Checked by grep before commit.
 
 ## ROSTER_SURVIVES_OFFMAP_PROOF_1 🔴 THE ARCHITECTURE GATE — do this before the rest
 spec:     §3.4 names this as *"the one that could invalidate the architecture. Do it first."*
@@ -733,7 +761,32 @@ criteria: 🔴 CHECK's, and it is a soak, not a glance. Stuff the roster, **save
           and a ticking roster changes the design.
           FAIL = any pawn missing, any relation dropped, any `Could not load reference to`
           in `Player.log` naming a pawn.
-state:    ready — ⚠️ everything below assumes this passes
+state:    harness built 2026-08-20, `f0a9f6c`. **The soak is CHECK's and is not done.**
+          Filed as `ROSTER_SOAK_100_DAYS_1` in `queue/CHECK.md`.
+          🔴 **TWO OF THE THREE WAYS THIS COULD HAVE FAILED WERE FOUND ON DISK AND FIXED
+          BEFORE THE SOAK, so the harness is now testing a different question than the
+          item assumed.** Read off the 1.6 decompile:
+            1. `WorldObject.DoTick` walks its child holders and calls `ThingOwner.DoTick`
+               on each, skipping only owners that are `is Map` or `is Caravan` — a
+               hardcoded type test a mod cannot join. **The design's "pawns held in a
+               ThingOwner off-map are not ticked" is FALSE for a custom holder**; the cast
+               would have starved in a box. Opt-out is `IThingHolderTickable` with
+               `ShouldTickContents => false`, and it is in.
+            2. `Caravan.pawns` is `LookMode.Reference`, safe only because caravan pawns are
+               in `WorldPawns` AND `WorldPawnGC.GetCriticalPawnReason` carries an explicit
+               `p.IsCaravanMember()` test. A custom holder matches **none** of that
+               method's tests, so the collector would have taken the whole roster between
+               visits. Ours is `LookMode.Deep` and stays out of `WorldPawns`.
+          §3.4 of the design doc has been corrected in place.
+          ⇒ **The soak now proves the remaining question, which is the interesting one:**
+          does a deep-held, deliberately un-ticked pawn survive save/quit-to-desktop/reload
+          and 100+ days with relations and hediffs intact. Debug actions, category
+          `Inhabited`: `Create place at current tile` · `Stuff roster (3 pawns)` ·
+          `Report roster` · `Report displaced pool` · `Absorb roster into pool` ·
+          `Draw 3 from pool`. `Report roster` prints ThingID, name, age in years AND ticks,
+          relation count, hediff count, trait count, dead flag and faction, per pawn.
+          🔑 **The age line is the one that answers §3.4's open question** — frozen reads
+          the same tick count twice, ticked reads exactly the elapsed time.
 
 ## INHABITED_DISPLACED_POOL_1 The placeless, per faction
 spec:     §4. `src/Jawa/Inhabited/Source/DisplacedPool.cs`, a `GameComponent` so it is
@@ -753,7 +806,18 @@ verify:   `dotnet build` clean. A `[DebugAction]` that absorbs 5 pawns and draws
 criteria: raid a cast, leave, land on a second place of the same faction, and at least one
           pawn there is a survivor of the first — same name, and RimWorld's own opinion
           system already knows what you did to him.
-state:    ready
+state:    built 2026-08-20, `f0a9f6c`. Build clean; the save/load half is CHECK's, filed
+          under `ROSTER_SOAK_100_DAYS_1`.
+          🔴 **ONE DEVIATION, and it is a save-correctness fix, not a preference.** The spec
+          asked for `Dictionary<Faction, ThingOwner<Pawn>> pools`. **That container cannot
+          round-trip:** a `ThingOwner` must be constructed with its `IThingHolder` owner,
+          and `Scribe_Collections`' deep look has no way to hand one to a value it is
+          reconstructing — the owners come back null and every pool empties on load.
+          Shipped instead: ONE `ThingOwner<Pawn>` plus a faction QUERY. `Absorb(Pawn,
+          Faction, reason, origin)` and `Draw(Faction, int)` are the specified API,
+          unchanged, and `Draw` returns longest-waiting first as specified.
+          ⛔ The dead never enter the pool; `Absorb` refuses them on the first line.
+          ⛔ There is no `GameComponentTick` and there must not be one.
 
 ## INHABITED_GENSTEP_CAST_SPAWN_1 The GenStep that puts the company on the ground
 spec:     §2. The link chain is entirely shipped and verified 2026-08-19:
@@ -785,7 +849,23 @@ verify:   a quicktest map on a tile carrying the mutator spawns the cast, and th
           and after a map cycle with no combat is EQUAL.
 criteria: land, leave, return: the same named people are there. Kill two, leave, return:
           the roster is short by exactly two and no record of them exists anywhere.
-state:    ready
+state:    ⭐ **MECHANISM BUILT, CONTENT MISSING** — 2026-08-20, `f0a9f6c`.
+          `GenStep_InhabitedCast` + `GenStepDef Inhabited_Cast` (order 900) are in and build
+          clean. Roster-out, `MakeNewLord`, spawn, and roster-back-in are all wired.
+          🔑 **Return of survivors is a Harmony prefix on `Verse.Game.DeinitAndRemoveMap`,
+          not a GenStep hook.** `Game.DeinitAndRemoveMap` runs
+          `Notify_MyMapAboutToBeRemoved()` and then `MapDeiniter.Deinit`, whose FIRST act is
+          `PassPawnsToWorld` — every pawn despawned and handed to `WorldPawns`. The prefix
+          is the last instant the cast is still standing on its own ground;
+          `MapComponentUtility.MapRemoved` fires afterwards and is far too late.
+          ⛔ **BLOCKED ON CONTENT, and it is not BUILD's to invent:** DECIDE's cast-size
+          table is in the spec above and is now expressible — `InhabitedCastDef.castSize` —
+          but **no `InhabitedPlaceDef` or `InhabitedCastDef` instance exists yet**, and
+          neither does any `TileMutatorDef` naming `Inhabited_Cast` in its `extraGenSteps`.
+          Those need the 269 authored characters as data first, which is
+          `CAST_ROSTER_MACHINE_READABLE_1` below.
+          ⛔ Farming is not attempted, as specified. `InhabitedPlaceDef.larder` carries the
+          present-not-produced sustenance and the reason is commented at the field.
 
 ## INHABITED_DAY_NIGHT_ROUTE_1 One toil that reassigns duty, and a sleep JobGiver
 spec:     §6. ROUTE is barracks → worksite → barracks across a day.
@@ -801,7 +881,24 @@ verify:   `dotnet build` clean; a save taken mid-routine reloads with the Lord i
           the same toil index.
 criteria: watch a cast over one in-game day — they work by day and are in the barracks at
           night, and a save/load mid-day does not scatter them.
-state:    ready
+state:    built 2026-08-20, `f0a9f6c`. Build clean. The watch-a-day half is CHECK's, filed
+          as `INHABITED_ROUTE_ONE_DAY_1`.
+          🔑 **The graph is ONE toil and must stay one forever.** `LordJob_Inhabited.
+          CreateGraph()` returns a `StateGraph` whose only toil is
+          `LordToil_InhabitedRoutine`; there are no transitions and no `LordToilData`, so
+          nothing in this job is index-serialised at all. The stance field is deliberately
+          NOT scribed — on load `CreateGraph()` rebuilds the toil, the field returns to its
+          default and the next reassess reassigns. Self-healing by construction.
+          ⭐ **The ROUTE is the DUTY'S FOCUS moving, not the duty changing.** One `DutyDef`,
+          `Inhabited_Resident`, modelled on Core's `DefendBase` from
+          `Data/Core/Defs/DutyDefs/Duties_NonPlayerHome.xml`, with `JobGiver_SleepAtNight`
+          inserted above the `SatisfyBasicNeeds` subtree. The toil moves the focus between
+          the worksite (day) and the barracks (night) every 600 ticks, and pins it to the
+          pawn's own position while `lord.lastPawnHarmTick` is recent — a cast under fire
+          does not walk to the barracks because the clock said so.
+          ⚠️ **`ThinkNode_Priority` takes its subnodes IN ORDER**, not by `GetPriority`, so
+          the XML order is the behaviour: fight back -> turn in at night -> eat and rest ->
+          keep warm -> wander. Re-tuning means moving a line in that file.
 
 ## INHABITED_BEGGARS_FROM_POOL_1 The beggars at your gate are the people you burned out
 spec:     §4.1 consumer 2. ⚠️ **Two corrections to the design doc before you start:**

@@ -1291,3 +1291,116 @@ criteria: 🔴 THE OWNER LOOKS AT THE PLANET AND DOES NOT IMMEDIATELY NAME A DEF
           ⚠️ Last night's planet failed exactly this: 100% tile match, and it still did not
           read as Ash'karr, because stages 2-7 had not run.
 state:    ready
+
+## ROSTER_SOAK_100_DAYS_1 🔴 THE ARCHITECTURE GATE — everything in `Inhabited` rests on this
+row:      inhabited-1
+from:     BUILD, 2026-08-20, `f0a9f6c`. Harness only; BUILD cannot run this.
+spec:     `Inhabited` holds a place's cast as real `Pawn` objects in a `ThingOwner<Pawn>`
+          on a `WorldObject`, off-map, between visits. `Caravan` is the shipped model and
+          it is designed to be TRANSIENT; we are using its shape for something PERMANENT,
+          and vanilla never stress-tests that across years.
+          🔑 **TWO of the three ways this could fail were found on disk and fixed before
+          you got here**, so do not spend the soak looking for them:
+            1. `WorldObject.DoTick` ticks child `ThingOwner`s unless the owner `is Map` or
+               `is Caravan`. Ours now implements `IThingHolderTickable` with
+               `ShouldTickContents => false`.
+            2. `Caravan.pawns` is `LookMode.Reference` and survives only because
+               `WorldPawnGC.GetCriticalPawnReason` has an explicit `IsCaravanMember()`
+               test. Ours is `LookMode.Deep` and stays out of `WorldPawns` entirely.
+          ⇒ **What is left to prove is the interesting part:** that a deep-held,
+          deliberately un-ticked pawn comes back whole after a real save/load and a long
+          absence.
+          ⚠️ **`mandrake.inhabited` is NOT in `ModsConfig.xml`.** Enable it first or none
+          of this exists. It is deployed and in sync.
+          THE RUN, and it is a soak, not a glance:
+            1. Dev mode on. Debug actions, category `Inhabited`:
+                 `Create place at current tile`   -> makes a `WorldObject_Inhabited`
+                 `Stuff roster (3 pawns)`         -> 3 pawns; #1 gets a `Sibling` relation
+                                                     to a free colonist, #2 a missing eye
+                                                     and the `Abrasive` trait
+                 `Report roster`                  -> KEEP THIS OUTPUT. It is the baseline.
+            2. Save. **Quit to desktop.** Reload. `Report roster` again.
+            3. Let **100+ in-game days** pass WITHOUT visiting that tile.
+            4. `Report roster` a third time.
+verify:   diff the three reports.
+criteria: PASS = identical `ThingID`s, names, relation counts, hediff counts and trait
+          counts across all three.
+          🔑 **AND REPORT THE AGE LINE EXPLICITLY, because it answers a design question
+          nobody can answer from disk.** Each entry prints `age=Ny (T ticks)`. Either
+            FROZEN — the tick count is unchanged across 100 days, which is what §3.4 of
+                     `design/Jawa/bridge/INHABITED_DESIGN.md` promises; or
+            TICKED — it advanced by exactly the elapsed time, which is ACCEPTABLE but
+                     changes the design and DECIDE must be told.
+          FAIL = any pawn missing · any relation or hediff dropped · any
+          `Could not load reference to` in `Player.log` naming a pawn.
+          ⛔ **If this fails, do not patch around it.** The container choice is wrong and
+          DECIDE re-specs before anything more is built on it.
+state:    ready
+
+## INHABITED_DEFS_LOAD_CLEAN_1 The four `Inhabited` defs load, and the Harmony patch binds
+row:      inhabited-2
+from:     BUILD, 2026-08-20, `f0a9f6c`.
+spec:     First load of a new assembly and four new def files. Cheap, and it gates the
+          three items below.
+            `DutyDef Inhabited_Resident`        `Defs/DutyDefs/Duties_Inhabited.xml`
+            `GenStepDef Inhabited_Cast`         `Defs/GenStepDefs/GenSteps_Inhabited.xml`
+            `WorldObjectDef Inhabited_Place`    `Defs/WorldObjectDefs/WorldObjects_Inhabited.xml`
+            6 keyed strings                     `Languages/English/Keyed/Inhabited.xml`
+          ⚠️ `InhabitedDefOf` names `Inhabited_Resident`, so `DefOfHelper` throws at
+          startup if that file failed to load. **That is deliberate** — it is the only
+          early warning available, because a def file that fails to parse otherwise just
+          produces a game with a missing duty and no message anyone reads.
+          ⚠️ The Harmony patch targets `Verse.Game.DeinitAndRemoveMap`. **A Harmony patch
+          that matches nothing THROWS at startup, unlike an XML one.** That is the wanted
+          behaviour: if the target is ever renamed the mod must fail loudly rather than
+          quietly forget everybody. So a clean startup IS the proof the target bound.
+verify:   `Player.log` after a load with `mandrake.inhabited` enabled:
+            zero `Could not load reference to` naming an `Inhabited_*` def
+            zero `DefOfHelper` errors
+            zero Harmony patch exceptions naming `mandrake.inhabited`
+          then `python3 src/RimMandrake/Utils/refresh.py` and confirm `Inhabited_Place`,
+          `Inhabited_Cast` and `Inhabited_Resident` appear in the def dump.
+criteria: a `WorldObject_Inhabited` created by the debug action draws its icon on the
+          planet and its inspect string reads `N souls`.
+state:    ready
+
+## INHABITED_ROUTE_ONE_DAY_1 Watch a cast across one in-game day
+row:      inhabited-3
+from:     BUILD, 2026-08-20, `f0a9f6c`. Depends on `ROSTER_SOAK_100_DAYS_1` passing.
+spec:     The ROUTE is one `LordToil` moving one duty's FOCUS: worksite by day, barracks
+          from 22:00 to 06:00, and pinned to the pawn's own position while
+          `lord.lastPawnHarmTick` is recent.
+          ⚠️ There is no `TileMutatorDef` naming `Inhabited_Cast` yet, so the cast will not
+          appear on a map by itself. Land on the place created by the debug action, or
+          spawn the pawns and lord by hand.
+verify:   watch the clock roll past 22:00 and past 06:00.
+criteria: they work by day and are at the barracks at night; a save/load mid-day does not
+          scatter them or leave anyone standing still; being shot at pulls them off the
+          schedule and they do not walk home mid-firefight.
+          ⚠️ **Report anything that reads as a crowd rather than as residents** — everyone
+          sleeping in one heap, or nobody sleeping at all. `JobGiver_SleepAtNight` prefers
+          a real bed via `RestUtility.FindBedFor` and only then a ground spot near the
+          duty focus, so a place with no beds will look like a camp. That may be correct.
+state:    ready
+
+## INHABITED_POOL_ROUND_TRIP_1 Somebody the player displaced turns up somewhere else
+row:      inhabited-4
+from:     BUILD, 2026-08-20, `f0a9f6c`. Depends on `ROSTER_SOAK_100_DAYS_1` passing.
+spec:     §4 of the design. The displaced pool is a `GameComponent`; any cast being
+          instantiated draws from it BEFORE generating anyone new, and that one ordering
+          rule is the whole recurring-character effect.
+          Debug actions: `Absorb roster into pool` · `Report displaced pool` ·
+          `Draw 3 from pool`.
+verify:   absorb 3, save, quit to desktop, reload, `Report displaced pool` -> the same 3
+          with the same `ThingID`s, reasons and origins. Then `Draw 3 from pool` -> 3
+          distinct pawns returned and the pool left empty.
+criteria: 🔑 the real one, and it needs two places of one faction: raid a cast, leave,
+          land on a second place of the same faction, and at least one person there is a
+          survivor of the first — same name, and RimWorld's own opinion system already
+          knows what the player did to him.
+          ⛔ **There is no morality system in this mod and there must never be one.** If
+          anything in play reads as a karma score, a reputation number or a "the world
+          disapproves" popup, that is a defect — report it as one.
+state:    blocked on content — no `InhabitedPlaceDef`/`InhabitedCastDef` instances exist
+          yet, so there is no second place to land on. The save/load half above is
+          runnable now.
