@@ -31,9 +31,11 @@
   field. A faction without it is set on 76 of 87 live defs, so the world map
   draws it broken. It is set explicitly here and in all six siblings.
 
-  ⛔ NO IDEO BLOCK. R23: `fixedIdeo` / `ideoName` / `ideoDescription` /
-  `forcedMemes` / `deityPresets` land as one uniform pass in B54, for all eleven
-  faiths at once. A faction without them generates an ideo at worldgen and works.
+  ✅ THE IDEO BLOCK IS IN THIS FILE. R23 said to omit it and add it in one pass
+  when the text existed; the text exists (`faction_religions_spec.md`) and that
+  pass landed here rather than in a separate file. 🔴 It has to be here before
+  the worldgen click: an ideo is generated once, at world creation, and a
+  `fixedIdeo` added afterwards does not retrofit an existing world.
 
   ⛔ NO TRADER GROUP. `canRequestTraders` is false; the hive does not trade.
 

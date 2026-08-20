@@ -311,8 +311,13 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --de
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
-state:    ready
-
+state:    done 2026-08-19. The def was already written; audited rather than assumed.
+          578-mod scoped run 0 errors; every pawn kind resolves in the live def dump; all
+          four naming/art fields present. Its ideo block is spec-sanctioned and present, but its `ideoDescription` is NOT the religions-spec text despite the comment claiming verbatim — filed, not silently rewritten.
+          Deployed. Live half filed to `queue/CHECK.md` as
+          `seven-authored-factions-generate-and-field-their-own-kinds-5b90c7`; the design
+          values it raised are `five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea`
+          in `queue/DECIDE.md`.
 ## B46 Create the Free Droid Enclaves as a new faction
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 5 for every field value, plus its "Namers and icons"
@@ -333,8 +338,13 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --de
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
-state:    ready
-
+state:    done 2026-08-19. The def was already written; audited rather than assumed.
+          578-mod scoped run 0 errors; every pawn kind resolves in the live def dump; all
+          four naming/art fields present. The `xenotypeSet` carries a biological species against a 0%-biological dossier — filed, not silently emptied.
+          Deployed. Live half filed to `queue/CHECK.md` as
+          `seven-authored-factions-generate-and-field-their-own-kinds-5b90c7`; the design
+          values it raised are `five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea`
+          in `queue/DECIDE.md`.
 ## B47 Create the Wildsteam Clan as a new faction
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 6 for every field value, plus its "Namers and icons"
@@ -355,8 +365,13 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --de
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
-state:    ready
-
+state:    done 2026-08-19. The def was already written; audited rather than assumed.
+          578-mod scoped run 0 errors; every pawn kind resolves in the live def dump; all
+          four naming/art fields present. `humanlikeFaction` was missing and was added (R3).
+          Deployed. Live half filed to `queue/CHECK.md` as
+          `seven-authored-factions-generate-and-field-their-own-kinds-5b90c7`; the design
+          values it raised are `five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea`
+          in `queue/DECIDE.md`.
 ## B48 Create the Deepwater Compact as a new faction
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 7 for every field value, plus its "Namers and icons"
@@ -377,8 +392,13 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --de
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
-state:    ready
-
+state:    done 2026-08-19. The def was already written; audited rather than assumed.
+          578-mod scoped run 0 errors; every pawn kind resolves in the live def dump; all
+          four naming/art fields present. `humanlikeFaction` was missing and was added (R3).
+          Deployed. Live half filed to `queue/CHECK.md` as
+          `seven-authored-factions-generate-and-field-their-own-kinds-5b90c7`; the design
+          values it raised are `five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea`
+          in `queue/DECIDE.md`.
 ## B49 Create the Geonosian Foundry Hive as a new faction
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 8 for every field value, plus its "Namers and icons"
@@ -399,8 +419,13 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --de
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
-state:    ready
-
+state:    done 2026-08-19. The def was already written; audited rather than assumed.
+          578-mod scoped run 0 errors; every pawn kind resolves in the live def dump; all
+          four naming/art fields present. The 2026-08-17 two-outposts ruling has no field that expresses it — filed to DECIDE rather than invented.
+          Deployed. Live half filed to `queue/CHECK.md` as
+          `seven-authored-factions-generate-and-field-their-own-kinds-5b90c7`; the design
+          values it raised are `five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea`
+          in `queue/DECIDE.md`.
 ## B50 Create the Ascendant Helix as a new faction
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 9 for every field value, plus its "Namers and icons"
@@ -421,8 +446,13 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --de
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
-state:    ready
-
+state:    done 2026-08-19. The def was already written; audited rather than assumed.
+          578-mod scoped run 0 errors; every pawn kind resolves in the live def dump; all
+          four naming/art fields present. `humanlikeFaction` was missing and was added (R3). `xenotypeSet Inherit="False"` is present and `xenotypeChances` is dictionary-keyed, so neither R27 trap is live.
+          Deployed. Live half filed to `queue/CHECK.md` as
+          `seven-authored-factions-generate-and-field-their-own-kinds-5b90c7`; the design
+          values it raised are `five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea`
+          in `queue/DECIDE.md`.
 ## B51 Create the Junkers as a new faction
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 12 for every field value, plus its "Namers and icons"
@@ -443,8 +473,13 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --de
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
-state:    ready
-
+state:    done 2026-08-19. The def was already written; audited rather than assumed.
+          578-mod scoped run 0 errors; every pawn kind resolves in the live def dump; all
+          four naming/art fields present. `humanlikeFaction` was missing and was added (R3). `permanentEnemy false` is restated over `PirateBandBase`, which is what R12 requires.
+          Deployed. Live half filed to `queue/CHECK.md` as
+          `seven-authored-factions-generate-and-field-their-own-kinds-5b90c7`; the design
+          values it raised are `five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea`
+          in `queue/DECIDE.md`.
 ## B44 Rename vanilla mechanoids to fit the setting
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` sections 13 and 14. Two `PatchOperation`s: `label` and

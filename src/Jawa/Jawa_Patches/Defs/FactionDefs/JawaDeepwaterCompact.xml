@@ -23,9 +23,11 @@
   field. A faction without it is set on 76 of 87 live defs, so the world map
   draws it broken. It is set explicitly here and in all six siblings.
 
-  ⛔ NO IDEO BLOCK. R23: `fixedIdeo` / `ideoName` / `ideoDescription` /
-  `forcedMemes` / `deityPresets` land as one uniform pass in B54, for all eleven
-  faiths at once. A faction without them generates an ideo at worldgen and works.
+  ✅ THE IDEO BLOCK IS IN THIS FILE. R23 said to omit it and add it in one pass
+  when the text existed; the text exists (`faction_religions_spec.md`) and that
+  pass landed here rather than in a separate file. 🔴 It has to be here before
+  the worldgen click: an ideo is generated once, at world creation, and a
+  `fixedIdeo` added afterwards does not retrofit an existing world.
 
   Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
   their owning mod for `MayRequire`:
@@ -45,6 +47,7 @@
     <categoryTag>Outlander</categoryTag>
     <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Industrial</techLevel>
+    <humanlikeFaction>true</humanlikeFaction>
     <canMakeRandomly>true</canMakeRandomly>
     <!-- 5 settlements, every oasis and coast. -->
     <settlementGenerationWeight>0.7</settlementGenerationWeight>
@@ -92,8 +95,11 @@
          campaign. The species below are this repo's own, copied out of the
          three colliding packs so none of them has to stay installed.
          ⚠️ The CHANCES are BUILD's, not the spec's — R27 gives species, not
-         numbers. They sum to 1.00 so no baseliner generates, with the dossier
-         lead species heaviest. Retune freely; nothing depends on them. -->
+         numbers. They sum to ~1.00, with the dossier
+         lead species heaviest.
+         ⚠️ Baseliner is one of the entries and it is NOT zero, so plain humans DO
+         generate at that rate. The comment used to claim otherwise. Retune freely;
+         nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
         <RimMandrakeMonCalamari MayRequire="mandrake.starwarsraces">0.222</RimMandrakeMonCalamari>
