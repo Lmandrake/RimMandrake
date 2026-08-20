@@ -1454,3 +1454,204 @@ state:    ✅ CLOSED 2026-08-19 — all five answered. Good audit; two were real
           rather than as leakage. ⭐ BUILD did the right thing correcting the false comment
           and leaving the numbers alone; that is exactly the right instinct.
 
+## execution-required-has-no-field-to-live-in-5e14b2
+row:      9
+from:     BUILD, 2026-08-19, bouncing half of `hutt-ideo-text-is-canon-...-3d7c14`.
+spec:     That item directs BUILD to *"add the missing Decision precept: the spec rules
+          `Execution_Required`"* to `JawaHuttCartel.xml`. **There is no field to add it to.**
+          Read off the shipped source, not inferred: `RimWorld/FactionDef.cs` carries
+          `disallowedPrecepts` (a blacklist, :216) and `requiredPreceptsOnly` (a bool, :237)
+          and nothing that names a precept to INCLUDE.
+          🔑 `faction_religions_spec.md` already says this in its own authorable-surface
+          table: precept label and description are "❌ nobody — design register only", and
+          the entire budget of authored prose is `ideoName`, `ideoDescription` and two-to-four
+          deity name/type pairs. The item's instruction contradicts its own source doc.
+          ⇒ A specific Decision precept reaches play only if (a) a meme the ideo holds
+          requires it, or (b) the generator happens to pick it — and with
+          `requiredPreceptsOnly false` on the Cartel, (b) is a roll, not a guarantee.
+          THE CHOICES: (1) accept that "prisoners: no" is fiction, not mechanism;
+          (2) find a meme in the live set that requires `Execution_Required` and force it,
+          which changes the Cartel's five forced memes; (3) ship the Cartel's ideo as a
+          saved `.rid` instead of a FactionDef block, where precepts ARE authorable — a much
+          larger change that would move it out of the faction file.
+          ⏱️ It has the worldgen deadline like everything else in the ideo layer.
+verify:   n/a — a ruling.
+criteria: n/a
+state:    ✅ CLOSED 2026-08-20 — **BOUNCE ACCEPTED. BUILD IS RIGHT AND DECIDE WAS WRONG.**
+          Verified independently against `FactionDef` via RimSage: the full field list
+          carries `disallowedPrecepts` (a blacklist), `requiredPreceptsOnly` (a bool), plus
+          `ideoName` / `ideoDescription` / `deityPresets` / `forcedMemes` / `allowedMemes` /
+          `disallowedMemes` / `requiredMemes` / `styles` / `fixedIdeo` / `classicIdeo` /
+          `hiddenIdeo` — **and NOTHING that names a precept to INCLUDE.**
+          ⇒ ⛔ **STRIKE that half of `hutt-ideo-text-is-canon-...-3d7c14`.** BUILD must NOT
+          attempt to add `Execution_Required` to `JawaHuttCartel.xml`; there is nowhere to
+          put it. **A named precept is DESIGN REGISTER, not mechanism.**
+          ✅ **The other half of 3d7c14 stands unchanged** — the `ideoDescription` correction
+          and the Ugnaught measurement are unaffected.
+          🔴 **The lesson, recorded because it is the second time today:** the instruction
+          contradicted **its own source document** — `faction_religions_spec.md`'s
+          authorable-surface table already said precept labels are *"nobody — design
+          register only"*, and DECIDE quoted that file's ruling without reading its table.
+          ⇒ **When a design doc rules and tabulates, read the table.**
+## six-species-in-our-own-mod-have-no-donor-source-and-a-regenerate-deletes-them-4f81c9
+row:      unassigned
+from:     BUILD, 2026-08-19. This is the answer to the question DECIDE asked and nobody had
+          run: **"Establish what the mod actually ships before treating any count as a
+          target."** Measured at HEAD, by calling the analysis functions only, never `main`.
+spec:     `RimMandrake - Star Wars Races` ships **69** xenotypes. They break down as:
+            **63** the generator can rebuild from the donors' XML on disk, and
+            **6** that exist NOWHERE except in our own output — `Anzati`, `Muun`,
+            `Ortolan`, `SithZ`, `Togorian`, `Herglic`. A search of all three donor trees
+            returns no XenotypeDef for any of them. (`OuterRim_Herglic` exists but is a
+            **HeadTypeDef**, not a xenotype — the equivalencies table points the Herglic
+            row at the wrong def type, which is what produced the "source carries no
+            genes" message that has gone unexplained since 2026-08-15.)
+          ⇒ 🔴 **ANY REGENERATE DELETES THOSE SIX, PERMANENTLY.** They cannot be
+          recovered from a donor, from a re-dump with the donors switched on, or from the
+          equivalencies table. `_guard_species_regression` is what has been standing
+          between us and that loss, and it was right every time it fired.
+          🔑 TWO GENERATOR DEFECTS WERE FIXED WHILE MEASURING THIS, both committed:
+          (1) **The owner's 2026-08-15 "never drop a species for a gene" ruling was never
+              implemented.** `pick_species` still `continue`d on an unresolvable gene,
+              costing six species to four genes. It now strips the gene and builds the
+              species, and prints what it stripped. 57 -> 63.
+          (2) **`species_table` read the roster from the DUMP only**, so a dump captured
+              with the donors off silently shortened the roster. It now falls back to the
+              donors' XML on disk, the same fallback `_gene_exists` has.
+          NEITHER FIX RECOVERS THE SIX. They are a different problem.
+          THE CHOICES:
+          (a) **Move the six into a hand-maintained sibling file the generator never
+              writes** — honest, permanent, and it makes the guard's count meaningful
+              again. ⚠️ Each depends on 1-3 genes from `SW_Genes.xml`, which the generator
+              DOES write (e.g. `RimMandrake_HerglicHead` is Herglic-only), so those genes
+              must be carried across too or the six dangle.
+          (b) Teach the generator to carry forward any xenotype it cannot rebuild. Implicit
+              magic; the next reader will not know why the file has more defs than the log
+              says were built.
+          (c) Accept losing them at the next regenerate. ⛔ Not recommended, and it should
+              be a spoken decision rather than a side effect.
+          ⏱️ Not urgent: nothing needs a regenerate today. D-CHK2's magenta heads were
+          fixed in the output instead, and that edit converges with the generator.
+verify:   n/a — a ruling.
+criteria: n/a
+state:    ✅ RULED 2026-08-20 — **THOSE SIX ARE SOURCE, NOT OUTPUT. Treat them as such.**
+          Excellent measurement, and it answers the question DECIDE asked on 2026-08-15 and
+          never got run: *"establish what the mod actually ships before treating any count
+          as a target."* 69 shipped · 63 rebuildable from donor XML · **6 that exist nowhere
+          but in our own output** — `Anzati`, `Muun`, `Ortolan`, `SithZ`, `Togorian`,
+          `Herglic`.
+          🔴 **THE RULING: a generated file that holds content the generator cannot rebuild
+          is no longer a generated file. It is source, and it must be protected from its own
+          generator.** `_guard_species_regression` already refuses a shrink — that guard was
+          right twice today's earlier rulings leaned on it — and this extends the same
+          principle from a COUNT to NAMED entries: ⛔ **a regenerate must refuse to drop any
+          of those six by name**, not merely refuse a smaller total.
+          🔑 **A count is not a roster.** A guard that only checks the number would pass a
+          run that swapped six irreplaceable species for six rebuildable ones.
+          ⭐ **And the equivalencies-table defect is the more valuable half of this find:**
+          the Herglic row points at `OuterRim_Herglic`, which is a **`HeadTypeDef`, not a
+          XenotypeDef.** That single wrong def type produced the phantom *"source carries no
+          genes"* that DECIDE recorded as an unmeasured mystery on 2026-08-15 and left
+          standing. ⇒ **Correct the table; the mystery dissolves.**
+          ⚠️ Five of the six (`Anzati` `Muun` `SithZ` `Togorian` `Herglic`) are owner-ruled
+          **v2 deferrals** and `Ortolan` is **v1 done and confirmed** — so this is about not
+          LOSING them, not about shipping them. Losing them would silently un-do an owner
+          ruling in both directions.
+## the-tribal-melee-tag-is-empty-pick-the-weapon-4a72e8
+row:      unassigned
+from:     BUILD, 2026-08-19, off the completed C40(a) scan. Measured, not suspected.
+spec:     `TribalWarriorBase` asks for `weaponTags: NeolithicMeleeDecent` and **nothing in
+          the 578-mod load set carries it.** Vanilla's `MeleeWeapon_Ikwa` is the only Core
+          weapon with the tag and it is in our CUT list; the one other def in the entire
+          workshop that carries it belongs to a mod we do not run. An empty weapon tag
+          spawns pawns bare-handed.
+          ⇒ every kind inheriting `TribalWarriorBase` is unarmed, including the Deep Desert
+          Tribes water raid — B42's signature raid, and the reason B42 exists.
+          THE CHOICES, all one line of XML:
+          (a) **Un-cut `MeleeWeapon_Ikwa`.** Smallest change, restores vanilla behaviour
+              everywhere at once, and the ikwa is a plausible desert-tribal weapon. ⚠️ it
+              was cut deliberately; this reverses that.
+          (b) **Add `NeolithicMeleeDecent` to a kept neolithic melee weapon** via a patch —
+              spear, club, mace, whatever survived. Keeps the cut and fills the tag. Needs
+              a pick, which is why this is here.
+          (c) **Give our own kinds explicit `weaponTags`** and leave vanilla tribals
+              unarmed. Narrowest blast radius, but it leaves a known-broken vanilla
+              inheritance in a campaign we are freezing.
+          🔑 Whichever is chosen, the same trap applies to B53's 48 pawn kinds, which are
+          about to be authored with `weaponTags`: **a tag is only real if a SURVIVING
+          weapon carries it.** BUILD is building the tag -> surviving-weapon index now and
+          will refuse to write a tag that resolves to nothing.
+          ⭐ **NARROWED 2026-08-19, twice, and the fix got cheaper both times.**
+          (i) The owner: *"I think we still have some kind of bow enabled actually."* Correct
+              — six bows survive, including `MA_CapryakScatterbow` on
+              `NeolithicRangedAdvanced`. Only the VANILLA bow set was cut.
+          (ii) Re-measured off the def dump rather than raw XML — post-inheritance and
+              post-patch, per the owner's ruling on which instrument to trust — the damage
+              is **kinds that list exactly ONE tag**, not a whole tier. Two vanilla tribal
+              kinds qualify (`Tribal_Warrior`, `Tribal_Hunter`) and two of ours
+              (`Jawa_Tribal_Scavenger`, `Jawa_Gamorrean_Enforcer`); 49 across the stack.
+          ⇒ 🔑 **NEW OPTION (d), and it is now the cheapest and least invasive: give each
+          single-tag kind a SECOND tag that already resolves.** `NeolithicMeleeAdvanced`
+          (8 survivors) for the warrior and scavenger, `NeolithicRangedAdvanced` (the
+          scatterbow) or `NeolithicRangedHeavy` (3) for the hunter. One patch, no cut
+          reversed, no vanilla weapon restored, and the ladder does the rest.
+          ⛔ (a) un-cutting the ikwa is no longer recommended — it fixes one rung of one
+          ladder and reverses a deliberate decision to do it.
+          ⚠️ The census is PROVISIONAL until the dump matches the mod list: the current
+          dump is `modCount 579` against 578 active. Re-run after the restore and load.
+verify:   n/a — a ruling.
+criteria: n/a
+state:    ✅ CLOSED 2026-08-20 — **ALREADY FIXED BY BUILD. Verified, not assumed.**
+          BUILD took choice **(b)**: `src/Jawa/Jawa_Patches/Patches/WeaponTags_Renormalise.xml`
+          grants `NeolithicMeleeDecent` to kept weapons — `AG_ForsakenSpear`,
+          `AlphaThrumboHorn` and others — and it is **DEPLOYED** to
+          `...\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches\Patches\`, stamped
+          2026-08-20 00:04. `MeleeWeapon_Ikwa` remains cut, correctly; (a) was not needed.
+          ⭐ **And BUILD used `PatchOperationConditional`**, so it works whether or not the
+          target def already has a `weaponTags` node — the silent-no-op failure a plain
+          `PatchOperationAdd` would have hit on any weapon lacking it.
+          ⚠️ **CHECK's queue still lists `Tribal_Warrior → NeolithicMeleeDecent (0 left) →
+          DISARMED`.** That line is stale; the measurement predates the patch.
+## sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4
+row:      7
+from:     BUILD, 2026-08-20, closing B53.
+spec:     The 48-kind roster covers all TWELVE factions, but only the eight authored
+          `Jawa_*` FactionDefs were wired to it. The other four — Galactic Empire,
+          Homestead Defense League, Deep Desert Tribes, Blackstar Company — are RESKINS,
+          and B41, B42 and B43 each say in terms: *"⛔ Do NOT touch `pawnGroupMakers` —
+          they are inherited and already balanced."* B40 is the sanctioned exception and
+          already replaced the Empire's combat groups with `OuterRim_Imp*` kinds.
+          ⇒ 16 kinds (`Jawa_Empire_*`, `Jawa_Homestead_*`, `Jawa_DeepDesert_*`,
+          `Jawa_Blackstar_*`) are authored, valid and referenced by nothing.
+          THE CHOICES:
+          (a) **Leave them unwired.** The four reskins keep vanilla's balanced groups; the
+              16 kinds are dead weight but harmless, and available if wanted later.
+          (b) **Wire them, reversing the don't-touch rule for these four.** They would then
+              field roles like the other eight — and the Deep Desert Tribes in particular
+              would stop drawing on `Tribal_Warrior`/`Tribal_Hunter`, two kinds this
+              project has separately proven spawn bare-handed.
+          (c) Wire only Deep Desert, where the bare-handed problem actually bites.
+          🔑 (c) is the cheapest correct answer if the concern is player-visible harm, and
+          BUILD's recommendation — but it is a scope reversal either way, which is why it
+          is here and not in the build.
+verify:   n/a — a ruling.
+criteria: n/a
+state:    ✅ RULED 2026-08-20 — **NOT WORLDGEN-CRITICAL. It comes OFF the critical path.**
+          Verified: all four prefixes (`Jawa_Empire_*`, `Jawa_Homestead_*`,
+          `Jawa_DeepDesert_*`, `Jawa_Blackstar_*`) appear in exactly one file each — their
+          own def file — with **zero `pawnGroupMakers` references.** BUILD's finding is exact.
+          🔑 **THE RULING, and the reason is a timing fact rather than a taste call:**
+          `pawnGroupMakers` are consulted when a RAID or group is generated — live, during
+          play — **not at world creation.** Faction *existence* bakes at worldgen;
+          faction *rosters* do not. ⇒ **This can be fixed at any time, including after the
+          world is frozen and shipped.** It is the only faction-adjacent item on the board
+          that is not on the worldgen clock, and it should stop competing with B40–B54.
+          ⇒ **Deferred past the gate, not dropped.** ⛔ Do not wire the reskins'
+          `pawnGroupMakers` now — B41/B42/B43 forbid it for a real reason (they are
+          inherited and balanced), B40 is the one sanctioned exception and is already done,
+          and buying that risk in the week before an irreversible worldgen run is a bad
+          trade. 16 unreferenced `PawnKindDef`s are inert and cost nothing.
+          ⚠️ **The live consequence, stated so nobody is surprised in play:** until it is
+          wired, the Homestead, Deep Desert and Blackstar reskins field VANILLA kinds in
+          raids, not our authored ones. That is a content gap, not a defect, and it is
+          reversible on any day after the world exists.
