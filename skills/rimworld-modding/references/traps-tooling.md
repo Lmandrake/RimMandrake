@@ -176,3 +176,30 @@ Two more edges from the same import:
 
 ⇒ For anything in our stack, the def dump is the authority. Use rimsage for vanilla
 implementation questions and nothing else.
+
+---
+
+## `li[kindDef="Combat"][1]` reads as DEAD to a findall()-based checker, and it is not
+
+`validate_patch.py` translates a simple xpath into an ElementPath expression and runs
+`findall()`. **ElementPath's `[N]` is "the Nth sibling carrying this tag". XPath 1.0's
+is "the Nth of the nodes the previous predicate kept."** They disagree the instant a
+step has two predicates, and the disagreement reads backwards — as a dead xpath rather
+than as a wrong one.
+
+Measured on Royalty's `Empire`, whose `pawnGroupMakers` are Trader, Combat(100),
+Combat(10), Settlement:
+
+```
+li[kindDef="Combat"][1]   findall -> 0   (li[1] is the Trader)   RimWorld -> Combat(100)
+li[kindDef="Combat"][2]   findall -> 1   (li[2])                 RimWorld -> Combat(10)
+```
+
+**RimWorld evaluates with System.Xml — full XPath 1.0 — so RimWorld is the one that is
+right.** Same class of bug: `[commonality=100]` unquoted is a legal numeric comparison
+that `findall()` never matches; `[commonality="100"]` does.
+
+The translator now refuses both shapes and falls through to lxml. But the durable fix
+is in the patch, not the checker: **name a list entry by a value it carries, never by
+its position.** `li[kindDef="Combat"][commonality="100"]` cannot drift when a mod
+inserts a group ahead of yours, and both engines agree on it.

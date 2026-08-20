@@ -404,3 +404,13 @@ edited out of your list. `python3 src/RimMandrake/Utils/cherrypick_build.py` nam
 one of them.
 
 </details>
+
+## The `rimworld-modding` skill archive is stale and will not rebuild — 2026-08-19, BUILD
+`skills/rimworld-modding.skill` is dated 2026-08-16 and `package_skill.py` refuses to
+refresh it: `SKILL.md body is 505 lines; the guidance is under 500`. It has been failing
+that check since before today, so **every script fix in that skill since 2026-08-16 is on
+disk and in git but is NOT in the installed skill** — including today's fix to
+`validate_patch.py`, which was reporting correct xpaths as dead.
+
+The fix is six lines of prose moved from `SKILL.md` into `references/`. That is REP's
+file, not BUILD's, which is why it is here rather than done.

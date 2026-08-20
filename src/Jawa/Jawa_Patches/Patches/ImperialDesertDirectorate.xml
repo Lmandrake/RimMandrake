@@ -42,6 +42,13 @@
   vessel — it actually ships `Ultra` — but the instruction is "no change", so
   no change is what this file makes.
 
+  🔑 THE COMBAT GROUPS ARE NAMED BY THEIR COMMONALITY, NOT BY POSITION. A positional
+  predicate would be correct today and wrong the moment any mod inserts a group ahead
+  of ours; `[commonality="100"]` cannot drift. It is also the form both engines agree
+  on — ElementTree's `[N]` counts siblings by tag while XPath 1.0's counts the nodes
+  the previous predicate kept, so `li[kindDef="Combat"][1]` reads as DEAD under a
+  findall()-based checker while RimWorld's System.Xml resolves it correctly.
+
   ⛔ COMBAT GROUPS ONLY. `pawnGroupMakers/li[kindDef="Combat"]` is TWO nodes on
   this def, so each op carries a positional predicate on the filtered set. The
   Trader and Settlement groups are untouched by design: they carry the
@@ -193,7 +200,7 @@
 
               <!-- The common raid (vanilla commonality 100). Line troops only. -->
               <li Class="PatchOperationReplace">
-                <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][1]/options</xpath>
+                <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][commonality="100"]/options</xpath>
                 <value>
                   <options>
                     <OuterRim_ImpStormArty MayRequire="Neronix17.OuterRim.GalacticEmpire">5</OuterRim_ImpStormArty>
@@ -206,7 +213,7 @@
               <!-- The rare raid (vanilla commonality 10). Line troops plus the
                    three 200-power specialists. -->
               <li Class="PatchOperationReplace">
-                <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][2]/options</xpath>
+                <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][commonality="10"]/options</xpath>
                 <value>
                   <options>
                     <OuterRim_ImpStormArty MayRequire="Neronix17.OuterRim.GalacticEmpire">5</OuterRim_ImpStormArty>

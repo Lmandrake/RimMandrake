@@ -609,6 +609,24 @@ def to_elementtree_xpath(xp: str) -> str | None:
     # Anything left that ET will choke on
     if re.search(r"\[[^\]]*[()][^\]]*\]", s):
         return None
+
+    # 🔴 ElementPath's [N] is "the Nth sibling carrying this tag". XPath 1.0's is
+    # "the Nth of the nodes the PREVIOUS predicate kept". They disagree the moment
+    # a step carries two predicates, and the disagreement reads as a DEAD xpath
+    # rather than as a wrong one - which is the one failure this tool exists to
+    # catch, reported backwards. Measured on Royalty's Empire, whose pawnGroupMakers
+    # are Trader, Combat(100), Combat(10), Settlement:
+    #   li[kindDef="Combat"][1]  ET -> 0 matches (li[1] is the Trader)
+    #                            RimWorld -> the commonality-100 group
+    # RimWorld evaluates with System.Xml, so RimWorld is the one that is right.
+    if re.search(r"\]\s*\[", s):
+        return None
+
+    # ElementPath compares [tag='text'] and nothing else. [commonality=100] is a
+    # legal XPath 1.0 numeric comparison that findall() silently never matches.
+    if re.search(r"\[[^\]]*=\s*[^'\"\]]", s):
+        return None
+
     return s
 
 
