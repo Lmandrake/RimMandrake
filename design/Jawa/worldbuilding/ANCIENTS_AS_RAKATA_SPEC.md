@@ -49,11 +49,19 @@ down from the asteroids, they built the works the Geonosians now worship, and th
 *Utinni*. Then **something attacked them with self-replicating flesh and nearly finished
 them**, and what survives is in the caskets.
 
-⭐ **DECIDE'S READING, offered for correction rather than asserted: the Rakata ARE the
-Forsakens.** `the_forgotten_war.md:7` — *"this was the **Forsakens'** world, that they
-partly terraformed"* — and the Utinni came as a *"Forsaken initiator"*; `FACTION_SPEC.md:783`
-has **Rakatan ruins revealing the true origins of the subsolar Founder machinery.** Same
-role, same works, two names. If they are two peoples, say so and this line comes out.
+### 🔴 RULED — the names, owner 2026-08-20
+
+> *"**Rakata** is the ancient's name for themselves. Modern people on this planet just call
+> them **the Forgotten** or **the Forsaken**, and thus their mechanoids are the Forsaken or
+> Forgotten Arsenal."*
+
+⇒ **One people, two names: `Rakata` is the ENDONYM, `the Forsaken` / `the Forgotten` is the
+EXONYM.** DECIDE had offered this as a guess; it is now ruled.
+🔑 **Which settles the Arsenal's ownership.** The Forsaken Arsenal is **Rakatan** — the
+victims' own machines, still fighting a war whose other side left no trace.
+⚠️ **Register rule for all authored text:** nobody alive on this planet says "Rakata" except
+the Rakata. **A Jawa, a Hutt factor or an Imperial clerk says *the Forsaken* or *the
+Forgotten*.** The word `Rakata` in a modern mouth is a scholar's word, or a sleeper's.
 
 ⇒ **The campaign's shape, restated:** the Jawa are scavenging the corpse of a terraforming
 project, its makers are asleep in boxes, **and the weapon that killed them is still running

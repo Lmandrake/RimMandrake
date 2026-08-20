@@ -289,6 +289,50 @@ does not.
 
 
 
+## 🔴 R-W6 · The assailant is a RUMOUR, and their technology ROTS — owner, 2026-08-20
+
+> *"The rumours that surround the ancient assailant are merely the **Sith** — referring to
+> ancient Sith sorcerers and alchemists, precursor to the Sithspawn tradition. But so little
+> is known about them, it is very hard to say. **Their technology literally rots and leaves
+> little trace to study.**"*
+
+### The naming, and its exact strength
+
+**"Sith" is a RUMOUR and never more than one.** Ancient Sith sorcerers and alchemists,
+precursor to the Sithspawn tradition. ⛔ **It is never confirmed, in any def, label,
+description or piece of dialogue.** The maximum any character may say is that this is what
+people say.
+⭐ **And the self-replicating flesh of R-W3 is Sithspawn in all but name** — alchemically
+made living weapons. The rumour is not arbitrary; it is the obvious inference a scholar
+would draw, which is exactly what makes it plausible and unprovable at once.
+
+### 🔑 THE MECHANISM — why nobody can settle it
+
+**Their technology rots.** That single property does more work than any other line in this
+document:
+
+| it explains | how |
+|---|---|
+| **why the author is unknown** | not authorial coyness — there is **no evidence left**. The question is unanswerable in-world |
+| ⭐ **why everything scavengeable on this planet is Rakatan** | the builders' works survive and the destroyers' do not. **The campaign's entire material economy is one side's leavings** |
+| **why the Ascendant Helix must come HERE, in person** | there are no artifacts to buy or excavate. **The only surviving specimen is the living residue in the strange biomes** — R-H8 |
+| **why the Forsaken Arsenal is Rakatan** | the mechanoids that never stopped are the *victims'* machines, still fighting a war whose other side left no trace |
+
+### ⭐ THE ASYMMETRY, and R-W4 already wrote half of it
+
+R-W4 explains the Rust Cathedral's survival: *"preserved through the eons by the planet's
+**low humidity and zero plate tectonics**."* ⇒ **This world is a perfect preservative — and
+it preserved only one side.** The Rakata's works are everywhere, whole enough to strip. Their
+killers left nothing but the thing still growing in the jungle.
+🔑 **That is the strongest argument for never naming them.** A world that keeps everything,
+and still cannot tell you who did this, is far more frightening than a named enemy.
+
+⚠️ **Do not weld this to the crags.** `hydrology_and_fire_ecology.md` warns that the crags
+read best as chemistry that was ALWAYS here, and the terminator biomes as something *done*
+to ordinary life. **Two different alien facts are richer than one explained one.**
+
+---
+
 ## 🔴 R-W5 · The Utinni is a FORSAKEN ship, and she was here at the beginning
 
 **Owner's ruling, 2026-08-15, and it is the largest single addition to the

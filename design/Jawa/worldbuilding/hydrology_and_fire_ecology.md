@@ -640,13 +640,33 @@ something — **Containment response**.
   jungle is them *working*. A Containment response is something having got out.
 - The player has a reason to go somewhere horrible other than curiosity.
 
-⚠️ ~~Do not settle who deployed the weapon.~~ **SUPERSEDED — the owner answered it,
-2026-08-15.** The weapon is the ancient enemy's **self-replicating flesh**, still
-contained in the breached vaults of `the_forgotten_war.md` R-W3 and escaped into
-these biomes. The enemy is proposed as the **Rakata**, which makes the Ascendant
-Helix — who carry `RimMandrakeRakata` — students of *their own ancestors' weapon* on the
-world it was fired at. **Whether the Helix knows that is still open, and that is
-the question worth keeping unanswered.**
+⛔ ~~**SUPERSEDED — the owner answered it, 2026-08-15.** The enemy is proposed as the
+**Rakata**, which makes the Ascendant Helix students of *their own ancestors' weapon*.~~
+🔴 **RETRACTED 2026-08-20 BY THE OWNER. THE RAKATA DID NOT DEPLOY IT.**
+> *"The Rakata were nearly wiped out by their bioweapon-wielding ASSAILANT, they didn't
+> release the bioweapons themselves. They were terraformers and mega builders."*
+
+⇒ **The original instruction — *do not settle who deployed the weapon* — is RESTORED**, and
+the warning at the head of this file that these facts should not be welded together stands
+after all. ⭐ **But it is no longer restraint. It is now a FACT ABOUT THE ENEMY**, ruled by
+the owner 2026-08-20:
+
+> *"The rumours that surround the ancient assailant are merely the **Sith** — referring to
+> ancient Sith sorcerers and alchemists, precursor to the Sithspawn tradition. But so little
+> is known about them, it is very hard to say. **Their technology literally rots and leaves
+> little trace to study.**"*
+
+**The full ruling is in `the_forgotten_war.md` R-W6.** For this file, what matters:
+- 🔑 **The author is unknowable IN-WORLD, not merely unwritten.** Nobody can settle it because
+  the evidence decayed. ⛔ Do not name them in any def, label or description.
+- ⭐ **The Helix's purpose SURVIVES and improves.** They carry `RimMandrakeRakata` — they are
+  of the **victims**. So they are not studying their ancestors' weapon; they are studying
+  **the thing that nearly exterminated their ancestors**, on the ground where it happened.
+- ⇒ **And it explains their method.** *"It does not raid; it retrieves."* There are no
+  artifacts to excavate, because the assailant's works rot. **The only surviving specimen of
+  that technology is the living residue in these biomes** — which is why a gene-cult must
+  come to a dying desert world in person, and why *Containment response* is one of its
+  standing pawn groups.
 
 ---
 
