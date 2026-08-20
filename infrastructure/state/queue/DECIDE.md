@@ -587,6 +587,32 @@ state:    ✅ CLOSED 2026-08-19 — (a) is the owner's click and is recorded on 
           ⚠️ NOT changed by this ruling: `WORLDGEN_RUN.md` §2.E must still read
           `AmbientHorror`, and `EXPECTED_FAILURES` S5 still expects the wrong string.
           Those two are the live remainder of this item and are recorded on the run sheet.
+🔴 **(a) THE ROUTE CHANGED UNDER US — corrected 2026-08-19, read this before quoting the
+          paragraph below.** `ferny.worldbuilder` is **ACTIVE** as of today's
+          `ModsConfig.xml` (578 mods, written 19:03). Every document that describes the
+          planet-type click says it is NOT active and reasons from that. Consequences,
+          all read off source:
+          · Alien Worlds picks its backend by `Type.GetType("Worldbuilder.WorldPresetManager")`,
+            not by `ModsConfig.IsActive`. Worldbuilder present ⇒ **backend = Worldbuilder**,
+            `selectedPlanetType` is forced to `"Unknown"`, and **the mod-settings radio list
+            is rendered DISABLED**. ⛔ So "set it in Mod settings" is no longer possible and
+            "`selectedPlanetType` reads `Default`" is no longer the thing to check.
+          · **The preset NAME is the planet type** — `PlanetTypeManager.Current` looks up a
+            `PlanetTypeDef` whose defName equals `WorldPresetManager.CurrentlyLoadedPreset.name`.
+            They cannot disagree. Picking the **tidally locked world** preset selects it.
+          · The preset also pushes **MLP subcount 7 and coverage 1.0**, which is what makes
+            the grid 21,872 tiles and our CSV's tile IDs correct. MLP's own slider never
+            draws — Worldbuilder's overhaul skips the vanilla page.
+          · 🔴 **AND THE PRESET IS DESTROYED AT EVERY LAUNCH** where it currently lives.
+            Filed as BUILD `worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-
+            updates-6b1e4d`, which is the fix and must land before the next launch.
+          ⇒ **What he actually does:** new colony → Worldbuilder's preset page → **tidally
+          locked world** → **Configure planet** (not skip) → confirm **Scale 7** and
+          **Coverage 100%** → generate. ⚠️ Scale 10 means the preset lost its parameters:
+          abort rather than generate.
+          ✅ **Nothing about the DECISION changed** — it is still `TidallyLocked`, still his
+          click, still parked until everything ships. Only the mechanism moved, and it is
+          now verifiable on screen before he commits, which it was not before.
 answered: **(a) PLANET TYPE — OWNER 2026-08-15: `TidallyLocked`, and HE sets it.**
           Asked directly. His words: *"I will set it, and it's parked until factions
           and ideos and almost everything else ships."*

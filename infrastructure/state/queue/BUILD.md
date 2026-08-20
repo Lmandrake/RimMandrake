@@ -1032,6 +1032,14 @@ spec:     `design/Jawa/worldbuilding/SCENARIO_SETTINGS_SPEC.md` is the authority
           🔴 **TWO BLOCKERS, both bucket A, both with a bucket B deadline.
           Measured 2026-08-15. Neither is theoretical.**
 
+          🔴 **(1) IS OBSOLETE AS WRITTEN — `ferny.worldbuilder` IS ACTIVE as of
+          2026-08-19 (578 mods, 19:03).** The backend is Worldbuilder, the mod-settings
+          radio list is DISABLED, `selectedPlanetType` is forced to `"Unknown"`, and the
+          preset NAME is the planet type. The corrected route and the on-screen check are
+          in `queue/DECIDE.md` D29(a); the preset itself is BUILD
+          `worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d`.
+          Everything from here to the end of (1) reasons from the dead premise —
+          ~~read it as history~~:
           (1) **THE PLANET TYPE IS NOT SELECTED AND THERE IS NO BUTTON FOR IT ON
           THE WORLD PAGE.** `ferny.Worldbuilder` is NOT in `<activeMods>`, so the
           Alien Worlds Framework runs its `Standalone` backend and the planet-type
@@ -2303,3 +2311,43 @@ state:    ⛔ DEAD 2026-08-19 — **the file does not exist.** Owner ruled 2026-
           Nothing to fix, nothing to validate, no load needed. Filed by DECIDE, killed
           by DECIDE. The `MandrakeJawa.xtp` half is unaffected and still closes on the
           next load's clean scribe log.
+
+## worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d
+row:      10
+from:     DECIDE, 2026-08-19. 🔴 **DO THIS BEFORE THE NEXT GAME LAUNCH.** It is a file
+          copy and it protects the one event in v1 that cannot be redone.
+spec:     Copy `design/Jawa/worldbuilding/TidallyLocked_Preset.xml` (verbatim, XML comment
+          header and all — it parses) to:
+            `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Worldbuilder\TidallyLocked\Preset.xml`
+          Create the `TidallyLocked` folder; the parent `Worldbuilder\` exists and is
+          EMPTY today. Do not delete anything. Optional and cosmetic: also copy
+          `Flavor.png` and `Thumbnail.png` from the workshop folder beside it — not
+          needed, the workshop copy supplies them by path override.
+          🔴 **WHY, and it is not the reason `alien-worlds-preset-is-edited-inside-a-steam-folder-8d40f3`
+          gave.** That item said Steam would revert the workshop file on a Workshop update.
+          The real mechanism is faster and certain: Alien Worlds' `WorldbuilderCompat` is
+          `[StaticConstructorOnStartup]` and calls `Refresh()`, which does
+          `Directory.Delete(<AWF root>/Worldbuilder, true)` and regenerates each preset
+          from the `PlanetTypeDef` carrying ONLY name/label/planetType/description/
+          difficulty/sortPriority/scenParts/biomes. ⇒ **the hand-saved file dies at EVERY
+          launch**, losing `myLittlePlanetSubcount 7`, `planetCoverage 1`,
+          `saveGenerationParameters True` and all 15 `Jawa_*` faction counts. Subcount
+          then defaults to **10**, which shifts every tile ID, and
+          `world/ASHKARR_WORLDMAP_tiles.csv` paints the wrong planet with no error line.
+          Read 2026-08-19 off `.../294100/3626210061/Source/WorldbuilderCompat.cs:16-34,52-70`.
+          ✅ **LocalLow wins.** `WorldPresetManager.BasePresetFolderPath` is
+          `GenFilePaths.FolderUnderSaveData("Worldbuilder")` and is scanned BEFORE mod
+          folders; `TryLoadPreset` is FIRST-WINS — a later duplicate contributes only image
+          path overrides (`.../3522102833/1.6/Source/WorldPresetManager.cs:143-200`).
+          AWF's delete only touches its own mod root, never LocalLow.
+          ⏱️ The workshop copy is still intact right now (mtime 2026-08-18 18:54, i.e. the
+          game has not launched since it was saved). The next launch is what destroys it.
+verify:   the LocalLow file exists and `grep -c Jawa_` returns 15, with
+          `<myLittlePlanetSubcount>7</myLittlePlanetSubcount>` and
+          `<planetCoverage>1</planetCoverage>` present. Then, after the NEXT launch,
+          the LocalLow file is still intact and unchanged (the workshop one will have
+          been regenerated as a stub — that is expected and fine).
+criteria: on the world-creation page, the **tidally locked world** preset appears, and
+          Configure Planet reads **Scale 7** and **Coverage 100%**. 🔴 If Scale reads 10,
+          the preset lost its parameters — ABORT, do not generate.
+state:    ready

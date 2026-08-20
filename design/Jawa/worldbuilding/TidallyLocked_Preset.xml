@@ -1,9 +1,27 @@
-<!-- REPO COPY. Deploys to:
-     C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3626210061\Worldbuilder\TidallyLocked\Preset.xml
-     Steam owns that directory and will silently revert it on any Workshop update
-     to Alien Worlds (3626210061). Copy this file back after any such update.
-     myLittlePlanetSubcount=7 + planetCoverage=1 are what produce the 21,872 tiles
-     that world/ASHKARR_WORLDMAP_tiles.csv is indexed against. Do not change either. -->
+<!-- REPO COPY — the master. 🔴 DEPLOY TARGET CORRECTED 2026-08-19.
+
+     DEPLOY TO (this folder is scanned FIRST and its preset WINS):
+       C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Worldbuilder\TidallyLocked\Preset.xml
+
+     ⛔ DO NOT deploy to the Steam workshop path any more:
+       C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3626210061\Worldbuilder\TidallyLocked\Preset.xml
+     Alien Worlds' own WorldbuilderCompat is [StaticConstructorOnStartup] and its
+     Refresh() does Directory.Delete(<AWF root>/Worldbuilder, true) then regenerates
+     every preset from the PlanetTypeDef with ONLY name/label/planetType/description/
+     difficulty/sortPriority/scenParts/biomes. So it DESTROYS this file on EVERY game
+     launch and silently drops myLittlePlanetSubcount, planetCoverage,
+     saveGenerationParameters and all 15 Jawa_* faction counts. Read off
+     .../3626210061/Source/WorldbuilderCompat.cs lines 16-34 and 52-70, 2026-08-19.
+
+     Worldbuilder loads LocalLow first and is FIRST-WINS: WorldPresetManager.TryLoadPreset
+     keeps the preset already in presetsCache and lets a later duplicate contribute only
+     image path overrides (1.6/Source/WorldPresetManager.cs:143-200). So the workshop copy
+     may regenerate as a stub forever; it will still supply Flavor.png / Thumbnail.png and
+     ours supplies the generation parameters.
+
+     myLittlePlanetSubcount=7 + planetCoverage=1 are what produce the 21,872 tiles that
+     world/ASHKARR_WORLDMAP_tiles.csv is indexed against. 🔴 Any other subcount shifts
+     EVERY tile ID and silently paints the wrong planet. Do not change either. -->
 <worldPreset>
   <name>TidallyLocked</name>
   <label>tidally locked world</label>
