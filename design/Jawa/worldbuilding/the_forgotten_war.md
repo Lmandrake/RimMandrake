@@ -57,6 +57,16 @@ should be visible in all three.
 
 ## R-W3 · The enemy weapon was self-replicating FLESH — and it is still running
 
+> 🔴 **THE AUTHOR IS NAMED — owner, 2026-08-20: the ancient enemy is the RAKATA.**
+> *"Let's go all out for v1 here. 'Ancients' is so boring! Let's get us some precursor
+> Rakata in cold storage for all this time..."* ⭐ This reverses the 2026-08-15 deferral in
+> `D30 (5)`, which declined to name them and sent it to v2.
+> ⇒ **The self-replicating flesh is Rakatan work**, and so is the wrong genetics of the
+> poison forest, the mycotic jungle and the gelatinous superorganism.
+> ⇒ ⭐ **And by R-W5 the same people built the Utinni** — so the player flies a ship made by
+> the civilisation whose weapon is still eating this planet, and whose survivors are in the
+> caskets. Spec and build: `ANCIENTS_AS_RAKATA_SPEC.md`.
+
 The ② vaults hold the ancient enemy's weapons: **self-replicating flesh, out of
 control.** The parallel to the Arsenal is deliberate — both sides built things
 that never stop, and both are still going.

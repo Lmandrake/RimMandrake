@@ -1,5 +1,49 @@
 # ANCIENTS_AS_RAKATA_SPEC.md — the frozen sleepers are Rakatan, specified for build
 
+## 🔴 RULED v1, IN FULL — owner, 2026-08-20
+
+> *"Let's go all out for v1 here. 'Ancients' is so boring! Let's get us some precursor
+> Rakata in cold storage for all this time..."*
+
+⭐ **THIS REVERSES THE 2026-08-15 DEFERRAL.** `D30 (5)` recorded that the owner *declined*
+to name `RimMandrakeRakata` as the ancient enemy, sent B61 to `design/V2_DREAMS.md`, and
+ruled that the frozen Ancients ship vanilla. **All three of those are now dead.** The
+Rakata are named, B61 returns to v1, and the sleepers are Rakatan.
+
+⇒ **BOTH halves are in, not just the appearance one.** R-A9 previously held labels back as
+the owner's separate call; he has now made it, and made it maximally:
+| half | status |
+|---|---|
+| **appearance** — six pawn kinds carry `RimMandrakeRakata` | ✅ v1 |
+| **naming** — the Rakata ARE the ancient enemy, in the fiction and on the label | ✅ v1 |
+
+### 🔑 What naming them does — it unifies three threads that were separate
+
+This is why the ruling is worth more than a reskin:
+1. **`the_forgotten_war.md` R-W5** — the ancient sleepers in the vaults are **the same people
+   who built the Utinni**, and she was one of the vessels that helped start this world.
+   ⇒ **The player flies a ship built by the people they are cracking out of cold storage.**
+2. **R-W3** — the ancient enemy's weapon was self-replicating flesh, still running, and it is
+   the same bioweapon whose residue is the poison forest, the mycotic jungle and the
+   gelatinous superorganism (`hydrology_and_fire_ecology.md` R-H8 left the author blank on
+   purpose). ⇒ **The Rakata are now that author.**
+3. **`FACTION_SPEC.md` §8 / the Geonosian plateau** — the splinter hive worships **Rakatan
+   ruins** that revealed the true origins of the subsolar Founder machinery, and has been
+   trying to commune with its AI for nine years. ⇒ **They are praying to the builders of the
+   thing in the vaults.**
+
+⇒ One name closes the Utinni's origin, the bioweapon's author and the plateau cult's god.
+⛔ **Do not re-open any of the three as separate questions.**
+
+### ⚠️ AND THE MECHANISM IS STILL NOT A FACTION RESKIN
+
+R-A7 below stands unchanged and is the reason this is cheap: **the `Ancients` faction is not
+touched.** Vanilla `Ancients` cannot host a faction — that is why the Ascendant Helix was
+authored fresh rather than reskinned. Ancient sleepers are not a faction you meet, they are
+**cryptosleep caskets you open**, so the pawn kinds' xenotype is the entire surface.
+⛔ Do not touch `hidden`, `settlementGenerationWeight` or `canMakeRandomly`.
+
+
 DECIDE owns this spec; **BUILD owns the implementation.** Written 2026-08-15 at
 the owner's instruction, immediately after `the_forgotten_war.md` R-W2/R-W3/R-W5
 landed.
@@ -26,7 +70,30 @@ it that way.
 
 ---
 
-## R-A1 · The xenotype is `RimMandrakeRakata`. **`RimMandrakeRakata` does not exist.**
+## R-A1 · The xenotype is `RimMandrakeRakata` — and it EXISTS. ⚠️ TABLE CORRECTED 2026-08-20
+
+🔴 **THIS SECTION'S TABLE WAS CORRUPTED BY A GLOBAL RENAME AND CONTRADICTED ITSELF.** It
+carried two rows both labelled `RimMandrakeRakata`, one saying ✅ exists and one saying
+🔴 does not exist anywhere — because a find-replace pass normalised the OLD defName
+(a `BTD_*` reference) into the new one and collapsed a real before/after comparison into
+nonsense. The heading said the def does not exist. **It does.**
+
+✅ **MEASURED 2026-08-20, on disk AND in the deployed mod folder:**
+`RimMandrakeRakata` (XenotypeDef) · `RimMandrakeRakata_Kind` (PawnKindDef) ·
+`RimMandrake_RakatanHead` (GeneDef) · `RimMandrake_Rakatan` (HeadTypeDef) — all present in
+`src/Jawa/RimMandrake_StarWarsRaces/` **and** in
+`...\Steam\steamapps\common\RimWorld\Mods\RimMandrake_StarWarsRaces\`.
+🔑 **It exists because of the owner's 2026-08-15 strip ruling** — Rakata was one of the six
+species the generator skipped for an unresolvable gene (`OuterRim_ForceInsensitive`), and
+*"remove any genes that aren't supported and build the species without"* is what brought it
+back. ⚠️ It is also one of the **six species that exist nowhere but our own output**
+(`queue/DECIDE.md`, `...4f81c9`) — **a regenerate that drops it by name kills this feature.**
+
+⛔ The historical table is left below, struck, because the `FACTION_SPEC.md` R27 broken-
+reference finding at the end of it is real and still owed. Read it for that, not for whether
+the def exists.
+
+~~
 
 **Measured 2026-08-15 against the live def dump**
 (`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\`).

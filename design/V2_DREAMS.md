@@ -1373,7 +1373,7 @@ working. Nothing here is refused; it is sequenced.
 
 | item | what it is | why it was safe to move |
 |---|---|---|
-| **B61** | The frozen Ancients look Rakatan | Appearance is def-driven; changes on any reload |
+| ~~**B61**~~ | ~~The frozen Ancients look Rakatan~~ | ⛔ **RETURNED TO v1 — owner, 2026-08-20:** *"let's go all out for v1 here."* The Rakata are named as the ancient enemy and the sleepers are Rakatan. Spec: `design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md`. **Do not action from this row** |
 | **B64** | Author our own boiling water and rain, drop ReGrowth: Boiling | The boiling biome is already ruled out of the campaign, so nothing in v1 consumes it |
 | **B57** | The lasso becomes a strength gene, not a pickup weapon | Balance, reversible at any time |
 | **B39** | Every place a design doc disagrees with the frozen mod list | Doc hygiene, zero world effect |
