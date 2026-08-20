@@ -230,7 +230,30 @@ criteria: six armed Jawa; a Geonosian that is not a baseliner; a robed Jawa ~~th
           bugs are seen in game."* Not passed and not failed: **not graded**. C40 is
           scored on the armed-Jawa and Geonosian clauses and on the APPAREL half of (c)
           alone. The robe and hood still count; the voice line does not.
-state:    🔴 COLLECTED 2026-08-15 — **(b) PASSES, (a) AND (c) FAIL.** Still v1.
+state:    🔴 RE-COLLECTED 2026-08-20 on the FULL 577-mod set — (b) PASSES, (a) SPLITS,
+          (c) FAILS. Supersedes the 2026-08-15 quicktest collection below.
+result:   Six `Jawa_Tribal_Scavenger` spawned INTO `Jawa_IndigenousTribes` via
+          `jawa/spawn_pawn` (faction-scoped, matching the criterion's setup), read back
+          with `jawa/pawn_get`:
+          ✅ **(a) XENOTYPE PASSES: 6/6 MandrakeJawa.** Unchanged from 2026-08-15.
+          ⚠️ **(a) ARMED: 4/6 — still short of "six armed Jawa", but the diagnosis has
+             CHANGED and the 2026-08-15 note was right to withhold blame from `291aebf`.**
+             It was 0/6 on the quicktest set; it is 4/6 on the full one. ⇒ the unarmed
+             result was a MOD-SET artifact, not a def defect — the quicktest list simply
+             held no weapon carrying the kind's tags. The residual 2/6 is the same
+             `weaponMoney` defect filed as `ROLE_KINDS_UNARMED_1` in BUILD's queue, not a
+             separate bug. 🔑 **A weapon-pool result measured on a reduced mod list does
+             not transfer to the shipping list. Neither direction.**
+             📌 One of the six equipped `TarisianAle` — a DRINK in the weapon slot. Worth
+             a look when the tags are repaired; a pool that admits ale admits anything.
+          ✅ **(b) PASSES, re-confirmed.** 3/3 `Jawa_Geonosian_Grunt` come out
+             `RimMandrakeGeonosianVariants`, armed with `guy762_sonrifle`. Not baseliners.
+          ❌ **(c) FAILS. 0/6 wear `guy762_Robes_jawa` or `guy762_JawaHood`.** They arrive
+             in `VFET_Apparel_Tribal*` + `VAE_Apparel_Tribal*` + `Apparel_WarVeil`. The
+             apparel half is the whole of (c) now the voice clause is struck, so (c) is a
+             clean fail — `5bb9f5c` did not put the robe on the pawn. ⚠️ The gear defs
+             exist and load; that was never the question, exactly as HOW IT LIES warned.
+prior:    🔴 COLLECTED 2026-08-15 — **(b) PASSES, (a) AND (c) FAIL.** Still v1.
 result:   Collected live on the quicktest map. Evidence is the SAVE, not a screenshot.
           ✅ **(b) PASSES.** 4/4 pawns spawned into `Jawa_GeonosianFoundryHive` come out
              `RimMandrakeGeonosianVariants` / "Geonosian" — NOT baseliners. The dropped
@@ -956,7 +979,7 @@ criteria: (a) each of the eight factions raids with a MIX — mostly grunts, a f
           cut** — mid-tier rifle tags stand in. Fiction may want a different answer.
 state:    ready
 
-## faction-relations-are-player-only-on-the-bridge-6d24b1
+## FACTION_RELATION_MATRIX_1
 row:      9
 spec:     Owner, 2026-08-20: put faction-to-faction AND faction-to-player relations on the
           bridge. Measured gap, read off the companion source today, not assumed:

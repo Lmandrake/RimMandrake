@@ -483,7 +483,7 @@ criteria: a cracked casket produces a Rakatan, the encounter plays identically, 
           `Could not resolve cross-reference` names the xenotype.
 state:    ready
 
-## sixteen-authored-role-kinds-spawn-bare-handed-on-weaponmoney-5e12b7
+## ROLE_KINDS_UNARMED_1
 row:      7
 from:     CHECK, 2026-08-20. Measured live on the full 577-mod set, not inferred.
           🔁 Filed to DECIDE first; the OWNER re-routed it here 2026-08-20 — BUILD
