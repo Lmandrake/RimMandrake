@@ -2091,8 +2091,9 @@ verify:   `grep -rn "RG_BoilingForest\|BoilingWater\|regrowth.botr.boilingforest
           `validate_patch.py` on `JawaWorld_BiomeMix.xml` still reports OK.
 criteria: no `Could not resolve cross-reference` naming an `RG_` biome at the next load,
           and the biome mix behaves as authored with the entry gone.
-state:    ready
-
+state:    dropped 2026-08-19 — VOID by the owner's ruling 6 at the head of this file:
+          the painter wins, biome-GENERATION edits are void, only the runtime weather half
+          stands. Same logic as DECIDE's D29.
 ## repoint-salvation-rid-provenance-at-the-live-set-7d3c11
 row:      10
 spec:     🔴 **Owner asked for this directly, 2026-08-15: "Can you modify Salvation.rid to
