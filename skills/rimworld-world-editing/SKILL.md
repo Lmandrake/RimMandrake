@@ -105,58 +105,55 @@ actionable"*. `execute_debug_action` is the only route to them.
 
 ---
 
-## 3. 🔴 THE WALL: there is no way to target a world tile
+## 3. ✅ THE WALL IS GONE — world-tile targeting landed 2026-08-19
 
-**This is the single most important fact in this file.** The world editors exist,
-resolve, and execute — and then do nothing, because nothing tells them WHICH TILE.
-
-Measured, end to end:
-
-```
-world_stats -> IceSheet 6070
-execute_debug_action("Actions\Set biome (mod)...\ice sheet") -> success TRUE, no message
-world_stats -> IceSheet 6070          # UNCHANGED. Nothing happened.
-effects.debugToolActiveAfter = False  # and no tool was even armed
-```
-
-`execute_debug_action`'s whole parameter set is `path`, `pawnId`, `x`, `z`,
-`thingId` — **every targeting parameter is map-scoped**, and at this screen they
-are all meaningless. There is no `tile` parameter and no world-selection call.
-
-Everything map-shaped refuses cleanly, which is at least honest:
+**This section used to say "there is no way to target a world tile" and that was true for
+four days.** It is now false. CHECK built 25 companion `[Tool]` methods that reach
+`Find.WorldGrid[tile]`, `Find.World.landmarks`, `Find.WorldObjects` and
+`Find.World.features` directly, with no cursor involved. Tile-by-tile world editing is no
+longer a human clicking.
 
 ```
-click_cell        -> "No current map is active."
-get_cell_info     -> "Architect tools require an active map."
+READ      world_layers · world_tile_get · world_links_get · world_mutators_get
+          world_landmarks_get · world_objects_get · world_features_get · world_info_get
+WRITE     world_tile_set/import · world_links_set/clear/import · world_mutators_set
+          world_landmarks_set · world_objects_set · world_features_set · world_info_set
+VALIDATE  world_tile_validate · world_links_validate · world_objects_validate
+          world_mutators_audit · world_lint
+COMMIT    world_commit          <- nothing you write is visible without it
+CAMERA    world_view            <- the only bridge route to the planet at all
 ```
 
-⚠️ **`success: true` here means the node ran, not that the planet changed** — the
-one law, in its most expensive form. A world edit that silently no-ops looks
-exactly like a world edit that worked. **Diff the `world_stats` biome histogram or
-you have measured nothing.**
+⚡ **Writing all 21,872 tiles takes 0.1 seconds.**
 
-⛔ The page's own buttons — **Back / Select random site / Factions / Next** — are
-drawn immediate-mode and are **not exposed as targets**. `get_screen_targets`
-offers only `window-dismiss:*` ids. `press_accept` / `press_cancel` exist and map
-to Enter/Escape, and on this page Enter means **Next**, which COMMITS the site and
-leaves the world screen. Do not fire it while exploring.
+🔴 **`success: true` still does not mean the planet changed** — that law is unrepealed, and
+it is now enforceable rather than merely warned about. Every writer here has a matching
+`*_validate` that reads RAW FIELDS, and `jawa/world_stats`' biome histogram remains the
+independent second instrument. Use both.
 
-### ⇒ What would unblock bulk tile work
+### The four traps that replaced the wall
 
-A companion `[Tool]` that takes a **tile id** — `jawa/set_world_biome`,
-`jawa/set_landmark`, `jawa/world_tile_info` — reaching `Find.WorldGrid[tile]` and
-`Find.World.landmarks` directly, no cursor involved. Extending the companion is a
-documented, supported path; see `skills/rimbridge/references/extending.md` §9.
-Until that exists, **tile-by-tile world editing is a human clicking, and the
-bridge cannot help.**
+1. **Nothing is visible until `jawa/world_commit` runs.** RimWorld has no per-tile visual
+   invalidation except pollution; everything else needs a whole `WorldDrawLayer` mesh
+   regeneration.
+2. **`Tile`'s private caches never invalidate.** `HillinessLabel`, `MinTemperature`,
+   `MaxTemperature` and `Biomes` are lazily cached with **no reset method anywhere in
+   RimWorld**. A validator built on them confirms writes that never landed.
+3. **`SurfaceTile.Roads`/`Rivers` are biome-FILTERED views.** A biome with
+   `allowRivers=false` hides links without deleting them — 20+ such tiles on an untouched
+   world. And `BiomeDef.allowRivers`/`allowRoads` are **absent from the offline def dump**,
+   so this cannot be checked offline at all.
+4. **`AddLandmark` does not enforce `IsValidTile`.** It will happily stack a landmark on a
+   settlement and say nothing. Ordering is ours to police.
 
-~~The other route, when the world is already saved: edit the world data in the
-`.rws` offline.~~ ⛔ DELETED 2026-08-19 — savegame writing is out; the map reaches the
-game over the live bridge (ASHKARR_WORLD_DEFINITION.md §12). The `.rws` planet arrays are
-still fully READABLE — `skills/rimworld-savegame` and `references/savegame-editing.md` —
-but nothing writes them back.
+Full element census and every signature:
+`design/Jawa/worldbuilding/WORLDMAP_BRIDGE_SURFACE.md`. Live facts: `LIVE.md`.
 
----
+📌 **The debug-menu route in §2 is now the slow path**, not the only path. It still works
+and the `Actions` root still NREs, so keep §2 — but reach for a `jawa/world_*` tool first.
+
+⛔ **`rimworld/search_debug_actions` timed out at 30 s even on a 13-mod list.** The
+documented debug-discovery hang is not only a heavy-modlist problem. Do not call it.
 
 ## 4. ⚠️ An open dialog blanks the screenshot
 
@@ -218,4 +215,6 @@ This file is the map. The parts that earned their own page:
 
 Anything measured at the world screen goes here rather than into `rimbridge`, because the
 two screens behave so differently that mixing them is how the wrong tool gets reached for.
-If a **world-tile targeting tool** ever lands, §3 is what has to be rewritten first.
+~~If a world-tile targeting tool ever lands, §3 is what has to be rewritten first.~~
+✅ It landed 2026-08-19 and §3 was rewritten. The next thing that would invalidate this
+file is a change to the `jawa/world_*` surface itself.
