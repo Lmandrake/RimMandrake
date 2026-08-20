@@ -907,6 +907,32 @@ verify:   a quicktest map on a tile carrying the mutator spawns the cast, and th
           and after a map cycle with no combat is EQUAL.
 criteria: land, leave, return: the same named people are there. Kill two, leave, return:
           the roster is short by exactly two and no record of them exists anywhere.
+🪤 **A TRAP FOUND IN THE 2026-08-20 08:08 LOAD LOG, before this item is runnable.**
+          Map Preview reported at line 5061:
+            *"the mod 'Custom Quest Framework' (QF_Patch) adds a destructive patch that will
+            likely override or break some functionality"*
+            patch:  `static System.Boolean QuestEditor_Library.Patch_MapGenerate::prefix(...)`
+            target: `static Verse.Map Verse.MapGenerator::GenerateMap(...)`
+          🔑 **Why that lands on THIS item specifically.** The whole wiring for the cast is
+          the `extraGenSteps` concatenation, and that concatenation lives **inside**
+          `MapGenerator.GenerateMap` (`MapGenerator.cs:156-162`). A Harmony prefix that
+          returns `bool` can return **false and skip the original method entirely** — and
+          if it ever does, our `GenStepDef` is never even assembled into the step list. The
+          cast would simply not appear, with **no error of any kind**, which is precisely
+          the failure class this project keeps getting bitten by.
+          ⚠️ **PROVEN vs NOT PROVEN, and do not let these blur:**
+            ✅ proven — a `bool`-returning prefix on that exact method is live in this build.
+            ❌ NOT proven — that it ever returns `false`. Most bool prefixes always return
+               true and merely observe, and Map Preview's warning is a heuristic about the
+               patch's SHAPE, not an observation of its behaviour. `strings` cannot answer
+               control flow and I did not pretend otherwise.
+          ✅ **The cheap decisive test, pre-registered here so it is not invented later:**
+          the first time a map generates on a tile carrying an `Inhabited_Cast` mutator,
+          check whether the cast spawned. If it did, the prefix is benign and this note can
+          be struck. If it did not, and no error appeared, **suspect this before suspecting
+          our own GenStep** — and confirm by temporarily disabling Custom Quest Framework
+          on the 14-mod MINIMAL list, where a load is 22 seconds.
+
 state:    ⭐ **MECHANISM BUILT, CONTENT MISSING** — 2026-08-20, `f0a9f6c`.
           `GenStep_InhabitedCast` + `GenStepDef Inhabited_Cast` (order 900) are in and build
           clean. Roster-out, `MakeNewLord`, spawn, and roster-back-in are all wired.

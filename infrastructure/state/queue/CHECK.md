@@ -1382,7 +1382,24 @@ verify:   `Player.log` after a load with `mandrake.inhabited` enabled:
           `Inhabited_Cast` and `Inhabited_Resident` appear in the def dump.
 criteria: a `WorldObject_Inhabited` created by the debug action draws its icon on the
           planet and its inspect string reads `N souls`.
-state:    ready
+state:    ✅ **PASSED at the 2026-08-20 08:08 load. Nothing further owed on this item.**
+          Scored by `python3 src/RimMandrake/Utils/score_inhabited_load.py` against the nine
+          signatures written in `EXPECTED_FAILURES_next_load.md` §4 BEFORE launch — all nine
+          green. The one line that settles it, `Player.log:5060`:
+            `[Inhabited] ready: 2 patches, 269 characters, 0 places, 0 casts.`
+          **2 patches** = both Harmony targets bound, so the compile-time delegate proof
+          held. **0 places, 0 casts** is correct and expected, not a shortfall.
+          ⭐ **And the engine confirmed it independently, which no log line could:** the
+          578-mod def dump now carries `CharacterDef.json` (269), `InhabitedPlaceDef.json`
+          (0) and `InhabitedCastDef.json` (0), attributed to `Inhabited (local)`. That is
+          RimWorld reporting our own def types back to us.
+          Zero `Could not find type named Inhabited.*`, zero `Config error in Inhabited_`,
+          zero Harmony exceptions, 25 cross-references = baseline with **0** naming a
+          `TraitDef`.
+          ⚠️ **Timing note for anyone scoring a future load:** `[Inhabited] ready` is written
+          by a `[StaticConstructorOnStartup]`, which runs AFTER def loading and after
+          RimDefDump finishes. Scoring the log too early reads P1 as MISSING when it simply
+          has not happened yet — it did exactly that here, ~90 s before the line appeared.
 
 ## INHABITED_ROUTE_ONE_DAY_1 Watch a cast across one in-game day
 row:      inhabited-3
@@ -1452,7 +1469,21 @@ criteria: dev mode -> debug action `Inhabited` / `Spawn authored character` -> p
           are deliberately empty, so an Ugnaught comes out as a baseliner in whatever the
           fallback kind wears. **That is not a bug to report.** It is the four fields
           DECIDE owes, filed as `INHABITED_OPEN_QUESTIONS_1`.
-state:    ready
+state:    ⭐ **THE LOG HALF PASSED; THE LOOK-AT-ONE HALF IS STILL OWED.**
+          ✅ Proven at the 2026-08-20 08:08 load: all **269** `CharacterDef`s loaded, appear
+          in the 578-mod def dump under `CharacterDef.json`, and produced **zero**
+          `Config error in Inhabited_` and zero unresolved `TraitDef` cross-references.
+          ⭐ **Re-proven against the NEW mod set, not merely absent from the log:**
+          `cast_to_xml.py` re-run against the 578-mod dump reports *"every trait and degree
+          resolved"* — all 807. The risk that the roster was validated at 577 and shipped
+          into 578 is now closed rather than untested.
+          ⏳ **STILL OWED, and it needs a human eye, not a grep:** dev mode -> debug actions
+          -> `Inhabited` -> `Spawn authored character`. Pick anyone. Then **read the hook
+          against the traits** and report any pair that disagrees, by defName. That is an
+          authoring defect for DECIDE, not a code one, and this is the first moment anybody
+          can see it.
+          ⚠️ Still expect them to look wrong in the body — xenotype, pawnKind, apparel and
+          skills are deliberately empty. Not a bug to report.
 
 ## PRELOAD_PREDICTIONS_578_1 What this load must show, written before it starts
 row:      bridge-9

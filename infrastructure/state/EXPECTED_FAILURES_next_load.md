@@ -1130,14 +1130,23 @@ grep -c "Could not resolve cross-reference" "$LOG"     # baseline 33
 
 ### Results — FILL THIS IN AFTER THE LOAD. Blank means unfinished.
 
-| # | outcome | evidence (line number / count) |
+✅ **ALL NINE ROWS PASSED — 2026-08-20 08:08, scored by
+`python3 src/RimMandrake/Utils/score_inhabited_load.py`, not by eye.**
+
+| # | outcome | evidence |
 |---|---|---|
-| P1 | | |
-| P2 | | |
-| F1 | | |
-| F2 | | |
-| F3 | | |
-| F4 | | |
-| F5 | | |
-| F6 | | |
-| F7 | | |
+| P1 | ✅ present | line 5060: `[Inhabited] ready: 2 patches, 269 characters, 0 places, 0 casts.` — **269 is the pass**; 2 patches means both Harmony targets bound; 0 places / 0 casts is correct, that content is blocked on DECIDE |
+| P2 | ✅ present | line 5056 `[RimDefDump] starting`, line 5059 `done in 16397 ms`. Manifest reports **modCount 578**, fingerprint `5ef6eec3daf6c325`, and `refresh.py` now calls the dump **current** |
+| F1 | ✅ clean | no `ReflectionTypeLoadException` / `Could not load assembly` near Inhabited |
+| F2 | ✅ clean | the `Inhabited_Resident` DefOf tripwire did not fire |
+| F3 | ✅ clean | no `Could not find type named Inhabited.*` |
+| F4 | ✅ clean | no `Config error in Inhabited_`. ⭐ **And independently re-proven, not just absent:** `cast_to_xml.py` re-run against the NEW 578-mod dump reports *"every trait and degree resolved"* — all 807 |
+| F5 | ✅ clean | no Harmony exception naming `mandrake.inhabited`. The compile-time delegate proof held |
+| F6 | ✅ clean | no `CastRoster_*` parse error |
+| F7 | ✅ = baseline | **25** `Could not resolve cross-reference`, **0** naming a `TraitDef` |
+
+⭐ **THE STRONGEST SINGLE PIECE OF EVIDENCE IS NOT IN THE LOG AT ALL.** The engine's own
+def dump now carries `CharacterDef.json` with **269 defs**, attributed to `Inhabited
+(local)` — plus empty `InhabitedPlaceDef.json` and `InhabitedCastDef.json`, which is the
+correct reading of "the mechanism is in and the content is not". That is RimWorld
+reporting our def types back to us, which no log line could establish on its own.
