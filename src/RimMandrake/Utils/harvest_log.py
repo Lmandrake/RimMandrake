@@ -200,6 +200,27 @@ CHECKS = [
      r"[Pp]atch operation .* failed|PatchOperation.*failed", 5,
      "5 = 3 Intimacy + 1 Mining Outpost + 1 Biomes! Caverns, all pre-existing "
      "and all other mods. A 6th is NEW - read it with --show patchfail"),
+    # Added 2026-08-20 by BUILD. Both were found by reading a log by hand and both
+    # would otherwise have to be re-found the same way every load.
+    # 🔴 The dictionary-shape error is the loudest silent bug this project has had:
+    # 28 lines per load while `biomeConfigs` read `[]` and all 27 biome score offsets
+    # did nothing, with `biomeBlacklist` working perfectly beside it so the def LOOKED
+    # configured. The message never says "ignored" - it says "XML format error" and then
+    # the game carries on.
+    ("dictshape", "dictionary field given <li> children",
+     r"is not <li>.*(biomeConfigs|xenotypeChances)", 0,
+     "was 28 for JawaWorld_BiomeMix before 2026-08-19. A dictionary-keyed field fed "
+     "<li> loses the WHOLE field and keeps loading. Same family as B56, where the "
+     "reverse shape discarded five FactionDefs outright"),
+    # 🔴 These are defNames this project USED to target and that no longer exist. A
+    # PatchOperationConditional on a missing def returns true and logs nothing, so the
+    # only way these surface is if something still references them by name in a context
+    # that DOES log. Zero is the pass; any hit means a patch was reverted or a file
+    # was restored from an old copy.
+    ("deadnames", "defNames we retired (should be extinct)",
+     r"OuterRim_Jawa\b|BTD_Jawa\b|HC_gamorreanaxe", 0,
+     "OuterRim_Jawa and BTD_Jawa both stopped existing when the donor mods went off; "
+     "HC_gamorreanaxe never existed at all. Retargeted 2026-08-19/20"),
 ]
 
 # Items queued for this specific load. Each is (label, regex, expectation).
