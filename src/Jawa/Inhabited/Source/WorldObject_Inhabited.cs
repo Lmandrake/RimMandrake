@@ -195,6 +195,11 @@ namespace Inhabited
                 }
             }
 
+            // Authored people go to the freshly generated pawns only. Anyone drawn
+            // from the pool is already somebody, and overwriting them would undo
+            // the one thing the pool exists for.
+            int nextCharacter = 0;
+
             for (int i = fromPool; i < wanted.Count; i++)
             {
                 Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
@@ -217,6 +222,11 @@ namespace Inhabited
                 if (p == null)
                 {
                     continue;
+                }
+                if (cast.characters != null && nextCharacter < cast.characters.Count)
+                {
+                    CharacterApplier.ApplyTo(p, cast.characters[nextCharacter]);
+                    nextCharacter++;
                 }
                 if (!roster.TryAdd(p, canMergeWithExistingStacks: false))
                 {

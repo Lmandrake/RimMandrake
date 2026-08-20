@@ -224,6 +224,38 @@ namespace Inhabited
             Log.Message(sb.ToString().TrimEndNewlines());
         }
 
+        [DebugAction(Cat, "Spawn authored character", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void SpawnCharacter()
+        {
+            List<CharacterDef> all = CharacterApplier.All.ToList();
+            if (all.Count == 0)
+            {
+                Log.Error("[Inhabited] no CharacterDefs loaded. Run cast_to_xml.py --write and redeploy.");
+                return;
+            }
+            Dialog_DebugOptionListLister.ShowSimpleDebugMenu(
+                all.OrderBy(c => c.faction).ThenBy(c => c.label),
+                c => c.faction + " / " + (c.place ?? "-") + " / " + c.label,
+                delegate (CharacterDef c)
+                {
+                    Map map = Find.CurrentMap;
+                    if (map == null)
+                    {
+                        return;
+                    }
+                    Pawn p = CharacterApplier.Spawn(c, Faction.OfPlayer, null, map.Tile);
+                    if (p == null)
+                    {
+                        Log.Error("[Inhabited] could not build " + c.defName);
+                        return;
+                    }
+                    GenSpawn.Spawn(p, CellFinder.RandomSpawnCellForPawnNear(map.Center, map), map);
+                    Log.Message("[Inhabited] " + c.defName + " -> " + Describe(p)
+                                + "\n    ageText: " + (c.ageText ?? "-")
+                                + "\n    hook:    " + (c.hook ?? "-"));
+                });
+        }
+
         private static string Describe(Pawn p)
         {
             if (p == null)

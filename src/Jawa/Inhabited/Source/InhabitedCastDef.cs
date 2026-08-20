@@ -51,6 +51,22 @@ namespace Inhabited
         public List<InhabitedRole> roles = new List<InhabitedRole>();
 
         /// <summary>
+        /// The AUTHORED people of this place, by `CharacterDef`. They are applied
+        /// to the first pawns the roles generate, in order, so a cast of eight
+        /// with three named characters gets those three and five nobodies.
+        ///
+        /// ⭐ One or two REALLY strange standouts per cast; the rest is background
+        /// texture. A cast where everyone is remarkable has nobody remarkable in
+        /// it, and the dull half has to be there first or the standouts have
+        /// nothing to stand against.
+        ///
+        /// ⚠️ A character drawn from the DISPLACED POOL is already somebody and is
+        /// never overwritten. Only freshly generated pawns are dressed as an
+        /// authored person -- a survivor of the refinery keeps being who he was.
+        /// </summary>
+        public List<CharacterDef> characters = new List<CharacterDef>();
+
+        /// <summary>
         /// How many people in total, clamping the rolled roles. A cast that rolls
         /// larger than this is trimmed from the back of the role list, so leaders
         /// and traders -- written first -- survive the trim.
