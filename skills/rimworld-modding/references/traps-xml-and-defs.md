@@ -203,3 +203,61 @@ script wrote, because nobody re-reads 14,000 generated lines.
 
 ✅ **Cheap standing check:** `grep -oE '<xpath>[^<]*\]\[[0-9]+\]'` over your patch folder.
 Every hit is a time bomb waiting for the next mod update.
+
+---
+
+## `weaponMoney` is a CEILING, and a ceiling under the pool arms nobody
+
+A `PawnKindDef` asks for weapons by tag, and the generator then keeps only those whose
+market value is **at or below `weaponMoney`**. A kind whose tags resolve to a rich pool and
+whose money sits under the cheapest member gets **nothing** — and it is as silent as having
+no tags at all, because the tags are valid and the pool is non-empty.
+
+Measured here: a scavenger kind asked for ion weapons that start at 800 on a budget of 120;
+a hunter asked for a 1,250 bowcaster on 200; leaders on 2,200 pointed at a legendary tier
+that starts at **12,000**. Five kinds, all of them looking perfectly correct in the XML.
+
+⇒ **Validate money against the CHEAPEST member of the kind's own pool**, not against
+intuition or against a neighbouring faction's numbers. The check is mechanical:
+
+```
+pool = {w for t in kind.weaponTags for w in weapons_with_tag(t) if w not in cut}
+if not any(marketValue(w) <= kind.weaponMoney.min for w in pool): BROKEN
+```
+
+🪤 And the fix is often **vocabulary, not money**. A poor faction wanting an expensive
+weapon class usually has a cheap member of that class somewhere in the stack under a
+different tag — reaching it keeps both the poverty and the flavour, where raising the
+budget destroys the first to get the second.
+
+---
+
+## A child `<tools>` list REPLACES the parent's; it does not merge
+
+Same shape as `xenotypeSet` and `pawnGroupMakers`, and it bites harder because tools carry
+`armorPenetration`, which is invisible in most inspection.
+
+An abstract weapon base declaring `point`/`edge` at `armorPenetration 1` gives that to
+nobody once a child def declares its own `<tools>` block — the child's list is the whole
+list, and any field it does not restate is simply gone. A family of weapons can therefore
+ship with the parent's penetration nowhere in sight while the parent's XML looks correct.
+
+⇒ When a stat looks wrong on a def that inherits, **check whether the child re-declares the
+container** before concluding the parent is broken. And when patching such a family, the
+abstract is usually the wrong target: patch the concrete defs, or nothing changes for the
+ones that opted out by redeclaring.
+
+---
+
+## Every humanlike `PawnKindDef` owes `initialResistanceRange` and `initialWillRange`
+
+Omit them and the game logs, per kind, per load:
+
+```
+Config error in <kind>: initial resistance range is undefined for humanlike pawn kind.
+Config error in <kind>: initial will range is undefined for humanlike pawn kind.
+```
+
+Two lines each — 48 new kinds produced **108 red lines** in one load. Not fatal, and easy
+to dismiss as noise, but they are also the numbers that decide what recruiting or enslaving
+a captured pawn costs. A kind without them is not just noisy; it is meaningless to capture.
