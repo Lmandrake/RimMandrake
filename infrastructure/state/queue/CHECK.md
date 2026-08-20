@@ -127,7 +127,45 @@ criteria: a scalar written through the tool is read back correctly from the RAW 
           properties - `HillinessLabel`, `MinTemperature`, `MaxTemperature` and `Biomes`
           are lazily cached with NO reset method anywhere in the codebase, so a validator
           built on them would confirm its own writes while the planet stayed wrong.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19. BOTH halves of the criterion.
+result:   SHIPPED: `world_tile_get` · `world_tile_set` · `world_tile_import` ·
+          `world_tile_validate` · `world_commit` · plus `world_view` (see below).
+          ✅ READ-BACK: 3 tiles written and re-read RAW - biome, elevation, hilliness,
+             temperature, rainfall, swampiness, pollution all correct.
+          ✅ VISIBLE: `observed/w3/w3_planet_painted.png` and `w3_ashkarr_clean.png`.
+          ✅ TWO INDEPENDENT INSTRUMENTS agreed on a 4,000-tile paint:
+             `jawa/world_stats` biome histogram IceSheet **2059 -> 6035** (delta 3976; the
+             24 shortfall is tiles already IceSheet), and water **56.16% -> 54.38%** as
+             elevation 900 lifted those tiles out of the sea.
+          ✅ ALL 8 COMMIT STEPS ok live - including `WorldDrawLayer_Roads.RegenerateNow`
+             and `_Rivers`, which the source read could only mark UNCERTAIN because no
+             vanilla call site exists. That inference is now PROVEN.
+          ✅ THE FULL 21,872-TILE IMPORT RUNS IN **0.1 SECONDS**, 0 rows skipped.
+          ✅ THE GUARD REFUSES: `expectTiles=21872` against a 119,904-tile grid returned
+             success:false and named the reason. The precondition folded in from the
+             retired pin item is real, not decorative.
+          ✅ VALIDATE: before import 0/3000 matched; after import **17,848/21,872 = 81.6%**,
+             and `byField` shows the ONLY mismatching field is `biome` (4,024 tiles).
+             ⇒ elevation, temperature, rainfall, swampiness and hilliness matched on
+             **all 21,872 tiles**. Every biome failure is one of 8 defs absent from the
+             13-mod list (Wasteland, PoisonForest, BMT_FungalForest, ZBiome_DesertOasis,
+             BMT_CrystalCaverns, ZBiome_Grasslands, ZBiome_Badlands, Volcano) - and the
+             importer REPORTED them up front in `unknownBiomes` rather than failing quietly.
+             Not a tool defect; it is W1's minimal-list gap, and W9 restores the full list.
+          🔑 NEW CAPABILITY NOT IN THE PLAN: `jawa/world_view`. RimWorld's world button is
+             drawn immediate-mode and is not a clickable target, so there was NO bridge
+             route to the planet from a running game at all - every "look at the map"
+             criterion in this project was unreachable. `CameraJumper.TryShowWorld()`.
+             ⚠️ It returns false unless `ProgramState == Playing`, and `start_debug_game_ready`
+             at `readiness=mapData` does NOT guarantee that. Wait for Playing first.
+          ⚠️ TRAP for every future screenshot: the debug log has Auto-open ON and reopens
+             on ANY warning, obscuring the frame. `shoot_planet.py` now closes and re-checks
+             up to 4 times and only shoots a clean frame.
+          📌 FINDING worth keeping: a contiguous TILE ID RANGE IS NOT a contiguous region
+             on the globe. Painting ids 20000-23999 produced scattered rosettes, and the
+             21,872-tile import produced a hard diagonal id-boundary across the planet.
+             Anything reasoning geographically must go through `world_graph`/neighbours,
+             never through id arithmetic.
 
 ## W4 G2 — rivers and roads, including the removal vanilla cannot do
 row:      bridge-4

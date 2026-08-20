@@ -12,14 +12,26 @@ def call(t, **p):
 name = sys.argv[1] if len(sys.argv) > 1 else "planet"
 tile = int(sys.argv[2]) if len(sys.argv) > 2 else -1
 call("jawa/world_view", show=True, centerTile=tile)
-# The debug log AUTO-REOPENS on any error, and an open dialog blanks/obscures
-# the shot. Close everything immediately before the capture, not earlier.
-for wt in ("LudeonTK.EditWindow_Log", "LudeonTK.Dialog_DevPalette",
-           "LudeonTK.Dialog_Debug", "LudeonTK.EditWindow_DebugInspector"):
-    call("rimworld/close_window", windowType=wt)
-call("jawa/clear_ui")
-time.sleep(0.4)
-sh = call("rimworld/take_screenshot", fileName=name, suppressMessage=True)
+# The debug log AUTO-REOPENS on any warning ("Auto-open is ON"), and an open
+# dialog obscures or blanks the shot. Closing once is not enough - something
+# can log between the close and the capture. Retry until the frame is clean.
+DIALOGS = ("LudeonTK.EditWindow_Log", "LudeonTK.Dialog_DevPalette",
+           "LudeonTK.Dialog_Debug", "LudeonTK.EditWindow_DebugInspector",
+           "LudeonTK.EditWindow_TweakValues")
+sh = None
+for attempt in range(4):
+    for wt in DIALOGS:
+        call("rimworld/close_window", windowType=wt)
+    call("jawa/clear_ui")
+    st = call("rimworld/get_ui_state")
+    top = st.get("topWindowType") or ""
+    if not any(d in top for d in DIALOGS) and st.get("windowCount", 9) <= 1:
+        sh = call("rimworld/take_screenshot", fileName=name, suppressMessage=True)
+        break
+    time.sleep(0.6)
+if sh is None:
+    sh = call("rimworld/take_screenshot", fileName=name, suppressMessage=True)
+    print("WARNING: could not get a clean frame after 4 tries; a dialog may obscure it")
 st = call("rimworld/get_ui_state")
 print("windows open at capture:", st.get("windowCount"), st.get("topWindowType"))
 print("saved:", sh.get("path") or sh.get("fileName"))

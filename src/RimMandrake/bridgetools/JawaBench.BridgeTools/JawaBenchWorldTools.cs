@@ -31,6 +31,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -511,6 +512,289 @@ namespace JawaBench.BridgeTools
                     worldSelectedAfter = WorldRendererUtility.WorldSelected,
                     wantedMode = Find.World.renderer != null ? Find.World.renderer.wantedMode.ToString() : null,
                     centeredOn = centered,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+
+        // ================================================================
+        //  G1 IMPORT / VALIDATE - by FILE PATH, not by ops string.
+        //  The companion's existing batch convention is a semicolon-separated
+        //  `string ops` capped at MaxOps=4096. 21,872 tiles would be ~6 calls
+        //  and a multi-megabyte socket payload. Reading the CSV in-process is
+        //  symmetric with world_tile_export, which already writes one.
+        //  ⚠️ This is the first file-READING code in the companion.
+        // ================================================================
+
+        private sealed class TileCsv
+        {
+            public List<string> Header = new List<string>();
+            public List<string[]> Rows = new List<string[]>();
+            public Dictionary<string, int> Col = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static string[] SplitCsvLine(string line)
+        {
+            var outp = new List<string>();
+            var sb = new System.Text.StringBuilder();
+            bool q = false;
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+                if (q)
+                {
+                    if (c == '"')
+                    {
+                        if (i + 1 < line.Length && line[i + 1] == '"') { sb.Append('"'); i++; }
+                        else q = false;
+                    }
+                    else sb.Append(c);
+                }
+                else if (c == '"') q = true;
+                else if (c == ',') { outp.Add(sb.ToString()); sb.Length = 0; }
+                else sb.Append(c);
+            }
+            outp.Add(sb.ToString());
+            return outp.ToArray();
+        }
+
+        private static TileCsv ReadTileCsv(string path, out string err)
+        {
+            err = null;
+            if (string.IsNullOrEmpty(path)) { err = "No path given."; return null; }
+            if (!File.Exists(path)) { err = "No such file: " + path; return null; }
+            string[] lines;
+            try { lines = File.ReadAllLines(path); }
+            catch (Exception e) { err = "Could not read " + path + ": " + e.Message; return null; }
+            if (lines.Length < 2) { err = "File has no data rows: " + path; return null; }
+
+            var csv = new TileCsv();
+            csv.Header = SplitCsvLine(lines[0]).Select(h => h.Trim()).ToList();
+            for (int i = 0; i < csv.Header.Count; i++)
+                if (!csv.Col.ContainsKey(csv.Header[i])) csv.Col[csv.Header[i]] = i;
+            if (!csv.Col.ContainsKey("tile")) { err = "CSV has no 'tile' column. Header: " + string.Join(",", csv.Header.ToArray()); return null; }
+            for (int i = 1; i < lines.Length; i++)
+            {
+                if (string.IsNullOrEmpty(lines[i])) continue;
+                csv.Rows.Add(SplitCsvLine(lines[i]));
+            }
+            return csv;
+        }
+
+        private static string Cell(TileCsv c, string[] row, string name)
+        {
+            int i;
+            if (!c.Col.TryGetValue(name, out i)) return null;
+            if (i >= row.Length) return null;
+            var v = row[i];
+            return string.IsNullOrEmpty(v) ? null : v.Trim();
+        }
+
+        private static bool F(string s, out float v)
+        {
+            return float.TryParse(s, System.Globalization.NumberStyles.Float,
+                                  System.Globalization.CultureInfo.InvariantCulture, out v);
+        }
+
+        [Tool(
+            "jawa/world_tile_import",
+            Description =
+                "Import per-tile scalars into the live world from a CSV FILE ON DISK. Reads " +
+                "column names from the header, so it accepts any CSV with a 'tile' column plus " +
+                "any of: biome, elev_m/elevation, temp_c/temperature, rain_mm/rainfall, " +
+                "hilliness (0-5 or a name), swampiness, pollution. Unknown columns are ignored. " +
+                "Takes a PATH rather than an ops string because 21,872 tiles will not fit the " +
+                "companion's 4096-op batch convention or a socket payload. " +
+                "Runs a DRY RUN by default - pass apply=true to write. " +
+                "Asserts the grid size when expectTiles is given, and REFUSES on mismatch: a " +
+                "different My Little Planet subcount shifts every tile id and would silently " +
+                "paint the wrong planet. Does not redraw; call jawa/world_commit after.",
+            ResultDescription =
+                "success, dryRun, rows, applied, skipped, unknownBiomes[], errors[], sample[].")]
+        public static async Task<object> WorldTileImport(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Absolute path to the CSV.")] string path = null,
+            [ToolParameter(Description = "Write for real. Default false (dry run).")] bool apply = false,
+            [ToolParameter(Description = "Refuse unless WorldGrid.TilesCount equals this. 0 = no check.")] int expectTiles = 0,
+            [ToolParameter(Description = "Stop after this many rows. 0 = all.")] int maxRows = 0,
+            [ToolParameter(Description = "Rows to echo back. Default 3.")] int sampleRows = 3)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null)
+                    return Fail("No world is loaded.");
+
+                var grid = Find.WorldGrid;
+                if (expectTiles > 0 && grid.TilesCount != expectTiles)
+                    return Fail("REFUSING: grid has " + grid.TilesCount + " tiles, expected " + expectTiles +
+                                ". The tile ids in the CSV are only meaningful on a grid of the expected size - " +
+                                "a different My Little Planet subcount shifts EVERY id and would paint the wrong planet.");
+
+                string err;
+                var csv = ReadTileCsv(path, out err);
+                if (csv == null) return Fail(err);
+
+                var errors = new List<string>();
+                var unknownBiomes = new HashSet<string>();
+                var biomeCache = new Dictionary<string, BiomeDef>(StringComparer.OrdinalIgnoreCase);
+                var sample = new List<object>();
+                int applied = 0, skipped = 0, rows = 0;
+
+                foreach (var row in csv.Rows)
+                {
+                    if (maxRows > 0 && rows >= maxRows) break;
+                    rows++;
+
+                    int id;
+                    var ids = Cell(csv, row, "tile");
+                    if (ids == null || !int.TryParse(ids, out id))
+                    { skipped++; if (errors.Count < 20) errors.Add("Row " + rows + ": bad tile id '" + ids + "'"); continue; }
+
+                    string e2;
+                    var t = SurfaceTileAt(id, out e2);
+                    if (t == null) { skipped++; if (errors.Count < 20) errors.Add("Row " + rows + ": " + e2); continue; }
+
+                    BiomeDef bd = null;
+                    var bname = Cell(csv, row, "biome");
+                    if (bname != null)
+                    {
+                        if (!biomeCache.TryGetValue(bname, out bd))
+                        {
+                            bd = DefDatabase<BiomeDef>.GetNamedSilentFail(bname);
+                            biomeCache[bname] = bd;
+                        }
+                        if (bd == null) unknownBiomes.Add(bname);
+                    }
+
+                    float fv;
+                    var elevS = Cell(csv, row, "elev_m") ?? Cell(csv, row, "elevation");
+                    var tempS = Cell(csv, row, "temp_c") ?? Cell(csv, row, "temperature");
+                    var rainS = Cell(csv, row, "rain_mm") ?? Cell(csv, row, "rainfall");
+                    var swS = Cell(csv, row, "swampiness");
+                    var poS = Cell(csv, row, "pollution");
+                    var hiS = Cell(csv, row, "hilliness");
+
+                    if (sample.Count < Math.Max(0, sampleRows))
+                        sample.Add(new { tile = id, biome = bname, elev = elevS, temp = tempS, rain = rainS, hilliness = hiS, swampiness = swS });
+
+                    if (!apply) { applied++; continue; }
+
+                    if (bd != null) t.PrimaryBiome = bd;
+                    if (elevS != null && F(elevS, out fv)) t.elevation = fv;
+                    if (tempS != null && F(tempS, out fv)) t.temperature = fv;
+                    if (rainS != null && F(rainS, out fv)) t.rainfall = fv;
+                    if (swS != null && F(swS, out fv)) t.swampiness = fv;
+                    if (poS != null && F(poS, out fv)) t.pollution = fv;
+                    if (hiS != null) { Hilliness h; if (TryHilliness(hiS, out h)) t.hilliness = h; }
+                    applied++;
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    dryRun = !apply,
+                    path,
+                    header = string.Join(",", csv.Header.ToArray()),
+                    rows,
+                    applied,
+                    skipped,
+                    tilesCount = grid.TilesCount,
+                    unknownBiomes = unknownBiomes.ToList(),
+                    note = apply
+                        ? "Written. Nothing is visible until jawa/world_commit runs."
+                        : "DRY RUN - nothing was written. Pass apply=true.",
+                    errors,
+                    sample,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_tile_validate",
+            Description =
+                "Compare the LIVE world against a CSV and report every tile that differs. " +
+                "Reads RAW tile fields, never the cached properties (HillinessLabel, " +
+                "Min/MaxTemperature, Biomes are lazily cached with no reset anywhere in " +
+                "RimWorld and would confirm writes that never landed). Use after " +
+                "jawa/world_tile_import to prove the import actually took.",
+            ResultDescription =
+                "success, rows, matched, mismatched, byField{}, diffs[] (capped).")]
+        public static async Task<object> WorldTileValidate(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Absolute path to the CSV.")] string path = null,
+            [ToolParameter(Description = "Tolerance for float compares. Default 0.5.")] float tolerance = 0.5f,
+            [ToolParameter(Description = "Max diff rows to return. Default 25.")] int limit = 25,
+            [ToolParameter(Description = "Stop after this many rows. 0 = all.")] int maxRows = 0)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null)
+                    return Fail("No world is loaded.");
+
+                string err;
+                var csv = ReadTileCsv(path, out err);
+                if (csv == null) return Fail(err);
+
+                int rows = 0, matched = 0, mismatched = 0;
+                var byField = new Dictionary<string, int>();
+                var diffs = new List<object>();
+                Action<string> bump = f => { int n; byField.TryGetValue(f, out n); byField[f] = n + 1; };
+
+                foreach (var row in csv.Rows)
+                {
+                    if (maxRows > 0 && rows >= maxRows) break;
+                    rows++;
+
+                    int id; var ids = Cell(csv, row, "tile");
+                    if (ids == null || !int.TryParse(ids, out id)) continue;
+                    string e2; var t = SurfaceTileAt(id, out e2);
+                    if (t == null) continue;
+
+                    var bad = new List<string>();
+                    float fv;
+
+                    var bname = Cell(csv, row, "biome");
+                    if (bname != null)
+                    {
+                        var live = t.PrimaryBiome != null ? t.PrimaryBiome.defName : null;
+                        if (!string.Equals(live, bname, StringComparison.OrdinalIgnoreCase)) { bad.Add("biome:" + live + "!=" + bname); bump("biome"); }
+                    }
+                    var s2 = Cell(csv, row, "elev_m") ?? Cell(csv, row, "elevation");
+                    if (s2 != null && F(s2, out fv) && Math.Abs(t.elevation - fv) > tolerance) { bad.Add("elevation:" + t.elevation + "!=" + fv); bump("elevation"); }
+                    s2 = Cell(csv, row, "temp_c") ?? Cell(csv, row, "temperature");
+                    if (s2 != null && F(s2, out fv) && Math.Abs(t.temperature - fv) > tolerance) { bad.Add("temperature:" + t.temperature + "!=" + fv); bump("temperature"); }
+                    s2 = Cell(csv, row, "rain_mm") ?? Cell(csv, row, "rainfall");
+                    if (s2 != null && F(s2, out fv) && Math.Abs(t.rainfall - fv) > tolerance) { bad.Add("rainfall:" + t.rainfall + "!=" + fv); bump("rainfall"); }
+                    s2 = Cell(csv, row, "swampiness");
+                    if (s2 != null && F(s2, out fv) && Math.Abs(t.swampiness - fv) > 0.02f) { bad.Add("swampiness:" + t.swampiness + "!=" + fv); bump("swampiness"); }
+                    s2 = Cell(csv, row, "hilliness");
+                    if (s2 != null) { Hilliness h; if (TryHilliness(s2, out h) && t.hilliness != h) { bad.Add("hilliness:" + t.hilliness + "!=" + h); bump("hilliness"); } }
+
+                    if (bad.Count == 0) matched++;
+                    else
+                    {
+                        mismatched++;
+                        if (diffs.Count < Math.Max(0, limit))
+                            diffs.Add(new { tile = id, fields = bad });
+                    }
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    path,
+                    rows,
+                    matched,
+                    mismatched,
+                    matchPct = rows > 0 ? Math.Round(100.0 * matched / rows, 2) : 0.0,
+                    tolerance,
+                    byField,
+                    readRawFields = true,
+                    diffs,
                     ticksGame = TicksGameSafe(),
                 };
             });
