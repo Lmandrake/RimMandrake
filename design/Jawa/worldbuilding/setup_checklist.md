@@ -43,7 +43,7 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
   Reversible in-game if Randy's variance feels too swingy in playtest.
 - [~] **Difficulty = Custom** (DECIDED in principle, `world_interest_and_mech_danger.md`/context §19.9):
   the "fewer, heavier, smarter" enemy distribution starts here BEFORE any mod — lower raid
-  *frequency*, raise raid *points*, disable enemy flee%, disable adaptation-difficulty decay. Set
+  *frequency*, raise raid *points*, disable adaptation-difficulty decay. Set
   exact sliders at the machine.
 - [x] **Commitment (permadeath) mode:** **OFF — reload allowed** (user, 2026-08-04).
 - [ ] 🔴 **Anomaly/monolith intensity: ZERO.** Owner's ruling 2026-08-13, and it is

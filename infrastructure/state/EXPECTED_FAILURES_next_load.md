@@ -398,21 +398,44 @@ per the checklist, that string is the only record of it.
 
 ## S5 — Anomaly at zero (owner's ruling, same run)
 
-**Setting:** the Anomaly playstyle. defNames **VERIFIED** in `Assembly-CSharp.dll`:
-`AnomalyFrequency_None` · `_VeryRare` · `_Rare` · `_Balanced` · `_Intense` ·
-`_Overwhelming`. **Want `AnomalyFrequency_None`.** The DLC stays **enabled** — only
-the storyline is off; its creatures and abilities remain ours to reskin.
+**Setting:** the Anomaly playstyle, and it is **`AnomalyPlaystyleDef`** — exactly three
+defs ship: `Standard` · `AmbientHorror` · `Disabled`
+(`…\Data\Anomaly\Defs\AnomalyPlaystyles\AnomalyPlaystyles.xml`).
+**Want `AmbientHorror` with the threat fraction dragged to 0.**
+
+🔴 `AnomalyFrequency_None` · `_VeryRare` · `_Rare` · `_Balanced` · `_Intense` ·
+`_Overwhelming` are **TRANSLATION KEYS, not defNames** —
+`…\Data\Anomaly\Languages\English\Keyed\Misc_Gameplay.xml:499-504`, the labels
+`Dialog_AnomalySettings.GetFrequencyLabel` prints beside the slider. Nothing can ever
+read back as one.
+
+**Why `AmbientHorror` and not `Disabled`:** `Disabled` carries
+`enableAnomalyContent:false`, which kills study, the research tab, the codex and tome
+trading. `AmbientHorror` keeps all of it, does not generate the monolith, and — with the
+fraction at 0 — spawns nothing on its own while leaving `PitGate`/`FleshmassHeart`
+available to fire deliberately.
+
+⚠️ **The slider still exists under `AmbientHorror` and it does NOT start at zero.**
+`displayThreatFractionSliders:false` only suppresses the per-category sliders;
+`overrideThreatFraction:true` makes `Dialog_AnomalySettings:166-170` draw a single
+0..1 slider instead, and `StorytellerUI:239` seeds it at **0.15**. It must be dragged
+down. Custom difficulty is required — `overrideAnomalyThreatsFraction` is not a
+`DifficultyDef` field at all; it lives on the runtime `Difficulty` object
+(`Difficulty.cs:121,374`) and scribes into the save's `<customDifficulty>`.
+
+🔴 **Both are world-creation-permanent.** The "Anomaly settings…" button is drawn under
+a `ProgramState.Entry` guard and is simply absent in an existing save.
 
 **Evidence command:**
 
 ```
 rimworld/save_game        # then grep the .rws on disk:
 grep -o "anomalyPlaystyleDef>[^<]*" <the .rws>
+grep -o "overrideAnomalyThreatsFraction>[^<]*" <the .rws>
 ```
 
-`anomalyPlaystyleDef` is the serialised field name, **verified in
-`Assembly-CSharp.dll`**. **Pass:** it reads `AnomalyFrequency_None`. **Fail:**
-anything else.
+**Pass:** the first reads `AmbientHorror` and the second reads `0`. **Fail:** anything
+else, including the second being absent — absent means the override was never set.
 
 ⚠️ **This costs one save, and there is no other read-back.**
 `rimworld/get_game_info` returns only `ticksGame` and `mapCount` and cannot answer
@@ -520,15 +543,16 @@ grep -nE "Patch operation Verse\.PatchOperationRemove failed|No Verse\.XenotypeD
 1. **S4** — both label checks on the Configure Factions page. A miss here means
    **stop and fix the deploy**, and it is the only point where that is still cheap.
 2. **S3, the act** — drive the 20 unticks and confirm the 6 keeps, from
-   `WORLDGEN_FACTION_CHECKLIST.md`. Tick **Anomaly → `AnomalyFrequency_None`** on
-   the same screens (S5).
+   `WORLDGEN_FACTION_CHECKLIST.md`. Set **Anomaly → `AmbientHorror`, threat slider
+   dragged to 0** on the same screens (S5).
 
 **Immediately after the world exists:**
 3. **S2** — the worldgen grep. Want zero lines. Screenshot the world map (row 7's gate).
 4. **S3, the evidence** — `jawa/list_factions`, diff against the checklist.
 5. **S1** — `prove_new_tools.py --census`; derive the expected number first (S1's two
    commands), then compare. **No literal count belongs in this step.**
-6. **S5** — `rimworld/save_game`, then grep the `.rws` for `anomalyPlaystyleDef`.
+6. **S5** — `rimworld/save_game`, then grep the `.rws` for `anomalyPlaystyleDef`
+   AND `overrideAnomalyThreatsFraction`. The playstyle alone is not a pass.
 
 **At session end, before the next launch destroys the log:**
 7. **S6** plus a re-run of **S3's downstream grep** — those fire during play, not at load.
@@ -557,7 +581,7 @@ reconstruct a result from the log.**
 | S3 | downstream over-exclusion grep = 0 (at session end) | | |
 | S4 | `OuterRim_GalacticEmpire` label reads "Imperial Desert Directorate" (observation, not a gate) | | |
 | S4 | `OuterRim_RebelAlliance` absent from the page | | |
-| S5 | `.rws` `anomalyPlaystyleDef` = `AnomalyFrequency_None` | | |
+| S5 | `.rws` `anomalyPlaystyleDef` = `AmbientHorror` AND `overrideAnomalyThreatsFraction` = `0` | | |
 | S6 | A2 / A3 log greps unchanged | | |
 | S7 | eleven campaign factions present on the page, each set ≥ 1 | | |
 | S7 | `jawa/list_factions` returns all eleven after worldgen | | |

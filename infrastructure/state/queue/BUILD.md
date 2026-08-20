@@ -532,7 +532,12 @@ state:    ready
 
 ## B55 Build the campaign start — fixed map, fixed ship, fixed pawns
 row:      12
-spec:     `design/Jawa/worldbuilding/SCENARIO_SPEC.md`. The scenario is a SAVED
+spec:     ⏭️ CARRIED IN FROM B63, 2026-08-19: **"The Sundered" must appear in
+          `ScenPart_GameStartDialog`.** It is the only part of the start carrying prose,
+          and if the epithet is not in the opening narration the player never sees it.
+          It lives in the save's embedded `<parts>` — B63 forbids authoring a `ScenarioDef`
+          for it. The planet name itself is already handled by `JawaWorld_Name.xml`.
+          `design/Jawa/worldbuilding/SCENARIO_SPEC.md`. The scenario is a SAVED
           GAME, not a `ScenarioDef` (R25) — no ScenPart can force named pawns
           with authored skills, and the owner is already shipping the world as a
           save. One artifact carries map, ship and crew.
@@ -1183,27 +1188,30 @@ criteria: the generated world is on the tidally locked planet type with the
           intended biome mix, the world is named `Ash'karr`, the opening dialog
           says "The Sundered", and the save reads back `AmbientHorror` with the
           anomaly threat fraction at 0.
-state:    ready — ⚠️ **HALF OF THIS ITEM WAS DEMOTED 2026-08-19. Read before working it.**
-🔴 DECIDE RULING 2026-08-19 (`queue/DECIDE.md`, D29):
-          **(1) THE PLANET TYPE STILL BLOCKS, and harder than this item says.** Read off
-          the mod's own source: `TidallyLocked` is not a worldgen curve pack — it Harmony-
-          patches `GenCelestial.CelestialSunGlow`, `SunPositionUnmodified` and
-          `CalculateOutdoorTemperatureAtTile`, so the sun is frozen, daylight is a
-          function of LONGITUDE and daily temperature variation is suppressed **during
-          play**. The choice is scribed into the world as `alienWorldsFrameworkPlanetType`
-          and `PostSaveLoadHook` re-applies it from the SAVE on every load. ⇒ it cannot be
-          set, unset or corrected after the world exists. It is the owner's click, on
-          `WORLDGEN_RUN.md` §2.A, and it is the single most irreversible one in v1.
-          **(2) THE BIOME MIX NO LONGER GATES ANYTHING. Do not treat it as a blocker.**
-          Every one of the 21,872 tiles' biomes is authored and stamped over the bridge,
-          and `BiomeDef.Worker.GetScore` — the only place either the blacklist or the 24
-          `scoreOffset`s act — is called from `WorldGenStep_Terrain` alone. We overwrite
-          100% of its output. The `verify:` below ("the live def must read 24
-          `biomeConfigs` entries") is no longer a pass condition for anything the player
-          sees. **Fix the `<li>` shorthand only if it is free**; it is worth a few minutes
-          purely as insurance on the vanilla substrate that Landmarks (650) and Mutators
-          (700) roll against before the stamp. ⛔ Nothing waits on it. It does not go on
-          the worldgen run sheet.
+state:    done 2026-08-19. Every half of this item that was BUILD's is landed:
+          • `biomeConfigs` converted to the real `<li><key>/<value>` dictionary shape,
+            27 entries. Declared type re-read off the framework source before touching it
+            (`Dictionary<string, BiomeConfig>`, no custom loader) and confirmed the
+            empty-`<biomes>` warning is harmless — `HandleActivationFor` is skipped,
+            `GetBiomeScorePostfix` reads the dictionary regardless.
+          • `JawaWorld_Name.xml` replaces Core's `NamerWorld` with `Ash'karr`.
+            🔑 The item's premise that the name cannot be typed anywhere is OBSOLETE:
+            with `ferny.worldbuilder` active there IS a planet-name field on the page
+            (`Page_CreateWorldParams_DoWindowContents_Patch:243-245` →
+            `WorldGenerator_GenerateWorld_Patch:42-44`). The patch still earns its place —
+            it SEEDS that field, which removes the only real hazard, the owner retyping
+            the apostrophe as U+2019.
+          • Both validated (0 errors, 1 match each) and deployed.
+          • The four doc corrections landed. S5's playstyle defNames were indeed
+            translation keys; corrected to `AmbientHorror` + `overrideAnomalyThreatsFraction 0`,
+            with the detail that the fraction slider still exists under `AmbientHorror`
+            and starts at **0.15**, so it must be dragged. `concept.md` had no flee line
+            left to strike.
+          • `SeaIce` and the `0.3 as int` line went to CHECK as their own report item.
+          ⏭️ Carried to B55, not dropped: "The Sundered" belongs in
+          `ScenPart_GameStartDialog`, which lives in the save's embedded `<parts>` — there
+          is no def for BUILD to write, per this item's own ⛔ author-no-ScenarioDef ruling.
+          Live halves filed to `queue/CHECK.md`.
 
 ## B62 Put desert creatures in the other four animal-drawn vehicles
 row:      2

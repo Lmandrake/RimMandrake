@@ -1417,7 +1417,7 @@ Before accepting an enemy or combat mod, evaluate:
 3. **Encounter framing** — frequency, telegraphing, objective, consequence.
 Vanilla difficulty scaling only pushes lever 2.5 (more bodies/points). The "we are not ready to fight *that* yet" feeling lives mostly in levers 1 and 3 — where most modlists under-invest. **Biggest qualitative gain per unit cost is smarter AI + disciplined storyteller settings, NOT a content pack.**
 
-**Zero-cost foundation (stock 1.6, established):** vanilla **Custom difficulty** already exposes the key dials — lower raid *frequency* while raising raid *points*, disable "enemies flee at X%," turn off adaptation decay. This alone produces the §19.6 "fewer, heavier" distribution before any mod loads. DO THIS FIRST; tune mods on top.
+**Zero-cost foundation (stock 1.6, established):** vanilla **Custom difficulty** already exposes the key dials — lower raid *frequency* while raising raid *points*, turn off adaptation decay. (⛔ There is no "enemies flee at X%" dial — `DifficultyDef` has no such field and fleeing is decided in code.) This alone produces the §19.6 "fewer, heavier" distribution before any mod loads. DO THIS FIRST; tune mods on top.
 
 **Mod → archetype mapping (thematic + technical fit; all Odyssey-1.6 compat pending Fetcher verification — knowledge cutoff May 2025):**
 - **Combat-AI mod (e.g. CAI-5000)** → delivers §19.2 "Behavior" wholesale (dynamic cover, flanking, suppression, retreat). Makes a 6-pawn elite team scary with NO extra bodies → directly serves criterion 6. **Recommended FIRST adoption.** *(Inference — regarded well at cutoff; verify live.)*

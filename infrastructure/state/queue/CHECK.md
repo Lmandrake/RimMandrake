@@ -661,3 +661,50 @@ criteria: on the world-creation page, the **tidally locked world** preset appear
           unchanged. The workshop copy WILL have been regenerated as a stub; that is
           expected and is not a failure.
 state:    ready
+
+## B63 the world-creation inputs, live half
+row:      12
+spec:     BUILD's half of B63 is closed offline: `biomeConfigs` now uses the real
+          `<li><key>/<value>` dictionary shape (27 entries), `JawaWorld_Name.xml` replaces
+          Core's `NamerWorld` with the single rule `Ash'karr`, both deployed; and the four
+          doc corrections are landed (`EXPECTED_FAILURES_next_load.md` S5,
+          `WORLDGEN_RUN.md` G0/§2.A/§2.E, the flee dial struck from two design docs).
+verify:   done offline — `validate_patch.py --defs` 0 errors on both patches, 1 match each;
+          no `ScenarioDef` and no `DifficultyDef` under `src/`; `Ash'karr` is U+0027
+          everywhere in `src/` and appears in no defName and no translation key.
+criteria: after the next load carrying the full mod list:
+          (a) `grep -c "not <li>.*biomeConfigs" <Player.log>` returns **0** where it
+              returned 28; then `refresh.py` and the live `PlanetTypeDef.json` entry for
+              `TidallyLocked` reads **27** `biomeConfigs` entries AND 29 `biomeBlacklist`
+              entries. 🔴 The blacklist alone is NOT a pass — that is the state that hid
+              the bug.
+          (b) a throwaway dev world names itself `Ash'karr`, and the byte is U+0027.
+          (c) at the real run: the world is `Ash'karr`, the opening dialog says
+              "The Sundered", and the save reads back `anomalyPlaystyleDef AmbientHorror`
+              with `overrideAnomalyThreatsFraction 0`.
+          ⚠️ (a) is insurance only. DECIDE D29 ruled the biome mix gates nothing — every
+          tile is stamped over the bridge — so a fail there is a note, not a stop.
+state:    ready
+
+## seaice-escapes-the-blacklist-by-an-unconditional-postfix-2b71fd
+row:      12
+spec:     REPORT, carried out of B63 and now measured rather than suspected.
+          `SeaIce` is in our `biomeBlacklist`, and the blacklist is enforced by AWF's
+          `GetBiomeScorePrefix` returning false and setting `__result = -1000f`
+          (`.../3626210061/Source/PlanetTypeManager.cs:108-119`). But the Tidally Locked
+          mod patches `BiomeWorker_SeaIce.GetScore` with a **Postfix that assigns
+          unconditionally** — `__result = tile.WaterCovered ? PermaIceScore(tile)-23f : -100f`
+          (`.../3631364335/Source/PlanetTypeDef.cs:137-141`). A Harmony postfix still runs
+          when a prefix skipped the original, and AWF's own postfix only `+=`, so it cannot
+          undo an assignment. ⇒ **the blacklist entry for `SeaIce` does nothing.**
+          ⭐ Consequence is small and bounded: it affects the vanilla substrate only, and
+          every tile is overwritten by the painted map. Nothing to fix in our files —
+          the fix would be load order or a patch on another mod's C#, both worse.
+          🔎 Also chased and NOT reproducing: the `[Def Error]: TidallyLocked … Parsed 0.3
+          as int` line B63 recorded. No `as int` error in either the current or the
+          previous `Player.log`, and no `0.3` in the mod's `PlanetTypes.xml`.
+verify:   read off both mods' source, above.
+criteria: after the next full load, `SeaIce` tiles on the GENERATED world are cosmetic
+          only — confirm the painted import overwrites them. If any survives into the
+          final map, that is a real defect and comes back as a new item.
+state:    ready

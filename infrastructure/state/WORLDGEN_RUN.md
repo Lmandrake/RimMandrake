@@ -56,7 +56,7 @@ rows. The general lesson it taught stands; the `[v2]` file it names does not shi
 |---|---|---|---|
 | ~~G1~~ | ⛔ **DEAD — the sea left v1, and as of 2026-08-19 it is deleted.** ~~The sea assembly and the 5-part sea gate are `[v2]` (`V2_DREAMS.md`).~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. `JawaSeaShaper` is gone from the repo, the Mods folder and `ModsConfig.xml` (584 → 583); `sea_seed_sweep.py` and `worldgen_sea_spec.md` are deleted. B2/C15/C16 dropped, DECIDE's D-CRIT superseded 2026-08-15 | — | Deploy nothing for the sea, and do not rebuild it. The repo/deployed md5 mismatch noted above is expected, not a defect |
 | ~~G2~~ | ⛔ **DEAD with G1** — ~~nothing registers `Jawa_SeaShaping` because nothing runs it~~. ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. We register no `WorldGenStepDef` at all. Kept as a struck row so nobody re-derives the gate from the mismatch above | — | — |
-| **G0** | 🔴 **`TidallyLocked` is SELECTED in Mod Settings** — see §2.A. Ratified 2026-08-15, **not set as of that date** | the owner, before the run | Fails **silently**: `selectedPlanetType` reads `Default`, no config file exists, nothing logs, and the type cannot be changed from the world page. Every ruling R-H0..R-H10 rests on its curve |
+| **G0** | 🔴 **the `tidally locked world` PRESET is picked on the world page, and Configure Planet reads Scale 7 / Coverage 100%** — see §2.A. The Mod Settings route is dead; `ferny.worldbuilder` is active | the owner, at the screen | Fails **silently**: the wrong preset gives an ordinary vanilla planet and nothing logs. Scale 10 means the preset lost its parameters and every tile ID shifts. Every ruling R-H0..R-H10 rests on that curve |
 | **G6** | 🔴 **`JawaWorld_BiomeMix.xml` actually applies** — today 28 `is not <li>` errors leave `biomeConfigs: []`, so all 24 abundance offsets fail behind a patch that looks fine | BUILD, **B63** | **Biome scoring runs ONCE, at worldgen.** Same dictionary-keyed `<li>` bug as B56 |
 | **G7** | 🔴 **Chain steps 6 and 9 are SHIPPED AND LIVE** — the 11 ideos and the full faction roster (B40–B54) | BUILD | Factions and ideos are read **once**, at world creation, and cannot be retrofitted. With the sea gone, **this is the real gate on rows 2 and 7**. Owner 2026-08-15: this work IS v1; factions are near done **bar allowed items and descriptions** — and "allowed items" now has a fixed set to draw from, because the cherrypick froze |
 | **G8** | 🔴 **The ideoligion LOADS and its 16 AbilityDefs resolve in the engine** — `NEXT_RELOAD.md` §5 L0b, CHECK C42 | CHECK | ✅ **The offline half is DONE, `6c0f307`** — CHECK built `validate_save_artifact.py` because `validate_ideoligion.py` cannot read a saved `.rid` (it answers *"no religions found"* and checks nothing). `The Salvation.rid`: 267 references, 251 resolve, **zero dangling**; `MandrakeJawa.xtp` 36/36. ⚠️ **101 precepts, not the 82 this row used to say.** What is left is live-only: does it load, and do the 16 `AbilityDef`s resolve — and 🔴 `AbilityDef.json` is one of the 79 EMPTY def-type files in the dump, so that half **cannot** be settled offline. It bakes at creation. ⛔ Do not report the ideo row done on files existing |
@@ -85,21 +85,28 @@ coverage or a seed here is overriding a decision the owner has explicitly kept.
 directly.** His words: *"I will set it, and it's parked until factions and ideos and
 almost everything else ships."* **He sets it himself, in Mod Settings.**
 
-🔴 **AND IT IS NOT SET YET. This is the single most dangerous unchecked box on this
-page.** Measured 2026-08-15: **no planet-type config file exists anywhere in
-`Config\`** and `selectedPlanetType` still reads `Default`. Alien Worlds ships
-exactly two types, `Default` and `TidallyLocked`. ⇒ **A world generated before he
-clicks it is an ordinary vanilla planet** — no tidal lock, no
-`avgTempByLatitudeCurve`, no rainfall curve, no biome blacklist — and **every ruling
-R-H0..R-H10 assumes that curve**. `JawaWorld_BiomeMix.xml` patches the def **by
-defName**, so it patches a type the world is not using.
-⚠️ It fails **silently**. Nothing logs, nothing warns, and the run is irreversible.
-`ferny.Worldbuilder` is inactive, so it is a **radio list in MOD SETTINGS, not a
-button on the world page** — it cannot be fixed at the screen once he is there.
+🔴 **THE ROUTE CHANGED — `ferny.worldbuilder` IS ACTIVE (measured 2026-08-19).** The
+Mod Settings radio list described here until now is **DISABLED** under that backend and
+`selectedPlanetType` is forced to `"Unknown"`. **The preset NAME is the planet type**, so
+it is chosen ON the world-creation page: pick the **tidally locked world** preset.
+The rest of the old warning still holds — a world generated on the wrong preset is an
+ordinary vanilla planet, no `avgTempByLatitudeCurve`, no biome blacklist, and it fails
+**silently**. `JawaWorld_BiomeMix.xml` patches the def by defName, so on the wrong type it
+patches something the world is not using.
+🔑 **The preset now lives at**
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Worldbuilder\TidallyLocked\Preset.xml`,
+which is scanned before mod folders and wins first. The workshop copy is deleted and
+regenerated as a parameterless stub at **every** launch, so it is not the one to read.
+🔴 **THE ON-SCREEN CHECK, and it is an ABORT gate:** Configure Planet must read
+**Scale 7** and **Coverage 100%**. If Scale reads **10**, the preset lost its parameters
+— Worldbuilder's own Reset path sets subcount 10 — and every tile ID in
+`world/ASHKARR_WORLDMAP_tiles.csv` is wrong. **Do not generate.**
 
-**⇒ Do not book this run until it is confirmed set.** That confirmation is a look at
-Mod Settings, not a file we can write for him — recorded here rather than in a queue
-because it is his click, not a build.
+✅ **THE PLANET NAME IS TYPEABLE, and it arrives pre-filled.** Worldbuilder draws a
+planet-name text field on this page and writes it straight to `WorldInfo.name`.
+`JawaWorld_Name.xml` replaces Core's `NamerWorld` rule pack with the single rule
+`Ash'karr`, which is what seeds that field — so **do not retype it**. `’` (U+2019) reads
+identically to `'` (U+0027) and compares unequal.
 
 🔴 **COVERAGE IS NO LONGER OPEN — it is PINNED, and this is the half of the run the
 2026-08-19 ruling explicitly KEEPS.** The generated world is the *input* the authored
@@ -145,9 +152,19 @@ a green from it would be meaningless. **It ships in the same window as G3.**
 
 ### E. Anomaly
 **Already ruled and NOT open — ticked during this run, not separate work.**
-Playstyle `Disabled` so content is at zero · **DLC stays ENABLED** so the assets
-remain reachable · the owner's cherry-picked removals stand. Recorded here only so
-nobody re-opens it at the screen.
+🔴 **CORRECTED 2026-08-19: the playstyle is `AmbientHorror`, NOT `Disabled`.**
+`Disabled` carries `enableAnomalyContent:false` and kills study, the research tab, the
+codex and tome trading. `AmbientHorror` keeps all of that, generates no monolith, and
+with the threat fraction at **0** spawns nothing on its own while leaving
+`PitGate`/`FleshmassHeart` available to fire deliberately.
+
+⚠️ **The fraction does not start at zero — drag it to 0.** `AmbientHorror` replaces the
+per-category sliders with a single 0..1 slider, seeded at **0.15**. That value lives on
+the runtime `Difficulty` object, so **Custom difficulty is mandatory, not a preference**.
+
+🔴 Both are set behind the "Anomaly settings…" button, which is drawn under a
+`ProgramState.Entry` guard — **it does not exist in an existing save.** DLC stays
+ENABLED; the owner's cherry-picked removals stand.
 
 ---
 
