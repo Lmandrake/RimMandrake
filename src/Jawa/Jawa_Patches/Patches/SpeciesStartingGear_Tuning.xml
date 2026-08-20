@@ -72,10 +72,13 @@
   outfit to require yet. They are dev-spawn scaffolding; dressing them properly
   is a separate job that needs a costume decision per species.
 
-  ⚠️ BLAST RADIUS. Op 1 edits Outer Rim's OuterRim_Jawa pawnkind itself, not a
-  copy, so it changes every Jawa this pawnkind ever produces, including any the
-  world generates later. That is intended — we want Jawa in robes everywhere —
-  but it is wider than a Jawa_Patches-only change and should be said out loud.
+  ⚠️ BLAST RADIUS. Op 1 edits the `RimMandrake_Jawa` pawnkind itself, not a copy,
+  so it changes every Jawa this pawnkind ever produces, including any the world
+  generates later. That is intended — we want Jawa in robes everywhere — but it is
+  wider than a Jawa_Patches-only change and should be said out loud.
+  🔴 The target was `OuterRim_Jawa` until 2026-08-19 and that def NO LONGER EXISTS:
+  switching the donors off renamed it, the op matched nothing, and the Jawa
+  starting-gear tuning was silently not applying. The ops name the live kind now.
 
   SAFETY
   ======

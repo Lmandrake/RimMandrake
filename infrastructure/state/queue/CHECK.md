@@ -1075,3 +1075,33 @@ criteria: `jawa/ideo_of` reads the eleven back and the names and descriptions ma
           carries `The Salvation` — filed as
           `the-trade-moot-wears-the-player-faith-and-the-spec-never-said-so-9d21f7`.
 state:    ready
+
+## B58 the Jawa_Patches half — dead defName repaired, and a wrong xenotype found behind it
+row:      7
+spec:     Two files in `src/Jawa/Jawa_Patches/Patches/` named `OuterRim_Jawa`, a def that
+          ceased to exist when the three donor mods went off and
+          `mandrake.starwarsraces` came on. Both are repaired and deployed.
+          `SpeciesStartingGear_Tuning.xml` — its OPS already named `RimMandrake_Jawa`;
+          only the header still described the dead target. Comment corrected.
+          `JawaXenotype_Repoint.xml` — both its operations were silent no-ops. Retargeted.
+          🔴 AND IT FOUND A LIVE DEFECT WHILE BEING RETARGETED. Two Jawa xenotypes ship
+          from `mandrake.starwarsraces` and share the label "Jawa": `MandrakeJawa` (35
+          genes, the owner's hand-built set, and by his 2026-08-14 ruling the ONLY active
+          one) and `RimMandrakeJawa` (24 genes, generator output). `RimMandrakeJawa_Kind`
+          — `defaultFactionDef PlayerColony`, i.e. THE PLAYER'S JAWA — was rolling the
+          24-gene one. The patch now replaces it with `MandrakeJawa`.
+          It is patched rather than fixed at source because `RimMandrakePawnKinds.xml` is
+          written by `gen_races_mod.py` and a hand edit there dies at the next run.
+verify:   done offline against the 578-mod list: 0 errors; the conditional and its inner
+          op both report **1 match** in `RimMandrake - Star Wars Races:
+          RimMandrakePawnKinds.xml`. `grep -rl OuterRim_Jawa src/Jawa/Jawa_Patches/`
+          leaves only prose. The three warnings are the add-if-missing idiom the validator
+          itself documents as normal.
+criteria: (a) the next load's harvest shows `Jawa_Patches ops` back at **baseline 0** — no
+          `Failed to find a node with the given xpath` naming `OuterRim_Jawa`.
+          (b) a spawned Jawa carries the tuned starting gear: hood and rustic robes, and
+          NOTHING else. No jeans, no mask.
+          (c) 🔴 a pawn from `RimMandrakeJawa_Kind` has the **35-gene** `MandrakeJawa`
+          xenotype, not the 24-gene `RimMandrakeJawa`. Both are labelled "Jawa", so the
+          label proves nothing — count genes, or read the xenotype defName off the pawn.
+state:    ready

@@ -2,62 +2,52 @@
 <Patch>
 
   <!--
-    Re-point the two Jawa pawn kinds at MandrakeJawa (owner ruling 2026-08-14: it is the ONLY active Jawa xenotype) instead of
-    OuterRim_Jawa (+10 C). Owner ruled; gate W2.
+    Every Jawa pawn kind rolls `MandrakeJawa`. Owner's ruling 2026-08-14: it is the
+    ONLY active Jawa xenotype.
 
-    🔴 THIS IS A WORLDGEN GATE, NOT A TUNING PATCH. xenotypeSet is read at PAWN
+    🔴 THIS IS A WORLDGEN GATE, NOT A TUNING PATCH. `xenotypeSet` is read at PAWN
     GENERATION, so a patch landing after a world exists does not fix that world's
     colonists — you get a campaign whose Jawas are quietly the wrong xenotype on a
-    desert planet, and nothing errors. It has to be in the load that makes the
-    world.
+    desert planet, and nothing errors.
 
-    WHAT IT TOUCHES. Two PawnKindDefs from Outer Rim - Galactic Diversity
-    (ws 2980427615, 1.6/Defs/GeneDefs/Xenotype_Jawa.xml:28-46):
+    🔴 RETARGETED 2026-08-19 (B58). This file used to patch Outer Rim's
+    `OuterRim_Jawa` and `OuterRim_JawaTribal`. Switching the three donor mods off
+    and `mandrake.starwarsraces` on DELETED both — measured against the live def
+    dump, neither name resolves as a PawnKindDef or a XenotypeDef any more, so both
+    operations had become silent no-ops.
 
-        OuterRim_Jawa        ParentName OuterRimTestColonyPawnKind
-        OuterRim_JawaTribal  ParentName OuterRimTestTribalPawnKind
+    WHAT IT TOUCHES NOW, and why it is still needed at all:
 
-    Both carry exactly:
+      RimMandrake_Jawa        already `MandrakeJawa` 999   — nothing to do
+      RimMandrake_JawaTribal  already `MandrakeJawa` 999   — nothing to do
+      RimMandrakeJawa_Kind    `RimMandrakeJawa` 1.0        — 🔴 THE WRONG ONE
 
-        <xenotypeSet><xenotypeChances><OuterRim_Jawa>999</OuterRim_Jawa></xenotypeChances></xenotypeSet>
+    ⚠️ TWO Jawa xenotypes ship from `mandrake.starwarsraces` and they are not the
+    same thing: `MandrakeJawa` carries **35** genes and is the owner's hand-built
+    set; `RimMandrakeJawa` carries **24** and is generator output. They share the
+    label "Jawa", so the wrong one is invisible in play — you would have to count
+    genes on a pawn to catch it. And `RimMandrakeJawa_Kind` is
+    `defaultFactionDef PlayerColony`: it is the PLAYER'S Jawa.
+
+    🔑 IT IS PATCHED HERE RATHER THAN FIXED AT SOURCE because
+    `Defs/PawnKindDefs/RimMandrakePawnKinds.xml` is written by
+    `gen_races_mod.py` — a hand edit there is erased by the next generator run.
 
     ⚠️ THE XENOTYPE IS THE ELEMENT NAME, NOT A VALUE. `xenotypeChances` is a
-    def-keyed dictionary — <OuterRim_Jawa>999</OuterRim_Jawa> means "this
-    xenotype, this weight". So there is no text node to edit: the whole
-    xenotypeChances block is replaced. A PatchOperationReplace aimed at a
-    <li> or at a value would match nothing here.
+    def-keyed dictionary, so there is no text node to edit and the whole block is
+    replaced. A `PatchOperationReplace` aimed at a `<li>` or at a value matches
+    nothing here.
 
-    ⚠️ Three mods define a Jawa xenotype (Galactic Diversity, BTD Xenotype REMIX,
-    guy762 Star Wars Xenotypes) and generation rolls whichever these kinds name.
-    This patch settles ONLY these two kinds; it does not deduplicate the
-    xenotypes themselves, which is a separate and much larger ruling.
-
-    LOAD ORDER: Jawa_Patches declares loadAfter Neronix17.OuterRim.GalacticDiversity,
-    so this lands after the defs it edits. Without that the xpath matches nothing
-    and fails silently.
-
-    Conditional so a donor restructure degrades to a no-op rather than an error.
+    Conditional, so a generator change degrades to a no-op rather than an error.
   -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="OuterRim_Jawa"]/xenotypeSet/xenotypeChances/OuterRim_Jawa</xpath>
+    <xpath>/Defs/PawnKindDef[defName="RimMandrakeJawa_Kind"]/xenotypeSet/xenotypeChances/RimMandrakeJawa</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef[defName="OuterRim_Jawa"]/xenotypeSet/xenotypeChances</xpath>
+      <xpath>/Defs/PawnKindDef[defName="RimMandrakeJawa_Kind"]/xenotypeSet/xenotypeChances</xpath>
       <value>
         <xenotypeChances>
-          <MandrakeJawa>999</MandrakeJawa>
-        </xenotypeChances>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="OuterRim_JawaTribal"]/xenotypeSet/xenotypeChances/OuterRim_Jawa</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef[defName="OuterRim_JawaTribal"]/xenotypeSet/xenotypeChances</xpath>
-      <value>
-        <xenotypeChances>
-          <MandrakeJawa>999</MandrakeJawa>
+          <MandrakeJawa>1.0</MandrakeJawa>
         </xenotypeChances>
       </value>
     </match>
