@@ -1039,3 +1039,79 @@ load-round skill says to run **solo**, and it is not solo — it rides a 578-mod
 ## §4 CORRECTION Results
 
 _(blank — fill after the load)_
+
+---
+
+## §4 — the 2026-08-20 MORNING load: W9 world import + `Inhabited`'s first load
+
+**Written 2026-08-20 07:5x, game DOWN, BEFORE launch.** Mod list `578` active
+(577 + `mandrake.inhabited`, enabled by the owner in RimSort at 07:42:46).
+**Results table blank = this block is UNFINISHED. Do not launch a second load against it.**
+
+```bash
+LOG="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log"
+```
+
+### What is riding, and the attribution risk
+
+| change | kind | can it steal another item's blame? |
+|---|---|---|
+| **`Inhabited`** — new mod: 1 new assembly, 4 def files, 269 `CharacterDef`s, 2 Harmony patches | 🔴 **new C# assembly** | **No, and here is why it is allowed to ride.** Its two Harmony targets are `Game.DeinitAndRemoveMap` and `QuestGen_Pawns.GeneratePawn` — neither is touched by the world-import work, and neither runs at all before a map is destroyed or a beggars quest is generated. It adds defs and patches nothing of anyone else's. Every failure mode below names `Inhabited` or `mandrake.inhabited` explicitly |
+| **W9 world import**, 7 stages, `MORNING_RELOAD_PLAN_1` | bridge calls, post-load | no |
+| `Jawa_Patches/About/About.xml` prose | text only | no — **not verifiable in a log and no signature is claimed for it** |
+| def dump re-take (`dump_request.txt` = `all`, armed) | startup artefact | no |
+
+🔴 **THE DEF DUMP RE-TAKE IS NOW MANDATORY, NOT OPTIONAL.** The 2026-08-20 ruling that
+the dump is definitive holds *"until a mod is added or removed"*. Enabling `Inhabited`
+took the list 577 → 578, so **the ratification has lapsed and the current dump is
+stale by exactly one mod.** The marker is armed; reach the main menu and it re-takes
+(~27 s, ~1.2 GB). ⚠️ **The marker is NOT consumed — delete it afterwards** or every
+future load pays that again.
+
+### Expected PRESENT — the strings that prove it loaded
+
+⚠️ Absence of an error is NOT proof of success. `Inhabited` does nothing visible on a
+good load, so it now says so itself.
+
+| # | expected string | baseline | what it means |
+|---|---|---|---|
+| P1 | `[Inhabited] ready: N patches, 269 characters, 0 places, 0 casts.` | **never seen — first load** | ⭐ **THE ONE LINE THAT SETTLES THE WHOLE MOD.** `269 characters` is the number to read: it proves the assembly loaded, the def type resolved, and all eleven `CastRoster_*.xml` parsed. `0 places, 0 casts` is **CORRECT and expected** — no `InhabitedPlaceDef`/`InhabitedCastDef` instance exists yet; that content is blocked on DECIDE |
+| P2 | `[RimDefDump]` | seen every armed load | the dump re-take ran. Then check the manifest reports **578** |
+
+```bash
+grep -n "\[Inhabited\] ready" "$LOG"
+```
+
+**Read P1's counts, do not just check the line exists.** `269 characters` is a pass;
+anything less means def files failed to parse and the exact count says how many.
+
+### Expected ABSENT — one signature per way this can fail
+
+| # | signature | baseline | what it means if present |
+|---|---|---|---|
+| F1 | `Inhabited` + `ReflectionTypeLoadException` \| `Could not load assembly` | 0 | the DLL did not load at all. Nothing else below is meaningful. **Check first** |
+| F2 | `Could not find Verse.DutyDef named Inhabited_Resident` \| `DefOfHelper` | 0 | `Defs/DutyDefs/Duties_Inhabited.xml` did not load. Deliberate tripwire: `InhabitedDefOf` names that duty precisely so a def file that fails to parse is loud instead of producing a silently duty-less mod |
+| F3 | `Could not find type named Inhabited.CharacterDef` \| `Inhabited.WorldObject_Inhabited` \| `Inhabited.GenStep_InhabitedCast` \| `Inhabited.JobGiver_SleepAtNight` | 0 | a def names a class the assembly does not expose. Means F1 in disguise, or a namespace typo |
+| F4 | `Config error in Inhabited_` | 0 | a `CharacterDef` failed its own `ConfigErrors`. ⚠️ **The most likely single failure in this block**, because all 807 traits were resolved against a **577**-mod dump and the live set is now 578. The defName in the message names the person |
+| F5 | `mandrake.inhabited` near `Exception` \| `HarmonyException` \| `patching` | 0 | a Harmony target moved. ⚠️ **Should be impossible** — both targets are bound to a delegate of the same signature at compile time, so a moved target fails the BUILD. If this fires, that proof was wrong and it is the more interesting finding |
+| F6 | `CastRoster_` near `XML error` \| `Exception loading` | 0 | a generated roster file is malformed. All eleven parse under Python; this would mean RimWorld's parser disagrees |
+| F7 | `Could not resolve cross-reference` naming a `TraitDef` | **33 total cross-ref lines in the 2026-08-20 02:58 log**, archived at `infrastructure/state/observed/logs/Player.2026-08-20_0258_preload.log` | a trait in a roster does not exist in the live set. Compare against that archived baseline — **33 is the number to beat, not zero** |
+
+```bash
+grep -nE "Inhabited|mandrake\.inhabited" "$LOG" | grep -viE "\[Inhabited\] ready" | head -40
+grep -c "Could not resolve cross-reference" "$LOG"     # baseline 33
+```
+
+### Results — FILL THIS IN AFTER THE LOAD. Blank means unfinished.
+
+| # | outcome | evidence (line number / count) |
+|---|---|---|
+| P1 | | |
+| P2 | | |
+| F1 | | |
+| F2 | | |
+| F3 | | |
+| F4 | | |
+| F5 | | |
+| F6 | | |
+| F7 | | |
