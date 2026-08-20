@@ -607,3 +607,56 @@ matches the CSV exactly, so the importer skipped these four rather than failing.
 ⚠️ **Not a defect, checked and cleared:** 80 world objects have a null faction and the tool
 warns those "die on load" — **all 80 are asteroids and one derelict station**, which
 legitimately have no faction. **Zero settlements among them.** No action.
+
+---
+
+## ✅ REP, 2026-08-20 — BUILD's bake-in defect #2 is FIXED AT SOURCE. Its #1 is not, and is worse.
+
+**Two seats found the same thing within the hour, from opposite directions, and agreed.**
+BUILD found it over the bridge (four settlements missing from the live world); I found it
+off the fresh 578-mod dump after you asked why Blackstar never generates. Same cause.
+
+### What was wrong, in one line
+
+`AM_EnemyPirate` — the def the whole Blackstar roster pointed at — is `hidden=True` with
+`settlementGenerationWeight=0`, from the third-party *Ancient urban ruins* mod. **It is
+built never to appear on the Configure Factions screen and never to place a settlement.**
+The def you actually reskinned as Blackstar is vanilla **`Pirate`**: label already reads
+`Blackstar Company`, weight 0.6, settlement art present. Nothing was wrong with the
+faction — **the roster named the wrong def.**
+
+### BUILD offered you a choice; I took the better half and it needs no decision
+
+> *"Either Blackstar needs a vessel that exists, or those four rows come out of the CSV."*
+
+**A vessel that exists — `Pirate`.** Deleting the rows would have removed a fully specced
+faction from your planet to work around a one-token error. Repointed in all four source
+files; zero `AM_EnemyPirate` left in any of them, 72 CSV rows preserved, both python tools
+still compile. Verified offline *before* editing that the world already contains
+`<def>Pirate</def>`, so the import resolves rather than refusing the whole file.
+
+🔑 **It also kills the TPS crash for free.** `BLACKSTAR_HAS_NO_SETTLEMENT_ART_1` was going
+to patch a `settlementTexturePath` onto `AM_EnemyPirate` to stop an every-frame
+`ArgumentNullException` that took TPS to **3.7**. `Pirate` already has that texture, so
+the crash cannot recur and **no patch ships**. That item is annotated superseded in place.
+
+### What is left, and it is not mine
+
+1. **The live planet still has 68 settlements, not 72.** The source is fixed; the world
+   changes only when `world_settlements_import` is re-run. **That is bridge work and CHECK
+   holds the bridge.**
+2. ⚠️ **One thing I could NOT verify without the bridge:** BUILD reports the live world
+   carries 16 factions and `AM_EnemyPirate` is not among them. I confirmed `Pirate` is in
+   the saved world on disk — **not that it is in the 16 CHECK has up.** If it is not, the
+   re-import will still skip those four. One `jawa/list_factions` settles it.
+
+### 🔴 BUILD's defect #1 is the one that should worry you, and I cannot touch it
+
+Ten of your eleven factions are wearing names the dice picked — *the Junkers* is called
+**Marina's Asteroids**, *Hutt Cartel* is **Southeast Thiourhium**. The Empire is correct
+only because it is the only def with a `fixedName`. **Adding `fixedName` now does not fix
+this world** — `Faction.Name` returns the stored string, and the generated names are
+already baked onto the objects in the save. It needs a live rename (nothing on the bridge
+does it) *plus* the def fix so it cannot recur. **This is the build-once-and-freeze class,
+and it is exactly the kind of thing that becomes permanent the day you keep a world.**
+
