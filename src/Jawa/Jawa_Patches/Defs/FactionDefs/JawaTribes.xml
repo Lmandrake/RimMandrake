@@ -87,10 +87,18 @@
 
     <!-- The religion. `fixedIdeo` stops worldgen rolling a random faith over
          it; `forcedMemes` is what actually makes it The Salvation in substance.
+         ⭐ THE TRADE MOOT AND THE PLAYER SHARE ONE FAITH. Owner, 2026-08-19. The
+         `ideoDescription` here is byte-identical to `<description>` and
+         `<descriptionTemplate>` in `src/Jawa/ideoligion/The Salvation.rid`, and both
+         come from `design/Jawa/worldbuilding/ideoligion/the_salvation_description.md`.
+         🔴 The nine gods live in the DESCRIPTION and nowhere else:
+         `AM_Structure_Scavenger` is `deityCount 0` and cannot seat a deity, so a
+         `deityPresets` block here would be an error, not an improvement.
          Pattern copied from Anomaly's Horax cult
          (Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml), NOT from the
          Empire's requiredMemes + structureMemeWeights. -->
     <ideoName>The Salvation</ideoName>
+    <ideoDescription>"We were content with our simple lives of scavenging, with little need for the extravagant luxuries of our ancestors. Then we found the Cradle, and the Cradle was owed."\n\nWe are the Keepers of the Second Hand. We hold that nothing is ever truly lost - only owed, only mislaid, only waiting for a better master. What others throw down, we inherit. What others break, we are owed the waking of.\n\nNine gods argue over us, and not one of them agrees.\n\nIshko the Unmaskable is the pair of orange eyes in the dark. He teaches cover, the covered body, the shot no one saw fired; the grave is the deepest hiding, and a Jawa who dies unseen has hidden perfectly. Ohm the All-Current is the spark that wakes a dead engine, and he rides in the Cradle-Mind - lonely for his lost hands. Oomo the Unspilled is the drop that never falls, and he counts every mouthful and every egg. Mob'Unloo the Ever-Owed keeps the ledger and asks only how much: a thing is right if it profited and wrong if it cost, and an unpaid debt follows you past death. Rekko of the Second Hand is the scarred hand rising from the heap; a wreck is not neutral scrap but a thing with a past, and a machine that could still be repaired is not scrap at all - it is a sleeping hand, owed its waking. Ta'Baa the Unrooted is farewell itself, the cunning coward, who holds that a clan which stops is already dead and that the launch is the holiest rite there is. Zizzik the Spark-Maker is the rattle you can never locate; we honour him so that he sleeps. Sh'kaar the All-Searing is the sun that never sets, and he is not our friend - against him there are only three moves: hide, abandon the plan, or run. Ozzik the Shamed is the tarnished crown half-buried in sand, the memory that we were once great and cannot bear it. He is a trap, and we love him anyway.\n\nNo act pleases all nine. To trade boldly offends the god who says do not be seen. To hide well offends the god who says leave. To restore the Cradle honours Rekko and feeds Ozzik in the same motion. This is not a flaw in the faith. This is the faith: the Council argues, it never announces, and we are always losing gracefully.\n\nSo: do not beg - the one who begs has thrown away his hands. Do not be caught - he does not condemn the theft, he condemns being bad at it. And never melt what can still be made to work.\n\nWe are saved by what we salvage.</ideoDescription>
     <fixedIdeo>true</fixedIdeo>
     <forcedMemes>
       <li MayRequire="sarg.alphamemes">AM_Structure_Scavenger</li>
