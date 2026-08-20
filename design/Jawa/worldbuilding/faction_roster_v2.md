@@ -1448,7 +1448,19 @@ The hive is ruled by Geonosians, not by outside overseers. Three castes, matchin
 
 ### Sonic weapons
 
-Geonosian drones fight with sonic blasters, which **cannot be deflected by lightsabers**. If any lightsaber-deflection mod is in use, Geonosian sonic weapons are the explicit hard counter to Jedi and Sith pawn kinds — including the player's. This is the Hive's tactical identity beyond mass.
+⛔ **DEMOTED TO FICTION, owner's ruling 2026-08-20: "Demote Geonosian counter to fiction.
+We're using the lightsaber we got."** No weapon in the 577-mod set carries `CompDeflector` —
+`VWEL_LaserSword` and every `Force_Lightsaber_*` ship without it — so there is no deflection
+for sonic to bypass. Keep the line as flavour; do not build an encounter on it.
+
+⭐ **BUT THE HIVE IS NOT MECHANICALLY EMPTY, and this was found by measuring rather than
+assuming.** `guy762_RangedDamage_sonic` is `armorCategory: Blunt`, and armour on this
+planet is built against Sharp and Heat: stormtrooper plate is **Sharp 1.18 · Heat 0.98 ·
+Blunt 0.62**. So sonic attacks the weakest axis of the best armour in the game — a real
+mechanism, just not the deflection one. It is undercut by the weapons being weak (8 damage,
+3-round burst), so the Hive's edge is *armour-indifference*, not damage.
+
+Geonosian drones fight with sonic blasters, which in canon cannot be deflected by lightsabers.
 
 ## Belief system: **The Foundry Mandate**
 
