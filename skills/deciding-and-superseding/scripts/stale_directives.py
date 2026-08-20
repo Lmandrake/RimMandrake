@@ -10,7 +10,7 @@ It does not judge. It builds the list you would otherwise have to remember to
 build, so the judging is yours and none of it is missed.
 
     python3 stale_directives.py "mechanoids off"
-    python3 stale_directives.py --regex "deploy.*SeaShaper" --root /path/to/repo
+    python3 stale_directives.py --regex "deploy.*Jawa_Patches" --root /path/to/repo
     python3 stale_directives.py "cherrypick" --all-md      # widen beyond defaults
 
 Exit codes:  0 = no hits   1 = hits found (so it can gate a commit hook)

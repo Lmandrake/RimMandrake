@@ -201,11 +201,7 @@ Two things below are not merely out of date, they are **false**:
 terminator).** With that substitution the *reasoning* below is still good and is why
 the faction table in the definition looks the way it does. The *coordinates* are not.
 
-⛔ The **route** section further down (*"ROUTE CHOSEN — a custom `WorldGenStep`"*) is
-also written on dead premises — it argues from *"worlds are disposable, so we will
-generate many"* and from letting **vanilla's river step run after ours**. Both are
-now excluded: there is **one** frozen world, and its rivers are authored. The
-conclusion may survive; the argument does not. See the definition's §12.
+⛔ The **route** section further down once chose a custom in-game worldgen step. ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see ASHKARR_WORLD_DEFINITION.md §12.
 
 ---
 
@@ -504,10 +500,8 @@ plumbing.** The rivers are why anything grows at the poles at all, the jungles
 sit where the rivers arrive, and everyone who matters at the cold end lives on
 one of three shores. **The Deepwater Compact holds three places, not a hundred.**
 
-**Routes, all measured, none needing a new dependency:** WorldEdit 2.0 (already
-active, sets elevation per-tile and planet-wide, plus `IsOceanOrLake` helpers) ·
-a custom `WorldGenStep` at order ~20 · BiomesKit's unused `setElevation` /
-`setNotWaterCovered` / `minimumWaterNeighbors` hooks.
+~~**Routes, all measured:** WorldEdit 2.0 · a custom `WorldGenStep` at order ~20 ·
+BiomesKit's unused elevation hooks.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see ASHKARR_WORLD_DEFINITION.md §12.
 
 ⚠️ **Set biome AND elevation together.** GravTide reads elevation, so a
 re-labelled tile carrying land elevation would confuse anything that goes down.
@@ -552,18 +546,13 @@ dune everywhere else — is currently contradicted by the generator by a factor 
 about a hundred.** Either the design bends or the planet does.
 
 **Recommendation: the planet bends.** The Three Waters is a better world than a
-half-drowned one, and it is the whole premise. **Three routes exist, all
-measured, none requiring new dependencies:**
+half-drowned one, and it is the whole premise. ~~Three routes exist: WorldEdit 2.0,
+a custom `WorldGenStep` at order ~20, or BiomesKit's elevation hooks.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see ASHKARR_WORLD_DEFINITION.md §12.
 
-1. ⭐ **WorldEdit 2.0 — already ACTIVE.** Ships a real 1.6 assembly with per-tile
-   and whole-planet elevation editing, plus `IsOceanOrLake` helpers. **Set biome
-   AND elevation together** — GravTide reads elevation, so a re-labelled tile
-   with land elevation would confuse it.
-2. **A custom `WorldGenStep`** at order ~20, after Terrain and before Lakes.
-   GravTide's own volcanic-biome step is the proven pattern.
-3. **BiomesKit** (active, entirely unused) exposes `setElevation`,
-   `setNotWaterCovered` and `minimumWaterNeighbors` — the cleanest declarative
-   lever if anyone wants to shape water without code.
+⚠️ **Still true whatever writes the tiles: set biome AND elevation together.**
+`WaterCovered` is `elevation <= 0`, and **GravTide reads elevation, not the biome
+label** — a tile re-labelled `Ocean` while carrying land elevation would look like
+sea and behave like ground.
 
 ### ✅ The GravTide objection is dead either way
 
@@ -577,41 +566,11 @@ no coverage, no seed, no sliders. `setup_checklist.md` still marks planet
 coverage, seed and sliders **OPEN**. The only settings we have are inferred from
 three saves: coverage 0.300, rainfall Normal, temperature Normal.
 
-### ⭐ ROUTE CHOSEN — a custom `WorldGenStep`. Not WorldEdit, not BiomesKit.
+### ~~⭐ ROUTE CHOSEN — a custom `WorldGenStep`. Not WorldEdit, not BiomesKit.~~
 
-**VISION, 2026-08-13. One route, and the reason is reproducibility.**
-
-| route | verdict |
-|---|---|
-| **custom `WorldGenStep` at order ~20** | ⭐ **TAKE THIS** |
-| WorldEdit 2.0 *(active)* | **inspection and touch-up only** — it is a manual in-game tool. Sculpting three irregular seas by hand produces **one** world and cannot be repeated |
-| BiomesKit hooks | declarative and unproven here; nothing in the install uses them. Fallback if the step proves hard |
-
-**Four reasons, in order:**
-
-1. ⭐ **Worlds are disposable by the owner's own ruling, so we will generate
-   many.** A hand-sculpted sea is one world. **A `WorldGenStep` is every world**,
-   including the ones we have not thought of yet.
-2. ⭐⭐ **Order ~20 sits after Terrain (order 0) and BEFORE Lakes and Rivers.**
-   So we shape the sea, and then **vanilla's own river step flows into what we
-   made, for free.** The owner's *"a few rivers from nearby mountains into these
-   bodies"* is not extra work — it is what happens next if we run at the right
-   moment.
-3. **Proven in-stack.** GravTide's `WorldGenStep_VolcanicBiome` does exactly this
-   — writes `info.PrimaryBiome` at order 20 after Terrain, before Lakes. Same
-   three lines, different def.
-4. **It is reviewable.** A step is code in the repo that can be read, argued with
-   and re-run. A session of clicking is not.
-
-🔴 **Set BIOME AND ELEVATION TOGETHER, in the same pass.** `WaterCovered` is
-`elevation <= 0`, and **GravTide reads elevation, not the biome label** — a tile
-re-labelled `Ocean` while carrying land elevation would look like sea and behave
-like ground. Anything that goes underwater would break on it.
-
-**What the step must do:** carve **three** irregular basins to ~25% of tiles,
-**deliberately not round** — the owner's word is *"oddly shaped rather than round
-or reasonable"* — set both biome and elevation on every tile it claims, and then
-get out of the way so Lakes and Rivers run normally.
+⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see ASHKARR_WORLD_DEFINITION.md §12. The reproducibility argument
+behind it (*"worlds are disposable, so we will generate many"*) died with the one
+frozen world.
 
 ### The biome mix — target shape, pending the review sheet
 

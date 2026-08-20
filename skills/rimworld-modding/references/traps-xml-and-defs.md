@@ -78,10 +78,17 @@ What goes in, and what does not: `references/traps.md`.
 
 ---
 
-### A `WorldGenStepDef` that is not listed on the layer def is loaded, valid, and never called
+### A def that is not listed on its consumer's own list is loaded, valid, and never called
+> 📎 **Historical example — we do not ship this any more.** The mod that produced this
+> lesson (`JawaSeaShaper`, an in-game worldgen step) was deleted on 2026-08-19: the owner
+> ruled that nothing aimed at RimWorld's in-game worldgen survives, and Ash'karr's map now
+> arrives through the live bridge. **Do not read anything below as a live instruction to
+> author or register a worldgen step.** The registration trap itself is generic and is the
+> reason the entry stays.
+
 **Symptom:** a custom `WorldGenStep` is authored, the `WorldGenStepDef` parses, the C# class resolves, the DLL loads, `validate_patch.py` is clean — and world generation produces a completely unshaped planet. No error, no warning, no log line. It looks exactly like a step that ran and decided to do nothing.
 **Cause:** `PlanetLayerDef.GenStepsInOrder` is `worldGenSteps.Where(...).OrderBy(...)` over the **layer def's own private `List<WorldGenStepDef> worldGenSteps`** — *not* over `DefDatabase<WorldGenStepDef>.AllDefs`. `Data/Core/Defs/PlanetLayerDefs/PlanetLayers.xml:14-26` lists the Surface layer's steps **by defName** (Terrain, Lakes, Rivers, Mutators, Landmarks, AncientSites, AncientRoads, Pollution, Factions, Roads, Features). Membership of that list is what makes a step run; defining the def only makes it exist.
-**Fix:** `PatchOperationAdd` the defName into `/Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps`. ⚠️ **Position in the list does not set execution order** — `GenStepsInOrder` sorts by the `WorldGenStepDef`'s own `<order>` field, so append and let `order` place it. ⚠️ The list is cached in `PlanetLayerDef.cachedGenSteps` on first read, so this must be a load-time patch and cannot be done at runtime.
+**What the registration would have been** (recorded so the mechanism is legible, *not* as a step to take): a `PatchOperationAdd` of the defName into `/Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps`. ⚠️ **Position in the list does not set execution order** — `GenStepsInOrder` sorts by the `WorldGenStepDef`'s own `<order>` field, so append and let `order` place it. ⚠️ The list is cached in `PlanetLayerDef.cachedGenSteps` on first read, so this must be a load-time patch and cannot be done at runtime.
 **Recurs when:** any def type whose consumers hold their own curated list instead of querying the database — the def existing is not the same claim as the def being *reachable*. `PlanetLayerDef.worldGenSteps` and `PlanetLayerDef.worldDrawLayers` both work this way. The tell is a `List<SomeDef>` field on another def; when you see one, membership is the registration and the DefDatabase is irrelevant.
 
 ---

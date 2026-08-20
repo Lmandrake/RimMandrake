@@ -87,8 +87,10 @@ may still key on latitude at runtime. **Flagged for the owner; not silently reso
 
 ## The binding constraints this map must satisfy
 
-Pulled from `worldgen_sea_spec.md`, `tidally_locked_world.md`, `desert_world_design.md`,
-`hydrology_and_fire_ecology.md`, `water_doctrine.md`. Numbers are theirs, not mine.
+Pulled from ~~`worldgen_sea_spec.md`~~ (⛔ DEAD — owner ruled 2026-08-19, all in-game
+worldgen hooks stripped; the file is deleted, its surviving numbers are restated here),
+`tidally_locked_world.md`, `desert_world_design.md`, `hydrology_and_fire_ecology.md`,
+`water_doctrine.md`. Numbers are theirs, not mine.
 
 **Sea** — ~25% of tiles water, accept **22–28%**. **Exactly three** connected bodies, no
 strays. Perimeter²/area **≥ 25** (a circle is 4π ≈ 12.6). Two centroids in the
@@ -120,7 +122,7 @@ nightside must never become farmable. ⛔ No gelatinous-superorganism band — p
 
 | ruling | supersedes |
 |---|---|
-| **Water is roughly a THIRD of what the 25% spec asked** — *"There's WAY too much water, so reduce that to a third the value shown."* Target **~8.6%**. | `worldgen_sea_spec.md` req 1 (22–28%). That number is dead. |
+| **Water is roughly a THIRD of what the 25% spec asked** — *"There's WAY too much water, so reduce that to a third the value shown."* Target **~8.6%**. | ~~`worldgen_sea_spec.md` req 1 (22–28%)~~ — that spec and that number are both dead. |
 | **Three named waters**: the **Twilight Sea** (moldy) and the **Grey Sea** (salt-encrusted, shrinking), both on the terminator; and **The Scald**, a **round crater lake** in the hottest part of the world. | my invented Sarr'khet / Ma'kel Reach / Black Mirror |
 | ⭐ **The Scald is the ONE shape ruled round.** It is a crater. Everything else stays torn. | the blanket "no circles" rule |
 | **The Pyrelands is `ZBiome_Grasslands`** — whose label is literally *"stormy savanna"*. | the claim that it is blacklisted, and the belief that no biome carried the Pyrelands |

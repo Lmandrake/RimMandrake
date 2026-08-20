@@ -122,10 +122,10 @@ far better decision than a binary.
 
 ## 🔴 What must change, urgently
 
-1. **The sea spec is now wrong.** `worldgen_sea_spec.md` says *"three oddly-shaped
-   bodies at HIGH LATITUDE, centroid nearer a pole than the equator."*
-   **It must become: elongated blobs lying near the TERMINATOR, with one near a
-   pole.** ⚠️ **CREATE is building to the old test right now.**
+1. ~~**The sea spec is now wrong.** `worldgen_sea_spec.md` says "three oddly-shaped
+   bodies at HIGH LATITUDE". **CREATE is building to the old test right now.**~~
+   ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see ASHKARR_WORLD_DEFINITION.md §12. The surviving geography — elongated
+   blobs near the TERMINATOR, one near a pole — is authored in the definition.
 2. **`faction_world_spec.md` §4 geography** — the latitude bands are superseded by
    day / terminator / night. Rewrite.
 3. **The biome verdicts shift**: cold biomes are no longer "poles only", they are
@@ -191,21 +191,20 @@ much better than a quirk: a sea on the NIGHTSIDE, frozen or freezing.**
 | `permaIceScoreOffset` · `sunlightFactor` · `steamGeyserFactor` | ⭐ **`sunlightFactor` is a global light multiplier** |
 | `scenParts` · `hideWorldRivers` · textures | scenario and presentation |
 
-## 🔴 What this does to the sea step
+## 🔴 What this does to the planet-type settings
 
-**The job shrinks to one thing.**
+**Most of the job is XML on the shipped planet type.**
 
 | need | route |
 |---|---|
 | **25% ocean** | ⭐ **XML — `elevationRange` on our own planet type.** Not code |
 | **biome removals (29)** | ⭐ **XML — `biomeBlacklist`.** Possibly no Cherry Picker |
 | **biome mix / commonality** | ⭐ **XML — `biomeConfigs.scoreOffset`**, and `workerClass` where a worker is the real gate |
-| **three ragged blobs at mid-latitude** | 🔴 **the ONLY remaining code.** `elevationRange` sets how much sea there is, not where or what shape |
+| **three ragged blobs at mid-latitude** | ⭐ **hand-authored in `world/WORLDMAP_ashkarr.rws` and carried into the game over the live bridge.** `elevationRange` sets how much sea there is, not where or what shape |
 
-⇒ **We author our own `PlanetTypeDef` — a Jawa-world variant of the tidally locked
-one — and the custom `WorldGenStep` reduces to arrangement alone.** That is a much
-smaller build than the one PROJECT put a one-day kill condition on, and most of it
-stops being C# entirely.
+⇒ ~~**We author our own `PlanetTypeDef` and the custom `WorldGenStep` reduces to
+arrangement alone.**~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see ASHKARR_WORLD_DEFINITION.md §12. The XML rows above stay —
+they configure the game to generate the inputs the hand-authored map needs.
 
 ⚠️ **The mod's own description says "generating at least 50% of the planet is
 recommended."** That is a worldgen-screen setting and it belongs on the checklist.
@@ -341,9 +340,9 @@ The mod author's own comment, verbatim:
 > −500 seems to do things"*
 
 **A knob its author does not understand, with no stated mapping to an ocean
-fraction.** ⇒ **Coarse nudge only.** The **`WorldGenStep` measures the actual
-fraction and hits the number** — that stays the mechanism, and my "the dial is in
-XML" claim was too strong.
+fraction.** ⇒ **Coarse nudge only.** ~~The `WorldGenStep` measures the actual
+fraction and hits the number — that stays the mechanism.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see ASHKARR_WORLD_DEFINITION.md §12.
+The water fraction is now whatever the hand-authored map holds.
 
 ### What survives unchanged
 
@@ -418,7 +417,7 @@ list `biomeConfigs[x].scoreOffset` implements.**_
 | ⭐ **ABUNDANT** | `ExtremeDesert` · `Desert` |
 | **COMMON** | `ZBiome_Badlands` · `AridShrubland` · `Wasteland` · ⭐ `AB_RockyCrags` |
 | **RARE** — 22 | `ZBiome_DesertOasis` · `AB_FeraliskInfestedJungle` · `AB_MiasmicMangrove` · `AB_MycoticJungle` · `COMIGO_GreaterSwamp_Tropical` · `AB_OcularForest` · `AB_TarPits` · `AB_PropaneLakes` · `AB_MechanoidIntrusion` · `AB_GallatrossGraveyard` · `AB_PyroclasticConflagration` · `Volcano` · `LavaField` · `Scarlands` · `IronScruff_PrimordialGeysers` · `RG_BoilingForest` · `BMT_CrystalCaverns` · `BMT_EarthenDepths` · `BMT_FungalForest` · `HorrorWastes` · `Glowforest` · `PoisonForest` |
-| 🔴 **NOT by scoreOffset** | `Ocean` · `Lake` — `isBackgroundBiome`, assigned by the **elevation threshold.** The sea step owns these |
+| 🔴 **NOT by scoreOffset** | `Ocean` · `Lake` — `isBackgroundBiome`, assigned by the **elevation threshold.** The hand-authored map owns these |
 | **no verdict needed** | `Space` · `Orbit` · `Underground` · `Undercave` · `CQF_Undercave` · `AM_UndergroundSpace` · `VQEA_AncientComplex` — layer and pocket biomes, never surface tiles. ⚠️ **and the exact reason we blacklist rather than whitelist** |
 
 **Two entries carry notes rather than plain frequencies:**

@@ -113,7 +113,7 @@ Use the bundled script rather than remembering:
 
 ```bash
 python3 scripts/stale_directives.py "mechanoids off" --root .
-python3 scripts/stale_directives.py --regex "deploy.*SeaShaper" --root .
+python3 scripts/stale_directives.py --regex "deploy.*Jawa_Patches" --root .
 ```
 
 It searches directive-bearing files, groups hits by file, and flags which read as

@@ -9,6 +9,9 @@
 
     🔴 WORLDGEN-GATED. Biome scoring runs once, in WorldGenStep_Terrain at order 0.
     A patch that misses a worldgen never touches that world.
+    ⭐ THIS FILE IS KEPT because it configures the game that produces the SOURCE
+    world Ash'karr is painted from — an input to the external map, not an in-game
+    worldgen feature of ours. The final map arrives through the live bridge.
 
     WHY THIS PATCHES THE SHIPPED TidallyLocked DEF RATHER THAN ADDING OUR OWN.
     AlienWorlds keeps exactly ONE active PlanetTypeDef (PlanetTypeManager
@@ -63,13 +66,15 @@
     🔴 Ocean and Lake appear NOWHERE here, deliberately. They are
     isBackgroundBiome, assigned by the elevation threshold rather than by any
     worker score (BiomeWorker_Ocean::GetScore is `WaterCovered ? 0 : -100`), so a
-    score offset cannot move them. The sea step owns them.
+    score offset cannot move them. Neither this patch nor anything we ship places
+    them: the coastline is authored offline in ashkarr_paint.py and imported.
 
-    ⏳ Not expressible as a flat offset, and left for a later pass rather than
-    faked: HorrorWastes and PoisonForest should form the dark MARGIN between
-    twilight and full crags, and Glowforest should sit inside the deep night as
-    isolated points of light. Frequency alone cannot say "at this latitude"; that
-    wants a workerClass override.
+    ⏳ Not expressible as a flat offset: HorrorWastes and PoisonForest should form
+    the dark MARGIN between twilight and full crags, and Glowforest should sit
+    inside the deep night as isolated points of light. Frequency alone cannot say
+    "at this latitude". ⛔ The workerClass override that would do it in-game is
+    DEAD, not deferred (owner, 2026-08-19: nothing aimed at in-game worldgen
+    survives). Place those biomes by hand in the painted map instead.
   -->
 
   <Operation Class="PatchOperationConditional">

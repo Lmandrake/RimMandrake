@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-# shutdown_deploy.sh — the three deploys that need RimWorld DOWN, in order, with guards.
+# shutdown_deploy.sh — the deploys that need RimWorld DOWN, in order, with guards.
 #
 # Written by OPS 2026-08-14 at wrap, when the game was STILL UP and the window never
 # opened. Everything below was staged and verified that day; nothing was shipped.
 #
 #   S8  BridgeTools companion   (CHECK's, --gm REQUIRED, rides free)
-#   S1  JawaSeaShaper.dll       (mod assembly, SOLO load)
 #   S9  Jawa_Patches            (scrapfields minSpacing 4->1, 8a7a5ee — the v1 row 4 fix)
+#
+# S1 was JawaSeaShaper.dll — our in-game worldgen mod. Deleted from the repo, from the
+# game's Mods folder and from ModsConfig.xml on 2026-08-19 by owner ruling: nothing
+# aimed at in-game worldgen survives. The step is gone, not disabled; do not restore it.
 #
 # Run from the repo root:  ./src/RimMandrake/Utils/shutdown_deploy.sh
 # Add --yes to skip the confirmation prompt.
@@ -24,7 +27,7 @@ fi
 echo "Game is down. Proceeding."
 
 if [ "${1:-}" != "--yes" ]; then
-  read -r -p "Deploy S8 (BridgeTools --gm), S1 (SeaShaper), S9 (Jawa_Patches)? [y/N] " a
+  read -r -p "Deploy S8 (BridgeTools --gm) and S9 (Jawa_Patches)? [y/N] " a
   [ "$a" = "y" ] || { echo "Aborted."; exit 1; }
 fi
 
@@ -37,15 +40,11 @@ fail=0
 echo; echo "=== S8  BridgeTools (--gm) ==="
 # 🔴 python.exe, NOT python3. build.py drives dotnet.exe, which cannot accept a
 # /mnt/... project path, and build.py refuses under WSL python3 with that message.
-# Measured 2026-08-15: this line ran, printed the refusal, and S8 FAILED while S1
-# and S9 went on to succeed — so the run reported partial success and left the
+# Measured 2026-08-15: this line ran, printed the refusal, and S8 FAILED while the
+# later steps went on to succeed — so the run reported partial success and left the
 # companion at 26 tools. A shutdown window is ~25 min of game load; do not spend
 # one on this again.
 PYTHONUTF8=1 python.exe src/RimMandrake/bridgetools/build.py --gm --apply || { echo "S8 FAILED"; fail=1; }
-
-# --- S1 -----------------------------------------------------------------------
-echo; echo "=== S1  JawaSeaShaper.dll (SOLO) ==="
-python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaSeaShaper --apply || { echo "S1 FAILED"; fail=1; }
 
 # --- S9 -----------------------------------------------------------------------
 echo; echo "=== S9  Jawa_Patches — scrapfields minSpacing 1 ==="
@@ -72,7 +71,7 @@ fi
 
 echo
 if [ "$fail" = 0 ]; then
-  echo "ALL THREE DEPLOYED. Next load: full-map ChunkSlagSteel count (expect 44-56 in ~5"
+  echo "ALL STEPS DEPLOYED. Next load: full-map ChunkSlagSteel count (expect 44-56 in ~5"
   echo "clumps) on a map GENERATED AFTER THIS DEPLOY — name the map — and grep the log"
   echo "for a GenStep_ScatterThings.ScatterAt NRE: gone => it was ours, still there =>"
   echo "it is Biomes Core's. Both ride work already scheduled."

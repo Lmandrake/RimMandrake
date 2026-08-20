@@ -61,7 +61,8 @@ a stale one is confusing yourself about which map a result came from (§3).
 
 A quicktest is **reversible**. It is not free, and it is not invisible. Each
 `start_debug_game_ready` is a full RimWorld **world** generation: a
-`sea_seed_sweep.py` loop of seven took `/proc/loadavg` to **22.58** (RAM fine —
+loop of seven (measured on a since-deleted worldgen sweep script) took
+`/proc/loadavg` to **22.58** (RAM fine —
 CPU and 9p-mount contention on the disk RimWorld streams assets from), and the
 owner reported the game *"stuck on Generating Map…"*, then *"running badly"*.
 Nothing was stuck. **From the keyboard, an agent-driven worldgen and a hang are
