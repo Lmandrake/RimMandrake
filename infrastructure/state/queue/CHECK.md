@@ -1828,3 +1828,21 @@ criteria: no Jawa faction fields an unarmed raid.
           change nobody explicitly asked for — **if it plays wrong, say so and DECIDE can
           re-tier it; the fix is one number per row in the generator.**
 state:    ready
+
+## ASH_STORM_OVER_PYRELANDS_1 An ash storm, grey sky, over a stormy-savanna tile
+row:      world-6
+from:     BUILD, 2026-08-20. `AshStorms_Pyrelands.xml` written, validated, deployed.
+spec:     `AB_VolcanicAsh` (Alpha Biomes, already loaded — no new weather authored) now
+          occurs on `ZBiome_Grasslands` at commonality 3, against `DryThunderstorm` 2, so
+          it should read as the dominant storm without erasing the others. Relabelled to
+          **`ash storm`** and given a description with no volcano in it.
+verify:   off the next def dump, `AB_VolcanicAsh.label` reads `ash storm`.
+criteria: 🔴 **LOOK AT IT.** Land on one of the 422 authored Pyrelands tiles, pass time,
+          and see an ash storm: grey sky, fog overlay, ranged accuracy down. The weather
+          tab should name it `ash storm`.
+          ⚠️ **The relabel is GLOBAL and that was accepted, not overlooked.**
+          `AB_PyroclasticConflagration` uses the same weather and is rare; if you meet it,
+          it will also say "ash storm", which reads correctly.
+          ⚠️ Weather is rolled by commonality, so absence over a short window proves
+          nothing. If you want it now, force it rather than waiting — `jawa/weather_set`.
+state:    ready

@@ -246,24 +246,45 @@ verify:   `grep -c 'ZBiome_Grasslands' <the biomeBlacklist block>` returns 0;
 criteria: on the world the owner rolls, stormy-savanna tiles exist and are sited between
           the wet biomes and the desert, and an ash storm occurs on one with the label
           `ash storm` and a grey sky.
-state:    ready — ⭐ **HALF (a) IS VOID; HALF (b) STANDS AND IS NOW MORE CERTAIN.**
-🔴 DECIDE RULING 2026-08-19 (`queue/DECIDE.md`, D29):
-          **(a) DELETE THE BLACKLIST LINE — VOID. Not passed, not failed, void.** Its
-          whole purpose was *"a blacklisted biome can never appear in ANY seed"*. Under
-          the live-bridge route we paint biomes ourselves, and the authored map already
-          places **422 `ZBiome_Grasslands` tiles** — the Pyrelands exist because we stamp
-          them, not because the generator is allowed to roll them. The edit is harmless
-          and costs one line if BUILD is in the file anyway; nothing depends on it.
-          **(b) ASH STORMS — UNAFFECTED, and it is the real content here.**
-          `weatherCommonalities` is read at RUNTIME, every day of play, on whatever tiles
-          carry `ZBiome_Grasslands`. It has nothing to do with worldgen and never did.
-          ⇒ ⛔ **The `⏳ ORDER: this rides on top of B63/D29(b)` line above is DEAD** — B63(2)
-          is demoted and (b) never needed `biomeConfigs` to work. Build (b) whenever.
-          ⇒ `criteria:` restated: stormy-savanna tiles exist and sit between the wet
-          biomes and the desert **because the authored map puts them there** — that is now
-          a property of `world/ASHKARR_WORLDMAP_tiles.csv`, not of the seed the owner
-          rolls. The live half of the criterion is the one that still means something:
-          **an ash storm occurs on one, labelled `ash storm`, with a grey sky.**
+state:    done 2026-08-20 (offline half). Half (b) built as one new file,
+          `src/Jawa/Jawa_Patches/Patches/AshStorms_Pyrelands.xml`, deployed and in sync.
+          ⛔ Half (a) NOT done — it is VOID by D29 and nothing depends on it.
+          verify output: `validate_patch.py --defs` -> `OK - 0 errors, 3 warning(s)`.
+
+          🔴 **EVERY PART OF THE OPERATION THE ITEM SPECIFIED WAS WRONG, and each one
+          would have failed SILENTLY.** Measured before writing anything:
+          1. **The field is `baseWeatherCommonalities`.** There is no `weatherCommonalities`
+             on `BiomeDef` — `BiomeDef.cs:55`. The specified xpath matches nothing, and a
+             PatchOperation that matches nothing logs nothing.
+          2. **It IS the dictionary shorthand, and the item has it exactly backwards.** The
+             item calls the `<li><weather>..</weather><commonality>..</commonality></li>`
+             form *mandatory* and the shorthand forbidden.
+             `WeatherCommonalityRecord.LoadDataFromXmlCustom` reads the **node NAME** as the
+             weather def and the node's **text** as the commonality:
+               `RegisterObjectWantsCrossRef(this, "weather", xmlRoot);`
+               `commonality = ParseHelper.FromString<float>(xmlRoot.FirstChild.Value);`
+             So `<AB_VolcanicAsh>3</AB_VolcanicAsh>` is the only form that loads. The
+             shipped def is written that way, twelve entries of it.
+          3. **The def dump cannot answer this.** `weatherCommonalities` is not a key it
+             captures, so it reads back `None` whether the field is empty, full or
+             imaginary — the same "null means NOT INSPECTED" trap the dump warns about
+             elsewhere. The real table came out of the mod's own 1.6 XML.
+             ⚠️ And the version folder matters: the same mod's **1.0** copy of this def has
+             a different label and no weather table at all.
+          ✅ **What the item got right:** `DryThunderstorm` does sit at 2, so commonality 3
+          reads as the dominant storm without erasing it. Full table now recorded in the
+          patch file's header.
+
+          ⚠️ **A NOTE ON THE VALIDATOR, because I could not settle it and nobody should
+          repeat the attempt blind.** Three ops warn `0 nodes in the on-disk Defs`. I tried
+          to characterise when that warning is real and **failed**: a controlled probe file
+          reports 0 nodes even for `Defs/PawnKindDef[defName="AncientSoldier"]`, a Core def
+          that matches perfectly well inside a real patch file. ⇒ **The 0-node warnings are
+          NOT a reliable measurement and a `PatchOperationConditional` test line is not one
+          either.** Verify a patch against the def's own XML, which is what was done here.
+          Not filed as a tool defect because I could not produce a reproducible case.
+
+          ⏳ Live half is CHECK's: `ASH_STORM_OVER_PYRELANDS_1` in `queue/CHECK.md`.
 
 ## grimterra-worldmap-over-wme-as-the-base-layer-2c8f19
 row:      tooling

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  AshStorms_Pyrelands.xml                   Jawa_Patches - new file 2026-08-20
+  ============================================================================
+
+  Ash storms over the Pyrelands. Builds half (b) of
+  `pyrelands-off-the-blacklist-and-ash-storms-5d2e71`.
+  ⛔ Half (a), deleting `ZBiome_Grasslands` from the biome blacklist, is VOID by
+  DECIDE's D29 ruling and is NOT done here: the authored map stamps 422
+  Pyrelands tiles itself, so nothing depends on the generator being allowed to
+  roll the biome.
+
+  No new weather is authored. `AB_VolcanicAsh` already loads from Alpha Biomes -
+  grey sky (0.6,0.6,0.6), WeatherOverlay_Fog, accuracyMultiplier 0.7,
+  favorability Bad - so this only makes it occur here, and renames it.
+
+  ⚠️ THE RELABEL IS GLOBAL. `AB_PyroclasticConflagration` uses the same weather
+  and is rare; "ash storm" reads correctly there too. Accepted by the item.
+  The description is rewritten with no volcano in it, because there is no
+  volcano on this planet - the ash is what is left of the world, not an eruption.
+
+  ============================================================================
+  🔴 THREE CORRECTIONS TO THE QUEUE ITEM, all measured before writing a line
+  ============================================================================
+  The item specified this operation, and every part of it was wrong:
+
+     PatchOperationAdd on
+       /Defs/BiomeDef[defName="ZBiome_Grasslands"]/weatherCommonalities
+     value  <li><weather>AB_VolcanicAsh</weather><commonality>3</commonality></li>
+     "weatherCommonalities is a LIST of WeatherCommonalityRecord, so the <li>
+      form above is mandatory. It is NOT the dictionary shorthand."
+
+  1. THE FIELD IS `baseWeatherCommonalities`. There is no `weatherCommonalities`
+     on BiomeDef - see BiomeDef.cs:55. An xpath at the named field matches
+     nothing, and a PatchOperation that matches nothing logs nothing.
+
+  2. IT IS THE DICTIONARY SHORTHAND, AND THE ITEM HAS IT EXACTLY BACKWARDS.
+     `WeatherCommonalityRecord.LoadDataFromXmlCustom` reads the NODE NAME as the
+     weather def and the node's TEXT as the commonality:
+         DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "weather", xmlRoot);
+         commonality = ParseHelper.FromString<float>(xmlRoot.FirstChild.Value);
+     So `<AB_VolcanicAsh>3</AB_VolcanicAsh>` is the ONLY form that loads, and the
+     `<li><weather>...</weather></li>` form the item calls mandatory would take
+     the FirstChild of an element node and misparse. The shipped def agrees - it
+     is written in shorthand, twelve entries of it.
+
+  3. THE DEF DUMP CANNOT ANSWER THIS AND SAYING "None" IS NOT SAYING "absent".
+     `weatherCommonalities` is simply not a key the dump captures, so reading it
+     back gives None whether the field is empty, full or imaginary. The biome's
+     real weather table was read out of the mod's own 1.6 XML - and note the 1.0
+     copy of the same def has a different label and no weather at all, so the
+     version folder matters too.
+
+  ⭐ WHAT THE ITEM GOT RIGHT: `DryThunderstorm` does sit at 2 on this biome, so
+  commonality 3 reads as the dominant storm without erasing it. Confirmed
+  against the loaded 1.6 def, whose table is
+  Clear 18 · SnowGentle 4 · SnowHard 4 · DryThunderstorm 2 · RainyThunderstorm 2
+  · Rain 1.5 · Fog 1 · GrayPall 1 · FoggyRain 0.5 · Windy 0.5 · Overcast 0.5 ·
+  TorrentialRain 0.5.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- Make ash storms occur over the Pyrelands. Shorthand form: the node
+             NAME is the weather def, its text is the commonality. -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities</xpath>
+          <value>
+            <AB_VolcanicAsh>3</AB_VolcanicAsh>
+          </value>
+        </li>
+
+        <!-- There is no volcano on this planet. -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/WeatherDef[defName="AB_VolcanicAsh"]/label</xpath>
+          <value><label>ash storm</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/WeatherDef[defName="AB_VolcanicAsh"]/description</xpath>
+          <value>
+            <description>Fine grey grit lifted off the pan and carried on the wind, thick enough to grey the sun and settle in every seam. It gets into optics and into lungs, and shooting at anything further than arm's reach becomes guesswork.\n\nNobody agrees where it comes from. It is simply what the ground here has been turning into for a very long time.</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
