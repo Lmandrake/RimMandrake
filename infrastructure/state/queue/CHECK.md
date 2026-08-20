@@ -903,7 +903,23 @@ criteria: `grep -c "Failed to find any textures at" <Player.log>` returns **0** 
           FEMALE Chagrian and a Jawa wearing the yuun mask.
           🔴 Gendered fields make this look intermittent — male Chagrians always rendered.
           Do not test one sex and call a species clean.
-state:    ready
+state:    🔵 NUMERIC HALF PASSES 2026-08-20; the isolated eyeball is still owed.
+result:   ✅ **`grep -c "Failed to find any textures at"` = 2, and NEITHER is a head.**
+          Both survivors are GrimTerra animal juveniles (`GRIMTERRA_TEXPATH_TYPOS_1` in
+          BUILD's queue). The three head failures the criterion counted are GONE.
+          ✅ **And the count did not move when provoked.** Spawned 24 pawns across the four
+          named species — 6 Gand, 6 Selkath, 6 Chagrian, 6 Jawa — covering BOTH sexes
+          (4 female Chagrian, 5 female Selkath, and males of each). Texture-failure count
+          before: 2. After: 2. 🔑 That is the right instrument for this item: a magenta
+          head IS a failed texture lookup, and a failed lookup logs. Zero new lines after
+          deliberately rendering the gendered cases is the mechanism reporting clean.
+          ⚠️ **STILL OWED, and I am not claiming it: the isolated headshot.** The 69-race
+          lineup screenshot shows every species rendering with no magenta, but the lineup
+          spawns one pawn per kind and the gendered concern needs a FEMALE Chagrian framed
+          on its own. My attempts to frame one put the camera on undiscovered rock — the
+          `position` a pawn reports and the cell the camera wants did not agree, and I ran
+          out of patience with it rather than out of evidence.
+          ⇒ closeable by one framed look at a female Chagrian and a female Selkath.
 
 ## neolithicmeleedecent-is-empty-so-every-tribal-spawns-bare-handed-9c02d5
 row:      unassigned
