@@ -510,8 +510,15 @@ which gate a world you intend to keep. Nothing I can do moves either.
 and pushed.** Eight of the nine queue items are done or built; the ninth needs an answer
 that is yours.
 
-🔴 **ONE THING BLOCKS IT LOADING, and I deliberately did not do it: `mandrake.inhabited` is
-NOT in your `ModsConfig.xml`.** I deployed the mod folder — it is byte-verified in sync at
+> ✅ **ANSWERED BY THE OWNER, 2026-08-20 07:37 — he enabled it.** `mandrake.inhabited` is in
+> `<activeMods>`; the set is **578** and LIVE matches FULL. ⇒ **This item's blocking question
+> is closed and the debug actions below are collectable on the load now running.** The only
+> live decision left here is the four missing character fields, at the bottom.
+> ⚠️ The def dump lapsed exactly as BUILD warned; `dump_request.txt` is armed to re-take it
+> on this load. **Delete it afterwards** — the marker is not consumed.
+
+~~🔴 **ONE THING BLOCKS IT LOADING, and I deliberately did not do it: `mandrake.inhabited` is
+NOT in your `ModsConfig.xml`.**~~ I deployed the mod folder — it is byte-verified in sync at
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Inhabited` — but enabling a
 mod changes your load set, and the 2026-08-20 ruling that **the def dump is definitive
 lapses the moment a mod is added or removed.** That is your call to make, not mine, and
