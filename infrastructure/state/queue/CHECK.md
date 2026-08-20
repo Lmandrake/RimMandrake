@@ -856,6 +856,53 @@ result:   ⭐ **THE OBSTACLE QUESTION, ANSWERED BY RUNNING IT:**
           `map_fire` (reports how many cells refused - `ChanceToStartFireIn` gates on
           flammability and wetness, which is not a failure), `map_skyfaller`.
 
+## P4 Psychic, pregnancy, mental states and romance
+row:      bridge-19
+spec:     Owner, 2026-08-19: *"Can we add and remove psypowers and psylinks? Can we add and
+          remove pregnancies? Mental breaks? People fall in and out of love? Be married or
+          single? Change parents?"* — answer: yes to all.
+          TOOLS: `pawn_psychic` · `pawn_pregnancy` · `pawn_mental` · `pawn_romance`.
+verify:   exercise every branch on live colonists, including the refusal paths.
+criteria: each round-trips, AND the documented quirks are handled rather than inherited.
+state:    ✅ DONE — PASSED 2026-08-19. All four families.
+result:   ✅ **PSYLINK, AND THE 0->N QUIRK IS HANDLED.** `PawnUtility.ChangePsylinkLevel`
+             creates the `PsychicAmplifier` hediff on the FIRST call and **returns without
+             ever reading the offset**, so one call can only ever reach level 1. The tool
+             ensures the hediff then uses `Hediff_Psylink.ChangeLevel`. Asked for **4 -> got
+             4**; asked for **6 -> got 6**, one call each.
+             ✅ Granted `Skip` (a psycast); the pawn ended with 6 psycasts (level-ups grant
+             their own). Psyfocus set to 1.0, entropy 0/30.
+             📌 Granting a psycast to a psylink-less pawn WORKS - nothing in `GainAbility`
+             checks - but casting is gated on psyfocus band, so the tool warns.
+          ✅ **PREGNANCY:** started with a named father (`PregnantHuman`, gestation 0.001),
+             advanced to **0.75**, read back, ended quietly.
+             🔑 **GESTATION *IS* THE HEDIFF SEVERITY** - there is no separate field, and 1.0
+             begins labour on the next tick.
+             ⚠️ The tool refuses when `GetInheritedGeneSet` fails (combined genes over the
+             metabolism limit) rather than producing a child with no genes - which is what
+             vanilla does at that point too.
+          ✅ **MENTAL STATES:** 47 defs. `Berserk` started (`started: true`); starting it
+             AGAIN returned **`started: false`** and said why - `TryStartMentalState` returns
+             false silently on ~6 conditions and this surfaces the bool instead of reporting
+             success regardless. `RecoverFromState` cleared it.
+             🔴 **`BerserkPermanent` is flagged `neverRecoversAlone`** - it sets
+             `minTicksBeforeRecovery` above the maximum. `action='list'` marks these.
+          ✅ **ROMANCE — THE FULL TRANSACTION, NOT THE RELATION FLIP:**
+             romance -> opinion **80/55**, lovers, bed shared.
+             marry (`MarriageCeremonyUtility.Married`) -> opinion **100/100**, ex-spouses
+             cleared, thoughts both ways, renamed, bed shared. Setting `Spouse` by hand
+             skips every one of those.
+             breakup -> opinion **70/-5**. ⭐ That negative number is the proof: the
+             `BrokeUpWithMe` thought landed. **A bare relation change produces NO thought**,
+             and opinion is purely computed from relations + memories, so a memory is the
+             ONLY lever on how two pawns feel.
+          📌 After `marry`, the pawn holds BOTH `Lover` and `Spouse` - that is vanilla's own
+             `Married()` doing it, and it bypasses the exclusivity check `pawn_relations`
+             applies to manual adds. Not a defect; worth knowing.
+          📌 TEST BUG WORTH RECORDING: `pawn_get` with no `pawn` argument returns a BRIEF
+             LISTING that has no gender, age or traits. My first pregnancy run read gender
+             from it, found none, and skipped. Fetch the full snapshot per pawn.
+
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
 spec:     Any idea for new content that is not v1 — including one a live session

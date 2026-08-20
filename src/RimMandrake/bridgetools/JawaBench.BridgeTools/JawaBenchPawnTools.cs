@@ -1276,5 +1276,417 @@ namespace JawaBench.BridgeTools
             });
         }
 
+
+        // ================================================================
+        //  P4 - PSYCHIC, PREGNANCY, MENTAL STATES, ROMANCE
+        // ================================================================
+
+        [Tool(
+            "jawa/pawn_psychic",
+            Description =
+                "Set psylink level, grant or remove abilities/psycasts, and set psyfocus. " +
+                "action='get' | 'psylink' | 'grant' | 'remove' | 'psyfocus'. " +
+                "🔴 THE 0->N QUIRK IS HANDLED FOR YOU: PawnUtility.ChangePsylinkLevel " +
+                "creates the PsychicAmplifier hediff on the FIRST call and returns without " +
+                "ever reading the offset, so a single call can only ever reach level 1. " +
+                "This tool ensures the hediff exists, then sets the exact level through " +
+                "Hediff_Psylink.ChangeLevel. " +
+                "📌 Granting a psycast WITHOUT a psylink works - nothing in GainAbility " +
+                "checks. What gates CASTING is psyfocus band, so an ability granted to a " +
+                "psylink-less pawn may be present and unusable.",
+            ResultDescription = "success, psylinkLevel, psyfocus, entropy, abilities[].")]
+        public static async Task<object> PawnPsychic(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'get' | 'psylink' | 'grant' | 'remove' | 'psyfocus'.")] string action = "get",
+            [ToolParameter(Description = "Target psylink level 0-6 for action='psylink'.")] int level = -1,
+            [ToolParameter(Description = "AbilityDef name for grant/remove.")] string ability = null,
+            [ToolParameter(Description = "Psyfocus 0-1 for action='psyfocus'. -1 leaves it.")] float psyfocus = -1f,
+            [ToolParameter(Description = "Clear all neural heat (entropy).")] bool clearEntropy = false,
+            [ToolParameter(Description = "List only psycasts when reporting abilities.")] bool psycastsOnly = false)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                string A = (action ?? "get").Trim().ToLowerInvariant();
+                var notes = new List<string>();
+
+                if (A == "psylink")
+                {
+                    if (!ModsConfig.RoyaltyActive)
+                        return Fail("Royalty is not active. Psylinks do not exist in this game.");
+                    if (level < 0) return Fail("Give a target level 0-6.");
+                    try
+                    {
+                        var src = p.GetMainPsylinkSource();
+                        if (src == null)
+                        {
+                            // First call ONLY creates the hediff at level 1 - the offset is
+                            // never read. This is the documented quirk, handled here.
+                            p.ChangePsylinkLevel(1, false);
+                            src = p.GetMainPsylinkSource();
+                            notes.Add("created the PsychicAmplifier hediff (level 1) - the first ChangePsylinkLevel call never reads its offset");
+                        }
+                        if (src == null) return Fail("Could not create a psylink source on this pawn.");
+                        int cur = src.level;
+                        if (level != cur)
+                        {
+                            src.ChangeLevel(level - cur, false);
+                            notes.Add("ChangeLevel(" + (level - cur) + ") -> " + src.level);
+                        }
+                        if (level == 0)
+                        {
+                            p.health.RemoveHediff(src);
+                            notes.Add("level 0 requested - removed the psylink hediff entirely");
+                        }
+                    }
+                    catch (Exception e) { return Fail("Psylink change threw: " + e.GetType().Name + ": " + e.Message); }
+                }
+                else if (A == "grant" || A == "remove")
+                {
+                    if (p.abilities == null) return Fail("Pawn has no ability tracker.");
+                    if (string.IsNullOrEmpty(ability)) return Fail("Give an AbilityDef.");
+                    var ad = DefDatabase<AbilityDef>.GetNamedSilentFail(ability.Trim());
+                    if (ad == null) return Fail("No AbilityDef '" + ability + "'.", DefSuggestions<AbilityDef>(ability));
+                    if (A == "grant")
+                    {
+                        p.abilities.GainAbility(ad);
+                        notes.Add("granted " + ad.defName + (ad.IsPsycast ? " (a PSYCAST)" : ""));
+                        if (ad.IsPsycast && p.GetPsylinkLevel() <= 0)
+                            notes.Add("⚠️ this pawn has NO psylink - the psycast is present but casting is gated on psyfocus band, so it may be unusable");
+                    }
+                    else { p.abilities.RemoveAbility(ad); notes.Add("removed " + ad.defName); }
+                }
+                else if (A == "psyfocus")
+                {
+                    var pe = p.psychicEntropy;
+                    if (pe == null) return Fail("Pawn has no psychic entropy tracker.");
+                    if (psyfocus >= 0f)
+                    {
+                        try { pe.OffsetPsyfocusDirectly(Mathf.Clamp01(psyfocus) - pe.CurrentPsyfocus); notes.Add("psyfocus set"); }
+                        catch (Exception e) { notes.Add("OffsetPsyfocusDirectly failed: " + e.Message); }
+                    }
+                    if (clearEntropy)
+                    {
+                        try { pe.RemoveAllEntropy(); notes.Add("entropy cleared"); }
+                        catch (Exception e) { notes.Add("RemoveAllEntropy failed: " + e.Message); }
+                    }
+                }
+                else if (A != "get") return Fail("action must be get|psylink|grant|remove|psyfocus.");
+
+                var abil = new List<object>();
+                if (p.abilities != null)
+                    foreach (var a in p.abilities.AllAbilitiesForReading)
+                    {
+                        if (psycastsOnly && !a.def.IsPsycast) continue;
+                        abil.Add(new { def = a.def.defName, label = a.def.label, isPsycast = a.def.IsPsycast });
+                    }
+
+                var pe2 = p.psychicEntropy;
+                return (object)new
+                {
+                    success = true, action = A, notes,
+                    royaltyActive = ModsConfig.RoyaltyActive,
+                    psylinkLevel = p.GetPsylinkLevel(),
+                    psyfocus = pe2 != null ? (object)pe2.CurrentPsyfocus : null,
+                    entropy = pe2 != null ? (object)pe2.EntropyValue : null,
+                    maxEntropy = pe2 != null ? (object)pe2.MaxEntropy : null,
+                    abilityCount = abil.Count, abilities = abil,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/pawn_pregnancy",
+            Description =
+                "Start, advance or end a pregnancy. action='get' | 'start' | 'progress' | 'end'. " +
+                "🔑 GESTATION PROGRESS *IS* THE HEDIFF SEVERITY - there is no separate field. " +
+                "Setting it to 1 makes labour begin on the next tick. " +
+                "'start' mirrors JobDriver_Lovin: MakeHediff(PregnantHuman) + SetParents with " +
+                "an inherited gene set + AddHediff. " +
+                "⚠️ PregnancyUtility.GetInheritedGeneSet can FAIL when the combined genes blow " +
+                "the metabolism limit; vanilla aborts the pregnancy there and so does this, " +
+                "rather than producing a child with no genes.",
+            ResultDescription = "success, pregnancy state, gestation, mother and father.")]
+        public static async Task<object> PawnPregnancy(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "The MOTHER's pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'get' | 'start' | 'progress' | 'end'.")] string action = "get",
+            [ToolParameter(Description = "The father's pawn id or name, for 'start'.")] string father = null,
+            [ToolParameter(Description = "Gestation 0-1 for 'progress'. 1 begins labour.")] float progress = -1f,
+            [ToolParameter(Description = "For 'end': true force-ends quietly, false terminates with the mood hit.")] bool quiet = false)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (!ModsConfig.BiotechActive)
+                    return Fail("Biotech is not active. Pregnancy does not exist in this game.");
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                string A = (action ?? "get").Trim().ToLowerInvariant();
+                var notes = new List<string>();
+
+                Func<Hediff> getPreg = () =>
+                {
+                    try { return PregnancyUtility.GetPregnancyHediff(p); }
+                    catch { return p.health.hediffSet.hediffs.FirstOrDefault(h => h is Hediff_Pregnant); }
+                };
+
+                if (A == "start")
+                {
+                    if (getPreg() != null) return Fail("This pawn is already pregnant.");
+                    Pawn dad = null;
+                    if (!string.IsNullOrEmpty(father)) { string e2; dad = FindPawn(father, out e2); if (dad == null) return Fail(e2); }
+
+                    bool humanlike = p.RaceProps != null && p.RaceProps.Humanlike;
+                    var def = humanlike ? HediffDefOf.PregnantHuman : HediffDefOf.Pregnant;
+                    if (humanlike && dad != null)
+                    {
+                        try
+                        {
+                            if (!PregnancyUtility.CanEverProduceChild(dad, p))
+                                return Fail("PregnancyUtility.CanEverProduceChild says these two can never produce a child - " +
+                                            "check gender, life stage, sterility genes and Fertility stat.");
+                        }
+                        catch (Exception e) { notes.Add("CanEverProduceChild threw: " + e.Message); }
+                    }
+
+                    try
+                    {
+                        var h = (Hediff_Pregnant)HediffMaker.MakeHediff(def, p);
+                        if (humanlike)
+                        {
+                            bool ok = true;
+                            GeneSet gs = null;
+                            try { gs = PregnancyUtility.GetInheritedGeneSet(dad, p, out ok); }
+                            catch (Exception e) { notes.Add("GetInheritedGeneSet threw: " + e.Message); ok = false; }
+                            if (!ok)
+                                return Fail("The inherited gene set could not be produced - vanilla aborts a pregnancy here " +
+                                            "(usually the combined genes exceed the metabolism limit). Refusing rather than " +
+                                            "creating a child with no genes.");
+                            h.SetParents(null, dad, gs);
+                        }
+                        p.health.AddHediff(h);
+                        notes.Add("pregnancy started with " + def.defName + (dad != null ? ", father " + dad.LabelShort : ", no father"));
+                    }
+                    catch (Exception e) { return Fail("Starting the pregnancy threw: " + e.GetType().Name + ": " + e.Message); }
+                }
+                else if (A == "progress")
+                {
+                    var h = getPreg();
+                    if (h == null) return Fail("This pawn is not pregnant.");
+                    if (progress < 0f) return Fail("Give progress 0-1.");
+                    h.Severity = Mathf.Clamp01(progress);
+                    notes.Add("gestation (= hediff Severity) set to " + h.Severity +
+                              (h.Severity >= 1f ? " - LABOUR WILL BEGIN ON THE NEXT TICK" : ""));
+                }
+                else if (A == "end")
+                {
+                    var h = getPreg();
+                    if (h == null) return Fail("This pawn is not pregnant.");
+                    try
+                    {
+                        if (quiet) { PregnancyUtility.ForceEndPregnancy(p, true); notes.Add("ForceEndPregnancy - no letter"); }
+                        else { PregnancyUtility.TryTerminatePregnancy(p); notes.Add("TryTerminatePregnancy - adds the termination thought"); }
+                    }
+                    catch (Exception e)
+                    {
+                        p.health.RemoveHediff(h);
+                        notes.Add("utility threw (" + e.Message + "); removed the hediff directly instead");
+                    }
+                }
+                else if (A != "get") return Fail("action must be get|start|progress|end.");
+
+                var cur = getPreg() as Hediff_Pregnant;
+                return (object)new
+                {
+                    success = true, action = A, notes,
+                    pregnant = cur != null,
+                    hediff = cur != null ? cur.def.defName : null,
+                    gestation = cur != null ? (object)cur.Severity : null,
+                    mother = cur != null && cur.Mother != null ? cur.Mother.LabelShort : null,
+                    father = cur != null && cur.Father != null ? cur.Father.LabelShort : null,
+                    note = "Gestation IS the hediff severity - there is no separate progress field.",
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/pawn_mental",
+            Description =
+                "Force or end a mental state. action='list' | 'start' | 'end'. " +
+                "⚠️ TryStartMentalState returns FALSE SILENTLY on about six conditions " +
+                "(already in that state, asleep without forceWake, mutant that prevents " +
+                "breaks, the worker refusing) - this tool surfaces that bool instead of " +
+                "reporting success regardless. " +
+                "🔴 SOME STATES NEVER RECOVER ON THEIR OWN: BerserkPermanent and " +
+                "ManhunterPermanent set minTicksBeforeRecovery above the maximum. " +
+                "action='list' flags them. RecoverFromState still works on all of them. " +
+                "⚠️ Aggressive states let a colonist kill colonists.",
+            ResultDescription = "success, started (the real bool), current state, and the def list.")]
+        public static async Task<object> PawnMental(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'list' | 'start' | 'end'.")] string action = "list",
+            [ToolParameter(Description = "MentalStateDef name.")] string state = null,
+            [ToolParameter(Description = "Bypass the worker's own StateCanOccur check. Default true.")] bool forced = true,
+            [ToolParameter(Description = "Start it even on a sleeping pawn. Default true.")] bool forceWake = true,
+            [ToolParameter(Description = "Another pawn, for social states.")] string otherPawn = null,
+            [ToolParameter(Description = "Max defs listed. Default 60.")] int limit = 60)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                string A = (action ?? "list").Trim().ToLowerInvariant();
+                var notes = new List<string>();
+                bool? started = null;
+
+                if (A == "start")
+                {
+                    if (p.mindState == null || p.mindState.mentalStateHandler == null)
+                        return Fail("Pawn has no mental state handler (animals and mechs may not).");
+                    if (string.IsNullOrEmpty(state)) return Fail("Give a MentalStateDef.");
+                    var sd = DefDatabase<MentalStateDef>.GetNamedSilentFail(state.Trim());
+                    if (sd == null) return Fail("No MentalStateDef '" + state + "'.", DefSuggestions<MentalStateDef>(state));
+                    Pawn other = null;
+                    if (!string.IsNullOrEmpty(otherPawn)) { string e2; other = FindPawn(otherPawn, out e2); }
+                    try
+                    {
+                        started = p.mindState.mentalStateHandler.TryStartMentalState(sd, "forced via bridge", forced, forceWake, false, other);
+                        if (started != true)
+                            notes.Add("TryStartMentalState returned FALSE - RimWorld refused. Common causes: already in this state, " +
+                                      "asleep without forceWake, a mutant that prevents breaks, or the state's own worker saying no.");
+                        if (sd.minTicksBeforeRecovery > sd.maxTicksBeforeRecovery)
+                            notes.Add("⚠️ '" + sd.defName + "' NEVER RECOVERS on its own - use action='end'.");
+                    }
+                    catch (Exception e) { return Fail("TryStartMentalState threw: " + e.GetType().Name + ": " + e.Message); }
+                }
+                else if (A == "end")
+                {
+                    var ms = p.MentalState;
+                    if (ms == null) return Fail("Pawn is not in a mental state.");
+                    try { ms.RecoverFromState(); notes.Add("RecoverFromState - grants the recovery thought and notifies the breaker; the dirty alternative (Reset) does neither"); }
+                    catch (Exception e) { return Fail("RecoverFromState threw: " + e.Message); }
+                }
+                else if (A != "list") return Fail("action must be list|start|end.");
+
+                var defs = new List<object>();
+                if (A == "list")
+                    foreach (var d in DefDatabase<MentalStateDef>.AllDefsListForReading.Take(Math.Max(1, limit)))
+                        defs.Add(new
+                        {
+                            def = d.defName,
+                            label = d.label,
+                            neverRecoversAlone = d.minTicksBeforeRecovery > d.maxTicksBeforeRecovery,
+                            blockNormalThoughts = d.blockNormalThoughts,
+                        });
+
+                return (object)new
+                {
+                    success = true, action = A, started, notes,
+                    currentState = p.MentalState != null ? p.MentalState.def.defName : null,
+                    totalDefs = DefDatabase<MentalStateDef>.AllDefsListForReading.Count,
+                    states = defs,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/pawn_romance",
+            Description =
+                "Do the FULL social transaction, not just the relation flip. " +
+                "action='romance' makes two pawns lovers and shares a bed; 'marry' runs " +
+                "MarriageCeremonyUtility.Married - which ex-spouses everyone, removes Fiance, " +
+                "adds the newly-married thoughts BOTH ways, renames after marriage and shares " +
+                "a bed; 'breakup' mirrors InteractionWorker_Breakup so the BrokeUpWithMe " +
+                "thought actually lands; 'memory' adds a ThoughtDef about another pawn. " +
+                "🔑 OPINION IS PURELY COMPUTED - relation offsets plus thoughts. There is no " +
+                "stored opinion field, so a MEMORY is the only lever on how two pawns feel.",
+            ResultDescription = "success, what happened, opinion both ways, relations after.")]
+        public static async Task<object> PawnRomance(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "First pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'romance' | 'marry' | 'breakup' | 'memory'.")] string action = "romance",
+            [ToolParameter(Description = "The other pawn.")] string otherPawn = null,
+            [ToolParameter(Description = "ThoughtDef for action='memory'.")] string thought = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var a = FindPawn(pawn, out err);
+                if (a == null) return Fail(err);
+                string e2; var b = FindPawn(otherPawn, out e2);
+                if (b == null) return Fail(e2);
+                if (a == b) return Fail("A pawn cannot romance itself.");
+                string A = (action ?? "romance").Trim().ToLowerInvariant();
+                var notes = new List<string>();
+
+                try
+                {
+                    if (A == "romance")
+                    {
+                        foreach (var d in new[] { PawnRelationDefOf.ExLover, PawnRelationDefOf.ExSpouse })
+                            if (a.relations.DirectRelationExists(d, b)) { a.relations.TryRemoveDirectRelation(d, b); notes.Add("cleared " + d.defName); }
+                        if (!a.relations.DirectRelationExists(PawnRelationDefOf.Lover, b))
+                        { a.relations.AddDirectRelation(PawnRelationDefOf.Lover, b); notes.Add("now lovers"); }
+                        try { LovePartnerRelationUtility.TryToShareBed(a, b); notes.Add("shared a bed"); } catch (Exception ex) { notes.Add("TryToShareBed: " + ex.Message); }
+                    }
+                    else if (A == "marry")
+                    {
+                        MarriageCeremonyUtility.Married(a, b);
+                        notes.Add("MarriageCeremonyUtility.Married - ex-spouses cleared, Fiance removed, newly-married thoughts both ways, name changed, bed shared. Setting Spouse alone would have skipped all of that.");
+                    }
+                    else if (A == "breakup")
+                    {
+                        bool wasSpouse = a.relations.DirectRelationExists(PawnRelationDefOf.Spouse, b);
+                        foreach (var d in new[] { PawnRelationDefOf.Lover, PawnRelationDefOf.Fiance })
+                            if (a.relations.DirectRelationExists(d, b)) { a.relations.TryRemoveDirectRelation(d, b); notes.Add("removed " + d.defName); }
+                        if (wasSpouse)
+                        {
+                            a.relations.TryRemoveDirectRelation(PawnRelationDefOf.Spouse, b);
+                            a.relations.AddDirectRelation(PawnRelationDefOf.ExSpouse, b);
+                            notes.Add("Spouse -> ExSpouse");
+                        }
+                        else if (!a.relations.DirectRelationExists(PawnRelationDefOf.ExLover, b))
+                        { a.relations.AddDirectRelation(PawnRelationDefOf.ExLover, b); notes.Add("added ExLover"); }
+                        try
+                        {
+                            if (b.needs != null && b.needs.mood != null)
+                            { b.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.BrokeUpWithMe, a); notes.Add("gave the other pawn the BrokeUpWithMe thought - a bare relation change produces NO thought"); }
+                        }
+                        catch (Exception ex) { notes.Add("BrokeUpWithMe: " + ex.Message); }
+                    }
+                    else if (A == "memory")
+                    {
+                        if (string.IsNullOrEmpty(thought)) return Fail("Give a ThoughtDef.");
+                        var td = DefDatabase<ThoughtDef>.GetNamedSilentFail(thought.Trim());
+                        if (td == null) return Fail("No ThoughtDef '" + thought + "'.", DefSuggestions<ThoughtDef>(thought));
+                        if (a.needs == null || a.needs.mood == null) return Fail("Pawn has no mood need.");
+                        a.needs.mood.thoughts.memories.TryGainMemory(td, b);
+                        notes.Add("memory added - this is the ONLY lever on opinion, which is otherwise purely computed");
+                    }
+                    else return Fail("action must be romance|marry|breakup|memory.");
+                }
+                catch (Exception ex) { return Fail(A + " threw: " + ex.GetType().Name + ": " + ex.Message); }
+
+                return (object)new
+                {
+                    success = true, action = A, notes,
+                    opinionAtoB = a.relations.OpinionOf(b),
+                    opinionBtoA = b.relations.OpinionOf(a),
+                    relations = a.relations.DirectRelations
+                        .Select(r => new { def = r.def.defName, with = r.otherPawn != null ? r.otherPawn.LabelShort : null }).ToList(),
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
     }
 }
