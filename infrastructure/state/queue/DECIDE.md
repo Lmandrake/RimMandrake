@@ -692,3 +692,29 @@ spec:     `TribalWarriorBase` asks for `weaponTags: NeolithicMeleeDecent` and **
 verify:   n/a — a ruling.
 criteria: n/a
 state:    ready
+
+## sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4
+row:      7
+from:     BUILD, 2026-08-20, closing B53.
+spec:     The 48-kind roster covers all TWELVE factions, but only the eight authored
+          `Jawa_*` FactionDefs were wired to it. The other four — Galactic Empire,
+          Homestead Defense League, Deep Desert Tribes, Blackstar Company — are RESKINS,
+          and B41, B42 and B43 each say in terms: *"⛔ Do NOT touch `pawnGroupMakers` —
+          they are inherited and already balanced."* B40 is the sanctioned exception and
+          already replaced the Empire's combat groups with `OuterRim_Imp*` kinds.
+          ⇒ 16 kinds (`Jawa_Empire_*`, `Jawa_Homestead_*`, `Jawa_DeepDesert_*`,
+          `Jawa_Blackstar_*`) are authored, valid and referenced by nothing.
+          THE CHOICES:
+          (a) **Leave them unwired.** The four reskins keep vanilla's balanced groups; the
+              16 kinds are dead weight but harmless, and available if wanted later.
+          (b) **Wire them, reversing the don't-touch rule for these four.** They would then
+              field roles like the other eight — and the Deep Desert Tribes in particular
+              would stop drawing on `Tribal_Warrior`/`Tribal_Hunter`, two kinds this
+              project has separately proven spawn bare-handed.
+          (c) Wire only Deep Desert, where the bare-handed problem actually bites.
+          🔑 (c) is the cheapest correct answer if the concern is player-visible harm, and
+          BUILD's recommendation — but it is a scope reversal either way, which is why it
+          is here and not in the build.
+verify:   n/a — a ruling.
+criteria: n/a
+state:    ready

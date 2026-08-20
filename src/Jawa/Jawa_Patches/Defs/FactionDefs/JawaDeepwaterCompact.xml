@@ -127,9 +127,10 @@
         <!-- Never reaches the player: raidsForbidden. This is settlement defence. -->
         <kindDef>Combat</kindDef>
         <options>
-          <RimMandrake_Quarren MayRequire="mandrake.starwarsraces">10</RimMandrake_Quarren>
-          <RimMandrake_MonCalamari MayRequire="mandrake.starwarsraces">8</RimMandrake_MonCalamari>
-          <RimMandrake_QuarrenTribal MayRequire="mandrake.starwarsraces">4</RimMandrake_QuarrenTribal>
+          <Jawa_Deepwater_Grunt>10</Jawa_Deepwater_Grunt>
+          <Jawa_Deepwater_Heavy>4</Jawa_Deepwater_Heavy>
+          <Jawa_Deepwater_Specialist>2</Jawa_Deepwater_Specialist>
+          <Jawa_Deepwater_Leader>1</Jawa_Deepwater_Leader>
         </options>
       </li>
       <li>
@@ -147,8 +148,9 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <RimMandrake_MonCalamari MayRequire="mandrake.starwarsraces">8</RimMandrake_MonCalamari>
-          <RimMandrake_Quarren MayRequire="mandrake.starwarsraces">8</RimMandrake_Quarren>
+          <Jawa_Deepwater_Grunt>10</Jawa_Deepwater_Grunt>
+          <Jawa_Deepwater_Heavy>3</Jawa_Deepwater_Heavy>
+          <Jawa_Deepwater_Specialist>2</Jawa_Deepwater_Specialist>
         </options>
       </li>
     </pawnGroupMakers>

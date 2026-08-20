@@ -1693,3 +1693,38 @@ criteria: spawn a `Tribal_Warrior` and a Deep Desert Tribes raid and look at the
           and `Mechanitor_Basic` on `Autopistol` among them, which independently confirms
           B65's diagnosis.
 state:    ready
+
+## B53 Create 48 pawn types so raids field roles, not one flat kind
+row:      7
+spec:     `src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml` — 48 kinds,
+          twelve factions × Grunt/Heavy/Specialist/Leader, generated from
+          `src/RimMandrake/Utils/gen_pawnkind_roster.py` so the roster table stays in one
+          place. Every kind sets `useFactionXenotypes true`, so one kind spawns the
+          faction's whole species mix in that faction's gear.
+          🔴 THIS FIXES UNARMED RAIDS, not just variety. Four factions' combat groups were
+          filled with species SAMPLERS — `isFighter false`, `combatPower 40`,
+          `weaponMoney 0~0`, no `weaponTags` — so Ascendant Helix, Deepwater Compact, Free
+          Droid Enclaves and Wildsteam Clan fielded raids that arrived with nothing in
+          their hands. The eight authored factions' Combat and Settlement groups are
+          rewired to the roster kinds at 10/4/2/1.
+verify:   done offline against the 578-mod list: **48 defs, 0 errors, 0 warnings**, and
+          every weapon tag resolves to a SURVIVING weapon, checked against the cherrypick
+          list rather than assumed. All `apparelRequired` entries resolve and none is cut.
+          `combatPower` follows the money as the roster directs (Empire 74/113/119/211).
+criteria: (a) each of the eight factions raids with a MIX — mostly grunts, a few heavies, a
+          specialist, at most one leader — and 🔴 **every pawn is holding a weapon.** That
+          is the whole point; a raid of empty-handed pawns means a tag resolved to nothing.
+          (b) the Trade Moot's grunts carry ION weapons specifically. `Jawa_IonWeapon` is a
+          tag this project added — `zal.ionweaponry` tags its seven guns only `Gun` and
+          `SpacerGun`, which every blaster also carries, so before this there was no way to
+          ask for an ion weapon and get one.
+          (c) Empire grunts wear `OuterRim_StormtrooperCuirass` + `Helmet`, and Blackstar
+          heavies wear Mandalorian plate. Those are `apparelRequired`, so a wrong defName
+          would be a LOUD load error rather than a silent miss — check the log too.
+          ⏭️ NOT WIRED, and it needs a ruling rather than a build: the 16 kinds for Empire,
+          Homestead, Deep Desert and Blackstar exist but are unused, because B41/B42/B43
+          forbid touching those factions' `pawnGroupMakers`. Filed to DECIDE as
+          `sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4`.
+          ⚠️ Deepwater's roster class is a "harpoon gun" and **no harpoon survives the
+          cut** — mid-tier rifle tags stand in. Fiction may want a different answer.
+state:    ready

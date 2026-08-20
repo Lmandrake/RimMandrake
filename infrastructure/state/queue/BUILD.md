@@ -103,17 +103,35 @@ criteria: each faction's raids field the intended roles, not one flat kind.
           the current one is `modCount 579` against 578 active.
           ⏭️ `combatPower` still has to be assigned per the roster; the samplers' flat 40
           is exactly the thing being replaced.
-state:    ready — 🔴 **SEQUENCING REVERSED BY THE OWNER, 2026-08-19: BUILD IT ALONGSIDE
-          THE ROSTER.** Pawn kinds and FactionDefs reference each other, so building them
-          together avoids authoring every `pawnGroupMaker` twice. The superseded 2026-08-15
-          text follows and is kept only so nobody re-derives it:
-          ~~⭐ **OWNER RULING 2026-08-15: v1, but SEQUENCED AFTER WORLDGEN.**~~
-          Measured, not assumed: `FACTION_SPEC.md` cites ZERO `Jawa_<Faction>_<Role>`
-          kinds — every `pawnGroupMaker` names a donor kind — so B45–B51 do not depend
-          on this and it does not bake at world creation. Build it once the factions
-          are live and the owner has generated his world. Chain step 3 still supplies
-          `weaponTags`/`apparelRequired`.
-
+state:    done 2026-08-20. 48 kinds in
+          `src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml`, emitted by
+          `src/RimMandrake/Utils/gen_pawnkind_roster.py` so the design table lives in one
+          place instead of drifting across 48 XML blocks. 578-mod scoped run: **0 errors,
+          0 warnings.**
+          The open work named by the item is closed:
+          • **`weaponTags` -> real strings.** Resolved against surviving weapons, never
+            invented — `ORImperialStandard` for the issue blaster, `KotORRanged_sonic` for
+            the Geonosian counter-to-lightsabers, `KotORBowcaster`, `ORTuskenMelee`,
+            `ORDroidWeapon`, and the `KotORRanged_weak/mid/legendary` ladder for the Hutts.
+            🔑 TWO CLASSES HAD NO TAG TO ASK FOR and now do: the Jawa ion blaster
+            (`zal.ionweaponry` tags its seven guns only `Gun`/`SpacerGun`, which every
+            blaster carries) and the Gamorrean axe. Both added to the SURVIVORS in
+            `WeaponTags_Renormalise.xml`.
+          • **`combatPower`** follows the money per the roster's instruction.
+          • **`apparelRequired`** for the four cases where the item IS the pawn. ⚠️ Two
+            defNames in the first draft were plausible inventions and neither existed;
+            corrected to `OuterRim_StormtrooperCuirass`/`Helmet` and
+            `guy762_MandoArmor_battle`/`MandoHelmet_supercom`. All entries verified present
+            and uncut.
+          • **`apparelStuffFilter` is a FACTION field** — noted, not set; it is the cheapest
+            way to make the Junkers look like Junkers and belongs to a faction pass.
+          The eight authored factions are rewired to the roster kinds at 10/4/2/1.
+          ⏭️ Two scope calls left to DECIDE rather than taken here: the 16 kinds for the
+          four RESKIN factions are unwired because B41-B43 forbid touching their
+          `pawnGroupMakers` (`sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4`), and the
+          Trade Moot's three authored `Jawa_Tribal_*` kinds were KEPT alongside the roster
+          kinds rather than replaced — deleting authored content is not a build decision.
+          Live half filed to `queue/CHECK.md`.
 ## B55 Build the campaign start — fixed map, fixed ship, fixed pawns
 row:      12
 spec:     ⏭️ CARRIED IN FROM B63, 2026-08-19: **"The Sundered" must appear in

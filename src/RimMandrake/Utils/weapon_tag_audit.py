@@ -230,8 +230,21 @@ def plan(untagged):
 # asking for a weapon that does not exist; putting the tag on the right survivor is
 # cheaper than rewriting the kind, and it survives a regenerate of the kind.
 EXTRA_TAGS = {
+    # The Gamorrean enforcer named a tag no weapon carried. These two vibro-axes are the
+    # weapon it was named for.
     "guy762_vaxe": ["Jawa_GamorreanAxe"],
     "guy762_vaxe_hutt": ["Jawa_GamorreanAxe"],
+    # 🔑 The ion blaster is the ONE thing Jawas canonically MANUFACTURE, and the roster
+    # builds the Trade Moot's grunt around it - but `zal.ionweaponry` tags its guns only
+    # `Gun`/`SpacerGun`, which every blaster in the stack also carries. Without a tag of
+    # their own there is no way to ask for "an ion weapon" and get one.
+    "IW_Gun_IonPistol": ["Jawa_IonWeapon", "Jawa_IonWeaponLight"],
+    "IW_Gun_IonPDW": ["Jawa_IonWeapon", "Jawa_IonWeaponLight"],
+    "IW_Gun_IonSlugthrower": ["Jawa_IonWeapon", "Jawa_IonWeaponLight"],
+    "IW_Gun_IonRifle": ["Jawa_IonWeapon"],
+    "IW_Gun_IonDMR": ["Jawa_IonWeapon"],
+    "IW_Gun_IonLMG": ["Jawa_IonWeapon", "Jawa_IonWeaponHeavy"],
+    "IW_Gun_HeavyIonLance": ["Jawa_IonWeapon", "Jawa_IonWeaponHeavy"],
 }
 
 

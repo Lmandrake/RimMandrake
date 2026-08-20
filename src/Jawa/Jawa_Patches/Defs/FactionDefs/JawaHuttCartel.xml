@@ -171,10 +171,10 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <RimMandrake_Nikto MayRequire="mandrake.starwarsraces">10</RimMandrake_Nikto>
-          <RimMandrake_NiktoTribal MayRequire="mandrake.starwarsraces">6</RimMandrake_NiktoTribal>
-          <Jawa_Gamorrean_Guard>4</Jawa_Gamorrean_Guard>
-          <Jawa_Gamorrean_Enforcer>1</Jawa_Gamorrean_Enforcer>
+          <Jawa_Hutt_Grunt>10</Jawa_Hutt_Grunt>
+          <Jawa_Hutt_Heavy>4</Jawa_Hutt_Heavy>
+          <Jawa_Hutt_Specialist>2</Jawa_Hutt_Specialist>
+          <Jawa_Hutt_Leader>1</Jawa_Hutt_Leader>
         </options>
       </li>
       <li>
@@ -195,9 +195,9 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <RimMandrake_Nikto MayRequire="mandrake.starwarsraces">8</RimMandrake_Nikto>
-          <Jawa_Gamorrean_Guard>4</Jawa_Gamorrean_Guard>
-          <Jawa_Spawn_Hutt>1</Jawa_Spawn_Hutt>
+          <Jawa_Hutt_Grunt>10</Jawa_Hutt_Grunt>
+          <Jawa_Hutt_Heavy>3</Jawa_Hutt_Heavy>
+          <Jawa_Hutt_Specialist>2</Jawa_Hutt_Specialist>
         </options>
       </li>
     </pawnGroupMakers>

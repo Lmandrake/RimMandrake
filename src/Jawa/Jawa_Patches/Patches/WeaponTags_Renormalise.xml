@@ -673,6 +673,90 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="IW_Gun_HeavyIonLance"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_HeavyIonLance"]/weaponTags</xpath>
+      <value><li>Jawa_IonWeapon</li><li>Jawa_IonWeaponHeavy</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_HeavyIonLance"]</xpath>
+      <value><weaponTags><li>Jawa_IonWeapon</li><li>Jawa_IonWeaponHeavy</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="IW_Gun_IonDMR"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonDMR"]/weaponTags</xpath>
+      <value><li>Jawa_IonWeapon</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonDMR"]</xpath>
+      <value><weaponTags><li>Jawa_IonWeapon</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="IW_Gun_IonLMG"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonLMG"]/weaponTags</xpath>
+      <value><li>Jawa_IonWeapon</li><li>Jawa_IonWeaponHeavy</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonLMG"]</xpath>
+      <value><weaponTags><li>Jawa_IonWeapon</li><li>Jawa_IonWeaponHeavy</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="IW_Gun_IonPDW"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonPDW"]/weaponTags</xpath>
+      <value><li>Jawa_IonWeapon</li><li>Jawa_IonWeaponLight</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonPDW"]</xpath>
+      <value><weaponTags><li>Jawa_IonWeapon</li><li>Jawa_IonWeaponLight</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="IW_Gun_IonPistol"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonPistol"]/weaponTags</xpath>
+      <value><li>Jawa_IonWeapon</li><li>Jawa_IonWeaponLight</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonPistol"]</xpath>
+      <value><weaponTags><li>Jawa_IonWeapon</li><li>Jawa_IonWeaponLight</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="IW_Gun_IonRifle"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonRifle"]/weaponTags</xpath>
+      <value><li>Jawa_IonWeapon</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonRifle"]</xpath>
+      <value><weaponTags><li>Jawa_IonWeapon</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="IW_Gun_IonSlugthrower"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonSlugthrower"]/weaponTags</xpath>
+      <value><li>Jawa_IonWeapon</li><li>Jawa_IonWeaponLight</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="IW_Gun_IonSlugthrower"]</xpath>
+      <value><weaponTags><li>Jawa_IonWeapon</li><li>Jawa_IonWeaponLight</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JakobeastHorn"]/weaponTags</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="JakobeastHorn"]/weaponTags</xpath>

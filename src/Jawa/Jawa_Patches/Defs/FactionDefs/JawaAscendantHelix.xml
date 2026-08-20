@@ -130,9 +130,10 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <RimMandrake_Arkanian MayRequire="mandrake.starwarsraces">8</RimMandrake_Arkanian>
-          <RimMandrake_Kaminoan MayRequire="mandrake.starwarsraces">4</RimMandrake_Kaminoan>
-          <RimMandrake_ArkanianTribal MayRequire="mandrake.starwarsraces">2</RimMandrake_ArkanianTribal>
+          <Jawa_Helix_Grunt>10</Jawa_Helix_Grunt>
+          <Jawa_Helix_Heavy>4</Jawa_Helix_Heavy>
+          <Jawa_Helix_Specialist>2</Jawa_Helix_Specialist>
+          <Jawa_Helix_Leader>1</Jawa_Helix_Leader>
         </options>
       </li>
       <li>
@@ -150,8 +151,9 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <RimMandrake_Arkanian MayRequire="mandrake.starwarsraces">8</RimMandrake_Arkanian>
-          <RimMandrake_Kaminoan MayRequire="mandrake.starwarsraces">6</RimMandrake_Kaminoan>
+          <Jawa_Helix_Grunt>10</Jawa_Helix_Grunt>
+          <Jawa_Helix_Heavy>3</Jawa_Helix_Heavy>
+          <Jawa_Helix_Specialist>2</Jawa_Helix_Specialist>
         </options>
       </li>
     </pawnGroupMakers>

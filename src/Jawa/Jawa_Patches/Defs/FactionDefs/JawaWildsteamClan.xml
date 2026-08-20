@@ -125,8 +125,10 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <RimMandrake_Wookiee MayRequire="mandrake.starwarsraces">10</RimMandrake_Wookiee>
-          <RimMandrake_WookieeTribal MayRequire="mandrake.starwarsraces">8</RimMandrake_WookieeTribal>
+          <Jawa_Wildsteam_Grunt>10</Jawa_Wildsteam_Grunt>
+          <Jawa_Wildsteam_Heavy>4</Jawa_Wildsteam_Heavy>
+          <Jawa_Wildsteam_Specialist>2</Jawa_Wildsteam_Specialist>
+          <Jawa_Wildsteam_Leader>1</Jawa_Wildsteam_Leader>
         </options>
       </li>
       <li>
@@ -146,8 +148,9 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <RimMandrake_WookieeTribal MayRequire="mandrake.starwarsraces">10</RimMandrake_WookieeTribal>
-          <RimMandrake_Wookiee MayRequire="mandrake.starwarsraces">5</RimMandrake_Wookiee>
+          <Jawa_Wildsteam_Grunt>10</Jawa_Wildsteam_Grunt>
+          <Jawa_Wildsteam_Heavy>3</Jawa_Wildsteam_Heavy>
+          <Jawa_Wildsteam_Specialist>2</Jawa_Wildsteam_Specialist>
         </options>
       </li>
     </pawnGroupMakers>

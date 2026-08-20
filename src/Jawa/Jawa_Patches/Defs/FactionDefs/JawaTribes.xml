@@ -127,8 +127,18 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <Jawa_Tribal_Scavenger>10</Jawa_Tribal_Scavenger>
-          <Jawa_Tribal_Slinger>10</Jawa_Tribal_Slinger>
+          <!-- ⭐ THE ROSTER KINDS ADD THE ROLES; THE THREE AUTHORED TRIBAL KINDS STAY.
+               The roster's Grunt/Heavy/Specialist/Leader shares are what make a raid read
+               as a formation instead of a crowd, but `Jawa_Tribal_*` were authored on
+               purpose and carry the faction's own flavour, so they ride alongside at
+               lower weight rather than being replaced. Dropping them would have been a
+               scope call, not a build. -->
+          <Jawa_TradeMoot_Grunt>10</Jawa_TradeMoot_Grunt>
+          <Jawa_TradeMoot_Heavy>4</Jawa_TradeMoot_Heavy>
+          <Jawa_TradeMoot_Specialist>2</Jawa_TradeMoot_Specialist>
+          <Jawa_TradeMoot_Leader>1</Jawa_TradeMoot_Leader>
+          <Jawa_Tribal_Scavenger>5</Jawa_Tribal_Scavenger>
+          <Jawa_Tribal_Slinger>5</Jawa_Tribal_Slinger>
           <Jawa_Tribal_Elder>1</Jawa_Tribal_Elder>
         </options>
       </li>

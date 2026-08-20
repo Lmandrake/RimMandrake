@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+gen_pawnkind_roster.py - the 48 faction pawn kinds, from design/…/pawnkind_roster.md.
+
+WHY THIS IS GENERATED. The roster is a design table: twelve factions x four roles, with
+weaponMoney, apparelMoney and a quality clamp per kind. Keeping the table here means the
+numbers can be re-tuned in one place and the 48 defs re-emitted, instead of 48 XML blocks
+drifting apart. The design lives in the doc; the STRINGS are the build.
+
+🔴 WHY IT EXISTS AT ALL. Measured 2026-08-19: four factions field combat groups made of
+SPECIES SAMPLERS - `isFighter: false`, `combatPower: 40`, `weaponMoney: 0~0` and no
+`weaponTags` - so their raids arrive UNARMED. These 48 kinds are the fix (roster R20),
+not a refinement.
+
+🔑 EVERY TAG BELOW WAS RESOLVED AGAINST SURVIVING WEAPONS, never invented. The roster
+deliberately gives weapon CLASSES and refuses to guess tag strings. Re-check them with
+`weapon_tag_audit.py`, which lists every tag the cherrypick emptied - a tag with no
+surviving carrier hands the pawn nothing, silently.
+
+⛔ The Predator/Yautja mod is GONE (owner, 2026-08-20). Nothing here may reference it.
+
+⚠️ EVERY defName HERE WAS LOOKED UP, NOT GUESSED. Two apparel names in the first draft
+were plausible inventions - `OuterRim_ImperialArmourStormtrooper` and
+`guy762_HvyArmor_mandalorian` - and neither existed. `apparelRequired` naming a def that
+does not exist is a load-time cross-reference error, so a guess here is loud rather than
+silent; the weapon tags above are the opposite and fail in silence. Check both.
+-->
+<Defs>
+
+  <PawnKindDef>
+    <defName>Jawa_Empire_Grunt</defName>
+    <label>stormtrooper</label>
+    <race>Human</race>
+    <defaultFactionDef>Empire</defaultFactionDef>
+    <combatPower>74</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>350~420</weaponMoney>
+    <apparelMoney>500~600</apparelMoney>
+    <weaponTags>
+      <li>ORImperialStandard</li>
+      <li>ORImperialLight</li>
+    </weaponTags>
+    <apparelRequired>
+      <li>OuterRim_StormtrooperCuirass</li>
+      <li>OuterRim_StormtrooperHelmet</li>
+    </apparelRequired>
+    <forceNormalGearQuality>true</forceNormalGearQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Empire_Heavy</defName>
+    <label>heavy trooper</label>
+    <race>Human</race>
+    <defaultFactionDef>Empire</defaultFactionDef>
+    <combatPower>113</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>700~840</weaponMoney>
+    <apparelMoney>700~840</apparelMoney>
+    <weaponTags>
+      <li>ORImperialHeavy</li>
+      <li>ORHeavyWeapon</li>
+    </weaponTags>
+    <forceNormalGearQuality>true</forceNormalGearQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Empire_Specialist</defName>
+    <label>Imperial officer</label>
+    <race>Human</race>
+    <defaultFactionDef>Empire</defaultFactionDef>
+    <combatPower>119</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>900~1080</weaponMoney>
+    <apparelMoney>700~840</apparelMoney>
+    <weaponTags>
+      <li>ORPistol</li>
+      <li>ORImperialLight</li>
+    </weaponTags>
+    <forceNormalGearQuality>true</forceNormalGearQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Empire_Leader</defName>
+    <label>Emperor Palpatine</label>
+    <race>Human</race>
+    <defaultFactionDef>Empire</defaultFactionDef>
+    <combatPower>211</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>1600~1920</weaponMoney>
+    <apparelMoney>1200~1440</apparelMoney>
+    <weaponTags>
+      <li>ORImperialSniper</li>
+      <li>ORPistol</li>
+    </weaponTags>
+    <itemQuality>Excellent</itemQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Hutt_Grunt</defName>
+    <label>Cartel enforcer</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_HuttCartel</defaultFactionDef>
+    <combatPower>55</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>200~240</weaponMoney>
+    <apparelMoney>250~300</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_weak</li>
+      <li>SWKotORWeaponCategoryTag_pistol</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Hutt_Heavy</defName>
+    <label>Cartel bodyguard</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_HuttCartel</defaultFactionDef>
+    <combatPower>90</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>550~660</weaponMoney>
+    <apparelMoney>400~480</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_mid</li>
+      <li>SWKotORWeaponCategoryTag_heavyranged</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Hutt_Specialist</defName>
+    <label>Cartel factor</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_HuttCartel</defaultFactionDef>
+    <combatPower>108</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>800~960</weaponMoney>
+    <apparelMoney>600~720</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_mid</li>
+      <li>SWKotORWeaponCategoryTag_pistol</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Hutt_Leader</defName>
+    <label>Lord Gorga the Immense</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_HuttCartel</defaultFactionDef>
+    <combatPower>311</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>2500~3000</weaponMoney>
+    <apparelMoney>2000~2400</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_legendary</li>
+      <li>KotORRanged_rare</li>
+    </weaponTags>
+    <itemQuality>Masterwork</itemQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Homestead_Grunt</defName>
+    <label>homestead militia</label>
+    <race>Human</race>
+    <defaultFactionDef>OutlanderCivil</defaultFactionDef>
+    <combatPower>49</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>130~156</weaponMoney>
+    <apparelMoney>180~216</apparelMoney>
+    <weaponTags>
+      <li>SimpleGun</li>
+      <li>KotORRanged_weak</li>
+    </weaponTags>
+    <maxApparelQuality>Good</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Homestead_Heavy</defName>
+    <label>well-guard</label>
+    <race>Human</race>
+    <defaultFactionDef>OutlanderCivil</defaultFactionDef>
+    <combatPower>69</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>300~360</weaponMoney>
+    <apparelMoney>250~300</apparelMoney>
+    <weaponTags>
+      <li>AssaultRifle</li>
+      <li>KotORRanged_mid</li>
+    </weaponTags>
+    <maxApparelQuality>Good</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Homestead_Specialist</defName>
+    <label>water warden</label>
+    <race>Human</race>
+    <defaultFactionDef>OutlanderCivil</defaultFactionDef>
+    <combatPower>76</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>450~540</weaponMoney>
+    <apparelMoney>300~360</apparelMoney>
+    <weaponTags>
+      <li>SniperRifle</li>
+      <li>ORSniper</li>
+    </weaponTags>
+    <maxApparelQuality>Good</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Homestead_Leader</defName>
+    <label>High Marshal Taren Voss</label>
+    <race>Human</race>
+    <defaultFactionDef>OutlanderCivil</defaultFactionDef>
+    <combatPower>116</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>700~840</weaponMoney>
+    <apparelMoney>500~600</apparelMoney>
+    <weaponTags>
+      <li>ORPistol</li>
+      <li>SWKotORWeaponCategoryTag_pistol</li>
+    </weaponTags>
+    <maxApparelQuality>Excellent</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_DeepDesert_Grunt</defName>
+    <label>Tusken raider</label>
+    <race>Human</race>
+    <defaultFactionDef>TribeCivil</defaultFactionDef>
+    <combatPower>44</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>90~108</weaponMoney>
+    <apparelMoney>100~120</apparelMoney>
+    <weaponTags>
+      <li>ORTuskenMelee</li>
+      <li>ORMeleeBlunt</li>
+    </weaponTags>
+    <maxApparelQuality>Normal</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_DeepDesert_Heavy</defName>
+    <label>Tusken brute</label>
+    <race>Human</race>
+    <defaultFactionDef>TribeCivil</defaultFactionDef>
+    <combatPower>59</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>200~240</weaponMoney>
+    <apparelMoney>150~180</apparelMoney>
+    <weaponTags>
+      <li>ORMeleeBlunt</li>
+      <li>NeolithicMeleeAdvanced</li>
+    </weaponTags>
+    <maxApparelQuality>Normal</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_DeepDesert_Specialist</defName>
+    <label>Tusken marksman</label>
+    <race>Human</race>
+    <defaultFactionDef>TribeCivil</defaultFactionDef>
+    <combatPower>64</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>300~360</weaponMoney>
+    <apparelMoney>200~240</apparelMoney>
+    <weaponTags>
+      <li>SaV_tusken</li>
+    </weaponTags>
+    <maxApparelQuality>Normal</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_DeepDesert_Leader</defName>
+    <label>War Chief Torr'gan</label>
+    <race>Human</race>
+    <defaultFactionDef>TribeCivil</defaultFactionDef>
+    <combatPower>96</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>500~600</weaponMoney>
+    <apparelMoney>350~420</apparelMoney>
+    <weaponTags>
+      <li>ORTuskenMelee</li>
+      <li>NeolithicMeleeAdvanced</li>
+    </weaponTags>
+    <maxApparelQuality>Good</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Droid_Grunt</defName>
+    <label>labour droid</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
+    <combatPower>35</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>0~0</weaponMoney>
+    <apparelMoney>0~0</apparelMoney>
+    <weaponTags>
+      <li>ORDroidWeapon</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Droid_Heavy</defName>
+    <label>security droid</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
+    <combatPower>40</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>0~0</weaponMoney>
+    <apparelMoney>0~0</apparelMoney>
+    <weaponTags>
+      <li>ORDroidWeapon</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Droid_Specialist</defName>
+    <label>medical droid</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
+    <combatPower>38</combatPower>
+    <isFighter>false</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>0~0</weaponMoney>
+    <apparelMoney>0~0</apparelMoney>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Droid_Leader</defName>
+    <label>First Speaker R-41 Rell</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
+    <combatPower>46</combatPower>
+    <isFighter>false</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>0~0</weaponMoney>
+    <apparelMoney>0~0</apparelMoney>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Wildsteam_Grunt</defName>
+    <label>Wildsteam hunter</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
+    <combatPower>51</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>200~240</weaponMoney>
+    <apparelMoney>150~180</apparelMoney>
+    <weaponTags>
+      <li>KotORBowcaster</li>
+    </weaponTags>
+    <minApparelQuality>Good</minApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Wildsteam_Heavy</defName>
+    <label>pod-warden</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
+    <combatPower>72</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>400~480</weaponMoney>
+    <apparelMoney>200~240</apparelMoney>
+    <weaponTags>
+      <li>KotORBowcaster</li>
+      <li>SWKotORWeaponCategoryTag_heavyranged</li>
+    </weaponTags>
+    <minApparelQuality>Good</minApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Wildsteam_Specialist</defName>
+    <label>beast-handler</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
+    <combatPower>76</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>500~600</weaponMoney>
+    <apparelMoney>250~300</apparelMoney>
+    <weaponTags>
+      <li>ORMeleeSharp</li>
+      <li>ORVibroweapon</li>
+    </weaponTags>
+    <minApparelQuality>Good</minApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Wildsteam_Leader</defName>
+    <label>Elder Rroowaak</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
+    <combatPower>116</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>800~960</weaponMoney>
+    <apparelMoney>400~480</apparelMoney>
+    <weaponTags>
+      <li>KotORBowcaster</li>
+    </weaponTags>
+    <minApparelQuality>Excellent</minApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Deepwater_Grunt</defName>
+    <label>shore guard</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_DeepwaterCompact</defaultFactionDef>
+    <combatPower>67</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>300~360</weaponMoney>
+    <apparelMoney>400~480</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_mid</li>
+      <li>SWKotORWeaponCategoryTag_rifle</li>
+    </weaponTags>
+    <minApparelQuality>Good</minApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Deepwater_Heavy</defName>
+    <label>pressure trooper</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_DeepwaterCompact</defaultFactionDef>
+    <combatPower>100</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>600~720</weaponMoney>
+    <apparelMoney>550~660</apparelMoney>
+    <weaponTags>
+      <li>SWKotORWeaponCategoryTag_heavyranged</li>
+      <li>KotORRanged_strong</li>
+    </weaponTags>
+    <minApparelQuality>Good</minApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Deepwater_Specialist</defName>
+    <label>Quarren shipwright</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_DeepwaterCompact</defaultFactionDef>
+    <combatPower>108</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>750~900</weaponMoney>
+    <apparelMoney>650~780</apparelMoney>
+    <weaponTags>
+      <li>ORVibroweapon</li>
+      <li>ORMeleeSharp</li>
+    </weaponTags>
+    <minApparelQuality>Good</minApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Deepwater_Leader</defName>
+    <label>High Warden Neris Cal</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_DeepwaterCompact</defaultFactionDef>
+    <combatPower>193</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>1400~1680</weaponMoney>
+    <apparelMoney>1100~1320</apparelMoney>
+    <weaponTags>
+      <li>ORMeleeSharp</li>
+      <li>KotORRanged_rare</li>
+    </weaponTags>
+    <itemQuality>Excellent</itemQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Geonosian_Grunt</defName>
+    <label>Geonosian drone</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_GeonosianFoundryHive</defaultFactionDef>
+    <combatPower>56</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>400~480</weaponMoney>
+    <apparelMoney>60~72</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_sonic</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Geonosian_Heavy</defName>
+    <label>soldier drone</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_GeonosianFoundryHive</defaultFactionDef>
+    <combatPower>86</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>800~960</weaponMoney>
+    <apparelMoney>80~96</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_sonic</li>
+      <li>SWKotORWeaponCategoryTag_heavyranged</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Geonosian_Specialist</defName>
+    <label>hive overseer</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_GeonosianFoundryHive</defaultFactionDef>
+    <combatPower>94</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>1000~1200</weaponMoney>
+    <apparelMoney>100~120</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_sonic</li>
+      <li>KotORRanged_rare</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Geonosian_Leader</defName>
+    <label>Archduke Korrik the Shaper</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_GeonosianFoundryHive</defaultFactionDef>
+    <combatPower>146</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>1500~1800</weaponMoney>
+    <apparelMoney>200~240</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_sonic</li>
+      <li>KotORRanged_legendary</li>
+    </weaponTags>
+    <itemQuality>Excellent</itemQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Helix_Grunt</defName>
+    <label>retrieval agent</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
+    <combatPower>94</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>600~720</weaponMoney>
+    <apparelMoney>700~840</apparelMoney>
+    <weaponTags>
+      <li>SWKotORWeaponCategoryTag_pistol</li>
+      <li>KotORRanged_strong</li>
+    </weaponTags>
+    <minApparelQuality>Excellent</minApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Helix_Heavy</defName>
+    <label>brute-stock labourer</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
+    <combatPower>145</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>1100~1320</weaponMoney>
+    <apparelMoney>900~1080</apparelMoney>
+    <weaponTags>
+      <li>SWKotORWeaponCategoryTag_heavyranged</li>
+      <li>KotORRanged_strong</li>
+    </weaponTags>
+    <minApparelQuality>Excellent</minApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Helix_Specialist</defName>
+    <label>Helix curator</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
+    <combatPower>164</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>1400~1680</weaponMoney>
+    <apparelMoney>1100~1320</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_rare</li>
+      <li>ORSniper</li>
+    </weaponTags>
+    <minApparelQuality>Excellent</minApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Helix_Leader</defName>
+    <label>Director Ko Saiyan</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
+    <combatPower>282</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>2200~2640</weaponMoney>
+    <apparelMoney>1800~2160</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_legendary</li>
+    </weaponTags>
+    <itemQuality>Masterwork</itemQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Blackstar_Grunt</defName>
+    <label>hired gun</label>
+    <race>Human</race>
+    <defaultFactionDef>Pirate</defaultFactionDef>
+    <combatPower>69</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>400~480</weaponMoney>
+    <apparelMoney>350~420</apparelMoney>
+    <weaponTags>
+      <li>SWKotORWeaponCategoryTag_rifle</li>
+      <li>SimpleGun</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Blackstar_Heavy</defName>
+    <label>Mandalorian</label>
+    <race>Human</race>
+    <defaultFactionDef>Pirate</defaultFactionDef>
+    <combatPower>103</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>700~840</weaponMoney>
+    <apparelMoney>500~600</apparelMoney>
+    <weaponTags>
+      <li>SWKotORWeaponCategoryTag_heavyranged</li>
+      <li>KotORRanged_strong</li>
+    </weaponTags>
+    <apparelRequired>
+      <li>guy762_MandoArmor_battle</li>
+      <li>guy762_MandoHelmet_supercom</li>
+    </apparelRequired>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Blackstar_Specialist</defName>
+    <label>Blackstar hunter</label>
+    <race>Human</race>
+    <defaultFactionDef>Pirate</defaultFactionDef>
+    <combatPower>134</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>1100~1320</weaponMoney>
+    <apparelMoney>800~960</apparelMoney>
+    <weaponTags>
+      <li>ORSniper</li>
+      <li>KotORRanged_rare</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Blackstar_Leader</defName>
+    <label>Captain Jaxen Marr</label>
+    <race>Human</race>
+    <defaultFactionDef>Pirate</defaultFactionDef>
+    <combatPower>240</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>1800~2160</weaponMoney>
+    <apparelMoney>1500~1800</apparelMoney>
+    <weaponTags>
+      <li>KotORRanged_legendary</li>
+      <li>ORPistol</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_TradeMoot_Grunt</defName>
+    <label>Jawa scavenger</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
+    <combatPower>45</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>120~144</weaponMoney>
+    <apparelMoney>100~120</apparelMoney>
+    <weaponTags>
+      <li>Jawa_IonWeaponLight</li>
+      <li>Jawa_IonWeapon</li>
+    </weaponTags>
+    <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+    </apparelRequired>
+    <maxApparelQuality>Poor</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_TradeMoot_Heavy</defName>
+    <label>crawler guard</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
+    <combatPower>57</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>200~240</weaponMoney>
+    <apparelMoney>130~156</apparelMoney>
+    <weaponTags>
+      <li>Jawa_IonWeapon</li>
+      <li>KotORRanged_weak</li>
+    </weaponTags>
+    <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+    </apparelRequired>
+    <maxApparelQuality>Normal</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_TradeMoot_Specialist</defName>
+    <label>Scrap-Singer</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
+    <combatPower>62</combatPower>
+    <isFighter>false</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>300~360</weaponMoney>
+    <apparelMoney>160~192</apparelMoney>
+    <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+    </apparelRequired>
+    <maxApparelQuality>Normal</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_TradeMoot_Leader</defName>
+    <label>First Bargainer Kiknik the Wealthy</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
+    <combatPower>87</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>450~540</weaponMoney>
+    <apparelMoney>250~300</apparelMoney>
+    <weaponTags>
+      <li>Jawa_IonWeapon</li>
+    </weaponTags>
+    <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+    </apparelRequired>
+    <maxApparelQuality>Good</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Junkers_Grunt</defName>
+    <label>Junker scrapper</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_Junkers</defaultFactionDef>
+    <combatPower>56</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>60~72</weaponMoney>
+    <apparelMoney>400~480</apparelMoney>
+    <weaponTags>
+      <li>ORMeleeBlunt</li>
+      <li>NeolithicMeleeBasic</li>
+    </weaponTags>
+    <maxApparelQuality>Awful</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Junkers_Heavy</defName>
+    <label>warcasket Junker</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_Junkers</defaultFactionDef>
+    <combatPower>84</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>140~168</weaponMoney>
+    <apparelMoney>700~840</apparelMoney>
+    <weaponTags>
+      <li>SimpleGun</li>
+      <li>KotORRanged_weak</li>
+    </weaponTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Junkers_Specialist</defName>
+    <label>claim-jumper</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_Junkers</defaultFactionDef>
+    <combatPower>94</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>200~240</weaponMoney>
+    <apparelMoney>900~1080</apparelMoney>
+    <weaponTags>
+      <li>AssaultRifle</li>
+      <li>KotORRanged_mid</li>
+    </weaponTags>
+    <maxApparelQuality>Poor</maxApparelQuality>
+  </PawnKindDef>
+
+  <PawnKindDef>
+    <defName>Jawa_Junkers_Leader</defName>
+    <label>Scraplord Tarn Vox the Brutal</label>
+    <race>Human</race>
+    <defaultFactionDef>Jawa_Junkers</defaultFactionDef>
+    <combatPower>149</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>350~420</weaponMoney>
+    <apparelMoney>1400~1680</apparelMoney>
+    <weaponTags>
+      <li>ORMeleeBlunt</li>
+    </weaponTags>
+    <itemQuality>Masterwork</itemQuality>
+  </PawnKindDef>
+
+</Defs>

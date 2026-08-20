@@ -136,20 +136,18 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <Jawa_Gamorrean_Guard>10</Jawa_Gamorrean_Guard>
-          <Jawa_Gamorrean_Enforcer>3</Jawa_Gamorrean_Enforcer>
-          <OuterRim_Scavenger MayRequire="Neronix17.OuterRim.Core">6</OuterRim_Scavenger>
-          <OuterRim_Thrasher MayRequire="Neronix17.OuterRim.Core">6</OuterRim_Thrasher>
-          <VFEP_Scrapper MayRequire="OskarPotocki.VFE.Pirates">4</VFEP_Scrapper>
-          <Scavenger>3</Scavenger>
-          <Thrasher>3</Thrasher>
+          <Jawa_Junkers_Grunt>10</Jawa_Junkers_Grunt>
+          <Jawa_Junkers_Heavy>4</Jawa_Junkers_Heavy>
+          <Jawa_Junkers_Specialist>2</Jawa_Junkers_Specialist>
+          <Jawa_Junkers_Leader>1</Jawa_Junkers_Leader>
         </options>
       </li>
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <Jawa_Gamorrean_Guard>8</Jawa_Gamorrean_Guard>
-          <OuterRim_Scavenger MayRequire="Neronix17.OuterRim.Core">5</OuterRim_Scavenger>
+          <Jawa_Junkers_Grunt>10</Jawa_Junkers_Grunt>
+          <Jawa_Junkers_Heavy>3</Jawa_Junkers_Heavy>
+          <Jawa_Junkers_Specialist>2</Jawa_Junkers_Specialist>
         </options>
       </li>
     </pawnGroupMakers>

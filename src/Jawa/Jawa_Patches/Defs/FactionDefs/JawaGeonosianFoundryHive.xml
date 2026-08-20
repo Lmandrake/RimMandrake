@@ -116,19 +116,18 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <RimMandrake_Geonosian MayRequire="mandrake.starwarsraces">10</RimMandrake_Geonosian>
-          <RimMandrake_GeonosianTribal MayRequire="mandrake.starwarsraces">6</RimMandrake_GeonosianTribal>
-          <JDSCIS_B1_Battle_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">8</JDSCIS_B1_Battle_Droid>
-          <JDSCIS_B2_Super_Battle_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">3</JDSCIS_B2_Super_Battle_Droid>
-          <JDSCIS_Droideka_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">1</JDSCIS_Droideka_Droid>
-          <JDSCIS_T1_Tactical_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">1</JDSCIS_T1_Tactical_Droid>
+          <Jawa_Geonosian_Grunt>10</Jawa_Geonosian_Grunt>
+          <Jawa_Geonosian_Heavy>4</Jawa_Geonosian_Heavy>
+          <Jawa_Geonosian_Specialist>2</Jawa_Geonosian_Specialist>
+          <Jawa_Geonosian_Leader>1</Jawa_Geonosian_Leader>
         </options>
       </li>
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <RimMandrake_Geonosian MayRequire="mandrake.starwarsraces">10</RimMandrake_Geonosian>
-          <JDSCIS_B1_Battle_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">6</JDSCIS_B1_Battle_Droid>
+          <Jawa_Geonosian_Grunt>10</Jawa_Geonosian_Grunt>
+          <Jawa_Geonosian_Heavy>3</Jawa_Geonosian_Heavy>
+          <Jawa_Geonosian_Specialist>2</Jawa_Geonosian_Specialist>
         </options>
       </li>
     </pawnGroupMakers>

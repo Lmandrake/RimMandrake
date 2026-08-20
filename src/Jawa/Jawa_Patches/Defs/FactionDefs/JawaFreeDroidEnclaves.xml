@@ -111,12 +111,10 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <OuterRim_EscapedBattleDroid MayRequire="Neronix17.OuterRim.DroidDepot">8</OuterRim_EscapedBattleDroid>
-          <OuterRim_BattleDroid MayRequire="Neronix17.OuterRim.DroidDepot">6</OuterRim_BattleDroid>
-          <OuterRim_SuperBattleDroid MayRequire="Neronix17.OuterRim.DroidDepot">3</OuterRim_SuperBattleDroid>
-          <OuterRim_CommandoDroid MayRequire="Neronix17.OuterRim.DroidDepot">2</OuterRim_CommandoDroid>
-          <OuterRim_MagnaGuardDroid MayRequire="Neronix17.OuterRim.DroidDepot">1</OuterRim_MagnaGuardDroid>
-          <OuterRim_TacticalDroid MayRequire="Neronix17.OuterRim.DroidDepot">1</OuterRim_TacticalDroid>
+          <Jawa_Droid_Grunt>10</Jawa_Droid_Grunt>
+          <Jawa_Droid_Heavy>4</Jawa_Droid_Heavy>
+          <Jawa_Droid_Specialist>2</Jawa_Droid_Specialist>
+          <Jawa_Droid_Leader>1</Jawa_Droid_Leader>
         </options>
       </li>
       <li>
@@ -131,8 +129,9 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <OuterRim_BattleDroid MayRequire="Neronix17.OuterRim.DroidDepot">6</OuterRim_BattleDroid>
-          <OuterRim_SuperBattleDroid MayRequire="Neronix17.OuterRim.DroidDepot">2</OuterRim_SuperBattleDroid>
+          <Jawa_Droid_Grunt>10</Jawa_Droid_Grunt>
+          <Jawa_Droid_Heavy>3</Jawa_Droid_Heavy>
+          <Jawa_Droid_Specialist>2</Jawa_Droid_Specialist>
         </options>
       </li>
     </pawnGroupMakers>
