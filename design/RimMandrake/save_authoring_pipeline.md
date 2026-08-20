@@ -1,3 +1,21 @@
+> # ⛔ DEAD DOCUMENT — the pipeline it describes was killed 2026-08-18
+>
+> **Owner, 2026-08-18: *"Please don't write to the savegame file anymore."*** Two offline
+> `.rws` writers passed every invariant check they had and still killed the game on load,
+> burning ~2 cold loads; nine save-writing scripts were **deleted** on 2026-08-19.
+>
+> ⛔ **Nothing below is a procedure to follow.** "Surgical save-editing", "you hand me
+> that save; I do surgical edits" and the whole file-authoring delivery model are dead.
+> **The engine writes our save and nothing else does.**
+>
+> ✅ **The live route is `design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md` §12** —
+> vanilla worldgen runs untouched, a companion DLL stamps the authored tiles into the
+> live world before any map exists, and the owner saves.
+>
+> **Kept, not deleted, for one reason:** the byte-level teardown of the `.rws` format
+> below is accurate and was expensive to produce. Read it as a **description of the
+> format**, never as an instruction to write one.
+
 # Save-Based World Authoring Pipeline — RimWorld 1.6 Jawa Gravship Campaign
 
 _How we build an exceptionally hand-crafted world by editing files directly instead of grinding the in-game UIs. Grounded in a byte-level teardown of Mr Samuel Streamer's **Gravtasm** starting save (`.rws`, RimWorld 1.6.4633 rev1261, 587 mods, 14.2 MB / 412k lines) pulled 2026-08-03._

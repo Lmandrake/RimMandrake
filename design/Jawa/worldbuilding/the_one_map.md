@@ -19,9 +19,14 @@
 - ⛔ **No generator.** Nothing that can produce a *second* planet: no seed sweep, no
   "roll N and pick", no exposed parameters, no worldgen step. A knob that could roll
   a different world is out of scope even if we would only ever turn it once.
-- ✅ **One planet, authored.** Direct edits to `world/WORLDMAP_ashkarr.rws`, judged on
-  **realism first** — does it read as a photograph of a real world — then against the
-  design docs below.
+- ✅ **One planet, authored.** ⛔ ~~Direct edits to `world/WORLDMAP_ashkarr.rws`~~ — **that
+  file does not exist and never will; savegame writing was killed 2026-08-18.** The map
+  IS `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows) plus `_links.csv`,
+  `_settlements.csv` and `_meta.json`, written by `ashkarr_paint.py`, which never opens a
+  `.rws`. It reaches the game over the live bridge — `ASHKARR_WORLD_DEFINITION.md` §12.
+  Judged on **realism first** — does it read as a photograph of a real world — then
+  against the design docs below. (See §"The savegame is not read and not written" below,
+  which this bullet contradicted for four days.)
 - 🔑 **The loop is LOOK, not measure.** `worldview.py` renders the save; change,
   render, look, change again. The old pipeline's numbers all passed while the picture
   showed compass-drawn circles, comb-toothed rivers and rectangular roads. **The

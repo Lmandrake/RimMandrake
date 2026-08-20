@@ -160,10 +160,24 @@ pass, because it is on the def the whole temperature design rests on.
 
 # Bucket A — what BUILD authors as FILES
 
-## R-S2 · What a `ScenarioDef` still buys us — and it is very little
+## R-S2 · What a `ScenarioDef` still buys us — 🔴 REVERSED 2026-08-19
 
-**The ruling: do NOT author a `ScenarioDef` for v1.** Author the parts we want
-**into the save's own embedded scenario** instead.
+| ~~**The ruling: do NOT author a `ScenarioDef` for v1.** Author the parts we want **into the save's own embedded scenario** instead.~~ | ⛔ **DEAD.** Owner, 2026-08-18: *"don't write to the savegame file anymore."* Two offline `.rws` writers passed every invariant check and still killed the game on load; nine save-writing scripts were deleted 2026-08-19 |
+
+🔴 **THE RULING NOW READS: AUTHOR THE `ScenarioDef`.** Not because a def is better
+than an edit — the facts below about what the save embeds are all still true — but
+because **only the engine is allowed to write our save, and starting a game from a
+scenario is how the engine embeds the parts for us.** The old ruling's conclusion
+depended entirely on our being able to open the `.rws` and append to `<parts>`. We
+cannot, and we are not going to.
+
+⇒ **The route:** the owner starts his one campaign FROM our `ScenarioDef` → the engine
+serialises every part into `<savegame><game><scenario>` at game creation → he places the
+gravship and the founders and saves → **that save is v1's start, and the parts are in it,
+written by the engine.** The def is then discardable exactly as this section always said;
+what changed is that the copy-once step is now the only door rather than a wasteful one.
+⚠️ **A part not in the def before he starts is not in the shipped campaign** — same
+one-shot, no-retrofit rule as the factions and the ideoligion. See `D-CRIT`.
 
 **Why.** The scenario is serialised into the `.rws` in full — `<savegame><game><scenario>`,
 with `<name>`, `<summary>`, `<description>`, `<playerFaction>`, `<surfaceLayer>`
@@ -198,8 +212,10 @@ drawing it.
 🔴 **Two of these do NOT take effect from a plain save edit.** `Rule_DisallowBuilding`
 and `Rule_DisallowDesignator_*` materialise into `<rules><disallowedBuildings>` /
 `<disallowedDesignatorTypes>` at `PostGameStart`, and nothing re-runs that on
-load. **Append the part AND write the matching `<rules>` entry**, or add the part
-before the save is first created. The live-queried parts (`StatFactor`,
+load. ~~**Append the part AND write the matching `<rules>` entry**~~ ⛔ that half is dead with
+the save-writer — **the part must be in the `ScenarioDef` before the save is first
+created**, which is now the only available route and happens to be the one that works
+for every part class rather than some of them. The live-queried parts (`StatFactor`,
 `DisableIncident`, the ticking ones) work from the edit alone.
 
 ⚠️ **`ScenPart_Error`** — "One or more parts in this scenario could not be loaded
@@ -462,7 +478,7 @@ careful click, and being wrong the other way costs a campaign.
 | **The anomaly threat slider** | adjustable in an existing save — **only while difficulty is Custom**. This is the reason B1 and B2 must be taken together |
 | **Individual Custom sliders** | same page, same Custom-only condition |
 | **Mod settings, autosave interval, UI** | any time |
-| **Everything in `SCENARIO_SPEC.md`'s starting stock** | it is a save; edit the save |
+| **Everything in `SCENARIO_SPEC.md`'s starting stock** | ⛔ ~~it is a save; edit the save~~ — **no.** Set it up in the running game before the owner saves (bridge or by hand); the save is written by the engine only |
 
 ---
 
@@ -472,16 +488,21 @@ careful click, and being wrong the other way costs a campaign.
    reads `TidallyLocked` at the settings page, by whichever of the three routes.
    **This is the item that decides whether the campaign world is the designed
    world at all**, and today it reads `Default`.
-2. 🔴 **Fix `biomeConfigs` in `src/Jawa/Jawa_Patches/Patches/JawaWorld_BiomeMix.xml`**
-   to the `<li><key>/<value>` shape (R-S1b), keep `<biomes>` empty, and **deploy it**.
-   This blocks the worldgen run.
+2. ~~🔴 **Fix `biomeConfigs`** … **This blocks the worldgen run.**~~ ⛔ **DEMOTED
+   2026-08-19 — it blocks nothing.** Every tile's biome is authored and stamped over the
+   bridge, and `BiomeDef.Worker.GetScore` (the only consumer of the blacklist and the 24
+   `scoreOffset`s) is called from `WorldGenStep_Terrain` alone, whose output we overwrite
+   in full. Fix the `<li>` shape only if it is free. Ruling in `queue/DECIDE.md`, D29.
 3. **Decide with DECIDE whether `rainfallCurves` carries R-H1**, and if so author
    it — same dictionary shape, same trap. Note it needs an `OverallRainfall` key
    matching the step the owner picks at B7.
 4. **Author nothing as a difficulty file.** No `DifficultyDef`, no patch to
    `Custom` (R-S5).
-5. **Author no `ScenarioDef`.** If any ongoing ScenPart is wanted, it goes into
-   the save's `<parts>` — and for `Rule_Disallow*`, into `<rules>` as well (R-S2).
+5. 🔴 **REVERSED — author the `ScenarioDef` after all (R-S2).** It is the only legal
+   way an ongoing ScenPart reaches the shipped save now that nothing but the engine may
+   write one. The owner starts his campaign from it and the engine embeds the parts.
+   ⚠️ DECIDE owes the part list before he sits down; a part missing then is missing
+   forever.
 6. **Correct two state files that carry wrong facts:**
    - `infrastructure/state/EXPECTED_FAILURES_next_load.md` **S5** records
      `AnomalyFrequency_None` and friends as playstyle **defNames**. 🔴 **They are
