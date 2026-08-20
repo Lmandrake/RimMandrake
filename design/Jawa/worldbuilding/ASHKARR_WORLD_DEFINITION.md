@@ -192,6 +192,44 @@ terminator. 🔑 **Small story-critical zones fill first**, or they starve.
 
 Every holding's tile and its one-line reason are in `ASHKARR_WORLDMAP_settlements.csv`.
 
+## 7b. ⭐ THE SETDOWN — where the player's clan lands. Sited 2026-08-19
+
+The docs had only *"the habitable ring is ~34–57° of arc"* and left the rest open.
+It is now decided, and it is in the recipe as `HOME_LATLON` / `HOME_NAME`.
+
+| | |
+|---|---|
+| **tile** | **2476** — lat −1.028, lon +56.867 |
+| **arc / bearing** | **56.9 / 358.8** — the outer edge of the habitable ring, on the **GRAY (downwind) flank** |
+| **region** | The Fall Line Barrens |
+| **ground** | `ExtremeDesert`, 276 m, **38.6 °C**, **18 mm** of rain, flat, with the tail of the Fall Line breaking to 583 m within ~2 tiles |
+| **water** | **none.** Nearest river tile 26°, nearest sea further. The Scald is over the horizon and over a mountain range |
+
+Why here and nowhere else — each of these is the reason, not a nice-to-have:
+
+1. 🔑 **The campaign has a direction built into the ground.** Everything the clan
+   needs lies **outward** toward the terminator; everything that will kill them lies
+   **sunward**. No other tile in the ring makes the map itself point somewhere.
+2. **Kin are one caravan out, not zero.** The Jawa Trade Moot's anchor **The Ore Moot**
+   — *the mine the sandcrawlers were stolen from* — is **5.3°** away.
+3. **The parts are the second ring.** The ship needs a thruster, a fuel tank and a
+   pilot console; the Junkers squat the worked-out mining fields at **The Claim Jump
+   10.4°**, **Tailings End 12.1°**, **The Slagfield 15.1°**. The v2 flight goal has a
+   destination on the map from turn one.
+4. **The Empire is a presence, not a garrison next door** — Ashgarrison at **16.2°**.
+5. ⭐ **Water is the campaign's pressure, not a resource on the map.** No river, no
+   oasis, no coast. This is what the water doctrine asks for and no wetter tile gives.
+6. **The Fall Line is the range that things fall along.** The clan lives in its
+   barrens; that is where a dead gravship was found and woken.
+
+⚠️ `SCENARIO_SPEC.md` requires the start biome to be Desert / ExtremeDesert /
+AridShrubland. `ExtremeDesert` is the harshest of the three and grows nothing —
+that is the intent, but it is the one choice here worth a playtest before it is final.
+
+🔑 **Resolved by lat/lon, never by tile number**, so it survives a geometry rebuild;
+the recipe **aborts** if that lat/lon stops being `ExtremeDesert`, because the home
+site is a decision and not an output.
+
 ## 8. Roads
 
 A **minimum spanning tree** between the holdings plus **shortcuts** wherever the tree
@@ -217,8 +255,8 @@ pictures of the CSV above.
 
 ## 10. Open questions for the owner
 
-1. **The player start is unsited.** Nothing in the docs places the Jawa clan beyond
-   *"the habitable ring is ~34–57° of arc"*.
+1. ~~The player start is unsited.~~ **CLOSED 2026-08-19 — see §7b.** The Setdown,
+   tile 2476. The one thing left to confirm by play is `ExtremeDesert` vs `Desert`.
 2. The Empire's three seats are choke points by inference; the docs say only *"roads,
    strategic passes"* and the spaceport.
 3. `faction_world_spec.md` §4 is still written in latitude bands and contradicts this
@@ -251,13 +289,30 @@ judge it by eye. Every defect that mattered in this work — compass-circle seas
 rivers, rectangular roads, bullseye biomes, rivers that could not die — passed its
 numeric checks while the picture was obviously wrong.
 
+### 🔴 The map was never actually frozen — found and fixed 2026-08-19
+
+`despeckle()` iterated a bare `set()` of biome-name strings, and dissolving one speck
+changes what the next speck sees, so the **order** of those names decided the outcome.
+Python randomises string hashing per process. **Three rebuilds produced three different
+planets** (roads 80 / 82 / 84 links) and every one of them passed every acceptance
+check. The committed CSV was one arbitrary sample, not THE map.
+
+Fixed by `sorted(set(...))`, a name-based tie-break in the ring vote, and pinning
+`PYTHONHASHSEED` by re-exec at the top of the recipe. Two consecutive rebuilds are now
+**byte-identical**. Re-freezing moved **107 tiles of 21872** and reshuffled which
+Homestead holding got which name.
+
+🔑 **The lesson generalises: "it renders the same" is not "it rebuilds the same."**
+Before trusting any future rebuild, run it twice and `md5sum` the three CSVs.
+
 ### What is NOT done, in the order it probably matters
 
-1. **The player start is unsited.** Nothing in the docs places the Jawa clan beyond
-   *"the habitable ring is ~34–57° of arc"*. Needs an owner call, then a tile.
-2. **Region labels collide** on the render — `The Dew Horn` / `The Scald` / `The Dew
-   Belt` overlap, and `The Fall Line Barrens` runs into `Ashfall Range`. The 11°
-   minimum separation is applied to label ANCHORS; the text is wider than that.
+1. ~~The player start is unsited.~~ **DONE — §7b.** The Setdown, tile 2476, arc 56.9 on
+   the gray flank. `ExtremeDesert` vs `Desert` is the one call worth a playtest.
+2. ~~Region labels collide on the render.~~ **DONE.** The anchor separation was the
+   wrong test — what collides is the projected **text box**. `worldview.py` now tests
+   pixel boxes and walks a ladder of vertical offsets, and the looser anchor rule
+   surfaced names that had been silently dropped (The Scorch, The Anvil, The Pyrelands).
 3. **`AB_GelatinousSuperorganism` smears across the top** of the rectangular map. It is
    honest — the poles genuinely sit on the terminator at arc 90 — but it reads as a
    band. Mollweide shows its true size (0.2%).
