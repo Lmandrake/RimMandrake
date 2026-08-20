@@ -106,7 +106,7 @@ material we did not write (→ `research/`), **anything a machine generates**.
 | `src/RimMandrake/RimDefDump/` | The def-dump mod that produces `observed/**/dumps/`. |
 | `src/RimMandrake/MissingArtFixes/`, `WreckedMachines/` | Generic mods — a stranger owning the donor mod could use them unchanged. |
 | `src/RimMandrake/*Fix/` | Per-mod art and orientation fixes: `BlastDoorFrameAsyncFix`, `CereanManeFix`, `GravshipAstronautFix`, `KotORBandolierNorthFix`, `MSEDroidFix`, `PhytokinBarkHeadFix`, `ResearchKitEastFix`, `SauridFrillFix`, `ToolBeltFix`. |
-| `src/RimMandrake/JawaSeaShaper/` | Worldgen sea shaping (name predates the naming rule; do not rename in passing). |
+| ~~`src/RimMandrake/JawaSeaShaper/`~~ | ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. The directory is DELETED from the repo, from the game's Mods folder and from `ModsConfig.xml`. Do not recreate it. |
 
 ---
 

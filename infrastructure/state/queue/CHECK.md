@@ -179,18 +179,20 @@ note:     2026-08-14 CHECK. Restamped: `by CHECK`, `at 1786770877` (was BRIDGE's
           Stays `doing` until I stamp it down and the panel agrees.
 
 ## C15 Finish measuring the ocean — 3 of 7 seeds still unread
-row:      v2
+row:      dead
 spec:     —
 verify:   —
 criteria: —
-state:    dropped — Worldgen is manual and the sea left v1. Full text in `design/V2_DREAMS.md`.
+state:    dropped — ~~v2, full text in `design/V2_DREAMS.md`.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12.
+          `sea_seed_sweep.py` is deleted; there are no seeds to read.
 
 ## C16 Score the ocean against its spec
-row:      v2
+row:      dead
 spec:     —
 verify:   —
 criteria: —
-state:    dropped — Worldgen is manual and the sea left v1. Full text in `design/V2_DREAMS.md`.
+state:    dropped — ~~v2, full text in `design/V2_DREAMS.md`.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12.
+          `worldgen_sea_spec.md` is deleted; there is no spec to score against.
 
 ## C35 Confirm the faction xenotype sets read back as Star Wars species
 row:      9
@@ -1223,6 +1225,18 @@ spec:     🔴 OWNER RULING 2026-08-18, end of session: STOP WRITING THE PAINTED
           construction because the ENGINE wrote them, and a bad write costs a reload
           instead of a cold load.
 
+          🔴 CONFIRMED THE ONLY ROUTE, owner 2026-08-19: *"anything aimed at the in-game
+          worldgen should be stripped, anything importing external worldmaps through the
+          bridge or configuring the game to generate the inputs for the external worldmap
+          creation should be kept."* The competing route - our own WorldGenStepDef stamping
+          tiles during generation - is DEAD, and its whole apparatus is deleted:
+          `JawaSeaShaper` (repo, Mods folder and ModsConfig, 584 -> 583),
+          `src/RimMandrake/bridgetools/sea_seed_sweep.py`,
+          `design/Jawa/worldbuilding/worldgen_sea_spec.md`. `ASHKARR_WORLD_DEFINITION.md`
+          §12 is rewritten to this route. ⇒ THIS ITEM IS NOW THE ONLY WAY THE MAP REACHES
+          THE GAME. Nothing else is being built in parallel, so it is not one option of two.
+          ⛔ Do not answer a difficulty here by proposing a worldgen step instead.
+
           WHAT IS NEEDED: two companion [Tool] methods beside jawa/world_neighbors -
           a batch tile setter (biome, elevation, hilliness, temperature, rainfall,
           swampiness) and a link setter (rivers, roads). Adding a companion tool measured
@@ -1295,32 +1309,31 @@ spec:     Two facts about the LIVE mod stack are load-bearing for any DLL that s
              subcount is anything but 7, EVERY tile ID in the CSV shifts and the import
              silently paints the wrong planet.** The importer must ASSERT
              `grid.TilesCount == 21872` and refuse, loudly, otherwise.
-          2. **Other mods are in the same pipeline, but they are NOT the reason to
-             pick an order.** Geological Landforms (`2773943594`, ACTIVE, packageId
-             `m00nl1ght.GeologicalLandforms`) Harmony-patches `WorldGenStep_Terrain`
-             itself, in `1.6/Lunar/Components/GeologicalLandforms.dll`. Terrain is
-             **order 0**, so anything of ours above 0 already lands after it. Four other
-             mods register their own WorldGenStepDefs — BiomesKit Continued
+          2. **Other mods write this same grid — worth knowing, no longer worth
+             ordering against.** Geological Landforms (`2773943594`, ACTIVE, packageId
+             `m00nl1ght.GeologicalLandforms`) Harmony-patches vanilla's
+             `WorldGenStep_Terrain` in `1.6/Lunar/Components/GeologicalLandforms.dll`,
+             and four mods register their own WorldGenStepDefs — BiomesKit Continued
              (`3333951497`, `zal.biomeskit`, ACTIVE), Vanilla Expanded Framework
              (`2023507013`, `KCSG.WorldGenStep_SpawnWorldObjects`), Fortified Features
-             Framework (`3498575851`), GravTide (`3779600989`) — **check each one's
-             `<order>` and make sure ours is higher**, which is the only lever that
-             sorts def against def.
-             ⚠️ **CORRECTION to the first version of this item, which said the step must
-             run LAST. It must not.** See the ORDER ruling in
-             `ASHKARR_WORLD_DEFINITION.md` §12: stamping after order 700 would leave
-             rivers, landmarks and mutators chosen against a planet that no longer
-             exists. **Order 20.**
-          3. `JawaSeaShaper` already sits in
-             `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\JawaSeaShaper\`
-             and is active — the WorldGenStepDef + `PatchOperationConditional`
-             registration pattern is proven end-to-end on this machine. Copy it, do not
-             reinvent it.
+             Framework (`3498575851`), GravTide (`3779600989`). **All of them are things
+             that ran BEFORE we arrive**, which is what we overwrite.
+             🔑 **The bridge import is last by construction.** It runs against a world
+             the game has already finished generating and before any map exists, so
+             every step above has had its turn and there is nothing to sort ours against.
+             ~~ORDER RULING: give our own `WorldGenStepDef` order 20 — above Geological
+             Landforms at 0, below the 700s.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12.
+             We register no step, so there is no order.
+          ~~3. `JawaSeaShaper` is installed and active; copy its WorldGenStepDef +
+             `PatchOperationConditional` registration pattern.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. The mod is
+             deleted from the repo, from the game's Mods folder and from `ModsConfig.xml`
+             (584 → 583). There is no registration pattern to copy — the route is the two
+             companion `[Tool]` methods that write the 21,872 tiles into a generated world.
 verify:   offline, before any load: `grep -c . world/ASHKARR_WORLDMAP_tiles.csv` is
           21873 (header + 21872), and the `myLittlePlanetSubcount` in the preset is 7.
-criteria: on the load that first runs the importer, `Player.log` shows the step running
-          AFTER the Geological Landforms patch, and a spot-check of five tile IDs drawn
-          from the CSV has the biome the CSV says. 🔑 Then LOOK at the world map and
+criteria: on the load that first runs the import, the companion tools return success
+          against a world whose `grid.TilesCount` is 21872, and a spot-check of five tile
+          IDs drawn from the CSV has the biome the CSV says. 🔑 Then LOOK at the world map and
           compare it against `world/view/ASHKARR_WORLDMAP.biome.equirect.png`. Every
           defect that has mattered in this work passed its numeric check while the
           picture was obviously wrong.

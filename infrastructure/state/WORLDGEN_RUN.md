@@ -54,8 +54,8 @@ rows. The general lesson it taught stands; the `[v2]` file it names does not shi
 
 | # | precondition | owner | why it cannot slip |
 |---|---|---|---|
-| ~~G1~~ | ⛔ **DEAD — the sea left v1.** Owner ruled worldgen MANUAL 2026-08-14; he picks a world he likes by eye. The sea assembly and the 5-part sea gate are `[v2]` (`V2_DREAMS.md`), B2/C15/C16 dropped, DECIDE's D-CRIT superseded 2026-08-15 | — | Deploy nothing for the sea. The repo/deployed md5 mismatch noted above is expected, not a defect |
-| ~~G2~~ | ⛔ **DEAD with G1** — nothing registers `Jawa_SeaShaping` because nothing runs it | — | Kept as a struck row so nobody re-derives the gate from the mismatch above |
+| ~~G1~~ | ⛔ **DEAD — the sea left v1, and as of 2026-08-19 it is deleted.** ~~The sea assembly and the 5-part sea gate are `[v2]` (`V2_DREAMS.md`).~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. `JawaSeaShaper` is gone from the repo, the Mods folder and `ModsConfig.xml` (584 → 583); `sea_seed_sweep.py` and `worldgen_sea_spec.md` are deleted. B2/C15/C16 dropped, DECIDE's D-CRIT superseded 2026-08-15 | — | Deploy nothing for the sea, and do not rebuild it. The repo/deployed md5 mismatch noted above is expected, not a defect |
+| ~~G2~~ | ⛔ **DEAD with G1** — ~~nothing registers `Jawa_SeaShaping` because nothing runs it~~. ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. We register no `WorldGenStepDef` at all. Kept as a struck row so nobody re-derives the gate from the mismatch above | — | — |
 | **G0** | 🔴 **`TidallyLocked` is SELECTED in Mod Settings** — see §2.A. Ratified 2026-08-15, **not set as of that date** | the owner, before the run | Fails **silently**: `selectedPlanetType` reads `Default`, no config file exists, nothing logs, and the type cannot be changed from the world page. Every ruling R-H0..R-H10 rests on its curve |
 | **G6** | 🔴 **`JawaWorld_BiomeMix.xml` actually applies** — today 28 `is not <li>` errors leave `biomeConfigs: []`, so all 24 abundance offsets fail behind a patch that looks fine | BUILD, **B63** | **Biome scoring runs ONCE, at worldgen.** Same dictionary-keyed `<li>` bug as B56 |
 | **G7** | 🔴 **Chain steps 6 and 9 are SHIPPED AND LIVE** — the 11 ideos and the full faction roster (B40–B54) | BUILD | Factions and ideos are read **once**, at world creation, and cannot be retrofitted. With the sea gone, **this is the real gate on rows 2 and 7**. Owner 2026-08-15: this work IS v1; factions are near done **bar allowed items and descriptions** — and "allowed items" now has a fixed set to draw from, because the cherrypick froze |
@@ -101,7 +101,16 @@ button on the world page** — it cannot be fixed at the screen once he is there
 Mod Settings, not a file we can write for him — recorded here rather than in a queue
 because it is his click, not a build.
 
-**Coverage and seed remain open and remain the owner's, at the screen.**
+🔴 **COVERAGE IS NO LONGER OPEN — it is PINNED, and this is the half of the run the
+2026-08-19 ruling explicitly KEEPS.** The generated world is the *input* the authored
+map is stamped onto, and the tile IDs in `world/ASHKARR_WORLDMAP_tiles.csv` only mean
+anything at one grid size: **My Little Planet subcount 7 · planet coverage 100% (1.0)**,
+which yields exactly **21,872 tiles**. Any other value and every tile ID shifts and the
+import silently paints the wrong planet. Details and the assert the importer must carry:
+`worldmap-import-is-pinned-to-mlp-subcount-7-4c9e1a` in `queue/CHECK.md`.
+
+**Seed remains open and remains the owner's, at the screen** — it chooses the base
+planet, which the import overwrites.
 
 ### B. 🔴 THE LANDING TILE — now load-bearing, and it was not before
 **Pick the tile against its MUTATORS, not only its biome.** Of 337 `TileMutatorDef`s
@@ -155,9 +164,11 @@ nobody re-opens it at the screen.
 5. **Configure Factions** — `WORLDGEN_FACTION_CHECKLIST.md`, box by box.
    **21 untick / 6 keep, ratified. Do not re-litigate at the screen.**
 6. **Anomaly settings** — §2.E.
-7. **Generate.** Then **read the sea step's own `Report()` out of the log before
-   choosing a tile** — it self-tests coverage, body count and raggedness.
-   ⚠️ **A missing `Report()` means G2 failed and the step never ran.**
+7. **Generate.** ~~Then read the sea step's own `Report()` out of the log before
+   choosing a tile.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. **No step of ours runs during
+   generation and nothing of ours writes to the log here.** The planet the generator
+   produces is the INPUT; the authored map is written over it afterwards through the
+   bridge — see `worldpaint-live-bridge-route-9d41c7` in `queue/CHECK.md`.
 8. **Landing tile** — §2.B, mutators first.
 9. **Land, then collect §4.**
 
@@ -169,7 +180,7 @@ nobody re-opens it at the screen.
 |---|---|---|
 | factions absent from the world | **2** | `jawa/list_factions` |
 | the campaign world exists, on the intended planet type | **7** | `jawa/world_stats` |
-| the sea: ~25% water, 3 bodies, raggedness, band | W1 | the step's `Report()` in the log |
+| ~~the sea: ~25% water, 3 bodies, raggedness, band~~ | ~~W1~~ | ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. Nothing to collect — no step, no `Report()` |
 | `ChunkSlagSteel` count on the campaign map | **4** | a cells sweep, or `jawa/get_things` if it has landed |
 | the hulk present and ship-shaped | 4's rider | count the prefab pieces and their bounding box — ⛔ **not "reads as a downed ship"**, which no call can collect |
 | *The Claim* fires and reaches an end state | **3** | `jawa/fire_quest`, then a state read at T+n |
@@ -191,5 +202,6 @@ do not let them wait on it.
 - ⛔ **Do not whitelist biomes.** A whitelist silently excludes `Space`, `Orbit`,
   `Underground` and the undercaves, breaking every pocket map. **Blacklist only.**
 - ⛔ **Do not trust `elevationRange` as an ocean dial.** Its own author wrote *"I
-  have absolutely no clue how it actually works."* **The step measures and hits
-  25%**; the field is a coarse nudge at best.
+  have absolutely no clue how it actually works."* ~~The step measures and hits 25%~~
+  — ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. The generated planet's water is
+  OVERWRITTEN by the imported map, so the field does not need to hit any target.

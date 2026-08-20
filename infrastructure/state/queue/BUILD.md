@@ -487,11 +487,13 @@ criteria: the save loads into a playable colony aboard the ship. This IS chain
 state:    blocked
 
 ## B2 Install the ocean-shaping mod on its own, so blame stays clear
-row:      v2
+row:      dead
 spec:     —
 verify:   —
 criteria: —
-state:    dropped — Worldgen is manual (owner, 2026-08-14) and the sea left v1. Full text in `design/V2_DREAMS.md`.
+state:    dropped — ~~v2, full text in `design/V2_DREAMS.md`.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12.
+          There is no mod to install: `JawaSeaShaper` is deleted from the repo, from
+          `…\Steam\steamapps\common\RimWorld\Mods\` and from `ModsConfig.xml`.
 
 ## B6 Deploy the MandrakeJawa xenotype and indigenous-tribe set
 row:      4

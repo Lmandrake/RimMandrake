@@ -214,11 +214,13 @@ criteria: —
 state:    dropped — Answered — the owner makes and saves the world by hand, so nothing needs measuring.
 
 ## D4 The world is half ocean against a quarter by design — pick a fix
-row:      v2
+row:      dead
 spec:     —
 verify:   —
 criteria: —
-state:    dropped — Worldgen is manual; the owner picks a world he likes by eye. Full text in `design/V2_DREAMS.md`.
+state:    dropped — ~~v2, full text in `design/V2_DREAMS.md`.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12.
+          The water is authored offline and imported; the generator's own ocean fraction
+          is overwritten and is not a problem to fix.
 
 ## D24 Four rules died with `agents_def.md` — re-home them or repeal them
 row:      0
@@ -862,10 +864,12 @@ state:    done — **RULING: `JawaWorld_BiomeMix.xml` is v1. B63 STANDS. Do not 
           things will be tested against it:
 
           🔴 **THE TEST IS "DOES IT RUN, OR IS IT READ?"**
-          - **STOOD DOWN — machinery that OPERATES the generator.** The stood-down sea
+          - **STOOD DOWN — machinery that OPERATES the generator.** ~~The stood-down sea
             work is a `WorldGenStepDef` plus an assembly that measures a world and re-shapes it
-            toward a target, iterating until a gate passes. That is worldgen "functioning
-            by itself", and it is exactly what the owner killed.
+            toward a target, iterating until a gate passes.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12.
+            Stood down became deleted; read this bullet as the CLASS that is forbidden, not
+            as a description of work that still exists anywhere.
+            That class is worldgen "functioning by itself", and it is exactly what the owner killed.
           - **NOT STOOD DOWN — def data the generator READS.** A `BiomeDef` field is
             static content. It never runs, never measures, never re-tries. It describes
             what this planet IS, and the generator consults it while the OWNER drives.

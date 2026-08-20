@@ -45,9 +45,11 @@ disagree about scope, this file is newer.
 6. 🔴 **WORLDGEN IS MANUAL AND IT IS THE OWNER'S.** *"I will manually make a world
    and save it. Then we will use it as a resource we simply enable. Let's not try
    to solve automated worldbuilding at this time in v1."*
-   ⇒ **The sea is OUT of v1** — `JawaSeaShaper`, the 5-part sea gate, the seed
-   sweep and the ocean-percentage problem all move to `V2_DREAMS.md`. The owner
-   picks a world he likes by eye.
+   ⇒ **The sea is OUT of v1**, and since 2026-08-19 it is out entirely.
+   ~~`JawaSeaShaper`, the 5-part sea gate, the seed sweep and the ocean-percentage
+   problem all move to `V2_DREAMS.md`.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. The mod,
+   `sea_seed_sweep.py` and `worldgen_sea_spec.md` are deleted; water arrives with the
+   rest of the painted map. The owner still picks a base world he likes by eye.
    ⇒ **THE DEADLINE INVERTS.** Every `FactionDef` and every ideo block must exist
    and be DEPLOYED *before the owner sits down to make that world*, because
    factions and ideos are read once at world creation. This is no longer an

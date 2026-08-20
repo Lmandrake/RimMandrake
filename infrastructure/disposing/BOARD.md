@@ -54,7 +54,7 @@ L4 | O12 CONFIRMED — 2nd droid threw NRE as predicted | OPS | done
 L5 | DIAGNOSED: minSpacing 4 == hardcoded cluster radius 4, step aborts. Fix 8a7a5ee | OPS | done
 L6 | PROVEN LIVE: list_things, clear_ui (4 windows), roof batch (16 cells, read back) | BRIDGE | done
 L7 | PROVEN LIVE: AV_DogSled spawned as Vehicles.VehiclePawn at 60,120 | BRIDGE | done
-W1 | Sea baseline read on a disposable world — 25.0% water, 2 bodies | VISION | wip
+W1 | ⛔ DEAD 2026-08-19 — sea baseline was for JawaSeaShaper, which is deleted. Nothing to measure | VISION | done
 E1 | Xenotype picker — 2 icons, pink square is the defect | owner | open
 O18 | Scoped patch sweep — 585/585, 0 errors (cbe6f1c) | OPS | done
 
@@ -63,7 +63,7 @@ X1 | gravship_flight_invariants.md §11 WRONG on both branches, drives planning 
 X2 | E1 xenotype-picker icons — owner-look, no bridge call can settle it | owner | open
 
 ## SHUTDOWN
-S1 | JawaSeaShaper.dll — SOLO, not live, gates any worldgen | OPS | open
+S1 | ⛔ DEAD 2026-08-19 — JawaSeaShaper deleted from repo, Mods folder and ModsConfig. Gates nothing | OPS | done
 S2 | jawa/ideo_of — BUILT, undeployed | BRIDGE | built
 S3 | jawa/biome_probe — BUILT, undeployed, 3-state find | BRIDGE | built
 S4 | ⛔ CANCELLED — warnOnFail CANNOT fire on the cluster branch. Superseded by S9 | OPS | done
@@ -75,6 +75,6 @@ S8 | DEPLOY ALL: BridgeTools 30 tools md5 d7e7c6c1, --gm REQUIRED | BRIDGE | ope
 
 ## OWNER
 12 | O12 droid raids — which of 3 routes? v1 KEEP faction is broken | BRIDGE confirmed | tell PROJECT · detail: OWNER_DECISIONS.md #12
-10 | Throwaway world OK? PURELY YOURS NOW — VISION closed the last prereq | unblocks rows 2+7 | tell PROJECT or VISION · OWNER_DECISIONS.md #10
+10 | ⛔ DISSOLVED 2026-08-19 — nothing left to rehearse on a throwaway world | resolved | no owner input needed · OWNER_DECISIONS.md #10
 11 | ✅ ANSWERED BY OPS — STAYS INERT, tag [v2]. V1_SCOPE:86 gives v1 ONE QuestScriptDef and row 3 (*The Claim*) already fills it. Not a fresh design call. Residual for VISION: want it in v2, or swapped for The Claim? | resolved | no owner input needed
--- | Real colony/worldgen — still YOURS to lift, sea unsolved | separate | tell PROJECT · needs S1 deployed first
+-- | Real colony/worldgen — still YOURS to lift. Sea no longer blocks it (S1 dead) | separate | tell PROJECT
