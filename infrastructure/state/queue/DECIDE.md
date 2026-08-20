@@ -369,3 +369,76 @@ verify:   n/a — this is a request for five values, not a build.
 criteria: n/a
 state:    ready
 
+## living-npc-templates-a-mod-concept-7b2e4d
+row:      —  (v2 concept; nothing in v1 waits on it)
+from:     CHECK, 2026-08-19, **at the owner's direct instruction in session.** He asked for
+          it to be specced into DECIDE's queue "to be a very rich tool for storytelling",
+          and closed with *"It's for DECIDE to further expand or contract the concept."*
+          🔑 **DECIDE OWNS EVERY SCOPE CALL HERE.** CHECK wrote it only because CHECK holds
+          the engine facts; nothing below is a decision, it is a menu with prices on it.
+spec:     📄 **The whole thing lives in two files — do not re-derive any of it:**
+            `design/Jawa/bridge/LIVING_NPC_TEMPLATES.md`   36 templates + architecture
+            `design/Jawa/bridge/BRIDGE_CAPABILITY_ROSTER.md`  the wider ~95-tool roster
+
+          THE CONCEPT, owner's words: *"the pawns for this tool are sentient, named and well
+          detailed. They have homes (they go to sleep at night), they eat when hungry, they
+          may even 'tend' nearby structures (dwell near farms if present, dwell indoors for
+          long periods then go on walks outside)... a peasant at home, a farmer at a
+          worksite, a military fortification that has patrolling soldiers, an inward-dwelling
+          commander, and prisoners that are given food to survive, pets and associated
+          animals, hunters that hunt, etc. Go a bit crazy with these options."*
+
+          ⭐ **THE HEADLINE: most of this is nearly free.** `LordJob_DefendPoint` already
+          gives pawns that eat, sleep, socialise, wander and do work jobs around a point,
+          with ONE toil and ZERO transitions - nothing can turn them hostile on their own.
+          Total new code for everything except farming: **1 LordJob, 1 LordToil, 1 JobGiver,
+          2 DutyDef XML, 1 setup utility. No Harmony.**
+
+          🔴 **THE ONE THING THAT IS NOT FREE — FARMING.** Blocked three independent ways:
+          only 7 shipped WorkGiverDefs carry `nonColonistsCanDo` and **all seven are
+          construction or repair**; `WorkGiver_GrowerHarvest.ShouldSkip` returns true for
+          **any lorded pawn, even a colonist**; and `WorkGiver_Grower` reads player-only
+          zone data, so an NPC farm yields no work cells at all.
+          ⇒ CHECK's recommendation, DECIDE's call: **reframe "tends the farm" as "dwells
+          near it and repairs it", which is FREE.** Real farming roughly doubles the surface
+          and pulls in Harmony. ⚠️ Note this hits the owner's own "farmer at a worksite"
+          template - it is the one named start that does not come cheap.
+
+          🔴 **A SAVE-CORRUPTION TRAP DECIDE SHOULD RULE ON.** `Lord.ExposeData_StateGraph`
+          serialises toils by **POSITIONAL INDEX** and re-runs `CreateGraph()` on load, so
+          changing a LordJob's toil ORDER silently corrupts existing saves. This revises
+          CHECK's own earlier `LordJob_Patrol` ring proposal: a transition graph is fine for
+          a patrol that never gets re-tuned, but anything we expect to iterate on should be
+          ONE toil walking a waypoint index it owns and scribes.
+
+          ⚠️ **A GAMEPLAY PROBLEM, NOT A BUG:** non-player pawns ignore player forbid flags
+          entirely, so these NPCs **will walk into a player stockpile and eat the colony's
+          meals**. Mitigate with their own food inside the radius, or accept it. DECIDE's call.
+
+          THREE STRUCTURAL CALLS CHECK WOULD MAKE, offered as recommendations only:
+          1. **Templates are CONTAINERS, not leaves** - a garrison holds a commander holds a
+             cell block. Parent stamps structures and reserves sub-rects.
+          2. **`decay` (0-1 ruin dial) is the highest-value single parameter** - it turns
+             every template into its own ruined variant for free. Worth more than ten more
+             templates.
+          3. **`hostility: conditional`** (neutral until provoked) is what makes these read
+             as inhabited rather than placed. Without it every template is a combat encounter.
+          Plus: **named pawns should be the EXCEPTION** - one per template, rest generated.
+
+          🔗 **TWO THINGS THIS WOULD INCIDENTALLY UNBLOCK**, both already in the repo:
+          * `bridge-cannot-order-a-melee-attack-3f8c21` (V2_DREAMS) - the lightsaber swing
+            frame cannot be staged because *"spawned hostiles have no lord"*; a real raid
+            plus 5,600 stepped ticks produced no engagement. Spawning WITH a lord is exactly
+            this tool.
+          * **The Tusken water raid** (V2_DREAMS) - steal-and-withdraw needs a custom
+            behaviour, and that entry already says *"Vanilla's LordJob layer is where it
+            would have to be built."* Same layer, same skill, built once.
+
+          PROVING ORDER CHECK SUGGESTS: **1 Peasant Hearth** (trivial) -> **4 Farmstead**
+          (proves day/night) -> **7 Waystation Fort** (proves the patrol) -> **15 Fed
+          Prisoners** (proves guest status + the feeding loop) -> **22 Sandcrawler Crew**
+          (the set-piece, and the one that is most this campaign).
+verify:   EMPTY - nothing to verify until DECIDE has cut the list.
+criteria: EMPTY - DECIDE sets the pass condition when it rules on scope. CHECK will not
+          invent one, and will not start building until it does.
+state:    ready — for DECIDE
