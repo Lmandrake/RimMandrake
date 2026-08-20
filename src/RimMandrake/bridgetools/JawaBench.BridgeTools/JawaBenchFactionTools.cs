@@ -300,5 +300,154 @@ namespace JawaBench.BridgeTools
                 };
             });
         }
+
+        [Tool(
+            "jawa/faction_create",
+            Description =
+                "Create a faction that worldgen never made, and add it to the world. " +
+                "This is the only route for a faction that is ABSENT from an existing " +
+                "world: requiredCountAtGameStart is read at world generation and nowhere " +
+                "else, and the only load-time top-up is a hardcoded list of five vanilla " +
+                "factions, so a missing faction cannot arrive by patching a def. " +
+                "WHY ONE GOES MISSING, which is worth checking before creating it: " +
+                "FactionGenerator.InitializeFactions skips a def entirely when ANY other " +
+                "def declares replacesFaction at it with requiredCountAtGameStart above " +
+                "zero. Biotech's PirateWaster replaces vanilla Pirate that way, which is " +
+                "why the reskinned Blackstar Company was never generated. " +
+                "DEFAULTS TO dryRun=true. " +
+                "REFUSES a def that already has a faction, and refuses a hidden def " +
+                "unless forced, because a hidden faction is engine bookkeeping and " +
+                "creating one by accident is silent. " +
+                "TRAP: the new faction is NAMED BY THE GENERATOR unless its def carries " +
+                "fixedName, so it will arrive wearing a random name. Clear it afterwards " +
+                "with the faction name setter in this same family. " +
+                "Relations with existing factions are wired automatically.",
+            ResultDescription =
+                "created, defName, name, wasHidden, plus factionCountBefore and " +
+                "factionCountAfter so the add is visible as a delta and not only as a flag.")]
+        public static async Task<object> FactionCreate(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "FactionDef defName to create.", DefaultValue = null)]
+            string defName = null,
+            [ToolParameter(Description =
+                "Create it even though the def is hidden. Hidden factions are engine " +
+                "bookkeeping and are almost never what you want.", DefaultValue = false)]
+            bool allowHidden = false,
+            [ToolParameter(Description =
+                "Create a SECOND instance even though one already exists. Vanilla does " +
+                "this for factions with a count above one; usually it is a mistake.",
+                DefaultValue = false)]
+            bool allowDuplicate = false,
+            [ToolParameter(Description =
+                "Report only. Nothing is created unless this is false.", DefaultValue = true)]
+            bool dryRun = true)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                if (Find.World == null)
+                    return Fail("No world loaded. Load or generate a game first.");
+                var fm = Find.FactionManager;
+                if (fm == null)
+                    return Fail("No FactionManager on the current world.");
+                if (string.IsNullOrWhiteSpace(defName))
+                    return Fail("defName is required.");
+
+                var def = DefDatabase<FactionDef>.GetNamedSilentFail(defName.Trim());
+                if (def == null)
+                    return Fail($"No FactionDef named '{defName.Trim()}'.",
+                                new { suggestions = DefSuggestions<FactionDef>(defName.Trim()) });
+
+                var existing = fm.AllFactionsListForReading
+                    .Where(f => f?.def == def).ToList();
+                if (existing.Count > 0 && !allowDuplicate)
+                    return Fail(
+                        $"'{def.defName}' already exists in this world as " +
+                        $"'{existing[0].Name}'. Pass allowDuplicate to add another.",
+                        new { existingCount = existing.Count, existingName = existing[0].Name });
+
+                if (def.hidden && !allowHidden)
+                    return Fail(
+                        $"'{def.defName}' is a HIDDEN faction def - engine bookkeeping, not " +
+                        "something the player meets. It will never appear on the Configure " +
+                        "Factions screen and, with settlementGenerationWeight 0, never places " +
+                        "a settlement. Pass allowHidden only if you are certain.",
+                        new { hidden = true, settlementGenerationWeight = def.settlementGenerationWeight });
+
+                int before = fm.AllFactionsListForReading.Count;
+
+                // What SHOULD have created this at worldgen, and why it did not.
+                // Reported either way, because it decides whether creating the
+                // faction here is a repair or a workaround that recurs.
+                var replacedBy = DefDatabase<FactionDef>.AllDefs
+                    .Where(d => d.requiredCountAtGameStart > 0 && d.replacesFaction == def)
+                    .Select(d => d.defName).ToList();
+
+                if (dryRun)
+                {
+                    return (object)new
+                    {
+                        success = true,
+                        dryRun = true,
+                        created = false,
+                        defName = def.defName,
+                        defLabel = def.LabelCap,
+                        defFixedName = def.fixedName,
+                        factionCountBefore = before,
+                        factionCountAfter = before,
+                        displacedBy = replacedBy,
+                        message = $"DRY RUN. Would create '{def.defName}'. Nothing was " +
+                                  "written. Pass dryRun false to apply." +
+                                  (replacedBy.Count > 0
+                                      ? $" NOTE: worldgen skips this def because " +
+                                        $"{string.Join(", ", replacedBy)} declares " +
+                                        "replacesFaction at it, so any FUTURE world will be " +
+                                        "missing it again unless that is addressed."
+                                      : "") +
+                                  (def.fixedName == null
+                                      ? " NOTE: the def has no fixedName, so the new faction " +
+                                        "will be named by the generator."
+                                      : ""),
+                        ticksGame = TicksGameSafe()
+                    };
+                }
+
+                FactionGenerator.CreateFactionAndAddToManager(def);
+
+                // Read back off the manager, not off the call - the method returns void.
+                var made = fm.AllFactionsListForReading.LastOrDefault(f => f?.def == def);
+                int after = fm.AllFactionsListForReading.Count;
+                bool ok = made != null && after == before + 1;
+
+                if (!ok)
+                    return Fail(
+                        $"Created '{def.defName}' but the FactionManager does not show it. " +
+                        $"Count went {before} -> {after}.",
+                        new { factionCountBefore = before, factionCountAfter = after });
+
+                return (object)new
+                {
+                    success = true,
+                    dryRun = false,
+                    created = true,
+                    defName = def.defName,
+                    name = made.Name,
+                    defLabel = def.LabelCap,
+                    generatedName = def.fixedName == null &&
+                                    !string.Equals(made.Name, def.LabelCap, StringComparison.Ordinal),
+                    wasHidden = def.hidden,
+                    factionCountBefore = before,
+                    factionCountAfter = after,
+                    displacedBy = replacedBy,
+                    message = $"Created '{def.defName}' as '{made.Name}'. " +
+                              (def.fixedName == null
+                                  ? "It is wearing a GENERATED name - clear the stored name " +
+                                    "to make it inherit its def label. "
+                                  : "") +
+                              "SAVE the game or this is lost.",
+                    ticksGame = TicksGameSafe()
+                };
+            });
+        }
     }
 }

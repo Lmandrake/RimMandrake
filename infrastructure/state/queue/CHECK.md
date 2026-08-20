@@ -1637,9 +1637,23 @@ another required faction replaces**. Vanilla `Pirate` is therefore never generat
 while Biotech is active. And `requiredCountAtGameStart` is read **only at worldgen** —
 there is no load-time top-up except a hardcoded list of five vanilla factions — so it
 cannot arrive later on its own.
-⇒ **The faction has to be CREATED, not configured.** `FactionGenerator
-.CreateFactionAndAddToManager(FactionDef)` is public and is what a companion tool would
-call; none exists yet. Filed to BUILD.
+⇒ **The faction has to be CREATED, not configured.**
+✅ **THE TOOL NOW EXISTS: `jawa/faction_create`.** Built 2026-08-20, waiting on the same
+game-down deploy as everything else in `INHABITED_DLL_FIX_AT_SHUTDOWN_1` — expect **115**
+`jawa/` tools afterwards, not 114. It wraps
+`FactionGenerator.CreateFactionAndAddToManager`, which also wires relations with every
+existing faction and recaches the manager, so nothing else is owed.
+**THE ORDER, once it is deployed:**
+  1. `jawa/faction_create` with `defName=Pirate` — ⚠️ it defaults to `dryRun=true`; read
+     the plan, which will also report `displacedBy: ["PirateWaster"]` telling you WHY it
+     was missing, then re-run with `dryRun=false`.
+  2. `jawa/faction_name_set` `action=clear` — the new faction arrives wearing a
+     GENERATED name, because `Pirate` has no `fixedName`. Clearing makes it read
+     **"Blackstar Company"**, its def label.
+  3. ONLY THEN re-run `world_settlements_import`. All 72 rows should land.
+  4. **SAVE.** A created faction lives on the world object and is lost otherwise.
+⚠️ This repairs THIS world. A future worldgen would lose `Pirate` again to Biotech —
+that half is `PIRATE_REPLACED_BY_BIOTECH_1` in `queue/DECIDE.md` and is not yours.
 state:    superseded — the live-world warning above is the part that is still live
 
 ## INHABITED_DLL_FIX_AT_SHUTDOWN_1 One assembly is built and waiting for the game to close
@@ -1654,10 +1668,11 @@ spec:     Two assemblies are built, proven to compile, and CANNOT be deployed wh
                vanilla generation could produce. **14 of the 269 need this** — see
                `CAST_TRAIT_CONFLICTS_1` in `queue/DECIDE.md`.
             2. `python.exe src/RimMandrake/bridgetools/build.py --gm --apply`
-               adds `jawa/faction_name_get` and `jawa/faction_name_set`, 112 -> **114**.
+               adds `jawa/faction_name_get`, `jawa/faction_name_set` and
+               `jawa/faction_create`, 112 -> **115**.
           🔴 **`--gm` on the second one, or the deploy strips every player-acting tool.**
 verify:   after the next launch, `Player.log` carries `[Inhabited] ready:` with 269
-          characters, and the bridge reports 114 `jawa/` tools.
+          characters, and the bridge reports 115 `jawa/` tools.
 criteria: both deploys report in sync, and nothing regressed against
           `EXPECTED_FAILURES_next_load.md` §4.
 state:    ready — waiting on a game-down window only
