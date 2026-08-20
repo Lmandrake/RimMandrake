@@ -857,6 +857,31 @@ def write_bundle(w):
 
     hilly, swamp = hilliness(w, reg), swampiness(w)
 
+    features = []
+    for i, (name, kind, tiles) in enumerate(w["regions"]):
+        if not len(tiles):
+            continue
+        # 🔑 The LARGEST CONNECTED MASS, not every tile with the name. Some regions
+        # are genuinely scattered - The Salt Gate is a delta at each river mouth -
+        # and averaging their tiles puts the label somewhere the region is not.
+        # (Measured: whole-region extent gave The Salt Gate a draw size of 161 tiles
+        # for a 131-tile region.) A WorldFeature is a mass, so use the mass.
+        mask = np.zeros(n, bool)
+        mask[list(tiles)] = True
+        comp = max(components(mask, w["nbl"]), key=len)
+        v = geo.vec[list(comp)].mean(axis=0)
+        v = v / np.linalg.norm(v)
+        spread = float(np.degrees(np.arccos(np.clip(
+            geo.vec[list(comp)].dot(v), -1, 1))).max())
+        features.append({"id": i, "name": name, "kind": kind,
+                         "tiles": int(len(tiles)), "mass": int(len(comp)),
+                         "drawCenter": [round(float(x), 6) for x in v],
+                         "lat": round(float(np.degrees(np.arcsin(v[1]))), 4),
+                         "lon": round(float(np.degrees(np.arctan2(v[2], v[0]))), 4),
+                         # extent in TILES, which is what maxDrawSizeInTiles wants:
+                         # mean tile spacing on a 21872-tile sphere is ~1.35 deg.
+                         "maxDrawSizeInTiles": round(2.0 * spread / 1.35, 1)})
+
     with open(BUNDLE + "_tiles.csv", "w", newline="", encoding="utf-8") as fh:
         wr = _csv.writer(fh)
         wr.writerow(["tile", "lat", "lon", "arc", "bearing", "elev_m", "temp_c",
@@ -898,6 +923,13 @@ def write_bundle(w):
     meta = {"planet": "Ash'karr — The Sundered", "tiles": n, "substellar": [0.0, 0.0],
             "water_pct": round(100.0 * float(w["sea"].sum()) / n, 2),
             "regions": [r[0] for r in w["regions"]],
+            # ⭐ WorldFeature records. A named region is a RUNTIME object in RimWorld,
+            # not a def: it needs a drawCenter on the unit sphere and an angular extent
+            # so the engine knows where to print the label and how big. Emitting them
+            # here is what stops WorldGenStep_Features (order 1000) renaming our 24
+            # regions at random. `kind` is the range/basin/tract distinction the
+            # importer maps onto a vanilla FeatureDef.
+            "features": features,
             "factions": sorted({x["faction"] for x in placed}),
             "faction_labels": FACTION_LABEL,
             "settlements": len(placed), "starved": [x["name"] for x in starved],
