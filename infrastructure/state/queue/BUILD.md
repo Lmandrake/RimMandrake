@@ -556,3 +556,38 @@ criteria: spawn each of the 48 kinds 5x live and read `jawa/pawn_get` -> `pawns[
           ⚠️ FALSE PASS: `jawa/pawn_gear` is a WRITER and answers a read with
           "Give a ThingDef." Reading equipment off it reports every pawn as bare.
 state:    ready
+
+## GRIMTERRA_TEXPATH_TYPOS_1 Three broken texPaths in GRiNDTerra Biomes, juveniles only
+row:      unassigned
+from:     CHECK, 2026-08-20. Found in the load harvest after the owner's terrain/worldmap
+          mod swap; diagnosed to the exact line.
+spec:     `GRiNDTerra Biomes` (`GRimTerra.Biomesmod`, workshop `3537211820`) ships three
+          `texPath`s pointing at folders that do not exist. **The art is all present** —
+          only the paths are wrong, and every one of them is in the SECOND `<li>` of
+          `<lifeStages>`, i.e. the JUVENILE stage. Baby and adult stages are correct.
+            `1.6/Defs/ThingDefs_Races/Races_Animal.xml:301`
+               is   Things/Pawn/Animal/TortoiseGRim/GRimTortoiseA
+               want Things/Pawn/Animal/GRimTortoise/GRimTortoiseA        (words transposed)
+            `1.6/Defs/ThingDefs_Races/Races_Animal.xml:305`
+               is   Things/Pawn/Animal/Tortoise/Dessicated_GRimTortoiseA
+               want Things/Pawn/Animal/GRimTortoise/Dessicated_GRimTortoiseA
+               ⚠️ points at VANILLA's Tortoise folder. Logs nothing until a dessicated
+               corpse exists, so it is invisible in the load harvest.
+            `1.6/Defs/ThingDefs_Races/Races_Animal_Birds.xml:64`
+               is   Things/Pawn/Animal/GRimPinkBird/GRimPinkbird
+               want Things/Pawn/Animal/GRimPinkbird/GRimPinkbird          (capital B)
+          🔑 The capital-B one is the instructive case: **Windows' filesystem is
+          case-insensitive but RimWorld's content index is NOT**, so the file resolves
+          perfectly from a shell and still fails in game. Never settle a texPath question
+          with `ls`.
+          FIX: a `PatchOperationReplace` in `Jawa_Patches` on those three `texPath` nodes.
+          ⛔ Do NOT edit the workshop folder — Steam overwrites it on the next update.
+verify:   `validate_patch.py --defs` 0 errors; the xpath reports 3 hits, not 0. A patch
+          that matches nothing logs nothing.
+criteria: a load whose `Player.log` carries **0** `Failed to find any textures at
+          Things/Pawn/Animal/TortoiseGRim` or `.../GRimPinkBird` lines. Baseline today is 2.
+          ⚠️ ABSENCE IS A WEAK SIGNAL and this is one of the cases where it is the only one
+          available. Strengthen it by spawning a JUVENILE tortoise and looking — adults
+          render fine and prove nothing. `jawa/set_pawn_age` cannot help: DebugSetAge is
+          FORWARD-ONLY and refuses to walk a debug-spawned adult back to a juvenile.
+state:    ready
