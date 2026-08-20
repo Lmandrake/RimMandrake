@@ -52,5 +52,11 @@
       }
     ]
   },
-  "crossSessionInbound": "refuse"
+  "crossSessionInbound": "accept",
+  "permissions": {
+    "deny": [
+      "SendMessage",
+      "ListAgents"
+    ]
+  }
 }

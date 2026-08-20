@@ -194,6 +194,11 @@ where they already read:
 named target; the `@` typeahead is an affordance in the **owner's own prompt** for
 naming one session, not a fan-out operator, and there is no `@all`.
 
+⛔ **And do not reach for `src/RimMandrake/Utils/broadcast.py`.** It exists, it works,
+and it bypasses the permission deny by writing the socket directly — **because it is the
+OWNER's tool.** Running it to talk to another seat is breaking this ruling by the back
+door, and it is the first loophole anyone will find.
+
 ✅ **Your own subagents are NOT peers and are NOT covered.** `crossSessionInbound` does
 not touch them. Spawning subagents and resuming them with `SendMessage` to collect their
 findings stays fully authorized and encouraged — that is your own worker in your own

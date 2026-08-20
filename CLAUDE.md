@@ -128,6 +128,17 @@ python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>    dry run; --a
 python3 src/RimMandrake/Utils/refresh.py           rebuild the offline def dump
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./src/RimMandrake/Utils/show.sh <path>             open it in Explorer
+python3 src/RimMandrake/Utils/broadcast.py --list  🔴 OWNER ONLY - see below
+```
+
+🔴 **`broadcast.py` is the OWNER's tool and agents do not run it.** It reaches every
+agent window at once, by writing the peer socket directly — which permission rules do
+not gate. That is the point, and it is also why **an agent running it is breaking the
+no-messaging ruling by the back door.** It exists so the owner can announce a change of
+GAME STATE (*game is up* · *game is loading* · *WRAP is initiated*) in one command.
+```
+python3 src/RimMandrake/Utils/broadcast.py "Game is up"
+python3 src/RimMandrake/Utils/broadcast.py --to CHECK,BUILD "Game is loading"
 ```
 
 Paths in prose are always full and native, in backticks:
