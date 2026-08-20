@@ -87,9 +87,9 @@ for this order; it is not a preference.
 | 7 | **Pawntypes** | 3, 4, 5 | 48 proposed, 0 literal defNames. 19 ship, none matching |
 | 8 | **Biomes** | 2 | ✅ ratified (W3) |
 | 9 | **Factions** | 6, 7 | ✅ 5 reskins + 8 authored, all BUILT AND DEPLOYED |
-| 10 | **Worldmap** | 9 | 🔴 **MANUAL — the owner makes and saves it.** Blocked on step 9 shipping first |
+| 10 | **Worldmap** | 9 | 🔴 **MANUAL, AND IT IS TWO ACTS.** (i) the owner generates any seed with the planet type set, then (ii) 🔑 **the companion stamps the 21,872 authored tiles into the LIVE world over the bridge before any map exists**, then he places the ship and saves. ⚠️ **A saved vanilla world is NOT step 10 done** — without act (ii) it is not our planet. `ASHKARR_WORLD_DEFINITION.md` §12. Blocked on step 9 shipping first |
 | 11 | **Gravship** | 2 | ✅ built and exported |
-| 12 | **Scenario** | 2, 7, 11 | specced — `SCENARIO_SPEC.md`. Waits on the owner's world |
+| 12 | **Scenario** | 2, 7, 11 | specced — `SCENARIO_SPEC.md`. ⚠️ **NO LONGER PURELY DOWNSTREAM: R-S2 reversed 2026-08-19** — the `ScenarioDef` must EXIST BEFORE he starts his campaign, because the engine embeds its parts at game creation and nothing may edit the save afterwards. Its part list is owed ahead of step 10, not after it |
 | 13 | **Quests** | 9 | row 3 reopened on resolution |
 
 🔴 **Everything through 9 is upstream of 10, and 10 cannot be redone.** A
