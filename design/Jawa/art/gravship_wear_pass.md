@@ -401,7 +401,7 @@ palette is filtered first. Get it right once and nobody pays again.
 
 **It ships as a SCRIPT plus its committed output, not as a table in this document.**
 A hand-written list rots silently the first time someone subscribes to a mod, and there
-are ~580 active here. Both files are tracked:
+are ~580 active here (~580 as of 2026-08-13, when this was written; the live list is 578 as of 2026-08-20 — `infrastructure/state/canon.yml` `modlist`). Both files are tracked:
 
 | file | what it is |
 |---|---|

@@ -247,7 +247,7 @@ slowly; `rimworld/search_debug_actions` never returned. `Player.log` stopped mid
 the socket timed out at 60 s, and Windows raised `AppHangB1` and closed RimWorld.
 
 **Cause:** those tools build RimWorld's debug-action node graph **on the main thread**.
-Across 562 mods that build did not complete. Nothing was mutated — the failure mode is
+Across 562 mods (the active count on 2026-08-10, the day of this hang; 578 as of 2026-08-20 — `infrastructure/state/canon.yml` `modlist`) that build did not complete. Nothing was mutated — the failure mode is
 a main-thread hang, not a bad write.
 
 **The lesson that generalises:** *read-only is not the same as safe.* The useful axis

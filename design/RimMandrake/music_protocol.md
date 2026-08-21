@@ -73,7 +73,7 @@ is far richer than vanilla's, which offers only `tense` plus time-of-day.
 
 **Generated tags** — the important part. The assembly contains `CreateBiomeTags`
 and `CreateWeatherTags`, so **biome and weather tags are built from the loaded
-defs**. With 561 mods that means every biome in the stack is a tag, and every
+defs**. With 561 mods (the active count on 2026-08-11, when this was written; 578 as of 2026-08-20 — `infrastructure/state/canon.yml` `modlist`) that means every biome in the stack is a tag, and every
 WeatherDef is a tag — **including our own `SW_Sandstorm` and `SW_DrySandstorm`.**
 We can score our own weather without writing a line of XML.
 

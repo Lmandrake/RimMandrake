@@ -36,6 +36,8 @@ at `activeMods` positions **556–564**; `guy762.mm.kotorcore` is at **573**, i.
 389, `sarg.alphagenes` 477, `biomesteam.biomescaverns` 479,
 `biomesteam.biomespollutedlands` 480).
 
+⚠️ **Every number in that paragraph is an `activeMods` POSITION as of 2026-08-13, not a mod count**, and every one of them moves when the list changes. The list was 578 activeMods as of 2026-08-20 (`infrastructure/state/canon.yml` `modlist`). Re-read `ModsConfig.xml` before placing a fix mod against any of these positions.
+
 ---
 
 ## 🔴 Two corrections to C7's own method — read before triaging art again

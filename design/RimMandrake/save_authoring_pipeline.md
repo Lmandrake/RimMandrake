@@ -1,4 +1,14 @@
-> # ⛔ DEAD DOCUMENT — the pipeline it describes was killed 2026-08-18
+> # ⛔ DEAD DOCUMENT — DO NOT FOLLOW ANYTHING BELOW
+>
+> ### status: `dead` · died **2026-08-18** · why: **the owner banned offline savegame writing**
+>
+> ⚠️ Noted 2026-08-20: this file is **still linked from other docs and was still being
+> indexed as though it were live.** It is not. It is kept ONLY as a description of the `.rws`
+> file format — never as a procedure.
+>
+> ---
+>
+> **What died, in one line: the whole save-writing pipeline described below.**
 >
 > **Owner, 2026-08-18: *"Please don't write to the savegame file anymore."*** Two offline
 > `.rws` writers passed every invariant check they had and still killed the game on load,
@@ -18,7 +28,7 @@
 
 # Save-Based World Authoring Pipeline — RimWorld 1.6 Jawa Gravship Campaign
 
-_How we build an exceptionally hand-crafted world by editing files directly instead of grinding the in-game UIs. Grounded in a byte-level teardown of Mr Samuel Streamer's **Gravtasm** starting save (`.rws`, RimWorld 1.6.4633 rev1261, 587 mods, 14.2 MB / 412k lines) pulled 2026-08-03._
+_How we build an exceptionally hand-crafted world by editing files directly instead of grinding the in-game UIs. Grounded in a byte-level teardown of Mr Samuel Streamer's **Gravtasm** starting save (`.rws`, RimWorld 1.6.4633 rev1261, 587 mods — ⛔ **his mod list, not ours** — 14.2 MB / 412k lines) pulled 2026-08-03._
 
 **Decision context:** save-based model chosen by user 2026-08-03 (see `Custom_World.md`). Goal = have CoWork do the high-volume authoring in files; reserve the mouse for the irreducible engine step.
 
@@ -41,7 +51,7 @@ _How we build an exceptionally hand-crafted world by editing files directly inst
 - **Starting crew are cleanly isolated and fully editable.** The 3 player pawns live in the player faction (`GravshipCrew`, loadID 16). Each pawn's `<story>` node exposes `childhood`/`adulthood` backstory defNames, `traits`, `bodyType`, `hairDef`, `headType`, `favoriteColorDef`; each `<skills>` node lists all 12 skills with `level` + `passion` per skill. All hand-settable. (Gravtasm's Crash Gunderson / Jiff / Pat are the model.)
 - **Xenotypes:** Gravtasm's `customXenotypeDatabase` is empty because it uses *mod-defined* xenotypes referenced by defName on each pawn (`<genes>` + kindDef), NOT the in-game custom-xenotype editor. For us this is ideal — our Jawa xenotype is a mod def (Outer Rim / Outland Genetics), so pawns just reference it by name.
 - **Factions** are a world-level list; each has a `<def>` + a custom `<name>` (Gravtasm reskins every faction: Empire→"Snifflax Imperium", Pirate→"Grabulon Marauders", etc.). Faction *naming/flavor* is trivially editable; faction *rosters/relations* are ID-linked (edit with more care).
-- The save's `<meta><modIds>` is the exact load order — 587 mods for Gravtasm. Confirms Streamer's caution: **the save assumes its full mod environment.** We read Gravtasm as a *structural template*, never load it in our stack.
+- The save's `<meta><modIds>` is the exact load order — 587 mods for Gravtasm. ⛔ **That 587 is GRAVTASM'S list, not ours, and is not a competing measurement of our mod stack** — never harvest it as one (ours: 578 activeMods as of 2026-08-20, `infrastructure/state/canon.yml` `modlist`). Confirms Streamer's caution: **the save assumes its full mod environment.** We read Gravtasm as a *structural template*, never load it in our stack.
 
 ---
 
@@ -96,7 +106,7 @@ Now proven safe for well-scoped edits, because the target nodes are legible:
 - Pawn story fields: `childhood`, `adulthood` (backstory defNames), `traits`, `bodyType`, `hairDef`, `headType`, `favoriteColorDef`, `birthLastName`.
 - Skill node: 12 `<li>` each with `<def>` (Shooting…Intellectual), `<level>`, `<passion>` (None/Minor/Major + modded passions like `AS_IntimatePassion` from Vanilla Skills Expanded — confirm ours before use).
 
-_All defNames above are from Streamer's 587-mod stack; **confirm each against OUR installed mods before use** — never feed a guessed defName to a scenario/save edit (standing engineering rule)._
+_All defNames above are from Streamer's 587-mod stack (⛔ **his 587, not ours** — not a count of our mod list and never to be reconciled with one); **confirm each against OUR installed mods before use** — never feed a guessed defName to a scenario/save edit (standing engineering rule)._
 
 ---
 

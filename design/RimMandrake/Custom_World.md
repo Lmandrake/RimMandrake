@@ -112,7 +112,7 @@ These ~10 "director" mods do the world-shaping. Learn these, not the content mod
 ## Must DIVERGE from him (pillar conflicts)
 - **The Force psycast** — violates our psycast ban. Skip.
 - **SaveOurShip2** — competes with VGE (our sole gravship layer). VGE is our ship. Skip.
-- **His 300–680 mod scale** — take his *directors + method*, not his content volume.
+- **His 300–680 mod scale** — take his *directors + method*, not his content volume. ⛔ **Not ours, and not a measurement of anything here:** that is a streamer's scale, and it must never be harvested as a count of our mod list. Ours is 578 activeMods as of 2026-08-20 (`infrastructure/state/canon.yml` `modlist`).
 - **MSSFP haunts/reformation-points** — his personal flavor, not our theme.
 
 ## Open questions / missing info

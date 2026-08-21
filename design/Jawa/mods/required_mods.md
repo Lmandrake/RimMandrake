@@ -39,6 +39,17 @@
 > | What changed most recently | the three § CORRECTION / § ADOPTIONS sections at the end |
 > | A dropped mod, and whether to reconsider it | the 🪦 tombstones — they exist to stop re-litigation, so read before proposing a re-adopt |
 
+> ## ⚠️ Mod COUNTS in this file, and how to count them
+>
+> **Every mod count here is dated.** A count with no date reads as current forever, and this
+> file spans weeks: 562 is a 2026-08-10 figure, and the 587 in the streamer sweep is
+> **Gravtasm's list, not ours.** The live figure is **578 activeMods as of 2026-08-20**
+> (`infrastructure/state/canon.yml` `modlist`), and only that file is canon.
+>
+> 🔴 **The counting trap, confirmed again 2026-08-20:** `grep -c '<li>' ModsConfig.xml`
+> returns **583**. The extra 5 are `knownExpansions`, which is not the mod list. **Parse the
+> XML and count `activeMods` children**, or the number is wrong by exactly five.
+
 _Ever-growing selection list. Each entry: **what it is**, **why it's in**, and **restriction/config** (how to keep it fun and on-theme). Status tags: ✅ selected · ✔️1.6 = Odyssey/1.6 compatibility VERIFIED via Fetcher 2026-08-01 · ⚠️ handling caution · ⏳ pending a design decision._
 
 **Compatibility verified 2026-08-01** (Fetcher results in `~/GDrive/<work>/dev/Fetcher/Delivery/2026-07-31_rimworld_odyssey_mod_compat/`). RimWorld Odyssey released 2025-07-11 with free 1.6 update. Workshop IDs recorded where known.
@@ -182,7 +193,7 @@ A standalone local compatibility mod (NOT edits to Core/DLC/Workshop files) that
 - **Restriction/config:** Keep as information-only; it explains *why* a place matters, not *what* loot waits — perfectly on-theme. Has explicit Geological Landforms compatibility (added by author). NOTE: bundled inside Alpha Biomes, so may already be present.
 
 ### Geological Landforms — ✅ ✔️1.6 (Workshop 2773943594)
-- **Why:** ~36 biome-independent landforms; dramatically different terrain layouts per landing.
+- **Why:** ~36 landforms that are independent of biome — i.e. any landform can appear in any biome (Geological Landforms' own landform count, as-of unknown); dramatically different terrain layouts per landing. ⚠️ **This 36 counts LANDFORMS, not biomes.** It has nothing to do with the 36 surviving BiomeDefs in `infrastructure/state/canon.yml` `biomes`; a regex on `36.*biome` false-positives here.
 - **Restriction/config:** In "Map Features" settings, its river landforms replace Odyssey's by default — customizable. Same author (m00nl1ght) as Map Preview; designed to pair.
 
 ### Biome Transitions — ✅ ✔️1.6 (Workshop 2814391846)
@@ -281,7 +292,7 @@ _Note (2026-08-05): **Interaction Bubbles** (WS `1516158345`) is also the anchor
 - **Restriction/config:** Use at setup to author the frozen world map (biomes + landmarks on the tiles that matter). Landmark formation follows base-game logic (if dev mode couldn't place it before, this can't either). Not an in-fiction player power — pure authoring tool, used before/at colony start.
 - **✅ SOURCE VERIFICATION RESOLVED (Fetcher `2026-08-06_mapdesigner_modifytiles_source`, delivered 2026-08-06):** (a) **1.6-tagged, no hard dependencies** — Workshop page confirms current. (b) It **does add real per-tile dev-mode commands on the WorldMap** = the `ToolWorld` pattern, so it is the one world-edit mod that **plausibly registers RimBridge-enumerable debug-action leaves** (`list_debug_action_children` would surface them; `execute_debug_action` could then call them). 🔎 CAVEAT: the exact registration (`[DebugAction]`/`ToolWorld` attribute vs a bespoke dev button) is **inference, not source-verified** — the mod is Workshop-only with no public repo, so its store description is the authoritative available source. If it truly registers ToolWorld leaves → this doubles as the programmatic world-edit path for the optional "extend beyond setup" idea; if bespoke UI → still fully usable by hand. Confirm in-game once installed by walking down from `list_debug_action_roots` with
 `list_debug_action_children` (one bounded level at a time).
-⛔ **NOT `search_debug_actions`** — on the full 568 stack it walks the entire tree and has
+⛔ **NOT `search_debug_actions`** — on the full 568 stack (568 active on 2026-08-12, the date of the correction below) it walks the entire tree and has
 livelocked the game twice, costing a 23-minute load and, separately, a colony plus another
 thread's unsaved work. `limit` bounds the *response*, not the search.
 _(Safety correction by a retired seat, 2026-08-12 — this line previously instructed the fatal call.
@@ -1256,7 +1267,7 @@ Five mods the user flagged as *likely to be accepted*; evaluated against the ant
 
 ## 🔎 STREAMER-SAVE MOD SWEEP (2026-08-08) — candidates mined from Gravtasm (1.6) + Bounty Hunter (1.5) load orders
 
-_Source: the full mod load orders embedded in the Gravtasm starting save (587 mods) and the Bounty Hunter starting save (292 mods). Raw un-decided inventory (478 mods, all categories incl. retextures/UI/performance) = `research/RimMandrake/samuel_streamer_study/mod_inventory_from_saves.md`. This section records the user's first evaluative pass on the standouts._
+_Source: the full mod load orders embedded in the Gravtasm starting save (587 mods — ⛔ **Gravtasm's mod list, not ours**; never harvest 587 as a count of our stack) and the Bounty Hunter starting save (292 mods — likewise his). Raw un-decided inventory (478 mods, all categories incl. retextures/UI/performance) = `research/RimMandrake/samuel_streamer_study/mod_inventory_from_saves.md`. This section records the user's first evaluative pass on the standouts._
 
 ### ✅ ADOPT — no source download needed (pure QoL, balance-neutral; user, 2026-08-08)
 These five are long-standing, widely-used QoL staples with no economy/progression impact. Adopted on sight; **confirm `supportedVersions`=1.6 + deps in RimSort at install** per the 1.6-scoping rule (belt-and-suspenders only — all are actively maintained).

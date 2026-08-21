@@ -91,7 +91,7 @@ The owner asked whether this ruling is consistent with where the droid-flesh
 patch landed. **It is** — but only because of the W8 guard change, and checking it
 turned up one stale doc and one untested family.
 
-**Verified from the live 573-mod dump, all three flesh types:**
+**Verified from the live 573-mod dump (573 active on 2026-08-13, the date of this check), all three flesh types:**
 
 | flesh type | family | `isOrganic` | `IsMechanoid` | our ion | ruling |
 |---|---|---|---|---|---|
@@ -114,7 +114,7 @@ KotOR. It was never the ion mechanism, after W8.
 ## ✅✅ KotOR ION TEST — PASSED, MEASURED LIVE 2026-08-13 ~08:4x
 
 **The gap below is CLOSED.** Owner directed the test; run on the live 573-mod
-stack, game paused throughout, five KotOR droids across **both** the `Good` and
+stack (573 active on 2026-08-13), game paused throughout, five KotOR droids across **both** the `Good` and
 `Bad` lines, against the `OuterRim_BattleDroid` control W8 used.
 
 | kind | line | downed | dead | destroyed | damage dealt | still on map |
@@ -650,7 +650,7 @@ error repeats.
 **Generalises to:** verifying the engine is not verifying the campaign. A rule
 read out of `Assembly-CSharp.dll` is a rule about a *class of thing*; whether the
 content in front of you belongs to that class is a separate question, and in a
-561-mod stack it usually does not.
+561-mod stack (as-of unknown — an earlier count carried forward into this doc; the same doc measured 573 on 2026-08-13, and canon reads 578 as of 2026-08-20, `infrastructure/state/canon.yml` `modlist`) it usually does not.
 
 ---
 

@@ -51,7 +51,7 @@ realistically produces touches every cell; a dramatic crater is 300 cells and
 lands in under a second. Only a full-map terrain replacement is slow, and that
 is not what any of the ambitions above actually need.
 
-⚠️ Measured on a **3-mod** game, **paused**. Re-measure on the 568-mod stack
+⚠️ Measured on a **3-mod** game, **paused**. Re-measure on the 568-mod stack (568 active on 2026-08-12, the date of the re-measurement below; the live list is 578 as of 2026-08-20 — `infrastructure/state/canon.yml` `modlist`)
 before treating 2 ms as universal — Harmony patch depth and TPS load could
 change it. This is the single most important number to re-verify.
 
@@ -59,6 +59,8 @@ change it. This is the single most important number to re-verify.
 
 Measured n=200/class, paused,
 same as the baseline, so the comparison is like-for-like.
+
+⚠️ **Every `568` and `573` in this document is a MOD COUNT taken 2026-08-12**, not a fixed property of the stack. The live list is 578 as of 2026-08-20 (`infrastructure/state/canon.yml` `modlist`). The numbers below are still valid as observations under the conditions named; they are not current counts.
 
 | call | 3-mod median | 568-mod median | 568 p99 | 568 max |
 |---|---|---|---|---|
@@ -97,7 +99,7 @@ predicts and an independent OS timer does not.
 ### ✅ SETTLED 2026-08-12 (evening) — it is NOT a fixed 60 Hz gate
 
 **The variable that finally moved was the colony, not the zoom.** Re-running
-`bridge_latency.py` on a fresh dev quicktest map at 573 mods:
+`bridge_latency.py` on a fresh dev quicktest map at 573 mods (count on 2026-08-12):
 
 | class | busy 21-colonist map (568) | fresh quicktest (573) |
 |---|---|---|
@@ -135,7 +137,7 @@ single-cell write cost stands for a better reason: **that number moves by 35%
 between runs nobody deliberately changed.**
 
 ⚠️ **Every latency number in this document is a SAMPLE, not a property.** Three
-runs at 573 mods on one map spread 35%. The tables above were measured on the
+runs at 573 mods (count on 2026-08-12) on one map spread 35%. The tables above were measured on the
 real 21-colonist map; treat them as one observation under known conditions, and
 re-measure rather than quoting them as the cost of an operation.
 
@@ -214,7 +216,7 @@ round trip **7.34 s**. The undo does not depend on the player reloading.
 
 **The one real mod-count signal is the designator path**, not ours: `dryRun`
 p99 is 102 ms with a 220 ms max, against 9.4 ms p99 at 3 mods. Placement
-validation genuinely does get more expensive with 568 mods' worth of patches.
+validation genuinely does get more expensive with 568 mods' worth of patches (568 active on 2026-08-12).
 **Recommendation: keep bulk authoring off `apply_architect_designator`
 entirely** and go through the companion, whose p99 is 21.6 ms with no
 comparable tail.
@@ -233,7 +235,7 @@ and it came back better than baseline. **Verdict holds. Build the generator.**
 | destroy what was there | only via floor overlay | ✅ direct |
 | runs while playing | ✅ | ❌ needs save/load |
 | **reversible if the player hates it** | ✅ **just reload** | ❌ permanent, needs a backup |
-| speed | **0.51 ms/cell batched** on the real 568-mod stack (~16.7 ms per unbatched call) | ~0.5 s whole-map |
+| speed | **0.51 ms/cell batched** on the real 568-mod stack, 2026-08-12 (~16.7 ms per unbatched call) | ~0.5 s whole-map |
 
 Proof for save-editing: map grids are base64 + raw DEFLATE arrays of 2-byte def
 shortHashes. Lossless roundtrip on all 62,500 cells, 76 cells painted through

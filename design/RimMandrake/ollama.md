@@ -194,7 +194,7 @@ Also: 14 PhysX worker threads → a healthy CPU for any CPU-offloaded layers.
 
 ## 2.2 ⚠️ The constraint that decides everything: RimWorld wants that VRAM too
 
-**548 active mods**, several large texture packs, Facial Animation, and a 4,000-tile ship map.
+**548 active mods** (as of 2026-08-08, the day this file was written; the live list is 578 as of 2026-08-20 — `infrastructure/state/canon.yml` `modlist`), several large texture packs, Facial Animation, and a 4,000-tile ship map.
 RimWorld will hold a substantial slice of those 16 GB while you play. A model that fits "in 16 GB"
 on paper does **not** fit while the game is running.
 

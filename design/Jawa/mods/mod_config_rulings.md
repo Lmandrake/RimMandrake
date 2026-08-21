@@ -12,7 +12,7 @@ inventory. This file holds only the "why".**
 
 Sections below are verbatim as of the 2026-08-10 third pass, and carry that
 date's judgement; the mod counts they were written against have since moved
-(562 → 580). Nothing here has been re-verified against the current stack.
+(562 on 2026-08-10 → 580 when this carve-out was written, 2026-08-13; the live list is 578 activeMods as of 2026-08-20, `infrastructure/state/canon.yml` `modlist`). Nothing here has been re-verified against the current stack.
 
 ---
 

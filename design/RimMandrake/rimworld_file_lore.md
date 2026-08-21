@@ -156,7 +156,13 @@ Save structure landmarks: `<game><scenario>`, `ScenPart_ConfigureStartingPawns`,
   (it matches **0 of 1,238** TerrainDefs). The real rule is `% 65535` — *not* `65536`, *not* a
   mask — using **C#'s truncate-toward-zero `%` then a ushort cast**; Python's floor-`%` is off
   by exactly 1 on negative hashes. Verified against the live dump: **BiomeDef 66/66 and RoofDef
-  6/6 exact, TerrainDef 1,227/1,238 (the 11 misses all +1, i.e. collision-bumped).** Collision
+  6/6 exact, TerrainDef 1,227/1,238 (the 11 misses all +1, i.e. collision-bumped).**
+  ⚠️ **That `66/66` is a 2026-08-15 measurement at 585 mods** — 66 was the whole BiomeDef
+  population on that mod set, and the algorithm matched all of it. The live dump of
+  **2026-08-20 (modCount 578, matching `ModsConfig.xml` exactly) reports 80 BiomeDefs**
+  (`infrastructure/state/canon.yml` `dump` and `biomes.live_defs`). ⛔ The denominator moved;
+  the RESULT did not, and nothing here should be recomputed from 80 — re-run the check against
+  a current dump if you need a current ratio. Collision
   bumping is still load-order dependent, but it touches **0.9% of terrain and none of the
   biomes**, so it is a residual correction rather than a precondition. Full algorithm, the
   measured table and the safe write discipline are in `save_authoring_pipeline.md` §"RETRACTED".

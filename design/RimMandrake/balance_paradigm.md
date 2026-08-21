@@ -1,7 +1,7 @@
 # balance_paradigm.md — why we would change any number in this game
 
 _Started 2026-08-10. The decision framework for normalising, cutting and
-re-skinning the 562-mod stack. Companion to `concept.md` (pillars) and
+re-skinning the 562-mod stack (562 active on 2026-08-10, the day this started; the live list is 578 as of 2026-08-20 — `infrastructure/state/canon.yml` `modlist`). Companion to `concept.md` (pillars) and
 `desert_world_design.md` (the world)._
 
 **Status:** paradigm, not a work order. Every measured claim below is from
@@ -135,7 +135,7 @@ different kind of story. Same reasoning as the tech-threshold rule (Axis 2):
 discontinuity is what carries meaning.
 
 **Measured 2026-08-10 — the VAST tier does not exist.** Largest animal in the
-whole 562-mod stack is `GR_ArchotechCentipede` at **20**; only 17 animals of
+whole 562-mod stack (562 active on 2026-08-10, the measurement date) is `GR_ArchotechCentipede` at **20**; only 17 animals of
 1,194 exceed size 10, and **zero** reach 50. Distribution: 15% below 0.5, 43%
 in the human band, 41% large, 1.4% in the 10–50 gap.
 

@@ -308,7 +308,7 @@ texture**, so anything we ship that must override should be loose files.
 Source: [RimWorld wiki — Asset Bundles](https://rimworldwiki.com/wiki/Modding_Tutorials/Asset_Bundles)
 
 **Still unaudited:** Droid Depot and Galactic Diversity hold ~44 xenotypes'
-worth of art we have now proven we *can* read but have not yet swept. That is
+worth of art. **Denominator: xenotypes reviewed in the Droid Depot + Galactic Diversity art audit, 2026-08-11.** ⛔ That is not the same population as the 42 species shipped by *Outer Rim – Galactic Diversity*, the 70-xenotype BTD roster, or the 79 mechanically distinct species available across all mods — do not reconcile the four. This art we have now proven we *can* read but have not yet swept. That is
 cheap offline work and should happen before any further art decisions.
 
 ---
