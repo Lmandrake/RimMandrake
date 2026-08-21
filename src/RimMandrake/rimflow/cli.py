@@ -534,6 +534,36 @@ def cmd_admin(args, seat):
 
 
 # ---------------------------------------------------------------------------
+# artifact — the one door for a new game artifact
+# ---------------------------------------------------------------------------
+def cmd_artifact(args, seat):
+    """`rimflow artifact accept <path> --kind dump|log|save|modlist [--official]`
+
+    ⛔ DRY RUN unless `--apply`, like the importer and for the same reason: it
+    registers an artifact and files work off it, and both are easier to review than to
+    undo. ⛔ And it NEVER auto-fixes a dangling reference — that is a decision, not a
+    repair. See `artifact.py`.
+    """
+    # The same dual-import shim as `model`/`priority` at the top of this file — a bare
+    # relative import fails when cli.py is run as a SCRIPT, which is how every seat
+    # runs it. See the try/except beside `from . import model, priority`.
+    try:
+        from . import artifact as art
+    except ImportError:
+        from rimflow import artifact as art
+    if args.action != "accept":
+        die("only `accept` exists so far")
+    text, dangling, provided = art.accept(
+        args.path, args.kind, official=args.official, by=seat.lower(),
+        write=args.apply)
+    print(text if args.full else "\n".join(text.splitlines()[:44]))
+    if not args.apply:
+        print("\nDRY RUN — nothing registered, nothing filed, no report written.")
+        print("Re-run with --apply to commit this.")
+    return 0
+
+
+# ---------------------------------------------------------------------------
 # sweep — LISTS, NEVER DELETES
 # ---------------------------------------------------------------------------
 def cmd_sweep(args, seat):
@@ -572,7 +602,10 @@ def cmd_sweep(args, seat):
 # ---------------------------------------------------------------------------
 def _render_module():
     try:
-        from . import render                                    # noqa: F401
+        try:
+            from . import render                                # noqa: F401
+        except ImportError:
+            from rimflow import render                          # noqa: F401
         return render
     except ImportError:
         try:
@@ -744,6 +777,18 @@ def build_parser():
 
     s = add("sweep", "list stale TRANSIENT_* files. LISTS ONLY", cmd_sweep)
     s.add_argument("--transient", action="store_true")
+
+    s = add("artifact", "accept a new game artifact. DRY RUN unless --apply",
+            cmd_artifact)
+    s.add_argument("action", choices=["accept"])
+    s.add_argument("path")
+    s.add_argument("--kind", required=True,
+                   choices=["dump", "log", "save", "modlist"])
+    s.add_argument("--official", action="store_true",
+                   help="freeze it as the design target. Owner only.")
+    s.add_argument("--apply", action="store_true",
+                   help="register it, write the report, file the item")
+    s.add_argument("--full", action="store_true", help="print the whole report")
 
     s = add("render", "rebuild queue/*.md and board.json (owned by render.py)",
             _delegate("render"))

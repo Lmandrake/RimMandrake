@@ -710,6 +710,15 @@ rimflow artifact accept <path> --kind dump|log|save|modlist [--official]
                        check_refs.py · check_declarations.py · validate_patch.py --defs
                        validate_ideoligion.py · xenotype_check.py · check_canon.py
   3. resolve         every defName cited anywhere in design/ and src/ against the new artifact
+                     ⚠️ **behind a PREFIX GATE.** The naive version reported **1,280**
+                     dangling and most were not defNames: our docs backtick C# class
+                     names, XML ops, field names and env vars, all of which match any
+                     reasonable defName pattern (`CompProperties_EggLayer`, `StateGraph`,
+                     `OLLAMA_FLASH_ATTENTION`). Only names whose namespace prefix is one
+                     the artifact actually uses for defs are judged — 2,128 of 3,736,
+                     giving **287** real candidates. The other 1,608 are reported as
+                     **NOT JUDGED**, never as clear: *we did not look* and *these are
+                     fine* are different statements.
   4. report          TRANSIENT_artifact_accept_<id>.md — three lists:
                        ✅ still resolves        (no action)
                        🔴 now dangling         (cited by name, absent from the artifact)

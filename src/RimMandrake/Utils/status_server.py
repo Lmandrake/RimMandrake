@@ -437,6 +437,38 @@ class H(BaseHTTPRequestHandler):
             body = json.dumps(_board() or {"unavailable": True,
                                            "why": _BOARD.get("err")}).encode()
             ctype = "application/json"
+        elif self.path.startswith("/items/"):
+            # One item's PROSE. The ledger holds every scalar and `items/<ID>.md` holds
+            # the spec/verify/criteria — deliberately, so no field exists twice — which
+            # left the Flow inspector with a native path to print and nothing to show.
+            # ⚠️ basename() is the path-traversal guard; do not "simplify" it away.
+            name = os.path.basename(self.path.split("?")[0])
+            if not name.endswith(".md"):
+                name += ".md"
+            try:
+                body = open(os.path.join(STATE, "items", name), "rb").read()
+            except Exception:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b"no such item")
+                return
+            ctype = "text/markdown; charset=utf-8"
+        elif self.path.split("?")[0].rstrip("/") == "/ledger/events.jsonl":
+            # The raw ledger, verbatim. The Timeline view needs the EVENT STREAM and
+            # /board carries only `events` as an integer count, so there was no served
+            # route to it at all — the view could render nothing but its own error
+            # panel. Reported by the view that could not read its own source.
+            # ⚠️ Served as text/plain, not JSON: it is JSON *Lines*, and a torn line is
+            # something the Timeline renders in place rather than something a parser
+            # here should reject on the reader's behalf.
+            try:
+                body = open(os.path.join(STATE, "ledger", "events.jsonl"), "rb").read()
+            except Exception as e:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(("ledger unreadable: %s" % e).encode())
+                return
+            ctype = "text/plain; charset=utf-8"
         elif self.path.startswith("/board/"):
             # The view modules, served from src/RimMandrake/Utils/board/.
             name = os.path.basename(self.path.split("?")[0])
