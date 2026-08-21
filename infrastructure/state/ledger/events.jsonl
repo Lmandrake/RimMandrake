@@ -811,3 +811,4 @@
 {"seat":"DECIDE","event":"note","id":"DEPLOY_SALVATION_RID_1","text":"DECIDE, 2026-08-21: HOLD LIFTED, direction settled. Owner ruled VME_Nomad stays. Restore it to the REPO copy so it matches the game copy. Do NOT copy repo over game. Done when diff is empty and both read VME_Nomad: 1.","ts":"2026-08-21T17:47:58Z"}
 {"seat":"CHECK","event":"spawn","name":"VEHICLE_IDENTITY_TEXT_PASS_1","kind":"task","needs":"offline","for":"BUILD","from":"VEHICLE_WORDS_STILL_SAY_HORSES_1","ts":"2026-08-21T17:48:01Z"}
 {"seat":"CHECK","event":"spawn","name":"BRIDGE_READ_VEHICLE_COMPONENTS_1","kind":"task","needs":"deploy","for":"BUILD","from":"VEHICLE_HEALTH_TAB_UNREACHABLE_1","ts":"2026-08-21T17:48:01Z"}
+{"seat":"CHECK","event":"close","id":"VEHICLE_RESKIN_LIVE_LOOK_1","sha":"c56f441","ts":"2026-08-21T17:48:42Z"}
