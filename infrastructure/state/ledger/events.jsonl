@@ -829,3 +829,6 @@
 {"seat":"BUILD","event":"file","id":"MEASURE_HELPER_FOR_MANIFEST_1","title":"13 tools json.load the dump manifest, silently dropping its duplicate keys","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T18:36:11Z"}
 {"seat":"BUILD","event":"file","id":"LOG_AND_CSV_GET_INSTRUMENTS_1","title":"Player.log and the world CSVs have a refusal but no instrument behind it","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T18:36:11Z"}
 {"seat":"BUILD","event":"file","id":"CHECK_AND_POLICY_LEARN_MEASURE_1","title":"CHECK.md and POLICY.md still do not name the instrument their seats need most","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T18:36:12Z"}
+{"seat":"BUILD","event":"close","id":"SKILLS_TEACH_REFUSED_SCANS_1","sha":"73875dd","ts":"2026-08-21T19:12:31Z"}
+{"seat":"BUILD","event":"close","id":"CHECK_AND_POLICY_LEARN_MEASURE_1","sha":"d1b4701","ts":"2026-08-21T19:12:31Z"}
+{"seat":"BUILD","event":"close","id":"MEASURE_HELPER_FOR_MANIFEST_1","sha":"8e63426","ts":"2026-08-21T19:12:32Z"}
