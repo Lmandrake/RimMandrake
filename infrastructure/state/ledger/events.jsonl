@@ -681,3 +681,7 @@
 {"seat":"DECIDE","event":"claim","id":"IDEO_TITLE_BEATS_DEF_TITLE_1","ts":"2026-08-21T15:54:26Z"}
 {"seat":"BUILD","event":"claim","id":"FORSAKEN_LABELS_FINISHED_1","ts":"2026-08-21T15:54:29Z"}
 {"seat":"BUILD","event":"start","id":"FORSAKEN_LABELS_FINISHED_1","ts":"2026-08-21T15:54:29Z"}
+{"seat":"BUILD","event":"claim","id":"DROP_TRIBAL_FURNITURE_MOD_1","ts":"2026-08-21T15:54:48Z"}
+{"seat":"BUILD","event":"start","id":"DROP_TRIBAL_FURNITURE_MOD_1","ts":"2026-08-21T15:54:49Z"}
+{"seat":"BUILD","event":"verify","id":"PAINTER_RING_COMMENT_STALE_1","result":"pass","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/PAINTER_RING_COMMENT_STALE_1_offline.txt","sha":"893d07d","ts":"2026-08-21T15:55:14Z"}
+{"seat":"BUILD","event":"close","id":"PAINTER_RING_COMMENT_STALE_1","sha":"72c7d0c","ts":"2026-08-21T15:55:33Z"}
