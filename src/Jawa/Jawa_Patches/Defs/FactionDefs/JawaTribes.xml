@@ -105,7 +105,24 @@
       <li MayRequire="mlie.preceptsandmemes">Trader</li>  <!-- NOT vanilla: the only vanilla `Trader` defName is a PawnGroupKindDef. -->
       <li MayRequire="vanillaexpanded.vmemese">VME_Scrapper</li>
       <li MayRequire="vanillaexpanded.vmemese">VME_Trader</li>
-      <li MayRequire="vanillaexpanded.vmemese">VME_Nomad</li>
+      <!-- 🔴 VME_Nomad DROPPED — owner's ruling, 2026-08-20, on the recommendation
+           standing unactioned in ideoligion/APPROVED.md §2 since it was written.
+           Its forced precept `VME_PermanentBases_Despised` runs mod C# with no shipped
+           source, and the def's OWN description says it "will only work when using the
+           vanilla game world system… Using other mods such as Caravan Adventure to
+           leave the map won't work either." Whether a gravship jump registers was never
+           verified; if it does not, the penalty is -50 mood at 60 days (15d -1 · 20d -5
+           · 30d -20 · 40d -30 · 50d -40 · 60d -50) — precisely the failure the owner
+           predicted: "they would think we're building our own base each time and get
+           upset."
+           ✅ `Nomadic_Preferred` does the job safely and is already in
+           `src/Jawa/ideoligion/The Salvation.rid`. It is a PRECEPT, so it costs no meme
+           slot, and its reset is proven in vanilla IL: GravshipUtility::ArriveNewMap
+           unconditionally stamps IdeoManager.lastResettledTick, the only field its
+           ThoughtWorker reads.
+           ⚠️ Dropped from the .rid in the SAME commit — APPROVED.md warned that
+           dropping it in one place and not the other makes the two religions diverge
+           silently, and an ideoligion bakes permanently at world creation. -->
     </forcedMemes>
 
     <!-- Every member is a Jawa. Without this the faction generates baseliners

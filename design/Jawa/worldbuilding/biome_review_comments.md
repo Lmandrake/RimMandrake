@@ -57,11 +57,29 @@ looked like a mod with nothing left in it.
 Vanilla `Savanna` and `Grasslands` are **cut**; `ZBiome_Grasslands`, labelled
 **"stormy savanna"** (More Vanilla Biomes), is **kept**.
 
-If deliberate this is the best available outcome — the Pyrelands land on a biome
-that is *already* storm-themed, so R-H4's dry-thunderstorm work becomes a shift of
-emphasis rather than an invention. **But if the Pyrelands were meant to be patched
-vanilla savanna, that cut must be reversed before the world is built.** Everything
-in chain step 2 keys on which def is the Pyrelands.
+✅ **RESOLVED BY THE OWNER, 2026-08-20 — it was deliberate, and this is the outcome.**
+
+> *"We kept Stormy Savanna, so we don't need normal Savannah. `ZBiome_Grasslands` is
+> actually the Stormy Savanah (it has a stupid defname)."*
+
+⇒ The cut of vanilla `Savanna` and `Grasslands` **stands**. `ZBiome_Grasslands` **is**
+the Stormy Savanna and **is** the Pyrelands carrier, on 233 painted tiles (1.07%).
+R-H4's dry-thunderstorm work is a shift of emphasis on an already storm-themed biome,
+not an invention. ⛔ **Nothing needs reversing before the world is built.**
+
+🔴 **AND THE TRAP, WORTH MORE THAN THE RULING: `ZBiome_Grasslands` IS NOT A GRASSLAND.**
+The defName is misleading — the owner's word for it is "stupid" — and it comes from
+*More Vanilla Biomes*, so we cannot rename it. Anyone reading `ZBiome_Grasslands` cold
+will picture temperate grass and reason about it wrongly. ✅ **Always write it as
+`ZBiome_Grasslands` (the Stormy Savanna).** Recorded in `canon.yml > biomes`.
+
+⚠️ The original open question is kept below, struck, because it is what this answers:
+
+> ~~If deliberate this is the best available outcome — the Pyrelands land on a biome
+> that is *already* storm-themed, so R-H4's dry-thunderstorm work becomes a shift of
+> emphasis rather than an invention. **But if the Pyrelands were meant to be patched
+> vanilla savanna, that cut must be reversed before the world is built.** Everything
+> in chain step 2 keys on which def is the Pyrelands.~~
 
 ## ⚠️ 2. Nine survivors have no assigned role — and three contradict R-H1
 

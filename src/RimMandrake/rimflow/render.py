@@ -64,11 +64,24 @@ DERIVED = os.path.join(STATE, "derived")
 PREVIEW = os.path.join(DERIVED, "queue_preview")
 BOARD = os.path.join(DERIVED, "board.json")
 
-# The seats that get a rendered view, in board order. OWNER's queue file has always
-# been called HUMAN.md; the view keeps that name so a diff against the real file is
-# a direct comparison rather than a rename nobody asked for.
-VIEW_SEATS = ("DECIDE", "BUILD", "CHECK", "REP", "OWNER")
-FILENAME = {"OWNER": "HUMAN"}
+# The seats that get a rendered view, in board order.
+#
+# 🔴 OWNER IS NOT ONE OF THEM — owner's ruling, 2026-08-20. `queue/HUMAN.md` is HIS
+# INBOX and stays hand-written.
+#
+# ⚠️ The migration made it a generated view and that was wrong. Prose written TO the
+# owner has no home in the ledger by construction: an event carries scalars, an item
+# file carries spec/verify/criteria, and a briefing is neither — which is exactly why
+# 593 lines of his briefings had to be rescued into `preserved/` to survive the import
+# at all. A do-not-edit banner on the one file a person writes in is the tool telling
+# its user to go away.
+#
+# ✅ Owner-owned ITEMS still live in the ledger and are still offered by
+# `rimflow next --seat OWNER`; they are simply not rendered over his prose.
+# ⛔ Do not add OWNER back here. If a rendered view of owner items is ever wanted, give
+# it its own filename — never HUMAN.md.
+VIEW_SEATS = ("DECIDE", "BUILD", "CHECK", "REP")
+FILENAME = {}
 
 # ⚠️ `rows` keeps THREE columns because `status_server.py` renders exactly three and
 # a fourth would push a column off the grid. REP and OWNER are not dropped — they are

@@ -120,6 +120,17 @@ touched, because the file is the owner's approved artifact.
    ⚠️ If `VME_Nomad` is dropped, drop it from `JawaTribes.xml`'s `forcedMemes` in
    the same commit or the two religions silently diverge.
 
+   ✅ **RULED BY THE OWNER, 2026-08-20: DROPPED. Done, in both places, in one commit.**
+   - `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml` — `<li>VME_Nomad</li>`
+     removed from `forcedMemes`, with the reasoning inline.
+   - `src/Jawa/ideoligion/The Salvation.rid` — removed from `<memes>`.
+     ⚠️ **Both, deliberately.** The warning above was the point: an ideoligion bakes
+     permanently at world creation, so a divergence between the def and the saved
+     religion would have been unfixable after the world was built.
+   - ✅ `Nomadic_Preferred` remains in the `.rid` and needs no meme slot.
+   - ✅ `validate_ideoligion.py --xml` → **1/1 VALID**, impact **7 over 4 memes**
+     (was 4 memes at the cap; the structure meme carries 0).
+
 ---
 
 ## The approved meme set, as it stands

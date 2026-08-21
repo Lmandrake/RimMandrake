@@ -442,6 +442,17 @@ biomes:
   # 🔴 `required_mods.md:185` says "~36 biome-independent landforms" — Geological
   # Landforms, nothing to do with biome survivors. A regex on `36.*biome` false-positives
   # here. check_canon.py must not flag it.
+  # 🔴 `ZBiome_Grasslands` IS THE STORMY SAVANNA. The defName lies.
+  # Owner, 2026-08-20: "We kept Stormy Savanna, so we don't need normal Savannah.
+  # ZBiome_Grasslands is actually the Stormy Savanah (it has a stupid defname)."
+  # It ships from *More Vanilla Biomes*, so we cannot rename it, and anyone reading
+  # `ZBiome_Grasslands` cold will picture temperate grass and reason about it wrongly.
+  # ✅ It is the PYRELANDS carrier, on 233 tiles, and vanilla `Savanna` and `Grasslands`
+  # stay cut. ⛔ Do not "restore" a savanna biome to carry the Pyrelands; one is already
+  # there under a misleading name. Always write it as
+  # `ZBiome_Grasslands` (the Stormy Savanna).
+  misleading_defnames:
+    ZBiome_Grasslands: "the Stormy Savanna — NOT a grassland. Carries the Pyrelands."
   on_map: 24
   on_map_src: >
     24 distinct biome defNames appear on at least one tile of the painted world.
@@ -585,18 +596,6 @@ needs_ruling:
       needs the save read against the live def set, which is CHECK's.
 
 
-  SAVANNA_PREMISE_RESOLVE_1:
-    question: "A 701-line design doc's subject biome is on the cut list."
-    at_stake: "Whether the doc is dead or the cut is."
-
-
-  # ⛔ RESOLVED 2026-08-20 and moved out of needs_ruling, kept here as the record:
-  #   LAKE_BIOME_CUT_OR_KEEP_1        -> keep. See `lake_biome` above.
-  #   GELATINOUS_CUT_REVERSAL_1       -> keep as painted; the cut is REVERSED.
-  #   ZBIOME_GRASSLANDS_CUT_REVERSAL_1 -> keep as painted; the REMOVE is REVERSED.
-  #   DOSSIER_WITHOUT_CAST_ROSTER_1   -> author the roster. Filed as work, not a question.
-  _resolved_2026_08_20: true
-
 
 # ===========================================================================
 # ruled — questions that WERE open and are now answered. Kept, not deleted:
@@ -605,6 +604,17 @@ needs_ruling:
 # just an assertion.
 # ===========================================================================
 ruled:
+
+  SAVANNA_PREMISE_RESOLVE_1:
+    question: "Were the Pyrelands meant to be patched vanilla savanna?"
+    ruled_by: owner
+    ruled_on: 2026-08-20
+    ruling: >
+      ✅ NO — and the premise was wrong. "We kept Stormy Savanna, so we don't need
+      normal Savannah. ZBiome_Grasslands is actually the Stormy Savanah (it has a
+      stupid defname)." The cut of vanilla `Savanna` and `Grasslands` STANDS;
+      `ZBiome_Grasslands` is the Stormy Savanna and is the Pyrelands carrier, on 233
+      painted tiles. Nothing needed reversing. See planet.misleading_defnames.
   DOSSIER_WITHOUT_CAST_ROSTER_1:
     question: >
       The Deepwater Compact has a dossier and a faith and NO cast roster. Deliberate,
