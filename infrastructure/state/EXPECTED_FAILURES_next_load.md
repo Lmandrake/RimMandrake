@@ -1078,9 +1078,36 @@ load-round skill says to run **solo**, and it is not solo — it rides a 578-mod
 | `XML error` / `Could not find type named Inhabited.` in a `WorldObjectDef` or `CharacterDef` | 🔴 def↔class binding. Expected first-run failure #3 |
 | ⭐ **expected-PRESENT:** the `Inhabited` debug actions appear in the dev menu | ✅ absence of errors is necessary and NOT sufficient — a mod that loads and does nothing logs nothing. This is the positive sighting that makes a clean log mean something |
 
-## §4 CORRECTION Results
+## §4 CORRECTION Results — filled 2026-08-20 from the 578-mod load, log EXITED
 
-_(blank — fill after the load)_
+| prediction | result |
+|---|---|
+| no `Inhabited` line at all ⇒ the mod did not load | ⭐ **DID NOT FIRE.** The log carries exactly one: `[Inhabited] ready: 2 patches, 269 characters, 0 places, 0 casts.` |
+| `Could not load reference to` naming an `Inhabited.*` type | ✅ none |
+| `Harmony` exception on `Patch_BeggarsFromPool` | ✅ none — **both patches bound.** This was the one I called likeliest to bite, because the design doc named a class that does not exist; BUILD had already corrected it to `QuestNode_Root_Beggars` |
+| `Could not find type named Inhabited.` in a def | ✅ none |
+| ⭐ expected-PRESENT: the mod announces itself | ✅ **satisfied by the `ready:` line, and this is the finding that matters.** `269 characters` means every authored person parsed into a def. `0 places, 0 casts` is correct for a first run — nothing has been placed yet |
+
+⇒ **`Inhabited` loaded clean on its first ever run, on a 578-mod list.** The architecture
+soak (`ROSTER_SOAK_100_DAYS_1`) is now the only thing between it and being real.
+
+### 🔴 Two RED lines in `harvest_log.py`, and only one of them is new
+
+| check | count | verdict |
+|---|---|---|
+| texture path failures | **2** vs baseline 0 | ⚠️ **NOT NEW.** These are the GRiNDTerra juvenile typos already filed as `GRIMTERRA_TEXPATH_TYPOS_1`, whose own criteria say *"Baseline today is 2"*. The harvester's baseline is the stale number, not the item's |
+| stale saved data (Scribe) | **8** vs baseline 0 | 3 × `guy762_*` GeneDef + 5 × `RG_*` ThingDef (Owlbeast, Boilberries) |
+
+🔑 **The Scribe 8 is NOT ours, and I nearly filed it as though it were.** The three gene
+failures sit directly under three `Loaded file (Xenotype)` lines, which reads exactly like our
+Jawa xenotype dropping genes — the failure `the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa`
+predicts and warns is *invisible to disk evidence*. Measured instead of assumed:
+**`pokean.xtp` contains all three `guy762_*` gene names; `MandrakeJawa.xtp` contains ZERO.**
+Our file's four `guy762` hits are **packageIds in its `<modIds>` provenance block**
+(`guy762.kotordroids`, `.kotorweapons`, `.mm.kotorcore`, `.starwarsxenotypes`) — dotted, not
+underscored, and not gene references at all.
+⚠️ **What this does NOT prove:** only three `.xtp` files loaded out of six in the folder, so a
+clean log does not establish that ours was one of them. `7e31aa` stays open on its own terms.
 
 ---
 
