@@ -51,8 +51,9 @@ click.**
 **no dangling names**, `MandrakeJawa.xtp` 36/36, both against the 2026-08-20 dump
 (`validate_save_artifact.py`, 2026-08-21). ⛔ This is **not** an open gate item and the old
 *"82 precepts unmeasured"* framing is dead. The one residue —
-`IDEO_ABILITY_DEFS_UNREAD_1`, 16 ritual `AbilityDef`s the dump cannot see — is
-**cheap-if-the-game-is-up**, not a blocker.
+`IDEO_ABILITY_DEFS_UNREAD_1`, 16 ritual `AbilityDef`s the dump cannot see — was **closed
+2026-08-21, offline: 16 of 16 resolve** in folders 1.6 actually loads. ⇒ **the player's
+ideoligion is fully measured and nothing about it is open.**
 
 ⚠️ **All three must be DEPLOYED, not merely committed.** The game reads
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`, never this repo.
