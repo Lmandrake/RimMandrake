@@ -689,7 +689,24 @@ class BundlePlanet(object):
         for r in _csv.DictReader(open(stem + "_links.csv", encoding="utf-8")):
             (self.rivers if r["kind"] == "river" else self.roads).append(
                 (int(r["a"]), int(r["b"]), r["def"], 0))
+        # 🔑 The bundle grew a landmark and a mutator file on 2026-08-21
+        # (`ashkarr_populate.py`). Before that this read `self.landmarks = []`, so the
+        # renderer reported zero landmarks on a bundle and there was no way to LOOK at
+        # that layer without a 25-minute load. Both files are optional: a bundle
+        # authored before they existed still renders.
         self.landmarks, self.unresolved = [], []
+        _lp = stem + "_landmarks.csv"
+        if os.path.isfile(_lp):
+            for r in _csv.DictReader(open(_lp, encoding="utf-8")):
+                self.landmarks.append({"tile": int(r["tile"]), "def": r["landmark"],
+                                       "name": r.get("why") or r["landmark"]})
+        self.mutators = {}
+        _mp = stem + "_mutators.csv"
+        if os.path.isfile(_mp):
+            for r in _csv.DictReader(open(_mp, encoding="utf-8")):
+                names = [x for x in (r["mutators"] or "").split(";") if x]
+                if names:
+                    self.mutators[int(r["tile"])] = names
         self.water_biome_set = {"Ocean", "Lake", "SeaIce"}
         self.rivers_broken = self.roads_broken = []
         self.river_dist = None
@@ -936,6 +953,28 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
     # of offsets to dodge with.
     label_boxes = []
 
+    # ⭐ Landmarks draw BEFORE settlements so a settlement mark is never hidden under a
+    # landmark cross. There are 16 of them against 72 holdings; they are named places,
+    # and the whole point of drawing them offline is to judge the layer before a load.
+    if "landmarks" in show and getattr(pv, "landmarks", None):
+        for lm in pv.landmarks:
+            t = lm["tile"]
+            if t >= pv.n:
+                continue
+            xy, vis = proj.project(g.vec[t][None, :], ref=g.vec[t])
+            if not vis:
+                continue
+            px, py, rr = float(xy[0][0]), float(xy[0][1]), 6.0 * sc
+            svg.add('<g stroke="#ffd75e" stroke-width="%.2f" fill="none" opacity="0.95">'
+                    '<circle cx="%.2f" cy="%.2f" r="%.2f"/>'
+                    '<line x1="%.2f" y1="%.2f" x2="%.2f" y2="%.2f"/>'
+                    '<line x1="%.2f" y1="%.2f" x2="%.2f" y2="%.2f"/>'
+                    '<title>%s — %s (tile %d)</title></g>'
+                    % (1.6 * sc, px, py, rr,
+                       px - rr * 1.6, py, px + rr * 1.6, py,
+                       px, py - rr * 1.6, px, py + rr * 1.6,
+                       esc(lm["def"]), esc(lm.get("name") or ""), t))
+
     if "settlements" in show and pv.settlements:
         # the dots always draw; the NAMES declutter, because 72 holdings crowd the
         # terminator band into an unreadable smear
@@ -1047,10 +1086,13 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
             % (y0, main.w, legend_h))
     svg.add('<text x="14" y="%d" font-size="23" font-weight="bold">%s — %s</text>'
             % (y0 + 26, esc(pv.info.get("name") or os.path.basename(pv.path)), esc(layer)))
+    _lm = len(getattr(pv, "landmarks", ()) or ())
+    _mt = len(getattr(pv, "mutators", ()) or ())
     svg.add('<text x="14" y="%d" font-size="14" opacity="0.85">%d tiles · %d settlements'
+            ' · %d landmarks · %d mutated tiles'
             ' · %d river edges · %d road edges · %.1f%% water · substellar (0,0), '
             'terminator = the solid white circle</text>'
-            % (y0 + 48, pv.n, len(pv.settlements), len(pv.rivers), len(pv.roads),
+            % (y0 + 48, pv.n, len(pv.settlements), _lm, _mt, len(pv.rivers), len(pv.roads),
                100.0 * float(pv.is_water.sum()) / pv.n))
     if layer == "biome":
         cen = Counter(pv.biome).most_common(30)
@@ -1123,7 +1165,8 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
                 '<tspan fill="#ffffff">terminator (arc 90)</tspan> &#160;'
                 '<tspan fill="#8e8d85">Wasteland = dead salt plain</tspan> &#160;'
                 '<tspan fill="#2f7fb5">Lake = hypersaline pool / the Scald</tspan> &#160;'
-                'outlined hexes = mountainous</text>' % (kx, ky))
+                'outlined hexes = mountainous  ·  '
+                '<tspan fill="#ffd75e">\u2295 landmark</tspan></text>' % (kx, ky))
 
     svg.add("</g>")
 
@@ -1179,7 +1222,7 @@ def main():
     ap.add_argument("--width", type=int, default=2400)
     ap.add_argument("--no-tooltips", action="store_true",
                     help="merge hexes by colour: much smaller file, no hover")
-    ap.add_argument("--hide", default="", help="comma list of rivers,roads,settlements,coast,labels")
+    ap.add_argument("--hide", default="", help="comma list of rivers,roads,settlements,landmarks,coast,labels")
     ap.add_argument("--water-biome", action="append", default=[],
                     help="treat this biome as water too (repeatable)")
     ap.add_argument("--not-water-biome", action="append", default=[])
@@ -1223,7 +1266,7 @@ def main():
     print("\nreport  %s" % jpath)
 
     if not a.report_only:
-        show = {"rivers", "roads", "settlements", "coast", "labels", "grid", "mountains"}
+        show = {"rivers", "roads", "settlements", "landmarks", "coast", "labels", "grid", "mountains"}
         show -= {s.strip() for s in a.hide.split(",") if s.strip()}
         lat, lon = (float(x) for x in a.center.split(","))
         svg = os.path.join(a.out, "%s.%s.%s.svg" % (stem, a.layer, a.projection))
