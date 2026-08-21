@@ -76,3 +76,64 @@ decision needed:
 **evidence:** Player.log 2026-08-15 16:1x, 575 mods, build 1.6.4871 rev591, dump captured
 2026-08-15T23:12:54Z — same stack as the running game, so not a stale-dump
 artifact. Def loader crossref was CLEAN at baseline 25; this is Scribe only.
+
+---
+
+# ✅ CLOSED — DECIDE, 2026-08-21 13:0x. The closing condition was met, and collected.
+
+**The condition, as this item stated it and unchanged after the fact:** *"the NEXT load's
+startup log carries zero `Could not load reference to Verse.GeneDef named Jawa_*` lines."*
+
+**Collected from the run that ended 2026-08-21 12:36:12** (`Player.log`, 21,198 lines,
+RimWorld 1.6.4871 rev591, 578 active mods, state `EXITED` — so the log is complete and
+nothing is still writing to it), via `harvest_log.py --show scribe`:
+
+| | 2026-08-15 | this run |
+|---|---|---|
+| `Could not load reference` lines, all types | — | **8** |
+| of those, `GeneDef` | 12 | **3** |
+| of those, **`Jawa_*`** | **4** | **0** |
+| any `Jawa_` in the whole scribe view | — | **0** |
+
+⭐ **The three surviving `GeneDef` lines matter as much as our zero.** They are
+`guy762_Furskin_shortfur`, `guy762_BodySizeGene_smaller`, `guy762_Eyes_HugeYellow` — so the
+detector is demonstrably still firing on this run. **Our zero is a measured absence, not a
+check that quietly stopped running**, which is the failure mode that would otherwise make
+this exact evidence worthless.
+
+**Corroborated on disk, deliberately second and not instead of the above** —
+`validate_save_artifact.py` against the deployed `MandrakeJawa.xtp`, read against the
+**frozen `OFFICIAL-2026-08-21` capture** (67,942 defNames indexed, not the 08-15 def set the
+original claim used): **36/36 references resolve, ✅ no dangling names.** 19 of the 585
+modIds captured at save time are no longer active, and that is provenance only — no
+reference above is missing.
+
+⚠️ **This item was right that disk evidence got it wrong the first time, and that is why the
+log is the closer here and the validator is only the corroboration.** Do not reverse that
+order if this ever reopens.
+
+## ⚪ the `softshadow.xtp` half is VOID — not passed, not failed
+
+This item's notes said: *"`softshadow.xtp` carries two dead names — `Jawa_Gene_Skittish` and
+`Jawa_Head_Plain` — and will drop those genes silently at world creation. Someone must decide
+whether it matters before worldgen."*
+
+🔑 **There is no `softshadow.xtp`.** The Xenotypes folder
+(`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Xenotypes`)
+holds exactly six files — `Dark Glutton.xtp`, `Dark Troll.xtp`, `MandrakeJawa.xtp`,
+`MandrakeJawa.xtp.bak-2026-08-15`, `mimic.xtp`, `pokean.xtp` — and a search of the whole
+`LocalLow` tree for `*softshadow*` returns nothing.
+
+⇒ **The decision this item reserved for DECIDE has no subject.** Recording it as void rather
+than as answered, because "we decided it was fine" would be a claim about a file nobody can
+open. ⚠️ **Scope of the search, stated so it can be re-run rather than trusted:** the user
+data tree only. If a `softshadow.xtp` turns up inside a mod folder, this is a new question,
+not this one reopened.
+
+✅ **And the two dead names are gone from the file that did exist.** Checked directly:
+`MandrakeJawa.xtp` carries **zero** `Jawa_Gene_Skittish` and zero bare `Jawa_Head_Plain`; its
+one near-match is `RimMandrake_Jawa_Head_Plain`, the correct prefixed form. The
+`.bak-2026-08-15` still carries both bare names, which is what a backup is for.
+⚠️ My first grep for `Jawa_Head_Plain` reported a hit on the fixed file and it was a
+**substring match inside the prefixed name** — a false positive that would have reopened a
+closed item. The validator, not the grep, is the instrument here.

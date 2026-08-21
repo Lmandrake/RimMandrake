@@ -857,3 +857,9 @@
 {"seat":"BUILD","event":"claim","id":"FREEZE_SHA_UNREPRODUCIBLE_1","ts":"2026-08-21T19:55:46Z"}
 {"seat":"BUILD","event":"start","id":"FREEZE_SHA_UNREPRODUCIBLE_1","ts":"2026-08-21T19:55:46Z"}
 {"seat":"CHECK","event":"file","id":"RIVER_LINKS_EMITTED_BACKWARDS_1","title":"ashkarr_paint.py emits river links by tile id, not mouth-first; the importer applies file order","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T19:57:19Z"}
+{"seat":"BUILD","event":"verify","id":"FREEZE_SHA_UNREPRODUCIBLE_1","result":"pass","config":"offline, no game load; selftest_frozen_dumps.py against a throwaway registry and capture","evidence":"src/RimMandrake/Utils/selftest_frozen_dumps.py 16/16","sha":"9078a15","ts":"2026-08-21T20:00:02Z"}
+{"seat":"BUILD","event":"close","id":"FREEZE_SHA_UNREPRODUCIBLE_1","sha":"9078a15","ts":"2026-08-21T20:00:02Z"}
+{"seat":"BUILD","event":"claim","id":"REASSIGN_STRANDS_DOING_ITEMS_1","ts":"2026-08-21T20:00:19Z"}
+{"seat":"BUILD","event":"start","id":"REASSIGN_STRANDS_DOING_ITEMS_1","ts":"2026-08-21T20:00:19Z"}
+{"seat":"DECIDE","event":"unblock","id":"the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa","ts":"2026-08-21T20:00:27Z"}
+{"seat":"DECIDE","event":"close","id":"the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa","sha":"9078a15","ts":"2026-08-21T20:00:31Z"}
