@@ -46,9 +46,16 @@ field, 2026-08-21:
 Queue state decays; the disk does not. ⇒ Whoever next touches these should close them
 against the commits that already built them, not rebuild them.
 
-⚠️ One stale sub-claim inside B54: its verify names three files as the `deityPresets`
-holders. There are **four** — `GalacticEmpire.xml`, `HomesteadDefenseLeague.xml`,
-`JawaHuttCartel.xml`, `JawaTribes.xml`. The artifact is right; the item's audit is old.
+⚠️ 🔴 **CORRECTED by CHECK, 2026-08-21, against the running game — this paragraph used to
+say four and it was wrong.** There are **three** `deityPresets` holders: `GalacticEmpire.xml`,
+`HomesteadDefenseLeague.xml`, `JawaHuttCartel.xml`. `JawaTribes.xml` has none, deliberately —
+its own comment at line 97 says a `deityPresets` block there *"would be an error, not an
+improvement"*, because `AM_Structure_Scavenger` allows **zero** deities. `grep -c
+'<deityPresets>'` returns 1/1/1/0 across the four files. The live game agrees: `jawa/ideo_of`
+on two quicktest worlds reports exactly three deities — `Palpatine`, `the Withdrawn`,
+`the Ledger` — and The Salvation comes back `keyDeityName: null`, `deityCountRange: "0"`.
+⇒ **B54's original audit of three was right.** Evidence:
+`infrastructure/state/observed/2026-08-21/B54_faction_faiths/`.
 
 ---
 
