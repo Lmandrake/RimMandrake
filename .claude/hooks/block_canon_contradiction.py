@@ -89,7 +89,11 @@ def main():
             "         <!-- canon-ok: why this line states it -->\n"
             "  3. CANON is wrong -> fix canon.yml, with a `src:` for the new value, "
             "and record the loser under `superseded:`.\n\n"
-            "    python3 src/RimMandrake/Utils/check_canon.py --list" % body[:2500])}}))
+            "    python3 src/RimMandrake/Utils/check_canon.py --list"
+            "\n\n\u26a0\ufe0f  NOTHING IN THAT COMMAND RAN \u2014 including anything BEFORE the "
+            "part that was\nrefused. A PreToolUse hook fires before the shell, so a compound "
+            "command is refused\nwhole. If you chained a file write to a commit, the write did "
+            "not happen either." % body[:2500])}}))
     return 0
 
 

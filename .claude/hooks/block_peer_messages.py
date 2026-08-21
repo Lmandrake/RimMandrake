@@ -142,7 +142,11 @@ def main():
                 "✅ Your OWN subagents are not peers and are not blocked. "
                 "Resume one by the hex id the Agent tool returned, not by a "
                 "nickname.\n"
-                "See CLAUDE.md > 'AGENTS DO NOT MESSAGE EACH OTHER'." % why
+                "See CLAUDE.md > 'AGENTS DO NOT MESSAGE EACH OTHER'."
+                "\n\n\u26a0\ufe0f  NOTHING IN THAT COMMAND RAN \u2014 including anything BEFORE the "
+                "part that was\nrefused. A PreToolUse hook fires before the shell, so a compound "
+                "command is refused\nwhole. If you chained a file write to a commit, the write did "
+                "not happen either." % why
             ),
         }
     }))

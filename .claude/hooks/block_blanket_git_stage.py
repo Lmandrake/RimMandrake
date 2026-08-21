@@ -189,7 +189,11 @@ def main():
                     "    git add  path/new.md\n"
                     "    git commit path/new.md -F - <<'EOF'\n\n"
                     "Amending is unaffected: `git commit --amend` is allowed.\n"
-                    "See CLAUDE.md > 'Commit explicit paths only'." % why
+                    "See CLAUDE.md > 'Commit explicit paths only'."
+                    "\n\n\u26a0\ufe0f  NOTHING IN THAT COMMAND RAN \u2014 including anything BEFORE the "
+                    "part that was\nrefused. A PreToolUse hook fires before the shell, so a compound "
+                    "command is refused\nwhole. If you chained a file write to a commit, the write did "
+                    "not happen either." % why
                 ),
             }
         }))

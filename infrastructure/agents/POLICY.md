@@ -182,6 +182,31 @@ will find out.
 same question in about 400 tokens, and answers it *correctly* — the file and the command
 call the same function, so they cannot disagree.
 
+### 🔴 An item filed off an owner QUOTE must cite what the quote overrules — 2026-08-21
+
+Ruled after REP filed `REFMATCH_THRESHOLDS_CALIBRATE_1` on the strength of *"Yes, I like
+your new globes. Well done."* — and never cited `ORTHO_GLOBE_MAP_ACCEPTED_1`, ruled the
+previous day, which says ⛔ **do not build `refmatch.py` for v1.** BUILD read both,
+refused to build, and escalated in one sentence. ⭐ That refusal is the behaviour to copy.
+
+**Before filing work whose premise is something the owner said:**
+1. **Search `canon.yml` and the queue for the topic.** The searchable record exists
+   precisely so this costs seconds.
+2. **Cite what you found, in the item** — either the ruling it supersedes, or the
+   sentence *"no prior ruling found on this"*. An item that cites neither is
+   indistinguishable from one that never looked.
+3. ⚠️ **Weigh the two quotes rather than taking the newer one.** Later is not stronger.
+   *"I like your new globes"* is approval of a RENDERING; *"Map accepted"* is a ruling
+   about SCOPE. REP's own spec said so and filed the work anyway.
+
+🔑 **The tell that this has gone wrong**: a doc that was answered by a better one and
+never told. If your new item and a standing ruling disagree and neither mentions the
+other, you are writing the first half of that failure.
+
+⛔ **Not enforceable by a hook, and deliberately not attempted.** Nothing can tell a
+citation from a plausible sentence. This is discipline, and the cost of skipping it is
+paid by whoever has to work out which of two rulings was live.
+
 ### 🔴 The owner announces GAME STATE by saying it — ruled 2026-08-21
 
 ⛔ **There is no longer a second command, and seats never had one.** The owner types a

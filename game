@@ -39,6 +39,27 @@ if [ $# -eq 0 ]; then
     exit 0
 fi
 
+# ⭐ --help exits ZERO and lists the states. Added 2026-08-21 after
+# `.claude/hooks/selftest_documented_commands.py` found this documented three times in
+# CLAUDE.md while `./game --help` exited 2 — the exact class of defect that test exists
+# to catch, caught on its first run.
+case "${1}" in
+    -h|--help|help)
+        echo "usage: ./game up|down|loading|deploying|going-down [\"note\"]"
+        echo
+        echo "  up           the game is live and usable"
+        echo "  down         no RimWorld process — the only window assemblies can be written"
+        echo "  loading      launched, not yet at a menu"
+        echo "  deploying    files going to the Steam Mods tree"
+        echo "  going-down   about to close — last call for anything needing the live game"
+        echo
+        echo "  ./game       with no argument: what the board thinks vs what is running"
+        echo
+        echo "Announces to every agent window AND stamps the ledger, in one act."
+        echo "🔴 OWNER ONLY. Agents do not announce game state."
+        exit 0 ;;
+esac
+
 case "${1,,}" in
     up)                 sentence="Game is up" ;;
     down)               sentence="Game is down" ;;
