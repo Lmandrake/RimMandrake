@@ -833,3 +833,4 @@
 {"seat":"BUILD","event":"close","id":"CHECK_AND_POLICY_LEARN_MEASURE_1","sha":"d1b4701","ts":"2026-08-21T19:12:31Z"}
 {"seat":"BUILD","event":"close","id":"MEASURE_HELPER_FOR_MANIFEST_1","sha":"8e63426","ts":"2026-08-21T19:12:32Z"}
 {"seat":"BUILD","event":"file","id":"DUMP_READERS_USE_THE_DB_1","title":"Five tools still parse 670MB of JSON for what the db answers in 0.2s","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T19:20:22Z"}
+{"seat":"BUILD","event":"file","id":"DUMP_FREEZE_COVERS_CAPTURE_1","title":"The frozen dump was replaced on 08-21; re-freeze, restore, or unfreeze","kind":"decision","target":"v1","needs":"owner","for":"OWNER","ts":"2026-08-21T19:29:31Z"}

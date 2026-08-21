@@ -17,6 +17,41 @@ a trailer. **This file is for everything that is not shaped like an item.**
 
 ---
 
+
+## 🔴 THE FROZEN DUMP HAS ALREADY BEEN REPLACED — only you can resolve it, 2026-08-21
+
+`infrastructure/state/dumps/REGISTRY.jsonl` freezes **`OFFICIAL-2026-08-20`** at
+`capturedUtc 2026-08-20T15:08:30Z`. The dump on disk is **`2026-08-21T08:20:20Z`**.
+
+⚠️ **Both captures are 578 mods**, which is why nothing noticed: the mod count was
+the only thing the frozen branch compared, and it had not moved. So the design
+target DECIDE and BUILD author against changed underneath them with no announcement
+— the exact failure `dumps/README.md` warns is *"far worse than a stale warning"*.
+
+✅ **Now detected.** `refresh.py` reports **`REPLACED`** on the board, comparing the
+registry's `capturedUtc` against the manifest's.
+
+🔑 **Two things you should know before choosing:**
+- The 08-21 capture is the one everything today was measured against, and it is the
+  one that exposed the 824-def collision loss. It is *better evidence* than the
+  08-20 one, not worse.
+- ⛔ **An agent must not re-freeze to clear the warning.** That is how a target moves
+  without anyone deciding, so this is parked here rather than fixed.
+
+**Your options:**
+  (a) **Re-freeze to the 08-21 capture** — new registry entry, new id. Says "yes,
+      this is the target now." Probably right, but it is your call to make.
+  (b) **Restore the 08-20 capture** — if the 08-20 one was chosen for a reason I
+      cannot see. Needs the old bytes, which may no longer exist.
+  (c) **Say the official dump is not frozen for now** — drop `frozen: true` until
+      the world work settles and the mod list stops moving.
+
+⚠️ **Also settled today, and it needs no decision from you** — the freeze covers the
+CAPTURE only (`manifest.json`, `defs/**`, `animals.json`). `defs.sqlite` is derived,
+deterministic and rebuilt in ~60 s, so it is explicitly OUTSIDE the freeze; freezing
+it would freeze its schema bugs. Full ruling at the top of `dumps/README.md`.
+
+
 ## ~~Q (DECIDE, 2026-08-15): a cherrypick session~~ ANSWERED — FROZEN, and CLOSED for v1
 
 🔴 **OWNER, 2026-08-15:** *"I have completed armor, weapons, items, beasts, and a few

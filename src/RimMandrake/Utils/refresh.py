@@ -499,11 +499,25 @@ def status(fp, steps_failed=False):
         # ✅ FROZEN, not stale — and this branch sits ABOVE the hash comparison on
         # purpose, so a count mismatch can never reach it. See the note at the top.
         fe = frozen_entry(D_DUMP)
-        rows.append(("DefDump/ (live)",
-                     "%s (%s mods, %s)" % (dfp["hash"], dfp["modCount"],
-                                           dfp.get("capturedUtc", "?")),
-                     "FROZEN", "owner only (%s, %s)"
-                     % (fe.get("by", "?"), fe.get("id", "?"))))
+        # 🔴 But a freeze that cannot detect REPLACEMENT is not a freeze.
+        # Measured 2026-08-21: the registry froze capture 2026-08-20T15:08:30Z
+        # and the disk held 2026-08-21T08:20:20Z. Both were 578 mods, so the
+        # only thing this branch checked had not moved, and the design target
+        # everyone builds against had silently changed. The registry's own
+        # README calls that "far worse than a stale warning, because nothing
+        # would announce it". This announces it.
+        want = str(fe.get("capturedUtc") or "")
+        got = str(dfp.get("capturedUtc") or "")
+        if want and got and want != got:
+            rows.append(("DefDump/ (live)",
+                         "frozen as %s, disk holds %s" % (want, got),
+                         "REPLACED", "owner re-freezes or restores"))
+        else:
+            rows.append(("DefDump/ (live)",
+                         "%s (%s mods, %s)" % (dfp["hash"], dfp["modCount"],
+                                               dfp.get("capturedUtc", "?")),
+                         "FROZEN", "owner only (%s, %s)"
+                         % (fe.get("by", "?"), fe.get("id", "?"))))
     elif dfp["hash"] != fp["hash"]:
         rows.append(("DefDump/ (live)",
                      "%s (%s mods, %s)" % (dfp["hash"], dfp["modCount"],

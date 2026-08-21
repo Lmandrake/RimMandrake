@@ -142,6 +142,47 @@ def t_the_shipped_registry_freezes_the_live_dump():
         "Got: %r" % (got,))
 
 
+def t_a_replaced_capture_is_not_reported_as_frozen():
+    """🔴 A freeze that cannot detect replacement is not a freeze.
+
+    Measured 2026-08-21: the registry froze 2026-08-20T15:08:30Z and the disk
+    held 2026-08-21T08:20:20Z. Both were 578 mods, so the mod-count comparison
+    — the only one the frozen branch made — saw nothing, and the design target
+    moved silently. That is the failure this file's README calls worse than a
+    stale warning.
+    """
+    d = with_registry(['{"id":"T","kind":"official","frozen":true,'
+                       '"modlist_count":578,"path":"DefDump",'
+                       '"capturedUtc":"2026-08-20T15:08:30Z"}\n'])
+    try:
+        fe = refresh.frozen_entry("/x/DefDump")
+        assert fe, "the test registry did not take"
+        assert fe["capturedUtc"] == "2026-08-20T15:08:30Z"
+        # the branch must compare capturedUtc, not only the mod count
+        src = open(os.path.join(HERE, "refresh.py"), encoding="utf-8").read()
+        assert "REPLACED" in src, (
+            "refresh.py no longer reports a replaced frozen capture")
+        assert 'fe.get("capturedUtc")' in src, (
+            "the frozen branch no longer compares capturedUtc, so a re-capture "
+            "on the same mod count would pass unnoticed again")
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def t_the_derived_db_is_outside_the_freeze():
+    """`defs.sqlite` lives inside the frozen path and must NOT be frozen —
+    it is a pure function of the capture, so rebuilding it cannot move the
+    target, and freezing it would freeze its schema bugs."""
+    readme = os.path.join(os.path.dirname(os.path.dirname(HERE)),
+                          "..", "infrastructure", "state", "dumps", "README.md")
+    readme = os.path.normpath(readme)
+    if not os.path.exists(readme):
+        return
+    text = open(readme, encoding="utf-8").read()
+    assert "defs.sqlite" in text and "never" in text.lower(), (
+        "the README no longer records that the derived db is outside the freeze")
+
+
 if __name__ == "__main__":
     real = refresh._registry_path
     for k, v in sorted(globals().items()):
