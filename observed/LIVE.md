@@ -24,17 +24,34 @@ registry's `knownDamage` is right about the artifact and stale only about the de
 automated and an agent must not do it. The command, in full:
 
 ```
-python3 src/RimMandrake/Utils/freeze_dump.py --by owner
+python3 src/RimMandrake/Utils/refresh.py --freeze --by owner
 ```
 
-⚠️ **`refresh.py --freeze` DOES NOT EXIST** — `refresh.py`'s own header has promised it
-since 2026-08-20 (*"`--freeze` refuses without an explicit `--by owner`"*) and there is no
-such flag in its argparse. So the one act the registry is built around had no command
-behind it. `freeze_dump.py` is that command: it reads `capturedUtc`, `gameVersion` and the
-mod count **out of manifest.json** rather than from the command line, sets `supersedes`
-itself, refuses every seat but the owner, and refuses a no-op when the capture on disk is
-already the frozen one. Run it with no arguments for a dry run that prints the exact line
-it would append.
+✅ **`refresh.py --freeze` NOW EXISTS** — corrected 2026-08-21 by BUILD under
+`FREEZE_SHA_UNREPRODUCIBLE_1`. It had been promised by `refresh.py`'s own header since
+2026-08-20 (*"`--freeze` refuses without an explicit `--by owner`"*) with no such flag in
+its argparse, so the one act the registry is built around had no command behind it.
+CHECK wrote a standalone `freeze_dump.py`; **that script has been folded into
+`refresh.py` and deleted**, because two commands that both append a freeze are two
+answers to one question.
+
+It reads `capturedUtc`, `gameVersion` and the mod count **out of manifest.json** rather
+than from the command line, takes `modlist_sha` from `refresh.dump_fingerprint()` so the
+number is **recomputable by a function you can run**, sets `supersedes` itself, refuses
+every seat but the owner, refuses a no-op when the capture on disk is already the frozen
+one, and refuses to append past a registry line nobody can parse. Drop `--by owner` for a
+dry run that prints the exact line it would append and writes nothing:
+
+```
+python3 src/RimMandrake/Utils/refresh.py --freeze
+```
+
+🪤 **And one number in the registry was never real.** `OFFICIAL-2026-08-21` was frozen
+carrying `modlist_sha e0f11692cf69e516`, which reproduces from nothing on this machine —
+not the capture's own mod set (`5ef6eec3daf6c325`), not the live load set
+(`49b83562b10df31c`). Corrected in place to the recomputable value, with a `shaCorrected`
+field saying so. **The capture, the id and `capturedUtc` are untouched — a wrong number
+made checkable is not a re-freeze.**
 
 Owner, 2026-08-21: *"deploy the fix, re-capture, re-freeze."*
 

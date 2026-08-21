@@ -380,8 +380,18 @@ def _registry_path():
     return os.path.join(root, "infrastructure", "state", "dumps", "REGISTRY.jsonl")
 
 
-def registry():
-    """-> [entry] newest last. [] when absent, which is not an error."""
+class RegistryCorrupt(Exception):
+    """A registry line will not parse. Fatal for a WRITE, survivable for a read."""
+
+
+def registry(strict=False):
+    """-> [entry] newest last. [] when absent, which is not an error.
+
+    `strict=True` raises `RegistryCorrupt` instead of warning past a bad line.
+    A reader degrades — it still has every line it could parse. A WRITER must
+    not: appending past a line nobody can read is how a frozen dump loses its
+    immunity with no symptom anywhere near the cause.
+    """
     out = []
     try:
         with open(_registry_path(), encoding="utf-8") as fh:
@@ -392,6 +402,11 @@ def registry():
                 try:
                     out.append(json.loads(line))
                 except ValueError:
+                    if strict:
+                        raise RegistryCorrupt(
+                            "REGISTRY.jsonl line %d is not valid JSON. Fix it by "
+                            "hand before freezing; refusing to append past a line "
+                            "nobody can read." % i)
                     # ⚠️ Reported, never skipped. A registry that quietly drops a line
                     # would let a frozen dump lose its immunity without anyone knowing,
                     # and the symptom — "the official dump went STALE" — points nowhere
@@ -401,6 +416,70 @@ def registry():
     except OSError:
         pass
     return out
+
+
+def freeze(dump=None, by="", id_="", note="", known_damage=""):
+    """Build the freeze entry for the capture on disk; write it only for the owner.
+
+    -> (entry_dict, wrote_bool). Never writes unless `by == "owner"`.
+
+    🔴 **Only the OWNER re-freezes, and this is the only command that can.**
+    Re-freezing moves the design target every seat authors against, so it must be
+    a decision, never a way to clear a warning. Any other `by` produces the entry
+    and returns `wrote=False`, which is the dry run.
+
+    🔑 **Every number comes out of `manifest.json` or out of `dump_fingerprint`,
+    none off the command line.** A freeze is a claim about an artifact; a claim
+    assembled from typed-in values is one nobody measured. `OFFICIAL-2026-08-21`
+    was frozen carrying `modlist_sha e0f11692cf69e516`, which reproduces from
+    NOTHING on this machine — not the dump's own mod set (`5ef6eec3daf6c325`),
+    not the live load set (`49b83562b10df31c`). That is what this function exists
+    to make impossible.
+    """
+    dump = dump or D_DUMP
+    mpath = os.path.join(dump, "manifest.json")
+    if not os.path.exists(mpath):
+        raise RuntimeError("no manifest.json at %s — there is no capture to "
+                           "freeze." % mpath)
+    with open(mpath, encoding="utf-8") as fh:
+        m = json.load(fh)
+    captured = m.get("capturedUtc") or m.get("captured") or ""
+    if not captured:
+        raise RuntimeError("manifest.json carries no capturedUtc — refusing to "
+                           "freeze a capture that cannot say when it was taken.")
+
+    prior = [e for e in registry(strict=True) if e.get("kind") == "official"]
+    cur = prior[-1] if prior else None
+    if cur and cur.get("capturedUtc") == captured:
+        raise RuntimeError(
+            "OFFICIAL is already frozen at capturedUtc %s (%s). Nothing to do — "
+            "this capture IS the design target." % (captured, cur.get("id")))
+
+    fp = dump_fingerprint(dump) or {}
+    entry = {
+        "id": id_ or "OFFICIAL-%s" % captured[:10],
+        "kind": "official", "frozen": True,
+        "modlist_count": m.get("modCount") or fp.get("modCount"),
+        "modlist_sha": fp.get("hash") or "see manifest.json",
+        "path": "RimWorld by Ludeon Studios/DefDump",
+        "by": "owner", "at": captured[:10], "capturedUtc": captured,
+        "gameVersion": m.get("gameVersion", ""),
+        "note": note or ("the design target — build to this. A differing live mod "
+                         "count, greater OR lesser, is NOT staleness. Only the "
+                         "owner re-freezes. THE FREEZE COVERS THE CAPTURE ONLY — "
+                         "manifest.json, defs/**, animals.json. defs.sqlite is "
+                         "derived and explicitly outside it. See dumps/README.md."),
+    }
+    if cur:
+        entry["supersedes"] = cur.get("id")
+    if known_damage:
+        entry["knownDamage"] = known_damage
+
+    if by != "owner":
+        return entry, False
+    with open(_registry_path(), "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(entry) + "\n")
+    return entry, True
 
 
 def frozen_entry(path):
@@ -709,12 +788,43 @@ def main():
                          "artefact and needs no game load. Exit 0 = measured, "
                          "nothing missing; 1 = measured, mods are missing; "
                          "2 = UNMEASURABLE (a mod root could not be read).")
+    ap.add_argument("--freeze", action="store_true",
+                    help="append a freeze entry for the capture on disk to "
+                         "dumps/REGISTRY.jsonl. 🔴 OWNER ONLY — refuses without "
+                         "an explicit `--by owner`, and prints the entry it "
+                         "WOULD write instead. Re-freezing moves the design "
+                         "target, so it is a decision, never a way to clear a "
+                         "warning.")
+    ap.add_argument("--by", default="", help="must be exactly `owner` for --freeze")
+    ap.add_argument("--freeze-id", default="",
+                    help="override the entry id; default OFFICIAL-<capture date>")
+    ap.add_argument("--known-damage", default="",
+                    help="what this capture is known to be missing; omit if clean")
+    ap.add_argument("--dump", default=D_DUMP, help="the capture to freeze")
     ap.add_argument("--note", default="",
                     help="record WHY this rebuild happened, e.g. 'VSIE pulled "
                          "for debugging'. Stored in GENERATED_FROM.json and "
                          "shown in status. Use it whenever the mod list is "
                          "deliberately not in its intended shape.")
     a = ap.parse_args()
+
+    if a.freeze:
+        try:
+            entry, wrote = freeze(a.dump, a.by, a.freeze_id, a.note,
+                                  a.known_damage)
+        except (RegistryCorrupt, RuntimeError) as exc:
+            sys.exit(str(exc))
+        print(json.dumps(entry))
+        if wrote:
+            print("\nfroze %s at capturedUtc %s" % (entry["id"], entry["capturedUtc"]))
+            if entry.get("supersedes"):
+                print("supersedes %s" % entry["supersedes"])
+            print("appended to %s" % _registry_path())
+            sys.exit(0)
+        print("\nDRY RUN — nothing written. Only the OWNER re-freezes.")
+        print("\nTo write it:")
+        print("  python3 src/RimMandrake/Utils/refresh.py --freeze --by owner")
+        sys.exit(1)
 
     try:
         fp = loadset_fingerprint(a.config)

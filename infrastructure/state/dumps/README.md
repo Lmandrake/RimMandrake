@@ -20,6 +20,23 @@ warning, because nothing would announce it.
 
 ⛔ **Only the owner re-freezes, deliberately.** Nothing automates it.
 
+**The command, in full** — and it is the ONLY one that appends a freeze
+(`freeze_dump.py` was folded into `refresh.py` and deleted, 2026-08-21,
+`FREEZE_SHA_UNREPRODUCIBLE_1`, because two commands that both append a freeze are
+two answers to one question):
+
+```
+python3 src/RimMandrake/Utils/refresh.py --freeze --by owner
+```
+
+Drop `--by owner` for a dry run that prints the line it would append and writes
+nothing. 🔑 **`modlist_sha` comes from `refresh.dump_fingerprint()`**, so every
+entry carries a number a reader can recompute. `OFFICIAL-2026-08-21` did not — it
+was frozen with `e0f11692cf69e516`, which reproduces from nothing on this machine;
+corrected in place to `5ef6eec3daf6c325` with a `shaCorrected` field. **A wrong
+number made checkable is not a re-freeze:** the capture, the id and `capturedUtc`
+are untouched.
+
 ## 🔴 WHAT A FREEZE COVERS — ruled 2026-08-21, BUILD, at the owner's request
 
 The question: now that a dump has more than one representation, **is the freeze on

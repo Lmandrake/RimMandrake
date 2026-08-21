@@ -183,6 +183,128 @@ def t_the_derived_db_is_outside_the_freeze():
         "the README no longer records that the derived db is outside the freeze")
 
 
+# ---------------------------------------------------------------------------
+# `refresh.py --freeze` — folded in from freeze_dump.py, FREEZE_SHA_UNREPRODUCIBLE_1.
+# The registry is append-only and points at the OWNER's design target, so every
+# case below writes to a throwaway registry and a throwaway capture. None of
+# them may touch the real one.
+# ---------------------------------------------------------------------------
+
+def _capture(captured="2026-09-01T00:00:00Z", mods=("a.one", "b.two")):
+    """A throwaway DefDump holding only what freeze() reads."""
+    d = tempfile.mkdtemp(prefix=".capture_")
+    json.dump({"capturedUtc": captured, "gameVersion": "1.6.9999 rev1",
+               "modCount": len(mods),
+               "mods": [{"loadOrder": i + 1, "name": m, "packageId": m,
+                         "rootDir": "/nowhere/" + m} for i, m in enumerate(mods)]},
+              open(os.path.join(d, "manifest.json"), "w", encoding="utf-8"))
+    return d
+
+
+def t_a_dry_run_writes_nothing_and_says_so():
+    reg = with_registry([entry(capturedUtc="2026-08-21T08:20:20Z")])
+    before = open(refresh._registry_path(), encoding="utf-8").read()
+    e, wrote = refresh.freeze(_capture(), by="")
+    assert wrote is False, "a freeze with no --by owner reported that it wrote"
+    assert open(refresh._registry_path(), encoding="utf-8").read() == before, (
+        "the dry run appended to the registry anyway")
+    assert e["id"] == "OFFICIAL-2026-09-01", e["id"]
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_only_the_owner_can_write_a_freeze():
+    reg = with_registry([entry(capturedUtc="2026-08-21T08:20:20Z")])
+    for who in ("BUILD", "check", "Owner", "owner "):
+        _, wrote = refresh.freeze(_capture(), by=who)
+        assert wrote is False, "`--by %s` was accepted as the owner" % who
+    _, wrote = refresh.freeze(_capture(), by="owner")
+    assert wrote is True, "the owner could not write a freeze"
+    lines = [l for l in open(refresh._registry_path(), encoding="utf-8") if l.strip()]
+    assert len(lines) == 2, "expected exactly one appended line, got %d" % len(lines)
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_the_sha_it_writes_is_reproducible():
+    """🔴 The defect this item was filed for. `OFFICIAL-2026-08-21` carried
+    `e0f11692cf69e516`, which no code on this machine produces. A freeze is a
+    claim about an artifact, and a claim nobody can recompute can only be
+    believed."""
+    reg = with_registry([entry(capturedUtc="2026-08-21T08:20:20Z")])
+    cap = _capture()
+    e, _ = refresh.freeze(cap, by="")
+    again = (refresh.dump_fingerprint(cap) or {}).get("hash") or "see manifest.json"
+    assert e["modlist_sha"] == again, (
+        "the sha in the entry (%s) is not what dump_fingerprint recomputes (%s)"
+        % (e["modlist_sha"], again))
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_refreezing_the_same_capture_is_refused():
+    """Not a courtesy. A no-op freeze is what "clear the warning" looks like."""
+    reg = with_registry([entry(capturedUtc="2026-09-01T00:00:00Z")])
+    try:
+        refresh.freeze(_capture("2026-09-01T00:00:00Z"), by="owner")
+        raise AssertionError("re-freezing the already-frozen capture was allowed")
+    except RuntimeError as exc:
+        assert "already frozen" in str(exc), str(exc)
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_a_writer_refuses_to_append_past_a_corrupt_line():
+    """A READER degrades and warns; a WRITER must not. Appending past a line
+    nobody can parse is how a frozen dump loses its immunity with the symptom
+    nowhere near the cause."""
+    reg = with_registry([entry(), "{not json at all\n"])
+    assert len(refresh.registry()) == 1, "the lenient read should still return the good line"
+    try:
+        refresh.registry(strict=True)
+        raise AssertionError("strict=True parsed a corrupt registry without complaint")
+    except refresh.RegistryCorrupt:
+        pass
+    try:
+        refresh.freeze(_capture(), by="owner")
+        raise AssertionError("freeze appended past a corrupt registry line")
+    except refresh.RegistryCorrupt:
+        pass
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_freeze_is_reachable_from_the_command_line():
+    """⛔ The whole point of FREEZE_SHA_UNREPRODUCIBLE_1: refresh.py's header has
+    promised `--freeze` since 2026-08-20 and its argparse never had it. A
+    capability named but not handed over is not handed over."""
+    out = subprocess.run([sys.executable, os.path.join(HERE, "refresh.py"), "--help"],
+                         capture_output=True, text=True).stdout
+    assert "--freeze" in out, "refresh.py --help still does not offer --freeze"
+    assert "--by" in out, "refresh.py --help does not mention --by"
+
+
+def t_there_is_exactly_one_command_that_freezes():
+    """Two tools answering one question is two answers. freeze_dump.py was folded
+    into refresh.py rather than kept beside it."""
+    assert not os.path.exists(os.path.join(HERE, "freeze_dump.py")), (
+        "freeze_dump.py is back — either it or refresh.py --freeze must go")
+
+
+def t_no_registry_entry_carries_an_unreproducible_sha():
+    """Every shipped entry's sha either recomputes or honestly says so."""
+    real = os.path.normpath(os.path.join(
+        os.path.dirname(os.path.dirname(HERE)), "..",
+        "infrastructure", "state", "dumps", "REGISTRY.jsonl"))
+    if not os.path.exists(real):
+        return
+    known = {(refresh.dump_fingerprint() or {}).get("hash"), "see manifest.json"}
+    known.discard(None)
+    for i, line in enumerate(open(real, encoding="utf-8"), 1):
+        line = line.strip()
+        if not line:
+            continue
+        sha = json.loads(line).get("modlist_sha")
+        assert sha in known, (
+            "REGISTRY.jsonl line %d claims modlist_sha %r, which nothing on this "
+            "machine produces (recomputable: %s)" % (i, sha, sorted(known)))
+
+
 if __name__ == "__main__":
     real = refresh._registry_path
     for k, v in sorted(globals().items()):
