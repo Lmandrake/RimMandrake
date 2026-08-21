@@ -191,3 +191,20 @@ it does not belong here.
   to the HTML page and the browser imported markup as JavaScript. **Every check that day
   had spun up a fresh instance on a spare port and passed.** Verify against the process
   that is actually running, not one you just started.
+- 🔴 **A missing facing does NOT go magenta, and that makes "no magenta" useless as an
+  art-gap test for any `Graphic_Multi` thing.** Read off `Verse/Graphic_Multi.Init`
+  2026-08-21: `_north` absent falls back to `_south` with
+  `drawRotatedExtraAngleOffset = 180f`; `_east`/`_west` absent fall back to each other
+  **flipped**; `_south` absent falls back to whatever filled slot 0. `BaseContent.BadMat`
+  and the log line `Failed to find any textures at <path>` fire **only when all four
+  suffixed paths AND the bare path miss**. ⇒ Magenta is the right instrument for a
+  WHOLLY missing texture (that is how the D-CHK2 heads were found); it can never see a
+  partially-shipped directional set.
+- 🪤 **Overriding another mod's texture is PER FILE, so a partial reskin mixes the two
+  mods' art on one thing.** `ContentFinder<T>.Get` walks `LoadedModManager.
+  RunningModsListForReading` **backwards** (`for (num = Count-1; num >= 0; num--)`) and
+  returns the first hit for that exact itemPath — last mod loaded wins, one path at a
+  time. Ship `AV_OxCart_south.png` at the donor's own path and leave `_north` out, and
+  the game draws OUR south beside the DONOR's north: banthas from one side, oxen from
+  the other, **no error and no magenta**. Either author every facing, or move the def's
+  `texPath` into our own namespace so the engine's own symmetry fallback covers the rest.
