@@ -103,6 +103,16 @@
   .cur .h{flex-wrap:wrap}
   .mem .r{gap:8px}
   .mem .r span:last-child{white-space:nowrap}
+  /* View switcher. No transitions anywhere: this page is left open all day. */
+  nav#views{display:flex;gap:1px;margin:10px 0 6px;border-bottom:1px solid #2e2e2c}
+  nav#views button{background:#1a1a19;color:#8a8a86;border:1px solid #2e2e2c;
+    border-bottom:none;padding:5px 13px;font:600 11px/1.4 ui-monospace,monospace;
+    letter-spacing:.08em;cursor:pointer}
+  nav#views button:hover{color:#cfcfc9}
+  nav#views button.on{color:#6fd3e0;border-color:#3a4f52;background:#14201f}
+  #viewhost{margin-bottom:14px}
+  #viewhost .vfail{border:1px solid #6b3a3a;background:#231818;color:#e0b3b3;
+    padding:10px 12px;font:12px/1.5 ui-monospace,monospace}
 </style>
 
 <div class="grid top">
@@ -112,6 +122,17 @@
   </div>
   <svg width="188" height="96" viewBox="0 0 188 96" id="gauge"></svg>
 </div>
+
+<!-- The five views. `legacy` is the original board, kept because it reads /data and
+     shows host, inventory and process facts the ledger has no opinion about. -->
+<nav id="views" aria-label="views">
+  <button data-v="deck"     class="on">DECK</button>
+  <button data-v="flow">FLOW</button>
+  <button data-v="vnv">V&amp;V</button>
+  <button data-v="timeline">TIMELINE</button>
+  <button data-v="legacy">HOST &amp; INVENTORY</button>
+</nav>
+<div id="viewhost" hidden></div>
 
 <div class="grid kpis" id="kpis"></div>
 
@@ -457,4 +478,96 @@ function render(d){
 const tick=()=>fetch('/data',{cache:'no-store'}).then(r=>r.json()).then(render)
   .catch(e=>el('clock').innerHTML='<span class="stale">server unreachable</span>');
 tick(); setInterval(tick,3000);
+</script>
+
+<script type="module">
+/* The view switcher.
+ *
+ * ⚠️ The four ledger views are ES modules loaded on demand, so a broken one takes only
+ * itself down — it must not blank the board. Every failure renders IN PLACE with the
+ * real error, because a view that silently shows nothing is indistinguishable from a
+ * view correctly reporting that there is nothing, and those are opposite facts.
+ *
+ * `legacy` is the original board and is NOT dead: it reads /data for host RSS,
+ * inventory and process facts that the ledger has no opinion about. The four new views
+ * read the ledger. Both are true at once. */
+const HOST = document.getElementById('viewhost');
+const NAV  = document.getElementById('views');
+/* Everything except `.grid.top`, which carries the title, the clock and the gauge and
+ * stays visible in every view. ⚠️ Selected by exclusion rather than by an enumerated
+ * class list: the first attempt named `.grid.mid/.bot/.mem`, none of which exist in
+ * this page, and silently hid nothing while looking correct. */
+const LEGACY = [...document.querySelectorAll('div.grid')].filter(n => !n.classList.contains('top'));
+const MOD = {};
+let current = 'deck', board = null, timer = null;
+
+const legacyShown = on => LEGACY.forEach(n => { n.style.display = on ? '' : 'none'; });
+
+async function load(name) {
+  if (!MOD[name]) MOD[name] = await import(`/board/${name}.js`);
+  return MOD[name];
+}
+
+function css(name) {
+  if (document.querySelector(`link[data-v="${name}"]`)) return;
+  const l = document.createElement('link');
+  l.rel = 'stylesheet'; l.href = `/board/${name}.css`; l.dataset.v = name;
+  l.onerror = () => l.remove();          /* a view may legitimately ship no CSS */
+  document.head.appendChild(l);
+}
+
+async function draw() {
+  if (current === 'legacy') { HOST.hidden = true; legacyShown(true); return; }
+  legacyShown(false); HOST.hidden = false;
+  try {
+    board = await (await fetch('/board', {cache: 'no-store'})).json();
+  } catch (e) {
+    board = {unavailable: true, why: `/board did not answer: ${e.message}`};
+  }
+  try {
+    css(current);
+    const m = await load(current);
+    if (typeof m.render !== 'function')
+      throw new Error(`board/${current}.js exports no render()`);
+    HOST.replaceChildren();
+    m.render(HOST, board);
+  } catch (e) {
+    /* In place, with the real message. Never a blank pane. */
+    HOST.innerHTML = `<div class="vfail"><b>${current} failed to render.</b><br>` +
+      `${String(e && e.stack || e).replace(/[<&]/g, c => c === '<' ? '&lt;' : '&amp;')}` +
+      `<br><br>The other views are unaffected; the board did not go down with it.</div>`;
+  }
+}
+
+NAV.addEventListener('click', ev => {
+  const b = ev.target.closest('button[data-v]');
+  if (!b) return;
+  [...NAV.children].forEach(x => x.classList.toggle('on', x === b));
+  current = b.dataset.v;
+  try { localStorage.setItem('rimflow.view', current); } catch (_) {}
+  draw();
+});
+
+/* `?view=flow` wins over the remembered one — a deep link is an explicit request, and
+ * it also makes each view testable in a headless browser, which a localStorage-only
+ * switcher is not. */
+const asked = new URLSearchParams(location.search).get('view');
+if (asked && NAV.querySelector(`button[data-v="${asked}"]`)) {
+  current = asked;
+  [...NAV.children].forEach(x => x.classList.toggle('on', x.dataset.v === asked));
+}
+
+try {
+  const saved = asked ? null : localStorage.getItem('rimflow.view');
+  if (saved) {
+    const b = NAV.querySelector(`button[data-v="${saved}"]`);
+    if (b) { current = saved; [...NAV.children].forEach(x => x.classList.toggle('on', x === b)); }
+  }
+} catch (_) {}
+
+draw();
+/* 60 s, matching the render cadence the board.json TTL uses. ⛔ Not 3 s like /data:
+   re-running the whole projection six times a minute would be pure waste, and the
+   ledger does not change that fast. */
+timer = setInterval(draw, 60000);
 </script>
