@@ -64,3 +64,40 @@ test proves nothing. Drain it to 0 first and confirm the gizmo reads empty.
 **Imported from `queue/BUILD.md`. Its `state:` read, verbatim:**
 
 ready — ⛔ spec only tonight, by the owner's own framing
+
+## notes — measured 2026-08-21 against the decompiled Vehicles.dll, BUILD
+
+🔴 **THE SPEC'S PREFERRED ROUTE DOES NOT EXIST.** It offers *"avoid patching
+SmashPhil's code at all: subclass `CompProperties_FueledTravel` / `CompFueledTravel`
+and override the lookup."* Only one of the four members it names can be overridden:
+
+| member | real signature | overridable |
+|---|---|---|
+| `CompFueledTravel.ClosestFuelAvailable` | `public **virtual** Thing` | ✅ |
+| `WorkGiver_RefuelVehicle.CanRefuel` | `public **static** bool` | ⛔ |
+| `CompFueledTravel.AllFuelFromInventory` | `public **static** IEnumerable<Thing>` | ⛔ |
+| `CompFueledTravel.Refunds` | non-virtual property | ⛔ |
+
+`CanRefuel` is the one the spec itself says a pawn never starts the job without, and it
+is static. ⇒ **Harmony is mandatory, not a fallback.** And subclassing would anyway
+require rewriting the donor's own vehicle defs to name our comp class, which is a
+bigger intrusion than a prefix.
+
+🔴 **AND THE CLOSURE IS NOT THE GATE.** The spec calls
+`<ClosestFuelAvailable>g__Validator|0` *"the actual predicate — this is the real work."*
+It is a predicate, but it runs downstream of the real filter:
+
+```csharp
+return GenClosest.ClosestThingReachable(pawn.Position, pawn.Map,
+    ThingRequest.ForDef(Props.fuelType), ...   // <-- ONE def, at the map index
+    (Predicate<Thing>)Validator, ...);
+```
+
+`ThingRequest.ForDef` narrows the search to a single def **before** `Validator` is ever
+called, so a patch that widens only the closure changes nothing and would look like a
+silent no-op. The prefix must replace the whole method and search
+`ThingRequest.ForGroup(ThingRequestGroup.HaulableEver)` with our own predicate.
+
+⇒ Home is `DesertVehicleReskin`: it is already active in `ModsConfig`, whereas a new
+mod would not load at all until the owner adds it. Its `About.xml` currently claims
+"texture overrides only", and that line must be corrected in the same commit.
