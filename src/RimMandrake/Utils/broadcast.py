@@ -37,6 +37,47 @@ We read both, then speak the session inbox protocol over the unix socket:
 Code upgrade changes it, this script starts failing and the fix is to re-read it.
 It is pinned in one place — `frame()` below — for exactly that reason.
 
+🔴 WHY EVERY WINDOW STILL ASKS "accept / reject", investigated 2026-08-21
+--------------------------------------------------------------------------
+It is NOT `crossSessionInbound`. That is already at its most permissive value.
+Confirmed against the installed binary 2.1.238, which carries the enum literally:
+
+    crossSessionInbound: ["accept","hold","refuse"]        N1i={accept:0,hold:1,refuse:2}
+
+There is no fourth, stronger value, and `.claude/settings.json` has held `accept`
+since 2026-08-19 (`6bdac8e`).
+
+🔑 `accept` IS OVERRIDDEN BY A PERMISSION-MODE RULE. Per Anthropic's cross-session
+messaging docs, when the two sides are in different permission-mode classes the
+receiver holds the message for approval regardless:
+
+  * receiver PROMPTS for permissions -> delivers, unless the SENDER bypasses
+  * receiver BYPASSES permissions    -> holds, unless the SENDER also bypasses
+
+The agent windows run in bypass mode. This script is a plain socket writer and
+does not identify as bypassing. Receiver bypasses + sender does not => HELD.
+That is the dialog, and it is working as designed.
+
+⛔ WHAT WILL NOT FIX IT, all checked so they are not tried again:
+  * a stronger `crossSessionInbound` — there isn't one
+  * a hook on receipt — no hook event fires on receiving a peer message
+  * gating on `from-name="OWNER"` — the receiver cannot see sender identity,
+    only the sender's permission-mode class
+  * a `permissions` entry — those govern what a session SENDS, not what it takes
+
+⚠️ THE OPEN QUESTION, and nobody should guess at it: which field of the auth
+handshake or the frame declares the sender's bypass class. It is not in the
+session's `~/.claude/sessions/<pid>.json` — those carry pid, name, cwd, status,
+peerProtocol and peerFeatures, and no permission mode. Pin it by reading the CLI's
+own outbound peer send, then set it here. A GUESSED field name is worse than the
+dialog: it fails silently and looks fixed.
+
+✅ AND THE SAFETY PROPERTY SURVIVES THE FIX, which is why the fix is worth making.
+Auto-delivery does NOT open agent-to-agent messaging: agents are blocked at the
+SENDING end by `.claude/hooks/block_peer_messages.py`, and an agent running THIS
+script is already the violation. Nothing about inbound needs to distinguish the
+owner, because nothing else can legitimately reach the socket.
+
 🔑 By DEFAULT this only reaches windows whose cwd is this repo, so the owner's
 other projects never get fleet traffic. `--all` overrides that.
 """
