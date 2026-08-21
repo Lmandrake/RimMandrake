@@ -1505,6 +1505,24 @@ criteria: 🔴 **The owner opens Configure Factions and SEES a row reading `Blac
           `PirateWaster.replacesFaction` away is DECIDE's — filed as
           `PIRATE_REPLACED_BY_BIOTECH_1` in `queue/DECIDE.md`.
 
+📌        MEASURED IN THE SAVED WORLD — REP, 2026-08-20 at shutdown. `b3af026` concluded
+          Biotech's `PirateWaster` (`replacesFaction = Pirate`, confirmed in the dump)
+          makes `InitializeFactions` skip `Pirate`, and that the roster therefore has no
+          vessel. **In `world/WORLDMAP_gen.rws` that did not happen.** Parsed the faction
+          objects directly — 22 of them, each a `<def>`/`<name>` pair:
+            `<def>Pirate</def>` `<name>Blackstar Company</name>` `<loadID>10</loadID>`
+          ⇒ **Blackstar is ALIVE in that world, on `Pirate`, already carrying the right
+          name** — so the repoint lands on a faction that exists, and Blackstar is NOT one
+          of the ten wearing dice-picked names (the ten are confirmed: `Jawa_Junkers` reads
+          *Liliya's Stars*, `Jawa_HuttCartel` reads *Thiinum*).
+          ⚠️ **`AM_EnemyPirate` is ALSO in that world**, as *The Scimitar Lions*. So the
+          four settlements were NOT skipped for want of a faction, and that half of the
+          earlier diagnosis is wrong — the cause is still open.
+          🔴 **SCOPE, and it is the whole caveat:** this is the world **on disk**. BUILD
+          measured the **live** world over the bridge and counted 16 factions, not 22.
+          **They may be different worlds.** Nothing here contradicts a live reading; one
+          `jawa/list_factions` against the live game settles which world is which, and
+          until then neither number should be quoted as "the" faction count.
 state:    doing
 
 ## NEOLITHIC_VEHICLE_BEAST_RESKIN_1 The four vehicles after the sled — beasts drawn, compositing left
