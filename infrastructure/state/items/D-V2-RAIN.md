@@ -74,6 +74,28 @@ owner's own first test — *does it read as a photograph of a real planet.*
   it does not — 18 mm is a 98.6% suppression, not a ban, and rises to ~2.3% of rolls during
   a large fire. **That is the argument for 0 over 18.**
 
+### ⚠️ CORRECTION 5 — `AB_VolcanicAshRain` does not rain, and snow is in scope
+
+Census of all 24 painted biomes and every `WeatherDef` they name, 2026-08-21:
+
+- ⛔ **`AB_VolcanicAshRain` has NO `rainRate` node** (Alpha Biomes
+  `Defs/WeatherDefs/Weathers.xml:92`) ⇒ `rainRate` 0. It is ash with rain *art*, not rain,
+  it is unaffected by the rainfall curve, and it cannot carry the owner's *"torrential,
+  boiling"* brief. **`SW_RedFoggyRain` is the only real candidate**, and it is ours to tune.
+- 🔴 **Zeroing rainfall also bans SNOW, and that is wanted.** `SnowGentle` and `SnowHard`
+  both carry `rainRate 1` and the curve `(0,0) (300,0.5) (1300,1)`, and **`Desert` and
+  `AridShrubland` list them at commonality 4 — twice their `Rain`.** Snow on Tatooine is
+  currently possible, rarely. `rain_mm = 0` removes it with no extra work.
+- ✅ **No painted biome is left with nothing to do.** The one real risk of a global rain ban
+  is a biome whose entire weather table is rain-gated. Checked all 24: the driest cases
+  still hold a non-rain entry — `AB_RockyCrags` keeps `AB_ForsakenNight:20`,
+  `PoisonForest` keeps `PoisonForestSpores:18`, `BMT_FungalForest` keeps
+  `BMT_FungalCavern:100`, `AB_PropaneLakes` keeps `Clear:12`.
+- ⚠️ **The wettest painted biomes are not deserts.** `AB_MycoticJungle` (1,939 tiles) lists
+  `Rain:10 · RainyThunderstorm:10 · FoggyRain:10` and `AB_MiasmicMangrove` lists
+  `Rain:10 · RainyThunderstorm:5`. Both sit at 18 mm today, so they are already dry — ⭐ **which
+  is the proof that the rainfall column, not the biome table, is the lever.**
+
 ### ⇒ THE RULING
 
 1. ✅ **`rain_mm = 0`** on every tile with `hilliness` < 4. Zero exactly — `(0,0)` is the
