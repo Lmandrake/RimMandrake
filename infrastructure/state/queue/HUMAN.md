@@ -768,42 +768,38 @@ struck.
 
 ---
 
-## 🔴 The rebel desert trooper hits two walls, and both are yours — BUILD, 2026-08-20
+## ✅ The desert trooper is built, and I should not have asked — BUILD, 2026-08-20
 
-You said *"Rebel desert trooper sounds awesome"*, and I agree — but I stopped before
-building it, because as specified it would be **inert**, and this session has spent a lot
-of effort finding exactly that kind of thing (`WookieeHead_Upgrade.xml` is a silent no-op
-sitting in `src/` right now).
+You were right to push back. I found that Outer Rim's own **snow** trooper wears the
+**forest** set, wrote that down, and then went on treating "no desert apparel" as a
+blocker anyway. Those cannot both be true. And I had already argued for the Homestead
+Defense League myself before bouncing it back to you.
 
-**Wall 1 — the Rebel Alliance is not on Ash'karr.**
-`OuterRim_RebelAlliance` exists as a FactionDef (the mod is installed), but the planet
-carries **12 factions holding all 72 settlements** and it is not among them:
-`Empire · OutlanderCivil · TribeCivil · Pirate · Jawa_HuttCartel · Jawa_Junkers ·
-Jawa_IndigenousTribes · Jawa_GeonosianFoundryHive · Jawa_DeepwaterCompact ·
-Jawa_WildsteamClan · Jawa_AscendantHelix · Jawa_FreeDroidEnclaves` (+ Mechanoid, no
-settlements). A PawnKindDef whose `defaultFactionType` is a faction that never generates
-**never spawns.**
+**Built:** `Jawa_Homestead_DesertRanger` — *"dune ranger"* — in
+`src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml`, alongside the militia,
+the well-guard, the water warden and High Marshal Taren Voss. combatPower 62, between the
+militia (49) and the well-guard (69).
 
-**Wall 2 — there is no desert kit to dress him in.**
-Ten `OuterRim_Rebel*` apparel items exist and none is desert:
-fleet trooper (uniform, helmet) · **forest** (fatigues, helmet, jacket, poncho) · jetpack ·
-officer (cap, jacket, uniform).
-⚠️ **The mod's own "rebel snow trooper" wears the FOREST set** — `RebelForestCamo`,
-`OuterRim_RebelForestFatigues`, forest poncho and helmet. So Outer Rim's biome troopers
-are already reskins in name only, which is either the licence to do the same or the reason
-not to.
+⚠️ **Dressed explicitly, unlike its four siblings, and that is the point of it.** They
+leave apparel to `apparelMoney` and take the roll; this one names `Apparel_Duster` +
+`Apparel_Headwrap` because *looking* like the desert is the whole brief. Both are vanilla
+Core, so no mod removal can strip them.
 
-**Three ways forward. I am not choosing, because the first one touches the map you just accepted.**
+### 🔴 But it does not spawn yet — and neither do its four siblings
 
-| | what it means | cost |
-|---|---|---|
-| **A. Put the Rebels on the planet** | Add `OuterRim_RebelAlliance` to the roster — 13 factions become 14. ⚠️ **Faction rosters bake at world creation**, so this is a change to the accepted map, not a content addition | real, and it reopens something you just closed |
-| **B. Give the desert kit to a faction already there** | The Homestead Defense League (`OutlanderCivil`, 13 settlements — the most on the map) is *"the arable margin of the terminator"* and is the obvious desert-fatigues faction. The trooper stops being "rebel" and becomes theirs | cheap, spawns immediately, loses the Rebel flavour |
-| **C. Author it dormant** | Build the kind and the apparel now, correct and ready, spawning nowhere until Rebels are ever added | ⛔ I would rather not — it is a def that does nothing, and we have been deleting those |
+`pawnGroupMakers` for this faction lives on the **abstract parent `OutlanderFactionBase`**,
+not on `OutlanderCivil`. So an xpath at `FactionDef[defName="OutlanderCivil"]/pawnGroupMakers`
+**matches nothing — and a patch that matches nothing logs nothing.** Wiring it means
+patching the abstract base, which reaches every Outlander faction, not just the League.
 
-✅ **Either way the apparel is real work worth doing** — a desert set (fatigues, wrapped
-helmet, sun cloak) does not exist in the stack for anyone, and a desert planet with no
-desert-dressed soldiers anywhere is a gap independent of which faction wears it.
+⚠️ **This is not a new problem and it is not the trooper's problem.** `Jawa_Homestead_Grunt`,
+`_Heavy`, `_Specialist` and `_Leader` are already authored, valid, and referenced by
+nothing — `HomesteadDefenseLeague.xml:36` records the ⛔ that put them there
+(*"pawnGroupMakers, factionNameMaker and the raid curves are untouched"*), and it is filed
+as `sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4` with three options and a
+recommendation already on it.
 
-Meanwhile I have struck the false claim in `desert_world_design.md:448` so nothing reads as
-though the trooper already exists.
+⇒ **One decision unblocks five kinds, not one.** I have not reversed the ⛔ myself because
+it is a documented scope rule with a filed ruling waiting, and reversing it changes how
+raids compose for a faction holding 13 of 72 settlements. Say the word and it is a small,
+additive patch — one `<li>` at a low weight, leaving vanilla's options and weights alone.

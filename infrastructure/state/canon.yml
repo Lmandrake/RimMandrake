@@ -633,6 +633,27 @@ needs_ruling:
 # ===========================================================================
 ruled:
 
+  FORCE_POWERS_ARE_V2_1:
+    question: >
+      Vanilla Psycasts Expanded is not in activeMods while two live docs call it the
+      sole Force substrate. Re-activate, or confirm it is out?
+    ruled_by: owner
+    ruled_on: 2026-08-20
+    ruling: >
+      🔴 DEFERRED TO v2, ENTIRELY. Owner: "Vanilla Psycasts Expanded should entirely be
+      about v2 at this point, completely deferred. No force powers in v1."
+      ⇒ VPE stays OUT of the mod list. ⛔ Do not add it to ModsConfig.xml for v1 and do
+      not write a patch that depends on it.
+      ✅ THIS RESOLVES 61 OF THE 287 DANGLING CITATIONS at a stroke: every `VPE_` name
+      is CUT FOR V1, not LOST. ⛔ Do not "fix" a single one of those defNames — they are
+      correct, they are simply v2.
+      ⚠️ `required_mods.md:632` ("KEEP … the sole Force substrate") and
+      `forbidden_mods.md:63` ("KEPT installed") are now wrong in a NEW way — they were
+      corrected to say "not installed"; they must now say "v2".
+      🔑 The scope is FORCE POWERS. `lee.theforce.lightsaber` is ACTIVE and ships 307
+      live `Force_` defs — those are WEAPONS, not powers, and this ruling does not
+      remove them. Flag anything that assumes otherwise rather than acting on it.
+
   MIRALUKA_IS_GONE_1:
     question: "Is the Miraluka species restored, replaced, or dropped?"
     ruled_by: owner
