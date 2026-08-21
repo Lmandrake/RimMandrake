@@ -172,6 +172,32 @@ is D + E: never scan it, use the bridge or `savemap.py`, and let the hook say so
 5. Whether this is v1 or v2. ⚠️ It is tooling, not content: it ships nothing to a player,
    but it protects every measurement that decides what does.
 
+## ruling
+
+🔴 **OWNER, 2026-08-21: option C + D + E, layered. Scope is EVERY large scanned
+artifact. Target v1.**
+
+Answering the five questions at section 6 in order:
+
+1. **Which option** — C + D + E, BUILD's recommendation, taken as written. E lands only
+   after C is usable, because a refusal with no cheap alternative is the freeze the owner
+   warned about.
+2. **SQLite or JSONL** — **SQLite.** He accepted the trade named in the walkthrough:
+   the dump stops being diffable and greppable, and in exchange `NULL` / `0` / no-row are
+   three different things without anyone maintaining a convention.
+3. **Does the hook go in** — **yes**, last, with an allowlist. A literal-string grep of a
+   `.rws` stays legal; a *semantic* one does not.
+4. **Scope** — **every large scanned artifact**, not the dump alone: the def dump, the
+   world CSVs, `Player.log`, the savegames, third-party DLLs. ⚠️ The `.rws` and the
+   third-party DLLs can never be reformatted, so for those the answer is D + E only —
+   a correct reader or the bridge, and a hook that says so.
+5. **v1 or v2** — **v1.** It ships nothing to a player and it protects every measurement
+   that decides what does.
+
+⚠️ **Keep writing JSON alongside SQLite for one capture cycle** and check them against
+each other; the JSON stops only when they agree. Carried through from section 5 — a format
+migration that is also a trust migration is not a single step.
+
 ## verify
 
 Depends on the option chosen. Common to all:
