@@ -69,12 +69,12 @@ childhood: nothing. A schooling, a certificate, a post.
 adult: fourteen years of contract numbers. Ink cuffs, a rubber thimble, the flattest voice on the spur.
 > She is genuinely boring and would not thank you for pretending otherwise. She closes the register at the eighteenth hour and does not reopen it, so an entire raid once sat on the pad overnight, fuelled and armed, because a countersignature arrived at nineteen. She was asked about it. She said the hour is the hour.
 
-**Ma'kesh Bruul** · Whiphid · m · 61
+**Ma'kesh Bruul** · Togorian · m · 61
 `traits: Gourmand, Brawler, NaturalMood(Depressive)`
 `skills: Melee 17, Shooting 2`
-childhood: an ice world, a first kill at eleven, and a rule that says a hunter eats what he takes and nothing else.
+childhood: a cold world, a first kill at eleven, and a rule that says a hunter eats what he takes and nothing else.
 adult: takes only night contracts, and only *alive and by hand* — which doubles the fee and is not negotiable.
-> Two and a half metres of matted white fur under a cooling shroud that fails twice a shift, tusks yellowed, permanently and visibly miserable in the heat of a world he will not leave. He is the most expensive hunter on the roster because his honour is a line item, and he eats the fee's worth of meat in a week, and he has never once been talked into a rifle.
+> Two and a half metres of matted fur under a cooling shroud that fails twice a shift, fangs yellowed, permanently and visibly miserable in the heat of a world he will not leave. He is the most expensive hunter on the roster because his honour is a line item, and he eats the fee's worth of meat in a week, and he has never once been talked into a rifle.
 
 **Vidd Anselm** · human · m · 29
 `traits: SlowLearner, ShootingAccuracy(TriggerHappy), NaturalMood(Sanguine)`
@@ -109,21 +109,21 @@ adult: fifty years flying for the Company and has never been in the room when an
 ## THE BOARDING CREW OF THE *COUNTERSIGN*
 *The ship that arrives with the paperwork already served. They come in through the wall, and the scope of works is nailed to the outside of the breach where the survivors can read it afterwards.*
 
-**Bosun Vurgo Nakk** · Besalisk · m · 43
+**Bosun Vurgo Nakk** · Gamorrean · m · 43
 `traits: Abrasive, Brawler, GreatMemory`
 `weapon: Weapon_GrenadeFrag`
 `skills: Melee 14`
 childhood: eleven siblings, a cold world, and a father who ran a loading crew badly.
 adult: sets the frame, blows the wall, and serves the notice. In that order, and the order is doctrine.
-> Four arms and a wattled roar you hear through a hull: two on the breaching frame, one on the charge, and the fourth holding the served copy flat against your ship with a spike driven through it. He will not open a compartment that is not named in the annex — he has stood outside a door with his hand flat on it, listening to his own crew being killed in the next bay, because that bay was in scope and this one was not.
+> Tusks, and a roar you hear through a hull: he sets the frame himself, fires the charge himself, and drives a spike through the served copy into your hull with the flat of his hand — in that order, alone, every time, because a thing done by three people is a thing three people can dispute. He will not open a compartment that is not named in the annex — he has stood outside a door with his hand flat on it, listening to his own crew being killed in the next bay, because that bay was in scope and this one was not.
 
-**Sszik Vhan** · Barabel · f · 38
+**Sszik Vhan** · Trandoshan · f · 38
 `traits: Cannibal, Brawler, NaturalMood(Sanguine)`
 `weapon: MeleeWeapon_Knife`
 `skills: Melee 17`
 childhood: a forest world, dark, and a first hunt she describes as a meal because it was one.
 adult: point of the breach. Signs Rider Four on every contract: *the mark arrives whole.*
-> Black scales, a grin with too much in it, and she reads Rider Four aloud in front of everyone before she signs it, every single time, cheerfully, because she thinks the ritual helps. It has held on all but two contracts. The Company still gives her the point position, because on the other thirty-one it worked, and because nothing on a boarding ramp has ever slowed her down.
+> Dark scales, a grin with too much in it, and she reads Rider Four aloud in front of everyone before she signs it, every single time, cheerfully, because she thinks the ritual helps. It has held on all but two contracts. The Company still gives her the point position, because on the other thirty-one it worked, and because nothing on a boarding ramp has ever slowed her down.
 
 **Tobbet Grale, the Penalty** · human · m · 36
 `traits: Masochist, SlowLearner, NaturalMood(Sanguine)`
@@ -139,13 +139,13 @@ childhood: a marksman father who counted her shots and charged her for the misse
 adult: nineteen contracts. Nineteen rounds fired. One barrel, one bag, one blanket.
 > Thin, grey, eats standing, and she announces before every job — flatly, to the whole crew, so that nobody can claim afterwards that they did not know — that she will not fire on anyone who is not in the writ. Not for cover. Not for them. She has watched a boarding crew get cut apart across her sightline while the named man walked into her crosshair, and she took him, and she has never lost a night over it.
 
-**Nekk Arda** · Arcona · m · 31
+**Nekk Arda** · Falleen · m · 31
 `traits: DrugDesire(ChemicalFascination), TooSmart, Delicate`
 `item: Flake`
 `skills: Intellectual 18`
 childhood: bright, tested, sent offworld young to a technical school he never finished.
 adult: opens doors and locks for the crew. The best slicer the Company has.
-> Hammer-headed, spindly, and his eyes have gone the colour of poured gold, which in his species means salt and means everyone can see it. He is worth four hunters at a sealed door and he has twice **amended a contract in the archive** for a handful of salt — the one sin the Contract cannot forgive — and the second one has not been found yet, and he has begun sweating in front of Hoxx Tenneb.
+> Scaled, spindly, and his skin has gone the colour of poured gold and **stayed** there — his people's colour moves with their mood, and his has not moved in two years, which means salt and means everyone can see it. He is worth four hunters at a sealed door and he has twice **amended a contract in the archive** for a handful of salt — the one sin the Contract cannot forgive — and the second one has not been found yet, and he has begun sweating in front of Hoxx Tenneb.
 
 **Yenevva Poll** · human · f · 33
 `traits: Kind, GreatMemory, Delicate`
@@ -169,11 +169,11 @@ childhood: unremarkable and he will confirm it if pressed, briefly, and then cha
 adult: twenty-nine years carrying and setting the boarding ramp. Has never fired a weapon.
 > He is the ramp man. He sets it, he holds it, he pulls it in, and he is paid on the shooters' scale because the ramp is written into the scope of works and the scope of works is the scope of works. New hunters raise this about once a year. He regards the discussion as vulgar and will simply walk away from you mid-sentence, and everyone senior lets him.
 
-**Ubo Tass** · Gran · m · 34
+**Ubo Tass** · Gungan · m · 34
 `traits: Jealous, AnnoyingVoice, NaturalMood(Sanguine)`
 childhood: a herd household of thirty, where being alone in a room was a punishment.
 adult: second through the breach. Counts the crew, aloud, continuously, for the whole action.
-> Three eyes on stalks and a bleating voice that carries over gunfire, calling the head-count through the entire boarding — *"six, six, six, five — FIVE"* — which the crew now navigate by and which the people being boarded hear coming down the corridor. He physically cannot bear being the only one of anything, and if the count reaches one he stops working entirely.
+> Eyes out on stalks and a honking call that carries over gunfire, calling the head-count through the entire boarding — *"six, six, six, five — FIVE"* — which the crew now navigate by and which the people being boarded hear coming down the corridor. He physically cannot bear being the only one of anything, and if the count reaches one he stops working entirely.
 
 **Kessa Ryn Wode** · human · f · 22
 `traits: Transhumanist, FastLearner, Beauty(Beautiful)`
@@ -187,11 +187,11 @@ adult: four bought pieces in four years, each one paid for by a named contract.
 ## THE CLAIMS OFFICE
 *Two rooms above the spur where the Company pays out. The Contract says everyone not named walks away untouched — so when they do not, someone in here writes a cheque. Blackstar is the only faction on this world that pays its victims, and it is not mercy, it is a liability.*
 
-**Adjuster Ushet Kel Ba** · Ishi Tib · m · 55
+**Adjuster Ushet Kel Ba** · Quarren · m · 55
 `traits: TooSmart, Abrasive, Ascetic`
 childhood: raised over water, in a trade where a wrong figure is a personal disgrace.
 adult: settles collateral claims brought by the people Blackstar raided.
-> A hooked beak, eyes out on stalks, and he conducts the entire hearing sitting chest-deep in a brine tub in the middle of the office because his hide splits in this air, and he is *not* embarrassed and will not have it mentioned. He will pay a farmer for a door, a wall, a dead animal, a spoiled well. He will not pay for the son, because the son picked up a weapon, and that made him a party.
+> Face-tentacles, a wet click on every third consonant, and he conducts the entire hearing sitting chest-deep in a brine tub in the middle of the office because his hide splits in this air, and he is *not* embarrassed and will not have it mentioned. He will pay a farmer for a door, a wall, a dead animal, a spoiled well. He will not pay for the son, because the son picked up a weapon, and that made him a party.
 
 **Underwriter Vessine Roal** · Muun · f · 63
 `traits: TooSmart, Abrasive, Delicate`
@@ -213,11 +213,11 @@ childhood: deep water, a species that finds the surface trades distasteful, and 
 adult: **service of notice.** He arrives before the raid, in person, with a copy, and asks you to sign for receipt.
 > Face-tentacles under a rebreather hood that clicks wetly every second breath, and he knocks politely, three days out, and waits to be invited in. He remembers your children's names from the survey and asks after them while you read. He has never harmed anyone in his life and he is the single most frightening thing this Company sends, and he cannot understand why people cry at a delivery.
 
-**Ippo Nuum** · Toydarian · m · 89
+**Ippo Nuum** · Ortolan · m · 89
 `traits: GreatMemory, Jealous, AnnoyingVoice`
 childhood: a market world, a family of brokers, and no shame about any of it.
 adult: holds the deposit on every live contract. Releases it only with both parties present.
-> A snout, a wing-buzz that has irritated four Captains, and an absolutely unbudgeable rule: **both** parties, in the room, or the strongbox stays shut. He is proud beyond reason of being unpersuadable — his people cannot be leaned on and he brings it up constantly — and there are now three hundred and eleven deposits he cannot release, because one party to each is dead, and he can recite every one of them by amount.
+> A trunk, a wet whistling breath that has irritated four Captains, and an absolutely unbudgeable rule: **both** parties, in the room, or the strongbox stays shut. He is proud beyond reason of being unpersuadable — his people have never once been leaned on successfully and he brings it up constantly — and there are now three hundred and eleven deposits he cannot release, because one party to each is dead, and he can recite every one of them by amount.
 
 **Adann Ferro, the Recoverer** · human · m · 41
 `traits: Brawler, Abrasive, NaturalMood(Pessimist)`

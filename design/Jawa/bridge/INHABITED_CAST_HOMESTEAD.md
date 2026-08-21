@@ -61,31 +61,31 @@ childhood: raised on the rule and made to recite it before he could work a valve
 adult: gave a Tusken scout water at his own trough, in the spring of the bad year.
 > Hands like split leather and a face that has never once been pleased about anything. The band came back in the autumn and took his elder son and four vaporators — and his trough is still outside his fence, still full, still unwatched. Say one admiring word about that and he will run you off his ground swearing. He is not being humble. He thinks praise turns a rule into a favour, and a favour is a thing that can be withdrawn.
 
-**Vekshaa** · Arcona · m · 30
+**Vekshaa** · Nikto · m · 30
 `traits: DrugDesire(ChemicalFascination), NaturalMood(Sanguine), Delicate`
 `item: Flake`
 childhood: came off a freighter at nineteen with a salt habit and no way home.
 adult: drinks. That is the entire occupation. No one in the Covenant may refuse him.
-> Hammerhead skull, eyes gone from gold to a dull swampy green after eleven years of salt, and he needs four times the water a man does *because* of the salt and cannot stop taking the salt. He is the most grateful person on the terminator — thanks you by name, warmly, every single time, and means it. He has drunk two holdings down to the sludge and moved on, and both of them let him, because the well belongs to whoever is thirsty standing at it, and he is always thirsty, and he is always standing at it.
+> Horned, and his hide has gone from red-brown to a dull ashy grey after eleven years of salt — his people are desert-born and he needs four times the water a man does *because* of the salt and cannot stop taking the salt. He is the most grateful person on the terminator — thanks you by name, warmly, every single time, and means it. He has drunk two holdings down to the sludge and moved on, and both of them let him, because the well belongs to whoever is thirsty standing at it, and he is always thirsty, and he is always standing at it.
 
-**Onk-Onk-Deshu** · Kitonak · f · ~90
+**Onk-Onk-Deshu** · Hutt · f · ~90
 `traits: TooSmart, Ascetic, CreepyBreathing`
 childhood: unrecorded, and if you ask her she will still be answering at sundown.
 adult: stands in the north field. Has stood there, broadly speaking, for six years.
-> Pale, boneless-looking, three hundred kilos of patient blubber that newcomers hitch animals to. She takes about four seconds a word and moves air through her skin continuously to stay damp — a low wet drone you feel through the floor — and she needs no well at all, ever, which is a problem nobody in the Covenant of Free Wells has worked out what to do with. She pays into the trough fund anyway. No one has heard the end of one of her sentences, so she is widely held to be the wisest person in Bell Cistern.
+> Vast, slow, three hundred kilos of patient bulk that newcomers hitch animals to. She takes about four seconds a word and keeps her own hide damp from the inside — a low wet drone you feel through the floor — and she needs no well at all, ever, which is a problem nobody in the Covenant of Free Wells has worked out what to do with. ⭐ She is also the only Hutt on the terminator who has never wanted anything from anybody, which the Cartel finds more offensive than a debt. She pays into the trough fund anyway. No one has heard the end of one of her sentences, so she is widely held to be the wisest person in Bell Cistern.
 
-**Pell Onasso** · Gran · m · 47
+**Pell Onasso** · Ithorian · m · 47
 `traits: Kind, Jealous, NaturalMood(Depressive)`
 `skills: Animals 16`
-childhood: herded before he could talk. Three eyes, all three on the animals.
+childhood: herded before he could talk. Both mouths, and every word of both, on the animals.
 adult: runs four hundred head on water Bell Cistern cannot spare and will not cull one.
-> Three stalked eyes that go wet independently of each other, and he has named every animal he owns and grieves each one aloud for a week. He will not put down a lame beast — not for meat, not for water, not for mercy — so a third of the herd is old cripples and it drinks like a second settlement. Admire somebody else's stock in front of him and he goes silent for a day and a half. Bell Cistern has voted on this twice and both times concluded it was his ground and none of their business.
+> A long curved head and two mouths that fall silent at different moments, and he has named every animal he owns and grieves each one aloud, in stereo, for a week. He will not put down a lame beast — not for meat, not for water, not for mercy — so a third of the herd is old cripples and it drinks like a second settlement. Admire somebody else's stock in front of him and he goes silent for a day and a half. Bell Cistern has voted on this twice and both times concluded it was his ground and none of their business.
 
-**Uzzo One-Eye** · Abyssin · m · 38
+**Uzzo One-Eye** · Weequay · m · 38
 `traits: Kind, BodyMastery, SlowLearner`
 childhood: nomad-raised under a custom that says the suffering are helped out of it.
-adult: twenty years on the Bell Cistern water gang. Grew a hand back in his first season.
-> One enormous eye, an arm that regrew a shade paler than the other, and he can work a full shift in the open at noon, which nobody else here can do. He is the gentlest man in the settlement, and he will still — sincerely, quietly, kindly — offer to end anyone in real pain, the old, the crushed, the dying, and be genuinely wounded by how they take it. He has been told. He has been told for twenty years. It will not stay in.
+adult: twenty years on the Bell Cistern water gang. Lost the eye in his first season and did not slow down.
+> One eye — the other went to a well collapse before most of the gang was born — an arm rebuilt out of parts that were somebody else's, and a hide that lets him work a full shift in the open at noon, which nobody else here can do. He is the gentlest man in the settlement, and he will still — sincerely, quietly, kindly — offer to end anyone in real pain, the old, the crushed, the dying, and be genuinely wounded by how they take it. He has been told. He has been told for twenty years. It will not stay in.
 
 **Marda Ilk** · human · f · 34
 `traits: Brawler, Ascetic, GreatMemory`

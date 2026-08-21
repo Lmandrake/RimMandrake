@@ -95,3 +95,32 @@ game contradicts**, not detail it merely does not draw. ⛔ **Do not rewrite Vur
 arms out**, and do not expect the sprite to show them.
 
 ⇒ Filed as `NINE_XENOTYPES_AUTHORED_1`.
+
+## 🔴 OVERRULED BY THE OWNER, 2026-08-21 — option (c) after all
+He chose **rewrite the eleven**, not add nine xenotypes: stack stability over eleven briefs.
+⇒ `NINE_XENOTYPES_AUTHORED_1` is **dropped**, and the rewrites are done. The ruling above
+stands as reasoning and is wrong about the outcome; it is left in place rather than edited,
+because a reader who finds the "add nine" argument elsewhere needs to see it lost.
+
+**The eleven, and what each new species had to carry:**
+
+| character | was | now | why this species |
+|---|---|---|---|
+| Ma'kesh Bruul | Whiphid | **Togorian** | 2.1 m+, thick fur, fangs — the heat misery and the cooling shroud survive almost verbatim |
+| Bosun Vurgo Nakk | Besalisk | **Gamorrean** | ⚠️ four arms cannot be rendered by anything. The three-beat *frame → charge → spike* rhythm is kept and now reads as **doing it alone on purpose**: *"a thing done by three people is a thing three people can dispute"* |
+| Sszik Vhan | Barabel | **Trandoshan** | scaled reptilian hunter; near-synonymous. One word changed |
+| Nekk Arda | Arcona | **Falleen** | ⭐ **better than the original.** Falleen skin shifts with mood; his has been stuck gold for two years. A *frozen* tell reads as damage where a gold eye only read as colour |
+| Ubo Tass | Gran | **Gungan** | eyestalks are canon, herd culture is canon, and the carrying voice becomes a honking call |
+| Ushet Kel Ba | Ishi Tib | **Quarren** | aquatic, so the brine tub — the whole character — survives untouched |
+| Ippo Nuum | Toydarian | **Ortolan** | the trunk survives; ⚠️ the wings do not, and the Force-proof joke becomes cultural: *"his people have never once been leaned on successfully"* |
+| Vekshaa | Arcona | **Nikto** | ⭐ desert-born, so *"needs four times the water a man does"* is now an irony rather than a fact. The salt tell moves from eye colour to hide colour |
+| Onk-Onk-Deshu | Kitonak | **Hutt** | ⭐⭐ the only species that carries 300 kg **and** four-seconds-a-word **and** needing no well. Gained one line that earns it: *"the only Hutt on the terminator who has never wanted anything from anybody, which the Cartel finds more offensive than a debt"* |
+| Pell Onasso | Gran | **Ithorian** | ⭐ gentle, bonded to living things, and **two mouths** — so he now grieves each animal *"aloud, in stereo, for a week"* |
+| Uzzo One-Eye | Abyssin | **Weequay** | ⚠️ the hardest. Regeneration is gone; the eye becomes an **injury**, which keeps his name and arguably makes him sadder. Weequay hide carries the noon shift, and the mercy-offer — his actual character — is untouched |
+
+✅ **Verified: 0 of 269 named characters now carry a race with no XenotypeDef** in the live
+578-mod set. Before the rewrites it was 11.
+
+⭐ **Two came out better than they went in** — Nekk Arda's frozen colour and Pell Onasso's
+two mouths both say more than the originals did. ⚠️ **One came out worse and it should be
+said:** Vurgo Nakk's four arms were a genuinely good image and nothing replaces them.
