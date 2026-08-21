@@ -341,7 +341,12 @@ def inventory():
 BOARD = os.path.join(STATE, "derived", "board.json")
 _RENDER = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "..", "rimflow", "render.py")
-_BOARD_TTL = 60                      # the cadence the plan asks for
+# ⏱️ 30 s, halved from 60 on the owner's ask 2026-08-21. `render.py` self-reports
+# ~400 ms, so this is ~1.3% of one core — the page's cheap half (/data: game state,
+# agent liveness, host memory) already ticks at 3 s and is unaffected. ⛔ Do not push
+# this below ~10 s: `stat`-ing the item files alone costs 130 ms on this 9p mount, so a
+# faster cadence buys nothing and starts competing with the seats for the disk.
+_BOARD_TTL = 30
 _BOARD = {"at": 0.0, "v": None, "err": None}
 
 
@@ -377,6 +382,69 @@ def _board(force=False):
     return v
 
 
+# ---------------------------------------------------------------------------
+# WHAT IS LEFT, AND WHAT IT IS WAITING FOR
+# ---------------------------------------------------------------------------
+# 🔴 OWNER, 2026-08-21: the board showed per-row done/total and per-seat state mixes,
+# and never once showed the number he actually wanted — HOW MANY THINGS ARE NOT DONE.
+# It also scattered "needs live game" across dozens of small cells instead of counting
+# them once at the top. Both are computed here, from `catalog`, which already carries
+# `needs` and `blocked` per item. ⛔ Nothing new is derived in render.py: this file
+# DISPLAYS, the ledger projection DECIDES.
+#
+# 🔑 `needs` and `blocked` are ORTHOGONAL and the page must not add them up.
+# `needs` is a window that will open by itself — nothing is wrong. `blocked` is
+# something being wrong that a person must act on. Conflating them is what made
+# "waiting on the owner" the only trustworthy number on the old board.
+OPEN_STATES = ("proposed", "ready", "doing")
+
+# label, needs-key, and what the owner does about it. Order is the order shown.
+WAITING_ON = [
+    ("GAME UP",     "game-up", "start the game"),
+    ("LIVE BRIDGE", "bridge",  "game up, bridge free"),
+    ("GAME DOWN",   "deploy",  "close the game — assemblies are locked while it runs"),
+    ("FRESH DUMP",  "harvest", "arm DefDump/dump_request.txt and load"),
+    ("YOU",         "owner",   "a ruling only you can give"),
+    ("NOTHING",     "offline", "runnable right now"),
+]
+
+
+def waiting(m):
+    """-> {'lanes': [...], 'open_total': N, 'blocked_total': N, 'per_seat': {...}}
+
+    Counts OPEN items only. A done item waiting for nothing is not news.
+    """
+    cat = m.get("catalog") or []
+    lanes = {k: 0 for _, k, _ in WAITING_ON}
+    per_seat, blocked_total, open_total, unknown = {}, 0, 0, 0
+    for it in cat:
+        if it.get("state") not in OPEN_STATES:
+            continue
+        open_total += 1
+        seat = it.get("owner") or "?"
+        d = per_seat.setdefault(seat, {"open": 0, "blocked": 0, "doing": 0})
+        d["open"] += 1
+        if it.get("state") == "doing":
+            d["doing"] += 1
+        if it.get("blocked"):
+            blocked_total += 1
+            d["blocked"] += 1
+            continue                 # blocked is not a window; do not double-count
+        k = it.get("needs")
+        if k in lanes:
+            lanes[k] += 1
+        else:
+            unknown += 1
+    out = [{"label": lab, "key": k, "hint": hint, "n": lanes[k]}
+           for lab, k, hint in WAITING_ON]
+    if unknown:
+        out.append({"label": "UNSET", "key": None,
+                    "hint": "no `needs` recorded — the filer left the default",
+                    "n": unknown})
+    return {"lanes": out, "open_total": open_total,
+            "blocked_total": blocked_total, "per_seat": per_seat}
+
+
 def snapshot():
     m = _board() or {"rows": [], "unavailable": True,
                      "why": _BOARD.get("err") or "board.json could not be built"}
@@ -394,6 +462,8 @@ def snapshot():
         # them off the items themselves. The hand-kept blockers.json that used to
         # sit here had drifted to 12 against 7 real blocked items.
         "blockers": m.get("blockers", {"classes": [], "on_human": 0}),
+        # ⭐ The number the owner asked for first: how many things are NOT done.
+        "waiting": waiting(m),
         "velocity": m.get("velocity", {}),
         # Declared game state, which is NOT the same fact as host()'s RSS reading:
         # one is what a seat claims, the other is whether the process exists. The
