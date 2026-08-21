@@ -281,6 +281,52 @@ folded into `refresh.py` under `FREEZE_SHA_UNREPRODUCIBLE_1` (`9078a15`), becaus
 two commands that both append a freeze are two answers. Drop `--by owner` for a
 dry run.
 
+## ✅ §6 S2 — RESULT, measured 2026-08-21 15:50. **The 824-def hole is closed.**
+
+The capture landed at `capturedUtc 2026-08-21T22:44:59Z`, 578 mods, carrying the
+`defTypes` index for all **533** types and **13 named collisions**, each resolved
+to a full type name and a file.
+
+| | before (`OFFICIAL-2026-08-21`) | after |
+|---|---|---|
+| defs in the db | 78,057 | **78,813** |
+| types | 536 | 552 |
+| `shadowed` | **8** | **0** |
+| `ambiguous` | **5** | **0** |
+| `orphan` | 19 | 19 |
+
+⇒ **756 defs recovered**, and every type this capture holds is now `complete`.
+
+```
+measure count RimWorld.AbilityDef   MEASURED 612       <- was UNMEASURED/shadowed
+measure count AbilityDef            UNMEASURED, correctly — three distinct types
+                                    share that simple name (612 / 18 / 0)
+measure coverage                    complete=533 orphan=19
+build total vs SELECT COUNT(*)      78813 == 78813
+```
+
+⚠️ **The prediction said ~824 and the measurement says 756. Both are right, and the
+difference is worth knowing.** 824 counted every def the PRODUCER lost to a
+filename collision; 756 is what the DB gained. Several collision losers held 0 defs
+to begin with (`AbilityUser.AbilityDef=0`, `Fortified.Structures.SymbolDef=0`, five
+more), and most of the gain is actually the WINNERS — a `shadowed` type had its rows
+deleted outright, so `AbilityDef`'s 612 and `FacialAnimation.FaceTypeDef`'s 152 were
+missing too.
+
+⚠️ **It is `RimWorld.AbilityDef`, not `Verse.AbilityDef`.** BUILD wrote the wrong
+namespace into three files before a real capture existed to check it against — the
+synthetic guessed. The manifest's `defTypes` index is what answers it, which is
+what that index is for.
+
+🔴 **The 19 orphans did not go away and were never going to.** They are stale
+`defs/*.json` from captures on 2026-08-10…15 whose mods are gone, and nothing prunes
+the directory. `DUMP_PRODUCER_DATED_CAPTURES_1` is what fixes that, and it is now
+unblocked — the clean capture it was waiting behind exists.
+
+⛔ **`refresh.py` now reports `REPLACED`. That is the freeze detector working, not a
+fault.** The frozen target is still the 08-21T08:20:20Z capture; the better one is on
+disk. **Only the owner re-freezes.**
+
 ## §6 S3 — the three greps that ride free (`NEXT_LOAD_LOG_HARVEST_1`)
 
 Fixed list, written before the log exists. ⛔ Nothing is added to it at collection time.
