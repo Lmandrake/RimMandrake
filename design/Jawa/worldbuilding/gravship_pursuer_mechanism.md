@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The gravship pursuer — can it be changed from mechanoids?
 
 ## ⭐ OWNER'S RULING, 2026-08-13 — WHO the pursuer is, settled

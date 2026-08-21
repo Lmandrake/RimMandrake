@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Jawa Dialogue and Translation Corpus — Source-Audited
 
 **Research date:** 2026-08-05  

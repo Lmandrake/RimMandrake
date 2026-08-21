@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The pawn-kind roster — 48 kinds, and what each one carries
 
 _A retired seat, 2026-08-14. **The buildable half of `faction_equipment_guidance.md`.**

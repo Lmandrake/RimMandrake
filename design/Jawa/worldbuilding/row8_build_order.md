@@ -1,3 +1,4 @@
+<!-- status: live -->
 # row8_build_order.md — the gravship build, step by step
 
 _Written offline 2026-08-13 by a retired seat, during the worldgen load window, for the same seat

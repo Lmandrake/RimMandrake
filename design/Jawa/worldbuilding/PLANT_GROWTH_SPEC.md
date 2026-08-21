@@ -1,3 +1,4 @@
+<!-- status: live -->
 # PLANT_GROWTH_SPEC.md — freakish plant growth, specified for build
 
 DECIDE owns this spec; **BUILD owns the implementation.** Written 2026-08-15 at

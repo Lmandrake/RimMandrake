@@ -1,3 +1,4 @@
+<!-- status: superseded-by: design/Jawa/worldbuilding/restraining_bolt_technical.md ; 2026-08-20 ; the bolt goodwill accounting became a ceiling instead of an offset; the fiction and intent here are unchanged -->
 # The restraint bolt — making the campaign's moral problem cost something
 
 > 🔑 **This is the FICTION and the INTENT. The build spec is

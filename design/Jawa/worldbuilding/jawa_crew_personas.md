@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Jawa Crew Personas — the Five Founders
 
 _Gravship Expedition campaign (RimWorld 1.6 / Odyssey). "Crashed Factory ship / Jawa stowaways" theme. Companion to `design/Jawa/worldbuilding/jawa_society.md` (xenotype + ideoligion + Part 4 society lore), `required_mods.md`, `faction_roster_v2.md`, and `context.md`._

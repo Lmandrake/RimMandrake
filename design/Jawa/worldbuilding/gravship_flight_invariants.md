@@ -1,3 +1,4 @@
+<!-- status: live -->
 # gravship_flight_invariants.md — what a gravship must satisfy to fly
 
 _A retired seat, 2026-08-13. Assembled for another retired seat's gravship-XML tooling and for the

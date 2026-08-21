@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Hiding the gravship — the third verb
 
 _A retired seat, 2026-08-13. **Owner's concept**, recorded and developed the hour it was

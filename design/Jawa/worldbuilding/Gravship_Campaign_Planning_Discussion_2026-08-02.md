@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Gravship Campaign Design Notes
 
 **Updated:** 2026-08-02  

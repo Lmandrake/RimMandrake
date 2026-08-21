@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Restraining bolts — the technical spec
 
 _A retired seat, 2026-08-13. Answers the four questions another retired seat posed in that seat's queue

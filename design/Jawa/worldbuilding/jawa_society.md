@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Jawa society — slavery, reproduction, the life-cycle, and what they carry
 
 > 🔑 **Owner lore, dated 2026-08-04 through 2026-08-07. Rescued 2026-08-20 from

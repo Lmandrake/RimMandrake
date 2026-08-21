@@ -1,3 +1,4 @@
+<!-- status: live -->
 # hydrology_and_fire_ecology.md — where the water goes, and what burns
 
 DECIDE owns this. **Owner's session, 2026-08-15.** This is a planetary-physics

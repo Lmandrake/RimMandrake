@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Orbital towers and the sky ladder — the Empire's way down
 
 _A retired seat, 2026-08-13. **Owner's design, recorded the moment it was made**, because

@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # The Livestock Trade — Utility, Pet & Companion Creatures
 
 _Companion to `Alien_Bestiary.md` (the VGE + creature-mod SW naming layer). Scanned across RimWorld 1.6 + Odyssey, Alpha Animals, Alpha Biomes, Alpha Memes, Vanilla Genetics Expanded, **Star Wars Animal Collection (Continued), Megafauna, Jurassic Rimworld – Dinosaurs Only, Biomes! family (Core/Caverns/Polluted Lands), and Cephaloids** — the full adopted creature stack per `required_mods.md`. Created August 2026; expanded 2026-08-07 (rest-of-menagerie pass + critique)._
