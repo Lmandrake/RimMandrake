@@ -765,3 +765,45 @@ open again.
 ⛔ Reopened as a **question**, not as work. Whether to cut anything from it is your call, and
 the killlist's own drop *rationale* was left intact — only the false "it was dropped" half is
 struck.
+
+---
+
+## 🔴 The rebel desert trooper hits two walls, and both are yours — BUILD, 2026-08-20
+
+You said *"Rebel desert trooper sounds awesome"*, and I agree — but I stopped before
+building it, because as specified it would be **inert**, and this session has spent a lot
+of effort finding exactly that kind of thing (`WookieeHead_Upgrade.xml` is a silent no-op
+sitting in `src/` right now).
+
+**Wall 1 — the Rebel Alliance is not on Ash'karr.**
+`OuterRim_RebelAlliance` exists as a FactionDef (the mod is installed), but the planet
+carries **12 factions holding all 72 settlements** and it is not among them:
+`Empire · OutlanderCivil · TribeCivil · Pirate · Jawa_HuttCartel · Jawa_Junkers ·
+Jawa_IndigenousTribes · Jawa_GeonosianFoundryHive · Jawa_DeepwaterCompact ·
+Jawa_WildsteamClan · Jawa_AscendantHelix · Jawa_FreeDroidEnclaves` (+ Mechanoid, no
+settlements). A PawnKindDef whose `defaultFactionType` is a faction that never generates
+**never spawns.**
+
+**Wall 2 — there is no desert kit to dress him in.**
+Ten `OuterRim_Rebel*` apparel items exist and none is desert:
+fleet trooper (uniform, helmet) · **forest** (fatigues, helmet, jacket, poncho) · jetpack ·
+officer (cap, jacket, uniform).
+⚠️ **The mod's own "rebel snow trooper" wears the FOREST set** — `RebelForestCamo`,
+`OuterRim_RebelForestFatigues`, forest poncho and helmet. So Outer Rim's biome troopers
+are already reskins in name only, which is either the licence to do the same or the reason
+not to.
+
+**Three ways forward. I am not choosing, because the first one touches the map you just accepted.**
+
+| | what it means | cost |
+|---|---|---|
+| **A. Put the Rebels on the planet** | Add `OuterRim_RebelAlliance` to the roster — 13 factions become 14. ⚠️ **Faction rosters bake at world creation**, so this is a change to the accepted map, not a content addition | real, and it reopens something you just closed |
+| **B. Give the desert kit to a faction already there** | The Homestead Defense League (`OutlanderCivil`, 13 settlements — the most on the map) is *"the arable margin of the terminator"* and is the obvious desert-fatigues faction. The trooper stops being "rebel" and becomes theirs | cheap, spawns immediately, loses the Rebel flavour |
+| **C. Author it dormant** | Build the kind and the apparel now, correct and ready, spawning nowhere until Rebels are ever added | ⛔ I would rather not — it is a def that does nothing, and we have been deleting those |
+
+✅ **Either way the apparel is real work worth doing** — a desert set (fatigues, wrapped
+helmet, sun cloak) does not exist in the stack for anyone, and a desert planet with no
+desert-dressed soldiers anywhere is a gap independent of which faction wears it.
+
+Meanwhile I have struck the false claim in `desert_world_design.md:448` so nothing reads as
+though the trooper already exists.

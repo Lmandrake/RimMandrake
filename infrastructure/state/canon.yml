@@ -58,6 +58,17 @@ covers: design/**/*.md
 planet:
   name: "Ash'karr — The Sundered"
 
+  # ⭐ ACCEPTED FOR V1 — owner, 2026-08-20, after looking at the ortho globes.
+  #   "Let's go with the globe map you made for v1. Map accepted."
+  # 🔑 THE SHAPE OF THE PLANET IS SETTLED. What remains is POPULATING it — mutators,
+  # landmarks, temperature ranges, setting-appropriate detail — not re-judging it.
+  # ⛔ Do not re-open geometry, water fraction, sea count or the temperature curve as
+  # "improvements". They are accepted, not merely current.
+  accepted_for_v1: true
+  accepted_on: 2026-08-20
+  accepted_by: owner
+  accepted_evidence: "TRANSIENT_refmatch_globes.html — three ortho globes beside the two reference photographs"
+
   tiles: 21872
   tiles_src: >
     world/ASHKARR_WORLDMAP_tiles.csv has 21872 data rows; world/ASHKARR_WORLDMAP_meta.json
@@ -453,6 +464,23 @@ biomes:
   # `ZBiome_Grasslands` (the Stormy Savanna).
   misleading_defnames:
     ZBiome_Grasslands: "the Stormy Savanna — NOT a grassland. Carries the Pyrelands."
+  # ⭐ OASES EXIST, AND IN FOUR SEPARATE MECHANISMS — measured 2026-08-20 in answer to
+  # "do we have any Oases at all?". Three of the four are UNUSED, and that is the gap:
+  #   1. `ZBiome_DesertOasis`  BiomeDef "desert oasis" — ✅ ALREADY PAINTED, 227 tiles (1.04%)
+  #   2. `Oasis`               LandmarkDef, with `NamerLandmark_Oasis` to name it — unused
+  #   3. `Oasis`               TileMutatorDef — unused
+  #   4. `GL_Oasis`            Geological Landforms tile mutator — unused
+  # ⚠️ `BiomeArcticOasis` and `GL_IceOasis` also exist and are WRONG for this planet.
+  # ⛔ Biomes! Oasis (`BMT_ChromaticOasis`) is NOT installed — do not reach for it.
+  # 🔑 The world bundle carries no mutator and no landmark column at all, so items 2-4
+  # are not "missing from the map", they are a layer nobody has authored yet.
+  oasis_mechanisms:
+    biome: {defName: ZBiome_DesertOasis, tiles: 227, pct: 1.04, status: painted}
+    landmark: {defName: Oasis, namer: NamerLandmark_Oasis, status: unused}
+    mutator: {defName: Oasis, status: unused}
+    landform: {defName: GL_Oasis, mod: "Geological Landforms", status: unused}
+    wrong_for_this_planet: [BiomeArcticOasis, GL_IceOasis]
+    not_installed: [BMT_ChromaticOasis]
   on_map: 24
   on_map_src: >
     24 distinct biome defNames appear on at least one tile of the painted world.
@@ -604,6 +632,43 @@ needs_ruling:
 # just an assertion.
 # ===========================================================================
 ruled:
+
+  MIRALUKA_IS_GONE_1:
+    question: "Is the Miraluka species restored, replaced, or dropped?"
+    ruled_by: owner
+    ruled_on: 2026-08-20
+    ruling: >
+      🔴 DROPPED, COMPLETELY, FOR EVERY VERSION. Owner: "Just let the Miraluka be gone,
+      don't try to get it back, close it out completely as an item for any version."
+      ⛔ This is NOT a v2 deferral and must not be filed in design/V2_DREAMS.md. The
+      species left when Neronix17.OuterRim.GalacticDiversity, btd.XenotypeRemix.StarWars
+      and guy762.StarWarsXenotypes were consolidated into mandrake.starwarsraces, and it
+      stays gone. `OuterRim_ForceSight`, the ability the roster hung on it, does not
+      exist in any form either.
+      ⛔ Do not seek a replacement race for the six Miraluka placements and do not
+      re-open this. The only surviving trace is `RimMandrake_KoTOR_NamerMiraluka`, a
+      RulePackDef name maker, which is harmless.
+
+  REBEL_DESERT_TROOPER_1:
+    question: "`OuterRim_RebelDesertTrooper` was cited as inventory and does not exist."
+    ruled_by: owner
+    ruled_on: 2026-08-20
+    ruling: >
+      ✅ AUTHOR IT. Owner: "Rebel desert trooper sounds awesome." Rebel Alliance ships
+      `OuterRim_RebelSnowTrooper`, `OuterRim_RebelScoutTrooper` and
+      `OuterRim_RebelEndorTrooper` — a desert variant is the obvious missing sibling on a
+      desert world. Filed as BUILD work.
+
+  ORTHO_GLOBE_MAP_ACCEPTED_1:
+    question: "Does the painted planet pass against the reference photographs?"
+    ruled_by: owner
+    ruled_on: 2026-08-20
+    ruling: >
+      ⭐ ACCEPTED FOR V1, on the ortho globes. "Let's go with the globe map you made for
+      v1. Map accepted." ⇒ `REFERENCE_MATCH_HARNESS_1` (refmatch.py, the five defect
+      screens) is MOOT for v1: it existed to decide whether the map passes, and the map
+      has passed. ⛔ Do not build it for v1. The remaining work is POPULATING the map,
+      not re-judging its shape.
 
   SAVANNA_PREMISE_RESOLVE_1:
     question: "Were the Pyrelands meant to be patched vanilla savanna?"
