@@ -1,0 +1,106 @@
+WEAPON_TAGS_MATCH_NOTHING_1 - offline evidence, BUILD, 2026-08-21
+config: offline-578-defs (DefDump captured 2026-08-21T08:20:20Z, 578 mods, MATCHES ModsConfig.xml)
+plus the mods' SOURCE XML, which the dump alone cannot substitute for. See THE INSTRUMENT WAS WRONG.
+
+================================================================================
+THE INSTRUMENT WAS WRONG, AND IT IS THE HEADLINE
+================================================================================
+weapon_tag_audit.py printed "emptied by the cut: 0" and the ruling in
+items/FIFTEEN_TAGLESS_KINDS_RULING_1.md was built on it - "🔑 THE CUT IS NOT THE CAUSE".
+
+That zero was STRUCTURALLY GUARANTEED and never a measurement.
+
+  🔴 Cherry Picker does not DELETE a cut weapon. It NEUTERS it in place.
+     AM_PKM, AM_PKP, Gun_Needle, Gun_Scattergun, Flamebow: all still present in the
+     dump, all with weaponTags == [] and MarketValue == 0.
+     Measured: 183 of 183 cut weapons are present-and-neutered. ZERO were deleted.
+
+  ⇒ audit() built its tag index from the dump's weaponTags. A neutered weapon
+    contributes NO tag, so a tag whose every carrier was cut never enters the index
+    at all - it cannot be counted as "emptied", it is simply absent. The `cut` filter
+    could only ever fire on a tag that still had a live carrier, which by definition
+    is not empty. The counter could not return anything but 0.
+
+  ⇒ ATTRIBUTION REQUIRES THE MOD'S SOURCE XML, which still carries the tag the
+    neutered def used to have. That is how the table below was built.
+
+Fixed in this commit: the false line is gone, replaced by the neutered count and an
+explicit warning; the mechanism is written into audit() as a comment.
+
+================================================================================
+THE 15, BY CAUSE. 14 of 15 are OURS.
+================================================================================
+Method per tag: find every ThingDef on disk carrying it (workshop/content/294100,
+common/RimWorld/Data, common/RimWorld/Mods), then test each carrier against
+observed/inventory/decisions_weapons.json `cut` and against the dump.
+
+BUCKET 2 - OUR CHERRYPICK EMPTIED THE TAG. 14 kinds, 11 tags.
+  AncientSoldierBoss   AMHP   10 carriers (AM_AK68A AM_DTMDR AM_M5A3LT AM_MK17A AM_MK18M
+  AncientSoldierBossN         AM_MK68A AM_RM68A AM_Spear68A AM_Spear68C AM_TKB68A) - 10/10 CUT
+  AncientMallGuards    PKM    2 carriers (AM_PKM, AM_PKP) - 2/2 CUT
+  ⭐ Mech_Pikeman      MechanoidGunLongRange  1 carrier Gun_Needle (CORE) - CUT
+  ⭐ Drone_Sentry      SentryDroneGunShortRange 1 carrier Gun_Scattergun (ODYSSEY) - CUT
+  ⭐ Tribal_Archer_Fire NeolithicRangedFlame  1 carrier Flamebow (BIOTECH) - CUT
+  VEE_Hunter           VEE_HunterIndustrialWeapon  VEE patches it onto Gun_BoltActionRifle - CUT
+  VEE_TribalHunter     VEE_HunterNeolithicWeapon   VEE patches it onto Bow_Recurve - CUT
+  DP_ArtilleryPirate   DP_CannonNoEquipTag   carrier DP_CannonNoEquip - CUT
+  DP_RocketPirate      DP_RocketNoEquipTag   carrier DP_RocketNoEquip - CUT
+  VFEP_Footsoldier     WarcasketBasic  VFEP_WarcasketGun_Autorifle - CUT
+                                       (VFEP_WarcasketGun_FoldingGun loads only IfModActive
+                                        VanillaExpanded.VWEQ, which is not active)
+  BS_Crossbowman       BS_CrossbowTag  carrier VFEM_Bow_HeavyCrossbow (Big and Small) - CUT
+  BS_CrossbowDvergr    (their other two tags are bucket 3, below)
+  BS_DvergrTraditionalist
+
+BUCKET 3 - TAG FROM A MOD WE DO NOT HAVE. 1 kind whose EVERY tag is bucket 3.
+  OuterRim_ImperialTrader  ORImperialOfficer - NO weapon defines it anywhere on disk.
+  (Also present as the 2nd and 3rd tags of the three BS_* kinds, which are already
+   bucket 2 on their first tag: DankPyon_Arbalest - no weapon on disk, Medieval
+   Overhaul absent; VFEM2_Arbalest - VFE Medieval 2 defines it but is NOT ACTIVE.)
+
+BUCKET 1 - DELIBERATE UPSTREAM, ARMING THEM WOULD BE THE DEFECT. 3 kinds.
+  DP_ArtilleryPirate, DP_RocketPirate - tags literally named *NoEquipTag.
+  VFEP_Footsoldier - VFE-Pirates equips warcaskets through its own system.
+  ⚠️ These three are ALSO bucket 2 by cause: we cut their carriers too. Intent
+     overrides cause here, so they stay unarmed. Do not fix.
+
+⛔ Mech_Pikeman and Drone_Sentry were previously filed as bucket 1 "built-in weapons".
+   THAT IS WRONG. Vanilla mechs and drones equip from the tag pool like anything else -
+   Mech_Pikeman carries weaponMoney 9999~9999 and weaponTags [MechanoidGunLongRange],
+   which resolved to Gun_Needle until we cut it. They are bucket 2.
+
+================================================================================
+🔴 THE BIGGER FINDING THE ITEM ASKED FOR
+================================================================================
+The item said: "Mech_Pikeman is vanilla-adjacent and worth checking first - if a VANILLA
+mech kind cannot arm, something broad was cut, and that is a bigger finding than fifteen
+kinds." It checked out, three times over.
+
+  Gun_Needle      (Core)    -> every Mech_Pikeman in the game spawns bare-handed
+  Gun_Scattergun  (Odyssey) -> every Drone_Sentry spawns bare-handed
+  Flamebow        (Biotech) -> Tribal_Archer_Fire and Tribal_Hunter_Fire
+
+These are CORE/ODYSSEY/BIOTECH weapons, cut as ordinary firearms in the blaster
+cherrypick, that were the sole carrier of a mechanoid or tribal pool. This is not a
+fifteen-kinds problem, it is the cut reaching into vanilla creature loadouts.
+⇒ OWED TO THE OWNER AS A SCOPE CALL, not fixed here. Nothing was armed beyond the three
+  kinds THREE_ANCIENT_KINDS_ARMED_1 authorises.
+
+================================================================================
+AUDIT NUMBERS
+================================================================================
+before: weapon tags in the dump: 390   emptied by the cut: 0
+        🔴 pawn kinds with EVERY weapon tag empty: 15
+after : weapon tags in the dump: 390
+        cut weapons still present but NEUTERED (weaponTags stripped): 183
+        🔴 pawn kinds with EVERY weapon tag empty: 15
+The 15 does not move here and is not supposed to: this item diagnoses, it does not arm.
+THREE_ANCIENT_KINDS_ARMED_1 takes it to 12, and only after a load rewrites the dump.
+
+VERDICT: partial
+  Done: all 15 assigned to a bucket with per-carrier evidence; the tag -> carrier index
+  rebuilt against the CURRENT 578-mod dump plus source XML; buckets 1 and 3 reported
+  rather than fixed; the instrument that produced the false premise is corrected.
+  NOT done: "zero bucket-2 kinds unable to arm". Bucket 2 is 14 kinds and DECIDE's
+  ruling authorises arming only 3 of them. The other 11 need a fresh ruling, because
+  the ruling's own premise - that the cut is not the cause - is now disproved.
