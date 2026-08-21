@@ -46,6 +46,16 @@ outbound is what this hook shuts.
 ⚠️ CLAUDE.md, POLICY.md and the four seat files all claim the setting reads
 "refuse". They are wrong about the config and right about the intent.
 
+⚠️ AND THE REPO-SCOPED "accept" DOES NOT GRANT ANYTHING — read off the CLI binary
+2.1.238 on 2026-08-21 (BROADCAST_WITHOUT_A_DIALOG_1). Local/project settings only
+RATCHET STRICTER: `if (N1i[n] > N1i[e ?? "accept"]) e = n`, N1i={accept:0,hold:1,
+refuse:2}. So a project-scoped `accept` never exceeds the default and is
+discarded — but a project-scoped `hold` or `refuse` WOULD take effect and would
+drop the owner's announcements. "MUST STAY accept" above is therefore exactly
+right; the value here only ever matters in the direction that shuts him out.
+What actually gets his messages delivered without a dialog is the `from-mode`
+attribute broadcast.py now asserts. Full write-up in its docstring.
+
 Reads the hook JSON on stdin, writes a PreToolUse deny decision on stdout.
 Fails OPEN on a malformed payload — a broken hook must not strand a seat that
 is only trying to collect from its own worker.

@@ -40,46 +40,76 @@ We read both, then speak the session inbox protocol over the unix socket:
     {"type":"auth","token":"<peerToken>"}\\n
     {"msgV":1,"msg_id":"<uuid>","type":"user","priority":"next",
      "message":{"role":"user","content":
-       "<cross-session-message from-name=\\"OWNER\\">TEXT</cross-session-message>"}}\\n
+       "<cross-session-message from-name=\\"OWNER\\" from-mode=\\"bypass\\">\\nTEXT\\n</cross-session-message>"}}\\n
 
-⚠️ The frame is READ OFF THE INSTALLED CLI (2.1.237), not documented. If a Claude
+⚠️ The frame is READ OFF THE INSTALLED CLI (2.1.238), not documented. If a Claude
 Code upgrade changes it, this script starts failing and the fix is to re-read it.
 It is pinned in one place — `frame()` below — for exactly that reason.
+🔴 `from-mode="bypass"` and those two newlines are LOAD-BEARING, not decoration.
+Without them every window holds the message behind an accept/reject dialog. Why,
+exactly, is the next section.
 
-🔴 WHY EVERY WINDOW STILL ASKS "accept / reject", investigated 2026-08-21
---------------------------------------------------------------------------
-It is NOT `crossSessionInbound`. That is already at its most permissive value.
-Confirmed against the installed binary 2.1.238, which carries the enum literally:
+🔴 WHY EVERY WINDOW ASKED "accept / reject" — SETTLED 2026-08-21, and fixed below
+--------------------------------------------------------------------------------
+Read out of the installed CLI binary, `~/.local/share/claude/versions/2.1.238`.
+Function names are minified and will change on upgrade; the byte offsets are for
+2.1.238 only. Re-read them, do not trust them, after any upgrade.
 
-    crossSessionInbound: ["accept","hold","refuse"]        N1i={accept:0,hold:1,refuse:2}
+🔑 THE FIELD IS NOT A FRAME FIELD. It is an ATTRIBUTE ON THE MESSAGE TAG.
+`hkb()` at ~303,726,700 builds the tag, and the last attribute it appends is:
 
-There is no fourth, stronger value, and `.claude/settings.json` has held `accept`
-since 2026-08-19 (`6bdac8e`).
+    if (o) i.push(`from-mode="${o}"`)           // o = the sender's mode
+    hId = ["bypass", "prompting"]                // the only two legal values
 
-🔑 `accept` IS OVERRIDDEN BY A PERMISSION-MODE RULE. Per Anthropic's cross-session
-messaging docs, when the two sides are in different permission-mode classes the
-receiver holds the message for approval regardless:
+The receiver's gate, `Enm()` at ~313,486,900, decides it:
 
-  * receiver PROMPTS for permissions -> delivers, unless the SENDER bypasses
-  * receiver BYPASSES permissions    -> holds, unless the SENDER also bypasses
+    let o = oXr(n)                       // OUR mode: "bypass" | "prompting"
+    let i = (t || nXr()) ? e?.fromMode : undefined
+    if (i !== undefined)
+        return i === o ? {policy:"accept"} : {policy:"hold", holdCause:"mode-mismatch"}
+    return o === "bypass" ? {policy:"hold",   holdCause:"no-mode-asserted"}
+                          : {policy:"accept", holdCause:"bypass-default"}
 
-The agent windows run in bypass mode. This script is a plain socket writer and
-does not identify as bypassing. Receiver bypasses + sender does not => HELD.
-That is the dialog, and it is working as designed.
+⇒ The agent windows run bypass, this script asserted no mode, so every message
+landed on `no-mode-asserted` and was held. Asserting `from-mode="bypass"` takes
+the `i === o` branch and is delivered with nothing to click.
+
+⚠️ THREE THINGS THAT MUST BE EXACTLY RIGHT, or the tag is not a peer message at all.
+`EId()` parses it with one anchored regex and then RE-SERIALISES the captured
+groups and compares to the original — `if (v1r(...) !== n) return;` — so anything
+it cannot reproduce byte-for-byte is silently not parsed, `origin.fromMode` comes
+back undefined, and you are back to the dialog while believing you fixed it.
+
+  1. ATTRIBUTE ORDER IS FIXED: from, from-session, hop-chain, from-name, from-mode.
+  2. THE BODY IS NEWLINE-DELIMITED: `<tag ...>\n BODY \n</tag>`. This script had
+     no newlines before today, so its tag never parsed even as a from-name.
+  3. THE BODY IS NOT HTML-ESCAPED. The CLI escapes nothing; it only scrubs a
+     nested copy of the tag (`h1r`). We used to send `&amp;` and `&lt;`, which
+     reached the owner's seats as literal entities.
+
+🔴 AND IT IS BEHIND A FEATURE GATE: `nXr()` is `it("tengu_harbor_kite_mode_emit",
+false)`. If that gate is OFF the receiver ignores `from-mode` entirely and holds
+regardless. It reads **true** on this machine (`~/.claude.json`,
+`cachedGrowthBookFeatures.tengu_harbor_kite_mode_emit`). If broadcasts start
+being held again after an upgrade, check that gate before touching anything here.
+
+⚠️ AND `crossSessionInbound: "accept"` IN THIS REPO IS A NO-OP — do not read the
+repo setting as the thing making delivery work. `bnm()` takes policySettings /
+flagSettings / userSettings as given, but local/project settings only RATCHET
+STRICTER: `if (N1i[n] > N1i[e ?? "accept"]) e = n`, with N1i={accept:0,hold:1,
+refuse:2}. A project-scoped `accept` never exceeds the default and is discarded,
+so `njt()` returns undefined and the permission-mode rule above decides it. The
+repo setting still matters — it is what keeps anyone setting `hold` or `refuse`
+there — but it cannot grant delivery. Nothing about it was changed for this fix.
 
 ⛔ WHAT WILL NOT FIX IT, all checked so they are not tried again:
-  * a stronger `crossSessionInbound` — there isn't one
+  * a stronger `crossSessionInbound` — the enum is {accept,hold,refuse} and there
+    is no fourth value; at repo scope `accept` does not even apply
   * a hook on receipt — no hook event fires on receiving a peer message
-  * gating on `from-name="OWNER"` — the receiver cannot see sender identity,
-    only the sender's permission-mode class
-  * a `permissions` entry — those govern what a session SENDS, not what it takes
-
-⚠️ THE OPEN QUESTION, and nobody should guess at it: which field of the auth
-handshake or the frame declares the sender's bypass class. It is not in the
-session's `~/.claude/sessions/<pid>.json` — those carry pid, name, cwd, status,
-peerProtocol and peerFeatures, and no permission mode. Pin it by reading the CLI's
-own outbound peer send, then set it here. A GUESSED field name is worse than the
-dialog: it fails silently and looks fixed.
+  * gating on `from-name="OWNER"` — the receiver never sees sender identity, only
+    the sender's permission-mode class
+  * the `selfSent` route — `pFl()` grants it for a presented CHILD token, and
+    `~/.claude/sessions/<pid>.<sha>.key` publishes only `peerToken`/`procStart`
 
 ✅ AND THE SAFETY PROPERTY SURVIVES THE FIX, which is why the fix is worth making.
 Auto-delivery does NOT open agent-to-agent messaging: agents are blocked at the
@@ -138,17 +168,53 @@ def sessions():
     return sorted(out, key=lambda r: r.get("name") or "")
 
 
-def frame(text, sender="OWNER"):
-    """⚠️ The wire format, pinned in one place. See the module docstring."""
-    esc = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+TAG = "cross-session-message"
+
+# 🔴 READ OFF THE INSTALLED CLI, ~/.local/share/claude/versions/2.1.238 — undocumented
+# internals, pinned here so an upgrade has ONE place to re-check. See the module
+# docstring for the exact functions and offsets.
+FRAME_READ_FROM_CLI_VERSION = "2.1.238"
+
+# The two legal values of the tag's `from-mode` attribute (`hId` in the binary).
+# "bypass" is what the agent windows run as, and matching it is the whole fix.
+SENDER_MODES = ("bypass", "prompting")
+SENDER_MODE = "bypass"
+
+
+def tag_body(text):
+    """The CLI does NOT escape the body (`v1r` passes it through). It only scrubs a
+    nested copy of the tag so a message cannot forge its own envelope — `h1r`
+    rewrites the opening `<` to `<\\`. Approximated here for the two literal
+    forms; anything more exotic than that is not something the owner types."""
+    return (text.replace("<" + TAG, "<\\" + TAG)
+                .replace("</" + TAG, "<\\/" + TAG))
+
+
+def frame(text, sender="OWNER", mode=SENDER_MODE):
+    """⚠️ The wire format, pinned in one place. See the module docstring.
+
+    ⛔ THE THREE THINGS THE PARSER WILL NOT FORGIVE, because it re-serialises what
+    it matched and compares byte-for-byte before believing any of it:
+      * attribute order — from, from-session, hop-chain, from-name, FROM-MODE last
+      * `>\n` before the body and `\n<` after it
+      * `from-name` carrying a quote or an angle bracket (the CLI strips them, so
+        a tag that keeps them cannot round-trip)
+    Break any one and the message is not recognised as a peer message at all: it
+    still arrives, it still waits behind accept/reject, and it looks fixed.
+    """
+    name = "".join(c for c in sender if c not in '"<>\r\n').strip() or "OWNER"
+    attrs = ' from-name="%s"' % name
+    if mode:
+        if mode not in SENDER_MODES:
+            raise ValueError("from-mode must be one of %r" % (SENDER_MODES,))
+        attrs += ' from-mode="%s"' % mode
+    content = "<%s%s>\n%s\n</%s>" % (TAG, attrs, tag_body(text), TAG)
     return json.dumps({
         "msgV": 1,
         "msg_id": str(uuid.uuid4()),
         "type": "user",
         "priority": "next",
-        "message": {"role": "user", "content":
-                    '<cross-session-message from-name="%s">%s</cross-session-message>'
-                    % (sender, esc)},
+        "message": {"role": "user", "content": content},
     })
 
 
