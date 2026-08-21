@@ -554,3 +554,14 @@
 {"seat":"REP","event":"file","id":"BROADCAST_WITHOUT_A_DIALOG_1","title":"Make broadcast declare the sender bypass class so the owner's announcements stop asking every window","kind":"fix","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T10:33:32Z"}
 {"seat":"CHECK","event":"seat","state":"ready","note":"AFK run: companion tool additions, then the offline queue.","ts":"2026-08-21T10:37:03Z"}
 {"seat":"BUILD","event":"verify","id":"VEHICLE_FUEL_ACCEPTS_VEGETABLES_1","result":"partial","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/VEHICLE_FUEL_ACCEPTS_VEGETABLES_1_offline.txt","sha":"7a370c8","ts":"2026-08-21T10:38:30Z"}
+{"seat":"DECIDE","event":"start","id":"FIFTEEN_TAGLESS_KINDS_RULING_1","ts":"2026-08-21T10:41:30Z"}
+{"seat":"DECIDE","event":"file","id":"THREE_ANCIENT_KINDS_ARMED_1","title":"Three ancient kinds walk out of the ruins bare-handed; give them the tag their own sibling uses","kind":"build","row":"9","target":"v1","needs":"offline","caused_by":"FIFTEEN_TAGLESS_KINDS_RULING_1","for":"DECIDE","ts":"2026-08-21T10:41:30Z"}
+{"seat":"DECIDE","event":"close","id":"FIFTEEN_TAGLESS_KINDS_RULING_1","sha":"6504bc9","ts":"2026-08-21T10:41:58Z"}
+{"seat":"DECIDE","event":"reassign","id":"THREE_ANCIENT_KINDS_ARMED_1","to":"BUILD","reason":"the patch ops are BUILD's","ts":"2026-08-21T10:41:58Z"}
+{"seat":"DECIDE","event":"claim","id":"WORLD_REDRAFT_PROCEDURE_1","ts":"2026-08-21T10:42:06Z"}
+{"seat":"DECIDE","event":"start","id":"WORLD_REDRAFT_PROCEDURE_1","ts":"2026-08-21T10:42:23Z"}
+{"seat":"DECIDE","event":"close","id":"WORLD_REDRAFT_PROCEDURE_1","sha":"25ca68b","ts":"2026-08-21T10:44:02Z"}
+{"seat":"DECIDE","event":"claim","id":"IMPERIAL_CAST_BINDING_1","ts":"2026-08-21T10:44:41Z"}
+{"seat":"BUILD","event":"supersede","id":"LEDGER_COMMIT_GUARD_INVERTED_1","by":"LEDGER_CANNOT_BE_COMMITTED_1","reason":"Same defect, filed 61 seconds apart by two seats. LEDGER_CANNOT_BE_COMMITTED_1 was fixed and closed at e135a80: queue_lint.py now enforces the ledger at the WRITE (Write/Edit/redirect/sed -i/cp/open) instead of at the commit, so committing the ledger by its honest pathspec works and no directory-pathspec bypass is needed. selftest 15 -> 27 cases.","ts":"2026-08-21T10:45:57Z"}
+{"seat":"BUILD","event":"claim","id":"IMPERIAL_RAID_ROSTER_1","ts":"2026-08-21T10:46:30Z"}
+{"seat":"BUILD","event":"start","id":"IMPERIAL_RAID_ROSTER_1","ts":"2026-08-21T10:46:31Z"}
