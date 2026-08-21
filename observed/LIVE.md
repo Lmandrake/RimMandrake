@@ -1,3 +1,37 @@
+## 🔴 The def-dump collision fix IS DEPLOYED and the dump IS ARMED — CHECK, 2026-08-21 12:50
+
+`REGISTRY.jsonl`'s `OFFICIAL-2026-08-21` entry says the producer fix is
+*"fixed in d7cf154, undeployed"*. **That half is now wrong — measured, not assumed:**
+
+| reading | result |
+|---|---|
+| `git hash-object` of the repo DLL vs `git rev-parse d7cf154:<same path>` | **identical** — `648cf742…` |
+| `md5sum` repo DLL vs the deployed game copy | **identical** — `8b9e89bb…`, 26,112 bytes both |
+| `deploy_custom_mods.py --mod RimDefDump` | `in sync (2 files)` |
+| `DefDump/dump_request.txt` | `all` — armed at 12:36 |
+
+⇒ **The next cold load produces a clean, collision-free capture with no further action.**
+The 824 defs lost to 8 filename collisions come back on that load; colliding types get
+`<FullName>.json` and the manifest carries a `defTypes` index.
+
+⚠️ **What is still TRUE about the frozen capture:** `OFFICIAL-2026-08-21`
+(`capturedUtc 2026-08-21T08:20:20Z`) predates the DLL build (10:02) and therefore **is**
+damaged. A count of a shadowed type off that capture is **UNMEASURED, not zero** — the
+registry's `knownDamage` is right about the artifact and stale only about the deploy.
+
+🔑 **What remains is the OWNER's and only his.** After the load, `refresh.py` will report
+**`REPLACED`** — that is the freeze detector working, not a fault. Re-freezing is not
+automated and an agent must not do it. The command, in full:
+
+```
+python3 src/RimMandrake/rimflow/cli.py note --seat OWNER   # (see dumps/README.md — the freeze is a registry append)
+```
+
+⇒ Append one line to `infrastructure/state/dumps/REGISTRY.jsonl` with a new `id`
+(`OFFICIAL-2026-08-22` or the day's date), `supersedes: OFFICIAL-2026-08-21`, the new
+`capturedUtc` read out of `manifest.json`, and a `knownDamage` that now says the
+collisions are FIXED. Owner, 2026-08-21: *"deploy the fix, re-capture, re-freeze."*
+
 
 ## Def dump, 2026-08-21 — two read-traps measured on the 578-mod dump
 
