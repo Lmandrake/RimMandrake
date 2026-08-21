@@ -22,6 +22,21 @@
     Tier split is each role's median market value. A `_Unique` always takes the top
     tier - it is a quest reward, and tagging one into a common pool puts a legendary
     weapon in an ordinary raid.
+
+    🔴 NO INGESTIBLE IS TAGGED HERE, and three that were have been taken out:
+    `TarisianAle`, `FungusBeer`, `BMT_MushroomLog`. Measured 2026-08-21: two of five
+    `Jawa_Tribal_Scavenger` generated holding a BOTTLE OF ALE as their primary weapon.
+    None of the three carries `weaponTags` in its own mod - this file gave them, off
+    `techLevel Neolithic` plus `weaponClasses [Melee, MeleeBlunt]`. weapon_tag_audit.py
+    now excludes `ingestible` at source, so a regenerate will not put them back.
+    ⚠️ The three drops cost the pools nothing: NeolithicMeleeBasic 35 = 32,
+    NeolithicMeleeDecent 41 = 38, and no pawn kind's pool goes empty.
+
+    🔴 DO NOT REGENERATE THIS FILE AGAINST A POST-PATCH DEF DUMP. Measured 2026-08-21:
+    the dump is taken with this patch ALREADY APPLIED, so every weapon it tagged now
+    reads as already-tagged and drops out of the eligible set. A regenerate today emits
+    9 operations against the 154 here, silently deleting 145. weapon_tag_audit.py now
+    REFUSES that write; see its `allow-shrink` flag and read the refusal before using it.
 -->
 
   <Operation Class="PatchOperationConditional">
@@ -188,18 +203,6 @@
     </match>
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="BMT_FungalMantisClaw"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_MushroomLog"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_MushroomLog"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_MushroomLog"]</xpath>
       <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
     </nomatch>
   </Operation>
@@ -488,18 +491,6 @@
     </match>
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="DV_MeleeWeapon_SerratedScimitar"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="FungusBeer"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="FungusBeer"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="FungusBeer"]</xpath>
       <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
     </nomatch>
   </Operation>
@@ -1052,18 +1043,6 @@
     </match>
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="SkalderTusk"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="TarisianAle"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="TarisianAle"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="TarisianAle"]</xpath>
       <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
     </nomatch>
   </Operation>

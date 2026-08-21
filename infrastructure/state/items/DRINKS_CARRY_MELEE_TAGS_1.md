@@ -1,4 +1,13 @@
 ## spec
+🔴 **CORRECTION, BUILD 2026-08-21 — it IS our bug.** Neither `TarisianAle`
+(`.../294100/3497316713/1.6/Defs/Drugs/TarisianAle.xml`) nor `FungusBeer`
+(`.../294100/2599616050/Defs/Drugs/Alcohol_FungusBeer.xml`) carries `weaponTags` in its
+own mod. `src/Jawa/Jawa_Patches/Patches/WeaponTags_Renormalise.xml` gave them both tags,
+off `techLevel Neolithic` + `weaponClasses [Melee, MeleeBlunt]`. The dump shows the tags
+because the dump is post-patch. ⇒ fixed at the generator (`weapon_tag_audit.py` now
+excludes any def with an `ingestible` block) and the three emitted blocks removed;
+`BMT_MushroomLog` was the third and went with them.
+
 🔴 **Measured live 2026-08-21: two of five `Jawa_Tribal_Scavenger` spawned holding a bottle
 of ale as their PRIMARY weapon.**
 

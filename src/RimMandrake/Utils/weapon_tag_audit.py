@@ -358,6 +358,18 @@ def emit_patch(mapping, path, allow_shrink=False):
     Tier split is each role's median market value. A `_Unique` always takes the top
     tier - it is a quest reward, and tagging one into a common pool puts a legendary
     weapon in an ordinary raid.
+
+    🔴 NO INGESTIBLE IS TAGGED HERE. Measured 2026-08-21: two of five
+    `Jawa_Tribal_Scavenger` generated holding a BOTTLE OF ALE as their primary weapon,
+    because `TarisianAle` reads as techLevel Neolithic with weaponClasses
+    [Melee, MeleeBlunt] and this file handed it the scavenger's only tag. `eligible`
+    now drops anything carrying an `ingestible` block.
+
+    🔴 DO NOT REGENERATE THIS FILE AGAINST A POST-PATCH DEF DUMP. The dump is captured
+    with this patch ALREADY APPLIED, so every weapon it tagged reads as already-tagged
+    and falls out of the eligible set: a regenerate on 2026-08-21 emitted 9 operations
+    against the 154 on disk. weapon_tag_audit.py REFUSES that write now; capture a dump
+    with Jawa_Patches disabled instead.
   """.rstrip(), "-->", ""]
     for dn, (role, tg) in sorted(mapping.items()):
         lines += [

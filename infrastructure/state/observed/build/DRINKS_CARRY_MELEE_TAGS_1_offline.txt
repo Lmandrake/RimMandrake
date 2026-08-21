@@ -1,0 +1,32 @@
+DRINKS_CARRY_MELEE_TAGS_1 - offline evidence, BUILD 2026-08-21
+
+== ROOT CAUSE: neither drink carries weaponTags in its own mod ==
+--- /mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2599616050/Defs/Drugs/Alcohol_FungusBeer.xml
+0
+62:    <techLevel>Neolithic</techLevel>
+76:    <weaponClasses>
+79:    </weaponClasses>
+--- /mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713/1.6/Defs/Drugs/TarisianAle.xml
+0
+61:    <techLevel>Neolithic</techLevel>
+75:    <weaponClasses>
+78:    </weaponClasses>
+
+== the tags came from OUR generated patch; three ingestibles were tagged ==
+removed Operation blocks: TarisianAle, FungusBeer, BMT_MushroomLog
+
+== pool impact, from the 578-mod def dump ==
+NeolithicMeleeBasic members: 35 -> after drop: 32
+NeolithicMeleeDecent members: 41 -> after drop: 38
+kinds with all-empty pools BEFORE drop: 15 / AFTER drop: 15 / newly disarmed: []
+
+== REGENERATION REFUSED - on_disk minus built = 145 ==
+before ops: 154   after ops (rebuilt in scratch): 9   LOST: 145   ADDED: 0
+cause: the def dump is captured with this patch already applied, so every weapon
+it tagged reads as already-tagged and drops out of eligible(). Guard added:
+REFUSING to write /tmp/claude-1000/-mnt-d-Luke-dev-Rimworld/ae07470c-8d4a-459f-801c-c1e3b23ef139/scratchpad/guardtest.xml: it already tags 151 defs and this run would tag 9, dropping 142 of them.
+   first lost: AG_ForsakenBow, AG_ForsakenSpear, AM_BeamGraserCannon, AM_Gun_GoliathChargeBlaster, AM_Gun_SuperHeavyChargeBlaster, AM_Gun_TacticalShotgun, AM_MechanoidGunRotaryNeedle, AM_StarfireTurret
+   The dump was almost certainly captured WITH this patch applied, which makes every weapon it tagged look already-tagged. Capture a dump with Jawa_Patches disabled, or pass --allow-shrink if you truly mean to delete them.
+
+== validate_patch.py ==
+OK - 0 errors, 162 warning(s)
