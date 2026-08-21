@@ -40,18 +40,22 @@ is kept in longhand.
 
 **Fenzik Trawl** · Chadra-Fan · m · 29
 `traits: TooSmart, AnnoyingVoice, NaturalMood(Sanguine)`
+`skills: Intellectual 14`
 childhood: a metre tall, in a species that is old at forty. Read the claim-code at nine.
 adult: owns more of Grave Nine than the Scraplord and has stripped almost none of it.
 > The smallest man on the field, four metres up on strapped stilts every dawn, screaming his claim across the scatter in a voice like a drill going into tin. He worked out that the code says *shadow*, not hand, and he has never once worked out that a claim you cannot strip is a debt — he holds eleven of them and is genuinely thrilled about it.
 
 **Ossa Grell** · Snivvian · f · 44
 `traits: GreatMemory, Abrasive, TorturedArtist`
+`weapon: MeleeWeapon_Knife`
+`skills: Artistic 14`
 childhood: carved her first tally at six and has not stopped carving since.
 adult: keeps the ledger of the Bolt That Missed. Decides whose survival counts.
 > Grey, jowled, permanently disgusted, with a knife and a plate of soft alloy always in her lap. She will interrogate you for an hour about the centimetre that spared you and then carve it in — but if you laughed while telling it she strikes it out, and there is no appeal, and two men have gone off the field over this.
 
 **Weft** · human · f · 19
 `traits: Brawler, CreepyBreathing, SlowLearner`
+`skills: Melee 14, Social 1`
 childhood: eight years alone in a sealed compartment. They cut her out at eleven.
 adult: nobody's crew. Fed by everyone. Owns a spanner and a blanket.
 > She breathes like something in a wall — she learned to do it quietly when quiet was survival and cannot unlearn it, so she is *audible* in a way you feel in your teeth. She has about forty words. She will not be given a weapon, because she goes hands and teeth immediately, and twice a year she climbs back into the compartment and stays there for a week.
@@ -64,6 +68,7 @@ adult: counts fasteners off the line. Still sends a tithe to an address that is 
 
 **Kaad'ro Tenth-Breath** · Kel Dor · m · 55
 `traits: VoidFascination, Ascetic, Delicate`
+`apparel: guy762_KelDorMask`
 childhood: two hundred years of family in the upper atmosphere. He came down in a hull.
 adult: cutter, day shift. Climbs the standing spine every single night.
 > He cannot breathe your air and never forgets it — the mask, the goggles, the ninety-second margin if either cracks. Every night he free-climbs sixty metres of unsecured wreck to sit on the highest plate on the field and look straight up, and he has been told what a fall would do to him, and he goes up anyway, and he is the gentlest man in the camp about everything else.
@@ -82,12 +87,14 @@ adult: has invented a system by which salvage scores. It is comprehensive. It is
 
 **Vagh Oro** · Feeorin · m · 214
 `traits: Psychopath, BodyMastery, NaturalMood(Sanguine)`
+`skills: Melee 17`
 childhood: a century of it. His people count that as most of a boyhood.
 adult: the Scraplord's collector. Has never been beaten and expects another eighty years of that.
 > Two hundred and fourteen and getting *stronger* — that is what his species does, and he is delighted by it in the open, cheerful way a man is delighted by good weather. He remembers your name, asks after your knee, and breaks the arm because the arm was the arrangement. There is no cruelty in it anywhere, which is the part people cannot get past.
 
 **Grunda Pell** · Ugnaught · f · 88
 `traits: Ascetic, Abrasive, NaturalMood(Sanguine)`
+`skills: Mining 15`
 childhood: won her trade at twenty, tusks against a cousin, in the proper way.
 adult: six years down the same shaft, working it beautifully.
 > Four feet of ferocious pride in a shaft that everybody else in camp knows is a sewage tender. Telling an Ugnaught her work is worthless is an insult you do not survive socially, so nobody has, for six years, and the lie has grown into a full camp custom with its own polite noises. She comes up every evening filthy and satisfied and tells you what she found.
@@ -105,6 +112,7 @@ adult: **last-fault man** — licensed to put the one flaw into everything the y
 
 **Modd Ryel** · Bith · m · 50
 `traits: TorturedArtist, Abrasive, GreatMemory`
+`skills: Artistic 16`
 childhood: nine years of formal music and one audition, failed, never mentioned.
 adult: sets the cut-line. Has tuned all eleven torches to a chord.
 > Bulb-headed, huge black eyes, hands like a surgeon's — and the eleven torches on the Long Strip are tuned, because he tuned them, and the yard's whole shift sounds like something. He will stop ninety people mid-cut because number six has gone flat. He has been told what an hour costs. He does not accept that this is the relevant question.
@@ -123,12 +131,14 @@ adult: earned the given name too, and then the judgement. **He is permitted to s
 
 **Bohrra Zeel** · Lasat · m · 62
 `traits: Kind, Ascetic, Brawler`
+`skills: Melee 15`
 childhood: taught the old warrior-code by people who by then had almost nobody left to teach.
 adult: carries the injured out. Sings over every hull before the first cut.
 > Eight feet of purple and grey who will not let a torch touch a ship until he has stood at the nose and sung the thing that is owed to something that carried people. It takes eleven minutes. It happens every time. Three foremen have tried to cut through it and all three were lifted off their feet and set down somewhere else, very gently, still talking.
 
 **Nossik Ryl** · Mon Calamari · m · 58
 `traits: TooSmart, NaturalMood(Depressive), Delicate`
+`skills: Intellectual 16`
 childhood: apprenticed to men who *grew* ships rather than built them.
 adult: the best pair of eyes on the Strip, employed exclusively to take ships apart.
 > He can name every hull that comes in — yard, year, who flew her, what the scarring means — and his entire job is to say where to cut. Once a season he petitions the Scraplord to be allowed to restore one, any one, on his own time, and once a season he is refused, and he has filed nineteen of them and keeps the refusals.
@@ -147,6 +157,8 @@ adult: **tests the shore.** Stands under it first so ninety others do not have t
 
 **Prah Sook** · Weequay · m · 47
 `traits: Cannibal, Kind, CreepyBreathing`
+`weapon: MeleeWeapon_Knife`
+`skills: Cooking 14`
 childhood: spoke to his clan in scent and to outsiders in a name he made up for them.
 adult: processes the dead. Nothing is wasted in the warrens — not the plate, not the meat.
 > Leathery, unhurried, and the kindest presence on the Long Strip: he remembers your mother's health, he gives away his water, he sits with the frightened. He also cuts up the people who did not come out, because the Weight says so, and he sees no contradiction anywhere in that and would be baffled to be asked. He breathes like a bellows with a hole in it.
@@ -188,6 +200,7 @@ adult: sells fasteners. Sorted by thread, then by length, then by alloy.
 
 **Grumm Oda** · Aqualish · m · 91
 `traits: GreatMemory, Abrasive, DrugDesire(ChemicalFascination)`
+`item: Beer`
 childhood: tusks, a bad temper, and a barge crew that took him because he could lift.
 adult: **the man the Bolt missed.** The saint. The relic on the post is his.
 > They wheel him out at the turn of the season and he is furious about it, because he remembers that morning with total clarity and it was not a miracle — he was drunk, he was asleep in the wrong bay, and the bolt went past his ear because he was lying down. He has said this in public for seventy years. It has been folded into the liturgy as the saint's humility. Leave a bottle in sight and you lose him for three days.

@@ -55,18 +55,22 @@ adult: married in at nineteen for the food and runs the drying sheds better than
 
 **Tikk of the Underline** · Ewok · m · 31
 `traits: CreepyBreathing, GreatMemory, Abrasive`
+`apparel: Apparel_GasMask`
 childhood: raised in the root-galleries under the rows; did not stand on open ground until eleven.
 adult: runs the whole trap-line at branch height and has never once used the paths.
 > He drops into your conversation from four metres up, mid-sentence, and he has been there the whole time. The spore mask makes him whistle wetly on every exhale, which is how the jungle knows he is coming and you do not. He considers walking on the ground a slovenly habit and says so to elders.
 
 **Grahnn** · Wookiee · f · 178
 `traits: Delicate, TooSmart, Kind`
+`skills: Plants 20, Intellectual 16`
 childhood: a bad bleeder in a family of jungle-cutters, kept indoors and resented for it.
 adult: the finest grafter in the clan and has not set foot outside the glasshouse in thirty years.
 > Two and a half metres of Wookiee doing needle-work with hooked tools the size of a fingernail, because a scratch puts her in bed for a week and a fall would kill her. Every food crop on this river came off her bench. She has never seen the fields they grow in and asks about them constantly, of everyone, forever.
 
 **Bo Kesh** · Yttakin · m · 44
 `traits: ShootingAccuracy(TriggerHappy), Abrasive, NaturalMood(Sanguine)`
+`weapon: OuterRim_A280Blaster`
+`skills: Shooting 17`
 childhood: pulled out of a Hutt slaver's hold at seven and never made a secret of it.
 adult: riverwarden. Nine skiffs on the bottom of the Scald, all of them crewed at the time.
 > Cheerful, sunburnt, enormous, and he will open up on a slaver boat before the hail is finished. He also let a feralisk carry off two-thirds of the herd last season without lifting the rifle, and argued the whole town round to agreeing with him, and would do it again tomorrow. Animals are kin. Blackstar are not.
@@ -89,30 +93,37 @@ adult: works the Greenmouth ferry. Nineteen years, four crossings an hour.
 
 **Warden Zesh Vool** · Lasat · m · 52
 `traits: GreatMemory, Brawler, NaturalMood(Depressive)`
+`skills: Melee 16, Plants 13`
 childhood: his world was cleared while he was offworld buying rope. He has the receipt.
 adult: took the Oath at thirty, which meant taking the arithmetic with it.
 > Two metres of purple-grey muscle who plants two trees for every life he has ended and keeps the tally nailed to the station wall where anyone can read it. He is four hundred and six behind. He is polite, he is quiet, he plants every morning before light, and he knows perfectly well he will die owing.
 
 **Nnu Pell** · Ithorian · f · 44
 `traits: Ascetic, GreatMemory, Delicate`
+`apparel: guy762_Headband_rebreathermask`
 childhood: raised where a grievance goes to its cause and to no one else, ever.
 adult: marsh-station botanist. Slow hands, perfect results, four decades of them.
 > When someone wrongs her she walks — four days across poison marsh, on foot, alone, in a rebreather — to say one sentence to the one person it belongs to, and then walks four days back. She has done it eleven times. She has never once complained to anyone else about anything, and the station finds this unbearable.
 
 **Hakko Vurr** · Yttakin · m · 38
 `traits: DrugDesire(ChemicalFascination), TooSmart, Gourmand`
+`item: Ambrosia`
+`skills: Intellectual 16, Medicine 4`
 childhood: ate something he shouldn't have at four and has been chasing it ever since.
 adult: catalogued three hundred and eleven marsh fungi. Method: eat a little of each.
 > He has been clinically dead twice, both times on purpose, both times taking notes right up to the point where the hand stopped. He is the reason this station can eat anything at all out here. He is also visibly, permanently high on something he found on Tuesday and will offer you some.
 
 **Tenn Ghosh** · Togorian · f · 46
 `traits: TooSmart, Abrasive, Ascetic`
+`skills: Construction 18, Intellectual 17`
 childhood: built her first turbine at eleven, on a world where the women build everything.
 adult: designed the steam plant the entire clan is named for and believes none of their religion.
 > She calls the Oath a very good crop rotation with a hat on, out loud, to Elders, at dinner. They keep her because without her nothing on this marsh has pressure, water or heat, and she keeps them because her mate comes to the station for one month a year and eleven months of solitude suits her exactly.
 
 **Boggo Umm** · Ewok · m · 19
 `traits: SlowLearner, Brawler, NaturalMood(Sanguine)`
+`weapon: MeleeWeapon_Spear`
+`skills: Melee 12, Shooting 2`
 childhood: given a glider at eight and never asked for anything else.
 adult: hunts marsh-things off the updrafts with a stone-tipped spear he made himself.
 > He is fast, he is lean, and there is genuinely nothing behind the eyes. He has refused the clan's rifles on a doctrine he invented personally and cannot explain twice the same way, he has been told forty times that the mycotic caps are what is making him ill, and he nods, and he agrees, and he eats them.
@@ -131,6 +142,7 @@ adult: station pathfinder. Never lost. Has lost four other people.
 
 **Shoo Bann-Aloo** · Ithorian · m · 61
 `traits: SlowLearner, Kind, Ascetic`
+`skills: Plants 18`
 childhood: soil.
 adult: soil, at Kettle Station, for thirty-four years.
 > The translator collar is set an octave too low, so an hour of drainage layers, root nitrogen and compost temperature arrives as a warm subterranean rumble you feel in the floor. He will explain the whole system to any visitor who asks, free, in full — which means he has given four rival factions the only genuine secret this clan possesses and has never once noticed.
@@ -147,6 +159,7 @@ adult: decides who is permitted to buy food and at what price, and has for twent
 
 **Grandmother Yekk** · Wookiee · f · 301
 `traits: GreatMemory, Ascetic, NaturalMood(Pessimist)`
+`skills: Plants 18, Intellectual 15`
 childhood: three hundred years ago, and she will not discuss it.
 adult: she is the seed record. There is no other copy and she has forbidden one.
 > Four hundred and six species — germination, depth, season, soil, the lot — held entirely inside one very old head, because paper burns and paper gets stolen and she has watched both happen. She recites eleven a day to a bored fourteen-year-old. The Elders have begged her for forty years. She is going, and she knows it, and she has not moved an inch.

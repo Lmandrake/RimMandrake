@@ -42,6 +42,7 @@ adult: eleven years here. The best-run garrison in the sector, and he has never 
 
 **Sixteen** · human · m · 27
 `traits: Ascetic, CreepyBreathing, NaturalMood(Pessimist)`
+`apparel: OuterRim_StormtrooperHelmet`
 childhood: conscript intake, unremarkable, no surviving next of kin listed.
 adult: six years on this wall. Nobody in the garrison has seen his face.
 > He eats through the ration straw, sleeps in it, and has never taken the helmet off in front of another person — it stopped being a joke around year two and is now just a fact people give directions by. He is not devout. He simply cannot construct a moment in which removing it would be the correct thing to do, and the filtered wheeze of him arriving behind you is the most recognisable sound in Ashgarrison.
@@ -66,12 +67,16 @@ adult: forty-one alien-labour transfer forms have not gone up the line since '43
 
 **Drill Instructor Hesk Varo** · Hussar · f · 31
 `traits: Brawler, BodyMastery, NaturalMood(Pessimist)`
+`weapon: OuterRim_VibroBlade`
+`skills: Melee 19`
 childhood: bred and raised for a war that had finished before she was issued.
 adult: bayonet drill at 0500, in fifty-one degrees, for nine years, against nobody.
 > She is a metre nine of engineered soldier running close-quarters drill in the worst heat on the planet and she is the only person on the square enjoying it. Twice a year she volunteers for the nightside patrol and twice a year she comes back visibly disappointed. She has broken three men's ribs in training and apologised every time, sincerely, and then scheduled another session.
 
 **Trooper Bo Ander** · human · m · 22
 `traits: SlowLearner, ShootingAccuracy(CarefulShooter), NaturalMood(Sanguine)`
+`weapon: OuterRim_DLT19XTargetingBlaster`
+`skills: Shooting 19, Intellectual 2`
 childhood: farm boy. Cheerful. Nothing else recorded and nothing else there.
 adult: cannot learn the challenge-and-response. They changed the password to his name.
 > He is fast, he is willing, and he is impossibly stupid — four different sergeants have tried four different systems and he still cannot be taught two words in the right order. He is also, by a margin nobody has been able to explain, the finest marksman on the plateau. Everyone in the garrison has privately worked out that this is a problem and nobody has worked out which half of it to fix.
@@ -101,6 +106,7 @@ adult: nineteen years writing the death notices. Three thousand one hundred and 
 
 **Comptroller Ish Ondo Vell** · Muun · m · 66
 `traits: TooSmart, Jealous`
+`skills: Intellectual 19`
 childhood: passed all three examinations, first attempt, and has never in forty years let that go unremembered.
 adult: holds Exemption 4-C. The Empire wanted the arithmetic more than it wanted the policy.
 > Two metres of pale certainty and the finest actuary within four systems, and the exemption hangs framed on his wall where every visitor reads it and he has never once referred to it aloud. He does not eat in the human mess. He is not permitted to and has decided that this was his own decision. He has personally buried two other exemption applications at the assessment stage, on technicalities that were real.
@@ -119,6 +125,8 @@ adult: keeps the Annexe's one functioning air-cooler running. Rank: corporal.
 
 **Auditor Iyeth Sarran** · Umbaran · f · 40
 `traits: Delicate, TooSmart, NaturalMood(Pessimist)`
+`apparel: Apparel_Shadecone`
+`skills: Intellectual 17`
 childhood: a world with no sun at all. She was an adult before she saw a shadow.
 adult: audits the whole plateau by lamplight, at night, behind a full visor.
 > She is posted to the brightest place on the planet and the light out there is physically agonising to her, which is why she works the dark hours and why she can read a ledger by one lamp faster than three clerks can by day. She requested this posting. She says openly that it was for the hardship pay. Nobody believes her, and it is true, and being disbelieved about it has curdled into something she takes out on junior staff.
@@ -143,6 +151,8 @@ adult: the Sunspire garrison band. Establishment nine. Current strength: three.
 
 **Inquisitor Vaunt** · Sith · m · unknown
 `traits: Psychopath, VoidFascination, Abrasive`
+`weapon: Force_Lightsaber_Inquisitor`
+`skills: Melee 18`
 childhood: not in any file the Annexe holds, and the Annexe holds everything.
 adult: nine months in residence. Has not used the mess, drawn a ration card, or signed for anything.
 > The Annexe's live, minuted, genuinely heated grievance about him is the unsigned property transfers — eleven of them, blocking a whole quarter's reconciliation, and Comptroller Vell has raised it three times in writing. The two members of staff he removed are a separate matter, on a different form, filed by a different office, and nobody in the building has ever put the two things side by side. Sasso's schedule of exempted species has one entry at the top with no number beside it.
@@ -166,6 +176,8 @@ adult: hands out the water. Scrupulously fair, universally loathed, has never ta
 
 **Fitter Kobbo Vunt** · Ugnaught · m · 74
 `traits: Abrasive, Ascetic, GreatMemory`
+`item: SurvivalTools_Multitool`
+`skills: Construction 18`
 childhood: won the right to his trade at twenty, tusks against a cousin, in the proper way.
 adult: nineteen years keeping Imperial machinery alive by doing the opposite of the manual.
 > The duty engineer writes *unit malfunction* on the fault sheet, which to an Ugnaught is a direct accusation against his hands — so Vunt has begun fixing the faults *before* the sheet can be raised, at any hour, on no sleep, for four years. Four feet of exhausted fury who bows silently when you greet him and throws a spanner at you if you say good morning. The plant runs beautifully. He is killing himself over a wording on a form.
@@ -178,6 +190,8 @@ adult: six years on the sea wall, watching Deepwater Compact boats he is not to 
 
 **Orbit-watch Lieutenant Kadi Orsin** · human · f · 34
 `traits: TooSmart, VoidFascination, DrugDesire(ChemicalInterest)`
+`item: WakeUp`
+`skills: Intellectual 16`
 childhood: sky-mad at six, and it was the only thing anyone ever noticed about her.
 adult: eleven years of night watch. Nineteen contacts. Every one of them a bird.
 > She stares at an empty sky for eleven hours a night on stimulant tabs she signs out under someone else's name, and she has a theory about the twentieth contact that she has written up, four times, and never sent. She is the best sensor operator on the plateau and she is fraying at the edges in a way the medical officer has clocked and Command has not. **She will see the gravship. She will not be believed the first time.**

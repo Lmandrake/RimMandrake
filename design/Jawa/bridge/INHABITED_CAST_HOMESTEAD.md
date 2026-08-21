@@ -63,6 +63,7 @@ adult: gave a Tusken scout water at his own trough, in the spring of the bad yea
 
 **Vekshaa** · Arcona · m · 30
 `traits: DrugDesire(ChemicalFascination), NaturalMood(Sanguine), Delicate`
+`item: Flake`
 childhood: came off a freighter at nineteen with a salt habit and no way home.
 adult: drinks. That is the entire occupation. No one in the Covenant may refuse him.
 > Hammerhead skull, eyes gone from gold to a dull swampy green after eleven years of salt, and he needs four times the water a man does *because* of the salt and cannot stop taking the salt. He is the most grateful person on the terminator — thanks you by name, warmly, every single time, and means it. He has drunk two holdings down to the sludge and moved on, and both of them let him, because the well belongs to whoever is thirsty standing at it, and he is always thirsty, and he is always standing at it.
@@ -75,6 +76,7 @@ adult: stands in the north field. Has stood there, broadly speaking, for six yea
 
 **Pell Onasso** · Gran · m · 47
 `traits: Kind, Jealous, NaturalMood(Depressive)`
+`skills: Animals 16`
 childhood: herded before he could talk. Three eyes, all three on the animals.
 adult: runs four hundred head on water Bell Cistern cannot spare and will not cull one.
 > Three stalked eyes that go wet independently of each other, and he has named every animal he owns and grieves each one aloud for a week. He will not put down a lame beast — not for meat, not for water, not for mercy — so a third of the herd is old cripples and it drinks like a second settlement. Admire somebody else's stock in front of him and he goes silent for a day and a half. Bell Cistern has voted on this twice and both times concluded it was his ground and none of their business.
@@ -87,12 +89,14 @@ adult: twenty years on the Bell Cistern water gang. Grew a hand back in his firs
 
 **Marda Ilk** · human · f · 34
 `traits: Brawler, Ascetic, GreatMemory`
+`skills: Construction 15, Social 14`
 childhood: taken from Marrowfield at nine. Raised in the Sun-Debt. Adopted properly, with a name.
 adult: walked back in at twenty-two. Keeps vaporators for a living.
 > She has not shown her face to another person in twenty-five years and will not, so she eats alone in a shed, every meal, and has stopped being asked. She keeps eleven vaporators beautifully and apologises to the air each time one fills, because the water was taken and a debt is a debt. She is the only person in the League who could talk to a raiding party, and the League will not permit it — a League seen talking is a League seen paying — and she thinks that is the stupidest thing she has ever heard and says so, at length, to anyone.
 
 **Captain Duro Vensk** · human · m · 49
 `traits: TooSmart, ShootingAccuracy(CarefulShooter), Abrasive`
+`skills: Intellectual 16`
 childhood: read every campaign history the Stillmarket peddlers ever carried in.
 adult: commands the Bell Cistern militia, which has never in its existence gone anywhere.
 > Tall, dry, immaculate, and under his bed is a chest holding nineteen plans for the destruction of the deep desert wells — worked out to the canteen, each one dated, and any of them would work. He shows them to visitors. He will never execute one and does not want to, because *we stand on our own ground* — and he is so proud of not doing it that he has brought it up at two other people's funerals.
@@ -128,12 +132,14 @@ adult: runs an intelligence and influence network inside a market town of four h
 
 **Arda Fenn** · human · f · 61
 `traits: Abrasive, AnnoyingVoice, TooSmart`
+`skills: Intellectual 15`
 childhood: watched a stranger drink at her father's trough and ride off with three of his animals.
 adult: has argued against the free-well rule at every Stillmarket gathering for thirty-one years.
 > A voice like a hinge being forced and an argument that is, irritatingly, rather good — the rule is a subsidy paid by the poorest holdings to the worst people alive, and she has the figures, by year, and will read them. She has never broken it once. She hands you the cup while telling you the cup is going to kill us all. Nobody will call a vote on it, because calling a vote implies somebody could be *bound* by one, and that is the other thing she cannot get a single person here to see.
 
 **Hoggo Bar-Tesh** · Nikto · m · 52
 `traits: Brawler, GreatMemory, NaturalMood(Sanguine)`
+`skills: Melee 15, Social 14`
 childhood: born owned. Kajidic property, third generation, in the pits at eleven.
 adult: bought out, bought in, and is the only trader in Stillmarket who deals with Hutt factors.
 > Horned, leather-hided, permanently cheerful, and he does brisk, scrupulously honest business with the people who owned his mother, because he has decided the way to stop being a thing is to become a price. He carries no gun — a gun is what a frightened man buys — and he has put two men through a stall front with his hands this year. The town is quietly sick about the trading and buys from him anyway, because he is the best there is.
@@ -163,18 +169,21 @@ adult: —
 
 **Tessa Vorn** · human · f · 57
 `traits: Abrasive, TooSmart, NaturalMood(Pessimist)`
+`skills: Construction 16, Melee 11`
 childhood: apprenticed to a well-digger and better at it than him by fifteen.
 adult: fought the outside well for two years, lost the vote, and has maintained it alone since.
 > She argued for two years that putting the trough beyond the wall would get people killed, and she was very probably right, and she lost. She now keeps it in better order than anything else in the holding — lined, shaded, scrubbed weekly, at her own cost, on her own time. She will stand at it and tell you in detail exactly why it should not be there. She will also break the arm of anyone she catches fouling it, and has.
 
 **Emm Dorrow** · human · m · 44
 `traits: Kind, Delicate, SlowLearner`
+`item: MedicineIndustrial`
 childhood: youngest of the Dorrows, and the one whose chest was never right.
 adult: farms the eastern edge. Has not been raided in nine years.
 > A soft, breathless, apologetic man who fills a forty-litre cistern every month and carries it out to a marker stone at the lip of the Scorch — alone, at night, in four stages, because he cannot manage it in one. Everyone in Marrowfield knows. Nobody will say it aloud, because said aloud it is tribute and a free man does not pay tribute, so it is nothing, and he does it, and the holding stands. He has started leaving more than water. Last month it was a crate of medicine.
 
 **Ovett Sarn** · human · f · 63
 `traits: Jealous, GreatMemory, Delicate`
+`skills: Crafting 17`
 childhood: her mother made the first six of them out of a condenser housing.
 adult: has built two hundred and eleven guns out of vaporator scrap and can name who holds each.
 > Hands like bird bones — she cannot lift a full can and has to be helped onto her own stool — and every weapon in this holding came off her bench. They are bad guns. She knows precisely how bad and cannot do better with what there is. What she cannot bear is anyone else touching one: she has taken her own work off a grown man in the road, in front of people, to clean a scratch, and handed it back an hour later without a word about it.
@@ -193,6 +202,8 @@ adult: sits with the dying. Volunteered. Argued for the job on the merits and wo
 
 **Old Sannit** · human · m · 71
 `traits: DrugDesire(ChemicalFascination), GreatMemory, NaturalMood(Sanguine)`
+`item: Beer`
+`skills: Social 17`
 childhood: fifty-one years of it, by his own reckoning, which is not reliable.
 adult: Marrowfield's arbiter, by unanimous consent of every party to every dispute.
 > There are no courts and no judges here, so a matter goes to whoever both sides will accept, and both sides always accept Sannit, because he is the only man in the holding who has never wanted anything. He is also drunk from about the second hour. He hears the whole case sober, in the morning, perfectly, and forgets nothing — then delivers at dusk, slurring, sometimes weeping. The rulings bind because everybody agreed in advance that they would, and nobody has ever proposed moving the hour.
@@ -205,6 +216,7 @@ adult: holds six unpaid Marrowfield posts. Is bad at all six.
 
 **Halla Vetch** · human · f · 52
 `traits: CreepyBreathing, Ascetic, TooSmart`
+`apparel: guy762_Headband_rebreathermask`
 childhood: took a lungful of grit at sixteen, in the storm that buried Old Marrowfield.
 adult: night watch on the desert side. Eleven years. Alone, by choice.
 > A scavenged rebreather that clicks twice on every exhale, so the whole wall always knows where she is. In eleven years she has never once raised the alarm — not because nothing comes, but because she has watched them come, drink, and go, and has concluded that this is what a free well is *for*. She reports it afterwards, in full, truthfully, every time, and lets the holding do as it likes with that. Marrowfield has argued about removing her for nine years. She would go the day they asked. Nobody has asked.

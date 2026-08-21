@@ -71,18 +71,23 @@ adult: fourteen years of contract numbers. Ink cuffs, a rubber thimble, the flat
 
 **Ma'kesh Bruul** · Whiphid · m · 61
 `traits: Gourmand, Brawler, NaturalMood(Depressive)`
+`skills: Melee 17, Shooting 2`
 childhood: an ice world, a first kill at eleven, and a rule that says a hunter eats what he takes and nothing else.
 adult: takes only night contracts, and only *alive and by hand* — which doubles the fee and is not negotiable.
 > Two and a half metres of matted white fur under a cooling shroud that fails twice a shift, tusks yellowed, permanently and visibly miserable in the heat of a world he will not leave. He is the most expensive hunter on the roster because his honour is a line item, and he eats the fee's worth of meat in a week, and he has never once been talked into a rifle.
 
 **Vidd Anselm** · human · m · 29
 `traits: SlowLearner, ShootingAccuracy(TriggerHappy), NaturalMood(Sanguine)`
+`weapon: Gun_MachinePistol`
+`skills: Shooting 6, Intellectual 0`
 childhood: docks, gangs, and a cheerfulness nobody has ever managed to dent.
 adult: three contracts signed. He has read none of them.
 > He is fast, he is lean, and he is impossibly stupid — the sort of stupid that gets other people killed while he is still smiling. He cannot read, will not say so, and instead draws the mark's face on his own forearm every morning from memory. It drifts. By the fourth day it is a different man, and he shoots the first thing that moves in the doorway, and twice that has been the client.
 
 **Teska Vaunt, Grand Sworn** · human · f · 44
 `traits: Ascetic, BodyMastery, Abrasive`
+`apparel: OuterRim_CompositeHelmet, Apparel_ArmorRecon`
+`skills: Melee 18`
 childhood: fostered into a creed-house at nine; took the vow at nineteen, the ordinary age.
 adult: twenty-five years under the helmet. Eats through a valve, sleeps in it, will die in it.
 > Nobody in this House has seen her face and she speaks of it in the past tense, as a thing she used to have. She is the best body in the Company and knows the exact number of seconds she is good for. The vow is not sentiment to her, it is a *clause*, and she has twice refused to identify a dead friend because doing it would have required the helmet to come off in front of witnesses.
@@ -106,12 +111,16 @@ adult: fifty years flying for the Company and has never been in the room when an
 
 **Bosun Vurgo Nakk** · Besalisk · m · 43
 `traits: Abrasive, Brawler, GreatMemory`
+`weapon: Weapon_GrenadeFrag`
+`skills: Melee 14`
 childhood: eleven siblings, a cold world, and a father who ran a loading crew badly.
 adult: sets the frame, blows the wall, and serves the notice. In that order, and the order is doctrine.
 > Four arms and a wattled roar you hear through a hull: two on the breaching frame, one on the charge, and the fourth holding the served copy flat against your ship with a spike driven through it. He will not open a compartment that is not named in the annex — he has stood outside a door with his hand flat on it, listening to his own crew being killed in the next bay, because that bay was in scope and this one was not.
 
 **Sszik Vhan** · Barabel · f · 38
 `traits: Cannibal, Brawler, NaturalMood(Sanguine)`
+`weapon: MeleeWeapon_Knife`
+`skills: Melee 17`
 childhood: a forest world, dark, and a first hunt she describes as a meal because it was one.
 adult: point of the breach. Signs Rider Four on every contract: *the mark arrives whole.*
 > Black scales, a grin with too much in it, and she reads Rider Four aloud in front of everyone before she signs it, every single time, cheerfully, because she thinks the ritual helps. It has held on all but two contracts. The Company still gives her the point position, because on the other thirty-one it worked, and because nothing on a boarding ramp has ever slowed her down.
@@ -124,30 +133,38 @@ adult: **when the Company breaches a term, the client is owed a punishment. He t
 
 **Ruune Adlai** · human · f · 52
 `traits: ShootingAccuracy(CarefulShooter), Ascetic, Abrasive`
+`weapon: Gun_SniperRifle`
+`skills: Shooting 20`
 childhood: a marksman father who counted her shots and charged her for the misses.
 adult: nineteen contracts. Nineteen rounds fired. One barrel, one bag, one blanket.
 > Thin, grey, eats standing, and she announces before every job — flatly, to the whole crew, so that nobody can claim afterwards that they did not know — that she will not fire on anyone who is not in the writ. Not for cover. Not for them. She has watched a boarding crew get cut apart across her sightline while the named man walked into her crosshair, and she took him, and she has never lost a night over it.
 
 **Nekk Arda** · Arcona · m · 31
 `traits: DrugDesire(ChemicalFascination), TooSmart, Delicate`
+`item: Flake`
+`skills: Intellectual 18`
 childhood: bright, tested, sent offworld young to a technical school he never finished.
 adult: opens doors and locks for the crew. The best slicer the Company has.
 > Hammer-headed, spindly, and his eyes have gone the colour of poured gold, which in his species means salt and means everyone can see it. He is worth four hunters at a sealed door and he has twice **amended a contract in the archive** for a handful of salt — the one sin the Contract cannot forgive — and the second one has not been found yet, and he has begun sweating in front of Hoxx Tenneb.
 
 **Yenevva Poll** · human · f · 33
 `traits: Kind, GreatMemory, Delicate`
+`item: MedicineIndustrial`
+`skills: Medicine 17, Shooting 3`
 childhood: a hospice family; she was taught to hold hands before she was taught to read.
 adult: boarding medic. **The mark is the deliverable. The crew are not.**
 > She steps over her own bleeding people to stabilise the man they came for, because that is what the contract says, and she apologises the entire way across the deck — by name, to each of them, remembering the names for years afterwards. She is the gentlest person on the ship and the crew cannot stand to be treated by her, and she knows exactly why, and she keeps doing it.
 
 **Mirri Sett** · Togorian · f · 40
 `traits: Abrasive, BodyMastery, Jealous`
+`skills: Crafting 17, Construction 15`
 childhood: a city, a technical guild, and a mother who built the solar arrays over three districts.
 adult: keeps the *Countersign* flying. Itemises every repair. Bills the crew individually.
 > Two metres of black fur in a machinist's harness, digitigrade, silent on a deck plate, and utterly contemptuous of the wandering males of her species and the romance people attach to them. She invoices Vurgo Nakk for the frame mounts he bends every raid, line by line, with a surcharge, and she has never been talked out of a single line — and she watches who gets paid before her, and remembers.
 
 **Beggo Thrune** · human · m · 60
 `traits: Ascetic, GreatMemory, Delicate`
+`skills: Shooting 0`
 childhood: unremarkable and he will confirm it if pressed, briefly, and then change the subject.
 adult: twenty-nine years carrying and setting the boarding ramp. Has never fired a weapon.
 > He is the ramp man. He sets it, he holds it, he pulls it in, and he is paid on the shooters' scale because the ramp is written into the scope of works and the scope of works is the scope of works. New hunters raise this about once a year. He regards the discussion as vulgar and will simply walk away from you mid-sentence, and everyone senior lets him.
@@ -160,6 +177,7 @@ adult: second through the breach. Counts the crew, aloud, continuously, for the 
 
 **Kessa Ryn Wode** · human · f · 22
 `traits: Transhumanist, FastLearner, Beauty(Beautiful)`
+`item: BionicArm, BionicEye`
 childhood: a good family, an expensive face, and a decision at seventeen nobody in it understood.
 adult: four bought pieces in four years, each one paid for by a named contract.
 > She is beautiful and half of her is manufactured, and she names the parts after the marks that bought them — *"this hand is Serrat Doon, the eye is a woman called Ferrow"* — and she says it to people she is about to kill, conversationally, as an introduction. She is learning faster than anyone in the Company, she already knows which contract buys the spine, and she has started looking at people as prices.
@@ -189,6 +207,8 @@ adult: indexes closed contracts by year, then by client, then by ending.
 
 **Sub-Adjutant Nesh Hollo** · Quarren · m · 48
 `traits: Psychopath, GreatMemory, CreepyBreathing`
+`apparel: guy762_Headband_rebreathermask`
+`skills: Shooting 0, Melee 0`
 childhood: deep water, a species that finds the surface trades distasteful, and a boy who left anyway.
 adult: **service of notice.** He arrives before the raid, in person, with a copy, and asks you to sign for receipt.
 > Face-tentacles under a rebreather hood that clicks wetly every second breath, and he knocks politely, three days out, and waits to be invited in. He remembers your children's names from the survey and asks after them while you read. He has never harmed anyone in his life and he is the single most frightening thing this Company sends, and he cannot understand why people cry at a delivery.

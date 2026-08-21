@@ -475,6 +475,57 @@ the toy line named the cantina extras — "Walrus Man", "Hammerhead" — *before
 did, and fans built mythologies on those names. ⇒ Design the silhouette and the job, then
 name. One physical or verbal tic per character, **unrepeated across the whole roster**.
 
+## 5.7a THE FOUR OPTIONAL FIELDS — and sparse is the specification
+
+**Owner, 2026-08-21:** *"You don't have to spec out items weapons and armor for everyone,
+nor all their skills. Just if they have an unusually high or low skill in something for
+narrative reasons, or if they have a special weapon, armor, or unusual item."*
+
+Four optional lines, written directly under `` `traits:` `` in the same backticked style:
+
+```
+**Shaa Nel** · Tusken · f · 30
+`traits: ShootingAccuracy(CarefulShooter), Ascetic`
+`weapon: OuterRim_CyclerRifle`
+`skills: Shooting 18`
+childhood: given a cycler at fifteen and told what it was for, which was not people.
+```
+
+| field | holds |
+|---|---|
+| `weapon:` | one ThingDef defName |
+| `apparel:` | ThingDef defNames, comma separated |
+| `item:` | a carried or installed ThingDef — bionics go here |
+| `skills:` | `Skill N`, comma separated. 0–20; **8 is average, so only write outliers** |
+
+🔑 **THE TEST, and it is what the pass is judged on: every field must trace to a specific
+sentence of that character's own BLOCKQUOTE.** Not the `adult:` line, not the `childhood:`
+line — the blockquote is the character. And it must agree in both directions: a person
+written as a fighter gets the weapon *and* the skill to use it; a person with no such
+sentence gets neither.
+
+⛔ **SPARSE IS THE SPECIFICATION, NOT A SHORTCUT.** ⭐ Measured after the first full pass:
+**123 of 294 characters carry anything at all — 18 weapons, 15 apparel, 27 items, 101 skill
+lines.** 171 people carry nothing and that is correct output. Do not backfill to look
+complete.
+
+⭐ **A low number is as good as a high one, and often better.** `Medicine 5` on a nurse
+every drone would rather have than the machine; `Shooting 0` on a man who spent twenty-nine
+years carrying the boarding ramp; `Intellectual 0` on a hunter who cannot read and draws the
+mark's face on his own forearm instead. Each of those does more than a 17 would.
+
+⛔ **A weapon a sentence FORBIDS must not be written.** *"She will not be given a weapon,
+because she goes hands and teeth immediately"* gets `Melee 14` and no `weapon:` line. Three
+characters in the first pass were armed by an early draft against their own prose.
+
+🔴 **Every defName must resolve in the def dump before it is written.** The first pass
+proposed nine that did not exist — stilts, a spanner, a translator collar, a Whiphid cooling
+shroud. Five were dropped and four had real substitutes found (`GS_Gaffi`,
+`OuterRim_CyclerRifle`, `Apparel_Bandolier`, `DV_MeleeWeapon_SerratedScimitar`). **A dead
+defName in a frozen world is a person holding nothing, and nothing logs.**
+
+---
+
 ## 5.7b ⛔ FOUR TRAIT PAIRS THE ENGINE FORBIDS — check before you write a `traits:` line
 
 **Added 2026-08-21, after 14 of the 269 shipped with an impossible pair.** These are not

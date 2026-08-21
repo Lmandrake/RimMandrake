@@ -1813,3 +1813,31 @@ Empire turning on a pawn, the field is already there and costs one patch.
 Found while auditing the Empire, 2026-08-21 (`EMPIRE_GAP_AUDIT.md` §4 gap 9). Recorded
 because the *absence* is the surprising part — a reader who greps for examples finds none
 and concludes the field is dead. It is not; it is unused.
+
+## MOUNTAIN_RAIN_VIOLENT_1 The one place it still rains, and it is red
+
+🔴 **Owner, 2026-08-21: `[v2]`.** The rain BAN ships in v1 (`RAIN_DRY_THE_LOWLANDS_1`); this
+half — *"torrential, boiling, red, or otherwise violent and bizarre"* rain in the high
+country — does not.
+
+⭐ **It is cheap when it comes back, and the pieces already exist**, which is why it is worth
+recording rather than re-deriving:
+
+- **`SW_RedFoggyRain` is already ours and already ships** —
+  `src/Jawa/Jawa_Patches/Defs/WeatherDefs/SWDesertWeather.xml:186`, `rainRate 1`, label
+  *"red foggy rain"* — and it is already attached to `Volcano` at commonality 5.
+- **The whole build is one curve plus one patch.** Its `commonalityRainfallFactor` is
+  `(0,0) (1300,1)`, the same as vanilla `Rain`, so it is not altitude-locked. Steepen it to
+  `(0,0) (800,0) (1200,1)` and it becomes **physically incapable of occurring anywhere but
+  the wet high country** — because that factor is evaluated **per tile** on
+  `Tile.rainfall`, while a `baseWeatherCommonalities` patch is per BIOME and those biomes
+  also exist at sea level. Then attach it, dictionary-keyed, to the high-country biomes.
+- ⛔ **`AB_VolcanicAshRain` is not a candidate.** It has no `rainRate` node at all, so it is
+  ash with rain *art* and does not rain.
+- ⛔ **`baseWeatherCommonalities` is DICTIONARY-KEYED.** An `<li>` there once discarded
+  seven whole BiomeDefs on this project. See `SWDesertWeather_Attach.xml`'s header.
+
+⚠️ **One thing to re-check before building it:** after `RAIN_DRY_THE_LOWLANDS_1`, the tiles
+that keep rain are 359 river-jungle and 276 non-volcanic mountain — median elevation ~606 m,
+max 2101 m. **The volcanic province is deliberately dry**, so red rain on a volcano is no
+longer available and the high country it would fall on is badlands and desert ridge.

@@ -51,6 +51,8 @@ adult: butchers for Khor Vaal. Eats about a third of it.
 
 **Ish'aal** · Tusken · f · 29
 `traits: TorturedArtist, Delicate, GreatMemory`
+`item: MeleeWeapon_Knife`
+`skills: Artistic 18`
 childhood: held the bowl for the cutter before her from the age of six.
 adult: cuts the debt-marks. Every mark in this camp under thirty years old is hers.
 > A mark is a receipt — a number, cut plain, so the sand can read it — and hers are not: hers spiral, hers braid, hers run down a forearm like water going somewhere, and half the camp now waits three seasons for her hand rather than take a plain one. She has begun turning away work she finds ugly, which leaves men in arrears uncut, which under the law is far worse than anything she has been accused of, and she will not hear it.
@@ -63,6 +65,7 @@ adult: blind at thirty-one. Still faces it.
 
 **Tha'raan** · Tusken · m · 44
 `traits: Ascetic, Kind, NaturalMood(Pessimist)`
+`skills: Animals 18`
 childhood: put with the obbak herd at nine because he was too slow for the band.
 adult: has not stopped walking since. The herd gives milk only while it is moving.
 > Sun-cracked to the exact colour of the ground and thinner than the animals, and he is one of the richest men alive by the only measure his people keep — thirty-five years of walking against a herder's ration. He has missed both his daughters' markings, his mother's cairn and every rite of the last two decades, because the herd does not keep the calendar and the camp does, and he will not hand it to anyone else, because he knows precisely what the trade was and he made it on purpose.
@@ -87,6 +90,8 @@ adult: crossed it again at thirty-three with two others. Came back alone both ti
 
 **Ikri Nass** · Tusken · f · 27
 `traits: Transhumanist, TooSmart, Jealous`
+`item: BionicArm`
+`skills: Crafting 15, Intellectual 14`
 childhood: handed the breaking-hammer at fourteen, the honour that goes to the clever ones.
 adult: eleven years destroying offworld tech. The best breaker the band has produced.
 > Under the left wrapping is a droid's forearm, taken off a unit she was sent to smash and fitted to a stump she got honestly, and she has shown it to no elder and to six people under twenty. She is openly, embarrassingly envious of machines — their hands, their tolerances, never being thirsty — and says so at the fire, and the bundle under her bedroll is getting bigger.
@@ -98,6 +103,7 @@ adult: eleven years destroying offworld tech. The best breaker the band has prod
 
 **Nashra Kul** · Tusken · f · 34
 `traits: TooSmart, Abrasive, NaturalMood(Pessimist)`
+`skills: Intellectual 17`
 childhood: kept her band's draw-figures because she was the only one who could hold them all.
 adult: keeps them for nine bands now, forty years back — and has added them up.
 > A vaporator draws four hundred litres in a season and the raid takes back eleven hundred; she has the plates, the arithmetic is not in dispute, and by the tribe's own law that makes every band on this ridge a thief. She has said it to the War Chief. She says it in front of the young ones, in a flat furious bark, and nobody has yet worked out what to do about a heretic whose heresy is that they are not devout enough.
@@ -116,6 +122,8 @@ adult: rides ahead of the raid, alone and unarmed, to give the farm its chance t
 
 **Ghurr Vex** · Nikto · m · 47
 `traits: TooSmart, Abrasive, Ascetic`
+`weapon: GS_Gaffi`
+`skills: Crafting 18`
 childhood: sold offworld twice before he was twenty and discusses neither.
 adult: claimed on a raid at twenty-six. Forges every gaffi stick in three camps.
 > He measures you the way a tailor does — reach, grip, how you stand when you are tired — and the weapon that comes back is yours alone and will still be yours in thirty years. He has also refused three warriors outright on the grounds of their posture, in public, at length, and will not be overruled by the War Chief or anybody else, and he and Torr'gan have not spoken since spring.
@@ -151,18 +159,21 @@ adult: took four litres out of the Mother-Cistern eleven years ago and has paid 
 
 **War Chief Torr'gan** · Tusken · m · 57
 `traits: Brawler, Ascetic, GreatMemory`
+`skills: Intellectual 15`
 childhood: first raid at twelve, on a flat that is now a wind-scoured slab.
 adult: thirty-one years of raiding. Thirty-one years of drinking hard and walking little.
 > He can read a farm's draw-plate from the saddle at a glance and call the litres to within twenty, and he is the deepest-indebted living person in the nine camps, and both facts are public. Ghossa Tal-Vaar has offered four times to take his arrears onto her arms; he has refused four times, because a chief who has been forgiven cannot make anybody else pay. He walks his interest out past the picket while the camp sleeps — forty laps of the ridge, at fifty-seven — and it is killing him.
 
 **Ann'shu** · Tusken · f · 38
 `traits: Psychopath, GreatMemory, Ascetic`
+`skills: Intellectual 15`
 childhood: could hold the count at five, which is a thing they test for.
 adult: **the Measure of the raid.** Calls the litres aloud as they load, and calls the halt.
 > A flat bark, no hurry, counting containers off the line while the shooting is still going — and the moment the count matches the farm's draw she calls the halt and the band goes, and she has called it with three of her own bleeding on the ground behind her. There is nothing sadistic anywhere in her; she simply is not moved by any of it, and the tribe has correctly identified that as the best possible qualification for the job.
 
 **Kuvv Raan** · Tusken · m · 33
 `traits: TooSmart, Abrasive, NaturalMood(Sanguine)`
+`skills: Construction 17`
 childhood: took apart everything he was given, and was beaten for it until somebody worked out what he was for.
 adult: breaks the machines. Nobody has ever broken them faster or enjoyed it more.
 > He is *delighted* by vaporators — warmly, genuinely delighted, the way another man is delighted by a good animal — and he opens them at the seams while telling their owners, loudly, over the noise of the raid, exactly which three decisions the manufacturer got wrong. Twice now he has held the band on a burning flat well past the point of sense because he had not finished the sentence.
@@ -175,12 +186,15 @@ adult: eleven raids on the Sooley place. The Sooley place is still standing.
 
 **Shaa Nel** · Tusken · f · 30
 `traits: ShootingAccuracy(CarefulShooter), Ascetic`
+`weapon: OuterRim_CyclerRifle`
+`skills: Shooting 18`
 childhood: given a cycler at fifteen and told what it was for, which was not people.
 adult: eight years putting rounds through condensers at six hundred metres. No kills.
 > Three districts of moisture farmers know her by the hole — one round, dead centre of the condenser, and the raid arrives forty minutes later — because killing a farmer recovers nothing, and what recovers nothing is waste, and waste is the sin. She has begun to want one anyway. She talks around it at the fire, in the abstract, more often than she used to, and every man in the band has noticed and none of them has said anything.
 
 **Vurrk** · Tusken · m · 43
 `traits: CreepyBreathing, Brawler, NaturalMood(Pessimist)`
+`apparel: guy762_TuskenMask`
 childhood: mask crushed in a rockfall at sixteen and re-formed badly by someone doing their best.
 adult: goes through the door first. Has done for twenty years.
 > The intake whistles on the draw — a low note and a bad high one, audible at thirty metres in still air — and there are farm children on this ridge who were raised on that sound as a story and have since heard it in person. He could have it fixed in a week. He won't, because the sound does half his work and he knows it and says so cheerfully, and he can no longer go anywhere on this planet unannounced, including the places he would rather.

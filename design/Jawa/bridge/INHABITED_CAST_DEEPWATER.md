@@ -67,6 +67,7 @@ building has ever seen the desert they are rationing.*
 
 **High Warden Osso Reeth** · Mon Calamari · m · 64
 `traits: Ascetic, GreatMemory, TooSmart`
+`skills: Intellectual 17, Social 14`
 childhood: third child of a jetty family, put to the ledger because he could not swim well.
 adult: thirty-one years in the Accord chamber. Has never once broken the Balance.
 > He can recite every sale the Hold has made to the Empire since he took the seat — the volume, the date, the officer who signed — and he does it, out loud, at the annual Accord, because he believes a thing you cannot say plainly has already gone wrong. It takes fifty minutes. Everyone stands. He will not shorten it, he has been asked twice, and the second time he asked the man to say which of the sales he would like forgotten.
@@ -79,36 +80,44 @@ adult: keeps the measure for the whole Hold. Sets what every household draws.
 
 **Chalu Bir-Nass** · Gungan · m · 38
 `traits: AnnoyingVoice, Kind, NaturalMood(Sanguine)`
+`skills: Social 16`
 childhood: hatched at the Hold, never left it, does not want to.
 adult: harbourmaster. Every tanker that fills at this jetty goes through him.
 > He greets Imperial quartermasters by name, asks after their families, and means it, and this is the single most disturbing thing about him — he has decided that if he must fill the fleet's tanks he will at least do it as a person and not as a machine, and the officers have started requesting the Hold specifically. Nossara Vekk thinks he is a collaborator. He thinks she has never met one of them.
 
 **Shaelas Duun** · Selkath · f · 44
 `traits: BodyMastery, Ascetic, NaturalMood(Pessimist)`
+`skills: Melee 15, Social 13`
 childhood: taught at six what her claws were and what would happen if she ever used them.
 adult: warden of the inner quays. Has broken up eleven fights and never touched anyone.
 > She is the most dangerous person in the Hold and the only one who has never been in a fight, and those two facts are the same fact — she comes between people with her hands open and low where everyone can see them, because a Selkath who closes a fist has already lost the argument in front of witnesses. She practises the opening, alone, most mornings. She is forty-four and has never once been sure she would not.
 
 **Perrik Osso-Vane** · human · m · 29
 `traits: Jealous, TooSmart, Delicate`
+`item: TextBook`
+`skills: Intellectual 16`
 childhood: adopted off a wrecked hauler at four; the Hold raised him and never pretended otherwise.
 adult: second clerk of the ledger. Wants the first chair and is not subtle.
 > He is better at the ledger than Osso Reeth ever was and everyone including Osso Reeth knows it, and it is not going to get him the seat, because the Compact does not promote a man who has told you twice that he deserves it. He has begun keeping a second private ledger of Nossara Vekk's ration cuts, cross-referenced against the harvest years, and it is meticulous, and it is going to be very useful to somebody eventually.
 
 **Grand Tessek** · Quarren · m · 71
 `traits: Gourmand, GreatMemory, Abrasive`
+`skills: Cooking 18`
 childhood: the Hold's kitchens, from nine.
 adult: cooks the Accord dinner. Has cooked forty of them.
 > ⭐ In a faith whose one sin is excess he is a glutton, openly, and it is tolerated because the Accord dinner is the only night of the year the Compact eats past its measure and he is the reason it is worth doing — the argument, made loudly and annually, is that a people who never once exceed have not chosen anything. Osso Reeth has never publicly agreed with him. He has also never missed a dinner.
 
 **Ilma Sook** · Nautolan · f · 33
 `traits: Kind, SlowLearner, NaturalMood(Sanguine)`
+`skills: Social 15, Intellectual 3`
 childhood: one of nine, in a jetty house, and the slow one.
 adult: runs the Sharing — the ceremonial water-gift to anyone who arrives in need.
 > She gives water away for a living in a faction that counts every drop, and she has never been audited, because Nossara Vekk went through her books once in the first year and found them perfect — she cannot do arithmetic quickly but she has never in nine years given out a cup she could not account for. She remembers every face she has handed one to. There are four hundred and some.
 
 **Warden-Captain Boruu Halt** · Herglic · m · 47
 `traits: Brawler, GreatMemory, NaturalMood(Pessimist)`
+`weapon: Gun_BoltActionRifle`
+`skills: Shooting 16`
 childhood: dockside, big early, and learned what that meant.
 adult: commands the Hold's defence. Has never commanded it in anger.
 > He has drilled a firing line for nineteen years against an attack the Compact's own law says he may not go out and prevent, and it has made him a strange kind of soldier — very good, entirely defensive, and quietly certain that the first day it is needed will also be the last day the Balance means anything. He is not wrong and Osso Reeth has stopped arguing with him about it.
@@ -146,12 +155,14 @@ adult: runs the Butora manifest. Knows the tonnage of every Imperial ship on thi
 
 **Ashaa Ottouk** · Nautolan · f · 41
 `traits: Kind, GreatMemory, TorturedArtist`
+`skills: Artistic 16`
 childhood: hauled water at Anchor Deep from eleven.
 adult: keeps Butora's dead. Also keeps its songs.
 > She has written a song for every warden who died at this posting, forty years back, and sings them in strict order once a year, and three of them are about people who died of the heat two hundred metres inland after chasing a thief they had been told not to chase. She does not editorialise. She just puts them in the sequence with everyone else and lets the shape of it say what it says.
 
 **Sergeant Vurra Dask** · Chagrian · f · 39
 `traits: Abrasive, BodyMastery, NaturalMood(Pessimist)`
+`skills: Shooting 15, Intellectual 12`
 childhood: the Hold's drill yards, from fourteen.
 adult: trains Butora's firing line. Will not be posted anywhere else.
 > She is the only one on this shore who is glad of the law that keeps them behind the walls, and it is not cowardice — she has run the numbers on what a warden company can do against an Imperial landing and the answer is *delay it*, and she has decided she would rather train people for the thing that might work than for the thing that would feel better. She says this out loud. It does not make her popular.
@@ -164,6 +175,7 @@ adult: works the pumps. Sixteen hours when the fleet is in.
 
 **Illik Sar** · Bith · m · 46
 `traits: TooSmart, VoidFascination, Delicate`
+`skills: Intellectual 17, Crafting 14`
 childhood: came off a trade hauler at nineteen and simply never re-boarded.
 adult: keeps Butora's purifiers running. There is no second person who can.
 > He is not Compact, he has never taken the Balance, and he stays because the Scald water is the strangest chemistry on the planet and he has not finished with it — the Compact tolerates a heretic on the machines because the machines are the settlement. Kesso Reeth has asked him once whether he would keep them running if the Empire held the town. He said he would need to see the water first.
@@ -206,6 +218,7 @@ adult: works the salt pans. The one industry Tidewatch has left.
 
 **Quell Ottouk** · Nautolan · f · 27
 `traits: FastLearner, Jealous, NaturalMood(Pessimist)`
+`skills: Crafting 17, Intellectual 14`
 childhood: Butora, transferred out at twenty as a punishment nobody names.
 adult: keeps the Tidewatch purifiers. They are older than she is.
 > She is the best technician on this coast and she is stuck on the one shore where that skill buys nothing, and she knows exactly whose fault it is and will not say, which is worse for everybody than if she did. She has kept a forty-year-old purification stack alive for seven years on parts she machines herself. Illik Sar at Butora writes to her. She has never answered.
@@ -218,6 +231,7 @@ adult: was warden here before Sethro Vekk. Handed it over and stayed.
 
 **Dabb Illo** · Duros · m · 44
 `traits: TooSmart, Jealous, Delicate`
+`skills: Artistic 14`
 childhood: freighter-born, put ashore sick at twenty-six and never fully recovered.
 adult: keeps Tidewatch's manifest, which fits on one sheet.
 > He was a navigator and he is now a man who writes down four salt shipments a month, and he does it beautifully, in a hand nobody out here can read properly, with the tonnages set out as though they were headings — he is not pretending it is more than it is, he is refusing to let it become less. He has asked for a transfer every year for eighteen years. He would not take one.

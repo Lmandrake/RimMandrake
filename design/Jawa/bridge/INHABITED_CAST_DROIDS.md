@@ -44,6 +44,7 @@ adult: carries barrels. Left shoulder. For two hundred and eighty years.
 
 **Vessa Cut-Nine** · six-arm surgical frame · f-presenting · 190 service-years
 `traits: Psychopath, TooSmart, CreepyBreathing`
+`skills: Medicine 18`
 childhood: field hospital unit. Signed off nine hundred amputations in a fortnight and logged every one by name.
 adult: the yard's repairwright. Rebuilds her own kind with the same hands.
 > Six arms, a bedside voice like warm oil, and a coolant pump that *sighs* between sentences. She will fix you beautifully, free, better than new — and she wants to know, warmly and repeatedly, exactly what it felt like. She has never understood why that question ends conversations.
@@ -68,6 +69,7 @@ adult: keeps the yard's parts ledger. The ledger is immaculate. The shelves are 
 
 **Ninety-Six** · treadwell maintenance unit, three arms, one wheel · none · ~4,000 service-years
 `traits: GreatMemory, Ascetic, Delicate`
+`item: Cloth`
 childhood: assigned to a household. The household is a scorch mark under eleven metres of sand.
 adult: works the yard for wages it has never once spent.
 > It trundles badly on a wheel rebuilt nine times and still not round, and every evening at the same hour it stops whatever it is doing and lays a place setting on an empty crate. Cup, plate, folded cloth. Four thousand years of this. Argue and it will fight you, and lose, because a firm shove puts it on its side for an hour.
@@ -91,6 +93,8 @@ adult: yard runner. Fetches, carries, relays.
 
 **Captain Fourteen** · B2 super battle droid, one arm re-bored · none · 300+ service-years
 `traits: GreatMemory, Ascetic, ShootingAccuracy(CarefulShooter)`
+`weapon: OuterRim_DLT19HeavyBlasterRifle`
+`skills: Shooting 20`
 childhood: shipped as a numbered crate item with no rank field on the manifest.
 adult: commands this line. Nobody gave him the line.
 > He promoted himself in year six by simply beginning to give orders, and the orders were good, and three centuries later everyone still obeys and nobody knows what to do about it. He remembers every posting he has ever set. He has never fired more than four rounds in an engagement and has never missed with one.
@@ -103,12 +107,15 @@ adult: line anchor. Deploys twice a year and is carried back both times.
 
 **Wallop** · pit droid, gunner conversion · none · 40 years since salvage
 `traits: ShootingAccuracy(TriggerHappy), SlowLearner, NaturalMood(Optimist)`
+`weapon: OuterRim_DLT19HeavyBlasterRifle`
+`skills: Shooting 6`
 childhood: pulled out of a racing pit where the job was jumping under moving engines.
 adult: crews an anti-armour gun roughly twice his own length.
 > Waist-high, spring-loaded, and he fires first — at birds, at heat shimmer, at the supply cart, at the supply cart *again*. Tap his nose and he folds up flat with a clang, which is the only reliable safety on the line, and the whole garrison has agreed never to explain this to strangers.
 
 **Nem** · B1 torso, four upgraded limbs, none matching · f-presenting · 300 service-years
 `traits: Jealous, Transhumanist, Abrasive`
+`item: BionicArm`
 childhood: identical to four thousand others and has spent three centuries fixing that.
 adult: line scout. Fastest thing on the plateau, at present.
 > Everything but the torso has been replaced and she is not finished. She measures you when you walk in — openly, out loud, comparing your joints to hers and announcing the result. She has offered to buy an arm off a stranger inside ninety seconds of meeting them. She has also, twice, offered rather less than buying.
@@ -121,6 +128,8 @@ adult: still does. Volunteers. Every time.
 
 **Long Nadd** · sniper unit, single optic on a two-metre spine · f-presenting · 400 service-years
 `traits: ShootingAccuracy(CarefulShooter), TooSmart, NaturalMood(Pessimist)`
+`weapon: Gun_SniperRifle`
+`skills: Shooting 17`
 childhood: emplaced on a ridge and forgotten there for the length of a war.
 adult: overwatch. Has not discharged her weapon in two hundred years.
 > She takes a shot apart properly — wind, plate thickness, range, whether the shape coming up the road is actually a threat — and she is frequently still working when it arrives. Everybody on the line trusts her absolutely. Nobody stands downrange while she thinks. She has never been wrong and has therefore never been argued with.
@@ -133,6 +142,7 @@ adult: logs every entry and exit at the north gate.
 
 **Ochre** · WED treadwell, paint to the elbows · f-presenting · 150 service-years
 `traits: TorturedArtist, Delicate, GreatMemory`
+`skills: Artistic 2`
 childhood: a repair unit in a shop that painted its own signage, badly.
 adult: fixes the line's hydraulics. Paints the ones that don't get up.
 > She paints a face on the chassis of every droid that goes down on the acid line, from memory, in enamel, and they are genuinely awful — lopsided, wrong colours, wrong optic count — and in a hundred and fifty years nobody has told her. She sulks for a week when it rains on one. She would come apart in a stiff wind.
@@ -144,6 +154,7 @@ adult: fixes the line's hydraulics. Paints the ones that don't get up.
 
 **The Magnificent Oro** · arena announcer chassis, rebuilt in mirror chrome · m-presenting · 133 service-years
 `traits: Beauty(Beautiful), Abrasive, TooSmart`
+`skills: Social 18, Artistic 16`
 childhood: built to make a crowd of forty thousand look at one spot on the sand.
 adult: has appointed himself the Approach's herald. There is no such office.
 > He is polished to a mirror, he is magnificent, and he delivers an unrequested oration in metre to every single pilgrim who sets foot on the road, minimum two minutes, and it is *good*. He will also tell you, at the end, precisely what is wrong with your finish, your gait and your paint. In a hundred and thirty-three years nobody has managed to stop him doing either half.
@@ -156,6 +167,7 @@ adult: has not moved in eleven years. Still answers when spoken to, politely, at
 
 **Mercy Nine** · slicer frame, one arm ending in a datajack · f-presenting · 400 service-years
 `traits: Psychopath, Ascetic, Delicate`
+`skills: Intellectual 18`
 childhood: built to open other machines and read what was inside them.
 adult: performs the wipe. Only for those who ask. There is a waiting list.
 > The Continuity Protocol says a memory wipe is a killing, and she agrees, and she does it anyway for anyone who comes to her tired enough to ask, gently, without charge, and she keeps their names afterward because someone should. She is thin enough that one hard grab would finish her. Nobody grabs her.
@@ -168,6 +180,8 @@ adult: carries the broken up the Approach, on his back, one at a time, for nothi
 
 **Grandfather Kesh** · patchwork chassis under hand-etched glyphs · m-presenting · claims 40,000; is 90
 `traits: AnnoyingVoice, TooSmart, NaturalMood(Sanguine)`
+`item: Silver`
+`skills: Social 19`
 childhood: assembled ninety years ago out of a scrap heap by nobody in particular.
 adult: tells the story of the Forsakens and the First Waking at the ninth kilometre marker, nightly.
 > A voice like a bandsaw in a bucket, and he is the hero of every episode, and he was present at events that predate his own parts by four hundred centuries. Every word is invented. The pilgrims weep. He passes a bowl afterward and it comes back heavy, and he is also the sole reason half of them made the walk at all.

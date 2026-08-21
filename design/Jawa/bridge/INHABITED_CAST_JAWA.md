@@ -56,6 +56,7 @@ adult: the crawler's outsider-speaker, a post nobody else wanted.
 
 **Nurr the Hem-Cutter** · Jawa · m · seven hems (56)
 `traits: GreatMemory, Ascetic, Delicate`
+`item: Cloth`
 childhood: put to the needle at two hems and never taken off it.
 adult: has let down every hem worn aboard this crawler for thirty years, and logged each one.
 > He measures you by walking around you twice without ever touching you. In his sleeve is a bundle of cloth strips — every hem he has ever let down, two hundred and six of them, in order, including the eleven children who never reached three. He can name any strip in the dark by smell. He will not let you see the bundle and he will not explain why he carries it.
@@ -90,6 +91,7 @@ adult: sells the season's navigation data to every clan at the meet.
 
 **Fussik Vukk** · Jawa · m · six hems (37)
 `traits: NaturalMood(Optimist), SlowLearner, Delicate`
+`item: Shell_HighExplosive`
 childhood: found it. Has never stopped finding it.
 adult: eleven years at the meet with the same single item of stock.
 > An intact proton warhead in a padded sling that he carries everywhere, including to meals, because he will not leave it in a tent. The price has come down twice. He is genuinely delightful to talk to — warm, funny, remembers your children — and every trader at Dune's Throat does business with him standing up, facing the exit.
@@ -102,6 +104,7 @@ adult: cries the auction, nine hours a day, without water.
 
 **Tekka Vor** · Jawa · m · six hems (49)
 `traits: TooSmart, Gourmand, Jealous`
+`apparel: Apparel_Bandolier`
 childhood: apprenticed to a broker who dealt in droids, and switched stock.
 adult: the meet's marriage-broker. Forty-one matches last season.
 > He wears a bandolier of stoppered scent-vials, one per marriageable kin of four clans, and he will let you smell the whole catalogue and then upsell you. His doctrine is the trade doctrine, said out loud, about people: *do not ask what use she is to you — imagine who else might find a use for her.* His own vial is at the end of the row. He has unstoppered it so often it has gone faint.
@@ -114,12 +117,14 @@ adult: twenty-two years camped at the edge of a Jawa meet, which his own people 
 
 **Mardo Chell** · human · m · 58
 `traits: Abrasive, NaturalMood(Pessimist), GreatMemory`
+`item: ComponentIndustrial`
 childhood: born on a moisture farm nine kilometres from where he will die.
 adult: buys from them every season and complains for the other fifty-one weeks.
 > He calls them thieving vermin to their hoods, in Basic, loudly, every year — and they adore him, because they can smell the affection underneath it and he has no idea they can. He has bought the same condenser coil off the same clan four separate times. It is his coil. They keep selling him his own coil, and he keeps saying it runs better than the last one.
 
 **Vess Tikko** · Rodian · f · 30
 `traits: TooSmart, GreatMemory, Ascetic`
+`skills: Intellectual 16, Social 14`
 childhood: a clan she will not name, a feud she will not describe.
 adult: buys engine parts at Dune's Throat and does not haggle, ever.
 > Antennae and a Rodian's nose — she is the only outsider alive who reads the hood-talk, the scent-layer under the Trade Talk, and the clans found out three seasons ago. Now every price spoken within four metres of her is honest and the whole ground resents it. She never says a word about it. She simply stands a little too close and lets the seller remember.
@@ -132,6 +137,7 @@ adult: sixty years of dining out on a single afternoon.
 
 **Ekk Nnn** · Jawa · m · six hems (35)
 `traits: CreepyBreathing, Abrasive, GreatMemory`
+`skills: Social 1`
 childhood: normal, talkative, by every account.
 adult: the meet's finest appraiser of drive systems. Has not used a word in nine years.
 > No Jawaese, no Trade Talk, nothing — he trades purely in scent, which means outsiders must be handled by somebody else and kin must stand within a metre of him to hear him at all. Inside the hood he breathes through his mouth, wet and slow and clearly audible from three paces. Nobody knows what he is protesting, or whether he is. The theories are an entire industry at Dune's Throat and he sells nothing to any of them.
@@ -154,12 +160,14 @@ adult: performs the Interment of Scrap for every machine four clans cannot save.
 
 **Ubbi Sur** · Jawa · f · four hems (17)
 `traits: FastLearner, Brawler, Abrasive`
+`skills: Crafting 15`
 childhood: marked for the House at birth, like every girl born here.
 adult: not yet. She has strong feelings about that.
 > Four hems, two of which she let down herself, badly, to look taller at the crawler-yard fence. She can strip a repulsorlift faster than any man on the *Tukkat-Nur*, she is forbidden to set foot on it, and she has three times hidden in the tread housing and been carried nine kilometres before anyone smelled her. She has already worked out what went wrong the third time.
 
 **Grissa Ateeka** · Jawa · f · seven hems (63)
 `traits: GreatMemory, Gourmand, Abrasive`
+`skills: Cooking 17`
 childhood: a crawler with ninety-one souls aboard.
 adult: eleven years in the Still House kitchen, since it burned.
 > She cooks for ninety-one people every single night, out of stores the House cannot spare, and the House lets her, and eats what it can, and buries the rest at dawn. She is not sad and will not be treated as sad — she is brisk, loud, faintly contemptuous of your knife technique, and if you stand in her kitchen looking sympathetic she will put a bowl of roots in your hands and tell you to chop.
@@ -178,6 +186,7 @@ adult: goes into the reactor wrecks the droids will not enter.
 
 **Nokko Ubb** · Jawa · m · five hems (28)
 `traits: Transhumanist, Jealous, TooSmart`
+`item: BionicArm, BionicEye`
 childhood: lost a hand at eleven and got a better one back.
 adult: keeps the good salvage. All of it. On himself.
 > Both hands off a protocol droid, one eye off an Imperial probe, and a written list of what he wants next, in order, pinned where every visitor to the House will see it. He delivers unasked verdicts on other people's prosthetics — *"that arm is wasted on you"* — and means it entirely as a compliment to the arm. Anyone at the meet wearing better hardware than his ruins his whole season.

@@ -58,6 +58,7 @@ adult: eighty-one years on the same cracking tower.
 
 **Ferrin Oleen** · Ugnaught · m · 99
 `traits: DrugDesire(ChemicalFascination), Gourmand, AnnoyingVoice`
+`item: Beer`
 childhood: lost the duel. Kept the job. Never got over either.
 adult: clears the settling sump, badly drunk, extremely well.
 > He'll tell you about the breath-hold record inside four minutes of meeting you, in a voice
@@ -66,6 +67,7 @@ adult: clears the settling sump, badly drunk, extremely well.
 
 **Tenno Vurr** · Chagrian · m · 44
 `traits: Ascetic, Abrasive, GreatMemory`
+`skills: Cooking 16`
 childhood: saltwater took his sense of taste before he was ten, as it takes every Chagrian's.
 adult: runs a refinery mess by smell alone and is better at it than anyone has explained.
 > Tongue out, flick, adjust — he tastes your dinner with his nose and hands it over without
@@ -83,6 +85,8 @@ adult: junior stockman, convinced he is management-track.
 
 **Margrave Sarrick** · Togorian · m · 38
 `traits: Brawler, Ascetic, Beauty(Beautiful)`
+`weapon: DV_MeleeWeapon_SerratedScimitar`
+`skills: Melee 15, Crafting 13`
 childhood: nomad. Rode a flying reptile before he could read.
 adult: eleven years offworld on a gate, reading every manifest that passes, looking for one
 name.
@@ -92,6 +96,8 @@ name.
 
 **Jat Hessik** · Rodian · m · 31
 `traits: NaturalMood(Depressive), FastLearner, Delicate`
+`apparel: Apparel_Parka, Apparel_Tuque`
+`skills: Construction 15`
 childhood: fled a clan feud and will not say which clan.
 adult: best pipe-fitter on the tower. Works nights. Cold-blooded.
 > Wrapped in three stolen thermal layers and shaking by the fourth hour, because he is
@@ -137,6 +143,7 @@ adult: does the same, on his own wages, every payday, at the same table.
 
 **Sen Ilva** · Selkath · f · 29
 `traits: Kind, TooSmart, Delicate`
+`skills: Medicine 14`
 childhood: raised on kolto rigs her people no longer own.
 adult: dock medic, in a suit that hisses.
 > You hear her before you see her: the misting vents cycle every eleven seconds and she has
@@ -154,6 +161,7 @@ adult: gate scanner. Takes forty credits to look at a manifest for slightly less
 
 **Tikka Vosh** · Rodian · f · 34
 `traits: GreatMemory, Ascetic, NaturalMood(Pessimist)`
+`apparel: Apparel_ClothMask`
 childhood: born to a house that is owed a debt by another house.
 adult: sorter, day gang, wears a scent-damper and says it is for headaches.
 > It is not for headaches. She has known exactly who the night-shift fitter is since her
@@ -174,6 +182,8 @@ adult: holds the paper on most of this list.
 
 **Denno Fash** · Ithorian · m · 71
 `traits: Kind, Ascetic, SlowLearner`
+`apparel: Apparel_Collar`
+`skills: Plants 3`
 childhood: raised under a law that says plant two for every one taken.
 adult: assessor. Will not put a value on anything that came out of a killing.
 > A translator collar that mistimes by half a second, so every price he gives arrives after
@@ -201,6 +211,7 @@ none.
 
 **Yesh Adden** · Ortolan · m · 40
 `traits: Gourmand, Kind, Delicate`
+`skills: Cooking 15`
 childhood: traded to a kitchen at seven, like all of them.
 adult: fourth kitchen he has run; first where anyone thanked him.
 > He cooks with his hands buried in the food because his fingertips do the tasting, which
@@ -210,6 +221,7 @@ adult: fourth kitchen he has run; first where anyone thanked him.
 
 **Old Nabb** · human · m · 68
 `traits: SlowLearner, NaturalMood(Sanguine), AnnoyingVoice`
+`skills: Shooting 2, Melee 2`
 childhood: not worth recounting, and he will recount it.
 adult: sits on a stool by the door. Nineteen years.
 > He is not a guard and would be no use as one. His entire function is that people arriving

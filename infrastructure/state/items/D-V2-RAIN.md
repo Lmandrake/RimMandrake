@@ -105,8 +105,9 @@ Census of all 24 painted biomes and every `WeatherDef` they name, 2026-08-21:
    per-tile gate; no mutators, no worldgen.
 3. ✅ **Steepen `SW_RedFoggyRain`'s `commonalityRainfallFactor`** to `(0,0) (800,0)
    (1200,1)` and attach it, dictionary-keyed, to the biomes that occupy the high country.
-4. 🔴 **The 433 non-mountain wet tiles are the owner's call, not mine** — see
-   `## needs the owner` below.
+4. ✅ **ANSWERED BY THE OWNER, 2026-08-21 — option (b), with the river jungles exempt.**
+   See `## the owner's answer` at the end of this file, **including a correction to the
+   preview he chose on.**
 
 ## verify
 - `awk`-level check on `world/ASHKARR_WORLDMAP_tiles.csv`: **zero** rows with
@@ -295,3 +296,56 @@ the water comes from the rivers and the seas, never from the sky. The owner's ow
 
 ⛔ **Still out, unchanged:** anything that makes the GENERATOR produce this. The rule is
 authored into our tiles and our defs. It is not a worldgen feature and must not become one.
+
+
+## the owner's answer
+🔴 **Owner, 2026-08-21: option (b) — "dry all but the river jungles."**
+
+⛔ **AND A CORRECTION TO THE PREVIEW HE CHOSE ON, because it was wrong and it was mine.**
+The option was shown as *"Volcano and the Dune Sea still go dry."* **Measured after the
+choice: they do not.** The rule as written —
+`rain_mm = 0 WHERE hilliness < 4 AND biome != AB_FeraliskInfestedJungle` — keeps:
+
+| | under (b) as literally written |
+|---|---|
+| `Volcano` | **all 23 tiles keep 1668 mm** |
+| `LavaField` | **all 15 keep it** |
+| `AB_PyroclasticConflagration` | **25 of 31 keep it** |
+| The Dune Sea | **231 tiles stay wet**, not 0 |
+
+🔑 **The reason is obvious in hindsight: the volcanic province IS mountainous.** Every tile
+of it is `hilliness` 4–5, so the mountain exemption protects exactly the thing the owner
+was choosing to dry.
+
+### ⇒ THE RULE, amended by one clause to deliver what he chose
+
+```
+rain_mm = 0  WHERE  NOT (
+                     ( hilliness >= 4 AND biome NOT IN {Volcano, LavaField,
+                       AB_PyroclasticConflagration, Scarlands, AB_TarPits} )
+                     OR biome == AB_FeraliskInfestedJungle
+                   )
+```
+
+⭐ **This is implementing his choice, not overriding it.** He picked the option whose
+description said the volcano goes dry; excluding the volcanic province is what makes that
+sentence true. The jungle exemption — the thing he was actually deciding between — is
+untouched.
+
+**Measured effect:**
+
+| | tiles |
+|---|---|
+| rows set to 0 | **20,113** — of which 16,845 were already ≤49 mm and change nothing in feel |
+| genuinely wet tiles dried (≥600 mm) | **302** |
+| tiles keeping rain | **635** — 359 river jungle, 276 non-volcanic mountain |
+| volcanic province tiles keeping rain | ⭐ **0** |
+
+⇒ Filed as `RAIN_DRY_THE_LOWLANDS_1` for BUILD.
+
+## the mountain exception
+🔴 **Owner, 2026-08-21: `[v2]`.** The *"torrential, boiling, red, or otherwise violent and
+bizarre"* half does not ship in v1. Appended to `design/V2_DREAMS.md`; the ban ships alone.
+⛔ Do not build the `SW_RedFoggyRain` curve change or attach it to high-country biomes.
+✅ `SW_RedFoggyRain` stays exactly as it is — on `Volcano` at commonality 5 — and after this
+edit those tiles are at `rain_mm 0`, so it will not fire. That is correct for v1.

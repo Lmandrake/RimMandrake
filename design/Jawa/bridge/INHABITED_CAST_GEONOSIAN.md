@@ -71,24 +71,30 @@ adult: opens the number-four sluice, waits, closes the number-four sluice. Thirt
 
 **Gizzek Vor** · Geonosian (drone) · m · 38
 `traits: Transhumanist, NaturalMood(Sanguine), FastLearner`
+`item: BionicLeg, BionicArm`
+`skills: Crafting 16`
 childhood: lost the right arm at eleven to an unguarded press, as was normal.
 adult: lost the left at nineteen, both legs below the knee at thirty. Promoted twice for it.
 > Four alloy sockets and a torso, walking on machine-shop legs he built better than the ones he was born with, and he is delighted. He asks — cheerfully, repeatedly, of anyone with a cutting torch — whether they'd take the remaining hand, because the socket is *so much faster.* Nobody has told him no in a way he accepted.
 
 **Rrekk the Returned** · Geonosian (warrior) · m · 33
 `traits: Brawler, Masochist`
+`skills: Melee 15`
 childhood: volunteered for the arena at fifteen, the one route up that a drone gets.
 adult: survived it, bought passage offworld, saw four planets, and came back.
 > Scarred to the plate and grinning about it, the only Geonosian on this rock who has stood under a foreign sun — and he came home to a dead mine on purpose and cannot explain why to anyone's satisfaction, including his own. He starts fights he has no interest in winning and thanks you afterward.
 
 **Ssuura Bell** · Geonosian (drone) · f · 29
 `traits: DrugDesire(ChemicalFascination), Gourmand, AnnoyingVoice`
+`item: Ambrosia`
+`skills: Plants 15`
 childhood: found the fungus at eight in a flooded gallery and told nobody for a year.
 adult: grows it, sells it, and is comfortably her own best customer.
 > You smell her three corridors out and it is *wonderful* — a hot sweet euphoric reek that makes strangers involuntarily happy and then resentful about it. She talks at a pitch that peels enamel, never stops, and hands you a fistful of grey fungus while explaining that this is a gift and also that you owe her.
 
 **Nurse-drone Ipp** · Geonosian (drone) · f · 56
 `traits: Kind, Delicate, SlowLearner`
+`skills: Medicine 5`
 childhood: sorted the crushed from the salvageable before she was ten. Kept sorting.
 adult: reattaches limbs badly, lovingly, and with total confidence.
 > She hums while she works and her stitching is genuinely poor and every drone on the floor would rather have her than the machine. She weighs nothing, bruises if you grip her, and has carried men twice her mass up a ladder on adrenaline she pays for in bed for a week.
@@ -125,6 +131,7 @@ adult: the ore that goes to the droids is weighed by him, and the weights are hi
 
 **Picador Ghhen** · Geonosian (picador caste) · m · 67
 `traits: AnnoyingVoice, GreatMemory, Ascetic`
+`skills: Animals 16`
 childhood: handed a goad at six.
 adult: kept the beasts. There have been no beasts for thirty years. He kept the post.
 > He has one subject and it is a massif called Drenn that died before most of the hive hatched, and he will give you Drenn's feeding weights by season in a voice like a saw going through wet bone. He is not sad about it. He simply has nothing else and has never once suspected that this is a problem.
@@ -135,6 +142,7 @@ adult: kept the beasts. There have been no beasts for thirty years. He kept the 
 
 **Archduke Sun Vekk** · Geonosian (aristocrat) · m · 49
 `traits: TooSmart, VoidFascination, Abrasive`
+`skills: Intellectual 18, Social 16`
 childhood: winged, high-caste, brilliant, and told so constantly.
 adult: led the splinter onto the hottest ground on the planet to speak with a god.
 > Two and a half metres of iridescent black chitin with a wingspan he opens *for emphasis* mid-sentence, and he is genuinely the smartest thing for a thousand kilometres. He has been nine days from contact with the Rakatan AI for nine years. He announces the revised date each Meckgin and the crowd cheers and he believes it every time.
@@ -147,12 +155,14 @@ adult: the hive's only confirmed voice of the god. She has heard nothing.
 
 **Slagwright Ebb'ka** · Geonosian (drone) · f · 34
 `traits: TorturedArtist, VoidFascination, Masochist`
+`skills: Artistic 19`
 childhood: apprenticed to the crucible; never left the heat.
 adult: casts the god's face in cooling slag, at night, at the pour lip.
 > She has made two thousand of them and destroyed two thousand of them, always within the hour, always by hand, always into the crucible she just took them from. Her forearms are a map of every one. When you finally see a finished one you will understand why she keeps going and also why she cannot stop breaking them.
 
 **Communicant Zzir** · Geonosian (drone) · m · 31
 `traits: Transhumanist, VoidFascination, Delicate`
+`item: BionicJaw`
 childhood: unremarkable until he read a Rakatan glyph and could not put it down.
 adult: replaced his own mandibles, twice, with alloy cut from the ruin.
 > He cannot eat solid food any more and does not consider this a cost. The new mandibles click in tones no Geonosian throat makes, which he insists is the god's own supervisory tongue, and when he uses them near the old hive drones they go pale and back away, because whatever he is saying, some of it lands.
@@ -165,6 +175,7 @@ adult: has not eaten in four years. Lives beside the fungus vats and breathes.
 
 **Antenna-keeper Rhud** · Geonosian (drone) · m · 45
 `traits: Ascetic, SlowLearner, NaturalMood(Pessimist)`
+`skills: Crafting 16`
 childhood: nothing.
 adult: maintains the array that the entire theological project depends on.
 > He does not believe in the god. He has never believed in the god. He is not a dissident about it — the question simply does not interest him, whereas the solder does. He will talk about solder. He will keep talking about solder. He is the only reason anyone up here can transmit at all and no one has ever thanked him.
@@ -177,6 +188,7 @@ adult: tests every claim of communion, personally, on the hot plate.
 
 **Proof-drone Ixxa** · Geonosian (drone) · f · 28
 `traits: TooSmart, Abrasive, NaturalMood(Depressive)`
+`skills: Intellectual 20`
 childhood: out-calculated her instructors at ten and was disliked for it at eleven.
 adult: has a proof, four hundred pages, that the Rakatan AI is dead and has been for millennia.
 > It is correct. It has been correct for three years. She has read it aloud at four consecutive Meckgins to a polite, cheering, entirely unlistening crowd, and she keeps rewriting it shorter, as though the problem were the length. She is unbearable at dinner and she is *right*.
@@ -189,6 +201,8 @@ adult: meets the Enclave traders at the boundary stones with oil and very bad bi
 
 **Meckgin-master Bo'ol** · Geonosian (drone) · m · 39
 `traits: NaturalMood(Sanguine), AnnoyingVoice, Gourmand`
+`item: Drum`
+`skills: Artistic 15`
 childhood: put in charge of the festival at nineteen and never relinquished it.
 adult: eleven days of mandatory celebration of the virtues of industry, and he is *thrilled.*
 > He wakes the plateau with a horn he made himself and a shriek of pure joy that carries two kilometres, and the festival is a genuine, ridiculous, beautiful spectacle — slag fireworks, quota recitations, a parade of tools. He has extended it by one day every four years on his own authority. Nobody has stopped him. Nobody quite wants to.

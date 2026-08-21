@@ -59,6 +59,7 @@ adult: chairs the improvement committee. Votes twice.
 
 **Prith Vane** · Umbaran · f · 44
 `traits: Psychopath, TooSmart`
+`skills: Social 18, Medicine 12`
 childhood: born under a sun she has never seen and does not want to.
 adult: it is her office that tells you your line has been discontinued.
 > Chalk-white, hairless, and she feels what you are feeling a half-second before you do — which is why she is very good at this, and why the people she discontinues thank her on the way out. She keeps the count. It is two hundred and nine. She will tell you the number if you ask, and she will be pleased you asked.
@@ -82,6 +83,8 @@ adult: keeps the list of the discontinued and reads it aloud at dawn, as the tab
 
 **Ollo Wen** · human · f · 51
 `traits: GreatMemory, Abrasive, DrugDesire(ChemicalInterest)`
+`item: Beer`
+`skills: Medicine 16`
 childhood: vat floor, third generation, same hall.
 adult: pulls the labour-lines out of the tank and slaps them into breathing.
 > She counts them aloud, one number per body, and she has never lost her place: she is at eleven thousand four hundred and two, and she gives you that number instead of her name. Thirty years of it. She drinks steadily from the second hour of every shift and has never dropped one, which is the only reason nobody has ever raised it.
@@ -100,30 +103,36 @@ adult: counts stock, grades it, and grades her own kind harder than any curator 
 
 **Curator-Adjunct Vekk Silla** · human · m · 42
 `traits: Transhumanist, Jealous, Abrasive`
+`item: BionicArm`
+`skills: Melee 13, Shooting 13`
 childhood: signed twenty years of service at fourteen for a package he could not have afforded in ten lifetimes.
 adult: paid it off. Collected. Every gram of it worked exactly as written.
 > He is stronger, faster, sharper and better-looking than anyone in this hall, precisely as promised, and his life is identical to the one he had, and he is *incandescent* about it. He will corner you and itemise the package — item, cost, the year he signed — and he will not release you until you agree out loud that he was cheated.
 
 **Recovery-tech Ossik Bram** · human · m · 44
 `traits: Cannibal, TooSmart, Ascetic`
+`skills: Intellectual 16, Social 14`
 childhood: nothing unusual, and he will give you the details, which are dull.
 adult: disposes of failed decants. Twelve years, no complaints, immaculate paperwork.
 > He eats them. He has a four-point argument from the Helix's own doctrine for why this is not merely permitted but *thrifty* — waste is the sin, the thing was never a person, the record is complete either way — and in twelve years no curator has refuted a word of it. They have all stopped trying. They have also all stopped eating with him.
 
 **Steward Bo Dukk** · Neimoidian · m · 46
 `traits: Delicate, Jealous, NaturalMood(Pessimist)`
+`apparel: Apparel_GasMask`
 childhood: hive-raised on the grab-or-starve system and has not relaxed since.
 adult: signs for every crate on Vat Row so that no curator has to touch one.
 > A filter mask indoors, gloves in summer, and nine clean tests for a contamination that does not exist. He tells everyone he is still waiting on his improvement. He was approved eleven years ago, walked as far as the theatre door, and went home — and four people know that, and he checks all four faces every single day.
 
 **Rah'da Onn** · Kel Dor · m · 55
 `traits: CreepyBreathing, Abrasive, GreatMemory`
+`apparel: guy762_KelDorMask`
 childhood: taught young that the air of every world but one would kill him. Found it clarifying.
 adult: walks the vat halls during the purge, four times a year, alone, because he does not breathe what is in there.
 > The mask rasps on every exhale and he leans in when he speaks. He is the only person who has seen what a hall of stock does when the atmosphere goes, he remembers all of it in order, and he will describe it at the table, unprompted, with his goggles pushed up on his head. In thirty years nobody has asked him to stop. Nobody has asked him anything else either.
 
 **Vat-tech Marrow Oo'Bir** · Bith · f · 48
 `traits: GreatMemory, SlowLearner, Ascetic`
+`skills: Crafting 16, Social 2`
 childhood: unremarkable on a world of prodigies, which is its own thing to be.
 adult: logs vat salinity on the hour. Nine years. No errors.
 > Enormous black eyes, no nose, the finest pair of hands in the building — and one subject. She will tell you about salinity, correctly and in detail, for as long as you are standing there, and there is no second subject, and she is not sad about it. She is invited to nothing. She is genuinely good at the job and would be missed inside a day.
@@ -165,6 +174,7 @@ adult: found alive in a Forsaken ruin forty-one years ago. The most valuable thi
 
 **Grrat** · Sith Massassi · m · ~30
 `traits: Brawler, TooSmart, Gourmand`
+`skills: Social 15`
 childhood: he was not raised. He was finished, four thousand years late, from somebody else's notes.
 adult: exhibit. Prior art. Living proof that this was attempted before and done badly.
 > Two hundred kilos of red hide and folded-back tusks, and he performs the roar for visiting traders twice a day — on cue, professionally, and it is *magnificent*. He negotiated the terms himself. He is paid in meat, he renegotiated in the spring, and the curator who keeps calling him a weapon has never once got the better of him across a table.
@@ -177,12 +187,14 @@ adult: cooks for the Annex. Feeds the people the terrace has finished with, and 
 
 **Wen Bosk** · human · m · 22
 `traits: FastLearner, Abrasive, NaturalMood(Depressive)`
+`skills: Cooking 15`
 childhood: read the family contract at fifteen, alone, in the record office, without permission.
 adult: works the Annex kitchen beside his father and is better than him at all of it.
 > He is brilliant and he is horrible to stand near — he corrects the curators' Arkanian, he does other people's work faster and in front of them, and his entire plan is to make himself impossible to refuse. That is precisely the behaviour the clause was written to produce. He has not worked that out yet, and his father is going to be so proud when he does.
 
 **Warden Sella Kro** · human · f · 35
 `traits: BodyMastery, Jealous, Abrasive`
+`skills: Melee 16`
 childhood: applied for improvement at nineteen. Filed again at twenty-four. Filed again at twenty-nine.
 adult: keeps the Annex door. Nobody has ever needed her to.
 > Her file was lost twice and the third time she was told the intake window closes at thirty — so she built the best body in this compound herself, out of spite, in a yard, with a bar and a rope. She can out-lift, out-run and out-last every improved curator on the terrace and she makes certain they see it, daily, pointedly, in front of guests. One of them is going to have her reassigned for it.
