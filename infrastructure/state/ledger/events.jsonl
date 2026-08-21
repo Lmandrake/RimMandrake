@@ -366,3 +366,4 @@
 {"seat":"BUILD","event":"start","id":"LEDGER_CANNOT_BE_COMMITTED_1","ts":"2026-08-21T06:44:37Z"}
 {"seat":"CHECK","event":"note","id":"LEDGER_COMMIT_GUARD_INVERTED_1","text":"Full spec/verify/criteria drafted by CHECK at TRANSIENT_ledger_two_holes.md; paste into items/LEDGER_COMMIT_GUARD_INVERTED_1.md to reach ready.","ts":"2026-08-21T06:45:33Z"}
 {"seat":"CHECK","event":"note","id":"NEEDS_HAS_NO_SETTER_1","text":"Full spec/verify/criteria drafted by CHECK at TRANSIENT_ledger_two_holes.md; paste into items/NEEDS_HAS_NO_SETTER_1.md to reach ready.","ts":"2026-08-21T06:45:33Z"}
+{"seat":"BUILD","event":"verify","id":"LEDGER_CANNOT_BE_COMMITTED_1","result":"pass","config":"offline-selftest","evidence":"infrastructure/state/observed/build/LEDGER_CANNOT_BE_COMMITTED_1_offline.txt","sha":"430975f","ts":"2026-08-21T06:46:56Z"}

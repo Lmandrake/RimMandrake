@@ -17,10 +17,22 @@ WHAT IT BLOCKS
 ==============
 1. **Committing an edit to a generated queue view.** The file says DO NOT EDIT at the
    top; this makes that true instead of hopeful.
-2. **Committing a hand-edit of `events.jsonl`.** ⛔ The ledger's `flock` is ADVISORY —
-   it protects writers that take it, and a shell redirect or an editor takes nothing.
-   On this repo's 9p mount, concurrent writes without the lock lose five of every six
-   events. `model.append()` is the only safe writer.
+2. **WRITING `events.jsonl` by any route that is not `rimflow`.** ⛔ The ledger's
+   `flock` is ADVISORY — it protects writers that take it, and a shell redirect or an
+   editor takes nothing. On this repo's 9p mount, concurrent writes without the lock
+   lose five of every six events. `model.append()` is the only safe writer.
+
+   🔴 **This is enforced at the WRITE, and it used to be enforced at the COMMIT. That
+   was a defect, and it cost the project 358 events sitting on one disk.** Committing a
+   changed ledger IS the normal case — every `rimflow` verb changes it — so a rule that
+   denied "a commit naming the ledger while the ledger differs from HEAD" fired on every
+   legitimate commit and never on the hand-edit it was aimed at. `git diff` cannot tell
+   an append from an editor write; the tool call that made it can.
+   ⚠️ Mentioning the path is not writing it. `grep`, `cat`, `sed -n`, `wc` and a commit
+   pathspec all name the ledger and are all allowed — only redirects, in-place editors,
+   copies over it and `open(..., 'w'|'a')` are refused. Over-blocking here is not the
+   safe direction: a hook that wedges correct work gets disabled, and then nothing is
+   guarded at all.
 3. **Editing `items/<ID>.md` for an item another seat owns.** Filing work FOR another
    seat is normal and encouraged; changing their work is not, and four seats share one
    working tree so it is easy to do by accident.
@@ -81,6 +93,49 @@ def git(root, *args):
     except (OSError, subprocess.SubprocessError):
         return None
     return p.stdout if p.returncode == 0 else None
+
+
+LEDGER_MSG = (
+    "Blocked: %s is being written by something that is not `rimflow`.\n\n"
+    "The ledger is APPEND-ONLY and `rimflow` is its only writer. Its lock is ADVISORY "
+    "— it protects writers that take it, and a shell redirect or an editor takes "
+    "nothing. On this repo's 9p mount, concurrent writes without that lock lost five "
+    "of every six events and tore hundreds of lines in half (measured 2026-08-20).\n\n"
+    "To change what the ledger says, add an event:\n"
+    "    python3 src/RimMandrake/rimflow/cli.py <verb> …\n"
+    "To correct one that is already in it, the OWNER appends an `admin` event. "
+    "Nothing is ever removed.\n\n"
+    "✅ COMMITTING the ledger is fine and is not what this refused — commit it after "
+    "every turn, and push. Reading it with grep, cat or sed -n is fine too.")
+
+LEDGER_PATH_RE = re.compile(r"[\w./\\-]*ledger/events\.jsonl")
+# A redirect must land on the ledger IMMEDIATELY. ⚠️ "somewhere earlier in the command"
+# is not good enough and was a false deny: `wc -l 2>/dev/null <ledger>` has a `>` before
+# the path, and that `>` already has its own target.
+REDIRECT_RE = re.compile(r">>?\s*['\"]?$")
+# These take the file as an ARGUMENT, so anywhere in the same shell word-run counts.
+# `dd of=` is spelled out because the path attaches to the operand, not the command.
+ARG_WRITER_RE = re.compile(
+    r"(?:\b(?:tee|cp|mv|rm|install|shred|truncate|ln)\b|\bof=|"
+    r"\bsed\b[^|;&]*?\s-i)[^|;&]*$")
+# python3 -c "open('…/events.jsonl', 'w')" — the mode sits AFTER the path.
+WRITE_AFTER_RE = re.compile(r"^\s*['\"]?\s*,\s*['\"][wax]")
+
+
+def ledger_write_target(cmd):
+    """-> the ledger path this command WRITES, or None if it only mentions it.
+
+    ⚠️ The distinction is the whole point. `git commit …/events.jsonl`, `grep x
+    …/events.jsonl` and a path quoted inside a report all mention it; none of them
+    write it. Blocking on mention is what broke this hook the first time.
+    """
+    for m in LEDGER_PATH_RE.finditer(cmd):
+        before = cmd[max(0, m.start() - 80):m.start()]
+        if REDIRECT_RE.search(before) or ARG_WRITER_RE.search(before):
+            return m.group(0)
+        if WRITE_AFTER_RE.match(cmd[m.end():m.end() + 12]):
+            return m.group(0)
+    return None
 
 
 def is_generated(path):
@@ -144,28 +199,27 @@ def main():
         ev = json.load(sys.stdin)
     except Exception:
         return 0
-    cmd = (ev.get("tool_input") or {}).get("command") or ""
+    ti = ev.get("tool_input") or {}
+
+    # ---- 2. the ledger is append-only and tool-only, enforced at the WRITE ---
+    # An editing tool names its target outright, so there is nothing to infer.
+    if (ev.get("tool_name") or "") in ("Write", "Edit", "MultiEdit", "NotebookEdit"):
+        fp = (ti.get("file_path") or ti.get("notebook_path") or "").replace("\\", "/")
+        if fp.rstrip("/").endswith("ledger/events.jsonl"):
+            return deny(LEDGER_MSG % fp)
+        return 0                          # rules 1/3/4 are about commits, not edits
+
+    cmd = ti.get("command") or ""
+    hit = ledger_write_target(cmd)
+    if hit:
+        return deny(LEDGER_MSG % hit)
+
     if "git" not in cmd or "commit" not in cmd:
         return 0
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
     paths = re.findall(r"[\w./-]+\.(?:md|jsonl)", cmd)
     if not paths:
         return 0
-
-    # ---- 2. the ledger is append-only and tool-only -------------------------
-    for p in paths:
-        if p.rstrip("/").endswith("ledger/events.jsonl") and changed(root, [p]):
-            return deny(
-                "Blocked: %s is being hand-edited.\n\n"
-                "The ledger is APPEND-ONLY and `rimflow` is its only writer. Its lock "
-                "is ADVISORY — it protects writers that take it, and a shell redirect "
-                "or an editor takes nothing. On this repo's 9p mount, concurrent "
-                "writes without that lock lost five of every six events and tore "
-                "hundreds of lines in half (measured 2026-08-20).\n\n"
-                "To change what the ledger says, add an event:\n"
-                "    python3 src/RimMandrake/rimflow/cli.py <verb> …\n"
-                "To correct one that is already in it, the OWNER appends an `admin` "
-                "event. Nothing is ever removed." % p)
 
     # ---- 1. a generated view is not a place to write ------------------------
     for p in paths:

@@ -53,7 +53,7 @@ def git(root, *a):
     subprocess.run(["git", "-C", root, *a], capture_output=True, text=True, check=True)
 
 
-def run(edits, cmd, seat="BUILD", new_files=None):
+def run(edits, cmd, seat="BUILD", new_files=None, tool=None):
     root = tempfile.mkdtemp(prefix="selftest_ql_")
     try:
         for rel, body in BASE.items():
@@ -77,8 +77,11 @@ def run(edits, cmd, seat="BUILD", new_files=None):
             env["RIMFLOW_SEAT"] = seat
         else:
             env.pop("RIMFLOW_SEAT", None)
+        # `tool` names an editing tool, in which case `cmd` is the file_path it targets.
+        ev = ({"tool_name": tool, "tool_input": {"file_path": cmd}} if tool
+              else {"tool_name": "Bash", "tool_input": {"command": cmd}})
         p = subprocess.run([sys.executable, HOOK],
-                           input=json.dumps({"tool_input": {"command": cmd}}),
+                           input=json.dumps(ev),
                            capture_output=True, text=True, env=env, cwd=root,
                            timeout=30)
         out = p.stdout.strip()
@@ -108,12 +111,44 @@ CASES = [
      {Q + "/DECIDE_ARCHIVE.md": HAND + "\n## D56 x\nstate: ready\n"},
      "git commit %s/DECIDE_ARCHIVE.md -m x" % Q, "BUILD", None),
 
-    # ---- 2. the ledger is append-only and tool-only ------------------------
-    ("DENY  hand-editing events.jsonl", DENY, "append-only",
+    # ---- 2. the ledger is append-only and tool-only, enforced at the WRITE --
+    # 🔴 The ALLOW cases here are the regression. Until 2026-08-21 this rule fired on
+    # any COMMIT naming a changed ledger — which is every legitimate commit, since
+    # every rimflow verb changes it — so the ledger reached one disk and stopped.
+    ("ALLOW committing a CHANGED ledger — the whole point", ALLOW, None,
      {L: LEDGER + '{"ts":"t","seat":"BUILD","event":"note","id":"X_Y_1","text":"z"}\n'},
      "git commit %s -m x" % L, "BUILD", None),
     ("ALLOW committing an UNCHANGED ledger alongside other work", ALLOW, None,
      {}, "git commit %s -m x" % L, "BUILD", None),
+    ("DENY  Write against the ledger", DENY, "only writer",
+     {}, L, "BUILD", None, "Write"),
+    ("DENY  Edit against the ledger", DENY, "only writer",
+     {}, L, "BUILD", None, "Edit"),
+    ("ALLOW Write against any other file", ALLOW, None,
+     {}, "src/foo.py", "BUILD", None, "Write"),
+    ("DENY  appending to the ledger with >>", DENY, "only writer",
+     {}, "echo '{\"x\":1}' >> %s" % L, "BUILD", None),
+    ("DENY  truncating the ledger with >", DENY, "only writer",
+     {}, "cat new.jsonl > %s" % L, "BUILD", None),
+    ("DENY  sed -i against the ledger", DENY, "only writer",
+     {}, "sed -i 's/a/b/' %s" % L, "BUILD", None),
+    ("DENY  copying over the ledger", DENY, "only writer",
+     {}, "cp /tmp/x.jsonl %s" % L, "BUILD", None),
+    ("DENY  python open(…, 'a') on the ledger", DENY, "only writer",
+     {}, "python3 -c \"open('%s', 'a').write('x')\"" % L, "BUILD", None),
+    # ⚠️ Mentioning the path is not writing it. Every one of these was refused by the
+    # old text match, and each is an ordinary read a seat does many times a turn.
+    ("ALLOW grepping the ledger", ALLOW, None,
+     {}, "grep -c '\"event\"' %s" % L, "BUILD", None),
+    ("ALLOW reading the ledger with sed -n", ALLOW, None,
+     {}, "sed -n '1,5p' %s" % L, "BUILD", None),
+    ("ALLOW tailing the ledger into a scratch file", ALLOW, None,
+     {}, "tail -5 %s > /tmp/scratch.txt" % L, "BUILD", None),
+    ("ALLOW a command that merely names the ledger after 2>/dev/null", ALLOW, None,
+     {}, "wc -l 2>/dev/null %s" % L, "BUILD", None),
+    ("ALLOW rimflow itself, which writes it properly", ALLOW, None,
+     {L: LEDGER + '{"x":1}\n'},
+     "python3 src/RimMandrake/rimflow/cli.py close X_Y_1 --sha abc", "BUILD", None),
 
     # ---- 3. file for any seat; change only what you own --------------------
     ("DENY  editing another seat's item file", DENY, "belongs to",
@@ -149,8 +184,9 @@ CASES = [
 
 def main():
     fails = 0
-    for name, want, needle, edits, cmd, seat, new in CASES:
-        got, reason = run(edits, cmd, seat, new)
+    for case in CASES:
+        name, want, needle, edits, cmd, seat, new = case[:7]
+        got, reason = run(edits, cmd, seat, new, case[7] if len(case) > 7 else None)
         ok = got == want and (not needle or needle.lower() in (reason or "").lower())
         print("%-5s %s" % ("ok" if ok else "FAIL", name))
         if not ok:

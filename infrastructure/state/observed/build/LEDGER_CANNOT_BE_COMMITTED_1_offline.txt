@@ -1,0 +1,40 @@
+LEDGER_CANNOT_BE_COMMITTED_1 — offline verify, 2026-08-21
+
+verify 4: selftest passes, with a new case per branch
+ok    DENY  editing a generated queue view
+ok    ALLOW an UNCHANGED generated view in the pathspec
+ok    ALLOW editing a hand-written ARCHIVE — still the source
+ok    ALLOW committing a CHANGED ledger — the whole point
+ok    ALLOW committing an UNCHANGED ledger alongside other work
+ok    DENY  Write against the ledger
+ok    DENY  Edit against the ledger
+ok    ALLOW Write against any other file
+ok    DENY  appending to the ledger with >>
+ok    DENY  truncating the ledger with >
+ok    DENY  sed -i against the ledger
+ok    DENY  copying over the ledger
+ok    DENY  python open(…, 'a') on the ledger
+ok    ALLOW grepping the ledger
+ok    ALLOW reading the ledger with sed -n
+ok    ALLOW tailing the ledger into a scratch file
+ok    ALLOW a command that merely names the ledger after 2>/dev/null
+ok    ALLOW rimflow itself, which writes it properly
+ok    DENY  editing another seat's item file
+ok    ALLOW editing your OWN item file
+ok    ALLOW the OWNER editing anyone's item
+ok    ALLOW when the seat is unknown — never guess and block
+ok    DENY  a new root .md that is not TRANSIENT_*
+ok    ALLOW a new TRANSIENT_ root file
+ok    ALLOW an already-tracked root file
+ok    ALLOW a normal src commit
+ok    ALLOW anything that is not a commit
+
+27/27 passed
+
+verify 2+3: the hook run directly, real repo
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDecisionReason": "Blocked: infrastructure/state/ledger/events.jsonl is being written by something that is not `rimflow`.\n\nThe ledger is APPEND-ONLY and `rimflow` is its only writer. Its lock is ADVISORY
+  ^ Write  -> deny
+  ^ commit -> no output = allow
+
+verify 1 is the commit that carries this file: it names the ledger in the pathspec
+with a pending rimflow append, which is exactly what was refused before.

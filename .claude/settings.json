@@ -45,6 +45,17 @@
         ]
       },
       {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/queue_lint.py\"",
+            "timeout": 20,
+            "statusMessage": "Checking nothing but rimflow writes the ledger"
+          }
+        ]
+      },
+      {
         "matcher": "SendMessage",
         "hooks": [
           {
