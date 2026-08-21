@@ -1,3 +1,29 @@
+🔴 **REDIRECTED 2026-08-21 — the owner reversed the drop: *"But I like VME_Nomad!"***
+⇒ **The reconcile direction flips.** The repo copy dropped the meme on 2026-08-20; the game
+copy still has it. His preference is to keep it, so the file that is now WRONG is the repo
+copy, not the game copy. ⛔ **Do not copy the repo `.rid` over the game `.rid`** — that would
+execute the reversed ruling.
+
+⏸️ **HELD on one measurement, and this is not a re-litigation of his preference.** The NPC
+side is already restored and free (`NOMAD_MEME_RESTORED_TRIBES_1` — the harsh precept carries
+`enabledForNPCFactions: false`). The **player** ideo is the only place
+`VME_PermanentBases_Despised` can actually fire, and it escalates to −50 mood at 60 days in
+one place. Whether that ever bites us depends entirely on whether a **gravship launch resets
+its counter** — and this campaign is a gravship campaign, so the colony moves constantly.
+🔑 Early reading of `VanillaMemesExpanded.dll` finds no `lastResettledTick` reference at all
+(that is the *vanilla* field `Nomadic_Preferred` reads) and does find
+`VanillaMemesExpanded_SettlementAbandonUtility_Abandon_Patch`, so the VME counter appears to
+reset on **settlement abandonment**, by a route of its own. Whether a gravship launch takes
+that route is being read out of the IL now.
+- **If it resets:** restore `VME_Nomad` to the repo `.rid`, reconcile both copies with it IN,
+  and this item closes with the owner keeping the meme everywhere.
+- **If it does not:** the owner gets told the number — his colony accrues to −50 mood and
+  only abandoning a settlement clears it — and he rules again with that in hand.
+⚠️ Either way **both copies must end up identical**, and an Ideo is fixed at world creation,
+so this must be settled before the next remake.
+
+---
+
 ## spec
 🔴 **The owner ruled `VME_Nomad` OUT on 2026-08-20. The file the game actually reads still
 has it in.** Same shape as the `Jawa_Patches` deploy trap: the repo copy is not what loads.
