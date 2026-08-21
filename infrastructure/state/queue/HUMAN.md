@@ -922,3 +922,60 @@ That is the real cost of a remake and it is not visible in any of the four items
 🔑 **This is the fingerprint-not-timestamp trap wearing a new coat**: the totals match, the
 SETS do not. Any check that resolves a defName against this dump can confirm something the
 running game does not have, and miss something it does. Re-take it on the next load.
+
+---
+
+## 🔴 THERE IS NO KEEPER WORLD — owner, 2026-08-21 10:17. This RETIRES the 02:48 ruling.
+
+Asked which of two saves is the v1 keeper. Answered: *"Neither is the keeper. We are still
+messing with things it seems. I will be remaking, especially in light of the faction
+control issue."*
+
+⛔ **The 02:48 ruling above — *"WORLDMAP_gen IS THE FIRST-DRAFT v1 KEEPER"* — is
+SUPERSEDED.** Nothing in the repo is the v1 world.
+
+| what said otherwise | correction |
+|---|---|
+| commit `388646f`, *"the v1 keeper world"* | a **backup of a working draft**. The bytes are still worth having; the label was wrong |
+| `WORLD_REDRAFT_PROCEDURE_1` | 🔑 **promoted from documentation-for-later to the thing that runs next** |
+| anything reading "the frozen world" of `WORLDMAP_gen` | there is no frozen world yet |
+
+**Measured while asking, which is why the question was worth asking:** two saves, both
+seeded `grasshopper` where the docs record `lada` — so the planet has already been remade
+at least once and nobody had confirmed the paint survived into either. `WORLDMAP_gen`
+5.2 MB / 73 settlements / no `<maps>`; `WORLDMAP_gen2` 13.2 MB / 74 / **with a map**, a
+landed game rather than a shippable planet.
+
+### 🔑 WHAT ACTUALLY HAS TO PRECEDE THE REMAKE — corrected by BUILD, `f76d297`
+
+⚠️ **REP's 03:11 batch table was wrong about the paint and is struck.** `w9_run` stage 1
+re-applies biome **and scalars** from the CSV, so a paint edit — the Scald included — is
+carried forward by any remake and is NOT remake-gated. What genuinely cannot be
+retrofitted is narrower:
+
+| | |
+|---|---|
+| `CLASSIC_IDEO_ERASES_FAITHS_1` | 🔴 **the biggest.** The live world has **2** ideoligions, not the eleven authored. An Ideo is generated once at world creation |
+| Configure Factions | your hand-pass, permanent at creation, spent afresh every remake |
+| the MOD LIST | FactionControl must be absent at generation; `DROP_TRIBAL_FURNITURE_MOD_1` means a world built on 577 never holds an `XER_` reference |
+| `PIRATE_VESSEL_RESTORED_1` | ⭐ its acceptance test — *Blackstar appears in the DEFAULT Configure Factions list* — is checkable ONLY before a world exists |
+| `WORLD_REDRAFT_PROCEDURE_1` | the checklist the remake is run from. Write it before, not after |
+
+⚠️ **The def dump is one mod stale in BOTH directions while its count reads current** —
+holds `thereallemon.factioncontrol`, missing `mandrake.strandedquest`. Re-take it on the
+load that does the remake.
+
+## ⛔ `refmatch.py` is CANCELLED for v1 — owner, 2026-08-21 10:17
+
+*"Cancelled for v1 — the earlier ruling stands."* `ORTHO_GLOBE_MAP_ACCEPTED_1` (`977aa75`)
+was never reversed. 🔴 **REP filed `REFMATCH_THRESHOLDS_CALIBRATE_1` off the weaker quote
+— *"I like your new globes"* — without citing the ruling it contradicted.** BUILD read
+both, refused to build, and escalated in one sentence rather than guessing. ✅ The globes
+stand: the orthographic view is the binding way to LOOK at the map, which is why
+`SCALD_RELIEF_RENDER_LOOK_1` still matters. Only the TOOL is cancelled.
+
+## ⏸️ B55 stays blocked — owner, 2026-08-21 10:17
+
+*"Not yet — the world is not settled enough."* `FINAL_WORLD_PREP_1` is not started. B55's
+spec, inputs and measured terrain batch (4,057 cells → 303 + 355 rect ops) remain correct
+and wanted; they were reached before the world was ready.
