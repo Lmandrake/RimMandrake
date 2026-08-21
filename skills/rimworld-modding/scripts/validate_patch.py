@@ -1157,6 +1157,36 @@ def count_matches(xp: str, docs) -> tuple[int, list[str], list, int, bool]:
     return total, where, elems, len(mods_hit), False
 
 
+
+def _dump_collisions(raw):
+    """(collided type names -> counts in write order, total defs lost).
+
+    A def dump whose manifest names the same TYPE twice has silently overwritten
+    one type's file with another's. The duplicate keys are the ONLY surviving
+    evidence — `json.load` discards them, because a dict cannot hold a duplicate
+    key — so a validator that does not look here cannot tell the reader that the
+    ground truth it is validating against has holes in it.
+
+    🔑 This is deliberately a local 8 lines rather than an import. The canonical
+    implementation is `measure.dumpdb.read_manifest` in the
+    `measuring-large-artifacts` skill, but this file ships as part of a skill to
+    machines that may not have it, and a validator that cannot run is worse than
+    one that repeats a little logic. If the two ever disagree, the skill wins.
+    """
+    order = {}
+    try:
+        def hook(pairs):
+            return dict(pairs)
+        json.loads(raw, object_pairs_hook=lambda ps: (
+            [order.setdefault(k, []).append(v) for k, v in ps]
+            if ps and all(isinstance(v, int) for _, v in ps) and len(ps) > 50
+            else None) or dict(ps))
+    except ValueError:
+        return {}, 0
+    coll = {k: v for k, v in order.items() if len(v) > 1}
+    return coll, sum(sum(v[:-1]) for v in coll.values())
+
+
 def check_value_shape(op: ET.Element, cls: str, path: str,
                       targets: list, f: Findings) -> None:
     """
@@ -1241,6 +1271,10 @@ class LiveIndex:
         self.game_version = ""
         self.mod_count = 0
         self.loaded = False
+        #: (collided type name -> counts in write order, total defs lost).
+        #: Non-empty means the ground truth this validator is checking against
+        #: has holes, and a `0` read from it means "unmeasured", not "none".
+        self.dump_collisions: tuple = ({}, 0)
 
     def has(self, name: str) -> bool:
         return name in self.names
@@ -1279,11 +1313,18 @@ class LiveIndex:
                 m = re.search(r'"modCount"\s*:\s*(\d+)', raw)
                 idx.mod_count = int(m.group(1)) if m else 0
                 try:
+                    # ⚠️ KEYS ONLY, and that is why this is correct. The 532
+                    # defCounts entries sit under 517 distinct NAMES, so a
+                    # plain parse loses no name — only the shadowed VALUES.
+                    # Verified 2026-08-21 by set comparison against a
+                    # duplicate-preserving parse; do not "fix" this to read a
+                    # value without reading `dump_collisions` below.
                     counts = (json.loads(raw).get("defCounts") or {})
                     if counts:
                         live_types = set(counts.keys())
                 except (ValueError, AttributeError):
                     live_types = None
+                idx.dump_collisions = _dump_collisions(raw)
             except OSError:
                 pass
 
@@ -1317,6 +1358,22 @@ class LiveIndex:
             if found:
                 idx.by_type[deftype] = found
                 idx.names |= found
+
+        coll, lost = getattr(idx, "dump_collisions", ({}, 0))
+        # Only the collisions that actually LOST defs make a count unmeasured.
+        # Where every earlier writer held 0, the name is ambiguous but the count
+        # is right — and warning about those would be an unearned warning, which
+        # is how a warning gets ignored.
+        harmful = {k: v for k, v in coll.items() if sum(v[:-1])}
+        if harmful:
+            # The dump itself is damaged, and a reader who does not know that
+            # will read a `0` from it as "none exist". Say it where the numbers
+            # are being used, not in a file nobody opens.
+            print(f"  (--live: ⚠️ the dump lost {lost} defs to {len(harmful)} "
+                  f"filename collision(s) — a count of "
+                  f"{', '.join(sorted(harmful)[:4])}"
+                  f"{' …' if len(harmful) > 4 else ''} from it is UNMEASURED, "
+                  f"not zero. `measure coverage` names them.)")
 
         if skipped_orphans:
             # Say it out loud. A silently-narrowed index is the same class of

@@ -3,11 +3,23 @@
 That file holds **532 `defCounts` entries under 517 distinct keys**, so the parse
 silently keeps the last value — `AbilityDef` reads 0 where 612 defs were written.
 
-⚠️ **Scope this honestly: only ONE of the 13 currently reads a wrong number.**
-`skills/rimworld-modding/scripts/validate_patch.py:1282` is the only one that
-consumes `defCounts`. The other twelve read `mods`/`gameVersion`/`capturedUtc`/
-`modCount` off the same collided parse, so their answers survive today — they are
-one field-addition away from the bug and can never see the 15 lost rows.
+🔴 **CORRECTED 2026-08-21, and the correction shrinks this item to almost
+nothing: NOTHING in the repo reads a wrong number from the manifest today.**
+The 532 entries sit under **517 distinct NAMES** — the duplicates repeat names
+already present, so `json.load(...).keys()` loses no name, only the shadowed
+VALUES. Proven by set comparison: the naive and duplicate-preserving key sets
+are identical.
+
+⇒ `validate_patch.py:1282` uses `set(counts.keys())` and is **correct as
+written**. The audit that called it "the only live wrong answer, silently
+dropping def types from validation" was wrong, and this item said so before
+being checked. The other twelve call sites read `mods`/`gameVersion`/
+`capturedUtc`/`modCount`, which the collided parse does not touch.
+
+✅ **What is left, and it is worth doing but is not urgent:** a single seam so
+the NEXT reader — the first one to want a defCounts VALUE — does not hit it, and
+so `collision_report()` is one import away. That seam now exists at
+`src/RimMandrake/Utils/dump_manifest.py`.
 
 ⛔ **And `validate_patch.py`'s USE of it is correct — do not "fix" it.** Verified
 2026-08-21: its `live_types` filter deliberately skips def-type files absent from
@@ -19,7 +31,7 @@ The work: export `measure.dumpdb.read_manifest()` as the one supported way to
 read a dump manifest, and switch the 13 call sites to it. One import, one call
 each.
 
-  `skills/rimworld-modding/scripts/validate_patch.py:1282`   ← the only live wrong answer
+  `skills/rimworld-modding/scripts/validate_patch.py:1282`   ← keys only; CORRECT, do not "fix"
   `src/RimMandrake/Utils/mod_inventory.py:168`
   `src/RimMandrake/Utils/check_load.py:68`
   `src/RimMandrake/Utils/weapon_tag_audit.py:130`
@@ -33,7 +45,8 @@ each.
   `src/RimMandrake/Utils/animal_live_diff.py:184`
   `skills/rimworld-start-prep/scripts/sync_mod_state.py:132`
   plus `observed/2026-08-13/dumps/capture_manifest.py:78,84`, which PRINTS
-  `def types 517` where 532 were written.
+  `def types 517` where 532 entries were written — the one genuine, if minor,
+  understatement, and it is in an archive directory.
 
 ## verify
 a script that asks each of the 13 call sites for the AbilityDef count and
