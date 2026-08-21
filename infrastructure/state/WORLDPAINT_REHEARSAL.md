@@ -60,7 +60,7 @@ so the owner cannot put them back by hand at the screen. It must be settled in X
 | the owner's FULL mod list, not the 13-mod minimal | live `ModsConfig.xml` activeMods = **578**, byte-identical to `ModsConfig.FULL.LATEST.xml` | ✅ no `modlist_swap --restore` needed |
 | My Little Planet active | `oblitus.mylittleplanet`, index 194 of 578 | ✅ |
 | subcount 7 · coverage 1 → 21,872 tiles | LocalLow preset carries `myLittlePlanetSubcount 7`, `planetCoverage 1`, `saveGenerationParameters True`; MLP's grid is 10·3ⁿ+2, n=7 → 21872 | ✅ |
-| the preset survives launch | LocalLow copy 3895 B, mtime 2026-08-20 00:59, **identical to the repo copy**, and a launch happened after it (`Player.log` 2026-08-20 17:54) and left it alone. Only the workshop copy is regenerated as a 683-byte stub | ✅ the "wiped at every launch" item is closed by measurement |
+| ⚠️ the preset survives launch — **DISK ONLY; the SCREEN half was never checked** | LocalLow copy 3895 B, mtime 2026-08-20 00:59, **identical to the repo copy**, and a launch happened after it (`Player.log` 2026-08-20 17:54) and left it alone. Only the workshop copy is regenerated as a 683-byte stub | ⚠️ **NOT SETTLED.** The file is intact and the owner's world-creation page STILL came up without Scale 7 / Coverage 100%. A file being correct on disk is not evidence the game read it. `PRESET_ONSCREEN_CHECK_UNVERIFIED_1` |
 | every biome defName resolves | **24 of 24** in an active mod: 5 Core · 2 Odyssey · 9 Alpha Biomes · 3 Advanced Biomes (Continued) · 3 More Vanilla Biomes · 2 Biomes! Caverns. None on Cherry Picker's 28-BiomeDef removal list | ✅ |
 | the 8 Jawa factions default to ≥1 | `requiredCountAtGameStart 1` on all eight | ✅ no counter to touch |
 | **every other defName the run writes** | 6 link defs (`Creek` `River` `LargeRiver` `HugeRiver` `DirtRoad` `StoneRoad`) all in Core · `WB_MapLabelFeature` is a real `FeatureDef` in `ferny.worldbuilder`, which is active · all 9 landmark and all 11 mutator defNames are on the live census roster | ✅ **the whole silent-failure class is closed offline** |
@@ -252,8 +252,17 @@ An assembly cannot be written while RimWorld holds it memory-mapped, so this was
 
 ## 7. What must not happen
 
-- ⛔ **No map may be instantiated.** Repainting a planet underneath a live map killed two
-  saves and about two cold loads on 2026-08-18. `Find.CurrentMap == null` throughout.
+- 🔴 **No map may be instantiated — and on 2026-08-21 we found out what it costs, because
+  we did it anyway.** The paint ran with `--despite-map` against a live colony. Every stage
+  succeeded and the planet was faithful (seven tiles read back exact, lint 3,529 → 86). Then
+  the **colony was destroyed**, the game **could no longer create a new one**, the **UI lost
+  its button icons and labels**, a world remade inside that session came up **without the
+  Scale 7 / Coverage 100% preset**, and the owner took the game down.
+  ⚠️ Everything measured AFTER the paint in that session is unattributable — a half-broken
+  game answers the bridge normally. The log harvest and the def dump were taken BEFORE it
+  and stand.
+  ⇒ `Find.CurrentMap == null` throughout, and `w9_run.py` now refuses on `mapCount > 0`.
+  `PAINT_UNDER_MAP_DESTROYS_GAME_1`.
 - ⛔ **Do not treat this world as the campaign start.** It has no scenario embedded and its
   faction roster is the slate's 13, not the checklist's. Saving it and keeping it would
   quietly become the shipped world with two gates skipped.

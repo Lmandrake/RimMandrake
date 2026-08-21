@@ -172,8 +172,14 @@ def main():
             w(out, "- 🔴 **%s map(s) are instantiated.** This run requires a world and NO map. "
                    "Generate a world and stop at the landing-site page. Regenerating costs "
                    "a minute or two, not a reload — the mod load is already paid for.\n"
-                   "  (`--despite-map` proceeds anyway. Only justified on a world nobody "
-                   "intends to keep, and everything it measures is UNATTRIBUTABLE.)"
+                   "  🔴 `--despite-map` proceeds anyway, and MEASURED 2026-08-21 that is "
+                   "what it costs: the colony was destroyed, the game could no longer create "
+                   "a new one, the UI lost its button icons and labels, a world remade in that "
+                   "session came up WITHOUT the planet-scale preset, and the owner had to take "
+                   "the game down. The paint itself was faithful - seven tiles read back exact. "
+                   "The damage is moving the ground out from under a map already generated from "
+                   "it. Use it only on a world nobody keeps, and treat everything measured "
+                   "afterwards as unattributable."
                  % gi.get("mapCount"))
             return 5
         if gi.get("status") != "game_loaded":
