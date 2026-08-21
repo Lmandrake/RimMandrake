@@ -1,0 +1,49 @@
+OCULAR_FOREST_SUMMITS_1 — offline evidence, BUILD, 2026-08-21T15:59:16Z
+
+# PRECONDITION — AB_OcularForest resolves in the v1.6-loaded def dump
+AB_OcularForest FOUND  mod=Alpha Biomes  label=ocular forest  implemented=True  canBuildBase=True
+  baseWeatherCommonalities: [('Clear', 8), ('AB_RedFog', 17), ('Rain', 1), ('DryThunderstorm', 1), ('RainyThunderstorm', 1), ('FoggyRain', 1)]
+
+$ git diff world/ASHKARR_WORLDMAP_tiles.csv   (the only three rows touched)
+-4299,-2.0308,63.1103,63.13,357.72,2190,23.5,31,ExtremeDesert,0,0,The Ashfall Range,4,0.0
++4299,-2.0308,63.1103,63.13,357.72,2190,23.5,31,AB_OcularForest,0,0,The Ashfall Range,4,0.0
+-9158,-0.677,63.2016,63.2,359.24,2177,23.5,18,ExtremeDesert,0,0,The Ashfall Range,4,0.0
+-9159,-1.3839,64.2956,64.3,358.46,2117,22.9,464,ExtremeDesert,0,0,The Ashfall Range,4,0.0
++9158,-0.677,63.2016,63.2,359.24,2177,23.5,18,AB_OcularForest,0,0,The Ashfall Range,4,0.0
++9159,-1.3839,64.2956,64.3,358.46,2117,22.9,464,AB_OcularForest,0,0,The Ashfall Range,4,0.0
+
+# VERIFY — recount from world/ASHKARR_WORLDMAP_tiles.csv
+row count: 21872 (unchanged, expected 21872)
+distinct biomes: 25 (24 -> 25)
+AB_OcularForest: 3 (was 0)
+ExtremeDesert: 3578 (3581 -> 3578, the three summits)
+Volcano                        23  (unchanged: 23 / 15 / 31 in canon before this edit)
+LavaField                      15  (unchanged: 23 / 15 / 31 in canon before this edit)
+AB_PyroclasticConflagration    31  (unchanged: 23 / 15 / 31 in canon before this edit)
+
+the three tiles NOT taken (spec: all Volcano, the only high river-flow tiles):
+  11961  biome=Volcano    elev=2021 river_flow=30
+  11965  biome=Volcano    elev=2011 river_flow=31
+  7101   biome=Volcano    elev=2001 river_flow=32
+
+the three painted:
+  4299   biome=AB_OcularForest  elev=2190  region=The Ashfall Range  hilliness=4
+  9158   biome=AB_OcularForest  elev=2177  region=The Ashfall Range  hilliness=4
+  9159   biome=AB_OcularForest  elev=2117  region=The Ashfall Range  hilliness=4
+
+# §6 count sentence updated
+$ grep -n "distinct biomes are painted" design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md
+216:**25 distinct biomes are painted**, out of the 36 defs that survived the owner's cut —
+$ grep -n "biomes_on_map:\|  on_map: " infrastructure/state/canon.yml
+170:  biomes_on_map: 25
+498:  on_map: 25
+
+$ python3 src/RimMandrake/Utils/check_canon.py | tail -2
+123 file(s) checked. 0 contradiction(s), 3 advisory.
+✅ no design doc contradicts canon.
+
+$ git diff --stat
+ design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md | 11 +++++++----
+ infrastructure/state/canon.yml                        | 14 +++++++++-----
+ world/ASHKARR_WORLDMAP_tiles.csv                      |  6 +++---
+ 3 files changed, 19 insertions(+), 12 deletions(-)

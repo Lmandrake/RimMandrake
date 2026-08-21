@@ -203,7 +203,7 @@ The dayside is desert unless a river pays for something else:
 Current census — **re-measured from `world/ASHKARR_WORLDMAP_tiles.csv`, 2026-08-20**,
 percentages of all 21,872 tiles (this supersedes the census printed here before, which
 was taken from an earlier paint): `AB_RockyCrags` 20.30 (4,440) ·
-`ExtremeDesert` 16.37 (3,581) · `AridShrubland` 10.98 (2,401) · `Desert` 9.82 (2,147) ·
+`ExtremeDesert` 16.36 (3,578) · `AridShrubland` 10.98 (2,401) · `Desert` 9.82 (2,147) ·
 `AB_MycoticJungle` 8.87 (1,939) · `Wasteland` 7.87 (1,721, the salt plains) ·
 `Ocean` 6.71 (1,468) · `PoisonForest` 2.76 (604) · `AB_PropaneLakes` 2.53 (554) ·
 `ZBiome_Badlands` 2.50 (546) · `AB_FeraliskInfestedJungle` 2.44 (534) ·
@@ -211,9 +211,12 @@ was taken from an earlier paint): `AB_RockyCrags` 20.30 (4,440) ·
 `ZBiome_Grasslands` 1.07 (233) · `ZBiome_DesertOasis` 1.04 (227) ·
 `BMT_CrystalCaverns` 0.58 (127) · `AB_GelatinousSuperorganism` 0.44 (96) ·
 `Scarlands` 0.41 (90) · `AB_MiasmicMangrove` 0.30 (65) · `AB_TarPits` 0.26 (57) ·
-`AB_PyroclasticConflagration` 0.14 (31) · `Volcano` 0.11 (23) · `LavaField` 0.07 (15).
-**24 distinct biomes are painted**, out of the 36 defs that survived the owner's cut —
-a def can survive the cut and appear on zero tiles.
+`AB_PyroclasticConflagration` 0.14 (31) · `Volcano` 0.11 (23) · `LavaField` 0.07 (15) ·
+`AB_OcularForest` 0.01 (3).
+**25 distinct biomes are painted**, out of the 36 defs that survived the owner's cut —
+a def can survive the cut and appear on zero tiles. ⚠️ **Was 24 until 2026-08-21**, when
+`AB_OcularForest` was painted on the three Ashfall Range summits under
+`OCULAR_FOREST_SUMMITS_1`; those three tiles came out of `ExtremeDesert`, 3,581 → 3,578.
 
 ## 6. Other biome placement
 

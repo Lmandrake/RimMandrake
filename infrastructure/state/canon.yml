@@ -167,15 +167,17 @@ planet:
         hand-made world, not a finding. Still asserted at
         ASHKARR_WORLD_DEFINITION.md:237 and fauna_placement.md:13 until that item runs.
 
-  biomes_on_map: 24
+  biomes_on_map: 25
   biomes_on_map_src: >
-    24 distinct biome defNames appear on at least one tile. ⚠️ This answers a DIFFERENT
+    25 distinct biome defNames appear on at least one tile. ⚠️ Was 24 until 2026-08-21,
+    when OCULAR_FOREST_SUMMITS_1 painted AB_OcularForest on 3 Ashfall Range summit tiles
+    (4299 · 9158 · 9159) that were ExtremeDesert. ⚠️ This answers a DIFFERENT
     question from the "36 / 37 / ~35 survivors" figures in the design tier, which count
     biome DEFS surviving a Cherry Picker cut, not biomes actually painted. A def can
     survive the cut and appear on zero tiles.
   biome_tile_counts:
     AB_RockyCrags: 4440
-    ExtremeDesert: 3581
+    ExtremeDesert: 3578
     AridShrubland: 2401
     Desert: 2147
     AB_MycoticJungle: 1939
@@ -198,6 +200,7 @@ planet:
     AB_PyroclasticConflagration: 31
     Volcano: 23
     LavaField: 15
+    AB_OcularForest: 3
 
 settlements:
   total: 72
@@ -492,9 +495,10 @@ biomes:
     landform: {defName: GL_Oasis, mod: "Geological Landforms", status: unused}
     wrong_for_this_planet: [BiomeArcticOasis, GL_IceOasis]
     not_installed: [BMT_ChromaticOasis]
-  on_map: 24
+  on_map: 25
   on_map_src: >
-    24 distinct biome defNames appear on at least one tile of the painted world.
+    25 distinct biome defNames appear on at least one tile of the painted world.
+    ⚠️ Was 24 until 2026-08-21 (OCULAR_FOREST_SUMMITS_1 painted AB_OcularForest on 3).
     Different question from `survivors`: a def can survive the cut and be painted nowhere.
 
 # ===========================================================================
