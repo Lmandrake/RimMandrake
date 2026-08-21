@@ -1,0 +1,17 @@
+VALIDATE_PATCH_BARE_DEFS_XPATH_1 + GrimTerra Bullfrog — offline verify, 2026-08-21
+
+BEFORE the fix (bare Defs/ xpath):
+  WARN  operations/li[1..4]: 0 nodes in the on-disk Defs
+  OK - 0 errors, 4 warning(s)
+
+AFTER:
+=== src/Jawa/Jawa_Patches/Patches/GrimTerraTexPaths_Fix.xml ===
+  info    Operation[1] > match > operations/li[1] (PatchOperationReplace): 1 match(es)  in GRiNDTerra Biomes: Races_Animal.xml(1)
+  info    Operation[1] > match > operations/li[2] (PatchOperationReplace): 1 match(es)  in GRiNDTerra Biomes: Races_Animal.xml(1)
+  info    Operation[1] > match > operations/li[3] (PatchOperationReplace): 1 match(es)  in GRiNDTerra Biomes: Races_Animal_Birds.xml(1)
+  info    Operation[1] > match > operations/li[4] (PatchOperationReplace): 1 match(es)  in GRiNDTerra Biomes: Races_Animal.xml(1)
+
+OK - 0 errors, 0 warning(s)
+
+Regression, whole directory:
+  OK TOTAL - 37 file(s), 0 error(s), 198 warning(s)

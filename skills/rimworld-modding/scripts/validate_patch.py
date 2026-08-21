@@ -599,6 +599,16 @@ def to_elementtree_xpath(xp: str) -> str | None:
         s = ".//" + s[2:]
     elif s.startswith("/"):
         return None
+    # 🔴 `Defs/...` with NO leading slash is equally valid and equally common in the
+    # wild, because RimWorld evaluates the xpath against the XmlDocument — whose CHILD
+    # is <Defs> — while ElementTree and lxml evaluate against the <Defs> ROOT ELEMENT.
+    # So the bare form silently means `Defs/Defs/...` here and matches nothing.
+    # ⚠️ It reported a FALSE "0 nodes in the on-disk Defs" on every such op, which is
+    # the same shape as a genuinely dead xpath — the one thing this validator exists to
+    # tell apart. Found 2026-08-21 when all four ops of a patch known to work in game
+    # came back 0; 42 xpaths across this repo's own patches were affected.
+    elif s.startswith("Defs/"):
+        s = s[len("Defs/"):]
     if not s:
         return None
 

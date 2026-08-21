@@ -4,11 +4,18 @@
   GrimTerraTexPaths_Fix.xml                 Jawa_Patches - new file 2026-08-20
   ============================================================================
 
-  GRiNDTerra Biomes (GRimTerra.Biomesmod, workshop 3537211820) ships three
-  texPaths pointing at folders that do not exist. THE ART IS ALL PRESENT -
-  only the paths are wrong, and all three are in the SECOND lifeStages entry,
-  i.e. the JUVENILE stage. Baby and adult render correctly, which is why this
-  went unnoticed.
+  GRiNDTerra Biomes (GRimTerra.Biomesmod, workshop 3537211820) ships FOUR
+  texPaths pointing at files that do not exist. THE ART IS ALL PRESENT -
+  only the paths are wrong, and the first three are in the SECOND lifeStages
+  entry, i.e. the JUVENILE stage. Baby and adult render correctly, which is why
+  this went unnoticed.
+
+  ⚠️ THE FOURTH WAS ADDED 2026-08-21 AND THE FIRST THREE DID NOT MISS IT BY
+  ACCIDENT - it is a different animal, found only when jawa/texture_audit ran
+  against the live process on the full mod list and reported GRimBullfrog. The
+  original sweep looked at Tortoise and Pinkbird. ⇒ Treat this file as "the
+  GRiNDTerra typos found SO FAR", not as a closed set: they are hand-typed
+  strings in a large mod and there is no reason to think four is the total.
 
   Verified against the mod's own Textures tree, 2026-08-20:
     Things/Pawn/Animal/GRimTortoise/   holds GRimTortoiseA_*.png
@@ -25,6 +32,13 @@
 
     is    Things/Pawn/Animal/GRimPinkBird/GRimPinkbird          capital B
     want  Things/Pawn/Animal/GRimPinkbird/GRimPinkbird
+
+    is    Things/Pawn/Animal/GRimBullfrog/Dessicated_GRimBullfrog   letter dropped
+    want  Things/Pawn/Animal/GRimBullfrog/Dessicated_GRimBullfrogA
+          GRimBullfrog's PawnKindDef has three lifeStages whose
+          dessicatedBodyGraphicData read A / <letterless> / A - both siblings
+          agree, and the folder holds 15 Dessicated_* files of which NONE is
+          letterless. Verified against the mod's Textures tree 2026-08-21.
 
   🔑 THE CAPITAL-B ONE IS THE INSTRUCTIVE CASE. Windows' filesystem is
   case-insensitive but RimWorld's content index is NOT, so that path resolves
@@ -74,6 +88,11 @@
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="GRimPinkbird"]/lifeStages/li/bodyGraphicData[texPath="Things/Pawn/Animal/GRimPinkBird/GRimPinkbird"]/texPath</xpath>
           <value><texPath>Things/Pawn/Animal/GRimPinkbird/GRimPinkbird</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GRimBullfrog"]/lifeStages/li/dessicatedBodyGraphicData[texPath="Things/Pawn/Animal/GRimBullfrog/Dessicated_GRimBullfrog"]/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/GRimBullfrog/Dessicated_GRimBullfrogA</texPath></value>
         </li>
 
       </operations>
