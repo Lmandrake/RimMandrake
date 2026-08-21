@@ -347,6 +347,44 @@ def t_bridge_item_offered_when_check_holds_it():
     assert got and got.id == "BRIDGE_ONLY_ITEM_2", got
 
 
+def t_going_down_is_a_legal_state_and_the_game_is_still_up():
+    """🔴 The owner could not announce a state his own doctrine requires.
+
+    `infrastructure/GAME_STATE_WORKFLOW.md` defines FIVE states and the model accepted
+    four, so `rimflow game GOING_DOWN` was refused outright. It is not a synonym for
+    DOWN: the game is still running, the bridge still answers, and CHECK is working the
+    live list against a closing window. Treating it as down stops offering live work at
+    exactly the moment there is least time left.
+    """
+    evs = _ready("LIVE_WORK_ITEM_HERE_1", needs="bridge", for_="CHECK")
+    evs += [ev(seat="OWNER", event="game", state="UP"),
+            ev(seat="CHECK", event="bridge", state="taken"),
+            ev(seat="OWNER", event="game", state="GOING_DOWN")]
+    w = model.replay(evs, strict=True)
+    assert w.game == "GOING_DOWN", w.game
+    got = priority.next_item(w, "CHECK")
+    assert got and got.id == "LIVE_WORK_ITEM_HERE_1", (
+        "live work stopped being offered at GOING_DOWN; got %r" % (got and got.id))
+
+
+def t_this_deployment_survives_going_down():
+    """⚠️ The flag is MOST load-bearing at GOING_DOWN, not least.
+
+    Clearing on "any state that is not UP" wiped it at the exact moment CHECK drops
+    everything postponable to work the this-deployment list. The doctrine file says
+    cleared on entering DOWN, and the doctrine file is right.
+    """
+    evs = _ready("HOST_ITEM_HERE_4", for_="CHECK")
+    evs += [ev(seat="OWNER", event="game", state="UP"),
+            ev(seat="CHECK", event="spawn",
+               **{"from": "HOST_ITEM_HERE_4", "for": "CHECK",
+                  "name": "URGENT_FOLLOWUP_HERE_4", "this_deployment": True}),
+            ev(seat="OWNER", event="game", state="GOING_DOWN")]
+    w = model.replay(evs, strict=True)
+    assert w.items["URGENT_FOLLOWUP_HERE_4"].this_deployment, (
+        "the flag was cleared at GOING_DOWN, which is when it matters most")
+
+
 def t_game_down_clears_this_deployment():
     evs = _ready("HOST_ITEM_HERE_1", for_="CHECK")
     evs += [ev(seat="OWNER", event="game", state="UP"),

@@ -428,6 +428,13 @@ DOWN ──(owner: "game load announced")──▶ DEPLOYING
    │                                          │ both seats: rimflow seat ready
    │                                          ▼
    │                                      LOADING ──▶ UP ──▶ GOING_DOWN ──▶ DOWN
+   │
+   │   ⚠️ GOING_DOWN was missing from `model.GAME_STATES` until 2026-08-20, so
+   │   `rimflow game GOING_DOWN` was REFUSED — the owner could not announce a state
+   │   his own doctrine file requires. It is not a synonym for DOWN: the game is
+   │   still running and the bridge still answers, which is why `needs: game-up` and
+   │   `needs: bridge` stay satisfiable there, and why `--this-deployment` is cleared
+   │   on entering DOWN and not on leaving UP.
    └──────────────────────────────────────────────────────────────────────────┘
 ```
 

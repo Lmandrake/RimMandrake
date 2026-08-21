@@ -34,11 +34,18 @@ from . import model
 # Which `needs` are satisfiable in which game state. ⚠️ `harvest` and `owner` are NOT
 # functions of game state alone — they are passed in, because the ledger cannot know
 # whether the owner is at the keyboard or whether a log has already been mined.
+# ⚠️ `GOING_DOWN` COUNTS AS THE GAME BEING UP, and this is the whole point of having a
+# separate state for it: the process is still running and the bridge still answers. It
+# is the window CLOSING, not closed — CHECK drops postponable offline work and runs live
+# items only. Treating it as down would silently stop offering live work at precisely
+# the moment there is least time left to do it.
+LIVE = ("UP", "GOING_DOWN")
+
 BY_GAME = {
     "offline":  lambda g, ctx: True,
     "deploy":   lambda g, ctx: g == "DEPLOYING",
-    "game-up":  lambda g, ctx: g == "UP",
-    "bridge":   lambda g, ctx: g == "UP" and ctx.get("bridge_holder") == "CHECK",
+    "game-up":  lambda g, ctx: g in LIVE,
+    "bridge":   lambda g, ctx: g in LIVE and ctx.get("bridge_holder") == "CHECK",
     "harvest":  lambda g, ctx: bool(ctx.get("harvest_pending")),
     "owner":    lambda g, ctx: ctx.get("mode") != "afk",
 }

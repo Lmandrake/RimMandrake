@@ -104,7 +104,15 @@ NEEDS = ("offline", "deploy", "game-up", "bridge", "harvest", "owner")
 # axis from `blocked`. blocked means something is WRONG. needs means the WINDOW IS
 # CLOSED. The old queues wrote both into one prose field, so the board could read
 # neither, and "waiting for the game to come up" was indistinguishable from "broken".
-GAME_STATES = ("DOWN", "DEPLOYING", "LOADING", "UP")
+# 🔴 FIVE STATES, NOT FOUR. `GOING_DOWN` was missing until 2026-08-20, which meant the
+# OWNER COULD NOT ANNOUNCE A STATE HIS OWN DOCTRINE REQUIRES — `rimflow game GOING_DOWN`
+# was refused outright, against `infrastructure/GAME_STATE_WORKFLOW.md`, which is a
+# permanent doctrine file every seat is bound by.
+#
+# ⚠️ It is not a synonym for DOWN and collapsing them loses the only thing it says: the
+# game is STILL UP and the window is closing. CHECK drops postponable offline work and
+# runs live items only. In DOWN the game is gone and everyone is offline.
+GAME_STATES = ("DOWN", "DEPLOYING", "LOADING", "UP", "GOING_DOWN")
 
 ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9._-]*$")
 # A run is the ONE exception to "no opaque IDs", and it is never seen alone.
@@ -558,10 +566,15 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
         return
     if verb == "game":
         world.game = ev["state"]
-        # 🔑 `--this-deployment` is cleared the moment the game leaves UP. That flag
-        # means "do this before the window closes"; carrying it into the next session
-        # would turn it into false urgency that nobody could trace to a cause.
-        if ev["state"] != "UP":
+        # 🔑 `--this-deployment` is cleared on entering DOWN — and ONLY on DOWN.
+        # ⚠️ This used to fire on any state that was not UP, which cleared the flag at
+        # GOING_DOWN: exactly the moment the flag is most load-bearing, because
+        # GOING_DOWN is when CHECK drops everything postponable and works the
+        # this-deployment list before the window shuts. The doctrine file says "cleared
+        # on entering DOWN" and the doctrine file is right.
+        # The flag means "do this before the window closes"; carrying it PAST the close
+        # would turn it into false urgency nobody could trace to a cause.
+        if ev["state"] == "DOWN":
             for it in world.items.values():
                 it.this_deployment = False
         return
