@@ -123,10 +123,12 @@ Then screenshot the planet and **put it beside
 while the picture shows compass circles is the number being wrong.* Looking is the check;
 the lint is the sanity test underneath it.
 
-⚠️ **Known unresolved at the time of writing: `THE_SCALD_LOST_ITS_WATER_1`.** One of the
-three ruled seas is not counting as water, and the shortfall is exactly its 312 tiles. **If
-that is still open when you redraft, the world you produce will have the same defect** — it
-is not something this procedure introduces or can fix, and it needs the bridge.
+✅ ~~Known unresolved: the Scald is not counting as water~~ **FIXED IN THE PAINT,
+2026-08-21** (`bd5dad0`). Its 312 tiles were at +1411 m and the engine counts water as
+`elevation <= 0`; they are now at −30 m like the two seas, water reads exactly 8.14%, and 32
+false cliffs went with it — they existed because the lake surface stood a kilometre above the
+ground beside it. ⇒ **a redraft from today's paint does not reproduce it.**
+⏳ The relief render has not been looked at since — `SCALD_RELIEF_RENDER_LOOK_1`.
 
 ## 8. Back the save up into the repo, and force it
 
