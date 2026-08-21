@@ -717,3 +717,7 @@
 {"seat":"BUILD","event":"start","id":"SLATE_KEEPS_CONFIGURABLE_1","ts":"2026-08-21T16:14:49Z"}
 {"seat":"BUILD","event":"verify","id":"SLATE_KEEPS_CONFIGURABLE_1","result":"pass","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/SLATE_KEEPS_CONFIGURABLE_1_offline.txt","sha":"50c0d96","ts":"2026-08-21T16:18:07Z"}
 {"seat":"BUILD","event":"close","id":"SLATE_KEEPS_CONFIGURABLE_1","sha":"df85f50","ts":"2026-08-21T16:18:21Z"}
+{"seat":"BUILD","event":"claim","id":"EMPIRE_XENOTYPES_REGENERATE_1","ts":"2026-08-21T16:18:43Z"}
+{"seat":"BUILD","event":"start","id":"EMPIRE_XENOTYPES_REGENERATE_1","ts":"2026-08-21T16:18:43Z"}
+{"seat":"BUILD","event":"verify","id":"EMPIRE_XENOTYPES_REGENERATE_1","result":"pass","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/EMPIRE_XENOTYPES_REGENERATE_1_offline.txt","sha":"c2bb662","ts":"2026-08-21T16:22:24Z"}
+{"seat":"BUILD","event":"close","id":"EMPIRE_XENOTYPES_REGENERATE_1","sha":"6fb978a","ts":"2026-08-21T16:22:40Z"}
