@@ -418,6 +418,10 @@ def snapshot():
         "agents": agents(),
         "inventory": inventory(),
         "ts": int(time.time()),
+        # See the note above main(): a five-day-old process served a page whose code
+        # had moved on, and nothing on screen said so.
+        "server_started": int(_STARTED),
+        "server_pid": os.getpid(),
     }
 
 
@@ -498,6 +502,23 @@ class H(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
+
+
+# 🔴 THE SERVER IS LONG-LIVED, AND THAT IS A TRAP THIS PAGE HAS ALREADY SPRUNG.
+# On 2026-08-20 the board reported "deck failed to render: Failed to fetch dynamically
+# imported module .../board/deck.js". Nothing was wrong with the code: the process
+# answering :8787 had been up since 2026-08-15 and predated the `/board` route entirely,
+# so every module request fell through to the HTML page and the browser tried to import
+# markup as JavaScript.
+#
+# ⚠️ Every verification that day had spun up a FRESH server on a spare port and passed.
+# A long-running process is a cached copy of the code, and testing a copy you just
+# started is testing the wrong thing — the same shape as the concurrency test that
+# passed on the wrong filesystem.
+#
+# ⇒ The page reports the server's start time, so a stale process is visible rather than
+# mysterious. `/data` carries `server_started` and `server_pid`.
+_STARTED = time.time()
 
 
 def main():

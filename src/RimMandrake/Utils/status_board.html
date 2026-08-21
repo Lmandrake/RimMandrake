@@ -475,7 +475,17 @@ function render(d){
      :'RimWorld is down — CHECK items cannot run.');
 }
 
-const tick=()=>fetch('/data',{cache:'no-store'}).then(r=>r.json()).then(render)
+/* ⚠️ Surface a stale SERVER, not just stale data. A process that has been up for days
+   is running the code it started with; on 2026-08-20 one from five days earlier served
+   this page while lacking the /board route, so every view failed to import and nothing
+   on screen suggested the fix was "restart the server". */
+function serverAge(d){
+  if(!d.server_started) return;
+  const h=(d.ts-d.server_started)/3600, el=document.getElementById('clock');
+  if(h>24 && el) el.innerHTML += ` &nbsp;<span class="stale">server up ${Math.floor(h/24)}d`
+    + ` (pid ${d.server_pid}) — restart it if a view fails to import</span>`;
+}
+const tick=()=>fetch('/data',{cache:'no-store'}).then(r=>r.json()).then(d=>{render(d);serverAge(d);})
   .catch(e=>el('clock').innerHTML='<span class="stale">server unreachable</span>');
 tick(); setInterval(tick,3000);
 </script>
