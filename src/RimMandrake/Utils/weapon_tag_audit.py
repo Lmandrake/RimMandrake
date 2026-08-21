@@ -21,7 +21,7 @@ different game. --anyway downgrades that to a loud warning.
     python3 src/RimMandrake/Utils/weapon_tag_audit.py --emit-patch <out.xml>
 """
 from __future__ import annotations
-import argparse, json, os, sys, xml.etree.ElementTree as ET
+import argparse, json, os, re, sys, xml.etree.ElementTree as ET
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -178,6 +178,25 @@ def audit(anyway=False):
                 e["kept"].append(d["defName"])
 
     empty = sorted(t for t, v in tags.items() if not v["kept"])
+
+    # 🔴 CORRECTED 2026-08-21 (WEAPON_TAGS_MATCH_NOTHING_1). `empty` above is
+    # STRUCTURALLY ALWAYS EMPTY, and the "emptied by the cut: 0" this used to print was a
+    # guaranteed zero, not a measurement. Cherry Picker does not DELETE a cut weapon; it
+    # NEUTERS it in place - the ThingDef is still in the dump, carrying `weaponTags: []`
+    # and MarketValue 0. So a cut weapon contributes no tag to `tags` at all, and a tag
+    # whose every carrier was cut never enters `tags` to be counted as emptied. The `cut`
+    # filter can only ever fire on a tag that still has a live carrier, which by
+    # definition is not empty.
+    # ⇒ A DUMP ALONE CANNOT ATTRIBUTE AN EMPTY TAG TO THE CUT. The attribution needs the
+    # mod's SOURCE XML, which still carries the tag the neutered def used to have.
+    # Measured that way, 11 of the 14 dead tags behind the 15 disarmed kinds are OURS:
+    # AMHP, PKM, MechanoidGunLongRange (Gun_Needle), SentryDroneGunShortRange
+    # (Gun_Scattergun), NeolithicRangedFlame (Flamebow), WarcasketBasic, BS_CrossbowTag,
+    # VEE_HunterIndustrialWeapon, VEE_HunterNeolithicWeapon, DP_CannonNoEquipTag and
+    # DP_RocketNoEquipTag. Evidence:
+    # infrastructure/state/observed/build/WEAPON_TAGS_MATCH_NOTHING_1_offline.txt
+    neutered = [d["defName"] for d in things
+                if d["defName"] in cut and not (f(d, "weaponTags") or [])]
     disarmed = []
     for k in kinds:
         wt = f(k, "weaponTags") or []
@@ -191,11 +210,11 @@ def audit(anyway=False):
         # Measured 2026-08-21: two of five `Jawa_Tribal_Scavenger` generated holding a
         # bottle of `TarisianAle` as their PRIMARY weapon, because this function saw
         # `techLevel Neolithic` + `weaponClasses [Melee, MeleeBlunt]` and handed the
-        # bottle `NeolithicMeleeBasic`/`Decent` - the scavenger's entire pool. RimWorld
+        # bottle `NeolithicMeleeBasic`/`Decent` - the scavenger's whole pool. RimWorld
         # will let a pawn club someone with a bottle; a pawn GENERATED holding one
         # instead of a weapon is the bug. `ingestible` is the separator, not `category`
         # and not a missing `verbs` - real melee weapons keep their attacks under
-        # `tools`, so filtering on `verbs` catches axes and clubs instead.
+        # `tools`, so filtering on `verbs` throws out axes and clubs instead.
         if f(d, "ingestible"):
             return False
         cls = set(f(d, "weaponClasses") or [])
@@ -213,7 +232,7 @@ def audit(anyway=False):
         return False
 
     untagged = [d for d in things if eligible(d)]
-    return tags, empty, sorted(disarmed), untagged
+    return tags, empty, sorted(disarmed), untagged, neutered
 
 
 def plan(untagged):
@@ -276,10 +295,49 @@ def preserved_block(path):
     return "\n" + old[i:j + len(HAND_END)] + "\n"
 
 
-def emit_patch(mapping, path):
+def existing_targets(path):
+    """The defNames the emitted patch on disk already tags. Empty if there is none."""
+    try:
+        return set(re.findall(r'ThingDef\[defName="([^"]+)"\]/weaponTags</xpath>',
+                              Path(path).read_text(encoding="utf-8")))
+    except OSError:
+        return set()
+
+
+def refuse_shrink(mapping, path, allow):
+    """🔴 THIS GENERATOR IS NOT IDEMPOTENT AND THE DUMP IS WHY.
+
+    The def dump is captured with this patch ALREADY APPLIED, so every weapon the last
+    run tagged comes back reading as already-tagged and drops out of `eligible`. Re-run
+    it against that dump and it emits a handful of operations where the file holds
+    hundreds - measured 2026-08-21: 9 against 154, a silent loss of 145.
+
+    A count is not a roster, so this compares the actual defNames. If the new mapping
+    would drop any target the file already carries, REFUSE and name them.
+
+    To regenerate for real: capture a def dump with `Jawa_Patches` DISABLED, so the
+    dump describes the game before this patch, then re-run. `--allow-shrink` overrides
+    this check and is the wrong answer nine times in ten."""
+    was = existing_targets(path)
+    lost = sorted(was - set(mapping))
+    if not lost:
+        return
+    msg = ("REFUSING to write %s: it already tags %d defs and this run would tag %d, "
+           "dropping %d of them.\n   first lost: %s\n   The dump was almost certainly "
+           "captured WITH this patch applied, which makes every weapon it tagged look "
+           "already-tagged. Capture a dump with Jawa_Patches disabled, or pass "
+           "--allow-shrink if you truly mean to delete them."
+           % (path, len(was), len(mapping), len(lost), ", ".join(lost[:8])))
+    if not allow:
+        sys.exit(msg)
+    print("!!  " + msg + "\n")
+
+
+def emit_patch(mapping, path, allow_shrink=False):
     for dn, tg in EXTRA_TAGS.items():
         role, have = mapping.get(dn, ("extra", []))
         mapping[dn] = (role, sorted(set(have) | set(tg)))
+    refuse_shrink(mapping, path, allow_shrink)
     lines = ['<?xml version="1.0" encoding="utf-8"?>', "<Patch>", "", "<!--", """
     WeaponTags_Renormalise.xml            Jawa_Patches = generated, do not hand-edit
     ============================================================================
@@ -349,10 +407,16 @@ def main():
                     help="report even though the dump does not match the live mod list")
     a = ap.parse_args()
 
-    tags, empty, disarmed, untagged = audit(a.anyway)
-    print("weapon tags in the dump: %d   emptied by the cut: %d" % (len(tags), len(empty)))
-    for t in empty:
-        print("   %-32s lost all %d" % (t, len(tags[t]["all"])))
+    tags, empty, disarmed, untagged, neutered = audit(a.anyway)
+    print("weapon tags in the dump: %d" % len(tags))
+    print("cut weapons still present but NEUTERED (weaponTags stripped): %d" % len(neutered))
+    print("⚠️  a tag whose EVERY carrier was cut is INVISIBLE here - it is absent from")
+    print("   the dump entirely, not present-and-empty. Attribute those from the mod's")
+    print("   SOURCE XML, never from this dump. See the comment in audit().")
+    if empty:
+        print("tags with a carrier still in the dump but every carrier cut: %d" % len(empty))
+        for t in empty:
+            print("   %-32s lost all %d" % (t, len(tags[t]["all"])))
     print("\n🔴 pawn kinds with EVERY weapon tag empty: %d" % len(disarmed))
     for n, w in disarmed:
         print("   %-34s %s" % (n, w))
