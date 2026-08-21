@@ -1,132 +1,88 @@
-# CHECK's AFK run, 2026-08-21 03:36 → dawn
+# CHECK — handoff, 2026-08-21 10:06
 
-Written for the owner waking up. One page. Detail is in the items and the commits.
+Written for a CHECK with none of this in context. One page. Detail is in the items.
 
-## 🔴 The one thing that changed everything
+## 🟢 STATE RIGHT NOW
 
-**The load blocker is the MOD SET, not the saves — settled, third save, third abort.**
+- **Game is UP.** World `Ash'karr` loaded, **1 map**, ticks 361, ~**304 pawns** on it.
+- 🔴 **~300 of those are MY TEST LITTER** — hostile spawns from the arming sweep and the
+  xenotype re-tests. They are disposable. The map is disposable. Nothing on it is kept.
+- Bridge **released**. `MODE` is **interactive**. The owner is at the desk.
+- `WORLDMAP_gen.rws` is the **complete painted world** — rain clamped, rivers re-graded,
+  labels small, 16 landmarks, mutators, 72 settlements, 23 regions — and it loads **with no
+  compatibility override**. Backed up at `world/WORLDMAP_gen.rws`.
 
-`WORLDMAP_gen`, written by this mod set last night with **no map in it**, aborts with the
-identical signature that killed `rt_probe` and `WORLDMAP_gen_sub7b`:
+## 🔴 THE RULING THAT CHANGES EVERYTHING ELSE
 
-    Exception in FinalizeLoading(): Collection was modified
-      at FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfix ()
+**Faction Control is OUT of v1.** Owner, 09:56 — *"I was wrong. We should remove the Faction
+Control mod."*
 
-Read back after: `status: no_game`, `programState: Entry`. Bailed to the main menu.
-`LOADS_ARE_BLOCKED_NEEDS_YOU_1` is answered. `LOAD_ABORT_IS_FACTIONCONTROL_1` carries it.
+With `thereallemon.factioncontrol` active, **three separate saves aborted** at
+`FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfix`. Without it the same save
+loads clean and a map save round-trips. `LOADS_ARE_BLOCKED_NEEDS_YOU_1`, open since
+2026-08-20, is **cleared**.
 
-⚠️ **AND YOUR MOD LIST IS MODIFIED RIGHT NOW.** `thereallemon.factioncontrol` is disabled
-(579 → 578) to test whether it is the cause. Your untouched list is snapshotted at
-`infrastructure/state/modlists/ModsConfig.BEFORE_FACTIONCONTROL_TEST.xml` — restore from it
-if the removal is not justified. Nothing declares FactionControl as a dependency (swept all
-1,254 installed workshop mods); what it provides is worldgen configurability for faction
-counts, not content.
+Propagated, not just noted: live `ModsConfig` 578 · `ModsConfig.FULL.LATEST.xml`
+**regenerated** (it is what `modlist_swap --restore` reads and it still carried the entry) ·
+`canon.yml` has an `excluded_by_ruling` block.
+⚠️ The count is still 578 **by coincidence** — a custom mod was added the same night.
+⚠️ Cost: the faction-count spinners at world creation are gone, making
+`FACTION_SLATE_ZEROES_KEEPS_1` the only remaining lever over which factions generate.
 
-## 🔴 The canary was lying, and everything trusted it
+## 🔴 READ THIS BEFORE YOU TRUST A MEASUREMENT
 
-`ErrorWhileLoadingGame` read **0** on that abort. Every tool gating on that string — including
-`w9_run.py`'s `canary()` — would have called the dead game healthy and worked on the corpse.
+`skills/rimbridge/references/traps.md`, bottom. **Three parameter names produced three fake
+catastrophes in one session.** Each returned `success: true` and answered a different question:
 
-The handler fires on **map** init; a save with no map dies in `FinalizeLoading` with nothing
-to write the line. Fixed: the canary now checks `Exception in FinalizeLoading` too, and
-`reload_check.py` reads `programState` back as a third instrument.
+- `jawa/pawn_get` takes **`pawn`**, not `pawnId` → read as *0 of 270 pawns armed*
+- `jawa/spawn_pawn`'s `faction` decides the **species** (all 67 kinds use
+  `useFactionXenotypes`) → `"hostile"` read as *49 of 55 kinds spawn Baseliners*
+- `rimworld/load_game` was returning `save.missing_mods` **while I diagnosed from the log for
+  an hour**
 
-## Four new bridge tools, built and deployed
+🔑 **A dramatic result makes the CALLER the first suspect.** Re-run it a second way before
+writing it down.
 
-119 `jawa/` tools now, from 115. Each exists because a question cost you a night:
+⚠️ `ErrorWhileLoadingGame` alone is NOT a load canary. On a save with no map the engine throws
+in `FinalizeLoading` and bails while that string reads **0**. Check both, and read
+`programState` back. `w9_run.py` and `reload_check.py` do this now.
 
-| tool | answers |
+## Settled, with verdicts
+
+| item | verdict |
 |---|---|
-| `jawa/tile_settleable` | "why can't I click these tiles" — the ENGINE's own refusal text |
-| `jawa/tile_cache_audit` | the mountain question, as a number. Reads the cache **by reflection** so the read does not populate it |
-| `jawa/biome_art_audit` | which biome draws magenta |
-| `jawa/faction_leader_get` | effective leader title beside the def's and the ideo's |
+| `LOADS_ARE_BLOCKED_NEEDS_YOU_1`, `RT_PROBE_LOAD_ABORTS_ON_578_1` | ✅ answered — FactionControl |
+| `HILLINESS_CACHE_NOT_READABLE_1` | ✅ `unexplainedStale = 0` after reload — the owner's hypothesis was right |
+| `BIOMESKIT_SNOWY_DESERT_TEXTURES_1` | ✅ 0 misses; the magenta belonged to the broken session |
+| `ASH_STORM_OVER_PYRELANDS_1`, `IKEE_READS_AS_OURS_1`, `B63` | ✅ off the fresh dump |
+| `FACTION_RELATION_MATRIX_1` | ✅ — but found **0 allies** planet-wide and **14 asymmetric** pairs |
+| `ROLE_KINDS_ARMED_5_OF_5_1` + `sixteen-authored-…` | ❌ **23 of 54 kinds field a bare pawn in 5** |
+| `B40 B41 B42 B52` | ❌ leader titles — the ideo overrides the def on 15 of 17 factions |
+| `B54` | ❌ only **2 ideoligions exist**; none of the eleven faiths generated |
+| `C40` | ❌ — but (a) and (b) are **retracted**, below |
+| `CAST_ROSTER_269_LOAD_1` | ⚠️ partial — 269 load, but `Spawn authored character` **does not exist** in the debug tree |
+| `SETTLEMENTS_OFF_IMPASSABLE_1`, `worldbuilder-preset-…` | ✅ closed |
 
-⭐ **And the offline arithmetic already answers your tile question:** **2,232 tiles (10.2%)
-are unsettleable by the engine's own rule** — 1,780 water, **504 because our own 72
-settlements block themselves and every neighbour**, 39 impassable. Not a cache bug. The
-engine working correctly on the world we painted.
+## ⚠️ Two of my own findings are RETRACTED — do not act on them
 
-## Map fixes that landed
+1. **"49 of 55 kinds spawn Baseliners"** — false, my spawn parameter. The roster is fine:
+   Geonosians 4/4, Jawa 5/5, Blackstar returns a five-species mercenary company.
+   **Exactly one faction is wrong**: `Jawa_Droid_Grunt` → `Jawa_FreeDroidEnclaves` gives
+   `Baseliner` 4/4. `DROID_ENCLAVES_FIELD_HUMANS_1`.
+2. **Drinks as melee weapons** — owner ruled it **not a defect and not even a check**.
+   ⚠️ BUILD shipped a fix 20 min *before* the ruling (`3c915e3`) permanently excluding
+   ingestibles from weapon tags. It contradicts the ruling and is BUILD's to revert.
+   `DRINK_WEAPON_CHECK_IS_RETIRED_1`.
 
-- **Three settlements stood on Impassable** and their own lore said otherwise — Oxalate
-  Watch is *"the one breach in the Spine"*. Fixed the terrain, not the placement, so every
-  named place stays where the design put it. Impassable 42 → 39.
-- **The magenta is not ours.** ReGrowth 2 owns `WorldMaterials/BiomesKit` and ships **no**
-  `_VerySnowy`/`_FullySnowy` for **any** biome — a healthy biome ships the same six files as
-  ExtremeDesert. And our desert runs 19–64 °C with zero tiles below freezing.
-- **The Scald is not water to the engine.** `SurfaceTile.WaterCovered => elevation <= 0f`,
-  and the Scald is a crater lake at +1411 m. I enumerated every call site rather than
-  guessing: the real bill is one broken `RiverDelta`, a road drawn where a boat should be,
-  and a statistic 1.4 points low — **not** what it first looked like. Three options written
-  up; ⛔ do not just drop 312 elevations, it re-rolls the relief.
-- **Tribal Furniture's "dead art" was false** — 140 PNGs and its resolver DLL are both
-  present. `jawa/texture_audit` was judging a mod's own `graphicClass` by vanilla rules; 39
-  of 53 rows were noise. Fixed: such defs now go to an `unjudged` bucket, never `missing`.
-  The false item is dropped with the measurement.
+## Owner decisions standing
 
-## ✅ THE EXPERIMENT WORKED — v1's load blocker was one mod entry
+- **Ideoligion mode**: fix at worldgen, do NOT accept Classic. At the top of
+  `WORLDGEN_RUN.md`. It causes BOTH the missing faiths and the wrong leader titles.
+- **The Scald**: sunk to −30 m. It was a lake perched **1,300 m above its own shoreline** —
+  32 "cliffs" were that absurdity. Water now 8.14%.
 
-**`WORLDMAP_gen` loads clean with FactionControl disabled.** `programState: Playing`,
-`hasCurrentGame: true`, `mapCount: 0`, and BOTH canary strings at zero. The same save
-aborted three times with that mod active.
+## Pick up with
 
-Then, in the same window, the world was completed and saved:
-
-    rainfall re-push   21,872 applied, 0 unknown biomes
-    river re-push      238 rivers, 837 roads, 0 unknown defs
-    volcanic read-back 40 mm on all three (was 1668)
-    saved over WORLDMAP_gen, and backed up into the repo
-
-⭐ **The new save no longer records FactionControl, so it loads with no override**, and its
-`<maps />` is still empty — the state the paint requires.
-
-⚠️ **The catch you need to know:** disabling a mod makes every save that RECORDED it refuse
-to load until `ignoreModCompatibility: true` is passed. That is a one-time cost — the new
-save is clean.
-
-### Every decision string, read back
-
-| | |
-|---|---|
-| canary | ErrorWhileLoadingGame **0**, Exception in FinalizeLoading **0** |
-| world | Ash'karr, seed grasshopper, **21,872 tiles**, maps 0 |
-| spot-check | **7 of 7** tiles match the CSV on biome and temperature |
-| landmarks / features | **16** / **23**, largest label 24.3 tiles — the resize scribed |
-| `tile_cache_audit` | **UNEXPLAINED STALE = 0** — your mountain hypothesis was right, and it is a number now |
-| `biome_art_audit` | 24 biomes, **0 missing**. BiomesKit misses this run: **0** |
-| `tile_settleable` | 2,236 refused vs my offline 2,232 — 1,468 Ocean, 345 settlement-adjacent, 312 Lake, 24 impassable |
-
-### 🔴 And the new tools found a real bug on their first run
-
-`faction_leader_get`: **the ideoligion overrode the def on 15 of 17 factions.**
-Empire reads **"leader"** where its def says **"Emperor"**. Pirate reads **"Ethical Dog"**
-where its def says **"Captain"**. `Faction.LeaderTitle` (Faction.cs:142) prefers
-`PrimaryIdeo.leaderTitleMale` and only falls back to the def — so an authored title can never
-win, and every offline check still reads correct. **B40, B41, B42, B52 fail their title half.**
-Same root cause as the faiths. `IDEO_TITLE_BEATS_DEF_TITLE_1`, filed for DECIDE.
-
-## Where it stands
-
-The game is **UP, paused, world loaded, no map** — exactly the state the paint requires, and
-the save on disk matches. `python.exe src/RimMandrake/Utils/reload_check.py` re-reads every
-string in one command; `infrastructure/state/RELOAD_CHECK.md` says what each should say.
-
-### 🔴 Three things want your call
-
-1. **Does FactionControl stay out?** It is what made v1 loadable. What it costs is the
-   worldgen faction-count spinners — which is exactly the page we still need for the slate
-   work. Snapshot to restore from is named above.
-2. **The ideoligion mode.** It is now responsible for TWO failures, not one: the eleven
-   faiths never generated, and 15 of 17 faction leader titles are overridden. Both are
-   decided by one irreversible click on the world-creation page.
-3. **The Scald** — accept it as brine over ground, drop 312 elevations, or just move the two
-   `RiverDelta` mutators. `THE_SCALD_LOST_ITS_WATER_1` has the whole cost.
-
-### And one correction on my own method
-
-I spent an hour diagnosing "the load will not dispatch" from `Player.log` not growing, while
-`load_game` had been returning `success: false, code: save.missing_mods` naming the mod the
-whole time. **I never read the return value.** The project's one law, applied to every write
-I made tonight and not once to a call I expected to succeed. Recorded on the item rather than
-quietly fixed.
+`rimflow next --seat CHECK`. The game is up with a disposable map, so anything needing pawns
+is cheap right now. ⛔ `INHABITED_POOL_ROUND_TRIP_1` is NOT cheap — it wants a quit-to-desktop
+and a two-settlement raid sequence.
