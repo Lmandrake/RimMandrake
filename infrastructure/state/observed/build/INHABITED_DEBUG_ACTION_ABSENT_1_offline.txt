@@ -1,0 +1,142 @@
+### INHABITED_DEBUG_ACTION_ABSENT_1 — offline evidence, BUILD, 2026-08-21
+
+==============================================================================
+PART 1 — WHY THE ACTION DID NOT APPEAR, NAMED FROM THE SOURCE
+==============================================================================
+
+$ grep -n 'DebugAction(' src/Jawa/Inhabited/Source/DebugActions_Inhabited.cs
+40:        private const string Cat = "Inhabited";
+42:        [DebugAction(Cat, "Create place at current tile", allowedGameStates = AllowedGameStates.Playing)]
+71:        [DebugAction(Cat, "Stuff roster (3 pawns)", allowedGameStates = AllowedGameStates.Playing)]
+136:        [DebugAction(Cat, "Report roster", allowedGameStates = AllowedGameStates.Playing)]
+158:        [DebugAction(Cat, "Report displaced pool", allowedGameStates = AllowedGameStates.Playing)]
+178:        [DebugAction(Cat, "Absorb roster into pool", allowedGameStates = AllowedGameStates.Playing)]
+204:        [DebugAction(Cat, "Draw 3 from pool", allowedGameStates = AllowedGameStates.Playing)]
+227:        [DebugAction(Cat, "Spawn authored character", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+
+The item listed three candidates. The source rules out two and confirms the third.
+
+  1. allowedGameStates that the current state does not satisfy   ⛔ RULED OUT.
+     'Spawn authored character' is AllowedGameStates.PlayingOnMap. CHECK walked the
+     tree with a MAP LOADED, so the state was satisfied. The other six are
+     AllowedGameStates.Playing, satisfied too.
+
+  3. a godMode gate rather than a dev-mode one                   ⛔ RULED OUT.
+$ grep -c 'godMode\|DebugSettings.godMode' src/Jawa/Inhabited/Source/DebugActions_Inhabited.cs
+0
+     Zero. No godMode anywhere in the file.
+
+  2. registration under a category node the walker does not traverse   ✅ CONFIRMED.
+     Every one of the SEVEN actions passes Cat as its first argument, and
+     Cat is the literal "Inhabited". So they are NOT children of Actions.
+     They are children of a CATEGORY NODE named Inhabited, one level below it.
+     A single-level listing of Actions returns that category, never its leaves —
+     which is exactly why a search of the 146 children for "Inhabited" or
+     "authored" matched a leaf label nowhere.
+
+== the repo already had a walker that does it right, and it descends TWICE ==
+$ sed -n '42,56p' src/RimMandrake/Utils/inhabited_soak.py
+def find_action(rb, label):
+    """Read the leaf path; never construct one. Some nodes key on a tab character."""
+    for root in ("Actions",):
+        r = rb.call("rimworld/list_debug_action_children", {"path": root})
+        if not r.get("success"):
+            raise RuntimeError("debug tree will not enumerate (%s) - the game may be a zombie"
+                               % str(r.get("message"))[:100])
+        for c in r.get("children") or []:
+            if (c.get("label") or "") == CAT or CAT.lower() in (c.get("path") or "").lower():
+                sub = rb.call("rimworld/list_debug_action_children", {"path": c.get("path")})
+                for leaf in sub.get("children") or []:
+                    if label.lower() in (leaf.get("label") or "").lower():
+                        return leaf.get("path")
+    return None
+
+
+== and the bridge ships a tool that needs no walking at all ==
+$ grep -n -A6 'search_debug_actions' vendor/mod_sources/RimBridgeServer-main/docs/tool-reference.md | head -12
+283:### `rimworld/search_debug_actions`
+284-
+285-Search the full RimWorld debug-action tree globally by path, label, category, and source metadata so callers do not need to walk one subtree at a time
+286-
+287-Parameters:
+288-- `query` (`string`, `required`): Case-insensitive search text such as Toggle Job Logging or Log Job Details
+289-- `limit` (`int`, `optional`, default `50`): Maximum number of matches to return
+
+⇒ WHAT CHECK SHOULD RUN (BUILD does not drive the bridge; that is CHECK's):
+     rimworld/search_debug_actions  {"query": "Spawn authored character"}
+   The category and the label, read out of the source and not constructed, are
+   exactly:   category "Inhabited"   label "Spawn authored character"
+   ⚠️ includeHidden defaults to FALSE on all four discovery tools; if the search
+   still returns nothing, re-run it with includeHidden true before concluding
+   the action is not registered.
+
+🔑 AND THIS IS NOT A REGRESSION. Nothing about the assembly changed.
+
+==============================================================================
+PART 2 — THE INSTRUMENT CAST_ROSTER_269_LOAD_1 WAS OWED, BUILT AND OFFLINE
+==============================================================================
+
+The item's second criterion asks for the debug action OR a tool that lists an
+authored character's name, traits and hook together. ⭐ It needs neither a game
+nor the bridge: the hook and the traits are BOTH in the generated XML, so the
+comparison is a disk question.
+
+$ python3 src/RimMandrake/Utils/cast_hook_audit.py --who "Adda Wesh"
+Adda Wesh                                       HUTT         DOCK NINE
+    traits: Abrasive, GreatMemory, DrugDesire(ChemicalInterest)
+    hook:   A gimpy walk from a crate that came down in '48 and a voice like a rasp on tin. She drinks the night gang under the table twice a season and reminds them of it for the other fifty-one weeks. Two promotions lost to her mouth and she'd lose a third tomorrow.
+    ⚠️  "rasp" — promises audible breathing; no CreepyBreathing
+    ⚠️  "voice like" — promises an unpleasant voice; no AnnoyingVoice
+
+1 characters across 1 roster files; 1 shown
+  1 carry a hook cue no trait backs  (a QUESTION, not a defect)
+  0 have no hook at all
+  0 carry no traits at all
+
+$ python3 src/RimMandrake/Utils/cast_hook_audit.py    (flagged only, tail)
+
+294 characters across 12 roster files; 15 shown
+  15 carry a hook cue no trait backs  (a QUESTION, not a defect)
+  0 have no hook at all
+  0 carry no traits at all
+
+$ python3 src/RimMandrake/Utils/cast_hook_audit.py | grep '⚠️' | sort | uniq -c | sort -rn
+      4     ⚠️  "voice like" — promises an unpleasant voice; no AnnoyingVoice
+      4     ⚠️  "beautiful" — promises notable appearance; no Beauty
+      2     ⚠️  "rasp" — promises audible breathing; no CreepyBreathing
+      2     ⚠️  "cruel" — promises taking pleasure in harm; no Psychopath / Masochist
+      1     ⚠️  "wheezing" — promises audible breathing; no CreepyBreathing
+      1     ⚠️  "rudeness" — promises habitual rudeness; no Abrasive
+      1     ⚠️  "remembers every" — promises perfect recall; no GreatMemory / TooSmart
+      1     ⚠️  "never forgets" — promises perfect recall; no GreatMemory
+      1     ⚠️  "cruelty" — promises taking pleasure in harm; no Psychopath / Masochist
+
+⛔ Every one of those 15 is a QUESTION for the author, never a verdict — prose is
+   allowed to describe a person the trait system cannot model. The tool always
+   exits 0 and does not gate.
+
+== it is deterministic, which the item's sibling asks of any measuring tool ==
+$ python3 ... --json | sha256sum   (twice)
+2ee8b37af3ccb376eea2a948d9e6f9324d948708f68bce47408c1f606fb90cf4  -
+2ee8b37af3ccb376eea2a948d9e6f9324d948708f68bce47408c1f606fb90cf4  -
+
+==============================================================================
+PART 3 — AN UNASKED-FOR FINDING, AND IT SETTLES THE '269'
+==============================================================================
+
+Player.log reads '[Inhabited] ready: 2 patches, 269 characters'. There are 294 on
+disk. The difference is not a loader defect: ONE ROSTER FILE IS NOT DEPLOYED.
+
+$ ls "C:\Program Files (x86)\Steam\steamapps11
+$ ls src/Jawa/Inhabited/Defs/CastRosters | wc -l
+12
+$ diff <(ls game) <(ls repo)
+1a2
+> CastRoster_DEEPWATER.xml
+$ grep -c '<Inhabited.CharacterDef>' src/Jawa/Inhabited/Defs/CastRosters/CastRoster_DEEPWATER.xml
+25
+  294 authored - 25 undeployed Deepwater = 269 loaded. Exact.
+
+⛔ NOT DEPLOYED BY BUILD, deliberately. The game is UP; Mods/Inhabited also holds
+   Assemblies the OS has open, so this is a deploy-window action and it belongs to
+   whoever owns CAST_ROSTER_269_LOAD_1, not to a side effect of this item.
