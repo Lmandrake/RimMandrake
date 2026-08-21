@@ -47,6 +47,13 @@ click.**
 | 2 | **The Galactic Empire's leader is Royalty's high stellarch**, not Palpatine — `fixedLeaderKinds` is unpatched | `IMPERIAL_RAID_ROSTER_1` | the leader pawn is generated at creation |
 | 3 | **Four faction world-markers are wrong** — one is a magenta square, three are shared with another faction that holds settlements | `FACTION_ICONS_UNCOLLIDE_1` | the map is frozen with them on it |
 
+✅ **The ideoligion artifacts are measured and clean** — `The Salvation.rid` 250/266 with
+**no dangling names**, `MandrakeJawa.xtp` 36/36, both against the 2026-08-20 dump
+(`validate_save_artifact.py`, 2026-08-21). ⛔ This is **not** an open gate item and the old
+*"82 precepts unmeasured"* framing is dead. The one residue —
+`IDEO_ABILITY_DEFS_UNREAD_1`, 16 ritual `AbilityDef`s the dump cannot see — is
+**cheap-if-the-game-is-up**, not a blocker.
+
 ⚠️ **All three must be DEPLOYED, not merely committed.** The game reads
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`, never this repo.
 

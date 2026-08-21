@@ -40,3 +40,51 @@ active at world creation.
 **Imported from `queue/DECIDE.md`. Its `state:` read, verbatim:**
 
 ready
+
+## ruling
+🔴 **DECIDE, 2026-08-21 — the premise expired. There IS an offline route, and it has now
+been run.**
+
+This item says *"There is no offline route to the answer"* and names
+`validate_ideoligion.py`, which is the wrong tool — it reads `IdeoPresetDef` and
+`FactionDef` XML. **`src/RimMandrake/Utils/validate_save_artifact.py` is the tool for a
+saved `.rid`/`.xtp`**, and it resolves every def reference in the artifact against the def
+dump. Run 2026-08-21 against the 2026-08-20 dump (61,197 defNames):
+
+| artifact | result |
+|---|---|
+| `src/Jawa/ideoligion/The Salvation.rid` | **250/266 resolve · ✅ no dangling names** |
+| `src/Jawa/ideoligion/MandrakeJawa.xtp` | **36/36 resolve · ✅ no dangling names** |
+
+⇒ **The 82 precepts are measured and they are present.** Not "probably fine" — resolved by
+defName against the dump, with zero dangling.
+
+**What is actually left is 16 `AbilityDef`s, and they are a dump blind spot, not a defect:**
+`Convert` · `Counsel` · `PreachHealth` · `Reassure` · `Trial` · `LeaderSpeech` ·
+`ConversionRitual` · `CombatCommand` · `WorkDrive` · `AM_ChangeStyle` · and six `VME_*`
+leader variants. The dump carries **zero rows of type `AbilityDef`**, so the checker
+correctly reports them ⬜ UNMEASURABLE rather than missing. Their donor mods —
+`sarg.alphamemes`, `vanillaexpanded.vmemese` — are both active.
+
+**Two other claims in the spec above also decayed and should not be re-quoted:**
+- *"585 mods, 11 of which no longer load"* — the `.rid` now reads **576 captured, 7
+  inactive**, and the `.xtp` **585 captured, 18 inactive**.
+- *"including all three xenotype donors"* — ⛔ **false for the `.rid`.** Its seven inactive
+  mods are Yautja, yayoani, cereanmanefix, jawaseashaper, two Regrowth biome patches and
+  rwexploration. None is a xenotype donor, and the artifact has no dangling names anyway.
+
+### ⇒ THE SEQUENCING ANSWER, which is what this item asked for
+
+⛔ **It does NOT gate the faction work, and it does not gate worldgen.** The reason it was
+proposed as a gate — *"the largest unmeasured surface on CHECK's board"* — no longer holds:
+the surface is 16 ability defs, and every precept resolves.
+
+✅ **Filed as `IDEO_ABILITY_DEFS_UNREAD_1` for CHECK** — one screen, at the next game-up,
+riding whatever load is already happening. It is listed in
+`design/Jawa/worldbuilding/PRE_WORLDGEN_GATE.md` as cheap-if-the-game-is-up, **not** as a
+blocker.
+
+🔑 **The lesson, and it is the reason this took one command instead of a game load:** the
+item asserted a tool could not answer the question. It named a real tool that genuinely
+cannot — and a second tool built for exactly this artifact already existed. **Check that a
+"no offline route" claim is still true before spending a live round on it.**
