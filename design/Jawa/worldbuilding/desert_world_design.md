@@ -445,7 +445,13 @@ from JDS Armory, KotOR Weapons and Outer Rim Core: `OuterRim_A280Blaster`,
 `OuterRim_A180Blaster`, `OuterRim_DH17Rifle`, `OuterRim_DH17Pistol`,
 `OuterRim_HH12RocketLauncher`. Plus 11 apparel (officer jacket / uniform / cap,
 fleet trooper uniform + helmet, forest fatigues / poncho / jacket / helmet,
-jetpack) and biome-tagged troopers including `OuterRim_RebelDesertTrooper`.
+jetpack) and biome-tagged troopers.
+⚠️ **Correction, 2026-08-20 (def dump, modCount 578).** ~~biome-tagged troopers including
+`OuterRim_RebelDesertTrooper`~~ → **there is no desert variant.** Rebel Alliance is installed, and the
+biome-tagged trooper kinds it actually ships are `OuterRim_RebelSnowTrooper`, `OuterRim_RebelScoutTrooper`
+and `OuterRim_RebelEndorTrooper` (forest). 🔓 **OPEN:** on a desert-world doc this was the one we most
+wanted to be real. Whether to author a desert trooper kind, reskin the scout, or drop the biome hook is a
+design decision and is left open.
 
 **The mechanism — config, not patching. Both tools are already adopted.**
 
@@ -537,9 +543,9 @@ wrapper, so enabling it without Mines 2.0 present throws on load.
 
 Where §3B/§3D are *found windfalls*, this is the **found peril** side of the same coin: hazards and faction-territory markers seeded onto a tile at authoring/RimBridge so the place *is* dangerous before any raid spawns. Consolidated here 2026-08-06 from the retired `resource_catalogue.md` "Family 11" inventory (the axis assignments live in `resource_terrain_matrix.html` §Family-11; the concrete defNames + the one real design hook are below so they aren't lost). All enemy-side / terrain-shaping only — raises no player ceiling, pillar-clean by construction.
 
-**(a) Booby-trap / IED palette — already in the stack (VFE-Deserters).** Full confirmed def list to reflavor as pre-placed wreck/minefield hazards: `TrapIED_ToxGas`, `TrapIED_Tar`, `TrapIED_Cluster`, `TrapIED_AntigrainWarhead`, `TrapIED_Shrapnel`, `TrapIED_EMP`, `TrapIED_HighExplosive`, `TrapIED_Incendiary`, `TrapIED_Firefoam`, `TrapIED_Smoke`. Use these as the physical hazard layer on abandoned-Imperial and android tiles — no new dependency.
+**(a) Booby-trap / IED palette — already in the stack (VFE-Deserters).** ~~Full confirmed def list: `TrapIED_ToxGas`, `TrapIED_Tar`, `TrapIED_Cluster`, `TrapIED_AntigrainWarhead`, `TrapIED_Shrapnel`, `TrapIED_EMP`, `TrapIED_HighExplosive`, `TrapIED_Incendiary`, `TrapIED_Firefoam`, `TrapIED_Smoke`.~~ → **corrected 2026-08-20 against the def dump (modCount 578).** `TrapIED_Cluster` and `TrapIED_Shrapnel` **do not exist**; `TrapIED_Tar` is **Alpha Biomes, not VFE-Deserters, and its real name is `AB_TrapIED_Tar`**. The ten bare `TrapIED_*` defs actually in the dump are: `TrapIED_AntigrainWarhead`, `TrapIED_AntigrainWarhead_Large`, `TrapIED_Deadlife`, `TrapIED_EMP`, `TrapIED_Firefoam`, `TrapIED_Gravcore`, `TrapIED_HighExplosive`, `TrapIED_Incendiary`, `TrapIED_Smoke`, `TrapIED_ToxGas`. Adjacent IED families in the same stack, should a wider palette be wanted: `AB_TrapIED_Tar` (Alpha Biomes), `GR_TrapIED_Boom`, and the five `CGT_TrapIED_*` gas traps (Halothane, Mustard, N2O, Tear, VX). Use these as the physical hazard layer on abandoned-Imperial and android tiles — no new dependency.
 
-**(b) Unstable fuel-node (deep-desert / dead-industrial tile).** Cleanest builds: reflavor a `TrapIED_HighExplosive`/`TrapIED_Cluster` (VFE-Deserters, in stack) placed *inside* the wreck as the "fuel node," or an ◇author comp that explodes a fuel `ThingDef` on deconstruct-begin. Turns salvaging a derelict into a real risk.
+**(b) Unstable fuel-node (deep-desert / dead-industrial tile).** Cleanest builds: reflavor a `TrapIED_HighExplosive` (~~`TrapIED_Cluster`~~ — no such def, 2026-08-20; `TrapIED_AntigrainWarhead` is the nearest real large-yield option) (VFE-Deserters, in stack) placed *inside* the wreck as the "fuel node," or an ◇author comp that explodes a fuel `ThingDef` on deconstruct-begin. Turns salvaging a derelict into a real risk.
 
 **(c) ⭐ Hutt corpse-markers — the faction-goodwill tripwire (the one genuine design hook, ◇author, not yet built).** The idea: pre-placed Hutt "warning" markers (gibbeted corpses / skull spikes on a tile the Hutts consider theirs) that inflict a **Hutt goodwill penalty if the player deconstructs/destroys them** — a diegetic "don't touch the slugs' turf" tripwire. **DefNames to place:** vanilla Ideology `GibbetCage` + `Skullspike` (place with corpses/skulls inside) + themed skulls already in the stack (`KraytDragonSkull`, `RancorSkull`, `WampaSkull`, `AB_AncientGallatrossSkull`). **Implementation routes, in order of preference:** (a) a C#-free `Jawa_Patches` patch is likely *insufficient* (no vanilla hook fires faction goodwill on deconstruct); more realistically (b) a small `MapComponent`/`ThingComp` that fires `Faction.TryAffectGoodwillWith(hutt, -X)` when the marker is deconstructed/destroyed, or (c) RimBridge live-watch: detect the gibbet's destruction event and apply the goodwill hit externally. **The *placement* needs no mod at all and can ship first** (just scatter the vanilla/stack defs on Hutt-turf tiles); the goodwill-penalty is a follow-on enhancement. Ties to the roster's Hutt "Skullspikes acceptable/desired" ideology precept.
 

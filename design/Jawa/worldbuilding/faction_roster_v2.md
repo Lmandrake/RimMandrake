@@ -27,7 +27,25 @@
 >    (a) **Imperial prisoners / rescue-quest targets**, (b) **rare Homestead "seers" (~1%)**,
 >    (c) **Ascendant Helix research subjects (~2%)**, and (d) a **Jedi-eligible race** for
 >    the factionless wanderers. Rationale: Force sensitivity leaks quietly into the fringe
->    factions, but *trained* Jedi remain factionless. `OuterRim_Miraluka` is confirmed on disk.
+>    factions, but *trained* Jedi remain factionless.
+>    ~~`OuterRim_Miraluka` is confirmed on disk.~~
+>
+> ⚠️ **Correction, 2026-08-20 — the evidence sentence only; the four-role ruling above stands as
+> the owner's decision.** `OuterRim_Miraluka` is **not on disk** and has **no successor** in the
+> RimMandrake pack. The species left the build when `Neronix17.OuterRim.GalacticDiversity`,
+> `btd.XenotypeRemix.StarWars` and `guy762.StarWarsXenotypes` were consolidated into
+> `mandrake.starwarsraces`. The only surviving trace in the def dump (modCount 578, captured
+> 2026-08-20) is `RimMandrake_KoTOR_NamerMiraluka`, a **RulePackDef name maker** — not a species,
+> not a XenotypeDef, not a PawnKindDef. `OuterRim_ForceSight`, the ability this roster hangs on
+> Miraluka, **does not exist in the dump in any form** (every def file grepped for `ForceSight`:
+> zero hits).
+>
+> 🔓 **OPEN — this is a decision, not a repair.** All four roles, and every other Miraluka
+> placement in this doc (Global system 5 Jedi-eligible races; the Imperial prisoner pool;
+> Homestead 1% seers; Helix 2% research subjects; the Psychic Researcher kind; the race/faction
+> matrix) now name a species with no def behind them. Whether to find a replacement race, revive
+> the xenotype in `mandrake.starwarsraces`, or drop the line is the owner's call. **Nothing has
+> been dropped here.**
 >
 > 3. **Race inventory.** This doc's "Global system 3 — Available races" matches the verified
 >    on-disk inventory (42 Outer Rim – Galactic Diversity species + 6 reflavored vanilla-Biotech
@@ -255,7 +273,10 @@ Royalty psycast mechanics, not a bespoke Force system, unless a Force mod is alr
 
 **Jedi placement — BOTH channels are true** (reconciliation ruling, 2026-08-06, overriding the original factionless-only phrasing).
 
-*Primary channel — factionless wanderers.* Jedi generate as hidden wanderer pawns hunted by the Galactic Empire, not as members of the Homestead Defense League or any other faction. Eligible races: Miraluka, Mirialan, Togruta, Iktotchi, Cerean, or Baseliner human. Psylink 3–6; monosword, persona monosword, or custom lightsaber; shield belt; no heavy armour; defensive, mobility, perception, and control psycasts; extreme pawn combat value; maximum one per group.
+*Primary channel — factionless wanderers.* Jedi generate as hidden wanderer pawns hunted by the Galactic Empire, not as members of the Homestead Defense League or any other faction. Eligible races: Miraluka ⚠️, Mirialan, Togruta, Iktotchi, Cerean, or Baseliner human.
+⚠️ **Miraluka has no def on disk as of 2026-08-20** — see the correction under the reconciliation ruling at
+the top of this file. Left in the list deliberately: replacing or dropping it is a design decision, not a repair.
+ Psylink 3–6; monosword, persona monosword, or custom lightsaber; shield belt; no heavy armour; defensive, mobility, perception, and control psycasts; extreme pawn combat value; maximum one per group.
 
 *Secondary channel — the rare sheltered Jedi.* In addition, a **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer group** at a very low spawn weight (the "hidden protector" the player may discover as an ally rather than a hunted stranger). Same curated VPE light/control loadout, same one-per-group cap. This does not make Jedi faction *members* in the roster sense — it is an occasional embedded guardian, not a standing pawn-kind slot in the faction's ordinary generation.
 
