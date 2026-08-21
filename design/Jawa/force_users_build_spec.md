@@ -1,4 +1,29 @@
 <!-- status: aspirational -->
+> ## ⛔ CLOSED 2026-08-20 — MIRALUKA IS GONE, FOR EVERY VERSION (`MIRALUKA_IS_GONE_1`)
+> Owner's ruling, verbatim: *"Just let the Miraluka be gone, don't try to get it back, close it out
+> completely as an item for any version."* **This is not a v2 deferral, there is no replacement race,
+> and there is no open question left anywhere.**
+>
+> **Every Miraluka line in this document is dead.** The species left the build when
+> `Neronix17.OuterRim.GalacticDiversity`, `btd.XenotypeRemix.StarWars` and
+> `guy762.StarWarsXenotypes` were consolidated into `mandrake.starwarsraces`. Verified against the
+> def dump (modCount 578, captured 2026-08-20): **no Miraluka species def exists** —
+> `guy762_xenotype_miraluka`, `BTD_Miraluka`, `OuterRim_Miraluka` and the `OuterRim_Miraluka`
+> pawnkind stub are all gone — and **`OuterRim_ForceSight` does not exist in any form** (every def
+> file grepped for `ForceSight`: zero hits). The `guy762_*` Force genes and abilities this document
+> was built on went with the same three mods.
+>
+> ⇒ **§3.1's "Jedi = `guy762_xenotype_miraluka`, the single best fit in the stack" is void**, as is
+> §3.4's `xenotypeChances guy762_xenotype_miraluka 999`. Both are struck in place below. The Jedi
+> xenotype is an open BUILD question **about other races** — it is *not* a reason to revive Miraluka.
+>
+> ✅ **`RimMandrake_KoTOR_NamerMiraluka` survives and is deliberately left alone.** It is a
+> **RulePackDef name maker** — not a species, not a XenotypeDef, not a PawnKindDef. It is harmless,
+> it is the only trace of the name in the dump, and nobody needs to hunt it later.
+>
+> ⚠️ Miraluka evidence elsewhere in this file (§1a, §1b, §1e-bis, §4) is **dated 2026-08-13 and kept
+> as history, not as fact about today's stack.** Read it as "what was on disk then".
+
 > ## 🔴 CORRECTION 2026-08-20 — THE LIGHTSABER CONCLUSION IN §7 IS SUPERSEDED. THE MOD IS NOW ACTIVE.
 > This document's evidence was read on **2026-08-13**. The def dump it is now measured against was
 > captured **2026-08-20** (`capturedUtc 2026-08-20T15:08:30Z`, game 1.6.4871, 578 `activeMods`).
@@ -152,11 +177,11 @@ folder by reading the **first** `<packageId>` in that folder's `About/About.xml`
 (later ones are `modDependencies` and were a source of false matches on the first
 pass). Every def below was read on disk.
 
-### 1a. Force-sensitive xenotypes — **we already have five, and they are good**
+### 1a. Force-sensitive xenotypes — ~~**we already have five, and they are good**~~ ⛔ **one fewer: Miraluka is struck (`MIRALUKA_IS_GONE_1`, 2026-08-20) and the count in this heading no longer holds**
 
 | defName | label | source mod (active) | file |
 |---|---|---|---|
-| `guy762_xenotype_miraluka` | Miraluka | Star Wars Xenotypes | `…\294100\2915192253\1.6\Defs\GeneDefs\XenotypeDefs.xml:941` |
+| ~~`guy762_xenotype_miraluka`~~ | ~~Miraluka~~ | ⛔ **GONE — closed 2026-08-20, `MIRALUKA_IS_GONE_1`.** No def, no successor, no replacement | ~~`…\294100\2915192253\1.6\Defs\GeneDefs\XenotypeDefs.xml:941`~~ |
 | `guy762_xenotype_sith` | Sith Pureblood | Star Wars Xenotypes | `…\2915192253\1.6\Defs\GeneDefs\XenotypeDefs.xml:1271` |
 | `guy762_xenotype_yoder` | (Yoda's species) | Star Wars Xenotypes | `…\2915192253\1.6\Defs\GeneDefs\XenotypeDefs.xml:1650` |
 | `RimMandrakeSithKissaiPureblood` | Sith Kissai (Pureblood) | [BTD] Xenotype REMIX: Star Wars | `…\294100\3458153185\1.6\Defs\Genes\BTD_Xenotypes.xml:1805` |
@@ -355,8 +380,9 @@ The campaign dossier for this faction is the **Homestead Defense League**
 **More Force-flavoured xenotypes, all active.** `PureBlood` ("Pureblood",
 `…\294100\3485069256\Defs\XenoType.xml`, mod *Rimwars:Pureblood Xenotype*,
 `Sov.Sith`) — cosmetics plus `PsychicAbility_Extreme`, **no** `guy762_statgene_force`,
-so no psylink. `BTD_Miraluka` (`…\3458153185\1.6\Defs\Genes\BTD_Xenotypes.xml:1279`,
-carries `OuterRim_ForceSight`), `OuterRim_Miraluka` and `OuterRim_Sith`
+so no psylink. ~~`BTD_Miraluka` (`…\3458153185\1.6\Defs\Genes\BTD_Xenotypes.xml:1279`,
+carries `OuterRim_ForceSight`)~~ ⛔ **gone — `MIRALUKA_IS_GONE_1`, and `OuterRim_ForceSight` exists
+nowhere in the 2026-08-20 dump** — ~~`OuterRim_Miraluka`~~ and `OuterRim_Sith`
 (`…\294100\2980427615\1.6\Defs\GeneDefs\Xenotype_Miraluka.xml` / `Xenotype_Sith.xml`),
 `guy762_xenotype_massassi`, `guy762_xenotype_zabrakDathomiri`.
 
@@ -518,8 +544,9 @@ option in the document, and it is a roster decision for the owner, not mine.
   `Culture_Sith.xml`, `guy762_culture_sith`) does not load. The
   `guy762_NamerPawnKind_MaleInquisitor` / `_FemaleInquisitor` RulePacks that
   *are* loaded name pawnkinds that do not exist.
-- **Every Sith/Miraluka "pawnkind" in the stack is a debug stub.**
-  `OuterRim_Sith`, `OuterRim_SithTribal`, `OuterRim_Miraluka`,
+- **Every Sith/Miraluka "pawnkind" in the stack is a debug stub.** ⛔ *(The Miraluka half of this
+  is moot: the species is closed out — `MIRALUKA_IS_GONE_1`, 2026-08-20.)*
+  `OuterRim_Sith`, `OuterRim_SithTribal`, ~~`OuterRim_Miraluka`~~,
   `OuterRim_ForceGremlin` are all `ParentName="OuterRimTestColonyPawnKind"` /
   `…TestTribalPawnKind` with no faction, no gear and no combatPower — dev-spawn
   enablers only. Our own
@@ -752,8 +779,8 @@ with defs that are all verified present; C is a project, not a task.
 |---|---|---|
 | **Sith** | `guy762_xenotype_sith` | Already carries `guy762_statgene_force` → `PsychicAmplifier` (psylink 1). Also `PsychicAbility_Extreme`, `Aggression_HyperAggressive`, `MeleeDamage_Strong`, `AptitudeRemarkable_Melee`, red skin, bone head, `combatPowerFactor 1.5`. `nameMaker NamerPersonPureblood`. This is a Sith with no authoring at all. |
 | **Sith castes (optional flavour)** | `RimMandrakeSithKissaiPureblood` / `RimMandrakeSithMassassi` / `RimMandrakeSithZ` | Kissai priest / Massassi warrior / Zugurak engineer. `RimMandrakeSithKissaiPureblood` carries `PsychicAbility_Enhanced` + `Turn_Gene_LatentPsychic`. **No `guy762_statgene_force`, so no psylink** — flavour only unless the psylink is supplied by §3.3. |
-| **Jedi** | `guy762_xenotype_miraluka` | Carries `guy762_statgene_force`, `PsychicAbility_Enhanced`, `Aggression_DeadCalm`, `Turn_Gene_Blindness`, and via the Royalty folder gains `guy762_AbilityGene_forcesight` → the `aiCanUse` blindsight ability. `faction_roster_v2.md:14` already places Miraluka as *"rare Homestead seers (~1%)"*. **This is the single best fit in the stack.** |
-| **Jedi (human option)** | `guy762_xenotype_mirialan` | Green/yellow-skinned, "more sensitive to the force". ⚠️ Its Force gene line is `<li MayRequire="lee.theforce.standalone">Force_Gene_LatentForceUser</li>` — **stripped in our stack**, so a Mirialan here is a cosmetic Jedi with no psylink. Use Miraluka, or add the gene via §3.3. |
+| **Jedi** | ~~`guy762_xenotype_miraluka`~~ | ⛔ **VOID — closed 2026-08-20, `MIRALUKA_IS_GONE_1`.** The xenotype does not exist, `OuterRim_ForceSight` does not exist, and the "rare Homestead seers (~1%)" placement it cited has itself been struck in `faction_roster_v2.md`. **No replacement race is nominated here** — picking the Jedi xenotype from the surviving races is a fresh decision, not a Miraluka repair. ~~Carries `guy762_statgene_force`, `PsychicAbility_Enhanced`, `Aggression_DeadCalm`, `Turn_Gene_Blindness`, and via the Royalty folder gains `guy762_AbilityGene_forcesight` → the `aiCanUse` blindsight ability. This is the single best fit in the stack.~~ |
+| **Jedi (human option)** | `guy762_xenotype_mirialan` | Green/yellow-skinned, "more sensitive to the force". ⚠️ Its Force gene line is `<li MayRequire="lee.theforce.standalone">Force_Gene_LatentForceUser</li>` — **stripped in our stack**, so a Mirialan here is a cosmetic Jedi with no psylink. ~~Use Miraluka, or add~~ ⛔ **Miraluka is gone (`MIRALUKA_IS_GONE_1`) — the only remaining route is to add** the gene via §3.3. |
 
 **Do not author a new XenotypeDef unless the owner wants a distinct look.** If one
 is wanted later, the house pattern is
@@ -863,7 +890,8 @@ It now reads `Empire`. See `infrastructure/state/OWNER_DECISIONS.md`.
 ```
 
 and the Jedi twin — `Jawa_Jedi_Sentinel`, `defaultFactionDef OuterRim_MoistureFarmers`,
-`xenotypeChances guy762_xenotype_miraluka 999`, `combatPower 220`,
+~~`xenotypeChances guy762_xenotype_miraluka 999`~~ ⛔ **struck 2026-08-20, `MIRALUKA_IS_GONE_1` — that
+xenotype does not exist and no replacement is named here**, `combatPower 220`,
 `maxPerGroup 1`, apparel tags drawn from what the Homestead pawnkinds already
 use, **no `factionLeader`**.
 

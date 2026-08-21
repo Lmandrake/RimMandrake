@@ -340,17 +340,25 @@ whole DLC subsystem and it should be a decision, not a side effect.
 |---|---|
 | **1 Hutt Cartel** | Nikto 22 · Gamorrean 18 · Rodian 11 · Trandoshan 10 · Aqualish 9 · Twi'lek 8 · Pyke 7 · Devaronian 5 · Herglic 4 · **Hutt 3** · Zeltron 2 · human 1 |
 | **2 the Galactic Empire** | **baseliner human 78** · Chiss 7 · Umbaran 6 · Arkanian 4 · Zabrak 3 · Savant 2 — *Sith and Massassi only inside escort pawn kinds* |
-| **3 Homestead Defense League** | human 20 · Ithorian 12 · Duros 10 · Sullustan 10 · Abednedo 9 · Pantoran 8 · Mirialan 7 · Twi'lek 7 · Iktotchi 5 · Togruta 5 · Cerean 4 · Bith 2 · Miraluka 1 |
+| **3 Homestead Defense League** | human **21** · Ithorian 12 · Duros 10 · Sullustan 10 · Abednedo 9 · Pantoran 8 · Mirialan 7 · Twi'lek 7 · Iktotchi 5 · Togruta 5 · Cerean 4 · Bith 2 · ~~Miraluka 1~~ |
 | **4 Deep Desert Tribes** | **Tusken (Dune Sea) 50 · Tusken (Canyon) 35** · Desert alien 8 · Brute 4 · Nikto 3 |
 | **5 Free Droid Enclaves** | **100% droid chassis, 0% biological** — Labor 25 · Maintenance 20 · Utility 15 · Scout 12 · Medical 8 · Security 8 · Protocol 7 · Heavy defence 4 · Coordinator core 1 |
 | **6 Wildsteam Clan** | Wookiee 48 · Wookiee-kin 25 · Cathar 10 · Ewok 8 · Togruta 6 · Ithorian 3 |
 | **7 Deepwater Compact** | Quarren 23 · Mon Calamari 22 · Selkath 20 · Gungan 14 · Chagrian 8 · Herglic 5 · Aqualish 4 · Ithorian 2 · Duros 2 — **every one aquatic or amphibian** |
 | **8 Geonosian Foundry Hive** | **Geonosian 76** · Savant 8 · Bith 6 · Brute 5 · Pyke 3 · Rakata 2 — *plus a 35–55% droid share on top* |
-| **9 Ascendant Helix** | Arkanian 26 · Kaminoan 20 · **Brute stock 12 (the engineered underclass)** · Cerean 8 · Bith 8 · Savant 8 · Chiss 6 · Rakata 4 · Umbaran 4 · Miraluka 2 · Neimoidian 2 |
+| **9 Ascendant Helix** | Arkanian **28** · Kaminoan 20 · **Brute stock 12 (the engineered underclass)** · Cerean 8 · Bith 8 · Savant 8 · Chiss 6 · Rakata 4 · Umbaran 4 · ~~Miraluka 2~~ · Neimoidian 2 |
 | **10 Blackstar Company** | Kaleesh 15 · Zabrak 12 · Trandoshan 12 · Rodian 10 · Bothan 8 · Devaronian 8 · Cathar 8 · Chiss 7 · Umbaran 6 · Zeltron 5 · Iktotchi 3 · Togruta 3 · Duros 3 |
 | **11 Jawa Trade Moot** | **Jawa (clan) 78 · Jawa (shaman/elder) 12** · Ugnaught 6 · vermin-kin 4 |
 | **12 the Junkers** | Gamorrean 26 · Weequay 16 · Nikto (low caste) 14 · Aqualish 12 · Ugnaught 10 · Rodian 8 · Snivvian 7 · Trandoshan (disgraced) 5 · Devaronian 2 |
 | **player** | **Jawa.** Other races may join by recruitment |
+
+⛔ **Miraluka is struck from factions 3 and 9 — CLOSED 2026-08-20, `MIRALUKA_IS_GONE_1`.** Owner's
+ruling: *"Just let the Miraluka be gone, don't try to get it back, close it out completely as an item
+for any version."* The species has no def and no successor after the consolidation into
+`mandrake.starwarsraces`; **there is no replacement race and this is not a v2 item.** Both rows still
+sum to 100 because the freed share was folded into the row above it — human 20 → **21** in the
+Homestead, Arkanian 26 → **28** in the Helix. That is arithmetic, not a re-casting of the role.
+See `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_roster_v2.md` for the full closure.
 
 ⚠️ **Thirst is differential and it is set by species, not faction.** Jawa, Tusken,
 Desert alien, Geonosian, Nikto, Kaleesh and Iktotchi drink **less**; droids drink

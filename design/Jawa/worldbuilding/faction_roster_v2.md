@@ -23,29 +23,31 @@
 >    still holds (no player Force ceiling). The body's "Global system 5 — Jedi and Sith"
 >    section reflects this.
 >
-> 2. **Miraluka — FOUR-ROLE placement.** Miraluka appear in four roles:
+> 2. ~~**Miraluka — FOUR-ROLE placement.** Miraluka appear in four roles:
 >    (a) **Imperial prisoners / rescue-quest targets**, (b) **rare Homestead "seers" (~1%)**,
 >    (c) **Ascendant Helix research subjects (~2%)**, and (d) a **Jedi-eligible race** for
 >    the factionless wanderers. Rationale: Force sensitivity leaks quietly into the fringe
->    factions, but *trained* Jedi remain factionless.
+>    factions, but *trained* Jedi remain factionless.~~
 >    ~~`OuterRim_Miraluka` is confirmed on disk.~~
 >
-> ⚠️ **Correction, 2026-08-20 — the evidence sentence only; the four-role ruling above stands as
-> the owner's decision.** `OuterRim_Miraluka` is **not on disk** and has **no successor** in the
+> ⛔ **CLOSED 2026-08-20 — `MIRALUKA_IS_GONE_1`. THE SPECIES IS GONE AND STAYS GONE.**
+> Owner's ruling, verbatim: *"Just let the Miraluka be gone, don't try to get it back, close it
+> out completely as an item for any version."* The four-role placement above is **struck, not
+> deferred** — there is **no v2 item, no replacement race, and no open question**. Every other
+> Miraluka placement in this document (Global system 5 Jedi-eligible races; the Imperial prisoner
+> pool; the Homestead 1% seers; the Helix 2% research subjects; the Psychic Researcher kind; the
+> race/faction matrix) is struck in place below under the same date. Do not re-open this.
+>
+> **Why it went.** `OuterRim_Miraluka` is **not on disk** and has **no successor** in the
 > RimMandrake pack. The species left the build when `Neronix17.OuterRim.GalacticDiversity`,
 > `btd.XenotypeRemix.StarWars` and `guy762.StarWarsXenotypes` were consolidated into
-> `mandrake.starwarsraces`. The only surviving trace in the def dump (modCount 578, captured
-> 2026-08-20) is `RimMandrake_KoTOR_NamerMiraluka`, a **RulePackDef name maker** — not a species,
-> not a XenotypeDef, not a PawnKindDef. `OuterRim_ForceSight`, the ability this roster hangs on
-> Miraluka, **does not exist in the dump in any form** (every def file grepped for `ForceSight`:
-> zero hits).
+> `mandrake.starwarsraces`. `OuterRim_ForceSight`, the ability this roster hung on Miraluka,
+> **does not exist in the def dump in any form** (modCount 578, captured 2026-08-20; every def
+> file grepped for `ForceSight`: zero hits).
 >
-> 🔓 **OPEN — this is a decision, not a repair.** All four roles, and every other Miraluka
-> placement in this doc (Global system 5 Jedi-eligible races; the Imperial prisoner pool;
-> Homestead 1% seers; Helix 2% research subjects; the Psychic Researcher kind; the race/faction
-> matrix) now name a species with no def behind them. Whether to find a replacement race, revive
-> the xenotype in `mandrake.starwarsraces`, or drop the line is the owner's call. **Nothing has
-> been dropped here.**
+> ✅ **`RimMandrake_KoTOR_NamerMiraluka` STAYS — it is not a leftover, do not hunt it.** It is a
+> **RulePackDef name maker**: not a species, not a XenotypeDef, not a PawnKindDef. It is the only
+> surviving trace of the name in the dump, it is harmless, and nothing depends on it being removed.
 >
 > 3. **Race inventory.** This doc's "Global system 3 — Available races" matches the verified
 >    on-disk inventory (42 Outer Rim – Galactic Diversity species + 6 reflavored vanilla-Biotech
@@ -273,9 +275,10 @@ Royalty psycast mechanics, not a bespoke Force system, unless a Force mod is alr
 
 **Jedi placement — BOTH channels are true** (reconciliation ruling, 2026-08-06, overriding the original factionless-only phrasing).
 
-*Primary channel — factionless wanderers.* Jedi generate as hidden wanderer pawns hunted by the Galactic Empire, not as members of the Homestead Defense League or any other faction. Eligible races: Miraluka ⚠️, Mirialan, Togruta, Iktotchi, Cerean, or Baseliner human.
-⚠️ **Miraluka has no def on disk as of 2026-08-20** — see the correction under the reconciliation ruling at
-the top of this file. Left in the list deliberately: replacing or dropping it is a design decision, not a repair.
+*Primary channel — factionless wanderers.* Jedi generate as hidden wanderer pawns hunted by the Galactic Empire, not as members of the Homestead Defense League or any other faction. Eligible races: ~~Miraluka,~~ Mirialan, Togruta, Iktotchi, Cerean, or Baseliner human — **five races.**
+⛔ **Miraluka struck 2026-08-20 (`MIRALUKA_IS_GONE_1`): closed for every version, no replacement, not a v2 item.**
+The species has no def and no successor — see the closure at the top of this file. The list was six races and is
+now **five**; the remaining five are unchanged and nothing is added in Miraluka's place.
  Psylink 3–6; monosword, persona monosword, or custom lightsaber; shield belt; no heavy armour; defensive, mobility, perception, and control psycasts; extreme pawn combat value; maximum one per group.
 
 *Secondary channel — the rare sheltered Jedi.* In addition, a **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer group** at a very low spawn weight (the "hidden protector" the player may discover as an ally rather than a hunted stranger). Same curated VPE light/control loadout, same one-per-group cap. This does not make Jedi faction *members* in the roster sense — it is an occasional embedded guardian, not a standing pawn-kind slot in the faction's ordinary generation.
@@ -284,7 +287,8 @@ Both channels draw on the same curated NPC-only VPE ability set; the player and 
 
 **Sith** appear only in Imperial Sith-escort pawn kinds. Psylink 4–6; persona melee weapon; shield belt or prestige armour; offensive and control psycasts; high Melee, Social, Intellectual; always accompanied by elite troops; extreme spawn cost.
 
-**Miraluka are never ordinary Imperial personnel.** All Miraluka are Force-sensitive, so under the Galactic Empire they appear exclusively as prisoners in Imperial settlements and as rescue-quest targets.
+~~**Miraluka are never ordinary Imperial personnel.** All Miraluka are Force-sensitive, so under the Galactic Empire they appear exclusively as prisoners in Imperial settlements and as rescue-quest targets.~~
+⛔ **CLOSED 2026-08-20 (`MIRALUKA_IS_GONE_1`).** The whole paragraph rests on a species that no longer exists, so it is closed rather than rescued: the Empire has **no** Miraluka prisoner tier and **no** replacement one. Imperial rescue quests still have the prisoner pool below, minus this race.
 
 ## Global system 6 — Droid implementation split
 
@@ -689,7 +693,7 @@ Human primacy is enforced demographically, not just ideologically. Non-humans ar
 
 ### Prisoner pool
 
-Imperial settlements always generate a slave/prisoner population, drawn from **Wookiee, Mon Calamari, Geonosian, and Miraluka**. Raiding an Imperial base therefore yields recruitable pawns, giving a permanent enemy an upside beyond loot.
+Imperial settlements always generate a slave/prisoner population, drawn from **Wookiee, Mon Calamari, and Geonosian** ~~and Miraluka~~ — **three races, not four** (Miraluka struck 2026-08-20, `MIRALUKA_IS_GONE_1`; no replacement). Raiding an Imperial base therefore yields recruitable pawns, giving a permanent enemy an upside beyond loot.
 
 ### Forced pawn-kind assignments
 
@@ -831,7 +835,7 @@ The Homestead requires potable water but is excluded from natural sources — th
 
 | Race/xenotype | Weight | Typical use |
 |---|---:|---|
-| **Baseliner human** | 20% | Farmers, militia, mechanics |
+| **Baseliner human** | 21% | Farmers, militia, mechanics |
 | **Ithorian** | 12% | Growers, doctors, negotiators |
 | **Duros** | 10% | Mechanics, pilots, rifle militia |
 | **Sullustan** | 10% | Miners, builders, tunnel workers |
@@ -843,8 +847,13 @@ The Homestead requires potable water but is excluded from natural sources — th
 | **Togruta** | 5% | Hunters and scouts |
 | **Cerean** | 4% | Researchers and teachers |
 | **Bith** | 2% | Craftspeople and researchers |
-| **Miraluka** | 1% | Rare seers |
+| ~~**Miraluka**~~ | ~~1%~~ | ~~Rare seers~~ — ⛔ **struck 2026-08-20, `MIRALUKA_IS_GONE_1`** |
 | **Total** | **100%** | |
+
+⛔ **Miraluka closed out 2026-08-20 (`MIRALUKA_IS_GONE_1`) — no replacement race.** The freed **1%**
+was folded into **Baseliner human (20% → 21%)** so the table still totals 100%. That is arithmetic to
+keep the column honest, **not** a statement that humans inherit the seer role — the seer role is gone.
+
 
 ### Forced pawn-kind assignments
 
@@ -1708,7 +1717,7 @@ Closed-loop recyclers make the Helix siting-indifferent, but growth vats and bio
 
 | Race/xenotype | Weight | Typical use |
 |---|---:|---|
-| **Arkanian** | 26% | Geneticists, doctors, administrators — the pureblood caste |
+| **Arkanian** | 28% | Geneticists, doctors, administrators — the pureblood caste |
 | **Kaminoan** | 20% | Growth-vat and medical specialists |
 | **Brute stock** | 12% | **The labour-line: an engineered underclass** |
 | **Cerean** | 8% | Senior researchers and educators |
@@ -1717,9 +1726,14 @@ Closed-loop recyclers make the Helix siting-indifferent, but growth vats and bio
 | **Chiss** | 6% | Security officers and administrators |
 | **Rakata** | 4% | Relic and archotechnology researchers |
 | **Umbaran** | 4% | Intelligence and containment staff |
-| **Miraluka** | 2% | Psychic research subjects |
+| ~~**Miraluka**~~ | ~~2%~~ | ~~Psychic research subjects~~ — ⛔ **struck 2026-08-20, `MIRALUKA_IS_GONE_1`** |
 | **Neimoidian** | 2% | Commercial staff |
 | **Total** | **100%** | |
+
+⛔ **Miraluka closed out 2026-08-20 (`MIRALUKA_IS_GONE_1`) — no replacement race.** The freed **2%**
+was folded into **Arkanian (26% → 28%)**, the table's largest row, so the total is still 100%. That is
+arithmetic only; the Helix simply has no psychic-research-subject race any more.
+
 
 ### The labour-line
 
@@ -1738,7 +1752,7 @@ This makes the faction's Supremacist and preferred-xenotype precepts **internall
 - **Medical Specialist:** Kaminoan or Arkanian.
 - **Labour-line Worker:** Brute stock only; minimal gear; water-rationed; very low point cost.
 - **Prototype Guardian:** gene-tailored pawn from any approved base race; extreme point cost.
-- **Psychic Researcher:** Miraluka or Cerean with low psylink.
+- **Psychic Researcher:** ~~Miraluka or~~ **Cerean only**, with low psylink (Miraluka struck 2026-08-20, `MIRALUKA_IS_GONE_1`; nothing added in its place).
 
 ## Belief system: **The Ascendant Genome**
 
@@ -2604,7 +2618,7 @@ Every installed race is used at least once across the twelve NPC factions. **Jaw
 | Kaleesh | Blackstar |
 | Kaminoan | Geonosian (gated), Helix |
 | Massassi | Imperial (Sith escort only) |
-| Miraluka | Homestead, Helix; Imperial prisoner pool; factionless Jedi |
+| ~~Miraluka~~ | ~~Homestead, Helix; Imperial prisoner pool; factionless Jedi~~ — ⛔ **species gone, all four placements closed 2026-08-20 (`MIRALUKA_IS_GONE_1`)** |
 | Mirialan | Homestead; factionless Jedi |
 | Mon Calamari | Deepwater; Imperial prisoner pool |
 | Neimoidian | Helix |

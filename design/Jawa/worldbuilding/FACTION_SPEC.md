@@ -725,7 +725,7 @@ needed judgement and are recorded here rather than guessed:
 |---|---|
 | `BTD_Geonosian` | → **`RimMandrakeGeonosianVariants`**. Renamed, but note the name change is not cosmetic — it is a *variants* def |
 | `BTD_SithK` | → **`RimMandrakeSithKissaiPureblood`** |
-| `BTD_Miraluka` | 🔴 **NO COUNTERPART EXISTS.** The species is gone from the stack. Anything specced around it must be re-specced |
+| `BTD_Miraluka` | ⛔ **NO COUNTERPART EXISTS, AND NONE WILL — CLOSED 2026-08-20, `MIRALUKA_IS_GONE_1`.** ~~Anything specced around it must be re-specced.~~ Owner's ruling: *"Just let the Miraluka be gone, don't try to get it back, close it out completely as an item for any version."* The species is gone from the stack, there is **no replacement and no v2 item**, and the design side has been struck rather than re-specced — see `faction_roster_v2.md`. ✅ `RimMandrake_KoTOR_NamerMiraluka` (a RulePackDef **name maker**) survives and is deliberately left alone; it is not a leftover to clean up |
 
 ⚠️ **Gravship-mod defs beginning `BTD_` are NOT affected and were left alone** —
 `BTD_GravEngine*`, `BTD_DownedGravship`, `BTD_QuestSiteSubstructure`,
