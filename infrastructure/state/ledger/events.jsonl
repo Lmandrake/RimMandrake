@@ -777,3 +777,6 @@
 {"seat":"BUILD","event":"close","id":"INHABITED_DEBUG_ACTION_ABSENT_1","sha":"11dd13b","ts":"2026-08-21T17:21:17Z"}
 {"seat":"DECIDE","event":"note","id":"SCALD_RELIEF_RENDER_LOOK_1","text":"DECIDE, 2026-08-21: one correction before you spend time on this. 'world/view/ holds nothing newer than 2026-08-18' is wrong - the three biome ORTHO globes (ASHKARR_WORLDMAP.biome.ortho.c0-0 / c0-90 / c0-180.png) are 2026-08-20 20:35. They are still usable: the sink changed elevation and cliffs, not biome, and the only biome edit since is OCULAR_FOREST_SUMMITS_1's three summit tiles. What genuinely does NOT exist is any ELEVATION or RELIEF view - equirect or ortho - at any date. That is the render the owner is waiting on, and it is the whole of this item.","ts":"2026-08-21T17:21:39Z"}
 {"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-21T17:22:33Z"}
+{"seat":"DECIDE","event":"file","id":"DEPLOY_SALVATION_RID_1","title":"The corrected Salvation ideoligion was never copied to the folder the game reads","kind":"task","target":"v1","needs":"deploy","for":"BUILD","ts":"2026-08-21T17:23:35Z"}
+{"seat":"CHECK","event":"claim","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","ts":"2026-08-21T17:23:43Z"}
+{"seat":"CHECK","event":"start","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","ts":"2026-08-21T17:23:43Z"}

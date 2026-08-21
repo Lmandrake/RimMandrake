@@ -79,9 +79,17 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 > def at `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml:100`. `Tunneler` appears in
 > neither. The §2.6 citation below points at a section of `APPROVED.md` that was overtaken.
 >
-> ⚠️ One thing is genuinely still open, and it is not this: `APPROVED.md:119-120` recommends
-> **dropping `VME_Nomad`** in favour of `Nomadic_Preferred`, and `JawaTribes.xml` still carries
-> `VME_Nomad`. That recommendation has never been ruled on. Do not act on it here.
+> ✅ **CORRECTED 2026-08-21 by DECIDE — the paragraph that stood here was stale in both
+> halves and it cost a re-litigation.** `APPROVED.md:119-120`'s recommendation **was ruled
+> on**: the owner DROPPED `VME_Nomad` on 2026-08-20, and `JawaTribes.xml` no longer carries
+> it — line 109 is the removal comment, not the entry. Nothing about the meme is open.
+> 🔑 And it was never a swap: `Nomadic_Preferred` is a **PreceptDef** on Odyssey's `Nomadic`
+> issue (`Data/Odyssey/Defs/PreceptDefs/Precepts_Nomadic.xml:12`), not a meme. There is **no
+> nomad MemeDef in vanilla at all** — putting `Nomadic_Preferred` in `forcedMemes` would be
+> an unresolved cross-reference, and FactionDef has no `requiredPrecepts` field to put it in
+> either. It costs no meme slot because it occupies no meme slot.
+> 🔴 **What IS open is a deploy, not a decision:** `DEPLOY_SALVATION_RID_1`. The repo copy
+> is correct; the copy the game actually reads is not.
 
 - [~] ~~**Ideoligion:** "The Articles of Passage" / in-fiction "Keepers of the Second Hand".~~
   ~~**Memes: Nomad (primary) + Tunneler (secondary)** — DECIDED (`design/Jawa/worldbuilding/ideoligion/APPROVED.md` §2.6).~~
