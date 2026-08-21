@@ -102,10 +102,25 @@ def canary(rb, out):
     except Exception as e:
         w(out, "- ⚠️ canary could not read Player.log (%s); proceeding UNVERIFIED" % e)
         return True
+    # 🔴 TWO STRINGS, NOT ONE. Measured 2026-08-21: `WORLDMAP_gen` aborted on
+    # FactionControl's cross-ref postfix and bailed to the main menu while
+    # `ErrorWhileLoadingGame` read ZERO. That handler is
+    # `GameAndMapInitExceptionHandlers.ErrorWhileLoadingGame` and it fires on MAP init -
+    # a save with `<maps />` empty dies in FinalizeLoading with no map-init handler to
+    # write the string. So the old canary called a dead load healthy, which is the exact
+    # failure this function exists to prevent.
     n = log.count("ErrorWhileLoadingGame")
-    if n == 0:
-        w(out, "- canary: no `ErrorWhileLoadingGame` in Player.log -> the load finished")
+    m = log.count("Exception in FinalizeLoading")
+    if n == 0 and m == 0:
+        w(out, "- canary: no `ErrorWhileLoadingGame` and no `Exception in FinalizeLoading` "
+               "-> the load finished")
         return True
+    if n == 0 and m > 0:
+        w(out, "- 🔴 CANARY FAILED: %d `Exception in FinalizeLoading` and ZERO "
+               "`ErrorWhileLoadingGame`. That combination is a NO-MAP abort - the scribe "
+               "threw and there was no map-init handler to write the usual string. The game "
+               "has bailed. Stopping." % m)
+        return False
     w(out, "- 🔴 CANARY FAILED: Player.log carries %d `ErrorWhileLoadingGame`. The load "
            "ABORTED and the engine bailed; the process may still answer and report "
            "`game_loaded` while being half-disposed. NOTHING measured here would count. "
