@@ -1,0 +1,547 @@
+# canon.yml — ONE authoritative value per contested number.
+#
+# WHY THIS FILE EXISTS
+# ===================
+# A 2026-08-20 audit of the 119-document design tier found 21 numbers asserted at
+# two or more different values, in files that all read as current. Water was 25%,
+# 22–28%, 8.6%, 8.1% and 6.9%. Factions were 14, 13, 12 and 11. Nothing was wrong
+# by its own lights; every document was written by someone who had measured
+# something. What was missing was a place for the answer to LIVE, so the next
+# reader got whichever file they opened first.
+#
+# THE RULE — and it is not "the newest wins"
+# =========================================
+#   1. A MEASUREMENT of the painted world beats any prose about the painted world.
+#   2. An OWNER RULING beats a measurement of something we then changed.
+#   3. Where those two conflict, the ruling wins and the measurement is recorded
+#      beside it as the realisation — see `temp_curve_c`, where the ruled +14 °C at
+#      the terminator and the painted median +13.0 °C are BOTH true and differ only
+#      by the altitude lapse.
+#   4. Every value below carries `src:` naming where it came from. A value with no
+#      source does not belong in this file. ⛔ Do not add one you cannot trace.
+#
+# ⚠️ `superseded:` IS NOT DECORATION. It is what stops a dead number coming back:
+# a reader who finds 25% in a design doc can look here, see it listed as superseded
+# with the reason, and know which way the correction runs. Never delete an entry
+# from a superseded list.
+#
+# 🔴 THIS FILE DOES NOT DECIDE SCOPE. Where the audit found a genuine open
+# question — not a stale copy, an actual unmade decision — it is filed under
+# `needs_ruling:` at the bottom with the evidence, and canon carries NO value for
+# it. BUILD measured; the owner rules.
+#
+# ⚠️ DEPENDENCY, stated plainly because the repo is otherwise stdlib-only: reading this
+# file needs PyYAML (6.0.3 is installed on this machine, 2026-08-20). It is the only
+# non-stdlib import in the tooling. If that becomes a problem the answer is to convert
+# this file to JSON, NOT to hand-roll a YAML parser — the comments above are half the
+# value here and a partial parser that silently drops them is worse than either format.
+#
+# Consumed by `src/RimMandrake/Utils/check_canon.py`, which fails with file:line on
+# any design doc asserting a contradicting value. A line is exempt if it documents
+# the old number rather than claiming it — see that tool for the exemption rule and
+# the `<!-- canon-ok: reason -->` escape.
+
+version: 1
+as_of: 2026-08-20
+authored_by: BUILD
+covers: design/**/*.md
+
+# ===========================================================================
+# THE PLANET — Ash'karr, "The Sundered"
+# ---------------------------------------------------------------------------
+# 🔑 The bundle at `world/ASHKARR_WORLDMAP_*` IS the planet. It is hand-authored,
+# frozen and shipped as a savegame; there is no worldgen behind it and no second
+# world to compare against (owner, 2026-08-15 and 2026-08-18). So every number
+# here is a direct measurement of those files, not a target we are working toward.
+# Re-measure with the commands in `src:` — they are the whole provenance.
+# ===========================================================================
+planet:
+  name: "Ash'karr — The Sundered"
+
+  tiles: 21872
+  tiles_src: >
+    world/ASHKARR_WORLDMAP_tiles.csv has 21872 data rows; world/ASHKARR_WORLDMAP_meta.json
+    "tiles": 21872. Measured 2026-08-20, the two agree.
+
+  water_pct: 8.14
+  water_tiles: 1780
+  water_src: >
+    1780 of 21872 tiles carry the water flag = 8.138%; meta.json rounds it 8.14.
+    The 1780 is exactly Ocean 1468 + Lake 312 — there is no third water biome.
+  water_superseded:
+    - value: "25% / 22–28%"
+      why: >
+        `worldgen_sea_spec.md` req 1, killed by the owner 2026-08-18 — "There's WAY
+        too much water, so reduce that to a third the value shown." Both the spec and
+        the number are dead. Still asserted LIVE at design/Jawa/worldbuilding/the_one_map.md:100.
+    - value: "8.6%"
+      why: >
+        The TARGET the owner's "a third of 25%" arithmetic produced, at the_one_map.md:130.
+        Not wrong, just not what got painted. The realised figure is 8.14.
+    - value: "6.9%"
+      why: >
+        A measurement of an EARLIER world, quoted forward by worldgen_interactive_def.md's
+        banner as if current. Measurement of a planet that no longer exists.
+
+  # The substellar point is the origin of everything: this world is tidally locked
+  # and does not rotate, so there is no day, no season and no latitude gradient.
+  # ⚠️ ARC — angular distance from the substellar point — IS THE AXIS, not latitude.
+  # Correlation of temperature against arc is −0.98 on the painted world
+  # (src/RimMandrake/Utils/ashkarr_paint.py:13). Any document reasoning from
+  # latitude is reasoning about a planet that spins, and this one does not.
+  substellar: [0.0, 0.0]
+  axis: arc
+  axis_src: "src/RimMandrake/Utils/ashkarr_paint.py:13 — corr −0.98 on the painted world"
+
+  lapse_c_per_km: 5.5
+  temp_curve_c: {0: 70, 30: 58, 60: 38, 90: 14, 120: -22, 150: -58, 180: -80}
+  temp_curve_src: >
+    src/RimMandrake/Utils/ashkarr_paint.py:796 `temperature_curve()`, whose docstring
+    reads "Owner's ruled endpoints: +70 C at the substellar point, +14 C at the
+    terminator, -80 C in deep night, minus an altitude lapse of 5.5 C/km." These are
+    the RULED endpoints and they are what the painter interpolates. Not a target.
+  temp_curve_realised_median_c: {0: 61.6, 30: 56.8, 60: 35.5, 90: 13.0, 120: -25.5, 150: -61.4, 180: -80.0}
+  temp_curve_realised_src: >
+    Median painted temp_c of every tile within ±2° of each anchor, 2026-08-20. It sits
+    BELOW the ruled curve everywhere land rises, because the 5.5 °C/km lapse is
+    subtracted per tile. 🔑 The ruled curve and the realised medians are not in
+    conflict and neither supersedes the other — quote the ruled curve when stating
+    design intent, the realised medians when predicting what a tile will feel like.
+  terminator_c: 14
+  terminator_src: "arc 90 on the ruled curve above; realised median +13.0 °C after lapse."
+
+  seas: 3
+  sea_names: ["The Scald", "The Twilight Sea", "The Gray Sea"]
+  seas_src: >
+    world/ASHKARR_WORLDMAP_meta.json features, kind "sea": exactly three, of 312, 851
+    and 617 tiles. Satisfies the_one_map.md:100 "Exactly three connected bodies".
+  # 🔴 The Scald is painted `Lake`, NOT `Ocean` — all 312 of its tiles. The other two
+  # seas are `Ocean`. This is why the `Lake` biome is 1.43% of the planet after the
+  # owner cut it: cutting the def does not remove a stray biome, it deletes a named
+  # sea. See needs_ruling.LAKE_BIOME_CUT_OR_KEEP_1.
+  named_regions: 24
+  named_regions_src: "meta.json regions[] — 24 names; 23 carry tiles, `The Ashteeth` carries ZERO."
+
+  rivers_tiles: 254
+  rain_mm: {min: 18, median: 19, max: 1668}
+  rain_src: "world/ASHKARR_WORLDMAP_tiles.csv, 2026-08-20."
+
+  start_tile: 2476
+  start_name: "The Setdown"
+  start_src: >
+    meta.json start{}; sited 2026-08-19 and argued at ashkarr_paint.py:74-95. arc 56.9,
+    bearing 358.8, ExtremeDesert, 276 m, 38.6 °C, 18 mm, nearest standing water 26° away.
+
+  habitable_ring_arc: [34, 57]
+  habitable_ring_src: >
+    src/RimMandrake/Utils/ashkarr_paint.py:76-77 — "the habitable ring is ~34-57 degrees
+    of arc" — and the siting decision built on it: The Setdown at arc 56.9 is called
+    "the OUTER EDGE of the habitable ring", which only reads true against 34–57.
+    🔑 This band is a DESIGN band, not a settlement census: the 72 settlements span
+    arc 10.0 to 104.6 with a median of 75.0. Do not "correct" one against the other.
+  habitable_ring_superseded:
+    - value: "[40, 57]"
+      why: >
+        ~700 tiles narrower, and it contradicts the file that sited the player's home.
+        No ruling or measurement found behind it. Flagged for owner confirmation —
+        see needs_ruling.HABITABLE_RING_ARC_RULING_1.
+
+  biomes_on_map: 24
+  biomes_on_map_src: >
+    24 distinct biome defNames appear on at least one tile. ⚠️ This answers a DIFFERENT
+    question from the "36 / 37 / ~35 survivors" figures in the design tier, which count
+    biome DEFS surviving a Cherry Picker cut, not biomes actually painted. A def can
+    survive the cut and appear on zero tiles.
+  biome_tile_counts:
+    AB_RockyCrags: 4440
+    ExtremeDesert: 3581
+    AridShrubland: 2401
+    Desert: 2147
+    AB_MycoticJungle: 1939
+    Wasteland: 1721
+    Ocean: 1468
+    PoisonForest: 604
+    AB_PropaneLakes: 554
+    ZBiome_Badlands: 546
+    AB_FeraliskInfestedJungle: 534
+    BMT_FungalForest: 425
+    Lake: 312
+    AB_MechanoidIntrusion: 236
+    ZBiome_Grasslands: 233
+    ZBiome_DesertOasis: 227
+    BMT_CrystalCaverns: 127
+    AB_GelatinousSuperorganism: 96
+    Scarlands: 90
+    AB_MiasmicMangrove: 65
+    AB_TarPits: 57
+    AB_PyroclasticConflagration: 31
+    Volcano: 23
+    LavaField: 15
+
+settlements:
+  total: 72
+  src: "world/ASHKARR_WORLDMAP_settlements.csv — 72 data rows; meta.json \"settlements\": 72."
+  superseded:
+    - value: "66"
+      why: "a count of an earlier paint of this world."
+    - value: "37"
+      why: >
+        a measurement of a DEAD world, quoted forward by worldgen_interactive_def.md's
+        banner as if it described the current one.
+  by_faction:
+    OutlanderCivil: 13
+    TribeCivil: 9
+    Jawa_HuttCartel: 8
+    Jawa_Junkers: 8
+    Jawa_IndigenousTribes: 7
+    Jawa_GeonosianFoundryHive: 5
+    Jawa_DeepwaterCompact: 5
+    Pirate: 4
+    Jawa_WildsteamClan: 4
+    Empire: 3
+    Jawa_FreeDroidEnclaves: 3
+    Jawa_AscendantHelix: 3
+
+# ===========================================================================
+# THE TEMPERATURE ATTRIBUTION — the 51 °C that is not a disagreement
+# ---------------------------------------------------------------------------
+# 🔑 +14 °C and −37 °C are BOTH correct, about DIFFERENT THINGS, and the audit
+# that called them "51 °C apart" was reading a comparison table as a conflict.
+# `design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md:76-78` states it properly:
+#
+#     |                                | arc 0 | arc 90 (terminator) | arc 180 |
+#     | the mod's AvgTempByLatitudeCurve| +70  |        −37          |   −80   |
+#     | §2, ours                        | +70  |        +14          |   −80   |
+#
+# Same endpoints, different middle. ⛔ Do not "reconcile" these to one number.
+# ⚠️ The live defect is an ATTRIBUTION, not a value:
+# `hydrology_and_fire_ecology.md:529` credits OUR +14 to the MOD, then concludes
+# "the active planet curve already agrees" and rules that only biomes need forcing.
+# The premise is false. Whether the conclusion also fails depends on something no
+# document has established — whether the mod recomputes tile temperature at RUNTIME
+# (overriding our painted values) or only at worldgen (where it cannot reach us).
+# That is a live-game question and belongs to CHECK. See needs_ruling.
+# ===========================================================================
+temperature_attribution:
+  ours_terminator_c: 14
+  mod_terminator_c: -37
+  mod_curve_name: AvgTempByLatitudeCurve
+  mod: "Alien Worlds - Tidally Locked"
+  src: "design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md:74-83"
+
+# ===========================================================================
+# FACTIONS
+# ===========================================================================
+factions:
+  count: 13
+  count_src: >
+    12 factions hold settlements on the painted map (world/ASHKARR_WORLDMAP_meta.json
+    "factions"), plus Mechanoid — "the Forgotten Arsenal" — which holds none by design
+    and is kept (queue item MECHANOIDS_STAY_ON_1). 12 + 1 = 13.
+  cut: [UnboundHive]
+  cut_src: >
+    design/Jawa/worldbuilding/FACTION_SPEC.md:49 and :331 strike it through, :55 says
+    "the Unbound Hive is cut". It holds no settlement on the map. ⚠️ FACTION_SPEC.md:59
+    keeps it "as a thing in the world" — cut as a FACTION, not erased as a creature.
+  cut_landed_on_disk: true
+  cut_landed_src: >
+    ✅ Verified 2026-08-20, not assumed. Exactly ONE occurrence of "UnboundHive" under
+    src/, and it is a comment recording the removal:
+    src/Jawa/Jawa_Patches/Patches/ForgottenArsenal.xml:10 — "THE UNBOUND HIVE WAS CUT
+    FROM THIS FILE, 2026-08-14 … roster went 14 -> 13". No def, no reference, no label
+    patch. 🔑 So the 14s still LIVE in the design tier are stale PROSE, not a live
+    disagreement with the build — nothing needs cutting, only correcting.
+  defined_by_us: 8
+  defined_by_us_src: >
+    8 FactionDefs under src/, all Jawa_*: AscendantHelix, DeepwaterCompact,
+    FreeDroidEnclaves, GeonosianFoundryHive, HuttCartel, IndigenousTribes, Junkers,
+    WildsteamClan. All 8 resolve in the live def dump (86 FactionDefs total).
+    🔑 8 ours + 5 from vanilla and mods (Empire, OutlanderCivil, TribeCivil, Pirate,
+    Mechanoid) = 13, which is the roster count arrived at independently of the map.
+  superseded:
+    - value: "14"
+      why: >
+        The pre-cut roster. Still asserted LIVE at FACTION_SPEC.md:32,
+        faction_world_spec.md:28 and :49, faction_roster_v2.md:35,
+        INHABITED_DESIGN.md:511, worldgen_interactive_def.md:627. 🔴 The cut never
+        propagated: faction_world_spec.md:66-164 and faction_roster_v2.md:36,:330 still
+        list the Unbound Hive as live faction 14. This IS the 14-vs-13 conflict.
+    - value: "12"
+      why: >
+        Correct for "factions that hold settlements", and correct for "factions carrying
+        dossiers" — not for the roster. faction_roster_v2.md:35 says both in one sentence:
+        "Fourteen factions stand on the map; twelve carry dossiers."
+    - value: "11"
+      why: "a count of a dead world (worldgen_interactive_def.md:723, EMPIRE_GAP_AUDIT.md:89)."
+  on_map:
+    - Empire
+    - OutlanderCivil
+    - TribeCivil
+    - Pirate
+    - Jawa_HuttCartel
+    - Jawa_FreeDroidEnclaves
+    - Jawa_WildsteamClan
+    - Jawa_DeepwaterCompact
+    - Jawa_GeonosianFoundryHive
+    - Jawa_AscendantHelix
+    - Jawa_IndigenousTribes
+    - Jawa_Junkers
+  no_settlements: [Mechanoid]
+  # ⚠️ Naming drift, found 2026-08-20 and NOT yet resolved: meta.json's faction list
+  # names `AM_EnemyPirate` where ashkarr_paint.py's FACTION_LABEL and the settlements
+  # CSV both say `Pirate`. One of the two is not the defName the game will resolve.
+  # Filed as needs_ruling.PIRATE_DEFNAME_DRIFT_1 — a wrong defName here is a
+  # `Could not resolve cross-reference` at load, not a cosmetic difference.
+  leaders_are_shipped: true
+  leaders_src: >
+    ✅ `Kiknik` and `Tarn Vox` are NOT design-only and do NOT need rescuing from a
+    retiring doc — checked 2026-08-20. Both ship as PawnKindDef labels:
+    src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml:848
+    "First Bargainer Kiknik the Wealthy" and :938 "Scraplord Tarn Vox the Brutal",
+    generated from src/RimMandrake/Utils/gen_pawnkind_roster.py:127,132.
+    ⚠️ They are LABELS, not defNames — a rename in the generator changes them silently.
+    Their faction reads "Jawa Trade Moot", which is the FACTION_LABEL of
+    `Jawa_IndigenousTribes` (ashkarr_paint.py FACTION_LABEL), so there is no orphan.
+
+# ===========================================================================
+# SPECIES — 🔴 NOT one contested number. Four different denominators.
+# ---------------------------------------------------------------------------
+# The audit listed "42 / 44 / 54 / 70 / 79 / 80" as six values for one fact. They
+# are not. 54 and 80 do not occur in design/ at all, and the remaining four count
+# different populations. ⛔ A checker must NOT force these to agree, and nobody
+# should "fix" one to another. Always write the denominator beside the number.
+# ===========================================================================
+species:
+  ours_on_disk: 71
+  ours_on_disk_src: >
+    71 XenotypeDefs defined under src/ — 70 in src/Jawa/RimMandrake_StarWarsRaces/Defs/
+    XenotypeDefs plus `Jawa_Xeno_Gamorrean` in Jawa_Patches. 🔑 This is what the design
+    tier's "70" actually counts, and it is now 71.
+  live_all_mods: 139
+  live_all_mods_src: >
+    Live def dump 2026-08-20 (modCount 578): XenotypeDef count 139, of which 71 ours.
+    ⚠️ An older dump at 585 mods reported 251 — the same question at a different mod
+    set, with dedup and Cherry Picker removing ~112. Not a contradiction; a denominator.
+  pawnkinds_ours: 152
+  pawnkinds_ours_src: >
+    152 PawnKindDefs under src/ — JawaFactionRoster 48, RimMandrakePawnKinds 69,
+    SW_RescuedKinds 16, AlienSpawnEnablers 13, JawaColonistPawnKinds 4,
+    GamorreanPawnKinds 2. Live total across all mods: 1736.
+  alien_race_thingdefs_ours: 0
+  alien_race_thingdefs_src: "We ship xenotypes, not ThingDef_AlienRace. Zero under src/."
+  denominators:
+    outer_rim_on_disk: {value: 42, means: "Star Wars species shipped by Outer Rim – Galactic Diversity",
+                        src: "design/Jawa/mods/cherry_picker_killlist.md:207"}
+    art_audit_subset:  {value: 44, means: "xenotypes reviewed in the Droid Depot + Galactic Diversity art audit",
+                        src: "design/RimMandrake/graphics_overhaul_protocol.md:310"}
+    btd_roster:        {value: 70, means: "xenotypes in the BTD mod — the working roster, and the number most docs mean",
+                        src: "design/Jawa/worldbuilding/faction_stage3_buildable_spec.md:42"}
+    distinct_available: {value: 79, means: "mechanically distinct Star Wars species available across all installed mods",
+                        src: "design/Jawa/worldbuilding/faction_stage3_buildable_spec.md:131"}
+  not_found: [54, 80]
+  not_found_src: >
+    Zero occurrences in design/ for either, 2026-08-20. `faction_equipment_guidance.md:27`
+    has "80 × 12 = 960" but that 80 is pawnkinds-per-faction arithmetic in a blockquote.
+
+# ===========================================================================
+# BIOMES
+# ===========================================================================
+biomes:
+  survivors: 36
+  survivors_src: >
+    The owner reviewed all 66 BiomeDefs and cut 30, leaving 36
+    (design/Jawa/worldbuilding/biome_review_comments.md:3-4, confirmed at
+    design/Jawa/PLANT_GROWTH_SPEC.md:101 "30 cut of 66").
+  base_defs: 66
+  base_defs_as_of: 2026-08-15
+  # 🔴 THE 66 IS A 2026-08-15 MEASUREMENT AND IT NO LONGER HOLDS. The live def dump of
+  # 2026-08-20 (modCount 578, matching ModsConfig exactly) reports **80** BiomeDefs.
+  # The 66 came from observed/2026-08-13/dumps/defnames.live.2026-08-15.json at
+  # modCount 585 — a different mod set. So `66 − 30 = 36` cannot be re-derived from the
+  # current game, and 36 is a RECORD OF A DECISION rather than a live count. That is
+  # fine and it is not a defect; what is a defect is quoting 66 as though it were
+  # current. ⛔ Do not "recompute" the survivor count against 80 — the owner cut 30
+  # specific biomes and the answer is those 30, not an arithmetic result.
+  live_defs: 80
+  live_defs_src: >
+    DefDump at C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon
+    Studios\DefDump, manifest capturedUtc 2026-08-20T15:08:30Z, modCount 578,
+    1.6.4871 rev591 — defs/BiomeDef.json count 80. CURRENT: its 578 matches ModsConfig.
+  defined_by_us: 0
+  patched_by_us: 10
+  patched_by_us_list: [AB_PyroclasticConflagration, AridShrubland, Desert, ExtremeDesert,
+                       IronScruff_PrimordialGeysers, Volcano, Wasteland, ZBiome_Badlands,
+                       ZBiome_DesertOasis, ZBiome_Grasslands]
+  # ⚠️ `biome_and_fauna_roster.md:94-112` works from 57, being 66 minus the 9 defs with
+  # no workerClass, and calls that "57 real decisions". That is a defensible narrower
+  # base for a DECISION count and is not a contradiction of 66 — but the two files never
+  # say so, which is why it reads as one. Whichever number a doc uses, name the base.
+  survivors_superseded:
+    - value: "37 / ~35"
+      why: "Neither occurs anywhere in design/, 2026-08-20. Phantom values; do not chase them."
+  # 🔴 `required_mods.md:185` says "~36 biome-independent landforms" — Geological
+  # Landforms, nothing to do with biome survivors. A regex on `36.*biome` false-positives
+  # here. check_canon.py must not flag it.
+  on_map: 24
+  on_map_src: >
+    24 distinct biome defNames appear on at least one tile of the painted world.
+    Different question from `survivors`: a def can survive the cut and be painted nowhere.
+
+# ===========================================================================
+# THE `Lake` BIOME — resolved by measurement, 2026-08-20
+# ---------------------------------------------------------------------------
+# 🔴 `Lake` STAYS, and the reason is not a preference. `The Scald` — one of the three
+# ruled seas — is painted `Lake` for all 312 of its tiles. `The Twilight Sea` (851)
+# and `The Gray Sea` (617) are `Ocean`. Cutting the `Lake` def does not remove a
+# stray biome; it deletes a named sea from the frozen map.
+# `biome_review_comments.md:54` is the ONLY file saying Lake is cut, and it flags
+# itself "worth a second look". Five other files assign it a weight, a role and a
+# terrain palette. This is the second look, and it says keep.
+# ===========================================================================
+lake_biome:
+  status: keep
+  tiles: 312
+  pct: 1.43
+  is: "The Scald — a named sea, not a stray"
+  src: "world/ASHKARR_WORLDMAP_tiles.csv joined on region: The Scald × Lake = 312, exactly."
+
+# ===========================================================================
+# IDEOLIGIONS
+# ===========================================================================
+ideoligions:
+  count: 12
+  src: >
+    12 distinct <ideoName> values under src/, 2026-08-20. Eight in our own FactionDefs —
+    the Balance · the Continuity Protocol · the Green Oath · Meckgin · The Salvation ·
+    the Ascendant Genome · the Reckoning of Debts · the Weight — and four patched onto
+    other mods' factions in src/Jawa/Jawa_Patches/Patches/: the Contract (BlackstarCompany) ·
+    the Sun-Debt (DeepDesertTribes) · the Covenant of Free Wells (HomesteadDefenseLeague) ·
+    The Rising Order (GalacticEmpire).
+  # ⚠️ `faction_roster_v2.md` also names twelve faiths. They are NOT these twelve. That
+  # layer was superseded by `faction_religions.md`, which produced the twelve above, and
+  # nobody told the roster — so both files read as current and neither cites the other.
+  # A reader arriving at the roster gets twelve names that exist nowhere on disk.
+
+# ===========================================================================
+# THE BESTIARY
+# ===========================================================================
+bestiary:
+  named: 108
+  built: 0
+  status: aspirational
+  src: >
+    🔴 Corrected 2026-08-20 — the figure carried everywhere was 78 and it undercounts.
+    Two independent extractions of design/Jawa/worldbuilding/Alien_Bestiary.md agree on
+    108, and the file's own header says so: "all 104 VGE creatures plus the four special
+    outputs" = 108. The 78 came from parsing only the tables sharing one header row;
+    §3.12–§3.14 use different headers and were skipped.
+  built_src: >
+    ZERO of the 108 appear under src/ as a defName or a label. Every raw grep hit is a
+    substring coincidence on a humanoid NPC or a gene — e.g. `Inhabited_Tusken_DhakkOrr`
+    matching "dhak". No bestiary rename or label patch exists in Jawa_Patches (37 files).
+
+# ===========================================================================
+# THE MOD LIST
+# ===========================================================================
+modlist:
+  official_count: 578
+  as_of: 2026-08-20
+  src: >
+    activeMods in C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by
+    Ludeon Studios\Config\ModsConfig.xml — 578 entries, mtime 2026-08-20 09:15:59 -0700,
+    game 1.6.4871 rev591. This is the owner's FULL list, not a minimal test list.
+  # ⚠️ THE COUNTING TRAP, confirmed again 2026-08-20: `grep -c '<li>'` on that file
+  # returns 583. The extra 5 are `knownExpansions`, which is not the mod list. Parse the
+  # XML and count `activeMods` children, or the number is wrong by exactly five.
+  note: >
+    A differing live count does NOT invalidate the frozen dump, greater or lesser. Our own
+    small custom mods change it constantly. Only the owner re-freezes.
+  # 🔴 Twenty distinct mod counts are asserted across design/, and only four carry an
+  # as-of date: 548 · 561 · 562 · 568 · 570 · 573 · 574 · 575 · 576 · 577 · 578 · 580 ·
+  # 585 · 587. None of them is WRONG — each was true on the day it was written. What is
+  # wrong is writing a mod count with no date, because it then reads as current forever.
+  # ✅ THE FIX IS NOT TO UNIFY THEM. It is to stamp every one with the date it was taken;
+  # a dated 562 is a fact, an undated 562 is a landmine. See MODLIST_STAMP_AS_OF_DATES_1.
+  superseded_undated: [548, 561, 562, 568, 570, 573, 574, 576, 577, 580]
+  not_ours: >
+    587 (design/RimMandrake/save_authoring_pipeline.md:44,:99 and required_mods.md:1259)
+    is GRAVTASM'S save, not ours, and 300–680 (Custom_World.md:115) is a streamer's scale.
+    Neither is a competing measurement of our mod list and neither should be "reconciled".
+
+# ===========================================================================
+# THE DEF DUMP — is the offline artifact current?
+# ===========================================================================
+dump:
+  path: "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\DefDump"
+  captured_utc: 2026-08-20T15:08:30Z
+  mod_count: 578
+  game_version: "1.6.4871 rev591"
+  current: true
+  current_src: >
+    ✅ CURRENT by FINGERPRINT, not by timestamp: the dump's manifest modCount (578)
+    equals ModsConfig's activeMods count (578). ⛔ The dump at
+    observed/2026-08-13/dumps/defnames.live.2026-08-15.json is modCount 585 and is
+    STALE — it is the source of the 66-BiomeDef and 251-xenotype figures still quoted
+    in the design tier. Do not use it for a current count.
+
+# ===========================================================================
+# needs_ruling — genuinely OPEN, not stale. Canon carries NO value for these.
+# ---------------------------------------------------------------------------
+# 🔴 BUILD measured; the owner rules. Each entry states the evidence and what
+# turns on the answer. ⛔ Do not resolve one of these by picking the value that
+# appears most often — frequency is what created the mess.
+# ===========================================================================
+needs_ruling:
+
+  HABITABLE_RING_ARC_RULING_1:
+    question: "Is the habitable ring 34–57° of arc, or 40–57°?"
+    canon_provisional: [34, 57]
+    why_provisional: >
+      34–57 is what the code that SITED THE PLAYER'S HOME used
+      (ashkarr_paint.py:76-77), and The Setdown at arc 56.9 is called "the outer edge
+      of the ring", which only reads true against 34–57. Asserted at
+      ASHKARR_WORLD_DEFINITION.md:237 and fauna_placement.md:13.
+    the_other_side: >
+      40–57 is asserted at worldgen_interactive_def.md:27, :134 and :455 (with tile
+      counts: 2,477 of which 1,791 land) and V2_DREAMS.md:1441. ⚠️ worldgen_interactive_def
+      is the file whose banner points readers at superseded measurements, which weakens it.
+    at_stake: "~700 tiles, and whether the arc-34–40 band is habitable or margin."
+
+  LAKE_BIOME_CUT_OR_KEEP_1:
+    question: "Confirm `Lake` stays."
+    canon_provisional: keep
+    why_provisional: >
+      Measurement, not preference: The Scald — one of the three ruled seas — is `Lake`
+      for all 312 of its tiles. Cutting the def deletes a named sea from the frozen map.
+    at_stake: "1.43% of the planet and one of exactly three seas."
+
+  PIRATE_DEFNAME_DRIFT_1:
+    question: "Is the pirate faction `Pirate` or `AM_EnemyPirate`?"
+    evidence: >
+      world/ASHKARR_WORLDMAP_meta.json factions[] says AM_EnemyPirate;
+      ashkarr_paint.py FACTION_LABEL and ASHKARR_WORLDMAP_settlements.csv both say
+      Pirate, with 4 settlements.
+    at_stake: >
+      A `Could not resolve cross-reference` at load if the frozen save names a def no
+      installed mod defines. Not cosmetic. ⚠️ BUILD cannot settle this offline — it
+      needs the save read against the live def set, which is CHECK's.
+
+  TERMINATOR_RUNTIME_OVERRIDE_1:
+    question: >
+      Does `Alien Worlds - Tidally Locked` recompute tile temperature at RUNTIME, or
+      only at worldgen?
+    at_stake: >
+      Everything downstream of R-H10. If it recomputes, its −37 °C terminator overwrites
+      our painted +14 °C on the frozen save, the habitable terminator the entire faction
+      plan stands on ceases to exist, and hydrology_and_fire_ecology.md's ruling that
+      "only biomes need forcing" is wrong. If it acts only at worldgen it cannot reach a
+      hand-painted save and our curve stands. ⚠️ A live-game question. CHECK's, not BUILD's.
+
+  GELATINOUS_CUT_REVERSAL_1:
+    question: "`AB_GelatinousSuperorganism` was cut 2026-08-04 and painted 2026-08-18."
+    evidence: "96 tiles, 0.44% of the planet, on the map right now."
+    at_stake: "Either the cut is reversed or 96 tiles need repainting. The palette was never told."
+
+  SAVANNA_PREMISE_RESOLVE_1:
+    question: "A 701-line design doc's subject biome is on the cut list."
+    at_stake: "Whether the doc is dead or the cut is."
