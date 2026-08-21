@@ -255,12 +255,17 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
        forest poncho, forest helmet. Its biome troopers are name-and-tag reskins, not
        new art, which is the licence to do the same here rather than commission a set.
 
-       🔴 IT DOES NOT SPAWN YET, and neither do its four siblings. `pawnGroupMakers`
-       for this faction lives on the ABSTRACT parent `OutlanderFactionBase`, not on
-       `OutlanderCivil`, so an xpath at `FactionDef[defName="OutlanderCivil"]/
-       pawnGroupMakers` matches nothing — and a patch that matches nothing logs nothing.
-       See `infrastructure/state/items/sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4.md`;
-       HomesteadDefenseLeague.xml:36 records the ⛔ that put them there. -->
+       ✅ IT SPAWNS AS OF 2026-08-21 === OUTLANDER_GROUPMAKER_PATCH_1, owner:
+       "Approved abstract patch." This paragraph used to read "IT DOES NOT SPAWN YET",
+       and that is now wrong. `pawnGroupMakers` for this faction does live on the
+       ABSTRACT parent `OutlanderFactionBase` and not on `OutlanderCivil` — which is
+       exactly why every earlier xpath at `FactionDef[defName="OutlanderCivil"]/
+       pawnGroupMakers` matched nothing and logged nothing. The parent is now patched
+       ADDITIVELY, by its `Name` attribute, at the end of
+       `Patches/HomesteadDefenseLeague.xml`: four new group makers (Combat, Peaceful,
+       Trader, Settlement) at commonality 5, which is 4.8% of Outlander groups of each
+       kind. All five Homestead kinds are in them; the ranger carries the joint-highest
+       weight. If it still never appears, the weight is wrong, not the def. -->
   <PawnKindDef>
     <defName>Jawa_Homestead_DesertRanger</defName>
     <label>dune ranger</label>

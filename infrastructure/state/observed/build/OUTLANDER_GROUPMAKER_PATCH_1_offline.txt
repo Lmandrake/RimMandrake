@@ -1,0 +1,83 @@
+OUTLANDER_GROUPMAKER_PATCH_1 - offline evidence, BUILD, 2026-08-21
+config: offline-578-defs (validate_patch.py, 579 active mods, 8681 def files)
+
+== 1. THE SILENT FAILURE, CONFIRMED ==
+pawnGroupMakers is written on the ABSTRACT parent, not on OutlanderCivil:
+  Core/Defs/FactionDefs/Factions_Misc.xml  <FactionDef Name="OutlanderFactionBase" Abstract="True">
+  OutlanderCivil ParentName=OutlanderFactionBase, owns NO pawnGroupMakers node.
+  => any xpath FactionDef[defName="OutlanderCivil"]/pawnGroupMakers matches 0 and logs nothing.
+The patch therefore addresses the parent by its Name ATTRIBUTE (abstract defs have no defName):
+  /Defs/FactionDef[@Name="OutlanderFactionBase"]/pawnGroupMakers
+
+== 2. validate_patch.py - every op >= 1 match, new ops are Operation[2] ==
+=== src/Jawa/Jawa_Patches/Patches/HomesteadDefenseLeague.xml ===
+  info    Operation[1] (PatchOperationConditional): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[1] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[2] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[3] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[4] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[5] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[6] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[7] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[8] (PatchOperationRemove): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[9] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[10] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[11] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[2] (PatchOperationConditional): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[2] > match (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+
+OK - 0 errors, 0 warning(s)
+
+== 3. WHAT WAS ADDED - additive only, no vanilla li/option/weight edited ==
+Four NEW pawnGroupMaker <li> appended: Combat, Peaceful, Trader, Settlement; commonality 5 each.
+Vanilla's eight existing <li> are byte-identical; git diff of this file touches only the header
+comment and appends one <Operation>. No PatchOperationReplace or Remove was added.
+
+== 4. THE NUMBER (item's verify demands a number, not an assertion) ==
+  PawnGroupMaker.commonality default = 100f (read off RimWorld/PawnGroupMaker.cs, not assumed).
+  Every vanilla Outlander group maker leaves commonality UNSET => 100.
+  Combat      before: 1 maker @100  ->  after: +1 maker @5. New maker takes 4.8% of Combat groups;
+              95.2% of ordinary Outlander Combat groups compose EXACTLY as before.
+  Peaceful    before: 1 maker @100  ->  after: +1 maker @5. New maker takes 4.8% of Peaceful groups;
+              95.2% of ordinary Outlander Peaceful groups compose EXACTLY as before.
+  Trader      before: 1 maker @100  ->  after: +1 maker @5. New maker takes 4.8% of Trader groups;
+              95.2% of ordinary Outlander Trader groups compose EXACTLY as before.
+  Settlement  before: 1 maker @100  ->  after: +1 maker @5. New maker takes 4.8% of Settlement groups;
+              95.2% of ordinary Outlander Settlement groups compose EXACTLY as before.
+  Aggregate: 95.2% of every Outlander group of these four kinds is unchanged.
+  In the other 4.8%, pawns are Human with useFactionXenotypes true, i.e. they still look
+  like that faction's people; only the kind roster differs.
+
+== 5. FIVE KINDS REACHABLE ==
+  Jawa_Homestead_Grunt -> referenced 4 time(s) in the new group makers
+  Jawa_Homestead_Heavy -> referenced 4 time(s) in the new group makers
+  Jawa_Homestead_Specialist -> referenced 4 time(s) in the new group makers
+  Jawa_Homestead_Leader -> referenced 2 time(s) in the new group makers
+  Jawa_Homestead_DesertRanger -> referenced 4 time(s) in the new group makers
+  DesertRanger carries the joint-highest weight in all four groups (10).
+
+== 6. defName spot-check against the live def dump (capturedUtc 2026-08-21T08:20:20Z) ==
+  PawnKindDef Jawa_Homestead_Grunt      True
+  PawnKindDef Jawa_Homestead_Heavy      True
+  PawnKindDef Jawa_Homestead_Specialist True
+  PawnKindDef Jawa_Homestead_Leader     True
+  PawnKindDef Jawa_Homestead_DesertRanger  FALSE  <- see note below
+  PawnKindDef Town_Trader  True | ThingDef Dromedary/Muffalo/Alpaca  True
+  ThingDef Apparel_Duster True | ThingDef Apparel_Headwrap True  (the ranger's explicit dress)
+  PawnGroupKindDef Combat/Peaceful/Trader/Settlement  all present
+
+  NOTE on the FALSE: the ranger def IS on disk and IS deployed
+  (src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml:265, game copy written
+  2026-08-20 23:28). apparelRequired is a real PawnKindDef field (Verse/PawnKindDef.cs:207,
+  List<ThingDef>, default null - the dump omits null lists, which is why it shows on no kind).
+  The most likely reading is that the dumping SESSION started before 23:28 and defs are parsed
+  only at startup. NOT PROVEN OFFLINE. First live load must confirm the ranger exists at all.
+
+== 7. SUPERSEDED DOC CORRECTED ==
+  HomesteadDefenseLeague.xml header no longer claims pawnGroupMakers is untouched;
+  it now names OUTLANDER_GROUPMAKER_PATCH_1 and the owner's approval.
+
+== NOT PROVABLE OFFLINE (why this run is PARTIAL) ==
+  - five kinds appearing in a generated Outlander group (needs quicktest or pawnkind_audit on a live stack)
+  - Jawa_Homestead_DesertRanger spawning wearing duster + headwrap
+  - whether the ranger def resolves at all in the running process (see item 6 note)

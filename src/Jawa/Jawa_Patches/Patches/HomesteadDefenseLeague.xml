@@ -33,9 +33,13 @@
       raidsForbidden              ABSENT in the whole chain  ->  Add
       label / description         own nodes   ->  Replace
 
-  ⛔ `pawnGroupMakers`, `factionNameMaker` and the raid curves are untouched.
-  They are inherited and already balanced; R15's group surgery is the Empire's
-  alone.
+  🔴 SUPERSEDED 2026-08-21 === OUTLANDER_GROUPMAKER_PATCH_1, owner: "Approved
+  abstract patch." This file used to say `pawnGroupMakers` was untouched. It no
+  longer is: four ADDITIVE group makers now hang off the abstract parent at the
+  end of this file, because the League's five authored pawn kinds were reachable
+  by nobody. `factionNameMaker` and the raid curves ARE still untouched, and
+  vanilla's own group makers and option weights are not edited at all.
+  (`fixedName` was added 2026-08-21 too === FACTION_FIXEDNAME_ELEVEN_1.)
 
   ⚠️ `raidsForbidden` is the MECHANISM for R2, not a precept. It is what makes
   the League never raid the player, and it has no vanilla default here.
@@ -163,6 +167,112 @@
         </li>
 
       </operations>
+    </match>
+  </Operation>
+
+  <!--
+    ========================================================================
+    THE FIVE KINDS GET SOMEWHERE TO BE USED === OUTLANDER_GROUPMAKER_PATCH_1
+    ========================================================================
+    🔴 OWNER, 2026-08-21: "Approved abstract patch." This reverses the ⛔ in the
+    header of this file and closes what
+    `sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4` was waiting on.
+
+    `pawnGroupMakers` for this faction is NOT on `OutlanderCivil`. It is on the
+    abstract parent `OutlanderFactionBase`
+    (Core/Defs/FactionDefs/Factions_Misc.xml), so every earlier xpath at
+    `FactionDef[defName="OutlanderCivil"]/pawnGroupMakers` matched ZERO and
+    logged nothing. That silent failure is what this operation ends. The parent is
+    abstract, so it is addressed by its `Name` ATTRIBUTE, not by a defName.
+
+    Reachable by nobody until now, all five authored in
+    `Defs/PawnKindDefs/JawaFactionRoster.xml`:
+      Jawa_Homestead_Grunt · _Heavy · _Specialist · _Leader · _DesertRanger
+
+    ⚠️ THIS REACHES EVERY OUTLANDER FACTION, not just the League. That is the
+    accepted cost of the approval, and the reason the weights are what they are.
+    ADDITIVE ONLY: four NEW `<li>` group makers are appended. ⛔ Not one vanilla
+    `<li>`, option or weight is edited, removed or reweighted.
+
+    THE NUMBER, because the item asks for a number and not an assertion.
+    `PawnGroupMaker.commonality` defaults to 100 (read off the class, not
+    assumed) and every vanilla Outlander group maker leaves it unset. At
+    commonality 5 each new group maker takes 5/(100+5) = 4.8% of the groups of
+    its kind; 95.2% of ordinary Outlander groups are composed exactly as before,
+    and the ones that are not still field ordinary humans with faction xenotypes.
+
+    ⭐ The dune ranger carries the joint-highest weight in every group it is in.
+    It is the one that must actually be SEEN, because it is the only one of the
+    five dressed explicitly (duster + headwrap, both Core).
+
+    Group kinds used: Combat · Peaceful · Trader · Settlement. The League is
+    `raidsForbidden`, so Peaceful and Trader are where the player actually meets
+    it; Combat and Settlement are for its settlement being attacked and for its
+    Outlander cousins.
+  -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[@Name="OutlanderFactionBase"]/pawnGroupMakers</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[@Name="OutlanderFactionBase"]/pawnGroupMakers</xpath>
+      <value>
+
+        <li>
+          <kindDef>Combat</kindDef>
+          <commonality>5</commonality>
+          <options>
+            <Jawa_Homestead_Grunt>10</Jawa_Homestead_Grunt>
+            <Jawa_Homestead_DesertRanger>10</Jawa_Homestead_DesertRanger>
+            <Jawa_Homestead_Heavy>6</Jawa_Homestead_Heavy>
+            <Jawa_Homestead_Specialist>4</Jawa_Homestead_Specialist>
+            <Jawa_Homestead_Leader>1</Jawa_Homestead_Leader>
+          </options>
+        </li>
+
+        <li>
+          <kindDef>Peaceful</kindDef>
+          <commonality>5</commonality>
+          <options>
+            <Jawa_Homestead_Grunt>10</Jawa_Homestead_Grunt>
+            <Jawa_Homestead_DesertRanger>10</Jawa_Homestead_DesertRanger>
+            <Jawa_Homestead_Heavy>4</Jawa_Homestead_Heavy>
+            <Jawa_Homestead_Specialist>4</Jawa_Homestead_Specialist>
+          </options>
+        </li>
+
+        <!-- `traders` and `carriers` repeat vanilla's own because a Trader group
+             cannot generate without a trader kind; only the GUARDS are ours. -->
+        <li>
+          <kindDef>Trader</kindDef>
+          <commonality>5</commonality>
+          <traders>
+            <Town_Trader>1</Town_Trader>
+          </traders>
+          <carriers>
+            <Dromedary>10</Dromedary>
+            <Muffalo>3</Muffalo>
+            <Alpaca>2</Alpaca>
+          </carriers>
+          <guards>
+            <Jawa_Homestead_DesertRanger>10</Jawa_Homestead_DesertRanger>
+            <Jawa_Homestead_Grunt>8</Jawa_Homestead_Grunt>
+            <Jawa_Homestead_Heavy>6</Jawa_Homestead_Heavy>
+            <Jawa_Homestead_Specialist>3</Jawa_Homestead_Specialist>
+          </guards>
+        </li>
+
+        <li>
+          <kindDef>Settlement</kindDef>
+          <commonality>5</commonality>
+          <options>
+            <Jawa_Homestead_Grunt>10</Jawa_Homestead_Grunt>
+            <Jawa_Homestead_DesertRanger>10</Jawa_Homestead_DesertRanger>
+            <Jawa_Homestead_Heavy>8</Jawa_Homestead_Heavy>
+            <Jawa_Homestead_Specialist>5</Jawa_Homestead_Specialist>
+            <Jawa_Homestead_Leader>2</Jawa_Homestead_Leader>
+          </options>
+        </li>
+
+      </value>
     </match>
   </Operation>
 
