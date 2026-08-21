@@ -485,6 +485,34 @@ def status(fp, steps_failed=False):
     else:
         rows.append(("DefDump/ (live)", dfp["hash"], "current", "-"))
 
+    # defs.sqlite — the queryable form of the dump above. ⭐ Its remedy is ONE
+    # COMMAND, not a game load: it is derived from the JSON that is already on
+    # disk. That distinction is the reason it gets its own row instead of being
+    # folded into the dump's — a reader who sees "GAME LOAD" on both will defer
+    # a 30-second rebuild for 25 minutes he does not need to spend.
+    _sqlite = os.path.join(D_DUMP, "defs.sqlite")
+    if not os.path.isfile(_sqlite):
+        rows.append(("DefDump/defs.sqlite", "absent", "MISSING",
+                     "measure/cli.py build"))
+    else:
+        try:
+            sys.path.insert(0, os.path.dirname(os.path.dirname(
+                os.path.abspath(__file__))))
+            from measure.dumpdb import DumpDB
+            _db = DumpDB(_sqlite)
+            _lost = _db.prov.get("defs_lost_to_collision", "0")
+            _note = "%s defs, %s types" % (_db.prov.get("defs_total", "?"),
+                                           _db.prov.get("types_captured", "?"))
+            if _lost not in ("0", "", None):
+                _note += ", %s lost to collisions" % _lost
+            rows.append(("DefDump/defs.sqlite", _note,
+                         "STALE" if _db.stale else "current",
+                         "measure/cli.py build" if _db.stale else "-"))
+            _db.close()
+        except Exception as ex:
+            rows.append(("DefDump/defs.sqlite", str(ex)[:40], "MISSING",
+                         "measure/cli.py build"))
+
     patch_dir = os.path.join(ARMOURY, "Patches")
     have_patches = os.path.isdir(patch_dir) and any(
         f.endswith(".xml") for f in os.listdir(patch_dir))

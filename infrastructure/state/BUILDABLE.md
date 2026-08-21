@@ -272,13 +272,52 @@ know** before you trust the case you don't.
 
 | # | instrument | what it returned | status |
 |---|---|---|---|
-| 1 | `strings -a -el` on a .NET assembly | **16** of 115 tool names — implying 99 live tools were missing | ⚠️ **known only** |
-| 2 | `grep` a `.rws` for biome defNames | **2**, where the CSV holds 3 / 233 / 31 | ⚠️ **known only** |
-| 3 | def dump `defs/<Type>.json` | `AbilityDef` **0**, having written 612 | ✅ **fixed** `d7cf154`, undeployed |
+| 1 | `strings -a -el` on a .NET assembly | **16** of 115 tool names — implying 99 live tools were missing | 🛡️ **refused at the tool call** |
+| 2 | `grep` a `.rws` for biome defNames | **2**, where the CSV holds 3 / 233 / 31 | 🛡️ **refused at the tool call** |
+| 3 | def dump `defs/<Type>.json` | `AbilityDef` **0**, having written 612 | ✅ **fixed** `d7cf154` (undeployed) **+ caught offline** |
 | 4 | `weapon_tag_audit` "emptied by the cut" | **0**, structurally guaranteed | ✅ **fixed** |
 | 5 | `jawa/texture_audit` | **53** dead paths, 39 of them present art | 📋 **filed**, `TEXTURE_AUDIT_CUSTOM_GRAPHICCLASS_1` |
 | 6 | `validate_patch.py`, bare `Defs/` xpath | **0 nodes** on patches live in game | ✅ **fixed**, selftest 36 cases |
 | 7 | `first_light` "no weaponTags" | counts a disarmed combat role as a civilian | ⚠️ **known only** |
+
+### ⭐ THE ANSWER TO THE OWNER'S QUESTION — `measure`, 2026-08-21
+
+He asked whether these were all fixed. They were not, and three of them never can be by
+fixing a tool: `strings`, `grep` and `wc` are not broken, they are being pointed at
+encodings they do not read. So the fix is a different shape — **you no longer get a bare
+number from a large artifact at all.**
+
+```
+python3 src/RimMandrake/measure/cli.py count AbilityDef     -> UNMEASURED, and why
+python3 src/RimMandrake/measure/cli.py count ThingDef       -> MEASURED 24904
+python3 src/RimMandrake/measure/cli.py coverage             -> what is NOT captured
+python3 src/RimMandrake/measure/cli.py explain <path>       -> what may read this file
+```
+
+🔑 **Every answer is `MEASURED` / `UNMEASURED` / `REFUSED`, and they are not
+interchangeable.** `0` can now only mean measured zero; ignorance has its own word and its
+own exit status (2 and 3). One line per question, so a count costs no context.
+
+🛡️ **`.claude/hooks/block_blind_scan.py` refuses the scan before the wrong number exists**
+— `grep`/`strings`/`wc` against a `.rws`, a `.dll`, `DefDump/**`, a world CSV or
+`Player.log`. It names the right instrument in the refusal, fails OPEN on any error, and
+`MEASURE_ALLOW_SCAN=1` overrides it for a legitimate literal-string search.
+
+⚠️ **The register above is still the antidote for anything the tool does not cover.** A
+`0` from a listed instrument is UNMEASURED until validated against a known answer.
+
+🪤 **AND THE LESSON THAT COST THE MOST, because it happened while building the fix:** the
+first cut of `measure` passed 16/16 and answered `MEASURED 0 AbilityDef`. It cross-checked
+three sources — the manifest's count, the file's own trailing `count`, and the parsed rows
+— and all three said 0. **They agreed because one collision corrupted all three
+identically.** ⇒ *Agreement between sources is not correctness when the sources share a
+failure mode.* The only surviving evidence was `manifest.json`'s **duplicate keys** (532
+`defCounts` entries under 517 names), and `json.load` destroys it silently at parse time.
+
+📋 **A second gap, found the same way and not previously recorded: 19 def types have a
+`defs/<Type>.json` file that `manifest.json` never declares at all.** They are counted and
+readable, but nothing cross-checks them — `coverage` reports them as `undeclared` rather
+than `complete`. `AspirationDef`, `RaceTraitDef`, `SkinDef` and 16 others.
 
 **1 — `strings` cannot read .NET attribute metadata.** It found 16 `jawa/` names in a DLL
 carrying 115, because .NET keeps attribute strings in metadata blobs a byte scan does not
