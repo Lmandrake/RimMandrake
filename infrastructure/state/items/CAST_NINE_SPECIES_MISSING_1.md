@@ -1,6 +1,6 @@
 ## spec
 Mapping every one of the 269 named characters' prose race onto a `XenotypeDef` in the
-**2026-08-21 578-mod dump** (139 rows) resolves **253**. Nine do not — their species has no
+**2026-08-21 578-mod dump** (139 rows) resolves **253**. ⚠️ **Eleven characters across nine species** do not — their species has no
 xenotype in this mod set at all:
 
 | species | characters | where |
@@ -46,3 +46,52 @@ changes with the species or the swap is a lie in the other direction.**
 
 ## criteria
 Nobody is described as something the game cannot show.
+
+## ruling
+🔴 **DECIDE, 2026-08-21 — option (d), which this item did not offer: ADD THE NINE TO OUR
+OWN RACES MOD.** ⛔ (c) re-casting is **rejected**, and it was my own proposal.
+
+### First, two corrections to this item's own spec
+
+⚠️ **It is ELEVEN characters, not nine** — nine *species*, but `Arcona` and `Gran` have two
+each.
+⚠️ **"Cheapest, reversible, entirely an authoring job" was wrong**, and reading the eleven
+briefs is what showed it.
+
+### Why re-casting is rejected: every one of the eleven is built on its body
+
+| character | the brief IS the anatomy |
+|---|---|
+| Ma'kesh Bruul | *"two and a half metres of matted white fur… tusks yellowed, permanently and visibly miserable in the heat"* |
+| Bosun Vurgo Nakk | *"**Four arms** and a wattled roar — two on the breaching frame, one on the charge, and the fourth holding the served copy flat against your ship"* |
+| Adjuster Ushet Kel Ba | *"a hooked beak, eyes out on stalks, and he conducts the entire hearing **chest-deep in a brine tub** because his hide splits in this air"* |
+| Onk-Onk-Deshu | *"three hundred kilos of patient blubber… moves air through her skin continuously to stay damp, and **needs no well at all, ever**"* |
+| Uzzo One-Eye | *"**One enormous eye**, an arm that regrew a shade paler than the other"* |
+| Vekshaa · Nekk Arda | hammerhead skulls whose **eye colour is the salt addiction**, visibly |
+| Pell Onasso · Ubo Tass | three stalked eyes; one *"go wet independently of each other"*, one calls the head-count |
+| Sszik Vhan · Ippo Nuum | black scales; a snout and a wing-buzz |
+
+⇒ **Swapping the species does not adjust a character, it deletes one.** Onk-Onk-Deshu needing
+no well is a *water-politics* character on a desert planet; Uzzo's regrowing arm is why he
+can work at noon. These are among the best-written in the whole cast.
+
+### Why (d) is not exotic: it is what that mod is for, and we have done it 70 times
+
+`src/Jawa/RimMandrake_StarWarsRaces/` already ships **70 XenotypeDefs** with the full
+supporting cast — `GeneDefs`, `HeadTypeDefs`, `RulePackDefs` namers and `XenotypeIcons`.
+Adding nine more is **additive, in-house, and adds no dependency** — which matters, because
+(a) *"install a mod"* would change the stack at the worst possible moment, right before a
+one-shot frozen worldgen.
+
+⚠️ **Not on the worldgen critical path.** `Inhabited` places people on a finished planet, so
+this can land after the click without loss. It is v1, not v1-blocking.
+
+### 🔴 Two of the eleven cannot be rendered by ANY xenotype, and that is not fixable
+
+**Besalisk four arms** and **Toydarian wings** are anatomy RimWorld does not model —
+no mod, no gene, no head type changes that. ⇒ **Keep the prose.** A pawn's bio is text the
+player reads, and §5.6's *"a hook the mechanics do not back is a lie"* is about **claims the
+game contradicts**, not detail it merely does not draw. ⛔ **Do not rewrite Vurgo Nakk's four
+arms out**, and do not expect the sprite to show them.
+
+⇒ Filed as `NINE_XENOTYPES_AUTHORED_1`.
