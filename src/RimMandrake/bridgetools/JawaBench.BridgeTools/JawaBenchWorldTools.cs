@@ -2389,7 +2389,16 @@ namespace JawaBench.BridgeTools
                             wbolN++;
                             if (waterBiomeOnLand.Count < limit) waterBiomeOnLand.Add(new { tile = i, biome = b.defName, elevation = t.elevation });
                         }
-                        if (!biomeIsWater && t.elevation <= 0f)
+                        // 🔴 Lake is excluded HERE TOO - corrected 2026-08-21
+                        // (LINT_EXCLUDE_LAKE_SUBMERGED_1). The 2026-08-20 fix above was
+                        // applied to waterBiomeOnRaisedLand and lakesAboveSeaLevel and
+                        // never to this check, so sinking the Scald to -30 simply moved
+                        // its 312 tiles from a check that scores zero into one that
+                        // scores. A lake BELOW its own shoreline is the definition of a
+                        // lake. ⛔ Do not "simplify" this by adding Lake to
+                        // biomeIsWater - that flips waterBiomeOnRaisedLand back on for
+                        // every ordinary high-altitude lake, which is what 08-20 fixed.
+                        if (!biomeIsWater && b.defName != "Lake" && t.elevation <= 0f)
                         {
                             lbsN++;
                             if (landBiomeSubmerged.Count < limit) landBiomeSubmerged.Add(new { tile = i, biome = b.defName, elevation = t.elevation });
