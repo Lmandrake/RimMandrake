@@ -497,3 +497,10 @@
 {"seat":"CHECK","event":"verify","id":"B63","result":"pass","config":"full-578","evidence":"DefDump 2026-08-21T08:20:20Z","sha":"3613b99","ts":"2026-08-21T10:00:27Z"}
 {"seat":"CHECK","event":"verify","id":"RAKATA_SLEEPERS_LOOK_RIGHT_1","result":"partial","config":"full-578","evidence":"DefDump 2026-08-21T08:20:20Z","sha":"3613b99","ts":"2026-08-21T10:00:28Z"}
 {"seat":"CHECK","event":"note","id":"RAKATA_SLEEPERS_LOOK_RIGHT_1","text":"useFactionXenotypes reads false on BOTH AncientSoldier and AncientSoldier_Leader - PASS, and it is measured because the field is present on all 1736 PawnKindDefs. xenotypeChances is UNMEASURED, not failed: the key appears on ZERO of the 1736 PawnKindDefs, so the dump cannot answer it either way. Settle it live or from the XML, never from this dump.","ts":"2026-08-21T10:00:28Z"}
+{"seat":"BUILD","event":"claim","id":"FACTION_ICONS_BESPOKE_1","ts":"2026-08-21T10:04:13Z"}
+{"seat":"BUILD","event":"start","id":"FACTION_ICONS_BESPOKE_1","ts":"2026-08-21T10:04:13Z"}
+{"seat":"DECIDE","event":"start","id":"TWO_JOKE_LABELS_ON_SLEEPERS_1","ts":"2026-08-21T10:04:31Z"}
+{"seat":"REP","event":"file","id":"SETTLEMENTS_OFF_IMPASSABLE_1","title":"Move the three holdings that sit on impassable tiles to the nearest valid tile","kind":"check","target":"v1","needs":"bridge","for":"CHECK","ts":"2026-08-21T10:07:37Z"}
+{"seat":"REP","event":"file","id":"DROP_TRIBAL_FURNITURE_MOD_1","title":"Owner ruled: drop Tribal Furniture entirely - but 34 of its defNames are already baked into the keeper save","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T10:07:38Z"}
+{"seat":"REP","event":"file","id":"WEAPON_TAGS_MATCH_NOTHING_1","title":"Fifteen pawn kinds carry weaponTags that match no loaded weapon and will always spawn bare-handed","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T10:07:38Z"}
+{"seat":"REP","event":"file","id":"WORLD_REDRAFT_PROCEDURE_1","title":"Write down how to rebuild the keeper world from the paint, while tonight's steps are still true","kind":"task","target":"v1","needs":"offline","for":"DECIDE","ts":"2026-08-21T10:07:38Z"}
