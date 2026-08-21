@@ -31,7 +31,7 @@ folder is a proven load path in this exact mod. No `LoadFolders` change is neede
 | `JawaFreeDroidEnclaves.xml` | `World/JawaFactions/FreeDroidEnclaves` |
 | `JawaGeonosianFoundryHive.xml` | `World/JawaFactions/GeonosianHive` |
 | `JawaWildsteamClan.xml` | `World/JawaFactions/WildsteamClan` |
-| `JawaAscendantHelix.xml` | ⏸️ **HOLD** — see §4 |
+| `JawaAscendantHelix.xml` | `World/JawaFactions/AscendantHelix` |
 
 ### 3. Four vessels — patch ops, and 🔴 THE ADD/REPLACE SPLIT IS THE TRAP
 
@@ -53,13 +53,15 @@ where it is present creates a duplicate node.** Both fail quietly enough to ship
 ✅ `ForgottenArsenal.png` is built and ready, but `Mechanoid` is `hidden`, holds no
 settlement and is never drawn — patching it changes nothing a player can see. Ship the
 texture; the def change is optional and costs one Replace on `Factions_Hidden.xml:88`.
+⚠️ **It is drawn to the owner's reference rather than traced from it.** The line-art
+original could not survive 26px: extracting it left either a shield outline with a dot, or
+a solid shield whose gear had filled in. A heater shield with a gear punched out and a solid
+hub is the same design and holds.
 
 ### 4. ⏸️ Two things are NOT resolved and must not be guessed
 
-- **Ascendant Helix has no icon.** The owner's reference for it arrived as a solid black
-  square — 512×512, one colour, no detail. It needs re-sending. **Leave
-  `JawaAscendantHelix.xml` on `World/WorldObjects/Expanding/Empire` until then** ⚠️ which
-  means it still collides with the Galactic Empire, and that collision is the last one left.
+- ✅ ~~Ascendant Helix has no icon~~ **RESOLVED 2026-08-21** — the owner re-sent it (a DNA
+  double helix) and it is built. ⇒ **there are no icon collisions left on the map.**
 - 🔴 **The Jawa Trade Moot's icon is nearly invisible, and it is a COLOUR fault, not an art
   fault.** Its `colorSpectrum` is `(0.70,0.55,0.30)` — sand — and it is drawn tinted, on
   sand, on a desert planet. The hood silhouette is correct and reads fine in any other
