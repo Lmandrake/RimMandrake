@@ -27,8 +27,11 @@ the owner accepted**.
 |---|---|
 | the shipped campaign world | needs a `ScenarioDef` that does not exist — §2 |
 | the quest-bearing faction roster | four ratified KEEPs are zeroed in XML — §2 |
-| mutators and landmarks | **the bundle has no column for either** — §4 |
 | anything on a map | no map may exist during this run — §5 |
+
+✅ **Mutators and landmarks were added to the paint on 2026-08-21**, on the owner's order,
+and they ride this run. This sheet said the opposite when it was written a few hours
+earlier; see §4.
 
 ## 2. The two gates that are shut, and why neither stops this run
 
@@ -82,9 +85,52 @@ generated** world never enters that path.
     72 settlements     12 factions, most: Homestead Defense League 13, Deep Desert Tribes 9
     23 named regions   imported as WB_MapLabelFeature
 
-🔴 **No mutator column. No landmark column.** `w9_run.py` runs stages 1, 2, 3, 5, 6 — there
-is no stage 4. Stage 3 only *removes* the stale `Coast` the repaint stranded. So the painted
-planet has no oasis landmarks and no tile mutators. Judge the picture accordingly.
+### ✅ The mutator and landmark layer — added 2026-08-21, on the owner's order
+
+`src/RimMandrake/Utils/ashkarr_populate.py` authors two more files, and `w9_run.py` gained
+three stages to place them. ⛔ It is not a generator: no seed, no knobs, no way to roll a
+second planet — the rules are hand-authored decisions about Ash'karr, written as code so
+they are reproducible instead of re-typed.
+
+    world/ASHKARR_WORLDMAP_mutators.csv    1,829 tiles   Mountain 1459 · Coast 369 · Oasis 188
+    world/ASHKARR_WORLDMAP_landmarks.csv      16 tiles   the cap from the census
+
+**Mutators are DERIVED** — each rule restates a column the map already carries, so a mutator
+is never an opinion:
+
+| rule | from | n |
+|---|---|---|
+| `Coast` | a land tile with ≥1 water neighbour, over the real adjacency graph | 369 |
+| `Mountain` | hilliness at the top two ordinals (4, 5) | 1,459 |
+| `Oasis` | `ZBiome_DesertOasis` inside the def's own 20–60 °C gate (39 of 227 fall outside) | 188 |
+
+⭐ **This is the fix for the defect the owner named on 2026-08-17.** The world carried 5,233
+`Coast`, of which 4,831 were on non-water tiles and 2,116 were deep inland — placed for the
+*original* sea layout, then stranded when the repaint moved the water. Stage 3 clears them
+and stage 4b recomputes them from where the water actually is.
+
+**Landmarks are HAND-PLACED**, all 16 out of the census §7 table — `AbandonedColonyOutlander`
+at The Setdown (tile 2476), `AncientQuarry` at The Ore Moot, `Valley` at The Scald Gate,
+`sw_Sarlacc` at Sarlacc Ground, `AncientLaunchSite` at the Rust Cathedral, `LavaCrater` +
+`LavaLake` on the Scald rim, `AncientHeatVent` ×3 on the hottest ground, `Oasis` ×6 spread
+across the wells. A named place stops being a place when there are 227.
+
+⚠️ **The salt pans are deliberately empty.** `DryLake` / `VEE_SaltPlains` may not be legal on
+`Wasteland`, and a landmark that cannot fire **logs nothing** — so nothing is placed on an
+unverified legality.
+
+🔴 **Two engine facts this rests on, and the run re-proves both rather than assuming them:**
+
+1. `AddLandmark` **ignores** `IsValidTile`. Measured 2026-08-19: on a settlement tile the
+   verdict was False and it added the landmark anyway. `ashkarr_populate.py` therefore
+   refuses settlement tiles *and their neighbours* itself — the first legal ring is two out,
+   not the "one tile adjacent" the census assumed — and stage 4 passes `checkValid: true` so
+   the engine's own verdict is recorded beside ours.
+2. `AddMutator` is **expected** to ignore `biomeWhitelist` the same way. That matters because
+   the shipped `Oasis` mutator whitelists `Desert`/`ExtremeDesert` only and our oasis tiles
+   are `ZBiome_DesertOasis`. **Expected, not proven** — stage 4b reads the count back and §6
+   carries it as decision string 8. If it reads 0, the whitelist *is* enforced and the census's
+   one-line `PatchOperationAdd` is needed after all.
 
 ## 5. The sequence
 
@@ -102,7 +148,10 @@ planet has no oasis landmarks and no tile mutators. Judge the picture accordingl
    let a map instantiate. Say the word.
 
 **CHECK:**
-7. `python.exe src/RimMandrake/Utils/w9_run.py --dry` — every stage reports, nothing writes.
+7. `python3 src/RimMandrake/Utils/ashkarr_populate.py` if either CSV is stale, then
+   `python3 src/RimMandrake/Utils/ashkarr_populate.py` — only if either CSV is stale;
+   it needs no game. Then
+   `python.exe src/RimMandrake/Utils/w9_run.py --dry` — every stage reports, nothing writes.
 8. `python.exe src/RimMandrake/Utils/w9_run.py --apply` — about a minute.
 9. The run takes the screenshot itself and names its path in the report.
 
@@ -121,11 +170,15 @@ A prediction invented after reading the log is a story that fits.
 | 4 | stage 1 `applied` / `unknownBiomes` | **21872** / **0** |
 | 5 | stage 2 `rivers` / `roads` / `unknownDefs` | **238** / **837** / **0** |
 | 6 | stage 3 offenders after | **0** |
-| 7 | stage 5 settlements, `refused` | **72**, refused **0** |
-| 8 | stage 6 regions | **23** `WB_MapLabelFeature` labels |
-| 9 | `jawa/world_commit` | `success: true` — ⚠️ without it no edit is visible |
-| 10 | `jawa/world_lint` verdict | clean |
-| 11 | the screenshot | exists, and the owner names no defect |
+| 6b | stage 3b leftover landmarks removed | **49** — the census counted exactly 49 in each of two savegames. A different number means this world generated differently and the figure is worth keeping |
+| 7 | stage 4 landmarks `added` | **16 of 16**, across 8 defs. `validity[]` may report tiles the engine calls invalid — record them; it places them anyway |
+| 7b | stage 4b mutators | **Coast 369 · Mountain 1459 · Oasis 188**, 2,016 placements over 1,829 tiles |
+| 8 | ⭐ Oasis read-back | **188 of 188** sampled carry it. **0 means `AddMutator` honours `biomeWhitelist`** and the one-line patch is needed — that is a finding, not a failure |
+| 9 | stage 5 settlements, `refused` | **72**, refused **0** |
+| 10 | stage 6 regions | **23** `WB_MapLabelFeature` labels |
+| 11 | `jawa/world_commit` | `success: true` — ⚠️ without it no edit is visible |
+| 12 | `jawa/world_lint` verdict | clean |
+| 13 | the screenshot | exists, and the owner names no defect |
 
 ⚠️ **Absence of an error is necessary, not sufficient.** Stages 4, 5, 7 and 8 are the
 expected-**present** numbers; a run that logs nothing and applies nothing also logs no error.

@@ -11,6 +11,23 @@ spec has mutators clearing after the biome repaint and features last, because ea
 invalidates assumptions the previous one made. Driving it by hand means re-deciding the
 order every time and getting it wrong once.
 
+THE STAGES, and the two ordering rules that are engine facts rather than taste:
+    1   tiles            biome + scalars
+    2   links            rivers mouth-first, then roads
+    3   mutators, clear  the marine ones the repaint stranded
+    3b  landmarks, clear the 49 vanilla worldgen leftovers
+    4   landmarks, add   🔴 BEFORE settlements - IsValidTile refuses a settlement tile
+                            and its neighbours, and AddLandmark ignores that verdict
+    4b  mutators, add    🔴 AFTER landmarks - AddLandmark also rolls the def's own
+                            mutatorChances onto its tile, on top of whatever is there
+    5   settlements
+    6   features         the 23 region labels
+    commit -> lint -> screenshot
+
+Stages 3b, 4 and 4b were added 2026-08-21 on the owner's order; before that the paint
+carried no mutator and no landmark layer at all. Their input is authored by
+`ashkarr_populate.py`, which writes the two CSVs they read.
+
 🔴 IT REFUSES TO START ON A ZOMBIE. A save can abort mid-load, the engine's own bail
 handler can throw, and the process will then report `game_loaded` and answer every call
 while being half-disposed. Measured 2026-08-20: hours of work landed on a corpse. The
@@ -37,7 +54,23 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 
 TILES = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv")
 LINKS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_links.csv")
 SETTS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_settlements.csv")
+MUTS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_mutators.csv")
+LMKS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_landmarks.csv")
 EXPECT_TILES = 21872
+
+
+def read_csv(path):
+    """Rows as dicts, or None if the file was never authored.
+
+    ⚠️ Returns None rather than [] on a missing file, because an empty stage and an
+    unauthored stage must not report the same thing. A stage that silently does nothing
+    is the failure mode this whole run exists to avoid.
+    """
+    if not os.path.isfile(path):
+        return None
+    import csv as _csv
+    with io.open(path, encoding="utf-8") as fh:
+        return list(_csv.DictReader(fh))
 
 
 def w(out, line):
@@ -183,6 +216,103 @@ def main():
             w(out, "- **stage 3 mutators**: removed stale `Coast` from %d tile(s); offenders now %s" % (done, after))
         else:
             w(out, "- stage 3 mutators (dry): would clear stale `Coast` from %d tile(s)" % len(offs))
+
+        # ---- stage 3b: the 49 vanilla landmark leftovers -------------------
+        # Bay, Cove, VEE_CoralReef, VEE_DriftwoodShore on a world that is 8.1% water
+        # with no forest upstream. They are worldgen fossils that no longer match the
+        # repainted biomes, and they must go BEFORE ours are placed: AddLandmark refuses
+        # a tile that already holds one, silently.
+        lg = rb.call("jawa/world_landmarks_get", {"limit": 5000})
+        existing = [l.get("tile") for l in (lg.get("landmarks") or []) if l.get("tile") is not None]
+        if not existing:
+            w(out, "- **stage 3b leftovers**: none present")
+        elif apply:
+            rr = rb.call("jawa/world_landmarks_set",
+                         {"action": "remove", "tiles": ",".join(map(str, existing)), "checkValid": False})
+            w(out, "- **stage 3b leftovers**: removed %s of %d" % (rr.get("removed"), len(existing)))
+        else:
+            w(out, "- stage 3b leftovers (dry): would remove %d" % len(existing))
+
+        # ---- stage 4: landmarks --------------------------------------------
+        # 🔴 BEFORE settlements. LandmarkDef.IsValidTile refuses a settlement tile and
+        # every tile adjacent to one — but AddLandmark never calls it, so nothing stops
+        # us and nothing reports it. ashkarr_populate.py already refused those tiles;
+        # checkValid=True here is the second instrument, and its verdict is recorded.
+        lmk = read_csv(LMKS)
+        if lmk is None:
+            w(out, "- ⚠️ **stage 4 landmarks**: %s is missing — run ashkarr_populate.py" % LMKS)
+        else:
+            by_def = {}
+            for r in lmk:
+                by_def.setdefault(r["landmark"], []).append(r["tile"])
+            added, invalid = 0, []
+            for ldef, tl in sorted(by_def.items()):
+                if not apply:
+                    continue
+                rr = rb.call("jawa/world_landmarks_set",
+                             {"action": "add", "def": ldef, "tiles": ",".join(tl), "checkValid": True})
+                if not rr.get("success"):
+                    w(out, "- 🔴 stage 4 `%s` failed: %s" % (ldef, str(rr.get("message"))[:140]))
+                    continue
+                added += rr.get("added") or 0
+                for v in (rr.get("validity") or []):
+                    if not v.get("isValidTile"):
+                        invalid.append("%s@%s%s" % (ldef, v.get("tile"),
+                                                    " (settlement)" if v.get("settlementAtOrAdjacent") else ""))
+            if apply:
+                w(out, "- **stage 4 landmarks**: added %d of %d across %d defs"
+                     % (added, len(lmk), len(by_def)))
+                if invalid:
+                    w(out, "  - ⚠️ engine called %d tile(s) invalid and placed them anyway: %s"
+                         % (len(invalid), ", ".join(invalid[:8])))
+            else:
+                w(out, "- stage 4 landmarks (dry): would add %d across %d defs — %s"
+                     % (len(lmk), len(by_def), ", ".join("%s×%d" % (k, len(v)) for k, v in sorted(by_def.items()))))
+
+        # ---- stage 4b: the derived mutators --------------------------------
+        # 🔴 AFTER landmarks, because AddLandmark also rolls the def's own mutatorChances
+        # onto its tile; running ours first would let that roll land on top.
+        mut = read_csv(MUTS)
+        if mut is None:
+            w(out, "- ⚠️ **stage 4b mutators**: %s is missing — run ashkarr_populate.py" % MUTS)
+        else:
+            by_mut = {}
+            for r in mut:
+                for name in (r["mutators"] or "").split(";"):
+                    if name:
+                        by_mut.setdefault(name, []).append(r["tile"])
+            if not apply:
+                w(out, "- stage 4b mutators (dry): would add %s"
+                     % ", ".join("%s×%d" % (k, len(v)) for k, v in sorted(by_mut.items())))
+            else:
+                tot = 0
+                for name, tl in sorted(by_mut.items()):
+                    done = 0
+                    for i in range(0, len(tl), 1000):
+                        chunk = tl[i:i + 1000]
+                        rr = rb.call("jawa/world_mutators_set",
+                                     {"action": "add", "mutators": name,
+                                      "tiles": ",".join(chunk), "readBack": 2})
+                        if not rr.get("success"):
+                            w(out, "- 🔴 stage 4b `%s` chunk failed: %s" % (name, str(rr.get("message"))[:140]))
+                            break
+                        done += len(chunk)
+                    tot += done
+                    w(out, "    - %-12s %d tile(s)" % (name, done))
+                w(out, "- **stage 4b mutators**: %d placements over %d tiles" % (tot, len(mut)))
+                # ⭐ The Oasis mutator whitelists Desert/ExtremeDesert only, and our oasis
+                # tiles are ZBiome_DesertOasis. Reading the count back is what proves
+                # AddMutator ignores biomeWhitelist — do not take the success flag for it.
+                if "Oasis" in by_mut:
+                    sample = by_mut["Oasis"][:200]
+                    chk = rb.call("jawa/world_mutators_get",
+                                  {"tiles": ",".join(sample), "limit": len(sample)})
+                    # ⚠️ `mutators` is a list of OBJECTS ({def,label,genOrder}), not names.
+                    hits = sum(1 for t in (chk.get("tiles") or [])
+                               if any((m or {}).get("def") == "Oasis" for m in (t.get("mutators") or [])))
+                    w(out, "  - ⭐ Oasis read-back: %d of %d sampled tiles carry it "
+                           "(0 ⇒ AddMutator DOES honour biomeWhitelist and the patch is needed)"
+                         % (hits, len(sample)))
 
         # ---- stage 5: settlements ------------------------------------------
         r = rb.call("jawa/world_settlements_import", {"path": SETTS, "apply": apply,
