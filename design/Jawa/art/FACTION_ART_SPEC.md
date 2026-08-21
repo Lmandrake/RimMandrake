@@ -134,6 +134,36 @@ colony.**
 `Expanding/VillageSavage` *"reads wrong on an outlander icon"*. ✅ Kept, unresolved, and
 folded into the LOOK step in §4 rather than guessed at again.
 
+### 2.6 ⭐ VALUE MODELLING — six icons carry two or three tones, and what that bought
+
+**Owner, 2026-08-21, after the Jawa glow worked:** *"See if you can improve the other icons
+with similar tricks."* Six now carry more than one value. Nothing here is a redesign — the
+silhouettes are the accepted ones; only the internal value structure changed.
+
+| icon | tones | what the values are doing |
+|---|---|---|
+| **Jawa Trade Moot** | hood `108` · eyes `255` | the robe dims into the sand, the eyes stare out |
+| **the Junkers** | plate `132` · skull `255` | ⭐ a battered dark plate with the sigil lit on it |
+| **Deep Desert Tribes** | wrappings `128` · tubes `196` · lenses + grille `255` | metal reads bright against cloth |
+| **Homestead League** | flanks `120` · door arches `170` · dome `255` | a lit adobe dome with a recessed doorway |
+| **Free Droid Enclaves** | feet `130` · body `170` · legs `205` · dome `235` · **photoreceptor `255`** | the eye is the brightest pixel on the droid |
+| **Wildsteam Clan** | three blades at `150` · `205` · `255` | depth in a flat cluster of leaves |
+| **Ascendant Helix** | rungs `140` · backbone strands `255` | the strands come forward, the rungs sit behind |
+
+🔑 **THE RULE THAT CAME OUT OF IT, and it is the useful part: a multi-tone icon should
+STRADDLE the ground value, not sit under it.** The Homestead dome first failed at pale tan —
+every tone landed above the sand and the whole mark washed out. Re-cutting the range so the
+**dome sits above the terrain and the flanks below it** made a pale palette legible without
+darkening the faction at all. ⇒ contrast is not "be darker than the ground", it is "cross
+it".
+
+⚠️ **What a single multiply cannot do, stated once so nobody tries.** *"Bright red skull"*
+and *"silver"* are both hue requests, and the tint has one hue. The skull can only be the
+**brightest tone of the faction's own colour** — which is why the Junkers moved to rust red,
+so that brightest tone IS red. Same for Tusken silver: the faction went bone-grey so the
+lenses read as metal. ⇒ **when a two-tone icon needs a specific hue for its accent, the
+FACTION COLOUR is the lever, not the texture.**
+
 ### 2.5 ⭐ The Jawa Trade Moot — a dark hood that vanishes, and eyes that do not
 
 **Owner, 2026-08-21:** *"rather than hollow eyes, could you make them a luminous warm
@@ -195,6 +225,13 @@ settlement and the glyph is genuinely free.
 | `Jawa_HuttCartel` | `Expanding/Town` **(shared ×2)** | `World/WorldObjects/Expanding/TradersGuild` | a trade-guild glyph for a cartel whose whole character is the market. Odyssey's `TradersGuild` is zeroed by the slate |
 | `Jawa_DeepwaterCompact` | `Expanding/Village` **(shared)** | `World/WorldObjects/Expanding/TownRough` | still a civic settlement — right for *"clean infrastructure married to ritual reverence for the cistern"* — and distinct from `Town`. `OutlanderRough` is zeroed by the slate |
 | `Jawa_AscendantHelix` | `Expanding/Empire` **(shared)** | `World/WorldObjects/Expanding/HoraxCult` | ⭐ a cult sigil, not a town. `INHABITED_CAST_HELIX.md:9` — *"Not a laboratory — a people with a religion about it."* Anomaly's `HoraxCult` is `hidden` and holds no settlement |
+
+⚠️ **R22 IS NOW NARROWED, not quietly broken — 2026-08-21.** Three of the five reskins keep
+their vessel's `colorSpectrum` (`Empire`, `Pirate`, `Mechanoid`); **two do not.**
+`OutlanderCivil` and `TribeCivil` move to tan and bone-grey because their icons are
+value-modelled and the vessel colour destroyed the modelling (§2.6). ⇒ **R22 now reads:
+a reskin keeps the vessel's spectrum UNLESS its icon carries more than one tone**, because
+then the spectrum is part of the drawing rather than a label on it.
 
 ⛔ **Do not move the four reskins** — `Empire`, `OutlanderCivil`, `TribeCivil`, `Pirate` keep
 their vessel's icon and spectrum. That is R22's principle and it is what makes the reskins

@@ -73,33 +73,34 @@ hub is the same design and holds.
   sand, on a desert planet. The hood silhouette is correct and reads fine in any other
   colour. ⇒ **do not redraw it.** See `FACTION_ART_SPEC.md` §2.5 for the proposed spectrum.
 
-### 5. 🔴 One `colorSpectrum` change, and it SHIPS WITH the icons — not optional
+### 5. 🔴 FOUR `colorSpectrum` changes, and they SHIP WITH the icons — not optional
 
-`src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml` — replace the `colorSpectrum` block:
+**Owner, 2026-08-21:** *"See if you can improve the other icons with similar tricks."*
+⇒ **Seven of the thirteen textures are now value-modelled** (two or three tones, not a flat
+mask). For four of them the faction colour is **part of the drawing**, because a multiply
+has one hue: an accent can only be the *brightest tone of the faction's own colour*.
 
-```xml
-<colorSpectrum>
-  <li>(0.98, 0.72, 0.16)</li>
-  <li>(0.86, 0.56, 0.08)</li>
-</colorSpectrum>
-```
+| file | def | new `colorSpectrum` | why the colour moved |
+|---|---|---|---|
+| `Defs/FactionDefs/JawaTribes.xml` | `Jawa_IndigenousTribes` | `(0.98,0.72,0.16)` → `(0.86,0.56,0.08)` | amber, so white eyes read as **lit** and the `108` hood as a dark robe |
+| `Defs/FactionDefs/JawaJunkers.xml` | `Jawa_Junkers` | `(0.72,0.26,0.15)` → `(0.56,0.19,0.10)` | rust red, so the `255` skull sigil reads **red** on a `132` plate. Scrap brown could only make it a brighter brown |
+| `Patches/DeepDesertTribes.xml` | `TribeCivil` | `(0.72,0.66,0.58)` → `(0.58,0.53,0.46)` | bone-grey, so the lenses and mouth grille read as **metal** against darker wrappings |
+| `Patches/HomesteadDefenseLeague.xml` | `OutlanderCivil` | `(0.68,0.56,0.40)` → `(0.54,0.43,0.29)` | mid tan — the adobe dome it always wanted to be, and the three tones **straddle** the sand so it does not wash out |
 
-⭐ **Owner's design, 2026-08-21:** *"even when the brown hood is invisible in the sand, the
-eyes stare out."*
+⚠️ **The two patch-file ones are Adds or Replaces depending on the vessel** — check the same
+way as `factionIconPath` in §3. `OutlanderCivil` **writes** its own `colorSpectrum`
+(`Core/Defs/FactionDefs/Factions_Misc.xml:188`) ⇒ **Replace**. `TribeCivil` also writes its
+own (`:446`) ⇒ **Replace**. ⭐ Unlike the icon path, both of these are Replaces.
 
-🔑 **`JawaTradeMoot.png` and this colour are ONE design and neither works alone.** Unlike
-the other twelve, that texture is **not a flat mask** — the hood is value `108/255` and the
-eyes are `255`, with a soft falloff between. The tint multiplies, so:
-- hood `0.42 × amber` ⇒ a dark warm brown robe
-- eyes `1.00 × amber` ⇒ full amber, the brightest thing on the tile
+🔑 **Texture and colour are one design in all four cases.** Ship a value-modelled texture
+with the old spectrum and you get a muddy blob; ship the new spectrum with a flat mask and
+you get a uniformly bright blob.
+⛔ **Do not flatten any texture to a single value to "match" the others.** Seven are
+deliberately multi-tone; this is vanilla's own convention — every one of the fifteen shipped
+world icons measured 2026-08-21 is greyscale spanning 0–255 with 10–200 distinct luminances.
+⛔ **Do not change the other nine factions' `colorSpectrum`.** They pass as they are.
 
-⛔ **Ship the old sand spectrum with this texture and you get a dim brown blob.**
-⛔ **Ship this spectrum with a flat mask and you get a uniformly bright amber blob.**
-⛔ **Do not "fix" the texture to a single value to match the other twelve** — the two-value
-authoring is deliberate, and it is vanilla's own convention: every one of the fifteen shipped
-world icons measured on 2026-08-21 is greyscale spanning 0–255 with 10–200 distinct
-luminances. Reasoning in `design/Jawa/art/FACTION_ART_SPEC.md` §1 and §2.5.
-⛔ **Do not change any other faction's `colorSpectrum`.** The other twelve pass.
+Reasoning and the per-icon value tables: `design/Jawa/art/FACTION_ART_SPEC.md` §1, §2.5, §2.6.
 
 ## verify
 - `grep -rn factionIconPath src/Jawa/Jawa_Patches/` shows eleven `World/JawaFactions/…`
