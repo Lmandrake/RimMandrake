@@ -235,7 +235,12 @@ def main():
                 "  change an item's STATE   -> rimflow claim|start|block|close <ID>\n"
                 "  change its PROSE         -> edit infrastructure/state/items/<ID>.md\n"
                 "  file something new       -> rimflow file --for <SEAT> …\n"
-                "  regenerate the view      -> python3 src/RimMandrake/rimflow/render.py"
+                "  regenerate the view      -> python3 src/RimMandrake/rimflow/render.py "
+                "--overwrite-queues\n"
+                "\n"
+                "\u26a0\ufe0f  The flag is part of that command. Bare `render.py` writes a "
+                "PREVIEW\nand leaves this file exactly as stale as it already was. "
+                "Corrected 2026-08-21."
                 % p)
 
     # ---- 3. you may file for any seat; you may change only what you own -----

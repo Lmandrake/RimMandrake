@@ -119,9 +119,17 @@ POLICY.md carries the full contract. Your turn starts with `rimflow next --seat 
 ⭐ **The board now reads the ledger, so you stop reconstructing state from prose.**
 
 ```
-python3 src/RimMandrake/rimflow/render.py     -> infrastructure/state/derived/board.json
-                                              -> queue/*.md, regenerated
+python3 src/RimMandrake/rimflow/render.py --overwrite-queues
+        -> infrastructure/state/derived/board.json
+        -> infrastructure/state/queue/{DECIDE,BUILD,CHECK,REP}.md, regenerated
 ```
+
+🔴 **THE FLAG IS PART OF THE COMMAND, and this block said otherwise until 2026-08-21.**
+Bare `render.py` writes a **preview** under `derived/preview/` and leaves the real queues
+untouched, reporting it only as a diff table that reads like success. ⇒ **The queues sat
+frozen for 2h17m** while four seats filed 24 items into a ledger nobody's view was
+showing. Publishing is REP's, and it is the one command that must not be forgotten.
+✅ `HUMAN.md` is never touched — `VIEW_SEATS` is the four agent seats only.
 
 🔑 **This is the job that went away, and it was most of the job.** The board used to be
 derived by parsing six hand-written queues whose `state:` was free text — 58 of 142
