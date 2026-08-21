@@ -54,6 +54,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='repla
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rimbridge_client import RimBridge, resolve_endpoint
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import PLAYER_LOG as _PLAYER_LOG  # noqa: E402
+
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 TILES = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv")
 LINKS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_links.csv")
@@ -82,7 +85,7 @@ def w(out, line):
     print(line)
 
 
-PLAYER_LOG = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log"
+PLAYER_LOG = _PLAYER_LOG
 
 
 def canary(rb, out):

@@ -20,16 +20,17 @@ the owner can load both in the ideo browser and compare.
 """
 
 import argparse
+import os
 import re
 import shutil
 import sys
 import zlib
 from pathlib import Path
 
-IDEOS = Path(
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-    "RimWorld by Ludeon Studios/Ideos"
-)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import IDEOS as _IDEOS                            # noqa: E402
+
+IDEOS = Path(_IDEOS)
 SRC = IDEOS / "The Salvation.rid"
 OUT = IDEOS / "The Salvation (built).rid"
 REPO = Path("/mnt/d/Luke/dev/Rimworld")

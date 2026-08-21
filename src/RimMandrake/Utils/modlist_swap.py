@@ -15,10 +15,11 @@ worldmap bridge work needs many reloads. A minimal list makes a reload cheap.
 import argparse, hashlib, os, shutil, sys, datetime
 import xml.etree.ElementTree as ET
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import MODS_CONFIG  # noqa: E402
+
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-LIVE = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml"
-if os.name == "nt" or not os.path.exists(os.path.dirname(LIVE)):
-    LIVE = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml"
+LIVE = MODS_CONFIG
 STORE = os.path.join(REPO, "infrastructure", "state", "modlists")
 FULL = os.path.join(STORE, "ModsConfig.FULL.LATEST.xml")
 MINIMAL = os.path.join(STORE, "ModsConfig.MINIMAL.xml")

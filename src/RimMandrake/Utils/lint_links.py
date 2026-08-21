@@ -16,12 +16,14 @@ afterwards; a clean lint here is a statement about the FILE, never about the gam
 """
 import argparse, csv, json, os, sys, collections
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import DEF_DUMP  # noqa: E402
+
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__)))))
 LINKS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_links.csv")
 TILES = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv")
-DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-        "RimWorld by Ludeon Studios/DefDump/defs")
+DUMP = os.path.join(DEF_DUMP, "defs")
 
 
 # Above this class a river is a TRUNK and owes the sea an outlet; at or below it may

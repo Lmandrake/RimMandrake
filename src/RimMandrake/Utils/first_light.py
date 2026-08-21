@@ -25,9 +25,12 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rimbridge_client import RimBridge, resolve_endpoint
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import PLAYER_LOG as _PLAYER_LOG  # noqa: E402
+
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 TILES_CSV = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv")
-PLAYER_LOG = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log"
+PLAYER_LOG = _PLAYER_LOG
 
 # The count the deployed assembly carries. Read it off the DLL rather than
 # trusting a literal here -- but a literal is still useful as a "did the deploy

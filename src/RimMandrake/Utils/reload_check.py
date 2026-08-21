@@ -26,13 +26,15 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='repla
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rimbridge_client import RimBridge, resolve_endpoint
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import PLAYER_LOG as _PLAYER_LOG  # noqa: E402
+
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 TILES = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv")
 LINKS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_links.csv")
 WIN_TILES = r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_tiles.csv"
 WIN_LINKS = r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_links.csv"
-PLAYER_LOG = (r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-              r"\RimWorld by Ludeon Studios\Player.log")
+PLAYER_LOG = _PLAYER_LOG
 SAVE = "WORLDMAP_gen"
 PROBE = [2476, 11350, 15087, 8147, 19495, 10, 12411]
 

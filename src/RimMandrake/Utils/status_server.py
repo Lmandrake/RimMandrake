@@ -16,10 +16,14 @@ Data:
 import argparse
 import json
 import os
+import sys
 import re
 import subprocess
 import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import PLAYER_LOG as _PLAYER_LOG  # noqa: E402
 
 ROOT = os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -160,8 +164,7 @@ def _cores_used(cpu_s):
     return round(dc / dt, 2)
 
 
-PLAYER_LOG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-              "RimWorld by Ludeon Studios/Player.log")
+PLAYER_LOG = _PLAYER_LOG
 LOAD_DONE_CUE = "Startup conditions satisfied"
 _LOG = {"key": None, "done": None}
 

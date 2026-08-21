@@ -81,12 +81,11 @@ def mod_dir(name):
 
 # The game side. Native-Windows form first, WSL form second; first one that
 # exists wins, so the same script serves both ways of running it.
-_MODS = [r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods",
-         "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"]
-_CONFIG = [r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-           r"\RimWorld by Ludeon Studios\Config\ModsConfig.xml",
-           "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios"
-           "/RimWorld by Ludeon Studios/Config/ModsConfig.xml"]
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import LOCAL_MODS, MODS_CONFIG            # noqa: E402
+
+_MODS = [LOCAL_MODS]
+_CONFIG = [MODS_CONFIG]
 
 
 def first_existing(paths, what):

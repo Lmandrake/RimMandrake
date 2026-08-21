@@ -15,10 +15,16 @@ infrastructure/state/dumps/REGISTRY.jsonl.
 """
 
 import json
+import os
 import sys
 
-DEFAULT_DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                "RimWorld by Ludeon Studios/DefDump/defs/ThingDef.json")
+sys.path.insert(0, os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))),
+    "src", "RimMandrake", "Utils"))
+from game_paths import DEF_DUMP                           # noqa: E402
+
+DEFAULT_DUMP = os.path.join(DEF_DUMP, "defs", "ThingDef.json")
 
 # RimWorld.FoodTypeFlags, read out of
 # C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll

@@ -36,8 +36,9 @@ error saying `None` is worse than one naming a plausible file.
 
 import os
 
-__all__ = ["MODS_CONFIG", "DEF_DUMP", "PLAYER_LOG", "WORKSHOP", "LOCAL_MODS",
-           "GAME_DATA", "LOCALLOW", "STEAM", "resolve", "describe"]
+__all__ = ["MODS_CONFIG", "DEF_DUMP", "PLAYER_LOG", "PREV_LOG", "IDEOS", "SAVES",
+           "WORKSHOP", "LOCAL_MODS", "GAME_DATA", "LOCALLOW", "STEAM",
+           "resolve", "describe"]
 
 
 def resolve(win, wsl):
@@ -65,6 +66,15 @@ DEF_DUMP = resolve(os.path.join(_LOW_WIN, "DefDump"),
 # distinction has cost a session before: this is the file the game appends to.
 PLAYER_LOG = resolve(os.path.join(_LOW_WIN, "Player.log"),
                      os.path.join(_LOW_WSL, "Player.log"))
+# Where the game keeps saved ideoligions (.rid) and savegames (.rws).
+# Unity rotates Player.log -> Player-prev.log at launch, PRESERVING the old
+# file's mtime, which makes it the anchor for "which run is this".
+PREV_LOG = resolve(os.path.join(_LOW_WIN, "Player-prev.log"),
+                   os.path.join(_LOW_WSL, "Player-prev.log"))
+IDEOS = resolve(os.path.join(_LOW_WIN, "Ideos"),
+                os.path.join(_LOW_WSL, "Ideos"))
+SAVES = resolve(os.path.join(_LOW_WIN, "Saves"),
+                os.path.join(_LOW_WSL, "Saves"))
 WORKSHOP = resolve(os.path.join(_STEAM_WIN, r"workshop\content\294100"),
                    os.path.join(_STEAM_WSL, "workshop/content/294100"))
 LOCAL_MODS = resolve(os.path.join(_STEAM_WIN, r"common\RimWorld\Mods"),
@@ -77,7 +87,8 @@ def describe():
     """Print what resolved to what, and flag anything missing. Run this first
     when a script says a game file does not exist."""
     rows = [("ModsConfig.xml", MODS_CONFIG), ("DefDump/", DEF_DUMP),
-            ("Player.log", PLAYER_LOG),
+            ("Player.log", PLAYER_LOG), ("Ideos/", IDEOS),
+            ("Saves/", SAVES),
             ("workshop/294100", WORKSHOP), ("Mods/", LOCAL_MODS),
             ("Data/", GAME_DATA)]
     width = max(len(n) for n, _ in rows)

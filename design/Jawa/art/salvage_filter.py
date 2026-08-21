@@ -48,9 +48,13 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 TSV = os.path.join(HERE, "salvage_palette.tsv")
 MD = os.path.join(HERE, "SALVAGE_PALETTE.md")
 
-MODSCONFIG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-              "RimWorld by Ludeon Studios/Config/ModsConfig.xml")
-WORKSHOP = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
+sys.path.insert(0, os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__))))),
+    "src", "RimMandrake", "Utils"))
+from game_paths import MODS_CONFIG, WORKSHOP              # noqa: E402
+
+MODSCONFIG = MODS_CONFIG
 
 KW = ("ancient", "slag", "chunk", "rubble", "debris", "wreck", "ruin", "scrap",
       "junk", "broken", "damaged", "destroyed", "busted", "rusted", "crashed",

@@ -59,7 +59,7 @@ import sys
 import textwrap
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from game_paths import MODS_CONFIG, PLAYER_LOG                    # noqa: E402
+from game_paths import DEF_DUMP, MODS_CONFIG, PLAYER_LOG, PREV_LOG                    # noqa: E402
 
 # ⚠️ The WIN_/WSL pair these two used to carry is what `game_paths.resolve()`
 # already does — Windows form first, /mnt/c second, whichever EXISTS wins.
@@ -80,19 +80,13 @@ EXITED_MARKER = "Peak usage frame count"
 # that count against ModsConfig answers "did THIS stack finish loading",
 # which no timestamp can. Arm it before the load:
 #     echo all > ".../DefDump/dump_request.txt"
-DEFAULT_MANIFEST = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios"
-                    "/RimWorld by Ludeon Studios/DefDump/manifest.json")
-WIN_MANIFEST = (r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-                r"\RimWorld by Ludeon Studios\DefDump\manifest.json")
+DEFAULT_MANIFEST = os.path.join(DEF_DUMP, "manifest.json")
 
 # Unity rotates Player.log -> Player-prev.log at launch, PRESERVING the old
 # file's mtime. So Player-prev.log's mtime is the previous run's last write,
 # which is a hard lower bound on the current run's launch time. That is the
 # anchor the modCount check needs: see WHICH RUN IS THIS below.
-DEFAULT_PREVLOG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios"
-                   "/RimWorld by Ludeon Studios/Player-prev.log")
-WIN_PREVLOG = (r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-               r"\RimWorld by Ludeon Studios\Player-prev.log")
+DEFAULT_PREVLOG = PREV_LOG
 
 # ---------------------------------------------------------------------------
 # ⏳ BASELINES vs THE 573 STACK — read before trusting a number below
@@ -383,8 +377,7 @@ def provenance(path, lines, since=None, stale_ok=False):
     # DID THE LOAD FINISH? Compare mod COUNTS, not timestamps: the manifest
     # records what the game actually loaded, so a stale count is proof the
     # current run has not written its dump yet.
-    man_path = (DEFAULT_MANIFEST if os.path.exists(DEFAULT_MANIFEST)
-                else WIN_MANIFEST)
+    man_path = DEFAULT_MANIFEST
     if exited:
         pass                      # a finished run is complete by definition
     elif not os.path.exists(man_path):
@@ -422,8 +415,7 @@ def provenance(path, lines, since=None, stale_ok=False):
             # rotates Player.log -> Player-prev.log at launch and preserves its
             # mtime, so that mtime is the previous run's last write and any
             # dump newer than it was written by the run happening now.
-            prev = (DEFAULT_PREVLOG if os.path.exists(DEFAULT_PREVLOG)
-                    else WIN_PREVLOG)
+            prev = DEFAULT_PREVLOG
             if not exited and os.path.exists(prev):
                 prev_mtime = datetime.datetime.fromtimestamp(
                     os.path.getmtime(prev))

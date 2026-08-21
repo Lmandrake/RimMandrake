@@ -44,12 +44,10 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 
-_LOGS = [
-    r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-    r"\RimWorld by Ludeon Studios\Player.log",
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios"
-    "/RimWorld by Ludeon Studios/Player.log",
-]
+sys.path.insert(0, HERE)
+from game_paths import PLAYER_LOG   # noqa: E402
+
+_LOGS = [PLAYER_LOG]
 
 # Counted on the archived pre-load log named in §4. 25 is the number to beat --
 # NOT zero; those 25 predate Inhabited entirely.

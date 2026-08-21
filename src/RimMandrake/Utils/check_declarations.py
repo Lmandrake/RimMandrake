@@ -51,6 +51,9 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import MODS_CONFIG  # noqa: E402
+
 FIELDS = ("loadAfter", "loadBefore", "forceLoadAfter", "forceLoadBefore",
           "modDependencies", "incompatibleWith")
 MOD_ROOTS = (
@@ -58,8 +61,7 @@ MOD_ROOTS = (
     "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods",
     "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data",
 )
-CONFIG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios"
-          "/RimWorld by Ludeon Studios/Config/ModsConfig.xml")
+CONFIG = MODS_CONFIG
 
 
 def repo_root():

@@ -24,8 +24,13 @@ import json
 import os
 import sys
 
-DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-        "RimWorld by Ludeon Studios/DefDump/defs/ThingDef.json")
+sys.path.insert(0, os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__))))),
+    "src", "RimMandrake", "Utils"))
+from game_paths import DEF_DUMP                           # noqa: E402
+
+DUMP = os.path.join(DEF_DUMP, "defs", "ThingDef.json")
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                    "census_building_graphics.tsv")
 
