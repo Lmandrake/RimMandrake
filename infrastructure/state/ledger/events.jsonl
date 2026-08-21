@@ -951,3 +951,5 @@
 {"seat":"BUILD","event":"file","id":"DUMPDB_KEYS_ON_SIMPLE_NAME_1","title":"measure discarded both slices of a resolved collision; capture keyed on the simple name","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T22:34:43Z"}
 {"seat":"BUILD","event":"claim","id":"DUMPDB_KEYS_ON_SIMPLE_NAME_1","ts":"2026-08-21T22:35:10Z"}
 {"seat":"BUILD","event":"start","id":"DUMPDB_KEYS_ON_SIMPLE_NAME_1","ts":"2026-08-21T22:35:10Z"}
+{"seat":"BUILD","event":"verify","id":"DUMPDB_KEYS_ON_SIMPLE_NAME_1","result":"pass","config":"offline; synthetic of d7cf154 output + the live 578-mod capture","evidence":"measuring-large-artifacts selftest_measure.py 47/47; live rebuild identical to v2","sha":"6c95591","ts":"2026-08-21T22:35:13Z"}
+{"seat":"BUILD","event":"close","id":"DUMPDB_KEYS_ON_SIMPLE_NAME_1","sha":"6c95591","ts":"2026-08-21T22:35:14Z"}
