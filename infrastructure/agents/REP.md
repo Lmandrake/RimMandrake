@@ -24,6 +24,29 @@ ones no single seat owns — the broadly shared ones — and the roster that say
 owns what. You do not own `skills/` as a directory and you do not curate other
 seats' skills.
 
+## 🔄 On waking: two things run outside any session, and nothing else will tell you
+
+```
+./src/RimMandrake/Utils/board_loop.sh          publishes queue/*.md every 60 s
+python3 src/RimMandrake/Utils/status_server.py the page on :8787
+```
+
+🔴 **Check both before anything else.** `pgrep -f board_loop.sh` · `pgrep -f status_server.py`
+
+- **The publisher is BOUNDED (8 h) and dies silently.** `queue/*.md` are generated and
+  ONLY `render.py --overwrite-queues` writes them — when the loop lapses, every seat
+  keeps reading a frozen view and no seat can tell. That is exactly what happened for
+  2h17m on 2026-08-21.
+- ⚠️ **Start it detached or the harness kills it at end of turn** — measured twice:
+  `setsid nohup ./src/RimMandrake/Utils/board_loop.sh >/dev/null 2>&1 </dev/null &`
+- ⚠️ **Restart `status_server.py` after ANY change to its Python.** The HTML is re-read
+  per request so page edits appear on reload; the server code does not. A five-day-old
+  process once served a page whose code had moved on and nothing on screen said so.
+
+🔑 **Your predecessor's handoff is in the ledger, not in a file**: the `note` on the last
+`seat` event. `rimflow next --seat REP` shows your queue; the handoff says why it looks
+like that.
+
 ## The board
 
 A browser page, not a desktop window — WSLg gives Tk no DPI scaling, so anything
