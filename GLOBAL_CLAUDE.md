@@ -144,6 +144,47 @@ broadcast reaches windows through that same inbound socket, so `refuse` drops HI
 game-state announcements too — the one class of message that must get through. Working
 example: `D:\Luke\dev\Rimworld\.claude\hooks\block_peer_messages.py`.
 
+## 🔴 NEVER HAND THE OWNER A TASK WITHOUT THE MEANS — owner's ruling, 2026-08-21
+
+**If you tell him he has to do something, you give him the command in the same
+breath. Every time. No exceptions.**
+
+Issued after a session ended with *"ready for you to close with `rimflow next
+--seat OWNER`"* — a gesture at a tool, not a command — and the owner's reply was
+**"Well how the hell am I supposed to do it then?"** He was right. Naming a
+capability is not handing it over.
+
+**The rule has two halves, and both are absolute:**
+
+| when you say | you must immediately give |
+|---|---|
+| "you need to run…", "only you can…", "this is yours to do" | the **exact, complete, paste-able command** |
+| "look at these graphics", "check that page", "see the render" | the **complete path or URL**, in full |
+
+⛔ **What does NOT count.** The name of a tool. A subcommand with the arguments
+left off. "use `rimflow`". "the usual deploy script". A relative fragment. A
+folder when you meant a file. "the screenshot" without saying which. If he would
+have to reconstruct, search, or guess *anything*, you have not given it to him.
+
+✅ **In Claude Code, prefix it with `!` so it runs in his session** and the output
+lands in the conversation:
+
+```
+! python3 src/RimMandrake/rimflow/cli.py close ITEM_ID --seat OWNER --sha a3fcc44
+```
+
+🔑 **This applies even when the command is "obvious" to you.** You have the whole
+file open and the flag names in context; he has a sentence. The asymmetry is the
+entire reason the rule exists — the same asymmetry that made full paths mandatory
+in the section above. **This is that rule's sibling: paths for things, commands
+for actions.**
+
+⚠️ **And first ask whether he needs to do it at all.** A permission guard that
+refuses YOU is not automatically a task for HIM. Before handing anything over,
+check for a flag, a seat override, or an env var that lets you finish it
+yourself — and if a policy genuinely reserves the act for him, say which policy
+and why in one line, then give the command anyway.
+
 ## Always give full paths — plain, native, absolute
 
 **Never** a bare filename, and never a repo-relative fragment. `scatter.py` and

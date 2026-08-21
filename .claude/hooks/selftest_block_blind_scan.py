@@ -191,6 +191,18 @@ def t_the_instrument_allowlist_matches_tokens_not_substrings():
     denied("grep -c biome /x/save.rws  # rimbench says 233")
 
 
+def t_a_bare_filename_with_no_directory_is_still_the_artifact():
+    """`strings Assembly-CSharp.dll` evaded the guard: "looks like a path" was
+    defined as "has a separator", so the commonest way people actually type it
+    walked straight through. Found while fixing the skills that teach it."""
+    denied("strings -a Assembly-CSharp.dll | grep QuestParts")
+    denied("grep -c biome save.rws")
+    denied("wc -l Player.log")
+    # …but a bare name with no registered extension is still nobody's business
+    allowed("wc -l notes.txt")
+    allowed("grep -c TODO README.md")
+
+
 if __name__ == "__main__":
     for k, v in sorted(globals().items()):
         if k.startswith("t_"):
