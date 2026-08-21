@@ -206,8 +206,10 @@ def main() -> int:
         )
         return 1
     if not args.check:
-        print("\nArchives written. Install them in Claude Code to make the "
-              "skills invocable - writing the folder does not do that.")
+        print("\nArchives written. These are EXPORTS, for a machine without this "
+              "checkout.\nThis repo installs skills by symlink - .claude/skills/<name> "
+              "-> skills/<name> - so\nthe folder was already live and nothing here "
+              "loads from a .skill.")
     return 0
 
 

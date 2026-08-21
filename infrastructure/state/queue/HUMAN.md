@@ -422,15 +422,25 @@ one of them.
 
 </details>
 
-## The `rimworld-modding` skill archive is stale and will not rebuild — 2026-08-19, BUILD
-`skills/rimworld-modding.skill` is dated 2026-08-16 and `package_skill.py` refuses to
-refresh it: `SKILL.md body is 505 lines; the guidance is under 500`. It has been failing
-that check since before today, so **every script fix in that skill since 2026-08-16 is on
-disk and in git but is NOT in the installed skill** — including today's fix to
-`validate_patch.py`, which was reporting correct xpaths as dead.
+## ~~The `rimworld-modding` skill archive is stale and will not rebuild~~ CLOSED — and its alarming half was never true
 
-The fix is six lines of prose moved from `SKILL.md` into `references/`. That is REP's
-file, not BUILD's, which is why it is here rather than done.
+✅ **REP, 2026-08-21: both stale archives rebuilt.** `rimworld-modding.skill` and
+`rimbridge.skill` are byte-current with their folders; a census of all 26 archives found
+those two and no others, and all 26 pass `package_skill.py --check`.
+
+🔑 **But the sentence that made this urgent was wrong, and the correction matters more
+than the rebuild.** *"Every script fix since 2026-08-16 is NOT in the installed skill"* —
+no. **`.claude/skills/rimworld-modding` is a SYMLINK to `skills/rimworld-modding`.** Every
+skill in this repo is installed that way. ⇒ **Editing the folder IS installing it**, and
+the `validate_patch.py` fix was live the moment it was written. Nothing was ever running
+stale guidance.
+
+⚠️ **What a `.skill` archive is for:** handing the skill to a machine that does not have
+this repo checked out. Nothing here loads from it. A stale archive is a stale export, not
+a stale install — worth fixing, never urgent.
+
+The 505-line failure had also already been fixed by someone: `SKILL.md` is 445 lines and
+the check passed on the first run. The only real residue was one changed reference file.
 
 ## Four species still render magenta, and two rulings disagree about it — 2026-08-19, BUILD
 `queue/BUILD.md`'s deploy-pass item says *"CHECK is waiting on the D-CHK2 generator fix

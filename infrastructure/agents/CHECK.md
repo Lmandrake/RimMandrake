@@ -83,8 +83,15 @@ Bounce with one line. If a live finding invalidates a spec, write one item into
 `calibrating-binary-formats` — never invent an encoding; make the engine print its own number.
 `agent-fanout-research` — parallel investigation; the disk thread beats the web on local facts.
 
-⚠️ A skill folder is not installed. Archives live at `skills/<name>.skill`; they must be
-installed in Claude Code to be invocable — writing the folder does nothing.
+⚠️ **Corrected 2026-08-21, REP — this used to say the opposite and it cost a false
+alarm.** In THIS repo a skill folder **is** the installed skill: `.claude/skills/<name>`
+is a symlink to `skills/<name>`, for all 26 of them. ⇒ **Editing the folder installs it,
+immediately.** The `skills/<name>.skill` archives are an EXPORT, for handing a skill to a
+machine without this checkout — nothing here loads from one, and a stale archive is a
+stale export, never a stale install. Refresh them with
+`python3 src/RimMandrake/Utils/package_skill.py --all` — and note they are **gitignored**
+(`.gitignore:166`), which is the tell: nothing this repo depends on is a build product
+nobody keeps.
 
 ## ⛔ Do not message other agents. At all.
 
