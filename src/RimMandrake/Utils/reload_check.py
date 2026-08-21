@@ -64,6 +64,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repush", action="store_true", help="re-push rainfall + river grades")
     ap.add_argument("--no-load", action="store_true", help="a world is already loaded")
+    ap.add_argument("--save", action="store_true",
+                    help="save over WORLDMAP_gen after a successful re-push. Requires --repush.")
     a = ap.parse_args()
 
     w("# reload check - %s" % time.strftime("%Y-%m-%d %H:%M"))
@@ -156,8 +158,26 @@ def main():
               % (r.get("success"), r.get("rivers"), r.get("roads"), r.get("unknownDefs")))
             w("- commit: %s" % s.call("jawa/world_commit", {}).get("success"))
             g = s.call("jawa/world_tile_get", {"tiles": "11965,19495,2540"})
+            ok40 = 0
             for row in (g.get("tiles") or []):
                 w("    - %s %s rainfall %s" % (row.get("tile"), row.get("biome"), row.get("rainfall")))
+                try:
+                    if abs(float(row.get("rainfall") or 0) - 40.0) < 0.5:
+                        ok40 += 1
+                except (TypeError, ValueError):
+                    pass
+
+            # ⛔ Saving is gated on the read-back, not on the import's success flag. An
+            # import that reported success and moved nothing would otherwise be written
+            # over the only copy of the painted world.
+            if a.save:
+                if ok40 == 3:
+                    r = s.call("rimworld/save_game", {"saveName": SAVE})
+                    w("- **save** over `%s`: %s" % (SAVE, r.get("success")))
+                else:
+                    w("- ⛔ **NOT SAVING**: the volcanic read-back is %d of 3 at 40mm, so the "
+                      "re-push did not land. Saving now would overwrite the only painted "
+                      "world with one that is no better." % ok40)
 
     path = os.path.join(REPO, "infrastructure", "output",
                         "reload_check_%s.md" % time.strftime("%Y-%m-%d_%H%M"))
