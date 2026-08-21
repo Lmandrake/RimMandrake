@@ -3344,6 +3344,10 @@ namespace JawaBench.BridgeTools
                 "shell `ls` cannot, because Windows is case-insensitive and RimWorld is not. " +
                 "Reports the owning mod so the fix can be aimed.",
             ResultDescription =
+                "⚠️ A def whose graphicClass is NOT a vanilla Verse.Graphic_* is reported in " +
+                "`unjudged`, never in `missing`: its own class resolves its own filenames and " +
+                "this checker only knows vanilla's rules. Measured 2026-08-21, 39 of 53 rows " +
+                "were one mod's custom class with all 138 of its PNGs present. " +
                 "missing[] with def, mod, which graphic (main or lifeStage N), and the dead " +
                 "path. `checked` counts paths actually tested. Empty missing[] with a large " +
                 "`checked` is the pass.")]
@@ -3368,7 +3372,24 @@ namespace JawaBench.BridgeTools
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 var missing = new List<object>();
-                int tested = 0, missingN = 0, defsSeen = 0;
+                var unjudged = new List<object>();
+                int tested = 0, missingN = 0, defsSeen = 0, unjudgedN = 0;
+
+                // 🔴 A MOD THAT SHIPS ITS OWN graphicClass RESOLVES ITS OWN FILENAMES, and
+                // this checker only knows vanilla's rules. Measured 2026-08-21: of 53 rows
+                // reported dead, 39 were Tribal Furniture defs declaring
+                // `TribalFurniture.Graphic_Appearances_Multi`, whose texPath is a STEM and
+                // whose 138 PNGs are all present and drawing. 74% noise trains the reader to
+                // skim a list that also holds real defects.
+                // ⛔ Those defs are NOT dropped - a custom class can still point at nothing.
+                // They go in their own bucket, named, so a human can judge them.
+                Func<GraphicData, string> customClassOf = gd =>
+                {
+                    if (gd == null || gd.graphicClass == null) return null;
+                    var t = gd.graphicClass;
+                    bool vanilla = t.Namespace == "Verse" && t.Name.StartsWith("Graphic_");
+                    return vanilla ? null : (t.FullName ?? t.Name);
+                };
                 var sw = new System.Diagnostics.Stopwatch(); sw.Start();
 
                 // A Multi graphic stores <path>_north/_east/_south; a Single
@@ -3410,19 +3431,29 @@ namespace JawaBench.BridgeTools
                         modId.IndexOf(mod.Trim(), StringComparison.OrdinalIgnoreCase) < 0) continue;
                     defsSeen++;
 
-                    Action<string, string> check = (path, which) =>
+                    Action<GraphicData, string> check = (gd, which) =>
                     {
-                        if (string.IsNullOrEmpty(path)) return;
+                        if (gd == null || string.IsNullOrEmpty(gd.texPath)) return;
                         if (maxPaths > 0 && tested >= maxPaths) return;
                         tested++;
-                        if (resolves(path)) return;
+                        if (resolves(gd.texPath)) return;
+                        var custom = customClassOf(gd);
+                        if (custom != null)
+                        {
+                            unjudgedN++;
+                            if (unjudged.Count < limit)
+                                unjudged.Add(new { def = d.defName, label = d.label, mod = modName,
+                                                   packageId = modId, graphic = which,
+                                                   texPath = gd.texPath, graphicClass = custom });
+                            return;
+                        }
                         missingN++;
                         if (missing.Count < limit)
                             missing.Add(new { def = d.defName, label = d.label, mod = modName,
-                                              packageId = modId, graphic = which, texPath = path });
+                                              packageId = modId, graphic = which, texPath = gd.texPath });
                     };
 
-                    if (d.graphicData != null) check(d.graphicData.texPath, "graphicData");
+                    if (d.graphicData != null) check(d.graphicData, "graphicData");
 
                 }
 
@@ -3457,6 +3488,17 @@ namespace JawaBench.BridgeTools
                             if (maxPaths > 0 && tested >= maxPaths) return;
                             tested++;
                             if (resolves(gd.texPath)) return;
+                            var lcustom = customClassOf(gd);
+                            if (lcustom != null)
+                            {
+                                unjudgedN++;
+                                if (unjudged.Count < limit)
+                                    unjudged.Add(new { def = pk.defName, label = pk.label, mod = pkMod,
+                                                       packageId = pkId,
+                                                       graphic = "lifeStages[" + i + "]." + which,
+                                                       texPath = gd.texPath, graphicClass = lcustom });
+                                return;
+                            }
                             missingN++;
                             if (missing.Count < limit)
                                 missing.Add(new { def = pk.defName, label = pk.label, mod = pkMod,
@@ -3479,16 +3521,25 @@ namespace JawaBench.BridgeTools
                     success = true,
                     message = missingN == 0
                         ? "No dead texPaths in " + tested + " path(s) across " + defsSeen + " def(s)."
-                        : missingN + " DEAD texPath(s) in " + tested + " path(s) across " + defsSeen + " def(s).",
+                              + (unjudgedN > 0 ? " " + unjudgedN + " unjudged (custom graphicClass)." : "")
+                        : missingN + " DEAD texPath(s) in " + tested + " path(s) across " + defsSeen + " def(s)."
+                              + (unjudgedN > 0 ? " Plus " + unjudgedN + " UNJUDGED - a custom graphicClass "
+                                                 + "resolves its own filenames and this checker cannot judge them."
+                                               : ""),
                     defsScanned = defsSeen,
                     pathsChecked = tested,
                     missingCount = missingN,
+                    unjudgedCount = unjudgedN,
                     truncated = missingN > missing.Count,
                     elapsedMs = sw.ElapsedMilliseconds,
                     missing,
+                    unjudged,
                     note = "A dead path here is invisible to `ls`: Windows is case-insensitive, " +
                            "RimWorld's content index is not. Fix by PATCH, never by editing a " +
-                           "workshop folder - Steam overwrites it.",
+                           "workshop folder - Steam overwrites it. " +
+                           "`unjudged` holds defs whose graphicClass is not a vanilla Verse.Graphic_*: " +
+                           "their own class resolves its own filenames and this checker does not know " +
+                           "its rules, so a miss there is UNKNOWN rather than dead. Judge those by hand.",
                     ticksGame = TicksGameSafe(),
                 };
             }, cancellationToken).ConfigureAwait(false);
