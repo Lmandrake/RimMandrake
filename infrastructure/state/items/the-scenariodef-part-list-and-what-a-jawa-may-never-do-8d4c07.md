@@ -147,3 +147,41 @@ That is strictly better than lever (b) as described:
 ✅ **The sowing half is untouched and was always correct** —
 `Rule_DisallowDesignator_ZoneAdd_Growing` plus `Rule_DisallowBuilding`, and the reasoning
 against a `PlantWork` gene (it would also stop harvesting and tree-chopping) stands.
+
+## the last two ScenParts — DECIDE, 2026-08-21: ⛔ DROP BOTH
+
+This item said *"DECIDE brings a candidate or drops them."* I looked for candidates and
+there are none worth taking.
+
+🔑 **The test both of the KEPT parts pass, and neither of these does: a ScenPart earns its
+place when it expresses something no def, biome, weather or difficulty setting can.**
+`ScenPart_GameStartDialog` is the only place the campaign's opening text can live at all.
+`ScenPart_DisableIncident` stops the storyteller drawing an incident **while leaving the def
+loadable for an authored quest** — cherrypicking genuinely cannot express that. Both are
+unique capabilities.
+
+**`ScenPart_PermaGameCondition` — dropped.** A condition that never ends is the heaviest
+always-on modifier the game has, and nothing in this design asks for one. The planet's
+character is already carried by authored biome, temperature, rainfall and weather, per tile.
+⚠️ **The one candidate that looked real does not survive inspection:** `GameConditionDef` has
+a `preventRain` flag (`WeatherDecider.cs:167`), so a permanent condition would be a second
+belt on the rain ban. ⛔ But the ban is already exact — `rain_mm 0` multiplies rain
+commonality by zero — so it would add nothing, and it would also kill the **violent mountain
+rain** that is parked in `V2_DREAMS.md`. A part that forecloses a v2 idea to duplicate a v1
+one is a clear no.
+
+**`ScenPart_StatFactor` — dropped.** A global stat multiplier is a thumb on the scale with no
+fiction behind it, and this campaign's difficulty shape already lives in the custom
+difficulty fields (`SCENARIO_SETTINGS_SPEC.md`). ⭐ The project's own rule is *"flavour
+without mechanics will not survive contact with play"* — a StatFactor is the exact inversion,
+**mechanics with no flavour**, and it is the easier mistake to make because it always
+"works".
+
+⇒ **Four parts, final:** `ScenPart_GameStartDialog` · `ScenPart_DisableIncident` ·
+`Rule_DisallowDesignator_ZoneAdd_Growing` · `Rule_DisallowBuilding` (per banned basin/pot,
+**by defName, never by label**).
+⚠️ **Prefer vanilla part classes throughout.** `ScenPart_Error` means a save whose scenario
+names a part from an absent mod **degrades rather than failing the load** — so a modded part
+can silently vanish for a recipient and nothing will say so.
+
+⇒ Everything this item owed is now ruled. The build is `JAWA_SCENARIO_PARTS_1`.
