@@ -436,6 +436,59 @@ def t_live_the_824_defs_are_found_offline_with_no_game():
     assert coll["AbilityDef"] == [612, 18, 0], coll["AbilityDef"]
 
 
+def t_a_stale_db_refuses_every_answer():
+    """A re-captured dump must not be answered from the old db.
+
+    🔑 Fingerprint, not timestamp: the check is on the manifest's own
+    capturedUtc and the mod-set hash, not on any file's mtime.
+    """
+    tmp, db = synthetic_db()
+    try:
+        assert db.stale is None, db.stale
+        db.close()
+        # re-capture: same defs, new timestamp
+        text = open(os.path.join(tmp, "manifest.json"), encoding="utf-8").read()
+        open(os.path.join(tmp, "manifest.json"), "w", encoding="utf-8").write(
+            text.replace("2026-08-21T00:00:00Z", "2026-08-22T09:00:00Z"))
+        db = DumpDB(os.path.join(tmp, DB_NAME))
+        assert db.stale, "a re-captured dump did not read as stale"
+        for m in (db.count("ThingDef"), db.get("Gun_A"),
+                  db.tag("Gun"), db.flag("weapon")):
+            assert not m.ok, "a stale db answered with a number: %s" % m.line()
+            assert "stale" in m.line(), m.line()
+    finally:
+        db.close()
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def t_a_mod_list_change_makes_the_db_stale_too():
+    tmp, db = synthetic_db()
+    try:
+        db.close()
+        text = open(os.path.join(tmp, "manifest.json"), encoding="utf-8").read()
+        open(os.path.join(tmp, "manifest.json"), "w", encoding="utf-8").write(
+            text.replace('"packageId":"some.mod"', '"packageId":"other.mod"'))
+        db = DumpDB(os.path.join(tmp, DB_NAME))
+        assert db.stale and "mod set" in db.stale, db.stale
+    finally:
+        db.close()
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def t_an_archived_db_whose_dump_is_gone_is_not_stale():
+    """Deleting the source dump must not make its record unreadable."""
+    tmp, db = synthetic_db()
+    try:
+        db.close()
+        os.remove(os.path.join(tmp, "manifest.json"))
+        db = DumpDB(os.path.join(tmp, DB_NAME))
+        assert db.stale is None, db.stale
+        assert db.count("ThingDef").unwrap() == 3
+    finally:
+        db.close()
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 if __name__ == "__main__":
     for k, v in sorted(globals().items()):
         if k.startswith("t_"):

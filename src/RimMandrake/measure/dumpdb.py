@@ -524,12 +524,57 @@ def _shadowed_by(missing_type, seen_types, def_types):
 # --------------------------------------------------------------------------
 
 class DumpDB:
-    def __init__(self, db_path: str):
+    def __init__(self, db_path: str, check_currency: bool = True):
         self.path = db_path
         if not os.path.exists(db_path):
             raise FileNotFoundError(db_path)
         self.con = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
         self.prov = dict(self.con.execute("SELECT key, value FROM provenance"))
+        self.stale = self._staleness() if check_currency else None
+
+    def _staleness(self):
+        """Is this db still an answer about the dump that is on disk NOW?
+
+        🔑 **Fingerprint, not timestamp.** An mtime says when a file was
+        written, which is not the same question — a re-capture that happens to
+        produce identical bytes is not stale, and a touched file is not fresh.
+        The manifest's own `capturedUtc` and the mod-set fingerprint are what
+        the answer is an answer ABOUT, so they are what gets compared.
+
+        Returns a reason string if stale, else None. A db whose source dump has
+        been deleted or moved is NOT stale — it is simply the only record left,
+        and saying otherwise would make an archived dump unusable.
+        """
+        src = self.prov.get("source_dump")
+        if not src:
+            return None
+        manifest_path = os.path.join(src, "manifest.json")
+        if not os.path.exists(manifest_path):
+            return None
+        try:
+            manifest, order = read_manifest(manifest_path)
+        except Exception as ex:
+            return f"the source manifest is unreadable ({ex})"
+        cap = manifest.get("capturedUtc", "")
+        if cap and cap != self.prov.get("captured_utc"):
+            return (f"the dump on disk was re-captured at {cap}; this db is "
+                    f"built from {self.prov.get('captured_utc')}")
+        fp = modlist_fingerprint(manifest.get("mods", []))
+        if fp != self.prov.get("modlist_fingerprint"):
+            return (f"the dump on disk now has mod set {fp}; this db is built "
+                    f"from {self.prov.get('modlist_fingerprint')}")
+        return None
+
+    def _guard(self, artifact):
+        """Every public answer passes through here first."""
+        if self.stale:
+            return Unmeasured(
+                reason=f"this defs.sqlite is stale — {self.stale}",
+                artifact=artifact,
+                instrument="dumpdb",
+                remedy="python3 src/RimMandrake/measure/cli.py build",
+            )
+        return None
 
     # ---- provenance -----------------------------------------------------
     @property
@@ -547,6 +592,9 @@ class DumpDB:
     # ---- the question that started this ---------------------------------
     def count(self, def_type: str):
         """How many defs of this type. `0` here can only mean measured zero."""
+        stale = self._guard(def_type)
+        if stale:
+            return stale
         row = self.con.execute(
             "SELECT coverage, reason, declared_count, loaded_count "
             "FROM capture WHERE def_type = ?", (def_type,)
@@ -605,6 +653,9 @@ class DumpDB:
             "SELECT coverage, COUNT(*) FROM capture GROUP BY coverage"))
 
     def get(self, def_name: str):
+        stale = self._guard(def_name)
+        if stale:
+            return stale
         rows = self.con.execute(
             "SELECT def_type, label, mod_name, package_id, short_hash "
             "FROM defs WHERE def_name = ?", (def_name,)
@@ -633,6 +684,9 @@ class DumpDB:
         from a dump-built index rather than empty in it. That made
         `emptied by the cut: 0` arithmetically guaranteed.
         """
+        stale = self._guard(f"{kind}:{tag}")
+        if stale:
+            return stale
         n = self.con.execute(
             "SELECT COUNT(DISTINCT def_id) FROM def_tags WHERE kind=? AND tag=?",
             (kind, tag),
@@ -664,6 +718,9 @@ class DumpDB:
         )
 
     def flag(self, key: str, value: str = "true"):
+        stale = self._guard(f"is.{key}={value}")
+        if stale:
+            return stale
         n = self.con.execute(
             "SELECT COUNT(DISTINCT def_id) FROM def_flags WHERE key=? AND value=?",
             (key, value),
