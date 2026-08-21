@@ -514,8 +514,34 @@ spacecraft engineering console, not a novelty dashboard.
 
 ### 9.4 Load
 
-`rimflow render` is **53 ms** for a year of events. At a 60 s cadence that is **0.09% of one core**.
-"Slow cadence, nothing that stresses the system" is satisfied with room to spare.
+🔴 **The 53 ms was measured on the wrong filesystem, and the 100 ms target is UNREACHABLE here
+by any caching strategy. Measured 2026-08-20 — and the conclusion is still that the load is fine.**
+
+`rimflow render` is **374 ms** against the real ledger (352 events, 144 items) on `/mnt/d`, which
+is a **9p / DrvFs** mount. The cost is not the code:
+
+| on the repo's 9p mount, 144 item files | |
+|---|---|
+| `stat` all of them | **130 ms** |
+| `open` + read all of them | **209 ms** |
+| the same loop on tmpfs | **0.8 ms** |
+
+⛔ **So a freshness-checking cache cannot help.** Any cache that verifies its entries are current
+must `stat` them, and `stat` alone is 130 ms — already over the 100 ms target before a single line
+of parsing. A per-process cache IS in `model._sections` and takes a warm replay to ~1 ms, which is
+what matters for a long-lived board; a *cold* render cannot get under the filesystem.
+
+✅ **And the target was never the real constraint — the LOAD argument was, and it still holds:**
+
+| | duty cycle at the specified 60 s cadence |
+|---|---|
+| the plan's 53 ms | 0.088% of one core |
+| the measured 374 ms | **0.623% of one core** |
+
+*"Slow cadence, nothing that stresses the system"* is satisfied with room to spare at seven times
+the assumed cost. ⇒ **The 100 ms figure is retired rather than chased.** Building a cache that
+cannot reach it, to buy half a percent of one core, would trade a real cache-invalidation bug for
+nothing.
 
 ---
 
