@@ -812,3 +812,12 @@
 {"seat":"CHECK","event":"spawn","name":"VEHICLE_IDENTITY_TEXT_PASS_1","kind":"task","needs":"offline","for":"BUILD","from":"VEHICLE_WORDS_STILL_SAY_HORSES_1","ts":"2026-08-21T17:48:01Z"}
 {"seat":"CHECK","event":"spawn","name":"BRIDGE_READ_VEHICLE_COMPONENTS_1","kind":"task","needs":"deploy","for":"BUILD","from":"VEHICLE_HEALTH_TAB_UNREACHABLE_1","ts":"2026-08-21T17:48:01Z"}
 {"seat":"CHECK","event":"close","id":"VEHICLE_RESKIN_LIVE_LOOK_1","sha":"c56f441","ts":"2026-08-21T17:48:42Z"}
+{"seat":"CHECK","event":"claim","id":"VEHICLE_FUEL_LIVE_PROOF_1","ts":"2026-08-21T17:49:15Z"}
+{"seat":"CHECK","event":"start","id":"VEHICLE_FUEL_LIVE_PROOF_1","ts":"2026-08-21T17:49:16Z"}
+{"seat":"BUILD","event":"claim","id":"SCANNED_ARTIFACTS_CANNOT_LIE_1","ts":"2026-08-21T17:53:35Z"}
+{"seat":"BUILD","event":"start","id":"SCANNED_ARTIFACTS_CANNOT_LIE_1","ts":"2026-08-21T17:53:35Z"}
+{"seat":"CHECK","event":"block","id":"VEHICLE_FUEL_LIVE_PROOF_1","reason":"Stopped mid-run at the owner's request 2026-08-21 10:58. Verify half PASSED and is recorded below; the hauling criteria are unmeasured.","ts":"2026-08-21T17:53:55Z"}
+{"seat":"CHECK","event":"verify","id":"VEHICLE_FUEL_LIVE_PROOF_1","result":"partial","config":"full-583","evidence":"observed/bridge/VEHICLE_FUEL_LIVE_PROOF_1_2026-08-21.md","sha":"6d96714","ts":"2026-08-21T17:54:22Z"}
+{"seat":"CHECK","event":"finding","id":"VEHICLE_FUEL_LIVE_PROOF_1","type":"tooling","severity":"medium","name":"VEHICLE_FUEL_LEVEL_UNREADABLE_1","from":"VEHICLE_FUEL_LIVE_PROOF_1/run-1@full-583","ts":"2026-08-21T17:54:23Z"}
+{"seat":"CHECK","event":"unblock","id":"VEHICLE_FUEL_LIVE_PROOF_1","ts":"2026-08-21T17:54:52Z"}
+{"seat":"CHECK","event":"close","id":"VEHICLE_FUEL_LIVE_PROOF_1","sha":"6d96714","ts":"2026-08-21T17:54:53Z"}
