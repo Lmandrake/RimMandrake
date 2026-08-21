@@ -1,0 +1,29 @@
+SLATE_KEEPS_CONFIGURABLE_1 - offline evidence, BUILD 2026-08-21
+
+== the generator is NOT in this repo ==
+$ grep -rl startingCountAtWorldCreation --exclude-dir=.git . | grep '\.py$'
+src/RimMandrake/Utils/set_planet_subcount.py
+(set_planet_subcount.py only READS the field in a comment; nothing emits OnlyOurFactions.xml)
+=> converted to HAND-MAINTAINED, header corrected in place
+
+== op counts, before -> after ==
+maxConfigurableAtWorldCreation Operation blocks: 48 -> 0
+startingCountAtWorldCreation  Operation blocks: 48 -> 48 (unchanged, same 48 defNames)
+file lines: 1460 -> 947
+
+$ grep -c 'maxConfigurableAtWorldCreation</xpath>' OnlyOurFactions.xml
+0
+$ grep -c '<maxConfigurableAtWorldCreation>' OnlyOurFactions.xml
+0
+
+== the 48 startingCount targets are byte-identical to HEAD ==
+IDENTICAL - 48 defNames
+
+== validate_patch.py ==
+OK - 0 errors, 51 warning(s)
+(all 51 warnings are the by-design Conditional/nomatch shape this file uses)
+
+== NOT touched, deliberately ==
+src/Jawa/Jawa_Patches/Patches/RebelAlliance_Suppress.xml:146 still zeroes
+maxConfigurableAtWorldCreation for OuterRim_RebelAlliance. That is a separate,
+deliberate suppression of one faction and is outside this item.

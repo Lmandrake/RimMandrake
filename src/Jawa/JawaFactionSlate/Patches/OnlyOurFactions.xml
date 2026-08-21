@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generated 2026-08-17. Do not hand-edit.
+<!-- HAND-MAINTAINED since 2026-08-21. First written 2026-08-17 by a generator that
+     is NOT in this repo: nothing under src/ emits this file, and searching for
+     startingCountAtWorldCreation across every script finds only set_planet_subcount.py,
+     which reads the field and never writes a patch. Edit it here, by hand, carefully.
 
      🔑 startingCountAtWorldCreation is the field that decides which factions a world
      generates. WorldGenerationData.ResetFactionCounts() repeats each ConfigurableFaction's
      defName that many times, so zeroing it removes the faction from the DEFAULT list.
-     maxConfigurableAtWorldCreation is only a cap and changes nothing on its own.
+     That is this file's whole job and it zeroes that field on 48 FactionDefs.
+
+     🔴 IT NO LONGER TOUCHES maxConfigurableAtWorldCreation, and must not again. The
+     header used to say that field "is only a cap and changes nothing on its own." THAT
+     IS FALSE AT ZERO. FactionGenerator.ConfigurableFactions is
+        from f in DefDatabase<FactionDef>.AllDefs where f.maxConfigurableAtWorldCreation > 0
+     and Page_CreateWorldParams builds the Configure Factions page from that enumeration
+     === so at 0 the row is not capped, it is DELETED, and the owner cannot add the
+     faction back at the screen. Four rows WORLDGEN_FACTION_CHECKLIST.md tells him to
+     tick were among them.
+     ⚠️ requiredCountAtGameStart is not a safety net. FactionGenerator.InitializeFactions
+     reads it ONLY where no faction list was configured; worldgen through the screen
+     passes Current.CreatingWorld.info.factions and adds that list verbatim.
 
      🔴 EVERY op is wrapped in an OUTER PatchOperationConditional that tests whether the
      FactionDef exists at all, with NO <nomatch>. A PatchOperationConditional that matches
@@ -33,17 +48,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="AA_BlackHive"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="AA_BlackHive"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="AA_BlackHive"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -61,17 +65,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="AG_OutlanderCivilUnion"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="AG_OutlanderCivilUnion"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="AG_OutlanderCivilUnion"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="AG_OutlanderCivilUnion"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -93,17 +86,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -121,17 +103,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="BMT_PustuleHornets"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="BMT_PustuleHornets"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="BMT_PustuleHornets"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="BMT_PustuleHornets"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -153,17 +124,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="BS_Dvergr_Medieval_Union"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="BS_Dvergr_Medieval_Union"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="BS_Dvergr_Medieval_Union"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -181,17 +141,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="BS_LittlePeople"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="BS_LittlePeople"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="BS_LittlePeople"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="BS_LittlePeople"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -213,17 +162,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="BS_Muspelheim"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="BS_Muspelheim"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="BS_Muspelheim"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -241,17 +179,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="BS_Niflheim"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="BS_Niflheim"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="BS_Niflheim"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="BS_Niflheim"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -273,17 +200,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="BS_OgreFaction"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="BS_OgreFaction"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="BS_OgreFaction"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -301,17 +217,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="BS_ZombieFaction"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="BS_ZombieFaction"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="BS_ZombieFaction"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="BS_ZombieFaction"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -333,17 +238,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="CAEvilSacrilegHunters"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="CAEvilSacrilegHunters"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="CAEvilSacrilegHunters"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -361,17 +255,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="CAFriendlyMechanoid"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="CAFriendlyMechanoid"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="CAFriendlyMechanoid"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="CAFriendlyMechanoid"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -393,17 +276,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -421,17 +293,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="CannibalPirate"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="CannibalPirate"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="CannibalPirate"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="CannibalPirate"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -453,17 +314,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="DA_Troll"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="DA_Troll"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="DA_Troll"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -481,17 +331,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="DV_OutlanderRoughBuzzer"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="DV_OutlanderRoughBuzzer"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="DV_OutlanderRoughBuzzer"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="DV_OutlanderRoughBuzzer"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -513,17 +352,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -541,17 +369,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="GR_RoamingMonstrosities"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="GR_RoamingMonstrosities"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="GR_RoamingMonstrosities"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="GR_RoamingMonstrosities"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -573,17 +390,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="GiantAnt_Faction"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="GiantAnt_Faction"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="GiantAnt_Faction"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -601,17 +407,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="Horrors"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="Horrors"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="Horrors"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="Horrors"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -633,17 +428,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="JDSCIS_CIS_Faction"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="JDSCIS_CIS_Faction"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="JDSCIS_CIS_Faction"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -661,17 +445,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="KAR_OrcClan"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="KAR_OrcClan"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="KAR_OrcClan"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="KAR_OrcClan"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -693,17 +466,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="MO_AbominationFaction"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="MO_AbominationFaction"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="MO_AbominationFaction"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -721,17 +483,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="NudistTribe"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="NudistTribe"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="NudistTribe"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="NudistTribe"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -753,17 +504,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="OuterRim_BinaryStarRaiders"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="OuterRim_BinaryStarRaiders"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="OuterRim_BinaryStarRaiders"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -781,17 +521,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -813,17 +542,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="OuterRim_MoistureFarmers"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="OuterRim_MoistureFarmers"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="OuterRim_MoistureFarmers"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -841,17 +559,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -873,17 +580,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="OuterRim_RogueDroidColony"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="OuterRim_RogueDroidColony"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="OuterRim_RogueDroidColony"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -901,17 +597,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="OutlanderRefugee"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="OutlanderRefugee"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="OutlanderRefugee"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="OutlanderRefugee"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -933,17 +618,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="OutlanderRough"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="OutlanderRough"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="OutlanderRough"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -961,17 +635,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="OutlanderRoughPig"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="OutlanderRoughPig"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="OutlanderRoughPig"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="OutlanderRoughPig"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -993,17 +656,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="PirateWaster"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="PirateWaster"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="PirateWaster"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -1021,17 +673,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="PirateYttakin"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="PirateYttakin"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="PirateYttakin"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="PirateYttakin"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -1053,17 +694,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="Salvagers"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="Salvagers"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="Salvagers"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -1081,17 +711,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="SplinterColony"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="SplinterColony"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="SplinterColony"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="SplinterColony"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -1113,17 +732,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="TradersGuild"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="TradersGuild"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="TradersGuild"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -1141,17 +749,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="TribeCannibal"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="TribeCannibal"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="TribeCannibal"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="TribeCannibal"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -1173,17 +770,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="TribeRough"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="TribeRough"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="TribeRough"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -1201,17 +787,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="TribeRoughNeanderthal"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="TribeRoughNeanderthal"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="TribeRoughNeanderthal"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="TribeRoughNeanderthal"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -1233,17 +808,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="TribeSavage"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="TribeSavage"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="TribeSavage"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -1261,17 +825,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="TribeSavageImpid"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="TribeSavageImpid"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="TribeSavageImpid"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="TribeSavageImpid"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -1293,17 +846,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="VFEP_Junkers"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="VFEP_Junkers"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="VFEP_Junkers"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -1321,17 +863,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="VFEP_Mercenaries"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="VFEP_Mercenaries"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="VFEP_Mercenaries"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="VFEP_Mercenaries"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -1353,17 +884,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="VRESaurids_OutlanderRoughSaurid"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="VRESaurids_OutlanderRoughSaurid"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="VRESaurids_OutlanderRoughSaurid"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -1381,17 +901,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="VRE_Archons"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="VRE_Archons"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="VRE_Archons"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="VRE_Archons"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
@@ -1413,17 +922,6 @@
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="guy762_KotORFaction_Civilians"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="guy762_KotORFaction_Civilians"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="guy762_KotORFaction_Civilians"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </nomatch>
-        </li>
       </operations>
     </match>
   </Operation>
@@ -1441,17 +939,6 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="guy762_KotORFaction_RogueDroids"]</xpath>
             <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="guy762_KotORFaction_RogueDroids"]/maxConfigurableAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="guy762_KotORFaction_RogueDroids"]/maxConfigurableAtWorldCreation</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="guy762_KotORFaction_RogueDroids"]</xpath>
-            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
           </nomatch>
         </li>
       </operations>
