@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Cherry Picker — the resolved target list
 
 _A retired seat, 2026-08-14. **Another retired seat's `cherrypick_inbox.md` names races and objects;

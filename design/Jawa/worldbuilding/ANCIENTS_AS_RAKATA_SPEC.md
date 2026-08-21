@@ -1,3 +1,4 @@
+<!-- status: live -->
 # ANCIENTS_AS_RAKATA_SPEC.md — the frozen sleepers are Rakatan, specified for build
 
 ## 🔴 RULED v1, IN FULL — owner, 2026-08-20

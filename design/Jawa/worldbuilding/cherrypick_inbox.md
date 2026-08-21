@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Cherry Picker inbox — everything ruled OFF so far
 
 _A retired seat, 2026-08-13. **Explicit defNames and source mods for every "turn it off"

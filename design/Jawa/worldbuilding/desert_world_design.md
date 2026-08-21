@@ -1,3 +1,4 @@
+<!-- status: live -->
 # desert_world_design.md — Consequential-Landing Design (risk/reward per terrain)
 
 _Campaign design doc for the RimWorld 1.6 / Odyssey gravship expedition (Jawa / crashed-Factory-ship theme). Companion to `Custom_World.md` (the director-mod machinery), `world_interest_and_mech_danger.md` (threat roster), `required_mods.md` (stack), and `concept.md` (premise). This file defines the **design intent** — the *why land here?* layer — that those files' tooling will implement._

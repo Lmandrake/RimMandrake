@@ -1,3 +1,4 @@
+<!-- status: live -->
 # ASH'KARR — THE SUNDERED · the world definition
 
 > 📌 **Corrected 2026-08-20 against `infrastructure/state/canon.yml`:** water is stated

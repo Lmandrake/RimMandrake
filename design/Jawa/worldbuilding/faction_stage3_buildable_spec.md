@@ -1,3 +1,4 @@
+<!-- status: superseded-by: design/Jawa/worldbuilding/FACTION_SPEC.md ; 2026-08-20 ; engine layer moved there (13 factions, Jawa_<Name> defNames, R16-R19); the xenotype and gene analysis here is still current -->
 # Faction Stage 3 — the buildable spec
 
 > 🔴 **SUPERSEDED for the ENGINE LAYER by `design/Jawa/worldbuilding/FACTION_SPEC.md`, 2026-08-20.**

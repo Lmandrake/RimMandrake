@@ -1,3 +1,4 @@
+<!-- status: live -->
 # fauna_placement.md — where each creature belongs
 
 DECIDE owns this. **Append-only register.** It feeds chain step 2 (normalize

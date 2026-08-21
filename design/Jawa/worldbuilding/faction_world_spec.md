@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The world we want — faction specification
 
 > 🔴 **CORRECTED 2026-08-20 against `infrastructure/state/canon.yml`. This file was the WRONG one.**

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # biome_terrain_palette.md — Authoritative Biome + Terrain Palette
 
 _The single coherent list of every **biome** (world-tile type) and every notable **terrain**

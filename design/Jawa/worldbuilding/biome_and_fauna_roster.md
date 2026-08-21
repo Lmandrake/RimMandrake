@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # biome_and_fauna_roster.md — which biomes, which beasts, and what makes each tile feel like itself
 
 _Authored 2026-08-13 by **a retired seat**, overnight, on the owner's brief: "Decide

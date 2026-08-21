@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Droid chassis — what we have, what one subscribe buys, what needs art
 
 _A retired seat, 2026-08-13. Measured against the owner's canon-lineage brief. **The

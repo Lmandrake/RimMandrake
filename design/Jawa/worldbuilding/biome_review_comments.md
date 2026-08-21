@@ -1,3 +1,4 @@
+<!-- status: live -->
 # biome_review_comments.md — DECIDE's read of the owner's biome cuts
 
 DECIDE, 2026-08-15. The owner reviewed all **66** `BiomeDef`s **as of 2026-08-15,

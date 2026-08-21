@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Eleven religions, seeded — every one a position on the light
 
 > 🔑 **WHAT ACTUALLY SHIPPED — twelve `<ideoName>` values, confirmed on disk

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The three droid families, and what each is FOR
 
 _A retired seat, 2026-08-13. Measured across all 57 droids in the three active droid

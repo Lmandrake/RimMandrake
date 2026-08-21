@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The Galactic Empire — gap audit against vanilla `Empire`
 
 _DECIDE, 2026-08-20, answering `queue/DECIDE.md` **D-EMP1**. Measured against the shipped

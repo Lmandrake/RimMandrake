@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # enrichment_agents.md — the world-enrichment agent catalogue
 
 _What we want an authoring pass to **add to the world**, sorted by the lifecycle phase it acts

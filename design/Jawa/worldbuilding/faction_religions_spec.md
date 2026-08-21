@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Eleven religions, buildable — the encoding layer
 
 > 🔑 **WHAT ACTUALLY SHIPPED — twelve `<ideoName>` values, confirmed on disk

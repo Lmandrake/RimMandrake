@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Faction equipment guidance — tech, money and flavour
 
 _A retired seat, 2026-08-14. **The guidance document the owner required before another retired seat

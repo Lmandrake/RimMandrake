@@ -1,3 +1,4 @@
+<!-- status: live -->
 # RimWorld 1.6 Desert-World Faction Roster — v2
 
 > 🔴 **CORRECTED 2026-08-20 — what changed (`CANON_RECONCILE_C4_1`).** Two things in

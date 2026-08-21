@@ -1,3 +1,4 @@
+<!-- status: live -->
 # FACTION_SPEC.md — the buildable faction layer
 
 DECIDE owns this file. It is what BUILD executes. `faction_roster_v2.md` holds the
