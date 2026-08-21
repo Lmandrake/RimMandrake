@@ -288,10 +288,10 @@ encodings they do not read. So the fix is a different shape — **you no longer 
 number from a large artifact at all.**
 
 ```
-python3 src/RimMandrake/measure/cli.py count AbilityDef     -> UNMEASURED, and why
-python3 src/RimMandrake/measure/cli.py count ThingDef       -> MEASURED 24904
-python3 src/RimMandrake/measure/cli.py coverage             -> what is NOT captured
-python3 src/RimMandrake/measure/cli.py explain <path>       -> what may read this file
+measure count AbilityDef     -> UNMEASURED, and why
+measure count ThingDef       -> MEASURED 24904
+measure coverage             -> what is NOT captured
+measure explain <path>       -> what may read this file
 ```
 
 🔑 **Every answer is `MEASURED` / `UNMEASURED` / `REFUSED`, and they are not

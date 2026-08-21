@@ -68,9 +68,9 @@ smell.** `.claude/hooks/block_blind_scan.py` refuses `grep`/`strings`/`wc` again
 def dump, a `.rws`, a `.dll`, a world CSV or `Player.log`, and names the instrument.
 
 ```
-python3 src/RimMandrake/measure/cli.py count <DefType>    MEASURED n | UNMEASURED + why
-python3 src/RimMandrake/measure/cli.py coverage           what the dump did NOT capture
-python3 src/RimMandrake/measure/cli.py explain <path>     what may read this file
+measure count <DefType>    MEASURED n | UNMEASURED + why
+measure coverage           what the dump did NOT capture
+measure explain <path>     what may read this file
 ```
 
 🔑 **You paste `verify:` output, so this is your evidence pipeline.** `UNMEASURED` in a

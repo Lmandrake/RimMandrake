@@ -87,6 +87,33 @@ def _first_existing(paths):
     return paths[0]
 
 
+def _measure_scripts():
+    """Find the measuring-large-artifacts skill, which lives OUTSIDE this repo.
+
+    It is a generic skill that this project happens to use, so it is versioned
+    on its own. Three places are tried, most explicit first; returns None if it
+    is not installed, and every caller here degrades rather than failing.
+    """
+    import os
+    cands = []
+    env = os.environ.get("MEASURE_SKILL_HOME")
+    if env:
+        cands.append(os.path.join(env, "scripts"))
+    cands.append(os.path.expanduser(
+        "~/.claude/skills/measuring-large-artifacts/scripts"))
+    d = os.path.abspath(__file__)
+    while d != os.path.dirname(d):
+        d = os.path.dirname(d)
+        if os.path.isdir(os.path.join(d, ".git")):
+            cands.append(os.path.join(os.path.dirname(d),
+                                      "measuring-large-artifacts", "scripts"))
+            break
+    for c in cands:
+        if os.path.isdir(os.path.join(c, "measure")):
+            return c
+    return None
+
+
 _LOCALLOW_WIN = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios"
 _LOCALLOW_WSL = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
 
@@ -493,11 +520,15 @@ def status(fp, steps_failed=False):
     _sqlite = os.path.join(D_DUMP, "defs.sqlite")
     if not os.path.isfile(_sqlite):
         rows.append(("DefDump/defs.sqlite", "absent", "MISSING",
-                     "measure/cli.py build"))
+                     "measure build"))
     else:
         try:
-            sys.path.insert(0, os.path.dirname(os.path.dirname(
-                os.path.abspath(__file__))))
+            _s = _measure_scripts()
+            if not _s:
+                raise ImportError(
+                    "measuring-large-artifacts is not installed; expected it "
+                    "beside this repo or at ~/.claude/skills/")
+            sys.path.insert(0, _s)
             from measure.dumpdb import DumpDB
             _db = DumpDB(_sqlite)
             _lost = _db.prov.get("defs_lost_to_collision", "0")
@@ -507,11 +538,11 @@ def status(fp, steps_failed=False):
                 _note += ", %s lost to collisions" % _lost
             rows.append(("DefDump/defs.sqlite", _note,
                          "STALE" if _db.stale else "current",
-                         "measure/cli.py build" if _db.stale else "-"))
+                         "measure build" if _db.stale else "-"))
             _db.close()
         except Exception as ex:
             rows.append(("DefDump/defs.sqlite", str(ex)[:40], "MISSING",
-                         "measure/cli.py build"))
+                         "measure build"))
 
     patch_dir = os.path.join(ARMOURY, "Patches")
     have_patches = os.path.isdir(patch_dir) and any(

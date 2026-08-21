@@ -52,9 +52,9 @@ to make it.
 called exactly that, because the raw dump answered `0` for a def type holding 612:**
 
 ```
-python3 src/RimMandrake/measure/cli.py count <DefType>    MEASURED n | UNMEASURED + why
-python3 src/RimMandrake/measure/cli.py get <defName>      does this exist, and as what
-python3 src/RimMandrake/measure/cli.py coverage           what the dump did NOT capture
+measure count <DefType>    MEASURED n | UNMEASURED + why
+measure get <defName>      does this exist, and as what
+measure coverage           what the dump did NOT capture
 ```
 
 🔑 **This matters most to YOU, because you scope work off these numbers.** A `0` from a

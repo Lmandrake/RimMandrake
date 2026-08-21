@@ -64,10 +64,16 @@ from design and discussion."*
   read the encoding — that cost seven wrong counts in one session, and
   `.claude/hooks/block_blind_scan.py` now refuses the scan and names the instrument.
   ```
-  python3 src/RimMandrake/measure/cli.py count <DefType>     MEASURED 24904 / UNMEASURED + why
-  python3 src/RimMandrake/measure/cli.py coverage            what the dump did NOT capture
-  python3 src/RimMandrake/measure/cli.py explain <path>      what may read this file
+  measure count <DefType>     MEASURED 24904 / UNMEASURED + why
+  measure coverage            what the dump did NOT capture
+  measure explain <path>      what may read this file
   ```
+  📦 **The instrument is a SKILL and lives OUTSIDE this repo**, because it is
+  generic and this project merely uses it:
+  `D:\Luke\dev\measuring-large-artifacts`, installed machine-wide at
+  `~/.claude/skills/measuring-large-artifacts`. Run it as `measure …` if `bin/`
+  is on PATH, else
+  `python3 ~/.claude/skills/measuring-large-artifacts/scripts/measure/cli.py …`.
   🔑 **`0` now means measured zero and nothing else** — ignorance answers `UNMEASURED`,
   a question the instrument cannot judge answers `REFUSED`, and both say what to run
   instead. The register of instruments caught lying is
@@ -212,7 +218,7 @@ infrastructure/state/   queues, V1.md, facts/        see POLICY.md
 python3 src/RimMandrake/Utils/status_server.py     the board -> http://localhost:8787
 python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>    dry run; --apply writes
 python3 src/RimMandrake/Utils/refresh.py           rebuild the offline def dump
-python3 src/RimMandrake/measure/cli.py count <DefType>       one line; never a bare number
+measure count <DefType>       one line; never a bare number  (skill: see below)
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./src/RimMandrake/Utils/show.sh <path>             open it in Explorer
 ./game up|down|loading|deploying|going-down   🔴 OWNER ONLY - announce + stamp

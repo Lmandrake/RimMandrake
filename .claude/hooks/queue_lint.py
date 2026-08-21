@@ -362,10 +362,17 @@ def main():
                    bad[0][1]))
 
     # ---- 4. the repo root is shared -----------------------------------------
+    # ⚠️ Scope the check to THIS repo. `git commit SKILL.md` run from another
+    # checkout on the same machine reaches this hook with a bare path, and
+    # without the existence test it is judged against Rimworld's root — which
+    # refuses a legitimate commit in a repo this guard has no authority over.
+    # Measured 2026-08-21 on a sibling skill repo.
     tracked = set((git(root, "ls-files") or "").split())
     for p in paths:
         if "/" in p or not p.endswith(".md"):
             continue
+        if not os.path.exists(os.path.join(root, p)):
+            continue                      # not a file in this repo at all
         if p in tracked or os.path.basename(p).startswith("TRANSIENT_"):
             continue
         if p.isupper() or p in ("README.md", "CLAUDE.md"):
