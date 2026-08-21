@@ -951,7 +951,7 @@ is. **No `Q104`, no `D55`, no bare numbers.**
 | item | what |
 |---|---|
 | ⭐ `ORTHO_GLOBE_FIRST_RENDER_1` | **one command, never yet run.** Three ortho globes beside the target reference |
-| `REFERENCE_MATCH_HARNESS_1` | `refmatch.py` — contact sheet + the five defect screens |
+| `REFERENCE_MATCH_HARNESS_1` | ⛔ **MOOT FOR V1** — `refmatch.py`, contact sheet + the five defect screens. Owner accepted the map on the globes, `canon.yml > ORTHO_GLOBE_MAP_ACCEPTED_1` |
 | `GAZETTEER_ZERO_TILE_AUDIT_1` | The Ash Verge · The Long Dark · The Ember Sink · `AB_OcularForest` · `Glowforest` · `HorrorWastes` — named, zero tiles |
 | `CAST_PLACES_ON_THE_MAP_1` | 26 named places exist as `<place>` strings on 269 CharacterDefs and are bound to no tile |
 
@@ -1072,7 +1072,7 @@ W5  solo ................. hooks + agent seat file rewrite      [touches .claude
 W6  ×1 + ×4 .............. board plumbing (solo) → then 4 view modules in parallel
       │
       ▼
-W7  solo ................. refmatch.py            [ONLY after the owner has looked at W1b]
+W7  solo ................. refmatch.py            [⛔ CANCELLED FOR V1 - ORTHO_GLOBE_MAP_ACCEPTED_1]
 ```
 
 **Why W2 is nine agents and not fifteen:** the contested numbers are not spread one-per-document.
@@ -1276,8 +1276,13 @@ on `|` and test the cell holding the number), not to the line.
 ### W4–W7
 
 Follow §18's named items and §2's data model. Sequence and file ownership are in §22.
-**W7 (`refmatch.py`) does not start until the owner has looked at W1b's globes** — its five defect
-thresholds are calibrated against the reference photographs, not chosen.
+⛔ ~~**W7 (`refmatch.py`) does not start until the owner has looked at W1b's globes** — its five defect
+thresholds are calibrated against the reference photographs, not chosen.~~ **W7 IS CANCELLED FOR V1,
+not merely gated.** The owner looked, and ruled on the whole tool rather than on the gate:
+`canon.yml > ORTHO_GLOBE_MAP_ACCEPTED_1` (2026-08-20, `977aa75`) — *"Map accepted … refmatch.py …
+is MOOT for v1 … ⛔ Do not build it for v1."* ⚠️ Anyone reading the struck sentence and treating a
+later *"I like your new globes"* as the gate lifting will build a tool the owner cancelled; that is
+exactly what `REFMATCH_THRESHOLDS_CALIBRATE_1` did, and it is blocked on the owner for it.
 
 ---
 

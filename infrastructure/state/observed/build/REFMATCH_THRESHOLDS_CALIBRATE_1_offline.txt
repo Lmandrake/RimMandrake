@@ -1,0 +1,77 @@
+### REFMATCH_THRESHOLDS_CALIBRATE_1 — offline evidence, BUILD, 2026-08-21
+
+⛔ NOT BUILT. This item's premise collides with a NAMED, DATED, COMMITTED owner ruling
+   that it does not cite. One owner sentence settles it; guessing costs ~400 lines of
+   tooling the owner may have already forbidden.
+
+== the ruling the item does not mention ==
+$ grep -n -A11 'ORTHO_GLOBE_MAP_ACCEPTED_1:' infrastructure/state/canon.yml
+735:  ORTHO_GLOBE_MAP_ACCEPTED_1:
+736-    question: "Does the painted planet pass against the reference photographs?"
+737-    ruled_by: owner
+738-    ruled_on: 2026-08-20
+739-    ruling: >
+740-      ⭐ ACCEPTED FOR V1, on the ortho globes. "Let's go with the globe map you made for
+741-      v1. Map accepted." ⇒ `REFERENCE_MATCH_HARNESS_1` (refmatch.py, the five defect
+742-      screens) is MOOT for v1: it existed to decide whether the map passes, and the map
+743-      has passed. ⛔ Do not build it for v1. The remaining work is POPULATING the map,
+744-      not re-judging its shape.
+745-
+746-  SAVANNA_PREMISE_RESOLVE_1:
+
+$ git log -1 --format='%H %ad' --date=iso-strict 977aa75
+977aa759182b3da819d66e1efbd90747678b9e64 2026-08-20T23:16:47-07:00
+
+== the two are 92 minutes apart, and the LATER one is the weaker quote ==
+canon  ORTHO_GLOBE_MAP_ACCEPTED_1   committed 2026-08-21T06:16:47Z
+        owner: "Let's go with the globe map you made for v1. Map accepted."
+        -> refmatch.py is MOOT for v1. ⛔ Do not build it for v1.
+
+$ python3 src/RimMandrake/rimflow/cli.py show REFMATCH_THRESHOLDS_CALIBRATE_1 | head -3
+REFMATCH_THRESHOLDS_CALIBRATE_1   doing  row -  needs offline  target v1
+The owner has looked at the globes and approved them; refmatch.py can be calibrated
+owner BUILD   kind task   filed 2026-08-21T07:48:44Z
+        owner: "Yes, I like your new globes. Well done."
+        -> read by the filer as the gate lifting.
+
+== why the later quote does not overturn the earlier one ==
+1. It is WEAKER, and the item itself says so, in its own spec:
+14:🔑 **"I like them" is approval of the RENDERING, and that is what it is worth.** It says
+   'approval of the RENDERING ... ⛔ It is not a ruling that the world has zero defects.'
+   Liking a rendering is not a reversal of 'do not build it for v1'.
+2. The item cites CANON_RULINGS_OWED_OWNER_1's OLD gate ('cannot be built until you
+   have looked') and never mentions ORTHO_GLOBE_MAP_ACCEPTED_1 at all — the shape of
+   a doc that was answered by a better one and never told, not of a deliberate reversal.
+3. The stale plan the gate came from still reads the old way, which is what the filer
+   would have been working off:
+1279:**W7 (`refmatch.py`) does not start until the owner has looked at W1b's globes** — its five defect
+4. HUMAN.md:825 records the same 2026-08-21 quote and the same reading. It is the same
+   source, not independent confirmation:
+| ⭐ **"I like your new globes. Well done."** | `REFMATCH_THRESHOLDS_CALIBRATE_1` → BUILD. The look was the gate on `refmatch.py`; it is lifted. ⚠️ Approval of the RENDERING, not a finding that the world is defect-free |
+
+== and canon is the authority both ways ==
+design/Jawa/worldbuilding/the_one_map.md:21 — "where the two ever differ, it wins, and
+`infrastructure/state/canon.yml` settles both."
+
+== what was done instead ==
+  * REFMATCH_THRESHOLDS_CALIBRATE_1 -> needs owner, blocked, with the reason in the ledger
+  * a banner written into the item file naming ORTHO_GLOBE_MAP_ACCEPTED_1
+  * ⛔ CANON_RULINGS_OWED_OWNER_1.md, which still carries the dead gate, could NOT be
+    corrected: it is an OWNER item and .claude/hooks refuses BUILD editing another
+    seat's work — correctly. Escalated instead as REFMATCH_CANCELLED_NOT_GATED_1,
+    filed for OWNER, which names that exact sentence as the remaining trap.
+  * TRANSIENT_upgrade_plan.md W7 corrected where it still reads 'only after the owner looks'
+
+== the owner's decision, in one line ==
+  KEEP THE RULING  -> rimflow drop REFMATCH_THRESHOLDS_CALIBRATE_1 (v1 needs no harness)
+  OVERTURN IT      -> say so; BUILD then writes src/RimMandrake/Utils/refmatch.py
+                      measuring the five defect classes named in the_one_map.md:
+                      circular seas, comb rivers, rectangular roads, concentric biome
+                      rings, inherited names — each threshold read off the reference
+                      images in D:\Luke\dev\Rimworld
+esearch\Jawa\, reporting
+                      numbers and not a verdict. Est. one session, no game needed.
+
+== no refmatch.py was written ==
+$ ls src/RimMandrake/Utils/refmatch.py
+ls: cannot access 'src/RimMandrake/Utils/refmatch.py': No such file or directory

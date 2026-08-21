@@ -1,5 +1,17 @@
 # REFMATCH_THRESHOLDS_CALIBRATE_1 — the globes were approved, so refmatch can be built
 
+> 🔴 **STOP — 2026-08-21, BUILD. This item's premise collides with a named owner ruling
+> it does not cite: `canon.yml > ORTHO_GLOBE_MAP_ACCEPTED_1`, ruled by the owner
+> 2026-08-20 and committed at `977aa75`:** *"Let's go with the globe map you made for v1.
+> Map accepted."* ⇒ *"`REFERENCE_MATCH_HARNESS_1` (refmatch.py, the five defect screens)
+> is MOOT for v1 … ⛔ Do not build it for v1."*
+>
+> The quote below — *"Yes, I like your new globes. Well done."* — is 92 minutes LATER and
+> is the WEAKER of the two, as this item's own spec says: approval of the RENDERING, not
+> a finding about the world. **Liking a rendering does not reverse "do not build it."**
+> ⇒ **`refmatch.py` was NOT written.** Blocked on the owner; one sentence settles it.
+> Evidence: `infrastructure/state/observed/build/REFMATCH_THRESHOLDS_CALIBRATE_1_offline.txt`
+
 ## spec
 
 🔴 **OWNER, 2026-08-21: "Yes, I like your new globes. Well done."** He looked at
