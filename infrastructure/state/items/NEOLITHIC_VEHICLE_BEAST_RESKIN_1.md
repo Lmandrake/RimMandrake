@@ -18,6 +18,39 @@ the point, so do not swap one for another without redoing the whole ladder:
 | `AV_WarChariot` | 2 horses | **dewback ×2** | 3.0 | reuses the Chariot body twice — the two chariots amortise one build |
 | `AV_OxCart` | 2 oxen | **bantha ×2** | 4.0 | the horns are the read at sprite size |
 | `AV_CoveredCarriage` | 2 horses | **ronto ×2** | 6.0 | the heaviest vehicle gets the heaviest beast |
+✅ **DONE 2026-08-21 — SIX facings, north AND south, `0a7cf25`:** OxCart (bantha x2),
+CoveredCarriage (ronto x2), WarChariot (dewback x2), each `_south` and `_north` plus
+masks, all six **PASS** `validate_sprite.py` against the donor facing. Distortion
+OxCart -11.4% · CoveredCarriage +4.1% · WarChariot +11.4%, all inside the ~18% rule.
+🔑 **The north band is the donor's VISIBLE animal, not the animal's length.** The
+wagon and the chariot are drawn over the horses' hindquarters, so CoveredCarriage's
+north band is 163 rows against south's 217. Filling it distorts 40%; contain-fitting
+it shrinks the beast to 80% of its south size, so the team changes size when the cart
+turns. ⇒ **Size the beast from the SOUTH band, anchor it at the FAR end, and composite
+UNDER the surviving art** so the donor's own bodywork occludes the overhang.
+🔴 **Anchor at the FAR end even when it opens a gap at the yoke.** OxCart north is the
+one facing where the ANIMAL sets the sprite's outer extent — the donor's ox horns reach
+y27, five rows above the black band — so hitch-anchoring cost 45 px of span and
+`validate_sprite.py` returned three REJECTs. Close the gap with the bounded stretch,
+never by moving the beast off the extent it has to reach.
+🔴 **The erase must dilate by 8 and drop blobs under 600 px** (GEOMETRY §1). Without it
+the donor's red-tagged keyline survives and an ox-shaped white halo stands on top of
+every bantha. South was rebuilt through the same path for this reason.
+
+⛔ **EAST IS BLOCKED ON MISSING ART, and it is proven, not assumed.** Attempted with the
+south pair turned 90° CCW; bands are measured and wired in `build_beast_vehicle.py`.
+The donor draws east animals in **side elevation** — flank, profile head, legs under the
+body — and the south pair is a plan view of the animal's BACK. Turning a plan view does
+not make an elevation. The donor also staggers the pair front-to-back (GEOMETRY §3:
+OxCart merges over x400–474); a turned pair stacks them flat. OxCart is the arithmetic
+proof too: band aspect 1.244 against the turned pair's 0.732 — fill costs +69.9%, contain
+spans 66% of the band's width. ⇒ **East needs purpose-generated SIDE-view pairs, one per
+species**, exactly as the sled needed `art/eopie_pair_gen_east.png`. See the rightmost
+column of `src/Jawa/DesertVehicleReskin/Source/art/review/beast_facings.png`.
+⛔ **Chariot is still unbuilt on every facing** — it needs ONE dewback in a 92×182 band
+and only a merged pair exists (the two animals overlap by 495 px at centre, so it cannot
+be halved). Also a missing asset.
+
 ⏳ **WHAT IS LEFT: the compositing, 12 facings, and it is the real work.**
 `build_eopie_sled_{south,north,east}.py` are the working pattern — read one before
 starting. ⚠️ **Only the south script parses argv**; north and east hardcode their
