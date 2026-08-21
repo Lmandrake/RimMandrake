@@ -616,39 +616,47 @@ modlist:
 # ===========================================================================
 dump:
   path: "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\DefDump"
-  captured_utc: 2026-08-21T08:20:20Z
+  captured_utc: 2026-08-21T22:44:59Z
   mod_count: 578
-  modlist_sha: e0f11692cf69e516
+  modlist_sha: 49b83562b10df31c
   game_version: "1.6.4871 rev591"
-  current: false
+  current: true
   current_src: >
-    🔴 NOT CURRENT — one mod stale in BOTH directions, measured 2026-08-21 13:0x by DECIDE
-    against the manifest and ModsConfig directly. The frozen capture holds
-    `thereallemon.factioncontrol` and lacks `mandrake.strandedquest`; the live list is the
-    exact reverse. Two swaps, so BOTH read 578 and every count comparison passes.
-    ⚠️ This does NOT invalidate the freeze and nobody should re-freeze to clear it — the
-    owner froze OFFICIAL-2026-08-21 deliberately (`a3fcc44`), and only the owner re-freezes.
-    It is recorded so no seat reads `current: true` and skips a re-measure. The clean
-    re-take is armed and happens on the load that does the remake.
-  # 🔴 THE OLD TEST WAS THE BUG, AND IT CALLED ITSELF THE CURE. The line struck below
-  # claimed "CURRENT by FINGERPRINT, not by timestamp" and then compared two COUNTS.
-  # A count is not a fingerprint. It failed the first time it was asked to do real work.
+    ✅ CURRENT, and by a real fingerprint this time. The capture on disk was re-taken on the
+    2026-08-21 evening load with the FIXED dumper, and `refresh.py --freeze` (dry run,
+    13:0x→15:5x) reports the capture's modlist_sha as 49b83562b10df31c — the SAME value
+    `refresh.py --fingerprint` reports for the live load set, which is what "the dump was
+    taken from this stack" looks like when it is true. Both read 578.
+    ⭐ The 824-def collision damage is GONE: `manifest.json > defCounts.AbilityDef` reads
+    612 where the 08:20 capture read 0. 81 def types still read 0 and that is the separate,
+    long-known empty-def-type blind spot, not collision loss.
+  # ⚠️ THE REGISTRY IS NOT YET UPDATED, DELIBERATELY. dumps/REGISTRY.jsonl still freezes the
+  # 08:20 capture. ⛔ NO AGENT MAY RE-FREEZE TO CLOSE THAT GAP — only the owner, and only as
+  # a decision. This block describes the capture ON DISK; the frozen DESIGN TARGET is
+  # whatever the registry's last official entry says. When they differ, say which you mean.
   currency_test: >
-    ✅ Compare the modlist SHA, never the count. The algorithm is reproducible and is the
-    one already stored in infrastructure/state/dumps/REGISTRY.jsonl as `modlist_sha` —
-    sha256 of the sorted, lowercased packageId set, first 16 hex chars. Verified 2026-08-21:
-    recomputing it over the manifest's `mods[].packageid` yields e0f11692cf69e516, which is
-    byte-identical to the registry's recorded value; the same computation over ModsConfig's
-    activeMods yields 9a204707f6dc183d. Equal sha = same stack. Equal count = nothing.
-    ⚠️ Parse the XML for `activeMods` children — `grep -c '<li>'` returns 583, five high,
-    because `knownExpansions` is not the mod list.
+    ✅ Compare fingerprints with the tool, never counts, and never a hand recipe.
+    `python3 src/RimMandrake/Utils/refresh.py --fingerprint` for the live load set;
+    `--freeze` with no `--by owner` is a DRY RUN that prints the capture's own entry.
+    Equal sha = same stack. Equal count = nothing at all — on 2026-08-21 the frozen capture
+    and the live list were BOTH 578 and differed by one mod in each direction.
+    ⚠️ `grep -c '<li>'` on ModsConfig.xml returns 583, five high: `knownExpansions` is not
+    the mod list. Parse `activeMods` children.
   superseded_currency_claim:
     - value: "current: true — 'CURRENT by FINGERPRINT: the dump's manifest modCount (578) equals ModsConfig's activeMods count (578)'"
       why: >
-        Falsified 2026-08-21. The two 578s are different sets; the count test cannot see a
-        one-in-one-out swap, which is exactly what happened overnight. This is the same
-        failure queue/HUMAN.md recorded when OFFICIAL-2026-08-20 was silently replaced —
-        "both captures are 578 mods, which is why nothing noticed."
+        Falsified 2026-08-21. A count is not a fingerprint; the test could not see a
+        one-in-one-out swap, which is exactly what happened overnight. Same failure that let
+        OFFICIAL-2026-08-20 be silently replaced — "both captures are 578 mods, which is why
+        nothing noticed."
+    - value: "modlist_sha e0f11692cf69e516, described here as reproducing the registry's recorded value"
+      why: >
+        ⚠️ DECIDE's own, written 13:0x and corrected 16:0x. It WAS true when written — that
+        value was recorded in REGISTRY.jsonl and an independent recomputation over the then-
+        current manifest matched it. It stopped being true at `9078a15`, which rewrote the
+        recorded sha of the already-frozen OFFICIAL-2026-08-21 in place to 5ef6eec3daf6c325.
+        ⇒ Canon now names the TOOL rather than any hand recipe, so this cannot recur:
+        single-source only what a generator enforces.
   stale_do_not_use: >
     ⛔ observed/2026-08-13/dumps/defnames.live.2026-08-15.json is modCount 585 and is STALE
     — it is the source of the 66-BiomeDef and 251-xenotype figures still quoted in the
