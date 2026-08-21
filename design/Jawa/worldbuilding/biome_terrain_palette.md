@@ -62,6 +62,13 @@ identifiers.
 | Ocean | `Ocean` 🔎 | Deep saltwater tile | The **tiny oceans** (keep few) | water source (saline) |
 | Lake | `Lake` 🔎 | Inland freshwater tile | **Rare rivers/lakes** (keep few) | fresh surface water |
 
+✅ **`Lake` is CONFIRMED KEPT, 2026-08-20 — this row was right.** A second look was
+asked for at `biome_review_comments.md` §4, which was the only file saying `Lake`
+was cut; it resolved by measurement to **keep**. **The Scald**, one of exactly
+three ruled seas, is painted `Lake` for **all 312 of its tiles** (1.43% of the
+planet); the other two seas are `Ocean`. Cutting the def deletes a named sea from
+the frozen map. Canon: `infrastructure/state/canon.yml > lake_biome`.
+
 **Odyssey note:** Multiple independent sources (Ludeon blog,
 RimWorld Wiki, SteamDB patch notes) confirm **Odyssey adds FIVE new planet-surface biomes** plus
 40+ new animals and reworked map generation. Three are named directly in the sources and are ⭐
@@ -97,9 +104,19 @@ temp/rainfall whitelisting — so you tune their frequency through **Choose Biom
 | **Rocky Crags / Forsaken Crags** | `AB_RockyCrags` (label "forsaken crags") | forsaken crags | arid alien badland | movementDifficulty 1, forageability 0.5; forsaken sand/rock, rose-quartz stone |
 | **Gallatross Graveyard** | `AB_GallatrossGraveyard` | gallatross graveyard | arid exotic | forageability 0.5; giant-creature bone terrain |
 | **Ocular Forest** | `AB_OcularForest` | ocular forest | alien, low value | forageability 0.1 (near-barren for forage); eye-creature biome |
-| **Gelatinous Superorganism** | `AB_GelatinousSuperorganism` | gelatinous superorganism | 🚫 **CUT from roster (user 2026-08-04)** — wrong genre; salvage its mineable nutrient blocks → re-home as *strange growths inside caverns* (Biomes! Caverns / CaveBiome) | movementDifficulty 4; slime terrain (`AB_Slime`, `AB_RichSlime`) |
+| **Gelatinous Superorganism** | `AB_GelatinousSuperorganism` | gelatinous superorganism | ⛔ **CONTESTED — see the note below this table.** Was: 🚫 **CUT from roster (user 2026-08-04)** — wrong genre; salvage its mineable nutrient blocks → re-home as *strange growths inside caverns* (Biomes! Caverns / CaveBiome) | movementDifficulty 4; slime terrain (`AB_Slime`, `AB_RichSlime`) |
 | **Idyllic Meadows** | `AB_IdyllicMeadows` | idyllic meadows | 🚫 **CUT from roster (user 2026-08-04)** — resource-rich + safe breaks the scarcity thesis; do not place | forageability 1.2 (resource-rich); off the scarcity theme |
 | **Mechanoid Intrusion** | `AB_MechanoidIntrusion` | mechanoid intrusion | ⭐ ties to android/mech threat; IN as ONE hand-seeded "Shipyards" cluster (§2D) | `canAutoChoose=false` (seed only); forageability 0; mechanoid substructure terrain |
+
+> ⛔ **`AB_GelatinousSuperorganism` — the cut above never landed, and this palette
+> was never told. OPEN, and it is the owner's call.** Cut here on **2026-08-04**;
+> listed as a *survivor* of the owner's biome review in
+> `biome_review_comments.md` (2026-08-15); then **painted onto 96 tiles — 0.44% of
+> the planet — on 2026-08-18**, and it is on the frozen map right now
+> (`infrastructure/state/canon.yml > planet.biome_tile_counts`). 🔑 Either the cut
+> is reversed or 96 tiles need repainting. ⛔ **BUILD and DECIDE may not settle
+> this; do not edit either file to agree with the other.** Filed as
+> `infrastructure/state/canon.yml > needs_ruling.GELATINOUS_CUT_REVERSAL_1`.
 
 ### A3. Advanced Biomes (Continued) — WS 3541022508 · emipa606/AdvancedBiomes ✅ (5 biomes verified from 1.6 defs)
 

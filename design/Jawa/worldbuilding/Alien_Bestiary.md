@@ -1,4 +1,25 @@
+<!-- status: aspirational -->
+<!-- canon: infrastructure/state/canon.yml > bestiary — named: 108, built: 0 -->
+
 # Star Wars Naming Layer for the VGE 1.6 Bestiary — v1
+
+> 🔴 **STATUS: ASPIRATIONAL. 108 creatures are named here and ZERO are built.**
+> "Aspirational" means exactly that: **named, designed, and not built.** This is a
+> design register, not an inventory of anything in the game.
+>
+> - **108 named** — this file's own scope line below says so: *"all 104 VGE
+>   creatures plus the four special outputs"* = 108. Two independent extractions
+>   agree. ⚠️ **The figure carried elsewhere was 78 and it undercounts**; 78 came
+>   from parsing only the tables that share one header row, and §3.12–§3.14 use
+>   different headers and were skipped. Correct any 78 you find to **108**.
+> - **0 built** — verified 2026-08-20: **zero of the 108 appear under `src/` as a
+>   defName or a label.** Every raw grep hit is a substring coincidence on a
+>   humanoid NPC or a gene (e.g. `Inhabited_Tusken_DhakkOrr` matching "dhak").
+>   No bestiary rename or label patch exists in `Jawa_Patches` (37 files).
+>
+> 🔑 So nothing in this file has shipped. The renames it specifies are
+> `PatchOperationReplace` work that has not been written. Do not cite a name here
+> as though the game answers to it.
 
 _Companion to `desert_world_design.md`, `faction_roster_v2.md`. Created 2026-08-06 (originally `VGE_1_6_Alien_World_Bestiary.md`, renamed to `Alien_Bestiary.md` as scope broadened toward all creature mods). The left-column names in §3 are the literal VGE ThingDef in-game labels._
 

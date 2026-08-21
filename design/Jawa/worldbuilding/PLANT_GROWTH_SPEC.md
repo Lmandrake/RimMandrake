@@ -93,13 +93,27 @@ by **`BiomeDef.wildPlantRegrowDays`**, which controls how quickly wild plants
 that burns once and stays black — the fire ecology needs the fuel to come back.
 
 - **Patch `wildPlantRegrowDays` down across the biomes we keep.** This one *is*
-  XML, because it is a small number of literal values on ~66 defs rather than
+  XML, because it is a small number of literal values on ~66 defs *(as of
+  2026-08-15, at modCount 585; the live dump of 2026-08-20 at modCount 578 reports
+  **80** `BiomeDef`s — see the note at R-G4 below)* rather than
   arithmetic over hundreds.
 - **Target: divide by ~4**, matching R-G2's default so the two levers agree.
 - ⚠️ **Wait for the biome cut list.** *(The review completed 2026-08-15 and its tool
   `biome_review.py` was retired 2026-08-20 — the cut list is
-  `observed/inventory/decisions_biomes.json`, 30 cut of 66.)* Patching a biome we are
-  about to cut is wasted work and a wasted diff. **R-G1 can ship immediately; R-G4 waits.**
+  `observed/inventory/decisions_biomes.json`, **30 cut of 66 as of 2026-08-15**.)*
+  Patching a biome we are about to cut is wasted work and a wasted diff.
+  **R-G1 can ship immediately; R-G4 waits.**
+
+  > ⚠️ **Stamp on the 66, added 2026-08-20.** That 66 was measured on 2026-08-15
+  > at modCount 585. The live def dump of **2026-08-20 (modCount 578, matching
+  > `ModsConfig.xml` exactly) reports 80 `BiomeDef`s**, so `66 − 30 = 36` can no
+  > longer be re-derived from the current game. **36 survivors still stands — it
+  > is the record of a decision, not a live count.** ⛔ Do NOT recompute it
+  > against 80; the owner cut 30 *specific* biomes, named in
+  > `decisions_biomes.json`, and that roster is the answer. 🔑 **For R-G4 this
+  > matters practically:** patch the biomes on the survivor roster, not "66 minus
+  > 30" worth of whatever the current dump lists. Canon:
+  > `infrastructure/state/canon.yml > biomes`.
 
 ## R-G5 · Exemptions to check before shipping
 

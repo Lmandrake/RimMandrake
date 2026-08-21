@@ -79,7 +79,24 @@ Genebulb would burst into a shower of pets. **Neither outcome is intended.**
 | **Biomes** | Review sheet being built now; verdicts are off / rare / common / abundant |
 | **Non-SW xenotypes** | ~170 of them — giants, trolls, demons, phytokin, Yautja, plus **1,073 auto-generated `HL_*` animal-people** from `redmattis.sapientanimals`. ⚠️ The `HL_*` set never spawns in pawn generation, so it is **noise, not a threat** — pick only if it pollutes something measurable |
 
----
+<!-- canon-ok: 70 / 58 / 44 are per-mod rosters, not competing counts of one population -->
+⛔ **The xenotype numbers above are PER-MOD ROSTERS, and they are correct as
+denominators. Do not reconcile them to a single species number.** BTD **70**,
+guy762 **58** and Outer Rim **44** each count the xenotypes *that mod ships*; the
+mods overlap, which is the entire reason this row exists. Adding them is
+meaningless and "correcting" one to another destroys the only information here.
+Canon keeps them as named denominators — `infrastructure/state/canon.yml >
+species.denominators` (`btd_roster: 70`, `outer_rim_on_disk: 42`,
+`art_audit_subset: 44`, `distinct_available: 79`) — and states the rule directly:
+*"Always write the denominator beside the number."*
+
+⚠️ **The "80 species across 172 defs" above is a fifth denominator and it is NOT
+yet traced.** It sits beside canon's `distinct_available: 79` ("mechanically
+distinct Star Wars species available across all installed mods"), and canon
+separately records 80 as *not found in `design/`* — this line is a counter-example
+to that. **Left as written, unmeasured.** Whoever runs the species cherry-pick
+should re-measure both against the live def dump before either is quoted; do not
+edit one into the other on paper.
 
 ## D. Already handled elsewhere — do NOT cherry-pick these
 
@@ -136,6 +153,34 @@ options `{Toughspike, Trispike}`. Never Fingerspike.** So:
 
 **Every defName resolved against the live def dump. Source mod given because
 several removals are duplicates of each other under different names.**
+
+> ⛔ **TWO OF THESE 29 REMOVALS ARE PAINTED ON THE FROZEN MAP. Flagged 2026-08-20;
+> NOT resolved here — the map is hand-authored and frozen, so a removal that
+> contradicts it is the owner's call, not a cherry-picker's.**
+>
+> | defName | verdict here | painted on the frozen world |
+> |---|---|---:|
+> | `AB_GelatinousSuperorganism` | REMOVE (2026-08-14) | **96 tiles, 0.44%** |
+> | `ZBiome_Grasslands` | REMOVE (2026-08-14) | **233 tiles** |
+>
+> Tile counts from `infrastructure/state/canon.yml > planet.biome_tile_counts`
+> (painted 2026-08-18). Picking either def now deletes painted tiles from the
+> shipped save.
+>
+> - **`AB_GelatinousSuperorganism` is contested three ways** and is filed for the
+>   owner as `canon.yml > needs_ruling.GELATINOUS_CUT_REVERSAL_1`: cut in
+>   `biome_terrain_palette.md` (2026-08-04), REMOVE here (2026-08-14), listed as a
+>   **survivor** in `biome_review_comments.md` (2026-08-15), then **painted**
+>   (2026-08-18).
+> - **`ZBiome_Grasslands` is contested two ways and has no ruling filed:** REMOVE
+>   here, but `biome_review_comments.md` §1 keeps it as the **"stormy savanna"
+>   that carries the Pyrelands**, and `canon.yml > biomes.patched_by_us_list`
+>   shows we patch it. ⚠️ Stated as a fact, not a verdict. Do not pick it and do
+>   not "correct" either file until the owner rules.
+>
+> ✅ **`Lake` is NOT on this REMOVE list**, which is worth saying because
+> `biome_review_comments.md` §4 used to claim it was cut. It stays — see
+> `canon.yml > lake_biome`.
 
 ### REMOVE
 

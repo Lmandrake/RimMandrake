@@ -91,8 +91,8 @@ confirmed junk**, and the nine biomes in §1 are confirmed non-decisions.
 
 ## 1. Nine of the sixty-six are not decisions at all
 
-**66 live `BiomeDef`s. Nine have no `workerClass`**, which means worldgen never
-offers them — they are quest, structure and pocket-dimension biomes reached
+**66 live `BiomeDef`s *(as of 2026-08-15, at modCount 585)*. Nine have no
+`workerClass`**, which means worldgen never offers them — they are quest, structure and pocket-dimension biomes reached
 through content, not through the world map.
 
 ```
@@ -106,6 +106,24 @@ the existing config's `AM_UndergroundSpace = 3.99` misleading: it looks like a
 deliberate, strong preference and it does nothing whatsoever.
 
 ⇒ **57 real decisions.** Everything below is about those.
+
+> 🔑 **57 does NOT contradict the 36-survivor figure, and the two files never said
+> so — which is why it has read as a conflict. Added 2026-08-20.**
+>
+> | number | what it counts | base |
+> |---:|---|---|
+> | **66** | all live `BiomeDef`s **as of 2026-08-15, modCount 585** | the population |
+> | **57** | the ones worldgen can actually offer — **66 minus the 9 above** | this document's decision base |
+> | **36** | what survived the owner's cut — **66 minus 30 specific defs** (`biome_review_comments.md`, `observed/inventory/decisions_biomes.json`) | the same population, a different question |
+> | **24** | distinct biomes **actually painted** on the frozen world | not a survivor count at all |
+>
+> 57 is a deliberately **narrower base for a decision count**; 36 is the record of
+> a cut. One population, two questions. ⛔ Do not "reconcile" them to one number,
+> and do not recompute either against the **80** `BiomeDef`s the live dump reports
+> at modCount 578 (2026-08-20) — the 66 is dated and the cut named 30 *specific*
+> biomes. Canon: `infrastructure/state/canon.yml > biomes`.
+>
+> ⚠️ **37 and ~35 occur nowhere in `design/`.** Phantom values; do not chase them.
 
 ---
 
@@ -178,7 +196,7 @@ ring, not a region.
 | biome | weight | why |
 |---|---:|---|
 | `Ocean` | **2** | Cannot build a base; existence is what matters. |
-| `Lake` | **1** | The scarce-water anchor. |
+| `Lake` | **1** | The scarce-water anchor. ✅ **Kept — confirmed 2026-08-20.** `The Scald`, one of exactly three ruled seas, is painted `Lake` for all **312** of its tiles (1.43%). Cutting the def deletes a named sea. `canon.yml > lake_biome`. |
 | `ZBiome_Sandbar_NoBeach` | ⚠️ **see note** | Sand + water, on-theme — but `canAutoChoose` is **False**. |
 
 ⚠️ **Caught in self-review, and it is the same mistake this document criticises
@@ -335,6 +353,13 @@ figure above is the correct one for "how often".
 
 Six of the 24 IN biomes carry very few live species. This is **not** an argument
 against including them, but it is a fact the fauna emphasis in §4 has to respect:
+
+<!-- canon-ok: this 24 is this document's own IN list, not planet.biomes_on_map -->
+⚠️ **This 24 is THIS document's IN list** — the biomes §2 proposes giving a
+non-zero weight. The frozen world *also* carries **24 distinct painted biomes**
+(`infrastructure/state/canon.yml > planet.biomes_on_map`), and the two are **not
+the same 24 and not the same question**: a def can be IN here and painted on zero
+tiles. Coincidence of value only — do not merge them.
 
 | biome | live species | reading |
 |---|---:|---|

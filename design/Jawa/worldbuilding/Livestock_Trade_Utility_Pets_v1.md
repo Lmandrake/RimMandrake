@@ -2,6 +2,14 @@
 
 _Companion to `Alien_Bestiary.md` (the VGE + creature-mod SW naming layer). Scanned across RimWorld 1.6 + Odyssey, Alpha Animals, Alpha Biomes, Alpha Memes, Vanilla Genetics Expanded, **Star Wars Animal Collection (Continued), Megafauna, Jurassic Rimworld – Dinosaurs Only, Biomes! family (Core/Caverns/Polluted Lands), and Cephaloids** — the full adopted creature stack per `required_mods.md`. Created August 2026; expanded 2026-08-07 (rest-of-menagerie pass + critique)._
 
+⚠️ **Its companion `Alien_Bestiary.md` is ASPIRATIONAL — 108 creatures named,
+ZERO built** (verified 2026-08-20: none of the 108 appears under `src/` as a
+defName or a label; `infrastructure/state/canon.yml > bestiary`). This file leans
+on the bestiary's names and on "the same `Patches/` file + generator script" — 🔑
+**that patch file does not exist yet.** Nothing on either side has shipped, so
+treat every cross-reference here as design register, not as a name the game
+answers to.
+
 ---
 
 ## 0-bis. Critique & corrections (2026-08-07 pass — read before building)

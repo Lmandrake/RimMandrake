@@ -260,6 +260,20 @@ inside other defs' fields.
 
 - **`FleshmassHeart` picks its defender kinds in C#, not in any def** — what the
   adult sarlacc spawns cannot be established offline. Live check.
-- **Mechanoids, SW xenotypes, biomes** — no verdicts yet; do not pick.
+- **Mechanoids and SW xenotypes** — no verdicts yet; do not pick.
+  - ⚠️ The SW xenotype figures in `cherrypick_inbox.md` §C (BTD **70** · guy762
+    **58** · Outer Rim **44**) are **per-mod rosters and correct as denominators**.
+    ⛔ Do not reconcile them to one species number. `canon.yml >
+    species.denominators`.
+- ~~**biomes** — no verdicts yet.~~ **Struck 2026-08-20: biome verdicts DO exist.**
+  The owner ruled **29 REMOVE / 4 KEEP** on 2026-08-14 (`cherrypick_inbox.md` §E),
+  and reviewed all 66 `BiomeDef`s on 2026-08-15, cutting **30** and leaving **36**
+  (`biome_review_comments.md`; roster in `observed/inventory/decisions_biomes.json`).
+  🔴 **But still do not pick a biome yet**, for a different reason than this line
+  gave: the planet is hand-authored and frozen, and **two of the 29 removals are
+  painted on it** — `AB_GelatinousSuperorganism` (96 tiles) and `ZBiome_Grasslands`
+  (233 tiles). Picking either deletes painted tiles from the shipped save. See the
+  flag at `cherrypick_inbox.md` §E and
+  `canon.yml > needs_ruling.GELATINOUS_CUT_REVERSAL_1`.
 - Whether the deadlife delivery items and the third-party shambler content in
   §1a are in scope.

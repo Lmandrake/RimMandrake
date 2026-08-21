@@ -1,9 +1,32 @@
 # biome_review_comments.md — DECIDE's read of the owner's biome cuts
 
-DECIDE, 2026-08-15. The owner reviewed all 66 `BiomeDef`s via `biome_review.py`
-(retired 2026-08-20, the review being finished) and cut **30**, leaving **36**.
-Decisions live in `observed/inventory/decisions_biomes.json`, keyed by defName —
-that file, not the tool, is the record.
+DECIDE, 2026-08-15. The owner reviewed all **66** `BiomeDef`s **as of 2026-08-15,
+at modCount 585** via `biome_review.py` (retired 2026-08-20, the review being
+finished) and cut **30**, leaving **36**. Decisions live in
+`observed/inventory/decisions_biomes.json`, keyed by defName — that file, not the
+tool, is the record.
+
+> 🔴 **The 66 is a dated measurement and no longer holds; the 36 still does.**
+> The live def dump of **2026-08-20 (modCount 578, matching `ModsConfig.xml`
+> exactly) reports 80 `BiomeDef`s**. So `66 − 30 = 36` can no longer be
+> re-derived from the current game. That is not a defect — **36 is the record of
+> a decision, not a live count.** ⛔ **Do NOT recompute the survivor count
+> against 80.** The owner cut 30 *specific* biomes; the answer is those 30, named
+> in `decisions_biomes.json`, not an arithmetic result. Canon:
+> `infrastructure/state/canon.yml > biomes` (`survivors: 36`, `base_defs: 66`,
+> `base_defs_as_of: 2026-08-15`, `live_defs: 80`).
+>
+> ⚠️ **`biome_and_fauna_roster.md` works from 57, and that is not a contradiction
+> of this 66.** Its 57 is 66 minus the nine defs with no `workerClass`, which
+> worldgen can never offer — a deliberately narrower base for a *decision* count.
+> Two bases, one population. Neither file used to say so; both do now.
+>
+> ⚠️ **"Survivors" and "biomes on the map" are different questions.** Only **24**
+> distinct biomes are painted on the frozen world (`canon.yml >
+> planet.biomes_on_map`). A def can survive this cut and appear on zero tiles.
+> Nothing below counts painted tiles.
+>
+> ⚠️ **37 and ~35 occur nowhere in `design/`.** Phantom values; do not chase them.
 
 **Headline: every biome the lore needs survived.** Poison forest, mycotic jungle,
 gelatinous superorganism, propane lakes, ocular forest, forsaken crags
@@ -12,6 +35,15 @@ Cathedral (`AB_MechanoidIntrusion`), desert, extreme desert, oasis, ocean — pl
 **three volcanic biomes** (`Volcano`, `LavaField`, `AB_PyroclasticConflagration`)
 and `IronScruff_PrimordialGeysers`, which R-H0's volcanism needed and which had
 looked like a mod with nothing left in it.
+
+> ⛔ **OPEN — `AB_GelatinousSuperorganism` is listed as a survivor here and as CUT
+> in `biome_terrain_palette.md:100` (user, 2026-08-04), and it was then PAINTED
+> on 96 tiles (0.44% of the planet) on 2026-08-18.** The palette was never told.
+> Three states, one biome. 🔑 **This is the owner's call and neither DECIDE nor
+> BUILD may settle it:** either the 2026-08-04 cut is reversed, or 96 painted
+> tiles need repainting. Filed as
+> `infrastructure/state/canon.yml > needs_ruling.GELATINOUS_CUT_REVERSAL_1`.
+> Until it is ruled, do not "correct" either file to match the other.
 
 ---
 
@@ -51,12 +83,33 @@ survived, and it is a *living* glow. Take it and the crystalline caverns become
 the mineral half, the glowforest the biological half — **the meagre-light band
 gets two textures instead of one**, which is better than either alone.
 
-## ⚠️ 4. `Lake` cut, `Ocean` kept — worth a second look
+## ✅ 4. `Lake` STAYS — the second look happened, 2026-08-20, and it says keep
 
-R-H1 describes **"small seas always on the edge of failing"**, which read as lakes
-far more than as oceans. Ocean's share is dialable via `elevationRange`, so this
-may be right — but the hypersaline sea of R-H2 is a *small* body by design and
-only the large-body def survives.
+~~`Lake` cut, `Ocean` kept — worth a second look.~~ **Struck 2026-08-20. This
+section was the ONLY file in the design tier saying `Lake` is cut**, against five
+that assign it a weight, a role and a terrain palette. It asked for a second look;
+this is it, and it was settled by **measurement, not preference**:
+
+| sea (of exactly three ruled) | tiles | biome painted |
+|---|---:|---|
+| **The Scald** | **312** | 🔴 **`Lake`** — all 312 |
+| The Twilight Sea | 851 | `Ocean` |
+| The Gray Sea | 617 | `Ocean` |
+
+Measured from `world/ASHKARR_WORLDMAP_tiles.csv` joined on region, 2026-08-20;
+`The Scald × Lake = 312`, exactly. That is **1.43% of the planet**.
+
+🔑 **So cutting the `Lake` def does not remove a stray biome — it deletes a named
+sea from the frozen map.** The world is hand-authored and shipped as a savegame;
+there is no worldgen behind it to repaint The Scald as something else.
+
+Canon: `infrastructure/state/canon.yml > lake_biome` (`status: keep`), with owner
+confirmation tracked at `needs_ruling.LAKE_BIOME_CUT_OR_KEEP_1`.
+
+⚠️ **The original reasoning was not wrong, only mis-aimed.** R-H1's *"small seas
+always on the edge of failing"* does read as lakes rather than oceans — and that
+is exactly what The Scald is. The premise argued for keeping `Lake`, not cutting
+it.
 
 ## Small notes
 
