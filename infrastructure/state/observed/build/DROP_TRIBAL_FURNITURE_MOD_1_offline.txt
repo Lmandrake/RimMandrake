@@ -1,0 +1,43 @@
+DROP_TRIBAL_FURNITURE_MOD_1 — offline verify, 2026-08-21
+
+STEPS 3 AND 4 PASS. STEP 5 IS THE OWNER'S AND IS NOT DONE — and there is a reason
+to look again before he takes it.
+
+STEP 3 — nobody is disarmed by the cut.
+   The departing mod contributes 66 defs: 64 ThingDef, 1 EffecterDef, 1 FleckDef.
+   weaponTags blocks in the whole mod: 0.  apparel blocks: 0.  tradeTags: 0.
+   Of its 64 ThingDefs, those carrying weaponTags: 0.
+   => no weapon or apparel tag can lose its last carrier. The trap does not apply.
+
+STEP 4 — references that die: 0.
+   A naive count says 368 external references would break, all attributed to Core.
+   That number is misleading and the shape explains it. They sit in exactly:
+      recipeUsers            125   the mod adding its own benches to Core recipes
+      fixedBillGiverDefs       5   same injection
+      childThingDefs           2   category membership, declared BY the children
+      cachedUnlockedDefs       3   runtime cache
+      allChild/sortedChild*    6   runtime cache
+   Every one is either the departing mod injecting itself, or a derived cache.
+   None is an authored reference from another mod's XML. Remove the mod and the
+   thing that created them is gone, so they never exist. => 0 die.
+
+🔴 STEP 5 NOT DONE, AND THE ITEM'S PREMISE IS FALSE.
+   The item's stated why: 34 dead texPaths, 'points at art that is not on disk',
+   'A mod rendering entirely as placeholder earns nothing.'
+   Measured 2026-08-21 while triaging first_light:
+      PNGs the mod ships:                        138
+      its defs declaring TribalFurniture.Graphic_Appearances_Multi:  13
+      its defs declaring vanilla Graphic_Multi:                      3
+   The 13 flagged defs all use the mod's OWN graphicClass out of its own DLL.
+   Their texPath is a STEM the class expands with a stuff infix:
+      def asks   Things/Building/Furniture/Bed/XERTribalBed/XERTribalBed
+      on disk    XERTribalBed_Bricks_north.png  (and _east, _south, per stuff)
+   jawa/texture_audit assumes vanilla suffixing and cannot see a custom resolver,
+   so it reported present art as dead. Filed as TEXTURE_AUDIT_CUSTOM_GRAPHICCLASS_1.
+   ⇒ THE MOD RENDERS. It is not a placeholder mod.
+
+   The item says the path check must NOT be re-offered because the owner ruled
+   twice. That instruction was written when the premise was still believed. He
+   ruled on 'a mod rendering entirely as placeholder', which is not this mod.
+   The cut is still safe and still his call - but it is now a preference about
+   content, not a repair, and he should know that before spending it.
