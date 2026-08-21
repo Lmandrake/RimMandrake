@@ -54,6 +54,33 @@ with different parameters. ⇒ **Expect ~6–8 real archetypes plus a parameter 
 smaller thing to build and a larger thing to vary. The 36 remain valid as a *content
 list* — they are the places we want — but not as a class list.
 
+## 1.1a The parameter table — two entries ruled, and one parameter refused
+
+§1.1 promises *"~6–8 real archetypes plus a parameter table"*. DECIDE, 2026-08-21, on the
+three structural calls CHECK offered:
+
+⭐ **`decay` — TAKEN. One float, 0–1, on the PLACE.** It is the highest-value single entry
+in the table because it turns **every** archetype into its own ruined variant for nothing:
+one number the GenStep reads to set building HP, missing walls, filth and whether the
+larder still holds anything. ⇒ *the refinery* and *the refinery nobody has run in nine
+years* are one archetype, not two.
+⚠️ **`decay` is about the PLACE, never the cast.** A ruined place with a full cast is
+squatters (§7.3); a whole place with no cast is abandoned. Do not let one number mean both.
+
+⛔ **`hostility` — REFUSED, because it is not a parameter.** CHECK proposed
+`hostility: conditional` (neutral until provoked) as the setting that makes a place read as
+inhabited rather than placed. ✅ **The intent is right and it is already the only mode:**
+`LordJob_DefendPoint` gives pawns that cannot turn hostile on their own, and §1.2 makes
+Resident *"the default and the great majority"*. ⇒ **A place carries no hostility field.
+The FACTION relation decides**, and §7.2 is where that is spelled out. A place that is
+hostile on sight is a raid, and a raid is not an inhabited place.
+
+⛔ **"Templates are containers, not leaves" — OVERTAKEN, not refused.** It was a good answer
+to *"how do we organise 36 template classes"*, and §1.1 deleted that question. Six to eight
+archetypes with a parameter table have no containment problem to solve.
+
+---
+
 ## 1.2 FATE — flight is caused, never scheduled
 
 ⛔ **The `LordJob_TradeWithColony` visitor arc is NOT the template.** It is one FATE among

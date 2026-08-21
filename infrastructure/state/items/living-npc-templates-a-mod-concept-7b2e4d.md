@@ -250,3 +250,37 @@ heartwrenching when they're the people you destroyed the livelihoods of recently
 ⇒ 🔑 **The design has no morality system, no karma meter and no reputation number for this,
 and it must not grow one.** The consequence is delivered entirely by RimWorld's existing
 name, backstory and memory systems plus the player's own recognition. That is why it works.
+
+## ruling
+**DECIDE, 2026-08-21. This item was a menu with prices on it, and every price has now been
+paid or refused. Closing it.**
+
+⭐ **Where the answers live:** `design/Jawa/bridge/INHABITED_DESIGN.md`. That file supersedes
+`LIVING_NPC_TEMPLATES.md` for architecture (§1.1) and the catalogue stays valid as the list
+of *places we want*. Nothing below needs re-deriving from this item.
+
+| CHECK asked DECIDE to rule on | ruling |
+|---|---|
+| **Farming — reframe as "dwells near it and repairs it"?** | ✅ **ACCEPTED**, and already written: §2.1 and §6's table. ⚠️ It does cost the owner's own *"farmer at a worksite"* start — that is the one named template that does not come cheap, and the honest version of it is a **granary**, not a field |
+| **NPCs ignore forbid flags and will eat the colony's meals** | ✅ **NOT A BUG — ALREADY RULED, §2.1.** `Thing.IsForbidden` returns false for any non-player faction, so a hungry cast raids the player's stockpile, and that is FATE:*flee — starved out* firing on a cause the player created. ⇒ **the fix is the larder, not a flag**: give the place food nearer than the player's, and the residue is content |
+| **`decay` 0–1 dial** | ✅ **TAKEN** — §1.1a. One float on the PLACE. The single highest-value entry in the parameter table |
+| **`hostility: conditional`** | ⛔ **REFUSED as a parameter, granted as the only mode** — §1.1a. A place carries no hostility field; the faction relation decides (§7.2) |
+| **Templates are containers, not leaves** | ⛔ **OVERTAKEN.** §1.1 deleted the 36-class list it was organising |
+| **"Named pawns should be the EXCEPTION"** | ⛔ **OVERTURNED BY THE OWNER**, answer 7: *"I want ALL of the people documented deeply."* What varies is REGISTER, never depth. 269 people are authored |
+| **The toil-order save-corruption trap** | ✅ **RULED AND WRITTEN**, §6: one toil that reassigns duty on a tick, never a StateGraph whose toil ORDER we expect to re-tune |
+
+### ⇒ The proving order — CHECK's is superseded, and by something less arbitrary
+
+⛔ CHECK proposed *Peasant Hearth → **Farmstead** → Waystation Fort → Fed Prisoners →
+Sandcrawler Crew*. **Farmstead is now the wrong second step** — it was chosen to prove
+day/night, and farming is Not Attempted, so it proves a granary.
+
+✅ **The order is the eight `INHABITED_*` items already filed for BUILD, and the gate is
+`§3.4`'s soak.** Do the 100-day `Caravan`-pattern hold-and-return **first**: it is the one
+test that can invalidate the architecture, two of its three failure modes were already
+found on disk and fixed, and the third is only findable by running it. Everything else is
+cheap to reorder; this is not.
+
+🔑 **What this item bought, and it was worth the length:** the engine facts. Farming's three
+walls, the positional-index save corruption, and the forbid-flag hole are all things nobody
+would have found by design reasoning, and two of them turned into content rather than bugs.
