@@ -217,15 +217,21 @@ a def can survive the cut and appear on zero tiles.
 
 ## 6. Other biome placement
 
-- ⛔ ~~`AB_OcularForest` — only at the tops of mountains (>2350 m) that are river
-  sources~~ 🔴 **THIS PLACEMENT NEVER HAPPENED AND COULD NOT — corrected 2026-08-21.**
-  The map's **highest tile is 2266 m**, so the >2350 m gate is unsatisfiable, and
-  `AB_OcularForest` is painted on **0 tiles**. It is one of the twelve defs that survived
-  the cut and appear nowhere. *(The rest of the entry is kept as the intent, in case the
-  biome is ever placed: it "bleeds small rivers outward" and its streams run red with
-  spores and toxins. ⚠️ "Active bioweaponry" is **not** in the record.)*
-  ⚠️ It is also the only high-mountain wet biome in the design, so **the "violent rain in
-  the high mountains" rule below has no signature biome to hang on.**
+- `AB_OcularForest` — ⭐ **only on the very highest ground, `> 2000 m`**, in tiny patches;
+  it *"bleeds small rivers outward"* and its streams run red with spores and toxins.
+  ⚠️ *"Active bioweaponry"* is **not** in the record.
+  🔴 **Gate reset 2026-08-21, owner's instruction.** It read `>2350 m`, and **the map's
+  highest tile is 2266 m** — so the gate was unsatisfiable and the biome is painted on
+  **0 tiles**. `> 2000 m` admits **14 tiles** (0.06% of the planet, all `hilliness` 4–5),
+  which is the "few highest tiles" the entry always meant.
+  ⛔ **The old "that are river sources" clause is dropped as a PRECONDITION and kept as a
+  DESCRIPTION.** All three tiles above 2000 m that already carry river flow are `Volcano`
+  on the Scald rim, and repainting them would eat the planet's one volcanic province. The
+  forest *makes* the streams; it does not need to find them.
+  ✅ **The patch to paint: `4299`, `9158`, `9159`** — the Ashfall Range summits at 2190 ·
+  2177 · 2117 m. They are the **highest non-volcanic ground on Ash'karr**, they are
+  adjacent, and they are currently `ExtremeDesert`. Nine of the other eleven candidates are
+  the volcanic province and must be left alone.
 - `AB_GelatinousSuperorganism` — **on the terminator**, patches only, never a band.
 - One volcanic province only: the **Scald rim** (Volcano · LavaField ·
   `AB_PyroclasticConflagration` · Scarlands · `AB_TarPits`). The rest of the planet is quiet.

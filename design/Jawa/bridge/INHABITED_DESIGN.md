@@ -483,8 +483,15 @@ style advice: `TraitDef.conflictingTraits` says the pawn cannot hold both.
 | do not pair | with |
 |---|---|
 | `Kind` | `Abrasive` · `Psychopath` |
-| `Ascetic` | `Jealous` · `Greedy` · `Gourmand` |
+| `Ascetic` | `Jealous` · `Gourmand` · `Greedy` |
 | `Brawler` | `ShootingAccuracy` *(either degree)* · `Wimp` |
+| ⭐ `TooSmart` | `SlowLearner` |
+
+⭐ **The `TooSmart` × `SlowLearner` row was missed on the first pass and caught by the
+audit, on a character written the same day the rule was added.** That is the argument for
+running the check rather than trusting the table: **derive the pairs from the shipped
+`TraitDef`s' own `conflictingTraits` and intersect with the vocabulary the rosters actually
+use.** Ten pairs matter today; a new mod can add more tomorrow.
 
 🔴 **The two that actually caught us, and why.** They are not random slips — each is a real
 character type that our house voice reaches for, and the engine models it as one trait, not

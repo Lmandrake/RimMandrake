@@ -217,7 +217,7 @@ adult: was warden here before Sethro Vekk. Handed it over and stayed.
 > She is the only living person who has seen the Grey Sea from the other side, and the children make her describe it, and she does, exactly the same way every time, down to the order of the hills — she has been doing it for forty years and Hessa Kur has written three versions down and they do not differ by a word. Sethro brings her the monthly stake numbers. She has never asked for them.
 
 **Dabb Illo** · Duros · m · 44
-`traits: TooSmart, Jealous, SlowLearner`
+`traits: TooSmart, Jealous, Delicate`
 childhood: freighter-born, put ashore sick at twenty-six and never fully recovered.
 adult: keeps Tidewatch's manifest, which fits on one sheet.
 > He was a navigator and he is now a man who writes down four salt shipments a month, and he does it beautifully, in a hand nobody out here can read properly, with the tonnages set out as though they were headings — he is not pretending it is more than it is, he is refusing to let it become less. He has asked for a transfer every year for eighteen years. He would not take one.
