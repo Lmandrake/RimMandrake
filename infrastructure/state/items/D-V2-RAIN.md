@@ -1,11 +1,123 @@
 ## spec
-_not recorded in the source queue_
+🔴 **The design spec already exists — it is in `## notes` below, dated 2026-08-19, and it
+is good.** This section RATIFIES it with four corrections measured 2026-08-21, one of which
+would have destroyed seven BiomeDefs if built as written.
+
+### ⛔ CORRECTION 1 — the 🪤 line in the notes is backwards, and it is the dangerous one
+
+The notes say: *"`weatherCommonalities` is a LIST of
+`<li><weather>X</weather><commonality>N</commonality></li>`. NOT the dictionary shorthand."*
+
+**Both halves are wrong.**
+- ⛔ **There is no field called `weatherCommonalities`.** The field is
+  **`baseWeatherCommonalities`**, and a grep of every vanilla `BiomeDef` returns zero hits
+  for the shorter name.
+- ⛔ **It IS dictionary-keyed**, and the `<li>` form is exactly the mistake this project
+  already made and documented at length in
+  `src/Jawa/Jawa_Patches/Patches/SWDesertWeather_Attach.xml` — it produced
+  *"No Verse.WeatherDef named li found"*, **discarded seven whole BiomeDefs** including
+  three Core ones, and orphaned ~950 animal cross-references on a desert-planet campaign.
+
+✅ **The correct shape, and our own shipped patch is the reference:**
+```xml
+<baseWeatherCommonalities>
+  <SW_RedFoggyRain>5</SW_RedFoggyRain>
+</baseWeatherCommonalities>
+```
+
+### ⭐ CORRECTION 2 — half the violent-weather work is already shipped
+
+The notes propose authoring the exception onto `SW_RedFoggyRain` and `AB_VolcanicAshRain`.
+**`SW_RedFoggyRain` is ours and already exists** —
+`src/Jawa/Jawa_Patches/Defs/WeatherDefs/SWDesertWeather.xml:186`, `rainRate 1`, label
+*"red foggy rain"* — and it is **already attached**, to `Volcano` at commonality 5
+(`SWDesertWeather_Attach.xml:159`).
+
+⇒ **What is actually missing is one curve.** Its `commonalityRainfallFactor` is
+`(0,0) (1300,1)` — the *same* curve as vanilla `Rain`, so it is not altitude-locked at
+all. Steepening it to `(0,0) (800,0) (1200,1)` is what makes it *"physically incapable of
+occurring anywhere except the high country"*, which is the notes' own idea and the best
+thing in them.
+
+### 🔴 CORRECTION 3 — the ban is NOT mostly ratification. 433 wet tiles are not mountains.
+
+Re-measured over all 21,872 rows, 2026-08-21:
+
+| band | tiles | where they are |
+|---|---|---|
+| ≤ 49 mm | 17,588 (80.4%) | ✅ already effectively rainless |
+| 600–1299 mm | 254 | rain at 46–100% strength |
+| **≥ 1300 mm** | **683 (3.1%)** | 🔴 **full vanilla rain**, max 1668 mm |
+
+Of the **937** tiles at ≥600 mm, only **504** are `hilliness` 4–5. **433 are not
+mountains**, and their median elevation is **696 m**.
+
+⇒ 🔴 **The 1668 mm stamp lands on biomes that contradict it.** 596 tiles carry exactly
+that value; only 271 are `AB_FeraliskInfestedJungle`. The other **325** are
+`ZBiome_Badlands` 78 · `ExtremeDesert` 52 · `ZBiome_DesertOasis` 52 · `ZBiome_Grasslands`
+36 · **`AB_PyroclasticConflagration` 31** · `Desert` 28 · **`Volcano` 23**. **235 of them
+are in The Dune Sea.** A volcano and a sand sea at tropical-rainforest rainfall fail the
+owner's own first test — *does it read as a photograph of a real planet.*
+
+### ⚠️ CORRECTION 4 — the jungle count in the notes is wrong, and one runtime consumer was missed
+
+- The notes say `AB_FeraliskInfestedJungle` is **1,561** tiles. Measured today: **534**.
+- The notes' grep concluded rainfall's only runtime consumer is `WeatherDecider.cs:191`.
+  ✅ **True, and re-verified** — nothing reads it for plant growth, fertility or yield, so
+  there is no economy cost and no floor to agonise over. ⚠️ **But
+  `WorldGenStep_Rivers.cs:131` does `flow[tileId] += tile.rainfall`.** That is worldgen, and
+  our `river_flow` column is authored and stamped, so it does not bite — **do not "fix"
+  river flow after zeroing rainfall.**
+- ⭐ **One thing that could have broken the ban and does not:** `WeatherDecider.cs:185`
+  multiplies a rain weather's commonality by **15** when `LargeFireDangerPresent`. At
+  rainfall 0 the product is still 0, so the ban holds through fires. At the current 18 mm
+  it does not — 18 mm is a 98.6% suppression, not a ban, and rises to ~2.3% of rolls during
+  a large fire. **That is the argument for 0 over 18.**
+
+### ⇒ THE RULING
+
+1. ✅ **`rain_mm = 0`** on every tile with `hilliness` < 4. Zero exactly — `(0,0)` is the
+   first point of every rain curve in the game, so 0 makes the multiplier **exactly** zero
+   and rain becomes unselectable rather than rare.
+2. ✅ **Keep the authored rainfall on `hilliness` 4 and 5.** The per-tile rainfall IS the
+   per-tile gate; no mutators, no worldgen.
+3. ✅ **Steepen `SW_RedFoggyRain`'s `commonalityRainfallFactor`** to `(0,0) (800,0)
+   (1200,1)` and attach it, dictionary-keyed, to the biomes that occupy the high country.
+4. 🔴 **The 433 non-mountain wet tiles are the owner's call, not mine** — see
+   `## needs the owner` below.
 
 ## verify
-_not recorded in the source queue_
+- `awk`-level check on `world/ASHKARR_WORLDMAP_tiles.csv`: **zero** rows with
+  `hilliness < 4` and `rain_mm > 0`
+- every remaining `rain_mm > 0` row has `hilliness` 4 or 5
+- `SW_RedFoggyRain`'s curve reads `(0,0) (800,0) (1200,1)`
+- `validate_patch.py` clean on `SWDesertWeather_Attach.xml`, and ⛔ **every weather entry it
+  adds is dictionary-keyed** — a single `<li>` in a `baseWeatherCommonalities` block fails
+  this item outright
 
 ## criteria
-_not recorded in the source queue_
+On a lowland map, rain never occurs — not rarely, never, including during a large fire.
+On a mountain map, what falls is red and violent.
+
+## needs the owner
+🔴 **Ruling 1 dries 433 tiles that are currently wet and are not mountains, and the map has
+already been ACCEPTED for v1.** 235 of them are in The Dune Sea. I am not repainting an
+accepted map on my own authority.
+
+**The choice is narrow:**
+- **(a) Apply the rule as ruled** — the Dune Sea, the volcano and the badlands go dry, and
+  the wet retreats to the 504 mountain tiles. Most faithful to *"ban rainfall"* and to
+  realism.
+- **(b) Apply it everywhere EXCEPT `AB_FeraliskInfestedJungle`** — the river jungles keep
+  1668 mm. ⚠️ Costs nothing visually and contradicts nothing: the notes already argue the
+  jungles are fed by rivers, not sky, so they do not NEED the rainfall — but leaving it
+  means jungle tiles still rain.
+- **(c) Ratify what is there** — accept that 3.1% of the planet has tropical rainfall,
+  including a volcano.
+
+**DECIDE recommends (a).** The rainfall column is invisible on the world map, so drying it
+changes no picture the owner accepted — it changes only whether water falls out of the sky
+on a sand sea.
 
 ## notes
 **Imported from `queue/DECIDE.md`. Its `state:` read, verbatim:**

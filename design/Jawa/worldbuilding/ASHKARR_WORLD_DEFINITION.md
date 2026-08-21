@@ -217,9 +217,15 @@ a def can survive the cut and appear on zero tiles.
 
 ## 6. Other biome placement
 
-- `AB_OcularForest` — ⭐ **only at the tops of mountains** (>2350 m) that are **river
-  sources**, in tiny patches; it *"bleeds small rivers outward"* and its streams run
-  red with spores and toxins. ⚠️ *"Active bioweaponry"* is **not** in the record.
+- ⛔ ~~`AB_OcularForest` — only at the tops of mountains (>2350 m) that are river
+  sources~~ 🔴 **THIS PLACEMENT NEVER HAPPENED AND COULD NOT — corrected 2026-08-21.**
+  The map's **highest tile is 2266 m**, so the >2350 m gate is unsatisfiable, and
+  `AB_OcularForest` is painted on **0 tiles**. It is one of the twelve defs that survived
+  the cut and appear nowhere. *(The rest of the entry is kept as the intent, in case the
+  biome is ever placed: it "bleeds small rivers outward" and its streams run red with
+  spores and toxins. ⚠️ "Active bioweaponry" is **not** in the record.)*
+  ⚠️ It is also the only high-mountain wet biome in the design, so **the "violent rain in
+  the high mountains" rule below has no signature biome to hang on.**
 - `AB_GelatinousSuperorganism` — **on the terminator**, patches only, never a band.
 - One volcanic province only: the **Scald rim** (Volcano · LavaField ·
   `AB_PyroclasticConflagration` · Scarlands · `AB_TarPits`). The rest of the planet is quiet.
@@ -228,6 +234,38 @@ a def can survive the cut and appear on zero tiles.
   `Glowforest` and `BMT_CrystalCaverns` as isolated points past arc 150.
 - ⛔ Blacklisted and not used: `SeaIce`, `IceSheet`, `Tundra`, `TropicalRainforest`,
   `Savanna` (the Advanced Biomes one), and the rest of the 29-entry list.
+
+## 6b. 🔴 RAIN — the rule, and the one number that enforces it
+
+**Owner, 2026-08-19:** *"Ban rainfall: v1 (but might still happen on highly mountainous
+terrain!)"* The full ruling and its corrections are in
+`infrastructure/state/items/D-V2-RAIN.md`. What a reader of THIS file needs:
+
+🔑 **The lever is `rain_mm` in the tile CSV, not the biome weather lists.** Every rain
+`WeatherDef` in the game carries a `commonalityRainfallFactor` curve that starts at
+**`(0, 0)`** and is evaluated **per tile** on `Tile.rainfall`
+(`WeatherDecider.cs:191`). ⇒ **at `rain_mm = 0` a rain weather's commonality is multiplied
+by exactly zero and it can never be selected**, on any biome, without patching anything.
+
+⚠️ **18 mm is not 0.** 80.4% of the map sits at ≤49 mm, which suppresses rain by ~98.6% —
+*rare*, not *banned*. And `WeatherDecider.cs:185` multiplies rain commonality by **15**
+during a large fire, so the residue surfaces exactly when the player is watching a fire.
+
+⛔ **`rain_mm` has no other runtime consumer.** Re-verified 2026-08-21: nothing reads it for
+plant growth, fertility or yield. `WorldGenStep_Rivers.cs:131` sums it into river flow, but
+that is worldgen and our `river_flow` column is authored — **do not "fix" river flow after
+zeroing rainfall.**
+
+🔴 **The measured defect, 2026-08-21.** 596 tiles carry exactly **1668 mm**. Only 271 are
+`AB_FeraliskInfestedJungle`; the other 325 are badlands, extreme desert, oases, grasslands,
+**31 tiles of `AB_PyroclasticConflagration` and 23 of `Volcano`** — and **235 of them are in
+The Dune Sea.** Of the 937 tiles at ≥600 mm, **433 are not mountainous at all** (median
+elevation 696 m).
+
+⇒ Awaiting the owner: `RAIN_BAN_SCOPE_1`. Drying them repaints nothing visible — `rain_mm`
+does not render on the world map — but it is an edit to an accepted map, so it is his call.
+
+---
 
 ## 7. Factions — 72 settlements
 
