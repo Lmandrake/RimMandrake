@@ -320,6 +320,75 @@ def compare(current, other):
     return sorted(a - b), sorted(b - a)
 
 
+# ---------------------------------------------------------------- frozen dumps
+#
+# 🔴 A MOD-COUNT MISMATCH IS NOT STALENESS FOR A FROZEN DUMP — owner's ruling.
+#
+# This file's entire job is flagging artefacts stale when the mod list changes, and
+# that is right for everything DERIVED from the live game. It is wrong for one thing:
+# the OFFICIAL dump, which is the DESIGN TARGET. DECIDE and BUILD author against it.
+#
+# ⚠️ Our own small custom mods change the count constantly — every new Jawa_* mod moves
+# it by one. If that read as STALE, the official dump would be permanently red and
+# someone would eventually re-freeze it to clear the warning, silently moving the
+# target everyone is building toward. **A mismatch, greater OR lesser, is expected.**
+#
+# ⛔ Only the OWNER re-freezes, deliberately. Nothing here does it automatically, and
+# `--freeze` refuses without an explicit `--by owner`.
+#
+# The registry is `infrastructure/state/dumps/REGISTRY.jsonl`, append-only, one JSON
+# object per line:
+#   {"id":"OFFICIAL-2026-08-21","kind":"official","frozen":true,"modlist_count":578,
+#    "modlist_sha":"…","path":"observed/inventory/DefDump_OFFICIAL/","by":"owner",
+#    "note":"the design target — build to this"}
+#
+# 🔑 `kind` answers two DIFFERENT questions and they must not be conflated:
+#   official     — "what should I design against?"    frozen, immune to drift
+#   verification — "does the live game match?"        never frozen, staleness applies
+# ---------------------------------------------------------------------------
+def _registry_path():
+    here = os.path.dirname(os.path.abspath(__file__))
+    root = os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(
+        os.path.dirname(os.path.dirname(here)))
+    return os.path.join(root, "infrastructure", "state", "dumps", "REGISTRY.jsonl")
+
+
+def registry():
+    """-> [entry] newest last. [] when absent, which is not an error."""
+    out = []
+    try:
+        with open(_registry_path(), encoding="utf-8") as fh:
+            for i, line in enumerate(fh, 1):
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    out.append(json.loads(line))
+                except ValueError:
+                    # ⚠️ Reported, never skipped. A registry that quietly drops a line
+                    # would let a frozen dump lose its immunity without anyone knowing,
+                    # and the symptom — "the official dump went STALE" — points nowhere
+                    # near the cause.
+                    print("!! REGISTRY.jsonl line %d is not valid JSON; it is being "
+                          "ignored and that may make a frozen dump read STALE." % i)
+    except OSError:
+        pass
+    return out
+
+
+def frozen_entry(path):
+    """-> the newest frozen registry entry describing `path`, or None."""
+    want = os.path.normpath(str(path)).replace("\\", "/").rstrip("/")
+    hit = None
+    for e in registry():
+        if not e.get("frozen"):
+            continue
+        p = os.path.normpath(str(e.get("path", ""))).replace("\\", "/").rstrip("/")
+        if p and (want.endswith(p) or p.endswith(want)):
+            hit = e
+    return hit
+
+
 # ---------------------------------------------------------------- status
 def status_only_fingerprint(fp):
     """Just the listed-vs-installed answer. No artefacts, no dump, no load."""
@@ -399,6 +468,15 @@ def status(fp, steps_failed=False):
                      "manifest, but no defs/*.json"
                      if os.path.isfile(os.path.join(D_DUMP, "manifest.json"))
                      else "absent", "MISSING", "GAME LOAD"))
+    elif frozen_entry(D_DUMP):
+        # ✅ FROZEN, not stale — and this branch sits ABOVE the hash comparison on
+        # purpose, so a count mismatch can never reach it. See the note at the top.
+        fe = frozen_entry(D_DUMP)
+        rows.append(("DefDump/ (live)",
+                     "%s (%s mods, %s)" % (dfp["hash"], dfp["modCount"],
+                                           dfp.get("capturedUtc", "?")),
+                     "FROZEN", "owner only (%s, %s)"
+                     % (fe.get("by", "?"), fe.get("id", "?"))))
     elif dfp["hash"] != fp["hash"]:
         rows.append(("DefDump/ (live)",
                      "%s (%s mods, %s)" % (dfp["hash"], dfp["modCount"],
@@ -431,6 +509,9 @@ def status(fp, steps_failed=False):
         if extra > 0:
             print("   ... and %d more" % extra)
 
+    # ⚠️ FROZEN is deliberately absent from this test. A frozen dump must never send
+    # anyone on a ~23-minute load: that load would produce a dump matching the CURRENT
+    # mod list, which is the opposite of what a frozen design target is for.
     needs_load = any(r[2] in ("STALE", "MISSING") and r[3] == "GAME LOAD" for r in rows)
     print("\n=== VERDICT ===")
     if needs_load:
