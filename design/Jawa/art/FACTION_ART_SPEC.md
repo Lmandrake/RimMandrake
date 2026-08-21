@@ -38,6 +38,12 @@ merely a UI field:
    colouring.
 2. **A path that does not resolve is not an error — it is a magenta square.**
    `FactionDef.cs:375` falls back to `BaseContent.BadTex` and logs nothing at that point.
+   ⚠️ **`settlementTexturePath` is the dangerous one and it does NOT fall back.**
+   `MatFrom(null, …)` reaches `Dictionary.FindEntry(null)` and throws
+   `ArgumentNullException` **once per settlement per frame** — measured on this project at
+   four settlements: 60 TPS to **3.7**, with the world map effectively unusable
+   (`BLACKSTAR_HAS_NO_SETTLEMENT_ART_1`, from a live stack trace). ⇒ an icon that does not
+   resolve is ugly; a settlement texture that does not resolve is a hang.
 3. **Shape is the only channel that separates two factions at planet scale.** Tint is the
    other, and it is weak: our thirteen colours are mostly mid-value earth tones read
    against desert terrain. Two factions sharing an icon path are, in practice, one faction
@@ -45,6 +51,10 @@ merely a UI field:
 
 **Canvas:** 128×128 PNG with alpha is the working convention on this stack — measured from
 `UI/FactionIcons/JunkersOutpost.png`, the one non-vanilla icon we already use.
+
+⇒ ⛔ **This is why §3 forbids adding `settlementTexturePath` by hand.** The field is
+effectively mandatory — every concrete vanilla faction sets it, to one of exactly two
+values — and the cost of getting it wrong is not cosmetic.
 
 **Inheritance:** `settlementTexturePath` is supplied by all three abstracts we build on —
 `OutlanderFactionBase` and `PirateBandBase` give `World/WorldObjects/DefaultSettlement`,
