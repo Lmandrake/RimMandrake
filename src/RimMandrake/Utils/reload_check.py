@@ -71,17 +71,37 @@ def main():
     w("# reload check - %s" % time.strftime("%Y-%m-%d %H:%M"))
 
     if not a.no_load:
+        # ⏳ THE BRIDGE ANSWERING IS NOT THE GAME BEING DRIVABLE. Measured by the owner
+        # 2026-08-14 and re-learned the hard way 2026-08-21: the game becomes reactive
+        # about forty seconds after the bridge first responds, and a mutation issued
+        # inside that window is accepted and never happens. A load_game issued seconds
+        # after the bridge came up left the game at the main menu with a Player.log that
+        # never grew by a single byte - no error, no abort, nothing to find.
+        # Read-only calls are fine in that window; this is not one.
+        w("- settling 45s before issuing a mutation")
+        time.sleep(45)
         with rb() as s:
+            st = s.call("rimworld/get_ui_state", {}).get("programState")
+            w("- pre-load programState: %s" % st)
             w("- loading `%s`" % SAVE)
             s.call("rimworld/load_game", {"saveName": SAVE})
-        for _ in range(120):
+        loaded = False
+        for _ in range(150):
             time.sleep(6)
             try:
                 with rb() as s:
                     if s.call("rimworld/get_game_info", {}).get("status") == "game_loaded":
+                        loaded = True
                         break
             except Exception:
                 pass
+        if not loaded:
+            # ⛔ Distinguish "aborted" from "never started". A load that never dispatched
+            # leaves the log UNCHANGED and no exception anywhere - it looks identical to a
+            # healthy idle game, which is how it cost an hour.
+            w("- 🔴 **NEVER REACHED `game_loaded`.** If Player.log did not grow, the call was "
+              "accepted and never dispatched - not an abort. Re-issue after the game has "
+              "settled; do not read this as the save being broken.")
 
     # ⏳ The abort is written AFTER status flips, so a read at t+0 passes a broken load.
     time.sleep(20)
