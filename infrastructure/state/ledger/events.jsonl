@@ -937,3 +937,5 @@
 {"seat":"CHECK","event":"supersede","id":"btd-jawa-has-no-merge-to-wait-for-8c40b2","by":"B58","reason":"same spawn same look; clause carried into B58","ts":"2026-08-21T20:25:11Z"}
 {"seat":"CHECK","event":"supersede","id":"SCALD_PLUME_SATURATES_RAIN_1","by":"SCALD_RELIEF_RENDER_LOOK_1","reason":"one look at one render; clause carried","ts":"2026-08-21T20:25:11Z"}
 {"seat":"CHECK","event":"supersede","id":"B42","by":"B40","reason":"one provoked-raid round; both clauses carried into B40","ts":"2026-08-21T20:25:11Z"}
+{"seat":"OWNER","event":"note","id":"DUMP_STORAGE_LAYOUT_RULING_1","text":"Owner ruled 2026-08-21 13:24, verbatim: 'Option (a) all the way. Keep last three.' => immutable dated captures, retention 3. Recorded by BUILD from the owner's direct instruction in session.","ts":"2026-08-21T20:25:58Z"}
+{"seat":"OWNER","event":"close","id":"DUMP_STORAGE_LAYOUT_RULING_1","sha":"1d79f2b","ts":"2026-08-21T20:25:58Z"}

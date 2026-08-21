@@ -142,6 +142,34 @@ it does not belong here.
   cheapest one. `OuterRim_DroidWeapon_BlasterCannon` computes to **982.5**.
   `weapon_affordability.py` reproduces the formula. *2026-08-20.*
 
+## 🪤 A WSL SYMLINK UNDER `LocalLow` IS INVISIBLE TO THE GAME — measured 2026-08-21
+
+`ln -s` on `/mnt/c/...` **succeeds**, and `ls -la` shows a normal-looking
+`lrwxrwxrwx ptr -> target`. It is not a normal symlink. Windows sees the reparse
+point (`Mode d----l`) but resolves **nothing** — `LinkType` and `Target` both come
+back empty, and reading a file through it fails `PathNotFound`:
+
+```
+ptr    d----l  {}      <- PowerShell, same directory, same second
+target d-----  {}
+Get-Content ...\ptr\probe.txt : Cannot find path ... because it does not exist.
+```
+
+⇒ **RimWorld and any C# tool cannot follow a symlink WSL created there.** It is a
+WSL-format link, not an NTFS one, and only WSL can read it back — so a check done
+from bash reports success and the game still cannot see the file.
+
+🔑 **Consequence for any layout that needs a "pointer".** Use a plain FILE holding
+a name, or derive the pointer from the data. `DUMP_STORAGE_LAYOUT_RULING_1`
+originally proposed `current`/`official` symlinks; measured, it needs neither —
+capture ids are ISO-8601 timestamps, so **current is `max(dirname)`** and
+**official is whatever `dumps/REGISTRY.jsonl` freezes**. Nothing to desync.
+
+⚠️ This does NOT say symlinks are broken everywhere. `.claude/skills/<name>` →
+`skills/<name>` works fine — those are inside WSL's own view and nothing Windows
+reads. The rule is narrower: **a link the GAME must traverse cannot be made from
+bash.**
+
 ## Deploy targets that are not `Mods/`
 
 - **`Xenotypes/*.xtp` and `Ideos/*.rid` are deploy targets.** They live under
