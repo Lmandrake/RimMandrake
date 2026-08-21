@@ -113,7 +113,8 @@ an unsubscribe done in Steam or RimSort is invisible to it and the exit writes
 nothing. **So check the entry, the folder, and the mtime:**
 
 ```bash
-# activeMods ONLY. `grep -c "<li>"` over-counts by exactly the 5 knownExpansions.
+# activeMods ONLY. `grep -c "<li>"` counts LINES and returns 6, not a count of mods;
+# `grep -o "<li>" | wc -l` returns activeMods + the 5 knownExpansions. Parse it.
 # Never quote a remembered total — print it, and quote the command with it.
 python3 -c "import xml.etree.ElementTree as ET;print(len(ET.parse(r'.../Config/ModsConfig.xml').getroot().find('activeMods')))"
 ls -d ".../workshop/content/294100/<id>"     # what exists

@@ -44,7 +44,7 @@ with**. Both halves are needed; each hides a different failure.
    optional-compat working.
 3. **Parse `activeMods`; never quote a number you read earlier.** With several
    seats sharing one install the count moved 582 → 580 → 578 → 576 inside an hour.
-   `grep -c "<li>"` also over-counts by the 5 `knownExpansions`.
+   ⚠️ **Counting `<li>` by hand is wrong in both obvious ways — measured 2026-08-21 against the live file (11 lines, `activeMods` 578, `knownExpansions` 5).** `grep -c '<li>'` counts matching LINES and returns **6**; `grep -o '<li>' | wc -l` returns **583**, over-counting by exactly the 5 `knownExpansions`. **Parse the XML and read `activeMods`.**
 
 ⚠️ **`validate_patch.py` resolves against the CURRENT load set, so `0 errors` cannot
 prove independence from a mod you are about to REMOVE** — every stale reference

@@ -324,9 +324,10 @@ depends on the previous one having actually landed on disk.
    stat -c %y "$MC"
    ```
 
-   ⚠️ Count `activeMods` specifically. `grep -c "<li>"` over-counts by exactly the
-   **5 `knownExpansions`**, and that five-mod gap has been mistaken for a real
-   discrepancy before. **Print the number; never quote a remembered one** — the
+   ⚠️ Count `activeMods` specifically, and see §4 trap 3 above for the measurement:
+   `grep -c` returns **6** (it counts lines), and it is `grep -o … | wc -l` that
+   over-counts by exactly the **5 `knownExpansions`**. This paragraph said `grep -c`
+   over-counted by 5 until 2026-08-21, contradicting trap 3 in its own file. **Print the number; never quote a remembered one** — the
    literals that used to sit here went 12 mods stale.
 8. 🔴 **OFFER THE MOD-STATE SYNC — this is the last thing before launch.** See §5a.
 9. **Then, and only then, spend the load** — hand off to

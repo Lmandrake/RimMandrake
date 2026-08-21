@@ -21,9 +21,16 @@ effects are distinguishable. Config-level changes (load order, mod settings,
 un/subscribes) carry near-zero attribution risk and should always ride along. A
 pure-XML patch that validated clean and has named log strings to check is also
 safe to include, because you know exactly what evidence would convict it. Keep
-genuinely ambiguous changes solo: a new C# assembly, a mod that patches broadly,
-or two changes that touch the same system. Say out loud which bucket each pending
-change is in before proposing a batch.
+genuinely ambiguous changes solo: a mod that patches broadly, or two changes that
+touch the same system. Say out loud which bucket each pending change is in before
+proposing a batch.
+
+🔴 **A new C# assembly USED to be on that solo list, and the owner waived it — see
+`rimworld-load-round/SKILL.md` §3, which is the live rule.** Three assemblies batch,
+on one mandatory condition: **write the three expected-failure signatures down
+BEFORE launching**, in `infrastructure/state/EXPECTED_FAILURES_next_load.md`. A
+signature invented after reading the log is a story that fits, not evidence. ⛔ Do
+not re-litigate the waiver and do not quietly split the load out of caution.
 
 ## Harvest the whole log, not just your change
 

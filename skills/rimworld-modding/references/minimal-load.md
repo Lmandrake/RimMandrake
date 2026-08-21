@@ -1,14 +1,20 @@
 # Building a minimal load to corner a bug
 
-_The **trigger** is in `SKILL.md` §2 — three failed hypotheses deep, stop
-bisecting downward. This is the **procedure**, once you have decided to run it._
+_The **trigger** is in `SKILL.md` §2 — **after the second** failed hypothesis, stop
+bisecting downward (this file used to say "three" here and "second" at the bottom;
+second is the rule). This is the **procedure**, once you have decided to run it._
+
+🔑 **Before building one by hand, check whether the CURATED list already answers it:**
+`rimworld-load-round/SKILL.md` §0 keeps a fixed 13-mod list that loads in **22
+seconds**, and `modlist_swap.py` swaps it in and restores the owner's list after. Build
+an ad-hoc set only when the bug needs mods that list does not carry.
 
 ## Why minimise rather than keep bisecting
 
 Removing one suspect at a time from a 500-mod stack costs a full load per guess,
 and only ever tests the guess you already had. Cutting to the ~20 mods that can
-possibly be involved costs **one** load, loads in a couple of minutes instead of
-half an hour, and answers a strictly better question: *does the feature work at
+possibly be involved costs **one** load, loads in well under a minute instead of
+~25, and answers a strictly better question: *does the feature work at
 all in isolation?*
 
 Either answer is progress:
