@@ -119,6 +119,10 @@ observed/**/Defs/
 # Extracted sprite caches, wherever they land — re-extractable from the game's
 # own assets. The genome scan's was 351 MB / 14k PNGs; see the genome block below.
 observed/**/art_cache/
+# Raw validator transcripts — 1.9 MB for one patch run, fully regenerable from the
+# command, and the verdict that matters is three lines. The summary .md beside it IS
+# the work product and is committed.
+observed/preload/*.txt
 # Bridge latency probes and screenshots.
 observed/**/latency_*.json
 observed/**/screenshots/
