@@ -1,4 +1,24 @@
 <!-- status: live -->
+> ## 🔴 RULED 2026-08-20 — FORCE POWERS ARE v2. VPE IS OUT OF v1 ON PURPOSE (`FORCE_POWERS_ARE_V2_1`)
+> Owner's ruling, verbatim: *"Vanilla Psycasts Expanded should entirely be about v2 at this point,
+> completely deferred. No force powers in v1."*
+>
+> ⇒ **VPE stays OUT of the mod list, deliberately.** The correction below is still factually true —
+> VPE is not in `activeMods` — but **"not installed" reads as an accident, and this is not one.** It
+> is a decision. ⛔ **Do not add `VanillaExpanded.VPsycastsE` to `ModsConfig.xml` for v1, do not
+> re-order for it, and do not write a patch that depends on it.** Re-adding VPE is now **against an
+> owner ruling**, not a fix to a defect.
+>
+> ✅ **The 61 dangling `VPE_` citations are CUT FOR V1, not broken.** Every `VPE_` defName in the design docs is
+> correct; it is simply v2. ⛔ **Nobody is to "fix" one of them.**
+>
+> 🔑 **The scope is FORCE POWERS ONLY.** `lee.theforce.lightsaber` is **ACTIVE** and ships **307 live
+> `Force_` defNames** — hilts, crystals, `Force_Broadsaber`, `Force_Darksaber`,
+> `Force_Lightsaber_Curved`, the seven lightsaber Forms. **Those are WEAPONS, not powers.** This
+> ruling does not remove them, does not defer them, and nothing lightsaber-side becomes v2.
+>
+> Recorded at `infrastructure/state/canon.yml > ruled.FORCE_POWERS_ARE_V2_1`.
+
 > ## 🔴 CORRECTION 2026-08-20 — "VPE IS KEPT INSTALLED" IS NOT TRUE OF THE LIVE MOD LIST
 > `ModsConfig.xml` parsed as XML holds **578 `activeMods` as of 2026-08-20** and **none** matches
 > `vpsy` or `psycast`. **`VanillaExpanded.VPsycastsE` is not active.** It is subscribed and on disk
@@ -11,9 +31,14 @@
 > **state**: the ENEMY-SIDE EXCEPTION describes a substrate that is not loaded, so THE FORCE has **no
 > mechanism in the running game today**.
 >
-> 🔴 **Re-activating VPE is the OWNER's decision and he has not made it.** He owns the mod list.
-> This is a finding, not an agreement and not an action. Full detail and the measurement live at the
-> top of `design/Jawa/mods/required_mods.md`.
+> ~~🔴 **Re-activating VPE is the OWNER's decision and he has not made it.**~~ **HE RULED THE SAME
+> DAY — `FORCE_POWERS_ARE_V2_1`: deferred to v2 entirely, no Force powers in v1.** So the missing
+> substrate is not a gap to close; it is the intended v1 state. Full detail and the measurement live
+> at the top of `design/Jawa/mods/required_mods.md`.
+>
+> ⚠️ **Two different rules live in this file and must not be blurred.** The **player-side psycasting
+> ban** below is a campaign rule and stands on its own, ruling or no ruling. **VPE being v2** is a
+> separate, mod-list decision by the owner. Neither one implies or repeals the other.
 > "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581).
 
 # Forbidden Mods — Gravship Expedition Campaign
@@ -75,9 +100,9 @@ _The governing rule: **the gravship and its onboard industrial system are the ca
 
 **7-question evaluation test — before adding ANY mod/DLC subsystem/reward type, ask:** (1) deepen the gravship/industrial tree, or create a parallel ladder? (2) impose a dependency, or merely remove a limitation? (3) can it scale indefinitely via trade/research/breeding/crafting/repeated quests? (4) make crew composition/recruitment less important? (5) bypass fuel, deck space, expedition risk, production time, injuries, mood, or scarcity? (6) reducible to a single authored exception rather than a general system? (7) make the ship MORE important, or LESS necessary? If the answers point toward broad optionality/self-sufficiency → restrict or exclude.
 
-- **Player psycasting — NO.** No psylink neuroformers, no psytrainers, no anima-tree linking, no royal-title advancement pursued for psylinks, no quest rewards granting psychic progression, no meditation-as-XP-leveling mods. **Note the scope: this is a *player*-side ban, not a mod-level ban of Vanilla Psycasts Expanded.** ~~VPE is KEPT installed as the NPC-only "THE FORCE" substrate~~ — **corrected 2026-08-20: VPE is NOT in the 578 active mods.** The player-side ban is unaffected and stands; the "kept installed" half is a statement of state that was never true of the live list. See the enemy-side exception below and the correction at the top of this file.
+- **Player psycasting — NO.** No psylink neuroformers, no psytrainers, no anima-tree linking, no royal-title advancement pursued for psylinks, no quest rewards granting psychic progression, no meditation-as-XP-leveling mods. **Note the scope: this is a *player*-side ban, not a mod-level ban of Vanilla Psycasts Expanded.** ~~VPE is KEPT installed as the NPC-only "THE FORCE" substrate~~ — **superseded twice on 2026-08-20: (1) VPE is NOT in the 578 active mods, and (2) owner's ruling `FORCE_POWERS_ARE_V2_1` defers VPE and all Force powers to v2 entirely.** ⇒ VPE is out of v1 **on purpose**; ⛔ do not re-add it to close the gap. **The player-side ban is a separate rule and is unaffected either way** — it would still stand if VPE were loaded tomorrow. See the enemy-side exception below and the ruling banner at the top of this file.
   - **Violates:** it's a flexible parallel advancement tree that bypasses exactly what the campaign preserves (positioning, fire/heat emergencies, hauling, extraction, crowd control, social difficulty, light/environment, travel logistics), and shifts the narrative center off the ship. Royalty stays installed for factions/equipment/enemies/quests; the player just doesn't use the psychic path.
-  - **⭐ ENEMY-SIDE EXCEPTION — VPE IS KEPT, NPC-ONLY (finalized 2026-08-06; authoritative statement in `required_mods.md` "THE FORCE SYSTEM — FINALIZED", lines ~428–436, one-line summary at `faction_roster_v2.md` §"Global system 5"):** ~~Vanilla Psycasts Expanded stays installed as the *sole* Force substrate.~~ **⛔ NOT LIVE as of 2026-08-20 — VPE is absent from `activeMods`, so this exception currently has no substrate and grants nothing.** The design intent below is unchanged and re-reads correctly the moment the owner re-activates the mod — which is **his** call, not made. Vanilla Psycasts Expanded was ruled the *sole* Force substrate. The dark-side tree is restricted to the Empire's Sith-race elite (Empire pawnGroupMakers only, via Sensible Factions (3531306011) / Faction Control (2882785581)); a curated set also drives factionless/homestead Jedi. **Players and the Jawa faction get NO Force-acquisition path whatsoever** — which is exactly why it passes the anti-exponential 7-question test (NPC-only powers raise no player ceiling). So "no player psycasting" and "VPE installed" are both true and non-contradictory: the ban is on the player *acquiring* it, not on the mod existing.
+  - **⭐ ENEMY-SIDE EXCEPTION — VPE IS KEPT, NPC-ONLY (finalized 2026-08-06; authoritative statement in `required_mods.md` "THE FORCE SYSTEM — FINALIZED", lines ~428–436, one-line summary at `faction_roster_v2.md` §"Global system 5"):** ~~Vanilla Psycasts Expanded stays installed as the *sole* Force substrate.~~ **⛔ `[v2]` — NOT IN v1 AT ALL, BY OWNER RULING 2026-08-20 (`FORCE_POWERS_ARE_V2_1`): *"completely deferred. No force powers in v1."*** VPE is absent from `activeMods` **deliberately**, so this exception grants nothing in v1 and is not supposed to. The design intent below is unchanged and re-reads correctly **in v2**; ⛔ nobody re-activates the mod to make it live. Vanilla Psycasts Expanded was ruled the *sole* Force substrate. The dark-side tree is restricted to the Empire's Sith-race elite (Empire pawnGroupMakers only, via Sensible Factions (3531306011) / Faction Control (2882785581)); a curated set also drives factionless/homestead Jedi. **Players and the Jawa faction get NO Force-acquisition path whatsoever** — which is exactly why it passes the anti-exponential 7-question test (NPC-only powers raise no player ceiling). So "no player psycasting" and "VPE installed" are both true and non-contradictory: the ban is on the player *acquiring* it, not on the mod existing.
   - **Possible future exception (NOT current ruleset):** one fixed non-scaling "Listener" character (single sensing/minor ability, no psylink levels, no new powers, quest-acquired).
 - **Player genetics laboratory — NO.** No gene extractors/assemblers/processors/banks, no genepack economy, no custom xenogerms, no archite-capsule optimization, no routine genetic-upgrade purchase, no crew-optimizing breeding programs.
   - **Violates:** turns pawn weaknesses into temporary engineering defects and erases recruitment tradeoffs. Xenotypes ARE welcome — but as FIXED biology per individual/population (advantages + liabilities you must accept). Genetics may appear as story content (fixed xenotype factions, rescue/refugee quests, a burdensome-but-valuable recruit, biome-adapted populations, one irreversible late-game treatment with a major drawback).

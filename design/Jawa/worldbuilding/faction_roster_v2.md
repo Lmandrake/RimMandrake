@@ -12,6 +12,23 @@
 > The mapping is the table "The faith layer is SUPERSEDED", just above dossier 1.
 > Contested numbers live in `D:\Luke\dev\Rimworld\infrastructure\state\canon.yml`.
 
+> ## 🔴 RULED 2026-08-20 — FORCE POWERS ARE v2 IN THEIR ENTIRETY (`FORCE_POWERS_ARE_V2_1`)
+> Owner, verbatim: *"Vanilla Psycasts Expanded should entirely be about v2 at this point, completely
+> deferred. No force powers in v1."*
+>
+> ⇒ **Every psylink tier, psycast loadout and curated `VPE_` ability set in this roster is `[v2]`.**
+> That covers Jedi (both channels), Sith, Dark Adepts, the Force-sensitive Hunter, the Forest Jedi,
+> the Psychic Researcher and "Global system 5 — Jedi and Sith". They are kept in full as the v2 plan
+> of record — **they are not v1 work that is late, and the pawn kinds themselves still ship; they
+> simply field no powers in v1.**
+>
+> ⛔ **VPE is out of the v1 mod list on purpose. Do not re-add it and do not "fix" a `VPE_` defName**
+> — those citations are **CUT FOR V1, not broken.**
+>
+> 🔑 **Lightsabers are NOT deferred.** `lee.theforce.lightsaber` is ACTIVE with 307 live `Force_`
+> weapon defs, so "monosword, persona monosword, or custom lightsaber" stays v1 content. The scope
+> is powers, not blades. Recorded at `infrastructure/state/canon.yml > ruled.FORCE_POWERS_ARE_V2_1`.
+
 > ## Rulings that override the body text
 > Where these conflict with the body below, these win:
 >
@@ -19,7 +36,9 @@
 >    The body's "Jedi are factionless, Empire-hunted wanderers" is the *primary* Jedi
 >    presence (psylink 3–6, ≤1 per group, no faction membership). In **addition**, a
 >    **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer group**.
->    Both channels coexist; VPE remains the sole Force substrate and the NPC-only gate
+>    Both channels coexist; ~~VPE remains the sole Force substrate~~ **— `[v2]` as of 2026-08-20
+>    (`FORCE_POWERS_ARE_V2_1`): VPE and all Force powers are deferred to v2 entirely, so in v1 the
+>    Jedi placement holds but fields no powers** — and the NPC-only gate
 >    still holds (no player Force ceiling). The body's "Global system 5 — Jedi and Sith"
 >    section reflects this.
 >
@@ -130,7 +149,7 @@ Everything here is expressible through RimWorld 1.6 definitions, DLC systems, fa
 - weapon, apparel, utility-item, drug, implant, and mechanoid loadout tags
 - settlement count and placement via world/faction editing
 - custom droid, Hutt, and species races under the roster's tweak license
-- Royalty psycasts and psylinks for rare Jedi and Sith pawn kinds
+- ~~Royalty psycasts and psylinks for rare Jedi and Sith pawn kinds~~ **`[v2]` — `FORCE_POWERS_ARE_V2_1`, 2026-08-20: no Force powers in v1. The pawn kinds stay; the psylinks are v2.**
 - Biotech mechanoids or custom droid pawn kinds for military and independent droids
 
 Removed **Force Gremlin** and disabled WIP species remain excluded.
@@ -269,9 +288,17 @@ Faction-wide percentages govern ordinary generation. Race is overridden at the p
 - faction leaders
 - Helix prototypes and labour-line workers
 
-## Global system 5 — Jedi and Sith
+## Global system 5 — Jedi and Sith  `[v2 — powers only]`
 
-Royalty psycast mechanics, not a bespoke Force system, unless a Force mod is already installed.
+🔴 **DEFERRED TO v2 IN FULL, 2026-08-20 (`FORCE_POWERS_ARE_V2_1`).** Owner: *"Vanilla Psycasts
+Expanded should entirely be about v2 at this point, completely deferred. No force powers in v1."*
+**Every psylink number and psycast loadout in this section is v2.** ⛔ VPE is out of the v1 mod list
+on purpose — do not re-add it, and do not "fix" the `VPE_` names below; they are **cut for v1, not
+broken.** ✅ The *placement* rules — who is factionless, who shelters with the Homestead, that Sith
+escort Imperial elites, one per group — are unaffected, and so are the weapons: lightsabers come
+from the ACTIVE `lee.theforce.lightsaber` and ship in v1.
+
+~~Royalty psycast mechanics, not a bespoke Force system, unless a Force mod is already installed.~~
 
 **Jedi placement — BOTH channels are true** (reconciliation ruling, 2026-08-06, overriding the original factionless-only phrasing).
 
@@ -283,7 +310,7 @@ now **five**; the remaining five are unchanged and nothing is added in Miraluka'
 
 *Secondary channel — the rare sheltered Jedi.* In addition, a **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer group** at a very low spawn weight (the "hidden protector" the player may discover as an ally rather than a hunted stranger). Same curated VPE light/control loadout, same one-per-group cap. This does not make Jedi faction *members* in the roster sense — it is an occasional embedded guardian, not a standing pawn-kind slot in the faction's ordinary generation.
 
-Both channels draw on the same curated NPC-only VPE ability set; the player and the Jawa faction have no Force-acquisition path under either channel.
+~~Both channels draw on the same curated NPC-only VPE ability set~~ — **`[v2]` (`FORCE_POWERS_ARE_V2_1`, 2026-08-20): the curated VPE set is v2 and no ability set is wired in v1.** The player and the Jawa faction have no Force-acquisition path under either channel, in either version.
 
 **Sith** appear only in Imperial Sith-escort pawn kinds. Psylink 4–6; persona melee weapon; shield belt or prestige armour; offensive and control psycasts; high Melee, Social, Intellectual; always accompanied by elite troops; extreme spawn cost.
 

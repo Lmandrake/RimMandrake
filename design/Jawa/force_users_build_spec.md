@@ -1,4 +1,23 @@
 <!-- status: aspirational -->
+> ## ✅ CONFIRMED 2026-08-20 — THIS DOC WAS ALREADY RIGHT (`FORCE_POWERS_ARE_V2_1`)
+> Owner's ruling, verbatim: *"Vanilla Psycasts Expanded should entirely be about v2 at this point,
+> completely deferred. No force powers in v1."*
+>
+> ✅ **Nothing in this spec needs rewriting for it.** The `<!-- status: aspirational -->` marker and
+> the `[v2]` scope tag below already said exactly this, and the ruling makes them owner-backed rather
+> than merely cautious. **Force POWERS are v2 in their entirety** — this document is the v2 plan of
+> record, not v1 work that is late.
+>
+> ⛔ **VPE is out of the v1 mod list on purpose.** Do not add `VanillaExpanded.VPsycastsE` to
+> `ModsConfig.xml`, and do not treat its absence as a defect to repair. ✅ Every `VPE_` defName cited
+> anywhere in the design docs is **CUT FOR V1, not broken** — correct names, simply v2. ⛔ Do not
+> "fix" one.
+>
+> 🔑 **Lightsabers are NOT deferred.** The scope is powers. `lee.theforce.lightsaber` stays ACTIVE
+> with its 307 live `Force_` weapon defs (see the correction immediately below), and that correction
+> is unaffected by this ruling. Recorded at
+> `infrastructure/state/canon.yml > ruled.FORCE_POWERS_ARE_V2_1`.
+
 > ## ⛔ CLOSED 2026-08-20 — MIRALUKA IS GONE, FOR EVERY VERSION (`MIRALUKA_IS_GONE_1`)
 > Owner's ruling, verbatim: *"Just let the Miraluka be gone, don't try to get it back, close it out
 > completely as an item for any version."* **This is not a v2 deferral, there is no replacement race,
@@ -42,9 +61,11 @@
 > cites *from those two mods* are **correct as references and are not defects** — they were never
 > claimed to be loadable, and they still are not.
 >
-> 🔴 **The VPE finding in §R1 is still true and is still unresolved** — see below; it is now also
-> recorded at the top of `design/Jawa/mods/required_mods.md` and `design/Jawa/mods/forbidden_mods.md`,
-> which is where it should have gone on 2026-08-13.
+> ~~🔴 **The VPE finding in §R1 is still true and is still unresolved**~~ — **the FINDING is still
+> true; the QUESTION is now CLOSED.** The owner ruled on 2026-08-20 (`FORCE_POWERS_ARE_V2_1`) that
+> VPE and all Force powers are deferred to v2 entirely, so VPE's absence is the intended v1 state,
+> not an unresolved risk. §R1 is annotated in place. The ruling is also recorded at the top of
+> `design/Jawa/mods/required_mods.md` and `design/Jawa/mods/forbidden_mods.md`.
 # Force users — build spec for Jedi and Sith raid leaders
 
 _Research pass, 2026-08-13. **Read-only.** Nothing was installed, deployed or
@@ -1038,13 +1059,21 @@ work.
 **So, stated plainly: what ships is a rare, terrifying melee duellist of the
 right species carrying the right blade — not a caster.** That is a real and
 recognisable Sith on the field. It is not the Force system in
-`required_mods.md:620-642`, and that system is currently not buildable at all.
+`required_mods.md:620-642` — and that system is **v2** as of 2026-08-20
+(`FORCE_POWERS_ARE_V2_1`), so ~~currently not buildable at all~~ **deliberately not built in v1.**
 
 ---
 
 ## 5. Risks
 
-### 🔴 R1 — The ruled Force design rests on a mod that is not installed
+### ~~🔴 R1 — The ruled Force design rests on a mod that is not installed~~ → ✅ CLOSED 2026-08-20 (`FORCE_POWERS_ARE_V2_1`)
+
+> **The risk was real and is now answered, not by installing VPE but by deferring it.** Owner,
+> 2026-08-20: *"Vanilla Psycasts Expanded should entirely be about v2 at this point, completely
+> deferred. No force powers in v1."* ⇒ **VPE stays out of v1 on purpose**, the Force design it
+> underpins is **v2 design**, and the "~23–30 min per cold load" dependency change below is a cost
+> **nobody is to incur for v1.** ⛔ Do not file this risk onward and do not re-add the mod. The
+> paragraph is kept below as the record of how the gap was found.
 
 `required_mods.md:620` finalizes *"VPE ONLY"* and `:623` calls VPE the sole
 substrate; `faction_roster_v2.md:231` says both Jedi channels *"draw on the same

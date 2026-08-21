@@ -1,4 +1,24 @@
 <!-- status: live -->
+> ## 🔴 RULED 2026-08-20 — FORCE POWERS ARE v2. VPE IS OUT OF v1 ON PURPOSE (`FORCE_POWERS_ARE_V2_1`)
+> Owner's ruling, verbatim: *"Vanilla Psycasts Expanded should entirely be about v2 at this point,
+> completely deferred. No force powers in v1."*
+>
+> ⇒ **VPE stays OUT of the mod list, deliberately.** The correction below is still factually true —
+> VPE is not in `activeMods` — but **"not installed" reads as an accident, and this is not one.** It
+> is a decision. ⛔ **Do not add `VanillaExpanded.VPsycastsE` to `ModsConfig.xml` for v1, do not
+> re-order for it, and do not write a patch that depends on it.** Re-adding VPE is now **against an
+> owner ruling**, not a fix to a defect.
+>
+> ✅ **The 61 dangling `VPE_` citations are CUT FOR V1, not broken.** Every `VPE_` defName below is
+> correct; it is simply v2. ⛔ **Nobody is to "fix" one of them.**
+>
+> 🔑 **The scope is FORCE POWERS ONLY.** `lee.theforce.lightsaber` is **ACTIVE** and ships **307 live
+> `Force_` defNames** — hilts, crystals, `Force_Broadsaber`, `Force_Darksaber`,
+> `Force_Lightsaber_Curved`, the seven lightsaber Forms. **Those are WEAPONS, not powers.** This
+> ruling does not remove them, does not defer them, and nothing lightsaber-side becomes v2.
+>
+> Recorded at `infrastructure/state/canon.yml > ruled.FORCE_POWERS_ARE_V2_1`.
+
 > ## 🔴 CORRECTION 2026-08-20 — VPE IS NOT IN THE MOD LIST, AND THIS FILE STILL SAYS IT IS
 > **Measured, not inferred.** `ModsConfig.xml` parsed as XML (**not** `grep -c '<li>'`, which
 > returns 583 by counting the 5 `knownExpansions`) holds **578 `activeMods` as of 2026-08-20**,
@@ -16,10 +36,10 @@
 > (`VPE_NuclearGenerator`, `VPE_RadioactiveFog`, …), which is a prefix collision, not the psycast mod.
 > ⛔ **The `VPE_` defNames in this file are NOT the defect and must not be edited out.**
 >
-> 🔴 **RE-ACTIVATING VPE IS THE OWNER'S CALL AND HAS NOT BEEN MADE.** He owns the mod list. This
-> block records the finding only. Nothing here is agreed, decided or done, and no agent should
-> add VPE to `ModsConfig.xml`, re-order it, or write a patch that depends on it until he rules.
-> Until then, treat every VPE-dependent line below as **PLANNED, NOT LIVE.**
+> ~~🔴 **RE-ACTIVATING VPE IS THE OWNER'S CALL AND HAS NOT BEEN MADE.**~~ **HE HAS NOW RULED —
+> 2026-08-20, `FORCE_POWERS_ARE_V2_1`: VPE is deferred to v2 entirely and there are no Force powers
+> in v1.** So VPE stays out, on purpose, and every VPE-dependent line below is **v2 DESIGN, NOT A
+> v1 GAP** — not "planned, awaiting a decision". See the ruling banner at the top of this file.
 >
 > Found first by `design/Jawa/force_users_build_spec.md` on **2026-08-13** (its §R1) — which never
 > propagated back into this file, which is why it stayed wrong for a week.
@@ -58,7 +78,7 @@
 > | Does a mod exist, its packageId / Workshop ID / versions | **`live_mod_inventory.md`** — it overrides this file, always |
 > | Why a mod was rejected | `forbidden_mods.md` (owns the 7-question test + anathema list) |
 > | The industrial spine (VFE-Factory et al.) | § INDUSTRIAL CORE |
-> | Star Wars content + THE FORCE (NPC-only VPE) | § STAR WARS THEME LAYER |
+> | Star Wars content + ~~THE FORCE (NPC-only VPE)~~ **THE FORCE = `[v2]`, `FORCE_POWERS_ARE_V2_1`** (lightsabers stay v1) | § STAR WARS THEME LAYER |
 > | Terrain / world-authoring verdicts | § World-Map Authoring & Setup Tools |
 > | Comedy / levity, ritual + religion aesthetics | § COMEDY / LEVITY, § RITUAL / RELIGION |
 > | What changed most recently | the three § CORRECTION / § ADOPTIONS sections at the end |
@@ -650,10 +670,17 @@ _Evidence tier: [WS-CONFIRMED] = the Workshop page / packageId / GitHub org veri
 - **[JDS] StarWars – The Separatist Droid Army** (WS 3276499495) [WS-CONFIRMED] — CIS scenario + hidden-always-hostile CIS faction; B1/B2/tactical/super-tactical/KX droids with real work/combat roles; optional Dead Man's Switch synergy. A ready droid-swarm enemy.
 - **[KR] Star Wars Separatist Army** (WS 3399017889) [WS-CONFIRMED] — alt droid-army faction ("120 days before they find you"); lethal, hardcore-tuned. §19.5 caution: "most likely fatal" framing = audit its numbers before trusting.
 
-**⭐ THE FORCE SYSTEM — FINALIZED (user decision 2026-08-06): VPE ONLY, no dedicated Force mod.**
+**⭐ THE FORCE SYSTEM — `[v2]` DEFERRED IN FULL (owner, 2026-08-20, `FORCE_POWERS_ARE_V2_1`).**
+🔴 **No Force POWERS ship in v1.** Everything in this section — the VPE substrate, the dark/light
+trees, the psylink tiers, every `VPE_` defName — is **v2 design, deliberately not built.** It is
+kept in full because it is the plan of record, not because anything here is outstanding work.
+🔑 **Lightsabers are NOT covered by this deferral**: `lee.theforce.lightsaber` is active and its
+307 `Force_` weapon defs are v1 content. Powers are deferred; blades are not.
+
+**~~⭐ THE FORCE SYSTEM — FINALIZED (user decision 2026-08-06): VPE ONLY, no dedicated Force mod.~~**
 
 - **DROPPED: JodemLee/TheForce_Psycast.** Reason: no `/1.6` folder in the repo (folders 1.4/1.5/2.9 only) and the Steam page (WS 3100942433) is now **"[Discontinued]."** Rather than gamble on a `LoadFolders.xml` remap of a dead mod, we take the confirmed-1.6 substrate and flavor it ourselves. Star Wars: The Force Factions (WS 3557220783) and "A complete Force system" (WS 3594298838) are likewise **NOT adopted** — same discontinuation/player-progression concerns, and no longer needed.
-- **~~✅ KEEP: Vanilla Psycasts Expanded (VPE)~~ → ⛔ NOT ACTIVE as of 2026-08-20 — see the correction at the top of this file.** The ruling below stands as a *decision*; it was never executed. VPE is subscribed on disk (`2842502659`) but absent from the 578 `activeMods`. Re-activating it is the **owner's** call, not yet made. Everything from here to the end of this section is therefore **PLANNED, NOT LIVE**. Original text follows unaltered: **✅ KEEP: Vanilla Psycasts Expanded (VPE)** (WS `2842502659`, Jan-2026 → **1.6 CONFIRMED**) — the sole Force substrate. VPE ships the **built-in enemy-cast AI + a storyteller that force-spawns enemy psycasters**, which is *why* enemy casters actually cast rather than stand inert (vanilla enemies never psycast — confirmed `2026-08-05_enemy_psycast_ai`). Deps (from VPE About.xml, verified `2026-08-06_force_and_or_sources_corrected`): **Harmony + Royalty DLC + VEF Core** (all in stack; Royalty is the psylink/psycast base VPE builds on). supportedVersions lists **1.4/1.5/1.6** — 1.6 confirmed. **Do NOT also run Powerful Psycast AI (Continued)** — C#-incompatible with VPE and redundant.
+- **~~✅ KEEP: Vanilla Psycasts Expanded (VPE)~~ → ⛔ `[v2]` — OUT OF v1 BY OWNER RULING, 2026-08-20 (`FORCE_POWERS_ARE_V2_1`): *"Vanilla Psycasts Expanded should entirely be about v2 at this point, completely deferred. No force powers in v1."* This is a decision, not an oversight — **do not re-add it.** VPE is subscribed on disk (`2842502659`) but deliberately absent from the 578 `activeMods`. Re-activating it is the **owner's** call, not yet made. Everything from here to the end of this section is therefore **PLANNED, NOT LIVE**. Original text follows unaltered: **✅ KEEP: Vanilla Psycasts Expanded (VPE)** (WS `2842502659`, Jan-2026 → **1.6 CONFIRMED**) — the sole Force substrate. VPE ships the **built-in enemy-cast AI + a storyteller that force-spawns enemy psycasters**, which is *why* enemy casters actually cast rather than stand inert (vanilla enemies never psycast — confirmed `2026-08-05_enemy_psycast_ai`). Deps (from VPE About.xml, verified `2026-08-06_force_and_or_sources_corrected`): **Harmony + Royalty DLC + VEF Core** (all in stack; Royalty is the psylink/psycast base VPE builds on). supportedVersions lists **1.4/1.5/1.6** — 1.6 confirmed. **Do NOT also run Powerful Psycast AI (Continued)** — C#-incompatible with VPE and redundant.
 - **THE GATE — WHO GETS THE FORCE, AND WHICH TREES (all NPC-only; players & Jawa get NONE):**
   - **Dark side → the Empire's Sith-race elite ONLY.** Restrict VPE psylink + a curated **dark-side tree** to the typical Sith xenotypes serving the Empire — **Sith / Massassi / Dathomirian-Nightsister**. Signature powers: **Force lightning** (VPE has a chain-lightning/"Discharge"-type effect to map to this), plus destructive/telekinetic-throw and fear/berserk-style debuffs. These pawns appear in **Empire pawnGroupMakers** only, via Sensible Factions (3531306011) / Faction Control (2882785581) — the Act-III "red-skinned Force elite" tier.
   - **Light/neutral side → BOTH channels are true [user ruling 2026-08-06, v2 reconciliation].** (1) **Primary: factionless, Empire-hunted lone Jedi wanderers** — hidden individuals belonging to NO faction (psylink 3–6, ≤1 per encounter), actively hunted by the Imperial Galactic Empire; the canon Imperial-purge-era fugitive. (2) **Also: a rare Jedi may shelter within a sympathetic Moisture-Farmer / Homestead faction** — a *rare* spawn (low pawnGroupMaker weight). Both get the curated **light + telekinesis tree**: **healing, telekinetic push/pull, non-lethal disables, deflection/self-buffs.** Uncommon, memorable, a reason to be careful who you raid.
