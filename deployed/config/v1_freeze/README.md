@@ -63,3 +63,17 @@ plus these seven, deliberately.
   correct today but ride a tie-break rather than a constraint (BUILD B25a).
 - `ModsConfig.xml` is also written by RimSort. If it moves, diff it against this
   copy before assuming the change was ours.
+
+## Amended 2026-08-21 — two mech weapons un-cut (`MECH_WEAPONS_UNCUT_1`)
+
+Owner, 2026-08-21: *"Please do what it takes to restore Pikeman and Sentry. We should not
+be turning off Mech weaponry, that was a mistake to correct."*
+
+`ThingDef/Gun_Needle` (Core) and `ThingDef/Gun_Scattergun` (Odyssey) were deleted from the
+list — **1,349 `<li>` → 1,347**. They were the sole carriers of `MechanoidGunLongRange` and
+`SentryDroneGunShortRange`, so cutting them left `Mech_Pikeman` and `Drone_Sentry` spawning
+bare-handed. The live file and this copy were edited together and are byte-identical.
+
+⛔ **`ThingDef/Flamebow` stays cut** — the ruling was about mech weaponry, not a neolithic
+fire-bow. The two kinds it disarmed are re-armed as plain archers instead, in
+`src/Jawa/Jawa_Patches/Patches/WeaponTags_Renormalise.xml` (`FIRE_ARCHERS_GET_BOWS_1`).
