@@ -1,0 +1,173 @@
+/* vnv.css — the V&V matrix. Dark graphite, 1px borders, high density, NO MOTION.
+ *
+ * ⛔ There is no transition, no animation and no keyframe in this file, deliberately:
+ * this page sits open on a second monitor all day.
+ *
+ * ⚠️ STATUS IS ITS OWN CHANNEL and borrows no categorical hue from palette.js — it uses
+ * only the two the plan allots, restrained cyan (--vnv-ok) for the quiet good state and
+ * amber (--vnv-warn) for attention. The categorical hues appear in this view only as the
+ * small per-item kind glyph, which is inline-styled from palette.js and never touches a
+ * status pixel.
+ *
+ * ⚠️ PASS and UNMEASURED share no visual property: solid vs dashed border, filled vs
+ * hatched panel, bright vs dim ink, ✔ vs ·, "PASS" vs "NEVER RUN". Colour is never the
+ * only difference between them, and neither is the word.
+ *
+ * Everything is scoped under .vnv so this cannot leak into the host page or into
+ * deck / flow / timeline.
+ */
+.vnv {
+  --vnv-bg: #1a1a19;
+  --vnv-panel: #201f1e;
+  --vnv-raise: #262524;
+  --vnv-line: #35342f;
+  --vnv-line-hi: #4a4842;
+  --vnv-ink: #d8d6cf;
+  --vnv-dim: #8b887f;
+  --vnv-faint: #6a675f;
+  --vnv-ok: #3fa7bd;         /* restrained cyan — neutral-active / quiet good */
+  --vnv-ok-ink: #9fdcea;
+  --vnv-warn: #f0a63c;       /* amber — attention */
+  --vnv-warn-ink: #ffc978;
+  background: var(--vnv-bg);
+  color: var(--vnv-ink);
+  font: 12px/1.35 ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", Consolas, monospace;
+  padding: 10px 12px 0;
+  box-sizing: border-box;
+}
+.vnv * { box-sizing: border-box; }
+
+/* ------------------------------------------------------------------- header */
+.vnv-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px;
+  border-bottom: 1px solid var(--vnv-line); padding-bottom: 7px; }
+.vnv-head h1 { font-size: 13px; letter-spacing: .16em; margin: 0;
+  color: var(--vnv-ok-ink); font-weight: 700; }
+.vnv-sub { color: var(--vnv-dim); }
+.vnv-asof, .vnv-warn { color: var(--vnv-faint); margin-left: auto; }
+.vnv-warn { color: var(--vnv-warn-ink); }
+.vnv-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+.vnv-stat b { color: var(--vnv-ink); font-size: 13px; }
+.vnv-stat i { color: var(--vnv-dim); font-style: normal; margin-left: 4px;
+  letter-spacing: .06em; }
+.vnv-stat-unmeasured b, .vnv-stat-unmeasured i { color: var(--vnv-faint); }
+.vnv-stat-fail b, .vnv-stat-fail i { color: var(--vnv-warn-ink); }
+
+/* ------------------------------------------------------------------- legend */
+.vnv-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 7px 0;
+  border-bottom: 1px solid var(--vnv-line); }
+.vnv-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.vnv-legend-note { color: var(--vnv-dim); }
+.vnv-legend-rule .vnv-tick { font-size: 12px; }
+
+/* --------------------------------------------------------------- the marks */
+.vnv-mark { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.vnv-glyph { font-size: 13px; line-height: 1; }
+.vnv-word { letter-spacing: .09em; font-weight: 700; font-size: 10px; }
+
+.vnv-pass .vnv-glyph, .vnv-pass .vnv-word { color: var(--vnv-ok-ink); }
+.vnv-fail .vnv-glyph, .vnv-fail .vnv-word { color: var(--vnv-warn-ink); }
+.vnv-partial .vnv-glyph, .vnv-partial .vnv-word { color: var(--vnv-warn); }
+.vnv-unknown .vnv-glyph, .vnv-unknown .vnv-word { color: #d9d2c4; }
+.vnv-unmeasured .vnv-glyph, .vnv-unmeasured .vnv-word { color: var(--vnv-faint); }
+
+/* one tick per historical run — this is the anti-erasure device, so it is never
+   allowed to be subtler than the verdict it sits under */
+.vnv-streak { display: block; letter-spacing: 2px; line-height: 1.1; margin-top: 2px; }
+.vnv-tick { font-size: 11px; }
+.vnv-tick.vnv-pass { color: var(--vnv-ok); }
+.vnv-tick.vnv-fail { color: var(--vnv-warn-ink); }
+.vnv-tick.vnv-partial { color: var(--vnv-warn); }
+.vnv-tick.vnv-more { color: var(--vnv-dim); font-size: 10px; letter-spacing: 0; }
+.vnv-tally { display: block; color: var(--vnv-dim); font-size: 10px; margin-top: 2px; }
+.vnv-failcount { color: var(--vnv-warn-ink); font-weight: 700; }
+
+/* ----------------------------------------------------------------- controls */
+.vnv-controls { display: flex; align-items: center; gap: 14px; padding: 7px 0;
+  border-bottom: 1px solid var(--vnv-line); }
+.vnv-q { background: var(--vnv-panel); border: 1px solid var(--vnv-line-hi);
+  color: var(--vnv-ink); padding: 3px 7px; width: 320px; font: inherit; }
+.vnv-q:focus { outline: 1px solid var(--vnv-ok); }
+.vnv-toggle { display: inline-flex; align-items: center; gap: 5px;
+  color: var(--vnv-dim); cursor: pointer; }
+.vnv-toggle input { accent-color: var(--vnv-ok); }
+.vnv-count { margin-left: auto; color: var(--vnv-faint); }
+
+/* ------------------------------------------------------------------- matrix */
+.vnv-scroll { overflow: auto; max-height: 58vh; border-bottom: 1px solid var(--vnv-line); }
+.vnv-matrix { border-collapse: separate; border-spacing: 0; width: 100%; }
+.vnv-matrix th, .vnv-matrix td { border-right: 1px solid var(--vnv-line);
+  border-bottom: 1px solid var(--vnv-line); padding: 3px 6px; vertical-align: top;
+  text-align: left; }
+.vnv-matrix thead th { position: sticky; top: 0; z-index: 3;
+  background: var(--vnv-raise); border-bottom: 1px solid var(--vnv-line-hi);
+  color: var(--vnv-dim); font-weight: 700; letter-spacing: .1em; font-size: 10px; }
+.vnv-h-config b { display: block; color: var(--vnv-ok-ink); letter-spacing: .06em;
+  font-size: 11px; }
+.vnv-h-config i { font-style: normal; color: var(--vnv-faint); font-weight: 400; }
+.vnv-h-item { min-width: 300px; }
+
+.vnv-item { position: sticky; left: 0; z-index: 2; background: var(--vnv-panel);
+  max-width: 380px; cursor: pointer; }
+.vnv-matrix thead .vnv-h-item { left: 0; z-index: 4; background: var(--vnv-raise); }
+.vnv-item:hover { background: var(--vnv-raise); }
+.vnv-kind { margin-right: 5px; }
+.vnv-id { color: var(--vnv-ink); font-weight: 700; }
+.vnv-itemmeta { color: var(--vnv-faint); margin-left: 6px; }
+
+.vnv-all { white-space: nowrap; color: var(--vnv-dim); min-width: 130px; }
+.vnv-all.vnv-hasfail { color: var(--vnv-warn-ink); }
+.vnv-all.vnv-unmeasured { color: var(--vnv-faint); }
+
+.vnv-cell { min-width: 116px; background: var(--vnv-panel);
+  border-left: 3px solid transparent; cursor: pointer; }
+.vnv-cell:hover { background: var(--vnv-raise); }
+.vnv-cell:focus { outline: 1px solid var(--vnv-ok); outline-offset: -1px; }
+.vnv-cell.vnv-pass { border-left-color: var(--vnv-ok); }
+.vnv-cell.vnv-fail { border-left-color: var(--vnv-warn-ink); background: #241f18; }
+.vnv-cell.vnv-partial { border-left-color: var(--vnv-warn); }
+/* ⚠️ latest run passed, earlier ones did not — the cell must SAY so, not go quietly
+   green. Amber notch on the pass, plus the ⚠ n FAILED EARLIER tally in the markup. */
+.vnv-cell.vnv-hasfail { border-left-color: var(--vnv-warn);
+  box-shadow: inset 0 -2px 0 0 var(--vnv-warn); }
+.vnv-cell.vnv-sel { outline: 1px solid var(--vnv-ok-ink); outline-offset: -1px; }
+
+/* UNMEASURED: dashed, hatched, dim, and it says NEVER RUN. Nothing about it is
+   shared with a pass. An empty cell is not a pass. */
+.vnv-cell.vnv-empty { border-left-color: transparent; background:
+  repeating-linear-gradient(45deg, #1d1c1b 0 5px, #201f1e 5px 10px); }
+.vnv-cell.vnv-empty { border-right: 1px dashed var(--vnv-line);
+  border-bottom: 1px dashed var(--vnv-line); }
+.vnv-row-fail .vnv-item { border-left: 3px solid var(--vnv-warn); }
+
+/* --------------------------------------------------------------- drill-down */
+.vnv-dockhost { padding: 8px 0 12px; }
+.vnv-dock-hint { color: var(--vnv-faint); padding: 4px 0; }
+.vnv-unmeasured-note { color: var(--vnv-warn-ink); }
+.vnv-dock-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.vnv-dock-id { color: var(--vnv-ok-ink); letter-spacing: .04em; }
+.vnv-dock-scope { color: var(--vnv-warn); }
+.vnv-dock-title { color: var(--vnv-dim); }
+.vnv-dock-meta { color: var(--vnv-faint); margin: 2px 0 6px; }
+.vnv-runs { border-collapse: collapse; width: 100%; }
+.vnv-runs th { text-align: left; color: var(--vnv-dim); font-size: 10px;
+  letter-spacing: .1em; border-bottom: 1px solid var(--vnv-line-hi); padding: 2px 8px 2px 0; }
+.vnv-runs td { border-bottom: 1px solid var(--vnv-line); padding: 3px 8px 3px 0;
+  color: var(--vnv-dim); vertical-align: top; }
+.vnv-runs .vnv-runname { color: var(--vnv-ink); font-weight: 700; }
+.vnv-runs .vnv-sha { color: var(--vnv-faint); }
+.vnv-runs .vnv-evidence { max-width: 420px; overflow-wrap: anywhere; }
+.vnv-mark-inline .vnv-word { font-size: 10px; }
+.vnv-dock-foot { color: var(--vnv-faint); margin-top: 6px; }
+.vnv-dock-foot.vnv-hasfail { color: var(--vnv-warn-ink); }
+
+/* ---------------------------------------------------------------- panels */
+.vnv-panel { border: 1px solid var(--vnv-line-hi); background: var(--vnv-panel);
+  padding: 10px 12px; margin: 10px 0; }
+.vnv-panel h2 { margin: 0 0 6px; font-size: 12px; letter-spacing: .14em;
+  color: var(--vnv-warn-ink); }
+.vnv-panel p { margin: 0 0 5px; color: var(--vnv-dim); max-width: 96ch; }
+.vnv-void { border-left: 3px solid var(--vnv-warn); }
+.vnv-bad { border-left: 3px solid var(--vnv-warn-ink); }
+.vnv-cmd { display: block; margin-top: 6px; padding: 5px 7px;
+  background: var(--vnv-bg); border: 1px solid var(--vnv-line);
+  color: var(--vnv-ok-ink); overflow-wrap: anywhere; }
