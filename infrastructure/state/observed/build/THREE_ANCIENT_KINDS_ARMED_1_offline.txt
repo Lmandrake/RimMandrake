@@ -1,0 +1,57 @@
+THREE_ANCIENT_KINDS_ARMED_1 - offline evidence, BUILD, 2026-08-21
+config: offline-578-defs (DefDump captured 2026-08-21T08:20:20Z, 578 mods, MATCHES ModsConfig.xml)
+
+WHAT CHANGED
+  src/Jawa/Jawa_Patches/Patches/WeaponTags_Renormalise.xml
+    New trailing HAND-AUTHORED block: PatchOperationFindMod on "Ancient urban ruins"
+    wrapping three PatchOperationConditional ops that APPEND <li>Gun</li> to
+    AncientSoldierBoss, AncientSoldierBossN, AncientMallGuards.
+    AMHP and PKM are KEPT on all three, as the item requires.
+  src/RimMandrake/Utils/weapon_tag_audit.py
+    emit_patch() now carries the HAND-AUTHORED block across a regeneration.
+    Without this the three ops above are deleted silently by the next --emit-patch.
+
+WHY 'Gun'
+  ThingDef.json, 578-mod dump: tag 'Gun' -> 73 loaded weapons (Gun_ChargeRifle,
+  Gun_ChargeLance, Gun_DoomsdayRocket, ...). Tags 'AMHP' and 'PKM' -> 0 weapons each.
+  Core's AncientSoldier carries weaponTags [Gun], weaponMoney 300~900, CP 85, and is
+  NOT on the tagless list - so the pool is proven non-empty by the audit itself.
+  All three targets carry weaponMoney 2100~7500 (Boss/BossN CP 225, MallGuards CP 425),
+  so the budget keeps them elite without the tag pool having to.
+
+ADD vs REPLACE, verified against the mod's own source XML
+  .../workshop/content/294100/3316062206/1.6/Defs/PawnKindDefs/PawnKinds_Boss.xml
+    AncientSoldierBoss   line 26  WRITES <weaponTags><li>AMHP</li></weaponTags>  -> match branch
+    AncientMallGuards    line 113 WRITES <weaponTags><li>PKM</li></weaponTags>   -> match branch
+    AncientSoldierBossN  line 80  ParentName="AMBossBase", NO weaponTags node    -> nomatch branch
+  RimWorld list inheritance appends rather than replaces without Inherit="False",
+  so BossN resolves to [AMHP, Gun].
+
+VALIDATOR - python3 skills/rimworld-modding/scripts/validate_patch.py
+  src/Jawa/Jawa_Patches/Patches/WeaponTags_Renormalise.xml
+  --defs ".../workshop/content/294100" --defs ".../common/RimWorld/Data"
+    OK - 0 errors, 165 warning(s)
+    Operation[155] > match > operations/li[1] > match   (PatchOperationAdd): 1 match  Ancient urban ruins: PawnKinds_Boss.xml
+    Operation[155] > match > operations/li[2] > nomatch (PatchOperationAdd): 1 match  Ancient urban ruins: PawnKinds_Boss.xml
+    Operation[155] > match > operations/li[3] > match   (PatchOperationAdd): 1 match  Ancient urban ruins: PawnKinds_Boss.xml
+  Every new op reports 1 hit. li[2] hits through nomatch exactly as the inheritance predicts.
+
+REGENERATION ROUND TRIP
+  Copied the file to scratch, ran --emit-patch on the copy: block survived verbatim,
+  XML still parses. (Recorded in passing: that run emitted only 9 ops against the
+  file's 155 - plan() currently classifies 0 of the 36 untagged survivors, so
+  regenerating this file TODAY would drop 146 generated ops. Pre-existing, not
+  introduced here, and not in this item's scope.)
+
+DEPLOYED
+  deploy_custom_mods.py --mod Jawa_Patches --apply -> 4 files, VERIFIED in sync.
+  (Also carried two files already committed in a488135 and one in AncientsAreRakata.xml
+  that the game copy had never received. No uncommitted work of any seat was deployed.)
+
+VERDICT: partial
+  The patch is authored, validated, and deployed. It CANNOT reach 'pass' offline:
+  weapon_tag_audit.py reads the DEF DUMP, and the live dump was captured 08:20:20Z,
+  before this patch existed. Re-run after the next cold load with a fresh dump:
+    before: pawn kinds with EVERY weapon tag empty: 15
+    after this patch, expected: 12, with the three names above absent.
+  Nothing else about the count should move.

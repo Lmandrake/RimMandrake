@@ -187,6 +187,17 @@ def audit(anyway=False):
     def eligible(d):
         if d["defName"] in cut:
             return False
+        # 🔴 An INGESTIBLE is never a weapon this tool may tag, however swingable it is.
+        # Measured 2026-08-21: two of five `Jawa_Tribal_Scavenger` generated holding a
+        # bottle of `TarisianAle` as their PRIMARY weapon, because this function saw
+        # `techLevel Neolithic` + `weaponClasses [Melee, MeleeBlunt]` and handed the
+        # bottle `NeolithicMeleeBasic`/`Decent` - the scavenger's entire pool. RimWorld
+        # will let a pawn club someone with a bottle; a pawn GENERATED holding one
+        # instead of a weapon is the bug. `ingestible` is the separator, not `category`
+        # and not a missing `verbs` - real melee weapons keep their attacks under
+        # `tools`, so filtering on `verbs` catches axes and clubs instead.
+        if f(d, "ingestible"):
+            return False
         cls = set(f(d, "weaponClasses") or [])
         wt = set(f(d, "weaponTags") or [])
         if "TurretGun" in wt or "ImprovisedMelee" in wt:
@@ -248,6 +259,23 @@ EXTRA_TAGS = {
 }
 
 
+HAND_BEGIN = "<!-- BEGIN HAND-AUTHORED -->"
+HAND_END = "<!-- END HAND-AUTHORED -->"
+
+
+def preserved_block(path):
+    """Return the hand-authored block of an existing emitted patch, or ''."""
+    try:
+        old = Path(path).read_text(encoding="utf-8")
+    except OSError:
+        return ""
+    i = old.find(HAND_BEGIN)
+    j = old.find(HAND_END)
+    if i < 0 or j < i:
+        return ""
+    return "\n" + old[i:j + len(HAND_END)] + "\n"
+
+
 def emit_patch(mapping, path):
     for dn, tg in EXTRA_TAGS.items():
         role, have = mapping.get(dn, ("extra", []))
@@ -289,7 +317,12 @@ def emit_patch(mapping, path):
             "  </Operation>",
             "",
         ]
-    lines += ["</Patch>", ""]
+    # 🔑 A HAND-AUTHORED block may live at the end of the emitted file, between the
+    # BEGIN/END markers below. It holds PawnKindDef ops this generator cannot derive
+    # (a kind whose tag no weapon carries needs a CHOSEN tag, not a computed one).
+    # Carry it across verbatim, or regenerating silently deletes work nobody will miss
+    # until pawns spawn bare-handed again.
+    lines += [preserved_block(path), "</Patch>", ""]
     # 🪤 An XML comment may not contain '--' ANYWHERE in its BODY - not in a rule line,
     # not in a CLI flag it quotes. One occurrence does not spoil the comment, it kills
     # the FILE: the parser aborts and every operation below is lost. Sanitise the body
