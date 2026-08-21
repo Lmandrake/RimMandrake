@@ -43,9 +43,21 @@ click.**
 
 | # | what | filed as | why it bakes |
 |---|---|---|---|
-| 1 | 🔴 **The Blackstar Company's vessel is dropped from the default worldgen faction list.** Biotech's `PirateWaster` declares `replacesFaction: Pirate`, so `Page_CreateWorldParams.cs:83-85` strips `Pirate` from the list the owner is shown | `PIRATE_VESSEL_RESTORED_1` | the faction roster is fixed at creation |
-| 2 | **The Galactic Empire's leader is Royalty's high stellarch**, not Palpatine — `fixedLeaderKinds` is unpatched | `IMPERIAL_RAID_ROSTER_1` | the leader pawn is generated at creation |
-| 3 | **Thirteen bespoke faction world-markers are designed, accepted and not yet installed.** Until they are, one faction draws a magenta square and three pairs share a glyph | `FACTION_ICONS_BESPOKE_1` | the map is frozen with them on it |
+| 1 | 🔴 **Four ratified KEEP rows are missing from the Configure Factions screen.** `OnlyOurFactions.xml` zeroes `maxConfigurableAtWorldCreation`, which deletes a row from `FactionGenerator.ConfigurableFactions` rather than capping it — so the owner cannot restore them where the checklist tells him to | `SLATE_KEEPS_CONFIGURABLE_1` | ⭐ **the checklist is a trap until this lands** |
+| 2 | **The Blackstar Company's vessel is dropped from the default worldgen list.** Biotech's `PirateWaster` declares `replacesFaction: Pirate` | `PIRATE_VESSEL_RESTORED_1` | the faction roster is fixed at creation |
+| 3 | **The Galactic Empire's leader is Royalty's high stellarch**, not Palpatine — `fixedLeaderKinds` unpatched | `IMPERIAL_RAID_ROSTER_1` | the leader pawn is generated at creation |
+| 4 | **Eleven factions have no `fixedName`**, so a generated world names them at random | `FACTION_FIXEDNAME_ELEVEN_1` | the faction's name is stored at creation |
+| 5 | **Thirteen faction world-markers, designed and accepted, not installed** — plus four `colorSpectrum` changes that ship with them | `FACTION_ICONS_BESPOKE_1` | the map is frozen with them on it |
+
+⚠️ **Items 1 and 2 are the same class of bug and it is worth naming:** a faction can be
+*silently absent* from the screen the owner ticks. Nothing logs it, and the checklist reads
+as if the row will be there.
+
+⭐ **What is NOT on this list, deliberately.** `RAIN_DRY_THE_LOWLANDS_1`,
+`OCULAR_FOREST_SUMMITS_1` and `META_JSON_NAMES_DEAD_PIRATE_1` all edit the **paint**, which
+W9 stamps onto the world *after* generation. They must land before the stamp, not before the
+click. `NINE_XENOTYPES_AUTHORED_1` and everything `Inhabited` are later still — people are
+placed on a finished planet.
 
 ✅ **The ideoligion artifacts are measured and clean** — `The Salvation.rid` 250/266 with
 **no dangling names**, `MandrakeJawa.xtp` 36/36, both against the 2026-08-20 dump
