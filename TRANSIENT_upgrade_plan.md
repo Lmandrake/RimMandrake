@@ -917,7 +917,7 @@ is. **No `Q104`, no `D55`, no bare numbers.**
 | `MODLIST_STAMP_AS_OF_DATES_1` | nine different counts, no as-of anywhere |
 | `LAKE_BIOME_CUT_OR_KEEP_1` | cut by the owner; **1.4% of the planet is `Lake`** |
 | `GELATINOUS_CUT_REVERSAL_1` | cut 08-04, placed 08-18, palette never told |
-| `SAVANNA_PREMISE_RESOLVE_1` | a 701-line doc's subject is blacklisted |
+| ~~`SAVANNA_PREMISE_RESOLVE_1`~~ | ✅ **RULED 2026-08-20, and the framing was wrong.** There is no 701-line savanna doc — the item was `biome_review_comments.md` §1's open question, ~15 lines. Owner: *"We kept Stormy Savanna, so we don't need normal Savannah. `ZBiome_Grasslands` is actually the Stormy Savanah (it has a stupid defname)."* The cut stands; nothing needed reversing |
 | `OASIS_OWNERSHIP_RULING_1` | Hutts or Deepwater Compact — inverts the water politics |
 | `JAWA_LEADER_TITLE_RULING_1` | First Bargainer vs Prime Trader; the engine layer ticks ✅ while overwriting canon |
 | `HABITABLE_RING_ARC_RULING_1` | 34–57 vs 40–57 — ~700 tiles |
