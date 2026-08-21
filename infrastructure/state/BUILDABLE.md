@@ -206,5 +206,17 @@ it does not belong here.
   returns the first hit for that exact itemPath — last mod loaded wins, one path at a
   time. Ship `AV_OxCart_south.png` at the donor's own path and leave `_north` out, and
   the game draws OUR south beside the DONOR's north: banthas from one side, oxen from
-  the other, **no error and no magenta**. Either author every facing, or move the def's
-  `texPath` into our own namespace so the engine's own symmetry fallback covers the rest.
+  the other, **no error and no magenta**. Author every facing the donor authors.
+- 🔴 **A VEHICLE's `_north` cannot be derived, and the fallback that looks like it can is
+  a trap.** Corrected 2026-08-21, same day the line above first said otherwise.
+  `Vehicles.Graphic_Rgb.GetTextures` does set `drawRotatedExtraAngleOffset = 180f` when
+  `_north` is absent — but **the vehicle BODY never reads it.**
+  `Graphic_Rgb.ParallelGetPreRenderResults` builds its quaternion from
+  `orientation.AsRotationAngle + rotation` alone, and `AdjustAngle`'s North case is an
+  empty `break`. The only two readers are `CompDrawLayer.AngleFromRot` and
+  `CompDrawLayerTurret.AngleFromRot`, which draw ADD-ON LAYERS rather than the body, and
+  both sit behind `ShouldDrawRotated` (`MatEast == MatNorth && MatWest == MatNorth`),
+  which is false the moment a real `_east` ships. ⇒ Ship `_south` with no `_north` and
+  the north facing draws the south sprite **unrotated, rear end pointing north**, in
+  silence. ✅ `_west` IS genuinely derived (`westFlipped`), which is why neither Alpha
+  Vehicles Neolithic nor our DogSled ships one: **the authored set is north+east+south.**
