@@ -38,6 +38,25 @@ BEFORE the run rather than at the screen, at 3am, alone._
 > read exactly once and can never be patched afterwards. **A wrong answer here is
 > not a bug — it is a new campaign.**
 
+> 🔴 **THE IDEOLIGION MODE ON THE WORLD-CREATION PAGE DECIDES WHETHER THE ELEVEN FAITHS
+> EXIST AT ALL — measured 2026-08-21, CHECK, and this file did not say so.**
+>
+> On the rehearsal world, `jawa/ideo_of` reports `ideologyActive: true` and
+> **`ideosTotal: 2`** — the player's `Astropolitan` (zero memes, no `structureMeme`, 54
+> precepts, `initialPlayerIdeo: true` — the signature of **Classic ideoligion**) and one
+> other. Every one of the sixteen factions returns a null ideo name, zero memes, zero
+> deities. **None of the eleven authored faiths generated.**
+>
+> ✅ **The defs are not at fault.** All twelve `ideoName` values are in the deployed
+> FactionDefs, and the one NPC ideo that DOES exist is `the Contract` — Blackstar Company's
+> faith — which appeared only because Blackstar was created by hand with
+> `jawa/faction_create` *after* worldgen. So the FactionDef ideo block works; worldgen
+> never applied it.
+>
+> ⇒ **On the real run, do NOT accept Classic ideoligion.** An Ideo is generated once at
+> world creation and cannot be retrofitted, so this click is the difference between eleven
+> faiths and none, forever. `B54` · `CLASSIC_IDEO_ERASES_FAITHS_1`.
+
 > ⭐ **REHEARSE IT FIRST — added 2026-08-21, CHECK.**
 > `infrastructure/state/WORLDPAINT_REHEARSAL.md` paints the same 21,872-tile bundle onto a
 > **throwaway** generated world, proving the import end to end and putting the planet on
