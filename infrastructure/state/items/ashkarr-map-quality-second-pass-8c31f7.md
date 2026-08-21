@@ -1,3 +1,30 @@
+🔴 **CORRECTION — CHECK, 2026-08-21. THE ADJACENCY-BYTE HUNT IS MOOT. DO NOT RESUME IT.**
+
+The `## notes` section below ends with *"WHAT IS STILL NEEDED: one number per tile —
+which neighbour is slot 0, plus the winding. 21,872 of them. Only the engine has it.
+The route is a companion [Tool] that dumps `Find.WorldGrid.GetTileNeighbors` order per
+tile, which needs the game DOWN to deploy."* **That is no longer true, and it cost two
+rounds of decoding before it was written.**
+
+⇒ **We never decode the slot byte, because we never write it.** `jawa/world_links_set`
+takes a PATH OF TILE IDS and `jawa/world_links_import` takes a CSV of `kind,a,b,def`;
+both hand adjacent tile PAIRS to RimWorld's own `WorldGrid.OverlayRiver` /
+`OverlayRoad`, which write both endpoints and maintain `riverDist` themselves. The
+engine computes the encoding. There is nothing to recover, no new `[Tool]` to write,
+and **no game-down deploy window is needed for this item.**
+
+⚠️ **What replaced it is a REAL trap, and it is the opposite kind — silent.** The
+importer applies rivers IN FILE ORDER and `OverlayRiver` accumulates
+`riverDist = max(riverDist, prev+1)`, so a file that is not mouth-first lays every
+river with wrong distances and refuses nothing. `world/ASHKARR_WORLDMAP_links.csv` WAS
+in that state — see `RIVER_LINKS_EMITTED_BACKWARDS_1`. It is corrected (`89029b7`) and
+`python3 src/RimMandrake/Utils/lint_links.py` now reports PASS on 1,075 rows.
+
+⇒ **The offline half of this item is DONE.** What remains is exactly what the owner
+re-scoped it to: paint the accepted world into a running game and look at it.
+
+---
+
 ## spec
 ⛔ 2026-08-19 — SAVEGAME WRITING IS OUT. Every "run X" in this item names a
 script that has been DELETED; the map reaches the game over the live bridge
