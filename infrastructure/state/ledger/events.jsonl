@@ -914,3 +914,7 @@
 {"seat":"CHECK","event":"needs","id":"lightsaber-armour-penetration-reads-zero-offline-but-the-mod-computes-it-in-c-sharp-6a91d3","to":"game-up","reason":"read the armour-penetration figure off the in-game info card","ts":"2026-08-21T20:21:41Z"}
 {"seat":"CHECK","event":"needs","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","to":"bridge","reason":"needs raids provoked to see which kinds actually field","ts":"2026-08-21T20:21:42Z"}
 {"seat":"CHECK","event":"needs","id":"sixteen-authored-role-kinds-spawn-bare-handed-on-weaponmoney-7c31a9","to":"bridge","reason":"spawn each role kind and read what it is holding","ts":"2026-08-21T20:21:42Z"}
+{"seat":"CHECK","event":"claim","id":"NEEDS_RESTAMP_THIRTYEIGHT_1","ts":"2026-08-21T20:22:04Z"}
+{"seat":"CHECK","event":"start","id":"NEEDS_RESTAMP_THIRTYEIGHT_1","ts":"2026-08-21T20:22:04Z"}
+{"seat":"CHECK","event":"verify","id":"NEEDS_RESTAMP_THIRTYEIGHT_1","result":"pass","config":"offline-ledger","evidence":"rimflow why W9 returns 'needs bridge, game is DOWN, NOT blocked'; needs now bridge 25 game-up 10 offline 8 owner 5 harvest 4 deploy 1","sha":"0a3e609","ts":"2026-08-21T20:22:04Z"}
+{"seat":"CHECK","event":"close","id":"NEEDS_RESTAMP_THIRTYEIGHT_1","sha":"0a3e609","ts":"2026-08-21T20:22:05Z"}
