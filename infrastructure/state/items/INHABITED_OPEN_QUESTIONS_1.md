@@ -65,3 +65,31 @@ written INTO the item in `queue/BUILD.md` that waits on it — not only here.
 **Imported from `queue/DECIDE.md`. Its `state:` read, verbatim:**
 
 ready — for DECIDE
+
+## ruling
+**DECIDE, 2026-08-21. All five are closed. `INHABITED_DESIGN.md` §7 is now "The five that
+were open — answered", and it is the place to read them, not this item.**
+
+| # | was | now |
+|---|---|---|
+| 1 | the four missing character fields | ✅ **the owner answered it 2026-08-21**, and narrower than this item framed it: race on all 269, kit and skills only where the prose earns them. ⇒ `CAST_RACE_AND_KIT_FIELDS_1`. ⛔ The `review-sheets` build this item proposed is **not** needed — 269 rows × 4 fields was the right instrument for the question as asked, and the question shrank |
+| 2 | the twelfth faction has no cast | ⏳ `DEEPWATER_CAST_ROSTER_1` — authoring debt, filed, not blocked on anything |
+| 3 | how the player initiates trade | ✅ **§7.1 — trade is a PERSON.** One cast member carries `pawn.trader.traderKind`, copied from `IncidentWorker_VisitorGroup.cs:96-97`. No dialog on the world object, no new UI |
+| 4 | what the gravship's arrival triggers | ✅ **§7.2 — one ratio, three faction states.** `Σ combatPower(cast) / Σ combatPower(landing party)`, with hostile factions fighting rather than fleeing |
+| 5 | can a place be re-occupied | ✅ **§7.3 — yes, but never by the faction you drove out** |
+
+🔑 **The through-line, and it is the constraint I held myself to:** every answer is built
+from a number RimWorld already computes — `combatPower`, `goodwill`, `isFighter`,
+`TraderKindDef`. §4.1 forbids this design growing a number of its own, and an arrival test
+or a squatting rule with its own score would have been exactly that.
+
+⚠️ **Two traps named where BUILD will hit them, not here:**
+- `pawn.trader` **only exists if the kind's `trader` is true** (`PawnComponentsUtility.cs:247`).
+  A trader without the tracker cannot be traded with **and nothing logs.**
+- Arrival-flight costs goodwill **only when the player lands on the site's own tile.**
+  Ungated, flying across the planet would strip the player's relations with everyone he
+  overflew, with no way for him to know.
+
+⭐ **What stays open is not on this list.** The `Caravan`-pattern 100-day soak (§3.4) is
+still the gate on the whole architecture, and two of its three failure modes have already
+been found and fixed on disk. Do it first.

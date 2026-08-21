@@ -615,16 +615,99 @@ are safe only because they never change.
 
 ---
 
-# 7. Open questions
+# 7. The five that were open — answered 2026-08-21
 
-- **Cast size distribution** — how many people is a refinery? A farmstead? Not yet set.
-- **How the player initiates trade** with a cast that is not a settlement.
-- **Whether a place can be re-occupied** by a *different* faction after abandonment
-  (`state: squatted` is reserved for it, unspecified).
-- **What the gravship's arrival actually triggers** — which casts break on sight, and on
-  what test.
-- ⚠️ **The `Caravan`-pattern longevity test** (§3.4) is the one that could invalidate the
-  architecture. Do it first.
+⭐ **Every answer below is built out of numbers RimWorld already computes.** Nothing here
+adds a stat, a score or a tracker. That is not thrift, it is §4.1's rule: the moment this
+design acquires its own number it becomes a mechanic instead of a memory.
+
+| was open | answer |
+|---|---|
+| **Cast size distribution** | ✅ **RULED** and written into `INHABITED_GENSTEP_CAST_SPAWN_1` — hive foundry 14–22 · waystation 10–16 · refinery 8–14 · nomad camp 6–12 · trade moot 5–9 · homestead 4–7 · droid enclave 3–6 |
+| **The four missing character fields** | ✅ **ANSWERED BY THE OWNER**, 2026-08-21, and narrower than the question: race on all 269, kit and skills **only where the prose earns them**. `CAST_RACE_AND_KIT_FIELDS_1` |
+| **The twelfth faction has no cast** | ⏳ authoring debt, filed — `DEEPWATER_CAST_ROSTER_1`, ~25 people for the Deepwater Compact |
+| **Trade · arrival · squatting** | ✅ **RULED BELOW** |
+| ⚠️ **The `Caravan`-pattern longevity soak** (§3.4) | 🔴 **still the gate.** Two of its three failure modes were found on disk and fixed; the third needs the 100-day soak. Do it first |
+
+## 7.1 Trade is a PERSON, not a place
+
+⛔ **Do not give `WorldObject_Inhabited` a trade dialog.** You trade with the quartermaster,
+not with the refinery — which is both the right fiction and the shipped mechanism.
+
+**One cast member is the trader.** The route is `IncidentWorker_VisitorGroup.cs:96-97`,
+copied exactly:
+
+```csharp
+TraderKindDef k = faction.def.visitorTraderKinds.RandomElementByWeight(t => t.CalculatedCommonality);
+pawn.trader.traderKind = k;
+```
+
+⚠️ **`pawn.trader` only exists if the pawn's `PawnKindDef.trader` is true** —
+`PawnComponentsUtility.cs:247` is where the tracker is created. So the designated cast
+member needs a kind with `trader: true`, or the tracker must be added explicitly. **A pawn
+without the tracker silently cannot be traded with and nothing logs.**
+
+⇒ The player walks up and trades. `JobDriver_TradeWithPawn` is shipped, needs no UI, and
+works on any pawn with a tracker.
+
+🔑 **The consequences fall out for free, and they are the reason to do it this way:**
+- **Kill the trader and the place stops trading** until the cast is re-instantiated. That
+  is a real decision the player can make and understand.
+- **The trader can flee** with the rest, into the displaced pool (§4), and turn up as
+  someone else's quartermaster two months later.
+- A cast with no eligible member simply does not trade. ⛔ **Do not fall back to
+  generating one** — a place that has nothing to sell should say so by having nobody to
+  sell it.
+
+✅ **The world-map route is available if it is ever wanted:**
+`CaravanVisitUtility.TradeCommand(caravan, faction, traderKind)` takes a faction and a
+trader kind and is not settlement-specific. `[v2]` — the on-map route is the design.
+
+## 7.2 What a gravship's arrival triggers — one ratio, three faction states
+
+**The test is the cast's own combat strength against the arriving party's**, both summed
+from `PawnKindDef.combatPower` — the same number RimWorld already uses to size every raid.
+
+```
+defenceRatio = Σ combatPower(cast) / Σ combatPower(landing party)
+```
+
+| the cast's faction | on arrival |
+|---|---|
+| **hostile** (`goodwill <= -75`) | ⛔ **never flees. It fights.** A gravship landing on an enemy site is an assault, and treating it as a scare would waste the best confrontation in the design |
+| **neutral** | flees iff `defenceRatio < 0.5` — *outmatched, and they know it* |
+| **ally** (`goodwill >= 75`) | never flees |
+
+⭐ **`isFighter` is the second lever and it is already on every kind.** A cast that is
+mostly `isFighter: false` — a homestead, a trade moot — will fail the ratio against almost
+any landing party, which is exactly the *"break on sight"* the FATE table asks for. **The
+civilians run because they are civilians, not because a flag says so.**
+
+🔴 **AND THE GOODWILL COST IS GATED, deliberately.** §1.2 says flight costs goodwill and
+that hostility only ends at 0, so a scared-off crew is expensive to repair. ⇒ **arrival-flight
+costs goodwill ONLY if the player lands on the site's own tile.** Landing on an adjacent tile
+and walking in costs nothing. Without that gate, crossing the planet would strip-mine the
+player's relations with everyone he flew over, and he would have had no way to know.
+
+## 7.3 Squatting — yes, but never by the people you drove out
+
+A place whose cast leaves becomes `Abandoned`. It becomes `Squatted` under three conditions,
+all of them already tracked:
+
+1. **A different faction's displaced pool has enough members** for the place's cast size.
+2. **That faction is hostile to the original owner.** Squatters are people who lost their
+   own place, taking someone else's.
+3. **Evaluated at cast instantiation only** — when the player next generates a map there.
+   ⛔ Never on a tick. This is §3.4's rule and squatting does not get an exception.
+
+🔴 **The original faction may NEVER re-occupy its own abandoned place.** If the Hutts you
+drove out of Kessek Refinery could drift back into it, the raid would be erased, and §3.4
+promises that *"every change in the world is legibly the player's doing."* A place the
+player emptied stays empty until **somebody else** takes it — which is a consequence, not
+an undo.
+
+⇒ Squatters keep their own faction; the place's ownership changes with them. The reason is
+carried on the pool entry exactly as §4.2 requires, and reads: *lost their own place.*
 
 ---
 
