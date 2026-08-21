@@ -33,7 +33,7 @@ log still exists.
 
 ## INDEX OF LOADS
 
-- **§3 — 2026-08-21 ~13:35 — ⬜ OPEN.** One new assembly (Inhabited + its 12 rosters, deployed together), a free def-dump recapture, and three carried greps.
+- **§6 — 2026-08-21 ~13:35 — ⬜ OPEN.** One new assembly (Inhabited + its 12 rosters, deployed together), a free def-dump recapture, and three carried greps.
 
 | block | load event | date | status |
 |---|---|---|---|
@@ -185,7 +185,7 @@ first timestamped line `[17:31:34]` at 644, 8,700 lines, mtime 21:10.
 ---
 
 
-# §3 — LOAD 2026-08-21 ~13:35. **⬜ OPEN — written before the game started.**
+# §6 — LOAD 2026-08-21 ~13:35. **⬜ OPEN — written before the game started.**
 
 Deploy state verified on disk with the game DOWN (`tasklist.exe` = 0 `RimWorldWin64`),
 minutes before launch:
@@ -203,7 +203,7 @@ minutes before launch:
 roster XMLs are not independently attributable and are not meant to be — they and the DLL
 are one unit, because the rosters carry four fields the OLD DLL could not parse.
 
-## §3 S1 — the Inhabited assembly and its rosters loaded as one unit
+## §6 S1 — the Inhabited assembly and its rosters loaded as one unit
 
 ```
 EXPECT PRESENT   [Inhabited] ready:  with a count of 269
@@ -224,7 +224,7 @@ half of this signature.
 mod failed to load at all, there are no parse errors *and* no `ready:` line. Both
 readings, or the signature has not fired.
 
-## §3 S2 — the def dump recovers the 824 collided defs
+## §6 S2 — the def dump recovers the 824 collided defs
 
 ```
 EXPECT PRESENT   [RimDefDump] at the main menu, ~27 s, ~1.2 GB
@@ -236,6 +236,29 @@ PREDICT          the new capture is ABOVE 78,057 by roughly 824, and AbilityDef 
                  non-empty (it read 0 before; vanilla alone has 612)
 ```
 
+🔴 **CORRECTED 2026-08-21 15:30 by CHECK, after BUILD measured it (`7a57678`). READ THE
+CAPTURE, NOT THE DATABASE.** The prediction above is about the **files on disk** and it
+stands. It must NOT be verified through `measure` or `defs.sqlite`:
+
+- `measure` keys coverage on the record's **simple** `defType` and never reads
+  `defTypeFullName`, the filename, or the new `defTypes` index — so the producer's whole
+  disambiguation is **invisible on arrival**.
+- `capture.def_type` is a `TEXT PRIMARY KEY`, so the schema **cannot hold two types that
+  share a simple name** at all.
+- `build` counts `defs_inserted` **before** shadowed rows are removed. BUILD measured it
+  reporting **615 defs while the table held 3**.
+
+⚠️ **And this load is what ARMS that bug.** It could not fire while `AbilityDef` declared
+0; the fixed producer supplies exactly the 824 defs that make it fire. ⇒ A post-load
+`measure count AbilityDef` is expected to return a **confidently wrong number**.
+
+✅ **The honest route:** read `manifest.json`'s `defCounts` and the `defs/*.json` files
+directly, and record anything the db cannot answer as **UNMEASURED**, never as 0 or as a
+pass (`infrastructure/agents/CHECK.md`, "Numbers you report").
+
+🔑 **The load still buys the irreversible half regardless: the 824 defs stop being lost
+on disk.** The reader defect is a separate, offline, fixable thing.
+
 ⚠️ **`refresh.py` will report `REPLACED` afterwards. That is the freeze detector working,
 not a fault.** Only the owner re-freezes:
 `python3 src/RimMandrake/Utils/refresh.py --freeze --by owner`
@@ -244,7 +267,7 @@ folded into `refresh.py` under `FREEZE_SHA_UNREPRODUCIBLE_1` (`9078a15`), becaus
 two commands that both append a freeze are two answers. Drop `--by owner` for a
 dry run.
 
-## §3 S3 — the three greps that ride free (`NEXT_LOAD_LOG_HARVEST_1`)
+## §6 S3 — the three greps that ride free (`NEXT_LOAD_LOG_HARVEST_1`)
 
 Fixed list, written before the log exists. ⛔ Nothing is added to it at collection time.
 
@@ -257,7 +280,7 @@ BIOMESKIT  the 148 missing-texture errors are ReGrowth's absent snow variants, N
            damage our repaint caused
 ```
 
-## §3 S5 — two BUILD changes that landed AFTER this file was written
+## §6 S5 — two BUILD changes that landed AFTER this file was written
 
 Both are repo-side only; neither touches the producer, so both are **expected to be
 invisible**. They are here because their signature is an ABSENCE that would otherwise
@@ -291,7 +314,7 @@ WHY              retention will keep the newest three captures and delete the re
 silent change with no expected string is indistinguishable from a change that never
 happened (§2 of the load-round skill).
 
-## §3 S6 — our 52 deployed patches contribute ZERO patch failures
+## §6 S6 — our 52 deployed patches contribute ZERO patch failures
 
 Not a new check — `harvest_log.py`'s `patchfail` already covers it. This turns its
 baseline into an **attributed** prediction, which is the stronger claim:
@@ -322,7 +345,7 @@ Whether they *did* something is what the fresh dump plus `validate_patch --live`
 answers afterwards — and 172 of this run's warnings are exactly the nodes an
 on-disk scan cannot see because another mod's patch creates them.
 
-## §3 S4 — carry-over, free
+## §6 S4 — carry-over, free
 
 ```
 EXPECT ABSENT    FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfix
@@ -330,7 +353,7 @@ EXPECT ABSENT    FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfi
 EXPECT           harvest_log.py exits 0, or names what is above baseline
 ```
 
-## §3 RESULTS — ⬜ to be filled from the log, not from memory
+## §6 RESULTS — ⬜ to be filled from the log, not from memory
 
 # §2 — NEXT LOAD: **NEW WORLD GENERATION**. ⬜ OPEN
 
