@@ -207,7 +207,7 @@
   "definition": "biome in ['Lake', 'Ocean', 'SeaIce']",
   "water_tiles": 1780,
   "water_pct": 8.14,
-  "below_sea_level_tiles": 1468,
+  "below_sea_level_tiles": 1780,
   "coastline_edges": 742,
   "bodies": [
    {
@@ -330,7 +330,7 @@
  "terrain": {
   "elevation_m": {
    "min": -30.0,
-   "mean": 438.0,
+   "mean": 417.4,
    "max": 2266.0
   },
   "elevation_land_m": {
@@ -345,15 +345,15 @@
   },
   "rainfall_mm": {
    "min": 18.0,
-   "mean": 96.0,
+   "mean": 79.0,
    "max": 1668.0
   },
   "hilliness": {
    "Flat": 8266,
    "SmallHills": 8113,
    "LargeHills": 4034,
-   "Mountainous": 1417,
-   "Impassable": 42
+   "Mountainous": 1420,
+   "Impassable": 39
   },
   "swampiness_mean": 0.074
  },
@@ -361,10 +361,10 @@
   "edges": 238,
   "broken_entries": [],
   "by_def": {
-   "HugeRiver": 113,
-   "Creek": 103,
-   "LargeRiver": 12,
-   "River": 10
+   "Creek": 112,
+   "LargeRiver": 51,
+   "River": 46,
+   "HugeRiver": 29
   },
   "tiles_touched": 248,
   "networks": 10,
@@ -373,10 +373,9 @@
     "edges": 97,
     "tiles": 98,
     "defs": {
-     "HugeRiver": 34,
-     "Creek": 61,
-     "LargeRiver": 1,
-     "River": 1
+     "LargeRiver": 26,
+     "Creek": 62,
+     "River": 9
     },
     "head": 7101,
     "head_elev_m": 2001.0,
@@ -386,9 +385,10 @@
     "edges": 74,
     "tiles": 75,
     "defs": {
-     "HugeRiver": 51,
-     "Creek": 19,
-     "LargeRiver": 4
+     "River": 23,
+     "HugeRiver": 15,
+     "Creek": 20,
+     "LargeRiver": 16
     },
     "head": 17293,
     "head_elev_m": 966.0,
@@ -398,8 +398,10 @@
     "edges": 29,
     "tiles": 30,
     "defs": {
-     "HugeRiver": 28,
-     "LargeRiver": 1
+     "LargeRiver": 9,
+     "HugeRiver": 14,
+     "River": 5,
+     "Creek": 1
     },
     "head": 11347,
     "head_elev_m": 550.0,
@@ -419,8 +421,8 @@
     "edges": 8,
     "tiles": 9,
     "defs": {
-     "River": 2,
-     "LargeRiver": 6
+     "Creek": 2,
+     "River": 6
     },
     "head": 2015,
     "head_elev_m": 91.0,
@@ -430,7 +432,8 @@
     "edges": 7,
     "tiles": 8,
     "defs": {
-     "River": 7
+     "Creek": 4,
+     "River": 3
     },
     "head": 1855,
     "head_elev_m": 12.0,
@@ -813,7 +816,7 @@
     "lon": -36.5,
     "elevation_m": 1283.0,
     "temp_c": 44.7,
-    "rain_mm": 1668,
+    "rain_mm": 40,
     "hilliness": "Mountainous",
     "coastal": true,
     "on_river": false,
@@ -921,8 +924,8 @@
     "lon": -40.13,
     "elevation_m": 1018.0,
     "temp_c": 44.2,
-    "rain_mm": 1668,
-    "hilliness": "Impassable",
+    "rain_mm": 40,
+    "hilliness": "Mountainous",
     "coastal": true,
     "on_river": false,
     "on_road": true,
@@ -940,7 +943,7 @@
     "elevation_m": 909.0,
     "temp_c": 44.3,
     "rain_mm": 1668,
-    "hilliness": "Impassable",
+    "hilliness": "Mountainous",
     "coastal": true,
     "on_river": false,
     "on_road": true,
@@ -1570,7 +1573,7 @@
     "elevation_m": 954.0,
     "temp_c": 36.3,
     "rain_mm": 1668,
-    "hilliness": "Impassable",
+    "hilliness": "Mountainous",
     "coastal": false,
     "on_river": false,
     "on_road": true,
@@ -1587,7 +1590,7 @@
     "lon": -22.46,
     "elevation_m": 928.0,
     "temp_c": 55.7,
-    "rain_mm": 1668,
+    "rain_mm": 65,
     "hilliness": "Mountainous",
     "coastal": true,
     "on_river": false,
