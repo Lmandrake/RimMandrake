@@ -399,8 +399,9 @@ scribed as `<world><info><name>`; the observed save reads `<name>Al Graffias</na
 ### `Flight of the Utinni` and "The Sundered"
 
 - The scenario name is **player-facing** and appears in the save's embedded
-  `<scenario><name>`. Since we ship a save and not a `ScenarioDef` (R-S2), it is
-  set by writing that node — one place, spelled once.
+  `<scenario><name>`. ⚠️ **Corrected 2026-08-21: R-S2 was REVERSED on 2026-08-19 by
+  this same file at line 164 — we DO author a `ScenarioDef`, and savegame writing is
+  out entirely. The name is set in the def, not by writing that node.**
 - ⭐ **"The Sundered" reaches the player through `ScenPart_GameStartDialog`**, which
   is already in R-S2's keep list and costs nothing. It is the only ongoing-ish part
   that carries prose. **If the translation is not in the opening narration it will

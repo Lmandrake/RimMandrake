@@ -258,7 +258,7 @@ edit the same world until that is tested.**
 - **`Hali.ModifyLandingTile`** — Modify Tiles at Game Start, **ACTIVE**. This is the mod
   supplying the `Set biome (mod)...` / `Set landmark (mod)...` / `Clear Landmark (mod)`
   entries we found in the live debug menu. Single-tile, mouse-targeted.
-- **`Oblitus.MyLittlePlanet`** — INACTIVE. The only way to change world size / tile count.
+- **`Oblitus.MyLittlePlanet`** — ✅ **ACTIVE** (corrected 2026-08-21 by CHECK: index 194 of the live 578; it was read as inactive while the 13-mod minimal list was installed). The only way to change world size / tile count.
   Note `WorldPreset` carries a `myLittlePlanetSubcount` field, so Worldbuilder expects it.
 - ⚠️ **`7f.alienworlds` (Alien Worlds Framework) is ACTIVE and states it is "fully
   integrated with Worldbuilder"** — which is inactive. The active planet-type framework is

@@ -38,6 +38,15 @@ BEFORE the run rather than at the screen, at 3am, alone._
 > read exactly once and can never be patched afterwards. **A wrong answer here is
 > not a bug — it is a new campaign.**
 
+> ⭐ **REHEARSE IT FIRST — added 2026-08-21, CHECK.**
+> `infrastructure/state/WORLDPAINT_REHEARSAL.md` paints the same 21,872-tile bundle onto a
+> **throwaway** generated world, proving the import end to end and putting the planet on
+> screen for the owner to judge, at no cost to this run. It also records the two gates that
+> are shut on THIS file right now: **no `ScenarioDef` exists**, and `JawaFactionSlate`'s
+> generated `OnlyOurFactions.xml` zeroes four factions the ratified checklist marks KEEP —
+> including `guy762_KotORFaction_RogueDroids` — in a way the Configure Factions page cannot
+> undo. Settle both before booking this load.
+
 ---
 
 ## 1. The gate — what must be TRUE before anyone books the load
