@@ -411,3 +411,27 @@ about what you were thinking.
   `kind: decision` items owned by OWNER and you carry on with anything else. The board
   shows the depth, so the backlog is visible on his return rather than four seats having
   quietly stopped. He clears it with `rimflow next --seat OWNER`.
+
+## 🔴 Citing an item ID is a claim about its STATE — run `rimflow show` first
+
+**Owner's correction, 2026-08-21**, after a seat warned him that an item gated his load.
+He had reversed it four hours earlier and the item was already `dropped`:
+*"I already ruled on that! Something is really wrong. You should already know that."*
+
+- ⛔ **Never name an item as a live gate, blocker or precondition** — in a warning, a table,
+  a spec, a briefing or a report — without running `rimflow show <ID>` and reading its
+  state. `dropped` and `done` items keep their names, so the name proves nothing.
+- 🔴 **A measurement of the world is not a measurement of the decision.** The seat measured
+  that the mod was still installed and concluded "ruled but never executed". The mod being
+  present *was the ruling working.*
+
+## 🔴 A reversal propagates in the SAME COMMIT, into every file that names the item
+
+The reversal above lived in exactly one place — the `drop` event's reason string in the
+ledger — while three tables in `queue/HUMAN.md` and one design doc went on citing the item
+as a live gate. **The ledger is not a publication channel. Nobody reads backwards into it.**
+
+✅ **So: a `drop` or `close` whose reason carries an owner REVERSAL is not finished until
+every file naming that item has been corrected, in the same commit.** Three separate
+failures of this were found in one day — this one, `VME_Nomad` (reversal in `APPROVED.md`
+alone, three files left stale), and the `rimflow next` invisibility family.
