@@ -7,7 +7,19 @@ BUILD builds from this; nothing here should require a decision from them._
 
 ## The shape, in one paragraph
 
-**Twelve factions × four roles = 48 `PawnKindDef`s.** Every one sets
+**Twelve factions × four roles = 48 `PawnKindDef`s.**
+
+⚠️ **Name the denominator: the twelve are the factions that HOLD SETTLEMENTS on the
+painted map**, which is also the twelve that carry dossiers in `faction_roster_v2.md`.
+**The full roster is THIRTEEN** (`factions.count` in
+`D:\Luke\dev\Rimworld\infrastructure\state\canon.yml`): the thirteenth is the
+Forgotten Arsenal (vanilla `Mechanoid`), which holds no settlement by design, gets a
+label patch rather than a dossier, and therefore gets **no kinds here**. So 12 is right
+in this arithmetic and 13 is right for the roster; they are different questions.
+🔴 The **fourteenth** faction some older docs count — the Unbound Hive — was cut
+2026-08-14 and the cut landed on disk.
+
+Every one sets
 **`useFactionXenotypes: true`**, so it draws its species from the faction's own
 `xenotypeSet` and **one kind spawns the whole species mix wearing that faction's
 gear.** Species never appear in a kind's name.

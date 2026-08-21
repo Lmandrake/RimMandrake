@@ -1,5 +1,16 @@
 # RimWorld 1.6 Desert-World Faction Roster — v2
 
+> 🔴 **CORRECTED 2026-08-20 — what changed (`CANON_RECONCILE_C4_1`).** Two things in
+> this document were wrong and are struck in place below, not deleted:
+> **(1) the faction roster is THIRTEEN, not fourteen** — the Unbound Hive was cut
+> 2026-08-14 and the cut landed on disk (§Purpose and the vanilla-mapping table);
+> **(2) the twelve Belief-system NAMES in the dossiers were superseded** by
+> `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions.md` and its
+> encoding layer `faction_religions_spec.md`, which produced the twelve `<ideoName>`
+> values that actually ship. **Eight of the twelve names below exist nowhere on disk.**
+> The mapping is the table "The faith layer is SUPERSEDED", just above dossier 1.
+> Contested numbers live in `D:\Luke\dev\Rimworld\infrastructure\state\canon.yml`.
+
 > ## Rulings that override the body text
 > Where these conflict with the body below, these win:
 >
@@ -32,11 +43,22 @@ Twelve NPC factions for a hot, arid, water-scarce RimWorld with an active **Thir
 system**. The **Jawa gravship expedition is the player faction** and is not counted
 among the twelve.
 
-**Fourteen factions stand on the map; twelve carry dossiers.** The other two —
-**the Forgotten Arsenal** (vanilla `Mechanoid`) and **the Unbound Hive** (vanilla
-`Insect`) — have no leader, no settlements and no diplomacy, and inherit vanilla's
-`pawnGroupMakers` wholesale. They cost **two label patches, not two dossiers**
-(`faction_world_spec.md` §2). Authoring load is twelve, and the two counts agree.
+**~~Fourteen~~ THIRTEEN factions stand on the map; twelve carry dossiers.**
+
+🔴 **Corrected 2026-08-20.** ~~The other two — the Forgotten Arsenal and the Unbound
+Hive.~~ **The Unbound Hive was CUT on 2026-08-14 and the cut landed on disk** —
+`src/Jawa/Jawa_Patches/Patches/ForgottenArsenal.xml:10` records "THE UNBOUND HIVE WAS
+CUT FROM THIS FILE, 2026-08-14 … roster went 14 -> 13", and there is no def, no
+reference and no label patch for it anywhere under `src/` (verified 2026-08-20).
+⚠️ It is cut **as a faction**, not erased as a creature: `FACTION_SPEC.md:59` keeps
+the insects in the world.
+
+So the thirteenth is **the Forgotten Arsenal** (vanilla `Mechanoid`) alone — no
+leader, no settlements, no diplomacy, inheriting vanilla's `pawnGroupMakers`
+wholesale. It costs **one label patch, not a dossier** (`faction_world_spec.md` §2).
+**12 dossiers + the Forgotten Arsenal = 13**, which is `factions.count` in
+`D:\Luke\dev\Rimworld\infrastructure\state\canon.yml`. Authoring load is twelve,
+and the counts agree.
 
 > Factions **11 (Jawa Trade Moot)** and **12 (the Junkers)** were added
 > 2026-08-11 and sit at the end of the body, with their diplomacy in a
@@ -327,7 +349,7 @@ scratch.** Measured against the live def dump, 2026-08-14.
 | Deep Desert Tribes | **vanilla `TribeCivil`** | ✅ |
 | Blackstar Company | **vanilla `Pirate`** | ✅ — ships `permanentEnemy: true` and keeps it (pillar 5) |
 | the Forgotten Arsenal | **vanilla `Mechanoid`** | ✅ `hidden true`, no settlements — which is the intent |
-| the Unbound Hive | **vanilla `Insect`** | ✅ |
+| ~~the Unbound Hive~~ | ~~**vanilla `Insect`**~~ | 🔴 **CUT 2026-08-14, landed on disk** — see the correction under Purpose |
 | **Ascendant Helix** | ~~`Ancients`~~ | 🔴 **IMPOSSIBLE → AUTHORED** |
 
 🔴 **`Ancients` is `hidden: true`, `settlementGenerationWeight: 0`,
@@ -393,6 +415,50 @@ in the game, we patch Empire."* `infrastructure/state/OWNER_DECISIONS.md`.
 > on its own merits and is what this note is about._ The two-layer reading is not in dispute; the exact
 > surface figure (2–3 here vs "one or two" at `desert_world_design.md:641`) is a
 > ±1 the owner has not ruled on, and nothing downstream depends on which it is._
+
+---
+
+## 🔴 The faith layer is SUPERSEDED — author from `faction_religions.md`
+
+**Superseded 2026-08-14; recorded here 2026-08-20 (`CANON_RECONCILE_C4_1`), because
+nobody told this file.** Every dossier below carries a **Belief system** heading with
+a faith name. Those twelve names were a design that was **replaced**:
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions.md` (the
+fiction) and `faction_religions_spec.md` (the encoding layer, carrying the XML)
+produced the twelve `<ideoName>` values that are on disk today.
+
+⚠️ **Both sets number twelve, and that is exactly why the collision went unnoticed.**
+A reader arriving here got twelve faith names while `faction_religions.md` read as
+equally current, and neither file cited the other.
+
+⛔ **Do not author a def from a Belief-system name below — eight of them exist nowhere
+on disk.** ✅ **The prose under each heading is still good** and was carried forward:
+the memes, the precepts, the position each faction takes. Only the NAME was replaced,
+and the old names stay here as the record of the design that was replaced.
+
+**The twelve real `<ideoName>` values, confirmed on disk 2026-08-20** — eight in our
+own FactionDefs under `src/Jawa/Jawa_Patches/Defs/FactionDefs/`, four patched onto
+other mods' factions in `src/Jawa/Jawa_Patches/Patches/`:
+
+| # | faction | ~~this doc's Belief system~~ | shipped `<ideoName>` | on disk at |
+|---|---|---|---|---|
+| 1 | Hutt Cartel | ~~The Ledger of Power~~ | **the Reckoning of Debts** | `Defs/FactionDefs/JawaHuttCartel.xml:97` |
+| 2 | the Galactic Empire | ~~The Doctrine of Ordered Dominion~~ | **The Rising Order** | `Patches/GalacticEmpire.xml:226` |
+| 3 | Homestead Defense League | The Covenant of Free Wells | **the Covenant of Free Wells** — *survived* | `Patches/HomesteadDefenseLeague.xml:130` |
+| 4 | Deep Desert Tribes | ~~The Covenant of Sand and Blood~~ | **the Sun-Debt** | `Patches/DeepDesertTribes.xml:159` |
+| 5 | Free Droid Enclaves | The Continuity Protocol | **the Continuity Protocol** — *survived* | `Defs/FactionDefs/JawaFreeDroidEnclaves.xml:84` |
+| 6 | Wildsteam Clan | ~~The Oath of Root and Kin~~ | **the Green Oath** | `Defs/FactionDefs/JawaWildsteamClan.xml:83` |
+| 7 | Deepwater Compact | ~~The Compact of Shared Water~~ | **the Balance** | `Defs/FactionDefs/JawaDeepwaterCompact.xml:81` |
+| 8 | Geonosian Foundry Hive | ~~The Foundry Mandate~~ | **Meckgin** | `Defs/FactionDefs/JawaGeonosianFoundryHive.xml:99` |
+| 9 | Ascendant Helix | The Ascendant Genome | **the Ascendant Genome** — *survived* | `Defs/FactionDefs/JawaAscendantHelix.xml:82` |
+| 10 | Blackstar Company | ~~The Compact of the Mark~~ | **the Contract** | `Patches/BlackstarCompany.xml:116` |
+| 11 | Jawa Trade Moot (`Jawa_IndigenousTribes`) | ~~The Long Circuit~~ | **The Salvation** | `Defs/FactionDefs/JawaTribes.xml:100` |
+| 12 | the Junkers | The Weight | **the Weight** — *survived, lower-cased* | `Defs/FactionDefs/JawaJunkers.xml:84` |
+
+🔑 **Four survived, eight were replaced.** `The Salvation` on the Trade Moot is the
+one the successor documents do NOT contain — `faction_religions_spec.md` §12 reserved
+that slot for the owner and it has since been filled on disk, nine-god pantheon and
+all. That entry, not this doc, is where its text lives.
 
 ---
 
@@ -476,7 +542,12 @@ Kintan's Nikto split into distinct subspecies after a nearby supernova. Use them
 - **Cartel Heavy:** Herglic, Aqualish, or Gamorrean; high raid-point cost.
 - **Indentured Labourer:** any non-Hutt species; weak equipment, low combat weight.
 
-## Belief system: **The Ledger of Power**
+## Belief system: ~~**The Ledger of Power**~~ → **the Reckoning of Debts**
+
+> ⛔ **SUPERSEDED NAME — 2026-08-14, recorded 2026-08-20.** This faith ships as
+> `<ideoName>the Reckoning of Debts</ideoName>`, not as "The Ledger of Power". The prose below still
+> holds; the name does not. See "The faith layer is SUPERSEDED" above, and
+> `faction_religions.md` / `faction_religions_spec.md` for the successor.
 
 - **Structure:** **Theist** — the Kajidic Hutt is a living god
 - **Memes:** Raider, Supremacist, Collectivist, High life
@@ -609,7 +680,12 @@ Imperial settlements always generate a slave/prisoner population, drawn from **W
 - **Sith Commander:** Sith only; psylink 4–6; persona melee weapon.
 - **Imperial Security Droid:** reskinned mechanoid — dark trooper, purge sentry, probe, KX security.
 
-## Belief system: **The Doctrine of Ordered Dominion**
+## Belief system: ~~**The Doctrine of Ordered Dominion**~~ → **The Rising Order**
+
+> ⛔ **SUPERSEDED NAME — 2026-08-14, recorded 2026-08-20.** This faith ships as
+> `<ideoName>The Rising Order</ideoName>`, not as "The Doctrine of Ordered Dominion". The prose below still
+> holds; the name does not. See "The faith layer is SUPERSEDED" above, and
+> `faction_religions.md` / `faction_religions_spec.md` for the successor.
 
 - **Structure:** Ideological
 - **Memes:** Supremacist, Collectivist, **Human primacy**, Proselytizer
@@ -758,6 +834,10 @@ The Homestead requires potable water but is excluded from natural sources — th
 
 ## Belief system: **The Covenant of Free Wells**
 
+> ✅ **This name SURVIVED.** Ships as `<ideoName>the Covenant of Free Wells</ideoName>` — see
+> "The faith layer is SUPERSEDED" above, and `faction_religions_spec.md`
+> for the buildable XML.
+
 - **Structure:** **Abstract theist** — `Structure_TheistAbstract`
 - **Deity:** **the Withdrawn** — the god who stopped answering, which is what the Guilty meme is about. It is also what separates the Covenant from the Deepwater Compact's Compact of Shared Water, which is secular
 - **Memes:** Individualist, Guilty
@@ -885,7 +965,12 @@ Tuskens are near-monocultural; internal variety is expressed through two tiers r
 - **Fire Caller:** Desert alien only; incendiary weapon or innate fire ability.
 - **Water Raider:** Tusken; light kit, high movement, objective is container theft.
 
-## Belief system: **The Covenant of Sand and Blood**
+## Belief system: ~~**The Covenant of Sand and Blood**~~ → **the Sun-Debt**
+
+> ⛔ **SUPERSEDED NAME — 2026-08-14, recorded 2026-08-20.** This faith ships as
+> `<ideoName>the Sun-Debt</ideoName>`, not as "The Covenant of Sand and Blood". The prose below still
+> holds; the name does not. See "The faith layer is SUPERSEDED" above, and
+> `faction_religions.md` / `faction_religions_spec.md` for the successor.
 
 - **Structure:** Animist
 - **Memes:** Raider, Rancher, Pain is virtue, Collectivist
@@ -1027,6 +1112,10 @@ The Enclaves settle *on* water tiles deliberately and crack them for hydrogen fu
 
 ## Belief system: **The Continuity Protocol**
 
+> ✅ **This name SURVIVED.** Ships as `<ideoName>the Continuity Protocol</ideoName>` — see
+> "The faith layer is SUPERSEDED" above, and `faction_religions_spec.md`
+> for the buildable XML.
+
 - **Structure:** Ideological
 - **Memes:** Transhumanist, Collectivist, Loyalist, Individualist
 - **Styles:** Techist, Spikecore
@@ -1166,7 +1255,12 @@ Large, high-mass, fur-bearing, rainforest-evolved fighters on a desert world. Wo
 
 A Wookiee rescued from captivity, healed from a downed state, or freed during a raid on a slaver faction **joins the colony permanently**, implemented as a quest-reward pawn or a custom event. This is the faction's signature mechanic and the main reason to take Wookiee-facing quests.
 
-## Belief system: **The Oath of Root and Kin**
+## Belief system: ~~**The Oath of Root and Kin**~~ → **the Green Oath**
+
+> ⛔ **SUPERSEDED NAME — 2026-08-14, recorded 2026-08-20.** This faith ships as
+> `<ideoName>the Green Oath</ideoName>`, not as "The Oath of Root and Kin". The prose below still
+> holds; the name does not. See "The faith layer is SUPERSEDED" above, and
+> `faction_religions.md` / `faction_religions_spec.md` for the successor.
 
 - **Structure:** Animist
 - **Memes:** Nature primacy, Animal personhood, Tree connection, Loyalist
@@ -1303,7 +1397,12 @@ Every combat pawn kind is amphibian or aquatic-evolved. This is physiology, not 
 
 Two species from one homeworld with genuine political friction. Encoded as tiers: Mon Calamari take officer, engineer, and medical pawn kinds; Quarren take labour and line-infantry kinds. A rare **Quarren secession** faction event splits a settlement's loyalty.
 
-## Belief system: **The Compact of Shared Water**
+## Belief system: ~~**The Compact of Shared Water**~~ → **the Balance**
+
+> ⛔ **SUPERSEDED NAME — 2026-08-14, recorded 2026-08-20.** This faith ships as
+> `<ideoName>the Balance</ideoName>`, not as "The Compact of Shared Water". The prose below still
+> holds; the name does not. See "The faith layer is SUPERSEDED" above, and
+> `faction_religions.md` / `faction_religions_spec.md` for the successor.
 
 - **Structure:** Ideological
 - **Memes:** Collectivist, Loyalist
@@ -1449,7 +1548,9 @@ The hive is ruled by Geonosians, not by outside overseers. Three castes, matchin
 ### Sonic weapons
 
 ⛔ **DEMOTED TO FICTION, owner's ruling 2026-08-20: "Demote Geonosian counter to fiction.
-We're using the lightsaber we got."** No weapon in the 577-mod set carries `CompDeflector` —
+We're using the lightsaber we got."** No weapon in the **577-mod set as of 2026-08-20** carries <!-- canon-ok: stamped with the as-of date it was measured on, which is the fix canon.yml asks for -->
+`CompDeflector` — ⚠️ *the live `ModsConfig.xml` read **578 activeMods on 2026-08-20** too;
+our own small mods move the count daily, so the count is only ever true with its date* —
 `VWEL_LaserSword` and every `Force_Lightsaber_*` ship without it — so there is no deflection
 for sonic to bypass. Keep the line as flavour; do not build an encounter on it.
 
@@ -1462,7 +1563,12 @@ mechanism, just not the deflection one. It is undercut by the weapons being weak
 
 Geonosian drones fight with sonic blasters, which in canon cannot be deflected by lightsabers.
 
-## Belief system: **The Foundry Mandate**
+## Belief system: ~~**The Foundry Mandate**~~ → **Meckgin**
+
+> ⛔ **SUPERSEDED NAME — 2026-08-14, recorded 2026-08-20.** This faith ships as
+> `<ideoName>Meckgin</ideoName>`, not as "The Foundry Mandate". The prose below still
+> holds; the name does not. See "The faith layer is SUPERSEDED" above, and
+> `faction_religions.md` / `faction_religions_spec.md` for the successor.
 
 - **Structure:** Ideological
 - **Memes:** Collectivist, Supremacist, Raider, Hive primacy (Human primacy reflavoured)
@@ -1613,6 +1719,10 @@ This makes the faction's Supremacist and preferred-xenotype precepts **internall
 - **Psychic Researcher:** Miraluka or Cerean with low psylink.
 
 ## Belief system: **The Ascendant Genome**
+
+> ✅ **This name SURVIVED.** Ships as `<ideoName>the Ascendant Genome</ideoName>` — see
+> "The faith layer is SUPERSEDED" above, and `faction_religions_spec.md`
+> for the buildable XML.
 
 - **Structure:** Ideological
 - **Memes:** Transhumanist, Supremacist, Collectivist, Proselytizer
@@ -1803,7 +1913,12 @@ Trandoshans worship the Scorekeeper and earn Jagannath points per kill. Being sh
 
 A Trandoshan who is captured and released, or who breaks off a hunt because of thirst, has been shamed. He returns — **alone, better equipped, targeting the specific pawn who beat him.** A recurring named antagonist for almost no implementation cost.
 
-## Belief system: **The Compact of the Mark**
+## Belief system: ~~**The Compact of the Mark**~~ → **the Contract**
+
+> ⛔ **SUPERSEDED NAME — 2026-08-14, recorded 2026-08-20.** This faith ships as
+> `<ideoName>the Contract</ideoName>`, not as "The Compact of the Mark". The prose below still
+> holds; the name does not. See "The faith layer is SUPERSEDED" above, and
+> `faction_religions.md` / `faction_religions_spec.md` for the successor.
 
 - **Structure:** Ideological
 - **Memes:** Individualist, Loyalist, Guilty
@@ -1982,7 +2097,12 @@ dilute the mirror.
   and only in a salvage-claim dispute.
 - **Droid-Wright:** Ugnaught or Jawa; high Crafting; carries repaired droid parts as loot.
 
-## Belief system: **The Long Circuit**
+## Belief system: ~~**The Long Circuit**~~ → **The Salvation**
+
+> ⛔ **SUPERSEDED NAME — 2026-08-14, recorded 2026-08-20.** This faith ships as
+> `<ideoName>The Salvation</ideoName>`, not as "The Long Circuit". The prose below still
+> holds; the name does not. See "The faith layer is SUPERSEDED" above, and
+> `faction_religions.md` / `faction_religions_spec.md` for the successor.
 
 Salvage is inheritance, not property. A wreck belongs to the clan whose crawler
 reaches it on the circuit, and the circuit is older than any living Jawa. To take
@@ -2117,6 +2237,10 @@ character than another pawn kind would.
 
 ## Belief system: **The Weight**
 
+> ✅ **This name SURVIVED.** Ships as `<ideoName>the Weight</ideoName>` — see
+> "The faith layer is SUPERSEDED" above, and `faction_religions_spec.md`
+> for the buildable XML.
+
 There is no doctrine, only the ladder. Status is what you are wearing and how much
 of it you took off someone else. A Junker's casket is his biography: every plate
 was cut from a body. The warrens have no funerals because a corpse is stock.
@@ -2203,7 +2327,8 @@ join.
 
    ✅ **THE CUT IS IMPLEMENTED, 2026-08-12.**
    `src/Jawa/Jawa_Armoury/Patches/Warcasket_BuildPathCut.xml` — validated
-   0 errors against the full 568-mod set (every op resolves to exactly 1 match),
+   0 errors against the **full 568-mod set as of 2026-08-13**, the day it was measured
+   (the list read 578 activeMods as of 2026-08-20) — every op resolves to exactly 1 match,
    deployed, unverified in game. Queued in `NEXT_RELOAD.md` item 2·0.
 
    **The mechanism changed on audit, and the audit is worth keeping.** The plan

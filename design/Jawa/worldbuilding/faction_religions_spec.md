@@ -1,5 +1,21 @@
 # Eleven religions, buildable — the encoding layer
 
+> 🔑 **WHAT ACTUALLY SHIPPED — twelve `<ideoName>` values, confirmed on disk
+> 2026-08-20 (`CANON_RECONCILE_C4_1`).** Eleven of them came from this pair of files.
+> **Eight** are in our own FactionDefs under `src/Jawa/Jawa_Patches/Defs/FactionDefs/` —
+> **the Balance · the Continuity Protocol · the Green Oath · Meckgin · The Salvation ·
+> the Ascendant Genome · the Reckoning of Debts · the Weight** — and **four** are
+> patched onto other mods' factions in `src/Jawa/Jawa_Patches/Patches/`:
+> **the Contract** (BlackstarCompany) · **the Sun-Debt** (DeepDesertTribes) ·
+> **the Covenant of Free Wells** (HomesteadDefenseLeague) ·
+> **The Rising Order** (GalacticEmpire).
+>
+> ⚠️ **`faction_roster_v2.md` also names twelve faiths and they are NOT these twelve.**
+> That layer — The Ledger of Power, The Doctrine of Ordered Dominion, The Foundry
+> Mandate and nine more — was **superseded by these files**, and the roster went six
+> days without being told, so both read as current. The roster now carries the mapping
+> table; author from here, never from there.
+
 _A retired seat, 2026-08-14. **These are decisions, not recommendations.** The fiction
 lives in `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions.md`;
 this file is what BUILD authors from. Every defName below was read out of the
@@ -1095,7 +1111,19 @@ explicable. ⭐ **Keep them unexplained.** Every other faction on this map answe
 
 ## 12 · Jawa Gravship Expedition — **the owner's**
 
-🔴 **Deliberately empty.** The player's own religion is the only one on this list
+> ✅ **NO LONGER EMPTY — measured on disk 2026-08-20 (`CANON_RECONCILE_C4_1`).** The
+> owner built it and it shipped as **`<ideoName>The Salvation</ideoName>`** at
+> `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml:100` — on
+> `Jawa_IndigenousTribes` (the Jawa Trade Moot), not on a separate player-faction def.
+> Its `ideoDescription` carries the full nine-god pantheon: Ishko · Ohm · Oomo ·
+> Mob'Unloo · Rekko · Ta'Baa · Zizzik · Sh'kaar · Ozzik. **That makes it the twelfth of
+> the twelve `<ideoName>` values on disk.**
+>
+> 🔑 **Blocker 1 below is therefore ANSWERED: the name is "The Salvation",** not "The
+> Articles of Passage" — §2.0's 2026-08-08 lock is what got built. **Blocker 2
+> (Nomad-primary vs Tunneler-primary) is untouched by this and is still open.**
+
+🔴 ~~**Deliberately empty.**~~ The player's own religion is the only one on this list
 that will be *played* rather than met, and it is the owner's to build. The material
 that already exists is in
 `design/Jawa/worldbuilding/ideoligion/APPROVED.md`

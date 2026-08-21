@@ -25,6 +25,11 @@ With it true, a kind draws its species from the faction's own `xenotypeSet` — 
 
 > **⇒ PER FACTION, BY ROLE. Species ride free.**
 > **~4 kinds × 12 factions ≈ 48 kinds, not 80 × 12 = 960.**
+> <!-- canon-ok: this 80 is a hypothetical kinds-per-faction figure, not a species count -->
+
+⚠️ **That `80` is pawnkinds-per-faction arithmetic, not a species count** — noted
+2026-08-20 so it is not mistaken for one of the species denominators
+(42 / 44 / 70 / 71 / 79, each a different population; see `canon.yml`).
 
 **And a Weequay in the Cartel automatically carries different gear from a Weequay
 in Blackstar**, because they are different kinds — which is the outcome we wanted,
@@ -95,7 +100,17 @@ blocked. **Build the roles; fill the species names when the test lands.**
 
 # The canon research, and the numbers it produces
 
-_Research: 70 species read from Wookieepedia wikitext, continuity marked per claim.
+_Research: 70 species read from Wookieepedia **wikitext**, continuity marked per claim.
+⚠️ **Denominator, added 2026-08-20 (`CANON_RECONCILE_C4_1`): this 70 counts SPECIES
+ARTICLES RESEARCHED, and it is not the other 70.** It is not the BTD mod's xenotype
+roster (also 70, `faction_stage3_buildable_spec.md:42`), not the 71 XenotypeDefs we now
+define under `src/`, not the 42 shipped by Outer Rim – Galactic Diversity, not the 44
+reviewed in the art audit, and not the 79 mechanically distinct Star Wars species
+available across all installed mods. Those are five different populations — see
+`species.denominators` in
+`D:\Luke\dev\Rimworld\infrastructure\state\canon.yml`, which forbids reconciling
+them. Always write the denominator beside the number._
+_
 **Full findings in the commit; the load-bearing conclusions are here.**_
 
 ## ⭐ The finding that validates the whole approach

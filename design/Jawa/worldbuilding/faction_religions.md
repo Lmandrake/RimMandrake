@@ -1,5 +1,27 @@
 # Eleven religions, seeded — every one a position on the light
 
+> 🔑 **WHAT ACTUALLY SHIPPED — twelve `<ideoName>` values, confirmed on disk
+> 2026-08-20 (`CANON_RECONCILE_C4_1`).** Eleven of them came from this pair of files.
+> **Eight** are in our own FactionDefs under `src/Jawa/Jawa_Patches/Defs/FactionDefs/` —
+> **the Balance · the Continuity Protocol · the Green Oath · Meckgin · The Salvation ·
+> the Ascendant Genome · the Reckoning of Debts · the Weight** — and **four** are
+> patched onto other mods' factions in `src/Jawa/Jawa_Patches/Patches/`:
+> **the Contract** (BlackstarCompany) · **the Sun-Debt** (DeepDesertTribes) ·
+> **the Covenant of Free Wells** (HomesteadDefenseLeague) ·
+> **The Rising Order** (GalacticEmpire).
+>
+> ⚠️ **`faction_roster_v2.md` also names twelve faiths and they are NOT these twelve.**
+> That layer — The Ledger of Power, The Doctrine of Ordered Dominion, The Foundry
+> Mandate and nine more — was **superseded by these files**, and the roster went six
+> days without being told, so both read as current. The roster now carries the mapping
+> table; author from here, never from there.
+>
+> 🔑 **Eleven here, twelve on disk, and the twelfth is not a contradiction.** This file
+> deliberately excludes the Jawa faith (it is the owner's). It shipped anyway, as
+> **The Salvation** on `Jawa_IndigenousTribes` — the Keepers of the Second Hand and
+> their nine arguing gods, at `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml:100`.
+> Entry 11 below (the Junkers, "no doctrine, only the ladder") shipped as **the Weight**.
+
 _A retired seat, 2026-08-14. **Seeds for the owner to modify.** The Jawa faith is the
 owner's and is not attempted here. Where the roster already has belief material,
 this builds on it and says so._
