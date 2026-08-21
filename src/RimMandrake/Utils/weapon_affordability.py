@@ -61,13 +61,12 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+sys.path.insert(0, HERE)
+from game_paths import DEF_DUMP  # noqa: E402
 ROSTER_GEN = os.path.join(HERE, "gen_pawnkind_roster.py")
 
 _DUMPS = [
-    r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-    r"\RimWorld by Ludeon Studios\DefDump\defs",
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios"
-    "/RimWorld by Ludeon Studios/DefDump/defs",
+    os.path.join(DEF_DUMP, "defs"),
 ]
 
 

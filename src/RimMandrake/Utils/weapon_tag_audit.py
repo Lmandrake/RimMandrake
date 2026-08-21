@@ -25,9 +25,9 @@ import argparse, json, os, re, sys, xml.etree.ElementTree as ET
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from game_paths import LOCALLOW, MODS_CONFIG            # noqa: E402
+from game_paths import DEF_DUMP, LOCALLOW, MODS_CONFIG   # noqa: E402
 
-DUMP = Path(LOCALLOW) / "DefDump"
+DUMP = Path(DEF_DUMP)
 REPO = Path(__file__).resolve().parents[3]
 CUTS = REPO / "observed" / "inventory"
 

@@ -45,10 +45,12 @@ import os
 import sys
 import xml.etree.ElementTree as ET
 
-LOW = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios"
-       "/RimWorld by Ludeon Studios")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import DEF_DUMP, LOCALLOW  # noqa: E402
+
+LOW = LOCALLOW
 CONFIG = os.path.join(LOW, "Config", "ModsConfig.xml")
-MANIFEST = os.path.join(LOW, "DefDump", "manifest.json")
+MANIFEST = os.path.join(DEF_DUMP, "manifest.json")
 
 
 def requested(path):

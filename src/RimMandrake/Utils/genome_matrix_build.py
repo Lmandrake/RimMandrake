@@ -50,7 +50,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from game_paths import LOCALLOW  # noqa: E402
+from game_paths import DEF_DUMP  # noqa: E402
 from genome_scan import (  # noqa: E402
     active_package_ids,
     build_texture_index,
@@ -62,7 +62,7 @@ try:
 except ImportError:
     sys.exit("Pillow is required. Run with ~/.venvs/rimart/bin/python.")
 
-DUMP = Path(LOCALLOW) / "DefDump" / "defs"
+DUMP = Path(DEF_DUMP) / "defs"
 ICON_PX = 28
 
 # ---------------------------------------------------------------- row selection
@@ -592,7 +592,7 @@ def build(args) -> int:
 
 
 def dump_stamp() -> str:
-    man = Path(LOCALLOW) / "DefDump" / "manifest.json"
+    man = Path(DEF_DUMP) / "manifest.json"
     try:
         m = json.loads(man.read_text(encoding="utf-8"))
         return f'{m.get("capturedUtc", "?")} (game {m.get("gameVersion", "?")})'

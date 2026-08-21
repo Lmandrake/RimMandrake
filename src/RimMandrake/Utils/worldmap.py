@@ -88,8 +88,10 @@ DECODE = {
     "tileElevation":   (lambda v: float(v - 8192),   lambda m: int(round(m)) + 8192),
 }
 
-DEFAULT_DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                "RimWorld by Ludeon Studios/DefDump/defs")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import DEF_DUMP                                   # noqa: E402
+
+DEFAULT_DUMP = os.path.join(DEF_DUMP, "defs")
 
 
 def load_hash_table(def_type, dump_dir=DEFAULT_DUMP):

@@ -57,11 +57,9 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from dump_manifest import dump_db          # noqa: E402
+from game_paths import DEF_DUMP            # noqa: E402
 
-DUMP = Path(
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-    "RimWorld by Ludeon Studios/DefDump"
-)
+DUMP = Path(DEF_DUMP)
 CACHE = Path(
     os.environ.get("TMPDIR", "/tmp")
 ) / "rimworld_defindex.json"

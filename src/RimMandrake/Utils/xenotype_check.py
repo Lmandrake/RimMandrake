@@ -56,6 +56,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from game_paths import DEF_DUMP  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[3]
 SCAN_DIR = REPO / "observed" / "genome"
@@ -63,8 +64,7 @@ SCAN_DIR = REPO / "observed" / "genome"
 # The live def dump. game_paths.py knows the game install; the dump lives beside
 # the config under LocalLow and is written by the def-dump mod at load.
 DUMP_DIR = Path(
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-    "RimWorld by Ludeon Studios/DefDump/defs"
+    os.path.join(DEF_DUMP, "defs")
 )
 
 # --- the caps ---------------------------------------------------------------

@@ -90,41 +90,24 @@ def _first_existing(paths):
 def _measure_scripts():
     """Find the measuring-large-artifacts skill, which lives OUTSIDE this repo.
 
-    It is a generic skill that this project happens to use, so it is versioned
-    on its own. Three places are tried, most explicit first; returns None if it
-    is not installed, and every caller here degrades rather than failing.
+    🔑 **A LOCATOR CALL, not a second locator.** This used to be a verbatim copy
+    of `dump_manifest.skill_scripts()` — the same three candidates in the same
+    order, in two files that had to change together the day the skill moved. One
+    of them would not have. `dump_manifest`'s own docstring says it exists so
+    that "if the skill moves, one file changes"; a duplicate here made that false.
+
+    Still returns None rather than raising: every caller here degrades.
     """
-    import os
-    cands = []
-    env = os.environ.get("MEASURE_SKILL_HOME")
-    if env:
-        cands.append(os.path.join(env, "scripts"))
-    cands.append(os.path.expanduser(
-        "~/.claude/skills/measuring-large-artifacts/scripts"))
-    d = os.path.abspath(__file__)
-    while d != os.path.dirname(d):
-        d = os.path.dirname(d)
-        if os.path.isdir(os.path.join(d, ".git")):
-            cands.append(os.path.join(os.path.dirname(d),
-                                      "measuring-large-artifacts", "scripts"))
-            break
-    for c in cands:
-        if os.path.isdir(os.path.join(c, "measure")):
-            return c
-    return None
+    from dump_manifest import skill_scripts
+    return skill_scripts()
 
-
-_LOCALLOW_WIN = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios"
-_LOCALLOW_WSL = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
-
-D_CONFIG = _first_existing([
-    os.path.join(_LOCALLOW_WIN, r"Config\ModsConfig.xml"),
-    os.path.join(_LOCALLOW_WSL, "Config/ModsConfig.xml"),
-])
-D_DUMP = _first_existing([
-    os.path.join(_LOCALLOW_WIN, "DefDump"),
-    os.path.join(_LOCALLOW_WSL, "DefDump"),
-])
+# ⚠️ These were a SECOND path seam — refresh.py resolved the LocalLow root from
+# its own literals while already importing game_paths for MOD_ROOTS just below,
+# and `gen_armour_patch.py` and `gen_megafauna_yield.py` import `D_DUMP` from
+# here. Two seams means a move of the dump has two places to miss, and the
+# second one has no test. They are now aliases of the one seam.
+D_CONFIG = _GP.MODS_CONFIG
+D_DUMP = _GP.DEF_DUMP
 INVENTORY = os.path.join(ROOT, "observed", "2026-08-13",
                          "inventory")
 STAMP = os.path.join(INVENTORY, "GENERATED_FROM.json")

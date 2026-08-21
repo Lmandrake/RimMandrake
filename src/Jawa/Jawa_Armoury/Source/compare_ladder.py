@@ -35,7 +35,7 @@ from def_diff import iter_live_defs
 # FileNotFoundError naming ThingDef.json - reading as "take a fresh dump" when the
 # dump is present and only the interpreter is wrong. game_paths resolves it.
 import game_paths as _GP
-DUMP = os.path.join(_GP.LOCALLOW, "DefDump", "defs", "ThingDef.json")
+DUMP = os.path.join(_GP.DEF_DUMP, "defs", "ThingDef.json")
 PATCHES = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury",
                        "Patches", "*.xml")
 TORSO = 40.0

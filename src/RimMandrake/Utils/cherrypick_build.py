@@ -57,7 +57,7 @@ sys.path.insert(0, HERE)
 from def_diff import iter_live_defs          # noqa: E402
 import game_paths as GP                       # noqa: E402
 
-DUMP = os.path.join(GP.LOCALLOW, "DefDump", "defs")
+DUMP = os.path.join(GP.DEF_DUMP, "defs")
 OUT = os.path.join(GP.LOCALLOW, "Config", "Mod_3521312241_Mod_CherryPicker.xml")
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 RATIFIED = os.path.join(REPO, "deployed", "config", "v1_freeze",

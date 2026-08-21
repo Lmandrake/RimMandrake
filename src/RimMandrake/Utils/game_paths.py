@@ -36,8 +36,8 @@ error saying `None` is worse than one naming a plausible file.
 
 import os
 
-__all__ = ["MODS_CONFIG", "DEF_DUMP", "WORKSHOP", "LOCAL_MODS", "GAME_DATA",
-           "LOCALLOW", "STEAM", "resolve", "describe"]
+__all__ = ["MODS_CONFIG", "DEF_DUMP", "PLAYER_LOG", "WORKSHOP", "LOCAL_MODS",
+           "GAME_DATA", "LOCALLOW", "STEAM", "resolve", "describe"]
 
 
 def resolve(win, wsl):
@@ -61,6 +61,10 @@ MODS_CONFIG = resolve(os.path.join(_LOW_WIN, r"Config\ModsConfig.xml"),
                       os.path.join(_LOW_WSL, "Config/ModsConfig.xml"))
 DEF_DUMP = resolve(os.path.join(_LOW_WIN, "DefDump"),
                    os.path.join(_LOW_WSL, "DefDump"))
+# ⚠️ RimWorld's OWN Player.log, not the one under Ludeon Studios/RimWorld/. The
+# distinction has cost a session before: this is the file the game appends to.
+PLAYER_LOG = resolve(os.path.join(_LOW_WIN, "Player.log"),
+                     os.path.join(_LOW_WSL, "Player.log"))
 WORKSHOP = resolve(os.path.join(_STEAM_WIN, r"workshop\content\294100"),
                    os.path.join(_STEAM_WSL, "workshop/content/294100"))
 LOCAL_MODS = resolve(os.path.join(_STEAM_WIN, r"common\RimWorld\Mods"),
@@ -73,6 +77,7 @@ def describe():
     """Print what resolved to what, and flag anything missing. Run this first
     when a script says a game file does not exist."""
     rows = [("ModsConfig.xml", MODS_CONFIG), ("DefDump/", DEF_DUMP),
+            ("Player.log", PLAYER_LOG),
             ("workshop/294100", WORKSHOP), ("Mods/", LOCAL_MODS),
             ("Data/", GAME_DATA)]
     width = max(len(n) for n, _ in rows)

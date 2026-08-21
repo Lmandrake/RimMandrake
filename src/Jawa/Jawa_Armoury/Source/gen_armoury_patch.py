@@ -90,7 +90,7 @@ from patch_provenance import guard, OurWrites, Recorder
 # was present and only the interpreter was wrong. refresh.py carries the
 # same lesson in its own header; game_paths.LOCALLOW is the shared fix.
 import game_paths as _GP
-DUMP = os.path.join(_GP.LOCALLOW, "DefDump", "defs", "ThingDef.json")
+DUMP = os.path.join(_GP.DEF_DUMP, "defs", "ThingDef.json")
 OUTDIR = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury", "Patches")
 
 # Mods whose HAND weapons sit on our ladder. Additive by design: dropping a mod

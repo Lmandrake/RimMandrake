@@ -57,7 +57,7 @@ sys.path.insert(0, os.path.join(_ROOT, "src", "RimMandrake", "Utils"))
 from def_diff import iter_live_defs            # noqa: E402
 import game_paths as _GP                        # noqa: E402
 
-DUMP = os.path.join(_GP.LOCALLOW, "DefDump", "defs", "ThingDef.json")
+DUMP = os.path.join(_GP.DEF_DUMP, "defs", "ThingDef.json")
 
 # Mods the generator already places on the emplacement rung, as of today.
 KNOWN = {"Giant imperial turret", "Rah's Vanilla Turrets Expansion",

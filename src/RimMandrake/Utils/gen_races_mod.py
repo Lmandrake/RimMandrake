@@ -40,10 +40,10 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__)))))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from dump_manifest import dump_db          # noqa: E402
+from game_paths import DEF_DUMP, WORKSHOP  # noqa: E402
 
-DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-        "RimWorld by Ludeon Studios/DefDump")
-WS = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
+DUMP = DEF_DUMP
+WS = WORKSHOP
 BTD = WS + "/3458153185"
 OUT = os.path.join(REPO, "src/Jawa/RimMandrake_StarWarsRaces")
 

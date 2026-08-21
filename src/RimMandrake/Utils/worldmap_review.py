@@ -78,6 +78,7 @@ import zlib
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from game_paths import DEF_DUMP, LOCALLOW  # noqa: E402
 import worldmap_effects as wme        # noqa: E402  the EFFECT sentences
 
 REPO = Path(__file__).resolve().parents[3]
@@ -91,8 +92,8 @@ OUT_HTML = OUT_DIR / "worldmap_elements.html"
 # Regenerate the prefill with src/RimMandrake/Utils/worldmap_prefill.py.
 PREFILL_JSON = OUT_DIR / "worldmap_elements.prefill.json"
 
-LOWLOW = Path("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios")
-DEFDUMP = LOWLOW / "DefDump" / "defs"
+LOWLOW = Path(LOCALLOW)
+DEFDUMP = Path(DEF_DUMP) / "defs"
 SAVES = LOWLOW / "Saves"
 
 DEF_TYPES = ("TileMutatorDef", "LandmarkDef")

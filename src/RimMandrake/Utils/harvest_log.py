@@ -58,18 +58,17 @@ import re
 import sys
 import textwrap
 
-DEFAULT_LOG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios"
-               "/RimWorld by Ludeon Studios/Player.log")
-WIN_LOG = (r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-           r"\RimWorld by Ludeon Studios\Player.log")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import MODS_CONFIG, PLAYER_LOG                    # noqa: E402
+
+# ⚠️ The WIN_/WSL pair these two used to carry is what `game_paths.resolve()`
+# already does — Windows form first, /mnt/c second, whichever EXISTS wins.
+DEFAULT_LOG = PLAYER_LOG
 
 # The mod list the game will have loaded. Its mtime is the launch-time anchor:
 # RimWorld reads this at startup and rewrites it on exit, so a ModsConfig
 # NEWER than the log can only mean the log is from an earlier run.
-DEFAULT_MODSCONFIG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios"
-                      "/RimWorld by Ludeon Studios/Config/ModsConfig.xml")
-WIN_MODSCONFIG = (r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-                  r"\RimWorld by Ludeon Studios\Config\ModsConfig.xml")
+DEFAULT_MODSCONFIG = MODS_CONFIG
 
 # Unity writes this block only when the process shuts down cleanly. Its
 # presence at the tail of a log means the run is OVER.
@@ -325,8 +324,7 @@ def provenance(path, lines, since=None, stale_ok=False):
 
     Returns a list of complaint strings; empty means the log is usable."""
     log_mtime = datetime.datetime.fromtimestamp(os.path.getmtime(path))
-    mc_path = (DEFAULT_MODSCONFIG if os.path.exists(DEFAULT_MODSCONFIG)
-               else WIN_MODSCONFIG)
+    mc_path = DEFAULT_MODSCONFIG
 
     build = next((l.strip() for l in lines[:800]
                   if l.startswith("RimWorld 1.")), "unknown build")
@@ -505,7 +503,7 @@ def main():
                          "anyway - deliberate re-reads only")
     args = ap.parse_args()
 
-    path = args.log or (DEFAULT_LOG if os.path.exists(DEFAULT_LOG) else WIN_LOG)
+    path = args.log or DEFAULT_LOG
     if not os.path.exists(path):
         sys.exit(f"log not found: {path}\n"
                  "Pass --log. Note WSL needs the /mnt/c/... form.")

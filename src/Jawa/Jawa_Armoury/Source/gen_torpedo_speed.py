@@ -58,7 +58,7 @@ from def_inventory import build as build_offline, D_CONFIG, D_WORKSHOP, D_LOCAL,
 # was present and only the interpreter was wrong. refresh.py carries the
 # same lesson in its own header; game_paths.LOCALLOW is the shared fix.
 import game_paths as _GP
-DUMP = os.path.join(_GP.LOCALLOW, "DefDump", "defs", "ThingDef.json")
+DUMP = os.path.join(_GP.DEF_DUMP, "defs", "ThingDef.json")
 OUT = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury", "Patches",
                    "Armoury_TorpedoSpeed.xml")
 

@@ -177,9 +177,10 @@ def available() -> bool:
 
 if __name__ == "__main__":
     import json
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from game_paths import DEF_DUMP
     p = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
-        "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-        "RimWorld by Ludeon Studios/DefDump", "manifest.json")
+        DEF_DUMP, "manifest.json")
     man, order = read_manifest(p)
     coll, lost = collision_report(order)
     print(json.dumps({

@@ -59,9 +59,9 @@ from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from game_paths import LOCALLOW, MODS_CONFIG  # noqa: E402
+from game_paths import DEF_DUMP, LOCALLOW, MODS_CONFIG  # noqa: E402
 
-DUMP = Path(LOCALLOW) / "DefDump" / "defs"
+DUMP = Path(DEF_DUMP) / "defs"
 LUDEON = ("ludeon.rimworld",)
 
 # The engine's own cap on total meme impact. Left None until it is MEASURED out

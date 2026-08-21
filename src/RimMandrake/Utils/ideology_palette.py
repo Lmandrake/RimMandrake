@@ -22,9 +22,9 @@ from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from game_paths import LOCALLOW  # noqa: E402
+from game_paths import DEF_DUMP  # noqa: E402
 
-DUMP = Path(LOCALLOW) / "DefDump"
+DUMP = Path(DEF_DUMP)
 OUT = Path("design/Jawa/worldbuilding/data/ideology_palette.md")
 
 

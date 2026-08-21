@@ -86,15 +86,14 @@ from xml.sax.saxutils import escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+sys.path.insert(0, HERE)
+from game_paths import DEF_DUMP  # noqa: E402
 
 CAST_DIR = os.path.join(ROOT, "design", "Jawa", "bridge")
 OUT_DIR = os.path.join(ROOT, "src", "Jawa", "Inhabited", "Defs", "CastRosters")
 
 _DUMPS = [
-    r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-    r"\RimWorld by Ludeon Studios\DefDump\defs",
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios"
-    "/RimWorld by Ludeon Studios/DefDump/defs",
+    os.path.join(DEF_DUMP, "defs"),
 ]
 
 # Factions tabled in INHABITED_DESIGN.md whose cast may not be written yet. This
