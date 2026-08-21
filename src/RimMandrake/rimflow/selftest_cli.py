@@ -37,6 +37,16 @@ TMP = os.path.join(REPO, ".rimflow_selftest_cli")      # under the repo, ON 9p, 
 PASS, FAIL = [], []
 
 
+def body(out):
+    """`next` opens with a `(game …, bridge …)` line. Strip it before matching an ID.
+
+    Added 2026-08-21 when that header was introduced: POLICY.md opened a turn with
+    `cli.py game`, which takes a required positional and errors bare, so the state
+    question is answered here instead and the turn lost a command.
+    """
+    return out.split("\n", 1)[1] if out.startswith("(game ") else out
+
+
 def case(name, fn):
     try:
         fn()
@@ -178,7 +188,7 @@ def t_next_prints_one_item_with_its_spec():
     ok("claim", "OFFER_THIS_ONE_1")
     ok("claim", "LATER_ROW_ITEM_1")
     out = ok("next", "--seat", "BUILD")
-    assert out.startswith("OFFER_THIS_ONE_1"), "row 2 must beat row 9: %s" % out
+    assert body(out).startswith("OFFER_THIS_ONE_1"), "row 2 must beat row 9: %s" % out
     assert "LATER_ROW_ITEM_1" not in out, "`next` prints ONE item, not a list: %s" % out
     assert "SPEC-MARKER" in out, "next must carry the spec or the seat opens the file anyway"
     assert "-> rimflow start OFFER_THIS_ONE_1" in out, out
@@ -321,12 +331,12 @@ def t_this_deployment_jumps_the_queue_and_clears_when_the_game_goes_down():
     prose("URGENT_FOLLOWUP_HERE_9")
     ok("claim", "URGENT_FOLLOWUP_HERE_9", seat="CHECK")
     out = ok("next", seat="CHECK")
-    assert out.startswith("URGENT_FOLLOWUP_HERE_9"), (
+    assert body(out).startswith("URGENT_FOLLOWUP_HERE_9"), (
         "the live window is closing and row 1 is not: %s" % out)
     assert "THIS DEPLOYMENT" in out, out
     ok("game", "DOWN", seat="OWNER")
     out = ok("next", seat="CHECK")
-    assert out.startswith("ROW_ONE_ITEM_HERE_1"), (
+    assert body(out).startswith("ROW_ONE_ITEM_HERE_1"), (
         "--this-deployment leaked past the window into false urgency: %s" % out)
 
 
@@ -342,7 +352,7 @@ def t_blocked_is_reported_and_the_item_is_withheld():
     assert "1  BLOCKED" in ok("next", "--seat", "BUILD"), (
         "the empty answer must bucket the reasons, not just say nothing")
     ok("unblock", "WAITING_ON_OWNER_1")
-    assert ok("next", "--seat", "BUILD").startswith("WAITING_ON_OWNER_1")
+    assert body(ok("next", "--seat", "BUILD")).startswith("WAITING_ON_OWNER_1")
 
 
 def t_reassign_is_decide_only():

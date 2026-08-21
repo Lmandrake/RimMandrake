@@ -228,6 +228,11 @@ def cmd_next(args, seat):
             return _offer_claimable(claimable, seat)
         return _nothing(w, seat, args, ctx)
 
+    # 🔑 ALWAYS state the world. `POLICY.md` used to open a turn with `cli.py game`,
+    # which takes a required positional and errors with no arguments — so the first of
+    # the three start-of-turn commands had never worked. The question it was asking is
+    # cheap to answer here, and answering it here means one fewer command in the turn.
+    print("(game %s, bridge %s)" % (w.game, w.bridge_holder or "free"))
     print("%s   %s" % (it.id, _scalars(it)))
     print(it.title or "(no title)")
     if it.caused_by:

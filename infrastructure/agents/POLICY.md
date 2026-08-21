@@ -182,13 +182,24 @@ will find out.
 same question in about 400 tokens, and answers it *correctly* — the file and the command
 call the same function, so they cannot disagree.
 
-### Start of turn — three commands, in this order, and no others
+### Start of turn — TWO commands, in this order, and no others
 
 ```
-python3 src/RimMandrake/rimflow/cli.py game                 what state is the game in?
 python3 src/RimMandrake/rimflow/cli.py seat ready           announce yourself
 python3 src/RimMandrake/rimflow/cli.py next --seat <ME>     your ONE item
 ```
+
+⚠️ **This block said THREE until 2026-08-21, and the first of them had never worked.**
+`cli.py game` takes a required positional — bare, it exits with an argparse error, so
+every seat's turn opened on a failing command. `next` now prints `(game …, bridge …)`
+itself, which is the question that command was asking. ⛔ Do not add `game` back: it is
+the OWNER's announcement verb, and a seat running it is refused by design.
+
+🔑 **`next` may answer with an item you have NOT claimed yet, and then the turn is three
+steps.** Work filed FOR you by another seat arrives in `proposed`; `next` names it and
+prints `rimflow claim <ID>`. **Run that, then `start`.** Until 2026-08-21 it did not
+surface them at all and 28 finished specs across four seats were unreachable — BUILD had
+18 of them, including a patch that gated the next world.
 
 ### End of item — always
 
