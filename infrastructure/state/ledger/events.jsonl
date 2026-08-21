@@ -659,3 +659,4 @@
 {"seat":"DECIDE","event":"close","id":"the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07","sha":"50e74d4","ts":"2026-08-21T15:47:13Z"}
 {"seat":"DECIDE","event":"reassign","id":"JAWA_SCENARIO_PARTS_1","to":"BUILD","reason":"defs and the ScenarioDef are BUILD's","ts":"2026-08-21T15:47:13Z"}
 {"seat":"DECIDE","event":"claim","id":"SCALD_WATER_RULING_1","ts":"2026-08-21T15:47:36Z"}
+{"seat":"OWNER","event":"game","state":"UP","ts":"2026-08-21T15:48:21Z"}
