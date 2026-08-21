@@ -21,8 +21,10 @@ decides whether art reads. Checkerboard behind, so transparency is not read as
 black.
 """
 
+import importlib.util
 import os
 import sys
+import tempfile
 
 from PIL import Image, ImageDraw
 
@@ -91,6 +93,70 @@ def main():
     os.makedirs(os.path.dirname(out), exist_ok=True)
     sheet.convert("RGB").save(out)
     print("wrote %s  (%dx%d, %d panels)" % (os.path.normpath(out), W, H, n))
+
+    beast_sheet(os.path.join(os.path.dirname(out), "beast_facings.png"))
+
+
+# --- the second sheet: what we BUILT, beside the donor it has to sit next to --------
+
+DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/"
+         "3028675048/Textures/Things/Vehicles/Land/Tier0")
+VEHICLES = ("OxCart", "CoveredCarriage", "WarChariot")
+
+
+def load_builder():
+    spec = importlib.util.spec_from_file_location(
+        "bbv", os.path.join(HERE, "build_beast_vehicle.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def east_attempt(mod, tmp, vehicle):
+    """Build the REJECTED east, into a temp dir, so the sheet shows the evidence.
+
+    It is regenerated rather than committed: it is not art we ship, and a reviewer has
+    to be able to see WHY east is blocked without taking anyone's word for it.
+    """
+    beast = mod.BEASTS[vehicle][0]
+    pair = os.path.join(HERE, "art", "%s_pair_gen_south.png" % beast)
+    out = os.path.join(tmp, "AV_%s_east.png" % vehicle)
+    import contextlib
+    import io
+    with contextlib.redirect_stdout(io.StringIO()):
+        mod.build(vehicle, "east", pair, out, out.replace(".png", "m.png"))
+    return Image.open(out).convert("RGBA")
+
+
+def beast_sheet(out):
+    mod = load_builder()
+    cols = [("donor north", None), ("OURS north", None), ("donor south", None),
+            ("OURS south", None), ("donor east", None), ("east ATTEMPT - REJECTED", None)]
+    W = PAD + len(cols) * (BIG + PAD)
+    H = PAD + LABEL + len(VEHICLES) * (LABEL + BIG + PAD)
+    sheet = Image.new("RGBA", (W, H), (28, 28, 30, 255))
+    d = ImageDraw.Draw(sheet)
+    for i, (name, _) in enumerate(cols):
+        col = (255, 140, 140, 255) if "REJECT" in name else (235, 235, 235, 255)
+        d.text((PAD + i * (BIG + PAD), PAD - 2), name, fill=col)
+
+    with tempfile.TemporaryDirectory() as tmp:
+        for r, v in enumerate(VEHICLES):
+            y = PAD + LABEL + r * (LABEL + BIG + PAD)
+            d.text((PAD, y), v, fill=(200, 200, 120, 255))
+            imgs = [
+                Image.open(os.path.join(DONOR, v, "AV_%s_north.png" % v)).convert("RGBA"),
+                Image.open(os.path.join(TEX, v, "AV_%s_north.png" % v)).convert("RGBA"),
+                Image.open(os.path.join(DONOR, v, "AV_%s_south.png" % v)).convert("RGBA"),
+                Image.open(os.path.join(TEX, v, "AV_%s_south.png" % v)).convert("RGBA"),
+                Image.open(os.path.join(DONOR, v, "AV_%s_east.png" % v)).convert("RGBA"),
+                east_attempt(mod, tmp, v),
+            ]
+            for i, im in enumerate(imgs):
+                sheet.alpha_composite(cell(im, BIG), (PAD + i * (BIG + PAD), y + LABEL))
+
+    sheet.convert("RGB").save(out)
+    print("wrote %s  (%dx%d, %d rows)" % (os.path.normpath(out), W, H, len(VEHICLES)))
 
 
 if __name__ == "__main__":
