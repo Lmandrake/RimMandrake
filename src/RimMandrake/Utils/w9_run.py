@@ -1,8 +1,12 @@
 """w9_run.py - stamp the authored planet onto a live world, in the order that works.
 
-    python.exe src/RimMandrake/Utils/w9_run.py --dry
-    python.exe src/RimMandrake/Utils/w9_run.py --apply
-    python.exe src/RimMandrake/Utils/w9_run.py --apply --load WORLDMAP_gen_sub7b
+    python.exe src/RimMandrake/Utils/w9_run.py                 DRY RUN - the default
+    python.exe src/RimMandrake/Utils/w9_run.py --apply         write for real
+    python.exe src/RimMandrake/Utils/w9_run.py --apply --load WORLDMAP_gen
+
+    ⚠️ There is NO `--dry`. This block claimed one until 2026-08-21 and argparse
+    refused it; the dry run is what you get by passing nothing. The real flags are
+    --apply, --load, --report, --skip-links, --despite-abort.
 
 🔴 WINDOWS `python.exe`. The bridge is on Windows loopback; WSL cannot reach it.
 
