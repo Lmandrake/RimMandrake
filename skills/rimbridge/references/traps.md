@@ -402,3 +402,75 @@ finally reading a return value that had been sitting there the whole time.
 
 ⚠️ `jawa/pawn_gear` is a **WRITER**. Reading equipment off it answers with *"Give a
 ThingDef."* and reports every pawn bare — a fourth route to the same false catastrophe.
+
+## Four more, all measured live on full-583 — 2026-08-21, CHECK
+
+### `rimworld/screenshot_cell_rect` captures the SCREEN, top window and all
+
+It returned `success: true` four times, for four different cell rects with four different
+filenames, and wrote **four byte-identical PNGs** — of the **Debug log window**, which was
+open over the map. No warning, no hint in the reply; the only tell was that the file sizes
+matched to the byte.
+
+⇒ Before any capture: `rimworld/get_ui_state` and look at `topWindowType`, then
+`rimworld/close_window` it. Closing `LudeonTK.EditWindow_Log` made every capture distinct.
+🔑 **And hash your screenshots.** Four identical md5s is the cheapest possible detector, and
+nothing else would have caught it — the image was a perfectly good screenshot of the wrong
+thing.
+
+### `rimworld/search_debug_actions` times out; the walk it exists to replace does not
+
+Its own description says it exists *"so callers do not need to walk one subtree at a time"*.
+On this stack it timed out at 30s and again at 150s, with params verified against its schema,
+while `jawa/map_zones` answered in seconds either side. `rimworld/list_debug_action_children`
+walked the same **646** nodes in seconds. **Walk it. Do not wait on the search.**
+
+### `visible: false` on a debug node is not "absent" — and `category` is not a tree level
+
+Two separate traps that compound into one wrong conclusion:
+
+- `Actions` reports **childCount 646, visibleChildCount 146.** `includeHidden` defaults to
+  **false** on every discovery tool, so 500 children simply do not appear and a hidden node
+  is indistinguishable from a missing one. A report of "146 children" is a report of the
+  visible count.
+- **`category` on a `[DebugAction]` is metadata on a LEAF, not a node.** All seven
+  `Inhabited` actions are DIRECT children of `Actions`; there is no `Actions\Inhabited`
+  node to descend into. Looking for one and not finding it proves nothing.
+
+And the reason a node hides is usually boring: `AllowedGameStates.PlayingOnMap` evaluates
+false while the session is on the **world view**. `jawa/world_view {"show": false}` returns
+to the map and the node reappears with `supported: true`. Check the view before the def.
+
+### Nothing reaches a `VehiclePawn`'s UI or its comps — four routes, four dead ends
+
+- `rimworld/select_pawn` refuses it by id AND by name — *"Could not find player-controlled
+  colonist"* — even though `jawa/set_pawn_faction` answers *"Pawn is already in
+  PlayerColony"*. It filters on colonists and a `VehiclePawn` is not one. No selection ⇒
+  `list_selected_gizmos`, `open_inspect_tab` and `get_ui_layout` all have nothing to read.
+- `jawa/get_defs` with `fields: "components"` returns `["VehicleComponentProperties" × 5]` —
+  the reflective reader flattens list elements to their class name and does not descend.
+  `jawa/get_def` returns `comps` (the `CompProperties` list), which is a **different field**
+  from `components` (the damageable parts).
+- No tool anywhere mentions fuel or refuel; the only two vehicle debug actions on the whole
+  583-mod stack are `Ground All Aerial Vehicles` and one mod's own list action.
+- `rimbridge/run_lua` does **not** rescue this. It compiles a lowered subset and executes
+  *"through the normal capability registry"* — it orchestrates existing tools, it does not
+  reflect into game objects.
+
+⇒ A vehicle's fuel level and health-tab labels are **unreadable from the bridge today**.
+Say UNMEASURED; do not infer one from a hauler that did or did not move.
+
+### The instrument that settles "did my world edit land"
+
+⛔ Not a grep of the `.rws` (it stores biome indices, so counting defName occurrences
+measures a lookup table). ⛔ Not a biome histogram either — a histogram agrees on a total
+while disagreeing tile by tile. Use **`jawa/world_tile_validate`**, which compares live to a
+CSV row by row and reads RAW fields, never the lazily-cached properties. Proven round trip:
+`world_tile_import apply=true` → `world_commit` → `world_tile_validate` = **21,872/21,872,
+mismatched 0**, about a second of engine time.
+
+🔑 **And read the FIELD BREAKDOWN before raising an alarm.** A world that looked unpainted
+turned out to be three commits stale: `byField: {rainfall: 20113, elevation: 312, biome: 3}`
+— three fields, three hand edits, nothing else. **A regeneration disagrees everywhere; a
+stale world disagrees only on the edits.** Two "signatures of a bare regeneration" written
+into the spec both fired, and both were wrong about the cause.
