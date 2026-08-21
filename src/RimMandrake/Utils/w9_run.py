@@ -6,7 +6,7 @@
 
     ⚠️ There is NO `--dry`. This block claimed one until 2026-08-21 and argparse
     refused it; the dry run is what you get by passing nothing. The real flags are
-    --apply, --load, --report, --skip-links, --despite-abort.
+    --apply, --load, --report, --skip-links, --despite-map, --despite-abort.
 
 🔴 WINDOWS `python.exe`. The bridge is on Windows loopback; WSL cannot reach it.
 
@@ -119,6 +119,9 @@ def main():
     ap.add_argument("--load", default=None, help="load this save first and wait for it")
     ap.add_argument("--report", default=None)
     ap.add_argument("--skip-links", action="store_true")
+    ap.add_argument("--despite-map", action="store_true",
+                    help="proceed with a map instantiated. Only for a world nobody keeps; "
+                         "everything measured becomes unattributable.")
     ap.add_argument("--despite-abort", action="store_true",
                     help="proceed even though the load aborted. Records it loudly in the "
                          "report. Only justified when the WORLD layer has been shown to be "
@@ -156,6 +159,23 @@ def main():
     with RimBridge(host, port, token) as rb:
         gi = rb.call("rimworld/get_game_info", {})
         w(out, "- status `%s`, ticks %s, maps %s" % (gi.get("status"), gi.get("ticksGame"), gi.get("mapCount")))
+
+        # 🔴 NO MAP MAY EXIST. W9's spec says "assert and REFUSE loudly:
+        # Find.CurrentMap == null", and until 2026-08-21 this file only PRINTED the
+        # count — the assertion existed in prose and nowhere in code. Repainting a
+        # planet underneath a live map is what killed two saves and about two cold
+        # loads on 2026-08-18: the map was generated from its tile's biome, and moving
+        # that biome out from under it desyncs the two permanently.
+        # ⚠️ The deeper cost is ATTRIBUTION. With a map up, a defect in the picture
+        # cannot be told apart from map-desync, so the run proves nothing either way.
+        if (gi.get("mapCount") or 0) > 0 and not a.despite_map:
+            w(out, "- 🔴 **%s map(s) are instantiated.** This run requires a world and NO map. "
+                   "Generate a world and stop at the landing-site page. Regenerating costs "
+                   "a minute or two, not a reload — the mod load is already paid for.\n"
+                   "  (`--despite-map` proceeds anyway. Only justified on a world nobody "
+                   "intends to keep, and everything it measures is UNATTRIBUTABLE.)"
+                 % gi.get("mapCount"))
+            return 5
         if gi.get("status") != "game_loaded":
             w(out, "- 🔴 no game loaded. Stopping.")
             return 2

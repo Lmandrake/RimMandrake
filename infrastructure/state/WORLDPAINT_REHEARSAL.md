@@ -164,7 +164,8 @@ unverified legality.
 7. `python3 src/RimMandrake/Utils/ashkarr_populate.py` if either CSV is stale, then
    `python3 src/RimMandrake/Utils/ashkarr_populate.py` — only if either CSV is stale;
    it needs no game. Then
-   `python.exe src/RimMandrake/Utils/w9_run.py --dry` — every stage reports, nothing writes.
+   `python.exe src/RimMandrake/Utils/w9_run.py` — the DRY RUN IS THE DEFAULT. There is no
+   `--dry` flag and argparse refuses one. Every stage reports, nothing writes.
 8. `python.exe src/RimMandrake/Utils/w9_run.py --apply` — about a minute.
 9. The run takes the screenshot itself and names its path in the report.
 
