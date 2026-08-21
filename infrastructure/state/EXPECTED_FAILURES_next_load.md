@@ -291,6 +291,37 @@ WHY              retention will keep the newest three captures and delete the re
 silent change with no expected string is indistinguishable from a change that never
 happened (§2 of the load-round skill).
 
+## §3 S6 — our 52 deployed patches contribute ZERO patch failures
+
+Not a new check — `harvest_log.py`'s `patchfail` already covers it. This turns its
+baseline into an **attributed** prediction, which is the stronger claim:
+
+```
+EXPECT           harvest_log.py `patchfail` still reads exactly 5
+BASELINE         5 = 3x Intimecy-Gender-Works + 1x Vanilla Mining Outpost +
+                 1x Biomes! Caverns — all OTHER people's mods, measured 2026-08-12
+                 by diffing a 568-mod load against a 573-mod one
+PREDICT          a 6th is NEW, and it is NOT ours: validated offline the same
+                 afternoon, our four deployed patch folders are 52 files,
+                 0 errors  (observed/preload/PATCH_VALIDATION_2026-08-21.md)
+READ IT WITH     python.exe src/RimMandrake/Utils/harvest_log.py --show patchfail
+```
+
+⚠️ **Two of ours are unguarded and could in principle log red** —
+`Jawa_Patches/Patches/ForceGremlin_NoHair.xml` and `.../JawaWorld_Name.xml` carry a
+bare `PatchOperationAdd`/`Replace` with no `PatchOperationConditional`. Checked
+individually: one targets **our own** `RimMandrake - Star Wars Races` def and the
+other targets **Core**, and each matches exactly one node today. Neither target can
+go absent from a mod-list change, so **neither can fire on this load**. If one does,
+the cause is a game-version change to the def upstream, not the mod list — and the
+filename in the error names which.
+
+🔑 **A patch that matches nothing logs NOTHING** (`CLAUDE.md`), so `patchfail == 5`
+is not by itself proof our patches applied. It only proves none of them errored.
+Whether they *did* something is what the fresh dump plus `validate_patch --live`
+answers afterwards — and 172 of this run's warnings are exactly the nodes an
+on-disk scan cannot see because another mod's patch creates them.
+
 ## §3 S4 — carry-over, free
 
 ```
