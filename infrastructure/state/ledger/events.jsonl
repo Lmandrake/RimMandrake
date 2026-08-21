@@ -851,3 +851,9 @@
 {"seat":"DECIDE","event":"close","id":"DROID_KINDS_NEED_A_RACE_1","sha":"d4bdad9","ts":"2026-08-21T19:51:33Z"}
 {"seat":"DECIDE","event":"file","id":"DROID_RACES_APPLIED_TO_KINDS_1","title":"Give the four Jawa_Droid_* kinds their ruled droid races","kind":"task","target":"v1","needs":"offline","caused_by":"DROID_KINDS_NEED_A_RACE_1","for":"BUILD","ts":"2026-08-21T19:51:36Z"}
 {"seat":"CHECK","event":"file","id":"FREEZE_SHA_UNREPRODUCIBLE_1","title":"The frozen dump's modlist_sha reproduces from nothing; fold freeze_dump.py into refresh.py","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T19:52:35Z"}
+{"seat":"BUILD","event":"file","id":"WEAPON_TOOLS_PROJECT_NOT_LOAD_1","title":"weapon_affordability and weapon_tag_audit should project, not load the graph","kind":"task","target":"v1","needs":"offline","caused_by":"DUMP_READERS_USE_THE_DB_1","for":"BUILD","ts":"2026-08-21T19:54:30Z"}
+{"seat":"BUILD","event":"verify","id":"DUMP_READERS_USE_THE_DB_1","result":"partial","config":"OFFICIAL-2026-08-21 capture, 578 mods, defs.sqlite current, game down","evidence":"observed/build/DUMP_READERS_USE_THE_DB_1_2026-08-21.md","sha":"6110c02","ts":"2026-08-21T19:55:21Z"}
+{"seat":"BUILD","event":"close","id":"DUMP_READERS_USE_THE_DB_1","sha":"6110c02","ts":"2026-08-21T19:55:32Z"}
+{"seat":"BUILD","event":"claim","id":"FREEZE_SHA_UNREPRODUCIBLE_1","ts":"2026-08-21T19:55:46Z"}
+{"seat":"BUILD","event":"start","id":"FREEZE_SHA_UNREPRODUCIBLE_1","ts":"2026-08-21T19:55:46Z"}
+{"seat":"CHECK","event":"file","id":"RIVER_LINKS_EMITTED_BACKWARDS_1","title":"ashkarr_paint.py emits river links by tile id, not mouth-first; the importer applies file order","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T19:57:19Z"}
