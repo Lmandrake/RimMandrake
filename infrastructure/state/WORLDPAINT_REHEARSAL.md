@@ -184,6 +184,59 @@ A prediction invented after reading the log is a story that fits.
 ⚠️ **Absence of an error is necessary, not sufficient.** Stages 4, 5, 7 and 8 are the
 expected-**present** numbers; a run that logs nothing and applies nothing also logs no error.
 
+## 6b. 🔴 THE RIDE-ALONGS — 25 of CHECK's 37 items settle on this one load
+
+A load is never spent on one question. Every item below has criteria that a **world screen
+with no map** satisfies, so they cost nothing extra. ⚠️ Read this **before** launching, not
+after: several are log strings that exist only in the log this load writes, and the previous
+`Player.log` is overwritten at launch.
+
+**Tier 1 — one grep of the log the load writes anyway. No bridge calls.**
+
+| item | the string |
+|---|---|
+| `PRELOAD_PREDICTIONS_578_1` | all seven at once: 112 `jawa/` tools · `Adding mandrake.inhabited` · `DEAD MODS` both 0 · `cross-reference (def loader)` 25 · dump says 578 · `patch operations failed` 6 · `texture path failures` 2 |
+| `btd-jawa-has-no-merge-to-wait-for-8c40b2` | `harvest_log.py --show scribe` — no `Could not load reference to Verse.XenotypeDef` naming a Jawa xenotype |
+| `B59` (the MegafaunaYield fix) | `patch operations failed` back at baseline **5**, no `[Jawa Doctrine Patches]` among them |
+| `B58` (the Jawa_Patches half) | `Jawa_Patches ops` at baseline **0**, no `Failed to find a node` naming `OuterRim_Jawa` |
+| `d-chk2-magenta-heads-…-7b3e01` | `grep -c "Failed to find any textures at"` returns **0**, was 3 |
+| `GRIMTERRA_JUVENILES_RENDER_1` | **0** lines for `Things/Pawn/Animal/TortoiseGRim` or `…/GRimPinkBird`; baseline 2 |
+| `cherrypick-settings-actually-load-3b71ae` | no `mod settings data for 3521312241` exception |
+| `INHABITED_DLL_FIX_AT_SHUTDOWN_1` | `[Inhabited] ready:` with **269** characters, and **115** `jawa/` tools |
+
+**Tier 2 — read the def dump this load regenerates** (arm `dump_request.txt` first):
+`ASH_STORM_OVER_PYRELANDS_1` (`AB_VolcanicAsh.label` = `ash storm`) · `IKEE_READS_AS_OURS_1`
+(`AA_Eyeling` labelled `ikee`, in exactly 3 biomes' `wildAnimals`) · `RAKATA_SLEEPERS_LOOK_RIGHT_1`
+(`AncientSoldier`/`_Leader` → `RimMandrakeRakata: 1.0`, `useFactionXenotypes: false`) ·
+`B63` live half (0 `biomeConfigs` `<li>` errors, then 27 biomeConfigs / 29 biomeBlacklist, and
+the world names itself `Ash'karr` with byte U+0027).
+
+**Tier 3 — one bridge call at the world screen:**
+`RT_PROBE_LOAD_ABORTS_ON_578_1` (canary only — a fresh generate does not exercise the
+save-restore half) · **`B54`** 🔴 (`jawa/ideo_of` reads eleven faiths — *irreversible after the
+click*) · `B40` `B41` `B42` `B43` `B52` (each faction's name and `leaderTitle`) ·
+`seven-authored-factions-…-5b90c7` · `FACTION_RELATION_MATRIX_1` · `FACTION_NAMES_ARE_GENERATED_1`
+(⚠️ its edit dies unless the world is saved).
+
+✅ **`FACTION_RELATION_MATRIX_1` DOES ride.** A sweep reported its DLL as never deployed; the
+deployed binary's own strings carry `jawa/faction_relations_get` and `_set`. Read the bytes.
+
+**Tier 4 — the paint itself**, which this session performs anyway: `W9` ·
+`ashkarr-map-quality-second-pass-8c31f7` · `seaice-…-2b71fd`.
+
+⛔ **Cannot ride — they need a map or a colony**, and no map will exist:
+`sixteen-authored-role-kinds-spawn-bare-handed-…` · `ROLE_KINDS_ARMED_5_OF_5_1` · `C40` ·
+`CAST_ROSTER_269_LOAD_1` · `INHABITED_ROUTE_ONE_DAY_1` · `ROSTER_SOAK_100_DAYS_1` ·
+`INHABITED_POOL_ROUND_TRIP_1`.
+
+### Done in the shutdown window, 2026-08-21 — both assemblies are in sync
+
+An assembly cannot be written while RimWorld holds it memory-mapped, so this was the window.
+`Inhabited.dll` was 15 hours stale on disk (repo 45,568 B built 23:41 · deployed 43,008 B from
+08:26); it is deployed and byte-verified, md5 `abd78bd73a86df1fa5dfa93cbdeacfe7` both sides.
+`JawaBench.BridgeTools` needed nothing — it already byte-matches and its strings carry 115
+`jawa/` tool names. **Nothing is waiting on a shutdown any more.**
+
 ## 7. What must not happen
 
 - ⛔ **No map may be instantiated.** Repainting a planet underneath a live map killed two
