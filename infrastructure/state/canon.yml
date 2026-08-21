@@ -355,11 +355,12 @@ factions:
     - Jawa_IndigenousTribes
     - Jawa_Junkers
   no_settlements: [Mechanoid]
-  # ⚠️ Naming drift, found 2026-08-20 and NOT yet resolved: meta.json's faction list
-  # names `AM_EnemyPirate` where ashkarr_paint.py's FACTION_LABEL and the settlements
-  # CSV both say `Pirate`. One of the two is not the defName the game will resolve.
-  # Filed as needs_ruling.PIRATE_DEFNAME_DRIFT_1 — a wrong defName here is a
-  # `Could not resolve cross-reference` at load, not a cosmetic difference.
+  # ✅ Naming drift, found 2026-08-20, RULED 2026-08-21 (ruled.PIRATE_DEFNAME_DRIFT_1)
+  # and CLOSED OUT 2026-08-21: meta.json's faction list named `AM_EnemyPirate` where
+  # ashkarr_paint.py's FACTION_LABEL and the settlements CSV said `Pirate`. The meta
+  # was the stale side and now says `Pirate` in both factions[] and faction_labels{}
+  # (META_JSON_NAMES_DEAD_PIRATE_1). ⚠️ world/*.rws still hold the old string and
+  # SHOULD — they are generated worlds re-imported from the CSV, not sources.
   leaders_are_shipped: true
   leaders_src: >
     ✅ `Kiknik` and `Tarn Vox` are NOT design-only and do NOT need rescuing from a
@@ -658,8 +659,9 @@ ruled:
       world/ASHKARR_WORLDMAP_settlements.csv: 4 rows `Pirate`, ZERO rows `AM_EnemyPirate`,
       out of 72.
     at_stake: >
-      🔴 The drift is NOT cosmetic and the stale side is
-      `world/ASHKARR_WORLDMAP_meta.json > factions[]`, which still lists `AM_EnemyPirate`.
+      🔴 The drift is NOT cosmetic and the stale side was
+      `world/ASHKARR_WORLDMAP_meta.json > factions[]`. ✅ FIXED 2026-08-21 under
+      META_JSON_NAMES_DEAD_PIRATE_1: it now reads `Pirate`, and so does faction_labels{}.
       Beyond naming a def that cannot own the sites, `AM_EnemyPirate` has a null
       `settlementTexturePath` — and `Settlement.Material` calls `MatFrom(null, ...)`, which
       throws ArgumentNullException once per settlement per frame. That was measured on this

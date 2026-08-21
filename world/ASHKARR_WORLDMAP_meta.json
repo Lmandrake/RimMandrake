@@ -395,7 +395,6 @@
   }
  ],
  "factions": [
-  "AM_EnemyPirate",
   "Empire",
   "Jawa_AscendantHelix",
   "Jawa_DeepwaterCompact",
@@ -406,13 +405,14 @@
   "Jawa_Junkers",
   "Jawa_WildsteamClan",
   "OutlanderCivil",
+  "Pirate",
   "TribeCivil"
  ],
  "faction_labels": {
   "Empire": "The Galactic Empire",
   "OutlanderCivil": "Homestead Defense League",
   "TribeCivil": "Deep Desert Tribes",
-  "AM_EnemyPirate": "Blackstar Company",
+  "Pirate": "Blackstar Company",
   "Jawa_HuttCartel": "Hutt Cartel",
   "Jawa_FreeDroidEnclaves": "Free Droid Enclaves",
   "Jawa_WildsteamClan": "Wildsteam Clan",

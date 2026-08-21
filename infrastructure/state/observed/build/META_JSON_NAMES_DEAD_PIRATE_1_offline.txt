@@ -1,0 +1,86 @@
+META_JSON_NAMES_DEAD_PIRATE_1 — offline evidence, BUILD, 2026-08-21T15:57:26Z
+
+# IS THE META GENERATED?  YES — ashkarr_paint.py:1011 writes BUNDLE + "_meta.json",
+# and factions[] is  sorted({x["faction"] for x in placed}).  The GENERATOR IS ALREADY
+# CORRECT (FACTION_LABEL:812 and ashkarr_settle.py:86 both say "Pirate"), so a rerun
+# would emit "Pirate".  The committed meta.json was simply STALE relative to its
+# sources.  ⚠️ HAND-EDITED, declared: the painter was NOT rerun, because rerunning it
+# would overwrite hand-authored tiles.csv columns (rain_mm, biome) that are not in the
+# painter.  Two strings changed; the file was re-dumped with the same json.dump
+# (indent=1, ensure_ascii=False) the painter uses, and the diff is 2 lines.
+
+$ grep -n "_meta.json" src/RimMandrake/Utils/ashkarr_paint.py
+1011:    with open(BUNDLE + "_meta.json", "w", encoding="utf-8") as fh:
+$ grep -n "\"factions\":" src/RimMandrake/Utils/ashkarr_paint.py
+999:            "factions": sorted({x["faction"] for x in placed}),
+$ grep -n "\"Pirate\"" src/RimMandrake/Utils/ashkarr_paint.py src/RimMandrake/Utils/ashkarr_settle.py
+src/RimMandrake/Utils/ashkarr_paint.py:812:    "TribeCivil": "Deep Desert Tribes", "Pirate": "Blackstar Company",
+src/RimMandrake/Utils/ashkarr_settle.py:86:    add("Pirate", ["Blackstar Field", "The Contract Camp", "Toll Rock",
+
+# VERIFY 1
+$ python3 -c "import json;print(json.load(open(...meta.json))[\"factions\"])"
+['Empire', 'Jawa_AscendantHelix', 'Jawa_DeepwaterCompact', 'Jawa_FreeDroidEnclaves', 'Jawa_GeonosianFoundryHive', 'Jawa_HuttCartel', 'Jawa_IndigenousTribes', 'Jawa_Junkers', 'Jawa_WildsteamClan', 'OutlanderCivil', 'Pirate', 'TribeCivil']
+$ grep -c AM_EnemyPirate world/ASHKARR_WORLDMAP_meta.json
+0
+0
+
+# VERIFY 2 — every factions[] entry against the v1.6-loaded FactionDef dump
+defName                        hidden  sgw      settlementTexturePath                  csv rows
+Empire                         False   0.450    World/WorldObjects/DefaultSettlement   3 
+Jawa_AscendantHelix            False   0.450    World/WorldObjects/DefaultSettlement   3 
+Jawa_DeepwaterCompact          False   0.700    World/WorldObjects/DefaultSettlement   5 
+Jawa_FreeDroidEnclaves         False   0.450    World/WorldObjects/DefaultSettlement   3 
+Jawa_GeonosianFoundryHive      False   0.700    World/WorldObjects/DefaultSettlement   5 
+Jawa_HuttCartel                False   1.150    World/WorldObjects/DefaultSettlement   8 
+Jawa_IndigenousTribes          False   1.000    World/WorldObjects/TribalSettlement    7 
+Jawa_Junkers                   False   1.150    World/WorldObjects/DefaultSettlement   8 
+Jawa_WildsteamClan             False   0.600    World/WorldObjects/DefaultSettlement   4 
+OutlanderCivil                 False   1.900    World/WorldObjects/DefaultSettlement   13 
+Pirate                         False   0.600    World/WorldObjects/DefaultSettlement   4 
+TribeCivil                     False   1.300    World/WorldObjects/TribalSettlement    9 
+
+factions[] entries: 12
+entries that cannot place a settlement yet hold CSV rows: 0
+faction_labels keys not in factions[]: ['Mechanoid']
+  Mechanoid: hidden=True sgw=0 csv rows=0  -> deliberately hidden, holds nothing
+
+VERIFY 3 — settlements CSV rows: 72 (unchanged, expected 72)
+  faction_def counts: {'Empire': 3, 'Jawa_GeonosianFoundryHive': 5, 'Jawa_FreeDroidEnclaves': 3, 'Jawa_AscendantHelix': 3, 'Pirate': 4, 'Jawa_WildsteamClan': 4, 'Jawa_DeepwaterCompact': 5, 'Jawa_HuttCartel': 8, 'Jawa_Junkers': 8, 'Jawa_IndigenousTribes': 7, 'TribeCivil': 9, 'OutlanderCivil': 13}
+
+$ git status --porcelain world/ASHKARR_WORLDMAP_settlements.csv
+(empty = untouched)
+
+$ git diff --stat world/ASHKARR_WORLDMAP_meta.json infrastructure/state/canon.yml
+ infrastructure/state/canon.yml   | 16 +++++++++-------
+ world/ASHKARR_WORLDMAP_meta.json |  4 ++--
+ 2 files changed, 11 insertions(+), 9 deletions(-)
+
+$ git diff world/ASHKARR_WORLDMAP_meta.json
+diff --git a/world/ASHKARR_WORLDMAP_meta.json b/world/ASHKARR_WORLDMAP_meta.json
+index 5142257..dc266b4 100644
+--- a/world/ASHKARR_WORLDMAP_meta.json
++++ b/world/ASHKARR_WORLDMAP_meta.json
+@@ -395,7 +395,6 @@
+   }
+  ],
+  "factions": [
+-  "AM_EnemyPirate",
+   "Empire",
+   "Jawa_AscendantHelix",
+   "Jawa_DeepwaterCompact",
+@@ -406,13 +405,14 @@
+   "Jawa_Junkers",
+   "Jawa_WildsteamClan",
+   "OutlanderCivil",
++  "Pirate",
+   "TribeCivil"
+  ],
+  "faction_labels": {
+   "Empire": "The Galactic Empire",
+   "OutlanderCivil": "Homestead Defense League",
+   "TribeCivil": "Deep Desert Tribes",
+-  "AM_EnemyPirate": "Blackstar Company",
++  "Pirate": "Blackstar Company",
+   "Jawa_HuttCartel": "Hutt Cartel",
+   "Jawa_FreeDroidEnclaves": "Free Droid Enclaves",
+   "Jawa_WildsteamClan": "Wildsteam Clan",
