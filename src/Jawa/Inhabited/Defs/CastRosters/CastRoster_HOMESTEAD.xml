@@ -166,10 +166,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Animals</skill>
-        <amount>16</amount>
-      </li>
+      <Animals>16</Animals>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -230,14 +227,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Construction</skill>
-        <amount>15</amount>
-      </li>
-      <li>
-        <skill>Social</skill>
-        <amount>14</amount>
-      </li>
+      <Construction>15</Construction>
+      <Social>14</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -270,10 +261,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>16</amount>
-      </li>
+      <Intellectual>16</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -419,10 +407,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>15</amount>
-      </li>
+      <Intellectual>15</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -455,14 +440,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>15</amount>
-      </li>
-      <li>
-        <skill>Social</skill>
-        <amount>14</amount>
-      </li>
+      <Melee>15</Melee>
+      <Social>14</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -583,14 +562,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Construction</skill>
-        <amount>16</amount>
-      </li>
-      <li>
-        <skill>Melee</skill>
-        <amount>11</amount>
-      </li>
+      <Construction>16</Construction>
+      <Melee>11</Melee>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -654,10 +627,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Crafting</skill>
-        <amount>17</amount>
-      </li>
+      <Crafting>17</Crafting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -748,10 +718,7 @@
       <li>Beer</li>
     </items>
     <skills>
-      <li>
-        <skill>Social</skill>
-        <amount>17</amount>
-      </li>
+      <Social>17</Social>
     </skills>
   </Inhabited.CharacterDef>
 

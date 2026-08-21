@@ -192,14 +192,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Plants</skill>
-        <amount>20</amount>
-      </li>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>16</amount>
-      </li>
+      <Plants>20</Plants>
+      <Intellectual>16</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -234,10 +228,7 @@
     </traits>
     <weapon>OuterRim_A280Blaster</weapon>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>17</amount>
-      </li>
+      <Shooting>17</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -329,14 +320,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>16</amount>
-      </li>
-      <li>
-        <skill>Plants</skill>
-        <amount>13</amount>
-      </li>
+      <Melee>16</Melee>
+      <Plants>13</Plants>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -404,14 +389,8 @@
       <li>Ambrosia</li>
     </items>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>16</amount>
-      </li>
-      <li>
-        <skill>Medicine</skill>
-        <amount>4</amount>
-      </li>
+      <Intellectual>16</Intellectual>
+      <Medicine>4</Medicine>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -443,14 +422,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Construction</skill>
-        <amount>18</amount>
-      </li>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>17</amount>
-      </li>
+      <Construction>18</Construction>
+      <Intellectual>17</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -484,14 +457,8 @@
     </traits>
     <weapon>MeleeWeapon_Spear</weapon>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>12</amount>
-      </li>
-      <li>
-        <skill>Shooting</skill>
-        <amount>2</amount>
-      </li>
+      <Melee>12</Melee>
+      <Shooting>2</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -582,10 +549,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Plants</skill>
-        <amount>18</amount>
-      </li>
+      <Plants>18</Plants>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -647,14 +611,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Plants</skill>
-        <amount>18</amount>
-      </li>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>15</amount>
-      </li>
+      <Plants>18</Plants>
+      <Intellectual>15</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 

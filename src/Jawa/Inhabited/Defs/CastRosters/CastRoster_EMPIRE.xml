@@ -195,10 +195,7 @@
     </traits>
     <weapon>OuterRim_VibroBlade</weapon>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>19</amount>
-      </li>
+      <Melee>19</Melee>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -233,14 +230,8 @@
     </traits>
     <weapon>OuterRim_DLT19XTargetingBlaster</weapon>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>19</amount>
-      </li>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>2</amount>
-      </li>
+      <Shooting>19</Shooting>
+      <Intellectual>2</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -352,10 +343,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>19</amount>
-      </li>
+      <Intellectual>19</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -450,10 +438,7 @@
       <li>Apparel_Shadecone</li>
     </apparel>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>17</amount>
-      </li>
+      <Intellectual>17</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -574,10 +559,7 @@
     </traits>
     <weapon>Force_Lightsaber_Inquisitor</weapon>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>18</amount>
-      </li>
+      <Melee>18</Melee>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -671,10 +653,7 @@
       <li>SurvivalTools_Multitool</li>
     </items>
     <skills>
-      <li>
-        <skill>Construction</skill>
-        <amount>18</amount>
-      </li>
+      <Construction>18</Construction>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -739,10 +718,7 @@
       <li>WakeUp</li>
     </items>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>16</amount>
-      </li>
+      <Intellectual>16</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 

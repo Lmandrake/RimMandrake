@@ -186,14 +186,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Social</skill>
-        <amount>18</amount>
-      </li>
-      <li>
-        <skill>Medicine</skill>
-        <amount>12</amount>
-      </li>
+      <Social>18</Social>
+      <Medicine>12</Medicine>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -289,10 +283,7 @@
       <li>Beer</li>
     </items>
     <skills>
-      <li>
-        <skill>Medicine</skill>
-        <amount>16</amount>
-      </li>
+      <Medicine>16</Medicine>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -386,14 +377,8 @@
       <li>BionicArm</li>
     </items>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>13</amount>
-      </li>
-      <li>
-        <skill>Shooting</skill>
-        <amount>13</amount>
-      </li>
+      <Melee>13</Melee>
+      <Shooting>13</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -425,14 +410,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>16</amount>
-      </li>
-      <li>
-        <skill>Social</skill>
-        <amount>14</amount>
-      </li>
+      <Intellectual>16</Intellectual>
+      <Social>14</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -529,14 +508,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Crafting</skill>
-        <amount>16</amount>
-      </li>
-      <li>
-        <skill>Social</skill>
-        <amount>2</amount>
-      </li>
+      <Crafting>16</Crafting>
+      <Social>2</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -715,10 +688,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Social</skill>
-        <amount>15</amount>
-      </li>
+      <Social>15</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -781,10 +751,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Cooking</skill>
-        <amount>15</amount>
-      </li>
+      <Cooking>15</Cooking>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -816,10 +783,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>16</amount>
-      </li>
+      <Melee>16</Melee>
     </skills>
   </Inhabited.CharacterDef>
 

@@ -493,14 +493,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>16</amount>
-      </li>
-      <li>
-        <skill>Social</skill>
-        <amount>14</amount>
-      </li>
+      <Intellectual>16</Intellectual>
+      <Social>14</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -562,10 +556,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Social</skill>
-        <amount>1</amount>
-      </li>
+      <Social>1</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -655,10 +646,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Crafting</skill>
-        <amount>15</amount>
-      </li>
+      <Crafting>15</Crafting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -690,10 +678,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Cooking</skill>
-        <amount>17</amount>
-      </li>
+      <Cooking>17</Cooking>
     </skills>
   </Inhabited.CharacterDef>
 

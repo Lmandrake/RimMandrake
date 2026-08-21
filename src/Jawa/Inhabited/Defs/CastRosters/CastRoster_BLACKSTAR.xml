@@ -162,14 +162,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>17</amount>
-      </li>
-      <li>
-        <skill>Shooting</skill>
-        <amount>2</amount>
-      </li>
+      <Melee>17</Melee>
+      <Shooting>2</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -204,14 +198,8 @@
     </traits>
     <weapon>Gun_MachinePistol</weapon>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>6</amount>
-      </li>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>0</amount>
-      </li>
+      <Shooting>6</Shooting>
+      <Intellectual>0</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -247,10 +235,7 @@
       <li>Apparel_ArmorRecon</li>
     </apparel>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>18</amount>
-      </li>
+      <Melee>18</Melee>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -342,10 +327,7 @@
     </traits>
     <weapon>Weapon_GrenadeFrag</weapon>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>14</amount>
-      </li>
+      <Melee>14</Melee>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -379,10 +361,7 @@
     </traits>
     <weapon>MeleeWeapon_Knife</weapon>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>17</amount>
-      </li>
+      <Melee>17</Melee>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -446,10 +425,7 @@
     </traits>
     <weapon>Gun_SniperRifle</weapon>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>20</amount>
-      </li>
+      <Shooting>20</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -485,10 +461,7 @@
       <li>Flake</li>
     </items>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>18</amount>
-      </li>
+      <Intellectual>18</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -523,14 +496,8 @@
       <li>MedicineIndustrial</li>
     </items>
     <skills>
-      <li>
-        <skill>Medicine</skill>
-        <amount>17</amount>
-      </li>
-      <li>
-        <skill>Shooting</skill>
-        <amount>3</amount>
-      </li>
+      <Medicine>17</Medicine>
+      <Shooting>3</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -562,14 +529,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Crafting</skill>
-        <amount>17</amount>
-      </li>
-      <li>
-        <skill>Construction</skill>
-        <amount>15</amount>
-      </li>
+      <Crafting>17</Crafting>
+      <Construction>15</Construction>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -601,10 +562,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>0</amount>
-      </li>
+      <Shooting>0</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -791,14 +749,8 @@
       <li>guy762_Headband_rebreathermask</li>
     </apparel>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>0</amount>
-      </li>
-      <li>
-        <skill>Melee</skill>
-        <amount>0</amount>
-      </li>
+      <Shooting>0</Shooting>
+      <Melee>0</Melee>
     </skills>
   </Inhabited.CharacterDef>
 

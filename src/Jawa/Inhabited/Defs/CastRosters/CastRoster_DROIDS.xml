@@ -99,10 +99,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Medicine</skill>
-        <amount>18</amount>
-      </li>
+      <Medicine>18</Medicine>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -308,10 +305,7 @@
     </traits>
     <weapon>OuterRim_DLT19HeavyBlasterRifle</weapon>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>20</amount>
-      </li>
+      <Shooting>20</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -374,10 +368,7 @@
     </traits>
     <weapon>OuterRim_DLT19HeavyBlasterRifle</weapon>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>6</amount>
-      </li>
+      <Shooting>6</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -470,10 +461,7 @@
     </traits>
     <weapon>Gun_SniperRifle</weapon>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>17</amount>
-      </li>
+      <Shooting>17</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -533,10 +521,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Artistic</skill>
-        <amount>2</amount>
-      </li>
+      <Artistic>2</Artistic>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -568,14 +553,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Social</skill>
-        <amount>18</amount>
-      </li>
-      <li>
-        <skill>Artistic</skill>
-        <amount>16</amount>
-      </li>
+      <Social>18</Social>
+      <Artistic>16</Artistic>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -634,10 +613,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>18</amount>
-      </li>
+      <Intellectual>18</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -700,10 +676,7 @@
       <li>Silver</li>
     </items>
     <skills>
-      <li>
-        <skill>Social</skill>
-        <amount>19</amount>
-      </li>
+      <Social>19</Social>
     </skills>
   </Inhabited.CharacterDef>
 

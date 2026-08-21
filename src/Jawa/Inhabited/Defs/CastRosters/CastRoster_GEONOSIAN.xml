@@ -136,10 +136,7 @@
       <li>BionicArm</li>
     </items>
     <skills>
-      <li>
-        <skill>Crafting</skill>
-        <amount>16</amount>
-      </li>
+      <Crafting>16</Crafting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -167,10 +164,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>15</amount>
-      </li>
+      <Melee>15</Melee>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -206,10 +200,7 @@
       <li>Ambrosia</li>
     </items>
     <skills>
-      <li>
-        <skill>Plants</skill>
-        <amount>15</amount>
-      </li>
+      <Plants>15</Plants>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -241,10 +232,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Medicine</skill>
-        <amount>5</amount>
-      </li>
+      <Medicine>5</Medicine>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -420,10 +408,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Animals</skill>
-        <amount>16</amount>
-      </li>
+      <Animals>16</Animals>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -455,14 +440,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>18</amount>
-      </li>
-      <li>
-        <skill>Social</skill>
-        <amount>16</amount>
-      </li>
+      <Intellectual>18</Intellectual>
+      <Social>16</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -524,10 +503,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Artistic</skill>
-        <amount>19</amount>
-      </li>
+      <Artistic>19</Artistic>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -621,10 +597,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Crafting</skill>
-        <amount>16</amount>
-      </li>
+      <Crafting>16</Crafting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -686,10 +659,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>20</amount>
-      </li>
+      <Intellectual>20</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -754,10 +724,7 @@
       <li>Drum</li>
     </items>
     <skills>
-      <li>
-        <skill>Artistic</skill>
-        <amount>15</amount>
-      </li>
+      <Artistic>15</Artistic>
     </skills>
   </Inhabited.CharacterDef>
 

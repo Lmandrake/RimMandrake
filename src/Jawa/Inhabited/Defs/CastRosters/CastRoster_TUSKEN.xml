@@ -105,10 +105,7 @@
       <li>MeleeWeapon_Knife</li>
     </items>
     <skills>
-      <li>
-        <skill>Artistic</skill>
-        <amount>18</amount>
-      </li>
+      <Artistic>18</Artistic>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -170,10 +167,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Animals</skill>
-        <amount>18</amount>
-      </li>
+      <Animals>18</Animals>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -298,14 +292,8 @@
       <li>BionicArm</li>
     </items>
     <skills>
-      <li>
-        <skill>Crafting</skill>
-        <amount>15</amount>
-      </li>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>14</amount>
-      </li>
+      <Crafting>15</Crafting>
+      <Intellectual>14</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -338,10 +326,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>17</amount>
-      </li>
+      <Intellectual>17</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -433,10 +418,7 @@
     </traits>
     <weapon>GS_Gaffi</weapon>
     <skills>
-      <li>
-        <skill>Crafting</skill>
-        <amount>18</amount>
-      </li>
+      <Crafting>18</Crafting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -585,10 +567,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>15</amount>
-      </li>
+      <Intellectual>15</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -620,10 +599,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>15</amount>
-      </li>
+      <Intellectual>15</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -656,10 +632,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Construction</skill>
-        <amount>17</amount>
-      </li>
+      <Construction>17</Construction>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -714,10 +687,7 @@
     </traits>
     <weapon>OuterRim_CyclerRifle</weapon>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>18</amount>
-      </li>
+      <Shooting>18</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 

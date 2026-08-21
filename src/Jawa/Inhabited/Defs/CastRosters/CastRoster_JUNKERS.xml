@@ -44,10 +44,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>14</amount>
-      </li>
+      <Intellectual>14</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -80,10 +77,7 @@
     </traits>
     <weapon>MeleeWeapon_Knife</weapon>
     <skills>
-      <li>
-        <skill>Artistic</skill>
-        <amount>14</amount>
-      </li>
+      <Artistic>14</Artistic>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -115,14 +109,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>14</amount>
-      </li>
-      <li>
-        <skill>Social</skill>
-        <amount>1</amount>
-      </li>
+      <Melee>14</Melee>
+      <Social>1</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -276,10 +264,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>17</amount>
-      </li>
+      <Melee>17</Melee>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -312,10 +297,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Mining</skill>
-        <amount>15</amount>
-      </li>
+      <Mining>15</Mining>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -376,10 +358,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Artistic</skill>
-        <amount>16</amount>
-      </li>
+      <Artistic>16</Artistic>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -468,10 +447,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>15</amount>
-      </li>
+      <Melee>15</Melee>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -504,10 +480,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>16</amount>
-      </li>
+      <Intellectual>16</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -599,10 +572,7 @@
     </traits>
     <weapon>MeleeWeapon_Knife</weapon>
     <skills>
-      <li>
-        <skill>Cooking</skill>
-        <amount>14</amount>
-      </li>
+      <Cooking>14</Cooking>
     </skills>
   </Inhabited.CharacterDef>
 

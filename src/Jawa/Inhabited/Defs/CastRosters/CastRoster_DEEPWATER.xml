@@ -43,14 +43,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>17</amount>
-      </li>
-      <li>
-        <skill>Social</skill>
-        <amount>14</amount>
-      </li>
+      <Intellectual>17</Intellectual>
+      <Social>14</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -112,10 +106,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Social</skill>
-        <amount>16</amount>
-      </li>
+      <Social>16</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -148,14 +139,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>15</amount>
-      </li>
-      <li>
-        <skill>Social</skill>
-        <amount>13</amount>
-      </li>
+      <Melee>15</Melee>
+      <Social>13</Social>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -190,10 +175,7 @@
       <li>TextBook</li>
     </items>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>16</amount>
-      </li>
+      <Intellectual>16</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -225,10 +207,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Cooking</skill>
-        <amount>18</amount>
-      </li>
+      <Cooking>18</Cooking>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -261,14 +240,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Social</skill>
-        <amount>15</amount>
-      </li>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>3</amount>
-      </li>
+      <Social>15</Social>
+      <Intellectual>3</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -302,10 +275,7 @@
     </traits>
     <weapon>Gun_BoltActionRifle</weapon>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>16</amount>
-      </li>
+      <Shooting>16</Shooting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -454,10 +424,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Artistic</skill>
-        <amount>16</amount>
-      </li>
+      <Artistic>16</Artistic>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -490,14 +457,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>15</amount>
-      </li>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>12</amount>
-      </li>
+      <Shooting>15</Shooting>
+      <Intellectual>12</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -558,14 +519,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>17</amount>
-      </li>
-      <li>
-        <skill>Crafting</skill>
-        <amount>14</amount>
-      </li>
+      <Intellectual>17</Intellectual>
+      <Crafting>14</Crafting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -745,14 +700,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Crafting</skill>
-        <amount>17</amount>
-      </li>
-      <li>
-        <skill>Intellectual</skill>
-        <amount>14</amount>
-      </li>
+      <Crafting>17</Crafting>
+      <Intellectual>14</Intellectual>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -813,10 +762,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Artistic</skill>
-        <amount>14</amount>
-      </li>
+      <Artistic>14</Artistic>
     </skills>
   </Inhabited.CharacterDef>
 

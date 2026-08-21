@@ -105,10 +105,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Cooking</skill>
-        <amount>16</amount>
-      </li>
+      <Cooking>16</Cooking>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -172,14 +169,8 @@
     </traits>
     <weapon>DV_MeleeWeapon_SerratedScimitar</weapon>
     <skills>
-      <li>
-        <skill>Melee</skill>
-        <amount>15</amount>
-      </li>
-      <li>
-        <skill>Crafting</skill>
-        <amount>13</amount>
-      </li>
+      <Melee>15</Melee>
+      <Crafting>13</Crafting>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -216,10 +207,7 @@
       <li>Apparel_Tuque</li>
     </apparel>
     <skills>
-      <li>
-        <skill>Construction</skill>
-        <amount>15</amount>
-      </li>
+      <Construction>15</Construction>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -369,10 +357,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Medicine</skill>
-        <amount>14</amount>
-      </li>
+      <Medicine>14</Medicine>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -499,10 +484,7 @@
       <li>Apparel_Collar</li>
     </apparel>
     <skills>
-      <li>
-        <skill>Plants</skill>
-        <amount>3</amount>
-      </li>
+      <Plants>3</Plants>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -592,10 +574,7 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Cooking</skill>
-        <amount>15</amount>
-      </li>
+      <Cooking>15</Cooking>
     </skills>
   </Inhabited.CharacterDef>
 
@@ -628,14 +607,8 @@
       </li>
     </traits>
     <skills>
-      <li>
-        <skill>Shooting</skill>
-        <amount>2</amount>
-      </li>
-      <li>
-        <skill>Melee</skill>
-        <amount>2</amount>
-      </li>
+      <Shooting>2</Shooting>
+      <Melee>2</Melee>
     </skills>
   </Inhabited.CharacterDef>
 
