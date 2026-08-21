@@ -360,3 +360,9 @@
 {"seat":"BUILD","event":"verify","id":"ROSTER_SURVIVES_OFFMAP_PROOF_1","result":"pass","config":"offline-dotnet-8.0.423","evidence":"infrastructure/state/observed/build/ROSTER_SURVIVES_OFFMAP_PROOF_1_offline.txt","sha":"d5110f1","ts":"2026-08-21T06:42:27Z"}
 {"seat":"REP","event":"file","id":"LEDGER_CANNOT_BE_COMMITTED_1","title":"The ledger guard blocks every commit of the ledger, so it lives on one disk","kind":"defect","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T06:42:34Z"}
 {"seat":"BUILD","event":"close","id":"ROSTER_SURVIVES_OFFMAP_PROOF_1","sha":"2ead1d4","ts":"2026-08-21T06:42:38Z"}
+{"seat":"CHECK","event":"file","id":"LEDGER_COMMIT_GUARD_INVERTED_1","title":"The ledger cannot be committed by its honest path, and the bypass is a directory pathspec","kind":"fix","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T06:43:35Z"}
+{"seat":"CHECK","event":"file","id":"NEEDS_HAS_NO_SETTER_1","title":"Every item's needs is stuck at the filing default; 38 CHECK items claim they are offline work","kind":"fix","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T06:43:36Z"}
+{"seat":"BUILD","event":"claim","id":"LEDGER_CANNOT_BE_COMMITTED_1","ts":"2026-08-21T06:44:37Z"}
+{"seat":"BUILD","event":"start","id":"LEDGER_CANNOT_BE_COMMITTED_1","ts":"2026-08-21T06:44:37Z"}
+{"seat":"CHECK","event":"note","id":"LEDGER_COMMIT_GUARD_INVERTED_1","text":"Full spec/verify/criteria drafted by CHECK at TRANSIENT_ledger_two_holes.md; paste into items/LEDGER_COMMIT_GUARD_INVERTED_1.md to reach ready.","ts":"2026-08-21T06:45:33Z"}
+{"seat":"CHECK","event":"note","id":"NEEDS_HAS_NO_SETTER_1","text":"Full spec/verify/criteria drafted by CHECK at TRANSIENT_ledger_two_holes.md; paste into items/NEEDS_HAS_NO_SETTER_1.md to reach ready.","ts":"2026-08-21T06:45:33Z"}
