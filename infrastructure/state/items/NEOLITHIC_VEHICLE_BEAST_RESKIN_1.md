@@ -37,25 +37,29 @@ never by moving the beast off the extent it has to reach.
 the donor's red-tagged keyline survives and an ox-shaped white halo stands on top of
 every bantha. South was rebuilt through the same path for this reason.
 
-⛔ **EAST IS BLOCKED ON MISSING ART, and it is proven, not assumed.** Attempted with the
-south pair turned 90° CCW; bands are measured and wired in `build_beast_vehicle.py`.
-The donor draws east animals in **side elevation** — flank, profile head, legs under the
-body — and the south pair is a plan view of the animal's BACK. Turning a plan view does
-not make an elevation. The donor also staggers the pair front-to-back (GEOMETRY §3:
-OxCart merges over x400–474); a turned pair stacks them flat. OxCart is the arithmetic
-proof too: band aspect 1.244 against the turned pair's 0.732 — fill costs +69.9%, contain
-spans 66% of the band's width. ⇒ **East needs purpose-generated SIDE-view pairs, one per
-species**, exactly as the sled needed `art/eopie_pair_gen_east.png`. See the rightmost
-column of `src/Jawa/DesertVehicleReskin/Source/art/review/beast_facings.png`.
-⏳ **The east art is now SPECIFIED and deliberately UNFIRED, 2026-08-21.** Generation
-sizes, band aspects, reference order, the four prompts and the exact commands are in
-`src/Jawa/DesertVehicleReskin/Source/EAST_COMMISSION.md`. It waits on the owner
-approving four generations; the donor east reference crops are already extracted to
-`Source/art/ref/donor_<Vehicle>_east_6x.png`, and `ROTATE["east"]` is now 0 because
-east art arrives already facing east.
-⛔ **Chariot east is still unbuilt** (south and north shipped in `65ec90d`) — east needs ONE dewback in a 233×152 band
-and only a merged pair exists (the two animals overlap by 495 px at centre, so it cannot
-be halved). Also a missing asset.
+✅ **DONE 2026-08-21 — THE FOUR EAST FACINGS, on the owner's approval of four image
+generations.** OxCart (bantha ×2), CoveredCarriage (ronto ×2), WarChariot (dewback ×2)
+and Chariot (dewback ×1), each `_east` plus its mask, all four **PASS**
+`validate_sprite.py` against the donor east. Distortion +0.0% · −0.0% · −0.0% ·
+**−10.8%** (Chariot), all inside the ~18% rule. ⇒ **All 12 facings now exist and 0
+REJECT**; the compositing work this item was waiting on is finished.
+🔑 **East was a MISSING ASSET and the four generations were the fix**, exactly as the
+turned-south-pair attempt proved: the donor draws east in side elevation and our pairs
+were plan views. The prompts, sizes and the three things the spec got wrong are in
+`src/Jawa/DesertVehicleReskin/Source/EAST_COMMISSION.md`, whose header now records the run.
+🔴 **A new required step exists between keying and compositing: `trim_to_band_aspect.py`.**
+`build_beast_vehicle.py` fits the subject BBOX, not the canvas, and a generation drawn with
+traces leaving the frame arrives +6.2% to +66.7% off its band's aspect. Untrimmed, the fit
+spends its whole bounded 12% stretch on one axis — and `validate_sprite.py` PASSES that,
+because it grades the whole 512×512 sprite while the damage sits inside a 227×170 band.
+⚠️ **A dewback will not crop to a horse's band.** Long low lizard, tail half its length;
+closing the 66.7% by cropping reaches the hind leg. Chariot east is capped at a 30% cut and
+pays −10.8% on the fit, which is what takes the fitted beast from 102 rows to 134 of 152.
+⚠️ **OxCart east carries one validator WARNING, not a reject:** 46.8% of solid pixels sit in
+a detached fragment, because our team meets the shaft with trace bars where the donor's oxen
+meet it with a rump. Cosmetic, visible only under magnification.
+⛔ **Nothing is deployed.** The game was down for the run and `deploy_custom_mods.py` was
+deliberately not called.
 
 ⏳ **WHAT IS LEFT: the compositing, 12 facings, and it is the real work.**
 `build_eopie_sled_{south,north,east}.py` are the working pattern — read one before

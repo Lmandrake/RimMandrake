@@ -1,13 +1,43 @@
-# EAST_COMMISSION.md — the four east facings, specified and NOT commissioned
+# EAST_COMMISSION.md — the four east facings, specified and NOW BUILT
 
-🔴 **Nothing here has been generated.** No image model was called to write this file, and
-none may be called until the owner approves the spend. He has approved exactly one
-generation so far — a single dewback — and this document exists so that approving the rest
-costs one paste, not an afternoon. The commands are at the bottom, complete and unrun.
+✅ **EXECUTED 2026-08-21 on the owner's approval. Four generations, four facings, four
+PASSes, and nothing here needs firing again.** The prompts, sizes and reference order
+below are the ones that ran, kept verbatim as provenance. What the run changed:
 
-⚠️ **The game is up.** Building the four textures writes only into this repo. Deploying
-them into `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods` is a separate act
-for a separate time, and it is not in the command block below.
+| facing | generation | distortion | span | validate_sprite.py |
+|---|---|---|---|---|
+| OxCart east | bantha ×2, 1792×1440 | **+0.0%** | 100%×100% | **PASS** (1 warning) |
+| CoveredCarriage east | ronto ×2, came back 1448×1086 | **−0.0%** | 100%×100% | **PASS** |
+| WarChariot east | dewback ×2, 1728×1152 | **−0.0%** | 100%×100% | **PASS** |
+| Chariot east | dewback ×1, 1472×960 | **−10.8%** | 100%×88% | **PASS** |
+
+🔴 **Three things this document did not know, all of them measured during the run:**
+
+1. **The generated bbox does NOT arrive at the band's aspect, and §5 underestimates by
+   how far.** `build_beast_vehicle.py` trims to the SUBJECT bbox, and asking for traces
+   that leave the frame means the bbox is mostly trace at one end: +6.2% (OxCart),
+   +15.0% (CoveredCarriage), +27.0% (dewback pair), **+66.7%** (dewback single) against
+   their bands. ⇒ **`trim_to_band_aspect.py` is now a required step between the key and
+   the build**, and §6 without it is an incomplete command block.
+2. **The surplus comes off the LEFT, not the far end.** §5 assumed the far end; the
+   donor crops say otherwise. The band holds torso and head with the muzzle ON its right
+   edge, and the traces run out of it to the left — so a right cut takes the snout while
+   a left cut takes trace-only columns the donor's band does not contain either.
+3. **A dewback cannot be cropped to a horse's band.** It is a long low lizard with a
+   tail half its length; closing 66.7% by cropping reaches the hind leg (tried it, it
+   returns a rear-half torso). Chariot east is therefore trimmed under a 30% cap and
+   spends −10.8% on the contain fit — inside the ~18% rule, and the cap is what takes
+   the fitted beast from 102 rows of a 152-row band to 134.
+
+⚠️ **The other measured surprise is in the builder, not here:** Chariot east left a black
+crescent between cart and beast — the donor horse tail's keyline is mask-RED while its
+interior is mask-BLACK, so the erase took the tail and left its outline. East now lets
+the dilation spill `DILATE` px past the hitch; the seeds are deliberately NOT widened,
+because the donor's shaft and rein keylines out there are mask-black and seeding them
+erases the chariot's own front outline.
+
+⚠️ **The game was DOWN for this run and nothing was deployed.** `deploy_custom_mods.py`
+is still a separate act for a separate time.
 
 ---
 
@@ -207,6 +237,9 @@ Species, palette and surface come from image 2: olive-green pebbled scale hide w
   It was `90` to serve the turned-south-pair experiment. East art is authored already facing
   east, so a turn would lay the team on its side. Nothing shipped ever used the old value —
   the sled's east came from `build_eopie_sled_east.py`, which is untouched.
+- ⚠️ **SUPERSEDED BY THE HEADER, 2026-08-21: this bullet is right about the mechanism and
+  wrong about the size of it.** The measured errors were +6.2% to +66.7%, not "inside
+  ~12%", and the cut comes off the LEFT. Use `trim_to_band_aspect.py`.
 - ⚠️ **The compositor trims to the subject bbox, so the SUBJECT's aspect is what matters,
   not the canvas's** — and the chroma-key clause asks for padding. After cutting, compare
   the trimmed subject's aspect to the band's. The east fit is `contain` with a bounded 12%
@@ -262,11 +295,19 @@ python3 $G/chroma_key.py --input $S/art/raw/ronto_pair_east_raw.png     --out $S
 python3 $G/chroma_key.py --input $S/art/raw/dewback_pair_east_raw.png   --out $S/art/dewback_pair_gen_east.png
 python3 $G/chroma_key.py --input $S/art/raw/dewback_single_east_raw.png --out $S/art/dewback_single_east.png
 
+# --- 2b. 🔴 TRIM TO THE BAND'S ASPECT. Added 2026-08-21 and NOT optional -- the builder
+#         fits the subject BBOX, so an untrimmed source spends its whole bounded stretch
+#         on one axis and validate_sprite.py passes it anyway. See the header.
+python3 $S/trim_to_band_aspect.py OxCart          east --input $S/art/bantha_pair_gen_east.png  --out $S/art/bantha_pair_east_trimmed.png
+python3 $S/trim_to_band_aspect.py CoveredCarriage east --input $S/art/ronto_pair_gen_east.png   --out $S/art/ronto_pair_east_trimmed.png
+python3 $S/trim_to_band_aspect.py WarChariot      east --input $S/art/dewback_pair_gen_east.png --out $S/art/dewback_pair_east_trimmed.png
+python3 $S/trim_to_band_aspect.py Chariot         east --input $S/art/dewback_single_east.png   --out $S/art/dewback_single_east_trimmed.png --max-cut 0.30
+
 # --- 3. COMPOSITE. Writes ../Textures/.../AV_<Vehicle>_east.png and its mask.
-python3 $S/build_beast_vehicle.py OxCart          --facing east --pair $S/art/bantha_pair_gen_east.png
-python3 $S/build_beast_vehicle.py CoveredCarriage --facing east --pair $S/art/ronto_pair_gen_east.png
-python3 $S/build_beast_vehicle.py WarChariot      --facing east --pair $S/art/dewback_pair_gen_east.png
-python3 $S/build_beast_vehicle.py Chariot         --facing east --pair $S/art/dewback_single_east.png
+python3 $S/build_beast_vehicle.py OxCart          --facing east --pair $S/art/bantha_pair_east_trimmed.png
+python3 $S/build_beast_vehicle.py CoveredCarriage --facing east --pair $S/art/ronto_pair_east_trimmed.png
+python3 $S/build_beast_vehicle.py WarChariot      --facing east --pair $S/art/dewback_pair_east_trimmed.png
+python3 $S/build_beast_vehicle.py Chariot         --facing east --pair $S/art/dewback_single_east_trimmed.png
 
 # --- 4. VALIDATE against the donor facing each one replaces. 0 REJECT is the bar the
 #        other eight facings cleared.

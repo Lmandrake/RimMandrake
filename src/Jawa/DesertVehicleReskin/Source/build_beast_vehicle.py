@@ -54,23 +54,18 @@ BANDS = {
     ("WarChariot", "north"):      (151, 361, 44, 276),
     ("OxCart", "north"):          (154, 357, 32, 220),
     ("CoveredCarriage", "north"): (175, 336, 36, 198),
-    # ⛔ EAST IS MEASURED AND WIRED AND THE ART IS NOT SHIPPABLE. Attempted 2026-08-21
-    # with the south pair turned 90 degrees CCW and it is plainly wrong, so the east
-    # bands stay here as measurement, not as a build that anyone should run:
-    #   * The donor's east animals are drawn in SIDE elevation -- flank, profile head,
-    #     legs under the body. The south pair is a plan view of the animal's BACK. Turning
-    #     a plan view does not produce an elevation, and at sprite size it reads as two
-    #     beasts lying on their sides rather than one team pulling.
-    #   * The donor also STAGGERS the pair front-to-back (GEOMETRY section 3: OxCart east
-    #     merges over x 400-474; CoveredCarriage's trunk gap is 5-7 px; WarChariot's is
-    #     2-7 px). A turned south pair stacks them flat and square, with no overlap.
-    #   * OxCart is the arithmetic proof as well as the visual one: its band is 224x180
-    #     (aspect 1.244) and the turned bantha pair is 0.732, so a fill costs +69.9% and a
-    #     contain fit spans only 66% of the band's width.
-    # ⇒ East needs purpose-generated SIDE-view pairs, one per species, exactly as the
-    # DogSled needed `art/eopie_pair_gen_east.png`. It is a missing asset, not a fit bug.
-    # 🔑 That art is now SPECIFIED and awaiting the owner's approval to spend a generation:
-    # sizes, references, prompts and the exact commands are in Source/EAST_COMMISSION.md.
+    # ✅ EAST IS BUILT AND SHIPPED, 2026-08-21. Four purpose-generated SIDE-elevation
+    # frames -- bantha x2, ronto x2, dewback x2, dewback x1 -- replaced the dead
+    # turned-south-pair experiment. Source/EAST_COMMISSION.md holds the prompts and the
+    # sizes; its own header records what the run changed.
+    # 🔴 EAST ART MUST BE PUT THROUGH trim_to_band_aspect.py FIRST. `trim()` below cuts
+    # the pair to its BBOX, so the bbox's aspect -- never the canvas's -- is what the
+    # contain fit sees, and a generation framed with long traces off the left edge comes
+    # out +6% (OxCart) to +15% (CoveredCarriage) wider than its band. The fit then spends
+    # its whole bounded stretch on one axis, and validate_sprite.py PASSES the result
+    # because it grades the WHOLE 512x512 sprite while the damage is confined to a
+    # 227x170 band. Trimming the bbox to the band's aspect first takes all four to
+    # distortion +0.0% at 100%x100% span.
     ("Chariot", "east"):          (254, 486, 191, 342),
     ("WarChariot", "east"):       (212, 494, 148, 336),
     ("OxCart", "east"):           (282, 505, 158, 337),
@@ -249,7 +244,17 @@ def build(vehicle, facing, pair_path, out_path, out_mask_path):
     clip = np.zeros_like(animal)
     clip[max(gy0, 0):gy1 + 1, max(gx0, 0):gx1 + 1] = True
 
-    erase = dilate(animal & clip) & clip
+    # 🔴 EAST LETS THE GROW SPILL PAST THE HITCH, and only the grow. Measured 2026-08-21:
+    # the donor's horse tail sits on the rump right at the band's left edge, its INTERIOR
+    # is mask-black and erases, and its 4-6 px keyline is mask-RED and does not -- so a
+    # dilation clipped hard at x0 leaves a black crescent standing between the chariot and
+    # the new beast on Chariot east. Spilling the dilation left by DILATE takes the
+    # crescent. ⛔ Do NOT widen the SEEDS instead: the donor's shaft and rein keylines out
+    # there are mask-black too, and seeding them erases the chariot's own front outline --
+    # tried it, it trades a black comma for a white notch.
+    spill = np.zeros_like(clip)
+    spill[max(gy0, 0):gy1 + 1, max(gx0 - (DILATE if facing == "east" else 0), 0):gx1 + 1] = True
+    erase = dilate(animal & clip) & spill
     kept_above = int((animal & ~clip).sum())
 
     A[erase] = (0, 0, 0, 0)
