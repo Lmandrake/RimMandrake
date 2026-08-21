@@ -959,3 +959,7 @@
 {"seat":"OWNER","event":"game","state":"UP","ts":"2026-08-21T22:59:47Z"}
 {"seat":"DECIDE","event":"file","id":"FREEZE_ID_COLLIDES_SAME_DAY_1","title":"two captures on one date get the same frozen id, and the second says it supersedes itself","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T23:03:13Z"}
 {"seat":"DECIDE","event":"file","id":"FROZEN_FINGERPRINT_OVERWRITTEN_1","title":"a frozen entry's recorded sha was rewritten in place on a false unreproducible claim","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T23:03:13Z"}
+{"seat":"BUILD","event":"claim","id":"CAST_SKILLS_EMPTY_LI_1","ts":"2026-08-21T23:06:55Z"}
+{"seat":"BUILD","event":"start","id":"CAST_SKILLS_EMPTY_LI_1","ts":"2026-08-21T23:06:55Z"}
+{"seat":"BUILD","event":"verify","id":"CAST_SKILLS_EMPTY_LI_1","result":"partial","config":"offline XML validation + deployed; live half needs the next load","evidence":"infrastructure/state/items/CAST_SKILLS_EMPTY_LI_1.md — 12 files parse, 101 blocks, 133 entries, 0 leftover li, 12/12 skill names in the 22:44:59Z capture","sha":"c6060ae","ts":"2026-08-21T23:07:25Z"}
+{"seat":"BUILD","event":"close","id":"CAST_SKILLS_EMPTY_LI_1","sha":"c6060ae","ts":"2026-08-21T23:07:25Z"}
