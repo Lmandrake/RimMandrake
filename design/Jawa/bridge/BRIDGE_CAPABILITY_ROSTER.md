@@ -244,7 +244,8 @@ ourselves** (a `GameComponent` keyed by pawn id); nothing in the game will carry
 ## 4. CONDUITS, WATER AND FUEL PIPES
 
 Vanilla RimWorld has **power conduits only**. Everything else is modded. Measured against
-the owner's real 578-mod list, there are exactly **three resource-network runtimes active**:
+the owner's real **578-mod list as of 2026-08-20** (`activeMods` in `ModsConfig.xml`, game
+1.6.4871 rev591), there are exactly **three resource-network runtimes active**:
 
 | framework | packageId | assembly | manager type |
 |---|---|---|---|

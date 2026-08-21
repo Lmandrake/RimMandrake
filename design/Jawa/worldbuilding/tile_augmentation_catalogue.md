@@ -9,7 +9,9 @@ beautifies **terrain**, this file places **content on** it; terrain vocabulary l
 `design/Jawa/worldbuilding/biome_terrain_palette.md`.
 
 **Every defName below is verified against the live def dump** (`…\RimWorld by Ludeon
-Studios\DefDump\defs\`, 573 mods, 25,734 `ThingDef`s) — not guessed.
+Studios\DefDump\defs\`, **573 mods as of 2026-08-13**, 25,734 `ThingDef`s) — not guessed.
+⚠️ A mod count with no date reads as current forever. The owner's list is **578 mods as of
+2026-08-20**; a dated 573 is a fact, an undated one is a landmine.
 
 ---
 
@@ -316,7 +318,8 @@ and detail spent here is the only map art the player never demolishes.
 
 ## 7.3 The mechanism is already installed and nobody has used it
 
-**`HaiLuan.CustomQuestFramework` is ACTIVE at load 108 of 575.** Space Tower is
+**`HaiLuan.CustomQuestFramework` is ACTIVE at load 108 of 575** — as of 2026-08-13; the
+owner's list is 578 as of 2026-08-20. Space Tower is
 not one dungeon mod; **it is one dungeon built on an authoring format we already
 have and are paying for.** Measured in
 `…\workshop\content\294100\3527936083\1.6\Defs\QuestEditor_Library.CustomMapDataDef\`

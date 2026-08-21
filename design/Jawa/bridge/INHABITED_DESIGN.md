@@ -312,8 +312,15 @@ very well, we can do a tremendous job."*
 1–2 standouts each that wants 90–180 placed, and several hundred gives depth, spares, and a
 stocked displaced pool for the beggars.
 
-⭐ **The matrix is already built: 70 xenotypes × 11 factions × 14 registers × the role
-table.** Every cell has a reason to be specific — an Ugnaught sump-clearer for the Hutts
+⭐ **The matrix is already built: 71 xenotypes × 12 factions × 14 registers × the role
+table.** ⚠️ **Name the denominator, always.** The 71 is *what we define under `src/`*; the
+oft-quoted 70 is the BTD mod's roster, 42 is Outer Rim alone, 44 the art-audit subset,
+79 the mechanically distinct species across all mods, and 139 the live xenotypes at 578
+mods (2026-08-20). The 12 is *factions carrying dossiers* — the roster is **13**, and the
+thirteenth, the Forgotten Arsenal, holds no settlement and has no cast. ~~11~~ was a count
+of a dead world.
+
+Every cell has a reason to be specific — an Ugnaught sump-clearer for the Hutts
 writes differently from a Geonosian one, and this project knows both.
 
 A generated fragment pool remains, demoted to **filler for the genuinely incidental**.
@@ -508,7 +515,8 @@ The same role written for two factions must produce two different people: a Hutt
 and a Homestead tallyman are not the same man in a different coat.
 
 ⭐ **AND THE ANSWER WAS ALREADY IN THE SPEC.** Every faction's ideoligion name in
-`FACTION_SPEC.md` §"The 14 factions" **is its moral climate in three words.** Nobody had
+`FACTION_SPEC.md` §"The 14 factions" — the heading is historical; **13** stand, the ~~14th~~
+(the Unbound Hive) being struck through and cut — **is its moral climate in three words.** Nobody had
 used them this way. Do.
 
 | faction | its faith | the moral climate | what the cast must SHOW |
