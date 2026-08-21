@@ -89,6 +89,31 @@ CASES = [
 
     # ---- advisory never fails the build -----------------------------------------
     ("undated mod count is advisory only", "The stack is 562 mods.", CLEAN, None),
+
+    # ---- the modlist rule's own false positives ----------------------------------
+    # ⚠️ Advisory means it never blocks, which makes noise MORE dangerous rather than
+    # less: nobody investigates a warning they have learned is usually wrong, and the
+    # real undated counts would then sit inside that noise forever. These five shapes
+    # were all flagged on the real corpus.
+    ("a DATED mod count is the point, not the defect",
+     "the owner's real 578-mod list as of 2026-08-20", CLEAN, None),
+    ("'since <date>' counts as dated",
+     "575 mods since 2026-08-15.", CLEAN, None),
+    ("a load-order POSITION is not a count",
+     "that mod is deployed and enabled at position 557", CLEAN, None),
+    ("'Active at 573' is a position too",
+     "Active at 573. Swept the whole workshop tree.", CLEAN, None),
+    ("a file:line citation is not a mod count",
+     "`ship_distinctive_features.md:566` — from Afterlife, a mod", CLEAN, None),
+    ("a count of PLANTS is not a count of mods",
+     "a literal growDays for every plant — 566 of them across dozens of mods", CLEAN, None),
+    ("…but a bare undated count still flags",
+     "measured against the 573-mod stack.", CLEAN, "modlist_undated"),
+    # ⚠️ Phrased WITHOUT "was" on purpose. The first draft of this case read "the stack
+    # was 573 mods", which the HISTORICAL rule correctly exempts — the test was wrong,
+    # not the checker. A past-tense count is documenting, which is exactly what we want.
+    ("…and so does the space-separated form",
+     "the stack runs 573 mods today.", CLEAN, "modlist_undated"),
 ]
 
 

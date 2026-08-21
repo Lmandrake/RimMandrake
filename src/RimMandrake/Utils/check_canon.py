@@ -77,6 +77,21 @@ ESCAPE = re.compile(r"<!--\s*canon-ok:")
 # immediately before the number so it cannot swallow a real claim further up the cell.
 DENIAL = re.compile(r"(\bnot\b|\bnever\b|\bnor\b|≠|rather than|instead of)"
                     r"[\s~*_`(]*$", re.I)
+
+# 🔴 The `modlist_undated` rule's own exemptions. It fires on a 5xx near the word "mod",
+# and on the real corpus five of its hits were wrong in two distinct ways — reported
+# 2026-08-20 by an agent whose files it flagged:
+#
+#   "the owner's real 578-mod list AS OF 2026-08-20"   ← already dated; the rule's entire
+#                                                        point is the MISSING date
+#   "that mod IS ACTIVE ... position 557"              ← a LOAD-ORDER POSITION, not a count
+#   "Active at 573"                                    ← same
+#
+# ⚠️ This rule is advisory, so a false positive never blocks a commit — which makes it
+# MORE dangerous, not less: nobody investigates a warning they have learned is usually
+# wrong, and the real undated counts would sit inside the noise forever.
+DATED = re.compile(r"20\d\d-\d\d-\d\d|\bas of\b|\bsince\b|\bon that day\b", re.I)
+POSITION = re.compile(r"\b(position|slot|index|at)\s*$", re.I)
 FENCE = re.compile(r"^\s*(```|~~~)")
 
 
@@ -188,11 +203,16 @@ def rules(c):
         # ADVISORY — never fails the build. See the docstring: an undated mod count is
         # the defect, and no single number can be right for every line.
         Rule("modlist_undated",
-             r"\b(5[4-8][0-9])\b",
+             # ⚠️ ADJACENT to the noun, like the count rules above — the same lesson,
+             # learned twice. Matching a 5xx anywhere near the word "mod" flagged a
+             # file:line citation (`ship_distinctive_features.md:566` … "from Afterlife,
+             # a mod") and a count of PLANTS ("566 of them across dozens of mods"). A
+             # mod count is written next to its noun: `578-mod list`, `573 mods`.
+             r"\b(5[4-8][0-9])[ \t]*-?[ \t]*mods?\b|\bmods?\b[ \t]*[:=][ \t]*(5[4-8][0-9])\b",
              "%d as of %s" % (c["modlist"]["official_count"], c["modlist"]["as_of"]),
              "A mod count with no as-of date reads as current forever. Stamp it with "
              "the date it was taken — do NOT replace the number.",
-             context=r"\bmods?\b", advisory=True),
+             advisory=True),
     ]
 
 
@@ -229,6 +249,11 @@ def scan(paths, rs):
                     m = r.bad.search(cell)
                     if m and DENIAL.search(cell[:m.start()][-24:]):
                         continue            # "— not 25%" denies it; it does not claim it
+                    if m and r.key == "modlist_undated":
+                        if DATED.search(cell):
+                            continue        # it HAS a date; that is the whole rule
+                        if POSITION.search(cell[:m.start()][-14:]):
+                            continue        # a load-order position, not a count
                     if m:
                         hits.append((path, i, r, m.group(0).strip(), line.strip()))
     return hits
