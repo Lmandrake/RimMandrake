@@ -185,7 +185,70 @@ first timestamped line `[17:31:34]` at 644, 8,700 lines, mtime 21:10.
 ---
 
 
-# §6 — LOAD 2026-08-21 ~13:35. **⬜ OPEN — written before the game started.**
+# §7 — RESTART 2026-08-21 ~16:15. **⬜ OPEN — written before the game closed.**
+
+Deploy state verified on disk with the game still UP, minutes before the restart:
+
+| artifact | state | evidence |
+|---|---|---|
+| all six assemblies | **unchanged** | md5-identical repo↔game: `Inhabited` `6d4fd4ff`, `JawaBench.BridgeTools` `600954ed`, `RimDefDump` `8b9e89bb`, plus JawaIonWeapons, JawaPlantGrowth, DesertVehicleReskin. **Nothing needs the shutdown window** |
+| `Inhabited/Defs/CastRosters/*` (12) | 🆕 **NEWLY DEPLOYED** | the `SkillGain` shape fix; `deploy_custom_mods` reports in sync |
+| `dump_request.txt` | **deleted** | the marker is not consumed. No dump this restart — one was taken at 15:44 and frozen |
+| frozen target | `OFFICIAL-2026-08-21T22-44-59Z` | 78,813 defs, `shadowed=0 ambiguous=0` |
+
+🔑 **ONE change rides this restart**: pure XML, one mod, no assembly. Attribution is
+unambiguous by construction.
+
+## §7 S1 — the 101 discarded cast members come back
+
+```
+EXPECT           harvest_log.py `DEFS DISCARDED` reads exactly 2
+BASELINE         103 on the 15:44 log — attributed line by line, not estimated:
+                   101  CastRoster_*.xml   (ours, the SkillGain shape bug)
+                     2  ElectricTorches_DarkAgesCrypts_Thoughts.xml  (Onimods, benign,
+                        and exactly harvest_log's standing baseline of 2)
+EXPECT ABSENT    any line matching `Exception loading def from file CastRoster_`
+EXPECT PRESENT   `[Inhabited] ready:` with its count — and the count must now
+                 INCLUDE the 101, not merely be non-zero
+```
+
+⚠️ **Absence alone is not sufficient, and here the trap is specific.** If `Inhabited`
+failed to load at all there would be no discard lines *and* no `ready:` line — a
+silent pass. Both readings are required. 🔑 And `ready: 269` alone was never
+sufficient either: the OLD log carried a `ready:` count while 101 of those
+characters had been thrown away by the def loader before the mod ever saw them.
+
+**Per-file baseline, so a partial fix is visible rather than a round number:**
+
+```
+DEEPWATER 12 · BLACKSTAR 11 · GEONOSIAN 10 · JUNKERS 9 · TUSKEN 9 · DROIDS 8
+HELIX 8 · HOMESTEAD 8 · WILDSTEAM 8 · EMPIRE 7 · HUTT 7 · JAWA 4
+```
+
+⇒ **If discards land between 2 and 103, the per-file counts name which roster
+still has the old shape.** A single number could not.
+
+## §7 S2 — carry-over, free
+
+```
+EXPECT           patchfail still 5   (held at exactly 5 on the 15:44 load ✅)
+EXPECT           dead mods 0, type-load 0, texture failures 0, Harmony 1
+EXPECT ABSENT    a `captures/` directory under DefDump/ — the producer is still
+                 unchanged, so the flat layout is the correct outcome
+EXPECT PRESENT   DefDump/.keep — written by the freeze; ⛔ do NOT sweep it away
+🔴 NOT EXPECTED  a new def dump. `dump_request.txt` was deleted after the 15:44
+                 capture. If `[RimDefDump]` appears, something re-armed it
+```
+
+⚠️ **Two counts were ALSO above baseline on the 15:44 log and are NOT addressed by
+this restart** — they are open questions, not regressions this fix touches:
+`cross-reference (def loader)` **128** against baseline 25, and
+`stale saved data (Scribe)` **8** against baseline 0. 🔑 **Some of the 128 may be
+downstream of the 101 discards** — a discarded `CharacterDef` is a dangling
+reference for anything that named it — so re-read this one AFTER the restart before
+filing anything about it.
+
+# §6 — LOAD 2026-08-21 15:25. **✅ CLOSED — results filled in below.**
 
 Deploy state verified on disk with the game DOWN (`tasklist.exe` = 0 `RimWorldWin64`),
 minutes before launch:
