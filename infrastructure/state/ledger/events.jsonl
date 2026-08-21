@@ -599,3 +599,8 @@
 {"seat":"BUILD","event":"close","id":"FACTION_FIXEDNAME_ELEVEN_1","sha":"00fa712","ts":"2026-08-21T10:55:36Z"}
 {"seat":"CHECK","event":"note","id":"TRIBAL_FURNITURE_ART_DEAD_1","text":"Correction to the drop reason above: two backticked words were eaten by shell expansion. It should read \"such defs go to an UNJUDGED bucket instead of MISSING\". The substance is unchanged and the measurement stands: 140 PNGs present, TribalFurniture.dll present, art drawing.","ts":"2026-08-21T10:55:41Z"}
 {"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-21T10:55:53Z"}
+{"seat":"BUILD","event":"claim","id":"OUTLANDER_GROUPMAKER_PATCH_1","ts":"2026-08-21T10:56:12Z"}
+{"seat":"BUILD","event":"start","id":"OUTLANDER_GROUPMAKER_PATCH_1","ts":"2026-08-21T10:56:13Z"}
+{"seat":"BUILD","event":"verify","id":"NEOLITHIC_VEHICLE_BEAST_RESKIN_1","result":"pass","config":"offline-donor-refs","evidence":"infrastructure/state/observed/build/NEOLITHIC_VEHICLE_BEAST_RESKIN_1_offline.txt","sha":"cd58f8f","ts":"2026-08-21T10:59:47Z"}
+{"seat":"BUILD","event":"close","id":"NEOLITHIC_VEHICLE_BEAST_RESKIN_1","sha":"742481f","ts":"2026-08-21T11:00:11Z"}
+{"seat":"BUILD","event":"file","id":"VEHICLE_RESKIN_LIVE_LOOK_1","title":"Look at all four reskinned vehicles in game, three facings each","kind":"check","target":"v1","for":"CHECK","ts":"2026-08-21T11:00:11Z"}
