@@ -77,17 +77,20 @@ WATER_BIOMES = {"Ocean", "Lake"}
 #     legal on `Wasteland` and the census says verify before placing. Nothing is placed
 #     on an unverified legality, because a landmark that cannot fire logs NOTHING.
 # ---------------------------------------------------------------------------
+#  `min_hill` is the fourth field: the lowest hilliness ordinal that still reads as the
+#  thing being named. A `Valley` is a NOTCH, so it needs relief around it; an
+#  `AbandonedColonyOutlander` does not care.
 HAND_PLACED = [
-    # (landmarkDef,               anchor,                          why)
-    ("AbandonedColonyOutlander", ("tile", 2476),                   "The Setdown - where the dead gravship was found"),
-    ("AncientQuarry",            ("settlement", "The Ore Moot"),   "the mine the sandcrawlers were stolen from"),
-    ("Valley",                   ("settlement", "Oxalate Watch"),  "The Scald Gate - the one breach in the Spine"),
-    ("sw_Sarlacc",               ("settlement", "Sarlacc Ground"), "the sarlacc the town is named for"),
-    ("AncientLaunchSite",        ("biome", "AB_MechanoidIntrusion"), "The Rust Cathedral - mechanoid ground, permanently at war"),
-    ("LavaCrater",               ("biome", "Volcano"),             "the Scald rim volcanics - the one volcanic province"),
-    ("LavaLake",                 ("biome", "LavaField"),           "the Scald rim volcanics"),
-    ("AncientHeatVent",          ("hottest", 3),                   "a heat plume on the hottest world"),
-    ("Oasis",                    ("oasis", 6),                     "the Hutt wells - six named, not 227"),
+    # (landmarkDef,               anchor,                            why,                                                                min_hill)
+    ("AbandonedColonyOutlander", ("tile", 2476),                     "The Setdown - where the dead gravship was found",                   0),
+    ("AncientQuarry",            ("settlement", "The Ore Moot"),     "the mine the sandcrawlers were stolen from",                        3),
+    ("Valley",                   ("settlement", "Oxalate Watch"),    "The Scald Gate - the one breach in the Spine",                      4),
+    ("sw_Sarlacc",               ("settlement", "Sarlacc Ground"),   "the sarlacc the town is named for",                                 0),
+    ("AncientLaunchSite",        ("biome", "AB_MechanoidIntrusion"), "The Rust Cathedral - mechanoid ground, permanently at war",          0),
+    ("LavaCrater",               ("biome", "Volcano"),               "the Scald rim volcanics - the one volcanic province",                0),
+    ("LavaLake",                 ("biome", "LavaField"),             "the Scald rim volcanics",                                           0),
+    ("AncientHeatVent",          ("hottest", 3),                     "a heat plume on the hottest world",                                 0),
+    ("Oasis",                    ("oasis", 6),                       "the Hutt wells - six named, not 227",                               0),
 ]
 
 
@@ -185,6 +188,30 @@ def resolve_landmarks(rows, setts, idx, keep):
     placed = {}      # tile -> (def, why)
     refusals = []
 
+    def hill(t):
+        try:
+            return int(rows[t]["hilliness"])
+        except (TypeError, ValueError):
+            return 0
+
+    def legal(t, min_hill=0):
+        """Can a landmark sit here at all?
+
+        🔴 `IsValidTile` refuses IMPASSABLE hilliness, and `AddLandmark` will place it
+        regardless — which is how the first pass put `LavaCrater` and `LavaLake` on two
+        of the planet's 42 impassable tiles, where no player can ever reach them. Both
+        volcanic biomes have passable tiles (Volcano 7, LavaField 8); there was never a
+        need to use an impassable one.
+        """
+        if t in forbidden or t in placed:
+            return False
+        r = rows[t]
+        if r["water"] == "1" or r["biome"] in WATER_BIOMES:
+            return False
+        if hill(t) >= IMPASSABLE:
+            return False
+        return hill(t) >= min_hill
+
     def claim(tile, ldef, why):
         if tile is None:
             refusals.append((ldef, why, "no candidate tile"))
@@ -198,47 +225,53 @@ def resolve_landmarks(rows, setts, idx, keep):
         placed[tile] = (ldef, why)
         return True
 
-    def step_off(tile):
+    def step_off(tile, min_hill=0):
         """The nearest tile to an anchor that a landmark may legally occupy.
 
         ⚠️ NOT one step. `IsValidTile` refuses a settlement tile AND every tile adjacent
         to one, so the census's "one tile adjacent" is not actually placeable - the first
         legal ring is two out. This walks outward until it finds one, so a named place
         stays as close to the thing it is named for as the engine permits.
+
+        Within a ring it takes the HILLIEST legal tile, so a `Valley` lands in relief
+        rather than on whatever the neighbour list happened to enumerate first. The first
+        pass had no such preference and put The Scald Gate's valley on an oasis.
         """
         seen = {tile}
         frontier = [tile]
-        for _ in range(4):
-            nxt = []
+        for _ in range(5):
+            nxt, ring = [], []
             for cur in frontier:
                 for n in idx[cur][keep[cur]]:
                     n = int(n)
                     if n in seen:
                         continue
                     seen.add(n)
-                    if n not in forbidden and n not in placed:
-                        return n
                     nxt.append(n)
+                    if legal(n, min_hill):
+                        ring.append(n)
+            if ring:
+                return max(ring, key=hill)
             frontier = nxt
         return None
 
-    for ldef, (kind, arg), why in HAND_PLACED:
+    for ldef, (kind, arg), why, min_hill in HAND_PLACED:
         if kind == "tile":
-            claim(int(arg), ldef, why)
+            claim(int(arg) if legal(int(arg), min_hill) else None, ldef, why)
 
         elif kind == "settlement":
             anchor = setts.get(arg)
             if anchor is None:
                 refusals.append((ldef, why, "no settlement named %r" % arg))
                 continue
-            claim(step_off(anchor), ldef, why)
+            claim(step_off(anchor, min_hill), ldef, why)
 
         elif kind == "biome":
-            # the tile of that biome furthest from any settlement, so a named place does
-            # not land in somebody's back garden
-            cands = [t for t, r in enumerate(rows) if r["biome"] == arg and t not in forbidden]
+            # the middle legal tile of that biome, so a named place does not land in
+            # somebody's back garden — and never an impassable one
+            cands = [t for t, r in enumerate(rows) if r["biome"] == arg and legal(t, min_hill)]
             if not cands:
-                refusals.append((ldef, why, "no tile carries biome %s" % arg))
+                refusals.append((ldef, why, "no LEGAL tile carries biome %s" % arg))
                 continue
             claim(sorted(cands)[len(cands) // 2], ldef, why)
 
@@ -248,11 +281,17 @@ def resolve_landmarks(rows, setts, idx, keep):
             for t in order:
                 if n >= int(arg):
                     break
-                if claim(t, ldef, why):
+                if legal(t, min_hill) and claim(t, ldef, why):
                     n += 1
 
         elif kind == "oasis":
-            cands = [t for t, r in enumerate(rows) if r["biome"] == "ZBiome_DesertOasis"]
+            # ⚠️ Inside the Oasis def's own 20–60 °C gate. The LandmarkDef FORCES its
+            # mutator (`req:Oasis`), and that mutator carries the temperature range — so
+            # a named well on a 18.5 °C tile is a landmark whose whole point cannot fire.
+            cands = [t for t, r in enumerate(rows)
+                     if r["biome"] == "ZBiome_DesertOasis"
+                     and 20.0 <= float(r["temp_c"] or -999) <= 60.0
+                     and legal(t, min_hill)]
             # spread them: take every k-th so six named wells are not six neighbours
             k = max(1, len(cands) // int(arg))
             n = 0
