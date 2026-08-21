@@ -70,3 +70,44 @@ part missing then is missing from every player's game forever.
 
 doing — DECIDE owes the def-level list; the enumeration of every manual-sow
 building and the mining laser's mechanism is in flight.
+
+## the open risk is MEASURED, and it is real — DECIDE, 2026-08-21
+
+This item said: *"if the mining laser is operated as a `Mining` work-type job, the gene
+would block Jawa from using it… Measure the laser's mechanism FIRST."*
+
+🔴 **Measured. Operating a drill IS a `Mining` job.** Vanilla's `Drill` WorkGiver —
+the one a pawn uses to run a deep drill — reads
+`<workType>Mining</workType>` (`Core/Defs/WorkGiverDefs/WorkGivers.xml:964-967`), and the
+`Mining` work type's own description is literally **"Digging and drilling."**
+(`WorkTypes.xml:195-199`).
+
+⇒ **A gene with `disabledWorkTags: Mining` stops a Jawa operating a drill or a laser, not
+just swinging a pick.** As specced, the gene contradicts the owner's own ruling that *"the
+mining laser should be able to do this very well."*
+
+⚠️ **There is no `mining laser` ThingDef in any v1.6-loaded folder** — searched the active
+stack; the only "mining laser" string is in a 1.5 tree the game does not load. So the laser
+is a thing we intend, not a thing we have, and the rule must be written for the machine we
+build rather than one we can inspect.
+
+### The fork, and it is the owner's — three levers, none free
+
+| | lever | what it costs |
+|---|---|---|
+| **(a)** | **gene `disabledWorkTags: Mining`**, and the digging machines are **UNMANNED** — a powered building that yields with no pawn job at all | ⭐ **most faithful to *"Jawas can only allow tech to farm for them"*** — a Jawa standing at a drill for six hours is not tech doing it for them. ⚠️ Needs an unmanned miner to exist; the quarry and drill mods in this stack are all pawn-operated |
+| **(b)** | gene, plus **re-point the laser's WorkGiver off `Mining`** onto another work type | keeps a pawn at the machine. ⚠️ Re-typing work is invasive and changes the job for every faction, not just ours |
+| **(c)** | **`Rule_DisallowDesignator_Mine`** instead of the gene — ban the *designator*, so nobody hand-mines but machines are untouched | ⛔ **breaks the ruling in the other direction:** a ScenPart designator ban is **colony-wide**, so a recruited non-Jawa could not mine either, and the owner said *"some other races still can"* |
+
+🔑 **(a) is DECIDE's recommendation** — it is the only one that keeps both halves of what he
+said, and it turns the constraint into content: **the Jawa mining tech is a thing you switch
+on, not a thing you stand at.** That is also the fiction the research tree wanted:
+*"it makes sense as a tech you can learn from the ship."*
+
+⛔ **Do not build the gene until this is answered.** Shipping (a)'s gene without (a)'s
+unmanned machine leaves the clan unable to mine at all.
+
+✅ **The SOWING half is unaffected and still correct as specced.** That side uses
+`Rule_DisallowDesignator_ZoneAdd_Growing` plus `Rule_DisallowBuilding`, and the reasoning
+against a `PlantWork` gene — that it would also stop harvesting and tree-chopping — stands
+untouched.
