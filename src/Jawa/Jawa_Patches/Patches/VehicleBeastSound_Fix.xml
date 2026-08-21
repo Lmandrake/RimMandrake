@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  VehicleBeastSound_Fix.xml                 Jawa_Patches - new file 2026-08-21
+  ============================================================================
+
+  The DogSled now pulls TWO EOPIES, and it still yelped like a dog when shot.
+
+  Alpha Vehicles Neolithic gives the sled the flesh type `AV_WoodenAndDogVehicle`,
+  whose three impact sounds all point at SoundDef `AV_BulletImpact_Wood_And_Dogs`
+  (FleshTypeVehicle.xml:70-72). That SoundDef's single grain is an
+  AudioGrain_SeveralFolders reading:
+
+      Impact/Bullet_Wood  +  Pawn/Animal/Dog/Dog_Injured
+
+  ⇒ replace the dog folder with a herbivore one. Only the DogSled uses that flesh
+  type, so this is one SoundDef and it affects nothing else in the mod.
+
+  🔴 WHY Muffalo_Pain AND NOT A GUESS. Vanilla ships its sounds inside Unity asset
+  bundles - there are ZERO loose .ogg files under the game's Data folder, measured
+  2026-08-21 - so no folder path can be confirmed to exist by looking at the disk,
+  and a wrong clip path is a SILENT no-sound. The path below is not chosen, it is
+  BORROWED: `AV_BulletImpact_Wood_And_Ox`, in this same donor mod, already reads
+      Impact/Bullet_Wood  +  Pawn/Animal/Muffalo/Muffalo_Pain
+  for its ox cart. A path another shipped SoundDef already resolves is a path that
+  resolves. Found by indexing every clipFolderPaths in all 3,345 SoundDefs of the
+  2026-08-21 dump; only three animal-injury folders are referenced anywhere in the
+  build - Dog_Injured, Horse/Pain and Muffalo/Muffalo_Pain.
+
+  Muffalo over Horse because an eopie is a large shaggy browsing herbivore rather
+  than an equine, and because Muffalo is what the donor already uses for its own
+  draught team - so the sled now matches the ox cart it drives beside.
+
+  ⚠️ The whole `clipFolderPaths` list is replaced rather than the one `<li>` inside
+  it. A predicate that selects an `<li>` BY ITS OWN TEXT is `li[.="..."]`, which
+  RimWorld accepts and the offline validator cannot evaluate - it has no child to
+  predicate on - so it would report 0 matches and look exactly like a dead xpath.
+  Replacing the parent keeps both engines in agreement. Same reasoning as
+  GrimTerraTexPaths_Fix.xml.
+
+  ⛔ DO NOT EDIT THE WORKSHOP FOLDER. Steam overwrites it on the next update.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Vehicles - Neolithic</li>
+    </mods>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/SoundDef[defName="AV_BulletImpact_Wood_And_Dogs"]/subSounds/li/grains/li/clipFolderPaths</xpath>
+      <value>
+        <clipFolderPaths>
+          <li>Impact/Bullet_Wood</li>
+          <li>Pawn/Animal/Muffalo/Muffalo_Pain</li>
+        </clipFolderPaths>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
