@@ -459,6 +459,42 @@ def board(world, events, target="v1", ctx=None):
         # Refusals already IN the append-only file. Surfaced, never swallowed: an
         # event that replay rejected is a fact about the ledger, not a crash.
         "errors": [{"index": i, "event": v, "message": m} for i, v, m in world.errors],
+        # 🔑 THE CATALOG — one entry per item, and the board's only source of detail.
+        # `items` above is a COUNT and was all this file carried until 2026-08-20, so
+        # the Flow graph could not draw a causal chain, the V&V matrix had no runs to
+        # put in a cell, and the timeline had no titles. All three views need the same
+        # fields, so they are computed once here rather than three times in JavaScript.
+        # ⚠️ `items` stays an int for anything already reading it; the detail is a new
+        # key rather than a changed one.
+        "catalog": [_catalog_entry(i) for i in sorted(world.items.values(),
+                                                      key=lambda i: i.id)],
+    }
+
+
+def _catalog_entry(it):
+    """One item, flattened for the views. ⛔ No prose — that lives in items/<ID>.md.
+
+    Duplicating the spec here would put the same text in two places and re-create the
+    drift the ledger exists to end; the inspector reads the file when a reader asks.
+    """
+    return {
+        "id": it.id, "title": it.title, "kind": it.kind, "owner": it.owner,
+        "state": it.state, "row": it.row, "target": it.target, "needs": it.needs,
+        "blocked": it.blocked, "blocked_reason": it.blocked_reason,
+        "blocked_on": it.blocked_on, "this_deployment": it.this_deployment,
+        "created_at": it.created_at, "closed_sha": it.closed_sha,
+        "superseded_by": it.superseded_by,
+        # `caused_by` NAMES its cause — an item id, a finding name, or a run like
+        # C40/run-3@full-578. It names rather than indexes because line numbers do not
+        # survive the monthly roll of events.jsonl. This one field IS the causal graph.
+        "caused_by": it.caused_by,
+        "findings": list(it.findings),
+        # ⚠️ EVERY run, not the latest. A cell that shows a pass while hiding three
+        # earlier failures is the exact lie the old queues told by reopening items.
+        # Run numbers restart per config on purpose: a pass on 13 mods and a pass on
+        # 578 are different questions, not a retry.
+        "runs": [{"name": r.name, "n": r.n, "config": r.config, "result": r.result,
+                  "evidence": r.evidence, "sha": r.sha, "ts": r.ts} for r in it.runs],
     }
 
 
