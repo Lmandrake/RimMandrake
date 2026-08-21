@@ -158,3 +158,36 @@ it does not belong here.
   on a freshly deployed one it had not yet read. Same output, opposite meanings. A
   deploy is **FIX DEPLOYED, UNVERIFIED** until a startup log shows zero
   `Could not load reference to`. *2026-08-15.*
+
+## Limits found 2026-08-20 — the repo's filesystem, and four def-dump blind spots
+
+- 🔴 **`/mnt/d` is a 9p / DrvFs mount, NOT a local filesystem, and `O_APPEND` is not
+  atomic there.** 12 writers × 250 events of ~160 bytes lost **five of every six** and
+  tore hundreds of lines, twice; the same test on tmpfs was 3000/3000. An exclusive
+  `flock` fixes it completely at ~2 ms/event, and flock ALONE is sufficient — 9p fails
+  to serialise the *writes*, not the append offset. ⚠️ flock is advisory, so
+  `rimflow.model.append()` is the only safe writer of the ledger; a shell `>>` still
+  tears lines. *Anything appending concurrently from more than one process on this repo
+  needs a lock, whatever POSIX says.*
+- ⚠️ **Per-file syscalls on that mount cost ~0.8 ms.** `stat`-ing 144 files is 130 ms,
+  `open`+read is 209 ms; on tmpfs the same loop is 0.8 ms. **Any freshness-checking
+  cache is over a 100 ms budget before it parses anything** — the floor is the
+  filesystem, not the code. Cache in-process instead: warm replay is ~1 ms.
+- 🔴 **`pawnGroupMakers` for `OutlanderCivil` lives on the ABSTRACT parent
+  `OutlanderFactionBase`.** An xpath at `FactionDef[defName="OutlanderCivil"]/
+  pawnGroupMakers` **matches nothing, and a patch that matches nothing logs nothing.**
+  Wiring a pawnkind into that faction means patching the abstract base, which reaches
+  every Outlander faction. *This is why five authored `Jawa_Homestead_*` kinds spawn
+  nowhere.*
+- 🔴 **`TileMutatorDef` in the def dump carries ONLY `defName` and `label`.** No
+  `biomeWhitelist`, no `averageTemperatureRange`, no `workerClass`. A whitelist question
+  can only be answered from the mod's own XML. *Checking the dump for
+  `ZBiome_DesertOasis` in the `Oasis` whitelist returned "absent" — from a field that
+  does not exist in the dump at all. A false negative that reads exactly like a real one.*
+- ⚠️ **`GameConditionDef.temperatureOffset` reads `-10` for ALL 89 defs in the dump.**
+  That is a dump default, not a per-def value. Do not use those numbers for anything.
+- 🔑 **A long-running server is a cached copy of the code.** The board on `:8787` had
+  been up five days and predated the `/board` route, so every module request fell through
+  to the HTML page and the browser imported markup as JavaScript. **Every check that day
+  had spun up a fresh instance on a spare port and passed.** Verify against the process
+  that is actually running, not one you just started.
