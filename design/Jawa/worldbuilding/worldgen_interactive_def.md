@@ -1,6 +1,22 @@
 <!-- status: live ; numbers-superseded-by: infrastructure/state/canon.yml ; 2026-08-20 ; the RULINGS here stand and are cited; every MEASUREMENT is of a superseded planet -->
 # worldgen_interactive_def.md — the working definition of the world we are painting
 
+> 🔴 **THE PLANET IS FROZEN — owner's ruling, 2026-08-21. Do not paint, repaint, re-render
+> or reference-match it.** Verbatim: *"We need to just freeze the world for now as-is and
+> move on to v1. I have to totally rethink how we create that planet. It's really messy and
+> horrible compared to what I was hoping for originally."*
+>
+> ⛔ **Every instruction in this file to edit the paint, re-run the painter, render and judge
+> the map by eye, or clear a pre-worldgen gate is DEAD FOR V1** — whether or not it is struck
+> below, and whether or not it reads as merely "not started yet". The map that exists IS the
+> v1 map. `refmatch.py` is cancelled, not gated, and does not exist.
+> ✅ **What survives is CORRECTNESS** in artifacts and tools we still ship — a link CSV
+> emitted backwards, a lint excluding the wrong tiles. Fix those.
+> 🔮 The rethink of the authoring METHOD is post-v1: `design/V2_DREAMS.md >
+> PLANET_METHOD_RETHINK_1`. ⛔ It is **not worldgen**, which is out of every version.
+> Ruling: `WORLD_FROZEN_RETHINK_PLANET_1` · canon: `ORTHO_GLOBE_MAP_ACCEPTED_1`.
+
+
 Live working doc for the hand-built, frozen planet. Bullets only. Decisions land here
 as they are made; new-content ideas go to `worldgen_interactive_build_concepts.md`.
 

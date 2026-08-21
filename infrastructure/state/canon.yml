@@ -60,8 +60,12 @@ planet:
 
   # ⭐ ACCEPTED FOR V1 — owner, 2026-08-20, after looking at the ortho globes.
   #   "Let's go with the globe map you made for v1. Map accepted."
-  # 🔑 THE SHAPE OF THE PLANET IS SETTLED. What remains is POPULATING it — mutators,
-  # landmarks, temperature ranges, setting-appropriate detail — not re-judging it.
+  # 🔑 THE SHAPE OF THE PLANET IS SETTLED.
+  # 🔴 HARDENED 2026-08-21 — owner: "just freeze the world for now as-is and move on to v1.
+  # I have to totally rethink how we create that planet." ⛔ POPULATING IT IS ALSO OVER for
+  # v1: no mutators, no landmarks, no temperature curves, no "setting-appropriate detail"
+  # passes. The map that exists IS the v1 map. Only CORRECTNESS in shipped artifacts and
+  # tools survives. See ORTHO_GLOBE_MAP_ACCEPTED_1 below and WORLD_FROZEN_RETHINK_PLANET_1.
   # ⛔ Do not re-open geometry, water fraction, sea count or the temperature curve as
   # "improvements". They are accepted, not merely current.
   accepted_for_v1: true
@@ -775,8 +779,19 @@ ruled:
       ⭐ ACCEPTED FOR V1, on the ortho globes. "Let's go with the globe map you made for
       v1. Map accepted." ⇒ `REFERENCE_MATCH_HARNESS_1` (refmatch.py, the five defect
       screens) is MOOT for v1: it existed to decide whether the map passes, and the map
-      has passed. ⛔ Do not build it for v1. The remaining work is POPULATING the map,
-      not re-judging its shape.
+      has passed. ⛔ Do not build it for v1. ⛔ ~~The remaining work is POPULATING the map,
+      not re-judging its shape.~~ — STRUCK 2026-08-21: populating is over too, see below.
+
+      🔴 RE-AFFIRMED AND HARDENED 2026-08-21, owner, verbatim: "We need to just freeze
+      the world for now as-is and move on to v1. I have to totally rethink how we create
+      that planet." ⇒ This acceptance did NOT lift and cannot be lifted by a later
+      compliment. The map is FROZEN AS-IS for v1 — planet authoring stops, not "finish
+      the pass then stop". `refmatch.py` is cancelled, not gated, and does not exist.
+      ⚠️ A later "I like your new globes" is not a reversal and never was; treating it as
+      one is what produced `REFMATCH_THRESHOLDS_CALIBRATE_1`. The rethink of how the
+      planet is authored is POST-V1 and lives in `design/V2_DREAMS.md >
+      PLANET_METHOD_RETHINK_1`. ⛔ It is NOT worldgen: CLAUDE.md's standing ruling holds —
+      there is no worldgen feature in any version. See `WORLD_FROZEN_RETHINK_PLANET_1`.
 
   SAVANNA_PREMISE_RESOLVE_1:
     question: "Were the Pyrelands meant to be patched vanilla savanna?"

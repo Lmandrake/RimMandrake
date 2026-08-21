@@ -1,5 +1,21 @@
 # TRANSIENT — Upgrade plan: canon, ledger, and the board
 
+> 🔴 **THE PLANET IS FROZEN — owner's ruling, 2026-08-21. Do not paint, repaint, re-render
+> or reference-match it.** Verbatim: *"We need to just freeze the world for now as-is and
+> move on to v1. I have to totally rethink how we create that planet. It's really messy and
+> horrible compared to what I was hoping for originally."*
+>
+> ⛔ **Every instruction in this file to edit the paint, re-run the painter, render and judge
+> the map by eye, or clear a pre-worldgen gate is DEAD FOR V1** — whether or not it is struck
+> below, and whether or not it reads as merely "not started yet". The map that exists IS the
+> v1 map. `refmatch.py` is cancelled, not gated, and does not exist.
+> ✅ **What survives is CORRECTNESS** in artifacts and tools we still ship — a link CSV
+> emitted backwards, a lint excluding the wrong tiles. Fix those.
+> 🔮 The rethink of the authoring METHOD is post-v1: `design/V2_DREAMS.md >
+> PLANET_METHOD_RETHINK_1`. ⛔ It is **not worldgen**, which is out of every version.
+> Ruling: `WORLD_FROZEN_RETHINK_PLANET_1` · canon: `ORTHO_GLOBE_MAP_ACCEPTED_1`.
+
+
 **For secondary review. 2026-08-20. Nothing here is built; nothing here is decided.**
 Supersedes nothing. Read with `TRANSIENT_RimFlow_Analysis.md` and `TRANSIENT_lorekeeping.md`.
 
@@ -810,7 +826,18 @@ owner's 2026-08-20 naming ruling forbids. Corrected throughout:
 
 ---
 
-## 17. ⭐ THE PLANET HARNESS — reference-driven
+## 17. ⛔ ~~THE PLANET HARNESS — reference-driven~~ — DEAD FOR V1
+
+> 🔴 **THE WHOLE OF §17 IS DEAD, 2026-08-21.** The owner froze the planet as-is
+> (*"just freeze the world for now as-is and move on to v1. I have to totally rethink how
+> we create that planet"*), so there is nothing left for a reference-matching harness to
+> judge and nothing left to repaint in response to it. ⛔ **Do not build any part of it,
+> and do not treat the five defect screens, the render loop or the acceptance picture as
+> pending work.** `refmatch.py` is cancelled, not gated, and does not exist. **W1b
+> (`ORTHO_GLOBE_FIRST_RENDER_1`) and W7 are both dead**; the wave list, the briefs and the
+> acceptance table below still name them and are wrong. It is kept for the post-v1 rethink
+> — `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` — not as a plan.
+> Ruling: `WORLD_FROZEN_RETHINK_PLANET_1` · canon: `ORTHO_GLOBE_MAP_ACCEPTED_1`.
 
 > *"I'm having a lot of trouble making this planet surface. Seemed so easy, but it isn't."*
 
@@ -946,7 +973,11 @@ is. **No `Q104`, no `D55`, no bare numbers.**
 `GAME_STATE_MACHINE_WIRING_1` · `QUEUE_LINT_BLOCKING_HOOK_1` · `AGENT_SEAT_FILES_REWRITE_1` ·
 `BOARD_DECK_VIEW_1` · `BOARD_FLOW_GRAPH_1` · `BOARD_VNV_MATRIX_1` · `BOARD_TIMELINE_VIEW_1`
 
-### The planet — do this one first
+### ⛔ ~~The planet — do this one first~~ — DEAD FOR V1, see §17's header
+
+⛔ **Nothing in this sub-section is work.** The planet is frozen as-is (2026-08-21);
+`ORTHO_GLOBE_FIRST_RENDER_1`, `GAZETTEER_ZERO_TILE_AUDIT_1` and `CAST_PLACES_ON_THE_MAP_1`
+are not to be started, and the refmatch defect thresholds are not to be calibrated.
 
 | item | what |
 |---|---|
@@ -1124,7 +1155,11 @@ Author `infrastructure/state/canon.yml` per §2.3. **Every value must trace to a
 measurement — no guesses.** Where two sources disagree, canon takes the one backed by the painted
 map or the owner's most recent ruling, and records the loser in a `superseded:` comment.
 
-### W1b — brief for one agent
+### ⛔ ~~W1b — brief for one agent~~ — DEAD, DO NOT DISPATCH IT
+
+⛔ **This brief is not to be given to anyone.** The planet is frozen as-is (owner,
+2026-08-21) and `ORTHO_GLOBE_FIRST_RENDER_1` is dead with it. See §17's header and
+`WORLD_FROZEN_RETHINK_PLANET_1`.
 
 > Render Ash'karr as three orthographic globes and build a comparison sheet. This has never been
 > done — every existing render is equirectangular, while the binding reference is a globe.
@@ -1292,7 +1327,7 @@ exactly what `REFMATCH_THRESHOLDS_CALIBRATE_1` did, and it is blocked on the own
 |---|---|
 | **W0** | §21 check 1 → `done 5, blocked 2, doing 7, closed 116`; check 3 → `exit=0`; both hook selftests 7/7 and 6/6 |
 | **W1a** | `canon.yml` parses; every value carries a source |
-| **W1b** | three `*.ortho.png` exist for `ASHKARR_WORLDMAP`; the sheet opens |
+| ⛔ ~~**W1b**~~ | ⛔ **DEAD — the planet is frozen as-is, 2026-08-21. There is no acceptance to reach.** |
 | **W2** | 🔴 **that grep is the wrong test — corrected 2026-08-20.** `25%` is an ordinary percentage: after W2 it survives 15 times in `design/` as a droid ratio, a research-speed boost, a spacer-equipment share and an armour-penetration figure, none of them about water. The real test is `python3 src/RimMandrake/Utils/check_canon.py` → **0 contradictions** (39 advisory, all undated mod counts), because it tests the number *against its context* |
 | **W3** | `check_canon.py` exits 0 across all 119 docs, and `selftest_check_canon.py` passes 28/28; `check_doc_links.py` reports no live→dead link. ⚠️ It also reports 117 docs with **no status header** — and *unmarked is not a pass*, which is what W3(a) exists to fix. Once the headers are written, the gate is `check_doc_links.py --require-status` |
 | **W4** | `rimflow next --seat BUILD` returns one item in < 1 s; `rimflow reindex` rebuilds from the ledger alone |
@@ -1321,7 +1356,8 @@ exactly what `REFMATCH_THRESHOLDS_CALIBRATE_1` did, and it is blocked on the own
 
 ## 27. What I would actually do first
 
-**W0 is thirty minutes and makes the board stop lying.** **W1b is one command** that produces the
+**W0 is thirty minutes and makes the board stop lying.** ⛔ ~~**W1b is one command** that produces the
 single comparison this project has never made — the map as a globe, beside the globe it is meant to
 resemble. Neither depends on anything else in this plan, and W1b may change what the rest of it
-should say.
+should say.~~ 🔴 **W1b IS DEAD — the planet is frozen as-is, 2026-08-21.** Do not start it, and do
+not read "may change what the rest of it should say" as a reason to run it anyway. `W0` stands.

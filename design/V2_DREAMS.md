@@ -1861,3 +1861,91 @@ recording rather than re-deriving:
 that keep rain are 359 river-jungle and 276 non-volcanic mountain — median elevation ~606 m,
 max 2101 m. **The volcanic province is deliberately dry**, so red rain on a volcano is no
 longer available and the high country it would fall on is badlands and desert ridge.
+
+---
+
+## PLANET_METHOD_RETHINK_1 The planet gets authored a different way, and this is what was wrong with the old one
+
+🔴 **Owner, 2026-08-21, verbatim — this is the whole reason the entry exists:**
+
+> *"We need to just freeze the world for now as-is and move on to v1. I have to totally
+> rethink how we create that planet. It's really messy and horrible compared to what I was
+> hoping for originally."*
+
+⛔ **This is NOT a worldgen item and must never become one.** The standing ruling at the top
+of this file holds unchanged: there is no worldgen feature in any version, players never
+generate anything, and v2 is not a parking space for one. *"Rethink how we create the
+planet"* means rethinking **the owner's own hand-authoring METHOD** — the way one map gets
+made once — not building a generator that could make a second.
+
+🔑 **Why this is written down now rather than when he comes back to it.** He will return with
+a method in mind. What is worth more then than now is the record of **what the old method
+was and what it produced**, because that is the thing the new one has to beat, and nobody
+will remember it in six months. Ruling: `WORLD_FROZEN_RETHINK_PLANET_1`.
+
+### The method that is being discarded
+
+```
+design recipe (ASHKARR_WORLD_DEFINITION.md)
+  -> ashkarr_paint.py            writes the bundle, never opens a savegame
+  -> world/ASHKARR_WORLDMAP_tiles.csv        21,872 rows  <- THE MAP IS THIS FILE
+     + _links.csv (1,075 rows) + _settlements.csv + _meta.json
+  -> jawa/world_* bridge tools   stamp the bundle into a live generated world
+  -> worldview.py / world/view/  render it, LOOK at it, change the recipe, repeat
+```
+
+- The loop was **change the recipe → rebuild → render → judge by eye**, per
+  `design/Jawa/worldbuilding/the_one_map.md`, and it was ruled that way deliberately: a
+  number saying the world is fine while the picture shows compass circles is the number
+  being wrong.
+- `WORLD_REDRAFT.md` is the by-hand redraft procedure that reproduces the keeper.
+- ⛔ Savegame writing was killed 2026-08-18; there is no `WORLDMAP_ashkarr.rws` and never
+  will be. **The CSV bundle is the artifact.**
+
+### What the intent was, so the new method can be judged against it
+
+`the_one_map.md` and the reference photographs are the standing statement of intent, and
+they have not changed. In the owner's own words when he set the brief, 2026-08-18:
+
+> *"I just want ONE planetary map that is as realistic as possible… Make the rivers wind and
+> fan out into salty deltas. Coat the rivers in jungles. Be free. You don't need to make
+> Python that does this… just do it directly. See how far that gets you through iteration."*
+
+⚠️ **Note the tension that is probably the whole finding: he asked for direct authoring and
+got a recipe-and-rebuild pipeline.** *"You don't need to make Python that does this"* was
+answered with `ashkarr_paint.py`. Whatever replaces it, that sentence is the brief.
+
+### The defects on record when it was frozen — the specific things "messy and horrible" may mean
+
+Do not treat these as the diagnosis; they are the measured residue, and the owner's
+objection was aesthetic and holistic. But a new method that reproduces them has not helped.
+
+- **Rivers spring from nothing.** Six HugeRiver/LargeRiver chains start on dry hillsides at
+  full flow, and **nine of ten river systems never reach a sea** — the painter draws trunks
+  without tributaries. `RIVERS_BEGIN_FROM_NOTHING_1`, dropped under the freeze; half of it
+  (grading by min-flow, HugeRiver 113 → 29) had already landed in `7d7ebca`.
+<!-- canon-ok: quotes the DEAD worldgen_sea_spec figure on purpose, as history. Canon is 8.14%, stated first in the same sentence. -->
+- **Water reads at 8.14%** — canon, measured, 1,780 of 21,872 tiles — against the ~25% the
+  earliest design assumed. ⛔ That 25% is the dead `worldgen_sea_spec` and is quoted here only
+  as history; it is not a target and never becomes one. The assumption died honestly, but the
+  distance travelled is part of the shape of the disappointment.
+- **Elevation and biome fought each other.** The Scald was authored as 312 `Lake` tiles at
+  **+1411 m** — a wall of water a kilometre above its own shoreline — which the engine did
+  not count as water at all and which manufactured 32 false cliffs. Fixed by dropping them
+  to −30 m (`bd5dad0`), which is exactly the kind of correction a hand-recipe makes late and
+  a better method would not need.
+- **The judgement loop never closed.** `refmatch.py` — five defect screens calibrated against
+  the reference photographs — was specified twice, gated, cancelled, and never written. The
+  map was accepted by eye instead, and then the eye changed its mind.
+
+### What a new method has to do better
+
+1. **Author directly, not through a recipe.** The brief said so and the recipe is what he
+   disliked.
+2. **Make hydrology fall out of elevation** rather than be painted beside it, so rivers
+   cannot begin on dry land and seas cannot float.
+3. **Show the picture continuously**, not at the end of a rebuild.
+4. **Keep the one-map rule.** Nothing that can produce a second planet, no seeds, no knobs
+   that could roll a different world.
+
+📌 **Nothing here is scheduled**, which is what makes it safe to write in full.
