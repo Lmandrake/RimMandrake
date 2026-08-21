@@ -6,6 +6,14 @@ living things. It exists because a single gameplay question — *why would anyon
 land anywhere but the savanna?* — turned out to have a physical answer rather
 than a balance answer.
 
+> 🔴 **CORRECTED 2026-08-20 — R-H10's REASON was wrong, its ruling stands.** This file
+> inherited `tidally_locked_world.md`'s misread of the mod curve's axis (it is **arc from
+> the substellar point**, not latitude) and concluded "the active planet curve already
+> agrees". It does not agree — the mod's terminator is −37 °C where ours is +14 °C — but
+> the mod is **worldgen-only** and cannot reach a hand-painted frozen save. Temperatures
+> quoted below are now ours, from `src/RimMandrake/Utils/ashkarr_paint.py:796`. Canon:
+> `infrastructure/state/canon.yml` → `temperature_curves`.
+
 Companion documents: `tidally_locked_world.md` (geography), `water_doctrine.md`
 (water as the master resource), `desert_world_design.md` (risk/reward per
 terrain), `setting_physics.md` (the laws of harm).
@@ -360,9 +368,12 @@ they stop being gas.
 | **the deep night** (R-H6b) | **hydrocarbons** | the propane lakes |
 
 **It is also physically honest**, which is why it is worth keeping exactly as
-stated: propane liquefies around −42 °C, and the active planet curve already runs
-to **−70 °C at latitude 1.3 and −80 °C in deep night**
-(`tidally_locked_world.md`). The lakes do not need special pleading. **The world
+stated: propane liquefies around −42 °C, and our painted planet curve already runs
+to **−58 °C at arc 150° and −80 °C at the antistellar point**
+(`src/RimMandrake/Utils/ashkarr_paint.py:796`; the axis is **arc from the substellar
+point**, not latitude — corrected 2026-08-20, ~~"−70 °C at latitude 1.3"~~ was the
+`Alien Worlds - Tidally Locked` curve misread as ours and as latitude).
+The lakes do not need special pleading. **The world
 is simply cold enough**, and the fungal biomes upwind are simply productive
 enough.
 
@@ -524,18 +535,32 @@ R-H8 already rules that the bioweapon's author stays unknown.
 to the same magnitude on the cold side that the dayside runs on the hot side. The
 world is symmetric about the terminator, and both ends are lethal.
 
-⭐ **The active planet curve already agrees**, which is why this is a ruling about
-*biomes* rather than about the planet. `Alien Worlds - Tidally Locked` maps
-temperature onto latitude: **+70 °C at the subsolar point, +14 °C at the
-terminator, −70 °C at latitude 1.3, −80 °C in deep night**
-(`tidally_locked_world.md`). The curve is correct. **What is wrong is the biomes** —
+⭐ **This is a ruling about *biomes* rather than about the planet** — and the reason,
+~~"the active planet curve already agrees"~~, was **wrong and is replaced, 2026-08-20.**
+The two curves do **not** agree. **The mod cannot reach us.**
+
+`Alien Worlds - Tidally Locked` maps temperature onto **arc from the substellar point**
+(not latitude — `Source/PlanetTypeDef.cs` evaluates the curve at
+`Acos(cos lon · cos lat)·Rad2Deg / 90`), giving **+70 °C at the substellar point, +14 °C
+at arc 45° on the DAYSIDE, −37 °C at the TERMINATOR, −80 °C at the antistellar point.**
+Our planet is the owner's ruled curve, also on arc: **+70 / +58 / +38 / +14 / −22 / −58 /
+−80 °C at arc 0/30/60/90/120/150/180** (`src/RimMandrake/Utils/ashkarr_paint.py:796`), so
+**our terminator is +14 °C where the mod's is −37 °C.** ~~The two agree.~~
+
+🔑 **It does not matter, because the mod is WORLDGEN-ONLY.** `FieldPatcher.cs` patches
+the curve into `WorldGenStep_Terrain.BaseTemperatureAtLatitude`, and the tidally-locked
+transpiler targets `WorldGenStep_Terrain.GenerateTileFor`. **Nothing recomputes per-tile
+temperature at runtime**, so the mod's −37 °C can never reach a hand-painted frozen save
+— and ours never generates. ✅ The ruling below stands on our own curve. Side-by-side
+table: `ASHKARR_WORLD_DEFINITION.md:74-83`; canon: `infrastructure/state/canon.yml` →
+`temperature_curves`. **What is wrong is the biomes** —
 they are imported from mods that assumed an ordinary planet, and they carry
 ordinary temperate assumptions with them.
 
 ### What must change
 
 - 🔴 **Every nightside biome gets its temperature forced down.** `BiomeDef` exposes
-  **`constantOutdoorTemperature`**, which overrides the latitude curve outright —
+  **`constantOutdoorTemperature`**, which overrides the planet's arc-temperature curve outright —
   that is the blunt lever, and for a biome that must *never* be survivable it is
   the right one. Where a range is wanted instead, the biome must at minimum stop
   contradicting the curve.
@@ -684,7 +709,9 @@ this is not all-or-nothing, because `Alien Worlds - Tidally Locked`
 XML on a `PlanetTypeDef` — `avgTempByLatitudeCurve` for the day/night gradient,
 **`rainfallCurves`** for R-H1, **`elevationRange`** for the mountain share of
 R-H0, `biomes`/`biomeBlacklist` for what may appear at all, and `biomeConfigs`
-with per-biome `scoreOffset` for pushing a biome toward a latitude band.
+with per-biome `scoreOffset` for pushing a biome toward an arc band (the curve's
+axis is arc from the substellar point despite the field's name — corrected 2026-08-20).
+⛔ **All of that is WORLDGEN-ONLY and cannot touch our frozen save** — see R-H10.
 
 ⇒ **The distinction worth keeping is zonation versus placement.** Zonation is the
 part that must hold *everywhere* — and a human placing hundreds of tiles by hand

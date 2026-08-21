@@ -4,6 +4,8 @@ _A retired seat, 2026-08-14. **Owner's ruling, and it is the largest single piec
 worldbuilding this project has produced.** Recorded the hour it was made. Mods
 installed for it: `Tidally Locked` plus two others._
 
+> 🔴 **CORRECTED 2026-08-20 — the mod's curve axis is ARC, not latitude, and this file was the source of the error.** `Source/PlanetTypeDef.cs` evaluates `<avgTempByLatitudeCurve>` at the great-circle **arc** from the substellar point ÷ 90, so x=0.5 is arc **45° — dayside, +14 °C** and x=1.0 is **the terminator, −37 °C**. Every statement below that read x=0.5 as the terminator or x=1.0 as the nightside was off by exactly one curve point (§"ARC IS THE AXIS", "What survives unchanged", the cold-tolerance section). Water was also carried here at 25%; the painted world measures **8.14%**. Canon: `infrastructure/state/canon.yml` → `temperature_curves`; the correct side-by-side table is `ASHKARR_WORLD_DEFINITION.md:74-83`.
+
 > **One face of the planet never turns away from the sun. The other never sees
 > it. Everything that lives does so in the band between.**
 
@@ -150,27 +152,57 @@ right to hold the spec before a third wrote code.**_
 **`Alien Worlds - Tidally Locked`** — `7f.alienworlds.tidallylocked`, **ACTIVE**,
 on the framework **`7f.alienworlds`**, also ACTIVE. Ships full source.
 
-## 🔴 Correction: LATITUDE IS THE AXIS. I was wrong twice.
+## 🔴 ~~Correction: LATITUDE IS THE AXIS. I was wrong twice.~~ → **ARC IS THE AXIS** (corrected 2026-08-20)
 
-**The mod does not build a day face and a night face geographically. It remaps
-TEMPERATURE onto LATITUDE.** Its whole planet def is one curve:
+~~**The mod does not build a day face and a night face geographically. It remaps
+TEMPERATURE onto LATITUDE.**~~ ⛔ **DEAD, 2026-08-20 — the name of the field lied and
+this file believed it.** The mod remaps temperature onto **ARC: the great-circle
+angular distance from the substellar point.** `Source/PlanetTypeDef.cs`,
+`WorldGenTemperaturesPatch.BaseTemperatureAtLongLat`, read from source and CONFIRMED:
 
-| latitude | avg temperature |
-|---:|---:|
-| **0.0** | ⭐ **+70 °C** — the subsolar point |
-| 0.1 | +65 °C |
-| ⭐ **0.5** | ⭐ **+14 °C — this is the terminator** |
-| 1.0 | −37 °C |
-| 1.3 | −70 °C |
-| 2.0 | **−80 °C** — deep night |
+```csharp
+var effectiveLat = Mathf.Acos(Mathf.Cos(pos.x*Deg2Rad) * Mathf.Cos(pos.y*Deg2Rad))
+                   * Mathf.Rad2Deg;          // "// damn you non-euclidean geometry"
+return ...AvgTempByLatitudeCurve.Evaluate(effectiveLat / 90f);
+```
 
-⇒ **Low latitude is the burning dayside. Mid latitude is the twilight band. High
-latitude — the poles — is the nightside.**
+**So the curve's x is arc ÷ 90, and every row below shifts by one point:**
 
-**So my original spec was accidentally half-right and my correction made it
+| curve x | **arc from the substellar point** | avg temperature |
+|---:|---:|---:|
+| **0.0** | 0° — the substellar point | ⭐ **+70 °C** |
+| 0.1 | 9° | +65 °C |
+| **0.5** | **45° — DAYSIDE**, ~~this is the terminator~~ ⛔ it is not | +14 °C |
+| ⭐ **1.0** | ⭐ **90° — THE TERMINATOR** | ⭐ **−37 °C** |
+| 1.3 | 117° — nightside | −70 °C |
+| 2.0 | 180° — the antistellar point | **−80 °C** — deep night |
+
+⚠️ **Corroboration that x cannot be latitude:** vanilla's own
+`WorldGenStep_Terrain.AvgTempByLatitudeCurve` stops at x=1.0 because latitude stops at
+the pole. This mod carries the curve to **x=2.0**, which is only explicable if x reaches
+180° — i.e. arc.
+
+⇒ ~~**Low latitude is the burning dayside. Mid latitude is the twilight band. High
+latitude — the poles — is the nightside.**~~ ⛔ Superseded 2026-08-20. **Low arc is the
+burning dayside. Arc 90° is the terminator. Arc beyond 90° is the nightside** — and a
+pole of this planet is only cold if it happens to lie far from the substellar point.
+
+~~**So my original spec was accidentally half-right and my correction made it
 worse.** I told a retired seat *"not latitude, the terminator"* — **but the terminator IS
 a latitude band on this planet.** The real target is **mid-latitude, around 0.4–0.6**:
-not the equator, not the poles.
+not the equator, not the poles.~~ ⛔ **DEAD, 2026-08-20.** The original *"not latitude,
+the terminator"* was right after all; this paragraph withdrew a correct correction. **The
+terminator is arc 90°, which is curve x=1.0 — not 0.4–0.6.**
+
+🔴 **AND IT DOES NOT REACH US ANYWAY.** The mod is **worldgen-only**: `FieldPatcher.cs`
+patches the curve into `WorldGenStep_Terrain.BaseTemperatureAtLatitude` and the
+tidally-locked transpiler targets `WorldGenStep_Terrain.GenerateTileFor`. Nothing
+recomputes per-tile temperature at runtime, so the mod's −37 °C can never reach a
+hand-painted frozen save. ✅ **Our planet is the owner's ruled curve on arc —
+`[70, 58, 38, 14, −22, −58, −80]` at arc 0/30/60/90/120/150/180
+(`src/RimMandrake/Utils/ashkarr_paint.py:796`), painted into the save, terminator
++14 °C** (realised median +13.0 °C after the 5.5 °C/km lapse). The two curves disagree
+and it does not matter. ⛔ Do not "reconcile" them.
 
 ⚠️ **And the owner's "one body near a pole to feel alien" now means something
 much better than a quirk: a sea on the NIGHTSIDE, frozen or freezing.**
@@ -181,7 +213,7 @@ much better than a quirk: a sea on the NIGHTSIDE, frozen or freezing.**
 
 | field | what it gives us |
 |---|---|
-| ⭐ **`elevationRange`** | **patches `WorldGenStep_Terrain.ElevationRange` directly — this is the ocean-share dial.** The 25% target may be one number in XML |
+| ⭐ **`elevationRange`** | **patches `WorldGenStep_Terrain.ElevationRange` directly — this is the ocean-share dial.** ~~The 25% target~~ (⛔ dead 2026-08-20 — the painted world is **8.14%** water, 1780 of 21872 tiles) may be one number in XML |
 | ⭐ **`biomes` / `biomeBlacklist`** | **a per-planet-type biome whitelist and blacklist.** The owner's 29 removals may not need Cherry Picker at all |
 | ⭐ **`biomeConfigs`** | per-biome **`scoreOffset`**, a **`workerClass` OVERRIDE**, and arbitrary `defFields` — the mod's own example is setting `inVacuum` |
 | `globalBiomeConfig` | the same, applied to everything |
@@ -197,10 +229,10 @@ much better than a quirk: a sea on the NIGHTSIDE, frozen or freezing.**
 
 | need | route |
 |---|---|
-| **25% ocean** | ⭐ **XML — `elevationRange` on our own planet type.** Not code |
+| ~~**25% ocean**~~ ⛔ dead 2026-08-20 — **8.14% is what got painted** | ⭐ **XML — `elevationRange` on our own planet type.** Not code |
 | **biome removals (29)** | ⭐ **XML — `biomeBlacklist`.** Possibly no Cherry Picker |
 | **biome mix / commonality** | ⭐ **XML — `biomeConfigs.scoreOffset`**, and `workerClass` where a worker is the real gate |
-| **three ragged blobs at mid-latitude** | ⭐ **hand-authored in `world/WORLDMAP_ashkarr.rws` and carried into the game over the live bridge.** `elevationRange` sets how much sea there is, not where or what shape |
+| **three ragged blobs at ~~mid-latitude~~ the terminator band (arc ~90°)** | ⭐ **hand-authored in `world/WORLDMAP_ashkarr.rws` and carried into the game over the live bridge.** `elevationRange` sets how much sea there is, not where or what shape |
 
 ⇒ ~~**We author our own `PlanetTypeDef` and the custom `WorldGenStep` reduces to
 arrangement alone.**~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see ASHKARR_WORLD_DEFINITION.md §12. The XML rows above stay —
@@ -333,7 +365,11 @@ a new planet type.**
 ⚠️ Patch by **`defName`**, not by class — the shipped def is a *subclass*,
 `AlienWorlds.TidallyLocked.PlanetTypeDef`.
 
-### 3. 🔴 **`elevationRange` is NOT the 25%-ocean dial. Stop calling it one.**
+### 3. 🔴 **`elevationRange` is NOT the ~~25%~~-ocean dial. Stop calling it one.**
+
+⚠️ **The 25% itself is dead too, 2026-08-20** — the owner cut it to a third on 2026-08-18
+and the painted world measures **8.14%** water (1780 of 21872 tiles). Neither the dial nor
+the target survives.
 
 The mod author's own comment, verbatim:
 
@@ -348,8 +384,13 @@ The water fraction is now whatever the hand-authored map holds.
 
 ### What survives unchanged
 
-✅ **The axis** — confirmed from the shipped curve: latitude, with **0.5 = +14 °C =
-the terminator.**
+✅ **The axis** — ~~confirmed from the shipped curve: latitude, with **0.5 = +14 °C =
+the terminator.**~~ ⛔ **WRONG ON BOTH COUNTS, corrected 2026-08-20.** The axis is
+**arc from the substellar point ÷ 90**, and on the mod's curve **x=1.0 = arc 90° = the
+terminator = −37 °C**; x=0.5 is arc 45°, deep on the dayside. What survives is that the
+axis is a single angular distance and the curve is the whole planet def — see the
+corrected table above, and `ASHKARR_WORLD_DEFINITION.md:74-83` for the mod's curve set
+beside ours.
 ✅ **`biomeConfigs[x].scoreOffset`** is the soft commonality dial and is exactly
 what the owner's abundance verdicts become.
 ⚠️ **`oceanBiome` / `lakeBiome` must ALSO appear in `<biomes>`** if a whitelist is
@@ -450,9 +491,14 @@ list `biomeConfigs[x].scoreOffset` implements.**_
 | `guy762_xenotype_jawa` | `MaxTemp_LargeIncrease` (+20) | 🔴 **none** |
 | `BTD_Jawa` | `MaxTemp_LargeIncrease` (+20) | 🔴 **none** |
 
-**All three buy heat. None buys cold.** So on a nightside running **−37 °C at
-latitude 1.0 and −80 °C at 2.0**, the clan sits at **baseline human cold
-tolerance** — which is not survival, it is a countdown.
+**All three buy heat. None buys cold.** So on a nightside running ~~**−37 °C at
+latitude 1.0 and −80 °C at 2.0**~~ — ⛔ corrected 2026-08-20: **−37 °C is curve x=1.0,
+which is arc 90°, THE TERMINATOR, not the nightside.** The nightside proper runs
+**−70 °C at arc 117° to −80 °C at the antistellar point**, and on our own painted curve
+**−22 °C at arc 120° to −80 °C at arc 180°** — the clan sits at **baseline human cold
+tolerance** — which is not survival, it is a countdown. 🔑 **The correction makes the
+argument stronger, not weaker:** the cold starts biting at the terminator, where the
+water and half the factions are, rather than only out in the dark.
 
 ### ⭐ And the loop closes on itself, which is why this is the best mechanic yet
 

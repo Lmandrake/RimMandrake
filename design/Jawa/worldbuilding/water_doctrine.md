@@ -78,7 +78,9 @@ casually.** It wants its own build slot and its own testing pass.
 ## What this changes for the roster — the audit I now owe
 
 **Twelve factions carry a water-doctrine line each, written before any of this was
-decided.** Each must now be re-read against these four rulings, specifically:
+decided.** (⚠️ 2026-08-20: twelve is the count of factions carrying **dossiers**; the
+roster is **13** — canon `infrastructure/state/canon.yml` → `factions`. Name the
+denominator whenever this number is quoted.) Each must now be re-read against these four rulings, specifically:
 
 - Does the faction's doctrine assume *universal* thirst? Several may.
 - Does it hold water tiles? **If yes, it now comes with defenders by rule 2.**

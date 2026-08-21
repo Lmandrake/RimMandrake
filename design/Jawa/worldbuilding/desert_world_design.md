@@ -427,7 +427,9 @@ no Rebel settlements, no Rebel raids — only what a defeated rebellion leaves
 behind.
 
 **Why we refused the live faction.** `faction_roster_v2.md` lists twelve factions
-and deliberately contains no Rebellion, because a live one competes with the
+(⚠️ 2026-08-20: the roster is **13** — 12 hold settlements on the painted map plus
+Mechanoid, the Forgotten Arsenal, which holds none by design; the Unbound Hive is cut.
+Canon: `infrastructure/state/canon.yml` → `factions`) and deliberately contains no Rebellion, because a live one competes with the
 campaign's most carefully-built mechanism: `faction_roster_v2.md:291` makes the
 **Hutts the primary way off-world**, and that alliance is *designed* to be a long,
 conditional, never-warm grind. An organised anti-Imperial resistance is a warmer,
