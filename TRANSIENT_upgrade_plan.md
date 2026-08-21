@@ -925,14 +925,21 @@ Run all six. Each line states what it returned on **2026-08-20**. A mismatch mea
 re-plan rather than proceed.
 
 ```bash
-# 1. The board is lying. Expect: done 0, blocked 0 (real answer: 28 and 2)
+# 1. The board is lying. Expect BEFORE W0: done 0, blocked 0.
+#    AFTER W0 (measured 2026-08-20, post-fix): done 5, blocked 2, doing 7, closed 116.
+#    ⚠️ The "28" this line originally predicted is not reachable under this metric and
+#    was never measured: `mix.done` counts items filed done WITHOUT a `Closes:` trailer,
+#    and 17 of the 22 done items in DECIDE/BUILD/CHECK already carry one, so they are
+#    banked in `velocity.closed` (116) instead. done 5 + closed 116 is the true reading.
 python3 src/RimMandrake/Utils/derive_matrix.py >/dev/null 2>&1
 python3 -c "import json;d=json.load(open('infrastructure/state/status_matrix.json'));
 m=[c['mix'] for r in d['rows'] for c in r['cells'].values()]
 print('mix done:',sum(x['done'] for x in m),' blocked:',sum(x['blocked'] for x in m),
       ' blockers panel:',len(d['blockers']),' closed-from-git:',d['velocity']['closed'])"
 
-# 2. Non-canonical state strings. Expect: 68 of 167
+# 2. Non-canonical state strings. Expect: 68 — but of 142 filed items, not 167.
+#    58 of the 68 begin with an emoji (27 ✅, 21 ⛔ v2, 5 🔵, 4 ⭐, 1 🔴), which is why
+#    the plain `.split()[0]` fix W0 originally specified still returned done 1.
 grep -hE '^state:' infrastructure/state/queue/*.md | sed -E 's/^state: *//' | awk '{print $1}' \
   | grep -vcE '^(ready|doing|done|blocked|dropped)$'
 
@@ -1025,7 +1032,7 @@ Four seats share one checkout. These are not style points.
 
 | item | change | acceptance |
 |---|---|---|
-| `BOARD_STATE_CLASSIFIER_FIX_1` | `derive_matrix.py:277` — compare `i.get("state","").split()[0]`, not the whole line. Same at `:278` for `doing`/`blocked` | §21 check 1 reports **done ≥ 28, blocked 2** |
+| `BOARD_STATE_CLASSIFIER_FIX_1` | `derive_matrix.py` — one `state_of()` classifier used at every comparison site, including `blockers()`. ⚠️ `.split()[0]` alone is NOT enough: 58 of 142 states lead with an emoji, so the keyword must be found past it and mapped (`closed`/`built`/`ruled` → done, `v2` → dropped, `v1` → ready), with the emoji as fallback and `ready` as the default for anything unrecognised | §21 check 1 reports **done 5, blocked 2, doing 7, closed 116** — done ≥ 28 was wrong, see check 1 |
 | `CLOSES_TRAILER_REGEX_FIX_1` | `.claude/hooks/warn_unclosed_queue_item.py:40-41` — `[A-Z][A-Z0-9-]*` → `[A-Za-z][A-Za-z0-9._-]*`, matching `derive_matrix.py:88`. Then make it exit non-zero | `INHABITED_DISPLACED_POOL_1` matches whole, not just `INHABITED` |
 | `DESIGN_INDEX_REGENERATION_1` | `python3 src/RimMandrake/Utils/doc_roster.py --write` | exit 0; `INHABITED_CAST_EMPIRE` and `_TUSKEN` now in `design/INDEX.md` |
 | `DOC_BUDGET_RED_ERRORS_1` | register `doc_budget.py` as a `PreToolUse:Bash` hook; red output naming file + overrun | an over-budget file produces a red message on commit |
@@ -1130,7 +1137,7 @@ thresholds are calibrated against the reference photographs, not chosen.
 
 | wave | test |
 |---|---|
-| **W0** | §21 check 1 → `done ≥ 28, blocked 2`; check 3 → `exit=0` |
+| **W0** | §21 check 1 → `done 5, blocked 2, doing 7, closed 116`; check 3 → `exit=0`; both hook selftests 7/7 and 6/6 |
 | **W1a** | `canon.yml` parses; every value carries a source |
 | **W1b** | three `*.ortho.png` exist for `ASHKARR_WORLDMAP`; the sheet opens |
 | **W2** | `grep -rE '25%\|22.28' design/` returns **only** struck-through or quoted-historical hits |

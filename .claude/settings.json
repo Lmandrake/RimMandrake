@@ -20,9 +20,15 @@
           },
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_unclosed_queue_item.py\" 2>/dev/null || true",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_unclosed_queue_item.py\"",
             "timeout": 10,
             "statusMessage": "Checking for a Closes: trailer"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_doc_budget.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking documentation budget"
           }
         ]
       },

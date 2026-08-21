@@ -386,14 +386,14 @@
     },
     "BUILD": {
      "done": 16,
-     "total": 18,
+     "total": 17,
      "state": "working",
      "mix": {
       "closed": 16,
       "done": 0,
       "doing": 1,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     },
     "CHECK": {
@@ -440,13 +440,13 @@
     "CHECK": {
      "done": 1,
      "total": 3,
-     "state": "idle",
+     "state": "working",
      "mix": {
       "closed": 1,
       "done": 0,
-      "doing": 0,
+      "doing": 1,
       "blocked": 0,
-      "ready": 2
+      "ready": 1
      }
     }
    }
@@ -498,13 +498,13 @@
     "DECIDE": {
      "done": 2,
      "total": 3,
-     "state": "idle",
+     "state": "working",
      "mix": {
       "closed": 2,
       "done": 0,
-      "doing": 0,
+      "doing": 1,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     },
     "BUILD": {
@@ -686,13 +686,13 @@
     "CHECK": {
      "done": 0,
      "total": 5,
-     "state": "idle",
+     "state": "working",
      "mix": {
       "closed": 0,
       "done": 0,
-      "doing": 0,
+      "doing": 2,
       "blocked": 0,
-      "ready": 5
+      "ready": 3
      }
     }
    }
@@ -848,15 +848,15 @@
      }
     },
     "CHECK": {
-     "done": 0,
+     "done": 1,
      "total": 1,
      "state": "idle",
      "mix": {
       "closed": 0,
-      "done": 0,
+      "done": 1,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     }
    }
@@ -932,13 +932,13 @@
     "CHECK": {
      "done": 0,
      "total": 1,
-     "state": "idle",
+     "state": "blocked",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
-      "blocked": 0,
-      "ready": 1
+      "blocked": 1,
+      "ready": 0
      }
     }
    }
@@ -1041,27 +1041,27 @@
      }
     },
     "BUILD": {
-     "done": 0,
+     "done": 1,
      "total": 1,
      "state": "idle",
      "mix": {
       "closed": 0,
-      "done": 0,
+      "done": 1,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     },
     "CHECK": {
      "done": 0,
      "total": 1,
-     "state": "idle",
+     "state": "working",
      "mix": {
       "closed": 0,
       "done": 0,
-      "doing": 0,
+      "doing": 1,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     }
    }
@@ -1072,37 +1072,37 @@
     "DECIDE": {
      "done": 8,
      "total": 16,
-     "state": "idle",
+     "state": "blocked",
      "mix": {
       "closed": 8,
       "done": 0,
       "doing": 0,
-      "blocked": 0,
-      "ready": 8
+      "blocked": 1,
+      "ready": 7
      }
     },
     "BUILD": {
-     "done": 4,
+     "done": 7,
      "total": 13,
      "state": "idle",
      "mix": {
       "closed": 4,
-      "done": 0,
+      "done": 3,
       "doing": 0,
       "blocked": 0,
-      "ready": 9
+      "ready": 6
      }
     },
     "CHECK": {
      "done": 1,
-     "total": 3,
-     "state": "idle",
+     "total": 2,
+     "state": "working",
      "mix": {
       "closed": 1,
       "done": 0,
-      "doing": 0,
+      "doing": 1,
       "blocked": 0,
-      "ready": 2
+      "ready": 0
      }
     }
    }
@@ -2331,7 +2331,7 @@
   ],
   "per_day": 16.57,
   "closed": 116,
-  "remaining": 60,
-  "eta_days": 4
+  "remaining": 53,
+  "eta_days": 3
  }
 }

@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""Selftest for warn_unclosed_queue_item.py — run after ANY change to it.
+
+The hook is a WARNING, so its failure mode is silence, and silence is invisible.
+That is exactly what happened: from the 2026-08-20 rename to
+THREE_DESCRIPTIVE_WORDS_# the heading regex was `[A-Z][A-Z0-9-]*\\b`, and `_` is
+a word character, so `## INHABITED_DISPLACED_POOL_1` had no word boundary after
+`INHABITED` and matched nothing at all. The hook stopped seeing removals on the
+very day the IDs it protects were renamed, and nothing reported it.
+
+So every case below is end-to-end against a REAL throwaway git repo — the hook
+shells out to `git diff HEAD`, and a test that stubs that out would not have
+caught the bug either.
+
+    python3 .claude/hooks/selftest_warn_unclosed_queue_item.py
+"""
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+
+HOOK = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                    "warn_unclosed_queue_item.py")
+QUEUE = "infrastructure/state/queue"
+
+BASE = """# BUILD queue
+
+## INHABITED_DISPLACED_POOL_1 Displaced-pool inhabitants
+state: done
+
+## OLD-STYLE-B58 A legacy kebab ID
+state: done
+
+## SANDSTORM_WEATHER_TUNING_1 Tune the storm
+state: ready
+"""
+
+
+def run(root, cmd):
+    ev = json.dumps({"tool_input": {"command": cmd}})
+    env = dict(os.environ, CLAUDE_PROJECT_DIR=root)
+    p = subprocess.run([sys.executable, HOOK], input=ev, capture_output=True,
+                       text=True, env=env, cwd=root, timeout=20)
+    return p.returncode, p.stderr
+
+
+def git(root, *a):
+    subprocess.run(["git", "-C", root, *a], capture_output=True, text=True,
+                   check=True)
+
+
+def setup(root, body):
+    os.makedirs(os.path.join(root, QUEUE), exist_ok=True)
+    git(root, "init", "-q")
+    git(root, "config", "user.email", "t@t")
+    git(root, "config", "user.name", "t")
+    path = os.path.join(root, QUEUE, "BUILD.md")
+    open(path, "w").write(BASE)
+    git(root, "add", "-A")
+    git(root, "commit", "-qm", "base")
+    open(path, "w").write(body)
+
+
+# (name, working-tree body, commit command, expect_warn, must appear in stderr)
+CASES = [
+    ("underscore ID removed, no trailer — THE 2026-08-20 REGRESSION",
+     BASE.replace("## INHABITED_DISPLACED_POOL_1 Displaced-pool inhabitants\n"
+                  "state: done\n\n", ""),
+     "git commit %s/BUILD.md -m 'drop it'" % QUEUE,
+     True, "INHABITED_DISPLACED_POOL_1"),
+
+    ("underscore ID removed WITH trailer — must be quiet",
+     BASE.replace("## INHABITED_DISPLACED_POOL_1 Displaced-pool inhabitants\n"
+                  "state: done\n\n", ""),
+     "git commit %s/BUILD.md -F - <<'EOF'\nclose\n\nCloses: "
+     "INHABITED_DISPLACED_POOL_1\nEOF" % QUEUE,
+     False, None),
+
+    ("legacy kebab ID still warns — old items keep their IDs",
+     BASE.replace("## OLD-STYLE-B58 A legacy kebab ID\nstate: done\n\n", ""),
+     "git commit %s/BUILD.md -m 'drop it'" % QUEUE,
+     True, "OLD-STYLE-B58"),
+
+    ("partial-prefix trailer must NOT satisfy the full ID",
+     BASE.replace("## INHABITED_DISPLACED_POOL_1 Displaced-pool inhabitants\n"
+                  "state: done\n\n", ""),
+     "git commit %s/BUILD.md -F - <<'EOF'\nclose\n\nCloses: INHABITED\nEOF"
+     % QUEUE,
+     True, "INHABITED_DISPLACED_POOL_1"),
+
+    ("retitle is not a removal",
+     BASE.replace("## INHABITED_DISPLACED_POOL_1 Displaced-pool inhabitants",
+                  "## INHABITED_DISPLACED_POOL_1 Renamed heading"),
+     "git commit %s/BUILD.md -m 'retitle'" % QUEUE,
+     False, None),
+
+    ("no queue path in the command — not our business",
+     BASE.replace("## OLD-STYLE-B58 A legacy kebab ID\nstate: done\n\n", ""),
+     "git commit src/foo.xml -m 'x'",
+     False, None),
+
+    ("not a commit at all",
+     BASE, "git status --porcelain", False, None),
+]
+
+
+def main():
+    fails = 0
+    for name, body, cmd, expect_warn, needle in CASES:
+        root = tempfile.mkdtemp(prefix="selftest_wuqi_")
+        try:
+            setup(root, body)
+            code, err = run(root, cmd)
+        finally:
+            shutil.rmtree(root, ignore_errors=True)
+        # Exit 1 = non-blocking error, stderr shown in red. NEVER 2: 2 blocks the
+        # command, and the owner ruled 2026-08-15 that this warns and never gates.
+        want = 1 if expect_warn else 0
+        ok = (code == want) and (not needle or needle in err)
+        if code == 2:
+            ok = False
+            err += "\n  !! exit 2 GATES the commit — forbidden"
+        print("%-4s %s" % ("ok" if ok else "FAIL", name))
+        if not ok:
+            fails += 1
+            print("       exit=%s want=%s stderr=%r" % (code, want, err[:400]))
+    print("\n%d/%d passed" % (len(CASES) - fails, len(CASES)))
+    return 1 if fails else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -18,7 +18,15 @@ WARN, NOT BLOCK — owner's call, 2026-08-15
 ==========================================
 The standing order is to commit and push the moment an item is done. A hook that
 refuses a commit costs more than the miscount it prevents, and a seat that hits
-it mid-flow will work around it. So this prints and always exits 0.
+it mid-flow will work around it. So this never gates.
+
+⚠️ Revised 2026-08-20: it now exits 1, not 0. In Claude Code a PreToolUse hook
+blocks on exit 2 and ONLY on 2; exit 1 is a non-blocking error whose stderr is
+shown to the user in red and then the command runs anyway. At exit 0 with the old
+`2>/dev/null || true` wrapper in settings.json, this warning was discarded twice
+over and no one had ever seen it. Warn-not-gate is intact; silence was not the
+ruling. The wrapper is gone and the fail-open lives in `__main__` instead, which
+also guarantees a crash can never exit 2 by accident.
 
 WHAT IT CHECKS
 ==============
@@ -37,8 +45,17 @@ import subprocess
 import sys
 
 QUEUE = "infrastructure/state/queue/"
-HEADING = re.compile(r"^([+-])## ([A-Z][A-Z0-9-]*)\b")
-CLOSES = re.compile(r"^Closes:\s*([A-Z][A-Z0-9-]*)\s*$", re.M)
+# ⚠️ The character class MUST match `derive_matrix.py`'s CLOSES_RE, which is what
+# actually counts closures. It did not: this file said `[A-Z][A-Z0-9-]*` while the
+# board said `[A-Za-z][A-Za-z0-9._-]*`, so from the 2026-08-20 rename to
+# THREE_DESCRIPTIVE_WORDS_# every ID stopped matching here — `INHABITED_DISPLACED_
+# POOL_1` has a word character on both sides of each `_`, so the trailing `\b`
+# never fired and the heading was not seen as removed at all. The hook went
+# silent on exactly the IDs it was rewritten to protect. Keep the two classes
+# identical; if one changes, change both.
+ID = r"[A-Za-z][A-Za-z0-9._-]*"
+HEADING = re.compile(r"^([+-])## (%s)" % ID)
+CLOSES = re.compile(r"^Closes:\s*(%s)\s*$" % ID, re.M)
 
 
 def git(root, *args):
@@ -92,8 +109,18 @@ def main():
     print("  Add to the commit message:  Closes: %s" % missing[0], file=sys.stderr)
     print("  Dropping it instead? Set `state: dropped` with one line of why.",
           file=sys.stderr)
-    return 0                                     # never a gate
+    # Exit 1, NOT 2. In Claude Code a PreToolUse hook blocks on 2 and only on 2;
+    # 1 is a non-blocking error whose stderr is shown to the user in red and then
+    # the command runs anyway. So this stays the owner's warn-not-gate (2026-08-15)
+    # while actually being SEEN — at exit 0 the message was swallowed by the
+    # `2>/dev/null || true` wrapper in settings.json and nobody ever read it.
+    return 1
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except Exception:
+        # Fail open, in code rather than in the shell wrapper: a hook that
+        # crashes must never cost a commit, and must never exit 2 by accident.
+        sys.exit(0)

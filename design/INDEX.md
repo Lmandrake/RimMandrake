@@ -42,12 +42,14 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `BRIDGE_CAPABILITY_ROSTER.md` | The live-bridge capability roster — what is POSSIBLE, for the owner to cull |
 | `INHABITED_CAST_BLACKSTAR.md` | `Inhabited` — cast 06: the Blackstar Company |
 | `INHABITED_CAST_DROIDS.md` | `Inhabited` — cast 04: the Free Droid Enclaves |
+| `INHABITED_CAST_EMPIRE.md` | `Inhabited` — cast 11: the Galactic Empire |
 | `INHABITED_CAST_GEONOSIAN.md` | `Inhabited` — cast 02: the Geonosian Foundry Hive |
 | `INHABITED_CAST_HELIX.md` | `Inhabited` — cast 08: the Ascendant Helix |
 | `INHABITED_CAST_HOMESTEAD.md` | `Inhabited` — cast 09: the Homestead Defense League |
 | `INHABITED_CAST_HUTT.md` | `Inhabited` — cast 01: the Hutt Cartel |
 | `INHABITED_CAST_JAWA.md` | `Inhabited` — cast 03: the Jawa Trade Moot |
 | `INHABITED_CAST_JUNKERS.md` | `Inhabited` — cast 05: the Junkers |
+| `INHABITED_CAST_TUSKEN.md` | `Inhabited` — cast 10: the Deep Desert Tribes |
 | `INHABITED_CAST_WILDSTEAM.md` | `Inhabited` — cast 07: the Wildsteam Clan |
 | `INHABITED_DESIGN.md` | `Inhabited` — somebody lives here |
 | `INHABITED_SPECIES_TEXTURE.md` | `Inhabited` — species texture, for authoring working-class characters |

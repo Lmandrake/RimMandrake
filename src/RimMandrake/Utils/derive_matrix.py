@@ -48,6 +48,51 @@ STATE = os.path.join(ROOT, "infrastructure/state")
 COLS = ["DECIDE", "BUILD", "CHECK"]
 
 
+# `state:` is PROSE, not an enum, and pretending otherwise is what broke the board.
+# Measured 2026-08-20 across the five queue files: of 142 filed items only 74 begin
+# with a bare canonical keyword. 58 begin with an emoji, 21 of those `⛔ v2 —`, and
+# the rest carry a qualifier the old exact `== "done"` comparison could never match:
+#   ✅ CLOSED 2026-08-19 — duplicate, and the work it asked for was done elsewhere.
+#   🔵 IN PROGRESS — WIDER THAN FILED, and the exception is now named exactly.
+#   ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.**
+# So the board reported 0 done and 0 blocked while the queues held 28 and 2.
+#
+# Classify on the LEADING KEYWORD, with the leading emoji as a fallback when the
+# keyword is not one we know. Keyword first, because `⛔ v2` and `✅ DONE` agree
+# but `⭐ **MECHANISM BUILT, CONTENT MISSING**` is ready, not done — the star is
+# the weaker signal and must not overrule a word that says otherwise.
+#
+# ⚠️ This is a READER, not a licence. The vocabulary below is what seats have
+# actually written, not what they are allowed to write; canonical remains
+# ready|doing|done|blocked|dropped. Anything unrecognised falls to `ready`, so a
+# new coinage shows up as OPEN WORK rather than silently vanishing into done.
+WORD = {
+    "done": "done", "closed": "done", "built": "done", "passed": "done",
+    "ruled": "done", "complete": "done", "completed": "done", "answered": "done",
+    "doing": "doing", "wip": "doing", "started": "doing",
+    "blocked": "blocked", "waiting": "blocked",
+    "dropped": "dropped", "void": "dropped", "superseded": "dropped",
+    "dead": "dropped", "v2": "dropped",
+    "ready": "ready", "open": "ready", "queued": "ready", "v1": "ready",
+}
+EMOJI = {"\u2705": "done", "\u26d4": "dropped", "\U0001f535": "doing",
+         "\u2b50": "ready", "\U0001f534": "ready"}
+
+
+def state_of(item):
+    """Canonical state for one filed item. '' only when the field is empty."""
+    raw = str(item.get("state", "")).strip()
+    if not raw:
+        return ""
+    lead = EMOJI.get(raw[0], "")
+    m = re.match(r"[^A-Za-z]*([A-Za-z][A-Za-z0-9]*)", raw)
+    if m:
+        w = WORD.get(m.group(1).lower())
+        if w:
+            return w
+    return lead or "ready"
+
+
 def parse(path):
     """-> [{'id':.., 'row':.., 'state':..}] . Tolerates missing fields."""
     items, cur = [], None
@@ -185,7 +230,7 @@ def blockers(grid):
         for its in cols.values():
             for it in its:
                 raw = str(it.get("state", ""))
-                if not raw.startswith("blocked"):
+                if state_of(it) != "blocked":
                     continue
                 reason = raw.split("—", 1)[1].strip() if "—" in raw else \
                          raw.split("-", 1)[1].strip() if "-" in raw else ""
@@ -272,21 +317,21 @@ def main():
         cells = {}
         for col in COLS:
             its = [i for i in grid.get(key, {}).get(col, [])
-                   if not str(i.get("state","")).startswith("dropped")]
+                   if state_of(i) != "dropped"]
             was = shut.get(key, {}).get(col, 0)
-            done = sum(1 for i in its if i.get("state") == "done") + was
-            st = ("blocked" if any(i.get("state") == "blocked" for i in its)
-                  else "working" if any(i.get("state") == "doing" for i in its)
+            done = sum(1 for i in its if state_of(i) == "done") + was
+            st = ("blocked" if any(state_of(i) == "blocked" for i in its)
+                  else "working" if any(state_of(i) == "doing" for i in its)
                   else "offline" if not its and not was
                   else "idle")
             # Composition, not just a ratio: the bar is drawn as segments, so
             # the four open states have to survive to the renderer.
             mix = {"closed": was,
-                   "done": sum(1 for i in its if i.get("state") == "done"),
-                   "doing": sum(1 for i in its if i.get("state") == "doing"),
-                   "blocked": sum(1 for i in its if i.get("state") == "blocked"),
+                   "done": sum(1 for i in its if state_of(i) == "done"),
+                   "doing": sum(1 for i in its if state_of(i) == "doing"),
+                   "blocked": sum(1 for i in its if state_of(i) == "blocked"),
                    "ready": sum(1 for i in its
-                                if i.get("state") not in
+                                if state_of(i) not in
                                 ("done", "doing", "blocked"))}
             cells[col] = {"done": done, "total": len(its) + was,
                           "state": st, "mix": mix}
