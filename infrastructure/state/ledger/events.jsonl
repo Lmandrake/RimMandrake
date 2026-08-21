@@ -781,3 +781,6 @@
 {"seat":"CHECK","event":"claim","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","ts":"2026-08-21T17:23:43Z"}
 {"seat":"CHECK","event":"start","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","ts":"2026-08-21T17:23:43Z"}
 {"seat":"BUILD","event":"file","id":"PAWNKIND_AUDIT_TAGLESS_BLIND_1","title":"first_light counts a disarmed combat role as a civilian, and first_light is the report we run","kind":"defect","target":"v1","for":"CHECK","ts":"2026-08-21T17:26:16Z"}
+{"seat":"CHECK","event":"verify","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","result":"pass","config":"full-583","evidence":"observed/bridge/INHABITED_ACTION_BRIDGE_CONFIRM_1_2026-08-21.md","sha":"ee85d2e","ts":"2026-08-21T17:28:52Z"}
+{"seat":"CHECK","event":"finding","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","type":"integration","severity":"medium","name":"SEARCH_DEBUG_ACTIONS_TIMES_OUT_1","from":"INHABITED_ACTION_BRIDGE_CONFIRM_1/run-1@full-583","ts":"2026-08-21T17:28:56Z"}
+{"seat":"CHECK","event":"close","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","sha":"ee85d2e","ts":"2026-08-21T17:29:00Z"}
