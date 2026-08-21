@@ -439,8 +439,22 @@ def freeze(dump=None, by="", id_="", note="", known_damage=""):
             "this capture IS the design target." % (captured, cur.get("id")))
 
     fp = dump_fingerprint(dump) or {}
+    # 🔴 The id was `OFFICIAL-<date>`, and TWO CAPTURES ON ONE DAY COLLIDE. It
+    # happened the first time it could: 2026-08-21 froze at 08:20 and again at
+    # 22:44, producing two entries with the same id and a `supersedes` pointing
+    # at the entry's own name. An id that is not unique cannot be looked up, and
+    # a self-referential chain cannot be walked.
+    # ⚠️ Only the DEFAULT is disambiguated. An explicit `--freeze-id` is the
+    # owner's word and is written as given.
+    auto_id = "OFFICIAL-%s" % captured[:10]
+    if not id_:
+        taken = {e.get("id") for e in registry()}
+        if auto_id in taken:
+            # The capture instant, which is unique by construction and reads the
+            # same way as a dated capture directory.
+            auto_id = "OFFICIAL-%s" % captured.replace(":", "-")
     entry = {
-        "id": id_ or "OFFICIAL-%s" % captured[:10],
+        "id": id_ or auto_id,
         "kind": "official", "frozen": True,
         "modlist_count": m.get("modCount") or fp.get("modCount"),
         "modlist_sha": fp.get("hash") or "see manifest.json",
@@ -453,8 +467,12 @@ def freeze(dump=None, by="", id_="", note="", known_damage=""):
                          "manifest.json, defs/**, animals.json. defs.sqlite is "
                          "derived and explicitly outside it. See dumps/README.md."),
     }
-    if cur:
+    # ⛔ Never let an entry supersede itself. With a colliding id it did exactly
+    # that, and "supersedes: <my own id>" is worse than no field at all.
+    if cur and cur.get("id") != entry["id"]:
         entry["supersedes"] = cur.get("id")
+    elif cur:
+        entry["supersedesCapturedUtc"] = cur.get("capturedUtc")
     if known_damage:
         entry["knownDamage"] = known_damage
 

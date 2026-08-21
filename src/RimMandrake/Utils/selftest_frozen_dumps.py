@@ -287,7 +287,20 @@ def t_there_is_exactly_one_command_that_freezes():
 
 
 def t_no_registry_entry_carries_an_unreproducible_sha():
-    """Every shipped entry's sha either recomputes or honestly says so."""
+    """The ACTIVE entry's sha must recompute. History is exempt, and the reason
+    matters more than the rule.
+
+    🔑 **A superseded entry describes a capture that no longer exists**, because
+    a capture overwrites the previous one in place. Its sha was recomputable the
+    day it was written and nothing on disk can confirm it now — that is
+    UNVERIFIABLE, not FABRICATED, and the two must not be conflated. This test
+    said otherwise and went red the moment a second capture was frozen: it
+    judged the 08:20 entry against the 22:44 dump's fingerprint.
+
+    ⇒ Only the newest official entry is checked. ⚠️ And the exemption is itself
+    a symptom — `DUMP_PRODUCER_DATED_CAPTURES_1` gives each capture its own
+    directory, after which a superseded entry still has its artifact and this
+    could check every row again."""
     real = os.path.normpath(os.path.join(
         os.path.dirname(os.path.dirname(HERE)), "..",
         "infrastructure", "state", "dumps", "REGISTRY.jsonl"))
@@ -295,14 +308,21 @@ def t_no_registry_entry_carries_an_unreproducible_sha():
         return
     known = {(refresh.dump_fingerprint() or {}).get("hash"), "see manifest.json"}
     known.discard(None)
-    for i, line in enumerate(open(real, encoding="utf-8"), 1):
-        line = line.strip()
-        if not line:
-            continue
-        sha = json.loads(line).get("modlist_sha")
-        assert sha in known, (
-            "REGISTRY.jsonl line %d claims modlist_sha %r, which nothing on this "
-            "machine produces (recomputable: %s)" % (i, sha, sorted(known)))
+    rows = [json.loads(l) for l in open(real, encoding="utf-8") if l.strip()]
+    official = [e for e in rows if e.get("kind") == "official"]
+    if not official:
+        return
+    active = official[-1]
+    sha = active.get("modlist_sha")
+    assert sha in known, (
+        "the ACTIVE frozen entry %s claims modlist_sha %r, which nothing on this "
+        "machine produces (recomputable: %s). This is the design target — a claim "
+        "about it that cannot be recomputed can only be believed."
+        % (active.get("id"), sha, sorted(known)))
+    # Every entry must still carry SOMETHING checkable rather than a blank.
+    for i, e in enumerate(rows, 1):
+        assert e.get("modlist_sha"), (
+            "REGISTRY.jsonl line %d has no modlist_sha at all" % i)
 
 
 # ---------------------------------------------------------------------------
@@ -406,6 +426,47 @@ def t_the_flat_layout_freeze_names_no_capture():
     assert "capture" not in e, "a flat-layout freeze invented a capture id: %r" % e.get("capture")
     shutil.rmtree(reg, ignore_errors=True)
     shutil.rmtree(src, ignore_errors=True)
+
+
+def t_two_captures_on_one_day_get_distinct_ids():
+    """🔴 Measured live 2026-08-21, the first day it could happen: the 08:20
+    capture and the 22:44 one both derived `OFFICIAL-2026-08-21`, so the registry
+    held two entries with one id and the newer said `supersedes` its own name.
+    An id that is not unique cannot be looked up; a self-referential chain cannot
+    be walked."""
+    reg = with_registry([entry(id="OFFICIAL-2026-09-05",
+                               capturedUtc="2026-09-05T08:00:00Z")])
+    e, _ = refresh.freeze(_capture("2026-09-05T22:44:59Z"), by="")
+    assert e["id"] != "OFFICIAL-2026-09-05", (
+        "a second capture on the same day reused the id: %s" % e["id"])
+    assert e["id"] == "OFFICIAL-2026-09-05T22-44-59Z", e["id"]
+    assert e.get("supersedes") != e["id"], "the entry supersedes itself"
+    assert e.get("supersedes") == "OFFICIAL-2026-09-05"
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_the_first_capture_of_a_day_keeps_the_plain_id():
+    """The disambiguator must not fire when there is nothing to disambiguate —
+    `OFFICIAL-<date>` is the readable form and stays the default."""
+    reg = with_registry([entry(id="OFFICIAL-2026-09-04",
+                               capturedUtc="2026-09-04T08:00:00Z")])
+    e, _ = refresh.freeze(_capture("2026-09-05T10:00:00Z"), by="")
+    assert e["id"] == "OFFICIAL-2026-09-05", e["id"]
+    assert e["supersedes"] == "OFFICIAL-2026-09-04"
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_an_explicit_id_is_written_as_given():
+    """⚠️ Only the DEFAULT is disambiguated. An id the owner typed is his word."""
+    reg = with_registry([entry(id="OFFICIAL-2026-09-06",
+                               capturedUtc="2026-09-06T08:00:00Z")])
+    e, _ = refresh.freeze(_capture("2026-09-06T22:00:00Z"), by="",
+                          id_="OFFICIAL-2026-09-06")
+    assert e["id"] == "OFFICIAL-2026-09-06", e["id"]
+    assert "supersedes" not in e, (
+        "it superseded itself: %s" % e.get("supersedes"))
+    assert e.get("supersedesCapturedUtc") == "2026-09-06T08:00:00Z", e
+    shutil.rmtree(reg, ignore_errors=True)
 
 
 if __name__ == "__main__":
