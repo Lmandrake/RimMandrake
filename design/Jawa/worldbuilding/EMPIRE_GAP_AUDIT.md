@@ -46,7 +46,7 @@ apparel, name makers, and the ~140 Keyed strings.
 | `label` The Galactic Empire · `fixedName` Galactic Empire | ✅ |
 | `leaderTitle` Emperor · `pawnSingular/Plural` stormtrooper(s) | ✅ |
 | `description` · `settlementGenerationWeight 0.45` | ✅ |
-| `permanentEnemy true` | ✅ |
+| `permanentEnemy` **false** + `permanentEnemyToEveryoneExcept` whitelist | ✅ shipped — ruling (b) of §2 is IN the patch, not pending |
 | `fixedIdeo` + `ideoName` The Rising Order + deities | ✅ |
 | Combat groups → `OuterRim_Imp*` kinds | ✅ 12 entries, 9 `MayRequire`-gated on an **active** mod |
 
@@ -147,7 +147,8 @@ faction added to the world later and forgotten here becomes a permanent enemy si
 🔑 And `permanentEnemy` **must be set to `false`**, not merely left — `FactionDef.cs:463`
 returns on it first and would keep the list dead.
 
-⇒ Filed to BUILD as `empire-permanent-enemy-becomes-a-whitelist-7c31d9`.
+✅ **BUILT AND SHIPPED.** `GalacticEmpire.xml` carries `permanentEnemy false` and the
+twelve-entry whitelist exactly as ruled. Nothing here is outstanding.
 
 ---
 
@@ -179,30 +180,50 @@ occupier. A player who cannot petition it is the point.
 
 ---
 
-## 4. The actual v1 gap list
+## 4. The actual v1 gap list — re-measured 2026-08-21
 
-Short, because the patch is in good shape.
+⭐ **Re-measured from the shipped files, not from the previous revision of this table.**
+Two of the old five gaps are closed, one moved to v2, and **four new ones surfaced** that
+the earlier pass never looked for. The column that matters is the last one: the owner's
+hand-built world is created **once**, so a gap that bakes has a deadline and a gap that is
+read live does not.
 
-| # | gap | owner | blocks worldgen? |
+| # | gap | owner | bakes into the world? |
 |---|---|---|---|
-| 1 | 🔴 **The `permanentEnemy` blast radius is unruled** (§2) | **DECIDE**, then BUILD | ⚠️ **YES** — faction relations are set at world creation |
-| 2 | **No Force/psycast patch exists at all.** `grep` over `src/Jawa/` returns zero hits for `VPE_`, `Psycast`, `psylink`. It is unwritten, not broken — and it can reuse the verified xpath in §1 | DECIDE spec, BUILD build | no — `pawnGroupMakers` are read at raid time |
-| 3 | **Vocabulary.** `royalFavorLabel` is literally `"honor"`, and ~140 Keyed strings in `Royalty/Languages/English/Keyed/` say royal / title / bestowing / honour. All overridable by our own English Keyed file | BUILD | no |
-| 4 | ⭐ **`royalImplantRules` is ABSENT from every shipped FactionDef** — a grep of all `Data/` returns zero. The implant-legality system exists in C# and vanilla enforces nothing. **A free extension point** if the Empire should ever restrict implants | DECIDE, `[v2]` | no |
-| 5 | Name makers still Sophian — `NamerFactionEmpire`, `NamerSettlementEmpire`, `NamerPersonSophian`, culture `Sophian`, backstory category `ImperialCommon`. `fixedName` covers the faction; **settlements and people still generate Sophian names** | BUILD | ⚠️ names bake into the shipped save |
+| 1 | ~~`permanentEnemy` blast radius unruled~~ | — | ✅ **CLOSED.** Ruled (b), built, shipped (§2) |
+| 2 | ~~No Force/psycast patch~~ | — | 🔴 **v2, by the owner's ruling** — *"No force powers in v1."* Not a v1 gap and must not be re-filed as one. The `lee.theforce.lightsaber` **weapons** are a separate, live thing |
+| 3 | 🔴 **Four authored Imperial pawn kinds have no spawn route.** `Jawa_Empire_Grunt` · `_Heavy` · `_Specialist` · `_Leader` (*"Emperor Palpatine"*) exist in `src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml:31-110` and are referenced by **nothing else in `src/`**. Both combat groups were replaced with `OuterRim_Imp*` kinds instead, and `defaultFactionDef` does **not** make a kind spawn — only a `pawnGroupMaker` does | **DECIDE**, then BUILD | no — group makers are read at raid time |
+| 4 | 🔴 **`fixedLeaderKinds` is still `Empire_Royal_Stellarch`.** Nothing in `src/` patches the field (zero hits). The Galactic Empire's leader generates as a Royalty stellarch under the title *Emperor* | BUILD | ⚠️ **YES.** The leader pawn is generated at world creation and saved |
+| 5 | **Sophian names.** ⚠️ *Downgraded from "the sleeper" — the earlier reading overstated it.* The three Imperial settlements are **hand-named** by `src/RimMandrake/Utils/ashkarr_settle.py:55-59` (Sunspire · Oxalate Watch · Ashgarrison), so `NamerSettlementEmpire` never fires for them, and ordinary Imperial pawns are named **at spawn**, live. **Only the leader pawn's name bakes** — and gap 4 replaces that pawn anyway | BUILD | ⚠️ leader pawn only |
+| 6 | **`Jawa_AscendantHelix` wears the Empire's world icon.** `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaAscendantHelix.xml:62-64` borrows `World/WorldObjects/Expanding/Empire` plus both Empire namers. Two factions, one icon, on a map that is frozen | DECIDE → `FACTION_ART_SPEC_1` | ⚠️ the icon is drawn live, the settlement names are not |
+| 7 | **26 Imperial `CharacterDef`s bind to nothing.** `src/Jawa/Inhabited/Defs/CastRosters/CastRoster_EMPIRE.xml` ships 26 named Imperials with xenotype, pawnKind and apparel **deliberately absent** (its own header, `:5-11`). Until they bind, the named cast and the raid roster are two unrelated populations | DECIDE spec | depends on how `Inhabited` places them |
+| 8 | **Vocabulary.** `royalFavorLabel` is literally `"honor"`, and ~140 Keyed strings say royal / title / bestowing. All overridable by our own English Keyed file | BUILD | no |
+| 9 | ⭐ **`royalImplantRules` absent from every shipped FactionDef** — a free extension point if the Empire should ever restrict implants | DECIDE, `[v2]` | no |
 
-⚠️ **Gap 5 is the sleeper.** `fixedName` fixes the faction's own name only. The spec already
-warns *"do NOT patch `factionNameMaker` away — the namer is still used for settlements"*, so
-every Imperial settlement and every Imperial pawn on the shipped world will carry a Sophian
-name unless the namers are replaced. **Those names are written into the world at creation.**
+⛔ **Two things that LOOK like gaps and are not — do not re-file either:**
+
+- **The Empire's xenotype mix is not wrong.** `VanillaFaction_Xenotypes.xml` gives Baseliner
+  0.411 · Echani 0.411 · Chiss 0.137 · Chadra-Fan 0.041, and its header records that it is
+  **generated from the owner's own race/faction matrix**. That supersedes the 78/7/6/4/3/2
+  mix in `faction_roster_v2.md:711`, which is design-tier prose the matrix overtook. The
+  matrix is the source; the roster is not.
+- **The Trader and Settlement pawn group makers still field Royalty kinds** — villagers,
+  janissaries, cataphracts. That is the spec (`FACTION_SPEC.md:130`, combat groups only)
+  and §3's ruling: for v1, `Empire_Fighter_*` spawning and fighting us **is** the Empire.
+
+⚠️ **One stale sentence outside this file:** `src/Jawa/Jawa_Patches/About/About.xml:32`
+still describes `permanentEnemy` as **true**. The shipped patch sets it false. Prose only,
+but it is the manifest a reader opens first.
 
 ---
 
 ## 5. The two checks that were closed against the wrong def — both now answered
 
-**1. The Force-patch xpath.** ✅ The shape is proven and already in production (§1). The
-patch itself does not exist. No `PatchOperationFindMod` wrapper is needed — Royalty is
-always loaded.
+**1. The Force-patch xpath.** ✅ Answered, then **retired**. The xpath shape is proven and
+in production (§1) — `li[kindDef="Combat"][commonality="100"]` selects, and no
+`PatchOperationFindMod` wrapper is needed because Royalty is always loaded. 🔴 **But the
+patch itself is v2**: the owner ruled *"No force powers in v1."* The shape is recorded here
+so v2 does not re-derive it; nothing is owed for v1.
 
 **2. Pursuit eligibility — all three pass on vanilla `Empire`:**
 
@@ -222,3 +243,5 @@ always loaded.
 - `GalacticEmpire.xml` patches `FactionDef[defName="Empire"]` and nothing else
 - `validate_patch.py --defs` clean on the patch
 - **this document cites no path under `infrastructure/disposing/`**
+- `grep -rn "Jawa_Empire_" src/ | grep -v JawaFactionRoster` → empty proves gap 3
+- `grep -rn "fixedLeaderKinds" src/` → empty proves gap 4

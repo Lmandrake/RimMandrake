@@ -1,6 +1,10 @@
 <!-- status: superseded-by: design/Jawa/worldbuilding/FACTION_SPEC.md ; 2026-08-20 ; engine layer moved there (13 factions, Jawa_<Name> defNames, R16-R19); the xenotype and gene analysis here is still current -->
 # Faction Stage 3 — the buildable spec
 
+> 🔴 **The Empire `colorSpectrum` requirement at `:294` LOST, 2026-08-21.** *Imperial grey/black*
+> is overruled by `FACTION_SPEC.md:511` rule R22 — reskins keep the vessel's colour — and the
+> shipped patch obeys R22. Settled at `infrastructure/state/canon.yml > empire.color_spectrum`.
+
 > 🔴 **SUPERSEDED for the ENGINE LAYER by `design/Jawa/worldbuilding/FACTION_SPEC.md`, 2026-08-20.**
 > That file is what BUILD executes, and where the two disagree about a FIELD it wins. What changed:
 > the roster is **13 factions**, not the 12 tabulated here — and the Unbound Hive was **cut** on

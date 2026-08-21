@@ -1,6 +1,10 @@
 <!-- status: live -->
 # The world we want — faction specification
 
+> 🔴 **The Empire's tech level in this file's table is WRONG, 2026-08-21.** It reads *Spacer*;
+> vanilla `Empire` ships `<techLevel>Ultra</techLevel>` and no patch changes it.
+> Settled at `infrastructure/state/canon.yml > empire.tech_level`.
+
 > 🔴 **CORRECTED 2026-08-20 against `infrastructure/state/canon.yml`. This file was the WRONG one.**
 > Three things it asserted are dead: the roster is **13**, not fourteen — the Unbound Hive was cut
 > 2026-08-14 and this file never heard; the water axis is **arc from the substellar point**, not

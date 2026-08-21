@@ -1,6 +1,12 @@
 <!-- status: live -->
 # RimWorld 1.6 Desert-World Faction Roster — v2
 
+> 🔴 **TWO EMPIRE NUMBERS HERE LOST, 2026-08-21** — `infrastructure/state/canon.yml > empire`.
+> The Empire's xenotype mix (`:711`, baseliner 78 / Chiss 7 / Umbaran 6 / …) is superseded by
+> the owner's own race/faction matrix, which ships as `VanillaFaction_Xenotypes.xml`; and the
+> Empire's tech level (`:688`, *Spacer*) is wrong — the vessel ships **Ultra** and always has.
+> ⛔ Do not build from either. Everything else about the Empire here stands.
+
 > 🔴 **CORRECTED 2026-08-20 — what changed (`CANON_RECONCILE_C4_1`).** Two things in
 > this document were wrong and are struck in place below, not deleted:
 > **(1) the faction roster is THIRTEEN, not fourteen** — the Unbound Hive was cut

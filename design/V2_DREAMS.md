@@ -1802,3 +1802,14 @@ scope:    ⛔ Not triaged and not diagnosed by me — the owner looked, I am rec
           silent. A clean log is not evidence against this finding.
 note:     Owner's verdict on the rest of the grid was positive — *"most now look good"* —
           so this is two exceptions in 70, not a systemic art problem.
+
+## IMPERIAL_IMPLANT_LEGALITY_1 `royalImplantRules` is a free extension point nobody uses
+
+`FactionDef.royalImplantRules` exists in C# and is **absent from every shipped FactionDef** —
+a grep of all of `Data/` returns zero. Vanilla enforces nothing with it. If the Galactic
+Empire should ever forbid its own troops certain bionics, or make an implant grounds for the
+Empire turning on a pawn, the field is already there and costs one patch.
+
+Found while auditing the Empire, 2026-08-21 (`EMPIRE_GAP_AUDIT.md` §4 gap 9). Recorded
+because the *absence* is the surprising part — a reader who greps for examples finds none
+and concludes the field is dead. It is not; it is unused.

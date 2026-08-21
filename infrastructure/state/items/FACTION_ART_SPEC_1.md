@@ -50,3 +50,11 @@ THIRD-PARTY def and must be reached by patch, not by editing the mod.
 **Imported from `queue/DECIDE.md`. Its `state:` read, verbatim:**
 
 ready
+
+## notes
+🔴 **One collision found while auditing the Empire, 2026-08-21 — fold it into this spec.**
+`src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaAscendantHelix.xml:62-64` borrows Royalty's
+`World/WorldObjects/Expanding/Empire` icon **and** both Empire name makers
+(`NamerFactionEmpire`, `NamerSettlementEmpire`). ⇒ on a world map that will be frozen, the
+Ascendant Helix and the Galactic Empire fly the same crest. Whichever one gets the new art,
+the other must not keep this path.
