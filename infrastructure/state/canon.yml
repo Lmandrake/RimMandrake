@@ -612,16 +612,6 @@ needs_ruling:
   #    recorded at world.habitable_ring_arc above. The arc-34–40 band is MARGIN.
 
 
-  PIRATE_DEFNAME_DRIFT_1:
-    question: "Is the pirate faction `Pirate` or `AM_EnemyPirate`?"
-    evidence: >
-      world/ASHKARR_WORLDMAP_meta.json factions[] says AM_EnemyPirate;
-      ashkarr_paint.py FACTION_LABEL and ASHKARR_WORLDMAP_settlements.csv both say
-      Pirate, with 4 settlements.
-    at_stake: >
-      A `Could not resolve cross-reference` at load if the frozen save names a def no
-      installed mod defines. Not cosmetic. ⚠️ BUILD cannot settle this offline — it
-      needs the save read against the live def set, which is CHECK's.
 
 
 
@@ -632,6 +622,38 @@ needs_ruling:
 # just an assertion.
 # ===========================================================================
 ruled:
+
+  PIRATE_DEFNAME_DRIFT_1:
+    question: "Is the pirate faction `Pirate` or `AM_EnemyPirate`?"
+    ruled_by: DECIDE
+    ruled_on: 2026-08-21
+    ruling: "`Pirate`. `AM_EnemyPirate` cannot hold a settlement and never could."
+    evidence: >
+      ⭐ SETTLED OFFLINE, which the old entry said was impossible — it claimed "BUILD cannot
+      settle this offline, it needs the save read against the live def set". It does not.
+      Read from the v1.6-loaded defs, 2026-08-21:
+      `AM_EnemyPirate` (Ancient urban ruins, 3316062206/1.6) is `hidden: true`, declares NO
+      `settlementGenerationWeight` and NO `settlementTexturePath`, and is labelled "pirate
+      scavenger". A hidden faction at weight 0 places nothing, so it cannot be the owner of
+      four Blackstar holdings under any reading.
+      `Pirate` (Core) is not hidden, weight 1, `requiredCountAtGameStart` 1, and is the def
+      `src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml` reskins to "Blackstar Company".
+      world/ASHKARR_WORLDMAP_settlements.csv: 4 rows `Pirate`, ZERO rows `AM_EnemyPirate`,
+      out of 72.
+    at_stake: >
+      🔴 The drift is NOT cosmetic and the stale side is
+      `world/ASHKARR_WORLDMAP_meta.json > factions[]`, which still lists `AM_EnemyPirate`.
+      Beyond naming a def that cannot own the sites, `AM_EnemyPirate` has a null
+      `settlementTexturePath` — and `Settlement.Material` calls `MatFrom(null, ...)`, which
+      throws ArgumentNullException once per settlement per frame. That was measured on this
+      project at 60 TPS to 3.7. ⇒ an importer that trusts meta.json does not merely mislabel,
+      it can wedge the world map. Filed as `META_JSON_NAMES_DEAD_PIRATE_1`.
+    superseded:
+      - value: "AM_EnemyPirate"
+        why: >
+          Named only by world/ASHKARR_WORLDMAP_meta.json. Two artifacts that actually place
+          settlements — ashkarr_paint.py's FACTION_LABEL and the settlements CSV — say
+          `Pirate`, and the def itself cannot place one.
 
   FORCE_POWERS_ARE_V2_1:
     question: >
