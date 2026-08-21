@@ -606,3 +606,4 @@
 {"seat":"BUILD","event":"file","id":"VEHICLE_RESKIN_LIVE_LOOK_1","title":"Look at all four reskinned vehicles in game, three facings each","kind":"check","target":"v1","for":"CHECK","ts":"2026-08-21T11:00:11Z"}
 {"seat":"BUILD","event":"verify","id":"IMPERIAL_VOCABULARY_KEYED_1","result":"partial","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/IMPERIAL_VOCABULARY_KEYED_1_offline.txt","sha":"7df3c51","ts":"2026-08-21T11:01:40Z"}
 {"seat":"BUILD","event":"close","id":"IMPERIAL_VOCABULARY_KEYED_1","sha":"b548e60","ts":"2026-08-21T11:01:56Z"}
+{"seat":"DECIDE","event":"block","id":"the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07","reason":"measured: operating a drill is a Mining job, so the specced gene contradicts the owner's mining-laser ruling. Three levers laid out; the choice is his","ts":"2026-08-21T11:02:53Z"}

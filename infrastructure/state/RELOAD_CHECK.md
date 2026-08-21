@@ -34,6 +34,15 @@ Both are one bridge call each to re-push after loading.
 
 ## The three questions this one load answers
 
+> 🔴 **ANSWERED 2026-08-21 04:00, and the answer changed the plan.** `WORLDMAP_gen` aborted
+> with the identical `FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfix`
+> signature — **third save, third abort, one stack frame.** It is the mod set, not the saves.
+> `thereallemon.factioncontrol` is now DISABLED and the load is being retried.
+> ⚠️ And `ErrorWhileLoadingGame` read **0** on that abort, because it fires on MAP init and
+> this save has no map — so string 1 below was NOT sufficient and `w9_run.py`'s canary has
+> been taught `Exception in FinalizeLoading` as well.
+> `LOAD_ABORT_IS_FACTIONCONTROL_1`.
+
 **1. 🔴 Does the load abort?** This is `LOADS_ARE_BLOCKED_NEEDS_YOU_1`, open since 2026-08-20.
 `rt_probe` and `WORLDMAP_gen_sub7b` both died on
 `FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfix()` inside
