@@ -1,0 +1,87 @@
+IMPERIAL_VOCABULARY_KEYED_1 — CORRECTION to run-1 evidence, BUILD, 2026-08-21
+config: offline-578-defs.  The item is CLOSED and its run-1 record is IMMUTABLE;
+this file records what run-1 got WRONG and what shipped instead.
+
+WHAT RUN-1 CLAIMED: 17 keys, three reachable surfaces, one of them the 'Imperial law'
+family — a colony that loots a psychic amplifier gets caught because it holds no rank.
+
+WHY THAT IS FALSE. MinimumRoyalTitle is computed FROM FactionDef.royalImplantRules.
+Measured against DefDump under the live list:
+  FactionDefs in dump:    86   declaring royalImplantRules: 0
+  ThingDefs             24904   using CompProperties_RoyalImplant: 0
+  HediffDefs             1614   using CompProperties_RoyalImplant: 0
+
+  => no faction declares a rule, so nothing carries a minimum rank, so none of these
+     eight keys can render in vanilla or under any mod in this 578-mod stack:
+       REMOVED  Stat_Thing_MinimumRoyalTitle_Name
+       REMOVED  Stat_Thing_MinimumRoyalTitle_Desc
+       REMOVED  Stat_Thing_Weapon_MinimumRoyalTitle_Desc
+       REMOVED  Stat_Thing_MinimumRoyalTitle_Level_Desc
+       REMOVED  MinimumRoyalTitleInspectString
+       REMOVED  RoyalImplantIllegalUseWarning
+       REMOVED  LetterLawViolationDetectedLabel
+       REMOVED  LetterLawViolationDetectedForbiddenThingUse
+
+⭐ EMPIRE_GAP_AUDIT.md row 9 ALREADY SAID SO — 'royalImplantRules absent from every
+   shipped FactionDef'. The finding was in the audit that commissioned this item and
+   the first pass did not connect it. Row 9 is now cross-linked from row 8.
+
+=== SECOND CORRECTION — the pawn route ===
+run-1 said Empire_Royal_* kinds 'still raid us'. They raid nobody. Read from the vessel:
+          <kindDef>Trader</kindDef>
+            <Empire_Common_Trader>1</Empire_Common_Trader>
+            <Empire_Fighter_Trooper>10</Empire_Fighter_Trooper>
+            <Empire_Fighter_Cataphract>1.5</Empire_Fighter_Cataphract>
+            <Empire_Fighter_Janissary>7</Empire_Fighter_Janissary>
+            <Empire_Fighter_Champion>10</Empire_Fighter_Champion>
+          <kindDef>Combat</kindDef>
+            <Empire_Fighter_Trooper>5</Empire_Fighter_Trooper>
+            <Empire_Fighter_Janissary>3.5</Empire_Fighter_Janissary>
+            <Empire_Fighter_Cataphract>2</Empire_Fighter_Cataphract>
+            <Empire_Fighter_Champion>4</Empire_Fighter_Champion>
+          <kindDef>Combat</kindDef>
+            <Empire_Fighter_Grenadier>2</Empire_Fighter_Grenadier>
+            <Empire_Fighter_Trooper>5</Empire_Fighter_Trooper>
+            <Empire_Fighter_Janissary>3.5</Empire_Fighter_Janissary>
+            <Empire_Fighter_Cataphract>2</Empire_Fighter_Cataphract>
+            <Empire_Fighter_Champion>4</Empire_Fighter_Champion>
+          <kindDef>Settlement</kindDef>
+            <Empire_Fighter_Trooper>5</Empire_Fighter_Trooper>
+            <Empire_Fighter_Janissary>3.5</Empire_Fighter_Janissary>
+            <Empire_Fighter_Cataphract>2</Empire_Fighter_Cataphract>
+            <Empire_Fighter_Champion>4</Empire_Fighter_Champion>
+  => zero Empire_Royal_* in any group. The only titled kind in a group is
+     Empire_Fighter_Cataphract (titleSelectOne Freeholder/Yeoman), and
+     IMPERIAL_RAID_ROSTER_1 replaced both COMBAT groups, so it no longer raids either.
+     The surface SURVIVES via the untouched Settlement and Trader groups: cataphracts
+     garrison Imperial bases and escort Imperial caravans.
+
+=== WHAT SHIPPED INSTEAD — 20 keys, four groups ===
+  OVERRIDES  tokens OK  RoyalTitleTooltipHasTitle
+  OVERRIDES  tokens OK  RoyalTitleTooltipConceited
+  OVERRIDES  tokens OK  CurrentTitle
+  OVERRIDES  tokens OK  RoyalTitleTooltipNextTitle
+  OVERRIDES  tokens OK  RoyalTitleTooltipNextTitleFavorCost
+  OVERRIDES  tokens OK  RoyalTitleTooltipTitlesEarnable
+  OVERRIDES  tokens OK  RoyalTitleTooltipTitlesNonEarnable
+  OVERRIDES  tokens OK  LetterRoyalTitleCantBeInherited
+  OVERRIDES  tokens OK  LetterRoyalTitleNoHeir
+  OVERRIDES  tokens OK  RoyalTitleTooltipNonConceited
+  OVERRIDES  tokens OK  RecruitmentResistanceRoyalTitleOffset
+  OVERRIDES  tokens OK  Stat_Thing_Apparel_MaxSatisfiedTitle
+  OVERRIDES  tokens OK  Stat_Thing_Apparel_MaxSatisfiedTitle_Desc
+  OVERRIDES  tokens OK  Stat_Thing_Ingestible_MaxSatisfiedTitle
+  OVERRIDES  tokens OK  Stat_Thing_Ingestible_MaxSatisfiedTitle_Desc
+  OVERRIDES  tokens OK  RoyalTitleTooltipPermits
+  OVERRIDES  tokens OK  RoyalTitleRequiredApparelStatDescription
+  OVERRIDES  tokens OK  RoyalTitleRequiredMealsDesc
+  OVERRIDES  tokens OK  RequiresTradePermission
+  OVERRIDES  tokens OK  ThroneMaxSatisfiedTitle
+
+  keys: 20   duplicates: none   orphans: NONE
+  placeholder-token parity vs the shipped string: ALL 20 MATCH
+
+=== STILL NOT VERIFIABLE OFFLINE ===
+The DARK/RENDERS split for the 20 remaining keys is argued from where each key is READ,
+not observed on a screen. The eight removed ones are settled by data (0 rules declared),
+which is why they are settled and the rest are not. Item stays PARTIAL.
