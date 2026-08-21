@@ -90,5 +90,6 @@ GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGeneban
 #    would log an XML error per unknown field on 123 characters and give every one
 #    of them no weapon, no kit and no skills, with the defs otherwise loading fine.
 # ⇒ Lift ALL of these at once, the next time the game is DOWN. The DLL goes first.
-Inhabited/Assemblies/Inhabited.dll     # BUILD: game up 2026-08-21; deploy with the rosters
-Inhabited/Defs/CastRosters/*           # BUILD: needs the rebuilt DLL's weapon/items fields
+# ✅ LIFTED 2026-08-21 13:30 by CHECK, on BUILD's own release condition: game DOWN,
+#    0 RimWorldWin64 processes, minutes before the owner's next load. DLL + 12 rosters
+#    deployed together in one --apply. This block is kept as the record of why.
