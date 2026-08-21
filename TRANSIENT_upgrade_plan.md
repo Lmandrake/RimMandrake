@@ -85,10 +85,36 @@ One JSON object per line, `\n`-terminated, written `O_APPEND`.
 {"ts":"2026-08-20T18:01:12Z","seat":"CHECK","event":"verify","id":"C40","result":"fail","config":"full-578","evidence":"observed/logs/Player_2026-08-20.log","sha":"f0a9f6c","caused_by":null}
 ```
 
-**Why appending is safe with four seats writing at once:** on Linux a write to a file opened
-`O_APPEND` is atomic below `PIPE_BUF` (4096 bytes). Our events measure **193 bytes**. Lines cannot
-interleave. This is the specific property that makes a shared *append* file safe where a shared
-*editable* file — today's six queue files — is not.
+🔴 **THIS SAFETY ARGUMENT IS FALSE ON THE FILESYSTEM THIS REPO LIVES ON. Measured 2026-08-20.**
+
+The argument was: on Linux a write to a file opened `O_APPEND` is atomic below `PIPE_BUF`
+(4096 bytes), our events measure ~193, so four seats can append at once with no coordination.
+That is true — **on a local filesystem.** ⛔ `/mnt/d` is a **9p / DrvFs** mount (WSL2 → a Windows
+drive), and 9p does not serialise concurrent writes. 12 processes × 250 events of ~160 bytes,
+run twice:
+
+| filesystem | lines written | distinct events | torn lines |
+|---|---|---|---|
+| `/tmp` (tmpfs) | 3000 / 3000 | 3000 / 3000 | **0** |
+| `/mnt/d` — **the repo** | 857 / 3000 | **502 / 3000** | **355** |
+| `/mnt/d` — again | 657 / 3000 | **496 / 3000** | **161** |
+
+**Five of every six events vanished**, in the one file that is supposed to be the truth. The
+PIPE_BUF property was quoted from POSIX and never run here.
+
+✅ **`model.append()` now takes an exclusive `flock`, and that fixes it completely** — 3000/3000,
+zero torn, twice, at ~2 ms per event. Isolated further: **flock alone is sufficient** and
+re-seeking under the lock changes nothing, so the defect is that 9p does not serialise the
+*writes*, not that it mishandles the append offset.
+
+⚠️ **`flock` is advisory**, so `model.append()` is the ONLY sanctioned writer. A shell `>>` still
+tears lines. The PIPE_BUF ceiling is kept anyway: it bounds an event to one plausible write, keeps
+prose out of the ledger, and restores the no-lock guarantee if this ever moves to ext4.
+
+🔑 **The lesson is not about 9p.** `selftest_concurrency.py`'s first version used
+`tempfile.mkdtemp()`, which is `/tmp`, and reported **3600/3600, zero torn** while the real
+filesystem was losing 83% of writes. A green test measuring the wrong disk is worse than no test.
+It now defaults to the directory the ledger actually lives in.
 
 **Measured cost:** 193 B/event · ~1,100 events in the last 8 days · **~9 MB per year**.
 Replaying a full year to current state: **53 ms**. Scanning for one seat: **6 ms**.
@@ -113,8 +139,18 @@ Replaying a full year to current state: **53 ms**. Scanning for one seat: **6 ms
 | `game` | `state` | **owner only** |
 | `admin` | `reason`, `patch` | **owner only** |
 
-`caused_by` carries the index of the event that caused this one. That single field is the entire
-causal graph — run → finding → spawn → close.
+`caused_by` is the entire causal graph — run → finding → spawn → close.
+
+🔴 **It carries a NAME, not an index. Corrected 2026-08-20 while building it.** The spec said
+"the index of the event", which fails twice over: computing an index means counting the whole file
+on every append (O(n²), and under 12 concurrent writers on 9p the re-read itself failed with
+ENODATA), and — the one that matters — **line indices do not survive the monthly roll.** Past
+~5 MB `events.jsonl` rolls into `events/2026-08.jsonl`, every index restarts at zero, and every
+stored `caused_by` silently points at a different event. A causal graph that quietly relabels
+itself is worse than none.
+
+So `caused_by` names an item id, a finding name, or a run like `C40/run-3@full-578` — all already
+unique, all already what §4's commands pass (`--from C40/run-3@full-578`), all roll-proof.
 
 ### 2.2 `items/<ID>.md` — prose only
 

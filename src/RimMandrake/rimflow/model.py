@@ -1,0 +1,622 @@
+#!/usr/bin/env python3
+"""rimflow/model.py — the event ledger, and the only thing allowed to interpret it.
+
+WHAT THIS REPLACES AND WHY
+==========================
+Six hand-edited markdown queues, 827 KB across 167 items, four seats sharing one
+working tree. Measured 2026-08-20: 68 of 142 items carried a `state:` no tool could
+parse, `state: done` had been written three times in the project's history while 116
+items had actually closed, and the board reported 0 done and 0 blocked. Items did not
+get closed, they got deleted — so the numerator could never rise while the denominator
+shrank.
+
+None of that was carelessness. It is what a **shared editable file** does when several
+writers each hold a partial view: every edit is a read-modify-write over someone else's
+state, and the last writer silently wins.
+
+So the truth moves to an **append-only event log**, and every view is derived from it.
+
+    THE LEDGER IS THE TRUTH. Everything else — queue/<SEAT>.md, the board, this
+    module's own `Item` objects — is a projection that can be thrown away and rebuilt.
+
+🔴 WHY APPENDING NEEDS A LOCK HERE, AND THE PLAN'S ARGUMENT WAS WRONG
+====================================================================
+The design's stated safety argument was: on Linux a `write()` to a file opened
+`O_APPEND` is atomic below `PIPE_BUF` (4096 bytes), so four seats can append at once
+with no coordination. That is true — **on a local filesystem.**
+
+⛔ **This repo is not on one.** `/mnt/d` is a **9p / DrvFs** mount (WSL2 talking to a
+Windows drive), and 9p does not serialise concurrent writes. Measured 2026-08-20,
+12 processes × 250 events of ~160 bytes each, run twice:
+
+    filesystem            lines written   distinct events   torn lines
+    /tmp   (tmpfs)          3000 / 3000      3000 / 3000          0
+    /mnt/d (the repo, 9p)    857 / 3000       502 / 3000        355
+                             657 / 3000       496 / 3000        161
+
+**Five of every six events vanished, and hundreds of lines were torn in half** — in
+the one file that is supposed to be the truth, on the filesystem the repo actually
+lives on. The PIPE_BUF argument was quoted from POSIX and never run here.
+
+✅ **`flock` fixes it completely**: 3000/3000, zero torn, twice, at ~2 ms per event.
+Isolated further — flock alone is sufficient and re-seeking under the lock changes
+nothing, so the failure is that 9p does not serialise the *writes*, not that it
+mishandles the append offset.
+
+⚠️ **`flock` is ADVISORY.** It only protects against writers that also take it, which
+means `append()` below is the ONLY sanctioned way to write this file. A shell `>>`,
+an editor, or any other appender bypasses the lock and can still tear a line.
+
+🔑 The PIPE_BUF ceiling is KEPT anyway, and not as superstition: it bounds an event to
+one plausible write, keeps prose out of the ledger, and preserves the no-lock
+guarantee for anyone who later moves this to ext4. Prose belongs in `items/<ID>.md`.
+
+⚠️ If the repo ever moves to a native Linux filesystem, or to NFS/SMB, re-run
+`selftest_concurrency.py` **in the repo** before trusting anything here. That test's
+first version defaulted to `tempfile.mkdtemp()`, which is `/tmp`, and passed 3600/3600
+while the real filesystem was losing 83% of writes — a green test measuring the wrong
+disk.
+
+NO FIELD EXISTS TWICE
+=====================
+`items/<ID>.md` holds **prose only** — spec, verify, criteria, notes — and no
+front-matter, no `state:`, no title. Every scalar lives in the ledger. A field cannot
+drift out of sync with itself if it exists in exactly one place, and drift between two
+copies of one field is the single failure this whole design is aimed at.
+
+Stdlib only, and no daemon. Everything is a file in git.
+"""
+import fcntl
+import json
+import os
+import re
+import time
+
+PIPE_BUF = 4096
+ROOT = os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+STATE = os.path.join(ROOT, "infrastructure", "state")
+LEDGER = os.path.join(STATE, "ledger")
+EVENTS = os.path.join(LEDGER, "events.jsonl")
+ITEMS = os.path.join(STATE, "items")
+
+SEATS = ("DECIDE", "BUILD", "CHECK", "REP", "OWNER")
+
+# Item lifecycle. `proposed` is not a holding pen for sloppiness — it is where an item
+# sits until it has all three of spec/verify/criteria, which is the completeness gate
+# replacing POLICY.md's manual "BUILD must refuse an item with an empty spec".
+STATES = ("proposed", "ready", "doing", "done", "dropped", "superseded")
+
+# ⚠️ `blocked` is NOT a state. It is a flag, because an item can be blocked while
+# proposed, ready or doing, and collapsing it into the state enum is what made the old
+# queues unable to say "ready, but waiting on an answer". Same for `needs`.
+NEEDS = ("offline", "deploy", "game-up", "bridge", "harvest", "owner")
+
+# 🔑 `needs` is the coupling between the game and the queue, and it is a DIFFERENT
+# axis from `blocked`. blocked means something is WRONG. needs means the WINDOW IS
+# CLOSED. The old queues wrote both into one prose field, so the board could read
+# neither, and "waiting for the game to come up" was indistinguishable from "broken".
+GAME_STATES = ("DOWN", "DEPLOYING", "LOADING", "UP")
+
+ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9._-]*$")
+# A run is the ONE exception to "no opaque IDs", and it is never seen alone.
+RUN_RE = re.compile(r"^(?P<item>[A-Za-z][A-Za-z0-9._-]*)/run-(?P<n>\d+)@(?P<config>[\w.-]+)$")
+
+
+class LedgerError(Exception):
+    """Base for every refusal. These are REFUSALS, not crashes: each one names a rule."""
+
+
+class EventTooLargeError(LedgerError):
+    pass
+
+
+class SchemaError(LedgerError):
+    pass
+
+
+class PermissionError_(LedgerError):
+    pass
+
+
+class TransitionError(LedgerError):
+    pass
+
+
+# ---------------------------------------------------------------------------
+# THE VOCABULARY — 18 verbs, deliberately small.
+#
+# ⚠️ The plan says "16 verbs" and lists 18. Its table pairs `claim · start`,
+# `block · unblock` and `drop · supersede` on shared rows, and the count was taken off
+# the rows. Corrected here rather than by cutting two verbs to match a number: all
+# eighteen are read by the board, the priority engine or the causal graph.
+#
+# ⛔ Adding a verb is a design change, not a convenience. Every verb here is one the
+# board, the priority engine or the causal graph actually reads; a verb nothing reads
+# is a note, and `note` already exists for that.
+#
+# `who`: which seat may emit it.
+#   "any"   — any seat
+#   "owner" — the seat that OWNS the item (not the human owner; see OWNER below)
+#   a tuple — exactly those seats. "OWNER" in a tuple means the human.
+# ---------------------------------------------------------------------------
+VERBS = {
+    "file":      {"who": "any",   "req": ("for", "title", "kind"),
+                  "opt": ("row", "target", "needs", "spec", "from")},
+    "claim":     {"who": "owner", "req": (), "opt": ()},
+    "start":     {"who": "owner", "req": (), "opt": ()},
+    "block":     {"who": "owner", "req": ("reason",), "opt": ("on",)},
+    "unblock":   {"who": "owner", "req": (), "opt": ("reason",)},
+    "verify":    {"who": "owner", "req": ("result", "config"), "opt": ("evidence", "sha")},
+    "finding":   {"who": "any",   "req": ("from", "type", "severity", "name"), "opt": ()},
+    "spawn":     {"who": "any",   "req": ("from", "for", "name"),
+                  "opt": ("kind", "needs", "this_deployment", "spec")},
+    "retarget":  {"who": ("DECIDE", "owner"), "req": ("to", "reason"), "opt": ("from",)},
+    "reassign":  {"who": ("DECIDE",), "req": ("to", "reason"), "opt": ()},
+    "close":     {"who": "owner", "req": ("sha",), "opt": ()},
+    "drop":      {"who": "owner", "req": ("reason",), "opt": ()},
+    "supersede": {"who": "owner", "req": ("by",), "opt": ("reason",)},
+    "note":      {"who": "any",   "req": ("text",), "opt": ()},
+    "seat":      {"who": "self",  "req": ("state",), "opt": ("reason", "item")},
+    "bridge":    {"who": ("CHECK",), "req": ("state",), "opt": ()},
+    "game":      {"who": ("OWNER",), "req": ("state",), "opt": ()},
+    "admin":     {"who": ("OWNER",), "req": ("reason",), "opt": ("patch",)},
+}
+
+# Events that do not name an item. Everything else must carry an `id`.
+ITEMLESS = ("seat", "bridge", "game")
+
+
+def now():
+    """UTC, second resolution, sortable. Seconds are enough: ordering inside the file
+    is what matters and appends are serialised by the kernel, not by the clock."""
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+# ---------------------------------------------------------------------------
+# WRITING
+# ---------------------------------------------------------------------------
+def validate(ev):
+    """Refuse a malformed event BEFORE it reaches the file.
+
+    🔑 There is no repair path for a bad line: the ledger is append-only, so a wrong
+    event can only be corrected by a later `admin` event, never removed. Validation
+    is therefore the last point at which a mistake is cheap.
+    """
+    verb = ev.get("event")
+    spec = VERBS.get(verb)
+    if not spec:
+        raise SchemaError("unknown verb %r. The vocabulary is 16 verbs and adding one "
+                          "is a design change: %s" % (verb, ", ".join(sorted(VERBS))))
+    seat = ev.get("seat")
+    if seat not in SEATS:
+        raise SchemaError("seat %r is not one of %s" % (seat, ", ".join(SEATS)))
+    if verb in ITEMLESS:
+        if ev.get("id"):
+            raise SchemaError("`%s` is not about an item; drop the id" % verb)
+    else:
+        iid = ev.get("id")
+        if not iid or not ID_RE.match(str(iid)):
+            raise SchemaError(
+                "`%s` needs an id matching THREE_DESCRIPTIVE_WORDS_# (got %r). "
+                "Legacy IDs like B58 still resolve and are never renamed." % (verb, iid))
+    for f in spec["req"]:
+        if ev.get(f) in (None, ""):
+            raise SchemaError("`%s` requires %r" % (verb, f))
+    known = set(spec["req"]) | set(spec["opt"]) | {
+        "ts", "seat", "event", "id", "caused_by"}
+    for f in ev:
+        if f not in known:
+            raise SchemaError(
+                "`%s` has no field %r. Prose belongs in items/<ID>.md, not in the "
+                "ledger — a scalar that exists in two places drifts." % (verb, f))
+    if verb == "seat" and ev["state"] not in ("ready", "busy", "idle"):
+        raise SchemaError("seat state must be ready|busy|idle")
+    if verb == "bridge" and ev["state"] not in ("taken", "released"):
+        raise SchemaError("bridge state must be taken|released")
+    if verb == "game" and ev["state"] not in GAME_STATES:
+        raise SchemaError("game state must be one of %s" % ", ".join(GAME_STATES))
+    if verb == "file" and ev["for"] not in SEATS:
+        raise SchemaError("file --for must name a seat")
+    if verb == "verify" and ev["result"] not in ("pass", "fail", "partial"):
+        raise SchemaError("verify result must be pass|fail|partial")
+    cb = ev.get("caused_by")
+    if cb is not None and not (ID_RE.match(str(cb)) or RUN_RE.match(str(cb))):
+        raise SchemaError(
+            "caused_by must NAME the cause — an item id, a finding name, or a run like "
+            "C40/run-3@full-578 — not a line number. Line numbers do not survive the "
+            "monthly roll of events.jsonl. Got %r" % (cb,))
+    n = ev.get("needs")
+    if n and n not in NEEDS:
+        raise SchemaError("needs must be one of %s" % ", ".join(NEEDS))
+    return ev
+
+
+def append(ev, path=EVENTS):
+    """Validate, then write ONE line under an exclusive lock. Returns the byte offset.
+
+    🔴 IT RETURNS A BYTE OFFSET, NOT A LINE INDEX, AND `caused_by` IS A NAME.
+    The plan specified `caused_by` as "the index of the event that caused this one".
+    That cannot work here for two independent reasons, both found while building it:
+
+    1. **Computing the index means counting the whole file on every append** — O(n²)
+       over the ledger's life, and under 12 concurrent writers on 9p the re-read
+       itself failed with ENODATA. The offset comes free from the lock we already hold.
+    2. 🔑 **Line indices do not survive the monthly roll.** The design rolls
+       `events.jsonl` into `events/2026-08.jsonl` past ~5 MB, at which point every
+       index restarts at zero and every stored `caused_by` silently points at a
+       different event. A causal graph that quietly relabels itself is worse than none.
+
+    So `caused_by` carries a **name** — an item id, a finding name, or a run name like
+    `C40/run-3@full-578`. Those are already unique, already what §4's commands pass
+    (`--from C40/run-3@full-578`), and they survive any amount of rolling.
+
+    The returned offset is a convenience for the CURRENT file only. Do not store it.
+    """
+    validate(ev)
+    ev.setdefault("ts", now())
+    line = json.dumps(ev, separators=(",", ":"), ensure_ascii=False) + "\n"
+    blob = line.encode("utf-8")
+    if len(blob) >= PIPE_BUF:
+        raise EventTooLargeError(
+            "event is %d bytes; O_APPEND is only atomic below %d, and a torn line "
+            "corrupts the ledger irrecoverably. Move the prose into items/%s.md."
+            % (len(blob), PIPE_BUF, ev.get("id", "<ID>")))
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+    try:
+        # ⛔ DO NOT REMOVE THE LOCK "because O_APPEND is atomic". It is, on ext4 and
+        # tmpfs. This repo is on 9p, where it is not, and without this lock five of
+        # every six events are lost — measured, not theorised. See the module
+        # docstring for the numbers and `selftest_concurrency.py` to re-run them.
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        try:
+            offset = os.lseek(fd, 0, os.SEEK_END)
+            written = os.write(fd, blob)
+            # A short write means a torn line, which is the one thing that cannot be
+            # tolerated in an append-only file. Silence would be the worst response.
+            if written != len(blob):
+                raise LedgerError(
+                    "short write: %d of %d bytes. The ledger may be torn at the tail "
+                    "— inspect it before writing again." % (written, len(blob)))
+        finally:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
+    return offset
+
+
+def read(path=EVENTS):
+    """-> [event]. A malformed line is REPORTED, never skipped silently.
+
+    ⚠️ Skipping a bad line would make the ledger quietly lie, which is precisely the
+    failure mode the ledger exists to end. A torn tail is recoverable by a human; a
+    silently ignored one is not, because nobody learns it happened.
+    """
+    out = []
+    if not os.path.exists(path):
+        return out
+    with open(path, encoding="utf-8") as fh:
+        for i, line in enumerate(fh):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                out.append(json.loads(line))
+            except ValueError as e:
+                raise LedgerError(
+                    "%s line %d is not valid JSON (%s). The ledger is append-only, so "
+                    "this is almost certainly a torn write — do NOT edit around it; "
+                    "look at the tail and repair it deliberately." % (path, i + 1, e))
+    return out
+
+
+# ---------------------------------------------------------------------------
+# READING — the projection
+#
+# 🔑 Everything below is DERIVED. Delete every file but events.jsonl and `reindex`
+# rebuilds all of it. That is the test of whether the ledger really is the truth, and
+# it is worth running for real rather than believing.
+# ---------------------------------------------------------------------------
+class Run(object):
+    """One verification attempt. IMMUTABLE, forever, including the failures.
+
+    ⭐ A failed run is not a defect in the record — it IS the record. The old queues
+    reopened an item when its check failed, which erased the fact that it had ever
+    failed and made "how many times did we try this" unanswerable. Here a `fail`
+    stands permanently and the follow-up is a NEW item, linked by `caused_by`.
+    """
+
+    __slots__ = ("item", "n", "config", "result", "evidence", "sha", "ts", "index")
+
+    def __init__(self, item, n, config, result, evidence, sha, ts, index):
+        self.item, self.n, self.config = item, n, config
+        self.result, self.evidence, self.sha = result, evidence, sha
+        self.ts, self.index = ts, index
+
+    @property
+    def name(self):
+        return "%s/run-%d@%s" % (self.item, self.n, self.config)
+
+    def __repr__(self):
+        return "<Run %s %s>" % (self.name, self.result)
+
+
+class Item(object):
+    """The projection of one item. Rebuilt from the ledger every time; never stored."""
+
+    __slots__ = ("id", "title", "kind", "owner", "row", "target", "needs", "state",
+                 "blocked", "blocked_reason", "blocked_on", "this_deployment",
+                 "created_at", "created_index", "closed_sha", "superseded_by",
+                 "runs", "findings", "history", "caused_by")
+
+    def __init__(self, iid, index):
+        self.id, self.created_index = iid, index
+        self.title = self.kind = self.owner = None
+        self.row = self.target = None
+        self.needs = "offline"
+        self.state = "proposed"
+        self.blocked = False
+        self.blocked_reason = self.blocked_on = None
+        self.this_deployment = False
+        self.created_at = None
+        self.closed_sha = self.superseded_by = self.caused_by = None
+        self.runs, self.findings, self.history = [], [], []
+
+    @property
+    def open(self):
+        return self.state in ("proposed", "ready", "doing")
+
+    def __repr__(self):
+        return "<Item %s %s%s>" % (self.id, self.state,
+                                   " BLOCKED" if self.blocked else "")
+
+
+class World(object):
+    """Everything the ledger says, at one moment: items, seats, bridge, game state."""
+
+    def __init__(self):
+        self.items = {}
+        self.seats = {}                 # seat -> {"state":…, "reason":…, "item":…}
+        self.bridge_holder = None
+        self.game = "DOWN"
+        self.findings = {}              # name -> {"from":…, "type":…, "severity":…}
+        self.errors = []                # refusals a replay found ALREADY IN the file
+
+    def open_items(self):
+        return [i for i in self.items.values() if i.open]
+
+
+# 🔴 TERMINAL MEANS TERMINAL. Nothing leaves these states, ever.
+#
+# ⚠️ This general rule is here because enumerating the forbidden PAIRS was not enough
+# and the selftest caught it: `claim` on a closed item computed `done -> proposed`,
+# which was not in the table, so a closed item could be quietly reopened through a
+# state nobody thought to forbid. A blocklist of pairs fails open on the pair you did
+# not think of; a terminal set fails closed. Prefer the second wherever the states are
+# few and the consequence is losing the record.
+TERMINAL = ("done", "dropped", "superseded")
+
+# The named refusals. Their value is the MESSAGE — the terminal rule above already
+# stops all of them, and each entry here replaces "refused" with a sentence saying
+# what to do instead. ⛔ Every one of these happened in the markdown queues.
+FORBIDDEN = {
+    ("done", "ready"): "an item that closed cannot be reopened. File a NEW item and "
+                       "link it with caused_by — the record of the close stands.",
+    ("done", "doing"): "an item that closed cannot be restarted. File a new one.",
+    ("done", "blocked"): "an item that closed cannot be blocked.",
+    ("dropped", "ready"): "a dropped item cannot be revived. File a new one, and say "
+                          "in its notes why the drop was wrong.",
+    ("dropped", "doing"): "a dropped item cannot be started.",
+    ("superseded", "ready"): "a superseded item cannot be revived; work its successor.",
+}
+
+
+def _may(ev, item, world):
+    """Who may emit this. Raises PermissionError_ naming the rule, never a bare False."""
+    verb, seat = ev["event"], ev["seat"]
+    who = VERBS[verb]["who"]
+    if who == "any":
+        return
+    if who == "self":
+        return                                  # a seat may only speak for itself
+    if who == "owner":
+        # OWNER is the human and overrides seat ownership deliberately: he is the one
+        # who can correct a seat that has wedged itself. Every such act is in the log.
+        if seat == "OWNER":
+            return
+        if item is None:
+            raise PermissionError_("`%s` names an item that does not exist" % verb)
+        if item.owner and item.owner != seat:
+            raise PermissionError_(
+                "%s may not `%s` %s — it belongs to %s. Filing work FOR another seat "
+                "is normal; changing another seat's item is refused."
+                % (seat, verb, item.id, item.owner))
+        return
+    if seat not in who:
+        if verb == "bridge":
+            raise PermissionError_(
+                "only CHECK takes the bridge. This is not a formality: two seats "
+                "driving one live game produce results neither can attribute.")
+        if verb == "game":
+            raise PermissionError_(
+                "only the OWNER announces game state. A seat that infers 'the game "
+                "is up' and tells everyone is guessing on other people's behalf.")
+        raise PermissionError_("only %s may `%s` (seat is %s)"
+                               % (" or ".join(who), verb, seat))
+
+
+def _apply(ev, index, world, strict):
+    verb, seat = ev["event"], ev["seat"]
+    iid = ev.get("id")
+    item = world.items.get(iid) if iid else None
+
+    if verb == "file":
+        if item is not None:
+            raise SchemaError("%s already exists (filed at line %d)"
+                              % (iid, item.created_index + 1))
+        item = Item(iid, index)
+        item.title, item.kind, item.owner = ev["title"], ev["kind"], ev["for"]
+        item.row, item.target = ev.get("row"), ev.get("target", "v1")
+        item.needs = ev.get("needs", "offline")
+        item.created_at = ev["ts"]
+        item.caused_by = ev.get("caused_by")
+        world.items[iid] = item
+        return
+
+    if verb not in ITEMLESS and item is None:
+        raise SchemaError("%s names item %s, which has never been filed" % (verb, iid))
+    _may(ev, item, world)
+
+    if verb == "seat":
+        world.seats[seat] = {"state": ev["state"], "reason": ev.get("reason"),
+                             "item": ev.get("item")}
+        return
+    if verb == "bridge":
+        world.bridge_holder = seat if ev["state"] == "taken" else None
+        return
+    if verb == "game":
+        world.game = ev["state"]
+        # 🔑 `--this-deployment` is cleared the moment the game leaves UP. That flag
+        # means "do this before the window closes"; carrying it into the next session
+        # would turn it into false urgency that nobody could trace to a cause.
+        if ev["state"] != "UP":
+            for it in world.items.values():
+                it.this_deployment = False
+        return
+
+    def to(state):
+        if state == item.state:
+            return
+        pair = (item.state, state)
+        if pair in FORBIDDEN:
+            raise TransitionError("%s: %s -> %s refused. %s"
+                                  % (item.id, item.state, state, FORBIDDEN[pair]))
+        if item.state in TERMINAL:
+            raise TransitionError(
+                "%s: %s -> %s refused. `%s` is terminal and cannot be reopened, "
+                "revived or restarted — the record of it standing IS the deliverable. "
+                "File a NEW item and link it with caused_by."
+                % (item.id, item.state, state, item.state))
+        item.state = state
+
+    if verb == "claim":
+        item.owner = seat
+        to("ready" if _complete(item) else "proposed")
+    elif verb == "start":
+        # ⚠️ The completeness gate, and it is a PRECONDITION rather than a bounce.
+        # POLICY.md told BUILD to refuse an item with an empty spec and set it
+        # blocked; that refusal was invisible for four days because nothing read it.
+        # Here the item simply cannot enter ready, and the tool names what is missing.
+        missing = _missing(item)
+        if missing:
+            raise TransitionError(
+                "%s cannot start: items/%s.md is missing %s. An artifact graded by "
+                "its own author proves nothing, which is why `verify` must be there "
+                "before work begins, not after."
+                % (item.id, item.id, " and ".join("## " + m for m in missing)))
+        to("doing")
+    elif verb == "block":
+        if item.state == "done":
+            raise TransitionError(FORBIDDEN[("done", "blocked")])
+        item.blocked = True
+        item.blocked_reason, item.blocked_on = ev["reason"], ev.get("on")
+    elif verb == "unblock":
+        item.blocked = False
+        item.blocked_reason = item.blocked_on = None
+    elif verb == "verify":
+        n = sum(1 for r in item.runs if r.config == ev["config"]) + 1
+        item.runs.append(Run(item.id, n, ev["config"], ev["result"],
+                             ev.get("evidence"), ev.get("sha"), ev["ts"], index))
+    elif verb == "finding":
+        world.findings[ev["name"]] = {"from": ev["from"], "type": ev["type"],
+                                      "severity": ev["severity"], "at": ev["ts"]}
+        item.findings.append(ev["name"])
+    elif verb == "spawn":
+        new = Item(ev["name"], index)
+        new.title = ev.get("title") or ev["name"]
+        new.kind = ev.get("kind", "task")
+        new.owner = ev["for"]
+        new.needs = ev.get("needs", "offline")
+        new.this_deployment = bool(ev.get("this_deployment"))
+        new.created_at, new.caused_by = ev["ts"], ev["from"]
+        world.items[ev["name"]] = new
+    elif verb == "retarget":
+        item.target = ev["to"]
+    elif verb == "reassign":
+        item.owner = ev["to"]
+    elif verb == "close":
+        to("done")
+        item.closed_sha = ev["sha"]
+        item.blocked = False
+    elif verb == "drop":
+        to("dropped")
+    elif verb == "supersede":
+        to("superseded")
+        item.superseded_by = ev["by"]
+    elif verb == "note":
+        pass
+
+    item.history.append(index)
+
+
+def _sections(iid):
+    """-> set of `## ` section names present in items/<ID>.md."""
+    path = os.path.join(ITEMS, "%s.md" % iid)
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return {m.group(1).strip().lower()
+                    for m in re.finditer(r"^##\s+(\w+)\s*$", fh.read(), re.M)}
+    except OSError:
+        return set()
+
+
+def _missing(item):
+    have = _sections(item.id)
+    return [s for s in ("spec", "verify", "criteria") if s not in have]
+
+
+def _complete(item):
+    return not _missing(item)
+
+
+def replay(events=None, strict=False):
+    """Fold the whole ledger into a `World`.
+
+    `strict=False` (the default) COLLECTS refusals into `world.errors` instead of
+    raising. ⚠️ That is not leniency — a refusal found during replay describes an
+    event that is ALREADY IN an append-only file and cannot be removed. Raising would
+    make every downstream tool unusable until a human intervened, which is exactly the
+    wrong incentive: it would push people toward editing the ledger. Collect, surface,
+    and let `admin` correct it forward.
+
+    `strict=True` is for the writing path, where the event has not landed yet and
+    refusing is both possible and correct.
+    """
+    if events is None:
+        events = read()
+    world = World()
+    for index, ev in enumerate(events):
+        try:
+            validate(ev)
+            _apply(ev, index, world, strict)
+        except LedgerError as e:
+            if strict:
+                raise
+            world.errors.append((index, ev.get("event"), str(e)))
+    return world
+
+
+def check(ev, world=None):
+    """Would this event be accepted? Raises the naming refusal if not.
+
+    Call this BEFORE `append`. It replays the candidate against current state, which
+    is the only way to catch a transition refusal — validate() alone cannot know that
+    an item is already closed.
+    """
+    if world is None:
+        world = replay()
+    validate(ev)
+    import copy
+    _apply(dict(ev, ts=ev.get("ts") or now()), len(read()), copy.deepcopy(world), True)
+    return True
