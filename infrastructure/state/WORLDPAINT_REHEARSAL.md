@@ -63,6 +63,7 @@ so the owner cannot put them back by hand at the screen. It must be settled in X
 | the preset survives launch | LocalLow copy 3895 B, mtime 2026-08-20 00:59, **identical to the repo copy**, and a launch happened after it (`Player.log` 2026-08-20 17:54) and left it alone. Only the workshop copy is regenerated as a 683-byte stub | ✅ the "wiped at every launch" item is closed by measurement |
 | every biome defName resolves | **24 of 24** in an active mod: 5 Core · 2 Odyssey · 9 Alpha Biomes · 3 Advanced Biomes (Continued) · 3 More Vanilla Biomes · 2 Biomes! Caverns. None on Cherry Picker's 28-BiomeDef removal list | ✅ |
 | the 8 Jawa factions default to ≥1 | `requiredCountAtGameStart 1` on all eight | ✅ no counter to touch |
+| **every other defName the run writes** | 6 link defs (`Creek` `River` `LargeRiver` `HugeRiver` `DirtRoad` `StoneRoad`) all in Core · `WB_MapLabelFeature` is a real `FeatureDef` in `ferny.worldbuilder`, which is active · all 9 landmark and 3 mutator defNames are on the live census roster | ✅ **the whole silent-failure class is closed offline** |
 
 ⚠️ **Single point of failure worth naming:** `Mlie.AdvancedBiomes` alone defines
 `Wasteland`, `PoisonForest` and `Volcano` — **2,348 tiles**. `Volcano` is not a vanilla
