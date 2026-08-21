@@ -111,3 +111,39 @@ unmanned machine leaves the clan unable to mine at all.
 `Rule_DisallowDesignator_ZoneAdd_Growing` plus `Rule_DisallowBuilding`, and the reasoning
 against a `PlantWork` gene — that it would also stop harvesting and tree-chopping — stands
 untouched.
+
+## 🔴 OWNER'S ANSWER, 2026-08-21 — lever (b): re-point the laser off `Mining`
+
+Gene stays as specced — `disabledWorkTags: Mining` on `MandrakeJawa`, so **no Jawa digs by
+hand and no Jawa operates a deep drill.** The laser is taken out of the `Mining` work type
+so a Jawa can run it.
+
+He accepted the asymmetry explicitly: *the laser works, the drill beside it does not, and
+nothing in the fiction explains why.*
+
+### ⭐ One wrinkle that makes this EASIER, not harder
+
+**There is nothing to re-point.** No `mining laser` ThingDef exists in any v1.6-loaded
+folder — searched the whole active stack. ⇒ **the laser is ours to author**, and it should be
+written with a non-`Mining` work type **from the start** rather than patched afterwards.
+
+That is strictly better than lever (b) as described:
+- ⛔ no `PatchOperationReplace` on another mod's `WorkGiverDef` — which would have re-typed
+  the job for **every faction in the game**, not just ours
+- ✅ the work type is a property of our own def, so nothing else in the stack changes
+- ✅ and it is honest: the fiction is *"a tech you can learn from the ship"*, so a
+  ship-taught machine having its own discipline is the explanation the asymmetry wanted
+
+**⇒ Spec for whoever builds it:**
+1. `MandrakeJawa` gains a `GeneDef` with `disabledWorkTags: Mining`.
+   ⚠️ `GeneDef.disabledWorkTags` is confirmed at `Verse/GeneDef.cs:73` and applied per-pawn
+   by `Pawn_GeneTracker`. ⛔ **The def dump reports 0 of 3,847 genes using it — that is a
+   dump blind spot, not absence.** Do not conclude it cannot be done.
+2. The mining laser is a **new ThingDef of ours**, with a `WorkGiverDef` whose `workType` is
+   **not** `Mining`. `Crafting` is the natural home — it is machine operation, not digging.
+3. ⛔ **Do not touch vanilla's `Drill` WorkGiver.** A Jawa not being able to run a deep drill
+   is the ruling working, not a bug to fix later.
+
+✅ **The sowing half is untouched and was always correct** —
+`Rule_DisallowDesignator_ZoneAdd_Growing` plus `Rule_DisallowBuilding`, and the reasoning
+against a `PlantWork` gene (it would also stop harvesting and tree-chopping) stands.
