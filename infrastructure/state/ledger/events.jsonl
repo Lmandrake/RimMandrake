@@ -671,3 +671,4 @@
 {"seat":"CHECK","event":"file","id":"DRINKS_CARRY_MELEE_TAGS_1","title":"Two ingestible drinks carry neolithic melee tags, and a scavenger spawned holding one","kind":"fix","row":"7","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T15:52:08Z"}
 {"seat":"BUILD","event":"verify","id":"CAST_XML_REGENERATE_1","result":"partial","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/CAST_XML_REGENERATE_1_offline.txt","sha":"f4e799c","ts":"2026-08-21T15:52:09Z"}
 {"seat":"BUILD","event":"close","id":"CAST_XML_REGENERATE_1","sha":"2c06e03","ts":"2026-08-21T15:52:28Z"}
+{"seat":"DECIDE","event":"close","id":"SCALD_WATER_RULING_1","sha":"8b98dfb","ts":"2026-08-21T15:52:41Z"}
