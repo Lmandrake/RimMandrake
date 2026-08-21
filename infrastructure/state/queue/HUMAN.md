@@ -840,3 +840,32 @@ Unchanged and unanswered. Every save aborts in `FactionControl`'s cross-referenc
 while the bridge keeps answering — which is why work against it looks fine and is not.
 **Generate a fresh world on the 578 stack and save it**; that is also where the faction
 renames land, and where your Configure Factions hand-tick pass belongs. `LOADS_ARE_BLOCKED_NEEDS_YOU_1`
+
+---
+
+## 🔴 `WORLDMAP_gen` IS THE FIRST-DRAFT v1 KEEPER — owner, 2026-08-21 02:48
+
+Asked as a fork by REP; answered *"This is the first draft v1 keeper."* ⇒ the world that
+exists right now is the one v1 ships, subject to redraft. Three consequences, all live:
+
+1. ⭐ **It is backed up.** `388646f` stores it at `world/WORLDMAP_gen.rws` (5.1 MB,
+   world-only, no map). ⚠️ It had been living in exactly ONE place — a Steam-Cloud-synced
+   `Saves/` folder that had been emptied of every other file an hour earlier.
+2. 🔴 **Blackstar Company is in this world by HAND, not by generation.** `jawa/faction_create`
+   added it after `FactionGenerator` skipped vanilla `Pirate` — Biotech's `PirateWaster`
+   declares `replacesFaction` at it with `requiredCountAtGameStart` 1, so `Pirate` can
+   never generate while Biotech is active. **That is now a permanent property of the v1
+   world.** `PIRATE_VESSEL_RESTORED_1` still ships so a REDRAFT generates cleanly — its
+   acceptance test ("Blackstar appears in the DEFAULT Configure Factions list") can only
+   be checked before a world is made, so it belongs to the next draft, not this one.
+3. **A keeper deserves a redraft procedure.** Nobody has written down how to rebuild this
+   world from the paint if it is ever lost or redrafted. Not filed; flagged.
+
+### ✅ Also ruled in the same exchange
+
+- **The Scald** — *"Chase it before anything else builds on this world."* → `THE_SCALD_LOST_ITS_WATER_1`
+  for CHECK. Water measures 6.71% (1,468 tiles); the three ruled seas total 1,780; the
+  312-tile gap is The Scald exactly, and lint independently reports `lakesAboveSeaLevel: 312`.
+- **Inbox** — close `LOADS_ARE_BLOCKED_NEEDS_YOU_1` and `MORNING_BRIEF_CHECK_1`; keep
+  `CANON_RULINGS_OWED_OWNER_1` open. → `CLOSE_TWO_OWNER_ITEMS_1` for DECIDE, since REP may
+  not close an OWNER item and only DECIDE may reassign one.
