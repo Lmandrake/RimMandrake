@@ -167,8 +167,12 @@ tool allowlists — dispatched by the Hand, never running as standing sessions:
 | `check` | verifies a claim; **never** fixes what it finds | nothing — reports only |
 | `scout` | read-only investigation, censuses, searches | nothing |
 
-⛔ **`check` must not be allowed to write.** A verifier that can fix what it finds stops
-being a verifier. It reports; the Hand dispatches a `build` worker if a fix is wanted.
+⛔ **`check` must not be allowed to write, and must never be the worker that did the job.**
+A verifier that can fix what it finds stops being a verifier. It reports; the Hand
+dispatches a `build` worker if a fix is wanted. Anthropic's harness-design post gives the
+reason in one line — they split planner from generator from evaluator because
+
+> *"agents tend to respond by confidently praising [their own] work."*
 
 ### 2.4 When the Hand fans out, and when it does not
 
@@ -182,6 +186,25 @@ being a verifier. It reports; the Hand dispatches a `build` worker if a fix is w
 Fan-out costs roughly **15× the tokens of chat** (Anthropic's measured figure). It buys
 calendar time, not correctness. Use it where the work is genuinely parallel and nowhere
 else.
+
+**Hard limits worth knowing before designing a fan-out:** 20 concurrent subagents
+(`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`), nesting 3 layers deep
+(`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`; `1` disables it).
+
+### 2.5 Large mechanical sweeps go through a workflow, not through the Hand
+
+For a fan-out that is big and repetitive — check 950 sprites, audit 152 pawnkinds, triage
+240 items — dispatching one worker at a time from the Hand fills the Hand's context with
+reports it does not need to read.
+
+**Dynamic workflows** (Claude Code v2.1.154+) are the sanctioned mechanism: a JavaScript
+script holds the plan and the loop, up to **1,000 agents per run at 16 concurrent**, and
+**intermediate results live in script variables rather than in anyone's context.** The Hand
+gets one synthesized return.
+
+⚠️ **Use it for sweeps, never for judgement.** A workflow is deterministic control flow over
+workers; it does not decide anything, and nothing in §2.4's "decision" row may be moved into
+one.
 
 ---
 
@@ -308,7 +331,9 @@ Rules that make briefs safe:
   the documented cause of overwrites. This is the discipline that replaces git worktrees at
   this scale; worktrees stay available if parallel *building* ever needs them.
 - **A worker returns a report, not a monologue.** Reports are budgeted so the Hand's context
-  does not fill with tool output.
+  does not fill with tool output. Anthropic's own figure for what a subagent should hand
+  back: *"a condensed, distilled summary (often 1,000–2,000 tokens)"* — however much it read
+  to get there.
 - **A worker that hits a decision stops and says so.** It does not decide. It cannot ask.
 - **Stopping conditions are explicit** — Anthropic: set *"stopping conditions (such as a
   maximum number of iterations)."*
@@ -320,6 +345,12 @@ Rules that make briefs safe:
 Prompts are advisory; hooks are deterministic. Everything in §4 and §5 that *matters* gets a
 hook. These are `PreToolUse`/`SessionStart` scripts in the style the project already uses
 (`block_blanket_git_stage.py`, `block_blind_scan.py`).
+
+✅ **Tool hooks fire inside subagents too**, with `agent_id` and `agent_type` in the hook
+input. So the same guard covers the Hand and every worker, and a worker cannot route around
+a rule the Hand is bound by. `PreToolUse` blocks via exit code 2 or a JSON
+`permissionDecision`. Relevant newer events if wanted later: `SubagentStart`,
+`SubagentStop`, `PostCompact`.
 
 | # | hook | fires on | refuses / does |
 |---|---|---|---|
@@ -440,6 +471,11 @@ distributed** — and fans out only where no decision is involved.
 - **No agent teams.** Available, experimental, and documented as wrong for sequential,
   same-file, dependency-dense work.
 - **No peer messaging.** Not on ideological grounds — there is simply nothing to message.
+  ⚠️ **State this accurately if the doctrine is rewritten:** subagents *can* now message each
+  other (a non-fork subagent's startup context includes a **sibling roster** of every other
+  named agent in the session), and cross-session messaging is shipped and on by default. Under
+  ONE HAND we decline both because workers are single-purpose and short-lived — **a choice,
+  not a platform limit.** The existing hook stays; only its justification changes.
 - **No worktrees yet.** File-ownership boundaries in the brief are sufficient at this
   scale. Reach for worktrees if parallel *building* ever becomes routine.
 - **No autonomous long-running mode.** The owner works conversationally and the evidence
@@ -457,12 +493,46 @@ distributed** — and fans out only where no decision is involved.
 3. Triage the 240 items into `WORKLIST.md`; surface only the unclear pile to the owner.
 4. Write **H4**, then **H3**.
 5. Retire the board, the publisher and the seat files.
-6. Trim `CLAUDE.md` to what a hook cannot enforce. *"Bloated CLAUDE.md files cause Claude to
-   ignore your actual instructions."*
+6. Trim `CLAUDE.md` — see §12.1. It is not cosmetic and it is not last for lack of
+   importance; it simply cannot be done until the hooks exist to take the weight.
 
-**Step 6 is not cosmetic.** Every rule that moves into a hook should come *out* of the prose,
-or the prose keeps growing and keeps being ignored — which is how the current system arrived
-where it is.
+### 12.1 Where the instruction files should go
+
+**The problem is now measured, not felt.** `CLAUDE.md` is loaded in full at the start of
+every conversation — and, critically, **into every subagent too**: subagents receive *"every
+level of the CLAUDE.md hierarchy the main conversation loads."* Under this model that means
+the whole of it is paid again on each of up to 20 concurrent workers. Anthropic's own
+context-cost table is blunt about the trade:
+
+| mechanism | context cost, per the docs |
+|---|---|
+| `CLAUDE.md` | **"High. Every line costs tokens whether relevant or not"** |
+| Skills | **"Low. Full body loads only when invoked"** |
+| Hooks | deterministic automation — no context cost at all |
+
+Skills use progressive disclosure: **~100 tokens of metadata always loaded**, the body
+(under 5k) only on trigger, and bundled scripts and references **cost nothing until
+accessed** — a script's *output* enters context, never its source.
+
+**The official rule for what moves:**
+
+> *"Create a skill when… a section of `CLAUDE.md` has grown into a procedure rather than a
+> fact."*
+
+⇒ **Three destinations, and every line of the current instruction files belongs to exactly
+one:**
+
+| what it is | where it goes |
+|---|---|
+| a rule that must hold regardless of what the model decides | **a hook** (§6) |
+| a *procedure* — how to deploy, how to measure, how to run a load round | **a skill**, loaded on trigger |
+| a bare *fact* that cannot be derived and is needed constantly | **stays in `CLAUDE.md`**, and it should be short |
+
+This project already has a healthy skills directory, so the destination exists. The work is
+moving the procedures out of the prose and deleting what the hooks now enforce.
+
+⚠️ **A skill's body stays in context across turns once loaded** — it is cheap to have, not
+free to use. Do not shard so finely that ten skills load for one task.
 
 ---
 
