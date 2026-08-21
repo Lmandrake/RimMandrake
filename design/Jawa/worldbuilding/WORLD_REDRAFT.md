@@ -78,7 +78,7 @@ frozen def dump and the live list are **both 578 and are not the same 578**:
 | modlist sha | `e0f11692cf69e516` | `9a204707f6dc183d` |
 | `thereallemon.factioncontrol` | PRESENT | **absent** ✅ (ruled out 08-21) |
 | `mandrake.strandedquest` | absent | **PRESENT** |
-| `xercaine.tribal.furniture` | PRESENT | **PRESENT** ⏳ |
+| `xercaine.tribal.furniture` | PRESENT | PRESENT ✅ **correct — the drop was reversed** |
 
 One out, one in — so the count is identical and every count-based currency check passes
 while the stacks differ. ✅ **Compare the sha**: sha256 of the sorted lowercased packageId
@@ -88,9 +88,10 @@ set, first 16 hex, which is the same value `dumps/REGISTRY.jsonl` already record
 **What that means for THIS procedure, concretely:**
 - ✅ **FactionControl is already out of the live list.** The 08-21 ruling is in force; step 1
   needs no action on it.
-- ⏳ **`xercaine.tribal.furniture` is still ACTIVE**, so `DROP_TRIBAL_FURNITURE_MOD_1` has
-  **not** been executed. 🔴 **It must be, before step 2** — a world generated with it holds
-  `XER_` references forever.
+- ✅ **`xercaine.tribal.furniture` is ACTIVE AND STAYS ACTIVE.** ⛔ **REVERSED — owner, 2026-08-21 09:46 PDT: *"If Tribal Furniture does not need to be cut, then don't. I did wonder why it was causing trouble. That's fine, leave it in."*** The mod STAYS. It was never rendering as placeholder — it ships 138 PNGs resolved through its own `TribalFurniture.Graphic_Appearances_Multi`, so its texPath is a stem, not a dead path. `DROP_TRIBAL_FURNITURE_MOD_1` is `dropped`. **578 with `xercaine.tribal.furniture` active is CORRECT; 577 is not a target.**
+  ⚠️ **DECIDE wrote the opposite line here at 13:0x and it was wrong** — filed as a remake
+  gate without checking the item's state, four hours after the owner had closed it. Struck
+  the same day. There is **no mod-list action** outstanding before step 2.
 - ⚠️ **The def dump is one mod stale in both directions.** Re-take it on the load that does
   the remake; the fixed dumper is deployed and armed.
 - ⚠️ `grep -c '<li>'` on `ModsConfig.xml` returns **583**, five too high — `knownExpansions`
