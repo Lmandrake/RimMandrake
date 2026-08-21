@@ -47,11 +47,12 @@ mountainous or impassable stayed unclickable after the repaint. Cause is documen
 and `tmpSecondaryBiome` have **no reset method anywhere in RimWorld** and clear only on
 reload. This load is the only way to test it.
 
-🔴 **AND THE BRIDGE CANNOT ANSWER THIS ONE.** `jawa/world_tile_get` builds both `hilliness`
-and `hillinessInt` from the RAW field `t.hilliness` — neither reads `HillinessLabel`. So a
-readback looks correct whether the cache is stale or not. **This is settled by the owner
-clicking tiles, or not at all**, until a tool exists that reads the cached label.
-See `HILLINESS_CACHE_NOT_READABLE_1`.
+⚠️ **The bridge could not answer this at 03:00 and now can.** `jawa/world_tile_get` builds
+both `hilliness` and `hillinessInt` from the RAW field, so it reports a tile as correct
+whether the cache is stale or not. `jawa/tile_cache_audit`, built and deployed 2026-08-21,
+reads `hillinessLabelCached` **by reflection** — calling the property would populate the very
+cache it is observing — and separates a real stale entry from a `TileMutatorDef` legitimately
+supplying the label. String 12. `HILLINESS_CACHE_NOT_READABLE_1`.
 
 **3. Does the paint survive a round trip?** Read back after loading and compare to the CSV.
 
@@ -65,7 +66,7 @@ See `HILLINESS_CACHE_NOT_READABLE_1`.
 | 4 | seven CSV tiles read back — 2476, 11350, 15087, 8147, 19495, 10, 12411 | biome, temperature and rainfall match the CSV **to the digit** (rainfall on the volcanic ones will read the OLD 1668 until the re-push) |
 | 5 | `jawa/world_landmarks_get` | **16** |
 | 6 | `jawa/world_features_get` | **23**, and `maxDrawSizeInTiles` ≤ 24.3 — proves the label resize scribed |
-| 7 | 🔴 the owner clicks a tile that was mountainous before the repaint and is Flat now | it selects. If it still refuses, reload does NOT clear it and the cache theory is wrong |
+| 7 | the owner clicks a tile that was mountainous before the repaint and is Flat now | it selects. ⭐ String 12 now answers this as a number, so this is the confirmation rather than the instrument |
 | 8 | after the two re-pushes: `jawa/world_tile_get` on 11965 / 19495 / 2540 | rainfall **40**, not 1668 |
 | 9 | after the two re-pushes: `world_links_import` reply | `rivers 238`, `roads 837`, `unknownDefs []` |
 
