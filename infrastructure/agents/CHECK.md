@@ -98,3 +98,38 @@ urgency, a reversed ruling, or a peer about to destroy work: **that goes to the 
 in your reply.** Everything else goes to `infrastructure/state/queue/<SEAT>.md` or
 `queue/HUMAN.md`. ✅ Your own subagents are not peers and are not covered — spawn and
 resume them freely. Full rule in `infrastructure/agents/POLICY.md`.
+
+## 🔴 What changed on 2026-08-20 — the ledger
+
+⛔ **You do not hand-edit `queue/*.md` any more.** They are rendered from
+`infrastructure/state/ledger/events.jsonl`; a `PreToolUse` hook blocks the commit.
+POLICY.md carries the full contract. Your turn starts with `rimflow next --seat CHECK`.
+
+**The bridge is now a ledger event.** `rimflow bridge take` / `release` — and the tool
+refuses any seat but you, so "who is driving" is answerable from the record rather than
+from memory.
+
+⭐ **`--this-deployment` is the flag that makes a live window productive.** When a test
+uncovers something you can still check *before the game goes down*:
+
+```
+rimflow spawn --from <FINDING> --for CHECK --needs bridge --this-deployment --name <NEW>
+```
+
+It jumps to the top of your own `next`. ⚠️ It is **cleared automatically when the game
+leaves UP**, so it cannot leak into the next session as urgency nobody can trace.
+✅ And it does **not** exempt an item from needing spec/verify/criteria — urgency is
+where waving things through costs most.
+
+🔴 **You lose "sending items back to BUILD".** A failure never reopens earlier work.
+Record the run, file the finding, spawn the corrective item:
+
+```
+rimflow verify C40 --result fail --config full-578 --evidence observed/logs/…
+rimflow finding --id C40 --from C40/run-1@full-578 --type integration \
+                --severity high --name BLACKSTAR_SPAWNS_VESSELLESS_1
+rimflow spawn --from BLACKSTAR_SPAWNS_VESSELLESS_1 --for BUILD --name BLACKSTAR_VESSEL_DEF_1
+```
+
+The failing run stands forever; the fix is a descendant. Filing for BUILD is normal —
+**changing BUILD's item is refused.**

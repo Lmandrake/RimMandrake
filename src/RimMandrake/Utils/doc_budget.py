@@ -72,6 +72,15 @@ BUDGETS = [
     # budget that cannot be met gets ignored rather than obeyed.
     ("infrastructure/state/queue/BUILD.md", 500),
     ("infrastructure/state/queue/*.md", 150),
+    # ⚠️ POLICY.md is not a per-seat identity, and the 150 was never meant for it. It is
+    # the SHARED contract that all four seats load, so its per-line cost is 4x a seat
+    # file's — which argues for a tighter budget, not a looser one. What earns 320 is
+    # the opposite lever: on 2026-08-20 it shed 74 lines that were verbatim duplication
+    # with CLAUDE.md and absorbed the whole rimflow contract, the 90% context ritual and
+    # the stop conditions, for a NET +11. Four copies of that text would be ~1,200 lines.
+    # 🔑 The real lever here is moving per-seat detail OUT into the four seat files, not
+    # compressing prose. A budget that cannot be met gets ignored rather than obeyed.
+    ("infrastructure/agents/POLICY.md", 320),
     ("infrastructure/agents/*.md", 150),   # was 120; premise was wrong, see docstring
     ("CLAUDE.md", 300),
     ("infrastructure/state/V1_CHAIN.md", 400),

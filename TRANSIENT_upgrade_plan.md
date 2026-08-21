@@ -443,9 +443,9 @@ The project has already proved that a `PreToolUse` hook changes behaviour where 
 | hook | fires on | action |
 |---|---|---|
 | **`queue_lint.py`** (new) | `Bash`, any `git commit` | 🔴 **BLOCKS**: hand-edit of `items/`-derived views · cross-seat write · backward transition · a new root `.md` not named `TRANSIENT_*` |
-| **`warn_unclosed_queue_item.py`** (fix) | `git commit` | fix the regex — `[A-Z][A-Z0-9-]*` has no underscore, so it reads `INHABITED` out of `INHABITED_DISPLACED_POOL_1`. Then make it **block**, not warn |
+| **`warn_unclosed_queue_item.py`** (fix) | `git commit` | ✅ regex fixed. 🔴 **"make it block" is REFUSED and the plan is corrected, not obeyed** — the owner ruled 2026-08-15 that it warns and never gates: *"a hook that refuses a commit costs more than the miscount it prevents, and a seat that hits it mid-flow will work around it."* Unreversed, so it exits 1: red and visible, never a gate. It also now exempts a GENERATED view, where a heading leaving loses nothing |
 | **`doc_budget.py`** (wire up) | `git commit` | 🔴 **RED ERROR on an over-budget file**, naming the file and the overrun. Exists and exits 1 today; nothing runs it |
-| **`doc_roster.py`** (wire up) | `git commit` touching `design/` | regenerate `INDEX.md`. It already exits 1 on drift and **is out of sync right now** |
+| **`doc_roster.py`** (wire up) | `git commit` touching `design/` | ⚠️ **WARNS, does not regenerate.** A `PreToolUse` hook that writes changes the tree under a commit whose pathspec is already fixed, so the regenerated index would NOT be in the commit — leaving the repo dirty and the author believing it was handled. It names the command instead |
 | **`check_canon.py`** (new) | `git commit` touching `design/` | 🔴 **BLOCKS** a number that contradicts `canon.yml` |
 | **`block_blanket_git_stage.py`** | unchanged | keep |
 | **`block_peer_messages.py`** | unchanged | keep |

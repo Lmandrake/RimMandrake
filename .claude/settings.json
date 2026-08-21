@@ -29,6 +29,18 @@
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_doc_budget.py\"",
             "timeout": 10,
             "statusMessage": "Checking documentation budget"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/queue_lint.py\"",
+            "timeout": 20,
+            "statusMessage": "Checking the ledger and the generated views"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_canon_contradiction.py\"",
+            "timeout": 60,
+            "statusMessage": "Checking design docs against canon"
           }
         ]
       },

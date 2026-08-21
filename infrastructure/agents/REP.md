@@ -102,3 +102,32 @@ urgency, a reversed ruling, or a peer about to destroy work: **that goes to the 
 in your reply.** Everything else goes to `infrastructure/state/queue/<SEAT>.md` or
 `queue/HUMAN.md`. ✅ Your own subagents are not peers and are not covered — spawn and
 resume them freely. Full rule in `infrastructure/agents/POLICY.md`.
+
+## 🔴 What changed on 2026-08-20 — the ledger
+
+⛔ **You do not hand-edit `queue/*.md` any more.** They are rendered from
+`infrastructure/state/ledger/events.jsonl`; a `PreToolUse` hook blocks the commit.
+POLICY.md carries the full contract. Your turn starts with `rimflow next --seat REP`.
+
+⭐ **The board now reads the ledger, so you stop reconstructing state from prose.**
+
+```
+python3 src/RimMandrake/rimflow/render.py     -> infrastructure/state/derived/board.json
+                                              -> queue/*.md, regenerated
+```
+
+🔑 **This is the job that went away, and it was most of the job.** The board used to be
+derived by parsing six hand-written queues whose `state:` was free text — 58 of 142
+items led with an emoji — so it reported **0 done and 0 blocked against a real 53 and
+2**. There was nothing wrong with the parsing; there was no enum to parse. Now every
+scalar is an event and the board is a projection.
+
+⚠️ **`derive_matrix.py` is superseded for the rendered queues and REFUSES to run against
+them**, rather than reporting zero. Pass `--legacy` only for the archives, which are
+still hand-written.
+
+**What is still yours and still manual:** `MODE`, and the owner's briefings. ⚠️ Prose
+written TO the owner has no home in the ledger — an event carries scalars and an item
+file carries spec/verify/criteria, and a briefing is neither. 929 lines of it were
+rescued into `infrastructure/state/preserved/` during the migration. That directory is
+hand-written and nothing regenerates it.

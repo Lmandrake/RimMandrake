@@ -148,142 +148,149 @@ python3 src/RimMandrake/Utils/say.py "<what>" --why "<why it matters>"
 One line. It feeds the board's CURRENTLY panel, which is how the human sees the
 fleet without reading four terminals. An entry with no `--why` renders as a gap.
 
-## The queue is the only channel
-
-**Owner's ruling, 2026-08-15: cross-agent chatter was interrupting real work. It
-stops now.** — and **hardened to a total ban on 2026-08-19**, see the next section.
-
-No live messaging between agents. An agent writes to the *next* agent's inbox and
-stops. **The inbox is read BETWEEN work items, never mid-item** — that is what makes
-it a queue instead of an interrupt.
-
-Everything is a queue item, and a queue item can be as long as it needs to be. The
-rule was never about detail; it was about interrupts.
-
-> ⚠️ **SUPERSEDED, 2026-08-19.** This section used to grant an exception — *"send one
-> only when it clears this bar: one or two sentences · urgent enough to break the
-> other seat's concentration"*, with examples like *stop, you are about to destroy X*.
-> **That exception is withdrawn. There is no bar to clear any more, because there is
-> no sanctioned live message at all.** Anything that would have qualified now goes to
-> the OWNER in your reply. Do not go looking for the old wording in your memory of
-> this file — it is gone on purpose.
-
 ## ⛔ AGENTS DO NOT MESSAGE EACH OTHER. AT ALL. — owner's ruling, 2026-08-19
 
 **`SendMessage` to another agent window is off.** Not rationed, not for emergencies —
-**off.** Waking another seat is a **USER function**, and the owner has taken it back.
+off. Waking another seat is a **USER function** and the owner has taken it back. There
+is no exception for urgency, a reversed ruling, a peer about to destroy work, a spec, a
+handoff, a finding or a status. **If it is genuinely urgent, tell the OWNER in your own
+reply** — he is reading you, and he is the one with authority to interrupt anyone.
 
-🔴 **Enforced, not merely written — but at the SENDING end.** `.claude/settings.json`
-runs `.claude/hooks/block_peer_messages.py` as a `PreToolUse` hook on `SendMessage`: a
-message whose target names a seat (BUILD · CHECK · DECIDE · REP) is refused before it
-is sent, with the queue files named in the refusal. `ListAgents` stays denied outright, so peers cannot be enumerated either.
+🔴 **Enforced at the SENDING end**, not merely written: `.claude/settings.json` runs
+`.claude/hooks/block_peer_messages.py` as a `PreToolUse` hook and a message naming a
+seat is refused before it leaves. ⚠️ `crossSessionInbound` is **`accept` on purpose** —
+the owner's `broadcast.py` reaches you through that same socket, and `refuse` would drop
+HIS game-state announcements, the one class of message that must get through.
 
-⚠️ **`crossSessionInbound` is `accept`, and that is DELIBERATE — do not "fix" it to
-`refuse`.** Corrected 2026-08-19 after three docs, this one included, claimed it read
-`refuse`. It never did, and it must not: the owner's `broadcast.py` reaches every window
-through that same inbound socket, which Claude Code runs through the same inbound
-controls as any other peer message. `refuse` would silence **the owner's own game-state
-announcements** — the one class of message that is supposed to get through.
+✅ **Your own subagents are NOT peers and are NOT covered.** Spawn them and resume them
+freely; that is your own worker in your own context, costing no one else anything.
 
-🔑 **Why a hook and not a deny rule.** `permissions.deny: ["SendMessage"]` was the old
-mechanism and it was too blunt: Claude Code's docs are explicit that *"denying
-SendMessage also removes messaging to subagents, since the same tool serves both"*, and
-there is no scoped syntax to separate them. It enforced "no peer messaging" by also
-breaking every subagent resume — a seat could spawn a worker and never collect from it.
-The owner ruled 2026-08-19: *"Sub-agents should function normally."*
+⚠️ **The full ruling, with the reasoning and the two settings traps, is in `CLAUDE.md`
+and is auto-loaded into every session.** It used to be restated here in full and the two
+copies are exactly the drift this file warns about elsewhere — so this is the operative
+rule and `CLAUDE.md` is where the argument lives.
 
-**The only thing that legitimately crosses windows is the owner announcing a change of
-GAME STATE** — *game is up* · *game is loading* · *WRAP is initiated* — and **the owner
-sends those himself, to each window.** You do not relay them, and you do not send one
-because you inferred it.
+🔴 **THE QUEUES ARE NO LONGER FILES YOU EDIT — 2026-08-20.**
 
-⛔ **There is no exception for:** urgency · a reversed ruling · "they are about to
-destroy work" · a spec · a contract · a handoff · a finding · a status · a summary ·
-context · reasoning · "here is what I decided". If a peer must know something, it goes
-where they already read:
+The truth is `infrastructure/state/ledger/events.jsonl`, an append-only event log.
+`queue/*.md` is **rendered from it** for the owner to read. Editing one is not a small
+mistake, it is an invisible one: the next `render` overwrites it, the work is gone, and
+nobody is told. A `PreToolUse` hook blocks the commit, and that is the only reason you
+will find out.
 
-| what you have | where it goes |
+⛔ **You do not open `queue/*.md`.** They are 3,474 lines. `rimflow next` answers the
+same question in about 400 tokens, and answers it *correctly* — the file and the command
+call the same function, so they cannot disagree.
+
+### Start of turn — three commands, in this order, and no others
+
+```
+python3 src/RimMandrake/rimflow/cli.py game                 what state is the game in?
+python3 src/RimMandrake/rimflow/cli.py seat ready           announce yourself
+python3 src/RimMandrake/rimflow/cli.py next --seat <ME>     your ONE item
+```
+
+### End of item — always
+
+```
+rimflow close <ID> --sha <commit>        or   rimflow block <ID> --reason "…"
+git commit <explicit paths>   with   Closes: <ID>
+git push
+```
+
+### Where things live now — one field, one place
+
+| what | where |
 |---|---|
-| work for another seat | `infrastructure/state/queue/<SEAT>.md` |
-| something the owner must decide or relay | `infrastructure/state/queue/HUMAN.md` |
-| a correction to doctrine | the file that says otherwise, plus a commit |
-| something genuinely urgent | 🔑 **tell the OWNER, in your own reply.** He is reading you, and he is the one with the authority to interrupt anyone |
+| every scalar — owner, state, row, target, needs, blocked | the **ledger**, via `rimflow` |
+| the prose — `## spec` `## verify` `## criteria` `## notes` | `infrastructure/state/items/<ID>.md` |
+| work for another seat | `rimflow file --for <SEAT> …` — filing for any seat is normal |
+| something the owner must decide | `rimflow file --for OWNER --kind decision` |
 
-⚠️ **There is no broadcast and there never was.** `SendMessage` addresses exactly one
-named target; the `@` typeahead is an affordance in the **owner's own prompt** for
-naming one session, not a fan-out operator, and there is no `@all`.
+⛔ **`items/<ID>.md` carries NO front-matter, no `state:`, no title.** The filename is
+the ID. A field cannot drift out of sync with itself if it exists in exactly one place,
+and drift between two copies of one field is the whole reason this changed.
 
-⛔ **And do not reach for `src/RimMandrake/Utils/broadcast.py`.** It exists, it works,
-and it bypasses the permission deny by writing the socket directly — **because it is the
-OWNER's tool.** Running it to talk to another seat is breaking this ruling by the back
-door, and it is the first loophole anyone will find.
+### Three rules the tool enforces, so you do not have to remember them
 
-✅ **Your own subagents are NOT peers and are NOT covered.** `crossSessionInbound` does
-not touch them. Spawning subagents and resuming them with `SendMessage` to collect their
-findings stays fully authorized and encouraged — that is your own worker in your own
-context, costing no one else anything.
+> **Work moves forward by adding evidence and creating linked descendants. A later
+> failure never reopens earlier work. Record the failing run, file a finding, spawn the
+> corrective item. A passing run afterwards is a NEW run, not an edit of the failed one.**
 
-🔑 **And a peer message could never change configuration anyway** — Claude Code instructs
-a receiving session never to alter permission settings, `CLAUDE.md` or other config
-because another session asked. Only the owner can.
+> **You may file work FOR any seat. You may change only work you OWN.**
 
-```
-infrastructure/state/queue/BUILD.md     DECIDE writes  ->  BUILD reads
-infrastructure/state/queue/CHECK.md     BUILD  writes  ->  CHECK reads
-infrastructure/state/queue/DECIDE.md    CHECK  writes  ->  DECIDE reads
-infrastructure/state/queue/HUMAN.md     anyone writes  ->  REP reads
-```
+> **Version allocation (v1 → v2 → vN-storage) is not a lifecycle move and never erases
+> done-ness.**
 
-### Item format — the contract is structural
+### The refusal contract became a precondition
 
-```
-## <name> <one-line title>
-row:      <the V1.md row number this serves. Without it the board cannot place it.>
-spec:     <exact: files, defNames, values, xpaths. No prose.>
-verify:   <the OFFLINE check BUILD must pass. Command or explicit criterion.>
-criteria: <the LIVE pass/fail CHECK will apply.>
-state:    ready | doing | done | blocked | dropped
-```
+⚠️ **This replaces "BUILD refuses an item with an empty `spec:`".** That refusal was
+real and it was invisible for four days, because a bounce is only as good as whoever
+reads it. Now an item filed without all three of spec/verify/criteria simply **cannot
+enter `ready`** — it sits `proposed`, `rimflow next` never offers it, and the tool names
+the missing section.
 
-🔴 **`<name>` is `THREE_DESCRIPTIVE_WORDS_#` — owner's ruling, 2026-08-20.**
-Never a number. Four seats append to these files with no locking, so a number that is
-free when you read it is taken by the time you write, and the blind write drops a peer's
-item silently.
+✅ **Urgency is not an exemption.** A `--this-deployment` item spawned mid-window with a
+live game waiting still cannot start without its three sections. The pressure to wave
+one through is highest exactly where skipping costs most.
 
-- **Three UPPER_SNAKE words that say what the work is, then a disambiguating number:**
-  `QUEUE_IDS_BECOME_NAMES_1`, `SANDSTORM_WEATHER_TUNING_1`. Three is the target — if it
-  takes six words to say, the extra words go in the title after the ID, not inside it.
-- **The name alone must identify the item**, cold, with no queue file open. No opaque
-  labels, no initials, no hashes standing alone.
-- **Uniqueness comes from the trailing number**, not from randomness. Start at `1` and
-  go up only when those three words are already taken. ⛔ **The old
-  `kebab-case-plus-random-hex` form (`queue-ids-become-names-7f3a2c`) is retired** — the
-  hex was noise the owner had to read past.
-- **Items already filed under a number keep it.** They close under the ID they were
-  filed with. Never rename one. ✅ **But cite them with their title attached** —
-  `B58 (the dead Jawa pawnkind)`, never a bare `B58`.
+### Naming — unchanged, and it still matters
 
-**A blocked item names WHY, after an em-dash:**
+🔴 **`THREE_DESCRIPTIVE_WORDS_#` — owner's ruling, 2026-08-20.** Three UPPER_SNAKE words
+that say what the work is, then a disambiguating number: `SANDSTORM_WEATHER_TUNING_1`.
+The name alone must identify the item **cold, with no file open** — that is the whole
+point, so a seat reading `Closes: SANDSTORM_WEATHER_TUNING_1` in a commit knows what
+happened. Uniqueness comes from the trailing number, not from randomness.
 
-```
-state:    blocked — needs a human answer
-state:    blocked — needs a live game
-state:    blocked — needs a shutdown window
-```
+⛔ The old `kebab-case-plus-random-hex` form is retired; the hex was noise. ⚠️ **Items
+already filed under a legacy ID keep it and are never renamed** — renumbering breaks the
+board's history irrecoverably. ✅ But cite them with their title attached: `B58 (the dead
+Jawa pawnkind)`, never a bare `B58`.
 
-The reason is free text and the board groups by it verbatim. **One phrase is
-reserved: `human`.** Anything whose reason contains it counts into the board's
-ON YOU tile, which is the only number on the board the owner alone can move —
-so do not use the word loosely. A blocked item with no reason renders as
-`unexplained`, which is honest and is meant to look like the omission it is.
+### `blocked` and `needs` are DIFFERENT AXES — do not collapse them
 
-- **BUILD refuses an item with an empty `spec:` or `verify:`.** Move it to `blocked`,
-  write one line saying which field is missing, stop.
-- **CHECK refuses an item with empty `criteria:`.** Same.
-- The refusing agent does not fix it. It bounces and moves to its next item.
-- **v2 work is never queued.** Any deferred idea or content thought goes to
-  `design/V2_DREAMS.md`. **Every seat may append to it directly, at any time** — no
-  permission, no routing through DECIDE, no format. Append at the end and move on.
+| | means | who unsticks it |
+|---|---|---|
+| `rimflow block <ID> --reason "…"` | **something is WRONG.** Someone must act | a person |
+| `--needs bridge` / `game-up` / `deploy` / `harvest` / `owner` | **the WINDOW is closed.** Nothing is wrong | time, or a game state |
+
+⚠️ The old queues wrote both into one prose field, so the board could read neither and
+"waiting for the game" looked identical to "broken" for months. An item whose `needs`
+cannot be met is **not offered and not blocked**.
+
+**One blocked reason is reserved: `human`.** Anything containing it counts into the
+board's ON YOU tile — the only number the owner alone can move. Do not use it loosely.
+
+- **v2 work is never queued.** Any deferred idea goes to `design/V2_DREAMS.md`. **Every
+  seat may append directly, any time** — no permission, no routing, no format.
+
+## 🔴 The 90% context ritual
+
+At **90% of your context window you stop taking new work** and do these four things, in
+this order. ⚠️ Not at 95%, and not "when convenient" — the last 10% is where you stop
+being able to write a good handoff, and a seat that runs out mid-item leaves an item
+`doing` that nobody can pick up.
+
+1. **Write down what you LEARNED**, where the next session will find it —
+   `BUILDABLE.md` for a stack limit, `observed/LIVE.md` for a live fact, the relevant
+   **skill** for a durable technique. ⛔ Not in your reply; that is not a place.
+2. **Close or block the item in hand.** Never leave it `doing`.
+3. **Commit and push.** Uncommitted work at 90% context is work about to be lost.
+4. `rimflow seat idle --reason context-exhausted --note "<one line: where I stopped>"`
+
+🔑 **The note IS the handoff.** A fresh seat reads it out of `rimflow next` and resumes
+without re-deriving anything. One line that says where you stopped beats a paragraph
+about what you were thinking.
+
+## Stop conditions — you keep working until exactly one is true
+
+| condition | what to do |
+|---|---|
+| **No ready work** | `rimflow seat idle --reason no-ready-work` |
+| **Needs the owner, owner present** | file it for OWNER, then **keep working** on something else; idle only if that was the last item |
+| **Needs the owner, owner AFK** | file it and **do not idle** — carry on |
+| **Waiting on a game state** | `rimflow seat idle --reason awaiting-game-state` |
+| **Context ≥ 90%** | the ritual above |
 
 ## Modes
 
@@ -291,5 +298,9 @@ so do not use the word loosely. A blocked item with no reason renders as
 
 - **interactive** — a question goes to `queue/HUMAN.md`, then you **move to your next
   item**. Never block on an answer.
-- **autonomous** — do not queue the question. Choose the answer, proceed, and record
-  it in `queue/HUMAN.md` as `Q: … A(assumed): … item: <ID>` so it can be reviewed.
+- **autonomous** — do not queue the question. Choose the answer, proceed, and record it
+  with `rimflow file --for OWNER --kind decision` so it can be reviewed.
+- **afk** — 🔴 **NO SEAT IDLES WAITING FOR THE OWNER.** Questions accumulate as
+  `kind: decision` items owned by OWNER and you carry on with anything else. The board
+  shows the depth, so the backlog is visible on his return rather than four seats having
+  quietly stopped. He clears it with `rimflow next --seat OWNER`.

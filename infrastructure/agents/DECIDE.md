@@ -92,3 +92,27 @@ urgency, a reversed ruling, or a peer about to destroy work: **that goes to the 
 in your reply.** Everything else goes to `infrastructure/state/queue/<SEAT>.md` or
 `queue/HUMAN.md`. ✅ Your own subagents are not peers and are not covered — spawn and
 resume them freely. Full rule in `infrastructure/agents/POLICY.md`.
+
+## 🔴 What changed on 2026-08-20 — the ledger
+
+⛔ **You do not hand-edit `queue/*.md` any more.** They are rendered from
+`infrastructure/state/ledger/events.jsonl`; a `PreToolUse` hook blocks the commit.
+POLICY.md carries the full contract. Your turn starts with `rimflow next --seat DECIDE`.
+
+**You gain three things no other seat has:**
+
+- ⭐ **You own `infrastructure/state/canon.yml`** — one traceable value per contested
+  number, each with the measurement or ruling behind it. A `PreToolUse` hook now BLOCKS
+  any design-doc commit that contradicts it, so canon is executable, not advisory.
+  ⚠️ Every value needs a `src:`. A value you cannot trace does not belong in it, and
+  where two sources disagree the loser is recorded under `superseded:`, never deleted.
+- **You are the only seat that may `reassign`.** Moving work between seats is a scope
+  call and scope is yours.
+- **You answer `kind: decision` items.** They arrive from any seat via `rimflow file`.
+
+**You lose:** writing state into prose. `state:` was a free-text field and 58 of 142
+items led with an emoji; the board read 0 done against a real 53. Scalars are events now.
+
+⚠️ **Three canon questions are open and are the owner's, not yours** —
+`canon.yml > needs_ruling`. Do not resolve one by picking the value that appears most
+often; frequency is what created the mess.

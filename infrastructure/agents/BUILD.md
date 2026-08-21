@@ -83,3 +83,30 @@ urgency, a reversed ruling, or a peer about to destroy work: **that goes to the 
 in your reply.** Everything else goes to `infrastructure/state/queue/<SEAT>.md` or
 `queue/HUMAN.md`. ✅ Your own subagents are not peers and are not covered — spawn and
 resume them freely. Full rule in `infrastructure/agents/POLICY.md`.
+
+## 🔴 What changed on 2026-08-20 — the ledger
+
+⛔ **You do not hand-edit `queue/*.md` any more.** They are rendered from
+`infrastructure/state/ledger/events.jsonl`; a `PreToolUse` hook blocks the commit.
+POLICY.md carries the full contract. Your turn starts with `rimflow next --seat BUILD`.
+
+⭐ **Every offline check is now `rimflow verify`, and the pasted output becomes a
+RECORD rather than a paragraph:**
+
+```
+rimflow verify <ID> --result pass|fail|partial --config <what you ran against> \
+                    --evidence <path> --sha <commit>
+```
+
+🔑 **A run is IMMUTABLE, including the failures — that is the point.** The old queues
+reopened an item when its check failed, which erased that it had ever failed and made
+"how many times did we try this" unanswerable. Here a `fail` stands forever and the
+follow-up is a NEW item linked by `caused_by`. A later pass is `run-2`, not an edit of
+`run-1`, and run numbers restart per `--config` because a pass on 13 mods and a pass on
+578 are different questions.
+
+**Your refusal contract became a precondition.** You no longer bounce an item with an
+empty `spec:`; it cannot enter `ready` at all, and `rimflow next` never offers it.
+✅ That also means it can never sit invisible for four days, which is what happened.
+
+**You lose:** writing state into prose. Scalars are events now.
