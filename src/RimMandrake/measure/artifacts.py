@@ -177,8 +177,9 @@ def is_big(path: str, threshold: int = 2_000_000) -> bool:
 
 def refusal_text(art: Artifact, tool: str, path: str) -> str:
     """The message a refusal shows. It must teach, and it must name the fix."""
+    article = "an" if art.kind[0] in "aeiou" else "a"
     lines = [
-        f"BLIND SCAN REFUSED — `{tool}` on a {art.kind} ({path})",
+        f"BLIND SCAN REFUSED — `{tool}` on {article} {art.kind} ({path})",
         "",
         f"Why: {art.encoding}.",
     ]

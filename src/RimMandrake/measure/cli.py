@@ -59,7 +59,8 @@ def cmd_build(args) -> int:
     print(
         f"MEASURED {stats.defs_inserted} defs built from {dump} "
         f"({stats.types_seen} types; absent={stats.absent} "
-        f"shadowed={stats.shadowed} partial={stats.partial} "
+        f"shadowed={stats.shadowed} ambiguous={stats.ambiguous} "
+        f"undeclared={stats.undeclared} partial={stats.partial} "
         f"failed={stats.failed}) via dumpdb.build"
     )
     return 0
@@ -108,12 +109,20 @@ def cmd_coverage(args) -> int:
             print(f"... {len(rows) - args.rows} more")
         return 0
     if bad:
+        # ⚠️ Say what each state COSTS, not just that it is not `complete`.
+        # `ambiguous` and `undeclared` still answer correctly; only `shadowed`,
+        # `absent`, `partial` and `failed` refuse. A remedy line that claims
+        # otherwise is itself a confident wrong answer.
+        refusing = sum(v for k, v in summary.items()
+                       if k in ("shadowed", "absent", "partial", "failed"))
         return emit(Unmeasured(
-            reason=f"{bad} of {total} def types are not fully captured ({detail})",
+            reason=f"{refusing} of {total} def types cannot be counted at all "
+                   f"and {bad - refusing} more answer without a cross-check "
+                   f"({detail})",
             artifact="dump coverage",
             instrument="dumpdb.coverage",
-            remedy="`coverage --rows 20` names them; a count for any of them "
-                   "is UNMEASURED, not zero",
+            remedy="`coverage --rows 20` names them with the reason; a count "
+                   "for a shadowed/absent type is UNMEASURED, never zero",
         ))
     return emit(Measured(value=total, instrument="dumpdb.coverage",
                          artifact="def types complete", against=db.against))

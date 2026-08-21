@@ -489,6 +489,31 @@ def t_an_archived_db_whose_dump_is_gone_is_not_stale():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def t_live_a_collision_that_lost_nothing_is_not_refused():
+    """8 names lost defs; 5 collided with an empty loser and lost none.
+
+    Refusing to answer a question that HAS a correct answer is the unearned
+    refusal the analysis warned would get the whole tool routed around. The
+    split is pinned because the 8 are exactly the 824.
+    """
+    db = _live()
+    try:
+        summary = db.coverage_summary()
+        if not summary.get("shadowed") and not summary.get("ambiguous"):
+            raise _Skip("this dump has no collisions — taken with the FIXED dumper")
+        assert summary.get("shadowed") == 8, summary
+        assert summary.get("ambiguous") == 5, summary
+        lost = int(db.prov["defs_lost_to_collision"])
+        assert lost == 824, lost
+        # a shadowed name refuses; an ambiguous one answers and says why
+        assert not db.count("AbilityDef").ok
+        amb = db.count("SymbolDef")
+        assert amb.ok and amb.unwrap() == 9099, amb.line()
+        assert "owning type is unrecorded" in amb.line(), amb.line()
+    finally:
+        db.close()
+
+
 if __name__ == "__main__":
     for k, v in sorted(globals().items()):
         if k.startswith("t_"):

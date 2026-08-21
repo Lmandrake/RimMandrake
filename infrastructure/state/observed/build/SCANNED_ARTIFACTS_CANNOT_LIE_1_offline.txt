@@ -1,0 +1,85 @@
+### SCANNED_ARTIFACTS_CANNOT_LIE_1 — offline evidence, BUILD, 2026-08-21
+
+Owner's ruling: option C + D + E layered, scope = every large scanned artifact, v1.
+Game was UP throughout; nothing here needed it, and no DLL was deployed.
+
+== 1. a question whose answer is already known, through the new path ==
+$ measure count ThingDef
+MEASURED 24904 ThingDef via dumpdb.count @ defs.sqlite mods=578/e0f11692cf69e516 captured=2026-08-21T08:20:20Z
+  exit=0
+
+$ measure count AbilityDef      # the old path said 0; 612 defs were written
+UNMEASURED AbilityDef — coverage=shadowed: the simple name 'AbilityDef' was written 3 times by different def types, counts [612, 18, 0] in write order; each write overwrote defs/AbilityDef.json and the manifest entry, losing 630 defs. The 0 defs here belong to the LAST writer only, and the dump no longer records which type that was. Fixed in d7cf154; that DLL is undeployed. [dumpdb.count] remedy: re-capture with a RimDefDump that includes d7cf154, then rebuild the db
+  exit=2
+
+== 2. absence is distinguishable from ignorance ==
+$ measure count NoSuchDefType
+UNMEASURED NoSuchDefType — no def type named NoSuchDefType in this capture (517 declared) [dumpdb.count] remedy: check the spelling with `types --like`; the dump only holds types the running game had loaded
+  exit=2
+
+$ measure coverage
+UNMEASURED dump coverage — 32 of 536 def types are not fully captured (complete=504 shadowed=13 undeclared=19) [dumpdb.coverage] remedy: `coverage --rows 20` names them; a count for any of them is UNMEASURED, not zero
+  exit=2
+
+$ measure coverage --rows 6
+SymbolDef                                    shadowed  declared=9099 — the simple name 'SymbolDef' was written 2 times by different def types, counts [0, 9099] in write order; each write overwrote defs/SymbolDef.json and the manifest entry, losing 0 defs. The 9099 defs here belong to the LAST writer only, and the dump no longer records which type that was. Fixed in d7cf154; that DLL is undeployed.
+StructureLayoutDef                           shadowed  declared=301 — the simple name 'StructureLayoutDef' was written 2 times by different def types, counts [0, 301] in write order; each write overwrote defs/StructureLayoutDef.json and the manifest entry, losing 0 defs. The 301 defs here belong to the LAST writer only, and the dump no longer records which type that was. Fixed in d7cf154; that DLL is undeployed.
+CharacterDef                                 shadowed  declared=269 — the simple name 'CharacterDef' was written 2 times by different def types, counts [0, 269] in write order; each write overwrote defs/CharacterDef.json and the manifest entry, losing 0 defs. The 269 defs here belong to the LAST writer only, and the dump no longer records which type that was. Fixed in d7cf154; that DLL is undeployed.
+CustomMapDataDef                             shadowed  declared=42 — the simple name 'CustomMapDataDef' was written 2 times by different def types, counts [12, 42] in write order; each write overwrote defs/CustomMapDataDef.json and the manifest entry, losing 12 defs. The 42 defs here belong to the LAST writer only, and the dump no longer records which type that was. Fixed in d7cf154; that DLL is undeployed.
+StructureSetDef                              shadowed  declared=14 — the simple name 'StructureSetDef' was written 2 times by different def types, counts [0, 14] in write order; each write overwrote defs/StructureSetDef.json and the manifest entry, losing 0 defs. The 14 defs here belong to the LAST writer only, and the dump no longer records which type that was. Fixed in d7cf154; that DLL is undeployed.
+ModDef                                       shadowed  declared=6 — the simple name 'ModDef' was written 2 times by different def types, counts [6, 6] in write order; each write overwrote defs/ModDef.json and the manifest entry, losing 6 defs. The 6 defs here belong to the LAST writer only, and the dump no longer records which type that was. Fixed in d7cf154; that DLL is undeployed.
+... 26 more
+
+== 3. an earned refusal vs an unearned one ==
+13 simple names collided. 8 lost defs (824 of them); 5 collided with a loser
+that held ZERO defs, so nothing was lost and the count is right. Refusing
+those 5 would be an unearned refusal, and unearned refusals get the tool
+routed around — which is the failure this whole item is trying to avoid.
+
+$ measure count AbilityDef     # lost 630 -> refuses
+UNMEASURED AbilityDef — coverage=shadowed: the simple name 'AbilityDef' was written 3 times by dif
+$ measure count SymbolDef      # lost 0   -> answers, and says what is unknown
+MEASURED 9099 SymbolDef (name shared with another def type that held 0 defs; the count is right, the owning type is unrecorded) via dumpdb.count @ defs.sqlite mods=578/e0f11692cf69e516 captured=2026-08-21T08:20:20Z
+
+== 4. the format-caused instrument failures, re-run ==
+
+⚠️ HONEST NOTE ON WHAT THIS SECTION PROVES. The hook was added to
+.claude/settings.json during this session, and Claude Code loads PreToolUse
+hooks at SESSION START. So it is wired and correct but NOT live in the session
+that wrote this file — a grep issued here still runs. The hook is exercised by
+feeding it the same commands directly, below, which is what its selftest does
+for all 12 cases. It goes live for every seat on their next session.
+
+$ grep -c Desert '/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon
+  # register #2 — returned 2 where the answer was 3 / 233 / 31
+  -> DENIED: BLIND SCAN REFUSED — `grep` on a savegame (/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/Ash.rws)
+     Use instead: python3 src/RimMandrake/Utils/rimbench/savemap.py, or the bridge for a live game
+
+$ strings -a -el src/RimMandrake/bridgetools/JawaBench.BridgeTools/bin/JawaBench.dll | wc 
+  # register #1 — found 16 of 115 tool names
+  -> DENIED: BLIND SCAN REFUSED — `strings` on a assembly (src/RimMandrake/bridgetools/JawaBench.BridgeTools/bin/JawaBench.dll)
+     Use instead: the bridge's own tool list for JawaBench, or a metadata reader; never `strings` for a census
+
+$ grep -o AbilityDef '/mnt/c/.../DefDump/defs/ThingDef.json' | wc -l
+  # register #3 — the def dump, scanned by byte
+  -> DENIED: BLIND SCAN REFUSED — `grep` on a defdump (/mnt/c/.../DefDump/defs/ThingDef.json)
+     Use instead: python3 src/RimMandrake/measure/cli.py count <DefType>
+
+$ grep -rn weaponTags src/Jawa
+  # ALLOWED — an ordinary source grep must stay untouched
+  -> allowed
+
+$ python3 src/RimMandrake/Utils/rimbench/savemap.py '/x/Ash.rws'
+  # ALLOWED — the real instrument may name the artifact
+  -> allowed
+
+== 5. cost of a count, measured ==
+  chars=110  lines=1  (budget: under 100 tokens)
+
+== 6. selftests ==
+$ python3 src/RimMandrake/Utils/selftest_measure.py
+
+24/24 passed, 0 skipped
+$ python3 .claude/hooks/selftest_block_blind_scan.py
+
+12/12 passed

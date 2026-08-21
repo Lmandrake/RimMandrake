@@ -126,6 +126,11 @@ COVERAGE_ABSENT = "absent"
 COVERAGE_FAILED = "failed"
 COVERAGE_SHADOWED = "shadowed"
 COVERAGE_UNDECLARED = "undeclared"
+#: The name collided but every loser wrote ZERO defs, so nothing was lost. The
+#: COUNT is right; only which TYPE owns it is unrecorded. Kept distinct from
+#: `shadowed` on purpose — refusing to answer a question that has a correct
+#: answer is the unearned refusal the analysis warned would get routed around.
+COVERAGE_AMBIGUOUS = "ambiguous"
 
 
 # --------------------------------------------------------------------------
@@ -255,6 +260,7 @@ class BuildStats:
     partial: int = 0
     failed: int = 0
     undeclared: int = 0
+    ambiguous: int = 0
 
 
 def modlist_fingerprint(mods) -> str:
@@ -393,6 +399,8 @@ def build(dump_dir: str, db_path: str = None, only=None, progress=None) -> Build
             stats.partial += 1
         elif cov == COVERAGE_SHADOWED:
             stats.shadowed += 1
+        elif cov == COVERAGE_AMBIGUOUS:
+            stats.ambiguous += 1
         elif cov == COVERAGE_UNDECLARED:
             stats.undeclared += 1
         con.execute(
@@ -482,6 +490,14 @@ def _coverage(inner_type, stem, declared_order, file_count, loaded):
         )
     if len(written) > 1:
         lost = sum(written[:-1])
+        if lost == 0:
+            return COVERAGE_AMBIGUOUS, (
+                f"the simple name '{inner_type}' was written {len(written)} "
+                f"times, counts {written} in write order, but every earlier "
+                f"writer held 0 defs — so NO def was lost and {loaded} is the "
+                f"right count. What the dump no longer records is which of the "
+                f"{len(written)} types these {loaded} defs belong to."
+            )
         return COVERAGE_SHADOWED, (
             f"the simple name '{inner_type}' was written {len(written)} times "
             f"by different def types, counts {written} in write order; each "
@@ -609,6 +625,13 @@ class DumpDB:
                        "holds types the running game had loaded",
             )
         coverage, reason, declared, loaded = row
+        if coverage == COVERAGE_AMBIGUOUS:
+            return Measured(
+                value=loaded, instrument="dumpdb.count", artifact=def_type,
+                against=self.against,
+                evidence="name shared with another def type that held 0 defs; "
+                         "the count is right, the owning type is unrecorded",
+            )
         if coverage == COVERAGE_UNDECLARED:
             return Measured(
                 value=loaded, instrument="dumpdb.count", artifact=def_type,
