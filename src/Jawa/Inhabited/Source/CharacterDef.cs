@@ -34,16 +34,22 @@ namespace Inhabited
     /// <summary>
     /// A hand-authored person, as data.
     ///
-    /// Two hundred and sixty-nine of these exist as prose across eleven cast
+    /// Two hundred and ninety-four of these exist as prose across twelve cast
     /// files, and this def is what `src/RimMandrake/Utils/cast_to_xml.py` turns
     /// them into. The prose files stay the source of truth: they are what a human
     /// edits, and they are regenerated from, never back into.
     ///
-    /// ⛔ FOUR FIELDS ARE DELIBERATELY EMPTY AND MUST NOT BE GUESSED: xenotype,
-    /// pawnKind, apparel and skills. The prose does not carry them, DECIDE owes
-    /// them, and a guessed xenotype ships a wrong-looking person into a world that
-    /// is built once and frozen. Empty is a question; a guess is a defect nobody
-    /// can see.
+    /// ⛔ TWO FIELDS ARE DELIBERATELY EMPTY AND MUST NOT BE GUESSED: xenotype and
+    /// pawnKind. The prose does not carry them, DECIDE owes them, and a guessed
+    /// xenotype ships a wrong-looking person into a world that is built once and
+    /// frozen. Empty is a question; a guess is a defect nobody can see.
+    ///
+    /// ⚠️ `apparel` and `skills` WERE in that list and are not any more -- owner
+    /// ruling 2026-08-21, INHABITED_DESIGN.md §5.7a. The prose now carries
+    /// `weapon:`, `apparel:`, `item:` and `skills:` lines, optionally, on the
+    /// people whose blockquote earns them. ⛔ Sparse is the specification: 171 of
+    /// the 294 carry none of the four, and an empty list here means the author
+    /// said nothing, not that anybody still owes it.
     ///
     /// ⚠️ `race` is a PROSE STRING -- "Ugnaught", "Chagrian" -- not a def. It is
     /// what the author wrote and it is not resolvable to anything yet. The droid
@@ -109,12 +115,37 @@ namespace Inhabited
         /// </summary>
         public string hook;
 
+        // ---- kit, where the prose earns it (INHABITED_DESIGN.md §5.7a) ----
+        //
+        // All four are OPTIONAL and empty is the common case. `cast_to_xml.py`
+        // writes only what a character's own blockquote says, and 171 of the 294
+        // say nothing. ⛔ Do not backfill any of these to look complete.
+
+        /// <summary>Their one signature weapon, or null. 18 characters have one.</summary>
+        public ThingDef weapon;
+
+        /// <summary>Worn. 15 characters have any.</summary>
+        public List<ThingDef> apparel = new List<ThingDef>();
+
+        /// <summary>
+        /// Carried OR installed, and the prose does not distinguish -- bionics are
+        /// written here too. Which it is, is CharacterApplier's call, not the
+        /// parser's. 27 characters have any.
+        /// </summary>
+        public List<ThingDef> items = new List<ThingDef>();
+
+        /// <summary>
+        /// ⭐ OUTLIERS ONLY, high or low. 8 is average and is never written, so a
+        /// skill absent here means "ordinary", not "unknown". `Shooting 0` on a man
+        /// who spent twenty-nine years carrying the boarding ramp is authored, and
+        /// says more than a 17 would. 101 characters carry a skills line.
+        /// </summary>
+        public List<SkillGain> skills = new List<SkillGain>();
+
         // ---- owed by DECIDE, deliberately empty ----
 
         public XenotypeDef xenotype;
         public PawnKindDef pawnKind;
-        public List<ThingDef> apparel = new List<ThingDef>();
-        public List<SkillGain> skills = new List<SkillGain>();
 
         public override IEnumerable<string> ConfigErrors()
         {

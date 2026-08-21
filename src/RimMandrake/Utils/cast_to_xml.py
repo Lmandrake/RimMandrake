@@ -20,12 +20,36 @@ WHAT THE PROSE CARRIES, AND WHAT IT DOES NOT
 Present on every entry:  name · race (prose, not a def) · gender · age ·
                          traits (REAL TraitDef names, some with a degree) ·
                          childhood · adult · hook
-Absent from ALL of them: xenotype · pawnKind · faction defName · apparel · skills
+Present on SOME entries:  weapon · apparel · item · skills   (INHABITED_DESIGN.md
+                         §5.7a, owner 2026-08-21). Four optional lines under
+                         `traits:`, in the same backticked style.
+Absent from ALL of them: xenotype · pawnKind · faction defName
 
-⛔ Those four are DECIDE's to answer and this tool must never invent them. A
+⛔ Those two are DECIDE's to answer and this tool must never invent them. A
 guessed xenotype ships a wrong-looking person into a world that is built once and
 frozen, and nobody can see the mistake. They are emitted empty, which reads as a
 question; a guess would read as an answer.
+
+THE FOUR OPTIONAL LINES
+-----------------------
+⛔ SPARSE IS THE SPECIFICATION, NOT MISSING DATA. 123 of the 294 characters carry
+at least one; 171 carry none, and that is the authored answer. None of the four is
+required and the parser must never backfill one.
+
+    `weapon: OuterRim_CyclerRifle`      one ThingDef defName
+    `apparel: Apparel_Parka, Apparel_Tuque`   ThingDef defNames, comma separated
+    `item: BionicArm, BionicEye`        carried OR installed -- bionics live here
+    `skills: Shooting 18, Intellectual 2`     `<SkillDef> <0-20>` pairs, NOT defNames
+
+⚠️ `item:` does not distinguish carried from installed, on purpose. Whether a
+BionicArm is in a pocket or in an arm is a CharacterApplier question; this tool
+parses ThingDefs and lets the applier decide.
+
+⚠️ ThingDef names are NOT checked against the def dump here, and that is
+deliberate. The dump on this machine is captured under a reduced mod list --
+`guy762_KelDorMask` is real, is authored, and is absent from it, while it is
+present in the 578-mod live capture. Checking against the smaller of the two
+would fail a correct name. The prose is validated where it is written.
 
 ⚠️ THE DROID FILE IS DIFFERENT ON PURPOSE, by owner ruling: `chassis` stands in
 for race and `service-years` for age. Handled, not normalised away.
@@ -80,6 +104,16 @@ ENTRY_RE = re.compile(
     r"^\*\*(?P<name>[^*]+)\*\*\s*·\s*(?P<race>[^·]+?)\s*·\s*(?P<gender>[^·]+?)\s*·\s*(?P<age>[^·]+?)\s*$"
 )
 TRAITS_RE = re.compile(r"^`traits:\s*(?P<traits>.+?)`\s*$")
+
+# The four optional kit lines. Same anchored backticked shape as `traits:`, and
+# every one of them may be absent -- see THE FOUR OPTIONAL LINES above.
+WEAPON_RE = re.compile(r"^`weapon:\s*(?P<value>.+?)`\s*$")
+APPAREL_RE = re.compile(r"^`apparel:\s*(?P<value>.+?)`\s*$")
+ITEM_RE = re.compile(r"^`item:\s*(?P<value>.+?)`\s*$")
+SKILLS_RE = re.compile(r"^`skills:\s*(?P<value>.+?)`\s*$")
+
+# `Shooting 18`. The number is the level the engine wants, 0-20.
+SKILL_RE = re.compile(r"^(?P<skill>[A-Za-z]+)\s+(?P<level>\d{1,2})$")
 FIELD_RE = re.compile(r"^(?P<key>childhood|adult):\s*(?P<value>.+?)\s*$")
 HOOK_RE = re.compile(r"^>\s?(?P<text>.*)$")
 HEADING_RE = re.compile(r"^##\s+(?P<text>.+?)\s*$")
@@ -124,6 +158,16 @@ def load_traits(dump_dir):
     return out
 
 
+def load_skills(dump_dir):
+    """-> {defName} for the twelve SkillDefs. Vanilla, so any dump has all of them."""
+    path = os.path.join(dump_dir, "SkillDef.json")
+    if not os.path.isfile(path):
+        die("no SkillDef.json at " + path)
+    with open(path, "r", encoding="utf-8") as fh:
+        data = json.load(fh)
+    return {d["defName"] for d in data.get("defs", [])}
+
+
 def norm(s):
     return re.sub(r"[^a-z0-9]", "", (s or "").lower())
 
@@ -145,7 +189,7 @@ def slug(name):
     return s
 
 
-def parse_file(path, faction, traitdb, problems):
+def parse_file(path, faction, traitdb, skilldb, problems):
     """-> list of character dicts."""
     with open(path, "r", encoding="utf-8") as fh:
         lines = fh.read().splitlines()
@@ -177,6 +221,10 @@ def parse_file(path, faction, traitdb, problems):
             "service_years": -1,
             "age_text": "",
             "traits": [],
+            "weapon": "",
+            "apparel": [],
+            "items": [],
+            "skills": [],
             "childhood": "",
             "adult": "",
             "hook": "",
@@ -208,6 +256,31 @@ def parse_file(path, faction, traitdb, problems):
             if t:
                 person["traits"] = parse_traits(
                     t.group("traits"), traitdb, path, i + 1, person["name"], problems)
+                i += 1
+                continue
+
+            w = WEAPON_RE.match(nxt)
+            if w:
+                person["weapon"] = w.group("value").strip()
+                i += 1
+                continue
+
+            a = APPAREL_RE.match(nxt)
+            if a:
+                person["apparel"] = split_list(a.group("value"))
+                i += 1
+                continue
+
+            it = ITEM_RE.match(nxt)
+            if it:
+                person["items"] = split_list(it.group("value"))
+                i += 1
+                continue
+
+            sk = SKILLS_RE.match(nxt)
+            if sk:
+                person["skills"] = parse_skills(
+                    sk.group("value"), skilldb, path, i + 1, person["name"], problems)
                 i += 1
                 continue
 
@@ -267,6 +340,41 @@ def parse_age(raw):
     return years, is_service
 
 
+def split_list(raw):
+    """`A, B, C` -> ["A", "B", "C"]. The comma-split the four optional lines share."""
+    return [p.strip() for p in raw.split(",") if p.strip()]
+
+
+def parse_skills(raw, skilldb, path, lineno, who, problems):
+    """
+    `Shooting 18, Intellectual 2` -> [{"skill": ..., "level": ...}]
+
+    ⚠️ These are `<Name> <0-20>` pairs, NOT defName lists like the other three.
+    ⭐ A LOW number is as authored as a high one -- `Shooting 0` on a man who
+    carried the boarding ramp for twenty-nine years says more than a 17 would --
+    so 0 is a value here, never a missing one.
+    """
+    out = []
+    for piece in split_list(raw):
+        m = SKILL_RE.match(piece)
+        if not m:
+            problems.append("%s:%d  unparseable skill %r on %s (want `Shooting 18`)"
+                            % (os.path.basename(path), lineno, piece, who))
+            continue
+        name = m.group("skill")
+        level = int(m.group("level"))
+        if name not in skilldb:
+            problems.append("%s:%d  SKILL DOES NOT EXIST: %s (on %s)"
+                            % (os.path.basename(path), lineno, name, who))
+            continue
+        if level > 20:
+            problems.append("%s:%d  %s %d is out of range 0-20 (on %s)"
+                            % (os.path.basename(path), lineno, name, level, who))
+            continue
+        out.append({"skill": name, "level": level})
+    return out
+
+
 def parse_traits(raw, traitdb, path, lineno, who, problems):
     out = []
     for piece in [p.strip() for p in raw.split(",") if p.strip()]:
@@ -317,9 +425,13 @@ def emit(people, faction, defnames):
         "    The source of truth is design/Jawa/bridge/INHABITED_CAST_%s.md;" % faction,
         "    edit the prose there and re-run the tool.",
         "",
-        "    xenotype, pawnKind, apparel and skills are deliberately absent: the",
-        "    prose does not carry them and DECIDE owes them. Empty reads as a",
-        "    question. A guess would read as an answer.",
+        "    xenotype and pawnKind are deliberately absent: the prose does not",
+        "    carry them and DECIDE owes them. Empty reads as a question. A guess",
+        "    would read as an answer.",
+        "",
+        "    weapon, apparel, items and skills ARE carried, on the people whose",
+        "    prose earns them (INHABITED_DESIGN.md 5.7a). 171 of the 294 have",
+        "    none of the four and that is the specification, not missing data.",
         "  -->",
         "",
     ]
@@ -369,6 +481,26 @@ def emit(people, faction, defnames):
                     rows.append("        <degreeName>%s</degreeName>" % escape(t["degree_name"]))
                 rows.append("      </li>")
             rows.append("    </traits>")
+        if p["weapon"]:
+            rows.append("    <weapon>%s</weapon>" % escape(p["weapon"]))
+        if p["apparel"]:
+            rows.append("    <apparel>")
+            for a in p["apparel"]:
+                rows.append("      <li>%s</li>" % escape(a))
+            rows.append("    </apparel>")
+        if p["items"]:
+            rows.append("    <items>")
+            for it in p["items"]:
+                rows.append("      <li>%s</li>" % escape(it))
+            rows.append("    </items>")
+        if p["skills"]:
+            rows.append("    <skills>")
+            for sk in p["skills"]:
+                rows.append("      <li>")
+                rows.append("        <skill>%s</skill>" % sk["skill"])
+                rows.append("        <amount>%d</amount>" % sk["level"])
+                rows.append("      </li>")
+            rows.append("    </skills>")
         rows.append("  </Inhabited.CharacterDef>")
         rows.append("")
     rows.append("</Defs>")
@@ -385,7 +517,9 @@ def main():
 
     dump = args.dump or first_existing(_DUMPS, "the def dump")
     traitdb = load_traits(dump)
-    print("traits known: %d, from %s" % (len(traitdb), dump))
+    skilldb = load_skills(dump)
+    print("traits known: %d, skills known: %d, from %s"
+          % (len(traitdb), len(skilldb), dump))
 
     files = sorted(f for f in os.listdir(CAST_DIR)
                    if f.startswith("INHABITED_CAST_") and f.endswith(".md"))
@@ -396,10 +530,12 @@ def main():
     defnames = set()
     total = 0
     written = []
+    kit = {"weapon": 0, "apparel": 0, "item": 0, "skills": 0}
+    kitted = 0
 
     for fn in files:
         faction = fn[len("INHABITED_CAST_"):-len(".md")]
-        people = parse_file(os.path.join(CAST_DIR, fn), faction, traitdb, problems)
+        people = parse_file(os.path.join(CAST_DIR, fn), faction, traitdb, skilldb, problems)
         total += len(people)
         xml = emit(people, faction, defnames)
         out = os.path.join(OUT_DIR, "CastRoster_%s.xml" % faction)
@@ -408,6 +544,13 @@ def main():
             with open(out, "w", encoding="utf-8", newline="\n") as fh:
                 fh.write(xml)
             written.append(out)
+        for p in people:
+            kit["weapon"] += 1 if p["weapon"] else 0
+            kit["apparel"] += 1 if p["apparel"] else 0
+            kit["item"] += 1 if p["items"] else 0
+            kit["skills"] += 1 if p["skills"] else 0
+            if p["weapon"] or p["apparel"] or p["items"] or p["skills"]:
+                kitted += 1
         ntr = sum(len(p["traits"]) for p in people)
         print("  %-12s %3d people, %3d traits  -> %s"
               % (faction, len(people), ntr, os.path.basename(out)))
@@ -417,6 +560,10 @@ def main():
               % m)
 
     print("\n%d characters across %d files" % (total, len(files)))
+    print("optional kit lines: weapon %d, apparel %d, item %d, skills %d"
+          % (kit["weapon"], kit["apparel"], kit["item"], kit["skills"]))
+    print("%d of %d carry at least one; %d carry none, which is the specification"
+          % (kitted, total, total - kitted))
 
     if problems:
         print("\n%d PROBLEM(S):" % len(problems))

@@ -1,0 +1,122 @@
+CAST_PARSER_KIT_FIELDS_1 — offline evidence, BUILD, 2026-08-21
+config: offline-578-defs (DefDump + observed/2026-08-13/dumps/defnames.live.2026-08-15.json)
+
+=== 1. $ python3 src/RimMandrake/Utils/cast_to_xml.py ===
+traits known: 265, skills known: 12, from /mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs
+  BLACKSTAR     25 people,  75 traits  -> CastRoster_BLACKSTAR.xml
+  DEEPWATER     25 people,  75 traits  -> CastRoster_DEEPWATER.xml
+  DROIDS        25 people,  75 traits  -> CastRoster_DROIDS.xml
+  EMPIRE        25 people,  73 traits  -> CastRoster_EMPIRE.xml
+  GEONOSIAN     25 people,  73 traits  -> CastRoster_GEONOSIAN.xml
+  HELIX         25 people,  74 traits  -> CastRoster_HELIX.xml
+  HOMESTEAD     25 people,  73 traits  -> CastRoster_HOMESTEAD.xml
+  HUTT          19 people,  57 traits  -> CastRoster_HUTT.xml
+  JAWA          25 people,  74 traits  -> CastRoster_JAWA.xml
+  JUNKERS       25 people,  74 traits  -> CastRoster_JUNKERS.xml
+  TUSKEN        25 people,  72 traits  -> CastRoster_TUSKEN.xml
+  WILDSTEAM     25 people,  74 traits  -> CastRoster_WILDSTEAM.xml
+  DEEPWATER      0 people          -- NO CAST FILE. Authoring debt, not a bug.
+
+294 characters across 12 files
+optional kit lines: weapon 18, apparel 15, item 27, skills 101
+123 of 294 carry at least one; 171 carry none, which is the specification
+every trait and degree resolved against the dump.
+nothing written. Re-run with --write.
+
+=== 2. counts against the spec table ===
+  weapon 18 / apparel 15 / item 27 / skills 101 / 123 of 294 — ALL FOUR MATCH, see above
+  grep of the prose, independently:
+    `weapon: 18
+    `apparel: 15
+    `item:   27
+    `skills: 101
+
+=== 3. every ThingDef named resolves ===
+  distinct ThingDefs named across weapon/apparel/item: 43
+  resolve in DefDump (reduced mod list, 24904 ThingDefs): 42/43  missing: ['guy762_KelDorMask']
+  resolve in defnames.live.2026-08-15.json (578 mods):  43/43  missing: []
+  => all 43 resolve against the LIVE capture. guy762_KelDorMask is absent from the
+     DefDump only because that dump was taken under a reduced mod list, so the tool
+     deliberately does NOT hard-check ThingDefs against it. No value was mangled.
+
+=== 4. skills validated against SkillDef.json (12 vanilla) ===
+  SkillDefs: Animals, Artistic, Construction, Cooking, Crafting, Intellectual, Medicine, Melee, Mining, Plants, Shooting, Social
+  every skill name in the prose is one of those twelve — the run above reported 0 problems
+
+=== 5. criteria: Shaa Nel, and a character carrying none of the four ===
+  <Inhabited.CharacterDef>
+    <defName>Inhabited_Tusken_ShaaNel</defName>
+    <label>Shaa Nel</label>
+    <faction>TUSKEN</faction>
+    <place>THE SHORT WALK</place>
+    <race>Tusken</race>
+    <age>30</age>
+    <ageText>30</ageText>
+    <genderText>f</genderText>
+    <gender>Female</gender>
+    <childhood>given a cycler at fifteen and told what it was for, which was not people.</childhood>
+    <adult>eight years putting rounds through condensers at six hundred metres. No kills.</adult>
+    <hook>Three districts of moisture farmers know her by the hole — one round, dead centre of the condenser, and the raid arrives forty minutes later — because killing a farmer recovers nothing, and what recovers nothing is waste, and waste is the sin. She has begun to want one anyway. She talks around it at the fire, in the abstract, more often than she used to, and every man in the band has noticed and none of them has said anything.</hook>
+    <traits>
+      <li>
+        <def>ShootingAccuracy</def>
+        <degree>1</degree>
+        <degreeName>CarefulShooter</degreeName>
+      </li>
+      <li>
+        <def>Ascetic</def>
+        <degree>0</degree>
+      </li>
+    </traits>
+    <weapon>OuterRim_CyclerRifle</weapon>
+    <skills>
+      <li>
+        <skill>Shooting</skill>
+        <amount>18</amount>
+      </li>
+    </skills>
+  </Inhabited.CharacterDef>
+
+--- first TUSKEN person carrying none of the four (15 of 25 in this file) ---
+  <Inhabited.CharacterDef>
+    <defName>Inhabited_Tusken_GhossaTalVaar</defName>
+    <label>Ghossa Tal-Vaar</label>
+    <faction>TUSKEN</faction>
+    <place>KHOR VAAL</place>
+    <race>Tusken</race>
+    <age>71</age>
+    <ageText>71</ageText>
+    <genderText>f</genderText>
+    <gender>Female</gender>
+    <childhood>walked the Waterless at eleven with her mother's band and came back owing nothing.</childhood>
+    <adult>sixty years in credit, and has never once spent any of it on herself.</adult>
+    <hook>Both arms from wrist to shoulder are somebody else's arrears — she buys a young raider's debt and cuts his marks into her own skin, and she holds the knife herself, and she is smiling under the wrappings the whole time. She has about four inches of unmarked hide left, she is seventy-one, and she will not close the waiting list.</hook>
+    <traits>
+      <li>
+        <def>Masochist</def>
+        <degree>0</degree>
+      </li>
+      <li>
+        <def>Ascetic</def>
+        <degree>0</degree>
+      </li>
+      <li>
+        <def>GreatMemory</def>
+        <degree>0</degree>
+      </li>
+    </traits>
+  </Inhabited.CharacterDef>
+
+=== 6. C# CharacterDef gained weapon + items; apparel/skills left the 'owed by DECIDE' block ===
+$ dotnet build Inhabited.csproj -c Release
+  Build succeeded.  0 Warning(s)  0 Error(s)
+$ strings src/Jawa/Inhabited/Assemblies/Inhabited.dll | grep -x -E 'weapon|items|apparel|skills'
+  apparel
+  items
+  skills
+  weapon
+
+⚠️ NOT DEPLOYED. RimWorld is running (RimWorldWin64.exe pid 42700), so the OS holds
+   Mods/Inhabited/Assemblies/Inhabited.dll open. The repo DLL is rebuilt and correct;
+   it must be copied at the next shutdown BEFORE the regenerated XML is loaded, or
+   <weapon>/<items> will not bind.
