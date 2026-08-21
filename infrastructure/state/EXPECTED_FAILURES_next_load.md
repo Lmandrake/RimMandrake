@@ -33,6 +33,8 @@ log still exists.
 
 ## INDEX OF LOADS
 
+- **§3 — 2026-08-21 ~13:35 — ⬜ OPEN.** One new assembly (Inhabited + its 12 rosters, deployed together), a free def-dump recapture, and three carried greps.
+
 | block | load event | date | status |
 |---|---|---|---|
 | **§1** | three-assemblies batch, reload of the (now deleted) campaign — quicktest map | started **2026-08-13 17:30:59**, harvested 18:11, game up to ~21:10 | ✅ **CLOSED 2026-08-13** — Results filled, incl. two rows honestly marked NOT COLLECTED |
@@ -181,6 +183,85 @@ first timestamped line `[17:31:34]` at 644, 8,700 lines, mtime 21:10.
   owns `CLOSED.md`. Both are the sole citation for a closed v1 claim.
 
 ---
+
+
+# §3 — LOAD 2026-08-21 ~13:35. **⬜ OPEN — written before the game started.**
+
+Deploy state verified on disk with the game DOWN (`tasklist.exe` = 0 `RimWorldWin64`),
+minutes before launch:
+
+| artifact | state | evidence |
+|---|---|---|
+| `Inhabited.dll` | 🆕 **NEWLY DEPLOYED** | `6d4fd4ff…` both copies; BUILD's hold lifted on its own release condition (`d05836f`) |
+| `Inhabited/Defs/CastRosters/*` (12 files) | 🆕 **NEWLY DEPLOYED** | deployed in the SAME `--apply` as the DLL, which the hold required |
+| `JawaBench.BridgeTools.dll` | unchanged | `600954ed…` both copies — **not** a new assembly this load |
+| `RimDefDump.dll` | unchanged since 10:02 | `8b9e89bb…` both copies, 26,112 bytes |
+| mod list | 578 active, `factioncontrol` ABSENT | parsed from `<activeMods>`, not grepped |
+| `dump_request.txt` | `all` — armed | a clean capture rides this load free |
+
+🔑 **ONE new assembly, not two.** The three-assembly waiver is not being invoked. The 12
+roster XMLs are not independently attributable and are not meant to be — they and the DLL
+are one unit, because the rosters carry four fields the OLD DLL could not parse.
+
+## §3 S1 — the Inhabited assembly and its rosters loaded as one unit
+
+```
+EXPECT PRESENT   [Inhabited] ready:  with a count of 269
+EXPECT ABSENT    any XML parse error naming <weapon>, <items>, <apparel> or <skills>
+BASELINE         the previous log (observed/2026-08-21_Player.log.pre-inhabited-deploy)
+                 predates this deploy entirely — there is no prior reading of this pair
+```
+
+🔴 **THE FALSE PASS TO FEAR, and it is the reason the hold existed.** If the DLL had NOT
+landed and the rosters had, RimWorld logs one XML error per unknown field across **123
+characters** and then loads the defs *fine* — every one of those characters silently
+carrying no weapon, no kit and no skills. **So `[Inhabited] ready: 269` alone is NOT
+sufficient.** A count of 269 is compatible with 123 of them being empty. The
+`<weapon>`-parse-error line must be ABSENT as well, and that absence is the load-bearing
+half of this signature.
+
+⚠️ **And absence alone is not sufficient either** (§2 of the load-round skill): if the
+mod failed to load at all, there are no parse errors *and* no `ready:` line. Both
+readings, or the signature has not fired.
+
+## §3 S2 — the def dump recovers the 824 collided defs
+
+```
+EXPECT PRESENT   [RimDefDump] at the main menu, ~27 s, ~1.2 GB
+EXPECT           manifest.json gains a defTypes index; colliding types written as
+                 <FullName>.json instead of <SimpleName>.json
+BASELINE         OFFICIAL-2026-08-21 capture: 78,057 defs, 536 types, 824 lost to
+                 8 filename collisions
+PREDICT          the new capture is ABOVE 78,057 by roughly 824, and AbilityDef is
+                 non-empty (it read 0 before; vanilla alone has 612)
+```
+
+⚠️ **`refresh.py` will report `REPLACED` afterwards. That is the freeze detector working,
+not a fault.** Only the owner re-freezes:
+`python3 src/RimMandrake/Utils/freeze_dump.py --by owner`
+
+## §3 S3 — the three greps that ride free (`NEXT_LOAD_LOG_HARVEST_1`)
+
+Fixed list, written before the log exists. ⛔ Nothing is added to it at collection time.
+
+```
+B59        Megafauna butcher yields are the intended ones, AND the ~50 patch operations
+           sequenced after the previously-aborted one apply again
+PRELOAD    JawaBench and Inhabited each print their own init line, so a failure is
+           attributable to the right assembly rather than to "the load broke"
+BIOMESKIT  the 148 missing-texture errors are ReGrowth's absent snow variants, NOT
+           damage our repaint caused
+```
+
+## §3 S4 — carry-over, free
+
+```
+EXPECT ABSENT    FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfix
+                 (the mod is out of the list; three saves aborted on it)
+EXPECT           harvest_log.py exits 0, or names what is above baseline
+```
+
+## §3 RESULTS — ⬜ to be filled from the log, not from memory
 
 # §2 — NEXT LOAD: **NEW WORLD GENERATION**. ⬜ OPEN
 
