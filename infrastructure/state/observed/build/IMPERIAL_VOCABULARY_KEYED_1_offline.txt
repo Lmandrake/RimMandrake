@@ -1,0 +1,106 @@
+IMPERIAL_VOCABULARY_KEYED_1 — offline evidence, BUILD, 2026-08-21
+config: offline-578-defs (DefDump modCount 578; ModsConfig active 579)
+
+=== PART 1 — royalFavorLabel + royalFavorIconPath ===
+vessel WRITES both, so both ops are Replaces (not Adds):
+16:    <royalFavorLabel>honor</royalFavorLabel>
+17:    <royalFavorIconPath>UI/Icons/RoyalFavor</royalFavorIconPath>
+
+item verify: grep -rn "royalFavorLabel" src/  -> hit in GalacticEmpire.xml
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:159:          `royalFavorLabel` on the vessel is literally `honor`, and it is the
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:165:          `royalFavorLabel` or `royalTitleTags` === checked against the def dump,
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:188:          <xpath>/Defs/FactionDef[defName="Empire"]/royalFavorLabel</xpath>
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:189:          <value><royalFavorLabel>Imperial favor</royalFavorLabel></value>
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:193:          <xpath>/Defs/FactionDef[defName="Empire"]/royalFavorIconPath</xpath>
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:194:          <value><royalFavorIconPath>World/JawaFactions/GalacticEmpire</royalFavorIconPath></value>
+
+Empire is the ONLY def in the load set with royalFavorLabel/royalTitleTags (def dump, FactionDef.json):
+  FactionDefs scanned: 86  carrying royal vocabulary: 1
+    ('Empire', 'honor', ['EmpireTitle'])
+
+=== validate_patch.py src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml ===
+
+validate_patch.py - 1 XML file(s): 1 <Patch>, 0 <Defs>
+  SCANNED     Patches/: operation shape, guards, value shape, live xpath hit counts
+              Defs/:    XML parse, comment bodies, missing/duplicate defName, ParentName
+                        resolution, Class attributes, texPath existence and case
+  NOT SCANNED field names, field types, value ranges, C# class members, and any node
+              a PatchOperation creates at load time. This is not a def linter.
+
+  info    xpath engine: lxml 6.0.2.0 - full XPath 1.0, the same class of engine RimWorld itself uses, so text(), contains(), starts-with(), not() and boolean predicates are CHECKED.
+  info    load set: 579 active mods, 561 found on disk, target version 1.6 -> 8,681 def files
+  WARN    18 active packageId(s) have no folder under --defs - a broken install or a renamed mod: mandrake.jawaplantgrowth, mandrake.msedroidfix, mandrake.sauridfrillfix, mandrake.jawavoice, mandrake.gravshipastronautfix, mandrake.toolbeltfix, mandrake.blastdoorframeasyncfix, mandrake.researchkiteastfix, mandrake.desertvehiclereskin, mandrake.jawa.doctrine (+8 more)
+
+=== src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml ===
+  info    Operation[1] (PatchOperationConditional): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[1] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[2] (PatchOperationAdd): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[3] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[4] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[5] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[6] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[7] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[8] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[9] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[10] (PatchOperationAdd): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[11] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[12] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[13] (PatchOperationRemove): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[14] (PatchOperationRemove): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[15] (PatchOperationAdd): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[16] > match > operations/li[1] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[16] > match > operations/li[2] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[16] > match > operations/li[3] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+
+OK - 0 errors, 0 warning(s)
+
+=== PART 2 — the Keyed file ===
+src/Jawa/Jawa_Patches/Languages/English/Keyed/ImperialVocabulary.xml
+
+ENUMERATION FIRST, as the spec demands. Royalty English Keyed = 319 keys in 12 files.
+178 of them carry the royal/title/bestow/throne/permit/stellarch vocabulary (re-counted;
+the audit's '~140' was low). EMPIRE_GAP_AUDIT.md s3 darkens 11 titles, 13 permits and
+~25 quests, which makes ~160 of those 178 unreachable. 17 are overridden — the three
+surfaces that survive the darkening. Every override targets a REAL shipped key:
+  keys in our file: 17   duplicates: none
+  OVERRIDES  tokens OK  RoyalTitleTooltipHasTitle
+  OVERRIDES  tokens OK  RoyalTitleTooltipConceited
+  OVERRIDES  tokens OK  RoyalTitleTooltipNonConceited
+  OVERRIDES  tokens OK  CurrentTitle
+  OVERRIDES  tokens OK  RecruitmentResistanceRoyalTitleOffset
+  OVERRIDES  tokens OK  Stat_Thing_MinimumRoyalTitle_Name
+  OVERRIDES  tokens OK  Stat_Thing_MinimumRoyalTitle_Desc
+  OVERRIDES  tokens OK  Stat_Thing_Weapon_MinimumRoyalTitle_Desc
+  OVERRIDES  tokens OK  Stat_Thing_MinimumRoyalTitle_Level_Desc
+  OVERRIDES  tokens OK  Stat_Thing_Apparel_MaxSatisfiedTitle
+  OVERRIDES  tokens OK  Stat_Thing_Apparel_MaxSatisfiedTitle_Desc
+  OVERRIDES  tokens OK  Stat_Thing_Ingestible_MaxSatisfiedTitle
+  OVERRIDES  tokens OK  Stat_Thing_Ingestible_MaxSatisfiedTitle_Desc
+  OVERRIDES  tokens OK  MinimumRoyalTitleInspectString
+  OVERRIDES  tokens OK  RoyalImplantIllegalUseWarning
+  OVERRIDES  tokens OK  LetterLawViolationDetectedLabel
+  OVERRIDES  tokens OK  LetterLawViolationDetectedForbiddenThingUse
+
+  orphan keys (dead weight): NONE
+  placeholder-token parity vs the shipped string: ALL 17 MATCH
+  (a dropped {TOKEN} would render as literal text or blank the line, silently)
+
+=== load order — our Keyed overrides win ===
+mandrake.jawa.patches sits at index 572 of 579 in ModsConfig.xml, after every workshop mod;
+DLCs always load first, so Royalty's keys are already in when ours replace them.
+No other mod loading after us ships a Languages/English/Keyed folder except mandrake.inhabited,
+whose single file defines only its own Inhabited* keys — checked, no collision.
+
+=== NOT VERIFIABLE OFFLINE (needs a running game) ===
+- that the honour icon renders as the Imperial badge rather than Royalty's crown
+- that a captured Imperial's Royalty ITab reads 'holds the Imperial rank of ...'
+- that no unenumerated Royalty string leaks onto a screen the player reaches
+  (the DARK/RENDERS split is argued from where each key is read, not observed)
+-> this item verifies PARTIAL.
+
+=== RESIDUAL, deliberately not done ===
+{TITLE} splices a RoyalTitleDef LABEL (freeholder/yeoman/knight/praetor/baron/count/
+consul/archon/stellarch). No Keyed file can reach a def label. Renaming those 11 into an
+Imperial ladder is a DESIGN call about what an Imperial officer is called, outside this
+item's spec, and is recorded as an open residual in EMPIRE_GAP_AUDIT.md row 8 rather
+than invented here.

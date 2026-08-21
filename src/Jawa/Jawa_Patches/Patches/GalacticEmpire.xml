@@ -152,6 +152,48 @@
           </value>
         </li>
 
+        <!--
+          ================================================================
+          THE IMPERIAL WORD FOR IT === IMPERIAL_VOCABULARY_KEYED_1
+          ================================================================
+          `royalFavorLabel` on the vessel is literally `honor`, and it is the
+          string the engine splices into every reward line, every quest
+          description and the Factions tab toggle. WRITTEN on the vessel
+          (Faction_Empire.xml:16 and :17), so BOTH of these are Replaces.
+
+          🔑 `Empire` is the ONLY def in the whole 578-mod load set that carries
+          `royalFavorLabel` or `royalTitleTags` === checked against the def dump,
+          not assumed. So the Keyed overrides that ship beside this file cannot
+          mistranslate somebody else's faction; there is nobody else.
+
+          "Imperial favor", not "favour": RimWorld's own UI is US English and the
+          label renders inline with shipped strings. The design prose
+          (faction_world_spec.md:334, tidally_locked_world.md:274) writes
+          "imperial favour" and this is that phrase, spelled to match its
+          neighbours.
+
+          ⚠️ The ICON is half the fix and it is easy to skip. Left alone it keeps
+          pointing at `UI/Icons/RoyalFavor`, Royalty's crown, next to the new
+          word. It is re-pointed at the faction badge this mod already ships and
+          already uses for `factionIconPath` ===
+          `Textures/World/JawaFactions/GalacticEmpire.png`, 128x128 RGBA, on disk.
+          No new art, and the badge and the currency read as one faction.
+
+          ⚠️ NOT a rename of what the currency DOES. The player cannot earn it:
+          the Empire is a permanent enemy, so titles, permits and the bestowing
+          quests are dark by design (EMPIRE_GAP_AUDIT.md section 3). This item is
+          about the strings that still render anyway.
+        -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Empire"]/royalFavorLabel</xpath>
+          <value><royalFavorLabel>Imperial favor</royalFavorLabel></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Empire"]/royalFavorIconPath</xpath>
+          <value><royalFavorIconPath>World/JawaFactions/GalacticEmpire</royalFavorIconPath></value>
+        </li>
+
         <li Class="PatchOperationReplace">
           <xpath>/Defs/FactionDef[defName="Empire"]/pawnSingular</xpath>
           <value><pawnSingular>stormtrooper</pawnSingular></value>

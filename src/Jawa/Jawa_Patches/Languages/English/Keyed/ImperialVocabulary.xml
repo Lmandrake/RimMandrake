@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  ============================================================================
+  ImperialVocabulary.xml                 Jawa_Patches · IMPERIAL_VOCABULARY_KEYED_1
+                                         written 2026-08-21
+  ============================================================================
+
+  The Galactic Empire's vessel is Royalty's `Empire`, and Royalty's VOCABULARY
+  came with it. `royalFavorLabel` was literally "honor"; 178 of Royalty's 319
+  English Keyed strings say royal, title, bestowing, throne, permit or stellarch.
+  This file is the second half of the fix === the first half is two ops in
+  `Patches/GalacticEmpire.xml` that re-point `royalFavorLabel` to
+  "Imperial favor" and `royalFavorIconPath` off Royalty's crown.
+
+  🔑 WHY A GLOBAL KEY OVERRIDE IS SAFE HERE, and it would not be in another
+  campaign. `Empire` is the ONLY def in the entire 578-mod load set carrying
+  `royalFavorLabel` or `royalTitleTags` === counted against
+  DefDump/defs/FactionDef.json, not assumed. Every `{FACTION_name}` these
+  strings splice therefore resolves to the Galactic Empire and nobody else's
+  faction can be mistranslated by them. If a mod is ever added that gives a
+  SECOND faction royal titles, re-check this file before shipping.
+
+  🔴 THIS IS A BOUNDED LIST, AND THE BOUND IS THE POINT.
+  `EMPIRE_GAP_AUDIT.md` section 3: the Empire is the player's PERMANENT ENEMY, so
+  all 11 `RoyalTitleDef`s, all 13 `RoyalTitlePermitDef`s and the ~25 bestowing,
+  decree, hospitality and RoyalAscent quests are DARK. The player cannot earn
+  favour, cannot hold a rank, cannot spend a permit, and never meets a bestower.
+  ⛔ So the ~160 strings covering thrones, throne rooms, bestowing ceremonies,
+  heirs, permits, "call royal aid" and the tribute collector are DELIBERATELY
+  NOT TRANSLATED === no screen reaches them, and translating them would be 160
+  strings of maintenance liability that nobody will ever read.
+
+  ✅ WHAT IS LEFT IS THE SHORT LIST BELOW, and every entry is reachable for a
+  reason that is written next to it. Three surfaces survive the darkening:
+
+     1. A captured or downed Imperial who CARRIES a rank of their own.
+        `Empire_Royal_*` pawn kinds still spawn and still raid us (section 3),
+        and the Royalty ITab and the prisoner recruitment breakdown both read
+        their rank straight off the pawn.
+     2. The STAT CARD and inspect line of Imperial gear the player LOOTS.
+        Prestige and cataphract armour, persona weapons and the Royalty
+        implants are craftable or lootable and are explicitly NOT faction-gated
+        (section 3), so their stat cards render for a colony that will never
+        hold a rank.
+     3. The LAW-VIOLATION letter, which is the one place the darkening makes
+        MORE text reachable rather than less: a colony that loots a psychic
+        amplifier and uses it gets caught by Imperial law precisely because it
+        holds no rank.
+
+  ⚠️ WHAT THIS FILE CANNOT REACH, recorded so it is not re-discovered as a bug.
+  `{TITLE}` splices a `RoyalTitleDef`'s own label === freeholder, yeoman,
+  knight, praetor, baron, count, consul, archon, stellarch. Those are DEF
+  LABELS, not Keyed strings, so no Keyed file can touch them and a captured
+  Imperial will still read "has the rank count". Renaming 11 titles into an
+  Imperial ladder is a DESIGN call about what an Imperial officer is called,
+  not a build call, so it is left for a named item rather than invented here.
+
+  VOCABULARY, applied consistently: "title" -> "rank" · "royal title" ->
+  "Imperial rank" · "honor" -> "Imperial favor" (that one lives on the def).
+  ============================================================================
+-->
+<LanguageData>
+
+  <!-- ==================================================================
+       1. A CAPTURED OR DOWNED IMPERIAL WHO HOLDS A RANK
+       Empire_Royal_* kinds keep spawning and keep raiding us. Select one on
+       the map, or take one prisoner, and the Royalty ITab reads its rank off
+       the pawn - no player title, no favour and no quest involved.
+       ================================================================== -->
+  <RoyalTitleTooltipHasTitle>{PAWN_labelShort} holds the Imperial rank of {TITLE}, granted by {FACTION_name}.</RoyalTitleTooltipHasTitle>
+  <RoyalTitleTooltipConceited>{PAWN_labelShort} will demand that this rank's privileges be fully respected.</RoyalTitleTooltipConceited>
+  <RoyalTitleTooltipNonConceited>{PAWN_labelShort} is flexible about this rank's privileges.</RoyalTitleTooltipNonConceited>
+  <CurrentTitle>Current rank</CurrentTitle>
+
+  <!-- The prisoner recruitment-difficulty breakdown, which is where a captured
+       Imperial officer's rank shows up as a number the player argues with. -->
+  <RecruitmentResistanceRoyalTitleOffset>{0} rank</RecruitmentResistanceRoyalTitleOffset>
+
+  <!-- ==================================================================
+       2. THE STAT CARD AND INSPECT LINE OF LOOTED IMPERIAL GEAR
+       Prestige/cataphract armour, persona weapons and the Royalty implants are
+       craftable or lootable and NOT faction-gated, so a colony that will never
+       hold a rank still reads these every time it inspects a corpse's kit.
+       ================================================================== -->
+  <Stat_Thing_MinimumRoyalTitle_Name>Minimum Imperial rank ({FACTION_name})</Stat_Thing_MinimumRoyalTitle_Name>
+  <Stat_Thing_MinimumRoyalTitle_Desc>{FACTION_name} has laws which limit the use of this implant to those holding specific Imperial ranks. Simply having the implant installed is undetectable, but if you use it, there is a chance they will detect the psychic emissions. This will cause diplomatic consequences.</Stat_Thing_MinimumRoyalTitle_Desc>
+  <Stat_Thing_Weapon_MinimumRoyalTitle_Desc>{FACTION_name} has laws which limit the use of this weapon to those holding specific Imperial ranks. Each time you attack with the weapon, there is a chance they will detect the psychic emissions. This will cause diplomatic consequences.</Stat_Thing_Weapon_MinimumRoyalTitle_Desc>
+  <Stat_Thing_MinimumRoyalTitle_Level_Desc>Each upgrade level of this implant requires a specific Imperial rank in {FACTION_name} to be used legally.</Stat_Thing_MinimumRoyalTitle_Level_Desc>
+  <Stat_Thing_Apparel_MaxSatisfiedTitle>Max satisfied rank</Stat_Thing_Apparel_MaxSatisfiedTitle>
+  <Stat_Thing_Apparel_MaxSatisfiedTitle_Desc>Highest Imperial rank whose apparel requirements are satisfied by this.</Stat_Thing_Apparel_MaxSatisfiedTitle_Desc>
+  <Stat_Thing_Ingestible_MaxSatisfiedTitle>Max satisfied rank</Stat_Thing_Ingestible_MaxSatisfiedTitle>
+  <Stat_Thing_Ingestible_MaxSatisfiedTitle_Desc>The highest Imperial rank whose food requirements are satisfied by this.</Stat_Thing_Ingestible_MaxSatisfiedTitle_Desc>
+  <MinimumRoyalTitleInspectString>Minimum Imperial rank ({FACTION_name}): {TITLE}</MinimumRoyalTitleInspectString>
+
+  <!-- The confirmation the player gets for installing or upgrading a LOOTED
+       Imperial implant, which is the only way this colony will ever hold one. -->
+  <RoyalImplantIllegalUseWarning>Under the laws of {FACTION_name}, only those holding the Imperial rank of {TITLE} may lawfully use a {IMPLANT}.\n\n{VIOLATIONTRIGGER}, there is a chance {FACTION_name} will detect its psychic signature. This will lead to diplomatic consequences.</RoyalImplantIllegalUseWarning>
+
+  <!-- ==================================================================
+       3. THE LAW-VIOLATION LETTER
+       ⭐ The darkening makes this MORE reachable, not less: the colony gets
+       caught precisely BECAUSE it holds no Imperial rank. Fires on using a
+       looted psychic amplifier or persona weapon.
+       ================================================================== -->
+  <LetterLawViolationDetectedLabel>Imperial law: {PAWN_labelShort}</LetterLawViolationDetectedLabel>
+  <LetterLawViolationDetectedForbiddenThingUse>{FACTION_name} has detected {PAWN_labelShort}'s illegal use of: {CULPRIT} (detection chance {CHANCE}).\n\nUnder the laws of {FACTION_name}, only those holding the Imperial rank of {TITLE} may use {CULPRIT}.\n\nAs a penalty, your faction relations have fallen by {GOODWILL}.</LetterLawViolationDetectedForbiddenThingUse>
+
+</LanguageData>
