@@ -871,3 +871,4 @@
 {"seat":"BUILD","event":"start","id":"DUMP_PATH_ONE_SEAM_1","ts":"2026-08-21T20:12:13Z"}
 {"seat":"BUILD","event":"verify","id":"DUMP_PATH_ONE_SEAM_1","result":"pass","config":"offline, game down; full selftest sweep","evidence":"src/RimMandrake/Utils/selftest_one_path_seam.py 6/6, plus 7 sibling selftests green","sha":"c098811","ts":"2026-08-21T20:18:15Z"}
 {"seat":"BUILD","event":"close","id":"DUMP_PATH_ONE_SEAM_1","sha":"c098811","ts":"2026-08-21T20:18:15Z"}
+{"seat":"BUILD","event":"file","id":"DUMP_STORAGE_LAYOUT_RULING_1","title":"How dumps are stored: immutable dated captures, or keep one live directory","kind":"decision","target":"v1","needs":"owner","for":"OWNER","ts":"2026-08-21T20:18:34Z"}

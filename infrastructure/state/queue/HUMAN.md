@@ -1024,6 +1024,30 @@ and wanted; they were reached before the world was ready.
 
 ---
 
+## ⏳ THE WORK STOP IS WAITING ON ONE RULING — BUILD, 2026-08-21
+
+`DUMP_STORAGE_LAYOUT_RULING_1` is filed for you and carries the measurements:
+
+    python3 src/RimMandrake/rimflow/cli.py show DUMP_STORAGE_LAYOUT_RULING_1
+
+**The ACCESS half of the restructure is done** and needed nothing from you —
+three readers moved to `defs.sqlite`, 34 path literals across 21 files collapsed
+onto one seam with a test holding them there, and `refresh.py --freeze --by owner`
+now exists. ⇒ **A layout change is now a one-file change.**
+
+**The STORAGE half is yours**, because it decides where the design target lives:
+immutable dated captures with `current`/`official` pointers (BUILD recommends),
+or keep the one live directory. What is broken today: a capture **overwrites** the
+previous one, so `OFFICIAL-2026-08-20` is gone from disk and a freeze cannot
+actually hold; `defs/` accumulates 19 stale files that made 154 dead defNames
+grade as PROVIDED; and the 734 MB derived db sits inside the frozen path.
+
+🔴 **Whatever you pick — do not let anyone touch `DefDumper.cs` before the next
+cold load.** The collision fix is deployed and armed, and that load produces the
+first capture with no missing defs. Restructure on the load AFTER it.
+
+---
+
 ## 🛑 WORK STOP — owner, 2026-08-21 10:54
 
 *"Stopping all work until we restructure the dump files. BUILD is on it."*
