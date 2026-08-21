@@ -46,7 +46,12 @@ class Artifact:
 REGISTRY = (
     Artifact(
         kind="defdump",
-        patterns=("*/DefDump/*", "*/DefDump", "*DefDump/defs/*.json"),
+        # ⚠️ `manifest.json` is deliberately NOT matched. It is ~320 KB of
+        # pretty-printed JSON — grepping it is legitimate and often correct,
+        # and refusing it would be an unearned refusal on the one file in the
+        # dump a human CAN read. (The manifest's trap is `json.load` silently
+        # dropping duplicate defCounts keys, which a grep actually exposes.)
+        patterns=("*/DefDump/defs/*", "*/DefDump/animals.json"),
         encoding=(
             "one JSON object per def type on a SINGLE line, up to 331 MB — "
             "a grep hit is a fragment of a record, never a record, and the "

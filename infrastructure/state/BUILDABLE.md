@@ -314,10 +314,25 @@ identically.** ⇒ *Agreement between sources is not correctness when the source
 failure mode.* The only surviving evidence was `manifest.json`'s **duplicate keys** (532
 `defCounts` entries under 517 names), and `json.load` destroys it silently at parse time.
 
-📋 **A second gap, found the same way and not previously recorded: 19 def types have a
-`defs/<Type>.json` file that `manifest.json` never declares at all.** They are counted and
-readable, but nothing cross-checks them — `coverage` reports them as `undeclared` rather
-than `complete`. `AspirationDef`, `RaceTraitDef`, `SkinDef` and 16 others.
+🪤 **AND THE SECOND LESSON, which is the same lesson: I called a KNOWN, HANDLED thing a
+new defect.** I first reported those 19 types as "a gap nobody had recorded — counted and
+readable, but nothing cross-checks them." **That was wrong, and the correction is the
+useful part.** `defs/` **ACCUMULATES**: RimDefDump writes a file per type that exists now
+and never deletes the file for a type that has stopped existing. Measured 2026-08-21: all
+19 undeclared files are **126–243 HOURS older than the manifest**, while every declared
+file was written within **17.8 seconds** of it. They are stale leftovers from removed
+mods — and `skills/rimworld-modding/scripts/validate_patch.py` has skipped them
+deliberately since 2026-08-13, for a reason it states plainly: *a dead defName in the
+index makes a patch that references a REMOVED def validate clean.* Fail-toward-success.
+
+⚠️ **So `measure` had the bug, not `validate_patch.py`** — it was ingesting 174 dead
+defNames and reporting them `MEASURED`. Fixed: `coverage=orphan`, their defs never enter
+the index, and the db now holds **78,057** defs, which is exactly the manifest's declared
+sum — two numbers reached by wholly different routes landing on one integer.
+
+🔑 **The rule worth carrying: before reporting a finding against another tool, check
+whether that tool already handles it and says why.** A guard that looks like a gap is
+usually a guard.
 
 **1 — `strings` cannot read .NET attribute metadata.** It found 16 `jawa/` names in a DLL
 carrying 115, because .NET keeps attribute strings in metadata blobs a byte scan does not

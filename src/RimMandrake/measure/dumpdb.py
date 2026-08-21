@@ -30,6 +30,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import sqlite3
 import sys
 from dataclasses import dataclass
@@ -125,7 +126,18 @@ COVERAGE_PARTIAL = "partial"
 COVERAGE_ABSENT = "absent"
 COVERAGE_FAILED = "failed"
 COVERAGE_SHADOWED = "shadowed"
-COVERAGE_UNDECLARED = "undeclared"
+#: 🔴 A file in defs/ that THIS capture's manifest never declared — a leftover
+#: from an earlier dump, not part of this load. `defs/` ACCUMULATES: RimDefDump
+#: writes a file per type that exists now and never deletes the file for a type
+#: that has stopped existing. Measured 2026-08-21: all 19 such files were
+#: 126–243 HOURS older than the manifest, while every declared file was written
+#: within 17.8 seconds of it.
+#: ⚠️ Their defs are NOT loaded, and this is the difference between a tool that
+#: is careful and one that fails toward success — a dead defName in the index
+#: makes a patch referencing a REMOVED def validate clean. The rule and its
+#: measurement are `skills/rimworld-modding/scripts/validate_patch.py`'s, from
+#: 2026-08-13; this module was wrong for an hour by ignoring it.
+COVERAGE_ORPHAN = "orphan"
 #: The name collided but every loser wrote ZERO defs, so nothing was lost. The
 #: COUNT is right; only which TYPE owns it is unrecorded. Kept distinct from
 #: `shadowed` on purpose — refusing to answer a question that has a correct
@@ -209,10 +221,14 @@ def iter_defs(path):
 
     # The header keys precede "defs". Decode just enough to read defType,
     # rather than the whole object.
-    key = '"defs":['
-    at = text.find(key)
-    if at < 0:
+    # Tolerate whitespace around the colon and bracket. The shipped dumper
+    # writes compact JSON, but a hand-written or reformatted dump is still a
+    # valid dump, and a reader that only accepts one spelling is brittle in a
+    # way that reads as "the file is corrupt".
+    mm = re.search(r'"defs"\s*:\s*\[', text)
+    if mm is None:
         raise ValueError(f"{os.path.basename(path)} has no defs array")
+    at, end = mm.start(), mm.end()
 
     head_text = text[: at] .rstrip()
     if head_text.endswith(","):
@@ -234,7 +250,7 @@ def iter_defs(path):
     header["fileCount"] = file_count
 
     def gen():
-        idx = at + len(key)
+        idx = end
         n = len(text)
         while True:
             while idx < n and text[idx] in " \t\r\n,":
@@ -259,7 +275,7 @@ class BuildStats:
     shadowed: int = 0
     partial: int = 0
     failed: int = 0
-    undeclared: int = 0
+    orphan: int = 0
     ambiguous: int = 0
 
 
@@ -358,6 +374,19 @@ def build(dump_dir: str, db_path: str = None, only=None, progress=None) -> Build
         file_count = header.get("fileCount")
         seen_types[inner_type] = fname
 
+        # 🔴 Decide BEFORE ingesting. An orphan's defs must never reach the
+        # `defs` table — being able to answer about them is the bug.
+        if inner_type not in declared_order:
+            n = sum(1 for _ in it)          # counted, so the refusal can say how many
+            cov, reason = _coverage(inner_type, stem, declared_order, file_count, n)
+            con.execute(
+                "INSERT OR REPLACE INTO capture VALUES (?,?,?,?,?,?,?,?)",
+                (inner_type, full_name, fname, None, file_count, 0, cov, reason),
+            )
+            stats.types_seen += 1
+            stats.orphan += 1
+            continue
+
         rows, flagrows, tagrows = [], [], []
         n = 0
         for d in it:
@@ -401,8 +430,6 @@ def build(dump_dir: str, db_path: str = None, only=None, progress=None) -> Build
             stats.shadowed += 1
         elif cov == COVERAGE_AMBIGUOUS:
             stats.ambiguous += 1
-        elif cov == COVERAGE_UNDECLARED:
-            stats.undeclared += 1
         con.execute(
             "INSERT OR REPLACE INTO capture VALUES (?,?,?,?,?,?,?,?)",
             (inner_type, full_name, fname, declared.get(inner_type),
@@ -484,9 +511,12 @@ def _coverage(inner_type, stem, declared_order, file_count, loaded):
     """
     written = declared_order.get(inner_type)
     if written is None:
-        return COVERAGE_UNDECLARED, (
-            f"{loaded} defs parsed, but manifest.json never declared this type, "
-            f"so nothing cross-checks the number"
+        return COVERAGE_ORPHAN, (
+            f"defs/{stem}.json exists but this capture's manifest never "
+            f"declared it — a leftover from an earlier dump, since defs/ "
+            f"accumulates and is never pruned. Its {loaded} defs are NOT "
+            f"loaded: a dead defName in the index makes a patch referencing a "
+            f"REMOVED def validate clean."
         )
     if len(written) > 1:
         lost = sum(written[:-1])
@@ -632,11 +662,15 @@ class DumpDB:
                 evidence="name shared with another def type that held 0 defs; "
                          "the count is right, the owning type is unrecorded",
             )
-        if coverage == COVERAGE_UNDECLARED:
-            return Measured(
-                value=loaded, instrument="dumpdb.count", artifact=def_type,
-                against=self.against,
-                evidence="undeclared by the manifest, so nothing cross-checks it",
+
+        if coverage == COVERAGE_ORPHAN:
+            return Unmeasured(
+                reason=f"coverage=orphan: {reason}",
+                artifact=def_type,
+                instrument="dumpdb.count",
+                remedy="this type was NOT in the load — the mod providing it "
+                       "was removed. If you expected it, the mod list is the "
+                       "thing to check, not the dump",
             )
         if coverage in (COVERAGE_ABSENT, COVERAGE_SHADOWED, COVERAGE_FAILED):
             return Unmeasured(

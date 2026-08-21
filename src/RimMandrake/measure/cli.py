@@ -60,7 +60,7 @@ def cmd_build(args) -> int:
         f"MEASURED {stats.defs_inserted} defs built from {dump} "
         f"({stats.types_seen} types; absent={stats.absent} "
         f"shadowed={stats.shadowed} ambiguous={stats.ambiguous} "
-        f"undeclared={stats.undeclared} partial={stats.partial} "
+        f"orphan={stats.orphan} partial={stats.partial} "
         f"failed={stats.failed}) via dumpdb.build"
     )
     return 0
@@ -110,11 +110,12 @@ def cmd_coverage(args) -> int:
         return 0
     if bad:
         # ⚠️ Say what each state COSTS, not just that it is not `complete`.
-        # `ambiguous` and `undeclared` still answer correctly; only `shadowed`,
-        # `absent`, `partial` and `failed` refuse. A remedy line that claims
-        # otherwise is itself a confident wrong answer.
+        # Only `ambiguous` still answers correctly; `shadowed`, `absent`,
+        # `orphan`, `partial` and `failed` all refuse. A remedy line that
+        # claims otherwise is itself a confident wrong answer.
         refusing = sum(v for k, v in summary.items()
-                       if k in ("shadowed", "absent", "partial", "failed"))
+                       if k in ("shadowed", "absent", "orphan", "partial",
+                                "failed"))
         return emit(Unmeasured(
             reason=f"{refusing} of {total} def types cannot be counted at all "
                    f"and {bad - refusing} more answer without a cross-check "

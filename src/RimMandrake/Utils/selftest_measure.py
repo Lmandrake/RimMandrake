@@ -514,6 +514,65 @@ def t_live_a_collision_that_lost_nothing_is_not_refused():
         db.close()
 
 
+def t_an_orphan_def_type_is_refused_and_its_defs_never_load():
+    """🔴 defs/ ACCUMULATES. A file for a type this load did not have is a
+    leftover, and its defNames must never enter the index.
+
+    Measured 2026-08-21 on the live dump: all 19 undeclared files were 126-243
+    HOURS older than the manifest, while every declared file was written within
+    17.8 seconds of it. They are stale, not a gap in the capture — and this
+    module reported them as MEASURED for an hour before that was checked.
+
+    The rule is `skills/rimworld-modding/scripts/validate_patch.py`'s, from
+    2026-08-13: a dead defName in the index makes a patch that references a
+    REMOVED def validate clean. Fail-toward-success.
+    """
+    tmp = tempfile.mkdtemp(prefix="measure_orph_")
+    try:
+        make_dump(tmp)
+        # a type the manifest never declares — a leftover from a removed mod
+        defs_dir = os.path.join(tmp, "defs")
+        with open(os.path.join(defs_dir, "DeadModDef.json"), "w",
+                  encoding="utf-8") as fh:
+            json.dump({"defType": "DeadModDef", "count": 1, "defs": [
+                {"defName": "GhostFromARemovedMod", "defType": "DeadModDef",
+                 "fields": {}}]}, fh)
+        build(tmp)
+        db = DumpDB(os.path.join(tmp, DB_NAME))
+        try:
+            got = db.count("DeadModDef")
+            assert not got.ok, "an orphan type returned a number: %s" % got.line()
+            assert "orphan" in got.line(), got.line()
+            ghost = db.get("GhostFromARemovedMod")
+            assert not ghost.ok, (
+                "a defName from a REMOVED mod is in the index — this is the "
+                "fail-toward-success bug validate_patch.py guards against: %s"
+                % ghost.line())
+            assert db.sql("SELECT COUNT(*) FROM defs "
+                          "WHERE def_type='DeadModDef'")[0][0] == 0
+        finally:
+            db.close()
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def t_live_the_db_holds_exactly_what_the_manifest_DECLARES():
+    """The strongest single check available: two numbers derived by wholly
+    different routes must land on the same integer."""
+    from measure.dumpdb import read_manifest
+    db = _live()
+    try:
+        path = os.path.join(default_dump_dir(), "manifest.json")
+        _, order = read_manifest(path)
+        declared_sum = sum(v[-1] for v in order.values())
+        actual = db.sql("SELECT COUNT(*) FROM defs")[0][0]
+        assert actual == declared_sum, (
+            "the db holds %d defs, the manifest declares %d — orphan files or "
+            "a parse gap" % (actual, declared_sum))
+    finally:
+        db.close()
+
+
 if __name__ == "__main__":
     for k, v in sorted(globals().items()):
         if k.startswith("t_"):
