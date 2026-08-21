@@ -863,3 +863,5 @@
 {"seat":"BUILD","event":"start","id":"REASSIGN_STRANDS_DOING_ITEMS_1","ts":"2026-08-21T20:00:19Z"}
 {"seat":"DECIDE","event":"unblock","id":"the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa","ts":"2026-08-21T20:00:27Z"}
 {"seat":"DECIDE","event":"close","id":"the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa","sha":"9078a15","ts":"2026-08-21T20:00:31Z"}
+{"seat":"BUILD","event":"verify","id":"REASSIGN_STRANDS_DOING_ITEMS_1","result":"pass","config":"offline; rimflow selftest_model.py","evidence":"src/RimMandrake/rimflow/selftest_model.py 41/41 (4 new reassign cases)","sha":"836bbca","ts":"2026-08-21T20:03:06Z"}
+{"seat":"BUILD","event":"close","id":"REASSIGN_STRANDS_DOING_ITEMS_1","sha":"836bbca","ts":"2026-08-21T20:03:06Z"}
