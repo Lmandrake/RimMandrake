@@ -918,3 +918,22 @@
 {"seat":"CHECK","event":"start","id":"NEEDS_RESTAMP_THIRTYEIGHT_1","ts":"2026-08-21T20:22:04Z"}
 {"seat":"CHECK","event":"verify","id":"NEEDS_RESTAMP_THIRTYEIGHT_1","result":"pass","config":"offline-ledger","evidence":"rimflow why W9 returns 'needs bridge, game is DOWN, NOT blocked'; needs now bridge 25 game-up 10 offline 8 owner 5 harvest 4 deploy 1","sha":"0a3e609","ts":"2026-08-21T20:22:04Z"}
 {"seat":"CHECK","event":"close","id":"NEEDS_RESTAMP_THIRTYEIGHT_1","sha":"0a3e609","ts":"2026-08-21T20:22:05Z"}
+{"seat":"CHECK","event":"file","id":"NEXT_LOAD_LOG_HARVEST_1","title":"Everything the next Player.log must be asked, in one pass","kind":"task","target":"v1","needs":"harvest","for":"CHECK","ts":"2026-08-21T20:23:33Z"}
+{"seat":"CHECK","event":"file","id":"QUICKTEST_VISUAL_ROUND_1","title":"One throwaway map answers every spawn-and-look left in the queue","kind":"task","target":"v1","needs":"bridge","for":"CHECK","ts":"2026-08-21T20:23:33Z"}
+{"seat":"CHECK","event":"file","id":"FACTION_LABELS_ONE_LOOK_1","title":"Read every authored faction and world label off one generated world","kind":"task","target":"v1","needs":"game-up","for":"CHECK","ts":"2026-08-21T20:23:33Z"}
+{"seat":"CHECK","event":"claim","id":"NEXT_LOAD_LOG_HARVEST_1","ts":"2026-08-21T20:25:06Z"}
+{"seat":"CHECK","event":"claim","id":"QUICKTEST_VISUAL_ROUND_1","ts":"2026-08-21T20:25:07Z"}
+{"seat":"CHECK","event":"claim","id":"FACTION_LABELS_ONE_LOOK_1","ts":"2026-08-21T20:25:07Z"}
+{"seat":"CHECK","event":"supersede","id":"B59","by":"NEXT_LOAD_LOG_HARVEST_1","reason":"two log greps; the harvest item carries both clauses verbatim","ts":"2026-08-21T20:25:07Z"}
+{"seat":"CHECK","event":"supersede","id":"PRELOAD_PREDICTIONS_578_1","by":"NEXT_LOAD_LOG_HARVEST_1","reason":"assembly init lines read in the same one log pass","ts":"2026-08-21T20:25:08Z"}
+{"seat":"CHECK","event":"supersede","id":"BIOMESKIT_SNOWY_DESERT_TEXTURES_1","by":"NEXT_LOAD_LOG_HARVEST_1","reason":"one grep of the same log; clause carried","ts":"2026-08-21T20:25:08Z"}
+{"seat":"CHECK","event":"supersede","id":"GRIMTERRA_JUVENILES_RENDER_1","by":"QUICKTEST_VISUAL_ROUND_1","reason":"spawn-and-look; one quicktest map serves it","ts":"2026-08-21T20:25:08Z"}
+{"seat":"CHECK","event":"supersede","id":"ASH_STORM_OVER_PYRELANDS_1","by":"QUICKTEST_VISUAL_ROUND_1","reason":"spawn-and-look; one quicktest map serves it","ts":"2026-08-21T20:25:09Z"}
+{"seat":"CHECK","event":"supersede","id":"B41","by":"FACTION_LABELS_ONE_LOOK_1","reason":"label glance; raidsForbidden dropped deliberately, see successor","ts":"2026-08-21T20:25:09Z"}
+{"seat":"CHECK","event":"supersede","id":"B43","by":"FACTION_LABELS_ONE_LOOK_1","reason":"label glance off one generated world","ts":"2026-08-21T20:25:09Z"}
+{"seat":"CHECK","event":"supersede","id":"B52","by":"FACTION_LABELS_ONE_LOOK_1","reason":"settlement presence read off the same generated world","ts":"2026-08-21T20:25:10Z"}
+{"seat":"CHECK","event":"supersede","id":"B63","by":"FACTION_LABELS_ONE_LOOK_1","reason":"world name and scenario read off the same generated world","ts":"2026-08-21T20:25:10Z"}
+{"seat":"CHECK","event":"supersede","id":"ashkarr-map-quality-second-pass-8c31f7","by":"W9","reason":"owner re-scoped it to W9's criteria; clause carried into W9","ts":"2026-08-21T20:25:10Z"}
+{"seat":"CHECK","event":"supersede","id":"btd-jawa-has-no-merge-to-wait-for-8c40b2","by":"B58","reason":"same spawn same look; clause carried into B58","ts":"2026-08-21T20:25:11Z"}
+{"seat":"CHECK","event":"supersede","id":"SCALD_PLUME_SATURATES_RAIN_1","by":"SCALD_RELIEF_RENDER_LOOK_1","reason":"one look at one render; clause carried","ts":"2026-08-21T20:25:11Z"}
+{"seat":"CHECK","event":"supersede","id":"B42","by":"B40","reason":"one provoked-raid round; both clauses carried into B40","ts":"2026-08-21T20:25:11Z"}

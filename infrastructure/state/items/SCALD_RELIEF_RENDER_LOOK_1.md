@@ -32,6 +32,16 @@ while the picture shows compass circles is the number being wrong.*
 ⚠️ **If the relief now reads wrong, do not re-raise the water question** — that is settled
 and was settled for good reasons. Raise the relief.
 
+
+### ⬅ ABSORBED 2026-08-21: `SCALD_PLUME_SATURATES_RAIN_1`
+
+Both are one look at one offline render of the same feature. The rainfall clamp was
+already made and verified; what survived was the look, and it is this look.
+
+**Its clause, carried:** on the render, the deserts and the volcanic ground must NOT read
+as the wettest terrain on the planet. If the Scald plume still saturates its surroundings,
+that is a defect of this item.
+
 ## verify
 both views regenerated with an mtime after `bd5dad0`, and a human has looked at them and
 said so in this item.
