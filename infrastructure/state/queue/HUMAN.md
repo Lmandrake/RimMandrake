@@ -708,3 +708,44 @@ pre-filled by RACE rather than per person is a couple of dozen calls, not 269. A
 `pip install Pillow`, which unblocks the contact sheets and all 12 vehicle facings.
 
 ---
+
+---
+
+## 🔴 Vanilla Psycasts Expanded is not installed, and nothing decided to drop it — BUILD, 2026-08-20
+
+**One line of your mod list, and it is yours to change. I have not touched `ModsConfig.xml`.**
+
+Verified three ways just now:
+
+| | |
+|---|---|
+| `ModsConfig.xml` | **578 activeMods, zero** matching `vpsy` / `psycast` — parsed as XML, not grepped |
+| on disk | **subscribed**, `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2842502659` |
+| dependencies | Royalty, Harmony and VEF Core are **all active**. Nothing forced it out |
+
+⚠️ **No document records a decision to drop it, and two LIVE documents say the opposite:**
+
+- `design/Jawa/mods/required_mods.md:632` — *"✅ KEEP: Vanilla Psycasts Expanded (VPE) … **the sole Force substrate**"*
+- `design/Jawa/mods/forbidden_mods.md:63` — *"VPE is **KEPT installed** as the NPC-only 'THE FORCE' substrate"*
+
+🔑 **This is why 61 of the 287 dangling citations dangle.** They are not 61 stale names —
+they are one absent mod. ⛔ So nothing should be "fixed" in the docs; the defNames are
+correct.
+
+**What it costs if it stays out:** the docs are explicit that VPE is what makes enemy
+psycasters actually cast — it ships the enemy-cast AI and a storyteller that force-spawns
+them, where vanilla enemies never psycast. Without it, THE FORCE has no substrate and the
+Jedi/Sith layer is inert rather than broken, which is the quiet kind of failure.
+
+⚠️ **`force_users_build_spec.md` found this on 2026-08-13** — lines 91, 206, 996 and a
+`[BUILD]` item at 1095 — and it never propagated back into `required_mods.md`, which still
+reads KEEP. That is exactly the `CLAUDE.md` failure: *superseding a doc means writing INTO
+the doc you superseded.*
+
+**Your options, and I am not choosing:**
+1. **Re-activate it** — one line in `ModsConfig.xml`, and the 61 citations resolve. ⚠️ It is a
+   C# mod, so it needs the game down and a load to prove.
+2. **Confirm it is out on purpose** — then `required_mods.md` and `forbidden_mods.md` are
+   wrong and I will correct them, and THE FORCE needs a different substrate or a v2 tag.
+
+I have filed the doc-currency half either way; only the mod list itself is waiting on you.

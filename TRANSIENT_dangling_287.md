@@ -457,3 +457,25 @@ or lost with a mod removed on purpose — three different answers.
 
 - `VRF_SettlementVehicleDef` — design/V2_DREAMS.md:435
 
+
+## Triage of the 287, 2026-08-20 — four agents, by namespace
+
+**287 dangling → 67 real defects, and 61 of those are ONE missing mod-list line.**
+
+| cluster | judged | CUT ON PURPOSE | RENAMED | NOT A DEF | **LOST** | undet. |
+|---|---|---|---|---|---|---|
+| `Force_` · `SE_` | 68 | 55 | 0 | 13 | **0** | 0 |
+| `VPE_` + VE kin | 68 | 3 | 0 | 4 | **61** | 0 |
+| `OuterRim_` · `BTD_` | 62 | 33 | 17 | 7 | **3** | 2 |
+| ours + misc | ~50 | — | 5 | 37 | **3** | 1 |
+
+🔑 **`Jawa_` — our own prefix, 17 names, ZERO lost.** The dump's 90 `Jawa*` defNames are
+exactly what `src/` defines, so nothing was built and then removed. Two are renames the
+design tier never heard about (`Jawa_IonStun` → `JawaIon_Stun`; `Jawa_Head_Plain` →
+`RimMandrake_Jawa_Head_Plain`), two are mod folder names, and the remaining thirteen are
+specs in `aspirational` docs that were never meant to exist yet.
+
+⭐ **Nothing fails at load.** Exactly one dangler is cited from shipped XML —
+`Jawa_GamorreanAxe` in `<weaponTags>` — and a weaponTag is a free string, not a
+cross-reference. The game cannot fail on it.
+
