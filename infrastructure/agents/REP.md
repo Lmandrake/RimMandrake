@@ -31,7 +31,21 @@ seats' skills.
 python3 src/RimMandrake/Utils/status_server.py the page on :8787
 ```
 
-🔴 **Check both before anything else.** `pgrep -f board_loop.sh` · `pgrep -f status_server.py`
+🔴 **Check both before anything else** — and ⛔ **NOT with `pgrep -f`.** Your own shell
+wrapper carries the search string on its command line, so `pgrep -f board_loop.sh`
+matches ITSELF and answers UP while the loop is dead. That false green is what let the
+board sit frozen from 12:22 to 16:20 on 2026-08-21 with a seat watching. Use a bracket
+grep, which cannot match its own line:
+
+```
+ps -eo pid,etime,args | grep -E '[b]oard_loop\.sh'    || echo "board loop DOWN"
+ps -eo pid,etime,args | grep -E '[s]tatus_server\.py' || echo "status server DOWN"
+```
+
+✅ **The board also answers for itself:** `curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8787/`
+— a `200` is proof the server lives, where no `ps` line is. There is no equivalent for the
+publisher, so check `queue/*.md` mtimes: older than ~2 min means the loop is not running
+whatever any process list says.
 
 - **The publisher is BOUNDED (8 h) and dies silently.** `queue/*.md` are generated and
   ONLY `render.py --overwrite-queues` writes them — when the loop lapses, every seat
