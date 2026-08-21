@@ -1,0 +1,95 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    DesertVehicleReskin - Harmony widening of Alpha Vehicles - Neolithic's fuel.
+
+    net48, NOT net472 as the other mods here use. Vehicle Framework's own
+    Vehicles.dll and SmashTools.dll are built against .NET Framework 4.8, and
+    MSBuild refuses to resolve a reference built against a higher profile than
+    the one being targeted - net472 fails the build outright with MSB3274. There
+    is no Visual Studio or targeting pack on this machine, so
+    Microsoft.NETFramework.ReferenceAssemblies supplies the reference assemblies
+    from NuGet instead.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\DesertVehicleReskin\Source\Fuel\DesertVehicleReskin.csproj -c Release
+
+    Output lands in ../../Assemblies/, which is where RimWorld looks.
+
+    Every reference is Private=false. Nothing but our own DLL may land next to
+    the mod: shipping a copy of Vehicles.dll or 0Harmony.dll would give the game
+    two of each and Harmony in particular must come from brrainz.harmony.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>DesertVehicleReskin</AssemblyName>
+    <RootNamespace>DesertVehicleReskin</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <!-- Vehicle Framework (SmashPhil). Alpha Vehicles - Neolithic depends on it. -->
+  <PropertyGroup Condition="'$(VehiclesAssemblies)' == ''">
+    <VehiclesAssemblies>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3014915404\1.6\Assemblies</VehiclesAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Vehicles">
+      <HintPath>$(VehiclesAssemblies)\Vehicles.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SmashTools">
+      <HintPath>$(VehiclesAssemblies)\SmashTools.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UpdateLogTool">
+      <HintPath>$(VehiclesAssemblies)\UpdateLogTool.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="..\**\*.cs" />
+    <Compile Include="*.cs" />
+  </ItemGroup>
+
+</Project>

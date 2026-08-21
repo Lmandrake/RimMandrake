@@ -8,7 +8,9 @@
   </supportedVersions>
   <description>Redraws the draught animals in Alpha Vehicles - Neolithic so its carts read as desert, not as medieval Europe.
 
-Texture overrides only. No defs are touched, no patches are applied, and Alpha Vehicles - Neolithic is not altered — every file here sits at the exact path the donor's own ThingDef already asks for, so the vehicles, their stats and their research are entirely the donor's.
+Mostly texture overrides: every art file here sits at the exact path the donor's own ThingDef already asks for, so the vehicles, their stats and their research stay entirely the donor's, and Alpha Vehicles - Neolithic itself is never edited.
+
+Two things go beyond art. A pair of XML PatchOperations retint and rename the dog sled as an eopie sled, and a small Harmony assembly widens what the draught vehicles will burn: the donor gives each cart exactly one fuel ThingDef (Hay for the chariots, ox cart and covered carriage; Kibble for the sled) because its fuel comp holds a single ThingDef and no ThingFilter, so there is no XML route to widen it. The patch makes any nutrition-giving vegetable-type food count — anything whose foodType carries Plant, VegetableOrFruit or Meal, excluding meat, animal products and drugs — plus, always, whatever the vehicle already declared, so nothing that fuels a cart today stops fuelling it. No defName is listed anywhere, so modded crops qualify on their own.
 
 WHY THE ANIMAL AND NOT THE CART
 
