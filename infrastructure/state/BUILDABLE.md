@@ -230,3 +230,14 @@ it does not belong here.
   `VegetableOrFruit` bit) · `Kibble = 2048` (standalone, **not** part-plant).
   ⇒ A `Plant | VegetableOrFruit | Meal` test admits `RawFungus` for free, and silently
   REJECTS `RawRice` and `Kibble`.
+- 🪤 **`jawa/texture_audit` reports a DEAD texPath for any def whose art is resolved by a
+  MOD'S OWN `graphicClass`, and those are false positives.** Measured 2026-08-21 against
+  the 01:23 first-light run: of 53 "dead" paths, **39 belong to Tribal Furniture**
+  (`xercaine.tribal.furniture`), whose 13 flagged defs all declare
+  `<graphicClass>TribalFurniture.Graphic_Appearances_Multi</graphicClass>` out of its own
+  `TribalFurniture.dll`. Its `texPath` is a STEM the class expands with a stuff infix, so
+  the file on disk is `XERTribalBed_Bricks_north.png`, not `XERTribalBed_north.png` — all
+  138 PNGs are present and the furniture renders. The audit assumes vanilla
+  `Graphic_Multi`/`Graphic_Single` suffixing and cannot see a custom resolver.
+  ⇒ **Before acting on any texture_audit row, read that def's `graphicClass`.** A row
+  whose class is not a `Verse.Graphic_*` is UNJUDGED, not broken.
