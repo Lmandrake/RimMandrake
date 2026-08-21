@@ -197,6 +197,7 @@ python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>    dry run; --a
 python3 src/RimMandrake/Utils/refresh.py           rebuild the offline def dump
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./src/RimMandrake/Utils/show.sh <path>             open it in Explorer
+./game up|down|loading|deploying|going-down   🔴 OWNER ONLY - announce + stamp
 python3 src/RimMandrake/Utils/broadcast.py --list  🔴 OWNER ONLY - see below
 ```
 
@@ -206,6 +207,8 @@ not gate. That is the point, and it is also why **an agent running it is breakin
 no-messaging ruling by the back door.** It exists so the owner can announce a change of
 GAME STATE (*game is up* · *game is loading* · *WRAP is initiated*) in one command.
 ```
+./game up                      # same thing, one word - announces AND stamps the ledger
+./game                         # no argument: what the board thinks vs what is running
 python3 src/RimMandrake/Utils/broadcast.py "Game is up"
 python3 src/RimMandrake/Utils/broadcast.py --to CHECK,BUILD "Game is loading"
 ```
