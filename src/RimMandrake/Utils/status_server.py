@@ -416,6 +416,12 @@ def waiting(m):
     """
     cat = m.get("catalog") or []
     lanes = {k: 0 for _, k, _ in WAITING_ON}
+    # 🔴 OWNER, 2026-08-21: "only the agents actively waiting should be in those
+    # messages". A lane reading 4 tells him something is stuck; a lane reading
+    # "BUILD (3), DECIDE (1)" tells him WHO to go and unstick, which is the whole
+    # difference between a dashboard and a to-do list.
+    by_seat = {k: {} for _, k, _ in WAITING_ON}
+    blocked_by_seat, unset_by_seat = {}, {}
     per_seat, blocked_total, open_total, unknown = {}, 0, 0, 0
     for it in cat:
         if it.get("state") not in OPEN_STATES:
@@ -429,20 +435,31 @@ def waiting(m):
         if it.get("blocked"):
             blocked_total += 1
             d["blocked"] += 1
+            blocked_by_seat[seat] = blocked_by_seat.get(seat, 0) + 1
             continue                 # blocked is not a window; do not double-count
         k = it.get("needs")
         if k in lanes:
             lanes[k] += 1
+            by_seat[k][seat] = by_seat[k].get(seat, 0) + 1
         else:
             unknown += 1
-    out = [{"label": lab, "key": k, "hint": hint, "n": lanes[k]}
+            unset_by_seat[seat] = unset_by_seat.get(seat, 0) + 1
+
+    def seats_of(d):
+        """Busiest first, then alphabetical — the seat to chase is named first."""
+        return [{"seat": k, "n": v}
+                for k, v in sorted(d.items(), key=lambda kv: (-kv[1], kv[0]))]
+
+    out = [{"label": lab, "key": k, "hint": hint, "n": lanes[k],
+            "seats": seats_of(by_seat[k])}
            for lab, k, hint in WAITING_ON]
     if unknown:
         out.append({"label": "UNSET", "key": None,
                     "hint": "no `needs` recorded — the filer left the default",
-                    "n": unknown})
+                    "n": unknown, "seats": seats_of(unset_by_seat)})
     return {"lanes": out, "open_total": open_total,
-            "blocked_total": blocked_total, "per_seat": per_seat}
+            "blocked_total": blocked_total, "per_seat": per_seat,
+            "blocked_seats": seats_of(blocked_by_seat)}
 
 
 def snapshot():

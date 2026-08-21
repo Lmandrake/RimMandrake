@@ -558,12 +558,40 @@ function drawLeft(d){
 
   const lanes=w.lanes.slice();
   lanes.push({label:"BLOCKED",key:"__b",n:w.blocked_total,
+              seats:w.blocked_seats||[],
               hint:"something is wrong and a person must act"});
+
+  /* 🔴 Owner, 2026-08-21: name the seats actually waiting, not just a count.
+     A lane reading 4 says something is stuck; "CHECK (3), BUILD (1)" says who to
+     go and unstick. Busiest seat first — that is the one to chase. */
+  const names=ss=>(ss||[]).map(x=>x.n>1?`${x.seat} (${x.n})`:x.seat).join(", ");
+  function tip(l){
+    if(!l.n) return `nothing is waiting on this — ${l.hint||""}`;
+    const who=names(l.seats);
+    switch(l.key){
+      case "__b":      return `BLOCKED: ${who} — someone must act, this will not clear itself`;
+      case "offline":  return `Runnable right now: ${who}`;
+      case "bridge":   return `Waiting on LIVE BRIDGE: ${who} — give the bridge to ${(l.seats[0]||{}).seat||"them"}`;
+      case "owner": {
+        /* ⚠️ An item whose `needs` is `owner` is usually OWNED by OWNER, so naming
+           the seat would just say "OWNER" back at him. Name the seats stuck on him
+           when there are any, and call the rest what they are: his own queue. */
+        const others=(l.seats||[]).filter(x=>x.seat!=="OWNER");
+        const mine=(l.seats||[]).find(x=>x.seat==="OWNER");
+        const parts=[];
+        if(others.length) parts.push(`${names(others)}: waiting on you`);
+        if(mine)          parts.push(`${mine.n} in your own queue`);
+        return parts.join(" · ") || `Waiting on you: ${who}`;
+      }
+      default:         return `Waiting on ${l.label}: ${who} — ${l.hint||""}`;
+    }
+  }
+
   document.getElementById("lanes").innerHTML=lanes.map(l=>{
     const cls=[ "lane",
                 l.key==="__b" ? "bad" : (LANE_CLASS[l.key]||""),
                 l.n ? "hot" : "zero" ].join(" ");
-    return `<div class="${cls}" title="${esc(l.hint||"")}">`
+    return `<div class="${cls}" title="${esc(tip(l))}">`
          + `<div class="n">${l.n}</div><div class="l">${esc(l.label)}</div></div>`;
   }).join("");
 
