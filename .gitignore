@@ -211,3 +211,8 @@ skills/skills-workspace/iteration-*/
 
 # modlist_swap.py archives one PRESWAP copy per swap - pure churn, and FULL.LATEST is the one that matters
 infrastructure/state/modlists/ModsConfig.PRESWAP.*.xml
+
+# rimflow render output: board.json is rebuilt on a timer and queue_preview/ on every
+# render, both from infrastructure/state/ledger/events.jsonl alone. Pure churn in a
+# shared worktree. Delete the whole directory and one `render` rebuilds it.
+infrastructure/state/derived/
