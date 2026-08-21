@@ -1096,21 +1096,37 @@ map or the owner's most recent ruling, and records the loser in a `superseded:` 
 
 - **C1** also fixes the self-contradiction at `the_one_map.md:100` vs `:130`, and adds a pointer back
   from `ASHKARR_WORLD_DEFINITION.md` to `the_one_map.md` (the link is one-way today).
-- **C2** — 🔴 **CORRECTED 2026-08-20 by measurement. Read this before touching the number.**
-  `hydrology_and_fire_ecology.md:529` concludes *"the active planet curve already agrees"* and cites
-  **+14 °C at the terminator** as the mod's figure. ⛔ **Do NOT "fix" +14 to −37.** +14 is OUR
-  number and it is correct: `src/RimMandrake/Utils/ashkarr_paint.py:796` carries the owner's ruled
-  endpoints `[70, 58, 38, 14, −22, −58, −80]`, the painter interpolates them, and the realised
-  median at arc 90 is **+13.0 °C** (the 5.5 °C/km lapse accounts for the difference).
-  **The defect is the ATTRIBUTION, not the value** — the doc credits +14 to
-  `Alien Worlds - Tidally Locked`, whose own curve is −37 °C at the terminator, which is what
-  `ASHKARR_WORLD_DEFINITION.md:76-78` correctly frames as *the mod's* curve against *ours*. So the
-  sentence to fix is "the active planet curve already agrees", and with it the conclusion it
-  carries — *"which is why this is a ruling about biomes rather than about the planet"* — because
-  if the mod recomputes temperature at runtime it overrides our painted tiles and the planet needs
-  forcing too. ⚠️ Whether it does is a LIVE question and belongs to CHECK; do not assert either way.
-  Also correct `tidally_locked_world.md:153` *"LATITUDE IS THE AXIS"* — the axis is **arc**,
-  correlation −0.98 (`ashkarr_paint.py:13`).
+- **C2** — 🔴 **REWRITTEN 2026-08-20 from the mod's own C# source. Read all of this first.**
+  The audit's verdict was right and its diagnosis was not. `canon.yml > temperature_curves`
+  carries the full trace; the short form:
+
+  `Alien Worlds - Tidally Locked` ships `<avgTempByLatitudeCurve>` = `0.0,70 · 0.1,65 · 0.5,14 ·
+  1.0,−37 · 1.3,−70 · 2.0,−80`. **The name says latitude; the code does not.**
+  `Source/PlanetTypeDef.cs` evaluates it at `Acos(cos lon · cos lat) · Rad2Deg / 90` — the
+  great-circle **arc** from the substellar point, over 90. So **x = 1.0 is the terminator at
+  −37 °C**, and **x = 0.5 is arc 45°, deep on the dayside, at +14 °C.**
+
+  🔑 **Our design tier read x = 0.5 as the terminator, and everything downstream is off by one
+  point on the same curve.** Three defects in `tidally_locked_world.md` and one inherited:
+
+  | file:line | says | is |
+  |---|---|---|
+  | `tidally_locked_world.md:162` | `0.5 → +14 °C — this is the terminator` | arc 45°, dayside |
+  | `tidally_locked_world.md:351-352` | "the axis: **latitude**, with 0.5 = +14 = the terminator" | the axis is **arc/90**, and 0.5 is not the terminator |
+  | `tidally_locked_world.md:453-454` | "a nightside running −37 at latitude 1.0" | x=1.0 **is** the terminator |
+  | `hydrology_and_fire_ecology.md:528-531` | "the active planet curve already agrees" | it does not agree — see below |
+
+  ✅ **But the conclusion that only biomes need forcing SURVIVES, for a different reason, and you
+  must write the new reason in rather than deleting the ruling.** The mod is **worldgen-only**:
+  `FieldPatcher.cs` patches the curve into `WorldGenStep_Terrain.BaseTemperatureAtLatitude` and the
+  transpiler targets `WorldGenStep_Terrain.GenerateTileFor`. Nothing recomputes tile temperature at
+  runtime. Our planet is hand-painted and ships frozen, so **the mod's −37 °C terminator can never
+  reach it.** The curves disagree; it does not matter. ⛔ Do NOT change our +14 °C.
+
+  ✅ `ASHKARR_WORLD_DEFINITION.md:74-83` already had this right and is the table to cite.
+  Correct `tidally_locked_world.md:153` *"LATITUDE IS THE AXIS"* — the axis is **arc**, for the
+  mod as well as for our painted world (correlation −0.98, `ashkarr_paint.py:13`).
+
 - **C3** — `faction_world_spec.md` §1 states *"water increases with latitude"* **above** its
   superseded banner, so it survives every harvest. Fix it. Add the missing forward pointer from
   `faction_stage3_buildable_spec.md` to `FACTION_SPEC.md`.

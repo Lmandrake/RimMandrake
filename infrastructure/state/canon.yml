@@ -203,31 +203,78 @@ settlements:
     Jawa_AscendantHelix: 3
 
 # ===========================================================================
-# THE TEMPERATURE ATTRIBUTION — the 51 °C that is not a disagreement
+# THE TEMPERATURE CURVES — settled 2026-08-20 from the mod's own C# source
 # ---------------------------------------------------------------------------
-# 🔑 +14 °C and −37 °C are BOTH correct, about DIFFERENT THINGS, and the audit
-# that called them "51 °C apart" was reading a comparison table as a conflict.
-# `design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md:76-78` states it properly:
+# 🔴 THE ROOT ERROR IS A MISREAD AXIS, AND IT IS OFF BY EXACTLY ONE CURVE POINT.
 #
-#     |                                | arc 0 | arc 90 (terminator) | arc 180 |
-#     | the mod's AvgTempByLatitudeCurve| +70  |        −37          |   −80   |
-#     | §2, ours                        | +70  |        +14          |   −80   |
+# `Alien Worlds - Tidally Locked` (workshop 3631364335, `7f.alienworlds.tidallylocked`)
+# ships `Defs/PlanetTypes.xml` with `<avgTempByLatitudeCurve>`:
 #
-# Same endpoints, different middle. ⛔ Do not "reconcile" these to one number.
-# ⚠️ The live defect is an ATTRIBUTION, not a value:
-# `hydrology_and_fire_ecology.md:529` credits OUR +14 to the MOD, then concludes
-# "the active planet curve already agrees" and rules that only biomes need forcing.
-# The premise is false. Whether the conclusion also fails depends on something no
-# document has established — whether the mod recomputes tile temperature at RUNTIME
-# (overriding our painted values) or only at worldgen (where it cannot reach us).
-# That is a live-game question and belongs to CHECK. See needs_ruling.
+#       0.0, 70    0.1, 65    0.5, 14    1.0, -37    1.3, -70    2.0, -80
+#
+# The name says LATITUDE. The code does not. `Source/PlanetTypeDef.cs`,
+# `WorldGenTemperaturesPatch.BaseTemperatureAtLongLat`:
+#
+#       var effectiveLat = Mathf.Acos(Mathf.Cos(pos.x*Deg2Rad) * Mathf.Cos(pos.y*Deg2Rad))
+#                          * Mathf.Rad2Deg;
+#       return ...AvgTempByLatitudeCurve.Evaluate(effectiveLat / 90f);
+#
+# `effectiveLat` is the GREAT-CIRCLE ARC from the substellar point — the author's own
+# comment on the line is "// damn you non-euclidean geometry." The curve is evaluated
+# at arc ÷ 90. So:
+#
+#       x 0.0 = arc   0° substellar  +70      x 1.0 = arc  90° TERMINATOR   -37
+#       x 0.5 = arc  45° dayside     +14      x 1.3 = arc 117° nightside    -70
+#                                             x 2.0 = arc 180° antistellar  -80
+#
+# ⚠️ Corroboration that the axis is arc and not latitude: vanilla's own
+# `WorldGenStep_Terrain.AvgTempByLatitudeCurve` runs x∈[0,1] because latitude stops at
+# the pole, and its pole value is likewise −37. This mod extends the curve to x=2.0,
+# which is only explicable if x reaches 180° — i.e. arc, not latitude.
+#
+# 🔑 CONSEQUENCE ONE: our design tier read x=0.5 as the terminator and inherited +14.
+# It is arc 45°, deep on the dayside. Every doc that labels +14 "the terminator" or
+# −37 "the nightside" is off by one point on the same curve.
+#
+# 🔑 CONSEQUENCE TWO, and it is the one that saves the campaign: THE MOD IS
+# WORLDGEN-ONLY. `FieldPatcher.cs` patches the curve into exactly one method,
+# `WorldGenStep_Terrain.BaseTemperatureAtLatitude`, and the tidally-locked transpiler
+# targets `WorldGenStep_Terrain.GenerateTileFor`. Nothing recomputes per-tile
+# temperature at runtime. ✅ Our painted +14 °C terminator survives in the frozen save,
+# because the mod can only act where a world is being GENERATED and ours never is.
+# (Two runtime patches exist and neither touches base tile temperature:
+# `SeasonalTempVariationCurve` → `GenTemperature.SeasonalShiftAmplitudeAt`, seasonal
+# amplitude only; and `OutdoorTemperaturePatch`, which forces `includeDailyVariations`
+# false. ⚠️ Whether the seasonal one reads arc or plain latitude is UNDETERMINED.)
+#
+# ⛔ So do NOT "reconcile" +14 and −37 to one number, and do NOT change our curve.
+# They are two curves for two different planets — one generated, one painted — and
+# only the painted one ships.
 # ===========================================================================
-temperature_attribution:
+temperature_curves:
   ours_terminator_c: 14
+  ours_src: "ashkarr_paint.py:796, owner's ruled endpoints; painted into the frozen save."
   mod_terminator_c: -37
-  mod_curve_name: AvgTempByLatitudeCurve
-  mod: "Alien Worlds - Tidally Locked"
-  src: "design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md:74-83"
+  mod_at_arc_45_c: 14
+  mod_curve_name: avgTempByLatitudeCurve
+  mod_curve_axis: "arc from the substellar point, divided by 90 — NOT latitude"
+  mod: "Alien Worlds - Tidally Locked (7f.alienworlds.tidallylocked, workshop 3631364335)"
+  mod_points: {0.0: 70, 0.1: 65, 0.5: 14, 1.0: -37, 1.3: -70, 2.0: -80}
+  mod_applies_at: worldgen
+  mod_overrides_runtime: false
+  mod_src: >
+    Defs/PlanetTypes.xml def `TidallyLocked`; Source/PlanetTypeDef.cs
+    `WorldGenTemperaturesPatch.BaseTemperatureAtLongLat`; framework
+    7f.alienworlds Source/FieldPatcher.cs. Both mods active in ModsConfig.
+    Read from source 2026-08-20 — CONFIRMED, not inferred.
+  known_defects:
+    - "design/Jawa/worldbuilding/tidally_locked_world.md:162 — labels x=0.5 (+14) 'this is the terminator'. It is arc 45°."
+    - "design/Jawa/worldbuilding/tidally_locked_world.md:351-352 — 'the axis: latitude, with 0.5 = +14 = the terminator'. Wrong on both counts."
+    - "design/Jawa/worldbuilding/tidally_locked_world.md:453-454 — calls x=1.0 (-37) 'nightside'. x=1.0 IS the terminator."
+    - "design/Jawa/worldbuilding/hydrology_and_fire_ecology.md:528-531 — inherits all of it and concludes 'the active planet curve already agrees'. It does not agree; it is simply unable to reach us."
+  # ✅ design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md:74-83 is CORRECT and is the
+  # only file that had it right: it tabulates the mod's curve at arc 0/90/180 as
+  # +70/−37/−80 against ours at +70/+14/−80. Cite that table, not the other three.
 
 # ===========================================================================
 # FACTIONS
@@ -525,17 +572,6 @@ needs_ruling:
       A `Could not resolve cross-reference` at load if the frozen save names a def no
       installed mod defines. Not cosmetic. ⚠️ BUILD cannot settle this offline — it
       needs the save read against the live def set, which is CHECK's.
-
-  TERMINATOR_RUNTIME_OVERRIDE_1:
-    question: >
-      Does `Alien Worlds - Tidally Locked` recompute tile temperature at RUNTIME, or
-      only at worldgen?
-    at_stake: >
-      Everything downstream of R-H10. If it recomputes, its −37 °C terminator overwrites
-      our painted +14 °C on the frozen save, the habitable terminator the entire faction
-      plan stands on ceases to exist, and hydrology_and_fire_ecology.md's ruling that
-      "only biomes need forcing" is wrong. If it acts only at worldgen it cannot reach a
-      hand-painted save and our curve stands. ⚠️ A live-game question. CHECK's, not BUILD's.
 
   GELATINOUS_CUT_REVERSAL_1:
     question: "`AB_GelatinousSuperorganism` was cut 2026-08-04 and painted 2026-08-18."
