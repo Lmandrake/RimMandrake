@@ -1,60 +1,67 @@
-# THE_SCALD_LOST_ITS_WATER_1 — a ruled sea stopped counting as water
-
 ## spec
+`jawa/world_stats` reports **6.71% water** on the painted planet. The bundle says
+**8.14%** — 1,780 of 21,872 tiles. The shortfall is exactly **312**, which is exactly the
+Scald.
 
-🔴 **OWNER, 2026-08-21: "Chase it before anything else builds on this world."** He also
-ruled the same session that `WORLDMAP_gen` is **the first-draft v1 keeper**, so this is a
-defect in a world that is meant to ship.
+**The mechanism, read from source, not inferred:**
 
-**The arithmetic, and it is what makes this worth chasing rather than shrugging at.**
-From `w9_run_2026-08-21_0143.md`:
+    RimWorld/Planet/SurfaceTile.cs:28
+    public override bool WaterCovered => elevation <= 0f;
 
-| | |
-|---|---|
-| water measured after the repaint | **6.71%** of 21,872 tiles = **1,468** tiles |
-| the three ruled seas, per canon | The Twilight Sea 851 + The Gray Sea 617 + **The Scald 312** = **1,780** |
-| shortfall | **312 tiles — The Scald exactly** |
-| lint, same run | **`lakesAboveSeaLevel: 312`** — the same number again |
+The Scald's 312 `Lake` tiles are authored at **elevation +1411 m** — it is a crater lake
+inside a 2,050 m rim, by design. RimWorld defines water as *elevation at or below zero*, so
+**the engine does not consider the Scald to be water at all.** `world_lint` was already
+saying so: `lakesAboveSeaLevel: 312`.
 
-Two independent numbers landing on 312 is not coincidence. ⇒ **The Scald is very likely
-present as a lake sitting above sea level, and is not registering as a body of water.**
+⚠️ **DO NOT "FIX" THIS BY DROPPING THE ELEVATION** until the cost below is weighed. The
+relief, the rain shadow, the Spine and the whole drainage story are computed from that
+1411 m. Moving it re-rolls more than it repairs.
 
-⚠️ **Before the repaint, water was 35.86% and lint reported 3,508 `landBiomeSubmerged`.**
-After, 6.71% and 86 findings. The repaint fixed far more than it broke — do not treat this
-as a reason to undo it. But it is the run that changed The Scald's status, and that is
-where to look.
+### What `WaterCovered == false` actually costs, enumerated from every call site
 
-🔑 **Canon is explicit that The Scald being `Lake` is DELIBERATE, so "it is a lake" is not
-the defect.** `canon.yml:129` — *"The Scald is painted `Lake`, NOT `Ocean` — all 312 of its
-tiles. The other two seas are `Ocean`."* The owner confirmed `Lake` stays on 2026-08-20,
-because cutting the def deletes a named sea. **The question is its ELEVATION and whether
-the engine counts it as water, not its biome.**
+| call site | consequence for the Scald | material? |
+|---|---|---|
+| `GenStep_ElevationFertility:81` | a map generated on a Scald tile builds as **dry land, not a lake** | ⚠️ see below |
+| `GenStep_RocksFromGrid:50`, `GenStep_RockChunks:21` | such a map also gets **rock**, which water tiles skip | ⚠️ same |
+| `TileMutatorWorker_RiverDelta:65`, `RiverConfluence:30-33` | both pick the neighbour that is **not** water-covered. A delta emptying into the Scald does not behave as a mouth | ✅ **real** — we place `RiverDelta` on 2 tiles |
+| `WorldDrawLayer_Roads:42` | roads draw only on non-water tiles, so a road across the Scald **draws** | cosmetic |
+| `WorldGenStep_Rivers:67` | rivers terminate at water — only runs at worldgen, and we author links ourselves | none |
+| the 14 vanilla `BiomeWorker_*` | only run at worldgen; we set the biome directly | none |
 
-**Two outcomes, and they need different fixes — decide which before touching anything:**
-1. **The repaint lifted it above sea level.** Then the map is wrong and the elevation of
-   those 312 tiles is the fix.
-2. **The lint rule does not know a ruled sea can legitimately sit high.** A scald is a
-   salt-crusted flat; a highland salt sea is plausible worldbuilding. Then the map is
-   right and the RULE learns about it — and `stats` should still count it as water.
+🔑 **The first two are mostly moot, and that is the finding.** `Lake` has
+`canBuildBase: false`, so **a player can never land on a Scald tile** — the local-map
+gensteps do not run for it in normal play. They would only fire for a quest site or a
+caravan event placed there, which is rare and survivable.
 
-⛔ **Do not "fix" this by repainting The Scald to `Ocean`.** That reverses a standing owner
-ruling and deletes the distinction between the three seas.
+⇒ **The honest cost is one broken `RiverDelta` behaviour, a road that draws where a boat
+should be, and a water statistic that reads 1.4 points low.** That is a much smaller bill
+than "the Scald is not water", and it is worth knowing before anyone edits 312 elevations.
+
+### The three ways out, for DECIDE or the owner
+1. **Accept it.** The design calls the Scald a *hypersaline pool*; brine over ground that
+   plays as ground is arguably correct, and it costs almost nothing measurable.
+2. **Drop the 312 tiles to elevation ≤ 0.** One column, same discipline as the rain clamp,
+   and it makes the Scald real water — a caldera below sea level inside a 2,050 m rim is
+   physically ordinary. ⚠️ But `elev_m` feeds the relief renderer and the lint's own
+   `lakesAboveSeaLevel` check, so it must be looked at afterwards, not just measured.
+3. **Leave the elevation and fix only the delta**, by moving the two `RiverDelta` mutators
+   to mouths that empty into a real sea.
 
 ## verify
-
-- Read the actual elevation of the 312 Scald tiles off the live world and state it as a
-  number against sea level. That single measurement decides which outcome above applies.
-- Confirm the 312 in `lakesAboveSeaLevel` are the same 312 tiles canon calls The Scald —
-  compare tile IDs, do not match on the count alone.
-- Recompute water% counting The Scald; it should reach ~8.14% if the three seas are all
-  wet.
-- 🔭 **Look at it.** Render the region and compare against
-  `world/view/ASHKARR_WORLDMAP.biome.equirect.png` and the 01:43 bridge screenshot. Per
-  `CLAUDE.md`, every defect that has mattered in this work passed its numeric check while
-  the picture was wrong.
+Whichever is chosen: `jawa/world_stats` water percentage, and `jawa/world_lint`'s
+`lakesAboveSeaLevel` count, read back after the change. Option 2 should move water to
+**8.14%** and `lakesAboveSeaLevel` to **0**.
 
 ## criteria
+- the chosen option is recorded with its reason, so nobody re-opens this from the statistic
+  alone
+- if option 2: the owner looks at the relief around the Scald afterwards and does not name
+  it as a defect
+- if option 1 or 3: `lakesAboveSeaLevel: 312` is annotated in the lint as expected, so it
+  stops reading as an unfixed fault
 
-A number for The Scald's elevation, a stated verdict on which of the two outcomes it is,
-and — if it is outcome 1 — 312 tiles that are wet again without any of them becoming
-`Ocean`.
+## notes
+Filed for CHECK 2026-08-21. The statistic is the symptom; the mechanism is a one-line
+definition in `SurfaceTile`. ⚠️ I nearly dismissed the 6.71/8.14 gap as "stats counts Ocean
+only" when I first saw it — that guess was wrong in a way that would have hidden a real
+mechanism, and the difference was reading the source instead of rationalising the number.
