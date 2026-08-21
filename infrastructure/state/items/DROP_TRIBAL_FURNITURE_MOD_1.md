@@ -1,3 +1,28 @@
+# ⛔ DROPPED 2026-08-21 — THE MOD STAYS. Read this before anything below.
+
+🔴 **OWNER, 2026-08-21:** *"If Tribal Furniture does not need to be cut, then don't. I did
+wonder why it was causing trouble. That's fine, leave it in."*
+
+**Everything below rests on a premise that is FALSE.** The item drops the mod because
+34–39 texPaths read as dead and it "renders entirely as placeholder". Measured 2026-08-21:
+
+- the mod ships **138 PNGs**;
+- **13** of its defs declare `<graphicClass>TribalFurniture.Graphic_Appearances_Multi</graphicClass>`
+  out of its own `TribalFurniture.dll`, and those 13 are exactly the ones flagged;
+- their `texPath` is a **stem** the class expands with a stuff infix, so the file on disk is
+  `XERTribalBed_Bricks_north.png`, not `XERTribalBed_north.png`.
+
+`jawa/texture_audit` assumes vanilla `Graphic_Multi` suffixing and cannot see a custom
+resolver, so it reported present art as dead — `TEXTURE_AUDIT_CUSTOM_GRAPHICCLASS_1`.
+
+✅ **The safety work below was done anyway and its findings stand**, should anyone ever cut
+this mod for a different reason: nothing is disarmed (0 weaponTags / 0 apparel / 0 tradeTags
+across its 64 ThingDefs) and 0 authored references die (the 368 that look external are all
+`recipeUsers`/`fixedBillGiverDefs` the mod injects into Core, plus runtime caches, which
+vanish with it). `ModsConfig.xml` was never edited.
+
+---
+
 # DROP_TRIBAL_FURNITURE_MOD_1 — the owner ruled drop it; the save already names it 34 times
 
 ## spec
