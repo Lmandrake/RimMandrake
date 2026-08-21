@@ -869,3 +869,33 @@ exists right now is the one v1 ships, subject to redraft. Three consequences, al
 - **Inbox** — close `LOADS_ARE_BLOCKED_NEEDS_YOU_1` and `MORNING_BRIEF_CHECK_1`; keep
   `CANON_RULINGS_OWED_OWNER_1` open. → `CLOSE_TWO_OWNER_ITEMS_1` for DECIDE, since REP may
   not close an OWNER item and only DECIDE may reassign one.
+
+---
+
+## 🔴 A REMAKE IS THE RECOVERY PATH — owner, 2026-08-21 03:11
+
+*"It'll be fine. I'll just remake the world again."* Said when told the Tribal Furniture
+drop would leave 34 dead `XER_` references in the keeper save.
+
+⇒ **`WORLDMAP_gen` is a FIRST DRAFT in the sense that matters: it is expendable.** The
+02:48 ruling above still stands — it is the v1 world *for now* — but nothing may be
+protected at the cost of blocking work, and `DROP_TRIBAL_FURNITURE_MOD_1` has had its
+copy-test ceremony struck out on this ruling.
+
+### 🔑 THE CONSEQUENCE NOBODY HAS ACTED ON YET: batch everything into ONE remake
+
+Four things want to be true **at world generation** and cannot be retrofitted. Doing them
+in one pass costs one remake; doing them as they come up costs four.
+
+| | why it must precede the remake |
+|---|---|
+| `PIRATE_VESSEL_RESTORED_1` | ⭐ **Its acceptance test becomes checkable for the first time** — *"Blackstar Company appears in the DEFAULT Configure Factions list"* can only be seen BEFORE a world exists. Ship it and `jawa/faction_create` is never needed again |
+| `DROP_TRIBAL_FURNITURE_MOD_1` | a world generated on **577** mods never contains an `XER_` reference at all |
+| `THE_SCALD_LOST_ITS_WATER_1` | if the Scald defect is in the PAINT, a remake carries it forward unchanged. Settle it first or repeat it |
+| `WORLD_REDRAFT_PROCEDURE_1` | 🔴 **now on the critical path, not documentation-for-later.** The next remake is the first real test of it, and writing it afterwards means writing it from memory again |
+
+⚠️ **Configure Factions is still a hand pass and still permanent.** Every remake spends it.
+That is the real cost of a remake and it is not visible in any of the four items above.
+
+⛔ **Not proposed: an automated rebuild.** One map, hand-made, is a standing ruling
+(2026-08-18). The procedure is a checklist for the owner, never a generator.

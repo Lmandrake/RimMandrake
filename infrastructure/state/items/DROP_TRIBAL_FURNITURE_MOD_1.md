@@ -64,3 +64,24 @@ worth re-offering to him rather than damaging a keeper save.
 ## criteria
 
 The mod is gone, the keeper world still loads clean, and nobody was disarmed by it.
+
+---
+
+## 🔴 OWNER, 2026-08-21 03:11: *"It'll be fine. I'll just remake the world again."*
+
+**This retires the caution above, and most of the ordering with it.** The 34 `XER_` names
+in `world/WORLDMAP_gen.rws` were only expensive because the save was treated as
+irreplaceable. The owner has accepted a remake as the recovery path, so:
+
+- ⛔ **Steps 1 and 2 are DROPPED.** Do not pin the enclosing XML element, and do not
+  rehearse the drop on a copy. If the keeper takes dead references, the answer is a
+  remake, and he has said so.
+- ✅ **Steps 3, 4 and 5 STAND and are unaffected by the ruling.** The tag → surviving-item
+  index, the drop-the-packageId reference pass and the `ModsConfig` count are about the
+  MOD SET, not about this save. A silently disarmed pawn kind survives a remake.
+- 🔑 **Do it BEFORE the remake, not after.** A world generated on 577 mods never contains
+  an `XER_` reference at all, so the whole problem stops existing rather than being
+  repaired.
+
+⚠️ **The path-check option the owner declined is now cheaper than the drop and should NOT
+be re-offered** — he has ruled twice on this mod. Drop it.
