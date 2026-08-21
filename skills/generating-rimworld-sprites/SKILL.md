@@ -303,7 +303,18 @@ Seven lines. If it does not fit, the item is really two items.
 
 ### How sprite checks lie
 
-Four earned ones — full cases as per the trap file:
+Five earned ones — full cases as per the trap file:
+
+- **The validator grades the WHOLE sprite, so a distortion confined to one region
+  is invisible to it.** Compositing a beast into a vehicle's animal band at
+  **+34.6% width stretch** returned `PASS` — canvas, span, origin and subject
+  aspect are all measured against the reference *as a whole*, and the cart either
+  side of the band held every one of them inside tolerance. At sprite size the
+  animal read as a green sliver rather than a beast. ⇒ When you are replacing
+  **part** of a sprite, the validator cannot see your part. Measure the distortion
+  of the region itself — fit the source to the *band's* aspect before scaling, not
+  the canvas's — and then look at it. Measured 2026-08-21; `selftest.py` still
+  passes 9/9, so this is a scope limit and not a defect.
 
 - **The bare-path fallback drew instead of your file.**
   `Graphic_Multi.Init` calls `ContentFinder.Get(req.path)` — the path *without*
