@@ -1,3 +1,4 @@
+<!-- status: live -->
 # ship_distinctive_features.md — the Kolyska's identity layer
 
 _Created 2026-08-07. A running list of **accepted** distinctive-flavor ideas for the

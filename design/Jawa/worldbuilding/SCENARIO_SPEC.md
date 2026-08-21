@@ -1,3 +1,4 @@
+<!-- status: live -->
 # SCENARIO_SPEC.md — how the campaign starts
 
 DECIDE owns this file. Chain step 12. It had no document at all until now.

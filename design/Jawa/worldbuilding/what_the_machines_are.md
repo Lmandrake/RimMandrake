@@ -1,3 +1,4 @@
+<!-- status: live -->
 # What the machines are
 
 > 🔴 **RULED, owner 2026-08-20 — read this first; it settles the open question this

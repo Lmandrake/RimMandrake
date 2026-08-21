@@ -1,3 +1,4 @@
+<!-- status: live -->
 # ship_deck_plan.md — The Ruined Vessel: deck plan + repair-progression design
 
 _Deep-think design pass, 2026-08-06. Turns the **hulk-ship reframe** (required_mods.md parked Thread 1)

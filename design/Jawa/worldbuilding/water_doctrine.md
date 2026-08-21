@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Water doctrine — the master resource, finally decided
 
 _A retired seat, 2026-08-13. **Owner's ruling, verbatim, recorded the hour it was made.**

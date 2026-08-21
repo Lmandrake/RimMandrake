@@ -1,3 +1,4 @@
+<!-- status: live -->
 # SCENARIO_SETTINGS_SPEC.md — every setting the campaign start needs, and WHEN it is fixed
 
 DECIDE owns this file. **BUILD owns bucket A. The OWNER owns bucket B.** Chain

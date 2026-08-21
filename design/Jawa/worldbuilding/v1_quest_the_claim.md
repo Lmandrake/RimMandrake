@@ -1,3 +1,4 @@
+<!-- status: live -->
 # "The Claim" — the v1 quest, specified
 
 _A retired seat, 2026-08-13. **This is row 3.** The row reads *"One

@@ -1,3 +1,4 @@
+<!-- status: live -->
 defName|mod|combatPower|raidOptionSlots|clusterAndAncientEligible|allowInMechClusters|isFighter|isGoodBreacher|appearsRandomly
 AM_Mech_Geneticor|?|10|0|False|True|False|False|True
 AM_Apoptosis|Alpha Mechs|750|0|False|False|False|False|True

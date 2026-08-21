@@ -1,3 +1,4 @@
+<!-- status: live -->
 # the_forgotten_war.md — the war that ended this world, and what it left
 
 DECIDE owns this. **Owner's session, 2026-08-15.** This document is the planet's

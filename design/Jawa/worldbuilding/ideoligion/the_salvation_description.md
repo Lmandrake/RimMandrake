@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The Salvation — ideo description text
 
 _The player-facing `<description>` for the Jawa ideoligion, written 2026-08-14 by

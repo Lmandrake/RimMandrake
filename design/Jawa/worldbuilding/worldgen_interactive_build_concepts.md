@@ -1,3 +1,4 @@
+<!-- status: live -->
 # worldgen_interactive_build_concepts.md — new content the world painting asks for
 
 Parking file. Anything that emerges from the worldgen sessions and needs something

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # ship_designs.md — Gravship topology: chosen hull + candidate menu (expanded limits)
 
 _Design pass, 2026-08-06. Regenerated after **Bigger Gravships** was approved (WS 3522759531,

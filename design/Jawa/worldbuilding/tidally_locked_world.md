@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The world is TIDALLY LOCKED — and it explains everything
 
 _A retired seat, 2026-08-14. **Owner's ruling, and it is the largest single piece of

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # setting_physics.md — the physical laws of this universe
 
 _Started 2026-08-10. The constitution the balance work derives from.

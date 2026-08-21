@@ -1,3 +1,4 @@
+<!-- status: live -->
 # THE ONE MAP — Ash'karr, hand-authored once
 
 > 📌 **Corrected 2026-08-20 against `infrastructure/state/canon.yml`:** the "~25% water,

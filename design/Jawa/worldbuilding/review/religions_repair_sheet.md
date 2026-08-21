@@ -1,3 +1,4 @@
+<!-- status: superseded-by: design/Jawa/worldbuilding/faction_religions_spec.md ; 2026-08-20 ; every repair on this sheet has landed - the spec now validates 11/11 VALID, so the 9 INVALID entries analysed here no longer exist; kept for the reasoning behind each repair -->
 # Religions repair sheet — the 9 INVALID entries, option by option
 
 _Analysis only. **The spec is not edited by this file** — every design call below is

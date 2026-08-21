@@ -1,3 +1,4 @@
+<!-- status: live -->
 # worldgen_interactive_def.md — the working definition of the world we are painting
 
 Live working doc for the hand-built, frozen planet. Bullets only. Decisions land here

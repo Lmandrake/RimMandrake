@@ -1,3 +1,4 @@
+<!-- status: live -->
 # APPROVED — the Jawa xenotype and religion are settled
 
 **Owner's ruling, 2026-08-14 (evening).** This file is the short authoritative

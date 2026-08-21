@@ -1,3 +1,4 @@
+<!-- status: live -->
 # tile_augmentation_catalogue.md — the concrete augmentation catalogue
 
 _The **content** layer of map authoring: what gets **placed on** a tile, biome by biome._

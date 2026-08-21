@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The ship's legacy armoury — laser weapons as inherited technology
 
 _A retired seat, 2026-08-13. **Owner's ruling**, recorded the day it was made:_

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The worldmap bridge surface — every element, and read/write/validate for each
 
 **CHECK owns this.** Owner's order, 2026-08-19: enumerate everything a WORLDMAP contains,

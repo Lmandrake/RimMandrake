@@ -1,3 +1,4 @@
+<!-- status: live -->
 # setup_checklist.md — Game Setup Decision Checklist (work through live)
 
 _Gravship Expedition campaign · RimWorld **1.6 + Odyssey** · "Crashed Factory ship / Jawa
