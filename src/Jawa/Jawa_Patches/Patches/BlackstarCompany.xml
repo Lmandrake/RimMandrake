@@ -131,6 +131,15 @@
           <value><factionIconPath>World/JawaFactions/BlackstarCompany</factionIconPath></value>
         </li>
 
+        <!-- The name the world object carries. No vanilla FactionDef writes fixedName
+             (checked in Core/Defs/FactionDefs/Factions_Misc.xml), so this is an ADD.
+             A Replace would match nothing and log red. factionNameMaker stays: it still
+             names this faction's SETTLEMENTS. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="Pirate"]</xpath>
+          <value><fixedName>Blackstar Company</fixedName></value>
+        </li>
+
       </operations>
     </match>
   </Operation>

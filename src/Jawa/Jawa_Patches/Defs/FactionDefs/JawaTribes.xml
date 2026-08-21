@@ -49,6 +49,7 @@
   <FactionDef ParentName="TribeBase">
     <defName>Jawa_IndigenousTribes</defName>
     <label>Jawa Trade Moot</label>
+    <fixedName>Jawa Trade Moot</fixedName>
     <humanlikeFaction>true</humanlikeFaction>
     <factionNameMaker>NamerFactionTribal</factionNameMaker>
     <settlementNameMaker>NamerSettlementTribal</settlementNameMaker>

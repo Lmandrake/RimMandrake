@@ -1,0 +1,103 @@
+FACTION_FIXEDNAME_ELEVEN_1 - offline evidence, BUILD, 2026-08-21
+config: offline-578-defs (validate_patch.py, 579 active mods, 8681 def files)
+
+== 1. Eight OWN defs edited (no patch), fixedName == label verbatim ==
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaAscendantHelix.xml:46:    <fixedName>Ascendant Helix</fixedName>
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaDeepwaterCompact.xml:43:    <fixedName>Deepwater Compact</fixedName>
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaFreeDroidEnclaves.xml:45:    <fixedName>Free Droid Enclaves</fixedName>
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaGeonosianFoundryHive.xml:53:    <fixedName>Geonosian Foundry Hive</fixedName>
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaHuttCartel.xml:42:    <fixedName>Hutt Cartel</fixedName>
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaJunkers.xml:44:    <fixedName>the Junkers</fixedName>
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml:52:    <fixedName>Jawa Trade Moot</fixedName>
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaWildsteamClan.xml:47:    <fixedName>Wildsteam Clan</fixedName>
+
+== 2. Three reskin patches: fixedName added as PatchOperationAdd inside the existing PatchOperationConditional ==
+-- vanilla writes fixedName? (Core/Defs/FactionDefs/Factions_Misc.xml) --
+OutlanderCivil fixedName node: False   TribeCivil: False   Pirate: False   => ADD is correct, Replace would match 0
+src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml:140:          <value><fixedName>Blackstar Company</fixedName></value>
+src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml:184:          <value><fixedName>Deep Desert Tribes</fixedName></value>
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:128:          <value><fixedName>Galactic Empire</fixedName></value>
+src/Jawa/Jawa_Patches/Patches/HomesteadDefenseLeague.xml:162:          <value><fixedName>Homestead Defense League</fixedName></value>
+
+== 3. validate_patch.py on the three patch files: every op >= 1 match ==
+=== src/Jawa/Jawa_Patches/Patches/HomesteadDefenseLeague.xml ===
+  info    Operation[1] (PatchOperationConditional): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[1] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[2] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[3] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[4] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[5] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[6] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[7] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[8] (PatchOperationRemove): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[9] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[10] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[11] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+OK - 0 errors, 0 warning(s)
+=== src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml ===
+  info    Operation[1] (PatchOperationConditional): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[1] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[2] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[3] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[4] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[5] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[6] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[7] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[8] (PatchOperationRemove): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[9] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[10] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[11] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+OK - 0 errors, 0 warning(s)
+=== src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml ===
+  info    Operation[1] (PatchOperationConditional): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[1] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[2] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[3] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[4] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[5] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[6] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[7] (PatchOperationRemove): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[8] (PatchOperationRemove): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[9] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[10] (PatchOperationReplace): 1 match(es)  in Core: Factions_Misc.xml(1)
+  info    Operation[1] > match > operations/li[11] (PatchOperationAdd): 1 match(es)  in Core: Factions_Misc.xml(1)
+OK - 0 errors, 0 warning(s)
+OK TOTAL - 3 file(s), 0 error(s), 0 warning(s)
+
+== 4. item verify: grep -rc '<fixedName>' totals 12 across twelve files ==
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaWildsteamClan.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaJunkers.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaGeonosianFoundryHive.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaHuttCartel.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaDeepwaterCompact.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaAscendantHelix.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaFreeDroidEnclaves.xml:1
+src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml:1
+src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml:1
+src/Jawa/Jawa_Patches/Patches/HomesteadDefenseLeague.xml:1
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:1
+TOTAL: 12
+
+== 5. Junkers lower-case article preserved ==
+43:    <label>the Junkers</label>
+44:    <fixedName>the Junkers</fixedName>
+
+== 6. no factionNameMaker removed - all 8 own defs still carry one ==
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaAscendantHelix.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaDeepwaterCompact.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaFreeDroidEnclaves.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaGeonosianFoundryHive.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaHuttCartel.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaJunkers.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml:1
+src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaWildsteamClan.xml:1
+no factionNameMaker op exists in the three patch files:
+src/Jawa/Jawa_Patches/Patches/HomesteadDefenseLeague.xml:2
+src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml:2
+src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml:3
+
+== 7. Empire untouched (already had one at GalacticEmpire.xml) ==
+128:          <value><fixedName>Galactic Empire</fixedName></value>
+
+NOT PROVABLE OFFLINE: criteria requires a freshly generated world naming all twelve.

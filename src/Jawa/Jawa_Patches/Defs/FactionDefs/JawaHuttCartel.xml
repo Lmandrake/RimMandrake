@@ -39,6 +39,7 @@
   <FactionDef ParentName="OutlanderFactionBase">
     <defName>Jawa_HuttCartel</defName>
     <label>Hutt Cartel</label>
+    <fixedName>Hutt Cartel</fixedName>
     <description>Wealthy, decentralised and entirely transactional. The Cartel owns the oases and sells water at whatever the buyer can be made to pay, and it holds the only non-Imperial orbital node on the planet — the door off-world, and the reason everyone keeps taking its calls.\n\nIt is hostile the way a creditor is hostile. Nothing about it is personal, and everything about it is negotiable.</description>
     <pawnSingular>Cartel enforcer</pawnSingular>
     <pawnsPlural>Cartel enforcers</pawnsPlural>

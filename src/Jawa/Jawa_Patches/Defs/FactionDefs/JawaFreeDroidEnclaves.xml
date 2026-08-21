@@ -42,6 +42,7 @@
   <FactionDef ParentName="OutlanderFactionBase">
     <defName>Jawa_FreeDroidEnclaves</defName>
     <label>Free Droid Enclaves</label>
+    <fixedName>Free Droid Enclaves</fixedName>
     <description>Battle droids abandoned after the war who woke up and decided they belong to themselves. They settle on water and crack it for fuel, so an attacker arrives thirsty at a source it cannot drink.\n\nThey do not take prisoners and they do not hold grudges. What they hold is the water, and a memory of being property that they intend never to repeat.</description>
     <pawnSingular>droid</pawnSingular>
     <pawnsPlural>droids</pawnsPlural>

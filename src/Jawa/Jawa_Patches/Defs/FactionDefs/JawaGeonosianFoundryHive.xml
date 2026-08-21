@@ -50,6 +50,7 @@
   <FactionDef ParentName="OutlanderFactionBase">
     <defName>Jawa_GeonosianFoundryHive</defName>
     <label>Geonosian Foundry Hive</label>
+    <fixedName>Geonosian Foundry Hive</fixedName>
     <description>A hive mass-producing droids in ancient factories under the rock, ruled by winged aristocrats under one immobile queen.\n\nIt is the only power on the planet that can sustain a siege in deep desert, because it does not need to bring water — it brings a line that never stops walking.</description>
     <pawnSingular>warrior drone</pawnSingular>
     <pawnsPlural>warrior drones</pawnsPlural>

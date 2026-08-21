@@ -44,6 +44,7 @@
   <FactionDef ParentName="OutlanderFactionBase">
     <defName>Jawa_WildsteamClan</defName>
     <label>Wildsteam Clan</label>
+    <fixedName>Wildsteam Clan</fixedName>
     <description>A forest people on the wrong planet, hard-sited to the few cool upland springs and holding a covenant that treats every living thing as kin. Devastating at home and near-useless anywhere else.\n\nThey come down out of the highlands for two reasons only: to trade, and to take somebody's slaves back off them.</description>
     <pawnSingular>freehold warrior</pawnSingular>
     <pawnsPlural>freehold warriors</pawnsPlural>

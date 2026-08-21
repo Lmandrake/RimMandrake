@@ -43,6 +43,7 @@
   <FactionDef ParentName="OutlanderFactionBase">
     <defName>Jawa_AscendantHelix</defName>
     <label>Ascendant Helix</label>
+    <fixedName>Ascendant Helix</fixedName>
     <description>A small, obscenely wealthy gene-cult that believes the body is a rough draft and the species is a project — and despises the manufactured underclass it made itself.\n\nIt does not raid. It retrieves. What it comes for is usually a person, and it has already decided which one.</description>
     <pawnSingular>curator</pawnSingular>
     <pawnsPlural>curators</pawnsPlural>

@@ -41,6 +41,7 @@
   <FactionDef ParentName="PirateBandBase">
     <defName>Jawa_Junkers</defName>
     <label>the Junkers</label>
+    <fixedName>the Junkers</fixedName>
     <description>The bottom of the scrap heap, given weapons and a grudge. Scavengers who arrive second and kill whoever arrived first, welded into warcaskets cut off other people's bodies.\n\nThere is no doctrine down there, only the ladder. Which means there is always somebody who would rather be paid than climb it.</description>
     <pawnSingular>Junker</pawnSingular>
     <pawnsPlural>Junkers</pawnsPlural>

@@ -40,6 +40,7 @@
   <FactionDef ParentName="OutlanderFactionBase">
     <defName>Jawa_DeepwaterCompact</defName>
     <label>Deepwater Compact</label>
+    <fixedName>Deepwater Compact</fixedName>
     <description>The amphibian peoples who live in the deep water and sell it to everyone, including the Empire that is hunting you. Their neutrality is a monopoly with teeth.\n\nTheir wardens cannot follow you inland, and both of you know it. Everything the Compact wants from the desert, it buys.</description>
     <pawnSingular>water warden</pawnSingular>
     <pawnsPlural>water wardens</pawnsPlural>
