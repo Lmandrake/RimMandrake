@@ -24,6 +24,15 @@ One HTML comment near the top of each design doc, so nothing renders:
     <!-- status: dead ; <date> ; <why> -->
     <!-- status: aspirational -->
 
+An optional extra field says a doc is live but its FIGURES are not — the case four
+statuses could not express, and the one that let `worldgen_interactive_def.md` sit at
+`live` while every number in it measured a planet that no longer exists:
+
+    <!-- status: live ; numbers-superseded-by: <path> ; <date> ; <why> -->
+
+It does not change link enforcement; `design/INDEX.md` renders it as
+"⚠ do not quote its numbers".
+
 ⚠️ A doc with NO header is reported as `unmarked`, and unmarked is NOT a pass — it is
 the state 119 documents were in when this was written, and the state that let a dead
 document keep collecting readers. It does not fail the build yet, because failing on
@@ -57,7 +66,13 @@ DESIGN = os.path.join(ROOT, "design")
 
 STATUS = re.compile(r"<!--\s*status:\s*(.+?)\s*-->", re.I | re.S)
 LINK = re.compile(r"\[[^\]]*\]\(([^)\s#]+)[^)]*\)|`(design/[\w./-]+\.md)`")
-HISTORICAL = re.compile(r"~~|superseded|\bdead\b|⛔|formerly|no longer", re.I)
+# `deleted` and `removed` are here for the provenance note, which is the RIGHT way to
+# cite a file that no longer exists: "rescued 2026-08-20 from <path>, which was deleted".
+# Without them the checker reports a broken link on exactly the sentence that explains
+# why the link is broken, and the only way to satisfy it is to delete the provenance.
+HISTORICAL = re.compile(
+    r"~~|superseded|\bdead\b|⛔|formerly|no longer|\bdeleted\b|\bremoved\b|"
+    r"\bretired\b|\bmoved (here|from)\b", re.I)
 FENCE = re.compile(r"^\s*(```|~~~)")
 # A dead doc sometimes says so in prose before anyone writes the header. Catch that
 # too, or the checker reports clean on the exact file that motivated it.

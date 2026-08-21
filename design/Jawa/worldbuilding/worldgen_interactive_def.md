@@ -1,4 +1,4 @@
-<!-- status: live -->
+<!-- status: live ; numbers-superseded-by: infrastructure/state/canon.yml ; 2026-08-20 ; the RULINGS here stand and are cited; every MEASUREMENT is of a superseded planet -->
 # worldgen_interactive_def.md — the working definition of the world we are painting
 
 Live working doc for the hand-built, frozen planet. Bullets only. Decisions land here

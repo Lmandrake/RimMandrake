@@ -198,6 +198,12 @@ def write_md(rows):
     empty = [r for r in rows if r["verdict"] == "USABLE-EMPTY"]
 
     L = []
+    # ⚠️ The status header goes FIRST, above the H1, and it is emitted here rather than
+    # hand-written because this function rewrites the whole file — a header typed into
+    # SALVAGE_PALETTE.md would be silently deleted by the next regeneration, and nobody
+    # would notice, because a missing status reads the same as a doc nobody has got to.
+    # `src/RimMandrake/Utils/check_doc_links.py` reads this line.
+    L.append("<!-- status: live -->")
     L.append("# SALVAGE_PALETTE.md — which shipped wreck props the player can actually strip\n")
     L.append("🔴 **GENERATED FILE. Do not hand-edit.** Regenerate with "
              "`python3 design/Jawa/art/salvage_filter.py`.\n")

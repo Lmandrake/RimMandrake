@@ -63,9 +63,29 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 
 ## 2. Ideology (Jawa ideoligion) — mostly authored, confirm in creator
 - [~] **Fixed ideology** (no fluid development) — DECIDED (`forbidden_mods.md`).
-- [~] **Ideoligion:** "The Articles of Passage" / in-fiction "Keepers of the Second Hand".
-  **Memes: Nomad (primary) + Tunneler (secondary)** — DECIDED (`design/Jawa/worldbuilding/ideoligion/APPROVED.md` §2.6).
-  - [x] Final call: **Nomad primary** + Tunneler secondary (user, 2026-08-04).
+> 🔴 **THIS ITEM IS DEAD AND WOULD BAKE THE WRONG RELIGION INTO THE WORLD. Corrected 2026-08-20.**
+> An ideoligion is fixed **at world creation** and cannot be changed afterwards, so working
+> the line below live would author a faith that no longer exists, permanently.
+>
+> | | dead — as written below | **shipped, and what to author** |
+> |---|---|---|
+> | name | ~~The Articles of Passage~~ | **The Salvation** |
+> | memes | ~~Nomad (primary) + Tunneler (secondary)~~ | `AM_Structure_Scavenger` · `Trader` · `VME_Scrapper` · `VME_Trader` · `VME_Nomad` |
+>
+> ✅ The in-fiction name **"Keepers of the Second Hand" SURVIVED** — it is in the shipped
+> `<ideoDescription>` verbatim. Only the ideoligion name and the meme set changed.
+> **Authority:** `design/Jawa/worldbuilding/ideoligion/APPROVED.md:15` — *"The Salvation is the
+> approved ideoligion, for the player faction and the indigenous Jawa tribes"* — and the shipped
+> def at `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml:100`. `Tunneler` appears in
+> neither. The §2.6 citation below points at a section of `APPROVED.md` that was overtaken.
+>
+> ⚠️ One thing is genuinely still open, and it is not this: `APPROVED.md:119-120` recommends
+> **dropping `VME_Nomad`** in favour of `Nomadic_Preferred`, and `JawaTribes.xml` still carries
+> `VME_Nomad`. That recommendation has never been ruled on. Do not act on it here.
+
+- [~] ~~**Ideoligion:** "The Articles of Passage" / in-fiction "Keepers of the Second Hand".~~
+  ~~**Memes: Nomad (primary) + Tunneler (secondary)** — DECIDED (`design/Jawa/worldbuilding/ideoligion/APPROVED.md` §2.6).~~
+  - [x] ~~Final call: **Nomad primary** + Tunneler secondary (user, 2026-08-04).~~ — superseded, see the box above.
 - [~] **Roles (two, non-multiplying):** Leader = Chief/Captain (self-limit its production-buff
   ability); Moral Guide = "Keeper of the Articles". DECIDED. No Production/Combat specialist roles.
 - [~] **Scavenger role:** Ideology Scavenger Role (WS 3565039115) adopted — restrictive identity,
@@ -291,8 +311,10 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
   full-body-size race mod yes/no; faction roster counts; planet coverage/seed/world sliders;
   starting biome + map size; starting research + starting things/counts; oven-vs-smelter start;
   storage-ratio cap value; the 3 Jawa personas.
-- **Newly decided (2026-08-04):** permadeath OFF (reload allowed); ideoligion memes = Nomad primary
-  + Tunneler secondary.
+- **Newly decided (2026-08-04):** permadeath OFF (reload allowed); ~~ideoligion memes = Nomad primary
+  + Tunneler secondary~~ — **superseded 2026-08-20: the shipped memes are `AM_Structure_Scavenger` ·
+  `Trader` · `VME_Scrapper` · `VME_Trader` · `VME_Nomad`, and the ideoligion is "The Salvation".**
+  See the box at §2.
 - **Verify-in-game (🔎):** Outland gene magnitudes; techprint-defName-digit check; Scavenger role
   hidden-bypass check; Cherry Picker cull lists; CAI × Total Warfare compat; romance stack RimSort 1.6 tags (RotR/Intimacy/Polyamory Beds) + WBR jealousy-slider tuning; Plant Speed Modifier 1.6 + wild-plant scope.
 - **Newly decided (2026-08-07):** relationship-complexity stack ADOPTED (WayBetterRomance backbone +

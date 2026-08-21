@@ -109,6 +109,15 @@ def doc_status(text: str, head_lines: int = 40) -> str:
     raw = m.group(1)
     kind = raw.split(";")[0].split(":")[0].strip().lower()
     mark = STATUS_MARK.get(kind, "? " + kind)
+    # ⚠️ A doc can be live in its RULINGS and dead in its NUMBERS, and the four statuses
+    # cannot say so. `worldgen_interactive_def.md` is exactly that: its banner reads "THE
+    # RULINGS IN THIS FILE STAND. ITS MEASUREMENTS DO NOT" — it is cited for decisions
+    # that are current while every figure in it measures a planet that no longer exists.
+    # Marked `live`, the machine-readable half of that warning was simply lost, and
+    # `live` is the status that invites quoting. So one optional extra field:
+    #     <!-- status: live ; numbers-superseded-by: <path> ; <date> ; <why> -->
+    if "numbers-superseded-by" in raw.lower():
+        mark = (mark + " · " if mark else "") + "⚠ do not quote its numbers"
     if kind == "superseded-by":
         # Name the successor here too. "Superseded" without a forwarding address
         # tells the reader to stop and gives them nowhere to go.

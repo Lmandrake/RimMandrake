@@ -609,9 +609,19 @@ needs_ruling:
       than waiting for the next one to surface by hand.
 
   DOSSIER_WITHOUT_CAST_ROSTER_1:
-    question: "Twelve factions carry dossiers; only eleven have a cast roster on disk."
+    question: >
+      The Deepwater Compact has a dossier and a faith and NO cast roster. Deliberate,
+      or an omission?
+    answered_which: "the Deepwater Compact"
     evidence: >
-      design/Jawa/bridge/ holds eleven INHABITED_CAST_*.md files against the twelve rows
-      of INHABITED_DESIGN.md §5.9. INHABITED_CAST_HOMESTEAD.md:15 says "the hardest brief
-      of the twelve", which counts briefs rather than files.
-    at_stake: "One faction ships with no named inhabitants. Which one, and is that deliberate?"
+      ✅ Identified 2026-08-20, not inferred. INHABITED_DESIGN.md §5.9 tabulates twelve
+      factions; design/Jawa/bridge/ holds eleven INHABITED_CAST_*.md files, self-numbered
+      cast 01–11 — Hutt, Geonosian, Jawa, Droids, Junkers, Blackstar, Wildsteam, Helix,
+      Homestead, Tusken, Empire. Deepwater is the only row with no numbered file.
+      (INHABITED_CAST_HOMESTEAD.md:15's "the hardest brief of the twelve" counts briefs,
+      not files, and is correct.)
+    at_stake: >
+      One of the five factions holding settlements ships with no named inhabitants.
+      ⚠️ It is not a marginal faction: its faith is `the Balance` — "the seas, measured
+      and rationed… people for whom excess is the sin" — which is the water politics of
+      a desert planet, and the one every other faction's water doctrine reacts to.

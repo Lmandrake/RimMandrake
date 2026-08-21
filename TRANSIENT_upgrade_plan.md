@@ -1164,6 +1164,20 @@ map or the owner's most recent ruling, and records the loser in a `superseded:` 
 renders. Known: `save_authoring_pipeline.md` is `⛔ DEAD DOCUMENT`, still linked and still indexed.
 Files: `design/**/*.md`.
 
+🔴 **DONE 2026-08-20 — and the four statuses were not enough.** Two gaps found in the doing:
+
+- **A doc can be live in its RULINGS and dead in its NUMBERS.** `worldgen_interactive_def.md` is
+  cited for decisions that are current while every figure in it measures a planet that no longer
+  exists. Marked `live`, the machine-readable half of its own banner is lost — and `live` is the
+  status that *invites* quoting. Added one optional field rather than a fifth status:
+  `<!-- status: live ; numbers-superseded-by: <path> ; <date> ; <why> -->`, which `design/INDEX.md`
+  renders as *"⚠ do not quote its numbers"*.
+- ⚠️ **A header hand-written into a GENERATED file is deleted by the next regeneration, silently,
+  and a missing status looks exactly like a doc nobody got to.** `design/Jawa/art/SALVAGE_PALETTE.md`
+  is rewritten whole by `design/Jawa/art/salvage_filter.py`; the generator now emits the header
+  itself. `design/INDEX.md` was safe only by luck — `doc_roster.py`'s `splice()` preserves
+  everything above its BEGIN marker. **Before stamping any doc, ask what writes it.**
+
 **(b) the checkers.** `src/RimMandrake/Utils/check_canon.py` (fails on a number contradicting canon,
 with the `<!-- canon-ok: reason -->` escape) and a dead-link checker (a `live` doc may not link into
 a `dead` one). Files: `src/RimMandrake/Utils/*.py` only.
