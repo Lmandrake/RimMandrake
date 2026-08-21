@@ -1,4 +1,10 @@
 ## spec
+> ✅ **THE ART IS ACCEPTED AND THE DESIGN IS CLOSED — owner, 2026-08-21:** *"Those are
+> exceptional icons! Please fully accept them and mark them DESIGN done... now they need to
+> be built into the game factions."* ⛔ **Nothing below is a proposal.** Do not restyle,
+> re-derive or substitute any of the thirteen; if one looks wrong in game, report it, do not
+> redraw it.
+
 🔴 **Owner, 2026-08-21: he rejected the drawn concepts and supplied a reference image per
 faction.** Twelve are converted, game-ready, and committed at
 `design/Jawa/art/faction_icons/` — **128×128 RGBA, single flat white value with real alpha**,
@@ -66,6 +72,27 @@ hub is the same design and holds.
   fault.** Its `colorSpectrum` is `(0.70,0.55,0.30)` — sand — and it is drawn tinted, on
   sand, on a desert planet. The hood silhouette is correct and reads fine in any other
   colour. ⇒ **do not redraw it.** See `FACTION_ART_SPEC.md` §2.5 for the proposed spectrum.
+
+### 5. ⭐ One `colorSpectrum` change, and it ships WITH the icons
+
+`src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml` — replace the `colorSpectrum` block:
+
+```xml
+<colorSpectrum>
+  <li>(0.42, 0.30, 0.16)</li>
+  <li>(0.30, 0.21, 0.11)</li>
+</colorSpectrum>
+```
+
+🔴 **Without this the Jawa Trade Moot's new icon is invisible and the work is wasted.** Its
+current spectrum is `(0.70,0.55,0.30)` — sand — and `Settlement.Material` tints the glyph
+with it, on sand, on a desert planet. The hood silhouette is correct and reads in any other
+colour; **every other faction escapes this only because every other palette is off the
+desert axis.** Reasoning in `design/Jawa/art/FACTION_ART_SPEC.md` §2.5.
+⚠️ **This is a DECIDE ruling made at acceptance, not an owner instruction** — he accepted the
+icons and this is what makes one of them legible. If he vetoes it, the icon stays and the
+colour reverts; nothing else changes.
+⛔ **Do not change any other faction's `colorSpectrum`.** The other twelve pass.
 
 ## verify
 - `grep -rn factionIconPath src/Jawa/Jawa_Patches/` shows eleven `World/JawaFactions/…`

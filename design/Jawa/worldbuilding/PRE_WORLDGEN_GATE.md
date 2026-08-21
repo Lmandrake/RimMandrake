@@ -45,7 +45,7 @@ click.**
 |---|---|---|---|
 | 1 | 🔴 **The Blackstar Company's vessel is dropped from the default worldgen faction list.** Biotech's `PirateWaster` declares `replacesFaction: Pirate`, so `Page_CreateWorldParams.cs:83-85` strips `Pirate` from the list the owner is shown | `PIRATE_VESSEL_RESTORED_1` | the faction roster is fixed at creation |
 | 2 | **The Galactic Empire's leader is Royalty's high stellarch**, not Palpatine — `fixedLeaderKinds` is unpatched | `IMPERIAL_RAID_ROSTER_1` | the leader pawn is generated at creation |
-| 3 | **Four faction world-markers are wrong** — one is a magenta square, three are shared with another faction that holds settlements | `FACTION_ICONS_UNCOLLIDE_1` | the map is frozen with them on it |
+| 3 | **Thirteen bespoke faction world-markers are designed, accepted and not yet installed.** Until they are, one faction draws a magenta square and three pairs share a glyph | `FACTION_ICONS_BESPOKE_1` | the map is frozen with them on it |
 
 ✅ **The ideoligion artifacts are measured and clean** — `The Salvation.rid` 250/266 with
 **no dangling names**, `MandrakeJawa.xtp` 36/36, both against the 2026-08-20 dump

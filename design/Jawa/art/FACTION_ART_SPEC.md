@@ -1,6 +1,17 @@
 <!-- status: live -->
 # Faction art — the world map, and what v1 owes it
 
+> ✅ **ACCEPTED BY THE OWNER, 2026-08-21: *"Those are exceptional icons! Please fully accept
+> them and mark them DESIGN done."*** ⇒ **The design of all thirteen faction world-map marks
+> is CLOSED.** The art is `design/Jawa/art/faction_icons/`, thirteen 128×128 single-value
+> masks with real alpha. ⛔ **Do not redesign, re-derive, restyle or "improve" them**, and do
+> not re-open R17 or the borrowed-glyph plan. What remains is installation only —
+> `FACTION_ICONS_BESPOKE_1`, BUILD's.
+>
+> 🔑 **The one design change that came WITH the acceptance** is a colour, not a drawing:
+> the Jawa Trade Moot's `colorSpectrum` (§2.5). The icon is finished; the palette made it
+> invisible.
+
 _DECIDE, 2026-08-21, closing `FACTION_ART_SPEC_1`. Every mechanism claim below was read
 from the shipped C# or the shipped def; every path was checked against the 1.6 load path,
 not against the file system._
