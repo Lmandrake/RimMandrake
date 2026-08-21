@@ -173,6 +173,15 @@ VERBS = {
     "spawn":     {"who": "any",   "req": ("from", "for", "name"),
                   "opt": ("kind", "needs", "this_deployment", "spec", "title")},
     "retarget":  {"who": ("DECIDE", "owner"), "req": ("to", "reason"), "opt": ("from",)},
+    # 🔴 `needs` had NO setter until 2026-08-21, and that broke the axis POLICY.md added
+    # precisely so "waiting for the game" stops looking like "ready". Only `file` and
+    # `spawn` accepted it, so every migrated item rendered at the filing default: 38 of
+    # CHECK's 38 read `offline` while several of them wanted 100 in-game days or a
+    # 21,872-tile bridge import, and his WAITING ON A WINDOW section was empty.
+    # ⚠️ It is `("DECIDE", "owner")` like `retarget`, not owner-only: a mis-stamped
+    # `needs` is exactly the kind of thing a seat notices about ANOTHER seat's item, and
+    # the item's owner may be the one seat that cannot see the problem.
+    "needs":     {"who": ("DECIDE", "owner"), "req": ("to", "reason"), "opt": ()},
     "reassign":  {"who": ("DECIDE",), "req": ("to", "reason"), "opt": ()},
     "close":     {"who": "owner", "req": ("sha",), "opt": ()},
     "drop":      {"who": "owner", "req": ("reason",), "opt": ()},
@@ -294,6 +303,12 @@ def validate(ev):
     n = ev.get("needs")
     if n and n not in NEEDS:
         raise SchemaError("needs must be one of %s" % ", ".join(NEEDS))
+    # The `needs` VERB carries its value in `to`, the same shape `retarget` uses. Without
+    # this, `rimflow needs <ID> --to offlien` would append a typo that renders as a needs
+    # nothing satisfies, and the item would simply stop being offered with no error.
+    if ev.get("event") == "needs" and ev.get("to") not in NEEDS:
+        raise SchemaError(
+            "needs --to must be one of %s (got %r)" % (", ".join(NEEDS), ev.get("to")))
     return ev
 
 
@@ -633,6 +648,8 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
         item.findings.append(ev["name"])
     elif verb == "retarget":
         item.target = ev["to"]
+    elif verb == "needs":
+        item.needs = ev["to"]
     elif verb == "reassign":
         item.owner = ev["to"]
     elif verb == "close":

@@ -543,6 +543,22 @@ def cmd_spawn(args, seat):
     return 0
 
 
+def cmd_needs(args, seat):
+    """Set `needs` on an existing item.
+
+    🔴 Until 2026-08-21 there was no way to do this: only `file` and `spawn` accepted
+    `--needs`, so every migrated item rendered at the filing default and the whole
+    game-state axis was dead. 38 of CHECK's 38 items claimed to be offline work while
+    several wanted 100 in-game days or a bridge import.
+    """
+    _, w = load()
+    _emit({"seat": seat, "event": "needs", "id": args.id, "to": args.to,
+           "reason": args.reason}, w, quiet=True)
+    print("%s now needs %s. Lifecycle untouched — this says WHEN it can be worked, "
+          "not that anything is wrong." % (args.id, args.to))
+    return 0
+
+
 def cmd_retarget(args, seat):
     _, w = load()
     _emit({"seat": seat, "event": "retarget", "id": args.id, "to": args.to,
@@ -788,6 +804,13 @@ def build_parser():
     s.add_argument("--this-deployment", dest="this_deployment", action="store_true",
                    help="jumps the queue; cleared automatically when the game leaves UP")
     s.add_argument("--id", help="host item; derived from --from when possible")
+
+    s = add("needs", "set WHEN an item can be worked (offline|deploy|game-up|bridge|"
+            "harvest|owner)", cmd_needs)
+    s.add_argument("id")
+    s.add_argument("--to", required=True,
+                   help="offline|deploy|game-up|bridge|harvest|owner")
+    s.add_argument("--reason", required=True)
 
     s = add("retarget", "move it between v1 and v2 — a planning move", cmd_retarget)
     s.add_argument("id")

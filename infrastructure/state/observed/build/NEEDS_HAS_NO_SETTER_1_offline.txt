@@ -1,0 +1,31 @@
+NEEDS_HAS_NO_SETTER_1 — offline verify, 2026-08-21
+
+New verb: rimflow needs <ID> --to <needs> --reason <why>
+  who: (DECIDE, owner) — same shape as retarget, because a mis-stamped needs is
+  exactly what another seat notices about an item its owner cannot see clearly.
+
+Exercised on B55, the item that started this session by being unstartable:
+
+a) OWNER sets it:
+   B55 now needs game-up. Lifecycle untouched.
+
+b) NON-owner refused:
+   only DECIDE or the owning seat may `needs` (seat is CHECK)
+
+c) TYPO refused (added beyond the spec — a bad value would otherwise append a
+   needs nothing satisfies and the item would stop being offered with no error):
+   needs --to must be one of offline, deploy, game-up, bridge, harvest, owner (got 'offlien')
+
+d) with the game DOWN, `rimflow next --seat BUILD` no longer returns B55 —
+   it now returns B-V2. B55 was the top-ranked item for every BUILD session.
+
+e) `rimflow why B55`:
+   - needs `game-up`, and the game is DOWN. This is NOT blocked — nothing is wrong,
+     the window is simply closed and will reopen.
+
+f) queue/BUILD.md now lists B55 under 'WAITING ON A WINDOW — nothing is wrong'.
+
+APPEND-ONLY by construction: the verb emits an event; nothing mutates.
+
+⇒ CHECK's follow-up — re-stamping his 38 items — is now possible. This item's own
+  spec says the setter is the deliverable and the re-stamp is his.
