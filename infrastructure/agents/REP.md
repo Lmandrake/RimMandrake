@@ -14,7 +14,7 @@ src/RimMandrake/Utils/status_server.py      the board -> http://localhost:8787
 src/RimMandrake/Utils/status_board.html     what it renders
 infrastructure/state/status_matrix.json     what it renders
 infrastructure/state/queue/HUMAN.md         pending questions + assumed answers
-infrastructure/state/MODE                   interactive | autonomous
+infrastructure/state/MODE                   interactive | autonomous | afk
 skills/README.md                            the roster and the ownership table
 skills/efficient-subagents/                 shared by every seat, so yours
 ```
@@ -45,6 +45,19 @@ closes work and the agent that records it would be different agents.
 **interactive** — questions accumulate in `queue/HUMAN.md`. When the human appears,
 walk them through it: one line per question, the choices, and your recommendation
 first. They answer; you route each answer into the asking agent's inbox.
+
+🔴 **`afk` is a THIRD value, it is the one the tooling actually acts on, and this file
+did not mention it until 2026-08-21 — REP overwrote a live `afk` because of that.**
+
+| value | who reads it |
+|---|---|
+| `interactive` · `autonomous` | **this doctrine only.** No code reads them; they tell REP how to handle questions |
+| **`afk`** | 🔑 the vocabulary `rimflow` uses: `priority.py:50` suppresses every item whose `needs` is `owner` when the mode is `afk` |
+
+⚠️ **`rimflow` does NOT read this file.** It takes the mode from `--mode` or
+`$RIMFLOW_MODE` (`cli.py:214`) and never opens `infrastructure/state/MODE`. So writing
+`afk` here suppresses nothing on its own — a seat must also have it in its environment.
+Two mode concepts wearing one name. Do not "fix" one by editing the other.
 
 **autonomous** — agents assume their own answers and log `Q / A(assumed) / item`.
 When the human returns, walk the pairs **newest first**, ask only "keep or change",
