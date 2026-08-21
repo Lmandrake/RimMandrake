@@ -237,7 +237,7 @@ single most expensive confusion in this project and it has three distinct shapes
 |---|---|
 | the dump is STALE — captured under a different mod set | dump `modCount` != `<activeMods>` children. Compare the SET, never a timestamp |
 | the def loaded and was then DELETED at runtime by a dedup mod | present in the dump, absent in game, no log line |
-| the field is present and current but a **C# comp computes the real value** | `strings -a <mod>/Assemblies/*.dll \| grep -i <fieldname>` gets a hit |
+| the field is present and current but a **C# comp computes the real value** | the mod's assembly declares a member named after the field (`AdjustedArmorPenetration`, `get_ArmorPenetrationInt`). Read it out of the metadata with `ilprobe` — ⛔ not `strings`, which the blind-scan hook refuses and which sees a minority of names anyway. `references/disk-vs-runtime.md` has the command |
 
 The third is the newest and the nastiest, because nothing about the dump looks wrong. The
 in-game info card is the arbiter, and reading one costs no map, no spawn and no bridge

@@ -79,8 +79,13 @@ rewrite in pure XML.** A missing class is a load error on that def and the def i
 gone; the species then generates without whatever the gene did.
 
 ⚠️ `EyeOffsetSouth` is the instructive one: the namespace does not match any mod
-folder name, so a dependency list built from namespaces alone misses it. Find the
-owner by `strings -a -el` on the assemblies, not by guessing.
+folder name, so a dependency list built from namespaces alone misses it. Find the owner by
+READING each assembly's TypeDef table — point `DLL` in a copy of
+`src/RimMandrake/Utils/ilprobe/meta_core.py` at the dll and look the class name up in
+`typedefs`, which carries the namespace beside it. ⛔ Not `strings -a -el`: the blind-scan
+hook refuses a byte scan of a `.dll`, and it sees one string heap at a time — **16 of 115**
+names on our own companion — so the assembly it fails to find the class in is not
+thereby innocent.
 
 ## 🔴 `Name=` is a second global namespace
 

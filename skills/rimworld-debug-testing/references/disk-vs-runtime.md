@@ -89,8 +89,19 @@ The XML field may simply be an input to a calculation, or vestigial. The analysi
 retracted, and the patch built on it was deleted rather than shipped.
 
 ⇒ **Before computing anything from a numeric def field, ask whether a comp owns that
-number.** The tell is cheap: `strings -a <mod>/Assemblies/*.dll | grep -i <fieldname>`. A
-hit means the field is contested and disk cannot settle it.
+number.** The tell is cheap, but it is a metadata read, not a byte scan — copy
+`src/RimMandrake/Utils/ilprobe/meta_core.py`, point its `DLL` at the mod's assembly, and
+look for a member named after the field:
+
+```bash
+python3 -c "import sys;sys.path.insert(0,'<dir with the repointed meta_core.py>');\
+import meta_core as m;print([t[0] for t in m.typedefs if 'ArmorPenetration' in t[0]])"
+```
+
+⛔ **Not `strings -a <mod>/Assemblies/*.dll | grep -i <fieldname>`.** The blind-scan hook
+refuses it, and it earns the refusal: a byte scan of a .NET assembly sees one string heap
+at a time — **16 of 115** names on our own companion — so a MISS is not absence. A hit
+means the field is contested and disk cannot settle it; a miss means you have not looked.
 
 ⇒ **The in-game info card is the arbiter, and reading one is not a test** — no map, no
 spawn, no combat, no bridge privileges. It displays the post-comp value. When an offline

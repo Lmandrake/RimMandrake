@@ -173,12 +173,25 @@ number moved again to **22** the same night, and to **26** on 2026-08-14.
 `EXPECTED_TOOLS` and `prove_new_tools.py` reads it out of the deployed DLL, so
 neither carries a literal to go stale.
 A census gate that three files answer differently is worse than no gate, so
-check the DLL rather than any of the three:
-`strings -a "<gamedir>\BridgeTools\JawaBench\JawaBench.BridgeTools.dll" | grep -o "jawa/[a-z_]*" | sort -u | wc -l`.
-🔴 **That command proves a tool NAME only.** Tool names are attribute blobs and
-are UTF-8; a method-body MESSAGE is UTF-16LE and needs `strings -a -el`, or it
-reports ABSENT on a string that is present.
-Deciding strings per tool: `src/RimMandrake/bridgetools/prove_new_tools.py`.
+measure the DLL rather than quoting any of the three.
+
+⛔ **Not `strings -a … | grep -o "jawa/[a-z_]*" | wc -l`.** That command IS this
+incident: it reported **16 of 115** tool names present. A tool name is a custom-attribute
+argument living in the UTF-8 blob heap; a method-body MESSAGE is a UTF-16LE literal in
+`#US`. One scan can only ever see one heap, and it reports the other as ABSENT with no
+error. The blind-scan hook now refuses `strings`/`grep` on a `.dll` outright.
+
+**Game down** — `tool_surface()` reads BOTH heaps, and is an upper bound (a name quoted
+inside a message counts once):
+
+```bash
+python3 -c "import sys;sys.path.insert(0,'src/RimMandrake/bridgetools');import build;\
+print(len(build.tool_surface(open('<gamedir>/BridgeTools/JawaBench/JawaBench.BridgeTools.dll','rb').read())))"
+```
+
+**Game up** — `python.exe src/RimMandrake/bridgetools/prove_new_tools.py --census`
+(read only). It compares what the GAME registered against what the deployed DLL holds, so
+neither side is a quoted number. Deciding strings per tool are in the same file.
 
 ---
 

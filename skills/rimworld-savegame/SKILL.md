@@ -32,8 +32,19 @@ contain that faction** — the hit is the def-name **registry** entry beside a
 neighbouring def, not an instance.
 
 ```bash
-grep -c '<def>OuterRim_RebelAlliance</def>' save.rws    # instantiated objects only
+MEASURE_ALLOW_SCAN=1 grep -c '<def>OuterRim_RebelAlliance</def>' save.rws   # instances only
 ```
+
+⛔ **The blind-scan hook refuses any `grep` of a `.rws` by default**, which is why the
+override is on that line. This is the legitimate case — an exact literal, asking whether
+it occurs — so run it with `MEASURE_ALLOW_SCAN=1` and say in your next message that you
+overrode it.
+
+🔴 **The override does not make a grid-borne count legitimate.** Biomes, terrain and
+things are 2-byte shortHash INDICES inside base64/raw-DEFLATE grids — not text at all — so
+a grep for biome defNames returned **2** where the answer was 3 / 233 / 31. Those go
+through `rimbench/savemap.py` or the live bridge; `measure explain <save>.rws` says which
+and why.
 
 **Use named controls**: check defs you know are present *and* absent in the same
 run, or an empty result is a claim about your query rather than about the world.

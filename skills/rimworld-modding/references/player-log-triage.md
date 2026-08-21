@@ -4,10 +4,24 @@ Open this whenever you are actually reading a log.
 
 `%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log`
 
+🔴 **Do not reach for `grep` first — run `harvest_log.py`.** The blind-scan hook refuses
+a scanner on `Player.log`, and it earns the refusal: one error spans 30 lines, so a
+`grep -c` counts LINES and not errors, and that number then decides severity.
+
+```bash
+python3 src/RimMandrake/Utils/harvest_log.py --log <path>    # note --log, not positional
+python3 src/RimMandrake/Utils/harvest_log.py --show dead     # print the matching lines
+```
+
+It groups traces, carries a measured baseline per check, and REFUSES a log written before
+the current `ModsConfig.xml` — which is the failure a hand grep cannot see at all.
+Searching for one literal error string to learn IF it occurred is still legitimate; run it
+as `MEASURE_ALLOW_SCAN=1 grep -F '<string>' "$LOG"` and say that you overrode.
+
 Triage in this order, because it sorts by severity of consequence rather than by
 position in the file:
 
-1. **`grep -n "static constructor\|TypeInitializationException\|ReflectionTypeLoadException"`** — these mods are *dead*, not noisy. A mod that
+1. **`--show dead` and `--show reflect`** (`static constructor`, `TypeInitializationException`, `ReflectionTypeLoadException`) — these mods are *dead*, not noisy. A mod that
    throws in its static constructor did not load at all, and it will not say so
    again later. In a large stack, failures concentrate here: mods that reflect
    over *other mods'* types at startup are the fragile class.

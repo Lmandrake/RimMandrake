@@ -76,8 +76,12 @@ drawing.
 
 **Generalises to:** when a mod setting "does nothing", check whether it is read at
 initialisation before calling it broken. Look for `Initialize`/`FromSave` in the
-assembly's method names — `strings -a <dll> | grep -i init` is usually enough. And prefer
-a debug action over a reload; a reload here costs a load, the action cost one call.
+assembly's method names — `python3 src/RimMandrake/Utils/ilprobe/meta.py <ClassName>`
+prints every method on a type (repoint `DLL` in a copy of `meta_core.py` for a mod's own
+dll). ⛔ Not `strings -a <dll> | grep -i init`: the blind-scan hook refuses it, and a byte
+scan of a .NET assembly sees a minority of names, so finding nothing tells you nothing.
+And prefer a debug action over a reload; a reload here costs a load, the action cost one
+call.
 
 📌 Also useful: the in-game world **tile inspector prints lat/long directly**
 (`39.40°N 4.97°E`). Free cross-check against `jawa/world_tile_export` once it deploys.

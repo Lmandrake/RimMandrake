@@ -287,8 +287,12 @@ Harvest per `skills/rimworld-modding/references/player-log-triage.md` and
 `vendor/wisdom/benign_log_errors.md` §0. Log path:
 `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log`
 
-Grep these exact strings (all verified present in Assembly-CSharp 1.6.4871 via
-`strings -a -e l`):
+Run `python3 src/RimMandrake/Utils/harvest_log.py --log <path>` first — the blind-scan
+hook refuses a scanner on `Player.log`, and a `grep -c` there counts LINES, not errors.
+harvest_log has no ideo check, so for the strings below the legitimate form is a LITERAL
+presence search — `MEASURE_ALLOW_SCAN=1 grep -F '<string>' "$LOG"`, asking whether it
+occurred, never how many times. (The strings were confirmed to exist in Assembly-CSharp
+1.6.4871 by a byte scan, which proves presence and never absence.)
 
 | string | means |
 |---|---|
@@ -368,8 +372,9 @@ is the one the script most looks like it is catching.**
 7. **Deploy.** Writing the file is not deploying it —
    `skills/rimworld-deploy/SKILL.md`. The game reads
    `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>`.
-8. **Load, then grep the log** for the eleven strings in §4b before touching the
-   UI. Cheap, and it rules out the loud failures.
+8. **Load, then read the log** — `harvest_log.py --log <path>` for the standing
+   checks, then the eleven §4b strings as literal presence searches under
+   `MEASURE_ALLOW_SCAN=1`. Cheap, and it rules out the loud failures.
 9. 🔴 **The one thing only a game load settles — open the Ideoligions tab, click
    "Show all ideoligions", find the faction, and read its memes back.** If they
    are not exactly your `forcedMemes`, the religion in the document does not

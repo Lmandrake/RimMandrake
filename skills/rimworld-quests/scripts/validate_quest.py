@@ -516,7 +516,12 @@ def check_def(defname: str, el: ET.Element, corpus: dict, rep: Report, src: Path
             add(INFO, "foreign-node",
                 f"{cls} is another assembly's node. That is a hard dependency and a "
                 f"load-order constraint - name the mod in <modDependencies> and confirm "
-                f"the namespace with: strings <mod>/Assemblies/*.dll | grep {short}")
+                f"the namespace by READING that assembly's metadata: point DLL in "
+                f"src/RimMandrake/Utils/ilprobe/meta_core.py at the mod's dll, then look "
+                f"for {short} in meta_core.typedefs (the name is there with its "
+                f"namespace). Do NOT `strings` it - the blind-scan hook refuses a byte "
+                f"scan of a .dll, and it earns the refusal: strings found 16 of 115 "
+                f"names on our own companion, so a miss is not absence.")
         elif nodes_known and short not in nodes_known:
             near = [n for n in nodes_known if n.lower() == short.lower()]
             if near:

@@ -368,8 +368,12 @@ timeout branches even when one inner node is yours, so the lifecycle stays edita
 without a rebuild — that hybrid is what the best third-party quest mods do.
 
 ⚠️ Borrowing a modded node is a hard dependency **and** a load-order constraint.
-Confirm the namespace with `strings <mod>/Assemblies/*.dll | grep QuestNode_` and
-name the mod in `<modDependencies>`. VEF ships one node under three namespaces.
+Confirm the namespace by reading that assembly's metadata — point `DLL` in a copy of
+`src/RimMandrake/Utils/ilprobe/meta_core.py` at the mod's dll and list every
+`QuestNode_*` in `typedefs`; the namespace comes with the name. ⛔ Not
+`strings … | grep QuestNode_`: refused by the blind-scan hook, and a byte scan of a
+.NET assembly finds only a minority of names, so a miss is not absence.
+Then name the mod in `<modDependencies>`. VEF ships one node under three namespaces.
 
 ---
 

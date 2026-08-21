@@ -42,7 +42,7 @@ What goes in, and what does not: `references/traps.md`.
 **Symptom:** swapping the six `Eyes_<colour>_Feline` genes on `BTD_Hutt` for the `Eyes_<colour>_Reptile` ones looks like a six-line find-and-replace in `HuttEyes_Slitted.xml`.
 **Cause:** two patches cooperate. `HuttEyes_RestoreRenderNodes.xml` puts back the `renderNodeProperties` that [LFS] Genes Expanded strips whenever Facial Animation is installed. The live dump shows them **present** on `Eyes_*_Feline` only because our own restore file put them there, and **stripped** on `Eyes_*_Reptile` — so retargeting the assigning file alone hands the xenotype six genes that draw nothing, i.e. Hutts with no eyes. Separately, editing a `XenotypeDef` never rewrites existing pawns: the save held 24 Feline eye genes on already-spawned Hutts plus one on an unrelated pawn, so deleting the old family blinds them on load.
 **Fix:** restore **both** families and let the xenotype roll only the new one. Every op is guarded `[not(renderNodeProperties)]`, so the unused half costs nothing on a save with none of those pawns.
-**Recurs when:** any xenotype, backstory or gene-roster change — `grep` the `.rws` for the old defNames, and re-read the *unpatched* sibling def, because a repaired state is evidence about your patch, not about the mod.
+**Recurs when:** any xenotype, backstory or gene-roster change — search the `.rws` for the old defNames as a LITERAL, `MEASURE_ALLOW_SCAN=1 grep -c '<def>NAME</def>' <save>.rws` (the blind-scan hook refuses a bare `grep` of a save, and the bare defName matches the registry entry rather than an instance), and re-read the *unpatched* sibling def, because a repaired state is evidence about your patch, not about the mod.
 
 ---
 
