@@ -787,3 +787,6 @@
 {"seat":"CHECK","event":"claim","id":"WORLD_PAINT_IS_PRESENT_1","ts":"2026-08-21T17:34:50Z"}
 {"seat":"CHECK","event":"start","id":"WORLD_PAINT_IS_PRESENT_1","ts":"2026-08-21T17:34:50Z"}
 {"seat":"BUILD","event":"file","id":"SCANNED_ARTIFACTS_CANNOT_LIE_1","title":"Make scanned artifacts incapable of returning a confident wrong number","kind":"decision","target":"v1","for":"BUILD","ts":"2026-08-21T17:35:24Z"}
+{"seat":"CHECK","event":"verify","id":"WORLD_PAINT_IS_PRESENT_1","result":"pass","config":"full-583","evidence":"observed/bridge/WORLD_PAINT_IS_PRESENT_1_2026-08-21.md","sha":"5d0faae","ts":"2026-08-21T17:38:38Z"}
+{"seat":"CHECK","event":"finding","id":"WORLD_PAINT_IS_PRESENT_1","type":"integration","severity":"high","name":"WORLD_SAVE_PREDATES_THE_CSV_1","from":"WORLD_PAINT_IS_PRESENT_1/run-1@full-583","ts":"2026-08-21T17:38:43Z"}
+{"seat":"CHECK","event":"close","id":"WORLD_PAINT_IS_PRESENT_1","sha":"5d0faae","ts":"2026-08-21T17:38:43Z"}
