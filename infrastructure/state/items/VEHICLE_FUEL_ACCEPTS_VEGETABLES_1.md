@@ -101,3 +101,38 @@ silent no-op. The prefix must replace the whole method and search
 ⇒ Home is `DesertVehicleReskin`: it is already active in `ModsConfig`, whereas a new
 mod would not load at all until the owner adds it. Its `About.xml` currently claims
 "texture overrides only", and that line must be corrected in the same commit.
+
+## notes — BUILT 2026-08-21, and two of this item's own claims are wrong
+
+**Shipped in `0606d16`** as `src/Jawa/DesertVehicleReskin/Source/Fuel/`, built clean to
+`src/Jawa/DesertVehicleReskin/Assemblies/DesertVehicleReskin.dll`. ⚠️ **Not deployed** —
+the game was up and the OS locks a loaded DLL.
+
+🔴 **`FoodTypeFlags` values are NOT the obvious powers of two, and two of them decide
+this item.** Read by reflection out of `Assembly-CSharp.dll` on 2026-08-21:
+
+| flag | value | consequence |
+|---|---|---|
+| `Fungus` | **4097 = 4096 \| VegetableOrFruit** | ✅ `RawFungus` qualifies — the composite carries the bit |
+| `Seed` | 16, standalone | ⛔ **`RawRice` does NOT qualify.** Its `foodType` is `Seed` alone |
+| `Kibble` | 2048, standalone | ⛔ **Kibble is NOT "part-plant"** as the spec above says |
+| `OvivoreAnimal` | 2848, hides `AnimalProduct` | ✅ correctly excluded, but only by flag arithmetic |
+
+⇒ **The spec's roster line is wrong about `RawRice`.** Everything else it lists is
+admitted. Rice is a food a herbivore team should plainly eat; adding `FoodTypeFlags.Seed`
+to `VegetableFuel.Accepted` is a one-token change and **DECIDE's call**, not BUILD's.
+
+⇒ **`Kibble` keeps `DogSled` alive ONLY through the always-accept-`Props.fuelType`
+clause**, not through the vegetable rule. Do not remove that clause.
+
+🔑 **`WorkGiver_RefuelVehicle.CanRefuel` needed no patch.** Its only fuel-def gate is the
+call to `ClosestFuelAvailable`; its remaining `Props.fuelType` use is the
+`NoFuelToRefuel` message text. The earlier note above was written before that body was
+read. `Refunds` and `EjectFuel` are also unpatched on purpose — `fuel` is one `float`
+with no record of which def filled it, so there is no honest widened answer.
+
+**Offline verify ran and passes** against the frozen `OFFICIAL-2026-08-20` dump:
+`python3 src/Jawa/DesertVehicleReskin/Source/Fuel/check_fuel_predicate.py` — 24 573
+ThingDefs scanned, **560 accepted**, `Hay`/`RawPotatoes`/`RawCorn`/`RawBerries`/
+`RawFungus` in, `Beer`/`Meat_Cow`/`Meat_Human`/`Milk`/`Ambrosia` out. ⚠️ That proves the
+**rule**, not the patches: only a game load proves Harmony attached.
