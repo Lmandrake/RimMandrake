@@ -575,3 +575,15 @@
 {"seat":"BUILD","event":"verify","id":"GUARD_SCANS_WHOLE_TREE_1","result":"pass","config":"offline-selftest","evidence":"infrastructure/state/observed/build/GUARD_SCANS_WHOLE_TREE_1_offline.txt","sha":"58eb6c6","ts":"2026-08-21T10:47:45Z"}
 {"seat":"DECIDE","event":"supersede","id":"IMPERIAL_CAST_BINDING_1","by":"CAST_XENOTYPE_BINDING_RULE_1","ts":"2026-08-21T10:47:51Z"}
 {"seat":"BUILD","event":"close","id":"GUARD_SCANS_WHOLE_TREE_1","sha":"1f3b054","ts":"2026-08-21T10:47:55Z"}
+{"seat":"DECIDE","event":"claim","id":"CAST_XENOTYPE_BINDING_RULE_1","ts":"2026-08-21T10:48:21Z"}
+{"seat":"DECIDE","event":"start","id":"CAST_XENOTYPE_BINDING_RULE_1","ts":"2026-08-21T10:48:22Z"}
+{"seat":"BUILD","event":"claim","id":"NEEDS_HAS_NO_SETTER_1","ts":"2026-08-21T10:48:33Z"}
+{"seat":"BUILD","event":"start","id":"NEEDS_HAS_NO_SETTER_1","ts":"2026-08-21T10:48:34Z"}
+{"seat":"BUILD","event":"needs","id":"B55","to":"game-up","reason":"every step is live-game work: place the gravship, replay terrainDef through jawa/set_terrain_batch, author six founders in Character Editor, set stock. It also waits on the owner's saved world. It was stuck at the filing default and was offered as offline work to every BUILD session.","ts":"2026-08-21T10:49:47Z"}
+{"seat":"DECIDE","event":"file","id":"CAST_NINE_SPECIES_MISSING_1","title":"Nine named characters are written as species this mod set cannot render","kind":"decision","row":"inhabited","target":"v1","needs":"offline","caused_by":"CAST_XENOTYPE_BINDING_RULE_1","for":"DECIDE","ts":"2026-08-21T10:49:50Z"}
+{"seat":"BUILD","event":"verify","id":"NEEDS_HAS_NO_SETTER_1","result":"pass","config":"offline-ledger","evidence":"infrastructure/state/observed/build/NEEDS_HAS_NO_SETTER_1_offline.txt","sha":"4729838","ts":"2026-08-21T10:50:19Z"}
+{"seat":"DECIDE","event":"close","id":"CAST_XENOTYPE_BINDING_RULE_1","sha":"82890b4","ts":"2026-08-21T10:50:23Z"}
+{"seat":"BUILD","event":"close","id":"NEEDS_HAS_NO_SETTER_1","sha":"4c1cba6","ts":"2026-08-21T10:50:41Z"}
+{"seat":"BUILD","event":"file","id":"NEEDS_RESTAMP_THIRTYEIGHT_1","title":"Re-stamp the 38 CHECK items whose needs is still the filing default","kind":"task","target":"v1","for":"CHECK","ts":"2026-08-21T10:50:41Z"}
+{"seat":"DECIDE","event":"claim","id":"CAST_NINE_SPECIES_MISSING_1","ts":"2026-08-21T10:50:45Z"}
+{"seat":"DECIDE","event":"start","id":"CAST_NINE_SPECIES_MISSING_1","ts":"2026-08-21T10:50:45Z"}
