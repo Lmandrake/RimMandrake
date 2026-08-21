@@ -5,6 +5,12 @@
 > accept 22–28%" constraint below was already dead when it was written here and is now
 > struck; the painted figure is **8.14%**.
 
+> 🛠️ **And the world can now be REBUILT from
+> [`WORLD_REDRAFT.md`](WORLD_REDRAFT.md)** — the by-hand procedure that produced the keeper
+> save, step by step, with each command checked against the tool that accepts it. ⛔ It is a
+> redraft procedure, never a generator; the ruling below is why. **A keeper you cannot
+> redraft is a keeper you cannot fix.**
+
 > 🔑 **The world's CONTENT now lives in
 > [`ASHKARR_WORLD_DEFINITION.md`](ASHKARR_WORLD_DEFINITION.md)** — coordinates,
 > gazetteer, hydrology, zonation, factions. This file keeps only the DOCTRINE: why
