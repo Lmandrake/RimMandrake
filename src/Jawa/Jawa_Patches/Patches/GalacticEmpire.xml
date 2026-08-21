@@ -38,6 +38,7 @@
       techLevel                   Ultra
       fixedName                   ABSENT      -> Add, not Replace
       permanentEnemy              ABSENT      -> Add, not Replace
+      fixedLeaderKinds            WRITTEN (line 90) -> Replace, not Add
       pawnGroupMakers             [1] Trader · [2] Combat commonality 100 ·
                                   [3] Combat commonality 10 · [4] Settlement
 
@@ -65,13 +66,38 @@
   Trader and Settlement groups are untouched by design: they carry the
   Royalty trade and settlement pawns, which are not part of R15.
 
-  The elite kinds (`OuterRim_ImpDeathTrooper`, `OuterRim_ImpISBAgent`,
-  `OuterRim_ImpRangeTrooper`, all combatPower 200) are confined to the RARE
-  combat group, mirroring vanilla's own split where the commonality-10 group is
-  the one carrying the heavier option list. The line troops
-  (`OuterRim_ImpStormArty`, `_Incinerator`, `_Jump`, all combatPower 80) appear
-  in both. None of the six carries the 99999 exclude-from-raid sentinel;
-  checked, they are 200/200/200/80/80/80.
+  🔑 THE RAID IS OURS NOW — IMPERIAL_RAID_ROSTER_1, 2026-08-21. Both combat
+  groups were built out of Outer Rim's `OuterRim_ImpStorm*` line troops, and the
+  four Imperial kinds this mod authors in
+  `Defs/PawnKindDefs/JawaFactionRoster.xml` had NO SPAWN ROUTE AT ALL:
+  `defaultFactionDef` names the faction a kind belongs to, it does not put the
+  kind in a raid. Only a `pawnGroupMaker` does. So the three fighting kinds now
+  carry both groups:
+
+      Jawa_Empire_Grunt        5      stormtrooper,     combatPower  87
+      Jawa_Empire_Heavy        2      heavy trooper,    combatPower 129
+      Jawa_Empire_Specialist   1.5    Imperial officer, combatPower 119
+
+  and the fourth, `Jawa_Empire_Leader` (Emperor Palpatine, combatPower 211), is
+  wired in through `fixedLeaderKinds` above rather than through a group, because
+  a leader is generated once for the faction and not rolled into raids.
+
+  The three Outer Rim SPECIALISTS stay in the RARE group only
+  (`OuterRim_ImpRangeTrooper`, `_ImpDeathTrooper`, `_ImpISBAgent`, all
+  combatPower 200), mirroring vanilla's own split where the commonality-10 group
+  carries the heavier option list. They are kept because they are flavour the
+  authored four do not carry. None of them holds the 99999 exclude-from-raid
+  sentinel; checked, all three are 200.
+
+  ⚠️ Our three kinds stay INSIDE the Outer Rim `PatchOperationFindMod` even
+  though they are ours, and that is deliberate: `Jawa_Empire_Grunt` declares
+  `apparelRequired` on `OuterRim_StormtrooperCuirass` and
+  `OuterRim_StormtrooperHelmet`, so without that mod the whole group is wrong
+  anyway.
+
+  ⛔ Do NOT touch the Trader or Settlement groups. They keep Royalty's villagers,
+  janissaries and cataphracts by design === FACTION_SPEC.md:130, EMPIRE_GAP_AUDIT.md
+  section 3.
 
   SAFETY
   ======
@@ -106,6 +132,24 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/FactionDef[defName="Empire"]/leaderTitle</xpath>
           <value><leaderTitle>Emperor</leaderTitle></value>
+        </li>
+
+        <!--
+          The leader the world actually names. WRITTEN on the vessel
+          (Data/Royalty/Defs/FactionDefs/Faction_Empire.xml:90, one li holding
+          Empire_Royal_Stellarch), so this is a REPLACE. An Add here would
+          append a second li and the Stellarch would keep rolling half the time.
+
+          OUTSIDE the Outer Rim FindMod on purpose: Jawa_Empire_Leader is ours,
+          shipped in this same mod, and needs no third-party gate.
+        -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Empire"]/fixedLeaderKinds</xpath>
+          <value>
+            <fixedLeaderKinds>
+              <li>Jawa_Empire_Leader</li>
+            </fixedLeaderKinds>
+          </value>
         </li>
 
         <li Class="PatchOperationReplace">
@@ -264,9 +308,9 @@
                 <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][commonality="100"]/options</xpath>
                 <value>
                   <options>
-                    <OuterRim_ImpStormArty MayRequire="Neronix17.OuterRim.GalacticEmpire">5</OuterRim_ImpStormArty>
-                    <OuterRim_ImpStormIncinerator MayRequire="Neronix17.OuterRim.GalacticEmpire">3.5</OuterRim_ImpStormIncinerator>
-                    <OuterRim_ImpStormJump MayRequire="Neronix17.OuterRim.GalacticEmpire">2</OuterRim_ImpStormJump>
+                    <Jawa_Empire_Grunt>5</Jawa_Empire_Grunt>
+                    <Jawa_Empire_Heavy>2</Jawa_Empire_Heavy>
+                    <Jawa_Empire_Specialist>1.5</Jawa_Empire_Specialist>
                   </options>
                 </value>
               </li>
@@ -277,9 +321,9 @@
                 <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][commonality="10"]/options</xpath>
                 <value>
                   <options>
-                    <OuterRim_ImpStormArty MayRequire="Neronix17.OuterRim.GalacticEmpire">5</OuterRim_ImpStormArty>
-                    <OuterRim_ImpStormIncinerator MayRequire="Neronix17.OuterRim.GalacticEmpire">3.5</OuterRim_ImpStormIncinerator>
-                    <OuterRim_ImpStormJump MayRequire="Neronix17.OuterRim.GalacticEmpire">2</OuterRim_ImpStormJump>
+                    <Jawa_Empire_Grunt>5</Jawa_Empire_Grunt>
+                    <Jawa_Empire_Heavy>2</Jawa_Empire_Heavy>
+                    <Jawa_Empire_Specialist>1.5</Jawa_Empire_Specialist>
                     <OuterRim_ImpRangeTrooper MayRequire="Neronix17.OuterRim.GalacticEmpire">2</OuterRim_ImpRangeTrooper>
                     <OuterRim_ImpDeathTrooper MayRequire="Neronix17.OuterRim.GalacticEmpire">1.5</OuterRim_ImpDeathTrooper>
                     <OuterRim_ImpISBAgent MayRequire="Neronix17.OuterRim.GalacticEmpire">1</OuterRim_ImpISBAgent>

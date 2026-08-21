@@ -1,0 +1,105 @@
+IMPERIAL_RAID_ROSTER_1 — offline evidence, BUILD, 2026-08-21
+config: offline-578-defs (DefDump modCount 578; ModsConfig active 579 — 1 mod adrift, see PROVISIONAL note below)
+
+=== 1. validate_patch.py src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml ===
+
+validate_patch.py - 1 XML file(s): 1 <Patch>, 0 <Defs>
+  SCANNED     Patches/: operation shape, guards, value shape, live xpath hit counts
+              Defs/:    XML parse, comment bodies, missing/duplicate defName, ParentName
+                        resolution, Class attributes, texPath existence and case
+  NOT SCANNED field names, field types, value ranges, C# class members, and any node
+              a PatchOperation creates at load time. This is not a def linter.
+
+  info    xpath engine: lxml 6.0.2.0 - full XPath 1.0, the same class of engine RimWorld itself uses, so text(), contains(), starts-with(), not() and boolean predicates are CHECKED.
+  info    load set: 579 active mods, 561 found on disk, target version 1.6 -> 8,681 def files
+  WARN    18 active packageId(s) have no folder under --defs - a broken install or a renamed mod: mandrake.jawaplantgrowth, mandrake.msedroidfix, mandrake.sauridfrillfix, mandrake.jawavoice, mandrake.gravshipastronautfix, mandrake.toolbeltfix, mandrake.blastdoorframeasyncfix, mandrake.researchkiteastfix, mandrake.desertvehiclereskin, mandrake.jawa.doctrine (+8 more)
+
+=== src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml ===
+  info    Operation[1] (PatchOperationConditional): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[1] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[2] (PatchOperationAdd): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[3] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[4] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[5] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[6] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[7] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[8] (PatchOperationAdd): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[9] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[10] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[11] (PatchOperationRemove): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[12] (PatchOperationRemove): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[13] (PatchOperationAdd): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[14] > match > operations/li[1] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[14] > match > operations/li[2] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match > operations/li[14] > match > operations/li[3] (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+
+OK - 0 errors, 0 warning(s)
+
+=== 2. grep -rn "Jawa_Empire_" src/ | grep -v JawaFactionRoster  (was EMPTY before this item) ===
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:77:      Jawa_Empire_Grunt        5      stormtrooper,     combatPower  87
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:78:      Jawa_Empire_Heavy        2      heavy trooper,    combatPower 129
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:79:      Jawa_Empire_Specialist   1.5    Imperial officer, combatPower 119
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:81:  and the fourth, `Jawa_Empire_Leader` (Emperor Palpatine, combatPower 211), is
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:93:  though they are ours, and that is deliberate: `Jawa_Empire_Grunt` declares
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:143:          OUTSIDE the Outer Rim FindMod on purpose: Jawa_Empire_Leader is ours,
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:150:              <li>Jawa_Empire_Leader</li>
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:311:                    <Jawa_Empire_Grunt>5</Jawa_Empire_Grunt>
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:312:                    <Jawa_Empire_Heavy>2</Jawa_Empire_Heavy>
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:313:                    <Jawa_Empire_Specialist>1.5</Jawa_Empire_Specialist>
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:324:                    <Jawa_Empire_Grunt>5</Jawa_Empire_Grunt>
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:325:                    <Jawa_Empire_Heavy>2</Jawa_Empire_Heavy>
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:326:                    <Jawa_Empire_Specialist>1.5</Jawa_Empire_Specialist>
+
+=== 3. fixedLeaderKinds: exactly one OPERATION, in GalacticEmpire.xml ===
+src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml:147:          <xpath>/Defs/FactionDef[defName="Empire"]/fixedLeaderKinds</xpath>
+vessel writes the field (so Replace, not Add):
+90:    <fixedLeaderKinds>
+91-      <li>Empire_Royal_Stellarch</li>
+92:    </fixedLeaderKinds>
+93-    <royalTitleTags>
+
+=== 4. THE TAG CHECK — every weaponTags entry on the four kinds, counted against ThingDef.json in the def dump ===
+  ORImperialStandard     3 surviving weapon(s)   e.g. OuterRim_DLT20ABlaster, OuterRim_E11BlasterRifle, OuterRim_E22BlasterRifle
+  ORImperialLight        4 surviving weapon(s)   e.g. OuterRim_DE10Blaster, OuterRim_DG29Blaster, OuterRim_EC17Blaster
+  ORImperialHeavy        6 surviving weapon(s)   e.g. OuterRim_T21RepeatingBlaster, OuterRim_D72wOppressor, OuterRim_DLT19HeavyBlasterRifle
+  ORHeavyWeapon          2 surviving weapon(s)   e.g. OuterRim_D72wOppressor, OuterRim_HH12RocketLauncher
+  ORPistol               8 surviving weapon(s)   e.g. OuterRim_BARMST12Scattergun, OuterRim_DE10Blaster, OuterRim_DG29Blaster
+  ORImperialSniper       1 surviving weapon(s)   e.g. OuterRim_DLT19XTargetingBlaster
+
+  ALL SIX TAGS >= 1. No authored Imperial kind spawns bare-handed.
+
+  OUT OF SCOPE but found while checking: ORImperialOfficer carries 0 weapons, which disarms OuterRim_ImperialTrader
+  (its only tag). Not one of our four kinds; not touched by this item.
+
+=== 5. weapon_tag_audit.py --anyway  (PROVISIONAL: dump 578 vs 579 active) ===
+⚠️  PROVISIONAL: dump modCount 578 != 579 active mods in ModsConfig.xml.
+   The dump describes a DIFFERENT mod set, so every number below would be a measurement of a game you are not running.
+   Regenerate the dump under the list you intend to ship, or pass --anyway to see the numbers as PROVISIONAL.
+
+weapon tags in the dump: 390   emptied by the cut: 0
+
+🔴 pawn kinds with EVERY weapon tag empty: 15
+   AncientMallGuards                  ['PKM']
+   AncientSoldierBoss                 ['AMHP']
+   AncientSoldierBossN                ['AMHP']
+   BS_CrossbowDvergr                  ['BS_CrossbowTag', 'DankPyon_Arbalest', 'VFEM2_Arbalest']
+   BS_Crossbowman                     ['BS_CrossbowTag', 'DankPyon_Arbalest', 'VFEM2_Arbalest']
+   BS_DvergrTraditionalist            ['BS_CrossbowTag', 'DankPyon_Arbalest', 'VFEM2_Arbalest']
+   DP_ArtilleryPirate                 ['DP_CannonNoEquipTag']
+   DP_RocketPirate                    ['DP_RocketNoEquipTag']
+   Drone_Sentry                       ['SentryDroneGunShortRange']
+   Mech_Pikeman                       ['MechanoidGunLongRange']
+   OuterRim_ImperialTrader            ['ORImperialOfficer']
+   Tribal_Archer_Fire                 ['NeolithicRangedFlame']
+   VEE_Hunter                         ['VEE_HunterIndustrialWeapon']
+   VEE_TribalHunter                   ['VEE_HunterNeolithicWeapon']
+   VFEP_Footsoldier                   ['WarcasketBasic']
+
+surviving Industrial/Spacer guns carrying NO vanilla role tag: 36
+   classified by role: {}
+   unclassified (left alone): 36
+
+=== NOT VERIFIABLE OFFLINE (needs a running game) ===
+- that an actual Imperial raid arrives armed and wearing the Stormtrooper cuirass/helmet
+- that the Empire's leader renders as 'Emperor Palpatine' in the faction panel
+- both require worldgen + a raid, so this item verifies PARTIAL.
