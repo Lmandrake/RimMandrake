@@ -112,10 +112,10 @@ work costs more than the work.
 
 ---
 
-## 4. Two ideas that do the heaviest lifting
+## 4. Three ideas that do the heaviest lifting
 
 These are not a path. They apply to all three, and they are where most of the relief comes
-from.
+from. **§4.3 bounds the other two** — without it, §4.2 collapses under its own weight.
 
 ### 4.1 Derive the worklist; do not store it
 
@@ -155,6 +155,80 @@ full, is growing, and the `deciding-and-superseding` skill exists to chase it.
 ⚠️ **What it costs:** a human browsing the design corpus can still read something false. The
 mitigation is a dated banner at the top of superseded files — cheap, and the project already
 does this.
+
+### 4.3 Canon is not "what is true." It is "what OVERRIDES."
+
+🔴 **This bound is load-bearing, and its absence is a defect this document shipped with.**
+The owner caught it: *"If we turned all the design facts and world facts into canon items,
+that's a LOT of canon… I could see this being thousands. What about cherrypicking out
+ThingDefs, for example? Build details?"*
+
+He is right, and without a bound §4.2 is unworkable — canon injected into every worker only
+survives if canon stays small.
+
+**A line earns canon only when something already written down says otherwise, or would be
+assumed otherwise.** The test is one question:
+
+> **Would a competent agent, holding the design docs and the data, do the wrong thing without
+> this line?**
+
+If no, it is not canon. It is content, and content lives where content lives.
+
+| kind | examples | where it lives | how an agent gets it |
+|---|---|---|---|
+| **Data** | 1,308 cherrypick keys · 21,872 tiles · 152 pawnkinds · 72 settlements · every def | its own files, whatever format suits | **queried by an instrument.** Never injected |
+| **Prose** | the premise · the planet · factions · religions | `design/**` | **read on demand, by path.** Never injected |
+| **Canon** | rulings that override one of the above | `canon/` | **injected whole — because it is small** |
+
+⛔ **A number that can be measured must never be written into canon.** Writing it down is how
+it goes stale — `biomes_on_map: 25` is a bug waiting to happen; `measure` answering 25 is
+not. The project already has the instrument for this column.
+
+**Worked example — cherrypicking's 1,308 keys collapse to two canon entries:**
+
+| the thing | verdict |
+|---|---|
+| the 1,308 keep/cut judgements | **data.** A tool answers *"is `ThingDef X` cut?"* Nobody reads the list |
+| *"Cherrypicking is frozen and closed for v1; plants, mechs, drugs, incidents, traits, ideology styles are not v1 work"* | ✅ **canon** — an agent would otherwise pick the work up |
+| *"The painter wins over the cut list: `AB_GelatinousSuperorganism` and `ZBiome_Grasslands` stay as painted"* | ✅ **canon** — it overrides the data file |
+| *"Cutting the last weapon carrying a tag silently disarms every pawn kind whose tags all went to zero"* | ⛔ **neither.** A procedure and a hazard — it belongs in a **skill**, loaded when someone cherry-picks |
+
+**Build details are the same shape.** The code is the truth about what the code does. Canon
+carries only the build decisions that override an assumption — *no Combat Extended* · *the
+gravship and its factory are the only sanctioned progression trees* · *assemblies deploy only
+while the game is down*.
+
+🔑 **Why this stays bounded:** canon size is governed by **live open questions, not decision
+history.** A superseded ruling leaves canon for the archive; only the current front is
+injected. And most rulings die naturally — once the thing they govern ships, the ruling stops
+overriding anything. Estimate under this definition: **60–150 live entries at ~10 lines
+each**, and it holds indefinitely because it does not accumulate.
+
+⚠️ **The failure mode to watch** is canon becoming a dumping ground for facts. The moment
+`water_pct: 8.14` is written into it, the slide toward thousands begins and the scheme
+collapses. **The discriminator above is the guard — and it is a definition, not a hook**,
+which is the §1 test passed.
+
+### 4.4 Format, given that bound
+
+With canon bounded at 60–150 entries, the format question is small and the answer keeps the
+markdown:
+
+- **`canon/<RULING_ID>.md`, one file per ruling**, with ~5 lines of frontmatter (`id`, `date`,
+  `tags`, `overturns`, `kills`). `ls` is the index, `grep` is the query, superseded rulings
+  move to `canon/archive/`, and git history per ruling is clean. **The structure lives inside
+  the file**, so if any script vanishes it is still readable prose.
+- 🔑 **No query engine is needed, because the Hand is the query.** The orchestrator knows the
+  task and selects the relevant rulings for the brief. Tags and `grep` are the backstop.
+- ✅ **Keep `canon.yml` and `check_canon.py` unchanged** for the *values* layer. 0
+  contradictions across 119 design docs is a real result and the one piece of the current
+  apparatus worth defending. ⚠️ But hold it to §4.3: values that can be measured should
+  migrate to the instrument rather than be maintained by hand.
+
+⚠️ **If canon comes in under ~50 entries, a single `CANON.md` is better** — total elegance,
+and the size problem never arrives. That is a countable question, not a matter of taste:
+seed canon from the rulings already scattered through `canon.yml`, `CLAUDE.md` and
+`HUMAN.md`, and count what comes out.
 
 ---
 
@@ -433,8 +507,22 @@ realistic worker count for one day's fan-out.
 **Why it matters:** it sizes the §12.1 migration (facts stay, procedures become skills, rules
 become hooks or disappear) instead of guessing at it.
 
-**Suggested order: E5 → E1 → E2 → E3, with E4 and E6 folded into normal work.** E5 first
-because it is free and reversible; E1 next because everything rests on it.
+### E7 · How big is canon actually?
+**The unknown:** §4.3 bounds canon by definition and estimates 60–150 live entries. That is a
+projection, and it decides the format (§4.4) and whether §4.2 is affordable at all.
+**The experiment:** sweep `canon.yml`'s `ruled:` and `needs_ruling:` sections, the standing
+rulings in both `CLAUDE.md` files, and `HUMAN.md`, applying the §4.3 test to each candidate —
+*would a competent agent do the wrong thing without this line?* **Count what survives.**
+**Cost:** one worker, no game.
+**Why it is decisive:** under ~50, take a single `CANON.md` and enjoy the elegance. Over ~150,
+the discriminator is not holding and §4.3 needs tightening before anything is built on it.
+⭐ It also produces the actual seeded canon as a by-product, so the measurement is not thrown
+away.
+
+**Suggested order: E5 → E7 → E1 → E2 → E3, with E4 and E6 folded into normal work.** E5 first
+because it is free and reversible; **E7 next because it is the one that can invalidate the
+design** — if canon really is thousands, §4.2 does not work and Path A needs rethinking; E1
+after, because everything else rests on it.
 
 ---
 
