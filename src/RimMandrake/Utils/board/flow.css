@@ -1,0 +1,192 @@
+/* flow.css — Flow view. Dark graphite, thin luminous 1px borders, restrained cyan for
+ * neutral-active and amber for attention. Crisp typography over chrome; high density.
+ *
+ * 🔴 NO MOTION. There is no transition, no animation and no @keyframes in this file,
+ * on purpose: this page is left open all day on a second monitor, and a graph that
+ * settles or pulses turns a reference into a distraction. If you are adding one, the
+ * answer is no — see §9.3 of the upgrade plan.
+ *
+ * ⚠️ Colour never carries meaning alone here. Every hue below is paired with a glyph
+ * and a word in the DOM; the ring, the dash and the strike are STATUS and are shaped,
+ * not tinted, so they cannot collide with a work category.
+ */
+.flow {
+  --surface: #1a1a19;
+  --panel: #201f1e;
+  --line: #33322f;
+  --line-hot: #4a4844;
+  --ink: #ded9d1;
+  --mut: #8d8880;
+  --cyan: #2f93a6;
+  --amber: #d99a2b;
+  --bad: #e05a5a;
+  background: var(--surface);
+  color: var(--ink);
+  font: 13px/1.45 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ---- bar ---------------------------------------------------------------- */
+.flow .fbar {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 8px 12px; border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+.flow .fbar-t { font-weight: 600; letter-spacing: .06em; font-size: 12px; color: var(--cyan); }
+.flow .fbar-f { color: var(--mut); font-size: 11.5px; margin-left: auto; }
+.flow .fbar-b, .flow .fmore {
+  background: transparent; color: var(--ink); border: 1px solid var(--line-hot);
+  border-radius: 3px; padding: 3px 9px; font: inherit; font-size: 11.5px; cursor: pointer;
+}
+.flow .fbar-b:hover, .flow .fmore:hover { border-color: var(--cyan); color: var(--cyan); }
+.flow .fmore-up { margin: 8px 0 0 12px; }
+
+.flow .fwarn {
+  margin: 8px 12px; padding: 7px 10px; font-size: 12px;
+  border: 1px solid var(--amber); border-left-width: 3px; color: var(--amber);
+  background: #221d12;
+}
+
+/* ---- layout ------------------------------------------------------------- */
+.flow .fmain { display: flex; align-items: stretch; min-height: 0; flex: 1; }
+.flow .fgraph { flex: 1; min-width: 0; overflow: auto; padding-bottom: 10px; }
+.flow .finsp {
+  width: 372px; flex: none; border-left: 1px solid var(--line);
+  background: var(--panel); overflow: auto; padding: 12px 14px 26px;
+}
+
+/* ---- canvas and edges --------------------------------------------------- */
+.flow .fcanvas { position: relative; }
+.flow .fedges { position: absolute; inset: 0; pointer-events: none; }
+.flow .fedge { fill: none; stroke: var(--line-hot); stroke-width: 1; }
+.flow .fedge.is-spawn { stroke: var(--cyan); }
+.flow .fedge-l {
+  fill: var(--mut); font: 9.5px "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: .04em;
+}
+
+/* ---- nodes -------------------------------------------------------------- */
+.flow .fnode {
+  position: absolute; box-sizing: border-box;
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 9px; background: #16201f00;
+  background-color: #191817;
+  border: 1px solid var(--hue, var(--line-hot));
+  border-left: 3px solid var(--hue, var(--line-hot));
+  border-radius: 3px; cursor: pointer; overflow: hidden;
+}
+.flow .fnode:hover, .flow .fnode:focus { outline: 1px solid var(--cyan); outline-offset: 1px; }
+.flow .fnode.is-focus { background-color: #23221f; box-shadow: inset 0 0 0 1px var(--line-hot); }
+/* STATUS, shaped rather than tinted. */
+.flow .fnode.is-ring { box-shadow: 0 0 0 2px #1a1a19, 0 0 0 3px var(--amber); }
+.flow .fnode.is-idle { border-style: dashed; border-left-style: solid; }
+.flow .fnode.is-struck .fnode-id { text-decoration: line-through; }
+.flow .fnode.is-struck .fnode-kind { text-decoration: line-through; }
+.flow .fnode.is-unlabelled { border: 2px solid var(--bad); color: var(--bad); font-size: 11px; }
+
+.flow .fnode-glyph {
+  flex: none; width: 20px; text-align: center; font-size: 15px; line-height: 1;
+  color: var(--hue, var(--ink));
+}
+.flow .fnode-body { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.flow .fnode-id {
+  font: 11.5px/1.25 "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.flow .fnode-meta {
+  font-size: 10.5px; color: var(--mut);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.flow .fnode-kind { color: var(--hue, var(--mut)); }
+.flow .fnode-warn { margin-left: auto; flex: none; color: var(--amber); font-size: 13px; }
+.flow .fnode-more {
+  position: absolute; right: 3px; bottom: 2px; font-size: 9.5px; color: var(--cyan);
+  border: 1px solid var(--line-hot); border-radius: 2px; padding: 0 3px;
+}
+.flow .fnode-run .fnode-id, .flow .fnode-finding .fnode-id { font-size: 10.5px; }
+
+/* ---- chooser ------------------------------------------------------------ */
+.flow .fchoose { padding: 12px 14px; max-width: 980px; }
+.flow .fchoose-h { color: var(--mut); font-size: 12px; margin-bottom: 10px; }
+.flow .fpick { margin: 0 0 14px; }
+.flow .fpick-h {
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--mut); border-bottom: 1px solid var(--line); padding-bottom: 3px; margin-bottom: 5px;
+}
+.flow .fpick-i {
+  display: flex; align-items: baseline; gap: 8px; width: 100%; text-align: left;
+  background: transparent; border: 1px solid transparent; border-left: 3px solid var(--hue);
+  color: var(--ink); font: inherit; padding: 3px 8px; cursor: pointer;
+}
+.flow .fpick-i:hover { border-color: var(--line-hot); border-left-color: var(--hue); background: #201f1d; }
+.flow .fpick-g { color: var(--hue); width: 16px; text-align: center; flex: none; }
+.flow .fpick-id { font: 11.5px "IBM Plex Mono", ui-monospace, monospace; flex: none; }
+.flow .fpick-k { color: var(--hue); font-size: 10.5px; flex: none; }
+.flow .fpick-t { color: var(--mut); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.flow .fsearch { margin-top: 8px; }
+.flow .fsearch input {
+  width: 100%; max-width: 460px; background: #141312; color: var(--ink);
+  border: 1px solid var(--line-hot); border-radius: 3px; padding: 5px 8px; font: inherit;
+}
+.flow .fsearch input:focus { outline: none; border-color: var(--cyan); }
+.flow .fsearch-hits { margin-top: 8px; }
+
+/* ---- the empty graph: the state the owner sees first --------------------- */
+.flow .fempty {
+  border: 1px solid var(--line); border-left: 3px solid var(--cyan);
+  background: #1d1c1a; padding: 12px 16px; margin-bottom: 16px; max-width: 760px;
+}
+.flow .fempty-h { color: var(--cyan); letter-spacing: .06em; font-size: 12.5px; font-weight: 600; }
+.flow .fempty p { margin: 8px 0; color: var(--ink); }
+.flow .fempty-sub { color: var(--mut) !important; font-size: 12px; }
+.flow .fempty-steps { margin: 6px 0 2px; padding-left: 20px; }
+.flow .fempty-steps li { margin-bottom: 7px; }
+.flow .fempty-steps code {
+  display: block; font: 11px "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--amber); overflow-wrap: anywhere;
+}
+.flow .fempty-why { display: block; color: var(--mut); font-size: 11.5px; }
+
+/* ---- inspector ---------------------------------------------------------- */
+.flow .finsp-head { display: flex; align-items: center; gap: 9px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.flow .finsp-glyph { font-size: 22px; color: var(--hue); line-height: 1; }
+.flow .finsp-id { font: 12px "IBM Plex Mono", ui-monospace, monospace; overflow-wrap: anywhere; }
+.flow .finsp-kind { font-size: 10.5px; color: var(--hue); letter-spacing: .04em; }
+.flow .finsp-title { margin: 8px 0 10px; font-size: 13.5px; }
+.flow .finsp h4 {
+  margin: 16px 0 5px; font-size: 11px; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--mut); border-bottom: 1px solid var(--line); padding-bottom: 3px;
+}
+.flow .finsp-scalars { display: grid; grid-template-columns: 108px 1fr; gap: 1px 8px; margin: 0; font-size: 11.5px; }
+.flow .finsp-scalars dt { color: var(--mut); }
+.flow .finsp-scalars dd { margin: 0; overflow-wrap: anywhere; }
+.flow .fwhy { margin-bottom: 9px; }
+.flow .fwhy-q { color: var(--cyan); font-size: 11.5px; }
+.flow .fwhy ul { margin: 3px 0 0; padding-left: 17px; }
+.flow .fwhy li { font-size: 11.5px; overflow-wrap: anywhere; margin-bottom: 3px; }
+.flow .fhist { list-style: none; margin: 0; padding: 0; }
+.flow .fhist li { display: flex; gap: 8px; font-size: 11px; padding: 2px 0; border-bottom: 1px solid #262523; }
+.flow .fhist-ts { color: var(--mut); font: 10.5px "IBM Plex Mono", ui-monospace, monospace; flex: none; }
+.flow .fhist-t { overflow-wrap: anywhere; }
+.flow .finsp-prose pre {
+  white-space: pre-wrap; font: 11px "IBM Plex Mono", ui-monospace, monospace;
+  background: #141312; border: 1px solid var(--line); padding: 8px; overflow-wrap: anywhere;
+}
+.flow .fpath {
+  display: block; font: 10.5px "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--amber); overflow-wrap: anywhere;
+}
+.flow .fmut { color: var(--mut); font-size: 11px; margin-top: 5px; }
+
+/* ---- unavailable, and the footer audit ---------------------------------- */
+.flow .funavail { margin: 24px; border: 1px solid var(--amber); border-left-width: 3px; padding: 14px 18px; max-width: 660px; }
+.flow .funavail-h { color: var(--amber); font-size: 16px; letter-spacing: .12em; font-weight: 600; }
+.flow .funavail p { color: var(--mut); margin: 8px 0 0; }
+.flow .ffoot {
+  border-top: 1px solid var(--line); background: var(--panel);
+  padding: 5px 12px; font-size: 10.5px; color: var(--mut); letter-spacing: .03em;
+}
+.flow .ffoot.is-bad { color: var(--bad); border-top-color: var(--bad); }
