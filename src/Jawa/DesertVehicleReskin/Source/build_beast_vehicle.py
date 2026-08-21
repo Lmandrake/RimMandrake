@@ -123,6 +123,23 @@ FIT_OVERRIDE = {("Chariot", "north"): "fill"}
 # stated invisibility limit for a top-down animal; sit under it, not on it.
 MAX_STRETCH = 1.12
 
+# 🔴 HOW FAR THE FITTED BEAST REACHES PAST THE BAND, TOWARD THE HITCH, IN BAND PIXELS.
+# The band is the donor's BLACK REGION, which is where the donor's ANIMAL was -- it is not
+# where the donor's animal MET ITS SHAFT. On OxCart east those are 8 px apart: the donor's
+# ox flank is continuous with the pole, but the pole's own tip is mask-RED keyline, so it
+# survives the erase while the flank beside it does not, and a beast fitted flush to x0
+# lands with its lowest trace at row 264 against a pole that stops at row 261. Two empty
+# rows, and validate_sprite.py counted the team as a detached fragment holding 46.8% of the
+# sprite -- the one warning on the whole twelve.
+# ⛔ Do NOT close it by widening the erase seeds. GEOMETRY.md and the east note below both
+# say why: the shaft and rein keylines out there are mask-black, so seeding them erases the
+# cart's own front outline. Tried, reverted, written down.
+# ✅ The fit EXTENDS instead of SHIFTING: `tw` grows by the reach and the far edge stays on
+# x1, so the muzzle keeps the band's outer extent -- which is the edge validate_sprite.py
+# measures -- and the whole cost is 8/224 = +3.6% of distortion on an animal whose limit is
+# ~18%. A shift would have cost 0% and taken 8 px off the snout instead.
+HITCH_REACH = {("OxCart", "east"): 8}
+
 # Facings where the donor draws bodywork OVER the animal (GEOMETRY section 2: no
 # isolated hitch exists on any north, and east stacks the pair under the shafts).
 UNDER = {"north": True, "east": True, "south": False}
@@ -289,6 +306,9 @@ def build(vehicle, facing, pair_path, out_path, out_mask_path):
         tw, th = int(round(pw * s)), int(round(ph * s))
         tw = min(bw, int(round(tw * MAX_STRETCH)))     # buy span back, bounded
         th = min(bh, int(round(th * MAX_STRETCH)))
+    reach = HITCH_REACH.get((vehicle, facing), 0)
+    if reach and mode == "contain":
+        tw += reach                                    # see HITCH_REACH: extend, not shift
     # Distortion actually applied: how far the two axis scales diverge. 0% means the
     # drawing is untouched; the item's limit for an invisible one is ~18%.
     stretch = (tw / pw) / (th / ph)
@@ -313,7 +333,7 @@ def build(vehicle, facing, pair_path, out_path, out_mask_path):
     # the beast off the extent it has to reach.
     anchor = FAR[facing] if mode == "south" else hitch
     if anchor == "left":
-        ox, oy = x0, y0 + (bh - th) // 2
+        ox, oy = x0 - reach, y0 + (bh - th) // 2
     elif anchor == "right":
         ox, oy = x1 + 1 - tw, y0 + (bh - th) // 2
     elif anchor == "top":

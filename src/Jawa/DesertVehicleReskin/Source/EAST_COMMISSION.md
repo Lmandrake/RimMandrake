@@ -6,10 +6,28 @@ below are the ones that ran, kept verbatim as provenance. What the run changed:
 
 | facing | generation | distortion | span | validate_sprite.py |
 |---|---|---|---|---|
-| OxCart east | bantha ×2, 1792×1440 | **+0.0%** | 100%×100% | **PASS** (1 warning) |
+| OxCart east | bantha ×2, 1792×1440 | **+3.6%** | 104%×100% | **PASS** (0 warnings) |
 | CoveredCarriage east | ronto ×2, came back 1448×1086 | **−0.0%** | 100%×100% | **PASS** |
 | WarChariot east | dewback ×2, 1728×1152 | **−0.0%** | 100%×100% | **PASS** |
 | Chariot east | dewback ×1, 1472×960 | **−10.8%** | 100%×88% | **PASS** |
+
+🔴 **TWO OWNER-APPROVED CHANGES LANDED ON TOP OF THIS RUN, 2026-08-21. The table above is
+the run's own numbers with OxCart's row corrected; nothing here needs firing again.**
+
+1. **OxCart east's one warning is closed, and the fix is `HITCH_REACH` in
+   `build_beast_vehicle.py`.** The banthas stood 2 rows clear of the pole tip and
+   `validate_sprite.py` counted the whole team as a detached fragment holding **46.8%** of
+   the sprite. The fitted beast now EXTENDS 8 px past the band toward the hitch, far edge
+   still on x1, so the traces meet the pole: **fragments 46.8% → 0.0%, one connected mass,
+   PASS with no warning**, bought for +3.6% distortion against the ~18% limit. The erase
+   seeds were NOT widened — see the builder for why that is a trap.
+2. **The ronto is no longer olive.** Both species came back at essentially one hue (ronto
+   51.1°, dewback 54.9°), which at sprite size is not two animals. `recolour_ronto.py`
+   shifts the RONTO only — hue **−20°**, value **×1.10**, saturation untouched — and the
+   dewback keeps the olive baseline. §4b's prompt says "taupe-olive hide"; **what ships is
+   dun.** The east build now takes `art/ronto_pair_east_dun_trimmed.png` and south/north
+   take `art/ronto_pair_gen_south_dun.png`; the olive originals stay as provenance of what
+   the model actually returned. No silhouette moved — a recolour cannot move one.
 
 🔴 **Three things this document did not know, all of them measured during the run:**
 
