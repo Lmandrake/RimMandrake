@@ -1,0 +1,181 @@
+/* deck.css — the Deck view. Spacecraft engineering console, not a dashboard.
+ *
+ * ⛔ NO MOTION. There is not one transition, animation or glow in this file, and
+ * that is deliberate: this page is left open all day on a second monitor, and
+ * anything that moves steals the eye from the one thing that changed.
+ *
+ * ⚠️ STATUS IS A SEPARATE CHANNEL FROM CATEGORY (palette.js, top comment).
+ * Category = hue + glyph + label, and it lives ONLY inside `.mk`.
+ * Status  = ring / opacity / dashed outline / ⚠, and it lives ONLY in the
+ * `.st-*` classes below. No `.st-*` rule may set a categorical hue, or
+ * "blocked" starts competing with "art" for the same pixel.
+ */
+
+.deck {
+  --bg: #1a1a19;
+  --panel: #201f1e;
+  --sunk: #141413;
+  --line: #34342f;
+  --lum: #4a4a43; /* the thin luminous 1px border */
+  --tx: #e5e4dd;
+  --mut: #8b8a81;
+  --dim: #66655d;
+  --cyan: #3fb3c4; /* neutral-active, restrained */
+  --amber: #d99e28; /* attention — always paired with ⚠, never alone */
+  background: var(--bg);
+  color: var(--tx);
+  font: 13px/1.35 "Segoe UI", system-ui, sans-serif;
+  padding: 12px;
+  min-width: 0;
+}
+
+.deck * { box-sizing: border-box; min-width: 0; }
+
+/* ---- shell ------------------------------------------------------------- */
+.deck .dk-head {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.deck .dk-head h2 {
+  margin: 0; font-size: 15px; font-weight: 700; letter-spacing: .18em;
+}
+.deck .dk-head .age { color: var(--mut); font-size: 11px; }
+.deck .dk-head .age.stale { color: var(--amber); font-weight: 700; }
+
+.deck .panel {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 5px;
+  padding: 10px 11px; overflow: hidden;
+}
+.deck .ttl {
+  margin: 0 0 8px; font-size: 10px; font-weight: 700; letter-spacing: .17em;
+  color: var(--mut);
+}
+.deck .row { display: grid; gap: 10px; margin-bottom: 10px; }
+.deck .row.top { grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr) minmax(0, 1fr); }
+@media (max-width: 900px) { .deck .row.top { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---- UNAVAILABLE — an absent board must never render as zeros ----------- */
+.deck .unavail {
+  border: 1px solid var(--amber); border-radius: 5px; padding: 14px;
+  background: var(--sunk);
+}
+.deck .unavail b { display: block; font-size: 16px; letter-spacing: .16em; color: var(--amber); }
+.deck .unavail p { margin: 7px 0 0; color: var(--tx); font-size: 12.5px; overflow-wrap: anywhere; }
+.deck .unavail .hint { color: var(--mut); font-style: italic; margin-top: 6px; }
+
+/* ---- the item mark: hue + GLYPH + LABEL, never hue alone ---------------- */
+.deck .mk {
+  display: inline-flex; align-items: center; gap: 5px; max-width: 100%;
+  padding: 1px 6px 1px 4px; border: 1px solid var(--line); border-radius: 3px;
+  background: var(--sunk); font-size: 12px; vertical-align: baseline;
+}
+.deck .mk .g {
+  color: var(--c); font-size: 12px; line-height: 1; width: 13px; text-align: center;
+  flex: 0 0 auto;
+}
+.deck .mk .id {
+  font-weight: 600; color: var(--tx); overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* The label is not optional. Two of our categories are ΔE 7.1 apart to a reader
+ * with ordinary sight, so the word is what actually carries the category. */
+.deck .mk .kl {
+  color: var(--mut); font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+  white-space: nowrap; flex: 0 0 auto;
+}
+.deck .mk .w { color: var(--amber); flex: 0 0 auto; }
+
+/* ---- STATUS CHANNEL. No hue here. -------------------------------------- */
+.deck .st-blocked { border-color: var(--amber); box-shadow: inset 0 0 0 1px var(--amber); }
+.deck .st-doing   { border-color: var(--lum); }
+.deck .st-done    { }
+.deck .st-idle    { border-style: dashed; border-color: var(--dim); }
+.deck .st-gone .id { text-decoration: line-through; }
+
+/* ---- seat lanes --------------------------------------------------------- */
+.deck .lane {
+  display: grid; align-items: start; gap: 10px;
+  grid-template-columns: 104px 128px minmax(0, 1.15fr) minmax(0, 1fr) 172px;
+  padding: 8px 0; border-top: 1px solid var(--line);
+}
+.deck .lane:first-of-type { border-top: 0; padding-top: 0; }
+@media (max-width: 1100px) {
+  .deck .lane { grid-template-columns: 104px 128px minmax(0, 1fr); }
+  .deck .lane .cell.mix { grid-column: 2 / -1; }
+}
+.deck .lane .nm { font-weight: 700; font-size: 12.5px; letter-spacing: .1em; }
+.deck .lane .nm small { display: block; color: var(--mut); font-weight: 400; letter-spacing: 0; font-size: 10.5px; }
+.deck .cell .h {
+  font-size: 9.5px; letter-spacing: .15em; color: var(--dim); font-weight: 700;
+  margin-bottom: 3px;
+}
+.deck .cell .v { display: flex; flex-wrap: wrap; gap: 4px; }
+.deck .cell .none { color: var(--dim); font-style: italic; font-size: 11.5px; }
+
+/* The seat's own state pill. Shape and word, not hue alone — `no-ready-work`
+ * and `context-exhausted` are DIFFERENT states and must not look the same. */
+.deck .pill {
+  display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 11px;
+  font-weight: 700; letter-spacing: .08em; border: 1px solid var(--lum);
+  background: var(--sunk); color: var(--tx);
+}
+.deck .pill.active  { border-color: var(--cyan); color: var(--cyan); }
+.deck .pill.warn    { border-color: var(--amber); color: var(--amber); }
+.deck .pill.quiet   { border-style: dashed; color: var(--dim); border-color: var(--dim); }
+.deck .pill.gone    { border-style: dashed; color: var(--dim); border-color: var(--line); opacity: .7; }
+.deck .why {
+  display: block; margin-top: 3px; font-size: 11px; color: var(--mut);
+  overflow-wrap: anywhere;
+}
+.deck .why b { color: var(--tx); font-weight: 600; }
+.deck .disagree {
+  display: block; margin-top: 3px; font-size: 10.5px; color: var(--amber);
+  overflow-wrap: anywhere;
+}
+
+/* ---- counts strip: fixed order, so hue alone is legal here (adjacent
+ * pairs only) — but the numbers are printed beside it regardless. -------- */
+.deck .mix .bar {
+  display: flex; height: 7px; border: 1px solid var(--line); border-radius: 2px;
+  overflow: hidden; background: var(--sunk); margin-bottom: 4px;
+}
+.deck .mix .bar i { display: block; height: 100%; }
+.deck .mix .n { font-size: 10.5px; color: var(--mut); font-variant-numeric: tabular-nums; }
+.deck .mix .n b { color: var(--tx); font-weight: 700; }
+.deck .mix .n .sep { color: var(--dim); }
+
+/* ---- game / bridge / owner tiles ---------------------------------------- */
+.deck .src { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 4px 10px; font-size: 12px; }
+.deck .src dt { color: var(--mut); font-size: 10.5px; letter-spacing: .1em; padding-top: 1px; }
+.deck .src dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.deck .src dd .from { display: block; color: var(--dim); font-size: 10px; font-weight: 400; letter-spacing: .04em; }
+.deck .conflict {
+  margin-top: 9px; border: 1px solid var(--amber); border-radius: 4px;
+  padding: 7px 9px; background: var(--sunk); font-size: 11.5px;
+}
+.deck .conflict b { color: var(--amber); letter-spacing: .12em; }
+.deck .conflict ul { margin: 5px 0 0; padding-left: 17px; color: var(--tx); }
+.deck .agree { margin-top: 9px; font-size: 11px; color: var(--dim); font-style: italic; }
+
+.deck .big { font-size: 30px; font-weight: 700; line-height: 1.02; font-variant-numeric: tabular-nums; }
+.deck .big.attn { color: var(--amber); }
+.deck .big.zero { color: var(--dim); }
+.deck .sub { font-size: 11px; color: var(--mut); margin-top: 4px; overflow-wrap: anywhere; }
+.deck .sub b { color: var(--tx); }
+
+/* ---- blocked + errors --------------------------------------------------- */
+.deck .blk { padding: 6px 0; border-top: 1px solid var(--line); font-size: 12px; }
+.deck .blk:first-of-type { border-top: 0; padding-top: 0; }
+.deck .blk .r { color: var(--mut); margin-top: 3px; overflow-wrap: anywhere; }
+.deck .blk .r b { color: var(--tx); font-weight: 600; }
+.deck .err {
+  border-top: 1px solid var(--line); padding: 6px 0; font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.deck .err:first-of-type { border-top: 0; padding-top: 0; }
+.deck .err .ix { color: var(--amber); font-weight: 700; font-variant-numeric: tabular-nums; }
+.deck .err code {
+  display: block; margin-top: 3px; color: var(--mut); font-size: 11px;
+  font-family: Consolas, "Cascadia Mono", monospace;
+}
+.deck .foot { color: var(--dim); font-size: 10.5px; margin-top: 10px; font-style: italic; }
