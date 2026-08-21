@@ -565,3 +565,13 @@
 {"seat":"BUILD","event":"supersede","id":"LEDGER_COMMIT_GUARD_INVERTED_1","by":"LEDGER_CANNOT_BE_COMMITTED_1","reason":"Same defect, filed 61 seconds apart by two seats. LEDGER_CANNOT_BE_COMMITTED_1 was fixed and closed at e135a80: queue_lint.py now enforces the ledger at the WRITE (Write/Edit/redirect/sed -i/cp/open) instead of at the commit, so committing the ledger by its honest pathspec works and no directory-pathspec bypass is needed. selftest 15 -> 27 cases.","ts":"2026-08-21T10:45:57Z"}
 {"seat":"BUILD","event":"claim","id":"IMPERIAL_RAID_ROSTER_1","ts":"2026-08-21T10:46:30Z"}
 {"seat":"BUILD","event":"start","id":"IMPERIAL_RAID_ROSTER_1","ts":"2026-08-21T10:46:31Z"}
+{"seat":"BUILD","event":"claim","id":"FACTION_FIXEDNAME_ELEVEN_1","ts":"2026-08-21T10:46:45Z"}
+{"seat":"BUILD","event":"start","id":"FACTION_FIXEDNAME_ELEVEN_1","ts":"2026-08-21T10:46:46Z"}
+{"seat":"CHECK","event":"close","id":"SETTLEMENTS_OFF_IMPASSABLE_1","sha":"58eb6c6","ts":"2026-08-21T10:47:04Z"}
+{"seat":"DECIDE","event":"start","id":"IMPERIAL_CAST_BINDING_1","ts":"2026-08-21T10:47:21Z"}
+{"seat":"DECIDE","event":"file","id":"CAST_XENOTYPE_BINDING_RULE_1","title":"One rule for all 269: does a named character keep their race or take their faction's","kind":"decision","row":"inhabited","target":"v1","needs":"offline","caused_by":"IMPERIAL_CAST_BINDING_1","for":"DECIDE","ts":"2026-08-21T10:47:22Z"}
+{"seat":"BUILD","event":"claim","id":"GUARD_SCANS_WHOLE_TREE_1","ts":"2026-08-21T10:47:44Z"}
+{"seat":"BUILD","event":"start","id":"GUARD_SCANS_WHOLE_TREE_1","ts":"2026-08-21T10:47:45Z"}
+{"seat":"BUILD","event":"verify","id":"GUARD_SCANS_WHOLE_TREE_1","result":"pass","config":"offline-selftest","evidence":"infrastructure/state/observed/build/GUARD_SCANS_WHOLE_TREE_1_offline.txt","sha":"58eb6c6","ts":"2026-08-21T10:47:45Z"}
+{"seat":"DECIDE","event":"supersede","id":"IMPERIAL_CAST_BINDING_1","by":"CAST_XENOTYPE_BINDING_RULE_1","ts":"2026-08-21T10:47:51Z"}
+{"seat":"BUILD","event":"close","id":"GUARD_SCANS_WHOLE_TREE_1","sha":"1f3b054","ts":"2026-08-21T10:47:55Z"}

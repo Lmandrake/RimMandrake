@@ -1,0 +1,19 @@
+GUARD_SCANS_WHOLE_TREE_1 — offline verify, 2026-08-21
+
+⚠️ BUILD did NOT author this fix. It landed in another seat's commits 70607b8
+   ('A commit message is not a pathspec') and 1f3b054 ('The filer may finish the
+   spec it was told to write, until a claim hands it over'). The item was left open.
+   Verified here and closed rather than redone.
+
+The code, .claude/hooks/queue_lint.py:329 —
+     mine = changed(root, want) if want else []
+   The empty pathspec can no longer reach changed(), so git diff HEAD is never
+   invoked with no paths and can no longer list the whole working tree.
+
+The item's four verify bullets, each with the selftest case that proves it:
+   ok    ALLOW the filer finishing the spec of an UNCLAIMED item it filed
+   ok    DENY  the filer once the owning seat has CLAIMED it
+   ok    DENY  another seat's item when it IS in the pathspec
+   ok    ALLOW a commit naming no item while ANOTHER item is dirty
+
+   selftest: 36/36 passed
