@@ -458,10 +458,34 @@ def freeze(dump=None, by="", id_="", note="", known_damage=""):
     if known_damage:
         entry["knownDamage"] = known_damage
 
+    # 🔑 Which directory on disk this freeze is ABOUT. Under the flat layout that
+    # is the dump root; under dated captures (`DUMP_STORAGE_LAYOUT_RULING_1`) it
+    # is one immutable capture, and naming it is the difference between a freeze
+    # that survives the next capture and one that gets written over — which is
+    # what happened to OFFICIAL-2026-08-20.
+    cap = os.path.basename(os.path.normpath(dump))
+    if _GP._CAPTURE_ID.match(cap):
+        entry["capture"] = cap
+
     if by != "owner":
         return entry, False
     with open(_registry_path(), "a", encoding="utf-8") as fh:
         fh.write(json.dumps(entry) + "\n")
+
+    # ⛔ THE OFFICIAL CAPTURE MUST OUTLIVE RETENTION. The producer keeps the
+    # newest three and deletes the rest; the design target is frozen precisely
+    # because it must NOT move, so it cannot also be allowed to age out. A marker
+    # file is the whole contract — the game needs no knowledge of this repo or
+    # its registry, and a capture carrying `.keep` is never pruned.
+    try:
+        marker = os.path.join(dump, _GP.KEEP_MARKER)
+        with open(marker, "w", encoding="utf-8") as fh:
+            fh.write("frozen as %s by the owner on %s. Retention must not delete "
+                     "this capture; it is the design target.\n"
+                     % (entry["id"], entry["at"]))
+    except OSError as exc:
+        print("!! could not write the keep marker (%s) — this capture can be "
+              "pruned by retention. Fix it before the next capture." % exc)
     return entry, True
 
 

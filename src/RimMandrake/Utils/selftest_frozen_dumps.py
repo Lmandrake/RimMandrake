@@ -305,6 +305,109 @@ def t_no_registry_entry_carries_an_unreproducible_sha():
             "machine produces (recomputable: %s)" % (i, sha, sorted(known)))
 
 
+# ---------------------------------------------------------------------------
+# Dated captures — DUMP_STORAGE_LAYOUT_RULING_1, owner 2026-08-21:
+# *"Option (a) all the way. Keep last three."*
+#
+# 🪤 The original proposal used `current`/`official` SYMLINKS and that is
+# impossible here: measured the same day, a symlink WSL creates under LocalLow
+# succeeds from bash and is unreadable from Windows (`Mode d----l`, empty
+# LinkType, PathNotFound through it), so the GAME could never follow one.
+# The ids are ISO-8601 instead, which makes `current` = max(dirname) and needs
+# no pointer at all. See BUILDABLE.md.
+# ---------------------------------------------------------------------------
+
+def _layout(ids, flat=True):
+    """A throwaway DefDump root. `ids` become capture dirs; `flat` also writes a
+    manifest at the root, which is the pre-migration shape."""
+    d = tempfile.mkdtemp(prefix=".dump_")
+    if flat:
+        json.dump({"capturedUtc": "2026-08-01T00:00:00Z"},
+                  open(os.path.join(d, "manifest.json"), "w"))
+    for i in ids:
+        os.makedirs(os.path.join(d, "captures", i))
+    return d
+
+
+def t_the_flat_layout_still_resolves_after_the_change():
+    """⚠️ The migration has no flag day. Until the producer is changed there is
+    no `captures/`, and every reader must go on working unchanged."""
+    import game_paths as gp
+    d = _layout([])
+    assert gp.captures(os.path.join(d, "captures")) == []
+    assert gp.newest_capture(os.path.join(d, "captures")) is None, (
+        "a dump with no captures/ claimed to have a newest capture")
+    shutil.rmtree(d, ignore_errors=True)
+
+
+def t_newest_capture_is_the_lexicographically_last_id():
+    """🔑 ISO-8601 with fixed-width fields, so a string sort IS a date sort —
+    which is what lets the C# producer agree with Python for free."""
+    import game_paths as gp
+    ids = ["2026-08-21T08-20-20Z", "2026-09-01T00-00-00Z", "2026-08-09T23-59-59Z"]
+    d = _layout(ids, flat=False)
+    root = os.path.join(d, "captures")
+    assert gp.captures(root) == sorted(ids), gp.captures(root)
+    assert os.path.basename(gp.newest_capture(root)) == "2026-09-01T00-00-00Z"
+    shutil.rmtree(d, ignore_errors=True)
+
+
+def t_a_directory_that_is_not_a_capture_id_is_ignored():
+    """`captures/` may end up holding a scratch dir, a partial write or a
+    `.tmp`. Anything that is not exactly an id is not a capture."""
+    import game_paths as gp
+    d = _layout(["2026-08-21T08-20-20Z"], flat=False)
+    root = os.path.join(d, "captures")
+    for junk in ("tmp", "2026-08-21", "2026-08-21T08-20-20Z.partial", "backup"):
+        os.makedirs(os.path.join(root, junk), exist_ok=True)
+    assert gp.captures(root) == ["2026-08-21T08-20-20Z"], gp.captures(root)
+    shutil.rmtree(d, ignore_errors=True)
+
+
+def t_freezing_marks_the_capture_so_retention_cannot_delete_it():
+    """🔴 The official capture is frozen precisely because it must not move. It
+    must therefore also not age out of a three-deep retention window."""
+    import game_paths as gp
+    reg = with_registry([entry(capturedUtc="2026-08-21T08:20:20Z")])
+    cap = _capture("2026-09-02T00:00:00Z")
+    _, wrote = refresh.freeze(cap, by="owner")
+    assert wrote
+    marker = os.path.join(cap, gp.KEEP_MARKER)
+    assert os.path.exists(marker), (
+        "freeze did not write %s — retention could delete the design target"
+        % gp.KEEP_MARKER)
+    assert "design target" in open(marker, encoding="utf-8").read()
+    shutil.rmtree(reg, ignore_errors=True)
+    shutil.rmtree(cap, ignore_errors=True)
+
+
+def t_a_freeze_of_a_dated_capture_records_which_one():
+    import game_paths as gp
+    reg = with_registry([entry(capturedUtc="2026-08-21T08:20:20Z")])
+    parent = tempfile.mkdtemp(prefix=".caps_")
+    cap = os.path.join(parent, "2026-09-03T04-05-06Z")
+    os.makedirs(cap)
+    src = _capture("2026-09-03T04:05:06Z")
+    shutil.copy(os.path.join(src, "manifest.json"), cap)
+    e, _ = refresh.freeze(cap, by="")
+    assert e.get("capture") == "2026-09-03T04-05-06Z", (
+        "the entry does not name the capture directory it froze: %r"
+        % e.get("capture"))
+    for d in (reg, parent, src):
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def t_the_flat_layout_freeze_names_no_capture():
+    """Under the pre-migration shape there is no capture id, and inventing one
+    would be a claim about a directory that does not exist."""
+    reg = with_registry([entry(capturedUtc="2026-08-21T08:20:20Z")])
+    src = _capture("2026-09-04T00:00:00Z")
+    e, _ = refresh.freeze(src, by="")
+    assert "capture" not in e, "a flat-layout freeze invented a capture id: %r" % e.get("capture")
+    shutil.rmtree(reg, ignore_errors=True)
+    shutil.rmtree(src, ignore_errors=True)
+
+
 if __name__ == "__main__":
     real = refresh._registry_path
     for k, v in sorted(globals().items()):

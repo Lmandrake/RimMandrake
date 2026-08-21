@@ -35,10 +35,12 @@ error saying `None` is worse than one naming a plausible file.
 """
 
 import os
+import re
 
-__all__ = ["MODS_CONFIG", "DEF_DUMP", "PLAYER_LOG", "PREV_LOG", "IDEOS", "SAVES",
-           "WORKSHOP", "LOCAL_MODS", "GAME_DATA", "LOCALLOW", "STEAM",
-           "resolve", "describe"]
+__all__ = ["MODS_CONFIG", "DEF_DUMP", "DUMP_ROOT", "CAPTURES", "PLAYER_LOG",
+           "PREV_LOG", "IDEOS", "SAVES", "WORKSHOP", "LOCAL_MODS", "GAME_DATA",
+           "LOCALLOW", "STEAM", "resolve", "describe", "captures",
+           "newest_capture", "KEEP_MARKER"]
 
 
 def resolve(win, wsl):
@@ -60,8 +62,57 @@ STEAM = resolve(_STEAM_WIN, _STEAM_WSL)
 
 MODS_CONFIG = resolve(os.path.join(_LOW_WIN, r"Config\ModsConfig.xml"),
                       os.path.join(_LOW_WSL, "Config/ModsConfig.xml"))
-DEF_DUMP = resolve(os.path.join(_LOW_WIN, "DefDump"),
-                   os.path.join(_LOW_WSL, "DefDump"))
+DUMP_ROOT = resolve(os.path.join(_LOW_WIN, "DefDump"),
+                    os.path.join(_LOW_WSL, "DefDump"))
+CAPTURES = os.path.join(DUMP_ROOT, "captures")
+
+#: A capture directory carrying this file is never pruned. `refresh.py --freeze`
+#: writes it into the capture it freezes, so the producer can enforce retention
+#: without knowing anything about this repo or its registry.
+KEEP_MARKER = ".keep"
+
+#: A capture id is the ISO-8601 instant it was taken, with `:` made filesystem
+#: safe — `2026-08-21T08-20-20Z`. That is the whole pointer mechanism.
+_CAPTURE_ID = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}Z$")
+
+
+def captures(root=None):
+    """-> [capture id] oldest first. [] when the dump is still the flat layout.
+
+    🔑 **Sorting is lexicographic AND that is exact**, because the ids are
+    ISO-8601 with fixed-width fields. No date parsing, nothing to get wrong in a
+    second language — the C# producer sorts the same strings the same way.
+    """
+    root = root or CAPTURES
+    try:
+        return sorted(d for d in os.listdir(root)
+                      if _CAPTURE_ID.match(d)
+                      and os.path.isdir(os.path.join(root, d)))
+    except OSError:
+        return []
+
+
+def newest_capture(root=None):
+    """-> absolute path of the newest capture, or None under the flat layout."""
+    ids = captures(root)
+    return os.path.join(root or CAPTURES, ids[-1]) if ids else None
+
+
+# 🔴 **DEF_DUMP IS THE CAPTURE, NOT THE FOLDER THAT HOLDS CAPTURES.** Every
+# reader wants "the current capture's manifest.json / defs/", and that is what
+# this has always meant — so it keeps meaning it across the layout change
+# (`DUMP_STORAGE_LAYOUT_RULING_1`, owner 2026-08-21: *"Option (a) all the way.
+# Keep last three."*).
+#
+# ⚠️ **The fallback is what makes the migration safe.** Before the producer is
+# changed there is no `captures/`, and this resolves to the flat `DefDump/`
+# exactly as before; afterwards it resolves to the newest dated capture. Both
+# layouts work with one line of code and no flag day.
+#
+# ⛔ Do NOT "simplify" this to `CAPTURES` — a reader that points at the folder of
+# captures sees a directory of directories where it expects `defs/`, and the
+# failure is a confusing empty result rather than an error.
+DEF_DUMP = newest_capture() or DUMP_ROOT
 # ⚠️ RimWorld's OWN Player.log, not the one under Ludeon Studios/RimWorld/. The
 # distinction has cost a session before: this is the file the game appends to.
 PLAYER_LOG = resolve(os.path.join(_LOW_WIN, "Player.log"),
@@ -86,7 +137,8 @@ GAME_DATA = resolve(os.path.join(_STEAM_WIN, r"common\RimWorld\Data"),
 def describe():
     """Print what resolved to what, and flag anything missing. Run this first
     when a script says a game file does not exist."""
-    rows = [("ModsConfig.xml", MODS_CONFIG), ("DefDump/", DEF_DUMP),
+    rows = [("ModsConfig.xml", MODS_CONFIG), ("DefDump root", DUMP_ROOT),
+            ("current capture", DEF_DUMP),
             ("Player.log", PLAYER_LOG), ("Ideos/", IDEOS),
             ("Saves/", SAVES),
             ("workshop/294100", WORKSHOP), ("Mods/", LOCAL_MODS),
