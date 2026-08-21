@@ -88,7 +88,7 @@ Record what you see, not what the row predicts, and **schedule no fix off it.**
 | 3 | `ResearchKitEastFix` | 🔴 **They are APPAREL and must be WORN.** `RR_FieldResearchKitSimple`, `…HiTech`, `…MultiAnalyzer`, `…Remote` | **worn by a pawn facing EAST** | four visible kits; none blank, none magenta. ⚠️ **Dropping them on the ground exercises NONE of the fixed art** — the fix replaces `wornGraphicPath` (`Apparel_FieldKits.xml:62`); the ground `texPath` (`:51`) is a single directionless PNG that was never broken |
 | 4 | `GravshipAstronautFix` | pawn kind `VGE_Astronaut` — ⚠️ **spawn BOTH life stages** | facing **NORTH** | a body, and its **faction-colour overlay** present. 🔴 **The ordinary adult's `Mech_Astronaut_north.png` was NEVER broken** — only the double-r `Astrronaut` files were, so checking the wrong life stage passes a row that was never at risk |
 | 5 | `MSEDroidFix` | pawn kind `OuterRim_MSEDroid` | facing **NORTH** | a droid, not an invisible or south-facing fallback |
-| 6 | `CereanManeFix` | a Cerean pawn, hair `OuterRim_CereanMane` | facing **SOUTH** | hair present — the donor's file is 1,514 B of **fully transparent** pixels, so the fail is a bald head |
+| ~~6~~ | ~~`CereanManeFix`~~ | — | — | ⛔ **CLOSED 2026-08-21, owner's ruling: "completely close all Cerean hair items".** Its target mod `Neronix17.OuterRim.GalacticDiversity` is installed but NOT in `ModsConfig`, so the HairDef `OuterRim_CereanMane` never loads and the fix cannot be exercised. Reopen only if that mod is activated. |
 | 7 | `SauridFrillFix` | a Saurid pawn, hair `VRESaurids_Littlefoot` | facing **NORTH** | the centre frill draws |
 | 8 | `ToolBeltFix` | 🔴 apparel **`VAEA_Apparel_ToolBelt`**, worn | facing **WEST** | the belt draws on the pawn |
 
@@ -322,7 +322,7 @@ pawnkind alone tests NOTHING** — the style has to be set on the pawn.
 
 | mod | spawn | then set | 🔴 face | why that facing |
 |---|---|---|---|---|
-| **CereanManeFix** | pawnkind `OuterRim_Cerean` | hair `OuterRim_CereanMane` | **SOUTH** | the file the fix ships |
+| ~~**CereanManeFix**~~ | — | — | — | ⛔ CLOSED 2026-08-21 — target mod not in ModsConfig; see row 6. |
 | **SauridFrillFix** | pawnkind `VRESaurids_Villager_Saurid` | hair `VRESaurids_Littlefoot` | **NORTH** | donor ships `CenterFrill8_north-.png`, **trailing hyphen**, confirmed on disk; `CenterFrill7_north.png` beside it is named correctly |
 | **ToolBeltFix** | ⛔ see below | — | **WEST** | `ToolBelt_west.png` is **753 bytes** against `ToolBelt_east.png` at **16,945** |
 
@@ -344,6 +344,9 @@ tool, not for a map.** ⚠️ `renderUtilityAsPack` is
 true, so it draws in the pack layer — check from behind as well as straight west.
 
 ### One load-order note, verified
+⛔ **The CereanManeFix half of this note is CLOSED 2026-08-21** — its target mod is not
+active, so none of it is exercised. Kept because the AssetBundle-vs-loose fact is reusable.
+
 CereanManeFix correctly declares **no** `loadAfter`: Outer Rim 1.6 serves that art
 from an AssetBundle (`Common/AssetBundles/neronix17_outerrim_galacticdiversity.manifest`
 lists `Hairs/Cerean/CereanMane_south.png` and its north/east siblings), and **a

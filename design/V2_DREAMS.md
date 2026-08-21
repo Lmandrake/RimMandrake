@@ -216,7 +216,14 @@ spec:     `00a1398` — one wide shot plus one casket bank. 619 of 1,200 cells; 
 verify:   EMPTY
 criteria: does the broken deck read as a wreck, and do three banks read as a hold. Nobody has ever seen an `AncientCryptosleepCasket` — vanilla and DLC art is in AssetBundles, so 297 wreck defs cannot be rendered offline; defs, sizes and yields are proven, the look is not. `ShipChunk_Mech` needs `Light`, not `Heavy`; `BrokenSubstructure` has no `Inherit="False"` so it APPENDS to `FloorBase` — either layer satisfies the deck. Missing props means prefab placement, blocked cells or `spotMustBeStandable`; do not report "deck present, props absent".
 
-## C10 The art-observation batch — Cerean and Saurid
+## C10 The art-observation batch — ~~Cerean and~~ Saurid
+⛔ **THE CEREAN HALF IS CLOSED, 2026-08-21, owner's ruling: "completely close all
+Cerean hair items right now. If they reoccur, we can reinvestigate."** Measured the
+same day: `Neronix17.OuterRim.GalacticDiversity`, which owns HairDef
+`OuterRim_CereanMane`, is installed but is NOT in `ModsConfig` — so the hair never
+loads, no def anywhere in the 578-mod dump references `OuterRim/Hairs/Cerean`, and
+`CereanManeFix` is inert. There is nothing to observe. ✅ **The SauridFrillFix half
+below stands unchanged** and is still worth running.
 spec:     Runnable on ANY live map; no fresh map, no new capability. **CereanManeFix**: spawn pawnkind `OuterRim_Cerean` (forces the xenotype, weight 999), then SET hair `OuterRim_CereanMane` (a fresh Cerean rolls it ~1 in 5 — set it, do not hope), face **SOUTH**. **SauridFrillFix**: spawn pawnkind `VRESaurids_Villager_Saurid`, then SET hair `VRESaurids_Littlefoot` (`texPath Pawn/CenterFrill/CenterFrill8`), face **NORTH** — the donor ships `CenterFrill8_north-.png` with a trailing hyphen while `CenterFrill7_north.png` beside it is named correctly, and north is the ONLY broken rotation. Tools: `jawa/spawn_pawn`, `jawa/set_pawn_style`, `jawa/set_pawn_rotation`. A pawnkind spawn ALONE tests neither — both are HairDef `texPath`s, not pawnkind art, so the style has to be SET or you photograph a default and call it passed.
 verify:   EMPTY
 criteria: the hair renders correctly in the named facing. OBSERVATION ONLY — the owner's stop on art fixing stands; looking is not fixing.
