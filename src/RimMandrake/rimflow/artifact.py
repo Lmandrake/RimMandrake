@@ -146,27 +146,16 @@ def defnames_in(path):
     """
     defs = os.path.join(path, "defs") if os.path.isdir(path) else None
 
-    db_path = os.path.join(path, "defs.sqlite") if os.path.isdir(path) else None
-    if db_path and os.path.exists(db_path):
-        try:
-            sys.path.insert(0, os.path.join(
-                os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                "Utils"))
-            from dump_manifest import skill_scripts
-            sk = skill_scripts()
-            if sk:
-                if sk not in sys.path:
-                    sys.path.insert(0, sk)
-                from measure.dumpdb import DumpDB
-                db = DumpDB(db_path)
-                try:
-                    if not db.stale:
-                        return {r[0] for r in db.sql(
-                            "SELECT def_name FROM defs")}
-                finally:
-                    db.close()
-        except Exception:
-            pass                      # fall through to the JSON scan
+    try:
+        sys.path.insert(0, os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "Utils"))
+        from dump_manifest import dump_db
+        with dump_db(path) as db:
+            if db is not None:
+                return {r[0] for r in db.sql("SELECT def_name FROM defs")}
+    except Exception:
+        pass                          # fall through to the JSON scan
 
     out = set()
     if defs and os.path.isdir(defs):

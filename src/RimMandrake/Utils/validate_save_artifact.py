@@ -55,6 +55,9 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from dump_manifest import dump_db          # noqa: E402
+
 DUMP = Path(
     "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
     "RimWorld by Ludeon Studios/DefDump"
@@ -62,6 +65,13 @@ DUMP = Path(
 CACHE = Path(
     os.environ.get("TMPDIR", "/tmp")
 ) / "rimworld_defindex.json"
+
+# ⚠️ Bump whenever the SHAPE or SOURCE of the index changes. The cache used to
+# be keyed on `capturedUtc` alone, which is right for "has the dump moved" and
+# wrong for "was this index built by the code now running" — switching between
+# the db and the JSON scan against one capture would silently serve the other
+# one's index. v2 = db-first, both def_type and concrete_type recorded.
+INDEX_VERSION = 2
 
 # ---------------------------------------------------------------------------
 # Reference paths, discovered by walking real artifacts rather than guessed.
@@ -132,30 +142,53 @@ HANDLE = re.compile(r"^(Precept_|Ability_|Thing_|Pawn_)\d+")
 DEFNAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_.]{2,}$")
 
 
-def build_index(rebuild=False):
-    """defName -> sorted list of (defType, packageId). Cached against the dump's
-    own capturedUtc, so a fresh dump invalidates it automatically — never a
-    wall-clock TTL, which is the mistake this project has already paid for."""
-    manifest = DUMP / "manifest.json"
-    if not manifest.exists():
-        return None, None
-    with open(manifest, encoding="utf-8") as fh:
-        meta = json.load(fh)
-    stamp = meta.get("capturedUtc", "")
+def _index_from_db():
+    """(index, blind_types) off `defs.sqlite`, or None when the db is unusable.
 
-    if CACHE.exists() and not rebuild:
-        try:
-            with open(CACHE, encoding="utf-8") as fh:
-                cached = json.load(fh)
-            if cached.get("capturedUtc") == stamp:
-                # Carry the blind-spot list through the cache too. Dropping it
-                # here silently downgrades UNMEASURABLE to MISSING on every
-                # cached run — the failure mode this whole tool is against.
-                meta["_emptyDefTypes"] = cached.get("emptyDefTypes", [])
-                return cached["index"], meta
-        except (json.JSONDecodeError, KeyError):
-            pass  # corrupt cache is not an error, just rebuild
+    ⭐ Preferred over the JSON scan for two reasons, and the second is a bug fix:
 
+      * the JSON path reads every `defs/*.json` — 641 MB, `ThingDef.json` alone
+        is 316 MB — where this is a single indexed query
+      * 🔴 **`defs/` ACCUMULATES.** Nothing prunes it, so it still holds 19 files
+        from captures on 2026-08-10…15 whose def types this capture never wrote.
+        The JSON scan ingests those dead defNames and a reference to a REMOVED
+        def then grades as PROVIDED — fail-toward-success, the one direction
+        this tool must never fail in. The db carries `capture.coverage`, so a
+        type the manifest never declared is `orphan` and excluded by construction.
+
+    🔑 **`blind` is drawn where the instrument draws it**, not by a heuristic:
+    `coverage NOT IN ('complete','ambiguous')`. An `ambiguous` type loaded all
+    its rows and is only uncross-checkable by COUNT, so grading a name by
+    PRESENCE against it is sound; `shadowed`/`orphan`/`absent`/`failed` are the
+    27 that can neither confirm nor deny. The old heuristic — `'"defs":[]'` in
+    the first 200 bytes — could only ever see the empty-file case.
+    """
+    with dump_db(DUMP) as db:
+        if db is None:
+            return None
+        index = {}
+        for name, dtype, conc, pkg in db.sql(
+                "SELECT def_name, def_type, concrete_type, package_id FROM defs"):
+            bucket = index.setdefault(name, [])
+            # ⚠️ BOTH types, because they answer different questions and a
+            # reference can legitimately name either. `def_type` is the database
+            # the def lives in (what a cross-reference resolves against);
+            # `concrete_type` is the record's own class, which differs on 1115
+            # rows — an AlienBackstoryDef is still in the BackstoryDef database.
+            # Keeping only one turns the other into a spurious typeMismatch.
+            for t in (dtype, conc):
+                entry = [t, pkg or ""]
+                if t and entry not in bucket:
+                    bucket.append(entry)
+        blind = [r[0] for r in db.sql(
+            "SELECT def_type FROM capture "
+            "WHERE coverage NOT IN ('complete','ambiguous') ORDER BY def_type")]
+        return index, blind
+
+
+def _index_from_json():
+    """(index, blind_types) by scanning `defs/*.json`. The fallback, kept so the
+    tool still runs where `measuring-large-artifacts` or the db is absent."""
     # Compact single-line JSON — a bounded regex over raw text is ~40x faster
     # than json.load across 663 MB, and we only need four fields per record.
     rec = re.compile(
@@ -193,11 +226,46 @@ def build_index(rebuild=False):
             entry = [dtype, pkg]
             if entry not in index[name]:
                 index[name].append(entry)
+    return index, empty_types
+
+
+def build_index(rebuild=False):
+    """defName -> sorted list of (defType, packageId). Cached against the dump's
+    own capturedUtc, so a fresh dump invalidates it automatically — never a
+    wall-clock TTL, which is the mistake this project has already paid for."""
+    manifest = DUMP / "manifest.json"
+    if not manifest.exists():
+        return None, None
+    with open(manifest, encoding="utf-8") as fh:
+        meta = json.load(fh)
+    stamp = meta.get("capturedUtc", "")
+
+    if CACHE.exists() and not rebuild:
+        try:
+            with open(CACHE, encoding="utf-8") as fh:
+                cached = json.load(fh)
+            if (cached.get("capturedUtc") == stamp
+                    and cached.get("indexVersion") == INDEX_VERSION):
+                # Carry the blind-spot list through the cache too. Dropping it
+                # here silently downgrades UNMEASURABLE to MISSING on every
+                # cached run — the failure mode this whole tool is against.
+                meta["_emptyDefTypes"] = cached.get("emptyDefTypes", [])
+                return cached["index"], meta
+        except (json.JSONDecodeError, KeyError):
+            pass  # corrupt cache is not an error, just rebuild
+
+    built, source = _index_from_db(), "db"
+    if built is None:
+        built, source = _index_from_json(), "json"
+    index, empty_types = built
+
     meta["_emptyDefTypes"] = sorted(empty_types)
     CACHE.parent.mkdir(parents=True, exist_ok=True)
     with open(CACHE, "w", encoding="utf-8") as fh:
         json.dump(
-            {"capturedUtc": stamp, "index": index, "emptyDefTypes": sorted(empty_types)},
+            {"capturedUtc": stamp, "indexVersion": INDEX_VERSION,
+             "source": source, "index": index,
+             "emptyDefTypes": sorted(empty_types)},
             fh,
         )
     return index, meta

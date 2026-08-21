@@ -39,6 +39,7 @@ only when you knowingly want the value a naive parse would have given.
 """
 from __future__ import annotations
 
+import contextlib
 import os
 import sys
 
@@ -90,6 +91,83 @@ def read_manifest(path):
 def collision_report(declared_order):
     """(collided name -> counts in write order, total defs lost)."""
     return _load()[1](declared_order)
+
+
+@contextlib.contextmanager
+def dump_db(dump_dir, check_currency: bool = True):
+    """Yield a live `measure.dumpdb.DumpDB` for this dump, or **None**.
+
+    🔑 **The db-first pattern lives here once, not in every reader.** Five tools
+    used to carry ~20 lines of "find the skill, import DumpDB, check .stale"
+    apiece; that is five copies of a locator that must all change together the
+    day the skill moves, which is exactly what this module exists to prevent.
+
+        with dump_db(DUMP) as db:
+            if db is not None:
+                return {r[0] for r in db.sql("SELECT def_name FROM defs")}
+        ...                       # the JSON fallback, unchanged
+
+    **None means "answer it the old way", never "the answer is empty."** It is
+    returned when the skill is not installed, when `defs.sqlite` has not been
+    built, when the db is stale against its capture, or when opening it raises
+    at all. A tool that cannot run is worse than one that is merely slow, so
+    every caller keeps its JSON path — and that path is also what runs on a
+    machine without the skill.
+
+    ⚠️ `check_currency=False` suppresses only the staleness check, for a caller
+    that knowingly wants a db whose source dump has moved. It does not make an
+    absent db appear.
+    """
+    db = None
+    try:
+        path = os.path.join(str(dump_dir), "defs.sqlite")
+        if not os.path.exists(path):
+            yield None
+            return
+        s = skill_scripts()
+        if s is None:
+            yield None
+            return
+        if s not in sys.path:
+            sys.path.insert(0, s)
+        from measure.dumpdb import DumpDB
+        db = DumpDB(path, check_currency=check_currency)
+        if check_currency and db.stale:
+            db.close()
+            db = None
+        yield db
+    except Exception:
+        yield None
+    finally:
+        if db is not None:
+            try:
+                db.close()
+            except Exception:
+                pass
+
+
+def hash_table(def_type, dump_dir):
+    """(shortHash -> defName, defName -> shortHash) for one def type, or None.
+
+    `None` means "the db is not usable here" — the caller falls back to reading
+    `defs/<Type>.json`, which two of them already stream. Two readers had
+    hand-rolled this over `json.load` of a whole type file; `short_hash` is an
+    ordinary column, so the db answers it as one indexed query.
+
+    ⚠️ A hash table is only valid against a capture taken with the SAME mod list
+    as the save being decoded — the db's staleness guard checks the db against
+    its capture, and cannot check the capture against your save.
+    """
+    with dump_db(dump_dir) as db:
+        if db is None:
+            return None
+        fwd, rev = {}, {}
+        for h, n in db.sql(
+                "SELECT short_hash, def_name FROM defs WHERE def_type = ? "
+                "AND short_hash IS NOT NULL", (def_type,)):
+            fwd[int(h)] = n
+            rev[n] = int(h)
+        return (fwd, rev) if fwd else None
 
 
 def available() -> bool:

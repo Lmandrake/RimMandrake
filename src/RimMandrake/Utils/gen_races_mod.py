@@ -38,6 +38,9 @@ import xml.etree.ElementTree as ET
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__)))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from dump_manifest import dump_db          # noqa: E402
+
 DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
         "RimWorld by Ludeon Studios/DefDump")
 WS = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
@@ -1130,14 +1133,30 @@ def scan_defs(root):
     return ours, refs, parents, trees
 
 
-def verify():
-    """The acceptance test, and the only one that answers the question the mod
-    exists for: with the three donors OFF, does everything still resolve?
+def _owner_index():
+    """defName -> {packageId…}, over the WHOLE capture.
 
-    validate_patch.py does not answer it -- it checks against the CURRENT load
-    set, where the donors are still installed and every stale reference still
-    resolves. That is exactly the failure this mod is built to prevent, so it
-    has to be checked against the surviving set instead."""
+    ⭐ One indexed query where this used to `json.load` every `defs/*.json` in
+    turn — 641 MB, and the only whole-graph load left in the repo. It is a pure
+    projection of two columns, which is the shape the db is fast at; a loader
+    that wants the RECORDS is better off with the JSON file, measured.
+
+    🔴 It also drops the ORPHANS. `defs/` accumulates — nothing prunes it — so
+    the directory walk ingested def types from captures on 2026-08-10…15 whose
+    mods are long gone. Every dead defName in this index makes a reference to a
+    REMOVED def look owned, and this function's whole job is finding references
+    that will NOT resolve once the donors are off. Fail-toward-success, in the
+    one function built to prevent exactly that.
+
+    Falls back to the directory walk when the db or the skill is absent.
+    """
+    with dump_db(DUMP) as db:
+        if db is not None:
+            owner = {}
+            for name, pkg in db.sql("SELECT def_name, package_id FROM defs"):
+                owner.setdefault(name, set()).add((pkg or "").lower())
+            return owner
+
     owner = {}
     for fn in os.listdir(DUMP + "/defs"):
         if not fn.endswith(".json"):
@@ -1151,6 +1170,18 @@ def verify():
         for x in d["defs"]:
             owner.setdefault(x["defName"], set()).add(
                 (x.get("packageId") or "").lower())
+    return owner
+
+
+def verify():
+    """The acceptance test, and the only one that answers the question the mod
+    exists for: with the three donors OFF, does everything still resolve?
+
+    validate_patch.py does not answer it -- it checks against the CURRENT load
+    set, where the donors are still installed and every stale reference still
+    resolves. That is exactly the failure this mod is built to prevent, so it
+    has to be checked against the surviving set instead."""
+    owner = _owner_index()
 
     ours, refs, parents, trees = scan_defs(OUT + "/Defs")
     files = [fp for fp, _ in trees]

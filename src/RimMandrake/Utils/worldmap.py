@@ -98,6 +98,18 @@ def load_hash_table(def_type, dump_dir=DEFAULT_DUMP):
     The dump carries `shortHash` on every def, so we never have to reimplement
     RimWorld's ShortHashGiver - which would be its own silent-failure surface.
     """
+    # ⭐ db first — one indexed query instead of `json.load` of a whole type
+    # file (TerrainDef is small, but ThingDef.json is 316 MB and this function
+    # is called with whatever type the grid needs).
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from dump_manifest import hash_table
+        hit = hash_table(def_type, os.path.dirname(dump_dir.rstrip("/\\")))
+        if hit is not None:
+            return hit
+    except Exception:
+        pass                      # fall through to the JSON read
+
     path = os.path.join(dump_dir, def_type + ".json")
     with open(path, encoding="utf-8") as fh:
         data = json.load(fh)
