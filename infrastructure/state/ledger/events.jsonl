@@ -604,3 +604,5 @@
 {"seat":"BUILD","event":"verify","id":"NEOLITHIC_VEHICLE_BEAST_RESKIN_1","result":"pass","config":"offline-donor-refs","evidence":"infrastructure/state/observed/build/NEOLITHIC_VEHICLE_BEAST_RESKIN_1_offline.txt","sha":"cd58f8f","ts":"2026-08-21T10:59:47Z"}
 {"seat":"BUILD","event":"close","id":"NEOLITHIC_VEHICLE_BEAST_RESKIN_1","sha":"742481f","ts":"2026-08-21T11:00:11Z"}
 {"seat":"BUILD","event":"file","id":"VEHICLE_RESKIN_LIVE_LOOK_1","title":"Look at all four reskinned vehicles in game, three facings each","kind":"check","target":"v1","for":"CHECK","ts":"2026-08-21T11:00:11Z"}
+{"seat":"BUILD","event":"verify","id":"IMPERIAL_VOCABULARY_KEYED_1","result":"partial","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/IMPERIAL_VOCABULARY_KEYED_1_offline.txt","sha":"7df3c51","ts":"2026-08-21T11:01:40Z"}
+{"seat":"BUILD","event":"close","id":"IMPERIAL_VOCABULARY_KEYED_1","sha":"b548e60","ts":"2026-08-21T11:01:56Z"}
