@@ -1449,11 +1449,12 @@ is cheap offline: `worldmap.py` reads every tile's biome, elevation, temperature
 rainfall and hilliness, so "does this planet actually have a habitable ring 40-57° from
 the substellar point" is a function, not an opinion.
 
-⚠️ **40–57 is not settled, and neither is 34–57 — do not build a scorer against either.**
-`infrastructure/state/canon.yml > needs_ruling.HABITABLE_RING_ARC_RULING_1` carries
-**34–57°** *provisionally*, because that is what the code that sited the player's home
-used (`src/RimMandrake/Utils/ashkarr_paint.py:76-77`); **40–57°** is asserted elsewhere
-with real tile counts. ~700 tiles turn on it. Both stand until the owner rules.
+🔴 **RULED BY THE OWNER, 2026-08-21: the habitable ring is 40–57° of arc.** ✅ **SETTLED — this paragraph is dead.**
+~~40–57 is not settled, and neither is 34–57.~~ It is 40–57, at
+`canon.yml > world.habitable_ring_arc`, and `HABITABLE_RING_ARC_RULING_1` is closed.
+⛔ **34–57 lost.** It was provisional on the strength of `ashkarr_paint.py:76-77`, the code
+that sited the player's home — a siting decision, not a measurement. A scorer built against
+40–57 is now legitimate.
 
 🔴 **Scope note, and it needs the owner's word before anyone builds it.** Automated
 **WORLDgen** is OUT of every version by his own standing ruling, and v2 is explicitly not

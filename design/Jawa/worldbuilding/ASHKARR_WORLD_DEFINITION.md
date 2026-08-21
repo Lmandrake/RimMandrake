@@ -300,7 +300,7 @@ Every holding's tile and its one-line reason are in `ASHKARR_WORLDMAP_settlement
 
 ## 7b. ⭐ THE SETDOWN — where the player's clan lands. Sited 2026-08-19
 
-The docs had only *"the habitable ring is ~34–57° of arc"* and left the rest open.
+The docs had only *"the habitable ring is ~34–57° of arc"* and left the rest open. ⚠️ **That figure was overruled 2026-08-21 — the ring is 40–57°** (`canon.yml > world.habitable_ring_arc`). ✅ **The Setdown does not move:** arc 56.9 is inside 57 under either reading, which is why the siting was never the thing in dispute.
 It is now decided, and it is in the recipe as `HOME_LATLON` / `HOME_NAME`.
 
 | | |

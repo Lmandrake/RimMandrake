@@ -27,9 +27,10 @@ as they are made; new-content ideas go to `worldgen_interactive_build_concepts.m
 > - `infrastructure/state/canon.yml` — one authoritative value per contested number, each
 >   with its provenance and its superseded list.
 >
-> ⚠️ **One number here is CONTESTED, not superseded, and must not be overwritten:** the
-> **40–57°** liveable ring at `:27`, `:134` and `:455`, with its tile counts. Canon carries
-> 34–57 only *provisionally*; see `needs_ruling.HABITABLE_RING_ARC_RULING_1`. The owner rules.
+> ✅ ~~One number here is CONTESTED~~ — **RESOLVED 2026-08-21 IN THIS FILE'S FAVOUR.**
+> 🔴 **RULED BY THE OWNER, 2026-08-21: the habitable ring is 40–57° of arc.** The **40–57°** liveable ring at
+> `:27`, `:134` and `:455`, with its tile counts, was the correct figure all along and is now
+> canon at `world.habitable_ring_arc`. `HABITABLE_RING_ARC_RULING_1` is closed.
 >
 > ⛔ **SAVEGAME WRITING IS OUT — 2026-08-19.** Everything below dated 2026-08-16/17
 > describes a pipeline that wrote a painted planet into a `.rws`. **That route is dead**:
@@ -53,13 +54,12 @@ as they are made; new-content ideas go to `worldgen_interactive_build_concepts.m
 - Angular distance from substellar drives everything:
   `d = acos(cos(lon)·cos(lat))` in degrees. 0° scorching · **40–57° the liveable ring** ·
   90° terminator · 180° antistellar.
-  ⚠️ **40–57 is CONTESTED, not superseded.** `ashkarr_paint.py:76-77` — the code that sited
-  the player's home — says **34–57**, and The Setdown at arc 56.9 is called "the outer edge
-  of the ring", which only reads true against 34–57. The evidence for 40–57 is the tile
-  count at `:134`/`:455` below; the evidence for 34–57 is the siting decision. ~700 tiles
-  turn on it. Filed as `needs_ruling.HABITABLE_RING_ARC_RULING_1` in
-  `infrastructure/state/canon.yml`; **the owner rules, and neither figure may be asserted
-  as settled until he does.**
+  ✅ **40–57 IS SETTLED — the owner ruled it 2026-08-21.** ~~CONTESTED~~. The tile count at
+  `:134`/`:455` below was the winning evidence; `ashkarr_paint.py:76-77`'s **34–57** was a
+  siting decision rather than a measurement, and it lost.
+  ⭐ **The Setdown did not move and never could have** — arc 56.9 is inside 57 either way, so
+  "the outer edge of the ring" reads true under both. That phrase was never evidence for
+  either figure, which is what made the argument circular for two days.
 - ~~As generated: land 75% / ocean 25%. Temperature **−105.7 … +67.9 °C**, median −38.~~
   ⛔ **SUPERSEDED 2026-08-20 — a reading of `WORLDMAP_gen.rws`, not of the frozen planet.**
   The shipped world is **water 8.14%** (1,780 of 21,872 tiles: Ocean 1,468 + Lake 312), so
@@ -177,10 +177,10 @@ Measured by inverting Alien Worlds' temperature curve to arc distance, both save
 ⚠️ **These counts are of `WORLDMAP_gen.rws` — the pre-paint generated world — not of the
 frozen `world/ASHKARR_WORLDMAP_*` planet.** The table is internally consistent and the
 sub7-vs-sub8 conclusion below still stands, because that was always a comparison of two
-*generated* candidates. ✅ The **2,477 (1,791 land)** figure is preserved deliberately: it is
-the evidence for a **40–57°** ring against `ashkarr_paint.py`'s 34–57, and it is what the
-owner will decide `needs_ruling.HABITABLE_RING_ARC_RULING_1` on. **Do not delete it and do
-not "correct" it to 34–57.**
+*generated* candidates. ✅ The **2,477 (1,791 land)** figure is preserved deliberately: it was
+the evidence for a **40–57°** ring against `ashkarr_paint.py`'s 34–57, and ⭐ **it won —
+the owner ruled 40–57 on 2026-08-21** and `HABITABLE_RING_ARC_RULING_1` is closed.
+**Do not delete it and do not "correct" it to 34–57.**
 
 **Coverage 0.5 amputates the far side.** sub8 holds nothing past ~100° arc — no deep dark,
 no antistellar core, no chemistry lakes, no endgame frontier. ⇒ **coverage 1.0 is not a

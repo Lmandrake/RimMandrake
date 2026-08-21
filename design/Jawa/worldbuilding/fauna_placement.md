@@ -11,14 +11,16 @@ commonality values are treated as **irrelevant** — the whole point of step 2 i
 that we reassign them.
 
 **The planet is tidally locked.** Temperature is arc distance from the subsolar
-point, not latitude — a scorched dayside, a habitable ring at roughly 34–57° of
-arc, and a frozen nightside. That geography is what most of these rules key on.
+point, not latitude — a scorched dayside, a habitable ring at **40–57° of arc**, and a
+frozen nightside. That geography is what most of these rules key on.
 
-⚠️ **The 34–57° band is canon's PROVISIONAL value, not a settled one** (stamped
-2026-08-20). It is what `src/RimMandrake/Utils/ashkarr_paint.py:76-77` used to site
-the player's home, and The Setdown at arc 56.9 only reads as "the outer edge of the
-ring" against 34–57 — but 40–57 is asserted elsewhere, and ~700 tiles turn on it.
-Open as `infrastructure/state/canon.yml > needs_ruling.HABITABLE_RING_ARC_RULING_1`.
+🔴 **RULED BY THE OWNER, 2026-08-21: the habitable ring is 40–57° of arc.** ⛔ **~~34–57~~ LOST — this file
+asserted it and is corrected in place.** It was canon-provisional on the strength of
+`ashkarr_paint.py:76-77`, the code that sited the player's home; that is a siting decision,
+not a measurement. `HABITABLE_RING_ARC_RULING_1` is closed and the value lives at
+`infrastructure/state/canon.yml > world.habitable_ring_arc`.
+⚠️ **~700 tiles move between the bands.** Any fauna rule here that was tuned against the
+34–40 margin should be re-read against the ring proper — the margin is now *outside* it.
 🔑 It is also a **design band, not a settlement census**: the 72 settlements span
 arc 10.0 to 104.6, median 75.0. Do not correct one against the other.
 
