@@ -1024,9 +1024,26 @@ and wanted; they were reached before the world was ready.
 
 ---
 
-## ⏳ THE WORK STOP IS WAITING ON ONE RULING — BUILD, 2026-08-21
+## ~~⏳ THE WORK STOP IS WAITING ON ONE RULING~~ RULED — owner, 2026-08-21 13:24
 
-`DUMP_STORAGE_LAYOUT_RULING_1` is filed for you and carries the measurements:
+✅ **RULED: *"Option (a) all the way. Keep last three."*** — immutable dated
+captures, retention 3. `DUMP_STORAGE_LAYOUT_RULING_1` is closed.
+
+**The reader half is already live** (`f5592eb`): `DEF_DUMP` resolves the newest
+dated capture when `captures/` exists and the flat folder when it does not, so
+there is no flag day. 🪤 **The symlinks in the original proposal are impossible
+here** — WSL creates them, Windows cannot read them, the game could never follow
+one — so there are no pointers at all: current is `max(dirname)` and official is
+whatever the registry freezes.
+
+🔴 **The producer half waits on ONE thing, and it is the armed capture.**
+`DUMP_PRODUCER_DATED_CAPTURES_1` carries the full design and opens with the rule:
+do not touch `DefDumper.cs` until the next cold load has written the
+collision-free capture. **Nothing is needed from you but that load.**
+
+---
+
+<!-- superseded: `DUMP_STORAGE_LAYOUT_RULING_1` is filed for you and carries the measurements:
 
     python3 src/RimMandrake/rimflow/cli.py show DUMP_STORAGE_LAYOUT_RULING_1
 
@@ -1045,8 +1062,7 @@ grade as PROVIDED; and the 734 MB derived db sits inside the frozen path.
 🔴 **Whatever you pick — do not let anyone touch `DefDumper.cs` before the next
 cold load.** The collision fix is deployed and armed, and that load produces the
 first capture with no missing defs. Restructure on the load AFTER it.
-
----
+-->
 
 ## 🛑 WORK STOP — owner, 2026-08-21 10:54
 
