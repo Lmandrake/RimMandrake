@@ -108,9 +108,25 @@ Same root cause as the faiths. `IDEO_TITLE_BEATS_DEF_TITLE_1`, filed for DECIDE.
 
 ## Where it stands
 
-The game is relaunching without FactionControl. `reload_check.py` runs every decision string
-in one command; `infrastructure/state/RELOAD_CHECK.md` holds them and what each should say.
+The game is **UP, paused, world loaded, no map** — exactly the state the paint requires, and
+the save on disk matches. `python.exe src/RimMandrake/Utils/reload_check.py` re-reads every
+string in one command; `infrastructure/state/RELOAD_CHECK.md` says what each should say.
 
-**If the load comes back clean, v1's biggest blocker was one mod entry.**
+### 🔴 Three things want your call
 
-⚠️ Two things still want your call: whether FactionControl stays out, and the Scald.
+1. **Does FactionControl stay out?** It is what made v1 loadable. What it costs is the
+   worldgen faction-count spinners — which is exactly the page we still need for the slate
+   work. Snapshot to restore from is named above.
+2. **The ideoligion mode.** It is now responsible for TWO failures, not one: the eleven
+   faiths never generated, and 15 of 17 faction leader titles are overridden. Both are
+   decided by one irreversible click on the world-creation page.
+3. **The Scald** — accept it as brine over ground, drop 312 elevations, or just move the two
+   `RiverDelta` mutators. `THE_SCALD_LOST_ITS_WATER_1` has the whole cost.
+
+### And one correction on my own method
+
+I spent an hour diagnosing "the load will not dispatch" from `Player.log` not growing, while
+`load_game` had been returning `success: false, code: save.missing_mods` naming the mod the
+whole time. **I never read the return value.** The project's one law, applied to every write
+I made tonight and not once to a call I expected to succeed. Recorded on the item rather than
+quietly fixed.
