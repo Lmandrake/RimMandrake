@@ -14,6 +14,12 @@
         "hooks": [
           {
             "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_blind_scan.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking the scan can read the artifact"
+          },
+          {
+            "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_blanket_git_stage.py\" 2>/dev/null || true",
             "timeout": 10,
             "statusMessage": "Checking git staging scope"
