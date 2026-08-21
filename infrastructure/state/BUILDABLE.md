@@ -252,3 +252,53 @@ it does not belong here.
   and the manifest carries `defTypes` / `defTypeCollisions`. ⚠️ That fix is in the
   ASSEMBLY, so it does nothing until the dumper is redeployed and the game reloaded — any
   dump captured before that is still lying.
+
+---
+
+## 🔴 INSTRUMENTS THAT RETURN A CONFIDENT WRONG ANSWER
+
+Owner, 2026-08-21, after the def-dump collision: *"Did we fix all of these string issues so
+we don't keep generating false negative results? This is very disturbing."*
+
+**The honest answer was no.** Seven instruments were caught lying in a single session, and
+only some were fixed. This is the register; it is here rather than in seven ledger notes
+because a note is not on anyone's path.
+
+🔑 **The shared shape, and it is worth naming once:** every one of these returns a NUMBER.
+None errors, none warns, none returns null. A wrong count reads exactly like a right one,
+so the failure is invisible unless you already suspect the instrument. ⇒ **When a count
+decides something expensive, check the instrument against a case whose answer you already
+know** before you trust the case you don't.
+
+| # | instrument | what it returned | status |
+|---|---|---|---|
+| 1 | `strings -a -el` on a .NET assembly | **16** of 115 tool names — implying 99 live tools were missing | ⚠️ **known only** |
+| 2 | `grep` a `.rws` for biome defNames | **2**, where the CSV holds 3 / 233 / 31 | ⚠️ **known only** |
+| 3 | def dump `defs/<Type>.json` | `AbilityDef` **0**, having written 612 | ✅ **fixed** `d7cf154`, undeployed |
+| 4 | `weapon_tag_audit` "emptied by the cut" | **0**, structurally guaranteed | ✅ **fixed** |
+| 5 | `jawa/texture_audit` | **53** dead paths, 39 of them present art | 📋 **filed**, `TEXTURE_AUDIT_CUSTOM_GRAPHICCLASS_1` |
+| 6 | `validate_patch.py`, bare `Defs/` xpath | **0 nodes** on patches live in game | ✅ **fixed**, selftest 36 cases |
+| 7 | `first_light` "no weaponTags" | counts a disarmed combat role as a civilian | ⚠️ **known only** |
+
+**1 — `strings` cannot read .NET attribute metadata.** It found 16 `jawa/` names in a DLL
+carrying 115, because .NET keeps attribute strings in metadata blobs a byte scan does not
+reach. I nearly rebuilt and redeployed the companion on that reading.
+⇒ Use `ilspycmd`, the live tool list, or file dates. **Never conclude a type or method is
+absent from an assembly because `strings` did not find it.**
+
+**2 — a `.rws` does not store world biomes as text.** They are indices into a compressed
+grid; a defName appears once or twice in a lookup table no matter how many tiles wear it.
+⇒ `jawa/world_stats`' histogram. Same class as (1): a byte scan of a structured file.
+
+**4 — Cherry Picker NEUTERS, it does not delete.** 1,170 of 1,344 cut defs are still in the
+dump with their `weaponTags` stripped, so a tag whose every carrier was cut is **absent**
+from a dump-built index rather than **empty** in it — and a counter over that index cannot
+return anything but zero. ⇒ Attribute cuts from the mod's SOURCE XML.
+
+**7 — a heuristic that is right in general hides the case you care about.** 291 kinds have
+no `weaponTags` and are meant not to; a combat role that LOSES its tags looks identical.
+⇒ `weapon_tag_audit.py` has no such blind spot; prefer it for that question.
+
+⚠️ **And one that is not a count.** `validate_patch.py --live` CANNOT prove independence
+from a mod you are about to REMOVE — every reference still resolves while the donor is
+installed. That check needs a separate pass that drops the departing packageId.
