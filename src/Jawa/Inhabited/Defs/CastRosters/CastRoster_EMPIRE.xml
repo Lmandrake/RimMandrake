@@ -6,9 +6,13 @@
     The source of truth is design/Jawa/bridge/INHABITED_CAST_EMPIRE.md;
     edit the prose there and re-run the tool.
 
-    xenotype, pawnKind, apparel and skills are deliberately absent: the
-    prose does not carry them and DECIDE owes them. Empty reads as a
-    question. A guess would read as an answer.
+    xenotype and pawnKind are deliberately absent: the prose does not
+    carry them and DECIDE owes them. Empty reads as a question. A guess
+    would read as an answer.
+
+    weapon, apparel, items and skills ARE carried, on the people whose
+    prose earns them (INHABITED_DESIGN.md 5.7a). 171 of the 294 have
+    none of the four and that is the specification, not missing data.
   -->
 
   <Inhabited.CharacterDef>
@@ -68,6 +72,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <apparel>
+      <li>OuterRim_StormtrooperHelmet</li>
+    </apparel>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -186,6 +193,13 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <weapon>OuterRim_VibroBlade</weapon>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>19</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -217,6 +231,17 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
+    <weapon>OuterRim_DLT19XTargetingBlaster</weapon>
+    <skills>
+      <li>
+        <skill>Shooting</skill>
+        <amount>19</amount>
+      </li>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>2</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -269,10 +294,6 @@
       </li>
       <li>
         <def>Abrasive</def>
-        <degree>0</degree>
-      </li>
-      <li>
-        <def>Kind</def>
         <degree>0</degree>
       </li>
     </traits>
@@ -329,11 +350,13 @@
         <def>Jealous</def>
         <degree>0</degree>
       </li>
-      <li>
-        <def>Ascetic</def>
-        <degree>0</degree>
-      </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>19</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -423,6 +446,15 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <apparel>
+      <li>Apparel_Shadecone</li>
+    </apparel>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>17</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -540,6 +572,13 @@
         <degree>0</degree>
       </li>
     </traits>
+    <weapon>Force_Lightsaber_Inquisitor</weapon>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>18</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -628,6 +667,15 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>SurvivalTools_Multitool</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Construction</skill>
+        <amount>18</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -687,6 +735,15 @@
         <degreeName>ChemicalInterest</degreeName>
       </li>
     </traits>
+    <items>
+      <li>WakeUp</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>

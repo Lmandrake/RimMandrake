@@ -1,0 +1,93 @@
+CAST_XML_REGENERATE_1 — offline evidence, BUILD, 2026-08-21
+config: offline-578-defs
+
+=== 0. DIFF SHAPE, computed BEFORE the write (generator output built to a scratch dir) ===
+  on disk : 269 defs in 11 files
+  built   : 294 defs in 12 files
+  LOST  (on_disk - built): 0        <- nothing a human put there is deleted
+  ADDED (built - on_disk): 25       <- all of them CastRoster_DEEPWATER.xml, a new file
+  ALTERED, present in both: 126 of 269. 143 byte-identical.
+  Every alteration traces to an edit of the PROSE, which is the source of truth:
+     14 defs  traits changed        CAST_TRAIT_CONFLICTS_1  (this item's reason)
+     11 defs  race + hook/childhood CAST_NINE_SPECIES_MISSING_1
+    101 defs  gained a kit field    CAST_PARSER_KIT_FIELDS_1  (weapon/apparel/items/skills)
+  ⇒ §6b of skills/frozen-artifacts applied: on_disk MINUS built is ZERO, so the
+    rosters hold nothing the generator cannot rebuild. No freeze is warranted;
+    the file fails test (a) — there are no human decisions in it, only prose output.
+
+⚠️ THE ITEM'S TWO STALE EXPECTATIONS, both benign:
+  - it says 'reports 269 people'. It reports 294. Deepwater Compact's 25 people were
+    written since the item was filed (DEEPWATER_CAST_ROSTER_1), so the twelfth cast
+    file now exists. 269 -> 294 is +25 gained, not a miscount.
+  - it says 'expect the tool to still report the Deepwater Compact has no cast file'.
+    It no longer does, and it must not: MISSING_CASTS was hard-coded and printed
+    'DEEPWATER 0 people -- NO CAST FILE' on the line after parsing DEEPWATER's 25.
+    Now EXPECTED_CASTS is checked against the directory.
+
+=== 1. $ python3 src/RimMandrake/Utils/cast_to_xml.py --write ===
+traits known: 265, skills known: 12, from /mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs
+  BLACKSTAR     25 people,  75 traits  -> CastRoster_BLACKSTAR.xml
+  DEEPWATER     25 people,  75 traits  -> CastRoster_DEEPWATER.xml
+  DROIDS        25 people,  75 traits  -> CastRoster_DROIDS.xml
+  EMPIRE        25 people,  73 traits  -> CastRoster_EMPIRE.xml
+  GEONOSIAN     25 people,  73 traits  -> CastRoster_GEONOSIAN.xml
+  HELIX         25 people,  74 traits  -> CastRoster_HELIX.xml
+  HOMESTEAD     25 people,  73 traits  -> CastRoster_HOMESTEAD.xml
+  HUTT          19 people,  57 traits  -> CastRoster_HUTT.xml
+  JAWA          25 people,  74 traits  -> CastRoster_JAWA.xml
+  JUNKERS       25 people,  74 traits  -> CastRoster_JUNKERS.xml
+  TUSKEN        25 people,  72 traits  -> CastRoster_TUSKEN.xml
+  WILDSTEAM     25 people,  74 traits  -> CastRoster_WILDSTEAM.xml
+
+294 characters across 12 files
+optional kit lines: weapon 18, apparel 15, item 27, skills 101
+123 of 294 carry at least one; 171 carry none, which is the specification
+every trait and degree resolved against the dump.
+nothing written. Re-run with --write.
+
+=== 2. ⭐ CONFLICT AUDIT over the REGENERATED XML — the starred verify ===
+  pair map built from 265 shipped TraitDefs: 216 conflicting pairs
+  (bidirectional AND exclusionTags, because TraitDef.ConflictsWith consults both;
+   reading conflictingTraits off one side only would miss half of them)
+  scanned 869 <traits> entries across 294 CharacterDefs in 12 files
+  CONFLICT AUDIT: 0
+
+=== 3. spot-check three by defName ===
+  Inhabited_Tusken_HarraGhul                 Ascetic Abrasive+GreatMemory
+  Inhabited_Helix_PrithVane                  Psychopath TooSmart
+  Inhabited_Homestead_BessaTrull             Ascetic Kind+TooSmart
+  (all three as the item specifies)
+
+=== 4. every regenerated file parses as XML ===
+  ok CastRoster_BLACKSTAR.xml      25 defs
+  ok CastRoster_DEEPWATER.xml      25 defs
+  ok CastRoster_DROIDS.xml         25 defs
+  ok CastRoster_EMPIRE.xml         25 defs
+  ok CastRoster_GEONOSIAN.xml      25 defs
+  ok CastRoster_HELIX.xml          25 defs
+  ok CastRoster_HOMESTEAD.xml      25 defs
+  ok CastRoster_HUTT.xml           19 defs
+  ok CastRoster_JAWA.xml           25 defs
+  ok CastRoster_JUNKERS.xml        25 defs
+  ok CastRoster_TUSKEN.xml         25 defs
+  ok CastRoster_WILDSTEAM.xml      25 defs
+  total 294
+
+=== 5. NOT DEPLOYED, on purpose — src/DEPLOY_HOLD.txt ===
+repo : /mnt/d/Luke/dev/Rimworld/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 6 pattern(s) from src/DEPLOY_HOLD.txt
+
+Inhabited        mandrake.inhabited         13 file(s) HELD
+    H  Defs/CastRosters/CastRoster_DEEPWATER.xml   (repo-only; not deployed)
+           held: BUILD: needs the rebuilt DLL's weapon/items fields
+  ... 13 files held ...
+
+Everything in sync.
+
+  The rosters now carry <weapon>/<items>/<apparel>/<skills>, which the DEPLOYED
+  Inhabited.dll does not define. RimWorld is running (RimWorldWin64.exe pid 42700)
+  and holds that DLL open, so it cannot be replaced this round. Shipping the XML
+  ahead of it would log an unknown-field error on each of the 123 kitted characters.
+  Lift both holds together at the next shutdown, DLL first.

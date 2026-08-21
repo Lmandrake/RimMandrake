@@ -6,9 +6,13 @@
     The source of truth is design/Jawa/bridge/INHABITED_CAST_JUNKERS.md;
     edit the prose there and re-run the tool.
 
-    xenotype, pawnKind, apparel and skills are deliberately absent: the
-    prose does not carry them and DECIDE owes them. Empty reads as a
-    question. A guess would read as an answer.
+    xenotype and pawnKind are deliberately absent: the prose does not
+    carry them and DECIDE owes them. Empty reads as a question. A guess
+    would read as an answer.
+
+    weapon, apparel, items and skills ARE carried, on the people whose
+    prose earns them (INHABITED_DESIGN.md 5.7a). 171 of the 294 have
+    none of the four and that is the specification, not missing data.
   -->
 
   <Inhabited.CharacterDef>
@@ -39,6 +43,12 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>14</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -68,6 +78,13 @@
         <degree>0</degree>
       </li>
     </traits>
+    <weapon>MeleeWeapon_Knife</weapon>
+    <skills>
+      <li>
+        <skill>Artistic</skill>
+        <amount>14</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -97,6 +114,16 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>14</amount>
+      </li>
+      <li>
+        <skill>Social</skill>
+        <amount>1</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -156,6 +183,9 @@
         <degree>0</degree>
       </li>
     </traits>
+    <apparel>
+      <li>guy762_KelDorMask</li>
+    </apparel>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -245,6 +275,12 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>17</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -275,6 +311,12 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Mining</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -333,6 +375,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Artistic</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -419,6 +467,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -449,6 +503,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -537,6 +597,13 @@
         <degree>0</degree>
       </li>
     </traits>
+    <weapon>MeleeWeapon_Knife</weapon>
+    <skills>
+      <li>
+        <skill>Cooking</skill>
+        <amount>14</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -588,10 +655,6 @@
       </li>
       <li>
         <def>AnnoyingVoice</def>
-        <degree>0</degree>
-      </li>
-      <li>
-        <def>Ascetic</def>
         <degree>0</degree>
       </li>
     </traits>
@@ -714,6 +777,9 @@
         <degreeName>ChemicalFascination</degreeName>
       </li>
     </traits>
+    <items>
+      <li>Beer</li>
+    </items>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>

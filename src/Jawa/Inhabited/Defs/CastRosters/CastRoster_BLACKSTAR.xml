@@ -6,9 +6,13 @@
     The source of truth is design/Jawa/bridge/INHABITED_CAST_BLACKSTAR.md;
     edit the prose there and re-run the tool.
 
-    xenotype, pawnKind, apparel and skills are deliberately absent: the
-    prose does not carry them and DECIDE owes them. Empty reads as a
-    question. A guess would read as an answer.
+    xenotype and pawnKind are deliberately absent: the prose does not
+    carry them and DECIDE owes them. Empty reads as a question. A guess
+    would read as an answer.
+
+    weapon, apparel, items and skills ARE carried, on the people whose
+    prose earns them (INHABITED_DESIGN.md 5.7a). 171 of the 294 have
+    none of the four and that is the specification, not missing data.
   -->
 
   <Inhabited.CharacterDef>
@@ -134,14 +138,14 @@
     <label>Ma'kesh Bruul</label>
     <faction>BLACKSTAR</faction>
     <place>THE SIGNING HOUSE</place>
-    <race>Whiphid</race>
+    <race>Togorian</race>
     <age>61</age>
     <ageText>61</ageText>
     <genderText>m</genderText>
     <gender>Male</gender>
-    <childhood>an ice world, a first kill at eleven, and a rule that says a hunter eats what he takes and nothing else.</childhood>
+    <childhood>a cold world, a first kill at eleven, and a rule that says a hunter eats what he takes and nothing else.</childhood>
     <adult>takes only night contracts, and only *alive and by hand* — which doubles the fee and is not negotiable.</adult>
-    <hook>Two and a half metres of matted white fur under a cooling shroud that fails twice a shift, tusks yellowed, permanently and visibly miserable in the heat of a world he will not leave. He is the most expensive hunter on the roster because his honour is a line item, and he eats the fee's worth of meat in a week, and he has never once been talked into a rifle.</hook>
+    <hook>Two and a half metres of matted fur under a cooling shroud that fails twice a shift, fangs yellowed, permanently and visibly miserable in the heat of a world he will not leave. He is the most expensive hunter on the roster because his honour is a line item, and he eats the fee's worth of meat in a week, and he has never once been talked into a rifle.</hook>
     <traits>
       <li>
         <def>Gourmand</def>
@@ -157,6 +161,16 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>17</amount>
+      </li>
+      <li>
+        <skill>Shooting</skill>
+        <amount>2</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -188,6 +202,17 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
+    <weapon>Gun_MachinePistol</weapon>
+    <skills>
+      <li>
+        <skill>Shooting</skill>
+        <amount>6</amount>
+      </li>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>0</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -217,6 +242,16 @@
         <degree>0</degree>
       </li>
     </traits>
+    <apparel>
+      <li>OuterRim_CompositeHelmet</li>
+      <li>Apparel_ArmorRecon</li>
+    </apparel>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>18</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -283,14 +318,14 @@
     <label>Bosun Vurgo Nakk</label>
     <faction>BLACKSTAR</faction>
     <place>THE BOARDING CREW OF THE COUNTERSIGN</place>
-    <race>Besalisk</race>
+    <race>Gamorrean</race>
     <age>43</age>
     <ageText>43</ageText>
     <genderText>m</genderText>
     <gender>Male</gender>
     <childhood>eleven siblings, a cold world, and a father who ran a loading crew badly.</childhood>
     <adult>sets the frame, blows the wall, and serves the notice. In that order, and the order is doctrine.</adult>
-    <hook>Four arms and a wattled roar you hear through a hull: two on the breaching frame, one on the charge, and the fourth holding the served copy flat against your ship with a spike driven through it. He will not open a compartment that is not named in the annex — he has stood outside a door with his hand flat on it, listening to his own crew being killed in the next bay, because that bay was in scope and this one was not.</hook>
+    <hook>Tusks, and a roar you hear through a hull: he sets the frame himself, fires the charge himself, and drives a spike through the served copy into your hull with the flat of his hand — in that order, alone, every time, because a thing done by three people is a thing three people can dispute. He will not open a compartment that is not named in the annex — he has stood outside a door with his hand flat on it, listening to his own crew being killed in the next bay, because that bay was in scope and this one was not.</hook>
     <traits>
       <li>
         <def>Abrasive</def>
@@ -305,6 +340,13 @@
         <degree>0</degree>
       </li>
     </traits>
+    <weapon>Weapon_GrenadeFrag</weapon>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>14</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -312,14 +354,14 @@
     <label>Sszik Vhan</label>
     <faction>BLACKSTAR</faction>
     <place>THE BOARDING CREW OF THE COUNTERSIGN</place>
-    <race>Barabel</race>
+    <race>Trandoshan</race>
     <age>38</age>
     <ageText>38</ageText>
     <genderText>f</genderText>
     <gender>Female</gender>
     <childhood>a forest world, dark, and a first hunt she describes as a meal because it was one.</childhood>
     <adult>point of the breach. Signs Rider Four on every contract: *the mark arrives whole.*</adult>
-    <hook>Black scales, a grin with too much in it, and she reads Rider Four aloud in front of everyone before she signs it, every single time, cheerfully, because she thinks the ritual helps. It has held on all but two contracts. The Company still gives her the point position, because on the other thirty-one it worked, and because nothing on a boarding ramp has ever slowed her down.</hook>
+    <hook>Dark scales, a grin with too much in it, and she reads Rider Four aloud in front of everyone before she signs it, every single time, cheerfully, because she thinks the ritual helps. It has held on all but two contracts. The Company still gives her the point position, because on the other thirty-one it worked, and because nothing on a boarding ramp has ever slowed her down.</hook>
     <traits>
       <li>
         <def>Cannibal</def>
@@ -335,6 +377,13 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
+    <weapon>MeleeWeapon_Knife</weapon>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>17</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -395,6 +444,13 @@
         <degree>0</degree>
       </li>
     </traits>
+    <weapon>Gun_SniperRifle</weapon>
+    <skills>
+      <li>
+        <skill>Shooting</skill>
+        <amount>20</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -402,14 +458,14 @@
     <label>Nekk Arda</label>
     <faction>BLACKSTAR</faction>
     <place>THE BOARDING CREW OF THE COUNTERSIGN</place>
-    <race>Arcona</race>
+    <race>Falleen</race>
     <age>31</age>
     <ageText>31</ageText>
     <genderText>m</genderText>
     <gender>Male</gender>
     <childhood>bright, tested, sent offworld young to a technical school he never finished.</childhood>
     <adult>opens doors and locks for the crew. The best slicer the Company has.</adult>
-    <hook>Hammer-headed, spindly, and his eyes have gone the colour of poured gold, which in his species means salt and means everyone can see it. He is worth four hunters at a sealed door and he has twice **amended a contract in the archive** for a handful of salt — the one sin the Contract cannot forgive — and the second one has not been found yet, and he has begun sweating in front of Hoxx Tenneb.</hook>
+    <hook>Scaled, spindly, and his skin has gone the colour of poured gold and **stayed** there — his people's colour moves with their mood, and his has not moved in two years, which means salt and means everyone can see it. He is worth four hunters at a sealed door and he has twice **amended a contract in the archive** for a handful of salt — the one sin the Contract cannot forgive — and the second one has not been found yet, and he has begun sweating in front of Hoxx Tenneb.</hook>
     <traits>
       <li>
         <def>DrugDesire</def>
@@ -425,6 +481,15 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>Flake</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>18</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -454,6 +519,19 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>MedicineIndustrial</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Medicine</skill>
+        <amount>17</amount>
+      </li>
+      <li>
+        <skill>Shooting</skill>
+        <amount>3</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -483,6 +561,16 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Crafting</skill>
+        <amount>17</amount>
+      </li>
+      <li>
+        <skill>Construction</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -512,6 +600,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Shooting</skill>
+        <amount>0</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -519,14 +613,14 @@
     <label>Ubo Tass</label>
     <faction>BLACKSTAR</faction>
     <place>THE BOARDING CREW OF THE COUNTERSIGN</place>
-    <race>Gran</race>
+    <race>Gungan</race>
     <age>34</age>
     <ageText>34</ageText>
     <genderText>m</genderText>
     <gender>Male</gender>
     <childhood>a herd household of thirty, where being alone in a room was a punishment.</childhood>
     <adult>second through the breach. Counts the crew, aloud, continuously, for the whole action.</adult>
-    <hook>Three eyes on stalks and a bleating voice that carries over gunfire, calling the head-count through the entire boarding — *"six, six, six, five — FIVE"* — which the crew now navigate by and which the people being boarded hear coming down the corridor. He physically cannot bear being the only one of anything, and if the count reaches one he stops working entirely.</hook>
+    <hook>Eyes out on stalks and a honking call that carries over gunfire, calling the head-count through the entire boarding — *"six, six, six, five — FIVE"* — which the crew now navigate by and which the people being boarded hear coming down the corridor. He physically cannot bear being the only one of anything, and if the count reaches one he stops working entirely.</hook>
     <traits>
       <li>
         <def>Jealous</def>
@@ -572,6 +666,10 @@
         <degreeName>Beautiful</degreeName>
       </li>
     </traits>
+    <items>
+      <li>BionicArm</li>
+      <li>BionicEye</li>
+    </items>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -579,14 +677,14 @@
     <label>Adjuster Ushet Kel Ba</label>
     <faction>BLACKSTAR</faction>
     <place>THE CLAIMS OFFICE</place>
-    <race>Ishi Tib</race>
+    <race>Quarren</race>
     <age>55</age>
     <ageText>55</ageText>
     <genderText>m</genderText>
     <gender>Male</gender>
     <childhood>raised over water, in a trade where a wrong figure is a personal disgrace.</childhood>
     <adult>settles collateral claims brought by the people Blackstar raided.</adult>
-    <hook>A hooked beak, eyes out on stalks, and he conducts the entire hearing sitting chest-deep in a brine tub in the middle of the office because his hide splits in this air, and he is *not* embarrassed and will not have it mentioned. He will pay a farmer for a door, a wall, a dead animal, a spoiled well. He will not pay for the son, because the son picked up a weapon, and that made him a party.</hook>
+    <hook>Face-tentacles, a wet click on every third consonant, and he conducts the entire hearing sitting chest-deep in a brine tub in the middle of the office because his hide splits in this air, and he is *not* embarrassed and will not have it mentioned. He will pay a farmer for a door, a wall, a dead animal, a spoiled well. He will not pay for the son, because the son picked up a weapon, and that made him a party.</hook>
     <traits>
       <li>
         <def>TooSmart</def>
@@ -689,6 +787,19 @@
         <degree>0</degree>
       </li>
     </traits>
+    <apparel>
+      <li>guy762_Headband_rebreathermask</li>
+    </apparel>
+    <skills>
+      <li>
+        <skill>Shooting</skill>
+        <amount>0</amount>
+      </li>
+      <li>
+        <skill>Melee</skill>
+        <amount>0</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -696,14 +807,14 @@
     <label>Ippo Nuum</label>
     <faction>BLACKSTAR</faction>
     <place>THE CLAIMS OFFICE</place>
-    <race>Toydarian</race>
+    <race>Ortolan</race>
     <age>89</age>
     <ageText>89</ageText>
     <genderText>m</genderText>
     <gender>Male</gender>
     <childhood>a market world, a family of brokers, and no shame about any of it.</childhood>
     <adult>holds the deposit on every live contract. Releases it only with both parties present.</adult>
-    <hook>A snout, a wing-buzz that has irritated four Captains, and an absolutely unbudgeable rule: **both** parties, in the room, or the strongbox stays shut. He is proud beyond reason of being unpersuadable — his people cannot be leaned on and he brings it up constantly — and there are now three hundred and eleven deposits he cannot release, because one party to each is dead, and he can recite every one of them by amount.</hook>
+    <hook>A trunk, a wet whistling breath that has irritated four Captains, and an absolutely unbudgeable rule: **both** parties, in the room, or the strongbox stays shut. He is proud beyond reason of being unpersuadable — his people have never once been leaned on successfully and he brings it up constantly — and there are now three hundred and eleven deposits he cannot release, because one party to each is dead, and he can recite every one of them by amount.</hook>
     <traits>
       <li>
         <def>GreatMemory</def>

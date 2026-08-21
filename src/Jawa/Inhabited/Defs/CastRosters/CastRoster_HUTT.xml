@@ -6,9 +6,13 @@
     The source of truth is design/Jawa/bridge/INHABITED_CAST_HUTT.md;
     edit the prose there and re-run the tool.
 
-    xenotype, pawnKind, apparel and skills are deliberately absent: the
-    prose does not carry them and DECIDE owes them. Empty reads as a
-    question. A guess would read as an answer.
+    xenotype and pawnKind are deliberately absent: the prose does not
+    carry them and DECIDE owes them. Empty reads as a question. A guess
+    would read as an answer.
+
+    weapon, apparel, items and skills ARE carried, on the people whose
+    prose earns them (INHABITED_DESIGN.md 5.7a). 171 of the 294 have
+    none of the four and that is the specification, not missing data.
   -->
 
   <Inhabited.CharacterDef>
@@ -68,6 +72,9 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>Beer</li>
+    </items>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -97,6 +104,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Cooking</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -157,6 +170,17 @@
         <degreeName>Beautiful</degreeName>
       </li>
     </traits>
+    <weapon>DV_MeleeWeapon_SerratedScimitar</weapon>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>15</amount>
+      </li>
+      <li>
+        <skill>Crafting</skill>
+        <amount>13</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -187,6 +211,16 @@
         <degree>0</degree>
       </li>
     </traits>
+    <apparel>
+      <li>Apparel_Parka</li>
+      <li>Apparel_Tuque</li>
+    </apparel>
+    <skills>
+      <li>
+        <skill>Construction</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -334,6 +368,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Medicine</skill>
+        <amount>14</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -394,6 +434,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <apparel>
+      <li>Apparel_ClothMask</li>
+    </apparel>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -452,6 +495,15 @@
         <degree>0</degree>
       </li>
     </traits>
+    <apparel>
+      <li>Apparel_Collar</li>
+    </apparel>
+    <skills>
+      <li>
+        <skill>Plants</skill>
+        <amount>3</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -539,6 +591,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Cooking</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -569,6 +627,16 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Shooting</skill>
+        <amount>2</amount>
+      </li>
+      <li>
+        <skill>Melee</skill>
+        <amount>2</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
 </Defs>

@@ -6,9 +6,13 @@
     The source of truth is design/Jawa/bridge/INHABITED_CAST_TUSKEN.md;
     edit the prose there and re-run the tool.
 
-    xenotype, pawnKind, apparel and skills are deliberately absent: the
-    prose does not carry them and DECIDE owes them. Empty reads as a
-    question. A guess would read as an answer.
+    xenotype and pawnKind are deliberately absent: the prose does not
+    carry them and DECIDE owes them. Empty reads as a question. A guess
+    would read as an answer.
+
+    weapon, apparel, items and skills ARE carried, on the people whose
+    prose earns them (INHABITED_DESIGN.md 5.7a). 171 of the 294 have
+    none of the four and that is the specification, not missing data.
   -->
 
   <Inhabited.CharacterDef>
@@ -97,6 +101,15 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>MeleeWeapon_Knife</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Artistic</skill>
+        <amount>18</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -156,6 +169,12 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Animals</skill>
+        <amount>18</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -275,6 +294,19 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>BionicArm</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Crafting</skill>
+        <amount>15</amount>
+      </li>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>14</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -305,6 +337,12 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>17</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -326,7 +364,7 @@
         <degree>0</degree>
       </li>
       <li>
-        <def>Jealous</def>
+        <def>Abrasive</def>
         <degree>0</degree>
       </li>
       <li>
@@ -393,6 +431,13 @@
         <degree>0</degree>
       </li>
     </traits>
+    <weapon>GS_Gaffi</weapon>
+    <skills>
+      <li>
+        <skill>Crafting</skill>
+        <amount>18</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -539,6 +584,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -568,6 +619,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -598,6 +655,12 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Construction</skill>
+        <amount>17</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -620,10 +683,6 @@
       </li>
       <li>
         <def>GreatMemory</def>
-        <degree>0</degree>
-      </li>
-      <li>
-        <def>Abrasive</def>
         <degree>0</degree>
       </li>
     </traits>
@@ -652,11 +711,14 @@
         <def>Ascetic</def>
         <degree>0</degree>
       </li>
-      <li>
-        <def>Jealous</def>
-        <degree>0</degree>
-      </li>
     </traits>
+    <weapon>OuterRim_CyclerRifle</weapon>
+    <skills>
+      <li>
+        <skill>Shooting</skill>
+        <amount>18</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -687,6 +749,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <apparel>
+      <li>guy762_TuskenMask</li>
+    </apparel>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -709,10 +774,6 @@
       </li>
       <li>
         <def>Brawler</def>
-        <degree>0</degree>
-      </li>
-      <li>
-        <def>Abrasive</def>
         <degree>0</degree>
       </li>
     </traits>

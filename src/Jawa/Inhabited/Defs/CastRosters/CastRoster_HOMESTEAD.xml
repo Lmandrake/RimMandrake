@@ -6,9 +6,13 @@
     The source of truth is design/Jawa/bridge/INHABITED_CAST_HOMESTEAD.md;
     edit the prose there and re-run the tool.
 
-    xenotype, pawnKind, apparel and skills are deliberately absent: the
-    prose does not carry them and DECIDE owes them. Empty reads as a
-    question. A guess would read as an answer.
+    xenotype and pawnKind are deliberately absent: the prose does not
+    carry them and DECIDE owes them. Empty reads as a question. A guess
+    would read as an answer.
+
+    weapon, apparel, items and skills ARE carried, on the people whose
+    prose earns them (INHABITED_DESIGN.md 5.7a). 171 of the 294 have
+    none of the four and that is the specification, not missing data.
   -->
 
   <Inhabited.CharacterDef>
@@ -75,14 +79,14 @@
     <label>Vekshaa</label>
     <faction>HOMESTEAD</faction>
     <place>BELL CISTERN</place>
-    <race>Arcona</race>
+    <race>Nikto</race>
     <age>30</age>
     <ageText>30</ageText>
     <genderText>m</genderText>
     <gender>Male</gender>
     <childhood>came off a freighter at nineteen with a salt habit and no way home.</childhood>
     <adult>drinks. That is the entire occupation. No one in the Covenant may refuse him.</adult>
-    <hook>Hammerhead skull, eyes gone from gold to a dull swampy green after eleven years of salt, and he needs four times the water a man does *because* of the salt and cannot stop taking the salt. He is the most grateful person on the terminator — thanks you by name, warmly, every single time, and means it. He has drunk two holdings down to the sludge and moved on, and both of them let him, because the well belongs to whoever is thirsty standing at it, and he is always thirsty, and he is always standing at it.</hook>
+    <hook>Horned, and his hide has gone from red-brown to a dull ashy grey after eleven years of salt — his people are desert-born and he needs four times the water a man does *because* of the salt and cannot stop taking the salt. He is the most grateful person on the terminator — thanks you by name, warmly, every single time, and means it. He has drunk two holdings down to the sludge and moved on, and both of them let him, because the well belongs to whoever is thirsty standing at it, and he is always thirsty, and he is always standing at it.</hook>
     <traits>
       <li>
         <def>DrugDesire</def>
@@ -99,6 +103,9 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>Flake</li>
+    </items>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -106,14 +113,14 @@
     <label>Onk-Onk-Deshu</label>
     <faction>HOMESTEAD</faction>
     <place>BELL CISTERN</place>
-    <race>Kitonak</race>
+    <race>Hutt</race>
     <age>90</age>
     <ageText>~90</ageText>
     <genderText>f</genderText>
     <gender>Female</gender>
     <childhood>unrecorded, and if you ask her she will still be answering at sundown.</childhood>
     <adult>stands in the north field. Has stood there, broadly speaking, for six years.</adult>
-    <hook>Pale, boneless-looking, three hundred kilos of patient blubber that newcomers hitch animals to. She takes about four seconds a word and moves air through her skin continuously to stay damp — a low wet drone you feel through the floor — and she needs no well at all, ever, which is a problem nobody in the Covenant of Free Wells has worked out what to do with. She pays into the trough fund anyway. No one has heard the end of one of her sentences, so she is widely held to be the wisest person in Bell Cistern.</hook>
+    <hook>Vast, slow, three hundred kilos of patient bulk that newcomers hitch animals to. She takes about four seconds a word and keeps her own hide damp from the inside — a low wet drone you feel through the floor — and she needs no well at all, ever, which is a problem nobody in the Covenant of Free Wells has worked out what to do with. ⭐ She is also the only Hutt on the terminator who has never wanted anything from anybody, which the Cartel finds more offensive than a debt. She pays into the trough fund anyway. No one has heard the end of one of her sentences, so she is widely held to be the wisest person in Bell Cistern.</hook>
     <traits>
       <li>
         <def>TooSmart</def>
@@ -135,14 +142,14 @@
     <label>Pell Onasso</label>
     <faction>HOMESTEAD</faction>
     <place>BELL CISTERN</place>
-    <race>Gran</race>
+    <race>Ithorian</race>
     <age>47</age>
     <ageText>47</ageText>
     <genderText>m</genderText>
     <gender>Male</gender>
-    <childhood>herded before he could talk. Three eyes, all three on the animals.</childhood>
+    <childhood>herded before he could talk. Both mouths, and every word of both, on the animals.</childhood>
     <adult>runs four hundred head on water Bell Cistern cannot spare and will not cull one.</adult>
-    <hook>Three stalked eyes that go wet independently of each other, and he has named every animal he owns and grieves each one aloud for a week. He will not put down a lame beast — not for meat, not for water, not for mercy — so a third of the herd is old cripples and it drinks like a second settlement. Admire somebody else's stock in front of him and he goes silent for a day and a half. Bell Cistern has voted on this twice and both times concluded it was his ground and none of their business.</hook>
+    <hook>A long curved head and two mouths that fall silent at different moments, and he has named every animal he owns and grieves each one aloud, in stereo, for a week. He will not put down a lame beast — not for meat, not for water, not for mercy — so a third of the herd is old cripples and it drinks like a second settlement. Admire somebody else's stock in front of him and he goes silent for a day and a half. Bell Cistern has voted on this twice and both times concluded it was his ground and none of their business.</hook>
     <traits>
       <li>
         <def>Kind</def>
@@ -158,6 +165,12 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Animals</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -165,14 +178,14 @@
     <label>Uzzo One-Eye</label>
     <faction>HOMESTEAD</faction>
     <place>BELL CISTERN</place>
-    <race>Abyssin</race>
+    <race>Weequay</race>
     <age>38</age>
     <ageText>38</ageText>
     <genderText>m</genderText>
     <gender>Male</gender>
     <childhood>nomad-raised under a custom that says the suffering are helped out of it.</childhood>
-    <adult>twenty years on the Bell Cistern water gang. Grew a hand back in his first season.</adult>
-    <hook>One enormous eye, an arm that regrew a shade paler than the other, and he can work a full shift in the open at noon, which nobody else here can do. He is the gentlest man in the settlement, and he will still — sincerely, quietly, kindly — offer to end anyone in real pain, the old, the crushed, the dying, and be genuinely wounded by how they take it. He has been told. He has been told for twenty years. It will not stay in.</hook>
+    <adult>twenty years on the Bell Cistern water gang. Lost the eye in his first season and did not slow down.</adult>
+    <hook>One eye — the other went to a well collapse before most of the gang was born — an arm rebuilt out of parts that were somebody else's, and a hide that lets him work a full shift in the open at noon, which nobody else here can do. He is the gentlest man in the settlement, and he will still — sincerely, quietly, kindly — offer to end anyone in real pain, the old, the crushed, the dying, and be genuinely wounded by how they take it. He has been told. He has been told for twenty years. It will not stay in.</hook>
     <traits>
       <li>
         <def>Kind</def>
@@ -216,6 +229,16 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Construction</skill>
+        <amount>15</amount>
+      </li>
+      <li>
+        <skill>Social</skill>
+        <amount>14</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -246,6 +269,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -327,10 +356,6 @@
         <degree>0</degree>
       </li>
       <li>
-        <def>Abrasive</def>
-        <degree>0</degree>
-      </li>
-      <li>
         <def>Kind</def>
         <degree>0</degree>
       </li>
@@ -393,6 +418,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -423,6 +454,16 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>15</amount>
+      </li>
+      <li>
+        <skill>Social</skill>
+        <amount>14</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -541,6 +582,16 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Construction</skill>
+        <amount>16</amount>
+      </li>
+      <li>
+        <skill>Melee</skill>
+        <amount>11</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -570,6 +621,9 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>MedicineIndustrial</li>
+    </items>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -599,6 +653,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Crafting</skill>
+        <amount>17</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -652,10 +712,6 @@
         <def>GreatMemory</def>
         <degree>0</degree>
       </li>
-      <li>
-        <def>Kind</def>
-        <degree>0</degree>
-      </li>
     </traits>
   </Inhabited.CharacterDef>
 
@@ -688,6 +744,15 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
+    <items>
+      <li>Beer</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Social</skill>
+        <amount>17</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -747,6 +812,9 @@
         <degree>0</degree>
       </li>
     </traits>
+    <apparel>
+      <li>guy762_Headband_rebreathermask</li>
+    </apparel>
   </Inhabited.CharacterDef>
 
 </Defs>

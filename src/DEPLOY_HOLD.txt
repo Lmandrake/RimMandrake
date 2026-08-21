@@ -78,3 +78,17 @@ GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGeneban
 #       RawRice ever stops qualifying, and the DLL was rebuilt against the change.
 #    Left as a note rather than deleted, because the entry records WHY an assembly sat
 #    undeployed and that it was released on a ruling rather than on impatience.
+
+# --- Inhabited: the cast rosters and their DLL, held TOGETHER -----------------
+# 2026-08-21 (BUILD). The regenerated CastRoster_*.xml carry four fields the
+# DEPLOYED Inhabited.dll has never heard of: <weapon>, <items>, <apparel> and
+# <skills> (CAST_PARSER_KIT_FIELDS_1). The repo DLL is rebuilt and has them; the
+# game copy does not, and the game was UP when this was built, so the OS holds
+# Mods/Inhabited/Assemblies/Inhabited.dll open and it could not be written.
+#
+# ⛔ Shipping the XML alone is the failure this hold exists to prevent: RimWorld
+#    would log an XML error per unknown field on 123 characters and give every one
+#    of them no weapon, no kit and no skills, with the defs otherwise loading fine.
+# ⇒ Lift ALL of these at once, the next time the game is DOWN. The DLL goes first.
+Inhabited/Assemblies/Inhabited.dll     # BUILD: game up 2026-08-21; deploy with the rosters
+Inhabited/Defs/CastRosters/*           # BUILD: needs the rebuilt DLL's weapon/items fields

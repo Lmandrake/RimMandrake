@@ -54,9 +54,10 @@ would fail a correct name. The prose is validated where it is written.
 ⚠️ THE DROID FILE IS DIFFERENT ON PURPOSE, by owner ruling: `chassis` stands in
 for race and `service-years` for age. Handled, not normalised away.
 
-⚠️ THE TWELFTH FACTION HAS NO CAST FILE. Deepwater Compact (*the Balance*) is
-tabled in INHABITED_DESIGN.md but nobody has written its 25 people. That is
-authoring debt, not a parser bug, and this tool reports it rather than failing.
+✅ ALL TWELVE FACTIONS NOW HAVE A CAST FILE. Deepwater Compact (*the Balance*) was
+the long-missing twelfth; DEEPWATER_CAST_ROSTER_1 wrote its 25 people and it is
+parsed like any other. The tool still checks the roster against the directory and
+reports a faction whose file is absent, rather than failing.
 
 TRAIT DEGREES
 -------------
@@ -96,8 +97,11 @@ _DUMPS = [
     "/RimWorld by Ludeon Studios/DefDump/defs",
 ]
 
-# The twelfth faction. Tabled in the design, never authored.
-MISSING_CASTS = ["DEEPWATER"]
+# Factions tabled in INHABITED_DESIGN.md whose cast may not be written yet. This
+# is checked against the directory, never asserted: DEEPWATER was the twelfth and
+# unauthored one until DEEPWATER_CAST_ROSTER_1 wrote its 25 people, and a hard-coded
+# "no cast file" line then reported a lie next to the file it had just parsed.
+EXPECTED_CASTS = ["DEEPWATER"]
 
 # **Name** · race · gender · age
 ENTRY_RE = re.compile(
@@ -555,9 +559,10 @@ def main():
         print("  %-12s %3d people, %3d traits  -> %s"
               % (faction, len(people), ntr, os.path.basename(out)))
 
-    for m in MISSING_CASTS:
-        print("  %-12s   0 people          -- NO CAST FILE. Authoring debt, not a bug."
-              % m)
+    for m in EXPECTED_CASTS:
+        if "INHABITED_CAST_%s.md" % m not in files:
+            print("  %-12s   0 people          -- NO CAST FILE. Authoring debt, not a bug."
+                  % m)
 
     print("\n%d characters across %d files" % (total, len(files)))
     print("optional kit lines: weapon %d, apparel %d, item %d, skills %d"

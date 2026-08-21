@@ -6,9 +6,13 @@
     The source of truth is design/Jawa/bridge/INHABITED_CAST_HELIX.md;
     edit the prose there and re-run the tool.
 
-    xenotype, pawnKind, apparel and skills are deliberately absent: the
-    prose does not carry them and DECIDE owes them. Empty reads as a
-    question. A guess would read as an answer.
+    xenotype and pawnKind are deliberately absent: the prose does not
+    carry them and DECIDE owes them. Empty reads as a question. A guess
+    would read as an answer.
+
+    weapon, apparel, items and skills ARE carried, on the people whose
+    prose earns them (INHABITED_DESIGN.md 5.7a). 171 of the 294 have
+    none of the four and that is the specification, not missing data.
   -->
 
   <Inhabited.CharacterDef>
@@ -177,14 +181,20 @@
         <degree>0</degree>
       </li>
       <li>
-        <def>Kind</def>
-        <degree>0</degree>
-      </li>
-      <li>
         <def>TooSmart</def>
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Social</skill>
+        <amount>18</amount>
+      </li>
+      <li>
+        <skill>Medicine</skill>
+        <amount>12</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -275,6 +285,15 @@
         <degreeName>ChemicalInterest</degreeName>
       </li>
     </traits>
+    <items>
+      <li>Beer</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Medicine</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -363,6 +382,19 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>BionicArm</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>13</amount>
+      </li>
+      <li>
+        <skill>Shooting</skill>
+        <amount>13</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -392,6 +424,16 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>16</amount>
+      </li>
+      <li>
+        <skill>Social</skill>
+        <amount>14</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -422,6 +464,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <apparel>
+      <li>Apparel_GasMask</li>
+    </apparel>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -451,6 +496,9 @@
         <degree>0</degree>
       </li>
     </traits>
+    <apparel>
+      <li>guy762_KelDorMask</li>
+    </apparel>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -480,6 +528,16 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Crafting</skill>
+        <amount>16</amount>
+      </li>
+      <li>
+        <skill>Social</skill>
+        <amount>2</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -656,6 +714,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Social</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -716,6 +780,12 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Cooking</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -745,6 +815,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
 </Defs>

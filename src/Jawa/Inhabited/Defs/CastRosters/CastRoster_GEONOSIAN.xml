@@ -6,9 +6,13 @@
     The source of truth is design/Jawa/bridge/INHABITED_CAST_GEONOSIAN.md;
     edit the prose there and re-run the tool.
 
-    xenotype, pawnKind, apparel and skills are deliberately absent: the
-    prose does not carry them and DECIDE owes them. Empty reads as a
-    question. A guess would read as an answer.
+    xenotype and pawnKind are deliberately absent: the prose does not
+    carry them and DECIDE owes them. Empty reads as a question. A guess
+    would read as an answer.
+
+    weapon, apparel, items and skills ARE carried, on the people whose
+    prose earns them (INHABITED_DESIGN.md 5.7a). 171 of the 294 have
+    none of the four and that is the specification, not missing data.
   -->
 
   <Inhabited.CharacterDef>
@@ -127,6 +131,16 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>BionicLeg</li>
+      <li>BionicArm</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Crafting</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -151,12 +165,13 @@
         <def>Masochist</def>
         <degree>0</degree>
       </li>
-      <li>
-        <def>ShootingAccuracy</def>
-        <degree>-1</degree>
-        <degreeName>Trigger-happy</degreeName>
-      </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Melee</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -187,6 +202,15 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>Ambrosia</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Plants</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -216,6 +240,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Medicine</skill>
+        <amount>5</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -292,10 +322,6 @@
     <adult>grooms the queen, feeds the queen, and speaks in the queen's cadence without noticing.</adult>
     <hook>Pale as unfired clay from twenty years underground, wings gone chalky from disuse, and she is the closest thing this hive has to a mouth — when she says *there was too much left undone*, she is not quoting, she thinks she is saying it. She has had two rival attendants reassigned to the smelt floor on paperwork she personally filed.</hook>
     <traits>
-      <li>
-        <def>Ascetic</def>
-        <degree>0</degree>
-      </li>
       <li>
         <def>GreatMemory</def>
         <degree>0</degree>
@@ -393,6 +419,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Animals</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -422,6 +454,16 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>18</amount>
+      </li>
+      <li>
+        <skill>Social</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -481,6 +523,12 @@
         <degree>0</degree>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Artistic</skill>
+        <amount>19</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -510,6 +558,9 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>BionicJaw</li>
+    </items>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -569,6 +620,12 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Crafting</skill>
+        <amount>16</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -628,6 +685,12 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
+    <skills>
+      <li>
+        <skill>Intellectual</skill>
+        <amount>20</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
@@ -687,6 +750,15 @@
         <degree>0</degree>
       </li>
     </traits>
+    <items>
+      <li>Drum</li>
+    </items>
+    <skills>
+      <li>
+        <skill>Artistic</skill>
+        <amount>15</amount>
+      </li>
+    </skills>
   </Inhabited.CharacterDef>
 
   <Inhabited.CharacterDef>
