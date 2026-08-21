@@ -120,7 +120,23 @@ touched, because the file is the owner's approved artifact.
    ⚠️ If `VME_Nomad` is dropped, drop it from `JawaTribes.xml`'s `forcedMemes` in
    the same commit or the two religions silently diverge.
 
-   ✅ **RULED BY THE OWNER, 2026-08-20: DROPPED. Done, in both places, in one commit.**
+   🔴 **REVERSED BY THE OWNER, 2026-08-21: `VME_Nomad` STAYS, everywhere.** *"But I like
+   VME_Nomad!"* — and, when shown that a gravship launch never resets the counter and the
+   colony climbs to −50 mood with no practical reset: *"Let's just assume there will be no
+   conflict… No further testing for Nomad issues at this time please."*
+   ⇒ The recommendation above is **dead**, and the 2026-08-20 drop recorded below is
+   **undone**. The meme is on the Jawa tribes (`NOMAD_MEME_RESTORED_TRIBES_1`, free there —
+   `VME_PermanentBases_Despised` carries `enabledForNPCFactions: false`) and on the player
+   ideo. `Nomadic_Preferred` stays too; it is a precept and costs no meme slot, so the two
+   were never alternatives.
+   ⛔ **Do not reopen this.** The evidence is preserved in
+   `infrastructure/state/items/NOMAD_GRAVSHIP_RESET_PATCH_1.md`; the owner read it and ruled
+   anyway. He will judge it in play.
+   🔑 And the swap that was recommended was never mechanically available: `Nomadic_Preferred`
+   is a **PreceptDef** on Odyssey's `Nomadic` issue, there is no nomad MemeDef in vanilla at
+   all, and FactionDef has no `requiredPrecepts` field to hold it.
+
+   <s>✅ **RULED BY THE OWNER, 2026-08-20: DROPPED. Done, in both places, in one commit.**</s>
    - `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml` — `<li>VME_Nomad</li>`
      removed from `forcedMemes`, with the reasoning inline.
    - `src/Jawa/ideoligion/The Salvation.rid` — removed from `<memes>`.

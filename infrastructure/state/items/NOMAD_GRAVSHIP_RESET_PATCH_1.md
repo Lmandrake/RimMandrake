@@ -1,3 +1,20 @@
+🔴 **CLOSED BY THE OWNER, 2026-08-21, before it was worked. His words:**
+> *"Let's just assume there will be no conflict. The user will know during gameplay if
+> they're getting unresolvable massive negative moods. No further testing for Nomad issues
+> at this time please."*
+
+⇒ **`VME_Nomad` STAYS — on the Jawa tribes AND on the player ideo.** No Harmony patch, no
+in-game verification, no further measurement. Options 1, 2 and 3 below are all dead; the
+owner took option 1 and ruled the question shut.
+
+⛔ **DO NOT REOPEN THIS ON THE EVIDENCE BELOW.** The −50 finding is real, confirmed against
+Ludeon's own source, and **the owner has seen it and ruled anyway.** That is his call to
+make and it is made. The measurements are kept here as the record of what he was told, not
+as an argument still waiting for someone to act on it. If it bites in play, he will say so —
+that is the mechanism he chose.
+
+---
+
 ## spec
 🔴 **OWNER, 2026-08-21: "But I like VME_Nomad!"** ✅ **Kept on the Jawa tribes — free, done**
 (`NOMAD_MEME_RESTORED_TRIBES_1`; the harsh precept carries `enabledForNPCFactions: false`).

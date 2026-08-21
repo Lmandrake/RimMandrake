@@ -1,3 +1,17 @@
+✅ **SETTLED 2026-08-21 — the hold is lifted and the direction is decided.** The owner ruled
+`VME_Nomad` stays and closed the question (`NOMAD_GRAVSHIP_RESET_PATCH_1`).
+
+⇒ **Reconcile with the meme IN.** Restore `VME_Nomad` to the repo copy
+`D:\Luke\dev\Rimworld\src\Jawa\ideoligion\The Salvation.rid` so it matches the game copy,
+which already has it and must not be overwritten.
+⛔ **Do NOT copy the repo `.rid` over the game `.rid`.** The game copy is the correct one.
+✅ `Nomadic_Preferred` stays too — it is a precept, costs no meme slot, and holding both was
+always available.
+**Done when:** `diff` between the two copies is empty and both read `VME_Nomad: 1`.
+⚠️ An Ideo is fixed at world creation, so this must land before the next remake.
+
+---
+
 🔴 **REDIRECTED 2026-08-21 — the owner reversed the drop: *"But I like VME_Nomad!"***
 ⇒ **The reconcile direction flips.** The repo copy dropped the meme on 2026-08-20; the game
 copy still has it. His preference is to keep it, so the file that is now WRONG is the repo
