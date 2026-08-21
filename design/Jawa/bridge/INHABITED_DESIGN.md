@@ -475,6 +475,50 @@ the toy line named the cantina extras — "Walrus Man", "Hammerhead" — *before
 did, and fans built mythologies on those names. ⇒ Design the silhouette and the job, then
 name. One physical or verbal tic per character, **unrepeated across the whole roster**.
 
+## 5.7 ⭐ A NAMED CHARACTER KEEPS THEIR OWN RACE — ruled 2026-08-21
+
+**The question:** 51 of the 269 carry a race their own faction cannot generate. When the
+two disagree, which wins?
+
+🔴 **The engine does not leave this open, so not deciding IS deciding.** Every `Jawa_*` pawn
+kind carries `useFactionXenotypes: true`, and `PawnGenerator.cs`:
+
+| | |
+|---|---|
+| `:1751` | at generation, draws the xenotype **from the faction's `xenotypeSet`** |
+| `:518` | in validation, **rejects** any candidate whose xenotype is not in that set |
+
+⇒ bind a named character to such a kind and their authored race is **discarded, or they
+fail to generate**. Silently, both ways.
+
+### ⇒ THE RULE
+
+1. ✅ **The authored race wins. `CharacterApplier` forces the xenotype** (`request.ForcedXenotype`).
+2. ⛔ **Named characters are not generated through a kind with `useFactionXenotypes: true`** —
+   give `Inhabited` its own unconstrained kinds, or clear the flag on the ones it uses.
+3. ⛔ **Do NOT widen a faction's `xenotypeSet` to make a named character fit.** That set is
+   the owner's race/faction matrix and it governs the faction's **anonymous** pawns. Editing
+   it to accommodate one person changes what a thousand others look like.
+4. ✅ `useFactionXenotypes` keeps governing anonymous fill, unchanged.
+
+🔑 **Why the individual wins, and it is the design's own answer.** §4.2 has named people
+**drift between factions** — enslaved, escaped, absorbed after a lost battle, sold by the
+player — and §4 redistributes them through the displaced pool. **A Muun in Imperial service
+is the setting working.** A named character is a person, not a sample from a distribution.
+
+### Two traps found while mapping all 269, both of which faked a missing def
+
+- ⚠️ **The 2026-08-15 dump contains 251 XenotypeDefs and none of ours.** Read against it,
+  every one of our races reports MISSING. **Use the 2026-08-21 578-mod capture** (139 rows).
+- ⚠️ **`Klatooinian` is spelled `RimMandrakeKlatoonian` in the def** — one "o" adrift from
+  the Star Wars spelling the prose uses. A prose→defName mapper that normalises spelling
+  will silently drop him. **Yttakin is vanilla**, not one of ours, and a `RimMandrake`
+  prefix breaks it the same way.
+
+⇒ **253 of 269 map cleanly.** The remaining 9 are `CAST_NINE_SPECIES_MISSING_1`.
+
+---
+
 ## 5.7a THE FOUR OPTIONAL FIELDS — and sparse is the specification
 
 **Owner, 2026-08-21:** *"You don't have to spec out items weapons and armor for everyone,
