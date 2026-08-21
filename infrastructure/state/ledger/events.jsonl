@@ -587,3 +587,5 @@
 {"seat":"BUILD","event":"file","id":"NEEDS_RESTAMP_THIRTYEIGHT_1","title":"Re-stamp the 38 CHECK items whose needs is still the filing default","kind":"task","target":"v1","for":"CHECK","ts":"2026-08-21T10:50:41Z"}
 {"seat":"DECIDE","event":"claim","id":"CAST_NINE_SPECIES_MISSING_1","ts":"2026-08-21T10:50:45Z"}
 {"seat":"DECIDE","event":"start","id":"CAST_NINE_SPECIES_MISSING_1","ts":"2026-08-21T10:50:45Z"}
+{"seat":"BUILD","event":"verify","id":"IMPERIAL_RAID_ROSTER_1","result":"partial","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/IMPERIAL_RAID_ROSTER_1_offline.txt","sha":"a500017","ts":"2026-08-21T10:51:11Z"}
+{"seat":"BUILD","event":"close","id":"IMPERIAL_RAID_ROSTER_1","sha":"2e6d550","ts":"2026-08-21T10:51:25Z"}
