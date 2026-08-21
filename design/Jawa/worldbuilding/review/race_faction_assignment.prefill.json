@@ -1,263 +1,265 @@
 {
- "posture": "matrix",
- "generated": "2026-08-17",
- "meaning": "Per race x faction: A abundant, S some, R rare, N not present. Absent from the file means N. Weights: A~0.30, S~0.10, R~0.03, normalised per faction when written into xenotypeChances.",
- "grid": {
-  "RimMandrakeAbednedo": {
-   "OutlanderCivil": "A"
-  },
-  "RimMandrakeAnzati": {
-   "Pirate": "S"
-  },
-  "RimMandrakeAqualish": {
-   "Jawa_HuttCartel": "S",
-   "Jawa_Junkers": "S"
-  },
-  "RimMandrakeArkanian": {
-   "Jawa_AscendantHelix": "A"
-  },
-  "Baseliner": {
-   "Empire": "A",
-   "OutlanderCivil": "A",
-   "Jawa_Junkers": "S",
-   "Jawa_AscendantHelix": "S",
-   "Jawa_DeepwaterCompact": "R",
-   "Jawa_WildsteamClan": "R",
-   "TribeCivil": "R",
-   "Pirate": "S",
-   "Jawa_HuttCartel": "R"
-  },
-  "RimMandrakeBith": {
-   "Jawa_AscendantHelix": "S",
-   "Jawa_DeepwaterCompact": "R"
-  },
-  "RimMandrakeBothan": {
-   "OutlanderCivil": "S",
-   "Jawa_HuttCartel": "R",
-   "Jawa_DeepwaterCompact": "R"
-  },
-  "RimMandrakeCathar": {
-   "Jawa_WildsteamClan": "R",
-   "Pirate": "R"
-  },
-  "RimMandrakeCerean": {
-   "Jawa_AscendantHelix": "S"
-  },
-  "RimMandrakeChadraFan": {
-   "Jawa_Junkers": "A",
-   "Empire": "R",
-   "OutlanderCivil": "R"
-  },
-  "RimMandrakeChagrian": {
-   "Jawa_DeepwaterCompact": "S"
-  },
-  "RimMandrakeChiss": {
-   "Empire": "S"
-  },
-  "RimMandrakeDathomirian": {},
-  "RimMandrakeDefel": {
-   "Pirate": "S"
-  },
-  "RimMandrakeDevaronian": {
-   "Jawa_HuttCartel": "S"
-  },
-  "RimMandrakeDuros": {
-   "OutlanderCivil": "R",
-   "Pirate": "R",
-   "Jawa_Junkers": "R",
-   "Jawa_DeepwaterCompact": "R"
-  },
-  "RimMandrakeEchani": {
-   "Empire": "A"
-  },
-  "RimMandrakeEwok": {
-   "Jawa_WildsteamClan": "S"
-  },
-  "RimMandrakeFalleen": {
-   "Jawa_HuttCartel": "S"
-  },
-  "RimMandrakeFeeorin": {
-   "Jawa_Junkers": "A",
-   "Jawa_HuttCartel": "R"
-  },
-  "RimMandrakeGamorrean": {
-   "Jawa_HuttCartel": "S",
-   "Jawa_Junkers": "A"
-  },
-  "RimMandrakeGand": {
-   "Jawa_Junkers": "A"
-  },
-  "RimMandrakeGeonosianVariants": {
-   "Jawa_GeonosianFoundryHive": "A"
-  },
-  "RimMandrakeGungan": {
-   "Jawa_DeepwaterCompact": "R"
-  },
-  "RimMandrakeHerglic": {
-   "Jawa_DeepwaterCompact": "S"
-  },
-  "RimMandrakeHutt": {
-   "Jawa_HuttCartel": "A"
-  },
-  "RimMandrakeIktotchi": {
-   "Jawa_AscendantHelix": "R"
-  },
-  "RimMandrakeIridonian": {
-   "TribeCivil": "R"
-  },
-  "RimMandrakeIthorian": {
-   "Jawa_WildsteamClan": "S",
-   "OutlanderCivil": "A"
-  },
-  "MandrakeJawa": {
-   "Jawa_IndigenousTribes": "A",
-   "Jawa_HuttCartel": "R"
-  },
-  "RimMandrakeJawa": {},
-  "RimMandrakeKaleesh": {
-   "TribeCivil": "R"
-  },
-  "RimMandrakeKaminoan": {
-   "Jawa_AscendantHelix": "S"
-  },
-  "RimMandrakeKelDor": {
-   "Jawa_AscendantHelix": "R",
-   "OutlanderCivil": "R"
-  },
-  "RimMandrakeKlatoonian": {
-   "Jawa_HuttCartel": "A"
-  },
-  "RimMandrakeKubaz": {
-   "Jawa_HuttCartel": "R",
-   "Jawa_Junkers": "R",
-   "Jawa_AscendantHelix": "R"
-  },
-  "RimMandrakeLasat": {
-   "Jawa_WildsteamClan": "A",
-   "TribeCivil": "R"
-  },
-  "RimMandrakeMimbanese": {
-   "TribeCivil": "R"
-  },
-  "RimMandrakeMirialan": {
-   "OutlanderCivil": "A"
-  },
-  "RimMandrakeMonCalamari": {
-   "Jawa_DeepwaterCompact": "A"
-  },
-  "RimMandrakeMuun": {
-   "Jawa_AscendantHelix": "S",
-   "Jawa_HuttCartel": "R"
-  },
-  "RimMandrakeNagai": {
-   "Pirate": "A",
-   "TribeCivil": "R"
-  },
-  "RimMandrakeNautolan": {
-   "Jawa_DeepwaterCompact": "A"
-  },
-  "RimMandrakeNeimoidian": {
-   "Jawa_AscendantHelix": "S"
-  },
-  "RimMandrakeNelvaanian": {
-   "TribeCivil": "R"
-  },
-  "RimMandrakeNikto": {
-   "Jawa_HuttCartel": "A",
-   "Jawa_Junkers": "S"
-  },
-  "RimMandrakeOrtolan": {
-   "Jawa_HuttCartel": "R",
-   "OutlanderCivil": "R"
-  },
-  "RimMandrakePantoran": {
-   "OutlanderCivil": "A",
-   "Jawa_Junkers": "R"
-  },
-  "RimMandrakePyke": {
-   "Jawa_HuttCartel": "S",
-   "Pirate": "R"
-  },
-  "RimMandrakeQuarren": {
-   "Jawa_DeepwaterCompact": "A"
-  },
-  "RimMandrakeRakata": {
-   "Jawa_AscendantHelix": "R"
-  },
-  "RimMandrakeRodian": {
-   "Jawa_HuttCartel": "S",
-   "Jawa_Junkers": "S",
-   "Pirate": "R"
-  },
-  "RimMandrakeSelkath": {
-   "Jawa_DeepwaterCompact": "S"
-  },
-  "RimMandrakeSithKissaiPureblood": {
-   "Jawa_AscendantHelix": "R"
-  },
-  "RimMandrakeSithMassassi": {
-   "Jawa_AscendantHelix": "R"
-  },
-  "RimMandrakeSithZ": {
-   "Jawa_AscendantHelix": "R"
-  },
-  "RimMandrakeSnivvian": {
-   "Jawa_Junkers": "S"
-  },
-  "RimMandrakeSullustan": {
-   "OutlanderCivil": "S"
-  },
-  "RimMandrakeTaung": {
-   "Pirate": "R",
-   "TribeCivil": "R"
-  },
-  "RimMandrakeTogorian": {
-   "Jawa_WildsteamClan": "S",
-   "Pirate": "R",
-   "TribeCivil": "R"
-  },
-  "RimMandrakeTogruta": {
-   "Jawa_WildsteamClan": "S",
-   "OutlanderCivil": "S"
-  },
-  "RimMandrakeTrandoshan": {
-   "Jawa_HuttCartel": "S",
-   "Jawa_Junkers": "S"
-  },
-  "RimMandrakeTusken": {
-   "TribeCivil": "A"
-  },
-  "RimMandrakeTwilek": {
-   "Jawa_HuttCartel": "S",
-   "Jawa_Junkers": "R",
-   "Pirate": "R",
-   "OutlanderCivil": "R"
-  },
-  "RimMandrakeUgnaught": {
-   "Jawa_Junkers": "S",
-   "Jawa_FreeDroidEnclaves": "S",
-   "OutlanderCivil": "R",
-   "Jawa_HuttCartel": "R"
-  },
-  "RimMandrakeUmbaran": {
-   "Jawa_AscendantHelix": "S"
-  },
-  "RimMandrakeWeequay": {
-   "Jawa_Junkers": "S"
-  },
-  "RimMandrakeWookiee": {
-   "Jawa_WildsteamClan": "A"
-  },
-  "RimMandrakeYoderForceGremlin": {},
-  "RimMandrakeZeltron": {
-   "Jawa_HuttCartel": "S"
-  },
-  "RimMandrakeZygerrian": {
-   "Pirate": "A",
-   "Jawa_HuttCartel": "R",
-   "Jawa_Junkers": "R"
-  }
- },
- "notes": {},
- "placedCount": 115
+  "posture": "matrix",
+  "generated": "2026-08-17",
+  "meaning": "Per race x faction: A abundant, S some, R rare, N not present. Absent from the file means N. Weights: A~0.30, S~0.10, R~0.03, normalised per faction when written into xenotypeChances.",
+  "grid": {
+    "RimMandrakeAbednedo": {
+      "OutlanderCivil": "A"
+    },
+    "RimMandrakeAnzati": {
+      "Pirate": "S"
+    },
+    "RimMandrakeAqualish": {
+      "Jawa_HuttCartel": "S",
+      "Jawa_Junkers": "S"
+    },
+    "RimMandrakeArkanian": {
+      "Jawa_AscendantHelix": "A"
+    },
+    "Baseliner": {
+      "Empire": "A",
+      "OutlanderCivil": "A",
+      "Jawa_Junkers": "S",
+      "Jawa_AscendantHelix": "S",
+      "Jawa_DeepwaterCompact": "R",
+      "Jawa_WildsteamClan": "R",
+      "TribeCivil": "R",
+      "Pirate": "S",
+      "Jawa_HuttCartel": "R"
+    },
+    "RimMandrakeBith": {
+      "Jawa_AscendantHelix": "S",
+      "Jawa_DeepwaterCompact": "R"
+    },
+    "RimMandrakeBothan": {
+      "OutlanderCivil": "S",
+      "Jawa_HuttCartel": "R",
+      "Jawa_DeepwaterCompact": "R"
+    },
+    "RimMandrakeCathar": {
+      "Jawa_WildsteamClan": "R",
+      "Pirate": "R"
+    },
+    "RimMandrakeCerean": {
+      "Jawa_AscendantHelix": "S"
+    },
+    "RimMandrakeChadraFan": {
+      "Jawa_Junkers": "A",
+      "Empire": "R",
+      "OutlanderCivil": "R"
+    },
+    "RimMandrakeChagrian": {
+      "Jawa_DeepwaterCompact": "S"
+    },
+    "RimMandrakeChiss": {
+      "Empire": "R"
+    },
+    "RimMandrakeDathomirian": {},
+    "RimMandrakeDefel": {
+      "Pirate": "S"
+    },
+    "RimMandrakeDevaronian": {
+      "Jawa_HuttCartel": "S"
+    },
+    "RimMandrakeDuros": {
+      "OutlanderCivil": "R",
+      "Pirate": "R",
+      "Jawa_Junkers": "R",
+      "Jawa_DeepwaterCompact": "R"
+    },
+    "RimMandrakeEchani": {
+      "Empire": "R"
+    },
+    "RimMandrakeEwok": {
+      "Jawa_WildsteamClan": "S"
+    },
+    "RimMandrakeFalleen": {
+      "Jawa_HuttCartel": "S"
+    },
+    "RimMandrakeFeeorin": {
+      "Jawa_Junkers": "A",
+      "Jawa_HuttCartel": "R"
+    },
+    "RimMandrakeGamorrean": {
+      "Jawa_HuttCartel": "S",
+      "Jawa_Junkers": "A"
+    },
+    "RimMandrakeGand": {
+      "Jawa_Junkers": "A"
+    },
+    "RimMandrakeGeonosianVariants": {
+      "Jawa_GeonosianFoundryHive": "A"
+    },
+    "RimMandrakeGungan": {
+      "Jawa_DeepwaterCompact": "R"
+    },
+    "RimMandrakeHerglic": {
+      "Jawa_DeepwaterCompact": "S"
+    },
+    "RimMandrakeHutt": {
+      "Jawa_HuttCartel": "A"
+    },
+    "RimMandrakeIktotchi": {
+      "Jawa_AscendantHelix": "R"
+    },
+    "RimMandrakeIridonian": {
+      "TribeCivil": "R"
+    },
+    "RimMandrakeIthorian": {
+      "Jawa_WildsteamClan": "S",
+      "OutlanderCivil": "A"
+    },
+    "MandrakeJawa": {
+      "Jawa_IndigenousTribes": "A",
+      "Jawa_HuttCartel": "R"
+    },
+    "RimMandrakeJawa": {},
+    "RimMandrakeKaleesh": {
+      "TribeCivil": "R"
+    },
+    "RimMandrakeKaminoan": {
+      "Jawa_AscendantHelix": "S"
+    },
+    "RimMandrakeKelDor": {
+      "Jawa_AscendantHelix": "R",
+      "OutlanderCivil": "R"
+    },
+    "RimMandrakeKlatoonian": {
+      "Jawa_HuttCartel": "A"
+    },
+    "RimMandrakeKubaz": {
+      "Jawa_HuttCartel": "R",
+      "Jawa_Junkers": "R",
+      "Jawa_AscendantHelix": "R"
+    },
+    "RimMandrakeLasat": {
+      "Jawa_WildsteamClan": "A",
+      "TribeCivil": "R"
+    },
+    "RimMandrakeMimbanese": {
+      "TribeCivil": "R"
+    },
+    "RimMandrakeMirialan": {
+      "OutlanderCivil": "A"
+    },
+    "RimMandrakeMonCalamari": {
+      "Jawa_DeepwaterCompact": "A"
+    },
+    "RimMandrakeMuun": {
+      "Jawa_AscendantHelix": "S",
+      "Jawa_HuttCartel": "R"
+    },
+    "RimMandrakeNagai": {
+      "Pirate": "A",
+      "TribeCivil": "R"
+    },
+    "RimMandrakeNautolan": {
+      "Jawa_DeepwaterCompact": "A"
+    },
+    "RimMandrakeNeimoidian": {
+      "Jawa_AscendantHelix": "S"
+    },
+    "RimMandrakeNelvaanian": {
+      "TribeCivil": "R"
+    },
+    "RimMandrakeNikto": {
+      "Jawa_HuttCartel": "A",
+      "Jawa_Junkers": "S"
+    },
+    "RimMandrakeOrtolan": {
+      "Jawa_HuttCartel": "R",
+      "OutlanderCivil": "R"
+    },
+    "RimMandrakePantoran": {
+      "OutlanderCivil": "A",
+      "Jawa_Junkers": "R"
+    },
+    "RimMandrakePyke": {
+      "Jawa_HuttCartel": "S",
+      "Pirate": "R"
+    },
+    "RimMandrakeQuarren": {
+      "Jawa_DeepwaterCompact": "A"
+    },
+    "RimMandrakeRakata": {
+      "Jawa_AscendantHelix": "R"
+    },
+    "RimMandrakeRodian": {
+      "Jawa_HuttCartel": "S",
+      "Jawa_Junkers": "S",
+      "Pirate": "R"
+    },
+    "RimMandrakeSelkath": {
+      "Jawa_DeepwaterCompact": "S"
+    },
+    "RimMandrakeSithKissaiPureblood": {
+      "Jawa_AscendantHelix": "R"
+    },
+    "RimMandrakeSithMassassi": {
+      "Jawa_AscendantHelix": "R"
+    },
+    "RimMandrakeSithZ": {
+      "Jawa_AscendantHelix": "R"
+    },
+    "RimMandrakeSnivvian": {
+      "Jawa_Junkers": "S"
+    },
+    "RimMandrakeSullustan": {
+      "OutlanderCivil": "S"
+    },
+    "RimMandrakeTaung": {
+      "Pirate": "R",
+      "TribeCivil": "R"
+    },
+    "RimMandrakeTogorian": {
+      "Jawa_WildsteamClan": "S",
+      "Pirate": "R",
+      "TribeCivil": "R"
+    },
+    "RimMandrakeTogruta": {
+      "Jawa_WildsteamClan": "S",
+      "OutlanderCivil": "S"
+    },
+    "RimMandrakeTrandoshan": {
+      "Jawa_HuttCartel": "S",
+      "Jawa_Junkers": "S"
+    },
+    "RimMandrakeTusken": {
+      "TribeCivil": "A"
+    },
+    "RimMandrakeTwilek": {
+      "Jawa_HuttCartel": "S",
+      "Jawa_Junkers": "R",
+      "Pirate": "R",
+      "OutlanderCivil": "R"
+    },
+    "RimMandrakeUgnaught": {
+      "Jawa_Junkers": "S",
+      "Jawa_FreeDroidEnclaves": "S",
+      "OutlanderCivil": "R",
+      "Jawa_HuttCartel": "R"
+    },
+    "RimMandrakeUmbaran": {
+      "Jawa_AscendantHelix": "S"
+    },
+    "RimMandrakeWeequay": {
+      "Jawa_Junkers": "S"
+    },
+    "RimMandrakeWookiee": {
+      "Jawa_WildsteamClan": "A"
+    },
+    "RimMandrakeYoderForceGremlin": {},
+    "RimMandrakeZeltron": {
+      "Jawa_HuttCartel": "S"
+    },
+    "RimMandrakeZygerrian": {
+      "Pirate": "A",
+      "Jawa_HuttCartel": "R",
+      "Jawa_Junkers": "R"
+    }
+  },
+  "notes": {
+    "Empire": "2026-08-21, owner: Echani at A gave 41% of the Galactic Empire's pawns, and canon stormtroopers are human. Echani A->R and Chiss S->R put Baseliner at 76.9%, which converges with design/Jawa/worldbuilding/faction_roster_v2.md:711's independently-authored 78% baseliner. All four species stay present; two become rare rather than abundant. ONLY the Empire column changed."
+  },
+  "placedCount": 115
 }
