@@ -1,0 +1,46 @@
+PAINTER_RING_COMMENT_STALE_1 — offline evidence, BUILD, 2026-08-21T15:55:09Z
+
+$ grep -rn "34-57\|34–57" src/
+src/RimMandrake/Utils/ashkarr_paint.py:77:# is ~34-57 degrees of arc" and left it open. ⚠️ THAT FIGURE WAS OVERRULED
+src/RimMandrake/Utils/check_canon.py:29:    34–57 was overruled (`canon.yml > world.habitable_ring_arc`). It stays out of the
+
+# both surviving src/ lines say OVERRULED. Context:
+$ sed -n "74,80p" src/RimMandrake/Utils/ashkarr_paint.py
+
+# ---------------------------------------------------------------------------
+# ⭐ THE PLAYER'S HOME. Sited 2026-08-19; the docs had only "the habitable ring
+# is ~34-57 degrees of arc" and left it open. ⚠️ THAT FIGURE WAS OVERRULED
+# 2026-08-21 — the ring is 40-57 (canon.yml > world.habitable_ring_arc). The
+# siting below does NOT change: arc 56.9 is inside 57 either way.
+# This is the whole decision:
+
+$ sed -n "26,32p" src/RimMandrake/Utils/check_canon.py
+    arc. Both are correct. The defect was never the numbers; it was labelling the
+    mod's x=0.5 point "the terminator" when it is arc 45°.
+  * **habitable ring** — ⚠️ NO LONGER OPEN: the owner RULED 40–57 on 2026-08-21 and
+    34–57 was overruled (`canon.yml > world.habitable_ring_arc`). It stays out of the
+    checker anyway, because the losing figure is quoted verbatim in the files that
+    record the ruling, and a checker cannot tell a citation from an assertion.
+  * **mod counts** — every one of the twenty was true the day it was written. The
+
+# The siting did NOT move.
+$ grep -n "HOME_LATLON\|HOME_NAME" src/RimMandrake/Utils/ashkarr_paint.py | head -3
+103:HOME_LATLON = (-1.0282, 56.8669)
+104:HOME_NAME = "The Setdown"
+912:    # ⭐ The player's home, resolved from the authored lat/lon (see HOME_LATLON).
+$ grep -n "startingTile" world/ASHKARR_WORLDMAP_meta.json
+428: "startingTile": 2476,
+$ grep -n "2476" src/RimMandrake/Utils/ashkarr_populate.py
+85:    ("AbandonedColonyOutlander", ("tile", 2476),                     "The Setdown - where the dead gravship was found",                   0),
+
+# The diff is comment-only; no computed number changed.
+$ git diff -U0 src/RimMandrake/Utils/ashkarr_paint.py | grep -E "^[+-]" | grep -v "^[+-][+-]" | grep -vE "^[+-]\s*#"
+(no non-comment lines changed)
+
+$ git diff --stat src/RimMandrake/Utils/ashkarr_paint.py src/RimMandrake/Utils/check_canon.py
+ src/RimMandrake/Utils/ashkarr_paint.py | 5 ++++-
+ src/RimMandrake/Utils/check_canon.py   | 6 ++++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+$ python3 -c "import ast; ast.parse(...)"
+both parse OK

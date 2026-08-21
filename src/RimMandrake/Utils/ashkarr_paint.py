@@ -74,7 +74,10 @@ RIVER_SCARCITY = 0.16
 
 # ---------------------------------------------------------------------------
 # ⭐ THE PLAYER'S HOME. Sited 2026-08-19; the docs had only "the habitable ring
-# is ~34-57 degrees of arc" and left it open. This is the whole decision:
+# is ~34-57 degrees of arc" and left it open. ⚠️ THAT FIGURE WAS OVERRULED
+# 2026-08-21 — the ring is 40-57 (canon.yml > world.habitable_ring_arc). The
+# siting below does NOT change: arc 56.9 is inside 57 either way.
+# This is the whole decision:
 #
 #   THE SETDOWN, in the Fall Line Barrens, on the GRAY (downwind) flank -
 #   arc 56.9, bearing 358.8, ExtremeDesert, 276 m, 38.6 C, 18 mm of rain,

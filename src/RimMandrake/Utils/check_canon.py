@@ -25,8 +25,10 @@ values and forcing them to be one would destroy information:
   * **temperature** — +14 °C is OUR terminator and −37 °C is the MOD's at the same
     arc. Both are correct. The defect was never the numbers; it was labelling the
     mod's x=0.5 point "the terminator" when it is arc 45°.
-  * **habitable ring** — 34–57 vs 40–57 is a genuine open question filed under
-    `needs_ruling`. A checker that picked one would be inventing a decision.
+  * **habitable ring** — ⚠️ NO LONGER OPEN: the owner RULED 40–57 on 2026-08-21 and
+    34–57 was overruled (`canon.yml > world.habitable_ring_arc`). It stays out of the
+    checker anyway, because the losing figure is quoted verbatim in the files that
+    record the ruling, and a checker cannot tell a citation from an assertion.
   * **mod counts** — every one of the twenty was true the day it was written. The
     defect is an undated count, not a wrong count, so `--list` reports undated mod
     counts as ADVISORY and they never fail the build.
