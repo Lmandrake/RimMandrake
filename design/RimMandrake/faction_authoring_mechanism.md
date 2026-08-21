@@ -1,3 +1,4 @@
+<!-- status: live -->
 # faction_authoring_mechanism.md — How we make rich, differentiated factions
 
 _The coherent method for the "Per-Faction Definition to the Samuel Streamer level" deliverable. This file owns the **mechanism** (source-grounded evidence, the FactionDef field map, the build layers, the dossier template). The **filled roster** lives in `faction_roster_v2.md`; the **status / dependencies / next-steps** live in `Custom_World.md` under the "🅿️⭐ PARKED — Per-Faction Definition" heading (the parked-work board) — not duplicated here._

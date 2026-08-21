@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # V2 — dreams and hopes
 
 > 🔴 **STANDING OWNER RULING — 2026-08-15. THERE IS NO WORLDGEN FEATURE, IN ANY VERSION.**

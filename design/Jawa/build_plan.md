@@ -1,3 +1,4 @@
+<!-- status: live -->
 # build_plan.md — the execution strategy (how we actually build this)
 
 _Created 2026-08-09. The complement to `first_live_access.md`: that file says **what to prove first**;

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # concept.md — Portable Campaign Brief
 
 _The one-page orientation to the Gravship Expedition campaign. Premise, pillars, the sanctioned

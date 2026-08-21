@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Droid ruling — ion, capture, and what detonates
 
 _Owner's design ask, 2026-08-12, with everything verified against the live install

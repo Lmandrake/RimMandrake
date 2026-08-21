@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # Explosion energy model — everything detonates, scaled by energy density
 
 _The build spec for `design/V2_DREAMS.md` §1. Drained out of that register 2026-08-14 so the

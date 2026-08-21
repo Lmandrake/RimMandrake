@@ -1,3 +1,4 @@
+<!-- status: live -->
 <!-- doc_roster:BEGIN — generated, do not hand-edit -->
 # design/ — every document, by directory
 

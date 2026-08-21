@@ -1,3 +1,4 @@
+<!-- status: live -->
 # graphics_overhaul_protocol.md — overhauling race art ourselves
 
 _Written 2026-08-11. Grounded in: the live def dump (2026-08-11T16:25Z), a texture

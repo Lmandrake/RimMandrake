@@ -1,3 +1,4 @@
+<!-- status: live -->
 # llm_stack_assessment.md — how far the live LLM stack gets us
 
 _Written 2026-08-09 against the **28 LLM mods now installed and ACTIVE** on the machine (27 RimTalk-family +

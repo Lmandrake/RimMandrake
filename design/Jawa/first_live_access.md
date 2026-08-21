@@ -1,3 +1,4 @@
+<!-- status: live -->
 # first_live_access.md — Day-One Runbook (the first real build steps)
 
 _What to actually **do first** now that vacation is over and we're starting to build this for real

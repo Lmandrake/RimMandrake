@@ -1,3 +1,4 @@
+<!-- status: live -->
 # design/ — what we intend to exist
 
 **Tier rule: this is intent, not fact.** Everything here describes something we

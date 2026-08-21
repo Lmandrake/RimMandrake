@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # gravship_wear_pass.md — making the Kolyska read "old, rusty brown, and terrible"
 
 _A retired seat, 2026-08-13. **This is a proposal. Nothing here has been deployed and no shipping

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Map authoring: RimBridge vs save-editing — the decision
 
 _Owner + assistant, 2026-08-12. Written at the point where both paths are

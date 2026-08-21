@@ -1,3 +1,4 @@
+<!-- status: live -->
 # SALVAGE_PALETTE.md — which shipped wreck props the player can actually strip
 
 🔴 **GENERATED FILE. Do not hand-edit.** Regenerate with `python3 design/Jawa/art/salvage_filter.py`.

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # llm_voice_preauthoring.md — paste-ready LLM voice prompts (RimAI + RimDialogue)
 
 _Created 2026-08-08. **Pre-authoring artifacts**, written now so they're ready to paste at

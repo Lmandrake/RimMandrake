@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The Divine-Satiation Engine — design (agent G)
 
 _Status: DESIGN v0.1, 2026-08-08. Owner of this concept: `design/Jawa/worldbuilding/enrichment_agents.md` §5 agent **G**.

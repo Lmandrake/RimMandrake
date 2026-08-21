@@ -1,3 +1,4 @@
+<!-- status: live -->
 # balance_paradigm.md — why we would change any number in this game
 
 _Started 2026-08-10. The decision framework for normalising, cutting and

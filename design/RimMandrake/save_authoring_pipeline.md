@@ -1,3 +1,4 @@
+<!-- status: dead ; 2026-08-18 ; the owner banned offline savegame writing -->
 > # ⛔ DEAD DOCUMENT — DO NOT FOLLOW ANYTHING BELOW
 >
 > ### status: `dead` · died **2026-08-18** · why: **the owner banned offline savegame writing**

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # rimworld_file_lore.md — technical manual for editing RimWorld save / scenario / def files
 
 _Purpose: a **self-teaching reference** so that any future session can successfully edit RimWorld savegames (`.rws`), scenarios, and mod def/patch XML for this campaign. Records concrete file names, XML node structures, safe-vs-fragile regions, gotchas, and lessons learned by doing. **Keep this updated** every time we learn something new about how these files work. Distinguish what we've **verified from actual files** (✅) vs **inference/assumption** (🔎) vs **not yet confirmed** (❓)._

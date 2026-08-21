@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # Force users — build spec for Jedi and Sith raid leaders
 
 _Research pass, 2026-08-13. **Read-only.** Nothing was installed, deployed or

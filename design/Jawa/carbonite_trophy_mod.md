@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # Custom Carbonite Trophy Mod — PARKED DESIGN (author fresh for 1.6)
 
 **Status:** ⭐ GREENLIT concept, PARKED for authoring. User 2026-08-06: the donor Outer Rim carbonite is "so much lamer than the carbonite I thought we might have… make our own that would be SO MUCH COOLER."

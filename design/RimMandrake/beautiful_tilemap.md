@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # Beautiful_Tilemap — concept spec
 
 **Status: `[v2]` concept. Nothing built.** Stashed for BUILD to evaluate; this

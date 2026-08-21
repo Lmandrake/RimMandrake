@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Art request — Gamorrean head sprites for RimWorld 1.6
 
 _Upload this file to ChatGPT together with the whole `seed/` folder._

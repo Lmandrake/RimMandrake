@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Custom_World.md — How to Build a Crafted RimWorld (living playbook)
 
 _Our working recipe for authoring storytelling-centric worlds, reverse-engineered from Mr Samuel Streamer's published configs + mod-lists and adapted to our anti-exponential Jawa / crashed-Factory-ship gravship run. This file grows as we uncover more. Full evidence + per-file citations live in `research/RimMandrake/samuel_streamer_study/02_TECHNIQUE_ANALYSIS.md`._

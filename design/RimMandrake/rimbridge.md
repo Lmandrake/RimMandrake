@@ -1,3 +1,4 @@
+<!-- status: live -->
 # rimbridge.md — living context on RimBridgeServer (live game modification)
 
 _Dedicated wisdom file for **RimBridgeServer**, the mod we intend to use to modify a

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # Coastal Mesa — LLM-authored map improvement
 
 **Approach:** every design decision below was made by reasoning, not by an

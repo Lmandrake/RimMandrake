@@ -1,3 +1,4 @@
+<!-- status: live -->
 # music_protocol.md — adding our own music to the gravship campaign
 
 _Written 2026-08-11. **Revised the same day** after auditing the actually-installed

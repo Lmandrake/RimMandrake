@@ -1,3 +1,4 @@
+<!-- status: superseded-by: design/RimMandrake/llm_stack_assessment.md ; 2026-08-09 ; the RimTalk - Quests verdict is reversed to adopt; kept only as the record of why RimDialogue is delisted -->
 > 🔴 **PARTLY REVERSED — do not act on the RimTalk – Quests verdict below.** `design/RimMandrake/llm_stack_assessment.md` §0 ("Correction to `rimtalk_analysis.md`", 2026-08-09, written against 28 mods read from disk) overturns it: RimTalk – Quests (3642675329) generates no quests and is pillar-safe — **recommendation reversed to adopt**.
 > This file is kept as the only record of *why* RimDialogue is delisted and what vacated that slot. Read the assessment for the current verdict.
 

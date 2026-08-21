@@ -1,3 +1,4 @@
+<!-- status: live -->
 # ollama.md — installing Ollama on Windows
 
 _Created 2026-08-08. Purpose: stand up a **local Ollama backend** on Windows for the Kolyska

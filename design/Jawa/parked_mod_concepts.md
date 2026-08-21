@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # parked_mod_concepts.md — mod ideas worth building later
 
 _Started 2026-08-10. A home for **mechanics we liked but aren't building yet** —
