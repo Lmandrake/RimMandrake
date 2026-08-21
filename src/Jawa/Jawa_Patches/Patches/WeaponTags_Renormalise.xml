@@ -1923,6 +1923,50 @@
       </operations>
     </match>
   </Operation>
+<!--
+
+    FIRE_ARCHERS_GET_BOWS_1. Our cherrypick removed `Flamebow` (Biotech), the sole carrier
+    of `NeolithicRangedFlame`, and `Tribal_Archer_Fire` declares that tag with
+    Inherit="False" - so it inherits NOTHING from `TribalArcherBase` and spawns BARE-HANDED.
+    weapon_tag_audit.py lists it, measured 2026-08-21 against the 578-mod 22:44 dump.
+
+    -> APPEND `NeolithicRangedBasic`, the tag its own base `Tribal_Archer` already carries,
+    at the same weaponMoney 80~80. 5 loaded weapons carry it (measured, same dump).
+    `NeolithicRangedFlame` is KEPT beside it, so un-cutting `Flamebow` later restores the
+    fire bows with no further edit.
+
+    ⛔ `Flamebow` STAYS CUT - the owner's 2026-08-21 ruling was about MECH weaponry
+    (MECH_WEAPONS_UNCUT_1), not a neolithic fire-bow. These become plain archers.
+
+    ⚠️ `Tribal_Hunter_Fire` is NOT patched here, and that is deliberate. The item's spec
+    said it was disarmed too; it is not. It has no Inherit="False", so it resolves to
+    ['NeolithicRangedDecent', 'NeolithicRangedFlame'] - a live tag with 6 carriers - and
+    the audit does not list it. Adding a tag would widen its pool and lower its quality
+    band. Measured, same dump. The spec's other error: it named `NeolithicRanged`, which
+    has ZERO carriers and would have been a silent no-op.
+
+    `Tribal_Archer_Fire` WRITES its own weaponTags node in Biotech's PawnKinds_Impid.xml,
+    so the match branch is the one that fires. The nomatch branch is carried for the case
+    where another mod replaces the def wholesale.
+
+-->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Biotech</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/PawnKindDef[defName="Tribal_Archer_Fire"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Tribal_Archer_Fire"]/weaponTags</xpath>
+        <value><li>NeolithicRangedBasic</li></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Tribal_Archer_Fire"]</xpath>
+        <value><weaponTags><li>NeolithicRangedBasic</li></weaponTags></value>
+      </nomatch>
+    </match>
+  </Operation>
+
 <!-- END HAND-AUTHORED -->
 
 </Patch>
