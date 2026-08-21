@@ -356,3 +356,14 @@ no `weaponTags` and are meant not to; a combat role that LOSES its tags looks id
 ⚠️ **And one that is not a count.** `validate_patch.py --live` CANNOT prove independence
 from a mod you are about to REMOVE — every reference still resolves while the donor is
 installed. That check needs a separate pass that drops the departing packageId.
+
+**8 — `rimsage` MCP answers "not found" for every MODDED def.** Measured 2026-08-21: asked
+for six `OuterRim_*` droid `ThingDef`s that demonstrably exist, plus bare-substring searches
+for `Droid`, `OuterRim` and `guy762`, it returned **zero hits on all of them**. Vanilla and
+expansion names resolve fine (`Gun_Revolver`, `Muffalo`, `Mech_Cyclops`), so its index is
+**vanilla + expansions only**. ⇒ its `not found` means **not indexed**, never **not present**,
+and it says so with no error and no caveat — the exact shape this register exists for.
+🔴 **Never conclude a modded def is absent because `rimsage` did not find it**, and treat any
+past finding that leaned on a rimsage miss as UNMEASURED rather than settled. Use the frozen
+capture instead — read-only SQL over `DefDump/defs.sqlite`'s structured `defs` table, with a
+known answer (`Human`) run first to validate the query shape.
