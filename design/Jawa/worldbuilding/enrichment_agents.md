@@ -120,6 +120,10 @@ Legend: **◇ user-seeded**; all others are extrapolations to grow the space.
   pieces (scorch, hull breaches, dead running-lights) to inspire the repair-progression art and give
   us before/after reference. Feeds `ship_distinctive_features.md` (running-lights-as-repair-bar) and
   the repair-gate table in `ship_deck_plan.md`.
+- ~~**Faction visual-identity kit agent.**~~ ✅ **WRITTEN BY HAND INSTEAD, 2026-08-21** —
+  the per-faction art direction is `design/Jawa/art/FACTION_ART_SPEC.md` §5, and the v1 half
+  (legibility, no collisions) is §3. No agent needed. Original text kept below for the
+  apparel-tint half, which §5 does not cover.
 - **Faction visual-identity kit agent.** Generate a coherent palette + insignia + apparel-tint set per
   NPC faction so Czerka, Hutt, scav, Empire-remnant, droid enclaves *read* distinct at a glance;
   emit the texture/def tints for the ones that are XML-tintable.

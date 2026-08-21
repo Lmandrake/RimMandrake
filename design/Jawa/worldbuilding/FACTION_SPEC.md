@@ -424,6 +424,13 @@ means vanilla namers, which will generate non-Star-Wars settlement names. That i
 a real and visible fiction cost, accepted for v1; bespoke `RulePackDef`s are the
 first `[v2]` item off this spec.
 
+> 🔴 **FOUR `factionIconPath` ROWS BELOW ARE SUPERSEDED, 2026-08-21** —
+> `design/Jawa/art/FACTION_ART_SPEC.md` §3. Hutt Cartel, Deepwater Compact and Ascendant
+> Helix each shared a glyph with another faction ON THE MAP, and the Jawa Trade Moot's path
+> is **dead in 1.6** — `MoistureFarmers` lives only in a `Common_Old` folder that `<v1.6>`
+> does not load, so it renders as a magenta square. ⛔ Do not build the icon column from this
+> table. R17 itself stands: reuse, and bespoke art is still `[v2]`.
+
 | faction | factionNameMaker | settlementNameMaker | factionIconPath |
 |---|---|---|---|
 | Hutt Cartel | `NamerFactionOutlander` | `NamerSettlementOutlander` | `World/WorldObjects/Expanding/Town` |
