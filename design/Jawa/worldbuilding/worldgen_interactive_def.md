@@ -3,6 +3,33 @@
 Live working doc for the hand-built, frozen planet. Bullets only. Decisions land here
 as they are made; new-content ideas go to `worldgen_interactive_build_concepts.md`.
 
+> # 🔴 THE RULINGS IN THIS FILE STAND. ITS MEASUREMENTS DO NOT. DO NOT QUOTE A NUMBER FROM HERE.
+>
+> **Rewritten 2026-08-20 (`CANON_RECONCILE_C5_1`). The previous banner told readers to
+> "read this file for its rulings and its measurements" — and its measurements are of a
+> planet that no longer exists.** They were taken off `WORLDMAP_gen.rws` and the
+> 2026-08-16/17 painted drafts, every one of which was superseded by the hand-authored,
+> frozen `world/ASHKARR_WORLDMAP_*` bundle. Water fraction, settlement counts, faction
+> counts, biome tallies, temperature ranges: all historical. They are kept below because
+> deleting the history of a number is worse than dating it, and struck through with the
+> canon value where they are load-bearing — but **nothing below is a current measurement
+> and none of it may be quoted forward.**
+>
+> ✅ **What IS still canon here: the DESIGN RULINGS.** The geometry, the three worlds, the
+> four axes, the named regions, the wind, the scale doctrine, the faction placement, the
+> "one stage owns one field" lesson. Those are decisions, not readings, and nothing has
+> overturned them.
+>
+> 🔑 **Current numbers live in exactly two places. Quote these, never this file:**
+> - `design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md` — the prose definition of the
+>   frozen planet.
+> - `infrastructure/state/canon.yml` — one authoritative value per contested number, each
+>   with its provenance and its superseded list.
+>
+> ⚠️ **One number here is CONTESTED, not superseded, and must not be overwritten:** the
+> **40–57°** liveable ring at `:27`, `:134` and `:455`, with its tile counts. Canon carries
+> 34–57 only *provisionally*; see `needs_ruling.HABITABLE_RING_ARC_RULING_1`. The owner rules.
+>
 > ⛔ **SAVEGAME WRITING IS OUT — 2026-08-19.** Everything below dated 2026-08-16/17
 > describes a pipeline that wrote a painted planet into a `.rws`. **That route is dead**:
 > it produced a dead load twice (owner, 2026-08-18) and its nine scripts —
@@ -10,11 +37,10 @@ as they are made; new-content ideas go to `worldgen_interactive_build_concepts.m
 > `name_ashkarr_regions.py`, `name_ashkarr_factions.py`, `strip_ashkarr_factions.py`,
 > `ashkarr_write.py`, `swap_faction_def.py` — were **deleted 2026-08-19**.
 > **The map reaches the game over the live bridge** (`ASHKARR_WORLD_DEFINITION.md` §12).
-> 🔑 The DESIGN rulings in this file (geometry, the three worlds, the four axes, the named
-> regions, the wind, the scale doctrine, the faction placement) are **unaffected and still
-> canon**; the current painter is `src/RimMandrake/Utils/ashkarr_paint.py` and the current
-> map is `world/ashkarr_tiles.csv`. **Read this file for its rulings and its measurements,
-> never for a command to run.**
+> The current painter is `src/RimMandrake/Utils/ashkarr_paint.py` and the current map is the
+> `world/ASHKARR_WORLDMAP_*` bundle (tiles CSV, settlements CSV, meta JSON).
+>
+> **Read this file for its RULINGS. Never for a measurement, and never for a command to run.**
 
 ## The geometry — FIXED, measured off the save
 
@@ -26,7 +52,18 @@ as they are made; new-content ideas go to `worldgen_interactive_build_concepts.m
 - Angular distance from substellar drives everything:
   `d = acos(cos(lon)·cos(lat))` in degrees. 0° scorching · **40–57° the liveable ring** ·
   90° terminator · 180° antistellar.
-- As generated: land 75% / ocean 25%. Temperature **−105.7 … +67.9 °C**, median −38.
+  ⚠️ **40–57 is CONTESTED, not superseded.** `ashkarr_paint.py:76-77` — the code that sited
+  the player's home — says **34–57**, and The Setdown at arc 56.9 is called "the outer edge
+  of the ring", which only reads true against 34–57. The evidence for 40–57 is the tile
+  count at `:134`/`:455` below; the evidence for 34–57 is the siting decision. ~700 tiles
+  turn on it. Filed as `needs_ruling.HABITABLE_RING_ARC_RULING_1` in
+  `infrastructure/state/canon.yml`; **the owner rules, and neither figure may be asserted
+  as settled until he does.**
+- ~~As generated: land 75% / ocean 25%. Temperature **−105.7 … +67.9 °C**, median −38.~~
+  ⛔ **SUPERSEDED 2026-08-20 — a reading of `WORLDMAP_gen.rws`, not of the frozen planet.**
+  The shipped world is **water 8.14%** (1,780 of 21,872 tiles: Ocean 1,468 + Lake 312), so
+  land is **91.9%**, not 75%. Temperature runs the ruled arc curve +70 °C substellar →
+  +14 °C terminator → −80 °C antistellar. See `infrastructure/state/canon.yml`.
 - Land by band: **61.5% dead cold** (<−25) · 13.6% harsh · 11.0% temperate · 7.0% warm ·
   5.0% hot · 1.7% lethal. Arid core (AridShrubland/Wasteland/Desert/ExtremeDesert) 30.9%.
 - 19 biome types present. **Treat the biome roster as fixed and good**; we choose which to
@@ -135,6 +172,14 @@ Measured by inverting Alien Worlds' temperature curve to arc distance, both save
 | terminator 80–100° | 3,549 (3,094 land) | 6,011 |
 | deep dark 100–120° | **3,301** | **0** |
 | antistellar core >120° | **6,136** | **0** |
+
+⚠️ **These counts are of `WORLDMAP_gen.rws` — the pre-paint generated world — not of the
+frozen `world/ASHKARR_WORLDMAP_*` planet.** The table is internally consistent and the
+sub7-vs-sub8 conclusion below still stands, because that was always a comparison of two
+*generated* candidates. ✅ The **2,477 (1,791 land)** figure is preserved deliberately: it is
+the evidence for a **40–57°** ring against `ashkarr_paint.py`'s 34–57, and it is what the
+owner will decide `needs_ruling.HABITABLE_RING_ARC_RULING_1` on. **Do not delete it and do
+not "correct" it to 34–57.**
 
 **Coverage 0.5 amputates the far side.** sub8 holds nothing past ~100° arc — no deep dark,
 no antistellar core, no chemistry lakes, no endgame frontier. ⇒ **coverage 1.0 is not a
@@ -459,6 +504,14 @@ cold load.** From here the entire repaint is offline; the bridge is not needed a
 | 120–150° | 4,032 | 2,969 | −77.3 | |
 | 150–181° antistellar | 1,446 | 1,036 | −79.9 | −80 at 180° ✅ |
 
+⚠️ **This table measures `WORLDMAP_gen.rws` as generated, 2026-08-16 — not the frozen
+planet.** It is internally consistent and is kept as the arc-band evidence, including the
+**40–57° / 2,414 tiles (1,738 land)** row that is one side of
+`needs_ruling.HABITABLE_RING_ARC_RULING_1`. ⛔ Its "published curve" column is the *mod's*
+worldgen curve, which never reaches our frozen save (`canon.yml` → `temperature_curves`);
+our ruled curve is +70/+14/−80 at arc 0/90/180. Quote neither column as a current
+measurement of Ash'karr.
+
 ⭐ **Nightside (arc > 90°) = 10,828 tiles = 49.5%.** The owner's "almost precisely 50%" ruling
 is met by the world as generated, with nothing to repaint. *(My earlier temperature-inversion
 estimate said 51%; the true figure is 49.5%. That table is superseded by this one.)*
@@ -539,7 +592,12 @@ is confirmed. Painted: Rust Cathedral 0.55–0.95 · scorch ring 0.30–0.70 · 
 (PoisonForest, TarPits, HorrorWastes, Scarlands). **Ancient machinery leaks; nothing
 else on this planet does.**
 
-### Settlements — 66, all ours
+### Settlements — ~~66~~, all ours
+
+> ⛔ **~~66~~ → the frozen planet carries 72 settlements across 12 map-holding factions
+> (13 in the roster, Mechanoid holding none). `canon.yml` → `settlements.total: 72`.**
+> Everything in this section is a record of the **2026-08-16 draft paint** and its
+> per-faction counts are of that dead world. Kept for its method, not its numbers.
 
 Every settlement **converted** to a ratified faction, moved to a tile that faction
 would hold, and renamed. ⛔ **Converted, never deleted** — removing a faction object
@@ -618,13 +676,19 @@ South — so a 5,000-tile crag field is not one label stretched across a hemisph
 
 ### The foreign banners — it was the Sites, not the settlements
 
-All 66 settlements were already ours, but **20 `Site` world objects still carried
+All ~~66~~ (→ **72** on the frozen planet) settlements were already ours, but **20 `Site` world objects still carried
 foreign factions**, and the Faction Territories overlay draws a coloured claim and a
 name for **any faction owning ANY world object** — so a dozen foreign banners sat on
 the planet with no settlement behind them. Sites are now reassigned across the Dune
 Tribes, Junkers, Hutt Cartel, Wildsteam, Binary Star Raiders and the Confederacy.
 
-✅ **Measured after: exactly 14 factions own anything on Ash'karr, and all 14 are ours.**
+✅ **Measured after: exactly ~~14~~ factions own anything on Ash'karr, and all ~~14~~ are ours.**
+⛔ **~~14~~ → 13, and the correction is on disk, not merely on paper.** The Unbound Hive was
+cut (`FACTION_SPEC.md:49`, `:55`, `:331`) and the cut landed:
+`src/Jawa/Jawa_Patches/Patches/ForgottenArsenal.xml:10` records "roster went 14 -> 13". The
+frozen planet has **12 factions holding settlements**, plus Mechanoid — the Forgotten
+Arsenal — which holds none by design and is kept (`MECHANOIDS_STAY_ON_1`). 12 + 1 = **13**.
+`canon.yml` → `factions.count`.
 
 ⚠️ **Pipeline conflict, caught and removed:** `populate_ashkarr.py` also renamed world
 features by type, which silently **undid** `name_ashkarr_regions.py` — it reverted 10
@@ -660,7 +724,8 @@ not empty — they are whatever was there before, and they are still live.**
 - The whole faction debug surface is `Execute raid with faction` · `RegenerateFactionLeaders`
   · `T: Set Faction` · `Set Faction Rect` · `Kill Faction Leader` · `Set Faction Relations`
   · `T: Make Faction Leader`. **None removes a faction.**
-- Live state agrees with the file: **12 visible factions hold all 66 settlements, all ours**
+- Live state agrees with the file: **12 visible factions hold all ~~66~~ settlements, all ours**
+  *(→ **72** settlements on the frozen planet; the 12 map-holding factions still holds)*
   — but **31 zero-settlement factions are still VISIBLE**, and visibility is what draws a
   name and a territory. Owning nothing does not remove a faction from the map.
 
@@ -676,8 +741,12 @@ not empty — they are whatever was there before, and they are still live.**
 
 ## Race → faction assignment — sheet built 2026-08-17
 
-`design/Jawa/worldbuilding/review/race_faction_assignment.html` — 70 xenotypes, 12
-factions plus "(no faction)", every row pre-filled with a proposed home. **14 contested**,
+`design/Jawa/worldbuilding/review/race_faction_assignment.html` — ~~70~~ xenotypes, 12
+factions plus "(no faction)", every row pre-filled with a proposed home.
+⚠️ **Name the denominator or the number is meaningless.** ~~70~~ was the BTD working
+roster; **we now ship 71 XenotypeDefs under `src/`**, against **139 XenotypeDefs live**
+across all 578 mods (2026-08-20). The 12 here is factions-with-xenotype-wiring, not the
+13-faction roster. `canon.yml` → `species`. **14 contested**,
 **6 moved** off their current faction, **2 deliberately unassigned**.
 
 ### What the audit found first
@@ -714,13 +783,19 @@ but it does not block the worldgen run.**
 
 `world/WORLDMAP_gen.rws`, verified by loading it and reading the engine's own numbers.
 
+> ⛔ **EVERY NUMBER IN THE TABLE BELOW IS A MEASUREMENT OF A DEAD WORLD.** This is the
+> 2026-08-17 `viscera` build, superseded by the hand-authored frozen
+> `world/ASHKARR_WORLDMAP_*` bundle. Only **21,872 tiles**, coverage 1.0, subdivisions 7
+> and `TidallyLocked` carried forward unchanged. Current values:
+> `infrastructure/state/canon.yml`.
+
 | | |
 |---|---|
 | geometry | TidallyLocked · subdivisions 7 · **coverage 1.0** · **21,872 tiles** |
-| climate | **−79.4 … +80.8 °C** · water 6.9% · 2,550 polluted tiles |
+| climate | **−79.4 … +80.8 °C** · ~~water 6.9%~~ → **8.14%** · 2,550 polluted tiles |
 | biomes | `AB_RockyCrags` 6,526 (30%) · AridShrubland 5,290 · Desert 1,647 · Wasteland 1,213 · ExtremeDesert 971 · zero unresolved hashes |
 | regions | **28 named** — The Scald, The Rust Cathedral, The Scald Spine, The Twilight Sea, The Gray Sea, The Dew Belt, The Fall Line, The Salt, The Nightspill, The Sunreach, The Umbra … |
-| people | **37 settlements across 11 factions, every one ours** |
+| people | ~~**37 settlements across 11 factions**~~ → **72 settlements across 12 map-holding factions (13 in the roster)**, every one ours |
 | integrity | 0 world objects in water · 0 non-ours owning anything · roads and rivers pruned of everything the repaint stranded |
 
 Settlements: Homestead 5 · Deepwater Compact 5 · Deep Desert Tribes 4 · Hutt Cartel 4 ·
@@ -739,5 +814,5 @@ save it.
 relabels it to **Blackstar Company** *in the panel*. The patch exists and throws no error,
 but nobody has verified the panel shows the new label — if it still says "pirate gang", that
 is why it keeps being deleted, and the label patch needs to land earlier.
-📌 Everything else in the ratified 14 is present. The world is usable as it stands; Blackstar
+📌 Everything else in the ratified ~~14~~ (→ **13**; the Unbound Hive was cut) is present. The world is usable as it stands; Blackstar
 is a missing antagonist, not a broken world.

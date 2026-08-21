@@ -451,7 +451,9 @@ Short, and shorter than it was this morning (see §7).
    yes at 100% coverage and 0.28 of a cell of margin; nothing offline can show the
    engine's own readout.
 3. **Whether the 26 resolved VFE defNames registered.** Declared in XML ≠ present
-   in `DefDatabase` on a 580-mod stack (`ship_build.md:256-258`). Step 16.
+   in `DefDatabase` on a 580-mod stack *(as of 2026-08-17, when `ship_build.md:256-258`
+   was written; the live list is **578 activeMods as of 2026-08-20**, per `ModsConfig.xml`
+   and `canon.yml` → `modlist`)*. Step 16.
 4. **East or west for the four rotated machines.** A footprint cannot express it
    and neither can a def. Step 17 — it is a look, not a calculation.
 5. **Whether the exporter's gizmo can be driven from the bridge.** Step 20.
