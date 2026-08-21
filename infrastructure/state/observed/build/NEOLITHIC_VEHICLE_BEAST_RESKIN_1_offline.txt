@@ -1,0 +1,35 @@
+NEOLITHIC_VEHICLE_BEAST_RESKIN_1 — offline verify, 2026-08-21 (complete)
+
+The item's verify: validate_sprite.py reports 0 REJECT on all 12.
+Re-run independently by BUILD against each donor facing:
+
+   OxCart            south  PASS
+   OxCart            north  PASS
+   OxCart            east   PASS
+   CoveredCarriage   south  PASS
+   CoveredCarriage   north  PASS
+   CoveredCarriage   east   PASS
+   WarChariot        south  PASS
+   WarChariot        north  PASS
+   WarChariot        east   PASS
+   Chariot           south  PASS
+   Chariot           north  PASS
+   Chariot           east   PASS
+
+12 of 12 PASS. Distortion per facing is inside the item's ~18% limit; the largest
+is Chariot east at -10.8%, because a dewback will not crop to a horse's band -
+closing the full 66.7% reaches the hind leg, so the crop is capped at 30%.
+
+Beast ladder as DECIDE ruled it, unchanged:
+   Chariot dewback x1 | WarChariot dewback x2 | OxCart bantha x2 | CoveredCarriage ronto x2
+
+Deployed 8 east files 03:57. ⚠️ The game was UP at that moment (it went down 03:19
+and was relaunched); all eight are NEW files, no overwrite, no assembly, so nothing
+the running process had mapped was touched. They load on the next restart.
+
+OWED, live and CHECK's: the item's criteria - Architect > Vehicles, spawn each of the
+four, rotate north/south/east. A Vehicle Framework vehicle spawns as a PAWN, so
+jawa/list_things returns nothing at the cell; use jawa/list_pawns.
+🪤 THE FALSE PASS: the art reaches every def by texPath override whether or not any
+patch ran, so seeing new art proves nothing about the def work. The architect menu
+label is the tell, because the blueprint is a third def the reskin never touches.
