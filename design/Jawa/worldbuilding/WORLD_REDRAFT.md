@@ -37,6 +37,36 @@ load re-dumps.
 
 ---
 
+## 🔴 What must land BEFORE the remake — and what must not wait for it
+
+**DECIDE's ruling, 2026-08-21.** `queue/HUMAN.md` (03:11) listed four things that "want to
+be true at world generation". ⚠️ **One of them was on that list for the wrong reason**, and
+the distinction below is the whole point of writing this down: batching the wrong things
+into a remake makes the remake a bottleneck that ordinary work waits behind.
+
+🔑 **The test is one question: does step 5 re-apply it?** Stage 1 of `w9_run.py` writes
+**biome + scalars** — biome, elevation, temperature, rainfall, hilliness, swampiness — onto
+the freshly generated planet, straight out of `ASHKARR_WORLDMAP_tiles.csv`. Rainfall,
+elevation and swampiness are VERIFIED against the live engine (`worldmap.py:78`).
+
+| | must precede a remake? | why |
+|---|---|---|
+| **the mod list** — 577 vs 578 | 🔴 **YES** | a world generated on the wrong stack bakes dead references into the save, and no later edit removes them. `DROP_TRIBAL_FURNITURE_MOD_1`'s whole case |
+| **Configure Factions** (step 2) | 🔴 **YES, and it is spent every time** | permanent at world creation, hand-only, unrepeatable. **This is the real cost of a remake** and it appears in no queue item |
+| **FactionDefs and their ideoligions** | 🔴 **YES** | an Ideo is fixed at world creation. A `forcedMeme` edit made after the world exists is invisible until the NEXT remake. ⇒ any pending meme or faction-religion change is remake-gated |
+| **the paint** — biomes, elevation, rainfall, rivers, roads, mutators, landmarks, settlements, regions | ✅ **NO** | step 5 re-applies all of it from the CSVs. Edit the paint whenever you like; the next remake picks it up for free |
+
+⛔ **Therefore the Scald was never remake-gated**, and the 03:11 table was wrong to list it.
+It was a **paint** change — 312 tiles from +1411 m to −30 m — and a remake would have
+re-applied the corrected elevation regardless. It was executed at 08:34 on 2026-08-21 and
+ratified (`8b98dfb`); nothing about it waits on anything. The same holds for
+`RAIN_DRY_THE_JUNGLE_1` and for every future paint edit.
+
+⚠️ **The one thing paint-is-free does NOT buy you: looking.** A scalar edit re-applies
+without a remake, but whether the planet still reads as a photograph of a real planet is a
+human looking at the render — see step 7, and `SCALD_RELIEF_RENDER_LOOK_1`, which is open
+precisely because the Scald dropped 1,441 m and nobody has looked at the relief since.
+
 ## 1. Load on the 578-mod stack *(578 as of 2026-08-21)*
 
 Nothing to decide. Wait for the main menu.

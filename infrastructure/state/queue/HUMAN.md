@@ -891,7 +891,7 @@ in one pass costs one remake; doing them as they come up costs four.
 |---|---|
 | `PIRATE_VESSEL_RESTORED_1` | ⭐ **Its acceptance test becomes checkable for the first time** — *"Blackstar Company appears in the DEFAULT Configure Factions list"* can only be seen BEFORE a world exists. Ship it and `jawa/faction_create` is never needed again |
 | `DROP_TRIBAL_FURNITURE_MOD_1` | a world generated on **577** mods never contains an `XER_` reference at all |
-| `THE_SCALD_LOST_ITS_WATER_1` | if the Scald defect is in the PAINT, a remake carries it forward unchanged. Settle it first or repeat it |
+| ~~`THE_SCALD_LOST_ITS_WATER_1`~~ | ⛔ **STRUCK 2026-08-21 by DECIDE — this row was wrong.** `w9_run.py` stage 1 re-applies biome AND scalars from the paint CSV, so a paint change is never remake-gated; a remake would have carried the CORRECTED elevation, not the defect. The Scald was executed at 08:34 and ratified (`8b98dfb`). The gate rule now lives in `design/Jawa/worldbuilding/WORLD_REDRAFT.md` — mod list, Configure Factions and ideoligions gate a remake; **paint does not** |
 | `WORLD_REDRAFT_PROCEDURE_1` | 🔴 **now on the critical path, not documentation-for-later.** The next remake is the first real test of it, and writing it afterwards means writing it from memory again |
 
 ⚠️ **Configure Factions is still a hand pass and still permanent.** Every remake spends it.
