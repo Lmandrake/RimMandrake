@@ -1,3 +1,4 @@
+## spec
 🔴 **CORRECTION — CHECK, 2026-08-21. THE ADJACENCY-BYTE HUNT IS MOOT. DO NOT RESUME IT.**
 
 The `## notes` section below ends with *"WHAT IS STILL NEEDED: one number per tile —
@@ -25,7 +26,6 @@ re-scoped it to: paint the accepted world into a running game and look at it.
 
 ---
 
-## spec
 ⛔ 2026-08-19 — SAVEGAME WRITING IS OUT. Every "run X" in this item names a
 script that has been DELETED; the map reaches the game over the live bridge
 (design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md §12). The DIAGNOSES and
