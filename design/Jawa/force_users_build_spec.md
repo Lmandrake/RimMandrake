@@ -1,4 +1,25 @@
 <!-- status: aspirational -->
+> ## 🔴 CORRECTION 2026-08-20 — THE LIGHTSABER CONCLUSION IN §7 IS SUPERSEDED. THE MOD IS NOW ACTIVE.
+> This document's evidence was read on **2026-08-13**. The def dump it is now measured against was
+> captured **2026-08-20** (`capturedUtc 2026-08-20T15:08:30Z`, game 1.6.4871, 578 `activeMods`).
+>
+> **`lee.theforce.lightsaber` IS in `activeMods`, and supplies 307 distinct live `Force_` defNames** —
+> every one of them from *Star Wars : The Force – Lightsaber* and from no other mod. Present and
+> loadable: `Force_Broadsaber`, `Force_Darksaber`, `Force_Lightsaber_Curved`, the hilt parts, the
+> crystals, the seven lightsaber Forms and their anims. ⇒ **"There are zero loadable lightsaber
+> ThingDefs in the active 1.6 modlist" is FALSE as of 2026-08-20**, and the §7 line calling those
+> names *"a shopping list for whoever restores it… not defNames fit to write into a patch"* is
+> **reversed**: they are readable from their own defs and are safe to write into a patch.
+>
+> ✅ **What is NOT superseded and must not be swept away with it.** Line 13's ruling stands
+> unchanged: `lee.theforce.standalone` (`3557220601`) and `lee.theforce.factions` (`3557220783`)
+> remain **deliberately UNINSTALLED**, read for design only. The ~55 `Force_` names this document
+> cites *from those two mods* are **correct as references and are not defects** — they were never
+> claimed to be loadable, and they still are not.
+>
+> 🔴 **The VPE finding in §R1 is still true and is still unresolved** — see below; it is now also
+> recorded at the top of `design/Jawa/mods/required_mods.md` and `design/Jawa/mods/forbidden_mods.md`,
+> which is where it should have gone on 2026-08-13.
 # Force users — build spec for Jedi and Sith raid leaders
 
 _Research pass, 2026-08-13. **Read-only.** Nothing was installed, deployed or
@@ -92,6 +113,13 @@ ships the enemy-cast AI** that makes NPC casters actually cast.
 match in the whole workshop tree for a VPE-ish packageId is folder `3462136587`,
 whose `About.xml` reads `<name>VPE - Anima</name>` — an *addon*, and also not
 active. **VPE itself is not installed.**
+
+> ⚠️ **Corrected 2026-08-20 — the *not active* half is right, the *no folder owns it* half is wrong.**
+> VPE is **subscribed and on disk** at
+> `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2842502659`, whose `About.xml`
+> reads `<name>Vanilla Psycasts Expanded</name>` / `<packageId>VanillaExpanded.VPsycastsE</packageId>`.
+> This matters: the fix is **re-activating a mod already downloaded**, not resubscribing to a missing one —
+> and that is the **owner's** call to make, unmade as of 2026-08-20.
 
 So every VPE defName in the shopping list at `required_mods.md:638-642`
 (`VPE_Bolt`, `VPE_ChainBolt`, `VPE_Thunderbolt`, `VPE_ChaosSkip`,
@@ -712,7 +740,7 @@ stormtroopers, purge units and lightsaber-bearing Sith together.
 |---|---|---|
 | **A. Melee duellist (no powers)** | A xenotype with psylink 1 from `guy762_statgene_force`, a persona plasmasword, high Melee, `combatPower` ~200. Reads as a Sith/Jedi on the field. Casts nothing. | **Zero new frameworks. Pure XML. Ships today.** |
 | **B. Melee duellist + utility powers** | A, plus `guy762_GeneAbility_forcesight` / `guy762_GeneAbility_jump`, which are `aiCanUse true` and already in the stack. | Still pure XML. Powers are non-combat; a "Force leap" is the only visible one. |
-| **C. Real Force combat powers** | Lightning, choke, throw. | Requires either **installing VPE** (a 570-mod load-order change and a re-verification pass — 570 as of 2026-08-13, this document's date; the list is 578 as of 2026-08-20 per `canon.yml > modlist`) or **authoring AbilityDefs + an NPC-casting think-tree node**, which is C#/Harmony work. See §4. |
+| **C. Real Force combat powers** | Lightning, choke, throw. | Requires either **installing VPE** (a 570-mod load-order change — 570 as of 2026-08-13; 578 as of 2026-08-20 and a re-verification pass — 570 as of 2026-08-13, this document's date; the list is 578 as of 2026-08-20 per `canon.yml > modlist`) or **authoring AbilityDefs + an NPC-casting think-tree node**, which is C#/Harmony work. See §4. |
 
 **Recommendation: build A, structured so B is a one-line addition and C is a
 later swap of the ability list.** A is achievable inside the existing patch mod
@@ -992,8 +1020,10 @@ recognisable Sith on the field. It is not the Force system in
 
 `required_mods.md:620` finalizes *"VPE ONLY"* and `:623` calls VPE the sole
 substrate; `faction_roster_v2.md:231` says both Jedi channels *"draw on the same
-curated NPC-only VPE ability set"*. **VPE is not in `ModsConfig.xml` and no folder
-in the workshop tree owns `VanillaExpanded.VPsycastsE`.**
+curated NPC-only VPE ability set"*. **VPE is not in `ModsConfig.xml`** ~~and no folder
+in the workshop tree owns `VanillaExpanded.VPsycastsE`~~ **— corrected 2026-08-20: folder
+`2842502659` does own it; the mod is downloaded and merely inactive, and its three dependencies
+(Royalty, Harmony, VEF Core) are all active.**
 
 Either the ruling was never executed, or VPE was removed and the docs were not
 updated. **This is not mine to resolve** — it is a mod-roster decision, and
@@ -1117,11 +1147,15 @@ Stated explicitly rather than filled in.
   and whether it is a `factionLeader` are all unknown. If that module were
   installed, the Sith half of this spec might reduce to zero authoring — **that
   is worth checking before building anything.**
-- **The lightsaber defNames and weapon tags in `lee.theforce.lightsaber`.** The
+- ~~**The lightsaber defNames and weapon tags in `lee.theforce.lightsaber`.** The
   mod is absent, so `Force_Lightsaber`, `SE_sithsaber`, `SE_sithwarrior`,
   `Force_InquisitorLightsaber` and the `Force_*HiltPart` names are known only as
   *references* made by other mods. None was read from its own def. Do not write
-  any of them into a patch.
+  any of them into a patch.~~
+  🔴 **CLOSED 2026-08-20 — `lee.theforce.lightsaber` is ACTIVE.** It supplies **307 distinct
+  `Force_` defNames** in the 2026-08-20 dump. These names are readable from their own defs and
+  **are** fit to write into a patch. This was an open question because the mod was inactive on
+  2026-08-13; it no longer is.
 - **Whether `TabulaRasa.DefModExt_PawnKindExtended.additionalHediffs` applies a
   whole-body hediff like `PsychicAmplifier` correctly.** The field exists
   (`strings` on `TabulaRasa.dll`) and the shipped usage attaches
@@ -1154,9 +1188,18 @@ Stated explicitly rather than filled in.
   and category labels, and a separate full census of the workshop tree
   independently reached the same conclusion and cleared each candidate mod by
   name (JDS Armory, Outer Rim Core and all four submodules, KotOR Resources,
-  KotOR Droids, Jawa_Armoury). **"There are zero loadable lightsaber ThingDefs in
-  the active 1.6 modlist" is now established, not merely supported.**
-- **The `lee.theforce.lightsaber` defNames remain references only.** The names
+  KotOR Droids, Jawa_Armoury). ~~**"There are zero loadable lightsaber ThingDefs in
+  the active 1.6 modlist" is now established, not merely supported.**~~
+  🔴 **FALSE as of 2026-08-20.** The sweep was correct for the modlist of 2026-08-13. It is not
+  correct for the modlist of 2026-08-20: `lee.theforce.lightsaber` is active and the dump holds
+  307 `Force_` defs including `Force_Broadsaber`, `Force_Darksaber` and `Force_Lightsaber_Curved`.
+  A census is a measurement of one day's mod list, not a standing fact.
+- ~~**The `lee.theforce.lightsaber` defNames remain references only.**~~ **Superseded 2026-08-20 —
+  the mod is active and every name below is now readable from its own def. The provenance account
+  that follows is kept as history; its conclusion is reversed.** ⚠️ Do NOT extend this reversal to
+  `lee.theforce.standalone` or `lee.theforce.factions` — those two are still uninstalled on purpose
+  (line 13), and the `Force_` names cited from *them* are still references only.
+  Original text: **The `lee.theforce.lightsaber` defNames remain references only.** The names
   that mod would supply were harvested from the *xpaths of patches that target
   it* (`…\2938932438\1.6\AdditionalMods\_TheForceLightsabers\Patches\Patch_KotORLightsaberBalancing.xml`)
   and from the reference mod's pawnkinds — `Force_Lightsaber`,

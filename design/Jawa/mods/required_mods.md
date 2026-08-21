@@ -1,4 +1,28 @@
 <!-- status: live -->
+> ## 🔴 CORRECTION 2026-08-20 — VPE IS NOT IN THE MOD LIST, AND THIS FILE STILL SAYS IT IS
+> **Measured, not inferred.** `ModsConfig.xml` parsed as XML (**not** `grep -c '<li>'`, which
+> returns 583 by counting the 5 `knownExpansions`) holds **578 `activeMods` as of 2026-08-20**,
+> and **none** of them matches `vpsy` or `psycast`. **`VanillaExpanded.VPsycastsE` is not active.**
+>
+> The mod is **subscribed and on disk** —
+> `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2842502659`,
+> `About.xml` reading `<name>Vanilla Psycasts Expanded</name>` / `<packageId>VanillaExpanded.VPsycastsE</packageId>` —
+> and **all three of its dependencies are active** (Royalty, Harmony, VEF Core). Nothing forced it
+> out, and **no document anywhere records a decision to drop it.**
+>
+> **Consequence:** the 2026-08-06 "VPE ONLY" ruling below (line ~632) is **written but not executed.**
+> **61 dangling `VPE_` defName citations across the design docs are this one missing mod-list line** —
+> the only `VPE_` defs in the 2026-08-20 def dump are six from *Vanilla Furniture Expanded – Power*
+> (`VPE_NuclearGenerator`, `VPE_RadioactiveFog`, …), which is a prefix collision, not the psycast mod.
+> ⛔ **The `VPE_` defNames in this file are NOT the defect and must not be edited out.**
+>
+> 🔴 **RE-ACTIVATING VPE IS THE OWNER'S CALL AND HAS NOT BEEN MADE.** He owns the mod list. This
+> block records the finding only. Nothing here is agreed, decided or done, and no agent should
+> add VPE to `ModsConfig.xml`, re-order it, or write a patch that depends on it until he rules.
+> Until then, treat every VPE-dependent line below as **PLANNED, NOT LIVE.**
+>
+> Found first by `design/Jawa/force_users_build_spec.md` on **2026-08-13** (its §R1) — which never
+> propagated back into this file, which is why it stayed wrong for a week.
 > ## ⚠️ Mod identity — read this first
 > This file carries *design rationale* only (7-question test, THE FORCE spec, terrain verdicts,
 > per-mod restrictions) — not mod identity (existence, Workshop ID, packageId, supported versions).
@@ -629,7 +653,7 @@ _Evidence tier: [WS-CONFIRMED] = the Workshop page / packageId / GitHub org veri
 **⭐ THE FORCE SYSTEM — FINALIZED (user decision 2026-08-06): VPE ONLY, no dedicated Force mod.**
 
 - **DROPPED: JodemLee/TheForce_Psycast.** Reason: no `/1.6` folder in the repo (folders 1.4/1.5/2.9 only) and the Steam page (WS 3100942433) is now **"[Discontinued]."** Rather than gamble on a `LoadFolders.xml` remap of a dead mod, we take the confirmed-1.6 substrate and flavor it ourselves. Star Wars: The Force Factions (WS 3557220783) and "A complete Force system" (WS 3594298838) are likewise **NOT adopted** — same discontinuation/player-progression concerns, and no longer needed.
-- **✅ KEEP: Vanilla Psycasts Expanded (VPE)** (WS `2842502659`, Jan-2026 → **1.6 CONFIRMED**) — the sole Force substrate. VPE ships the **built-in enemy-cast AI + a storyteller that force-spawns enemy psycasters**, which is *why* enemy casters actually cast rather than stand inert (vanilla enemies never psycast — confirmed `2026-08-05_enemy_psycast_ai`). Deps (from VPE About.xml, verified `2026-08-06_force_and_or_sources_corrected`): **Harmony + Royalty DLC + VEF Core** (all in stack; Royalty is the psylink/psycast base VPE builds on). supportedVersions lists **1.4/1.5/1.6** — 1.6 confirmed. **Do NOT also run Powerful Psycast AI (Continued)** — C#-incompatible with VPE and redundant.
+- **~~✅ KEEP: Vanilla Psycasts Expanded (VPE)~~ → ⛔ NOT ACTIVE as of 2026-08-20 — see the correction at the top of this file.** The ruling below stands as a *decision*; it was never executed. VPE is subscribed on disk (`2842502659`) but absent from the 578 `activeMods`. Re-activating it is the **owner's** call, not yet made. Everything from here to the end of this section is therefore **PLANNED, NOT LIVE**. Original text follows unaltered: **✅ KEEP: Vanilla Psycasts Expanded (VPE)** (WS `2842502659`, Jan-2026 → **1.6 CONFIRMED**) — the sole Force substrate. VPE ships the **built-in enemy-cast AI + a storyteller that force-spawns enemy psycasters**, which is *why* enemy casters actually cast rather than stand inert (vanilla enemies never psycast — confirmed `2026-08-05_enemy_psycast_ai`). Deps (from VPE About.xml, verified `2026-08-06_force_and_or_sources_corrected`): **Harmony + Royalty DLC + VEF Core** (all in stack; Royalty is the psylink/psycast base VPE builds on). supportedVersions lists **1.4/1.5/1.6** — 1.6 confirmed. **Do NOT also run Powerful Psycast AI (Continued)** — C#-incompatible with VPE and redundant.
 - **THE GATE — WHO GETS THE FORCE, AND WHICH TREES (all NPC-only; players & Jawa get NONE):**
   - **Dark side → the Empire's Sith-race elite ONLY.** Restrict VPE psylink + a curated **dark-side tree** to the typical Sith xenotypes serving the Empire — **Sith / Massassi / Dathomirian-Nightsister**. Signature powers: **Force lightning** (VPE has a chain-lightning/"Discharge"-type effect to map to this), plus destructive/telekinetic-throw and fear/berserk-style debuffs. These pawns appear in **Empire pawnGroupMakers** only, via Sensible Factions (3531306011) / Faction Control (2882785581) — the Act-III "red-skinned Force elite" tier.
   - **Light/neutral side → BOTH channels are true [user ruling 2026-08-06, v2 reconciliation].** (1) **Primary: factionless, Empire-hunted lone Jedi wanderers** — hidden individuals belonging to NO faction (psylink 3–6, ≤1 per encounter), actively hunted by the Imperial Galactic Empire; the canon Imperial-purge-era fugitive. (2) **Also: a rare Jedi may shelter within a sympathetic Moisture-Farmer / Homestead faction** — a *rare* spawn (low pawnGroupMaker weight). Both get the curated **light + telekinesis tree**: **healing, telekinetic push/pull, non-lethal disables, deflection/self-buffs.** Uncommon, memorable, a reason to be careful who you raid.
@@ -901,7 +925,16 @@ _Recorded here so the pins aren't re-derived; the "does a mod already do this" v
 - **Ranges:** vanilla baseline = engine 500 tiles @ r19, each of ≤6 extenders 250 tiles @ r16, 2,000-tile cap. The mod's exact slider min/max are being pulled via Fetcher (`2026-08-06_bigger_gravships_ranges`). Until confirmed, design work uses **generous assumed limits** (documented in `ship_designs.md`) and will be re-validated against the real numbers when the Fetcher result lands.
 - **Compat note:** it's a numeric-settings mod over vanilla gravship fields; expected to coexist with VGE (which overhauls fuel/heat/power/crew, not the connection-radius constants). Confirm no double-patch of the same field once source is in hand.
 
-### 🪦 ANCIENTS (VFE-Ancients / VQE-Ancients) — DROPPED ENTIRELY (user decision 2026-08-03)
+### 🪦 ANCIENTS (VFE-Ancients / VQE-Ancients) — ~~DROPPED ENTIRELY~~ HALF-WRONG (user decision 2026-08-03; corrected 2026-08-20)
+
+> 🔴 **CORRECTION 2026-08-20 — the VQE half of this section is false. `vanillaquestsexpanded.ancients` IS in `activeMods`**
+> (folder `3618306875`), and its `VQEA_*` defs are throughout the 2026-08-20 def dump (**428 records**).
+> ✅ The **VFE-Ancients** half is correct and unchanged: WS 2654846754 is deprecated at 1.5 and is not installed.
+> ✅ The **reason** the mod was dropped is also correct and unchanged: VQE-Ancients deleted the Supply Slingshot,
+> which was the only feature we ever wanted. What is wrong is the *state* — it says the mod is gone, and it is loaded.
+> ⚠️ Whether to now uninstall it, or keep it for its quest content, is the **owner's** mod-list call. Do not act on either reading.
+> The same false claim was in `cherry_picker_killlist.md:245` and is corrected there too.
+
 **Not in the mod list. Do not install either mod.**
 
 We had adopted **VFE-Ancients** (WS 2654846754) for ONE feature — the **Supply Slingshot** (equal-value distant barter, the "isolated Jawa trade with distant Jawa" conceit). Two facts killed that: (1) VFE-Ancients is **deprecated, capped at 1.5**, won't run on 1.6/Odyssey (author Sarg Bjornson: *"it's deprecated. Use Vanilla Quests Expanded - Ancients"*); (2) its 1.6 successor **VQE-Ancients** (WS 3618306875) **deleted the Supply Slingshot** — `grep -ri slingshot` over the full source = 0 matches (verified 2026-08-03).

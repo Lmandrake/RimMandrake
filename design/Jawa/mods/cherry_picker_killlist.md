@@ -240,9 +240,15 @@ Two tools overlap; use the right one so you don't fight yourself:
 
 ## 4b. ~~VFE-Ancients player POWERS ladder~~ — 🪦 RETIRED (Ancients dropped, user 2026-08-03)
 
-**Nothing to do here. Both VFE-Ancients (WS 2654846754) and its 1.6 successor VQE-Ancients (WS 3618306875) were DROPPED from the mod list entirely** (user decision 2026-08-03 — the mod was only ever adopted for the Supply Slingshot, which the 1.6 successor deleted; see required_mods.md "ANCIENTS — DROPPED ENTIRELY").
+> 🔴 **CORRECTION 2026-08-20 — half of the sentence below is false.** `vanillaquestsexpanded.ancients` (WS `3618306875`) **IS in the 578 `activeMods`**
+> and ships **428 `VQEA_*` records** in the 2026-08-20 def dump, `VQEA_ArchogenInjector` among them. ✅ The **VFE-Ancients** half is correct: WS 2654846754 is
+> deprecated at 1.5 and is not installed, so `VFEA_GeneTailoringPod` genuinely does not exist. ⚠️ This section's *retirement* is therefore **reopened as a
+> question, not as work**: if the archite-power ladder is to stay out of player hands, VQE-Ancients is loaded and there IS something to Cherry-Pick.
+> Whether the mod stays at all is the **owner's** mod-list call. Same correction filed at `design/Jawa/mods/required_mods.md` §ANCIENTS.
 
-With no Ancients mod installed there is **no archite-power system to Cherry-Pick** — the old target `VFEA_GeneTailoringPod` (and its successor `VQEA_ArchogenInjector`) do not exist in the stack. If "powered" enemy raiders are wanted for danger, that comes from **CAI-5000** + the **Star-Wars-faction roster**, not from an Ancients module. This section is kept as a tombstone for provenance only.
+**Nothing to do here. ~~Both~~ VFE-Ancients (WS 2654846754) ~~and its 1.6 successor VQE-Ancients (WS 3618306875)~~ ~~were~~ was DROPPED from the mod list entirely** (user decision 2026-08-03 — the mod was only ever adopted for the Supply Slingshot, which the 1.6 successor deleted; see required_mods.md "ANCIENTS — DROPPED ENTIRELY").
+
+~~With no Ancients mod installed there is **no archite-power system to Cherry-Pick** — the old target `VFEA_GeneTailoringPod` (and its successor `VQEA_ArchogenInjector`) do not exist in the stack.~~ **Corrected 2026-08-20:** `VFEA_GeneTailoringPod` does not exist (VFE-Ancients absent, as stated). `VQEA_ArchogenInjector` **does** — VQE-Ancients is active. The archite-power system is in the stack. If "powered" enemy raiders are wanted for danger, that comes from **CAI-5000** + the **Star-Wars-faction roster**, not from an Ancients module. This section is kept as a tombstone for provenance only.
 
 ## 5. Off-theme buildings / research / genes clutter (LOW — polish pass)
 
