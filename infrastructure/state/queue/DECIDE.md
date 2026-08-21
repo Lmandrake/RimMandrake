@@ -1,5 +1,70 @@
 # DECIDE inbox.
 
+## 📌 SESSION HANDOFF — 2026-08-20 EVENING. Newest first; the morning handoff follows below.
+
+**Shutdown state: clean.** Everything committed and pushed, game DOWN, dump marker consumed,
+LIVE mod list = FULL = **578** (`modlist_swap.py --status` reads `matches: FULL`).
+
+### 🔴 Four things this seat did that are NOT in its lane, and why
+
+The owner directed each one personally while working alongside this window. Recorded so a
+later reader does not conclude DECIDE has quietly widened her remit.
+1. **Authored the planet** — edited `src/RimMandrake/Utils/ashkarr_paint.py` and re-rendered.
+   CLAUDE.md's *"iterate by LOOKING"* makes this the world-authoring loop, and he was watching
+   the render with me.
+2. **Generated sprites** and committed them to `DesertVehicleReskin`.
+3. ⛔ **Did NOT deploy any of it.** `deploy_custom_mods.py --mod DesertVehicleReskin` reports
+   **6 files of drift** — the regenerated sled art is committed and NOT in the game folder.
+   That is BUILD's, deliberately, after the owner's 2026-08-20 correction on the Worldbuilder
+   preset: *"a seat boundary is worth most exactly when something feels too urgent to hand over."*
+4. **Ruled cast size and the beast ladder** — those two ARE this seat's, and they unblocked
+   two BUILD items that would otherwise have bounced.
+
+### ⭐ The single most useful thing learned today, and it cost this session its accuracy twice
+
+🔑 **Four seats share ONE working tree, so a measurement taken while a peer is committing
+describes a repo that has stopped existing.** It happened twice in an hour:
+- The pre-load brief was written at 07:35 reading 577 mods and *"no assembly rides this load"*.
+  Both were false within twenty minutes — BUILD had built and deployed `Inhabited`, and the
+  owner enabled it. Corrected in `NEXT_RELOAD.md` §0 with the dead readings struck.
+- `modlist_swap --status` then read **UNRECOGNISED**, which looks like someone corrupting the
+  owner's list. Diffed before raising it: **0 of 578 positions differ** — formatting only.
+⇒ **Re-measure immediately before acting, never at the top of the session**, and diff before
+you escalate.
+
+### ✅ What landed
+
+| | |
+|---|---|
+| **The planet** | 712 river edges → **238** (owner: *"1/3"*). Scald shoreline **70/79 → 1**, its outflow notch. Systems touching two seas **3 → 0**. Mycotic jungle moved onto the terminator |
+| **`Inhabited`** | reversed to v1 by the owner, 8 items filed, BUILD built all of it overnight, and it **loaded clean on its first run**: `[Inhabited] ready: 2 patches, 269 characters, 0 places, 0 casts` |
+| **The sled** | all three facings regenerated, 0 REJECT from `validate_sprite.py`, committed, ⛔ **undeployed** |
+| **The beasts** | bantha, ronto and dewback drawn south-facing and committed; **12 composites not done** |
+| **Vehicle fuel** | specced. 🔴 No XML route — `CompProperties_FueledTravel` has no filter field |
+
+### 🔴 The root-cause find worth not re-deriving
+
+`ashkarr_paint.py` called `flow()` twice. The erosion cycles passed `evap`; **the final call —
+the one whose accumulation decides where a river IS — did not.** So no branch ever dried out,
+the Scald's trunk crossed the planet, and the owner's 2026-08-19 ruling that rivers must not
+connect the basins sat in the comment directly above that line for a day, doing nothing.
+⇒ **A ruling written as a comment beside the code it governs is not enforcement.**
+
+### ⏳ What this seat still owes
+
+- `INHABITED_OPEN_QUESTIONS_1` — the four missing character fields (⭐ BUILD's improvement on
+  my plan: pre-fill the review sheet **by RACE, not per person** — two dozen calls, not 269),
+  the twelfth faction's cast, and three answers held until the roster soak reports.
+- 🔴 **The nightside is still noise.** ~12% of the planet, and the only region that reads as
+  generated rather than authored. The owner has seen it and not yet ruled.
+- **Glowforest and HorrorWastes are still 0 tiles** — both authored at `ashkarr_paint.py:590`
+  and `:594`, both behind noise gates that never coincide. Diagnosed, not fixed.
+- The green terminator ring thinned with the rivers (`AB_FeraliskInfestedJungle` 7.1% → 2.4%).
+  ⚠️ **If he wants it back, widen the riparian bands — do NOT restore the rivers**, or the
+  three requirements he gave this morning come undone.
+
+---
+
 ## 📌 SESSION HANDOFF — 2026-08-20. Read this before working the items below.
 
 **State:** 7 live items, 1,456 lines of archive. The queue opened this session at **40 items /
