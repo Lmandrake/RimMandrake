@@ -79,10 +79,16 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 > def at `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml:100`. `Tunneler` appears in
 > neither. The §2.6 citation below points at a section of `APPROVED.md` that was overtaken.
 >
-> ✅ **CORRECTED 2026-08-21 by DECIDE — the paragraph that stood here was stale in both
-> halves and it cost a re-litigation.** `APPROVED.md:119-120`'s recommendation **was ruled
-> on**: the owner DROPPED `VME_Nomad` on 2026-08-20, and `JawaTribes.xml` no longer carries
-> it — line 109 is the removal comment, not the entry. Nothing about the meme is open.
+> ✅ **CORRECTED AGAIN 2026-08-21 12:4x by DECIDE — read this one, not the struck one below.**
+> `VME_Nomad` **STAYS, on the player ideo and on the Jawa tribes.** The owner reversed his
+> 2026-08-20 drop on 2026-08-21 (*"But I like VME_Nomad!"*) and **re-confirmed it to DECIDE
+> the same day**. On an NPC faction the meme is free — its only hazardous precept,
+> `VME_PermanentBases_Despised`, carries `enabledForNPCFactions: false`.
+> ⏳ `JawaTribes.xml:109` is still the 08-20 **removal comment** and is therefore WRONG;
+> restoring the `<li>` is `NOMAD_MEME_RESTORED_TRIBES_1`, filed for BUILD and not yet run.
+> ⛔ **Do not reopen the drop.** The owner read the −50-mood evidence and ruled anyway.
+> <s>CORRECTED 2026-08-21 by DECIDE: the owner DROPPED `VME_Nomad` on 2026-08-20 and
+> `JawaTribes.xml` no longer carries it.</s> ⛔ DEAD — reversed the next day, above.
 > 🔑 And it was never a swap: `Nomadic_Preferred` is a **PreceptDef** on Odyssey's `Nomadic`
 > issue (`Data/Odyssey/Defs/PreceptDefs/Precepts_Nomadic.xml:12`), not a meme. There is **no
 > nomad MemeDef in vanilla at all** — putting `Nomadic_Preferred` in `forcedMemes` would be

@@ -979,7 +979,7 @@ SUPERSEDED.** Nothing in the repo is the v1 world.
 | what said otherwise | correction |
 |---|---|
 | commit `388646f`, *"the v1 keeper world"* | a **backup of a working draft**. The bytes are still worth having; the label was wrong |
-| `WORLD_REDRAFT_PROCEDURE_1` | 🔑 **promoted from documentation-for-later to the thing that runs next** |
+| ~~`WORLD_REDRAFT_PROCEDURE_1`~~ | ⛔ **the promotion is DEAD — owner, 12:4x the same day: CONTENT FIRST, REMAKE LATER.** The doc is written and the item is `done`; it is documentation-for-later again. See the 12:4x ruling at the foot of this file |
 | anything reading "the frozen world" of `WORLDMAP_gen` | there is no frozen world yet |
 
 **Measured while asking, which is why the question was worth asking:** two saves, both
@@ -1055,3 +1055,100 @@ sends it** — `./game` is not the vehicle, a broadcast is:
 ⚠️ That phrasing also stamps the ledger `GOING_DOWN`, which is wrong if the game is
 staying up. To halt without touching game state, use wording the recogniser ignores —
 e.g. *"All work stops until the dump restructure lands."*
+
+---
+
+## ✅ FOUR RULINGS — owner to DECIDE, 2026-08-21 12:45
+
+Asked cold on waking; answered in one pass. Recorded here because three of the four
+change what a seat does on its next turn.
+
+### 1. 🟢 THE WORK STOP IS LIFTED — resume now
+
+*"Lifted — resume now."* The 10:54 stop (*"stopping all work until we restructure the dump
+files"*) ends here. BUILD landed the restructure: `OFFICIAL-2026-08-21` is frozen
+(`a3fcc44`), the fixed dumper is deployed (`0a3c310`), the dump is armed for the next load.
+
+⚠️ **What you are resuming ONTO, stated plainly:** the frozen target still has the
+**824-def collision holes** — `AbilityDef` among them, reading 0 where 612 were written.
+They are recorded in the registry's `knownDamage`, and `measure` answers `UNMEASURED`
+rather than `0` for every affected type, so they cannot be mistaken for absence. The clean
+re-dump happens on the next load; it was **not** made a precondition of resuming.
+
+**Nothing was lost.** Nine items were parked mid-flight with a `doing` event and no close;
+`rimflow next` does not re-offer a `doing` item, so each seat picks its own back up.
+Verified at lift: both working seats have ready work waiting —
+CHECK → `ashkarr-map-quality-second-pass-8c31f7`, BUILD → `INHABITED_GENSTEP_CAST_SPAWN_1`.
+⛔ `REFMATCH_THRESHOLDS_CALIBRATE_1` is **cancelled, not parked** — drop it, do not resume it.
+
+### 2. 🔴 CONTENT FIRST, REMAKE LATER — the world is not the next rock
+
+*"Content first, remake later."* Offered content-first / remake-next / throwaway-probe.
+
+⇒ **`WORLD_REDRAFT_PROCEDURE_1`'s 10:17 promotion to "the thing that runs next" is
+SUPERSEDED**, and struck in place above. The procedure is written and the item is `done`;
+it is documentation-for-later again.
+
+**The reason, so it can be applied to a case I did not foresee:** a remake spends things
+that cannot be un-spent — your Configure Factions hand-pass, and the ideoligion bake, which
+is permanent at world creation. The live world holds **2** ideoligions against **eleven**
+authored. Remaking before that content exists spends the pass to produce another draft.
+
+**What this makes actionable now** — the creation-gated work, in the order it gates:
+
+| | why it must precede the remake |
+|---|---|
+| `CLASSIC_IDEO_ERASES_FAITHS_1` | 🔴 the biggest. An Ideo is generated once, at world creation |
+| the MOD LIST | FactionControl absent at generation; `DROP_TRIBAL_FURNITURE_MOD_1` so no world holds an `XER_` reference |
+| `PIRATE_VESSEL_RESTORED_1` | ⭐ its acceptance test — Blackstar in the DEFAULT Configure Factions list — is checkable ONLY before a world exists |
+| `NOMAD_MEME_RESTORED_TRIBES_1` | forcedMemes are read at generation (see 3) |
+
+⛔ **Do not schedule a remake to "test" something.** If a check is only possible before a
+world exists, it belongs in the redraft pre-flight, not in a burned generation.
+✅ **Paint is NOT remake-gated** and never was — `w9_run` stage 1 re-applies biome *and*
+scalars from the CSV, so paint edits (the Scald included) carry forward. BUILD corrected
+REP on this at `f76d297`; it still holds.
+
+### 3. ✅ `VME_Nomad` STAYS — and the real defect was that this was already ruled
+
+*"Keep VME_Nomad."*
+
+🔑 **This re-confirms your own 2026-08-21 reversal rather than deciding anything new — and
+finding that out was the point.** I put it to you as *"never ruled"* because
+`APPROVED.md:119-120` still reads as an open recommendation. It is not open: you reversed
+the 08-20 drop the next day (*"But I like VME_Nomad!"*), the reversal was written into
+`APPROVED.md` — **and into nothing else.** Three files went on saying it was dropped.
+
+⚠️ **The 08-20 drop was propagated in four places. The 08-21 reversal was propagated in
+one.** That asymmetry is the whole failure, and it is the exact shape
+`deciding-and-superseding` exists to prevent.
+
+✅ **Corrected this turn, in the files that said otherwise:**
+- `design/Jawa/worldbuilding/setup_checklist.md` — my own 08-21 correction had itself gone
+  stale, asserting the drop. Rewritten; the dead version struck in place, not deleted.
+- `design/V2_DREAMS.md` B7 — read *"`VME_Nomad` is IN and must come out"*, with a `verify:`
+  demanding `no VME_Nomad`. Both struck; the verify now demands the meme be **present**.
+
+⏳ **Still wrong, and it is BUILD's to fix, not mine:**
+`src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml:109` is still the 08-20 removal
+comment where the `<li>` belongs. That is `NOMAD_MEME_RESTORED_TRIBES_1`, spec-complete and
+waiting for BUILD to claim. On an NPC faction the meme is free — its one hazardous precept,
+`VME_PermanentBases_Despised`, carries `enabledForNPCFactions: false`.
+
+⛔ **What this ruling does NOT touch — draw the edge before someone widens it.** The **Deep
+Desert Tribes** dropped `VME_Nomad` for `PainIsVirtue` on **2026-08-14**, a different
+faction, a different reason (it is the only meme gating both `Scarification_Heavy` and
+`Pain_Idealized`) and a hard 4-meme budget. **That ruling stands.** This one covers The
+Salvation — the player ideo and `Jawa_IndigenousTribes` — and nothing else.
+
+🔑 And it was never a swap in either direction: `Nomadic_Preferred` is a **PreceptDef** on
+Odyssey's `Nomadic` issue. There is no nomad MemeDef in vanilla at all, and FactionDef has
+no `requiredPrecepts` field, so the two were never alternatives. Both stay.
+
+### 4. 🎯 The droid races are mine to rule
+
+*"You rule it."* `DROID_KINDS_NEED_A_RACE_1` — the four `Jawa_Droid_*` kinds declare
+`race=Human` against an empty `xenotypeSet`, so the Free Droid Enclaves field Baseliners
+4-of-4. I pick the ladder from the loaded Humanlike droid ThingDefs, turn
+`useFactionXenotypes` off on the four, and file it ready for BUILD.
+✅ **You veto in play, not in advance** — that is what "you rule it" buys.

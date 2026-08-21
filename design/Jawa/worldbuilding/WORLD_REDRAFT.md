@@ -5,6 +5,17 @@ _DECIDE, 2026-08-21, at the owner's instruction — *"Write it now, while the st
 true."* Every command below was checked against the tool as it exists today, not
 transcribed from the night's transcript._
 
+> 🔴 **WHEN THIS RUNS — owner's ruling, 2026-08-21 12:4x, to DECIDE: CONTENT FIRST, REMAKE
+> LATER.** Offered content-first / remake-next / throwaway-probe; he took content-first.
+> ⇒ **This procedure does NOT run next.** It runs ONCE, after the creation-gated content is
+> finished, because every remake spends a Configure Factions hand-pass and bakes the
+> ideoligions permanently — the live world has **2** where eleven are authored.
+> ⛔ **Nobody schedules a remake to "test" something.** If a check is only possible before a
+> world exists, file it against this procedure's pre-flight, do not burn a generation on it.
+> ⚠️ This SUPERSEDES the 10:17 line in `infrastructure/state/queue/HUMAN.md` that promoted
+> this doc "from documentation-for-later to the thing that runs next". It is documentation
+> for later again — deliberately, and with a different reason than before.
+
 > ⛔ **THIS IS A REDRAFT PROCEDURE, NOT A GENERATOR.** There is ONE map (owner, 2026-08-18).
 > Nothing here may become a script that rolls a second planet, and **no seed or parameter
 > may be exposed that would let it.** If you find yourself adding a knob, stop.
