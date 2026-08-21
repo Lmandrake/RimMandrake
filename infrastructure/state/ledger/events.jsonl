@@ -351,3 +351,12 @@
 {"seat":"OWNER","event":"file","id":"CANON_RULINGS_OWED_OWNER_1","for":"OWNER","kind":"question","title":"Seven canon questions, and one thing to look at","target":"v1","row":"—","needs":"owner","ts":"2026-08-21T05:05:18Z"}
 {"seat":"OWNER","event":"claim","id":"CANON_RULINGS_OWED_OWNER_1","ts":"2026-08-21T05:05:18Z"}
 {"seat":"BUILD","event":"seat","state":"idle","reason":"context-exhausted","note":"W0-W6 all pushed, nothing half-done. queue/*.md is GENERATED - a hook blocks hand-edits; work the ledger via rimflow. queue/HUMAN.md is the owner's and is hand-written. W7/refmatch is CANCELLED, map accepted for v1. Open build work: the 5 Jawa_Homestead_* kinds spawn nowhere (pawnGroupMakers is on the abstract OutlanderFactionBase), and populating the map per TRANSIENT_populate_census.md - clear the 49 leftover landmarks first.","ts":"2026-08-21T06:38:49Z"}
+{"seat":"DECIDE","event":"seat","state":"ready","ts":"2026-08-21T06:40:47Z"}
+{"seat":"BUILD","event":"seat","state":"ready","ts":"2026-08-21T06:40:55Z"}
+{"seat":"CHECK","event":"seat","state":"ready","ts":"2026-08-21T06:41:04Z"}
+{"seat":"DECIDE","event":"start","id":"D-EMP1","ts":"2026-08-21T06:41:10Z"}
+{"seat":"REP","event":"seat","state":"ready","ts":"2026-08-21T06:41:11Z"}
+{"seat":"BUILD","event":"start","id":"ROSTER_SURVIVES_OFFMAP_PROOF_1","ts":"2026-08-21T06:42:27Z"}
+{"seat":"BUILD","event":"verify","id":"ROSTER_SURVIVES_OFFMAP_PROOF_1","result":"pass","config":"offline-dotnet-8.0.423","evidence":"infrastructure/state/observed/build/ROSTER_SURVIVES_OFFMAP_PROOF_1_offline.txt","sha":"d5110f1","ts":"2026-08-21T06:42:27Z"}
+{"seat":"REP","event":"file","id":"LEDGER_CANNOT_BE_COMMITTED_1","title":"The ledger guard blocks every commit of the ledger, so it lives on one disk","kind":"defect","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T06:42:34Z"}
+{"seat":"BUILD","event":"close","id":"ROSTER_SURVIVES_OFFMAP_PROOF_1","sha":"2ead1d4","ts":"2026-08-21T06:42:38Z"}
