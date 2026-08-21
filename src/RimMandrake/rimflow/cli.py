@@ -70,12 +70,15 @@ PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~6
 # ---------------------------------------------------------------------------
 # PATHS
 #
-# ⚠️ `model.read` and `model.append` bind EVENTS as a DEFAULT ARGUMENT, which is
-# evaluated at import. Reassigning `model.EVENTS` therefore does NOT redirect them —
-# a test that only sets the module global writes to the real ledger. Rebinding the
-# defaults is the fix, and it is why `selftest_cli.py` can run end-to-end against a
-# throwaway file with no risk to the real one. Reported as a model defect; not fixed
-# here, because model.py belongs to another agent.
+# `RIMFLOW_LEDGER` and `RIMFLOW_ITEMS` redirect the whole tool at a throwaway ledger,
+# which is how `selftest_cli.py` runs end-to-end with no risk to the real one.
+#
+# ⚠️ This used to also rebind `model.read.__defaults__` / `model.append.__defaults__`,
+# because those functions took `path=EVENTS` as a DEFAULT ARGUMENT — evaluated at
+# import, so reassigning `model.EVENTS` redirected nothing and a test that only set the
+# global appended to the REAL, append-only ledger. `model.py` now resolves the path at
+# call time (2026-08-20), so the rebinding is gone. ⛔ If you ever find yourself
+# reaching for `__defaults__` again, the bug is in the callee.
 # ---------------------------------------------------------------------------
 def _bind_paths():
     led = os.environ.get("RIMFLOW_LEDGER")
@@ -84,8 +87,6 @@ def _bind_paths():
         model.EVENTS = led
     if its:
         model.ITEMS = its
-    model.read.__defaults__ = (model.EVENTS,)
-    model.append.__defaults__ = (model.EVENTS,)
 
 
 def die(msg, code=2):
@@ -461,12 +462,21 @@ def cmd_finding(args, seat):
 
 
 def cmd_spawn(args, seat):
+    """`spawn --from <cause> --for <SEAT> --name <NEW>` — no host item.
+
+    ⚠️ This used to resolve a host `id`, because `model.spawn` demanded one. It no
+    longer does (fixed 2026-08-20): a spawn is about its CAUSE and its PRODUCT, and
+    nominating some third item as the host was an artefact of the old schema.
+    ⛔ Do not reintroduce `--id` here.
+    """
     _, w = load()
-    iid = args.id or _item_of(args.from_, w)
-    if not iid:
-        die("cannot tell which item spawns this. Pass --id, or make --from a finding "
-            "name or a run name that is already in the ledger.")
-    ev = {"seat": seat, "event": "spawn", "id": iid, "name": args.name,
+    known = (args.from_ in w.items or args.from_ in w.findings
+             or model.RUN_RE.match(args.from_ or ""))
+    if not known:
+        die("--from %r names nothing in the ledger. It must be an item id, a finding "
+            "name, or a run like C40/run-3@full-578 — `from` IS the causal link, and a "
+            "cause that resolves to nothing is not one." % args.from_)
+    ev = {"seat": seat, "event": "spawn", "name": args.name,
           "kind": args.kind, "needs": args.needs, "spec": args.spec,
           "this_deployment": args.this_deployment}
     ev["for"] = args.for_

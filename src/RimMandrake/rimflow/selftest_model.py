@@ -157,6 +157,61 @@ def t_filing_for_another_seat_is_fine():
     assert w.items["FILED_BY_DECIDE_1"].owner == "BUILD"
 
 
+def t_a_seat_may_retarget_its_own_item():
+    """⚠️ `retarget`'s `who` is the mixed tuple ("DECIDE", "owner").
+
+    Treating a tuple as a literal seat list made the "owner" sentinel match nothing,
+    so no seat could retarget its own item and only DECIDE and OWNER could retarget at
+    all. The model's own tests had exercised only the pure-tuple case; the CLI's
+    selftest caught it by trying the thing a seat would actually do.
+    """
+    evs = [filed("MY_OWN_ITEM_HERE_1", for_="BUILD"),
+           ev(seat="BUILD", event="retarget", id="MY_OWN_ITEM_HERE_1",
+              to="v2", reason="not v1")]
+    w = model.replay(evs, strict=True)
+    assert w.items["MY_OWN_ITEM_HERE_1"].target == "v2"
+
+
+def t_a_seat_may_not_retarget_another_seats_item():
+    evs = [filed("NOT_MY_ITEM_HERE_1", for_="BUILD"),
+           ev(seat="CHECK", event="retarget", id="NOT_MY_ITEM_HERE_1",
+              to="v2", reason="x")]
+    refuses(lambda: model.replay(evs, strict=True), "retarget",
+            "CHECK retargeted BUILD's item")
+
+
+def t_decide_may_retarget_anything():
+    evs = [filed("ANY_ITEM_HERE_1", for_="BUILD"),
+           ev(seat="DECIDE", event="retarget", id="ANY_ITEM_HERE_1",
+              to="v2", reason="scope call")]
+    assert model.replay(evs, strict=True).items["ANY_ITEM_HERE_1"].target == "v2"
+
+
+def t_ledger_path_is_redirectable():
+    """🔴 The one that protects the production ledger.
+
+    `def read(path=EVENTS)` binds the real file at import, so a test that reassigns
+    `model.EVENTS` still reads — and on any write path, APPENDS TO — the real,
+    append-only ledger. There is no undo for that file.
+    """
+    probe = os.path.join(TMP, "redirect.jsonl")
+    real = model.EVENTS
+    model.EVENTS = probe
+    try:
+        model.append(filed("REDIRECTED_ITEM_HERE_1"))
+        assert os.path.exists(probe), "append ignored the reassigned model.EVENTS"
+        assert len(model.read()) == 1, "read ignored the reassigned model.EVENTS"
+        assert "REDIRECTED_ITEM_HERE_1" in model.replay().items, (
+            "replay ignored the reassigned model.EVENTS")
+        model.check(ev(seat="BUILD", event="note", id="REDIRECTED_ITEM_HERE_1",
+                       text="x"))
+    finally:
+        model.EVENTS = real
+    assert not os.path.exists(real) or "REDIRECTED_ITEM_HERE_1" not in \
+        open(real, encoding="utf-8").read(), (
+            "🔴 the probe event reached the REAL ledger at %s" % real)
+
+
 def t_only_check_takes_bridge():
     refuses(lambda: model.replay([ev(seat="BUILD", event="bridge", state="taken")],
                                  strict=True),
@@ -225,12 +280,26 @@ def t_run_numbering_is_per_config():
 
 
 # ---- the causal graph ----------------------------------------------------
+def t_spawn_needs_no_host_item():
+    """⚠️ §4's command is `spawn --from <FINDING> --for BUILD --name <NEW>` — no host.
+
+    `spawn` used to require an `id` naming some existing item, which forced the caller
+    to nominate an unrelated host and made the documented command impossible. Its cause
+    is `from`; its product is `name`. Passing an `id` is now the error.
+    """
+    refuses(lambda: model.validate(ev(seat="CHECK", event="spawn", id="ANY_ITEM_HERE_9",
+                                      **{"from": "F_1", "for": "BUILD", "name": "N_1"})),
+            "drop the id", "spawn still demanded a host item")
+    model.validate(ev(seat="CHECK", event="spawn",
+                      **{"from": "F_1", "for": "BUILD", "name": "NEW_WORK_HERE_1"}))
+
+
 def t_spawn_records_its_cause():
     evs = [filed("SOURCE_ITEM_HERE_1", for_="CHECK"),
            ev(seat="CHECK", event="finding", id="SOURCE_ITEM_HERE_1",
               **{"from": "SOURCE_ITEM_HERE_1/run-1@full-578", "type": "integration",
                  "severity": "high", "name": "BLACKSTAR_SPAWNS_VESSELLESS_1"}),
-           ev(seat="CHECK", event="spawn", id="SOURCE_ITEM_HERE_1",
+           ev(seat="CHECK", event="spawn",
               **{"from": "BLACKSTAR_SPAWNS_VESSELLESS_1", "for": "BUILD",
                  "name": "BLACKSTAR_VESSEL_DEF_1"})]
     w = model.replay(evs, strict=True)
@@ -281,7 +350,7 @@ def t_bridge_item_offered_when_check_holds_it():
 def t_game_down_clears_this_deployment():
     evs = _ready("HOST_ITEM_HERE_1", for_="CHECK")
     evs += [ev(seat="OWNER", event="game", state="UP"),
-            ev(seat="CHECK", event="spawn", id="HOST_ITEM_HERE_1",
+            ev(seat="CHECK", event="spawn",
                **{"from": "HOST_ITEM_HERE_1", "for": "CHECK",
                   "name": "URGENT_FOLLOWUP_HERE_1", "this_deployment": True}),
             ev(seat="OWNER", event="game", state="DOWN")]
@@ -304,7 +373,7 @@ def t_ordering_is_deterministic_and_correct():
 
 def _spawn_urgent(host, name):
     return [ev(seat="OWNER", event="game", state="UP"),
-            ev(seat="CHECK", event="spawn", id=host,
+            ev(seat="CHECK", event="spawn",
                **{"from": host, "for": "CHECK", "needs": "game-up",
                   "name": name, "this_deployment": True})]
 
@@ -374,7 +443,13 @@ def t_torn_line_is_reported_not_skipped():
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 if __name__ == "__main__":
-    TMP = tempfile.mkdtemp(prefix="rimflow_selftest_")
+    # 🔴 UNDER THE REPO, NOT /tmp — and this file fell into the exact trap its sibling
+    # `selftest_concurrency.py` was written to warn about. `/tmp` is tmpfs here and the
+    # repo is on a 9p mount; the two behave differently enough that concurrent appends
+    # pass on one and lose 83% of writes on the other. A test that exercises the ledger
+    # anywhere but where the ledger lives is measuring the wrong disk.
+    TMP = tempfile.mkdtemp(prefix=".rimflow_selftest_",
+                           dir=os.path.dirname(os.path.dirname(HERE)))
     model.ITEMS = os.path.join(TMP, "items")
     model.EVENTS = os.path.join(TMP, "events.jsonl")
     try:

@@ -72,6 +72,14 @@ import os
 import re
 import time
 
+# 🔴 EVERY PATH BELOW IS RESOLVED AT CALL TIME, NEVER BOUND AS A DEFAULT ARGUMENT.
+# `def read(path=EVENTS)` binds the production ledger at import, so reassigning
+# `model.EVENTS` — which is exactly what a test does — silently leaves read() and
+# append() pointed at the real, append-only file. Worse, `check()` calls `read()` with
+# no argument, so a redirected test would have replayed production state and, on any
+# write path, appended to it. There is no undo for that file. Found 2026-08-20 by the
+# CLI's selftest, which had to rebind `read.__defaults__` to work around it.
+# ⛔ Do not "simplify" these back to default arguments.
 PIPE_BUF = 4096
 ROOT = os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -149,8 +157,13 @@ VERBS = {
     "unblock":   {"who": "owner", "req": (), "opt": ("reason",)},
     "verify":    {"who": "owner", "req": ("result", "config"), "opt": ("evidence", "sha")},
     "finding":   {"who": "any",   "req": ("from", "type", "severity", "name"), "opt": ()},
+    # ⚠️ `spawn` carries no `id`. Its cause is `from` — a finding name, a run name, or
+    # an item id — and its product is `name`. Requiring an `id` too forced the caller to
+    # nominate some existing HOST item, which is not what §4 describes
+    # (`spawn --from BLACKSTAR_SPAWNS_VESSELLESS_1 --for BUILD --name …`) and made the
+    # documented command impossible. Found 2026-08-20 by the renderer, which tried it.
     "spawn":     {"who": "any",   "req": ("from", "for", "name"),
-                  "opt": ("kind", "needs", "this_deployment", "spec")},
+                  "opt": ("kind", "needs", "this_deployment", "spec", "title")},
     "retarget":  {"who": ("DECIDE", "owner"), "req": ("to", "reason"), "opt": ("from",)},
     "reassign":  {"who": ("DECIDE",), "req": ("to", "reason"), "opt": ()},
     "close":     {"who": "owner", "req": ("sha",), "opt": ()},
@@ -164,7 +177,9 @@ VERBS = {
 }
 
 # Events that do not name an item. Everything else must carry an `id`.
-ITEMLESS = ("seat", "bridge", "game")
+# Events that do not name an EXISTING item. `spawn` is here because it CREATES one —
+# it is about its `from` (the cause) and its `name` (the product), never about a host.
+ITEMLESS = ("seat", "bridge", "game", "spawn")
 
 
 def now():
@@ -186,14 +201,22 @@ def validate(ev):
     verb = ev.get("event")
     spec = VERBS.get(verb)
     if not spec:
-        raise SchemaError("unknown verb %r. The vocabulary is 16 verbs and adding one "
-                          "is a design change: %s" % (verb, ", ".join(sorted(VERBS))))
+        raise SchemaError("unknown verb %r. The vocabulary is %d verbs and adding one "
+                          "is a design change: %s"
+                          % (verb, len(VERBS), ", ".join(sorted(VERBS))))
     seat = ev.get("seat")
     if seat not in SEATS:
         raise SchemaError("seat %r is not one of %s" % (seat, ", ".join(SEATS)))
     if verb in ITEMLESS:
         if ev.get("id"):
-            raise SchemaError("`%s` is not about an item; drop the id" % verb)
+            raise SchemaError(
+                "`%s` is not about an existing item; drop the id.%s" % (
+                    verb,
+                    " Its cause is `from` and its product is `name`."
+                    if verb == "spawn" else ""))
+        if verb == "spawn" and not ID_RE.match(str(ev["name"])):
+            raise SchemaError("spawn --name must be THREE_DESCRIPTIVE_WORDS_# "
+                              "(got %r)" % ev["name"])
     else:
         iid = ev.get("id")
         if not iid or not ID_RE.match(str(iid)):
@@ -232,7 +255,7 @@ def validate(ev):
     return ev
 
 
-def append(ev, path=EVENTS):
+def append(ev, path=None):
     """Validate, then write ONE line under an exclusive lock. Returns the byte offset.
 
     🔴 IT RETURNS A BYTE OFFSET, NOT A LINE INDEX, AND `caused_by` IS A NAME.
@@ -254,6 +277,7 @@ def append(ev, path=EVENTS):
     The returned offset is a convenience for the CURRENT file only. Do not store it.
     """
     validate(ev)
+    path = path or EVENTS
     ev.setdefault("ts", now())
     line = json.dumps(ev, separators=(",", ":"), ensure_ascii=False) + "\n"
     blob = line.encode("utf-8")
@@ -286,7 +310,7 @@ def append(ev, path=EVENTS):
     return offset
 
 
-def read(path=EVENTS):
+def read(path=None):
     """-> [event]. A malformed line is REPORTED, never skipped silently.
 
     ⚠️ Skipping a bad line would make the ledger quietly lie, which is precisely the
@@ -294,6 +318,7 @@ def read(path=EVENTS):
     silently ignored one is not, because nobody learns it happened.
     """
     out = []
+    path = path or EVENTS
     if not os.path.exists(path):
         return out
     with open(path, encoding="utf-8") as fh:
@@ -433,6 +458,15 @@ def _may(ev, item, world):
                 "is normal; changing another seat's item is refused."
                 % (seat, verb, item.id, item.owner))
         return
+    # ⚠️ `who` may MIX seat names with the sentinel "owner" — `retarget` is
+    # ("DECIDE", "owner"), meaning DECIDE may retarget anything and a seat may
+    # retarget its own. Treating the tuple as a literal seat list made the sentinel
+    # match nothing, so no seat could ever retarget its own item. Found 2026-08-20 by
+    # the CLI's selftest, which tried it; the model's own tests had only ever
+    # exercised the pure-tuple case.
+    if "owner" in who and (seat == "OWNER" or (item is not None and
+                                               item.owner in (None, seat))):
+        return
     if seat not in who:
         if verb == "bridge":
             raise PermissionError_(
@@ -442,11 +476,13 @@ def _may(ev, item, world):
             raise PermissionError_(
                 "only the OWNER announces game state. A seat that infers 'the game "
                 "is up' and tells everyone is guessing on other people's behalf.")
-        raise PermissionError_("only %s may `%s` (seat is %s)"
-                               % (" or ".join(who), verb, seat))
+        raise PermissionError_(
+            "only %s may `%s` (seat is %s)"
+            % (" or ".join("the owning seat" if w == "owner" else w for w in who),
+               verb, seat))
 
 
-def _apply(ev, index, world, strict):
+def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
     verb, seat = ev["event"], ev["seat"]
     iid = ev.get("id")
     item = world.items.get(iid) if iid else None
@@ -467,6 +503,21 @@ def _apply(ev, index, world, strict):
     if verb not in ITEMLESS and item is None:
         raise SchemaError("%s names item %s, which has never been filed" % (verb, iid))
     _may(ev, item, world)
+
+    if verb == "spawn":
+        new = Item(ev["name"], index)
+        new.title = ev.get("title") or ev["name"]
+        new.kind = ev.get("kind", "task")
+        new.owner = ev["for"]
+        new.needs = ev.get("needs", "offline")
+        new.this_deployment = bool(ev.get("this_deployment"))
+        new.created_at, new.caused_by = ev["ts"], ev["from"]
+        # The spawn IS the new item's first history entry. Without this the item
+        # renders with "history (0 events)" while plainly existing, which reads as a
+        # gap in the record rather than as its beginning.
+        new.history.append(index)
+        world.items[ev["name"]] = new
+        return
 
     if verb == "seat":
         world.seats[seat] = {"state": ev["state"], "reason": ev.get("reason"),
@@ -532,15 +583,6 @@ def _apply(ev, index, world, strict):
         world.findings[ev["name"]] = {"from": ev["from"], "type": ev["type"],
                                       "severity": ev["severity"], "at": ev["ts"]}
         item.findings.append(ev["name"])
-    elif verb == "spawn":
-        new = Item(ev["name"], index)
-        new.title = ev.get("title") or ev["name"]
-        new.kind = ev.get("kind", "task")
-        new.owner = ev["for"]
-        new.needs = ev.get("needs", "offline")
-        new.this_deployment = bool(ev.get("this_deployment"))
-        new.created_at, new.caused_by = ev["ts"], ev["from"]
-        world.items[ev["name"]] = new
     elif verb == "retarget":
         item.target = ev["to"]
     elif verb == "reassign":
@@ -560,15 +602,39 @@ def _apply(ev, index, world, strict):
     item.history.append(index)
 
 
+# 🔴 A CACHE, BECAUSE ON THIS FILESYSTEM AN open() IS 0.8 ms.
+# `_sections` is called on every `claim` and every `start`, so a replay of 600 events
+# over 150 items did 500 uncached opens and spent 297 of its 373 ms there — measured
+# 2026-08-20. The identical loop on tmpfs takes 0.8 ms total. It is the 9p mount again:
+# the same property that broke concurrent appends makes per-file syscalls expensive.
+# ⚠️ Keyed on the ITEMS dir so redirecting `model.ITEMS` (which tests do) cannot serve
+# a stale answer from the previous directory.
+_SECTIONS_CACHE = {}
+
+
+def invalidate_sections(iid=None):
+    """Drop the cache. Call after writing items/<ID>.md within one process."""
+    if iid is None:
+        _SECTIONS_CACHE.clear()
+    else:
+        _SECTIONS_CACHE.pop((ITEMS, iid), None)
+
+
 def _sections(iid):
     """-> set of `## ` section names present in items/<ID>.md."""
+    key = (ITEMS, iid)
+    hit = _SECTIONS_CACHE.get(key)
+    if hit is not None:
+        return hit
     path = os.path.join(ITEMS, "%s.md" % iid)
     try:
         with open(path, encoding="utf-8") as fh:
-            return {m.group(1).strip().lower()
-                    for m in re.finditer(r"^##\s+(\w+)\s*$", fh.read(), re.M)}
+            out = {m.group(1).strip().lower()
+                   for m in re.finditer(r"^##\s+(\w+)\s*$", fh.read(), re.M)}
     except OSError:
-        return set()
+        out = set()
+    _SECTIONS_CACHE[key] = out
+    return out
 
 
 def _missing(item):
@@ -580,7 +646,7 @@ def _complete(item):
     return not _missing(item)
 
 
-def replay(events=None, strict=False):
+def replay(events=None, strict=False, path=None):
     """Fold the whole ledger into a `World`.
 
     `strict=False` (the default) COLLECTS refusals into `world.errors` instead of
@@ -594,7 +660,7 @@ def replay(events=None, strict=False):
     refusing is both possible and correct.
     """
     if events is None:
-        events = read()
+        events = read(path)
     world = World()
     for index, ev in enumerate(events):
         try:
@@ -607,7 +673,7 @@ def replay(events=None, strict=False):
     return world
 
 
-def check(ev, world=None):
+def check(ev, world=None, path=None):
     """Would this event be accepted? Raises the naming refusal if not.
 
     Call this BEFORE `append`. It replays the candidate against current state, which
@@ -615,8 +681,8 @@ def check(ev, world=None):
     an item is already closed.
     """
     if world is None:
-        world = replay()
+        world = replay(path=path)
     validate(ev)
     import copy
-    _apply(dict(ev, ts=ev.get("ts") or now()), len(read()), copy.deepcopy(world), True)
+    _apply(dict(ev, ts=ev.get("ts") or now()), 0, copy.deepcopy(world), True)
     return True

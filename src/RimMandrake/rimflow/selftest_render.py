@@ -141,7 +141,7 @@ def t_this_deployment_wins_the_tie():
     # every non-ITEMLESS verb, and _apply refuses an id that was never filed — so a
     # spawn off a bare FINDING name, which is what the plan's §4 example does, cannot
     # be emitted at all. Reported to BUILD, not fixed here.
-    emit(seat="CHECK", event="spawn", id="ORDINARY_ROW_ONE_1",
+    emit(seat="CHECK", event="spawn",
          **{"from": "ORDINARY_ROW_ONE_1", "for": "BUILD",
             "name": "URGENT_LIVE_WINDOW_1", "this_deployment": True})
     emit(seat="BUILD", event="claim", id="URGENT_LIVE_WINDOW_1")

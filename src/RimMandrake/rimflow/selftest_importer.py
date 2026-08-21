@@ -209,17 +209,39 @@ def t_v2_is_dropped_to_v2_not_done():
         assert "drop" in verbs(c) and "close" not in verbs(c), verbs(c)
 
 
-def t_emoji_word_conflict_is_uncertain():
-    """`⛔ CLOSED — MOVED TO v2` — the red circle and the word disagree.
+def t_closed_but_deferred_is_dropped_not_done():
+    """🔴 `⛔ CLOSED — MOVED TO v2` is NOT delivered, and it must not import as done.
 
-    The word wins (that is derive_matrix's rule and the board follows it), but a human
-    must be shown this one before it becomes the record, so it is UNCERTAIN, never
-    quietly resolved.
+    The word `closed` is genuinely ambiguous in these queues: it means "done" almost
+    everywhere, and "closed the item without doing it" in the two places where the
+    owner pushed something to v2. Taking the leading word made both of those `done` —
+    writing two undelivered things into the permanent record as delivered, which
+    inflates the exact count this migration exists to make trustworthy.
+
+    ⚠️ So a deferral phrase BEATS the word, and both source lines were unambiguous to a
+    human on 2026-08-20 and only ambiguous to the classifier. It is `inferred`, not
+    `uncertain`: the deferral is explicit, so there is nothing left to guess.
     """
     with Rig() as r:
         c = r.by_id("C43")
-        assert c.confidence == "uncertain", (c.confidence, c.why)
-        assert "emoji" in " ".join(c.why) and "word" in " ".join(c.why), c.why
+        assert c.state == "dropped", (c.state, c.why)
+        tgt = [e.get("target") for e in c.events if e["event"] == "file"]
+        assert tgt and tgt[0] == "v2", tgt
+        assert "close" not in verbs(c), (
+            "an undelivered item was imported as a close: %s" % verbs(c))
+        assert "NOT delivered" in " ".join(c.why), c.why
+
+
+def t_emoji_word_conflict_with_no_deferral_is_uncertain():
+    """A bare emoji/word disagreement is still a guess and must be shown to a human.
+
+    ⚠️ This is the case the deferral rule must NOT swallow. Without an explicit
+    "MOVED TO v2" there is nothing to disambiguate on, the word wins by
+    derive_matrix's rule, and the item is flagged `uncertain` so someone looks.
+    """
+    state, conf, why = importer.classify("⛔ DONE — shipped 2026-08-14")
+    assert conf == "uncertain", (state, conf, why)
+    assert "emoji" in why and "word" in why, why
 
 
 def t_nothing_is_silently_dropped():

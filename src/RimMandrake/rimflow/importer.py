@@ -232,6 +232,21 @@ def classify(raw):
     raw = (raw or "").strip()
     if not raw:
         return "ready", "uncertain", "no `state:` field at all; defaulted to ready (open)"
+    # 🔴 A DEFERRAL BEATS THE WORD "CLOSED", AND THIS IS NOT A TIE-BREAK RULE.
+    # Two items read `⛔ CLOSED — MOVED TO v2` and `⛔ CLOSED 2026-08-19 — the buildings
+    # pass is NOT v1`. Taking the leading word made both `done`. Neither was DELIVERED:
+    # both were closed as ITEMS and pushed to v2, and importing them as done writes two
+    # undelivered things into the permanent record as delivered — inflating the exact
+    # count this whole migration exists to make trustworthy.
+    # ⚠️ The word `closed` is genuinely ambiguous in these queues: it means "done" most
+    # of the time and "closed the item without doing it" here. The deferral phrase is
+    # the disambiguator and it is explicit, so it wins. Read 2026-08-20 in context; both
+    # were unambiguous to a human and only ambiguous to the classifier.
+    if DEFER_RE.search(raw):
+        return "dropped", "inferred", (
+            "reads as CLOSED but says %r — closed as an item and deferred, NOT "
+            "delivered. Recorded dropped + target v2."
+            % DEFER_RE.search(raw).group(0).strip())
     final = state_of({"state": raw})      # derive_matrix takes the ITEM dict
     emoji = EMOJI.get(raw[0])
     m = LEAD_WORD.match(raw)
@@ -253,10 +268,23 @@ def classify(raw):
         "(open work, never done)" % (raw.splitlines()[0][:60], final))
 
 
+# An explicit push to v2 or out of v1, anywhere in the `state:` prose. ⚠️ Deliberately
+# NOT just a leading `v2`: the two items this was written for lead with `CLOSED`.
+DEFER_RE = re.compile(
+    r"MOVED TO v2|move[sd]? (?:it )?to v2|\bNOT v1\b|is\s*`?\[v2\]`?|"
+    r"\bjoins the .{0,40}freeze\b|deferred to v2", re.I)
+
+
 def wants_v2(raw, fields):
     """`⛔ v2 —` is dropped AND targeted v2. The two are different axes and the queues
-    wrote both into one word."""
+    wrote both into one word.
+
+    ⚠️ Also true of `⛔ CLOSED — MOVED TO v2`, which does not LEAD with v2 — see
+    DEFER_RE and the note in classify().
+    """
     if fields.get("target", "").strip().lower().startswith("v2"):
+        return True
+    if DEFER_RE.search(raw or ""):
         return True
     m = LEAD_WORD.match(raw or "")
     return bool(m and m.group(1).lower() == "v2")
