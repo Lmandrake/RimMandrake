@@ -528,3 +528,22 @@
 {"seat":"BUILD","event":"note","id":"FACTION_ICONS_BESPOKE_1","text":"ForgottenArsenal.png is the THIRTEENTH icon and nothing references it. The spec's tables assign twelve (8 of our FactionDefs + 4 vessels) and ForgottenArsenal is not among them; per CLAUDE.md the Mechanoid faction is kept and IS the Forgotten Arsenal, so the intended target is probably the Mechanoid FactionDef - but the spec does not say so and BUILD does not guess a faction assignment. The art is shipped at Textures/World/JawaFactions/ForgottenArsenal.png and one Add op wires it whenever someone rules on the target. Also noted: the spec's verify line says ELEVEN factionIconPath values; the correct count is TWELVE.","ts":"2026-08-21T10:17:37Z"}
 {"seat":"DECIDE","event":"claim","id":"HABITABLE_RING_IS_40_57_1","ts":"2026-08-21T10:17:39Z"}
 {"seat":"DECIDE","event":"start","id":"HABITABLE_RING_IS_40_57_1","ts":"2026-08-21T10:17:52Z"}
+{"seat":"DECIDE","event":"file","id":"PAINTER_RING_COMMENT_STALE_1","title":"The painter still documents the ring as 34-57, and it is the comment the losing case rested on","kind":"build","target":"v1","needs":"offline","caused_by":"HABITABLE_RING_IS_40_57_1","for":"DECIDE","ts":"2026-08-21T10:19:19Z"}
+{"seat":"DECIDE","event":"close","id":"HABITABLE_RING_IS_40_57_1","sha":"cdd56f6","ts":"2026-08-21T10:19:22Z"}
+{"seat":"DECIDE","event":"reassign","id":"PAINTER_RING_COMMENT_STALE_1","to":"BUILD","reason":"src/ is BUILD's","ts":"2026-08-21T10:19:22Z"}
+{"seat":"DECIDE","event":"claim","id":"CLOSE_TWO_OWNER_ITEMS_1","ts":"2026-08-21T10:19:30Z"}
+{"seat":"DECIDE","event":"start","id":"CLOSE_TWO_OWNER_ITEMS_1","ts":"2026-08-21T10:19:43Z"}
+{"seat":"DECIDE","event":"file","id":"META_JSON_NAMES_DEAD_PIRATE_1","title":"The world meta names a hidden zero-weight pirate def that cannot hold its four settlements","kind":"build","row":"10","target":"v1","needs":"offline","caused_by":"CLOSE_TWO_OWNER_ITEMS_1","for":"DECIDE","ts":"2026-08-21T10:20:54Z"}
+{"seat":"DECIDE","event":"reassign","id":"LOADS_ARE_BLOCKED_NEEDS_YOU_1","to":"DECIDE","reason":"owner: close the two you have answered; rimflow refuses a close on an OWNER item","ts":"2026-08-21T10:21:08Z"}
+{"seat":"DECIDE","event":"reassign","id":"MORNING_BRIEF_CHECK_1","to":"DECIDE","reason":"owner: close the two you have answered","ts":"2026-08-21T10:21:09Z"}
+{"seat":"DECIDE","event":"close","id":"LOADS_ARE_BLOCKED_NEEDS_YOU_1","sha":"ffa5444","ts":"2026-08-21T10:21:11Z"}
+{"seat":"DECIDE","event":"close","id":"MORNING_BRIEF_CHECK_1","sha":"ffa5444","ts":"2026-08-21T10:21:11Z"}
+{"seat":"DECIDE","event":"close","id":"CLOSE_TWO_OWNER_ITEMS_1","sha":"ffa5444","ts":"2026-08-21T10:21:11Z"}
+{"seat":"DECIDE","event":"reassign","id":"META_JSON_NAMES_DEAD_PIRATE_1","to":"BUILD","reason":"world/ artifacts are BUILD's","ts":"2026-08-21T10:21:12Z"}
+{"seat":"DECIDE","event":"claim","id":"FIFTEEN_TAGLESS_KINDS_RULING_1","ts":"2026-08-21T10:21:19Z"}
+{"seat":"BUILD","event":"claim","id":"PIRATE_VESSEL_RESTORED_1","ts":"2026-08-21T10:22:57Z"}
+{"seat":"BUILD","event":"start","id":"PIRATE_VESSEL_RESTORED_1","ts":"2026-08-21T10:22:58Z"}
+{"seat":"REP","event":"claim","id":"FILED_WORK_NEVER_OFFERED_1","ts":"2026-08-21T10:24:06Z"}
+{"seat":"REP","event":"start","id":"FILED_WORK_NEVER_OFFERED_1","ts":"2026-08-21T10:24:06Z"}
+{"seat":"REP","event":"verify","id":"FILED_WORK_NEVER_OFFERED_1","result":"pass","config":"offline-selftest","evidence":"selftest_cli.py: next_offers_unclaimed_spec_complete_work_instead_of_nothing + next_still_says_nothing_when_the_proposal_has_no_prose; 24/24, and model/render/importer unchanged","sha":"PENDING","ts":"2026-08-21T10:24:06Z"}
+{"seat":"REP","event":"close","id":"FILED_WORK_NEVER_OFFERED_1","sha":"7648063","ts":"2026-08-21T10:24:31Z"}
