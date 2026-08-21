@@ -745,7 +745,23 @@ the doc you superseded.*
 **Your options, and I am not choosing:**
 1. **Re-activate it** — one line in `ModsConfig.xml`, and the 61 citations resolve. ⚠️ It is a
    C# mod, so it needs the game down and a load to prove.
+   ✅ **Re-activate, not re-subscribe — corrected 2026-08-20.** `force_users_build_spec.md:94`
+   and `:995` said *"no folder in the workshop tree owns `VanillaExpanded.VPsycastsE`"*. That is
+   false: folder `2842502659` is on disk. It changes the remedy from a download to a checkbox.
 2. **Confirm it is out on purpose** — then `required_mods.md` and `forbidden_mods.md` are
    wrong and I will correct them, and THE FORCE needs a different substrate or a v2 tag.
 
 I have filed the doc-currency half either way; only the mod list itself is waiting on you.
+
+
+## ⚠️ A tombstone that is load-bearing again — BUILD, 2026-08-20
+
+`cherry_picker_killlist.md` §4b was retired on the premise that **no Ancients mod existed**.
+**VQE-Ancients is active** — `vanillaquestsexpanded.ancients`, folder `3618306875`, **428
+`VQEA_*` defs in the dump**, verified. ⇒ The archite-power ladder **is** in the stack, so
+there is something to Cherry-Pick after all, and a gap someone reasonably believed closed is
+open again.
+
+⛔ Reopened as a **question**, not as work. Whether to cut anything from it is your call, and
+the killlist's own drop *rationale* was left intact — only the false "it was dropped" half is
+struck.
