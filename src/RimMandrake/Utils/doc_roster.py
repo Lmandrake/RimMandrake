@@ -25,6 +25,7 @@ table, the tier rule and every hand-written ruling are left exactly alone — th
 are decisions, not data, and no generator may own them.
 """
 import argparse
+import os
 import pathlib
 import re
 import sys
@@ -82,26 +83,68 @@ def skills_block() -> str:
     return "\n".join([head] + rows)
 
 
+# ⭐ The index carries each doc's STATUS, and that is the point of the column.
+# `save_authoring_pipeline.md` opened with "⛔ DEAD DOCUMENT" on 2026-08-18 and this
+# index still listed it beside every live doc, indistinguishable, for two days. A
+# reader picking a document off an index has not opened it yet — the warning has to
+# reach them HERE or it does not reach them in time.
+#
+# ⚠️ The status is read from the doc, never stored here: INDEX.md is generated and a
+# status typed into it would be deleted by the next --write. To change what this
+# column says, change the `<!-- status: ... -->` line in the document itself.
+STATUS_RE = re.compile(r"<!--\s*status:\s*(.+?)\s*-->", re.I | re.S)
+STATUS_MARK = {"dead": "⛔ dead", "superseded-by": "→ superseded",
+               "aspirational": "☁ aspirational", "live": ""}
+
+
+def doc_status(text: str, head_lines: int = 40) -> str:
+    """-> a short status mark for the index, '' for live, '—' when unmarked.
+
+    Only the head is read: a status buried at line 900 is not a status, because
+    nobody would have got that far before believing the document.
+    """
+    m = STATUS_RE.search("\n".join(text.splitlines()[:head_lines]))
+    if not m:
+        return "—"                       # unmarked. NOT the same as live.
+    raw = m.group(1)
+    kind = raw.split(";")[0].split(":")[0].strip().lower()
+    mark = STATUS_MARK.get(kind, "? " + kind)
+    if kind == "superseded-by":
+        # Name the successor here too. "Superseded" without a forwarding address
+        # tells the reader to stop and gives them nowhere to go.
+        target = raw.split(":", 1)[1].split(";")[0].strip() if ":" in raw else ""
+        if target:
+            mark += " `%s`" % os.path.basename(target)
+    return mark
+
+
 def design_index() -> str:
     root = REPO / "design"
-    by_dir: dict[str, list[tuple[str, str]]] = {}
+    by_dir: dict[str, list[tuple[str, str, str]]] = {}
     for md in sorted(root.rglob("*.md")):
         rel = md.relative_to(root)
         if rel.name in ("INDEX.md", "README.md"):
             continue
+        text = md.read_text(encoding="utf-8", errors="replace")
         title = ""
-        for line in md.read_text(encoding="utf-8", errors="replace").splitlines():
+        for line in text.splitlines():
             if line.startswith("# "):
                 title = line[2:].strip()
                 break
-        by_dir.setdefault(str(rel.parent), []).append((rel.name, title))
+        by_dir.setdefault(str(rel.parent), []).append(
+            (rel.name, title, doc_status(text)))
     out = []
+    unmarked = sum(1 for v in by_dir.values() for e in v if e[2] == "—")
+    if unmarked:
+        out.append("\n⚠️ **%d doc(s) carry no `<!-- status: -->` line and show `—` below.**"
+                   " Unmarked is not the same as live: it means nobody has said."
+                   % unmarked)
     for d in sorted(by_dir):
         out.append(f"\n### `design/{d}/`\n" if d != "." else "\n### `design/`\n")
-        out.append("| doc | title |")
-        out.append("|---|---|")
-        for name, title in by_dir[d]:
-            out.append(f"| `{name}` | {title or '—'} |")
+        out.append("| doc | title | status |")
+        out.append("|---|---|---|")
+        for name, title, status in by_dir[d]:
+            out.append(f"| `{name}` | {title or '—'} | {status} |")
     return "\n".join(out)
 
 

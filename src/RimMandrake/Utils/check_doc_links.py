@@ -37,9 +37,12 @@ A link from a `live` (or unmarked, or `aspirational`) doc INTO a `dead` doc.
   * a link out of a dead doc — it is dead; where it points no longer matters.
   * a link into a `superseded-by` doc — supersession is a forwarding address, not a
     grave. The successor is named in the header the reader lands on.
-  * a link inside a cell or line marked historical (`~~`, `superseded`, `dead`, `⛔`)
-    — that is citing the dead doc AS dead, which is exactly right and must stay legal.
-    Kill this exemption and every correct supersession note becomes an error.
+  * a link on a line marked historical (`~~`, `superseded`, `dead`, `⛔`) — that is
+    citing the dead doc AS dead, which is exactly right and must stay legal. Kill this
+    exemption and every correct supersession note becomes an error.
+    ⚠️ Scoped to the whole LINE, including a whole table row — deliberately the
+    OPPOSITE of `check_canon.py`, which scopes its markers to the cell. See the
+    comment at the exemption itself for why the two must differ.
 
 Stdlib only.
 """
@@ -107,13 +110,17 @@ def links_from(path):
             target = m.group(1) or m.group(2)
             if not target or not target.endswith(".md"):
                 continue
-            cell = line
-            if line.count("|") >= 2:
-                for c in line.split("|"):
-                    if target in c:
-                        cell = c
-                        break
-            if HISTORICAL.search(cell):
+            # 🔑 THE EXEMPTION IS ROW-SCOPED HERE, AND CELL-SCOPED IN check_canon.py.
+            # That looks inconsistent and is not. A NUMBER is a claim all by itself, so
+            # a `~~` in a neighbouring cell says nothing about it — scoping to the line
+            # there silently exempted a live 8.6% because the cell beside it struck
+            # through a dead citation. A LINK in a table row is the opposite: the row IS
+            # one statement about that document, and
+            #     | ⛔ dead | [old](pipeline.md) | replaced by X |
+            # is the canonical shape of a supersession table. Cell-scoping it would make
+            # every correctly-written supersession table an error, which would teach
+            # people to stop writing them.
+            if HISTORICAL.search(line):
                 continue                     # citing it AS dead — legal, and correct
             out.append((i, target, line.strip()))
     return out
