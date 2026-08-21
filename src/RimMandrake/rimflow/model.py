@@ -652,6 +652,27 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
         item.needs = ev["to"]
     elif verb == "reassign":
         item.owner = ev["to"]
+        # 🔴 A `doing` item handed to another seat was INVISIBLE to them.
+        # `priority.rank()` only offers `ready`, so `rimflow next` never showed it,
+        # and agents do not message each other — so nobody could tell the receiving
+        # seat the id, and nothing would. Owner, 2026-08-21, shown the bug:
+        # *"Capture that reassign bug and pass it to BUILD to fix! That's horrible!"*
+        #
+        # 🔑 Only `doing` moves, and that is deliberate. `proposed` and `ready` are
+        # both already discoverable — `next` offers `ready` and names the
+        # spec-complete `proposed` items waiting to be claimed — so touching them
+        # would rewrite state nobody asked to change.
+        #
+        # ⛔ The alternative fix — making `next` surface `doing` items — was refused
+        # in the item's own spec. The 2026-08-21 work stop parked nine items as
+        # `doing` precisely BECAUSE `next` does not re-offer them. That behaviour is
+        # load-bearing and is not for trading away.
+        #
+        # ⚠️ Not a `claim`: the receiving seat has not acted yet. This routes through
+        # the same completeness test so an item with a hole lands in `proposed` where
+        # `start` would have refused it anyway, rather than in a `ready` that lies.
+        if item.state == "doing":
+            to("ready" if _complete(item) else "proposed")
     elif verb == "close":
         to("done")
         item.closed_sha = ev["sha"]

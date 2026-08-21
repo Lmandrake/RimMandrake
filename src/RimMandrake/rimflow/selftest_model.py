@@ -493,6 +493,105 @@ def t_torn_line_is_reported_not_skipped():
             "which is the one failure it exists to end")
 
 
+# ---- reassign must not strand a `doing` item -------------------------------
+# 🔴 REASSIGN_STRANDS_DOING_ITEMS_1, ordered fixed by the owner 2026-08-21 after he
+# was shown it live: *"Capture that reassign bug and pass it to BUILD to fix!
+# That's horrible!"* `reassign` set `item.owner` and nothing else, so an item that
+# was `doing` stayed `doing` under its new seat — and `rank()` only offers `ready`.
+# The receiving seat could not find it with `next`, and agents do not message each
+# other, so nobody could hand them the id either.
+
+def _complete_item(iid):
+    os.makedirs(model.ITEMS, exist_ok=True)
+    with open(os.path.join(model.ITEMS, iid + ".md"), "w") as fh:
+        fh.write("## spec\nx\n\n## verify\ny\n\n## criteria\nz\n")
+
+
+def t_reassign_of_a_doing_item_reaches_the_new_seat():
+    _complete_item("HANDED_OVER_MIDFLIGHT_1")
+    evs = [filed("HANDED_OVER_MIDFLIGHT_1", for_="BUILD"),
+           ev(seat="BUILD", event="start", id="HANDED_OVER_MIDFLIGHT_1"),
+           ev(seat="DECIDE", event="reassign", id="HANDED_OVER_MIDFLIGHT_1",
+              to="CHECK", reason="handing the live check to CHECK")]
+    w = model.replay(evs, strict=True)
+    it = w.items["HANDED_OVER_MIDFLIGHT_1"]
+    assert it.owner == "CHECK", it.owner
+    assert it.state == "ready", (
+        "a `doing` item reassigned to CHECK is still %r — rank() only offers "
+        "`ready`, so CHECK can never be shown it" % it.state)
+    got = priority.next_item(w, "CHECK")
+    assert got is not None and got.id == "HANDED_OVER_MIDFLIGHT_1", (
+        "`rimflow next --seat CHECK` does not offer the item it was just handed")
+
+
+def t_reassign_of_a_holed_doing_item_lands_in_proposed_not_ready():
+    """A `ready` that lies is worse than a `proposed` that waits.
+
+    ⚠️ The hole can only open BETWEEN processes — `start` refuses an incomplete
+    item, so within one fold the prose is always there. A real `rimflow reassign`
+    is a fresh process that re-reads `items/`, and the file may have lost a
+    section since work began. Reproduced here by making `_sections` answer
+    complete for `start` and holed for the `reassign` that follows it — the same
+    two reads those two processes would each do.
+    """
+    _complete_item("PROSE_WENT_MISSING_1")
+    real, calls = model._sections, []
+
+    def staged(iid):
+        calls.append(iid)
+        return real(iid) if len(calls) == 1 else set()
+
+    evs = [filed("PROSE_WENT_MISSING_1", for_="BUILD"),
+           ev(seat="BUILD", event="start", id="PROSE_WENT_MISSING_1"),
+           ev(seat="DECIDE", event="reassign", id="PROSE_WENT_MISSING_1",
+              to="CHECK", reason="handing it on")]
+    model._sections = staged
+    try:
+        it = model.replay(evs, strict=True).items["PROSE_WENT_MISSING_1"]
+    finally:
+        model._sections = real
+    assert len(calls) == 2, (
+        "expected one completeness read for `start` and one for `reassign`, got %d "
+        "— if this changed, the staging above no longer means what it says" % len(calls))
+    assert it.state == "proposed", (
+        "an item whose spec went missing was handed over as %r" % it.state)
+    assert it.owner == "CHECK", it.owner
+
+
+def t_reassign_leaves_a_ready_item_exactly_where_it_was():
+    """⛔ Only `doing` moves. `proposed` and `ready` are already discoverable, and
+    rewriting state nobody asked to change is its own bug."""
+    _complete_item("ALREADY_FINDABLE_HERE_1")
+    for start_state, evs in (
+        ("proposed", [filed("ALREADY_FINDABLE_HERE_1", for_="BUILD")]),
+        ("ready", [filed("ALREADY_FINDABLE_HERE_1", for_="BUILD"),
+                   ev(seat="BUILD", event="claim", id="ALREADY_FINDABLE_HERE_1")]),
+    ):
+        before = model.replay(evs, strict=True).items["ALREADY_FINDABLE_HERE_1"].state
+        assert before == start_state, "%s != %s" % (before, start_state)
+        evs = evs + [ev(seat="DECIDE", event="reassign",
+                        id="ALREADY_FINDABLE_HERE_1", to="CHECK",
+                        reason="handing it on")]
+        it = model.replay(evs, strict=True).items["ALREADY_FINDABLE_HERE_1"]
+        assert it.state == start_state, (
+            "reassign moved a %s item to %s" % (start_state, it.state))
+        assert it.owner == "CHECK", it.owner
+
+
+def t_reassign_still_cannot_revive_a_terminal_item():
+    """The fix routes through `to()`, so the terminal guard still stands in front
+    of it. A closed item handed to another seat stays closed."""
+    _complete_item("CLOSED_AND_HANDED_ON_1")
+    evs = [filed("CLOSED_AND_HANDED_ON_1", for_="BUILD"),
+           ev(seat="BUILD", event="start", id="CLOSED_AND_HANDED_ON_1"),
+           ev(seat="BUILD", event="close", id="CLOSED_AND_HANDED_ON_1", sha="abc1234"),
+           ev(seat="DECIDE", event="reassign", id="CLOSED_AND_HANDED_ON_1",
+              to="CHECK", reason="handing it on")]
+    it = model.replay(evs, strict=True).items["CLOSED_AND_HANDED_ON_1"]
+    assert it.state == "done", "a closed item came back as %r" % it.state
+    assert it.owner == "CHECK", it.owner
+
+
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 if __name__ == "__main__":
