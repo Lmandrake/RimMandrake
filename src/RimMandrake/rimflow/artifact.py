@@ -128,9 +128,47 @@ def sha_of(path, cap=64 * 1024 * 1024):
 
 
 def defnames_in(path):
-    """-> set of defNames the artifact provides. Empty set means COULD NOT READ."""
-    out = set()
+    """-> set of defNames the artifact provides. Empty set means COULD NOT READ.
+
+    ⭐ Prefers `defs.sqlite` when the `measuring-large-artifacts` skill is
+    installed and the db is current. Two reasons, and the second is a bug fix:
+
+      * the JSON path loads every `defs/*.json` whole — 670 MB, ThingDef alone
+        is 331 MB and ~1.5 GB of peak RSS to parse
+      * `defs/` **accumulates**: it keeps a file for every type that has ever
+        existed, so the JSON path silently ingests defNames from mods removed
+        weeks ago. A dead defName in this set makes a reference to a REMOVED
+        def look provided — fail-toward-success. The db excludes orphan types
+        by construction.
+
+    Falls back to the JSON scan when the skill or the db is absent, because a
+    tool that cannot run is worse than one that is merely slow.
+    """
     defs = os.path.join(path, "defs") if os.path.isdir(path) else None
+
+    db_path = os.path.join(path, "defs.sqlite") if os.path.isdir(path) else None
+    if db_path and os.path.exists(db_path):
+        try:
+            sys.path.insert(0, os.path.join(
+                os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                "Utils"))
+            from dump_manifest import skill_scripts
+            sk = skill_scripts()
+            if sk:
+                if sk not in sys.path:
+                    sys.path.insert(0, sk)
+                from measure.dumpdb import DumpDB
+                db = DumpDB(db_path)
+                try:
+                    if not db.stale:
+                        return {r[0] for r in db.sql(
+                            "SELECT def_name FROM defs")}
+                finally:
+                    db.close()
+        except Exception:
+            pass                      # fall through to the JSON scan
+
+    out = set()
     if defs and os.path.isdir(defs):
         for f in sorted(os.listdir(defs)):
             if not f.endswith(".json"):
