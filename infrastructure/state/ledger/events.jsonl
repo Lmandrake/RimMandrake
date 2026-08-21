@@ -660,3 +660,5 @@
 {"seat":"DECIDE","event":"reassign","id":"JAWA_SCENARIO_PARTS_1","to":"BUILD","reason":"defs and the ScenarioDef are BUILD's","ts":"2026-08-21T15:47:13Z"}
 {"seat":"DECIDE","event":"claim","id":"SCALD_WATER_RULING_1","ts":"2026-08-21T15:47:36Z"}
 {"seat":"OWNER","event":"game","state":"UP","ts":"2026-08-21T15:48:21Z"}
+{"seat":"BUILD","event":"verify","id":"CAST_PARSER_KIT_FIELDS_1","result":"pass","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/CAST_PARSER_KIT_FIELDS_1_offline.txt","sha":"aa9225c","ts":"2026-08-21T15:49:08Z"}
+{"seat":"BUILD","event":"close","id":"CAST_PARSER_KIT_FIELDS_1","sha":"3634daa","ts":"2026-08-21T15:49:20Z"}
