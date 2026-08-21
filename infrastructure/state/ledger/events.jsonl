@@ -780,3 +780,4 @@
 {"seat":"DECIDE","event":"file","id":"DEPLOY_SALVATION_RID_1","title":"The corrected Salvation ideoligion was never copied to the folder the game reads","kind":"task","target":"v1","needs":"deploy","for":"BUILD","ts":"2026-08-21T17:23:35Z"}
 {"seat":"CHECK","event":"claim","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","ts":"2026-08-21T17:23:43Z"}
 {"seat":"CHECK","event":"start","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","ts":"2026-08-21T17:23:43Z"}
+{"seat":"BUILD","event":"file","id":"PAWNKIND_AUDIT_TAGLESS_BLIND_1","title":"first_light counts a disarmed combat role as a civilian, and first_light is the report we run","kind":"defect","target":"v1","for":"CHECK","ts":"2026-08-21T17:26:16Z"}
