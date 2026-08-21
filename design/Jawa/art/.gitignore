@@ -6,6 +6,13 @@
 seed/
 *.png
 
+# ✅ EXCEPT the faction world-map icons, which are the decision this file deferred
+# ("Returned/derived art gets its own decision when it lands"). These twelve are a v1
+# DELIVERABLE — 128x128 single-value masks the game tints by colorSpectrum — built from
+# references the owner supplied, 2026-08-21. They ship, so they are tracked.
+!faction_icons/
+!faction_icons/*.png
+
 # Offline review sheets and the def census are DERIVED: regenerate with
 #   /home/mandrake/.venvs/art/bin/python design/Jawa/art/preview_gravship_rust.py
 #   python3 design/Jawa/art/scan_graphics.py

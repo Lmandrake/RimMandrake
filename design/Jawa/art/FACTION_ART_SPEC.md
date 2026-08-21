@@ -5,6 +5,14 @@ _DECIDE, 2026-08-21, closing `FACTION_ART_SPEC_1`. Every mechanism claim below w
 from the shipped C# or the shipped def; every path was checked against the 1.6 load path,
 not against the file system._
 
+> 🔴 **OVERTAKEN BY THE OWNER, 2026-08-21.** He rejected the drawn concepts and supplied a
+> reference image per faction. **R17's *"bespoke faction art is `[v2]`"* is overruled**, the
+> borrowed-glyph plan in §3 is dead, and **twelve finished icons now sit in
+> `design/Jawa/art/faction_icons/`** — see §2.5 and `FACTION_ICONS_BESPOKE_1`. §1's mechanism
+> and §4's LOOK step stand and are what the twelve were built against. Everything below the
+> next rule is kept because it is the reasoning that produced the mechanism, not because the
+> plan survives.
+
 > 🔴 **THE RULING, and it is a narrowing.** `FACTION_SPEC.md:18` rule **R17** already says
 > *"bespoke faction art is `[v2]`"*, and that stands. ⇒ **v1 does not commission thirteen
 > Star Wars sigils.** What v1 owes is much smaller and much harder to skip: **every faction
@@ -106,6 +114,33 @@ colony.**
 `FACTION_SPEC.md:614` records it: `Jawa_WildsteamClan`'s deep green `(0.30,0.45,0.25)` on
 `Expanding/VillageSavage` *"reads wrong on an outlander icon"*. ✅ Kept, unresolved, and
 folded into the LOOK step in §4 rather than guessed at again.
+
+### 2.5 🔴 The Jawa Trade Moot is invisible, and it is the COLOUR that is wrong
+
+⭐ **Found by looking, 2026-08-21, exactly as §4 said it would be.** With the new hood-and-eyes
+icon in place, the Trade Moot is still the hardest thing on the sheet to see — and the
+silhouette is not the problem. `Jawa_IndigenousTribes` carries
+`colorSpectrum (0.70,0.55,0.30)`, described in `FACTION_SPEC.md:528` as *"sand, with the
+ember"*. ⇒ **it is sand, tinted onto sand, on a desert planet.** The player's own kin are
+camouflaged against their own world.
+
+⚠️ **Every other faction passes this test** because every other faction's colour is off the
+desert axis — teal, violet, rust, deep green, crimson. The Trade Moot is the only one whose
+palette *is* the terrain.
+
+✅ **The fix keeps the read and drops the camouflage.** A Jawa is a **dark brown robe with
+lit eyes**, not a sand-coloured one — the ember in that description is the eyes, and the eyes
+are a hole in the icon, so the robe should carry the contrast:
+
+```
+<colorSpectrum>
+  <li>(0.42, 0.30, 0.16)</li>
+  <li>(0.30, 0.21, 0.11)</li>
+</colorSpectrum>
+```
+
+⛔ **Do not solve this by redrawing the icon.** A heavier silhouette would only make a larger
+sand-coloured blob. ⛔ **And do not lighten it** — a pale Jawa is wrong twice.
 
 ### 2.4 Two icons are on-loan from other mods with no gate
 
