@@ -797,7 +797,21 @@ was equirectangular, while the binding reference is a globe. **`refmatch.py` can
 until you have looked**, because its five defect thresholds are calibrated against those
 photographs, not chosen.
 
-### The seven
+### 🔴 THREE ARE ANSWERED — 2026-08-20, in session
+
+| ruled | outcome |
+|---|---|
+| **`Lake`** | ✅ **KEEP.** Confirmed, not provisional. |
+| **The two cut-then-painted biomes** | ✅ **THE PAINTER WINS.** `AB_GelatinousSuperorganism` (96 tiles) and `ZBiome_Grasslands` (233) stay exactly as painted; **both cuts are REVERSED.** Written into all five docs that said otherwise. |
+| **The Deepwater Compact** | ✅ **AUTHOR THE ROSTER.** Filed as `DEEPWATER_CAST_ROSTER_1` in `queue/DECIDE.md` with spec, verify and criteria. |
+| **The habitable ring** | ⏸️ **Abstained, deliberately.** 34–57 and 40–57 both keep standing; canon holds 34–57 as provisional and the question stays open. |
+
+⭐ **And the follow-up is already done rather than pending.** Rather than wait for a third
+cut-versus-painted case to surface by hand, the whole cut list was diffed against the painted
+biome census: of the **24 biomes on the map, exactly two** were ever cut-flagged — the two above.
+**There is no third case.** `canon.yml > cut_vs_painted`.
+
+### The seven, as filed
 
 | # | question | the evidence | canon holds |
 |---|---|---|---|
