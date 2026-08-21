@@ -33,3 +33,22 @@ is out"*, not *"saves load"*, and anything asserting either without naming the m
 unsafe.
 ⭐ This is also the first evidence that a save carrying a **MAP** survives the round trip; the
 earlier clean load was a world with `<maps />` empty.
+
+## 🔴 `jawa/spawn_pawn`'s `faction` parameter decides the pawn's SPECIES — 2026-08-21
+
+`faction: "hostile"` drops the pawn into whatever faction currently opposes the player, and
+**all 67 of our PawnKindDefs carry `useFactionXenotypes: true`** — so the xenotype comes from
+the faction the pawn JOINS, not from the kind.
+
+⇒ Spawning a roster test with `faction: "hostile"` measures the wrong faction's
+`xenotypeSet`. It produced a reading of **"49 of 55 kinds spawn Baseliners"**, which looked
+like the whole species roster being broken and was entirely an artifact. Re-spawned into
+their own factions, the same kinds return Geonosians 4/4, MandrakeJawa 5/5, and a
+five-species mercenary company.
+
+✅ **Always pass the kind's OWN faction defName when testing a roster.** `hostile`, `player`
+and `none` are for combat and staging tests, not for anything that reads what a pawn IS.
+
+⚠️ And `xenotypeChances` cannot settle this offline — the key is absent from all 1,736
+PawnKindDefs in the dump, so a dump answer is UNMEASURED. `useFactionXenotypes` IS present
+and is the field that tells you the faction decides.
