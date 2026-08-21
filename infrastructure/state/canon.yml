@@ -385,10 +385,23 @@ species:
                         src: "design/Jawa/worldbuilding/faction_stage3_buildable_spec.md:42"}
     distinct_available: {value: 79, means: "mechanically distinct Star Wars species available across all installed mods",
                         src: "design/Jawa/worldbuilding/faction_stage3_buildable_spec.md:131"}
-  not_found: [54, 80]
+  not_found: [54]
   not_found_src: >
-    Zero occurrences in design/ for either, 2026-08-20. `faction_equipment_guidance.md:27`
-    has "80 × 12 = 960" but that 80 is pawnkinds-per-faction arithmetic in a blockquote.
+    Zero occurrences in design/ for 54, 2026-08-20.
+  # 🔴 CORRECTED 2026-08-20, same day it was written. This entry said `[54, 80]` and
+  # claimed zero occurrences of 80. That was wrong: `cherrypick_inbox.md:78` reads
+  # "80 species across 172 defs" — a sixth denominator, untraced. The first pass looked
+  # for 80 next to the word "xenotype" and this line says "species". ⚠️ Worth keeping as
+  # the shape of the whole problem: a claim that something does NOT exist is only as
+  # good as the search behind it, and mine was one synonym wide.
+  # (`faction_equipment_guidance.md:27`'s "80 × 12 = 960" IS pawnkinds-per-faction
+  # arithmetic in a blockquote, and remains a non-hit.)
+  untraced:
+    - {value: 80, means: "species across 172 defs", src: "design/Jawa/worldbuilding/cherrypick_inbox.md:78",
+       note: "denominator never stated; nobody has re-derived it"}
+    - {value: 70, means: "species researched from Wookieepedia wikitext",
+       src: "design/Jawa/worldbuilding/faction_equipment_guidance.md:98",
+       note: "a count of ARTICLES READ, which is not a count of anything on disk"}
 
 # ===========================================================================
 # BIOMES
@@ -581,3 +594,24 @@ needs_ruling:
   SAVANNA_PREMISE_RESOLVE_1:
     question: "A 701-line design doc's subject biome is on the cut list."
     at_stake: "Whether the doc is dead or the cut is."
+
+  ZBIOME_GRASSLANDS_CUT_REVERSAL_1:
+    question: "`ZBiome_Grasslands` was marked REMOVE on 2026-08-14 and is painted on 233 tiles."
+    evidence: >
+      REMOVE in design/Jawa/worldbuilding/cherrypick_inbox.md §E (2026-08-14); KEPT as the
+      Pyrelands-carrying "stormy savanna" in biome_review_comments.md §1; and painted on
+      233 tiles (1.07%) of the frozen map, measured 2026-08-20.
+    at_stake: >
+      233 tiles, and the Pyrelands region's character. ⚠️ Identical in shape to
+      GELATINOUS_CUT_REVERSAL_1 and found the same day — which suggests the cut list and
+      the painter have never been reconciled as a pair, and that a third case is likely.
+      Someone should diff the whole REMOVE list against the painted biome census rather
+      than waiting for the next one to surface by hand.
+
+  DOSSIER_WITHOUT_CAST_ROSTER_1:
+    question: "Twelve factions carry dossiers; only eleven have a cast roster on disk."
+    evidence: >
+      design/Jawa/bridge/ holds eleven INHABITED_CAST_*.md files against the twelve rows
+      of INHABITED_DESIGN.md §5.9. INHABITED_CAST_HOMESTEAD.md:15 says "the hardest brief
+      of the twelve", which counts briefs rather than files.
+    at_stake: "One faction ships with no named inhabitants. Which one, and is that deliberate?"

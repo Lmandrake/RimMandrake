@@ -1196,8 +1196,8 @@ thresholds are calibrated against the reference photographs, not chosen.
 | **W0** | §21 check 1 → `done 5, blocked 2, doing 7, closed 116`; check 3 → `exit=0`; both hook selftests 7/7 and 6/6 |
 | **W1a** | `canon.yml` parses; every value carries a source |
 | **W1b** | three `*.ortho.png` exist for `ASHKARR_WORLDMAP`; the sheet opens |
-| **W2** | `grep -rE '25%\|22.28' design/` returns **only** struck-through or quoted-historical hits |
-| **W3** | `check_canon.py` exits 0 across all 119 docs; no live doc links into a dead one |
+| **W2** | 🔴 **that grep is the wrong test — corrected 2026-08-20.** `25%` is an ordinary percentage: after W2 it survives 15 times in `design/` as a droid ratio, a research-speed boost, a spacer-equipment share and an armour-penetration figure, none of them about water. The real test is `python3 src/RimMandrake/Utils/check_canon.py` → **0 contradictions** (39 advisory, all undated mod counts), because it tests the number *against its context* |
+| **W3** | `check_canon.py` exits 0 across all 119 docs, and `selftest_check_canon.py` passes 28/28; `check_doc_links.py` reports no live→dead link. ⚠️ It also reports 117 docs with **no status header** — and *unmarked is not a pass*, which is what W3(a) exists to fix. Once the headers are written, the gate is `check_doc_links.py --require-status` |
 | **W4** | `rimflow next --seat BUILD` returns one item in < 1 s; `rimflow reindex` rebuilds from the ledger alone |
 | **W5** | a deliberate `done → ready` edit is **refused**; a cross-seat write is **refused** |
 | **W6** | board renders at `:8787`; regeneration < 100 ms |
