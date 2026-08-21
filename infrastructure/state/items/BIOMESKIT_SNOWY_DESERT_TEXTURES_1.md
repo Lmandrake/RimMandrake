@@ -1,60 +1,57 @@
-# BIOMESKIT_SNOWY_DESERT_TEXTURES_1 — new texture failures in the session that went unstable
-
 ## spec
+`Player.log` from the 2026-08-21 session carries missing-texture errors of exactly four
+shapes, and nothing else of the kind:
 
-The game became unstable and was brought down at 03:14. `Player.log` is harvested to
-`infrastructure/state/observed/logs/Player.2026-08-21_0315_unstable.log` (9,557 lines)
-before the next launch destroys it, along with `Player-prev`.
+    Could not load Texture2D at 'WorldMaterials/BiomesKit/ExtremeDesert/Hills/Mountains_VerySnowy'      ×13
+    Could not load Texture2D at 'WorldMaterials/BiomesKit/ExtremeDesert/Hills/Mountains_FullySnowy'     ×13
+    Could not load Texture2D at 'WorldMaterials/BiomesKit/ExtremeDesert/Hills/Impassable_VerySnowy'     ×11
+    Could not load Texture2D at 'WorldMaterials/BiomesKit/ExtremeDesert/Hills/Impassable_FullySnowy'    ×7
 
-🔑 **The finding is a DIFFERENCE, which is what makes it worth chasing:**
+A texture RimWorld cannot load renders **magenta**, which is what the owner saw on the
+globe: *"some extreme desert has magenta artwork."*
 
-| log | `Could not load Texture2D` |
-|---|---|
-| `Player.2026-08-20_1754_session.log` (18,563 lines, yesterday) | **0** |
-| `Player.2026-08-21_0315_unstable.log` (9,557 lines, tonight) | **148** |
+### What is established, by reading disk rather than guessing
 
-All 148 name BiomesKit world materials for **ExtremeDesert Hills in SNOWY variants**:
-`WorldMaterials/BiomesKit/ExtremeDesert/Hills/Mountains_FullySnowy`,
-`.../Impassable_FullySnowy`, `.../Impassable_VerySnowy`. They are the last errors in the
-log before the Unity memory dump that ends it.
+✅ **The owner of those paths is `ReGrowth.BOTR.Core` (ReGrowth 2)**, workshop `2260097569`,
+at `Textures/WorldMaterials/BiomesKit/`.
 
-**Tonight is the session in which the planet was repainted** — w9 stages 1–6 applied at
-01:43, 21,872 tiles rewritten. ⇒ The correlation is strong and the direction is obvious.
+🔴 **NO biome in that mod ships a `_VerySnowy` or `_FullySnowy` variant.** `ExtremeDesert/Hills`
+ships exactly six files — `Impassable`, `Impassable_SemiSnowy`, `LargeHills`, `Mountains`,
+`Mountains_SemiSnowy`, `SmallHills` — and `AridShrubland/Hills`, a biome with no complaints
+against it, ships **exactly the same six**. So this is not a gap peculiar to ExtremeDesert
+and it is **not caused by our map**: any biome would fail identically once BiomesKit asked
+for a snowier variant than `_SemiSnowy`.
 
-⚠️ **BUT THIS IS A HYPOTHESIS, NOT A CAUSE, AND MUST NOT BE REPORTED AS ONE.** 148 log
-lines is not by itself an instability. The allocator statistics in the tail are Unity's
-ordinary bucket accounting, not evidence of a leak — REP nearly read them as one. What
-would make this the cause is a texture lookup failing **inside the world-render loop, every
-frame** — the same shape as the missing `settlementTexturePath` that took TPS to 3.7 on
-2026-08-20. Establish that it repeats per frame before believing it.
+🔴 **And snow is impossible on the tiles complaining.** Our 3,581 `ExtremeDesert` tiles run
+**19.1 °C to 64.3 °C, with ZERO below freezing** — including all 345 at Mountains or
+Impassable hilliness (22.9 °C to 63.8 °C). Whatever makes BiomesKit ask for a fully-snowy
+desert, it is not our temperature column.
 
-**What the offline data says, and it does not fit yet:**
-`world/ASHKARR_WORLDMAP_tiles.csv` has 3,581 `ExtremeDesert` tiles, of which **345 are
-hilliness 4 (Mountains) and ZERO are hilliness 5 (Impassable)**. All 345 measure
-**22.9 °C to 63.8 °C — none below freezing.** So by the CSV, nothing should ever ask for a
-snowy desert mountain. Either the LIVE world diverges from the CSV, or BiomesKit requests
-every (hilliness × snow) permutation for a biome it sees at all. **Which of those it is
-decides whether this is cosmetic spam or a real paint defect.**
+⚠️ **UNRESOLVED, and do not guess it:** why the request is made at all. Candidates, none
+tested — BiomesKit computing snow from something other than tile temperature; a variant
+probe that tries every level and tolerates misses; or a symptom of the render state that
+session, which had also lost its button icons and labels.
 
-🔑 **Check it against the other elevation-smelling symptom before treating them separately.**
-`THE_SCALD_LOST_ITS_WATER_1` reports `lakesAboveSeaLevel: 312`. Snow and lakes-above-sea-level
-are both things that follow from ELEVATION, and the same run produced both. The planet does
-carry genuinely cold ground — 8,911 tiles below 0 °C, min −80.8 °C, which is the night side
-of a tidally locked world and is correct — so cold is not itself the anomaly. Cold *desert
-mountains on the day side* would be.
+⚠️ **"Yesterday had zero" is weaker evidence than it looks.** The 2026-08-20 session never
+finished loading a world, so it never drew a planet — these errors are written when the
+world map renders, so zero may mean *nothing was drawn*, not *nothing was wrong*.
 
 ## verify
+The next clean load settles it. Load `WORLDMAP_gen`, let the planet draw, then:
 
-- Establish whether the 148 are per-frame or one-shot at world load. This is the question.
-- Read the LIVE world's biome × hilliness for the tiles BiomesKit is complaining about and
-  compare against the CSV's 345/0 split. Name any divergence.
-- Confirm whether the same errors appear on a load of the world WITHOUT the repaint
-  (`world/WORLDMAP_source.rws`), which separates "our paint did this" from "BiomesKit
-  always does this".
-- Say plainly whether this explains the instability or does not. ⛔ "Probably related" is
-  not an answer; the log is on disk and the question is settleable.
+    grep -c "WorldMaterials/BiomesKit" <Player.log>
+
+- **0** ⇒ the errors belonged to the broken session, and there is nothing to fix.
+- **~44 again** ⇒ they are normal for this mod stack drawing this biome-and-hilliness mix,
+  and the fix is a mod-side one: supply the two missing variants, or stop BiomesKit asking.
 
 ## criteria
+- the count is read off a load that actually drew the planet, and recorded either way
+- if non-zero: name whether any biome other than `ExtremeDesert` appears, because that
+  decides "our map's fault" versus "the framework's"
+- ⛔ do not ship a hand-made `_FullySnowy` desert texture to silence it before that is known
 
-Either a named mechanism for tonight's instability, or a clear statement that these 148
-lines are noise and the cause is still unknown.
+## notes
+Filed for CHECK 2026-08-21. ⚠️ The magenta is real and the owner saw it; what is NOT
+established is that our map caused it, and the disk evidence points away from us. Added as
+decision string 10 in `RELOAD_CHECK.md`.

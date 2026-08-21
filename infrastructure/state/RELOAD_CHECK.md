@@ -69,6 +69,15 @@ See `HILLINESS_CACHE_NOT_READABLE_1`.
 | 8 | after the two re-pushes: `jawa/world_tile_get` on 11965 / 19495 / 2540 | rainfall **40**, not 1668 |
 | 9 | after the two re-pushes: `world_links_import` reply | `rivers 238`, `roads 837`, `unknownDefs []` |
 
+| 10 | `grep -c "WorldMaterials/BiomesKit" Player.log`, **after the planet has drawn** | **0** ⇒ the magenta belonged to the broken session. **~44** ⇒ normal for this mod stack; ReGrowth 2 ships no `_VerySnowy`/`_FullySnowy` for ANY biome, so it is the framework's gap, not our map's. `BIOMESKIT_SNOWY_DESERT_TEXTURES_1` |
+| 11 | `jawa/tile_settleable` with no args | a planet sweep. Expect ~**2,232 refused** (1,780 water · 504 settlement-adjacent · 39 impassable) and the engine's own reason text on each |
+| 12 | `jawa/tile_cache_audit` with no args | `unexplainedStale` — **this is the mountain question**, answered as a number instead of by clicking |
+| 13 | `jawa/biome_art_audit` | `missingCount` **0**, or the biome that draws magenta named |
+| 14 | `jawa/faction_leader_get` | effective title beside def title for Empire/Outlander/Tribe/Pirate — settles the `leaderTitle` half of B40–B43 |
+
+⭐ Strings 11–14 exercise **four new tools built 2026-08-21** and deployed into this launch.
+Proving them IS part of this run: a tool that has never returned a number is not a tool yet.
+
 ## The sequence
 
 1. Launch. **Do not generate anything.**
