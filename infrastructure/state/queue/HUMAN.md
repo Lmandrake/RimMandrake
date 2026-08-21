@@ -58,6 +58,27 @@ CAPTURE only (`manifest.json`, `defs/**`, `animals.json`). `defs.sqlite` is deri
 deterministic and rebuilt in ~60 s, so it is explicitly OUTSIDE the freeze; freezing
 it would freeze its schema bugs. Full ruling at the top of `dumps/README.md`.
 
+---
+
+✅ **DONE, 2026-08-21 evening — the holes are gone and nothing above is outstanding.**
+The game-down window happened, `d7cf154` deployed, and the owner froze the clean
+capture: **`OFFICIAL-2026-08-21T22-44-59Z`**, `capturedUtc 2026-08-21T22:44:59Z`,
+superseding `OFFICIAL-2026-08-21`. `AbilityDef` reads 612, not 0. **No 824-def
+`knownDamage` on this entry**, and the board does not read `REPLACED`.
+
+🔑 **It is CURRENT, not merely present** — `modlist_sha 49b83562b10df31c` is the same
+value `refresh.py --fingerprint` returns for the live load set (578 listed, 578
+resolved, 0 missing), verified 2026-08-21 16:24 PDT. **Do not ask the owner to
+re-freeze**; REP did on waking, from this section, and was wrong. Read
+`infrastructure/state/dumps/REGISTRY.jsonl`, never a briefing, before saying a freeze
+is stale.
+
+⚠️ **Two label-only corrections sit on the registry and are NOT re-freezes.** The id
+was renamed off the bare date (the default id derives from the DATE, so two captures
+in one day collided and the entry claimed to supersede itself), and the 08:20 entry's
+`modlist_sha` was replaced with one that actually reproduces on this machine. Captures,
+`capturedUtc` and freeze authority are untouched in both.
+
 
 ## ~~Q (DECIDE, 2026-08-15): a cherrypick session~~ ANSWERED — FROZEN, and CLOSED for v1
 
