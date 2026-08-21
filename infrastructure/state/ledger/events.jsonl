@@ -519,3 +519,11 @@
 {"seat":"DECIDE","event":"file","id":"CHECKLIST_RETIRE_TWO_KEEPS_1","title":"Retire binary star raiders and moisture farmers from the ratified KEEP list","kind":"decision","row":"10","target":"v1","needs":"offline","caused_by":"FACTION_SLATE_ZEROES_KEEPS_1","for":"DECIDE","ts":"2026-08-21T10:16:01Z"}
 {"seat":"DECIDE","event":"close","id":"FACTION_SLATE_ZEROES_KEEPS_1","sha":"efbfb43","ts":"2026-08-21T10:16:40Z"}
 {"seat":"DECIDE","event":"reassign","id":"SLATE_KEEPS_CONFIGURABLE_1","to":"BUILD","reason":"the generator is BUILD's","ts":"2026-08-21T10:16:41Z"}
+{"seat":"DECIDE","event":"claim","id":"CHECKLIST_RETIRE_TWO_KEEPS_1","ts":"2026-08-21T10:16:50Z"}
+{"seat":"DECIDE","event":"start","id":"CHECKLIST_RETIRE_TWO_KEEPS_1","ts":"2026-08-21T10:16:50Z"}
+{"seat":"REP","event":"file","id":"BIOMESKIT_SNOWY_DESERT_TEXTURES_1","title":"148 new missing-texture errors appeared the session the game went unstable, and yesterday had zero","kind":"check","target":"v1","needs":"offline","for":"CHECK","ts":"2026-08-21T10:17:01Z"}
+{"seat":"BUILD","event":"verify","id":"FACTION_ICONS_BESPOKE_1","result":"pass","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/FACTION_ICONS_BESPOKE_1_offline.txt","sha":"f9ccce4","ts":"2026-08-21T10:17:25Z"}
+{"seat":"DECIDE","event":"close","id":"CHECKLIST_RETIRE_TWO_KEEPS_1","sha":"21daa81","ts":"2026-08-21T10:17:31Z"}
+{"seat":"BUILD","event":"close","id":"FACTION_ICONS_BESPOKE_1","sha":"afa0704","ts":"2026-08-21T10:17:37Z"}
+{"seat":"BUILD","event":"note","id":"FACTION_ICONS_BESPOKE_1","text":"ForgottenArsenal.png is the THIRTEENTH icon and nothing references it. The spec's tables assign twelve (8 of our FactionDefs + 4 vessels) and ForgottenArsenal is not among them; per CLAUDE.md the Mechanoid faction is kept and IS the Forgotten Arsenal, so the intended target is probably the Mechanoid FactionDef - but the spec does not say so and BUILD does not guess a faction assignment. The art is shipped at Textures/World/JawaFactions/ForgottenArsenal.png and one Add op wires it whenever someone rules on the target. Also noted: the spec's verify line says ELEVEN factionIconPath values; the correct count is TWELVE.","ts":"2026-08-21T10:17:37Z"}
+{"seat":"DECIDE","event":"claim","id":"HABITABLE_RING_IS_40_57_1","ts":"2026-08-21T10:17:39Z"}
