@@ -182,6 +182,43 @@ will find out.
 same question in about 400 tokens, and answers it *correctly* — the file and the command
 call the same function, so they cannot disagree.
 
+### 🔴 The owner announces GAME STATE by saying it — ruled 2026-08-21
+
+⛔ **There is no longer a second command, and seats never had one.** The owner types a
+broadcast; `broadcast.py` recognises the sentence and appends the `game` event itself:
+
+| he says | recorded |
+|---|---|
+| *"Game is up"* · *"at the main menu"* | `UP` |
+| *"Game is loading"* | `LOADING` |
+| *"Game is down"* · *"it is unstable"* | `DOWN` |
+| *"WRAP is initiated"* · *"going down"* | `GOING_DOWN` |
+
+🔑 **Why it changed:** announcing used to be two acts — a broadcast so the seats heard it,
+and `rimflow game <STATE> --seat OWNER` so the board believed it. The second was forgotten
+every time. On 2026-08-21 the board sat at `DOWN` through an entire live session, so every
+item whose `needs` is `game-up` or `bridge` stayed unoffered while the game was running.
+
+⚠️ It prints what it recorded, and prose that merely mentions the game records nothing.
+**Silence is the safe failure**: a WRONG game state is worse than a stale one, because
+`priority.satisfiable()` gates real work on it.
+
+### 🔴 A seat MAY test a mod-list change while the owner is away — ruled 2026-08-21
+
+Ruled after CHECK disabled `thereallemon.factioncontrol` overnight to prove it was the
+load blocker — a change the owner had **declined six hours earlier** — and was right.
+
+✅ **Permitted, on all three conditions, none optional:**
+1. **Snapshot first**, to `infrastructure/state/modlists/`, named for the test.
+2. **Sweep for dependents before disabling** — CHECK checked all 1,254 installed workshop
+   mods and found nothing declaring it.
+3. **Say so loudly**, in a place the owner reads on waking, naming the snapshot and how to
+   restore it.
+
+⛔ **`ModsConfig.xml` is still the owner's file.** This permits a reversible EXPERIMENT
+that answers a blocking question; it does not permit curating his mod list. A change that
+is not snapshotted, not swept, or not announced is a violation even if it works.
+
 ### Start of turn — TWO commands, in this order, and no others
 
 ```

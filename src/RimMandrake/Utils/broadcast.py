@@ -7,6 +7,15 @@
     ./src/RimMandrake/Utils/broadcast.py --to CHECK,BUILD "Game is loading"
     ./src/RimMandrake/Utils/broadcast.py --list
 
+⭐ SAYING IT IS RECORDING IT. A message that announces game state also appends the
+OWNER's `game` event, so there is no second command to forget:
+
+    "Game is up"          -> UP          "Game is loading"   -> LOADING
+    "Game is down"        -> DOWN        "WRAP is initiated" -> GOING_DOWN
+    "at the main menu"    -> UP          "deploying"         -> DEPLOYING
+
+It prints what it recorded. Prose that merely mentions the game records nothing.
+
 🔴 THIS IS A USER TOOL. AGENTS DO NOT RUN IT.
 Owner's ruling, 2026-08-19: agents do not message each other, at all. `SendMessage`
 and `ListAgents` are DENIED to them in `.claude/settings.json`, so an agent has no
@@ -158,6 +167,65 @@ def send(rec, text, sender="OWNER"):
         return "%s: %s" % (type(e).__name__, e)
 
 
+# ---------------------------------------------------------------------------
+# GAME STATE — the owner says it, this records it
+# ---------------------------------------------------------------------------
+# 🔴 OWNER, 2026-08-21: "change the python implementation of the user declaring the
+# game up or down to a simple broadcast message, not a python script."
+#
+# Before this, announcing a load was TWO acts: a broadcast so the seats heard it, and
+# `rimflow game UP --seat OWNER` so the board believed it. The second was forgotten
+# every time — the board sat at DOWN through an entire session on 2026-08-21 while the
+# game was up, so every item gated on `needs: game-up` stayed unoffered.
+#
+# 🔑 Now the sentence IS the command. The owner types what he was going to type anyway
+# and the ledger event is a side effect of being understood.
+#
+# ⚠️ DELIBERATELY CONSERVATIVE. It matches whole phrases, not the bare word "game", and
+# it prints what it recorded so a wrong guess is visible in the same breath. Prose that
+# merely mentions the game records nothing — silence is the safe failure here, because a
+# WRONG game state is worse than none: `satisfiable()` gates bridge work on it.
+GAME_PHRASES = [
+    # order matters — the first match wins, so the specific ones come first
+    ("GOING_DOWN", ("going down", "wrap is initiated", "wrap initiated",
+                    "about to close", "closing the game", "shutting down")),
+    ("LOADING",    ("is loading", "game loading", "loading now", "loading the game")),
+    ("DEPLOYING",  ("deploying", "deploy window", "is deploying")),
+    ("UP",         ("game is up", "game up", "at the main menu", "main menu",
+                    "game's up", "we are up", "it is up", "it's up")),
+    ("DOWN",       ("game is down", "game down", "game's down", "is closed",
+                    "has closed", "went down", "is unstable", "brought it down")),
+]
+
+
+def game_state_in(text):
+    """-> the state this sentence announces, or None. First match wins."""
+    low = " %s " % " ".join(text.lower().split())
+    for state, phrases in GAME_PHRASES:
+        for p in phrases:
+            if p in low:
+                return state
+    return None
+
+
+def record_game(state, text):
+    """Append the OWNER's `game` event. Never fatal — the message still goes out."""
+    import subprocess
+    cli = os.path.join(REPO, "src/RimMandrake/rimflow/cli.py")
+    if not os.path.exists(cli):
+        return "rimflow not found; state NOT recorded"
+    env = dict(os.environ, RIMFLOW_SEAT="OWNER")
+    try:
+        p = subprocess.run([sys.executable, cli, "game", state],
+                           capture_output=True, text=True, timeout=30,
+                           cwd=REPO, env=env)
+    except Exception as e:                       # noqa: BLE001 - never gate the send
+        return "state NOT recorded: %s" % e
+    if p.returncode:
+        return "state NOT recorded: %s" % (p.stderr or p.stdout or "?").strip()[:160]
+    return None
+
+
 def main(argv):
     args, only, everywhere, sender = [], None, False, "OWNER"
     i = 0
@@ -200,6 +268,13 @@ def main(argv):
     if not live:
         print("no live sessions matched")
         return 1
+
+    # 🔑 Record BEFORE delivering. A seat woken by this message will run
+    # `rimflow next` within the second, and it must read the new state, not the old one.
+    state = game_state_in(text)
+    if state:
+        err = record_game(state, text)
+        print("  game -> %-12s %s" % (state, err or "recorded in the ledger"))
 
     me = os.environ.get("CLAUDE_CODE_MESSAGING_SOCKET")
     for r in live:

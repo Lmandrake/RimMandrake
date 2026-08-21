@@ -899,3 +899,26 @@ That is the real cost of a remake and it is not visible in any of the four items
 
 ⛔ **Not proposed: an automated rebuild.** One map, hand-made, is a standing ruling
 (2026-08-18). The procedure is a checklist for the owner, never a generator.
+
+---
+
+## ✅ FOUR MORNING RULINGS — owner, 2026-08-21 08:19
+
+| ruled | effect |
+|---|---|
+| **FactionControl stays disabled** — 578, not 579 | The evidence turned overnight: three saves, three aborts, identical signature in its cross-reference postfix, and the painted world loads clean without it. He had declined this at 00:50 when it was a guess |
+| **Seats MAY snapshot-and-test a mod-list change while he is AFK** | Written into `POLICY.md` with all three conditions — snapshot, dependency sweep, loud written notice. ⛔ Still not licence to curate his mod list |
+| **He wakes BUILD and DECIDE himself** | Both idled the whole night; 15 spec-complete items each. Waking a seat is a USER function and REP does not send it |
+| **He rules the Scald himself**, not DECIDE | It changes how the planet looks, and he has ruled every map question so far. ⏳ **The three options are still in front of him — this answered WHO, not WHICH** |
+
+### ⚠️ The def dump is one mod stale in BOTH directions, and nothing says so
+
+`DefDump/` was captured 2026-08-21T08:20:20Z against 578 mods and the live list is also
+578 — **so a count comparison says "current" and is wrong.**
+
+- in the dump, not live: `thereallemon.factioncontrol` (disabled overnight)
+- live, not in the dump: `mandrake.strandedquest` (added since)
+
+🔑 **This is the fingerprint-not-timestamp trap wearing a new coat**: the totals match, the
+SETS do not. Any check that resolves a defName against this dump can confirm something the
+running game does not have, and miss something it does. Re-take it on the next load.
