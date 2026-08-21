@@ -1050,7 +1050,51 @@ def report(w):
         print("   %-32s %5d  %5.2f%%" % (b, c, 100.0 * c / n))
 
 
+OVERRIDE = "--i-know-this-regresses-the-hand-authored-planet"
+
+
+def _refuse_if_frozen():
+    """Refuse to rebuild the world over hand edits the paint cannot reproduce.
+
+    🔴 This script takes no arguments and writes the moment it is invoked, so there is
+    no dry run to discover the problem in. The CSV it overwrites is the 21,872-tile
+    hand-authored planet, and a regenerated one is the same shape, the same row count
+    and parses clean — the only symptom is a wet planet nobody diffs for.
+    ⚠️ A docstring saying "do not run this" is read AFTER the damage. This is the guard.
+    """
+    import json as _json
+    side = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv.frozen.json")
+    try:
+        with open(side, encoding="utf-8") as fh:
+            flag = _json.load(fh)
+    except (OSError, ValueError):
+        return                                    # no sidecar, or unreadable: not frozen
+    if not flag.get("frozen"):
+        return
+    if OVERRIDE in sys.argv:
+        print("!! OVERRIDE GIVEN — rebuilding over %s" % flag.get("artifact"))
+        print("!! %s" % flag.get("frozenMeaning", ""))
+        return
+    print("REFUSING: %s is FROZEN (%s, %s)."
+          % (flag.get("artifact"), flag.get("frozenBy", "?"), flag.get("frozenOn", "?")))
+    print()
+    print(flag.get("frozenMeaning", ""))
+    print()
+    print("To regenerate anyway, both steps:")
+    for step in flag.get("toUnfreeze", []):
+        print("  %s" % step)
+    print()
+    print("  the flag is:  %s" % OVERRIDE)
+    print()
+    print("⚠️ To change the world WITHOUT regenerating it — which is how every change")
+    print("   since the last paint was made — edit the rows you mean, the way")
+    print("   ashkarr_clamp_rain.py / ashkarr_regate_rain.py / ashkarr_fix_impassable.py")
+    print("   do. None of those is frozen.")
+    sys.exit(1)
+
+
 if __name__ == "__main__":
+    _refuse_if_frozen()
     w = build()
     report(w)
     write_bundle(w)

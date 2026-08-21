@@ -1,0 +1,24 @@
+{
+  "artifact": "world/ASHKARR_WORLDMAP_tiles.csv",
+  "frozen": true,
+  "frozenOn": "2026-08-21",
+  "frozenBy": "BUILD",
+  "frozenMeaning": "FROZEN 2026-08-21. This CSV is the 21,872-tile hand-authored planet and it is now AHEAD of the generator that first wrote it. Do NOT run src/RimMandrake/Utils/ashkarr_paint.py over it - that script takes no arguments, rebuilds tiles + settlements + links wholesale the moment it is invoked, and would silently regress every hand edit made since. The output would still be 21,872 valid rows with no error and no visible break, which is why this is a refusal rather than a comment.",
+  "whyItPassesTheThreeTests": {
+    "a_human_decisions": "The owner's rain ruling (RAIN_DRY_THE_LOWLANDS_1) zeroed rain_mm on 20,113 of 21,872 rows, and OCULAR_FOREST_SUMMITS_1 painted AB_OcularForest onto tiles 4299/9158/9159. Neither is reproducible by the painter - both are judgement calls recorded afterwards. Per CLAUDE.md the map is built BY HAND, ONCE, and frozen; this makes that doctrine true rather than hopeful.",
+    "b_generator_exists": "ashkarr_paint.py. Measured 2026-08-21: a plain re-run regresses the 20,113 rain rows and the 3 ocular tiles.",
+    "c_hard_to_notice": "The regenerated file is the same shape, the same 21,872 rows, and parses clean. The only symptom is a wet planet, and nobody diffs rain_mm by habit."
+  },
+  "whatFreezingCosts": "From now on the world is changed by SURGICAL edit, not by regeneration. That is already how it has been done - ashkarr_clamp_rain.py, ashkarr_regate_rain.py, ashkarr_fix_impassable.py, ashkarr_regrade_rivers.py and ashkarr_sink_scald.py each read the current CSV and change named rows, and NONE of them is frozen; they stay free on purpose. What is refused is the one script that rebuilds from scratch. If the planet ever genuinely needs regenerating from the paint, that is WORLD_REDRAFT_PROCEDURE_1's job and it should be written down before it is run, not discovered mid-run.",
+  "toUnfreeze": [
+    "1. Run the generator with its override flag - ashkarr_paint.py prints it in the refusal.",
+    "2. Set \"frozen\": false in this file, or delete this file."
+  ],
+  "notFrozen": [
+    "world/ASHKARR_WORLDMAP_settlements.csv",
+    "world/ASHKARR_WORLDMAP_links.csv",
+    "world/ASHKARR_WORLDMAP_mutators.csv",
+    "world/ASHKARR_WORLDMAP_landmarks.csv"
+  ],
+  "notFrozenWhy": "Only the tiles CSV is known to carry hand edits the painter would lose. ashkarr_paint.py writes the settlements and links CSVs too, so the guard stops those being rebuilt as a side effect - but they are not independently frozen and no separate claim is made about them. If one of them is later hand-edited, say so here."
+}
