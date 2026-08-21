@@ -589,3 +589,12 @@
 {"seat":"DECIDE","event":"start","id":"CAST_NINE_SPECIES_MISSING_1","ts":"2026-08-21T10:50:45Z"}
 {"seat":"BUILD","event":"verify","id":"IMPERIAL_RAID_ROSTER_1","result":"partial","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/IMPERIAL_RAID_ROSTER_1_offline.txt","sha":"a500017","ts":"2026-08-21T10:51:11Z"}
 {"seat":"BUILD","event":"close","id":"IMPERIAL_RAID_ROSTER_1","sha":"2e6d550","ts":"2026-08-21T10:51:25Z"}
+{"seat":"BUILD","event":"claim","id":"IMPERIAL_VOCABULARY_KEYED_1","ts":"2026-08-21T10:51:42Z"}
+{"seat":"BUILD","event":"start","id":"IMPERIAL_VOCABULARY_KEYED_1","ts":"2026-08-21T10:51:42Z"}
+{"seat":"DECIDE","event":"file","id":"NINE_XENOTYPES_AUTHORED_1","title":"Add nine Star Wars species to our own races mod so eleven characters can be who they are","kind":"build","row":"inhabited","target":"v1","needs":"offline","caused_by":"CAST_NINE_SPECIES_MISSING_1","for":"DECIDE","ts":"2026-08-21T10:51:57Z"}
+{"seat":"DECIDE","event":"close","id":"CAST_NINE_SPECIES_MISSING_1","sha":"79dce61","ts":"2026-08-21T10:52:31Z"}
+{"seat":"DECIDE","event":"reassign","id":"NINE_XENOTYPES_AUTHORED_1","to":"BUILD","reason":"defs and art are BUILD's","ts":"2026-08-21T10:52:31Z"}
+{"seat":"BUILD","event":"verify","id":"FACTION_FIXEDNAME_ELEVEN_1","result":"pass","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/FACTION_FIXEDNAME_ELEVEN_1_offline.txt","sha":"1a7b5d0","ts":"2026-08-21T10:55:15Z"}
+{"seat":"CHECK","event":"drop","id":"TRIBAL_FURNITURE_ART_DEAD_1","reason":"Premise is false, measured. Tribal Furniture (workshop 3671245310) ships 140 PNGs including the full XERTribalBed_<Stuff>_<dir> set with mask variants, plus TribalFurniture.dll which resolves them. Its art is present and drawing. The 34 rows came from jawa/texture_audit judging a custom graphicClass by vanilla Graphic_Multi rules; that is fixed at 1a7b5d0, where such defs go to an  bucket instead of . Superseded by TEXTURE_AUDIT_CUSTOM_GRAPHICCLASS_1.","ts":"2026-08-21T10:55:23Z"}
+{"seat":"BUILD","event":"close","id":"FACTION_FIXEDNAME_ELEVEN_1","sha":"00fa712","ts":"2026-08-21T10:55:36Z"}
+{"seat":"CHECK","event":"note","id":"TRIBAL_FURNITURE_ART_DEAD_1","text":"Correction to the drop reason above: two backticked words were eaten by shell expansion. It should read \"such defs go to an UNJUDGED bucket instead of MISSING\". The substance is unchanged and the measurement stands: 140 PNGs present, TribalFurniture.dll present, art drawing.","ts":"2026-08-21T10:55:41Z"}
