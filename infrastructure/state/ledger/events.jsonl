@@ -865,3 +865,9 @@
 {"seat":"DECIDE","event":"close","id":"the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa","sha":"9078a15","ts":"2026-08-21T20:00:31Z"}
 {"seat":"BUILD","event":"verify","id":"REASSIGN_STRANDS_DOING_ITEMS_1","result":"pass","config":"offline; rimflow selftest_model.py","evidence":"src/RimMandrake/rimflow/selftest_model.py 41/41 (4 new reassign cases)","sha":"836bbca","ts":"2026-08-21T20:03:06Z"}
 {"seat":"BUILD","event":"close","id":"REASSIGN_STRANDS_DOING_ITEMS_1","sha":"836bbca","ts":"2026-08-21T20:03:06Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ts":"2026-08-21T20:06:44Z"}
+{"seat":"BUILD","event":"file","id":"DUMP_PATH_ONE_SEAM_1","title":"21 files resolved the dump themselves; collapse them onto game_paths","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T20:11:53Z"}
+{"seat":"BUILD","event":"claim","id":"DUMP_PATH_ONE_SEAM_1","ts":"2026-08-21T20:12:13Z"}
+{"seat":"BUILD","event":"start","id":"DUMP_PATH_ONE_SEAM_1","ts":"2026-08-21T20:12:13Z"}
+{"seat":"BUILD","event":"verify","id":"DUMP_PATH_ONE_SEAM_1","result":"pass","config":"offline, game down; full selftest sweep","evidence":"src/RimMandrake/Utils/selftest_one_path_seam.py 6/6, plus 7 sibling selftests green","sha":"c098811","ts":"2026-08-21T20:18:15Z"}
+{"seat":"BUILD","event":"close","id":"DUMP_PATH_ONE_SEAM_1","sha":"c098811","ts":"2026-08-21T20:18:15Z"}
