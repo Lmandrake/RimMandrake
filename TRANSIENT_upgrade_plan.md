@@ -888,3 +888,280 @@ is. **No `Q104`, no `D55`, no bare numbers.**
 3. **`refmatch.py` defect thresholds** — circularity > 0.75, straight-run length, bearing-variance
    floor. I would calibrate these **against the reference images themselves** so the screen agrees
    with the photographs rather than with my taste.
+
+---
+---
+
+# PART THREE — COLD-START EXECUTION RUNBOOK
+
+**If you are a fresh BUILD seat with no context, everything you need is in Part Three.**
+Parts One and Two are the *why*. This part is the *how*, and it assumes you have read neither.
+
+---
+
+## 20. Your first five minutes
+
+You are the **BUILD seat**. You are the **only** fan-out point — subagents cannot spawn subagents.
+Your job is to run the waves in §22, dispatching the briefs in §24, and to commit and push on
+behalf of each wave.
+
+```bash
+cd /mnt/d/Luke/dev/Rimworld
+git pull --rebase
+python3 src/RimMandrake/Utils/check_git_locks.py     # a stale index.lock will wedge every agent
+```
+
+Then run §21 **before dispatching anything.** These numbers were measured 2026-08-20; if a wave's
+premise has already been fixed by another seat, you must know that before you spend agents on it.
+
+⛔ **Do not read `infrastructure/state/queue/*.md`.** They total ~207,000 tokens and you do not need
+them. Everything actionable is in §18 and §24.
+
+---
+
+## 21. Ground truth — verify before you act
+
+Run all six. Each line states what it returned on **2026-08-20**. A mismatch means the world moved;
+re-plan rather than proceed.
+
+```bash
+# 1. The board is lying. Expect: done 0, blocked 0 (real answer: 28 and 2)
+python3 src/RimMandrake/Utils/derive_matrix.py >/dev/null 2>&1
+python3 -c "import json;d=json.load(open('infrastructure/state/status_matrix.json'));
+m=[c['mix'] for r in d['rows'] for c in r['cells'].values()]
+print('mix done:',sum(x['done'] for x in m),' blocked:',sum(x['blocked'] for x in m),
+      ' blockers panel:',len(d['blockers']),' closed-from-git:',d['velocity']['closed'])"
+
+# 2. Non-canonical state strings. Expect: 68 of 167
+grep -hE '^state:' infrastructure/state/queue/*.md | sed -E 's/^state: *//' | awk '{print $1}' \
+  | grep -vcE '^(ready|doing|done|blocked|dropped)$'
+
+# 3. The design index is stale. Expect: exit 1
+python3 src/RimMandrake/Utils/doc_roster.py >/dev/null 2>&1; echo "doc_roster exit=$?"
+
+# 4. Design tier size. Expect: 119 files, 46488 lines
+git ls-files design | grep '\.md$' | wc -l
+git ls-files design | grep '\.md$' | xargs wc -l | tail -1
+
+# 5. The self-contradiction, verbatim. Expect line 100 = 25%, line 130 = ~8.6%
+sed -n '100p;130p' design/Jawa/worldbuilding/the_one_map.md
+
+# 6. The hook regex bug. Expect: no underscore in the class
+grep -n 'HEADING = re.compile' .claude/hooks/warn_unclosed_queue_item.py
+grep -n 'CLOSES_RE = re.compile' src/RimMandrake/Utils/derive_matrix.py
+```
+
+---
+
+## 22. The wave plan
+
+Waves are serial. **Inside a wave, everything runs concurrently.** Dispatch a whole wave in one
+message with multiple `Agent` calls.
+
+```
+W0  solo, ~30 min ....... the four S0 fixes                    [no fan-out — touches .claude/]
+      │
+      ├────────────────────────────┐
+      ▼                            ▼
+W1a solo ................. canon.yml        W1b solo ....... ORTHO_GLOBE_FIRST_RENDER_1
+      │                                          │            (independent; owner LOOKS)
+      ▼                                          │
+W2  ×9 parallel .......... reconcile all 38 docs against canon
+      │
+      ▼
+W3  ×2 parallel .......... (a) status headers, 119 docs   (b) check_canon.py + dead-link checker
+      │
+      ▼
+W4a solo ................. event schema + rimflow/model.py     [everything downstream needs it]
+      │
+      ▼
+W4b ×3 parallel .......... importer │ CLI verbs │ render/views
+      │
+      ▼
+W4c ×2 parallel .......... priority engine + deployment object │ artifact-accept sweep
+      │
+      ▼
+W5  solo ................. hooks + agent seat file rewrite      [touches .claude/ and POLICY]
+      │
+      ▼
+W6  ×1 + ×4 .............. board plumbing (solo) → then 4 view modules in parallel
+      │
+      ▼
+W7  solo ................. refmatch.py            [ONLY after the owner has looked at W1b]
+```
+
+**Why W2 is nine agents and not fifteen:** the contested numbers are not spread one-per-document.
+`ASHKARR_WORLD_DEFINITION.md` and `worldgen_interactive_def.md` each carry **four** of them.
+Fanning out by *item* would put seven agents inside the same file. Fan out by **file cluster**, and
+the clusters are disjoint by construction.
+
+---
+
+## 23. Fan-out rules — how not to corrupt a shared worktree
+
+Four seats share one checkout. These are not style points.
+
+1. **Every subagent owns a disjoint file set**, given explicitly in its brief. It writes nothing else.
+2. ⛔ **Never `git add -A`, `git add .`, or `git commit -a`.** A `PreToolUse` hook blocks it, and the
+   reason is that it sweeps peers' mid-edit work into your commit.
+3. ⚠️ **`git commit <path>` commits the WORKING TREE at that path, not your index** — including
+   another agent's uncommitted edits to that same path. This is why disjointness is mandatory.
+4. **Subagents commit; only YOU push.** Push once per wave, after every agent in it has returned.
+   *(A deliberate, bounded deviation from commit-and-push-immediately: nine agents racing
+   `pull --rebase` produces conflicts that cost more than the minutes of exposure. The window is one
+   wave.)*
+5. **On `index.lock` contention**, retry with backoff. `src/RimMandrake/Utils/check_git_locks.py`
+   diagnoses a stale one.
+6. **No subagent messages another agent.** `SendMessage` to a seat is blocked at the sending end.
+   Your own subagents are exempt and you resume them normally.
+7. **Give every subagent an output budget.** "Report ≤ 400 words: files changed, acceptance-test
+   output, anything you could not do." You are the one holding context.
+
+---
+
+## 24. Subagent briefs — copy-paste
+
+### W0 — do this yourself, no fan-out
+
+| item | change | acceptance |
+|---|---|---|
+| `BOARD_STATE_CLASSIFIER_FIX_1` | `derive_matrix.py:277` — compare `i.get("state","").split()[0]`, not the whole line. Same at `:278` for `doing`/`blocked` | §21 check 1 reports **done ≥ 28, blocked 2** |
+| `CLOSES_TRAILER_REGEX_FIX_1` | `.claude/hooks/warn_unclosed_queue_item.py:40-41` — `[A-Z][A-Z0-9-]*` → `[A-Za-z][A-Za-z0-9._-]*`, matching `derive_matrix.py:88`. Then make it exit non-zero | `INHABITED_DISPLACED_POOL_1` matches whole, not just `INHABITED` |
+| `DESIGN_INDEX_REGENERATION_1` | `python3 src/RimMandrake/Utils/doc_roster.py --write` | exit 0; `INHABITED_CAST_EMPIRE` and `_TUSKEN` now in `design/INDEX.md` |
+| `DOC_BUDGET_RED_ERRORS_1` | register `doc_budget.py` as a `PreToolUse:Bash` hook; red output naming file + overrun | an over-budget file produces a red message on commit |
+
+⚠️ **Hooks are fail-open (`2>/dev/null || true`). Stdlib only — no third-party imports, ever.**
+Write `selftest_<hook>.py` beside each, following `selftest_block_blanket_git_stage.py`.
+
+### W1a — `canon.yml` (solo, you)
+
+Author `infrastructure/state/canon.yml` per §2.3. **Every value must trace to a ruling or a
+measurement — no guesses.** Where two sources disagree, canon takes the one backed by the painted
+map or the owner's most recent ruling, and records the loser in a `superseded:` comment.
+
+### W1b — brief for one agent
+
+> Render Ash'karr as three orthographic globes and build a comparison sheet. This has never been
+> done — every existing render is equirectangular, while the binding reference is a globe.
+>
+> ```
+> python3 src/RimMandrake/Utils/worldview.py world/ASHKARR_WORLDMAP \
+>         --layer biome --projection ortho --center 0,0     # day face
+> # repeat with --center 0,90 (terminator) and --center 0,180 (night cap)
+> ```
+> Then write `TRANSIENT_refmatch_globes.html`: our three globes beside
+> `research/Jawa/planet_map_tidal_lock_inspiration.webp` and
+> `research/Jawa/planet_inspiration_tidal_lock2.webp`, same display size, labelled.
+> Do NOT judge the result and do NOT change the map. Report the output paths only.
+> Files you may write: `world/view/*`, `TRANSIENT_refmatch_globes.html`.
+
+### W2 — nine agents, one per cluster
+
+**Shared preamble for all nine** (paste into each, then append that cluster's file list):
+
+> You are reconciling design documents against a single source of truth.
+> Read `infrastructure/state/canon.yml` — it holds the authoritative value for every contested
+> number. **Fix every number in YOUR FILES ONLY that contradicts canon.**
+>
+> Rules:
+> - ⛔ Touch no file outside your list. Other agents are editing theirs right now.
+> - **Never delete the history of a number.** Replace `25%` with `8.1%` and, where the old value is
+>   load-bearing to an argument, keep it struck through with a date: `~~25%~~ → 8.1% (owner, 2026-08-18)`.
+> - Where your file is the one that was WRONG, add one line at the top naming what changed.
+> - Prose that *documents* an old number (inside `~~`, a blockquote, or a line containing
+>   `superseded`/`was`/`formerly`/`dead`) is correct as-is — leave it.
+> - Commit your own paths only, with a `Closes:` trailer. **Do not push.**
+> - Report ≤ 400 words: numbers changed (file:line, old → new), anything you could not resolve.
+
+| cluster | files |
+|---|---|
+| **C1 world-core** | `ASHKARR_WORLD_DEFINITION.md` · `the_one_map.md` |
+| **C2 world-physics** | `tidally_locked_world.md` · `hydrology_and_fire_ecology.md` · `setting_physics.md` · `desert_world_design.md` · `water_doctrine.md` |
+| **C3 faction-engine** | `FACTION_SPEC.md` · `faction_world_spec.md` · `faction_stage3_buildable_spec.md` |
+| **C4 faction-fiction** | `faction_roster_v2.md` · `faction_religions.md` · `faction_religions_spec.md` · `faction_equipment_guidance.md` · `pawnkind_roster.md` |
+| **C5 worldgen-legacy** | `worldgen_interactive_def.md` · `worldgen_interactive_build_concepts.md` · `row8_build_order.md` |
+| **C6 biome-fauna** | `biome_and_fauna_roster.md` · `biome_terrain_palette.md` · `biome_review_comments.md` · `fauna_placement.md` · `Alien_Bestiary.md` · `Livestock_Trade_Utility_Pets_v1.md` |
+| **C7 bridge-scenario** | `design/Jawa/bridge/*.md` · `SCENARIO_SPEC.md` · `SCENARIO_SETTINGS_SPEC.md` · `tile_augmentation_catalogue.md` |
+| **C8 mods-and-rest** | `design/Jawa/mods/*.md` · `design/RimMandrake/*.md` · `design/Jawa/art/*.md` · `build_plan.md` · `droid_ruling.md` |
+| **C9 stragglers** | `EMPIRE_GAP_AUDIT.md` · `force_users_build_spec.md` · `gravship_pursuer_mechanism.md` · `ship_deck_plan.md` · `ship_designs.md` · `what_the_machines_are.md` · `droid_chassis_coverage.md` · `V2_DREAMS.md` |
+
+**Cluster-specific additions:**
+
+- **C1** also fixes the self-contradiction at `the_one_map.md:100` vs `:130`, and adds a pointer back
+  from `ASHKARR_WORLD_DEFINITION.md` to `the_one_map.md` (the link is one-way today).
+- **C2** — 🔴 `hydrology_and_fire_ecology.md:529` concludes *"the active planet curve already agrees."*
+  **It does not.** It inherited `tidally_locked_world.md`'s +14 °C, and the mod's real curve is −37 °C
+  at the terminator. Fix the claim **and** whatever it justified. Also correct
+  `tidally_locked_world.md:153` *"LATITUDE IS THE AXIS"* — the axis is **arc**, correlation −0.98.
+- **C3** — `faction_world_spec.md` §1 states *"water increases with latitude"* **above** its
+  superseded banner, so it survives every harvest. Fix it. Add the missing forward pointer from
+  `faction_stage3_buildable_spec.md` to `FACTION_SPEC.md`. Rescue the two named leaders
+  (Kiknik, Tarn Vox) that exist only in the file slated for retirement.
+- **C4** — `faction_roster_v2.md` names **12 faiths that do not exist on disk** (verified: 0 hits for
+  all of them under `src/`). Mark that layer superseded by `faction_religions.md`, which produced the
+  12 real `<ideoName>` values.
+- **C5** — `worldgen_interactive_def.md`'s banner **actively points readers at dead measurements**
+  (*"read this file for its rulings and its measurements"* — 6.9% water, 37 settlements, 11 factions,
+  all superseded). Rewrite the banner to kill the measurements too.
+- **C6** — add `<!-- status: aspirational -->` to `Alien_Bestiary.md`: **78 named creatures, 0 on
+  disk.** Resolve `Lake` (cut by the owner, yet 1.4% of the planet) and `AB_GelatinousSuperorganism`
+  (cut 08-04, placed 08-18, palette never told).
+
+### W3 — two agents
+
+**(a) status headers.** One header line on all 119 design docs: `live` · `superseded-by: <path> ;
+<date> ; <what changed>` · `dead ; <date> ; <why>` · `aspirational`. HTML comments, so nothing
+renders. Known: `save_authoring_pipeline.md` is `⛔ DEAD DOCUMENT`, still linked and still indexed.
+Files: `design/**/*.md`.
+
+**(b) the checkers.** `src/RimMandrake/Utils/check_canon.py` (fails on a number contradicting canon,
+with the `<!-- canon-ok: reason -->` escape) and a dead-link checker (a `live` doc may not link into
+a `dead` one). Files: `src/RimMandrake/Utils/*.py` only.
+
+### W4–W7
+
+Follow §18's named items and §2's data model. Sequence and file ownership are in §22.
+**W7 (`refmatch.py`) does not start until the owner has looked at W1b's globes** — its five defect
+thresholds are calibrated against the reference photographs, not chosen.
+
+---
+
+## 25. Acceptance — how you know a wave is done
+
+| wave | test |
+|---|---|
+| **W0** | §21 check 1 → `done ≥ 28, blocked 2`; check 3 → `exit=0` |
+| **W1a** | `canon.yml` parses; every value carries a source |
+| **W1b** | three `*.ortho.png` exist for `ASHKARR_WORLDMAP`; the sheet opens |
+| **W2** | `grep -rE '25%\|22.28' design/` returns **only** struck-through or quoted-historical hits |
+| **W3** | `check_canon.py` exits 0 across all 119 docs; no live doc links into a dead one |
+| **W4** | `rimflow next --seat BUILD` returns one item in < 1 s; `rimflow reindex` rebuilds from the ledger alone |
+| **W5** | a deliberate `done → ready` edit is **refused**; a cross-seat write is **refused** |
+| **W6** | board renders at `:8787`; regeneration < 100 ms |
+| **W7** | contact sheet opens; the five defect screens run |
+
+---
+
+## 26. Guardrails
+
+- ⛔ **Never take the bridge.** CHECK only, always, no exception.
+- ⛔ **Never announce a game state.** The owner alone does that; `broadcast.py` is his tool.
+- ⛔ **Never `deploy_custom_mods.py --apply` without `--mod`** — it overwrites the game copy with the
+  repo as it currently is.
+- ⛔ **No new opaque IDs.** Not `Q104`, not `D55`, not `B-FIX2`. `THREE_DESCRIPTIVE_WORDS_#`, always.
+  A run is the sole exception and is never seen alone: `<ITEM>/run-N@<config>`.
+- ⛔ **No file over ~50 MB** in a commit. Hosts hard-reject at 100.
+- ✅ **Any new scratch output is `TRANSIENT_<name>.md`**, committed, never gitignored.
+- ✅ **At 90% context**: write down what you learned, close or block the item, commit, push,
+  `rimflow seat idle --reason context-exhausted --note "<where I stopped>"`.
+- ⚠️ **Numbers in this plan were measured 2026-08-20 and decay.** §21 is how you check. When a
+  measurement here disagrees with the repo, **the repo is right** — re-measure and correct this file.
+
+---
+
+## 27. What I would actually do first
+
+**W0 is thirty minutes and makes the board stop lying.** **W1b is one command** that produces the
+single comparison this project has never made — the map as a globe, beside the globe it is meant to
+resemble. Neither depends on anything else in this plan, and W1b may change what the rest of it
+should say.
