@@ -70,4 +70,11 @@ GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGeneban
 #    `Seed` is one token and is the owner's call; it is open in queue/HUMAN terms.
 # ⇒ Lift when the owner rules on Seed AND the game is down. The textures in this
 #    mod continue to deploy normally; that split is why this list is per-file.
-DesertVehicleReskin/Assemblies/DesertVehicleReskin.dll   # BUILD: game up + Seed ruling open, 2026-08-21
+#
+# ✅ HOLD LIFTED 2026-08-21 03:37 — BOTH conditions met, in the order the hold named.
+#    1. The game went down.
+#    2. The owner ruled on Seed: *"Add Seed — rice fuels"*. FoodTypeFlags.Seed is now
+#       in VegetableFuel.Accepted, the offline checker mirrors it and now FAILS if
+#       RawRice ever stops qualifying, and the DLL was rebuilt against the change.
+#    Left as a note rather than deleted, because the entry records WHY an assembly sat
+#    undeployed and that it was released on a ruling rather than on impatience.

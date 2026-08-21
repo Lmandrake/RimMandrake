@@ -22,8 +22,18 @@ namespace DesertVehicleReskin
     public static class VegetableFuel
     {
         /// <summary>Food classes a herbivore team will pull for.</summary>
+        /// <remarks>
+        /// Seed was ADDED 2026-08-21 on the owner's ruling. Without it the rule
+        /// rejected RawRice, which the item's own roster listed as something that
+        /// should qualify: rice's foodType is the STANDALONE FoodTypeFlags.Seed
+        /// flag (16), not VegetableOrFruit, so it matched nothing here. Seed is
+        /// not Meat and carries no drugCategory, so both deliberate exclusions
+        /// below still bite. Fungus needed no such fix - FoodTypeFlags.Fungus is
+        /// 0x1001 and already CARRIES the VegetableOrFruit bit.
+        /// </remarks>
         public const FoodTypeFlags Accepted =
-            FoodTypeFlags.Plant | FoodTypeFlags.VegetableOrFruit | FoodTypeFlags.Meal;
+            FoodTypeFlags.Plant | FoodTypeFlags.VegetableOrFruit | FoodTypeFlags.Meal
+            | FoodTypeFlags.Seed;
 
         /// <summary>Food classes that disqualify a def outright.</summary>
         public const FoodTypeFlags Rejected =

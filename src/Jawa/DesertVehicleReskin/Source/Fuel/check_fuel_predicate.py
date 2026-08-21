@@ -39,12 +39,15 @@ FLAG_VALUES = {
     "DendrovoreAnimal": 6801, "OvivoreAnimal": 2848, "OmnivoreHuman": 7999,
 }
 
-ACCEPTED = FLAG_VALUES["Plant"] | FLAG_VALUES["VegetableOrFruit"] | FLAG_VALUES["Meal"]
+# Seed added 2026-08-21 on the owner's ruling: RawRice's foodType is the standalone
+# Seed flag (16), so the rule rejected a crop the item's own roster said should fuel.
+ACCEPTED = (FLAG_VALUES["Plant"] | FLAG_VALUES["VegetableOrFruit"]
+            | FLAG_VALUES["Meal"] | FLAG_VALUES["Seed"])
 REJECTED = FLAG_VALUES["Meat"] | FLAG_VALUES["AnimalProduct"]
 
 # The verify line from the item.  RawMeat is not a vanilla defName - meat is
 # per-species - so the real meat defs stand in for it.
-MUST_ACCEPT = ["Hay", "RawPotatoes", "RawCorn", "RawBerries", "RawFungus"]
+MUST_ACCEPT = ["Hay", "RawPotatoes", "RawCorn", "RawBerries", "RawFungus", "RawRice"]
 MUST_REJECT = ["Beer", "Meat_Cow", "Meat_Human", "Milk", "Ambrosia",
                "MA_RaptorkhanEggUnfertilized"]
 
@@ -183,13 +186,16 @@ def main():
         if got is True:
             failures.append("%s accepted but must be rejected" % name)
 
-    print("\nspec claims the rule admits these; measured, it does not:")
+    print("\nthe Seed ruling, owner 2026-08-21 - these were rejected until Seed was added:")
     for name in SPEC_CLAIMS_NOT_MET:
-        print("  %-24s: accepted=%s  (foodType is Seed, which is neither Plant"
-              % (name, verdicts.get(name)))
-        print("  %-24s   nor VegetableOrFruit nor Meal - DECIDE's call whether"
+        got = verdicts.get(name)
+        print("  %-24s: accepted=%s  (foodType is the standalone Seed flag (16),"
+              % (name, got))
+        print("  %-24s   not VegetableOrFruit. The item's roster always said it"
               % "")
-        print("  %-24s   to add Seed to the rule.)" % "")
+        print("  %-24s   should fuel; the rule now matches the roster.)" % "")
+        if got is not True:
+            failures.append("%s must be accepted since the Seed ruling" % name)
 
     kibble = verdicts.get("Kibble")
     print("\nKibble by the rule alone: %s" % kibble)

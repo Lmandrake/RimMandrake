@@ -1,0 +1,31 @@
+VEHICLE_FUEL_ACCEPTS_VEGETABLES_1 — offline verify, 2026-08-21 (post-Seed ruling)
+
+Owner's ruling: "Add Seed — rice fuels."
+FoodTypeFlags.Seed added to VegetableFuel.Accepted; check_fuel_predicate.py mirrors it
+and now FAILS if RawRice ever stops qualifying.
+
+dotnet build:
+  Build succeeded.  0 Warning(s)  0 Error(s)
+  -> src/Jawa/DesertVehicleReskin/Assemblies/DesertVehicleReskin.dll (rebuilt 03:37:24)
+
+offline predicate check against the 08:20:20Z dump (578 mods, matches live):
+ThingDefs scanned: 24573
+accepted by the vegetable rule: 561
+  accepts Hay                     : PASS
+  accepts RawPotatoes             : PASS
+  accepts RawCorn                 : PASS
+  accepts RawBerries              : PASS
+  accepts RawFungus               : PASS
+  accepts RawRice                 : PASS
+  rejects Beer                    : PASS
+  rejects Meat_Cow                : PASS
+  rejects Meat_Human              : PASS
+  rejects Milk                    : PASS
+  rejects Ambrosia                : PASS
+  rejects MA_RaptorkhanEggUnfertilized: PASS
+  RawRice                 : accepted=True  (foodType is the standalone Seed flag (16),
+ALL CHECKS PASS
+
+Deployed 03:37 with the game DOWN. DEPLOY_HOLD lifted, both its conditions met.
+OWED, needs a load: that the Harmony patches ATTACH, and the acceptance criterion
+(drain an ox cart to 0, stack potatoes, watch a hauler refuel).
