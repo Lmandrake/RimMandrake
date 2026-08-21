@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  AnimalDessicatedTexPaths_Fix.xml           Jawa_Patches - new file 2026-08-21
+  ============================================================================
+
+  Six dead `dessicatedBodyGraphicData/texPath` strings across three animal
+  mods, all found by jawa/texture_audit against the LIVE process on the full
+  mod list (first_light_2026-08-21_0123.md). GRiNDTerra's equivalents live in
+  `GrimTerraTexPaths_Fix.xml`; this file is everything else.
+
+  🪤 EVERY ONE OF THESE IS ON A PawnKindDef, NOT ON THE ANIMAL'S ThingDef.
+  The ThingDef carries race/lifeStages with `dessicatedTexPath`; these sit on
+  the PAWNKIND's own lifeStages under `dessicatedBodyGraphicData/texPath` -
+  a different node, on a different def, with the same-looking shape. An xpath
+  aimed at the ThingDef matches nothing, and a PatchOperation that matches
+  nothing logs nothing, so it would have looked exactly like a fix.
+
+  🔑 A DESSICATED texPath IS THE LAST THING ANYONE NOTICES. It is only read
+  when a corpse finishes rotting, so none of these appears in a load harvest
+  and none of them breaks the living animal. They are found by auditing the
+  content index, not by playing.
+
+  ⚠️ Case is compared character by character below. Windows' filesystem is
+  case-insensitive and RimWorld's content index is NOT, so a path can resolve
+  from a shell and still fail in game. Never settle one of these with `ls`.
+
+  =========================================================================
+  Biomes! Caverns (workshop 2969748433) - verified against its Textures tree
+  =========================================================================
+    is    Things/Pawn/Animal/BeardedYak/Dessicated_BeardedYak
+    want  BMT_Caverns/Things/Animal/BeardedYak/Dessicated_BeardedYak
+          Mod prefix dropped. The path as written points into VANILLA's
+          Things/Pawn/Animal/, where no bearded yak has ever existed. Its own
+          `bodyGraphicData` two lines above carries the BMT_Caverns prefix
+          correctly, which is what makes this a slip rather than a design.
+
+    is    BMT_Caverns/Things/Animal/FreezerFrog/Dessicated_FreezerFrog
+    want  BMT_Caverns/Things/Animal/FreezerFrog/Dessicated_FreezertFrog
+          The FILE is the misspelt one - `FreezertFrog`, with a stray t - and
+          the def is right. We cannot rename art in a workshop folder, so the
+          patch bends the def to the file.
+          ⚠️ THIS ONE IS ONLY HALF A FIX AND THAT IS DELIBERATE. The file also
+          has no directional suffix: its siblings ship `Dessicated_*_east.png`
+          and this ships a bare `Dessicated_FreezertFrog.png`. Graphic_Multi
+          looks for _north/_east/_south/_west, so the corpse may still fail to
+          resolve. That is a defect in the mod's ART, not in its path, and
+          fixing it means shipping a renamed PNG - out of scope here. The
+          patch is still correct: it names a file that exists.
+
+    is    Things/Pawn/Animal/GlarralPenguin/Dessicated_GlarralPenguin
+    want  BMT_Caverns/Things/Animal/GlarralPenguin/Dessicated_GlarralPenguin
+          Same dropped prefix as the yak, same file, same author.
+
+  All three animals declare THREE identical lifeStages, so each op below
+  matches three nodes, not one. PatchOperationReplace replaces every match.
+
+  =========================================================================
+  Star Wars Animal Collection (Continued) (workshop 3497316713)
+  =========================================================================
+  🔑 THIS MOD SHIPS NO LOOSE PNGs. Its `Textures/` folder holds only
+  UpdateInfo; the art is inside `AssetBundles/Mlie_StarWarsAnimalCollection`,
+  and the authority on what exists is the `.manifest` beside it. Anyone who
+  concludes "the texture is missing" from a `find` over Textures/ is wrong
+  about every animal in the mod.
+
+    is    swanimals/Bursa_Dessicated
+    want  swanimals/Bursa/Bursa_Dessicated
+          Folder segment dropped. Its own lifeStages[1] and [2] already read
+          the correct form; only the BABY stage is broken.
+
+    is    swanimals/KGreaterKraytDragon/GreaterKraytDragon_Dessicated
+    want  swanimals/GreaterKraytDragon/GreaterKraytDragon_Dessicated
+          A stray leading K on the folder. Again only lifeStages[0].
+
+  ⛔ NOT FIXED, AND NOT FIXABLE HERE: Yobshrimp lifeStages[0] wants
+  `swanimals/Yobshrimp/Yobshrimp_j_Dessicated`. The bundle holds
+  Yobshrimp_j_east/_north/_south and Yobshrimp_Dessicated, but there is no
+  juvenile dessicated sprite at all - the art was never drawn. (KraytDragon,
+  by contrast, does ship a _j_Dessicated, which is how we know the convention
+  is real and this is an omission.) Pointing it at the ADULT
+  `swanimals/Yobshrimp/Yobshrimp_Dessicated` would silence the error at the
+  cost of substituting art the author did not choose; that is an owner call,
+  not a typo repair, so it is left alone and reported instead.
+
+  =========================================================================
+  Insectoids 2 - Isopoda geneline (workshop 3357632382)
+  =========================================================================
+    is    Things/Pawn/Animal/SW_GrenadeBug/SW_Dessicated_EngineerBug
+    want  Things/Pawn/Animal/SW_GrenadeBug/SW_Dessicated_GrenadeBug
+          Half of a copy-paste: the FOLDER was updated to SW_GrenadeBug and
+          the FILENAME was not. Both `SW_EngineerBug/SW_Dessicated_EngineerBug`
+          and `SW_GrenadeBug/SW_Dessicated_GrenadeBug` exist, so the pair
+          could be reconciled in either direction - we take the GrenadeBug
+          one because the electrictick's LIVING sprite is
+          `SW_GrenadeBug/SW_GrenadeBug`, and a corpse should look like the
+          thing that died.
+
+  =========================================================================
+  Each operation targets the node BY ITS CURRENT VALUE rather than by
+  position. li[1] would be correct today and wrong the moment anything inserts
+  a life stage; a value predicate cannot drift, because only the broken node
+  carries the broken string.
+
+  🪤 THE PREDICATE GOES ON THE PARENT, NOT ON THE texPath ITSELF. The obvious
+  form, texPath[.="..."], is XPath 1.0 and RimWorld would accept it - but the
+  offline validator walks the defs with ElementTree, which does not implement
+  a self-predicate and reports 0 matches. The form below,
+  dessicatedBodyGraphicData[texPath="..."]/texPath, is a CHILD-VALUE predicate
+  and is the house form both engines agree on.
+
+  ⛔ DO NOT EDIT THE WORKSHOP FOLDERS. Steam overwrites them on update.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Biomes! Caverns</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="BMT_BeardedYak"]/lifeStages/li/dessicatedBodyGraphicData[texPath="Things/Pawn/Animal/BeardedYak/Dessicated_BeardedYak"]/texPath</xpath>
+          <value><texPath>BMT_Caverns/Things/Animal/BeardedYak/Dessicated_BeardedYak</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="BMT_FreezerFrog"]/lifeStages/li/dessicatedBodyGraphicData[texPath="BMT_Caverns/Things/Animal/FreezerFrog/Dessicated_FreezerFrog"]/texPath</xpath>
+          <value><texPath>BMT_Caverns/Things/Animal/FreezerFrog/Dessicated_FreezertFrog</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="BMT_GlarralPenguin"]/lifeStages/li/dessicatedBodyGraphicData[texPath="Things/Pawn/Animal/GlarralPenguin/Dessicated_GlarralPenguin"]/texPath</xpath>
+          <value><texPath>BMT_Caverns/Things/Animal/GlarralPenguin/Dessicated_GlarralPenguin</texPath></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars Animal Collection (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Bursa"]/lifeStages/li/dessicatedBodyGraphicData[texPath="swanimals/Bursa_Dessicated"]/texPath</xpath>
+          <value><texPath>swanimals/Bursa/Bursa_Dessicated</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GreaterKraytDragon"]/lifeStages/li/dessicatedBodyGraphicData[texPath="swanimals/KGreaterKraytDragon/GreaterKraytDragon_Dessicated"]/texPath</xpath>
+          <value><texPath>swanimals/GreaterKraytDragon/GreaterKraytDragon_Dessicated</texPath></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Insectoids 2 - Isopoda geneline</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="SW_Electrictick"]/lifeStages/li/dessicatedBodyGraphicData[texPath="Things/Pawn/Animal/SW_GrenadeBug/SW_Dessicated_EngineerBug"]/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/SW_GrenadeBug/SW_Dessicated_GrenadeBug</texPath></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
