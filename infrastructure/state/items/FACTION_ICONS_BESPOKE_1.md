@@ -73,25 +73,32 @@ hub is the same design and holds.
   sand, on a desert planet. The hood silhouette is correct and reads fine in any other
   colour. ⇒ **do not redraw it.** See `FACTION_ART_SPEC.md` §2.5 for the proposed spectrum.
 
-### 5. ⭐ One `colorSpectrum` change, and it ships WITH the icons
+### 5. 🔴 One `colorSpectrum` change, and it SHIPS WITH the icons — not optional
 
 `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml` — replace the `colorSpectrum` block:
 
 ```xml
 <colorSpectrum>
-  <li>(0.42, 0.30, 0.16)</li>
-  <li>(0.30, 0.21, 0.11)</li>
+  <li>(0.98, 0.72, 0.16)</li>
+  <li>(0.86, 0.56, 0.08)</li>
 </colorSpectrum>
 ```
 
-🔴 **Without this the Jawa Trade Moot's new icon is invisible and the work is wasted.** Its
-current spectrum is `(0.70,0.55,0.30)` — sand — and `Settlement.Material` tints the glyph
-with it, on sand, on a desert planet. The hood silhouette is correct and reads in any other
-colour; **every other faction escapes this only because every other palette is off the
-desert axis.** Reasoning in `design/Jawa/art/FACTION_ART_SPEC.md` §2.5.
-⚠️ **This is a DECIDE ruling made at acceptance, not an owner instruction** — he accepted the
-icons and this is what makes one of them legible. If he vetoes it, the icon stays and the
-colour reverts; nothing else changes.
+⭐ **Owner's design, 2026-08-21:** *"even when the brown hood is invisible in the sand, the
+eyes stare out."*
+
+🔑 **`JawaTradeMoot.png` and this colour are ONE design and neither works alone.** Unlike
+the other twelve, that texture is **not a flat mask** — the hood is value `108/255` and the
+eyes are `255`, with a soft falloff between. The tint multiplies, so:
+- hood `0.42 × amber` ⇒ a dark warm brown robe
+- eyes `1.00 × amber` ⇒ full amber, the brightest thing on the tile
+
+⛔ **Ship the old sand spectrum with this texture and you get a dim brown blob.**
+⛔ **Ship this spectrum with a flat mask and you get a uniformly bright amber blob.**
+⛔ **Do not "fix" the texture to a single value to match the other twelve** — the two-value
+authoring is deliberate, and it is vanilla's own convention: every one of the fifteen shipped
+world icons measured on 2026-08-21 is greyscale spanning 0–255 with 10–200 distinct
+luminances. Reasoning in `design/Jawa/art/FACTION_ART_SPEC.md` §1 and §2.5.
 ⛔ **Do not change any other faction's `colorSpectrum`.** The other twelve pass.
 
 ## verify

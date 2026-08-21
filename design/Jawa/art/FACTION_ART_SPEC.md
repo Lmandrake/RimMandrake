@@ -50,11 +50,19 @@ merely a UI field:
 
 🔑 **Three consequences that decide every choice in this document:**
 
-1. **Both markers are tinted by the faction colour, and the icon is tinted only on the
-   map.** `FactionUIUtility.cs:112` and `:290` draw the icon with no colour set, so the
-   Factions tab shows it as authored. ⇒ **art with colour baked in looks right in the UI
-   and muddy on the planet.** Author white-to-grey with alpha; let `colorSpectrum` do the
-   colouring.
+1. 🔴 **NO HUE — BUT VALUE IS YOUR ONE EXPRESSIVE CHANNEL, AND IT IS POWERFUL.**
+   *Corrected 2026-08-21; the earlier rule here said "one flat value" and it was wrong.*
+   The tint **multiplies**, so a colour baked into the texture can only be darkened by the
+   faction colour and goes muddy — hue genuinely cannot survive. ⭐ **But brightness passes
+   straight through.** A pixel at 1.0 renders as the faction colour at full strength; a
+   pixel at 0.42 renders as a dark version of it. **One texture therefore carries two
+   materials.**
+   ✅ **This is vanilla's own convention, measured, not inferred.** Every one of the fifteen
+   shipped world icons extracted on 2026-08-21 is greyscale — mean saturation 0.0–1.8 — and
+   every one spans the full 0–255 range with **10 to 200 distinct luminance levels**.
+   ⚠️ `FactionUIUtility.cs:112` and `:290` draw the icon **untinted** in the Factions tab, so
+   a value-modelled icon must also read as plain greyscale. It does: dark shape, bright
+   accent.
 2. **A path that does not resolve is not an error — it is a magenta square.**
    `FactionDef.cs:375` falls back to `BaseContent.BadTex` and logs nothing at that point.
    ⚠️ **`settlementTexturePath` is the dangerous one and it does NOT fall back.**
@@ -126,32 +134,44 @@ colony.**
 `Expanding/VillageSavage` *"reads wrong on an outlander icon"*. ✅ Kept, unresolved, and
 folded into the LOOK step in §4 rather than guessed at again.
 
-### 2.5 🔴 The Jawa Trade Moot is invisible, and it is the COLOUR that is wrong
+### 2.5 ⭐ The Jawa Trade Moot — a dark hood that vanishes, and eyes that do not
 
-⭐ **Found by looking, 2026-08-21, exactly as §4 said it would be.** With the new hood-and-eyes
-icon in place, the Trade Moot is still the hardest thing on the sheet to see — and the
-silhouette is not the problem. `Jawa_IndigenousTribes` carries
-`colorSpectrum (0.70,0.55,0.30)`, described in `FACTION_SPEC.md:528` as *"sand, with the
-ember"*. ⇒ **it is sand, tinted onto sand, on a desert planet.** The player's own kin are
-camouflaged against their own world.
+**Owner, 2026-08-21:** *"rather than hollow eyes, could you make them a luminous warm
+yellow? … even when the brown hood is invisible in the sand, the eyes stare out."*
 
-⚠️ **Every other faction passes this test** because every other faction's colour is off the
-desert axis — teal, violet, rust, deep green, crimson. The Trade Moot is the only one whose
-palette *is* the terrain.
+🔑 **It works, and it needs BOTH halves — the texture and the colour — or it fails.**
 
-✅ **The fix keeps the read and drops the camouflage.** A Jawa is a **dark brown robe with
-lit eyes**, not a sand-coloured one — the ember in that description is the eyes, and the eyes
-are a hole in the icon, so the robe should carry the contrast:
+**The problem it solves.** The Trade Moot's old `colorSpectrum` was `(0.70,0.55,0.30)`,
+described at `FACTION_SPEC.md:528` as *"sand, with the ember"*. That is sand tinted onto
+sand on a desert planet: the player's own kin, camouflaged against their own world. Every
+other faction escapes this only because every other palette is off the desert axis.
 
-```
+**The mechanism.** ⛔ *Yellow cannot be painted into the eyes* — the tint multiplies, so
+yellow × a brown faction colour is dark orange mud. ✅ **Instead the eyes are pure white in
+the texture and the FACTION COLOUR is the amber**:
+
+| texture value | × amber | renders as |
+|---|---|---|
+| hood `108/255` (0.42) | | a **dark warm brown robe** |
+| eyes `255` | | **full amber, the brightest thing on the tile** |
+
+⇒ the ember in *"sand, with the ember"* was always the eyes. Now it is.
+
+```xml
 <colorSpectrum>
-  <li>(0.42, 0.30, 0.16)</li>
-  <li>(0.30, 0.21, 0.11)</li>
+  <li>(0.98, 0.72, 0.16)</li>
+  <li>(0.86, 0.56, 0.08)</li>
 </colorSpectrum>
 ```
 
-⛔ **Do not solve this by redrawing the icon.** A heavier silhouette would only make a larger
-sand-coloured blob. ⛔ **And do not lighten it** — a pale Jawa is wrong twice.
+⚠️ **The whole spectrum range was checked, not just the first stop.** Both ends and the
+midpoint give a dark hood with lit eyes.
+⛔ **DECIDE's earlier proposal of a dark brown `(0.42,0.30,0.16)` is WITHDRAWN and was
+worse** — it darkened the hood correctly and killed the glow, because dull-brown eyes on a
+dark-brown hood have nothing to be brighter *than*.
+🔑 **The eyes carry a soft falloff** (a blurred halo stepping 108 → 255) so they read as
+emitting rather than as holes. At 26px the hood dims into the sand and two bright points
+remain — which is the whole idea.
 
 ### 2.4 Two icons are on-loan from other mods with no gate
 
