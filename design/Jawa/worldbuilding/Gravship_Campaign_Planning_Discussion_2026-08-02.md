@@ -1421,6 +1421,7 @@ Vanilla difficulty scaling only pushes lever 2.5 (more bodies/points). The "we a
 
 **Mod → archetype mapping (thematic + technical fit; all Odyssey-1.6 compat pending Fetcher verification — knowledge cutoff May 2025):**
 - **Combat-AI mod (e.g. CAI-5000)** → delivers §19.2 "Behavior" wholesale (dynamic cover, flanking, suppression, retreat). Makes a 6-pawn elite team scary with NO extra bodies → directly serves criterion 6. **Recommended FIRST adoption.** *(Inference — regarded well at cutoff; verify live.)*
+<!-- canon-ok: "criterion 11" is a criterion number, not a faction count. -->
 - **Combat Extended** → **❌ FORBIDDEN (2026-08-02, user's call).** Compat surface + over-arms the player (tension w/ §19.5 + criterion 11) + temp-map risk. Recorded in forbidden_mods.md. Keep base game vanilla-lethal; danger comes from AI + factions + difficulty tuning, NOT a lethality overhaul.
 - **VFE-Mechanoids** → "Anti-Ship Mech Cell" + "Pursuer Vanguard"; dovetails with the Odyssey pursuing-mechanoid premise the campaign is built on.
 - **VFE-Pirates** → "Elite Hunter Team" (warcasket heavy-armor elites).

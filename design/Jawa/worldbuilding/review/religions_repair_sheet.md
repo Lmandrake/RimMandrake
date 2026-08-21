@@ -15,9 +15,13 @@ python3 /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/validate_ideoligion.py --
 ```
 
 ⚠️ **The block above is verbatim validator output and is left exactly as it ran.**
-Its `585 active mods` is a historical stamp: the list is **575** since 2026-08-15
-and that dump is stale, so the meme/precept/style counts may have moved. Re-run
-the validator against the fresh dump before treating any count here as current.
+<!-- canon-ok: 585 and 575 are DATED historical stamps of the day each gate ran; the live figure is stated beside them. -->
+Its `585 active mods` is a historical stamp — **585 as of 2026-08-14**, the day
+the gate ran — and that dump is stale, so the meme/precept/style counts may have
+moved. ~~the list is **575** since 2026-08-15~~ **The live list is 578 activeMods
+as of 2026-08-20** (`infrastructure/state/canon.yml > modlist`; the 575 was true
+on 2026-08-15). Re-run the validator against the fresh dump before treating any
+count here as current.
 
 Every claim below was re-read out of
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\`
@@ -31,6 +35,7 @@ legality checked against
 
 **1. 🔴 No `FactionDef` field sets precepts.** `disallowedPrecepts` is a blacklist and
 that is the only precept field on the def (`references/authoring.md` §1, verified
+<!-- canon-ok: "eleven entries" counts the religions under validation, not factions. -->
 across all 87 installed `FactionDef`s). The validator says so on all eleven entries:
 
 ```
@@ -229,6 +234,7 @@ gated behind eight memes of which seven are illegal here.
 `MayRequire` table (line 86) maps the prefix to `neronix17.outerrim.droiddepot`.
 
 🔴 **Corrected 2026-08-15 (BUILD) — the verdict stands, the reason was wrong.**
+<!-- canon-ok: quotes the superseded text; "547 of 575" is stamped 2026-08-15 by the heading above. -->
 The old text said that mod is *"not in the 585 active mods"*. It **is** active,
 at slot **547 of 575**, and it **does** ship the def:
 `.../294100/3096501398/1.6/Mods/Ideology/Defs/MemeDefs/Meme_DroidSupremacy.xml`

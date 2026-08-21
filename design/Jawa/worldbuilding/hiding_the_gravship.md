@@ -297,16 +297,27 @@ at depth" remains ours to decide and ours to implement.
 
 🔴 **This is a THIRST WORLD. GravTide needs ocean tiles.**
 
-`faction_world_spec.md` §4 puts the only standing water at high latitude, in
+> ✅ **ANSWERED 2026-08-20 by measurement — the check below is closed, and the
+> answer is the good one.** The painted world carries **1,780 water tiles of
+> 21,872 = 8.14%**, in **exactly three** connected seas: The Scald (312 tiles,
+> painted `Lake`), The Twilight Sea (851) and The Gray Sea (617).
+> `infrastructure/state/canon.yml > planet.water_pct`, `planet.seas`. So GravTide
+> has something to work with, and it has *scarcely* enough — which is what the ⭐
+> paragraph below hoped for. ⚠️ Two corrections while you are here: the axis on a
+> tidally locked world is **arc from the substellar point, not latitude**
+> (`canon.yml > planet.axis`), and there is **no worldgen** — the world is
+> hand-painted and frozen (owner, 2026-08-15 and 2026-08-18).
+
+~~`faction_world_spec.md` §4 puts the only standing water at high latitude, in
 small quantity. **Before adopting, establish whether our worldgen produces any
 ocean tiles at all, and whether a few can be forced.** If the answer is none,
-GravTide has nothing to work with.
+GravTide has nothing to work with.~~
 
 ⭐ **If the answer is "a few", that is better than a lot.** Three or four deep
 seas on an entire desert planet, each one the property of the Deepwater Compact,
 each one the only place in the world you cannot be found — **that is a far
 stronger setting than an ocean world would be.** Scarcity is the campaign's whole
-grammar, and it should apply to sanctuary too.
+grammar, and it should apply to sanctuary too. 🔑 **It came out at exactly three.**
 
 ## Alternatives already live, for the record
 
@@ -320,7 +331,9 @@ grammar, and it should apply to sanctuary too.
 
 ## Recommendation
 
-**ADOPT, `[v2]`, subject to one check: does our world have ocean tiles.**
+**ADOPT, `[v2]`.** ~~subject to one check: does our world have ocean tiles.~~
+✅ **That check is now answered — 1,780 water tiles, three seas** (see above,
+and `infrastructure/state/canon.yml > planet.water_pct` / `planet.seas`).
 
 It is 1.6, its dependency is already in the stack, it declares no conflicts, and
 it delivers a designed-and-built version of a concept we would otherwise spend

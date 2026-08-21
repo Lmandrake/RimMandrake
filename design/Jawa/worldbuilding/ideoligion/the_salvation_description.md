@@ -14,6 +14,7 @@ beg" (J:326), being caught vs stealing (J:162).
 
 ⚠️ **`Sh'kaar` is written as "the sun that never sets", NOT "the twin suns"**
 (J:206). The twin-sun line predates the tidally-locked world established in
+<!-- canon-ok: "faction_religions.md:11-17" is a line range, not a faction count. -->
 `faction_religions.md`:11–17, where the sun does not move at all. Flagged for the
 owner — if the twin suns are canon, this is the one line to change.
 
