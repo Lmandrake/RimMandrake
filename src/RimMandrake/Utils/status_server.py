@@ -426,7 +426,11 @@ class H(BaseHTTPRequestHandler):
         pass
 
     def do_GET(self):
-        if self.path.startswith("/board"):
+        # ⚠️ EXACT match, and the order below is load-bearing. `startswith("/board")`
+        # swallowed `/board/deck.js` too, so every module request returned the 81 KB
+        # board JSON with a JSON content-type and the page silently loaded nothing.
+        # Found 2026-08-20 by the view that could not load itself.
+        if self.path.split("?")[0].rstrip("/") == "/board":
             # The raw ledger projection, for the view modules. Kept separate from
             # /data so a view can poll the ledger without paying for host(),
             # inventory() and the process census on every tick.
