@@ -18,6 +18,13 @@ exactly how Jawa_FreeDroidEnclaves ended up with none of its own.
 ⚠️ Refuses to run if the decisions file is still byte-identical to the generated
 pre-fill, because that means the sheet never wrote and these are the agent's guesses,
 not the owner's.
+
+🔴 A FactionDef carrying the marker FROZEN-XENOTYPESET is SKIPPED, not rewritten.
+Measured 2026-08-21: `Jawa_FreeDroidEnclaves` was hand-emptied on the owner's ruling of
+2026-08-19 (a droid enclave generating Ugnaughts), but the matrix still grades
+`RimMandrakeUgnaught` for it, so --apply refilled it at 1.000 - silently, in valid XML,
+visible only as a pawn. `--thaw-frozen` overrides the skip and is almost never right:
+the honest fix is to clear that cell in the matrix.
 """
 import json
 import os
@@ -70,9 +77,18 @@ def main():
                 % (indent, indent, li, indent, indent))
 
     wrote = 0
+    thaw = "--thaw-frozen" in sys.argv
     for fn in sorted(os.listdir(FACDIR)):
         p = os.path.join(FACDIR, fn)
         s = open(p, encoding="utf-8").read()
+        # 🔴 A hand-emptied or hand-tuned set that the matrix would refill. The marker
+        # lives in the def file itself and carries its own reason; see the docstring.
+        if "FROZEN-XENOTYPESET" in s and not thaw:
+            print("  SKIPPED %s - FROZEN-XENOTYPESET. Its xenotypeSet is a human's "
+                  "decision and this script would overwrite it. Read the comment in "
+                  "the file; clear the matrix cell rather than passing --thaw-frozen."
+                  % fn)
+            continue
         for m in re.finditer(r"<defName>([\w.]+)</defName>", s):
             fac = m.group(1)
             if fac not in per:

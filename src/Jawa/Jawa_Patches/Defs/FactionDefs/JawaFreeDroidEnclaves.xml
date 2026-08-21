@@ -99,7 +99,21 @@
          `RimMandrakeUgnaught` at 1.000, i.e. every biological pawn this faction ever
          generated was an Ugnaught, against a dossier that says it has none. Removed on
          the owner's ruling, 2026-08-19. The droid kinds are unaffected — they carry
-         their own non-human races and never consulted this field. -->
+         their own non-human races and never consulted this field.
+
+         FROZEN-XENOTYPESET
+           frozenOn:      2026-08-19 (ruled), 2026-08-21 (marker written)
+           frozenBy:      owner
+           frozenAgainst: src/RimMandrake/Utils/apply_race_factions.py
+           frozenMeaning: the A/S/R matrix STILL grades RimMandrakeUgnaught for
+             Jawa_FreeDroidEnclaves, so `apply_race_factions.py === apply` refills this
+             set at 1.000 - valid XML, no error, visible only as an Ugnaught walking out
+             of a droid enclave. Measured 2026-08-21 by regenerating into a scratch tree.
+             The script now SKIPS any FactionDef carrying this marker.
+           to unfreeze: clear the Jawa_FreeDroidEnclaves cell for RimMandrakeUgnaught in
+             design/Jawa/worldbuilding/review/race_faction_assignment.prefill.json, which
+             is the owner's file - or delete this marker. `===thaw-frozen` overrides the
+             skip for one run and is almost never the right answer. -->
     <xenotypeSet Inherit="False" />
 
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER

@@ -1,0 +1,52 @@
+EMPIRE_XENOTYPES_REGENERATE_1 - offline evidence, BUILD 2026-08-21
+
+== 1. DIFF COMPUTED IN A SCRATCH TREE FIRST (nothing in the repo written yet) ==
+$ diff -rq <repo> <scratch after --apply>
+Files .../Defs/FactionDefs/JawaFreeDroidEnclaves.xml differ      <-- STOP
+Files .../Patches/VanillaFaction_Xenotypes.xml differ            <-- wanted
+the other 7 authored FactionDefs: byte-identical
+
+== 2. WHAT REGENERATION WOULD HAVE DESTROYED ==
+JawaFreeDroidEnclaves.xml, hand-emptied on the owner's ruling of 2026-08-19:
+-    <xenotypeSet Inherit="False" />
++    <xenotypeSet Inherit="False">
++      <xenotypeChances>
++        <RimMandrakeUgnaught MayRequire="mandrake.starwarsraces">1.000</RimMandrakeUgnaught>
++      </xenotypeChances>
++    </xenotypeSet>
+The matrix still grades RimMandrakeUgnaught for Jawa_FreeDroidEnclaves, so --apply
+refills it: valid XML, no error, visible only as an Ugnaught in a droid enclave.
+=> FROZEN-XENOTYPESET marker written into the def; apply_race_factions.py now skips it:
+  SKIPPED JawaFreeDroidEnclaves.xml - FROZEN-XENOTYPESET. Its xenotypeSet is a human's decision and this script would overwrite it. Read the comment in the file; clear the matrix cell rather than passing --thaw-frozen.
+
+== 3. THE WRITE, shape of the real diff ==
+ .../Jawa_Patches/Patches/VanillaFaction_Xenotypes.xml    | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+-            <Baseliner>0.411</Baseliner>
+-            <RimMandrakeEchani MayRequire="mandrake.starwarsraces">0.411</RimMandrakeEchani>
+-            <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.137</RimMandrakeChiss>
+-            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.041</RimMandrakeChadraFan>
++            <Baseliner>0.769</Baseliner>
++            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChadraFan>
++            <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChiss>
++            <RimMandrakeEchani MayRequire="mandrake.starwarsraces">0.077</RimMandrakeEchani>
+-            <Baseliner>0.411</Baseliner>
+-            <RimMandrakeEchani MayRequire="mandrake.starwarsraces">0.411</RimMandrakeEchani>
+-            <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.137</RimMandrakeChiss>
+-            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.041</RimMandrakeChadraFan>
++            <Baseliner>0.769</Baseliner>
++            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChadraFan>
++            <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChiss>
++            <RimMandrakeEchani MayRequire="mandrake.starwarsraces">0.077</RimMandrakeEchani>
+defs added 0 / removed 0 / altered 1 (Empire, both branches of one Conditional).
+All four species still present: 4 before, 4 after.
+
+== 4. canon.yml > empire.xenotype_mix ==
+848:  xenotype_mix: "Baseliner 0.769 · RimMandrakeChadraFan 0.077 · RimMandrakeChiss 0.077 · RimMandrakeEchani 0.077"
+
+== 5. validate_patch.py ==
+OK - 0 errors, 4 warning(s)
+  WARN    Operation[1] > nomatch (PatchOperationAdd): inner xpath differs from the conditional test.
+  info    Operation[1] (PatchOperationConditional): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > match (PatchOperationReplace): 1 match(es)  in Royalty: Faction_Empire.xml(1)
+  info    Operation[1] > nomatch (PatchOperationAdd): 1 match(es)  in Royalty: Faction_Empire.xml(1)

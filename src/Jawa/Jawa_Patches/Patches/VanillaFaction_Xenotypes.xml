@@ -10,10 +10,10 @@
       <value>
         <xenotypeSet Inherit="False">
           <xenotypeChances>
-            <Baseliner>0.411</Baseliner>
-            <RimMandrakeEchani MayRequire="mandrake.starwarsraces">0.411</RimMandrakeEchani>
-            <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.137</RimMandrakeChiss>
-            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.041</RimMandrakeChadraFan>
+            <Baseliner>0.769</Baseliner>
+            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChadraFan>
+            <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChiss>
+            <RimMandrakeEchani MayRequire="mandrake.starwarsraces">0.077</RimMandrakeEchani>
           </xenotypeChances>
         </xenotypeSet>
       </value>
@@ -23,10 +23,10 @@
       <value>
         <xenotypeSet Inherit="False">
           <xenotypeChances>
-            <Baseliner>0.411</Baseliner>
-            <RimMandrakeEchani MayRequire="mandrake.starwarsraces">0.411</RimMandrakeEchani>
-            <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.137</RimMandrakeChiss>
-            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.041</RimMandrakeChadraFan>
+            <Baseliner>0.769</Baseliner>
+            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChadraFan>
+            <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChiss>
+            <RimMandrakeEchani MayRequire="mandrake.starwarsraces">0.077</RimMandrakeEchani>
           </xenotypeChances>
         </xenotypeSet>
       </value>
