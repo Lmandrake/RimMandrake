@@ -1,0 +1,59 @@
+### DEFDUMP_ABILITYDEF_BLIND_1 — offline evidence, BUILD, 2026-08-21
+
+== the dump under test ==
+capturedUtc 2026-08-21T08:20:20Z | mode all | gameVersion 1.6.4871 rev591 | modCount 578
+
+== $ cat 'DefDump/defs/AbilityDef.json' ==
+{"defType":"AbilityDef","defs":[],"count":0}
+
+== CAUSE: manifest defCounts has 532 entries under 517 distinct simple names ==
+defCounts entries written : 532
+distinct simple names     : 517
+names claimed by >1 type  : 13   <- each one silently overwrote the earlier file
+
+SIMPLE NAME                counts in write order  defs LOST to the last writer
+AbilityDef                 612,18,0               630
+CharacterDef               0,269                  0
+CustomMapDataDef           12,42                  12
+DefExtensions              1,1,1                  2
+DialogTreeDef              0,1                    0
+DubsModOptions             15,4                   15
+ExpansionDef               6,1                    6
+FaceTypeDef                152,0                  152
+ModDef                     6,6                    6
+QuestGiverDef              1,5                    1
+StructureLayoutDef         0,301                  0
+StructureSetDef            0,14                   0
+SymbolDef                  0,9099                 0
+
+TOTAL defs written then overwritten: 824
+
+== which is why AbilityDef reads as empty: 612 vanilla defs were written FIRST, then a 0-def AbilityDef from another mod was written LAST to the same path ==
+
+== the cost, measured now, before the fix ==
+$ python3 src/RimMandrake/Utils/validate_save_artifact.py 'src/Jawa/ideoligion/The Salvation.rid'
+
+=== The Salvation.rid
+    dump captured 2026-08-21T08:20:20Z  (61197 defNames indexed)
+    250/266 references resolve
+    ⬜ 16 UNMEASURABLE — the dump carries zero rows for their type.
+       Not a pass and not a failure. Only a live check settles these.
+        AbilityDef: AM_ChangeStyle, CombatCommand, ConversionRitual, Convert, Counsel, LeaderSpeech, PreachHealth, Reassure, Trial, VME_CallTradeCaravan, VME_LeaderConversionRitual, VME_LeaderConvert, VME_LeaderCounsel, VME_LeaderPreachHealth, VME_LeaderReassure, WorkDrive
+    ·  19 empty <li> (normal Scribe output — vanilla ideos have them too; not a defect)
+
+== the fix, built ==
+$ dotnet build Source/RimDefDump.csproj -c Release
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.45
+-rwxrwxrwx 1 mandrake mandrake 26112 Aug 21 10:02 src/RimMandrake/RimDefDump/1.6/Assemblies/RimDefDump.dll
+
+== NOT DONE — owed, and why ==
+RimWorld is RUNNING and the OS holds Mods/RimDefDump/1.6/Assemblies/RimDefDump.dll open.
+The rebuilt DLL is in the REPO only. Owed:
+  1. deploy_custom_mods.py --mod RimDefDump --apply   (game DOWN)
+  2. next load with DefDump/dump_request.txt containing 'all'
+  3. re-run validate_save_artifact.py -> expect 266/266 and no UNMEASURABLE line

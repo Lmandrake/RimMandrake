@@ -90,11 +90,14 @@ namespace RimDefDump
             Directory.CreateDirectory(root);
 
             var counts = new List<KeyValuePair<string, int>>();
+            var typeEntries = new List<DefTypeEntry>();
+            var collisions = new List<string>();
             long animalMs = TimeIt(() => WriteAnimals(root));
             long allMs = 0;
-            if (dumpAll) allMs = TimeIt(() => WriteAllDefs(root, counts));
+            if (dumpAll) allMs = TimeIt(() => WriteAllDefs(root, counts, typeEntries, collisions));
 
-            WriteManifest(root, mode, counts, total.ElapsedMilliseconds, animalMs, allMs);
+            WriteManifest(root, mode, counts, typeEntries, collisions,
+                          total.ElapsedMilliseconds, animalMs, allMs);
 
             total.Stop();
             Log.Message("[RimDefDump] done in " + total.ElapsedMilliseconds + " ms"
@@ -133,6 +136,8 @@ namespace RimDefDump
         // ------------------------------------------------------------------
         private static void WriteManifest(string root, string mode,
                                           List<KeyValuePair<string, int>> counts,
+                                          List<DefTypeEntry> typeEntries,
+                                          List<string> collisions,
                                           long totalMs, long animalMs, long allMs)
         {
             using (StreamWriter sw = Open(Path.Combine(root, "manifest.json")))
@@ -177,10 +182,41 @@ namespace RimDefDump
                 w.EndArray();
                 w.Prop("modCount", mods.Count);
 
+                // Keyed on the FILE STEM, not the simple type name. For the
+                // 517 types whose simple name is unique those are the same
+                // string; for the 13 that collide, the loser is now listed
+                // under its full name instead of overwriting the winner.
                 w.Name("defCounts");
                 w.StartObject();
                 for (int i = 0; i < counts.Count; i++) w.Prop(counts[i].Key, counts[i].Value);
                 w.EndObject();
+
+                // The authoritative index: which type landed in which file.
+                // A reader that wants Verse.AbilityDef specifically looks here
+                // rather than assuming defs/AbilityDef.json is it.
+                w.Name("defTypes");
+                w.StartArray();
+                for (int i = 0; i < typeEntries.Count; i++)
+                {
+                    DefTypeEntry e = typeEntries[i];
+                    if (e.file == null) continue;
+                    w.StartObject();
+                    w.Prop("name", e.type.Name);
+                    w.Prop("fullName", e.type.FullName);
+                    w.Prop("assembly", e.type.Assembly.GetName().Name);
+                    w.Prop("file", e.file);
+                    w.Prop("count", e.count);
+                    w.EndObject();
+                }
+                w.EndArray();
+
+                // Named loudly, because a collision is the one thing that used
+                // to make a populated def type read as empty.
+                w.Name("defTypeCollisions");
+                w.StartArray();
+                for (int i = 0; i < collisions.Count; i++) w.Str(collisions[i]);
+                w.EndArray();
+                w.Prop("defTypeCount", typeEntries.Count);
 
                 w.EndObject();
             }
@@ -340,25 +376,131 @@ namespace RimDefDump
 
         // ------------------------------------------------------------------
         // defs/<Type>.json — the full generic pass (mode=all).
+        //
+        // === WHY THIS IS NOT KEYED ON defType.Name ===
+        // A def type's SIMPLE name is not unique across a 578-mod stack. The
+        // 2026-08-21 capture enumerated 532 def types under only 517 distinct
+        // simple names: 13 names were claimed by two or three unrelated types.
+        // The old code wrote Path.Combine(dir, defType.Name + ".json"), so the
+        // LAST type enumerated silently overwrote every earlier one's file.
+        //
+        // That is what made AbilityDef read as empty. Three types are called
+        // AbilityDef in this stack, holding 612, 18 and 0 defs; the empty one
+        // was written last, so defs/AbilityDef.json was
+        // {"defType":"AbilityDef","defs":[],"count":0} and Verse.AbilityDef's
+        // 612 defs — every vanilla psycast and Ideology ability — were gone.
+        // Same failure: CharacterDef (0 beat 269), SymbolDef (0 beat 9099),
+        // StructureLayoutDef (0 beat 301), FaceTypeDef (152 lost to 0).
+        //
+        // === THE RULE ===
+        // Simple name is unique  -> "<Name>.json", exactly as before, so every
+        //                           existing reader of defs/ThingDef.json is
+        //                           unaffected.
+        // Simple name collides   -> the type holding the MOST defs keeps
+        //                           "<Name>.json"; the others get
+        //                           "<FullName>.json". Ties break on
+        //                           core-assembly-first, then ordinal FullName,
+        //                           so the mapping is deterministic across runs.
+        // manifest.json gains a "defTypes" array giving fullName, assembly,
+        // file and count for every type, and "defTypeCollisions" naming the
+        // groups, so a reader can always find where a type actually landed.
         // ------------------------------------------------------------------
-        private static void WriteAllDefs(string root, List<KeyValuePair<string, int>> counts)
+        private sealed class DefTypeEntry
+        {
+            public Type type;
+            public int count;
+            public bool core;
+            public string file;
+        }
+
+        private static void WriteAllDefs(string root, List<KeyValuePair<string, int>> counts,
+                                         List<DefTypeEntry> entries, List<string> collisions)
         {
             string dir = Path.Combine(root, "defs");
             Directory.CreateDirectory(dir);
 
+            Assembly coreAsm = typeof(Def).Assembly;
+
+            // --- pass 1: enumerate the types and how many defs each holds ----
+            // Counting is a list walk; the expensive part is the reflection
+            // write in pass 2. Doing it twice is cheap and is the only way to
+            // know which type deserves the unqualified filename.
             foreach (Type defType in GenDefDatabase.AllDefTypesWithDatabases())
             {
+                if (defType == null) continue;
+                int n;
+                try { n = CountDefsOf(defType); }
+                catch (Exception ex)
+                {
+                    Log.Warning("[RimDefDump] cannot enumerate " + defType.FullName + ": " + ex.Message);
+                    continue;
+                }
+                if (n < 0) continue;
+                entries.Add(new DefTypeEntry
+                {
+                    type = defType,
+                    count = n,
+                    core = defType.Assembly == coreAsm,
+                });
+            }
+
+            // --- assign filenames, disambiguating collisions -----------------
+            var byName = new Dictionary<string, List<DefTypeEntry>>();
+            for (int i = 0; i < entries.Count; i++)
+            {
+                List<DefTypeEntry> group;
+                if (!byName.TryGetValue(entries[i].type.Name, out group))
+                {
+                    group = new List<DefTypeEntry>();
+                    byName[entries[i].type.Name] = group;
+                }
+                group.Add(entries[i]);
+            }
+
+            foreach (KeyValuePair<string, List<DefTypeEntry>> kv in byName)
+            {
+                List<DefTypeEntry> group = kv.Value;
+                if (group.Count == 1)
+                {
+                    group[0].file = kv.Key + ".json";
+                    continue;
+                }
+
+                group.Sort(delegate (DefTypeEntry a, DefTypeEntry b)
+                {
+                    if (a.count != b.count) return b.count.CompareTo(a.count);   // most defs first
+                    if (a.core != b.core) return a.core ? -1 : 1;                // then the game's own
+                    return string.CompareOrdinal(a.type.FullName, b.type.FullName);
+                });
+
+                var names = new List<string>();
+                for (int i = 0; i < group.Count; i++)
+                {
+                    group[i].file = (i == 0 ? kv.Key : SafeFileName(group[i].type.FullName)) + ".json";
+                    names.Add(group[i].type.FullName + "=" + group[i].count + "->" + group[i].file);
+                }
+                collisions.Add(kv.Key + ": " + string.Join(", ", names.ToArray()));
+                Log.Warning("[RimDefDump] def type name collision — " + kv.Key + ": "
+                            + string.Join(", ", names.ToArray()));
+            }
+
+            // --- pass 2: write ------------------------------------------------
+            for (int e = 0; e < entries.Count; e++)
+            {
+                DefTypeEntry entry = entries[e];
+                Type defType = entry.type;
+
                 IEnumerable defs;
                 try { defs = AllDefsOf(defType); }
                 catch (Exception ex)
                 {
-                    Log.Warning("[RimDefDump] cannot enumerate " + defType.Name + ": " + ex.Message);
+                    Log.Warning("[RimDefDump] cannot enumerate " + defType.FullName + ": " + ex.Message);
                     continue;
                 }
                 if (defs == null) continue;
 
                 int n = 0;
-                string path = Path.Combine(dir, defType.Name + ".json");
+                string path = Path.Combine(dir, entry.file);
                 try
                 {
                     using (StreamWriter sw = Open(path))
@@ -366,6 +508,8 @@ namespace RimDefDump
                         var w = new JsonWriter(sw, IndentBulkFiles);
                         w.StartObject();
                         w.Prop("defType", defType.Name);
+                        w.Prop("defTypeFullName", defType.FullName);
+                        w.Prop("assembly", defType.Assembly.GetName().Name);
                         w.Name("defs");
                         w.StartArray();
                         foreach (object o in defs)
@@ -382,13 +526,51 @@ namespace RimDefDump
                 }
                 catch (Exception ex)
                 {
-                    Log.Warning("[RimDefDump] failed writing " + defType.Name + ": " + ex.Message);
+                    Log.Warning("[RimDefDump] failed writing " + defType.FullName + ": " + ex.Message);
                     continue;
                 }
-                counts.Add(new KeyValuePair<string, int>(defType.Name, n));
+                entry.count = n;
+                // Keyed on the FILE stem, which is unique by construction, so
+                // defCounts can no longer report one type's count under another
+                // type's name.
+                counts.Add(new KeyValuePair<string, int>(
+                    entry.file.EndsWith(".json") ? entry.file.Substring(0, entry.file.Length - 5) : entry.file, n));
             }
 
-            Log.Message("[RimDefDump] wrote " + counts.Count + " def-type files to " + dir);
+            Log.Message("[RimDefDump] wrote " + counts.Count + " def-type files to " + dir
+                        + " (" + collisions.Count + " simple-name collisions disambiguated)");
+        }
+
+        /// <summary>
+        /// A type's full name is legal in a filename here (dots are fine), but
+        /// nested types use '+' and generics use '`', neither of which is worth
+        /// gambling on across filesystems.
+        /// </summary>
+        private static string SafeFileName(string s)
+        {
+            var sb = new StringBuilder(s.Length);
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                sb.Append(char.IsLetterOrDigit(c) || c == '.' || c == '_' || c == '-' ? c : '_');
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// How many defs a type's database holds, without materialising them.
+        /// </summary>
+        private static int CountDefsOf(Type defType)
+        {
+            Type db = typeof(DefDatabase<>).MakeGenericType(defType);
+            PropertyInfo cp = db.GetProperty("DefCount", BindingFlags.Public | BindingFlags.Static);
+            if (cp != null) return (int)cp.GetValue(null, null);
+
+            IEnumerable defs = AllDefsOf(defType);
+            if (defs == null) return -1;
+            int n = 0;
+            foreach (object o in defs) if (o is Def) n++;
+            return n;
         }
 
         /// <summary>

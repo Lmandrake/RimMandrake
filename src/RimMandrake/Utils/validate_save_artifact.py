@@ -170,10 +170,22 @@ def build_index(rebuild=False):
         except OSError:
             continue
         found = rec.findall(text)
-        # 🔴 79 of 529 def-type files in the 2026-08-15 dump are EMPTY, AbilityDef
-        # among them. "Absent from the dump" therefore does NOT mean "absent from
-        # the game" for those types, and grading against them would invent
-        # failures. Record them so the report can say UNMEASURABLE instead.
+        # 🔴 A chunk of the def-type files are EMPTY, so "absent from the dump"
+        # does NOT mean "absent from the game" for those types, and grading
+        # against them would invent failures. Record them so the report can say
+        # UNMEASURABLE instead.
+        #
+        # === WHY AbilityDef WAS ONE OF THEM ===
+        # Not sparsity. RimDefDump keyed defs/<file>.json on the def type's
+        # SIMPLE name, and 13 simple names are claimed by two or three unrelated
+        # types on this 578-mod stack; the last one written won. Three types are
+        # called AbilityDef here (612, 18 and 0 defs) and the empty one went
+        # last, so 612 vanilla psycasts and Ideology abilities were written and
+        # then overwritten. Fixed 2026-08-21 in RimDefDump/Source/DefDumper.cs
+        # (DEFDUMP_ABILITYDEF_BLIND_1) — colliding types now get <FullName>.json
+        # and manifest.json carries a defTypes index. ⚠️ Any dump captured
+        # BEFORE that fix reaches this machine still has the hole, and its
+        # UNMEASURABLE lines are collisions rather than absences.
         if not found and '"defs":[]' in text[:200]:
             empty_types.append(path.stem)
         for name, dtype, pkg in found:

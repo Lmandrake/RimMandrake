@@ -117,6 +117,44 @@ Written to `…\RimWorld by Ludeon Studios\DefDump\`.
 a dump is unattributable a week later. These are snapshots of a **mod set**, not
 of RimWorld.
 
+### 🔴 A def type's SIMPLE name is not unique — fixed 2026-08-21
+
+Up to and including the `capturedUtc 2026-08-21T08:20:20Z` capture, `defs/` was
+keyed on `defType.Name`. On the 578-mod stack that enumerated **532 def types
+under only 517 distinct simple names**, so 13 filenames were claimed by two or
+three unrelated types and **the last one written silently overwrote the rest.**
+824 defs were written and then destroyed by a later same-named type.
+
+That is why `AbilityDef.json` read `{"defType":"AbilityDef","defs":[],"count":0}`
+— 44 bytes. Three types are called `AbilityDef` here, holding 612, 18 and 0 defs;
+the empty one went last. Every vanilla psycast and Ideology ability was in that
+file and then was not. The same thing hid `SymbolDef` (9,099 defs beaten by 0),
+`StructureLayoutDef` (301 by 0), `CharacterDef` (269 by 0) and `FaceTypeDef`
+(152 lost to 0).
+
+⚠️ **So "the dump has zero rows for that type" was never evidence the game has
+none.** Anything that graded against an empty def-type file before this date —
+`validate_save_artifact.py`'s ⬜ UNMEASURABLE line most of all — was reading a
+collision, not an absence.
+
+**The rule now:**
+
+| case | filename |
+|---|---|
+| simple name is unique (517 of 532) | `<Name>.json`, exactly as before — every existing reader of `defs/ThingDef.json` is unaffected |
+| simple name collides | the type holding the **most defs** keeps `<Name>.json`; the others get `<FullName>.json`, e.g. `VFECore.Abilities.AbilityDef.json` |
+
+Ties break core-assembly-first, then ordinal `FullName`, so the mapping is
+deterministic run to run. Every def-type file now also carries
+`defTypeFullName` and `assembly` in its header, and `manifest.json` gains:
+
+- `defTypes` — the authoritative index: `name`, `fullName`, `assembly`, `file`,
+  `count` for every type. **A reader that wants `Verse.AbilityDef` specifically
+  looks here** rather than assuming `defs/AbilityDef.json` is it.
+- `defTypeCollisions` — the groups, named loudly.
+- `defCounts` is now keyed on the **file stem**, so it can no longer report one
+  type's count under another type's name.
+
 ## How the reflector survives the live object graph
 
 The live graph is hostile in four specific ways. Each has a rule, and each rule
