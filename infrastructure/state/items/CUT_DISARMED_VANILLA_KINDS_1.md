@@ -57,3 +57,49 @@ The instrument is corrected in place: `weapon_tag_audit.py` no longer prints the
 line, prints the neutered count instead, and carries the mechanism as a comment in
 `audit()`. ⚠️ That correction was still uncommitted in a file another seat was mid-edit
 when this was filed — confirm it landed before trusting the tool's output.
+
+---
+
+## ruling — DECIDE, 2026-08-21, on the owner's words
+
+🔴 **OWNER, 2026-08-21:** *"Please do what it takes to restore Pikeman and Sentry. We
+should not be turning off Mech weaponry, that was a mistake to correct."*
+
+That is a ruling about the **cut**, not about the tag index — so the repair is at the
+cut, not in `WeaponTags_Renormalise.xml`. Restoring the weapon restores the pool with
+zero patch ops and gives the mech back *its own* gun rather than a human rifle.
+
+### In scope — three kinds, two mechanisms
+
+| kind | mechanism | why this one |
+|---|---|---|
+| `Mech_Pikeman` | **UN-CUT `Gun_Needle`** (Core) — delete its `<li>` from the Cherry Picker list | Owner's ruling verbatim. Appending `Gun` would arm a mechanoid with an industrial rifle; that is not restoring mech weaponry, it is disguising the hole |
+| `Drone_Sentry` | **UN-CUT `Gun_Scattergun`** (Odyssey) — same | Same ruling. `weaponMoney 9999~9999` resolved to this weapon until we cut it |
+| `Tribal_Archer_Fire`, `Tribal_Hunter_Fire` | **APPEND `NeolithicRanged`** beside the dead `NeolithicRangedFlame` in the hand-authored block of `WeaponTags_Renormalise.xml` | ⛔ `Flamebow` **stays cut.** The owner ruled on *mech* weaponry; a neolithic fire-bow is not that, and its cut reads deliberate. These kinds become plain archers — armed, not on fire. The mechanism is the one `THREE_ANCIENT_KINDS_ARMED_1` already proved |
+
+⚠️ **The two un-cuts are edits to a LIVE game config**
+(`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_3521312241_Mod_CherryPicker.xml`,
+1,349 `<li>`, all three weapons present and confirmed today). Config files never wait on
+the game — but **Cherry Picker's in-game UI writes this file**, so an edit made while the
+game is up can be clobbered when its window is next saved. Sequence it accordingly and
+re-read after, and refresh `deployed/config/v1_freeze/` to match.
+🔑 The tag pool only re-forms on a **load**. Nothing here is visible without one.
+
+### Out of scope, and each for its own reason — do not reopen these
+
+- ⛔ `DP_ArtilleryPirate` · `DP_RocketPirate` · `VFEP_Footsoldier` — bucket 2 by cause,
+  bucket 1 by **intent**. Their mods equip them by another route and arming them breaks it.
+  **Intent overrides cause.** Unchanged from `FIFTEEN_TAGLESS_KINDS_RULING_1`.
+- ⛔ `VEE_Hunter` · `VEE_TribalHunter` · `BS_Crossbowman` · `BS_CrossbowDvergr` ·
+  `BS_DvergrTraditionalist` · `AncientMallGuards` (PKM) — **mod kinds, not base game.** The
+  ruling's discriminator was *does this kind ever spawn HERE*, and that discriminator was
+  never disproved — only the CAUSE beneath it was. It still rules them out.
+- ⛔ The seven out-of-scope-by-reachability kinds stay out. Nothing here reopens them.
+
+🔑 **The correction that outlives this item.** `FIFTEEN_TAGLESS_KINDS_RULING_1` was right
+about *which kinds matter* and wrong about *why they were tagless*. It said our cut was not
+the cause; the cut was the cause for 11 of 14. The discriminator survives, the premise does
+not, and `weapon_tag_audit.py`'s `emptied by the cut: 0` was a structural artefact of
+reading a dump where Cherry Picker neuters rather than deletes — **183 of 183 cut weapons
+present-and-neutered, zero deleted.** Any future attribution question must go to the mod's
+SOURCE XML, never to the dump.

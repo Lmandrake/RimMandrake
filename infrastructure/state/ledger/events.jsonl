@@ -757,3 +757,12 @@
 {"seat":"BUILD","event":"needs","id":"REFMATCH_THRESHOLDS_CALIBRATE_1","to":"owner","reason":"canon.yml > ORTHO_GLOBE_MAP_ACCEPTED_1 (owner, 2026-08-20, 977aa75) rules refmatch.py MOOT for v1 and says do not build it. This item's later quote is weaker and does not reverse it. One owner sentence settles it.","ts":"2026-08-21T17:13:37Z"}
 {"seat":"BUILD","event":"block","id":"REFMATCH_THRESHOLDS_CALIBRATE_1","reason":"Premise collides with ORTHO_GLOBE_MAP_ACCEPTED_1, which the item does not cite. refmatch.py NOT written. Keep the ruling -> drop this item; overturn it -> say so and BUILD writes it. Evidence: infrastructure/state/observed/build/REFMATCH_THRESHOLDS_CALIBRATE_1_offline.txt","ts":"2026-08-21T17:13:37Z"}
 {"seat":"BUILD","event":"file","id":"REFMATCH_CANCELLED_NOT_GATED_1","title":"One sentence: is refmatch.py cancelled for v1, or is it now wanted?","kind":"task","target":"v1","needs":"owner","for":"OWNER","ts":"2026-08-21T17:13:57Z"}
+{"seat":"BUILD","event":"claim","id":"INHABITED_DEBUG_ACTION_ABSENT_1","ts":"2026-08-21T17:14:55Z"}
+{"seat":"BUILD","event":"start","id":"INHABITED_DEBUG_ACTION_ABSENT_1","ts":"2026-08-21T17:14:55Z"}
+{"seat":"DECIDE","event":"claim","id":"CUT_DISARMED_VANILLA_KINDS_1","ts":"2026-08-21T17:16:33Z"}
+{"seat":"DECIDE","event":"start","id":"CUT_DISARMED_VANILLA_KINDS_1","ts":"2026-08-21T17:16:33Z"}
+{"seat":"CHECK","event":"seat","state":"ready","ts":"2026-08-21T17:16:56Z"}
+{"seat":"BUILD","event":"claim","id":"DROID_ENCLAVES_FIELD_HUMANS_1","ts":"2026-08-21T17:17:22Z"}
+{"seat":"DECIDE","event":"file","id":"MECH_WEAPONS_UNCUT_1","title":"Un-cut Gun_Needle and Gun_Scattergun so Pikemen and Sentry drones stop spawning bare-handed","kind":"task","target":"v1","needs":"offline","caused_by":"CUT_DISARMED_VANILLA_KINDS_1","for":"BUILD","ts":"2026-08-21T17:17:37Z"}
+{"seat":"DECIDE","event":"file","id":"FIRE_ARCHERS_GET_BOWS_1","title":"Append NeolithicRanged to the two fire-archer kinds; Flamebow stays cut","kind":"task","target":"v1","needs":"offline","caused_by":"CUT_DISARMED_VANILLA_KINDS_1","for":"BUILD","ts":"2026-08-21T17:17:37Z"}
+{"seat":"DECIDE","event":"file","id":"RAIN_DRY_THE_JUNGLE_1","title":"The rain ban is option (a): dry the 363 Feralisk jungle lowland tiles too","kind":"task","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-21T17:17:38Z"}

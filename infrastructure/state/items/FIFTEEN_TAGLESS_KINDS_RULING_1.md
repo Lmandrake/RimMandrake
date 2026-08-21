@@ -1,3 +1,14 @@
+🔴 **CORRECTED 2026-08-21 by `CUT_DISARMED_VANILLA_KINDS_1` — read that first.**
+This item's PREMISE is wrong: it says our cherrypick was not the cause, and the cut IS the
+cause for **11 of the 14** dead tags. `weapon_tag_audit.py`'s `emptied by the cut: 0` was a
+structural artefact, never a measurement — Cherry Picker NEUTERS a cut weapon in place
+rather than deleting it, so a tag whose every carrier was cut never enters a dump-built
+index at all. ✅ **The discriminator here — *does this kind ever spawn HERE* — survives
+untouched.** ⇒ Three base-game kinds were reopened and ruled back IN SCOPE:
+`Mech_Pikeman`, `Drone_Sentry`, `Tribal_Archer_Fire`/`Tribal_Hunter_Fire`.
+
+---
+
 ## spec
 `weapon_tag_audit.py`, run 2026-08-21 against a dump captured 08:20:20Z that MATCHES the
 live 578-mod list, reports **15 pawn kinds whose every weapon tag resolves to an empty
