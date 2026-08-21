@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — cast 09: the Homestead Defense League
 
 _Authored 2026-08-20. **Faith: the Covenant of Free Wells** — read from the shipped patch,

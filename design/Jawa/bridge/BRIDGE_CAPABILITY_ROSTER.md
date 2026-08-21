@@ -1,3 +1,4 @@
+<!-- status: live -->
 # The live-bridge capability roster — what is POSSIBLE, for the owner to cull
 
 **Queue item:** `dll-capability-roster-and-cull-a41c02`. Owner, 2026-08-18: *"Produce the

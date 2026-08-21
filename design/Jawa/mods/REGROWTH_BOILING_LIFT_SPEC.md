@@ -1,3 +1,4 @@
+<!-- status: aspirational -->
 # REGROWTH_BOILING_LIFT_SPEC.md — the boiling water and the boiling rain, kept; the mod, dropped
 
 DECIDE owns this. **Owner's ruling, 2026-08-15.** `RG_BoilingForest` is CUT

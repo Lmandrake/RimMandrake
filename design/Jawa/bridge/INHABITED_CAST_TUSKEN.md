@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — cast 10: the Deep Desert Tribes
 
 _Authored 2026-08-20. **Faith: `the Sun-Debt`**, read from the shipped def at

@@ -1,3 +1,4 @@
+<!-- status: live -->
 > "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581).
 
 # Outer Rim → Custom 1.6 Sub-Mod — CHERRY-PICK DEF LIST (Task A)

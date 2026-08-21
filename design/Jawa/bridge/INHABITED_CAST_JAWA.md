@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — cast 03: the Jawa Trade Moot
 
 _Authored 2026-08-20. **Faith: The Salvation — shared with the player.** Moral climate per

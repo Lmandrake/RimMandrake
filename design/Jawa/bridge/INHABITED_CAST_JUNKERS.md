@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — cast 05: the Junkers
 
 _Authored 2026-08-20. **Faith: `the Weight`** — read from the shipped def, not the roster

@@ -1,3 +1,4 @@
+<!-- status: live -->
 > "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581).
 
 # concept_defnames.md — verified defName / ID vocabulary (companion to concept.md)

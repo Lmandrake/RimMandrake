@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — cast 08: the Ascendant Helix
 
 _Authored 2026-08-20. **Faith: the Ascendant Genome.** From the shipped def, verbatim:

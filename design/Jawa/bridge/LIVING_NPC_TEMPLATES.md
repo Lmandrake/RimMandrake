@@ -1,3 +1,4 @@
+<!-- status: superseded-by: design/Jawa/bridge/INHABITED_DESIGN.md ; 2026-08-19 ; the architecture and class-list reading is replaced there; this file remains valid as the content catalogue of template places -->
 # Living NPCs on a map — template catalogue
 
 🔴 **DECIDE OWNS THIS DESIGN.** CHECK wrote it because CHECK holds the engine facts, but

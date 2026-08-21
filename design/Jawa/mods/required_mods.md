@@ -1,3 +1,4 @@
+<!-- status: live -->
 > ## ⚠️ Mod identity — read this first
 > This file carries *design rationale* only (7-question test, THE FORCE spec, terrain verdicts,
 > per-mod restrictions) — not mod identity (existence, Workshop ID, packageId, supported versions).

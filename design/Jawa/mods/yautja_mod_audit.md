@@ -1,3 +1,4 @@
+<!-- status: live -->
 # yautja_mod_audit.md — what `[AB] Xenotype: Yautja` actually brings
 
 DECIDE owns this. Written 2026-08-15 to answer the owner's question at the

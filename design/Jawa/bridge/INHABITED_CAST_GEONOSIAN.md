@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — cast 02: the Geonosian Foundry Hive
 
 _Authored 2026-08-20. Written against `INHABITED_CAST_HUTT.md` (format),

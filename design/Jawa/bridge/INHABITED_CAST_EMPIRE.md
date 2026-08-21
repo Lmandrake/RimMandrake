@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — cast 11: the Galactic Empire
 
 _Authored 2026-08-20. **Faith: The Rising Order**, read from the shipped patch

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — cast 07: the Wildsteam Clan
 
 _Authored 2026-08-20. **Faith: `the Green Oath`** — `Structure_Animist` · `NaturePrimacy` ·

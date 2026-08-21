@@ -1,3 +1,4 @@
+<!-- status: live -->
 # CHERRYPICK_AGENDA.md — everything we review together, and in what order
 
 DECIDE owns this. Chain step 1. It is the running agenda for the interactive

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — cast 04: the Free Droid Enclaves
 
 _Authored 2026-08-20. **0% biological, by owner ruling.** Chassis replaces race;

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — species texture, for authoring working-class characters
 
 _Research pass 2026-08-19. Source: Wookieepedia wikitext via the Fandom API. **(C)** current

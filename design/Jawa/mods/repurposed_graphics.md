@@ -1,3 +1,4 @@
+<!-- status: live -->
 # repurposed_graphics.md — turned off, but the ART may still be worth having
 
 DECIDE owns this. **Append-only.** Nothing here is scheduled and nothing here is

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # agent_supersession_audit.md — "does a mod already do this?"
 
 _A single source-level audit (Fetcher 2026-08-08) answering, for each enrichment agent in

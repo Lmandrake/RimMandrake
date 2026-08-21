@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — somebody lives here
 
 _An independent RimWorld mod. Designed 2026-08-19 by DECIDE with the owner, in Q/A._

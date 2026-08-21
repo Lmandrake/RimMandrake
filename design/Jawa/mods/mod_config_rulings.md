@@ -1,3 +1,4 @@
+<!-- status: live -->
 # mod_config_rulings.md — accept/reject rulings and configuration guidance
 
 _Hand-authored. **This is the reasoning half of the mod inventory.** It was

@@ -1,3 +1,4 @@
+<!-- status: live -->
 # `Inhabited` — cast 06: the Blackstar Company
 
 _Authored 2026-08-20. **Faith: `the Contract`** — read from `faction_religions_spec.md` §10,

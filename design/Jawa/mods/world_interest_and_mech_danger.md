@@ -1,3 +1,4 @@
+<!-- status: live -->
 > 🔴 **§1 (DEADLIER MECHANOIDS) IS LIVE. Read this before acting on the older
 > banner history in git — it said the opposite for about an hour on 2026-08-20 and was
 > wrong.**

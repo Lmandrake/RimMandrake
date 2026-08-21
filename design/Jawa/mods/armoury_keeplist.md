@@ -1,3 +1,4 @@
+<!-- status: live -->
 # armoury_keeplist.md — the proposed weapon roster
 
 _Drafted 2026-08-10 from the live post-patch dump (674 weapons across 60 mods).
