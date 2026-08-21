@@ -1,0 +1,64 @@
+RAIN_DRY_THE_LOWLANDS_1 — offline evidence, BUILD, 2026-08-21T16:02:49Z
+
+RULE APPLIED, verbatim from the spec:
+  rain_mm = 0 WHERE NOT ( (hilliness >= 4 AND biome NOT IN {Volcano, LavaField,
+                           AB_PyroclasticConflagration, Scarlands, AB_TarPits})
+                          OR biome == AB_FeraliskInfestedJungle )
+
+$ (apply) -> rows set to 0: 20113   [spec headline: 20,113 — EXACT MATCH]
+
+# VERIFY — column-wise diff against HEAD (the commit before this edit) + the four bullets
+row count HEAD=21872 now=21872  (unchanged, 21872)
+tile ids in identical order: yes
+columns differing from HEAD: {'rain_mm': 20113}   <- rain_mm ONLY
+
+bullet 1 — rows where clause true AND rain_mm > 0 : 0 (must be 0)
+bullet 2 — rows above 0 rain, by excluded biome:
+    AB_PyroclasticConflagration    0  of 31 tiles
+    AB_TarPits                     0  of 57 tiles
+    LavaField                      0  of 15 tiles
+    Scarlands                      0  of 90 tiles
+    Volcano                        0  of 23 tiles
+bullet 3 — AB_FeraliskInfestedJungle rows at 1668 mm: 271 (spec: 271)
+bullet 4 — row count 21872 and only rain_mm differs: shown above
+
+tiles keeping rain: 1759
+  AB_FeraliskInfestedJungle: 534
+  non-volcanic mountain    : 1225
+  by biome: [('AB_FeraliskInfestedJungle', 534), ('ExtremeDesert', 342), ('ZBiome_Badlands', 158), ('Desert', 153), ('AB_RockyCrags', 129), ('AB_PropaneLakes', 86), ('AridShrubland', 75), ('AB_MycoticJungle', 61), ('PoisonForest', 57), ('Wasteland', 49), ('ZBiome_Grasslands', 48), ('ZBiome_DesertOasis', 47), ('AB_MechanoidIntrusion', 10), ('AB_MiasmicMangrove', 4), ('AB_OcularForest', 3), ('BMT_FungalForest', 3)]
+
+planet-wide rain_mm: min 0 median 0 max 1668 ; 20113 tiles at 0
+across the 1759 wet tiles: min 18 median 69 max 1668
+
+### ⚠️ THREE NUMBERS IN THE ITEM'S "Measured effect" TABLE DID NOT REPRODUCE.
+# The four VERIFY bullets all pass exactly, and the headline 20,113 and the 271
+# Feralisk-at-1668 both match to the row. But:
+#   item says "tiles keeping rain 635 (359 river jungle, 276 non-volcanic mountain)"
+#            -> measured 1,759 (534 river jungle, 1,225 non-volcanic mountain)
+#   item says "16,845 of them were already <=49 mm"  -> measured 16,918
+#   item says "genuinely wet tiles dried (>=600 mm): 302"  -> measured 180
+# No alternative reading of the clause reproduces 635/359/276 — tested hilliness>=5
+# (17 tiles), river_flow>0 on Feralisk (211), and rain thresholds 49/90/100/300/600
+# on the keeper set (1016 / 836 / 819 / 645 / 524). The clause is unambiguous and
+# was applied verbatim; the table is stale prose, not a criterion.
+
+# PROPAGATED (nobody reads backwards):
+#  canon.yml planet.rain_mm  {min:18, median:19} -> {min:0, median:0}
+#  world/ASHKARR_WORLDMAP_meta.json start.rain_mm  18 -> 0  (The Setdown, tile 2476,
+#     hilliness 1, so it dries; the tile itself does NOT move)
+#  ASHKARR_WORLD_DEFINITION.md §"Awaiting the owner: RAIN_BAN_SCOPE_1" -> DONE, with
+#     the clause and the counts; and the Setdown ground row 18 mm -> 0 mm
+#  ashkarr_paint.py docstring — 🔴 banner: the committed CSV is AHEAD of the script,
+#     a plain re-run REGRESSES rain_mm (20,113 rows) and biome (3 AB_OcularForest tiles)
+
+$ python3 src/RimMandrake/Utils/check_canon.py | tail -2
+123 file(s) checked. 0 contradiction(s), 3 advisory.
+✅ no design doc contradicts canon.
+
+$ git diff --stat
+ .../Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md |    32 +-
+ infrastructure/state/canon.yml                     |    11 +-
+ src/RimMandrake/Utils/ashkarr_paint.py             |    11 +
+ world/ASHKARR_WORLDMAP_meta.json                   |     2 +-
+ world/ASHKARR_WORLDMAP_tiles.csv                   | 40226 +++++++++----------
+ 5 files changed, 20158 insertions(+), 20124 deletions(-)

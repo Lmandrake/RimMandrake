@@ -20,6 +20,14 @@ point - is the planet's real coordinate. 0 = noon, 90 = terminator, 180 = midnig
 What it fixes, all five visible in the first worldview.py render of the old painter:
 compass-circle seas · comb-toothed rivers · rectangular roads · concentric biome
 rings · inherited vanilla region names.
+
+🔴 THE COMMITTED world/ASHKARR_WORLDMAP_tiles.csv IS AHEAD OF THIS SCRIPT.
+Direct, one-off authoring edits have been made to the CSV that this file does NOT
+reproduce, so a plain re-run REGRESSES the map. Known as of 2026-08-21:
+  * `rain_mm` — 20,113 rows forced to 0 (RAIN_DRY_THE_LOWLANDS_1). Rain survives only
+    on hilliness>=4 non-volcanic ground and on AB_FeraliskInfestedJungle.
+  * `biome` — tiles 4299 / 9158 / 9159 painted AB_OcularForest (OCULAR_FOREST_SUMMITS_1).
+⇒ If you re-run this script, re-apply both before committing the CSV.
 """
 import os as _os
 import sys as _sys
@@ -82,6 +90,9 @@ RIVER_SCARCITY = 0.16
 #   THE SETDOWN, in the Fall Line Barrens, on the GRAY (downwind) flank -
 #   arc 56.9, bearing 358.8, ExtremeDesert, 276 m, 38.6 C, 18 mm of rain,
 #   and the nearest standing water is 26 degrees away.
+#   ⚠️ The 18 mm is what THIS SCRIPT computes. The committed tiles.csv now says 0:
+#   RAIN_DRY_THE_LOWLANDS_1 zeroed rain on every tile that is not non-volcanic
+#   mountain or river jungle. See the banner at the top of this file.
 #
 # Why here and nowhere else:
 #   - It is the OUTER EDGE of the habitable ring, so everything the clan needs

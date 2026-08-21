@@ -256,7 +256,8 @@ terrain!)"* The full ruling and its corrections are in
 (`WeatherDecider.cs:191`). ⇒ **at `rain_mm = 0` a rain weather's commonality is multiplied
 by exactly zero and it can never be selected**, on any biome, without patching anything.
 
-⚠️ **18 mm is not 0.** 80.4% of the map sits at ≤49 mm, which suppresses rain by ~98.6% —
+⚠️ **18 mm is not 0** — this is *why* the ban below had to zero the column rather than lower
+it. As measured on 2026-08-20, 80.4% of the map sat at ≤49 mm, which suppresses rain by ~98.6% —
 *rare*, not *banned*. And `WeatherDecider.cs:185` multiplies rain commonality by **15**
 during a large fire, so the residue surfaces exactly when the player is watching a fire.
 
@@ -265,14 +266,29 @@ plant growth, fertility or yield. `WorldGenStep_Rivers.cs:131` sums it into rive
 that is worldgen and our `river_flow` column is authored — **do not "fix" river flow after
 zeroing rainfall.**
 
-🔴 **The measured defect, 2026-08-21.** 596 tiles carry exactly **1668 mm**. Only 271 are
-`AB_FeraliskInfestedJungle`; the other 325 are badlands, extreme desert, oases, grasslands,
-**31 tiles of `AB_PyroclasticConflagration` and 23 of `Volcano`** — and **235 of them are in
-The Dune Sea.** Of the 937 tiles at ≥600 mm, **433 are not mountainous at all** (median
+🔴 **The measured defect, 2026-08-21.** 596 tiles carried exactly **1668 mm**. Only 271 were
+`AB_FeraliskInfestedJungle`; the other 325 were badlands, extreme desert, oases, grasslands,
+**31 tiles of `AB_PyroclasticConflagration` and 23 of `Volcano`** — and **235 of them were in
+The Dune Sea.** Of the 937 tiles at ≥600 mm, **433 were not mountainous at all** (median
 elevation 696 m).
 
-⇒ Awaiting the owner: `RAIN_BAN_SCOPE_1`. Drying them repaints nothing visible — `rain_mm`
-does not render on the world map — but it is an edit to an accepted map, so it is his call.
+✅ **DONE, 2026-08-21 — `RAIN_DRY_THE_LOWLANDS_1`.** `rain_mm` was set to **0** on
+**20,113** rows of `world/ASHKARR_WORLDMAP_tiles.csv`, everywhere except:
+
+```
+KEEP rain WHERE ( hilliness >= 4 AND biome NOT IN {Volcano, LavaField,
+                  AB_PyroclasticConflagration, Scarlands, AB_TarPits} )
+               OR biome == AB_FeraliskInfestedJungle
+```
+
+**1,759 tiles keep rain** — 534 `AB_FeraliskInfestedJungle` (271 of them still at 1668 mm)
+and 1,225 non-volcanic mountain across 15 other biomes. **Zero** tiles of `Volcano`,
+`LavaField`, `AB_PyroclasticConflagration`, `Scarlands` or `AB_TarPits` carry any rain.
+Only `rain_mm` changed; all 21,872 rows and every other column are byte-identical.
+⚠️ **The 18 mm floor is gone**: planet-wide `rain_mm` is now min **0**, median **0**,
+max 1668; across the 1,759 wet tiles it is min 18, median 69, max 1668.
+⚠️ **This also removes SNOW**, which is wanted — `SnowGentle`/`SnowHard` carry the same
+curve shape and `Desert`/`AridShrubland` listed them at commonality 4.
 
 ---
 
@@ -311,7 +327,7 @@ It is now decided, and it is in the recipe as `HOME_LATLON` / `HOME_NAME`.
 | **tile** | **2476** — lat −1.028, lon +56.867 |
 | **arc / bearing** | **56.9 / 358.8** — the outer edge of the habitable ring, on the **GRAY (downwind) flank** |
 | **region** | The Fall Line Barrens |
-| **ground** | `ExtremeDesert`, 276 m, **38.6 °C**, **18 mm** of rain, flat, with the tail of the Fall Line breaking to 583 m within ~2 tiles |
+| **ground** | `ExtremeDesert`, 276 m, **38.6 °C**, **0 mm** of rain (~~18 mm~~, zeroed 2026-08-21 by `RAIN_DRY_THE_LOWLANDS_1`; the tile is `hilliness` 1), flat, with the tail of the Fall Line breaking to 583 m within ~2 tiles |
 | **water** | **none.** Nearest river tile 26°, nearest sea further. The Scald is over the horizon and over a mountain range |
 
 Why here and nowhere else — each of these is the reason, not a nice-to-have:
