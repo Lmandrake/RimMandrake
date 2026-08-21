@@ -3288,7 +3288,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 3286,-13.0109,-55.3788,56.39,195.68,1025,34.8,103,Desert,0,0,The Dew Horn,2,0.0
 3287,-12.1896,-52.8573,53.83,195.16,986,36.7,1668,ZBiome_DesertOasis,0,0,The Scald Spine,5,0.2
 3288,-9.7625,-52.3521,52.99,192.26,797,38.3,1668,AB_FeraliskInfestedJungle,0,25,The Scald Spine,3,0.45
-3289,-8.2651,-54.2477,54.68,190.15,954,36.3,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,5,0.45
+3289,-8.2651,-54.2477,54.68,190.15,954,36.3,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
 3290,8.2651,-54.2477,54.68,169.85,204,40.4,1630,AB_FeraliskInfestedJungle,0,19786,The Dew Belt,1,0.45
 3291,9.7625,-52.3521,52.99,167.74,118,42.0,1668,AB_FeraliskInfestedJungle,0,0,The Dew Belt,2,0.45
 3292,9.0457,-56.6479,57.12,169.21,250,38.5,533,AB_FeraliskInfestedJungle,0,0,The Dew Belt,2,0.45
@@ -7791,7 +7791,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 7789,-18.168,-65.2566,66.57,199.87,1062,26.9,660,Desert,0,0,The Dew Horn,4,0.0
 7790,10.6904,-40.4488,41.6,163.78,175,49.3,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
 7791,12.029,-39.8189,41.3,161.59,892,45.6,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
-7792,10.6293,-41.9353,43.02,164.31,909,44.3,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,5,0.45
+7792,10.6293,-41.9353,43.02,164.31,909,44.3,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
 7793,11.8915,-42.8174,44.13,162.79,767,44.4,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
 7794,13.2296,-42.2141,43.86,160.72,584,45.5,1668,AB_FeraliskInfestedJungle,0,3838,The Scald Spine,4,0.45
 7795,13.3061,-40.7014,42.46,160.07,679,46.0,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
@@ -15206,7 +15206,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 15204,-13.3818,-36.268,38.34,201.91,1411,44.7,90,Lake,1,0,The Scald,1,0.0
 15205,-12.0595,-35.4354,37.18,200.23,1411,45.5,90,Lake,1,0,The Scald,1,0.0
 15206,-15.8572,-41.083,43.52,203.38,1170,42.5,40,Volcano,0,10912,The Scald Spine,5,0.0
-15207,-14.6119,-40.1346,42.29,202.02,1018,44.2,40,Volcano,0,0,The Scald Spine,5,0.0
+15207,-14.6119,-40.1346,42.29,202.02,1018,44.2,40,Volcano,0,0,The Scald Spine,4,0.0
 15208,-14.6572,-38.6331,40.91,202.73,483,48.1,40,Volcano,0,0,The Scald Spine,4,0.0
 15209,-15.9773,-38.0274,40.77,204.93,1131,44.6,40,Volcano,0,82,The Scald Spine,5,0.0
 15210,-17.1775,-40.5055,43.41,205.45,1448,41.1,40,Volcano,0,0,The Scald Spine,5,0.0
