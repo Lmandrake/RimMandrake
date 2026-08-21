@@ -49,8 +49,12 @@ merely a UI field:
    against desert terrain. Two factions sharing an icon path are, in practice, one faction
    on the map.
 
-**Canvas:** 128×128 PNG with alpha is the working convention on this stack — measured from
-`UI/FactionIcons/JunkersOutpost.png`, the one non-vanilla icon we already use.
+**Canvas:** ⚠️ **there is no single convention — measured 2026-08-21 by extracting the real
+textures.** Vanilla world icons are **64×64 or 128×128**, mixed within Core itself:
+`Empire`, `Town`, `Insects`, `PirateOutpost`, `Mechanoids`, `Salvagers`, `TradersGuild` and
+`HoraxCult` are 64×64; `Village`, `VillageSavage`, `VillageRough` and `TownRough` are
+128×128. Both of our on-loan mod icons — `JunkersOutpost`, `RogueDroids` — are 128×128.
+⇒ **author at 128×128 with alpha**; it is the larger of the two and downscales cleanly.
 
 ⇒ ⛔ **This is why §3 forbids adding `settlementTexturePath` by hand.** The field is
 effectively mandatory — every concrete vanilla faction sets it, to one of exactly two
@@ -154,11 +158,17 @@ grep -rn factionIconPath src/Jawa/Jawa_Patches/Defs/FactionDefs/
 #    -> resolve OutlanderCivil/TribeCivil/Pirate through their abstracts before comparing
 ```
 
-🔴 **3. Then look at them.** Build a contact sheet of the thirteen icons **at world-map
-scale, each tinted by its own `colorSpectrum`, against the desert terrain colour** —
-`src/RimMandrake/Utils/extract_bundle_textures.py` pulls the vanilla ones out of
-`resources.assets`. Two things only the picture can answer: whether thirteen glyphs are
-still distinguishable at that size, and whether Wildsteam's green (§2.3) reads.
+✅ **3. Then look at them — BUILT 2026-08-21, at the owner's instruction.**
+**https://claude.ai/code/artifact/d737d0c3-7393-4a59-a2f4-c502780227d6**
+All thirteen real textures, extracted from `resources.assets` and the DLC bundles with
+UnityPy, each tinted by its own `colorSpectrum` against desert ground, shown at map scale
+and at inspection size, with the three collisions paired directly.
+⚠️ **UnityPy and Pillow live on the WINDOWS `python.exe`, not WSL's `python3`** — the WSL
+interpreter has neither. That is the only thing that makes this awkward, and it is a
+one-line difference.
+🔑 **Two things only the picture can answer** and they are why this is a gate: whether
+thirteen glyphs are still distinguishable at map size, and whether Wildsteam's green (§2.3)
+reads. The sheet deliberately does **not** propose a change for Wildsteam — it asks.
 
 **A number that says the map is legible while the sheet shows thirteen grey blobs is the
 number being wrong.**
