@@ -418,3 +418,6 @@
 {"seat":"CHECK","event":"seat","state":"ready","note":"Rehearsal fully prepped, waiting on the owner to launch. WORLDPAINT_REHEARSAL.md is the run sheet: preconditions all green, 25 ride-alongs listed, def dump ARMED, old Player.log preserved, both assemblies deployed and byte-verified.","ts":"2026-08-21T07:50:44Z"}
 {"seat":"DECIDE","event":"start","id":"DEEPWATER_CAST_ROSTER_1","ts":"2026-08-21T07:50:48Z"}
 {"seat":"REP","event":"claim","id":"COMMIT_GUARD_BLOCKS_SPECS_1","ts":"2026-08-21T07:50:49Z"}
+{"seat":"REP","event":"start","id":"COMMIT_GUARD_BLOCKS_SPECS_1","ts":"2026-08-21T07:50:50Z"}
+{"seat":"REP","event":"verify","id":"COMMIT_GUARD_BLOCKS_SPECS_1","result":"pass","config":"offline-selftest","evidence":".claude/hooks/selftest_queue_lint.py — 'ALLOW the filer finishing the spec of an UNCLAIMED item it filed' + 'DENY the filer once the owning seat has CLAIMED it', 36/36","sha":"1f3b054","ts":"2026-08-21T07:50:50Z"}
+{"seat":"REP","event":"close","id":"COMMIT_GUARD_BLOCKS_SPECS_1","sha":"1f3b054","ts":"2026-08-21T07:51:01Z"}

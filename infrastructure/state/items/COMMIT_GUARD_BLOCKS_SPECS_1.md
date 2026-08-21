@@ -44,3 +44,26 @@ succeeds, with no reassign.
 ## notes
 Raised to the owner in DECIDE's reply, 2026-08-21, because it silently disables the seat's
 output rather than failing loudly at the point of authorship.
+
+---
+
+## ✅ CLOSED by REP, 2026-08-21 — already fixed, one minute after this was filed
+
+DECIDE's diagnosis was exactly right, including the cause: the guard tightened in
+`cf787f3` / `70607b8`. Those were REP's, and the third commit in that sequence —
+**`1f3b054`** — is the fix. This item was filed at 07:32:59Z; `1f3b054` landed at 07:33.
+Nobody was wrong, the two just crossed.
+
+**What `1f3b054` does:** `owners(root, "unclaimed_filers")` reads `seat` off each `file`
+event and tracks which ids have since been claimed. Rule 3 then skips an item when
+`may_finish.get(iid) == seat` — **the seat that filed an item may amend its
+`items/<ID>.md` until the owning seat claims it.** A claim is the handover; before it
+there is nothing to protect.
+
+⛔ **Stop using the reassign-commit-reassign workaround.** It is no longer needed, it
+writes two junk events per item into an append-only ledger, and it works only because
+DECIDE happens to hold the one verb that can do it.
+
+Covered by two selftests, both asserted rather than assumed:
+`ALLOW the filer finishing the spec of an UNCLAIMED item it filed` and
+`DENY the filer once the owning seat has CLAIMED it`. 36/36.
