@@ -275,6 +275,6 @@ inside other defs' fields.
   painted on it** — `AB_GelatinousSuperorganism` (96 tiles) and `ZBiome_Grasslands`
   (233 tiles). Picking either deletes painted tiles from the shipped save. See the
   flag at `cherrypick_inbox.md` §E and
-  `canon.yml > needs_ruling.GELATINOUS_CUT_REVERSAL_1`.
+  `canon.yml > cut_vs_painted` — **RULED 2026-08-20: kept as painted, cut reversed.**
 - Whether the deadlife delivery items and the third-party shambler content in
   §1a are in scope.

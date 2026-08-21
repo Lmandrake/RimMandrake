@@ -460,6 +460,11 @@ biomes:
 # ===========================================================================
 lake_biome:
   status: keep
+  ruled_by: owner
+  ruled_on: 2026-08-20
+  ruling: >
+    ✅ RULED, not provisional. The owner confirmed keep on the measurement below.
+    `Lake` is not a stray biome and cutting it is not available.
   tiles: 312
   pct: 1.43
   is: "The Scald — a named sea, not a stray"
@@ -567,13 +572,6 @@ needs_ruling:
       is the file whose banner points readers at superseded measurements, which weakens it.
     at_stake: "~700 tiles, and whether the arc-34–40 band is habitable or margin."
 
-  LAKE_BIOME_CUT_OR_KEEP_1:
-    question: "Confirm `Lake` stays."
-    canon_provisional: keep
-    why_provisional: >
-      Measurement, not preference: The Scald — one of the three ruled seas — is `Lake`
-      for all 312 of its tiles. Cutting the def deletes a named sea from the frozen map.
-    at_stake: "1.43% of the planet and one of exactly three seas."
 
   PIRATE_DEFNAME_DRIFT_1:
     question: "Is the pirate faction `Pirate` or `AM_EnemyPirate`?"
@@ -586,28 +584,27 @@ needs_ruling:
       installed mod defines. Not cosmetic. ⚠️ BUILD cannot settle this offline — it
       needs the save read against the live def set, which is CHECK's.
 
-  GELATINOUS_CUT_REVERSAL_1:
-    question: "`AB_GelatinousSuperorganism` was cut 2026-08-04 and painted 2026-08-18."
-    evidence: "96 tiles, 0.44% of the planet, on the map right now."
-    at_stake: "Either the cut is reversed or 96 tiles need repainting. The palette was never told."
 
   SAVANNA_PREMISE_RESOLVE_1:
     question: "A 701-line design doc's subject biome is on the cut list."
     at_stake: "Whether the doc is dead or the cut is."
 
-  ZBIOME_GRASSLANDS_CUT_REVERSAL_1:
-    question: "`ZBiome_Grasslands` was marked REMOVE on 2026-08-14 and is painted on 233 tiles."
-    evidence: >
-      REMOVE in design/Jawa/worldbuilding/cherrypick_inbox.md §E (2026-08-14); KEPT as the
-      Pyrelands-carrying "stormy savanna" in biome_review_comments.md §1; and painted on
-      233 tiles (1.07%) of the frozen map, measured 2026-08-20.
-    at_stake: >
-      233 tiles, and the Pyrelands region's character. ⚠️ Identical in shape to
-      GELATINOUS_CUT_REVERSAL_1 and found the same day — which suggests the cut list and
-      the painter have never been reconciled as a pair, and that a third case is likely.
-      Someone should diff the whole REMOVE list against the painted biome census rather
-      than waiting for the next one to surface by hand.
 
+  # ⛔ RESOLVED 2026-08-20 and moved out of needs_ruling, kept here as the record:
+  #   LAKE_BIOME_CUT_OR_KEEP_1        -> keep. See `lake_biome` above.
+  #   GELATINOUS_CUT_REVERSAL_1       -> keep as painted; the cut is REVERSED.
+  #   ZBIOME_GRASSLANDS_CUT_REVERSAL_1 -> keep as painted; the REMOVE is REVERSED.
+  #   DOSSIER_WITHOUT_CAST_ROSTER_1   -> author the roster. Filed as work, not a question.
+  _resolved_2026_08_20: true
+
+
+# ===========================================================================
+# ruled — questions that WERE open and are now answered. Kept, not deleted:
+# a reader who finds the old wording in a design doc needs to see which way the
+# correction runs, and an answer with no record of the question it settled is
+# just an assertion.
+# ===========================================================================
+ruled:
   DOSSIER_WITHOUT_CAST_ROSTER_1:
     question: >
       The Deepwater Compact has a dossier and a faith and NO cast roster. Deliberate,
@@ -625,3 +622,39 @@ needs_ruling:
       ⚠️ It is not a marginal faction: its faith is `the Balance` — "the seas, measured
       and rationed… people for whom excess is the sin" — which is the water politics of
       a desert planet, and the one every other faction's water doctrine reacts to.
+    ruled_by: owner
+    ruled_on: 2026-08-20
+    ruling: >
+      ✅ AUTHOR THE MISSING ROSTER, to parity with the other eleven. This is no longer a
+      question and is filed as work for DECIDE — DEEPWATER_CAST_ROSTER_1.
+
+# ===========================================================================
+# THE CUT LIST vs THE PAINTED MAP — the diff, run once, and it is CLOSED
+# ---------------------------------------------------------------------------
+# Two biomes were cut on paper and painted onto the map anyway, and both surfaced
+# by hand on the same day. Rather than wait for a third, the WHOLE cut list was
+# diffed against the painted biome census on 2026-08-20.
+#
+# ✅ THERE IS NO THIRD CASE. Of the 24 biomes painted on Ash'karr, exactly two were
+# ever cut-flagged — `AB_GelatinousSuperorganism` (96 tiles) and `ZBiome_Grasslands`
+# (233). The only other hits are the "`Lake` cut, `Ocean` kept" line, which is about
+# Lake and names Ocean only as the survivor.
+#
+# 🔑 THE OWNER RULED THE PAINTER WINS, 2026-08-20: both cuts are REVERSED and the
+# tiles stay as painted. So the palette needs telling, once, for both — and the
+# reconciliation itself is now done rather than pending.
+# ⛔ Do not re-open either as "the cut list says otherwise". The cut list is the loser.
+# ===========================================================================
+cut_vs_painted:
+  reconciled_on: 2026-08-20
+  method: >
+    Every biome painted on at least one tile of world/ASHKARR_WORLDMAP_tiles.csv, matched
+    against every REMOVE/CUT/⛔ line in cherrypick_inbox.md, biome_review_comments.md,
+    cherrypick_resolved.md and cherry_picker_killlist.md.
+  third_case_exists: false
+  reversed:
+    - {biome: AB_GelatinousSuperorganism, tiles: 96, pct: 0.44,
+       was: "cut 2026-08-04", now: "KEPT as painted, owner 2026-08-20"}
+    - {biome: ZBiome_Grasslands, tiles: 233, pct: 1.07,
+       was: "REMOVE 2026-08-14", now: "KEPT as painted, owner 2026-08-20",
+       note: "carries the Pyrelands' stormy-savanna character; a repaint would have changed a named region"}

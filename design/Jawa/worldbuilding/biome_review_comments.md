@@ -43,7 +43,11 @@ looked like a mod with nothing left in it.
 > Three states, one biome. 🔑 **This is the owner's call and neither DECIDE nor
 > BUILD may settle it:** either the 2026-08-04 cut is reversed, or 96 painted
 > tiles need repainting. Filed as
-> `infrastructure/state/canon.yml > needs_ruling.GELATINOUS_CUT_REVERSAL_1`.
+> `infrastructure/state/canon.yml > cut_vs_painted`.
+>
+> ✅ **RULED BY THE OWNER, 2026-08-20: THE PAINTER WINS.** Both `AB_GelatinousSuperorganism` (96 tiles) and `ZBiome_Grasslands` (233) stay **exactly as painted**, and both cuts are **REVERSED**. ⛔ Do not re-open either as "the cut list says otherwise" — the cut list is the loser here. `canon.yml > cut_vs_painted`.
+>
+> 🔑 **And the reconciliation is DONE, not pending:** the whole cut list was diffed against the painted biome census on 2026-08-20 and **there is no third case.** Of the 24 biomes on the map, exactly these two were ever cut-flagged.
 > Until it is ruled, do not "correct" either file to match the other.
 
 ---
@@ -105,7 +109,7 @@ sea from the frozen map.** The world is hand-authored and shipped as a savegame;
 there is no worldgen behind it to repaint The Scald as something else.
 
 Canon: `infrastructure/state/canon.yml > lake_biome` (`status: keep`), with owner
-confirmation tracked at `needs_ruling.LAKE_BIOME_CUT_OR_KEEP_1`.
+**confirmed by the owner 2026-08-20** — `canon.yml > lake_biome`, ruled, not provisional.
 
 ⚠️ **The original reasoning was not wrong, only mis-aimed.** R-H1's *"small seas
 always on the edge of failing"* does read as lakes rather than oceans — and that

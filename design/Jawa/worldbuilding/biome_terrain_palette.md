@@ -105,7 +105,7 @@ temp/rainfall whitelisting — so you tune their frequency through **Choose Biom
 | **Rocky Crags / Forsaken Crags** | `AB_RockyCrags` (label "forsaken crags") | forsaken crags | arid alien badland | movementDifficulty 1, forageability 0.5; forsaken sand/rock, rose-quartz stone |
 | **Gallatross Graveyard** | `AB_GallatrossGraveyard` | gallatross graveyard | arid exotic | forageability 0.5; giant-creature bone terrain |
 | **Ocular Forest** | `AB_OcularForest` | ocular forest | alien, low value | forageability 0.1 (near-barren for forage); eye-creature biome |
-| **Gelatinous Superorganism** | `AB_GelatinousSuperorganism` | gelatinous superorganism | ⛔ **CONTESTED — see the note below this table.** Was: 🚫 **CUT from roster (user 2026-08-04)** — wrong genre; salvage its mineable nutrient blocks → re-home as *strange growths inside caverns* (Biomes! Caverns / CaveBiome) | movementDifficulty 4; slime terrain (`AB_Slime`, `AB_RichSlime`) |
+| **Gelatinous Superorganism** | `AB_GelatinousSuperorganism` | gelatinous superorganism | ✅ **KEPT AS PAINTED — owner ruled 2026-08-20, the cut is REVERSED.** ~~🚫 CUT from roster (user 2026-08-04)~~ — wrong genre; salvage its mineable nutrient blocks → re-home as *strange growths inside caverns* (Biomes! Caverns / CaveBiome) | movementDifficulty 4; slime terrain (`AB_Slime`, `AB_RichSlime`) |
 | **Idyllic Meadows** | `AB_IdyllicMeadows` | idyllic meadows | 🚫 **CUT from roster (user 2026-08-04)** — resource-rich + safe breaks the scarcity thesis; do not place | forageability 1.2 (resource-rich); off the scarcity theme |
 | **Mechanoid Intrusion** | `AB_MechanoidIntrusion` | mechanoid intrusion | ⭐ ties to android/mech threat; IN as ONE hand-seeded "Shipyards" cluster (§2D) | `canAutoChoose=false` (seed only); forageability 0; mechanoid substructure terrain |
 
@@ -117,7 +117,11 @@ temp/rainfall whitelisting — so you tune their frequency through **Choose Biom
 > (`infrastructure/state/canon.yml > planet.biome_tile_counts`). 🔑 Either the cut
 > is reversed or 96 tiles need repainting. ⛔ **BUILD and DECIDE may not settle
 > this; do not edit either file to agree with the other.** Filed as
-> `infrastructure/state/canon.yml > needs_ruling.GELATINOUS_CUT_REVERSAL_1`.
+> `infrastructure/state/canon.yml > cut_vs_painted`.
+>
+> ✅ **RULED BY THE OWNER, 2026-08-20: THE PAINTER WINS.** Both `AB_GelatinousSuperorganism` (96 tiles) and `ZBiome_Grasslands` (233) stay **exactly as painted**, and both cuts are **REVERSED**. ⛔ Do not re-open either as "the cut list says otherwise" — the cut list is the loser here. `canon.yml > cut_vs_painted`.
+>
+> 🔑 **And the reconciliation is DONE, not pending:** the whole cut list was diffed against the painted biome census on 2026-08-20 and **there is no third case.** Of the 24 biomes on the map, exactly these two were ever cut-flagged.
 
 ### A3. Advanced Biomes (Continued) — WS 3541022508 · emipa606/AdvancedBiomes ✅ (5 biomes verified from 1.6 defs)
 

@@ -169,7 +169,9 @@ several removals are duplicates of each other under different names.**
 > shipped save.
 >
 > - **`AB_GelatinousSuperorganism` is contested three ways** and is filed for the
->   owner as `canon.yml > needs_ruling.GELATINOUS_CUT_REVERSAL_1`: cut in
+>   owner, and **RULED 2026-08-20: KEEP AS PAINTED, the cut is REVERSED**
+>   (`canon.yml > cut_vs_painted`). Same ruling covers `ZBiome_Grasslands`.
+>   Originally: cut in
 >   `biome_terrain_palette.md` (2026-08-04), REMOVE here (2026-08-14), listed as a
 >   **survivor** in `biome_review_comments.md` (2026-08-15), then **painted**
 >   (2026-08-18).
