@@ -171,7 +171,62 @@ def derive_mutators(rows, idx, keep):
             out.setdefault(t, []).append("Oasis")
             oasis += 1
 
-    return out, {"Coast": coast, "Mountain": mountain, "Oasis": oasis}
+    counts = {"Coast": coast, "Mountain": mountain, "Oasis": oasis}
+
+    # ---- the second wave, added 2026-08-21 on the owner's call ----------------
+    # Same discipline: every rule reads a column already authored, so nothing here is a
+    # placement opinion. ⛔ `Marshy`, `Wetland` and `WetClimate` are NOT here even though
+    # the swampiness column would support them - the census ruled them out for a planet
+    # with no seasons and no rain, and inventory beats a clever derivation.
+
+    def num(r, k):
+        try:
+            return float(r[k] or 0)
+        except (TypeError, ValueError):
+            return 0.0
+
+    elev = [num(r, "elev_m") for r in rows]
+
+    def add(name, pred):
+        n = 0
+        for t, r in enumerate(rows):
+            if pred(t, r):
+                out.setdefault(t, []).append(name)
+                n += 1
+        counts[name] = n
+
+    # The Dune Sea: the flat, rainless heart of the dayside. The census flagged a
+    # duplication risk against the REGION named "The Dune Sea" — but a region label is a
+    # name on the globe and a mutator is terrain on the local map. Different layers.
+    add("Dunes", lambda t, r: r["biome"] == "ExtremeDesert"
+        and int(r["hilliness"] or 0) == 1 and num(r, "rain_mm") < 60)
+
+    # The arid belt either side of it — sand in patches rather than an ocean of it.
+    add("Sandy", lambda t, r: r["biome"] in ("Desert", "AridShrubland")
+        and int(r["hilliness"] or 0) <= 2)
+
+    # The nightside floor is rock, and rock at relief has caves in it.
+    add("Caves", lambda t, r: r["biome"] == "AB_RockyCrags" and int(r["hilliness"] or 0) >= 3)
+
+    # A tile the river actually runs through. ⚠️ The link layer puts the river on the
+    # GLOBE; this is what makes it show up on the local map when a colony lands there.
+    add("River", lambda t, r: num(r, "river_flow") > 0)
+
+    # A mouth: a river tile touching the sea. There are exactly two on this planet.
+    add("RiverDelta", lambda t, r: num(r, "river_flow") > 0 and is_water[idx[t][keep[t]]].any())
+
+    # Relief steep enough to read as a face rather than a slope.
+    add("Cliffs", lambda t, r: (not is_water[t]) and len(idx[t][keep[t]])
+        and max(abs(elev[int(n)] - elev[t]) for n in idx[t][keep[t]]) > 700.0)
+
+    # The one volcanic province, and the ground that borders it.
+    add("LavaFlow", lambda t, r: r["biome"] == "AB_PyroclasticConflagration")
+    volcanic = {t for t, r in enumerate(rows)
+                if r["biome"] in ("Volcano", "LavaField", "AB_PyroclasticConflagration")}
+    add("HotSprings", lambda t, r: t not in volcanic and (not is_water[t])
+        and any(int(n) in volcanic for n in idx[t][keep[t]]))
+
+    return out, counts
 
 
 # ---------------------------------------------------------------------------

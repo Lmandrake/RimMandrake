@@ -22059,7 +22059,7 @@
 <g font-family="DejaVu Sans, sans-serif" fill="#e8e8e8">
 <rect x="0" y="1200" width="2400" height="520" fill="#101218"/>
 <text x="14" y="1226" font-size="23" font-weight="bold">Ash'karr — The Sundered — biome</text>
-<text x="14" y="1248" font-size="14" opacity="0.85">21872 tiles · 72 settlements · 16 landmarks · 1829 mutated tiles · 238 river edges · 837 road edges · 8.1% water · substellar (0,0), terminator = the solid white circle</text>
+<text x="14" y="1248" font-size="14" opacity="0.85">21872 tiles · 72 settlements · 16 landmarks · 8569 mutated tiles · 238 river edges · 837 road edges · 8.1% water · substellar (0,0), terminator = the solid white circle</text>
 <rect x="14" y="1272" width="20" height="20" fill="#3a3a52" stroke="#000"/>
 <text x="40" y="1287" font-size="13">AB_RockyCrags  <tspan opacity="0.6">20.3%</tspan></text>
 <rect x="14" y="1299" width="20" height="20" fill="#f4e6bd" stroke="#000"/>

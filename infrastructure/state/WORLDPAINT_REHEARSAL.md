@@ -63,7 +63,7 @@ so the owner cannot put them back by hand at the screen. It must be settled in X
 | the preset survives launch | LocalLow copy 3895 B, mtime 2026-08-20 00:59, **identical to the repo copy**, and a launch happened after it (`Player.log` 2026-08-20 17:54) and left it alone. Only the workshop copy is regenerated as a 683-byte stub | ✅ the "wiped at every launch" item is closed by measurement |
 | every biome defName resolves | **24 of 24** in an active mod: 5 Core · 2 Odyssey · 9 Alpha Biomes · 3 Advanced Biomes (Continued) · 3 More Vanilla Biomes · 2 Biomes! Caverns. None on Cherry Picker's 28-BiomeDef removal list | ✅ |
 | the 8 Jawa factions default to ≥1 | `requiredCountAtGameStart 1` on all eight | ✅ no counter to touch |
-| **every other defName the run writes** | 6 link defs (`Creek` `River` `LargeRiver` `HugeRiver` `DirtRoad` `StoneRoad`) all in Core · `WB_MapLabelFeature` is a real `FeatureDef` in `ferny.worldbuilder`, which is active · all 9 landmark and 3 mutator defNames are on the live census roster | ✅ **the whole silent-failure class is closed offline** |
+| **every other defName the run writes** | 6 link defs (`Creek` `River` `LargeRiver` `HugeRiver` `DirtRoad` `StoneRoad`) all in Core · `WB_MapLabelFeature` is a real `FeatureDef` in `ferny.worldbuilder`, which is active · all 9 landmark and all 11 mutator defNames are on the live census roster | ✅ **the whole silent-failure class is closed offline** |
 
 ⚠️ **Single point of failure worth naming:** `Mlie.AdvancedBiomes` alone defines
 `Wasteland`, `PoisonForest` and `Volcano` — **2,348 tiles**. `Volcano` is not a vanilla
@@ -93,7 +93,7 @@ three stages to place them. ⛔ It is not a generator: no seed, no knobs, no way
 second planet — the rules are hand-authored decisions about Ash'karr, written as code so
 they are reproducible instead of re-typed.
 
-    world/ASHKARR_WORLDMAP_mutators.csv    1,829 tiles   Mountain 1459 · Coast 369 · Oasis 188
+    world/ASHKARR_WORLDMAP_mutators.csv    8,569 tiles, 9,227 placements, 11 rules
     world/ASHKARR_WORLDMAP_landmarks.csv      16 tiles   the cap from the census
 
 **Mutators are DERIVED** — each rule restates a column the map already carries, so a mutator
@@ -101,9 +101,21 @@ is never an opinion:
 
 | rule | from | n |
 |---|---|---|
-| `Coast` | a land tile with ≥1 water neighbour, over the real adjacency graph | 369 |
+| `Sandy` | `Desert`/`AridShrubland` at hilliness ≤2 — the arid belt | 3,663 |
+| `Caves` | `AB_RockyCrags` at hilliness ≥3 — the nightside floor, where rock has relief | 1,540 |
+| `Dunes` | `ExtremeDesert`, flat, rain <60 mm — the rainless heart of the dayside | 1,535 |
 | `Mountain` | hilliness at the top two ordinals (4, 5) | 1,459 |
+| `Coast` | a land tile with ≥1 water neighbour, over the real adjacency graph | 369 |
+| `River` | `river_flow` >0 — what puts the river on the LOCAL map, not just the globe | 254 |
 | `Oasis` | `ZBiome_DesertOasis` inside the def's own 20–60 °C gate (39 of 227 fall outside) | 188 |
+| `Cliffs` | a neighbour more than 700 m above or below | 121 |
+| `HotSprings` | land bordering the volcanic province | 65 |
+| `LavaFlow` | `AB_PyroclasticConflagration` | 31 |
+| `RiverDelta` | a river tile touching the sea — there are exactly two mouths | 2 |
+
+⛔ **`Marshy`, `Wetland` and `WetClimate` are deliberately absent** even though the
+swampiness column would support a derivation. The census ruled them out for a planet with
+no seasons and no rain, and the inventory beats a clever rule.
 
 ⭐ **This is the fix for the defect the owner named on 2026-08-17.** The world carried 5,233
 `Coast`, of which 4,831 were on non-water tiles and 2,116 were deep inland — placed for the
@@ -173,7 +185,7 @@ A prediction invented after reading the log is a story that fits.
 | 6 | stage 3 offenders after | **0** |
 | 6b | stage 3b leftover landmarks removed | **49** — the census counted exactly 49 in each of two savegames. A different number means this world generated differently and the figure is worth keeping |
 | 7 | stage 4 landmarks `added` | **16 of 16**, across 8 defs. `validity[]` may report tiles the engine calls invalid — record them; it places them anyway |
-| 7b | stage 4b mutators | **Coast 369 · Mountain 1459 · Oasis 188**, 2,016 placements over 1,829 tiles |
+| 7b | stage 4b mutators | **9,227 placements over 8,569 tiles**, 11 rules: Sandy 3663 · Caves 1540 · Dunes 1535 · Mountain 1459 · Coast 369 · River 254 · Oasis 188 · Cliffs 121 · HotSprings 65 · LavaFlow 31 · RiverDelta 2 |
 | 8 | ⭐ Oasis read-back | **188 of 188** sampled carry it. **0 means `AddMutator` honours `biomeWhitelist`** and the one-line patch is needed — that is a finding, not a failure |
 | 9 | stage 5 settlements, `refused` | **72**, refused **0** |
 | 10 | stage 6 regions | **23** `WB_MapLabelFeature` labels |
