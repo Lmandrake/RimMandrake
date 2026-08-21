@@ -220,3 +220,13 @@ it does not belong here.
   the north facing draws the south sprite **unrotated, rear end pointing north**, in
   silence. ✅ `_west` IS genuinely derived (`westFlipped`), which is why neither Alpha
   Vehicles Neolithic nor our DogSled ships one: **the authored set is north+east+south.**
+- ⚠️ **A mod DLL that references `Vehicles.dll` or `SmashTools.dll` must target `net48`,
+  not `net472`.** Both are built against 4.8 and MSBuild refuses to resolve them from a
+  4.7.2 target with `MSB3274`. Measured 2026-08-21 building `DesertVehicleReskin.dll`.
+  Everything else in this repo is `net472` and stays there.
+- 🔑 **`RimWorld.FoodTypeFlags` values are NOT the obvious powers of two, and two of them
+  decide what a herbivore will eat.** Read off `RimWorld/FoodTypeFlags.cs`:
+  `Seed = 0x10` (16, standalone) · `Fungus = 0x1001` (4097, i.e. it CARRIES the
+  `VegetableOrFruit` bit) · `Kibble = 2048` (standalone, **not** part-plant).
+  ⇒ A `Plant | VegetableOrFruit | Meal` test admits `RawFungus` for free, and silently
+  REJECTS `RawRice` and `Kibble`.
