@@ -101,8 +101,8 @@ Replaying a full year to current state: **53 ms**. Scanning for one seat: **6 ms
 | `claim` · `start` | — | owner seat |
 | `block` · `unblock` | `reason`, `on` (item id, optional) | owner seat |
 | `verify` | `result`, `config`, `evidence`, `sha` | owner seat |
-| `finding` | `from` (run), `type`, `severity`, `title` | any seat |
-| `spawn` | `from` (finding/item), `for`, `title` | any seat |
+| `finding` | `from` (run), `type`, `severity`, `name` | any seat |
+| `spawn` | `from` (finding/item), `for`, `name` | any seat |
 | `retarget` | `from`, `to`, `reason` | owner seat + DECIDE |
 | `reassign` | `to`, `reason` | DECIDE only |
 | `close` | `sha` | owner seat |
@@ -238,14 +238,14 @@ not corrupt the record of what already happened.
 CHECK finds a live failure:
 
   rimflow verify C40 --result fail --config full-578 --evidence observed/logs/Player_x.log
-      → RUN-0093 recorded. C40 is NOT reopened. The failure stands forever.
+      → C40/run-3@full-578 recorded. C40 is NOT reopened. The failure stands forever.
 
-  rimflow finding --from RUN-0093 --type integration --severity high \
-                  --title "Blackstar spawns with no vessel"
-      → FND-0041
+  rimflow finding --from C40/run-3@full-578 --type integration --severity high \
+                  --name BLACKSTAR_SPAWNS_VESSELLESS_1
+      → BLACKSTAR_SPAWNS_VESSELLESS_1
 
-  rimflow spawn --from FND-0041 --for BUILD --needs offline \
-                --title "Give Blackstar a vessel def" --spec items/draft.md
+  rimflow spawn --from BLACKSTAR_SPAWNS_VESSELLESS_1 --for BUILD --needs offline \
+                --name BLACKSTAR_VESSEL_DEF_1 --spec items/draft.md
       → BLACKSTAR_VESSEL_DEF_1, owned by BUILD, state proposed
 ```
 
@@ -281,8 +281,8 @@ rimflow file   --for <SEAT> …            create work (any seat)
 rimflow claim | start | close <ID>       lifecycle (owner seat only)
 rimflow block  <ID> --reason "…"         with an optional --on <ID>
 rimflow verify <ID> --result … --evidence …    records a RUN. Immutable.
-rimflow finding --from RUN-# …           records a finding
-rimflow spawn  --from FND-# --for <SEAT> [--this-deployment]
+rimflow finding --from <ITEM>/run-N --name THREE_WORD_# …   records a finding
+rimflow spawn  --from <NAME> --for <SEAT> --name THREE_WORD_# [--this-deployment]
 rimflow retarget <ID> v2 --reason "…"    planning move; lifecycle untouched
 rimflow seat   ready | busy | idle --reason …
 rimflow bridge take | release            CHECK only
@@ -587,3 +587,304 @@ modlist drift**) · `doc_budget.py` (+`design/` class, red output) · `doc_roste
   as `confidence: low` and land in a triage lane. Any import that silently guesses is worse than no import.
 - **I am the BUILD seat specifying the system that grades BUILD.** Worth naming. Every acceptance
   test in S0–S1 is deliberately a number someone else can independently check.
+
+---
+---
+
+# PART TWO — second review, 2026-08-20
+
+Six rulings from the owner, then the planet harness, then the named backlog.
+
+## 16. Rulings
+
+### 16.1 🔴 BUILD is master of "this deployment" — he wins ties
+
+**A deployment is a first-class object owned by BUILD.** When two `--this-deployment` items compete
+for a closing window, **BUILD's ordering wins.** CHECK owns the *bridge*; BUILD owns the *deployment*.
+
+```
+rimflow deployment open   --name <THREE_WORD_#>     BUILD only
+rimflow deployment add    <ITEM>                    any seat may request; BUILD confirms
+rimflow deployment order  <ITEM> --before <ITEM>    BUILD only — this is the tie-break
+rimflow deployment close                            on entering DOWN; clears --this-deployment
+```
+
+The priority engine gains one term above all others:
+
+```
+sort  0. deployment_rank        (BUILD's explicit order, when set)
+      1. needed_this_deployment  desc
+      2. v1_row / parent milestone priority
+      3. created_at              asc
+```
+
+⭐ **Rank 0 is the only hand-set field in the whole engine, it is BUILD's alone, and it applies only
+inside an open deployment.** Everything else stays computed.
+
+### 16.2 🔴 Citations are BY NAME, and a new artifact triggers a dangling-reference sweep
+
+> *"Citations should be by name, so nothing breaks with an index. But there could easily be a pass
+> of running validators that depend on the dump that changed to ensure nothing has been left
+> dangling. This should be codified in deterministic code that accepts a new game artifact asset."*
+
+**Rule: nothing ever cites a dump by index, offset, row number or ordinal. Only by `defName`.**
+A design doc says `OuterRim_GalacticEmpire`, never "row 412 of the dump".
+
+**New tool — `rimflow artifact accept`.** One deterministic entry point for every new game artifact
+(a dump, a log, a save, a modlist snapshot):
+
+```
+rimflow artifact accept <path> --kind dump|log|save|modlist [--official]
+
+  1. register        append to dumps/REGISTRY.jsonl with sha, count, date, frozen flag
+  2. re-run          EVERY validator that depends on this artifact kind:
+                       check_refs.py · check_declarations.py · validate_patch.py --defs
+                       validate_ideoligion.py · xenotype_check.py · check_canon.py
+  3. resolve         every defName cited anywhere in design/ and src/ against the new artifact
+  4. report          TRANSIENT_artifact_accept_<id>.md — three lists:
+                       ✅ still resolves        (no action)
+                       🔴 now dangling         (cited by name, absent from the artifact)
+                       🆕 newly available      (present, cited by nothing)
+  5. file            one item per dangling citation, named for what broke
+  6. NEVER auto-fix  a dangling reference is a decision, not a repair
+```
+
+🔑 **This is the piece that makes re-freezing safe.** Answering the earlier open question directly:
+when the owner re-freezes the official dump, nothing happens automatically — the sweep reports the
+deltas by name and a human decides.
+
+⚠️ And the frozen-dump rule stands above all of it: **a differing mod count, greater or lesser, is
+never staleness.** The sweep reports; it never invalidates.
+
+### 16.3 🔴 TRANSIENT files are COMMITTED
+
+> *"Committed for certain, we can choose to eliminate them later optionally, but they are deeply
+> valuable until then."*
+
+Refining §0b with the owner's own driver:
+
+| a `TRANSIENT_` file **is** | a `TRANSIENT_` file is **not** |
+|---|---|
+| a temporary analysis | ⛔ **anything the game routinely makes** — dumps, logs, renders, saves |
+| a transition or migration plan | ⛔ a derived artifact a script regenerates |
+| a comparison written to settle one decision | ⛔ doctrine, specs, canon, items, the ledger |
+
+🔑 **The source driver, in the owner's words: they become stale rapidly.** That is what the prefix
+marks — not "unimportant", but **"had a shelf life, and it has probably expired."**
+
+- **Committed and pushed**, always. Losing an analysis to a reboot is the exact failure the
+  commit-and-push rule exists to prevent. Never gitignored.
+- `rimflow sweep --transient` **lists** candidates older than 14 days. **It never deletes.**
+- Routine machine output is not TRANSIENT — it is derived, and `.gitignore` already governs it.
+
+### 16.4 🔴 V1 rows become first-class milestone items
+
+`row:` is an unenforced foreign key today: `V1.md` defines rows 0–13, and queue items reference
+**32 distinct values of which 20 do not exist** (`world-7`, `inhabited-3`, `bridge-6`, `doctrine`,
+`dead`, `tooling`, `repo`, `v2`, `unassigned`). The board renders **56 rows for 14 real steps.**
+
+```
+items/FACTION_ROSTER_COMPLETE_9.md        kind: milestone
+  ↑ parent
+items/ROLE_KINDS_UNARMED_1.md             kind: build
+items/BLACKSTAR_VESSEL_DEF_1.md           kind: build
+
+rimflow why FACTION_ROSTER_COMPLETE_9
+  → 11 done · 4 ready · 2 blocked (on OWNER_DECISION_VESSEL_ART_1) · 0 doing
+```
+
+- **Every V1 row becomes a `kind: milestone` item with a real name**, not a number.
+- Items declare `parent:` instead of `row:`. `queue_lint` refuses a parent that is not a milestone.
+- The 20 invented buckets are triaged: promote to a milestone, remap to an existing one, or mark
+  `parent: none` deliberately.
+- ⛔ **`V1.md` stays** — as a generated burn-down view rendered from milestone rollups, so the owner
+  keeps the file he reads.
+
+### 16.5 `Alien_Bestiary.md` — `status: aspirational`
+
+78 named creatures, **0 on disk**, never named by a queue item or a commit. It stays in `design/`
+and gains a header:
+
+```html
+<!-- status: aspirational ; 2026-08-20 ; 0 of 78 named creatures exist on disk -->
+```
+
+`check_canon.py` treats an `aspirational` doc as **non-binding**: its numbers never contradict canon,
+and nothing may cite it as evidence that a thing exists. It remains readable, quotable as intent,
+and honest about what it is.
+
+### 16.6 🔴 My own naming mistake, corrected
+
+The first draft of this plan used `RUN-0093` and `FND-0041` — precisely the opaque nonsense the
+owner's 2026-08-20 naming ruling forbids. Corrected throughout:
+
+| thing | naming | example |
+|---|---|---|
+| **Item** | `THREE_DESCRIPTIVE_WORDS_#` | `BLACKSTAR_VESSEL_DEF_1` |
+| **Milestone** | same, numbered by V1 row | `FACTION_ROSTER_COMPLETE_9` |
+| **Finding** | same — a finding **is** an item | `BLACKSTAR_SPAWNS_VESSELLESS_1` |
+| **Run** | scoped to its item, never standalone | `C40/run-3@full-578` |
+| **Deployment** | same | `INHABITED_FIRST_LIGHT_1` |
+
+🔑 **A run is the only thing carrying a number, and it is never seen alone** — it always reads as
+`<ITEM>/run-N@<config>`, which explains itself. `queue_lint` refuses any new name matching
+`^[A-Z]\d+$` or `^[A-Z]-[A-Z0-9]+$`.
+
+---
+
+## 17. ⭐ THE PLANET HARNESS — reference-driven
+
+> *"I'm having a lot of trouble making this planet surface. Seemed so easy, but it isn't."*
+
+**The acceptance criteria already exist and are already good. They are simply not executable.**
+`the_one_map.md` §"What realistic means here" lists seven binding reference images and **five named
+defects**. Today a human has to hold both in their head while squinting at a render.
+
+### 17.1 What exists right now
+
+| | |
+|---|---|
+| references | **7 binding images**, all present in `research/Jawa/` |
+| renders of the current map | **equirect only** — `world/view/ASHKARR_WORLDMAP.biome.equirect.png` |
+| 🔴 **the gap** | **there is no orthographic render of the current map at all** — and the primary reference, `planet_map_tidal_lock_inspiration.webp`, is a **globe** |
+| capability | `worldview.py` already supports `--projection ortho --center lat,lon`. Nothing has used it on Ash'karr |
+
+**So the single most binding comparison in the project has never been made.** That alone may be a
+large part of why this is hard.
+
+### 17.2 `refmatch.py` — the tool
+
+```
+python3 src/RimMandrake/Utils/refmatch.py world/ASHKARR_WORLDMAP
+```
+
+**Step 1 — render to match, in the reference's own projection and scale:**
+
+| reference | our render |
+|---|---|
+| `planet_map_tidal_lock_inspiration.webp` ⭐ THE TARGET | ortho globe, `--center 0,0` (day face) |
+| `planet_inspiration_tidal_lock2.webp` | ortho, `--center 0,90` (terminator) and `0,180` (night cap) |
+| `desert_map_inspiration2.jpg` ⭐ THE RIVERS | crop on the Scald trunk, arc 51→11 |
+| `desert_tilemap_inspiration4.jpg` ⭐ THE DELTAS | crop on The Salt Gate |
+| `desert_tilemap_inspiration3.jpg` (emptiness) | crop on The Dune Sea |
+| `desert_zoomin_inspiration.jpg` (playas) | crop on The Salt |
+| `desert_tilemap_inspiration2.jpg` (canyons) | crop on The Ashteeth |
+
+**Step 2 — screen the five named defects.** These are the owner's own words, made computable:
+
+| # | defect | test | flag when |
+|---|---|---|---|
+| 1 | ⛔ **circular seas** | circularity `4πA/P²` per water body | > 0.75 (a disc is 1.0) |
+| 2 | ⛔ **comb rivers** | histogram of tributary junction angles | the 80–100° bin is over-represented; real drainage branches **acute** |
+| 3 | ⛔ **rectangular roads** | run-length of constant bearing; closed loops | any straight run > N tiles, or a closed rectangle |
+| 4 | ⛔ **concentric biome rings** | bearing-variance of each biome at fixed arc | variance too low ⇒ a bullseye ⇒ every direction out of the hot pole looks alike |
+| 5 | ⛔ **inherited names** | every region/feature name ∩ the vanilla source tile CSV | any hit |
+
+**Step 3 — one contact sheet**, `TRANSIENT_refmatch_<date>.html`: reference left, ours right, same
+size, same projection, defect flags beneath each pair.
+
+### 17.3 The doctrine this must not violate
+
+🔑 **`the_one_map.md` is explicit: "The loop is LOOK, not measure"** — the old pipeline's numbers all
+passed while the picture showed compass circles and comb rivers.
+
+⇒ **The picture is the acceptance test; the five defect checks are a screen, never a verdict.**
+The report leads with the images and puts numbers underneath. A green defect screen on an ugly map
+means **the screen is wrong**, and that is the documented failure mode.
+
+### 17.4 What I would do first, before writing any code
+
+**Render the three ortho globes and put them beside `planet_map_tidal_lock_inspiration.webp`.**
+That is one command, it has never been done, and it is the comparison the whole design is judged on.
+It may make the next move obvious — or reveal that the map is closer than it feels.
+
+```
+python3 src/RimMandrake/Utils/worldview.py world/ASHKARR_WORLDMAP \
+        --layer biome --projection ortho --center 0,0     # day face
+        # then --center 0,90 (terminator) and --center 0,180 (night cap)
+```
+
+---
+
+## 18. The named backlog
+
+Every item from this plan and from `TRANSIENT_lorekeeping.md`, named so a cold reader knows what it
+is. **No `Q104`, no `D55`, no bare numbers.**
+
+### Milestones (from V1 rows — names to be confirmed against `V1.md`)
+
+`PLANET_SURFACE_AUTHORED_?` · `FACTION_ROSTER_COMPLETE_?` · `FAITHS_AUTHORED_COMPLETE_?` ·
+`WORLD_FROZEN_AND_SHIPPED_?`
+
+### S0 — half a day, do these regardless
+
+| item | what |
+|---|---|
+| `BOARD_STATE_CLASSIFIER_FIX_1` | `derive_matrix.py:277` → `state.split()[0]`. Recovers 28 done, 2 blocked |
+| `CLOSES_TRAILER_REGEX_FIX_1` | `warn_unclosed_queue_item.py:40` has no `_` in its class; disagrees with `derive_matrix.py:88` on every new ID |
+| `DESIGN_INDEX_REGENERATION_1` | `doc_roster.py --write` — **out of sync now**; `INHABITED_CAST_EMPIRE/TUSKEN` missing |
+| `DOC_BUDGET_RED_ERRORS_1` | wire the existing exit-1 to a commit hook, red output |
+
+### S1 — canon
+
+| item | what |
+|---|---|
+| `CANON_NUMBERS_SINGLE_SOURCE_1` | author `canon.yml` |
+| `CANON_CONTRADICTION_CHECKER_1` | `check_canon.py` + the `<!-- canon-ok: -->` escape |
+| `WATER_PERCENT_RECONCILE_1` | 8.1 vs 25 vs 8.6 vs 6.9 — `the_one_map.md` contradicts itself 30 lines apart |
+| `TERMINATOR_TEMP_RECONCILE_1` | +14 vs −37, **51 °C apart**, and hydrology inherited the wrong one |
+| `FACTION_COUNT_RECONCILE_1` | 14 / 13 / 12 / 11 — the Unbound Hive cut never propagated |
+| `SETTLEMENT_COUNT_RECONCILE_1` | 72 / 66 / 37 — two are measurements of dead worlds |
+| `SPECIES_COUNT_RECONCILE_1` | 42 / 44 / 54 / 70 / 79 / 80 |
+| `MODLIST_STAMP_AS_OF_DATES_1` | nine different counts, no as-of anywhere |
+| `LAKE_BIOME_CUT_OR_KEEP_1` | cut by the owner; **1.4% of the planet is `Lake`** |
+| `GELATINOUS_CUT_REVERSAL_1` | cut 08-04, placed 08-18, palette never told |
+| `SAVANNA_PREMISE_RESOLVE_1` | a 701-line doc's subject is blacklisted |
+| `OASIS_OWNERSHIP_RULING_1` | Hutts or Deepwater Compact — inverts the water politics |
+| `JAWA_LEADER_TITLE_RULING_1` | First Bargainer vs Prime Trader; the engine layer ticks ✅ while overwriting canon |
+| `HABITABLE_RING_ARC_RULING_1` | 34–57 vs 40–57 — ~700 tiles |
+| `BIOME_SURVIVOR_COUNT_FIX_1` | 36 / 37 / ~35 from a 66- or 57-def base |
+
+### S2 — supersession
+
+| item | what |
+|---|---|
+| `DESIGN_DOC_STATUS_HEADERS_1` | one header line on all 119 docs |
+| `DEAD_DOC_LINK_REFUSAL_1` | checker refuses a live doc linking into a dead one |
+| `SAVE_PIPELINE_DOC_RETIRE_1` | `⛔ DEAD DOCUMENT`, still linked, still in the index |
+| `WORLDGEN_DEF_DEAD_NUMBERS_1` | its banner **points readers at** superseded measurements |
+| `FACTION_SPEC_CLUSTER_POINTERS_1` | 4-way cluster; nothing tells `faction_stage3` it was replaced |
+| `LEADER_CANON_RESCUE_1` | 2 of 12 named leaders exist **only** in the file slated for retirement |
+| `LOST_ITEMS_RECOVER_1` | `softshadow-xtp-…-2f7c85` and `D-CHK1` — gone, and softshadow is still live |
+| `BESTIARY_ASPIRATIONAL_HEADER_1` | 78 named, 0 built |
+| `ROSTER_V2_FAITH_LAYER_RETIRE_1` | 12 faith names, **0 on disk**, superseded and unmarked |
+
+### S3–S6 — the machinery
+
+`ITEM_FILES_ONE_PER_ITEM_1` · `QUEUE_IMPORT_WITH_CONFIDENCE_1` · `CLOSES_HISTORY_REPLAY_1` ·
+`GENERATED_QUEUE_VIEWS_1` · `EVENT_LEDGER_APPEND_ONLY_1` · `RIMFLOW_CLI_CORE_1` ·
+`PRIORITY_ENGINE_DETERMINISTIC_1` · `DEPLOYMENT_OBJECT_BUILD_OWNED_1` ·
+`ARTIFACT_ACCEPT_SWEEP_1` · `FROZEN_DUMP_IMMUNITY_1` (teach `refresh.py` frozen ≠ stale) ·
+`GAME_STATE_MACHINE_WIRING_1` · `QUEUE_LINT_BLOCKING_HOOK_1` · `AGENT_SEAT_FILES_REWRITE_1` ·
+`BOARD_DECK_VIEW_1` · `BOARD_FLOW_GRAPH_1` · `BOARD_VNV_MATRIX_1` · `BOARD_TIMELINE_VIEW_1`
+
+### The planet — do this one first
+
+| item | what |
+|---|---|
+| ⭐ `ORTHO_GLOBE_FIRST_RENDER_1` | **one command, never yet run.** Three ortho globes beside the target reference |
+| `REFERENCE_MATCH_HARNESS_1` | `refmatch.py` — contact sheet + the five defect screens |
+| `GAZETTEER_ZERO_TILE_AUDIT_1` | The Ash Verge · The Long Dark · The Ember Sink · `AB_OcularForest` · `Glowforest` · `HorrorWastes` — named, zero tiles |
+| `CAST_PLACES_ON_THE_MAP_1` | 26 named places exist as `<place>` strings on 269 CharacterDefs and are bound to no tile |
+
+---
+
+## 19. Revised open questions
+
+1. **Milestone names for the 14 V1 rows** — I will draft them from `V1.md`'s own step titles unless
+   you would rather name them yourself. They are the most-read names in the system.
+2. **The 20 invented `row:` buckets** — promote, remap, or drop? I would triage and bring you a
+   one-page table rather than guess.
+3. **`refmatch.py` defect thresholds** — circularity > 0.75, straight-run length, bearing-variance
+   floor. I would calibrate these **against the reference images themselves** so the screen agrees
+   with the photographs rather than with my taste.
