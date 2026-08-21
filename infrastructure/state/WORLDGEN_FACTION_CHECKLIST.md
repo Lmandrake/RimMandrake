@@ -29,8 +29,9 @@
 
 > # ✅ RATIFIED — a retired seat, 2026-08-13. EXECUTE THE LIST.
 >
-> **21 untick / 6 keep is RATIFIED as written.** Nothing in the tick-list changes.
-> Four rulings ride with it; read them, they take ten seconds each.
+> **21 untick / ~~6~~ 4 keep. The TICK-LIST is unchanged and still ratified;** two KEEP rows
+> were retired 2026-08-21 on evidence that did not exist when this was written — see R5.
+> Five rulings ride with it; read them, they take ten seconds each.
 >
 > ## R1. Dangling references: a retired seat was RIGHT, and blanket "accepted cost" is REFUSED
 >
@@ -63,7 +64,30 @@
 > Factions* — downloaded, not active, inert today. **It stops being inert the day
 > we enable that mod for the Jedi/Sith build.** Mine to handle then, not now.
 >
-> ## R3. ⭐ ADD vanilla `Empire` to KEEP — it is THE GALACTIC EMPIRE
+> ## R5. 🔴 RETIRE two KEEPs — they place settlements on a frozen map (2026-08-21)
+
+**DECIDE, on evidence that did not exist when this list was ratified.** The tick-list is
+untouched; only Section 4's KEEP column changes, from six rows to four.
+
+🔑 **The discriminator is settlements, not sentiment.** Read from each def's own 1.6 files:
+
+| def | hidden | `settlementGenerationWeight` | |
+|---|---|---|---|
+| `guy762_KotORFaction_RogueDroids` | **true** | — | ✅ keeps. Places nothing. And it is **quest-critical** |
+| `JDSCIS_CIS_Faction` | **true** | — | ✅ keeps. Places nothing |
+| `OuterRim_BinaryStarRaiders` | no | **1** | ⛔ retired |
+| `OuterRim_MoistureFarmers` | no | **1** | ⛔ retired |
+
+⭐ **When this list was ratified the planet was not yet authored.** It now is:
+`world/ASHKARR_WORLDMAP_settlements.csv` places **72 settlements for 13 factions** by hand,
+and the world is generated once and frozen. A faction that generates its own holdings adds
+sites that CSV does not account for — the one class of mistake that cannot be corrected
+afterwards. The two hidden KEEPs cost the map nothing and stay.
+
+✅ **This file's own header already licenses the change:** *"its keep list is transitional
+rather than final."*
+
+## R3. ⭐ ADD vanilla `Empire` to KEEP — it is THE GALACTIC EMPIRE
 
 **Owner's canon, 2026-08-13.** Vanilla `Empire` is reskinned as **the Galactic
 Empire**, led by **Emperor Palpatine**. It is the campaign's **one permanent
@@ -87,9 +111,10 @@ patch lands. **Screenshot whatever it does say.**
 >
 > ## What REMAINS STANDING after the cut — the world is populated
 >
-> **6 keeps:** binary star raiders · Confederacy of Independent Systems ·
-> **the Galactic Empire** · moisture farmers · rogue droid collective ·
-> *(Rebel Alliance retired per R2)*.
+> **4 keeps:** Confederacy of Independent Systems · **the Galactic Empire** ·
+> rogue droid collective · vanilla `Empire`.
+> ~~binary star raiders~~ · ~~moisture farmers~~ **retired per R5, 2026-08-21.**
+> *(Rebel Alliance retired per R2.)*
 > **Plus, untouched by this list:** vanilla **`Empire` = the Fallen Dominion**,
 > outlander unions, rough outlanders, tribes and pirates. **Nobody is unticking
 > vanilla's spine.** The world has a Galactic arm, a disgraced local aristocracy,
@@ -106,7 +131,7 @@ second Empire. The keep itself stands: confirm vanilla `Empire` present, count �
 
 > ✅ **A retired seat's note — RESOLVED, nothing here blocks execution.**
 >
-> **The tick-list is measured:** 21 untick / 6 keep / 0 not found, every defName
+> **The tick-list is measured:** 21 untick / ~~6~~ 4 keep / 0 not found, every defName
 > read off disk, labels taken from the defs because the page shows labels, not
 > defNames.
 >
@@ -273,10 +298,10 @@ time.
 
 | ✔ | in-game label | defName | mod | note |
 |---|---|---|---|---|
-| ☐ | **binary star raiders** | `OuterRim_BinaryStarRaiders` | Outer Rim - Core (2919227155) | ordinary row, permanent enemy |
+| ~~☐~~ | ~~**binary star raiders**~~ | ~~`OuterRim_BinaryStarRaiders`~~ | Outer Rim - Core (2919227155) | ⛔ **RETIRED FROM KEEP 2026-08-21 (R5).** Not hidden, `settlementGenerationWeight 1` ⇒ it places holdings on a planet whose **72 settlements are already hand-placed for 13 factions**. Absent is now the desired outcome; do not restore it at the screen. |
 | ☐ | **Confederacy of Independent Systems** | `JDSCIS_CIS_Faction` | [JDS] Separatist Droid Army (3276499495) | **hidden checkbox**, not a row |
 | ~~☐~~ | ~~**`OuterRim_GalacticEmpire`**~~ | ~~`OuterRim_GalacticEmpire`~~ | ~~Outer Rim - Galactic Empire (2919248699)~~ | ⛔ **DEAD ROW 2026-08-20 — do not check it, do not expect it.** Owner: *"OuterRim_GalacticEmpire is no longer in the game, we patch Empire."* The Galactic Empire's vessel is **vanilla `Empire`** (the ⭐ row below) and nothing patches this def. Whatever this row does or does not say at worldgen is **not a signal about anything**. See `infrastructure/state/OWNER_DECISIONS.md`. |
-| ☐ | **moisture farmers** | `OuterRim_MoistureFarmers` | Outer Rim - Core | ordinary row |
+| ~~☐~~ | ~~**moisture farmers**~~ | ~~`OuterRim_MoistureFarmers`~~ | Outer Rim - Core | ⛔ **RETIRED FROM KEEP 2026-08-21 (R5).** Same settlement reason, plus ⭐ **it duplicates a role we authored** — the **Homestead Defense League** *is* this planet's moisture farmers, thirteen settlements of them. Absent is the desired outcome. |
 | ☐ | **rogue droid collective** *("Droid Collective")* | `guy762_KotORFaction_RogueDroids` | Star Wars KotOR Droids (3047371944) | **hidden checkbox**, not a row. 🔴 **quest-critical — antagonist of the KotOR distress call. Never untick.** |
 | ☐ | ⭐ **vanilla `Empire`** — *name will be GENERATED, expect a different string* | `Empire` | **vanilla (Royalty)** | 🔴 **ADDED TO KEEP by R3 above.** Not on any untick list, so it survives by default — **confirm it anyway, count ≥ 1, and SCREENSHOT the generated name.** |
 | ☐ | ~~**Rebel Alliance**~~ — **RETIRED from KEEP** | `OuterRim_RebelAlliance` | Outer Rim - Rebel Alliance (2919249903) | 🔴 **ABSENT is the DESIRED outcome (R2 above). Record absent and move on — do NOT revert the patch at the screen.** |

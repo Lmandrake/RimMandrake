@@ -58,8 +58,12 @@ ideoligion is fully measured and nothing about it is open.**
 ⚠️ **All three must be DEPLOYED, not merely committed.** The game reads
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`, never this repo.
 
-✅ **`WORLDGEN_FACTION_CHECKLIST.md`** (`infrastructure/state/`) is ratified — 21 untick,
-6 keep — and needs no build. It is one screen the owner ticks during the run.
+⚠️ **`WORLDGEN_FACTION_CHECKLIST.md`** (`infrastructure/state/`) is ratified — 21 untick,
+**4 keep** as of 2026-08-21 — and needs no build. It is one screen the owner ticks during
+the run. 🔴 **But four of its rows currently do not appear on that screen.**
+`JawaFactionSlate/Patches/OnlyOurFactions.xml` zeroes `maxConfigurableAtWorldCreation`,
+which deletes a faction from `FactionGenerator.ConfigurableFactions` rather than capping it.
+⇒ `SLATE_KEEPS_CONFIGURABLE_1` must land before the run, or the checklist is a trap.
 
 ---
 
