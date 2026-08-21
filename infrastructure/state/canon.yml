@@ -616,16 +616,43 @@ modlist:
 # ===========================================================================
 dump:
   path: "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\DefDump"
-  captured_utc: 2026-08-20T15:08:30Z
+  captured_utc: 2026-08-21T08:20:20Z
   mod_count: 578
+  modlist_sha: e0f11692cf69e516
   game_version: "1.6.4871 rev591"
-  current: true
+  current: false
   current_src: >
-    ✅ CURRENT by FINGERPRINT, not by timestamp: the dump's manifest modCount (578)
-    equals ModsConfig's activeMods count (578). ⛔ The dump at
-    observed/2026-08-13/dumps/defnames.live.2026-08-15.json is modCount 585 and is
-    STALE — it is the source of the 66-BiomeDef and 251-xenotype figures still quoted
-    in the design tier. Do not use it for a current count.
+    🔴 NOT CURRENT — one mod stale in BOTH directions, measured 2026-08-21 13:0x by DECIDE
+    against the manifest and ModsConfig directly. The frozen capture holds
+    `thereallemon.factioncontrol` and lacks `mandrake.strandedquest`; the live list is the
+    exact reverse. Two swaps, so BOTH read 578 and every count comparison passes.
+    ⚠️ This does NOT invalidate the freeze and nobody should re-freeze to clear it — the
+    owner froze OFFICIAL-2026-08-21 deliberately (`a3fcc44`), and only the owner re-freezes.
+    It is recorded so no seat reads `current: true` and skips a re-measure. The clean
+    re-take is armed and happens on the load that does the remake.
+  # 🔴 THE OLD TEST WAS THE BUG, AND IT CALLED ITSELF THE CURE. The line struck below
+  # claimed "CURRENT by FINGERPRINT, not by timestamp" and then compared two COUNTS.
+  # A count is not a fingerprint. It failed the first time it was asked to do real work.
+  currency_test: >
+    ✅ Compare the modlist SHA, never the count. The algorithm is reproducible and is the
+    one already stored in infrastructure/state/dumps/REGISTRY.jsonl as `modlist_sha` —
+    sha256 of the sorted, lowercased packageId set, first 16 hex chars. Verified 2026-08-21:
+    recomputing it over the manifest's `mods[].packageid` yields e0f11692cf69e516, which is
+    byte-identical to the registry's recorded value; the same computation over ModsConfig's
+    activeMods yields 9a204707f6dc183d. Equal sha = same stack. Equal count = nothing.
+    ⚠️ Parse the XML for `activeMods` children — `grep -c '<li>'` returns 583, five high,
+    because `knownExpansions` is not the mod list.
+  superseded_currency_claim:
+    - value: "current: true — 'CURRENT by FINGERPRINT: the dump's manifest modCount (578) equals ModsConfig's activeMods count (578)'"
+      why: >
+        Falsified 2026-08-21. The two 578s are different sets; the count test cannot see a
+        one-in-one-out swap, which is exactly what happened overnight. This is the same
+        failure queue/HUMAN.md recorded when OFFICIAL-2026-08-20 was silently replaced —
+        "both captures are 578 mods, which is why nothing noticed."
+  stale_do_not_use: >
+    ⛔ observed/2026-08-13/dumps/defnames.live.2026-08-15.json is modCount 585 and is STALE
+    — it is the source of the 66-BiomeDef and 251-xenotype figures still quoted in the
+    design tier. Do not use it for a current count.
 
 # ===========================================================================
 # needs_ruling — genuinely OPEN, not stale. Canon carries NO value for these.

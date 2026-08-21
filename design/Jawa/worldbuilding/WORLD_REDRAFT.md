@@ -62,10 +62,39 @@ elevation and swampiness are VERIFIED against the live engine (`worldmap.py:78`)
 
 | | must precede a remake? | why |
 |---|---|---|
-| **the mod list** — 577 vs 578 | 🔴 **YES** | a world generated on the wrong stack bakes dead references into the save, and no later edit removes them. `DROP_TRIBAL_FURNITURE_MOD_1`'s whole case |
+| **the mod list** — see the measured state below | 🔴 **YES** | a world generated on the wrong stack bakes dead references into the save, and no later edit removes them. `DROP_TRIBAL_FURNITURE_MOD_1`'s whole case |
 | **Configure Factions** (step 2) | 🔴 **YES, and it is spent every time** | permanent at world creation, hand-only, unrepeatable. **This is the real cost of a remake** and it appears in no queue item |
 | **FactionDefs and their ideoligions** | 🔴 **YES** | an Ideo is fixed at world creation. A `forcedMeme` edit made after the world exists is invisible until the NEXT remake. ⇒ any pending meme or faction-religion change is remake-gated |
 | **the paint** — biomes, elevation, rainfall, rivers, roads, mutators, landmarks, settlements, regions | ✅ **NO** | step 5 re-applies all of it from the CSVs. Edit the paint whenever you like; the next remake picks it up for free |
+
+### 🔢 the mod list, MEASURED 2026-08-21 13:0x — do not inherit a number from prose
+
+⛔ **Never compare mod COUNTS to decide whether two stacks match.** Measured today, the
+frozen def dump and the live list are **both 578 and are not the same 578**:
+
+| | frozen `OFFICIAL-2026-08-21` | live `ModsConfig.xml` |
+|---|---|---|
+| `activeMods` count | 578 | 578 |
+| modlist sha | `e0f11692cf69e516` | `9a204707f6dc183d` |
+| `thereallemon.factioncontrol` | PRESENT | **absent** ✅ (ruled out 08-21) |
+| `mandrake.strandedquest` | absent | **PRESENT** |
+| `xercaine.tribal.furniture` | PRESENT | **PRESENT** ⏳ |
+
+One out, one in — so the count is identical and every count-based currency check passes
+while the stacks differ. ✅ **Compare the sha**: sha256 of the sorted lowercased packageId
+set, first 16 hex, which is the same value `dumps/REGISTRY.jsonl` already records as
+`modlist_sha`. `canon.yml > dump.currency_test` carries the rule.
+
+**What that means for THIS procedure, concretely:**
+- ✅ **FactionControl is already out of the live list.** The 08-21 ruling is in force; step 1
+  needs no action on it.
+- ⏳ **`xercaine.tribal.furniture` is still ACTIVE**, so `DROP_TRIBAL_FURNITURE_MOD_1` has
+  **not** been executed. 🔴 **It must be, before step 2** — a world generated with it holds
+  `XER_` references forever.
+- ⚠️ **The def dump is one mod stale in both directions.** Re-take it on the load that does
+  the remake; the fixed dumper is deployed and armed.
+- ⚠️ `grep -c '<li>'` on `ModsConfig.xml` returns **583**, five too high — `knownExpansions`
+  is not the mod list. Parse the XML and count `activeMods` children.
 
 ⛔ **Therefore the Scald was never remake-gated**, and the 03:11 table was wrong to list it.
 It was a **paint** change — 312 tiles from +1411 m to −30 m — and a remake would have
