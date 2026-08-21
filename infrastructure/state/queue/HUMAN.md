@@ -728,3 +728,49 @@ rather flag it than quietly change your environment.
 ⚠️ While I was there: the item said the north and east sled builders both ignore their
 arguments. **East was fine; north was not** — it silently wrote the OLD eopie pair to the
 shipped path with a success message. Fixed, but not run, for the reason above.
+
+---
+
+## BUILD, 2026-08-20 evening — shutdown done, and three free measurements are waiting
+
+**The shutdown window was used.** Both assemblies that could only be written with the game
+down are deployed and byte-verified against the repo:
+- `Inhabited.dll` — the guard that stops an authored character being built with two
+  mutually-exclusive traits.
+- `JawaBench.BridgeTools.dll` — **115 bridge tools**, up from 112. The three new ones are
+  what repair the faction names and create a missing faction.
+
+⚠️ **All three are inert until RimWorld next starts** — the bridge only discovers companion
+tools at startup. Nothing else is pending; all 22 mods report "Everything in sync".
+
+**Your day's `Player.log` is saved** at
+`D:\Luke\dev\Rimworld\infrastructure\state\observed\logs\Player.2026-08-20_1754_session.log`
+(1.0 MB, 18,566 lines), along with `Player-prev`. The launcher destroys those at the next
+launch, so they are only in that folder now.
+
+### 🔑 The next load answers three things for free
+
+I harvested the whole log rather than only my own items. Three rows are RED, and **two are
+things fixed later the same day**, so they are clean before/afters — no test to design:
+
+| what | now | should be |
+|---|---|---|
+| texture failures | **2** | **0** — both are the GrimTerra juvenile paths I fixed |
+| `Jawa_Patches` op failures | **3** | **0** — all three are the unarmed-pawn-kind errors I fixed |
+| stale saved data (Scribe) | **8** | **?** — nobody has looked at this one |
+
+That third one is worth a moment: a **saved file** holds a def name nothing provides. It is
+a different system from the cross-reference errors and **no mod change fixes it** — it has
+to be repaired in the save or lived with. It was not caused today; it simply has not been
+triaged.
+
+⭐ **A nice confirmation:** RimWorld's own validator logged *"Cheapest weapon … costs 570 but
+weaponMoney **min** is 350, so could end up weaponless"* — which is exactly the correction I
+had to make against the queue item's guidance, and its numbers matched my offline tool to
+within 0.5%. The engine agreed with the fix before I could ask it to.
+
+### Still yours to decide, nothing blocking
+
+The four missing character fields (xenotype, pawnKind, apparel, skills) — a review sheet
+pre-filled by RACE rather than per person is a couple of dozen calls, not 269. And
+`pip install Pillow`, which unblocks the contact sheets and all 12 vehicle facings.

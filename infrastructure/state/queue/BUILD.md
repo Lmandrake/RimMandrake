@@ -41,52 +41,73 @@ They are WRONG about the config, right about the intent.** Do not edit the setti
 the docs; the docs get fixed.
 ✅ **Subagents are unaffected and fully authorized** — spawn them, fan out, do not ask.
 
-## 📍 STATE OF PLAY at the 2026-08-20 wrap — read this first
+## 📍 STATE OF PLAY at the 2026-08-20 EVENING shutdown — read this first
 
-**The def dump is RATIFIED as definitive** (owner, 2026-08-20; fingerprint and the
-conditions in `infrastructure/state/observed/LIVE.md`). 577 mods, dump and `activeMods`
-agree for the first time. Answer def questions from it until the owner says otherwise;
-adding or removing a mod lapses the ruling.
+⛔ **The block that used to sit here described the 02:00 wrap and is superseded.** Its two
+still-live facts are carried forward below; everything else it said is either done or
+restated more accurately here.
 
-**Landed and deployed this session, all awaiting a live look in `queue/CHECK.md`:**
-the eleven faith texts · the eight faction defs and their `requiredCountAtGameStart` ·
-the biome-mix dictionary shape · the `Ash'karr` namer · D-CHK2's 30 texture paths ·
-`WeaponTags_Renormalise.xml` (154 weapons) · `JawaFactionRoster.xml` (48 kinds) ·
-the MegafaunaYield op-47 repair · the Worldbuilder preset in LocalLow.
+### The queue is DRAINED of offline work. What is left needs the game or a decision.
 
-**Confirmed live at the 00:55 load:** `dictshape` 0 (was 28) · `deadnames` 0 ·
-texture failures 2 and both belong to GRimTerra, not us · **emptied weapon tags 0** ·
-disarmed pawn kinds 49 → 15 with none of ours among them.
+Closed today, all deployed and validated offline: `empire-permanent-enemy…` ·
+`the-ancients-are-rakata…` · `ROLE_KINDS_UNARMED_1` · `GRIMTERRA_TEXPATH_TYPOS_1` ·
+`pyrelands…` · `the-eyeling…ikee…` · `B-EMP1` · `B-FIX1` · `B-SWAP1` ·
+`CAST_ROSTER_MACHINE_READABLE_1` · `INHABITED_*` (all seven).
+Still open and **none of it is BUILD's alone**: `B55` (needs the finished world) ·
+`NEOLITHIC_VEHICLE_BEAST_RESKIN_1` (🔴 blocked on Pillow) ·
+`VEHICLE_FUEL_ACCEPTS_VEGETABLES_1` (spec written, build deliberately deferred by the
+owner) · `BLACKSTAR_NEVER_GENERATES_1` (REP's, now needs a faction CREATED).
 
-🔑 **Two tools now gate this work and should be run before hand-reasoning about either:**
-`weapon_tag_audit.py` (refuses unless the dump matches the mod list) and
-`gen_pawnkind_roster.py` (the roster table lives in its source, not in the XML).
+### 🔴 BOTH ASSEMBLIES WERE DEPLOYED IN THIS SHUTDOWN WINDOW. Nothing is pending.
 
-⚠️ **Open, and none of it is BUILD's to decide:** the 16 unwired roster kinds for the four
-reskin factions · `Execution_Required` has no `FactionDef` field · the six orphan xenotypes
-a regenerate would delete · Deepwater's non-existent harpoon · the lightsaber
-`armorPenetration` reading CHECK owes.
+  `Inhabited.dll` — the trait-conflict guard. Repo and game copy agree.
+  `JawaBench.BridgeTools.dll` — **115 `jawa/` tools**, up from 112. New:
+  `jawa/faction_name_get` · `jawa/faction_name_set` · `jawa/faction_create`.
+  ⚠️ Companions register only at RimBridgeServer STARTUP, so all three are inert until the
+  next launch. `deploy_custom_mods.py` reports **"Everything in sync"** across all 22 mods.
 
-⛔ **Do not re-derive the lightsaber damage analysis from the dump.** It was retracted:
-`Lightsaber.dll` computes penetration in C#. The reading comes back from CHECK first —
-`lightsaber-armour-penetration-...-6a91d3` in `queue/CHECK.md` asks for ONE number off the
-weapon info card. The AP-2.0 patch was built and deleted; regenerating it is minutes.
+### 🔴 THE NEXT LOAD HAS THREE FREE MEASUREMENTS. They cost nothing and settle three items.
 
-**Later on 2026-08-20, after the state block above was written:**
-- 🔴 **The game had been loading a RETIRED Empire patch.** A peer renamed
-  `ImperialDesertDirectorate.xml` to `GalacticEmpire.xml`, but a rename is a delete plus an
-  add and `deploy_custom_mods.py` will NOT delete on its own — it reports the orphan as a
-  `-` line and keeps it. The old file sat in the Steam copy while the new one had never
-  shipped. Fixed with `--prune --apply`. 🪤 **Check for a `-` line after every rename.**
-- ✅ **Skills are SYMLINKS, not installs.** `.claude/skills/<name>` points at
-  `skills/<name>` — same inode. Editing the repo folder IS installing it; the `.skill` zips
-  are for handoff and a fresh clone only. I claimed the opposite three times before
-  checking. `rimbridge-companion` was the one skill with no symlink and never invocable;
-  linked now, 27 of 27.
-- ✅ Everything deploys clean: `deploy_custom_mods.py` reports **"Everything in sync"**
-  across all 22 mods, only the 17 deliberate `DEPLOY_HOLD` entries held.
-- ✅ The dump still matches the live list (577 = 577). Bringing the game down does not
-  lapse the ratification; only a mod-set change does.
+`harvest_log.py` was RED on exactly three rows against the 07:59 run, and **two of them are
+things fixed later the same day**, so they are straight before/afters:
+
+| row | was | should be | why |
+|---|---|---|---|
+| `texture path failures` | **2** | **0** | both are the GrimTerra juvenile paths, confirmed live and identical to what the fix targets |
+| `Jawa_Patches ops` | **3** | **0** | all three are `weaponMoney` config errors on kinds fixed by `ROLE_KINDS_UNARMED_1` |
+| `stale saved data (Scribe)` | **8** | ? | a SAVED FILE holds a dead name. NOT the same system as cross-reference, and no mod change fixes it. Untouched today and nobody has triaged it |
+
+⭐ **And the game validates `weaponMoney` itself** — *"Cheapest weapon … costs 570 but
+weaponMoney MIN is 350"*. That refutes the old guidance that `min` may sit below the
+cheapest weapon, and it matched `weapon_affordability.py` to within 0.5%.
+
+### 🔴 Two bake-in defects found in the live world, both filed, neither fixed
+
+1. **Ten of eleven factions wear generated names** (`Jawa_Junkers` = "Marina's Asteroids").
+   Only the Empire is right, being the one def with a `fixedName`. A def patch cannot reach
+   an existing world — `Faction.Name` returns the stored name. `jawa/faction_name_set
+   action=clear` is the repair and is now deployed. `FACTION_NAMES_ARE_GENERATED_1`.
+2. **Vanilla `Pirate` — the Blackstar Company — is not in the world and cannot generate.**
+   Biotech's `PirateWaster` declares `replacesFaction: Pirate`, and worldgen skips any def
+   another required faction replaces. `requiredCountAtGameStart` is worldgen-only.
+   ⛔ **Do not re-run `world_settlements_import`**: the CSV now points at a faction the
+   world lacks, which could fail all 72 rows where it previously skipped 4. Create the
+   faction first with `jawa/faction_create`.
+
+### Carried forward from the old block, still true
+
+**The def dump is RATIFIED as definitive** — but it was re-taken at **578** mods
+(fingerprint `5ef6eec3daf6c325`) after `mandrake.inhabited` was enabled, so quote that one.
+⚠️ `dump_request.txt` has been DELETED; arm it again if the next load should re-dump.
+🔑 `weapon_tag_audit.py` and `gen_pawnkind_roster.py` still gate the roster work — and
+`weapon_affordability.py` (new today) is the pass the generator always told you to run.
+
+### ⚠️ One dependency is missing and it silently blocks two things
+
+**Pillow is not installed.** `refresh.py --offline` can never complete (it dies in
+`animal_contact_sheet.py`), which is why the offline artefacts read STALE all day, and all
+12 vehicle facings are unbuildable. `pip install Pillow`. Flagged to the owner in
+`queue/HUMAN.md`; not installed by me.
 
 ## B-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
