@@ -61,7 +61,7 @@
 
     <factionNameMaker>NamerFactionEmpire</factionNameMaker>
     <settlementNameMaker>NamerSettlementEmpire</settlementNameMaker>
-    <factionIconPath>World/WorldObjects/Expanding/Empire</factionIconPath>
+    <factionIconPath>World/JawaFactions/AscendantHelix</factionIconPath>
     <!-- R22: pale violet. -->
     <colorSpectrum>
       <li>(0.78,0.74,0.85)</li>

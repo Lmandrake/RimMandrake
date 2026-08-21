@@ -58,7 +58,7 @@
 
     <factionNameMaker>NamerFactionOutlander</factionNameMaker>
     <settlementNameMaker>NamerSettlementOutlander</settlementNameMaker>
-    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <factionIconPath>World/JawaFactions/HuttCartel</factionIconPath>
     <!-- R22: sickly gold. -->
     <colorSpectrum>
       <li>(0.72,0.62,0.25)</li>

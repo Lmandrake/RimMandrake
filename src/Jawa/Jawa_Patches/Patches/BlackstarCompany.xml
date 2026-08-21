@@ -125,6 +125,12 @@
           </value>
         </li>
 
+        <!-- Bespoke world-map icon. the def writes it - Core/Defs/FactionDefs/Factions_Misc.xml:522, so REPLACE. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/factionIconPath</xpath>
+          <value><factionIconPath>World/JawaFactions/BlackstarCompany</factionIconPath></value>
+        </li>
+
       </operations>
     </match>
   </Operation>

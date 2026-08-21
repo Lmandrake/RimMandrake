@@ -287,6 +287,12 @@
                 </value>
               </li>
 
+        <!-- Bespoke world-map icon. the def writes it - Data/Royalty/Defs/FactionDefs/Faction_Empire.xml:19, so REPLACE. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Empire"]/factionIconPath</xpath>
+          <value><factionIconPath>World/JawaFactions/GalacticEmpire</factionIconPath></value>
+        </li>
+
             </operations>
           </match>
         </li>

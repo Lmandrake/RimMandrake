@@ -146,6 +146,13 @@
           </value>
         </li>
 
+        <!-- Bespoke world-map icon. the def does NOT write it - it inherits Expanding/Town from OutlanderFactionBase, so ADD.
+             A Replace here would match nothing and log nothing. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
+          <value><factionIconPath>World/JawaFactions/HomesteadLeague</factionIconPath></value>
+        </li>
+
       </operations>
     </match>
   </Operation>

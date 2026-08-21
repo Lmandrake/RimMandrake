@@ -1,0 +1,39 @@
+FACTION_ICONS_BESPOKE_1 — offline verify, 2026-08-21
+
+1. factionIconPath values under Jawa_Patches — 12 distinct, 12 refs, 0 duplicates:
+   World/JawaFactions/AscendantHelix
+   World/JawaFactions/BlackstarCompany
+   World/JawaFactions/DeepDesertTribes
+   World/JawaFactions/DeepwaterCompact
+   World/JawaFactions/FreeDroidEnclaves
+   World/JawaFactions/GalacticEmpire
+   World/JawaFactions/GeonosianHive
+   World/JawaFactions/HomesteadLeague
+   World/JawaFactions/HuttCartel
+   World/JawaFactions/JawaTradeMoot
+   World/JawaFactions/Junkers
+   World/JawaFactions/WildsteamClan
+   (the spec's verify says ELEVEN; 8 defs + 4 vessels = 12. Spec off-by-one.)
+
+2. PNG form in the shipped location:
+   AscendantHelix.png         128x128   alpha(0, 255)
+   BlackstarCompany.png       128x128   alpha(0, 255)
+   DeepDesertTribes.png       128x128   alpha(0, 255)
+   DeepwaterCompact.png       128x128   alpha(0, 255)
+   ForgottenArsenal.png       128x128   alpha(0, 255)
+   FreeDroidEnclaves.png      128x128   alpha(0, 255)
+   GalacticEmpire.png         128x128   alpha(0, 255)
+   GeonosianHive.png          128x128   alpha(0, 255)
+   HomesteadLeague.png        128x128   alpha(0, 255)
+   HuttCartel.png             128x128   alpha(0, 255)
+   JawaTradeMoot.png          128x128   alpha(0, 255)
+   Junkers.png                128x128   alpha(0, 255)
+   WildsteamClan.png          128x128   alpha(0, 255)
+
+3. validate_patch on the four vessel files: OK TOTAL - 4 file(s), 0 error(s), 0 warning(s)
+   every op reports 1 match(es); no 0-node warning anywhere.
+
+4. FACTION_ICONS_UNCOLLIDE_1 state: superseded — not applied.
+
+OPEN: ForgottenArsenal.png ships but no def references it. The spec assigns twelve;
+this is the thirteenth. Not guessed at — reported.

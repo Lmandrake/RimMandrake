@@ -60,7 +60,7 @@
 
     <factionNameMaker>NamerFactionOutlander</factionNameMaker>
     <settlementNameMaker>NamerSettlementOutlander</settlementNameMaker>
-    <factionIconPath>World/WorldObjects/Expanding/Village</factionIconPath>
+    <factionIconPath>World/JawaFactions/DeepwaterCompact</factionIconPath>
     <!-- R22: teal. -->
     <colorSpectrum>
       <li>(0.20,0.55,0.58)</li>

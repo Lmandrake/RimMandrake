@@ -56,7 +56,7 @@
          workshop/294100/2919227155/Common_Old/Textures/OuterRim/WorldObjects/
          MoistureFarmers.png. `TribeBase` would otherwise give the generic
          Village. -->
-    <factionIconPath>OuterRim/WorldObjects/MoistureFarmers</factionIconPath>
+    <factionIconPath>World/JawaFactions/JawaTradeMoot</factionIconPath>
     <!-- R22: sand, with the ember. -->
     <colorSpectrum>
       <li>(0.70,0.55,0.30)</li>

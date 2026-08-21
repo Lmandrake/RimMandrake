@@ -62,7 +62,7 @@
 
     <factionNameMaker>NamerFactionTribal</factionNameMaker>
     <settlementNameMaker>NamerSettlementTribal</settlementNameMaker>
-    <factionIconPath>World/WorldObjects/Expanding/VillageSavage</factionIconPath>
+    <factionIconPath>World/JawaFactions/WildsteamClan</factionIconPath>
     <!-- R22: deep green. -->
     <colorSpectrum>
       <li>(0.30,0.45,0.25)</li>

@@ -60,7 +60,7 @@
 
     <factionNameMaker>NamerFactionSalvagers</factionNameMaker>
     <settlementNameMaker>NamerSettlementPirate</settlementNameMaker>
-    <factionIconPath>UI/FactionIcons/JunkersOutpost</factionIconPath>
+    <factionIconPath>World/JawaFactions/Junkers</factionIconPath>
     <!-- The icon ships in Vanilla Factions Expanded - Pirates
          (oskarpotocki.vfe.pirates), which is active. A texture path has no
          MayRequire; if that mod ever leaves the list the icon goes pink. -->
