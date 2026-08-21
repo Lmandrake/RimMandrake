@@ -54,7 +54,24 @@ from design and discussion."*
   Nobody blocks on RimSort or game close for config files of any kind."* Write it,
   game up or down. Only **assemblies** need the game down, because the OS locks them.
 - **Never guess a defName, field, or namespace.** Read the def, the `About.xml`, or
-  `strings -a -el` the assembly. Plain `strings` misses UTF-16 method bodies.
+  ask `measure`. ⚠️ **Corrected 2026-08-21: `strings -a -el` on an assembly is NOT a
+  census and this file used to say it was.** Measured against the companion DLL it
+  found **16 of 115** tool names — .NET keeps attribute strings in metadata blobs a
+  byte scan never reaches, and it reports the shortfall as a clean answer. `strings`
+  proves a name is PRESENT; it can never prove one is absent.
+- 🔴 **A number about a large artifact comes from `measure`, never from a scan.**
+  `grep`, `strings` and `wc` return a plausible number with no error when they cannot
+  read the encoding — that cost seven wrong counts in one session, and
+  `.claude/hooks/block_blind_scan.py` now refuses the scan and names the instrument.
+  ```
+  python3 src/RimMandrake/measure/cli.py count <DefType>     MEASURED 24904 / UNMEASURED + why
+  python3 src/RimMandrake/measure/cli.py coverage            what the dump did NOT capture
+  python3 src/RimMandrake/measure/cli.py explain <path>      what may read this file
+  ```
+  🔑 **`0` now means measured zero and nothing else** — ignorance answers `UNMEASURED`,
+  a question the instrument cannot judge answers `REFUSED`, and both say what to run
+  instead. The register of instruments caught lying is
+  `infrastructure/state/BUILDABLE.md`.
 - **A patch that matches nothing logs nothing.** `PatchOperationConditional` and
   `PatchOperationFindMod` both return true on no match.
 
@@ -195,6 +212,7 @@ infrastructure/state/   queues, V1.md, facts/        see POLICY.md
 python3 src/RimMandrake/Utils/status_server.py     the board -> http://localhost:8787
 python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>    dry run; --apply writes
 python3 src/RimMandrake/Utils/refresh.py           rebuild the offline def dump
+python3 src/RimMandrake/measure/cli.py count <DefType>       one line; never a bare number
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./src/RimMandrake/Utils/show.sh <path>             open it in Explorer
 ./game up|down|loading|deploying|going-down   🔴 OWNER ONLY - announce + stamp

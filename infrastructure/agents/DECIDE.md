@@ -48,10 +48,23 @@ to make it.
 
 ## Before you ask anyone anything
 
-**There is no facts file. Measure it.** The offline def dump at
-`observed/2026-08-13/dumps/` answers "does this def exist"; the mod XML under the
-workshop tree answers "what does it actually say"; only the live game answers
-"what is loaded right now". If the answer needs a live game, write one item into
+**There is no facts file. Measure it.** ⭐ **And since 2026-08-21 there is a tool
+called exactly that, because the raw dump answered `0` for a def type holding 612:**
+
+```
+python3 src/RimMandrake/measure/cli.py count <DefType>    MEASURED n | UNMEASURED + why
+python3 src/RimMandrake/measure/cli.py get <defName>      does this exist, and as what
+python3 src/RimMandrake/measure/cli.py coverage           what the dump did NOT capture
+```
+
+🔑 **This matters most to YOU, because you scope work off these numbers.** A `0` from a
+scan used to be indistinguishable between "measured zero", "not captured" and "cannot
+judge"; now each has its own word, and `UNMEASURED` names what to run to settle it. ⛔ Do
+not scope an item off a bare count any more — if it did not come back `MEASURED`, the
+question is still open.
+
+The mod XML under the workshop tree answers "what does it actually say"; only the live
+game answers "what is loaded right now". If the answer needs a live game, write one item into
 `queue/CHECK.md` and go to your next item.
 
 ## Reading

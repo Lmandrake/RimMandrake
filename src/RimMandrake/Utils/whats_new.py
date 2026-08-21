@@ -80,6 +80,13 @@ DOCTRINE = [
     "infrastructure/state/V1.md",
     "infrastructure/state/V1_CHAIN.md",
     "infrastructure/DOC_BUDGET.md",
+    # ⭐ Added 2026-08-21. A NEW TOOL was invisible here: this list watched only
+    # prose, so `measure/` and its hook shipped in six commits and produced no
+    # delta line for any seat. A capability nobody is told about loses to the
+    # habit it was built to replace. BUILDABLE.md is where a seat publishes
+    # "the stack can / cannot do X", so watching it announces new capability
+    # generally, not just this one instance.
+    "infrastructure/state/BUILDABLE.md",
 ]
 
 EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"

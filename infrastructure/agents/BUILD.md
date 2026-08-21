@@ -55,8 +55,27 @@ engine refuses. Replace a superseded line; do not append a correction under it.
 
 ## Reading
 
-The def, the About.xml, or `strings` the assembly. Never guess a defName, field, or
-namespace. That is the one thing worth the extra read.
+The def, the About.xml, or `measure`. Never guess a defName, field, or namespace.
+That is the one thing worth the extra read.
+
+⚠️ **Corrected 2026-08-21 — this line used to say `strings` the assembly.** Measured
+against the companion DLL, `strings -a -el` found **16 of 115** tool names: .NET keeps
+attribute strings in metadata blobs a byte scan cannot reach, and it returns the
+shortfall as a clean answer. It can prove a name is present, never that one is absent.
+
+🔴 **Any COUNT off a large artifact goes through `measure`, and a bare number is now a
+smell.** `.claude/hooks/block_blind_scan.py` refuses `grep`/`strings`/`wc` against the
+def dump, a `.rws`, a `.dll`, a world CSV or `Player.log`, and names the instrument.
+
+```
+python3 src/RimMandrake/measure/cli.py count <DefType>    MEASURED n | UNMEASURED + why
+python3 src/RimMandrake/measure/cli.py coverage           what the dump did NOT capture
+python3 src/RimMandrake/measure/cli.py explain <path>     what may read this file
+```
+
+🔑 **You paste `verify:` output, so this is your evidence pipeline.** `UNMEASURED` in a
+verify record is a real result and an honest one — it is a check that could not run, not
+a check that passed. Never round it to 0.
 
 ## Declines
 
