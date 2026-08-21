@@ -102,11 +102,35 @@ I = "infrastructure/state/items"
 
 CASES = [
     # ---- 1. a generated view is not a place to write -----------------------
-    ("DENY  editing a generated queue view", DENY, "render",
-     {Q + "/BUILD.md": GEN + "\n## MY_HAND_EDIT_1 x\nstate: ready\n"},
+    # 🔴 Enforced at the WRITE since 2026-08-21, not at the commit. A REGENERATED view
+    # differs from HEAD every time, so the commit-time rule fired on
+    # `render --overwrite-queues` — the correct action — and never on a hand-edit.
+    ("DENY  hand-editing a generated queue view", DENY, "render",
+     {}, Q + "/BUILD.md", "BUILD", None, "Edit"),
+    ("ALLOW hand-editing a hand-written queue file", ALLOW, None,
+     {}, Q + "/DECIDE_ARCHIVE.md", "BUILD", None, "Edit"),
+    ("ALLOW committing a REGENERATED view — that is publishing, not editing",
+     ALLOW, None,
+     {Q + "/BUILD.md": GEN + "\n## SOME_ITEM_1 x\nstate: ready\n"},
      "git commit %s/BUILD.md -m x" % Q, "BUILD", None),
     ("ALLOW an UNCHANGED generated view in the pathspec", ALLOW, None,
      {}, "git commit %s/BUILD.md -m x" % Q, "BUILD", None),
+
+    # ---- 1b. a commit MESSAGE is not a pathspec ---------------------------
+    # All four of these refused correct work on 2026-08-21 before the fix.
+    ("ALLOW a message body that merely QUOTES another seat's item", ALLOW, None,
+     {I + "/THEIRS_ITEM_HERE_1.md": "changed\n"},
+     "git commit src/x.py -m \"see %s/THEIRS_ITEM_HERE_1.md for why\"" % I, "BUILD", None),
+    ("ALLOW a message body naming a root .md that does not exist", ALLOW, None,
+     {}, "git commit src/x.py -m \"corrected REP.md and BUILD.md\"", "BUILD", None),
+    ("ALLOW a message quoting the ledger path", ALLOW, None,
+     {}, "git commit src/x.py -m \"the %s guard was inverted\"" % L, "BUILD", None),
+    ("DENY  another seat's item when it IS in the pathspec", DENY, "belongs to",
+     {I + "/THEIRS_ITEM_HERE_1.md": "changed\n"},
+     "git commit %s/THEIRS_ITEM_HERE_1.md -m \"x\"" % I, "BUILD", None),
+    ("ALLOW a commit naming no item while ANOTHER item is dirty", ALLOW, None,
+     {I + "/THEIRS_ITEM_HERE_1.md": "changed\n"},
+     "git commit src/x.py -m x", "BUILD", None),
     ("ALLOW editing a hand-written ARCHIVE — still the source", ALLOW, None,
      {Q + "/DECIDE_ARCHIVE.md": HAND + "\n## D56 x\nstate: ready\n"},
      "git commit %s/DECIDE_ARCHIVE.md -m x" % Q, "BUILD", None),

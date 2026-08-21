@@ -108,6 +108,21 @@ LEDGER_MSG = (
     "✅ COMMITTING the ledger is fine and is not what this refused — commit it after "
     "every turn, and push. Reading it with grep, cat or sed -n is fine too.")
 
+VIEW_MSG = (
+    "Blocked: %s is a GENERATED VIEW and you are editing it by hand.\n\n"
+    "It is rendered from infrastructure/state/ledger/events.jsonl, so this edit is not "
+    "a small mistake — it is invisible. The next render overwrites it, the work is "
+    "gone, and nobody is told.\n\n"
+    "What you probably meant:\n"
+    "  change an item's STATE   -> rimflow claim|start|block|close <ID>\n"
+    "  change its PROSE         -> edit infrastructure/state/items/<ID>.md\n"
+    "  file something new       -> rimflow file --for <SEAT> …\n"
+    "  regenerate the view      -> python3 src/RimMandrake/rimflow/render.py "
+    "--overwrite-queues\n\n"
+    "\u26a0\ufe0f  The flag is part of that command. Bare `render.py` writes a PREVIEW and "
+    "leaves\nthis file exactly as stale as it already was.\n"
+    "\u2705 These four views are gitignored, so there is nothing to commit either way.")
+
 LEDGER_PATH_RE = re.compile(r"[\w./\\-]*ledger/events\.jsonl")
 # A redirect must land on the ledger IMMEDIATELY. ⚠️ "somewhere earlier in the command"
 # is not good enough and was a false deny: `wc -l 2>/dev/null <ledger>` has a `>` before
@@ -136,6 +151,36 @@ def ledger_write_target(cmd):
         if WRITE_AFTER_RE.match(cmd[m.end():m.end() + 12]):
             return m.group(0)
     return None
+
+
+# ⚠️ A COMMIT MESSAGE IS NOT A PATHSPEC, and treating it as one refused four
+# legitimate commits on 2026-08-21 — including one whose only sin was quoting the path
+# of the file it was fixing, and one whose body contained the string "REP.md". The old
+# rule was `re.findall(r"[\w./-]+\.(?:md|jsonl)", cmd)` over the whole command.
+_MSG_FLAG_RE = re.compile(r"""(?x)
+    (?:^|\s) -(?:m|F|c|C|-message|-file|-reedit-message|-reuse-message)
+    (?:=|\s+)
+    (?: "(?:[^"\\]|\\.)*"? | '[^']*'? | \S+ )
+""")
+_HEREDOC_RE = re.compile(r"<<-?\s*['\"]?(\w+)['\"]?.*?^\1", re.S | re.M)
+_PATH_RE = re.compile(r"[\w./-]+\.(?:md|jsonl)")
+
+
+def commit_pathspec(cmd):
+    """-> the .md/.jsonl paths this `git commit` actually names as a PATHSPEC.
+
+    Message bodies, heredocs and `--flag=value` text are stripped first. What survives
+    is a bare word-run that git itself would read as a path.
+
+    🔑 Over-stripping is the SAFE direction here. A missed pathspec means a rule does
+    not fire; a phantom one from prose means correct work is refused, and a hook that
+    refuses correct work gets disabled — after which nothing is guarded at all.
+    """
+    stripped = _HEREDOC_RE.sub(" ", cmd)
+    stripped = _MSG_FLAG_RE.sub(" ", stripped)
+    # Anything still inside quotes is a message body the flag regex could not pair up.
+    stripped = re.sub(r"\"(?:[^\"\\]|\\.)*\"|'[^']*'", " ", stripped)
+    return _PATH_RE.findall(stripped)
 
 
 def is_generated(path):
@@ -207,7 +252,13 @@ def main():
         fp = (ti.get("file_path") or ti.get("notebook_path") or "").replace("\\", "/")
         if fp.rstrip("/").endswith("ledger/events.jsonl"):
             return deny(LEDGER_MSG % fp)
-        return 0                          # rules 1/3/4 are about commits, not edits
+        # A generated queue view: refuse the EDIT, which is the moment the work is
+        # wasted. `render` writes these with open(), not through a tool call, so it is
+        # unaffected — which is the whole reason this belongs here and not at commit.
+        if QUEUE in fp and is_generated(fp if os.path.isabs(fp) else os.path.join(
+                os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd(), fp)):
+            return deny(VIEW_MSG % fp)
+        return 0                          # rules 3/4 are about commits, not edits
 
     cmd = ti.get("command") or ""
     hit = ledger_write_target(cmd)
@@ -217,12 +268,19 @@ def main():
     if "git" not in cmd or "commit" not in cmd:
         return 0
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
-    paths = re.findall(r"[\w./-]+\.(?:md|jsonl)", cmd)
+    paths = commit_pathspec(cmd)
     if not paths:
         return 0
 
     # ---- 1. a generated view is not a place to write ------------------------
-    for p in paths:
+    # 🔴 ENFORCED AT THE WRITE, not here — see the Write/Edit branch above, and the
+    # same correction the ledger rule got. A REGENERATED view is byte-different from
+    # HEAD every single time, so a commit-time rule fired on `render --overwrite-queues`
+    # (the correct, required action) and never on the hand-edit it was aimed at. The
+    # four views are now gitignored as the derived artifacts they are — `derived/` was
+    # already ignored for exactly this reason. Kept as dead code? No: deleted. This
+    # comment is the record.
+    for p in ():
         if QUEUE in p and is_generated(os.path.join(root, p)) and changed(root, [p]):
             return deny(
                 "Blocked: %s is a GENERATED VIEW and you are committing an edit to "
@@ -247,7 +305,12 @@ def main():
     seat = my_seat(root)
     if seat:
         own = owners(root)
-        mine = [p for p in changed(root, [p for p in paths if ITEMS in p])]
+        # ⚠️ `git diff HEAD --` with an EMPTY pathspec lists the whole working tree, so
+        # this used to refuse a commit because some OTHER seat was mid-edit on an item
+        # that appeared in neither the pathspec nor the diff. Four seats share one tree;
+        # it fired constantly. Measured 2026-08-21.
+        want = [p for p in paths if ITEMS in p]
+        mine = changed(root, want) if want else []
         bad = []
         for p in mine:
             iid = os.path.basename(p)[:-3]

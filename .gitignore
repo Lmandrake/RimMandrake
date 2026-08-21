@@ -216,3 +216,14 @@ infrastructure/state/modlists/ModsConfig.PRESWAP.*.xml
 # render, both from infrastructure/state/ledger/events.jsonl alone. Pure churn in a
 # shared worktree. Delete the whole directory and one `render` rebuilds it.
 infrastructure/state/derived/
+
+# rimflow's four generated queue views. Rendered from events.jsonl + items/<ID>.md by
+# `render.py --overwrite-queues`, exactly like derived/ above. They were tracked AND
+# uncommittable until 2026-08-21 — the commit guard refused every regenerated copy,
+# because a regenerated view differs from HEAD every time — so git held a frozen
+# snapshot while the disk held the truth. HUMAN.md, CHECK_CLOSED.md and
+# DECIDE_ARCHIVE.md are HAND-WRITTEN and stay tracked.
+infrastructure/state/queue/DECIDE.md
+infrastructure/state/queue/BUILD.md
+infrastructure/state/queue/CHECK.md
+infrastructure/state/queue/REP.md

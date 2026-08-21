@@ -5,9 +5,9 @@
 The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 `infrastructure/state/items/<ID>.md`. Regenerate with:
 
-    python3 src/RimMandrake/rimflow/render.py
+    python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-21T05:05:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-21T07:23:36Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -40,15 +40,6 @@ target:   v1
 kind:     task
 summary:  §2. The link chain is entirely shipped and verified 2026-08-19:
 prose:    infrastructure/state/items/INHABITED_GENSTEP_CAST_SPAWN_1.md
-
-## ROSTER_SURVIVES_OFFMAP_PROOF_1 🔴 THE ARCHITECTURE GATE — do this before the rest
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  §3.4 names this as "the one that could invalidate the architecture. Do it first."
-prose:    infrastructure/state/items/ROSTER_SURVIVES_OFFMAP_PROOF_1.md
 
 ## VEHICLE_FUEL_ACCEPTS_VEGETABLES_1 Any plant food fuels a draught vehicle, not just hay
 state:    ready
@@ -95,12 +86,64 @@ _none._
 
 # PROPOSED — cannot enter `ready` yet
 
-_none._
+An item without spec/verify/criteria in its `items/<ID>.md` cannot start. The missing sections are named per item.
+
+## LEDGER_COMMIT_GUARD_INVERTED_1 The ledger cannot be committed by its honest path, and the bypass is a directory pathspec
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+missing:  ## spec, ## verify, ## criteria
+summary:  (no items/LEDGER_COMMIT_GUARD_INVERTED_1.md yet — cannot enter `ready` without spec/verify/criteria)
+prose:    infrastructure/state/items/LEDGER_COMMIT_GUARD_INVERTED_1.md
+
+## NEEDS_HAS_NO_SETTER_1 Every item's needs is stuck at the filing default; 38 CHECK items claim they are offline work
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+missing:  ## spec, ## verify, ## criteria
+summary:  (no items/NEEDS_HAS_NO_SETTER_1.md yet — cannot enter `ready` without spec/verify/criteria)
+prose:    infrastructure/state/items/NEEDS_HAS_NO_SETTER_1.md
+
+## IMPERIAL_RAID_ROSTER_1 Wire the four authored Imperial pawn kinds into the Empire's raids, and give it Palpatine as leader
+state:    proposed
+row:      1
+needs:    offline
+target:   v1
+kind:     build
+missing:  nothing — claim it
+summary:  src/Jawa/JawaPatches/Defs/PawnKindDefs/JawaFactionRoster.xml:31-110 authors four
+prose:    infrastructure/state/items/IMPERIAL_RAID_ROSTER_1.md
+
+## IMPERIAL_VOCABULARY_KEYED_1 Override Royalty's royal/honour/bestowing vocabulary for the Galactic Empire
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+missing:  nothing — claim it
+summary:  The Empire's vessel is Royalty's, and its vocabulary comes with it: royalFavorLabel is
+prose:    infrastructure/state/items/IMPERIAL_VOCABULARY_KEYED_1.md
+
+## GUARD_SCANS_WHOLE_TREE_1 An empty pathspec makes the ownership guard scan the whole tree, so any seat blocks every other
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+missing:  nothing — claim it
+summary:  .claude/hooks/queuelint.py:245 builds the ownership check as
+prose:    infrastructure/state/items/GUARD_SCANS_WHOLE_TREE_1.md
 
 # CLOSED RECENTLY — the last 10, newest first
 
 ⭐ Terminal, permanently. A failed run or a dropped item is not a hole in the record — it IS the record. Follow-up work is a NEW item linked with `caused_by`.
 
+- `LEDGER_CANNOT_BE_COMMITTED_1` **done** 2026-08-21 at e135a80 — The ledger guard blocks every commit of the ledger, so it lives on one disk
+- `ROSTER_SURVIVES_OFFMAP_PROOF_1` **done** 2026-08-21 at 2ead1d4 — 🔴 THE ARCHITECTURE GATE — do this before the rest
 - `the-eyeling-becomes-the-ikee-rename-and-place-it-6f2b81` **done** 2026-08-21 at 6029f51 — the-eyeling-becomes-the-ikee-rename-and-place-it-6f2b81
 - `the-ancients-are-rakata-and-it-is-v1-now-9d40a7` **done** 2026-08-21 at 3cc16a2 — the-ancients-are-rakata-and-it-is-v1-now-9d40a7
 - `pyrelands-off-the-blacklist-and-ash-storms-5d2e71` **done** 2026-08-21 at 0310a46 — pyrelands-off-the-blacklist-and-ash-storms-5d2e71
@@ -109,5 +152,3 @@ _none._
 - `ROLE_KINDS_UNARMED_1` **done** 2026-08-21 at 4a98af5 — ROLE_KINDS_UNARMED_1
 - `INHABITED_WORLD_OBJECT_CORE_1` **done** 2026-08-21 at f0a9f6c — `WorldObject_Inhabited` — the roster is real pawns
 - `INHABITED_MOD_SKELETON_1` **done** 2026-08-21 at f0a9f6c — The mod folder, About.xml and csproj
-- `INHABITED_DISPLACED_POOL_1` **done** 2026-08-21 at f0a9f6c — The placeless, per faction
-- `INHABITED_DAY_NIGHT_ROUTE_1` **done** 2026-08-21 at f0a9f6c — One toil that reassigns duty, and a sleep JobGiver

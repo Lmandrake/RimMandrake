@@ -5,9 +5,9 @@
 The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 `infrastructure/state/items/<ID>.md`. Regenerate with:
 
-    python3 src/RimMandrake/rimflow/render.py
+    python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-21T05:05:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-21T07:23:36Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -130,15 +130,6 @@ target:   v1
 kind:     check
 summary:  Carries the live half of B45 · B46 · B47 · B48 · B49 · B50 · B51 — Hutt
 prose:    infrastructure/state/items/seven-authored-factions-generate-and-field-their-own-kinds-5b90c7.md
-
-## worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d
-state:    ready
-row:      10
-needs:    offline
-target:   v1
-kind:     check
-summary:  design/Jawa/worldbuilding/TidallyLockedPreset.xml copied verbatim to
-prose:    infrastructure/state/items/worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d.md
 
 ## B63 the world-creation inputs, live half
 state:    ready
@@ -381,6 +372,7 @@ _none._
 
 ⭐ Terminal, permanently. A failed run or a dropped item is not a hole in the record — it IS the record. Follow-up work is a NEW item linked with `caused_by`.
 
+- `worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d` **done** 2026-08-21 at 8e84d3c — worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d
 - `worldpaint-live-bridge-route-9d41c7` **dropped** 2026-08-21 — worldpaint-live-bridge-route-9d41c7
 - `worldmap-import-is-pinned-to-mlp-subcount-7-4c9e1a` **dropped** 2026-08-21 — worldmap-import-is-pinned-to-mlp-subcount-7-4c9e1a
 - `seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8` **done** 2026-08-21 at 7aa0543 — seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8
@@ -390,4 +382,3 @@ _none._
 - `INHABITED_DEFS_LOAD_CLEAN_1` **done** 2026-08-21 at unrecorded — The four `Inhabited` defs load, and the Harmony patch binds
 - `C43` **dropped** 2026-08-21 — Lightsabres in active melee — the observation is collectable, the VERDICT is not mine
 - `C42` **dropped** 2026-08-21 — The two saved ideo/xenotype files were captured on a stack 11 mods wider than today's
-- `C41` **dropped** 2026-08-21 — Four more transports pulled by desert creatures — validation plan

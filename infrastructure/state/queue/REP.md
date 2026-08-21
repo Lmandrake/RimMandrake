@@ -5,9 +5,9 @@
 The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 `infrastructure/state/items/<ID>.md`. Regenerate with:
 
-    python3 src/RimMandrake/rimflow/render.py
+    python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-21T05:05:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-21T07:23:36Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first

@@ -5,32 +5,14 @@
 The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 `infrastructure/state/items/<ID>.md`. Regenerate with:
 
-    python3 src/RimMandrake/rimflow/render.py
+    python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-21T05:05:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-21T07:23:36Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat DECIDE` returns. This file and that command call the same function, so they cannot disagree.
-
-## D-EMP1 A fresh faction gap audit, against vanilla `Empire`
-state:    ready
-row:      1
-needs:    offline
-target:   v1
-kind:     decision
-summary:  🔴 OWNER RULING 2026-08-20 (OWNERDECISIONS.md, end of file): "I've
-prose:    infrastructure/state/items/D-EMP1.md
-
-## FACTION_ART_SPEC_1 Spec the world-map and faction art for all twelve, from Star Wars canon
-state:    ready
-row:      9
-needs:    offline
-target:   v1
-kind:     decision
-summary:  not recorded in the source queue
-prose:    infrastructure/state/items/FACTION_ART_SPEC_1.md
 
 ## D-CRIT ⭐ Read before sequencing — the worldgen deadline
 state:    ready
@@ -126,6 +108,15 @@ prose:    infrastructure/state/items/TWO_JOKE_LABELS_ON_SLEEPERS_1.md
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
 
+## FACTION_ART_SPEC_1 Spec the world-map and faction art for all twelve, from Star Wars canon
+state:    doing
+row:      9
+needs:    offline
+target:   v1
+kind:     decision
+summary:  not recorded in the source queue
+prose:    infrastructure/state/items/FACTION_ART_SPEC_1.md
+
 ## the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07 the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07
 state:    doing
 row:      12
@@ -159,12 +150,33 @@ _none._
 
 # PROPOSED — cannot enter `ready` yet
 
-_none._
+An item without spec/verify/criteria in its `items/<ID>.md` cannot start. The missing sections are named per item.
+
+## IMPERIAL_CAST_BINDING_1 Bind the 26 named Imperials to a xenotype, a pawn kind and apparel
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     decision
+missing:  nothing — claim it
+summary:  src/Jawa/Inhabited/Defs/CastRosters/CastRosterEMPIRE.xml ships 26
+prose:    infrastructure/state/items/IMPERIAL_CAST_BINDING_1.md
+
+## FACTION_SLATE_ZEROES_KEEPS_1 The generated faction slate zeroes four factions the ratified checklist marks KEEP
+state:    proposed
+row:      10
+needs:    offline
+target:   v1
+kind:     decision
+missing:  ## spec, ## verify, ## criteria
+summary:  (no items/FACTION_SLATE_ZEROES_KEEPS_1.md yet — cannot enter `ready` without spec/verify/criteria)
+prose:    infrastructure/state/items/FACTION_SLATE_ZEROES_KEEPS_1.md
 
 # CLOSED RECENTLY — the last 10, newest first
 
 ⭐ Terminal, permanently. A failed run or a dropped item is not a hole in the record — it IS the record. Follow-up work is a NEW item linked with `caused_by`.
 
+- `D-EMP1` **done** 2026-08-21 at b279df6 — A fresh faction gap audit, against vanilla `Empire`
 - `the-tribal-melee-tag-is-empty-pick-the-weapon-4a72e8` **done** 2026-08-21 at 4958c33 — the-tribal-melee-tag-is-empty-pick-the-weapon-4a72e8
 - `the-trade-moot-wears-the-player-faith-and-the-spec-never-said-so-9d21f7` **done** 2026-08-21 at c7ae367 — the-trade-moot-wears-the-player-faith-and-the-spec-never-said-so-9d21f7
 - `the-dump-was-never-stale-correct-the-manifest-5cb9a2` **dropped** 2026-08-21 — the-dump-was-never-stale-correct-the-manifest-5cb9a2
@@ -174,4 +186,3 @@ _none._
 - `six-species-in-our-own-mod-have-no-donor-source-and-a-regenerate-deletes-them-4f81c9` **done** 2026-08-21 at 4958c33 — six-species-in-our-own-mod-have-no-donor-source-and-a-regenerate-deletes-them-4f81c9
 - `seven-factions-have-no-required-count-9c4e17` **done** 2026-08-21 at c7ae367 — seven-factions-have-no-required-count-9c4e17
 - `promote-the-defdump-arming-out-of-optional-6ea3c7` **dropped** 2026-08-21 — promote-the-defdump-arming-out-of-optional-6ea3c7
-- `point-seats-at-checks-live-file-3f70d1` **dropped** 2026-08-21 — point-seats-at-checks-live-file-3f70d1
