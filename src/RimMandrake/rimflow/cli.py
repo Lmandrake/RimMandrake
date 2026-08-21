@@ -223,6 +223,9 @@ def cmd_next(args, seat):
     ctx = _ctx(args)
     it = priority.next_item(w, seat, args.target, ctx)
     if it is None:
+        claimable = _claimable(w, seat, args.target)
+        if claimable:
+            return _offer_claimable(claimable, seat)
         return _nothing(w, seat, args, ctx)
 
     print("%s   %s" % (it.id, _scalars(it)))
@@ -250,6 +253,43 @@ def cmd_next(args, seat):
     return 0
 
 
+def _claimable(w, seat, target="v1"):
+    """-> [Item] this seat owns that are `proposed`, spec-complete and unblocked.
+
+    🔴 THE HANDOFF USED TO END HERE, SILENTLY. `priority.rank()` filters
+    `state == "ready"`, and an item filed FOR a seat lands in `proposed` — so work that
+    another seat had specced in full was never surfaced by the only command POLICY tells
+    a seat to run. Measured 2026-08-21: BUILD held 21 proposed items, **18 of them
+    spec-complete**, while `next` offered 3 and the board showed no problem. Fleet-wide,
+    28 finished specs were unreachable.
+
+    ⚠️ This deliberately does NOT change `priority.rank()`. `ready` still means claimed,
+    the claim is still an explicit act, and the rendered NEXT section still shows only
+    claimed work. What changes is that an empty answer must now say "claim one" rather
+    than "nothing".
+    """
+    out = [i for i in w.items.values()
+           if i.owner == seat and i.state == "proposed" and not i.blocked
+           and i.target in (None, target) and model._complete(i)]
+    out.sort(key=lambda i: (not i.this_deployment, i.created_at or "", i.id))
+    return out
+
+
+def _offer_claimable(items, seat):
+    it = items[0]
+    print("nothing is CLAIMED, but %d spec-complete item%s waiting for %s to claim."
+          % (len(items), "" if len(items) == 1 else "s", seat))
+    print("")
+    print("%s   %s" % (it.id, _scalars(it)))
+    print(it.title or "(no title)")
+    if len(items) > 1:
+        rest = ", ".join(i.id for i in items[1:6])
+        print("also: %s%s" % (rest, "" if len(items) <= 6 else ", +%d" % (len(items) - 6)))
+    print("")
+    print("-> rimflow claim %s     (then `start`)" % it.id)
+    return 0
+
+
 def _nothing(w, seat, args, ctx):
     """⭐ An empty answer must still say WHY, in one line.
 
@@ -273,6 +313,15 @@ def _nothing(w, seat, args, ctx):
     for key, ids in sorted(buckets.items(), key=lambda kv: -len(kv[1])):
         show = ", ".join(ids[:4]) + ("" if len(ids) <= 4 else ", +%d" % (len(ids) - 4))
         print("  %d  %s  (%s)" % (len(ids), key, show))
+    incomplete = [i for i in mine
+                  if i.state == "proposed" and not model._complete(i)]
+    if incomplete:
+        print("⚠️  %d proposed item(s) cannot be claimed because items/<ID>.md is "
+              "missing sections:" % len(incomplete))
+        for i in incomplete[:6]:
+            print("      %-44s missing %s"
+                  % (i.id, ", ".join("## " + m for m in model._missing(i))))
+        print("    Whoever filed them owes the prose; until then nobody can work them.")
     print("-> rimflow why <ID> for the full reason")
     return 0
 

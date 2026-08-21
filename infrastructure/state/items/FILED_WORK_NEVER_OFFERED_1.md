@@ -45,3 +45,35 @@ another seat and has never been claimed. Today it does not.
 ## criteria
 No item can be complete, filed, unblocked and still absent from the only command its owner
 is told to run.
+
+---
+
+## ✅ FIXED by REP, 2026-08-21
+
+**Re-measured before fixing, and it had grown:** BUILD held **21** proposed, **18 of them
+spec-complete**, against 3 offered. Fleet-wide **28 finished specs were unreachable** —
+BUILD 18, CHECK 7, DECIDE 2, REP 1.
+
+**The fix, in `cli.py`:** `next` now falls through to `_claimable()` before saying
+"nothing". If the seat owns `proposed` items that are unblocked, on-target and
+spec-complete, it prints the top one and the exact verb — `rimflow claim <ID>` — instead
+of an empty answer.
+
+⚠️ **`priority.rank()` is deliberately UNCHANGED.** `ready` still means claimed, the claim
+stays an explicit act of taking the work, and the rendered NEXT section still shows only
+claimed items. The defect was never that `rank()` was wrong; it was that an empty answer
+lied about there being nothing to do.
+
+⭐ **And the other half, which the item did not ask for but is the same wound:** when there
+is genuinely nothing claimable, `_nothing()` now lists proposals that CANNOT be claimed
+because their `items/<ID>.md` is missing sections, naming the sections. Previously those
+sat in a generic bucket reading `state is proposed`, which told nobody that the filer
+still owed prose.
+
+Two selftests, asserting both directions: a spec-complete handoff is offered with its
+claim verb, and a prose-less proposal is still refused and names what it lacks.
+`selftest_cli.py` 24/24; model 37/37, render 16/16, importer 21/21 unchanged.
+
+🔑 **What this does NOT fix, and somebody should:** `POLICY.md` still tells every seat its
+turn is *"three commands, in this order, and no others"*, and `claim` is not among them.
+The tool now surfaces the work, but the doctrine still has no step for taking it.

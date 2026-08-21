@@ -184,6 +184,35 @@ def t_next_prints_one_item_with_its_spec():
     assert "-> rimflow start OFFER_THIS_ONE_1" in out, out
 
 
+def t_next_offers_unclaimed_spec_complete_work_instead_of_nothing():
+    """🔴 The DECIDE->BUILD handoff used to end silently here.
+
+    `priority.rank()` filters `state == "ready"`, an item filed FOR a seat lands in
+    `proposed`, and POLICY tells a seat its turn is three commands ending in `next`.
+    So a fully specced item was unreachable by the only command anyone runs. Measured
+    2026-08-21: BUILD held 21 proposed, 18 spec-complete, while `next` offered 3.
+    """
+    fresh()
+    ok("file", "HANDED_TO_BUILD_1", "--for", "BUILD", "--title", "Specced by someone else")
+    prose("HANDED_TO_BUILD_1", spec="HANDOFF-MARKER")
+    out = ok("next", "--seat", "BUILD")
+    assert "nothing offered" not in out, (
+        "a spec-complete unclaimed item must not read as nothing to do: %s" % out)
+    assert "HANDED_TO_BUILD_1" in out, out
+    assert "rimflow claim HANDED_TO_BUILD_1" in out, (
+        "the answer must name the verb that unblocks it: %s" % out)
+
+
+def t_next_still_says_nothing_when_the_proposal_has_no_prose():
+    """⚠️ The counterpart: an item nobody can work must NOT be offered as claimable."""
+    fresh()
+    ok("file", "NO_PROSE_HANDOFF_1", "--for", "BUILD", "--title", "t")
+    out = ok("next", "--seat", "BUILD")
+    assert "nothing offered" in out, out
+    assert "missing" in out and "## spec" in out, (
+        "an unworkable proposal must name what it is missing: %s" % out)
+
+
 def t_why_explains_a_v2_item_as_planning_not_breakage():
     fresh()
     ok("file", "SOMEDAY_ITEM_HERE_1", "--for", "BUILD", "--title", "t",
