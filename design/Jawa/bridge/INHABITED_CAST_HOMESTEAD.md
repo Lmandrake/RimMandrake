@@ -115,7 +115,7 @@ adult: took the Covenant at twenty-four. The only Jawa ever to do it, as far as 
 > Two glowing eyes at chest height, a smell that arrives well ahead of him, and a chatter like a saw blade dropped on stone. He will steal anything you own — parts, boots, the pin out of your hinge — and regards that as evidence of his good character. He will not touch water. He once walked eleven kilometres in the dark, both ways, to put a canteen back where he found it, told nobody, and has been insufferable about the Covenant to his own clan ever since, who find the entire business obscene.
 
 **Bessa Trull** · human · f · 44
-`traits: Ascetic, Abrasive, Kind`
+`traits: Ascetic, Kind`
 childhood: taught that a debt you did not agree to is still a debt.
 adult: her aquifer went brackish four years ago. Stillmarket has hauled her water free since.
 > Wire-thin and going grey at forty-four, and the most generous person in this town toward anybody except herself. She will not take the haulage as a gift, so she works it off — at night, after her own day, on other people's ground — and she is thirty-one months ahead of anything anyone claims she owes. They have stopped telling her. She is starting to look like something left out in the sun, and if you say so she will thank you for your concern and add a shift.
@@ -186,7 +186,7 @@ adult: sorts and bales fodder. Has never in her life been present when anything 
 > She arrived after. She always arrives after — the raid, the collapse, the wedding, the argument — and she knows everyone who was there, and she will give you the whole thing accurately in a flat honking drone, crediting who told her which part, for as long as you stand still. Marrowfield uses her as an index and has never told her that is what she is for. Nothing has ever happened to her. She does not appear to mind and does not appear to have noticed.
 
 **Ren Ashek** · human · f · 46
-`traits: Psychopath, GreatMemory, Kind`
+`traits: Psychopath, GreatMemory`
 childhood: perfectly ordinary, in a house that loved her and got nothing back.
 adult: sits with the dying. Volunteered. Argued for the job on the merits and won the argument.
 > She feels nothing, and has said so plainly at a gathering, to four hundred people, and made the case that this is exactly why the job should be hers — and Marrowfield are libertarians and could not fault the reasoning. She keeps a card with the correct things to say written on it and reads from it openly, at the bedside, in front of the family. The dying find it enormously comforting. Somebody wrote it down. Somebody sat and worked out what would help, and then came.

@@ -76,7 +76,7 @@ adult: lost the left at nineteen, both legs below the knee at thirty. Promoted t
 > Four alloy sockets and a torso, walking on machine-shop legs he built better than the ones he was born with, and he is delighted. He asks — cheerfully, repeatedly, of anyone with a cutting torch — whether they'd take the remaining hand, because the socket is *so much faster.* Nobody has told him no in a way he accepted.
 
 **Rrekk the Returned** · Geonosian (warrior) · m · 33
-`traits: Brawler, Masochist, ShootingAccuracy(Trigger-happy)`
+`traits: Brawler, Masochist`
 childhood: volunteered for the arena at fifteen, the one route up that a drone gets.
 adult: survived it, bought passage offworld, saw four planets, and came back.
 > Scarred to the plate and grinning about it, the only Geonosian on this rock who has stood under a foreign sun — and he came home to a dead mine on purpose and cannot explain why to anyone's satisfaction, including his own. He starts fights he has no interest in winning and thanks you afterward.
@@ -106,7 +106,7 @@ adult: went down a collapsed seam at thirty-two and came up six years later.
 > He works. He hits quota. He clicks correctly at his foreman and he has hurt no one since he came back up. He also will not stand in a lit room, eats standing in the dark with his back to the wall, and everyone knows exactly how he survived six years and nobody has ever said the word aloud.
 
 **Attendant Qu'raa** · Geonosian (aristocrat) · f · 63
-`traits: Ascetic, GreatMemory, Jealous`
+`traits: GreatMemory, Jealous`
 childhood: selected at four for the chamber. Has not been outdoors since.
 adult: grooms the queen, feeds the queen, and speaks in the queen's cadence without noticing.
 > Pale as unfired clay from twenty years underground, wings gone chalky from disuse, and she is the closest thing this hive has to a mouth — when she says *there was too much left undone*, she is not quoting, she thinks she is saying it. She has had two rival attendants reassigned to the smelt floor on paperwork she personally filed.

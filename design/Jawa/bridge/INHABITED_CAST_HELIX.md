@@ -58,7 +58,7 @@ adult: chairs the improvement committee. Votes twice.
 > The tall cone of his skull holds a binary brain that genuinely disagrees with itself, out loud, mid-sentence, switching sides in a nasal drone that runs twenty minutes — and the clerk is required by doctrine to record *both* his votes. He has deadlocked the committee four times entirely by himself and does not consider this a fault.
 
 **Prith Vane** · Umbaran · f · 44
-`traits: Psychopath, Kind, TooSmart`
+`traits: Psychopath, TooSmart`
 childhood: born under a sun she has never seen and does not want to.
 adult: it is her office that tells you your line has been discontinued.
 > Chalk-white, hairless, and she feels what you are feeling a half-second before you do — which is why she is very good at this, and why the people she discontinues thank her on the way out. She keeps the count. It is two hundred and nine. She will tell you the number if you ask, and she will be pleased you asked.

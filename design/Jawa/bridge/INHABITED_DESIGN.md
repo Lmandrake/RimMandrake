@@ -448,6 +448,41 @@ the toy line named the cantina extras — "Walrus Man", "Hammerhead" — *before
 did, and fans built mythologies on those names. ⇒ Design the silhouette and the job, then
 name. One physical or verbal tic per character, **unrepeated across the whole roster**.
 
+## 5.7b ⛔ FOUR TRAIT PAIRS THE ENGINE FORBIDS — check before you write a `traits:` line
+
+**Added 2026-08-21, after 14 of the 269 shipped with an impossible pair.** These are not
+style advice: `TraitDef.conflictingTraits` says the pawn cannot hold both.
+
+| do not pair | with |
+|---|---|
+| `Kind` | `Abrasive` · `Psychopath` |
+| `Ascetic` | `Jealous` · `Greedy` · `Gourmand` |
+| `Brawler` | `ShootingAccuracy` *(either degree)* · `Wimp` |
+
+🔴 **The two that actually caught us, and why.** They are not random slips — each is a real
+character type that our house voice reaches for, and the engine models it as one trait, not
+two:
+
+- **`Ascetic` + `Jealous`** — four of the fourteen. Both read as *"wants nothing / resents
+  what others have"*, so a writer reaches for the pair naturally. ⇒ **Decide which engine
+  the person runs on.** Someone who takes the smallest ration in public is `Ascetic`;
+  someone who cannot bear a rival holding what they hold is `Jealous`. Almost nobody is
+  both, and the prose always says which.
+- **`Kind` + `Abrasive` / `Kind` + `Psychopath`** — the *"decent but unbearable"* and the
+  *"performs warmth without feeling it"* characters. ⇒ ⭐ **`Psychopath` plus prose about
+  learned warmth is the stronger version anyway** — Prith Vane and Ren Ashek both work
+  better that way, and one of them reads the right words off a card at the bedside.
+
+⚠️ **RimWorld will not tell you.** `TraitSet.GainTrait` checks no conflicts and imposes no
+trait cap, so an impossible pair loads with **zero errors** and generates a pawn silently.
+`CharacterDef.ConfigErrors` now names the pair at load and `CharacterApplier` refuses the
+second trait — so it is loud today, but only because we made it so.
+
+✅ **The audit is one command** — build the conflict map out of the shipped `TraitDef`s and
+scan every `traits:` line. It returned **269 scanned, 0 conflicts** on 2026-08-21.
+
+---
+
 ## 5.8 🔑 THE ATTACHMENT FORMAT — measured against players, not assumed
 
 _Evidence: ~70 first-person "favourite pawn" accounts from r/RimWorld recovered via

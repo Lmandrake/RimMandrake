@@ -83,7 +83,7 @@ adult: measured on one number — conversions to The Rising Order among the loca
 > There are eleven farmers within reach of Ashgarrison and he has converted all eleven four times each, and files them each quarter as new, and the quarterly figure is *excellent*. He arrives with cake he has baked himself, he stays three hours, he is nasal and unstoppable and completely sincere. The farmers have worked out that agreeing gets him gone by dusk, and he has never worked out that they have worked it out.
 
 **Schoolmistress Perrin Aleth** · human · f · 46
-`traits: TooSmart, Abrasive, Kind`
+`traits: TooSmart, Abrasive`
 childhood: two grades ahead of her age everywhere she was posted, and disliked for it everywhere she was posted.
 adult: twelve dependent children, one room, catechism in the morning and long division after.
 > It is a genuinely excellent little school on the worst posting in the sector and she will fight anyone who suggests otherwise, up to and including the Commander, whose grammar she has corrected in front of his own men on two occasions. She considers herself the moral authority of Ashgarrison and is not entirely wrong, which is the unbearable part. Every child she has taught has enlisted. She is proud of that. She keeps the notices.
@@ -100,7 +100,7 @@ adult: nineteen years writing the death notices. Three thousand one hundred and 
 > It is a form letter with three variables and she knows it by heart, obviously, and she types it out fresh every time anyway because using the template feels wrong to her in a way she has never tried to justify. She has improved the wording twice, without authorisation, and nobody upstream noticed either time, and the second version is better. She could tell you which line she changed. She will not.
 
 **Comptroller Ish Ondo Vell** · Muun · m · 66
-`traits: TooSmart, Jealous, Ascetic`
+`traits: TooSmart, Jealous`
 childhood: passed all three examinations, first attempt, and has never in forty years let that go unremembered.
 adult: holds Exemption 4-C. The Empire wanted the arithmetic more than it wanted the policy.
 > Two metres of pale certainty and the finest actuary within four systems, and the exemption hangs framed on his wall where every visitor reads it and he has never once referred to it aloud. He does not eat in the human mess. He is not permitted to and has decided that this was his own decision. He has personally buried two other exemption applications at the assessment stage, on technicalities that were real.

@@ -152,7 +152,7 @@ adult: she is the seed record. There is no other copy and she has forbidden one.
 > Four hundred and six species — germination, depth, season, soil, the lot — held entirely inside one very old head, because paper burns and paper gets stolen and she has watched both happen. She recites eleven a day to a bored fourteen-year-old. The Elders have begged her for forty years. She is going, and she knows it, and she has not moved an inch.
 
 **Nikko the Sap-Namer** · Ewok · f · 15
-`traits: GreatMemory, Kind, Abrasive`
+`traits: GreatMemory, Kind`
 childhood: is still it, mostly.
 adult: given the naming of the saplings at seven as a joke that nobody stopped in time.
 > Four thousand one hundred trees on these terraces have names, she knows every one, and she will walk you round and introduce you personally for as long as you fail to escape. She has also ruled that no tree she has named may be taken for timber. That is all of them. The clan's entire timber policy is now a fifteen-year-old girl and she is winning.

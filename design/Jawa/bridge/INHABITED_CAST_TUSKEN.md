@@ -103,7 +103,7 @@ adult: keeps them for nine bands now, forty years back — and has added them up
 > A vaporator draws four hundred litres in a season and the raid takes back eleven hundred; she has the plates, the arithmetic is not in dispute, and by the tribe's own law that makes every band on this ridge a thief. She has said it to the War Chief. She says it in front of the young ones, in a flat furious bark, and nobody has yet worked out what to do about a heretic whose heresy is that they are not devout enough.
 
 **Harra Ghul** · Tusken · f · 61
-`traits: Ascetic, Jealous, GreatMemory`
+`traits: Ascetic, Abrasive, GreatMemory`
 childhood: her mother kept the cistern, and her mother's mother.
 adult: forty years on the measure. Sets the rate at which arrears accrue.
 > She has never drunk from the Mother-Cistern in her life — she takes her ration from the common cup at the back of the line, in front of everyone, and would die before being seen to do otherwise. She also cannot stand another pair of hands on the measure, has driven off three apprentices in nine years, and raised the interest on arrears in a drought year without consulting a soul, which is the reason Bharr Nu will die owing.
@@ -168,13 +168,13 @@ adult: breaks the machines. Nobody has ever broken them faster or enjoyed it mor
 > He is *delighted* by vaporators — warmly, genuinely delighted, the way another man is delighted by a good animal — and he opens them at the seams while telling their owners, loudly, over the noise of the raid, exactly which three decisions the manufacturer got wrong. Twice now he has held the band on a burning flat well past the point of sense because he had not finished the sentence.
 
 **Orr'gash** · Tusken · m · 49
-`traits: Kind, GreatMemory, Abrasive`
+`traits: Kind, GreatMemory`
 childhood: raided the same flats his father raided, off the same list, in the same order.
 adult: eleven raids on the Sooley place. The Sooley place is still standing.
 > He takes what the machines drew and not one drop past it, so the house cistern goes untouched every single time — that is the law and he is scrupulous about the law — and the woman who farms it has taken to chalking the season's draw figure on the door for him, and in eleven years neither of them has spoken a word to the other. He will not go in on a farm with children on it. He has aborted two raids over it, in front of everyone, and said why.
 
 **Shaa Nel** · Tusken · f · 30
-`traits: ShootingAccuracy(CarefulShooter), Ascetic, Jealous`
+`traits: ShootingAccuracy(CarefulShooter), Ascetic`
 childhood: given a cycler at fifteen and told what it was for, which was not people.
 adult: eight years putting rounds through condensers at six hundred metres. No kills.
 > Three districts of moisture farmers know her by the hole — one round, dead centre of the condenser, and the raid arrives forty minutes later — because killing a farmer recovers nothing, and what recovers nothing is waste, and waste is the sin. She has begun to want one anyway. She talks around it at the fire, in the abstract, more often than she used to, and every man in the band has noticed and none of them has said anything.
@@ -186,7 +186,7 @@ adult: goes through the door first. Has done for twenty years.
 > The intake whistles on the draw — a low note and a bad high one, audible at thirty metres in still air — and there are farm children on this ridge who were raised on that sound as a story and have since heard it in person. He could have it fixed in a week. He won't, because the sound does half his work and he knows it and says so cheerfully, and he can no longer go anywhere on this planet unannounced, including the places he would rather.
 
 **Ess'kan** · Tusken · m · 35
-`traits: Kind, Brawler, Abrasive`
+`traits: Kind, Brawler`
 childhood: raised by a woman who had been claimed off the sand, and was not told until she died.
 adult: has claimed eleven people in nine years. There are no prisoners — there is kin, or there is the ground.
 > He cannot put down a person who is standing still; the arm simply does not go — so he claims them instead, on the spot, out loud, in front of the band, and a claim cannot be undone by anyone including him. Four of the eleven have run. Two are the best people in the camp. Khor Vaal is now full of half-kin who fit nowhere, he is proud of every one of them, and he will do it again on the next raid.

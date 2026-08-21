@@ -163,7 +163,7 @@ adult: **the Weigher.** Holds the scales on every bribe taken at the Hooks.
 > Green, wattled, immaculate, and absolutely incorruptible in a job that consists entirely of corruption — the scale is honest because a false weight would eventually be found and finding is death and he cannot make himself risk it. He will not stand beside the arm during a heavy weighing in case something comes down. He audibly whimpers. He has never once been wrong.
 
 **Atai Vosk** · Zygerrian · m · 52
-`traits: Jealous, AnnoyingVoice, Ascetic`
+`traits: Jealous, AnnoyingVoice`
 childhood: raised on a world that measured a family by how many people it owned.
 adult: freed all eleven of them, followed one here, and now works for her.
 > He fetches, he carries, he sleeps outside her stall in a voice like a cat in a grinder announcing that he is fine out here, and Yenna Rill has told him to leave for nine years and cannot make him. He cannot bear anyone else running her errands and will elbow a child out of the way to do it. He has never once apologised, because apologising would be about him.

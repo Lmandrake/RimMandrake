@@ -37,7 +37,7 @@ adult: mixes fuel.
 > He mixes to the ratio his uncle taught him, has never varied it, has never once been wrong, and has never in his life held an opinion about anything else. Ask him about the war, the Shaman, the price of coils — he answers about fuel. He is perfectly content. He is the only person on this crawler who is.
 
 **Ossik the Outrider** · Jawa · m · five hems (26)
-`traits: Brawler, ShootingAccuracy(TriggerHappy), NaturalMood(Pessimist)`
+`traits: Brawler, NaturalMood(Pessimist)`
 childhood: put on a stripped speeder bike at three hems because he bit a cousin.
 adult: forward scout. Has never lost a run.
 > He has not slept inside the hull in six years — he sleeps under it, in the tread-shadow, because the crawler "smells of everyone." He greets kin by biting the air beside their shoulder, hard, teeth audible. He always finds the wreck. He has never once come back with all of his equipment.
