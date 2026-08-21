@@ -24,13 +24,19 @@ registry's `knownDamage` is right about the artifact and stale only about the de
 automated and an agent must not do it. The command, in full:
 
 ```
-python3 src/RimMandrake/rimflow/cli.py note --seat OWNER   # (see dumps/README.md — the freeze is a registry append)
+python3 src/RimMandrake/Utils/freeze_dump.py --by owner
 ```
 
-⇒ Append one line to `infrastructure/state/dumps/REGISTRY.jsonl` with a new `id`
-(`OFFICIAL-2026-08-22` or the day's date), `supersedes: OFFICIAL-2026-08-21`, the new
-`capturedUtc` read out of `manifest.json`, and a `knownDamage` that now says the
-collisions are FIXED. Owner, 2026-08-21: *"deploy the fix, re-capture, re-freeze."*
+⚠️ **`refresh.py --freeze` DOES NOT EXIST** — `refresh.py`'s own header has promised it
+since 2026-08-20 (*"`--freeze` refuses without an explicit `--by owner`"*) and there is no
+such flag in its argparse. So the one act the registry is built around had no command
+behind it. `freeze_dump.py` is that command: it reads `capturedUtc`, `gameVersion` and the
+mod count **out of manifest.json** rather than from the command line, sets `supersedes`
+itself, refuses every seat but the owner, and refuses a no-op when the capture on disk is
+already the frozen one. Run it with no arguments for a dry run that prints the exact line
+it would append.
+
+Owner, 2026-08-21: *"deploy the fix, re-capture, re-freeze."*
 
 
 ## Def dump, 2026-08-21 — two read-traps measured on the 578-mod dump
