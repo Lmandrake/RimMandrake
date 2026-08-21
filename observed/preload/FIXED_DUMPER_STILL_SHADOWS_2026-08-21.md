@@ -5,7 +5,7 @@
 > keys `capture` on the resolved identity — the full name when the manifest's
 > `defTypes` index names one — so both slices survive. Re-measured on the same
 > synthetic: **633 defs built, 633 held, all three types `complete`**, and
-> `measure count Verse.AbilityDef` → **MEASURED 612**. `count AbilityDef` now
+> `measure count RimWorld.AbilityDef` → **MEASURED 612**. `count AbilityDef` now
 > refuses and names both types rather than summing them. Five new selftests lock
 > it in; 47/47. The live 578-mod capture rebuilds to the identical
 > `78057 defs / 536 types / shadowed=8 ambiguous=5 orphan=19` it gave under v2,
@@ -18,7 +18,9 @@
 > conclusion never changed.
 >
 > 🔑 **What to do after the load is now the original plan again:**
-> `measure build`, then `measure count Verse.AbilityDef` must read **612**.
+> `measure build`, then `measure count RimWorld.AbilityDef` must read **612**.
+> ⚠️ **`RimWorld.`, not `Verse.`** — the synthetic guessed the namespace and
+> the guess was wrong. Confirmed against the real capture 2026-08-21 15:44.
 
 # 🔴 The fixed dumper's capture will STILL read as shadowed — measured before the load
 

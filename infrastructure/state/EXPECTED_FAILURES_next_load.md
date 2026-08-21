@@ -241,7 +241,7 @@ correctly — because three distinct types share that simple name and summing th
 would invent a quantity nothing measured. The command that answers is:
 
 ```
-python3 ~/.claude/skills/measuring-large-artifacts/scripts/measure/cli.py count Verse.AbilityDef
+python3 ~/.claude/skills/measuring-large-artifacts/scripts/measure/cli.py count RimWorld.AbilityDef
 ```
 
 ⚠️ **And rebuild first: `measure build`.** The reader was fixed this afternoon

@@ -17,7 +17,7 @@ Measured on a synthetic faithful to `DefDumper.cs` (header carries the SIMPLE na
 |---|---|---|
 | `AbilityDef` rows in `defs` | **0** of 630 on disk | 612 + 18, both `complete` |
 | `build` says / table holds | **615 / 3** | 633 / 633 |
-| `count Verse.AbilityDef` | UNMEASURED, shadowed | **MEASURED 612** |
+| `count RimWorld.AbilityDef` | UNMEASURED, shadowed | **MEASURED 612** |
 
 ⚠️ **Second defect, same root:** `stats.defs_inserted += n` ran before the deleted
 rows were subtracted, so `build` announced a total it did not hold — the package's
@@ -55,4 +55,8 @@ instant the version moved, and a red suite nobody can green is one people stop
 reading.
 
 ⚠️ **`measure count AbilityDef` now refuses, and that is correct.** Three types share
-that name. Ask by full name: `measure count Verse.AbilityDef`.
+that name. Ask by full name: `measure count RimWorld.AbilityDef`.
+⚠️ **It is `RimWorld.AbilityDef`, not `Verse.AbilityDef`** — BUILD wrote the
+wrong namespace into three files before the capture existed to check it
+against. The synthetic used a plausible name; the real one is in the
+manifest's `defTypes` index, which is exactly what that index is for.
