@@ -1,3 +1,27 @@
+## 🔴 RULED — OWNER, 2026-08-21 08:39: FACTION CONTROL IS REMOVED FROM V1
+
+> *"I was wrong. We should remove the Faction Control mod."*
+
+Reversing his own 08:19 call to put it back and hunt the conflict. **The mod is out.** There
+is no investigation to do and no conflicting-mod hunt to schedule; anything below that reads
+as pending work on restoring it is superseded by this line.
+
+**What was done to make it stick, not just true today:**
+
+- `thereallemon.factioncontrol` is absent from the live `ModsConfig.xml` — 578 active.
+- 🔴 **`ModsConfig.FULL.LATEST.xml` regenerated from the live config.** That file is what
+  `modlist_swap.py --restore` restores FROM, and it still carried the entry — a single
+  `--restore` would have put the load blocker straight back with nothing to warn anyone.
+  The pre-removal list is kept as `ModsConfig.FULL.20260821_WITH_factioncontrol.xml`.
+- ⚠️ **The cost, stated plainly:** we lose the faction-count spinners on the world-creation
+  page. `JawaFactionSlate`'s generated patch already zeroes 48 FactionDefs, so that page
+  matters less than it did — but `FACTION_SLATE_ZEROES_KEEPS_1` is now the ONLY lever over
+  which factions generate, which raises its priority.
+- ⚠️ Every save written while it was active still records it and needs
+  `ignoreModCompatibility: true` once. Saves written since do not.
+
+---
+
 ## spec
 🔴 **THE LOAD BLOCKER IS THE MOD SET, NOT THE SAVES. Settled 2026-08-21, third save, third
 abort.** `LOADS_ARE_BLOCKED_NEEDS_YOU_1` has been open since 2026-08-20 with two suspects:

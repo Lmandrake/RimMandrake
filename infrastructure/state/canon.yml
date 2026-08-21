@@ -559,7 +559,24 @@ bestiary:
 # ===========================================================================
 modlist:
   official_count: 578
-  as_of: 2026-08-20
+  as_of: 2026-08-21
+  # 🔴 ONE MOD IS RULED OUT OF V1 BY NAME — owner, 2026-08-21 08:39:
+  #   "I was wrong. We should remove the Faction Control mod."
+  # `thereallemon.factioncontrol` is REMOVED. It is not a preference: with it active,
+  # THREE separate saves aborted at
+  # FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfix inside
+  # ScribeLoader.FinalizeLoading, and the game bailed to the main menu every time. With it
+  # gone, the same save loads clean and a map save round-trips.
+  # ⚠️ The count is still 578 by coincidence, not because nothing changed - a custom mod
+  # was added the same night. Do not read an unchanged count as an unchanged list.
+  # 🔑 ModsConfig.FULL.LATEST.xml was REGENERATED so `modlist_swap.py --restore` cannot put
+  # it back; the pre-removal list is ModsConfig.FULL.20260821_WITH_factioncontrol.xml.
+  excluded_by_ruling:
+    - packageId: thereallemon.factioncontrol
+      ruled: 2026-08-21
+      why: every save aborts on its cross-reference postfix
+      cost: the faction-count spinners on the world-creation page are gone
+  as_of_previous: 2026-08-20
   src: >
     activeMods in C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by
     Ludeon Studios\Config\ModsConfig.xml — 578 entries, mtime 2026-08-20 09:15:59 -0700,

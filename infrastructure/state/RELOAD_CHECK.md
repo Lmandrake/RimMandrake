@@ -37,7 +37,8 @@ Both are one bridge call each to re-push after loading.
 > 🔴 **ANSWERED 2026-08-21 04:00, and the answer changed the plan.** `WORLDMAP_gen` aborted
 > with the identical `FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfix`
 > signature — **third save, third abort, one stack frame.** It is the mod set, not the saves.
-> `thereallemon.factioncontrol` is now DISABLED and the load is being retried.
+> `thereallemon.factioncontrol` is DISABLED — and as of 2026-08-21 08:39 that is the
+> owner's RULING, not an experiment. The mod is out of v1. The same save then loaded clean.
 > ⚠️ And `ErrorWhileLoadingGame` read **0** on that abort, because it fires on MAP init and
 > this save has no map — so string 1 below was NOT sufficient and `w9_run.py`'s canary has
 > been taught `Exception in FinalizeLoading` as well.
