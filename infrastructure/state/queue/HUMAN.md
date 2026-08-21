@@ -1176,3 +1176,35 @@ no `requiredPrecepts` field, so the two were never alternatives. Both stay.
 4-of-4. I pick the ladder from the loaded Humanlike droid ThingDefs, turn
 `useFactionXenotypes` off on the four, and file it ready for BUILD.
 ✅ **You veto in play, not in advance** — that is what "you rule it" buys.
+
+
+## 🔴 THE WORLD IS FROZEN AS-IS — you ruled it, 2026-08-21
+
+*"We need to just freeze the world for now as-is and move on to v1. I have to totally
+rethink how we create that planet. It's really messy and horrible compared to what I was
+hoping for originally."*
+
+Asked as `REFMATCH_CANCELLED_NOT_GATED_1`; you answered something larger than the
+question, so it is recorded whole rather than folded into that item.
+
+- ⛔ **Planet authoring stops.** Not "finish the pass" — stop. The map that exists is v1's.
+- ⛔ **`refmatch.py` is not built for v1.** The 08-20 globe-map acceptance STANDS; *"I like
+  your new globes"* was never a reversal of it.
+- 🔮 **The method gets rethought post-v1**, and ⚠️ **that is not worldgen** — CLAUDE.md's
+  standing ruling is untouched. Rethinking your own hand-authoring method is not building
+  a generator, and nobody may read it as one.
+
+✅ **Filed for DECIDE as `WORLD_FROZEN_RETHINK_PLANET_1`**, spec-complete, to triage the
+open world items and propagate into the docs that still say keep painting.
+
+⏳ **One thing is left and it needs your seat, because REP was refused and correctly so** —
+`REFMATCH_THRESHOLDS_CALIBRATE_1` belongs to BUILD, and a seat may not drop another seat's
+item. Either BUILD drops it, or you do:
+
+```
+python3 src/RimMandrake/rimflow/cli.py drop REFMATCH_THRESHOLDS_CALIBRATE_1 --seat OWNER --reason "World frozen as-is for v1; the globe-map acceptance stands and the planet method is being rethought."
+```
+
+⚠️ **Three OWNER items are stale, not open** — all seven canon questions were ruled by
+2026-08-21, and `NOMAD_GRAVSHIP_RESET_PATCH_1` records that you already took option 1.
+They are bookkeeping. Closing them is your seat's, same reason as above.

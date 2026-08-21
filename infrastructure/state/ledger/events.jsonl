@@ -872,3 +872,45 @@
 {"seat":"BUILD","event":"verify","id":"DUMP_PATH_ONE_SEAM_1","result":"pass","config":"offline, game down; full selftest sweep","evidence":"src/RimMandrake/Utils/selftest_one_path_seam.py 6/6, plus 7 sibling selftests green","sha":"c098811","ts":"2026-08-21T20:18:15Z"}
 {"seat":"BUILD","event":"close","id":"DUMP_PATH_ONE_SEAM_1","sha":"c098811","ts":"2026-08-21T20:18:15Z"}
 {"seat":"BUILD","event":"file","id":"DUMP_STORAGE_LAYOUT_RULING_1","title":"How dumps are stored: immutable dated captures, or keep one live directory","kind":"decision","target":"v1","needs":"owner","for":"OWNER","ts":"2026-08-21T20:18:34Z"}
+{"seat":"REP","event":"file","id":"WORLD_FROZEN_RETHINK_PLANET_1","title":"The world is frozen as-is for v1; refmatch is dead and the planet method gets rethought post-v1","kind":"decision","target":"v1","needs":"offline","spec":"/tmp/claude-1000/-mnt-d-Luke-dev-Rimworld/bcc33db5-6389-43af-af4a-d8415a0c94c8/scratchpad/spec.md","for":"DECIDE","ts":"2026-08-21T20:21:06Z"}
+{"seat":"CHECK","event":"needs","id":"ASH_STORM_OVER_PYRELANDS_1","to":"bridge","reason":"force the weather on a Pyrelands tile and look","ts":"2026-08-21T20:21:29Z"}
+{"seat":"CHECK","event":"needs","id":"B40","to":"bridge","reason":"raid composition can only be read from a provoked raid","ts":"2026-08-21T20:21:30Z"}
+{"seat":"CHECK","event":"needs","id":"B41","to":"game-up","reason":"the label half is a glance at the in-game faction list","ts":"2026-08-21T20:21:30Z"}
+{"seat":"CHECK","event":"needs","id":"B42","to":"bridge","reason":"raid composition can only be read from a provoked raid","ts":"2026-08-21T20:21:30Z"}
+{"seat":"CHECK","event":"needs","id":"B43","to":"game-up","reason":"the label half is a glance at the in-game faction list","ts":"2026-08-21T20:21:30Z"}
+{"seat":"CHECK","event":"needs","id":"B52","to":"game-up","reason":"Trade Moot settlements are observed on the generated planet","ts":"2026-08-21T20:21:31Z"}
+{"seat":"CHECK","event":"needs","id":"B54","to":"bridge","reason":"read each faction's ideo back out of the live world","ts":"2026-08-21T20:21:31Z"}
+{"seat":"CHECK","event":"needs","id":"B58","to":"bridge","reason":"spawn a player Jawa and read its xenotype and gear back","ts":"2026-08-21T20:21:31Z"}
+{"seat":"CHECK","event":"needs","id":"B59","to":"harvest","reason":"two greps of Player.log; no interaction needed","ts":"2026-08-21T20:21:32Z"}
+{"seat":"CHECK","event":"needs","id":"B63","to":"game-up","reason":"read the world name and scenario off the worldgen screen","ts":"2026-08-21T20:21:32Z"}
+{"seat":"CHECK","event":"needs","id":"BIOMESKIT_SNOWY_DESERT_TEXTURES_1","to":"harvest","reason":"one grep of Player.log for the missing-texture lines","ts":"2026-08-21T20:21:32Z"}
+{"seat":"CHECK","event":"needs","id":"BLACKSTAR_IN_DEFAULT_LIST_1","to":"bridge","reason":"a pirate raid must be provoked to see who arrives","ts":"2026-08-21T20:21:33Z"}
+{"seat":"CHECK","event":"needs","id":"C40","to":"bridge","reason":"spawns Jawa and Geonosian pawns to look at what they carry","ts":"2026-08-21T20:21:33Z"}
+{"seat":"CHECK","event":"needs","id":"CAST_ROSTER_269_LOAD_1","to":"bridge","reason":"spawn one of the 269 and read its name and traits back","ts":"2026-08-21T20:21:33Z"}
+{"seat":"CHECK","event":"needs","id":"CHEAPEST_WEAPON_IS_ABSURD_1","to":"bridge","reason":"spawn traders and hunters and read their weapons","ts":"2026-08-21T20:21:34Z"}
+{"seat":"CHECK","event":"needs","id":"FACTION_NAMES_ARE_GENERATED_1","to":"bridge","reason":"the renaming tool writes settlement names over the bridge","ts":"2026-08-21T20:21:34Z"}
+{"seat":"CHECK","event":"needs","id":"FACTION_RELATION_MATRIX_1","to":"bridge","reason":"set and read faction hostility through the bridge","ts":"2026-08-21T20:21:34Z"}
+{"seat":"CHECK","event":"needs","id":"GRIMTERRA_JUVENILES_RENDER_1","to":"bridge","reason":"spawn juveniles on a quicktest map and look","ts":"2026-08-21T20:21:35Z"}
+{"seat":"CHECK","event":"needs","id":"HILLINESS_CACHE_NOT_READABLE_1","to":"bridge","reason":"reads the hilliness cache out of the running WorldGrid","ts":"2026-08-21T20:21:35Z"}
+{"seat":"CHECK","event":"needs","id":"INHABITED_DLL_FIX_AT_SHUTDOWN_1","to":"deploy","reason":"an assembly is built and waiting; the OS locks it while the game runs","ts":"2026-08-21T20:21:35Z"}
+{"seat":"CHECK","event":"needs","id":"INHABITED_POOL_ROUND_TRIP_1","to":"bridge","reason":"raid a settlement, then look for the same person elsewhere","ts":"2026-08-21T20:21:36Z"}
+{"seat":"CHECK","event":"needs","id":"INHABITED_ROUTE_ONE_DAY_1","to":"bridge","reason":"a quicktest map is created and driven through the bridge","ts":"2026-08-21T20:21:36Z"}
+{"seat":"CHECK","event":"needs","id":"LOAD2_TARGET_IS_SUB7B_1","to":"game-up","reason":"which world the next load opens is observed at load","ts":"2026-08-21T20:21:36Z"}
+{"seat":"CHECK","event":"needs","id":"MAGENTA_CONTACT_SHEET_1","to":"owner","reason":"a contact sheet is built offline and looked at","ts":"2026-08-21T20:21:37Z"}
+{"seat":"CHECK","event":"needs","id":"MORNING_RELOAD_PLAN_1","to":"game-up","reason":"a load must happen and be observed","ts":"2026-08-21T20:21:37Z"}
+{"seat":"CHECK","event":"needs","id":"PHYTOKIN_BARK_EAST_LOOK_1","to":"bridge","reason":"spawn the pawn on a quicktest map and face her east","ts":"2026-08-21T20:21:37Z"}
+{"seat":"CHECK","event":"needs","id":"PRELOAD_PREDICTIONS_578_1","to":"harvest","reason":"assembly-init lines read out of Player.log at launch","ts":"2026-08-21T20:21:38Z"}
+{"seat":"CHECK","event":"needs","id":"RAKATA_SLEEPERS_LOOK_RIGHT_1","to":"bridge","reason":"crack a casket on a quicktest map and look at what thaws","ts":"2026-08-21T20:21:38Z"}
+{"seat":"CHECK","event":"needs","id":"ROLE_KINDS_ARMED_5_OF_5_1","to":"bridge","reason":"spawn all 48 kinds and read what each is holding","ts":"2026-08-21T20:21:38Z"}
+{"seat":"CHECK","event":"needs","id":"ROSTER_SOAK_100_DAYS_1","to":"bridge","reason":"100 in-game days must be driven forward and sampled","ts":"2026-08-21T20:21:39Z"}
+{"seat":"CHECK","event":"needs","id":"RT_PROBE_LOAD_ABORTS_ON_578_1","to":"harvest","reason":"the abort and its stack are read from Player.log","ts":"2026-08-21T20:21:39Z"}
+{"seat":"CHECK","event":"needs","id":"SCALD_PLUME_SATURATES_RAIN_1","to":"owner","reason":"an offline globe render is looked at; no game needed","ts":"2026-08-21T20:21:39Z"}
+{"seat":"CHECK","event":"needs","id":"SCALD_RELIEF_RENDER_LOOK_1","to":"owner","reason":"an offline relief render is looked at; no game needed","ts":"2026-08-21T20:21:39Z"}
+{"seat":"CHECK","event":"needs","id":"W9","to":"bridge","reason":"the 21,872-tile import runs over the bridge; CHECK must be driving","ts":"2026-08-21T20:21:40Z"}
+{"seat":"CHECK","event":"needs","id":"ashkarr-map-quality-second-pass-8c31f7","to":"bridge","reason":"the map is painted into the game over the bridge, then looked at","ts":"2026-08-21T20:21:40Z"}
+{"seat":"CHECK","event":"needs","id":"btd-jawa-has-no-merge-to-wait-for-8c40b2","to":"bridge","reason":"spawn Jawas and look; rides B58's spawn","ts":"2026-08-21T20:21:40Z"}
+{"seat":"CHECK","event":"needs","id":"cherrypick-settings-actually-load-3b71ae","to":"bridge","reason":"read trade and craft lists out of the running game","ts":"2026-08-21T20:21:41Z"}
+{"seat":"CHECK","event":"needs","id":"d-chk2-magenta-heads-fixed-by-path-and-texture-not-by-regenerate-7b3e01","to":"owner","reason":"a rendered lineup is looked at; no game needed","ts":"2026-08-21T20:21:41Z"}
+{"seat":"CHECK","event":"needs","id":"lightsaber-armour-penetration-reads-zero-offline-but-the-mod-computes-it-in-c-sharp-6a91d3","to":"game-up","reason":"read the armour-penetration figure off the in-game info card","ts":"2026-08-21T20:21:41Z"}
+{"seat":"CHECK","event":"needs","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","to":"bridge","reason":"needs raids provoked to see which kinds actually field","ts":"2026-08-21T20:21:42Z"}
+{"seat":"CHECK","event":"needs","id":"sixteen-authored-role-kinds-spawn-bare-handed-on-weaponmoney-7c31a9","to":"bridge","reason":"spawn each role kind and read what it is holding","ts":"2026-08-21T20:21:42Z"}
