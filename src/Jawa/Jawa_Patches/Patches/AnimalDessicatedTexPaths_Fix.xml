@@ -40,13 +40,15 @@
           The FILE is the misspelt one - `FreezertFrog`, with a stray t - and
           the def is right. We cannot rename art in a workshop folder, so the
           patch bends the def to the file.
-          ⚠️ THIS ONE IS ONLY HALF A FIX AND THAT IS DELIBERATE. The file also
-          has no directional suffix: its siblings ship `Dessicated_*_east.png`
-          and this ships a bare `Dessicated_FreezertFrog.png`. Graphic_Multi
-          looks for _north/_east/_south/_west, so the corpse may still fail to
-          resolve. That is a defect in the mod's ART, not in its path, and
-          fixing it means shipping a renamed PNG - out of scope here. The
-          patch is still correct: it names a file that exists.
+          ⚠️ ONE LOOSE END, RECORDED RATHER THAN GUESSED AT. The file also
+          has no directional suffix: its Caverns siblings ship
+          `Dessicated_*_east.png` and this ships a bare
+          `Dessicated_FreezertFrog.png`, while Graphic_Multi looks for
+          _north/_east/_south/_west. That is probably fine - every dessicated
+          sprite in Star Wars Animal Collection is suffixless too and none of
+          those was flagged - but it is untested, and if the frog corpse still
+          fails to draw after this patch, the suffix is where to look. Either
+          way it would be a defect in the mod's ART, not in its path.
 
     is    Things/Pawn/Animal/GlarralPenguin/Dessicated_GlarralPenguin
     want  BMT_Caverns/Things/Animal/GlarralPenguin/Dessicated_GlarralPenguin
