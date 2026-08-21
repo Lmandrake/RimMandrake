@@ -238,7 +238,11 @@ PREDICT          the new capture is ABOVE 78,057 by roughly 824, and AbilityDef 
 
 ⚠️ **`refresh.py` will report `REPLACED` afterwards. That is the freeze detector working,
 not a fault.** Only the owner re-freezes:
-`python3 src/RimMandrake/Utils/freeze_dump.py --by owner`
+`python3 src/RimMandrake/Utils/refresh.py --freeze --by owner`
+⚠️ **Corrected 2026-08-21 by BUILD — `freeze_dump.py` no longer exists.** It was
+folded into `refresh.py` under `FREEZE_SHA_UNREPRODUCIBLE_1` (`9078a15`), because
+two commands that both append a freeze are two answers. Drop `--by owner` for a
+dry run.
 
 ## §3 S3 — the three greps that ride free (`NEXT_LOAD_LOG_HARVEST_1`)
 
@@ -252,6 +256,40 @@ PRELOAD    JawaBench and Inhabited each print their own init line, so a failure 
 BIOMESKIT  the 148 missing-texture errors are ReGrowth's absent snow variants, NOT
            damage our repaint caused
 ```
+
+## §3 S5 — two BUILD changes that landed AFTER this file was written
+
+Both are repo-side only; neither touches the producer, so both are **expected to be
+invisible**. They are here because their signature is an ABSENCE that would otherwise
+read as "nothing happened".
+
+```
+EXPECT ABSENT    a `captures/` directory under DefDump/ after this load
+WHY              `DUMP_STORAGE_LAYOUT_RULING_1` (owner: "Option (a) all the way. Keep
+                 last three.") moved the READERS onto dated captures — `game_paths.
+                 DEF_DUMP` resolves captures/<newest> when it exists and the flat
+                 DefDump/ when it does not. `DefDumper.cs` is DELIBERATELY UNCHANGED
+                 this load, so the flat fallback is the correct outcome.
+🔴 IF captures/ APPEARS, something deployed a producer that must not have been
+   deployed yet — the armed collision fix has to write its capture FIRST
+   (DUMP_PRODUCER_DATED_CAPTURES_1 opens with that rule).
+CHECK IT WITH    python3 src/RimMandrake/Utils/game_paths.py
+                 `current capture` must equal `DefDump root` while the layout is flat.
+```
+
+```
+EXPECT PRESENT   a `.keep` file inside the frozen capture — but ONLY after the owner
+                 re-freezes, not from the load itself
+WHY              retention will keep the newest three captures and delete the rest;
+                 the OFFICIAL one must not age out, so `refresh.py --freeze` marks it.
+⛔ DO NOT DELETE IT as stray junk. Removing `.keep` silently removes the design
+   target's protection from a prune that does not exist yet — the worst kind of
+   time bomb, because nothing fails until the fourth capture.
+```
+
+⚠️ **Neither of these can fail loudly**, which is exactly why they are written down: a
+silent change with no expected string is indistinguishable from a change that never
+happened (§2 of the load-round skill).
 
 ## §3 S4 — carry-over, free
 
