@@ -214,3 +214,79 @@ Worth knowing before you sketch — these have **zero tiles**:
 Also: the census printed in §5b of the definition doc is **stale** against the current CSV
 (it says RockyCrags 26.3 / ExtremeDesert 13.4 / AridShrubland 9.0; the map now has
 20.3 / 16.4 / 11.0).
+
+---
+
+## 10. Named in the design docs, NOT on the map — world-map scale
+
+🔑 **The `INHABITED_CAST_*` rosters name a whole second set of places, and none of them are
+among the 72 settlements.** Checked by name against `ASHKARR_WORLDMAP_settlements.csv`:
+Kessek · Greenmouth · Khor Vaal · Dune's Throat · Grave Nine · The White Terrace ·
+The Cracking Yard · The Hopeless Call · The Signing House · Kettle Station ·
+Var Ullu · Tukkat-Nur — **all zero hits.** These are pins you may want to add.
+
+| name | shape / size | where & why |
+|---|---|---|
+| **Kessek Refinery** | town with cracking towers | Hutt spice/ore refinery. ⭐ **Already has a tile: 8811** — arc 68.5, bear 229, Desert, 12 m, 31 °C |
+| **Greenmouth** | river-town | Wildsteam. ⭐ **Where the Scald's trunk enters the vicious jungle** — the head of the corridor |
+| **Kettle Station** | boiler-houses on stilts | Wildsteam, in the meridian's poison marsh |
+| **The Stairs of Var Ullu** | 900 cut steps up a terraced slope, hot spring at the top | Wildsteam upland spring; the clan's food market |
+| **Khor Vaal** | canyon camp in permanent shadow | Deep Desert Tribes — sited against a canyon's east wall, because on a locked world shade never moves |
+| **The Mother-Cistern** | hidden rock cistern under a false floor | Deep Desert Tribes' water reserve. Kin-only |
+| **The Waterless** | a crossing, not a point | Deep Desert Tribes' rite-of-passage traverse of the deep desert |
+| **Dune's Throat** | open swap-meet ground | Jawa Trade Moot — where clans gather before storm season |
+| **The Still House of Karr** | rock-hold, a droid-relic hole 1 km deep | Jawa Trade Moot. ⭐ *"The rock that does not move"* — oversees four sandcrawlers |
+| **Sandcrawler *Tukkat-Nur*** | ⭐ **a town that MOVES** | Jawa Trade Moot; runs the Dune Sea crawler circuit. Needs a route, not a pin |
+| **The Cracking Yard** | electrolysis field | Free Droids, on the substellar plateau — *"the only warm place on the plateau"* |
+| **Battery Line Seven** | a LINE of garrisons | Free Droids, strung along the **acid lakes** on the plateau |
+| **The Cathedral Approach** | a ROAD, last 9 km, inhabited | the pilgrimage road running up to the Rust Cathedral gate |
+| **The Ore Seams / Seam Nine** | mine + smelter, worked 400 m down | Geonosian — the collapsed silicax-oxalate holdings the Jawas robbed |
+| **Grave Nine** | camp inside the scatter of something enormous | Junkers, in a wreck field |
+| **The Long Strip** | stripping yard | Junkers — where hulls are cut to bones |
+| **The Sixteen Hooks** | salvage market, a rail of 16 hooks | Junker trade point (the sixteenth is kept empty) |
+| **The Signing House** | landing spur + stone contract room | Blackstar, at a road junction |
+| **The White Terrace** | the Director's compound | Ascendant Helix seat, isolated highlands |
+| **The Hopeless Call** | Rakatan array, still transmitting | ⭐ deep nightside, **deliberately inaccessible** |
+| **The Listening Floor** | Rakatan array | ⚠️ *proposed, not ruled* — plateau's edge |
+| **The Hutt vehicle salvage yard** | yard | ⭐ **where the player steals the ship.** Explicitly a DIFFERENT place from the oxalate mines |
+| **The vaults** | buried complexes, planet-wide | Forsaken/Rakatan, sand-buried, three content types. Not individually named |
+| **Solar fields** | wide collection fields | near large settlements — plus **rusted broken ones** at the abandoned mining areas |
+| **Orbital towers / the sky ladder** | ⭐ **3–5 hand-placed backbone towers**, plus random side towers | Imperial. **Names not yet written.** The skyhook variant has a fixed ground anchor |
+| **The Gusting** | high-wind margins | on the flanks of the Nightspill and Sunreach, alongside the Dew Belt |
+| ~~The Crawler Graveyard~~ | — | ⛔ **DROPPED by the owner 2026-08-16.** Do not place |
+
+---
+
+## 11. Named places that are INSIDE a settlement — don't pin these on the planet
+
+These are rooms, quarters and installations within a holding. They belong on a local map, not the globe.
+
+**Gate Two** *(a water queue at Oxalate Watch)* · **Dock Nine**, **The Ledger House** *(Hutt)* ·
+**The Sunspire Annexe** *(the records floors of Sunspire)* · **Vat Row**, **The Annex** *(Helix)* ·
+**The Claims Office** *(above the Signing House spur)* · **Vurr Station** *(a later landing example)*
+
+---
+
+## 12. Alternative region vocabulary in older docs
+
+`faction_world_spec.md` still splits the planet three ways instead of by named region. Useful as
+a coarse sketch layer, and it maps onto arc cleanly:
+
+| band | arc | what lives there |
+|---|---|---|
+| **The Dune Sea** | low | open sand, canyons, wreck fields, ore-rich rock — Tusken · Jawa · Geonosian · Junker |
+| **The Scrub and the Roads** | mid | rocky desert, salt pans, marginal farmland, roads and passes — Hutt · Homestead · Empire · Blackstar |
+| **The Cold Margin** | high | cold desert, remnant marsh, upland springs, rare wooded pockets — Deepwater · Wildsteam · Helix · Free Droids |
+
+⚠️ That file is marked **superseded** by `ASHKARR_WORLD_DEFINITION.md` §7 and it is written in
+*latitude*, which on this planet means nothing — read every "equatorial/polar" as **low/high arc**.
+
+Two more coarse names in circulation: **The liveable ring** (arc 40–57, ~2,414 tiles) and
+**the substellar plateau** (the flat-and-high subsolar cap that carries the Anvil, the Scorch and
+the Rust Cathedral).
+
+Rejected names, kept so nobody re-derives them:
+*for the Pyrelands* — The Burning Savanna · The Tinder Veldt · The Ashfall Steppe · The Emberplain ·
+The Thunder Veldt · The Quickgrass · The Kindling Reach · The Scorchgrass Sea · The Cinderveldt.
+*for the Rust Cathedral* — The Skyfall Works · The Iron Rain · The Fallen Foundry · The Anvil Fields ·
+The Great Halt.
