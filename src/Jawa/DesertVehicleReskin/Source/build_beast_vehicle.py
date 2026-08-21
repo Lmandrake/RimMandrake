@@ -109,6 +109,20 @@ FAR = {"south": "bottom", "north": "top", "east": "right"}
 # by the cart. That is what `south` does, and it is why UNDER matters.
 FIT = {"south": "fill", "north": "south", "east": "contain"}
 
+# 🔴 PER-VEHICLE, AND IT CANNOT BE DERIVED FROM THE BANDS. Measured 2026-08-21.
+# `north: south` is right when the north band UNDERSTATES the animal — OxCart's ox horns
+# reach to y27, five rows ABOVE its black band, so filling that band shrinks the team and
+# returns three REJECTs. The Chariot is the opposite: the donor genuinely draws its horse
+# LONGER facing north (236 rows against south's 182), nothing occludes it, and holding it
+# to the south size starves the band by 14% — all of which collects at the hitch and
+# reads as the beast floating free of the cart.
+# ⛔ Do NOT try to tell those apart by comparing band sizes. Both vehicles have a north
+# band ~1.3x their south band's length (OxCart 189/149, Chariot 236/182); the ratio is
+# almost identical and the correct answers are opposite. Tried it, it re-broke OxCart to
+# -20.9%. The discriminator is whether the ANIMAL overruns its band, which only a look at
+# the donor art answers — so it is written down per vehicle rather than computed.
+FIT_OVERRIDE = {("Chariot", "north"): "fill"}
+
 # The most a contain fit may stretch its short axis to recover span. 18% is the item's
 # stated invisibility limit for a top-down animal; sit under it, not on it.
 MAX_STRETCH = 1.12
@@ -241,7 +255,7 @@ def build(vehicle, facing, pair_path, out_path, out_mask_path):
     pair = trim(pair)
     pw, ph = pair.size
 
-    mode = FIT.get(facing, "fill")
+    mode = FIT_OVERRIDE.get((vehicle, facing)) or FIT.get(facing, "fill")
     if mode == "fill":
         tw, th = bw, bh
     elif mode == "south":
