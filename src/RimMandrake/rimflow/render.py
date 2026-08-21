@@ -492,12 +492,18 @@ def queue_item_ids(path):
     out = set()
     try:
         with open(path, encoding="utf-8") as fh:
-            for ln in fh:
-                m = _HEAD_RE.match(ln)
-                if m and model.ID_RE.match(m.group(1)):
-                    out.add(m.group(1))
+            lines = fh.read().splitlines()
     except OSError:
-        pass
+        return out
+    heads = [i for i, l in enumerate(lines) if _HEAD_RE.match(l)] + [len(lines)]
+    for a, b in zip(heads, heads[1:]):
+        m = _HEAD_RE.match(lines[a])
+        # ⛔ `model.is_item_heading`, NOT a local rule. This function and the importer
+        # MUST count the same things or the overwrite guard cries wolf — it did, on
+        # 2026-08-20, counting `## A (DECIDE…)`, `## FYI…`, `## The…` as items and
+        # refusing a migration that was actually complete.
+        if m and model.is_item_heading(m.group(1), lines[a + 1:b]):
+            out.add(m.group(1))
     return out
 
 

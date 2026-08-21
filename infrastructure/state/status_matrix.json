@@ -439,14 +439,14 @@
     },
     "CHECK": {
      "done": 1,
-     "total": 3,
+     "total": 2,
      "state": "working",
      "mix": {
       "closed": 1,
       "done": 0,
       "doing": 1,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     }
    }
@@ -566,88 +566,6 @@
      "state": "offline",
      "mix": {
       "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-6",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 1,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 1,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    }
-   }
-  },
-  {
-   "name": "bridge-7",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 1,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
@@ -821,47 +739,6 @@
    }
   },
   {
-   "name": "inhabited-2",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 1,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 1,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    }
-   }
-  },
-  {
    "name": "inhabited-3",
    "cells": {
     "DECIDE": {
@@ -932,13 +809,13 @@
     "CHECK": {
      "done": 0,
      "total": 1,
-     "state": "blocked",
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
-      "blocked": 1,
-      "ready": 0
+      "blocked": 0,
+      "ready": 1
      }
     }
    }
@@ -1041,12 +918,12 @@
      }
     },
     "BUILD": {
-     "done": 1,
-     "total": 1,
-     "state": "idle",
+     "done": 0,
+     "total": 0,
+     "state": "offline",
      "mix": {
       "closed": 0,
-      "done": 1,
+      "done": 0,
       "doing": 0,
       "blocked": 0,
       "ready": 0
@@ -1071,26 +948,26 @@
    "cells": {
     "DECIDE": {
      "done": 8,
-     "total": 16,
-     "state": "blocked",
+     "total": 14,
+     "state": "idle",
      "mix": {
       "closed": 8,
       "done": 0,
       "doing": 0,
-      "blocked": 1,
-      "ready": 7
+      "blocked": 0,
+      "ready": 6
      }
     },
     "BUILD": {
-     "done": 7,
-     "total": 13,
+     "done": 4,
+     "total": 8,
      "state": "idle",
      "mix": {
       "closed": 4,
-      "done": 3,
+      "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 6
+      "ready": 4
      }
     },
     "CHECK": {
@@ -1358,14 +1235,14 @@
    "cells": {
     "DECIDE": {
      "done": 1,
-     "total": 1,
+     "total": 2,
      "state": "idle",
      "mix": {
       "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 1
      }
     },
     "BUILD": {
@@ -1395,7 +1272,7 @@
    }
   },
   {
-   "name": "\u2014  (v2 concept; nothing in v1 waits on it)",
+   "name": "\u2014 (v2 concept; nothing in v1 waits on i\u2026",
    "cells": {
     "DECIDE": {
      "done": 0,
@@ -2092,6 +1969,88 @@
    }
   },
   {
+   "name": "bridge-6",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-7",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
    "name": "bridge-8",
    "cells": {
     "DECIDE": {
@@ -2299,16 +2258,7 @@
  ],
  "blockers": {
   "on_human": 0,
-  "classes": [
-   {
-    "label": "needs a live game. **Fix deployed to the game copy 2026-08-15, never",
-    "count": 1
-   },
-   {
-    "label": "no `InhabitedPlaceDef`/`InhabitedCastDef` instances exist",
-    "count": 1
-   }
-  ]
+  "classes": []
  },
  "velocity": {
   "days": [
@@ -2331,7 +2281,7 @@
   ],
   "per_day": 16.57,
   "closed": 116,
-  "remaining": 53,
+  "remaining": 49,
   "eta_days": 3
  }
 }

@@ -356,11 +356,47 @@ def t_every_event_passes_the_model():
 def t_prose_headings_are_skipped_but_reported():
     with Rig() as r:
         skipped = r.convert()[1]
-        assert any("OWNER RULINGS" in s for s in skipped), skipped
+        assert any("OWNER RULINGS" in h for h, _b in skipped), skipped
         rc, out = r.run()
         assert "OWNER RULINGS" in out, (
             "a skipped heading was not listed; a human has to be able to check that "
             "none of them was actually work")
+
+
+def t_skipped_prose_keeps_its_body():
+    """A heading with no body would be a useless rescue."""
+    with Rig() as r:
+        skipped = r.convert()[1]
+        bodies = [b for h, b in skipped if "OWNER RULINGS" in h]
+        assert bodies and any(l.strip() for l in bodies[0]), (
+            "the section was captured as a bare heading; its prose is what matters")
+
+
+def t_apply_preserves_prose_before_writing_anything():
+    """🔴 THE GUARD ON THE ONE-WAY DOOR.
+
+    18 sections across the six queues carry no fields at all — session handoffs, owner
+    rulings, and in `HUMAN.md` thirteen sections of briefings written TO the owner,
+    several still unanswered. 853 lines, measured 2026-08-20. The ledger has nowhere to
+    put them: an event carries scalars, an item file carries spec/verify/criteria, and
+    a briefing is neither. Once `queue/*.md` is a generated view they are gone — git
+    would still have them, which is recovery, not access, because nobody greps a
+    deleted file.
+
+    ⚠️ So preservation runs INSIDE `--apply`, first, and this asserts it. A separate
+    step is a step someone skips, and this one is unskippable exactly once.
+    """
+    with Rig() as r:
+        dest = os.path.join(r.dir, "preserved")
+        importer.preserve(r.convert()[1], dest)
+        files = sorted(os.listdir(dest))
+        assert files, "nothing was preserved"
+        text = open(os.path.join(dest, files[0]), encoding="utf-8").read()
+        assert "OWNER RULINGS" in text, text[:200]
+        assert "This heading has no ID" in text, (
+            "the heading was rescued without its body")
+        assert "NOT GENERATED" in text, (
+            "the rescue file must say it is hand-written, or the next render eats it")
 
 
 # ---- the irreversible half -------------------------------------------------

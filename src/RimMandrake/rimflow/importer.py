@@ -98,6 +98,7 @@ from rimflow import model                                            # noqa: E40
 
 ROOT = model.ROOT
 QUEUE = os.path.join(model.STATE, "queue")
+REPO = model.ROOT
 CLOSED_LEDGER = os.path.join(model.STATE, "closed_ledger.json")
 
 # 🔑 REUSED, NOT REIMPLEMENTED. derive_matrix.py's state_of()/WORD/EMOJI are the
@@ -189,12 +190,11 @@ def parse_file(path, source, owner, kind):
         tok = tok[0] if tok else ""
         body = lines[a + 1:b]
         if not model.ID_RE.match(tok):
-            skipped.append(lines[a])
+            skipped.append((lines[a], body))
             continue
-        has_state = any(FIELD.match(l) and FIELD.match(l).group(1) == "state"
-                        for l in body)
-        if not (has_state or NAMED_ID.match(tok)):
-            skipped.append(lines[a])
+        # ⛔ The SAME predicate the overwrite guard uses. See model.is_item_heading.
+        if not model.is_item_heading(tok, body):
+            skipped.append((lines[a], body))
             continue
         it = Parsed(tok, lines[a][3:][len(tok):].strip(), os.path.basename(path),
                     owner, kind)
@@ -452,6 +452,60 @@ def convert(parsed, closed, dup_of=None):
 
 
 # ---------------------------------------------------------------------------
+# PRESERVATION — the part that stops the one-way door from eating 853 lines
+#
+# 🔴 The queues do not hold only items. Measured 2026-08-20, across the six files:
+# 18 `## ` sections carry NO fields at all — session handoffs, owner rulings, and in
+# `HUMAN.md` thirteen sections totalling 593 lines of briefings written TO the owner,
+# several of them still unanswered. The ledger has nowhere to put them: an event
+# carries scalars and an item file carries spec/verify/criteria, and a briefing is
+# neither.
+#
+# So once `queue/*.md` becomes a generated view, all 853 lines are gone. Git would
+# still have them, which is recovery, not access — nobody greps a deleted file.
+#
+# ⛔ THEREFORE PRESERVATION IS PART OF `--apply`, NOT A SEPARATE STEP. A separate step
+# is a step someone skips, and this one is unskippable exactly once.
+# ---------------------------------------------------------------------------
+PRESERVED = os.path.join(os.path.dirname(QUEUE), "preserved")
+
+
+def preserve(skipped, dest=None):
+    """Copy every non-item section, verbatim, into preserved/<SOURCE>.md. -> [paths]."""
+    dest = dest or PRESERVED
+    by_src = {}
+    for head, body in skipped:
+        by_src.setdefault(head_source(head), []).append((head, body))
+    os.makedirs(dest, exist_ok=True)
+    out = []
+    for src, secs in sorted(by_src.items()):
+        path = os.path.join(dest, src)
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write("<!-- status: live -->\n")
+            fh.write("# Prose rescued from `infrastructure/state/queue/%s`\n\n" % src)
+            fh.write("🔴 **HAND-WRITTEN. NOT GENERATED. Nothing regenerates this file.**\n\n")
+            fh.write("These %d sections carried no fields, so the ledger has nowhere to "
+                     "put them —\nan event holds scalars and an item file holds "
+                     "spec/verify/criteria, and a briefing\nis neither. They were moved "
+                     "here verbatim when `queue/%s` became a generated\nview, on "
+                     "2026-08-20. ⚠️ Some are still unanswered.\n\n"
+                     % (len(secs), src))
+            fh.write("---\n")
+            for head, body in secs:
+                fh.write("\n" + head + "\n")
+                fh.write("\n".join(body).rstrip() + "\n")
+        out.append(path)
+    return out
+
+
+_SRC_OF = {}
+
+
+def head_source(head):
+    return _SRC_OF.get(head, "UNKNOWN.md")
+
+
+# ---------------------------------------------------------------------------
 # THE RUN
 # ---------------------------------------------------------------------------
 def collect():
@@ -461,6 +515,8 @@ def collect():
         path = os.path.join(QUEUE, fname)
         got, skip = parse_file(path, fname, owner, kind)
         items.extend(got)
+        for head, _body in skip:
+            _SRC_OF[head] = fname
         skipped.extend(skip)
         heads += len(got) + len(skip)
     return items, skipped, heads
@@ -596,9 +652,14 @@ def report(convs, skipped, heads, refused, world, out=None):
           % (len(world.items), len(world.errors)))
         for i, verb, msg in world.errors[:20]:
             w("    line %d %-10s %s\n" % (i, verb, msg.replace("\n", " ")[:150]))
-    w("\nSKIPPED HEADINGS (prose, not items — check none of these is work)\n")
-    for s in skipped:
-        w("  %s\n" % s[:100])
+    n_lines = sum(len(b) for _h, b in skipped)
+    w("\nSKIPPED HEADINGS — prose, not items. %d sections, %d lines.\n"
+      % (len(skipped), n_lines))
+    w("  ⚠️ These carry NO fields, so nothing in the ledger will hold them. Several are\n")
+    w("  owner briefings that exist ONLY here. `--apply` copies every one of them,\n")
+    w("  verbatim and with its body, into infrastructure/state/preserved/ FIRST.\n")
+    for h, b in skipped:
+        w("  %-96s %4d lines\n" % (h[:96], len(b)))
     w("\n")
     return ok and not refused
 
@@ -637,6 +698,10 @@ def main(argv=None):
             sys.stderr.write("--force: appending on top of an existing %d-byte ledger.\n"
                              % os.path.getsize(a.events))
         APPLIED = True
+        # ⛔ FIRST, before a single event is written. If this fails, nothing else runs.
+        kept = preserve(skipped)
+        for k in kept:
+            sys.stderr.write("preserved %s\n" % os.path.relpath(k, REPO))
         refused = materialise(convs, a.items, a.events)
         saved, model.ITEMS = model.ITEMS, a.items
         try:

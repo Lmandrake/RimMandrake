@@ -182,6 +182,36 @@ VERBS = {
 ITEMLESS = ("seat", "bridge", "game", "spawn")
 
 
+# THREE_DESCRIPTIVE_WORDS_# — the naming rule since 2026-08-20. Legacy IDs (B58, D55,
+# C40) do not match it and are never renamed, which is why this is one half of a test
+# and not the whole of it.
+NAMED_ID = re.compile(r"^[A-Z][A-Z0-9]*(_[A-Z0-9]+)+_\d+$")
+
+
+def is_item_heading(token, body_lines):
+    """Is `## <token> …` a filed ITEM, or a prose section that merely starts with a word?
+
+    🔴 ONE DEFINITION, USED BY BOTH THE IMPORTER AND THE OVERWRITE GUARD. They disagreed
+    on 2026-08-20 and it nearly cost the migration: the guard counted any heading whose
+    first token was a legal ID, so `## A (DECIDE, 2026-08-14) to BUILD's B6 question`
+    counted `A` as an item, and `## FYI …`, `## The …`, `## Four …`, `## Q …` likewise.
+    The ledger held 144 items and the guard insisted the queues held 149, so it refused
+    to let the overwrite proceed — correctly refusing, for a wrong reason.
+
+    ⚠️ That is the dangerous shape of a bad guard: it does not fail open, it cries wolf.
+    A guard that miscounts is one people learn to `--force` past, and forcing past this
+    particular guard is how 853 lines of owner briefings would have died.
+
+    The discriminator is that a real item carries a `state:` field at column 0, or is
+    named in the THREE_DESCRIPTIVE_WORDS_# form. Prose sections have neither.
+    """
+    if not ID_RE.match(token or ""):
+        return False
+    if NAMED_ID.match(token):
+        return True
+    return any(re.match(r"state\s*:", l) for l in body_lines)
+
+
 def now():
     """UTC, second resolution, sortable. Seconds are enough: ordering inside the file
     is what matters and appends are serialised by the kernel, not by the clock."""

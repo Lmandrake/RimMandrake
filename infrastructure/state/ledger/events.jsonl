@@ -1,0 +1,352 @@
+{"seat":"BUILD","event":"file","id":"B-V2","for":"BUILD","kind":"task","title":"Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed","target":"v1","row":"doctrine","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"B-V2","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"B53","for":"BUILD","kind":"task","title":"Create 48 pawn types so raids field roles, not one flat kind","target":"v1","row":"7","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"B53","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"B53","sha":"6b454a6","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"B55","for":"BUILD","kind":"task","title":"Build the campaign start — fixed map, fixed ship, fixed pawns","target":"v1","row":"12","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"B55","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"pyrelands-off-the-blacklist-and-ash-storms-5d2e71","for":"BUILD","kind":"task","title":"pyrelands-off-the-blacklist-and-ash-storms-5d2e71","target":"v1","row":"10","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"pyrelands-off-the-blacklist-and-ash-storms-5d2e71","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"pyrelands-off-the-blacklist-and-ash-storms-5d2e71","sha":"0310a46","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"grimterra-worldmap-over-wme-as-the-base-layer-2c8f19","for":"BUILD","kind":"task","title":"grimterra-worldmap-over-wme-as-the-base-layer-2c8f19","target":"v1","row":"tooling","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"grimterra-worldmap-over-wme-as-the-base-layer-2c8f19","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"grimterra-worldmap-over-wme-as-the-base-layer-2c8f19","sha":"unrecorded","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"the-eyeling-becomes-the-ikee-rename-and-place-it-6f2b81","for":"BUILD","kind":"task","title":"the-eyeling-becomes-the-ikee-rename-and-place-it-6f2b81","target":"v1","row":"12","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"the-eyeling-becomes-the-ikee-rename-and-place-it-6f2b81","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"the-eyeling-becomes-the-ikee-rename-and-place-it-6f2b81","sha":"6029f51","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"B-EMP1","for":"BUILD","kind":"task","title":"Stale Empire-vessel prose in `Jawa_Patches/About/About.xml`","target":"v1","row":"1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"B-EMP1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"B-EMP1","sha":"eecba28","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"B-FIX1","for":"BUILD","kind":"task","title":"`make_vehicle_mask.py` adds a path that does not exist","target":"v1","row":"0","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"B-FIX1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"B-FIX1","sha":"eecba28","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"B-SWAP1","for":"BUILD","kind":"task","title":"`modlist_swap.py` never prunes its own backups","target":"v1","row":"0","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"B-SWAP1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"B-SWAP1","sha":"eecba28","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"empire-permanent-enemy-becomes-a-whitelist-7c31d9","for":"BUILD","kind":"task","title":"empire-permanent-enemy-becomes-a-whitelist-7c31d9","target":"v1","row":"1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"empire-permanent-enemy-becomes-a-whitelist-7c31d9","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"empire-permanent-enemy-becomes-a-whitelist-7c31d9","sha":"b2d883b","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"the-ancients-are-rakata-and-it-is-v1-now-9d40a7","for":"BUILD","kind":"task","title":"the-ancients-are-rakata-and-it-is-v1-now-9d40a7","target":"v1","row":"1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"the-ancients-are-rakata-and-it-is-v1-now-9d40a7","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"the-ancients-are-rakata-and-it-is-v1-now-9d40a7","sha":"3cc16a2","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"ROLE_KINDS_UNARMED_1","for":"BUILD","kind":"task","title":"ROLE_KINDS_UNARMED_1","target":"v1","row":"7","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"ROLE_KINDS_UNARMED_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"ROLE_KINDS_UNARMED_1","sha":"4a98af5","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"GRIMTERRA_TEXPATH_TYPOS_1","for":"BUILD","kind":"task","title":"Three broken texPaths in GRiNDTerra Biomes, juveniles only","target":"v1","row":"unassigned","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"GRIMTERRA_TEXPATH_TYPOS_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"GRIMTERRA_TEXPATH_TYPOS_1","sha":"1c18167","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"INHABITED_MOD_SKELETON_1","for":"BUILD","kind":"task","title":"The mod folder, About.xml and csproj","target":"v1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"INHABITED_MOD_SKELETON_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"INHABITED_MOD_SKELETON_1","sha":"f0a9f6c","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"INHABITED_WORLD_OBJECT_CORE_1","for":"BUILD","kind":"task","title":"`WorldObject_Inhabited` — the roster is real pawns","target":"v1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"INHABITED_WORLD_OBJECT_CORE_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"INHABITED_WORLD_OBJECT_CORE_1","sha":"f0a9f6c","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"ROSTER_SURVIVES_OFFMAP_PROOF_1","for":"BUILD","kind":"task","title":"🔴 THE ARCHITECTURE GATE — do this before the rest","target":"v1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"ROSTER_SURVIVES_OFFMAP_PROOF_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"INHABITED_DISPLACED_POOL_1","for":"BUILD","kind":"task","title":"The placeless, per faction","target":"v1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"INHABITED_DISPLACED_POOL_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"INHABITED_DISPLACED_POOL_1","sha":"f0a9f6c","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"INHABITED_GENSTEP_CAST_SPAWN_1","for":"BUILD","kind":"task","title":"The GenStep that puts the company on the ground","target":"v1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"INHABITED_GENSTEP_CAST_SPAWN_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"INHABITED_DAY_NIGHT_ROUTE_1","for":"BUILD","kind":"task","title":"One toil that reassigns duty, and a sleep JobGiver","target":"v1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"INHABITED_DAY_NIGHT_ROUTE_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"INHABITED_DAY_NIGHT_ROUTE_1","sha":"f0a9f6c","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"INHABITED_BEGGARS_FROM_POOL_1","for":"BUILD","kind":"task","title":"The beggars at your gate are the people you burned out","target":"v1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"INHABITED_BEGGARS_FROM_POOL_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"INHABITED_BEGGARS_FROM_POOL_1","sha":"8fd8fbd","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"CAST_ROSTER_MACHINE_READABLE_1","for":"BUILD","kind":"task","title":"269 prose characters become data","target":"v1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"CAST_ROSTER_MACHINE_READABLE_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"close","id":"CAST_ROSTER_MACHINE_READABLE_1","sha":"2cbb3ed","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"VEHICLE_FUEL_ACCEPTS_VEGETABLES_1","for":"BUILD","kind":"task","title":"Any plant food fuels a draught vehicle, not just hay","target":"v1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"VEHICLE_FUEL_ACCEPTS_VEGETABLES_1","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"BLACKSTAR_HAS_NO_SETTLEMENT_ART_1","for":"BUILD","kind":"task","title":"AM_EnemyPirate draws nothing and throws every frame","target":"v1","row":"9","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"drop","id":"BLACKSTAR_HAS_NO_SETTLEMENT_ART_1","reason":"void 2026-08-20 — closed by `BLACKSTAR_NEVER_GENERATES_1` rather than by a patch, exactly as this item's own superseding header says. `AM_EnemyPirate` is the wrong def to be using at all; the real Blackstar Company is vanilla `Pirate`, which already carries `World/WorldObjects/D…","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"file","id":"BLACKSTAR_NEVER_GENERATES_1","for":"BUILD","kind":"task","title":"The roster names a hidden zero-weight def; the real Blackstar is vanilla Pirate","target":"v1","row":"9","ts":"2026-08-21T05:05:16Z"}
+{"seat":"BUILD","event":"claim","id":"BLACKSTAR_NEVER_GENERATES_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"BUILD","event":"start","id":"BLACKSTAR_NEVER_GENERATES_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"BUILD","event":"file","id":"NEOLITHIC_VEHICLE_BEAST_RESKIN_1","for":"BUILD","kind":"task","title":"The four vehicles after the sled — beasts drawn, compositing left","target":"v1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"BUILD","event":"claim","id":"NEOLITHIC_VEHICLE_BEAST_RESKIN_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"W6","for":"CHECK","kind":"check","title":"G4 + G5 — named regions, and the world objects that carry our 72 holdings","target":"v1","row":"bridge-6","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"W6","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"W6","sha":"a6b3074","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"W7","for":"CHECK","kind":"check","title":"G6 — world info and layers","target":"v1","row":"bridge-7","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"W7","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"W7","sha":"a6b3074","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"W9","for":"CHECK","kind":"check","title":"The full 21,872-tile import, and the owner looks at his planet","target":"v1","row":"bridge-9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"W9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"start","id":"W9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C-V2","for":"CHECK","kind":"check","title":"Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed","target":"v1","row":"doctrine","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"C-V2","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C17","for":"CHECK","kind":"check","title":"At worldgen, untick the 21 factions that break the fiction","target":"v2","row":"10","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"drop","id":"C17","reason":"⭐ v1 — and RESHAPED 2026-08-15 by the owner's worldgen ruling. 🔴 ruling: *\"There is no auto worldgen we are building. The world will be user-made and frozen... True worldgen is OUT of any version, even v2.\"* Plus: *\"(but designing worldgen by hand and design documents to guide t…","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C40","for":"CHECK","kind":"check","title":"Three Jawa fixes that only a load can prove","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"C40","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"ashkarr-map-quality-second-pass-8c31f7","for":"CHECK","kind":"check","title":"ashkarr-map-quality-second-pass-8c31f7","target":"v1","row":"2","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"ashkarr-map-quality-second-pass-8c31f7","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"dll-capability-roster-and-cull-a41c02","for":"CHECK","kind":"check","title":"dll-capability-roster-and-cull-a41c02","target":"v1","row":"tooling","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"dll-capability-roster-and-cull-a41c02","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"start","id":"dll-capability-roster-and-cull-a41c02","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"cherrypick-settings-actually-load-3b71ae","for":"CHECK","kind":"check","title":"cherrypick-settings-actually-load-3b71ae","target":"v1","row":"10","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"cherrypick-settings-actually-load-3b71ae","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"start","id":"cherrypick-settings-actually-load-3b71ae","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8","for":"CHECK","kind":"check","title":"seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8","sha":"7aa0543","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d","for":"CHECK","kind":"check","title":"worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d","target":"v1","row":"10","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"B63","for":"CHECK","kind":"check","title":"the world-creation inputs, live half","target":"v1","row":"12","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"B63","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"seaice-escapes-the-blacklist-by-an-unconditional-postfix-2b71fd","for":"CHECK","kind":"check","title":"seaice-escapes-the-blacklist-by-an-unconditional-postfix-2b71fd","target":"v1","row":"12","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"seaice-escapes-the-blacklist-by-an-unconditional-postfix-2b71fd","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"B40","for":"CHECK","kind":"check","title":"Give the Empire stormtroopers instead of medieval knights","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"B40","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"B41","for":"CHECK","kind":"check","title":"Turn vanilla outlanders into the Homestead Defense League","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"B41","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"B42","for":"CHECK","kind":"check","title":"Turn vanilla tribes into the Deep Desert Tribes, and add a water raid","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"B42","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"B43","for":"CHECK","kind":"check","title":"Turn vanilla pirates into the Blackstar Company","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"B43","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"B52","for":"CHECK","kind":"check","title":"Fix our one existing faction — wrong name, six fields missing","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"B52","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","for":"CHECK","kind":"check","title":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"B54","for":"CHECK","kind":"check","title":"Add the faith text to the eleven factions, before worldgen","target":"v1","row":"6","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"B54","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"B58","for":"CHECK","kind":"check","title":"the Jawa_Patches half — dead defName repaired, and a wrong xenotype found behind it","target":"v1","row":"7","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"B58","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"btd-jawa-has-no-merge-to-wait-for-8c40b2","for":"CHECK","kind":"check","title":"btd-jawa-has-no-merge-to-wait-for-8c40b2","target":"v1","row":"4","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"btd-jawa-has-no-merge-to-wait-for-8c40b2","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"d-chk2-magenta-heads-fixed-by-path-and-texture-not-by-regenerate-7b3e01","for":"CHECK","kind":"check","title":"d-chk2-magenta-heads-fixed-by-path-and-texture-not-by-regenerate-7b3e01","target":"v1","row":"unassigned","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"d-chk2-magenta-heads-fixed-by-path-and-texture-not-by-regenerate-7b3e01","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"start","id":"d-chk2-magenta-heads-fixed-by-path-and-texture-not-by-regenerate-7b3e01","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"neolithicmeleedecent-is-empty-so-every-tribal-spawns-bare-handed-9c02d5","for":"CHECK","kind":"check","title":"neolithicmeleedecent-is-empty-so-every-tribal-spawns-bare-handed-9c02d5","target":"v1","row":"unassigned","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"neolithicmeleedecent-is-empty-so-every-tribal-spawns-bare-handed-9c02d5","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"neolithicmeleedecent-is-empty-so-every-tribal-spawns-bare-handed-9c02d5","sha":"9443d24","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"note","id":"B53","text":"duplicate heading in queue/CHECK.md: Create 48 pawn types so raids field roles, not one flat kind","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"FACTION_RELATION_MATRIX_1","for":"CHECK","kind":"check","title":"FACTION_RELATION_MATRIX_1","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"FACTION_RELATION_MATRIX_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"B59","for":"CHECK","kind":"check","title":"the MegafaunaYield fix — root cause found in the live log and repaired","target":"v1","row":"—","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"B59","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"sixteen-authored-role-kinds-spawn-bare-handed-on-weaponmoney-7c31a9","for":"CHECK","kind":"check","title":"sixteen-authored-role-kinds-spawn-bare-handed-on-weaponmoney-7c31a9","target":"v1","row":"7","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"sixteen-authored-role-kinds-spawn-bare-handed-on-weaponmoney-7c31a9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"lightsaber-armour-penetration-reads-zero-offline-but-the-mod-computes-it-in-c-sharp-6a91d3","for":"CHECK","kind":"check","title":"lightsaber-armour-penetration-reads-zero-offline-but-the-mod-computes-it-in-c-sharp-6a91d3","target":"v1","row":"—","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"lightsaber-armour-penetration-reads-zero-offline-but-the-mod-computes-it-in-c-sharp-6a91d3","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"ANCIENT_DANGER_GARRISON_1","for":"CHECK","kind":"check","title":"Prove mechs still garrison ancient dangers once PursuingMechanoids is removed","target":"v1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"drop","id":"ANCIENT_DANGER_GARRISON_1","reason":"dropped — premise rejected by the owner; no live check is owed","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"MORNING_RELOAD_PLAN_1","for":"CHECK","kind":"check","title":"Two loads, and the quit between them serves both jobs","target":"v1","row":"bridge-9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"MORNING_RELOAD_PLAN_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"ROSTER_SOAK_100_DAYS_1","for":"CHECK","kind":"check","title":"🔴 THE ARCHITECTURE GATE — everything in `Inhabited` rests on this","target":"v1","row":"inhabited-1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"ROSTER_SOAK_100_DAYS_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"INHABITED_DEFS_LOAD_CLEAN_1","for":"CHECK","kind":"check","title":"The four `Inhabited` defs load, and the Harmony patch binds","target":"v1","row":"inhabited-2","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"INHABITED_DEFS_LOAD_CLEAN_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"INHABITED_DEFS_LOAD_CLEAN_1","sha":"unrecorded","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"INHABITED_ROUTE_ONE_DAY_1","for":"CHECK","kind":"check","title":"Watch a cast across one in-game day","target":"v1","row":"inhabited-3","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"INHABITED_ROUTE_ONE_DAY_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"INHABITED_POOL_ROUND_TRIP_1","for":"CHECK","kind":"check","title":"Somebody the player displaced turns up somewhere else","target":"v1","row":"inhabited-4","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"INHABITED_POOL_ROUND_TRIP_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"block","id":"INHABITED_POOL_ROUND_TRIP_1","reason":"blocked on content — no `InhabitedPlaceDef`/`InhabitedCastDef` instances exist yet, so there is no second place to land on. The save/load half above is runnable now.","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"CAST_ROSTER_269_LOAD_1","for":"CHECK","kind":"check","title":"The 269 authored people load, and one of them can be looked at","target":"v1","row":"inhabited-5","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"CAST_ROSTER_269_LOAD_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"PRELOAD_PREDICTIONS_578_1","for":"CHECK","kind":"check","title":"What this load must show, written before it starts","target":"v1","row":"bridge-9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"PRELOAD_PREDICTIONS_578_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"RT_PROBE_LOAD_ABORTS_ON_578_1","for":"CHECK","kind":"check","title":"The save aborts loading, and the engine's own handler then NREs","target":"v1","row":"bridge-9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"RT_PROBE_LOAD_ABORTS_ON_578_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"start","id":"RT_PROBE_LOAD_ABORTS_ON_578_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"FACTION_NAMES_ARE_GENERATED_1","for":"CHECK","kind":"check","title":"🔴 Ten factions are wearing names the dice picked","target":"v1","row":"world-1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"FACTION_NAMES_ARE_GENERATED_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"BLACKSTAR_HAS_NO_VESSEL_1","for":"CHECK","kind":"check","title":"⛔ SUPERSEDED — but read the warning, it is new","target":"v1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"supersede","id":"BLACKSTAR_HAS_NO_VESSEL_1","by":"BLACKSTAR_NEVER_GENERATES_1","reason":"superseded — the live-world warning above is the part that is still live","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"INHABITED_DLL_FIX_AT_SHUTDOWN_1","for":"CHECK","kind":"check","title":"One assembly is built and waiting for the game to close","target":"v1","row":"inhabited-6","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"INHABITED_DLL_FIX_AT_SHUTDOWN_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"LOAD2_TARGET_IS_SUB7B_1","for":"CHECK","kind":"check","title":"Load WORLDMAP_gen_sub7b, not rt_probe","target":"v1","row":"bridge-9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"LOAD2_TARGET_IS_SUB7B_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"RAKATA_SLEEPERS_LOOK_RIGHT_1","for":"CHECK","kind":"check","title":"A cracked casket produces a Rakatan, and plays the same","target":"v1","row":"world-3","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"RAKATA_SLEEPERS_LOOK_RIGHT_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"GRIMTERRA_JUVENILES_RENDER_1","for":"CHECK","kind":"check","title":"A juvenile tortoise and a juvenile pinkbird actually draw","target":"v1","row":"world-4","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"GRIMTERRA_JUVENILES_RENDER_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"ROLE_KINDS_ARMED_5_OF_5_1","for":"CHECK","kind":"check","title":"All 48 roster kinds spawn holding something","target":"v1","row":"world-5","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"ROLE_KINDS_ARMED_5_OF_5_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"ASH_STORM_OVER_PYRELANDS_1","for":"CHECK","kind":"check","title":"An ash storm, grey sky, over a stormy-savanna tile","target":"v1","row":"world-6","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"ASH_STORM_OVER_PYRELANDS_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"IKEE_READS_AS_OURS_1","for":"CHECK","kind":"check","title":"The eyeling is an ikee, and it lives in the waste","target":"v1","row":"world-7","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"IKEE_READS_AS_OURS_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C1","for":"CHECK","kind":"check","title":"Run the bridge tools that were built but never once called","target":"v1","row":"tooling","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"C1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"C1","sha":"unrecorded","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C21","for":"CHECK","kind":"check","title":"Follow The Claim quest to an end — registering is not finishing","target":"v2","row":"13","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"drop","id":"C21","reason":"⛔ v2 — owner's ruling 2026-08-15. Registration already works; only end-to-end resolution is unproven, and that needs real playtime, not a bridge test.","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C31","for":"CHECK","kind":"check","title":"Confirm our four Jawa pawn types actually spawn","target":"v2","row":"7","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"drop","id":"C31","reason":"⛔ v2 — owner's ruling 2026-08-15. Four Jawa pawn kinds are silently discarded at load on a bad `ParentName`, so those four types do not exist in game. Blocked on BUILD's fix and deferred with it.","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C35","for":"CHECK","kind":"check","title":"Confirm the faction xenotype sets read back as Star Wars species","target":"v2","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"drop","id":"C35","reason":"⛔ v2 — owner's ruling 2026-08-15. The fix is deployed and the indirect evidence is good (C37 forced 70/70 xenotypes correctly), so this is confirmation rather than discovery.","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C36","for":"CHECK","kind":"check","title":"Prove the races mod stands with all three donor mods switched off","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"C36","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"C36","sha":"unrecorded","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C37","for":"CHECK","kind":"check","title":"VALIDATION PLAN — can we spawn all 70 RimMandrake races?","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"C37","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"C37","sha":"unrecorded","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C38","for":"CHECK","kind":"check","title":"VALIDATION PLAN — planetary fast growth, and the terminator case that proves it","target":"v1","row":"2","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"C38","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"C38","sha":"unrecorded","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C39","for":"CHECK","kind":"check","title":"The eopie sled reads and renders as ours, on BOTH defs","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"C39","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"C39","sha":"unrecorded","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C41","for":"CHECK","kind":"check","title":"Four more transports pulled by desert creatures — validation plan","target":"v2","row":"2","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"drop","id":"C41","reason":"⛔ v2 — owner's ruling 2026-08-15. Nothing to test: B62 is UNBUILT (12 PNGs on disk, 24 needed; its 13 defs absent). Pure content addition.","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"B-BOIL","for":"CHECK","kind":"check","title":"Jawa_Patches deployed — the boiling cut, and a dead pawnkind that was never shipped","target":"v1","row":"3","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"claim","id":"B-BOIL","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"close","id":"B-BOIL","sha":"unrecorded","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C42","for":"CHECK","kind":"check","title":"The two saved ideo/xenotype files were captured on a stack 11 mods wider than today's","target":"v2","row":"7","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"drop","id":"C42","reason":"⛔ v2 — owner's ruling 2026-08-15. The .rid half (does The Salvation load with all 101 precepts) is NOT collected and will NOT be collected for v1. ⚠️ It bakes at world creation, so the generated world keeps whatever the file loads with; the owner made that call knowing it. The .…","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"C43","for":"CHECK","kind":"check","title":"Lightsabres in active melee — the observation is collectable, the VERDICT is not mine","target":"v2","row":"—","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"drop","id":"C43","reason":"⛔ CLOSED — MOVED TO v2, owner's ruling 2026-08-15: *\"move the lightsabre position bug to v2\"*. **Not a v1 defect. Do not collect it, do not spend a load on it, do not photograph a swing for v1.** Parked in `design/V2_DREAMS.md`. The measurement below stays as the record of what …","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"worldpaint-live-bridge-route-9d41c7","for":"CHECK","kind":"check","title":"worldpaint-live-bridge-route-9d41c7","target":"v1","row":"1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"drop","id":"worldpaint-live-bridge-route-9d41c7","reason":"⛔ SUPERSEDED 2026-08-19 by W1-W9 above, on the owner's order to expand the whole worldmap bridge surface rather than build two tools. Nothing here is abandoned: the route, the preconditions and the owner's map notes all survive as W3 (tile scalars), W4 (links) and W9 (the full i…","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"file","id":"worldmap-import-is-pinned-to-mlp-subcount-7-4c9e1a","for":"CHECK","kind":"check","title":"worldmap-import-is-pinned-to-mlp-subcount-7-4c9e1a","target":"v1","row":"— ⚠️ URGENT, read before the importer D…","ts":"2026-08-21T05:05:17Z"}
+{"seat":"CHECK","event":"drop","id":"worldmap-import-is-pinned-to-mlp-subcount-7-4c9e1a","reason":"⛔ FOLDED IN 2026-08-19. It was never a task - it is a PRECONDITION, and it would have sat \"ready\" forever having no action of its own. Both assertions (TilesCount == 21872; MLP active at subcount 7 / coverage 1) are now written into W9 as refuse-loudly gates, and MLP is item 13 …","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"D-CRIT","for":"DECIDE","kind":"decision","title":"⭐ Read before sequencing — the worldgen deadline","target":"v1","row":"10","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"claim","id":"D-CRIT","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"sequence-the-ideoligion-check-before-the-faction-work-e3f1a7","for":"DECIDE","kind":"decision","title":"sequence-the-ideoligion-check-before-the-faction-work-e3f1a7","target":"v1","row":"10","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"claim","id":"sequence-the-ideoligion-check-before-the-faction-work-e3f1a7","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa","for":"DECIDE","kind":"decision","title":"the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa","target":"v1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"claim","id":"the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"block","id":"the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa","reason":"blocked — needs a live game. **Fix deployed to the game copy 2026-08-15, never witnessed.** ⚠️ This item had NO `state:` line for four days, so it was invisible to the board and to every seat sweeping by state. Added 2026-08-19. CLOSING CONDITION, and it costs nothing to collect…","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"D-V2-RAIN","for":"DECIDE","kind":"decision","title":"Ban rainfall planet-wide, except violent rain in the high mountains","target":"v1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"claim","id":"D-V2-RAIN","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07","for":"DECIDE","kind":"decision","title":"the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07","target":"v1","row":"12","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"claim","id":"the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"start","id":"the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"living-npc-templates-a-mod-concept-7b2e4d","for":"DECIDE","kind":"decision","title":"living-npc-templates-a-mod-concept-7b2e4d","target":"v1","row":"— (v2 concept; nothing in v1 waits on i…","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"claim","id":"living-npc-templates-a-mod-concept-7b2e4d","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"D-EMP1","for":"DECIDE","kind":"decision","title":"A fresh faction gap audit, against vanilla `Empire`","target":"v1","row":"1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"claim","id":"D-EMP1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"INHABITED_OPEN_QUESTIONS_1","for":"DECIDE","kind":"decision","title":"The five answers BUILD is now waiting on","target":"v1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"claim","id":"INHABITED_OPEN_QUESTIONS_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"CAST_TRAIT_CONFLICTS_1","for":"DECIDE","kind":"decision","title":"Fourteen authored characters cannot exist","target":"v1","row":"inhabited","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"claim","id":"CAST_TRAIT_CONFLICTS_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"FACTION_ART_SPEC_1","for":"DECIDE","kind":"decision","title":"Spec the world-map and faction art for all twelve, from Star Wars canon","target":"v1","row":"9","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"claim","id":"FACTION_ART_SPEC_1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"file","id":"BLACKSTAR_VESSEL_DECISION_1","for":"DECIDE","kind":"decision","title":"⛔ VOID — the vessel was never in question","target":"v1","ts":"2026-08-21T05:05:17Z"}
+{"seat":"DECIDE","event":"drop","id":"BLACKSTAR_VESSEL_DECISION_1","reason":"void","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"FACTION_FIXEDNAME_DOCTRINE_1","for":"DECIDE","kind":"decision","title":"Should the ten defs carry `fixedName`, or only this world be repaired?","target":"v1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"FACTION_FIXEDNAME_DOCTRINE_1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"PIRATE_REPLACED_BY_BIOTECH_1","for":"DECIDE","kind":"decision","title":"Biotech displaces the def the Blackstar Company is built on","target":"v1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"PIRATE_REPLACED_BY_BIOTECH_1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"TWO_JOKE_LABELS_ON_SLEEPERS_1","for":"DECIDE","kind":"decision","title":"\"Fashion guy\" and \"slaughter\" are still ancient-mod jokes","target":"v1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"TWO_JOKE_LABELS_ON_SLEEPERS_1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"DEEPWATER_CAST_ROSTER_1","for":"DECIDE","kind":"decision","title":"The Deepwater Compact has a faith and no faces","target":"v1","row":"—","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"DEEPWATER_CAST_ROSTER_1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D-RACE","for":"DECIDE","kind":"decision","title":"Owner closed race appearance for v1; Ortolan moved INTO v1","target":"v1","row":"doctrine","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D-RACE","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D-RACE","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D1","for":"DECIDE","kind":"decision","title":"Fill in the items whose spec or test is still blank","target":"v2","row":"doctrine","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"D1","reason":"⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not reach the frozen world. Parked, not lost.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D10","for":"DECIDE","kind":"decision","title":"Owner: cut the four Predator factions from the world?","target":"v1","row":"10","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D10","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D10","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D16","for":"DECIDE","kind":"decision","title":"Seven files have no home in the new layout — decide where","target":"v2","row":"repo","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"D16","reason":"⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not reach the frozen world. Parked, not lost.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D19","for":"DECIDE","kind":"decision","title":"Design how the campaign starts — no document exists","target":"v1","row":"12","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D19","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D19","sha":"bab001d","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D21","for":"DECIDE","kind":"decision","title":"Rule on TEST_PLAN.md: still useful, rewrite, or retire","target":"v1","row":"0","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D21","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D21","sha":"dfdb9c8","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D22","for":"DECIDE","kind":"decision","title":"Prune NEXT_RELOAD.md — 657 lines against a 400 budget","target":"v1","row":"0","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D22","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D22","sha":"dfdb9c8","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D2","for":"DECIDE","kind":"decision","title":"Owner: may we generate throwaway worlds purely to measure?","target":"v1","row":"v2","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"D2","reason":"dropped — Answered — the owner makes and saves the world by hand, so nothing needs measuring.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D4","for":"DECIDE","kind":"decision","title":"The world is half ocean against a quarter by design — pick a fix","target":"v1","row":"dead","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"D4","reason":"dropped — ~~v2, full text in `design/V2_DREAMS.md`.~~ ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see `ASHKARR_WORLD_DEFINITION.md` §12. The water is authored offline and imported; the generator's own ocean fraction is over…","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D24","for":"DECIDE","kind":"decision","title":"Four rules died with `agents_def.md` — re-home them or repeal them","target":"v2","row":"0","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"D24","reason":"⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not reach the frozen world. Parked, not lost.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D23","for":"DECIDE","kind":"decision","title":"Build our own xenotype set instead of cherrypicking three packs","target":"v1","row":"1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D23","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D23","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D25","for":"DECIDE","kind":"decision","title":"A spec shipped a fabricated XML sample, and the validator called it clean","target":"v2","row":"9","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"D25","reason":"⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not reach the frozen world. Parked, not lost.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D27","for":"DECIDE","kind":"decision","title":"Run the cherrypick with the owner, category by category","target":"v1","row":"1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D27","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D27","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D28","for":"DECIDE","kind":"decision","title":"Second pass on the xenotypes, once they are actually spawning","target":"v2","row":"7","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"D28","reason":"⛔ v2 — its premise died with D23. Xenotype inclusion is closed for v1.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D-CHK2","for":"DECIDE","kind":"decision","title":"Magenta heads: the generator's path-rewrite list is incomplete","target":"v2","row":"unassigned","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"D-CHK2","reason":"⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not reach the frozen world. Parked, not lost.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D-CHK3","for":"DECIDE","kind":"decision","title":"All 69 RimMandrake pawn kinds log a config error at every load","target":"v2","row":"unassigned","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"D-CHK3","reason":"⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not reach the frozen world. Parked, not lost.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D29","for":"DECIDE","kind":"decision","title":"Ash'karr's world is not safe to generate yet — two silent blockers","target":"v1","row":"10","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D29","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D29","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"stage-the-next-load-and-more-content-4b7e05","for":"DECIDE","kind":"decision","title":"stage-the-next-load-and-more-content-4b7e05","target":"v1","row":"10","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"stage-the-next-load-and-more-content-4b7e05","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"stage-the-next-load-and-more-content-4b7e05","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"frozen-mod-count-is-ten-short-2d1f8b","for":"DECIDE","kind":"decision","title":"frozen-mod-count-is-ten-short-2d1f8b","target":"v1","row":"10","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"frozen-mod-count-is-ten-short-2d1f8b","reason":"⛔ DROPPED 2026-08-19 — **owner: *\"Unfreeze mod count, let's not treat this as a criteria to monitor for v1.\"*** The item asked for four unattributed removals to be named and every doc to state the same number. Neither is wanted. The premise also decayed while it sat: live is **5…","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"promote-the-defdump-arming-out-of-optional-6ea3c7","for":"DECIDE","kind":"decision","title":"promote-the-defdump-arming-out-of-optional-6ea3c7","target":"v2","row":"10","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"promote-the-defdump-arming-out-of-optional-6ea3c7","reason":"⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not reach the frozen world. Parked, not lost.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"the-dump-was-never-stale-correct-the-manifest-5cb9a2","for":"DECIDE","kind":"decision","title":"the-dump-was-never-stale-correct-the-manifest-5cb9a2","target":"v2","row":"10","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"the-dump-was-never-stale-correct-the-manifest-5cb9a2","reason":"⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not reach the frozen world. Parked, not lost.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"point-seats-at-checks-live-file-3f70d1","for":"DECIDE","kind":"decision","title":"point-seats-at-checks-live-file-3f70d1","target":"v2","row":"doctrine","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"point-seats-at-checks-live-file-3f70d1","reason":"⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not reach the frozen world. Parked, not lost.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D-C1-SCOPE","for":"DECIDE","kind":"decision","title":"Re-scope C1's criterion, or close it — its last gap went v2","target":"v1","row":"tooling","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D-C1-SCOPE","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D-C1-SCOPE","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"does-the-standdown-cover-biome-commonality-tuning-b7c81e","for":"DECIDE","kind":"decision","title":"does-the-standdown-cover-biome-commonality-tuning-b7c81e","target":"v1","row":"10","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"does-the-standdown-cover-biome-commonality-tuning-b7c81e","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"does-the-standdown-cover-biome-commonality-tuning-b7c81e","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"b66-species-catalogue-lost-its-donor-dump-1d9e73","for":"DECIDE","kind":"decision","title":"b66-species-catalogue-lost-its-donor-dump-1d9e73","target":"v1","row":"10","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"b66-species-catalogue-lost-its-donor-dump-1d9e73","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"b66-species-catalogue-lost-its-donor-dump-1d9e73","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"a-paired-manifest-row-hides-a-missing-artifact-c58f24","for":"DECIDE","kind":"decision","title":"a-paired-manifest-row-hides-a-missing-artifact-c58f24","target":"v2","row":"doctrine","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"a-paired-manifest-row-hides-a-missing-artifact-c58f24","reason":"⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not reach the frozen world. Parked, not lost.","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"six-species-move-to-v2-owner-2026-08-15","for":"DECIDE","kind":"decision","title":"six-species-move-to-v2-owner-2026-08-15","target":"v1","row":"9","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"six-species-move-to-v2-owner-2026-08-15","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"six-species-move-to-v2-owner-2026-08-15","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"building-cherrypicker-three-state-walkthrough-4e91c7","for":"DECIDE","kind":"decision","title":"building-cherrypicker-three-state-walkthrough-4e91c7","target":"v2","row":"tooling","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"building-cherrypicker-three-state-walkthrough-4e91c7","reason":"⛔ CLOSED 2026-08-19 — **OWNER: \"Freeze buildings cherrypick, that's huge.\"** ⇒ The buildings pass is NOT v1. It joins the seven un-run categories under the 2026-08-15 freeze and is `[v2]` *if needed at all*. ⛔ Do not build the sheet, do not fill the EMPTY `verify:`/`criteria:` —…","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"ashkarr-import-the-four-uncertains-are-settled-off-the-assembly-c91d02","for":"DECIDE","kind":"decision","title":"ashkarr-import-the-four-uncertains-are-settled-off-the-assembly-c91d02","target":"v1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"ashkarr-import-the-four-uncertains-are-settled-off-the-assembly-c91d02","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"ashkarr-import-the-four-uncertains-are-settled-off-the-assembly-c91d02","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D30","for":"DECIDE","kind":"decision","title":"Six rulings the next session must get from the owner","target":"v2","row":"0","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"drop","id":"D30","reason":"✅ CLOSED 2026-08-19 — all six answered. (1)(2)(3)(4) closed 2026-08-15 by the owner; (5) ancient enemy DEFERRED to v2, he declined to name `RimMandrakeRakata`; **(6) RULED TODAY** — the Rust Cathedral's hazards and the Enclave goodwill cost were set TOGETHER as R-W4 required, in…","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"seven-factions-have-no-required-count-9c4e17","for":"DECIDE","kind":"decision","title":"seven-factions-have-no-required-count-9c4e17","target":"v1","row":"—","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"seven-factions-have-no-required-count-9c4e17","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"seven-factions-have-no-required-count-9c4e17","sha":"c7ae367","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D-MUTATOR-VEHICLE","for":"DECIDE","kind":"decision","title":"Tile mutators ARE our content-injection mechanism — v1","target":"v1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D-MUTATOR-VEHICLE","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D-MUTATOR-VEHICLE","sha":"c7ae367","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D-TODO-WORLDMAP-ART","for":"DECIDE","kind":"decision","title":"Compare GRiNDTerra vs World Map Enhanced by LOOKING","target":"v1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D-TODO-WORLDMAP-ART","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D-TODO-WORLDMAP-ART","sha":"c7ae367","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"the-trade-moot-wears-the-player-faith-and-the-spec-never-said-so-9d21f7","for":"DECIDE","kind":"decision","title":"the-trade-moot-wears-the-player-faith-and-the-spec-never-said-so-9d21f7","target":"v1","row":"6","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"the-trade-moot-wears-the-player-faith-and-the-spec-never-said-so-9d21f7","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"the-trade-moot-wears-the-player-faith-and-the-spec-never-said-so-9d21f7","sha":"c7ae367","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"ortolan-is-v1-again-supersedes-the-v2-deferral-1a7f30","for":"DECIDE","kind":"decision","title":"ortolan-is-v1-again-supersedes-the-v2-deferral-1a7f30","target":"v1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"ortolan-is-v1-again-supersedes-the-v2-deferral-1a7f30","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"ortolan-is-v1-again-supersedes-the-v2-deferral-1a7f30","sha":"7a16b97","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"D26","for":"DECIDE","kind":"decision","title":"The Eyeling becomes the Jawa clan's pet — v1","target":"v1","row":"12","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"D26","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"D26","sha":"b6f10f5","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea","for":"DECIDE","kind":"decision","title":"five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea","target":"v1","row":"9","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea","sha":"b6f10f5","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"execution-required-has-no-field-to-live-in-5e14b2","for":"DECIDE","kind":"decision","title":"execution-required-has-no-field-to-live-in-5e14b2","target":"v1","row":"9","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"execution-required-has-no-field-to-live-in-5e14b2","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"execution-required-has-no-field-to-live-in-5e14b2","sha":"4958c33","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"six-species-in-our-own-mod-have-no-donor-source-and-a-regenerate-deletes-them-4f81c9","for":"DECIDE","kind":"decision","title":"six-species-in-our-own-mod-have-no-donor-source-and-a-regenerate-deletes-them-4f81c9","target":"v1","row":"unassigned","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"six-species-in-our-own-mod-have-no-donor-source-and-a-regenerate-deletes-them-4f81c9","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"six-species-in-our-own-mod-have-no-donor-source-and-a-regenerate-deletes-them-4f81c9","sha":"4958c33","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"the-tribal-melee-tag-is-empty-pick-the-weapon-4a72e8","for":"DECIDE","kind":"decision","title":"the-tribal-melee-tag-is-empty-pick-the-weapon-4a72e8","target":"v1","row":"unassigned","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"the-tribal-melee-tag-is-empty-pick-the-weapon-4a72e8","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"the-tribal-melee-tag-is-empty-pick-the-weapon-4a72e8","sha":"4958c33","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"file","id":"sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4","for":"DECIDE","kind":"decision","title":"sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4","target":"v1","row":"7","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"claim","id":"sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4","ts":"2026-08-21T05:05:18Z"}
+{"seat":"DECIDE","event":"close","id":"sixteen-roster-kinds-have-nowhere-to-be-used-8f21c4","sha":"4958c33","ts":"2026-08-21T05:05:18Z"}
+{"seat":"OWNER","event":"file","id":"MORNING_BRIEF_CHECK_1","for":"OWNER","kind":"question","title":"What CHECK did overnight, 2026-08-20","target":"v1","needs":"owner","ts":"2026-08-21T05:05:18Z"}
+{"seat":"OWNER","event":"note","id":"MORNING_BRIEF_CHECK_1","text":"imported from queue/HUMAN.md with no parseable fields; state and prose are unverified","ts":"2026-08-21T05:05:18Z"}
+{"seat":"OWNER","event":"claim","id":"MORNING_BRIEF_CHECK_1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"OWNER","event":"file","id":"LOADS_ARE_BLOCKED_NEEDS_YOU_1","for":"OWNER","kind":"question","title":"No save loads cleanly on the 578 stack — W9 needs a fresh world","target":"v1","needs":"owner","ts":"2026-08-21T05:05:18Z"}
+{"seat":"OWNER","event":"claim","id":"LOADS_ARE_BLOCKED_NEEDS_YOU_1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"OWNER","event":"file","id":"CANON_RULINGS_OWED_OWNER_1","for":"OWNER","kind":"question","title":"Seven canon questions, and one thing to look at","target":"v1","row":"—","needs":"owner","ts":"2026-08-21T05:05:18Z"}
+{"seat":"OWNER","event":"claim","id":"CANON_RULINGS_OWED_OWNER_1","ts":"2026-08-21T05:05:18Z"}
