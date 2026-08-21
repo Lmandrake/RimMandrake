@@ -69,6 +69,8 @@ BANDS = {
     #     contain fit spans only 66% of the band's width.
     # ⇒ East needs purpose-generated SIDE-view pairs, one per species, exactly as the
     # DogSled needed `art/eopie_pair_gen_east.png`. It is a missing asset, not a fit bug.
+    # 🔑 That art is now SPECIFIED and awaiting the owner's approval to spend a generation:
+    # sizes, references, prompts and the exact commands are in Source/EAST_COMMISSION.md.
     ("Chariot", "east"):          (254, 486, 191, 342),
     ("WarChariot", "east"):       (212, 494, 148, 336),
     ("OxCart", "east"):           (282, 505, 158, 337),
@@ -146,7 +148,12 @@ UNDER = {"north": True, "east": True, "south": False}
 # it into the donor's own north band gives the animals seen from behind, which is what
 # north wants. Graded against the DogSled's hand-authored north on
 # `art/review/derived_facings.png`, that read as near-indistinguishable at sprite size.
-ROTATE = {"north": 180, "south": 0, "east": 90}   # east: bottom -> right
+# 🔴 EAST IS 0, NOT 90. The 90 was there to serve the turned-south-pair experiment, which
+# is dead (see the east note in BANDS). East art is AUTHORED in side elevation, heads to
+# the right, so it arrives already facing the way the donor draws it and any turn would
+# lay the team on its side. North stays 180: rotating the south plan view is exactly what
+# a rear view of the same animal is. See Source/EAST_COMMISSION.md.
+ROTATE = {"north": 180, "south": 0, "east": 0}
 
 # DECIDE's ruling from measured baseBodySize. The ladder is the point; do not swap
 # one beast for another without redoing the whole ladder.

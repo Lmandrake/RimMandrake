@@ -47,7 +47,13 @@ proof too: band aspect 1.244 against the turned pair's 0.732 — fill costs +69.
 spans 66% of the band's width. ⇒ **East needs purpose-generated SIDE-view pairs, one per
 species**, exactly as the sled needed `art/eopie_pair_gen_east.png`. See the rightmost
 column of `src/Jawa/DesertVehicleReskin/Source/art/review/beast_facings.png`.
-⛔ **Chariot is still unbuilt on every facing** — it needs ONE dewback in a 92×182 band
+⏳ **The east art is now SPECIFIED and deliberately UNFIRED, 2026-08-21.** Generation
+sizes, band aspects, reference order, the four prompts and the exact commands are in
+`src/Jawa/DesertVehicleReskin/Source/EAST_COMMISSION.md`. It waits on the owner
+approving four generations; the donor east reference crops are already extracted to
+`Source/art/ref/donor_<Vehicle>_east_6x.png`, and `ROTATE["east"]` is now 0 because
+east art arrives already facing east.
+⛔ **Chariot east is still unbuilt** (south and north shipped in `65ec90d`) — east needs ONE dewback in a 233×152 band
 and only a merged pair exists (the two animals overlap by 495 px at centre, so it cannot
 be halved). Also a missing asset.
 
