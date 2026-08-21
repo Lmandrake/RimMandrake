@@ -382,10 +382,16 @@ biome would not inherit it. **Reuse the biome itself rather than copying it.**
 
 ## Fauna: one free win, and one perfect fit
 
-- ⭐ **`AB_ForsakenAnglerfish` already exists** — native to this biome,
-  `livesInOcean=true`, a bioluminescent lure. **It is inert only because Fish
-  Industry is not enabled.** One mod switch gives the deep a native swimming
-  creature.
+- ⭐ **~~`AB_ForsakenAnglerfish`~~ → `VCEF_ForsakenAnglerfish`** — moved from Alpha
+  Biomes to **VCE Fishing**; corrected against the official def dump
+  (**578 mods as of 2026-08-20**). The bioluminescent-lure anglerfish is still in the stack under the new
+  name. ⚠️ **But it is now a fish ITEM, not a creature:** the live def is a `ThingDef`
+  of category `Item`, ingestible, with `VFEFactory_FishingProcess_VCEF_ForsakenAnglerfish`
+  beside it, and **`livesInOcean` appears nowhere in the dump** — that was Fish
+  Industry's field, and Fish Industry is not enabled. ⛔ **So "one mod switch gives the
+  deep a native swimming creature" no longer follows** — under VCE Fishing this is
+  something you catch, not something that swims. What actually stocks the deep is left
+  open.
 - ⭐ **`AA_SandProwler`** (combatPower 275) is described as a **lion × shark ×
   sand skink** that burrows through loose substrate and ambushes from beneath,
   and it already re-skins itself by terrain. **Swap sand for silt and it is a

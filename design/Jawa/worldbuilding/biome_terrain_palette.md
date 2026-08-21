@@ -139,7 +139,18 @@ biome.)
 | **Savanna** | `Savanna` | savanna | dry grassland — transitional desert edge |
 | **Wetland** | `Wetland` | wetland | rare water fringe |
 
-### A4. Biomes! Oasis — WS 2538518381 · biomes-team/BiomesOasis ✅ (verified from 1.6 defs)
+### A4. Biomes! Oasis — WS 2538518381 · biomes-team/BiomesOasis 🔴 NOT IN THE STACK
+
+🔴 **`BMT_ChromaticOasis` does not exist in the live game. This is a LOST reference, not a stale
+name.** Checked against the official def dump (**578 mods as of 2026-08-20**): **zero** defs of any type match
+`Chromatic`, and of the 80 entries in `BiomeDef.json` **none** comes from Biomes! Oasis — the only
+`BMT_` biomes present are Biomes! Caverns' three. ⚠️ The surviving `BMT_GenstepOasisElevation` /
+`BMT_GenstepOasisTerrain` belong to **Biomes! Core**, not to Oasis, so their presence is not evidence
+the mod is installed. **Biomes! Oasis is simply not in the mod list**, and everything below describes
+a mod we do not have. ⛔ **What should carry the oasis role instead is an OPEN design question** —
+`ZBiome_DesertOasis` (More Vanilla Biomes) exists and is cited elsewhere, but substituting it is a
+design decision, not a repair, so nothing is substituted here.
+
 
 1.6 verified (`supportedVersions` 1.2–1.6). Adds exactly **one** biome: the **Chromatic Oasis**
 (`BMT_ChromaticOasis`, label "chromatic oasis") — groundwater-rich desert oasis with rare
@@ -270,7 +281,10 @@ Grouped by use. **Alien terrain welcome** (user) — this is where it lives:
 - **Alien red-water (⭐ "tiny oceans" with alien flavor — Gunk submod, `GU_` prefix):**
   `GU_RedWaterShallow`, `GU_RedWaterDeep`, `GU_RedWaterMovingShallow`, `GU_RedWaterMovingChestDeep`,
   `GU_RedWaterOceanShallow`, `GU_RedWaterOceanDeep`; alien sand/soil: `GU_AlienSand`, `GU_AlienSandFine`,
-  `GU_AlienSoftSand`, `GU_RichAlienSand`, `GU_MossyRed`; alien tech floors: `GU_MetalFloor1/2/3`, `GU_Piping`
+  ~~`GU_AlienSoftSand`~~ (**LOST 2026-08-20** — no dump match. ⚠️ Not a rename either: `GU_AlienSand`
+  and `GU_AlienSandFine`, both already named on this line, are the **only** two `GU_` sand terrains
+  in the stack, so this third name never had anything to be renamed from), `GU_RichAlienSand`,
+  `GU_MossyRed`; alien tech floors: `GU_MetalFloor1/2/3`, `GU_Piping`
 - **Tar / propane (exotic fuel terrain):** `AB_Tar`, `AB_ArtificialTar`, `AB_TarMud`, `AB_PropaneLake`,
   `AB_SolidPropane`
 - **Slime (gelatinous biome):** `AB_Slime`, `AB_RichSlime`, `AB_SlimeGrass`, `AB_SlimyMud`, `AB_LiquidSlime`
@@ -330,7 +344,7 @@ oasis/mycotic tiles their §④ threat. Resolved after a full 1.6 search + sourc
   low-but-present commonality; their `AB_LiquidLava`/`AB_Obsidian`/`AB_VolcanicGravel` terrains give
   the "highly volcanic" read even inside otherwise-desert tiles.
 - **Rare water, jungle-ringed:** keep `Lake`/`Ocean` tiles few; where they occur, favor
-  `TropicalRainforest` / `AB_FeraliskInfestedJungle` / `AB_MiasmicMangrove` / `BMT_ChromaticOasis`
+  `TropicalRainforest` / `AB_FeraliskInfestedJungle` / `AB_MiasmicMangrove` / ~~`BMT_ChromaticOasis`~~ (**LOST 2026-08-20**, §A4)
   as the surrounding ring (the vicious jungle around scarce water). This is a **placement pattern**
   Map Designer + biome commonality can bias, and the natural payoff of the Tier-2b world-authoring
   process to be designed next.
@@ -338,12 +352,15 @@ oasis/mycotic tiles their §④ threat. Resolved after a full 1.6 search + sourc
   red alien oceans, obsidian flats, slime, tar — to sprinkle for strangeness without new biomes.
 - **Water model intact:** every water terrain above is tagged surface/groundwater/none so the §3A
   partition and the no-free-generator guardrail hold — a `Sand`/`ExtremeDesert` tile is genuinely
-  ✗-water (carry from the ship), while `WaterMovingShallow`/`BMT_ChromaticOasis` are fill points.
+  ✗-water (carry from the ship), while `WaterMovingShallow` is a fill point and ~~`BMT_ChromaticOasis`~~ is **LOST 2026-08-20** (§A4).
 
 ## 4. Open items before this palette is "final"
 1. ✅ **DONE 2026-08-04:** `2026-08-04l` ingested — Advanced Biomes (5 biomes, unprefixed defNames),
-   Biomes! Oasis (`BMT_ChromaticOasis`), More Vanilla Biomes (10 `ZBiome_*`) all verified from 1.6
+   ~~Biomes! Oasis (`BMT_ChromaticOasis`)~~, More Vanilla Biomes (10 `ZBiome_*`) all verified from 1.6
    defs; A3/A4/A5 + B4 now hold real defNames. **All four biome mods are now defName-verified.**
+   🔴 **Corrected 2026-08-20:** that pass read each mod's OWN 1.6 folder, not the loaded stack. Three
+   of the four hold up; **Biomes! Oasis is not in the mod list**, so `BMT_ChromaticOasis` is a LOST
+   reference and only three biome mods are actually verified. See §A4.
 2. ⚠️ **Advanced Biomes uses unprefixed defNames** (`Volcano`, `Wasteland`, `Lava`, `Savanna`,
    `PoisonSoil`, …). In a large load order this is a legibility/collision hazard — watch for def
    overwrites and, if a clash appears, patch-rename via the compat mod. Not blocking, but flagged.
