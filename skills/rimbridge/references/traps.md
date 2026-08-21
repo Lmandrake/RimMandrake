@@ -381,3 +381,24 @@ tree and went looking for why dev mode was off. Dev mode was on; the call was fa
 an exit code: it converts "I could not answer" into "the answer is nothing", and those need
 completely different responses. Generalises to every `.get(x) or default` over a bridge
 reply.
+
+## Three parameter names that produced fake catastrophes in one session — 2026-08-21, CHECK
+
+All three calls returned `success: true` and answered a **different question than was asked**.
+An unknown parameter name is dropped before the tool runs, so a wrong name is
+indistinguishable from an omitted one. Generalises to: **every one of these looked like a
+devastating content finding, and every one was the caller.**
+
+| I passed | the tool wants | what it looked like |
+|---|---|---|
+| `jawa/pawn_get` `pawnId=` | **`pawn=`** | the param was dropped, the tool returned its brief LISTING with no `equipment` field, and every pawn read as unarmed — **a clean 0 of 270 armed** |
+| `jawa/spawn_pawn` `faction="hostile"` | the kind's **own faction defName** | all 67 of our kinds carry `useFactionXenotypes: true`, so xenotype comes from the faction the pawn JOINS — reading **"49 of 55 kinds spawn Baseliners"**, i.e. the species identity of twelve factions apparently gone. Re-spawned into their own factions: Geonosians 4/4, Jawa 5/5, a five-species mercenary company. Exactly one faction was genuinely wrong |
+| `rimworld/load_game` — | *(name was right)* | it returned `success: false, code: "save.missing_mods"` naming the mod, and I diagnosed "the load will not dispatch" from `Player.log` not growing for an hour **without reading the response** |
+
+🔑 **The rule these three share is not "check parameter names".** It is: when a result is
+dramatic, the caller is the first suspect, not the content. Re-run the same question a second
+way before writing it down. Two of the three were caught that way; the third was caught by
+finally reading a return value that had been sitting there the whole time.
+
+⚠️ `jawa/pawn_gear` is a **WRITER**. Reading equipment off it answers with *"Give a
+ThingDef."* and reports every pawn bare — a fourth route to the same false catastrophe.
