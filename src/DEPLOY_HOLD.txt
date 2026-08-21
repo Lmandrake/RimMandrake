@@ -59,3 +59,15 @@ WreckedMachines/*                                 # owner: parked to v2, 2026-08
 # typo fixes that are NOT part of the ruling. Holding the single file keeps
 # those live. Lift this the moment the owner rules on the genebank's north view.
 GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png   # owner: pulled pending art verification, 2026-08-14
+
+# --- DesertVehicleReskin: the fuel assembly, held on TWO counts ---------------
+# 1. The game was UP when it was built (2026-08-21). Assemblies load only at
+#    startup, so deploying mid-session cannot be tested this round and only risks
+#    the next launch loading a DLL nobody has watched attach.
+# 2. It may still change. The rule accepts `Plant | VegetableOrFruit | Meal` and
+#    therefore REJECTS RawRice, whose foodType is the standalone `Seed` flag (16)
+#    — while the item's own spec lists RawRice among what should qualify. Adding
+#    `Seed` is one token and is the owner's call; it is open in queue/HUMAN terms.
+# ⇒ Lift when the owner rules on Seed AND the game is down. The textures in this
+#    mod continue to deploy normally; that split is why this list is per-file.
+DesertVehicleReskin/Assemblies/DesertVehicleReskin.dll   # BUILD: game up + Seed ruling open, 2026-08-21

@@ -3,6 +3,16 @@
      DEPLOY TO (this folder is scanned FIRST and its preset WINS):
        C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Worldbuilder\TidallyLocked\Preset.xml
 
+     ⚠️ MEASURED 2026-08-21, AND IT CONTRADICTS THE PARAGRAPH BELOW: the deployed
+     LocalLow copy SURVIVED a full cold launch of the 450-mod list untouched — still
+     dated 2026-08-20 00:59 afterwards, with myLittlePlanetSubcount, planetCoverage,
+     saveGenerationParameters and all 16 Jawa_* lines intact. So "destroys this file on
+     EVERY game launch" is NOT what is happening now. Read the note below as the
+     mechanism that COULD fire rather than one that reliably does — something (a mod
+     update, load order, or a condition inside Refresh) is gating it. 🔑 Do not rely on
+     either reading: CHECK the file after a launch before generating a world, because
+     the failure is silent and costs 21,872 tiles of hand-authored data.
+
      ⛔ DO NOT deploy to the Steam workshop path any more:
        C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3626210061\Worldbuilder\TidallyLocked\Preset.xml
      Alien Worlds' own WorldbuilderCompat is [StaticConstructorOnStartup] and its
