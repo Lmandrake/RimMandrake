@@ -73,7 +73,29 @@ Blackstar Company faction swap (was `swap_faction_def.py`) and the final
 21,872-tile world-stats histogram. Treat both as historical, not as checks.
 
 ## verify
-EMPTY
+🔴 **OWNER'S RULING, 2026-08-21: the validation is HUMAN VERIFICATION — the authored
+world painted into the game, successfully, and looked at.**
+
+> *"I would very much like to see that world painted into the game successfully. That
+> would be a valuable check. So you can make that the validation: human verification."*
+
+That replaces the EMPTY that stood here, and it re-scopes the item: the 2026-08-17
+review list below is no longer the deliverable, because the owner ACCEPTED the map on
+the ortho globes on 2026-08-20 (`canon.yml: accepted_for_v1: true`, commit `977aa75`).
+What is being verified now is that the accepted CSV survives the trip into a running
+game.
+
+The run:
+
+    python.exe src/RimMandrake/Utils/w9_run.py --dry      # then
+    python.exe src/RimMandrake/Utils/w9_run.py --apply
+
+⚠️ It refuses to start on a zombie game and that refusal is correct — see
+`RT_PROBE_LOAD_ABORTS_ON_578_1`. It needs a world of 21,872 tiles that finished loading,
+which today means one **generated fresh**, not a save restored.
+
+⚠️ `needs` cannot be stamped on this item — there is no setter (`NEEDS_HAS_NO_SETTER_1`).
+Read it as `needs: game-up` + `bridge` until that lands.
 
 ## criteria
 the owner looks at the planet and does not immediately name a defect.
