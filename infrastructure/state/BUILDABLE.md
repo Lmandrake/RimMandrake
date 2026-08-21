@@ -241,3 +241,14 @@ it does not belong here.
   `Graphic_Multi`/`Graphic_Single` suffixing and cannot see a custom resolver.
   ⇒ **Before acting on any texture_audit row, read that def's `graphicClass`.** A row
   whose class is not a `Verse.Graphic_*` is UNJUDGED, not broken.
+- 🔴 **THE DEF DUMP SILENTLY DESTROYED 824 DEFS, AND A TYPE READING `0` THERE MEANS
+  NOTHING.** `defs/<Type>.json` was keyed on the type's SIMPLE name, but 532 def types
+  share only **517** distinct simple names — so 13 files were written two or three times
+  and the last writer won. Measured on the 2026-08-21 08:20:20Z capture: `AbilityDef`
+  **612 → 0**, `FaceTypeDef` **152 → 0**, and depending on write order `SymbolDef` (9,099),
+  `StructureLayoutDef` (301) and `CharacterDef` (269) are the same coin landing the other
+  way. ⇒ **"Zero X in the dump" is UNMEASURED, never negative** — the type may simply have
+  lost the race. Fixed 2026-08-21 (`d7cf154`): colliding types now write `<FullName>.json`
+  and the manifest carries `defTypes` / `defTypeCollisions`. ⚠️ That fix is in the
+  ASSEMBLY, so it does nothing until the dumper is redeployed and the game reloaded — any
+  dump captured before that is still lying.
