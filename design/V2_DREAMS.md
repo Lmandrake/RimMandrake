@@ -1337,7 +1337,7 @@ None is abandoned; none is scheduled.
 |---|---|---|
 | **C42 (.rid half)** | Does `The Salvation.rid` load with all **101 precepts**? | ⚠️ **This one bakes at world creation** — the generated world keeps whatever the file loads with, and dropped precepts are silent. The owner deferred it knowing that. The `.xtp` half is separate and still tracked in DECIDE. |
 | **C21** | Follow The Claim quest from rumour to actual **resolution** | Registration already works; only end-to-end resolution is unproven, and that needs real playtime rather than a bridge test. |
-| **C35** | Do the six factions' `xenotypeSet`s read back as Star Wars species, not the vanilla ones inherited from the abstract parent? | The fix is deployed and C37 forced 70/70 xenotypes correctly, so this is confirmation, not discovery. If it HAS failed, faction members spawn as vanilla xenotypes. |
+| **C35** | Do the six factions' `xenotypeSet`s read back as Star Wars species, not the vanilla ones inherited from the abstract parent? | The fix is deployed and C37 forced 70/70 xenotypes correctly (70 = the BTD roster; we now define **71** under `src/`, and 139 XenotypeDefs are live at 578 mods — `canon.yml > species`), so this is confirmation, not discovery. If it HAS failed, faction members spawn as vanilla xenotypes. |
 | **C41** | Four more animal-drawn transports | Nothing to test — **B62 is unbuilt**: 12 PNGs on disk against 24 needed, and its 13 defs are absent. Pure content addition. |
 | **C31** | Four Jawa pawn kinds (`Jawa_Colonist`, `Jawa_Tribal_Scavenger`, `_Slinger`, `_Elder`) | They are **silently discarded at load** on a bad `ParentName`, so those four types do not exist in game. Blocked on BUILD's fix and deferred with it. |
 
@@ -1440,6 +1440,12 @@ adjust → repeat**, the same shape as the validators already in this repo
 is cheap offline: `worldmap.py` reads every tile's biome, elevation, temperature,
 rainfall and hilliness, so "does this planet actually have a habitable ring 40-57° from
 the substellar point" is a function, not an opinion.
+
+⚠️ **40–57 is not settled, and neither is 34–57 — do not build a scorer against either.**
+`infrastructure/state/canon.yml > needs_ruling.HABITABLE_RING_ARC_RULING_1` carries
+**34–57°** *provisionally*, because that is what the code that sited the player's home
+used (`src/RimMandrake/Utils/ashkarr_paint.py:76-77`); **40–57°** is asserted elsewhere
+with real tile counts. ~700 tiles turn on it. Both stand until the owner rules.
 
 🔴 **Scope note, and it needs the owner's word before anyone builds it.** Automated
 **WORLDgen** is OUT of every version by his own standing ruling, and v2 is explicitly not
@@ -1636,7 +1642,7 @@ spec:     🔴 **OWNER RULING 2026-08-15, AND IT IS PART (c) OF THIS ITEM — do
           `Config error in RimMandrake<Species>_Kind: initial resistance range is
           undefined for humanlike pawn kind.` — **69 lines, three quarters of the whole
           stack's 93 config errors.** Not only noise: it is what a prisoner's recruitment
-          resistance rolls from, so the capture path is unset for all 70 species.
+          resistance rolls from, so the capture path is unset for all 70 species (70 = the BTD roster the generator emits; 71 XenotypeDefs are now defined under `src/` — `canon.yml > species.ours_on_disk`).
           Fix: one `ET.SubElement(e, "initialResistanceRange").text = "10~20"` beside the
           existing `apparelMoney` line at `:831`. `10~20` is vanilla's humanlike value —
           use it; this is not a balance decision and must not become one.
@@ -1785,7 +1791,7 @@ finding:  THREE species named across two separate looks, and the pair is NOT the
           ⚠️ Two grids, two different second names. Either the fault is not deterministic
           per species, or one of the two was a misread at a glance — **check all three**,
           and do not assume Chagrian is clean because the second look did not name it.
-          All SPAWN fine — 70/70 xenotypes spawned, so this is art only, not defs or genes.
+          All SPAWN fine — 70/70 xenotypes spawned (70 = the BTD roster, not the 71 now under `src/`), so this is art only, not defs or genes.
 scope:    ⛔ Not triaged and not diagnosed by me — the owner looked, I am recording it.
           Whether it is a texPath that does not resolve, a missing PNG, or a head/body
           type with no graphic is BUILD's to find.

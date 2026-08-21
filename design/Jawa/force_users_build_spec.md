@@ -711,7 +711,7 @@ stormtroopers, purge units and lightsaber-bearing Sith together.
 |---|---|---|
 | **A. Melee duellist (no powers)** | A xenotype with psylink 1 from `guy762_statgene_force`, a persona plasmasword, high Melee, `combatPower` ~200. Reads as a Sith/Jedi on the field. Casts nothing. | **Zero new frameworks. Pure XML. Ships today.** |
 | **B. Melee duellist + utility powers** | A, plus `guy762_GeneAbility_forcesight` / `guy762_GeneAbility_jump`, which are `aiCanUse true` and already in the stack. | Still pure XML. Powers are non-combat; a "Force leap" is the only visible one. |
-| **C. Real Force combat powers** | Lightning, choke, throw. | Requires either **installing VPE** (a 570-mod load-order change and a re-verification pass) or **authoring AbilityDefs + an NPC-casting think-tree node**, which is C#/Harmony work. See §4. |
+| **C. Real Force combat powers** | Lightning, choke, throw. | Requires either **installing VPE** (a 570-mod load-order change and a re-verification pass — 570 as of 2026-08-13, this document's date; the list is 578 as of 2026-08-20 per `canon.yml > modlist`) or **authoring AbilityDefs + an NPC-casting think-tree node**, which is C#/Harmony work. See §4. |
 
 **Recommendation: build A, structured so B is a one-line addition and C is a
 later swap of the ability list.** A is achievable inside the existing patch mod
@@ -998,7 +998,7 @@ Either the ruling was never executed, or VPE was removed and the docs were not
 updated. **This is not mine to resolve** — it is a mod-roster decision, and
 `required_mods.md` is BUILD's file (`infrastructure/agents/BUILD.md`). It must be
 filed, not silently worked around
-(§6). Adding VPE now is a dependency change to a 570-mod order and a full
+(§6). Adding VPE now is a dependency change to a 570-mod order (570 as of 2026-08-13) and a full
 re-verification, at ~23–30 min per cold load; it is not a side effect of building
 a pawnkind.
 
@@ -1007,7 +1007,7 @@ a pawnkind.
 Standalone is a 516 KB Harmony assembly patching pawn generation, trait
 generation, apparel generation, damage pre-application, projectile impact,
 faction relation creation, gene add/remove, tend, peace talks and mechanitor
-eligibility — plus a custom shader bundle and a `Doorstopper`. In a 570-mod order
+eligibility — plus a custom shader bundle and a `Doorstopper`. In a 570-mod order (570 as of 2026-08-13)
 that is a very large surface for a mod whose reviews already report instability.
 The owner's decision to keep both uninstalled is well supported by what is on
 disk. **Nothing in this spec requires any of it.**

@@ -86,7 +86,13 @@ entire list dead code.**
 
 🔑 **The owner ruled `permanentEnemy` for the PLAYER relationship and the spec accepts that
 consequence explicitly** — *"this is the Galactic Empire, not a patron you petition."*
-⚠️ **Nobody has ruled on the other eleven factions**, and the side effect makes a real
+⚠️ **Nobody has ruled on the other ~~eleven~~ twelve factions** — corrected 2026-08-20:
+the roster is **13** (`infrastructure/state/canon.yml > factions.count` — the 8 `Jawa_*`
+we define plus `Empire`, `OutlanderCivil`, `TribeCivil`, `Pirate` and `Mechanoid`), so
+**twelve** besides the Empire. *Eleven* counted a dead world. ⚠️ The table above names
+only ten of them: it omits `Pirate` (4 settlements) and the hidden `Mechanoid` — the
+blanket flag makes the Empire permanently hostile to those two as well. And the side
+effect makes a real
 design claim: **the Hutt Cartel can never deal with the Empire.** A faction whose own
 `ideoDescription` is *"we sell to the farmer, and we sell to the fleet that burned the
 farmer"* is, by this flag, forbidden from selling to the fleet.

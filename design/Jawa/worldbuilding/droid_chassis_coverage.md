@@ -69,8 +69,12 @@ tuning pass, not a drop-in.
 Mechanoid its Droid`, which turn these chassis into factions and into vanilla
 mech replacements. We do not want either.**
 
-`what_the_machines_are.md` already ruled there is **no thirteenth faction** — the
-roster holds twelve and four of them are already about machines. **These are
+`what_the_machines_are.md` already ruled these chassis get **no faction of their own**.
+~~"no thirteenth faction — the roster holds twelve"~~ — corrected 2026-08-20: the roster
+is **13** (`infrastructure/state/canon.yml > factions.count`), and the thirteenth is the
+hidden Mechanoid *Forgotten Arsenal* that same file calls **faction 13**. Twelve is the
+count of factions that hold settlements on the map, and four of those are already about
+machines. **These are
 visual variety for factions that exist**, not new polities.
 
 ⇒ **Adopt for SILHOUETTES, not for count.** The Geonosian Foundry Hive is a droid
