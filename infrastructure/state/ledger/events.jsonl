@@ -700,3 +700,7 @@
 {"seat":"BUILD","event":"start","id":"DRINKS_CARRY_MELEE_TAGS_1","ts":"2026-08-21T15:58:28Z"}
 {"seat":"BUILD","event":"verify","id":"OCULAR_FOREST_SUMMITS_1","result":"pass","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/OCULAR_FOREST_SUMMITS_1_offline.txt","sha":"bdb78ff","ts":"2026-08-21T15:59:37Z"}
 {"seat":"BUILD","event":"close","id":"OCULAR_FOREST_SUMMITS_1","sha":"bdb78ff","ts":"2026-08-21T15:59:38Z"}
+{"seat":"BUILD","event":"claim","id":"RAIN_DRY_THE_LOWLANDS_1","ts":"2026-08-21T15:59:55Z"}
+{"seat":"BUILD","event":"start","id":"RAIN_DRY_THE_LOWLANDS_1","ts":"2026-08-21T15:59:55Z"}
+{"seat":"BUILD","event":"verify","id":"THREE_ANCIENT_KINDS_ARMED_1","result":"partial","config":"offline-578-defs","evidence":"infrastructure/state/observed/build/THREE_ANCIENT_KINDS_ARMED_1_offline.txt","sha":"f8a5d7c","ts":"2026-08-21T16:02:08Z"}
+{"seat":"BUILD","event":"close","id":"THREE_ANCIENT_KINDS_ARMED_1","sha":"35ff26c","ts":"2026-08-21T16:02:23Z"}
