@@ -36,7 +36,14 @@ LEDGER = (
     '{"ts":"t","seat":"DECIDE","event":"file","id":"MINE_ITEM_HERE_1",'
     '"title":"t","kind":"task","for":"BUILD"}\n'
     '{"ts":"t","seat":"DECIDE","event":"file","id":"THEIRS_ITEM_HERE_1",'
-    '"title":"t","kind":"task","for":"CHECK"}\n')
+    '"title":"t","kind":"task","for":"CHECK"}\n'
+    # BUILD filed both FOR CHECK. Nobody has claimed the first; CHECK claimed the
+    # second, and that claim is the handover.
+    '{"ts":"t","seat":"BUILD","event":"file","id":"FILED_BY_ME_1",'
+    '"title":"t","kind":"task","for":"CHECK"}\n'
+    '{"ts":"t","seat":"BUILD","event":"file","id":"FILED_THEN_CLAIMED_1",'
+    '"title":"t","kind":"task","for":"CHECK"}\n'
+    '{"ts":"t","seat":"CHECK","event":"claim","id":"FILED_THEN_CLAIMED_1"}\n')
 
 BASE = {
     "infrastructure/state/queue/BUILD.md": GEN,
@@ -44,6 +51,8 @@ BASE = {
     "infrastructure/state/ledger/events.jsonl": LEDGER,
     "infrastructure/state/items/MINE_ITEM_HERE_1.md": "## spec\nx\n",
     "infrastructure/state/items/THEIRS_ITEM_HERE_1.md": "## spec\nx\n",
+    "infrastructure/state/items/FILED_BY_ME_1.md": "## spec\nold\n",
+    "infrastructure/state/items/FILED_THEN_CLAIMED_1.md": "## spec\nold\n",
     "TRANSIENT_notes.md": "scratch\n",
     "README.md": "# repo\n",
 }
@@ -125,6 +134,14 @@ CASES = [
      {}, "git commit src/x.py -m \"corrected REP.md and BUILD.md\"", "BUILD", None),
     ("ALLOW a message quoting the ledger path", ALLOW, None,
      {}, "git commit src/x.py -m \"the %s guard was inverted\"" % L, "BUILD", None),
+    # The filer is TOLD to write the spec, so it may finish it — until a claim hands
+    # the item over. Both halves are asserted; the LEDGER fixture decides which.
+    ("ALLOW the filer finishing the spec of an UNCLAIMED item it filed", ALLOW, None,
+     {I + "/FILED_BY_ME_1.md": "## spec\nx\n"},
+     "git commit %s/FILED_BY_ME_1.md -m x" % I, "BUILD", None),
+    ("DENY  the filer once the owning seat has CLAIMED it", DENY, "belongs to",
+     {I + "/FILED_THEN_CLAIMED_1.md": "## spec\nx\n"},
+     "git commit %s/FILED_THEN_CLAIMED_1.md -m x" % I, "BUILD", None),
     ("DENY  another seat's item when it IS in the pathspec", DENY, "belongs to",
      {I + "/THEIRS_ITEM_HERE_1.md": "changed\n"},
      "git commit %s/THEIRS_ITEM_HERE_1.md -m \"x\"" % I, "BUILD", None),

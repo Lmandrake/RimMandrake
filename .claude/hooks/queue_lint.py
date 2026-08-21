@@ -203,9 +203,17 @@ def my_seat(root):
     return None
 
 
-def owners(root):
-    """-> {item_id: owning_seat} from the ledger. {} if it cannot be read."""
+def owners(root, want=None):
+    """-> {item_id: owning_seat} from the ledger. {} if it cannot be read.
+
+    `want="unclaimed_filers"` instead returns {item_id: filing_seat} for items NOBODY
+    has claimed yet. 🔑 `rimflow file --for X` TELLS the filer to write the spec, so
+    refusing the filer's later corrections to it made the instruction impossible to
+    follow — the first commit only worked because `git diff` does not list untracked
+    files. A claim is the handover; before it there is nothing to protect.
+    """
     out = {}
+    filed_by, claimed = {}, set()
     path = os.path.join(root, LEDGER)
     try:
         with open(path, encoding="utf-8") as fh:
@@ -219,12 +227,19 @@ def owners(root):
                     return {}            # torn ledger: say nothing rather than guess
                 if ev.get("event") == "file" and ev.get("id"):
                     out[ev["id"]] = ev.get("for")
+                    filed_by[ev["id"]] = ev.get("seat")
                 elif ev.get("event") == "spawn" and ev.get("name"):
                     out[ev["name"]] = ev.get("for")
+                    filed_by[ev["name"]] = ev.get("seat")
                 elif ev.get("event") == "reassign" and ev.get("id"):
                     out[ev["id"]] = ev.get("to")
+                    claimed.add(ev["id"])
+                elif ev.get("event") in ("claim", "start") and ev.get("id"):
+                    claimed.add(ev["id"])
     except OSError:
         return {}
+    if want == "unclaimed_filers":
+        return {k: v for k, v in filed_by.items() if v and k not in claimed}
     return out
 
 
@@ -305,6 +320,7 @@ def main():
     seat = my_seat(root)
     if seat:
         own = owners(root)
+        may_finish = owners(root, "unclaimed_filers")
         # ⚠️ `git diff HEAD --` with an EMPTY pathspec lists the whole working tree, so
         # this used to refuse a commit because some OTHER seat was mid-edit on an item
         # that appeared in neither the pathspec nor the diff. Four seats share one tree;
@@ -316,6 +332,8 @@ def main():
             iid = os.path.basename(p)[:-3]
             holder = own.get(iid)
             if holder and holder != seat and seat != "OWNER":
+                if may_finish.get(iid) == seat:
+                    continue             # you filed it and nobody has claimed it yet
                 bad.append((iid, holder))
         if bad:
             return deny(
