@@ -143,19 +143,29 @@ planet:
     meta.json start{}; sited 2026-08-19 and argued at ashkarr_paint.py:74-95. arc 56.9,
     bearing 358.8, ExtremeDesert, 276 m, 38.6 °C, 18 mm, nearest standing water 26° away.
 
-  habitable_ring_arc: [34, 57]
+  habitable_ring_arc: [40, 57]
   habitable_ring_src: >
-    src/RimMandrake/Utils/ashkarr_paint.py:76-77 — "the habitable ring is ~34-57 degrees
-    of arc" — and the siting decision built on it: The Setdown at arc 56.9 is called
-    "the OUTER EDGE of the habitable ring", which only reads true against 34–57.
+    🔴 OWNER RULING, 2026-08-21: "Select 40-57 habitable ring." Asked as
+    needs_ruling.HABITABLE_RING_ARC_RULING_1, abstained on 2026-08-20, ruled the next
+    day. This value is RULED, not measured — it does not need a citation behind it and
+    nothing may reopen it on evidence.
     🔑 This band is a DESIGN band, not a settlement census: the 72 settlements span
     arc 10.0 to 104.6 with a median of 75.0. Do not "correct" one against the other.
+    ⚠️ The arc-34–40 band, ~700 tiles, is MARGIN and not habitable. That is the whole
+    practical consequence of the ruling.
+    ✅ The Setdown does not move. It sits at arc 56.9 and is called "the outer edge of
+    the habitable ring", which reads true under either arc — 56.9 is inside 57 both
+    ways. A propagation edit that moves the start tile is wrong.
+    Propagation into the files that still say 34–57 is HABITABLE_RING_IS_40_57_1.
   habitable_ring_superseded:
-    - value: "[40, 57]"
+    - value: "[34, 57]"
       why: >
-        ~700 tiles narrower, and it contradicts the file that sited the player's home.
-        No ruling or measurement found behind it. Flagged for owner confirmation —
-        see needs_ruling.HABITABLE_RING_ARC_RULING_1.
+        Held as canon-provisional until 2026-08-21, on the strength of
+        ashkarr_paint.py:76-77 ("the habitable ring is ~34-57 degrees of arc") and the
+        siting argument built on it. ⛔ OVERRULED BY THE OWNER. It was the stronger
+        EVIDENCE and it still lost, which is correct: this is a design decision about a
+        hand-made world, not a finding. Still asserted at
+        ASHKARR_WORLD_DEFINITION.md:237 and fauna_placement.md:13 until that item runs.
 
   biomes_on_map: 24
   biomes_on_map_src: >
@@ -597,19 +607,9 @@ dump:
 # ===========================================================================
 needs_ruling:
 
-  HABITABLE_RING_ARC_RULING_1:
-    question: "Is the habitable ring 34–57° of arc, or 40–57°?"
-    canon_provisional: [34, 57]
-    why_provisional: >
-      34–57 is what the code that SITED THE PLAYER'S HOME used
-      (ashkarr_paint.py:76-77), and The Setdown at arc 56.9 is called "the outer edge
-      of the ring", which only reads true against 34–57. Asserted at
-      ASHKARR_WORLD_DEFINITION.md:237 and fauna_placement.md:13.
-    the_other_side: >
-      40–57 is asserted at worldgen_interactive_def.md:27, :134 and :455 (with tile
-      counts: 2,477 of which 1,791 land) and V2_DREAMS.md:1441. ⚠️ worldgen_interactive_def
-      is the file whose banner points readers at superseded measurements, which weakens it.
-    at_stake: "~700 tiles, and whether the arc-34–40 band is habitable or margin."
+  # ✅ HABITABLE_RING_ARC_RULING_1 — ANSWERED by the owner 2026-08-21: 40–57.
+  #    Removed from needs_ruling on the day; the value and the losing side are both
+  #    recorded at world.habitable_ring_arc above. The arc-34–40 band is MARGIN.
 
 
   PIRATE_DEFNAME_DRIFT_1:

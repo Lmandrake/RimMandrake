@@ -813,3 +813,30 @@ recommendation already on it.
 it is a documented scope rule with a filed ruling waiting, and reversing it changes how
 raids compose for a faction holding 13 of 72 settlements. Say the word and it is a small,
 additive patch — one `<li>` at a low weight, leaving vanilla's options and weights alone.
+
+---
+
+## ✅ SIX OWNER RULINGS — 2026-08-21 00:45, routed by REP
+
+All six are recorded as items so they execute; this block is the index, not the record.
+
+| ruling | where it went |
+|---|---|
+| ⭐ **"I like your new globes. Well done."** | `REFMATCH_THRESHOLDS_CALIBRATE_1` → BUILD. The look was the gate on `refmatch.py`; it is lifted. ⚠️ Approval of the RENDERING, not a finding that the world is defect-free |
+| **Rename the factions on the FRESH world** | folded into the fresh-world run, below. Both halves still needed: rename the live ten, AND add `fixedName` to the ten defs so it cannot recur |
+| **"Approved abstract patch."** | `OUTLANDER_GROUPMAKER_PATCH_1` → BUILD. Reverses the ⛔ at `HomesteadDefenseLeague.xml:36`. Unblocks five kinds, not one |
+| **"I want to see the magenta with my own eyes before we fix it, I don't trust it."** | `MAGENTA_CONTACT_SHEET_1` → CHECK. 🔴 Produces a PICTURE, not a fix. `d-chk2-magenta…` does not start until you have looked |
+| **Race for all 269; kit and skills only where the prose earns it** | `CAST_RACE_AND_KIT_FIELDS_1` → DECIDE. ⛔ xenotype and pawnKind stay OPEN — not inferred from the race string |
+| **"Select 40-57 habitable ring."** | `HABITABLE_RING_IS_40_57_1` → DECIDE, and **ruled at source in `canon.yml` already**. `needs_ruling` now holds one question, not two |
+
+🔑 **The ring ruling reversed the provisional value, so read it carefully.** Canon held
+**34–57** and listed 40–57 as superseded; those are now swapped. The arc-34–40 band,
+~700 tiles, is **margin, not habitable**. ✅ **The Setdown does not move** — arc 56.9 is
+inside 57 either way. `check_canon.py`: 121 files, 0 contradictions.
+
+### 🔴 STILL THE ONE THING THAT BLOCKS EVERYTHING: no save loads
+
+Unchanged and unanswered. Every save aborts in `FactionControl`'s cross-reference postfix
+while the bridge keeps answering — which is why work against it looks fine and is not.
+**Generate a fresh world on the 578 stack and save it**; that is also where the faction
+renames land, and where your Configure Factions hand-tick pass belongs. `LOADS_ARE_BLOCKED_NEEDS_YOU_1`
