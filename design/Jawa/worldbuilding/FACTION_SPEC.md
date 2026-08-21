@@ -20,8 +20,8 @@ a cosmetic defect; a missing icon is a broken faction screen.
 
 **R18 · defNames are `Jawa_<Name>`.** That is already the mod's namespace for
 non-Jawa content — `Jawa_Gamorrean_Guard`, `Jawa_SaltCrust`, `Jawa_TheClaim` — so
-it is a namespace, not a claim about who the faction is. The 6 reskins get **no
-new defName**; they are patches on the vanilla def.
+it is a namespace, not a claim about who the faction is. The ~~6~~ **5** reskins *(corrected
+2026-08-20 — `Insect` was cut)* get **no new defName**; they are patches on the vanilla def.
 
 **R19 · `Jawa_IndigenousTribes` IS the Jawa Trade Moot.** R8's rename table maps
 "Indigenous Jawa Clans / the Duneborn" → "Jawa Trade Moot", and the shipped def
@@ -29,7 +29,13 @@ already carries `leaderTitle` **Prime Trader** and `ideoName` **The Salvation**.
 ⇒ **Keep the defName** — it is deployed, and renaming a live defName risks the
 world and buys nothing — and **change the `label`** from "Jawa tribes".
 
-## The 14 factions
+## The ~~14~~ 13 factions
+
+*(Heading corrected 2026-08-20 — the table below already struck row 14; only the heading still
+said 14.)* Canon's 13 = **8 FactionDefs we define**, all `Jawa_*`, + **5 from vanilla and mods**
+(`Empire`, `OutlanderCivil`, `TribeCivil`, `Pirate`, `Mechanoid`). ⚠️ **12** is a different
+question and is also right: 12 factions hold settlements on the painted map, and 12 carry
+dossiers. `Mechanoid` — the Forgotten Arsenal — holds none by design and is the thirteenth.
 
 | # | faction | defName | vessel | religion |
 |---|---|---|---|---|
@@ -61,7 +67,7 @@ is not a faction.
 
 ## What each kind of faction owes
 
-### A reskin (6) — a `PatchOperation`, not a def
+### A reskin (~~6~~ 5) — a `PatchOperation`, not a def
 Patch only what changes the fiction. **Never touch `pawnGroupMakers` except for
 the Empire (R15).** Everything else — group makers, name makers, icons, raid
 curves — is inherited and already balanced.
@@ -521,7 +527,9 @@ desert terrain.
 | the Junkers | `(0.55,0.35,0.20)` `(0.38,0.24,0.14)` — scrap brown |
 | Jawa Trade Moot | `(0.70,0.55,0.30)` `(0.52,0.40,0.20)` — sand, with the ember |
 
-The six reskins keep their vessel's spectrum. Do not patch it.
+The ~~six~~ **five** reskins keep their vessel's spectrum. Do not patch it. *(Corrected 2026-08-20:
+`Insect` was cut, so `Empire`, `OutlanderCivil`, `TribeCivil`, `Pirate` and `Mechanoid` are the
+reskins — matching "5 reskins · 8 authored" above.)*
 
 **R23 · ✅ SPENT, 2026-08-19. The ideo blocks have landed — do not strip them.**
 R23 was a sequencing device for a time when the faith text did not exist. It does now

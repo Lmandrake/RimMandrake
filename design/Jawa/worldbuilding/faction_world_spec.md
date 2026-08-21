@@ -1,5 +1,11 @@
 # The world we want — faction specification
 
+> 🔴 **CORRECTED 2026-08-20 against `infrastructure/state/canon.yml`. This file was the WRONG one.**
+> Three things it asserted are dead: the roster is **13**, not fourteen — the Unbound Hive was cut
+> 2026-08-14 and this file never heard; the water axis is **arc from the substellar point**, not
+> latitude; and water is **8.14%** of tiles in **exactly three** connected seas, not 25% ocean.
+> Old values are struck through below rather than deleted.
+
 _A retired seat, 2026-08-13. **This states the desired end state only.** No instructions,
 no UI steps, no "how to get there". Everything here is a claim about what should
 be true of the finished world; how to make each line true is a separate problem
@@ -25,14 +31,14 @@ rewritten against them, and the shape of the whole design changed with it.
 
 | | |
 |---|---|
-| ✅ **Fourteen NPC factions exist**, plus the player's Jawa expedition | but **only twelve carry dossiers** — the machines and the hive are label reskins with no leader, no settlements and no diplomacy. **Two label patches, not two designs** |
-| 🔴 **SIX of them are reskins of VANILLA factions**, not authored from scratch | `Empire` · `OutlanderCivil` · `TribeCivil` · `Pirate` · `Mechanoid` · `Insect` |
+| ✅ **~~Fourteen~~ THIRTEEN NPC factions exist** *(corrected 2026-08-20)*, plus the player's Jawa expedition | but **only twelve carry dossiers** — *twelve* is right for dossiers and for factions holding settlements; **thirteen** is the roster. The machines are a label reskin with no leader, no settlements and no diplomacy. **One label patch, not a design** |
+| 🔴 **~~SIX~~ FIVE of them are reskins of VANILLA factions**, not authored from scratch | `Empire` · `OutlanderCivil` · `TribeCivil` · `Pirate` · `Mechanoid` — ~~`Insect`~~ *(the Unbound Hive was cut 2026-08-14)* |
 | ✅ **Eight are authored by us** | Hutt Cartel · Free Droid Enclaves · Wildsteam Clan · Deepwater Compact · Geonosian Foundry Hive · **Ascendant Helix** · Jawa Trade Moot · the Junkers |
 | ✅ **Every faction has a NAMED LEADER** | the world has people in it, not offices |
 | ✅ **The world is BIG and sparse** — ~72 settlements across a large planet | |
 | ✅ **Interesting tiles cluster** — around living settlements, and around dead ones | |
 | ✅ **One permanent enemy: the Galactic Empire** | led by Palpatine |
-| ✅ **Water increases with latitude** | the equator kills; the poles hold the standing water |
+| 🔴 **Water increases with ~~latitude~~ ARC** *(corrected 2026-08-20)* | the axis is **arc — angular distance from the substellar point** — not latitude; this world is tidally locked and does not spin, so "polar" means nothing here (temp correlates −0.98 with arc, +0.10 with latitude). Water is **8.14% of tiles (1,780 of 21,872)** in **exactly three** connected seas — The Scald at arc 35, The Twilight Sea at arc 91, The Gray Sea at arc 92. ~~25% ocean~~ is dead. See `infrastructure/state/canon.yml` |
 | ❌ **No mod faction is kept "because it is Star Wars"** | flavour is not a dependency |
 | ❌ **No faction generates Jawa except the Trade Moot** | the player race is not a common sight |
 | ❌ **The world is not auto-generated and accepted** | generate a seed, then author on top of it |
@@ -46,7 +52,13 @@ because it is not deleted — **it is wearing our names.**
 
 ---
 
-## 2. The fourteen factions
+## 2. The ~~fourteen~~ THIRTEEN factions
+
+⚠️ **Corrected 2026-08-20.** Row 14, the Unbound Hive, was cut as a faction on 2026-08-14 and
+is struck below. Canon's 13 = **8 FactionDefs we define** (all `Jawa_*`) + **5 from vanilla and
+mods** (`Empire`, `OutlanderCivil`, `TribeCivil`, `Pirate`, `Mechanoid`). The **12** in the notes
+after the table is a different question — factions that hold settlements, and factions that carry
+dossiers — and stays 12.
 
 | # | Faction | Leader | rides on | Settlements | ~~Goodwill~~ *(cut)* | Perm. enemy |
 |---|---|---|---|---:|---:|---|
@@ -63,7 +75,7 @@ because it is not deleted — **it is wearing our names.**
 | 11 | **Jawa Trade Moot** | **Kiknik the Wealthy** *("leads")* | authored | 7 | **+40, capped +74** | No |
 | 12 | **the Junkers** | **Tarn Vox the Brutal** | authored | 8 | −90 | No — bribable |
 | 13 | ⭐ **the Forgotten Arsenal** | — *(no leader; it is not a polity)* | **vanilla `Mechanoid`** | none | — | — |
-| 14 | ⭐ **the Unbound Hive** | — *(no leader)* | **vanilla `Insect`** | none | — | — |
+| ~~14~~ | ~~⭐ **the Unbound Hive**~~ | — | ~~**vanilla `Insect`**~~ | 🔴 **CUT AS A FACTION, 2026-08-14** — `Insect` is unticked at worldgen, so there is no faction to dress. ⚠️ Cut as a FACTION, not erased as a creature: hives and infestations remain in the world. See `FACTION_SPEC.md:49,:55,:59` | — | — |
 | — | **Jawa Gravship Expedition** *(player)* | the clan chief | — | — | — | — |
 
 ⚠️ **The Goodwill column is CUT FROM V1.** There is no goodwill field on
@@ -72,21 +84,25 @@ because it is not deleted — **it is wearing our names.**
 `permanentEnemyToEveryoneExceptPlayer` · `hostileToFactionlessHumanlikes` ·
 `raidsForbidden`. The numbers are `[v2]` intent, gated on CHECK C24.
 
-⭐ **Fourteen on the map, twelve dossiers — the two counts do not conflict.**
-`faction_roster_v2.md` counts dossiers; this table counts factions on the map.
-**The Forgotten Arsenal** and **the Unbound Hive** have no leader, no settlements
-and no diplomacy, so they inherit vanilla `Mechanoid` and `Insect`
-`pawnGroupMakers` wholesale. **They cost two label patches, not two dossiers.**
-Authoring load stays at twelve.
+⭐ **~~Fourteen~~ Thirteen on the roster, twelve dossiers — the two counts do not conflict**
+*(corrected 2026-08-20)*. `faction_roster_v2.md` counts dossiers; the roster counts FactionDefs.
+Twelve is also the count of factions that hold settlements on the painted map — **the Forgotten
+Arsenal holds none by design and is the thirteenth.** It has no leader, no settlements and no
+diplomacy, so it inherits vanilla `Mechanoid` `pawnGroupMakers` wholesale. **It costs one label
+patch, not a dossier.** ~~The Unbound Hive was the fourteenth on the same footing~~ — cut
+2026-08-14. Authoring load stays at twelve.
 
 ⭐ **The Forgotten Arsenal is the best name in the list**, because it says what
 `what_the_machines_are.md` ruled: **not an army, an armoury nobody came back
 for.** It is a *what*, not a *who* — no leader, no settlements, no diplomacy. The
 Forsakens left it running.
 
-⭐ **The Unbound Hive** solves the collision I flagged: the Geonosian Foundry is
+~~⭐ **The Unbound Hive** solves the collision I flagged: the Geonosian Foundry is
 *our* insectoid faction, and "unbound" says exactly how the vanilla one differs —
-**a hive with no maker and no purpose.**
+**a hive with no maker and no purpose.**~~
+⛔ **DEAD as a faction, 2026-08-14** — the name and the reading are kept for the record only;
+the collision was resolved by cutting the vanilla `Insect` faction outright rather than dressing
+it. The hive remains as a creature in the world.
 
 ### Leader titles and full styles — owner's canon, 2026-08-13
 
@@ -107,7 +123,14 @@ Forsakens left it running.
 | **Jawa Trade Moot** | **First Bargainer** | **First Bargainer Kiknik the Wealthy** | Jawa |
 | **the Junkers** | **Scraplord** | **Scraplord Tarn Vox the Brutal** | — |
 | **the Forgotten Arsenal** | — | *none — it is not a polity* | — |
-| **the Unbound Hive** | — | *none* | — |
+| ~~**the Unbound Hive**~~ | — | ~~*none*~~ — 🔴 **cut as a faction 2026-08-14** | — |
+
+✅ **Two of these leaders are already SHIPPED, not design-only** — verified 2026-08-20.
+**First Bargainer Kiknik the Wealthy** and **Scraplord Tarn Vox the Brutal** exist as
+PawnKindDef **labels** at `src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml:848`
+and `:938`, generated by `src/RimMandrake/Utils/gen_pawnkind_roster.py:127,132`.
+⚠️ **They are LABELS, not defNames** — a rename in the generator changes them silently and
+nothing here would notice.
 
 ⭐ **The titles do real work: each one tells you how its faction is organised
 before you meet anybody.** *War Chief* and *Scraplord* are taken by force.
@@ -133,7 +156,7 @@ give it to.** The Empire's word is **Emperor**, top to bottom.
 | Indigenous Jawa Clans / the Duneborn | **Jawa Trade Moot** |
 | Junker Scrap-Warrens | **the Junkers** |
 | *(vanilla Mechanoid)* | **the Forgotten Arsenal** |
-| *(vanilla Insect)* | **the Unbound Hive** |
+| ~~*(vanilla Insect)*~~ | ~~**the Unbound Hive**~~ — 🔴 **cut as a faction 2026-08-14; no rename was shipped** |
 
 ⚠️ **Two are not just renames — their MEMBERSHIP widened**, and the dossiers must
 follow:
@@ -150,9 +173,9 @@ follow:
 
 ## 3. What each reskin costs, and what it earns
 
-**Six vanilla factions are kept and reskinned. Each is kept because something we
-cannot practically change is wired to it — the wiring does not care what the label
-says.**
+**~~Six~~ FIVE vanilla factions are kept and reskinned** *(corrected 2026-08-20 — `Insect` was
+cut)*. **Each is kept because something we cannot practically change is wired to it — the wiring
+does not care what the label says.**
 
 | our faction | vanilla def | what the wiring buys us |
 |---|---|---|
@@ -161,7 +184,7 @@ says.**
 | **Deep Desert Tribes** | vanilla `TribeCivil` | tribal incidents, neolithic pawn kinds, the raid tier below the Empire |
 | **Blackstar Company** | vanilla `Pirate` | the default hostile-raid backbone — and it ships `permanentEnemy: true`, which it keeps |
 | **the Forgotten Arsenal** | vanilla `Mechanoid` | ancient dangers, clusters, and the `Gravcore_Mechhive` endgame chain |
-| **the Unbound Hive** | vanilla `Insect` | infestations, VFE Insectoid genelines, Alpha hives, Anomaly's relations |
+| ~~**the Unbound Hive**~~ | ~~vanilla `Insect`~~ | 🔴 **CUT 2026-08-14 — no reskin.** `Insect` is unticked at worldgen, so the wiring below never had a faction to hang on. ⚠️ Infestations, VFE Insectoid genelines, Alpha hives and Anomaly's relations are **map-generated and unaffected** — the creature stays, the faction does not |
 
 **Still kept without a rename:**
 
@@ -194,7 +217,7 @@ Two things below are not merely out of date, they are **false**:
 | this section says | measured truth |
 |---|---|
 | *"the only variable that matters is **latitude**"* | The tidal lock is a **POINT**, not a band. Temperature correlates **−0.98** with **arc** — angular distance from the substellar point (lat 0, lon 0) — and **+0.10** with latitude. "Polar" is meaningless here; **the poles sit on the terminator** |
-| *"It may be amusing to put these bodies near the **poles**"* | The three waters are at **arc 35 (the Scald), arc 91 (the Twilight Sea), arc 92 (the Grey Sea)** — i.e. one in the hottest place on the planet and two on the terminator. Water is **8.1%**, not 25% |
+| *"It may be amusing to put these bodies near the **poles**"* | The three waters are at **arc 35 (the Scald), arc 91 (the Twilight Sea), arc 92 (the Grey Sea)** — i.e. one in the hottest place on the planet and two on the terminator. Water is **8.14% — 1,780 of 21,872 tiles, in exactly three connected seas** — not 25% |
 
 🔑 **Translate as you read: wherever this section says "equatorial" read LOW ARC
 (sunward), and wherever it says "polar" or "high-latitude" read HIGH ARC (toward the
@@ -471,6 +494,15 @@ tradeable**. Only axes the engine actually separates will appear on the sheet.
 
 ## 🔴 THE SHAPE OF THE SEA — owner's ruling, 2026-08-13. WORLDGEN-TIME.
 
+> ⛔ **THE 25% IS DEAD, 2026-08-20. Do not author from the numbers in this section.**
+> The owner cut it 2026-08-18 — *"There's WAY too much water, so reduce that to a third the
+> value shown."* The painted world is **8.14% water (1,780 of 21,872 tiles)** in **exactly three**
+> connected seas — The Scald (312, painted `Lake`), The Twilight Sea (851) and The Gray Sea (617).
+> ✅ **What SURVIVES from this section is the SHAPE ruling, and it was satisfied:** three bodies,
+> oddly shaped, a few mountain-fed rivers, badlands and desert everywhere else.
+> ⚠️ And "worldgen-time" is dead twice over — there is no worldgen; the world is hand-painted and
+> frozen (owner, 2026-08-15 / 2026-08-18). See `infrastructure/state/canon.yml`.
+
 > **"The world should be a quarter ocean, split into three different bodies that
 > are oddly shaped rather than round or reasonable. Only a few rivers flow from
 > nearby mountains into these bodies. The rest of the world is shades of
@@ -482,7 +514,7 @@ later patch reshapes it.
 
 | | target | what the generator does unaided |
 |---|---|---|
-| **ocean share** | **25%** | 43–55% measured across three real saves |
+| **ocean share** | ~~**25%**~~ → 🔴 **8.14% realised** *(2026-08-20; the 25% was cut by the owner 2026-08-18)* | 43–55% measured across three real saves |
 | **number of bodies** | **THREE** | scattered everywhere |
 | **shape** | ⭐ **oddly shaped — not round, not reasonable** | perlin-blobby |
 | **rivers** | **a few, flowing from nearby mountains into the three bodies** | scattered by `WorldGenStep_Rivers` |
@@ -579,7 +611,7 @@ implies:**
 
 | band | target |
 |---|---|
-| **ocean** | **25%**, in three bodies |
+| **ocean** | ~~**25%**~~ → 🔴 **8.14%, realised** *(2026-08-20)*, in **exactly three** bodies |
 | **deep desert / extreme desert** | the dominant land biome |
 | **desert · badlands** | the next two, together most of the rest |
 | **strange alien biomes** | ⭐ **rare — islands, not a zoo.** Their value is being unexpected |

@@ -1,8 +1,18 @@
 # Faction Stage 3 — the buildable spec
 
+> 🔴 **SUPERSEDED for the ENGINE LAYER by `design/Jawa/worldbuilding/FACTION_SPEC.md`, 2026-08-20.**
+> That file is what BUILD executes, and where the two disagree about a FIELD it wins. What changed:
+> the roster is **13 factions**, not the 12 tabulated here — and the Unbound Hive was **cut** on
+> 2026-08-14, which this file predates; defNames are ruled `Jawa_<Name>` (R18); vessel assignments,
+> name makers, icons and ideo blocks are all settled there (R16–R19). ✅ **What is NOT superseded and
+> is still the best source in the repo:** the xenotype-family analysis (§0), the per-faction species
+> distributions (§2), and the thirst/heat gene mechanics (§4). Read those here; read fields there.
+
 _Written by **a retired seat**, 2026-08-13 overnight, against faction roster Stage 3
 (now `design/V2_DREAMS.md` **B20**).
-Substrate is the 574-mod dump. **This is `[v2]` spec work**: v1 cuts
+Substrate is the 574-mod dump **as of 2026-08-13** — ⚠️ an undated mod count reads as current
+forever; the owner's live list is **578 as of 2026-08-20** (`infrastructure/state/canon.yml`), and a
+differing count does not invalidate this dump. **This is `[v2]` spec work**: v1 cuts
 build *depth*, not spec, and speccing costs no verification pass. v1 still ships
 one thin Empire reskin._
 
@@ -30,6 +40,14 @@ different creatures to the engine.
 | Star Wars Xenotypes (`guy762`) | 58 | 15.6 | 30 |
 | Outer Rim – Galactic Diversity | 44 | 8.3 | 18 |
 
+⚠️ **Name the denominator, 2026-08-20 — these are not competing measurements of one fact.**
+The **70** is *xenotypes in the BTD mod*, the working roster most docs mean. The **44** here counts
+Outer Rim – Galactic Diversity xenotypes **as loaded in this 2026-08-13 574-mod dump**; canon
+separately records **42** as *species shipped by Outer Rim – Galactic Diversity*
+(`design/Jawa/mods/cherry_picker_killlist.md:207`) and **44** as *xenotypes reviewed in the Droid
+Depot + Galactic Diversity art audit*. ⛔ Do not force 42/44/70/79 together —
+`infrastructure/state/canon.yml` §species.
+
 > **RULE: use `BTD_*` for every species it covers. Fall back to `guy762_*` only
 > for species BTD lacks. Never `OuterRim_*` for a species BTD has.**
 
@@ -39,7 +57,9 @@ requirement, melee damage, sleep need. At 6–9 genes it is a hat. The gene budg
 *is* the mechanical identity, so the family choice is the single highest-leverage
 decision in this document.
 
-**BTD covers 70 of the 79 distinct SW species available.** The apparent gaps are
+**BTD covers 70 of the 79 distinct SW species available** — i.e. **70 xenotypes in the BTD mod**,
+out of **79 mechanically distinct Star Wars species available across all installed mods**.
+⛔ **Two different denominators; do not reconcile them to one number.** The apparent gaps are
 mostly naming variants that BTD *does* cover:
 
 | looks missing | actually |
@@ -128,12 +148,13 @@ than merely slowed.
 **Why this is the most valuable finding here:** it converts the water doctrine
 from *fiction the engine tolerates* into *fiction the engine enforces*, and it
 costs one stat per species. **This is the cheapest large win available** — a
-single `statFactor` per xenotype makes 79 species mechanically distinct on the
+single `statFactor` per xenotype makes **79 species — the *mechanically distinct SW species across
+all installed mods* denominator** — mechanically distinct on the
 axis the whole campaign is built around. It also directly answers "make each race
 uniquely represented": thirst rate is a number the player *feels* every raid,
 every caravan, every siege.
 
-⚠️ **Heat is the complement and is PARTLY built — 30 of 70 BTD species carry a
+⚠️ **Heat is the complement and is PARTLY built — 30 of the 70 *xenotypes in the BTD mod* carry a
 `MinTemp_*`/`MaxTemp_*` gene, not all of them.** (Corrected on self-review; the
 first draft said "already carry them", which overstated it.) **Thirst + heat
 tolerance are the desert world's two axes:** heat is 43% built, thirst 0%.
@@ -493,7 +514,8 @@ no new XML defs, no licence exposure, no art.
 - **No pawnGroupMaker contents authored** — the per-group `options` lists are the
   next layer down and are large. The *sources* are identified per faction above,
   which is what Stage 3 owed.
-- **Nothing verified in-game.** Every defName here is read from the 574-mod dump;
+- **Nothing verified in-game.** Every defName here is read from the 574-mod dump **as of
+  2026-08-13** (live list 578 as of 2026-08-20);
   ⚠️ per tonight's wrong-layer lesson, the dump reports **what the game loaded**,
   so for any claim about *shipped* mod behaviour read the workshop XML.
 
