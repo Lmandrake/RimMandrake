@@ -1,0 +1,50 @@
+FORSAKEN_LABELS_FINISHED_1 - offline evidence, BUILD 2026-08-21
+
+== source defs carry a <label>, confirmed ==
+92:  <defName>AncientMallGuards</defName>
+93-    <label>"Fashion guy"</label>
+188:  <defName>AncientSlaughter</defName>
+189-    <label>slaughter</label>
+
+== validate_patch.py (578-mod def set) ==
+
+=== src/Jawa/Jawa_Patches/Patches/AncientsAreRakata.xml ===
+  WARN    Operation[1] > operations/li[1] > operations/li[1] (PatchOperationRemove): 0 nodes in the on-disk Defs, but 'xenotypeSet' appears in a PatchOperation in 'Beliar Xenotype', 'Det's Xenotypes - Avaloi', 'Det's Xenotypes - Boglegs' (+12 more). This node is probably CREATED by that mod's patch at runtime, which this validator cannot see. Make sure your mod loads AFTER it.
+              Defs/PawnKindDef[defName="AncientSoldier"]/xenotypeSet
+  WARN    Operation[1] > operations/li[2] > operations/li[1] (PatchOperationRemove): 0 nodes in the on-disk Defs, but 'xenotypeSet' appears in a PatchOperation in 'Beliar Xenotype', 'Det's Xenotypes - Avaloi', 'Det's Xenotypes - Boglegs' (+12 more). This node is probably CREATED by that mod's patch at runtime, which this validator cannot see. Make sure your mod loads AFTER it.
+              Defs/PawnKindDef[defName="AncientSoldier_Leader"]/xenotypeSet
+  WARN    Operation[2] > match > operations/li[2] > operations/li[1] (PatchOperationRemove): 0 nodes in the on-disk Defs, but 'xenotypeSet' appears in a PatchOperation in 'Beliar Xenotype', 'Det's Xenotypes - Avaloi', 'Det's Xenotypes - Boglegs' (+12 more). This node is probably CREATED by that mod's patch at runtime, which this validator cannot see. Make sure your mod loads AFTER it.
+              Defs/PawnKindDef[defName="AncientSoldierBossN"]/xenotypeSet
+  WARN    Operation[2] > match > operations/li[2] > operations/li[2] (PatchOperationRemove): 0 nodes in the on-disk Defs, but 'label' appears in a PatchOperation in 'Odyssey', 'Adaptive Storage Framework', 'Big and Small - Framework' (+65 more). This node is probably CREATED by that mod's patch at runtime, which this validator cannot see. Make sure your mod loads AFTER it.
+              Defs/PawnKindDef[defName="AncientSoldierBossN"]/label
+  info    Operation[1] > operations/li[1] > operations/li[2] (PatchOperationAdd): 1 match(es)  in Core: PawnKinds_Spacer.xml(1)
+  info    Operation[1] > operations/li[1] > operations/li[3] (PatchOperationReplace): 1 match(es)  in Core: PawnKinds_Spacer.xml(1)
+  info    Operation[1] > operations/li[2] > operations/li[2] (PatchOperationAdd): 1 match(es)  in Odyssey: PawnKinds_Spacer.xml(1)
+  info    Operation[1] > operations/li[2] > operations/li[3] (PatchOperationReplace): 1 match(es)  in Odyssey: PawnKinds_Spacer.xml(1)
+  info    Operation[2] > match > operations/li[1] > operations/li[1] (PatchOperationRemove): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[1] > operations/li[2] (PatchOperationRemove): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[1] > operations/li[3] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[1] > operations/li[4] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[2] > operations/li[3] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[2] > operations/li[4] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[3] > operations/li[1] (PatchOperationRemove): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[3] > operations/li[2] (PatchOperationRemove): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[3] > operations/li[3] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[3] > operations/li[4] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[4] > operations/li[1] (PatchOperationRemove): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[4] > operations/li[2] (PatchOperationRemove): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[4] > operations/li[3] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match > operations/li[4] > operations/li[4] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+
+OK - 0 errors, 4 warning(s)
+
+== the six ancient kinds' labels ==
+150:            <value><label>Forsaken soldier</label></value>
+175:            <value><label>Forsaken captain</label></value>
+219:                <value><label>Forsaken special unit</label></value>
+248:                <value><label>Forsaken special unit</label></value>
+277:                <value><label>Forsaken sentinel</label></value>
+306:                <value><label>Forsaken executioner</label></value>
+
+== 'Fashion guy' outside comments in src/ ==
+0

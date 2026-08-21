@@ -47,10 +47,13 @@
       label in the bio and gene tab still reads "Rakata" for a curious player who
       goes looking. The information stays present without being announced.
 
-  ⛔ TWO LABELS ARE DELIBERATELY NOT TOUCHED: `AncientMallGuards` ("Fashion guy")
-  and `AncientSlaughter` ("slaughter"), both from Ancient urban ruins. Renaming a
-  joke label is authoring, not mechanics, and it is DECIDE's register call. Their
-  XENOTYPE is patched here exactly like the other four; only the label is left.
+  ✅ ALL SIX LABELS ARE NOW SET. The two urban-ruins joke labels - `AncientMallGuards`
+  ("Fashion guy") and `AncientSlaughter` ("slaughter") - were held back on 2026-08-20 as
+  DECIDE's register call; that call was made and they are patched here as
+  `Forsaken sentinel` and `Forsaken executioner`. The six read: soldier, captain,
+  special unit x2, sentinel, executioner.
+  ⛔ The defNames stay as they are - they are third-party and every reference inside
+  Ancient urban ruins resolves through them.
 
   ============================================================================
   THE MECHANISM, and why both halves are required (R-A3)
@@ -91,8 +94,10 @@
                                            `success Always` covers both cases.
     useFactionXenotypes   Add only         absent in source, patched by nobody.
     label (Core/Odyssey)  Replace          verified PRESENT in the raw def.
-    label (urban ruins)   Remove + Add     presence not verifiable offline; the
-                                           validator cannot see those defs at all.
+    label (urban ruins)   Remove + Add     presence CONFIRMED 2026-08-21 in that
+                                           mod's PawnKinds_Boss.xml, so a plain
+                                           Replace would also work; Remove + Add is
+                                           kept for consistency with the block.
 
   ⚠️ LOAD ORDER IS ON OUR SIDE AND MUST STAY THAT WAY. `mandrake.jawa.patches`
   sits near the end of ModsConfig.xml, after `mandrake.starwarsraces`,
@@ -252,6 +257,10 @@
                 <xpath>Defs/PawnKindDef[defName="AncientMallGuards"]/xenotypeSet</xpath>
                 <success>Always</success>
               </li>
+              <li Class="PatchOperationRemove">
+                <xpath>Defs/PawnKindDef[defName="AncientMallGuards"]/label</xpath>
+                <success>Always</success>
+              </li>
               <li Class="PatchOperationAdd">
                 <xpath>Defs/PawnKindDef[defName="AncientMallGuards"]</xpath>
                 <value>
@@ -263,6 +272,10 @@
                       <useFactionXenotypes>false</useFactionXenotypes>
                 </value>
               </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/PawnKindDef[defName="AncientMallGuards"]</xpath>
+                <value><label>Forsaken sentinel</label></value>
+              </li>
             </operations>
           </li>
 
@@ -271,6 +284,10 @@
             <operations>
               <li Class="PatchOperationRemove">
                 <xpath>Defs/PawnKindDef[defName="AncientSlaughter"]/xenotypeSet</xpath>
+                <success>Always</success>
+              </li>
+              <li Class="PatchOperationRemove">
+                <xpath>Defs/PawnKindDef[defName="AncientSlaughter"]/label</xpath>
                 <success>Always</success>
               </li>
               <li Class="PatchOperationAdd">
@@ -283,6 +300,10 @@
                       </xenotypeSet>
                       <useFactionXenotypes>false</useFactionXenotypes>
                 </value>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/PawnKindDef[defName="AncientSlaughter"]</xpath>
+                <value><label>Forsaken executioner</label></value>
               </li>
             </operations>
           </li>
