@@ -501,9 +501,12 @@ def cmd_retarget(args, seat):
 def cmd_seat(args, seat):
     _, w = load()
     _emit({"seat": seat, "event": "seat", "state": args.state,
-           "reason": args.reason, "item": args.item}, w, quiet=True)
+           "reason": args.reason, "item": args.item, "note": args.note},
+          w, quiet=True)
     print("%s is %s%s" % (seat, args.state,
                           " (%s)" % args.reason if args.reason else ""))
+    if args.note:
+        print("  handoff: %s" % args.note)
     return 0
 
 
@@ -762,6 +765,9 @@ def build_parser():
     s.add_argument("state", choices=("ready", "busy", "idle"))
     s.add_argument("--reason")
     s.add_argument("--item")
+    # 🔑 The handoff. POLICY.md's 90% ritual names this flag; a fresh seat reads it out
+    # of the ledger and resumes without re-deriving anything.
+    s.add_argument("--note", help="one line: where you stopped. THIS is the handoff.")
 
     s = add("bridge", "CHECK only — two seats driving one game is unattributable",
             cmd_bridge)

@@ -178,7 +178,11 @@ VERBS = {
     "drop":      {"who": "owner", "req": ("reason",), "opt": ()},
     "supersede": {"who": "owner", "req": ("by",), "opt": ("reason",)},
     "note":      {"who": "any",   "req": ("text",), "opt": ()},
-    "seat":      {"who": "self",  "req": ("state",), "opt": ("reason", "item")},
+    # ⚠️ `note` is the HANDOFF and POLICY.md's 90% ritual instructs it by name:
+    # `rimflow seat idle --reason context-exhausted --note "<where I stopped>"`.
+    # It was missing from this table, so the documented command errored out — a rule
+    # nobody could follow. Found 2026-08-20 by the first seat that tried to follow it.
+    "seat":      {"who": "self",  "req": ("state",), "opt": ("reason", "item", "note")},
     "bridge":    {"who": ("CHECK",), "req": ("state",), "opt": ()},
     "game":      {"who": ("OWNER",), "req": ("state",), "opt": ()},
     "admin":     {"who": ("OWNER",), "req": ("reason",), "opt": ("patch",)},
@@ -559,7 +563,8 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
 
     if verb == "seat":
         world.seats[seat] = {"state": ev["state"], "reason": ev.get("reason"),
-                             "item": ev.get("item")}
+                             "item": ev.get("item"), "note": ev.get("note"),
+                             "at": ev["ts"]}
         return
     if verb == "bridge":
         world.bridge_holder = seat if ev["state"] == "taken" else None

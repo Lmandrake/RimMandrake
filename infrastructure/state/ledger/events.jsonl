@@ -350,3 +350,4 @@
 {"seat":"OWNER","event":"claim","id":"LOADS_ARE_BLOCKED_NEEDS_YOU_1","ts":"2026-08-21T05:05:18Z"}
 {"seat":"OWNER","event":"file","id":"CANON_RULINGS_OWED_OWNER_1","for":"OWNER","kind":"question","title":"Seven canon questions, and one thing to look at","target":"v1","row":"—","needs":"owner","ts":"2026-08-21T05:05:18Z"}
 {"seat":"OWNER","event":"claim","id":"CANON_RULINGS_OWED_OWNER_1","ts":"2026-08-21T05:05:18Z"}
+{"seat":"BUILD","event":"seat","state":"idle","reason":"context-exhausted","note":"W0-W6 all pushed, nothing half-done. queue/*.md is GENERATED - a hook blocks hand-edits; work the ledger via rimflow. queue/HUMAN.md is the owner's and is hand-written. W7/refmatch is CANCELLED, map accepted for v1. Open build work: the 5 Jawa_Homestead_* kinds spawn nowhere (pawnGroupMakers is on the abstract OutlanderFactionBase), and populating the map per TRANSIENT_populate_census.md - clear the 49 leftover landmarks first.","ts":"2026-08-21T06:38:49Z"}

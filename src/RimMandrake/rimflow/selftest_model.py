@@ -212,6 +212,21 @@ def t_ledger_path_is_redirectable():
             "🔴 the probe event reached the REAL ledger at %s" % real)
 
 
+def t_seat_idle_takes_the_handoff_note():
+    """🔑 POLICY.md's 90% ritual instructs this flag BY NAME, and it did not exist.
+
+    `rimflow seat idle --reason context-exhausted --note "<where I stopped>"` errored
+    out on an unrecognised argument — a documented ritual nobody could actually follow,
+    found by the first seat that tried. The note IS the handoff: a fresh seat reads it
+    from the ledger and resumes without re-deriving anything.
+    """
+    ev_ = ev(seat="BUILD", event="seat", state="idle",
+             reason="context-exhausted", note="stopped mid-W6, board renders")
+    model.validate(ev_)
+    w = model.replay([ev_], strict=True)
+    assert w.seats["BUILD"]["state"] == "idle"
+
+
 def t_only_check_takes_bridge():
     refuses(lambda: model.replay([ev(seat="BUILD", event="bridge", state="taken")],
                                  strict=True),
