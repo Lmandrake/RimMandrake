@@ -37,7 +37,7 @@ load re-dumps.
 
 ---
 
-## 1. Load on the 578-mod stack
+## 1. Load on the 578-mod stack *(578 as of 2026-08-21)*
 
 Nothing to decide. Wait for the main menu.
 
