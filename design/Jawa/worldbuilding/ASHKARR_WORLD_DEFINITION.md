@@ -1,5 +1,10 @@
 # ASH'KARR — THE SUNDERED · the world definition
 
+> 📌 **Corrected 2026-08-20 against `infrastructure/state/canon.yml`:** water is stated
+> as **8.14 %** (1,780 of 21,872 tiles) rather than the rounded 8.1 %, and §5b's biome
+> census was re-measured from `world/ASHKARR_WORLDMAP_tiles.csv` — the figures printed
+> there before were from an earlier paint.
+
 **The single source of truth for the planet.** Everything here has been ruled by the
 owner or is derived from a ruling; nothing is a guess left standing. If the map has to
 be rebuilt, rebuild it from this file.
@@ -89,7 +94,11 @@ numeric check.
 
 ## 3. The gazetteer — every named place, in (arc, bearing)
 
-### Water — 8.1% of the planet, three bodies
+### Water — 8.14% of the planet, three bodies
+
+**1,780 water tiles of 21,872 = 8.138%**, measured from `world/ASHKARR_WORLDMAP_tiles.csv`
+2026-08-20 and rounded to **8.14%** in `_meta.json`. That 1,780 is exactly `Ocean` 1,468 +
+`Lake` 312; there is no third water biome. (~~8.1%~~ was this file's rounding; cite 8.14%.)
 | name | centre | radius | water level | character |
 |---|---|---|---|---|
 | **The Scald** | (35, 185) | 10.5 | **perched, ~1410 m** | ⭐ a crater lake, **the one shape ruled round**. Spills through the Spine's notch |
@@ -97,7 +106,8 @@ numeric check.
 | **The Grey Sea** | (92, 8) | 16.5 | 0 m, sink | salt-encrusted, shrinking |
 | The Umbra Trap | (158, 62) | 19.5 | — | holds **ammonia**, not water → The Ammonia Flats |
 
-🔴 Water was cut to **a third** of the old 22–28% spec (owner, 2026-08-18). The west
+🔴 Water was cut to **a third** of the old ~~22–28%~~ spec (owner, 2026-08-18) — the
+arithmetic target was **~8.6%** and the painted result is **8.14%**. The west
 (Twilight) side is deliberately wetter than the east (Grey).
 
 ### Ranges — a ridge is a LINE, so it inherits the line's shape
@@ -172,7 +182,9 @@ gets a corridor. Flat bands ate the vast desert the owner asked to keep.
 🔴 **The Pyrelands are a narrow bracket, not a belt** — owner, 2026-08-19: *"Too much
 grassland. Make the grassland into more desert, and make more extreme desert."* Gated to
 **arc < 74** and to within **2 tiles of a mid river or 4 of a trunk**. `ZBiome_Grasslands`
-went 6.3% → **2.0%** and `ExtremeDesert` 5.4% → **13.4%**.
+went 6.3% → **2.0%** and `ExtremeDesert` 5.4% → **13.4%** at the time of that pass;
+re-measured 2026-08-20 the realised figures are **1.07%** and **16.37%** — the gate bit
+harder than the pass reported. See the census in §5b.
 🔑 **Terrestrial foliage belongs to the Scald**; the meridian gets mycoid and poison
 forest. Two greens that mean different things.
 
@@ -187,11 +199,20 @@ The dayside is desert unless a river pays for something else:
 | 56–78 | `Desert`, with `ZBiome_Badlands` on the broken ground and `ExtremeDesert` returning in the flattest parts |
 | > 78 | `Desert`, with `AridShrubland` only where it is genuinely damp |
 
-Current census, for comparison when this is rebuilt: `AB_RockyCrags` 26.3 ·
-`ExtremeDesert` 13.4 · `AridShrubland` 9.0 · `Wasteland` 7.8 (the salt plains) ·
-`Desert` 7.7 · `AB_FeraliskInfestedJungle` 6.9 · `Ocean` 6.7 · `AB_MycoticJungle` 4.8 ·
-`PoisonForest` 3.0 · `AB_PropaneLakes` 2.5 · `ZBiome_DesertOasis` 2.1 ·
-`ZBiome_Grasslands` 2.0 · `ZBiome_Badlands` 1.9 · `Lake` 1.4.
+Current census — **re-measured from `world/ASHKARR_WORLDMAP_tiles.csv`, 2026-08-20**,
+percentages of all 21,872 tiles (this supersedes the census printed here before, which
+was taken from an earlier paint): `AB_RockyCrags` 20.30 (4,440) ·
+`ExtremeDesert` 16.37 (3,581) · `AridShrubland` 10.98 (2,401) · `Desert` 9.82 (2,147) ·
+`AB_MycoticJungle` 8.87 (1,939) · `Wasteland` 7.87 (1,721, the salt plains) ·
+`Ocean` 6.71 (1,468) · `PoisonForest` 2.76 (604) · `AB_PropaneLakes` 2.53 (554) ·
+`ZBiome_Badlands` 2.50 (546) · `AB_FeraliskInfestedJungle` 2.44 (534) ·
+`BMT_FungalForest` 1.94 (425) · `Lake` 1.43 (312) · `AB_MechanoidIntrusion` 1.08 (236) ·
+`ZBiome_Grasslands` 1.07 (233) · `ZBiome_DesertOasis` 1.04 (227) ·
+`BMT_CrystalCaverns` 0.58 (127) · `AB_GelatinousSuperorganism` 0.44 (96) ·
+`Scarlands` 0.41 (90) · `AB_MiasmicMangrove` 0.30 (65) · `AB_TarPits` 0.26 (57) ·
+`AB_PyroclasticConflagration` 0.14 (31) · `Volcano` 0.11 (23) · `LavaField` 0.07 (15).
+**24 distinct biomes are painted**, out of the 36 defs that survived the owner's cut —
+a def can survive the cut and appear on zero tiles.
 
 ## 6. Other biome placement
 
@@ -722,7 +743,7 @@ whole value of one is that it means a specific place on this specific planet.
 `AB_MagmaticQuagmire`, `AB_MutagenicSprings` (need biomes we do not have).
 🔑 The coastal shapes — `Bay`, `Cove`, `Fjord`, `Peninsula`, `Harbor`, `CoastalAtoll` —
 **are** whitelisted for dry biomes, so they are legal, but only on a tile touching one
-of the three waters. They should be rare: this planet is 8.1% water.
+of the three waters. They should be rare: this planet is 8.14% water (1,780 of 21,872 tiles).
 
 ### 13.4 What is NOT settled
 

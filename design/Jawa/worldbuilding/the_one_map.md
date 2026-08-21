@@ -1,9 +1,17 @@
 # THE ONE MAP — Ash'karr, hand-authored once
 
+> 📌 **Corrected 2026-08-20 against `infrastructure/state/canon.yml`:** the "~25% water,
+> accept 22–28%" constraint below was already dead when it was written here and is now
+> struck; the painted figure is **8.14%**.
+
 > 🔑 **The world's CONTENT now lives in
 > [`ASHKARR_WORLD_DEFINITION.md`](ASHKARR_WORLD_DEFINITION.md)** — coordinates,
 > gazetteer, hydrology, zonation, factions. This file keeps only the DOCTRINE: why
 > there is no generator, what "realistic" means here, and the reference images.
+> ⭐ **That file is the NUMERIC definition of the planet — every count, coordinate and
+> percentage is authoritative there, not here.** Numbers in this file are quoted from
+> it; where the two ever differ, it wins, and `infrastructure/state/canon.yml` settles
+> both.
 
 **🔴 Owner's ruling, 2026-08-18:**
 
@@ -85,8 +93,17 @@ terminator**, `θ = 180°` is the antistellar point. The sea band "normalised la
 0.35–0.65" therefore means **θ between 63° and 117°**, which is exactly the terminator
 band the same doc asks for — so the intent survives the correction, only the axis moves.
 
-⚠️ This has not been reconciled with the mod's own `TidallyLocked` PlanetTypeDef, which
-may still key on latitude at runtime. **Flagged for the owner; not silently resolved.**
+✅ **RECONCILED 2026-08-20 from the mod's own C# source** — ~~this has not been reconciled
+with the mod's own `TidallyLocked` PlanetTypeDef, which may still key on latitude at
+runtime~~. `Alien Worlds - Tidally Locked` (`7f.alienworlds.tidallylocked`) keys on **arc
+from the substellar point, not latitude** — its `avgTempByLatitudeCurve` is evaluated at
+`arc ÷ 90`, so the name is a lie and the measurement above is the same axis the mod uses.
+And it is **worldgen-only**: it patches `WorldGenStep_Terrain` and nothing recomputes tile
+temperature at runtime, so it cannot touch our frozen world. ⛔ Our **+14 °C at the
+terminator** and the mod's **−37 °C at the same arc** are two curves for two planets, one
+painted and one generated; do not average them. The table is
+`ASHKARR_WORLD_DEFINITION.md` §2b, and `infrastructure/state/canon.yml`
+`temperature_curves` carries the source read.
 
 ---
 
@@ -97,7 +114,10 @@ worldgen hooks stripped; the file is deleted, its surviving numbers are restated
 `tidally_locked_world.md`, `desert_world_design.md`, `hydrology_and_fire_ecology.md`,
 `water_doctrine.md`. Numbers are theirs, not mine.
 
-**Sea** — ~25% of tiles water, accept **22–28%**. **Exactly three** connected bodies, no
+**Sea** — ⛔ ~~~25% of tiles water, accept **22–28%**~~ — **DEAD**, killed by the owner
+2026-08-18 along with the spec that carried it; see the ruling table below. The live
+figure is **8.14% water** (1,780 of 21,872 tiles, measured 2026-08-20). **Exactly three**
+connected bodies, no
 strays. Perimeter²/area **≥ 25** (a circle is 4π ≈ 12.6). Two centroids in the
 terminator band, **one deliberately out near the antistellar point**, frozen. Elongated
 and torn, ⛔ **never a ring**, ⛔ never smoothed. Hypersaline — the sea is food and mass,
@@ -127,7 +147,7 @@ nightside must never become farmable. ⛔ No gelatinous-superorganism band — p
 
 | ruling | supersedes |
 |---|---|
-| **Water is roughly a THIRD of what the 25% spec asked** — *"There's WAY too much water, so reduce that to a third the value shown."* Target **~8.6%**. | ~~`worldgen_sea_spec.md` req 1 (22–28%)~~ — that spec and that number are both dead. |
+| **Water is roughly a THIRD of what the 25% spec asked** — *"There's WAY too much water, so reduce that to a third the value shown."* **~8.6% was the TARGET** the "a third of 25%" arithmetic produced; **8.14% is what got painted** — 1,780 water tiles of 21,872, measured 2026-08-20, being `Ocean` 1,468 + `Lake` 312. Quote 8.14% for the world as it stands, 8.6% only when naming the target. | ~~`worldgen_sea_spec.md` req 1 (22–28%)~~ — that spec and that number are both dead. |
 | **Three named waters**: the **Twilight Sea** (moldy) and the **Grey Sea** (salt-encrusted, shrinking), both on the terminator; and **The Scald**, a **round crater lake** in the hottest part of the world. | my invented Sarr'khet / Ma'kel Reach / Black Mirror |
 | ⭐ **The Scald is the ONE shape ruled round.** It is a crater. Everything else stays torn. | the blanket "no circles" rule |
 | **The Pyrelands is `ZBiome_Grasslands`** — whose label is literally *"stormy savanna"*. | the claim that it is blacklisted, and the belief that no biome carried the Pyrelands |
