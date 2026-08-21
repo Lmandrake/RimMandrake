@@ -67,6 +67,18 @@
           </value>
         </li>
 
+        <!-- The thirteenth bespoke icon (FACTION_ICONS_BESPOKE_1). Mechanoid WRITES
+             factionIconPath on the def, so REPLACE matches; an Add would duplicate it.
+             CAVEAT, measured 2026-08-21 and not a reason to skip it: this faction is
+             hidden=True, settlementGenerationWeight=0 and canMakeRandomly=False, so it
+             places no world settlement and the icon has nowhere to draw TODAY. The def
+             state is still the correct one, and it costs nothing; if the Forgotten
+             Arsenal is ever unhidden or given a holding, its mark is already right. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Mechanoid"]/factionIconPath</xpath>
+          <value><factionIconPath>World/JawaFactions/ForgottenArsenal</factionIconPath></value>
+        </li>
+
       </operations>
     </match>
   </Operation>
