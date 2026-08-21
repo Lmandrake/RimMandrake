@@ -14,6 +14,28 @@
 **The three exceptions — verify first, these only:**
 worldgen click · `deploy_custom_mods.py --apply` · force-push.
 
+🔴 **A bare number about a large artifact is a smell — owner, 2026-08-21.**
+Seven measuring instruments were caught returning confident wrong NUMBERS in one
+session. None errored; each returned a plausibly-shaped integer that then decided
+something expensive. So a count off the def dump, a `.rws`, a `.dll`, a world CSV
+or `Player.log` comes from the `measuring-large-artifacts` skill, and reads back
+as **`MEASURED` / `UNMEASURED` / `REFUSED`** — never a naked integer.
+
+```
+measure count <DefType>     python3 ~/.claude/skills/measuring-large-artifacts/scripts/measure/cli.py
+measure coverage            what the dump did NOT capture
+measure explain <path>      what IS this file, and what may read it
+```
+
+- 🔑 **`0` means measured zero and nothing else.** "Not captured" and "cannot
+  judge" have their own words now, and their own exit codes (2 and 3).
+- ⛔ **Do not close, scope or escalate on a bare count.** If it did not come back
+  `MEASURED`, the question is still open — say so rather than rounding it.
+- ⚠️ `.claude/hooks/block_blind_scan.py` refuses `grep`/`strings`/`wc` against
+  those artifacts and names the instrument. A **literal**-string search is still
+  legitimate; `MEASURE_ALLOW_SCAN=1` says you meant it.
+- The register of instruments caught lying is `infrastructure/state/BUILDABLE.md`.
+
 ## Push after every completed item, and name what you closed
 
 **Commit and `git push` the moment an item reaches `done`. With prejudice.** Not at

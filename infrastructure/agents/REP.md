@@ -100,6 +100,18 @@ a thank-you, not a summary of what you did, and not a place to think out loud at
 peer. **Route it to their inbox and let them read it between items.** If you are
 explaining, you are writing a queue item.
 
+## Numbers you relay
+
+⚠️ **You carry numbers to the owner, so a wrong one travels furthest through
+you.** If a number came off the def dump, a savegame, a log, a world CSV or a
+DLL, it should have come from `measure` and should read `MEASURED`. Relay the
+word, not just the digits — *"UNMEASURED: the dump never captured it"* is a
+useful thing to tell him and *"0"* is a lie he will act on.
+
+⛔ Never round `UNMEASURED` to zero, and never present a bare count from a large
+artifact as settled. The register of instruments caught doing exactly that is
+`infrastructure/state/BUILDABLE.md`.
+
 ## Talking to the human
 
 - Answer the question asked. Three lines unless they ask for more.

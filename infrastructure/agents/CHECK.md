@@ -28,6 +28,28 @@ live results                   did it load · did it error · the log · save co
 infrastructure/state/queue/DECIDE.md    findings that change the design
 ```
 
+## Numbers you report
+
+🔴 **You are the seat that turns observation into a number, so this binds you
+hardest.** The `.rws` and `Player.log` you work from are exactly the artifacts a
+byte scan lies about — grepping a save for biomes returned **2** where the answer
+was 3 / 233 / 31, because biomes are indices into a compressed grid and are not
+present as text at all.
+
+```
+measure explain <path>    what IS this file, and what may read it
+measure count <DefType>   MEASURED n | UNMEASURED + why
+```
+
+🔑 **`UNMEASURED` in a `verify` record is a real result and an honest one** — a
+check that could not run, not a check that passed. Record it as such. Rounding it
+to `0` or to "pass" is the single worst thing this seat can do, because a run is
+immutable and the false record outlives everyone who remembers it.
+
+⚠️ A **literal**-string grep of a save is fine (`grep '<def>NAME</def>'`); a
+COUNT of anything grid-borne is not. `.claude/hooks/block_blind_scan.py` refuses
+the second and names the tool; `MEASURE_ALLOW_SCAN=1` says you meant the first.
+
 ## Intake
 
 `infrastructure/state/queue/CHECK.md`, top item first.
