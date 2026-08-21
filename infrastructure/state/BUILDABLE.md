@@ -377,6 +377,21 @@ dump with their `weaponTags` stripped, so a tag whose every carrier was cut is *
 from a dump-built index rather than **empty** in it — and a counter over that index cannot
 return anything but zero. ⇒ Attribute cuts from the mod's SOURCE XML.
 
+**9 — a tag table pairs kinds that a tag table cannot pair.** Losing the sole carrier of a
+weapon tag disarms a kind ONLY if that kind also blocks inheritance. `Flamebow`'s cut emptied
+`NeolithicRangedFlame`, which both `Tribal_Archer_Fire` and `Tribal_Hunter_Fire` declare — but
+only the archer writes `<weaponTags Inherit="False">`. The hunter appends to `Tribal_Hunter`'s
+live `NeolithicRangedDecent` and is fully armed, and `weapon_tag_audit.py` correctly does not
+list it. ⇒ **Read the `Inherit` attribute in the source def before pairing kinds off a tag.**
+Measured 2026-08-21 (`FIRE_ARCHERS_GET_BOWS_1`); `CUT_DISARMED_VANILLA_KINDS_1` had them
+paired and is corrected at its head.
+
+**10 — `NeolithicRanged` does not exist; a patch naming it is a silent no-op.** The vanilla
+neolithic ranged tags are `NeolithicRangedBasic` (5 carriers), `NeolithicRangedDecent` (6) and
+`NeolithicRangedHeavy` (3). A bare `NeolithicRanged` has zero, and `validate_patch.py` passes
+it — the op is well-formed and the xpath matches; only the POOL is empty, which nothing
+offline reports. ⇒ Before appending a weapon tag, count its carriers in the dump.
+
 **7 — a heuristic that is right in general hides the case you care about.** 291 kinds have
 no `weaponTags` and are meant not to; a combat role that LOSES its tags looks identical.
 ⇒ `weapon_tag_audit.py` has no such blind spot; prefer it for that question.
