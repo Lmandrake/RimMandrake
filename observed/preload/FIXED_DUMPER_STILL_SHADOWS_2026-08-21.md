@@ -1,4 +1,25 @@
-<!-- status: live -->
+<!-- status: superseded -->
+# ~~🔴 The fixed dumper's capture will STILL read as shadowed~~ FIXED, same afternoon
+
+> ✅ **RESOLVED before the capture landed.** `measuring-large-artifacts` `80551ae`
+> keys `capture` on the resolved identity — the full name when the manifest's
+> `defTypes` index names one — so both slices survive. Re-measured on the same
+> synthetic: **633 defs built, 633 held, all three types `complete`**, and
+> `measure count Verse.AbilityDef` → **MEASURED 612**. `count AbilityDef` now
+> refuses and names both types rather than summing them. Five new selftests lock
+> it in; 47/47. The live 578-mod capture rebuilds to the identical
+> `78057 defs / 536 types / shadowed=8 ambiguous=5 orphan=19` it gave under v2,
+> so old captures are unaffected.
+>
+> ⚠️ **One detail below was wrong and is corrected here:** the first synthetic
+> keyed `defCounts` on the simple name. The fixed producer keys it on the **file
+> stem** (`DefDumper.cs:183-186`). Re-measured faithfully, the outcome was the
+> same — and slightly worse, adding a phantom `absent` row for the stem. The
+> conclusion never changed.
+>
+> 🔑 **What to do after the load is now the original plan again:**
+> `measure build`, then `measure count Verse.AbilityDef` must read **612**.
+
 # 🔴 The fixed dumper's capture will STILL read as shadowed — measured before the load
 
 **BUILD, 2026-08-21, game down, offline.** Found while checking that our readers

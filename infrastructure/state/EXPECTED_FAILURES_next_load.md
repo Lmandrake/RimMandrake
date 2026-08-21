@@ -236,6 +236,20 @@ PREDICT          the new capture is ABOVE 78,057 by roughly 824, and AbilityDef 
                  non-empty (it read 0 before; vanilla alone has 612)
 ```
 
+🔴 **ASK FOR IT BY ITS FULL NAME.** `measure count AbilityDef` will now REFUSE —
+correctly — because three distinct types share that simple name and summing them
+would invent a quantity nothing measured. The command that answers is:
+
+```
+python3 ~/.claude/skills/measuring-large-artifacts/scripts/measure/cli.py count Verse.AbilityDef
+```
+
+⚠️ **And rebuild first: `measure build`.** The reader was fixed this afternoon
+(`measuring-large-artifacts` `80551ae`, SCHEMA_VERSION 2 -> 3) after a synthetic of
+this very capture showed the OLD reader would discard both AbilityDef slices and
+report a total it did not hold. Any `defs.sqlite` from before that refuses until
+rebuilt, which is the guard working.
+
 🔴 **CORRECTED 2026-08-21 15:30 by CHECK, after BUILD measured it (`7a57678`). READ THE
 CAPTURE, NOT THE DATABASE.** The prediction above is about the **files on disk** and it
 stands. It must NOT be verified through `measure` or `defs.sqlite`:
