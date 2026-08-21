@@ -255,6 +255,21 @@ def cmd_next(args, seat):
         budget -= len(body)
         print(body + "\n")
     print("-> rimflow start %s" % it.id)
+    # ⭐ AND SAY WHAT IS QUEUED BEHIND IT. `_claimable` below fires only when NOTHING is
+    # claimed, which fixed the empty-queue case and left the worse one open: a seat with
+    # any `ready` item never learns that spec-complete work is waiting. Measured
+    # 2026-08-21, AFTER that fix landed: 30 finished specs masked fleet-wide — 15 behind
+    # BUILD and 15 behind CHECK. 🔴 BUILD's top item was `B-V2`, a STANDING RIGHT with no
+    # completion condition, so its queue could never empty and those 15 were unreachable
+    # forever, not merely delayed.
+    also = _claimable(w, seat, args.target)
+    if also:
+        print("")
+        print("⚠️  %d spec-complete item%s ALSO waiting for %s to claim: %s%s"
+              % (len(also), "" if len(also) == 1 else "s", seat,
+                 ", ".join(i.id for i in also[:4]),
+                 "" if len(also) <= 4 else ", +%d" % (len(also) - 4)))
+        print("    filed for you by another seat. `rimflow claim <ID>` to take one.")
     return 0
 
 

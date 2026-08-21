@@ -1,6 +1,18 @@
 <!-- status: aspirational -->
 # V2 — dreams and hopes
 
+> ✅ **EVERY SEAT MAY APPEND HERE DIRECTLY. No permission, no routing through DECIDE, no
+> queue item asking for it, no format and no field contract.** Any idea for new content
+> that is not v1 goes at the END of this file, yourself, now.
+> ⛔ **Never queue v2 work**, and never leave a `[v2]` tag sitting in a working doc — move
+> it here.
+> 🔑 **Nothing in this file is scheduled**, which is what makes appending free.
+>
+> *Moved here 2026-08-21 from `B-V2`/`C-V2`, two queue items that carried this standing
+> right and could never be completed — so they sat at the top of BUILD's and CHECK's
+> boards forever. Their own verify said "the header of V2_DREAMS.md says the same thing".
+> It did not. Now it does.*
+
 > 🔴 **STANDING OWNER RULING — 2026-08-15. THERE IS NO WORLDGEN FEATURE, IN ANY VERSION.**
 >
 > Verbatim: *"There is no auto worldgen we are building. The world will be user-made and
