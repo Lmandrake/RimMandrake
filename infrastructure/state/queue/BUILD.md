@@ -798,6 +798,23 @@ criteria: spawn each of the 48 kinds 5x live and read `jawa/pawn_get` -> `pawns[
           reached the suspect list on a single bare roll and is fine at 5/5.
           ⚠️ FALSE PASS: `jawa/pawn_gear` is a WRITER and answers a read with
           "Give a ThingDef." Reading equipment off it reports every pawn as bare.
+🔴        **CONFIRMED BY THE GAME'S OWN VALIDATOR, in the 2026-08-20 session log
+          (17:54, archived).** RimWorld validates this itself and its message settles the
+          argument the item and I were having:
+            `Config error in Jawa_Empire_Grunt: Cheapest weapon with one of my weaponTags`
+            `costs 570 but weaponMoney MIN is 350, so could end up weaponless.`
+            `Config error in Jawa_Empire_Heavy: ... costs 865 but weaponMoney min is 700 ...`
+            `Config error in Jawa_TradeMoot_Specialist: weaponMoney is set but weaponTags is not.`
+          ⇒ **The engine measures against `min`, not `max`** — the item's *"min must be at
+          or below the cheapest tagged weapon"* is refuted by RimWorld in as many words.
+          ⭐ **And it independently validates the affordability pass to within 0.5%:** the
+          engine says Empire_Grunt 570 / Empire_Heavy 865; the tool computed **573** and
+          **867.5**, having priced weapons that declare no MarketValue at all from their
+          recipes. Three kinds flagged, and they are three of the nine I fixed.
+          ⏳ All three errors were logged by a game that started at 07:59, BEFORE the fix
+          deployed. **Next load they should be 0** — that is the cheapest possible check and
+          `harvest_log.py`'s `Jawa_Patches ops` row (RED at 3, baseline 0) is where it shows.
+
 state:    done 2026-08-20 (offline half). Table fixed in
           `src/RimMandrake/Utils/gen_pawnkind_roster.py`, 48 defs regenerated into
           `src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml`, deployed.
@@ -886,6 +903,18 @@ criteria: a load whose `Player.log` carries **0** `Failed to find any textures a
           available. Strengthen it by spawning a JUVENILE tortoise and looking — adults
           render fine and prove nothing. `jawa/set_pawn_age` cannot help: DebugSetAge is
           FORWARD-ONLY and refuses to walk a debug-spawned adult back to a juvenile.
+🔴        **THE TWO BROKEN PATHS ARE CONFIRMED LIVE, in the 2026-08-20 session log
+          (17:54, archived), and they are EXACTLY the strings this patch targets:**
+            `Failed to find any textures at Things/Pawn/Animal/TortoiseGRim/GRimTortoiseA`
+            `Failed to find any textures at Things/Pawn/Animal/GRimPinkBird/GRimPinkbird`
+          ⇒ That is `harvest_log.py`'s `texture path failures` row, RED at **2** against a
+          baseline of 0. ⭐ **This substantially answers the "I could not produce the hit
+          count" caveat below** — the offline validator could not confirm the xpaths match,
+          but the ENGINE confirms the broken values are present and identical to the ones
+          the ops name. The load was at 07:59, before the fix deployed.
+          ⏳ **Next load that row must read 0.** It is the cheapest check in this item and
+          it is now a straight before/after against a measured 2.
+
 state:    done 2026-08-20 (offline half). One new file,
           `src/Jawa/Jawa_Patches/Patches/GrimTerraTexPaths_Fix.xml`, deployed and in sync.
           verify output: `validate_patch.py --defs` -> `OK - 0 errors, 3 warning(s)`, all
