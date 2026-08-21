@@ -1,0 +1,1642 @@
+{
+  "success": true,
+  "message": "45 of 45 ideoligion(s) returned; believer counting was SKIPPED.",
+  "ideologyActive": true,
+  "ideosTotal": 45,
+  "ideosReturned": 45,
+  "believersCounted": false,
+  "pawnsScanned": 0,
+  "nonPlayerBelieversTotal": -1,
+  "ideos": [
+    {
+      "id": 4,
+      "name": "Transient Path",
+      "adjective": "serketist",
+      "memberName": "Serketist",
+      "culture": "Corunan",
+      "structureMeme": "VME_Structure_Serketist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "VME_Structure_Serketist",
+        "VVE_Travelers"
+      ],
+      "preceptCount": 90,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist"
+      ],
+      "veneratedAnimals": [
+        "BMT_Yooka"
+      ],
+      "preferredXenotypes": [
+        "Neanderthal"
+      ],
+      "primaryFactions": [
+        "Luddus",
+        "The Lost"
+      ],
+      "believers": null
+    },
+    {
+      "id": 23,
+      "name": "Boccin Way",
+      "adjective": "Raid-Zahirist",
+      "memberName": "Raid-Zahirist",
+      "culture": "BS_MedievalCulture",
+      "structureMeme": "Structure_OriginIslamic",
+      "keyDeityName": "Ar-Rahman",
+      "deityCountRange": "1",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_OriginIslamic",
+        "Raider",
+        "Ritualist"
+      ],
+      "preceptCount": 100,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MeleeSpecialist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [
+        "GR_Wolfscarab"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Niflheim"
+      ],
+      "believers": null
+    },
+    {
+      "id": 24,
+      "name": "Bloody Eaters",
+      "adjective": "Hapiic",
+      "memberName": "Hapiite",
+      "culture": "Corunan",
+      "structureMeme": "AM_Structure_Kemetism",
+      "keyDeityName": "Hapi",
+      "deityCountRange": "4",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "AM_Structure_Kemetism",
+        "Cannibal",
+        "Nudism",
+        "Raider"
+      ],
+      "preceptCount": 100,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterArchitect",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MeleeSpecialist"
+      ],
+      "veneratedAnimals": [
+        "AA_Eyeling"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Ogre Tribes"
+      ],
+      "believers": null
+    },
+    {
+      "id": 25,
+      "name": "New Order",
+      "adjective": "Imperial",
+      "memberName": "Citizen",
+      "culture": "OuterRim_CultureNewOrder",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Loyalist",
+        "Collectivist",
+        "GR_MadScientists"
+      ],
+      "preceptCount": 102,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist"
+      ],
+      "veneratedAnimals": [
+        "AA_Erin"
+      ],
+      "preferredXenotypes": [
+        "Baseliner"
+      ],
+      "primaryFactions": [
+        "Galactic Empire"
+      ],
+      "believers": null
+    },
+    {
+      "id": 26,
+      "name": "the Ascendant Genome",
+      "adjective": "genetic",
+      "memberName": "Lab worker",
+      "culture": "Rustican",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Supremacist",
+        "Transhumanist",
+        "GR_CarefulGeneticists"
+      ],
+      "preceptCount": 53,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Ascendant Helix"
+      ],
+      "believers": null
+    },
+    {
+      "id": 27,
+      "name": "the Balance",
+      "adjective": "riverine",
+      "memberName": "Streamwalker",
+      "culture": "Rustican",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Individualist",
+        "AM_WaterPrimacy",
+        "VME_Trader",
+        "VME_Pacifist"
+      ],
+      "preceptCount": 53,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "VME_IdeoRole_Merchant"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Deepwater Compact"
+      ],
+      "believers": null
+    },
+    {
+      "id": 28,
+      "name": "the Continuity Protocol",
+      "adjective": "mechanoid",
+      "memberName": "Mechanoid worshipper",
+      "culture": "Rustican",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Collectivist",
+        "Transhumanist",
+        "VME_MechanoidSupremacy",
+        "VME_Emancipation"
+      ],
+      "preceptCount": 52,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "VME_IdeoRole_Mechacker"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Free Droid Enclaves"
+      ],
+      "believers": null
+    },
+    {
+      "id": 29,
+      "name": "Meckgin",
+      "adjective": "insectoid",
+      "memberName": "Insect worshipper",
+      "culture": "Rustican",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Collectivist",
+        "Tunneler",
+        "VME_HardcoreIndustrialism",
+        "VME_InsectoidSupremacy"
+      ],
+      "preceptCount": 54,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "VME_IdeoRole_InsectoidHerder"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Geonosian Foundry Hive"
+      ],
+      "believers": null
+    },
+    {
+      "id": 30,
+      "name": "the Reckoning of Debts",
+      "adjective": "corporate",
+      "memberName": "Employee",
+      "culture": "Rustican",
+      "structureMeme": "VME_Structure_Corporate",
+      "keyDeityName": "the Ledger",
+      "deityCountRange": "1",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "VME_Structure_Corporate",
+        "Guilty",
+        "HighLife",
+        "AM_Gladiator",
+        "VME_Trader"
+      ],
+      "preceptCount": 106,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MeleeSpecialist",
+        "IdeoRole_PlantSpecialist",
+        "VME_IdeoRole_Merchant"
+      ],
+      "veneratedAnimals": [
+        "BMT_Maligoat"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Hutt Cartel"
+      ],
+      "believers": null
+    },
+    {
+      "id": 0,
+      "name": "the Covenant of Free Wells",
+      "adjective": "freedomist",
+      "memberName": "Freeist",
+      "culture": "Rustican",
+      "structureMeme": "Structure_TheistAbstract",
+      "keyDeityName": "the Withdrawn",
+      "deityCountRange": "1~4",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_TheistAbstract",
+        "Guilty",
+        "Individualist",
+        "Rancher",
+        "AM_WaterPrimacy"
+      ],
+      "preceptCount": 102,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_AnimalsSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Homestead Defense League"
+      ],
+      "believers": null
+    },
+    {
+      "id": 31,
+      "name": "the Weight",
+      "adjective": "scavenging",
+      "memberName": "Scavenger",
+      "culture": "Kriminul",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "AM_Structure_Scavenger",
+        "Guilty",
+        "Individualist",
+        "Cannibal",
+        "Raider",
+        "VME_Scrapper",
+        "VME_Bushido",
+        "VME_Anonymity"
+      ],
+      "preceptCount": 56,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "the Junkers"
+      ],
+      "believers": null
+    },
+    {
+      "id": 33,
+      "name": "the Green Oath",
+      "adjective": "animalistic",
+      "memberName": "Animalist",
+      "culture": "Rustican",
+      "structureMeme": "Structure_Animist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Animist",
+        "Collectivist",
+        "AnimalPersonhood",
+        "TreeConnection",
+        "NaturePrimacy"
+      ],
+      "preceptCount": 107,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_AnimalsSpecialist"
+      ],
+      "veneratedAnimals": [
+        "DA_IroncasketBeetle",
+        "GraniteSlug"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Wildsteam Clan"
+      ],
+      "believers": null
+    },
+    {
+      "id": 34,
+      "name": "Industrial Academy",
+      "adjective": "fidelist",
+      "memberName": "Fidelor",
+      "culture": "DV_Uligerva",
+      "structureMeme": "Structure_Archist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Archist",
+        "Loyalist",
+        "Transhumanist",
+        "HumanPrimacy"
+      ],
+      "preceptCount": 98,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ResearchSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Ancients"
+      ],
+      "believers": null
+    },
+    {
+      "id": 35,
+      "name": "Philosophy of Archotechnology",
+      "adjective": "archotechnic",
+      "memberName": "Archotechnist",
+      "culture": "BS_MedievalCulture",
+      "structureMeme": "Structure_Archist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Archist",
+        "Loyalist",
+        "Transhumanist",
+        "HumanPrimacy"
+      ],
+      "preceptCount": 102,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ResearchSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Ancients"
+      ],
+      "believers": null
+    },
+    {
+      "id": 36,
+      "name": "Nightmare Deep",
+      "adjective": "archist",
+      "memberName": "Archist",
+      "culture": "BS_Corunan",
+      "structureMeme": "Structure_Archist",
+      "keyDeityName": "Horax",
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": true,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Archist",
+        "Inhuman",
+        "Ritualist"
+      ],
+      "preceptCount": 51,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "The Servants of Horax"
+      ],
+      "believers": null
+    },
+    {
+      "id": 37,
+      "name": "Sophian Philosophy",
+      "adjective": "loyal",
+      "memberName": "Loyalist",
+      "culture": "Sophian",
+      "structureMeme": "Structure_Archist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Archist",
+        "Loyalist",
+        "Transhumanist",
+        "HumanPrimacy"
+      ],
+      "preceptCount": 98,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ProductionSpecialist",
+        "IdeoRole_ResearchSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "MiningCo."
+      ],
+      "believers": null
+    },
+    {
+      "id": 38,
+      "name": "Libertism",
+      "adjective": "libertine",
+      "memberName": "Libertor",
+      "culture": "Transcendent",
+      "structureMeme": "Structure_Archist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Archist",
+        "Individualist",
+        "FleshPurity",
+        "PainIsVirtue"
+      ],
+      "preceptCount": 106,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MedicalSpecialist"
+      ],
+      "veneratedAnimals": [
+        "Arthropleura"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Archons"
+      ],
+      "believers": null
+    },
+    {
+      "id": 39,
+      "name": "Chamber of Ethics",
+      "adjective": "ethical",
+      "memberName": "Ethicist",
+      "culture": "Kriminul",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Supremacist",
+        "PainIsVirtue",
+        "Raider"
+      ],
+      "preceptCount": 107,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [
+        "AA_Ravager"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "The Mugger Burglars"
+      ],
+      "believers": null
+    },
+    {
+      "id": 22,
+      "name": "Ilwaban Legion",
+      "adjective": "Super-Catholic",
+      "memberName": "Super-Catholic",
+      "culture": "BS_MedievalCulture",
+      "structureMeme": "Structure_OriginChristian",
+      "keyDeityName": "Christ-Lord",
+      "deityCountRange": "1",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_OriginChristian",
+        "Supremacist",
+        "HumanPrimacy"
+      ],
+      "preceptCount": 101,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Muspelheim"
+      ],
+      "believers": null
+    },
+    {
+      "id": 32,
+      "name": "The Salvation",
+      "adjective": "scavenging",
+      "memberName": "Scavenger",
+      "culture": "Corunan",
+      "structureMeme": "AM_Structure_Scavenger",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "AM_Structure_Scavenger",
+        "Trader",
+        "VME_Scrapper",
+        "VME_Trader"
+      ],
+      "preceptCount": 99,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "VME_IdeoRole_Merchant"
+      ],
+      "veneratedAnimals": [
+        "VQE_IceCrawler"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Jawa Trade Moot"
+      ],
+      "believers": null
+    },
+    {
+      "id": 21,
+      "name": "Preventive Wellness",
+      "adjective": "Neo-Ibadi",
+      "memberName": "Neo-Ibadi",
+      "culture": "BS_MedievalCulture",
+      "structureMeme": "Structure_OriginIslamic",
+      "keyDeityName": "Allah",
+      "deityCountRange": "1",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_OriginIslamic",
+        "AM_Cowboys",
+        "VME_CityBuilders",
+        "VME_Healthcare"
+      ],
+      "preceptCount": 101,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_AnimalsSpecialist",
+        "IdeoRole_MedicalSpecialist",
+        "VME_IdeoRole_Nurse"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Western Oulora"
+      ],
+      "believers": null
+    },
+    {
+      "id": 20,
+      "name": "Self-Discipline of Dominance",
+      "adjective": "dominant",
+      "memberName": "Dominator",
+      "culture": "Rustican",
+      "structureMeme": "VME_Structure_Esotericism",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "VME_Structure_Esotericism",
+        "Supremacist",
+        "AM_Monastic"
+      ],
+      "preceptCount": 105,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_PlantSpecialist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Gaboofweg"
+      ],
+      "believers": null
+    },
+    {
+      "id": 19,
+      "name": "Detached Equality",
+      "adjective": "Hyper-Shaivan",
+      "memberName": "Hyper-Shaiva",
+      "culture": "Rustican",
+      "structureMeme": "Structure_OriginHindu",
+      "keyDeityName": "Prithvi",
+      "deityCountRange": "4",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_OriginHindu",
+        "VME_Egalitarian",
+        "VFEA_Isolationist",
+        "VVE_Skyseekers"
+      ],
+      "preceptCount": 94,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist"
+      ],
+      "veneratedAnimals": [
+        "DA_Barog"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Pact of Vearelia"
+      ],
+      "believers": null
+    },
+    {
+      "id": 2,
+      "name": "the Contract",
+      "adjective": "bushido",
+      "memberName": "Samurai",
+      "culture": "Kriminul",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Guilty",
+        "Individualist",
+        "VME_Bushido",
+        "VME_Anonymity"
+      ],
+      "preceptCount": 103,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MeleeSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Blackstar Company"
+      ],
+      "believers": null
+    },
+    {
+      "id": 3,
+      "name": "The Rising Order",
+      "adjective": "humanitist",
+      "memberName": "Humanitor",
+      "culture": "Sophian",
+      "structureMeme": "Structure_TheistEmbodied",
+      "keyDeityName": "Palpatine",
+      "deityCountRange": "2~4",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_TheistEmbodied",
+        "Supremacist",
+        "Proselytizer",
+        "HumanPrimacy",
+        "VME_GodEmperor"
+      ],
+      "preceptCount": 46,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Galactic Empire"
+      ],
+      "believers": null
+    },
+    {
+      "id": 5,
+      "name": "the Contract",
+      "adjective": "kleptic",
+      "memberName": "Kleptor",
+      "culture": "Kriminul",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Guilty",
+        "Individualist",
+        "AnimalPersonhood",
+        "Raider",
+        "VME_Bushido",
+        "VME_Anonymity"
+      ],
+      "preceptCount": 111,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_AnimalsSpecialist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [
+        "JRWQuetzalcoatlus",
+        "DA_Karabal"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Blackstar Company"
+      ],
+      "believers": null
+    },
+    {
+      "id": 6,
+      "name": "Legion of Cult of Personality",
+      "adjective": "totalitarian",
+      "memberName": "Subject",
+      "culture": "Corunan",
+      "structureMeme": "VME_Structure_CultOfPersonality",
+      "keyDeityName": "Our Supreme Leader",
+      "deityCountRange": "1",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "VME_Structure_CultOfPersonality",
+        "Supremacist",
+        "Collectivist"
+      ],
+      "preceptCount": 102,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MeleeSpecialist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [
+        "Hssiss"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "League of Necuvizz"
+      ],
+      "believers": null
+    },
+    {
+      "id": 7,
+      "name": "Dim Legion",
+      "adjective": "eldritch",
+      "memberName": "Cultist",
+      "culture": "Rustican",
+      "structureMeme": "VME_Structure_ChthonianCult",
+      "keyDeityName": "Gherhele",
+      "deityCountRange": "4",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "VME_Structure_ChthonianCult",
+        "Supremacist",
+        "Darkness"
+      ],
+      "preceptCount": 106,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MiningSpecialist"
+      ],
+      "veneratedAnimals": [
+        "Scurrier"
+      ],
+      "preferredXenotypes": [
+        "Pigskin"
+      ],
+      "primaryFactions": [
+        "Gemoinund Accord"
+      ],
+      "believers": null
+    },
+    {
+      "id": 8,
+      "name": "Archo-Mankindism",
+      "adjective": "pro-man",
+      "memberName": "Mankindist",
+      "culture": "Rustican",
+      "structureMeme": "Structure_Archist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Archist",
+        "Loyalist",
+        "Transhumanist",
+        "HumanPrimacy"
+      ],
+      "preceptCount": 100,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ProductionSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Sacrileg Hunters"
+      ],
+      "believers": null
+    },
+    {
+      "id": 9,
+      "name": "Marauding Path",
+      "adjective": "powerist",
+      "memberName": "Poweror",
+      "culture": "Rustican",
+      "structureMeme": "AM_Structure_Corsair",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "AM_Structure_Corsair",
+        "Supremacist"
+      ],
+      "preceptCount": 103,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MeleeSpecialist"
+      ],
+      "veneratedAnimals": [
+        "OuterRim_DUMDroid"
+      ],
+      "preferredXenotypes": [
+        "DV_Buzzer"
+      ],
+      "primaryFactions": [
+        "Cloud of Thschit"
+      ],
+      "believers": null
+    },
+    {
+      "id": 10,
+      "name": "Truth of Power",
+      "adjective": "independent",
+      "memberName": "Independent",
+      "culture": "DV_Uligerva",
+      "structureMeme": "Structure_TheistAbstract",
+      "keyDeityName": "Kahlom",
+      "deityCountRange": "1~0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_TheistAbstract",
+        "Structure_Ideological",
+        "Guilty",
+        "Individualist",
+        "PainIsVirtue",
+        "Raider",
+        "VME_Bushido",
+        "VME_Anonymity"
+      ],
+      "preceptCount": 109,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [
+        "GR_Manalope"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Blackstar Company"
+      ],
+      "believers": null
+    },
+    {
+      "id": 1,
+      "name": "the Sun-Debt",
+      "adjective": "lootist",
+      "memberName": "Looter",
+      "culture": "Corunan",
+      "structureMeme": "Structure_Animist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Animist",
+        "PainIsVirtue",
+        "Raider",
+        "NaturePrimacy",
+        "VQE_Technophobia"
+      ],
+      "preceptCount": 54,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Deep Desert Tribes"
+      ],
+      "believers": null
+    },
+    {
+      "id": 11,
+      "name": "Stello-The Voidbringerism",
+      "adjective": "The Voidbringeric",
+      "memberName": "The Voidbringerite",
+      "culture": "Kriminul",
+      "structureMeme": "AM_Structure_Horaxian",
+      "keyDeityName": "The Voidbringer",
+      "deityCountRange": "1",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "AM_Structure_Horaxian",
+        "AM_Epicurean",
+        "Altruism",
+        "VME_ExaltedPriesthood"
+      ],
+      "preceptCount": 97,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MedicalSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "The Dark Swarm"
+      ],
+      "believers": null
+    },
+    {
+      "id": 13,
+      "name": "The Auguries",
+      "adjective": "victoryist",
+      "memberName": "Victorist",
+      "culture": "Rustican",
+      "structureMeme": "VME_Structure_Eschatologism",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "VME_Structure_Eschatologism",
+        "Supremacist"
+      ],
+      "preceptCount": 100,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [
+        "DA_Goldilox"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Pob'Rokba Coalition"
+      ],
+      "believers": null
+    },
+    {
+      "id": 14,
+      "name": "Xanidian Collective",
+      "adjective": "pantheistic",
+      "memberName": "Pantheist",
+      "culture": "Rustican",
+      "structureMeme": "VME_Structure_Pantheism",
+      "keyDeityName": "The Universe",
+      "deityCountRange": "1",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "VME_Structure_Pantheism",
+        "VME_Gestalt"
+      ],
+      "preceptCount": 87,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Eraistia"
+      ],
+      "believers": null
+    },
+    {
+      "id": 15,
+      "name": "the Contract",
+      "adjective": "guiltist",
+      "memberName": "Guilty One",
+      "culture": "Kriminul",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Guilty",
+        "Individualist",
+        "VME_Bushido",
+        "VME_Anonymity"
+      ],
+      "preceptCount": 104,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MeleeSpecialist"
+      ],
+      "veneratedAnimals": [
+        "Veermok"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Blackstar Company"
+      ],
+      "believers": null
+    },
+    {
+      "id": 16,
+      "name": "Supreme University",
+      "adjective": "just",
+      "memberName": "Justicar",
+      "culture": "VFEP_Khanate",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Supremacist",
+        "Transhumanist",
+        "Raider"
+      ],
+      "preceptCount": 102,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ResearchSpecialist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "The Anti-Love Imps"
+      ],
+      "believers": null
+    },
+    {
+      "id": 17,
+      "name": "Post-Automatism",
+      "adjective": "automatist",
+      "memberName": "Automator",
+      "culture": "Kriminul",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Supremacist",
+        "Transhumanist",
+        "Raider"
+      ],
+      "preceptCount": 108,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ResearchSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "The Raiders"
+      ],
+      "believers": null
+    },
+    {
+      "id": 18,
+      "name": "Raidism",
+      "adjective": "raidist",
+      "memberName": "Raidist",
+      "culture": "Kriminul",
+      "structureMeme": "Structure_Ideological",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Ideological",
+        "Supremacist",
+        "Raider"
+      ],
+      "preceptCount": 97,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "The Pistol Bears"
+      ],
+      "believers": null
+    },
+    {
+      "id": 40,
+      "name": "Neo-Fealtism",
+      "adjective": "fealtist",
+      "memberName": "Fealtor",
+      "culture": "Corunan",
+      "structureMeme": "Structure_Archist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Archist",
+        "Loyalist",
+        "Transhumanist",
+        "HumanPrimacy"
+      ],
+      "preceptCount": 97,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ResearchSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Hostile Tribal Generic"
+      ],
+      "believers": null
+    },
+    {
+      "id": 41,
+      "name": "Zoutin Way",
+      "adjective": "machinist",
+      "memberName": "Machinist",
+      "culture": "Orcish",
+      "structureMeme": "Structure_Archist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Archist",
+        "Loyalist",
+        "Transhumanist",
+        "HumanPrimacy"
+      ],
+      "preceptCount": 98,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ProductionSpecialist",
+        "IdeoRole_ResearchSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Hostile Generic"
+      ],
+      "believers": null
+    },
+    {
+      "id": 12,
+      "name": "Oubanyeni Commune",
+      "adjective": "Raid-Gelugist",
+      "memberName": "Raid-Gelugist",
+      "culture": "Orcish",
+      "structureMeme": "Structure_OriginBuddhist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_OriginBuddhist",
+        "Loyalist",
+        "Collectivist",
+        "Raider"
+      ],
+      "preceptCount": 103,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_MeleeSpecialist",
+        "IdeoRole_ShootingSpecialist"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "The Trosma People"
+      ],
+      "believers": null
+    },
+    {
+      "id": 42,
+      "name": "Astro-Nauticals",
+      "adjective": "nautical",
+      "memberName": "Seaman",
+      "culture": "Astropolitan",
+      "structureMeme": "Structure_Archist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Archist",
+        "Shipborn",
+        "VME_BloodCourt",
+        "VVE_Nauticals"
+      ],
+      "preceptCount": 99,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "VGE_IdeoRole_EngineeringSpecialist",
+        "VGE_IdeoRole_Navigator",
+        "VGE_IdeoRole_PilotingSpecialist"
+      ],
+      "veneratedAnimals": [
+        "Pikobis"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "Cosmic Nexus"
+      ],
+      "believers": null
+    },
+    {
+      "id": 43,
+      "name": "Dark-Archism",
+      "adjective": "archist",
+      "memberName": "Archist",
+      "culture": "Astropolitan",
+      "structureMeme": "Structure_Archist",
+      "keyDeityName": null,
+      "deityCountRange": "0",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "Structure_Archist",
+        "Shipborn"
+      ],
+      "preceptCount": 96,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "IdeoRole_AmeScavenger",
+        "AM_IdeoRole_MasterStylist",
+        "VGE_IdeoRole_EngineeringSpecialist",
+        "VGE_IdeoRole_Navigator",
+        "VGE_IdeoRole_PilotingSpecialist"
+      ],
+      "veneratedAnimals": [
+        "Tauntaun"
+      ],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "The Crazy Corsairs"
+      ],
+      "believers": null
+    },
+    {
+      "id": 44,
+      "name": "Smouldering Creed",
+      "adjective": "sharpshooter",
+      "memberName": "Marksman",
+      "culture": "Astropolitan",
+      "structureMeme": "AM_Structure_Cubicism",
+      "keyDeityName": "The Tetragold",
+      "deityCountRange": "1",
+      "supremeGender": "None",
+      "hidden": false,
+      "fluid": false,
+      "initialPlayerIdeo": false,
+      "memes": [
+        "AM_Structure_Cubicism",
+        "AM_Sharpshooter",
+        "VME_FireWorship"
+      ],
+      "preceptCount": 98,
+      "precepts": null,
+      "roles": [
+        "IdeoRole_Leader",
+        "IdeoRole_Moralist",
+        "AM_IdeoRole_MasterStylist",
+        "IdeoRole_ShootingSpecialist",
+        "VME_IdeoRole_FireKeeper"
+      ],
+      "veneratedAnimals": [],
+      "preferredXenotypes": [],
+      "primaryFactions": [
+        "New Arrivals"
+      ],
+      "believers": null
+    }
+  ],
+  "ticksGame": 1,
+  "operation": {
+    "OperationId": "op_88d7bfa5472a4812b57d2fdaf0ca3237",
+    "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ideo-of",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-08-21T23:29:30.3905803+00:00",
+    "CompletedAtUtc": "2026-08-21T23:29:30.4335645+00:00",
+    "DurationMs": 42,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}

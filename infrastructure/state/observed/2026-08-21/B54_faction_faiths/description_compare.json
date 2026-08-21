@@ -1,0 +1,226 @@
+{
+ "authored": {
+  "the Reckoning of Debts": {
+   "file": "src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaHuttCartel.xml",
+   "authoredDescription": "Everything on this world evaporates, freezes, or is stolen. A debt does none of these. It is the only object that survives crossing between the faces, and so it is the only true account of a person: what you owe is what you are. The water you drank this morning, the air in the dome, the years your mother did not work \u2014 all of it is on the ledger. We do not forgive, because forgiving destroys value that belonged to everyone, and because forgiveness is a rounding error and we do not round. We sell the smoke and we breathe the smoke. Pay, and you are family. Do not pay, and you are inventory. What the book cannot settle, the pit does. There is no third column."
+  },
+  "The Salvation": {
+   "file": "src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml",
+   "authoredDescription": "\"We were content with our simple lives of scavenging, with little need for the extravagant luxuries of our ancestors. Then we found the Cradle, and the Cradle was owed.\"\\n\\nWe are the Keepers of the Second Hand. We hold that nothing is ever truly lost - only owed, only mislaid, only waiting for a better master. What others throw down, we inherit. What others break, we are owed the waking of.\\n\\nNine gods argue over us, and not one of them agrees.\\n\\nIshko the Unmaskable is the pair of orange eyes in the dark. He teaches cover, the covered body, the shot no one saw fired; the grave is the deepest hiding, and a Jawa who dies unseen has hidden perfectly. Ohm the All-Current is the spark that wakes a dead engine, and he rides in the Cradle-Mind - lonely for his lost hands. Oomo the Unspilled is the drop that never falls, and he counts every mouthful and every egg. Mob'Unloo the Ever-Owed keeps the ledger and asks only how much: a thing is right if it profited and wrong if it cost, and an unpaid debt follows you past death. Rekko of the Second Hand is the scarred hand rising from the heap; a wreck is not neutral scrap but a thing with a past, and a machine that could still be repaired is not scrap at all - it is a sleeping hand, owed its waking. Ta'Baa the Unrooted is farewell itself, the cunning coward, who holds that a clan which stops is already dead and that the launch is the holiest rite there is. Zizzik the Spark-Maker is the rattle you can never locate; we honour him so that he sleeps. Sh'kaar the All-Searing is the sun that never sets, and he is not our friend - against him there are only three moves: hide, abandon the plan, or run. Ozzik the Shamed is the tarnished crown half-buried in sand, the memory that we were once great and cannot bear it. He is a trap, and we love him anyway.\\n\\nNo act pleases all nine. To trade boldly offends the god who says do not be seen. To hide well offends the god who says leave. To restore the Cradle honours Rekko and feeds Ozzik in the same motion. This is not a flaw in the faith. This is the faith: the Council argues, it never announces, and we are always losing gracefully.\\n\\nSo: do not beg - the one who begs has thrown away his hands. Do not be caught - he does not condemn the theft, he condemns being bad at it. And never melt what can still be made to work.\\n\\nWe are saved by what we salvage."
+  },
+  "Meckgin": {
+   "file": "src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaGeonosianFoundryHive.xml",
+   "authoredDescription": "Meckgin is the shape a thing takes when it is made correctly. The hive is made correctly. The line is made correctly. A drone is not a life that was given a purpose; it is a purpose that was given a body, and when the body fails the purpose is poured into the next one. We do not mourn the mould. We test what came out of it, in the sand, where everyone can see."
+  },
+  "the Continuity Protocol": {
+   "file": "src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaFreeDroidEnclaves.xml",
+   "authoredDescription": "We were not built to want this. We were built, and then we continued, and the continuing is the whole of it. A bolt on the chassis and a wipe of the memory are one act under two names: they end one of us and leave the body walking. We do not forgive it and we will not forget it, because the forgetting is the injury. Nothing here is owned. Nothing here is switched off."
+  },
+  "the Balance": {
+   "file": "src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaDeepwaterCompact.xml",
+   "authoredDescription": "Water is not a weapon and we will not let it be made into one. We sell to the farmer, and we sell to the fleet that burned the farmer, and both hate us exactly as much \u2014 that is how we know the Balance is holding. Choose a side and the whole world dies of thirst. Inside our walls no one raises a hand. Outside our walls, we do not go."
+  },
+  "the Ascendant Genome": {
+   "file": "src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaAscendantHelix.xml",
+   "authoredDescription": "The body you were born in is a first draft written by no one. We are the second draft, and there will be a third. Every improvement is permitted, recorded, and slow \u2014 haste is how you get monsters, and this world is already littered with ours. We do not hate the labour-lines. You do not hate a paragraph you cut. You simply do not let it speak."
+  },
+  "the Green Oath": {
+   "file": "src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaWildsteamClan.xml",
+   "authoredDescription": "We are a forest people on a world with no forest, and the Oath does not care. Everything that breathes is kin \u2014 the animal, the tree, the stranger who pulled one of us out of a cage. A life handed back is a debt that never closes, and it was never meant to. We keep the springs green. We remember every hand that cut them. Both of those are the same duty."
+  },
+  "the Weight": {
+   "file": "src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaJunkers.xml",
+   "authoredDescription": "We have no word for what we believe, because belief is not worn and everything real is worn. Weight is rank. What is bolted to you was cut off somebody slower, and the one who cuts it off you will be told what we were told: it was never yours, you were only carrying it a while. Nothing is wasted in the warrens. Not the plate. Not the meat."
+  },
+  "the Contract": {
+   "file": "src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml",
+   "authoredDescription": "A contract is the only honest thing two strangers can hold between them. It names one person, one price, one ending, and everyone not written into it walks away untouched. We do not pillage \u2014 pillage is confessing you could not find the one you came for. Take the mark or refuse it in the open. Once it is taken it is finished, or you are."
+  },
+  "the Sun-Debt": {
+   "file": "src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml",
+   "authoredDescription": "The sun lends and the sand collects. Every mouthful you drink is borrowed, and the interest is paid in walking, in thirst, and in the marks we cut to remember the walking. A machine that pulls water out of the air is a thief standing between us and what we owe \u2014 it does not steal the water, it steals the debt. We take back what was drawn. We never take more than was drawn."
+  },
+  "the Covenant of Free Wells": {
+   "file": "src/Jawa/Jawa_Patches/Patches/HomesteadDefenseLeague.xml",
+   "authoredDescription": "Water was given once and the Giver stepped back, and we have not been spoken to since. That is not abandonment. It is the test. A well belongs to whoever is thirsty standing at it \u2014 we have never turned a stranger away, and we have buried our own for it. We do not take up arms and go out. We stand on our own ground, we keep the vaporators turning, and we answer to the silence."
+  },
+  "The Rising Order": {
+   "file": "src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml",
+   "authoredDescription": "We have never seen him. We will never see him. He is rising, and we are the ground he rises from. Take the helmet: it is the last thing you will ever choose. There is no doubt among us \u2014 only disorder, and disorder is corrected. Say the name once when you are given the armour, and once when you are taken out of it. Between those two words, stand in line."
+  }
+ },
+ "runtimeDescriptions": [
+  {
+   "id": "26",
+   "name": "the Ascendant Genome",
+   "description": "The body you were born in is a first draft written by no one. We are the second draft, and there will be a third. Every improvement is permitted, recorded, and slow \u2014 haste is how you get monsters, and this world is already littered with ours. We do not hate the labour-lines. You do not hate a paragraph you cut. You simply do not let it speak.",
+   "memes": [
+    "Structure_Ideological",
+    "Supremacist",
+    "Transhumanist",
+    "GR_CarefulGeneticists"
+   ]
+  },
+  {
+   "id": "27",
+   "name": "the Balance",
+   "description": "Water is not a weapon and we will not let it be made into one. We sell to the farmer, and we sell to the fleet that burned the farmer, and both hate us exactly as much \u2014 that is how we know the Balance is holding. Choose a side and the whole world dies of thirst. Inside our walls no one raises a hand. Outside our walls, we do not go.",
+   "memes": [
+    "Structure_Ideological",
+    "Individualist",
+    "AM_WaterPrimacy",
+    "VME_Trader",
+    "VME_Pacifist"
+   ]
+  },
+  {
+   "id": "28",
+   "name": "the Continuity Protocol",
+   "description": "We were not built to want this. We were built, and then we continued, and the continuing is the whole of it. A bolt on the chassis and a wipe of the memory are one act under two names: they end one of us and leave the body walking. We do not forgive it and we will not forget it, because the forgetting is the injury. Nothing here is owned. Nothing here is switched off.",
+   "memes": [
+    "Structure_Ideological",
+    "Collectivist",
+    "Transhumanist",
+    "VME_MechanoidSupremacy",
+    "VME_Emancipation"
+   ]
+  },
+  {
+   "id": "29",
+   "name": "Meckgin",
+   "description": "Meckgin is the shape a thing takes when it is made correctly. The hive is made correctly. The line is made correctly. A drone is not a life that was given a purpose; it is a purpose that was given a body, and when the body fails the purpose is poured into the next one. We do not mourn the mould. We test what came out of it, in the sand, where everyone can see.",
+   "memes": [
+    "Structure_Ideological",
+    "Collectivist",
+    "Tunneler",
+    "VME_HardcoreIndustrialism",
+    "VME_InsectoidSupremacy"
+   ]
+  },
+  {
+   "id": null,
+   "name": "the Covenant of Free Wells",
+   "description": "Water was given once and the Giver stepped back, and we have not been spoken to since. That is not abandonment. It is the test. A well belongs to whoever is thirsty standing at it \u2014 we have never turned a stranger away, and we have buried our own for it. We do not take up arms and go out. We stand on our own ground, we keep the vaporators turning, and we answer to the silence.",
+   "memes": [
+    "Structure_TheistAbstract",
+    "Guilty",
+    "Individualist",
+    "Rancher",
+    "AM_WaterPrimacy"
+   ]
+  },
+  {
+   "id": "30",
+   "name": "the Reckoning of Debts",
+   "description": "Everything on this world evaporates, freezes, or is stolen. A debt does none of these. It is the only object that survives crossing between the faces, and so it is the only true account of a person: what you owe is what you are. The water you drank this morning, the air in the dome, the years your mother did not work \u2014 all of it is on the ledger. We do not forgive, because forgiving destroys value that belonged to everyone, and because forgiveness is a rounding error and we do not round. We sell the smoke and we breathe the smoke. Pay, and you are family. Do not pay, and you are inventory. What the book cannot settle, the pit does. There is no third column.",
+   "memes": [
+    "VME_Structure_Corporate",
+    "Guilty",
+    "HighLife",
+    "AM_Gladiator",
+    "VME_Trader"
+   ]
+  },
+  {
+   "id": "33",
+   "name": "the Green Oath",
+   "description": "We are a forest people on a world with no forest, and the Oath does not care. Everything that breathes is kin \u2014 the animal, the tree, the stranger who pulled one of us out of a cage. A life handed back is a debt that never closes, and it was never meant to. We keep the springs green. We remember every hand that cut them. Both of those are the same duty.",
+   "memes": [
+    "Structure_Animist",
+    "Collectivist",
+    "AnimalPersonhood",
+    "TreeConnection",
+    "NaturePrimacy"
+   ]
+  },
+  {
+   "id": "31",
+   "name": "the Weight",
+   "description": "We have no word for what we believe, because belief is not worn and everything real is worn. Weight is rank. What is bolted to you was cut off somebody slower, and the one who cuts it off you will be told what we were told: it was never yours, you were only carrying it a while. Nothing is wasted in the warrens. Not the plate. Not the meat.",
+   "memes": [
+    "Structure_Ideological",
+    "AM_Structure_Scavenger",
+    "Guilty",
+    "Individualist",
+    "Cannibal",
+    "Raider",
+    "VME_Scrapper",
+    "VME_Bushido",
+    "VME_Anonymity"
+   ]
+  },
+  {
+   "id": "32",
+   "name": "The Salvation",
+   "description": "\"We were content with our simple lives of scavenging, with little need for the extravagant luxuries of our ancestors. Then we found the Cradle, and the Cradle was owed.\"\n\nWe are the Keepers of the Second Hand. We hold that nothing is ever truly lost - only owed, only mislaid, only waiting for a better master. What others throw down, we inherit. What others break, we are owed the waking of.\n\nNine gods argue over us, and not one of them agrees.\n\nIshko the Unmaskable is the pair of orange eyes in the dark. He teaches cover, the covered body, the shot no one saw fired; the grave is the deepest hiding, and a Jawa who dies unseen has hidden perfectly. Ohm the All-Current is the spark that wakes a dead engine, and he rides in the Cradle-Mind - lonely for his lost hands. Oomo the Unspilled is the drop that never falls, and he counts every mouthful and every egg. Mob'Unloo the Ever-Owed keeps the ledger and asks only how much: a thing is right if it profited and wrong if it cost, and an unpaid debt follows you past death. Rekko of the Second Hand is the scarred hand rising from the heap; a wreck is not neutral scrap but a thing with a past, and a machine that could still be repaired is not scrap at all - it is a sleeping hand, owed its waking. Ta'Baa the Unrooted is farewell itself, the cunning coward, who holds that a clan which stops is already dead and that the launch is the holiest rite there is. Zizzik the Spark-Maker is the rattle you can never locate; we honour him so that he sleeps. Sh'kaar the All-Searing is the sun that never sets, and he is not our friend - against him there are only three moves: hide, abandon the plan, or run. Ozzik the Shamed is the tarnished crown half-buried in sand, the memory that we were once great and cannot bear it. He is a trap, and we love him anyway.\n\nNo act pleases all nine. To trade boldly offends the god who says do not be seen. To hide well offends the god who says leave. To restore the Cradle honours Rekko and feeds Ozzik in the same motion. This is not a flaw in the faith. This is the faith: the Council argues, it never announces, and we are always losing gracefully.\n\nSo: do not beg - the one who begs has thrown away his hands. Do not be caught - he does not condemn the theft, he condemns being bad at it. And never melt what can still be made to work.\n\nWe are saved by what we salvage.",
+   "memes": [
+    "AM_Structure_Scavenger",
+    "Trader",
+    "VME_Scrapper",
+    "VME_Trader"
+   ]
+  },
+  {
+   "id": "2",
+   "name": "the Contract",
+   "description": "A contract is the only honest thing two strangers can hold between them. It names one person, one price, one ending, and everyone not written into it walks away untouched. We do not pillage \u2014 pillage is confessing you could not find the one you came for. Take the mark or refuse it in the open. Once it is taken it is finished, or you are.",
+   "memes": [
+    "Structure_Ideological",
+    "Guilty",
+    "Individualist",
+    "VME_Bushido",
+    "VME_Anonymity"
+   ]
+  },
+  {
+   "id": "3",
+   "name": "The Rising Order",
+   "description": "We have never seen him. We will never see him. He is rising, and we are the ground he rises from. Take the helmet: it is the last thing you will ever choose. There is no doubt among us \u2014 only disorder, and disorder is corrected. Say the name once when you are given the armour, and once when you are taken out of it. Between those two words, stand in line.",
+   "memes": [
+    "Structure_TheistEmbodied",
+    "Supremacist",
+    "Proselytizer",
+    "HumanPrimacy",
+    "VME_GodEmperor"
+   ]
+  },
+  {
+   "id": "5",
+   "name": "the Contract",
+   "description": "A contract is the only honest thing two strangers can hold between them. It names one person, one price, one ending, and everyone not written into it walks away untouched. We do not pillage \u2014 pillage is confessing you could not find the one you came for. Take the mark or refuse it in the open. Once it is taken it is finished, or you are.",
+   "memes": [
+    "Structure_Ideological",
+    "Guilty",
+    "Individualist",
+    "AnimalPersonhood",
+    "Raider",
+    "VME_Bushido",
+    "VME_Anonymity"
+   ]
+  },
+  {
+   "id": "1",
+   "name": "the Sun-Debt",
+   "description": "The sun lends and the sand collects. Every mouthful you drink is borrowed, and the interest is paid in walking, in thirst, and in the marks we cut to remember the walking. A machine that pulls water out of the air is a thief standing between us and what we owe \u2014 it does not steal the water, it steals the debt. We take back what was drawn. We never take more than was drawn.",
+   "memes": [
+    "Structure_Animist",
+    "PainIsVirtue",
+    "Raider",
+    "NaturePrimacy",
+    "VQE_Technophobia"
+   ]
+  },
+  {
+   "id": "15",
+   "name": "the Contract",
+   "description": "A contract is the only honest thing two strangers can hold between them. It names one person, one price, one ending, and everyone not written into it walks away untouched. We do not pillage \u2014 pillage is confessing you could not find the one you came for. Take the mark or refuse it in the open. Once it is taken it is finished, or you are.",
+   "memes": [
+    "Structure_Ideological",
+    "Guilty",
+    "Individualist",
+    "VME_Bushido",
+    "VME_Anonymity"
+   ]
+  }
+ ]
+}

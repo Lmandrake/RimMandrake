@@ -480,3 +480,36 @@ never added during LoadingVars` above the abort.
 ⚠️ **What still counts from a zombie session:** results about the TOOLS. A tile import that
 reports 21,872/21,872 and validates at 100% really did do that. What does NOT count is any
 claim about the game's state, its save, or its behaviour.
+
+---
+
+## An ideoligion's DESCRIPTION is not readable through the bridge — CHECK, 2026-08-21
+
+`jawa/ideo_of` returns name, adjective, memberName, culture, structureMeme, keyDeityName,
+memes, precepts, roles, veneratedAnimals, preferredXenotypes, primaryFactions and believer
+counts — **and no `description`**. `rimbridge/run_script` only chains existing capability
+calls, so there is no reflection route either.
+
+✅ **The route that works: save the game and read the `.rws`.** `rimworld/save_game` then
+`ideoManager/ideos/li/{name,description,memes}`. A quicktest save is ~17 MB and parses in
+seconds with `ET.iterparse`. This is how B54's twelve `ideoDescription` strings were proved
+verbatim.
+
+⚠️ **RimWorld unescapes literal `\n` in XML text at load.** An authored description
+containing `\n\n` will differ from the runtime string by 2 bytes per occurrence and is NOT
+a content mismatch. Unescape before comparing, or you will report a false DIFF.
+
+## A dev quicktest generates the full faction roster and every ideo — CHECK, 2026-08-21
+
+`rimworld/start_debug_game_ready` on the owner's full 578-mod list produces a world with
+the complete faction set and 45 Ideos, in ~1 minute. **All twelve authored faction faiths
+were present and correctly attached.** So the eleven-faiths class of question does NOT need
+a real worldgen click to answer.
+
+🔴 **`readiness: gameData` returns in ~1.6 s and is a lie about progress** — it comes back
+with `hasCurrentGame: true`, `longEventPending: true`, `mapCount: 0`. Poll
+`rimworld/get_game_info` until `status: game_loaded`; that took ~45–70 s here.
+
+⚠️ **Two quicktests came back byte-identical** — same ideo ids, memes, deities, factions.
+Reproducibility, yes; **evidence of a shared seed, not proof that the owner's real worldgen
+will match.** Do not report a quicktest result as a prediction about the frozen world.
