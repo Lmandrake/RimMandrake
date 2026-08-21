@@ -27,19 +27,21 @@
 import { mark, kindOf, statusStyle, SURFACE } from "./palette.js";
 
 /* ---------------------------------------------------------------------------
- * The projection carries NO per-item `kind` — `rimflow render` drops it, and
- * the ledger's kind is a property of the queue FILE an item was filed in
- * (importer.py SOURCES). So we recover it from the owning seat rather than
- * guessing per item, and an unknown seat falls through kindOf() to the neutral
- * "unclassified" rather than borrowing a real category's colour.
+ * CATEGORY COMES FROM THE LEDGER, NEVER FROM THE SEAT.
+ *
+ * `board.catalog` carries one entry per item, `kind` included. An earlier cut of
+ * this view recovered kind from the owning seat instead — that made every CHECK
+ * item read `test` and every BUILD item `code`, asserting a category the ledger
+ * never filed. A wrong category reads as a confident answer, which is worse than
+ * none: kindOf() returns a neutral `·` "unclassified" for an unknown kind, and
+ * that is the honest fallback. So: look it up, or show the neutral. Never guess.
+ *
+ * Module-scoped because every mark on the page needs it and threading a map
+ * through nine render helpers buys nothing. render() re-seeds it each draw.
  * ------------------------------------------------------------------------- */
-const SEAT_KIND = {
-  DECIDE: "decision", // DECIDE.md      -> decision -> doc  ▤
-  BUILD: "task",      // BUILD.md       -> task     -> code ⌘
-  CHECK: "check",     // CHECK.md       -> check    -> test ◈
-  OWNER: "question",  // HUMAN.md       -> question -> doc  ▤
-  REP: "infra",       // no queue file of its own
-};
+let CAT = new Map();
+const catOf = (id) => CAT.get(id) || null;
+
 const SEATS = ["DECIDE", "BUILD", "CHECK", "REP", "OWNER"];
 const SEAT_NOTE = {
   DECIDE: "design + rulings",
@@ -66,8 +68,10 @@ const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g,
  * channel on top. Never call this without a status — an unmarked chip claims
  * a state it has not got.
  * ------------------------------------------------------------------------ */
-function itemMark(id, seat, status) {
-  const m = mark({ kind: SEAT_KIND[seat], ...status });
+function itemMark(id, status) {
+  const c = catOf(id);
+  // kind is read, not inferred. No entry -> no category, and the mark says so.
+  const m = mark({ kind: c ? c.kind : null, ...status });
   const st = statusStyle({ ...status });
   const cls = ["mk"];
   if (status.blocked) cls.push("st-blocked");
@@ -76,7 +80,9 @@ function itemMark(id, seat, status) {
   else if (status.state === "idle") cls.push("st-idle");
   if (st.strike) cls.push("st-gone");
   const title = `${id} — ${m.label}` +
-    (status.blocked ? " — BLOCKED" : status.state ? ` — ${status.state}` : "");
+    (status.blocked ? " — BLOCKED" : status.state ? ` — ${status.state}` : "") +
+    (c && c.title ? `\n${c.title}` : "") +
+    (c && c.blocked_reason ? `\nblocked: ${c.blocked_reason}` : "");
   return `<span class="${cls.join(" ")}" style="--c:${m.hex};opacity:${st.opacity}"` +
     ` title="${esc(title)}">` +
     `<span class="g">${m.glyph}</span>` +
@@ -193,7 +199,7 @@ function ownerPanel(board) {
       ${blocked.length
       ? `<br><b>${blocked.length}</b> further item${blocked.length === 1 ? " is" : "s are"}
          blocked on an owner decision: ` +
-      blocked.map((b) => itemMark(b.id, b.owner, { blocked: true, state: b.state })).join(" ")
+      blocked.map((b) => itemMark(b.id, { blocked: true, state: b.state })).join(" ")
       : "No seat item is blocked on an owner decision."}
       ${onHuman != null && onHuman !== blocked.length
       ? `<br><span class="none">the ledger counts ${onHuman} blocked on a human,
@@ -282,17 +288,17 @@ function lane(seat, board) {
   const s = (board.seats || {})[seat] || {};
   const blocks = (board.blocked || []).filter((b) => b.owner === seat);
   const p = seatPill(s, blocks.length);
-  const doing = (s.doing || []).map((id) => itemMark(id, seat, { state: "doing" }));
+  const doing = (s.doing || []).map((id) => itemMark(id, { state: "doing" }));
   const nextId = s.next;
   const ready = (s.counts || {}).ready || 0;
 
   const nextCell = nextId
-    ? itemMark(nextId, seat, { state: "ready" }) +
+    ? itemMark(nextId, { state: "ready" }) +
       (s.offered > 1 ? ` <span class="none">+${s.offered - 1} more offered</span>` : "")
     : none(ready ? `${ready} ready, none offered — every one is gated` : "nothing ready");
 
   const blockedCell = blocks.length
-    ? blocks.map((b) => itemMark(b.id, seat, { blocked: true, state: b.state })).join(" ")
+    ? blocks.map((b) => itemMark(b.id, { blocked: true, state: b.state })).join(" ")
     : none("none");
 
   return `<div class="lane">
@@ -316,7 +322,7 @@ function blockedPanel(board) {
     <p class="sub">Nothing open is blocked.</p></div>`;
   return `<div class="panel"><p class="ttl">BLOCKED — ${bs.length}</p>` +
     bs.map((b) => `<div class="blk">
-      ${itemMark(b.id, b.owner, { blocked: true, state: b.state })}
+      ${itemMark(b.id, { blocked: true, state: b.state })}
       <div class="r"><b>${esc(b.owner || "?")}</b> · ${esc(b.reason || "unexplained")}
         ${b.on ? ` · on <b>${esc(b.on)}</b>` : ""}
         ${b.needs ? ` · needs <b>${esc(b.needs)}</b>` : ""}
@@ -386,6 +392,8 @@ export function render(root, board) {
     return;
   }
 
+  // Re-seeded every draw: the catalog is the only source of an item's category.
+  CAT = new Map((board.catalog || []).map((c) => [c.id, c]));
   const errs = errorsPanel(board);
   root.innerHTML = `
     <div class="dk-head">
@@ -404,8 +412,9 @@ export function render(root, board) {
     </div></div>
     <div class="row">${blockedPanel(board)}</div>
     ${errs ? `<div class="row">${errs}</div>` : ""}
-    <p class="foot">Category is hue + glyph + label; status is ring / opacity /
-      dashed outline. Colour is never the only encoding — see palette.js.</p>`;
+    <p class="foot">Category is hue + glyph + label, read from the ledger catalog;
+      status is ring / opacity / dashed outline. Colour is never the only encoding
+      — see palette.js.${CAT.size ? "" : " <b>This board carries no catalog, so every mark is unclassified.</b>"}</p>`;
 }
 
 /* Convenience for a host page that would rather not own the fetch. Polling is
