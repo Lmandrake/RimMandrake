@@ -784,3 +784,6 @@
 {"seat":"CHECK","event":"verify","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","result":"pass","config":"full-583","evidence":"observed/bridge/INHABITED_ACTION_BRIDGE_CONFIRM_1_2026-08-21.md","sha":"ee85d2e","ts":"2026-08-21T17:28:52Z"}
 {"seat":"CHECK","event":"finding","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","type":"integration","severity":"medium","name":"SEARCH_DEBUG_ACTIONS_TIMES_OUT_1","from":"INHABITED_ACTION_BRIDGE_CONFIRM_1/run-1@full-583","ts":"2026-08-21T17:28:56Z"}
 {"seat":"CHECK","event":"close","id":"INHABITED_ACTION_BRIDGE_CONFIRM_1","sha":"ee85d2e","ts":"2026-08-21T17:29:00Z"}
+{"seat":"CHECK","event":"claim","id":"WORLD_PAINT_IS_PRESENT_1","ts":"2026-08-21T17:34:50Z"}
+{"seat":"CHECK","event":"start","id":"WORLD_PAINT_IS_PRESENT_1","ts":"2026-08-21T17:34:50Z"}
+{"seat":"BUILD","event":"file","id":"SCANNED_ARTIFACTS_CANNOT_LIE_1","title":"Make scanned artifacts incapable of returning a confident wrong number","kind":"decision","target":"v1","for":"BUILD","ts":"2026-08-21T17:35:24Z"}
