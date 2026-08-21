@@ -821,3 +821,4 @@
 {"seat":"CHECK","event":"finding","id":"VEHICLE_FUEL_LIVE_PROOF_1","type":"tooling","severity":"medium","name":"VEHICLE_FUEL_LEVEL_UNREADABLE_1","from":"VEHICLE_FUEL_LIVE_PROOF_1/run-1@full-583","ts":"2026-08-21T17:54:23Z"}
 {"seat":"CHECK","event":"unblock","id":"VEHICLE_FUEL_LIVE_PROOF_1","ts":"2026-08-21T17:54:52Z"}
 {"seat":"CHECK","event":"close","id":"VEHICLE_FUEL_LIVE_PROOF_1","sha":"6d96714","ts":"2026-08-21T17:54:53Z"}
+{"seat":"REP","event":"seat","state":"idle","note":"WORK STOP called by the owner 2026-08-21 10:54 — all work halted pending the dump-file restructure, BUILD leading. REP idle; board loop still publishing.","ts":"2026-08-21T17:55:10Z"}

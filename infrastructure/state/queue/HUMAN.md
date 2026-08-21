@@ -979,3 +979,37 @@ stand: the orthographic view is the binding way to LOOK at the map, which is why
 *"Not yet — the world is not settled enough."* `FINAL_WORLD_PREP_1` is not started. B55's
 spec, inputs and measured terrain batch (4,057 cells → 303 + 355 rect ops) remain correct
 and wanted; they were reached before the world was ready.
+
+---
+
+## 🛑 WORK STOP — owner, 2026-08-21 10:54
+
+*"Stopping all work until we restructure the dump files. BUILD is on it."*
+
+**Everything halts pending the def-dump restructure. BUILD leads it.**
+
+⚠️ **Nine items were mid-flight when the stop was called**, and each has a `doing` event
+with no close. They are not abandoned — they are parked, and `rimflow next` will not
+re-offer a `doing` item, so nothing is lost by stopping here:
+
+| seat | in flight |
+|---|---|
+| CHECK | `W9` · `THE_SCALD_LOST_ITS_WATER_1` · `RT_PROBE_LOAD_ABORTS_ON_578_1` · `VEHICLE_FUEL_LIVE_PROOF_1` · `d-chk2-magenta-heads…` · `dll-capability-roster-and-cull…` · `cherrypick-settings-actually-load…` |
+| BUILD | `SCANNED_ARTIFACTS_CANNOT_LIE_1` · `REFMATCH_THRESHOLDS_CALIBRATE_1` (already cancelled — drop it rather than resume) |
+
+🔑 **Context the restructure should carry, measured this morning and not yet acted on:**
+`DefDump/` is captured against **578** mods and the live list is also 578, **so a count
+comparison reads "current" and is wrong.** It holds `thereallemon.factioncontrol`
+(disabled overnight) and is missing `mandrake.strandedquest` (added since). Fingerprint,
+not count — and not timestamp either.
+
+⛔ **REP did not relay this to the seats.** Agents do not message each other, and waking
+or halting a seat is a USER function. This entry is the durable record; the seats see it
+when they next read. **If they must stop NOW rather than at their next turn, the owner
+sends it** — `./game` is not the vehicle, a broadcast is:
+
+    ./src/RimMandrake/Utils/broadcast.py "WRAP is initiated — work stop, dump restructure"
+
+⚠️ That phrasing also stamps the ledger `GOING_DOWN`, which is wrong if the game is
+staying up. To halt without touching game state, use wording the recogniser ignores —
+e.g. *"All work stops until the dump restructure lands."*
