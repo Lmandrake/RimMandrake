@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  PirateWaster_Yield.xml                    Jawa_Patches - new file 2026-08-21
+  ============================================================================
+
+  THE BLACKSTAR COMPANY IS BUILT ON VANILLA `Pirate`, AND BIOTECH TAKES ITS PLACE.
+
+  Biotech's `PirateWaster` declares
+      <replacesFaction>Pirate</replacesFaction>
+  (`Data/Biotech/Defs/FactionDefs/Factions_Misc.xml:576`) and inherits
+  `requiredCountAtGameStart` **1** from `PirateBandBase`
+  (`Data/Core/Defs/FactionDefs/Factions_Misc.xml:518`).
+
+  Between them, vanilla `Pirate` - the def `BlackstarCompany.xml` reskins - is
+  stripped from the DEFAULT Configure Factions list
+  (`Page_CreateWorldParams.cs:83-85`) and skipped outright when no list is
+  configured (`FactionGenerator.cs:78`):
+
+      if (!ordered.Any(x => x.requiredCountAtGameStart > 0
+                            && x.replacesFaction == facDef) && ...)
+
+  🔑 So the faction the campaign carefully reskinned is a faction the engine never
+  creates. No label, weight or count patched onto `Pirate` can change that, because
+  the skip happens before any of them are read.
+
+  ⚠️ AND IT CANNOT ARRIVE LATER. `requiredCountAtGameStart` is read in exactly one
+  place, reached only from `WorldGenStep_Factions`. The only load-time top-up is
+  `BackCompatibility.cs`, a hardcoded list of five vanilla factions. A faction absent
+  when the world was generated stays absent forever - see `BUILDABLE.md`.
+
+  THE TWO OPS, AND THE ADD/REMOVE SPLIT IS THE TRAP
+  =================================================
+  1. REMOVE `replacesFaction`. It is written ON the def, so Remove is correct and
+     matches. This is what returns `Pirate` to the default list.
+  2. ADD `requiredCountAtGameStart` 0. 🔴 The def does NOT write that field - it
+     INHERITS it from `PirateBandBase` - so a Replace would match nothing, and a
+     PatchOperation that matches nothing logs nothing. Add is the only op that works.
+     This is what stops `PirateWaster` taking the slot it has just vacated.
+
+  Both sit inside a `PatchOperationConditional` on the def itself, so with Biotech
+  absent this file is a silent no-op rather than a wall of red.
+
+  ⛔ DO NOT TOUCH `Pirate`. It is already correct: weight 1,
+  `requiredCountAtGameStart` 1, `maxConfigurableAtWorldCreation` 9999, and
+  `BlackstarCompany.xml` already reskins it.
+  ⛔ DO NOT EXTEND THIS TO THE OTHER FIVE `replacesFaction` DECLARATIONS.
+  `OutlanderRoughPig`, `TribeRoughNeanderthal`, `TribeSavageImpid` and
+  `VRESaurids_OutlanderRoughSaurid` replace `OutlanderRough` / `TribeRough` /
+  `TribeSavage`, none of which carries a faction of ours. Measured across every active
+  mod: `Pirate` is the ONLY one of our thirteen that is hit.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="PirateWaster"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- 1. Written on the def, so REMOVE matches. Returns Pirate to the list. -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/FactionDef[defName="PirateWaster"]/replacesFaction</xpath>
+        </li>
+
+        <!-- 2. INHERITED from PirateBandBase, so ADD. A Replace would match nothing
+             and log nothing. Stops PirateWaster retaking the slot it just vacated. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="PirateWaster"]</xpath>
+          <value><requiredCountAtGameStart>0</requiredCountAtGameStart></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

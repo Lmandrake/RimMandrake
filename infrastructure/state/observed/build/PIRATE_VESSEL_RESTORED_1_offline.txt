@@ -1,0 +1,17 @@
+PIRATE_VESSEL_RESTORED_1 — offline verify, 2026-08-21
+
+1. validate_patch.py — 0 errors, 0 warnings, each op 1 hit:
+     info    Operation[1] (PatchOperationConditional): 1 match(es)  in Biotech: Factions_Misc.xml(1)
+     info    Operation[1] > match > operations/li[1] (PatchOperationRemove): 1 match(es)  in Biotech: Factions_Misc.xml(1)
+     info    Operation[1] > match > operations/li[2] (PatchOperationAdd): 1 match(es)  in Biotech: Factions_Misc.xml(1)
+   OK - 0 errors, 0 warning(s)
+
+2. PRE-state off the 08:20:20Z dump (578 mods, matches the live list):
+   Pirate        label=Blackstar Company  weight=0.6  reqCount=1  replacesFaction=None  hidden=False
+   PirateWaster  label=waster pirates     weight=0.6  reqCount=1  replacesFaction=Pirate hidden=False
+   ⇒ the defect is present and the patch targets it.
+   ⚠️ the item's spec says Pirate weight is 1; measured 0.6. We do not touch Pirate either way.
+
+3. OWED, and it needs a game load: a REGENERATED dump showing
+   PirateWaster.replacesFaction absent and requiredCountAtGameStart 0.
+   Offline cannot see a PatchOperation's effect - only that it matches.
