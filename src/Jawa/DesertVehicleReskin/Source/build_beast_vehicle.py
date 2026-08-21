@@ -99,7 +99,6 @@ FAR = {"south": "bottom", "north": "top", "east": "right"}
 # 0.709 -> 0.906 (WarChariot). Filling those with the south pair costs -20.9%, +40.3%
 # and +42.2% of width. The item allows ~18% on a top-down animal; 40% is a different
 # animal. Contain-fit costs 0% distortion and buys it back in span.
-# animal. Contain-fit costs 0% distortion and buys it back in span.
 #
 # 🔑 AND CONTAIN IS NOT THE ANSWER EITHER, measured the same day. The north band is
 # SHORTER than the south one on CoveredCarriage (163 vs 217) and WarChariot (233 vs
