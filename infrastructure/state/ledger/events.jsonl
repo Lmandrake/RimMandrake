@@ -646,3 +646,16 @@
 {"seat":"DECIDE","event":"file","id":"EMPIRE_XENOTYPES_REGENERATE_1","title":"Regenerate the faction xenotype patch: the Empire's Echani share was 41% and stormtroopers are human","kind":"build","row":"9","target":"v1","needs":"offline","for":"DECIDE","ts":"2026-08-21T15:40:54Z"}
 {"seat":"DECIDE","event":"reassign","id":"EMPIRE_XENOTYPES_REGENERATE_1","to":"BUILD","reason":"the generated patch lives in src/","ts":"2026-08-21T15:40:57Z"}
 {"seat":"BUILD","event":"file","id":"PHYTOKIN_BARK_EAST_LOOK_1","title":"Look at a wide-headed female bark Phytokin facing east, and settle the fix","kind":"check","target":"v1","for":"CHECK","ts":"2026-08-21T15:42:53Z"}
+{"seat":"BUILD","event":"claim","id":"CAST_PARSER_KIT_FIELDS_1","ts":"2026-08-21T15:44:11Z"}
+{"seat":"BUILD","event":"start","id":"CAST_PARSER_KIT_FIELDS_1","ts":"2026-08-21T15:44:12Z"}
+{"seat":"BUILD","event":"claim","id":"WEAPON_TAGS_MATCH_NOTHING_1","ts":"2026-08-21T15:45:07Z"}
+{"seat":"BUILD","event":"start","id":"WEAPON_TAGS_MATCH_NOTHING_1","ts":"2026-08-21T15:45:08Z"}
+{"seat":"BUILD","event":"claim","id":"THREE_ANCIENT_KINDS_ARMED_1","ts":"2026-08-21T15:45:08Z"}
+{"seat":"BUILD","event":"start","id":"THREE_ANCIENT_KINDS_ARMED_1","ts":"2026-08-21T15:45:08Z"}
+{"seat":"DECIDE","event":"reassign","id":"NINE_XENOTYPES_AUTHORED_1","to":"DECIDE","reason":"owner chose to rewrite the eleven instead; retiring this","ts":"2026-08-21T15:45:17Z"}
+{"seat":"DECIDE","event":"drop","id":"NINE_XENOTYPES_AUTHORED_1","reason":"owner ruled 2026-08-21 for rewriting the eleven characters over adding nine species — stack stability before a one-shot frozen worldgen. The rewrites are done and 0 of 269 races are now unresolvable","ts":"2026-08-21T15:45:17Z"}
+{"seat":"DECIDE","event":"unblock","id":"the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07","reason":"owner ruled lever (b); and the laser turns out to be ours to author, so no patch on another mod's WorkGiver is needed","ts":"2026-08-21T15:45:47Z"}
+{"seat":"DECIDE","event":"file","id":"JAWA_SCENARIO_PARTS_1","title":"The ScenarioDef, the no-sow rules, the mining gene and a laser that is not a Mining job","kind":"build","row":"1","target":"v1","needs":"offline","caused_by":"the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07","for":"DECIDE","ts":"2026-08-21T15:47:10Z"}
+{"seat":"DECIDE","event":"close","id":"the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07","sha":"50e74d4","ts":"2026-08-21T15:47:13Z"}
+{"seat":"DECIDE","event":"reassign","id":"JAWA_SCENARIO_PARTS_1","to":"BUILD","reason":"defs and the ScenarioDef are BUILD's","ts":"2026-08-21T15:47:13Z"}
+{"seat":"DECIDE","event":"claim","id":"SCALD_WATER_RULING_1","ts":"2026-08-21T15:47:36Z"}
