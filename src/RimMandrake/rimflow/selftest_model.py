@@ -248,13 +248,25 @@ def t_owner_overrides_seat_ownership():
     assert w.items["STUCK_ITEM_HERE_1"].state == "dropped"
 
 
-# ---- the completeness gate -----------------------------------------------
-def t_incomplete_item_cannot_start():
+# ---- there is NO completeness gate ---------------------------------------
+# 🔴 Owner, 2026-08-21: the gate "was a BAD IDEA, and it's costing us lost knowledge
+# when we discover errors." These tests now assert its ABSENCE, so that reinstating it
+# breaks the suite rather than passing quietly.
+def t_incomplete_item_starts_fine():
     evs = [filed("NO_SPEC_ITEM_HERE_1"),
            ev(seat="BUILD", event="start", id="NO_SPEC_ITEM_HERE_1")]
-    refuses(lambda: model.replay(evs, strict=True), "missing",
-            "an item with no spec/verify/criteria was started — the exact failure "
-            "POLICY.md's manual refusal was supposed to prevent and did not")
+    w = model.replay(evs, strict=True)
+    assert w.items["NO_SPEC_ITEM_HERE_1"].state == "doing", (
+        "an item with no spec/verify/criteria was refused — the completeness gate "
+        "the owner removed on 2026-08-21 is back")
+
+
+def t_claim_always_reaches_ready():
+    w = model.replay([filed("NO_PROSE_CLAIM_1"),
+                      ev(seat="BUILD", event="claim", id="NO_PROSE_CLAIM_1")],
+                     strict=True)
+    assert w.items["NO_PROSE_CLAIM_1"].state == "ready", (
+        "claim parked a prose-less item in `proposed` — the removed gate is back")
 
 
 def t_complete_item_can_start():
@@ -524,15 +536,12 @@ def t_reassign_of_a_doing_item_reaches_the_new_seat():
         "`rimflow next --seat CHECK` does not offer the item it was just handed")
 
 
-def t_reassign_of_a_holed_doing_item_lands_in_proposed_not_ready():
-    """A `ready` that lies is worse than a `proposed` that waits.
+def t_reassign_of_a_holed_doing_item_still_lands_in_ready():
+    """🔴 Was `..._lands_in_proposed_not_ready`, asserting the completeness gate.
 
-    ⚠️ The hole can only open BETWEEN processes — `start` refuses an incomplete
-    item, so within one fold the prose is always there. A real `rimflow reassign`
-    is a fresh process that re-reads `items/`, and the file may have lost a
-    section since work began. Reproduced here by making `_sections` answer
-    complete for `start` and holed for the `reassign` that follows it — the same
-    two reads those two processes would each do.
+    The owner removed that gate on 2026-08-21 — an item is workable whatever prose it
+    carries — so a handover now lands in `ready` regardless. Kept, inverted, so that
+    reinstating the gate fails here.
     """
     _complete_item("PROSE_WENT_MISSING_1")
     real, calls = model._sections, []
@@ -550,11 +559,9 @@ def t_reassign_of_a_holed_doing_item_lands_in_proposed_not_ready():
         it = model.replay(evs, strict=True).items["PROSE_WENT_MISSING_1"]
     finally:
         model._sections = real
-    assert len(calls) == 2, (
-        "expected one completeness read for `start` and one for `reassign`, got %d "
-        "— if this changed, the staging above no longer means what it says" % len(calls))
-    assert it.state == "proposed", (
-        "an item whose spec went missing was handed over as %r" % it.state)
+    assert it.state == "ready", (
+        "a handover parked a prose-less item in %r — the removed completeness gate "
+        "is back" % it.state)
     assert it.owner == "CHECK", it.owner
 
 

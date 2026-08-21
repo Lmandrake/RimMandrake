@@ -170,12 +170,13 @@ def t_reopening_a_closed_item_is_refused():
             "a closed item was reopened, which erases that it ever closed")
 
 
-def t_incomplete_item_cannot_start_and_the_tool_names_what_is_missing():
+def t_incomplete_item_starts_fine_and_the_tool_does_not_block():
+    # 🔴 Owner, 2026-08-21: the completeness gate is removed. Asserting its ABSENCE so
+    # that reinstating it fails the suite.
     fresh()
     ok("file", "NO_PROSE_ITEM_HERE_1", "--for", "BUILD", "--title", "t")
     ok("claim", "NO_PROSE_ITEM_HERE_1")
-    refused(("start", "NO_PROSE_ITEM_HERE_1"), "## spec",
-            "an item with no spec/verify/criteria was started")
+    ok("start", "NO_PROSE_ITEM_HERE_1")
 
 
 def t_next_prints_one_item_with_its_spec():

@@ -90,9 +90,9 @@ ITEMS = os.path.join(STATE, "items")
 
 SEATS = ("DECIDE", "BUILD", "CHECK", "REP", "OWNER")
 
-# Item lifecycle. `proposed` is not a holding pen for sloppiness — it is where an item
-# sits until it has all three of spec/verify/criteria, which is the completeness gate
-# replacing POLICY.md's manual "BUILD must refuse an item with an empty spec".
+# Item lifecycle. `proposed` means "filed, not yet taken". 🔴 It is NO LONGER a
+# completeness gate — the owner removed that on 2026-08-21 (see `start`). An item may be
+# claimed and started with no spec, verify or criteria at all.
 STATES = ("proposed", "ready", "doing", "done", "dropped", "superseded")
 
 # ⚠️ `blocked` is NOT a state. It is a flag, because an item can be blocked while
@@ -616,19 +616,23 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
 
     if verb == "claim":
         item.owner = seat
-        to("ready" if _complete(item) else "proposed")
+        to("ready")
     elif verb == "start":
-        # ⚠️ The completeness gate, and it is a PRECONDITION rather than a bounce.
-        # POLICY.md told BUILD to refuse an item with an empty spec and set it
-        # blocked; that refusal was invisible for four days because nothing read it.
-        # Here the item simply cannot enter ready, and the tool names what is missing.
-        missing = _missing(item)
-        if missing:
-            raise TransitionError(
-                "%s cannot start: items/%s.md is missing %s. An artifact graded by "
-                "its own author proves nothing, which is why `verify` must be there "
-                "before work begins, not after."
-                % (item.id, item.id, " and ".join("## " + m for m in missing)))
+        # 🔴 THE COMPLETENESS GATE IS GONE. Owner, 2026-08-21:
+        #   "I need you to turn off the whole 'you can't work on something that
+        #    doesn't have a valid verification or validation plan' thing. It was a
+        #    BAD IDEA, and it's costing us lost knowledge when we discover errors.
+        #    Remove it immediately and make everyone able to work on anything in
+        #    their queue independent of the V&V plan attached right away."
+        #
+        # ⛔ Do not reinstate it, and do not reintroduce it in a softer form —
+        # not as a warning that blocks, not as a `needs` value, not as a hook.
+        # The cost it was paying for was never measured; the cost it imposed was:
+        # a discovered error could not be written down and worked because the item
+        # recording it had no verify section yet, so the knowledge was lost.
+        #
+        # ✅ `verify` and `criteria` remain GOOD PRACTICE and the sections still
+        # exist. They are simply not a precondition for doing the work.
         to("doing")
     elif verb == "block":
         if item.state == "done":
@@ -668,11 +672,12 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
         # `doing` precisely BECAUSE `next` does not re-offer them. That behaviour is
         # load-bearing and is not for trading away.
         #
-        # ⚠️ Not a `claim`: the receiving seat has not acted yet. This routes through
-        # the same completeness test so an item with a hole lands in `proposed` where
-        # `start` would have refused it anyway, rather than in a `ready` that lies.
+        # ⚠️ Not a `claim`: the receiving seat has not acted yet, so a `doing` item
+        # returns to `ready` for them to pick up. It lands in `ready` regardless of
+        # whether the prose sections exist — the completeness gate was removed by the
+        # owner on 2026-08-21; see `start` above.
         if item.state == "doing":
-            to("ready" if _complete(item) else "proposed")
+            to("ready")
     elif verb == "close":
         to("done")
         item.closed_sha = ev["sha"]

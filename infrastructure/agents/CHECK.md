@@ -147,8 +147,9 @@ rimflow spawn --from <FINDING> --for CHECK --needs bridge --this-deployment --na
 
 It jumps to the top of your own `next`. ⚠️ It is **cleared automatically when the game
 leaves UP**, so it cannot leak into the next session as urgency nobody can trace.
-✅ And it does **not** exempt an item from needing spec/verify/criteria — urgency is
-where waving things through costs most.
+✅ Prose is never a precondition — **the completeness gate was removed by the owner on
+2026-08-21** and any item can be started as it stands. Write `verify` when you have
+something to say about it.
 
 🔴 **You lose "sending items back to BUILD".** A failure never reopens earlier work.
 Record the run, file the finding, spawn the corrective item:

@@ -180,12 +180,12 @@ def summary(iid, items_dir=None):
         return idx["cache"][iid]
     name = "%s.md" % iid
     if name not in idx["names"]:
-        return "(no items/%s.md yet — cannot enter `ready` without spec/verify/criteria)" % iid
+        return "(no items/%s.md yet — write one when you have something to say)" % iid
     try:
         with open(os.path.join(idx["dir"], name), encoding="utf-8") as fh:
             text = fh.read()
     except OSError:
-        return "(no items/%s.md yet — cannot enter `ready` without spec/verify/criteria)" % iid
+        return "(no items/%s.md yet — write one when you have something to say)" % iid
     m = _SPEC_RE.search(text)
     body = m.group(1) if m else text
     for raw in body.splitlines():
@@ -307,11 +307,11 @@ def queue_view(world, seat, events, target="v1", ctx=None):
             lambda i: ["waiting:  needs `%s`, game is %s" % (i.needs, world.game)])
     section("NOT THIS TARGET", offtarget,
             "Ready, but aimed at another version. A planning decision, not a defect.")
-    section("PROPOSED — cannot enter `ready` yet", proposed,
-            "An item without spec/verify/criteria in its `items/<ID>.md` cannot "
-            "start. The missing sections are named per item.",
-            lambda i: ["missing:  %s" % (", ".join("## " + m for m in model._missing(i))
-                                         or "nothing — claim it")])
+    section("PROPOSED — filed, not yet taken", proposed,
+            "Claim one to work it. Any item can be claimed and started; the prose "
+            "sections are good practice, never a precondition.",
+            lambda i: ["thin:     %s" % (", ".join("no ## " + m for m in model._missing(i))
+                                         or "spec, verify and criteria all present")])
 
     L.append("# CLOSED RECENTLY — the last 10, newest first")
     L.append("")

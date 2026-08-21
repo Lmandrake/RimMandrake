@@ -461,8 +461,8 @@ def cmd_file(args, seat):
     miss = [s for s in ("spec", "verify", "criteria")
             if s not in {n.lower() for n, _ in read_prose(args.id)}]
     if miss:
-        print("items/%s.md still needs %s before it can reach `ready`."
-              % (args.id, " and ".join("## " + m for m in miss)))
+        print("items/%s.md has no %s yet — worth adding, but it can be claimed and "
+              "started as it is." % (args.id, " or ".join("## " + m for m in miss)))
     return 0
 
 
@@ -553,8 +553,8 @@ def cmd_spawn(args, seat):
     _emit(ev, w, quiet=True)
     print("%s spawned for %s, state proposed, caused by %s."
           % (args.name, args.for_, args.from_))
-    print("items/%s.md needs ## spec, ## verify and ## criteria before it can be "
-          "claimed — urgency is not an exemption." % args.name)
+    print("items/%s.md has no prose yet. Write it when you have something to say; "
+          "it can be claimed and started either way." % args.name)
     return 0
 
 
@@ -774,9 +774,9 @@ def build_parser():
     s.add_argument("--spec", help="path to a draft spec, recorded as provenance")
     s.add_argument("--caused-by", dest="caused_by")
 
-    add("claim", "take ownership; reaches `ready` only if the prose is complete",
+    add("claim", "take ownership; always reaches `ready`",
         _simple("claim")).add_argument("id")
-    add("start", "begin work; refused unless spec+verify+criteria exist",
+    add("start", "begin work; never refused for missing prose",
         _simple("start")).add_argument("id")
 
     s = add("close", "close it against a commit", cmd_close)

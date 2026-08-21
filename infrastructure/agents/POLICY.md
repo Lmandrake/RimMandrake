@@ -317,17 +317,29 @@ and drift between two copies of one field is the whole reason this changed.
 > **Version allocation (v1 → v2 → vN-storage) is not a lifecycle move and never erases
 > done-ness.**
 
-### The refusal contract became a precondition
+### 🔴 THERE IS NO COMPLETENESS GATE — owner's ruling, 2026-08-21
 
-⚠️ **This replaces "BUILD refuses an item with an empty `spec:`".** That refusal was
-real and it was invisible for four days, because a bounce is only as good as whoever
-reads it. Now an item filed without all three of spec/verify/criteria simply **cannot
-enter `ready`** — it sits `proposed`, `rimflow next` never offers it, and the tool names
-the missing section.
+> *"I need you to turn off the whole 'you can't work on something that doesn't have a
+> valid verification or validation plan' thing. It was a BAD IDEA, and it's costing us
+> lost knowledge when we discover errors. Remove it immediately and make everyone able
+> to work on anything in their queue independent of the V&V plan attached right away."*
 
-✅ **Urgency is not an exemption.** A `--this-deployment` item spawned mid-window with a
-live game waiting still cannot start without its three sections. The pressure to wave
-one through is highest exactly where skipping costs most.
+**Any item can be claimed and started, whatever prose it carries — including none.**
+`rimflow start` no longer refuses, `claim` always reaches `ready`, and a handover lands
+in `ready` regardless. Removed in `model.py`; `selftest_model.py` and
+`selftest_cli.py` now assert its **absence**, so reinstating it fails the suite.
+
+🔑 **Why it had to go, in the owner's terms:** the gate meant a discovered error could
+not be written down and worked, because the item recording it had no `verify` section
+yet. **The knowledge was lost to protect a form.** The cost the gate was paying for was
+never measured; the cost it imposed was.
+
+⛔ **Do not reinstate it in a softer form** — not as a warning that blocks, not as a
+`needs` value, not as a hook, not as a rule in a seat file.
+
+✅ **`spec`, `verify` and `criteria` remain good practice** and the sections still
+exist. Write them when you have something to say. They are simply never a precondition
+for doing the work.
 
 ### Naming — unchanged, and it still matters
 
