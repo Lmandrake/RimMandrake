@@ -470,32 +470,32 @@
   "mouths": 23
  },
  "roads": {
-  "edges": 1294,
+  "edges": 1351,
   "broken_entries": [],
   "by_def": {
-   "DirtRoad": 966,
+   "DirtRoad": 1023,
    "StoneRoad": 328
   },
-  "tiles_touched": 1260,
+  "tiles_touched": 1317,
   "networks": 1,
   "largest": [
    {
-    "edges": 1281,
-    "tiles": 1260,
+    "edges": 1338,
+    "tiles": 1317,
     "defs": {
-     "DirtRoad": 955,
+     "DirtRoad": 1012,
      "StoneRoad": 326
     },
-    "settlements": 118
+    "settlements": 120
    }
   ]
  },
  "settlements": {
-  "count": 118,
+  "count": 120,
   "by_faction": {
    "Homestead Defense League": 37,
    "Hutt Cartel": 19,
-   "Free Droid Enclaves": 10,
+   "Free Droid Enclaves": 12,
    "Deep Desert Tribes": 9,
    "the Junkers": 8,
    "Ascendant Helix": 7,
@@ -512,8 +512,8 @@
    "ExtremeDesert": 21,
    "AridShrubland": 14,
    "ZBiome_Badlands": 11,
+   "AB_RockyCrags": 6,
    "AB_FeraliskInfestedJungle": 5,
-   "AB_RockyCrags": 4,
    "PoisonForest": 3,
    "Volcano": 2,
    "AB_MechanoidIntrusion": 2,
@@ -524,7 +524,7 @@
   },
   "coastal": 45,
   "on_river": 2,
-  "on_road": 118,
+  "on_road": 120,
   "list": [
    {
     "id": 115,
@@ -995,6 +995,24 @@
     "region": "The Anvil"
    },
    {
+    "id": 120,
+    "tile": 4227,
+    "name": "Coldfire",
+    "faction": "Free Droid Enclaves",
+    "factionDef": "Jawa_FreeDroidEnclaves",
+    "biome": "AB_RockyCrags",
+    "lat": 30.46,
+    "lon": -175.78,
+    "elevation_m": 1586.0,
+    "temp_c": -65.9,
+    "rain_mm": 0,
+    "hilliness": "SmallHills",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "The Ammonia Flats"
+   },
+   {
     "id": 10,
     "tile": 19350,
     "name": "No Master",
@@ -1047,6 +1065,24 @@
     "on_river": false,
     "on_road": true,
     "region": "The Dune Sea"
+   },
+   {
+    "id": 119,
+    "tile": 20808,
+    "name": "The Cracking Station",
+    "faction": "Free Droid Enclaves",
+    "factionDef": "Jawa_FreeDroidEnclaves",
+    "biome": "AB_RockyCrags",
+    "lat": 1.23,
+    "lon": 178.44,
+    "elevation_m": 33.0,
+    "temp_c": -78.7,
+    "rain_mm": 0,
+    "hilliness": "SmallHills",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "The Ammonia Flats"
    },
    {
     "id": 107,

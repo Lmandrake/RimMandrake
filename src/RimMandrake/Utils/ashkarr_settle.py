@@ -80,6 +80,10 @@ HELIX_NAMES = [
     "Second Reading",
 ]
 
+PROPANE_NAMES = ["The Cracking Station", "Coldfire"]
+PROPANE_WHY = ("on the propane lakes of the Ammonia Flats - 554 tiles of liquid fuel at "
+               "-80 C that only a droid can work, and the reason there is a road out here")
+
 DROID_WHY = ("they settle on water nobody else can drink and crack it for fuel, so "
              "attackers arrive thirsty at a source that would kill them")
 HELIX_WHY = ("a cold, isolated research seat on the nightside edge - the Helix does not "
@@ -203,8 +207,9 @@ def main():
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--homesteads", type=int, default=0)
     ap.add_argument("--hutts", type=int, default=0)
-    ap.add_argument("--droids", type=int, default=7)
-    ap.add_argument("--helix", type=int, default=5)
+    ap.add_argument("--droids", type=int, default=0)
+    ap.add_argument("--propane", type=int, default=2)
+    ap.add_argument("--helix", type=int, default=0)
     a = ap.parse_args()
 
     T, nb = load()
@@ -252,6 +257,21 @@ def main():
                or any(T[n]["biome"] in UNDRINKABLE for n in nb[t]))]
     plans.append(("Free Droid Enclaves", "Jawa_FreeDroidEnclaves", DROID_NAMES,
                   DROID_WHY, dr, a.droids, False))
+
+    # ── the propane lakes ─────────────────────────────────────────────────────
+    # 554 tiles of liquid fuel at -80 C, deep in the night side, twenty landmarks on
+    # them, and NOTHING within nine hexes of a road. Measured 2026-08-22 as the largest
+    # unreachable biome on the planet. It is not a defect - that ground is meant to be
+    # empty - but the Free Droid Enclaves' own spec line is "they settle on water
+    # nobody else can drink and CRACK IT FOR FUEL", and a propane lake is exactly that.
+    # ⛔ Deliberately a HANDFUL, with a long road: the point is one destination worth an
+    # expedition, not a populated night side.
+    pl = [t for t in T if ok(t, {"The Ammonia Flats"})
+          and (T[t]["biome"] == "AB_PropaneLakes"
+               or any(T[n]["biome"] == "AB_PropaneLakes" for n in nb[t]))
+          and T[t]["biome"] != "AB_PropaneLakes"]
+    plans.append(("Free Droid Enclaves", "Jawa_FreeDroidEnclaves", PROPANE_NAMES,
+                  PROPANE_WHY, pl, a.propane, False))
 
     # ── Ascendant Helix: cold, isolated, on the nightward edge ────────────────
     HELIX_BARREN_OK = {"The Rimewall", "The Cold Bloom", "The Ashen Waste", "The Grayrot",
