@@ -207,6 +207,39 @@ CASES = [
      {I + "/THEIRS_ITEM_HERE_1.md": "## spec\nedited\n"},
      "git commit %s/THEIRS_ITEM_HERE_1.md -m x" % I, None, None),
 
+    # ---- 3a. the SAME rule, at the WRITE ----------------------------------
+    #
+    # 🔴 Owner's ruling, 2026-08-22. Rule 3 refused the COMMIT while the edit branch
+    # permitted the WRITE, so a seat could write a correction into another seat's item,
+    # be refused only at the end, and be left holding work that lived in nothing but a
+    # shared working tree. DECIDE hit it twice and found both by luck the next morning.
+    #
+    # ⚠️ The four ALLOWs below are the whole risk of this change. Refusing at the write
+    # is a much bigger hammer than refusing at the commit — it stops the work being
+    # created at all — so every legitimate write must keep working, especially step 2
+    # of the route the refusal itself hands over.
+    ("DENY  WRITING another seat's item file", DENY, "Blocked at the WRITE",
+     {}, I + "/THEIRS_ITEM_HERE_1.md", "BUILD", None, "Edit"),
+    ("DENY  ...and it names the two-command route out", DENY, "cli.py file CORRECT_",
+     {}, I + "/THEIRS_ITEM_HERE_1.md", "BUILD", None, "Write"),
+    ("ALLOW WRITING your OWN item file", ALLOW, None,
+     {}, I + "/MINE_ITEM_HERE_1.md", "BUILD", None, "Edit"),
+    ("ALLOW the OWNER writing anyone's item", ALLOW, None,
+     {}, I + "/THEIRS_ITEM_HERE_1.md", "OWNER", None, "Edit"),
+    ("ALLOW writing when the seat is unknown — never guess and block", ALLOW, None,
+     {}, I + "/THEIRS_ITEM_HERE_1.md", None, None, "Edit"),
+    # 🔑 THE ROUTE THE REFUSAL PRINTS MUST WORK. `file --for CHECK` leaves the item
+    # UNCLAIMED, and the filer may write it — that is step 2, and if this ever denies,
+    # the refusal above is sending seats into a wall instead of out of one.
+    ("ALLOW writing an item you filed that nobody has claimed", ALLOW, None,
+     {}, I + "/FILED_BY_ME_1.md", "BUILD", None, "Edit"),
+    ("DENY  writing it once they have claimed it", DENY, "belongs to",
+     {}, I + "/FILED_THEN_CLAIMED_1.md", "BUILD", None, "Edit"),
+    # ⚠️ An item file for an id the ledger has never heard of is a NEW item being
+    # drafted. Nobody owns it, so nothing may refuse it.
+    ("ALLOW writing an item file the ledger does not know", ALLOW, None,
+     {}, I + "/BRAND_NEW_DRAFT_1.md", "BUILD", None, "Write"),
+
     # ---- 4. the repo root is shared ---------------------------------------
     ("DENY  a new root .md that is not TRANSIENT_*", DENY, "TRANSIENT",
      {}, "git commit analysis.md -m x", "BUILD", ["analysis.md"]),

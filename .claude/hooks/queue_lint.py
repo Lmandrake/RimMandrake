@@ -136,6 +136,40 @@ VIEW_MSG = (
     "leaves\nthis file exactly as stale as it already was.\n"
     "\u2705 These four views are gitignored, so there is nothing to commit either way.")
 
+# 🔴 Refused at the WRITE so no work is ever created that cannot be landed. The commit
+# is refused too (rule 3) — but by then the edit is already stranded in a shared tree.
+#
+# 🔑 The route it hands over is not a consolation prize: `file --for <them>` leaves the
+# new item UNCLAIMED, and `owners(root, "unclaimed_filers")` exempts the FILER, so the
+# correcting seat may write AND commit the new item's own file. The correction ends up
+# durable, in git, addressed to the right seat — which is everything the stranded edit
+# was not.
+ITEM_OWNED_MSG = (
+    "\u26d4 Blocked at the WRITE, not at the commit \u2014 and that is deliberate.\n\n"
+    "    %(iid)s belongs to %(holder)s.\n\n"
+    "If you write this and the commit bounces, your correction exists ONLY in a working "
+    "tree\nfour seats share, where the next `git checkout` erases it and nothing tells "
+    "%(holder)s it\nwas ever there. That happened twice, and both were found by luck the "
+    "next morning. So\nthe refusal moved here, to the moment the work would be created.\n\n"
+    "\u2705 SEND the correction instead. Two commands, and the work ends up in git:\n\n"
+    "  1. File it against them \u2014 this leaves it UNCLAIMED, which is what lets you "
+    "write it:\n\n"
+    "     python3 src/RimMandrake/rimflow/cli.py file %(new)s \\\n"
+    "       --for %(holder)s --kind task --caused-by %(iid)s \\\n"
+    "       --title \"<what is wrong with %(iid)s, in one line>\"\n\n"
+    "  2. Write the correction into ITS file \u2014 yours to write and yours to commit:\n\n"
+    "     infrastructure/state/items/%(new)s.md\n"
+    "       ## Spec        the correction IN FULL. This is the deliverable.\n"
+    "       ## Verify      how %(holder)s confirms it landed\n"
+    "       ## Criteria    what done looks like\n\n"
+    "     git commit infrastructure/state/items/%(new)s.md -m \"<subject>\"\n\n"
+    "\U0001f511 Write the WHOLE correction into `## Spec`. %(holder)s should be able to "
+    "apply it\nwithout reconstructing anything you already worked out.\n\n"
+    "\u26a0\ufe0f  Genuinely urgent, or %(holder)s is wrong on the merits? Say so in\n"
+    "infrastructure/state/queue/HUMAN.md \u2014 any seat may write that one."
+)
+
+
 LEDGER_PATH_RE = re.compile(r"[\w./\\-]*ledger/events\.jsonl")
 # A redirect must land on the ledger IMMEDIATELY. ⚠️ "somewhere earlier in the command"
 # is not good enough and was a false deny: `wc -l 2>/dev/null <ledger>` has a `>` before
@@ -286,7 +320,30 @@ def main():
         if QUEUE in fp and is_generated(fp if os.path.isabs(fp) else os.path.join(
                 os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd(), fp)):
             return deny(VIEW_MSG % fp)
-        return 0                          # rules 3/4 are about commits, not edits
+        # ---- 3a. another seat's ITEM FILE — refused HERE, at the write ------
+        #
+        # 🔴 THE ASYMMETRY THAT MANUFACTURED STRANDED WORK — owner's ruling, 2026-08-22.
+        # Rule 3 refused the COMMIT and this branch permitted the WRITE, so a seat could
+        # spend a whole turn writing a correction into another seat's item, be refused
+        # only at the end, and be left holding work that existed in nothing but a shared
+        # working tree. DECIDE reported it twice: *"the edit sits in the working tree
+        # where the next git checkout would erase it. Both were still sitting there this
+        # morning."* Nothing routed them; it noticed by luck, both times.
+        #
+        # 🔑 A guard that blocks at commit but permits the write ALWAYS produces this.
+        # The write is the moment the work is created, so it is the moment to refuse.
+        if ITEMS in fp and fp.endswith(".md"):
+            root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+            seat = my_seat(root)
+            iid = os.path.basename(fp)[:-3]
+            holder = owners(root).get(iid) if seat else None
+            if (holder and seat and holder != seat and seat != "OWNER"
+                    and owners(root, "unclaimed_filers").get(iid) != seat):
+                bits = [b for b in iid.split("_") if not b.isdigit()][:2]
+                return deny(ITEM_OWNED_MSG % {
+                    "iid": iid, "holder": holder,
+                    "new": "_".join(["CORRECT"] + bits + ["1"])})
+        return 0                          # rule 4 is about commits, not edits
 
     cmd = ti.get("command") or ""
     hit = ledger_write_target(cmd)
