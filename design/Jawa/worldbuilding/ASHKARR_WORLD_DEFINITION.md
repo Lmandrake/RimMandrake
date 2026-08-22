@@ -117,7 +117,7 @@ numeric check.
 `Lake` 312; there is no third water biome. (~~8.1%~~ was this file's rounding; cite 8.14%.)
 | name | centre | radius | water level | character |
 |---|---|---|---|---|
-| **The Scald** | (35, 185) | 10.5 | **perched, ~1410 m** | ⭐ a crater lake, **the one shape ruled round**. Spills through the Spine's notch |
+| **The Scald** | (35, 185) | 10.5 | ⛔ ~~**perched, ~1410 m**~~ → **−30 m, at sea level** | ⭐ a crater lake, **the one shape ruled round**. 🔴 **It no longer spills: it is a terminal pan.** See the note below |
 | **The Twilight Sea** | (91, 170) | 22.0 | 0 m, sink | moldy |
 | **The Grey Sea** | (92, 8) | 16.5 | 0 m, sink | salt-encrusted, shrinking |
 | The Umbra Trap | (158, 62) | 19.5 | — | holds **ammonia**, not water → The Ammonia Flats |
@@ -161,7 +161,21 @@ The Ammonia Flats · The Salt Gate (the deltas).
    It is a hot lake in the hottest place, so it evaporates hard, the vapour rains out
    on its own Spine, and the whole catchment leaves through **one notch**. The outflow
    carries **~32,000** units of flow — an order of magnitude more than anything else.
-   🔴 A lake below sea level cannot emit anything; that is why the Scald is perched.
+   ⛔ ~~🔴 A lake below sea level cannot emit anything; that is why the Scald is perched.~~
+
+   🔴 **SUPERSEDED 2026-08-21 BY AN OWNER RULING — the Scald is at −30 m and the doctrine
+   above is what changed, not the map.** `SCALD_WATER_RULING_1` took option 2 of three and
+   `bd5dad0` applied it: all 312 tiles dropped from +1411 m to −30 m. The reason was
+   mechanical, not aesthetic — `SurfaceTile.WaterCovered => elevation <= 0f`, so a lake
+   perched above sea level **was not counted as water by the engine at all**, and it also
+   manufactured 32 false cliffs where a wall of water stood a kilometre above its own
+   shoreline. Verified after: water measures 1,780 tiles = **8.14%**, matching
+   `canon.yml > planet.water_pct`, and `Cliffs` fell 121 → 104.
+   ⇒ **The consequence is real and is accepted:** eight rivers now END in the Scald and
+   none leaves it. It is a terminal evaporation pan, not the planet's water source.
+   ⚠️ Two independent reviews on 2026-08-22 flagged the map for contradicting this
+   paragraph. They were reading a stale paragraph — which is exactly why it is corrected
+   here rather than in a commit message nobody will find.
 3. **Rivers evaporate as they go.** Loss per tile is brutal in the deep waste and mild
    in the crater basin. Without this every stream that starts anywhere arrives
    somewhere and the map fills with rivers no climate could feed.
@@ -307,7 +321,13 @@ curve shape and `Desert`/`AridShrubland` listed them at commonality 4.
 
 ---
 
-## 7. Factions — 72 settlements
+## 7. Factions — 120 settlements
+
+> 📌 **Corrected 2026-08-22: this section said 72.** The map has **120**, across the same
+> 12 factions. Homestead Defense League 13 → 37 and Hutt Cartel 8 → 19 on the owner's
+> ruling that *"the moisture farmers could definitely be all over the place"*; Free Droid
+> Enclaves 3 → 12 and Ascendant Helix 3 → 7 on his later go-ahead. The authoritative count
+> is `world/ASHKARR_WORLDMAP_settlements.csv`, and `_meta.json` is regenerated from it.
 
 Counts from `tidally_locked_world.md`'s arc-aware table, which **supersedes**
 `faction_world_spec.md` §4 (still written in latitude bands, never rewritten).
