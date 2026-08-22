@@ -26,14 +26,14 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 24,Jawa_DeepwaterCompact,Deepwater Compact,Deepwater Hold,2919,2.295,-77.621,77.6,Desert,"the Twilight Sea, the largest standing water on Ash'karr"
 25,Jawa_DeepwaterCompact,Deepwater Compact,Coldquay,11828,5.311,-74.922,75.0,Desert,"the Twilight Sea, the largest standing water on Ash'karr"
 26,Jawa_DeepwaterCompact,Deepwater Compact,Tidewatch,21767,19.143,78.862,79.5,Wasteland,"the Grey Sea, salt-encrusted and shrinking - they hold it anyway"
-27,Jawa_HuttCartel,Hutt Cartel,Spicehead,17215,7.475,-70.987,71.2,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
-28,Jawa_HuttCartel,Hutt Cartel,Sarlacc Ground,15088,-1.552,-83.828,83.8,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
-29,Jawa_HuttCartel,Hutt Cartel,Itunt,1828,35.119,-65.4,70.1,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
-30,Jawa_HuttCartel,Hutt Cartel,The Yards,17209,10.247,-68.079,68.4,AridShrubland,beside a near-desert oasis - the well is guarded and is NOT the town tile
-31,Jawa_HuttCartel,Hutt Cartel,Wellsong,19200,-10.562,-73.155,73.4,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
-32,Jawa_HuttCartel,Hutt Cartel,The Tollgate,15100,-0.759,-75.104,75.1,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
-33,Jawa_HuttCartel,Hutt Cartel,Bantha Cross,6979,-2.233,-70.1,70.1,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
-34,Jawa_HuttCartel,Hutt Cartel,Greasepalm,17247,-8.161,-69.667,69.9,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
+27,Jawa_HuttCartel,Hutt Cartel,Norba the Wet's Palace,17215,7.475,-70.987,71.2,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
+28,Jawa_HuttCartel,Hutt Cartel,Gorga the Immense's Palace,15088,-1.552,-83.828,83.8,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
+29,Jawa_HuttCartel,Hutt Cartel,Vexxa's Casino,1828,35.119,-65.4,70.1,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
+30,Jawa_HuttCartel,Hutt Cartel,Vexxa the Unblinking's Palace,17209,10.247,-68.079,68.4,AridShrubland,beside a near-desert oasis - the well is guarded and is NOT the town tile
+31,Jawa_HuttCartel,Hutt Cartel,Hurgo the Vast's Palace,19200,-10.562,-73.155,73.4,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
+32,Jawa_HuttCartel,Hutt Cartel,Bloatu the Ninth's Palace,15100,-0.759,-75.104,75.1,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
+33,Jawa_HuttCartel,Hutt Cartel,Rulla the Deep's Palace,6979,-2.233,-70.1,70.1,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
+34,Jawa_HuttCartel,Hutt Cartel,Zeddo the Patient's Palace,17247,-8.161,-69.667,69.9,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
 35,Jawa_Junkers,the Junkers,The Fuel Works,11779,-7.751,96.393,96.3,ZBiome_Badlands,"past the terminator on the warm downwind flank, scavenging the cold swirl"
 36,Jawa_Junkers,the Junkers,Cryohaul,5456,40.647,98.795,96.7,AB_RockyCrags,"past the terminator on the warm downwind flank, scavenging the cold swirl"
 37,Jawa_Junkers,the Junkers,Ammonia Landing,510,34.124,99.742,98.1,AB_RockyCrags,"past the terminator on the warm downwind flank, scavenging the cold swirl"
@@ -95,17 +95,17 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 93,OutlanderCivil,Homestead Defense League,Hollowdew,5813,-57.2693,33.3333,63.1400,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 94,OutlanderCivil,Homestead Defense League,Thornfurrow,8075,-1.2814,46.3859,46.4000,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 95,OutlanderCivil,Homestead Defense League,Chalkwell,19680,27.8127,57.9886,62.04,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
-96,Jawa_HuttCartel,Hutt Cartel,The Debt House,165,59.7622,-24.3874,62.7000,Desert,beside a near-desert oasis - the well is guarded and is NOT free
-97,Jawa_HuttCartel,Hutt Cartel,Slug Hollow,528,-50.8913,-47.9041,64.9800,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
-98,Jawa_HuttCartel,Hutt Cartel,Tollwater,11880,-27.0643,-65.9807,68.75,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
-99,Jawa_HuttCartel,Hutt Cartel,The Levy,3240,13.0109,55.3788,56.3900,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
-100,Jawa_HuttCartel,Hutt Cartel,Fatwell,12868,39.0707,46.6413,57.7900,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
-101,Jawa_HuttCartel,Hutt Cartel,The Reckoning,1011,54.172,-52.5028,69.1300,Desert,beside a near-desert oasis - the well is guarded and is NOT free
-102,Jawa_HuttCartel,Hutt Cartel,Oilpalm,19519,51.426,43.2112,62.97,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
-103,Jawa_HuttCartel,Hutt Cartel,Gorge Station,4865,-59.5491,10.6221,60.1200,Desert,beside a near-desert oasis - the well is guarded and is NOT free
-104,Jawa_HuttCartel,Hutt Cartel,The Skim,1028,63.0058,47.4818,72.1400,Desert,beside a near-desert oasis - the well is guarded and is NOT free
-105,Jawa_HuttCartel,Hutt Cartel,Bloatwater,1820,42.1947,-52.4741,63.1700,Desert,beside a near-desert oasis - the well is guarded and is NOT free
-106,Jawa_HuttCartel,Hutt Cartel,Cartel Ground,4686,-13.9217,-83.3187,83.5200,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+96,Jawa_HuttCartel,Hutt Cartel,Norba's Toll,165,59.7622,-24.3874,62.7000,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+97,Jawa_HuttCartel,Hutt Cartel,Hurgo's Kennels,528,-50.8913,-47.9041,64.9800,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+98,Jawa_HuttCartel,Hutt Cartel,Hurgo's Waystation,11880,-27.0643,-65.9807,68.75,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+99,Jawa_HuttCartel,Hutt Cartel,Zeddo's Toll,3240,13.0109,55.3788,56.3900,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+100,Jawa_HuttCartel,Hutt Cartel,Bloatu's Market,12868,39.0707,46.6413,57.7900,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+101,Jawa_HuttCartel,Hutt Cartel,Norba's Vault,1011,54.172,-52.5028,69.1300,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+102,Jawa_HuttCartel,Hutt Cartel,Rulla's Market,19519,51.426,43.2112,62.97,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+103,Jawa_HuttCartel,Hutt Cartel,Zeddo's Station,4865,-59.5491,10.6221,60.1200,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+104,Jawa_HuttCartel,Hutt Cartel,Rulla's Skimhouse,1028,63.0058,47.4818,72.1400,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+105,Jawa_HuttCartel,Hutt Cartel,Vexxa's Spicehouse,1820,42.1947,-52.4741,63.1700,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+106,Jawa_HuttCartel,Hutt Cartel,Mokka the Unpaid's Palace,4686,-13.9217,-83.3187,83.5200,Desert,beside a near-desert oasis - the well is guarded and is NOT free
 107,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Cracking Yard,13177,-5.2478,17.865,18.6000,ExtremeDesert,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
 108,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Twelve,2818,-13.6018,0.0,13.6000,ExtremeDesert,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
 109,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Owner,8858,11.6961,15.6328,19.4400,ExtremeDesert,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"

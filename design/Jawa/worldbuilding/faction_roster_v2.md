@@ -211,7 +211,7 @@ Four states. Each governs settlement siting **and** the operational range of tha
 |---|---|---|
 | Deepwater Compact | **Require** (absolute) | Holds every water tile; cannot meaningfully raid |
 | Wildsteam Clan | **Require** (severe) | Devastating on home defence, near-useless expeditionary |
-| Hutt Cartel | **Require** (oasis-anchored) | Every compound sits on a fiercely held oasis tile |
+| Hutt Cartel | **Require** at the seats, **Allow** at the posts | 🔴 ~~Every compound sits on a fiercely held oasis tile~~ — **SUPERSEDED, owner 2026-08-22.** Measured: only **8 of 19** Hutt holdings are oasis-adjacent; 11 sit a median 15 tiles from any oasis and some 40+. The doctrine now matches the map and is better for it: the **eight PALACES** are oasis-anchored seats, one per Hutt lord; the **eleven deep-desert posts** are Casinos, Markets, Tolls, Vaults and Kennels — *"reduced to providing service rather than just making a Palace"*. See `HUTT_LORDS_AND_POSTS_1` |
 | Homestead Defense League | **Manufacture** | Vaporators: stores water, has no source |
 | Ascendant Helix | **Allow** (high consumption) | Buys bulk water from the Deepwater Compact |
 | the Galactic Empire | **Allow** (supplied) | Can settle anywhere; convoys are an attack surface |
