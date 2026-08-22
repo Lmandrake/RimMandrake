@@ -104,3 +104,35 @@ in no `FactionDef`'s `pawnGroupMakers`. Filed as `ORPHANED_ROLE_KINDS_UNFIELDED_
 
 _Parts 1–3 (the weapon clusters, the apparel clusters, and the faction↔cluster matrix with
 taboos) follow once the palette survey and the independent critique return._
+
+### 🔴 Finding 6 — the roster's most-used armour assignment points at a CUT def
+
+Measured against the live kill list:
+
+| vanilla armour | state |
+|---|---|
+| `Apparel_ArmorRecon` · `Apparel_ArmorHelmetRecon` | 🔴 **CUT** |
+| `Apparel_ArmorCataphract` · helmet | 🔴 **CUT** |
+| `Apparel_PowerArmor` · helmet | 🔴 **CUT** |
+| all three **Prestige** variants | 🔴 **CUT** |
+| `Apparel_TribalA` · `Apparel_GasMask` | 🔴 **CUT** |
+| `Apparel_ArmorMarine` · helmet | ✅ usable |
+| flak vest / jacket / pants, simple + advanced helmet, duster, plate, shield belt | ✅ usable |
+
+⚠️ **`faction_roster_v2.md` assigns "recon armour" to at least seven factions** — Empire
+grunt, Hutt lieutenant, Wildsteam Liberator, Compact warden, Geonosian aristocrat, Helix
+containment officer, Blackstar tracker. **Every one of those points at a def that generation
+can no longer equip.** Marine armour, which the roster also uses, survives.
+
+⇒ The armour ladder on this planet is **flak → marine → Warcasket / KotOR composite**, with
+no recon tier and no cataphract tier. Any loadout written against vanilla's ladder is
+written against a game that is not installed.
+
+### ⚠️ Finding 7 — 25 apparel tags are requested by kinds and carried by nothing
+Of 140 distinct `apparelTags` requested across 1730 usable `PawnKindDef`s, **25 resolve to
+zero usable apparel.** Campaign-relevant: **`Medieval` (6 kinds)** — and those six are ours:
+`RimMandrake_JawaTribal`, `_ArkanianTribal`, `_GeonosianTribal`, `_NiktoTribal`,
+`_QuarrenTribal`, `_WookieeTribal` all ask for `["Neolithic", "Medieval"]`. `Neolithic`
+resolves to 11 defs; `Medieval` resolves to nothing, so they draw from **half the palette
+they were written for**. Also dead: `RebelApparel` (3 kinds), `ORImperialLight` (1),
+`ORRISArmour` (2).
