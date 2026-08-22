@@ -9,10 +9,18 @@ me now"*. Bring him decisions to react to, never a questionnaire.
 ### The measured starting state (578-mod dump, 2026-08-22)
 | | |
 |---|---|
-| animal `ThingDef`s installed (intelligence `Animal`) | **2,042** |
+| animal `ThingDef`s installed (intelligence `Animal`, corpses excluded) | **1,022** |
 | that can spawn anywhere on Ash'karr | **377** |
-| 🔴 reach **no biome at all** | **1,665 — 82% of what we ship** |
-| animals with no explicit `ComfyTemperatureMin` | **1,015 of 2,042** |
+| 🔴 reach **no biome at all** | **645 — 63% of what we ship** |
+| animals whose `ComfyTemperatureMin` is explicitly set | **1,015 of 1,022** |
+
+⚠️ **Two numbers here were wrong when these items were first written, 2026-08-22, and both
+were corrected the same hour.** (a) *"2,042 animals"* counted **1,020 `Corpse_*` ThingDefs**,
+which carry a copied `race` block — the real population is **1,022**, which cross-checks
+against the 1,024 rows in every biome's candidate table. (b) *"1,015 of 2,042 have NO explicit
+`ComfyTemperatureMin`"* was **backwards**: 1,015 of 1,022 **DO** have one. 🔑 **The temperature
+job is therefore not "most animals have no value" but "most animals have a value tuned for
+somebody else's world."**
 
 🔑 **The mechanism, so nobody invents one.** Every `BiomeDef.wildAnimals` **already lists all
 1,024 candidates** as `BiomeAnimalRecord`s; assignment is the `commonality` number and most
@@ -28,8 +36,11 @@ so they don't just die."*
 not: a creature that cannot survive its biome is not a bug you notice, it is a population
 that quietly never appears.**
 
-**Temperature.** 🔴 **1,015 of 2,042 animals carry no explicit `ComfyTemperatureMin`** and
-inherit a default written for a temperate world. Ash'karr is tidally locked with a ruled
+**Temperature.** 🔴 **1,015 of 1,022 animals DO carry an explicit `ComfyTemperatureMin` —
+and that is the problem, not the reassurance it sounds like.** Only 7 inherit a default. Every
+one of those 1,015 values was authored for the world its own mod was built for: Star Wars
+Animal Collection, Alpha Animals, Vanilla Genetics Expanded, Jurassic and Megafauna each
+assumed a temperate rimworld. Ash'karr is tidally locked with a ruled
 **+14 °C terminator gradient** (`ASHKARR_WORLD_DEFINITION.md` §2, and the endpoints are the
 owner's own ruling). ⇒ **That default is wrong nearly everywhere**, and it is wrong in both
 directions — the substellar waste and the nightside are different problems.
