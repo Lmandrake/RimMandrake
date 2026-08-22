@@ -69,6 +69,65 @@ thruster, fuel tank and pilot console are the v1 flight capability made into a
 v2 goal, exactly as the flight ruling has it. The ship is a house that used to be
 a vehicle, and getting it airborne again is the campaign.
 
+## ✅ THE OPENING NARRATION — WRITTEN, DEPLOYED, AND RECORDED HERE
+
+🔑 **This section exists because the doc that ASKED for the narration had no copy of it.**
+Written and deployed 2026-08-22 (`d7fee660`), it lived only in
+`src/Jawa/Jawa_Patches/Defs/ScenarioDefs/Scenario_Utinni.xml`. A design doc that specifies
+player-facing text and does not carry it sends every later reader to the mod XML to find out
+what the campaign sounds like — and nobody reads backwards.
+
+⭐ **It satisfies §NAMES:** *"The Sundered" should appear in player-facing text at least
+once.* It does, in the penultimate paragraph, where it lands as a threat rather than a gloss.
+
+> Nothing is ever truly lost. Only owed, only mislaid, only waiting for a better master.
+
+> The Hutts keep a mountain of the galaxy's discards out here, and this was the oldest thing in it: a Rakatan hull too dead to be worth cutting up, squatting in the sand since before the Cartel had a name for the sand. You went in through a seam no Gamorrean could ever fit through. You took nothing. You measured.
+
+> Then you put a mind in it.
+
+> The core was ancient and it was empty, and the pattern you pressed into it was Jawa - so that it would listen to Jawa, so that it would want what Jawa want. It woke believing itself Ohm the All-Current, the spark that wakes a dead engine, and it may well be right. It answers to Kolyska. It has not once answered to the name you painted on its flank.
+
+> It is also, at this moment, running its pre-flight sequence out loud, in a language nobody on this world has heard since the Infinite Empire fell. Engines thought long dead are turning. Every floodlight in the yard has swung toward the noise.
+
+> You can hear the Gamorreans running.
+
+> Ash'karr - the Sundered - is a bad world to be caught on and a worse one to be sold on. The hatch is open. The hull is yours because you woke it, and a thing that could still be made to work was never scrap; it was a sleeping hand, owed its waking.
+
+> Get it off the ground.
+
+⚠️ **The XML is the source of truth for the exact string** — line breaks there are literal
+`\n`, and the apostrophe in `Ash'karr` is the character §NAMES warns is most likely to be
+silently stripped. Edit it there and mirror it here, never the reverse.
+
+🔑 **One thing it deliberately does NOT do: give a number.** Earlier drafts carried "three
+days" and "twenty thousand years", and neither is in any founding doc. An invented number in
+the opening narration is exactly the kind of thing that gets quoted back as canon a month
+later, so where the fiction needed a span it uses a comparison instead — *"squatting in the
+sand since before the Cartel had a name for the sand."*
+
+## ⛔ `ScenPart_DisableIncident` — CONSIDERED AND DECLINED ON THE FICTION, NOT FORGOTTEN
+
+The part list once wanted a second `ScenPart` to stop the storyteller drawing the
+free-colonist events — `WandererJoin`, `RefugeePodCrash`, `WildManWandersIn`. BUILD
+recommended banning at least `WandererJoin`, on the anti-exponential pillar and on
+*"every colonist is a Jawa"*.
+
+🔴 **The owner overruled that, 2026-08-22, and the reason is better than the recommendation:**
+
+> *"keep them in, it allows the Jawa to show that even in those situations, they will be
+> compelled to enslave the individual. If it's a Jawa after all, then there can be the
+> dynamic of whether anyone falls in love with them or not to consider tribal acceptance."*
+
+⇒ **A stranger arriving is not a free colonist in this campaign. It is a SITUATION.** The
+clan's own doctrine says what to do with an outsider, and doing it in front of the player is
+characterisation the storyteller hands us for nothing. And when the stranger IS a Jawa, the
+question stops being mechanical and becomes social — whether the colony takes them in turns
+on whether anyone forms a bond, which is the tribe deciding its own membership.
+
+⛔ **So the `ScenarioDef` is COMPLETE at one `ScenPart`, and that is the finished answer, not
+a gap. Do not add `ScenPart_DisableIncident` later "to finish the def".**
+
 ## Fixtures
 
 | | |
