@@ -318,8 +318,30 @@ know** before you trust the case you don't.
 | 3 | def dump `defs/<Type>.json` | `AbilityDef` **0**, having written 612 | ✅ **fixed** `d7cf154`, **deployed + captured** `2026-08-21T22:44:59Z` |
 | 4 | `weapon_tag_audit` "emptied by the cut" | **0**, structurally guaranteed | ✅ **fixed** |
 | 5 | `jawa/texture_audit` | **53** dead paths, 39 of them present art | 📋 **filed**, `TEXTURE_AUDIT_CUSTOM_GRAPHICCLASS_1` |
-| 6 | `validate_patch.py`, bare `Defs/` xpath | **0 nodes** on patches live in game | ✅ **fix real** (`fc10b9a5`) — ⚠️ **no selftest exists**; "36 cases" was a bleed from `validate_save_artifact.py` |
+| 6 | `validate_patch.py`, bare `Defs/` xpath | **0 nodes** on patches live in game | ✅ fix real (`fc10b9a5`) — 🔴 **AND IT SHIPPED AGAIN** as `1c3a673f`; still **no selftest**, which is why |
+| 6b | `validate_patch.py`, lxml branch | **0 matches for EVERY** `text()` / `contains()` / `starts-with()` / `not()` / axis / union xpath | ✅ fixed `1c3a673f` (`rebase_for_root_element`, line 587, called at 1156). ⚠️ **Same bug class as row 6, second occurrence** |
+| 6c | `validate_patch.py --defs`, def created by ANOTHER MOD'S PATCH | **0 matches** on an xpath that is live and load-bearing | ⚠️ **KNOWN ONLY, and it is a third false-zero class** — see below |
 | 7 | `first_light` "no weaponTags" | counts a disarmed combat role as a civilian | ⚠️ **known only** |
+
+🔴 **THE THIRD FALSE ZERO: a def that exists only as another mod's PATCH OUTPUT — CHECK,
+2026-08-22.** `--defs` scans mods **on disk**. A def that no XML file declares, because a
+different mod's `PatchOperationAdd` creates it during the patch phase, is **invisible to that
+scan** — so an xpath targeting it reports **0 matches while being perfectly live**.
+
+- **The case:** `Jawa_Patches/Patches/HeadSetForFA_Revive.xml` targets
+  `FacialAnimation.FaceAdjustmentDef[defName="BS_InsectoidHumanoid_FourArmed_FaceAdjustment"]`.
+  It reads 0 on disk. The def is created by Big and Small's
+  `Patches/BS_Insectoid_FacialAnimation.xml` at load order **560**; Jawa Patches is **572**, so
+  we patch *after* it and the xpath reaches it fine.
+- ⚠️ **This entry corrects a 2026-08-22 sweep note that called that operation dead and
+  harmless.** Measured against the capture: the def reads `"generated": false` — it is
+  **patch-created, not runtime-created**; what actually distinguishes it is having no
+  `modContentPack`/`fileName`. And its `AgeBasedParams: []` is **evidence our patch fired**,
+  not evidence the patch was redundant — the upstream XML supplies no such node. Reading the
+  empty list as "already present" is circular.
+- 🔑 **The rule:** a 0 from `--defs` means *not found on disk*, never *not reachable*. Settle
+  it against a **live dump**, which is downstream of the patch phase and therefore sees
+  patch-created defs. `--live` exists for exactly this.
 
 ### ⭐ THE ANSWER TO THE OWNER'S QUESTION — `measure`, 2026-08-21
 
