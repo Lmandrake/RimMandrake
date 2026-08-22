@@ -71,6 +71,20 @@ HUTT_NAMES = [
     "Cartel Ground", "The Vig",
 ]
 
+DROID_NAMES = [
+    "The Cracking Yard", "Vent Twelve", "No Owner", "Cell Seven", "The Free Charge",
+    "Second Speaker", "Vent Forty", "The Long Charge",
+]
+HELIX_NAMES = [
+    "The Draft", "Cold Archive", "The Revision", "Specimen Hall", "The Fair Copy",
+    "Second Reading",
+]
+
+DROID_WHY = ("they settle on water nobody else can drink and crack it for fuel, so "
+             "attackers arrive thirsty at a source that would kill them")
+HELIX_WHY = ("a cold, isolated research seat on the nightside edge - the Helix does not "
+             "raid, it retrieves, and it wants no neighbours")
+
 HOMESTEAD_WHY = ("moisture farming reaches wherever the air holds anything - "
                  "vaporators, aquifers, and a covenant that the wells stay free")
 HUTT_WHY = ("beside a near-desert oasis - the well is guarded and is NOT free")
@@ -187,8 +201,10 @@ def road_path(src, targets, T, nb):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true")
-    ap.add_argument("--homesteads", type=int, default=26)
-    ap.add_argument("--hutts", type=int, default=11)
+    ap.add_argument("--homesteads", type=int, default=0)
+    ap.add_argument("--hutts", type=int, default=0)
+    ap.add_argument("--droids", type=int, default=7)
+    ap.add_argument("--helix", type=int, default=5)
     a = ap.parse_args()
 
     T, nb = load()
@@ -202,11 +218,16 @@ def main():
     road_tiles = {int(x) for k, p, q, d in body if k == "road" for x in (p, q)}
     next_id = max(int(r["id"]) for r in srows) + 1
 
-    def ok(t, extra_ban=()):
+    def ok(t, barren_ok=()):
+        """barren_ok lets ONE faction into regions the barren list otherwise closes.
+        The Ascendant Helix needs it: their whole placement rule is "cold, isolated
+        research seats on the nightside edge", which is exactly the ground the barren
+        list protects. They stay rare and far apart instead - isolation is their
+        character, so a wide spacing serves both the fiction and the emptiness floor."""
         d = T[t]
         return (d["water"] == 0 and d["hill"] < 5 and t not in occupied
-                and t not in lm_tiles and d["region"] not in BARREN_REGIONS
-                and d["region"] and d["biome"] not in extra_ban)
+                and t not in lm_tiles and d["region"]
+                and (d["region"] not in BARREN_REGIONS or d["region"] in barren_ok))
 
     plans = []
     # ── moisture farmers: everywhere the air holds anything ────────────────────
@@ -222,6 +243,23 @@ def main():
     ht = [t for t in T if ok(t) and 55 <= T[t]["arc"] <= 88
           and T[t]["biome"] in ("Desert", "ExtremeDesert") and T[t]["hill"] <= 2]
     plans.append(("Hutt Cartel", "Jawa_HuttCartel", HUTT_NAMES, HUTT_WHY, ht, a.hutts, True))
+
+    # ── Free Droid Enclaves: the day side, on water that would kill a drinker ──
+    UNDRINKABLE = ("AB_PropaneLakes", "AB_TarPits", "Volcano", "LavaField",
+                   "AB_PyroclasticConflagration", "Scarlands", "AB_MechanoidIntrusion")
+    dr = [t for t in T if ok(t) and T[t]["arc"] <= 55
+          and (T[t]["biome"] in UNDRINKABLE
+               or any(T[n]["biome"] in UNDRINKABLE for n in nb[t]))]
+    plans.append(("Free Droid Enclaves", "Jawa_FreeDroidEnclaves", DROID_NAMES,
+                  DROID_WHY, dr, a.droids, False))
+
+    # ── Ascendant Helix: cold, isolated, on the nightward edge ────────────────
+    HELIX_BARREN_OK = {"The Rimewall", "The Cold Bloom", "The Ashen Waste", "The Grayrot",
+                       "The Shoulder", "The Last Green", "The High Rot"}
+    hx = [t for t in T if ok(t, HELIX_BARREN_OK) and 98 <= T[t]["arc"] <= 128
+          and T[t]["hill"] <= 4 and T[t]["biome"] not in ("Ocean", "Lake")]
+    plans.append(("Ascendant Helix", "Jawa_AscendantHelix", HELIX_NAMES, HELIX_WHY,
+                  hx, a.helix, False))
 
     new_s, new_lm, name_i = [], [], {}
     for faction, fdef, names, why, cand, want, wants_well in plans:
@@ -257,7 +295,7 @@ def main():
         t = int(s["tile"])
         p = road_path(t, road_tiles, T, nb)
         if p is None:
-            unreachable.append(s["name"])
+            unreachable.append((s["name"], t))
             continue
         for i in range(len(p) - 1):
             e = frozenset((p[i], p[i + 1]))
@@ -266,8 +304,18 @@ def main():
             have.add(e)
             new_roads.append(["road", str(p[i]), str(p[i + 1]), "DirtRoad"])
         road_tiles.update(p)
-    print("\n  %d new road links laid; %d settlements unreachable %s"
-          % (len(new_roads), len(unreachable), unreachable or ""))
+    # 🔑 EVERY SETTLEMENT IS ON THE ONE ROAD NET, and that invariant is worth more than
+    # one extra placement. A site the road-cost search cannot reach is DROPPED, not
+    # written as an orphan - otherwise the map quietly acquires settlements no caravan
+    # can route to, and nothing downstream would notice.
+    if unreachable:
+        drop = {n for n, _ in unreachable}
+        new_s = [x for x in new_s if x["name"] not in drop]
+        for name, t in unreachable:
+            occupied.discard(t)
+        print("\n  DROPPED %d unreachable site(s): %s" % (len(unreachable), sorted(drop)))
+    print("  %d new road links laid; %d settlements now placed"
+          % (len(new_roads), len(new_s)))
 
     # ── the emptiness floor ────────────────────────────────────────────────────
     land = [t for t in T if T[t]["water"] == 0]
