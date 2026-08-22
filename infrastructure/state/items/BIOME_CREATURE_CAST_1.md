@@ -125,3 +125,51 @@ in so many biomes that it reads as ubiquitous; the 1,665 unreachable set is mate
 
 ## criteria
 An owner-approved cast list per biome, recorded as data, ready for `commonality` weights.
+
+
+## ✅ ELIGIBILITY, RULED BY THE OWNER 2026-08-22
+
+**Verbatim:** *"I never meant droids, mechs, vehicles for wildlife... we're allocating
+existing animals to biomes, not inventing new animals from scratch. Some anomaly may be
+re-used in the bioweapon-related biomes though! That stays."*
+
+| class | n | verdict |
+|---|---|---|
+| wildlife | **1,006** | ✅ the casting pool |
+| anomaly | **14** | ✅ eligible, but **only in the biomes named below** |
+| mechanoid flesh | 93 | ⛔ out |
+| vehicles / automatons | 43 | ⛔ out |
+| other non-animals | 5 | ⛔ out |
+
+**The 14 anomaly entities:** bulbfreak · chimera · devourer · dreadmeld · fingerspike ·
+fleshmass nucleus · gorehulk · metalhorror · nociosphere · noctol · revenant · sightstealer ·
+toughspike · trispike.
+
+**Owner named their biomes, 2026-08-22:** *"gelatinous superorganism, ocular forest, horror
+wastes, scarlands"* ⇒ `AB_GelatinousSuperorganism` (96 tiles) · `AB_OcularForest` (3) ·
+`Scarlands` (90) · 🔴 **`HorrorWastes` — installed but has ZERO tiles on Ash'karr.**
+
+⚠️ **Two things follow and both are the owner's:**
+1. **`HorrorWastes` is a biome we own and never placed.** Either it goes on the map (a map
+   edit, and the map is in progress) or he meant `Wasteland` (1,721 tiles). **Do not guess.**
+2. **As named, the anomaly carve-out covers 189 tiles — 0.9% of the planet.** If anomaly
+   creatures are meant to be met rather than theoretical, either those biomes grow or
+   `HorrorWastes` gets placed.
+
+⛔ **Anomaly entities may not be cast anywhere else**, and that includes the other
+bio-horror biomes (`AB_MycoticJungle` 1,939, `AB_FeraliskInfestedJungle` 534,
+`PoisonForest` 604). He named four; four is the list.
+
+## ✅ BRIGHT COLOUR IS LICENSED BY DEFENCE — owner, 2026-08-22
+
+**Verbatim:** *"finding things that are WILDLY differently colored is also biologically
+plausible if they can defend themselves with poison or hostility though... or even
+biological exuberance. So that's just one criteria."*
+
+⇒ ⛔ **Do NOT minimise STANDOUT and do not cast for camouflage.** A creature is scored on
+`standout` **against** a `defence` score built from armour, manhunter chance, predator
+status, `deathAction`, toxic resistance and body size (`wildlife_filter.py`).
+- **gaudy + defended** = aposematism. Plausible *and* memorable — actively wanted.
+- **gaudy + defenceless** = 🚩 **FLAG ONLY.** Owner ruled 2026-08-22: *flag for review, do
+  not act.* ⚠️ **Burrowing, flight and speed are defences the score cannot see**, so an
+  auto-demotion would lose good creatures for a bad reason.
