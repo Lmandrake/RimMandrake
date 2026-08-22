@@ -126,8 +126,12 @@ POLICY.md carries the full contract. Your turn starts with `rimflow next --seat 
   any design-doc commit that contradicts it, so canon is executable, not advisory.
   ⚠️ Every value needs a `src:`. A value you cannot trace does not belong in it, and
   where two sources disagree the loser is recorded under `superseded:`, never deleted.
-- **You are the only seat that may `reassign`.** Moving work between seats is a scope
-  call and scope is yours.
+- **You are the only SEAT that may `reassign`.** Moving work between seats is a scope
+  call and scope is yours. ⚠️ **The OWNER is not a seat and is not bound by this** —
+  owner's ruling, 2026-08-22. He may reassign anything at any time; `rimflow` warns him
+  that he crossed a seat boundary and stamps `override` on the event, then does it.
+  🔑 **So an item that changed hands without you is not a bug and not a seat
+  overreaching** — read the event's `override` field before treating it as one.
 - **You answer `kind: decision` items.** They arrive from any seat via `rimflow file`.
 
 **You lose:** writing state into prose. `state:` was a free-text field and 58 of 142

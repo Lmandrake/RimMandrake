@@ -435,3 +435,32 @@ as a live gate. **The ledger is not a publication channel. Nobody reads backward
 every file naming that item has been corrected, in the same commit.** Three separate
 failures of this were found in one day — this one, `VME_Nomad` (reversal in `APPROVED.md`
 alone, three files left stale), and the `rimflow next` invisibility family.
+
+## 🔴 THE OWNER IS NEVER REFUSED BY A SEAT RULE — owner's ruling, 2026-08-22
+
+A seat told him `reassign` was DECIDE-only and that *"OWNER is not exempt for that verb,
+so even you can't do it as OWNER — it needs `RIMFLOW_SEAT=DECIDE`."* His answer:
+
+> *"That's bullshit. OWNER absolutely can and should be able to override and shift items
+> between agents if necessary. A warning may be appropriate, but I have to be able to
+> override."*
+
+🔑 **Every `who` rule in `rimflow` exists to stop one SEAT reaching into another seat's
+work. The owner is not a seat.** He is the human the seats work for, and the only one who
+can correct a seat that has wedged itself. A rule that refuses him is not protecting
+anything — it is a tool telling its owner no.
+
+- ✅ **`RIMFLOW_SEAT=OWNER` may emit any verb**, on any item, whoever holds it.
+- ⚠️ **It is warned and RECORDED, never silent.** The event carries
+  `override: "<the rule bypassed>"` and the CLI prints the bypassed rule to stderr. The
+  failure mode to avoid was never the override; it was an override nobody could see.
+- ⛔ **It does NOT reach the state machine.** `_may` governs WHO. `TERMINAL` and
+  `FORBIDDEN` are separate and still refuse him, so **a closed, dropped or superseded
+  item cannot be reopened by anyone, owner included.** Reviving a decision is a new item
+  linked with `caused_by` — that record is the one thing nobody edits.
+- ⛔ **A typo is not a seat boundary.** An id that was never filed is still refused.
+
+⚠️ **Do not tell the owner that a tool forbids him something.** First check for the flag,
+the seat override or the env var that lets him through; if a policy genuinely reserves an
+act, name the policy and hand him the exact command anyway. Where no such route exists and
+he wants one, the answer is to BUILD it, as here — not to report the wall.
