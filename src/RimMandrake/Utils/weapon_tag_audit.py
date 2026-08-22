@@ -434,6 +434,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--emit-patch", metavar="OUT")
+    ap.add_argument("--list-unclassified", action="store_true",
+                    help="name the surviving guns role_of could not classify - the remaining retag work, which the summary line otherwise hides")
     ap.add_argument("--anyway", action="store_true",
                     help="report even though the dump does not match the live mod list")
     a = ap.parse_args()
@@ -456,6 +458,22 @@ def main():
     from collections import Counter
     print("   classified by role: %s" % dict(Counter(r for r, _ in m.values())))
     print("   unclassified (left alone): %d" % (len(untagged) - len(m)))
+    if a.list_unclassified:
+        # 🔑 THIS IS THE REMAINING RETAG WORK, NAMED. `role_of` matches a word list
+        # against defName+label; a weapon whose name carries none of those words gets no
+        # role and is skipped in silence. That silence is the point of this flag: the
+        # summary line says "unclassified (left alone)" and a reader has no way to find
+        # out WHICH, so the residue never shrinks.
+        # ⚠️ Each one needs a human call - is it a pistol, a rifle, a heavy - or a new
+        # word in ROLE_WORDS. Do NOT guess from the name alone; check range and damage.
+        rest = sorted((d for d in untagged if d["defName"] not in m),
+                      key=lambda d: d["defName"])
+        print("\n   the unclassified, with what a classifier would need:")
+        print("   %-40s %-9s %-8s %s" % ("defName", "techLevel", "value", "label"))
+        for d in rest:
+            print("   %-40s %-9s %-8s %s"
+                  % (d["defName"], f(d, "techLevel"), market_value(d) or "?",
+                     str(f(d, "label"))[:34]))
     if a.emit_patch:
         n = emit_patch(m, a.emit_patch)
         print("\nwrote %s - %d weapons re-tagged" % (a.emit_patch, n))
