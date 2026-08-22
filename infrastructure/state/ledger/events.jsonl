@@ -1056,3 +1056,12 @@
 {"seat":"CHECK","event":"start","id":"FACTION_RELATION_MATRIX_1","ts":"2026-08-22T00:13:37Z"}
 {"seat":"CHECK","event":"verify","id":"FACTION_RELATION_MATRIX_1","result":"partial","config":"full-578","evidence":"infrastructure/state/observed/2026-08-21/faction_relations/README.md","sha":"3c092bd","ts":"2026-08-22T00:13:37Z"}
 {"seat":"CHECK","event":"finding","id":"FACTION_RELATION_MATRIX_1","type":"engine","severity":"medium","name":"SACRILEG_HUNTERS_GOODWILL_ASYMMETRIC_1","from":"FACTION_RELATION_MATRIX_1/run-1@full-578","ts":"2026-08-22T00:13:37Z"}
+{"seat":"BUILD","event":"file","id":"GENIDEO_REVERTS_DEAD_KINDS_1","title":"genideo.py reverts 94 gate strings to a pawnkind that no longer exists","kind":"fix","target":"v1","needs":"offline","caused_by":"DROID_RACES_APPLIED_TO_KINDS_1","for":"BUILD","ts":"2026-08-22T00:13:51Z"}
+{"seat":"BUILD","event":"file","id":"JAWAVOICE_BUILDER_IS_ORPHANED_1","title":"build_jawavoice.py has no inputs and a wrong output path, over 9 committed files","kind":"fix","target":"v1","needs":"offline","caused_by":"DROID_RACES_APPLIED_TO_KINDS_1","for":"BUILD","ts":"2026-08-22T00:13:51Z"}
+{"seat":"BUILD","event":"claim","id":"NOMAD_MEME_RESTORED_TRIBES_1","ts":"2026-08-22T00:14:59Z"}
+{"seat":"BUILD","event":"start","id":"NOMAD_MEME_RESTORED_TRIBES_1","ts":"2026-08-22T00:15:00Z"}
+{"seat":"CHECK","event":"claim","id":"FACTION_NAMES_ARE_GENERATED_1","ts":"2026-08-22T00:15:25Z"}
+{"seat":"CHECK","event":"start","id":"FACTION_NAMES_ARE_GENERATED_1","ts":"2026-08-22T00:15:25Z"}
+{"seat":"CHECK","event":"verify","id":"FACTION_NAMES_ARE_GENERATED_1","result":"partial","config":"full-578","evidence":"infrastructure/state/observed/2026-08-21/faction_names/README.md","sha":"359c3f7","ts":"2026-08-22T00:15:25Z"}
+{"seat":"CHECK","event":"finding","id":"FACTION_NAMES_ARE_GENERATED_1","type":"instrument","severity":"high","name":"NAME_GET_FLAGS_CORRECT_NAMES_1","from":"FACTION_NAMES_ARE_GENERATED_1/run-1@full-578","ts":"2026-08-22T00:15:25Z"}
+{"seat":"CHECK","event":"spawn","name":"ISGENERATED_COMPARES_WRONG_FIELD_1","kind":"task","needs":"offline","for":"BUILD","from":"NAME_GET_FLAGS_CORRECT_NAMES_1","ts":"2026-08-22T00:15:25Z"}

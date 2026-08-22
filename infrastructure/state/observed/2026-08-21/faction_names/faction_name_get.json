@@ -1,0 +1,367 @@
+{
+  "success": true,
+  "factions": [
+    {
+      "defName": "Insect",
+      "currentName": "Hive",
+      "storedName": "Hive",
+      "defLabel": "Hive",
+      "defFixedName": "Hive",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "OutlanderCivil",
+      "currentName": "Homestead Defense League",
+      "storedName": "Homestead Defense League",
+      "defLabel": "Homestead Defense League",
+      "defFixedName": "Homestead Defense League",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "TribeCivil",
+      "currentName": "Deep Desert Tribes",
+      "storedName": "Deep Desert Tribes",
+      "defLabel": "Deep Desert Tribes",
+      "defFixedName": "Deep Desert Tribes",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "Pirate",
+      "currentName": "Blackstar Company",
+      "storedName": "Blackstar Company",
+      "defLabel": "Blackstar Company",
+      "defFixedName": "Blackstar Company",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "Empire",
+      "currentName": "Galactic Empire",
+      "storedName": "Galactic Empire",
+      "defLabel": "The Galactic Empire",
+      "defFixedName": "Galactic Empire",
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "TribeRoughNeanderthal",
+      "currentName": "Luddus",
+      "storedName": "Luddus",
+      "defLabel": "Fierce neanderthal tribe",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "PirateYttakin",
+      "currentName": "Blackstar Company",
+      "storedName": "Blackstar Company",
+      "defLabel": "Yttakin pirates",
+      "defFixedName": "Blackstar Company",
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "TribeSavageImpid",
+      "currentName": "League of Necuvizz",
+      "storedName": "League of Necuvizz",
+      "defLabel": "Savage impid tribe",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "OutlanderRoughPig",
+      "currentName": "Gemoinund Accord",
+      "storedName": "Gemoinund Accord",
+      "defLabel": "Rough pig union",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "CASacrilegHunters",
+      "currentName": "Sacrileg Hunters",
+      "storedName": "Sacrileg Hunters",
+      "defLabel": "Sacrileg Hunters",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "DV_OutlanderRoughBuzzer",
+      "currentName": "Cloud of Thschit",
+      "storedName": "Cloud of Thschit",
+      "defLabel": "Rough buzzer swarm",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "DV_PirateKeshig",
+      "currentName": "Blackstar Company",
+      "storedName": "Blackstar Company",
+      "defLabel": "Keshig horde",
+      "defFixedName": "Blackstar Company",
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "Horrors",
+      "currentName": "The Dark Swarm",
+      "storedName": "The Dark Swarm",
+      "defLabel": "Horrors",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "KAR_OrcClan",
+      "currentName": "The Trosma People",
+      "storedName": "The Trosma People",
+      "defLabel": "Orc clan",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "VRESaurids_OutlanderRoughSaurid",
+      "currentName": "Pob'Rokba Coalition",
+      "storedName": "Pob'Rokba Coalition",
+      "defLabel": "Rough saurid union",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "AG_OutlanderCivilUnion",
+      "currentName": "Eraistia",
+      "storedName": "Eraistia",
+      "defLabel": "Civil xenohuman union",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "AG_XenohumanPirates",
+      "currentName": "Blackstar Company",
+      "storedName": "Blackstar Company",
+      "defLabel": "Xenohuman pirate gang",
+      "defFixedName": "Blackstar Company",
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "VFEP_Junkers",
+      "currentName": "The Anti-Love Imps",
+      "storedName": "The Anti-Love Imps",
+      "defLabel": "Junkers",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "VFEP_Mercenaries",
+      "currentName": "The Raiders",
+      "storedName": "The Raiders",
+      "defLabel": "Mercenaries",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "OuterRim_BinaryStarRaiders",
+      "currentName": "The Pistol Bears",
+      "storedName": "The Pistol Bears",
+      "defLabel": "Binary star raiders",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "OuterRim_MoistureFarmers",
+      "currentName": "Pact of Vearelia",
+      "storedName": "Pact of Vearelia",
+      "defLabel": "Moisture farmers",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "BS_LittlePeople",
+      "currentName": "Gaboofweg",
+      "storedName": "Gaboofweg",
+      "defLabel": "A little people union",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "BS_Dvergr_Medieval_Union",
+      "currentName": "Western Oulora",
+      "storedName": "Western Oulora",
+      "defLabel": "Dvergr Trade Union",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "BS_Muspelheim",
+      "currentName": "Muspelheim",
+      "storedName": "Muspelheim",
+      "defLabel": "Kingdom of Muspelheim",
+      "defFixedName": "Muspelheim",
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "BS_Niflheim",
+      "currentName": "Niflheim",
+      "storedName": "Niflheim",
+      "defLabel": "Tribes of Niflheim",
+      "defFixedName": "Niflheim",
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "BS_OgreFaction",
+      "currentName": "Ogre Tribes",
+      "storedName": "Ogre Tribes",
+      "defLabel": "Ogre tribe",
+      "defFixedName": "Ogre Tribes",
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "OuterRim_GalacticEmpire",
+      "currentName": "Galactic Empire",
+      "storedName": "Galactic Empire",
+      "defLabel": "Galactic Empire",
+      "defFixedName": "Galactic Empire",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "Jawa_AscendantHelix",
+      "currentName": "Ascendant Helix",
+      "storedName": "Ascendant Helix",
+      "defLabel": "Ascendant Helix",
+      "defFixedName": "Ascendant Helix",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "Jawa_DeepwaterCompact",
+      "currentName": "Deepwater Compact",
+      "storedName": "Deepwater Compact",
+      "defLabel": "Deepwater Compact",
+      "defFixedName": "Deepwater Compact",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "Jawa_FreeDroidEnclaves",
+      "currentName": "Free Droid Enclaves",
+      "storedName": "Free Droid Enclaves",
+      "defLabel": "Free Droid Enclaves",
+      "defFixedName": "Free Droid Enclaves",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "Jawa_GeonosianFoundryHive",
+      "currentName": "Geonosian Foundry Hive",
+      "storedName": "Geonosian Foundry Hive",
+      "defLabel": "Geonosian Foundry Hive",
+      "defFixedName": "Geonosian Foundry Hive",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "Jawa_HuttCartel",
+      "currentName": "Hutt Cartel",
+      "storedName": "Hutt Cartel",
+      "defLabel": "Hutt Cartel",
+      "defFixedName": "Hutt Cartel",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "Jawa_Junkers",
+      "currentName": "the Junkers",
+      "storedName": "the Junkers",
+      "defLabel": "The Junkers",
+      "defFixedName": "the Junkers",
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "Jawa_IndigenousTribes",
+      "currentName": "Jawa Trade Moot",
+      "storedName": "Jawa Trade Moot",
+      "defLabel": "Jawa Trade Moot",
+      "defFixedName": "Jawa Trade Moot",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "Jawa_WildsteamClan",
+      "currentName": "Wildsteam Clan",
+      "storedName": "Wildsteam Clan",
+      "defLabel": "Wildsteam Clan",
+      "defFixedName": "Wildsteam Clan",
+      "isPlayer": false,
+      "isGenerated": false
+    },
+    {
+      "defName": "TradersGuild",
+      "currentName": "Cosmic Nexus",
+      "storedName": "Cosmic Nexus",
+      "defLabel": "Traders guild",
+      "defFixedName": null,
+      "isPlayer": false,
+      "isGenerated": true
+    },
+    {
+      "defName": "PlayerColony",
+      "currentName": "New Arrivals",
+      "storedName": null,
+      "defLabel": "New Arrivals",
+      "defFixedName": null,
+      "isPlayer": true,
+      "isGenerated": false
+    },
+    {
+      "defName": "CannibalPirate",
+      "currentName": "Blackstar Company",
+      "storedName": "Blackstar Company",
+      "defLabel": "Cannibal pirate gang",
+      "defFixedName": "Blackstar Company",
+      "isPlayer": false,
+      "isGenerated": true
+    }
+  ],
+  "count": 38,
+  "generatedCount": 24,
+  "hiddenSkipped": 20,
+  "message": "24 faction(s) are wearing a GENERATED name. On a world that will be frozen and shipped this is permanent unless repaired.",
+  "ticksGame": 1,
+  "operation": {
+    "OperationId": "op_e27dcf92f84b401db4acc7a6d9140afe",
+    "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/faction-name-get",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-08-22T00:14:00.8703759+00:00",
+    "CompletedAtUtc": "2026-08-22T00:14:00.9700858+00:00",
+    "DurationMs": 99,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}
