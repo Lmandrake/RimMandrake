@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  EggLayersLayEggs.xml                      Jawa_Patches - new file 2026-08-22
+  ============================================================================
+
+  🔴 NINETEEN OF OUR XENOTYPES CARRY A GENE THAT PROMISES EGG-LAYING AND DOES
+  NOTHING. They give live birth. The gene is `Outland_EggLayer` (Outland -
+  Genetics, neronix17) and its own description reads, verbatim:
+
+      "Carriers of this gene reproduce by laying an egg rather than typical
+       pregnancy."
+
+  MEASURED, not suspected, against the live 578-mod dump:
+    * `Outland_EggLayer` has `geneClass` **Verse.Gene** - the plain base class,
+      which has no behaviour of its own.
+    * Its ONLY modExtension is Vanilla Expanded Framework's `GeneExtension`.
+      That class serialises 21 fields and the only one touching reproduction is
+      `pregnancySpeedFactor`, which the gene sets to **1** - no effect. There is
+      no egg field of any kind in it.
+    ⇒ nothing anywhere reads this gene. It is a description and an icon.
+
+  🔑 THE PREGNANCY SYSTEM ACTUALLY IN PLAY IS INTIMACY - GENDER WORKS, and it
+  drives egg-laying off `SEX_Ovipositor`, whose mod extension names an ovipositor
+  as the `femaleReproductiveReplacement`. That mod ALSO replaces vanilla
+  `PregnancyUtility.CanEverProduceChild` outright, so it is the only pregnancy
+  path that runs.
+
+  ⭐ THIS PATCH IS THE MOD AUTHOR'S OWN PATTERN, not an invention. Intimacy ships
+  overlap patches that do exactly this for every foreign egg gene it knows about
+  - `Alpha_Genes_egg_overlap.xml`, `VRE_Saurid_egg_overlap.xml`,
+  `VRE_Insector_egg_overlap.xml` - swapping them for `SEX_Ovipositor`. It has no
+  patch for Outland, because Outland is not a mod it was written against. This
+  file is the missing one.
+
+  ⚠️ `Outland_EggLayer` IS DELIBERATELY KEPT beside the new gene rather than
+  removed. It carries the icon and the flavour text the species pack chose, and
+  its `exclusionTags` (Egglaying · AG_Egglaying · Reproduction) are what stop a
+  third egg gene stacking on top. `SEX_Ovipositor` declares no exclusionTags at
+  all, so the two cannot conflict.
+
+  🔑 ONE XPATH REACHES ALL NINETEEN, and that is on purpose: the predicate is
+  "whichever xenotypes claim to lay eggs", not a list of names that decays the
+  moment the species pack is updated. Verified with lxml against
+  RimMandrake_StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml -
+  19 matches, which is exactly the count in the live dump.
+  ⚠️ It would also reach a future non-RimMandrake xenotype carrying the same
+  gene. Measured today, all 19 are ours; if that changes, this is the file to
+  narrow.
+
+  ⚠️ TWO GUARDS, AND THEY GUARD DIFFERENT THINGS. `MayRequire` sits on the `<li>`
+  because the risk there is the GENE not existing - a xenotype listing a gene no
+  mod supplies logs a cross-reference error every load. The surrounding
+  `PatchOperationConditional` guards the XENOTYPES not existing: a
+  PatchOperationAdd whose xpath matches nothing throws red on every launch, and
+  it would match nothing if our own species pack were ever unloaded.
+
+  ⛔ WHAT THIS FILE DOES NOT DECIDE: whether those nineteen SHOULD lay eggs.
+  That was settled by whoever put `Outland_EggLayer` on them, and Wookieepedia
+  confirms it for only some - Trandoshan, Gungan, Nautolan, Geonosian, Duros and
+  Nikto are explicit in the article text; Aqualish, Falleen, Feeorin, Gand and
+  Klatoonian are simply silent on reproduction. Changing the ROSTER is a design
+  call for the owner. This file only makes the game do what our defs already say.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Every xenotype that claims to lay eggs now actually does. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[genes/li="Outland_EggLayer"]/genes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[genes/li="Outland_EggLayer"]/genes</xpath>
+      <value>
+        <li MayRequire="LovelyDovey.Sex.WithRosaline">SEX_Ovipositor</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!--
+    🔴 THE HUTT IS THE ONE SPECIES ON THE WHOLE 70-XENOTYPE ROSTER THAT
+    WOOKIEEPEDIA CALLS HERMAPHRODITIC: "multiple sex organs and utilized
+    hermaphroditic reproduction" (Hutt/Legends). It carried no reproductive gene
+    at all, so every Hutt was taking the gender default - phallor if male, gestor
+    if female - which is the one thing a Hutt canonically is not.
+
+    `SEX_AlwaysAphrodor` gives both organs regardless of gender, so a Hutt can
+    play either role. Conception in this load is decided purely by organs and
+    never by gender, so this is the whole change; nothing else is needed.
+
+    ⛔ NOT `SEX_Meiosis`, even though Jabba self-impregnating to produce Rotta is
+    the canonical precedent. That gene's own effect text says it "prevents
+    regular conception", so it would replace Hutt reproduction with selfing
+    rather than add to it. If the owner wants the Rotta case it is a deliberate
+    second decision, not a free extra.
+    ⚠️ The hermaphroditism is LEGENDS. Canon confirms only the brood pouch, which
+    nothing here models.
+  -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeHutt"]/genes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeHutt"]/genes</xpath>
+      <value>
+        <li MayRequire="LovelyDovey.Sex.WithRosaline">SEX_AlwaysAphrodor</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
