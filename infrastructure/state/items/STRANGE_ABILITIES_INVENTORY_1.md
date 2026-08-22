@@ -10,8 +10,18 @@ me now"*. Bring him decisions to react to, never a questionnaire.
 | | |
 |---|---|
 | animals in the census (`animals.json`, corpses already excluded) | **1,260** |
-| that can spawn anywhere on Ash'karr | **377** |
-| 🔴 reach **no biome at all** | **883 — 70% of what we ship** |
+| already spawning on Ash'karr | **377** |
+| live only in biomes we do NOT have — **redistributable** | **85** |
+| 🔴 have **no wild biome ANYWHERE**, in any mod | **798** |
+
+🔴 **The 798 are not "unassigned" — their own authors never made them wild-spawning.** 764 do
+not appear in the biome table at all; only 34 sit there at commonality 0. They are VGE lab
+hybrids (140), Jurassic dinosaurs (104), Big and Small framework stock (61), Alpha Mechs,
+insectoid faction units. **238 of them are not even animals** — 98 `Humanlike`, 140 `ToolUser`.
+⇒ ⚠️ **An earlier draft said "883 reach no biome" and treated them as one pool. That was
+wrong and it hid the real question:** the ready pool is **462** (377 + 85), and whether any of
+the remaining **560 animal-intelligence** creatures should become wild at all is a **flavour
+decision for the owner**, not a gap to be filled.
 | `(biome, animal)` pairs with `commonality > 0` on this planet | **1,685** |
 
 🔑 **USE `<DefDump>/animals.json`, NOT `defs/ThingDef.json`.** The dumper already ships a
