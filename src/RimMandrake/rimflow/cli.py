@@ -158,6 +158,12 @@ def _emit(ev, world=None, quiet=False):
         # override, and to be told when he did. Silent power is the failure mode here,
         # not the override itself. `check()` deep-copies the event, so the notice comes
         # back on the module, not on `ev`.
+        said = getattr(model, "OWNER_SAID", "")
+        if said:
+            ev["ownerSaid"] = said
+            sys.stderr.write(
+                "\u2705 Acting as OWNER on his instruction, recorded on the event:\n"
+                "     \u201c%s\u201d\n" % said)
         if model.OVERRIDE_NOTICES:
             ev["override"] = model.OVERRIDE_NOTICES[0]
             sys.stderr.write(
@@ -805,6 +811,17 @@ def build_parser():
     common.add_argument("--target", default="v1",
                         help="active version the priority engine filters on (v1)")
     common.add_argument("--mode", help="afk suppresses items whose needs is `owner`")
+    # 🔴 THE OWNER'S WORD IS THE AUTHORIZATION — his ruling, 2026-08-22:
+    # *"I need to be able to simply tell you things as the owner and it's understood
+    # that that agent now has owner authorization. I don't want to route through weird
+    # python calls."* He was pasting `! RIMFLOW_SEAT=OWNER python3 …` lines to exercise
+    # his own authority, which proved nothing except that he could paste.
+    # 🔑 This is STRICTLY better evidence than the paste was: the ledger now carries
+    # what he actually SAID, verbatim, instead of a command anyone could have typed.
+    common.add_argument("--owner-said", dest="owner_said", metavar="\"…\"",
+                        help="act as OWNER on his spoken instruction. Pass his words "
+                             "VERBATIM; they are recorded on the event as the "
+                             "authorization. Never paraphrase, never invent.")
     sub = p.add_subparsers(dest="cmd")
 
     def add(name, help_, fn, parents=(common,)):
@@ -977,6 +994,25 @@ def main(argv=None):
             seat = "BUILD"
     else:
         seat = resolve_seat(getattr(args, "seat", None))
+    said = (getattr(args, "owner_said", None) or "").strip()
+    if said:
+        # ⛔ A quote too short to be a quote is not authorization. This is the only
+        # guard: it stops `--owner-said yes` standing in for something he never said.
+        # ⛔ A QUESTION IS NOT AN INSTRUCTION. Caught within a minute of shipping this
+        # flag: REP dropped an item quoting the owner ASKING what he could knock out.
+        # The quote must be him telling you to do THIS, not him talking nearby.
+        if said.rstrip().endswith("?"):
+            die("`--owner-said` must quote an INSTRUCTION, and %r is a question.\n\n"
+                "The owner asking about a thing is not the owner authorizing it. Quote "
+                "the words\nwhere he told you to act; if there are none, act as your "
+                "own seat and say whose\ncall it was, or ask him.\n" % said[:80])
+        if len(said) < 12:
+            die("`--owner-said` carries the OWNER's own words and is the record that "
+                "he authorized this.\nQuote him verbatim — %r is too short to be a "
+                "quote.\n\n\u26a0\ufe0f  If he did not say it, you may not do it as him."
+                % said)
+        seat = "OWNER"
+        model.OWNER_SAID = said
     return args.fn(args, seat) or 0
 
 

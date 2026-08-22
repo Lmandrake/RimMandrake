@@ -298,7 +298,7 @@ def validate(ev):
     # It holds the rule he overrode, so the bypass is in the record rather than being
     # invisible — see `_may`. No seat may set it; `_emit` stamps it.
     known = set(spec["req"]) | set(spec["opt"]) | {
-        "ts", "seat", "event", "id", "caused_by", "override"}
+        "ts", "seat", "event", "id", "caused_by", "override", "ownerSaid"}
     for f in ev:
         if f not in known:
             raise SchemaError(
@@ -517,6 +517,11 @@ FORBIDDEN = {
 # Filled by `_may` when the OWNER overrides a seat restriction, drained by the CLI so
 # the override is WARNED about as well as recorded. Cleared at the top of `check()`.
 OVERRIDE_NOTICES = []
+
+# The OWNER's verbatim instruction, when a seat is acting on his spoken word rather than
+# from his own shell. Set by the CLI's `--owner-said`, stamped onto the event as
+# `ownerSaid`. 🔑 It is the authorization AND the record — see the flag's own comment.
+OWNER_SAID = ""
 
 
 def _who_refusal(ev, item):

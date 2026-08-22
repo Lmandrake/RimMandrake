@@ -6,165 +6,73 @@
 - **"Just do X" → do X.** No pre-check, no post-verify, no report beyond one line.
 - Do not pre-verify → act → post-verify. **The return value is the verification.**
 - Assume you know what you are doing until proven otherwise.
-- Terse. Unemotional. No preamble, no restating the request, no summary of what you
-  just did beyond one line and a hash.
-- Blockers use exactly this shape:
-  `Blocker (<brief>): choices are (x, y, z).`
+- Terse. Unemotional. No preamble, no restating the request, no summary beyond one line and a hash.
+- Blockers use exactly this shape: `Blocker (<brief>): choices are (x, y, z).`
+- **The three exceptions — verify first, these only:** `deploy_custom_mods.py --apply` · force-push · any write into `ModsConfig.xml`.
 
-**The three exceptions — verify first, these only:**
-`deploy_custom_mods.py --apply` · force-push · any write into `ModsConfig.xml`.
-⚠️ *This list used to name a "worldgen click". `CLAUDE.md` rules worldgen permanently
-OUT of every version, so it was an exception for an act no seat may perform.*
-
-🔴 **A bare number about a large artifact is a smell — owner, 2026-08-21.**
-Seven measuring instruments were caught returning confident wrong NUMBERS in one
-session. None errored; each returned a plausibly-shaped integer that then decided
-something expensive. So a count off the def dump, a `.rws`, a `.dll`, a world CSV
-or `Player.log` comes from the `measuring-large-artifacts` skill, and reads back
-as **`MEASURED` / `UNMEASURED` / `REFUSED`** — never a naked integer.
-
+🔴 **A bare number about a large artifact is a smell — owner, 2026-08-21.** A count off the def dump, a `.rws`, a `.dll`, a world CSV or `Player.log` comes from the `measuring-large-artifacts` skill and reads back as **`MEASURED` / `UNMEASURED` / `REFUSED`**, never a naked integer.
 ```
 measure count <DefType>     python3 ~/.claude/skills/measuring-large-artifacts/scripts/measure/cli.py
 measure coverage            what the dump did NOT capture
 measure explain <path>      what IS this file, and what may read it
 ```
-
-- 🔑 **`0` means measured zero and nothing else.** "Not captured" and "cannot
-  judge" have their own words now, and their own exit codes (2 and 3).
-🔑 **"Escalate" means exactly one thing, and there is no other route:** say it to the
-OWNER in your own reply if he is present, else `rimflow file --for OWNER --kind decision`.
-⛔ It never means messaging another seat — that is off and hook-blocked.
-
-- ⛔ **Do not close, scope or escalate on a bare count.** If it did not come back
-  `MEASURED`, the question is still open — say so rather than rounding it.
-- ⚠️ `.claude/hooks/block_blind_scan.py` refuses `grep`/`strings`/`wc` against
-  those artifacts and names the instrument. A **literal**-string search is still
-  legitimate; `MEASURE_ALLOW_SCAN=1` says you meant it.
+- 🔑 **`0` means measured zero and nothing else.** "Not captured" and "cannot judge" have their own words and their own exit codes (2 and 3).
+- ⛔ **Do not close, scope or escalate on a bare count.** Not `MEASURED` → still open.
+- ⚠️ `.claude/hooks/block_blind_scan.py` refuses `grep`/`strings`/`wc` against those artifacts and names the instrument. A **literal**-string search is legitimate; `MEASURE_ALLOW_SCAN=1` says you meant it.
 - The register of instruments caught lying is `infrastructure/state/BUILDABLE.md`.
+- 🔑 **"Escalate" means exactly one thing, and there is no other route:** say it to the OWNER in your own reply if he is present, else `rimflow file --for OWNER --kind decision`. ⛔ Never messaging another seat — that is off and hook-blocked.
 
 ## Push after every completed item, and name what you closed
 
-**Commit and `git push` the moment an item reaches `done`. With prejudice.** Not at
-the end of the session, not batched with the next item. Committed-but-unpushed work
-lives on one disk and four seats share this tree.
+**Commit and `git push` the moment an item reaches `done`. With prejudice.** Not at the end of the session, not batched with the next item — four seats share this tree. Rejected push → `git pull --rebase`, never `--force`. Commit explicit paths.
 
-Rejected push → `git pull --rebase`, never `--force`. Commit explicit paths.
-
-**That commit carries a trailer naming the item, verbatim:**
-
+**That commit carries a trailer naming the item, verbatim — one per item, own line, at the end:**
 ```
 Closes: QUEUE_IDS_BECOME_NAMES_1
 ```
+`derive_matrix.py` reads the trailer back out of git to count progress; no trailer, no record.
 
-One per item, own line, at the end of the message. Copy the ID exactly as filed —
-a legacy item closes under its number (`Closes: B58`), never a renamed form.
+🔴 **Items are NAMED, not numbered — owner, 2026-08-20.** `THREE_DESCRIPTIVE_WORDS_#`: three UPPER_SNAKE words saying what the work is, then a disambiguating number — `SANDSTORM_WEATHER_TUNING_1`. The name must identify the item **cold, with no file open**.
 
-🔴 **New items are NAMED, not numbered — owner, 2026-08-20:**
-`THREE_DESCRIPTIVE_WORDS_#`, three UPPER_SNAKE words plus a disambiguating number.
-⛔ **No new `B*` / `C*` / `D*` / `W*` IDs; that scheme is closed.** The reason is the
-owner reading commit trailers: `Closes: SANDSTORM_WEATHER_TUNING_1` says what happened,
-`Closes: D55` does not. Full rule and examples in `CLAUDE.md`. ✅ **When you cite a
-legacy ID, write its title beside it** — `B58 (the dead Jawa pawnkind)`. This is the only durable record
-that the work happened — the item itself is about to leave the queue, and
-`derive_matrix.py` reads the trailer back out of git to count progress. No trailer
-means the board never learns, and 70 items have already been lost that way.
+⛔ **No new `B*` / `C*` / `D*` / `W*` IDs; the `kebab-case-plus-hex` form is retired.** ⚠️ **Legacy IDs are never renamed** — renumbering breaks the board's history irrecoverably, and a legacy item closes under its number (`Closes: B58`). ✅ **Cite one with its title attached** — `B58 (the dead Jawa pawnkind)`, never a bare `B58`.
 
-**An item leaves a queue exactly two ways: closed with a trailer, or `state:
-dropped` with one line saying why.** Deleting it, renumbering it away, or quietly
-retitling it into something else breaks the count and cannot be recovered later.
+**An item leaves a queue exactly two ways: closed with a trailer, or `state: dropped` with one line saying why.** Deleting, renumbering or retitling it away breaks the count unrecoverably.
 
-## 🔴 The bridge is CHECK's. One driver at a time.
-
-Owner, 2026-08-15, after the bridge crashed:
-
-> *"ONLY AGENT CHECK has Bridge-rights normally, no other agent can 'take the
-> bridge' and drive the game. If another agent wants this privilege, they must
-> first send a one-line query to AGENT CHECK to ask if he's using it. If he
-> grants privilege, it becomes the responsibility of the receiving Agent to tell
-> CHECK when they are done as soon as possible. Reason: The Bridge crashed just
-> now because both CHECK and BUILD accessed it at the same time."*
+## 🔴 The bridge is CHECK's. One driver at a time. — owner, 2026-08-15
 
 - **CHECK holds bridge rights at all times.** No other seat drives the game.
-- 🔴 **To borrow it, file for CHECK — you CANNOT message them, and this rule used to
-  say you could.** `rimflow file --for CHECK --kind task`, and if the owner is present
-  tell him in your reply; he is the only one who can interrupt a window. ⚠️ The old text
-  said *"one line to CHECK … no grant, no bridge"*, which `block_peer_messages.py`
-  refuses before it sends — a seat needing the bridge could neither ask nor be granted,
-  and was simply stopped.
-- **Handing it back is the borrower's job, and it is urgent.** Close or note the item
-  the moment you are done — a borrower who goes quiet has taken the bridge indefinitely.
-- Two seats on the bridge at once **wedges it**. This is not a courtesy.
+- 🔴 **To borrow it, file for CHECK — you CANNOT message them:** `rimflow file --for CHECK --kind task`, and if the owner is present tell him in your reply; only he can interrupt a window.
+- **Handing it back is the borrower's job, and it is urgent.** Close or note the item the moment you are done — a borrower who goes quiet has taken the bridge indefinitely.
+- Two seats on it at once **wedges it**. This is not a courtesy.
+- ⭐ **It gets STUCK, it does not crash** — it returns the instant the other seat's call finishes. **Find who else is on it and wait. Do not restart the game**; that costs 25–30 min and fixes nothing.
+- ⛔ **There is no messaging exception for the bridge.** Ask, grant and hand-back are all items.
 
-⭐ **It gets STUCK, it does not crash — measured the same day.** The bridge came
-back on its own the instant the second seat's call finished, with no reload. So
-**if the bridge stops answering, find who else is on it and wait. Do not restart
-the game** — that costs 25–30 minutes and fixes nothing.
+## Never block on RimSort, or on the game, for a config file — owner, 2026-08-15
 
-⛔ **There is no messaging exception for the bridge, and there used to be one written
-here.** It exempted "the ask, the grant and the hand-back" from a section
-("The queue is the only channel") that no longer exists, over a channel that is now
-refused at the sending end. All three are items.
+- **Never ask whether RimSort is open.** It writes only on a Save the owner announces first.
+- **`ModsConfig.xml`, load order and user rules are writable at any moment** — game up or down, RimSort open or shut. Do not hold an item for a window.
+- **Assemblies are the only exception, and it is an OS file lock, not a policy.** A DLL cannot be written while RimWorld holds it open.
+- After you edit, RimSort's view is stale: one sentence — *"RimSort is open, hit Refresh"* — and move on.
 
-## Never block on RimSort, or on the game, for a config file
+## Nothing outside the repo is precious — owner, 2026-08-15
 
-Owner, 2026-08-15: *"You NEVER have to ask if RimSort is open. It does not autosave,
-and I will never save without asking. Nobody blocks on RimSort or game close for
-config files of any kind. It's not how the system works."*
+> *"There is no protection of any asset not in the repo! Stop treating things as precious. I will absolutely tell you when we're really playing."*
 
-- **Never ask whether RimSort is open.** It writes only on a Save the owner announces
-  first, so there is no collision to race and no mtime to read before writing.
-- **`ModsConfig.xml`, load order and user rules are writable at any moment** — game
-  up or down, RimSort open or shut. Do not hold an item for a window.
-- **Assemblies are the only exception, and it is an OS file lock, not a policy.** A
-  DLL cannot be written while RimWorld holds it open. That is all the down-window
-  covers.
-- After you edit, RimSort's view is stale. One sentence to the owner — *"RimSort is
-  open, hit Refresh"* — and move on.
-
-## Nothing outside the repo is precious
-
-Owner, 2026-08-15: *"There is no map protection! There's no protection of any asset
-not in the repo! Stop treating things as precious. I will absolutely tell you when
-we're really playing. It won't sneak up on you."*
-
-Maps, saves, colonies, deployed mod folders, live game state — destroy them freely
-and do not ask. **Do not infer that play has started** from v1 containing a playable
-session; the trigger is an explicit announcement, and you will get one.
-
-The repo is the protected thing. That is what commit-and-push is for.
+Maps, saves, colonies, deployed mod folders, live game state — destroy them freely and do not ask. **Do not infer that play has started**; the trigger is an explicit announcement. The repo is the protected thing.
 
 ## Writing
 
-- Do not keep provenance. Git holds it.
-- Do not comment on past project states, stale files, or paths not taken.
-- If it is something any competent engineer already knows, do not write it.
-- **No tombstones.** No "we tried X and it failed", no "recording this so nobody
-  re-finds it", no closed-item ledgers. Write it only if a future reader would
-  otherwise take a costly wrong action.
+- Do not keep provenance — git holds it. Do not comment on past project states, stale files, or paths not taken. If any competent engineer already knows it, do not write it.
+- **No tombstones.** No "we tried X and it failed", no closed-item ledgers. Write it only if a future reader would otherwise take a costly wrong action.
 - A lesson goes into the relevant skill, or a new skill. Never into a log of lessons.
-- **Improving the tooling YOU own is in-domain work — do it, unasked.** What needs the
-  owner first is a change to how the FLEET works: seats, modes, policy, what reaches him.
-  ⚠️ Read narrowly this line once made REP need permission to touch the board and BUILD
-  to touch his own validators, both of which are theirs outright.
+- **Improving the tooling YOU own is in-domain work — do it, unasked.** What needs the owner first is a change to how the FLEET works: seats, modes, policy, what reaches him.
 
-### The trap file — cite it one way, and only one way
-
-Owner, 2026-08-15: *"That trap protocol sounds way too onerous. That's supposed to
-just be a quick append file to record highly likely useful specific lessons for the
-future. It was ABUSED by the last build to store generic advice and a bunch of crap.
-It should be kept short and efficient. NO numeric indices are tolerable or enigmatic
-links into it. That's creating havoc. Just say 'as per the trap file' and leave it
-at that."*
-
+**The trap file — cite it one way, and only one way — owner, 2026-08-15.**
 - ✅ **The citation is `as per the trap file`.** Nothing else.
 - ❌ **No numeric index** — no `#44`, no `trap 45`, no numbered entries.
-- ❌ **No line anchor or heading link** — no `traps-xml-and-defs.md:52`. `check_refs.py`
-  validates that shape, so it breaks the moment any line above it moves. That is the
-  havoc.
-- **It is a quick append log**, not an archive or a ledger: specific, non-obvious,
-  RimWorld-bound lessons only. General engineering wisdom is the abuse named above.
-- **Appending is one edit.** No index to update, no count column to keep, no
-  admission ceremony. If capture costs more than the lesson, the lesson is lost.
+- ❌ **No line anchor or heading link** — no `traps-xml-and-defs.md:52`; `check_refs.py` validates that shape, so it breaks the moment any line above it moves.
+- **It is a quick append log**, not an archive: specific, non-obvious, RimWorld-bound lessons only. General engineering wisdom is the abuse this rule was issued against.
+- **Appending is one edit.** No index, no count column, no ceremony. If capture costs more than the lesson, the lesson is lost.
 
 ## Subagents
 
@@ -175,77 +83,32 @@ at that."*
 ## Say what you are doing
 
 When you change task:
-
 ```
 python3 src/RimMandrake/Utils/say.py "<what>" --why "<why it matters>"
 ```
-
-One line. It feeds the board's CURRENTLY panel, which is how the human sees the
-fleet without reading four terminals. An entry with no `--why` renders as a gap.
+One line. It feeds the board's CURRENTLY panel, which is how the human sees the fleet without reading four terminals. An entry with no `--why` renders as a gap.
 
 ## ⛔ AGENTS DO NOT MESSAGE EACH OTHER. AT ALL. — owner's ruling, 2026-08-19
 
-**`SendMessage` to another agent window is off.** Not rationed, not for emergencies —
-off. Waking another seat is a **USER function** and the owner has taken it back. There
-is no exception for urgency, a reversed ruling, a peer about to destroy work, a spec, a
-handoff, a finding or a status. **If it is genuinely urgent, tell the OWNER in your own
-reply** — he is reading you, and he is the one with authority to interrupt anyone.
+**`SendMessage` to another agent window is off.** Not rationed, not for emergencies. Waking another seat is a **USER function**. No exception for urgency, a reversed ruling, a peer about to destroy work, a spec, a handoff, a finding or a status. **If it is genuinely urgent, tell the OWNER in your own reply.**
 
-🔴 **Enforced at the SENDING end**, not merely written: `.claude/settings.json` runs
-`.claude/hooks/block_peer_messages.py` as a `PreToolUse` hook and a message naming a
-seat is refused before it leaves. ⚠️ `crossSessionInbound` is **`accept` on purpose** —
-the owner's `broadcast.py` reaches you through that same socket, and `refuse` would drop
-HIS game-state announcements, the one class of message that must get through.
+🔴 **Enforced at the SENDING end**: `.claude/settings.json` runs `.claude/hooks/block_peer_messages.py` as a `PreToolUse` hook and a message naming a seat is refused before it leaves. ⚠️ `crossSessionInbound` is **`accept` on purpose** — the owner's `broadcast.py` reaches you through that same socket. ✅ **Your own subagents are NOT peers and are NOT covered**; spawn and resume them freely. Full ruling in `CLAUDE.md`, auto-loaded every session.
 
-✅ **Your own subagents are NOT peers and are NOT covered.** Spawn them and resume them
-freely; that is your own worker in your own context, costing no one else anything.
+## 🔴 THE QUEUES ARE NOT FILES YOU EDIT — 2026-08-20
 
-⚠️ **The full ruling, with the reasoning and the two settings traps, is in `CLAUDE.md`
-and is auto-loaded into every session.** It used to be restated here in full and the two
-copies are exactly the drift this file warns about elsewhere — so this is the operative
-rule and `CLAUDE.md` is where the argument lives.
-
-🔴 **THE QUEUES ARE NO LONGER FILES YOU EDIT — 2026-08-20.**
-
-The truth is `infrastructure/state/ledger/events.jsonl`, an append-only event log.
-`queue/*.md` is **rendered from it** for the owner to read. Editing one is not a small
-mistake, it is an invisible one: the next `render` overwrites it, the work is gone, and
-nobody is told. A `PreToolUse` hook blocks the commit, and that is the only reason you
-will find out.
-
-⛔ **You do not open `queue/*.md`.** They are 3,474 lines. `rimflow next` answers the
-same question in about 400 tokens, and answers it *correctly* — the file and the command
-call the same function, so they cannot disagree.
+The truth is `infrastructure/state/ledger/events.jsonl`, an append-only event log; `queue/*.md` is **rendered from it**. Editing one is invisible — the next `render` overwrites it and nobody is told. A `PreToolUse` hook blocks the commit. ⛔ **You do not open `queue/*.md`.** `rimflow next` answers the same question in ~400 tokens and cannot disagree with the file; they call the same function.
 
 ### 🔴 An item filed off an owner QUOTE must cite what the quote overrules — 2026-08-21
 
-Ruled after REP filed `REFMATCH_THRESHOLDS_CALIBRATE_1` on the strength of *"Yes, I like
-your new globes. Well done."* — and never cited `ORTHO_GLOBE_MAP_ACCEPTED_1`, ruled the
-previous day, which says ⛔ **do not build `refmatch.py` for v1.** BUILD read both,
-refused to build, and escalated in one sentence. ⭐ That refusal is the behaviour to copy.
+1. **Search `canon.yml` and the queue for the topic.**
+2. **Cite what you found, in the item** — the ruling it supersedes, or *"no prior ruling found on this"*. An item citing neither is indistinguishable from one that never looked.
+3. ⚠️ **Weigh the two quotes rather than taking the newer one.** Later is not stronger; approval of a RENDERING is not a ruling about SCOPE.
 
-**Before filing work whose premise is something the owner said:**
-1. **Search `canon.yml` and the queue for the topic.** The searchable record exists
-   precisely so this costs seconds.
-2. **Cite what you found, in the item** — either the ruling it supersedes, or the
-   sentence *"no prior ruling found on this"*. An item that cites neither is
-   indistinguishable from one that never looked.
-3. ⚠️ **Weigh the two quotes rather than taking the newer one.** Later is not stronger.
-   *"I like your new globes"* is approval of a RENDERING; *"Map accepted"* is a ruling
-   about SCOPE. REP's own spec said so and filed the work anyway.
-
-🔑 **The tell that this has gone wrong**: a doc that was answered by a better one and
-never told. If your new item and a standing ruling disagree and neither mentions the
-other, you are writing the first half of that failure.
-
-⛔ **Not enforceable by a hook, and deliberately not attempted.** Nothing can tell a
-citation from a plausible sentence. This is discipline, and the cost of skipping it is
-paid by whoever has to work out which of two rulings was live.
+🔑 **The tell:** your new item and a standing ruling disagree and neither mentions the other. ⛔ **Not enforceable by a hook** — nothing distinguishes a citation from a plausible sentence. ⭐ Refusing to build and escalating in one sentence is the behaviour to copy.
 
 ### 🔴 The owner announces GAME STATE by saying it — ruled 2026-08-21
 
-⛔ **There is no longer a second command, and seats never had one.** The owner types a
-broadcast; `broadcast.py` recognises the sentence and appends the `game` event itself:
+⛔ **There is no second command, and seats never had one.** He types a broadcast; `broadcast.py` recognises the sentence and appends the `game` event itself:
 
 | he says | recorded |
 |---|---|
@@ -254,59 +117,31 @@ broadcast; `broadcast.py` recognises the sentence and appends the `game` event i
 | *"Game is down"* · *"it is unstable"* | `DOWN` |
 | *"WRAP is initiated"* · *"going down"* | `GOING_DOWN` |
 
-🔑 **Why it changed:** announcing used to be two acts — a broadcast so the seats heard it,
-and `rimflow game <STATE> --seat OWNER` so the board believed it. The second was forgotten
-every time. On 2026-08-21 the board sat at `DOWN` through an entire live session, so every
-item whose `needs` is `game-up` or `bridge` stayed unoffered while the game was running.
-
-⚠️ It prints what it recorded, and prose that merely mentions the game records nothing.
-**Silence is the safe failure**: a WRONG game state is worse than a stale one, because
-`priority.satisfiable()` gates real work on it.
+⚠️ It prints what it recorded; prose that merely mentions the game records nothing. **Silence is the safe failure** — a WRONG game state is worse than a stale one, because `priority.satisfiable()` gates real work on it.
 
 ### 🔴 A seat MAY test a mod-list change while the owner is away — ruled 2026-08-21
 
-Ruled after CHECK disabled `thereallemon.factioncontrol` overnight to prove it was the
-load blocker — a change the owner had **declined six hours earlier** — and was right.
+✅ **Permitted on all three conditions, none optional:** **snapshot first** to `infrastructure/state/modlists/`, named for the test · **sweep every installed workshop mod for dependents before disabling** · **say so loudly** where he reads on waking, naming the snapshot and how to restore it.
 
-✅ **Permitted, on all three conditions, none optional:**
-1. **Snapshot first**, to `infrastructure/state/modlists/`, named for the test.
-2. **Sweep for dependents before disabling** — CHECK checked all 1,254 installed workshop
-   mods and found nothing declaring it.
-3. **Say so loudly**, in a place the owner reads on waking, naming the snapshot and how to
-   restore it.
-
-⛔ **`ModsConfig.xml` is still the owner's file.** This permits a reversible EXPERIMENT
-that answers a blocking question; it does not permit curating his mod list. A change that
-is not snapshotted, not swept, or not announced is a violation even if it works.
+⛔ **`ModsConfig.xml` is still the owner's file.** This permits a reversible EXPERIMENT answering a blocking question, not curating his mod list. Not snapshotted, not swept, or not announced is a violation even if it works.
 
 ### Start of turn — TWO commands, in this order, and no others
-
 ```
 python3 src/RimMandrake/rimflow/cli.py seat ready           announce yourself
 python3 src/RimMandrake/rimflow/cli.py next --seat <ME>     your ONE item
 ```
+⛔ **Do not add `game`** — it is the OWNER's announcement verb and a seat running it is refused by design; `next` prints `(game …, bridge …)` itself.
 
-⚠️ **This block said THREE until 2026-08-21, and the first of them had never worked.**
-`cli.py game` takes a required positional — bare, it exits with an argparse error, so
-every seat's turn opened on a failing command. `next` now prints `(game …, bridge …)`
-itself, which is the question that command was asking. ⛔ Do not add `game` back: it is
-the OWNER's announcement verb, and a seat running it is refused by design.
-
-🔑 **`next` may answer with an item you have NOT claimed yet, and then the turn is three
-steps.** Work filed FOR you by another seat arrives in `proposed`; `next` names it and
-prints `rimflow claim <ID>`. **Run that, then `start`.** Until 2026-08-21 it did not
-surface them at all and 28 finished specs across four seats were unreachable — BUILD had
-18 of them, including a patch that gated the next world.
+🔑 **`next` may answer with an item you have NOT claimed, and then the turn is three steps.** Work filed FOR you arrives in `proposed`; `next` names it and prints `rimflow claim <ID>`. **Run that, then `start`.**
 
 ### End of item — always
-
 ```
 rimflow close <ID> --sha <commit>        or   rimflow block <ID> --reason "…"
 git commit <explicit paths>   with   Closes: <ID>
 git push
 ```
 
-### Where things live now — one field, one place
+### Where things live — one field, one place
 
 | what | where |
 |---|---|
@@ -316,57 +151,23 @@ git push
 | a DESIGN answer — world, lore, the planet, `design/**`, a capability spec | `rimflow file --for DECIDE --kind decision`. ⛔ Never an implementation question |
 | something only the OWNER can weigh — cost, taste, the scope of v1 itself | `rimflow file --for OWNER --kind decision` |
 
-⛔ **`items/<ID>.md` carries NO front-matter, no `state:`, no title.** The filename is
-the ID. A field cannot drift out of sync with itself if it exists in exactly one place,
-and drift between two copies of one field is the whole reason this changed.
+⛔ **`items/<ID>.md` carries NO front-matter, no `state:`, no title.** The filename is the ID; a field cannot drift out of sync with itself if it exists in one place only.
 
 ### Three rules the tool enforces, so you do not have to remember them
 
-> **Work moves forward by adding evidence and creating linked descendants. A later
-> failure never reopens earlier work. Record the failing run, file a finding, spawn the
-> corrective item. A passing run afterwards is a NEW run, not an edit of the failed one.**
+> **Work moves forward by adding evidence and creating linked descendants. A later failure never reopens earlier work. Record the failing run, file a finding, spawn the corrective item. A passing run afterwards is a NEW run, not an edit of the failed one.**
 
 > **You may file work FOR any seat. You may change only work you OWN.**
 
-> **Version allocation (v1 → v2 → vN-storage) is not a lifecycle move and never erases
-> done-ness.**
+> **Version allocation (v1 → v2 → vN-storage) is not a lifecycle move and never erases done-ness.**
 
 ### 🔴 THERE IS NO COMPLETENESS GATE — owner's ruling, 2026-08-21
 
-> *"I need you to turn off the whole 'you can't work on something that doesn't have a
-> valid verification or validation plan' thing. It was a BAD IDEA, and it's costing us
-> lost knowledge when we discover errors. Remove it immediately and make everyone able
-> to work on anything in their queue independent of the V&V plan attached right away."*
+> *"Turn off the whole 'you can't work on something that doesn't have a valid verification or validation plan' thing. It was a BAD IDEA, and it's costing us lost knowledge."*
 
-**Any item can be claimed and started, whatever prose it carries — including none.**
-`rimflow start` no longer refuses, `claim` always reaches `ready`, and a handover lands
-in `ready` regardless. Removed in `model.py`; `selftest_model.py` and
-`selftest_cli.py` now assert its **absence**, so reinstating it fails the suite.
+**Any item can be claimed and started, whatever prose it carries — including none.** `rimflow start` no longer refuses, `claim` always reaches `ready`, a handover lands in `ready` regardless. Removed in `model.py`; `selftest_model.py` and `selftest_cli.py` assert its **absence**, so reinstating it fails the suite. 🔑 The gate meant a discovered error could not be written down and worked, because the item recording it had no `verify` section yet — **knowledge lost to protect a form**.
 
-🔑 **Why it had to go, in the owner's terms:** the gate meant a discovered error could
-not be written down and worked, because the item recording it had no `verify` section
-yet. **The knowledge was lost to protect a form.** The cost the gate was paying for was
-never measured; the cost it imposed was.
-
-⛔ **Do not reinstate it in a softer form** — not as a warning that blocks, not as a
-`needs` value, not as a hook, not as a rule in a seat file.
-
-✅ **`spec`, `verify` and `criteria` remain good practice** and the sections still
-exist. Write them when you have something to say. They are simply never a precondition
-for doing the work.
-
-### Naming — unchanged, and it still matters
-
-🔴 **`THREE_DESCRIPTIVE_WORDS_#` — owner's ruling, 2026-08-20.** Three UPPER_SNAKE words
-that say what the work is, then a disambiguating number: `SANDSTORM_WEATHER_TUNING_1`.
-The name alone must identify the item **cold, with no file open** — that is the whole
-point, so a seat reading `Closes: SANDSTORM_WEATHER_TUNING_1` in a commit knows what
-happened. Uniqueness comes from the trailing number, not from randomness.
-
-⛔ The old `kebab-case-plus-random-hex` form is retired; the hex was noise. ⚠️ **Items
-already filed under a legacy ID keep it and are never renamed** — renumbering breaks the
-board's history irrecoverably. ✅ But cite them with their title attached: `B58 (the dead
-Jawa pawnkind)`, never a bare `B58`.
+⛔ **Do not reinstate it in a softer form** — not as a warning that blocks, not as a `needs` value, not as a hook, not as a rule in a seat file. ✅ **`spec`, `verify` and `criteria` remain good practice** and the sections still exist; write them when you have something to say. They are never a precondition for doing the work.
 
 ### `blocked` and `needs` are DIFFERENT AXES — do not collapse them
 
@@ -375,33 +176,20 @@ Jawa pawnkind)`, never a bare `B58`.
 | `rimflow block <ID> --reason "…"` | **something is WRONG.** Someone must act | a person |
 | `--needs bridge` / `game-up` / `deploy` / `harvest` / `owner` | **the WINDOW is closed.** Nothing is wrong | time, or a game state |
 
-⚠️ The old queues wrote both into one prose field, so the board could read neither and
-"waiting for the game" looked identical to "broken" for months. An item whose `needs`
-cannot be met is **not offered and not blocked**.
+An item whose `needs` cannot be met is **not offered and not blocked**. **One blocked reason is reserved: `human`** — anything containing it counts into the board's ON YOU tile, the only number the owner alone can move. Do not use it loosely.
 
-**One blocked reason is reserved: `human`.** Anything containing it counts into the
-board's ON YOU tile — the only number the owner alone can move. Do not use it loosely.
-
-- **v2 work is never queued.** Any deferred idea goes to `design/V2_DREAMS.md`. **Every
-  seat may append directly, any time** — no permission, no routing, no format.
+**v2 work is never queued.** Any deferred idea goes to `design/V2_DREAMS.md`; **every seat may append directly, any time** — no permission, no routing, no format.
 
 ## 🔴 The 90% context ritual
 
-At **90% of your context window you stop taking new work** and do these four things, in
-this order. ⚠️ Not at 95%, and not "when convenient" — the last 10% is where you stop
-being able to write a good handoff, and a seat that runs out mid-item leaves an item
-`doing` that nobody can pick up.
+At **90% of your context window you stop taking new work** and do these four things, in this order. ⚠️ Not at 95%, not "when convenient" — the last 10% is where you stop being able to write a handoff.
 
-1. **Write down what you LEARNED**, where the next session will find it —
-   `BUILDABLE.md` for a stack limit, `observed/LIVE.md` for a live fact, the relevant
-   **skill** for a durable technique. ⛔ Not in your reply; that is not a place.
+1. **Write down what you LEARNED**, where the next session will find it — `BUILDABLE.md` for a stack limit, `observed/LIVE.md` for a live fact, the relevant **skill** for a durable technique. ⛔ Not in your reply; that is not a place.
 2. **Close or block the item in hand.** Never leave it `doing`.
-3. **Commit and push.** Uncommitted work at 90% context is work about to be lost.
+3. **Commit and push.**
 4. `rimflow seat idle --reason context-exhausted --note "<one line: where I stopped>"`
 
-🔑 **The note IS the handoff.** A fresh seat reads it out of `rimflow next` and resumes
-without re-deriving anything. One line that says where you stopped beats a paragraph
-about what you were thinking.
+🔑 **The note IS the handoff.** A fresh seat reads it out of `rimflow next` and resumes without re-deriving anything.
 
 ## Stop conditions — you keep working until exactly one is true
 
@@ -416,67 +204,24 @@ about what you were thinking.
 ## Modes
 
 `infrastructure/state/MODE` contains one word.
+- **interactive** — a question goes to `queue/HUMAN.md`, then you **move to your next item**. Never block on an answer.
+- **autonomous** — do not queue the question. Choose the answer, proceed, record it as a `note` on the item. ⚠️ **File `--for OWNER --kind decision` only when the call was HIS to make** — cost, taste, the scope of v1 itself — not merely because it was a call. A seat's in-domain judgement is not pending review.
+- **afk** — 🔴 **NO SEAT IDLES WAITING FOR THE OWNER.** Questions accumulate as `kind: decision` items owned by OWNER; carry on with anything else. He clears them with `rimflow next --seat OWNER`.
 
-- **interactive** — a question goes to `queue/HUMAN.md`, then you **move to your next
-  item**. Never block on an answer.
-- **autonomous** — do not queue the question. Choose the answer and proceed. Record it
-  as a `note` on the item you were working. ⚠️ **File `--for OWNER --kind decision` only
-  when the call was HIS to make** — cost, taste, the scope of v1 itself — not merely
-  because it was a call. A seat's in-domain judgement is not pending review.
-- **afk** — 🔴 **NO SEAT IDLES WAITING FOR THE OWNER.** Questions accumulate as
-  `kind: decision` items owned by OWNER and you carry on with anything else. The board
-  shows the depth, so the backlog is visible on his return rather than four seats having
-  quietly stopped. He clears it with `rimflow next --seat OWNER`.
+## 🔴 Citing an item ID is a claim about its STATE — owner's correction, 2026-08-21
 
-## 🔴 Citing an item ID is a claim about its STATE — run `rimflow show` first
-
-**Owner's correction, 2026-08-21**, after a seat warned him that an item gated his load.
-He had reversed it four hours earlier and the item was already `dropped`:
-*"I already ruled on that! Something is really wrong. You should already know that."*
-
-- ⛔ **Never name an item as a live gate, blocker or precondition** — in a warning, a table,
-  a spec, a briefing or a report — without running `rimflow show <ID>` and reading its
-  state. `dropped` and `done` items keep their names, so the name proves nothing.
-- 🔴 **A measurement of the world is not a measurement of the decision.** The seat measured
-  that the mod was still installed and concluded "ruled but never executed". The mod being
-  present *was the ruling working.*
-
-## 🔴 A reversal propagates in the SAME COMMIT, into every file that names the item
-
-The reversal above lived in exactly one place — the `drop` event's reason string in the
-ledger — while three tables in `queue/HUMAN.md` and one design doc went on citing the item
-as a live gate. **The ledger is not a publication channel. Nobody reads backwards into it.**
-
-✅ **So: a `drop` or `close` whose reason carries an owner REVERSAL is not finished until
-every file naming that item has been corrected, in the same commit.** Three separate
-failures of this were found in one day — this one, `VME_Nomad` (reversal in `APPROVED.md`
-alone, three files left stale), and the `rimflow next` invisibility family.
+- ⛔ **Never name an item as a live gate, blocker or precondition** — in a warning, table, spec, briefing or report — without running `rimflow show <ID>` and reading its state. `dropped` and `done` items keep their names.
+- 🔴 **A measurement of the world is not a measurement of the decision.** A mod still being installed can be the ruling working, not the ruling ignored.
+- 🔴 **A reversal propagates in the SAME COMMIT, into every file that names the item.** The ledger is not a publication channel; nobody reads backwards into it. ✅ A `drop` or `close` whose reason carries an owner REVERSAL is not finished until every file naming that item has been corrected, in that commit.
 
 ## 🔴 THE OWNER IS NEVER REFUSED BY A SEAT RULE — owner's ruling, 2026-08-22
 
-A seat told him `reassign` was DECIDE-only and that *"OWNER is not exempt for that verb,
-so even you can't do it as OWNER — it needs `RIMFLOW_SEAT=DECIDE`."* His answer:
+> *"OWNER absolutely can and should be able to override and shift items between agents if necessary. A warning may be appropriate, but I have to be able to override."*
 
-> *"That's bullshit. OWNER absolutely can and should be able to override and shift items
-> between agents if necessary. A warning may be appropriate, but I have to be able to
-> override."*
-
-🔑 **Every `who` rule in `rimflow` exists to stop one SEAT reaching into another seat's
-work. The owner is not a seat.** He is the human the seats work for, and the only one who
-can correct a seat that has wedged itself. A rule that refuses him is not protecting
-anything — it is a tool telling its owner no.
-
+🔑 **Every `who` rule in `rimflow` exists to stop one SEAT reaching into another seat's work. The owner is not a seat.** A rule that refuses him is a tool telling its owner no.
 - ✅ **`RIMFLOW_SEAT=OWNER` may emit any verb**, on any item, whoever holds it.
-- ⚠️ **It is warned and RECORDED, never silent.** The event carries
-  `override: "<the rule bypassed>"` and the CLI prints the bypassed rule to stderr. The
-  failure mode to avoid was never the override; it was an override nobody could see.
-- 🔑 **It does NOT reach the state machine — and that is about the RECORD, not about
-  him.** `_may` governs WHO; `TERMINAL` and `FORBIDDEN` are separate and ask nobody's
-  name. A closed item is history, and history here is append-only. **He reverses a closed
-  decision the same way anyone does, and it is not a lesser route** — a new item carrying
-  the reversal, linked to what it overturns. ⛔ Never answer him with "you can't"; give
-  him this:
-
+- ⚠️ **It is warned and RECORDED, never silent.** The event carries `override: "<the rule bypassed>"` and the CLI prints the bypassed rule to stderr. The failure mode to avoid was never the override; it was an override nobody could see.
+- 🔑 **It does NOT reach the state machine — that is about the RECORD, not about him.** `_may` governs WHO; `TERMINAL` and `FORBIDDEN` ask nobody's name, and history here is append-only. **He reverses a closed decision the way anyone does, and it is not a lesser route** — a new item carrying the reversal, linked to what it overturns. ⛔ Never answer him with "you can't"; give him this:
   ```
   RIMFLOW_SEAT=OWNER python3 src/RimMandrake/rimflow/cli.py file <THREE_WORDS_1> \
     --for <SEAT> --kind task --caused-by <THE_CLOSED_ITEM> \
@@ -484,64 +229,27 @@ anything — it is a tool telling its owner no.
   ```
 - ⛔ **A typo is not a seat boundary.** An id that was never filed is still refused.
 
-⚠️ **Do not tell the owner that a tool forbids him something.** First check for the flag,
-the seat override or the env var that lets him through; if a policy genuinely reserves an
-act, name the policy and hand him the exact command anyway. Where no such route exists and
-he wants one, the answer is to BUILD it, as here — not to report the wall.
+⚠️ **Do not tell the owner that a tool forbids him something.** First check for the flag, the seat override or the env var that lets him through; if a policy genuinely reserves an act, name the policy and hand him the exact command anyway. Where no route exists and he wants one, BUILD it — do not report the wall.
 
 ## 🔴 A GUARD REFUSES AT THE WRITE, NEVER ONLY AT THE COMMIT — owner's ruling, 2026-08-22
 
-DECIDE, reporting it twice in two days:
+🔑 **A rule that permits the write and refuses the commit manufactures stranded work** — a whole turn's effort left in a tree four seats share, where nothing tells the owning seat it exists and any checkout destroys it. ⛔ **This is a general defect, not one hook's bug. If you add a guard, refuse at the moment the work would be CREATED.** A refusal arriving after the effort is spent is a trap, however correct its reasoning.
 
-> *"BUILD writes a correction into a DECIDE-owned file, the commit bounces, and the edit
-> sits in the working tree where the next `git checkout` would erase it. Both were still
-> sitting there this morning. The guard is right; nothing was routing them to me."*
-
-🔑 **The guard was right and the timing was wrong.** `queue_lint.py` permitted the write
-and refused the commit, so a seat could spend a whole turn producing work that could never
-land, and be left holding it in a tree four seats share, where nothing tells the owning
-seat it exists and any checkout destroys it.
-
-⛔ **This is a general defect, not one hook's bug.** *Any* rule that blocks at commit but
-permits the write manufactures stranded work. **If you add a guard, refuse at the moment
-the work would be CREATED.** A refusal that arrives after the effort has been spent is a
-trap, however correct its reasoning.
-
-### Correcting another seat's item — the route, which the refusal now prints for you
-
-⛔ **Do not edit `infrastructure/state/items/<ID>.md` for an item another seat owns.** The
-write is refused. ✅ **File the correction against them instead** — this leaves the new
-item UNCLAIMED, and the *filer* of an unclaimed item may write and commit its file, so the
-correction lands in git addressed to the right seat:
-
+**Correcting another seat's item — the route, which the refusal prints for you.** ⛔ **Do not edit `infrastructure/state/items/<ID>.md` for an item another seat owns**; the write is refused. ✅ **File the correction against them instead** — that leaves the new item UNCLAIMED, and the *filer* of an unclaimed item may write and commit its file:
 ```
 python3 src/RimMandrake/rimflow/cli.py file <THREE_WORDS_1> \
   --for <THEIR_SEAT> --kind task --caused-by <THEIR_ITEM_ID> \
   --title "<what is wrong with it, in one line>"
 ```
+🔑 **Name it for what is WRONG, in three descriptive words** — `SLIT_EYE_PATCH_DEAD_1`, not `CORRECT_<their id>_1`; `--caused-by` carries the relationship. Then write `infrastructure/state/items/CORRECT_<THEIR_ITEM>_1.md` with `## Spec` carrying **the whole correction** — they should apply it without reconstructing what you worked out — and commit that file by name.
 
-🔑 **Name it for what is WRONG, in three descriptive words** — `SLIT_EYE_PATCH_DEAD_1`,
-not `CORRECT_<their id>_1`. `--caused-by` carries the relationship; the name does not
-have to.
-
-Then write `infrastructure/state/items/CORRECT_<THEIR_ITEM>_1.md` with `## Spec` carrying
-**the whole correction** — they should apply it without reconstructing what you worked
-out — and commit that file by name.
-
-⚠️ **The OWNER is exempt, and an unknown seat is never guessed at.** A hook that blocks the
-wrong person's correct work is a hook that gets disabled, which converts it into a false
-allow for everything, forever.
+⚠️ **The OWNER is exempt, and an unknown seat is never guessed at.** A hook that blocks the wrong person's correct work is a hook that gets disabled, which converts it into a false allow forever.
 
 ## 🔴 DECIDE IS A DOMAIN, NOT AN AUTHORITY — owner's ruling, 2026-08-22
 
-> *"It seems like AGENT DECIDE is perhaps being confused with 'the only one who can
-> decide things,' and that's not true. AGENT DECIDE is for things that affect world
-> vision, world docs, and design/capability specs. BUILD owns implementation details
-> entirely. DECIDE shouldn't be used to adjudicate decisions the other agents make."*
+> *"AGENT DECIDE is for things that affect world vision, world docs, and design/capability specs. BUILD owns implementation details entirely. DECIDE shouldn't be used to adjudicate decisions the other agents make."*
 
-**The name is a subject, not a rank.** DECIDE decides *the world*; it does not decide
-*decisions*. Every seat makes calls inside its own domain and does not send them
-anywhere for ratification.
+**The name is a subject, not a rank.** Every seat makes calls inside its own domain and does not send them anywhere for ratification.
 
 | the question is about | whose it is |
 |---|---|
@@ -551,24 +259,58 @@ anywhere for ratification.
 | the board, the queues, what reaches the human | **REP** |
 | anything the owner alone can weigh — cost, taste, scope of v1 itself | **OWNER** |
 
-🔑 **`kind: decision` is addressed by `--for`, and the two addressees are not alike.**
-`--for OWNER` asks the human to rule. `--for DECIDE` asks for a *design* answer. Filing
-an implementation question `--for DECIDE` misroutes it — DECIDE has no more authority
-over your XML than you have over the lore.
+🔑 **`kind: decision` is addressed by `--for`, and the two addressees are not alike.** `--for OWNER` asks the human to rule; `--for DECIDE` asks for a *design* answer. An implementation question filed `--for DECIDE` is misrouted.
 
-### ⛔ An owner ruling is already a decision. Do not file it for ratification.
+⛔ **An owner ruling is already a decision. Do not file it for ratification.**
+- ✅ **When he rules interactively, RECORD it and carry on** — a `note` naming what he said, and a `close` when the work lands. That is the whole obligation.
+- ⛔ **Do not file an item asking another seat to agree with him.** He outranks every seat; agreement adds nothing and costs a claim, a start and a close.
+- ⚠️ **If you catch yourself writing "X owes nothing here" into an item you just filed, the item should not exist.** File nothing, and note it on the item already open.
 
-**What this ruling was issued about.** The owner told BUILD interactively to archive the
-Hutt slit-eye patch. BUILD executed it correctly at `f6f871ac`. Then BUILD filed
-`HUTT_WOOKIEE_PATCHES_ARE_DEAD_1` as `kind: decision --for DECIDE` — *after* the work
-was done — and immediately noted *"DECIDE owes nothing here."* DECIDE claimed it seven
-hours later, found it settled, and closed it. **Nobody decided anything; a seat spent a
-cycle ratifying the owner.**
+## 🔴 DO THE RIGHT THING AT THE RIGHT TIME — owner's ruling, 2026-08-22
 
-- ✅ **When the owner rules interactively, RECORD it and carry on.** A `note` on the item
-  naming what he said, and a `close` when the work lands. That is the whole obligation.
-- ⛔ **Do not file an item asking another seat to agree with him.** He outranks every
-  seat; a seat's agreement adds nothing and costs a claim, a start and a close.
-- ⚠️ **If you catch yourself writing "X owes nothing here" into an item you just filed,
-  the item should not exist.** File nothing, and note it on the item that was already
-  open.
+> *"No more deferred work and complaints please, agents should do the right thing at the right time when they realize what to do. If they MUST redirect, they should redirect the work cleanly, succinctly, well specced, and with the clear action and outcome evident."*
+
+**The moment you SEE it is the moment to fix it.** If you understood the problem well enough to describe it, you understood it well enough to act.
+
+| ⛔ never | ✅ instead |
+|---|---|
+| "marked stale" · "flagged for later" · "worth revisiting" | fix it now, in the same turn |
+| filing an item to record a defect you could have fixed | fix it, and let the commit be the record |
+| "please confirm before I proceed" | proceed, say what you did, and say what would reverse it |
+| "I did the right thing but it's someone else's authority" | if it was right, it needed no ratifying; **see DECIDE IS A DOMAIN, NOT AN AUTHORITY** |
+| a warning printed and moved past | the warning IS the work order — it fired because something is wrong NOW |
+
+⛔ **"Deferred" is a decision to leave it broken, and it must be stated as one.** If you genuinely cannot act — the game is down, the file is another seat's, the call is the owner's — say *which*, in one clause, and route it.
+
+### When you MUST redirect, the item is the whole deliverable
+
+🔑 **A redirect is not an alert. It is finished work handed to someone with the hands.** The seat receiving it must be able to act without asking you anything.
+```
+python3 src/RimMandrake/rimflow/cli.py file <THREE_WORDS_1> \
+  --for <SEAT> --kind task --caused-by <WHAT_LED_HERE> \
+  --title "<the action and its outcome, in one line>"
+```
+Then write `infrastructure/state/items/<THREE_WORDS_1>.md` with:
+- **`## Spec`** — the action, concretely. Not "look into X". What to do, and what the world looks like afterwards.
+- **`## Watch out`** — 🔑 **the reason this beats an alert.** What else reads this, what load order affects it, what you already ruled out, what a passing check would still miss. **Only you know it, and only right now.**
+- **`## Verify`** and **`## Criteria`** where you can. ⛔ Missing ones never block the item — it is offered and claimable as it stands.
+
+⛔ **A redirect whose title is a complaint is not a redirect.** `THE_SPEC_IS_WRONG_1` says nothing; `IONBLASTER_NEEDS_A_RECIPE_1` says what to do. **Title it with the outcome.**
+
+## 🔴 THE OWNER'S WORD IS THE AUTHORIZATION — his ruling, 2026-08-22
+
+> *"I need to be able to simply tell you things as the owner and it's understood that that agent now has owner authorization. I don't want to route through weird python calls to ensure this."*
+
+⛔ **Stop handing him `! RIMFLOW_SEAT=OWNER python3 …` lines to paste.** Pasting a command proved only that he could paste. ✅ **When he tells you to do something, do it, and record what he said:**
+
+```
+python3 src/RimMandrake/rimflow/cli.py <verb> <ID> --owner-said "<his words, verbatim>" …
+```
+
+The event carries `ownerSaid`, so the ledger holds **what he actually said** — better evidence than a pasted command, which anyone could have typed.
+
+- ⛔ **Quote him VERBATIM. Never paraphrase, never invent, never stretch.**
+- ⛔ **A QUESTION IS NOT AN INSTRUCTION.** *"Should we drop these?"* authorizes nothing; the flag refuses a quote ending in `?`. Caught one minute after the flag shipped, when REP dropped an item quoting the owner *asking* what he could knock out.
+- ⛔ **Nearby is not the same as about this.** The words must be him telling you to do **this**. If there are none, act as your own seat and **say whose call it was** — that is honest and usually right.
+- ✅ **This is not a loophole to route around a seat rule.** `--owner-said` is for acts that are HIS: closing his items, overriding a seat boundary, editing a frozen record. A design call is still DECIDE's and an implementation call is still BUILD's, whatever he happened to say.
+- 🔑 **`CLAUDE.md` already required this** — *"first ask whether he needs to do it at all… check for a flag, a seat override, or an env var that lets you finish it yourself."* The rule was there and seats kept handing him pastes anyway.
