@@ -290,12 +290,17 @@ and not a new mystery. ⛔ It is NOT proof — nobody has attributed the 128 lin
 ⛔ **`B59 MEGAFAUNA YIELDS` is UNMEASURED, not passed.** A no-op patch logs nothing, so
 the log cannot answer it; it was settled on screen only. Do not read it as green.
 
-⚠️ **THE EVIDENCE FILE IS MISSING.** The verify says *"saved to
-`observed/2026-08-21_harvest_2244load.txt`"* and **that file is not on disk** — checked
-2026-08-22. The table above is transcribed from the `verify` event's own `evidence`
-string, which is the surviving record. 🔑 A `verify` whose evidence pointer is dead is
-still evidence, but it cannot be re-read or re-counted — treat every number here as
-quoted, not as re-derivable.
+✅ **THE EVIDENCE IS ON DISK AND RE-READABLE:** `observed/2026-08-21_harvest_2244load.txt`
+(5,604 bytes, 2026-08-21 16:11). Its lines 16 and 18 read
+`RED DEFS DISCARDED 103 ABOVE baseline 2` and
+`RED cross-reference (def loader) 128 ABOVE baseline 25`, which is where the table above
+comes from — measured output, re-countable, not quoted from memory.
+
+⚠️ **THERE ARE TWO `observed/` DIRECTORIES AND THEY ARE DIFFERENT PLACES.** Harvests and
+saved logs live at the **repo root**, `observed/`; per-experiment output lives under
+`infrastructure/state/observed/`. REP searched only the second on 2026-08-22, declared
+this evidence missing, and had to correct it — **check both before calling any evidence
+gone.** The ledger's evidence strings are written relative to the repo root.
 
 ---
 

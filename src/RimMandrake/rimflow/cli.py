@@ -55,6 +55,7 @@ notes stale is not grounds for destroying them, and the listing is the whole pro
 """
 import argparse
 import os
+import re
 import subprocess
 import sys
 
@@ -624,8 +625,50 @@ def cmd_close(args, seat):
     return 0
 
 
+_EVIDENCE_PATH_RE = re.compile(
+    r"(?:observed|infrastructure|src|design|world|skills)[\w./-]*"
+    r"\.(?:txt|md|json|jsonl|csv|html|log|xml|png)")
+
+
+def _dead_evidence(evidence):
+    """-> paths named in `evidence` that are not on disk.
+
+    🔴 A VERIFY IS ONLY WORTH ITS EVIDENCE, and a pointer that does not resolve is not
+    evidence — it is a claim. Measured 2026-08-22: nine `verify` events cite
+    `observed/2026-08-21_Player.log`, which has never existed at that path (logs live in
+    `observed/logs/` under a different name), and the 22:44 harvest output they were
+    graded from is gone from disk entirely. Those numbers can now only be QUOTED, never
+    re-counted, and nothing said so at the time.
+
+    ⚠️ Checked HERE because this is the one moment it is cheap: the seat still has the
+    file open and can save it in seconds. An hour later the log has rotated.
+
+    🔴 TWO `observed/` DIRECTORIES, AND THEY ARE DIFFERENT PLACES. Harvests and saved
+    logs live at the REPO ROOT (`observed/`); per-experiment output lives under
+    `infrastructure/state/observed/`. Searching only the second is how REP wrongly
+    declared a live harvest file missing on 2026-08-22 — both roots are tried below,
+    and a path is only dead when neither resolves.
+    """
+    out = []
+    for m in sorted(set(_EVIDENCE_PATH_RE.findall(evidence or ""))):
+        if not any(os.path.exists(c) for c in
+                   (m, os.path.join(model.ROOT, m),
+                    os.path.join(model.ROOT, "infrastructure", "state", m))):
+            out.append(m)
+    return out
+
+
 def cmd_verify(args, seat):
     _, w = load()
+    dead = _dead_evidence(args.evidence)
+    if dead:
+        sys.stderr.write(
+            "\u26a0\ufe0f  EVIDENCE THAT DOES NOT RESOLVE — recorded anyway, but say so:\n"
+            + "".join("      %s\n" % d for d in dead)
+            + "   A pointer nobody can follow is a claim, not evidence. \U0001f511 Save "
+              "the file NOW while\n   you still have it — Player.log rotates on the next "
+              "launch and is then gone for\n   good. If it truly cannot be kept, put the "
+              "numbers themselves in --evidence so\n   they survive without it.\n")
     _emit({"seat": seat, "event": "verify", "id": args.id, "result": args.result,
            "config": args.config, "evidence": args.evidence,
            "sha": args.sha or head_sha()}, w, quiet=True)
