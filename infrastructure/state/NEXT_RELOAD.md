@@ -105,6 +105,12 @@
 >   no-opped.
 > - A species in the -0.20 band (`RimMandrakeBothan`, `RimMandrakeSullustan`, …) reads
 >   **0.80** — our own `RimMandrake_BodySizeGene_small`, mechanical since `1c3a673f`.
+> - ⚠️ **BOTH Jawa xenotypes must read 0.65.** The Star Wars pack ships its own
+>   `RimMandrakeJawa` beside our `MandrakeJawa`, and until `1c3a673f` only ours was
+>   patched — two Jawa standing side by side at different sizes. If they differ, the
+>   `RimMandrakeJawa` operation in `BodySizeIsReal.xml` did not match.
+> - The small genes also got their metabolism (`_small` +1 → **+3**, `_smaller` +2 → **+5**),
+>   so small species genuinely eat less. That shows in the gene assembler, not on a pawn.
 > - ⛔ **Nothing may read 2.00 or over.** That is Big and Small's giant-weapon threshold
 >   and anything at or above it silently gains the 23 `BS_GiantWeapon` weapons. The
 >   ceiling is `HalfJotunFrame` at 1.75 on purpose.
