@@ -2033,3 +2033,82 @@ look like one — it is the visual the cold-nursery pillar is enforced by.
 
 🔑 Pairs with `JAWA_RAG_NEST_1`; the nest and the egg should be designed together or the
 new nest will hold somebody else's egg.
+
+## BESTIARY_MADE_REAL_1 Assign every animal to a biome, re-temperature it, rename it thematically and redraw it
+
+**Owner, 2026-08-22:** *"assign all the animals to all the biomes, re-evaluate their
+temperatures, rename them thematically, and improve their graphics. A VERY big job, but one
+with huge payoff."*
+
+### Why the payoff is real — measured, 2026-08-22, against the 578-mod dump
+
+| | |
+|---|---|
+| animal `ThingDef`s installed (intelligence `Animal`) | **2,042** |
+| that can spawn **anywhere** on Ash'karr | **377** |
+| 🔴 that reach **no biome at all** | **1,665 — 82% of what we ship** |
+| bestiary creatures named in `Alien_Bestiary.md` | 108 |
+| 🔴 of those actually **built** | **0** (`canon.yml > bestiary.built`) |
+
+⇒ **We are carrying four huge animal mods and using one fifth of one of them.** Star Wars
+Animal Collection alone is 320 defs; Alpha Animals 282; Vanilla Genetics Expanded 279;
+Jurassic 262.
+
+### The distribution is worse than the total, and this is the part that shows in play
+
+Spawnable animals per biome, against tiles on the planet:
+
+| tiles | biome | animals that can spawn | animalDensity |
+|---|---|---|---|
+| **4,703** | **`AB_RockyCrags`** — the biggest biome we have | 🔴 **14** | 1.8 |
+| 3,578 | `ExtremeDesert` | 100 | 0.1 |
+| 2,147 | `Desert` | 155 | 0.4 |
+| 2,138 | `AridShrubland` | 224 | 1.8 |
+| 1,939 | `AB_MycoticJungle` | 40 | 1.9 |
+| 1,721 | `Wasteland` | 28 | 0.1 |
+| 236 | `AB_MechanoidIntrusion` | 14 | 0.1 |
+
+🔑 **The largest biome on the planet has fourteen animals and a high density** — so the
+player meets the same fourteen creatures over and over across 21% of the world. That is the
+symptom worth fixing, and it is invisible in any single map.
+
+### 🔑 The mechanism, so nobody starts by inventing one
+**Every biome already LISTS all 1,024 candidate animals** — `BiomeDef.wildAnimals` is a full
+`BiomeAnimalRecord` table. **Assignment is a `commonality` number, and the overwhelming
+majority sit at `0`, meaning never.** ⇒ This job is not "add animals to biomes"; it is
+**re-weighting a table that already exists**, which is far more tractable than it sounds and
+is patchable in XML.
+⚠️ **Do not measure this by counting `wildAnimals` entries** — every biome returns 1,024 and
+the number is meaningless. Count entries with `commonality > 0`. A uniform count across
+wildly different biomes is the tell that you are measuring the wrong field.
+
+### The four passes, and they are genuinely separable
+
+1. **Assign** — set `commonality` per (animal, biome) so each biome fields a plausible cast.
+   The desert biomes and `AB_RockyCrags` are where the payoff is concentrated.
+2. **Re-temperature** — **1,015 of 2,042 animals carry no explicit `ComfyTemperatureMin`** and
+   inherit a default written for a temperate world. On a tidally-locked desert with a ruled
+   +14 °C terminator gradient, that default is wrong nearly everywhere. ⚠️ This one interacts
+   with the map: `ASHKARR_WORLD_DEFINITION.md` §2 owns the temperature model, and an animal
+   pass that disagrees with it will produce populations that die on arrival.
+3. **Rename** — the 108-creature `Alien_Bestiary.md` exists and **not one entry is built**.
+   This pass is what makes the setting feel authored rather than modded: a player should meet
+   a *dhakk-orr*, not a "Feralisk". Label patches, not new defs.
+4. **Redraw** — the largest and most deferrable. ⛔ **Gated on the standing art directive:**
+   art *fixing* is stopped until the owner personally verifies art is broken. This pass is
+   the owner's to authorise, creature by creature or in bulk, and must not be started off an
+   agent's judgement that a sprite looks wrong.
+
+### Sequencing
+**1 → 2 → 3 → 4**, and 1 and 2 must land together or the assignment ships animals that
+freeze or cook. 3 is independent and could be done at any time. 4 is last and separately
+authorised.
+
+⚠️ **v1 keeps what it has.** The 377 reachable animals are enough for a shipped campaign, and
+this is deliberately not a v1 item — but ⛔ **note that the world is frozen once**, so any
+part of this that touches **which animals exist in the savegame's world** has to be understood
+against that. Re-weighting `BiomeDef.wildAnimals` is read at map generation, not at worldgen,
+so it stays safe to do later — **verify that before relying on it.**
+
+🔑 Pairs with `biome_and_fauna_roster.md` and `fauna_placement.md`, which already hold design
+work for this and should be the starting point rather than a blank page.
