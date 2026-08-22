@@ -20,6 +20,7 @@ import os
 import sys
 import re
 import subprocess
+import threading
 import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -627,7 +628,17 @@ def bridge_probe():
             pass
 
 
-_MEASURED = {"at": 0.0, "v": None}
+_MEASURED = {"at": 0.0, "v": None, "busy": False}
+
+
+def _measure_refresh():
+    """Recompute in the background so no request ever waits on a reading."""
+    try:
+        _measure_now()
+    except Exception:
+        pass
+    finally:
+        _MEASURED["busy"] = False
 MEASURED_TTL = 5      # seconds; the page polls every 3
 
 
@@ -642,8 +653,26 @@ def measured():
     🔑 Freshness is not lost, it is DISCLOSED: every tile prints its own read age
     off `at`, so a cached value says how old it is rather than pretending.
     """
-    if _MEASURED["v"] is not None and time.time() - _MEASURED["at"] < MEASURED_TTL:
+    # ⭐ STALE-WHILE-REVALIDATE, not block-and-wait. Measured 2026-08-22 under
+    # load: with a 578-mod def build running on the same box, a cold `measured()`
+    # took over 20 SECONDS — PowerShell for the process list, git status over the
+    # 9p mount — and the board answered 000 to every poll. A monitoring page that
+    # goes dark exactly when the machine is busy is worse than no page.
+    # ⇒ Never block a request on the readings. Serve what we have, refresh behind
+    # it, and let each tile print its own age. UNMEASURED-until-first-read is the
+    # honest cold-start answer and the page renders it as such.
+    fresh = time.time() - _MEASURED["at"] < MEASURED_TTL
+    if _MEASURED["v"] is not None and fresh:
         return _MEASURED["v"]
+    if _MEASURED["v"] is not None:
+        if not _MEASURED.get("busy"):
+            _MEASURED["busy"] = True
+            threading.Thread(target=_measure_refresh, daemon=True).start()
+        return _MEASURED["v"]
+    return _measure_now()
+
+
+def _measure_now():
     now = time.time()
     procs, act = seat_processes(), seat_activity(now)
     rss = host().get("rimworld_gb")
@@ -837,6 +866,9 @@ def main():
         print(json.dumps(snapshot(), indent=1))
         return 0
     print("http://localhost:%d" % a.port)
+    # Warm the readings before the first request so a fresh server does not
+    # serve one 4-second page. Everything after it is stale-while-revalidate.
+    threading.Thread(target=_measure_refresh, daemon=True).start()
     HTTPServer(("0.0.0.0", a.port), H).serve_forever()
 
 
