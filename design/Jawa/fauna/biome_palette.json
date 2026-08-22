@@ -1,0 +1,1722 @@
+{
+ "_note": "Mean RGB over each terrain texture (fully transparent pixels dropped); biome colour = equal-weight mean of its terrains. Swatches are k-means (k=4) over pooled, equally-sampled pixels.",
+ "terrains": {
+  "BMT_Caverns/Terrains/Crystal": {
+   "rgb": [
+    91,
+    126,
+    155
+   ],
+   "hsv": [
+    207.4,
+    0.412,
+    0.607
+   ],
+   "source": "loose",
+   "hex": "#5b7e9b",
+   "file": "Crystal.png",
+   "rule": "bare"
+  },
+  "Terrain/Lava": {
+   "rgb": [
+    103,
+    19,
+    12
+   ],
+   "hsv": [
+    4.7,
+    0.883,
+    0.402
+   ],
+   "source": "bundle",
+   "hex": "#67130c",
+   "file": "lava.png",
+   "rule": "bare"
+  },
+  "Terrain/NuclearWaste": {
+   "rgb": [
+    86,
+    118,
+    19
+   ],
+   "hsv": [
+    79.6,
+    0.842,
+    0.463
+   ],
+   "source": "bundle",
+   "hex": "#567613",
+   "file": "nuclearwaste.png",
+   "rule": "bare"
+  },
+  "Terrain/PoisonSoil": {
+   "rgb": [
+    65,
+    62,
+    80
+   ],
+   "hsv": [
+    250.8,
+    0.228,
+    0.314
+   ],
+   "source": "bundle",
+   "hex": "#413e50",
+   "file": "poisonsoil.png",
+   "rule": "bare"
+  },
+  "Terrain/PoisonSoilRich": {
+   "rgb": [
+    50,
+    47,
+    63
+   ],
+   "hsv": [
+    250.8,
+    0.245,
+    0.246
+   ],
+   "source": "bundle",
+   "hex": "#322f3f",
+   "file": "poisonsoilrich.png",
+   "rule": "bare"
+  },
+  "Terrain/SavannaSoilRich": {
+   "rgb": [
+    64,
+    51,
+    41
+   ],
+   "hsv": [
+    26.2,
+    0.355,
+    0.25
+   ],
+   "source": "bundle",
+   "hex": "#403329",
+   "file": "savannasoilrich.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_BlackPebbles": {
+   "rgb": [
+    68,
+    65,
+    63
+   ],
+   "hsv": [
+    30.7,
+    0.078,
+    0.266
+   ],
+   "source": "loose",
+   "hex": "#44413f",
+   "file": "AB_BlackPebbles.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_DarkMud": {
+   "rgb": [
+    33,
+    26,
+    20
+   ],
+   "hsv": [
+    24.3,
+    0.387,
+    0.13
+   ],
+   "source": "loose",
+   "hex": "#211a14",
+   "file": "AB_DarkMud.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_DenseGrass": {
+   "rgb": [
+    58,
+    64,
+    41
+   ],
+   "hsv": [
+    75.6,
+    0.361,
+    0.25
+   ],
+   "source": "loose",
+   "hex": "#3a4029",
+   "file": "AB_DenseGrass.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_DenseMud": {
+   "rgb": [
+    75,
+    59,
+    47
+   ],
+   "hsv": [
+    24.6,
+    0.364,
+    0.293
+   ],
+   "source": "loose",
+   "hex": "#4b3b2f",
+   "file": "AB_DenseMud.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_FertileMarsh": {
+   "rgb": [
+    46,
+    51,
+    39
+   ],
+   "hsv": [
+    87.1,
+    0.236,
+    0.201
+   ],
+   "source": "loose",
+   "hex": "#2e3327",
+   "file": "AB_FertileMarsh.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_FertileMud": {
+   "rgb": [
+    55,
+    42,
+    33
+   ],
+   "hsv": [
+    24.3,
+    0.39,
+    0.214
+   ],
+   "source": "loose",
+   "hex": "#372a21",
+   "file": "AB_FertileMud.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_FineForsakenSands": {
+   "rgb": [
+    30,
+    30,
+    35
+   ],
+   "hsv": [
+    249.0,
+    0.148,
+    0.136
+   ],
+   "source": "loose",
+   "hex": "#1e1e23",
+   "file": "AB_FineForsakenSands.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_ForsakenRocks": {
+   "rgb": [
+    24,
+    23,
+    29
+   ],
+   "hsv": [
+    252.5,
+    0.214,
+    0.113
+   ],
+   "source": "loose",
+   "hex": "#18171d",
+   "file": "AB_ForsakenRocks.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_ForsakenSands": {
+   "rgb": [
+    30,
+    29,
+    34
+   ],
+   "hsv": [
+    248.8,
+    0.147,
+    0.135
+   ],
+   "source": "loose",
+   "hex": "#1e1d22",
+   "file": "AB_ForsakenSands.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_GrassySand": {
+   "rgb": [
+    161,
+    155,
+    145
+   ],
+   "hsv": [
+    38.2,
+    0.099,
+    0.631
+   ],
+   "source": "loose",
+   "hex": "#a19b91",
+   "file": "AB_GrassySand.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_HardenedGrass": {
+   "rgb": [
+    70,
+    58,
+    46
+   ],
+   "hsv": [
+    30.2,
+    0.341,
+    0.274
+   ],
+   "source": "loose",
+   "hex": "#463a2e",
+   "file": "AB_HardenedGrass.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_Ice": {
+   "rgb": [
+    151,
+    167,
+    191
+   ],
+   "hsv": [
+    215.9,
+    0.211,
+    0.75
+   ],
+   "source": "loose",
+   "hex": "#97a7bf",
+   "file": "AB_Ice.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_LavaTexture": {
+   "rgb": [
+    77,
+    69,
+    65
+   ],
+   "hsv": [
+    20.4,
+    0.158,
+    0.304
+   ],
+   "source": "loose",
+   "hex": "#4d4541",
+   "file": "AB_LavaTexture.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_LushGrass": {
+   "rgb": [
+    120,
+    124,
+    88
+   ],
+   "hsv": [
+    65.6,
+    0.286,
+    0.485
+   ],
+   "source": "loose",
+   "hex": "#787c58",
+   "file": "AB_LushGrass.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_MossyRed2": {
+   "rgb": [
+    117,
+    75,
+    60
+   ],
+   "hsv": [
+    16.3,
+    0.49,
+    0.459
+   ],
+   "source": "loose",
+   "hex": "#754b3c",
+   "file": "AB_MossyRed2.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_MycoticDirt": {
+   "rgb": [
+    147,
+    131,
+    117
+   ],
+   "hsv": [
+    28.4,
+    0.208,
+    0.577
+   ],
+   "source": "loose",
+   "hex": "#938375",
+   "file": "AB_MycoticDirt.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_MycoticGrass": {
+   "rgb": [
+    94,
+    85,
+    103
+   ],
+   "hsv": [
+    269.1,
+    0.174,
+    0.403
+   ],
+   "source": "loose",
+   "hex": "#5e5567",
+   "file": "AB_MycoticGrass.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_Obsidian": {
+   "rgb": [
+    46,
+    46,
+    46
+   ],
+   "hsv": [
+    30.0,
+    0.015,
+    0.182
+   ],
+   "source": "loose",
+   "hex": "#2e2e2e",
+   "file": "AB_Obsidian.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_ParchedEarth": {
+   "rgb": [
+    137,
+    130,
+    117
+   ],
+   "hsv": [
+    38.5,
+    0.145,
+    0.538
+   ],
+   "source": "loose",
+   "hex": "#898275",
+   "file": "AB_ParchedEarth.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_Polymer": {
+   "rgb": [
+    38,
+    38,
+    38
+   ],
+   "hsv": [
+    274.1,
+    0.004,
+    0.15
+   ],
+   "source": "loose",
+   "hex": "#262626",
+   "file": "AB_Polymer.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_RichMycoticDirt": {
+   "rgb": [
+    101,
+    79,
+    61
+   ],
+   "hsv": [
+    26.7,
+    0.398,
+    0.397
+   ],
+   "source": "loose",
+   "hex": "#654f3d",
+   "file": "AB_RichMycoticDirt.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_RichSlime": {
+   "rgb": [
+    40,
+    47,
+    35
+   ],
+   "hsv": [
+    96.5,
+    0.27,
+    0.186
+   ],
+   "source": "loose",
+   "hex": "#282f23",
+   "file": "AB_RichSlime.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_Slime": {
+   "rgb": [
+    58,
+    69,
+    52
+   ],
+   "hsv": [
+    98.8,
+    0.248,
+    0.269
+   ],
+   "source": "loose",
+   "hex": "#3a4534",
+   "file": "AB_Slime.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_SlimeGrass": {
+   "rgb": [
+    76,
+    82,
+    57
+   ],
+   "hsv": [
+    74.7,
+    0.303,
+    0.322
+   ],
+   "source": "loose",
+   "hex": "#4c5239",
+   "file": "AB_SlimeGrass.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_SlimeRamp": {
+   "rgb": [
+    34,
+    76,
+    39
+   ],
+   "hsv": [
+    127.2,
+    0.552,
+    0.298
+   ],
+   "source": "loose",
+   "hex": "#224c27",
+   "file": "AB_SlimeRamp.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_SlimyMud": {
+   "rgb": [
+    48,
+    52,
+    35
+   ],
+   "hsv": [
+    74.3,
+    0.324,
+    0.204
+   ],
+   "source": "loose",
+   "hex": "#303423",
+   "file": "AB_SlimyMud.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_Snow": {
+   "rgb": [
+    217,
+    217,
+    216
+   ],
+   "hsv": [
+    53.2,
+    0.004,
+    0.851
+   ],
+   "source": "loose",
+   "hex": "#d9d9d8",
+   "file": "AB_Snow.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_SnowOverRocks": {
+   "rgb": [
+    234,
+    232,
+    230
+   ],
+   "hsv": [
+    33.6,
+    0.016,
+    0.918
+   ],
+   "source": "loose",
+   "hex": "#eae8e6",
+   "file": "AB_SnowOverRocks.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_SoilOnCrackedMetal": {
+   "rgb": [
+    95,
+    82,
+    71
+   ],
+   "hsv": [
+    28.0,
+    0.257,
+    0.372
+   ],
+   "source": "loose",
+   "hex": "#5f5247",
+   "file": "AB_SoilOnCrackedMetal.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_TarDeepRamp": {
+   "rgb": [
+    20,
+    20,
+    20
+   ],
+   "hsv": [
+    0.0,
+    0.0,
+    0.078
+   ],
+   "source": "loose",
+   "hex": "#141414",
+   "file": "AB_TarDeepRamp.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_TarMud": {
+   "rgb": [
+    46,
+    37,
+    30
+   ],
+   "hsv": [
+    24.4,
+    0.359,
+    0.182
+   ],
+   "source": "loose",
+   "hex": "#2e251e",
+   "file": "AB_TarMud.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_WaterDeepRamp_Red": {
+   "rgb": [
+    95,
+    70,
+    69
+   ],
+   "hsv": [
+    3.6,
+    0.277,
+    0.374
+   ],
+   "source": "loose",
+   "hex": "#5f4645",
+   "file": "AB_WaterDeepRamp_Red.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_WaterShallowRamp_Red": {
+   "rgb": [
+    122,
+    91,
+    89
+   ],
+   "hsv": [
+    3.7,
+    0.271,
+    0.48
+   ],
+   "source": "loose",
+   "hex": "#7a5b59",
+   "file": "AB_WaterShallowRamp_Red.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_WebCoveredMarsh": {
+   "rgb": [
+    86,
+    83,
+    72
+   ],
+   "hsv": [
+    47.5,
+    0.169,
+    0.338
+   ],
+   "source": "loose",
+   "hex": "#565348",
+   "file": "AB_WebCoveredMarsh.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AB_WhiteIce": {
+   "rgb": [
+    189,
+    193,
+    201
+   ],
+   "hsv": [
+    218.0,
+    0.057,
+    0.787
+   ],
+   "source": "loose",
+   "hex": "#bdc1c9",
+   "file": "AB_WhiteIce.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/AncientMegastructure": {
+   "rgb": [
+    92,
+    90,
+    86
+   ],
+   "hsv": [
+    41.4,
+    0.063,
+    0.362
+   ],
+   "source": "loose",
+   "hex": "#5c5a56",
+   "file": "AncientMegastructure.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/DeepLava": {
+   "rgb": [
+    140,
+    70,
+    52
+   ],
+   "hsv": [
+    12.3,
+    0.627,
+    0.549
+   ],
+   "source": "bundle",
+   "hex": "#8c4634",
+   "file": "deeplava.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/DryLakeBed": {
+   "rgb": [
+    167,
+    136,
+    104
+   ],
+   "hsv": [
+    30.5,
+    0.377,
+    0.656
+   ],
+   "source": "loose",
+   "hex": "#a78868",
+   "file": "DryLakeBed.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/GU_AlienSand": {
+   "rgb": [
+    105,
+    86,
+    74
+   ],
+   "hsv": [
+    23.9,
+    0.291,
+    0.41
+   ],
+   "source": "loose",
+   "hex": "#69564a",
+   "file": "GU_AlienSand.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/GU_AlienSandFine": {
+   "rgb": [
+    143,
+    105,
+    83
+   ],
+   "hsv": [
+    21.7,
+    0.418,
+    0.561
+   ],
+   "source": "loose",
+   "hex": "#8f6953",
+   "file": "GU_AlienSandFine.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/GU_MetalFloor1": {
+   "rgb": [
+    88,
+    81,
+    73
+   ],
+   "hsv": [
+    31.9,
+    0.166,
+    0.345
+   ],
+   "source": "loose",
+   "hex": "#585149",
+   "file": "GU_MetalFloor1.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/GU_MetalFloor2": {
+   "rgb": [
+    161,
+    162,
+    155
+   ],
+   "hsv": [
+    62.2,
+    0.043,
+    0.633
+   ],
+   "source": "loose",
+   "hex": "#a1a29b",
+   "file": "GU_MetalFloor2.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/GU_Piping": {
+   "rgb": [
+    42,
+    39,
+    32
+   ],
+   "hsv": [
+    39.7,
+    0.243,
+    0.165
+   ],
+   "source": "loose",
+   "hex": "#2a2720",
+   "file": "GU_Piping.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/Gravel": {
+   "rgb": [
+    93,
+    75,
+    58
+   ],
+   "hsv": [
+    29.2,
+    0.376,
+    0.365
+   ],
+   "source": "loose",
+   "hex": "#5d4b3a",
+   "file": "Gravel.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/Marsh": {
+   "rgb": [
+    56,
+    71,
+    50
+   ],
+   "hsv": [
+    101.4,
+    0.29,
+    0.277
+   ],
+   "source": "loose",
+   "hex": "#384732",
+   "file": "Marsh.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/MarshyTerrain": {
+   "rgb": [
+    80,
+    75,
+    58
+   ],
+   "hsv": [
+    47.2,
+    0.279,
+    0.314
+   ],
+   "source": "loose",
+   "hex": "#504b3a",
+   "file": "MarshyTerrain.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/Mud": {
+   "rgb": [
+    71,
+    62,
+    48
+   ],
+   "hsv": [
+    37.8,
+    0.321,
+    0.276
+   ],
+   "source": "loose",
+   "hex": "#473e30",
+   "file": "Mud.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/NewAridSoil": {
+   "rgb": [
+    91,
+    74,
+    51
+   ],
+   "hsv": [
+    35.2,
+    0.446,
+    0.358
+   ],
+   "source": "loose",
+   "hex": "#5b4a33",
+   "file": "NewAridSoil.jpg",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/RoughStone": {
+   "rgb": [
+    170,
+    170,
+    170
+   ],
+   "hsv": [
+    0.0,
+    0.0,
+    0.666
+   ],
+   "source": "loose",
+   "hex": "#aaaaaa",
+   "file": "RoughStone.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/Sand": {
+   "rgb": [
+    129,
+    111,
+    92
+   ],
+   "hsv": [
+    31.6,
+    0.292,
+    0.507
+   ],
+   "source": "loose",
+   "hex": "#816f5c",
+   "file": "Sand.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/SoftSand": {
+   "rgb": [
+    134,
+    122,
+    104
+   ],
+   "hsv": [
+    34.3,
+    0.224,
+    0.527
+   ],
+   "source": "loose",
+   "hex": "#867a68",
+   "file": "SoftSand.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/Soil": {
+   "rgb": [
+    90,
+    74,
+    61
+   ],
+   "hsv": [
+    26.9,
+    0.323,
+    0.353
+   ],
+   "source": "loose",
+   "hex": "#5a4a3d",
+   "file": "Soil.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/SoilRich": {
+   "rgb": [
+    71,
+    60,
+    49
+   ],
+   "hsv": [
+    31.5,
+    0.315,
+    0.278
+   ],
+   "source": "loose",
+   "hex": "#473c31",
+   "file": "SoilRich.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/ToxicWaterDeepRamp": {
+   "rgb": [
+    60,
+    86,
+    58
+   ],
+   "hsv": [
+    114.4,
+    0.331,
+    0.338
+   ],
+   "source": "loose",
+   "hex": "#3c563a",
+   "file": "ToxicWaterDeepRamp.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/ToxicWaterShallowRamp": {
+   "rgb": [
+    73,
+    100,
+    72
+   ],
+   "hsv": [
+    117.9,
+    0.283,
+    0.394
+   ],
+   "source": "loose",
+   "hex": "#496448",
+   "file": "ToxicWaterShallowRamp.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/VolcanicRock": {
+   "rgb": [
+    43,
+    42,
+    42
+   ],
+   "hsv": [
+    38.5,
+    0.01,
+    0.167
+   ],
+   "source": "loose",
+   "hex": "#2b2a2a",
+   "file": "VolcanicRock.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/WaterDeepRamp": {
+   "rgb": [
+    58,
+    69,
+    85
+   ],
+   "hsv": [
+    216.6,
+    0.323,
+    0.334
+   ],
+   "source": "loose",
+   "hex": "#3a4555",
+   "file": "WaterDeepRamp.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/WaterShallowRamp": {
+   "rgb": [
+    73,
+    85,
+    97
+   ],
+   "hsv": [
+    209.1,
+    0.245,
+    0.378
+   ],
+   "source": "loose",
+   "hex": "#495561",
+   "file": "WaterShallowRamp.png",
+   "rule": "bare"
+  },
+  "Terrain/VolcanoSoil": {
+   "rgb": [
+    66,
+    66,
+    65
+   ],
+   "hsv": [
+    28.6,
+    0.017,
+    0.261
+   ],
+   "source": "bundle",
+   "hex": "#424241",
+   "file": "volcanosoil.png",
+   "rule": "bare"
+  },
+  "Terrain/VolcanoSoilRich": {
+   "rgb": [
+    48,
+    45,
+    47
+   ],
+   "hsv": [
+    326.5,
+    0.077,
+    0.19
+   ],
+   "source": "bundle",
+   "hex": "#302d2f",
+   "file": "volcanosoilrich.png",
+   "rule": "bare"
+  },
+  "Terrain/WastelandAsphalt": {
+   "rgb": [
+    79,
+    76,
+    73
+   ],
+   "hsv": [
+    28.7,
+    0.074,
+    0.309
+   ],
+   "source": "bundle",
+   "hex": "#4f4c49",
+   "file": "wastelandasphalt.png",
+   "rule": "bare"
+  }
+ },
+ "biomes": {
+  "AB_RockyCrags": {
+   "rgb": [
+    41,
+    44,
+    50
+   ],
+   "hsv": [
+    223.8,
+    0.173,
+    0.196
+   ],
+   "hex": "#292c32",
+   "terrains_used": [
+    "AB_FineForsakenSand",
+    "AB_ForsakenSand",
+    "AB_ForsakenRock",
+    "AB_DarkMud",
+    "WaterShallow",
+    "WaterDeep"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#1c1818",
+    "#1f1e24",
+    "#3a4455",
+    "#495560"
+   ],
+   "tiles": 4703
+  },
+  "ExtremeDesert": {
+   "rgb": [
+    143,
+    123,
+    100
+   ],
+   "hsv": [
+    31.8,
+    0.302,
+    0.562
+   ],
+   "hex": "#8f7b64",
+   "terrains_used": [
+    "Sand",
+    "SoftSand",
+    "Jawa_SaltCrust"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#867968",
+    "#826f5b",
+    "#ad8e6e",
+    "#a08261"
+   ],
+   "tiles": 3578
+  },
+  "Desert": {
+   "rgb": [
+    130,
+    111,
+    88
+   ],
+   "hsv": [
+    32.5,
+    0.326,
+    0.511
+   ],
+   "hex": "#826f58",
+   "terrains_used": [
+    "Sand",
+    "NewAridSoil",
+    "SoftSand",
+    "Jawa_SaltCrust"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#887967",
+    "#826f5b",
+    "#5b4a32",
+    "#aa8a6a"
+   ],
+   "tiles": 2147
+  },
+  "AridShrubland": {
+   "rgb": [
+    122,
+    103,
+    82
+   ],
+   "hsv": [
+    31.7,
+    0.326,
+    0.479
+   ],
+   "hex": "#7a6752",
+   "terrains_used": [
+    "Sand",
+    "NewAridSoil",
+    "NewAridSoilRich",
+    "SoftSand",
+    "Jawa_SaltCrust"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#5b4a38",
+    "#887967",
+    "#826f5b",
+    "#aa8a6a"
+   ],
+   "tiles": 2138
+  },
+  "AB_MycoticJungle": {
+   "rgb": [
+    100,
+    92,
+    83
+   ],
+   "hsv": [
+    31.3,
+    0.168,
+    0.39
+   ],
+   "hex": "#645c53",
+   "terrains_used": [
+    "AB_MycoticGrass",
+    "AB_MycoticSoilRich",
+    "AB_MycoticSoil",
+    "Marsh"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#394732",
+    "#938375",
+    "#5e5567",
+    "#654f3d"
+   ],
+   "tiles": 1939
+  },
+  "Wasteland": {
+   "rgb": [
+    81,
+    84,
+    54
+   ],
+   "hsv": [
+    65.5,
+    0.358,
+    0.328
+   ],
+   "hex": "#515436",
+   "terrains_used": [
+    "VolcanoSoil",
+    "WastelandAsphalt",
+    "Gravel",
+    "NuclearWaste"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#4e4c49",
+    "#567613",
+    "#5d4b3a",
+    "#424141"
+   ],
+   "tiles": 1721
+  },
+  "PoisonForest": {
+   "rgb": [
+    63,
+    64,
+    63
+   ],
+   "hsv": [
+    120.0,
+    0.016,
+    0.25
+   ],
+   "hex": "#3f403f",
+   "terrains_used": [
+    "PoisonSoil",
+    "PoisonSoilRich",
+    "MarshyTerrain",
+    "Marsh"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#394632",
+    "#322f3f",
+    "#413e50",
+    "#504c3a"
+   ],
+   "tiles": 604
+  },
+  "AB_PropaneLakes": {
+   "rgb": [
+    188,
+    195,
+    206
+   ],
+   "hsv": [
+    216.6,
+    0.085,
+    0.807
+   ],
+   "hex": "#bcc3ce",
+   "terrains_used": [
+    "AB_PackedSnow",
+    "AB_PackedIce",
+    "AB_SnowOverRocks",
+    "AB_SolidPropane",
+    "AB_PropaneLake"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#97a7bf",
+    "#dad9d8",
+    "#bdc1c9",
+    "#f4f4f3"
+   ],
+   "tiles": 554
+  },
+  "ZBiome_Badlands": {
+   "rgb": [
+    132,
+    120,
+    106
+   ],
+   "hsv": [
+    31.8,
+    0.194,
+    0.516
+   ],
+   "hex": "#84786a",
+   "terrains_used": [
+    "Sand",
+    "SoftSand",
+    "Sandstone_Rough",
+    "Gravel"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#847562",
+    "#5d4b3a",
+    "#9f9f9f",
+    "#bbbbbb"
+   ],
+   "tiles": 546
+  },
+  "AB_FeraliskInfestedJungle": {
+   "rgb": [
+    69,
+    67,
+    52
+   ],
+   "hsv": [
+    53.8,
+    0.251,
+    0.271
+   ],
+   "hex": "#454334",
+   "terrains_used": [
+    "AB_DenseMud",
+    "AB_DenseGrass",
+    "SoilRich",
+    "AB_WebbedMarshyTerrain",
+    "Marsh"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#4a3c31",
+    "#3b3d29",
+    "#394732",
+    "#565348"
+   ],
+   "tiles": 534
+  },
+  "BMT_FungalForest": {
+   "rgb": [
+    74,
+    68,
+    53
+   ],
+   "hsv": [
+    44.7,
+    0.277,
+    0.289
+   ],
+   "hex": "#4a4435",
+   "terrains_used": [
+    "Soil",
+    "SoilRich",
+    "MarshyTerrain",
+    "Mud",
+    "Marsh"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#4d4334",
+    "#594e3f",
+    "#384732",
+    "#3e352a"
+   ],
+   "tiles": 425
+  },
+  "AB_MechanoidIntrusion": {
+   "rgb": [
+    85,
+    80,
+    74
+   ],
+   "hsv": [
+    36.0,
+    0.13,
+    0.333
+   ],
+   "hex": "#55504a",
+   "terrains_used": [
+    "GU_MetalFloor1",
+    "GU_MetalFloor2",
+    "GU_MetalFloor3",
+    "AB_SoilOnCrackedMetal",
+    "GU_Piping"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#5b5148",
+    "#292825",
+    "#a1a19a",
+    "#1a1713"
+   ],
+   "tiles": 236
+  },
+  "ZBiome_Grasslands": {
+   "rgb": [
+    84,
+    77,
+    70
+   ],
+   "hsv": [
+    29.1,
+    0.162,
+    0.328
+   ],
+   "hex": "#544d46",
+   "terrains_used": [
+    "Sand",
+    "Gravel",
+    "Soil",
+    "SoilRich",
+    "Mud",
+    "WaterShallow",
+    "WaterDeep"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#5a4b3b",
+    "#414d5b",
+    "#42392d",
+    "#816f5c"
+   ],
+   "tiles": 233
+  },
+  "ZBiome_DesertOasis": {
+   "rgb": [
+    94,
+    84,
+    73
+   ],
+   "hsv": [
+    31.6,
+    0.23,
+    0.37
+   ],
+   "hex": "#5e5449",
+   "terrains_used": [
+    "Sand",
+    "SoftSand",
+    "WaterShallow",
+    "Mud",
+    "SoilRich",
+    "Soil",
+    "Gravel"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#5b4b3b",
+    "#847462",
+    "#42392d",
+    "#495560"
+   ],
+   "tiles": 227
+  },
+  "BMT_CrystalCaverns": {
+   "rgb": [
+    87,
+    90,
+    93
+   ],
+   "hsv": [
+    207.5,
+    0.065,
+    0.364
+   ],
+   "hex": "#575a5d",
+   "terrains_used": [
+    "Gravel",
+    "BMT_Crystal",
+    "Soil",
+    "WaterShallow"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#5c4b3c",
+    "#495560",
+    "#597a96",
+    "#6087a8"
+   ],
+   "tiles": 127
+  },
+  "AB_GelatinousSuperorganism": {
+   "rgb": [
+    51,
+    65,
+    44
+   ],
+   "hsv": [
+    98.9,
+    0.331,
+    0.256
+   ],
+   "hex": "#33412c",
+   "terrains_used": [
+    "AB_Slime",
+    "AB_RichSlime",
+    "AB_SlimeGrass",
+    "AB_SlimyMud",
+    "AB_LiquidSlime"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#2b3122",
+    "#3a4432",
+    "#224c27",
+    "#4e553b"
+   ],
+   "tiles": 96
+  },
+  "Scarlands": {
+   "rgb": [
+    79,
+    88,
+    69
+   ],
+   "hsv": [
+    88.8,
+    0.209,
+    0.343
+   ],
+   "hex": "#4f5845",
+   "terrains_used": [
+    "AncientMegastructure",
+    "Soil",
+    "ToxicWaterShallow",
+    "ToxicWaterDeep"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#5a4a3d",
+    "#3c563a",
+    "#496448",
+    "#5d5b57"
+   ],
+   "tiles": 90
+  },
+  "AB_MiasmicMangrove": {
+   "rgb": [
+    63,
+    58,
+    44
+   ],
+   "hsv": [
+    42.2,
+    0.294,
+    0.247
+   ],
+   "hex": "#3f3a2c",
+   "terrains_used": [
+    "Mud",
+    "AB_FertileMud",
+    "AB_FertileMarsh",
+    "MarshyTerrain"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#303427",
+    "#362a21",
+    "#554f3e",
+    "#4b4333"
+   ],
+   "tiles": 65
+  },
+  "AB_TarPits": {
+   "rgb": [
+    97,
+    93,
+    80
+   ],
+   "hsv": [
+    47.1,
+    0.174,
+    0.38
+   ],
+   "hex": "#615d50",
+   "terrains_used": [
+    "AB_GrassySand",
+    "AB_LushGrass",
+    "AB_ParchedEarth",
+    "AB_TarMud",
+    "AB_Tar"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#807f66",
+    "#a19b91",
+    "#141414",
+    "#2f251e"
+   ],
+   "tiles": 57
+  },
+  "AB_PyroclasticConflagration": {
+   "rgb": [
+    73,
+    58,
+    51
+   ],
+   "hsv": [
+    18.7,
+    0.3,
+    0.288
+   ],
+   "hex": "#493a33",
+   "terrains_used": [
+    "AB_BlackPebbles",
+    "AB_HardenedGrass",
+    "AB_HardenedGrassFertile",
+    "VolcanicRock",
+    "AB_Obsidian",
+    "AB_SolidifiedLava",
+    "LavaDeep"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#4a413b",
+    "#332f2b",
+    "#9d3d2e",
+    "#ae6231"
+   ],
+   "tiles": 31
+  },
+  "Volcano": {
+   "rgb": [
+    72,
+    59,
+    58
+   ],
+   "hsv": [
+    3.0,
+    0.198,
+    0.283
+   ],
+   "hex": "#483b3a",
+   "terrains_used": [
+    "Gravel",
+    "VolcanoSoil",
+    "VolcanoSoilRich",
+    "WaterShallow",
+    "WaterDeep",
+    "VolcanoObsidian",
+    "Lava"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#38302c",
+    "#414d5b",
+    "#51473e",
+    "#66130c"
+   ],
+   "tiles": 23
+  },
+  "LavaField": {
+   "rgb": [
+    86,
+    62,
+    51
+   ],
+   "hsv": [
+    18.0,
+    0.407,
+    0.337
+   ],
+   "hex": "#563e33",
+   "terrains_used": [
+    "VolcanicRock",
+    "Soil",
+    "SoilRich",
+    "LavaDeep"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#54453b",
+    "#312e2a",
+    "#a03e2e",
+    "#af6732"
+   ],
+   "tiles": 15
+  },
+  "AB_OcularForest": {
+   "rgb": [
+    114,
+    86,
+    75
+   ],
+   "hsv": [
+    16.1,
+    0.346,
+    0.449
+   ],
+   "hex": "#72564b",
+   "terrains_used": [
+    "GU_AlienSandFine",
+    "GU_AlienSand",
+    "GU_RichAlienSand",
+    "GU_MossyRed",
+    "GU_RedWaterShallow",
+    "GU_RedWaterDeep"
+   ],
+   "terrains_missing": [],
+   "swatch": [
+    "#735b55",
+    "#614b44",
+    "#734d3f",
+    "#8f6955"
+   ],
+   "tiles": 3
+  }
+ }
+}
