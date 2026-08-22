@@ -1,0 +1,4718 @@
+{
+ "G_CentaurWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_FourArmTailed": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_FourArmTailedWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_FourArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SixArmTailed": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SixArmTailedWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SixArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SnekFourArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SnekFourArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SnekSixArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SnekSixArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SnekWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SpooderFourArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SpooderFourArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SpooderSixArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SpooderSixArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_SpooderWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "G_TailedWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "Gazelle": {
+  "file": "Gazelle.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Gazelle/Gazelle",
+  "variant": "plain_south"
+ },
+ "Gelagrub": {
+  "file": "Gelagrub.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Gelagrub/Gelagrub",
+  "variant": "plain_south"
+ },
+ "GiantAnt_Race": {
+  "file": "GiantAnt_Race.png",
+  "from": "sapiently.theyatomicmonsters",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/GiantAnt/GiantAnt",
+  "variant": "plain_south"
+ },
+ "GiantToad": {
+  "file": "GiantToad.png",
+  "from": "zal.gianttoads",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/GiantToad/GiantToad1",
+  "variant": "plain_south"
+ },
+ "Giantala": {
+  "file": "Giantala.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Giantala",
+  "variant": "plain_south"
+ },
+ "Gigantelope": {
+  "file": "Gigantelope.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Gigantelope",
+  "variant": "plain_south"
+ },
+ "Gigantophis": {
+  "file": "Gigantophis.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Gigantophis/megafauna_gigantophisMale",
+  "variant": "plain_south"
+ },
+ "Gigantopithecus": {
+  "file": "Gigantopithecus.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Gigantopithecus/megafauna_gigantopithecusMale",
+  "variant": "plain_south"
+ },
+ "Gizka": {
+  "file": "Gizka.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Gizka/Gizka",
+  "variant": "plain_south"
+ },
+ "Goat": {
+  "file": "Goat.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Goat/GoatMale",
+  "variant": "plain_south"
+ },
+ "Gomphotaria": {
+  "file": "Gomphotaria.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Gomphotaria/megafauna_gomphotaria",
+  "variant": "plain_south"
+ },
+ "Goose": {
+  "file": "Goose.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Goose/Goose",
+  "variant": "plain_south"
+ },
+ "Gorehulk": {
+  "file": "Gorehulk.png",
+  "from": "ludeon.rimworld.anomaly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Gorehulk/Gorehulk_A",
+  "variant": "plain_south"
+ },
+ "Gorg": {
+  "file": "Gorg.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Gorg/Gorg",
+  "variant": "plain_south"
+ },
+ "Gorilla": {
+  "file": "Gorilla.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Gorilla/Gorilla",
+  "variant": "plain_south"
+ },
+ "Gornt": {
+  "file": "Gornt.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Gornt/Gornt",
+  "variant": "plain_south"
+ },
+ "GraniteSlug": {
+  "file": "GraniteSlug.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/GraniteSlug/GraniteSlug",
+  "variant": "plain_south"
+ },
+ "Grank": {
+  "file": "Grank.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Grank/Grank",
+  "variant": "plain_south"
+ },
+ "Grazer": {
+  "file": "Grazer.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Grazer/Grazer_m",
+  "variant": "plain_south"
+ },
+ "GreaterKraytDragon": {
+  "file": "GreaterKraytDragon.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
+  "variant": "plain_south"
+ },
+ "Gualaar": {
+  "file": "Gualaar.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Gualaar/Gualaar",
+  "variant": "plain_south"
+ },
+ "GuineaPig": {
+  "file": "GuineaPig.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/GuineaPig/GuineaPig",
+  "variant": "plain_south"
+ },
+ "Gullipud": {
+  "file": "Gullipud.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Gullipud/Gullipud",
+  "variant": "plain_south"
+ },
+ "Gundark": {
+  "file": "Gundark.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Gundark/Gundark",
+  "variant": "plain_south"
+ },
+ "Gutkurr": {
+  "file": "Gutkurr.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Gutkurr/Gutkurr",
+  "variant": "plain_south"
+ },
+ "Hare": {
+  "file": "Hare.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/RG_Hare/Hare",
+  "variant": "plain_south"
+ },
+ "Harvester": {
+  "file": "Harvester.png",
+  "from": "mlie.horrors",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Harvester/Harvester",
+  "variant": "plain_south"
+ },
+ "HarvesterBeetle": {
+  "file": "HarvesterBeetle.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/HarvesterBeetle/HarvesterBeetle",
+  "variant": "plain_south"
+ },
+ "Hawkbat": {
+  "file": "Hawkbat.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Hawkbat/Hawkbat",
+  "variant": "plain_south"
+ },
+ "HermitCrab": {
+  "file": "HermitCrab.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/HermitCrab/HermitCrabA",
+  "variant": "plain_south"
+ },
+ "Heron": {
+  "file": "Heron.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Heron/Heron",
+  "variant": "plain_south"
+ },
+ "Hippo": {
+  "file": "Hippo.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Hippo/Hippo",
+  "variant": "plain_south"
+ },
+ "HiveQueen": {
+  "file": "HiveQueen.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Insect/HiveQueen/HiveQueen",
+  "variant": "plain_south"
+ },
+ "Horax": {
+  "file": "Horax.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Horax/Horax",
+  "variant": "plain_south"
+ },
+ "Horse": {
+  "file": "Horse.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Horse/Horse",
+  "variant": "plain_south"
+ },
+ "Hrumph": {
+  "file": "Hrumph.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Hrumph/Hrumph",
+  "variant": "plain_south"
+ },
+ "Hssiss": {
+  "file": "Hssiss.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Hssiss/Hssiss",
+  "variant": "plain_south"
+ },
+ "Human": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "Husky": {
+  "file": "Husky.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Husky/Husky",
+  "variant": "plain_south"
+ },
+ "Ibex": {
+  "file": "Ibex.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Ibex/IbexMale",
+  "variant": "plain_south"
+ },
+ "Igitz": {
+  "file": "Igitz.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Igitz/Igitz",
+  "variant": "plain_south"
+ },
+ "Iguana": {
+  "file": "Iguana.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Iguana/Iguana",
+  "variant": "plain_south"
+ },
+ "Insectomorph": {
+  "file": "Insectomorph.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Insectomorph/Insectomorph",
+  "variant": "plain_south"
+ },
+ "Iriaz": {
+  "file": "Iriaz.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Iriaz/Iriaz",
+  "variant": "plain_south"
+ },
+ "IridonianReek": {
+  "file": "IridonianReek.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/IridonianReek/IridonianReek",
+  "variant": "plain_south"
+ },
+ "IronScruff_Flatworm": {
+  "file": "IronScruff_Flatworm.png",
+  "from": "ironscruff.primordialgeysers",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Animals/IronScruff_Flatworm/IronScruff_Flatworm",
+  "variant": "plain_south"
+ },
+ "IronScruff_Hydrazoa": {
+  "file": "IronScruff_Hydrazoa.png",
+  "from": "ironscruff.primordialgeysers",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Animals/IronScruff_Hydrazoa/IronScruff_Hydrazoa",
+  "variant": "plain_south"
+ },
+ "IronScruff_Jellybird": {
+  "file": "IronScruff_Jellybird.png",
+  "from": "ironscruff.primordialgeysers",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Animals/IronScruff_Jellybird/IronScruff_Jellybird",
+  "variant": "plain_south"
+ },
+ "IronScruff_Tardigrade": {
+  "file": "IronScruff_Tardigrade.png",
+  "from": "ironscruff.primordialgeysers",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Animals/IronScruff_Tardigrade/IronScruff_Tardigrade",
+  "variant": "plain_south"
+ },
+ "IthorianReek": {
+  "file": "IthorianReek.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/IthorianReek/IthorianReek",
+  "variant": "plain_south"
+ },
+ "JDSCIS_AQ_Battle_Droid": {
+  "file": "JDSCIS_AQ_Battle_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/AQ_Battle_Droid",
+  "variant": "plain_south"
+ },
+ "JDSCIS_B1_Battle_Droid": {
+  "file": "JDSCIS_B1_Battle_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/B1_Battle_Droids",
+  "variant": "plain_south"
+ },
+ "JDSCIS_B1_Commander_Droid": {
+  "file": "JDSCIS_B1_Commander_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/B1_Commander_Droids",
+  "variant": "plain_south"
+ },
+ "JDSCIS_B1_Security_Droid": {
+  "file": "JDSCIS_B1_Security_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/B1_Security_Droids",
+  "variant": "plain_south"
+ },
+ "JDSCIS_B2_HA_Super_Battle_Droid": {
+  "file": "JDSCIS_B2_HA_Super_Battle_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/B2_HA_Super_Battle_Droid",
+  "variant": "plain_south"
+ },
+ "JDSCIS_B2_Super_Battle_Droid": {
+  "file": "JDSCIS_B2_Super_Battle_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/B2_Super_Battle_Droid",
+  "variant": "plain_south"
+ },
+ "JDSCIS_BX_Commando_Droid": {
+  "file": "JDSCIS_BX_Commando_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/BX_Commando_Droids",
+  "variant": "plain_south"
+ },
+ "JDSCIS_DSD1_Dwarf_Spider_Droid": {
+  "file": "JDSCIS_DSD1_Dwarf_Spider_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/DSD1_Dwarf_Spider_Droid",
+  "variant": "plain_south"
+ },
+ "JDSCIS_Demolition_Droid": {
+  "file": "JDSCIS_Demolition_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Demolition_Droid",
+  "variant": "plain_south"
+ },
+ "JDSCIS_Droideka_Droid": {
+  "file": "JDSCIS_Droideka_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Droideka_Droid",
+  "variant": "plain_south"
+ },
+ "JDSCIS_Droideka_Sharpshooter_Droid": {
+  "file": "JDSCIS_Droideka_Sharpshooter_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Droideka_Sharpshooter_Droid",
+  "variant": "plain_south"
+ },
+ "JDSCIS_IG-100_MagnaGuards": {
+  "file": "JDSCIS_IG-100_MagnaGuards.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/IG-100_MagnaGuards",
+  "variant": "plain_south"
+ },
+ "JDSCIS_LR-57_Combat_Droid": {
+  "file": "JDSCIS_LR-57_Combat_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/LR-57_Combat_Droid",
+  "variant": "plain_south"
+ },
+ "JDSCIS_Pistoeka_Sotage_Droid": {
+  "file": "JDSCIS_Pistoeka_Sotage_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pistoeka_Sotage_Droid",
+  "variant": "plain_south"
+ },
+ "JDSCIS_ST_Super_Tactical_Droid": {
+  "file": "JDSCIS_ST_Super_Tactical_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/ST_Super_Tactical_Droid",
+  "variant": "plain_south"
+ },
+ "JDSCIS_T1_Tactical_Droid": {
+  "file": "JDSCIS_T1_Tactical_Droid.png",
+  "from": "m3.continued.jangodsoul.starwars.tsda",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/T1_Tactical_Droid",
+  "variant": "plain_south"
+ },
+ "JOE_Cephalope": {
+  "file": "JOE_Cephalope.png",
+  "from": "joe.cephaloids",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/cephalope/cephalope",
+  "variant": "plain_south"
+ },
+ "JOE_Landopus": {
+  "file": "JOE_Landopus.png",
+  "from": "joe.cephaloids",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/landopus/landopus",
+  "variant": "plain_south"
+ },
+ "JOE_Nautilant": {
+  "file": "JOE_Nautilant.png",
+  "from": "joe.cephaloids",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/nautilant/nautilant",
+  "variant": "plain_south"
+ },
+ "JRWAbrictosaurus": {
+  "file": "JRWAbrictosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Abrictosaurus",
+  "variant": "plain_south"
+ },
+ "JRWAcrocanthosaurus": {
+  "file": "JRWAcrocanthosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Acrocanthosaurus",
+  "variant": "plain_south"
+ },
+ "JRWAdalia": {
+  "file": "JRWAdalia.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Adalia",
+  "variant": "plain_south"
+ },
+ "JRWAgilisaurus": {
+  "file": "JRWAgilisaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Agilisaurus",
+  "variant": "plain_south"
+ },
+ "JRWAlbertosaurus": {
+  "file": "JRWAlbertosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Albertosaurus",
+  "variant": "plain_south"
+ },
+ "JRWAllosaurus": {
+  "file": "JRWAllosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Allosaurus",
+  "variant": "plain_south"
+ },
+ "JRWAnkylosaurus": {
+  "file": "JRWAnkylosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Ankylosaurus",
+  "variant": "plain_south"
+ },
+ "JRWAntarctopelta": {
+  "file": "JRWAntarctopelta.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Antarctopelta",
+  "variant": "plain_south"
+ },
+ "JRWApatosaurus": {
+  "file": "JRWApatosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Apatosaurus",
+  "variant": "plain_south"
+ },
+ "JRWArchaeopteryx": {
+  "file": "JRWArchaeopteryx.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Archaeopteryx",
+  "variant": "plain_south"
+ },
+ "JRWArgentinosaurus": {
+  "file": "JRWArgentinosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Argentinosaurus",
+  "variant": "plain_south"
+ },
+ "JRWArthropleura": {
+  "file": "JRWArthropleura.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Arthropleura",
+  "variant": "plain_south"
+ },
+ "JRWBagaceratops": {
+  "file": "JRWBagaceratops.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Bagaceratops",
+  "variant": "plain_south"
+ },
+ "JRWBaryonyx": {
+  "file": "JRWBaryonyx.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Baryonyx",
+  "variant": "plain_south"
+ },
+ "JRWBaseopsis": {
+  "file": "JRWBaseopsis.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Baseopsis",
+  "variant": "plain_south"
+ },
+ "JRWBecklespinax": {
+  "file": "JRWBecklespinax.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Becklespinax",
+  "variant": "plain_south"
+ },
+ "JRWBeelzebufo": {
+  "file": "JRWBeelzebufo.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Beelzebufo",
+  "variant": "plain_south"
+ },
+ "JRWBernicia": {
+  "file": "JRWBernicia.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Bernicia",
+  "variant": "plain_south"
+ },
+ "JRWBrachiosaurus": {
+  "file": "JRWBrachiosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Brachiosaurus",
+  "variant": "plain_south"
+ },
+ "JRWBrachytrachelopan": {
+  "file": "JRWBrachytrachelopan.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Brachytrachelopan",
+  "variant": "plain_south"
+ },
+ "JRWCaihong": {
+  "file": "JRWCaihong.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Caihong",
+  "variant": "plain_south"
+ },
+ "JRWCamarasaurus": {
+  "file": "JRWCamarasaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Camarasaurus",
+  "variant": "plain_south"
+ },
+ "JRWCamptosaurus": {
+  "file": "JRWCamptosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Camptosaurus",
+  "variant": "plain_south"
+ },
+ "JRWCarcharodontosaurus": {
+  "file": "JRWCarcharodontosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Carcharodontosaurus",
+  "variant": "plain_south"
+ },
+ "JRWCarnotaurus": {
+  "file": "JRWCarnotaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Carnotaurus",
+  "variant": "plain_south"
+ },
+ "JRWCeratosaurus": {
+  "file": "JRWCeratosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Ceratosaurus",
+  "variant": "plain_south"
+ },
+ "JRWCoahuilaceratops": {
+  "file": "JRWCoahuilaceratops.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Coahuilaceratops",
+  "variant": "plain_south"
+ },
+ "JRWCoelophysis": {
+  "file": "JRWCoelophysis.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Coelophysis",
+  "variant": "plain_south"
+ },
+ "JRWCompsognathus": {
+  "file": "JRWCompsognathus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Compsognathus",
+  "variant": "plain_south"
+ },
+ "JRWCorythosaurus": {
+  "file": "JRWCorythosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Corythosaurus",
+  "variant": "plain_south"
+ },
+ "JRWCryolophosaurus": {
+  "file": "JRWCryolophosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Cryolophosaurus",
+  "variant": "plain_south"
+ },
+ "JRWCyclosphaeroma": {
+  "file": "JRWCyclosphaeroma.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Cyclosphaeroma",
+  "variant": "plain_south"
+ },
+ "JRWDeinonychus": {
+  "file": "JRWDeinonychus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Deinonychus",
+  "variant": "plain_south"
+ },
+ "JRWDeinosuchus": {
+  "file": "JRWDeinosuchus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Deinosuchus",
+  "variant": "plain_south"
+ },
+ "JRWDesmatosuchus": {
+  "file": "JRWDesmatosuchus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Desmatosuchus",
+  "variant": "plain_south"
+ },
+ "JRWDilophosaurus": {
+  "file": "JRWDilophosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Dilophosaurus",
+  "variant": "plain_south"
+ },
+ "JRWDimetrodon": {
+  "file": "JRWDimetrodon.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Dimetrodon",
+  "variant": "plain_south"
+ },
+ "JRWDinilysia": {
+  "file": "JRWDinilysia.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Dinilysia",
+  "variant": "plain_south"
+ },
+ "JRWDiplocaulus": {
+  "file": "JRWDiplocaulus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Diplocaulus",
+  "variant": "plain_south"
+ },
+ "JRWDracorex": {
+  "file": "JRWDracorex.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Dracorex",
+  "variant": "plain_south"
+ },
+ "JRWDrinker": {
+  "file": "JRWDrinker.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Drinker",
+  "variant": "plain_south"
+ },
+ "JRWDromaeosaurus": {
+  "file": "JRWDromaeosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Dromaeosaurus",
+  "variant": "plain_south"
+ },
+ "JRWDryosaurus": {
+  "file": "JRWDryosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Dryosaurus",
+  "variant": "plain_south"
+ },
+ "JRWEdaphosaurus": {
+  "file": "JRWEdaphosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Edaphosaurus",
+  "variant": "plain_south"
+ },
+ "JRWEdmontosaurus": {
+  "file": "JRWEdmontosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Edmontosaurus",
+  "variant": "plain_south"
+ },
+ "JRWEnigmosaurus": {
+  "file": "JRWEnigmosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Enigmosaurus",
+  "variant": "plain_south"
+ },
+ "JRWEstemmenosuchus": {
+  "file": "JRWEstemmenosuchus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Estemmenosuchus",
+  "variant": "plain_south"
+ },
+ "JRWEuoplocephalus": {
+  "file": "JRWEuoplocephalus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Euoplocephalus",
+  "variant": "plain_south"
+ },
+ "JRWEuphoberia": {
+  "file": "JRWEuphoberia.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Euphoberia",
+  "variant": "plain_south"
+ },
+ "JRWGallimimus": {
+  "file": "JRWGallimimus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Gallimimus",
+  "variant": "plain_south"
+ },
+ "JRWGasosaurus": {
+  "file": "JRWGasosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Gasosaurus",
+  "variant": "plain_south"
+ },
+ "JRWGeosternbergia": {
+  "file": "JRWGeosternbergia.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Geosternbergia",
+  "variant": "plain_south"
+ },
+ "JRWGeralinura": {
+  "file": "JRWGeralinura.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Geralinura",
+  "variant": "plain_south"
+ },
+ "JRWGiganotosaurus": {
+  "file": "JRWGiganotosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Giganotosaurus",
+  "variant": "plain_south"
+ },
+ "JRWGigantophis": {
+  "file": "JRWGigantophis.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Gigantophis",
+  "variant": "plain_south"
+ },
+ "JRWGorgonops": {
+  "file": "JRWGorgonops.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Gorgonops",
+  "variant": "plain_south"
+ },
+ "JRWHalszkaraptor": {
+  "file": "JRWHalszkaraptor.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Halszkaraptor",
+  "variant": "plain_south"
+ },
+ "JRWHolcorobeus": {
+  "file": "JRWHolcorobeus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Holcorobeus",
+  "variant": "plain_south"
+ },
+ "JRWHomalocephale": {
+  "file": "JRWHomalocephale.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Homalocephale",
+  "variant": "plain_south"
+ },
+ "JRWHylonomus": {
+  "file": "JRWHylonomus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Hylonomus",
+  "variant": "plain_south"
+ },
+ "JRWHynerpeton": {
+  "file": "JRWHynerpeton.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Hynerpeton",
+  "variant": "plain_south"
+ },
+ "JRWHypsilophodon": {
+  "file": "JRWHypsilophodon.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Hypsilophodon",
+  "variant": "plain_south"
+ },
+ "JRWIndominus": {
+  "file": "JRWIndominus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Hybrid/Indominus",
+  "variant": "plain_south"
+ },
+ "JRWIndoraptor": {
+  "file": "JRWIndoraptor.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Hybrid/Indoraptor",
+  "variant": "plain_south"
+ },
+ "JRWIschigualastia": {
+  "file": "JRWIschigualastia.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Ischigualastia",
+  "variant": "plain_south"
+ },
+ "JRWKaprosuchus": {
+  "file": "JRWKaprosuchus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Kaprosuchus",
+  "variant": "plain_south"
+ },
+ "JRWKentrosaurus": {
+  "file": "JRWKentrosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Kentrosaurus",
+  "variant": "plain_south"
+ },
+ "JRWKileskus": {
+  "file": "JRWKileskus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Kileskus",
+  "variant": "plain_south"
+ },
+ "JRWKosmoceratops": {
+  "file": "JRWKosmoceratops.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Kosmoceratops",
+  "variant": "plain_south"
+ },
+ "JRWLycaenops": {
+  "file": "JRWLycaenops.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Lycaenops",
+  "variant": "plain_south"
+ },
+ "JRWMacrelcana": {
+  "file": "JRWMacrelcana.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Macrelcana",
+  "variant": "plain_south"
+ },
+ "JRWManipulator": {
+  "file": "JRWManipulator.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Manipulator",
+  "variant": "plain_south"
+ },
+ "JRWMeganeura": {
+  "file": "JRWMeganeura.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Meganeura",
+  "variant": "plain_south"
+ },
+ "JRWMetriacanthosaurus": {
+  "file": "JRWMetriacanthosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Metriacanthosaurus",
+  "variant": "plain_south"
+ },
+ "JRWMicroceratus": {
+  "file": "JRWMicroceratus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Microceratus",
+  "variant": "plain_south"
+ },
+ "JRWMochlodon": {
+  "file": "JRWMochlodon.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Mochlodon",
+  "variant": "plain_south"
+ },
+ "JRWNanuqsaurus": {
+  "file": "JRWNanuqsaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Nanuqsaurus",
+  "variant": "plain_south"
+ },
+ "JRWNasutoceratops": {
+  "file": "JRWNasutoceratops.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Nasutoceratops",
+  "variant": "plain_south"
+ },
+ "JRWNyctosaurus": {
+  "file": "JRWNyctosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Nyctosaurus",
+  "variant": "plain_south"
+ },
+ "JRWOphiacodon": {
+  "file": "JRWOphiacodon.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Ophiacodon",
+  "variant": "plain_south"
+ },
+ "JRWOrnithosuchus": {
+  "file": "JRWOrnithosuchus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Ornithosuchus",
+  "variant": "plain_south"
+ },
+ "JRWOuranosaurus": {
+  "file": "JRWOuranosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Ouranosaurus",
+  "variant": "plain_south"
+ },
+ "JRWOviraptor": {
+  "file": "JRWOviraptor.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Oviraptor",
+  "variant": "plain_south"
+ },
+ "JRWPachycephalosaurus": {
+  "file": "JRWPachycephalosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Pachycephalosaurus",
+  "variant": "plain_south"
+ },
+ "JRWPachyrhinosaurus": {
+  "file": "JRWPachyrhinosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Pachyrhinosaurus",
+  "variant": "plain_south"
+ },
+ "JRWParasaurolophus": {
+  "file": "JRWParasaurolophus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Parasaurolophus",
+  "variant": "plain_south"
+ },
+ "JRWParksosaurus": {
+  "file": "JRWParksosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Parksosaurus",
+  "variant": "plain_south"
+ },
+ "JRWPlatyhystrix": {
+  "file": "JRWPlatyhystrix.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Platyhystrix",
+  "variant": "plain_south"
+ },
+ "JRWPrestosuchus": {
+  "file": "JRWPrestosuchus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Prestosuchus",
+  "variant": "plain_south"
+ },
+ "JRWProtoceratops": {
+  "file": "JRWProtoceratops.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Protoceratops",
+  "variant": "plain_south"
+ },
+ "JRWProtosolpuga": {
+  "file": "JRWProtosolpuga.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Protosolpuga",
+  "variant": "plain_south"
+ },
+ "JRWProtovermes": {
+  "file": "JRWProtovermes.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Protovermes",
+  "variant": "plain_south"
+ },
+ "JRWPsittacosaurus": {
+  "file": "JRWPsittacosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Psittacosaurus",
+  "variant": "plain_south"
+ },
+ "JRWPteranodon": {
+  "file": "JRWPteranodon.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Pteranodon",
+  "variant": "plain_south"
+ },
+ "JRWPulmonoscorpius": {
+  "file": "JRWPulmonoscorpius.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Pulmonoscorpius",
+  "variant": "plain_south"
+ },
+ "JRWQantassaurus": {
+  "file": "JRWQantassaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Qantassaurus",
+  "variant": "plain_south"
+ },
+ "JRWQuetzalcoatlus": {
+  "file": "JRWQuetzalcoatlus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Quetzalcoatlus",
+  "variant": "plain_south"
+ },
+ "JRWRajasaurus": {
+  "file": "JRWRajasaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Rajasaurus",
+  "variant": "plain_south"
+ },
+ "JRWRhabdodon": {
+  "file": "JRWRhabdodon.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Rhabdodon",
+  "variant": "plain_south"
+ },
+ "JRWRhamphorhynchus": {
+  "file": "JRWRhamphorhynchus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Rhamphorhynchus",
+  "variant": "plain_south"
+ },
+ "JRWSaltasaurus": {
+  "file": "JRWSaltasaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Saltasaurus",
+  "variant": "plain_south"
+ },
+ "JRWSarcosuchus": {
+  "file": "JRWSarcosuchus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Sarcosuchus",
+  "variant": "plain_south"
+ },
+ "JRWScutosaurus": {
+  "file": "JRWScutosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Scutosaurus",
+  "variant": "plain_south"
+ },
+ "JRWSegnosaurus": {
+  "file": "JRWSegnosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Segnosaurus",
+  "variant": "plain_south"
+ },
+ "JRWSpinosaurus": {
+  "file": "JRWSpinosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Spinosaurus",
+  "variant": "plain_south"
+ },
+ "JRWStaurikosaurus": {
+  "file": "JRWStaurikosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Staurikosaurus",
+  "variant": "plain_south"
+ },
+ "JRWStegosaurus": {
+  "file": "JRWStegosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Stegosaurus",
+  "variant": "plain_south"
+ },
+ "JRWStygimoloch": {
+  "file": "JRWStygimoloch.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Stygimoloch",
+  "variant": "plain_south"
+ },
+ "JRWStyracosaurus": {
+  "file": "JRWStyracosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Styracosaurus",
+  "variant": "plain_south"
+ },
+ "JRWSuchomimus": {
+  "file": "JRWSuchomimus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Suchomimus",
+  "variant": "plain_south"
+ },
+ "JRWSupersaurus": {
+  "file": "JRWSupersaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Supersaurus",
+  "variant": "plain_south"
+ },
+ "JRWTanystropheus": {
+  "file": "JRWTanystropheus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Tanystropheus",
+  "variant": "plain_south"
+ },
+ "JRWTenontosaurus": {
+  "file": "JRWTenontosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Tenontosaurus",
+  "variant": "plain_south"
+ },
+ "JRWTermitotron": {
+  "file": "JRWTermitotron.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Termitotron",
+  "variant": "plain_south"
+ },
+ "JRWTherizinosaurus": {
+  "file": "JRWTherizinosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Therizinosaurus",
+  "variant": "plain_south"
+ },
+ "JRWTitanoboa": {
+  "file": "JRWTitanoboa.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Titanoboa",
+  "variant": "plain_south"
+ },
+ "JRWTorosaurus": {
+  "file": "JRWTorosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Torosaurus",
+  "variant": "plain_south"
+ },
+ "JRWTriceratops": {
+  "file": "JRWTriceratops.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Triceratops",
+  "variant": "plain_south"
+ },
+ "JRWTroodon": {
+  "file": "JRWTroodon.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Troodon",
+  "variant": "plain_south"
+ },
+ "JRWTupandactylus": {
+  "file": "JRWTupandactylus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Tupandactylus",
+  "variant": "plain_south"
+ },
+ "JRWTyrannosaurus": {
+  "file": "JRWTyrannosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Tyrannosaurus",
+  "variant": "plain_south"
+ },
+ "JRWUdanoceratops": {
+  "file": "JRWUdanoceratops.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Udanoceratops",
+  "variant": "plain_south"
+ },
+ "JRWValdosaurus": {
+  "file": "JRWValdosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Valdosaurus",
+  "variant": "plain_south"
+ },
+ "JRWVelociraptor": {
+  "file": "JRWVelociraptor.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Velociraptor",
+  "variant": "plain_south"
+ },
+ "JRWWonambi": {
+  "file": "JRWWonambi.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Wonambi",
+  "variant": "plain_south"
+ },
+ "JRWYangchuanosaurus": {
+  "file": "JRWYangchuanosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Yangchuanosaurus",
+  "variant": "plain_south"
+ },
+ "JRWYi": {
+  "file": "JRWYi.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Yi",
+  "variant": "plain_south"
+ },
+ "JRWYurlunggur": {
+  "file": "JRWYurlunggur.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Yurlunggur",
+  "variant": "plain_south"
+ },
+ "JRWYutyrannus": {
+  "file": "JRWYutyrannus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Yutyrannus",
+  "variant": "plain_south"
+ },
+ "JRWZalmoxes": {
+  "file": "JRWZalmoxes.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Zalmoxes",
+  "variant": "plain_south"
+ },
+ "JRWZephyrosaurus": {
+  "file": "JRWZephyrosaurus.png",
+  "from": "mlie.jurassicrimworlddinosaursonly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Zephyrosaurus",
+  "variant": "plain_south"
+ },
+ "Jakobeast": {
+  "file": "Jakobeast.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Jakobeast/Jakobeast",
+  "variant": "plain_south"
+ },
+ "Jamel": {
+  "file": "Jamel.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Jamel/Jamel",
+  "variant": "plain_south"
+ },
+ "Jerbal": {
+  "file": "Jerbal.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Jerbal",
+  "variant": "plain_south"
+ },
+ "Jimvu": {
+  "file": "Jimvu.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Jimvu/Jimvu",
+  "variant": "plain_south"
+ },
+ "Josephoartigasia": {
+  "file": "Josephoartigasia.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Josephoartigasia/megafauna_josephoartigasia",
+  "variant": "plain_south"
+ },
+ "JungleRancor": {
+  "file": "JungleRancor.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/JungleRancor/BullRancor",
+  "variant": "plain_south"
+ },
+ "Kaadu": {
+  "file": "Kaadu.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Kaadu/Kaadu_m",
+  "variant": "plain_south"
+ },
+ "Katarn": {
+  "file": "Katarn.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Katarn/Katarn",
+  "variant": "plain_south"
+ },
+ "KellDragon": {
+  "file": "KellDragon.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/KellDragon/KellDragon",
+  "variant": "plain_south"
+ },
+ "KingToad": {
+  "file": "KingToad.png",
+  "from": "zal.gianttoads",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/KingToad/vore",
+  "variant": "plain_south"
+ },
+ "Kinrath": {
+  "file": "Kinrath.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Kinrath/Kinrath",
+  "variant": "plain_south"
+ },
+ "Klorslug": {
+  "file": "Klorslug.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Klorslug/Klorslug",
+  "variant": "plain_south"
+ },
+ "KowakianMonkeyLizard": {
+  "file": "KowakianMonkeyLizard.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard",
+  "variant": "plain_south"
+ },
+ "KraytDragon": {
+  "file": "KraytDragon.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/KraytDragon/KraytDragon_m",
+  "variant": "plain_south"
+ },
+ "Kreetle": {
+  "file": "Kreetle.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Kreetle/Kreetle",
+  "variant": "plain_south"
+ },
+ "Krykna": {
+  "file": "Krykna.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Krykna/Krykna",
+  "variant": "plain_south"
+ },
+ "KwazelMaw": {
+  "file": "KwazelMaw.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/KwazelMaw/KwazelMaw",
+  "variant": "plain_south"
+ },
+ "Kwi": {
+  "file": "Kwi.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Kwi/Kwi",
+  "variant": "plain_south"
+ },
+ "Kybuck": {
+  "file": "Kybuck.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Kybuck/Kybuck",
+  "variant": "plain_south"
+ },
+ "LabradorRetriever": {
+  "file": "LabradorRetriever.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Labrador/Labrador",
+  "variant": "plain_south"
+ },
+ "Larva": {
+  "file": "Larva.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Insect/Larva/Larva",
+  "variant": "plain_south"
+ },
+ "LavaFlea": {
+  "file": "LavaFlea.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/LavaFlea/LavaFlea",
+  "variant": "plain_south"
+ },
+ "LavaSnail": {
+  "file": "LavaSnail.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/LavaSnail/LavaSnail",
+  "variant": "plain_south"
+ },
+ "Leaftail": {
+  "file": "Leaftail.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Leaftail/Leaftail",
+  "variant": "plain_south"
+ },
+ "Ling_Cockroach": {
+  "file": "Ling_Cockroach.png",
+  "from": "lingluo.cockroach",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Ling_Cockroach/Ling_Cockroach",
+  "variant": "plain_south"
+ },
+ "Ling_Cockroach_Mechanoid": {
+  "file": "Ling_Cockroach_Mechanoid.png",
+  "from": "lingluo.cockroach",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/LingCockroachMechanoid/LingCockroachMechanoid",
+  "variant": "plain_south"
+ },
+ "Locust": {
+  "file": "Locust.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Insect/Locust/Locust",
+  "variant": "plain_south"
+ },
+ "LongtailGorg": {
+  "file": "LongtailGorg.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/LongtailGorg/LongtailGorg",
+  "variant": "plain_south"
+ },
+ "LothWolf": {
+  "file": "LothWolf.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/LothWolf/LothWolf_m",
+  "variant": "plain_south"
+ },
+ "Lothcat": {
+  "file": "Lothcat.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Lothcat/Lothcat_m",
+  "variant": "plain_south"
+ },
+ "Lylek": {
+  "file": "Lylek.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Lylek/Lylek",
+  "variant": "plain_south"
+ },
+ "Lynx": {
+  "file": "Lynx.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Lynx/Lynx",
+  "variant": "plain_south"
+ },
+ "MA_Aminox": {
+  "file": "MA_Aminox.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Aminox/Aminox",
+  "variant": "plain_south"
+ },
+ "MA_Capryak": {
+  "file": "MA_Capryak.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Capryak/Capryak",
+  "variant": "plain_south"
+ },
+ "MA_Deermoss": {
+  "file": "MA_Deermoss.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Deermoss/Deermoss",
+  "variant": "plain_south"
+ },
+ "MA_Direhorse": {
+  "file": "MA_Direhorse.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Direhorse/Direhorse",
+  "variant": "plain_south"
+ },
+ "MA_Dunbear": {
+  "file": "MA_Dunbear.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Dunbear/Dunbear",
+  "variant": "plain_south"
+ },
+ "MA_Duskhorn": {
+  "file": "MA_Duskhorn.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Duskhorn/Duskhorn",
+  "variant": "plain_south"
+ },
+ "MA_Furpotamus": {
+  "file": "MA_Furpotamus.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Furpotamus/Furpotamus",
+  "variant": "plain_south"
+ },
+ "MA_Gnaut": {
+  "file": "MA_Gnaut.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Gnaut/Gnaut",
+  "variant": "plain_south"
+ },
+ "MA_Harpeagle": {
+  "file": "MA_Harpeagle.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Harpeagle/Harpeagle",
+  "variant": "plain_south"
+ },
+ "MA_Hellboar": {
+  "file": "MA_Hellboar.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Hellboar/Hellboar",
+  "variant": "plain_south"
+ },
+ "MA_Manehound": {
+  "file": "MA_Manehound.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Manehound/Manehound",
+  "variant": "plain_south"
+ },
+ "MA_Narkospider": {
+  "file": "MA_Narkospider.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Narkospider/Narkospider",
+  "variant": "plain_south"
+ },
+ "MA_Plastemmoth": {
+  "file": "MA_Plastemmoth.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Plastemmoth/Plastemmoth",
+  "variant": "plain_south"
+ },
+ "MA_PlastemmothAlpha": {
+  "file": "MA_PlastemmothAlpha.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/PlastemmothAlpha/PlastemmothAlpha",
+  "variant": "plain_south"
+ },
+ "MA_Raptorkhan": {
+  "file": "MA_Raptorkhan.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Raptorkhan/Raptorkhan",
+  "variant": "plain_south"
+ },
+ "MA_Scarodon": {
+  "file": "MA_Scarodon.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Scarodon/Scarodon",
+  "variant": "plain_south"
+ },
+ "MA_Simbakub": {
+  "file": "MA_Simbakub.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Simbakub/Simbakub",
+  "variant": "plain_south"
+ },
+ "MA_SimbakubAlpha": {
+  "file": "MA_SimbakubAlpha.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/SimbakubAlpha/SimbakubAlpha",
+  "variant": "plain_south"
+ },
+ "MA_Sivatherium": {
+  "file": "MA_Sivatherium.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Sivatherium/Sivatherium",
+  "variant": "plain_south"
+ },
+ "MA_Sporemole": {
+  "file": "MA_Sporemole.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Sporemole/Sporemole",
+  "variant": "plain_south"
+ },
+ "MA_Worhin": {
+  "file": "MA_Worhin.png",
+  "from": "veterano.mythicages.megafaunabestiary",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Animal/Worhin/Worhin",
+  "variant": "plain_south"
+ },
+ "MO_AbominationRace": {
+  "file": "MO_AbominationRace.png",
+  "from": "mlie.moevents",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Pawn/Abomination",
+  "variant": "plain_south"
+ },
+ "M_MechaCentaur": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaCentaurFourArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaCentaurFourArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaCentaurSixArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaCentaurSixArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaCentaurWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaFourArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaFourArmTailed": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaFourArmTailedWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaFourArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSixArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSixArmTailed": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSixArmTailedWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSixArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSnek": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSnekFourArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSnekFourArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSnekSixArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSnekSixArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSnekWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSpooder": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSpooderFourArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSpooderFourArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSpooderSixArm": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSpooderSixArmWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaSpooderWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaTailed": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaTailedWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "M_MechaWinged": {
+  "missing": true,
+  "why": "no PawnKindDef references this race, and its ThingDef declares no graphicData.texPath - no texPath exists to resolve"
+ },
+ "Maalraas": {
+  "file": "Maalraas.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Maalraas/Maalraas",
+  "variant": "plain_south"
+ },
+ "Macaw": {
+  "file": "Macaw.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Macaw/Macaw",
+  "variant": "plain_south"
+ },
+ "Macrauchenia": {
+  "file": "Macrauchenia.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Macrauchenia/megafauna_macrauchenia",
+  "variant": "plain_south"
+ },
+ "Mandrill": {
+  "file": "Mandrill.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mandrill",
+  "variant": "plain_south"
+ },
+ "MandrillMan": {
+  "file": "MandrillMan.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/MandrillMan",
+  "variant": "plain_south"
+ },
+ "Manka": {
+  "file": "Manka.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Manka/Manka",
+  "variant": "plain_south"
+ },
+ "MarshHaunt": {
+  "file": "MarshHaunt.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/MarshHaunt/MarshHaunt",
+  "variant": "plain_south"
+ },
+ "Massiff": {
+  "file": "Massiff.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Massiff/Massiff",
+  "variant": "plain_south"
+ },
+ "MastiffPhalone": {
+  "file": "MastiffPhalone.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/MastiffPhalone/MastiffPhalone",
+  "variant": "plain_south"
+ },
+ "Mastmot": {
+  "file": "Mastmot.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Mastmot/Mastmot_m",
+  "variant": "plain_south"
+ },
+ "Mastodon": {
+  "file": "Mastodon.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Mastodon/Mastodon",
+  "variant": "plain_south"
+ },
+ "Mawvorr": {
+  "file": "Mawvorr.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Mawvorr/Mawvorr",
+  "variant": "plain_south"
+ },
+ "Mech_Agrihand": {
+  "file": "Mech_Agrihand.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/AgrihandAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Apocriton": {
+  "file": "Mech_Apocriton.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/ApocritonAncient",
+  "variant": "plain_south"
+ },
+ "Mech_CentipedeBlaster": {
+  "file": "Mech_CentipedeBlaster.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Mechanoid/Centipede",
+  "variant": "plain_south"
+ },
+ "Mech_CentipedeBurner": {
+  "file": "Mech_CentipedeBurner.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Mechanoid/CentipedeBurner",
+  "variant": "plain_south"
+ },
+ "Mech_CentipedeGunner": {
+  "file": "Mech_CentipedeGunner.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Mechanoid/CentipedeGunner",
+  "variant": "plain_south"
+ },
+ "Mech_Centurion": {
+  "file": "Mech_Centurion.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/CenturionAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Cleansweeper": {
+  "file": "Mech_Cleansweeper.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/CleansweeperAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Constructoid": {
+  "file": "Mech_Constructoid.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/ConstructoidAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Cyclops": {
+  "file": "Mech_Cyclops.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/MechCyclops/Cyclops_Ancient",
+  "variant": "plain_south"
+ },
+ "Mech_Diabolus": {
+  "file": "Mech_Diabolus.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/DiabolusAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Fabricor": {
+  "file": "Mech_Fabricor.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/FabricorAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Lancer": {
+  "file": "Mech_Lancer.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Mechanoid/Lancer",
+  "variant": "plain_south"
+ },
+ "Mech_Legionary": {
+  "file": "Mech_Legionary.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/LegionaryAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Lifter": {
+  "file": "Mech_Lifter.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/LifterAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Militor": {
+  "file": "Mech_Militor.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/MilitorAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Paramedic": {
+  "file": "Mech_Paramedic.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/ParamedicAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Pikeman": {
+  "file": "Mech_Pikeman.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Mechanoid/Pikeman",
+  "variant": "plain_south"
+ },
+ "Mech_Scorcher": {
+  "file": "Mech_Scorcher.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/ScorcherAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Scyther": {
+  "file": "Mech_Scyther.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Mechanoid/Scyther",
+  "variant": "plain_south"
+ },
+ "Mech_Termite": {
+  "file": "Mech_Termite.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Mechanoid/Termite",
+  "variant": "plain_south"
+ },
+ "Mech_Tesseron": {
+  "file": "Mech_Tesseron.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/TesseronAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Tunneler": {
+  "file": "Mech_Tunneler.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/TunnelerAncient",
+  "variant": "plain_south"
+ },
+ "Mech_WarUrchin": {
+  "file": "Mech_WarUrchin.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/WarUrchinAncient",
+  "variant": "plain_south"
+ },
+ "Mech_Warqueen": {
+  "file": "Mech_Warqueen.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Mechanoid/WarqueenAncient",
+  "variant": "plain_south"
+ },
+ "Megalania": {
+  "file": "Megalania.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megalania/megafauna_megalania",
+  "variant": "plain_south"
+ },
+ "Megaloceros": {
+  "file": "Megaloceros.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megaloceros/megafauna_megalocerosMale",
+  "variant": "plain_south"
+ },
+ "Megalochelys": {
+  "file": "Megalochelys.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megalochelys/megafauna_megalochelys",
+  "variant": "plain_south"
+ },
+ "Meganeura": {
+  "file": "Meganeura.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Meganeura/megafauna_meganeura",
+  "variant": "plain_south"
+ },
+ "Megascarab": {
+  "file": "Megascarab.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Megascarab/Megascarab",
+  "variant": "plain_south"
+ },
+ "Megasloth": {
+  "file": "Megasloth.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/RG_Megasloth/Megasloth",
+  "variant": "plain_south"
+ },
+ "Megaspider": {
+  "file": "Megaspider.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Megaspider/Megaspider",
+  "variant": "plain_south"
+ },
+ "Megasquid": {
+  "file": "Megasquid.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megasquid",
+  "variant": "plain_south"
+ },
+ "Megavole": {
+  "file": "Megavole.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Megavole/Megavole",
+  "variant": "plain_south"
+ },
+ "Metalhorror": {
+  "file": "Metalhorror.png",
+  "from": "ludeon.rimworld.anomaly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Metalhorror/Metalhorror_Mature",
+  "variant": "plain_south"
+ },
+ "Mink": {
+  "file": "Mink.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Mink/Mink",
+  "variant": "plain_south"
+ },
+ "MonitorLizard": {
+  "file": "MonitorLizard.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/MonitorLizard/MonitorLizard",
+  "variant": "plain_south"
+ },
+ "Monkey": {
+  "file": "Monkey.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Monkey/Monkey",
+  "variant": "plain_south"
+ },
+ "Moose": {
+  "file": "Moose.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Moose/MooseMale",
+  "variant": "plain_south"
+ },
+ "Mott": {
+  "file": "Mott.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Mott/Mott_m",
+  "variant": "plain_south"
+ },
+ "Mudhorn": {
+  "file": "Mudhorn.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Mudhorn/Mudhorn",
+  "variant": "plain_south"
+ },
+ "Muffalo": {
+  "file": "Muffalo.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/RG_Muffalo/Muffalo",
+  "variant": "plain_south"
+ },
+ "Muskox": {
+  "file": "Muskox.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Muskox/Muskox",
+  "variant": "plain_south"
+ },
+ "MutantCow": {
+  "file": "MutantCow.png",
+  "from": "mlie.advancedbiomes",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Animal/Cow/Bull",
+  "variant": "plain_south"
+ },
+ "Mynock": {
+  "file": "Mynock.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Mynock/Mynock",
+  "variant": "plain_south"
+ },
+ "Narglatch": {
+  "file": "Narglatch.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Narglatch/Narglatch_m",
+  "variant": "plain_south"
+ },
+ "Neanderthal": {
+  "file": "Neanderthal.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Neanderthal",
+  "variant": "plain_east"
+ },
+ "Neebray": {
+  "file": "Neebray.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Neebray/Neebray",
+  "variant": "plain_south"
+ },
+ "Nerf": {
+  "file": "Nerf.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Nerf/Nerf_m",
+  "variant": "plain_south"
+ },
+ "Nexu": {
+  "file": "Nexu.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Nexu/NexuW",
+  "variant": "plain_south"
+ },
+ "Nociosphere": {
+  "file": "Nociosphere.png",
+  "from": "ludeon.rimworld.anomaly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Nociosphere/Nociosphere_Center",
+  "variant": "plain_bare"
+ },
+ "Noctol": {
+  "file": "Noctol.png",
+  "from": "ludeon.rimworld.anomaly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Noctol/Noctol",
+  "variant": "plain_south"
+ },
+ "Nuna": {
+  "file": "Nuna.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Nuna/Nuna_m",
+  "variant": "plain_south"
+ },
+ "Ollopom": {
+  "file": "Ollopom.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Ollopom/Ollopom",
+  "variant": "plain_south"
+ },
+ "Orray": {
+  "file": "Orray.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Orray/Orray",
+  "variant": "plain_south"
+ },
+ "Ostrich": {
+  "file": "Ostrich.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Ostrich/Ostrich",
+  "variant": "plain_south"
+ },
+ "Otter": {
+  "file": "Otter.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Otter/Otter",
+  "variant": "plain_south"
+ },
+ "OuterRim_AstromechDroid": {
+  "file": "OuterRim_AstromechDroid.png",
+  "from": "neronix17.outerrim.droiddepot",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "OuterRim/Droid/Astromech/R2",
+  "variant": "plain_south"
+ },
+ "OuterRim_BattleDroid": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "OuterRim_BattleDroidAdvanced": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "OuterRim_CommandoDroid": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "OuterRim_DUMDroid": {
+  "file": "OuterRim_DUMDroid.png",
+  "from": "neronix17.outerrim.droiddepot",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "OuterRim/Droid/DUM",
+  "variant": "plain_south"
+ },
+ "OuterRim_DestroyerDroid": {
+  "file": "OuterRim_DestroyerDroid.png",
+  "from": "neronix17.outerrim.droiddepot",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "OuterRim/Droid/Droideka/Droideka",
+  "variant": "plain_south"
+ },
+ "OuterRim_FX7Droid": {
+  "file": "OuterRim_FX7Droid.png",
+  "from": "neronix17.outerrim.droiddepot",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "OuterRim/Droid/FX7",
+  "variant": "plain_south"
+ },
+ "OuterRim_GNKDroid": {
+  "file": "OuterRim_GNKDroid.png",
+  "from": "neronix17.outerrim.droiddepot",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "OuterRim/Droid/GNK",
+  "variant": "plain_south"
+ },
+ "OuterRim_HKDroid": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "OuterRim_ImperialLaborDroid": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "OuterRim_KXSecurityDroid": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "OuterRim_MSEDroid": {
+  "file": "OuterRim_MSEDroid.png",
+  "from": "neronix17.outerrim.droiddepot",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "OuterRim/Droid/MSE",
+  "variant": "plain_south"
+ },
+ "OuterRim_MagnaGuardDroid": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "OuterRim_MuckrakerDroid": {
+  "file": "OuterRim_MuckrakerDroid.png",
+  "from": "neronix17.outerrim.droiddepot",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "OuterRim/Droid/Muckraker/CrabDroid",
+  "variant": "plain_south"
+ },
+ "OuterRim_ProtocolDroid": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "OuterRim_SalvageAssistDroid": {
+  "file": "OuterRim_SalvageAssistDroid.png",
+  "from": "neronix17.outerrim.droiddepot",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "OuterRim/Droid/SalvageAssist",
+  "variant": "plain_south"
+ },
+ "OuterRim_SuperBattleDroid": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "OuterRim_SuperTacticalDroid": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "OuterRim_TacticalDroid": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "PaintedSpat": {
+  "file": "PaintedSpat.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/PaintedSpat/PaintedSpat",
+  "variant": "plain_south"
+ },
+ "Palaeeudyptes": {
+  "file": "Palaeeudyptes.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Palaeeudyptes/megafauna_palaeeudyptes",
+  "variant": "plain_south"
+ },
+ "Panda": {
+  "file": "Panda.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Panda/Panda",
+  "variant": "plain_south"
+ },
+ "Panther": {
+  "file": "Panther.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Cougar/Cougar",
+  "variant": "plain_south"
+ },
+ "Paraceratherium": {
+  "file": "Paraceratherium.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paraceratherium/megafauna_paraceratherium",
+  "variant": "plain_south"
+ },
+ "Peacock": {
+  "file": "Peacock.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Peacock/PeacockMale",
+  "variant": "plain_south"
+ },
+ "PekoPeko": {
+  "file": "PekoPeko.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/PekoPeko/PekoPeko_m",
+  "variant": "plain_south"
+ },
+ "Penguin": {
+  "file": "Penguin.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Penguin",
+  "variant": "plain_south"
+ },
+ "Pig": {
+  "file": "Pig.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Pig/Pig",
+  "variant": "plain_south"
+ },
+ "Pikobis": {
+  "file": "Pikobis.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Pikobis/Pikobis",
+  "variant": "plain_south"
+ },
+ "Platybelodon": {
+  "file": "Platybelodon.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Platybelodon/megafauna_platybelodon",
+  "variant": "plain_south"
+ },
+ "PoisonButterfly": {
+  "file": "PoisonButterfly.png",
+  "from": "mlie.advancedbiomes",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Animal/Butterfly/butterfly",
+  "variant": "plain_south"
+ },
+ "PoisonDeer": {
+  "file": "PoisonDeer.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": false,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Deer/DeerMale",
+  "variant": "plain_south"
+ },
+ "PoisonRat": {
+  "file": "PoisonRat.png",
+  "from": "armoredampharos.fancyrats",
+  "ownMod": false,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/FancyRat/FancyRat_SelfF",
+  "variant": "plain_south"
+ },
+ "Porcupine": {
+  "file": "Porcupine.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Porcupine/Porcupine",
+  "variant": "plain_south"
+ },
+ "Porg": {
+  "file": "Porg.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Porg/Porg",
+  "variant": "plain_south"
+ },
+ "PrairieDog": {
+  "file": "PrairieDog.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/PrairieDog/PrairieDog",
+  "variant": "plain_south"
+ },
+ "Procoptodon": {
+  "file": "Procoptodon.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Procoptodon/megafauna_procoptodon",
+  "variant": "plain_south"
+ },
+ "Prowler": {
+  "file": "Prowler.png",
+  "from": "mlie.horrors",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Prowler/Prowler",
+  "variant": "plain_south"
+ },
+ "Pufferpig": {
+  "file": "Pufferpig.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Pufferpig/Pufferpig",
+  "variant": "plain_south"
+ },
+ "Pulmonoscorpius": {
+  "file": "Pulmonoscorpius.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Pulmonoscorpius/megafauna_pulmonoscorpius",
+  "variant": "plain_south"
+ },
+ "Purussaurus": {
+  "file": "Purussaurus.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Purussaurus/megafauna_purussaurus",
+  "variant": "plain_south"
+ },
+ "Qormot": {
+  "file": "Qormot.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Qormot/Qormot",
+  "variant": "plain_south"
+ },
+ "Quail": {
+  "file": "Quail.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Quail/QuailMale",
+  "variant": "plain_south"
+ },
+ "Quinkana": {
+  "file": "Quinkana.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Quinkana/megafauna_quinkana",
+  "variant": "plain_south"
+ },
+ "RG_Hemolope": {
+  "file": "RG_Hemolope.png",
+  "from": "regrowth.botr.core",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Hemolope/Hemolope",
+  "variant": "plain_south"
+ },
+ "RG_KiwiBird": {
+  "file": "RG_KiwiBird.png",
+  "from": "regrowth.botr.core",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Kiwi/Kiwi",
+  "variant": "plain_south"
+ },
+ "RG_Neutrolope": {
+  "file": "RG_Neutrolope.png",
+  "from": "regrowth.botr.core",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Neutrolope/Neutrolope",
+  "variant": "plain_south"
+ },
+ "RG_Rabbit": {
+  "file": "RG_Rabbit.png",
+  "from": "regrowth.botr.core",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Rabbit/Rabbit",
+  "variant": "plain_south"
+ },
+ "RG_Rimclaw": {
+  "file": "RG_Rimclaw.png",
+  "from": "regrowth.botr.core",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw",
+  "variant": "plain_south"
+ },
+ "RG_WoollyStegosaurus": {
+  "file": "RG_WoollyStegosaurus.png",
+  "from": "regrowth.botr.core",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/ReGrowth/WoollyStegosaurus/WoollyStegosaurus",
+  "variant": "plain_south"
+ },
+ "Rabbuck": {
+  "file": "Rabbuck.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Rabbuck",
+  "variant": "plain_south"
+ },
+ "Raccoon": {
+  "file": "Raccoon.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Raccoon/Raccoon",
+  "variant": "plain_south"
+ },
+ "Rancor": {
+  "file": "Rancor.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Rancor/Rancor",
+  "variant": "plain_south"
+ },
+ "Rat": {
+  "file": "Rat.png",
+  "from": "armoredampharos.fancyrats",
+  "ownMod": false,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/FancyRat/FancyRat_SelfF",
+  "variant": "plain_south"
+ },
+ "Raxshir": {
+  "file": "Raxshir.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Raxshir/Raxshir",
+  "variant": "plain_south"
+ },
+ "Reek": {
+  "file": "Reek.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Reek/Reek",
+  "variant": "plain_south"
+ },
+ "Revenant": {
+  "file": "Revenant.png",
+  "from": "ludeon.rimworld.anomaly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Revenant/Revenant",
+  "variant": "plain_south"
+ },
+ "Rhinoceros": {
+  "file": "Rhinoceros.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Rhino/Rhino",
+  "variant": "plain_south"
+ },
+ "Rikknit": {
+  "file": "Rikknit.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Rikknit/Rikknit",
+  "variant": "plain_south"
+ },
+ "Roggwart": {
+  "file": "Roggwart.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Roggwart/Roggwart",
+  "variant": "plain_south"
+ },
+ "Ronto": {
+  "file": "Ronto.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Ronto/Ronto",
+  "variant": "plain_south"
+ },
+ "Runyip": {
+  "file": "Runyip.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Runyip/Runyip",
+  "variant": "plain_south"
+ },
+ "Rycrit": {
+  "file": "Rycrit.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Rycrit/Rycrit",
+  "variant": "plain_south"
+ },
+ "SWPotF_RaceDef_ysalamir": {
+  "file": "SWPotF_RaceDef_ysalamir.png",
+  "from": "guy762.mm.kotorcore",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "ysalamiri/ysalamiri",
+  "variant": "plain_south"
+ },
+ "SW_Electricfish": {
+  "file": "SW_Electricfish.png",
+  "from": "who.vfee.isopodageneline",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/SW_LaborBug/SW_LaborBugA",
+  "variant": "plain_south"
+ },
+ "SW_Electricgryllotalpa": {
+  "file": "SW_Electricgryllotalpa.png",
+  "from": "who.vfee.isopodageneline",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/SW_AcidSpittingSpider/SW_AcidSpittingSpiderA",
+  "variant": "plain_south"
+ },
+ "SW_Electrictick": {
+  "file": "SW_Electrictick.png",
+  "from": "who.vfee.isopodageneline",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/SW_GrenadeBug/SW_GrenadeBug",
+  "variant": "plain_south"
+ },
+ "SW_Emperorisopod": {
+  "file": "SW_Emperorisopod.png",
+  "from": "who.vfee.isopodageneline",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/SW_Emperorisopod/SW_EmperorisopodA",
+  "variant": "plain_south"
+ },
+ "SW_Grenadierworm": {
+  "file": "SW_Grenadierworm.png",
+  "from": "who.vfee.isopodageneline",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/SW_EngineerBug/SW_EngineerBugA",
+  "variant": "plain_south"
+ },
+ "SW_Juggernautbeetles": {
+  "file": "SW_Juggernautbeetles.png",
+  "from": "who.vfee.isopodageneline",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/SW_PraetorianExecutioner/SW_PraetorianExecutionerA",
+  "variant": "plain_south"
+ },
+ "Scavrat": {
+  "file": "Scavrat.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Scavrat/Scavrat",
+  "variant": "plain_south"
+ },
+ "Scurrier": {
+  "file": "Scurrier.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Scurrier/Scurrier_m",
+  "variant": "plain_south"
+ },
+ "Scuttlebug": {
+  "file": "Scuttlebug.png",
+  "from": "mlie.spaceworms",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Scuttlebug/scuttlebug",
+  "variant": "plain_south"
+ },
+ "SeaLion": {
+  "file": "SeaLion.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/SeaLion/SeaLionMale",
+  "variant": "plain_south"
+ },
+ "SeaTurtle": {
+  "file": "SeaTurtle.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/SeaTurtle/SeaTurtle",
+  "variant": "plain_south"
+ },
+ "Seal": {
+  "file": "Seal.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Seal/Seal",
+  "variant": "plain_south"
+ },
+ "Shaak": {
+  "file": "Shaak.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Shaak/Shaak",
+  "variant": "plain_south"
+ },
+ "Sheep": {
+  "file": "Sheep.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Sheep/SheepMale",
+  "variant": "plain_south"
+ },
+ "Shiro": {
+  "file": "Shiro.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Shiro/Shiro",
+  "variant": "plain_south"
+ },
+ "ShiroTrap": {
+  "file": "ShiroTrap.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/ShiroTrap/ShiroTrap",
+  "variant": "plain_south"
+ },
+ "ShortfacedBear": {
+  "file": "ShortfacedBear.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/ShortfacedBear/megafauna_shortfacedbear",
+  "variant": "plain_south"
+ },
+ "Shyrack": {
+  "file": "Shyrack.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Shyrack/Shyrack",
+  "variant": "plain_south"
+ },
+ "Sightstealer": {
+  "file": "Sightstealer.png",
+  "from": "ludeon.rimworld.anomaly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Sightstealer/Sightstealer_A",
+  "variant": "plain_south"
+ },
+ "Silooth": {
+  "file": "Silooth.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Silooth/Silooth",
+  "variant": "plain_south"
+ },
+ "Sivatherium": {
+  "file": "Sivatherium.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Sivatherium/megafauna_sivatherium",
+  "variant": "plain_south"
+ },
+ "Skalder": {
+  "file": "Skalder.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Skalder/Skalder",
+  "variant": "plain_south"
+ },
+ "Sketto": {
+  "file": "Sketto.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Sketto/Sketto",
+  "variant": "plain_south"
+ },
+ "Smilodon": {
+  "file": "Smilodon.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Smilodon/megafauna_smilodon",
+  "variant": "plain_south"
+ },
+ "Snoruuk": {
+  "file": "Snoruuk.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Snoruuk/Snoruuk",
+  "variant": "plain_south"
+ },
+ "Snowhare": {
+  "file": "Snowhare.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/RG_Hare/Hare",
+  "variant": "plain_south"
+ },
+ "Sparrow": {
+  "file": "Sparrow.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Sparrow/Sparrow",
+  "variant": "plain_south"
+ },
+ "Spelopede": {
+  "file": "Spelopede.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Spelopede/Spelopede",
+  "variant": "plain_south"
+ },
+ "Squall": {
+  "file": "Squall.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Squall/Squall",
+  "variant": "plain_south"
+ },
+ "Squirrel": {
+  "file": "Squirrel.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/RG_Squirrel/Squirrel",
+  "variant": "plain_south"
+ },
+ "Stintaril": {
+  "file": "Stintaril.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Stintaril/Stintaril",
+  "variant": "plain_south"
+ },
+ "StoneCrab": {
+  "file": "StoneCrab.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/StoneCrab/StoneCrab",
+  "variant": "plain_south"
+ },
+ "Strill": {
+  "file": "Strill.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Strill/Strill",
+  "variant": "plain_south"
+ },
+ "Swan": {
+  "file": "Swan.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Swan/Swan",
+  "variant": "plain_south"
+ },
+ "TYR_HotfootRat": {
+  "file": "TYR_HotfootRat.png",
+  "from": "tyrannidae.littlecritters",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/KangarooRat/KangarooRat_Tyr",
+  "variant": "plain_south"
+ },
+ "TYR_KangarooRat": {
+  "file": "TYR_KangarooRat.png",
+  "from": "tyrannidae.littlecritters",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/KangarooRat/KangarooRat_Tyr",
+  "variant": "plain_south"
+ },
+ "TYR_Lemming": {
+  "file": "TYR_Lemming.png",
+  "from": "tyrannidae.littlecritters",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Lemming/Lemming_Tyr",
+  "variant": "plain_south"
+ },
+ "TYR_Mouse": {
+  "file": "TYR_Mouse.png",
+  "from": "tyrannidae.littlecritters",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mouse/Mouse_Tyr",
+  "variant": "plain_south"
+ },
+ "TYR_MousePoison": {
+  "file": "TYR_MousePoison.png",
+  "from": "tyrannidae.littlecritters",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mouse/Mouse_Tyr",
+  "variant": "plain_south"
+ },
+ "Tach": {
+  "file": "Tach.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Tach/Tach",
+  "variant": "plain_south"
+ },
+ "Taozin": {
+  "file": "Taozin.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Taozin/Taozin",
+  "variant": "plain_south"
+ },
+ "Tauntaun": {
+  "file": "Tauntaun.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Tauntaun/Tauntaun",
+  "variant": "plain_south"
+ },
+ "TeeMuss": {
+  "file": "TeeMuss.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/TeeMuss/TeeMuss",
+  "variant": "plain_south"
+ },
+ "Terrorworm": {
+  "file": "Terrorworm.png",
+  "from": "mlie.horrors",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Terrorworm/TerrorWorm",
+  "variant": "plain_south"
+ },
+ "TetnissCrab": {
+  "file": "TetnissCrab.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/TetnissCrab/TetnissCrab_j",
+  "variant": "plain_south"
+ },
+ "Thranta": {
+  "file": "Thranta.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Thranta/Thranta",
+  "variant": "plain_south"
+ },
+ "ThrumbaToad": {
+  "file": "ThrumbaToad.png",
+  "from": "grimterra.biomesmod",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/ThrumbaToad/ThrumbaToad",
+  "variant": "plain_south"
+ },
+ "Thrumbo": {
+  "file": "Thrumbo.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Thrumbo/Thrumbo",
+  "variant": "plain_south"
+ },
+ "Tibidee": {
+  "file": "Tibidee.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Tibidee/Tibidee",
+  "variant": "plain_south"
+ },
+ "Tiger": {
+  "file": "Tiger.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Tiger/Tiger",
+  "variant": "plain_south"
+ },
+ "Titan": {
+  "file": "Titan.png",
+  "from": "titans.fl",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Titan/Titan",
+  "variant": "plain_south"
+ },
+ "Titanis": {
+  "file": "Titanis.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Titanis/megafauna_titanis",
+  "variant": "plain_south"
+ },
+ "Titanoboa": {
+  "file": "Titanoboa.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Titanoboa/megafauna_titanoboaMale",
+  "variant": "plain_south"
+ },
+ "Tooke": {
+  "file": "Tooke.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Tooke/Tooke",
+  "variant": "plain_south"
+ },
+ "Toraton": {
+  "file": "Toraton.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Toraton",
+  "variant": "plain_south"
+ },
+ "Tortoise": {
+  "file": "Tortoise.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Tortoise/Tortoise",
+  "variant": "plain_south"
+ },
+ "Torton": {
+  "file": "Torton.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Torton/Torton",
+  "variant": "plain_south"
+ },
+ "Toughspike": {
+  "file": "Toughspike.png",
+  "from": "ludeon.rimworld.anomaly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Fleshbeast/Toughspike/Toughspike",
+  "variant": "plain_south"
+ },
+ "Toxalope": {
+  "file": "Toxalope.png",
+  "from": "regrowth.botr.core",
+  "ownMod": false,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/RG_Toxalope/Toxalope",
+  "variant": "plain_south"
+ },
+ "Trispike": {
+  "file": "Trispike.png",
+  "from": "ludeon.rimworld.anomaly",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Fleshbeast/Trispike/Trispike",
+  "variant": "plain_south"
+ },
+ "Tukata": {
+  "file": "Tukata.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Tukata/Tukata",
+  "variant": "plain_south"
+ },
+ "Turkey": {
+  "file": "Turkey.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Turkey/TurkeyTom",
+  "variant": "plain_south"
+ },
+ "TuskCat": {
+  "file": "TuskCat.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/TuskCat/TuskCat",
+  "variant": "plain_south"
+ },
+ "Uintatherium": {
+  "file": "Uintatherium.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Uintatherium/megafauna_uintatherium",
+  "variant": "plain_south"
+ },
+ "Urusai": {
+  "file": "Urusai.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Urusai/Urusai",
+  "variant": "plain_south"
+ },
+ "Uvak": {
+  "file": "Uvak.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Uvak/Uvak",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Hydra": {
+  "file": "VAEWaste_Hydra.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Hydra/Hydra",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Megatardi": {
+  "file": "VAEWaste_Megatardi.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megatardi/Megatardi",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Pestigator": {
+  "file": "VAEWaste_Pestigator.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Pestigator/Pestigator",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Toxafox": {
+  "file": "VAEWaste_Toxafox.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Toxafox/Toxafox",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Toxbear": {
+  "file": "VAEWaste_Toxbear.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Toxbear/Toxbear",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Toxiguana": {
+  "file": "VAEWaste_Toxiguana.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Toxiguana/Toxiguana",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Toxlion": {
+  "file": "VAEWaste_Toxlion.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Toxlion/ToxlionMale",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Toxscorpion": {
+  "file": "VAEWaste_Toxscorpion.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Toxscorpion/Toxscorpion",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Wasteboar": {
+  "file": "VAEWaste_Wasteboar.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Wasteboar/Wasteboar",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Wastedeer": {
+  "file": "VAEWaste_Wastedeer.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Toxdeer/ToxdeerMale",
+  "variant": "plain_south"
+ },
+ "VAEWaste_Wasteffalo": {
+  "file": "VAEWaste_Wasteffalo.png",
+  "from": "vanillaexpanded.vaewaste",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Wasteffalo/Wasteffalo",
+  "variant": "plain_south"
+ },
+ "VFEI2_Acidspitter": {
+  "file": "VFEI2_Acidspitter.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Acidspitter/Acidspitter",
+  "variant": "plain_south"
+ },
+ "VFEI2_BlackEmpress": {
+  "file": "VFEI2_BlackEmpress.png",
+  "from": "sarg.alphaanimals",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/VFEI2_BlackEmpress/VFEI2_BlackEmpress",
+  "variant": "plain_south"
+ },
+ "VFEI2_BlackQueen": {
+  "file": "VFEI2_BlackQueen.png",
+  "from": "sarg.alphaanimals",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_BlackQueen/AA_BlackQueen",
+  "variant": "plain_south"
+ },
+ "VFEI2_BlackSwarmling": {
+  "file": "VFEI2_BlackSwarmling.png",
+  "from": "sarg.alphaanimals",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling",
+  "variant": "plain_south"
+ },
+ "VFEI2_Boomtick": {
+  "file": "VFEI2_Boomtick.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Boomtick/Boomtick",
+  "variant": "plain_south"
+ },
+ "VFEI2_Durapod": {
+  "file": "VFEI2_Durapod.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Durapod/Durapod",
+  "variant": "plain_south"
+ },
+ "VFEI2_Empress": {
+  "file": "VFEI2_Empress.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Empress/Empress",
+  "variant": "plain_south"
+ },
+ "VFEI2_Fuelmite": {
+  "file": "VFEI2_Fuelmite.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Fuelmite/Fuelmite",
+  "variant": "plain_south"
+ },
+ "VFEI2_Gigalocust": {
+  "file": "VFEI2_Gigalocust.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Gigalocust/Gigalocust",
+  "variant": "plain_south"
+ },
+ "VFEI2_Gigamite": {
+  "file": "VFEI2_Gigamite.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Gigamite/Gigamite",
+  "variant": "plain_south"
+ },
+ "VFEI2_Hellbeetle": {
+  "file": "VFEI2_Hellbeetle.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Hellbeetle/Hellbeetle",
+  "variant": "plain_south"
+ },
+ "VFEI2_Ironclad": {
+  "file": "VFEI2_Ironclad.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Ironclad/Ironclad",
+  "variant": "plain_south"
+ },
+ "VFEI2_Macrofly": {
+  "file": "VFEI2_Macrofly.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Macrofly/Macrofly",
+  "variant": "plain_south"
+ },
+ "VFEI2_Megapede": {
+  "file": "VFEI2_Megapede.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megapede/Megapede",
+  "variant": "plain_south"
+ },
+ "VFEI2_Megathrips": {
+  "file": "VFEI2_Megathrips.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megathrips/Megathrips",
+  "variant": "plain_south"
+ },
+ "VFEI2_Megawasp": {
+  "file": "VFEI2_Megawasp.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megawasp/Megawasp",
+  "variant": "plain_south"
+ },
+ "VFEI2_Patriarch": {
+  "file": "VFEI2_Patriarch.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Patriarch/Patriarch",
+  "variant": "plain_south"
+ },
+ "VFEI2_Queen": {
+  "file": "VFEI2_Queen.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/InsectoidQueen/InsectoidQueen",
+  "variant": "plain_south"
+ },
+ "VFEI2_RoyalMegascarab": {
+  "file": "VFEI2_RoyalMegascarab.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/RoyalMegascarab/RoyalMegascarab",
+  "variant": "plain_south"
+ },
+ "VFEI2_RoyalMegaspider": {
+  "file": "VFEI2_RoyalMegaspider.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/RoyalMegaspider/RoyalMegaspider",
+  "variant": "plain_south"
+ },
+ "VFEI2_RoyalSpelopede": {
+  "file": "VFEI2_RoyalSpelopede.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/RoyalSpelopede/RoyalSpelopede",
+  "variant": "plain_south"
+ },
+ "VFEI2_Silverfish": {
+  "file": "VFEI2_Silverfish.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Silverfish/Silverfish",
+  "variant": "plain_south"
+ },
+ "VFEI2_Swarmling": {
+  "file": "VFEI2_Swarmling.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Swarmling/Swarmling",
+  "variant": "plain_south"
+ },
+ "VFEI2_Tankroach": {
+  "file": "VFEI2_Tankroach.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Tankroach/Tankroach",
+  "variant": "plain_south"
+ },
+ "VFEI2_Teramantis": {
+  "file": "VFEI2_Teramantis.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Teramantis/Teramantis",
+  "variant": "plain_south"
+ },
+ "VFEI2_Titantick": {
+  "file": "VFEI2_Titantick.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Titantick/Titantick",
+  "variant": "plain_south"
+ },
+ "VFEI2_Venomite": {
+  "file": "VFEI2_Venomite.png",
+  "from": "oskarpotocki.vfe.insectoid2",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Venomite/Venomite",
+  "variant": "plain_south"
+ },
+ "VFEP_Mech_Spidermine": {
+  "file": "VFEP_Mech_Spidermine.png",
+  "from": "oskarpotocki.vfe.pirates",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/WarcasketSpidermine",
+  "variant": "plain_bare"
+ },
+ "VFEP_Mech_Wardrone": {
+  "file": "VFEP_Mech_Wardrone.png",
+  "from": "oskarpotocki.vfe.pirates",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/WarcasketCombatDrone",
+  "variant": "plain_bare"
+ },
+ "VGE_Astronaut": {
+  "file": "VGE_Astronaut.png",
+  "from": "vanillaexpanded.gravship",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut",
+  "variant": "plain_south"
+ },
+ "VGE_Astropede": {
+  "file": "VGE_Astropede.png",
+  "from": "vanillaexpanded.gravship",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawns/Mechanoid/Astropede/AncientAstropede",
+  "variant": "plain_south"
+ },
+ "VGE_Hunter": {
+  "file": "VGE_Hunter.png",
+  "from": "vanillaexpanded.gravship",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawns/Mechanoid/Hunter/AncientHunter",
+  "variant": "plain_south"
+ },
+ "VQEA_Splicefiend": {
+  "file": "VQEA_Splicefiend.png",
+  "from": "vanillaquestsexpanded.ancients",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Pawn/Mutants/Splicefiend",
+  "variant": "plain_south"
+ },
+ "VQEA_Splicehulk": {
+  "file": "VQEA_Splicehulk.png",
+  "from": "vanillaquestsexpanded.ancients",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Pawn/Mutants/Splicehulk",
+  "variant": "plain_south"
+ },
+ "VQEA_Spliceling": {
+  "file": "VQEA_Spliceling.png",
+  "from": "vanillaquestsexpanded.ancients",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Pawn/Mutants/Spliceling",
+  "variant": "plain_south"
+ },
+ "VQEA_Splicetoot": {
+  "file": "VQEA_Splicetoot.png",
+  "from": "vanillaquestsexpanded.ancients",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Pawn/Mutants/Splicetoot",
+  "variant": "plain_south"
+ },
+ "VQE_IceCrawler": {
+  "file": "VQE_IceCrawler.png",
+  "from": "vanillaquestsexpanded.cryptoforge",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Pawn/Insectoid/IceCrawler",
+  "variant": "plain_south"
+ },
+ "VQE_Megamidge": {
+  "file": "VQE_Megamidge.png",
+  "from": "vanillaquestsexpanded.cryptoforge",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Pawn/Insectoid/Megamidge",
+  "variant": "plain_south"
+ },
+ "VRE_CompanionDryad": {
+  "file": "VRE_CompanionDryad.png",
+  "from": "vanillaracesexpanded.phytokin",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Companiondryad/Companiondryad",
+  "variant": "plain_south"
+ },
+ "VVE_BangBus": {
+  "file": "VVE_BangBus.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_Van/Tier1_Van",
+  "variant": "plain_south"
+ },
+ "VVE_Bulldog": {
+  "file": "VVE_Bulldog.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_Tank/Tier2_Tank",
+  "variant": "plain_south"
+ },
+ "VVE_Bunsen": {
+  "file": "VVE_Bunsen.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_FlamerTank/Tier1_FlamerTank",
+  "variant": "plain_south"
+ },
+ "VVE_Charley": {
+  "file": "VVE_Charley.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_Motorbike/Tier2_Motorbike",
+  "variant": "plain_south"
+ },
+ "VVE_Dinghy": {
+  "file": "VVE_Dinghy.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_Boat/Tier1_Boat",
+  "variant": "plain_south"
+ },
+ "VVE_Dirtbike": {
+  "file": "VVE_Dirtbike.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_Motorbike/Tier1_Motorbike",
+  "variant": "plain_south"
+ },
+ "VVE_Frog": {
+  "file": "VVE_Frog.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_Droppod/Tier1_Droppod",
+  "variant": "plain_bare"
+ },
+ "VVE_Highwayman": {
+  "file": "VVE_Highwayman.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_APC/Tier1_APC",
+  "variant": "plain_south"
+ },
+ "VVE_Mosquito": {
+  "file": "VVE_Mosquito.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_Helicopter/Tier2_Helicopter",
+  "variant": "plain_south"
+ },
+ "VVE_Mule": {
+  "file": "VVE_Mule.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_Hauler/Tier1_Hauler",
+  "variant": "plain_south"
+ },
+ "VVE_Prowler": {
+  "file": "VVE_Prowler.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_Explorer/Tier1_Explorer",
+  "variant": "plain_south"
+ },
+ "VVE_Roadkill": {
+  "file": "VVE_Roadkill.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_Tank/Tier1_Tank",
+  "variant": "plain_south"
+ },
+ "VVE_Roadrunner": {
+  "file": "VVE_Roadrunner.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_Traveller/Tier2_Hauler",
+  "variant": "plain_south"
+ },
+ "VVE_Scytheman": {
+  "file": "VVE_Scytheman.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_RocketTruck/Tier1_RocketTruck",
+  "variant": "plain_south"
+ },
+ "VVE_Smuggler": {
+  "file": "VVE_Smuggler.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_Airplane/Tier2_Airplane",
+  "variant": "plain_south"
+ },
+ "VVE_Snatcher": {
+  "file": "VVE_Snatcher.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_Van/Tier2_Van",
+  "variant": "plain_south"
+ },
+ "VVE_Tango": {
+  "file": "VVE_Tango.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_APC/Tier2_APC",
+  "variant": "plain_south"
+ },
+ "VVE_Toad": {
+  "file": "VVE_Toad.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_SiegePod/Tier1_SiegePod",
+  "variant": "plain_bare"
+ },
+ "VVE_Traveller": {
+  "file": "VVE_Traveller.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier1/Tier1_Traveller/Tier1_Traveller",
+  "variant": "plain_south"
+ },
+ "VVE_Trawler": {
+  "file": "VVE_Trawler.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_Boat/Tier2_Boat",
+  "variant": "plain_south"
+ },
+ "VVE_Wagon": {
+  "file": "VVE_Wagon.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_FamilyCar/Tier2_FamilyCar",
+  "variant": "plain_south"
+ },
+ "VVE_Warbird": {
+  "file": "VVE_Warbird.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_Warplane/Tier2_Warplane",
+  "variant": "plain_south"
+ },
+ "VVE_Wisent": {
+  "file": "VVE_Wisent.png",
+  "from": "oskarpotocki.vanillavehiclesexpanded",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Vehicles/Tier2/Tier2_MilitaryTruck/Tier2_MilitaryTruck",
+  "variant": "plain_south"
+ },
+ "Vapaad": {
+  "file": "Vapaad.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Vapaad/Vapaad",
+  "variant": "plain_south"
+ },
+ "Varactyl": {
+  "file": "Varactyl.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Varactyl/Varactyl_m",
+  "variant": "plain_south"
+ },
+ "Veermok": {
+  "file": "Veermok.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Veermok/Veermok",
+  "variant": "plain_south"
+ },
+ "Visceral": {
+  "file": "Visceral.png",
+  "from": "mlie.horrors",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Visceral/Visceral",
+  "variant": "plain_south"
+ },
+ "Voorpak": {
+  "file": "Voorpak.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Voorpak/Voorpak",
+  "variant": "plain_south"
+ },
+ "Vornskyr": {
+  "file": "Vornskyr.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Vornskyr/Vornskyr",
+  "variant": "plain_south"
+ },
+ "Vulptex": {
+  "file": "Vulptex.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Vulptex/Vulptex",
+  "variant": "plain_south"
+ },
+ "Vulture": {
+  "file": "Vulture.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Vulture/Vulture",
+  "variant": "plain_south"
+ },
+ "Walrus": {
+  "file": "Walrus.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Walrus/Walrus",
+  "variant": "plain_south"
+ },
+ "Wampa": {
+  "file": "Wampa.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Wampa/Wampa",
+  "variant": "plain_south"
+ },
+ "WarWyrm": {
+  "file": "WarWyrm.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/WarWyrm/WarWyrm",
+  "variant": "plain_south"
+ },
+ "Warbird": {
+  "file": "Warbird.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Warbird/Warbird",
+  "variant": "plain_south"
+ },
+ "Warg": {
+  "file": "Warg.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Warg/Warg",
+  "variant": "plain_south"
+ },
+ "WasteRat": {
+  "file": "WasteRat.png",
+  "from": "ludeon.rimworld.biotech",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/WasteRat/WasteRat",
+  "variant": "plain_south"
+ },
+ "Whisperbird": {
+  "file": "Whisperbird.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Whisperbird/Whisperbird",
+  "variant": "plain_south"
+ },
+ "WildBoar": {
+  "file": "WildBoar.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/WildBoar/WildBoar",
+  "variant": "plain_south"
+ },
+ "Wolf_Arctic": {
+  "file": "Wolf_Arctic.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Wolf_Arctic/Wolf_Arctic",
+  "variant": "plain_south"
+ },
+ "Wolf_Great": {
+  "file": "Wolf_Great.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/GreatWolf/GreatWolf",
+  "variant": "plain_south"
+ },
+ "Wolf_Timber": {
+  "file": "Wolf_Timber.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Wolf_Timber/Wolf_Timber",
+  "variant": "plain_south"
+ },
+ "Wolverine": {
+  "file": "Wolverine.png",
+  "from": "ludeon.rimworld.odyssey",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Wolverine/Wolverine",
+  "variant": "plain_south"
+ },
+ "WompRat": {
+  "file": "WompRat.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/WompRat/WompRat",
+  "variant": "plain_south"
+ },
+ "Woolamander": {
+  "file": "Woolamander.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Woolamander/Woolamander",
+  "variant": "plain_south"
+ },
+ "WoollyMammoth": {
+  "file": "WoollyMammoth.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/WoollyMammoth/megafauna_woollymammoth",
+  "variant": "plain_south"
+ },
+ "Worm": {
+  "file": "Worm.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Worm",
+  "variant": "plain_south"
+ },
+ "Worrt": {
+  "file": "Worrt.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Worrt/Worrt",
+  "variant": "plain_south"
+ },
+ "Wraid": {
+  "file": "Wraid.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Wraid/Wraid",
+  "variant": "plain_south"
+ },
+ "Wyyyschokk": {
+  "file": "Wyyyschokk.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Wyyyschokk/Wyyyschokk",
+  "variant": "plain_south"
+ },
+ "Yak": {
+  "file": "Yak.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/Yak/YakMale",
+  "variant": "plain_south"
+ },
+ "Yippa": {
+  "file": "Yippa.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Yippa",
+  "variant": "plain_south"
+ },
+ "Yobshrimp": {
+  "file": "Yobshrimp.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Yobshrimp/Yobshrimp",
+  "variant": "plain_south"
+ },
+ "YorkshireTerrier": {
+  "file": "YorkshireTerrier.png",
+  "from": "ludeon.rimworld.core",
+  "ownMod": true,
+  "source": "resources.assets",
+  "texPath": "Things/Pawn/Animal/YorkshireTerrier/YorkshireTerrier",
+  "variant": "plain_south"
+ },
+ "Zakkeg": {
+  "file": "Zakkeg.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Zakkeg/Zakkeg",
+  "variant": "plain_south"
+ },
+ "Zarander": {
+  "file": "Zarander.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Zarander",
+  "variant": "plain_south"
+ },
+ "Zebra": {
+  "file": "Zebra.png",
+  "from": "mlie.beastsoftherim",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Zebra",
+  "variant": "plain_south"
+ },
+ "Zeer": {
+  "file": "Zeer.png",
+  "from": "mlie.starwarsanimalcollection",
+  "ownMod": true,
+  "source": "bundle",
+  "texPath": "swanimals/Zeer/Zeer",
+  "variant": "plain_south"
+ },
+ "Zygolophodon": {
+  "file": "Zygolophodon.png",
+  "from": "spino.megafauna",
+  "ownMod": true,
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Zygolophodon/megafauna_zygolophodon",
+  "variant": "plain_south"
+ },
+ "guy762_DroidRace_3Cseries": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_ADMkI": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_ADMkIV": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_ADMkIV_sith": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_ADMkI_sf": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_DevAD": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_DevWD": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_GE3LD": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_GE3PD": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_GOTO": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_HK50series": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_HK51series": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_HKseries": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_ITseries": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_KM1HMD": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_KM1MD": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_KX12APD": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_KX12UPD": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_MPDMkI": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_R8009UD": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_SentWD": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ },
+ "guy762_DroidRace_T3series": {
+  "missing": true,
+  "why": "PawnKindDef exists but no lifeStage carries bodyGraphicData.texPath (humanlike/droid/mech: sprite is assembled from body+head+apparel defs)"
+ }
+}

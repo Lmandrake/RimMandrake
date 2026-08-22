@@ -31,7 +31,7 @@
  },
  "biomes": {
   "unresolved_hashes": [],
-  "distinct": 27,
+  "distinct": 28,
   "census": [
    {
     "biome": "Desert",
@@ -125,18 +125,18 @@
     "temp_c": -15.0
    },
    {
-    "biome": "SeaIce",
-    "tiles": 357,
-    "pct": 1.632,
-    "water": true,
-    "temp_c": -13.1
-   },
-   {
     "biome": "Lake",
     "tiles": 312,
     "pct": 1.426,
     "water": true,
     "temp_c": 46.0
+   },
+   {
+    "biome": "SeaIce",
+    "tiles": 277,
+    "pct": 1.266,
+    "water": true,
+    "temp_c": -4.3
    },
    {
     "biome": "AB_MechanoidIntrusion",
@@ -179,6 +179,13 @@
     "pct": 0.411,
     "water": false,
     "temp_c": 60.6
+   },
+   {
+    "biome": "IceSheet",
+    "tiles": 80,
+    "pct": 0.366,
+    "water": false,
+    "temp_c": -52.5
    },
    {
     "biome": "AB_MiasmicMangrove",

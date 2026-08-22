@@ -1,0 +1,3747 @@
+{
+ "AA_AcanthamoebaGiganteaHuge": {
+  "file": "AA_AcanthamoebaGiganteaHuge.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea",
+  "variant": "side_south"
+ },
+ "AA_AcanthamoebaGiganteaLarge": {
+  "file": "AA_AcanthamoebaGiganteaLarge.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea",
+  "variant": "side_south"
+ },
+ "AA_AcanthamoebaGiganteaSmall": {
+  "file": "AA_AcanthamoebaGiganteaSmall.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea",
+  "variant": "side_south"
+ },
+ "AA_Aerofleet": {
+  "file": "AA_Aerofleet.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet",
+  "variant": "side_south"
+ },
+ "AA_Agaripawn": {
+  "file": "AA_Agaripawn.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Agaripawn/AA_Agaripawn",
+  "variant": "side_south"
+ },
+ "AA_Agaripod": {
+  "file": "AA_Agaripod.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
+  "variant": "side_south"
+ },
+ "AA_AngelMoth": {
+  "file": "AA_AngelMoth.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
+  "variant": "side_south"
+ },
+ "AA_AngelMothLarva": {
+  "file": "AA_AngelMothLarva.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMothLarva",
+  "variant": "side_south"
+ },
+ "AA_AnimaColossus": {
+  "file": "AA_AnimaColossus.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus",
+  "variant": "side_south"
+ },
+ "AA_Animalisk": {
+  "file": "AA_Animalisk.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Animalisk/AA_Animalisk",
+  "variant": "side_south"
+ },
+ "AA_AnimusVox": {
+  "file": "AA_AnimusVox.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_AnimusVox/AA_AnimusVox",
+  "variant": "side_south"
+ },
+ "AA_ArcticLion": {
+  "file": "AA_ArcticLion.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_ArcticLion/AA_ArcticLion",
+  "variant": "side_south"
+ },
+ "AA_Atispec": {
+  "file": "AA_Atispec.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Atispec/AA_Atispec",
+  "variant": "side_south"
+ },
+ "AA_AuroraSylph": {
+  "file": "AA_AuroraSylph.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_AuroraSylph/AA_AuroraSylph",
+  "variant": "side_south"
+ },
+ "AA_Barbslinger": {
+  "file": "AA_Barbslinger.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_BarbSlinger/AA_BarbSlinger",
+  "variant": "side_south"
+ },
+ "AA_BedBug": {
+  "file": "AA_BedBug.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
+  "variant": "side_south"
+ },
+ "AA_Behemoth": {
+  "file": "AA_Behemoth.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/FO_ForsakenDragon/FO_ForsakenDragon",
+  "variant": "side_south"
+ },
+ "AA_BlackScarab": {
+  "file": "AA_BlackScarab.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_BlackScarab/AA_BlackScarab",
+  "variant": "side_south"
+ },
+ "AA_BlackSpelopede": {
+  "file": "AA_BlackSpelopede.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_BlackSpelopede/AA_BlackSpelopede",
+  "variant": "side_south"
+ },
+ "AA_BlackSpider": {
+  "file": "AA_BlackSpider.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_BlackSpider/AA_BlackSpider",
+  "variant": "side_south"
+ },
+ "AA_Blizzarisk": {
+  "file": "AA_Blizzarisk.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Blizzarisk/AA_Blizzarisk",
+  "variant": "side_south"
+ },
+ "AA_BlizzariskClutchMother": {
+  "file": "AA_BlizzariskClutchMother.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Blizzarisk/AA_Blizzarisk_Clutchmother",
+  "variant": "side_south"
+ },
+ "AA_BloodShrimp": {
+  "file": "AA_BloodShrimp.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp",
+  "variant": "side_south"
+ },
+ "AA_Bobeene": {
+  "file": "AA_Bobeene.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Bobeene/AA_Bobeene_male",
+  "variant": "side_south"
+ },
+ "AA_BoulderMit": {
+  "file": "AA_BoulderMit.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit",
+  "variant": "side_south"
+ },
+ "AA_Bumbledrone": {
+  "file": "AA_Bumbledrone.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone",
+  "variant": "side_south"
+ },
+ "AA_BumbledroneHierophant": {
+  "file": "AA_BumbledroneHierophant.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Bumbledrone/AA_BumbledroneHierophant",
+  "variant": "side_south"
+ },
+ "AA_BumbledroneQueen": {
+  "file": "AA_BumbledroneQueen.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Bumbledrone/AA_BumbledroneQueen",
+  "variant": "side_south"
+ },
+ "AA_Cactipine": {
+  "file": "AA_Cactipine.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Cactipine/AA_Cactipine",
+  "variant": "side_south"
+ },
+ "AA_ChameleonYak": {
+  "file": "AA_ChameleonYak.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_ChameleonYak/AA_ChameleonYak",
+  "variant": "side_south"
+ },
+ "AA_ChemfuelMyrmidon": {
+  "file": "AA_ChemfuelMyrmidon.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_ChemfuelMyrmidon/AA_ChemfuelMyrmidon",
+  "variant": "side_south"
+ },
+ "AA_Cinderlisk": {
+  "file": "AA_Cinderlisk.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Cinderlisk/AA_Cinderlisk",
+  "variant": "side_south"
+ },
+ "AA_ColossalAerofleet": {
+  "file": "AA_ColossalAerofleet.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet_Colossal",
+  "variant": "side_south"
+ },
+ "AA_CrepuscularBeetle": {
+  "file": "AA_CrepuscularBeetle.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_CrepuscularBeetle/AA_CrepuscularBeetle",
+  "variant": "side_south"
+ },
+ "AA_CrescendoAnole": {
+  "file": "AA_CrescendoAnole.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole",
+  "variant": "side_south"
+ },
+ "AA_CrystalMit": {
+  "file": "AA_CrystalMit.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
+  "variant": "side_south"
+ },
+ "AA_CrystallineCaracal": {
+  "file": "AA_CrystallineCaracal.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_CrystallineCaracal/AA_CrystallineCaracal",
+  "variant": "side_south"
+ },
+ "AA_DarkVandal": {
+  "file": "AA_DarkVandal.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar",
+  "variant": "side_south"
+ },
+ "AA_Darkbeast": {
+  "file": "AA_Darkbeast.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Darkbeast/AA_Darkbeast",
+  "variant": "side_south"
+ },
+ "AA_DecayDrake": {
+  "file": "AA_DecayDrake.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
+  "variant": "side_south"
+ },
+ "AA_DesertAve": {
+  "file": "AA_DesertAve.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_DesertAve/AA_DesertAve",
+  "variant": "side_south"
+ },
+ "AA_DevilSheep": {
+  "file": "AA_DevilSheep.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_DevilSheep/AA_DevilSheepMale",
+  "variant": "side_south"
+ },
+ "AA_Drainer": {
+  "file": "AA_Drainer.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Drainer/AA_Drainer",
+  "variant": "side_south"
+ },
+ "AA_DrainerLarva": {
+  "file": "AA_DrainerLarva.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Drainer/AA_DrainerLarva",
+  "variant": "side_south"
+ },
+ "AA_Dunealisk": {
+  "file": "AA_Dunealisk.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Dunealisk/AA_Dunealisk",
+  "variant": "side_south"
+ },
+ "AA_DunealiskClutchMother": {
+  "file": "AA_DunealiskClutchMother.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Dunealisk/AA_Dunealisk_Clutchmother",
+  "variant": "side_south"
+ },
+ "AA_DuskProwler": {
+  "file": "AA_DuskProwler.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/FO_DuskProwler/FO_DuskProwler",
+  "variant": "side_south"
+ },
+ "AA_DuskRat": {
+  "file": "AA_DuskRat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_DuskRat/AA_DuskRat",
+  "variant": "side_south"
+ },
+ "AA_EmpressButterfly": {
+  "file": "AA_EmpressButterfly.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_EmpressButterfly/AA_EmpressButterfly",
+  "variant": "side_south"
+ },
+ "AA_EmpressButterflyLarva": {
+  "file": "AA_EmpressButterflyLarva.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_EmpressButterfly/AA_EmpressButterflyLarva",
+  "variant": "side_south"
+ },
+ "AA_EngorgedTentacularAberration": {
+  "file": "AA_EngorgedTentacularAberration.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_EngorgedTentacularAberration/AA_EngorgedTentacularAberration",
+  "variant": "side_south"
+ },
+ "AA_Erin": {
+  "file": "AA_Erin.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Erin/AA_Erin",
+  "variant": "side_south"
+ },
+ "AA_Eyeling": {
+  "file": "AA_Eyeling.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Eyeling/AA_Eyeling",
+  "variant": "side_south"
+ },
+ "AA_Feralisk": {
+  "file": "AA_Feralisk.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Feralisk/AA_Feralisk",
+  "variant": "side_south"
+ },
+ "AA_FeraliskClutchMother": {
+  "file": "AA_FeraliskClutchMother.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Feralisk/AA_Feralisk_Clutchmother",
+  "variant": "side_south"
+ },
+ "AA_FireWasp": {
+  "file": "AA_FireWasp.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_FireWasp/AA_FireWasp",
+  "variant": "side_south"
+ },
+ "AA_FissionMouse": {
+  "file": "AA_FissionMouse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_FissionMouse/AA_FissionMouse",
+  "variant": "side_south"
+ },
+ "AA_FissionMouseSecond": {
+  "file": "AA_FissionMouseSecond.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_FissionMouse/AA_FissionMouse",
+  "variant": "side_south"
+ },
+ "AA_FissionMouseThird": {
+  "file": "AA_FissionMouseThird.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_FissionMouse/AA_FissionMouse",
+  "variant": "side_south"
+ },
+ "AA_FlamingoPhoenix": {
+  "file": "AA_FlamingoPhoenix.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_FlamingoPhoenix/AA_FlamingoPhoenix",
+  "variant": "side_south"
+ },
+ "AA_FrostAve": {
+  "file": "AA_FrostAve.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_FrostAve/AA_FrostAve",
+  "variant": "side_south"
+ },
+ "AA_FrostLynx": {
+  "file": "AA_FrostLynx.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_FrostLynx/AA_FrostLynx",
+  "variant": "side_south"
+ },
+ "AA_FrostboundBehemoth": {
+  "file": "AA_FrostboundBehemoth.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_FrostboundBehemoth/AA_FrostboundBehemoth",
+  "variant": "side_south"
+ },
+ "AA_Frostling": {
+  "file": "AA_Frostling.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Frostling/AA_Frostling",
+  "variant": "side_south"
+ },
+ "AA_Frostmite": {
+  "file": "AA_Frostmite.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_FrostMite/AA_FrostMite",
+  "variant": "side_south"
+ },
+ "AA_FungalHusk": {
+  "file": "AA_FungalHusk.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_FungalHusk/AA_FungalHusk",
+  "variant": "side_south"
+ },
+ "AA_Gallatross": {
+  "file": "AA_Gallatross.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Gallatross/AA_Gallatross",
+  "variant": "side_south"
+ },
+ "AA_GallatrossMoribund": {
+  "file": "AA_GallatrossMoribund.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Gallatross/AA_Gallatross_Moribund",
+  "variant": "side_south"
+ },
+ "AA_Genix": {
+  "file": "AA_Genix.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Genix/AA_Genix",
+  "variant": "side_south"
+ },
+ "AA_GiantCrownedSilkie": {
+  "file": "AA_GiantCrownedSilkie.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie",
+  "variant": "side_south"
+ },
+ "AA_Gigantelope": {
+  "file": "AA_Gigantelope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Gigantelope/AA_Gigantelope",
+  "variant": "side_south"
+ },
+ "AA_GreatDevourer": {
+  "file": "AA_GreatDevourer.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer",
+  "variant": "side_south"
+ },
+ "AA_GreenGoo": {
+  "file": "AA_GreenGoo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo",
+  "variant": "side_south"
+ },
+ "AA_GreyCoatedMouflon": {
+  "file": "AA_GreyCoatedMouflon.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_GreyCoatedMouflon/AA_GreyCoatedMouflonMale",
+  "variant": "side_south"
+ },
+ "AA_Groundrunner": {
+  "file": "AA_Groundrunner.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner",
+  "variant": "side_south"
+ },
+ "AA_Helixien": {
+  "file": "AA_Helixien.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
+  "variant": "side_south"
+ },
+ "AA_InfectedAerofleet": {
+  "file": "AA_InfectedAerofleet.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
+  "variant": "side_south"
+ },
+ "AA_IronhuskBeetle": {
+  "file": "AA_IronhuskBeetle.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_IronhuskBeetle/AA_IronhuskBeetle",
+  "variant": "side_south"
+ },
+ "AA_Junglelisk": {
+  "file": "AA_Junglelisk.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Junglelisk/AA_Junglelisk",
+  "variant": "side_south"
+ },
+ "AA_LarvalAtispec": {
+  "file": "AA_LarvalAtispec.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Atispec/AA_LarvalAtispec",
+  "variant": "side_south"
+ },
+ "AA_Lockjaw": {
+  "file": "AA_Lockjaw.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
+  "variant": "side_south"
+ },
+ "AA_Locusts": {
+  "file": "AA_Locusts.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Locusts/AA_LocustsThree",
+  "variant": "side_south"
+ },
+ "AA_LuciferBug": {
+  "file": "AA_LuciferBug.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_LuciferBug/AA_LuciferBug",
+  "variant": "side_south"
+ },
+ "AA_MammothWorm": {
+  "file": "AA_MammothWorm.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_MammothWorm/AA_MammothWorm",
+  "variant": "side_south"
+ },
+ "AA_Mantrap": {
+  "file": "AA_Mantrap.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
+  "variant": "side_south"
+ },
+ "AA_MatureFleshbeast": {
+  "file": "AA_MatureFleshbeast.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_MatureFleshbeast/AA_MatureFleshbeast",
+  "variant": "side_south"
+ },
+ "AA_MeadowAve": {
+  "file": "AA_MeadowAve.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_MeadowAve/AA_MeadowAve_1",
+  "variant": "side_south"
+ },
+ "AA_MegaLouse": {
+  "file": "AA_MegaLouse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_MegaLouse/AA_MegaLouse",
+  "variant": "side_south"
+ },
+ "AA_Metallovore": {
+  "file": "AA_Metallovore.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Metallovore/AA_Metallovore",
+  "variant": "side_south"
+ },
+ "AA_Mime": {
+  "file": "AA_Mime.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Mime/AA_Mime",
+  "variant": "side_south"
+ },
+ "AA_Murkling": {
+  "file": "AA_Murkling.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
+  "variant": "side_south"
+ },
+ "AA_MycoidColossus": {
+  "file": "AA_MycoidColossus.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus",
+  "variant": "side_south"
+ },
+ "AA_Needlepost": {
+  "file": "AA_Needlepost.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost",
+  "variant": "side_south"
+ },
+ "AA_Needleroll": {
+  "file": "AA_Needleroll.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Needleroll/AA_Needleroll",
+  "variant": "side_south"
+ },
+ "AA_NightAve": {
+  "file": "AA_NightAve.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_NightAve/AA_NightAve",
+  "variant": "side_south"
+ },
+ "AA_NightMule": {
+  "file": "AA_NightMule.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_NightMule/AA_NightMule",
+  "variant": "side_south"
+ },
+ "AA_NightRam": {
+  "file": "AA_NightRam.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_NightRam/AA_NightRam",
+  "variant": "side_south"
+ },
+ "AA_Nightling": {
+  "file": "AA_Nightling.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Nightling/AA_Nightling",
+  "variant": "side_south"
+ },
+ "AA_OcularJelly": {
+  "file": "AA_OcularJelly.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly",
+  "variant": "side_south"
+ },
+ "AA_OcularNightling": {
+  "file": "AA_OcularNightling.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_OcularNightling/AA_OcularNightling",
+  "variant": "side_south"
+ },
+ "AA_OvergrownColossus": {
+  "file": "AA_OvergrownColossus.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_OvergrownColossus/AA_OvergrownColossus",
+  "variant": "side_south"
+ },
+ "AA_PebbleMit": {
+  "file": "AA_PebbleMit.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_PebbleMit/AA_PebbleMit1",
+  "variant": "side_south"
+ },
+ "AA_PedigreedRaptor": {
+  "file": "AA_PedigreedRaptor.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_PedigreedRaptor/AA_PedigreedRaptor",
+  "variant": "side_south"
+ },
+ "AA_PhoenixOwlcat": {
+  "file": "AA_PhoenixOwlcat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_PhoenixOwlcat/AA_PhoenixOwlcat",
+  "variant": "side_south"
+ },
+ "AA_Plasmorph": {
+  "file": "AA_Plasmorph.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph",
+  "variant": "side_south"
+ },
+ "AA_Radyak": {
+  "file": "AA_Radyak.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Radyak/AA_Radyak",
+  "variant": "side_south"
+ },
+ "AA_RaptorShrimp": {
+  "file": "AA_RaptorShrimp.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
+  "variant": "side_south"
+ },
+ "AA_Ravager": {
+  "file": "AA_Ravager.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Ravager/AA_Ravager",
+  "variant": "side_south"
+ },
+ "AA_RayHound": {
+  "file": "AA_RayHound.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_RayHound/AA_RayHound",
+  "variant": "side_south"
+ },
+ "AA_Razorjack": {
+  "file": "AA_Razorjack.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Razorjack/AA_Razorjack",
+  "variant": "side_south"
+ },
+ "AA_RedGoo": {
+  "file": "AA_RedGoo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_RedGoo/AA_RedGoo",
+  "variant": "side_south"
+ },
+ "AA_RedSpore": {
+  "file": "AA_RedSpore.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_RedSpore/AA_RedSpore",
+  "variant": "side_south"
+ },
+ "AA_RipperHound": {
+  "file": "AA_RipperHound.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_RipperHound/AA_RipperHound",
+  "variant": "side_south"
+ },
+ "AA_RoughPlatedMonitor": {
+  "file": "AA_RoughPlatedMonitor.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_RoughPlatedMonitor/AA_RoughPlatedMonitor",
+  "variant": "side_south"
+ },
+ "AA_RoyalAve": {
+  "file": "AA_RoyalAve.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_RoyalAve/AA_RoyalAve",
+  "variant": "side_south"
+ },
+ "AA_SandLion": {
+  "file": "AA_SandLion.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_SandLion/AA_SandLion",
+  "variant": "side_south"
+ },
+ "AA_SandProwler": {
+  "file": "AA_SandProwler.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_SandProwler/AA_SandProwler",
+  "variant": "side_south"
+ },
+ "AA_SandSquid": {
+  "file": "AA_SandSquid.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_SandSquid/AA_SandSquid",
+  "variant": "side_south"
+ },
+ "AA_ShadowCharger": {
+  "file": "AA_ShadowCharger.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/FO_NightCow/FO_NightCow",
+  "variant": "side_south"
+ },
+ "AA_ShockGoat": {
+  "file": "AA_ShockGoat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat",
+  "variant": "side_south"
+ },
+ "AA_Skiphound": {
+  "file": "AA_Skiphound.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Skiphound/AA_Skiphound",
+  "variant": "side_south"
+ },
+ "AA_Skyeel": {
+  "file": "AA_Skyeel.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Skyeel/AA_Skyeel",
+  "variant": "side_south"
+ },
+ "AA_Slurrypede": {
+  "file": "AA_Slurrypede.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Slurrypede/AA_Slurrypede",
+  "variant": "side_south"
+ },
+ "AA_SmallButterfly": {
+  "file": "AA_SmallButterfly.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_SmallButterfly/AA_SmallButterflyThree",
+  "variant": "side_south"
+ },
+ "AA_SpinedGow": {
+  "file": "AA_SpinedGow.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowMale",
+  "variant": "side_south"
+ },
+ "AA_SummitCrab": {
+  "file": "AA_SummitCrab.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_BoulderMit/AA_SummitCrab",
+  "variant": "side_south"
+ },
+ "AA_Swarmling": {
+  "file": "AA_Swarmling.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Swarmling/AA_Swarmling",
+  "variant": "side_south"
+ },
+ "AA_TarGuzzler": {
+  "file": "AA_TarGuzzler.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_TarGuzzler/AA_TarGuzzler",
+  "variant": "side_south"
+ },
+ "AA_TeratogenicOriginator": {
+  "file": "AA_TeratogenicOriginator.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_TeratogenicOriginator/AA_TeratogenicOriginator",
+  "variant": "side_south"
+ },
+ "AA_Terramorph": {
+  "file": "AA_Terramorph.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Terramorph/AA_Terramorph",
+  "variant": "side_south"
+ },
+ "AA_TetraSlug": {
+  "file": "AA_TetraSlug.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_TetraSlug/AA_TetraSlug",
+  "variant": "side_south"
+ },
+ "AA_Thermadon": {
+  "file": "AA_Thermadon.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Thermadon/AA_Thermadon",
+  "variant": "side_south"
+ },
+ "AA_Thunderbeast": {
+  "file": "AA_Thunderbeast.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
+  "variant": "side_south"
+ },
+ "AA_Thunderox": {
+  "file": "AA_Thunderox.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/FO_WoolyDuskling/FO_WoolyDuskling",
+  "variant": "side_south"
+ },
+ "AA_UnblinkingEye": {
+  "file": "AA_UnblinkingEye.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_UnblinkingEye/AA_UnblinkingEye",
+  "variant": "side_south"
+ },
+ "AA_Wildpawn": {
+  "file": "AA_Wildpawn.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn",
+  "variant": "side_south"
+ },
+ "AA_Wildpod": {
+  "file": "AA_Wildpod.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
+  "variant": "side_south"
+ },
+ "AA_WindBeast": {
+  "file": "AA_WindBeast.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AA_WindBeast/AA_WindBeast",
+  "variant": "side_south"
+ },
+ "AG_OcularSlinger": {
+  "file": "AG_OcularSlinger.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AG_OcularSlinger/AG_OcularSlinger",
+  "variant": "side_south"
+ },
+ "AM_Apoptosis": {
+  "file": "AM_Apoptosis.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis",
+  "variant": "side_south"
+ },
+ "AM_Aura": {
+  "file": "AM_Aura.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_MechAura/AM_MechAura",
+  "variant": "side_south"
+ },
+ "AM_Blitzkrieg": {
+  "file": "AM_Blitzkrieg.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg",
+  "variant": "side_south"
+ },
+ "AM_Daggersnout": {
+  "file": "AM_Daggersnout.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnout",
+  "variant": "side_south"
+ },
+ "AM_Demolisher": {
+  "file": "AM_Demolisher.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisher",
+  "variant": "side_south"
+ },
+ "AM_Dryad_Corruptor": {
+  "file": "AM_Dryad_Corruptor.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor",
+  "variant": "side_south"
+ },
+ "AM_Dryad_Ocular": {
+  "file": "AM_Dryad_Ocular.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AM_Dryad_Ocular/AM_Dryad_Ocular",
+  "variant": "side_south"
+ },
+ "AM_Dryad_Spitter": {
+  "file": "AM_Dryad_Spitter.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AM_Dryad_Spitter/AM_Dryad_Spitter",
+  "variant": "side_south"
+ },
+ "AM_Dryad_Tumorous": {
+  "file": "AM_Dryad_Tumorous.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous",
+  "variant": "side_south"
+ },
+ "AM_Dryad_Unstable": {
+  "file": "AM_Dryad_Unstable.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AM_Dryad_Unstable/AM_Dryad_Unstable",
+  "variant": "side_south"
+ },
+ "AM_Fireworm": {
+  "file": "AM_Fireworm.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFireworm",
+  "variant": "side_south"
+ },
+ "AM_Goliath": {
+  "file": "AM_Goliath.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliath",
+  "variant": "side_south"
+ },
+ "AM_Infernus": {
+  "file": "AM_Infernus.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus",
+  "variant": "side_south"
+ },
+ "AM_Mech_Artilleron": {
+  "file": "AM_Mech_Artilleron.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Bellicor_Mortar/AM_Bellicor_Mortar_Clean",
+  "variant": "side_south"
+ },
+ "AM_Mech_Bellicor": {
+  "file": "AM_Mech_Bellicor.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor",
+  "variant": "side_south"
+ },
+ "AM_Mech_Geneticor": {
+  "file": "AM_Mech_Geneticor.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor",
+  "variant": "side_south"
+ },
+ "AM_Mech_Guttersnipe": {
+  "file": "AM_Mech_Guttersnipe.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe",
+  "variant": "side_south"
+ },
+ "AM_Mech_Legate": {
+  "file": "AM_Mech_Legate.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Legate/AM_Legate",
+  "variant": "side_south"
+ },
+ "AM_Mech_Lux": {
+  "file": "AM_Mech_Lux.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia",
+  "variant": "side_south"
+ },
+ "AM_Mech_MasterChef": {
+  "file": "AM_Mech_MasterChef.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef",
+  "variant": "side_south"
+ },
+ "AM_Mech_Munifex": {
+  "file": "AM_Mech_Munifex.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex",
+  "variant": "side_south"
+ },
+ "AM_Mech_Optio": {
+  "file": "AM_Mech_Optio.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Optio/AM_Optio",
+  "variant": "side_south"
+ },
+ "AM_Mech_Polychoron": {
+  "file": "AM_Mech_Polychoron.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron",
+  "variant": "side_south"
+ },
+ "AM_Mech_PristineAssembler": {
+  "file": "AM_Mech_PristineAssembler.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler",
+  "variant": "side_south"
+ },
+ "AM_Mech_PristineSlurrypede": {
+  "file": "AM_Mech_PristineSlurrypede.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede",
+  "variant": "side_south"
+ },
+ "AM_Mech_Sagittarius": {
+  "file": "AM_Mech_Sagittarius.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius",
+  "variant": "side_south"
+ },
+ "AM_Mech_TurboCleaner": {
+  "file": "AM_Mech_TurboCleaner.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner",
+  "variant": "side_south"
+ },
+ "AM_Phalanx": {
+  "file": "AM_Phalanx.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanx",
+  "variant": "side_south"
+ },
+ "AM_PristineStrider": {
+  "file": "AM_PristineStrider.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider",
+  "variant": "side_south"
+ },
+ "AM_Siegebreaker": {
+  "file": "AM_Siegebreaker.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreaker",
+  "variant": "side_south"
+ },
+ "AM_Siegemelter": {
+  "file": "AM_Siegemelter.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter",
+  "variant": "side_south"
+ },
+ "AM_Starfire": {
+  "file": "AM_Starfire.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire",
+  "variant": "side_south"
+ },
+ "AM_UnshackledDryad": {
+  "file": "AM_UnshackledDryad.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dryad_Basic/Dryad_Basic",
+  "variant": "side_south"
+ },
+ "AM_WarEmpress": {
+  "file": "AM_WarEmpress.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress",
+  "variant": "side_south"
+ },
+ "AV_Balloon": {
+  "file": "AV_Balloon.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Air/Tier0/Balloon/AV_Balloon",
+  "variant": "side:bare"
+ },
+ "AV_Chariot": {
+  "file": "AV_Chariot.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Land/Tier0/Chariot/AV_Chariot",
+  "variant": "side_south"
+ },
+ "AV_CoveredCarriage": {
+  "file": "AV_CoveredCarriage.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Land/Tier0/CoveredCarriage/AV_CoveredCarriage",
+  "variant": "side_south"
+ },
+ "AV_DogSled": {
+  "file": "AV_DogSled.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Land/Tier0/DogSled/AV_DogSled",
+  "variant": "side_south"
+ },
+ "AV_Hwacha": {
+  "file": "AV_Hwacha.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Land/Tier0/Hwacha/AV_Hwacha",
+  "variant": "side_south"
+ },
+ "AV_OutriggerCanoe": {
+  "file": "AV_OutriggerCanoe.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Sea/Tier0/OutriggerCanoe/AV_OutriggerCanoe",
+  "variant": "side_south"
+ },
+ "AV_OxCart": {
+  "file": "AV_OxCart.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Land/Tier0/OxCart/AV_OxCart",
+  "variant": "side_south"
+ },
+ "AV_Palanquin": {
+  "file": "AV_Palanquin.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Land/Tier0/Palanquin/AV_Palanquin",
+  "variant": "side_south"
+ },
+ "AV_Rickshaw": {
+  "file": "AV_Rickshaw.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Land/Tier0/Rickshaw/AV_Rickshaw",
+  "variant": "side_south"
+ },
+ "AV_RowBoat": {
+  "file": "AV_RowBoat.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Sea/Tier0/RowBoat/AV_RowBoat",
+  "variant": "side_south"
+ },
+ "AV_WarChariot": {
+  "file": "AV_WarChariot.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Land/Tier0/WarChariot/AV_WarChariot",
+  "variant": "side_south"
+ },
+ "AV_Wheelbarrow": {
+  "file": "AV_Wheelbarrow.png",
+  "source": "loose",
+  "texPath": "Things/Vehicles/Land/Tier0/Wheelbarrow/AV_Wheelbarrow",
+  "variant": "side_south"
+ },
+ "Acklay": {
+  "file": "Acklay.png",
+  "source": "bundle",
+  "texPath": "swanimals/Acklay/Acklay",
+  "variant": "side_south"
+ },
+ "Aiwha": {
+  "file": "Aiwha.png",
+  "source": "bundle",
+  "texPath": "swanimals/Aiwha/Aiwha",
+  "variant": "side_south"
+ },
+ "Akk": {
+  "file": "Akk.png",
+  "source": "bundle",
+  "texPath": "swanimals/Akk/Akk",
+  "variant": "side_south"
+ },
+ "Alligator": {
+  "file": "Alligator.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Alligator/Alligator",
+  "variant": "side_south"
+ },
+ "AlligatorMan": {
+  "file": "AlligatorMan.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AlligatorMan",
+  "variant": "side_south"
+ },
+ "Alpaca": {
+  "file": "Alpaca.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Alpaca/Alpaca",
+  "variant": "side_south"
+ },
+ "AlphaThrumbo": {
+  "file": "AlphaThrumbo.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/AlphaThrumbo/AlphaThrumbo",
+  "variant": "side_south"
+ },
+ "Alphabeaver": {
+  "file": "Alphabeaver.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Beaver/Beaver",
+  "variant": "side_south"
+ },
+ "Andrewsarchus": {
+  "file": "Andrewsarchus.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Andrewsarchus/megafauna_andrewsarchus",
+  "variant": "side_south"
+ },
+ "Anooba": {
+  "file": "Anooba.png",
+  "source": "bundle",
+  "texPath": "swanimals/Anooba/Anooba_m",
+  "variant": "side_south"
+ },
+ "Armadillo": {
+  "file": "Armadillo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Armadillo",
+  "variant": "side_south"
+ },
+ "Arthropleura": {
+  "file": "Arthropleura.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Arthropleura/megafauna_arthropleura",
+  "variant": "side_south"
+ },
+ "Aurochs": {
+  "file": "Aurochs.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Aurochs/megafauna_aurochsMale",
+  "variant": "side_south"
+ },
+ "BI_Queen": {
+  "file": "BI_Queen.png",
+  "source": "loose",
+  "texPath": "BI/Queen",
+  "variant": "side_south"
+ },
+ "BMT_AaroxisDendoria": {
+  "file": "BMT_AaroxisDendoria.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria",
+  "variant": "side_south"
+ },
+ "BMT_AaroxisDendoriaLarvae": {
+  "file": "BMT_AaroxisDendoriaLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoriaLarvae",
+  "variant": "side_south"
+ },
+ "BMT_AaroxisDendoriaPupa": {
+  "file": "BMT_AaroxisDendoriaPupa.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BeetlePupae/AaroxisDendoriaPupa",
+  "variant": "side_east"
+ },
+ "BMT_AcidSlug": {
+  "file": "BMT_AcidSlug.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/AcidSlug/AcidSlug",
+  "variant": "side_south"
+ },
+ "BMT_BarbedPangolin": {
+  "file": "BMT_BarbedPangolin.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/BarbedPangolin/BarbedPangolin",
+  "variant": "side_south"
+ },
+ "BMT_Basilisk": {
+  "file": "BMT_Basilisk.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Basilisk/Basilisk",
+  "variant": "side_south"
+ },
+ "BMT_Batbird": {
+  "file": "BMT_Batbird.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Batbird/Batbird_Sitting",
+  "variant": "side_south"
+ },
+ "BMT_BeardedYak": {
+  "file": "BMT_BeardedYak.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BeardedYak/BeardedYak",
+  "variant": "side_south"
+ },
+ "BMT_BiliousVarog": {
+  "file": "BMT_BiliousVarog.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/BiliousVarog/BiliousVarog",
+  "variant": "side_south"
+ },
+ "BMT_BloodletterPetrel": {
+  "file": "BMT_BloodletterPetrel.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+  "variant": "side_south"
+ },
+ "BMT_BloodropLarvae": {
+  "file": "BMT_BloodropLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BloodropMoth/BloodropMothLarvae",
+  "variant": "side_south"
+ },
+ "BMT_BloodropMoth": {
+  "file": "BMT_BloodropMoth.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
+  "variant": "side_south"
+ },
+ "BMT_BloodropPupa": {
+  "file": "BMT_BloodropPupa.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BeetlePupae/BloodDropMothPupa",
+  "variant": "side_east"
+ },
+ "BMT_BovineBeetle": {
+  "file": "BMT_BovineBeetle.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
+  "variant": "side_south"
+ },
+ "BMT_BovineBeetleLarvae": {
+  "file": "BMT_BovineBeetleLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetleLarva",
+  "variant": "side_south"
+ },
+ "BMT_BovineBeetlePupa": {
+  "file": "BMT_BovineBeetlePupa.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BeetlePupae/BeetlePupa",
+  "variant": "side_east"
+ },
+ "BMT_BrownBat": {
+  "file": "BMT_BrownBat.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Brownbat/Bat_Sitting",
+  "variant": "side_south"
+ },
+ "BMT_BunkerBug": {
+  "file": "BMT_BunkerBug.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/BunkerBug/BunkerBug",
+  "variant": "side_south"
+ },
+ "BMT_CactusCrab": {
+  "file": "BMT_CactusCrab.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/CactusCrab/CactusCrab",
+  "variant": "side_south"
+ },
+ "BMT_CarrionVulture": {
+  "file": "BMT_CarrionVulture.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/CarrionVulture/CarrionVulture",
+  "variant": "side_south"
+ },
+ "BMT_CaveCricket": {
+  "file": "BMT_CaveCricket.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/CaveCricket/CaveCricket",
+  "variant": "side_south"
+ },
+ "BMT_CaveLemming": {
+  "file": "BMT_CaveLemming.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
+  "variant": "side_south"
+ },
+ "BMT_CaveSpider": {
+  "file": "BMT_CaveSpider.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/CaveSpider/CaveSpider",
+  "variant": "side_south"
+ },
+ "BMT_ChemSnail": {
+  "file": "BMT_ChemSnail.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/ChemSnail/ChemSnail",
+  "variant": "side_south"
+ },
+ "BMT_ColonyPustuleHornet": {
+  "file": "BMT_ColonyPustuleHornet.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/PustuleHornet/PustuleHornet",
+  "variant": "side_south"
+ },
+ "BMT_ColonyPustuleHornetQueen": {
+  "file": "BMT_ColonyPustuleHornetQueen.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/PustuleHornetQueen/PustuleHornetQueen",
+  "variant": "side_south"
+ },
+ "BMT_Creature_Mantrap": {
+  "file": "BMT_Creature_Mantrap.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
+  "variant": "side_south"
+ },
+ "BMT_CrestedDragon": {
+  "file": "BMT_CrestedDragon.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon",
+  "variant": "side_south"
+ },
+ "BMT_CrystalBeetle": {
+  "file": "BMT_CrystalBeetle.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/CrystalbackBeetle/CrystalBeetle",
+  "variant": "side_south"
+ },
+ "BMT_CrystalBeetleLarvae": {
+  "file": "BMT_CrystalBeetleLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/CrystalbackBeetle/CrystalBeetleLarva",
+  "variant": "side_south"
+ },
+ "BMT_CrystalBeetlePupa": {
+  "file": "BMT_CrystalBeetlePupa.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BeetlePupae/BeetlePupa",
+  "variant": "side_east"
+ },
+ "BMT_CrystalCrab": {
+  "file": "BMT_CrystalCrab.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/CrystalCrab/CrystalCrabMale",
+  "variant": "side_south"
+ },
+ "BMT_CrystalFairyMole": {
+  "file": "BMT_CrystalFairyMole.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/CrystalFairyMole/CrystalFairyMole",
+  "variant": "side_south"
+ },
+ "BMT_CrystalMantis": {
+  "file": "BMT_CrystalMantis.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/CrystalMantis/CrystalMantis",
+  "variant": "side_south"
+ },
+ "BMT_Crystalope": {
+  "file": "BMT_Crystalope.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Crystalope/Crystalope",
+  "variant": "side_south"
+ },
+ "BMT_DarkAxolotl": {
+  "file": "BMT_DarkAxolotl.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/DarkAxolotl/DarkAxolotl",
+  "variant": "side_south"
+ },
+ "BMT_Diggerpede": {
+  "file": "BMT_Diggerpede.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Diggerpede/Diggerpede",
+  "variant": "side_south"
+ },
+ "BMT_FacetMoth": {
+  "file": "BMT_FacetMoth.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FacetMoth/FacetMoth",
+  "variant": "side_south"
+ },
+ "BMT_FacetMothLarvae": {
+  "file": "BMT_FacetMothLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
+  "variant": "side_south"
+ },
+ "BMT_FacetMothPupa": {
+  "file": "BMT_FacetMothPupa.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FacetMoth/FacetMothPupa",
+  "variant": "side:bare"
+ },
+ "BMT_FamineLocust": {
+  "file": "BMT_FamineLocust.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/SwarmingLocust/SwarmingLocust",
+  "variant": "side_south"
+ },
+ "BMT_FenridStoat": {
+  "file": "BMT_FenridStoat.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/FenridStoat/FenridStoat",
+  "variant": "side_south"
+ },
+ "BMT_FireSalamander": {
+  "file": "BMT_FireSalamander.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FireSalamander/FireSalamander",
+  "variant": "side_south"
+ },
+ "BMT_FleeceSpider": {
+  "file": "BMT_FleeceSpider.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider",
+  "variant": "side_south"
+ },
+ "BMT_FoundryBeetle": {
+  "file": "BMT_FoundryBeetle.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle",
+  "variant": "side_south"
+ },
+ "BMT_FoundryBeetleLarvae": {
+  "file": "BMT_FoundryBeetleLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FoundryBeetle/FoundryGrub",
+  "variant": "side_south"
+ },
+ "BMT_FoundryBeetlePupa": {
+  "file": "BMT_FoundryBeetlePupa.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BeetlePupae/BeetlePupa",
+  "variant": "side_east"
+ },
+ "BMT_FreezerFrog": {
+  "file": "BMT_FreezerFrog.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FreezerFrog/FreezerFrog",
+  "variant": "side_south"
+ },
+ "BMT_FrostweaverSpider": {
+  "file": "BMT_FrostweaverSpider.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Frostweaver/Frostweaver",
+  "variant": "side_south"
+ },
+ "BMT_FungalFerret": {
+  "file": "BMT_FungalFerret.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FungalFerret/FungalFerret",
+  "variant": "side_south"
+ },
+ "BMT_FungalMantis": {
+  "file": "BMT_FungalMantis.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FungalMantis/FungalMantis",
+  "variant": "side_south"
+ },
+ "BMT_FungalWeevil": {
+  "file": "BMT_FungalWeevil.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/FungalWeevil/FungalWeevil",
+  "variant": "side_south"
+ },
+ "BMT_GastroToad": {
+  "file": "BMT_GastroToad.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/GastroToad/GastroToad",
+  "variant": "side_south"
+ },
+ "BMT_Gembug": {
+  "file": "BMT_Gembug.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
+  "variant": "side_south"
+ },
+ "BMT_GiantSlug": {
+  "file": "BMT_GiantSlug.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/GiantSlug/GiantSlug",
+  "variant": "side_south"
+ },
+ "BMT_GiantSnail": {
+  "file": "BMT_GiantSnail.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/GiantSnail_1.5_Temp/GiantSnail",
+  "variant": "side_south"
+ },
+ "BMT_GlarralPenguin": {
+  "file": "BMT_GlarralPenguin.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/GlarralPenguin/GlarralPenguin",
+  "variant": "side_south"
+ },
+ "BMT_GlowBat": {
+  "file": "BMT_GlowBat.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Glowbat/GlowBat_Sitting",
+  "variant": "side_south"
+ },
+ "BMT_GlowSlug": {
+  "file": "BMT_GlowSlug.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/GlowSlug/GlowSlug",
+  "variant": "side_south"
+ },
+ "BMT_Glowtail": {
+  "file": "BMT_Glowtail.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/Glowtail/Glowtail",
+  "variant": "side_south"
+ },
+ "BMT_GoetoTadpole": {
+  "file": "BMT_GoetoTadpole.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/GoetoToad/GoetoToad",
+  "variant": "side_south"
+ },
+ "BMT_GoetoToad": {
+  "file": "BMT_GoetoToad.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/GoetoToad/GoetoToad",
+  "variant": "side_south"
+ },
+ "BMT_HoarfrostMastodon": {
+  "file": "BMT_HoarfrostMastodon.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/HoarfrostMastodon/HoarfrostMastodon",
+  "variant": "side_south"
+ },
+ "BMT_HungeringHydra": {
+  "file": "BMT_HungeringHydra.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/HungeringHydra/Hydra",
+  "variant": "side_south"
+ },
+ "BMT_ImperialToad": {
+  "file": "BMT_ImperialToad.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/ImperialToad/ImperialToad",
+  "variant": "side_south"
+ },
+ "BMT_Jellypot": {
+  "file": "BMT_Jellypot.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Jellypot/Jellypot",
+  "variant": "side_south"
+ },
+ "BMT_JewelBeetle": {
+  "file": "BMT_JewelBeetle.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/JewelBeetle/JewelBeetle",
+  "variant": "side_south"
+ },
+ "BMT_JewelBeetleLarvae": {
+  "file": "BMT_JewelBeetleLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/JewelBeetle/JewelBeetleLarva",
+  "variant": "side_south"
+ },
+ "BMT_JewelBeetlePupa": {
+  "file": "BMT_JewelBeetlePupa.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BeetlePupae/BeetlePupa",
+  "variant": "side_east"
+ },
+ "BMT_LandOctopus": {
+  "file": "BMT_LandOctopus.png",
+  "source": "loose",
+  "texPath": "BMT_Core/Things/Animal/LandOctopus/LandOctopi",
+  "variant": "side_south"
+ },
+ "BMT_MaceDrake": {
+  "file": "BMT_MaceDrake.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Macedrake/MaceDrake",
+  "variant": "side_south"
+ },
+ "BMT_Maguana": {
+  "file": "BMT_Maguana.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Maguana/Maguana",
+  "variant": "side_south"
+ },
+ "BMT_Maligoat": {
+  "file": "BMT_Maligoat.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale",
+  "variant": "side_south"
+ },
+ "BMT_Maxolotl": {
+  "file": "BMT_Maxolotl.png",
+  "source": "loose",
+  "texPath": "BiomesCore_Things/Animal/Maxolotl/Maxolotl",
+  "variant": "side_south"
+ },
+ "BMT_Megabat": {
+  "file": "BMT_Megabat.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Megabat/Megabat",
+  "variant": "side_south"
+ },
+ "BMT_Megakrill": {
+  "file": "BMT_Megakrill.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/Megakrill/Megakrill",
+  "variant": "side_south"
+ },
+ "BMT_Megaphorid": {
+  "file": "BMT_Megaphorid.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/Megaphorid/Megaphorid",
+  "variant": "side_south"
+ },
+ "BMT_MegaphoridLarva": {
+  "file": "BMT_MegaphoridLarva.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva",
+  "variant": "side_south"
+ },
+ "BMT_Megapleura": {
+  "file": "BMT_Megapleura.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Megapleura/Megapleura",
+  "variant": "side_south"
+ },
+ "BMT_Megaroach": {
+  "file": "BMT_Megaroach.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/Megaroach/Megaroach",
+  "variant": "side_south"
+ },
+ "BMT_MetalloSnail": {
+  "file": "BMT_MetalloSnail.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/MetalloSnail/Metallosnail",
+  "variant": "side_south"
+ },
+ "BMT_Mole": {
+  "file": "BMT_Mole.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Mole/Mole",
+  "variant": "side_south"
+ },
+ "BMT_Molebear": {
+  "file": "BMT_Molebear.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Molebear/Molebear",
+  "variant": "side_south"
+ },
+ "BMT_MossBeetle": {
+  "file": "BMT_MossBeetle.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/MossBeetle/MossBeetle",
+  "variant": "side_south"
+ },
+ "BMT_MossBeetleLarvae": {
+  "file": "BMT_MossBeetleLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
+  "variant": "side_south"
+ },
+ "BMT_MossBeetlePupa": {
+  "file": "BMT_MossBeetlePupa.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BeetlePupae/BeetlePupa",
+  "variant": "side_east"
+ },
+ "BMT_MossyFennec": {
+  "file": "BMT_MossyFennec.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/MossyFennec/MossyFennec",
+  "variant": "side_south"
+ },
+ "BMT_MucklurkerCatfish": {
+  "file": "BMT_MucklurkerCatfish.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/MucklurkerCatfish/MucklurkerCatfish",
+  "variant": "side_south"
+ },
+ "BMT_MutagenicNorphea": {
+  "file": "BMT_MutagenicNorphea.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea",
+  "variant": "side_south"
+ },
+ "BMT_MutatingTumorfishAdult": {
+  "file": "BMT_MutatingTumorfishAdult.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage3",
+  "variant": "side_south"
+ },
+ "BMT_MutatingTumorfishFry": {
+  "file": "BMT_MutatingTumorfishFry.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage2",
+  "variant": "side_south"
+ },
+ "BMT_MutatingTumorfishSpawn": {
+  "file": "BMT_MutatingTumorfishSpawn.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage1",
+  "variant": "side_south"
+ },
+ "BMT_Pillbug": {
+  "file": "BMT_Pillbug.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Pillbug/Pillbug",
+  "variant": "side_south"
+ },
+ "BMT_PodWorm": {
+  "file": "BMT_PodWorm.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/GlowWorm/GlowWorm",
+  "variant": "side_south"
+ },
+ "BMT_Polluwog": {
+  "file": "BMT_Polluwog.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/GastroToad/Polluwog",
+  "variant": "side_south"
+ },
+ "BMT_PustuleHornet": {
+  "file": "BMT_PustuleHornet.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/PustuleHornet/PustuleHornet",
+  "variant": "side_south"
+ },
+ "BMT_PustuleHornetQueen": {
+  "file": "BMT_PustuleHornetQueen.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/PustuleHornetQueen/PustuleHornetQueen",
+  "variant": "side_south"
+ },
+ "BMT_PustuleHornetSpawned": {
+  "file": "BMT_PustuleHornetSpawned.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/PustuleHornet/PustuleHornet",
+  "variant": "side_south"
+ },
+ "BMT_Rimebeak": {
+  "file": "BMT_Rimebeak.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Rimebeak/Rimebeak",
+  "variant": "side_south"
+ },
+ "BMT_RoyalRhino": {
+  "file": "BMT_RoyalRhino.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/RoyalRhinoBeetle/RoyalRhino",
+  "variant": "side_south"
+ },
+ "BMT_RoyalRhinoLarvae": {
+  "file": "BMT_RoyalRhinoLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/RoyalRhinoBeetle/RoyalGrub",
+  "variant": "side_south"
+ },
+ "BMT_RoyalRhinoPupa": {
+  "file": "BMT_RoyalRhinoPupa.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BeetlePupae/BeetlePupa",
+  "variant": "side_east"
+ },
+ "BMT_Sacapillar": {
+  "file": "BMT_Sacapillar.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
+  "variant": "side_south"
+ },
+ "BMT_SandLeaper": {
+  "file": "BMT_SandLeaper.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/SandLeaper/SandLeaper",
+  "variant": "side_south"
+ },
+ "BMT_SandPillar": {
+  "file": "BMT_SandPillar.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/SandPillar/SandPillar",
+  "variant": "side_south"
+ },
+ "BMT_Screecher": {
+  "file": "BMT_Screecher.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+  "variant": "side_south"
+ },
+ "BMT_ShatterjawBeetle": {
+  "file": "BMT_ShatterjawBeetle.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/ShatterjawBeetle/ShatterJaw",
+  "variant": "side_south"
+ },
+ "BMT_ShatterjawBeetleLarvae": {
+  "file": "BMT_ShatterjawBeetleLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/ShatterjawBeetle/ShatterGrub",
+  "variant": "side_south"
+ },
+ "BMT_ShatterjawBeetlePupa": {
+  "file": "BMT_ShatterjawBeetlePupa.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/BeetlePupae/BeetlePupa",
+  "variant": "side_east"
+ },
+ "BMT_ShimmershellSnail": {
+  "file": "BMT_ShimmershellSnail.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/ShimmershellSnail/ShimmershellSnail",
+  "variant": "side_south"
+ },
+ "BMT_SilverSheep": {
+  "file": "BMT_SilverSheep.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/SilverSheep/SilverSheepMale",
+  "variant": "side_south"
+ },
+ "BMT_SludgeCrawler": {
+  "file": "BMT_SludgeCrawler.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/SludgeCrawler/SludgeCrawler",
+  "variant": "side_south"
+ },
+ "BMT_SmogMoth": {
+  "file": "BMT_SmogMoth.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/SmogMoth/SmogMoth",
+  "variant": "side_south"
+ },
+ "BMT_SmogMothLarvae": {
+  "file": "BMT_SmogMothLarvae.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar",
+  "variant": "side_south"
+ },
+ "BMT_SmogPupa": {
+  "file": "BMT_SmogPupa.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/SmogMoth/SmogPupa",
+  "variant": "side_east"
+ },
+ "BMT_SmolderstingScorpion": {
+  "file": "BMT_SmolderstingScorpion.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/SmolderstingScorpion/SmolderstingScorpion",
+  "variant": "side_south"
+ },
+ "BMT_Snowstalker": {
+  "file": "BMT_Snowstalker.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Snowstalker/Snowstalker",
+  "variant": "side_south"
+ },
+ "BMT_SonarRabbit": {
+  "file": "BMT_SonarRabbit.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/SonarRabbit/SonarRabbit",
+  "variant": "side_south"
+ },
+ "BMT_Stoneback": {
+  "file": "BMT_Stoneback.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Stoneback/Stoneback",
+  "variant": "side_south"
+ },
+ "BMT_Swarmcaller": {
+  "file": "BMT_Swarmcaller.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/Swarmcaller/Swarmcaller",
+  "variant": "side_south"
+ },
+ "BMT_TaintedTurtle": {
+  "file": "BMT_TaintedTurtle.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/TaintedTurtle/TaintedTurtle",
+  "variant": "side_south"
+ },
+ "BMT_Thrumbungus": {
+  "file": "BMT_Thrumbungus.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Thrumbungus/Thrumbungus",
+  "variant": "side_south"
+ },
+ "BMT_ToxSheep": {
+  "file": "BMT_ToxSheep.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/ToxwoolSheep/ToxwoolSheepMale",
+  "variant": "side_south"
+ },
+ "BMT_TripleSnapper": {
+  "file": "BMT_TripleSnapper.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/TripleSnapper/TripleSnapper",
+  "variant": "side_south"
+ },
+ "BMT_TruffleMole": {
+  "file": "BMT_TruffleMole.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/TruffleMole/TruffleMole",
+  "variant": "side_south"
+ },
+ "BMT_Varmot": {
+  "file": "BMT_Varmot.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/Varmot/Varmot",
+  "variant": "side_south"
+ },
+ "BMT_WasteHound": {
+  "file": "BMT_WasteHound.png",
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Animal/Wastehound/Wastehound",
+  "variant": "side_south"
+ },
+ "BMT_Woollybat": {
+  "file": "BMT_Woollybat.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Woollybat/Woollybat",
+  "variant": "side_south"
+ },
+ "BMT_Xyrion": {
+  "file": "BMT_Xyrion.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Xyrion/Xyrion",
+  "variant": "side_south"
+ },
+ "BMT_Yooka": {
+  "file": "BMT_Yooka.png",
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Animal/Yooka/Yooka",
+  "variant": "side_south"
+ },
+ "BS_Centaur": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_GluttonRace": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_HumanFouramed": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_HumanoidWithTail": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_HumanoidWithWings": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_InsectoidHumanoid_FourArmed": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_JustAHead": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_Marlith": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_Naga": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_SixArmedHuman": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_SpiderPersonRace": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "BS_UrbMech": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "Badger": {
+  "file": "Badger.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Badger/Badger",
+  "variant": "side_south"
+ },
+ "Bantha": {
+  "file": "Bantha.png",
+  "source": "bundle",
+  "texPath": "swanimals/Bantha/BanthaW",
+  "variant": "side_south"
+ },
+ "Bardelot": {
+  "file": "Bardelot.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Bardelot",
+  "variant": "side_south"
+ },
+ "Bear_Grizzly": {
+  "file": "Bear_Grizzly.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/RG_Grizzly/GrizzlyBear",
+  "variant": "side_south"
+ },
+ "Bear_Polar": {
+  "file": "Bear_Polar.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Bear/Bear",
+  "variant": "side_south"
+ },
+ "Behemoth": {
+  "file": "Behemoth.png",
+  "source": "bundle",
+  "texPath": "swanimals/Behemoth/Behemoth_m",
+  "variant": "side_south"
+ },
+ "Beldon": {
+  "file": "Beldon.png",
+  "source": "bundle",
+  "texPath": "swanimals/Beldon/Beldon",
+  "variant": "side_south"
+ },
+ "BiomesIslands_Flamingo": {
+  "file": "BiomesIslands_Flamingo.png",
+  "source": "loose",
+  "texPath": "BiomesCore_Things/Animal/Flamingo/Flamingo",
+  "variant": "side_south"
+ },
+ "Bison": {
+  "file": "Bison.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Bison/Bison",
+  "variant": "side_south"
+ },
+ "BlackBear": {
+  "file": "BlackBear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/BlackBear",
+  "variant": "side_south"
+ },
+ "BlackBearMan": {
+  "file": "BlackBearMan.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/BlackBearMan",
+  "variant": "side_south"
+ },
+ "Blarth": {
+  "file": "Blarth.png",
+  "source": "bundle",
+  "texPath": "swanimals/Blarth/Blarth",
+  "variant": "side_south"
+ },
+ "Blixus": {
+  "file": "Blixus.png",
+  "source": "bundle",
+  "texPath": "swanimals/Blixus/Blixus",
+  "variant": "side_south"
+ },
+ "Bluebird": {
+  "file": "Bluebird.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Bluebird/Bluebird",
+  "variant": "side_south"
+ },
+ "Blurrg": {
+  "file": "Blurrg.png",
+  "source": "bundle",
+  "texPath": "swanimals/Blurrg/Blurrg",
+  "variant": "side_south"
+ },
+ "Boarwolf": {
+  "file": "Boarwolf.png",
+  "source": "bundle",
+  "texPath": "swanimals/Boarwolf/Boarwolf",
+  "variant": "side_south"
+ },
+ "BogHound": {
+  "file": "BogHound.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/BogHound/BogHound_A",
+  "variant": "side_south"
+ },
+ "Bogwing": {
+  "file": "Bogwing.png",
+  "source": "bundle",
+  "texPath": "swanimals/Bogwing/Bogwing",
+  "variant": "side_south"
+ },
+ "Bolotaur": {
+  "file": "Bolotaur.png",
+  "source": "bundle",
+  "texPath": "swanimals/Bolotaur/Bolotaur",
+  "variant": "side_south"
+ },
+ "Boma": {
+  "file": "Boma.png",
+  "source": "bundle",
+  "texPath": "swanimals/Boma/Boma",
+  "variant": "side_south"
+ },
+ "Boomalope": {
+  "file": "Boomalope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/RG_Boomalope/Boomalope",
+  "variant": "side_south"
+ },
+ "Boomrat": {
+  "file": "Boomrat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Boomrat/Boomrat",
+  "variant": "side_south"
+ },
+ "Borcatu": {
+  "file": "Borcatu.png",
+  "source": "bundle",
+  "texPath": "swanimals/Borcatu/Borcatu",
+  "variant": "side_south"
+ },
+ "Bordok": {
+  "file": "Bordok.png",
+  "source": "bundle",
+  "texPath": "swanimals/Bordok/Bordok",
+  "variant": "side_south"
+ },
+ "Brezak": {
+  "file": "Brezak.png",
+  "source": "bundle",
+  "texPath": "swanimals/Brezak/Brezak",
+  "variant": "side_south"
+ },
+ "BroodLord": {
+  "file": "BroodLord.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Bulwark/Bulwark",
+  "variant": "side_south"
+ },
+ "Bulbfreak": {
+  "file": "Bulbfreak.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Fleshbeast/Bulbfreak/Bulbfreak",
+  "variant": "side_south"
+ },
+ "Bullfrog": {
+  "file": "Bullfrog.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Bullfrog/Bullfrog",
+  "variant": "side_south"
+ },
+ "Bulwark": {
+  "file": "Bulwark.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Bulwark/Bulwark",
+  "variant": "side_south"
+ },
+ "Bursa": {
+  "file": "Bursa.png",
+  "source": "bundle",
+  "texPath": "swanimals/Bursa/Bursa",
+  "variant": "side_south"
+ },
+ "CACrystalScythe": {
+  "file": "CACrystalScythe.png",
+  "source": "loose",
+  "texPath": "Things/Bosses/2",
+  "variant": "side_south"
+ },
+ "CADevourer": {
+  "file": "CADevourer.png",
+  "source": "loose",
+  "texPath": "Things/Bosses/1",
+  "variant": "side_south"
+ },
+ "CAEndBossMech": {
+  "file": "CAEndBossMech.png",
+  "source": "loose",
+  "texPath": "Things/Bosses/5",
+  "variant": "side_south"
+ },
+ "CAHarbinger": {
+  "file": "CAHarbinger.png",
+  "source": "loose",
+  "texPath": "Things/Bosses/4",
+  "variant": "side_south"
+ },
+ "CAHavoc": {
+  "file": "CAHavoc.png",
+  "source": "loose",
+  "texPath": "Things/Bosses/3",
+  "variant": "side_south"
+ },
+ "CAMech_Scyther": {
+  "file": "CAMech_Scyther.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Mechanoid/Scyther",
+  "variant": "side_south"
+ },
+ "CanCell": {
+  "file": "CanCell.png",
+  "source": "bundle",
+  "texPath": "swanimals/CanCell/CanCell",
+  "variant": "side_south"
+ },
+ "Cannok": {
+  "file": "Cannok.png",
+  "source": "bundle",
+  "texPath": "swanimals/Cannok/Cannok",
+  "variant": "side_south"
+ },
+ "Capybara": {
+  "file": "Capybara.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Capybara/Capybara",
+  "variant": "side_south"
+ },
+ "Caribou": {
+  "file": "Caribou.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Caribou/Caribou",
+  "variant": "side_south"
+ },
+ "Cassowary": {
+  "file": "Cassowary.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Cassowary/Cassowary",
+  "variant": "side_south"
+ },
+ "Castoroides": {
+  "file": "Castoroides.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Castoroides/megafauna_castoroides",
+  "variant": "side_south"
+ },
+ "Cat": {
+  "file": "Cat.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/RG_Cat/Cat",
+  "variant": "side_south"
+ },
+ "Cat_Scimitar": {
+  "file": "Cat_Scimitar.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/ScimitarCat/ScimitarCat",
+  "variant": "side_south"
+ },
+ "Chalicotherium": {
+  "file": "Chalicotherium.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Chalicotherium/megafauna_chalicotherium",
+  "variant": "side_south"
+ },
+ "Chicken": {
+  "file": "Chicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Chicken/Chicken",
+  "variant": "side_south"
+ },
+ "Chimera": {
+  "file": "Chimera.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Chimera/Chimera_A",
+  "variant": "side_south"
+ },
+ "Chinchilla": {
+  "file": "Chinchilla.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Chinchilla/Chinchilla",
+  "variant": "side_south"
+ },
+ "ChrysalideRancor": {
+  "file": "ChrysalideRancor.png",
+  "source": "bundle",
+  "texPath": "swanimals/ChrysalideRancor/ChrysalideRancor",
+  "variant": "side_south"
+ },
+ "Clodhopper": {
+  "file": "Clodhopper.png",
+  "source": "bundle",
+  "texPath": "swanimals/Clodhopper/Clodhopper",
+  "variant": "side_south"
+ },
+ "Cobra": {
+  "file": "Cobra.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Cobra/Cobra",
+  "variant": "side_south"
+ },
+ "ColossusToad": {
+  "file": "ColossusToad.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/ColossusToad/ColossusToad",
+  "variant": "side_south"
+ },
+ "Convor": {
+  "file": "Convor.png",
+  "source": "bundle",
+  "texPath": "swanimals/Convor/Convor",
+  "variant": "side_south"
+ },
+ "CorellianHound": {
+  "file": "CorellianHound.png",
+  "source": "bundle",
+  "texPath": "swanimals/CorellianHound/CorellianHound",
+  "variant": "side_south"
+ },
+ "Corinathoth": {
+  "file": "Corinathoth.png",
+  "source": "bundle",
+  "texPath": "swanimals/Corinathoth/Corinathoth",
+  "variant": "side_south"
+ },
+ "Cougar": {
+  "file": "Cougar.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Cougar/Cougar",
+  "variant": "side_south"
+ },
+ "Cow": {
+  "file": "Cow.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Cow/Bull",
+  "variant": "side_south"
+ },
+ "CreepJoiner": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "Crow": {
+  "file": "Crow.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Crow/Crow",
+  "variant": "side_south"
+ },
+ "DA_ArcticOwlcat": {
+  "file": "DA_ArcticOwlcat.png",
+  "source": "loose",
+  "texPath": "Animal/Owlcat/ArcticOwlcat",
+  "variant": "side_south"
+ },
+ "DA_Barog": {
+  "file": "DA_Barog.png",
+  "source": "loose",
+  "texPath": "Animal/Barog/Barog",
+  "variant": "side_south"
+ },
+ "DA_BeardedTroll": {
+  "file": "DA_BeardedTroll.png",
+  "source": "loose",
+  "texPath": "Animal/BeardedTroll/BeardedTroll",
+  "variant": "side_south"
+ },
+ "DA_BlackScribe": {
+  "file": "DA_BlackScribe.png",
+  "source": "loose",
+  "texPath": "Animal/BlackScribe/BlackScribe",
+  "variant": "side_south"
+ },
+ "DA_Crestel": {
+  "file": "DA_Crestel.png",
+  "source": "loose",
+  "texPath": "Animal/Crestel/Crestel",
+  "variant": "side_south"
+ },
+ "DA_DwarvenMuffton": {
+  "file": "DA_DwarvenMuffton.png",
+  "source": "loose",
+  "texPath": "Animal/DwarvenMuffton/DwarvenMuffton",
+  "variant": "side_south"
+ },
+ "DA_ForestOwlcat": {
+  "file": "DA_ForestOwlcat.png",
+  "source": "loose",
+  "texPath": "Animal/Owlcat/ForestOwlcat",
+  "variant": "side_south"
+ },
+ "DA_Goldilox": {
+  "file": "DA_Goldilox.png",
+  "source": "loose",
+  "texPath": "Animal/Goldilox/Goldilox",
+  "variant": "side_south"
+ },
+ "DA_ImperialRedhound": {
+  "file": "DA_ImperialRedhound.png",
+  "source": "loose",
+  "texPath": "Animal/ImperialRedhound/ImperialRedhound",
+  "variant": "side_south"
+ },
+ "DA_IroncasketBeetle": {
+  "file": "DA_IroncasketBeetle.png",
+  "source": "loose",
+  "texPath": "Animal/IroncasketBeetle/IroncasketBeetle",
+  "variant": "side_south"
+ },
+ "DA_Karabal": {
+  "file": "DA_Karabal.png",
+  "source": "loose",
+  "texPath": "Animal/Karabal/KarabalA",
+  "variant": "side_south"
+ },
+ "DA_LeviathanCrab": {
+  "file": "DA_LeviathanCrab.png",
+  "source": "loose",
+  "texPath": "Animal/LeviathanCrab/Leviathan",
+  "variant": "side_south"
+ },
+ "DA_NorthernDrog": {
+  "file": "DA_NorthernDrog.png",
+  "source": "loose",
+  "texPath": "Animal/NorthernDrog/NorthernDrog",
+  "variant": "side_south"
+ },
+ "DA_Phrak": {
+  "file": "DA_Phrak.png",
+  "source": "loose",
+  "texPath": "Animal/Phrak/Phrak",
+  "variant": "side_south"
+ },
+ "DA_Pilgrim": {
+  "file": "DA_Pilgrim.png",
+  "source": "loose",
+  "texPath": "Animal/Pilgrim/Pilgrim",
+  "variant": "side_south"
+ },
+ "DA_RedhornedLarpah": {
+  "file": "DA_RedhornedLarpah.png",
+  "source": "loose",
+  "texPath": "Animal/RedhornedLarpah/RedhornedLarpahA",
+  "variant": "side_south"
+ },
+ "DA_RockTroll": {
+  "file": "DA_RockTroll.png",
+  "source": "loose",
+  "texPath": "Animal/RockTroll/RockTroll",
+  "variant": "side_south"
+ },
+ "DA_SilverMole": {
+  "file": "DA_SilverMole.png",
+  "source": "loose",
+  "texPath": "Animal/SilverMole/SilverMole",
+  "variant": "side_south"
+ },
+ "DA_Snaptoad": {
+  "file": "DA_Snaptoad.png",
+  "source": "loose",
+  "texPath": "Animal/GiantSnaptoad/GiantSnaptoad",
+  "variant": "side_south"
+ },
+ "DA_SnowTaraal": {
+  "file": "DA_SnowTaraal.png",
+  "source": "loose",
+  "texPath": "Animal/Taraal/SnowTaraal",
+  "variant": "side_south"
+ },
+ "DA_Taraal": {
+  "file": "DA_Taraal.png",
+  "source": "loose",
+  "texPath": "Animal/Taraal/Taraal",
+  "variant": "side_south"
+ },
+ "DZY_RNGChicken": {
+  "file": "DZY_RNGChicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/RNGChicken/AllSeeingEye/AllSeeingEye",
+  "variant": "side_south"
+ },
+ "Dactillion": {
+  "file": "Dactillion.png",
+  "source": "bundle",
+  "texPath": "swanimals/Dactillion/Dactillion",
+  "variant": "side_south"
+ },
+ "Daeodon": {
+  "file": "Daeodon.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Daeodon/megafauna_daeodon",
+  "variant": "side_south"
+ },
+ "Dalgo": {
+  "file": "Dalgo.png",
+  "source": "bundle",
+  "texPath": "swanimals/Dalgo/Dalgo",
+  "variant": "side_south"
+ },
+ "Deer": {
+  "file": "Deer.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Deer/DeerMale",
+  "variant": "side_south"
+ },
+ "Deinotherium": {
+  "file": "Deinotherium.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Deinotherium/megafauna_deinotherium",
+  "variant": "side_south"
+ },
+ "Devourer": {
+  "file": "Devourer.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Devourer/Devourer",
+  "variant": "side_south"
+ },
+ "Devourers": {
+  "file": "Devourers.png",
+  "source": "bundle",
+  "texPath": "swanimals/Devourer/Devourer",
+  "variant": "side_south"
+ },
+ "Dewback": {
+  "file": "Dewback.png",
+  "source": "bundle",
+  "texPath": "swanimals/Dewback/Dewback",
+  "variant": "side_south"
+ },
+ "Dianoga": {
+  "file": "Dianoga.png",
+  "source": "bundle",
+  "texPath": "swanimals/Dianoga/Dianoga",
+  "variant": "side_south"
+ },
+ "Dinocrocuta": {
+  "file": "Dinocrocuta.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dinocrocuta/megafauna_dinocrocuta",
+  "variant": "side_south"
+ },
+ "Dinopithecus": {
+  "file": "Dinopithecus.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dinopithecus/megafauna_dinopithecusMale",
+  "variant": "side_south"
+ },
+ "Dinornis": {
+  "file": "Dinornis.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dinornis/megafauna_dinornisMale",
+  "variant": "side_south"
+ },
+ "Diprotodon": {
+  "file": "Diprotodon.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Diprotodon/megafauna_diprotodon",
+  "variant": "side_south"
+ },
+ "Doedicurus": {
+  "file": "Doedicurus.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Doedicurus/megafauna_doedicurus",
+  "variant": "side_south"
+ },
+ "Donkey": {
+  "file": "Donkey.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Donkey/Donkey",
+  "variant": "side_south"
+ },
+ "Dragonsnake": {
+  "file": "Dragonsnake.png",
+  "source": "bundle",
+  "texPath": "swanimals/Dragonsnake/Dragonsnake",
+  "variant": "side_south"
+ },
+ "Dreadmeld": {
+  "file": "Dreadmeld.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Fleshbeast/Dreadmeld/Dreadmeld",
+  "variant": "side_south"
+ },
+ "Drexl": {
+  "file": "Drexl.png",
+  "source": "bundle",
+  "texPath": "swanimals/Drexl/Drexl",
+  "variant": "side_south"
+ },
+ "Dromedary": {
+  "file": "Dromedary.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dromedary/Dromedary",
+  "variant": "side_south"
+ },
+ "Drone_Hunter": {
+  "file": "Drone_Hunter.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Drone/Hunter/HunterDrone",
+  "variant": "side_south"
+ },
+ "Drone_Sentry": {
+  "file": "Drone_Sentry.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Drone/Sentry/SentryDrone",
+  "variant": "side_south"
+ },
+ "Drone_Wasp": {
+  "file": "Drone_Wasp.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Drone/Wasp/WaspDrone",
+  "variant": "side_south"
+ },
+ "Dryad_Barkskin": {
+  "file": "Dryad_Barkskin.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dryad_Barkskin/Dryad_Barkskin",
+  "variant": "side_south"
+ },
+ "Dryad_Basic": {
+  "file": "Dryad_Basic.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dryad_Basic/Dryad_Basic",
+  "variant": "side_south"
+ },
+ "Dryad_Berrymaker": {
+  "file": "Dryad_Berrymaker.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dryad_Berrymaker/DryadBerrymaker",
+  "variant": "side_south"
+ },
+ "Dryad_Carrier": {
+  "file": "Dryad_Carrier.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dryad_Carrier/DryadCarrier",
+  "variant": "side_south"
+ },
+ "Dryad_Clawer": {
+  "file": "Dryad_Clawer.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dryad_Clawer/Dryad_Clawer",
+  "variant": "side_south"
+ },
+ "Dryad_Gaumaker": {
+  "file": "Dryad_Gaumaker.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dryad_Gaumaker/DryadGaumaker",
+  "variant": "side_south"
+ },
+ "Dryad_Medicinemaker": {
+  "file": "Dryad_Medicinemaker.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dryad_Medicinemaker/DryadMedicinemaker",
+  "variant": "side_south"
+ },
+ "Dryad_Woodmaker": {
+  "file": "Dryad_Woodmaker.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Dryad_Woodmaker/DryadWoodmaker",
+  "variant": "side_south"
+ },
+ "Duck": {
+  "file": "Duck.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Duck/DuckMale",
+  "variant": "side_south"
+ },
+ "ERN_Amaro": {
+  "file": "ERN_Amaro.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/ERN_Amaro/Amaro",
+  "variant": "side_south"
+ },
+ "ERN_BigCarbuncle": {
+  "file": "ERN_BigCarbuncle.png",
+  "source": "loose",
+  "texPath": "Pawns/Animals/ERN_BigCarbuncle/CarbuncleBlue",
+  "variant": "side_south"
+ },
+ "ERN_Carbuncle": {
+  "file": "ERN_Carbuncle.png",
+  "source": "loose",
+  "texPath": "Pawns/Animals/ERN_Carbuncle/CarbuncleBlue",
+  "variant": "side_south"
+ },
+ "ERN_Chocobo": {
+  "file": "ERN_Chocobo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/ERN_Chocobo/chocobo",
+  "variant": "side_south"
+ },
+ "Elasmotherium": {
+  "file": "Elasmotherium.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Elasmotherium/megafauna_elasmotherium",
+  "variant": "side_south"
+ },
+ "Elephant": {
+  "file": "Elephant.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Elephant/Elephant",
+  "variant": "side_south"
+ },
+ "Elk": {
+  "file": "Elk.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Elk/ElkMale",
+  "variant": "side_south"
+ },
+ "Emu": {
+  "file": "Emu.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Emu/Emu",
+  "variant": "side_south"
+ },
+ "EnergySpider": {
+  "file": "EnergySpider.png",
+  "source": "bundle",
+  "texPath": "swanimals/EnergySpider/EnergySpider",
+  "variant": "side_south"
+ },
+ "Enhydriodon": {
+  "file": "Enhydriodon.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Enhydriodon/megafauna_enhydriodon",
+  "variant": "side_south"
+ },
+ "Eopie": {
+  "file": "Eopie.png",
+  "source": "bundle",
+  "texPath": "swanimals/Eopie/Eopie",
+  "variant": "side_south"
+ },
+ "Falumpaset": {
+  "file": "Falumpaset.png",
+  "source": "bundle",
+  "texPath": "swanimals/Falumpaset/Falumpaset",
+  "variant": "side_south"
+ },
+ "Fambaa": {
+  "file": "Fambaa.png",
+  "source": "bundle",
+  "texPath": "swanimals/Fambaa/Fambaa",
+  "variant": "side_south"
+ },
+ "Fanback": {
+  "file": "Fanback.png",
+  "source": "bundle",
+  "texPath": "swanimals/Fanback/Fanback",
+  "variant": "side_south"
+ },
+ "FancyRat": {
+  "file": "FancyRat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/FancyRat/FancyRat_Albino",
+  "variant": "side_south"
+ },
+ "FeralGrazer": {
+  "file": "FeralGrazer.png",
+  "source": "bundle",
+  "texPath": "swanimals/FeralGrazer/FeralGrazer",
+  "variant": "side_south"
+ },
+ "FeralNerf": {
+  "file": "FeralNerf.png",
+  "source": "bundle",
+  "texPath": "swanimals/FeralNerf/FeralNerf",
+  "variant": "side_south"
+ },
+ "Fingerspike": {
+  "file": "Fingerspike.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Fleshbeast/Fingerspike/Fingerspike",
+  "variant": "side_south"
+ },
+ "Flamingo": {
+  "file": "Flamingo.png",
+  "source": "bundle",
+  "texPath": "Things/Pawn/Animal/Flamingo/Flamingo",
+  "variant": "side_south"
+ },
+ "FleshmassNucleus": {
+  "file": "FleshmassNucleus.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/FleshmassNucleus",
+  "variant": "dir:fleshmassnucleusa"
+ },
+ "Fox_Arctic": {
+  "file": "Fox_Arctic.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Fox_Arctic/Fox_Arctic",
+  "variant": "side_south"
+ },
+ "Fox_Fennec": {
+  "file": "Fox_Fennec.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Fox_Fennec/Fox_Fennec",
+  "variant": "side_south"
+ },
+ "Fox_Red": {
+  "file": "Fox_Red.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Fox_Red/Fox_Red",
+  "variant": "side_south"
+ },
+ "FrilledGorg": {
+  "file": "FrilledGorg.png",
+  "source": "bundle",
+  "texPath": "swanimals/FrilledGorg/FrilledGorg",
+  "variant": "side_south"
+ },
+ "FrogDog": {
+  "file": "FrogDog.png",
+  "source": "bundle",
+  "texPath": "swanimals/FrogDog/FrogDog",
+  "variant": "side_south"
+ },
+ "GR_AberrantFleshbeast": {
+  "file": "GR_AberrantFleshbeast.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Failures/AberrantFleshbeast/Fleshbeast",
+  "variant": "side_south"
+ },
+ "GR_AnimusHare": {
+  "file": "GR_AnimusHare.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AlphaAnimals/Rodent/GR_AnimusHare",
+  "variant": "side_south"
+ },
+ "GR_ArchotechCentipede": {
+  "file": "GR_ArchotechCentipede.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Archotech/GR_ArchotechCentipede",
+  "variant": "side_south"
+ },
+ "GR_BearBug": {
+  "file": "GR_BearBug.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AlphaAnimals/Bear/GR_BearBug",
+  "variant": "side_south"
+ },
+ "GR_Bearalope": {
+  "file": "GR_Bearalope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Ursine/Bearalope/Bearalope",
+  "variant": "side_south"
+ },
+ "GR_Bearcat": {
+  "file": "GR_Bearcat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Ursine/Bearcat/GR_Bearcat",
+  "variant": "side_south"
+ },
+ "GR_Bearchicken": {
+  "file": "GR_Bearchicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Ursine/Bearchicken/Bearchicken",
+  "variant": "side_south"
+ },
+ "GR_Bearffalo": {
+  "file": "GR_Bearffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Ursine/Bearffalo/Bearffalo",
+  "variant": "side_south"
+ },
+ "GR_Bearhorse": {
+  "file": "GR_Bearhorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Equine/Bearhorse/GR_Bearhorse",
+  "variant": "side_south"
+ },
+ "GR_Bearman": {
+  "file": "GR_Bearman.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Ursine/Bearman/GR_Bearman1",
+  "variant": "side_south"
+ },
+ "GR_Bearmole": {
+  "file": "GR_Bearmole.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Ursine/Bearmole/Bearmole",
+  "variant": "side_south"
+ },
+ "GR_Bearodile": {
+  "file": "GR_Bearodile.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Reptile/Bearodile/Bearodile",
+  "variant": "side_south"
+ },
+ "GR_Bearscarab": {
+  "file": "GR_Bearscarab.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Insectoid/Bearscarab/Bearscarab",
+  "variant": "side_south"
+ },
+ "GR_Bearwolf": {
+  "file": "GR_Bearwolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Ursine/Bearwolf/Bearwolf",
+  "variant": "side_south"
+ },
+ "GR_Beaverwolf": {
+  "file": "GR_Beaverwolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Rodent/Beaverwolf/GR_Beaverwolf",
+  "variant": "side_south"
+ },
+ "GR_Beetlefleet": {
+  "file": "GR_Beetlefleet.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
+  "variant": "side_south"
+ },
+ "GR_Boomabear": {
+  "file": "GR_Boomabear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Boomalope/Boomabear/Boomabear",
+  "variant": "side_south"
+ },
+ "GR_Boomachicken": {
+  "file": "GR_Boomachicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Boomalope/Boomachicken/Boomachicken",
+  "variant": "side_south"
+ },
+ "GR_Boomalisk": {
+  "file": "GR_Boomalisk.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AlphaAnimals/Boomalope/GR_Boomalisk",
+  "variant": "side_south"
+ },
+ "GR_Booman": {
+  "file": "GR_Booman.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Boomalope/Booman/GR_Booman",
+  "variant": "side_south"
+ },
+ "GR_Boombeetle": {
+  "file": "GR_Boombeetle.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Insectoid/Boombeetle/Boombeetle",
+  "variant": "side_south"
+ },
+ "GR_Boomcat": {
+  "file": "GR_Boomcat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Boomalope/Boomacat/GR_Boomacat",
+  "variant": "side_south"
+ },
+ "GR_Boomffalo": {
+  "file": "GR_Boomffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Boomalope/Boomffalo/Boomffalo",
+  "variant": "side_south"
+ },
+ "GR_Boomhorse": {
+  "file": "GR_Boomhorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Equine/Boomhorse/GR_Boomhorse",
+  "variant": "side_south"
+ },
+ "GR_Boomnotherium": {
+  "file": "GR_Boomnotherium.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megafauna/Boomalope/GR_Boomnotherium",
+  "variant": "side_south"
+ },
+ "GR_Boomsnake": {
+  "file": "GR_Boomsnake.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Reptile/Boomsnake/Boomsnake",
+  "variant": "side_south"
+ },
+ "GR_Boomsquirrel": {
+  "file": "GR_Boomsquirrel.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Boomalope/Boomsquirrel/Boomsquirrel",
+  "variant": "side_south"
+ },
+ "GR_Boomwolf": {
+  "file": "GR_Boomwolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Boomalope/Boomwolf/Boomwolf",
+  "variant": "side_south"
+ },
+ "GR_Catalope": {
+  "file": "GR_Catalope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Feline/Catalope/GR_Catalope",
+  "variant": "side_south"
+ },
+ "GR_Catbear": {
+  "file": "GR_Catbear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Feline/Catbear/GR_Catbear",
+  "variant": "side_south"
+ },
+ "GR_Catchicken": {
+  "file": "GR_Catchicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Feline/Catchicken/GR_Catchicken",
+  "variant": "side_south"
+ },
+ "GR_Catffalo": {
+  "file": "GR_Catffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Feline/Catffalo/GR_Catffalo",
+  "variant": "side_south"
+ },
+ "GR_Cathorse": {
+  "file": "GR_Cathorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Equine/Cathorse/GR_Cathorse",
+  "variant": "side_south"
+ },
+ "GR_Catman": {
+  "file": "GR_Catman.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Feline/Catman/GR_Catman",
+  "variant": "side_south"
+ },
+ "GR_Catrabbit": {
+  "file": "GR_Catrabbit.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Feline/Catrabbit/GR_Catrabbit",
+  "variant": "side_south"
+ },
+ "GR_Catwolf": {
+  "file": "GR_Catwolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Feline/Catwolf/GR_Catwolf",
+  "variant": "side_south"
+ },
+ "GR_Chickenbear": {
+  "file": "GR_Chickenbear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Avian/Chickenbear/Chickenbear",
+  "variant": "side_south"
+ },
+ "GR_Chickencat": {
+  "file": "GR_Chickencat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Avian/Chickencat/GR_Chickencat",
+  "variant": "side_south"
+ },
+ "GR_Chickenffalo": {
+  "file": "GR_Chickenffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Avian/Chickenffalo/Chickenffalo",
+  "variant": "side_south"
+ },
+ "GR_Chickenhorse": {
+  "file": "GR_Chickenhorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Equine/Chickenhorse/GR_Chickenhorse",
+  "variant": "side_south"
+ },
+ "GR_Chickenlizard": {
+  "file": "GR_Chickenlizard.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Reptile/Chickenlizard/Chickenlizard",
+  "variant": "side_south"
+ },
+ "GR_Chickenlodon": {
+  "file": "GR_Chickenlodon.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megafauna/Chicken/GR_Chickenlodon",
+  "variant": "side_south"
+ },
+ "GR_Chickenlope": {
+  "file": "GR_Chickenlope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Avian/Chickenlope/Chickenlope",
+  "variant": "side_south"
+ },
+ "GR_Chickenrabbit": {
+  "file": "GR_Chickenrabbit.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Avian/Chickenrabbit/Chickenrabbit",
+  "variant": "side_south"
+ },
+ "GR_Chickenspider": {
+  "file": "GR_Chickenspider.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Insectoid/Chickenspider/Chickenspider",
+  "variant": "side_south"
+ },
+ "GR_Chickenwolf": {
+  "file": "GR_Chickenwolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Avian/Chickenwolf/Chickenwolf",
+  "variant": "side_south"
+ },
+ "GR_Crocorse": {
+  "file": "GR_Crocorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Equine/Crocorse/GR_Crocorse",
+  "variant": "side_south"
+ },
+ "GR_Doedicoon": {
+  "file": "GR_Doedicoon.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megafauna/Rodent/GR_Doedicoon",
+  "variant": "side_south"
+ },
+ "GR_Dogman": {
+  "file": "GR_Dogman.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Canine/Dogman/GR_Dogman1",
+  "variant": "side_south"
+ },
+ "GR_Elasmobearium": {
+  "file": "GR_Elasmobearium.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megafauna/Bear/GR_Elasmobearium",
+  "variant": "side_south"
+ },
+ "GR_FleshFlies": {
+  "missing": true,
+  "texPath": "Things/Pawn/Animal/Special/GR_Transparent",
+  "why": "blank_png"
+ },
+ "GR_FleshGrowth": {
+  "file": "GR_FleshGrowth.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Failures/Fleshgrowth/FleshgrowthA",
+  "variant": "side:bare"
+ },
+ "GR_FleshMonstrosity": {
+  "file": "GR_FleshMonstrosity.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Failures/FleshMonstrosity/FleshMonstrosity",
+  "variant": "side_south"
+ },
+ "GR_Fleshling": {
+  "file": "GR_Fleshling.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Failures/Fleshling/Fleshling",
+  "variant": "side_south"
+ },
+ "GR_Groundffalo": {
+  "file": "GR_Groundffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AlphaAnimals/Muffalo/GR_Groundfallo",
+  "variant": "side_south"
+ },
+ "GR_Hurseman": {
+  "file": "GR_Hurseman.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Equine/Hurseman/GR_Hurseman1",
+  "variant": "side_south"
+ },
+ "GR_Lizardman": {
+  "file": "GR_Lizardman.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Reptile/Lizardman/GR_Lizardman",
+  "variant": "side_south"
+ },
+ "GR_Lizardochs": {
+  "file": "GR_Lizardochs.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megafauna/Reptile/GR_Lizardochs",
+  "variant": "side_south"
+ },
+ "GR_Manalope": {
+  "file": "GR_Manalope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Humanoid/Manalope/GR_Manalope",
+  "variant": "side_south"
+ },
+ "GR_Manbear": {
+  "file": "GR_Manbear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Humanoid/Manbear/GR_Manbear",
+  "variant": "side_south"
+ },
+ "GR_Mancat": {
+  "file": "GR_Mancat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Humanoid/Mancat/GR_Mancat",
+  "variant": "side_south"
+ },
+ "GR_Manchicken": {
+  "file": "GR_Manchicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Humanoid/Manchicken/GR_Manchicken",
+  "variant": "side_south"
+ },
+ "GR_Manffalo": {
+  "file": "GR_Manffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Humanoid/Manffalo/GR_Manffalo_Male",
+  "variant": "side_south"
+ },
+ "GR_Manscarab": {
+  "file": "GR_Manscarab.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Insectoid/Manscarab/GR_Manscarab",
+  "variant": "side_south"
+ },
+ "GR_Mansquirrel": {
+  "file": "GR_Mansquirrel.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Humanoid/Mansquirrel/GR_Mansquirrel",
+  "variant": "side_south"
+ },
+ "GR_Mantistanis": {
+  "file": "GR_Mantistanis.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megafauna/Insectoid/GR_Mantistanis",
+  "variant": "side_south"
+ },
+ "GR_Manwolf": {
+  "file": "GR_Manwolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Humanoid/Manwolf/GR_Manwolf",
+  "variant": "side_south"
+ },
+ "GR_MeadowLizard": {
+  "file": "GR_MeadowLizard.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AlphaAnimals/Reptile/GR_MeadowLizard",
+  "variant": "side_south"
+ },
+ "GR_Mechabear": {
+  "file": "GR_Mechabear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechabear/GR_Mechanoid_Bear",
+  "variant": "side_south"
+ },
+ "GR_Mechacat": {
+  "file": "GR_Mechacat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechacat/GR_Mechacat",
+  "variant": "side_south"
+ },
+ "GR_Mechachicken": {
+  "file": "GR_Mechachicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechachicken/GR_Mechanoid_Chicken",
+  "variant": "side_south"
+ },
+ "GR_Mechahorse": {
+  "file": "GR_Mechahorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechahorse/GR_Mechanoid_Horse",
+  "variant": "side_south"
+ },
+ "GR_Mechalope": {
+  "file": "GR_Mechalope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechalope/GR_Mechanoid_Boomalope",
+  "variant": "side_south"
+ },
+ "GR_Mechamime": {
+  "file": "GR_Mechamime.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechahumanoid/GR_Mechanoid_Humanoid",
+  "variant": "side_south"
+ },
+ "GR_Mechamuffalo": {
+  "file": "GR_Mechamuffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechamuffalo/GR_Mechanoid_Muffalo",
+  "variant": "side_south"
+ },
+ "GR_Mecharat": {
+  "file": "GR_Mecharat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mecharat/GR_Mechanoid_Rat",
+  "variant": "side_south"
+ },
+ "GR_Mechaspider": {
+  "file": "GR_Mechaspider.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechaspider/GR_Mechanoid_Megaspider",
+  "variant": "side_south"
+ },
+ "GR_Mechathrumbo": {
+  "file": "GR_Mechathrumbo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechathrumbo/GR_Mechanoid_Thrumbo",
+  "variant": "side_south"
+ },
+ "GR_Mechaturtle": {
+  "file": "GR_Mechaturtle.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechaturtle/GR_Mechanoid_Turtle",
+  "variant": "side_south"
+ },
+ "GR_Mechawolf": {
+  "file": "GR_Mechawolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Mechanoid/Mechawolf/GR_Mechanoid_Wolf",
+  "variant": "side_south"
+ },
+ "GR_Molebear": {
+  "file": "GR_Molebear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Rodent/Molebear/GR_Molebear",
+  "variant": "side_south"
+ },
+ "GR_Molehorse": {
+  "file": "GR_Molehorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Equine/Molehorse/GR_Molehorse",
+  "variant": "side_south"
+ },
+ "GR_Moleman": {
+  "file": "GR_Moleman.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Rodent/Moleman/GR_Moleman",
+  "variant": "side_south"
+ },
+ "GR_Muffalobear": {
+  "file": "GR_Muffalobear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Muffalo/Muffalobear/Muffalobear",
+  "variant": "side_south"
+ },
+ "GR_Muffalocat": {
+  "file": "GR_Muffalocat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Muffalo/Muffalocat/GR_Muffalocat",
+  "variant": "side_south"
+ },
+ "GR_Muffalochicken": {
+  "file": "GR_Muffalochicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Muffalo/Muffalochicken/Muffalochicken",
+  "variant": "side_south"
+ },
+ "GR_Muffalohorse": {
+  "file": "GR_Muffalohorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Equine/Muffalohorse/GR_Muffalohorse",
+  "variant": "side_south"
+ },
+ "GR_Muffalokomodo": {
+  "file": "GR_Muffalokomodo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Reptile/Muffalokomodo/Muffalokomodo",
+  "variant": "side_south"
+ },
+ "GR_Muffaloman": {
+  "file": "GR_Muffaloman.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Muffalo/Muffaloman/GR_Muffaloman",
+  "variant": "side_south"
+ },
+ "GR_Muffalope": {
+  "file": "GR_Muffalope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Muffalo/Muffalope/Muffalope",
+  "variant": "side_south"
+ },
+ "GR_Muffalopede": {
+  "file": "GR_Muffalopede.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Insectoid/Muffalopede/Muffalopede",
+  "variant": "side_south"
+ },
+ "GR_Muffalorat": {
+  "file": "GR_Muffalorat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Muffalo/Muffalorat/Muffalorat",
+  "variant": "side_south"
+ },
+ "GR_Muffalowolf": {
+  "file": "GR_Muffalowolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Muffalo/Muffalowolf/Muffalowolf",
+  "variant": "side_south"
+ },
+ "GR_Needlechicken": {
+  "file": "GR_Needlechicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AlphaAnimals/Chicken/GR_Needlechicken",
+  "variant": "side_south"
+ },
+ "GR_Nighthrumbo": {
+  "file": "GR_Nighthrumbo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AlphaAnimals/Thrumbo/GR_Nighthrumbo",
+  "variant": "side_south"
+ },
+ "GR_Paraceramuffalo": {
+  "file": "GR_Paraceramuffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megafauna/Muffalo/GR_Paraceramuffalo",
+  "variant": "side_south"
+ },
+ "GR_ParagonBear": {
+  "file": "GR_ParagonBear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Bear/GR_Paragonbear",
+  "variant": "side_south"
+ },
+ "GR_ParagonBoomalope": {
+  "file": "GR_ParagonBoomalope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Boomalope/GR_Paragonboomalope",
+  "variant": "side_south"
+ },
+ "GR_ParagonChicken": {
+  "file": "GR_ParagonChicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Chicken/GR_ParagonChicken",
+  "variant": "side_south"
+ },
+ "GR_ParagonFeline": {
+  "file": "GR_ParagonFeline.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Cat/GR_ParagonFeline",
+  "variant": "side_south"
+ },
+ "GR_ParagonHorse": {
+  "file": "GR_ParagonHorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Horse/GR_ParagonEquine1",
+  "variant": "side_south"
+ },
+ "GR_ParagonHumanoid": {
+  "file": "GR_ParagonHumanoid.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Humanoid/GR_ParagonHumanoid",
+  "variant": "side_south"
+ },
+ "GR_ParagonIguana": {
+  "file": "GR_ParagonIguana.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Iguana/GR_ParagonIguana",
+  "variant": "side_south"
+ },
+ "GR_ParagonInsectoid": {
+  "file": "GR_ParagonInsectoid.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Insectoid/GR_ParagonInsectoid",
+  "variant": "side_south"
+ },
+ "GR_ParagonMuffalo": {
+  "file": "GR_ParagonMuffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Muffalo/GR_ParagonMuffalo",
+  "variant": "side_south"
+ },
+ "GR_ParagonRat": {
+  "file": "GR_ParagonRat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Rat/GR_ParagonRat",
+  "variant": "side_south"
+ },
+ "GR_ParagonThrumbo": {
+  "file": "GR_ParagonThrumbo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Thrumbo/GR_ParagonThrumbo",
+  "variant": "side_south"
+ },
+ "GR_ParagonWolf": {
+  "file": "GR_ParagonWolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Paragon/Wolf/GR_ParagonTimberWolf",
+  "variant": "side_south"
+ },
+ "GR_Rabbitcat": {
+  "file": "GR_Rabbitcat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Rodent/Rabbitcat/GR_Rabbitcat",
+  "variant": "side_south"
+ },
+ "GR_Rabbitchicken": {
+  "file": "GR_Rabbitchicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Rodent/Rabbitchicken/GR_Rabbitchicken",
+  "variant": "side_south"
+ },
+ "GR_Ratffalo": {
+  "file": "GR_Ratffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Rodent/Ratffalo/GR_Ratffalo",
+  "variant": "side_south"
+ },
+ "GR_Snakecat": {
+  "file": "GR_Snakecat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Reptile/Snakecat/GR_Snakecat",
+  "variant": "side_south"
+ },
+ "GR_Spidercat": {
+  "file": "GR_Spidercat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Insectoid/Spidercat/GR_Spidercat",
+  "variant": "side_south"
+ },
+ "GR_Spiderhorse": {
+  "file": "GR_Spiderhorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Equine/Spiderhorse/GR_Spiderhorse1",
+  "variant": "side_south"
+ },
+ "GR_Spidersnake": {
+  "file": "GR_Spidersnake.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Reptile/Spidersnake/Spidersnake",
+  "variant": "side_south"
+ },
+ "GR_Squirralope": {
+  "file": "GR_Squirralope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Rodent/Squirralope/Squirralope",
+  "variant": "side_south"
+ },
+ "GR_Thrumbalope": {
+  "file": "GR_Thrumbalope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumbalope/Thrumbalope",
+  "variant": "side_south"
+ },
+ "GR_Thrumbear": {
+  "file": "GR_Thrumbear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumbear/Thrumbear",
+  "variant": "side_south"
+ },
+ "GR_Thrumbocat": {
+  "file": "GR_Thrumbocat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumbocat/GR_Thrumbocat",
+  "variant": "side_south"
+ },
+ "GR_Thrumbochicken": {
+  "file": "GR_Thrumbochicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumbochicken/Thrumbochicken",
+  "variant": "side_south"
+ },
+ "GR_Thrumbolizard": {
+  "file": "GR_Thrumbolizard.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumbolizard/Thrumbolizard",
+  "variant": "side_south"
+ },
+ "GR_Thrumboman": {
+  "file": "GR_Thrumboman.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumboman/GR_Thrumboman_Male",
+  "variant": "side_south"
+ },
+ "GR_Thrumborat": {
+  "file": "GR_Thrumborat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumborat/Thrumborat",
+  "variant": "side_south"
+ },
+ "GR_Thrumbospider": {
+  "file": "GR_Thrumbospider.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumbospider/Thrumbospider",
+  "variant": "side_south"
+ },
+ "GR_Thrumdraeodon": {
+  "file": "GR_Thrumdraeodon.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megafauna/Thrumbo/GR_Thrumdraeodon",
+  "variant": "side_south"
+ },
+ "GR_Thrumffalo": {
+  "file": "GR_Thrumffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumffalo/Thrumffalo",
+  "variant": "side_south"
+ },
+ "GR_Thrumhorse": {
+  "file": "GR_Thrumhorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumhorse/GR_Thrumhorse",
+  "variant": "side_south"
+ },
+ "GR_Thrumwolf": {
+  "file": "GR_Thrumwolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Colossal/Thrumwolf/Thrumwolf",
+  "variant": "side_south"
+ },
+ "GR_Turkeyman": {
+  "file": "GR_Turkeyman.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Avian/Turkeyman/GR_Turkeyman",
+  "variant": "side_south"
+ },
+ "GR_WolfShrimp": {
+  "file": "GR_WolfShrimp.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/AlphaAnimals/Wolf/GR_WolfShrimp",
+  "variant": "side_south"
+ },
+ "GR_Wolfalope": {
+  "file": "GR_Wolfalope.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Canine/Wolfalope/Wolfalope",
+  "variant": "side_south"
+ },
+ "GR_Wolfbear": {
+  "file": "GR_Wolfbear.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Canine/Wolfbear/Wolfbear",
+  "variant": "side_south"
+ },
+ "GR_Wolfbeaver": {
+  "file": "GR_Wolfbeaver.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Canine/Wolfbeaver/Wolfbeaver",
+  "variant": "side_south"
+ },
+ "GR_Wolfcat": {
+  "file": "GR_Wolfcat.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Canine/Wolfcat/GR_Wolfcat",
+  "variant": "side_south"
+ },
+ "GR_Wolfchicken": {
+  "file": "GR_Wolfchicken.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Canine/Wolfchicken/Wolfchicken",
+  "variant": "side_south"
+ },
+ "GR_Wolffalo": {
+  "file": "GR_Wolffalo.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Canine/Wolffalo/Wolffalo",
+  "variant": "side_south"
+ },
+ "GR_Wolfhorse": {
+  "file": "GR_Wolfhorse.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Equine/Wolfhorse/GR_Wolfhorse",
+  "variant": "side_south"
+ },
+ "GR_Wolfscarab": {
+  "file": "GR_Wolfscarab.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Insectoid/Wolfscarab/Wolfscarab",
+  "variant": "side_south"
+ },
+ "GR_Wolfsnake": {
+  "file": "GR_Wolfsnake.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Reptile/Wolfsnake/Wolfsnake",
+  "variant": "side_south"
+ },
+ "GR_WoolyWolf": {
+  "file": "GR_WoolyWolf.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/Megafauna/Wolf/GR_WoolyWolf",
+  "variant": "side_south"
+ },
+ "GRimBullfrog": {
+  "file": "GRimBullfrog.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/GRimBullfrog/GRimBullfrogA",
+  "variant": "side_south"
+ },
+ "GRimCobra": {
+  "file": "GRimCobra.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/GRimCobra/GRimCobraA",
+  "variant": "side_south"
+ },
+ "GRimLavaSnail": {
+  "file": "GRimLavaSnail.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/GRimLavaSnail/GRimLavaSnailA",
+  "variant": "side_south"
+ },
+ "GRimMonitorLizard": {
+  "file": "GRimMonitorLizard.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/GRimMonitorLizard/GRimMonitorLizardA",
+  "variant": "side_south"
+ },
+ "GRimPinkbird": {
+  "file": "GRimPinkbird.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/GRimPinkbird/GRimPinkbird",
+  "variant": "side_south"
+ },
+ "GRimQuail": {
+  "file": "GRimQuail.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/GRimQuail/GRimQuailMale",
+  "variant": "side_south"
+ },
+ "GRimStoneCrab": {
+  "file": "GRimStoneCrab.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/GRimStoneCrab/GRimStoneCrabA",
+  "variant": "side_south"
+ },
+ "GRimTortoise": {
+  "file": "GRimTortoise.png",
+  "source": "loose",
+  "texPath": "Things/Pawn/Animal/GRimTortoise/GRimTortoiseA",
+  "variant": "side_south"
+ },
+ "G_CentaurFourArm": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "G_CentaurFourArmWinged": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "G_CentaurSixArm": {
+  "missing": true,
+  "why": "no_texPath"
+ },
+ "G_CentaurSixArmWinged": {
+  "missing": true,
+  "why": "no_texPath"
+ }
+}

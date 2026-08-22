@@ -513,6 +513,9 @@ def print_report(r):
 BIOME_COLOR = {
     # --- water
     "Ocean": "#1b3f66", "Lake": "#2f7fb5", "SeaIce": "#cfe4ee",
+    # ancient land ice in the deep dark - deliberately colder/bluer than SeaIce,
+    # which is the frozen shallow sea near the terminator. Two different places.
+    "IceSheet": "#8fb8d4",
     # --- the dayside waste: a light ramp, cream -> tan -> olive
     "ExtremeDesert": "#f4e6bd", "Desert": "#dcbc74", "AridShrubland": "#b4a049",
     "ZBiome_Badlands": "#b0603a", "Wasteland": "#8e8d85",

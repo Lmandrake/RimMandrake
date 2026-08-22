@@ -49,6 +49,10 @@ def median(v):
     v = sorted(v); n = len(v)
     return v[n//2] if n % 2 else (v[n//2-1] + v[n//2]) / 2
 
+def pct(v, p):
+    v = sorted(v)
+    return v[max(0, min(len(v) - 1, int(round(p * (len(v) - 1)))))]
+
 def main():
     A, W, fit, tiles = load()
     biomes = sorted(tiles, key=lambda b: -len(tiles[b]))
@@ -57,7 +61,11 @@ def main():
     promote = []                 # creatures we must enlarge to fill a SUPER slot
 
     for b in biomes:
-        med = median(tiles[b])
+        # 🔴 NOT the median. Filtering on the median put cows, geese and ostriches on SeaIce:
+        # that biome inherited the -2 C LIQUID-WATER CLAMP, so its median reads -2 while the
+        # biome actually spans -60..0. A creature must tolerate the biome's INTERQUARTILE
+        # range, not its middle tile, or it dies on most of the ground it was cast onto.
+        cold, hot = pct(tiles[b], 0.25), pct(tiles[b], 0.75)
         anomaly_ok = b in ANOMALY_BIOMES
         pool = []
         for dn, w in W.items():
@@ -65,7 +73,7 @@ def main():
             if w['reason'] not in ('wildlife', 'anomaly'):   continue
             st = (A.get(dn, {}).get('stats') or {})
             lo, hi = st.get('ComfyTemperatureMin'), st.get('ComfyTemperatureMax')
-            if lo is None or hi is None or not (lo <= med <= hi): continue
+            if lo is None or hi is None or not (lo <= cold and hi >= hot): continue
             if dn not in fit[b]:                              continue
             pool.append(dn)
 
