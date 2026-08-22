@@ -328,3 +328,28 @@ Picker **active**, so cut weapons already read `weaponTags: []` in it. A tag who
 carriers were cut is therefore *indistinguishable in the dump* from a tag that never had a
 carrier. The cut-vs-never-existed split above is a name-join against the kill list — strong,
 but indirect.
+
+---
+
+# PART 5 — what has actually been built (running log)
+
+| when | change | state |
+|---|---|---|
+| 2026-08-22 01:12 | `ThingDef/Flamebow` removed from the Cherry Picker kill list (1347 → 1346); backup `.bak-20260822-flamebow`, `deployed/config/v1_freeze/` mirror synced | **live config written**, effective next cold load |
+| 2026-08-22 01:41 | `src/Jawa/Jawa_Armoury/Patches/Flamebow_TagWiden.xml` — adds `NeolithicRangedBasic` + `NeolithicRangedDecent` to `Flamebow`. Validated 1 match, 0 errors, against the real 578-mod load set. **Deployed and VERIFIED in sync** | **deployed**, effective next cold load |
+
+⇒ On the next cold load: `Tribal_Archer_Fire` should arm (its only tag had zero carriers),
+and `Tribal_Archer` (budget 80) and `Tribal_Hunter` (budget 100) can draw a 45-silver
+flamebow — putting an actual bow back in the Deep Desert Tribes' hands for the first time.
+`Tribal_HeavyArcher` deliberately untouched: `NeolithicRangedHeavy` stays a 250-budget slot.
+
+🔴 **Flagged, not decided:** this gives incendiary arrows to *every* vanilla tribal archer
+and hunter in the game, on a world whose fire ecology is load-bearing
+(`PLANT_GROWTH_SPEC.md` × `hydrology_and_fire_ecology.md` R-H3). The cheap dial if it proves
+too much is to drop `NeolithicRangedBasic` and keep only `NeolithicRangedDecent`.
+
+⚠️ **Correction to Part 2's warcasket note.** I wrote that the Junkers' hazard-warcasket heat
+insulation (333) contradicting the fiction "belongs to DECIDE". It is narrower than that:
+the owner already ruled **SHIP NEITHER** on 2026-08-12, and `Warcasket_HazardRetune.xml`
+sits in `src/DEPLOY_HOLD.txt` unshipped for that reason. So the 333 stands **by decision**,
+not by oversight. Re-opening it means reversing a ruling, not filling a gap.

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Flamebow_TagWiden.xml                     Jawa_Armoury · authored 2026-08-22
+  ============================================================================
+
+  Owner's instruction, 2026-08-22 01:05:
+    "We should put tags on the flame bows so that more people can use them too,
+     like the deep tribes especially."
+
+  WHY A PATCH IS NEEDED AT ALL, AND WHY IT ALONE WAS NOT ENOUGH
+  =============================================================
+  `ThingDef/Flamebow` was on the Cherry Picker kill list. Cherry Picker does not
+  delete a cut def - it NEUTERS it, and part of neutering a weapon is emptying
+  `weaponTags`. So every tag added here would have been wiped at load and the
+  patch would have looked like it silently failed.
+
+  ⇒ The owner removed `ThingDef/Flamebow` from the kill list on 2026-08-22 01:12
+  (1347 -> 1346 entries; backup `.bak-20260822-flamebow`, repo mirror synced).
+  THAT step is a precondition for this file. If the flamebow is ever re-cut,
+  this patch stops working and logs nothing.
+
+  WHAT BIOTECH ALREADY SHIPS - read from the source, not assumed
+  ==============================================================
+    C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Biotech\
+      Defs\ThingDefs_Misc\Weapons\RangedIndustrial.xml:185-197
+        <MarketValue>45</MarketValue>
+        <weaponTags>
+          <li>NeolithicRangedFlame</li>
+        </weaponTags>
+
+  ⇒ Un-cutting alone already repairs `Tribal_Archer_Fire`, whose only tag is
+  `NeolithicRangedFlame` and whose budget is 80. That tag had ZERO usable
+  carriers while the flamebow was cut, which is why the kind spawned 0/5 armed
+  when measured live on 2026-08-21
+  (`infrastructure/state/observed/2026-08-21/armed_sweep_48/`).
+
+  WHAT THIS FILE ADDS, AND THE ARITHMETIC BEHIND EACH TAG
+  ========================================================
+  Measured budgets and tags, from the 2026-08-21 def dump:
+
+    Tribal_Archer        money  80- 80   tags [NeolithicRangedBasic]
+    Tribal_Hunter        money 100-100   tags [NeolithicRangedDecent]
+    Tribal_HeavyArcher   money 250-250   tags [NeolithicRangedHeavy]
+    Tribal_Archer_Fire   money  80- 80   tags [NeolithicRangedFlame]      <- already fixed
+
+  The flamebow costs 45, so it is affordable to Archer (80) and Hunter (100)
+  with room to spare. Adding those two tags is what lets the Deep Desert Tribes
+  actually field it: `TribeCivil` fields `Tribal_Archer`, `Tribal_HeavyArcher`
+  and `Tribal_Hunter`, and NONE of its group makers name a fire kind.
+
+  ⛔ `NeolithicRangedHeavy` is deliberately NOT added. A 45-silver light bow has
+  no business in a 250-budget heavy slot; it would make the HeavyArcher strictly
+  cheaper and remove the distinction between the two archer tiers.
+
+  WHY THIS MATTERS BEYOND ONE KIND - the bow palette is nearly gone
+  =================================================================
+  Measured 2026-08-22 against the dump and the kill list: of the primitive-ranged
+  cluster, **2 usable and 12 cut**. `NeolithicRangedBasic` has 5 carriers left,
+  `NeolithicRangedDecent` 6, `NeolithicRangedAdvanced` 3. Live spawns of
+  `TribeCivil`'s archers on 2026-08-21 drew nerve spikers, throwing knives, a
+  fungal spore and throwspikes - and 6 of 18 drew nothing at all. NOT ONE BOW.
+  This patch puts an actual bow back in the tribal pool.
+
+  🔴 A CONSEQUENCE THE OWNER SHOULD SEE BEFORE THIS SHIPS
+  ========================================================
+  This makes incendiary arrows available to EVERY `Tribal_Archer` and
+  `Tribal_Hunter` in the game, not only the Deep Desert Tribes - those are
+  vanilla kinds fielded by many tribal factions.
+
+  ⚠️ And `PLANT_GROWTH_SPEC.md` multiplies every plant's GrowthRate, while
+  `hydrology_and_fire_ecology.md` R-H3 makes that growth the fuel for a savanna
+  that burns forever. Fire arrows in the hands of every tribal archer on a world
+  built to burn is a LOUD change. It may be exactly the drama wanted; it is not
+  a quiet one. If it proves too much, the cheap dial is to drop
+  `NeolithicRangedBasic` here and leave only `NeolithicRangedDecent`, halving the
+  number of kinds that can draw it.
+
+  SAFETY
+  ======
+  Wrapped in a conditional on the def existing, so if Biotech is ever inactive
+  the file is a silent no-op rather than a wall of red. `PatchOperationAdd` onto
+  the existing `weaponTags` node APPENDS; it does not replace, so
+  `NeolithicRangedFlame` survives.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Flamebow"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Flamebow"]/weaponTags</xpath>
+      <value>
+        <li>NeolithicRangedBasic</li>
+        <li>NeolithicRangedDecent</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
