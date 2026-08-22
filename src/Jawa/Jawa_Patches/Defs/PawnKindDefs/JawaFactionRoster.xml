@@ -237,59 +237,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <maxApparelQuality>Good</maxApparelQuality>
   </PawnKindDef>
 
-  <!-- ⭐ THE DESERT TROOPER — owner, 2026-08-20: "the Homestead Defense League
-       absolutely would dress like the desert naturally."
-
-       It began as `OuterRim_RebelDesertTrooper`, asserted as an inventory fact in
-       desert_world_design.md:448 and absent from the dump. The Rebel Alliance holds
-       none of the 72 settlements, so it could never have spawned there. The Homestead
-       Defense League is the right home: 13 settlements, the most on the map, sited on
-       "the arable margin of the terminator".
-
-       ⚠️ DRESSED EXPLICITLY, unlike its four siblings, and that is the point of it.
-       They leave apparel to `apparelMoney` and take whatever the roll gives; this one
-       names duster + headwrap because LOOKING like the desert is the whole brief.
-       Both are vanilla `Core` items, so no mod can take them away.
-
-       ⚠️ Outer Rim's own "snow trooper" wears the FOREST set — `RebelForestFatigues`,
-       forest poncho, forest helmet. Its biome troopers are name-and-tag reskins, not
-       new art, which is the licence to do the same here rather than commission a set.
-
-       ✅ IT SPAWNS AS OF 2026-08-21 === OUTLANDER_GROUPMAKER_PATCH_1, owner:
-       "Approved abstract patch." This paragraph used to read "IT DOES NOT SPAWN YET",
-       and that is now wrong. `pawnGroupMakers` for this faction does live on the
-       ABSTRACT parent `OutlanderFactionBase` and not on `OutlanderCivil` — which is
-       exactly why every earlier xpath at `FactionDef[defName="OutlanderCivil"]/
-       pawnGroupMakers` matched nothing and logged nothing. The parent is now patched
-       ADDITIVELY, by its `Name` attribute, at the end of
-       `Patches/HomesteadDefenseLeague.xml`: four new group makers (Combat, Peaceful,
-       Trader, Settlement) at commonality 5, which is 4.8% of Outlander groups of each
-       kind. All five Homestead kinds are in them; the ranger carries the joint-highest
-       weight. If it still never appears, the weight is wrong, not the def. -->
-  <PawnKindDef>
-    <defName>Jawa_Homestead_DesertRanger</defName>
-    <label>dune ranger</label>
-    <race>Human</race>
-    <defaultFactionDef>OutlanderCivil</defaultFactionDef>
-    <combatPower>62</combatPower>
-    <isFighter>true</isFighter>
-    <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>200~260</weaponMoney>
-    <apparelMoney>240~300</apparelMoney>
-    <initialResistanceRange>10~16</initialResistanceRange>
-    <initialWillRange>2~4</initialWillRange>
-    <weaponTags>
-      <li>SimpleGun</li>
-      <li>KotORRanged_mid</li>
-    </weaponTags>
-    <apparelRequired>
-      <li>Apparel_Duster</li>
-      <li>Apparel_Headwrap</li>
-    </apparelRequired>
-    <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
-    <maxApparelQuality>Good</maxApparelQuality>
-  </PawnKindDef>
-
   <PawnKindDef>
     <defName>Jawa_Homestead_Leader</defName>
     <label>High Marshal Taren Voss</label>
@@ -385,14 +332,14 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <maxApparelQuality>Good</maxApparelQuality>
   </PawnKindDef>
 
-  <PawnKindDef>
+  <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
     <defName>Jawa_Droid_Grunt</defName>
     <label>labour droid</label>
-    <race>Human</race>
+    <race>OuterRim_ImperialLaborDroid</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>90</combatPower>
     <isFighter>true</isFighter>
-    <useFactionXenotypes>true</useFactionXenotypes>
+    <useFactionXenotypes>false</useFactionXenotypes>
     <weaponMoney>1100~1320</weaponMoney>
     <apparelMoney>120~144</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -402,14 +349,14 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </weaponTags>
   </PawnKindDef>
 
-  <PawnKindDef>
+  <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
     <defName>Jawa_Droid_Heavy</defName>
     <label>security droid</label>
-    <race>Human</race>
+    <race>OuterRim_KXSecurityDroid</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>124</combatPower>
     <isFighter>true</isFighter>
-    <useFactionXenotypes>true</useFactionXenotypes>
+    <useFactionXenotypes>false</useFactionXenotypes>
     <weaponMoney>1400~1680</weaponMoney>
     <apparelMoney>200~240</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -419,14 +366,14 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </weaponTags>
   </PawnKindDef>
 
-  <PawnKindDef>
+  <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
     <defName>Jawa_Droid_Specialist</defName>
     <label>medical droid</label>
-    <race>Human</race>
+    <race>OuterRim_ProtocolDroid</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>108</combatPower>
     <isFighter>true</isFighter>
-    <useFactionXenotypes>true</useFactionXenotypes>
+    <useFactionXenotypes>false</useFactionXenotypes>
     <weaponMoney>1200~1440</weaponMoney>
     <apparelMoney>180~216</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -436,14 +383,14 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </weaponTags>
   </PawnKindDef>
 
-  <PawnKindDef>
+  <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
     <defName>Jawa_Droid_Leader</defName>
     <label>First Speaker R-41 Rell</label>
-    <race>Human</race>
+    <race>OuterRim_SuperTacticalDroid</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>176</combatPower>
     <isFighter>true</isFighter>
-    <useFactionXenotypes>true</useFactionXenotypes>
+    <useFactionXenotypes>false</useFactionXenotypes>
     <weaponMoney>1800~2160</weaponMoney>
     <apparelMoney>400~480</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -1006,5 +953,59 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </apparelTags>
     <itemQuality>Masterwork</itemQuality>
   </PawnKindDef>
+
+  <!-- ⭐ THE DESERT TROOPER — owner, 2026-08-20: "the Homestead Defense League
+       absolutely would dress like the desert naturally."
+
+       It began as `OuterRim_RebelDesertTrooper`, asserted as an inventory fact in
+       desert_world_design.md:448 and absent from the dump. The Rebel Alliance holds
+       none of the 72 settlements, so it could never have spawned there. The Homestead
+       Defense League is the right home: 13 settlements, the most on the map, sited on
+       "the arable margin of the terminator".
+
+       ⚠️ DRESSED EXPLICITLY, unlike its four siblings, and that is the point of it.
+       They leave apparel to `apparelMoney` and take whatever the roll gives; this one
+       names duster + headwrap because LOOKING like the desert is the whole brief.
+       Both are vanilla `Core` items, so no mod can take them away.
+
+       ⚠️ Outer Rim's own "snow trooper" wears the FOREST set — `RebelForestFatigues`,
+       forest poncho, forest helmet. Its biome troopers are name-and-tag reskins, not
+       new art, which is the licence to do the same here rather than commission a set.
+
+       ✅ IT SPAWNS AS OF 2026-08-21 === OUTLANDER_GROUPMAKER_PATCH_1, owner:
+       "Approved abstract patch." This paragraph used to read "IT DOES NOT SPAWN YET",
+       and that is now wrong. `pawnGroupMakers` for this faction does live on the
+       ABSTRACT parent `OutlanderFactionBase` and not on `OutlanderCivil` — which is
+       exactly why every earlier xpath at `FactionDef[defName="OutlanderCivil"]/
+       pawnGroupMakers` matched nothing and logged nothing. The parent is now patched
+       ADDITIVELY, by its `Name` attribute, at the end of
+       `Patches/HomesteadDefenseLeague.xml`: four new group makers (Combat, Peaceful,
+       Trader, Settlement) at commonality 5, which is 4.8% of Outlander groups of each
+       kind. All five Homestead kinds are in them; the ranger carries the joint-highest
+       weight. If it still never appears, the weight is wrong, not the def. -->
+  <PawnKindDef>
+    <defName>Jawa_Homestead_DesertRanger</defName>
+    <label>dune ranger</label>
+    <race>Human</race>
+    <defaultFactionDef>OutlanderCivil</defaultFactionDef>
+    <combatPower>62</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>200~260</weaponMoney>
+    <apparelMoney>240~300</apparelMoney>
+    <initialResistanceRange>10~16</initialResistanceRange>
+    <initialWillRange>2~4</initialWillRange>
+    <weaponTags>
+      <li>SimpleGun</li>
+      <li>KotORRanged_mid</li>
+    </weaponTags>
+    <apparelRequired>
+      <li>Apparel_Duster</li>
+      <li>Apparel_Headwrap</li>
+    </apparelRequired>
+    <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
+    <maxApparelQuality>Good</maxApparelQuality>
+  </PawnKindDef>
+
 
 </Defs>

@@ -30,6 +30,108 @@ from pathlib import Path
 
 OUT = Path("src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml")
 
+# (faction, role) -> (race ThingDef, owning packageId for MayRequire)
+#
+# 🔴 A KIND WITH NO ENTRY HERE IS `Human` AND `useFactionXenotypes true`, which is the
+# roster's whole design: one kind spawns the faction's species MIX. An entry here opts a
+# kind OUT of that, and is only correct when the kind is not a person.
+#
+# DROID_RACES_APPLIED_TO_KINDS_1, executing DECIDE's ruling in DROID_KINDS_NEED_A_RACE_1.
+# The four Jawa_Droid_* kinds declared <race>Human</race> against Jawa_FreeDroidEnclaves'
+# deliberately EMPTY xenotypeSet, so the faction fielded Baseliner 4-of-4 - baseline humans
+# walking out of an enclave of freed droids.
+#
+# ⛔ `useFactionXenotypes` is forced FALSE for these. A xenotype is a Human-race concept;
+# with a droid race the field asks the faction for something the race cannot wear.
+#
+# ⛔ NO BATTLE DROIDS. B1, B2, BX Commando and MagnaGuard read as *Separatist army*; this
+# faction is an enclave of FREED droids and its roster reads as what its members were built
+# for and escaped from. Two of the four are already fielded by the faction's Trader group.
+#
+# ⚠️ Jawa_Droid_Specialist is labelled "medical droid" and gets a PROTOCOL chassis because
+# there is no medical droid in the Humanlike set - 2-1B and FX have no Humanlike ThingDef in
+# this stack. Protocol is the nearest attendant silhouette. Flagged, not buried.
+#
+# All four measured present in OFFICIAL-2026-08-21 (defs.sqlite, 578 mods): intelligence
+# Humanlike, race.body OuterRim_HumanoidDroid, thinkTreeMain Humanlike, one lifeStageAges
+# entry each - a single adult stage, so no droid children. That is correct, not a defect.
+# 🔴 KINDS THE TABLE CANNOT EXPRESS, CARRIED VERBATIM. Emitted after the 48.
+#
+# ⚠️ THIS EXISTS BECAUSE REGENERATING SILENTLY DELETED ONE. Measured 2026-08-21: the
+# committed XML held 49 PawnKindDefs and this generator emits 48. The odd one out was
+# `Jawa_Homestead_DesertRanger` — hand-added to the OUTPUT after an owner ruling, with
+# thirty lines of provenance the table has nowhere to put. Re-running the generator
+# removed it and its comment, and nothing said so: `wrote … 48 pawn kinds` reads
+# identically whether or not a def just died. A count is not a roster.
+#
+# ⇒ Anything hand-added to the output goes HERE, verbatim, or the next regeneration
+# eats it. ⛔ Do not "clean this up" into the table: the table cannot carry a comment,
+# and its combat_power() formula does not reproduce this kind's 62 from its own money
+# values (200+240 gives 55/60/63 across the role multipliers). The number was chosen by
+# a person. Rebuilding it from the formula would be a silent re-tune.
+EXTRAS = """\
+  <!-- ⭐ THE DESERT TROOPER — owner, 2026-08-20: "the Homestead Defense League
+       absolutely would dress like the desert naturally."
+
+       It began as `OuterRim_RebelDesertTrooper`, asserted as an inventory fact in
+       desert_world_design.md:448 and absent from the dump. The Rebel Alliance holds
+       none of the 72 settlements, so it could never have spawned there. The Homestead
+       Defense League is the right home: 13 settlements, the most on the map, sited on
+       "the arable margin of the terminator".
+
+       ⚠️ DRESSED EXPLICITLY, unlike its four siblings, and that is the point of it.
+       They leave apparel to `apparelMoney` and take whatever the roll gives; this one
+       names duster + headwrap because LOOKING like the desert is the whole brief.
+       Both are vanilla `Core` items, so no mod can take them away.
+
+       ⚠️ Outer Rim's own "snow trooper" wears the FOREST set — `RebelForestFatigues`,
+       forest poncho, forest helmet. Its biome troopers are name-and-tag reskins, not
+       new art, which is the licence to do the same here rather than commission a set.
+
+       ✅ IT SPAWNS AS OF 2026-08-21 === OUTLANDER_GROUPMAKER_PATCH_1, owner:
+       "Approved abstract patch." This paragraph used to read "IT DOES NOT SPAWN YET",
+       and that is now wrong. `pawnGroupMakers` for this faction does live on the
+       ABSTRACT parent `OutlanderFactionBase` and not on `OutlanderCivil` — which is
+       exactly why every earlier xpath at `FactionDef[defName="OutlanderCivil"]/
+       pawnGroupMakers` matched nothing and logged nothing. The parent is now patched
+       ADDITIVELY, by its `Name` attribute, at the end of
+       `Patches/HomesteadDefenseLeague.xml`: four new group makers (Combat, Peaceful,
+       Trader, Settlement) at commonality 5, which is 4.8% of Outlander groups of each
+       kind. All five Homestead kinds are in them; the ranger carries the joint-highest
+       weight. If it still never appears, the weight is wrong, not the def. -->
+  <PawnKindDef>
+    <defName>Jawa_Homestead_DesertRanger</defName>
+    <label>dune ranger</label>
+    <race>Human</race>
+    <defaultFactionDef>OutlanderCivil</defaultFactionDef>
+    <combatPower>62</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>200~260</weaponMoney>
+    <apparelMoney>240~300</apparelMoney>
+    <initialResistanceRange>10~16</initialResistanceRange>
+    <initialWillRange>2~4</initialWillRange>
+    <weaponTags>
+      <li>SimpleGun</li>
+      <li>KotORRanged_mid</li>
+    </weaponTags>
+    <apparelRequired>
+      <li>Apparel_Duster</li>
+      <li>Apparel_Headwrap</li>
+    </apparelRequired>
+    <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
+    <maxApparelQuality>Good</maxApparelQuality>
+  </PawnKindDef>
+"""
+
+DROID_DEPOT = "Neronix17.OuterRim.DroidDepot"
+RACES = {
+    ("Droid", "Grunt"):      ("OuterRim_ImperialLaborDroid", DROID_DEPOT),
+    ("Droid", "Heavy"):      ("OuterRim_KXSecurityDroid",    DROID_DEPOT),
+    ("Droid", "Specialist"): ("OuterRim_ProtocolDroid",      DROID_DEPOT),
+    ("Droid", "Leader"):     ("OuterRim_SuperTacticalDroid", DROID_DEPOT),
+}
+
 # faction -> (FactionDef defName, xenotype-driven?)
 FACTIONS = {
     "Empire":     "Empire",
@@ -156,17 +258,23 @@ def emit():
     L = ['<?xml version="1.0" encoding="utf-8"?>', "<!--", __doc__.strip().replace("--", "="),
          "-->", "<Defs>", ""]
     for fac, role, label, wm, am, q, wt, req in R:
-        L += ["  <PawnKindDef>",
+        race, pkg = RACES.get((fac, role), ("Human", None))
+        # 🔑 MayRequire rides the whole PawnKindDef, not the <race> line. If the race's mod
+        # is absent the def must vanish WHOLE - a kind whose <race> node was stripped has no
+        # race at all, which is a louder failure than the one being guarded against. The
+        # matching guard on the faction's group makers is in JawaFreeDroidEnclaves.xml and
+        # the two must move together.
+        L += ["  <PawnKindDef%s>" % ('' if pkg is None else ' MayRequire="%s"' % pkg),
               "    <defName>Jawa_%s_%s</defName>" % (fac, role),
               "    <label>%s</label>" % label,
-              "    <race>Human</race>",
+              "    <race>%s</race>" % race,
               "    <defaultFactionDef>%s</defaultFactionDef>" % FACTIONS[fac],
               "    <combatPower>%d</combatPower>" % combat_power(wm, am, role),
               "    <isFighter>%s</isFighter>" % ("false" if not wt else "true"),
               # 🔑 The whole point of the roster: ONE kind spawns the faction's whole
               # species mix wearing that faction's gear, so species never appear in a
               # kind's name and a faction's look is edited in one place.
-              "    <useFactionXenotypes>true</useFactionXenotypes>",
+              "    <useFactionXenotypes>%s</useFactionXenotypes>" % ("true" if race == "Human" else "false"),
               "    <weaponMoney>%d~%d</weaponMoney>" % (wm, int(wm * 1.2)),
               "    <apparelMoney>%d~%d</apparelMoney>" % (am, int(am * 1.2)),
               # 🔴 REQUIRED ON EVERY HUMANLIKE KIND. Omitting them is not fatal but the
@@ -199,10 +307,11 @@ def emit():
             else:
                 L.append("    <itemQuality>%s</itemQuality>" % q[1])
         L += ["  </PawnKindDef>", ""]
+    L += [EXTRAS, ""]
     L += ["</Defs>", ""]
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text("\n".join(L), encoding="utf-8")
-    return len(R)
+    return len(R) + EXTRAS.count("<PawnKindDef")
 
 
 if __name__ == "__main__":

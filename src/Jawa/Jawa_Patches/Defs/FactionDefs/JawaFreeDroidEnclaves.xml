@@ -123,13 +123,25 @@
          vanilla pawns wearing our name. Vanilla itself writes it 314 times,
          9 of them on pawnGroupMakers. -->
     <pawnGroupMakers Inherit="False">
+      <!-- 🔴 MayRequire ON EVERY ENTRY, and it must stay in step with the four
+           PawnKindDefs in Defs/PawnKindDefs/JawaFactionRoster.xml, which carry the
+           same guard. Since DROID_RACES_APPLIED_TO_KINDS_1 those kinds have a
+           <race> from Droid Depot, so without that mod the def cannot resolve at
+           all. Guarding both ends means the kinds and their references vanish
+           TOGETHER; guarding one end leaves a dangling cross-reference every load.
+           ⚠️ The consequence, stated rather than discovered: with Droid Depot
+           absent these two group makers are EMPTY and the faction fields nobody.
+           That is already true of its Trader group below, which is entirely
+           MayRequire'd on the same package — so this is the file's existing
+           bargain, not a new one. It matters only on a reduced mod list; the
+           frozen v1 list has Droid Depot active. -->
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <Jawa_Droid_Grunt>10</Jawa_Droid_Grunt>
-          <Jawa_Droid_Heavy>4</Jawa_Droid_Heavy>
-          <Jawa_Droid_Specialist>2</Jawa_Droid_Specialist>
-          <Jawa_Droid_Leader>1</Jawa_Droid_Leader>
+          <Jawa_Droid_Grunt MayRequire="Neronix17.OuterRim.DroidDepot">10</Jawa_Droid_Grunt>
+          <Jawa_Droid_Heavy MayRequire="Neronix17.OuterRim.DroidDepot">4</Jawa_Droid_Heavy>
+          <Jawa_Droid_Specialist MayRequire="Neronix17.OuterRim.DroidDepot">2</Jawa_Droid_Specialist>
+          <Jawa_Droid_Leader MayRequire="Neronix17.OuterRim.DroidDepot">1</Jawa_Droid_Leader>
         </options>
       </li>
       <li>
@@ -144,9 +156,9 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <Jawa_Droid_Grunt>10</Jawa_Droid_Grunt>
-          <Jawa_Droid_Heavy>3</Jawa_Droid_Heavy>
-          <Jawa_Droid_Specialist>2</Jawa_Droid_Specialist>
+          <Jawa_Droid_Grunt MayRequire="Neronix17.OuterRim.DroidDepot">10</Jawa_Droid_Grunt>
+          <Jawa_Droid_Heavy MayRequire="Neronix17.OuterRim.DroidDepot">3</Jawa_Droid_Heavy>
+          <Jawa_Droid_Specialist MayRequire="Neronix17.OuterRim.DroidDepot">2</Jawa_Droid_Specialist>
         </options>
       </li>
     </pawnGroupMakers>
