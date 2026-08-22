@@ -97,10 +97,47 @@ Plants sat at 30.8% while weapons, apparel and items sat near 1%. Content does n
 distribute itself that way; unhandled graphic classes do. Compare categories
 against each other before you compare any of them against zero.
 
-⚠️ A suffix ladder still cannot save you when the STEM differs. Vanilla's
-`Shell_AntigrainWarhead` extracts as `Shell_Antigrain_a`; nothing but a fuzzy
-stem match finds that, and fuzzy matching is what caused the apparel disaster.
-Leave those few blank and say so.
+🔴 **A THIRD form: the letter lands in the MIDDLE.** When a texPath carries a
+trailing qualifier, the variant letter goes before it, not at the end:
+
+```
+def texPath : Things/Plant/Grass_Leafless
+on disk     : GrassA_Leafless · GrassB_Leafless
+```
+
+A ladder that only appends will never see these. Try the letter as an **infix**
+before the last `_` segment too.
+
+🔴 **A FOURTH form, and it is the one that hides most: the bundle DIRECTORY whose
+files carry a DIFFERENT STEM.** The texPath names a container, and the flattened
+entries inside are named for something else entirely:
+
+```
+def texPath : Things/Plant/RG_Bush
+in bundle   : things/plant/rg_bush/busha.png   <- stem is `busha`, not `rg_bush`
+```
+
+⇒ **No suffix on the texPath's own stem can ever reach it**, so a stem-keyed
+bundle index reports the art missing. Index the cache **by containing directory**
+as well as by stem, and match the directory the same way stems are matched —
+from the right-hand end, because a container path runs deeper than the texPath.
+Every ReGrowth retexture of a vanilla plant lives here.
+
+⚠️ **Measured 2026-08-22 over 190 plants: 69 needed a rung the ladder did not
+have** — a third of the set would have come back "missing" from a resolver whose
+entire promise is that it can tell MISSING from NOT FOUND. The working ladder is
+`resolve_texture()` in `src/RimMandrake/Utils/animal_contact_sheet.py`, and the
+calibration fixture is `design/Jawa/mods/plant_sprites/manifest.json`, whose
+every entry carries a `variant` field naming which rung fired.
+
+⚠️ A suffix ladder still cannot save you when the STEM differs and no directory
+holds them together. Vanilla's `Shell_AntigrainWarhead` extracts as
+`Shell_Antigrain_a`; `Plant_Berry_Leafless` declares
+`Things/Plant/BerryPlant_Leafless` while ReGrowth's art is `BerryBush_Leafless*`.
+Nothing but a fuzzy stem match finds those, and fuzzy matching is what caused the
+apparel disaster. ✅ **Leave them blank and say WHY** — that is the correct
+answer, and `Plant_Berry_Leafless` is the regression case that must stay
+unresolved.
 
 ## Which content folders a mod actually loads
 
