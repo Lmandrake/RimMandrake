@@ -258,7 +258,22 @@ QUEUED = [
 # finding. The inverse of everything above, and easy to forget to look for.
 EXPECTED = [
     ("RimAI Core booted", r"\[RimAI\.Core\] All Parts Boot OK"),
+    # 🔴 Reads "[Inhabited] ready: N patches, C characters, ...". The COUNT is
+    # the finding, not the presence — on 2026-08-22 this line was present and
+    # said 193 against 294 CharacterDefs on disk, because all 101 that carry a
+    # <skills> block are discarded at load (CAST_ROSTER_SKILLS_DISCARDED_1).
+    # Read the number every time; a present line is not a passing one.
+    ("Inhabited ready (READ THE COUNT)", r"\[Inhabited\] ready:"),
 ]
+
+# ⚠️ NOT in EXPECTED, deliberately, and this is the finding rather than an
+# omission: JawaBench has NO startup line. Every Log call in
+# JawaBench.BridgeTools is a Log.Warning inside a catch, so the assembly is
+# silent when it works AND silent when it never loaded. A load where the
+# companion is missing is indistinguishable from one where it is fine, and no
+# grep can separate them — the tool count has to be asked of a running bridge.
+# Filed as JAWABENCH_HAS_NO_INIT_LINE_1. Adding it to EXPECTED now would only
+# manufacture a permanent false RED against an instrument that does not exist.
 
 # Questions this script STRUCTURALLY CANNOT answer, and that a green run above
 # will silently imply it did. Added 2026-08-12 after W6 exposed the gap: the
@@ -466,6 +481,28 @@ def provenance(path, lines, since=None, stale_ok=False):
     return problems
 
 
+# 🔴 The patch-file INVENTORY is not evidence, and counting it lied three times.
+# LogAfterDefError prints a flat manifest of every mod and every patch file it
+# loaded, as hundreds of contiguous alphabetical pairs:
+#     [Source: Jawa Doctrine Patches]
+#     [File: C:\...\Mods\Jawa_Doctrine\Patches\MegafaunaYield.xml]
+# A bare mod-name regex hits every one of them. On 2026-08-22 that reported
+# "MegafaunaYield fix 303", "Jawa_Patches ops 5252" and "JawaVoice ops 2224"
+# as RED against baseline 0 — three confident wrong numbers, none of them an
+# error, all of them just the manifest saying the files exist.
+# This is the SAME mistake already recorded against the bare /RimAI/ pattern
+# below, which matched a healthy mod's own chatter. The lesson did not get
+# applied to the Jawa checks, so it is enforced here instead of re-documented.
+# A line that is ONLY [Source: …] or [File: …] is metadata. It is never an
+# error and never an applied op, so it cannot count toward either.
+INVENTORY = re.compile(r"^\s*\[(Source|File):")
+
+
+def count(lines, rx):
+    """Matching lines, excluding the load-time patch-file manifest."""
+    return sum(1 for l in lines if rx.search(l) and not INVENTORY.match(l))
+
+
 def colour(s, c):
     if not sys.stdout.isatty():
         return s
@@ -515,7 +552,7 @@ def main():
                      f"try one of {[c[0] for c in CHECKS]}")
         rx = re.compile(pat)
         for i, l in enumerate(lines, 1):
-            if rx.search(l):
+            if rx.search(l) and not INVENTORY.match(l):
                 print(f"{i:>7}: {l.rstrip()[:200]}")
         return
 
@@ -523,7 +560,7 @@ def main():
     red = 0
     for key, label, pat, base, note in CHECKS:
         rx = re.compile(pat)
-        n = sum(1 for l in lines if rx.search(l))
+        n = count(lines, rx)
         tag, col, expl = verdict(n, base)
         red += col == "red"
         print(f"  {colour(tag, col)}  {label:<32} {n:>5}   "
@@ -533,7 +570,7 @@ def main():
     print("\n" + colour("QUEUED FOR THIS LOAD", "bold"))
     for label, pat, base in QUEUED:
         rx = re.compile(pat)
-        n = sum(1 for l in lines if rx.search(l))
+        n = count(lines, rx)
         tag, col, expl = verdict(n, base)
         red += col == "red"
         print(f"  {colour(tag, col)}  {label:<38} {n:>5}   "
@@ -542,7 +579,7 @@ def main():
     print("\n" + colour("EXPECTED PRESENT (absence is the finding)", "bold"))
     for label, pat in EXPECTED:
         rx = re.compile(pat)
-        n = sum(1 for l in lines if rx.search(l))
+        n = count(lines, rx)
         ok = n > 0
         red += not ok
         print(f"  {colour('  ok' if ok else ' RED', 'green' if ok else 'red')}"

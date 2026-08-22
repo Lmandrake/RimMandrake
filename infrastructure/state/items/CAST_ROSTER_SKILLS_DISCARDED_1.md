@@ -1,5 +1,5 @@
 ## spec
-🔴 **MEASURED, not suspected. 101 of the 269 authored cast members do not exist
+🔴 **MEASURED, not suspected. 101 of the 294 authored cast members do not exist
 in the running game** — every single one that carries a `<skills>` block is
 thrown away at def load, and has been since the roster was first deployed.
 
@@ -49,6 +49,21 @@ Characters with **no** `<skills>` block load fine. This is the sole trigger.
 the **loader**: our def goes through 1.6's `DirectXmlToObjectNew` dynamic-method path,
 and that path is what hands `LoadDataFromXmlCustom` a node with a null `FirstChild.Value`.
 **Do not "fix" the XML to match vanilla — it already does.**
+
+### ⭐ CONFIRMED BY THE GAME'S OWN COUNT, 2026-08-22 10:35
+The log carries Inhabited's init line:
+
+    [Inhabited] ready: 2 patches, 193 characters, 0 places, 0 casts.
+
+**294 `Inhabited.CharacterDef`s on disk − 101 carrying `<skills>` = 193.** The
+game loaded exactly 193. That is a third independent confirmation, on top of the
+stack trace and the 101/101 per-file match, and it is the engine agreeing rather
+than me inferring.
+
+⚠️ **The roster is 294, not 269.** Every item and doc still saying 269 — including
+`CAST_ROSTER_269_LOAD_1`'s own title and `INHABITED_DLL_FIX_AT_SHUTDOWN_1`'s
+verify line — predates growth in the cast and must not be used as the target.
+**294 is the number to beat.**
 
 ## verify
 POSITIVE OBSERVATIONS, after a cold load with whatever fix is chosen:
