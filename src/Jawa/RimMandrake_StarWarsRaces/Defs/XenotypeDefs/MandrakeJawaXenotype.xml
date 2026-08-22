@@ -109,18 +109,24 @@
            "a gene decided this" flag. So with the ovipositor ALONE that flag stays false,
            `GetGenderBasedReproductivesForPawn` runs, and every Jawa falls back to the
            gender default: males become phallors and females become gestors.
-           ⇒ Until this line was added the clan was an ORDINARY TWO-SEX SPECIES that
-           happened to lay eggs, and the ovipositor gene did nothing at all for half of
-           them - its own description says so: "Gestor or aphrodor carriers of this gene
-           will be born with an ovipositor."
+           ⇒ 🔴 AND BECAUSE `Outland_AllMale` IS ALSO ON THIS LIST, THE GENDER DEFAULT
+           MADE **EVERY** JAWA A PHALLOR. Not half - all of them. The ovipositor gene was
+           doing nothing for a single member of the species, because its own description
+           is "GESTOR OR APHRODOR carriers of this gene will be born with an ovipositor"
+           and there were no gestors and no aphrodors. The clan was an all-male species
+           that could not reproduce at all with itself and carried an inert egg gene.
+           ⚠️ A correction to my own first note here, which said "half of them" - that was
+           written before I checked `Outland_AllMale`, and it understated the defect.
 
            `SEX_AlwaysAphrodor` gives BOTH organs to every carrier regardless of gender,
            and the ovipositor then replaces the female one. So a Jawa has a phallus and an
            ovipositor: any Jawa can impregnate any other Jawa, and whichever was
            impregnated lays an egg. That is the owner's sentence, mechanically.
-           🔑 It is gender-BLIND, not gender-changing. Jawa still roll male or female for
-           appearance, which is why `Hair_BaldOnly` and `Beard_NoBeardOnly` above still do
-           the visual work. Nothing here touches how a Jawa looks.
+           🔑 It is gender-BLIND, not gender-changing, and that is what makes it compose
+           with `Outland_AllMale` instead of fighting it. Every Jawa stays male - the
+           owner's own build, and the single-gender half of his description - while the
+           reproductive class stops following gender at all. Nothing here touches how a
+           Jawa looks; `Hair_BaldOnly` and `Beard_NoBeardOnly` above still do that.
 
            ⚠️ CONCEPTION IS DECIDED BY ORGANS AND NEVER BY GENDER once this mod is loaded:
            its `PregnancyUtility.CanEverProduceChild` prefix replaces the vanilla method
