@@ -165,10 +165,20 @@ than only in a screenshot.
 plate → beaten by blaster heat. **Ion and stun are exact mirrors of each other** (L4/L5), so
 a force meeting droids *and* people needs two tools and cannot economise.
 
-⭐ **And one consequence is the whole campaign in a sentence: the Jawa's own manufactured
-weapon, the ion blaster, does ZERO damage to flesh.** The player faction's signature arm
-cannot kill a person. It captures machines. Everything else they carry came off somebody
-else. That is not a balance problem to fix — it is the thesis, and it should be protected.
+⭐ **And one consequence was meant to be the whole campaign in a sentence: the Jawa's own
+manufactured weapon, the ion blaster, does ZERO damage to flesh — it captures machines.**
+
+🔴 **MEASURED 2026-08-22 AND IT IS BACKWARDS. Do not build on the sentence above.**
+`JawaIon_Damage` applied live: six hits **down a flesh pawn alive** with zero injury and no
+blood (`JawaIon_Stun` 0.74 → 1.00, inspect pane *"Downed, unconscious."*), while **thirteen
+hits leave a `Mech_Scyther` completely untouched** — `stunned=False`, no hediff — and a
+single vanilla `EMP` stuns the same mech for 570 ticks.
+
+⇒ **It captures people and ignores droids**, the exact inverse of canon and of L4. The
+mechanism itself is live and correct — `DamageWorker_IonBuildup` fires, and the mod's
+`KNOWN INERT` comment is stale — but its entire effect is a hediff, and a mechanoid cannot
+receive one. Evidence: `infrastructure/state/observed/2026-08-22/ion_buildup/`.
+Ruling needed: `ION_CAPTURES_PEOPLE_NOT_DROIDS_1` (DECIDE, needs owner).
 
 ## Axis B — cultural idiom (how they came to hold it)
 
