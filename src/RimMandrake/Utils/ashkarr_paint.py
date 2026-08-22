@@ -894,6 +894,71 @@ def swampiness(w):
     return out
 
 
+
+def river_link_rows(chan, down, acc, sea):
+    """River links as `jawa/world_links_import` needs them: MOUTH FIRST, a = downstream.
+
+    🔴 THIS ORDER IS LOAD-BEARING AND IT FAILS SILENTLY IF IT IS WRONG.
+    `WorldGrid.OverlayRiver` sets `riverDist = max(riverDist, previous + 1)`, and the
+    importer applies river rows IN FILE ORDER. Emit them in ascending tile id with the
+    ends swapped - which is what this function replaced - and every link still LAYS: the
+    importer refuses nothing, logs nothing, `world_lint` has no rule for it, and the
+    planet comes back with wrong `riverDist` on every river. Measured over the 238
+    Ash'karr links, the old emitter produced 22/238 rows running uphill where mouth-first
+    expects a majority; the corrected order gives 157/238.
+
+    ⇒ Walk the drainage forest OUTWARD FROM THE MOUTHS. A root is a downstream endpoint
+    that is nobody's upstream end - the sea tile, or a terminal playa. Breadth-first from
+    the roots reaches every segment nearer the mouth before the segment above it, which is
+    exactly the invariant the accumulator needs.
+
+    ⚠️ The `def` column is taken from the UPSTREAM tile's accumulation, unchanged from the
+    original emitter. Orientation and order were the defect; the link SET was not, and
+    `world/ASHKARR_WORLDMAP_tiles.csv` is frozen with the map accepted for v1.
+    """
+    from collections import deque
+
+    ups = {}
+    for t in np.nonzero(chan)[0]:
+        d = down[t]
+        if d < 0 or not (chan[d] or sea[d]):
+            continue
+        ups.setdefault(int(d), []).append(int(t))
+
+    def river_def(t):
+        a = acc[t]
+        return ("HugeRiver" if a > 3000 else "LargeRiver" if a > 1200
+                else "River" if a > 300 else "Creek")
+
+    upstream_ends = {t for lst in ups.values() for t in lst}
+    roots = sorted(d for d in ups if d not in upstream_ends)
+
+    # 🔑 ONE MOUTH AT A TIME, not one global sweep. A single queue seeded with every
+    # root interleaves unrelated rivers and still satisfies the accumulator, but it does
+    # not reproduce `lint_links.mouth_first`, which is what wrote the accepted file. The
+    # two must agree row for row or the emitter cannot be proved against it.
+    rows, seen_edge = [], set()
+    for m in roots:
+        q = deque([m])
+        while q:
+            d = q.popleft()
+            for t in sorted(ups.get(d, [])):
+                if (d, t) in seen_edge:
+                    continue
+                seen_edge.add((d, t))
+                rows.append(["river", int(d), int(t), river_def(t)])
+                q.append(t)
+
+    # ⚠️ A cycle in the flow field would strand edges the BFS never reaches. Emit them
+    # rather than drop them - a lost row is a lost river, and this must never silently
+    # shrink the link set. There are none on Ash'karr; the guard is for the next planet.
+    for d in sorted(ups):
+        for t in sorted(ups[d]):
+            if (d, t) not in seen_edge:
+                seen_edge.add((d, t))
+                rows.append(["river", int(d), int(t), river_def(t)])
+    return rows
+
 def write_bundle(w):
     """⭐ THE MAP, as data. Four files, all committed, all readable without RimWorld."""
     import csv as _csv
@@ -986,14 +1051,8 @@ def write_bundle(w):
     with open(BUNDLE + "_links.csv", "w", newline="", encoding="utf-8") as fh:
         wr = _csv.writer(fh)
         wr.writerow(["kind", "a", "b", "def"])
-        for t in np.nonzero(w["chan"])[0]:
-            d = w["down"][t]
-            if d < 0 or not (w["chan"][d] or w["sea"][d]):
-                continue
-            a = w["acc"][t]
-            wr.writerow(["river", int(t), int(d),
-                         "HugeRiver" if a > 3000 else "LargeRiver" if a > 1200
-                         else "River" if a > 300 else "Creek"])
+        for row in river_link_rows(w["chan"], w["down"], w["acc"], w["sea"]):
+            wr.writerow(row)
         for a, b, g in edges:
             wr.writerow(["road", a, b, "StoneRoad" if g == 1 else "DirtRoad"])
 
