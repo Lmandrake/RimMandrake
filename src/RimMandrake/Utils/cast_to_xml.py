@@ -497,12 +497,35 @@ def emit(people, faction, defnames):
                 rows.append("      <li>%s</li>" % escape(it))
             rows.append("    </items>")
         if p["skills"]:
+            # 🔴 `<SkillName>N</SkillName>`, NEVER `<li><skill>..</skill><amount>..</amount></li>`.
+            # This emitted the `<li>` form until 2026-08-22 and it DISCARDED 101 of the 294
+            # CharacterDefs at every load, silently - the def, not the field.
+            #
+            # WHY, read from the engine: `skills` is `List<SkillGain>`, and `SkillGain`
+            # carries `LoadDataFromXmlCustom`, so the loader hands it each child of
+            # `<skills>` whole and the method does
+            #     RegisterObjectWantsCrossRef(this, "skill", xmlRoot.Name);
+            #     amount = ParseHelper.FromString<int>(xmlRoot.FirstChild.Value);
+            # ⇒ the ELEMENT NAME is the skill and its TEXT is the amount. Given `<li>`, the
+            # name is "li" and `FirstChild` is the `<skill>` ELEMENT, whose `.Value` is null;
+            # `int.TryParse(null)` fails, the `float.Parse(null)` fallback throws
+            # ArgumentNullException, and the whole def is thrown away.
+            #
+            # The two fingerprints, both present in the 2026-08-21 Player.log:
+            #     Exception loading def from file CastRoster_*.xml: Value cannot be null
+            #     Could not resolve cross-reference: No RimWorld.SkillDef named li found
+            # ⚠️ The second one is the tell, and it is the cheaper check - a cross-ref
+            # failure naming a SkillDef "li" can mean nothing else.
+            #
+            # 🔑 `<traits>` above KEEPS its `<li>` form and that is not an inconsistency:
+            # `TraitEntry` has no custom loader, so it takes the ordinary list path where
+            # `<li>` is required. The shape follows the TYPE, not the file.
+            # Vanilla precedent for the form used here: Core's own
+            # Defs/BackstoryDefs/Shuffled/Outsider_Adult.xml writes
+            # `<skillGains><Plants>4</Plants></skillGains>` into the same `List<SkillGain>`.
             rows.append("    <skills>")
             for sk in p["skills"]:
-                rows.append("      <li>")
-                rows.append("        <skill>%s</skill>" % sk["skill"])
-                rows.append("        <amount>%d</amount>" % sk["level"])
-                rows.append("      </li>")
+                rows.append("      <%s>%d</%s>" % (sk["skill"], sk["level"], sk["skill"]))
             rows.append("    </skills>")
         rows.append("  </Inhabited.CharacterDef>")
         rows.append("")
