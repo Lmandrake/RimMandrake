@@ -562,8 +562,13 @@ def _who_refusal(ev, item):
         return ("only CHECK takes the bridge. This is not a formality: two seats "
                 "driving one live game produce results neither can attribute.")
     if verb == "game":
-        return ("only the OWNER announces game state. A seat that infers 'the game "
-                "is up' and tells everyone is guessing on other people's behalf.")
+        return ("only the OWNER announces game state. A seat that INFERS 'the game is "
+                "up' and tells everyone is guessing on other people's behalf.\n\n"
+                "\u2705 But if he SAID it, quoting him is not inferring — stamp it now:\n"
+                "    python3 src/RimMandrake/rimflow/cli.py game <STATE> "
+                "--owner-said \"<his words>\"\n"
+                "\u26a0\ufe0f  That stamps the LEDGER only. Waking the other windows is "
+                "still his, and\n    `./game up` does both in one word.")
     return ("only %s may `%s` (seat is %s)"
             % (" or ".join("the owning seat" if w == "owner" else w for w in who),
                verb, seat))

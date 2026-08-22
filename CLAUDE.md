@@ -221,9 +221,27 @@ python3 src/RimMandrake/Utils/refresh.py           rebuild the offline def dump
 measure count <DefType>       one line; never a bare number  (skill: see below)
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./src/RimMandrake/Utils/show.sh <path>             open it in Explorer
-./game up|down|loading|deploying|going-down   🔴 OWNER ONLY - announce + stamp
+./game up|down|loading|deploying|going-down   announce to every window + stamp the ledger
 python3 src/RimMandrake/Utils/broadcast.py --list  🔴 OWNER ONLY - see below
 ```
+
+### 🔑 Declaring game state: just say it
+
+**Owner, 2026-08-22 — he no longer types anything to stamp the board.** Say *"game is up"*,
+*"game is loading"*, *"game is going down"* to whichever agent you are talking to, and it
+stamps the ledger immediately, recording your words as the authorization:
+
+```
+python3 src/RimMandrake/rimflow/cli.py game UP --owner-said "game is up"
+```
+
+⛔ **A seat still may not INFER game state** — that is guessing on everyone's behalf, and
+it is what the rule always banned. Quoting you is not inferring.
+
+⚠️ **That stamps the LEDGER, which is what makes `rimflow next` start offering or
+withholding `needs: game-up` / `bridge` / `deploy` work.** It does NOT wake the other
+windows. **`./game up` does both**, in one word, and is still the better move when other
+seats are running:
 
 🔴 **`broadcast.py` is the OWNER's tool and agents do not run it.** It reaches every
 agent window at once, by writing the peer socket directly — which permission rules do
