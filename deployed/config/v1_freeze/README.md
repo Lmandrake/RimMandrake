@@ -100,3 +100,18 @@ balance.
 `Gun_Scattergun` (`MECH_WEAPONS_UNCUT_1`): a cut weapon that was the sole carrier of a tag
 some pawn kind depends on. The general test is in that item — **a cut is safe only if every
 tag it carried still has another carrier, or nobody asks for it.**
+
+## Amended 2026-08-22 — the heavy crossbow un-cut (`HEAVY_CROSSBOW_UNCUT_1`)
+
+Owner, 2026-08-22: *"Agreed on the BS_ items."* **1,343 `<li>` → 1,342.**
+
+`VFEM_Bow_HeavyCrossbow` (Big and Small - Races) is the **sole surviving carrier** of
+`BS_CrossbowTag`, and three combatPower-120 kinds name it: `BS_CrossbowDvergr`,
+`BS_Crossbowman`, `BS_DvergrTraditionalist`. Their two other tags cannot save them —
+`VFEM2_Arbalest` needs *VFE Medieval 2* and `DankPyon_Arbalest` its own mod, and **neither
+is installed**. So all three were arriving bare-handed.
+
+🔑 **Third instance of one shape**, after the mech guns and the warcasket guns: *a cut
+weapon that was the sole carrier of a tag some pawn kind depends on.* The general test now
+lives in `THOROUGH_RETAG_WEAPONS_ARMOUR_1` — **a cut is safe only if every tag it carried
+still has another carrier, or nobody asks for it.**
