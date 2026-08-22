@@ -22,7 +22,9 @@
 >   `SCENARIO_SETTINGS_SPEC.md`, the faction, biome and terrain specs. Keep writing them.
 >
 > 🔑 **The consequence, and it got stronger rather than weaker:** one hand-made world,
-> frozen, then shipped to every player. **A faction, ideoligion or setting absent when he
+> frozen **once he saves it**, then shipped to every player. ⚠️ *2026-08-22: `canon.yml` says
+> `planet.status: remaking` — the owner is rebuilding the planet, so no frozen world exists
+> YET. The no-worldgen ruling above is untouched; only the tense is.* **A faction, ideoligion or setting absent when he
 > builds it is absent from every player's game forever, with no regenerate to fall back
 > on.** That is why the faction roster and the faith text stay v1.
 
@@ -69,10 +71,17 @@ it does not belong here.
   aimed at that container fails — and `PatchOperationSequence` stops at the first
   failure, silently killing every op after it. **Any generator that decides what to
   patch by reading a RESOLVED def dump will emit this bug.** *2026-08-15.*
-- **Nothing on the 155-tool bridge can order an attack.** `jawa/order_pawn` issues a
+- **Nothing on the bridge can order an attack.** ⚠️ *The tool count that used to open this
+  line was wrong three ways over; the measured count is below.* `jawa/order_pawn` issues a
   GOTO even with a `targetId`; drafted pawns hold at `Wait_Combat`; spawned hostiles
-  have no lord and idle. Blocks every combat test. *2026-08-15,
-  `bridge-cannot-order-a-melee-attack-3f8c21`.*
+  have no lord and idle. Blocks every combat test. 🔑 **Re-measured 2026-08-22 from the
+  companion SOURCE** (regex over the `[Tool("…")]` attribute across 53 `.cs` files, never
+  `strings`): **119 distinct `jawa/` tools**, of which exactly three are combat-adjacent —
+  `fire_raid`, `order_pawn`, `raid_preview` — and repo-wide the only `JobDefOf` members
+  referenced anywhere are `Goto` and `LayDown`. ⚠️ **The LIVE total is UNMEASURED offline**:
+  it is those 119 plus RimBridgeServer's own `rimworld/*`, which only a running bridge can
+  enumerate. *2026-08-15, `bridge-cannot-order-a-melee-attack-3f8c21`; count corrected
+  2026-08-22.*
 
 - 🔴 **A `ThingOwner<Pawn>` on a custom `WorldObject` IS TICKED, and copying `Caravan`
   literally would delete the cast.** Two shipped mechanisms bite, and neither is
@@ -205,8 +214,10 @@ bash.**
   `OutlanderFactionBase`.** An xpath at `FactionDef[defName="OutlanderCivil"]/
   pawnGroupMakers` **matches nothing, and a patch that matches nothing logs nothing.**
   Wiring a pawnkind into that faction means patching the abstract base, which reaches
-  every Outlander faction. *This is why five authored `Jawa_Homestead_*` kinds spawn
-  nowhere.*
+  every Outlander faction. ⚠️ **The five `Jawa_Homestead_*` kinds this used to cite are now
+  FIELDED** — `Jawa_Patches/Patches/HomesteadDefenseLeague.xml` patches the abstract base. The
+  live orphan set is nine different kinds; see `AUTHORED_KINDS_MUST_FIELD_1` (`38cabab0`), which
+  also **rejects `Inherit="False"` as the fix** — it drops all twelve inherited groups.
 - 🔴 **`TileMutatorDef` in the def dump carries ONLY `defName` and `label`.** No
   `biomeWhitelist`, no `averageTemperatureRange`, no `workerClass`. A whitelist question
   can only be answered from the mod's own XML. *Checking the dump for
@@ -277,9 +288,11 @@ bash.**
   `StructureLayoutDef` (301) and `CharacterDef` (269) are the same coin landing the other
   way. ⇒ **"Zero X in the dump" is UNMEASURED, never negative** — the type may simply have
   lost the race. Fixed 2026-08-21 (`d7cf154`): colliding types now write `<FullName>.json`
-  and the manifest carries `defTypes` / `defTypeCollisions`. ⚠️ That fix is in the
-  ASSEMBLY, so it does nothing until the dumper is redeployed and the game reloaded — any
-  dump captured before that is still lying.
+  and the manifest carries `defTypes` / `defTypeCollisions`. ✅ **Deployed and captured**
+  (`d4bdad92` / `0a3c310b`): the live `RimDefDump.dll` is md5-identical to the repo copy, and
+  the OFFICIAL-2026-08-21 capture (`capturedUtc 2026-08-21T22:44:59Z`) carries **533 `defTypes`
+  and 13 `defTypeCollisions`**. ⚠️ **A dump captured BEFORE that timestamp is still lying** —
+  read `capturedUtc` before trusting a zero out of an older capture.
 
 ---
 
@@ -302,10 +315,10 @@ know** before you trust the case you don't.
 |---|---|---|---|
 | 1 | `strings -a -el` on a .NET assembly | **16** of 115 tool names — implying 99 live tools were missing | 🛡️ **refused at the tool call** |
 | 2 | `grep` a `.rws` for biome defNames | **2**, where the CSV holds 3 / 233 / 31 | 🛡️ **refused at the tool call** |
-| 3 | def dump `defs/<Type>.json` | `AbilityDef` **0**, having written 612 | ✅ **fixed** `d7cf154` (undeployed) **+ caught offline** |
+| 3 | def dump `defs/<Type>.json` | `AbilityDef` **0**, having written 612 | ✅ **fixed** `d7cf154`, **deployed + captured** `2026-08-21T22:44:59Z` |
 | 4 | `weapon_tag_audit` "emptied by the cut" | **0**, structurally guaranteed | ✅ **fixed** |
 | 5 | `jawa/texture_audit` | **53** dead paths, 39 of them present art | 📋 **filed**, `TEXTURE_AUDIT_CUSTOM_GRAPHICCLASS_1` |
-| 6 | `validate_patch.py`, bare `Defs/` xpath | **0 nodes** on patches live in game | ✅ **fixed**, selftest 36 cases |
+| 6 | `validate_patch.py`, bare `Defs/` xpath | **0 nodes** on patches live in game | ✅ **fix real** (`fc10b9a5`) — ⚠️ **no selftest exists**; "36 cases" was a bleed from `validate_save_artifact.py` |
 | 7 | `first_light` "no weaponTags" | counts a disarmed combat role as a civilian | ⚠️ **known only** |
 
 ### ⭐ THE ANSWER TO THE OWNER'S QUESTION — `measure`, 2026-08-21
@@ -378,7 +391,8 @@ from a dump-built index rather than **empty** in it — and a counter over that 
 return anything but zero. ⇒ Attribute cuts from the mod's SOURCE XML.
 
 **12 — `jawa/faction_name_get` flagged the factions that were RIGHT** (fixed 2026-08-21,
-`37ac949`; **undeployed until the next shutdown window**). Its `isGenerated` compared
+`37ac949`; **deployed — the live companion DLL is dated 2026-08-22 12:47, 19 h after that
+commit, and is md5-identical to the repo build**). Its `isGenerated` compared
 `currentName` against `defLabel` — but a faction with a `fixedName` is SUPPOSED to differ
 from its label, that is what a reskin is. Live on 578 mods it reported 24 generated, of
 which **9 were false positives wearing their own `defFixedName`**: `Empire`,
@@ -386,8 +400,9 @@ which **9 were false positives wearing their own `defFixedName`**: `Empire`,
 `CannibalPirate`, `BS_Muspelheim`, `BS_Niflheim`, `BS_OgreFaction`. 🔴 **Worse than a wrong
 number: it aimed the repair at the wrong targets.** `faction_name_set action=clear` rewrote
 the name to `defLabel`, so running the documented fix against `generatedCount` would have
-DELETED nine authored names. ⇒ Until the deploy lands, treat any `generatedCount` from a
-live game as wrong, and do not run `clear`.
+DELETED nine authored names. ⇒ **The deploy has landed; only a LOAD is still owed.** Treat a
+`generatedCount` from a game that has not restarted since 2026-08-22 12:47 as wrong, and do not
+run `clear` against it. `FACTION_NAME_CHECK_TRUSTWORTHY_1` is the item that proves it live.
 
 **13 — `weaponMoney` is a CEILING rolled once, not a budget, and "raise the floor" is the
 wrong reflex.** `PawnWeaponGenerator.TryGenerateWeaponFor` rolls `weaponMoney.RandomInRange`
@@ -461,5 +476,7 @@ expansion names resolve fine (`Gun_Revolver`, `Muffalo`, `Mech_Cyclops`), so its
 and it says so with no error and no caveat — the exact shape this register exists for.
 🔴 **Never conclude a modded def is absent because `rimsage` did not find it**, and treat any
 past finding that leaned on a rimsage miss as UNMEASURED rather than settled. Use the frozen
-capture instead — read-only SQL over `DefDump/defs.sqlite`'s structured `defs` table, with a
+capture instead — read-only SQL over the structured `defs` table of
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs.sqlite`
+(788 MB, mtime 2026-08-21 16:10; there is no copy in the repo), with a
 known answer (`Human`) run first to validate the query shape.

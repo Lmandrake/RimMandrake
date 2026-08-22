@@ -60,17 +60,18 @@ does not exist. The rest of this file is still the script.
 | 5 | 🔴 **The four RR research kits are APPAREL and must be WORN.** The fix replaces `wornGraphicPath` (`Apparel_FieldKits.xml:62`); the ground `texPath` (`:51`) is one directionless PNG, so a kit on the ground exercises **none** of the fixed art. There is no apparel tool on the bridge: the only route is `rimworld/select_pawn` then `Actions\Wear apparel (selected)…`, which works on **player colonists only** ⇒ spawn the wearer with `faction=player` |
 | 6 | **`AV_DogSled` is a `Vehicles.VehicleDef`, not a ThingDef.** `spawn_thing`/`ThingMaker` genuinely cannot construct it; **`jawa/spawn_batch`** routes vehicles through `Vehicles.VehicleSpawner.SpawnVehicleRandomized` by reflection. Its brown comes from a def patch (`DogSledTint_Brown.xml`, `graphicData/color` → `(99,65,24)`) ⇒ **a grey sled means the patch, not the art** |
 | 7 | **`VGE_Astronaut` has two lifeStages sharing one maskPath**, and only the double-r `Astrronaut` files were typo'd ⇒ **shoot an adult**, or you pass on art that was never broken |
-| 8 | ⛔ **The C12 double-ship warning is STALE and names the wrong mod.** The real overlap was `MissingArtFixes`, all seven pairs md5-identical, now inactive. **If a row looks wrong, load order is NOT the suspect** |
-| 9 | ⚠️ **The Part 1 table covers eight mods; ten art-fix mods are live.** `mandrake.phytokinbarkheadfix` and `mandrake.kotorbandoliernorthfix` are deployed but untabled — see Part 1b, which is why. **Read `ModsConfig.xml` for the active list; never a count written in a doc** |
+| 8 | ⛔ **The double-ship warning is STALE and names the wrong mod.** The real overlap was `MissingArtFixes`, all seven pairs md5-identical, now inactive. **If a row looks wrong, load order is NOT the suspect.** ⚠️ *It carried the ID `C12`, which belongs to an unrelated item — do not cite one* |
+| 9 | ⚠️ **SEVEN are live: six art-fix plus the sled reskin.** *(Re-measured 2026-08-22 against `ModsConfig.xml`, 578 active: `msedroidfix`, `sauridfrillfix`, `gravshipastronautfix`, `toolbeltfix`, `blastdoorframeasyncfix`, `researchkiteastfix`, `desertvehiclereskin`.)* ⛔ **NOT active:** `phytokinbarkheadfix`, `kotorbandoliernorthfix`, `missingartfixes`, `galacticdiversity` — and `mandrake.cereanmanefix` is **not in `ModsConfig.xml` at all**. **Read `ModsConfig.xml` for the active list; never a count written in a doc — including this one** |
 
 ⚠️ **`jawa/spawn_thing` DOES NOT EXIST.** The single-thing call is vanilla
 `rimworld/spawn_thing`; `jawa/spawn_batch` is for more than one.
 
 ---
 
-## Part 1 — the EIGHT live mods. Cheapest first, all doable on any map
+## Part 1 — the SEVEN live mods. Cheapest first, all doable on any map
 
-Seven art-fix mods plus the sled reskin. `mandrake.missingartfixes` is out of the
+Six art-fix mods plus the sled reskin — the table below numbers eight rows, but **row 6
+(`CereanManeFix`) is struck closed**, so seven are live. *(Count re-measured 2026-08-22.)* `mandrake.missingartfixes` is out of the
 list; **the two mods enabled at 23:18 were pulled again on the owner's ruling** —
 see Part 1b, which is why.
 Each is *one spawn and one look*. Nothing here needs a fresh map or a colony.
@@ -123,8 +124,13 @@ fallback is to draft the pawn and order a move so it turns, or shoot it walking.
 `draft=true` included, and returns the read-back position.
 Do not report the art broken on the strength of a rotation call failing.
 
-⛔ **My `C12` double-ship warning was STALE and named the wrong mod. Struck.**
-`Jawa_Patches/Textures/` holds exactly two PNGs and neither collides. The real
+⛔ **The double-ship warning was STALE and named the wrong mod. Struck.**
+⚠️ *The ID `C12` used to appear here and is wrong twice over: it is in no ledger event, and
+`design/V2_DREAMS.md:248` uses `C12` for `NoPathToPilotConsole`, an unrelated live item. Cite
+no ID for this; it never had one.*
+`Jawa_Patches/Textures/` holds **14 PNGs** — 13 faction icons under `Textures/World/JawaFactions/`
+plus `Textures/Things/Item/Special/JawaClaimRumour.png` — and none collides. *(Re-counted
+2026-08-22; the "exactly two" this used to say was wrong, though the no-collision finding stands.)* The real
 overlap was `MissingArtFixes`, whose seven pairs are **md5-identical** — so it was
 never a rendering hazard at all — and it is now inactive.
 **If rows 4 or 7 look wrong, load order is NOT the suspect.**
@@ -195,7 +201,7 @@ report it as failed because the biome was wrong.
 
 | # | override | what to look for | PASS |
 |---|---|---|---|
-| 1 | **Salt pans** (`Jawa_SaltCrust`) | broad **pale cracked** patches in low ground | ✅ **ALREADY PASSED LIVE** — 144 cells, 0 failed verify. Only "does it generate" is left |
+| 1 | **Salt pans** (`Jawa_SaltCrust`) | broad **pale cracked** patches in low ground | ⚠️ **UNMEASURED — downgraded 2026-08-22.** This read *"ALREADY PASSED LIVE — 144 cells, 0 failed verify"*; **no capture of that run exists** in either `observed/` directory (both swept, 34,814 files, plus the two oversized logs). The only `SaltCrust` hits are def-load lines. ⇒ **Re-run it:** `jawa/set_terrain`, then read back with `rimworld/get_cell_info` → `terrainDefName`, and SAVE the reply under `observed/`. "Does it generate" is still open too |
 | 2 | **Dune seas** (widened `SoftSand`) | 🔴 **DO NOT EYEBALL THIS** | **not a look.** 0.65→0.55 is a *density* change and is unjudgeable without a control map — "compare against memory of a normal desert" is not evidence. **Read the live `BiomeDef` and confirm `terrainPatchMakers` shows `0.55` (Desert) and `0.50` (ExtremeDesert)**, plus the new AridShrubland maker at `0.70`. Source of truth: `src/Jawa/Jawa_Patches/Patches/JawaTerrain_DuneSeas.xml` |
 | 3 | **Scrapfields** | steel slag chunks strewn across open ground, with machine-bits filth | **no count gate — it ships at whatever density it produces.** 🔴 **LOOK BEFORE ANY DESTROY** — the last map's evidence died in a 43,288-thing wipe. ⚠️ `isJunk` makes the count the product of the tile's `TileMutatorDef.junkDensityFactor`, and **`Dunes` is one of five live mutators whose factor is ZERO** — on such a tile it places nothing, silently, with no warning |
 
@@ -214,7 +220,8 @@ and destroy dev colonies freely. Paint it wherever you stand.
 claims, and that is evidence hygiene, not preservation.
 
 🔴 **The parameter is `terrainDef`, not `def`** — the real signature is
-`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs:69`,
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs:61`
+(the `string terrainDef` parameter itself is at `:73`),
 `SetTerrain(x, z, terrainDef, width, height, layer, refresh)`. **The bridge drops
 unknown params silently before the tool runs**, so `def=` would not have errored:
 it would have painted nothing and cost live minutes to notice.
