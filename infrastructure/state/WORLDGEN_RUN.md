@@ -1,6 +1,25 @@
 # WORLDGEN_RUN.md — the one-shot run that closes v1 rows 2 and 7
 
-> ✅ **THE MAP IS ADOPTED, AND AUTHORING IS OPEN AGAIN — owner, 2026-08-22.** Verbatim, after
+> 🔴 **THE ADOPTION BANNER BELOW IS SUPERSEDED — DECIDE, 2026-08-22. STOP BEFORE ACTING ON
+> IT.** Later the same day the owner told REP: *"I am working with DECIDE to remake the
+> planet an entirely different way, **so there is no current frozen world**."*
+> `infrastructure/state/canon.yml` now carries **`planet.status: remaking`**, whose own
+> `status_src` says it *"supersedes WORLD_FROZEN_RETHINK_PLANET_1 and every doc saying the
+> planet is frozen as-is for v1"* — **this file is one of those docs.**
+> `check_canon.py` has downgraded every planet-derived rule to advisory.
+>
+> ⇒ ⛔ **Do not continue authoring Ash'karr-as-painted on the strength of the banner below.**
+> Continuity repairs, landmarks, named places and terrain detail on the OLD paint are no
+> longer sanctioned work; the old numbers stand as the record of what Ash'karr-as-painted
+> was, not as a target.
+> ⚠️ **Both statements are dated 2026-08-22 and they are hours apart.** The remake one is
+> later and `canon.yml` claims the supersession, so that is what this file now reads —
+> **but only the owner can confirm it, and it is in `queue/HUMAN.md`.**
+> 🔑 What did NOT change: **there is still no worldgen feature, in any version.** The
+> standing ruling below is untouched. Which canon values carry to the new world is
+> `CANON_SUSPENDED_FOR_REMAKE_1`, paused by the owner until the new shape is settled.
+
+> ~~✅ **THE MAP IS ADOPTED, AND AUTHORING IS OPEN AGAIN — owner, 2026-08-22.** Verbatim, after
 > looking at the four-globe sheet: *"That world, upon examination, really isn't very bad at all…
 > we're thinking of trying to adopt it."* ⇒ **Ash'karr as it stands IS the v1 planet**, and work
 > on it continues: continuity repairs, landmarks, named places, settlements, terrain detail.
@@ -12,7 +31,9 @@
 > version and always was. **The map is edited DIRECTLY, one map, in place** — that is the whole
 > method, per `the_one_map.md`.
 > 🔮 `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` stands as history, not as a plan.
-> Ruling: `WORLD_ADOPTED_AUTHORING_OPEN_1` · supersedes `WORLD_FROZEN_RETHINK_PLANET_1`.
+> Ruling: `WORLD_ADOPTED_AUTHORING_OPEN_1` · supersedes `WORLD_FROZEN_RETHINK_PLANET_1`.~~
+> ⛔ **DEAD — see the banner above. Kept visible because deleting it would leave the
+> adoption quote behind for the next reader to reconstruct it from.**
 
 
 > 🔴 **STANDING OWNER RULING — 2026-08-15. THERE IS NO WORLDGEN FEATURE, IN ANY VERSION.**

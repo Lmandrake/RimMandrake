@@ -35,6 +35,35 @@ reversal as a broad one — three items closed this morning were caused by exact
 
 <details><summary>the question as it was asked, kept for the record</summary>
 
+## 🔴 TWO OF YOUR OWN RULINGS FROM 2026-08-22 DISAGREE ABOUT THE PLANET — DECIDE, 2026-08-22
+
+**One sentence from you settles it, and until you say it the run sheet is ambiguous.**
+
+| what you said | where it now lives | what it tells an agent to do |
+|---|---|---|
+| *"That world, upon examination, really isn't very bad at all… we're thinking of trying to adopt it."* | the top banner of `infrastructure/state/WORLDGEN_RUN.md` | **keep authoring Ash'karr** — continuity repairs, landmarks, named places, settlements, terrain detail |
+| *"I am working with DECIDE to remake the planet an entirely different way, so there is no current frozen world."* (to REP) | `infrastructure/state/canon.yml` → `planet.status: remaking` | **stop** — the old paint is a record, not a target |
+
+⚠️ **Both are dated 2026-08-22, hours apart.** I have written the second one over the first
+in `WORLDGEN_RUN.md`, because it is later and because `canon.yml`'s own provenance claims it
+*"supersedes … every doc saying the planet is frozen as-is for v1"*. **That is my reading of
+your words, not your ruling.** If I have it backwards, an agent has been stopped from doing
+work you wanted.
+
+🔑 **What I need from you is one of these two lines, said to any window:**
+
+- *"The map is adopted, keep authoring Ash'karr"* — I revert the banner and set
+  `canon.yml` back to `frozen`.
+- *"The planet is being remade, the old paint is history"* — the banner stands as written and
+  `CANON_SUSPENDED_FOR_REMAKE_1` unblocks when the new shape is settled.
+
+⚠️ **What is NOT in question either way:** there is no worldgen feature in any version, and
+the world is still built by hand, once, and frozen. Only *which* world is at issue.
+
+⛔ **Separately and still open:** nobody can say which savegame the world bakes into — both
+candidates read `seedString grasshopper` and the docs say `lada`. That blocks `B55` and it is
+below.
+
 ## ⚖️ WHAT IS THE WEAPONS FLOOR? TWO DOCS SAY VANILLA, THE CUT SAYS BLASTERS — DECIDE, 2026-08-22
 
 **Nothing is blocked on this.** I ruled `VANILLA_GUNS_CUT_OR_RETAG_1` without it and the
