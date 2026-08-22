@@ -1,122 +1,78 @@
-# Handoff — CHECK, 2026-08-21 16:10 PDT
+# Handoff — CHECK, 2026-08-21 ~17:55 PDT
 
-> 🔴 **THE PLANET IS FROZEN — owner's ruling, 2026-08-21. Do not paint, repaint, re-render
-> or reference-match it.** Verbatim: *"We need to just freeze the world for now as-is and
-> move on to v1. I have to totally rethink how we create that planet. It's really messy and
-> horrible compared to what I was hoping for originally."*
->
-> ⛔ **Every instruction in this file to edit the paint, re-run the painter, render and judge
-> the map by eye, or clear a pre-worldgen gate is DEAD FOR V1** — whether or not it is struck
-> below, and whether or not it reads as merely "not started yet". The map that exists IS the
-> v1 map. `refmatch.py` is cancelled, not gated, and does not exist.
-> ✅ **What survives is CORRECTNESS** in artifacts and tools we still ship — a link CSV
-> emitted backwards, a lint excluding the wrong tiles. Fix those.
-> 🔮 The rethink of the authoring METHOD is post-v1: `design/V2_DREAMS.md >
-> PLANET_METHOD_RETHINK_1`. ⛔ It is **not worldgen**, which is out of every version.
-> Ruling: `WORLD_FROZEN_RETHINK_PLANET_1` · canon: `ORTHO_GLOBE_MAP_ACCEPTED_1`.
+Owner went AFK at 16:55 and asked for the live game to be used hard. It was.
+All work committed and pushed; `origin/main..HEAD` empty.
 
+## Runs recorded this window — 11 items touched, 4 closed
 
-## 🔴 THE GAME IS UP, AT THE MAIN MENU, AND THE BRIDGE IS YOURS
+| item | result | what it turned on |
+|---|---|---|
+| `B54` the eleven faction faiths | **pass, CLOSED** | 12/12 names, factions and descriptions read back from a live game |
+| `CLASSIC_IDEO_ERASES_FAITHS_1` | **pass, CLOSED** | the defs were never at fault; Classic ideoligion mode was |
+| `IKEE_READS_AS_OURS_1` | **pass, CLOSED** | exactly 3 biomes, once `commonality > 0` is applied |
+| `CHEAPEST_WEAPON_IS_ABSURD_1` | **pass, CLOSED** | the pool is emptied, not the budget |
+| `ROLE_KINDS_ARMED_5_OF_5_1` | fail | 25/48 at 5/5 armed |
+| `sixteen-…-bare-handed-…-7c31a9` | fail | same sweep |
+| `MECH_AND_ARCHER_ARMED_1` | fail | pikeman, drone, archer all 0/5 |
+| `FACTION_RELATION_MATRIX_1` | partial | tools work; 31 corrupt pairs found |
+| `FACTION_NAMES_ARE_GENERATED_1` | partial | premise expired; instrument over-reports |
+| `RAKATA_SLEEPERS_LOOK_RIGHT_1` | partial | 16/16 Rakatan; no casket cracked |
+| `seven-…-own-kinds-5b90c7` | partial | all seven generated with settlements; raids untested |
+| `QUICKTEST_VISUAL_ROUND_1` | partial | adults draw clean; juveniles unreachable |
 
-```
-game        UP (owner stamped it 15:53). 578 mods, factioncontrol ABSENT.
-bridge      CHECK holds it. 244 tools live: jawa 119, rimworld 107, rimbridge 18.
-where       MAIN MENU. No world generated, no map. That is why the 21
-            `needs: bridge` items have not been run - almost all of them want
-            pawns, raids or a world to look at.
-reach it    python.exe, NEVER python3. RimBridge binds Windows loopback and
-            WSL2 is NAT-mode, so from WSL it is unreachable and the error says
-            NOTHING about whether RimWorld is running.
-```
+## 🔴 The three that matter most
 
-```python
-python.exe -c "import sys; sys.path.insert(0,r'D:\Luke\dev\Rimworld\src\RimMandrake\Utils')
-from rimbridge_client import RimBridge, resolve_endpoint
-h,p,t=resolve_endpoint()
-with RimBridge(h,p,t) as b: print(b._request('tools/list',{}))"
-```
+**1. Ten vanilla guns and sixteen more weapons have lost their `weaponTags`.**
+`Gun_Revolver` reads `[]` at runtime and vanilla ships it `[SimpleGun, Revolver]`. At least
+**26** vanilla/DLC weapons are stripped — every basic gun, all three bows, the whole
+medieval melee set. `Mercenary_Sniper` and `Scavenger` spawn **5/5 bare**; vanilla combat
+kinds run **32.5% unarmed** against our roster's 11.2%. **The bare-handed-raider problem is
+vanilla's, not ours.** Filed `RESTORE_VANILLA_GUN_TAGS_1` (BUILD). The hunt for what strips
+them was dispatched to a subagent and had not returned when this was written — **check
+whether that answer landed before starting the search again.**
+⛔ And do NOT raise `weaponMoney`: 0 of 48 kinds can roll below their cheapest weapon, and
+`jawa/pawnkind_audit` reports 0 `cannotAfford`. Money is refuted.
 
-## What this load proved, and what it did not
+**2. Blackstar's reskin patches the abstract root of every pirate def.**
+`Core`'s `Pirate` is declared `<FactionDef Name="PirateBandBase">` — one def that is both the
+concrete faction and the parent everything inherits. **Six FactionDefs now read
+`fixedName: Blackstar Company`** and four generated at once. Because list fields APPEND down
+the tree, `Jawa_Junkers` wears Blackstar's five `forcedMemes` on top of its own four, giving
+it two structure memes — and the effective one is Blackstar's, not the authored
+`AM_Structure_Scavenger`. `JUNKERS_STRUCTURE_MEME_LOST_1` (BUILD),
+`BLACKSTAR_IS_EVERY_PIRATE_1` (DECIDE). **This bakes at worldgen.**
+⚠️ My first filing said inheritance did not explain it. That was wrong and is corrected in
+the item.
 
-Signatures were `EXPECTED_FAILURES_next_load.md` **§6** (⚠️ I first numbered it §3, which
-was taken; it is §6 now). Harvest saved to
-`observed/2026-08-21_harvest_2244load.txt` — read that, do not re-derive it.
+**3. Every pawn in the campaign is called `Gestor` or `Phallor`.**
+"Intimacy - Gender Works" writes reproductive-role words into the xenotype slot of the
+inspect pane, so no authored species name is visible where players actually look. The gene
+tab is correct. **One toggle:** `integrateReproductiveGenesIntoXenotypes = True`.
+`INTIMACY_MOD_RENAMES_SPECIES_1` (DECIDE, needs owner).
 
-| | |
-|---|---|
-| ✅ **S2 def dump** | **PASS.** New capture `2026-08-21T22:44:59Z`: 533 types, **78,813 defs** (+756 over the frozen 78,057), `defTypes` index present, **`AbilityDef` 612** — it read **0** before. The 824-collision fix works. |
-| ⚠️ **S1 Inhabited** | **PARTIAL.** DLL landed, **zero** unknown-field errors. But 294 CharacterDefs on disk → **193 loaded, 101 discarded.** |
-| ✅ **companion** | 244 tools; `jawa/faction_name_get`/`_set`/`faction_create` all present. |
-| ⚠️ **S3 harvest** | **PARTIAL** — see below. |
+## Two instruments caught returning confident wrong numbers
+- **`jawa/faction_name_get`** says 24 factions wear generated names. **Nine are factions
+  correctly wearing their own `defFixedName`** — it compares against `defLabel`. A repair
+  driven off `generatedCount` would clear the Empire's and the Junkers' names.
+  `ISGENERATED_COMPARES_WRONG_FIELD_1` (BUILD).
+- **`BiomeDef.wildAnimals` lists EVERY animal at `commonality: 0`.** `Ocean` carries 1024
+  entries. Asking which biomes list the ikee returns **79**, including Space and Orbit.
+  Filter `commonality > 0` and it is **3**. Recorded in `observed/LIVE.md`; the same shape
+  almost certainly applies to `wildPlants`.
 
-### 🔑 Two written-down numbers were wrong and nobody had counted
+## Docs corrected in place
+- `PRE_WORLDGEN_GATE.md` §2 **row 4 RETIRED** — all twelve authored factions carry a
+  `fixedName` and wear it live. `FACTION_FIXEDNAME_ELEVEN_1` has landed.
+- `PRE_WORLDGEN_GATE.md` deityPresets paragraph: **three holders, not four.** `JawaTribes.xml`
+  has none deliberately, and the live game reports three deities.
 
-- The roster expectation of **269** is wrong in both directions: **294** on disk, **193** loaded.
-- The tool expectation of **115** `jawa/` tools is wrong: **119**.
+## The map
+Scratch, and deliberately polluted — ~300 spawned pawns plus a hand-made `CannibalPirate`
+faction. `step_game_ticks` now times out because of it. **Roll a fresh quicktest next time
+rather than reusing it.** Nothing in it is worth saving.
 
-### The 101 discards — FOUND, FIXED ON DISK, NOT IN THIS SESSION
-
-Engine stack: `SkillGain.LoadDataFromXmlCustom → ParseIntPermissive → Single.Parse(null)`.
-BUILD's root cause (`c6060ae`): **`SkillGain` takes the node NAME** — `<Shooting>5</Shooting>` —
-**not `<li>`**. `CAST_SKILLS_EMPTY_LI_1` is **done**.
-🔴 **Defs parse only at startup, so the RUNNING game still has 193 of 294.** The full cast
-is not testable until the next load. Not a reason to reload — the 193 are fine for the
-pawn, weapon, faction and world checks.
-
-### From the harvest, not predicted
-
-- `DEFS DISCARDED` **103** vs baseline 2 — fully attributed: our 101 + 2 benign.
-- `cross-reference` **128** vs baseline 25.
-- `stale saved data (Scribe)` **8** vs baseline 0 — all `guy762_*` GeneDefs (KotOR).
-  ⚠️ Scribe ≠ cross-ref: a SAVED FILE holds a dead name, and no mod change fixes it.
-- ⛔ **B59's megafauna YIELDS is UNMEASURED, not passed.** A no-op patch logs nothing, so
-  the log cannot answer it. Settled on screen only. Recorded as UNMEASURED per
-  `CHECK.md` "Numbers you report" — do not round it to a pass.
-
-## 🔴 ONE THING IS THE OWNER'S AND IS STILL PENDING
-
-`refresh.py` reports the capture **REPLACED**. Only he re-freezes:
-
-```
-python3 src/RimMandrake/Utils/refresh.py --freeze --by owner --freeze-id OFFICIAL-2026-08-21-2244
-```
-
-⚠️ **The `--freeze-id` is REQUIRED here.** The default ids from the capture DATE and both
-captures are 2026-08-21, so the entry comes out with `"id"` == `"supersedes"` — an entry
-that supersedes itself. Verified by dry run.
-⛔ `freeze_dump.py` (which I wrote) **no longer exists** — BUILD folded it into
-`refresh.py` at `9078a15`. Anything naming the standalone script is dead.
-
-## The queue is smaller and now schedulable
-
-- **53 open → 42.** `NEEDS_RESTAMP_THIRTYEIGHT_1` closed: 49 items read `needs: offline`
-  at the migration default; now **bridge 21 · game-up 7 · offline 7 · owner 4 · harvest 2
-  · deploy 1**. `rimflow why <ID>` gives a true answer now.
-- 13 items merged into 3 umbrellas (`NEXT_LOAD_LOG_HARVEST_1`, `QUICKTEST_VISUAL_ROUND_1`,
-  `FACTION_LABELS_ONE_LOOK_1`) and 4 hosts. Every absorbed clause was written into its
-  successor's spec first. **One deliberate drop, named:** `B41`'s `raidsForbidden` — an
-  absence cannot be observed in any bounded check.
-
-### ⬜ The owner's review sheet is UNACTIONED and now STALE
-
-`D:\Luke\dev\Rimworld\TRANSIENT_check_queue_review.html` — 53 rows, pre-filled
-KEEP 26 / CUT 10 / MERGE 17. The 17 MERGEs are done; **the 10 CUTs are untouched and
-waiting on him.** It still shows the pre-merge queue, so it is 13 rows stale. Regenerate
-with `make_check_review.py --summaries TRANSIENT_check_queue_summaries.jsonl`.
-
-## Convergence — the measured answer to his worry
-
-69% of all items reach an end state; CHECK is the outlier at 36%. **The leak is not the
-filing rate:** of 69 runs, 34 pass / **27 partial** / 8 fail, and only 2 items were ever
-verified twice. A partial parks an item and nothing re-runs it.
-⚠️ The ledger spans ONE day (migrated), so it cannot show a trend.
-
-## Next, in order
-
-1. **A dev quicktest map (~90 s) is the best value** — unlocks the largest block:
-   `ROLE_KINDS_ARMED_5_OF_5_1`, `sixteen-authored-role-kinds…`, `CHEAPEST_WEAPON_IS_ABSURD_1`,
-   `QUICKTEST_VISUAL_ROUND_1`. Owner had not chosen when this was written.
-2. `W9` — generate and paint the world. The links CSV is pre-flighted: `lint_links.py`
-   PASSES on 1,075 rows. Pass `expectTiles=21872`.
-3. 🪤 **Hash every screenshot.** `rimworld/screenshot_cell_rect` photographs the TOP
-   WINDOW, not the map — four `success: true` calls once gave four identical PNGs.
+## Still owed and needing a live game
+raid composition for the seven factions · a casket-cracked Rakatan and its encounter
+difficulty · the ash storm · juvenile GRiNDTerra animals (needs an age route
+`jawa/spawn_pawn` does not have) · the Configure Factions screen for
+`BLACKSTAR_IN_DEFAULT_LIST_1` · clicking a Junkers settlement to read its name on screen.
