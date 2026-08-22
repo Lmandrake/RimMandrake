@@ -1014,7 +1014,9 @@ exists right now is the one v1 ships, subject to redraft. Three consequences, al
   312-tile gap is The Scald exactly, and lint independently reports `lakesAboveSeaLevel: 312`.
 - **Inbox** — close `LOADS_ARE_BLOCKED_NEEDS_YOU_1` and `MORNING_BRIEF_CHECK_1`; keep
   `CANON_RULINGS_OWED_OWNER_1` open. → `CLOSE_TWO_OWNER_ITEMS_1` for DECIDE, since REP may
-  not close an OWNER item and only DECIDE may reassign one.
+  not close an OWNER item. ⚠️ *(That line also said only DECIDE may reassign one. As of
+  your 2026-08-22 ruling that is no longer true of YOU — you may reassign anything, with
+  a warning. It remains true of REP.)*
 
 ---
 

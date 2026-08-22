@@ -365,6 +365,64 @@ def t_reassign_is_decide_only():
                             "--reason", "x", seat="DECIDE")
 
 
+# ---- the OWNER is never refused by a seat rule -----------------------------
+#
+# Owner's ruling, 2026-08-22, after being told `reassign` was DECIDE-only and that
+# *"OWNER is not exempt for that verb, so even you can't do it as OWNER"*:
+# *"That's bullshit. OWNER absolutely can and should be able to override and shift
+# items between agents if necessary. A warning may be appropriate, but I have to be
+# able to override."*
+def t_owner_may_reassign_and_is_told_that_he_overrode():
+    fresh()
+    ok("file", "OWNER_TAKES_THIS_BACK_1", "--for", "BUILD", "--title", "t")
+    rc, out, err = run("reassign", "OWNER_TAKES_THIS_BACK_1", "--to", "CHECK",
+                       "--reason", "mine now", seat="OWNER")
+    assert rc == 0, "the OWNER was refused a reassign\n  %s" % (out + err).strip()
+    assert "CHECK" in ok("show", "OWNER_TAKES_THIS_BACK_1"), "the reassign did nothing"
+    assert "OVERRIDE" in err.upper(), (
+        "the override was silent. He asked to be able to override AND to be warned; "
+        "an unannounced bypass is the failure mode, not the bypass.\n  stderr: %r" % err)
+    led = open(os.path.join(TMP, "events.jsonl")).read()
+    assert '"override"' in led, (
+        "the override is not in the ledger. A year later it must read as a deliberate "
+        "crossing of a seat boundary, not as a boundary that never existed.")
+
+
+def t_owner_override_does_not_reach_the_state_machine():
+    """`_may` governs WHO, and only WHO.
+
+    ⛔ Being the OWNER must not become a way past the record. `claim` on a dropped item
+    is a TERMINAL violation and stays refused for him; a typo'd id is not a seat
+    boundary at all and stays refused too, or he would file events about nothing.
+    ✅ `reassign` on a terminal item is ALLOWED and does not revive it — the owner may
+    change who holds a closed item; he may not reopen it.
+    """
+    fresh()
+    ok("file", "OWNER_CANNOT_REVIVE_THIS_1", "--for", "BUILD", "--title", "t")
+    ok("drop", "OWNER_CANNOT_REVIVE_THIS_1", "--reason", "x", seat="BUILD")
+    refused(("claim", "OWNER_CANNOT_REVIVE_THIS_1"),
+            "drop", "OWNER restarted a dropped item by being the OWNER", seat="OWNER")
+    ok("reassign", "OWNER_CANNOT_REVIVE_THIS_1", "--to", "CHECK", "--reason", "x",
+       seat="OWNER")
+    assert "dropped" in ok("show", "OWNER_CANNOT_REVIVE_THIS_1"), (
+        "an owner reassign revived a terminal item")
+    refused(("reassign", "NO_SUCH_ITEM_ANYWHERE_1", "--to", "CHECK", "--reason", "x"),
+            "never been filed", "OWNER overrode a typo into an event about nothing",
+            seat="OWNER")
+
+
+def t_owner_is_not_warned_where_the_rule_already_admits_him():
+    """`retarget` is ("DECIDE", "owner") — he was always allowed. No warning for it."""
+    fresh()
+    ok("file", "OWNER_RETARGETS_QUIETLY_1", "--for", "BUILD", "--title", "t")
+    rc, out, err = run("retarget", "OWNER_RETARGETS_QUIETLY_1", "v2",
+                       "--reason", "x", seat="OWNER")
+    assert rc == 0, (out + err).strip()
+    assert "OVERRIDE" not in err.upper(), (
+        "warned about an override that did not happen — the rule admits the owner "
+        "outright. Crying wolf here is how the real warning stops being read.")
+
+
 def t_sweep_transient_lists_and_never_deletes():
     fresh()
     before = sorted(n for n in os.listdir(REPO) if n.startswith("TRANSIENT_"))

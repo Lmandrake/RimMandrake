@@ -277,8 +277,11 @@ def validate(ev):
     for f in spec["req"]:
         if ev.get(f) in (None, ""):
             raise SchemaError("`%s` requires %r" % (verb, f))
+    # ⚠️ `override` is legal on EVERY verb because the OWNER may override every verb.
+    # It holds the rule he overrode, so the bypass is in the record rather than being
+    # invisible — see `_may`. No seat may set it; `_emit` stamps it.
     known = set(spec["req"]) | set(spec["opt"]) | {
-        "ts", "seat", "event", "id", "caused_by"}
+        "ts", "seat", "event", "id", "caused_by", "override"}
     for f in ev:
         if f not in known:
             raise SchemaError(
@@ -494,27 +497,34 @@ FORBIDDEN = {
 }
 
 
-def _may(ev, item, world):
-    """Who may emit this. Raises PermissionError_ naming the rule, never a bare False."""
+# Filled by `_may` when the OWNER overrides a seat restriction, drained by the CLI so
+# the override is WARNED about as well as recorded. Cleared at the top of `check()`.
+OVERRIDE_NOTICES = []
+
+
+def _who_refusal(ev, item):
+    """The refusal `who` would produce, or None if this seat may emit the event.
+
+    Split out of `_may` so the OWNER override has ONE thing to bypass and ONE sentence
+    to quote back. Keeping the checks inline meant every new verb had to remember to
+    exempt him, and `reassign` did not — see `_may`.
+    """
     verb, seat = ev["event"], ev["seat"]
     who = VERBS[verb]["who"]
-    if who == "any":
-        return
-    if who == "self":
-        return                                  # a seat may only speak for itself
+    if who in ("any", "self"):
+        return None                             # a seat may only speak for itself
     if who == "owner":
-        # OWNER is the human and overrides seat ownership deliberately: he is the one
-        # who can correct a seat that has wedged itself. Every such act is in the log.
-        if seat == "OWNER":
-            return
         if item is None:
+            # ⛔ NOT overridable, and it is in this function only because that is where
+            # the lookup lands. "This id does not exist" is not a seat boundary — it is
+            # a typo, and letting the OWNER override it would file events against
+            # nothing. Raised, not returned, so `_may` never offers it to him.
             raise PermissionError_("`%s` names an item that does not exist" % verb)
         if item.owner and item.owner != seat:
-            raise PermissionError_(
-                "%s may not `%s` %s — it belongs to %s. Filing work FOR another seat "
-                "is normal; changing another seat's item is refused."
-                % (seat, verb, item.id, item.owner))
-        return
+            return ("%s may not `%s` %s — it belongs to %s. Filing work FOR another "
+                    "seat is normal; changing another seat's item is refused."
+                    % (seat, verb, item.id, item.owner))
+        return None
     # ⚠️ `who` may MIX seat names with the sentinel "owner" — `retarget` is
     # ("DECIDE", "owner"), meaning DECIDE may retarget anything and a seat may
     # retarget its own. Treating the tuple as a literal seat list made the sentinel
@@ -523,20 +533,50 @@ def _may(ev, item, world):
     # exercised the pure-tuple case.
     if "owner" in who and (seat == "OWNER" or (item is not None and
                                                item.owner in (None, seat))):
-        return
-    if seat not in who:
-        if verb == "bridge":
-            raise PermissionError_(
-                "only CHECK takes the bridge. This is not a formality: two seats "
+        return None                             # the rule admits him; not an override
+    if seat in who:
+        return None
+    if verb == "bridge":
+        return ("only CHECK takes the bridge. This is not a formality: two seats "
                 "driving one live game produce results neither can attribute.")
-        if verb == "game":
-            raise PermissionError_(
-                "only the OWNER announces game state. A seat that infers 'the game "
+    if verb == "game":
+        return ("only the OWNER announces game state. A seat that infers 'the game "
                 "is up' and tells everyone is guessing on other people's behalf.")
-        raise PermissionError_(
-            "only %s may `%s` (seat is %s)"
+    return ("only %s may `%s` (seat is %s)"
             % (" or ".join("the owning seat" if w == "owner" else w for w in who),
                verb, seat))
+
+
+def _may(ev, item, world):
+    """Who may emit this. Raises PermissionError_ naming the rule, never a bare False.
+
+    🔴 THE OWNER IS NEVER REFUSED BY A SEAT RULE — owner's ruling, 2026-08-22.
+    He was told `reassign` was DECIDE-only and that *"OWNER is not exempt for that
+    verb, so even you can't do it"*. His answer: *"That's bullshit. OWNER absolutely
+    can and should be able to override and shift items between agents if necessary.
+    A warning may be appropriate, but I have to be able to override."*
+
+    Every `who` rule here exists to stop one SEAT from reaching into another seat's
+    work. The owner is not a seat — he is the human the seats work for, and he is the
+    only one who can correct a seat that has wedged itself. A rule that refuses him is
+    not protecting anything; it is a tool telling its owner no.
+
+    ⚠️ **The override is recorded and warned about, never silent.** The event carries
+    `override: "<the rule bypassed>"`, so a year later the ledger says he crossed a
+    seat boundary deliberately rather than the boundary appearing not to have existed.
+
+    ⛔ **What this does NOT unlock, deliberately.** `_may` governs WHO. It is not the
+    state machine: `TERMINAL` and `FORBIDDEN` are checked elsewhere and still refuse
+    him, so he cannot reopen a closed item by being the owner. Reviving a decision is
+    a new item, for him as for everyone — that record is the one thing nobody edits.
+    """
+    reason = _who_refusal(ev, item)
+    if reason is None:
+        return
+    if ev["seat"] == "OWNER":
+        OVERRIDE_NOTICES.append(reason)
+        return
+    raise PermissionError_(reason)
 
 
 def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
@@ -771,6 +811,7 @@ def check(ev, world=None, path=None):
     is the only way to catch a transition refusal — validate() alone cannot know that
     an item is already closed.
     """
+    del OVERRIDE_NOTICES[:]             # per-call; the CLI drains it after we return
     if world is None:
         world = replay(path=path)
     validate(ev)

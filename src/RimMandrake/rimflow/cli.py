@@ -153,6 +153,18 @@ def _emit(ev, world=None, quiet=False):
     ev = {k: v for k, v in ev.items() if v not in (None, "", False)}
     try:
         model.check(ev, world)
+        # 🔴 The OWNER overrode a seat rule (2026-08-22 ruling — see `model._may`).
+        # STAMP it before appending and WARN on stderr: he asked to be able to
+        # override, and to be told when he did. Silent power is the failure mode here,
+        # not the override itself. `check()` deep-copies the event, so the notice comes
+        # back on the module, not on `ev`.
+        if model.OVERRIDE_NOTICES:
+            ev["override"] = model.OVERRIDE_NOTICES[0]
+            sys.stderr.write(
+                "⚠️  OWNER OVERRIDE — the rule bypassed was: %s\n"
+                "    Allowed because you are the OWNER, and recorded on the event as "
+                "`override` so the ledger shows you crossed a seat boundary on purpose.\n"
+                % model.OVERRIDE_NOTICES[0])
         model.append(ev, model.EVENTS)
     except model.LedgerError as e:
         die(str(e))                     # verbatim, non-zero — see the module docstring
@@ -832,7 +844,7 @@ def build_parser():
     s.add_argument("to", help="v1|v2")
     s.add_argument("--reason", required=True)
 
-    s = add("reassign", "hand an item to another seat (DECIDE only)",
+    s = add("reassign", "hand an item to another seat (DECIDE, or OWNER overriding)",
             _simple("reassign", (("to", "to"), ("reason", "reason"))))
     s.add_argument("id")
     s.add_argument("--to", required=True)
