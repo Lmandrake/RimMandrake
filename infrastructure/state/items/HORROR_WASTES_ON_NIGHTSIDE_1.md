@@ -48,3 +48,29 @@ approved by looking.
 ⚠️ **Biome counts are canon-adjacent.** `canon.yml` carries planet figures; re-measure after.
 ⚠️ This changes `BIOME_CREATURE_CAST_1`'s biome list from 23 to 24 and re-opens the
 `AB_RockyCrags` cast, which is the one already worked. Do this BEFORE casting it.
+
+## 🔴 MEASURED 2026-08-22 — `HorrorWastes` AS SHIPPED IS A HOT, DRY BIOME WITH THREE ANIMALS
+
+Read from the live dump before committing any tile to it:
+
+- **Its own description is desert, not ice:** *"A **dry region**, contorted by alien fauna and
+  flora to be unrecognizable. A terrible place of disease, Horrors and suffering."*
+- **Its terrain is `Sand`, `Soil`, `SoilRich`** — sand will read wrong on a −56 °C nightside.
+- **Its entire cast is THREE animals**, and none survives the ground it is being sent to:
+
+  | animal | comfy range | survives −56 °C? |
+  |---|---|---|
+  | `Bulwark` | 0 … 40 °C | ⛔ no |
+  | `Terrorworm` | 0 … 40 °C | ⛔ no |
+  | `Visceral` | −40 … 40 °C | ⛔ no |
+
+⇒ 🔑 **The owner's concept is sound and the def does not implement it.** He wants *"ancient
+bioweapons that have adapted to the extreme cold"*; the shipped biome is a hot dry horror
+region. **Placing it unchanged yields empty ground.**
+
+**What that actually costs, and it is not much:** we are re-casting every biome anyway
+(`BIOME_CREATURE_CAST_1`), and this is one of the four biomes licensed to draw on the 14
+anomaly entities. ⇒ **Treat `HorrorWastes` as a SHELL we fill, not a biome we inherit.**
+Owed alongside the tiles: a cold terrain set, and a cast of cold-viable hostiles.
+⚠️ Its `animalDensity` is **3.6**, which is high — a near-empty cast at high density is the
+`AB_RockyCrags` failure repeated, so the cast has to land with the tiles, not after.
