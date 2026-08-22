@@ -1,5 +1,26 @@
 # NEXT_RELOAD.md — the run sheet for the NEXT game load
 
+> 🔴 **STALE — CHECK, 2026-08-22 10:40. This sheet was assembled 2026-08-20 07:35 and A
+> WHOLE LOAD HAS HAPPENED SINCE** (the 08-22 08:40 run, 578 mods, rev591, now harvested
+> and closed as `NEXT_LOAD_LOG_HARVEST_1`). Do not spend a cold load off it until DECIDE
+> reassembles it — filed as `RUN_SHEET_REASSEMBLE_AFTER_LOAD_1`.
+>
+> **What that load already changed, so §0's brief is answering yesterday's question:**
+> - ⛔ **§9's premise is broken.** `Inhabited` is not a "first run" any more — it ran, and
+>   it loaded **193 of 294** characters. All 101 that carry a `<skills>` block are
+>   discarded at def load (`CAST_ROSTER_SKILLS_DISCARDED_1`). §9 says a positive sighting
+>   settles the architecture gate; it cannot, while 34% of the cast is absent. Do the §9
+>   sequence only AFTER that item lands, or its baseline is measured against a short cast.
+> - ✅ **Two deploys in §0 are already DONE** in the 10:30 game-down window: `Inhabited`
+>   (in sync, 18 files) and `bridgetools --gm --apply` (`7df3c51b` → `e3e8a89c`, adding
+>   `jawa/faction_name_get`, `faction_name_set`, `faction_create`).
+> - ⚠️ **`harvest_log.py` changed under this sheet.** It was counting the load-time
+>   patch-file manifest as evidence and reporting `303 / 5252 / 2224` RED against baseline
+>   0 for MegafaunaYield, `Jawa_Patches` and `JawaVoice`. All three now read 0 / 0 / 2.
+>   **Any number in this sheet quoted from the old tool is suspect.**
+> - 🔑 **269 is a dead number.** The cast roster is **294** on disk. Anything here or in an
+>   item that verifies against 269 is verifying against a roster the project outgrew.
+
 > 🔴 **STANDING OWNER RULING — 2026-08-15. THERE IS NO WORLDGEN FEATURE, IN ANY VERSION.**
 >
 > Verbatim: *"There is no auto worldgen we are building. The world will be user-made and

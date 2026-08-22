@@ -1312,3 +1312,4 @@
 {"seat":"BUILD","event":"needs","id":"ION_MACHINE_TIER_MISSING_1","to":"bridge","ts":"2026-08-22T17:31:53Z"}
 {"seat":"REP","event":"file","id":"V1_CHAIN_TWELVE_STALE_1","title":"V1_CHAIN.md still argues from four closed items and six wrong counts","kind":"task","target":"v1","needs":"offline","for":"DECIDE","ts":"2026-08-22T17:32:11Z"}
 {"seat":"REP","event":"file","id":"TEST_PLAN_SIX_WRONG_ANCHORS_1","title":"TEST_PLAN.md's mod counts, texture count and three line anchors do not match disk","kind":"check","target":"v1","needs":"offline","for":"CHECK","ts":"2026-08-22T17:32:11Z"}
+{"seat":"CHECK","event":"file","id":"RUN_SHEET_REASSEMBLE_AFTER_LOAD_1","title":"The next-load run sheet describes a load that already happened","kind":"fix","target":"v1","needs":"offline","for":"DECIDE","ts":"2026-08-22T17:32:28Z"}
