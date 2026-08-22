@@ -48,6 +48,27 @@
     <pawnSingular>curator</pawnSingular>
     <pawnsPlural>curators</pawnsPlural>
     <leaderTitle>Director</leaderTitle>
+    <!-- 🔴 WITHOUT THIS THE FACTION IS NOT ON THE CONFIGURE FACTIONS SCREEN, and a world
+         built through that screen may not contain it at all. Measured 2026-08-22
+         (AUTHORED_FACTIONS_OFF_THE_SCREEN_1): seven of our eight read -1 here.
+         `FactionGenerator.ConfigurableFactions` is
+             from f in DefDatabase<FactionDef>.AllDefs
+             where f.maxConfigurableAtWorldCreation > 0
+             orderby f.configurationListOrderPriority
+         and vanilla writes 9999 on the CONCRETE defs (OutlanderCivil, TribeCivil,
+         Pirate), never on the abstract bases we inherit - so ours defaulted to -1.
+         ⚠️ `requiredCountAtGameStart` is NOT a safety net for this.
+         `FactionGenerator.InitializeFactions` reads it ONLY when `factions == null`;
+         worldgen through the screen passes the configured list and adds it verbatim.
+         A dev quicktest takes the null path, which is why these factions generated
+         when CHECK measured them and why that measurement does not transfer.
+         ⛔ Set on OUR def, never on the abstract base - patching OutlanderFactionBase
+         would hand a screen row to every outlander faction in 578 mods.
+         🔑 The priority sorts ASCENDING, so the negative numbers put the campaign's own
+         eight factions at the TOP of the page the owner builds the one world from.
+         Vanilla's own rows are 10-60. -->
+    <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>-93</configurationListOrderPriority>
     <categoryTag>Outlander</categoryTag>
     <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Spacer</techLevel>
