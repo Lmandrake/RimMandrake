@@ -316,9 +316,24 @@ python3 $G/chroma_key.py --input $S/art/raw/dewback_single_east_raw.png --out $S
 # --- 2b. 🔴 TRIM TO THE BAND'S ASPECT. Added 2026-08-21 and NOT optional -- the builder
 #         fits the subject BBOX, so an untrimmed source spends its whole bounded stretch
 #         on one axis and validate_sprite.py passes it anyway. See the header.
-python3 $S/trim_to_band_aspect.py OxCart          east --input $S/art/bantha_pair_gen_east.png  --out $S/art/bantha_pair_east_trimmed.png
-python3 $S/trim_to_band_aspect.py CoveredCarriage east --input $S/art/ronto_pair_gen_east.png   --out $S/art/ronto_pair_east_trimmed.png
-python3 $S/trim_to_band_aspect.py WarChariot      east --input $S/art/dewback_pair_gen_east.png --out $S/art/dewback_pair_east_trimmed.png
+# 🔴 CUTS REDUCED 2026-08-22 under VEHICLE_SPRITE_ARTEFACT_CLEANUP_1. The owner looked
+#    at the shipped east facings and said the tails were "clearly truncated". They were,
+#    and this step is where it happened: an uncapped --max-cut took whatever the band
+#    aspect wanted, off the LEFT, which is exactly where a dewback or a ronto keeps its
+#    tail. The three lines below now carry a cap. Measured cost, and it is a GAIN:
+#      WarChariot      352 -> 199 px cut,  +11.7% residual aspect, distortion -10.5%, band 100%x100%
+#      CoveredCarriage 182 -> 112 px cut,  +5.8%  residual aspect, distortion  -5.5%, band 100%x100%
+#      OxCart          103 ->  88 px cut,  +0.9%  residual aspect, distortion  +2.6%, band 104%x100%
+#    All three still PASS validate_sprite.py against their donor, and the beasts came out
+#    BIGGER in the band, not smaller.
+#    ⛔ CHARIOT IS DELIBERATELY UNCHANGED at 0.30. Its single dewback is 2.56 aspect
+#    against a 1.53 band, so a smaller cut cannot win: 0.20 fills the band 100%x78% and
+#    0.15 fills it 100%x73% - the animal SHRINKS for a tail stub nobody can see at sprite
+#    size. Looked at all three side by side before deciding. That comparison is the
+#    reason, not the numbers.
+python3 $S/trim_to_band_aspect.py OxCart          east --input $S/art/bantha_pair_gen_east.png  --out $S/art/bantha_pair_east_trimmed.png --max-cut 0.05
+python3 $S/trim_to_band_aspect.py CoveredCarriage east --input $S/art/ronto_pair_gen_east_dun.png --out $S/art/ronto_pair_east_dun_trimmed.png --max-cut 0.08
+python3 $S/trim_to_band_aspect.py WarChariot      east --input $S/art/dewback_pair_gen_east.png --out $S/art/dewback_pair_east_trimmed.png --max-cut 0.12
 python3 $S/trim_to_band_aspect.py Chariot         east --input $S/art/dewback_single_east.png   --out $S/art/dewback_single_east_trimmed.png --max-cut 0.30
 
 # --- 3. COMPOSITE. Writes ../Textures/.../AV_<Vehicle>_east.png and its mask.
