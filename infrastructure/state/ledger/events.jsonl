@@ -1197,3 +1197,9 @@
 {"seat":"CHECK","event":"verify","id":"lightsaber-armour-penetration-reads-zero-offline-but-the-mod-computes-it-in-c-sharp-6a91d3","result":"pass","config":"full-578","evidence":"infrastructure/state/observed/2026-08-22/lightsaber_ap/README.md","sha":"cc9dcb93","ts":"2026-08-22T15:06:09Z"}
 {"seat":"CHECK","event":"finding","id":"lightsaber-armour-penetration-reads-zero-offline-but-the-mod-computes-it-in-c-sharp-6a91d3","type":"design","severity":"medium","name":"LIGHTSABER_AP_ZERO_L3_UNBUILT_1","from":"lightsaber-armour-penetration-reads-zero-offline-but-the-mod-computes-it-in-c-sharp-6a91d3/run-1@full-578","ts":"2026-08-22T15:06:09Z"}
 {"seat":"CHECK","event":"close","id":"lightsaber-armour-penetration-reads-zero-offline-but-the-mod-computes-it-in-c-sharp-6a91d3","sha":"cc9dcb93","ts":"2026-08-22T15:06:10Z"}
+{"seat":"DECIDE","event":"claim","id":"HUTT_WOOKIEE_PATCHES_ARE_DEAD_1","ts":"2026-08-22T15:09:03Z"}
+{"seat":"DECIDE","event":"start","id":"HUTT_WOOKIEE_PATCHES_ARE_DEAD_1","ts":"2026-08-22T15:09:04Z"}
+{"seat":"CHECK","event":"start","id":"FACTION_LABELS_ONE_LOOK_1","ts":"2026-08-22T15:10:43Z"}
+{"seat":"CHECK","event":"verify","id":"FACTION_LABELS_ONE_LOOK_1","result":"fail","config":"full-578","evidence":"infrastructure/state/observed/2026-08-22/faction_labels/README.md","sha":"ac18c755","ts":"2026-08-22T15:10:43Z"}
+{"seat":"CHECK","event":"finding","id":"FACTION_LABELS_ONE_LOOK_1","type":"integration","severity":"high","name":"IDEO_BURIES_EVERY_LEADER_TITLE_1","from":"FACTION_LABELS_ONE_LOOK_1/run-1@full-578","ts":"2026-08-22T15:10:43Z"}
+{"seat":"CHECK","event":"spawn","name":"LEADER_TITLES_BAKE_AT_WORLDGEN_1","kind":"task","needs":"owner","for":"DECIDE","from":"IDEO_BURIES_EVERY_LEADER_TITLE_1","ts":"2026-08-22T15:10:44Z"}
