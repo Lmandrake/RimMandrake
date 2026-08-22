@@ -482,6 +482,7 @@ def t_a_sealed_entry_that_was_edited_is_detected():
     e[refresh.SEAL_FIELD] = refresh.seal_of(e)
     reg = with_registry([json.dumps(e) + "\n"])
     assert refresh.registry_tamper() == [], "a freshly sealed entry read as tampered"
+    shutil.rmtree(reg, ignore_errors=True)   # ⚠️ or the second with_registry() orphans it
 
     e["modlist_sha"] = "5ef6eec3daf6c325"          # the in-place rewrite, replayed
     reg = with_registry([json.dumps(e) + "\n"])
