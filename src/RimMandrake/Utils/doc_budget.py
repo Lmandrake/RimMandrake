@@ -71,6 +71,17 @@ BUDGETS = [
     # 150 is a budget for a list of titles, not for executable contracts, and a
     # budget that cannot be met gets ignored rather than obeyed.
     ("infrastructure/state/queue/BUILD.md", 500),
+    # 🔴 ARCHIVES AND THE INBOX ARE NOT QUEUE VIEWS — corrected 2026-08-22.
+    # These three were charged against the 150 written for a rendered list of titles, so
+    # the report showed them 3,600 lines OVER, every run, unfixably. ⛔ That is the exact
+    # failure this file's own docstring names: unactionable OVER lines train everyone to
+    # ignore the output. Their length is a function of HOW MUCH WORK HAS BEEN DONE and
+    # of what the owner has been told — not of rot — and truncating them destroys record.
+    # 🔑 The numbers are deliberately loose. They exist to catch a runaway, not to shape
+    # the file; when one is hit, ask whether the OLDEST half belongs in git history only.
+    ("infrastructure/state/queue/DECIDE_ARCHIVE.md", 2500),
+    ("infrastructure/state/queue/CHECK_CLOSED.md", 2500),
+    ("infrastructure/state/queue/HUMAN.md", 2000),
     ("infrastructure/state/queue/*.md", 150),
     # ⚠️ POLICY.md is not a per-seat identity, and the 150 was never meant for it. It is
     # the SHARED contract that all four seats load, so its per-line cost is 4x a seat

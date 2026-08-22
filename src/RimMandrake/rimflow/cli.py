@@ -228,8 +228,27 @@ def _scalars(it):
     return "  ".join(bits)
 
 
+def _mode_file():
+    """`infrastructure/state/MODE`, or None. 🔴 NOTHING READ THIS FILE UNTIL 2026-08-22.
+
+    `POLICY.md > Modes` and `REP.md` both document it as the switch between
+    `interactive`, `autonomous` and `afk`, REP owns it, and the owner sets it — and the
+    only readers were a `--mode` flag nobody passes and `$RIMFLOW_MODE`. So `afk`
+    suppressed nothing and the documented mechanism was inert: a dead channel with
+    three docs pointing at it.
+    """
+    try:
+        with open(os.path.join(model.ROOT, "infrastructure", "state", "MODE"),
+                  encoding="utf-8") as fh:
+            word = fh.read().strip().split()[0].lower()
+    except (OSError, IndexError):
+        return None
+    return word if word in ("interactive", "autonomous", "afk") else None
+
+
 def _ctx(args):
-    return {"mode": getattr(args, "mode", None) or os.environ.get("RIMFLOW_MODE"),
+    return {"mode": (getattr(args, "mode", None) or os.environ.get("RIMFLOW_MODE")
+                     or _mode_file()),
             "harvest_pending": bool(os.environ.get("RIMFLOW_HARVEST_PENDING"))}
 
 
