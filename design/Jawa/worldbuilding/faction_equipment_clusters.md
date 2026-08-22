@@ -353,3 +353,116 @@ insulation (333) contradicting the fiction "belongs to DECIDE". It is narrower t
 the owner already ruled **SHIP NEITHER** on 2026-08-12, and `Warcasket_HazardRetune.xml`
 sits in `src/DEPLOY_HOLD.txt` unshipped for that reason. So the 333 stands **by decision**,
 not by oversight. Re-opening it means reversing a ruling, not filling a gap.
+
+---
+
+# PART 6 — the independent review, and what it changed
+
+_An independent thread was asked "how could this be made more realistic, sensible and
+authentic?" against `setting_physics.md`, `FACTION_SPEC.md`, the guidance doc and the
+roster. Its central charge is upheld and is recorded here in its own words:_
+
+> **"It reasons from tag names instead of the defs behind them."**
+
+That is correct, and it is the discipline Part 0 used and Parts 1–2 dropped. Every
+correction below was re-measured by CHECK before being accepted — including the two places
+the reviewer itself was wrong.
+
+## UPHELD — and acted on tonight
+
+### 🔴 R1. "Ion does zero damage to flesh" was true of one def and false of the two the Jawa field
+Measured off the DamageDefs, not the tag names:
+
+| tag | damage def | vs flesh |
+|---|---|---|
+| `Jawa_IonWeapon` / `_Light` | `IW_IonBullet` | `harmsHealth` **true** · Sharp · `Gunshot` · `makesBlood` **true** — shoots bullets |
+| `KotORRanged_ion` | `guy762_RangedDamage_ion` | `harmsHealth` **true** · Heat · `Burn` — burns people |
+| `ORIonRifle` | `OuterRim_Ion` | `harmsHealth` false · `causeStun` true |
+| **`JawaIon_Damage`** (ours) | `JawaIon_Damage` | `harmsHealth` **false** · `makesBlood` false · `externalViolence` **false** · `externalViolenceForMechanoids` **true** · `Damage_EMP` · `DamageWorker_IonBuildup` |
+
+⇒ **The thesis survives, narrowed and much sharper: it is true of the weapon WE built and
+false of every ion-branded gun the Trade Moot was actually carrying.** And the reason is
+worse than a mis-citation — `JawaIon_Damage` was **requested by zero pawn kinds.** The
+campaign's signature weapon was a craftable curio nobody fielded.
+
+⚠️ One reviewer detail corrected: `JawaIon_Blaster` carries **four** tags —
+`Gun`, `JawaIon_Damage`, `AssaultRifle`, `SimpleGun` — not one. The conclusion stands
+regardless, because no Trade Moot kind requests any of the four.
+
+✅ **FIXED AND DEPLOYED, 2026-08-22:** `Jawa_Patches/Patches/JawaIon_FieldOurOwnGun.xml`
+adds `JawaIon_Damage` to Heavy, Specialist and Leader. Validated 3/3 matches, 0 errors.
+⛔ The Grunt is excluded on arithmetic: `weaponMoney` 250–300 against a **420** blaster, and
+`PawnWeaponGenerator` filters by market value — the tag would have been a silent no-op.
+Follow-ups filed: `IONBLASTER_INTO_THE_GENERATOR_1` (the roster XML is generated; this patch
+is a stopgap) and `IONBUILDUP_ACCRUES_ON_FLESH_1` (nobody has ever watched the C# worker
+fire; its own source carries a `VERIFY IN-GAME` note).
+
+🔑 And per L16, not L4: *"Downed is not dead, and this is where most of our prisoners,
+salvage and mercy come from."* **A4 in Part 1 should cite L16.**
+
+### R2. The bowcaster is not kinetic — Part 2's Wildsteam row is wrong
+`guy762_bowcaster` fires `KotORBowcasterBolt_default` → **`guy762_RangedDamage_energy`,
+damage 34, AP 0.4, Heat, `Burn`**. Canon agrees: a quarrel sheathed in plasma.
+⇒ Wildsteam has **no kinetic primary at all**, and its actual arm is the hardest-hitting
+energy weapon in the low-tech palette. The row's primary should read **A2 thermal-plasma**,
+and its vulnerability column — which leaned on kinetic's weaknesses — is void.
+
+### R3. Two entries in the apparel table are defNames, not tags
+`guy762_JawaHood` and `GS_SandP_*` are **defNames**; no apparel tag by those names exists.
+As written those rows are silent no-ops. `guy762_JawaHood` belongs in `apparelRequired`.
+
+### R4. `PrestigeCombatGear` contains no Star Wars content
+22 carriers, none of them vanilla Prestige (all cut): Vanilla Quests Cryptoforge, Alpha
+Genes Forsaken, Biomes! Caverns chitin, Alpha Mechs Mechlord. Assigning it to the Helix
+dresses an Arkanian ultratech faction in beetle chitin and Forsaken cloaks — **the design's
+own "not by tag name" rule failing on its first application.**
+
+### R5. Axis A is not the physics doc's seven forms
+Physics Part 1 names Kinetic, Thermal, Cutting-plasma, Ionic, Neural, **Chemical**,
+**Gravitic**. Axis A drops two and invents three, then assigns "chemical" to factions on an
+axis that lacks it. **Ionic and Neural map to no `armorCategory` at all**, so no
+vulnerability column is checkable against a def until that mapping is written down.
+
+### R6. One cluster per faction contradicts four of the taboos on the same page
+Blackstar's taboo is *"no two alike"* and it is then given one cluster. `apparelTags` is a
+**list**; the number of clusters a faction draws from IS the expression of its idiom, and it
+is free. Silhouette should come from a required head piece plus colour, not from narrowing
+the body pool.
+
+### R7. Other upheld points, recorded without restating
+The Empire's standing explosive secondary breaks Guardrail 7 · the Tusken taboo as written
+deletes the roster's shipped fire caller · `SaV_tusken` does not reach `OuterRim_CyclerRifle`
+· `WarcasketVeteran` tops out at Insulation_Heat 15 and contains no `_Hazard` piece, so the
+Junker heat problem is a tag choice, not a patch · water and `inventoryOptions` are the most
+authentic desert signature available and the design mentions them twice, as flavour.
+
+## 🔴 NOT UPHELD — the reviewer made the same error it diagnosed
+
+**R-X. "Kinetic is unaffordable to the factions physics assigns it to." FALSE as stated.**
+The reviewer priced the survivors against the **guidance doc's proposed** money table
+(90 / 200 / 300 / 500) rather than the **shipped** defs. Measured:
+
+| kind | shipped `weaponMoney` | what it DREW, live, 5 rolls |
+|---|---|---|
+| `Jawa_DeepDesert_Specialist` | **2000–2400** | `guy762_slugrifle_tusken` ×2, `guy762_slugrifle_SovTusken` ×2 (MV **1977**), bare ×1 |
+| `Jawa_DeepDesert_Leader` | 500–600 | melee — `MA_GnautHornMace`, spears |
+| `Jawa_DeepDesert_Heavy` | 200–240 | melee |
+| `Jawa_DeepDesert_Grunt` | 150–180 | melee |
+
+⇒ **The Tusken Cycler is affordable and is already being fielded**, four rolls in five. What
+IS true is narrower: the other three Deep Desert roles cannot afford any surviving kinetic
+ranged weapon and are melee-only — which is what the design intends for them anyway.
+🔑 The lesson is the reviewer's own: **the guidance doc's numbers are a proposal; the shipped
+defs are the fact.** Resolution 3 in Finding 8 therefore stays live, and Resolution 2 is not
+forced.
+
+## What Part 1–2 owe as a result
+1. A4 recited from **L16**, not L4, and "cannot kill a person" deleted.
+2. Wildsteam's primary moved from A1 to A2, vulnerability column rewritten.
+3. Axis A reconciled to the seven forms, with a physics→`armorCategory` mapping table.
+4. Apparel table: defNames moved out of the tag column; `PrestigeCombatGear` replaced for
+   the Helix; one-cluster-per-faction replaced by a cluster LIST plus a required head piece.
+5. Water and `inventoryOptions` given a row per faction.
+
+⚠️ These are edits to a draft, not new findings, and they belong to whoever picks the design
+up next. **Part 0's diagnostic and Parts 4–6 are measured and stand.**
