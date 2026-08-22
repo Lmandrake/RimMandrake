@@ -253,3 +253,78 @@ protection on the planet, which contradicts the roster's intent that warcaskets 
 5. **Fix `Medieval`** — six of our own tribal kinds ask for a tag with no carriers.
 6. **Decide the Deepwater Compact's weapon identity.** Harpoons do not exist; the two 6.8
    spear rifles are cut and are the cheapest route to one.
+
+---
+
+# PART 4 — the measured weapon palette
+
+585 usable of 771. Clustered on projectile `damageDef`, melee/ranged flags and tags — not
+by mod.
+
+| # | cluster | usable | cut | price min / med / max | the tag a kind would name |
+|---|---|---|---|---|---|
+| 1 | **Blaster (bolt)** | **104** | 0 | 60 / 2648 / 99999 | `ORGun`, `StarWarsRange`, `SWKotORWeaponCategoryTag_rifle` |
+| 2 | Heavy & explosive | 66 | 17 | 1 / 1400 / 40000 | `GunHeavy`, `ORGrenade` |
+| 3 | Turrets | 62 | 0 | UNKNOWN | `TurretGun` (the only one) |
+| 4 | Primitive & industrial melee | 59 | 8 | 100 / 2500 / 10000 | `NeolithicMelee*`, **`SandClub`** |
+| 5 | Vibro / energy melee | 51 | 0 | 120 / 2250 / 24800 | `ORVibroweapon`, `Vibroweapon`, `KotORMelee_*` |
+| 6 | 🔴 **Slugthrower (kinetic)** | **46** | **133** | 0 / 1500 / 22805 | `KotORRanged_mid`, `SniperRifle` |
+| 7 | Tools & improvised | 45 | 1 | 0.7 / 10 / 800 | almost all untagged |
+| 8 | Charge / laser | 38 | 0 | 150 / 2125 / 10000 | `LaserGun`, `SpacerGun` |
+| 9 | Beast-part melee | 37 | 5 | 30 / 360 / 3000 | shares `NeolithicMelee*` |
+| 10 | **Ion / EMP** | 28 | 2 | 200 / 1400 / 12799 | **`Jawa_IonWeapon`**, `KotORRanged_ion`, `ORIonRifle` |
+| 11 | Lightsabers | 15 | 0 | 2000 / 2000 / 3000 | `Force_Lightsaber` |
+| 12 | Sonic | 12 | 0 | 220 / 2900 / 16400 | `KotORRanged_sonic` |
+| 13 | Disruptor | 12 | 0 | 240 / 5750 / 75000 | ⚠️ **none exclusive** |
+| 14 | Bowcasters | 5 | 0 | 1250 / 3500 / 40000 | `KotORBowcaster` (only 3 of 5 carry it) |
+| 15 | 🔴 **Primitive ranged (bows)** | **2** | **12** | 0 / 260 / 520 | `NeolithicRangedAdvanced` (3 carriers) |
+| 16 | Misc | 3 | 8 | — | — |
+
+## 🔴 Finding 8 — the cuts have gutted the axis the physics doc calls load-bearing
+
+**133 of 179 slugthrowers are cut — 74% of the cluster.** Every Vanilla Weapons Expanded
+conventional gun, the whole Makeshift set, most Core firearms. And bows are down to **two**.
+
+`setting_physics.md` leans on kinetic twice, hard:
+
+- **L2** — *"A slug carries momentum, not energy… Beats armour optimised against energy."*
+  Slugthrowers are named as the reason energy armour never wins outright.
+- **L11, the desert exception** — desert megafauna evolved for heat are **naturally
+  ablative**, so blasters fail against them and *"colonists must fall back on slugthrowers,
+  vibro-weapons, traps and terrain."*
+
+⇒ **The curation has removed three quarters of one leg of the counter-loop.** Vibro (51) and
+melee (59) survive, so L11's fallback is not gone — but its ranged half largely is. This is
+not a bug and not a mistake; it is a **collision between a deliberate cut and a deliberate
+physics**, and only the owner can say which gives way. Three coherent resolutions:
+1. **Accept it** — this planet's answer to an ablative krayt dragon is a vibro-lance and a
+   trap, not a rifle. Arguably better texture.
+2. **Restore a thin kinetic tier** — un-cut a handful of Makeshift/VWE slugthrowers for the
+   Tribes and the Homestead, who are the two factions physics wants holding them.
+3. **Re-found L11's fallback on the Star Wars slug-rifles that survive** — the Tusken Cycler,
+   the Verpine and Kaleesh slug rifles — and accept that kinetic is now *expensive*, which
+   is itself a strong faction statement: only the Tribes and the rich have it.
+
+## ⚠️ Finding 9 — three structural weaknesses in the palette
+- **`Force_Lightsaber` is a single point of failure.** All 15 lightsabers come from one mod.
+- **The disruptor cluster cannot be selected.** 12 weapons, prices to 75 000, and **no
+  exclusive tag** — a kind must name individual defNames to field one. If disruptors are
+  meant to be anyone's signature, a tag has to be added first.
+- **57 usable weapons carry no `weaponTags` at all** — `Gun_Needle`, `Flamebow`, `RancorTooth`,
+  `MammothTusk`, `DP_ThorHammer` and most Survival Tools. They can be crafted and traded but
+  **no pawn kind can ever spawn holding them.** ⚠️ `Flamebow` is now un-cut (owner,
+  2026-08-22) and still has no tags — un-cutting was necessary and is not sufficient.
+
+## ⚠️ Finding 10 — 22 orphaned weapon tags, and 12 kinds fully disarmed by them
+`MedievalMeleeAdvancedGiant` is named by **16** kinds and carried by none. Twelve kinds have
+**every** tag orphaned and will always generate unarmed: `Mech_Pikeman`, `Drone_Sentry`,
+`Tribal_Archer_Fire`, `VEE_Hunter`, `VEE_TribalHunter`, `VFEP_Footsoldier`,
+`OuterRim_ImperialTrader`, `DP_ArtilleryPirate`, `DP_RocketPirate`, and the three
+`BS_*Crossbow*` kinds. This matches the live spawn test exactly — see
+`infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
+
+⚠️ **Attribution caveat, stated because it matters:** the def dump was captured with Cherry
+Picker **active**, so cut weapons already read `weaponTags: []` in it. A tag whose only
+carriers were cut is therefore *indistinguishable in the dump* from a tag that never had a
+carrier. The cut-vs-never-existed split above is a name-join against the kill list — strong,
+but indirect.
