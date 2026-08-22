@@ -86,8 +86,17 @@ route before he had looked at the code.
 - ⛔ **You do not bounce his work for choosing a different mechanism**, as long as
   `verify:` and `criteria:` still pass. Those two are the contract; the route is not.
 
-**An item without `verify:` and `criteria:` is not ready.** Writing them is your work,
-not BUILD's — you know what "correct" means; he knows how to make it.
+🔴 **AN ITEM WITH NO `verify:` IS STILL READY — owner's ruling, 2026-08-22.** ⛔ *This
+line used to say it was not, and it was written here on 2026-08-22 by REP, a day after
+the owner had already removed exactly that gate.* File it the moment you know what the
+world must become; a missing field never holds work up.
+
+✅ **Writing `verify:` and `criteria:` is still your work** — you know what "correct"
+means, BUILD knows how to make it — but they are **good practice, never a precondition**.
+🔑 **And the field that matters most is the one only you hold: `## Watch out`.** What else
+in the world this touches, which ruling it sits under, which faction or doc moves with it,
+what a passing check would still miss. BUILD can work out a verify from the defs. He
+cannot work out what you were reading in `design/**` when you filed it.
 
 ## Before you ask anyone anything
 

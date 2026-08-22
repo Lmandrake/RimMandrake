@@ -277,7 +277,7 @@ def cmd_next(args, seat):
     also = _claimable(w, seat, args.target)
     if also:
         print("")
-        print("⚠️  %d spec-complete item%s ALSO waiting for %s to claim: %s%s"
+        print("⚠️  %d item%s ALSO waiting for %s to claim: %s%s"
               % (len(also), "" if len(also) == 1 else "s", seat,
                  ", ".join(i.id for i in also[:4]),
                  "" if len(also) <= 4 else ", +%d" % (len(also) - 4)))
@@ -286,7 +286,7 @@ def cmd_next(args, seat):
 
 
 def _claimable(w, seat, target="v1"):
-    """-> [Item] this seat owns that are `proposed`, spec-complete and unblocked.
+    """-> [Item] this seat owns that are `proposed` and unblocked, thin ones included.
 
     🔴 THE HANDOFF USED TO END HERE, SILENTLY. `priority.rank()` filters
     `state == "ready"`, and an item filed FOR a seat lands in `proposed` — so work that
@@ -300,20 +300,42 @@ def _claimable(w, seat, target="v1"):
     claimed work. What changes is that an empty answer must now say "claim one" rather
     than "nothing".
     """
+    # 🔴 NO COMPLETENESS FILTER — owner's ruling, 2026-08-22. `and model._complete(i)`
+    # used to sit on the end of this list comprehension, and it was the removed gate's
+    # last hiding place: the owner killed the completeness gate on 2026-08-21 at `claim`
+    # and at `start`, and the removal never reached the OFFER path. So a thin item was
+    # not refused, it was INVISIBLE — strictly worse, because nothing was told and the
+    # blame landed on whoever filed it. Measured 2026-08-22: three of BUILD's open items
+    # were starved this way. A thin item is offered, and `_offer_claimable` says what is
+    # thin about it so the claiming seat knows what it is walking into.
     out = [i for i in w.items.values()
            if i.owner == seat and i.state == "proposed" and not i.blocked
-           and i.target in (None, target) and model._complete(i)]
+           and i.target in (None, target)]
     out.sort(key=lambda i: (not i.this_deployment, i.created_at or "", i.id))
     return out
 
 
 def _offer_claimable(items, seat):
     it = items[0]
-    print("nothing is CLAIMED, but %d spec-complete item%s waiting for %s to claim."
+    print("nothing is CLAIMED, but %d item%s waiting for %s to claim."
           % (len(items), "" if len(items) == 1 else "s", seat))
     print("")
     print("%s   %s" % (it.id, _scalars(it)))
     print(it.title or "(no title)")
+    # 🔑 What is thin about the item you are being offered, said UP FRONT — never as a
+    # reason you cannot have it. Owner, 2026-08-22: a missing field is not a rejection,
+    # it is a signal that the filer knows something they have not written down.
+    gaps = model._missing(it)
+    if gaps:
+        print("")
+        print("⚠️  THIN ITEM — offered anyway, but you are missing:")
+        for m in gaps:
+            print("      ## %-9s %s" % (m, {
+                "spec": "(nobody said what the world must become)",
+                "verify": "(nobody said how to prove it)",
+                "criteria": "(nobody said what CHECK looks for)"}[m]))
+        print("   The filer may know something you do not. Ask, or decide it yourself")
+        print("   and write down what you chose.")
     if len(items) > 1:
         rest = ", ".join(i.id for i in items[1:6])
         print("also: %s%s" % (rest, "" if len(items) <= 6 else ", +%d" % (len(items) - 6)))
@@ -348,12 +370,16 @@ def _nothing(w, seat, args, ctx):
     incomplete = [i for i in mine
                   if i.state == "proposed" and not model._complete(i)]
     if incomplete:
-        print("⚠️  %d proposed item(s) cannot be claimed because items/<ID>.md is "
-              "missing sections:" % len(incomplete))
+        # ⚠️ INFORMATION, NOT A GATE. These items ARE offered and ARE claimable; this
+        # says what you would be walking into. The old text read "cannot be claimed …
+        # whoever filed them owes the prose", which was the gate the owner removed.
+        print("⚠️  %d thin item(s) — offered anyway, but something was left unsaid:"
+              % len(incomplete))
         for i in incomplete[:6]:
-            print("      %-44s missing %s"
+            print("      %-44s no %s"
                   % (i.id, ", ".join("## " + m for m in model._missing(i))))
-        print("    Whoever filed them owes the prose; until then nobody can work them.")
+        print("    Claim them as they stand. The filer may know something you do not —"
+              "\n    ask, or decide it yourself and write down what you chose.")
     print("-> rimflow why <ID> for the full reason")
     return 0
 
@@ -470,11 +496,25 @@ def cmd_file(args, seat):
     ev["for"] = args.for_
     _emit(ev, w, quiet=True)
     print("%s filed for %s, state proposed." % (args.id, args.for_))
-    miss = [s for s in ("spec", "verify", "criteria")
-            if s not in {n.lower() for n, _ in read_prose(args.id)}]
+    have = {n.lower() for n, _ in read_prose(args.id)}
+    miss = [s for s in ("spec", "verify", "criteria") if s not in have]
     if miss:
-        print("items/%s.md has no %s yet — worth adding, but it can be claimed and "
-              "started as it is." % (args.id, " or ".join("## " + m for m in miss)))
+        print("items/%s.md has no %s yet — worth adding, but it IS offered and can be "
+              "claimed and started exactly as it stands."
+              % (args.id, " or ".join("## " + m for m in miss)))
+    # 🔑 THE ONE SECTION NOBODY ELSE CAN SUPPLY — owner's ruling, 2026-08-22:
+    # *"the submitter should include any non-obvious information that should be
+    # considered for V&V because of interdependencies that the submitter may only be
+    # aware of themselves."* Prompted by name, never required — the whole point of the
+    # ruling is that a missing field stops being a rejection.
+    if "watch out" not in have and args.for_ != seat:
+        print("")
+        print("🔑 Worth adding — nobody else can supply this:")
+        print("   ## Watch out")
+        print("     what else reads this def, what load order affects it, what a")
+        print("     passing verify would still miss. You are the only one who knows")
+        print("     what you were looking at when you filed it.")
+        print("   items/%s.md   (optional; the item is already claimable)" % args.id)
     return 0
 
 

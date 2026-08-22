@@ -214,14 +214,31 @@ def t_next_offers_unclaimed_spec_complete_work_instead_of_nothing():
         "the answer must name the verb that unblocks it: %s" % out)
 
 
-def t_next_still_says_nothing_when_the_proposal_has_no_prose():
-    """⚠️ The counterpart: an item nobody can work must NOT be offered as claimable."""
+def t_a_thin_proposal_is_OFFERED_and_says_what_is_thin():
+    """🔴 THE COMPLETENESS GATE IS GONE FROM THE OFFER PATH TOO — owner, 2026-08-22.
+
+    This test used to assert the opposite: *"an item nobody can work must NOT be offered
+    as claimable."* The owner removed the completeness gate on 2026-08-21; the removal
+    reached `claim` and `start` and never reached the offer path, where `_claimable()`
+    still filtered on `model._complete()`. So a thin item was not refused, it was
+    INVISIBLE, and `next` blamed whoever filed it — *"whoever filed them owes the prose;
+    until then nobody can work them."* Three of BUILD's open items were starved that way.
+
+    🔑 The replacement is an information duty, and BOTH halves are the contract: the
+    item is offered, AND the seat is told what was left unsaid so it knows what it is
+    walking into. Asserting only the first half would let the warning rot away.
+    """
     fresh()
     ok("file", "NO_PROSE_HANDOFF_1", "--for", "BUILD", "--title", "t")
     out = ok("next", "--seat", "BUILD")
-    assert "nothing offered" in out, out
-    assert "missing" in out and "## spec" in out, (
-        "an unworkable proposal must name what it is missing: %s" % out)
+    assert "NO_PROSE_HANDOFF_1" in out and "waiting for BUILD to claim" in out, (
+        "a thin item must be OFFERED, not hidden: %s" % out)
+    assert "THIN ITEM" in out and "## spec" in out, (
+        "offered, but the seat must be told what is missing: %s" % out)
+    assert "cannot be claimed" not in out and "owes the prose" not in out, (
+        "the removed gate's wording came back: %s" % out)
+    # ...and it must actually be claimable, not merely advertised as such.
+    assert "claim" in ok("claim", "NO_PROSE_HANDOFF_1")
 
 
 def t_why_explains_a_v2_item_as_planning_not_breakage():

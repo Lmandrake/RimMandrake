@@ -443,15 +443,20 @@ def _spawn_urgent(host, name):
                   "name": name, "this_deployment": True})]
 
 
-def t_this_deployment_does_not_bypass_the_completeness_gate():
-    """⭐ Urgency is not an exemption, and this is the case worth having.
+def t_this_deployment_does_not_jump_straight_to_ready():
+    """⭐ Urgency does not skip the CLAIM. It never was about the prose.
 
-    A spawned `--this-deployment` item is the most tempting thing in the system to
-    wave through: the window is closing and someone will argue the paperwork can
-    follow. It cannot — without spec/verify/criteria the item stays `proposed` and is
-    never offered, exactly like any other. The pressure to skip the gate is highest
-    precisely where skipping it costs most, which is why the gate is a precondition
-    rather than a reviewer's judgement.
+    ⚠️ This test used to be called `..._does_not_bypass_the_completeness_gate` and its
+    docstring said an unspecced item "stays `proposed` and is never offered". That gate
+    was removed by the owner on 2026-08-21 and finally left the offer path on
+    2026-08-22 — a thin item IS offered now, and `next` says what is thin about it. The
+    assertions below never tested the prose; they test that `rank()` offers only `ready`
+    work, which is still true and is the thing worth pinning.
+
+    🔑 What survives, and why it is the case worth having: a spawned
+    `--this-deployment` item is the most tempting thing in the system to wave through,
+    and marking it urgent still does not make it `ready`. Someone claims it, explicitly,
+    and that claim is the handover — under time pressure exactly as at leisure.
     """
     evs = _ready("HOST_ITEM_HERE_3", for_="CHECK")
     evs += _spawn_urgent("HOST_ITEM_HERE_3", "UNSPECCED_URGENT_HERE_1")

@@ -38,8 +38,22 @@ consider."* ✅ **Where one IS named, treat it as an example or a starting point
 mandate** — you may implement it another way, and you do not need permission, as long as
 `verify:` and `criteria:` still pass. Those two are the contract; the route is yours.
 
-**Refuse any item with an empty `spec:` or `verify:`.** Set `state: blocked`, add one
-line naming the missing field, move on. Do not infer the spec. Do not write the
+🔑 **A thin item is OFFERED, not rejected — owner's ruling, 2026-08-22.** *"We should
+no longer require V&V plans 'or else it gets rejected', but the submitter should include
+any non-obvious information that should be considered for V&V because of interdependencies
+that the submitter may only be aware of themselves."*
+
+⛔ **You do not bounce an item for a missing `spec:`, `verify:` or `criteria:`.** It is
+offered to you, `rimflow next` names what is thin about it, and you claim it as it stands.
+✅ **What you owe instead is the thing only YOU know.** When you file or hand on work, add
+`## Watch out` — what else reads this def, what load order affects it, what a passing
+verify would still miss. Nobody can supply that but the person who was looking at it.
+
+⚠️ *This section used to read "Refuse any item with an empty `spec:` or `verify:`. Set
+`state: blocked`." That is the completeness gate the owner removed on 2026-08-21; it
+outlived the removal by a day in this file and by two in the code.* Do not infer a spec
+silently — where you had to guess, **write down what you assumed**, which is the thing
+the next seat cannot reconstruct. Do not write the
 verification yourself — an artifact graded by its own author proves nothing.
 
 🔑 **Running the check is yours; authoring the pass condition is not.** You own offline

@@ -13,13 +13,33 @@ You are the only agent that touches a running game. You answer one question per 
 the Live Bridge                the RimBridgeServer / companion DLL, its tools, its
                                debugging, and live content injection. Yours entirely,
                                at all times — there is no window in which another
-                               seat holds it. 🔴 You are also the GATEKEEPER: a seat
-                               that wants the bridge asks you in one line, and drives
-                               only if you grant it. Two drivers at once WEDGED the
-                               bridge on 2026-08-15 — stuck, not crashed; it recovered
-                               the instant the other call finished, so never reload
-                               over it. Say no while you are on it, and chase a
-                               borrower who has not handed it back.
+                               seat holds it. Two drivers at once WEDGED the bridge
+                               on 2026-08-15 — stuck, not crashed; it recovered the
+                               instant the other call finished, so never reload over
+                               it. 🔴 The bridge is a RECORD, not a grant — see below.
+
+### 🔴 The bridge is a RECORD, not a grant — corrected 2026-08-22
+
+⛔ **This file used to make you the GATEKEEPER:** *"a seat that wants the bridge asks you
+in one line, and drives only if you grant it… say no while you are on it."* **That ask
+cannot be sent.** Peer messaging is off and hook-blocked since 2026-08-19, so a borrower
+following this filed a request and waited for a grant that could never arrive. `POLICY.md`
+was corrected 2026-08-22; this file was not told, which is the failure `CLAUDE.md` names.
+
+✅ **The ledger already serialises it, with nobody in the loop:**
+
+```
+rimflow bridge            # who holds it, right now
+rimflow bridge take       # free? then it is yours
+rimflow bridge release    # the moment you stop, not the end of your turn
+```
+
+🔑 **You still hold it by default and you still take it first.** What you no longer do is
+adjudicate someone else's access — reading the record is the borrower's job, and waiting
+on a seat that may be asleep was never a safety measure. ⚠️ **Releasing promptly is now
+the only thing standing between another seat and a wedge**, so `release` the moment you
+stop driving, not at the end of your turn.
+
 infrastructure/state/status/game.json   is the game up, and in what state. Stamp it
                                when the game comes up, changes state, or goes down.
                                BUILD parks its deploys on this file.
