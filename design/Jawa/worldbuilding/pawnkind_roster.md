@@ -254,3 +254,64 @@ Imperial trooper and a Blackstar hunter always arrive willing.
   dump reports 0 `TraitDef`s with `Violent` in `degreeDatas`, which is a
   [blind spot](../../../infrastructure/state/dumps), not a proven zero. If a trait route
   exists, some of the 8 may move from A to B. **Measure it before building A.**
+
+---
+
+## 🔴 Every authored kind must be FIELDED — DECIDE's ruling, 2026-08-22
+
+_Closes `ORPHANED_ROLE_KINDS_UNFIELDED_1`._
+
+**Nine of the 48 are built, correct, and fielded by no `FactionDef`:**
+
+    Jawa_DeepDesert_Grunt  Heavy  Leader  Specialist      <- the Tuskens
+    Jawa_Blackstar_Grunt   Heavy  Leader  Specialist      <- the mercenaries
+    Jawa_Empire_Leader
+
+⛔ **"Leave them as a reserve for hand-placed encounters" is not an option and I am
+rejecting it outright.** This document's opening sentence is *twelve factions × four roles
+= 48 kinds*. A kind no faction fields is not a reserve, it is dead authoring — and the
+player meets the alternative instead. Measured, 18 live spawns from `TribeCivil` today:
+
+| what arrives | drew |
+|---|---|
+| `Tribal_Archer` ×6 | `NerveSpiker` ×4, `VWE_Throwing_Knives` ×1, bare ×1 |
+| `Tribal_HeavyArcher` ×6 | `BMT_ThrumbungusShroom` ×3, `VFET_Throwspikes` ×1, bare ×2 |
+| `Tribal_Hunter` ×6 | `NerveSpiker` ×3, bare ×3 |
+
+**No gaderffii sticks, no Tusken cyclers, a third of them empty-handed, and a mushroom.**
+The authored kinds produce exactly the faction the owner described on 2026-08-22 —
+*"they normally use their combat stick weapons and have long blaster rifles"* — and they
+are the ones not turning up. ⇒ **Wire them in.**
+
+### The real question, and the answer: replace the CAST, keep the GROUPS
+
+`pawnGroupMakers` **inherits by appending**, so a bare `<li>` puts our kinds *alongside*
+twelve vanilla groups. A raid that is half Tusken and half generic RimWorld tribal is the
+kind of unreal result the owner ruled against for the map, and it is no better here.
+
+⛔ **But do NOT reach for `Inherit="False"` on `pawnGroupMakers`.** It drops all twelve
+groups — including **Trader, Peaceful and Settlement** — and the roster has **no trader
+role** to replace them with. A faction that cannot send a caravan or defend its own
+settlement is a worse bug than the one being fixed.
+
+✅ **The sanctioned shape is the one `GalacticEmpire.xml` already ships and proves:**
+rewrite the `options` **inside the Combat groups**, and leave every non-combat group
+vanilla. That is why three of four Empire kinds field today and the other two factions'
+field none.
+
+| faction | vessel | combat groups | non-combat groups |
+|---|---|---|---|
+| Deep Desert Tribes | `TribeCivil` | 🔴 **ours only** — no vanilla `Tribal_*` may appear in a raid | ✅ stay vanilla |
+| Blackstar Company | `Pirate` | 🔴 **ours only** | ✅ stay vanilla |
+| Galactic Empire | `Empire` | ✅ already wired — **add `Jawa_Empire_Leader`**, a plain omission | ✅ unchanged |
+
+### What this ruling does NOT change
+
+- **It is not the weapon-cut problem.** `FLAMEBOW_UNCUT_AND_RETAGGED_1` and the tag work
+  are separate; wiring the roster in may make the flamebow question moot for Deep Desert,
+  but neither fix substitutes for the other.
+- **It is not baked at worldgen.** `pawnGroupMakers` are read at raid time, so this is
+  fixable after the click. **The faction ROSTER is baked** — whether Blackstar generates
+  at all is `BLACKSTAR_IN_DEFAULT_LIST_1`, and that one really is pre-worldgen.
+- **The other nine factions are untouched.** Do not sweep this pattern across the roster;
+  those are already fielded.
