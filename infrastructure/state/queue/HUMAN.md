@@ -56,7 +56,28 @@ reversal as a broad one — three items closed this morning were caused by exact
 > (`WORLD_PORT_SURVIVES_BRIDGE_1`), and the faction/ideoligion slate finished **in parallel**
 > because it bakes at initiation. Sequence recorded in `canon.yml > planet.status_src`.
 
-## 🔴 TWO OF YOUR OWN RULINGS FROM 2026-08-22 DISAGREE ABOUT THE PLANET — DECIDE, 2026-08-22
+## ✅ ANSWERED 2026-08-22 11:00 — THE REPO CSV BUNDLE **IS** THE MAP, AND AUTHORING IS OPEN
+
+**Owner, direct to DECIDE.** Asked which artifact he meant by *"an out of game map we are
+working on together"*, he chose: **`world/ASHKARR_WORLDMAP_*.csv` in this repo is it.**
+
+🔑 **"Remake it an entirely different way" meant the METHOD — direct hand-authoring judged by
+looking — NOT a different planet.** Ash'karr as painted is the map in progress; it is edited
+in place and it is not final.
+
+⚠️ **DECIDE struck the `WORLDGEN_RUN.md` adoption banner earlier that morning on the opposite
+reading. The strike was wrong and has been withdrawn.** Nobody acted on it.
+
+⭐ **And `status: remaking` was never a verdict on the paint** — it is the owner's four-step
+sequence, and it **stays** until step 4: map worked → port-survival proof through the bridge
+→ factions/leader-names/ideoligions finalised in parallel → **save the game, and that
+savegame IS the freeze.**
+
+Three further DECIDE questions answered in the same breath: **all nine remaining NPC faiths
+get a full `ideoDescription`** · **vanilla pawn kinds get retagged onto Star Wars guns**
+rather than cut or left bare · **the plant cherrypick runs as a pre-filled review sheet.**
+
+## ~~🔴 TWO OF YOUR OWN RULINGS FROM 2026-08-22 DISAGREE ABOUT THE PLANET~~ — ANSWERED ABOVE, DECIDE, 2026-08-22
 
 **One sentence from you settles it, and until you say it the run sheet is ambiguous.**
 
