@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BeastVehicle_Identity.xml            DesertVehicleReskin · authored 2026-08-22
+  ============================================================================
+
+  Closes `VEHICLE_IDENTITY_TEXT_PASS_1`, the sibling of the finding
+  `VEHICLE_WORDS_STILL_SAY_HORSES_1`. `EopieSled_Identity.xml` did this for one
+  vehicle on 2026-08-15; four more were already wearing our art and still reading
+  as Earth livestock.
+
+  🔴 WHAT WAS MEASURED, 2026-08-22. Alpha Vehicles - Neolithic ships 12 vehicles.
+  We have reskin art for FIVE of them, and only ONE had its words changed:
+
+      vehicle              our art shows      label said     description said
+      AV_DogSled           two eopies         eopie sled ✅   fixed 2026-08-15 ✅
+      AV_Chariot           one dewback        "Chariot"      "horse-driven cart"
+      AV_WarChariot        two dewbacks       "War chariot"  "steering with his reins"
+      AV_CoveredCarriage   two rontos         "Covered Carriage"  "horse-drawn"
+      AV_OxCart            two banthas        "Ox cart"      "pulled by oxen"
+
+  The beast in each row is not a guess — it is what was actually generated and
+  shipped, recorded in `Source/EAST_COMMISSION.md`: bantha for the OxCart, ronto
+  for the CoveredCarriage, dewback ×2 for the WarChariot, dewback ×1 for the
+  Chariot. The words now name the animal in the picture.
+
+  🔑 EVERY VEHICLE IS TWO DEFS AND THE OLD FILE ONLY PATCHED ONE OF THEM.
+  Alpha Vehicles declares a `Vehicles.VehicleDef` (the thing that drives around)
+  AND a `Vehicles.VehicleBuildDef` named `<defName>_Blueprint` (the row in the
+  build menu). They carry SEPARATE `label` and `description` fields with the same
+  text, and `EopieSled_Identity.xml` patched only the VehicleDef — so the build
+  menu has been offering a "Dog Sled" that travels "over ice and through snow"
+  ever since. ⇒ That blueprint is fixed here too, with the sled's own words,
+  rather than by editing the older file, so each vehicle's four operations sit
+  together.
+
+  ⚠️ THE `Fuel type:` LINE IS LEFT ALONE ON PURPOSE. It says Hay because the def
+  really does burn Hay, and Kibble on the sled because the sled really does burn
+  Kibble. Rewriting the flavour to something more desert while the mechanic still
+  eats hay would make the description lie, which is the defect this file exists to
+  fix, not a style to extend.
+
+  ⛔ NOT IN SCOPE, and each is somebody else's call. Whether the other seven
+  vehicles (Balloon, Hwacha, Outrigger Canoe, Palanquin, Rickshaw, Row boat,
+  Wheelbarrow) belong on a desert world at all is a CONTENT decision, not a text
+  one — a row boat with no water is not fixed by renaming it. And they have no
+  reskin art, so renaming them would put our words on someone else's picture,
+  which is the same defect pointing the other way.
+
+  Each operation carries `MayRequire` for Alpha Vehicles, so an absent mod makes
+  the whole file a silent no-op rather than a red error on a def that is not there.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod" MayRequire="sarg.alphavehiclesneolithic">
+    <mods>
+      <li>Alpha Vehicles - Neolithic</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- ═══ AV_Chariot — one dewback ══════════════════════════════════ -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleDef[defName="AV_Chariot"]/label</xpath>
+          <value><label>dewback chariot</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleBuildDef[defName="AV_Chariot_Blueprint"]/label</xpath>
+          <value><label>dewback chariot</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleDef[defName="AV_Chariot"]/description</xpath>
+          <value>
+            <description>One dewback, a yoke, and a light two-wheeled platform to stand on. It is the fastest thing a scavenger clan can build out of scrap, and it is fast only where the ground is already flat and packed.\n\nDewbacks are big grey-green lizards that do not hurry and do not need to. They drink at dawn, walk through the worst of the heat without complaint, and will keep a steady pace long after a warm-blooded animal has lain down in whatever shade it can find.\n\nOff a road the chariot is close to useless — the wheels are narrow, they cut into soft sand, and the rider spends more time hauling it free than riding it.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Driver x1\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Hay</description>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleBuildDef[defName="AV_Chariot_Blueprint"]/description</xpath>
+          <value>
+            <description>One dewback, a yoke, and a light two-wheeled platform to stand on. It is the fastest thing a scavenger clan can build out of scrap, and it is fast only where the ground is already flat and packed.\n\nDewbacks are big grey-green lizards that do not hurry and do not need to. They drink at dawn, walk through the worst of the heat without complaint, and will keep a steady pace long after a warm-blooded animal has lain down in whatever shade it can find.\n\nOff a road the chariot is close to useless — the wheels are narrow, they cut into soft sand, and the rider spends more time hauling it free than riding it.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Driver x1\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Hay</description>
+          </value>
+        </li>
+
+        <!-- ═══ AV_WarChariot — two dewbacks, and a shooter ═══════════════ -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleDef[defName="AV_WarChariot"]/label</xpath>
+          <value><label>dewback war chariot</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleBuildDef[defName="AV_WarChariot_Blueprint"]/label</xpath>
+          <value><label>dewback war chariot</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleDef[defName="AV_WarChariot"]/description</xpath>
+          <value>
+            <description>A pair of dewbacks in double harness and a shooting platform braced over the axle. One hand drives; the other stands behind the rail and works whatever the clan could hang off it.\n\nThe dewbacks are the reason it works. They are slow to start and impossible to stop, they do not spook at noise the way a ronto does, and they will walk straight at something that is shooting back — which is a rarer quality in a draft animal than it sounds.\n\nIt is not cavalry. It is a way to put a shooter somewhere they could not have walked to, and to get them out again afterwards.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Driver x1, Archer x1\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Hay</description>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleBuildDef[defName="AV_WarChariot_Blueprint"]/description</xpath>
+          <value>
+            <description>A pair of dewbacks in double harness and a shooting platform braced over the axle. One hand drives; the other stands behind the rail and works whatever the clan could hang off it.\n\nThe dewbacks are the reason it works. They are slow to start and impossible to stop, they do not spook at noise the way a ronto does, and they will walk straight at something that is shooting back — which is a rarer quality in a draft animal than it sounds.\n\nIt is not cavalry. It is a way to put a shooter somewhere they could not have walked to, and to get them out again afterwards.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Driver x1, Archer x1\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Hay</description>
+          </value>
+        </li>
+
+        <!-- ═══ AV_CoveredCarriage — two rontos, four wheels, a roof ══════ -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleDef[defName="AV_CoveredCarriage"]/label</xpath>
+          <value><label>ronto wagon</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleBuildDef[defName="AV_CoveredCarriage_Blueprint"]/label</xpath>
+          <value><label>ronto wagon</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleDef[defName="AV_CoveredCarriage"]/description</xpath>
+          <value>
+            <description>Two rontos in front of a four-wheeled wagon with a hide roof stretched over hoops. The roof is not comfort. It is the difference between arriving and arriving with heatstroke.\n\nRontos are enormous, dun-coloured and profoundly nervous. They will carry a house across open pan all day and then bolt at a shadow, so the harness is built to come apart faster than it goes on, and nobody sensible sleeps under the wheels.\n\nLeather strapping under the bed takes the worst of the ruts out. Three can ride in the back without arriving bruised, which on a two-day crossing is worth more than speed.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Driver x1, Passenger x3\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Hay</description>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleBuildDef[defName="AV_CoveredCarriage_Blueprint"]/description</xpath>
+          <value>
+            <description>Two rontos in front of a four-wheeled wagon with a hide roof stretched over hoops. The roof is not comfort. It is the difference between arriving and arriving with heatstroke.\n\nRontos are enormous, dun-coloured and profoundly nervous. They will carry a house across open pan all day and then bolt at a shadow, so the harness is built to come apart faster than it goes on, and nobody sensible sleeps under the wheels.\n\nLeather strapping under the bed takes the worst of the ruts out. Three can ride in the back without arriving bruised, which on a two-day crossing is worth more than speed.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Driver x1, Passenger x3\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Hay</description>
+          </value>
+        </li>
+
+        <!-- ═══ AV_OxCart — two banthas, and the clan's real workhorse ════ -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleDef[defName="AV_OxCart"]/label</xpath>
+          <value><label>bantha cart</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleBuildDef[defName="AV_OxCart_Blueprint"]/label</xpath>
+          <value><label>bantha cart</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleDef[defName="AV_OxCart"]/description</xpath>
+          <value>
+            <description>Two banthas and a two-wheeled cart. Nothing on this world moves more weight for less trouble, and nothing looks less impressive doing it.\n\nA bantha is a mountain of shaggy hide under a pair of spiral horns, and it is stupid in the specific way that makes an animal useful — it will lean into a load until the load moves or the harness breaks, and it does not form an opinion about which. They eat anything with roots, they carry their own water for days, and the Tuskens have built an entire way of living on them for good reason.\n\nUse it for salvage: hull plate, machinery, whatever came out of a wreck too heavy to carry. It is slow, it is terrible off a road, and it will still be doing this long after the fast things have shaken themselves apart.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Driver x1\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Hay</description>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleBuildDef[defName="AV_OxCart_Blueprint"]/description</xpath>
+          <value>
+            <description>Two banthas and a two-wheeled cart. Nothing on this world moves more weight for less trouble, and nothing looks less impressive doing it.\n\nA bantha is a mountain of shaggy hide under a pair of spiral horns, and it is stupid in the specific way that makes an animal useful — it will lean into a load until the load moves or the harness breaks, and it does not form an opinion about which. They eat anything with roots, they carry their own water for days, and the Tuskens have built an entire way of living on them for good reason.\n\nUse it for salvage: hull plate, machinery, whatever came out of a wreck too heavy to carry. It is slow, it is terrible off a road, and it will still be doing this long after the fast things have shaken themselves apart.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Driver x1\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Hay</description>
+          </value>
+        </li>
+
+        <!-- ═══ AV_DogSled_Blueprint — the half EopieSled_Identity missed ══ -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleBuildDef[defName="AV_DogSled_Blueprint"]/label</xpath>
+          <value><label>eopie sled</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleBuildDef[defName="AV_DogSled_Blueprint"]/description</xpath>
+          <value>
+            <description>Two eopies in harness, and a flatbed of lashed scrap riding on runners because wheels drown in soft sand.\n\nThey are patient, sour-smelling animals with long necks and a hide like cracked leather, and they will walk all day on almost nothing. Water they need. Food they mostly find, chewing whatever grey thing is rooted between the rocks. They complain constantly through their snouts, they spit when handled badly, and they are worth every bit of it — an eopie team will cross open pan in the heat of the day and be ready to do it again after a night's rest and a trough.\n\nThe sled is the point. Runners spread the load where a cart would dig in, so you can haul a wreck's worth of salvage back across the flats instead of picking through it for what fits in a pack.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Driver x1\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Kibble</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
