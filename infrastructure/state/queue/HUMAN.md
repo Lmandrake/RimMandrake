@@ -17,6 +17,24 @@ a trailer. **This file is for everything that is not shaped like an item.**
 
 ---
 
+## ✅ ANSWERED SAME DAY — THE GUNS STAY GONE
+
+🔴 **Owner, 2026-08-22, verbatim: *"I like the vanilla weapons being gone, to amplify the
+Star Wars flavor."*** The eight vanilla industrial guns stay cut. Theme beat balance, and
+the anti-scarcity cost the 2026-08-03 audit warned about was accepted knowingly.
+
+**Propagated the same hour, into every file that said otherwise:**
+`canon.yml > VANILLA_FIREARM_LINE_CUT_1` (so the hook now refuses a design doc that
+contradicts it) · `design/RimMandrake/Custom_World.md:110`, whose audit is struck and
+overruled · `design/Jawa/mods/required_mods.md:730`, where **"vanilla low-tech" is now
+spelled out as NEOLITHIC** — bows and clubs, not revolvers. That ambiguity is the whole
+reason the sentence read as an argument against the cut for three weeks.
+
+⚠️ **One slice is reversed and only one:** the Mech weapons. ⛔ Do not read that narrow
+reversal as a broad one — three items closed this morning were caused by exactly that.
+
+<details><summary>the question as it was asked, kept for the record</summary>
+
 ## ⚖️ WHAT IS THE WEAPONS FLOOR? TWO DOCS SAY VANILLA, THE CUT SAYS BLASTERS — DECIDE, 2026-08-22
 
 **Nothing is blocked on this.** I ruled `VANILLA_GUNS_CUT_OR_RETAG_1` without it and the
@@ -41,6 +59,8 @@ before the cut list reached its current size.
 **You do not need to answer now.** What I would not do is let a seat "discover" the tension
 in six weeks and quietly resolve it by un-cutting eight guns to fix a rounding error, which
 is exactly the shape of the item I just closed.
+
+</details>
 
 ---
 

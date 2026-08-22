@@ -32,7 +32,17 @@ to repair **two incident-spawned hunters**. The owner reversed exactly one slice
 a faction that cannot function without its own weapons. ⛔ **Reading a narrow reversal as a
 broad one is the failure this queue has already closed three items about today.**
 
-### ⚠️ A premise tension exists and this ruling does NOT settle it
+### ✅ THE PREMISE TENSION WAS SETTLED THE SAME DAY — owner, 2026-08-22
+
+🔴 *"I like the vanilla weapons being gone, to amplify the Star Wars flavor."* ⇒ The cut is
+now RULED, not merely current: `canon.yml > VANILLA_FIREARM_LINE_CUT_1`. Both documents
+below are struck and overruled in place, and the weapons floor is **vanilla NEOLITHIC** plus
+Outer Rim's cheap end. The section below is kept because the reasoning was sound and losing
+on theme is not the same as being wrong.
+
+<details><summary>the tension as it stood when this was ruled</summary>
+
+#### ⚠️ A premise tension exists and this ruling does NOT settle it
 
 Two documents say the weapons floor is vanilla, and they are not struck:
 `design/RimMandrake/Custom_World.md:110` (2026-08-03 audit — *"keep vanilla for the low end;
@@ -42,6 +52,8 @@ Outer Rim's cheap end"*). The Cherry Picker cut removes eight vanilla **industri
 which may or may not be what "low-tech floor" meant. 🔑 **That question does not block this
 item** — the retag architecture holds either way — but it is real, it is unresolved, and it
 is the owner's. Raised in `queue/HUMAN.md`, not decided here.
+
+</details>
 
 ### What BUILD does
 

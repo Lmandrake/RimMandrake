@@ -806,6 +806,29 @@ ruled:
       always was. `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` stands as history, not a plan.
       See `WORLD_ADOPTED_AUTHORING_OPEN_1`, which supersedes `WORLD_FROZEN_RETHINK_PLANET_1`.
 
+  VANILLA_FIREARM_LINE_CUT_1:
+    question: "Does the vanilla firearm line stay cut, or come back as the low-tech floor?"
+    ruled_by: owner
+    ruled_on: 2026-08-22
+    ruling: >
+      ⛔ IT STAYS CUT. Owner, verbatim: "I like the vanilla weapons being gone, to amplify
+      the Star Wars flavor." The eight vanilla INDUSTRIAL guns — revolver, autopistol,
+      bolt-action, pump shotgun, machine pistol, heavy SMG, assault rifle, sniper — remain on
+      the Cherry Picker list. THEME beat balance and the anti-scarcity cost was accepted
+      knowingly.
+      ⇒ v1's weapons floor is vanilla NEOLITHIC plus Outer Rim's cheap end — bows and clubs,
+      not revolvers. The pools stay full via the retag architecture in
+      `WeaponTags_Renormalise.xml` (156 PatchOperations, 465 xpath targets), which grants the
+      vanilla tag vocabulary to surviving blasters at the WEAPON end.
+      ⚠️ ONE SLICE IS REVERSED AND ONLY ONE: the Mech weapons (`MECH_WEAPONS_UNCUT_1`,
+      "we should not be turning off Mech weaponry"). ⛔ Do not read that narrow reversal as
+      a broad one.
+    superseded:
+      - "design/RimMandrake/Custom_World.md:110 — a 2026-08-03 audit recommending AGAINST
+         amputation, 'keep vanilla for the low end'. Sound reasoning, overruled on theme."
+      - "design/Jawa/mods/required_mods.md:730 — 'v1's floor is vanilla low-tech', 2026-08-15.
+         Ambiguous between neolithic and industrial; it meant neolithic."
+
   SAVANNA_PREMISE_RESOLVE_1:
     question: "Were the Pyrelands meant to be patched vanilla savanna?"
     ruled_by: owner
