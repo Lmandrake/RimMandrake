@@ -105,7 +105,21 @@
     <requiredPreceptsOnly>true</requiredPreceptsOnly>
     <ideoName>the Weight</ideoName>
     <ideoDescription>We have no word for what we believe, because belief is not worn and everything real is worn. Weight is rank. What is bolted to you was cut off somebody slower, and the one who cuts it off you will be told what we were told: it was never yours, you were only carrying it a while. Nothing is wasted in the warrens. Not the plate. Not the meat.</ideoDescription>
-    <forcedMemes>
+    <!-- 🔴 `Inherit="False"` ADDED 2026-08-22, JUNKERS_STRUCTURE_MEME_LOST_1. Without it
+         this faith ran with NINE memes and TWO structure memes, and the effective one was
+         `Structure_Ideological` - not the scavenger structure the whole faith was designed
+         around. `jawa/ideo_of` reported it on two separate quicktest worlds.
+         🔑 THE LEAK PATH, and it is the same trap `pawnGroupMakers` below documents.
+         Core declares ONE def that is both concrete and abstract:
+             <FactionDef Name="PirateBandBase" ParentName="FactionBase">
+               <defName>Pirate</defName>
+         So `BlackstarCompany.xml`'s PatchOperationAdd at FactionDef[defName="Pirate"] does
+         not patch a sibling - it patches OUR PARENT. Inheritance overrides a scalar and
+         APPENDS a list, so `fixedName` stayed "the Junkers" (scalar, ours wins) while
+         Blackstar's five `forcedMemes` landed underneath ours. The name looking right is
+         precisely why nobody caught the memes.
+         ⛔ Do not drop this to "fix" a meme that seems missing. Four is the authored set. -->
+    <forcedMemes Inherit="False">
       <li MayRequire="sarg.alphamemes">AM_Structure_Scavenger</li>
       <li>Raider</li>
       <li>Cannibal</li>
@@ -173,6 +187,17 @@
         </options>
       </li>
     </pawnGroupMakers>
+
+    <!-- 🔴 THE THIRD INHERIT TRAP, and it opened on 2026-08-22 when
+         AUTHORED_KINDS_MUST_FIELD_1 gave `Pirate` a `fixedLeaderKinds` naming
+         `Jawa_Blackstar_Leader`. That is a list on our own parent, so without this opt-out
+         the Junkers would be led by Captain Jaxen Marr of Blackstar Company.
+         🔑 `Jawa_Junkers_Leader` is ALSO in the Combat group above at weight 1, and that is
+         deliberate rather than a duplicate: the group entry is the Scraplord turning up in
+         a raid, this field is the faction's standing leader. -->
+    <fixedLeaderKinds Inherit="False">
+      <li>Jawa_Junkers_Leader</li>
+    </fixedLeaderKinds>
   </FactionDef>
 
 </Defs>
