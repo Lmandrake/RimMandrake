@@ -30,6 +30,12 @@ Two further mechanical routes exist and are counted:
     modExtensions GeneDefExtension_Pawn.bodySizeFactor   (a plain multiplier)
     modExtensions GeneExtension.sizeByAge                (an offset from an age)
 
+``sizeByAgeMult`` is deliberately NOT counted.  It is Big and Small's early- and
+late-maturity curve: it changes how fast a pawn reaches its adult size, not what
+that adult size is.  ``BS_EarlyMaturity`` on ``MandrakeJawa`` is that gene, and
+counting it would report the player xenotype as carrying a size gene when it
+does not.
+
 Data source is the live def dump's sqlite, opened READ-ONLY.  It is what the
 running game actually built -- post-patch, post-inheritance, post-dedup.
 
@@ -137,6 +143,11 @@ def size_genes(conn: sqlite3.Connection) -> dict[str, dict]:
                 # minOffset/maxOffset are the offset at the low/high end of the
                 # age range; an adult pawn gets maxOffset.
                 effects.append(("offset", "modExt sizeByAge", by_age.get("maxOffset")))
+            elif isinstance(by_age, list) and by_age:
+                # A curve of CurvePoints. The dump serialises the points as bare
+                # {"$type": "CurvePoint"} with the x/y stripped, so the final size
+                # is UNMEASURABLE from the dump -- record the gene, not a number.
+                effects.append(("curve", "modExt sizeByAge curve", None))
         if effects:
             found[def_name] = {
                 "mod": mod_name,
