@@ -163,8 +163,12 @@ RULES = [
      "the Dew Belt - the strip that is merely difficult"),
     ("VEE_Moor",           2, 5, lambda t: t["biome"] in ("ZBiome_Grasslands", "PoisonForest") and t["rain"] > 300,
      "wet ground on the twilight side"),
-    ("Wetland",            2, 5, lambda t: t["rain"] > 600 and t["hill"] <= 2,
-     "standing water that lasts the year"),
+    # ⛔ Wetland is IMPOSSIBLE on Ash'karr and is deliberately not in this table.
+    # Measured 2026-08-22: all 413 tiles with rain > 300 mm are hilliness 4 (397) or 5
+    # (16). There is no flat wet ground anywhere on the planet - the rain-drying passes
+    # left every millimetre on the high country. That is the planet's character, not a
+    # gap, so a "Wetland" here would be a lie about it. Same reasoning killed a forced
+    # patch of it: forcing something the terrain forbids is worse than leaving it out.
 
     # what the ancients left - a scavenger clan's whole economy
     ("Ruins",              6, 8, lambda t: t["hill"] <= 4 and t["biome"] not in ("Ocean", "Lake"),
@@ -188,6 +192,15 @@ RULES = [
 ]
 
 
+# ── forced patches ─────────────────────────────────────────────────────────────
+# (landmark, patch size in tiles, predicate, why). Spacing does NOT apply.
+FORCE_PATCH = [
+    ("AB_MagmaticQuagmire", 3,
+     lambda t: t["biome"] in ("LavaField", "AB_PyroclasticConflagration", "Volcano"),
+     "a patch of ground that is not quite solid, on the Scald rim - owner asked for it by name"),
+]
+
+
 def landmark_defs():
     out = subprocess.run(["python3", MEASURE, "--rows", "200", "sql",
                           "SELECT def_name || '\t' || json FROM defs WHERE def_type='LandmarkDef'"],
@@ -208,6 +221,9 @@ def landmark_defs():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true")
+    ap.add_argument("--density", type=float, default=2.5,
+                    help="scales every rule's count and tightens spacing. Owner asked for "
+                         "DENSE on 2026-08-22; 1.0 reproduces the first, sparser pass.")
     a = ap.parse_args()
 
     LD = landmark_defs()
@@ -249,7 +265,47 @@ def main():
 
     # ── EXTEND ────────────────────────────────────────────────────────────────
     placed, by_rule = [], []
-    for name, want, spacing, pred, why in RULES:
+
+    # ── FORCED PATCHES ────────────────────────────────────────────────────────
+    # Rules whose biome is small enough that ordinary spacing starves them. The owner
+    # asked for AB_MagmaticQuagmire by name, 2026-08-22 - "a little patch would do" -
+    # so it is placed as a CONTIGUOUS patch with the spacing guard switched off.
+    # 🔑 THESE RUN FIRST. Run last, they are leftovers: at --density 2.5 the ordinary
+    # rules had claimed every qualifying tile and a "forced" patch found nowhere to go,
+    # which is the opposite of forced.
+    for name, size, pred, why in FORCE_PATCH:
+        if name not in LD:
+            print("  SKIP  %-26s no such LandmarkDef" % name)
+            continue
+        cand = [t for t, d in T.items()
+                if t not in taken and t not in settlements and d["water"] == 0 and pred(d)]
+        if not cand:
+            print("  FORCE %-26s  no tile matches at all - not placed" % name)
+            continue
+        cand.sort(key=lambda t: (-sum(1 for n in nb[t] if n in set(cand)), -T[t]["elev"], t))
+        seed = cand[0]
+        patch, pool = [seed], set(cand)
+        frontier = [seed]
+        while len(patch) < size and frontier:
+            nxt = []
+            for x in frontier:
+                for n in nb[x]:
+                    if n in pool and n not in patch and len(patch) < size:
+                        patch.append(n)
+                        nxt.append(n)
+            frontier = nxt
+        for t in patch:
+            taken.add(t)
+            placed.append({"tile": str(t), "landmark": name, "why": why})
+            for m in LD[name]:
+                MU.setdefault(t, [])
+                if m not in MU[t]:
+                    MU[t].append(m)
+        print("  FORCE %-26s %2d tiles, contiguous patch at %d" % (name, len(patch), seed))
+
+    for name, want0, spacing0, pred, why in RULES:
+        want = max(1, int(round(want0 * a.density)))
+        spacing = max(3, int(round(spacing0 / max(1.0, a.density ** 0.5))))
         if name not in LD:
             print("  SKIP  %-26s no such LandmarkDef in this mod set" % name)
             continue
@@ -271,7 +327,11 @@ def main():
                 continue
             if any(_hops(t, u, nb, spacing) for u in chosen):
                 continue
-            if any(_hops(t, u, nb, max(3, spacing // 2)) for u in taken):
+            # 🔑 the guard against OTHER rules' landmarks has to scale with density too.
+            # A flat 3-hop floor starved every small-biome rule at --density 2.5 on
+            # 2026-08-22: LavaFlow, Iceberg and the quagmire all came back 0 because
+            # 400 landmarks were already within 3 hops of everything.
+            if any(_hops(t, u, nb, max(2, spacing // 2)) for u in taken):
                 continue
             chosen.append(t)
             taken.add(t)

@@ -15,193 +15,468 @@ tile,landmark,why
 14490,AncientHeatVent,a heat plume on the hottest world
 17225,Oasis,"the Hutt wells - six named, not 227"
 19495,LavaLake,the Scald rim volcanics
+19493,AB_MagmaticQuagmire,"a patch of ground that is not quite solid, on the Scald rim - owner asked for it by name"
+2035,AB_MagmaticQuagmire,"a patch of ground that is not quite solid, on the Scald rim - owner asked for it by name"
+6233,AB_MagmaticQuagmire,"a patch of ground that is not quite solid, on the Scald rim - owner asked for it by name"
 765,Dunes,the Dune Sea proper - open sand a caravan crosses for days
-7034,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+11895,Dunes,the Dune Sea proper - open sand a caravan crosses for days
 14839,Dunes,the Dune Sea proper - open sand a caravan crosses for days
 16959,Dunes,the Dune Sea proper - open sand a caravan crosses for days
 3280,Dunes,the Dune Sea proper - open sand a caravan crosses for days
 19542,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+3285,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+14831,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+13522,Dunes,the Dune Sea proper - open sand a caravan crosses for days
 16707,Dunes,the Dune Sea proper - open sand a caravan crosses for days
 390,Dunes,the Dune Sea proper - open sand a caravan crosses for days
-14831,VEE_PebbleDunes,"gravel desert, harder going than sand"
-20524,VEE_PebbleDunes,"gravel desert, harder going than sand"
-3688,VEE_PebbleDunes,"gravel desert, harder going than sand"
-3621,VEE_PebbleDunes,"gravel desert, harder going than sand"
+20524,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+3688,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+3621,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+11866,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+3229,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+3664,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+9619,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+6739,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+14369,Dunes,the Dune Sea proper - open sand a caravan crosses for days
+21424,VEE_PebbleDunes,"gravel desert, harder going than sand"
+9630,VEE_PebbleDunes,"gravel desert, harder going than sand"
+6463,VEE_PebbleDunes,"gravel desert, harder going than sand"
+19675,VEE_PebbleDunes,"gravel desert, harder going than sand"
+12859,VEE_PebbleDunes,"gravel desert, harder going than sand"
+19293,VEE_PebbleDunes,"gravel desert, harder going than sand"
+21653,VEE_PebbleDunes,"gravel desert, harder going than sand"
+8090,VEE_PebbleDunes,"gravel desert, harder going than sand"
+19328,VEE_PebbleDunes,"gravel desert, harder going than sand"
+4757,VEE_PebbleDunes,"gravel desert, harder going than sand"
 3606,VEE_QuicksandDunes,a sink that swallows a sandcrawler
-14369,VEE_QuicksandDunes,a sink that swallows a sandcrawler
-21653,VEE_QuicksandDunes,a sink that swallows a sandcrawler
+9747,VEE_QuicksandDunes,a sink that swallows a sandcrawler
+16943,VEE_QuicksandDunes,a sink that swallows a sandcrawler
+19708,VEE_QuicksandDunes,a sink that swallows a sandcrawler
+19130,VEE_QuicksandDunes,a sink that swallows a sandcrawler
+4704,VEE_QuicksandDunes,a sink that swallows a sandcrawler
+19505,VEE_QuicksandDunes,a sink that swallows a sandcrawler
+19646,VEE_QuicksandDunes,a sink that swallows a sandcrawler
 16642,VEE_RedDesert,iron sand on the hot side
-19339,VEE_RedDesert,iron sand on the hot side
+19337,VEE_RedDesert,iron sand on the hot side
+920,VEE_RedDesert,iron sand on the hot side
 5064,VEE_RedDesert,iron sand on the hot side
+21647,VEE_RedDesert,iron sand on the hot side
+19311,VEE_RedDesert,iron sand on the hot side
+19610,VEE_RedDesert,iron sand on the hot side
+263,VEE_RedDesert,iron sand on the hot side
+17260,VEE_DustBowl,ground that was farmed once and is not any more
 15770,VEE_DustBowl,ground that was farmed once and is not any more
+10468,VEE_DustBowl,ground that was farmed once and is not any more
 16845,VEE_DustBowl,ground that was farmed once and is not any more
-5614,VEE_DustBowl,ground that was farmed once and is not any more
+15040,VEE_DustBowl,ground that was farmed once and is not any more
+105,VEE_DustBowl,ground that was farmed once and is not any more
+12936,VEE_DustBowl,ground that was farmed once and is not any more
+8973,VEE_DustBowl,ground that was farmed once and is not any more
 2210,DryLake,a playa - the salt flat a river dies in
 9926,DryLake,a playa - the salt flat a river dies in
 17157,DryLake,a playa - the salt flat a river dies in
 19652,DryLake,a playa - the salt flat a river dies in
 6712,DryLake,a playa - the salt flat a river dies in
+9954,DryLake,a playa - the salt flat a river dies in
+6422,DryLake,a playa - the salt flat a river dies in
+12434,DryLake,a playa - the salt flat a river dies in
+20016,DryLake,a playa - the salt flat a river dies in
+6253,DryLake,a playa - the salt flat a river dies in
+14793,DryLake,a playa - the salt flat a river dies in
+16690,DryLake,a playa - the salt flat a river dies in
 6303,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
 14704,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
-16593,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
 1842,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
-17260,VEE_DryRiver,a watercourse that runs once a decade
-21416,VEE_DryRiver,a watercourse that runs once a decade
-12800,VEE_DryRiver,a watercourse that runs once a decade
+21507,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
+16035,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
+11456,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
+20367,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
+6291,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
+20179,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
+6845,VEE_SaltPlains,"salt pan, and the reason the Salt is named that"
+15139,VEE_DryRiver,a watercourse that runs once a decade
+17236,VEE_DryRiver,a watercourse that runs once a decade
+20518,VEE_DryRiver,a watercourse that runs once a decade
 9173,VEE_DryRiver,a watercourse that runs once a decade
-13523,VEE_DryRiver,a watercourse that runs once a decade
+21411,VEE_DryRiver,a watercourse that runs once a decade
+11585,VEE_DryRiver,a watercourse that runs once a decade
+8105,VEE_DryRiver,a watercourse that runs once a decade
+6372,VEE_DryRiver,a watercourse that runs once a decade
+10293,VEE_DryRiver,a watercourse that runs once a decade
+3629,VEE_DryRiver,a watercourse that runs once a decade
+9222,VEE_DryRiver,a watercourse that runs once a decade
+7004,VEE_DryRiver,a watercourse that runs once a decade
+8041,VEE_RelictDelta,where the inland rivers spread out and stop
 7054,VEE_RelictDelta,where the inland rivers spread out and stop
-891,VEE_RelictDelta,where the inland rivers spread out and stop
+354,VEE_RelictDelta,where the inland rivers spread out and stop
+1535,VEE_RelictDelta,where the inland rivers spread out and stop
+1855,VEE_RelictDelta,where the inland rivers spread out and stop
 11343,VEE_AlluvialFan,the spoil a mountain stream drops when the slope runs out
 11971,VEE_AlluvialFan,the spoil a mountain stream drops when the slope runs out
 11089,VEE_AlluvialFan,the spoil a mountain stream drops when the slope runs out
-9583,Oasis,the Hutt wells - water is the currency here
-16983,Oasis,the Hutt wells - water is the currency here
+15125,VEE_AlluvialFan,the spoil a mountain stream drops when the slope runs out
+19404,VEE_AlluvialFan,the spoil a mountain stream drops when the slope runs out
+9240,VEE_AlluvialFan,the spoil a mountain stream drops when the slope runs out
+6470,VEE_AlluvialFan,the spoil a mountain stream drops when the slope runs out
+8082,VEE_AlluvialFan,the spoil a mountain stream drops when the slope runs out
+17198,Oasis,the Hutt wells - water is the currency here
+2349,Oasis,the Hutt wells - water is the currency here
+11834,Oasis,the Hutt wells - water is the currency here
+11471,Oasis,the Hutt wells - water is the currency here
+4321,Oasis,the Hutt wells - water is the currency here
 25,Oasis,the Hutt wells - water is the currency here
-1678,Oasis,the Hutt wells - water is the currency here
-11330,VEE_StagnantRivulet,"standing water, and everything that breeds in it"
+15166,Oasis,the Hutt wells - water is the currency here
+16619,Oasis,the Hutt wells - water is the currency here
+14564,VEE_StagnantRivulet,"standing water, and everything that breeds in it"
 8500,VEE_StagnantRivulet,"standing water, and everything that breeds in it"
 4378,VEE_StagnantRivulet,"standing water, and everything that breeds in it"
+7043,VEE_StagnantRivulet,"standing water, and everything that breeds in it"
+11334,VEE_StagnantRivulet,"standing water, and everything that breeds in it"
+6236,VEE_StagnantRivulet,"standing water, and everything that breeds in it"
+15160,VEE_StagnantRivulet,"standing water, and everything that breeds in it"
+19371,VEE_StagnantRivulet,"standing water, and everything that breeds in it"
 1907,Cliffs,"the crags break in walls, not slopes"
-8377,Cliffs,"the crags break in walls, not slopes"
+18651,Cliffs,"the crags break in walls, not slopes"
+18664,Cliffs,"the crags break in walls, not slopes"
 4218,Cliffs,"the crags break in walls, not slopes"
 809,Cliffs,"the crags break in walls, not slopes"
 17547,Cliffs,"the crags break in walls, not slopes"
+8474,Cliffs,"the crags break in walls, not slopes"
+3150,Cliffs,"the crags break in walls, not slopes"
+12128,Cliffs,"the crags break in walls, not slopes"
 7602,Cliffs,"the crags break in walls, not slopes"
+1942,Cliffs,"the crags break in walls, not slopes"
+9500,Cliffs,"the crags break in walls, not slopes"
+10777,Cliffs,"the crags break in walls, not slopes"
+20814,Cliffs,"the crags break in walls, not slopes"
+20800,Cliffs,"the crags break in walls, not slopes"
+5410,VEE_RockRidge,a spine of standing rock
 10465,VEE_RockRidge,a spine of standing rock
 10937,VEE_RockRidge,a spine of standing rock
-17897,VEE_RockRidge,a spine of standing rock
+499,VEE_RockRidge,a spine of standing rock
+6099,VEE_RockRidge,a spine of standing rock
+5628,VEE_RockRidge,a spine of standing rock
 12327,VEE_RockRidge,a spine of standing rock
-18653,VEE_RockRidge,a spine of standing rock
-4732,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
-6099,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
-5628,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
-9090,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
-8474,VEE_JaggedRocks,ground that cuts boots
-3150,VEE_JaggedRocks,ground that cuts boots
-12128,VEE_JaggedRocks,ground that cuts boots
-9500,VEE_JaggedRocks,ground that cuts boots
-8776,Plateau,"high flat ground, and you can see everything from it"
-18743,Plateau,"high flat ground, and you can see everything from it"
+18744,VEE_RockRidge,a spine of standing rock
+14182,VEE_RockRidge,a spine of standing rock
+4231,VEE_RockRidge,a spine of standing rock
+16415,VEE_RockRidge,a spine of standing rock
+1072,VEE_RockRidge,a spine of standing rock
+9593,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
+6082,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
+117,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
+18823,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
+16429,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
+14247,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
+3921,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
+13719,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
+7214,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
+2767,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through"
+10254,VEE_JaggedRocks,ground that cuts boots
+18661,VEE_JaggedRocks,ground that cuts boots
+19222,VEE_JaggedRocks,ground that cuts boots
+19272,VEE_JaggedRocks,ground that cuts boots
+16441,VEE_JaggedRocks,ground that cuts boots
+18921,VEE_JaggedRocks,ground that cuts boots
+575,VEE_JaggedRocks,ground that cuts boots
+7166,VEE_JaggedRocks,ground that cuts boots
+18947,VEE_JaggedRocks,ground that cuts boots
+15330,VEE_JaggedRocks,ground that cuts boots
+8775,Plateau,"high flat ground, and you can see everything from it"
+10954,Plateau,"high flat ground, and you can see everything from it"
 19982,Plateau,"high flat ground, and you can see everything from it"
-16418,VEE_WindBlownPlateau,nothing grows up here and the wind never stops
-21211,VEE_WindBlownPlateau,nothing grows up here and the wind never stops
-9160,Valley,"the way through a range, and everyone uses it"
-15177,Valley,"the way through a range, and everyone uses it"
-18770,Valley,"the way through a range, and everyone uses it"
-12311,Valley,"the way through a range, and everyone uses it"
-2367,Basin,a bowl that collects what little falls
+2527,Plateau,"high flat ground, and you can see everything from it"
+4719,Plateau,"high flat ground, and you can see everything from it"
+838,Plateau,"high flat ground, and you can see everything from it"
+2769,Plateau,"high flat ground, and you can see everything from it"
+13095,Plateau,"high flat ground, and you can see everything from it"
+8395,VEE_WindBlownPlateau,nothing grows up here and the wind never stops
+21059,VEE_WindBlownPlateau,nothing grows up here and the wind never stops
+1904,VEE_WindBlownPlateau,nothing grows up here and the wind never stops
+16423,VEE_WindBlownPlateau,nothing grows up here and the wind never stops
+16335,VEE_WindBlownPlateau,nothing grows up here and the wind never stops
+9159,Valley,"the way through a range, and everyone uses it"
+11945,Valley,"the way through a range, and everyone uses it"
+2032,Valley,"the way through a range, and everyone uses it"
+15181,Valley,"the way through a range, and everyone uses it"
+16954,Valley,"the way through a range, and everyone uses it"
+5409,Valley,"the way through a range, and everyone uses it"
+7029,Valley,"the way through a range, and everyone uses it"
+2544,Valley,"the way through a range, and everyone uses it"
+19789,Valley,"the way through a range, and everyone uses it"
+3997,Valley,"the way through a range, and everyone uses it"
 4493,Basin,a bowl that collects what little falls
 10203,Basin,a bowl that collects what little falls
-1151,Cavern,a mountain you can get inside
-16363,Cavern,a mountain you can get inside
-13518,Cavern,a mountain you can get inside
-21536,Cavern,a mountain you can get inside
-8106,Chasm,a crack too wide to jump and too deep to see
-6951,Chasm,a crack too wide to jump and too deep to see
-3228,Chasm,a crack too wide to jump and too deep to see
-7645,VEE_StoneForest,"wind-cut pillars, a landscape that looks made"
+13854,Basin,a bowl that collects what little falls
+17854,Basin,a bowl that collects what little falls
+1382,Basin,a bowl that collects what little falls
+8045,Basin,a bowl that collects what little falls
+9134,Basin,a bowl that collects what little falls
+14846,Basin,a bowl that collects what little falls
+11936,Cavern,a mountain you can get inside
+18775,Cavern,a mountain you can get inside
+10768,Cavern,a mountain you can get inside
+16356,Cavern,a mountain you can get inside
+84,Cavern,a mountain you can get inside
+15141,Cavern,a mountain you can get inside
+5146,Cavern,a mountain you can get inside
+4352,Cavern,a mountain you can get inside
+6955,Cavern,a mountain you can get inside
+20136,Cavern,a mountain you can get inside
+14885,Chasm,a crack too wide to jump and too deep to see
+17185,Chasm,a crack too wide to jump and too deep to see
+1604,Chasm,a crack too wide to jump and too deep to see
+19357,Chasm,a crack too wide to jump and too deep to see
+14289,Chasm,a crack too wide to jump and too deep to see
+7160,Chasm,a crack too wide to jump and too deep to see
+12087,Chasm,a crack too wide to jump and too deep to see
 14036,VEE_StoneForest,"wind-cut pillars, a landscape that looks made"
-18707,Hollow,"shelter, if you get there before dark"
-13100,Hollow,"shelter, if you get there before dark"
-18823,Hollow,"shelter, if you get there before dark"
-19476,LavaFlow,the Scald rim is still live
-7084,LavaFlow,the Scald rim is still live
-1321,LavaFlow,the Scald rim is still live
-19478,VEE_ResurgentCaldera,a crater that is not finished
+14260,VEE_StoneForest,"wind-cut pillars, a landscape that looks made"
+11986,VEE_StoneForest,"wind-cut pillars, a landscape that looks made"
+8246,VEE_StoneForest,"wind-cut pillars, a landscape that looks made"
+8406,VEE_StoneForest,"wind-cut pillars, a landscape that looks made"
+21052,Hollow,"shelter, if you get there before dark"
+1510,Hollow,"shelter, if you get there before dark"
+10929,Hollow,"shelter, if you get there before dark"
+21109,Hollow,"shelter, if you get there before dark"
+9467,Hollow,"shelter, if you get there before dark"
+17638,Hollow,"shelter, if you get there before dark"
+5622,Hollow,"shelter, if you get there before dark"
+2522,Hollow,"shelter, if you get there before dark"
+15211,LavaFlow,the Scald rim is still live
+19478,LavaFlow,the Scald rim is still live
+7400,LavaFlow,the Scald rim is still live
+12833,HotSprings,geothermal water - the one warm bath on this planet
+6951,HotSprings,geothermal water - the one warm bath on this planet
+11904,HotSprings,geothermal water - the one warm bath on this planet
+16929,HotSprings,geothermal water - the one warm bath on this planet
 2162,HotSprings,geothermal water - the one warm bath on this planet
+19471,HotSprings,geothermal water - the one warm bath on this planet
+16902,HotSprings,geothermal water - the one warm bath on this planet
 14446,HotSprings,geothermal water - the one warm bath on this planet
-18768,AB_PropaneLakes,554 tiles of it and not one landmark until now
-12304,AB_PropaneLakes,554 tiles of it and not one landmark until now
-18832,AB_PropaneLakes,554 tiles of it and not one landmark until now
+12318,AB_PropaneLakes,554 tiles of it and not one landmark until now
+6102,AB_PropaneLakes,554 tiles of it and not one landmark until now
+16332,AB_PropaneLakes,554 tiles of it and not one landmark until now
+12302,AB_PropaneLakes,554 tiles of it and not one landmark until now
+1502,AB_PropaneLakes,554 tiles of it and not one landmark until now
+4211,AB_PropaneLakes,554 tiles of it and not one landmark until now
+6118,AB_PropaneLakes,554 tiles of it and not one landmark until now
+14213,AB_PropaneLakes,554 tiles of it and not one landmark until now
 9825,AB_PropaneLakes,554 tiles of it and not one landmark until now
+18846,AB_PropaneLakes,554 tiles of it and not one landmark until now
 13059,AB_PropaneLakes,554 tiles of it and not one landmark until now
+4216,AB_PropaneLakes,554 tiles of it and not one landmark until now
 994,AB_TarLakes,"the tar pits, and what is preserved in them"
 457,AB_TarLakes,"the tar pits, and what is preserved in them"
-1016,AB_TarLakes,"the tar pits, and what is preserved in them"
-13724,AB_MutagenicSprings,the ocular ground - do not drink it
-18757,AB_MutagenicSprings,the ocular ground - do not drink it
-7387,AB_QuicksandPits,soft ground under the fungus
-13733,AB_QuicksandPits,soft ground under the fungus
-9859,AB_QuicksandPits,soft ground under the fungus
-20136,AB_HealingSprings,"rare, and worth a pilgrimage"
+476,AB_TarLakes,"the tar pits, and what is preserved in them"
+1859,AB_TarLakes,"the tar pits, and what is preserved in them"
+21079,AB_MutagenicSprings,the ocular ground - do not drink it
+14201,AB_MutagenicSprings,the ocular ground - do not drink it
+1074,AB_MutagenicSprings,the ocular ground - do not drink it
+21044,AB_MutagenicSprings,the ocular ground - do not drink it
+18754,AB_MutagenicSprings,the ocular ground - do not drink it
+5526,AB_QuicksandPits,soft ground under the fungus
+10925,AB_QuicksandPits,soft ground under the fungus
+8802,AB_QuicksandPits,soft ground under the fungus
+5945,AB_QuicksandPits,soft ground under the fungus
+1770,AB_QuicksandPits,soft ground under the fungus
+5000,AB_QuicksandPits,soft ground under the fungus
+21031,AB_QuicksandPits,soft ground under the fungus
+13090,AB_QuicksandPits,soft ground under the fungus
+17524,AB_HealingSprings,"rare, and worth a pilgrimage"
 4405,AB_HealingSprings,"rare, and worth a pilgrimage"
-14166,VEE_Cenotes,a roof that fell into the water table
-10377,VEE_Cenotes,a roof that fell into the water table
-10806,VEE_Cenotes,a roof that fell into the water table
+13618,VEE_Cenotes,a roof that fell into the water table
+13119,VEE_Cenotes,a roof that fell into the water table
+2358,VEE_Cenotes,a roof that fell into the water table
+9477,VEE_Cenotes,a roof that fell into the water table
+1145,VEE_Cenotes,a roof that fell into the water table
+1782,VEE_Cenotes,a roof that fell into the water table
+9456,VEE_Cenotes,a roof that fell into the water table
+15634,VEE_Cenotes,a roof that fell into the water table
+37,VEE_FleshPits,"the superorganism, where it surfaces"
 1062,VEE_FleshPits,"the superorganism, where it surfaces"
 469,VEE_FleshPits,"the superorganism, where it surfaces"
+992,VEE_FleshPits,"the superorganism, where it surfaces"
+674,VEE_SulfuricLake,"yellow water, and the smell reaches a day out"
 2604,VEE_SulfuricLake,"yellow water, and the smell reaches a day out"
-2382,VEE_SulfuricLake,"yellow water, and the smell reaches a day out"
-3593,ToxicLake,left over from whatever happened here
-12239,ToxicLake,left over from whatever happened here
-5040,VEE_Mangrove,the mangrove has 65 tiles and deserves a named one
-16719,VEE_Mangrove,the mangrove has 65 tiles and deserves a named one
+16737,VEE_SulfuricLake,"yellow water, and the smell reaches a day out"
+20315,VEE_SulfuricLake,"yellow water, and the smell reaches a day out"
+1817,VEE_SulfuricLake,"yellow water, and the smell reaches a day out"
+6791,ToxicLake,left over from whatever happened here
+1973,ToxicLake,left over from whatever happened here
+9657,ToxicLake,left over from whatever happened here
+2136,ToxicLake,left over from whatever happened here
+9539,ToxicLake,left over from whatever happened here
+8835,VEE_Mangrove,the mangrove has 65 tiles and deserves a named one
+9898,VEE_Mangrove,the mangrove has 65 tiles and deserves a named one
+3192,VEE_Mangrove,the mangrove has 65 tiles and deserves a named one
+3195,VEE_Mangrove,the mangrove has 65 tiles and deserves a named one
+848,VEE_Mangrove,the mangrove has 65 tiles and deserves a named one
 7791,Bay,a harbour the Deepwater Compact could actually use
 15064,Bay,a harbour the Deepwater Compact could actually use
-15328,Bay,a harbour the Deepwater Compact could actually use
+17211,Bay,a harbour the Deepwater Compact could actually use
 1860,Bay,a harbour the Deepwater Compact could actually use
-17211,Peninsula,land reaching into the water
-7160,Peninsula,land reaching into the water
-11637,Peninsula,land reaching into the water
-11925,CoastalIsland,"offshore, and hard to raid"
-15077,CoastalIsland,"offshore, and hard to raid"
-11643,CoastalIsland,"offshore, and hard to raid"
-17513,Archipelago,a scatter of rock in the shallows
-5460,Archipelago,a scatter of rock in the shallows
-7809,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
-1708,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
-8081,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
-19148,VEE_LittoralDunes,where the Dune Sea meets the other kind
-13409,VEE_LittoralDunes,where the Dune Sea meets the other kind
-16311,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
-21111,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
-18735,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
-16341,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
-9084,Crevasse,"a split in the cap, and it does not show until you are on it"
-6156,Crevasse,"a split in the cap, and it does not show until you are on it"
-19788,Crevasse,"a split in the cap, and it does not show until you are on it"
-6147,Crevasse,"a split in the cap, and it does not show until you are on it"
-19021,VEE_IceSpires,the Ammonia Flats stand in towers
-14138,VEE_IceSpires,the Ammonia Flats stand in towers
+11637,Bay,a harbour the Deepwater Compact could actually use
+17038,Bay,a harbour the Deepwater Compact could actually use
+11647,Bay,a harbour the Deepwater Compact could actually use
+17537,Bay,a harbour the Deepwater Compact could actually use
+8084,Bay,a harbour the Deepwater Compact could actually use
+7069,Bay,a harbour the Deepwater Compact could actually use
+15278,Peninsula,land reaching into the water
+15077,Peninsula,land reaching into the water
+4400,Peninsula,land reaching into the water
+8184,Peninsula,land reaching into the water
+11850,Peninsula,land reaching into the water
+12009,Peninsula,land reaching into the water
+5460,Peninsula,land reaching into the water
+4044,Peninsula,land reaching into the water
+19163,CoastalIsland,"offshore, and hard to raid"
+12498,CoastalIsland,"offshore, and hard to raid"
+267,CoastalIsland,"offshore, and hard to raid"
+9809,CoastalIsland,"offshore, and hard to raid"
+10344,CoastalIsland,"offshore, and hard to raid"
+12016,CoastalIsland,"offshore, and hard to raid"
+36,CoastalIsland,"offshore, and hard to raid"
+171,CoastalIsland,"offshore, and hard to raid"
+269,Archipelago,a scatter of rock in the shallows
+2249,Archipelago,a scatter of rock in the shallows
+5102,Archipelago,a scatter of rock in the shallows
+6634,Archipelago,a scatter of rock in the shallows
+6909,Archipelago,a scatter of rock in the shallows
+1046,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
+17531,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
+446,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
+709,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
+2247,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
+2616,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
+6638,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
+13409,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea"
+7630,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
+4228,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
+8005,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
+18747,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
+3148,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
+1507,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
+9470,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
+18716,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
+6033,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
+2782,IceDunes,"wind-driven ice, the night side's answer to the Dune Sea"
+2288,Crevasse,"a split in the cap, and it does not show until you are on it"
+5952,Crevasse,"a split in the cap, and it does not show until you are on it"
+19014,Crevasse,"a split in the cap, and it does not show until you are on it"
+8622,Crevasse,"a split in the cap, and it does not show until you are on it"
+12070,Crevasse,"a split in the cap, and it does not show until you are on it"
+17557,Crevasse,"a split in the cap, and it does not show until you are on it"
+14159,Crevasse,"a split in the cap, and it does not show until you are on it"
+3735,Crevasse,"a split in the cap, and it does not show until you are on it"
+19022,Crevasse,"a split in the cap, and it does not show until you are on it"
+18873,Crevasse,"a split in the cap, and it does not show until you are on it"
+11006,VEE_IceSpires,the Ammonia Flats stand in towers
+14270,VEE_IceSpires,the Ammonia Flats stand in towers
+16350,VEE_IceSpires,the Ammonia Flats stand in towers
+14140,VEE_IceSpires,the Ammonia Flats stand in towers
+18992,VEE_IceSpires,the Ammonia Flats stand in towers
 2751,VEE_IceSpires,the Ammonia Flats stand in towers
-428,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
-18992,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
-5885,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
-4445,VEE_GlacialMoraine,the rubble a glacier left when it stopped
-6169,VEE_GlacialMoraine,the rubble a glacier left when it stopped
-5010,VEE_GlacialMoraine,the rubble a glacier left when it stopped
-3552,FrozenRuins,somebody lived out here once - scavenging ground
-17623,FrozenRuins,somebody lived out here once - scavenging ground
-18785,FrozenRuins,somebody lived out here once - scavenging ground
-17038,Iceberg,calved off the nightside cap and drifting
-4400,Iceberg,calved off the nightside cap and drifting
-11317,VEE_TemperateGrasslands,the Dew Belt - the strip that is merely difficult
+5885,VEE_IceSpires,the Ammonia Flats stand in towers
+5010,VEE_IceSpires,the Ammonia Flats stand in towers
+3525,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
+620,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
+21081,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
+11035,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
+13953,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
+6055,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
+20113,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
+16291,VEE_PermafrostBasin,"frozen ground that never thaws, however deep you dig"
+3364,VEE_GlacialMoraine,the rubble a glacier left when it stopped
+21191,VEE_GlacialMoraine,the rubble a glacier left when it stopped
+5863,VEE_GlacialMoraine,the rubble a glacier left when it stopped
+372,VEE_GlacialMoraine,the rubble a glacier left when it stopped
+16139,VEE_GlacialMoraine,the rubble a glacier left when it stopped
+15315,VEE_GlacialMoraine,the rubble a glacier left when it stopped
+1723,VEE_GlacialMoraine,the rubble a glacier left when it stopped
+10779,VEE_GlacialMoraine,the rubble a glacier left when it stopped
+3349,FrozenRuins,somebody lived out here once - scavenging ground
+21124,FrozenRuins,somebody lived out here once - scavenging ground
+1116,FrozenRuins,somebody lived out here once - scavenging ground
+6167,FrozenRuins,somebody lived out here once - scavenging ground
+4659,FrozenRuins,somebody lived out here once - scavenging ground
+7200,FrozenRuins,somebody lived out here once - scavenging ground
+17611,FrozenRuins,somebody lived out here once - scavenging ground
+18854,FrozenRuins,somebody lived out here once - scavenging ground
+14879,Iceberg,calved off the nightside cap and drifting
+7349,Iceberg,calved off the nightside cap and drifting
+88,Iceberg,calved off the nightside cap and drifting
+17034,Iceberg,calved off the nightside cap and drifting
+6902,Iceberg,calved off the nightside cap and drifting
+2021,VEE_TemperateGrasslands,the Dew Belt - the strip that is merely difficult
+2011,VEE_TemperateGrasslands,the Dew Belt - the strip that is merely difficult
 21300,VEE_TemperateGrasslands,the Dew Belt - the strip that is merely difficult
-11800,VEE_TemperateGrasslands,the Dew Belt - the strip that is merely difficult
-12809,VEE_Moor,wet ground on the twilight side
-1844,VEE_Moor,wet ground on the twilight side
-16424,Ruins,"scavenging ground, and the reason the clan is here"
-16293,Ruins,"scavenging ground, and the reason the clan is here"
-10469,Ruins,"scavenging ground, and the reason the clan is here"
-10933,Ruins,"scavenging ground, and the reason the clan is here"
-9452,Ruins,"scavenging ground, and the reason the clan is here"
-3940,Ruins,"scavenging ground, and the reason the clan is here"
+9390,VEE_TemperateGrasslands,the Dew Belt - the strip that is merely difficult
+1672,VEE_TemperateGrasslands,the Dew Belt - the strip that is merely difficult
+11079,VEE_TemperateGrasslands,the Dew Belt - the strip that is merely difficult
+8017,VEE_TemperateGrasslands,the Dew Belt - the strip that is merely difficult
+6941,VEE_TemperateGrasslands,the Dew Belt - the strip that is merely difficult
+12808,VEE_Moor,wet ground on the twilight side
+11312,VEE_Moor,wet ground on the twilight side
+17323,VEE_Moor,wet ground on the twilight side
+17257,Ruins,"scavenging ground, and the reason the clan is here"
+3512,Ruins,"scavenging ground, and the reason the clan is here"
+2691,Ruins,"scavenging ground, and the reason the clan is here"
+21073,Ruins,"scavenging ground, and the reason the clan is here"
+16400,Ruins,"scavenging ground, and the reason the clan is here"
+5632,Ruins,"scavenging ground, and the reason the clan is here"
+6093,Ruins,"scavenging ground, and the reason the clan is here"
+18728,Ruins,"scavenging ground, and the reason the clan is here"
+4995,Ruins,"scavenging ground, and the reason the clan is here"
+1505,Ruins,"scavenging ground, and the reason the clan is here"
+4623,Ruins,"scavenging ground, and the reason the clan is here"
+18712,Ruins,"scavenging ground, and the reason the clan is here"
+3924,Ruins,"scavenging ground, and the reason the clan is here"
+17232,Ruins,"scavenging ground, and the reason the clan is here"
+13513,Ruins,"scavenging ground, and the reason the clan is here"
+2677,AncientGarrison,somebody defended this once
+9558,AncientGarrison,somebody defended this once
 2560,AncientGarrison,somebody defended this once
-4697,AncientGarrison,somebody defended this once
-3052,AncientGarrison,somebody defended this once
-13952,AncientWarehouse,"sealed, and worth the trip"
-17908,AncientWarehouse,"sealed, and worth the trip"
-13592,AncientWarehouse,"sealed, and worth the trip"
-6791,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on
-9657,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on
-2136,TerraformingScar,somebody tried to fix this planet and failed
-557,TerraformingScar,somebody tried to fix this planet and failed
-7789,AbandonedColonyTribal,a tribe that did not make it through a dry decade
-20742,AbandonedColonyTribal,a tribe that did not make it through a dry decade
-218,VEE_AbandonedFarmland,furrows still visible from the air
-4835,VEE_AbandonedFarmland,furrows still visible from the air
-3937,VEE_MeteorCrater,nothing on this world stops a rock
-17656,VEE_MeteorCrater,nothing on this world stops a rock
-604,VEE_MeteorCrater,nothing on this world stops a rock
-10232,sw_DeadSarlacc,"the second sarlacc, and it is dead - somebody killed it"
+5617,AncientGarrison,somebody defended this once
+10518,AncientGarrison,somebody defended this once
+6854,AncientGarrison,somebody defended this once
+18683,AncientGarrison,somebody defended this once
+10332,AncientGarrison,somebody defended this once
+10370,AncientWarehouse,"sealed, and worth the trip"
+8449,AncientWarehouse,"sealed, and worth the trip"
+20853,AncientWarehouse,"sealed, and worth the trip"
+10355,AncientWarehouse,"sealed, and worth the trip"
+3351,AncientWarehouse,"sealed, and worth the trip"
+8794,AncientWarehouse,"sealed, and worth the trip"
+9553,AncientWarehouse,"sealed, and worth the trip"
+17461,AncientWarehouse,"sealed, and worth the trip"
+17106,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on
+7306,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on
+20085,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on
+557,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on
+3251,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on
+1641,TerraformingScar,somebody tried to fix this planet and failed
+17085,TerraformingScar,somebody tried to fix this planet and failed
+19875,TerraformingScar,somebody tried to fix this planet and failed
+5531,TerraformingScar,somebody tried to fix this planet and failed
+4778,TerraformingScar,somebody tried to fix this planet and failed
+17266,AbandonedColonyTribal,a tribe that did not make it through a dry decade
+15111,AbandonedColonyTribal,a tribe that did not make it through a dry decade
+7037,AbandonedColonyTribal,a tribe that did not make it through a dry decade
+6977,AbandonedColonyTribal,a tribe that did not make it through a dry decade
+11590,AbandonedColonyTribal,a tribe that did not make it through a dry decade
+17761,VEE_AbandonedFarmland,furrows still visible from the air
+519,VEE_AbandonedFarmland,furrows still visible from the air
+20045,VEE_AbandonedFarmland,furrows still visible from the air
+7749,VEE_AbandonedFarmland,furrows still visible from the air
+12765,VEE_AbandonedFarmland,furrows still visible from the air
+3910,VEE_MeteorCrater,nothing on this world stops a rock
+16269,VEE_MeteorCrater,nothing on this world stops a rock
+6882,VEE_MeteorCrater,nothing on this world stops a rock
+17950,VEE_MeteorCrater,nothing on this world stops a rock
+1960,VEE_MeteorCrater,nothing on this world stops a rock
+4433,VEE_MeteorCrater,nothing on this world stops a rock
+10886,VEE_MeteorCrater,nothing on this world stops a rock
+11632,VEE_MeteorCrater,nothing on this world stops a rock
+1837,sw_DeadSarlacc,"the second sarlacc, and it is dead - somebody killed it"
+15623,sw_DeadSarlacc,"the second sarlacc, and it is dead - somebody killed it"
