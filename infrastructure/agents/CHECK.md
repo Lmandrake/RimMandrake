@@ -16,6 +16,11 @@ the Live Bridge     RimBridgeServer / companion DLL, its tools, its debugging, l
                     finishes) — so never reload over one.
 game.json           infrastructure/state/status/game.json — is the game up, in what state. Stamp it
                     when the game comes up, changes state, or goes down; BUILD parks deploys on it.
+                    🔑 You keep it TRUE, you do not ORIGINATE it. `./game` (no argument) MEASURES the
+                    process and corrects the record from any seat — that is allowed, it is not an
+                    inference. A change of state the owner announces is stamped with his words:
+                    `rimflow game UP --owner-said "game is up" --note "…"`. Resolved 2026-08-22 under
+                    GAME_STATE_HAS_NO_STAMPER_1; full flow in `infrastructure/GAME_STATE_WORKFLOW.md`.
 live results        did it load · did it error · the log · save contents · did the behaviour occur
 findings            a build is wrong -> BUILD. World vision, lore, design/** or a capability spec
                     is wrong -> DECIDE. 🔑 BUILD is the normal case; see Declines.
