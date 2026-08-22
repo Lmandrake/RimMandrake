@@ -174,9 +174,9 @@ FACTIONS = {
 # quality: ("force",) | ("max", Q) | ("min", Q) | ("item", Q) | None
 R = [
  ("Empire","Grunt","stormtrooper",650,500,("force",),["ORImperialStandard","ORImperialLight"],["OuterRim_StormtrooperCuirass","OuterRim_StormtrooperHelmet"]),
- ("Empire","Heavy","heavy trooper",1000,700,("force",),["ORImperialHeavy","ORHeavyWeapon"],[]),
- ("Empire","Specialist","Imperial officer",900,700,("force",),["ORPistol","ORImperialLight"],[]),
- ("Empire","Leader","Emperor Palpatine",1600,1200,("item","Excellent"),["ORImperialSniper","ORPistol"],[]),
+ ("Empire","Heavy","heavy trooper",1000,700,("force",),["ORImperialHeavy","ORHeavyWeapon"],["OuterRim_ImperialArmyCuirass","OuterRim_ImperialArmyHelmet","OuterRim_ImperialArmyPauldrons"]),
+ ("Empire","Specialist","Imperial officer",900,700,("force",),["ORPistol","ORImperialLight"],["OuterRim_ImperialOfficerUniform","OuterRim_ImperialOfficerCap"]),
+ ("Empire","Leader","Emperor Palpatine",1600,1200,("item","Excellent"),["ORImperialSniper","ORPistol"],["OuterRim_ImperialOfficerUniform_Black","OuterRim_ImperialOfficerCap_Black"]),
 
  ("Hutt","Grunt","Cartel enforcer",200,250,None,["KotORRanged_weak","SWKotORWeaponCategoryTag_pistol"],[]),
  ("Hutt","Heavy","Cartel bodyguard",550,400,None,["KotORRanged_mid","SWKotORWeaponCategoryTag_heavyranged"],[]),
@@ -254,7 +254,24 @@ R = [
 # surviving pieces), the counter existed (19 vibro weapons), and the two never met.
 # `apparelRequired` pins the helmet; the tag brings the matching body plate, because a
 # casket is a SET and requiring every piece by name would break the moment VFEP renames one.
-APPAREL_TAGS = {"Junkers": ["WarcasketAll"]}
+# 🔴 THE SILHOUETTE IS THE FACTION, and without this the pool is the whole load set.
+# Measured live 2026-08-22 (IMPERIAL_APPAREL_ON_ALL_KINDS_1): `Jawa_Empire_Heavy` and
+# `_Specialist` carried neither `apparelRequired` nor any `apparelTags`, so
+# PawnApparelGenerator dressed them from all 723 usable apparel defs on a 578-mod list.
+# What arrived: `guy762_Clothing_RebelCamoII` and a rebel cap on the heavy, `GS_SandP_Hood`
+# (Sandpeople) and `guy762_SithMask_marauder` on the specialist. The faction the guidance
+# doc calls "uniform, mass-produced, no personality - you are fighting a supply chain" was
+# fielding troops in REBEL CAMOUFLAGE and a TUSKEN HOOD.
+# 🔑 Three tags, not one: Outer Rim does NOT put `ImperialApparel` on everything Imperial.
+# The army set carries only `ImperialArmy` and the officer set only `ImperialOfficer`, so a
+# single-tag pool would silently exclude two of the four kinds' own uniforms.
+# ⚠️ `apparelRequired` is generated regardless of this filter and regardless of
+# `apparelMoney` - that is why the Grunt's stormtrooper plate has always landed on 4 of 4.
+# These tags govern the OTHER slots, which is where the rebel camo was coming from.
+APPAREL_TAGS = {
+    "Junkers": ["WarcasketAll"],
+    "Empire":  ["ImperialApparel", "ImperialArmy", "ImperialOfficer"],
+}
 
 RESIST = {"Grunt": (8, 14), "Heavy": (12, 18), "Specialist": (14, 22), "Leader": (20, 30)}
 WILL   = {"Grunt": (1, 3),  "Heavy": (2, 4),   "Specialist": (2, 5),   "Leader": (4, 7)}

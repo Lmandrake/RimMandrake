@@ -47,6 +47,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>OuterRim_StormtrooperCuirass</li>
       <li>OuterRim_StormtrooperHelmet</li>
     </apparelRequired>
+    <apparelTags>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+    </apparelTags>
     <forceNormalGearQuality>true</forceNormalGearQuality>
   </PawnKindDef>
 
@@ -66,6 +71,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORImperialHeavy</li>
       <li>ORHeavyWeapon</li>
     </weaponTags>
+    <apparelRequired>
+      <li>OuterRim_ImperialArmyCuirass</li>
+      <li>OuterRim_ImperialArmyHelmet</li>
+      <li>OuterRim_ImperialArmyPauldrons</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+    </apparelTags>
     <forceNormalGearQuality>true</forceNormalGearQuality>
   </PawnKindDef>
 
@@ -85,6 +100,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORPistol</li>
       <li>ORImperialLight</li>
     </weaponTags>
+    <apparelRequired>
+      <li>OuterRim_ImperialOfficerUniform</li>
+      <li>OuterRim_ImperialOfficerCap</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+    </apparelTags>
     <forceNormalGearQuality>true</forceNormalGearQuality>
   </PawnKindDef>
 
@@ -104,6 +128,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORImperialSniper</li>
       <li>ORPistol</li>
     </weaponTags>
+    <apparelRequired>
+      <li>OuterRim_ImperialOfficerUniform_Black</li>
+      <li>OuterRim_ImperialOfficerCap_Black</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+    </apparelTags>
     <itemQuality>Excellent</itemQuality>
   </PawnKindDef>
 
