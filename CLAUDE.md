@@ -236,7 +236,11 @@ python3 src/RimMandrake/rimflow/cli.py game UP --owner-said "game is up"
 ```
 
 ⛔ **A seat still may not INFER game state** — that is guessing on everyone's behalf, and
-it is what the rule always banned. Quoting you is not inferring.
+it is what the rule always banned. Quoting you is not inferring. ✅ **And neither is
+MEASURING it** — owner, 2026-08-22: *"Any agent is absolutely able to check what it
+literally is."* `./game` takes the reading and corrects the ledger from it, from any seat.
+⛔ **So never write "X says up but the owner said down"** — run it and there is nothing to
+report. The full ruling is `infrastructure/GAME_STATE_WORKFLOW.md`.
 
 ⚠️ **That stamps the LEDGER, which is what makes `rimflow next` start offering or
 withholding `needs: game-up` / `bridge` / `deploy` work.** It does NOT wake the other

@@ -60,10 +60,10 @@ import subprocess
 import sys
 
 try:                                                    # python3 -m rimflow.cli
-    from . import model, priority
+    from . import model, priority, probe
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import model, priority                 # noqa: F401
+    from rimflow import model, priority, probe          # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -289,6 +289,11 @@ def cmd_next(args, seat):
     if warn:
         sys.stderr.write(warn)
     _, w = load()
+    # 🔴 MEASURE BEFORE OFFERING. `next` decides what a seat may work on, and half of
+    # that decision is the game state — so it reads it from the machine, not from what
+    # somebody last typed. Owner, 2026-08-22: the measurement wins, silently. Cached for
+    # 20 s in probe.py, so a seat in a loop does not shell out every call.
+    sync_game_state(w, seat)
     ctx = _ctx(args)
     it = priority.next_item(w, seat, args.target, ctx)
     if it is None:
@@ -780,8 +785,47 @@ def cmd_bridge(args, seat):
     return 0
 
 
+def sync_game_state(w, seat, announce=True):
+    """Measure the game, and correct the record if the machine contradicts it.
+
+    \U0001f534 OWNER, 2026-08-22 12:47: *"there should be precisely ONE place that variable
+    is recorded and no more."* That place is the ledger, and this is the only thing that
+    writes to it without him. It exists so that no seat ever again reports a disagreement
+    between what is recorded and what is true \u2014 there is nothing to report, because
+    the reading corrects the record as it takes it.
+
+    Returns (state, reading, corrected_from) where corrected_from is None if nothing moved.
+    """
+    reading = probe.measure()
+    corrected = probe.contradicts(w.game, reading)
+    if corrected is None:
+        return w.game, reading, None
+    was = w.game
+    _emit({"seat": seat, "event": "game", "state": corrected, "measured": True,
+           "evidence": reading["evidence"]}, w, quiet=True)
+    w.game = corrected
+    if announce:
+        sys.stderr.write("\u2699\ufe0f  game state corrected %s \u2192 %s (measured: %s)\n"
+                         % (was, corrected, reading["evidence"]))
+    return corrected, reading, was
+
+
 def cmd_game(args, seat):
     _, w = load()
+
+    # No state given: MEASURE. Any seat, any time, no announcement needed.
+    if not getattr(args, "state", None):
+        state, reading, was = sync_game_state(w, seat, announce=False)
+        print("running   : %s   (%s)"
+              % ("RUNNING" if reading["running"] else
+                 "NOT RUNNING" if reading["running"] is False else "UNMEASURED",
+                 reading["evidence"]))
+        if was is None:
+            print("recorded  : %s" % state)
+        else:
+            print("recorded  : %s  \u2192 corrected to %s, measured now" % (was, state))
+        return 0
+
     ev = {"seat": seat, "event": "game", "state": args.state}
     note = (getattr(args, "note", None) or "").strip()
     if note:
@@ -1060,7 +1104,8 @@ def build_parser():
     s.add_argument("action", choices=("take", "release"))
 
     s = add("game", "OWNER only — announce the game state", cmd_game)
-    s.add_argument("state", choices=model.GAME_STATES)
+    s.add_argument("state", nargs="?", choices=model.GAME_STATES,
+                   help="omit to MEASURE the game and correct the record from it")
     # 🔑 GAME_STATE_HAS_NO_STAMPER_1's second half. The prose the old game.json
     # carried - what is left to do, where the blocker is, what this load is FOR -
     # had nowhere to go once the state moved into the ledger, so it was being lost

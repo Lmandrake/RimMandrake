@@ -117,7 +117,9 @@ The truth is `infrastructure/state/ledger/events.jsonl`, an append-only event lo
 | *"Game is down"* · *"it is unstable"* | `DOWN` |
 | *"WRAP is initiated"* · *"going down"* | `GOING_DOWN` |
 
-⚠️ It prints what it recorded; prose that merely mentions the game records nothing. **Silence is the safe failure** — a WRONG game state is worse than a stale one, because `priority.satisfiable()` gates real work on it.
+⚠️ It prints what it recorded; prose that merely mentions the game records nothing.
+
+🔴 **AND ANY SEAT MEASURES IT — owner, 2026-08-22.** *"Any agent is absolutely able to check what it literally is."* `./game` (= `rimflow game`) takes the reading and **corrects the ledger from it**, from any seat, no announcement needed; `rimflow next` does the same before it offers you work. ⛔ **So never write a sentence comparing a recorded state to a measured one** — run it and the disagreement is gone. That prose is what the ruling deletes. ⚠️ *"Silence is the safe failure"* is retired with it: a stale state is no longer safer than a measured one, because measuring is now free. The two states the machine cannot see — `DEPLOYING` vs `DOWN`, `GOING_DOWN` vs `UP` — stay the owner's alone and the probe never touches them. Full ruling: `infrastructure/GAME_STATE_WORKFLOW.md`.
 
 ### 🔴 A seat MAY test a mod-list change while the owner is away — ruled 2026-08-21
 

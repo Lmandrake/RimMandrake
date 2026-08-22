@@ -10,8 +10,10 @@ the cycle, **this file wins**; fix the seat file in the same commit.
 
 ## 0. The two things that are always true
 
-1. 🔴 **The OWNER announces every game-state change.** No agent infers one, and no agent announces
-   one. An agent reads state with `rimflow game`; it never sets it.
+1. 🔴 **The OWNER announces every game-state change — and any seat MEASURES it.** Superseded in
+   part 2026-08-22: an agent still never *infers* a state, but it may *look*, and when the
+   machine contradicts the record the record is corrected on the spot. See the ruling at the
+   foot of this file. `./game` is the whole of it.
 2. 🔴 **ONLY CHECK EVER TAKES THE BRIDGE.** No other seat, no exception, no "just one call".
    CHECK announces possession and release; nobody else touches it.
 
@@ -176,3 +178,42 @@ running it is breaking the no-peer-messaging ruling by the back door.
 ⇒ **Arrive already confident.** Write down, before the load, the exact `Player.log` strings that will
 decide each open item. A load spent discovering what to look for is a load wasted. Never
 "restart and see" — see `skills/rimworld-load-round`.
+
+---
+
+## 🔴 THE MEASUREMENT WINS, SILENTLY — owner, 2026-08-22 12:47
+
+*"I keep seeing things that say 'something says the game is up, but the owner said it was
+down' and neither one is actually just checking to see the truth. We need to simplify this
+game state business. Any agent is absolutely able to check what it literally is to some
+degree. The point of the user saying anything was to authorize people to react to a game
+state change, and there should be precisely ONE place that variable is recorded and no more."*
+
+**Any seat may look, any time. One command, and it corrects the record as it reads it:**
+
+```
+./game                                              # or: rimflow game
+running   : NOT RUNNING   (tasklist.exe lists no RimWorldWin64)
+recorded  : UP  → corrected to DOWN, measured now
+```
+
+- ⛔ **Never write a sentence comparing a recorded state to a measured one.** There is
+  nothing to compare and nothing to escalate — run the probe and the disagreement is gone.
+  That prose is the thing this ruling deletes.
+- 🔑 **ONE recorded place: the ledger.** `infrastructure/state/ledger/events.jsonl`, one
+  `game` event. The board, `queue/*.md` and `board.json` are DERIVED views of it and are
+  never edited. A number about game state that came from anywhere else is a copy.
+- ✅ **`rimflow next` measures before it offers**, so a seat cannot be handed `needs: game-up`
+  work against a stale reading. Cached 20 s.
+- 🔑 **What the owner's word is FOR, and it has not shrunk:** authorization to REACT to a
+  change, and naming the two states the machine cannot see — `DEPLOYING` is indistinguishable
+  from `DOWN` (no process either way) and `GOING_DOWN` from `UP` (process alive either way).
+  The probe never overwrites those.
+- ⛔ **An INFERRED state is still refused.** `measured: true` is written by `probe.py` and
+  nowhere else. Setting it by hand puts a guess in the one place that is supposed to be true.
+- ⚠️ **Ignorance is not a reading.** On a host with no `tasklist.exe` the probe answers
+  UNMEASURED and changes nothing — it never rounds "I could not look" down to "nothing is
+  running". `selftest_probe.py` pins that.
+
+**Announcing to the other windows is still the owner's**, and still `./game up|down|loading`.
+That sends the one message that legitimately crosses windows AND stamps the ledger.

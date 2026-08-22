@@ -201,7 +201,7 @@ VERBS = {
     # nobody could follow. Found 2026-08-20 by the first seat that tried to follow it.
     "seat":      {"who": "self",  "req": ("state",), "opt": ("reason", "item", "note")},
     "bridge":    {"who": ("CHECK",), "req": ("state",), "opt": ()},
-    "game":      {"who": ("OWNER",), "req": ("state",), "opt": ()},
+    "game":      {"who": ("OWNER",), "req": ("state",), "opt": ("measured", "evidence")},
     "admin":     {"who": ("OWNER",), "req": ("reason",), "opt": ("patch",)},
 }
 
@@ -562,8 +562,21 @@ def _who_refusal(ev, item):
         return ("only CHECK takes the bridge. This is not a formality: two seats "
                 "driving one live game produce results neither can attribute.")
     if verb == "game":
-        return ("only the OWNER announces game state. A seat that INFERS 'the game is "
-                "up' and tells everyone is guessing on other people's behalf.\n\n"
+        # \U0001f534 OWNER, 2026-08-22: the MEASUREMENT wins, silently. A seat that RAN
+        # the probe is not guessing on anyone's behalf - it looked. Those events carry
+        # `measured: true` and are admitted from any seat, because the alternative is
+        # what he was tired of: a seat that can SEE the game is down, is forbidden to
+        # say so, and writes a paragraph about the disagreement instead.
+        # \u26d4 An INFERRED state is still refused. `measured` is set by probe.py and
+        # nowhere else; writing it by hand to bypass this is the one thing it cannot
+        # survive, and it would put a guess in the one place that is supposed to be true.
+        if ev.get("measured"):
+            return None
+        return ("only the OWNER announces game state \u2014 unless you MEASURED it.\n\n"
+                "\u2705 To read and correct it from the machine, which any seat may do:\n"
+                "    python3 src/RimMandrake/rimflow/cli.py game\n\n"
+                "A seat that INFERS 'the game is up' and tells everyone is still "
+                "guessing on other people's behalf.\n\n"
                 "\u2705 But if he SAID it, quoting him is not inferring — stamp it now:\n"
                 "    python3 src/RimMandrake/rimflow/cli.py game <STATE> "
                 "--owner-said \"<his words>\"\n"

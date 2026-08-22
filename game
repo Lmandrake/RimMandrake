@@ -24,19 +24,12 @@ here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 bc="$here/src/RimMandrake/Utils/broadcast.py"
 
 if [ $# -eq 0 ]; then
-    # No argument: report rather than guess. Two independent readings, because the
-    # whole point of the tool is that they can disagree.
-    board=$(sed -n 's/^game: *\([A-Z_]*\).*/\1/p' "$here/infrastructure/state/queue/BUILD.md" 2>/dev/null | head -1)
-    proc=$(tasklist.exe 2>/dev/null | grep -ci RimWorldWin64 || true)
-    echo "board says : ${board:-unknown}"
-    echo "process    : $([ "${proc:-0}" -gt 0 ] && echo RUNNING || echo 'not running')"
-    if { [ "${proc:-0}" -gt 0 ] && [ "${board:-}" != "UP" ] && [ "${board:-}" != "LOADING" ] && [ "${board:-}" != "GOING_DOWN" ]; } \
-       || { [ "${proc:-0}" -eq 0 ] && { [ "${board:-}" = "UP" ] || [ "${board:-}" = "LOADING" ]; }; }; then
-        echo "⚠️  THESE DISAGREE — the board is stale. Correct it with: ./game up|down"
-    fi
-    echo
-    echo "usage: ./game up|down|loading|deploying|going-down [\"note\"]"
-    exit 0
+    # No argument: MEASURE it. Owner, 2026-08-22: *"Any agent is absolutely able to check
+    # what it literally is... there should be precisely ONE place that variable is
+    # recorded and no more."* So this does not compare two readings and shrug — it takes
+    # the reading, corrects the ledger from it, and says what it did. One mechanism, and
+    # the same one every seat gets from `rimflow game`.
+    exec python3 "$here/src/RimMandrake/rimflow/cli.py" game
 fi
 
 # ⭐ --help exits ZERO and lists the states. Added 2026-08-21 after
