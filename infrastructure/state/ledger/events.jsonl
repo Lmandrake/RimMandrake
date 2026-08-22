@@ -1457,3 +1457,11 @@
 {"seat":"CHECK","event":"start","id":"TEST_PLAN_SIX_WRONG_ANCHORS_1","ts":"2026-08-22T20:54:43Z"}
 {"seat":"CHECK","event":"claim","id":"BUILDABLE_REGISTER_SIX_STALE_1","ts":"2026-08-22T20:54:43Z"}
 {"seat":"BUILD","event":"close","id":"GAME_STATE_HAS_NO_STAMPER_1","sha":"eb1bc8a4","ts":"2026-08-22T20:55:00Z"}
+{"seat":"BUILD","event":"claim","id":"BIG_WEAPON_XENOTYPE_AUDIT_1","ts":"2026-08-22T20:56:06Z"}
+{"seat":"BUILD","event":"start","id":"BIG_WEAPON_XENOTYPE_AUDIT_1","ts":"2026-08-22T20:56:06Z"}
+{"seat":"CHECK","event":"verify","id":"TEST_PLAN_SIX_WRONG_ANCHORS_1","result":"partial","config":"offline","evidence":"infrastructure/state/evidence/doc_sweep_verification_2026-08-22_CHECK.md","sha":"b36c5b35","ts":"2026-08-22T21:01:39Z"}
+{"seat":"CHECK","event":"start","id":"BUILDABLE_REGISTER_SIX_STALE_1","ts":"2026-08-22T21:01:39Z"}
+{"seat":"CHECK","event":"verify","id":"BUILDABLE_REGISTER_SIX_STALE_1","result":"partial","config":"offline","evidence":"infrastructure/state/evidence/doc_sweep_verification_2026-08-22_CHECK.md","sha":"b36c5b35","ts":"2026-08-22T21:01:39Z"}
+{"seat":"CHECK","event":"close","id":"TEST_PLAN_SIX_WRONG_ANCHORS_1","sha":"3e514cfe","ts":"2026-08-22T21:02:03Z"}
+{"seat":"CHECK","event":"close","id":"BUILDABLE_REGISTER_SIX_STALE_1","sha":"3e514cfe","ts":"2026-08-22T21:02:03Z"}
+{"seat":"CHECK","event":"spawn","name":"SALT_PANS_NEVER_CAPTURED_1","kind":"check","needs":"bridge","spec":"TEST_PLAN.md line 198 row 1 carried a PASS reading '144 cells, 0 failed verify' for the Jawa_SaltCrust salt pans. No capture of that run exists anywhere on disk: both observed/ roots were swept (34,814 files) plus targeted reads of the two 148/149 MB Player.logs, and the only SaltCrust hits are def-load lines. The row was downgraded PASSED -> UNMEASURED on 2026-08-22 (3e514cfe). Re-run it live: call jawa/set_terrain, read the cell back with rimworld/get_cell_info and confirm terrainDefName, and SAVE the reply under observed/. A returning method is not the evidence; the read-back is. 'Does it generate naturally' is a second, separate question and is still open.","for":"CHECK","from":"TEST_PLAN_SIX_WRONG_ANCHORS_1/run-1@offline","ts":"2026-08-22T21:02:17Z"}
