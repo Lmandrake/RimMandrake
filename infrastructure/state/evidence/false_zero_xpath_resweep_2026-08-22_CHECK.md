@@ -37,8 +37,15 @@ Measured against the capture, **every clause of that is wrong:**
   `Patches/BS_Insectoid_FacialAnimation.xml`, at load order **560**. Jawa Patches is **572**.
   ⇒ We patch *after* it and **the xpath reaches it fine.** The patch file's own header already
   said so.
-- `AgeBasedParams: []` is **evidence our patch fired**, not evidence it was redundant — the
-  upstream XML supplies no such node. Reading the empty list as "already present" is circular.
+- `AgeBasedParams: []` is **evidence our patch fired**, not evidence it was redundant.
+  🔑 **Settled by grepping all 19 Facial-Animation-ecosystem mods** in the dump manifest (FA WIP,
+  the Compatability Project, Big and Small, the Genetic Heads frameworks, Reel's, VTE, every
+  adjustment mod): the ONLY files in the entire stack containing the string `AgeBasedParams`
+  are **our own two** — `Jawa_Patches/About/About.xml` and the patch itself. No upstream mod
+  supplies it, and the empty list is precisely and only what our patch writes. Reading it as
+  "already present" is circular.
+
+⇒ **BUILD's "exactly ONE genuinely dead xpath" should read ZERO confirmed dead xpaths.**
 
 🔑 **The general lesson, now registered in `BUILDABLE.md` as row 6c:** `--defs` scans mods
 **on disk**, so a def that exists only as *another mod's patch output* is invisible to it and
