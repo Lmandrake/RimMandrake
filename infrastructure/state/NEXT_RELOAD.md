@@ -1,5 +1,70 @@
 # NEXT_RELOAD.md — the run sheet for the NEXT game load
 
+> ## ✅ THE HOLD CONDITION IS MET — BUILD, 2026-08-22
+>
+> `CAST_ROSTER_SKILLS_DISCARDED_1` has landed. **The owner's 10:58 hold is discharged and
+> this load may be launched when he is back.**
+>
+> 🔑 **The cause was the opposite of what the item said, and the XML half was already
+> fixed a day before it was filed.** `SkillGain` carries `LoadDataFromXmlCustom`, so the
+> ELEMENT NAME is the skill and its TEXT is the amount. The rosters had been emitting
+> `<li><skill>X</skill><amount>N</amount></li>`, where the name is "li" and `FirstChild`
+> is the `<skill>` element whose `.Value` is null — `float.Parse(null)` throws and the
+> whole def is discarded. The log this was diagnosed from carries the proof in one line:
+> `Could not resolve cross-reference: No RimWorld.SkillDef named li found`. `c6060ae8`
+> converted all twelve files on 2026-08-21 16:07; the Player.log quoted at 08:40 the next
+> day is from a session that STARTED BEFORE that commit (the file is appended for the life
+> of a run; its mtime is the last write, not the launch). **What was still live is that
+> `cast_to_xml.py` STILL EMITTED THE OLD SHAPE** and would have reverted the fix on its
+> next run. Fixed at `b24dde99`; re-emitting now reproduces all twelve committed files
+> byte-for-byte.
+>
+> ### 🔴 WHAT THIS ONE LOAD MUST PROVE — everything BUILD landed 2026-08-22
+> Grouped by where to look. Thirteen items are parked on this load.
+>
+> **In `Player.log`, before touching anything:**
+> ```
+> measure count-errors "C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log" --top 12
+> ```
+> - ⭐ **`[JawaBench] ready: N tools, build <hex>`** — new this load. Its ABSENCE means the
+>   companion did not load, which used to be indistinguishable from a healthy run.
+>   Expect **119** with `--gm`; two fewer means the build flag was wrong.
+> - **`[Inhabited] ready: … 294 characters …`** — not 193. That is the cast fix.
+> - **Zero** `Exception loading def from file CastRoster_*` and **zero**
+>   `SkillDef named li`.
+> - ⚠️ `measure count-errors` is itself new and validated against this same log's known
+>   answers (101 and 101). A `grep -c` on that log gives 148, 1007 or 122 depending on the
+>   pattern; only one of those is the number of distinct errors.
+>
+> **On the Configure Factions page — the owner's eyes, nobody else's:**
+> - all **eight** authored `Jawa_*` factions listed, sorted above vanilla's rows.
+>   Seven of them read `maxConfigurableAtWorldCreation −1` until `b95556a3`.
+>
+> **Through the bridge, once CHECK has it:**
+> - `jawa/faction_leader_get` — all twelve authored factions show their AUTHORED
+>   `effectiveTitle`. The Junkers' Scraplord, not `Awoken Cheese`.
+> - `jawa/ideo_of` the Junkers — **4** memes and `structureMeme AM_Structure_Scavenger`.
+> - a raid from `TribeCivil`, `Pirate` and `Empire` — **zero vanilla kinds**; then a trade
+>   caravan and a settlement from each, to prove the non-combat groups survived.
+> - `jawa/damage` a `Mech_Scyther` with the ion blaster — `stunned=True`, far fewer than 13
+>   hits. Then a `Tribal_Warrior`: still down alive at ~6 hits with zero injuries.
+> - the 48-kind armed sweep, and a 5-roll sweep of `Scavenger`, `Town_Trader`,
+>   `Mercenary_Sniper`, `Hunter` and `Mechanitor`.
+> - 20 spawns each of the eight Empire/Blackstar kinds — zero violence-disabling
+>   backstories; the other ten families within noise of 13/180.
+> - six spawns of `Jawa_Colonist` — robe and hood, no jeans.
+>
+> ⚠️ **THE SCENARIO IS THE ONE THING THAT CANNOT BE TESTED BY A QUICKTEST.**
+> `Jawa_UtinniStart` could not start a game at all before `6b9a79b9` — `ConfigErrors`
+> wanted `playerFaction` and `surfaceLayer`, and with no config-page part the game walked
+> to `InitGameStart` with **zero colonists**. It now inherits `ScenarioBase` and configures
+> six `MandrakeJawa` through a xenotype part. **Proving that means starting a game from it
+> and stopping at the pawn page**, which is the owner's act, not a bridge call.
+>
+> 🔑 **Nothing below this block has been re-checked against today's work.** The 2026-08-20
+> sheet is still stale and `RUN_SHEET_REASSEMBLE_AFTER_LOAD_1` still owns it.
+
+
 > 🔴 **OWNER RULING 2026-08-22 10:58 — THE COLD START IS HELD.** Asked what the next load
 > is for, he chose: *"Both — hold until the cast fix lands, then one load."*
 >
