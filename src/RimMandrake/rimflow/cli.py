@@ -782,8 +782,14 @@ def cmd_bridge(args, seat):
 
 def cmd_game(args, seat):
     _, w = load()
-    _emit({"seat": seat, "event": "game", "state": args.state}, w, quiet=True)
+    ev = {"seat": seat, "event": "game", "state": args.state}
+    note = (getattr(args, "note", None) or "").strip()
+    if note:
+        ev["text"] = note
+    _emit(ev, w, quiet=True)
     print("game is %s" % args.state)
+    if note:
+        print("  note: %s" % note)
     if args.state != "UP":
         print("every --this-deployment flag is now cleared.")
     return 0
@@ -1055,6 +1061,14 @@ def build_parser():
 
     s = add("game", "OWNER only — announce the game state", cmd_game)
     s.add_argument("state", choices=model.GAME_STATES)
+    # 🔑 GAME_STATE_HAS_NO_STAMPER_1's second half. The prose the old game.json
+    # carried - what is left to do, where the blocker is, what this load is FOR -
+    # had nowhere to go once the state moved into the ledger, so it was being lost
+    # at exactly the moment it was most worth keeping. It is optional: a state
+    # change with nothing to say should not have to invent something.
+    s.add_argument("--note", default=None,
+                   help="one line of context for this state change, e.g. what "
+                        "the load is for or why it went down")
 
     s = add("admin", "OWNER only — an audited correction", cmd_admin)
     s.add_argument("id")
