@@ -218,6 +218,34 @@ def rules(c):
     ]
 
 
+# 🔴 Rules that MEASURE THE PLANET, as opposed to rules about the mod list, the
+# faction roster or a document's own contents. When `canon.planet.status` is not
+# `frozen` these are downgraded to advisory: they still report, they never block.
+#
+# ⚠️ WHY THIS EXISTS. On 2026-08-22 the owner said *"I am working with DECIDE to remake
+# the planet an entirely different way, so there is no current frozen world."* The hook
+# that enforces canon had just moved from the commit to the WRITE, so a seat drafting
+# the NEW planet was refused mid-sentence on the OLD planet's water percentage. A rule
+# that blocks the work that supersedes it is not protecting anything.
+PLANET_DERIVED = ("water", "tiles", "settlements", "axis", "terminator", "lake",
+                  "seas", "named_regions", "rivers", "habitable_ring", "start_tile")
+
+
+def suspend_planet_rules(rules, canon):
+    """-> (rules, note). Downgrade planet-derived rules while the world is being remade."""
+    status = str((canon.get("planet") or {}).get("status") or "frozen").lower()
+    if status == "frozen":
+        return rules, ""
+    hit = [r for r in rules if r.key in PLANET_DERIVED and not r.advisory]
+    for r in hit:
+        r.advisory = True
+    return rules, (
+        "\u26a0\ufe0f  planet.status is %r \u2014 there is no frozen world, so %d "
+        "planet-derived rule(s)\n    are ADVISORY: reported, never blocking. They "
+        "measure the world being replaced.\n    Set canon.yml planet.status back to "
+        "`frozen` when a new world is frozen.\n" % (status, len(hit)))
+
+
 def cells(line):
     """The testable spans of a line. A table row splits on `|`; anything else is whole."""
     if line.count("|") >= 2:
@@ -278,9 +306,12 @@ def main():
     with open(CANON, encoding="utf-8") as fh:
         canon = yaml.safe_load(fh)
     rs = rules(canon)
+    rs, suspend_note = suspend_planet_rules(rs, canon)
 
     if a.list:
         print("canon.yml v%s, as of %s\n" % (canon["version"], canon["as_of"]))
+        if suspend_note:
+            print(suspend_note)
         for r in rs:
             print("  %-16s canon %-22s %s"
                   % (r.key + (" (advisory)" if r.advisory else ""), r.canon, r.why))

@@ -42,8 +42,17 @@ def run(body, cmd_path="design/.selftest_probe/probe.md", write=True):
 
 
 CASES = [
-    ("DENY  a live contradiction", DENY, "canon says 8.14%",
+    # 🔴 WATER IS ADVISORY WHILE THE PLANET IS BEING REMADE — owner, 2026-08-22:
+    # *"I am working with DECIDE to remake the planet an entirely different way, so
+    # there is no current frozen world."* `canon.yml planet.status: remaking` downgrades
+    # every planet-derived rule, because enforcing the dead world's water percentage
+    # refused the seat DRAFTING its replacement — at the write, mid-sentence.
+    # ⚠️ This case asserted DENY until then. Flip it back the day a new world is frozen
+    # and `planet.status` returns to `frozen`; the rule itself never changed.
+    ("ALLOW a planet number while planet.status is `remaking`", ALLOW, None,
      "Water is ~25% of tiles, accept 22-28%.\n", None),
+    # ✅ The suspension must NOT leak. A faction count is not planet-derived and still
+    # blocks — this is the case that proves the downgrade is scoped.
     ("DENY  a wrong faction count", DENY, "13 factions",
      "Fourteen factions stand on the map.\n", None),
 

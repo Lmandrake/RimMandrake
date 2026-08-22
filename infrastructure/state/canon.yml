@@ -56,6 +56,20 @@ covers: design/**/*.md
 # Re-measure with the commands in `src:` — they are the whole provenance.
 # ===========================================================================
 planet:
+  # 🔴 THERE IS NO FROZEN WORLD — owner, 2026-08-22: "I am working with DECIDE to remake
+  # the planet an entirely different way, so there is no current frozen world."
+  # ⇒ Every number under `planet:` below, plus `settlements.count` and `lake_biome`,
+  # MEASURES A WORLD THAT IS BEING REPLACED. They are kept, not deleted: they are the
+  # record of what Ash'karr-as-painted was, and the remake will want to compare.
+  # 🔑 While this reads `remaking`, check_canon downgrades every planet-derived rule to
+  # ADVISORY — it reports the difference and never blocks a write. Enforcement was
+  # actively refusing DECIDE's remake at the write, using the dead world's numbers.
+  # ✅ Set it back to `frozen` when a new world is frozen, and the rules bite again.
+  status: remaking
+  status_src: >
+    Owner, 2026-08-22, to REP. Supersedes WORLD_FROZEN_RETHINK_PLANET_1 and every doc
+    saying the planet is frozen as-is for v1. The ACCEPTED_ON/ACCEPTED_BY fields below
+    describe the superseded world and are left untouched for the same reason.
   name: "Ash'karr — The Sundered"
 
   # ⭐ ACCEPTED FOR V1 — owner, 2026-08-20, after looking at the ortho globes.
