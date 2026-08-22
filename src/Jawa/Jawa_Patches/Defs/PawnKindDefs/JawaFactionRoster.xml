@@ -47,6 +47,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>OuterRim_StormtrooperCuirass</li>
       <li>OuterRim_StormtrooperHelmet</li>
     </apparelRequired>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialApparel</li>
       <li>ImperialArmy</li>
@@ -76,6 +77,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>OuterRim_ImperialArmyHelmet</li>
       <li>OuterRim_ImperialArmyPauldrons</li>
     </apparelRequired>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialApparel</li>
       <li>ImperialArmy</li>
@@ -104,6 +106,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>OuterRim_ImperialOfficerUniform</li>
       <li>OuterRim_ImperialOfficerCap</li>
     </apparelRequired>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialApparel</li>
       <li>ImperialArmy</li>
@@ -132,6 +135,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>OuterRim_ImperialOfficerUniform_Black</li>
       <li>OuterRim_ImperialOfficerCap_Black</li>
     </apparelRequired>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialApparel</li>
       <li>ImperialArmy</li>
@@ -748,6 +752,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>SWKotORWeaponCategoryTag_rifle</li>
       <li>SimpleGun</li>
     </weaponTags>
+    <requiredWorkTags>Violent</requiredWorkTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -770,6 +775,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>guy762_MandoArmor_battle</li>
       <li>guy762_MandoHelmet_supercom</li>
     </apparelRequired>
+    <requiredWorkTags>Violent</requiredWorkTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -788,6 +794,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORSniper</li>
       <li>KotORRanged_rare</li>
     </weaponTags>
+    <requiredWorkTags>Violent</requiredWorkTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -806,6 +813,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_legendary</li>
       <li>ORPistol</li>
     </weaponTags>
+    <requiredWorkTags>Violent</requiredWorkTags>
   </PawnKindDef>
 
   <PawnKindDef>

@@ -273,6 +273,24 @@ APPAREL_TAGS = {
     "Empire":  ["ImperialApparel", "ImperialArmy", "ImperialOfficer"],
 }
 
+# 🔴 EMPIRE_BLACKSTAR_ALWAYS_WILLING_1. DECIDE ruled 2026-08-22 that a pacifist pawn is
+# acceptable from ten of the twelve factions and unacceptable from these two: the Empire is
+# a supply chain and Blackstar is a contract house, and neither sends someone who will not
+# fight. ⛔ The other ten keep their pacifist rolls - DECIDE called that wanted texture and
+# narrowing it a regression.
+#
+# 🔑 `requiredWorkTags` is the VANILLA mechanism and not an invention: 143 kinds in the live
+# 578-mod set already carry it, including Core's own `AncientSoldier`, `Tribal_Archer` and
+# `Tribal_Warrior`. `PawnGenerator` rejects and re-rolls a pawn whose disabled work tags
+# intersect it - "Generated pawn with disabled requiredWorkTags" - which is a harder
+# guarantee than a backstory filter, because it catches a trait or a gene that disables
+# violence as well as a backstory.
+# ⚠️ It is also NOT redundant with the raid path. `PawnGroupKindWorker_Normal` already
+# passes `mustBeCapableOfViolence: true`, so a pawn arriving in a RAID was already covered;
+# what was not covered is every other route these kinds reach the map by - a dev spawn, a
+# quest, a settlement roster, an inhabited map - and that is where the 5-in-20 was measured.
+REQUIRE_VIOLENT = {"Empire", "Blackstar"}
+
 RESIST = {"Grunt": (8, 14), "Heavy": (12, 18), "Specialist": (14, 22), "Leader": (20, 30)}
 WILL   = {"Grunt": (1, 3),  "Heavy": (2, 4),   "Specialist": (2, 5),   "Leader": (4, 7)}
 
@@ -321,6 +339,8 @@ def emit():
             L.append("    <apparelRequired>")
             L += ["      <li>%s</li>" % r for r in req]
             L.append("    </apparelRequired>")
+        if fac in REQUIRE_VIOLENT:
+            L.append("    <requiredWorkTags>Violent</requiredWorkTags>")
         if fac in APPAREL_TAGS:
             L.append("    <apparelTags>")
             L += ["      <li>%s</li>" % t for t in APPAREL_TAGS[fac]]
