@@ -1988,3 +1988,48 @@ at all, rather than cutting them piecemeal off a killlist. The reason to defer i
 ladder is a progression, and cutting a rung out of a progression is how a tech tree ends up
 with a gap nobody notices until a pawn cannot reach the next thing.
 
+
+## JAWA_RAG_NEST_1 An egg nest of rags and scrap, not a poultry box
+
+The Jawa lay eggs, and as of 2026-08-22 they actually do — `SEX_Ovipositor` plus
+`SEX_AlwaysAphrodor` on `MandrakeJawa`, with a hard 32 °C ceiling that makes the cold
+nursery a design pillar (`jawa_society.md` §4.3a). **What they lay them INTO is vanilla's
+`EggBox`**, which *Intimacy — Gender Works* repurposes for human eggs with a patched
+description and nothing else. It is a wooden poultry crate.
+
+⇒ v2 wants **`Jawa_Rag_Nest`**: a hatching nest built from the clan's own materials — rag,
+salvaged insulation, scrap plate — that reads as a burrow lining rather than a farm
+fixture. The fiction is already written for it: a clan that must keep its clutch cold and
+deep does not put it in a slatted box.
+
+**What it needs, roughly:** a `ThingDef` of our own with the same comp shape the mod's
+patched `EggBox` carries (so eggs are still marked for human use and the "lay egg at
+nearest egg box" job still finds it), our own texture, a cheap rag/steel cost, and ideally
+an insulation angle — a nest that helps hold the 0–32 °C band would tie the graphic to the
+mechanic instead of only redressing it.
+
+⚠️ **Check what the mod actually keys on before authoring the def.** The job looks for
+"an egg box marked for human use"; whether that is the `EggBox` defName, a comp, or a
+designation decides whether a new def is picked up for free or needs its own patch. Read
+`Patches/Egg_box_changes.xml` and `JobDriver_LayEgg` first — the whole item is cheap if it
+is a comp and awkward if it is a defName.
+
+## JAWA_EGG_GRAPHIC_1 The human egg gets a Jawa egg's face
+
+`SEX_HumanEgg` ships one texture for every species that lays one, and its description is
+written for a glitterworld engineering programme — *"engineered in some distant glitterworld
+during the 38th century to solve the issue of maternal death."* On a Jawa clutch that reads
+as somebody else's technology.
+
+⇒ v2 wants **a Jawa egg**: its own sprite, leathery and sand-coloured rather than a chicken
+egg, and its own description written from the clan's side. Whether that is a separate
+`ThingDef` or a texture-and-string patch on `SEX_HumanEgg` is the first question — a
+separate def is cleaner to look at and risks the mod's own code not recognising it, and a
+patch is safe and global (every species' egg changes with it).
+
+⚠️ **The ruined variant needs the same pass.** `SEX_HumanEgg_Ruined` is what a clutch
+becomes above 32 °C, and on Ash'karr the player will see it. A cooked Jawa egg deserves to
+look like one — it is the visual the cold-nursery pillar is enforced by.
+
+🔑 Pairs with `JAWA_RAG_NEST_1`; the nest and the egg should be designed together or the
+new nest will hold somebody else's egg.
