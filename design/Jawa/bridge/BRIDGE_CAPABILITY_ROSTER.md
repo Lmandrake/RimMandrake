@@ -23,17 +23,50 @@ a live count from the running bridge is the authority — a source count is not.
 ⛔ **So "Nothing below duplicates those" can no longer be trusted, and the cull is the
 thing that pays for it.** The tool count roughly DOUBLED since this roster was written on
 2026-08-19; anything the owner picks may already exist.
-✅ **RE-WALKED 2026-08-22, and the rows are now MARKED.** The roster names its candidates
-without the `jawa/` prefix, which is why a first pass matching on `jawa/…` found nothing.
-Matched properly: **128 distinct tool names are proposed, and 15 of them are already built.**
-Each of those 15 now carries **✅ BUILT** in its first cell — marked, never deleted, so the
-reasoning that proposed them survives. **113 candidates remain genuinely open**, and the cull
-can be made against those.
+⚠️ **THE "15 BUILT / 113 OPEN" PASS BELOW WAS A NAME MATCH AND UNDERCOUNTS BY ~4× —
+superseded by the semantic reconciliation, CHECK, 2026-08-22.** It is kept for provenance;
+do not cull against it.
 
-The 15: `get_terrain_layers` · `set_substructure_batch` · `set_deep_resource` (§1) · `fire_raid`
-(§2) · `set_pawn_backstory` · `set_pawn_skill` · `set_pawn_appearance` · `set_pawn_faction` ·
-`set_pawn_ideo` · `set_pawn_age` (§3) · `build_batch` · `build_check` · `designate_batch` ·
-`prefab_capture` · `prefab_place` (§7).
+🔑 **The real numbers: 103 capability rows. 56 are FULLY DELIVERED, 10 are PARTIAL,
+37 are genuinely open.** The name match caught only rows whose proposed name equals the
+shipped name; every capability **absorbed into a multi-action tool** was missed — e.g.
+`set_under_terrain`, `set_temp_terrain`, `set_terrain_color` and `remove_top_layer` are all
+four modes of the single shipped `jawa/set_terrain_layer`.
+
+⛰️ **Where the open work actually is.** §3 DEEP PAWN EDITING is **done but for
+`set_pawn_gender`** (`gender` is read in `pawn_get`, PawnTools:115, and never written).
+§1 is 14 of 23 done. **The 37 open rows concentrate in §0 lords/settlements (7), §1 map
+generation (7), §2 incidents/clock (6), §4 pipes and power nets (3), §5 patrol (3) and
+§7 layout/blueprints/power (10).** Start a cull there.
+
+📛 **The 10 PARTIAL rows are the trap** — a tool exists and does less than the row asks, so
+both "built" and "open" are wrong about them: `lord_list`/`lord_destroy` (`social_cancel`
+clears gathering/ritual lords only) · `pawn_force_job` (`order_pawn` is Goto/walk only) ·
+`wildlife_spawn` (no ambient-density control) · `create_allowed_area` (`TryMakeNewAllowed`
+absent) · `drop_roof` (no `RoofCollapserImmediate` crush) · `fire_incident_full` ·
+`set_storyteller` (read-only today) · `list_letters`/`send_letter_delayed` · `place_pipe_line`
+(UNCERTAIN) · `wipe_cell` (no refund, no pre-query).
+
+⚠️ **Two UNCERTAINs a live tool list would settle, and source alone cannot:** the clock and
+speed tools (`get_time`/`set_time_speed`) may already exist in **core RimBridge** rather than
+the companion; and whether `connect_cells` handles a **modded** pipe def's grid-dirty step.
+
+⚠️ **`jawa/fire_incident` and `jawa/send_letter` are GM-gated** (`#if JAWA_GM_TOOLS`,
+`JawaBenchTerrainTools.cs:3795`; `build.py --gm`, OFF by default) ⇒ a **default deploy ships
+117, not 119**. A live count from the running bridge is the authority over any source count.
+
+🪤 **Method note, because it bit:** the `[Tool(` attribute puts its name on the **next line**,
+so a single-line `\[Tool\("` regex returns **0** and reads as a clean answer.
+
+---
+
+**Superseded provenance — the 2026-08-22 name-match pass:** *"128 distinct tool names are
+proposed, and 15 of them are already built … 113 candidates remain genuinely open."* The 15
+it found: `get_terrain_layers` · `set_substructure_batch` · `set_deep_resource` (§1) ·
+`fire_raid` (§2) · `set_pawn_backstory` · `set_pawn_skill` · `set_pawn_appearance` ·
+`set_pawn_faction` · `set_pawn_ideo` · `set_pawn_age` (§3) · `build_batch` · `build_check` ·
+`designate_batch` · `prefab_capture` · `prefab_place` (§7). Those rows still carry ✅ BUILT in
+their first cell; **41 more rows deserve the same mark and do not yet have it.**
 
 ⚠️ **§6 "ALREADY BUILT — do not re-roster these" is itself the 08-19 list of 57** and has not
 been regenerated. Trust the ✅ marks and the source count, not §6.

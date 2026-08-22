@@ -37,3 +37,45 @@ count and the Homestead consequence both carried a true finding under a false nu
 effect. 🔑 **Both half-wrong rows would have been made WORSE by acting on the sweep as written**:
 deleting the attack-order warning because its count was stale, or deleting the abstract-parent
 mechanism because its example had been fixed. The item files were right to say *verify first*.
+
+---
+
+# Reconciling the bridge capability roster — CHECK, 2026-08-22
+
+`design/Jawa/bridge/BRIDGE_CAPABILITY_ROSTER.md` was written 2026-08-19 against 57 built
+tools, to be culled by the owner. The companion source now declares **119**. A 2026-08-22
+pass marked 15 rows built and 113 open; that pass matched on NAME and is wrong by ~4×.
+
+**Measured:** 119 `[Tool]` declarations, unique, across the seven `JawaBench*Tools.cs` files
+(Diagnostic 4 · Event 13 · Faction 3 · Map 16 · Pawn 18 · Terrain 32 · World 33). Two are
+GM-gated (`#if JAWA_GM_TOOLS`) ⇒ **a default deploy ships 117**. 🪤 The `[Tool(` attribute
+carries its name on the FOLLOWING line, so a single-line `\[Tool\("` regex returns 0 and
+reads as a clean answer — the same shape as every instrument in `BUILDABLE.md`.
+
+**103 capability rows ⇒ 56 fully delivered · 10 partial · 37 open.**
+
+🔑 **Why the name match failed: absorption.** Every capability folded into a multi-action
+tool was missed. `set_under_terrain`, `set_temp_terrain`, `set_terrain_color` and
+`remove_top_layer` are four MODES of `jawa/set_terrain_layer`; `set_snow`, `add_snow_radial`,
+`set_sand`, `add_sand_radial` are `set_weather_buildup(kind, mode)`; the whole of §3's gear,
+health and psychic surface is four tools. ⇒ **A roster row is a CAPABILITY, not a tool name,
+and only a semantic match can retire one.**
+
+📛 **The 10 partial rows are the real hazard** — "built" and "open" are both wrong about
+them. `social_cancel` clears gathering/ritual lords only and returns a count, so
+`lord_list`/`lord_destroy` is not delivered; `order_pawn` is Goto/walk only, so
+`pawn_force_job` is not; `weather_get` READS storyteller/difficulty/threatScale
+(EventTools:87-90) with no setter and no `Notify_DefChanged`.
+
+**Open work concentrates in §0 lords/settlements (7), §1 map generation (7), §2
+incidents/clock (6), §4 pipes and power (3), §5 patrol (3), §7 layout/blueprints/power (10).**
+§3 DEEP PAWN EDITING is complete but for `set_pawn_gender` — `gender` is read at
+PawnTools:115 and never written.
+
+⚠️ **Two UNCERTAINs source alone cannot settle, and a live tool list would:** whether
+`get_time`/`set_time_speed` already exist in core RimBridge rather than the companion, and
+whether `connect_cells` handles a modded pipe def's grid-dirty step. Both are marked
+UNCERTAIN in the roster rather than guessed.
+
+Header superseded in place per the project's supersede-in-place rule; the name-match pass is
+kept as provenance, not deleted.
