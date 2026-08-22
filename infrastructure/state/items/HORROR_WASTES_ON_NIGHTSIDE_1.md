@@ -74,3 +74,29 @@ anomaly entities. ⇒ **Treat `HorrorWastes` as a SHELL we fill, not a biome we 
 Owed alongside the tiles: a cold terrain set, and a cast of cold-viable hostiles.
 ⚠️ Its `animalDensity` is **3.6**, which is high — a near-empty cast at high density is the
 `AB_RockyCrags` failure repeated, so the cast has to land with the tiles, not after.
+
+## ✅ TILES PLACED 2026-08-22 — and the terrain defect is now MEASURED
+`ashkarr_nightside_pass.py --apply` moved **1,200** of `AB_RockyCrags`' coldest tiles
+(arc ≥ 140) to `HorrorWastes`. `AB_RockyCrags` 4,703 → 3,423 and its thermal span narrows,
+which was the second reason for doing it.
+
+🔴 **Its ground colour proves the terrain is wrong for where it now sits.** Sampled from the
+real terrain textures (`biome_fit.py`, 25 biomes):
+
+| biome | ground rgb | |
+|---|---|---|
+| `HorrorWastes` | **[97, 82, 67]** | warm sand — `Sand`, `Soil`, `SoilRich` |
+| `Desert` | [130, 111, 88] | ⚠️ **its nearest neighbour in colour** |
+| `AB_RockyCrags` — what surrounds it | [29, 27, 30] | near-black rock |
+| `SeaIce` — its other neighbour | [155, 164, 172] | pale blue-grey |
+
+⇒ **On the deep nightside it will read as a warm sand patch dropped into black rock and
+ice.** The def is a *dry* horror biome (its own description: *"A dry region"*) and nothing
+about it was authored for −56 °C.
+
+**Still owed before this closes:**
+1. **A cold terrain set** — it must not sit at [97,82,67] between [29,27,30] and [155,164,172].
+2. **A cast.** Its three shipped animals (`Bulwark`, `Terrorworm`, `Visceral`) all die at
+   −56 °C, and `animalDensity` is **3.6** — near-empty at high density is exactly the
+   `AB_RockyCrags` failure being repeated. Carried by `BIOME_CREATURE_CAST_1`; it is one of
+   the four biomes licensed to draw on the 14 anomaly entities.

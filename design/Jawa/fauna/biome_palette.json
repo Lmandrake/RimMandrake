@@ -1072,6 +1072,23 @@
    "hex": "#4f4c49",
    "file": "wastelandasphalt.png",
    "rule": "bare"
+  },
+  "Terrain/Surfaces/Ice": {
+   "rgb": [
+    155,
+    164,
+    172
+   ],
+   "hsv": [
+    209.07196224554144,
+    0.103809727703023,
+    0.6763285319010417
+   ],
+   "hex": "#9aa3ac",
+   "source": "resources.assets (cached)",
+   "file": "Ice.png",
+   "rule": "bare",
+   "note": "added 2026-08-22 for the new SeaIce biome; the 67-terrain pass never needed it"
   }
  },
  "biomes": {
