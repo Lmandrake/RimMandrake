@@ -179,6 +179,25 @@ The Ammonia Flats · The Salt Gate (the deltas).
 3. **Rivers evaporate as they go.** Loss per tile is brutal in the deep waste and mild
    in the crater basin. Without this every stream that starts anywhere arrives
    somewhere and the map fills with rivers no climate could feed.
+7. 🔴 **NO RIVER MAY EXIST ON THE TERMINATOR — owner, 2026-08-22 13:04.** Verbatim:
+   *"There should not be rivers on the terminator."* ✅ **The map already complies:** the
+   highest arc carrying a river anywhere is **71.52**, and there are **zero** river tiles at
+   arc > 74. This is written down so a later hydrology pass does not "repair" the dry
+   meridian by feeding it. The meridian's green is fungal and gathers its water from the
+   air (§5), so it needs no river and must not be given one.
+
+8. 🔴 **THE MERIDIAN WATER BODIES SHRINK TO ~HALF — owner, 2026-08-22 13:04**, and the Grey
+   Sea gets a desiccation halo. Verbatim: *"I would like to shrink the meridian water bodies
+   to around half their current size. Around the gray sea I would like there to be some small
+   patchy bits of water dotted around as though low-lying regions were still flooded with
+   brine while it slowly dessicates away, like the Dead Sea."*
+   ⇒ The Grey Sea — (92, 8), 0 m sink, already logged *"salt-encrusted, shrinking"* — is the
+   subject. **Halving it and scattering brine remnants is the same gesture as the label it
+   already carries.** Carried by `MERIDIAN_WATER_HALVED_1` and `GREY_SEA_BRINE_PATCHES_1`.
+   ⚠️ **Water is a canon figure** (`canon.yml > planet.water_pct`, 8.14% / 1,780 tiles) and
+   this pass moves it. Re-measure and update canon in the same change, or the next audit
+   reports a defect that is actually this ruling.
+
 4. **Genuine basins are left endorheic** — only pits shallower than 70 m are filled.
    🔴 Filling every depression guarantees every tile a path to the sea and makes dying
    rivers impossible; that bug produced **zero** salt pans.
@@ -215,9 +234,17 @@ belongs on a desert world but only adjacent to steaming evaporating rivers."*
 `AB_FeraliskInfestedJungle` — 534 tiles, 100% dayside — has **222 tiles on a river, 261 one
 hop out, 51 two hops out and NOT ONE beyond that.**
 
-⚠️ **Open, and the owner's:** whether *"only adjacent to rivers"* also binds the **meridian**
-mycoid belt. If it does, 2,968 tiles change biome. DECIDE's reading is that it does not —
-mycoid forest is watered by the terminator, not by rivers. `MERIDIAN_GREEN_IS_NOT_RIVER_JUNGLE_1`.
+✅ **ANSWERED BY THE OWNER, 2026-08-22 13:04 — the rule does NOT bind the meridian, and no
+tile moves.** Verbatim: *"mycoid is watered by terminator drift processes & efficient
+atmospheric moisture gathering by the fungus, NOT by rain or steaming rivers. There should
+not be rivers on the terminator."*
+
+⇒ 🔑 **The mycoid belt has its OWN hydrology and it is not fluvial.** The fungus gathers
+moisture from the air; the terminator drift feeds it. **Do not measure meridian green against
+distance-to-water — that metric does not apply to it**, and doing so produced a false "93% of
+jungle violates the ruling" that would have re-authored 2,968 tiles.
+⛔ **And do not "fix" the meridian by giving it rivers.** Rivers on the terminator are now
+forbidden outright — see §4 rule 7.
 
 | band | dayside | meridian (arc > 82) |
 |---|---|---|
