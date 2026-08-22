@@ -138,6 +138,19 @@ The clan enslaves **anyone outside the Clan**, but what happens next depends on 
 > biological rather than decorative, and it makes a power failure in a modern Jawa hold a
 > reproductive catastrophe rather than a mood hit.
 > ⚠️ **Do not "fix" the 32 °C ceiling.** It is what makes the ruling true.
+>
+> **✅ MEASURED 2026-08-22, and the tension is real rather than predicted**
+> (`infrastructure/state/evidence/xenotype_temperature_audit_2026-08-22.md`):
+> `MandrakeJawa` adults are comfortable to **46.0 °C** — `MinTemp_SmallIncrease` plus
+> `MaxTemp_LargeIncrease` puts their band at 20.5..46.0 against a baseline human's 16..26.
+> The egg ruins above **32 °C**. ⇒ **there is a fourteen-degree window in which the clan is
+> perfectly comfortable and its own clutch cooks**, and the Trade Moot's seven settlements
+> sit at 24.4..28.1 °C annual mean — close enough that a summer afternoon crosses 32 while
+> the adults never notice. The nursery is not a precaution against a hostile world; it is a
+> precaution against a world the adults find pleasant.
+> 🔑 The same audit found the Trade Moot is **the only one of the twelve authored factions
+> whose xenotypes cover every tile it holds.** The Jawa are the best-adapted people on
+> Ash'karr and still cannot raise their young in the open.
 
 The clan's growth engine (this is the reason recruitment isn't needed):
 
