@@ -182,3 +182,75 @@ roster; we author no pawn kinds for either.**
    stormtrooper armour, Mandalorian plate, warcasket, Jawa robe.
 4. ⚠️ **`apparelStuffFilter` is a FACTION field, not a kind field** — set it once
    per faction. **The cheapest way to make the Junkers look like Junkers.**
+
+---
+
+## 🔴 Who may arrive unable to fight — DECIDE's ruling, 2026-08-22
+
+_Closes `UNARMED_RAIDERS_ACCEPTABLE_RATE_1`. Supersedes the bar in
+`ROLE_KINDS_ARMED_5_OF_5_1` ("all 48 kinds spawn 5/5 armed"), which is unreachable._
+
+**RimWorld will not arm a pawn whose backstory disables `Violent`.** No def edit reaches
+that, so a flat "every kind, every roll, armed" can never pass. ⛔ **But the answer is not
+to pick a tolerable percentage.** A rate is a number nobody can act on and it hides the
+only thing that matters — *which* faction the unarmed pawn belongs to.
+
+⇒ **The criterion splits into two independent claims. Grade them separately.**
+
+### A · Pool integrity — an absolute bar, and it is currently FAILING
+
+**Every authored combat kind must have a non-empty reachable weapon pool.** A bare-handed
+pawn whose backstory does **not** disable `Violent` is a defect in our defs, full stop.
+There is no acceptable rate; the bar is **zero**.
+
+Measured 2026-08-21, 240 spawns across the 48 kinds
+(`infrastructure/state/observed/2026-08-21/armed_sweep_48/rolls.json`) — **8 such rolls,
+and they are not scattered:**
+
+| family | rolls | bare | of which pacifist | 🔴 unexplained |
+|---|---|---|---|---|
+| **Blackstar** | 20 | 5 | 0 | **5** |
+| **DeepDesert** | 20 | 4 | 1 | **3** |
+| Empire | 20 | 5 | 5 | 0 |
+| Helix · Geonosian · Wildsteam · Deepwater · Droid · Homestead · Hutt · Junkers · TradeMoot | 180 | 13 | 13 | 0 |
+
+⭐ **Every unexplained bare roll is in one of two families**, across six kinds:
+`Jawa_Blackstar_Heavy · _Leader · _Specialist` and `Jawa_DeepDesert_Grunt · _Leader ·
+_Specialist`. **Ten of the twelve families are clean.** ⇒ This is not a roster-wide
+weapon-tag problem and must not be worked as one.
+
+⚠️ **The same two families are the ones `ORPHANED_ROLE_KINDS_UNFIELDED_1` found fielded by
+no `FactionDef`.** Note the coincidence; do **not** assume one cause. Unfielded is a
+wiring defect, an empty pool is a tag defect, and fixing either leaves the other.
+
+### B · Pacifist incidence — a fiction call, per faction, and it is mine
+
+A pawn the engine refuses to arm is not a defect. Whether it is **acceptable** depends
+entirely on who sent them.
+
+| faction | may field a pawn who will not fight | why |
+|---|---|---|
+| Jawa Trade Moot · the Junkers · Homestead Defense League · Wildsteam Clan · Deepwater Compact · Free Droid Enclaves · Ascendant Helix · Geonosian Foundry Hive · Hutt Cartel · Deep Desert Tribes | ✅ **yes** | scavengers, traders, levies and hired labour carrying whatever they own. One who will not fight is texture, and on a salvage world it is *good* texture |
+| 🔴 **Galactic Empire** | ⛔ **no** | conscripted, drilled and helmeted. Its authored faith is `VME_Anonymity` and *the Line* — **"nothing behind the helmet wants anything."** A stormtrooper who declines to shoot is the faction contradicting its own ideoligion in front of the player. **5 of 20 rolls today** |
+| 🔴 **Blackstar Company** | ⛔ **no** | hired *for* violence — *"one dangerous person with a name who is coming for you"* (`FACTION_SPEC.md` 10). A contract hunter who will not fight has no reason to be on the map |
+
+⇒ **Two factions, eight kinds, need their combat roles kept off violence-disabling
+backstories.** ⛔ **Do not apply this to the other ten** — narrowing their pawn variety
+buys nothing and costs the texture the ruling just defended.
+
+🔑 **HOW is BUILD's, not mine.** Backstory-category constraint, a curated
+`backstoryFilters`, or something else entirely — I do not care which, only that an
+Imperial trooper and a Blackstar hunter always arrive willing.
+
+### What this ruling does NOT change
+
+- **Vanilla kinds are out of scope here.** `Mercenary_Sniper`, `Scavenger`, `Town_Guard`
+  and the rest run at **32.5% bare** for a different reason — the weapon cut emptied their
+  tags. That is `ORPHANED_KINDS_AFTER_GUN_CUT_1` and it is still open.
+- **No rate is hereby blessed.** 11.2% is a measurement, not a target. After A is fixed and
+  B is applied, whatever number falls out of the ten permitted factions is correct by
+  construction.
+- ⚠️ The item's own caveat stands: violence-disabling **traits** were never measured — the
+  dump reports 0 `TraitDef`s with `Violent` in `degreeDatas`, which is a
+  [blind spot](../../../infrastructure/state/dumps), not a proven zero. If a trait route
+  exists, some of the 8 may move from A to B. **Measure it before building A.**
