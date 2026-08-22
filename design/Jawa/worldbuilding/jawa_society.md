@@ -89,6 +89,56 @@ The clan enslaves **anyone outside the Clan**, but what happens next depends on 
 
 ### 4.3 Reproduction — all-male, homosexual, egg-laying, fast-growing
 
+> 🔴 **BUILT AND CORRECTED 2026-08-22. Two things below are now WRONG and one owner ruling
+> has been added. Read this block before the bullets.**
+>
+> **(1) `Outland_EggLayer` DOES NOTHING, and the bullets below commit the whole design to it.**
+> Measured against the live 578-mod dump: its `geneClass` is `Verse.Gene`, the plain base
+> class, and its only modExtension is Vanilla Expanded Framework's `GeneExtension`, which
+> serialises 21 fields and has **no egg field of any kind**. Nothing reads it. The
+> "triply redundant" reasoning in the bullets was about the gene being AVAILABLE; nobody
+> checked that it was IMPLEMENTED. Nineteen of our xenotypes carried it and gave live birth.
+>
+> **(2) The working route is `SEX_Ovipositor`, from *Intimacy — Gender Works*,** which is
+> the mod that actually owns pregnancy in this load — it replaces
+> `PregnancyUtility.CanEverProduceChild` outright. `Jawa_Patches/Patches/EggLayersLayEggs.xml`
+> adds it beside `Outland_EggLayer` on all nineteen; the Outland gene is kept for its icon
+> and its exclusion tags, not for behaviour.
+>
+> **(3) "All male" alone did not give male–male conception — it PREVENTED it.** Intimacy
+> assigns every pawn a reproductive class, and by default that class follows gender. With
+> `Outland_AllMale` forcing male, **every Jawa was a phallor**: nobody had a female organ,
+> so no two Jawa could conceive at all, and the ovipositor gene — which by its own text only
+> does anything "for a gestor or aphrodor carrier" — reached nobody. The clan was sterile
+> with itself. ⇒ `SEX_AlwaysAphrodor` is now on the xenotype: **both organs on every Jawa,
+> regardless of gender**, with the ovipositor standing in for the female one. Any Jawa can
+> impregnate any other Jawa and the one impregnated lays the egg. That is §4.3's "male–male
+> pregnancy producing eggs", and it needed a third gene nobody had identified.
+> 🔑 Fertility is on the **male** age curve because every Jawa is male — full from 18 to 50,
+> tapering to zero at 90. The female curve is already near-zero by 45. The clan got the long one.
+>
+> ### 🔴 4.3a THE COLD NURSERY — owner's ruling, 2026-08-22
+> **His words:** *"That would mean Jawa MUST build deep cave-like homes in the wild or (in
+> modern days) build refrigerated egg chambers in order to reproduce. That's fantastic."*
+>
+> **The mechanism, measured:** a laid egg carries
+> `CompProperties_TemperatureSensitiveHumanEgg` with `minSafeTemperature 0` and
+> **`maxSafeTemperature 32`**. Outside that band the egg accrues ruin and becomes
+> `SEX_HumanEgg_Ruined` — no hatch, no child.
+>
+> **Why that is load-bearing on Ash'karr and not a footnote:** measured against
+> `world/ASHKARR_WORLDMAP_tiles.csv`, **6,276 of 21,872 tiles (29%) exceed 32 °C on their
+> ANNUAL MEAN**, and an annual mean badly understates summer daytime peaks. The hottest
+> biomes are ExtremeDesert and Desert — which is where Jawa live.
+>
+> ⇒ **The clan cannot reproduce in the open on its own homeworld.** A clutch needs depth,
+> shade or refrigeration, and the wild-clan and settled-clan answers differ exactly as the
+> owner describes them. This is now canon and it is a *design pillar*, not a constraint to
+> be engineered away: it gives the sandcrawler and the burrow a reason to exist that is
+> biological rather than decorative, and it makes a power failure in a modern Jawa hold a
+> reproductive catastrophe rather than a mood hit.
+> ⚠️ **Do not "fix" the 32 °C ceiling.** It is what makes the ruling true.
+
 The clan's growth engine (this is the reason recruitment isn't needed):
 
 - **All Jawa are male and homosexual.** *Mechanic:* force male pawn generation + the Biotech **Gay gene** (or equivalent) in the xenotype/pawnkind. Forcing 100% male at generation may need a pawnkind `<fixedGender>Male` patch or a mod; 🔎 confirm the cleanest route.
