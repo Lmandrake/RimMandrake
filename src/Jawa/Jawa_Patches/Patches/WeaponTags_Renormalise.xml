@@ -1967,6 +1967,124 @@
     </match>
   </Operation>
 
+<!--
+
+    VEE_HUNTERS_GET_WEAPONS_1. `IncidentDef VEE_HuntingParty` (worker `VEE.HuntingParty`,
+    mod `vanillaexpanded.vee`) spawns `VEE_Hunter` and `VEE_TribalHunter`. Each asks for
+    ONE tag, and both tags have ZERO carriers in the live dump - measured 2026-08-22 -
+    so both hunters arrive with empty hands, every time.
+
+    ⚠️ Their tags were never OUR casualty: no installed mod has ever declared
+    `VEE_HunterIndustrialWeapon` or `VEE_HunterNeolithicWeapon` on a ThingDef. VEE ships
+    the kinds and expects some other mod to fill the tags; nothing does. So a CHOSEN tag
+    is the fix, not a restoration.
+
+    🔑 TAGGED AT THE WEAPON END, deliberately, unlike `Tribal_Archer_Fire` above. The
+    faction slate cannot reach these kinds - `OnlyOurFactions.xml` zeroes
+    `startingCountAtWorldCreation`, and an incident has no FactionDef to zero - so the
+    tag has to become real rather than the kind be re-pointed. Any future kind asking
+    for either tag is then also covered, at no further cost.
+
+    ⛔ Do NOT do the same for `DP_ArtilleryPirate` / `DP_RocketPirate`. They are false
+    positives by design: the mod ships `DP_CannonNoEquip` / `DP_RocketNoEquip` as Primary
+    equipment with `destroyOnDrop=true`, no `weaponTags` and `weaponMoney` 99999. Tagging
+    them would put a mortar in a pirate's hands.
+
+    THE CHOICES, and the price each was checked against (all UNCUT in the 1342-entry
+    Cherry Picker list, prices from the 578-mod dump):
+
+      VEE_Hunter        weaponMoney 9999~9999  - price is not a constraint
+        OuterRim_CyclerRifle   364  a slugthrower marksman rifle; the campaign's
+                                    hunting-rifle analogue now the vanilla line is cut
+        guy762_brifle_dmr      762  blaster DMR, the industrial-settler counterpart
+
+      VEE_TribalHunter  weaponMoney 330~850  - the ROLL is what matters, so the pool's
+        cheapest must sit at or under 330 or a low roll still fields bare hands
+        VFET_Throwspikes        25  cheapest; this is what makes the kind ALWAYS arm
+        VWE_Throwing_Knives     45
+        MA_CapryakScatterbow   520  an actual bow at the top of the roll
+
+    ⚠️ `AG_ForsakenBow` (125) and `BMT_BlastSpore` (1) were rejected on lore, not price -
+    an Ultratech Forsaken bow and a thrown fungus are not desert-tribal hunting gear.
+    `BS_GiantPrimitiveBow` (295) was rejected because it is a GIANT weapon and these
+    hunters are not; see `BIG_WEAPON_XENOTYPE_AUDIT_1`.
+
+-->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Outer Rim - Core</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="OuterRim_CyclerRifle"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="OuterRim_CyclerRifle"]/weaponTags</xpath>
+        <value><li>VEE_HunterIndustrialWeapon</li></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="OuterRim_CyclerRifle"]</xpath>
+        <value><weaponTags><li>VEE_HunterIndustrialWeapon</li></weaponTags></value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="guy762_brifle_dmr"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="guy762_brifle_dmr"]/weaponTags</xpath>
+        <value><li>VEE_HunterIndustrialWeapon</li></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="guy762_brifle_dmr"]</xpath>
+        <value><weaponTags><li>VEE_HunterIndustrialWeapon</li></weaponTags></value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Vanilla Factions Expanded - Tribals</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="VFET_Throwspikes"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="VFET_Throwspikes"]/weaponTags</xpath>
+        <value><li>VEE_HunterNeolithicWeapon</li></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="VFET_Throwspikes"]</xpath>
+        <value><weaponTags><li>VEE_HunterNeolithicWeapon</li></weaponTags></value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Vanilla Weapons Expanded</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="VWE_Throwing_Knives"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="VWE_Throwing_Knives"]/weaponTags</xpath>
+        <value><li>VEE_HunterNeolithicWeapon</li></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="VWE_Throwing_Knives"]</xpath>
+        <value><weaponTags><li>VEE_HunterNeolithicWeapon</li></weaponTags></value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Mythic Ages: Megafauna Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="MA_CapryakScatterbow"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="MA_CapryakScatterbow"]/weaponTags</xpath>
+        <value><li>VEE_HunterNeolithicWeapon</li></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="MA_CapryakScatterbow"]</xpath>
+        <value><weaponTags><li>VEE_HunterNeolithicWeapon</li></weaponTags></value>
+      </nomatch>
+    </match>
+  </Operation>
+
 <!-- END HAND-AUTHORED -->
 
 </Patch>
