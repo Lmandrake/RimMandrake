@@ -70,6 +70,14 @@
 > - 20 spawns each of the eight Empire/Blackstar kinds — zero violence-disabling
 >   backstories; the other ten families within noise of 13/180.
 > - six spawns of `Jawa_Colonist` — robe and hood, no jeans.
+> - 🆕 **the cache audit, added 2026-08-22 in the game-down window.** One command:
+>   ```
+>   python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\prove_world_cache_audit.py
+>   ```
+>   ⭐ **Read `[JawaBench] ready:` for 120, not 119** — `jawa/world_cache_audit` is new this
+>   load, so 119 means the companion deploy did not take. The harness arms a cache, repaints
+>   under it and requires a non-zero stale count; **its last step needs a SECOND load** (save,
+>   reload, expect `staleTotal == 0`) and it says so rather than pretending.
 >
 > ⚠️ **THE SCENARIO IS THE ONE THING THAT CANNOT BE TESTED BY A QUICKTEST.**
 > `Jawa_UtinniStart` could not start a game at all before `6b9a79b9` — `ConfigErrors`
