@@ -377,6 +377,16 @@ dump with their `weaponTags` stripped, so a tag whose every carrier was cut is *
 from a dump-built index rather than **empty** in it — and a counter over that index cannot
 return anything but zero. ⇒ Attribute cuts from the mod's SOURCE XML.
 
+**11 — a generator's own success line cannot tell you it just deleted a def.**
+`gen_pawnkind_roster.py` emits 48 pawn kinds; the committed XML held **49**. The odd one
+was `Jawa_Homestead_DesertRanger`, hand-added to the OUTPUT after an owner ruling, with
+thirty lines of provenance the generator's table has nowhere to put. Re-running printed
+`wrote … 48 pawn kinds` — the same sentence it prints when nothing is wrong. ⇒ **Before
+re-running ANY generator whose output is committed, count the defs in the output and
+compare to what the generator claims to emit.** A count is not a roster, and a generator
+that no longer knows about an entry deletes it in silence. Fixed 2026-08-21 with a verbatim
+`EXTRAS` block; the same audit is owed by every other emitter in `Utils/`.
+
 **9 — a tag table pairs kinds that a tag table cannot pair.** Losing the sole carrier of a
 weapon tag disarms a kind ONLY if that kind also blocks inheritance. `Flamebow`'s cut emptied
 `NeolithicRangedFlame`, which both `Tribal_Archer_Fire` and `Tribal_Hunter_Fire` declare — but
