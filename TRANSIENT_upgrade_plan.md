@@ -8,7 +8,7 @@
 > ⛔ **This REPLACES the 2026-08-21 freeze banner**, which said the opposite and is struck. The
 > freeze lasted one evening and did its job — it stopped a redraft nobody wanted.
 > ⚠️ **What did NOT come back:** re-running `ashkarr_paint.py` to regenerate the bundle, the
-> reference-match harness (`refmatch.py` stays cancelled), and worldgen, which is out of every
+> reference-match harness (`refmatch.py` is **V2**, owner 2026-08-22 — deferred, not cancelled), and worldgen, which is out of every
 > version and always was. **The map is edited DIRECTLY, one map, in place** — that is the whole
 > method, per `the_one_map.md`.
 > 🔮 `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` stands as history, not as a plan.
@@ -834,7 +834,8 @@ owner's 2026-08-20 naming ruling forbids. Corrected throughout:
 > scores the map against the reference photographs has nothing left to decide once the map is
 > accepted, so there is nothing here for a reference-matching harness to judge. ⛔ **Do not build any part of it,
 > and do not treat the five defect screens, the render loop or the acceptance picture as
-> pending work.** `refmatch.py` is cancelled, not gated, and does not exist. **W1b
+> pending work.** `refmatch.py` is **V2** (owner, 2026-08-22) — deferred, not cancelled, and
+> does not exist yet. **W1b
 > (`ORTHO_GLOBE_FIRST_RENDER_1`) and W7 are both dead**; the wave list, the briefs and the
 > acceptance table below still name them and are wrong. It is kept for the post-v1 rethink
 > — `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` — not as a plan.
@@ -1104,7 +1105,7 @@ W5  solo ................. hooks + agent seat file rewrite      [touches .claude
 W6  ×1 + ×4 .............. board plumbing (solo) → then 4 view modules in parallel
       │
       ▼
-W7  solo ................. refmatch.py            [⛔ CANCELLED FOR V1 - ORTHO_GLOBE_MAP_ACCEPTED_1]
+W7  solo ................. refmatch.py            [⏩ V2 - owner 2026-08-22, deferred not cancelled]
 ```
 
 **Why W2 is nine agents and not fifteen:** the contested numbers are not spread one-per-document.

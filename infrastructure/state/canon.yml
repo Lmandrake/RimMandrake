@@ -815,9 +815,13 @@ ruled:
       continuity repairs, landmarks, named places, settlements and terrain detail, edited
       DIRECTLY and in place. The freeze lasted one evening and did its job: it stopped a
       redraft nobody wanted.
-      ⛔ What did NOT come back: regenerating the bundle with `ashkarr_paint.py`; `refmatch.py`,
-      which stays cancelled and does not exist; and worldgen, which is out of every version and
-      always was. `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` stands as history, not a plan.
+      ⛔ What did NOT come back: regenerating the bundle with `ashkarr_paint.py`; and worldgen,
+      which is out of every version and always was.
+      🔴 `refmatch.py` IS V2 — owner's ruling, 2026-08-22: "Please put refmatch.py in v2
+      officially, right now." ⛔ It is NOT cancelled and NOT dead; it is deferred, and this
+      ruling used to say "stays cancelled and does not exist". ✅ Do not build it for v1 and
+      do not treat a v1 decision as needing it. `design/V2_DREAMS.md > REFERENCE_MATCH_HARNESS_2`
+      carries it; the item is `REFMATCH_CANCELLED_NOT_GATED_1`, target v2. `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` stands as history, not a plan.
       See `WORLD_ADOPTED_AUTHORING_OPEN_1`, which supersedes `WORLD_FROZEN_RETHINK_PLANET_1`.
 
   VANILLA_FIREARM_LINE_CUT_1:

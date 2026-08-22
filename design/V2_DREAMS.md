@@ -1937,6 +1937,31 @@ objection was aesthetic and holistic. But a new method that reproduces them has 
 - **The judgement loop never closed.** `refmatch.py` — five defect screens calibrated against
   the reference photographs — was specified twice, gated, cancelled, and never written. The
   map was accepted by eye instead, and then the eye changed its mind.
+  ⇒ 🔴 **It is now V2 work, not a dead idea — see `REFERENCE_MATCH_HARNESS_2` below.**
+
+## REFERENCE_MATCH_HARNESS_2 Measure the planet against the reference photographs
+
+🔴 **OWNER'S RULING, 2026-08-22: *"Please put refmatch.py in v2 officially, right now."***
+⛔ **Not cancelled. Deferred.** Every doc that called it *"cancelled and does not exist"* is
+corrected in the same commit — `canon.yml > ORTHO_GLOBE_MAP_ACCEPTED_1`, `V1.md`,
+`TRANSIENT_upgrade_plan.md` §17 and its W7 row. The tracked item is
+`REFMATCH_CANCELLED_NOT_GATED_1`, retargeted to v2; nothing is blocked on it.
+
+**What it is.** A tool that renders the authored planet and scores it against the reference
+photographs on five defect screens — circularity, straight-run length, bearing variance, and
+the two the thresholds were never calibrated for. It closes the loop the v1 world never had:
+the map was judged **by eye**, and the eye changed its mind twice.
+
+🔑 **Why it is worth more in v2 than it was in v1.** In v1 it arrived after the map was
+accepted, so it could only re-litigate a settled call — which is exactly why it was ruled
+moot. The owner is now remaking the planet an entirely different way (`canon.yml`
+`planet.status: remaking`), and a harness that says *how far off the reference we are*
+is worth most **while a world is being authored**, not after it is frozen.
+
+⚠️ **Its thresholds were never calibrated and its numbers were never trusted.** Whoever
+builds it starts from the reference photographs in `design/Jawa/worldbuilding/the_one_map.md`
+and calibrates against a world someone has already judged good by eye — a screen nobody has
+validated is a number that lies, which is the failure this repo has hit repeatedly.
 
 ### What a new method has to do better
 
