@@ -65,11 +65,34 @@ planet:
   # ADVISORY — it reports the difference and never blocks a write. Enforcement was
   # actively refusing DECIDE's remake at the write, using the dead world's numbers.
   # ✅ Set it back to `frozen` when a new world is frozen, and the rules bite again.
+  # 🔴 `remaking` IS A FOUR-STEP SEQUENCE, NOT A MOOD — owner, 2026-08-22 10:57, to REP.
+  # It was being read as the binary "adopt Ash'karr or redraw it". It is neither. His words:
+  #   1. "DECIDE and I have an out of game map we are working on together. It is NOT
+  #      frozen/finalized" — the new map exists, OUT OF GAME, and is in progress.
+  #   2. "then we need to successfully show that it can survive a port into the game
+  #      through the live bridge" — 🔑 A PORT-SURVIVAL PROOF IS A GATE. Until the map has
+  #      been carried in through the bridge and read back, nothing downstream is real.
+  #   3. "Simultaneously, we are working to define the factions, leadernames,
+  #      ideoligions, etc. because those must be finalized and correct at game initiation
+  #      it turns out." — ⛔ these do NOT wait for the map. They are baked at initiation and
+  #      cannot be retrofitted, so they run in PARALLEL with steps 1-2.
+  #   4. "Once all that is done, then we can finally save a game and meaningfully freeze
+  #      it as the embodied world."
+  # ⇒ 🔑 **THE FREEZE IS A SAVEGAME.** Not a CSV, not a definition doc, not an approval of a
+  # render. Nothing is frozen until a game has been saved with the map ported, the factions
+  # settled and the ideoligions correct. Any doc that calls an artifact short of that "the
+  # frozen world" is wrong, and that is what this field exists to say.
+  # ✅ Set it back to `frozen` when step 4 has happened — a saved game, on disk — and the
+  # planet rules bite again.
   status: remaking
   status_src: >
     Owner, 2026-08-22, to REP. Supersedes WORLD_FROZEN_RETHINK_PLANET_1 and every doc
     saying the planet is frozen as-is for v1. The ACCEPTED_ON/ACCEPTED_BY fields below
     describe the superseded world and are left untouched for the same reason.
+    Extended 2026-08-22 10:57 with the owner's own sequencing, quoted in the comment
+    above: out-of-game map -> port-survival proof through the live bridge -> factions,
+    leader names and ideoligions correct at initiation (in parallel) -> save the game,
+    and THAT is the freeze.
   name: "Ash'karr — The Sundered"
 
   # ⭐ ACCEPTED FOR V1 — owner, 2026-08-20, after looking at the ortho globes.

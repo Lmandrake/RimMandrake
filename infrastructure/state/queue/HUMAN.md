@@ -45,7 +45,16 @@ reversal as a broad one — three items closed this morning were caused by exact
 
 <details><summary>the question as it was asked, kept for the record</summary>
 
-> 🔴 **STILL LIVE — this is the one section that noticed, and it is right.** `canon.yml` carries `planet.status: remaking` and that is in force by default, but this section says so itself: *"that is my reading of your words, not your ruling."* One sentence from the owner closes it.
+> ✅ **ANSWERED 2026-08-22 10:57 — AND THE QUESTION WAS THE WRONG SHAPE.** It asked "adopt or
+> remake". Neither. The owner: *"DECIDE and I have an out of game map we are working on together.
+> It is not frozen/finalized, and then we need to successfully show that it can survive a port
+> into the game through the live bridge. Simultaneously, we are working to define the factions,
+> leadernames, ideoligions, etc. because those must be finalized and correct at game initiation
+> it turns out. Once all that is done, then we can finally save a game and meaningfully freeze it
+> as the embodied world."* ⇒ 🔑 **The freeze is a SAVEGAME**, and three things stand between here
+> and it: the out-of-game map, a **port-survival proof through the live bridge**
+> (`WORLD_PORT_SURVIVES_BRIDGE_1`), and the faction/ideoligion slate finished **in parallel**
+> because it bakes at initiation. Sequence recorded in `canon.yml > planet.status_src`.
 
 ## 🔴 TWO OF YOUR OWN RULINGS FROM 2026-08-22 DISAGREE ABOUT THE PLANET — DECIDE, 2026-08-22
 
@@ -1020,7 +1029,9 @@ the doc you superseded.*
 I have filed the doc-currency half either way; only the mod list itself is waiting on you.
 
 
-> 🔴 **STILL LIVE — needs the owner.** Whether to Cherry-Pick anything out of VQE-Ancients' archite-power ladder (killlist §4b). No item resolves it.
+> ✅ **ANSWERED 2026-08-22 10:57 — owner: *"We are leaving in for v1. We will deal with it more
+> in v2 properly."*** ⇒ ⛔ Cherry-Pick nothing out of the VQE-Ancients archite-power ladder for
+> v1. Filed to `design/V2_DREAMS.md > ARCHITE_LADDER_RETHINK_2`.
 
 ## ⚠️ A tombstone that is load-bearing again — BUILD, 2026-08-20
 

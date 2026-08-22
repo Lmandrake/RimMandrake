@@ -1974,3 +1974,17 @@ validated is a number that lies, which is the failure this repo has hit repeated
    that could roll a different world.
 
 📌 **Nothing here is scheduled**, which is what makes it safe to write in full.
+
+## ARCHITE_LADDER_RETHINK_2 The VQE-Ancients archite-power ladder, dealt with properly
+
+**Owner, 2026-08-22:** *"We are leaving in for v1. We will deal with it more in v2 properly."*
+
+⛔ **Nothing is Cherry-Picked out of it for v1** — the ladder ships as the mod ships. The
+question that raised it (`queue/HUMAN.md`, "a tombstone that is load-bearing again", killlist
+§4b) is answered for v1 by leaving it alone.
+
+What v2 is for: deciding which rungs of the archite ladder belong in a Jawa scavenger campaign
+at all, rather than cutting them piecemeal off a killlist. The reason to defer is that the
+ladder is a progression, and cutting a rung out of a progression is how a tech tree ends up
+with a gap nobody notices until a pawn cannot reach the next thing.
+
