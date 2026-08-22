@@ -1,5 +1,21 @@
 # NEXT_RELOAD.md — the run sheet for the NEXT game load
 
+> 🔴 **OWNER RULING 2026-08-22 10:58 — THE COLD START IS HELD.** Asked what the next load
+> is for, he chose: *"Both — hold until the cast fix lands, then one load."*
+>
+> ⛔ **Do not launch until `CAST_ROSTER_SKILLS_DISCARDED_1` has landed.** The five things
+> already deployed and unproven (Flamebow off the kill list, `Flamebow_TagWiden.xml`,
+> `JawaIon_FieldOurOwnGun.xml`, and the two assemblies deployed 10:30) are NOT urgent
+> enough to buy a load of their own — they ride along with the cast fix. **One load
+> answers everything; launching now costs two.**
+>
+> 🔑 **The reason is the architecture gate, not the deploys.** `ROSTER_SOAK_100_DAYS_1`
+> measured against 193 of 294 people produces a baseline that has to be thrown away and
+> re-measured, and a re-measure is another ~25 minutes.
+>
+> ✅ **BUILD owns the cast fix.** The owner confirmed the item stays filed where it is;
+> CHECK does not take it.
+
 > 🔴 **STALE — CHECK, 2026-08-22 10:40. This sheet was assembled 2026-08-20 07:35 and A
 > WHOLE LOAD HAS HAPPENED SINCE** (the 08-22 08:40 run, 578 mods, rev591, now harvested
 > and closed as `NEXT_LOAD_LOG_HARVEST_1`). Do not spend a cold load off it until DECIDE
