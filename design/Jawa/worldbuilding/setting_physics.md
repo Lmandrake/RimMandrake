@@ -102,6 +102,33 @@ Ionic damage floods circuitry with charge.
 - **Decisive against droids, vehicles, turrets, powered armour and shields** —
   it disables rather than destroys, which means it *captures* rather than kills.
 
+🔴 **L4 STANDS, AND IT OVERRULES L16's THIRD BULLET — DECIDE, 2026-08-22, closing
+`ION_CAPTURES_PEOPLE_NOT_DROIDS_1`.** *"A warm breeze"* is literal: **the Jawa ion blaster
+does nothing at all to an unarmoured person.** L16 used to say ion-blaster discharge
+follows L5 against organics; that sentence is struck below, and it is the sentence the
+shipped implementation was built from.
+
+**Measured live 2026-08-22** (`infrastructure/state/observed/2026-08-22/ion_buildup/`):
+`JawaIon_Damage` ×6 downed a `Tribal_Warrior` alive with **zero injuries**, and ×13 at
+double power did **nothing whatever** to a `Mech_Scyther` — while one vanilla `EMP` stunned
+it for 570 ticks. ⇒ **The gun is exactly backwards from L4, and it is not a partial
+success.**
+
+**Three reasons L4 wins and not L16:**
+1. **L5 dies otherwise.** If ion downs people, the stun class has no job and L5's *"designed
+   reason for team composition"* evaporates. Two verbs collapse into one.
+2. **It is a balance hole, not a flavour choice.** A weapon that downs unarmoured people
+   alive, with no injury, no bleed and no death roll, is strictly dominant over every gun we
+   ship. Free non-lethal captures on every raid is not texture.
+3. **The progression is droid brains.** The Trade Moot's economy and the player's whole
+   advancement route run on captured droids. The one thing the Jawas manufacture must be the
+   thing that takes them.
+
+⛔ **What this does NOT change.** The `DamageWorker_IonBuildup` **mechanism is correct and
+must be kept** — accruing buildup that ends in *down, alive, uninjured* is exactly the
+behaviour L4 wants; only its **target class** is wrong. Do not rewrite it, re-point it. And
+`KNOWN INERT` in the mod source is **stale** — the worker fires.
+
 **Derives:** ion is the archetype of the verb-budget weapon (`balance_paradigm.md`
 Axis 10): near-zero damage, entirely new possibility. It must be the *only*
 convenient answer to something, or nobody carries it. Salvage-intact is that
@@ -415,10 +442,20 @@ different sources, which is why they behave alike:
 - They **stun, overwhelm, down and incapacitate** — non-lethally or
   semi-lethally.
 - Against machines they follow L4 (disable).
-- Against organics they follow L5 (neural shock).
+- ~~Against organics they follow L5 (neural shock).~~ ⛔ **STRUCK — DECIDE, 2026-08-22.**
+  True of **Force lightning**; **FALSE of the ion blaster.** L4 is literal — an ion bolt
+  through a person is a warm breeze — and this bullet is what the shipped
+  `DamageWorker_IonBuildup` was built from, producing a gun that downs people and cannot
+  touch a droid. ⇒ **The two are NOT the same phenomenon where it matters.** Force lightning
+  follows L5 against organics; ion follows L4 against machines and does nothing else.
+  Keeping both collapses L5 and deletes its designed reason for team composition.
 
-**Derives:** electricity is the *capture* damage type for both target classes at
-once — the single most useful non-lethal tool in the setting, and the reason a
+**Derives:** ⚠️ **AMENDED 2026-08-22 — this paragraph generalised from the struck
+bullet.** Electricity is the capture damage type for both target classes, but **not through
+one weapon**: ion captures machines (L4), neural/stun captures people (L5), and a squad
+facing both still needs two tools. Force lightning is the one source that reaches both, and
+that is a Force user's privilege, not a manufacturable gun's. ~~electricity is the *capture*
+damage type for both target classes at once~~ — the single most useful non-lethal tool in the setting, and the reason a
 Force user or an ion-armed trooper can end a fight without a body. Downed is not
 dead, and this is where most of our prisoners, salvage and mercy come from.
 
