@@ -1,3 +1,40 @@
+🔴 **OVERTAKEN 2026-08-21/22. FOUR CLAIMS BELOW ARE DEAD — read this header before
+acting on anything in this file.** All four were ruled by the owner and executed; the
+corrections are recorded here on his instruction to propagate them.
+
+**1. The no-planting row is STRUCK.** Owner, 2026-08-21: *"I'm afraid I'm going to disagree
+with the implementation of the no planting. We should simply add a line that Jawa genetics
+has a disability toward farming."* Then, on the fork: *"Correct on the aptitude decision."*
+⇒ `Rule_DisallowDesignator_ZoneAdd_Growing` and the `Rule_DisallowBuilding` list are dead.
+Shipped instead: **`AptitudeTerrible_Plants`** on `MandrakeJawa` (`56d2b4d`). ✅ The row's
+own argument against a `PlantWork` gene still stands and is exactly why an APTITUDE was
+chosen over `disabledWorkTags`.
+
+**2. The `disabledWorkTags` blind-spot claim is FALSE, both halves.** It reads *"the def dump
+reports 0 of 3,847 genes using `disabledWorkTags`. That is a dump blind spot, not absence."*
+Measured: the dump carries the field on **3,845 of 3,845** GeneDefs and **5 hold a real
+value** — `ViolenceDisabled` (Biotech), `BS_DroneKind`, `BS_SimpleMind`, `BS_VerySimpleMind`,
+`Turn_Gene_Bliss`. The rest read `None`, a measured zero. 🔑 **Claiming a blind spot that is
+not there is the inverse of the usual trap and costs the same: it teaches a reader to
+distrust a working instrument.**
+
+**3. "There is nothing to re-point… no `mining laser` ThingDef exists" is FALSE** — the whole
+*"⭐ One wrinkle that makes this EASIER"* section. Owner, 2026-08-21: *"I believe the Mining
+Laser is actually called Drillturret and does NOT need art."* He is right. **`DrillTurret`**
+(*MiningCo. DrillTurret (Continued)*, `mlie.miningcodrillturret`) ships with its own
+research, blueprint, frame, techprint, `JobDef`, job driver **and art**. A literal
+`guy762_mininglaser` exists too, as a hand-held weapon. The original search missed both.
+
+**4. Final spec point 2 is superseded.** *"The mining laser is a new ThingDef of ours…
+`Crafting` is the natural home"* → nothing was authored. `OperateDrillTurret`'s `workType`
+was re-pointed `Mining` → **`Hunting`** (`fe0064c`). Owner, 2026-08-22: *"And I still like
+shooting for the laser, please make it so."* `Hunting` is the only Core/DLC work type
+carrying the Shooting skill; its `Violent` tag is the accepted cost. ⛔ Do not "correct" it
+back to `Crafting`.
+
+✅ **Points 1 and 3 of that final spec stand and shipped as written:** the
+`disabledWorkTags: Mining` gene (`13c6dd8`), and *do not touch vanilla's `Drill` WorkGiver*.
+
 ## spec
 **RULED SO FAR — owner, 2026-08-19, in Q/A.**
 
