@@ -8,6 +8,12 @@ about to do the thing it names — not before.
 **Owner's ruling, 2026-08-15: a skill is owned by the seat that USES it. A skill
 used broadly by everyone is REP's.** No seat owns `skills/` as a directory.
 
+🔑 **"Uses it" means the seat whose DOMAIN it is — owner's ruling, 2026-08-22.** Seat
+names are subject domains, not ranks: **DECIDE** the world (vision, lore, `design/**`,
+capability specs) · **BUILD** implementation entirely (defs, patches, xpaths, art, DLLs,
+deploy) · **CHECK** the live game · **REP** the board, the queues and what reaches the
+human. See `infrastructure/agents/POLICY.md > DECIDE IS A DOMAIN, NOT AN AUTHORITY`.
+
 The point is that the seat which pays for a wrong instruction is the seat that
 fixes it — a bridge trap belongs to whoever drives the bridge, not to whoever
 happens to own the folder. **Edit the skill you use, in the same commit as the
@@ -17,10 +23,10 @@ it, and the `.skill` zips are gitignored.
 
 | owner | skills |
 |---|---|
-| **CHECK** — the live game | `rimbridge` · `rimbridge-companion` · `rimworld-world-editing` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` |
-| **BUILD** — artifacts and art | `rimworld-modding` · `rimworld-deploy` · `rimworld-ideoligion` · `rimworld-quests` · `rimworld-xenotypes` · `rimworld-start-prep` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` |
-| **DECIDE** — what ships | `deciding-and-superseding` (issuing a ruling that survives contact) · `rimworld-content-moderation` (the cherrypick method — a keep/cut call is a scope call) |
-| **REP** — shared | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `agent-fanout-research` · `calibrating-binary-formats` · `frozen-artifacts` · `reading-rimworld-graphics` (art, contact sheets and audits all reach for it), and this README |
+| **CHECK** — the live game | `rimbridge` · `rimworld-world-editing` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` · `rimworld-start-prep` (the mod list before a launch is the same domain as the launch) |
+| **BUILD** — how it is made | `rimworld-modding` · `rimworld-deploy` · `rimbridge-companion` (a companion DLL is implementation, 2026-08-22) · `rimworld-quests` · `rimworld-xenotypes` · `rimworld-scenario-building` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` · `reading-rimworld-graphics` (art is BUILD's; a reader of it is not a separate domain) · `rimworld-ideoligion` (**authoring** half) |
+| **DECIDE** — the world | `rimworld-content-moderation` (a keep/cut call is what v1 contains) · `rimworld-ideoligion` (**the judging rubric** — judging a religion is world vision; authoring it is BUILD's) |
+| **REP** — shared, and what reaches the human | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `agent-fanout-research` · `calibrating-binary-formats` · `frozen-artifacts` · `review-sheets` (a sheet exists so a human can decide) · `deciding-and-superseding` (⚠️ moved from DECIDE 2026-08-22 — it is about **propagating** a ruling into items and queues, which is the board; DECIDE makes rulings, it does not own the machinery for spreading them), and this README |
 
 _Assignments came from the seats that use them, not from a guess at the table.
 DECIDE claimed `rimworld-content-moderation` and disclaimed the other on
