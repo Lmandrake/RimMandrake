@@ -293,6 +293,36 @@ settlementGenerationWeight 0.6         -- 4
 ideoName     the Contract    -- deliberately NO Raider meme
 ```
 
+🔴 **ONE OUTFIT, NOT A GENUS — DECIDE's ruling, 2026-08-22, closing
+`BLACKSTAR_IS_EVERY_PIRATE_1`.** The description above is the ruling: *"one dangerous
+person with a name."* **"Blackstar Company" is the name of a single mercenary outfit and
+must never be the word a player reads over a second pirate faction.**
+
+⚠️ **The reskin patches `FactionDef[defName="Pirate"]`, which is ALSO declared
+`Name="PirateBandBase"` — the abstract root every other pirate def inherits from**
+(`Core/Defs/FactionDefs/Factions_Misc.xml:510`). PatchOperations run before inheritance
+resolves, so `fixedName` leaks down. **Six defs read `fixedName: Blackstar Company`** —
+`Pirate`, `CannibalPirate`, `PirateYttakin`, `PirateWaster`, `DV_PirateKeshig`,
+`AG_XenohumanPirates` (2026-08-21 dump).
+
+✅ **The containment already exists and BUILD does not have to invent it.**
+`src/Jawa/JawaFactionSlate/Patches/OnlyOurFactions.xml` zeroes
+`startingCountAtWorldCreation` on **all five** siblings, so none of them should reach a
+generated world. ⇒ **The fix is not "one patch per child".** What is owed is proof that
+the zeroing actually holds at the next worldgen — the 2026-08-21 world showed **four**
+Blackstar Companies with three divergent `the Contract` ideos, and that contradiction is
+unexplained. Carried by `BLACKSTAR_NAME_MUST_NOT_LEAK_1` (BUILD).
+
+⛔ **What this ruling does NOT change.** `permanentEnemy true` stands (R12). The
+`Pirate` vessel stays Blackstar's — do **not** move the reskin onto a fresh
+non-inherited def unless the zeroing is proven not to hold. And it says nothing about
+whether other pirate factions should exist; it says only that **if one does, it is not
+called Blackstar.**
+
+⚠️ **`Galactic Empire` has the identical shape** — `Empire` and
+`OuterRim_GalacticEmpire` both carry that `fixedName`, and `OuterRim_GalacticEmpire` is
+zeroed by the same file. Same ruling, same proof.
+
 ### 11 · Jawa Trade Moot — `Jawa_IndigenousTribes` — ALREADY SHIPS, FIX IT
 
 ```
