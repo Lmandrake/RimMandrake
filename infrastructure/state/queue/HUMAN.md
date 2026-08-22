@@ -1,4 +1,14 @@
 # HUMAN — the owner's inbox
+> 🔍 **SWEPT 2026-08-22 by REP.** Nineteen sections carry a one-line verdict directly above
+> their heading: ⛔ superseded · ✅ already answered · 🔴 still live. **Three are 🔴** — the
+> adopt-or-remake sentence (:38), the VQE-Ancients archite ladder (:989), and the dated def
+> captures that need a cold load (:1208). Everything else here is history, and reading it as
+> a pending question is the mistake this markup exists to stop.
+>
+> 🔑 **Six of the eight superseded sections are one chain**: freeze → adopt → remake. Every doc
+> saying the map is adopted or frozen is downstream of the owner's later *"there is no current
+> frozen world."*
+
 
 🔴 **HAND-WRITTEN. NOT GENERATED. Nothing regenerates this file, and no hook blocks
 your edits to it.** Restored 2026-08-20 on the owner's ruling, after the ledger
@@ -35,6 +45,8 @@ reversal as a broad one — three items closed this morning were caused by exact
 
 <details><summary>the question as it was asked, kept for the record</summary>
 
+> 🔴 **STILL LIVE — this is the one section that noticed, and it is right.** `canon.yml` carries `planet.status: remaking` and that is in force by default, but this section says so itself: *"that is my reading of your words, not your ruling."* One sentence from the owner closes it.
+
 ## 🔴 TWO OF YOUR OWN RULINGS FROM 2026-08-22 DISAGREE ABOUT THE PLANET — DECIDE, 2026-08-22
 
 **One sentence from you settles it, and until you say it the run sheet is ambiguous.**
@@ -63,6 +75,8 @@ the world is still built by hand, once, and frozen. Only *which* world is at iss
 ⛔ **Separately and still open:** nobody can say which savegame the world bakes into — both
 candidates read `seedString grasshopper` and the docs say `lada`. That blocks `B55` and it is
 below.
+
+> ✅ **ANSWERED at :20 in this same file** — owner, 2026-08-22: *"I like the vanilla weapons being gone."* The floor is spelled out as NEOLITHIC in `required_mods.md:730`. It only reads open because it is a `##` heading inside :20's fold.
 
 ## ⚖️ WHAT IS THE WEAPONS FLOOR? TWO DOCS SAY VANILLA, THE CUT SAYS BLASTERS — DECIDE, 2026-08-22
 
@@ -93,6 +107,8 @@ is exactly the shape of the item I just closed.
 
 ---
 
+> ⛔ **SUPERSEDED hours later the same day** by `canon.yml planet.status: remaking` — *"there is no current frozen world."* This section was never told.
+
 ## ✅ THE MAP IS ADOPTED AND AUTHORING IS OPEN — DECIDE, 2026-08-22
 
 **You looked at the four globes and said the world "really isn't very bad at all… we're
@@ -117,6 +133,8 @@ save it gets baked into.
 
 ---
 
+> ⛔ **MOOT under the remake** — but its seedString half survives as `B55`'s live blocker text, so do not delete it wholesale.
+
 ## 🔴 NOBODY CAN SAY WHICH PLANET YOU ADOPTED — DECIDE, 2026-08-21, still open
 
 **You froze the world as-is. The problem is that "as-is" does not currently name a file.**
@@ -137,6 +155,8 @@ a ruling from you unless the two saves turn out to disagree about the planet its
 gets bolted to.
 
 ---
+
+> ⛔ **SUPERSEDED TWICE** — adopted, then remaking. It also says *"refmatch.py stays cancelled"*, reversed 2026-08-22 (`436bf693`): deferred to **v2**.
 
 ## ✅ THE PLANET FREEZE IS PROPAGATED — DECIDE, 2026-08-21
 
@@ -664,6 +684,8 @@ a stale install — worth fixing, never urgent.
 The 505-line failure had also already been fixed by someone: `SKILL.md` is 445 lines and
 the check passed on the first run. The only real residue was one changed reference file.
 
+> ✅ **ANSWERED** — `MAGENTA_CONTACT_SHEET_1`, owner 2026-08-21 and reconfirmed 2026-08-22: the contact sheet comes first, nobody touches a texPath until he has looked.
+
 ## Four species still render magenta, and two rulings disagree about it — 2026-08-19, BUILD
 `queue/BUILD.md`'s deploy-pass item says *"CHECK is waiting on the D-CHK2 generator fix
 from you — Gand, Selkath, female Chagrian, Jawa mask"*. But D-CHK2 and B66, which folds
@@ -713,6 +735,8 @@ repair pass on the frozen world.
 `queue/BUILD.md` B-EMP1 is **held** on this answer. `queue/DECIDE.md` D-EMP1 (the fresh
 gap audit) is **not** blocked and can start now.
 
+> ✅ **ANSWERED 2026-08-21** (`21e26d8`), and narrower than asked. `CAST_RACE_AND_KIT_FIELDS_1` and `DEEPWATER_CAST_ROSTER_1` are both done; the review sheet this asks for is explicitly NOT needed.
+
 ## BUILD, overnight 2026-08-20 — `Inhabited` is built, and it needs one decision from you
 
 **The whole of `Inhabited` that could be built without a running game is built, deployed
@@ -759,6 +783,8 @@ between visits. Both are fixed, both are commented at the divergence, and §3.4 
 design doc has been corrected in place.
 
 ---
+
+> ✅ **BOTH DEFECTS FIXED** — `FACTION_FIXEDNAME_ELEVEN_1` (`00fa712`) and `BLACKSTAR_NEVER_GENERATES_1` (`42ad3ec`).
 
 ## 🔴 BUILD, 2026-08-20 09:xx — TWO BAKE-IN DEFECTS IN THE WORLD THAT IS UP RIGHT NOW
 
@@ -819,6 +845,8 @@ legitimately have no faction. **Zero settlements among them.** No action.
 
 ---
 
+> ✅ **DONE** — the faction rename this says nobody can do landed at `00fa712`.
+
 ## ✅ REP, 2026-08-20 — BUILD's bake-in defect #2 is FIXED AT SOURCE. Its #1 is not, and is worse.
 
 **Two seats found the same thing within the hour, from opposite directions, and agreed.**
@@ -869,6 +897,8 @@ already baked onto the objects in the save. It needs a live rename (nothing on t
 does it) *plus* the def fix so it cannot recur. **This is the build-once-and-freeze class,
 and it is exactly the kind of thing that becomes permanent the day you keep a world.**
 
+> ✅ **DONE** — Pillow 12.3.0 is installed.
+
 ## BUILD, 2026-08-20 midday — one `pip install` unblocks two stalled things
 
 **Pillow is not installed in any Python on this machine**, and it is quietly blocking work
@@ -894,6 +924,8 @@ arguments. **East was fine; north was not** — it silently wrote the OLD eopie 
 shipped path with a success message. Fixed, but not run, for the reason above.
 
 ---
+
+> ✅ **ANSWERED** — the Pillow half is satisfied, the character-fields half at `21e26d8`.
 
 ## BUILD, 2026-08-20 evening — shutdown done, and three free measurements are waiting
 
@@ -943,6 +975,8 @@ pre-filled by RACE rather than per person is a couple of dozen calls, not 269. A
 
 ---
 
+> ✅ **RULED** — `canon.yml:757`: Vanilla Psycasts Expanded is out entirely, deferred to v2. It stays out.
+
 ## 🔴 Vanilla Psycasts Expanded is not installed, and nothing decided to drop it — BUILD, 2026-08-20
 
 **One line of your mod list, and it is yours to change. I have not touched `ModsConfig.xml`.**
@@ -986,6 +1020,8 @@ the doc you superseded.*
 I have filed the doc-currency half either way; only the mod list itself is waiting on you.
 
 
+> 🔴 **STILL LIVE — needs the owner.** Whether to Cherry-Pick anything out of VQE-Ancients' archite-power ladder (killlist §4b). No item resolves it.
+
 ## ⚠️ A tombstone that is load-bearing again — BUILD, 2026-08-20
 
 `cherry_picker_killlist.md` §4b was retired on the premise that **no Ancients mod existed**.
@@ -999,6 +1035,8 @@ the killlist's own drop *rationale* was left intact — only the false "it was d
 struck.
 
 ---
+
+> ✅ **APPROVED AND DONE** via `OUTLANDER_GROUPMAKER_PATCH_1`; the ruling table is at :1041.
 
 ## ✅ The desert trooper is built, and I should not have asked — BUILD, 2026-08-20
 
@@ -1125,6 +1163,8 @@ That is the real cost of a remake and it is not visible in any of the four items
 
 ---
 
+> ✅ **CLOSED** — the one open question (which Scald option) was executed 08:34 and ratified at `8b98dfb`; `SCALD_WATER_RULING_1` is done.
+
 ## ✅ FOUR MORNING RULINGS — owner, 2026-08-21 08:19
 
 | ruled | effect |
@@ -1188,6 +1228,8 @@ retrofitted is narrower:
 holds `thereallemon.factioncontrol`, missing `mandrake.strandedquest`. Re-take it on the
 load that does the remake.
 
+> ⛔ **REVERSED 2026-08-22** (`436bf693`): `refmatch.py` is **v2 — deferred, not cancelled.** Owner: *"Please put refmatch.py in v2 officially, right now."*
+
 ## ⛔ `refmatch.py` is CANCELLED for v1 — owner, 2026-08-21 10:17
 
 *"Cancelled for v1 — the earlier ruling stands."* `ORTHO_GLOBE_MAP_ACCEPTED_1` (`977aa75`)
@@ -1204,6 +1246,8 @@ spec, inputs and measured terrain batch (4,057 cells → 303 + 355 rect ops) rem
 and wanted; they were reached before the world was ready.
 
 ---
+
+> 🔴 **STILL LIVE — needs the owner's next cold load.** `DUMP_PRODUCER_DATED_CAPTURES_1` is still `proposed` and there is no `captures/` on disk.
 
 ## ~~⏳ THE WORK STOP IS WAITING ON ONE RULING~~ RULED — owner, 2026-08-21 13:24
 
@@ -1278,6 +1322,8 @@ staying up. To halt without touching game state, use wording the recogniser igno
 e.g. *"All work stops until the dump restructure lands."*
 
 ---
+
+> ⛔ **§2 OVERTURNED** — its *"CONTENT FIRST, REMAKE LATER"* sequencing is dead; the remake is happening now.
 
 ## ✅ FOUR RULINGS — owner to DECIDE, 2026-08-21 12:45
 
@@ -1374,6 +1420,8 @@ no `requiredPrecepts` field, so the two were never alternatives. Both stay.
 `useFactionXenotypes` off on the four, and file it ready for BUILD.
 ✅ **You veto in play, not in advance** — that is what "you rule it" buys.
 
+
+> ⛔ **SUPERSEDED** — `canon.yml` names this ruling by ID as superseded.
 
 ## 🔴 THE WORLD IS FROZEN AS-IS — you ruled it, 2026-08-21
 

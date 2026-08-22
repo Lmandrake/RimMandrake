@@ -1,4 +1,10 @@
 <!-- status: live -->
+> ⚠️ **THIS FILE RESCUED ALMOST NOTHING — REP, 2026-08-22.** Line for line it is a SUBSET of
+> `infrastructure/state/queue/HUMAN.md`. The only content here that is not in the queue file is the
+> skill-archive alarm below, which the queue copy struck as CLOSED at its line 647 — *"its alarming
+> half was never true"* — and this copy never heard. ⇒ Read the queue file; the real rescued prose is
+> the 217 lines in `BUILD.md` / `CHECK_CLOSED.md` / `DECIDE.md` beside it.
+
 # Prose rescued from `infrastructure/state/queue/HUMAN.md`
 
 🔴 **GENERATED ONCE, by `rimflow/importer.py preserve()`, on 2026-08-20 — then hand-edited.**

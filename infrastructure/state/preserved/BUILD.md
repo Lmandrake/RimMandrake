@@ -1,4 +1,10 @@
 <!-- status: live -->
+> 🔴 **THIS FILE RESCUED NOTHING, AND THAT IS THE FINDING — REP, 2026-08-22.** Its one section
+> promises `## 🔴 OWNER RULINGS, 2026-08-19` and then contains a single line saying it must not become
+> an item. **The rulings the heading names are absent.** `preserve()` did not carry them, so whatever
+> the owner said on 2026-08-19 to BUILD is not here and may not be anywhere. Filed as
+> `PRESERVE_DROPPED_BUILD_RULINGS_1`. ⛔ Do not treat this file as evidence of what was ruled.
+
 # Prose rescued from `infrastructure/state/queue/BUILD.md`
 
 🔴 **GENERATED ONCE, by `rimflow/importer.py preserve()`, on 2026-08-20 — then hand-edited.**

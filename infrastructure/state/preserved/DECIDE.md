@@ -1,4 +1,6 @@
 <!-- status: live -->
+> ⛔ **BOTH HALVES OF THIS BANNER ARE DEAD — REP, 2026-08-22.** Adoption is reversed by `canon.yml planet.status: remaking`; *"refmatch.py stays cancelled"* is reversed by `436bf693` (v2, deferred).
+
 # Prose rescued from `infrastructure/state/queue/DECIDE.md`
 
 > ✅ **THE MAP IS ADOPTED, AND AUTHORING IS OPEN AGAIN — owner, 2026-08-22.** Verbatim, after
@@ -29,6 +31,8 @@ is neither. They were moved here verbatim when `queue/DECIDE.md` became a genera
 view, on 2026-08-20. ⚠️ Some are still unanswered.
 
 ---
+
+> ⛔ **THIS SEAT NO LONGER OWES THIS LIST.** `INHABITED_OPEN_QUESTIONS_1` is closed, and the nightside noise, the Glowforest/HorrorWastes 0-tile and the riparian band are properties of paint the owner is REPLACING.
 
 ## 📌 SESSION HANDOFF — 2026-08-20 EVENING. Newest first; the morning handoff follows below.
 
@@ -94,6 +98,8 @@ connect the basins sat in the comment directly above that line for a day, doing 
   three requirements he gave this morning come undone.
 
 ---
+
+> ✅ **ALL THREE CLOSED** — `8d4c07` (`50e74d4`), `D-V2-RAIN` (`30ced56`), and the Sith rumour ruled never to harden. Nothing here waits on the owner.
 
 ## 📌 SESSION HANDOFF — 2026-08-20. Read this before working the items below.
 
