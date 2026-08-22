@@ -365,23 +365,23 @@
   "swampiness_mean": 0.074
  },
  "rivers": {
-  "edges": 252,
+  "edges": 291,
   "broken_entries": [],
   "by_def": {
-   "Creek": 114,
+   "Creek": 153,
    "River": 54,
    "LargeRiver": 53,
    "HugeRiver": 31
   },
-  "tiles_touched": 262,
-  "networks": 10,
+  "tiles_touched": 307,
+  "networks": 16,
   "largest": [
    {
-    "edges": 97,
-    "tiles": 98,
+    "edges": 100,
+    "tiles": 101,
     "defs": {
      "LargeRiver": 26,
-     "Creek": 62,
+     "Creek": 65,
      "River": 9
     },
     "head": 7101,
@@ -389,16 +389,16 @@
     "reaches_sea": false
    },
    {
-    "edges": 82,
-    "tiles": 83,
+    "edges": 90,
+    "tiles": 91,
     "defs": {
      "River": 29,
      "HugeRiver": 15,
-     "Creek": 20,
+     "Creek": 28,
      "LargeRiver": 18
     },
-    "head": 17293,
-    "head_elev_m": 966.0,
+    "head": 17237,
+    "head_elev_m": 1473.0,
     "reaches_sea": true
    },
    {
@@ -452,22 +452,22 @@
     "defs": {
      "Creek": 6
     },
-    "head": 15155,
-    "head_elev_m": 551.0,
+    "head": 2928,
+    "head_elev_m": 1329.0,
     "reaches_sea": false
    },
    {
-    "edges": 4,
-    "tiles": 5,
+    "edges": 6,
+    "tiles": 7,
     "defs": {
-     "Creek": 4
+     "Creek": 6
     },
-    "head": 19482,
-    "head_elev_m": 1045.0,
+    "head": 15155,
+    "head_elev_m": 551.0,
     "reaches_sea": false
    }
   ],
-  "mouths": 16
+  "mouths": 23
  },
  "roads": {
   "edges": 837,
