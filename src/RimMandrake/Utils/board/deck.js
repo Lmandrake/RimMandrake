@@ -166,13 +166,21 @@ function gamePanel(board) {
 }
 
 function bridgePanel(board) {
+  /* ⛔ Was BRIDGE HOLDER, printing `board.bridge_holder` — a lease a seat files
+   * and NOTHING ever clears. It read "CHECK holds the live game" six hours after
+   * the game went down, which is the defect that started this rewrite.
+   * ⭐ Now the headline is a socket probe. The lease still shows, demoted to what
+   * it is: a claim, with its age, under a reading that can contradict it. */
+  const m = (board.measured || {}).bridge || {};
+  const answering = m.state === "ANSWERING";
   const g = readGame(board);
-  const held = g.bridge != null && g.bridge !== "";
-  return `<div class="panel"><p class="ttl">BRIDGE HOLDER</p>
-    <div class="big ${held ? "" : "zero"}">${held ? esc(g.bridge) : "FREE"}</div>
-    <p class="sub">${held
-      ? "holds the live game. Nobody else drives RimWorld until it is released."
-      : "no seat has taken the bridge."}</p></div>`;
+  const claim = g.bridge != null && g.bridge !== "" ? esc(g.bridge) : null;
+  return `<div class="panel"><p class="ttl">BRIDGE</p>
+    <div class="big ${answering ? "" : "zero"}">${esc(m.state || "UNMEASURED")}</div>
+    <p class="sub">${esc(m.how || "no probe wired — this is UNMEASURED, not FREE")}
+      ${claim ? `<br><span class="none">ledger still records <b>${claim}</b> as holder` +
+        `${answering ? "" : " — a lease nobody released, not a live claim"}</span>` : ""}
+    </p></div>`;
 }
 
 /* --------------------------------------------------------------------------
@@ -237,7 +245,51 @@ function mixStrip(counts) {
  * what the seat last ANNOUNCED about itself. When those disagree that IS the
  * finding — a seat announcing busy with nothing started is exactly the failure
  * the old board could not see. */
-function seatPill(s, blockedHere) {
+/* --------------------------------------------------------------------------
+ * MEASURED — 2026-08-22. Owner: *"It's never showing what the agents are really
+ * doing... Right now it says CHECK holds the Bridge, but there's no live game...
+ * Some say idle, they're not. Some say blocked, they're not."*
+ *
+ * 🔑 THE DIAGNOSIS. Every seat pill on this deck was derived from ITEMS and from
+ * what a seat once ANNOUNCED — `s.doing`, `s.counts`, `s.says` — and none of
+ * those is a fact about a running window. "BLOCKED" meant *this seat owns blocked
+ * items*, which is true of a seat working happily on something else. "IDLE —
+ * reboot" was a `seat` event filed hours earlier and never superseded. The bridge
+ * holder was a lease nobody releases.
+ *
+ * ⭐ `board.measured` is now served alongside the ledger projection and carries
+ * READINGS: `ps` for whether the window exists, the append-only ledger for when
+ * the seat last did anything, a TCP probe for the bridge, git for durability.
+ * Item facts stay on screen — they are real and useful — but they are no longer
+ * allowed to masquerade as the state of a window.
+ * ------------------------------------------------------------------------ */
+const mAgo = (sec) => sec == null ? "never"
+  : sec < 90 ? sec + "s" : sec < 5400 ? Math.round(sec / 60) + "m"
+  : (sec / 3600).toFixed(1) + "h";
+const measuredSeat = (board, seat) => ((board.measured || {}).seats || {})[seat] || null;
+
+function seatPill(s, blockedHere, m) {
+  /* 🔴 MEASURED FIRST. `m` is the reading for this seat; when it exists it wins,
+   * because everything below it is an inference from items or from a stale
+   * announcement. The item facts move into `why`, where they are true. */
+  if (m) {
+    if (!m.alive) {
+      return { pill: `<span class="pill gone">NO PROCESS</span>`,
+        why: `<span class="why">no window with <code>AGENT_SEAT</code> is running` +
+          `${m.last_s != null ? ` — last did anything ${mAgo(m.last_s)} ago` : ""}</span>` };
+    }
+    // Live = wrote a ledger event in the last 10 minutes. Quiet is NOT a fault:
+    // a seat twenty minutes into one build files nothing and is working hard.
+    const live = m.last_s != null && m.last_s < 600;
+    const detail =
+      `<span class="why">up ${mAgo(m.up_s)} · last ledger event ${mAgo(m.last_s)} ago` +
+      `${m.last_what ? `: <b>${esc(m.last_what)}</b>` : ""}` +
+      `${m.events_60m ? ` · ${m.events_60m} in the last hour` : ""}` +
+      `${blockedHere ? ` · owns ${blockedHere} blocked item${blockedHere === 1 ? "" : "s"}` : ""}` +
+      `</span>`;
+    return { pill: `<span class="pill ${live ? "active" : "quiet"}">` +
+        `${live ? "LIVE" : "QUIET " + mAgo(m.last_s)}</span>`, why: detail };
+  }
   const says = s.says || {};
   const said = says.state ? String(says.state).toLowerCase() : null;
   const doing = (s.doing || []).length;
@@ -287,7 +339,7 @@ function seatPill(s, blockedHere) {
 function lane(seat, board) {
   const s = (board.seats || {})[seat] || {};
   const blocks = (board.blocked || []).filter((b) => b.owner === seat);
-  const p = seatPill(s, blocks.length);
+  const p = seatPill(s, blocks.length, measuredSeat(board, seat));
   const doing = (s.doing || []).map((id) => itemMark(id, { state: "doing" }));
   const nextId = s.next;
   const ready = (s.counts || {}).ready || 0;
@@ -357,8 +409,14 @@ function age(board) {
   if (!t) return "";
   const m = (Date.now() - t) / 60000;
   const s = m < 1 ? "just now" : m < 60 ? Math.floor(m) + "m ago" : (m / 60).toFixed(1) + "h ago";
-  return `<span class="age${m > 5 ? " stale" : ""}">ledger as of ${esc(board.as_of)} — ${s}` +
-    `${m > 5 ? " · STALE" : ""}</span>`;
+  /* ⚠️ This is how long since anyone FILED an event — not how fresh the page is,
+   * and not a fault. A seat twenty minutes into one build files nothing, and the
+   * old wording ("STALE" past five minutes) reported that as the board rotting.
+   * The page's own freshness is the header clock; the seat readings carry their
+   * own ages. An hour of quiet is worth a mention, five minutes is not. */
+  return `<span class="age${m > 60 ? " stale" : ""}">last ledger event ${s}` +
+    `<span class="none"> · ${esc(board.as_of)}</span>` +
+    `${m > 60 ? " · nobody has filed anything for an hour" : ""}</span>`;
 }
 
 /* CSS is fetched once, from the same directory this module was served from, so
@@ -407,7 +465,7 @@ export function render(root, board) {
       ${ownerPanel(board)}
     </div>
     <div class="row"><div class="panel">
-      <p class="ttl">SEATS — DOING · NEXT · BLOCKED · IDLE-WITH-REASON</p>
+      <p class="ttl">SEATS — MEASURED · DOING · NEXT · BLOCKED</p>
       ${SEATS.map((s) => lane(s, board)).join("")}
     </div></div>
     <div class="row">${blockedPanel(board)}</div>

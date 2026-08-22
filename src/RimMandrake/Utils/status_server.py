@@ -718,8 +718,15 @@ class H(BaseHTTPRequestHandler):
             # The raw ledger projection, for the view modules. Kept separate from
             # /data so a view can poll the ledger without paying for host(),
             # inventory() and the process census on every tick.
-            body = json.dumps(_board() or {"unavailable": True,
-                                           "why": _BOARD.get("err")}).encode()
+            # ⭐ `measured` rides along, 2026-08-22. The DECK view polls /board and
+            # nothing else, so without this it could only ever render LEDGER facts —
+            # which is precisely why it was showing "BRIDGE HOLDER: CHECK" with no
+            # game running and calling a live seat IDLE. It is cheap: ps, a 0.4s
+            # socket probe, git porcelain, one pass over the ledger. host() is
+            # cached 6s and is the only Windows call.
+            _b = dict(_board() or {"unavailable": True, "why": _BOARD.get("err")})
+            _b["measured"] = measured()
+            body = json.dumps(_b).encode()
             ctype = "application/json"
         elif self.path.startswith("/items/"):
             # One item's PROSE. The ledger holds every scalar and `items/<ID>.md` holds
