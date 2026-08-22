@@ -43,19 +43,40 @@ namespace JawaBench.BridgeTools
 {
     public sealed partial class JawaBenchTerrainTools
     {
+        // 🔴 THE NAME A FACTION IS SUPPOSED TO WEAR IS `fixedName` WHEN IT HAS ONE, NOT
+        // `label`. Comparing against the label alone flags every reskin as generated -
+        // differing from the label is exactly what a fixedName IS - so the old check fired
+        // hardest on the nine factions that were CORRECT, the Galactic Empire and the
+        // Junkers among them. Measured on a live 578-mod quicktest: 24 reported, 9 of them
+        // false positives wearing their own defFixedName, 15 genuinely nameless.
+        // ⛔ That was worse than a wrong number. `FACTION_NAMES_ARE_GENERATED_1` tells a
+        // seat to run `faction_name_set action=clear` against whatever this reports, and
+        // clear rewrote the name to `defLabel` - so the repair would have DELETED nine
+        // authored names and called it a fix.
+        // Corrected 2026-08-21, ISGENERATED_COMPARES_WRONG_FIELD_1.
+        private static string AuthoredName(Faction f)
+        {
+            var fixedName = f?.def?.fixedName;
+            return !string.IsNullOrEmpty(fixedName) ? fixedName : f?.def?.LabelCap;
+        }
+
         [Tool(
             "jawa/faction_name_get",
             Description =
                 "Read what each faction is ACTUALLY called against what its def says it " +
                 "should be called. Answers the one question no UI shows side by side: is " +
                 "this faction wearing its authored name, or one the name generator picked " +
-                "at world creation? A faction with storedName set and defLabel different " +
-                "is wearing a generated name, and on a world meant to be frozen and " +
-                "shipped that is permanent unless it is repaired.",
+                "at world creation? A faction whose stored name differs from its AUTHORED " +
+                "name - fixedName where the def has one, label otherwise - is wearing a " +
+                "generated name, and on a world meant to be frozen and shipped that is " +
+                "permanent unless it is repaired.",
             ResultDescription =
                 "Per faction: defName, currentName, storedName (null means it inherits), " +
-                "defLabel, defFixedName, and isGenerated - true when a stored name differs " +
-                "from the def label, which is the defect. Plus generatedCount.")]
+                "defLabel, defFixedName, authoredName, hasFixedName, and isGenerated - " +
+                "true when a stored name differs from the AUTHORED name (fixedName where " +
+                "the def has one, label otherwise). Plus generatedCount and " +
+                "generatedOverAuthoredCount, reported separately: only the latter is a " +
+                "defect with a known repair.")]
         public static async Task<object> FactionNameGet(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -75,7 +96,7 @@ namespace JawaBench.BridgeTools
                     return Fail("No FactionManager on the current world.");
 
                 var rows = new List<object>();
-                int generated = 0, hiddenSkipped = 0;
+                int generated = 0, generatedOverAuthored = 0, hiddenSkipped = 0;
 
                 foreach (var f in fm.AllFactionsListForReading)
                 {
@@ -86,9 +107,16 @@ namespace JawaBench.BridgeTools
 
                     string stored = f.HasName ? f.Name : null;
                     string defLabel = f.def.LabelCap;
+                    string authored = AuthoredName(f);
+                    bool hasFixedName = !string.IsNullOrEmpty(f.def.fixedName);
                     bool isGenerated = stored != null &&
-                                       !string.Equals(stored, defLabel, StringComparison.Ordinal);
+                                       !string.Equals(stored, authored, StringComparison.Ordinal);
                     if (isGenerated) generated++;
+                    // 🔑 The two populations are reported SEPARATELY, never summed. A faction
+                    // with no fixedName that drew a generated name is ordinary and may be
+                    // what the design wants; one that HAS an authored name and is not
+                    // wearing it is the actual defect. One number could not tell them apart.
+                    if (isGenerated && hasFixedName) generatedOverAuthored++;
 
                     rows.Add(new
                     {
@@ -97,6 +125,8 @@ namespace JawaBench.BridgeTools
                         storedName = stored,
                         defLabel,
                         defFixedName = f.def.fixedName,
+                        authoredName = authored,
+                        hasFixedName,
                         isPlayer = f.IsPlayer,
                         isGenerated
                     });
@@ -108,11 +138,15 @@ namespace JawaBench.BridgeTools
                     factions = rows,
                     count = rows.Count,
                     generatedCount = generated,
+                    generatedOverAuthoredCount = generatedOverAuthored,
                     hiddenSkipped,
                     message = generated == 0
                         ? "Every faction is wearing its authored name."
-                        : $"{generated} faction(s) are wearing a GENERATED name. On a world " +
-                          "that will be frozen and shipped this is permanent unless repaired.",
+                        : $"{generated} faction(s) are wearing a GENERATED name, " +
+                          $"{generatedOverAuthored} of them OVER AN AUTHORED fixedName. On a " +
+                          "world that will be frozen and shipped this is permanent unless " +
+                          "repaired. Repair the generatedOverAuthored ones first - the rest " +
+                          "carry no authored name to go back to.",
                     ticksGame = TicksGameSafe()
                 };
             });
@@ -222,8 +256,9 @@ namespace JawaBench.BridgeTools
                     string before = f.Name;
                     string stored = f.HasName ? f.Name : null;
                     string defLabel = f.def.LabelCap;
+                    string authored = AuthoredName(f);
                     bool isGenerated = stored != null &&
-                                       !string.Equals(stored, defLabel, StringComparison.Ordinal);
+                                       !string.Equals(stored, authored, StringComparison.Ordinal);
 
                     string reason = null;
                     if (protectPlayer && f.IsPlayer)
@@ -236,7 +271,11 @@ namespace JawaBench.BridgeTools
                     string after = before;
                     if (reason == null)
                     {
-                        if (clearing) after = defLabel;
+                        // ⛔ CLEARING GOES BACK TO THE AUTHORED NAME, NOT THE LABEL. This
+                        // line used to write `defLabel`, which on a fixedName faction
+                        // DESTROYS the authored name - the exact damage the corrected
+                        // isGenerated above exists to stop being aimed at.
+                        if (clearing) after = authored;
                         else if (!wanted.TryGetValue(f.def.defName, out after))
                             reason = "no name supplied for this defName";
                     }
