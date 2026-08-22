@@ -685,7 +685,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Glass Reach"
    },
    {
     "id": 15,
@@ -1279,7 +1279,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Saddle"
+    "region": "The Notch"
    },
    {
     "id": 71,
@@ -1441,7 +1441,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Softground"
+    "region": "The Sinkground"
    },
    {
     "id": 59,
@@ -1513,7 +1513,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Flatdew"
+    "region": "The Level"
    },
    {
     "id": 73,
@@ -1675,7 +1675,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Softground"
+    "region": "The Sinkground"
    },
    {
     "id": 89,
@@ -1783,7 +1783,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Softground"
+    "region": "The Sinkground"
    },
    {
     "id": 74,
@@ -2323,7 +2323,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Glass Reach"
    },
    {
     "id": 47,
@@ -2395,7 +2395,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Saddle"
+    "region": "The Notch"
    },
    {
     "id": 46,
@@ -2485,7 +2485,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Wither"
    },
    {
     "id": 19,
@@ -2521,7 +2521,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Slough"
    },
    {
     "id": 18,
@@ -2713,9 +2713,9 @@
   }
  },
  "regions": {
-  "count": 60,
+  "count": 71,
   "by_def": {
-   "Region": 60
+   "Region": 71
   },
   "named": [
    {
@@ -2729,9 +2729,19 @@
     "tiles": 255
    },
    {
+    "name": "The Pale Flats",
+    "def": "Region",
+    "tiles": 60
+   },
+   {
+    "name": "The Wither",
+    "def": "Region",
+    "tiles": 72
+   },
+   {
     "name": "The Deadstone",
     "def": "Region",
-    "tiles": 1979
+    "tiles": 2051
    },
    {
     "name": "The Ammonia Flats",
@@ -2751,27 +2761,27 @@
    {
     "name": "The Sunreach",
     "def": "Region",
-    "tiles": 781
+    "tiles": 795
    },
    {
     "name": "The Dew Belt",
     "def": "Region",
-    "tiles": 361
+    "tiles": 362
    },
    {
     "name": "The Nightspill",
     "def": "Region",
-    "tiles": 817
+    "tiles": 853
    },
    {
-    "name": "The Cold Bloom",
+    "name": "The Frostcaps",
     "def": "Region",
     "tiles": 254
    },
    {
     "name": "The Cracklands",
     "def": "Region",
-    "tiles": 210
+    "tiles": 227
    },
    {
     "name": "The Pyrelands",
@@ -2781,12 +2791,12 @@
    {
     "name": "The Twilight Sea",
     "def": "Region",
-    "tiles": 851
+    "tiles": 852
    },
    {
-    "name": "The Crown Rot",
+    "name": "The Capwood",
     "def": "Region",
-    "tiles": 67
+    "tiles": 75
    },
    {
     "name": "The Umbra",
@@ -2796,35 +2806,35 @@
    {
     "name": "The Glare",
     "def": "Region",
-    "tiles": 866
+    "tiles": 879
    },
    {
     "name": "The South Crags",
     "def": "Region",
-    "tiles": 432
+    "tiles": 433
    },
    {
-    "name": "The Last Green",
+    "name": "The Verge",
     "def": "Region",
-    "tiles": 144
+    "tiles": 171
    },
    {
     "name": "The Long Sand",
     "def": "Region",
-    "tiles": 670
+    "tiles": 721
    },
    {
     "name": "The Kiln",
     "def": "Region",
-    "tiles": 816
+    "tiles": 878
    },
    {
-    "name": "The Low Dew",
+    "name": "The Damp",
     "def": "Region",
     "tiles": 230
    },
    {
-    "name": "The Coldspore",
+    "name": "The Ashwood",
     "def": "Region",
     "tiles": 69
    },
@@ -2841,12 +2851,22 @@
    {
     "name": "The Rimewall",
     "def": "Region",
-    "tiles": 335
+    "tiles": 338
+   },
+   {
+    "name": "The Slough",
+    "def": "Region",
+    "tiles": 148
    },
    {
     "name": "The Combs",
     "def": "Region",
     "tiles": 360
+   },
+   {
+    "name": "The Glass Reach",
+    "def": "Region",
+    "tiles": 172
    },
    {
     "name": "The Dry March",
@@ -2856,7 +2876,7 @@
    {
     "name": "The Gray Crags",
     "def": "Region",
-    "tiles": 576
+    "tiles": 577
    },
    {
     "name": "The Sunward Scrub",
@@ -2864,12 +2884,17 @@
     "tiles": 154
    },
    {
-    "name": "The Softground",
+    "name": "The Sinkground",
     "def": "Region",
-    "tiles": 275
+    "tiles": 276
    },
    {
-    "name": "The Warm Rot",
+    "name": "The Coldstone",
+    "def": "Region",
+    "tiles": 57
+   },
+   {
+    "name": "The Sweatwood",
     "def": "Region",
     "tiles": 93
    },
@@ -2886,10 +2911,15 @@
    {
     "name": "The Thornbelt",
     "def": "Region",
-    "tiles": 492
+    "tiles": 502
    },
    {
-    "name": "The Frostbloom",
+    "name": "The Lantern Deeps",
+    "def": "Region",
+    "tiles": 57
+   },
+   {
+    "name": "The Stillwood",
     "def": "Region",
     "tiles": 142
    },
@@ -2904,12 +2934,12 @@
     "tiles": 153
    },
    {
-    "name": "The Saddle",
+    "name": "The Notch",
     "def": "Region",
     "tiles": 68
    },
    {
-    "name": "The Last Scrub",
+    "name": "The Thornend",
     "def": "Region",
     "tiles": 61
    },
@@ -2934,9 +2964,14 @@
     "tiles": 384
    },
    {
-    "name": "The Apron",
+    "name": "The Fanground",
     "def": "Region",
     "tiles": 70
+   },
+   {
+    "name": "The Tallow Ground",
+    "def": "Region",
+    "tiles": 129
    },
    {
     "name": "The Blight",
@@ -2951,7 +2986,12 @@
    {
     "name": "The Cinderdark",
     "def": "Region",
-    "tiles": 146
+    "tiles": 153
+   },
+   {
+    "name": "The Blindwood",
+    "def": "Region",
+    "tiles": 145
    },
    {
     "name": "The Knuckles",
@@ -2959,7 +2999,7 @@
     "tiles": 78
    },
    {
-    "name": "The Grayrot",
+    "name": "The Mould March",
     "def": "Region",
     "tiles": 123
    },
@@ -2971,10 +3011,10 @@
    {
     "name": "The Fever Wood",
     "def": "Region",
-    "tiles": 65
+    "tiles": 81
    },
    {
-    "name": "The Shelf Rot",
+    "name": "The Stepwood",
     "def": "Region",
     "tiles": 85
    },
@@ -2989,14 +3029,14 @@
     "tiles": 72
    },
    {
-    "name": "The Shoulder",
+    "name": "The Coldshelf",
     "def": "Region",
     "tiles": 68
    },
    {
     "name": "The Cinders",
     "def": "Region",
-    "tiles": 93
+    "tiles": 112
    },
    {
     "name": "The Salt",
@@ -3004,19 +3044,34 @@
     "tiles": 249
    },
    {
-    "name": "The Flatdew",
+    "name": "The Hollow Verge",
+    "def": "Region",
+    "tiles": 40
+   },
+   {
+    "name": "The Level",
     "def": "Region",
     "tiles": 141
    },
    {
-    "name": "The Deep Bloom",
+    "name": "The Grinding Floor",
     "def": "Region",
-    "tiles": 132
+    "tiles": 79
    },
    {
-    "name": "The High Rot",
+    "name": "The Hanging Wood",
     "def": "Region",
     "tiles": 165
+   },
+   {
+    "name": "The Chalk March",
+    "def": "Region",
+    "tiles": 57
+   },
+   {
+    "name": "The Quiet Ground",
+    "def": "Region",
+    "tiles": 43
    }
   ]
  },

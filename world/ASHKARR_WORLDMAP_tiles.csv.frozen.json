@@ -21,9 +21,9 @@
     "world/ASHKARR_WORLDMAP_landmarks.csv"
   ],
   "notFrozenWhy": "Only the tiles CSV is known to carry hand edits the painter would lose. ashkarr_paint.py writes the settlements and links CSVs too, so the guard stops those being rebuilt as a side effect - but they are not independently frozen and no separate claim is made about them. If one of them is later hand-edited, say so here.",
-  "sha256": "d4a5be45cd6265d514a6584f38be2196ed50c8642b059018b97dab98d50e3707",
+  "sha256": "93f84d035c57a8247fad4efa3dea7a59fde0bc817522360d9717c204f7828baa",
   "rows": 21872,
-  "bytes": 1832120,
+  "bytes": 1848464,
   "restampedWhy": "Restamped 2026-08-22 after an independent audit found this file 16 hours stale and STRUCTURALLY UNABLE to notice: it asserted '20,113 rows with rain_mm = 0' (actual at the time: 20,476) and carried no hash and no row count, so the claim read as authoritative while being false. sha256/rows/bytes are the fix - a freeze that cannot detect its own staleness is a comment, not a guard.",
   "dryRows": 20476
 }

@@ -1,5 +1,18 @@
-<!-- status: draft -->
+<!-- status: superseded -->
 # NAMED PLACES — draft set for the owner to veto
+
+> ✅ **APPLIED 2026-08-22 as drafted, on the owner's word ("We'll try it as is and see how
+> it looks"), then POLISHED after an independent fiction review.** The names below are the
+> current ones; **17 were renamed** because the review counted five names ending in *Rot*,
+> four more in *Bloom*/*Spore* and four in *Dew* — *"ten names for one idea… on a
+> curved-label world map they will read as noise"* — plus six that said nothing about the
+> place. ⛔ The older names (The Scald, The Salt, The Anvil, The Dew Horn, The Dew Belt)
+> were NOT touched: they are the owner's and they set the voice.
+> 🔑 **The 1,287 unnamed tiles are gone.** Eleven blobs of 40+ tiles were named — including
+> **The Lantern Deeps** for the crystal caverns and **The Slough** for the gelatinous ground
+> the review called "the strangest ground on the planet, and nameless" — and 373 sliver
+> tiles were absorbed into the region they border most. **Every land tile now has a region;
+> the planet has 71.**
 
 > 🔴 **HALF THE PLANET HAS NO NAME.** Measured 2026-08-22: **11,107 of 21,872 tiles** carry
 > an empty `region`, in one contiguous blob spanning the whole world from arc 40° to 152°.
@@ -45,21 +58,21 @@ a legitimate and probably wise answer.
 | **The Cracklands** | 210 | badlands | 60–85° | 12–256 m | 18 to 37 °C | `14` |
 | **The Sunward Scrub** | 154 | shrub | 73–85° | 12–1062 m | 17 to 27 °C | `40` |
 | **The Blight** | 140 | waste | 73–85° | 12–290 m | 17 to 28 °C | `110` |
-| **The Warm Rot** | 93 | fungal | 74–85° | 148–838 m | 14 to 24 °C | `46` |
+| **The Sweatwood** | 93 | fungal | 74–85° | 148–838 m | 14 to 24 °C | `46` |
 | **The Cinders** | 93 | waste | 63–82° | 12–394 m | 20 to 33 °C | `231` |
-| **The Apron** | 70 | shrub | 75–85° | 12–12 m | 18 to 26 °C | `95` |
-| **The Saddle** | 68 | desert | 61–70° | 12–624 m | 30 to 34 °C | `73` |
+| **The Fanground** | 70 | shrub | 75–85° | 12–12 m | 18 to 26 °C | `95` |
+| **The Notch** | 68 | desert | 61–70° | 12–624 m | 30 to 34 °C | `73` |
 
 ## THE TERMINATOR — the only liveable band
 
 | Name | tiles | terrain | arc | elevation | temp | seed |
 |---|---:|---|---|---|---|---:|
-| **The Softground** | 275 | shrub | 85–100° | 12–1087 m | -4 to 18 °C | `43` |
+| **The Sinkground** | 275 | shrub | 85–100° | 12–1087 m | -4 to 18 °C | `43` |
 | **The Sporefields** | 255 | fungal | 85–100° | 12–608 m | 0 to 18 °C | `1` |
 | **The Scour** | 234 | waste | 85–100° | 12–598 m | -1 to 18 °C | `49` |
-| **The Low Dew** | 230 | shrub | 85–96° | 12–156 m | 7 to 18 °C | `26` |
-| **The Flatdew** | 141 | shrub | 85–100° | 12–12 m | 2 to 18 °C | `275` |
-| **The Shelf Rot** | 85 | fungal | 86–95° | 355–902 m | 4 to 15 °C | `194` |
+| **The Damp** | 230 | shrub | 85–96° | 12–156 m | 7 to 18 °C | `26` |
+| **The Level** | 141 | shrub | 85–100° | 12–12 m | 2 to 18 °C | `275` |
+| **The Stepwood** | 85 | fungal | 86–95° | 355–902 m | 4 to 15 °C | `194` |
 | **The Pan** | 79 | waste | 85–94° | 12–12 m | 10 to 18 °C | `0` |
 | **The Knuckles** | 78 | crags | 87–99° | 12–179 m | 2 to 16 °C | `159` |
 
@@ -68,12 +81,12 @@ a legitimate and probably wise answer.
 | Name | tiles | terrain | arc | elevation | temp | seed |
 |---|---:|---|---|---|---|---:|
 | **The Rimewall** | 335 | crags | 100–125° | 12–1331 m | -35 to 2 °C | `33` |
-| **The Cold Bloom** | 254 | fungal | 106–125° | 12–1235 m | -34 to -7 °C | `13` |
+| **The Frostcaps** | 254 | fungal | 106–125° | 12–1235 m | -34 to -7 °C | `13` |
 | **The Ashen Waste** | 202 | waste | 100–120° | 12–671 m | -25 to 2 °C | `48` |
-| **The High Rot** | 165 | fungal | 100–120° | 535–1690 m | -29 to -2 °C | `398` |
-| **The Last Green** | 144 | shrub | 100–124° | 12–939 m | -30 to -1 °C | `23` |
-| **The Grayrot** | 123 | fungal | 100–113° | 118–915 m | -17 to 1 °C | `160` |
-| **The Shoulder** | 68 | shrub | 100–106° | 640–1299 m | -11 to -2 °C | `218` |
+| **The Hanging Wood** | 165 | fungal | 100–120° | 535–1690 m | -29 to -2 °C | `398` |
+| **The Verge** | 144 | shrub | 100–124° | 12–939 m | -30 to -1 °C | `23` |
+| **The Mould March** | 123 | fungal | 100–113° | 118–915 m | -17 to 1 °C | `160` |
+| **The Coldshelf** | 68 | shrub | 100–106° | 640–1299 m | -11 to -2 °C | `218` |
 
 ## THE NIGHT SIDE — the star never rises
 
@@ -81,12 +94,12 @@ a legitimate and probably wise answer.
 |---|---:|---|---|---|---|---:|
 | **The Deadstone** | 1979 | crags | 125–152° | 65–1615 m | -66 to -30 °C | `4` |
 | **The Cinderdark** | 146 | waste | 125–138° | 322–774 m | -46 to -30 °C | `138` |
-| **The Frostbloom** | 142 | fungal | 125–136° | 728–1605 m | -49 to -32 °C | `57` |
-| **The Deep Bloom** | 132 | fungal | 125–142° | 154–1046 m | -54 to -30 °C | `327` |
+| **The Stillwood** | 142 | fungal | 125–136° | 728–1605 m | -49 to -32 °C | `57` |
+| **The Blindwood** | 132 | fungal | 125–142° | 154–1046 m | -54 to -30 °C | `327` |
 | **The Venom Wood** | 72 | fungal | 133–144° | 270–697 m | -53 to -40 °C | `215` |
-| **The Coldspore** | 69 | fungal | 125–139° | 680–1196 m | -49 to -34 °C | `28` |
-| **The Crown Rot** | 67 | fungal | 125–132° | 986–1528 m | -44 to -35 °C | `17` |
-| **The Last Scrub** | 61 | shrub | 130–138° | 410–743 m | -47 to -36 °C | `78` |
+| **The Ashwood** | 69 | fungal | 125–139° | 680–1196 m | -49 to -34 °C | `28` |
+| **The Capwood** | 67 | fungal | 125–132° | 986–1528 m | -44 to -35 °C | `17` |
+| **The Thornend** | 61 | shrub | 130–138° | 410–743 m | -47 to -36 °C | `78` |
 
 
 ## The voice these were written in
@@ -101,7 +114,7 @@ Three that are doing specific work and are worth a second look before you accept
 - **The Deadstone** — 1,979 tiles, the single largest unnamed block on the planet, night-side
   rock between −66 and −30 °C. It is bigger than any currently-named region except the Dune
   Sea. If one name in this list matters, it is this one.
-- **The Flatdew** and **The Pan** — both are dead flat at exactly 12 m, the world's floor
+- **The Level** and **The Pan** — both are dead flat at exactly 12 m, the world's floor
   elevation. They are named for being flat because that is the only thing true of them.
 - **The Fever Wood** — 65 tiles of Feralisk jungle at 38–51 °C on the day side. Small, but it
   is the only warm forest on the planet and the only place that biome appears sunward.

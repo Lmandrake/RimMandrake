@@ -10,10 +10,10 @@
     "The Deadstone",
     "The Dune Sea",
     "The Glare",
+    "The Kiln",
+    "The Nightspill",
     "The Twilight Sea",
     "The Ammonia Flats",
-    "The Nightspill",
-    "The Kiln",
     "The Umbra",
     "The Sunreach",
     "The Long Sand",
@@ -30,53 +30,64 @@
     "The Ashfall Range",
     "The Rimewall",
     "The Scald",
-    "The Softground",
+    "The Sinkground",
     "The Sporefields",
-    "The Cold Bloom",
+    "The Frostcaps",
     "The Salt",
     "The Rust Cathedral",
     "The Scour",
-    "The Low Dew",
+    "The Damp",
     "The Cracklands",
     "The Ashen Waste",
     "The Scald Spine",
-    "The High Rot",
+    "The Glass Reach",
+    "The Verge",
+    "The Hanging Wood",
     "The Fall Line",
     "The Sunward Scrub",
     "The Fall Line Barrens",
     "The Cinderdark",
-    "The Last Green",
-    "The Frostbloom",
-    "The Flatdew",
+    "The Slough",
+    "The Blindwood",
+    "The Stillwood",
+    "The Level",
     "The Blight",
-    "The Deep Bloom",
-    "The Grayrot",
-    "The Warm Rot",
+    "The Tallow Ground",
+    "The Mould March",
     "The Cinders",
+    "The Sweatwood",
     "The Scorch",
-    "The Shelf Rot",
-    "The Pan",
-    "The Knuckles",
-    "The Venom Wood",
-    "The Apron",
-    "The Coldspore",
-    "The Saddle",
-    "The Shoulder",
-    "The Crown Rot",
+    "The Stepwood",
     "The Fever Wood",
+    "The Pan",
+    "The Grinding Floor",
+    "The Knuckles",
+    "The Capwood",
+    "The Wither",
+    "The Venom Wood",
+    "The Fanground",
+    "The Ashwood",
+    "The Notch",
+    "The Coldshelf",
     "The Pyrelands",
-    "The Last Scrub",
+    "The Thornend",
+    "The Pale Flats",
+    "The Coldstone",
+    "The Lantern Deeps",
+    "The Chalk March",
+    "The Quiet Ground",
+    "The Hollow Verge",
     "The Salt Gate"
   ],
   "features": [
     {
       "id": 0,
       "name": "The Deadstone",
-      "tiles": 1979,
-      "mass": 1979,
+      "tiles": 2051,
+      "mass": 2051,
       "kind": "region",
-      "lat": -0.9944,
-      "lon": -37.7629
+      "lat": -2.2918,
+      "lon": -40.6607
     },
     {
       "id": 1,
@@ -96,29 +107,53 @@
     {
       "id": 2,
       "name": "The Glare",
-      "tiles": 866,
-      "mass": 866,
+      "tiles": 879,
+      "mass": 879,
       "kind": "region",
-      "lat": 40.3726,
-      "lon": 9.3437
+      "lat": 40.2631,
+      "lon": 8.7928
     },
     {
       "id": 3,
+      "name": "The Kiln",
+      "tiles": 878,
+      "mass": 878,
+      "kind": "region",
+      "lat": -40.6595,
+      "lon": 6.6376
+    },
+    {
+      "id": 4,
+      "name": "The Nightspill",
+      "kind": "waste",
+      "tiles": 853,
+      "mass": 853,
+      "drawCenter": [
+        -0.417913,
+        -0.071562,
+        -0.905664
+      ],
+      "lat": -7.2796,
+      "lon": -116.5633,
+      "maxDrawSizeInTiles": 87.7
+    },
+    {
+      "id": 5,
       "name": "The Twilight Sea",
       "kind": "sea",
-      "tiles": 851,
-      "mass": 851,
+      "tiles": 852,
+      "mass": 852,
       "drawCenter": [
         -0.01706,
         0.303841,
         -0.95257
       ],
-      "lat": 17.174,
-      "lon": -90.7035,
+      "lat": 17.1972,
+      "lon": -90.6771,
       "maxDrawSizeInTiles": 48.8
     },
     {
-      "id": 4,
+      "id": 6,
       "name": "The Ammonia Flats",
       "kind": "waste",
       "tiles": 818,
@@ -131,30 +166,6 @@
       "lat": 19.6648,
       "lon": 88.3734,
       "maxDrawSizeInTiles": 33.6
-    },
-    {
-      "id": 5,
-      "name": "The Nightspill",
-      "kind": "waste",
-      "tiles": 817,
-      "mass": 817,
-      "drawCenter": [
-        -0.417913,
-        -0.071562,
-        -0.905664
-      ],
-      "lat": -7.5879,
-      "lon": -115.9538,
-      "maxDrawSizeInTiles": 87.7
-    },
-    {
-      "id": 6,
-      "name": "The Kiln",
-      "tiles": 816,
-      "mass": 816,
-      "kind": "region",
-      "lat": -40.4956,
-      "lon": 5.9074
     },
     {
       "id": 7,
@@ -175,25 +186,25 @@
       "id": 8,
       "name": "The Sunreach",
       "kind": "waste",
-      "tiles": 781,
-      "mass": 781,
+      "tiles": 795,
+      "mass": 795,
       "drawCenter": [
         -0.414725,
         -0.03444,
         0.909295
       ],
-      "lat": -9.6373,
-      "lon": 115.6537,
+      "lat": -9.6086,
+      "lon": 115.8354,
       "maxDrawSizeInTiles": 84.5
     },
     {
       "id": 9,
       "name": "The Long Sand",
-      "tiles": 670,
-      "mass": 670,
+      "tiles": 721,
+      "mass": 721,
       "kind": "region",
-      "lat": -53.467,
-      "lon": -43.8079
+      "lat": -53.2134,
+      "lon": -42.445
     },
     {
       "id": 10,
@@ -208,25 +219,25 @@
       "id": 11,
       "name": "The Gray Crags",
       "kind": "massif",
-      "tiles": 576,
-      "mass": 576,
+      "tiles": 577,
+      "mass": 577,
       "drawCenter": [
         -0.401206,
         0.368233,
         0.838712
       ],
-      "lat": 21.1932,
-      "lon": 117.3839,
+      "lat": 21.247,
+      "lon": 117.385,
       "maxDrawSizeInTiles": 69.7
     },
     {
       "id": 12,
       "name": "The Thornbelt",
-      "tiles": 492,
-      "mass": 492,
+      "tiles": 502,
+      "mass": 502,
       "kind": "region",
-      "lat": -47.6337,
-      "lon": 61.2509
+      "lat": -47.5397,
+      "lon": 61.0695
     },
     {
       "id": 13,
@@ -247,15 +258,15 @@
       "id": 14,
       "name": "The South Crags",
       "kind": "massif",
-      "tiles": 432,
-      "mass": 432,
+      "tiles": 433,
+      "mass": 433,
       "drawCenter": [
         -0.623093,
         -0.758824,
         0.189582
       ],
-      "lat": -46.1336,
-      "lon": 46.8703,
+      "lat": -46.0942,
+      "lon": 47.0862,
       "maxDrawSizeInTiles": 53.1
     },
     {
@@ -286,15 +297,15 @@
       "id": 17,
       "name": "The Dew Belt",
       "kind": "waste",
-      "tiles": 361,
-      "mass": 361,
+      "tiles": 362,
+      "mass": 362,
       "drawCenter": [
         0.422316,
         -0.067106,
         -0.903961
       ],
-      "lat": -6.8667,
-      "lon": -73.492,
+      "lat": -6.9159,
+      "lon": -73.5255,
       "maxDrawSizeInTiles": 47.5
     },
     {
@@ -339,11 +350,11 @@
     {
       "id": 21,
       "name": "The Rimewall",
-      "tiles": 335,
-      "mass": 335,
+      "tiles": 338,
+      "mass": 338,
       "kind": "region",
-      "lat": 62.208,
-      "lon": -26.0207
+      "lat": 62.3039,
+      "lon": -26.95
     },
     {
       "id": 22,
@@ -362,12 +373,12 @@
     },
     {
       "id": 23,
-      "name": "The Softground",
-      "tiles": 275,
-      "mass": 275,
+      "name": "The Sinkground",
+      "tiles": 276,
+      "mass": 276,
       "kind": "region",
-      "lat": -69.4344,
-      "lon": -80.8735
+      "lat": -69.4746,
+      "lon": -81.2043
     },
     {
       "id": 24,
@@ -380,7 +391,7 @@
     },
     {
       "id": 25,
-      "name": "The Cold Bloom",
+      "name": "The Frostcaps",
       "tiles": 254,
       "mass": 254,
       "kind": "region",
@@ -428,7 +439,7 @@
     },
     {
       "id": 29,
-      "name": "The Low Dew",
+      "name": "The Damp",
       "tiles": 230,
       "mass": 230,
       "kind": "region",
@@ -438,11 +449,11 @@
     {
       "id": 30,
       "name": "The Cracklands",
-      "tiles": 210,
-      "mass": 210,
+      "tiles": 227,
+      "mass": 227,
       "kind": "region",
-      "lat": 70.295,
-      "lon": -8.4788
+      "lat": 70.2272,
+      "lon": -8.4617
     },
     {
       "id": 31,
@@ -470,7 +481,25 @@
     },
     {
       "id": 33,
-      "name": "The High Rot",
+      "name": "The Glass Reach",
+      "tiles": 172,
+      "mass": 172,
+      "kind": "region",
+      "lat": 51.7806,
+      "lon": -91.7962
+    },
+    {
+      "id": 34,
+      "name": "The Verge",
+      "tiles": 171,
+      "mass": 171,
+      "kind": "region",
+      "lat": -60.8164,
+      "lon": 155.1389
+    },
+    {
+      "id": 35,
+      "name": "The Hanging Wood",
       "tiles": 165,
       "mass": 165,
       "kind": "region",
@@ -478,7 +507,7 @@
       "lon": -114.6527
     },
     {
-      "id": 34,
+      "id": 36,
       "name": "The Fall Line",
       "kind": "massif",
       "tiles": 155,
@@ -493,7 +522,7 @@
       "maxDrawSizeInTiles": 35.2
     },
     {
-      "id": 35,
+      "id": 37,
       "name": "The Sunward Scrub",
       "tiles": 154,
       "mass": 154,
@@ -502,7 +531,7 @@
       "lon": 61.3641
     },
     {
-      "id": 36,
+      "id": 38,
       "name": "The Fall Line Barrens",
       "kind": "waste",
       "tiles": 153,
@@ -517,26 +546,35 @@
       "maxDrawSizeInTiles": 32.7
     },
     {
-      "id": 37,
-      "name": "The Cinderdark",
-      "tiles": 146,
-      "mass": 146,
-      "kind": "region",
-      "lat": -8.1918,
-      "lon": 130.4971
-    },
-    {
-      "id": 38,
-      "name": "The Last Green",
-      "tiles": 144,
-      "mass": 144,
-      "kind": "region",
-      "lat": -61.8498,
-      "lon": 154.2743
-    },
-    {
       "id": 39,
-      "name": "The Frostbloom",
+      "name": "The Cinderdark",
+      "tiles": 153,
+      "mass": 153,
+      "kind": "region",
+      "lat": -7.8835,
+      "lon": 130.2295
+    },
+    {
+      "id": 40,
+      "name": "The Slough",
+      "tiles": 148,
+      "mass": 148,
+      "kind": "region",
+      "lat": 81.1797,
+      "lon": 8.5445
+    },
+    {
+      "id": 41,
+      "name": "The Blindwood",
+      "tiles": 145,
+      "mass": 145,
+      "kind": "region",
+      "lat": 8.1713,
+      "lon": -131.5337
+    },
+    {
+      "id": 42,
+      "name": "The Stillwood",
       "tiles": 142,
       "mass": 142,
       "kind": "region",
@@ -544,8 +582,8 @@
       "lon": -9.495
     },
     {
-      "id": 40,
-      "name": "The Flatdew",
+      "id": 43,
+      "name": "The Level",
       "tiles": 141,
       "mass": 141,
       "kind": "region",
@@ -553,7 +591,7 @@
       "lon": -101.6466
     },
     {
-      "id": 41,
+      "id": 44,
       "name": "The Blight",
       "tiles": 140,
       "mass": 140,
@@ -562,17 +600,17 @@
       "lon": 26.3523
     },
     {
-      "id": 42,
-      "name": "The Deep Bloom",
-      "tiles": 132,
-      "mass": 132,
+      "id": 45,
+      "name": "The Tallow Ground",
+      "tiles": 129,
+      "mass": 129,
       "kind": "region",
-      "lat": 8.8989,
-      "lon": -132.1855
+      "lat": 46.8252,
+      "lon": 80.3395
     },
     {
-      "id": 43,
-      "name": "The Grayrot",
+      "id": 46,
+      "name": "The Mould March",
       "tiles": 123,
       "mass": 123,
       "kind": "region",
@@ -580,8 +618,17 @@
       "lon": 128.1967
     },
     {
-      "id": 44,
-      "name": "The Warm Rot",
+      "id": 47,
+      "name": "The Cinders",
+      "tiles": 112,
+      "mass": 112,
+      "kind": "region",
+      "lat": -28.2478,
+      "lon": 69.7258
+    },
+    {
+      "id": 48,
+      "name": "The Sweatwood",
       "tiles": 93,
       "mass": 93,
       "kind": "region",
@@ -589,16 +636,7 @@
       "lon": -77.6701
     },
     {
-      "id": 45,
-      "name": "The Cinders",
-      "tiles": 93,
-      "mass": 93,
-      "kind": "region",
-      "lat": -28.5609,
-      "lon": 70.211
-    },
-    {
-      "id": 46,
+      "id": 49,
       "name": "The Scorch",
       "kind": "waste",
       "tiles": 90,
@@ -613,8 +651,8 @@
       "maxDrawSizeInTiles": 23.2
     },
     {
-      "id": 47,
-      "name": "The Shelf Rot",
+      "id": 50,
+      "name": "The Stepwood",
       "tiles": 85,
       "mass": 85,
       "kind": "region",
@@ -622,7 +660,16 @@
       "lon": -90.271
     },
     {
-      "id": 48,
+      "id": 51,
+      "name": "The Fever Wood",
+      "tiles": 81,
+      "mass": 81,
+      "kind": "region",
+      "lat": 24.1762,
+      "lon": -42.0119
+    },
+    {
+      "id": 52,
       "name": "The Pan",
       "tiles": 79,
       "mass": 79,
@@ -631,7 +678,16 @@
       "lon": -89.1791
     },
     {
-      "id": 49,
+      "id": 53,
+      "name": "The Grinding Floor",
+      "tiles": 79,
+      "mass": 79,
+      "kind": "region",
+      "lat": -20.5444,
+      "lon": -93.2791
+    },
+    {
+      "id": 54,
       "name": "The Knuckles",
       "tiles": 78,
       "mass": 78,
@@ -640,7 +696,25 @@
       "lon": 76.0241
     },
     {
-      "id": 50,
+      "id": 55,
+      "name": "The Capwood",
+      "tiles": 75,
+      "mass": 75,
+      "kind": "region",
+      "lat": 37.4241,
+      "lon": 141.0936
+    },
+    {
+      "id": 56,
+      "name": "The Wither",
+      "tiles": 72,
+      "mass": 72,
+      "kind": "region",
+      "lat": -58.6131,
+      "lon": 84.821
+    },
+    {
+      "id": 57,
       "name": "The Venom Wood",
       "tiles": 72,
       "mass": 72,
@@ -649,8 +723,8 @@
       "lon": 143.5591
     },
     {
-      "id": 51,
-      "name": "The Apron",
+      "id": 58,
+      "name": "The Fanground",
       "tiles": 70,
       "mass": 70,
       "kind": "region",
@@ -658,8 +732,8 @@
       "lon": -71.9517
     },
     {
-      "id": 52,
-      "name": "The Coldspore",
+      "id": 59,
+      "name": "The Ashwood",
       "tiles": 69,
       "mass": 69,
       "kind": "region",
@@ -667,8 +741,8 @@
       "lon": -138.5493
     },
     {
-      "id": 53,
-      "name": "The Saddle",
+      "id": 60,
+      "name": "The Notch",
       "tiles": 68,
       "mass": 68,
       "kind": "region",
@@ -676,8 +750,8 @@
       "lon": 63.6019
     },
     {
-      "id": 54,
-      "name": "The Shoulder",
+      "id": 61,
+      "name": "The Coldshelf",
       "tiles": 68,
       "mass": 68,
       "kind": "region",
@@ -685,25 +759,7 @@
       "lon": -126.004
     },
     {
-      "id": 55,
-      "name": "The Crown Rot",
-      "tiles": 67,
-      "mass": 67,
-      "kind": "region",
-      "lat": 36.8352,
-      "lon": 141.2525
-    },
-    {
-      "id": 56,
-      "name": "The Fever Wood",
-      "tiles": 65,
-      "mass": 65,
-      "kind": "region",
-      "lat": 25.3568,
-      "lon": -41.8678
-    },
-    {
-      "id": 57,
+      "id": 62,
       "name": "The Pyrelands",
       "kind": "waste",
       "tiles": 63,
@@ -718,8 +774,8 @@
       "maxDrawSizeInTiles": 20.8
     },
     {
-      "id": 58,
-      "name": "The Last Scrub",
+      "id": 63,
+      "name": "The Thornend",
       "tiles": 61,
       "mass": 61,
       "kind": "region",
@@ -727,7 +783,61 @@
       "lon": 136.793
     },
     {
-      "id": 59,
+      "id": 64,
+      "name": "The Pale Flats",
+      "tiles": 60,
+      "mass": 60,
+      "kind": "region",
+      "lat": -54.6867,
+      "lon": -88.1514
+    },
+    {
+      "id": 65,
+      "name": "The Coldstone",
+      "tiles": 57,
+      "mass": 57,
+      "kind": "region",
+      "lat": -61.2777,
+      "lon": -127.9804
+    },
+    {
+      "id": 66,
+      "name": "The Lantern Deeps",
+      "tiles": 57,
+      "mass": 57,
+      "kind": "region",
+      "lat": -28.1152,
+      "lon": -168.1139
+    },
+    {
+      "id": 67,
+      "name": "The Chalk March",
+      "tiles": 57,
+      "mass": 57,
+      "kind": "region",
+      "lat": -72.5591,
+      "lon": -64.6454
+    },
+    {
+      "id": 68,
+      "name": "The Quiet Ground",
+      "tiles": 43,
+      "mass": 43,
+      "kind": "region",
+      "lat": 20.0159,
+      "lon": 132.9392
+    },
+    {
+      "id": 69,
+      "name": "The Hollow Verge",
+      "tiles": 40,
+      "mass": 40,
+      "kind": "region",
+      "lat": -25.1743,
+      "lon": -38.736
+    },
+    {
+      "id": 70,
       "name": "The Salt Gate",
       "kind": "waste",
       "tiles": 16,
@@ -787,5 +897,5 @@
   "landmarks": 569,
   "riverLinks": 293,
   "roadLinks": 1373,
-  "unnamedLandTiles": 1287
+  "unnamedLandTiles": 0
 }
