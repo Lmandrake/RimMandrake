@@ -1779,6 +1779,7 @@ class DefContext:
         self.patch_files: list[str] = []
         self.other_files: list[str] = []
         self.meta_files: list[str] = []
+        self.lang_files: list[str] = []
         self.local_names: set[str] = set()
         self.defname_locs: dict[tuple[str, str], list[str]] = {}
 
@@ -1793,6 +1794,11 @@ class DefContext:
                 continue
             if root.tag in ("ModMetaData", "loadFolders"):
                 self.meta_files.append(p)
+                continue
+            # Counted apart from `other_files` so the banner does not advertise
+            # translations as files it could not classify.
+            if root.tag == "LanguageData":
+                self.lang_files.append(p)
                 continue
             if root.tag != "Defs":
                 self.other_files.append(p)
@@ -2085,6 +2091,23 @@ def validate_file(path: str, docs, scanner: PatchScanner | None,
                "--defs load set, not checked here.")
         return f.report(quiet), len(f.errors), len(f.warnings)
 
+    # 🔴 Languages/ is NOT a patch folder, and reading it as one made this gate
+    # cry wolf. `<LanguageData>` is exactly what a keyed translation or a
+    # DefInjected override must have; reporting it as "expected <Patch>" put a
+    # fake ERROR — and therefore `FAIL TOTAL` — on a mod with zero real defects.
+    # ⚠️ A gate that fails a clean mod gets ignored, which costs more than the
+    # gate ever saved: Jawa_Patches read FAIL on 1 fake error while 11 real ones
+    # had just been cleared.
+    # ⛔ Do not "fix" this by skipping the Languages/ DIRECTORY. Dispatching on
+    # the root element is right for the same reason it was right for About.xml:
+    # the deploy skill asks a seat to validate the WHOLE mod folder, because the
+    # blast radius is the mod.
+    if root.tag == "LanguageData":
+        n = len([c for c in root if isinstance(c.tag, str)])
+        f.info(f"translation file: parsed, {n} key(s). Translations are not this "
+               "tool's business — no patch or def check applies to them.")
+        return f.report(quiet), len(f.errors), len(f.warnings)
+
     if root.tag == "Defs":
         tex, ships_dll = _textures_for(path, mods, tex_cache)
         check_def_structure(root, path, f, ctx, tex, index, ships_dll)
@@ -2205,6 +2228,7 @@ def main() -> int:
     print(f"\nvalidate_patch.py - {len(files)} XML file(s): "
           f"{len(ctx.patch_files)} <Patch>, {len(ctx.def_files)} <Defs>"
           + (f", {len(ctx.meta_files)} About/LoadFolders" if ctx.meta_files else "")
+          + (f", {len(ctx.lang_files)} translation" if ctx.lang_files else "")
           + (f", {len(ctx.other_files)} neither" if ctx.other_files else ""))
     print("  SCANNED     Patches/: operation shape, guards, value shape, live "
           "xpath hit counts")
@@ -2303,6 +2327,16 @@ def main() -> int:
         verdict = "FAIL" if total_err else "OK"
         print(f"{verdict} TOTAL - {len(files)} file(s), {total_err} error(s), "
               f"{total_warn} warning(s)")
+        # ⭐ The verdict already keys off ERRORS only, but a bare "0 error(s),
+        # 183 warning(s)" still reads as a failing mod, and most of that 183 is
+        # one benign shape — `nomatch` whose inner xpath differs from the
+        # conditional test, which is how add-if-missing patches are written.
+        # Say so, or the next seat goes hunting through 183 lines for a defect
+        # the tool already knows is intentional.
+        if not total_err and total_warn:
+            print(f"     ⇒ nothing here fails. {total_warn} warning(s) are "
+                  "advisory; the add-if-missing `nomatch` shape is the common "
+                  "one and is intentional.")
 
     return 1 if total_err else 0
 
