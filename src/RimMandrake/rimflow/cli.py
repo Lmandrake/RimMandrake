@@ -535,8 +535,14 @@ def cmd_close(args, seat):
     _, w = load()
     sha = args.sha or head_sha()
     if not sha:
-        die("`close` requires --sha and git could not supply one. The sha is what makes "
-            "a close checkable a year later; a close with no commit behind it is a claim.")
+        die("`close` needs a sha and `git rev-parse --short HEAD` gave nothing — you are "
+            "probably\nin a repo with no commits yet, or outside one.\n\n"
+            "The sha is what makes a close checkable a year later; a close with no commit "
+            "behind\nit is a claim. 🔑 COMMIT THE WORK FIRST — the commit IS the close:\n\n"
+            "    git commit <the paths you changed> -m \"<what you did>\"\n"
+            "    python3 src/RimMandrake/rimflow/cli.py close %s\n\n"
+            "⚠️  Nothing is lost by the refusal — the item is untouched and still yours."
+            % args.id)
     _emit({"seat": seat, "event": "close", "id": args.id, "sha": sha}, w, quiet=True)
     print("%s closed at %s." % (args.id, sha))
     return 0
@@ -877,18 +883,18 @@ def build_parser():
     s.add_argument("id")
     s.add_argument("--to", required=True,
                    help="offline|deploy|game-up|bridge|harvest|owner")
-    s.add_argument("--reason", required=True)
+    s.add_argument("--reason")   # optional since 2026-08-22 — nothing reads it
 
     s = add("retarget", "move it between v1 and v2 — a planning move", cmd_retarget)
     s.add_argument("id")
     s.add_argument("to", help="v1|v2")
-    s.add_argument("--reason", required=True)
+    s.add_argument("--reason")   # optional since 2026-08-22 — nothing reads it
 
     s = add("reassign", "hand an item to another seat (DECIDE, or OWNER overriding)",
             _simple("reassign", (("to", "to"), ("reason", "reason"))))
     s.add_argument("id")
     s.add_argument("--to", required=True)
-    s.add_argument("--reason", required=True)
+    s.add_argument("--reason")   # optional since 2026-08-22 — nothing reads it
 
     s = add("drop", "this will not be done", _simple("drop", (("reason", "reason"),)))
     s.add_argument("id")

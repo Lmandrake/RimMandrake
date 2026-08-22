@@ -172,7 +172,15 @@ VERBS = {
     # documented command impossible. Found 2026-08-20 by the renderer, which tried it.
     "spawn":     {"who": "any",   "req": ("from", "for", "name"),
                   "opt": ("kind", "needs", "this_deployment", "spec", "title")},
-    "retarget":  {"who": ("DECIDE", "owner"), "req": ("to", "reason"), "opt": ("from",)},
+    # ⚠️ `reason` moved from `req` to `opt` on these three — owner's ruling, 2026-08-22.
+    # Nothing reads them: no renderer, no `priority.rank()` branch, no `derive_matrix`
+    # case. They were a required justification that only a human ever reads, which is
+    # what `note` is for — and a required field with nothing to put in it is answered
+    # with filler, which is worse than silence because it looks like a reason.
+    # 🔑 `drop`, `block` and `admin` KEEP theirs: there the reason is the ONLY record of
+    # the decision, and the Tribal Furniture reversal was lost precisely because it lived
+    # in a drop reason nobody propagated. Those are load-bearing; these three are not.
+    "retarget":  {"who": ("DECIDE", "owner"), "req": ("to",), "opt": ("from", "reason")},
     # 🔴 `needs` had NO setter until 2026-08-21, and that broke the axis POLICY.md added
     # precisely so "waiting for the game" stops looking like "ready". Only `file` and
     # `spawn` accepted it, so every migrated item rendered at the filing default: 38 of
@@ -181,8 +189,8 @@ VERBS = {
     # ⚠️ It is `("DECIDE", "owner")` like `retarget`, not owner-only: a mis-stamped
     # `needs` is exactly the kind of thing a seat notices about ANOTHER seat's item, and
     # the item's owner may be the one seat that cannot see the problem.
-    "needs":     {"who": ("DECIDE", "owner"), "req": ("to", "reason"), "opt": ()},
-    "reassign":  {"who": ("DECIDE",), "req": ("to", "reason"), "opt": ()},
+    "needs":     {"who": ("DECIDE", "owner"), "req": ("to",), "opt": ("reason",)},
+    "reassign":  {"who": ("DECIDE",), "req": ("to",), "opt": ("reason",)},
     "close":     {"who": "owner", "req": ("sha",), "opt": ()},
     "drop":      {"who": "owner", "req": ("reason",), "opt": ()},
     "supersede": {"who": "owner", "req": ("by",), "opt": ("reason",)},
@@ -276,7 +284,16 @@ def validate(ev):
                 "Legacy IDs like B58 still resolve and are never renamed." % (verb, iid))
     for f in spec["req"]:
         if ev.get(f) in (None, ""):
-            raise SchemaError("`%s` requires %r" % (verb, f))
+            raise SchemaError(
+                "`%s` requires --%s. Every field this verb needs:\n"
+                "    required  %s\n"
+                "    optional  %s\n"
+                "\u2705 python3 src/RimMandrake/rimflow/cli.py %s <ID> %s"
+                % (verb, str(f).replace("_", "-"),
+                   ", ".join("--" + x.replace("_", "-") for x in spec["req"]) or "(none)",
+                   ", ".join("--" + x.replace("_", "-") for x in spec["opt"]) or "(none)",
+                   verb,
+                   " ".join("--%s <%s>" % (x.replace("_", "-"), x) for x in spec["req"])))
     # ⚠️ `override` is legal on EVERY verb because the OWNER may override every verb.
     # It holds the rule he overrode, so the bypass is in the record rather than being
     # invisible — see `_may`. No seat may set it; `_emit` stamps it.
