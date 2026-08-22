@@ -28,8 +28,23 @@ it is a mod's presentation, not ours.
 ## the call, which is the owner's
 Three shapes:
 1. **Accept it.** It is a deliberate feature of a mod he chose.
-2. **Turn it off in that mod's settings**, if the substitution is optional — check
-   `rimworld/get_mod_settings` for the mod before assuming it is not.
+2. ⭐ **Turn it off in that mod's settings — the switch is FOUND and named.**
+   `Intimacy - Gender Works` (`lovelydovey.sex.withrosaline`, workshop 3534254491) exposes
+   five settings, read live off the running game:
+
+       femaleAphrodorChance                     = 0.05
+       femalePhallorChance                      = 0.03
+       integrateReproductiveGenesIntoXenotypes  = True     <-- this one
+       maleAphrodorChance                       = 0.05
+       maleGestorChance                         = 0.03
+
+   🔑 The 3-5% figures are the CROSS cases, not the overall rate. With integration ON every
+   pawn receives a reproductive gene — female defaults to `Gestor`, male to `Phallor`, with
+   3% swapped — which is why 100% of sampled pawns showed one. Turning
+   `integrateReproductiveGenesIntoXenotypes` to **False** is the single-toggle fix, and it
+   is in the mod's own options window, no rebuild and no reload of anyone else's work.
+
+   ⛔ **Not changed by CHECK.** It is the owner's mod configuration and the call is his.
 3. **Cherrypick the gene.** ⚠️ `GeneDef/SEX_AlwaysGestor` is a *gene*, so cutting it may
    affect pawn generation, not only the label. Do not cut before reading what else uses it.
 
