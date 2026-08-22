@@ -22,16 +22,28 @@ All work committed and pushed; `origin/main..HEAD` empty.
 
 ## 🔴 The three that matter most
 
-**1. Ten vanilla guns and sixteen more weapons have lost their `weaponTags`.**
-`Gun_Revolver` reads `[]` at runtime and vanilla ships it `[SimpleGun, Revolver]`. At least
-**26** vanilla/DLC weapons are stripped — every basic gun, all three bows, the whole
-medieval melee set. `Mercenary_Sniper` and `Scavenger` spawn **5/5 bare**; vanilla combat
-kinds run **32.5% unarmed** against our roster's 11.2%. **The bare-handed-raider problem is
-vanilla's, not ours.** Filed `RESTORE_VANILLA_GUN_TAGS_1` (BUILD). The hunt for what strips
-them was dispatched to a subagent and had not returned when this was written — **check
-whether that answer landed before starting the search again.**
-⛔ And do NOT raise `weaponMoney`: 0 of 48 kinds can roll below their cheapest weapon, and
-`jawa/pawnkind_audit` reports 0 `cannotAfford`. Money is refuted.
+**1. 26+ vanilla weapons have no `weaponTags`, and the culprit is CHERRY PICKER — the
+owner's own cut list.** 27 of 27 measured-stripped weapons are on the list the game loaded;
+both measured-intact ones are absent. Cherry Picker neuters rather than deletes, and
+emptying `weaponTags` is part of neutering. ⛔ **Nothing is to be restored — the cut is
+deliberate**, and `RESTORE_VANILLA_GUN_TAGS_1` is mis-titled and opens with that correction.
+🔑 **A Cherry Picker cut is invisible to every XML search.** Read the kill list first.
+
+The real fallout, from the whole-game audit (711 tool-using kinds): **29 intend to arm and
+cannot** — **12 `emptyTagPool`** (incl. `Mech_Pikeman`, `Drone_Sentry`,
+`Tribal_Archer_Fire`, all measured 0/5) and **17 `cannotAfford`**. Filed
+`ORPHANED_KINDS_AFTER_GUN_CUT_1` (DECIDE) with the per-kind table.
+
+⚠️ **Correcting myself:** "the pool is emptied, not the budget" is true for the mechs and
+FALSE for the traders. `Mercenary_Sniper` holds a 760-silver DMR and has 600 to spend.
+`weaponMoney` is refuted **for the 48 authored kinds only** — for those 17 vanilla kinds
+`cannotAfford` is the literal diagnosis, though raising it arms town traders with
+incendiary launchers, which is the absurdity the item is named after.
+
+⭐ `MECH_WEAPONS_UNCUT_1` un-cut `Gun_Needle` and `Gun_Scattergun` today at 16:22. The
+running game loaded the pre-edit list, so the repair is real but **not yet live** — on the
+next cold load the pikeman and sentry drone should arm. `Bow_Great` is still cut, so the
+fire archer will not.
 
 **2. Blackstar's reskin patches the abstract root of every pirate def.**
 `Core`'s `Pirate` is declared `<FactionDef Name="PirateBandBase">` — one def that is both the
