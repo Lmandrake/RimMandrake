@@ -1,0 +1,1875 @@
+{
+  "success": true,
+  "message": "29 of 711 tool-using kind(s) INTEND to arm and CANNOT: 12 whose tags match no loaded weapon, 17 that cannot afford the cheapest weapon their tags allow. (Not counted: 291 with no weaponTags and 9 with weaponMoney.max 0 - both are how a civilian or a child is kept unarmed.)",
+  "weaponPairsInGame": 1748,
+  "distinctWeaponTags": 389,
+  "kindsChecked": 711,
+  "skippedNonToolUser": 1026,
+  "counts": {
+    "emptyTagPool": 12,
+    "cannotAfford": 17,
+    "healthy": 382,
+    "byDesign_noWeaponTags": 291,
+    "byDesign_zeroBudget": 9
+  },
+  "byDesign_noWeaponTags": [
+    {
+      "kind": "Colonist",
+      "label": "colonist",
+      "race": "Human"
+    },
+    {
+      "kind": "Tribesperson",
+      "label": "member",
+      "race": "Human"
+    },
+    {
+      "kind": "SpaceRefugee",
+      "label": "space refugee",
+      "race": "Human"
+    },
+    {
+      "kind": "SpaceRefugee_Clothed",
+      "label": "space refugee",
+      "race": "Human"
+    },
+    {
+      "kind": "Slave",
+      "label": "slave",
+      "race": "Human"
+    },
+    {
+      "kind": "WildMan",
+      "label": "wild man",
+      "race": "Human"
+    },
+    {
+      "kind": "Mech_Scyther",
+      "label": "scyther",
+      "race": "Mech_Scyther"
+    },
+    {
+      "kind": "Slave_Empire",
+      "label": "slave",
+      "race": "Human"
+    },
+    {
+      "kind": "Empire_Common_Lodger",
+      "label": "imperial citizen",
+      "race": "Human"
+    },
+    {
+      "kind": "Empire_Common_Laborer",
+      "label": "imperial laborer",
+      "race": "Human"
+    },
+    {
+      "kind": "Empire_Royal_NobleWimp",
+      "label": "noble",
+      "race": "Human"
+    },
+    {
+      "kind": "Tribal_Child_Fire",
+      "label": "villager",
+      "race": "Human"
+    },
+    {
+      "kind": "Sanguophage_Player",
+      "label": "sanguophage",
+      "race": "Human"
+    },
+    {
+      "kind": "Tribal_Child",
+      "label": "villager",
+      "race": "Human"
+    },
+    {
+      "kind": "Mech_Tunneler",
+      "label": "tunneler",
+      "race": "Mech_Tunneler"
+    },
+    {
+      "kind": "Mech_Lifter",
+      "label": "lifter",
+      "race": "Mech_Lifter"
+    },
+    {
+      "kind": "Mech_Constructoid",
+      "label": "constructoid",
+      "race": "Mech_Constructoid"
+    },
+    {
+      "kind": "Mech_Fabricor",
+      "label": "fabricor",
+      "race": "Mech_Fabricor"
+    },
+    {
+      "kind": "Mech_Agrihand",
+      "label": "agrihand",
+      "race": "Mech_Agrihand"
+    },
+    {
+      "kind": "Mech_Cleansweeper",
+      "label": "cleansweeper",
+      "race": "Mech_Cleansweeper"
+    },
+    {
+      "kind": "Mech_Paramedic",
+      "label": "paramedic",
+      "race": "Mech_Paramedic"
+    },
+    {
+      "kind": "Mech_Centurion",
+      "label": "centurion",
+      "race": "Mech_Centurion"
+    },
+    {
+      "kind": "Mech_Warqueen",
+      "label": "war queen",
+      "race": "Mech_Warqueen"
+    },
+    {
+      "kind": "LeatheryStranger",
+      "label": "leathery stranger",
+      "race": "CreepJoiner"
+    },
+    {
+      "kind": "DarkScholar",
+      "label": "dark scholar",
+      "race": "CreepJoiner"
+    },
+    {
+      "kind": "DealMaker",
+      "label": "deal maker",
+      "race": "CreepJoiner"
+    },
+    {
+      "kind": "Blindhealer",
+      "label": "blind healer",
+      "race": "CreepJoiner"
+    },
+    {
+      "kind": "TimelessOne",
+      "label": "timeless one",
+      "race": "CreepJoiner"
+    },
+    {
+      "kind": "CultEscapee",
+      "label": "cult escapee",
+      "race": "CreepJoiner"
+    },
+    {
+      "kind": "LoneGenius",
+      "label": "lone genius",
+      "race": "CreepJoiner"
+    },
+    {
+      "kind": "Nociosphere",
+      "label": "nociosphere",
+      "race": "Nociosphere"
+    },
+    {
+      "kind": "Metalhorror",
+      "label": "metalhorror",
+      "race": "Metalhorror"
+    },
+    {
+      "kind": "Revenant",
+      "label": "revenant",
+      "race": "Revenant"
+    },
+    {
+      "kind": "Sightstealer",
+      "label": "sightstealer",
+      "race": "Sightstealer"
+    },
+    {
+      "kind": "Noctol",
+      "label": "noctol",
+      "race": "Noctol"
+    },
+    {
+      "kind": "Gorehulk",
+      "label": "gorehulk",
+      "race": "Gorehulk"
+    },
+    {
+      "kind": "Devourer",
+      "label": "devourer",
+      "race": "Devourer"
+    },
+    {
+      "kind": "Bulbfreak",
+      "label": "bulbfreak",
+      "race": "Bulbfreak"
+    },
+    {
+      "kind": "Fingerspike",
+      "label": "fingerspike",
+      "race": "Fingerspike"
+    },
+    {
+      "kind": "Toughspike",
+      "label": "toughspike",
+      "race": "Toughspike"
+    },
+    {
+      "kind": "Trispike",
+      "label": "trispike",
+      "race": "Trispike"
+    },
+    {
+      "kind": "Dreadmeld",
+      "label": "dreadmeld",
+      "race": "Dreadmeld"
+    },
+    {
+      "kind": "ShamblerSwarmer",
+      "label": "shambler swarmer",
+      "race": "Human"
+    },
+    {
+      "kind": "ShamblerSoldier",
+      "label": "shambler soldier",
+      "race": "Human"
+    },
+    {
+      "kind": "ShamblerGorehulk",
+      "label": "gorehulk",
+      "race": "Gorehulk"
+    },
+    {
+      "kind": "Ghoul",
+      "label": "ghoul",
+      "race": "Human"
+    },
+    {
+      "kind": "Researcher",
+      "label": "researcher",
+      "race": "Human"
+    },
+    {
+      "kind": "Drone_Hunter",
+      "label": "hunter drone",
+      "race": "Drone_Hunter"
+    },
+    {
+      "kind": "Drone_Wasp",
+      "label": "wasp",
+      "race": "Drone_Wasp"
+    },
+    {
+      "kind": "CrewMember",
+      "label": "crew member",
+      "race": "Human"
+    },
+    {
+      "kind": "TradersGuild_Child",
+      "label": null,
+      "race": "Human"
+    },
+    {
+      "kind": "FFF_Dummy",
+      "label": "dummy",
+      "race": "Human"
+    },
+    {
+      "kind": "BS_ColonistXenoPlus",
+      "label": "colonist",
+      "race": "Human"
+    },
+    {
+      "kind": "BS_TribespersonXenoPlus",
+      "label": "member",
+      "race": "Human"
+    },
+    {
+      "kind": "BS_SpaceRefugeeXenoPlus",
+      "label": "space refugee",
+      "race": "Human"
+    },
+    {
+      "kind": "AM_Blitzkrieg",
+      "label": "blitzkrieg",
+      "race": "AM_Blitzkrieg"
+    },
+    {
+      "kind": "AM_Mech_Guttersnipe",
+      "label": "guttersnipe",
+      "race": "AM_Mech_Guttersnipe"
+    },
+    {
+      "kind": "AM_Mech_MasterChef",
+      "label": "culinarius",
+      "race": "AM_Mech_MasterChef"
+    },
+    {
+      "kind": "AM_Mech_PristineAssembler",
+      "label": "pristine assembler",
+      "race": "AM_Mech_PristineAssembler"
+    },
+    {
+      "kind": "AM_Mech_PristineSlurrypede",
+      "label": "pristine slurrypede",
+      "race": "AM_Mech_PristineSlurrypede"
+    },
+    {
+      "kind": "AM_PristineStrider",
+      "label": "pristine strider",
+      "race": "AM_PristineStrider"
+    },
+    {
+      "kind": "AM_Mech_TurboCleaner",
+      "label": "turbocleaner",
+      "race": "AM_Mech_TurboCleaner"
+    },
+    {
+      "kind": "AM_WarEmpress",
+      "label": "war empress",
+      "race": "AM_WarEmpress"
+    },
+    {
+      "kind": "AM_Aura",
+      "label": "aura",
+      "race": "AM_Aura"
+    },
+    {
+      "kind": "AM_Daggersnout",
+      "label": "daggersnout",
+      "race": "AM_Daggersnout"
+    },
+    {
+      "kind": "CAMech_Scyther",
+      "label": "summoned scyther",
+      "race": "CAMech_Scyther"
+    },
+    {
+      "kind": "CABossMechCrystalScythe",
+      "label": "Crystal scythe",
+      "race": "CACrystalScythe"
+    },
+    {
+      "kind": "CABossMechHarbinger",
+      "label": "Harbinger",
+      "race": "CAHarbinger"
+    },
+    {
+      "kind": "CityDwellerLGE",
+      "label": "citizen",
+      "race": "Human"
+    },
+    {
+      "kind": "MiningCoGeologist",
+      "label": "geologist",
+      "race": "Human"
+    },
+    {
+      "kind": "MiningCoGuard",
+      "label": "guard",
+      "race": "Human"
+    },
+    {
+      "kind": "MiningCoHeavyGuard",
+      "label": "guard",
+      "race": "Human"
+    },
+    {
+      "kind": "MiningCoMedic",
+      "label": "medic",
+      "race": "Human"
+    },
+    {
+      "kind": "MiningCoMiner",
+      "label": "miner",
+      "race": "Human"
+    },
+    {
+      "kind": "MiningCoOfficer",
+      "label": "officer",
+      "race": "Human"
+    },
+    {
+      "kind": "MiningCoPilot",
+      "label": "spaceship pilot",
+      "race": "Human"
+    },
+    {
+      "kind": "MiningCoScout",
+      "label": "scout",
+      "race": "Human"
+    },
+    {
+      "kind": "MiningCoShockTrooper",
+      "label": "shock trooper",
+      "race": "Human"
+    },
+    {
+      "kind": "MiningCoTechnician",
+      "label": "technician",
+      "race": "Human"
+    },
+    {
+      "kind": "MO_AbominationPawnKind",
+      "label": "abomination",
+      "race": "MO_AbominationRace"
+    },
+    {
+      "kind": "Ling_Cockroach_Mechanoid",
+      "label": "Mechanical Cockroach",
+      "race": "Ling_Cockroach_Mechanoid"
+    },
+    {
+      "kind": "RBM_ProtectedMonarch",
+      "label": "protected monarch",
+      "race": "Human"
+    },
+    {
+      "kind": "VFET_Wildperson",
+      "label": "wild man",
+      "race": "Human"
+    },
+    {
+      "kind": "VGE_Astronaut",
+      "label": "astronaut",
+      "race": "VGE_Astronaut"
+    },
+    {
+      "kind": "VQE_Patient",
+      "label": "patient",
+      "race": "Human"
+    },
+    {
+      "kind": "VQE_Experiment",
+      "label": null,
+      "race": "Human"
+    },
+    {
+      "kind": "VQE_Hero",
+      "label": null,
+      "race": "Human"
+    },
+    {
+      "kind": "VQE_Inventor",
+      "label": "Inventor",
+      "race": "Human"
+    },
+    {
+      "kind": "VRE_AncientFungoid",
+      "label": "ancient fungoid",
+      "race": "Human"
+    },
+    {
+      "kind": "VRESaurid_SauridMother",
+      "label": "Saurid Mother",
+      "race": "Human"
+    },
+    {
+      "kind": "JDSCIS_Pistoeka_Sotage_Droid",
+      "label": "Pistoeka Sotage Droid",
+      "race": "JDSCIS_Pistoeka_Sotage_Droid"
+    },
+    {
+      "kind": "DP_Madman",
+      "label": "Madman",
+      "race": "Human"
+    },
+    {
+      "kind": "VFEP_PirateColonist",
+      "label": "pirate",
+      "race": "Human"
+    },
+    {
+      "kind": "VFEP_Mech_Spidermine",
+      "label": "spidermine",
+      "race": "VFEP_Mech_Spidermine"
+    },
+    {
+      "kind": "GTGTC_Mercenary_Artisan",
+      "label": "GTG artisan",
+      "race": "Human"
+    },
+    {
+      "kind": "GTGTC_Mercenary_Laborer",
+      "label": "GTG laborer",
+      "race": "Human"
+    },
+    {
+      "kind": "Tribal_Wildman",
+      "label": "tribal wildman",
+      "race": "Human"
+    },
+    {
+      "kind": "Tribal_WildmanNW",
+      "label": "tribal wildman",
+      "race": "Human"
+    },
+    {
+      "kind": "Tribal_Wildman_Leader",
+      "label": "tribal wildman leader",
+      "race": "Human"
+    },
+    {
+      "kind": "BS_Nisse_Mage",
+      "label": "nisse mage",
+      "race": "Human"
+    },
+    {
+      "kind": "OuterRim_EscapedBattleDroid",
+      "label": "escaped battle droid",
+      "race": "OuterRim_BattleDroid"
+    },
+    {
+      "kind": "OuterRim_MuckrakerDroid",
+      "label": "Muckraker Crab Droid",
+      "race": "OuterRim_MuckrakerDroid"
+    },
+    {
+      "kind": "OuterRim_DestroyerDroid",
+      "label": "Destroyer Droid",
+      "race": "OuterRim_DestroyerDroid"
+    },
+    {
+      "kind": "OuterRim_DUMDroid",
+      "label": "DUM Repair Droid",
+      "race": "OuterRim_DUMDroid"
+    },
+    {
+      "kind": "OuterRim_FX7Droid",
+      "label": "fx-7 medical Droid",
+      "race": "OuterRim_FX7Droid"
+    },
+    {
+      "kind": "OuterRim_GNKDroid",
+      "label": "gnk power Droid",
+      "race": "OuterRim_GNKDroid"
+    },
+    {
+      "kind": "OuterRim_MSEDroid",
+      "label": "MSE Repair Droid",
+      "race": "OuterRim_MSEDroid"
+    },
+    {
+      "kind": "OuterRim_RSeriesDroid",
+      "label": "R-Series Droid",
+      "race": "OuterRim_AstromechDroid"
+    },
+    {
+      "kind": "OuterRim_SalvageAssistDroid",
+      "label": "salvage assist droid",
+      "race": "OuterRim_SalvageAssistDroid"
+    },
+    {
+      "kind": "OuterRim_BattleDroid",
+      "label": "B1 Battle Droid",
+      "race": "OuterRim_BattleDroid"
+    },
+    {
+      "kind": "OuterRim_BattleDroidAdvanced",
+      "label": "B1A Battle Droid",
+      "race": "OuterRim_BattleDroidAdvanced"
+    },
+    {
+      "kind": "OuterRim_CommandoDroid",
+      "label": "BX Commando Droid",
+      "race": "OuterRim_CommandoDroid"
+    },
+    {
+      "kind": "OuterRim_HKDroid",
+      "label": "HK-Series Assasin Droid",
+      "race": "OuterRim_HKDroid"
+    },
+    {
+      "kind": "OuterRim_ImperialLaborDroid",
+      "label": "imperial labor droid",
+      "race": "OuterRim_ImperialLaborDroid"
+    },
+    {
+      "kind": "OuterRim_KXSecurityDroid",
+      "label": "KX Security Droid",
+      "race": "OuterRim_KXSecurityDroid"
+    },
+    {
+      "kind": "OuterRim_MagnaGuardDroid",
+      "label": "MagnaGuard Droid",
+      "race": "OuterRim_MagnaGuardDroid"
+    },
+    {
+      "kind": "OuterRim_ProtocolDroid",
+      "label": "protocol droid",
+      "race": "OuterRim_ProtocolDroid"
+    },
+    {
+      "kind": "OuterRim_SuperBattleDroid",
+      "label": "B2 Super Battle Droid",
+      "race": "OuterRim_SuperBattleDroid"
+    },
+    {
+      "kind": "OuterRim_SuperTacticalDroid",
+      "label": "Super Tactical Droid",
+      "race": "OuterRim_SuperTacticalDroid"
+    },
+    {
+      "kind": "OuterRim_TacticalDroid",
+      "label": "T-Series Tactical Droid",
+      "race": "OuterRim_TacticalDroid"
+    },
+    {
+      "kind": "RimMandrakeAbednedo_Kind",
+      "label": "Abednedo",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeAnzati_Kind",
+      "label": "Anzati",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeAqualish_Kind",
+      "label": "Aqualish",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeArkanian_Kind",
+      "label": "Arkanian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeBith_Kind",
+      "label": "Bith",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeBothan_Kind",
+      "label": "Bothan",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeCathar_Kind",
+      "label": "Cathar",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeCerean_Kind",
+      "label": "Cerean",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeChadraFan_Kind",
+      "label": "Chadra-Fan",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeChagrian_Kind",
+      "label": "Chagrian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeChiss_Kind",
+      "label": "Chiss",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeDathomirian_Kind",
+      "label": "Dathomirian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeDefel_Kind",
+      "label": "Defel",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeDevaronian_Kind",
+      "label": "Devaronian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeDuros_Kind",
+      "label": "Duros",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeEchani_Kind",
+      "label": "Echani",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeEwok_Kind",
+      "label": "Ewok",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeFalleen_Kind",
+      "label": "Falleen",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeFeeorin_Kind",
+      "label": "Feeorin",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeGamorrean_Kind",
+      "label": "Gamorrean",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeGand_Kind",
+      "label": "Gand",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeGeonosianVariants_Kind",
+      "label": "Geonosian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeGungan_Kind",
+      "label": "gungan",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeHerglic_Kind",
+      "label": "Herglic",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeHutt_Kind",
+      "label": "Hutt",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeIktotchi_Kind",
+      "label": "Iktotchi",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeIridonian_Kind",
+      "label": "Iridonian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeIthorian_Kind",
+      "label": "Ithorian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeJawa_Kind",
+      "label": "Jawa",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeKaleesh_Kind",
+      "label": "Kaleesh",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeKaminoan_Kind",
+      "label": "kaminoan",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeKelDor_Kind",
+      "label": "Kel Dor",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeKlatoonian_Kind",
+      "label": "Klatoonian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeKubaz_Kind",
+      "label": "Kubaz",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeLasat_Kind",
+      "label": "Lasat",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeMimbanese_Kind",
+      "label": "Mimbanese",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeMirialan_Kind",
+      "label": "mirialan",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeMonCalamari_Kind",
+      "label": "Mon Calamari",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeMuun_Kind",
+      "label": "Muun",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeNagai_Kind",
+      "label": "Nagai",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeNautolan_Kind",
+      "label": "Nautolan",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeNeimoidian_Kind",
+      "label": "Neimoidian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeNelvaanian_Kind",
+      "label": "Nelvaanian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeNikto_Kind",
+      "label": "Nikto",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeOrtolan_Kind",
+      "label": "Ortolan",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakePantoran_Kind",
+      "label": "Pantoran",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakePyke_Kind",
+      "label": "Pyke",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeQuarren_Kind",
+      "label": "Quarren",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeRakata_Kind",
+      "label": "Rakata",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeRodian_Kind",
+      "label": "Rodian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeSelkath_Kind",
+      "label": "Selkath",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeSithKissaiPureblood_Kind",
+      "label": "Sith Kissai (Pureblood)",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeSithMassassi_Kind",
+      "label": "Sith Massassi (Pureblood)",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeSithZ_Kind",
+      "label": "Sith Zugurak (Pureblood)",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeSnivvian_Kind",
+      "label": "Snivvian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeSullustan_Kind",
+      "label": "Sullustan",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeTaung_Kind",
+      "label": "Taung",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeTogorian_Kind",
+      "label": "Togorian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeTogruta_Kind",
+      "label": "Togruta",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeTrandoshan_Kind",
+      "label": "Trandoshan",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeTusken_Kind",
+      "label": "Tusken",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeTwilek_Kind",
+      "label": "Twi'lek",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeUgnaught_Kind",
+      "label": "Ugnaught",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeUmbaran_Kind",
+      "label": "Umbaran",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeWeequay_Kind",
+      "label": "Weequay",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeWookiee_Kind",
+      "label": "Wookiee",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeYoderForceGremlin_Kind",
+      "label": "Yoder",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeZeltron_Kind",
+      "label": "Zeltron",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrakeZygerrian_Kind",
+      "label": "Zygerrian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_Aqualish",
+      "label": "aqualish",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_Arkanian",
+      "label": "arkanian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_ArkanianTribal",
+      "label": "tribal arkanian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_Geonosian",
+      "label": "geonosian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_GeonosianTribal",
+      "label": "tribal geonosian",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_Herglic",
+      "label": "herglic",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_Jawa",
+      "label": "jawa",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_JawaTribal",
+      "label": "tribal jawa",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_Kaminoan",
+      "label": "kaminoan",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_MonCalamari",
+      "label": "mon calamari",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_Nikto",
+      "label": "nikto",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_NiktoTribal",
+      "label": "tribal nikto",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_Quarren",
+      "label": "quarren",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_QuarrenTribal",
+      "label": "tribal quarren",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_Wookiee",
+      "label": "wookiee",
+      "race": "Human"
+    },
+    {
+      "kind": "RimMandrake_WookieeTribal",
+      "label": "tribal wookiee",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Hutt",
+      "label": "hutt",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Gand",
+      "label": "gand",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Kubaz",
+      "label": "kubaz",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Taung",
+      "label": "taung",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Mimbanese",
+      "label": "mimbanese",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Zygerrian",
+      "label": "zygerrian",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Lasat",
+      "label": "lasat",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Muun",
+      "label": "muun",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Ortolan",
+      "label": "ortolan",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Nelvaanian",
+      "label": "nelvaanian",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_SithK",
+      "label": "sith (kissai)",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_SithM",
+      "label": "sith (massassi)",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Yoder",
+      "label": "yoder",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Colonist",
+      "label": "Jawa scavenger",
+      "race": "Human"
+    },
+    {
+      "kind": "KotORDroidGood_3C",
+      "label": "utility droid",
+      "race": "guy762_DroidRace_3Cseries"
+    },
+    {
+      "kind": "KotORDroidGood_R8009",
+      "label": "maintenance droid",
+      "race": "guy762_DroidRace_R8009UD"
+    },
+    {
+      "kind": "KotORDroidGood_GE3PD",
+      "label": "protocol droid",
+      "race": "guy762_DroidRace_GE3PD"
+    },
+    {
+      "kind": "KotORDroidGood_GE3LD",
+      "label": "labor droid",
+      "race": "guy762_DroidRace_GE3LD"
+    },
+    {
+      "kind": "KotORDroidGood_KX12UPD",
+      "label": "medical droid",
+      "race": "guy762_DroidRace_KX12UPD"
+    },
+    {
+      "kind": "KotORDroidGood_KM1HMD",
+      "label": "fire control droid",
+      "race": "guy762_DroidRace_KM1HMD"
+    },
+    {
+      "kind": "KotORDroidBad_KM1MD",
+      "label": "mining droid",
+      "race": "guy762_DroidRace_KM1MD"
+    },
+    {
+      "kind": "KotORDroidBad_KM1HMD",
+      "label": "excavation droid",
+      "race": "guy762_DroidRace_KM1HMD"
+    },
+    {
+      "kind": "KotORDroidBad_KX12UPD",
+      "label": "probe droid",
+      "race": "guy762_DroidRace_KX12UPD"
+    },
+    {
+      "kind": "KotORDroidBad_MPDMkI",
+      "label": "patrol droid",
+      "race": "guy762_DroidRace_MPDMkI"
+    },
+    {
+      "kind": "KotORDroidBad_KX12APD",
+      "label": "assassin probe",
+      "race": "guy762_DroidRace_KX12APD"
+    },
+    {
+      "kind": "KotORDroidBad_KX12APD_sapper",
+      "label": "saboteur probe",
+      "race": "guy762_DroidRace_KX12APD"
+    },
+    {
+      "kind": "KotORDroidBad_ADMkI",
+      "label": "assault droid",
+      "race": "guy762_DroidRace_ADMkI"
+    },
+    {
+      "kind": "KotORDroidBad_ADMkIV",
+      "label": "heavy assault droid",
+      "race": "guy762_DroidRace_ADMkIV"
+    },
+    {
+      "kind": "KotORDroidColonist_T3UD",
+      "label": "specialist droid",
+      "race": "guy762_DroidRace_T3series"
+    },
+    {
+      "kind": "KotORDroidColonist_3CUD",
+      "label": "utility droid",
+      "race": "guy762_DroidRace_3Cseries"
+    },
+    {
+      "kind": "KotORDroidColonist_ITUD",
+      "label": "specialist droid",
+      "race": "guy762_DroidRace_ITseries"
+    },
+    {
+      "kind": "KotORDroidColonist_R8009UD",
+      "label": "utility droid",
+      "race": "guy762_DroidRace_R8009UD"
+    },
+    {
+      "kind": "KotORDroidColonist_GE3LD",
+      "label": "labor droid",
+      "race": "guy762_DroidRace_GE3LD"
+    },
+    {
+      "kind": "KotORDroidColonist_GE3PD",
+      "label": "protocol droid",
+      "race": "guy762_DroidRace_GE3PD"
+    },
+    {
+      "kind": "KotORDroidColonist_KX12UPD",
+      "label": "probe droid",
+      "race": "guy762_DroidRace_KX12UPD"
+    },
+    {
+      "kind": "KotORDroidColonist_KX12APD",
+      "label": "assassin probe",
+      "race": "guy762_DroidRace_KX12APD"
+    },
+    {
+      "kind": "KotORDroidColonist_MPDMkI",
+      "label": "patrol droid",
+      "race": "guy762_DroidRace_MPDMkI"
+    },
+    {
+      "kind": "KotORDroidColonist_KM1MD",
+      "label": "mining droid",
+      "race": "guy762_DroidRace_KM1MD"
+    },
+    {
+      "kind": "KotORDroidColonist_KM1HMD",
+      "label": "excavation droid",
+      "race": "guy762_DroidRace_KM1HMD"
+    },
+    {
+      "kind": "KotORDroidColonist_SentWD",
+      "label": "war droid",
+      "race": "guy762_DroidRace_SentWD"
+    },
+    {
+      "kind": "KotORDroidColonist_DevWD",
+      "label": "battle droid",
+      "race": "guy762_DroidRace_DevWD"
+    },
+    {
+      "kind": "KotORDroidColonist_DevAD",
+      "label": "assassin droid",
+      "race": "guy762_DroidRace_DevAD"
+    },
+    {
+      "kind": "KotORDroidColonist_ADMkI",
+      "label": "assault droid",
+      "race": "guy762_DroidRace_ADMkI"
+    },
+    {
+      "kind": "KotORDroidColonist_ADMkI_sf",
+      "label": "star forge droid",
+      "race": "guy762_DroidRace_ADMkI_sf"
+    },
+    {
+      "kind": "KotORDroidColonist_ADMkIV",
+      "label": "heavy assault droid",
+      "race": "guy762_DroidRace_ADMkIV"
+    },
+    {
+      "kind": "KotORDroidColonist_ADMkIV_sith",
+      "label": "heavy assault droid",
+      "race": "guy762_DroidRace_ADMkIV_sith"
+    },
+    {
+      "kind": "KotORDroidColonist_HK50AD",
+      "label": "HK-50 unit",
+      "race": "guy762_DroidRace_HK50series"
+    },
+    {
+      "kind": "KotORDroidColonist_HK51AD",
+      "label": "HK-51 unit",
+      "race": "guy762_DroidRace_HK51series"
+    },
+    {
+      "kind": "KotORDroidColonist_GOTO",
+      "label": "specialist droid",
+      "race": "guy762_DroidRace_GOTO"
+    },
+    {
+      "kind": "KotORPlayableHero_T3M4",
+      "label": "T3 unit",
+      "race": "guy762_DroidRace_T3series"
+    },
+    {
+      "kind": "AM_Mech_Geneticor",
+      "label": "geneticor",
+      "race": "AM_Mech_Geneticor"
+    },
+    {
+      "kind": "VVE_BangBus_PawnKind",
+      "label": "Bang Bus",
+      "race": "VVE_BangBus"
+    },
+    {
+      "kind": "VVE_Bunsen_PawnKind",
+      "label": "Bunsen",
+      "race": "VVE_Bunsen"
+    },
+    {
+      "kind": "VVE_Dinghy_PawnKind",
+      "label": "Dinghy",
+      "race": "VVE_Dinghy"
+    },
+    {
+      "kind": "VVE_Dirtbike_PawnKind",
+      "label": "Dirtbike",
+      "race": "VVE_Dirtbike"
+    },
+    {
+      "kind": "VVE_Frog_PawnKind",
+      "label": "Frog",
+      "race": "VVE_Frog"
+    },
+    {
+      "kind": "VVE_Highwayman_PawnKind",
+      "label": "Highwayman",
+      "race": "VVE_Highwayman"
+    },
+    {
+      "kind": "VVE_Mule_PawnKind",
+      "label": "Mule",
+      "race": "VVE_Mule"
+    },
+    {
+      "kind": "VVE_Prowler_PawnKind",
+      "label": "Prowler",
+      "race": "VVE_Prowler"
+    },
+    {
+      "kind": "VVE_Roadkill_PawnKind",
+      "label": "Roadkill",
+      "race": "VVE_Roadkill"
+    },
+    {
+      "kind": "VVE_Scytheman_PawnKind",
+      "label": "Scytheman",
+      "race": "VVE_Scytheman"
+    },
+    {
+      "kind": "VVE_Toad_PawnKind",
+      "label": "Toad",
+      "race": "VVE_Toad"
+    },
+    {
+      "kind": "VVE_Traveller_PawnKind",
+      "label": "Traveller",
+      "race": "VVE_Traveller"
+    },
+    {
+      "kind": "VVE_Bulldog_PawnKind",
+      "label": "Bulldog",
+      "race": "VVE_Bulldog"
+    },
+    {
+      "kind": "VVE_Charley_PawnKind",
+      "label": "Charley",
+      "race": "VVE_Charley"
+    },
+    {
+      "kind": "VVE_Mosquito_PawnKind",
+      "label": "Mosquito",
+      "race": "VVE_Mosquito"
+    },
+    {
+      "kind": "VVE_Roadrunner_PawnKind",
+      "label": "Roadrunner",
+      "race": "VVE_Roadrunner"
+    },
+    {
+      "kind": "VVE_Smuggler_PawnKind",
+      "label": "Smuggler",
+      "race": "VVE_Smuggler"
+    },
+    {
+      "kind": "VVE_Snatcher_PawnKind",
+      "label": "Snatcher",
+      "race": "VVE_Snatcher"
+    },
+    {
+      "kind": "VVE_Tango_PawnKind",
+      "label": "Tango",
+      "race": "VVE_Tango"
+    },
+    {
+      "kind": "VVE_Trawler_PawnKind",
+      "label": "Trawler",
+      "race": "VVE_Trawler"
+    },
+    {
+      "kind": "VVE_Wagon_PawnKind",
+      "label": "Wagon",
+      "race": "VVE_Wagon"
+    },
+    {
+      "kind": "VVE_Warbird_PawnKind",
+      "label": "Warbird",
+      "race": "VVE_Warbird"
+    },
+    {
+      "kind": "VVE_Wisent_PawnKind",
+      "label": "Wisent",
+      "race": "VVE_Wisent"
+    },
+    {
+      "kind": "AV_Balloon_PawnKind",
+      "label": "Balloon",
+      "race": "AV_Balloon"
+    },
+    {
+      "kind": "AV_Chariot_PawnKind",
+      "label": "Chariot",
+      "race": "AV_Chariot"
+    },
+    {
+      "kind": "AV_CoveredCarriage_PawnKind",
+      "label": "Covered Carriage",
+      "race": "AV_CoveredCarriage"
+    },
+    {
+      "kind": "AV_DogSled_PawnKind",
+      "label": "eopie sled",
+      "race": "AV_DogSled"
+    },
+    {
+      "kind": "AV_Hwacha_PawnKind",
+      "label": "Hwacha",
+      "race": "AV_Hwacha"
+    },
+    {
+      "kind": "AV_OutriggerCanoe_PawnKind",
+      "label": "Outrigger Canoe",
+      "race": "AV_OutriggerCanoe"
+    },
+    {
+      "kind": "AV_OxCart_PawnKind",
+      "label": "Ox cart",
+      "race": "AV_OxCart"
+    },
+    {
+      "kind": "AV_Palanquin_PawnKind",
+      "label": "Palanquin",
+      "race": "AV_Palanquin"
+    },
+    {
+      "kind": "AV_Rickshaw_PawnKind",
+      "label": "Rickshaw",
+      "race": "AV_Rickshaw"
+    },
+    {
+      "kind": "AV_RowBoat_PawnKind",
+      "label": "Row boat",
+      "race": "AV_RowBoat"
+    },
+    {
+      "kind": "AV_WarChariot_PawnKind",
+      "label": "War chariot",
+      "race": "AV_WarChariot"
+    },
+    {
+      "kind": "AV_Wheelbarrow_PawnKind",
+      "label": "Wheelbarrow",
+      "race": "AV_Wheelbarrow"
+    }
+  ],
+  "byDesign_zeroBudget": [
+    {
+      "kind": "Villager_Child_Pig",
+      "label": "villager",
+      "tags": [
+        "Gun",
+        "MedievalMeleeBasic"
+      ]
+    },
+    {
+      "kind": "Villager_Child",
+      "label": "villager",
+      "tags": [
+        "Gun",
+        "MedievalMeleeBasic"
+      ]
+    },
+    {
+      "kind": "DV_Villager_Child_Buzzer",
+      "label": "villager",
+      "tags": [
+        "Gun",
+        "MedievalMeleeBasic"
+      ]
+    },
+    {
+      "kind": "VRESaurids_VillagerChild_Saurid",
+      "label": "villager",
+      "tags": [
+        "Gun",
+        "MedievalMeleeBasic"
+      ]
+    },
+    {
+      "kind": "OuterRim_ImperialArmy_PlayerStarter",
+      "label": "imperial army trooper",
+      "tags": [
+        "ORImperialStandardEarly"
+      ]
+    },
+    {
+      "kind": "OuterRim_ImperialArmy_PlayerRecruit",
+      "label": "imperial army trooper",
+      "tags": [
+        "ORImperialStandardEarly"
+      ]
+    },
+    {
+      "kind": "OuterRim_Stormtrooper_PlayerNoHelmet",
+      "label": "Stormtrooper",
+      "tags": [
+        "ORImperialStandard"
+      ]
+    },
+    {
+      "kind": "OuterRim_Stormtrooper_PlayerRecruit",
+      "label": "Stormtrooper",
+      "tags": [
+        "ORImperialStandard"
+      ]
+    },
+    {
+      "kind": "OuterRim_RebelInsurgent_PlayerNoHelmet",
+      "label": "rebel insurgent",
+      "tags": [
+        "ORRebelStandard"
+      ]
+    }
+  ],
+  "emptyTagPool": [
+    {
+      "kind": "Mech_Pikeman",
+      "label": "pikeman",
+      "tags": [
+        "MechanoidGunLongRange"
+      ],
+      "weaponMoneyMax": 9999.0
+    },
+    {
+      "kind": "Tribal_Archer_Fire",
+      "label": "archer",
+      "tags": [
+        "NeolithicRangedFlame"
+      ],
+      "weaponMoneyMax": 80.0
+    },
+    {
+      "kind": "Drone_Sentry",
+      "label": "sentry drone",
+      "tags": [
+        "SentryDroneGunShortRange"
+      ],
+      "weaponMoneyMax": 9999.0
+    },
+    {
+      "kind": "VEE_TribalHunter",
+      "label": "hunter",
+      "tags": [
+        "VEE_HunterNeolithicWeapon"
+      ],
+      "weaponMoneyMax": 850.0
+    },
+    {
+      "kind": "VEE_Hunter",
+      "label": "hunter",
+      "tags": [
+        "VEE_HunterIndustrialWeapon"
+      ],
+      "weaponMoneyMax": 9999.0
+    },
+    {
+      "kind": "DP_ArtilleryPirate",
+      "label": "Cannon Artillery",
+      "tags": [
+        "DP_CannonNoEquipTag"
+      ],
+      "weaponMoneyMax": 99999.0
+    },
+    {
+      "kind": "DP_RocketPirate",
+      "label": "Rocket Artillery",
+      "tags": [
+        "DP_RocketNoEquipTag"
+      ],
+      "weaponMoneyMax": 99999.0
+    },
+    {
+      "kind": "VFEP_Footsoldier",
+      "label": "footsoldier",
+      "tags": [
+        "WarcasketBasic"
+      ],
+      "weaponMoneyMax": 2200.0
+    },
+    {
+      "kind": "BS_Crossbowman",
+      "label": "crossbowman",
+      "tags": [
+        "BS_CrossbowTag",
+        "DankPyon_Arbalest",
+        "VFEM2_Arbalest"
+      ],
+      "weaponMoneyMax": 1400.0
+    },
+    {
+      "kind": "BS_CrossbowDvergr",
+      "label": "crossbowman",
+      "tags": [
+        "BS_CrossbowTag",
+        "DankPyon_Arbalest",
+        "VFEM2_Arbalest"
+      ],
+      "weaponMoneyMax": 1400.0
+    },
+    {
+      "kind": "BS_DvergrTraditionalist",
+      "label": "traditionalist",
+      "tags": [
+        "BS_CrossbowTag",
+        "DankPyon_Arbalest",
+        "VFEM2_Arbalest"
+      ],
+      "weaponMoneyMax": 1400.0
+    },
+    {
+      "kind": "OuterRim_ImperialTrader",
+      "label": "trader",
+      "tags": [
+        "ORImperialOfficer"
+      ],
+      "weaponMoneyMax": 40000.0
+    }
+  ],
+  "cannotAfford": [
+    {
+      "kind": "Mercenary_Sniper",
+      "label": "mercenary sniper",
+      "tags": [
+        "SniperRifle"
+      ],
+      "weaponMoneyMin": 600.0,
+      "weaponMoneyMax": 600.0,
+      "cheapestEligible": "guy762_brifle_dmr",
+      "cheapestPrice": 760.0,
+      "raiseMaxTo": 760.0
+    },
+    {
+      "kind": "Mercenary_Sniper_Acidifier",
+      "label": "mercenary sniper",
+      "tags": [
+        "SniperRifle"
+      ],
+      "weaponMoneyMin": 600.0,
+      "weaponMoneyMax": 600.0,
+      "cheapestEligible": "guy762_brifle_dmr",
+      "cheapestPrice": 760.0,
+      "raiseMaxTo": 760.0
+    },
+    {
+      "kind": "Town_Trader",
+      "label": "town trader",
+      "tags": [
+        "Gun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 200.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "Town_Councilman",
+      "label": "town councilman",
+      "tags": [
+        "Gun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 200.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "Scavenger",
+      "label": "scavenger gunner",
+      "tags": [
+        "Gun",
+        "MakeshiftGun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 300.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "Hunter",
+      "label": "hunter",
+      "tags": [
+        "Gun"
+      ],
+      "weaponMoneyMin": 140.0,
+      "weaponMoneyMax": 250.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "Town_Trader_Pig",
+      "label": "town trader",
+      "tags": [
+        "Gun",
+        "Gun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 200.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "Scavenger_Yttakin",
+      "label": "scavenger gunner",
+      "tags": [
+        "Gun",
+        "MakeshiftGun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 300.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "Mercenary_Sniper_Yttakin",
+      "label": "mercenary sniper",
+      "tags": [
+        "SniperRifle"
+      ],
+      "weaponMoneyMin": 600.0,
+      "weaponMoneyMax": 600.0,
+      "cheapestEligible": "guy762_brifle_dmr",
+      "cheapestPrice": 760.0,
+      "raiseMaxTo": 760.0
+    },
+    {
+      "kind": "TradersGuild_Citizen",
+      "label": "guild citizen",
+      "tags": [
+        "Gun"
+      ],
+      "weaponMoneyMin": 150.0,
+      "weaponMoneyMax": 250.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "CASacrilegHunters_Town_Councilman",
+      "label": "town councilman",
+      "tags": [
+        "Gun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 200.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "CASacrilegHunters_Town_Trader",
+      "label": "town trader",
+      "tags": [
+        "Gun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 200.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "Bogleg_Trader",
+      "label": "town trader",
+      "tags": [
+        "Gun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 200.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "DV_Swarm_Trader_Buzzer",
+      "label": "town trader",
+      "tags": [
+        "Gun",
+        "Gun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 200.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "DV_Scavenger_Keshig",
+      "label": "scavenger gunner",
+      "tags": [
+        "Gun",
+        "MakeshiftGun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 300.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "VRESaurids_TownTrader_Saurid",
+      "label": "town trader",
+      "tags": [
+        "Gun",
+        "Gun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 200.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    },
+    {
+      "kind": "AM_EnemyScavenger",
+      "label": "scavenger gunner",
+      "tags": [
+        "Gun"
+      ],
+      "weaponMoneyMin": 200.0,
+      "weaponMoneyMax": 300.0,
+      "cheapestEligible": "Gun_IncendiaryLauncher",
+      "cheapestPrice": 340.0,
+      "raiseMaxTo": 340.0
+    }
+  ],
+  "healthy": null,
+  "note": "weaponMoney is a CEILING - raise `max` above cheapestPrice. `min` only shifts the roll and never excludes a weapon. Price includes stuff.",
+  "ticksGame": 40,
+  "operation": {
+    "OperationId": "op_b7306f1029a240279a53a0a72179cc41",
+    "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-kind-audit",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-08-22T00:36:05.8770113+00:00",
+    "CompletedAtUtc": "2026-08-22T00:36:06.0007998+00:00",
+    "DurationMs": 123,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}

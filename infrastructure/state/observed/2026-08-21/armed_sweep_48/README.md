@@ -127,3 +127,62 @@ true count is 26 or more.
 
 🔑 Read the pattern: **every basic gun, all three bows, and the entire medieval melee set.**
 That is the starting kit of every low-tech and mid-tech faction in the campaign.
+
+---
+
+# Second addendum — the culprit is Cherry Picker, and I had one thing backwards
+
+## The strip is the owner's own curation. 27 of 27.
+
+`Config/Mod_3521312241_Mod_CherryPicker.xml` — the list the running game loaded — carries
+**every one of the 27 weapons measured as stripped**, and **neither of the two measured as
+intact**. No exceptions in either direction.
+
+Cherry Picker is C#/Harmony, not XML: at load it **neuters** each named def rather than
+deleting it (deleting breaks cross-references), and part of neutering a weapon is emptying
+its `weaponTags`. An exhaustive sweep of 1437 XML files mentioning `weaponTags` across 1254
+workshop mods found nothing targeting these defs — **because there is nothing to find.**
+
+🔑 **A Cherry Picker cut is invisible to every XML-shaped search. Read the kill list first.**
+
+⛔ **So "restore the vanilla gun tags" was the wrong conclusion** and the item carrying that
+title now opens with the correction. Nobody is to undo the cut.
+
+## 🔴 And "the pool is emptied, not the budget" was too broad
+
+That reading was right for the mechs and wrong for the traders. The whole-game audit
+(`jawa/pawnkind_audit`, no filter — **711 tool-using kinds**) splits them:
+
+    29 of 711 INTEND to arm and CANNOT
+       12  emptyTagPool   - tags match no loaded weapon at all
+       17  cannotAfford   - the pool survives, but only expensive things are left in it
+    (not counted: 291 with no weaponTags, 9 with weaponMoney.max 0 - civilians and children)
+
+**The 12 with a genuinely empty pool** — and these are exactly the 0/5 results measured
+above:
+
+    Mech_Pikeman         tags [MechanoidGunLongRange]      Drone_Sentry  tags [SentryDroneGunShortRange]
+    Tribal_Archer_Fire   tags [NeolithicRangedFlame]       VEE_Hunter, VEE_TribalHunter,
+    VFEP_Footsoldier, BS_Crossbowman x3, DP_ArtilleryPirate, DP_RocketPirate, OuterRim_ImperialTrader
+
+**The 17 that cannot afford** — and here the earlier reading was wrong:
+
+| kind | tags | budget | cheapest left | raise max to |
+|---|---|---|---|---|
+| `Mercenary_Sniper` (+2 variants) | `SniperRifle` | 600–600 | `guy762_brifle_dmr` **760** | 760 |
+| `Town_Trader`, `Town_Councilman` (+5 clones) | `Gun` | 200–200 | `Gun_IncendiaryLauncher` **340** | 340 |
+| `Hunter` | `Gun` | 140–250 | `Gun_IncendiaryLauncher` **340** | 340 |
+| `Scavenger` (+3 clones) | `Gun`, `MakeshiftGun` | 200–300 | `Gun_IncendiaryLauncher` **340** | 340 |
+| `TradersGuild_Citizen` | `Gun` | 150–250 | `Gun_IncendiaryLauncher` **340** | 340 |
+
+⇒ **`Mercenary_Sniper` is not bare because its pool is empty.** Its pool holds a 760-silver
+DMR and it has 600 to spend. Every cheap `Gun`-tagged weapon was cut, so the cheapest thing
+left wearing `Gun` is the **incendiary launcher at 340** — which is precisely the absurdity
+`CHEAPEST_WEAPON_IS_ABSURD_1` was named after. The item's own framing was right all along.
+
+🔑 **The correction, stated plainly: `weaponMoney` is refuted for the 48 AUTHORED kinds
+(0 of 48 can roll below their cheapest weapon) and it is the correct lever for these 17.**
+Do not carry the "money is never the answer" line across to them. The audit even prints
+`raiseMaxTo` per kind.
+
+Whole-game audit: `pawnkind_audit_wholegame.json`.

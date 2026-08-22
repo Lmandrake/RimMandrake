@@ -1,65 +1,66 @@
-## spec
-🔴 **Ten vanilla industrial guns have no `weaponTags` in the running game.** Measured off
-the engine with `jawa/get_defs`, and the 2026-08-21 def dump agrees:
+## 🔴 CORRECTED 2026-08-21 ~17:35 — DO NOT RESTORE ANYTHING. THIS ITEM WAS FILED WRONG.
 
-    Gun_Revolver  Gun_Autopistol  Gun_BoltActionRifle  Gun_PumpShotgun  Gun_MachinePistol
-    Gun_HeavySMG  Gun_AssaultRifle  Gun_SniperRifle  Gun_Needle  Gun_Scattergun     -> []
+**The cause is Cherry Picker, and Cherry Picker is the owner's own curation.** The 26
+weapons are not victims of a mystery mod — **they are on the kill list, deliberately.**
+Correspondence checked defName-for-defName against the list the running game loaded
+(`Config/Mod_3521312241_Mod_CherryPicker.xml.bak-20260821-mechuncut`):
 
-Vanilla ships them tagged — `Gun_Revolver` carries
-`<weaponTags><li>SimpleGun</li><li>Revolver</li></weaponTags>` at
-`Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrial.xml:40`. **Something strips them at
-load.** Not everything is hit: `Gun_IncendiaryLauncher` keeps
-`['Gun','GunHeavy','IndustrialGunAdvanced']` and `Gun_ChargeRifle` keeps
-`['Gun','SpacerGun','VFEP_Sergeant','VFEP_Captain']`.
+    weapons measured stripped and present on the loaded kill list:  27 of 27
+    weapons measured intact and absent from it:                     2 of 2
+                                                (Gun_IncendiaryLauncher, Gun_ChargeRifle)
 
-## what it costs, measured not argued
-`weaponTags` is the pool `PawnGenerator` draws from. An empty pool means the kind arrives
-**bare-handed**, and no amount of `weaponMoney` fixes it. Live, on one quicktest map:
+No exceptions in either direction. ⛔ **The original title — "restore the vanilla gun
+tags" — describes undoing a decision the owner made on purpose.** Nobody is to act on it.
 
-| kind | bare rolls |
-|---|---|
-| `Mercenary_Sniper` | **5/5** |
-| `Scavenger` | **5/5** |
-| `Town_Guard` | 3/5 |
-| vanilla combat kinds overall | **13 of 40 = 32.5%** |
+**How Cherry Picker does it:** it is C#/Harmony, not XML. There is no PatchOperation to
+find — an exhaustive sweep of 1437 XML files mentioning `weaponTags` across 1254 workshop
+mods found nothing targeting these defs. At load it walks its `keys` list and **neuters**
+each named def instead of deleting it (deleting would break cross-references), and part of
+neutering a weapon is **emptying its `weaponTags`** so no PawnKindDef, ThingSetMaker or
+trader can roll it. The def survives with `weaponTags = []` — exactly the observed state in
+both runtime and the dump.
 
-⇒ This is a whole-game defect, not a Jawa one. Every faction in the campaign that fields a
-vanilla kind fields unarmed pawns.
+🔑 **So a Cherry Picker cut is invisible to every XML-shaped search.** Anyone hunting a
+def's missing field should read the kill list FIRST.
 
-## criteria
-`jawa/get_defs ThingDef/Gun_Revolver fields=weaponTags` reads back `['SimpleGun','Revolver']`
-on a live game, and a 5-roll spawn of `Mercenary_Sniper` and `Scavenger` comes back
-**5/5 armed**.
+## what IS a defect, and it is a consequence rather than the cut
+`skills/rimworld-content-moderation` names this exact trap: **cutting the last weapon
+carrying a tag silently disarms every pawn kind whose tags ALL went to zero.** That is
+what happened, and it is measured:
 
-## ⛔ what NOT to do
-Do not raise `weaponMoney` on anything to work around this. It was tested and refuted —
-across all 48 authored kinds, **0 have a `weaponMoney.min` below their cheapest eligible
-weapon**, and `jawa/pawnkind_audit` reports **0 `cannotAfford`**. Money is not the lever.
+    Mercenary_Sniper   bare 5/5      Scavenger    bare 5/5      Town_Guard  bare 3/5
+    vanilla combat kinds overall     13 of 40 = 32.5% unarmed
 
-## the stripped set — 26 vanilla weapons, and that is a FLOOR
-Comparing every vanilla/DLC `ThingDef` that ships a non-empty `<weaponTags>` block against
-the live dump: **57 ship tags, 31 keep them, 26 are stripped to `[]`.**
+The whole-game audit puts a number on it: **29 of 711 tool-using kinds intend to arm and
+cannot** — 12 whose tag pool is genuinely empty, 17 whose pool survives but now holds only
+expensive weapons. The cut was intended; **disarmed raiders were probably not.**
 
-    Artillery_AutoMortar  Artillery_Mortar  Bow_Great  Bow_Recurve  Bow_Short  Flamebow
-    Gun_AssaultRifle  Gun_Autopistol  Gun_ChainShotgun  Gun_HeavySMG  Gun_HellcatRifle
-    Gun_Incinerator  Gun_LMG  Gun_MachinePistol  Gun_Minigun  Gun_Needle  Gun_PumpShotgun
-    Gun_Revolver  Gun_Scattergun  Gun_SniperRifle  MeleeWeapon_Axe  MeleeWeapon_Gladius
-    MeleeWeapon_Ikwa  MeleeWeapon_LongSword  MeleeWeapon_Mace  Pila
+⚠️ Correcting an earlier line in this file's evidence: `Mercenary_Sniper` is **not** bare
+because its pool is empty. It holds a 760-silver DMR and the kind has 600 to spend. Every
+cheap `Gun`-tagged weapon was cut, so the cheapest survivor wearing `Gun` is the incendiary
+launcher at 340.
 
-⚠️ A def that INHERITS its tags from an abstract parent is not counted here, so the real
-number is 26 or more — `Gun_BoltActionRifle` reads `[]` live and is not in the list above.
+⇒ The work is **not** un-cutting weapons. It is one of:
+1. **Retag the orphaned kinds** onto surviving weapons, so a vanilla kind draws a Star Wars
+   gun instead of nothing.
+2. **Cut the kinds too**, if no vanilla kind should be fielding pawns on Ash'karr at all.
+3. **Accept it** — some factions arrive with melee-only or unarmed pawns.
 
-🔑 **Every basic gun, all three bows, and the whole medieval melee set** — the starting kit
-of every low-tech and mid-tech faction in the campaign.
+That is a scope call. Filed as `ORPHANED_KINDS_AFTER_GUN_CUT_1` for DECIDE.
 
-⇒ It also takes the mechs with it: `Mech_Pikeman`, `Drone_Sentry` and `Tribal_Archer_Fire`
-each spawned **0/5 armed** on this load (`MECH_AND_ARCHER_ARMED_1`), because `Gun_Needle`,
-`Gun_Scattergun` and `Bow_Great` are all in the stripped set. That is the same defect, not
-a second one.
+## ⚠️ live-config drift, worth knowing before the next load
+The current kill list was edited **today at 16:22** and differs from the loaded one by
+exactly two entries: **`Gun_Needle` and `Gun_Scattergun` were REMOVED** — BUILD's
+`MECH_WEAPONS_UNCUT_1` repair. It is real and correct; it simply has not taken, because the
+running game loaded the pre-edit list. **On the next cold load those two — and only those
+two — come back tagged**, which should arm `Mech_Pikeman` and `Drone_Sentry`.
+🔑 `Bow_Great` is still on the list, so `Tribal_Archer_Fire` will still spawn bare.
 
-## finding the culprit
-Not yet named. Look for a `PatchOperationRemove`/`Replace` whose xpath hits `weaponTags`
-across many `ThingDef`s at once — a broad xpath would explain why the two survivors are the
-ones with an unusual tag set. `skills/rimworld-content-moderation` names the general shape:
-a cut that empties a tag pool disarms every kind whose tags all went to zero, silently.
+## the rebuilt criteria
+Measured after the next cold load, not now:
+- `Gun_Needle` and `Gun_Scattergun` read non-empty `weaponTags`
+- `Mech_Pikeman` and `Drone_Sentry` spawn **5/5 armed**
+- every other def on the kill list still reads `[]` — **that is the pass condition, not a
+  failure**
+
 Evidence: `infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
