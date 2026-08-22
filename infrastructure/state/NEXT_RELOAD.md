@@ -65,10 +65,14 @@
 > sheet is still stale and `RUN_SHEET_REASSEMBLE_AFTER_LOAD_1` still owns it.
 
 
-> 🔴 **OWNER RULING 2026-08-22 10:58 — THE COLD START IS HELD.** Asked what the next load
+> ✅ **DISCHARGED 2026-08-22 — the condition below was MET. Kept for provenance; do not
+> read the ⛔ as live.** `CAST_ROSTER_SKILLS_DISCARDED_1` has landed (`c6060ae8` +
+> `b24dde99`), so the hold has done its job and the load may be launched.
+>
+> 🔴 **OWNER RULING 2026-08-22 10:58 — THE COLD START WAS HELD.** Asked what the next load
 > is for, he chose: *"Both — hold until the cast fix lands, then one load."*
 >
-> ⛔ **Do not launch until `CAST_ROSTER_SKILLS_DISCARDED_1` has landed.** The five things
+> ⛔ ~~**Do not launch until `CAST_ROSTER_SKILLS_DISCARDED_1` has landed.**~~ The five things
 > already deployed and unproven (Flamebow off the kill list, `Flamebow_TagWiden.xml`,
 > `JawaIon_FieldOurOwnGun.xml`, and the two assemblies deployed 10:30) are NOT urgent
 > enough to buy a load of their own — they ride along with the cast fix. **One load
@@ -87,14 +91,17 @@
 > reassembles it — filed as `RUN_SHEET_REASSEMBLE_AFTER_LOAD_1`.
 >
 > **What that load already changed, so §0's brief is answering yesterday's question:**
-> - ⛔ **§9's premise is broken.** `Inhabited` is not a "first run" any more — it ran, and
->   it loaded **193 of 294** characters. All 101 that carry a `<skills>` block are
->   discarded at def load (`CAST_ROSTER_SKILLS_DISCARDED_1`). §9 says a positive sighting
->   settles the architecture gate; it cannot, while 34% of the cast is absent. Do the §9
->   sequence only AFTER that item lands, or its baseline is measured against a short cast.
-> - ✅ **Two deploys in §0 are already DONE** in the 10:30 game-down window: `Inhabited`
->   (in sync, 18 files) and `bridgetools --gm --apply` (`7df3c51b` → `e3e8a89c`, adding
->   `jawa/faction_name_get`, `faction_name_set`, `faction_create`).
+> - ⛔ **§9's premise is broken.** `Inhabited` is not a "first run" any more — it ran on
+>   2026-08-21/22 and loaded **193 of 294** characters, because the rosters were still
+>   emitting the `<li>` shape. ✅ **That is now FIXED** (`c6060ae8`, `b24dde99`) and
+>   verified: re-running `cast_to_xml.py` reproduces the committed tree byte-for-byte, so
+>   the §9 sequence may run — but its baseline is only valid if `[Inhabited] ready:` reads
+>   **294**. If it reads 193, stop: the fix did not reach the game and no §9 number counts.
+> - ✅ **Deploys are CURRENT as of 2026-08-22 12:50, checked not assumed.** A full
+>   `deploy_custom_mods.py` sweep reports *everything in sync* (14 files held on purpose,
+>   the v2 WreckedMachines park). The companion was rebuilt and deployed to
+>   **`7be4d084`** — it had been left at `43d24a6e`, one commit behind, missing
+>   `37ac949d` (`faction_name_get` flagged nine factions that were RIGHT).
 > - ⚠️ **`harvest_log.py` changed under this sheet.** It was counting the load-time
 >   patch-file manifest as evidence and reporting `303 / 5252 / 2224` RED against baseline
 >   0 for MegafaunaYield, `Jawa_Patches` and `JawaVoice`. All three now read 0 / 0 / 2.
