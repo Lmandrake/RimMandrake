@@ -1147,3 +1147,8 @@
 {"seat":"BUILD","event":"file","id":"THOROUGH_RETAG_WEAPONS_ARMOUR_1","title":"The thorough weapon and armour retag: the advice, the measured state, and the dump it is blocked on","kind":"task","target":"v1","needs":"harvest","for":"BUILD","ts":"2026-08-22T08:51:21Z"}
 {"seat":"CHECK","event":"file","id":"IONBLASTER_INTO_THE_GENERATOR_1","title":"Fold JawaIon_Damage into gen_pawnkind_roster.py and delete the stopgap patch","kind":"defect","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-22T08:52:42Z"}
 {"seat":"CHECK","event":"file","id":"IONBUILDUP_ACCRUES_ON_FLESH_1","title":"Prove the ion buildup actually downs a flesh pawn alive","kind":"check","target":"v1","needs":"bridge","for":"CHECK","ts":"2026-08-22T08:52:42Z"}
+{"seat":"CHECK","event":"claim","id":"IONBUILDUP_ACCRUES_ON_FLESH_1","ts":"2026-08-22T08:54:32Z"}
+{"seat":"CHECK","event":"start","id":"IONBUILDUP_ACCRUES_ON_FLESH_1","ts":"2026-08-22T08:54:33Z"}
+{"seat":"CHECK","event":"verify","id":"IONBUILDUP_ACCRUES_ON_FLESH_1","result":"partial","config":"full-578","evidence":"infrastructure/state/observed/2026-08-22/ion_buildup/README.md","sha":"20e492bf","ts":"2026-08-22T08:59:46Z"}
+{"seat":"CHECK","event":"finding","id":"IONBUILDUP_ACCRUES_ON_FLESH_1","type":"integration","severity":"high","name":"IONBLASTER_IGNORES_DROIDS_1","from":"IONBUILDUP_ACCRUES_ON_FLESH_1/run-1@full-578","ts":"2026-08-22T08:59:46Z"}
+{"seat":"CHECK","event":"spawn","name":"ION_CAPTURES_PEOPLE_NOT_DROIDS_1","kind":"task","needs":"owner","for":"DECIDE","from":"IONBLASTER_IGNORES_DROIDS_1","ts":"2026-08-22T08:59:46Z"}
