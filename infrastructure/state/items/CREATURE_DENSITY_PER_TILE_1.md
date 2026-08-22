@@ -9,10 +9,21 @@ me now"*. Bring him decisions to react to, never a questionnaire.
 ### The measured starting state (578-mod dump, 2026-08-22)
 | | |
 |---|---|
-| animal `ThingDef`s installed (intelligence `Animal`, corpses excluded) | **1,022** |
+| animals in the census (`animals.json`, corpses already excluded) | **1,260** |
 | that can spawn anywhere on Ash'karr | **377** |
-| 🔴 reach **no biome at all** | **645 — 63% of what we ship** |
-| animals whose `ComfyTemperatureMin` is explicitly set | **1,015 of 1,022** |
+| 🔴 reach **no biome at all** | **883 — 70% of what we ship** |
+| `(biome, animal)` pairs with `commonality > 0` on this planet | **1,685** |
+
+🔑 **USE `<DefDump>/animals.json`, NOT `defs/ThingDef.json`.** The dumper already ships a
+purpose-built animal census — `animalCount 1260`, **`corpseDefsSkipped 1264`** — plus
+`biomeAnimals`, a table of **5,568 `(biome, pawnKind, race, commonality)` pairs across 80
+biomes**. That is exactly the assignment table this work needs, pre-computed.
+⚠️ **`animals.json` is BROADER than `intelligence == Animal`.** It carries 1,260 where a
+strict intelligence filter gives 1,022; the extra **238** are `ToolUser` (140) and `Humanlike`
+(98) flagged `isAnimal: true` — Alpha Mechs and kin. **Decide per pass whether those belong**;
+for wildlife casting they mostly do not, except in `AB_MechanoidIntrusion`.
+⚠️ **Earlier drafts of these items said 2,042 animals. That counted 1,020 `Corpse_*` defs**
+off `ThingDef.json` — a census the dumper had already done correctly. Do not re-derive it.
 
 ⚠️ **Two numbers here were wrong when these items were first written, 2026-08-22, and both
 were corrected the same hour.** (a) *"2,042 animals"* counted **1,020 `Corpse_*` ThingDefs**,
