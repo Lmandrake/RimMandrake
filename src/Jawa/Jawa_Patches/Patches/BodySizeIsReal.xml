@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BodySizeIsReal.xml                        Jawa_Patches - new file 2026-08-22
+  ============================================================================
+
+  OWNER, 2026-08-22: "It would be very appropriate for Wookiee to TOWER over Jawa
+  and even humans, by the lore. That's pretty important actually. And the same the
+  other way for smallness. size differential makes great immersion as well as nice
+  mechanics differentials during unfortunate times like melee."
+
+  🔴 EVERY SIZE GENE THE STAR WARS PACK SHIPS IS COSMETIC. Verified in our own
+  source: `RimMandrake_BodySizeGene_big/bigger/biggest/small/smaller` all write
+  `SM_Cosmetic_BodySizeOffset`, and a repo-wide grep finds 10 uses of that stat and
+  ZERO of `SM_BodySizeOffset`. ⇒ a Wookiee and a Jawa have had IDENTICAL mechanical
+  body size all along: same health scale, same melee damage, same carry capacity,
+  same food. The pictures differed and nothing else did.
+
+  Big and Small ships the real ladder. Baseline human BodySize is 1.0:
+
+      BS_RabbitFrame / GnomeFrame   -0.60  ->  0.40
+      BS_SmallFrame  / DwarfFrame   -0.35  ->  0.65     <- used here
+      (nothing between -0.35 and 0)
+      BS_LargeFrame                 +0.40  ->  1.40     <- used here
+      HalfColossusFrame             +0.70  ->  1.70
+      HalfJotunFrame                +0.75  ->  1.75
+      OgreFrame                     +1.00  ->  2.00     ⚠️ see below
+      JotunFrame                    +1.50  ->  2.50
+      GreatOgreFrame                +2.00  ->  3.00
+      TitanFrame                    +3.00  ->  4.00
+
+  ⇒ A Wookiee at 1.40 against a Jawa at 0.65 is a **2.15x** differential, in health
+  scale and melee and carry capacity, not just in the sprite.
+
+  🔑 WHY THESE ARE SWAPS AND NOT ADDITIONS. Our cosmetic genes and Big and Small's
+  real frames share the SAME `exclusionTags` entry, `BodySize`. Two active genes
+  with a shared exclusion tag fight in `Pawn_GeneTracker.CheckForOverrides` and one
+  silently wins - which one is not worth relying on. So the cosmetic gene is
+  REPLACED, never stacked. Where a species had no size gene at all the operation is
+  an Add instead, and both cases are marked below.
+
+  ⚠️ ONE RUNG FOR EVERYONE LARGE, DELIBERATELY. Feeorin and Lasat carried the +0.50
+  cosmetic rung and Wookiee the +0.20, and all of them land on `BS_LargeFrame`.
+  A first pass that is consistent is easier to tune than one that is already
+  opinionated: promoting a single species to `HalfJotunFrame` later is a one-line
+  edit, and nothing here has to be undone first.
+
+  ⛔ NOBODY IS GIVEN `OgreFrame` OR ABOVE, AND THAT IS A DECISION. At +1.00 Big and
+  Small grants the `BS_Giant` trait automatically, which is the permission flag for
+  the 23 `BS_GiantWeapon` weapons. Putting a species on that rung silently hands it
+  giant weapons as well as size. Those are two separate questions and this file
+  answers only the first.
+
+  ⛔ TALL IS NOT BIG, and the two tools exist for the two meanings. Species that are
+  tall but slender KEEP their cosmetic gene and are deliberately absent from this
+  file: Kaminoan (2.7 m, the tallest on the roster, and canonically frail), Muun
+  (1.9 m gaunt), Cerean, Kel Dor, Gungan, Ithorian, Chagrian, Aqualish, Nagai, Pyke.
+  Giving them real mass would make a frail cloner a melee threat.
+
+  ⚠️ NOT INCLUDED, EACH FOR A NAMED REASON:
+    * `RimMandrakeRakata` - 2.0 m but only ~85 kg, and its own def uses a gaunt body.
+      Human mass; the height is cosmetic work, not this.
+    * `RimMandrakeNelvaanian` - males 2.0 m / 130 kg, females 1.5 m / 50 kg. A gene
+      applies to the whole xenotype and would make the females giants too.
+    * `RimMandrakeHutt` - carries the +0.70 cosmetic rung and is genuinely enormous,
+      but a Hutt is sluglike and does not fight hand to hand. Real mass would make it
+      tanky in melee, which may be exactly right or exactly wrong. OWNER'S CALL.
+    * `RimMandrakeYoderForceGremlin` IS included at `BS_SmallFrame` (0.65), but the
+      species is ~0.66 m in lore, which argues for `BS_RabbitFrame` (0.40). One rung
+      lower is a one-line change if wanted.
+
+  ⚠️ METABOLISM MOVES WITH SIZE and that is the mechanic, not a side effect.
+  `BS_LargeFrame` is met -2 (a big body eats more) and `BS_SmallFrame` is met +5.
+  On a xenotype this is a permanent property of the species.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ═══ LARGE: swapping the cosmetic Big Frame for a real one ═══════════ -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeSithMassassi"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeSithMassassi"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeGamorrean"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeGamorrean"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeTaung"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeTaung"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeTrandoshan"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeTrandoshan"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeTogorian"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeTogorian"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+
+  <!-- Feeorin and Lasat carried the +0.50 cosmetic rung, so the swap names that one. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeFeeorin"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeFeeorin"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeLasat"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeLasat"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+
+  <!-- 🔴 HERGLIC AND KLATOONIAN CARRIED NO SIZE GENE AT ALL, cosmetic or otherwise, and
+       both are large in lore: a Herglic is ~2.2 m and whale-descended, canonically too
+       bulky for human corridors, and a Klatooinian is "often nearly 2 m" with a strong
+       build. These are ADDs, not swaps - there is nothing to replace. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeKlatoonian"]/genes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeKlatoonian"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
+    </match>
+  </Operation>
+
+
+  <!-- ═══ SMALL: the same move downwards ══════════════════════════════════ -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeEwok"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeEwok"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeChadraFan"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeChadraFan"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeUgnaught"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeUgnaught"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeYoderForceGremlin"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeYoderForceGremlin"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
+    </match>
+  </Operation>
+
+</Patch>
