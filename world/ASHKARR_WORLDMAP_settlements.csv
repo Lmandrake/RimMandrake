@@ -49,15 +49,15 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 47,Jawa_IndigenousTribes,Jawa Trade Moot,Sandmoot,11537,6.042,73.612,73.7,ZBiome_Badlands,canyon fortresses and crawler circuit nodes across the near-desert
 48,Jawa_IndigenousTribes,Jawa Trade Moot,The Bartering Rock,11502,-12.752,71.576,72.0,Wasteland,canyon fortresses and crawler circuit nodes across the near-desert
 49,Jawa_IndigenousTribes,Jawa Trade Moot,Tin Camp,3221,-6.691,69.834,70.0,ExtremeDesert,canyon fortresses and crawler circuit nodes across the near-desert
-50,TribeCivil,Deep Desert Tribes,Duneward,15629,50.132,64.653,74.1,Desert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-51,TribeCivil,Deep Desert Tribes,Stone Moot,19565,44.808,64.374,72.1,Desert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-52,TribeCivil,Deep Desert Tribes,Redscarp,15562,47.634,-72.997,78.6,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-53,TribeCivil,Deep Desert Tribes,The Dry Moot,15850,-47.634,-72.997,78.6,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-54,TribeCivil,Deep Desert Tribes,Barno,3044,-55.554,-69.608,78.6,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-55,TribeCivil,Deep Desert Tribes,The Long Camp,2697,-42.344,-72.121,76.9,Desert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-56,TribeCivil,Deep Desert Tribes,Ashfoot,1786,70.718,-53.323,78.6,ZBiome_Badlands,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-57,TribeCivil,Deep Desert Tribes,Knife Canyon,2154,-70.718,-53.323,78.6,Desert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-58,TribeCivil,Deep Desert Tribes,The Blind Wells,15816,-62.901,-64.279,78.6,Desert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+50,TribeCivil,Deep Desert Tribes,Duneward,71,23.5048,21.5067,31.44,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+51,TribeCivil,Deep Desert Tribes,Stone Moot,688,31.4829,20.992,37.23,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+52,TribeCivil,Deep Desert Tribes,Redscarp,6,-31.716,0.0,31.72,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+53,TribeCivil,Deep Desert Tribes,The Dry Moot,3211,36.1659,15.1642,38.81,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+54,TribeCivil,Deep Desert Tribes,Barno,4233,-34.3085,-5.4262,34.68,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+55,TribeCivil,Deep Desert Tribes,The Long Camp,6288,-33.0117,23.3755,39.67,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+56,TribeCivil,Deep Desert Tribes,Ashfoot,6566,18.5277,25.9836,31.53,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+57,TribeCivil,Deep Desert Tribes,Knife Canyon,303,-29.6668,6.6438,30.34,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+58,TribeCivil,Deep Desert Tribes,The Blind Wells,3156,-37.0059,-12.2612,38.71,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
 59,OutlanderCivil,Homestead Defense League,Dewhome,2234,-16.191,81.842,82.2,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 60,OutlanderCivil,Homestead Defense League,Condenser Flats,9956,21.563,82.883,83.4,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 61,OutlanderCivil,Homestead Defense League,Bell Cistern,20776,-6.223,86.2,86.2,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
@@ -86,7 +86,7 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 84,OutlanderCivil,Homestead Defense League,The Standpipe,3452,45.2293,-37.1289,55.8400,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 85,OutlanderCivil,Homestead Defense League,Mistfoot,5816,-40.6469,81.2046,83.3400,AridShrubland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 86,OutlanderCivil,Homestead Defense League,Dripstone,15585,69.3013,75.1048,84.7900,AridShrubland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
-87,OutlanderCivil,Homestead Defense League,The Long Furrow,16022,-65.1826,112.95,99.4200,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+87,OutlanderCivil,Homestead Defense League,The Long Furrow,1457,-64.3976,115.8097,100.84,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 88,OutlanderCivil,Homestead Defense League,Whistledew,979,-34.5118,-50.5364,58.4200,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 89,OutlanderCivil,Homestead Defense League,Pumphouse,3436,62.3799,23.4783,64.8400,ZBiome_Badlands,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 90,OutlanderCivil,Homestead Defense League,Greenpatch,4669,-25.3808,-84.0981,84.6700,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
@@ -94,14 +94,14 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 92,OutlanderCivil,Homestead Defense League,Sweetwell,5538,-73.1979,-123.3616,99.1500,AridShrubland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 93,OutlanderCivil,Homestead Defense League,Hollowdew,5813,-57.2693,33.3333,63.1400,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 94,OutlanderCivil,Homestead Defense League,Thornfurrow,8075,-1.2814,46.3859,46.4000,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
-95,OutlanderCivil,Homestead Defense League,Chalkwell,19681,28.8414,59.2288,63.3700,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+95,OutlanderCivil,Homestead Defense League,Chalkwell,19680,27.8127,57.9886,62.04,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 96,Jawa_HuttCartel,Hutt Cartel,The Debt House,165,59.7622,-24.3874,62.7000,Desert,beside a near-desert oasis - the well is guarded and is NOT free
 97,Jawa_HuttCartel,Hutt Cartel,Slug Hollow,528,-50.8913,-47.9041,64.9800,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
-98,Jawa_HuttCartel,Hutt Cartel,Tollwater,766,-26.551,-67.6278,70.0900,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+98,Jawa_HuttCartel,Hutt Cartel,Tollwater,11880,-27.0643,-65.9807,68.75,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
 99,Jawa_HuttCartel,Hutt Cartel,The Levy,3240,13.0109,55.3788,56.3900,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
 100,Jawa_HuttCartel,Hutt Cartel,Fatwell,12868,39.0707,46.6413,57.7900,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
 101,Jawa_HuttCartel,Hutt Cartel,The Reckoning,1011,54.172,-52.5028,69.1300,Desert,beside a near-desert oasis - the well is guarded and is NOT free
-102,Jawa_HuttCartel,Hutt Cartel,Oilpalm,19518,52.8395,42.1608,63.4000,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+102,Jawa_HuttCartel,Hutt Cartel,Oilpalm,19519,51.426,43.2112,62.97,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
 103,Jawa_HuttCartel,Hutt Cartel,Gorge Station,4865,-59.5491,10.6221,60.1200,Desert,beside a near-desert oasis - the well is guarded and is NOT free
 104,Jawa_HuttCartel,Hutt Cartel,The Skim,1028,63.0058,47.4818,72.1400,Desert,beside a near-desert oasis - the well is guarded and is NOT free
 105,Jawa_HuttCartel,Hutt Cartel,Bloatwater,1820,42.1947,-52.4741,63.1700,Desert,beside a near-desert oasis - the well is guarded and is NOT free
