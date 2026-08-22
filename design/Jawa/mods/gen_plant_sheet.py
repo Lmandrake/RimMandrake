@@ -25,22 +25,24 @@ GROUPS = [
      'Desert · ExtremeDesert · AridShrubland. 7,863 tiles, 36% of the planet. Anything here is in the raids, the caravans and every screenshot.'),
     ('B', 'Rocky Crags — the single biggest biome',
      "AB_RockyCrags, 4,703 tiles. ⚠️ Its only wood comes from Alpha Biomes toxic flora. Cut those and the biggest biome on Ash'karr has no wood at all."),
-    ('C', 'Oasis and Badlands — the green exceptions',
+    ('J', '🌴 JUNGLE AND WETLAND — the green on your rivers',
+     "AB_MycoticJungle 1,939 · PoisonForest 604 · AB_FeraliskInfestedJungle 534 · BMT_FungalForest 425 · AB_MiasmicMangrove 65. <b>3,567 tiles, 16% of the planet.</b> ⭐ <b>222 of the 309 river-adjacent tiles — 72% — are Feralisk Infested Jungle</b>, whose plantDensity is 0.9, the densest large biome here. This is the jungle you are seeing. Every big jungle tree is in this group; they were previously buried under “exotic” and that was the defect. 🔑 <b>Left undecided on purpose — the honest question is whether these biomes belong on a desert world at all, and that is a BIOME call worth more than every plant call combined.</b>"),
+    ('C', 'Oasis, Badlands and Grasslands — the small green exceptions',
      'ZBiome_DesertOasis 227 · ZBiome_Badlands 546 · ZBiome_Grasslands 233. Small, deliberate, and the only place lush growth is meant to read as correct.'),
     ('D', 'Wasteland and Scarlands',
      'Wasteland 1,721 · Scarlands 90. Dead ground; the flora here is meant to look like it lost.'),
-    ('E', 'Exotic biomes — decide the BIOME first, not the plant',
-     "Mycotic Jungle 1,939 · Poison Forest 604 · Propane Lakes 554 · Feralisk Jungle 534 · Fungal Forest 425 · Crystal Caverns 127 and smaller. \U0001f511 These are left UNDECIDED on purpose — the real question is whether the biome belongs on Ash'karr."),
+    ('E', 'Other exotic biomes — decide the BIOME first, not the plant',
+     'AB_PropaneLakes 554 · BMT_CrystalCaverns 127 · AB_GelatinousSuperorganism 96 · AB_TarPits 57 · AB_MechanoidIntrusion 236. Same reasoning as the jungle group: the biome is the real question.'),
     ('F', 'Marginal — under 100 tiles',
-     'Volcano 23 · LavaField 15 · Ocular Forest 3 · Mechanoid Intrusion 236 · Tar Pits 57 · Miasmic Mangrove 65 · Gelatinous Superorganism 96. Almost never seen.'),
+     'Volcano 23 · LavaField 15 · AB_OcularForest 3 · AB_PyroclasticConflagration 31. Almost never seen.'),
 ]
 GROUP_BIOMES = {
     'B': {'AB_RockyCrags'},
+    'J': {'AB_MycoticJungle', 'AB_FeraliskInfestedJungle', 'AB_MiasmicMangrove',
+          'BMT_FungalForest', 'PoisonForest'},
     'C': {'ZBiome_DesertOasis', 'ZBiome_Badlands', 'ZBiome_Grasslands'},
     'D': {'Wasteland', 'Scarlands'},
-    'F': {'Volcano', 'LavaField', 'AB_OcularForest', 'AB_MechanoidIntrusion',
-          'AB_TarPits', 'AB_MiasmicMangrove', 'AB_GelatinousSuperorganism',
-          'AB_PyroclasticConflagration'},
+    'F': {'Volcano', 'LavaField', 'AB_OcularForest', 'AB_PyroclasticConflagration'},
 }
 
 def tile_counts():
@@ -52,7 +54,7 @@ def tile_counts():
 
 def group_of(biomes):
     if biomes & CORE_DESERT: return 'A'
-    for g in ('B', 'C', 'D', 'F'):
+    for g in ('B', 'J', 'C', 'D', 'F'):
         if biomes & GROUP_BIOMES[g]: return g
     return 'E'
 
@@ -72,6 +74,8 @@ def decide(r, biomes, wood_lifeline):
     g = group_of(biomes)
     if r['defName'] in wood_lifeline:
         return 'keep', 'R3', 'LAST WOOD — cutting this leaves its biome with too few wood sources.'
+    if g == 'J':
+        return 'undecided', 'R4', 'Jungle/wetland flora. Decide whether the BIOME belongs here, not the plant.'
     if g == 'E':
         return 'undecided', 'R4', 'Only appears in an exotic biome. Decide the biome, not the plant.'
     if not tree:
@@ -150,7 +154,8 @@ def main():
             'life': r['defName'] in lifeline,
             'img': sprites.get(r['defName'], ''),
         })
-    items.sort(key=lambda x: (x['g'], -x['r']))
+    order = {g: n for n, (g, _t, _d) in enumerate(GROUPS)}
+    items.sort(key=lambda x: (order[x['g']], -x['r']))
 
     payload = json.dumps({'items': items, 'groups': GROUPS,
                           'generated': 'plant_review.html'}, ensure_ascii=False)

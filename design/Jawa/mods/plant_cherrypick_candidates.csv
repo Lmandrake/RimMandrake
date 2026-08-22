@@ -189,3 +189,5 @@ AB_AlienGrass,ocular grass,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_Oc
 AB_RedLeaves,ocular plant,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_OcularForest
 AB_RedPlantsTall,ocular plant,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_OcularForest
 AB_HalfAlienTree,half transformed ocular tree,Alpha Biomes,sarg.alphabiomes,True,Full,5,WoodLog,3,AB_OcularForest
+VEE_Plant_ChollaCactus,cholla cactus,Vanilla Landmarks Expanded,vanillaexpanded.vexploratione,True,Full,5,WoodLog,8,Desert|ExtremeDesert
+VEE_Plant_HoodiaCactus,hoodia cactus,Vanilla Landmarks Expanded,vanillaexpanded.vexploratione,True,Full,5,WoodLog,8,Desert|ExtremeDesert
