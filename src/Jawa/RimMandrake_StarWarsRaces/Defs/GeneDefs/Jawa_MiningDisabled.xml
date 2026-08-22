@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Jawa_MiningDisabled.xml                    StarWarsRaces · authored 2026-08-22
+  ============================================================================
+
+  JAWA_CANNOT_DIG_GENE_1. The owner's ruling, verbatim: "they should not be able
+  to mine ore, though some other races still can. And the mining laser should be
+  able to do this very well."
+
+  WHY A GENE AND NOT A ScenPart
+  =============================
+  A `Rule_DisallowDesignator_Mine` is COLONY-WIDE, so a recruited Ugnaught could
+  not mine either — and the owner said "some other races still can". A gene is
+  per-pawn, which delivers that exactly, and it reaches ENEMY Jawa factions as
+  well, which nothing else buys.
+
+  WHY `disabledWorkTags` HERE AND AN APTITUDE FOR FARMING
+  ======================================================
+  Not an inconsistency — the WorkTags enum is simply not symmetrical. `PlantWork`
+  is the ONLY plant tag and it covers `PlantCutting` as well as `Growing`, so
+  disabling it would also stop a Jawa harvesting and CHOPPING TREES. No wood, on
+  a scavenger clan. So farming took the soft lever (`AptitudeTerrible_Plants`,
+  on the xenotype). `Mining` covers the `Mining` work type and nothing else, so
+  the hard lever is clean here and it is what the owner asked for.
+
+  🔑 AND THE DEEP DRILL GOES WITH IT, DELIBERATELY. Vanilla's `Drill` WorkGiver
+  is `workType Mining`, so this gene stops a Jawa operating one. The owner
+  accepted that asymmetry explicitly: the laser works, the drill beside it does
+  not. ⛔ Do not "fix" it by patching vanilla's Drill WorkGiver — that would
+  re-type the job for every faction in the game.
+
+  ⚠️ THE TURRET STILL WORKS BECAUSE IT IS NO LONGER A MINING JOB.
+  `DRILLTURRET_IS_A_SHOOTING_JOB_1` (fe0064c) moved `OperateDrillTurret` to
+  `workType Hunting`. Hunting's workTags include `Violent`, so this design also
+  depends on Jawa being CAPABLE of violent work. Measured 2026-08-22: no other
+  gene on `MandrakeJawa` disables any work tag. If one is ever added, the turret
+  silently stops being operable and nothing will say so.
+
+  SHAPE
+  =====
+  Modelled on Biotech's `ViolenceDisabled`, which is the only shipped gene of
+  this exact form — `disabledWorkTags Violent`, `biostatMet 3`, `biostatCpx 1`.
+  ⛔ NO NEW ART. `iconPath` is the one Biotech's own `AptitudeTerrible_Mining`
+  uses, which is proof it resolves. It is not a loose PNG on disk and it does
+  not need to be.
+  ============================================================================
+-->
+<Defs>
+
+  <GeneDef>
+    <defName>RimMandrake_Jawa_MiningDisabled</defName>
+    <label>cannot dig</label>
+    <labelShortAdj>non-digging</labelShortAdj>
+    <description>Carriers of this gene cannot mine. The hands are wrong for it — narrow, soft-knuckled, built for stripping a wreck rather than breaking a seam — and the flinch response that keeps a Jawa alive in a collapsing hull makes standing under unsupported rock unbearable. They will not swing a pick and they will not stand at a deep drill.\n\nThis is not squeamishness about ore. A Jawa will happily run a machine that does the digging for it, and considers that the correct arrangement.</description>
+    <iconPath>UI/Icons/Genes/Skills/Mining/Terrible</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <displayOrderInCategory>1790</displayOrderInCategory>
+    <biostatMet>3</biostatMet>
+    <biostatCpx>1</biostatCpx>
+    <disabledWorkTags>Mining</disabledWorkTags>
+  </GeneDef>
+
+</Defs>
