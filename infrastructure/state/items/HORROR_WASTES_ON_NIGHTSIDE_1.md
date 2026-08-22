@@ -90,9 +90,17 @@ real terrain textures (`biome_fit.py`, 25 biomes):
 | `AB_RockyCrags` — what surrounds it | [29, 27, 30] | near-black rock |
 | `SeaIce` — its other neighbour | [155, 164, 172] | pale blue-grey |
 
-⇒ **On the deep nightside it will read as a warm sand patch dropped into black rock and
-ice.** The def is a *dry* horror biome (its own description: *"A dry region"*) and nothing
-about it was authored for −56 °C.
+⇒ **In game, the ground a pawn stands on will be warm sand between black rock and ice.** The
+def is a *dry* horror biome (its own description: *"A dry region"*) and nothing about it was
+authored for −56 °C.
+
+⚠️ **CORRECTION, 2026-08-22 — this is an IN-GAME defect only; the world render is fine.**
+DECIDE told the owner he would see a warm sand patch on the map. He will not.
+`worldview.py` uses its own `BIOME_COLOR` palette, chosen *"for SEPARATION first and mimicry
+second"*, and **both new biomes already have entries** — `HorrorWastes` `#7c0f31` dark
+crimson, `SeaIce` `#cfe4ee` pale. 🔑 **A biome's map colour and its ground terrain are
+different fields and one says nothing about the other.** The ground-colour table above is
+evidence about the *map surface a pawn walks on*, and it stands.
 
 **Still owed before this closes:**
 1. **A cold terrain set** — it must not sit at [97,82,67] between [29,27,30] and [155,164,172].

@@ -180,3 +180,37 @@ status, `deathAction`, toxic resistance and body size (`wildlife_filter.py`).
 - **gaudy + defenceless** = 🚩 **FLAG ONLY.** Owner ruled 2026-08-22: *flag for review, do
   not act.* ⚠️ **Burrowing, flight and speed are defences the score cannot see**, so an
   auto-demotion would lose good creatures for a bad reason.
+
+
+## 🔴 THE CANDIDATE POOLS, RE-MEASURED 2026-08-22 AFTER THE NIGHTSIDE PASS
+_The earlier per-biome table in this item was taken over 23 biomes and the pre-pass map. It
+is superseded by this one: **25 biomes**, and `AB_RockyCrags` has lost its coldest 1,200
+tiles to `HorrorWastes`._
+
+**"Wildlife viable" = eligible for wildlife casting AND survives the biome's MEDIAN tile
+temperature.** That is the only hard filter we have, and it does almost all its work at the
+extremes:
+
+| biome | tiles | median °C | viable | of which SUPER |
+|---|---|---|---|---|
+| 🔴 **`HorrorWastes`** | 1,200 | **−69** | **89** | 12 |
+| `BMT_CrystalCaverns` | 127 | −62 | 111 | 14 |
+| `AB_PropaneLakes` | 554 | −60 | 137 | 14 |
+| `AB_MechanoidIntrusion` | 236 | +62 | 151 | 10 |
+| `AB_RockyCrags` | 3,423 | −35 | 294 | 17 |
+| `Scarlands` | 90 | +59 | 328 | 12 |
+| `ExtremeDesert` | 3,606 | +46 | 422 | 12 |
+| `AB_MycoticJungle` | 1,939 | −19 | 535 | 30 |
+| `Desert` · `Wasteland` · `AridShrubland` · `ZBiome_Badlands` · `AB_GelatinousSuperorganism` | | +1…+30 | **~990** | 39 |
+
+⭐ **Two things follow, and they split the job in half:**
+1. **The extremes cast themselves.** 89–151 candidates is a list a human can read. `HorrorWastes`
+   is the tightest pool on the planet and **still has 12 super-huge to choose a set piece from**,
+   so the constraint is real but not a dead end.
+2. 🔴 **Temperature does nothing for the temperate biomes.** Nine of them sit at ~990 viable —
+   essentially the whole pool. There, *appearance, defence and uniqueness must carry the entire
+   decision*, because the physics has no opinion.
+
+⚠️ **`AB_RockyCrags` got EASIER, not harder** — 232 viable before the split, **294** now. Losing
+its deep-nightside end made it warmer (median −44.8 → −35), which widened its pool. That is the
+opposite of what I assumed when I called it the hardest biome to cast.
