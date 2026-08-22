@@ -389,6 +389,25 @@ the name to `defLabel`, so running the documented fix against `generatedCount` w
 DELETED nine authored names. ⇒ Until the deploy lands, treat any `generatedCount` from a
 live game as wrong, and do not run `clear`.
 
+**13 — `weaponMoney` is a CEILING rolled once, not a budget, and "raise the floor" is the
+wrong reflex.** `PawnWeaponGenerator.TryGenerateWeaponFor` rolls `weaponMoney.RandomInRange`
+ONCE and admits every weapon priced at or below the roll; `min ≥ cheapest` means the kind
+ALWAYS arms, `max < cheapest` means it NEVER does. ⇒ Before proposing a money fix, compute
+`P(bare) = (cheapest − min) / (max − min)` and check it is not already zero. Measured
+2026-08-22 on the seven kinds a live run named worst: **all seven predict 0.0%**, and
+`Jawa_Junkers_Grunt` has a floor of 60 against a cheapest of 1. Money was not the lever and
+three independent routes said so. ⛔ Raising it is also not free — `gen_pawnkind_roster.py`
+derives `max` AND `combatPower` from the same number, so lifting a floor re-tiers the raids.
+
+**14 — `weapon_affordability.py` will answer with a resource.** It named
+`BMT_ResourceBlueCrystal` (Biomes! Caverns, `stackLimit` 75) as a pawn kind's cheapest
+eligible weapon at price 1. Not strictly wrong — the def carries `equipmentType Primary`,
+`weaponTags`, `weaponClasses` and a Cut tool at power 11 — but a resource stack answering a
+weapon question makes "this kind is safe" mean less than it reads. ⚠️ And the tool's prices
+are `MarketValue`, i.e. UNSTUFFED; the engine compares `ThingStuffPair.Price`, which is
+dearer. **Its pass is a floor, never a truth** — it says so in its own header, and a live
+run has already contradicted it.
+
 **11 — a generator's own success line cannot tell you it just deleted a def.**
 `gen_pawnkind_roster.py` emits 48 pawn kinds; the committed XML held **49**. The odd one
 was `Jawa_Homestead_DesertRanger`, hand-added to the OUTPUT after an owner ruling, with
