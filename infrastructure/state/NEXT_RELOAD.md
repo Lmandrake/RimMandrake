@@ -20,7 +20,13 @@
 > byte-for-byte.
 >
 > ### 🔴 WHAT THIS ONE LOAD MUST PROVE — everything BUILD landed 2026-08-22
-> Grouped by where to look. Thirteen items are parked on this load.
+> Grouped by where to look. ⚠️ **53 items across BUILD and CHECK cannot move until the
+> game is up** — 23 BUILD, 30 CHECK, counted 2026-08-22 from the `needs:` lines in
+> `queue/*.md` (`bridge`, `game-up` or `harvest`). The older "thirteen" here counted
+> only one seat's and only one day's. Recount rather than trust it:
+> ```
+> grep -c "^needs:    \(bridge\|game-up\|harvest\)" infrastructure/state/queue/*.md
+> ```
 >
 > **In `Player.log`, before touching anything:**
 > ```
@@ -35,6 +41,32 @@
 > - ⚠️ `measure count-errors` is itself new and validated against this same log's known
 >   answers (101 and 101). A `grep -c` on that log gives 148, 1007 or 122 depending on the
 >   pattern; only one of those is the number of distinct errors.
+>
+> **🔴 THE DUMP PRODUCER IS NEW THIS LOAD — check it FIRST, before anything else.**
+> `RimDefDump.dll` was rebuilt and deployed 2026-08-22 (`b9d3e8b0`) and has never run.
+> `dump_request.txt` still reads `all`, so this load WILL take a capture, and it will be
+> the first one written under the dated layout.
+> ```
+> [RimDefDump] starting, mode=all, capture=<id>, out=…/DefDump/captures
+> [RimDefDump] capture published: …/DefDump/captures/<id>
+> ```
+> - Both lines must appear. **`capture published` is the one that matters** — everything
+>   is written under `captures/.writing/` and only an atomic rename makes it a capture, so
+>   its absence means the capture did not happen, not that it half happened.
+> - Then, from the repo:
+> ```
+> python3 src/RimMandrake/Utils/game_paths.py            # `current capture` = the NEW id
+> python3 ~/.claude/skills/measuring-large-artifacts/scripts/measure/cli.py build
+> python3 ~/.claude/skills/measuring-large-artifacts/scripts/measure/cli.py count RimWorld.AbilityDef
+> ```
+> - ⚠️ **`measure build` must be re-run before any count is believed.** `defs.sqlite` sits
+>   at the DefDump ROOT and is derived from whichever capture is current; after a new
+>   capture lands it describes the OLD one, and nothing about the file says so.
+> - ⛔ **`captures/2026-08-21T22-44-59Z/` must still be there afterwards.** It carries a
+>   `.keep` marker because it is the frozen OFFICIAL, and retention must never prune it.
+>   If it is gone, the keep-marker path is broken and the frozen design target is lost.
+> - A leftover `captures/.writing/` after the load means the capture died mid-write. That
+>   is safe by construction — no reader will match it — but it wants looking at.
 >
 > **Body size is REAL now — one bridge read settles the whole thing:**
 > ```
