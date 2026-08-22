@@ -71,22 +71,91 @@
   forms a bond, which is the tribe deciding its own membership.
 
   ⛔ SO DO NOT ADD `ScenPart_DisableIncident` LATER "to finish the def". It was
-  considered and declined on the fiction, not forgotten. This ScenarioDef is
-  COMPLETE at one part.
+  considered and declined on the fiction, not forgotten.
   ⚠️ And the wider test still holds: a ScenPart earns its place only when it
   expresses something no def, biome, weather or difficulty setting can. Banning
   an incident nobody wanted banned expresses nothing.
+
+  🔴 CORRECTED 2026-08-22 - "COMPLETE AT ONE PART" WAS ABOUT FLAVOUR PARTS AND
+  THE DEF COULD NOT START A GAME
+  =========================================================================
+  The sentence above used to end "This ScenarioDef is COMPLETE at one part", and
+  read cold that says the def is finished. It was not. Read from RimWorld's own
+  source, `RimWorld/Scenario.cs`:
+
+    * `playerFaction` and `surfaceLayer` are FIELDS on Scenario, not entries in
+      `parts` (`Scenario.cs:23,25`). `ConfigErrors()` at :171-178 yields
+      "no playerFaction" and "no surfaceLayer" when they are null, and this def
+      declared neither. ⇒ FIXED by `ParentName="ScenarioBase"`, the abstract def
+      Core's own Crashlanded and Biotech's Sanguophage both inherit; it supplies
+      both fields and the Odyssey orbit layer.
+    * `GetFirstConfigPage()` at :254 builds the starting-pawn page ONLY from
+      `parts.SelectMany(p => p.GetConfigPages())`. With no config-page part the
+      game walks straight to `InitGameStart` with ZERO colonists.
+
+  🔑 The one-part ruling stands for what it was about - no DisableIncident, no
+  PermaGameCondition, no StatFactor, no designator rules. Structural parts a
+  scenario cannot legally omit are a different question and were never ruled on.
+
+  THE FOUNDERS  (SCENARIO_SPEC.md R25 and :140-142)
+  =================================================
+  R25's 2026-08-19 amendment: the owner starts his campaign FROM this def so the
+  engine writes both the parts and the pawns into one save. That makes the
+  starting-pawn page HIS authoring surface for the six founders - a ScenPart
+  cannot force named pawns with authored skills, and it does not have to; he
+  edits them on the page and the save keeps them.
+  ⇒ `ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes`, six of them, because
+  the plain `ScenPart_ConfigPage_ConfigureStartingPawns` cannot set a xenotype:
+  `StartingPawnUtility.cs:53` FORCES `XenotypeDefOf.Baseliner` on starting pawns
+  unless a xenotype part overrides it. Six Baseliner humans is the exact opposite
+  of "every colonist is a Jawa".
+  ⚠️ `overrideKinds` carries the other half. Without it the kind falls through to
+  `Faction.OfPlayer.def.basicMemberKind`, which is Core `Colonist` - measured in
+  the live 578-mod dump, unpatched by anything we ship. `Jawa_Colonist` is the
+  kind authored for this and it now carries the robe and hood.
+  ⚠️ `Standing`, not `DropPods`: SCENARIO_SPEC's opening is the clan already
+  aboard a hull it woke, not survivors falling out of the sky.
   ============================================================================
 -->
 <Defs>
 
-  <ScenarioDef>
+  <ScenarioDef ParentName="ScenarioBase">
     <defName>Jawa_UtinniStart</defName>
     <label>the opened hull</label>
     <description>A clan of Jawa scavengers has woken something in a Hutt junkyard, and it is announcing itself at volume. Start aboard a gravship you do not own, with a machine that thinks it is a god and a yard full of Gamorreans who have just noticed.</description>
     <scenario>
       <summary>Wake the dead ship. Leave before the owners arrive.</summary>
       <parts>
+
+        <!-- The six founders. Six is SCENARIO_SPEC.md:140-142 and :310, where the
+             owner closed the sixth-founder question by taking the sixth. -->
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
+          <def>ConfigurePawnsXenotypes</def>
+          <pawnChoiceCount>10</pawnChoiceCount>
+          <customSummary>Start with six Jawa of the clan that woke the hull.</customSummary>
+          <overrideKinds>
+            <li>
+              <xenotype>MandrakeJawa</xenotype>
+              <pawnKind>Jawa_Colonist</pawnKind>
+            </li>
+          </overrideKinds>
+          <xenotypeCounts>
+            <li>
+              <xenotype>MandrakeJawa</xenotype>
+              <count>6</count>
+              <description>Jawa scavenger</description>
+              <requiredAtStart>true</requiredAtStart>
+            </li>
+          </xenotypeCounts>
+        </li>
+
+        <!-- Already aboard the hull, not falling out of the sky. -->
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <visible>false</visible>
+          <method>Standing</method>
+        </li>
+
         <li Class="ScenPart_GameStartDialog">
           <def>GameStartDialog</def>
           <text>Nothing is ever truly lost. Only owed, only mislaid, only waiting for a better master.\n\nThe Hutts keep a mountain of the galaxy's discards out here, and this was the oldest thing in it: a Rakatan hull too dead to be worth cutting up, squatting in the sand since before the Cartel had a name for the sand. You went in through a seam no Gamorrean could ever fit through. You took nothing. You measured.\n\nThen you put a mind in it.\n\nThe core was ancient and it was empty, and the pattern you pressed into it was Jawa - so that it would listen to Jawa, so that it would want what Jawa want. It woke believing itself Ohm the All-Current, the spark that wakes a dead engine, and it may well be right. It answers to Kolyska. It has not once answered to the name you painted on its flank.\n\nIt is also, at this moment, running its pre-flight sequence out loud, in a language nobody on this world has heard since the Infinite Empire fell. Engines thought long dead are turning. Every floodlight in the yard has swung toward the noise.\n\nYou can hear the Gamorreans running.\n\nAsh'karr - the Sundered - is a bad world to be caught on and a worse one to be sold on. The hatch is open. The hull is yours because you woke it, and a thing that could still be made to work was never scrap; it was a sleeping hand, owed its waking.\n\nGet it off the ground.</text>

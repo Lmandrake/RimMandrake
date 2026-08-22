@@ -46,7 +46,22 @@
     <apparelTags>
       <li>IndustrialBasic</li>
     </apparelTags>
-    <apparelAllowHeadgearChance>0</apparelAllowHeadgearChance>
+    <!-- 🔴 THE APPAREL IS THE PAWN. SCENARIO_SPEC.md:142 - "All six: xenotype MandrakeJawa,
+         apparel locked to the Jawa robe and hood" - and faction_equipment_guidance.md lists
+         the Jawa as one of four cases where the silhouette IS the faction. Without these two
+         lines a founder arrives in jeans, a t-shirt and a hay sunhat; measured 6 of 6 live on
+         2026-08-22 (PLAYER_JAWA_WEARS_JEANS_1) on a kind in exactly this state.
+         🔑 `apparelRequired` is generated unconditionally - it ignores both `apparelTags` and
+         `apparelMoney` - so the robe and hood always land and `IndustrialBasic` only dresses
+         whatever slots they leave open.
+         ⚠️ `apparelAllowHeadgearChance` MOVED FROM 0 TO 1 and that is deliberate: the hood is
+         headgear, and leaving the roll at 0 is the obvious way to end up with a required hood
+         that never appears. -->
+    <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+      <li>guy762_JawaHood</li>
+    </apparelRequired>
+    <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
     <apparelMoney>350~600</apparelMoney>
     <backstoryCryptosleepCommonality>1</backstoryCryptosleepCommonality>
     <techHediffsChance>0.03</techHediffsChance>
