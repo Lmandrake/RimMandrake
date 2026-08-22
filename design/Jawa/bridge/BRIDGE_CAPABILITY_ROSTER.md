@@ -66,7 +66,10 @@ it found: `get_terrain_layers` · `set_substructure_batch` · `set_deep_resource
 `fire_raid` (§2) · `set_pawn_backstory` · `set_pawn_skill` · `set_pawn_appearance` ·
 `set_pawn_faction` · `set_pawn_ideo` · `set_pawn_age` (§3) · `build_batch` · `build_check` ·
 `designate_batch` · `prefab_capture` · `prefab_place` (§7). Those rows still carry ✅ BUILT in
-their first cell; **41 more rows deserve the same mark and do not yet have it.**
+their first cell. ✅ **The other 41 are now marked too**, each naming the shipped tool that
+covers it (`✅ **BUILT** → jawa/…`), and the 10 partial rows carry `⚠️ **PARTIAL**` with the
+gap spelled out. ⇒ **An unmarked row is an open candidate. There are 37 of them, and they
+are the cull.**
 
 ⚠️ **§6 "ALREADY BUILT — do not re-roster these" is itself the 08-19 list of 57** and has not
 been regenerated. Trust the ✅ marks and the source count, not §6.
@@ -127,14 +130,14 @@ non-player pawn — no non-player caller was found.
 | `pawns_settle_area` | ⭐ spawn/collect pawns under one lord; they live, work and defend a radius forever | `LordMaker.MakeNewLord` + `LordJob_DefendPoint` | low |
 | `lord_create` | generic: any LordJob by class name + ctor args | `LordMaker.MakeNewLord` | med |
 | `lord_add_pawns` | move already-spawned pawns into an existing lord | `Lord.AddPawn/AddPawns` | low |
-| `lord_list` / `lord_destroy` | inspect or clear lords | `map.lordManager.lords`, `Lord.Destroy()` | low |
+| ⚠️ **PARTIAL** — `social_cancel` clears gathering/ritual lords only and returns a COUNT — no per-lord listing, no arbitrary destroy  `lord_list` / `lord_destroy` | inspect or clear lords | `map.lordManager.lords`, `Lord.Destroy()` | low |
 | `lord_set_point` | move the territory centre live | `LordToil_DefendPoint.SetDefendPoint` | low |
 | `settlement_generate` | full BaseGen settlement into a rect | `BaseGen.symbolStack.Push("settlement", rp)` | **high** |
 | `settlement_populate` | inhabitants only, joined to a lord | `MapGenUtility.GeneratePawns` | med |
 | `pawn_set_guest_status` | guest / prisoner / slave | `Pawn_GuestTracker.SetGuestStatus` | med |
-| `pawn_force_job` | one-shot order | `Pawn.jobs.TryTakeOrderedJob` | med |
-| `pawn_mental_state` | panic / berserk / wander | `MentalStateHandler.TryStartMentalState` | med |
-| `wildlife_spawn` | herd at a cell, or force ambient density | `map.wildAnimalSpawner.SpawnRandomWildAnimalAt` | low |
+| ⚠️ **PARTIAL** — `order_pawn` is Goto/walk only — no arbitrary `JobDef`  `pawn_force_job` | one-shot order | `Pawn.jobs.TryTakeOrderedJob` | med |
+| ✅ **BUILT** → `jawa/pawn_mental`  `pawn_mental_state` | panic / berserk / wander | `MentalStateHandler.TryStartMentalState` | med |
+| ⚠️ **PARTIAL** — `spawn_pawn`/`spawn_batch` place animals — no `wildAnimalSpawner` ambient-density control  `wildlife_spawn` | herd at a cell, or force ambient density | `map.wildAnimalSpawner.SpawnRandomWildAnimalAt` | low |
 
 72 `LordJob_*` classes ship. Peaceful-settle candidates besides `DefendPoint`:
 `SitePawns`, `WanderNest` (Odyssey), `VoidAwakeningWander`, `CreepJoiner`,
@@ -155,27 +158,27 @@ drawer**; its sole state-changing method is `MarkDirty()`. All Odyssey-gated.
 | tool | what it does | anchor | risk |
 |---|---|---|---|
 | ✅ **BUILT**  `get_terrain_layers` | all 5 layers + colour at a cell | `TerrainGrid.TopTerrainAt/UnderTerrainAt/FoundationAt/TempTerrainAt/BaseTerrainAt/ColorAt` | low |
-| `set_under_terrain` | terrain beneath a floor | `TerrainGrid.SetUnderTerrain` | low |
-| `remove_top_layer` | strip floor → under → foundation, one step | `RemoveTopLayer`; guard `CanRemoveTopLayerAt` | med |
+| ✅ **BUILT** → `jawa/set_terrain_layer layer=under`  `set_under_terrain` | terrain beneath a floor | `TerrainGrid.SetUnderTerrain` | low |
+| ✅ **BUILT** → `jawa/set_terrain_layer layer=removeTop`  `remove_top_layer` | strip floor → under → foundation, one step | `RemoveTopLayer`; guard `CanRemoveTopLayerAt` | med |
 | ✅ **BUILT**  `set_substructure_batch` | ⭐ paint substructure over a rect | `SetFoundation(c, TerrainDefOf.Substructure)` — errors if `underGrid[c] != null` | med |
-| `remove_substructure` | strip the foundation layer | `RemoveFoundation`; guard `CanRemoveFoundationAt` | med |
-| `substructure_refresh` | re-dirty engines + overlay after bulk paint | `Map.substructureGrid.MarkDirty()` | low |
+| ✅ **BUILT** → `jawa/set_substructure_batch (RemoveFoundation)`  `remove_substructure` | strip the foundation layer | `RemoveFoundation`; guard `CanRemoveFoundationAt` | med |
+| ✅ **BUILT** → `jawa/map_commit`  `substructure_refresh` | re-dirty engines + overlay after bulk paint | `Map.substructureGrid.MarkDirty()` | low |
 | `get_gravship_substructure` | connected/valid cell sets + support budget | `Building_GravEngine.ValidSubstructure`, `.AllConnectedSubstructure`, `StatDefOf.SubstructureSupport` | low |
-| `set_temp_terrain` | Odyssey temporary terrain | `SetTempTerrain`; `TempTerrainManager.QueueRemoveTerrain(c, tick)` | med |
-| `set_terrain_color` | recolour floors (Ideology dye) | `SetTerrainColor(c, ColorDef)` | low |
-| `unfog_rect` / `unfog_all` / `refog_rect` | reveal or re-hide | `FogGrid.Unfog/ClearAllFog/FloodUnfogAdjacent/Refog` | low |
-| `set_snow` / `add_snow_radial` | depth 0–1 | `SnowGrid.SetDepth/AddDepth`, `WeatherBuildupUtility.AddSnowRadial` | low |
-| `set_sand` / `add_sand_radial` | ⭐ **Odyssey dune painting** | `SandGrid.SetDepth/AddDepth`, `AddSandRadial` | low |
+| ✅ **BUILT** → `jawa/set_terrain_layer layer=temp`  `set_temp_terrain` | Odyssey temporary terrain | `SetTempTerrain`; `TempTerrainManager.QueueRemoveTerrain(c, tick)` | med |
+| ✅ **BUILT** → `jawa/set_terrain_layer layer=color`  `set_terrain_color` | recolour floors (Ideology dye) | `SetTerrainColor(c, ColorDef)` | low |
+| ✅ **BUILT** → `jawa/set_fog`  `unfog_rect` / `unfog_all` / `refog_rect` | reveal or re-hide | `FogGrid.Unfog/ClearAllFog/FloodUnfogAdjacent/Refog` | low |
+| ✅ **BUILT** → `jawa/set_weather_buildup kind=snow`  `set_snow` / `add_snow_radial` | depth 0–1 | `SnowGrid.SetDepth/AddDepth`, `WeatherBuildupUtility.AddSnowRadial` | low |
+| ✅ **BUILT** → `jawa/set_weather_buildup kind=sand`  `set_sand` / `add_sand_radial` | ⭐ **Odyssey dune painting** | `SandGrid.SetDepth/AddDepth`, `AddSandRadial` | low |
 | ✅ **BUILT**  `set_deep_resource` | buried ore for drills | `DeepResourceGrid.SetAt(c, ThingDef, count)` | low |
 | `set_pollution` | Biotech-gated | `PollutionGrid.SetPolluted` | low |
-| `add_gas` / `clear_gas` | tox / smoke / rotstink / deadlife | `GasGrid.AddGas/SetDirect/ClearCellUnsafe` | med |
-| `create_zone` / `paint_zone_cells` / `delete_zone` | stockpile + growing zones | `new Zone_Stockpile(...)`, `ZoneManager.RegisterZone`, `Zone.AddCell` + `CheckContiguous()` | med |
-| `paint_area` / `create_allowed_area` | home / no-roof / allowed (max 10) | `Area[IntVec3] = bool`, `AreaManager.TryMakeNewAllowed` | low |
+| ✅ **BUILT** → `jawa/set_gas`  `add_gas` / `clear_gas` | tox / smoke / rotstink / deadlife | `GasGrid.AddGas/SetDirect/ClearCellUnsafe` | med |
+| ✅ **BUILT** → `jawa/map_zones`  `create_zone` / `paint_zone_cells` / `delete_zone` | stockpile + growing zones | `new Zone_Stockpile(...)`, `ZoneManager.RegisterZone`, `Zone.AddCell` + `CheckContiguous()` | med |
+| ⚠️ **PARTIAL** — `map_zones` paints EXISTING areas — `TryMakeNewAllowed` absent, so a new allowed area cannot be created  `paint_area` / `create_allowed_area` | home / no-roof / allowed (max 10) | `Area[IntVec3] = bool`, `AreaManager.TryMakeNewAllowed` | low |
 | `run_genstep` | any `GenStep` subclass on a live map | `((GenStep)Activator.CreateInstance(t)).Generate(map, default)` | **high** |
 | `scatter_at` | force one scatterer at a cell | `GenStep_Scatterer.ForceScatterAt` | med |
 | `run_basegen_symbol` | ruins / rooms into a rect | `BaseGen.symbolStack.Push(symbol, rect)` | **high** |
 | `flood_fill` | region select by predicate | `Map.floodFiller.FloodFill` — ⛔ not reentrant | low |
-| `drop_roof` | collapse + crush damage | `RoofCollapserImmediate.DropRoofInCells` | **high** |
+| ⚠️ **PARTIAL** — `set_roof_batch` removes roof cleanly — no `RoofCollapserImmediate` collapse or crush damage  `drop_roof` | collapse + crush damage | `RoofCollapserImmediate.DropRoofInCells` | **high** |
 | `fix_floating_roofs` | remove unsupported roof after demolition | `RoofCollapseCellsFinder.CheckAndRemoveCollpsingRoofs` (typo is real) | med |
 
 ⚠️ Most `GenStep_*` read `MapGenerator.Elevation/Fertility/Caves` and `PlayerStartSpot`,
@@ -202,24 +205,24 @@ Counts: 24 `WeatherDef` · 38 `GameConditionDef` · 11 `RaidStrategyDef` ·
 
 | tool | what it does | anchor | risk |
 |---|---|---|---|
-| `get_threat_points` | ⭐ what the storyteller thinks you are worth + wealth split | `StorytellerUtility.DefaultThreatPointsNow`, `map.wealthWatcher` | low |
+| ✅ **BUILT** → `jawa/weather_get`  `get_threat_points` | ⭐ what the storyteller thinks you are worth + wealth split | `StorytellerUtility.DefaultThreatPointsNow`, `map.wealthWatcher` | low |
 | `forecast_incidents` | ⭐ dry-run N days of the storyteller's plan, no game time spent | `StorytellerUtility.DebugGetFutureIncidents` | low |
-| `list_weather` / `get_weather` | defs, current, age, rain/snow/wind rates | `Map.weatherManager` | low |
-| `set_weather` **PLAYER** | transition now (reverts in ≤ duration) | `weatherManager.TransitionTo` | low |
-| `lock_weather` **PLAYER** | ⭐ the only durable weather control | `GameConditionMaker.MakeConditionPermanent(WeatherController)` | med |
-| `list_game_conditions` | 38 defs + active, ticksLeft, permanent | `GameConditionManager.ActiveConditions` | low |
-| `start_game_condition` **PLAYER** | any def, map- or world-scoped | `GameConditionMaker.MakeCondition` + `RegisterCondition` | med |
-| `end_game_condition` **PLAYER** | end early | `Duration = TicksPassed` | low |
-| `list_raid_options` | strategies × arrival modes, `CanUseWith`-filtered | `RaidStrategyDef.Worker.CanUseWith` | low |
-| `preview_raid` | resolve parms without executing | `Worker.CanFireNow` + `DefaultParmsNow` | low |
+| ✅ **BUILT** → `jawa/weather_get`  `list_weather` / `get_weather` | defs, current, age, rain/snow/wind rates | `Map.weatherManager` | low |
+| ✅ **BUILT** → `jawa/weather_set`  `set_weather` **PLAYER** | transition now (reverts in ≤ duration) | `weatherManager.TransitionTo` | low |
+| ✅ **BUILT** → `jawa/weather_set lock=true`  `lock_weather` **PLAYER** | ⭐ the only durable weather control | `GameConditionMaker.MakeConditionPermanent(WeatherController)` | med |
+| ✅ **BUILT** → `jawa/weather_get listDefs`  `list_game_conditions` | 38 defs + active, ticksLeft, permanent | `GameConditionManager.ActiveConditions` | low |
+| ✅ **BUILT** → `jawa/game_condition`  `start_game_condition` **PLAYER** | any def, map- or world-scoped | `GameConditionMaker.MakeCondition` + `RegisterCondition` | med |
+| ✅ **BUILT** → `jawa/game_condition`  `end_game_condition` **PLAYER** | end early | `Duration = TicksPassed` | low |
+| ✅ **BUILT** → `jawa/raid_preview`  `list_raid_options` | strategies × arrival modes, `CanUseWith`-filtered | `RaidStrategyDef.Worker.CanUseWith` | low |
+| ✅ **BUILT** → `jawa/raid_preview`  `preview_raid` | resolve parms without executing | `Worker.CanFireNow` + `DefaultParmsNow` | low |
 | ✅ **BUILT**  `fire_raid` **PLAYER** | ⭐ every parm: points, faction, strategy, arrival, spawnCenter, kind, count, age restriction, steal/kidnap/flee | `new IncidentParms{…}; IncidentDefOf.RaidEnemy.Worker.TryExecute` | **high** |
-| `fire_incident_full` **PLAYER** | generalises the existing `fire_incident` to the whole IncidentParms surface | `incidentDef.Worker.TryExecute` | **high** |
+| ⚠️ **PARTIAL** — `fire_incident` exists but is GM-gated and not generalised to the full `IncidentParms` surface  `fire_incident_full` **PLAYER** | generalises the existing `fire_incident` to the whole IncidentParms surface | `incidentDef.Worker.TryExecute` | **high** |
 | `spawn_mech_cluster` **PLAYER** | sketch to a point value | `MechClusterGenerator.GenerateClusterSketch` | high |
-| `get_storyteller` / `set_storyteller` **PLAYER** | def, difficulty, ~50 fields, incident queue | `Find.Storyteller`, `Notify_DefChanged()` | med |
+| ⚠️ **PARTIAL** — `weather_get` READS def, difficulty, threatScale, allowBigThreats (EventTools:87-90) — no setter, no `Notify_DefChanged`  `get_storyteller` / `set_storyteller` **PLAYER** | def, difficulty, ~50 fields, incident queue | `Find.Storyteller`, `Notify_DefChanged()` | med |
 | `queue_incident` / `clear_incident_queue` **PLAYER** | schedule or suppress | `Find.Storyteller.incidentQueue` | med |
 | `get_time` / `get_local_date` / `set_time_speed` | clock, season, quadrum | `Find.TickManager`, `GenLocalDate` | low |
 | `set_ticks_game` **PLAYER** | the ONLY way to force a season/year | `DebugSetTicksGame` | **high** — skips all ticking; growth/rot/ages desync |
-| `list_letters` / `show_message` / `send_letter_delayed` | | `Find.LetterStack`, `Messages.Message`, `LetterMaker` | low |
+| ⚠️ **PARTIAL** — `send_letter` sends one and is GM-gated — no letter-stack read, no delayed letter, no `Messages.Message`  `list_letters` / `show_message` / `send_letter_delayed` | | `Find.LetterStack`, `Messages.Message`, `LetterMaker` | low |
 | `force_song` / `screen_shake` / `spawn_fleck` **PLAYER** | audio-visual | `Find.MusicManagerPlay.ForcePlaySong`, `CameraDriver.shaker.DoShake`, `FleckMaker` | low |
 
 ⚠️ Full storyteller suppression is not one flag. The clean lever is
@@ -243,30 +246,30 @@ ourselves** (a `GameComponent` keyed by pawn id); nothing in the game will carry
 
 | tool | what it does | anchor | risk |
 |---|---|---|---|
-| `set_pawn_name` | first / nick / last, or single | `pawn.Name = new NameTriple(f,n,l)` — props are get-only, build a new object. Check `name.IsValid` | low |
-| `set_pawn_title` | ⭐ the only free text on a pawn | `pawn.story.Title` (setter drops a value equal to the default) | low |
+| ✅ **BUILT** → `jawa/set_pawn_identity`  `set_pawn_name` | first / nick / last, or single | `pawn.Name = new NameTriple(f,n,l)` — props are get-only, build a new object. Check `name.IsValid` | low |
+| ✅ **BUILT** → `jawa/set_pawn_identity`  `set_pawn_title` | ⭐ the only free text on a pawn | `pawn.story.Title` (setter drops a value equal to the default) | low |
 | ✅ **BUILT**  `set_pawn_backstory` | childhood / adulthood | `pawn.story.Childhood/Adulthood = BackstoryDef` | **med** |
-| `add_pawn_trait` / `remove_pawn_trait` | | `story.traits.GainTrait(new Trait(def,degree,forced))` / `RemoveTrait` | low |
+| ✅ **BUILT** → `jawa/pawn_traits`  `add_pawn_trait` / `remove_pawn_trait` | | `story.traits.GainTrait(new Trait(def,degree,forced))` / `RemoveTrait` | low |
 | ✅ **BUILT**  `set_pawn_skill` | level + passion + xp | `skills.GetSkill(def).Level / .passion / .xpSinceLastLevel` | med |
 | ✅ **BUILT**  `set_pawn_appearance` | head, body, hair, beard, fur, tattoos, hair + skin colour | `story.headType/bodyType/hairDef/furDef/HairColor/skinColorOverride`, `style.beardDef/FaceTattoo/BodyTattoo` | low |
 | ✅ **BUILT**  `set_pawn_faction` | | `pawn.SetFaction(faction, recruiter)` | **med** |
-| `recruit_pawn` | prisoner/guest → player, properly | `RecruitUtility.Recruit(pawn, faction, recruiter)` | low |
+| ✅ **BUILT** → `jawa/set_pawn_faction`  `recruit_pawn` | prisoner/guest → player, properly | `RecruitUtility.Recruit(pawn, faction, recruiter)` | low |
 | ✅ **BUILT**  `set_pawn_ideo` / `set_pawn_certainty` | | `pawn.ideo.SetIdeo(ideo)`; certainty via `OffsetCertainty/Reassure` | med |
-| `assign_ideo_role` | | `Precept_Role.Assign(pawn, addThoughts)` / `Unassign` | med |
-| `add_pawn_relation` | | `relations.AddDirectRelation(def, other)` | low |
-| `add_pawn_gene` / `remove_pawn_gene` | | `pawn.genes.AddGene(GeneDef, xenogene)` / `RemoveGene` | low |
-| `give_pawn_equipment` | | `ThingMaker.MakeThing` + `CompQuality.SetQuality` → `equipment.AddEquipment` | med |
-| `give_pawn_apparel` | | `PawnApparelGenerator.GenerateApparelOfDefFor(pawn, def)` → `apparel.Wear(...)` | low |
-| `clear_pawn_gear` | | `equipment.DestroyAllEquipment()`, `apparel.DestroyAll()`, `inventory.DestroyAll()` | low |
-| `add_pawn_inventory` | | `inventory.innerContainer.TryAddOrTransfer` | low |
-| `add_pawn_hediff` / `remove_pawn_hediff` | | `health.AddHediff(def, part, dinfo, result)` / `RemoveHediff` | med |
-| `install_bionic` | ⭐ no RecipeDef needed | `health.RestorePart(part); health.AddHediff(bionicDef, part)` | med |
-| `restore_body_part` | | `health.RestorePart(part)` | **high** |
-| `set_pawn_need` | | `needs.TryGetNeed(def).CurLevel` | low |
-| `add_pawn_thought` | | `needs.mood.thoughts.memories.TryGainMemory(def, otherPawn, sourcePrecept)` | low |
+| ✅ **BUILT** → `jawa/set_pawn_ideo`  `assign_ideo_role` | | `Precept_Role.Assign(pawn, addThoughts)` / `Unassign` | med |
+| ✅ **BUILT** → `jawa/pawn_relations`  `add_pawn_relation` | | `relations.AddDirectRelation(def, other)` | low |
+| ✅ **BUILT** → `jawa/pawn_genes`  `add_pawn_gene` / `remove_pawn_gene` | | `pawn.genes.AddGene(GeneDef, xenogene)` / `RemoveGene` | low |
+| ✅ **BUILT** → `jawa/pawn_gear`  `give_pawn_equipment` | | `ThingMaker.MakeThing` + `CompQuality.SetQuality` → `equipment.AddEquipment` | med |
+| ✅ **BUILT** → `jawa/pawn_gear`  `give_pawn_apparel` | | `PawnApparelGenerator.GenerateApparelOfDefFor(pawn, def)` → `apparel.Wear(...)` | low |
+| ✅ **BUILT** → `jawa/pawn_gear`  `clear_pawn_gear` | | `equipment.DestroyAllEquipment()`, `apparel.DestroyAll()`, `inventory.DestroyAll()` | low |
+| ✅ **BUILT** → `jawa/pawn_gear`  `add_pawn_inventory` | | `inventory.innerContainer.TryAddOrTransfer` | low |
+| ✅ **BUILT** → `jawa/pawn_health`  `add_pawn_hediff` / `remove_pawn_hediff` | | `health.AddHediff(def, part, dinfo, result)` / `RemoveHediff` | med |
+| ✅ **BUILT** → `jawa/pawn_health`  `install_bionic` | ⭐ no RecipeDef needed | `health.RestorePart(part); health.AddHediff(bionicDef, part)` | med |
+| ✅ **BUILT** → `jawa/pawn_health`  `restore_body_part` | | `health.RestorePart(part)` | **high** |
+| ✅ **BUILT** → `jawa/pawn_need`  `set_pawn_need` | | `needs.TryGetNeed(def).CurLevel` | low |
+| ✅ **BUILT** → `jawa/pawn_need`  `add_pawn_thought` | | `needs.mood.thoughts.memories.TryGainMemory(def, otherPawn, sourcePrecept)` | low |
 | ✅ **BUILT**  `set_pawn_age` | | `ageTracker.DebugSetAge(ticks)` — 1 yr = 3,600,000 | **high** |
 | `set_pawn_gender` | | `pawn.gender` — plain field | med |
-| `give_pawn_ability` / `set_pawn_psylink` | | `abilities.GainAbility(def)`; `pawn.ChangePsylinkLevel(offset, sendLetter)` | med |
+| ✅ **BUILT** → `jawa/pawn_psychic`  `give_pawn_ability` / `set_pawn_psylink` | | `abilities.GainAbility(def)`; `pawn.ChangePsylinkLevel(offset, sendLetter)` | med |
 
 ### 🔴 The refresh and silent-failure traps — these are what make pawn editing dangerous
 
@@ -329,9 +332,9 @@ No Project RimFactory, no SRTS.
 | tool | what it does | anchor | risk |
 |---|---|---|---|
 | `power_net_info` | vanilla: nets, gen/consumption/stored, connectivity | `Map.powerNetManager`, `PowerNet`, `CompPower` | low |
-| `place_conduit_line` | vanilla conduits along a path | `GenSpawn.Spawn(ThingDefOf.PowerConduit, …)` | low |
+| ✅ **BUILT** → `jawa/connect_cells`  `place_conduit_line` | vanilla conduits along a path | `GenSpawn.Spawn(ThingDefOf.PowerConduit, …)` | low |
 | `pipe_net_info` | ⭐ generic reflective reader over all three frameworks | `map.GetComponent<PipeSystem.PipeNetManager>()` etc. | med |
-| `place_pipe_line` | lay a modded pipe along a path, any framework | `Building_Pipe` via `GenSpawn.Spawn`, then dirty the grid | med |
+| ⚠️ **PARTIAL** — ⚠️ UNCERTAIN — `connect_cells` is def-generic so it may lay a pipe def, but no modded pipe-grid dirty step  `place_pipe_line` | lay a modded pipe along a path, any framework | `Building_Pipe` via `GenSpawn.Spawn`, then dirty the grid | med |
 | `pipe_grid_rebuild` | after bulk placement | `Rimefeller.RebuildPipeGrid` / `DirtyAllPipeGrids`; DBH `DirtyPipeGrid` | low |
 
 ⚠️ **UNCERTAIN and must be settled before writing these:** whether the correct handle is
@@ -465,13 +468,13 @@ stamps it back down. That is "spew out entities at will" with the engine doing t
 |---|---|---|---|
 | ✅ **BUILT**  `build_batch` | ⭐ god-mode instant build: stuff, rot, faction, style | `ThingMaker.MakeThing(def, stuff)` → `SetFactionDirect` → `GenSpawn.Spawn(thing, c, map, rot, WipeMode)` | low |
 | ✅ **BUILT**  `build_check` | pre-flight a cell without placing | `GenConstruct.CanPlaceBlueprintAt(...) → AcceptanceReport`, `GenSpawn.CanSpawnAt` | low |
-| `wipe_cell` | clear what a placement would overwrite, with/without refund | `GenSpawn.WipeExistingThings` / `WipeAndRefundExistingThings` / `WouldWipeAnythingWith` | med |
+| ⚠️ **PARTIAL** — `build_batch` has `wipeExisting` (DestroyMode.Vanish, MapTools:725) — no refund path, no `WouldWipeAnythingWith` pre-query  `wipe_cell` | clear what a placement would overwrite, with/without refund | `GenSpawn.WipeExistingThings` / `WipeAndRefundExistingThings` / `WouldWipeAnythingWith` | med |
 | `set_thing_props` | quality / HP / faction / style on spawned things | `CompQuality.SetQuality`, `Thing.HitPoints`, `Thing.SetFaction` | low |
 | `place_blueprint_batch` | leave real blueprints for colonists to build | `GenConstruct.PlaceBlueprintForBuild(...)` | low |
 | `frame_complete` | finish a frame as a colonist would | `Frame.CompleteConstruction(Pawn worker)` | **high** |
 | `minify` / `uninstall` | pop a building into a haulable crate | `MinifyUtility.MakeMinified` / `Uninstall` | med |
 | ✅ **BUILT**  `designate_batch` | Mine/Deconstruct/Harvest/Haul/Plan… with no cursor | `designationManager.AddDesignation(new Designation(target, def))` | low |
-| `designation_clear` / `designation_query` | | `TryRemoveDesignation`, `RemoveAllDesignationsOn`, `DesignationAt/On` | low |
+| ✅ **BUILT** → `jawa/designate_batch (remove)`  `designation_clear` / `designation_query` | | `TryRemoveDesignation`, `RemoveAllDesignationsOn`, `DesignationAt/On` | low |
 | ✅ **BUILT**  `prefab_capture` | ⭐ capture a CellRect into a PrefabDef | `PrefabUtility.CreatePrefab(CellRect, copyAllThings, copyTerrain)` | low |
 | ✅ **BUILT**  `prefab_place` | ⭐ stamp a prefab down | `PrefabUtility.SpawnPrefab(def, map, pos, rot, faction, …)`, guard `CanSpawnPrefab` | low |
 | `layout_generate` | a whole multi-room complex | `layoutDef.Worker.GenerateStructureSketch` → `LayoutWorker.Spawn(...)` | high |
@@ -480,7 +483,7 @@ stamps it back down. That is "spew out entities at will" with the engine doing t
 | `kcsg_place` | place a VE structure layout | `KCSG.LayoutUtils.Generate(...)` then `ReconnectAllPowerBuildings(map)` | high |
 | `power_net_query` | net at a cell, gain rate, stored, members | `map.powerNetGrid.TransmittedPowerNetAt(c)`, `PowerNet.CurrentEnergyGainRate()` | low |
 | `battery_set` | force-charge / drain (watt-days) | `CompPowerBattery.SetStoredEnergyPct/AddEnergy/DrawPower` | low |
-| `power_reconnect` | flush queued net rebuilds after bulk spawn | `map.powerNetManager.UpdatePowerNetsAndConnections_First()` | low |
+| ✅ **BUILT** → `jawa/map_commit`  `power_reconnect` | flush queued net rebuilds after bulk spawn | `map.powerNetManager.UpdatePowerNetsAndConnections_First()` | low |
 
 ### 🔴 `map_commit` — the map-side equivalent of `world_commit`
 
