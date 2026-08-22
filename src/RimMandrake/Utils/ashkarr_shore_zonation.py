@@ -54,9 +54,23 @@ def main():
             riv.add(l['a']); riv.add(l['b'])
     rivpts = [X[t] for t in riv if t in X]
 
+    # 🔴 A DRIED SEABED IS NOT A FRINGE. Running the fringe first put 281 seabed tiles into
+    # AridShrubland and then dropped VEE_SaltPlains on top - "vegetated fringe with a sterile
+    # salt-plain surface", which is a contradiction. A playa is bare. Seabed tiles are the one
+    # place NEAR water that must not be vegetated, so they are excluded here and forced to the
+    # sterile biome below.
+    SEABED_REGIONS = ('The Twilight Sea', 'The Grey Sea')
+    seabed = [r for r in tiles if r['biome'] not in WET and r.get('region') in SEABED_REGIONS]
+
     moves = collections.Counter()
+    for r in seabed:
+        if r['biome'] != 'ExtremeDesert':
+            moves[f"{r['biome']} -> ExtremeDesert (bare seabed)"] += 1
+            r['biome'] = 'ExtremeDesert'
+    seabed_ids = {r['tile'] for r in seabed}
+
     for r in tiles:
-        if r['biome'] not in ARID:
+        if r['biome'] not in ARID or r['tile'] in seabed_ids:
             continue
         dw = min(sep(X[r['tile']], p) for p in wet)
         dr = min(sep(X[r['tile']], p) for p in rivpts) if rivpts else 1e9

@@ -35,17 +35,17 @@
   "census": [
    {
     "biome": "Desert",
-    "tiles": 4134,
-    "pct": 18.901,
+    "tiles": 3961,
+    "pct": 18.11,
     "water": false,
-    "temp_c": 22.6
+    "temp_c": 22.5
    },
    {
     "biome": "ExtremeDesert",
-    "tiles": 3519,
-    "pct": 16.089,
+    "tiles": 3606,
+    "pct": 16.487,
     "water": false,
-    "temp_c": 46.2
+    "temp_c": 43.6
    },
    {
     "biome": "AB_RockyCrags",
@@ -83,18 +83,18 @@
     "temp_c": 18.6
    },
    {
+    "biome": "AridShrubland",
+    "tiles": 665,
+    "pct": 3.04,
+    "water": false,
+    "temp_c": 32.9
+   },
+   {
     "biome": "PoisonForest",
     "tiles": 604,
     "pct": 2.762,
     "water": false,
     "temp_c": -15.0
-   },
-   {
-    "biome": "AridShrubland",
-    "tiles": 578,
-    "pct": 2.643,
-    "water": false,
-    "temp_c": 20.4
    },
    {
     "biome": "AB_PropaneLakes",
@@ -105,8 +105,8 @@
    },
    {
     "biome": "ZBiome_Badlands",
-    "tiles": 546,
-    "pct": 2.496,
+    "tiles": 545,
+    "pct": 2.492,
     "water": false,
     "temp_c": 24.9
    },
@@ -325,8 +325,8 @@
      "The Glare"
     ],
     "biomes": {
-     "Desert": 4134,
-     "ExtremeDesert": 3519,
+     "Desert": 3961,
+     "ExtremeDesert": 3499,
      "AB_RockyCrags": 3413,
      "AB_MycoticJungle": 1939
     }
@@ -343,7 +343,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "AridShrubland": 13
+     "ExtremeDesert": 13
     }
    },
    {
@@ -374,7 +374,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "AridShrubland": 11
+     "ExtremeDesert": 11
     }
    },
    {
@@ -389,7 +389,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "AridShrubland": 10
+     "ExtremeDesert": 10
     }
    },
    {
@@ -404,7 +404,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "AridShrubland": 7
+     "ExtremeDesert": 7
     }
    },
    {
@@ -419,7 +419,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "AridShrubland": 7
+     "ExtremeDesert": 7
     }
    },
    {
@@ -434,7 +434,7 @@
      "The Twilight Sea"
     ],
     "biomes": {
-     "AridShrubland": 5
+     "ExtremeDesert": 5
     }
    },
    {
@@ -449,7 +449,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "AridShrubland": 5
+     "ExtremeDesert": 5
     }
    },
    {
@@ -464,7 +464,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "AridShrubland": 5
+     "ExtremeDesert": 5
     }
    },
    {
@@ -479,7 +479,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "AridShrubland": 3
+     "ExtremeDesert": 3
     }
    },
    {
@@ -494,7 +494,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "AridShrubland": 3
+     "ExtremeDesert": 3
     }
    }
   ],
@@ -673,10 +673,10 @@
    "The Galactic Empire": 3
   },
   "by_biome": {
-   "Desert": 27,
-   "ExtremeDesert": 25,
+   "Desert": 25,
+   "ExtremeDesert": 23,
    "Wasteland": 21,
-   "AridShrubland": 14,
+   "AridShrubland": 18,
    "ZBiome_Badlands": 10,
    "AB_FeraliskInfestedJungle": 6,
    "AB_RockyCrags": 4,
@@ -1004,7 +1004,7 @@
     "name": "The Blind Wells",
     "faction": "Deep Desert Tribes",
     "factionDef": "TribeCivil",
-    "biome": "ExtremeDesert",
+    "biome": "AridShrubland",
     "lat": -37.01,
     "lon": -12.26,
     "elevation_m": 53.0,
@@ -2120,7 +2120,7 @@
     "name": "Bloatu the Ninth's Palace",
     "faction": "Hutt Cartel",
     "factionDef": "Jawa_HuttCartel",
-    "biome": "Desert",
+    "biome": "AridShrubland",
     "lat": -0.76,
     "lon": -75.1,
     "elevation_m": 559.0,
@@ -2156,7 +2156,7 @@
     "name": "Gorga the Immense's Palace",
     "faction": "Hutt Cartel",
     "factionDef": "Jawa_HuttCartel",
-    "biome": "Desert",
+    "biome": "AridShrubland",
     "lat": -1.55,
     "lon": -83.83,
     "elevation_m": 170.0,
@@ -2210,7 +2210,7 @@
     "name": "Hurgo's Waystation",
     "faction": "Hutt Cartel",
     "factionDef": "Jawa_HuttCartel",
-    "biome": "ExtremeDesert",
+    "biome": "AridShrubland",
     "lat": -27.06,
     "lon": -65.98,
     "elevation_m": 504.0,
