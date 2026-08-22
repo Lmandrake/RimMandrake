@@ -71,6 +71,8 @@ click.**
 | 4 | ~~**Eleven of the twelve NAMED factions have no `fixedName`**~~ 🔴 **RETIRED — measured live by CHECK, 2026-08-21: all TWELVE carry a `defFixedName` and all twelve wear it on a generated world** (`jawa/faction_name_get`; evidence `infrastructure/state/observed/2026-08-21/faction_names/`). `FACTION_FIXEDNAME_ELEVEN_1` has landed. ⚠️ What IS still random is **fifteen third-party mod factions** — `TradersGuild` → "Cosmic Nexus", `VFEP_Junkers` → "The Anti-Love Imps" and thirteen more — which is a scope call, not a gate item | `FACTION_FIXEDNAME_ELEVEN_1` | the faction's name is stored at creation |
 | 5 | **Thirteen faction world-markers, designed and accepted, not installed** — plus four `colorSpectrum` changes that ship with them | `FACTION_ICONS_BESPOKE_1` | the map is frozen with them on it |
 
+| 6 | 🔴 **Every authored leader title is invisible — the ideoligion overrides the def.** `jawa/faction_leader_get` reads `ideoOverrodeDefCount: 36` of 37. The Junkers' Scraplord is called **`Awoken Cheese`**; Blackstar's Captain is **`Ethical Thug`**. DECIDE ruled 2026-08-22 (`FACTION_SPEC.md`): **override all twelve on the IDEO**, in the same session as world creation, before the save | `LEADER_TITLES_ON_THE_IDEO_1` | ⭐ **an Ideo is generated once at world creation and cannot be retrofitted** |
+
 ⚠️ **Items 1 and 2 are the same class of bug and it is worth naming:** a faction can be
 *silently absent* from the screen the owner ticks. Nothing logs it, and the checklist reads
 as if the row will be there.

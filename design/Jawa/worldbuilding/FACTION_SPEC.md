@@ -398,6 +398,54 @@ gated on the same Faction Customizer question as CHECK C24.
 - **Ideo text is the deliverable.** `ideoName`, `ideoDescription` and the deity
   name/type pairs are the only strings the engine renders; 9 of 11 entries in
   `faction_religions_spec.md` still have none.
+- 🔴 **`leaderTitle` ON THE DEF IS NOT WHAT THE PLAYER READS. Every one above is
+  currently invisible.** `Faction.LeaderTitle` prefers the primary ideoligion's
+  `leaderTitleMale`/`leaderTitleFemale` and only falls back to `def.leaderTitle`.
+  Measured live 2026-08-22, `jawa/faction_leader_get`: **`ideoOverrodeDefCount: 36` of 37.**
+  The Junkers' Scraplord reads **`Awoken Cheese`**; Blackstar's Captain reads
+  **`Ethical Thug`**; the Emperor reads `High Stellarch`.
+
+## 🔴 Leader titles must be written onto the IDEO — DECIDE's ruling, 2026-08-22
+
+_Closes `LEADER_TITLES_BAKE_AT_WORLDGEN_1`. This is a **pre-worldgen** item: an Ideo is
+generated once at world creation and cannot be retrofitted._
+
+**Set the title on the ideo, not the def, for all twelve authored factions.**
+
+⛔ **"Accept the generated titles" is rejected.** Some rolls read well — `First Neodruid`
+for the Wildsteam Clan, `Moral Keeper` for the Deepwater Compact. But `Awoken Cheese` is
+what the Junkers' leader is **called, in the shipped savegame, forever**, and this world is
+frozen once. A lottery is not an acceptable input to a permanent artifact.
+
+⛔ **"Hybrid — keep the good rolls, override the bad" is also rejected**, and not on taste.
+It needs the *identical* mechanism, so it saves nothing, and it leaves the result
+**per-world**: the next time a world is rolled the good titles are different ones and the
+whole judgement must be redone. **Override all twelve and the outcome is deterministic and
+reviewable before the freeze.**
+
+🔑 **HOW is BUILD's.** The `FactionDef` ideo block carries no leader-title field, so the
+route is either a precept that supplies one or a post-worldgen bridge pass writing
+`leaderTitleMale`/`leaderTitleFemale` onto each of the twelve ideos. ⚠️ **Do not guess the
+field or the precept — read it.** If neither route exists, that is a finding, not a
+failure; say so and DECIDE will re-rule.
+
+⚠️ **The bridge route is only viable because the world is authored once by hand — and it
+must run in the SAME session as world creation, before the save.** Once the savegame is
+frozen the ideos are in it.
+
+⚠️ **No offline instrument can see this.** `validate_ideoligion.py`, `derive_matrix.py` and
+the def dump all read `def.leaderTitle`, which is correct and unused. **Verification is
+live-only**, on the world that will actually be frozen — not on a quicktest, because each
+world rolls its own ideos.
+
+### What this ruling does NOT change
+- **The `leaderTitle` values above stay exactly as authored.** They are the intended
+  strings; the ruling is about *where they have to be written* to reach a player.
+- **It is not `IMPERIAL_RAID_ROSTER_1`.** That is the Empire's leader *kind* being Royalty's
+  high stellarch pawn. This is the *title* also reading `High Stellarch`, from the ideo.
+  One faction, two defects, different causes — fixing `fixedLeaderKinds` will not touch the
+  title.
+- **The 25 non-authored factions are out of scope.** Only the twelve get overrides.
 
 ## The pawn layer — measured, and it forces a ruling
 
