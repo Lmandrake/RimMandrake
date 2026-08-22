@@ -407,8 +407,16 @@ Follow-ups filed: `IONBLASTER_INTO_THE_GENERATOR_1` (the roster XML is generated
 is a stopgap) and `IONBUILDUP_ACCRUES_ON_FLESH_1` (nobody has ever watched the C# worker
 fire; its own source carries a `VERIFY IN-GAME` note).
 
-🔑 And per L16, not L4: *"Downed is not dead, and this is where most of our prisoners,
-salvage and mercy come from."* **A4 in Part 1 should cite L16.**
+~~🔑 And per L16, not L4: *"Downed is not dead, and this is where most of our prisoners,
+salvage and mercy come from."* **A4 in Part 1 should cite L16.**~~
+
+⛔ **REVERSED — DECIDE, 2026-08-22, `ION_TAKES_DROIDS_NOT_PEOPLE_1`.** **L4 wins and L16's
+organic bullet is struck** in `setting_physics.md`. The Jawa ion blaster does **nothing** to
+an unarmoured person — *"a warm breeze"*, literally. ⇒ **A4 cites L4, and "cannot kill a
+person" is not merely restored, it is strengthened to "cannot touch a person."** The
+prisoners and mercy L16 promised come from **stun/neural weapons (L5)** and from Force
+lightning, never from this gun. Keeping L16's reading collapsed L5 and made free non-lethal
+human capture the dominant weapon in the game.
 
 ### R2. The bowcaster is not kinetic — Part 2's Wildsteam row is wrong
 `guy762_bowcaster` fires `KotORBowcasterBolt_default` → **`guy762_RangedDamage_energy`,
@@ -467,7 +475,10 @@ defs are the fact.** Resolution 3 in Finding 8 therefore stays live, and Resolut
 forced.
 
 ## What Part 1–2 owe as a result
-1. A4 recited from **L16**, not L4, and "cannot kill a person" deleted.
+1. ~~A4 recited from **L16**, not L4, and "cannot kill a person" deleted.~~
+   ⛔ **REVERSED — DECIDE, 2026-08-22.** A4 recites from **L4**. L16's organic bullet is
+   struck in `setting_physics.md`; the ion blaster is droids-only and cannot touch an
+   unarmoured person at all. Carried by `ION_TAKES_DROIDS_NOT_PEOPLE_1`.
 2. Wildsteam's primary moved from A1 to A2, vulnerability column rewritten.
 3. Axis A reconciled to the seven forms, with a physics→`armorCategory` mapping table.
 4. Apparel table: defNames moved out of the tag column; `PrestigeCombatGear` replaced for
