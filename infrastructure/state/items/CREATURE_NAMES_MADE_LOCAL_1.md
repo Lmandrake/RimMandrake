@@ -1,0 +1,45 @@
+## spec
+🔴 **OWNER'S BRIEF, 2026-08-22 13:33 — the fauna pass is v1 and it is NOW.** Verbatim:
+*"move the animal assignment task to v1 and right now… This is exciting! The biomes are
+pretty much frozen right now as are the animals, so it's a good time for this."*
+
+⭐ **Worked WITH the owner, not for him.** He asked for these as items *"to work through with
+me now"*. Bring him decisions to react to, never a questionnaire.
+
+### The measured starting state (578-mod dump, 2026-08-22)
+| | |
+|---|---|
+| animal `ThingDef`s installed (intelligence `Animal`) | **2,042** |
+| that can spawn anywhere on Ash'karr | **377** |
+| 🔴 reach **no biome at all** | **1,665 — 82% of what we ship** |
+| animals with no explicit `ComfyTemperatureMin` | **1,015 of 2,042** |
+
+🔑 **The mechanism, so nobody invents one.** Every `BiomeDef.wildAnimals` **already lists all
+1,024 candidates** as `BiomeAnimalRecord`s; assignment is the `commonality` number and most
+sit at **0** (never). ⇒ This is **re-weighting an existing table in XML**, not new content.
+⚠️ **Never count `wildAnimals` entries** — every biome returns 1,024 and the number is
+meaningless. Count `commonality > 0`.
+
+## the job — names that belong to this planet
+**Owner, 2026-08-22:** *"we'll scan their names and find better Star Wars-style animal reskins
+for them instead of latin dinosaur names (particularly terrible)."*
+
+🔴 **The Jurassic mod alone is 262 defs of Latin binomials**, and the owner has named that as
+the worst offender. A player meeting a *Pachycephalosaurus* on a Star Wars desert world is
+being told, in one word, that this is a mod stack.
+
+✅ **The source material already exists and is unbuilt.** `design/Jawa/worldbuilding/Alien_Bestiary.md`
+names **108** creatures; `canon.yml > bestiary.built` reads **0** — not one has ever been
+applied. **Start there, not from a blank page.**
+
+🔑 **Label patches, not new defs.** A rename is `<label>` and `<description>`; creating a
+parallel def loses every other mod's interactions with the original.
+⚠️ **A def can be renamed and still be referenced by its defName** in quests, incidents and
+other mods' patches. **Never change a `defName`** — only the label a player reads.
+
+## verify
+No Latin binomial survives in a label a player can see; every renamed creature keeps its
+defName; the 108 bestiary names are used before any new name is invented.
+
+## criteria
+A label/description patch set, with the bestiary drawn down toward 0 unused names.

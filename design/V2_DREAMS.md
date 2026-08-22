@@ -2034,7 +2034,22 @@ look like one — it is the visual the cold-nursery pillar is enforced by.
 🔑 Pairs with `JAWA_RAG_NEST_1`; the nest and the egg should be designed together or the
 new nest will hold somebody else's egg.
 
-## BESTIARY_MADE_REAL_1 Assign every animal to a biome, re-temperature it, rename it thematically and redraw it
+## ~~BESTIARY_MADE_REAL_1~~ ⬆️ **PULLED INTO v1, 2026-08-22 — this entry is history, not a plan**
+
+🔴 **The owner moved this to v1 the same day it was written, and moved it to NOW.** Verbatim:
+*"move the animal assignment task to v1 and right now… The biomes are pretty much frozen
+right now as are the animals, so it's a good time for this."*
+
+⇒ **Do not work from this entry.** It is split into eight sequenced DECIDE items, each with
+the owner's own rules of thumb written into it:
+`BIOME_CREATURE_CAST_1` → `CREATURE_SIZES_ADJUSTED_1` → `CREATURE_DENSITY_PER_TILE_1` →
+`CREATURE_COMBAT_NORMALIZED_1` → `CREATURE_DIET_AND_TEMPERATURE_1` →
+`CREATURE_NAMES_MADE_LOCAL_1` → `CREATURE_ART_REVIEW_FLAGS_1` → `STRANGE_ABILITIES_INVENTORY_1`.
+
+**The measurements below stand and are the starting evidence for all eight.** Kept visible
+rather than deleted, because the numbers are what justified the pull.
+
+## ~~BESTIARY_MADE_REAL_1~~ (superseded) Assign every animal to a biome, re-temperature it, rename it thematically and redraw it
 
 **Owner, 2026-08-22:** *"assign all the animals to all the biomes, re-evaluate their
 temperatures, rename them thematically, and improve their graphics. A VERY big job, but one
