@@ -66,7 +66,7 @@ click.**
 | # | what | filed as | why it bakes |
 |---|---|---|---|
 | 1 | ~~Four ratified KEEP rows are missing from the Configure Factions screen~~ 🔴 **REWRITTEN by CHECK, 2026-08-22.** The described cause is FIXED: `OnlyOurFactions.xml` no longer touches `maxConfigurableAtWorldCreation` (its own header now forbids it) and zeroes `startingCountAtWorldCreation` instead; exactly one visible FactionDef in the game reads 0, and it is `OuterRim_RebelAlliance`. ⚠️ **But a larger defect is real and was never the patch's fault:** **seven of our eight authored `Jawa_*` factions read −1** because we never set the field and their abstract parents do not carry it, and the engine's query is `> 0`. Only `Jawa_Junkers` is configurable, by inheritance accident. ⇒ `AUTHORED_FACTIONS_OFF_THE_SCREEN_1`; evidence `infrastructure/state/observed/2026-08-22/configure_factions/` | `SLATE_KEEPS_CONFIGURABLE_1` → `AUTHORED_FACTIONS_OFF_THE_SCREEN_1` | ⭐ **still the checklist's trap, for a different reason** |
-| 2 | **The Blackstar Company's vessel is dropped from the default worldgen list.** Biotech's `PirateWaster` declares `replacesFaction: Pirate` | `PIRATE_VESSEL_RESTORED_1` | the faction roster is fixed at creation |
+| 2 | ~~**The Blackstar Company's vessel is dropped from the default worldgen list.** Biotech's `PirateWaster` declares `replacesFaction: Pirate`~~ ✅ **DISCHARGED — `PIRATE_VESSEL_RESTORED_1` closed at `42ad3ec`, and re-measured 2026-08-22.** `src/Jawa/Jawa_Patches/Patches/PirateWaster_Yield.xml` removes the field and zeroes the count, and the LIVE 578-mod dump confirms it: `PirateWaster` carries no `replacesFaction` at all. ⚠️ The shipped Biotech XML still declares it at `Data/Biotech/Defs/FactionDefs/Factions_Misc.xml:576` — **reading the vanilla file will make this look unfixed.** Read the dump. | `PIRATE_VESSEL_RESTORED_1` | the faction roster is fixed at creation |
 | 3 | **The Galactic Empire's leader is Royalty's high stellarch**, not Palpatine — `fixedLeaderKinds` unpatched | `IMPERIAL_RAID_ROSTER_1` | the leader pawn is generated at creation |
 | 4 | ~~**Eleven of the twelve NAMED factions have no `fixedName`**~~ 🔴 **RETIRED — measured live by CHECK, 2026-08-21: all TWELVE carry a `defFixedName` and all twelve wear it on a generated world** (`jawa/faction_name_get`; evidence `infrastructure/state/observed/2026-08-21/faction_names/`). `FACTION_FIXEDNAME_ELEVEN_1` has landed. ⚠️ What IS still random is **fifteen third-party mod factions** — `TradersGuild` → "Cosmic Nexus", `VFEP_Junkers` → "The Anti-Love Imps" and thirteen more — which is a scope call, not a gate item | `FACTION_FIXEDNAME_ELEVEN_1` | the faction's name is stored at creation |
 | 5 | **Thirteen faction world-markers, designed and accepted, not installed** — plus four `colorSpectrum` changes that ship with them | `FACTION_ICONS_BESPOKE_1` | the map is frozen with them on it |
@@ -118,11 +118,28 @@ and as "fine", and neither was right:
 world that is generated once and frozen, that distinction does not help: a faction that
 survives only because someone remembered an unwritten step is a faction we will lose.
 
-⛔ **Only `Pirate` is hit.** Measured across every active mod: six defs declare
-`replacesFaction`, at `Pirate`, `OutlanderRough`, `TribeRough` and `TribeSavage`. Nothing
-declares it at `OutlanderCivil` or `TribeCivil`, so the Homestead Defense League and the
-Deep Desert Tribes are safe. ⚠️ **Re-run that scan if a mod is ever added**, because
-nothing warns.
+⛔ **Only `Pirate` was hit, and it no longer is.** 🔴 **RE-MEASURED 2026-08-22 against the
+live 578-mod `FactionDef` dump — 86 FactionDefs, post-inheritance, post-patch — and the
+census below replaces the one this paragraph used to carry:**
+
+    TribeRoughNeanderthal            -> TribeRough
+    TribeSavageImpid                 -> TribeSavage
+    OutlanderRoughPig                -> OutlanderRough
+    VRESaurids_OutlanderRoughSaurid  -> OutlanderRough
+    BS_LittlePeople                  -> OutlanderRough
+
+**FIVE, not six, and none of them targets `Pirate`** — because `PirateWaster_Yield.xml`
+removes the one that did. Two corrections to what was written here: `BS_LittlePeople` was
+never listed and is real, and `PirateWaster -> Pirate` is listed and is gone.
+✅ Nothing declares it at `OutlanderCivil` or `TribeCivil`, so the Homestead Defense League
+and the Deep Desert Tribes are still safe.
+
+🔑 **And the removal loop does not check the count.** `Page_CreateWorldParams.ResetFactionCounts`
+runs `factions.RemoveAll(x => x == faction.replacesFaction)` over EVERY configurable faction,
+whatever its `startingCountAtWorldCreation`. So zeroing a replacer does not protect the
+faction it replaces — only removing the field does, which is what our patch does.
+⚠️ **Re-run the scan against the DUMP if a mod is ever added**, because nothing warns — and
+because a scan of the vanilla XML would report the field our patch has already removed.
 
 ---
 
