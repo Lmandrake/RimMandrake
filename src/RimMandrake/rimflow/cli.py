@@ -386,6 +386,15 @@ def _nothing(w, seat, args, ctx):
                   % (i.id, ", ".join("## " + m for m in model._missing(i))))
         print("    Claim them as they stand. The filer may know something you do not —"
               "\n    ask, or decide it yourself and write down what you chose.")
+    if getattr(priority, "UNKNOWN_NEEDS", None):
+        # 🔴 An unrecognised `needs` no longer hides an item (priority.satisfiable fails
+        # open since 2026-08-22). It is REPORTED, because a value nothing understands is
+        # a defect somebody must fix, not a state to live in.
+        print("⚠️  unrecognised `needs` value(s) in play: %s"
+              % ", ".join(sorted(str(u) for u in priority.UNKNOWN_NEEDS)))
+        print("    Those items ARE offered — nothing is hidden — but the value means "
+              "nothing to the")
+        print("    priority engine. Legal values: %s" % ", ".join(model.NEEDS))
     print("-> rimflow why <ID> for the full reason")
     return 0
 
@@ -513,6 +522,17 @@ def cmd_file(args, seat):
     # considered for V&V because of interdependencies that the submitter may only be
     # aware of themselves."* Prompted by name, never required — the whole point of the
     # ruling is that a missing field stops being a rejection.
+    # ⚠️ `needs` DEFAULTS TO `offline`, which is a claim that nothing external is
+    # required — and it is the field `priority.satisfiable()` uses to decide whether the
+    # item is ever offered. A wrong one either hides work or offers unrunnable work.
+    # Measured 2026-08-22: CHECK hand-corrected 45 items across 44 filings, almost all
+    # to `bridge`. Prompted, never required — the filer knows and the default does not.
+    if not args.needs:
+        print("⚠️  needs is `offline` by default — a claim that nothing external is "
+              "required.")
+        print("   If this wants a window, restamp it now, in this turn:")
+        print("     python3 src/RimMandrake/rimflow/cli.py needs %s --to "
+              "<deploy|game-up|bridge|harvest|owner>" % args.id)
     if "watch out" not in have and args.for_ != seat:
         print("")
         print("🔑 Worth adding — nobody else can supply this:")

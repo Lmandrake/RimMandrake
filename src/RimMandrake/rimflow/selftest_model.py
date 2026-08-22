@@ -443,6 +443,24 @@ def _spawn_urgent(host, name):
                   "name": name, "this_deployment": True})]
 
 
+def t_an_unknown_needs_is_offered_not_hidden():
+    """🔴 FAIL OPEN — corrected 2026-08-22. `satisfiable()` used to return False for a
+    `needs` value it did not recognise, so a typo or a newly-added value made an item
+    invisible to every seat for ever, with nothing reporting it.
+
+    ⛔ Silently unofferable is the worst state this engine can produce: the work exists,
+    someone is waiting on it, and no command will ever mention it. ✅ Offering an item
+    whose window may be shut costs one seat one look, and `next` names the bad value.
+    """
+    evs = _ready("BAD_NEEDS_VALUE_HERE_1", for_="BUILD")
+    w = model.replay(evs, strict=True)
+    w.items["BAD_NEEDS_VALUE_HERE_1"].needs = "whenever-the-moon-is-right"
+    assert priority.satisfiable(w.items["BAD_NEEDS_VALUE_HERE_1"], w), (
+        "an unrecognised `needs` hid the item instead of being reported")
+    assert "whenever-the-moon-is-right" in priority.UNKNOWN_NEEDS, (
+        "it was offered but nothing recorded that the value is meaningless")
+
+
 def t_this_deployment_does_not_jump_straight_to_ready():
     """⭐ Urgency does not skip the CLAIM. It never was about the prose.
 

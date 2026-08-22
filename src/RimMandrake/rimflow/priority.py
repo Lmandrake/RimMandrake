@@ -41,6 +41,10 @@ from . import model
 # the moment there is least time left to do it.
 LIVE = ("UP", "GOING_DOWN")
 
+# Unrecognised `needs` values seen this process, so `next` can report them instead of
+# swallowing the items that carry them. See `satisfiable`.
+UNKNOWN_NEEDS = set()
+
 BY_GAME = {
     "offline":  lambda g, ctx: True,
     "deploy":   lambda g, ctx: g == "DEPLOYING",
@@ -56,7 +60,14 @@ def satisfiable(item, world, ctx=None):
     ctx.setdefault("bridge_holder", world.bridge_holder)
     fn = BY_GAME.get(item.needs)
     if fn is None:
-        return False                    # an unknown `needs` is never offered
+        # 🔴 FAIL OPEN, and say so — corrected 2026-08-22. This used to `return False`
+        # with the comment "an unknown `needs` is never offered", which made a typo or a
+        # new NEEDS value hide an item from every seat, for ever, with nothing reporting
+        # it. ⛔ Silently unofferable is the worst failure this file can produce: the
+        # work exists, someone is waiting on it, and no command will ever mention it.
+        # ✅ Offering an item whose window may be shut costs one seat one look.
+        UNKNOWN_NEEDS.add(item.needs)
+        return True
     return fn(world.game, ctx)
 
 
