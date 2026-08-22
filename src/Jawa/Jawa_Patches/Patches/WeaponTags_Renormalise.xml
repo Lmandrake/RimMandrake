@@ -2085,6 +2085,179 @@
     </match>
   </Operation>
 
+<!--
+
+    ORPHANED_KINDS_AFTER_GUN_CUT_1 - owner's ruling, 2026-08-22: "retag onto survivors".
+    ⛔ NOT more money, and ⛔ not un-cutting a gun. The vanilla firearm cut stands.
+
+    THE MEASUREMENT, taken against the CURRENT kill list rather than the audit's older one.
+    Of 411 pawn kinds that declare weaponTags and a non-zero weaponMoney.max:
+        17 can NEVER afford their pool   - 13 of them ask for `Gun` at 200 against a
+                                           cheapest survivor of 342, the incendiary launcher
+        34 are SOMETIMES bare            - their pool's cheapest sits above their money FLOOR
+        14 read as an empty pool, but only ONE of those is real work; see below
+
+    🔑 WHY THE FIX IS AT THE WEAPON END AND NOT ON 51 PAWN KINDS. Five operations here
+    reach every one of them, and they reach any future kind asking for the same tags. The
+    alternative - raising `weaponMoney.max` per kind - is the trap
+    `CHEAPEST_WEAPON_IS_ABSURD_1` is named after: the only thing a raised `Gun` budget can
+    buy is `Gun_IncendiaryLauncher`, so it arms town traders and hunters with incendiary
+    launchers.
+
+    ⚠️ A CHEAP GUN IN A BROAD TAG DOES NOT IMPOVERISH THE KINDS THAT WERE ALREADY ARMED.
+    Read from source: `PawnWeaponGenerator.GetCommonality` weights the roll by
+    `Commonality * Price`, so a 60-silver hold-out is roughly ten times less likely than a
+    600-silver blaster for a pawn who can afford both. It fills the bottom of the range; it
+    does not take over the top.
+
+    THE FOURTEEN "EMPTY POOL" KINDS, and why only one of them is here:
+      * `Mech_Pikeman` · `Drone_Sentry`                  fixed by MECH_WEAPONS_UNCUT_1
+      * `BS_Crossbowman` · `BS_CrossbowDvergr` · `BS_DvergrTraditionalist`
+                                                         fixed by HEAVY_CROSSBOW_UNCUT_1
+      * `VFEP_Footsoldier`                               fixed by the warcasket gun un-cut
+      * `Tribal_Archer_Fire`                             fixed by FIRE_ARCHERS_GET_BOWS_1,
+                                                         and now by Bow_Short being un-cut
+      * `VEE_Hunter` · `VEE_TribalHunter`                fixed by VEE_HUNTERS_GET_WEAPONS_1
+      * `DP_ArtilleryPirate` · `DP_RocketPirate`         ⛔ false positives BY DESIGN - the
+                                                         mod ships no-equip cannons at
+                                                         weaponMoney 99999. Never tag these.
+      * `Mech_Tesseron` · `AM_Mech_Polychoron` · `HorrorsInfestedHuman` · `HorrorsOverlord`
+        · `Prowler`                                      ⚠️ FALSE POSITIVES OF MY OWN AUDIT.
+        Their pools are NOT empty - `Gun_BeamGraser`, `AM_BeamGraserCannon`,
+        `MeleeWeapon_RendingClaws` and `Gun_ProwlerSpit` all carry the tag and are uncut.
+        They declare no `MarketValue` the dump can resolve, so a price filter drops them and
+        the kind reads bare. 🔑 An unpriced weapon is not an absent one.
+      * `OuterRim_ImperialTrader`                        ⭐ the one real remainder, below.
+
+-->
+
+  <!-- hold-out blaster, 60. The cheapest surviving gun on the planet, and the one that arms
+         the 65~125 civilians - Farmer, Miner, Logger, BS_LittleBigVillager. `MakeshiftGun` had
+         ZERO carriers of any price; a palm-sized illegal blaster is exactly what it meant. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="guy762_holdout"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="guy762_holdout"]/weaponTags</xpath>
+        <value>
+          <li>Gun</li>
+          <li>MakeshiftGun</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="guy762_holdout"]</xpath>
+        <value>
+          <weaponTags>
+            <li>Gun</li>
+            <li>MakeshiftGun</li>
+          </weaponTags>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <!-- blaster pistol, 100. The generic sidearm. Arms every 200-budget trader and
+         councilman that the vanilla revolver used to.
+         ⭐ It also takes `Autopistol` and `ShortShots`, which are not dead tags but poor
+         ones: their cheapest survivor is 400 against a 300 floor, so `Mechanitor`,
+         `Mechanitor_Basic`, `AM_Scavenger`, `Mercenary_Gunner_Pig` and
+         `VRESaurids_MercenaryGunner_Saurid` each rolled bare some fraction of the time.
+         A pistol is what both tags mean. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="guy762_bpistol"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="guy762_bpistol"]/weaponTags</xpath>
+        <value>
+          <li>Gun</li>
+          <li>Autopistol</li>
+          <li>ShortShots</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="guy762_bpistol"]</xpath>
+        <value>
+          <weaponTags>
+            <li>Gun</li>
+            <li>Autopistol</li>
+            <li>ShortShots</li>
+          </weaponTags>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <!-- slug-rifle, 100. A cheap long arm rather than a second pistol, so a Scavenger or a
+         Hunter reads as carrying a hunting weapon and not a hold-out. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="guy762_slugrifle"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="guy762_slugrifle"]/weaponTags</xpath>
+        <value>
+          <li>Gun</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="guy762_slugrifle"]</xpath>
+        <value>
+          <weaponTags>
+            <li>Gun</li>
+          </weaponTags>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <!-- cycler rifle, 364, against the snipers' 600~600. It already carries `ORSniper` and
+         `ORTuskenSniper`, so this only says in vanilla's vocabulary what it already was. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Outer Rim - Core</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="OuterRim_CyclerRifle"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="OuterRim_CyclerRifle"]/weaponTags</xpath>
+        <value>
+          <li>SniperRifle</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="OuterRim_CyclerRifle"]</xpath>
+        <value>
+          <weaponTags>
+            <li>SniperRifle</li>
+          </weaponTags>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <!-- SE-14R, 573. `ORImperialOfficer` had ZERO carriers in any installed mod - never our
+         cut - and `OuterRim_ImperialTrader` is its only asker, at weaponMoney 40000. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Outer Rim - Galactic Empire</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="OuterRim_SE14RBlaster"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="OuterRim_SE14RBlaster"]/weaponTags</xpath>
+        <value>
+          <li>ORImperialOfficer</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="OuterRim_SE14RBlaster"]</xpath>
+        <value>
+          <weaponTags>
+            <li>ORImperialOfficer</li>
+          </weaponTags>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
 <!-- END HAND-AUTHORED -->
 
 </Patch>
