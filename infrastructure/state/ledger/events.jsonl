@@ -1065,3 +1065,12 @@
 {"seat":"CHECK","event":"verify","id":"FACTION_NAMES_ARE_GENERATED_1","result":"partial","config":"full-578","evidence":"infrastructure/state/observed/2026-08-21/faction_names/README.md","sha":"359c3f7","ts":"2026-08-22T00:15:25Z"}
 {"seat":"CHECK","event":"finding","id":"FACTION_NAMES_ARE_GENERATED_1","type":"instrument","severity":"high","name":"NAME_GET_FLAGS_CORRECT_NAMES_1","from":"FACTION_NAMES_ARE_GENERATED_1/run-1@full-578","ts":"2026-08-22T00:15:25Z"}
 {"seat":"CHECK","event":"spawn","name":"ISGENERATED_COMPARES_WRONG_FIELD_1","kind":"task","needs":"offline","for":"BUILD","from":"NAME_GET_FLAGS_CORRECT_NAMES_1","ts":"2026-08-22T00:15:25Z"}
+{"seat":"BUILD","event":"verify","id":"NOMAD_MEME_RESTORED_TRIBES_1","result":"pass","config":"offline, validate_ideoligion.py --xml against the 22:44:59Z dump, 578 mods","evidence":"validate_ideoligion: 1/1 VALID, no errors. meme/impact total 10 over 5 memes (AM_Structure_Scavenger:0, Trader:2, VME_Scrapper:3, VME_Trader:2, VME_Nomad:3) - the item predicted exactly 10 over 5 and asked it be confirmed legal before committing. All five memes resolve with correct MayRequire. The NPC exemption verified independently, not taken from the item: Precepts_PermanentBases.xml defName VME_PermanentBases_Despised carries enabledForNPCFactions false at line 19. Deployed to the game copy, VERIFIED in sync.","sha":"96f2012","ts":"2026-08-22T00:16:50Z"}
+{"seat":"BUILD","event":"close","id":"NOMAD_MEME_RESTORED_TRIBES_1","sha":"96f2012","ts":"2026-08-22T00:16:50Z"}
+{"seat":"CHECK","event":"claim","id":"IKEE_READS_AS_OURS_1","ts":"2026-08-22T00:17:03Z"}
+{"seat":"CHECK","event":"start","id":"IKEE_READS_AS_OURS_1","ts":"2026-08-22T00:17:03Z"}
+{"seat":"CHECK","event":"verify","id":"IKEE_READS_AS_OURS_1","result":"pass","config":"full-578","evidence":"infrastructure/state/observed/2026-08-21/misc/ikee_and_seven.md","sha":"96f2012","ts":"2026-08-22T00:17:03Z"}
+{"seat":"CHECK","event":"close","id":"IKEE_READS_AS_OURS_1","sha":"96f2012","ts":"2026-08-22T00:17:03Z"}
+{"seat":"CHECK","event":"claim","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","ts":"2026-08-22T00:17:03Z"}
+{"seat":"CHECK","event":"start","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","ts":"2026-08-22T00:17:03Z"}
+{"seat":"CHECK","event":"verify","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","result":"partial","config":"full-578","evidence":"infrastructure/state/observed/2026-08-21/misc/ikee_and_seven.md","sha":"96f2012","ts":"2026-08-22T00:17:03Z"}

@@ -513,3 +513,22 @@ with `hasCurrentGame: true`, `longEventPending: true`, `mapCount: 0`. Poll
 ⚠️ **Two quicktests came back byte-identical** — same ideo ids, memes, deities, factions.
 Reproducibility, yes; **evidence of a shared seed, not proof that the owner's real worldgen
 will match.** Do not report a quicktest result as a prediction about the frozen world.
+
+## ⚠️ `BiomeDef.wildAnimals` lists EVERY animal, at commonality 0 — CHECK, 2026-08-21
+
+`Ocean` carries **1024** `BiomeAnimalRecord` entries. The animals that cannot live there are
+present with **`commonality: 0`**. ⇒ **"appears in `wildAnimals`" means nothing.** Asking
+which biomes list `AA_Eyeling` returns **79**, including `Ocean`, `Space`, `Orbit`,
+`IceSheet` and `MetalHell`. Filtering `commonality > 0` returns the true answer: **3**
+(`ExtremeDesert`, `Wasteland`, `ZBiome_DesertOasis`).
+
+🔑 The same shape almost certainly applies to `wildPlants`. **Filter on commonality before
+counting anything biome-borne**, or a desert animal reads as living in orbit.
+
+## A dev quicktest generates the full authored faction roster — CHECK, 2026-08-21
+
+37 visible factions, **105 settlements**, and all twelve authored factions present with
+settlements: Hutt Cartel 6 · the Junkers 4 · Ascendant Helix 3 · Jawa Trade Moot 3 ·
+Homestead Defense League 3 · Deepwater Compact 2 · Free Droid Enclaves 2 · Deep Desert
+Tribes 2 · Geonosian Foundry Hive 1 · Wildsteam Clan 1 · Galactic Empire 1 · Blackstar
+Company 1. ⇒ Faction-roster questions do **not** need a real worldgen click.
