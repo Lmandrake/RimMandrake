@@ -1,0 +1,6 @@
+weapon tags known: 390, from /mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs
+pawn kinds in the roster: 48
+
+always arms 48 · sometimes 0 · never 0 · no tags 0 · unmeasured 0
+
+Every measurable kind arms on every roll.
