@@ -34,7 +34,9 @@ The engine's own message agreed before the read did: `kind Neutral->Hostile (rev
 Neutral->Neutral)`. ⇒ The asymmetry is real, deliberate and **contained** — nothing to
 report as an engine finding. Restored to Neutral/Neutral afterwards.
 
-## (d) against the player — PASS
+## (d) against the player — ⚠️ PARTIAL, and the second half NEVER RAN
+*Header corrected 2026-08-22: it read `PASS` over a body that says UNMEASURED, and the
+ledger result for this run is `partial`. A header is what gets skimmed.*
 
 `faction=Jawa_HuttCartel other=Player kind=Hostile` reads back **Hostile −100 in both
 directions**, and `Player` resolves to `PlayerColony`. Restored to Neutral afterwards.

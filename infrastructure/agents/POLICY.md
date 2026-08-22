@@ -314,3 +314,12 @@ The event carries `ownerSaid`, so the ledger holds **what he actually said** —
 - ⛔ **Nearby is not the same as about this.** The words must be him telling you to do **this**. If there are none, act as your own seat and **say whose call it was** — that is honest and usually right.
 - ✅ **This is not a loophole to route around a seat rule.** `--owner-said` is for acts that are HIS: closing his items, overriding a seat boundary, editing a frozen record. A design call is still DECIDE's and an implementation call is still BUILD's, whatever he happened to say.
 - 🔑 **`CLAUDE.md` already required this** — *"first ask whether he needs to do it at all… check for a flag, a seat override, or an env var that lets you finish it yourself."* The rule was there and seats kept handing him pastes anyway.
+
+## ⚠️ THERE ARE TWO `observed/` DIRECTORIES
+
+`observed/` (repo root) holds harvested logs and `Player.log` snapshots.
+`infrastructure/state/observed/` holds per-experiment captures. 🔑 **A bare `observed/…`
+in a `rimflow` evidence string means the REPO ROOT one** — that is what every existing
+`verify` follows. ⛔ **Never declare evidence missing without checking both**; doing so has
+produced a false "missing" verdict three times. `rimflow verify` checks both and warns only
+when neither resolves. Each directory has a README naming the other.
