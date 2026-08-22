@@ -132,7 +132,9 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Also check cachedMinTemp/cachedMaxTemp. SLOW over a whole planet - recomputes the yearly curve per tile. Default false.")]
             bool includeTemps = false,
             [ToolParameter(Description = "Tolerance in Celsius before a temperature cache counts as stale. Default 0.01.")]
-            float tempEpsilon = 0.01f)
+            float tempEpsilon = 0.01f,
+            [ToolParameter(Description = "AFTER measuring, touch the public getters so empty caches become populated. CHANGES STATE - off by default. A tile with no cache cannot go stale, so this is how you arm a before/after test: populate, repaint, audit again. Never combine with a measurement you intend to trust as 'before'.")]
+            bool populate = false)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -189,6 +191,7 @@ namespace JawaBench.BridgeTools
                 int hillCached = 0, hillStale = 0;
                 int biomeCached = 0, biomeStale = 0;
                 int minCached = 0, minStale = 0, maxCached = 0, maxStale = 0;
+                int newlyPopulated = 0;
                 var rows = new List<object>();
 
                 foreach (int id in ids)
@@ -264,6 +267,20 @@ namespace JawaBench.BridgeTools
                         }
                     }
 
+                    // ---- optional ARM step, strictly AFTER the measurement ----
+                    // Touching the getters fills an empty cache. Done first it would
+                    // guarantee agreement and make every audit a pass, so it happens
+                    // here, once this tile's comparison is already recorded.
+                    if (populate)
+                    {
+                        if (!hCached.HasValue) { var _ = t.HillinessLabel; newlyPopulated++; }
+                        if (includeTemps)
+                        {
+                            if (!minC.HasValue) { var _ = t.MinTemperature; }
+                            if (!maxC.HasValue) { var _ = t.MaxTemperature; }
+                        }
+                    }
+
                     if (anyStale && rows.Count < Math.Max(0, limit))
                     {
                         rows.Add(new
@@ -294,11 +311,13 @@ namespace JawaBench.BridgeTools
                     secondaryBiome = new { cached = biomeCached, stale = biomeStale },
                     minTemp = new { cached = minCached, stale = minStale, checked_ = includeTemps },
                     maxTemp = new { cached = maxCached, stale = maxStale, checked_ = includeTemps },
+                    newlyPopulated,
                     examples = rows,
                     exampleCap = limit,
                     examplesTruncated = staleTotal > rows.Count,
                     refusedCount = refused.Count,
                     refused,
+                    populateRequested = populate,
                     note = includeTemps
                         ? "A non-zero staleTotal means a RELOAD is required; RimWorld has no reset for these caches."
                         : "Temperature caches were NOT checked - pass includeTemps=true. A non-zero staleTotal means a RELOAD is required.",
