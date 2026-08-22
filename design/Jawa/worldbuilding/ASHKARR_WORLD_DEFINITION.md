@@ -117,10 +117,10 @@ numeric check.
 `Lake` 312; there is no third water biome. (~~8.1%~~ was this file's rounding; cite 8.14%.)
 | name | centre | radius | water level | character |
 |---|---|---|---|---|
-| **The Scald** | (35, 185) | 10.5 | ⛔ ~~**perched, ~1410 m**~~ → **−30 m, at sea level** | ⭐ a crater lake, **the one shape ruled round**. 🔴 **It no longer spills: it is a terminal pan.** See the note below |
-| **The Twilight Sea** | (91, 170) | 22.0 | 0 m, sink | moldy |
-| **The Grey Sea** | (92, 8) | 16.5 | 0 m, sink | salt-encrusted, shrinking |
-| The Umbra Trap | (158, 62) | 19.5 | — | holds **ammonia**, not water → The Ammonia Flats |
+| **Scald** | (35, 185) | 10.5 | ⛔ ~~**perched, ~1410 m**~~ → **−30 m, at sea level** | ⭐ a crater lake, **the one shape ruled round**. 🔴 **It no longer spills: it is a terminal pan.** See the note below |
+| **Twilight Sea** | (91, 170) | 22.0 | 0 m, sink | moldy |
+| **Grey Sea** | (92, 8) | 16.5 | 0 m, sink | salt-encrusted, shrinking |
+| Umbra Trap | (158, 62) | 19.5 | — | holds **ammonia**, not water → Ammonia Flats |
 
 🔴 Water was cut to **a third** of the old ~~22–28%~~ spec (owner, 2026-08-18) — the
 arithmetic target was **~8.6%** and the painted result is **8.14%**. The west
@@ -129,27 +129,27 @@ arithmetic target was **~8.6%** and the painted result is **8.14%**. The west
 ### Ranges — a ridge is a LINE, so it inherits the line's shape
 | name | anchors (arc, bear) | crest |
 |---|---|---|
-| **The Scald Spine** | ring at (35,185), r 15.5, **notched** | 2050 m |
+| **Scald Spine** | ring at (35,185), r 15.5, **notched** | 2050 m |
 | **The Ashteeth** | (21.5,116) (23.5,142) (24.5,168) (24,203) (22,230) (19.5,254) | 1450 m |
-| **The Fall Line** | (26,352) (34,357) (43,2) (52,6) (61,9) | 780 m |
-| **The Dew Horn** | (58,148) (64,162) (67,178) (63,196) (57,210) | 1850 m |
-| **The Ashfall Range** | (56,338) (63,352) (66,8) (61,24) | 1700 m |
-| **The Twilight Crags** | (104,210) (110,186) (108,160) (114,134) | 900 m |
-| **The Gray Crags** | (106,340) (112,12) (109,42) (116,68) | 820 m |
-| **The South Crags** | (118,250) (127,272) (131,300) (124,322) | 760 m |
+| **Fall Line** | (26,352) (34,357) (43,2) (52,6) (61,9) | 780 m |
+| **Dew Horn** | (58,148) (64,162) (67,178) (63,196) (57,210) | 1850 m |
+| **Ashfall Range** | (56,338) (63,352) (66,8) (61,24) | 1700 m |
+| **Twilight Crags** | (104,210) (110,186) (108,160) (114,134) | 900 m |
+| **Gray Crags** | (106,340) (112,12) (109,42) (116,68) | 820 m |
+| **South Crags** | (118,250) (127,272) (131,300) (124,322) | 760 m |
 
 ⛔ Never one spine — **many ranges, dotted with volcanoes**.
 
 ### Troughs and lows
-**The Salt** (34,288)→(71,320) · **The Ember Sink** (36,96)→(68,74) ·
-**The Dew Belt** (38,184)→(89,180) · **the Scald Gate** (49,180)→(39,184), the breach.
+**Salt** (34,288)→(71,320) · **The Ember Sink** (36,96)→(68,74) ·
+**Dew Belt** (38,184)→(89,180) · **the Scald Gate** (49,180)→(39,184), the breach.
 
 ### Regions
-The Anvil (arc<20, flat-topped substellar plateau) · The Dune Sea (20–40) ·
-**The Rust Cathedral** (arc<12.5, bear within 118° of 40 — mechanoids, permanently at
-war) · **The Scorch** (12.5–17, broken arcs) · The Pyrelands · The Nightspill ·
-The Sunreach · The Ash Verge · The Long Dark · **The Umbra** (>152) ·
-The Ammonia Flats · The Salt Gate (the deltas).
+Anvil (arc<20, flat-topped substellar plateau) · Dune Sea (20–40) ·
+**Rust Cathedral** (arc<12.5, bear within 118° of 40 — mechanoids, permanently at
+war) · **Scorch** (12.5–17, broken arcs) · Pyrelands · Nightspill ·
+Sunreach · The Ash Verge · The Long Dark · **Umbra** (>152) ·
+Ammonia Flats · Salt Gate (the deltas).
 
 ## 4. Hydrology — ruled, and it is the heart of the map
 
@@ -157,7 +157,7 @@ The Ammonia Flats · The Salt Gate (the deltas).
    moist air is dragged sunward off the terminator and wrung out climbing the ranges,
    so a range rains on its **terminator-facing flank** and the substellar plateau is
    the rain shadow.
-2. ⭐ **The Scald is the planet's water source and its river is the driving system.**
+2. ⭐ **Scald is the planet's water source and its river is the driving system.**
    It is a hot lake in the hottest place, so it evaporates hard, the vapour rains out
    on its own Spine, and the whole catchment leaves through **one notch**. The outflow
    carries **~32,000** units of flow — an order of magnitude more than anything else.
@@ -191,7 +191,7 @@ The Ammonia Flats · The Salt Gate (the deltas).
    to around half their current size. Around the gray sea I would like there to be some small
    patchy bits of water dotted around as though low-lying regions were still flooded with
    brine while it slowly dessicates away, like the Dead Sea."*
-   ⇒ The Grey Sea — (92, 8), 0 m sink, already logged *"salt-encrusted, shrinking"* — is the
+   ⇒ Grey Sea — (92, 8), 0 m sink, already logged *"salt-encrusted, shrinking"* — is the
    subject. **Halving it and scattering brine remnants is the same gesture as the label it
    already carries.** Carried by `MERIDIAN_WATER_HALVED_1` and `GREY_SEA_BRINE_PATCHES_1`.
    ⚠️ **Water is a canon figure** (`canon.yml > planet.water_pct`, 8.14% / 1,780 tiles) and
@@ -208,7 +208,7 @@ The Ammonia Flats · The Salt Gate (the deltas).
    evaporation is set high enough (base **900**/tile in the waste, **×0.16** inside the
    Scald basin) to kill even the 32,000-unit trunk before it reaches a sea, and **no
    river link is ever written into a basin** — a reach that would arrive at one is a
-   terminus instead. The Twilight Sea, the Grey Sea and the Scald are therefore
+   terminus instead. Twilight Sea, the Grey Sea and the Scald are therefore
    hydrologically **separate**; nothing flows between them.
    Currently **235 termini, ~1,120 tiles of dead salt plain, 3 hypersaline pools**.
 7. **Dayside only.** Nothing feeds the nightside; there, water is locked as ice.
@@ -251,12 +251,12 @@ forbidden outright — see §4 rule 7.
 | **on the river** | `AB_FeraliskInfestedJungle` — vicious jungle | ⛔ **n/a — no meridian river exists** |
 | **the meridian equivalent, river-independent** | — | `AB_MycoticJungle` · `PoisonForest` · `BMT_FungalForest` |
 | **bracketing it** | `AB_MiasmicMangrove` · `COMIGO_GreaterSwamp_Tropical` · `ZBiome_DesertOasis` | `PoisonForest` |
-| **then** | **The Pyrelands** — `ZBiome_Grasslands`, whose label is literally *"stormy savanna"* — with `AB_TarPits` interspersed | — (Pyrelands are dayside only) |
+| **then** | **Pyrelands** — `ZBiome_Grasslands`, whose label is literally *"stormy savanna"* — with `AB_TarPits` interspersed | — (Pyrelands are dayside only) |
 | **then** | desert | — |
 
 🔑 **The bands scale with the river.** A creek gets one tile of green; the Scald's trunk
 gets a corridor. Flat bands ate the vast desert the owner asked to keep.
-🔴 **The Pyrelands are a narrow bracket, not a belt** — owner, 2026-08-19: *"Too much
+🔴 **Pyrelands are a narrow bracket, not a belt** — owner, 2026-08-19: *"Too much
 grassland. Make the grassland into more desert, and make more extreme desert."* Gated to
 **arc < 74** and to within **2 tiles of a mid river or 4 of a trunk**. `ZBiome_Grasslands`
 went 6.3% → **2.0%** and `ExtremeDesert` 5.4% → **13.4%** at the time of that pass;
@@ -345,7 +345,7 @@ zeroing rainfall.**
 🔴 **The measured defect, 2026-08-21.** 596 tiles carried exactly **1668 mm**. Only 271 were
 `AB_FeraliskInfestedJungle`; the other 325 were badlands, extreme desert, oases, grasslands,
 **31 tiles of `AB_PyroclasticConflagration` and 23 of `Volcano`** — and **235 of them were in
-The Dune Sea.** Of the 937 tiles at ≥600 mm, **433 were not mountainous at all** (median
+Dune Sea.** Of the 937 tiles at ≥600 mm, **433 were not mountainous at all** (median
 elevation 696 m).
 
 ✅ **DONE, 2026-08-21 — `RAIN_DRY_THE_LOWLANDS_1`.** `rain_mm` was set to **0** on
@@ -464,9 +464,9 @@ It is now decided, and it is in the recipe as `HOME_LATLON` / `HOME_NAME`.
 |---|---|
 | **tile** | **2476** — lat −1.028, lon +56.867 |
 | **arc / bearing** | **56.9 / 358.8** — the outer edge of the habitable ring, on the **GRAY (downwind) flank** |
-| **region** | The Fall Line Barrens |
+| **region** | Fall Line Barrens |
 | **ground** | `ExtremeDesert`, 276 m, **38.6 °C**, **0 mm** of rain (~~18 mm~~, zeroed 2026-08-21 by `RAIN_DRY_THE_LOWLANDS_1`; the tile is `hilliness` 1), flat, with the tail of the Fall Line breaking to 583 m within ~2 tiles |
-| **water** | **none.** Nearest river tile 26°, nearest sea further. The Scald is over the horizon and over a mountain range |
+| **water** | **none.** Nearest river tile 26°, nearest sea further. Scald is over the horizon and over a mountain range |
 
 Why here and nowhere else — each of these is the reason, not a nice-to-have:
 
@@ -482,7 +482,7 @@ Why here and nowhere else — each of these is the reason, not a nice-to-have:
 4. **The Empire is a presence, not a garrison next door** — Ashgarrison at **16.2°**.
 5. ⭐ **Water is the campaign's pressure, not a resource on the map.** No river, no
    oasis, no coast. This is what the water doctrine asks for and no wetter tile gives.
-6. **The Fall Line is the range that things fall along.** The clan lives in its
+6. **Fall Line is the range that things fall along.** The clan lives in its
    barrens; that is where a dead gravship was found and woken.
 
 ⚠️ `SCENARIO_SPEC.md` requires the start biome to be Desert / ExtremeDesert /
@@ -576,11 +576,11 @@ Before trusting any future rebuild, run it twice and `md5sum` the three CSVs.
 2. ~~Region labels collide on the render.~~ **DONE.** The anchor separation was the
    wrong test — what collides is the projected **text box**. `worldview.py` now tests
    pixel boxes and walks a ladder of vertical offsets, and the looser anchor rule
-   surfaced names that had been silently dropped (The Scorch, The Anvil, The Pyrelands).
+   surfaced names that had been silently dropped (Scorch, Anvil, Pyrelands).
    Settlement names and region names also share **one** box list now; they used to
-   declutter only against their own kind, which is why `The Ashfall Range` printed
+   declutter only against their own kind, which is why `Ashfall Range` printed
    through `The Claim Jump`. ⚠️ The tradeoff is real and deliberate: with one list, a
-   crowded region name can lose its slot entirely rather than overprint. `The Scald
+   crowded region name can lose its slot entirely rather than overprint. `Scald
    Spine` is the current casualty.
 3. **`AB_GelatinousSuperorganism` smears across the top** of the rectangular map. It is
    honest — the poles genuinely sit on the terminator at arc 90 — but it reads as a
@@ -928,10 +928,10 @@ whole value of one is that it means a specific place on this specific planet.
 | our named place | landmark | note |
 |---|---|---|
 | **The Setdown**, one tile adjacent — never the home tile itself | `Ruins` or `AbandonedColonyOutlander` | ⭐ **where the dead gravship was found and woken.** The campaign's own backstory, on the map. Not on 2476: the ship needs 4,057 clear substructure cells |
-| **The Scald Gate** | `Valley` | the one breach in the Spine. No biome list — gated on `minHilliness: Mountainous` only, which the Spine satisfies |
+| **Scald Gate** | `Valley` | the one breach in the Spine. No biome list — gated on `minHilliness: Mountainous` only, which the Spine satisfies |
 | **The Ore Moot** | `AncientQuarry` | *the mine the sandcrawlers were stolen from.* Mountainous; ore-rich |
 | **Sarlacc Ground** | `sw_Sarlacc` | ships in Star Wars Animal Collection; blacklists ice only, `maxHilliness: Mountainous`, and combos onto Dunes/Sandy/Hollow/Chasm/Valley/Cavern — authored for exactly this |
-| **The Rust Cathedral** | `AncientLaunchSite` / `AncientGarrison` | mechanoid, permanently at war |
+| **Rust Cathedral** | `AncientLaunchSite` / `AncientGarrison` | mechanoid, permanently at war |
 | the Scald rim volcanics | `LavaLake` · `LavaCrater` | `LavaField` only — the one volcanic province |
 | the salt pans (`Wasteland`) | `DryLake` or `VEE_SaltPlains` | ⚠️ **verify**: `DryLake` whitelists Desert/ExtremeDesert/AridShrubland, and our salt pans are `Wasteland`. It may not be legal there |
 | the oases (`ZBiome_DesertOasis`) | `Oasis` | temp range **20–60 °C**; our arc 30–60 band runs 38–58 °C, so it fits — but it does **not** fit sunward of that |

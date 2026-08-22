@@ -38,8 +38,13 @@ def sep(a, b):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--apply', action='store_true')
-    ap.add_argument('--fringe', type=float, default=3.2,
-                    help='degrees from water that count as fringe (tile spacing ~1.44)')
+    ap.add_argument('--fringe', type=float, default=8.0,
+                    help='degrees from a SEA that count as fringe (tile spacing ~1.44)')
+    ap.add_argument('--river-fringe', type=float, default=3.5,
+                    help='degrees from a RIVER. Kept SHORTER than the sea fringe on purpose: '
+                         'with one shared threshold the rivers took 439 of the 665 shrubland '
+                         'tiles and the coasts got 226, so the sea looked bare - which is '
+                         'exactly what the owner saw on the render.')
     a = ap.parse_args()
 
     with open(TILES, encoding='utf-8') as f:
@@ -59,7 +64,7 @@ def main():
     # salt-plain surface", which is a contradiction. A playa is bare. Seabed tiles are the one
     # place NEAR water that must not be vegetated, so they are excluded here and forced to the
     # sterile biome below.
-    SEABED_REGIONS = ('The Twilight Sea', 'The Grey Sea')
+    SEABED_REGIONS = ('Twilight Sea', 'Grey Sea')
     seabed = [r for r in tiles if r['biome'] not in WET and r.get('region') in SEABED_REGIONS]
 
     moves = collections.Counter()
@@ -74,7 +79,7 @@ def main():
             continue
         dw = min(sep(X[r['tile']], p) for p in wet)
         dr = min(sep(X[r['tile']], p) for p in rivpts) if rivpts else 1e9
-        fringe = min(dw, dr) <= a.fringe
+        fringe = (dw <= a.fringe) or (dr <= a.river_fringe)
         if fringe and r['biome'] != 'AridShrubland':
             moves[f"{r['biome']} -> AridShrubland (fringe)"] += 1
             r['biome'] = 'AridShrubland'
@@ -90,7 +95,7 @@ def main():
     for r in tiles:
         if r['biome'] in WET:
             continue
-        if r.get('region') not in ('The Twilight Sea', 'The Grey Sea'):
+        if r.get('region') not in ('Twilight Sea', 'Grey Sea'):
             continue
         cur = mut.get(r['tile'], '')
         if SALT_MUTATOR in cur:

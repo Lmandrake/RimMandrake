@@ -326,8 +326,8 @@ RIDGES = [
 # instead of its drain.
 BASINS = [
     # name, (arc, bear), radius, floor amp, water level m, is it a sink
-    ("The Scald",       (35, 185), 10.5, -1500, None,   False),   # level = auto
-    ("The Twilight Sea", (91, 170), 22.0, -1650,    0.0, True),
+    ("Scald",       (35, 185), 10.5, -1500, None,   False),   # level = auto
+    ("Twilight Sea", (91, 170), 22.0, -1650,    0.0, True),
     ("The Gray Sea",    (92, 8),   16.5, -1550,    0.0, True),
     ("The Umbra Trap",  (158, 62), 19.5, -1150,  -900.0, False),   # ammonia, not water
 ]

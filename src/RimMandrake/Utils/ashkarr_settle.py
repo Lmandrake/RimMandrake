@@ -50,7 +50,7 @@ MIN_EMPTY_FRACTION = 0.55  # at least this much of the land must stay that empty
 # and the owner asked for large areas of barrenness by name.
 BARREN_REGIONS = {
     "The Deadstone", "The Ammonia Flats", "The Umbra", "The Nightspill",
-    "The Twilight Sea", "The Gray Sea", "The Scald", "The Rust Cathedral",
+    "Twilight Sea", "The Gray Sea", "Scald", "The Rust Cathedral",
     "The Cinderdark", "The Frostbloom", "The Deep Bloom", "The Venom Wood",
     "The Coldspore", "The Crown Rot", "The Last Scrub", "The Rimewall",
     "The Cold Bloom", "The Ashen Waste", "The High Rot", "The Grayrot",

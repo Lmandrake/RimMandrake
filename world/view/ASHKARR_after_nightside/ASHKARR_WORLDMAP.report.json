@@ -34,25 +34,25 @@
   "distinct": 28,
   "census": [
    {
-    "biome": "Desert",
-    "tiles": 3961,
-    "pct": 18.11,
+    "biome": "AB_RockyCrags",
+    "tiles": 4155,
+    "pct": 18.997,
     "water": false,
-    "temp_c": 22.5
+    "temp_c": -38.9
+   },
+   {
+    "biome": "Desert",
+    "tiles": 4124,
+    "pct": 18.855,
+    "water": false,
+    "temp_c": 23.6
    },
    {
     "biome": "ExtremeDesert",
-    "tiles": 3606,
-    "pct": 16.487,
+    "tiles": 3569,
+    "pct": 16.318,
     "water": false,
-    "temp_c": 43.6
-   },
-   {
-    "biome": "AB_RockyCrags",
-    "tiles": 3423,
-    "pct": 15.65,
-    "water": false,
-    "temp_c": -30.4
+    "temp_c": 43.7
    },
    {
     "biome": "AB_MycoticJungle",
@@ -69,25 +69,11 @@
     "temp_c": -0.8
    },
    {
-    "biome": "HorrorWastes",
-    "tiles": 1200,
-    "pct": 5.486,
-    "water": false,
-    "temp_c": -68.8
-   },
-   {
     "biome": "Ocean",
     "tiles": 823,
     "pct": 3.763,
     "water": true,
     "temp_c": 18.6
-   },
-   {
-    "biome": "AridShrubland",
-    "tiles": 665,
-    "pct": 3.04,
-    "water": false,
-    "temp_c": 32.9
    },
    {
     "biome": "PoisonForest",
@@ -111,11 +97,25 @@
     "temp_c": 24.9
    },
    {
+    "biome": "AridShrubland",
+    "tiles": 539,
+    "pct": 2.464,
+    "water": false,
+    "temp_c": 27.0
+   },
+   {
     "biome": "AB_FeraliskInfestedJungle",
     "tiles": 534,
     "pct": 2.441,
     "water": false,
     "temp_c": 46.9
+   },
+   {
+    "biome": "HorrorWastes",
+    "tiles": 468,
+    "pct": 2.14,
+    "water": false,
+    "temp_c": -53.7
    },
    {
     "biome": "BMT_FungalForest",
@@ -247,7 +247,7 @@
      -89.76
     ],
     "named": [
-     "The Twilight Sea"
+     "Twilight Sea"
     ],
     "biomes": {
      "Ocean": 449,
@@ -263,7 +263,7 @@
      88.6
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "Ocean": 373,
@@ -279,7 +279,7 @@
      -35.47
     ],
     "named": [
-     "The Scald"
+     "Scald"
     ],
     "biomes": {
      "Lake": 312
@@ -294,7 +294,7 @@
      -105.64
     ],
     "named": [
-     "The Twilight Sea"
+     "Twilight Sea"
     ],
     "biomes": {
      "SeaIce": 3
@@ -309,7 +309,7 @@
      88.68
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "Ocean": 1
@@ -327,14 +327,14 @@
      132.21
     ],
     "named": [
-     "The Deadstone",
-     "The Dune Sea",
-     "The Glare"
+     "Deadstone",
+     "Dune Sea",
+     "Glare"
     ],
     "biomes": {
-     "Desert": 3961,
-     "ExtremeDesert": 3499,
-     "AB_RockyCrags": 3413,
+     "AB_RockyCrags": 4145,
+     "Desert": 4124,
+     "ExtremeDesert": 3462,
      "AB_MycoticJungle": 1939
     }
    },
@@ -347,7 +347,7 @@
      98.48
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "ExtremeDesert": 13
@@ -362,7 +362,7 @@
      -110.31
     ],
     "named": [
-     "The Twilight Crags"
+     "Twilight Crags"
     ],
     "biomes": {
      "AB_RockyCrags": 10,
@@ -378,7 +378,7 @@
      86.41
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "ExtremeDesert": 11
@@ -393,7 +393,7 @@
      94.15
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "ExtremeDesert": 10
@@ -408,7 +408,7 @@
      100.19
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "ExtremeDesert": 7
@@ -423,7 +423,7 @@
      89.99
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "ExtremeDesert": 7
@@ -438,7 +438,7 @@
      -101.6
     ],
     "named": [
-     "The Twilight Sea"
+     "Twilight Sea"
     ],
     "biomes": {
      "ExtremeDesert": 5
@@ -453,7 +453,7 @@
      100.68
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "ExtremeDesert": 5
@@ -468,7 +468,7 @@
      84.38
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "ExtremeDesert": 5
@@ -483,7 +483,7 @@
      83.65
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "ExtremeDesert": 3
@@ -498,7 +498,7 @@
      87.75
     ],
     "named": [
-     "The Grey Sea"
+     "Grey Sea"
     ],
     "biomes": {
      "ExtremeDesert": 3
@@ -680,17 +680,16 @@
    "The Galactic Empire": 3
   },
   "by_biome": {
-   "Desert": 25,
+   "Desert": 26,
    "ExtremeDesert": 23,
    "Wasteland": 21,
-   "AridShrubland": 18,
+   "AridShrubland": 17,
    "ZBiome_Badlands": 10,
+   "AB_RockyCrags": 6,
    "AB_FeraliskInfestedJungle": 6,
-   "AB_RockyCrags": 4,
    "PoisonForest": 3,
    "Scarlands": 3,
    "Volcano": 2,
-   "HorrorWastes": 2,
    "AB_MycoticJungle": 1,
    "ZBiome_Grasslands": 1,
    "AB_MiasmicMangrove": 1
@@ -715,7 +714,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Rimewall"
+    "region": "Rimewall"
    },
    {
     "id": 11,
@@ -733,7 +732,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Twilight Crags"
+    "region": "Twilight Crags"
    },
    {
     "id": 13,
@@ -751,7 +750,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 117,
@@ -769,7 +768,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Twilight Crags"
+    "region": "Twilight Crags"
    },
    {
     "id": 12,
@@ -787,7 +786,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 118,
@@ -805,7 +804,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The South Crags"
+    "region": "South Crags"
    },
    {
     "id": 116,
@@ -823,7 +822,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Rimewall"
+    "region": "Rimewall"
    },
    {
     "id": 14,
@@ -841,7 +840,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Horn"
+    "region": "Dew Horn"
    },
    {
     "id": 17,
@@ -859,7 +858,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Glass Reach"
+    "region": "Glass Reach"
    },
    {
     "id": 15,
@@ -877,7 +876,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 16,
@@ -895,7 +894,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Thornbelt"
+    "region": "Thornbelt"
    },
    {
     "id": 56,
@@ -913,7 +912,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 54,
@@ -931,7 +930,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 50,
@@ -949,7 +948,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 57,
@@ -967,7 +966,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 52,
@@ -985,7 +984,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 51,
@@ -1003,7 +1002,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 58,
@@ -1011,7 +1010,7 @@
     "name": "The Blind Wells",
     "faction": "Deep Desert Tribes",
     "factionDef": "TribeCivil",
-    "biome": "AridShrubland",
+    "biome": "Desert",
     "lat": -37.01,
     "lon": -12.26,
     "elevation_m": 53.0,
@@ -1021,7 +1020,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 53,
@@ -1039,7 +1038,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 55,
@@ -1057,7 +1056,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 23,
@@ -1075,7 +1074,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 22,
@@ -1093,7 +1092,7 @@
     "coastal": true,
     "on_river": true,
     "on_road": true,
-    "region": "The Scald Spine"
+    "region": "Scald Spine"
    },
    {
     "id": 25,
@@ -1111,7 +1110,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Belt"
+    "region": "Dew Belt"
    },
    {
     "id": 24,
@@ -1129,7 +1128,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Belt"
+    "region": "Dew Belt"
    },
    {
     "id": 26,
@@ -1147,7 +1146,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 110,
@@ -1165,7 +1164,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Anvil"
+    "region": "Anvil"
    },
    {
     "id": 120,
@@ -1173,7 +1172,7 @@
     "name": "Coldfire",
     "faction": "Free Droid Enclaves",
     "factionDef": "Jawa_FreeDroidEnclaves",
-    "biome": "HorrorWastes",
+    "biome": "AB_RockyCrags",
     "lat": 30.46,
     "lon": -175.78,
     "elevation_m": 1586.0,
@@ -1183,7 +1182,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Ammonia Flats"
+    "region": "Ammonia Flats"
    },
    {
     "id": 10,
@@ -1201,7 +1200,7 @@
     "coastal": false,
     "on_river": true,
     "on_road": true,
-    "region": "The Anvil"
+    "region": "Anvil"
    },
    {
     "id": 109,
@@ -1219,7 +1218,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Anvil"
+    "region": "Anvil"
    },
    {
     "id": 112,
@@ -1237,7 +1236,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 119,
@@ -1245,7 +1244,7 @@
     "name": "The Cracking Station",
     "faction": "Free Droid Enclaves",
     "factionDef": "Jawa_FreeDroidEnclaves",
-    "biome": "HorrorWastes",
+    "biome": "AB_RockyCrags",
     "lat": 1.23,
     "lon": 178.44,
     "elevation_m": 33.0,
@@ -1255,7 +1254,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Ammonia Flats"
+    "region": "Ammonia Flats"
    },
    {
     "id": 107,
@@ -1273,7 +1272,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Anvil"
+    "region": "Anvil"
    },
    {
     "id": 111,
@@ -1291,7 +1290,7 @@
     "coastal": false,
     "on_river": true,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 8,
@@ -1309,7 +1308,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Scald Spine"
+    "region": "Scald Spine"
    },
    {
     "id": 113,
@@ -1327,7 +1326,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Anvil"
+    "region": "Anvil"
    },
    {
     "id": 9,
@@ -1345,7 +1344,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Scald Spine"
+    "region": "Scald Spine"
    },
    {
     "id": 108,
@@ -1363,7 +1362,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Anvil"
+    "region": "Anvil"
    },
    {
     "id": 6,
@@ -1381,7 +1380,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Scorch"
+    "region": "Scorch"
    },
    {
     "id": 7,
@@ -1399,7 +1398,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Scorch"
+    "region": "Scorch"
    },
    {
     "id": 4,
@@ -1417,7 +1416,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Cinders"
+    "region": "Cinders"
    },
    {
     "id": 5,
@@ -1435,7 +1434,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Scorch"
+    "region": "Scorch"
    },
    {
     "id": 3,
@@ -1453,7 +1452,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Notch"
+    "region": "Notch"
    },
    {
     "id": 71,
@@ -1471,7 +1470,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Horn"
+    "region": "Dew Horn"
    },
    {
     "id": 61,
@@ -1489,7 +1488,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 82,
@@ -1507,7 +1506,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Pan"
+    "region": "Pan"
    },
    {
     "id": 95,
@@ -1525,7 +1524,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dry March"
+    "region": "Dry Marches"
    },
    {
     "id": 67,
@@ -1543,7 +1542,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Horn"
+    "region": "Dew Horn"
    },
    {
     "id": 91,
@@ -1561,7 +1560,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Long Sand"
+    "region": "Long Sand"
    },
    {
     "id": 80,
@@ -1579,7 +1578,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Blight"
+    "region": "Blight"
    },
    {
     "id": 60,
@@ -1597,7 +1596,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 76,
@@ -1615,7 +1614,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Sinkground"
+    "region": "Sinkground"
    },
    {
     "id": 59,
@@ -1633,7 +1632,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Thornbelt"
+    "region": "Thornbelt"
    },
    {
     "id": 86,
@@ -1651,7 +1650,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Sunward Scrub"
+    "region": "Sunward Scrub"
    },
    {
     "id": 72,
@@ -1669,7 +1668,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Kiln"
+    "region": "Kiln"
    },
    {
     "id": 83,
@@ -1687,7 +1686,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Level"
+    "region": "Level"
    },
    {
     "id": 73,
@@ -1705,7 +1704,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Sunreach"
+    "region": "Sunreach"
    },
    {
     "id": 68,
@@ -1723,7 +1722,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Horn"
+    "region": "Dew Horn"
    },
    {
     "id": 90,
@@ -1741,7 +1740,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Long Sand"
+    "region": "Long Sand"
    },
    {
     "id": 93,
@@ -1759,7 +1758,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Long Sand"
+    "region": "Long Sand"
    },
    {
     "id": 66,
@@ -1767,7 +1766,7 @@
     "name": "Longfurrow",
     "faction": "Homestead Defense League",
     "factionDef": "OutlanderCivil",
-    "biome": "Desert",
+    "biome": "AridShrubland",
     "lat": -2.34,
     "lon": -87.53,
     "elevation_m": 58.0,
@@ -1777,7 +1776,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Belt"
+    "region": "Dew Belt"
    },
    {
     "id": 70,
@@ -1795,7 +1794,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 62,
@@ -1813,7 +1812,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 85,
@@ -1831,7 +1830,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Thornbelt"
+    "region": "Thornbelt"
    },
    {
     "id": 79,
@@ -1849,7 +1848,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Sinkground"
+    "region": "Sinkground"
    },
    {
     "id": 89,
@@ -1867,7 +1866,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Cracklands"
+    "region": "Cracklands"
    },
    {
     "id": 64,
@@ -1885,7 +1884,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 75,
@@ -1903,7 +1902,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Glare"
+    "region": "Glare"
    },
    {
     "id": 63,
@@ -1921,7 +1920,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 77,
@@ -1939,7 +1938,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Kiln"
+    "region": "Kiln"
    },
    {
     "id": 92,
@@ -1957,7 +1956,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Sinkground"
+    "region": "Sinkground"
    },
    {
     "id": 74,
@@ -1975,7 +1974,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Glare"
+    "region": "Glare"
    },
    {
     "id": 69,
@@ -1993,7 +1992,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 87,
@@ -2011,7 +2010,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Ashen Waste"
+    "region": "Ashen Wastes"
    },
    {
     "id": 84,
@@ -2029,7 +2028,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Glare"
+    "region": "Glare"
    },
    {
     "id": 81,
@@ -2047,7 +2046,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Kiln"
+    "region": "Kiln"
    },
    {
     "id": 78,
@@ -2065,7 +2064,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Glare"
+    "region": "Glare"
    },
    {
     "id": 94,
@@ -2083,7 +2082,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Fall Line"
+    "region": "Fall Line"
    },
    {
     "id": 65,
@@ -2101,7 +2100,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 88,
@@ -2119,7 +2118,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Kiln"
+    "region": "Kiln"
    },
    {
     "id": 32,
@@ -2137,7 +2136,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Belt"
+    "region": "Dew Belt"
    },
    {
     "id": 100,
@@ -2155,7 +2154,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Glare"
+    "region": "Glare"
    },
    {
     "id": 28,
@@ -2173,7 +2172,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Belt"
+    "region": "Dew Belt"
    },
    {
     "id": 31,
@@ -2191,7 +2190,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Belt"
+    "region": "Dew Belt"
    },
    {
     "id": 97,
@@ -2209,7 +2208,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Long Sand"
+    "region": "Long Sand"
    },
    {
     "id": 98,
@@ -2217,7 +2216,7 @@
     "name": "Hurgo's Waystation",
     "faction": "Hutt Cartel",
     "factionDef": "Jawa_HuttCartel",
-    "biome": "AridShrubland",
+    "biome": "Desert",
     "lat": -27.06,
     "lon": -65.98,
     "elevation_m": 504.0,
@@ -2227,7 +2226,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Long Sand"
+    "region": "Long Sand"
    },
    {
     "id": 106,
@@ -2245,7 +2244,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Belt"
+    "region": "Dew Belt"
    },
    {
     "id": 27,
@@ -2263,7 +2262,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Horn"
+    "region": "Dew Horn"
    },
    {
     "id": 96,
@@ -2281,7 +2280,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Combs"
+    "region": "Combs"
    },
    {
     "id": 101,
@@ -2299,7 +2298,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Combs"
+    "region": "Combs"
    },
    {
     "id": 33,
@@ -2317,7 +2316,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Horn"
+    "region": "Dew Horn"
    },
    {
     "id": 102,
@@ -2335,7 +2334,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dry March"
+    "region": "Dry Marches"
    },
    {
     "id": 104,
@@ -2353,7 +2352,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dry March"
+    "region": "Dry Marches"
    },
    {
     "id": 30,
@@ -2371,7 +2370,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Horn"
+    "region": "Dew Horn"
    },
    {
     "id": 29,
@@ -2389,7 +2388,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Combs"
+    "region": "Combs"
    },
    {
     "id": 105,
@@ -2407,7 +2406,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Combs"
+    "region": "Combs"
    },
    {
     "id": 34,
@@ -2425,7 +2424,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Horn"
+    "region": "Dew Horn"
    },
    {
     "id": 103,
@@ -2443,7 +2442,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Long Sand"
+    "region": "Long Sand"
    },
    {
     "id": 99,
@@ -2461,7 +2460,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Ashfall Range"
+    "region": "Ashfall Range"
    },
    {
     "id": 44,
@@ -2479,7 +2478,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 45,
@@ -2497,7 +2496,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Glass Reach"
+    "region": "Glass Reach"
    },
    {
     "id": 47,
@@ -2515,7 +2514,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 48,
@@ -2533,7 +2532,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Cinders"
+    "region": "Cinders"
    },
    {
     "id": 43,
@@ -2551,7 +2550,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Ashfall Range"
+    "region": "Ashfall Range"
    },
    {
     "id": 49,
@@ -2569,7 +2568,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Notch"
+    "region": "Notch"
    },
    {
     "id": 46,
@@ -2587,7 +2586,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Thornbelt"
+    "region": "Thornbelt"
    },
    {
     "id": 2,
@@ -2605,7 +2604,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Ashfall Range"
+    "region": "Ashfall Range"
    },
    {
     "id": 1,
@@ -2623,7 +2622,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Scald Spine"
+    "region": "Scald Spine"
    },
    {
     "id": 0,
@@ -2641,7 +2640,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Dune Sea"
+    "region": "Dune Sea"
    },
    {
     "id": 20,
@@ -2659,7 +2658,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Wither"
+    "region": "Wither"
    },
    {
     "id": 19,
@@ -2677,7 +2676,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Dew Belt"
+    "region": "Dew Belt"
    },
    {
     "id": 21,
@@ -2695,7 +2694,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Slough"
+    "region": "Slough"
    },
    {
     "id": 18,
@@ -2713,7 +2712,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt Gate"
+    "region": "Salt Gate"
    },
    {
     "id": 37,
@@ -2731,7 +2730,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Sunreach"
+    "region": "Sunreach"
    },
    {
     "id": 39,
@@ -2749,7 +2748,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 36,
@@ -2767,7 +2766,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Sunreach"
+    "region": "Sunreach"
    },
    {
     "id": 40,
@@ -2785,7 +2784,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Ashfall Range"
+    "region": "Ashfall Range"
    },
    {
     "id": 42,
@@ -2803,7 +2802,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": "The Ashfall Range"
+    "region": "Ashfall Range"
    },
    {
     "id": 35,
@@ -2821,7 +2820,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    },
    {
     "id": 41,
@@ -2839,7 +2838,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Ashfall Range"
+    "region": "Ashfall Range"
    },
    {
     "id": 38,
@@ -2857,7 +2856,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": "The Salt"
+    "region": "Salt"
    }
   ]
  },
@@ -2893,97 +2892,97 @@
   },
   "named": [
    {
-    "name": "The Pan",
+    "name": "Pan",
     "def": "Region",
     "tiles": 79
    },
    {
-    "name": "The Sporefields",
+    "name": "Sporefields",
     "def": "Region",
     "tiles": 255
    },
    {
-    "name": "The Pale Flats",
+    "name": "Pale Flats",
     "def": "Region",
     "tiles": 60
    },
    {
-    "name": "The Wither",
+    "name": "Wither",
     "def": "Region",
     "tiles": 72
    },
    {
-    "name": "The Deadstone",
+    "name": "Deadstone",
     "def": "Region",
     "tiles": 2051
    },
    {
-    "name": "The Ammonia Flats",
+    "name": "Ammonia Flats",
     "def": "Region",
     "tiles": 818
    },
    {
-    "name": "The Dune Sea",
+    "name": "Dune Sea",
     "def": "Region",
     "tiles": 1692
    },
    {
-    "name": "The Ashfall Range",
+    "name": "Ashfall Range",
     "def": "Region",
     "tiles": 346
    },
    {
-    "name": "The Sunreach",
+    "name": "Sunreach",
     "def": "Region",
     "tiles": 795
    },
    {
-    "name": "The Dew Belt",
+    "name": "Dew Belt",
     "def": "Region",
     "tiles": 362
    },
    {
-    "name": "The Nightspill",
+    "name": "Nightspill",
     "def": "Region",
     "tiles": 853
    },
    {
-    "name": "The Frostcaps",
+    "name": "Frostcaps",
     "def": "Region",
     "tiles": 254
    },
    {
-    "name": "The Cracklands",
+    "name": "Cracklands",
     "def": "Region",
     "tiles": 227
    },
    {
-    "name": "The Pyrelands",
+    "name": "Pyrelands",
     "def": "Region",
     "tiles": 63
    },
    {
-    "name": "The Twilight Sea",
+    "name": "Twilight Sea",
     "def": "Region",
     "tiles": 852
    },
    {
-    "name": "The Capwood",
+    "name": "Capwood",
     "def": "Region",
     "tiles": 75
    },
    {
-    "name": "The Umbra",
+    "name": "Umbra",
     "def": "Region",
     "tiles": 802
    },
    {
-    "name": "The Glare",
+    "name": "Glare",
     "def": "Region",
     "tiles": 879
    },
    {
-    "name": "The South Crags",
+    "name": "South Crags",
     "def": "Region",
     "tiles": 433
    },
@@ -2993,257 +2992,257 @@
     "tiles": 171
    },
    {
-    "name": "The Long Sand",
+    "name": "Long Sand",
     "def": "Region",
     "tiles": 721
    },
    {
-    "name": "The Kiln",
+    "name": "Kiln",
     "def": "Region",
     "tiles": 878
    },
    {
-    "name": "The Damp",
+    "name": "Damp",
     "def": "Region",
     "tiles": 230
    },
    {
-    "name": "The Ashwood",
+    "name": "Ashwood",
     "def": "Region",
     "tiles": 69
    },
    {
-    "name": "The Scorch",
+    "name": "Scorch",
     "def": "Region",
     "tiles": 90
    },
    {
-    "name": "The Grey Sea",
+    "name": "Grey Sea",
     "def": "Region",
     "tiles": 617
    },
    {
-    "name": "The Rimewall",
+    "name": "Rimewall",
     "def": "Region",
     "tiles": 338
    },
    {
-    "name": "The Slough",
+    "name": "Slough",
     "def": "Region",
     "tiles": 148
    },
    {
-    "name": "The Combs",
+    "name": "Combs",
     "def": "Region",
     "tiles": 360
    },
    {
-    "name": "The Glass Reach",
+    "name": "Glass Reach",
     "def": "Region",
     "tiles": 172
    },
    {
-    "name": "The Dry March",
+    "name": "Dry Marches",
     "def": "Region",
     "tiles": 387
    },
    {
-    "name": "The Gray Crags",
+    "name": "Gray Crags",
     "def": "Region",
     "tiles": 577
    },
    {
-    "name": "The Sunward Scrub",
+    "name": "Sunward Scrub",
     "def": "Region",
     "tiles": 154
    },
    {
-    "name": "The Sinkground",
+    "name": "Sinkground",
     "def": "Region",
     "tiles": 276
    },
    {
-    "name": "The Coldstone",
+    "name": "Coldstone",
     "def": "Region",
     "tiles": 57
    },
    {
-    "name": "The Sweatwood",
+    "name": "Sweatwood",
     "def": "Region",
     "tiles": 93
    },
    {
-    "name": "The Ashen Waste",
+    "name": "Ashen Wastes",
     "def": "Region",
     "tiles": 202
    },
    {
-    "name": "The Scour",
+    "name": "Scour",
     "def": "Region",
     "tiles": 234
    },
    {
-    "name": "The Thornbelt",
+    "name": "Thornbelt",
     "def": "Region",
     "tiles": 502
    },
    {
-    "name": "The Lantern Deeps",
+    "name": "Lantern Deeps",
     "def": "Region",
     "tiles": 57
    },
    {
-    "name": "The Stillwood",
+    "name": "Stillwood",
     "def": "Region",
     "tiles": 142
    },
    {
-    "name": "The Rust Cathedral",
+    "name": "Rust Cathedral",
     "def": "Region",
     "tiles": 236
    },
    {
-    "name": "The Fall Line Barrens",
+    "name": "Fall Line Barrens",
     "def": "Region",
     "tiles": 153
    },
    {
-    "name": "The Notch",
+    "name": "Notch",
     "def": "Region",
     "tiles": 68
    },
    {
-    "name": "The Thornend",
+    "name": "Thornend",
     "def": "Region",
     "tiles": 61
    },
    {
-    "name": "The Dew Horn",
+    "name": "Dew Horn",
     "def": "Region",
     "tiles": 491
    },
    {
-    "name": "The Scald Spine",
+    "name": "Scald Spine",
     "def": "Region",
     "tiles": 174
    },
    {
-    "name": "The Scald",
+    "name": "Scald",
     "def": "Region",
     "tiles": 312
    },
    {
-    "name": "The Twilight Crags",
+    "name": "Twilight Crags",
     "def": "Region",
     "tiles": 384
    },
    {
-    "name": "The Fanground",
+    "name": "Fanground",
     "def": "Region",
     "tiles": 70
    },
    {
-    "name": "The Tallow Ground",
+    "name": "Tallow Ground",
     "def": "Region",
     "tiles": 129
    },
    {
-    "name": "The Blight",
+    "name": "Blight",
     "def": "Region",
     "tiles": 140
    },
    {
-    "name": "The Fall Line",
+    "name": "Fall Line",
     "def": "Region",
     "tiles": 155
    },
    {
-    "name": "The Cinderdark",
+    "name": "Cinderdark",
     "def": "Region",
     "tiles": 153
    },
    {
-    "name": "The Blindwood",
+    "name": "Blindwood",
     "def": "Region",
     "tiles": 145
    },
    {
-    "name": "The Knuckles",
+    "name": "Knuckles",
     "def": "Region",
     "tiles": 78
    },
    {
-    "name": "The Mould March",
+    "name": "Mould Marches",
     "def": "Region",
     "tiles": 123
    },
    {
-    "name": "The Salt Gate",
+    "name": "Salt Gate",
     "def": "Region",
     "tiles": 16
    },
    {
-    "name": "The Fever Wood",
+    "name": "Fever Wood",
     "def": "Region",
     "tiles": 81
    },
    {
-    "name": "The Stepwood",
+    "name": "Stepwood",
     "def": "Region",
     "tiles": 85
    },
    {
-    "name": "The Anvil",
+    "name": "Anvil",
     "def": "Region",
     "tiles": 349
    },
    {
-    "name": "The Venom Wood",
+    "name": "Venom Wood",
     "def": "Region",
     "tiles": 72
    },
    {
-    "name": "The Coldshelf",
+    "name": "Coldshelf",
     "def": "Region",
     "tiles": 68
    },
    {
-    "name": "The Cinders",
+    "name": "Cinders",
     "def": "Region",
     "tiles": 112
    },
    {
-    "name": "The Salt",
+    "name": "Salt",
     "def": "Region",
     "tiles": 249
    },
    {
-    "name": "The Hollow Verge",
+    "name": "Hollow Verge",
     "def": "Region",
     "tiles": 40
    },
    {
-    "name": "The Level",
+    "name": "Level",
     "def": "Region",
     "tiles": 141
    },
    {
-    "name": "The Grinding Floor",
+    "name": "Grinding Floor",
     "def": "Region",
     "tiles": 79
    },
    {
-    "name": "The Hanging Wood",
+    "name": "Hanging Wood",
     "def": "Region",
     "tiles": 165
    },
    {
-    "name": "The Chalk March",
+    "name": "Chalk Marches",
     "def": "Region",
     "tiles": 57
    },
    {
-    "name": "The Quiet Ground",
+    "name": "Quiet Ground",
     "def": "Region",
     "tiles": 43
    }

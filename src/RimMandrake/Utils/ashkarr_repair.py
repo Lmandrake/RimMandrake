@@ -20,7 +20,7 @@ number it changed, and a block that finds nothing to do says so rather than stay
                          is adjacent the link is drawn; where the tile is isolated the
                          flow is zeroed, because accumulation with no channel is a number
                          that contradicts its own map.
-  5 GREY SEA             Every design doc and Tidewatch's own why-line say "The Grey Sea";
+  5 GREY SEA             Every design doc and Tidewatch's own why-line say "Grey Sea";
                          the map region said "The Gray Sea". The docs are the older and
                          more numerous usage, so the map moves.
 
@@ -162,7 +162,7 @@ def main():
     renamed = 0
     for r in trows:
         if r["region"] == "The Gray Sea":
-            r["region"] = "The Grey Sea"
+            r["region"] = "Grey Sea"
             renamed += 1
     print("5 GREY SEA         tiles respelled to match every doc: %d" % renamed)
 

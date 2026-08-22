@@ -69,11 +69,11 @@ def main():
             changes['E3 sub-freezing water -> SeaIce'] += 1
 
     # ---- E1/E2 operate on what is still LIQUID -------------------------------------
-    # 🔴 The Scald is a ruled feature (312 Lake tiles, region "The Scald", all at arc <= 82).
+    # 🔴 The Scald is a ruled feature (312 Lake tiles, region "Scald", all at arc <= 82).
     # It is outside the meridian so the halving never reaches it - this guard makes that
     # explicit rather than incidental, so a later change to MERIDIAN_ARC cannot eat it.
     water = [r for r in rows if r['biome'] in ('Ocean', 'Lake')
-             and r.get('region') != 'The Scald']
+             and r.get('region') != 'Scald']
     mer_water = [r for r in water if r['_arc'] > MERIDIAN_ARC]
 
     # ---- E1 halve the meridian water --------------------------------------------
@@ -97,8 +97,8 @@ def main():
     def _sep(a, b):
         return _m.degrees(_m.acos(max(-1, min(1, sum(x*y for x, y in zip(a, b))))))
 
-    twilight = [r for r in mer_water if r.get('region') == 'The Twilight Sea']
-    other    = [r for r in mer_water if r.get('region') != 'The Twilight Sea']
+    twilight = [r for r in mer_water if r.get('region') == 'Twilight Sea']
+    other    = [r for r in mer_water if r.get('region') != 'Twilight Sea']
 
     removed = []
     if twilight:
