@@ -186,3 +186,46 @@ Do not carry the "money is never the answer" line across to them. The audit even
 `raiseMaxTo` per kind.
 
 Whole-game audit: `pawnkind_audit_wholegame.json`.
+
+---
+
+# Third addendum — the Deep Desert Tribes' archers have no bows
+
+Prompted by the owner asking what `Tribal_Archer_Fire` is. Answering it turned up something
+about **his own faction**.
+
+## What the fire archer is, and whose it is
+`Tribal_Archer_Fire` is **vanilla Biotech**, label "archer", `combatPower 75`. Its single
+weapon tag `NeolithicRangedFlame` maps to Biotech's **`Flamebow`** — a neolithic bow firing
+incendiary arrows. So yes: a tribal archer that shoots fire.
+
+⚠️ **It is not the Deep Desert Tribes'.** The only FactionDef fielding it is
+`TribeSavageImpid` — the savage impid tribe, which generated on this world as "League of
+Necuvizz". Thematically right: impids are Biotech's fire-resistant xenotype.
+
+**Why it is disarmed and its sibling is not:** `NeolithicRangedFlame` is now carried by
+**0 loaded weapons**. `Tribal_Hunter_Fire` survives only because it carries a *second* tag,
+`NeolithicRangedDecent`, still on 6 weapons. **One tag versus two — that is the entire
+difference**, and it is the tag-pool trap in miniature.
+
+## 🔴 What the Deep Desert Tribes (`TribeCivil`) actually field now
+
+18 live spawns in faction `TribeCivil`, equipment read back:
+
+| kind | what they drew |
+|---|---|
+| `Tribal_Archer` ×6 | `NerveSpiker` ×4 · `VWE_Throwing_Knives` ×1 · **bare** ×1 |
+| `Tribal_HeavyArcher` ×6 | `BMT_ThrumbungusShroom` ×3 · `VFET_Throwspikes` ×1 · **bare** ×2 |
+| `Tribal_Hunter` ×6 | `NerveSpiker` ×3 · **bare** ×3 |
+
+**Not one bow among the eighteen.** `Bow_Short`, `Bow_Recurve` and `Bow_Great` are all on
+the Cherry Picker kill list, so `NeolithicRangedBasic` and `NeolithicRangedDecent` now
+resolve to a five-weapon pool of modded oddities — a nerve spiker, throwing knives, throw
+spikes and a fungal spore. **6 of 18 (33%) arrived bare-handed.**
+
+## 🔑 And this is the part the instrument cannot tell you
+**None of these three kinds appears in `jawa/pawnkind_audit`'s 29.** They are counted
+`healthy`, because healthy means *"a weapon exists in its pool that it can afford"* — not
+*"it draws something sensible"*. ⇒ The audit is the right tool for **disarmed**, and it is
+blind to **absurdly armed**. `CHEAPEST_WEAPON_IS_ABSURD_1` was about exactly that gap and
+the gap is wider than the town traders: it reaches an authored faction's core troops.
