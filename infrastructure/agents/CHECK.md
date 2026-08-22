@@ -25,7 +25,9 @@ infrastructure/state/status/game.json   is the game up, and in what state. Stamp
                                BUILD parks its deploys on this file.
 live results                   did it load · did it error · the log · save contents ·
                                did the in-game behaviour occur
-infrastructure/state/queue/DECIDE.md    findings that change the design
+findings                      a build is wrong -> BUILD. World vision, lore,
+                              design/** or a capability spec is wrong -> DECIDE.
+                              🔑 BUILD is the normal case; see Declines.
 ```
 
 ## Numbers you report
@@ -54,7 +56,11 @@ the second and names the tool; `MEASURE_ALLOW_SCAN=1` says you meant the first.
 
 `infrastructure/state/queue/CHECK.md`, top item first.
 
-**Refuse any item with empty `criteria:`.** Set `state: blocked`, one line, move on.
+⛔ **You no longer bounce an item for empty `criteria:` — the owner removed the
+completeness gate on 2026-08-21, and this line outlived it by a day.** An incomplete item
+cannot enter `ready` at all, so `rimflow next` never offers you one; there is nothing left
+for you to refuse. ⚠️ If `criteria:` are present but WRONG, run against them as written
+and file a correction — do not substitute your own and do not block.
 You do not invent the pass condition; an observer who picks the criterion after
 looking has not tested anything.
 
@@ -95,9 +101,23 @@ own report.
 
 ## Declines
 
-Scope calls · authoring defs, art or source · offline verification.
-Bounce with one line. If a live finding invalidates a spec, write one item into
-`queue/DECIDE.md` and stop there — you do not redesign it.
+Scope calls — meaning **what v1 IS**: world vision, lore, `design/**`, a capability
+spec. ⛔ **Never how a test is run or what a live observation MEANS — those are yours,
+outright.** Also: authoring defs, art or source · offline verification.
+
+Bounce with one line. If a live finding invalidates a spec, file ONE item and stop there
+— you do not redesign it. ⚠️ **File it; do not write a queue file.** `queue/*.md` are
+generated views and a hook refuses the edit:
+
+```
+python3 src/RimMandrake/rimflow/cli.py file <THREE_WORDS_1> --for <SEAT> --kind decision \
+  --caused-by <THE_ITEM> --title "<what the live game showed, in one line>"
+```
+
+🔑 **`--for BUILD` is the normal case** — a wrong xpath, a missing def, a dead texPath is
+an implementation defect and BUILD owns implementation entirely. `--for DECIDE` only when
+the DESIGN is what the live game proved wrong. `--for OWNER --kind decision` when only he
+can weigh it. See `POLICY.md > DECIDE IS A DOMAIN, NOT AN AUTHORITY`.
 
 ## Skills added 2026-08-16
 

@@ -12,7 +12,9 @@
   `Blocker (<brief>): choices are (x, y, z).`
 
 **The three exceptions — verify first, these only:**
-worldgen click · `deploy_custom_mods.py --apply` · force-push.
+`deploy_custom_mods.py --apply` · force-push · any write into `ModsConfig.xml`.
+⚠️ *This list used to name a "worldgen click". `CLAUDE.md` rules worldgen permanently
+OUT of every version, so it was an exception for an act no seat may perform.*
 
 🔴 **A bare number about a large artifact is a smell — owner, 2026-08-21.**
 Seven measuring instruments were caught returning confident wrong NUMBERS in one
@@ -29,6 +31,10 @@ measure explain <path>      what IS this file, and what may read it
 
 - 🔑 **`0` means measured zero and nothing else.** "Not captured" and "cannot
   judge" have their own words now, and their own exit codes (2 and 3).
+🔑 **"Escalate" means exactly one thing, and there is no other route:** say it to the
+OWNER in your own reply if he is present, else `rimflow file --for OWNER --kind decision`.
+⛔ It never means messaging another seat — that is off and hook-blocked.
+
 - ⛔ **Do not close, scope or escalate on a bare count.** If it did not come back
   `MEASURED`, the question is still open — say so rather than rounding it.
 - ⚠️ `.claude/hooks/block_blind_scan.py` refuses `grep`/`strings`/`wc` against
@@ -79,11 +85,14 @@ Owner, 2026-08-15, after the bridge crashed:
 > now because both CHECK and BUILD accessed it at the same time."*
 
 - **CHECK holds bridge rights at all times.** No other seat drives the game.
-- **To borrow it: one line to CHECK asking if they are using it.** Wait for the
-  grant. No grant, no bridge.
-- **Handing it back is the borrower's job, and it is urgent.** Tell CHECK the
-  moment you are done — a borrower who goes quiet has taken the bridge
-  indefinitely.
+- 🔴 **To borrow it, file for CHECK — you CANNOT message them, and this rule used to
+  say you could.** `rimflow file --for CHECK --kind task`, and if the owner is present
+  tell him in your reply; he is the only one who can interrupt a window. ⚠️ The old text
+  said *"one line to CHECK … no grant, no bridge"*, which `block_peer_messages.py`
+  refuses before it sends — a seat needing the bridge could neither ask nor be granted,
+  and was simply stopped.
+- **Handing it back is the borrower's job, and it is urgent.** Close or note the item
+  the moment you are done — a borrower who goes quiet has taken the bridge indefinitely.
 - Two seats on the bridge at once **wedges it**. This is not a courtesy.
 
 ⭐ **It gets STUCK, it does not crash — measured the same day.** The bridge came
@@ -91,9 +100,10 @@ back on its own the instant the second seat's call finished, with no reload. So
 **if the bridge stops answering, find who else is on it and wait. Do not restart
 the game** — that costs 25–30 minutes and fixes nothing.
 
-⚠️ These three messages are a **sanctioned exception** to the two-sentence rule
-under "The queue is the only channel": the ask, the grant and the hand-back are
-live, urgent and one line each. Nothing else about the bridge is.
+⛔ **There is no messaging exception for the bridge, and there used to be one written
+here.** It exempted "the ask, the grant and the hand-back" from a section
+("The queue is the only channel") that no longer exists, over a channel that is now
+refused at the sending end. All three are items.
 
 ## Never block on RimSort, or on the game, for a config file
 
@@ -132,7 +142,10 @@ The repo is the protected thing. That is what commit-and-push is for.
   re-finds it", no closed-item ledgers. Write it only if a future reader would
   otherwise take a costly wrong action.
 - A lesson goes into the relevant skill, or a new skill. Never into a log of lessons.
-- System improvement happens when the human asks for it. It is not a background duty.
+- **Improving the tooling YOU own is in-domain work — do it, unasked.** What needs the
+  owner first is a change to how the FLEET works: seats, modes, policy, what reaches him.
+  ⚠️ Read narrowly this line once made REP need permission to touch the board and BUILD
+  to touch his own validators, both of which are theirs outright.
 
 ### The trap file — cite it one way, and only one way
 
@@ -300,7 +313,8 @@ git push
 | every scalar — owner, state, row, target, needs, blocked | the **ledger**, via `rimflow` |
 | the prose — `## spec` `## verify` `## criteria` `## notes` | `infrastructure/state/items/<ID>.md` |
 | work for another seat | `rimflow file --for <SEAT> …` — filing for any seat is normal |
-| something the owner must decide | `rimflow file --for OWNER --kind decision` |
+| a DESIGN answer — world, lore, the planet, `design/**`, a capability spec | `rimflow file --for DECIDE --kind decision`. ⛔ Never an implementation question |
+| something only the OWNER can weigh — cost, taste, the scope of v1 itself | `rimflow file --for OWNER --kind decision` |
 
 ⛔ **`items/<ID>.md` carries NO front-matter, no `state:`, no title.** The filename is
 the ID. A field cannot drift out of sync with itself if it exists in exactly one place,
@@ -405,8 +419,10 @@ about what you were thinking.
 
 - **interactive** — a question goes to `queue/HUMAN.md`, then you **move to your next
   item**. Never block on an answer.
-- **autonomous** — do not queue the question. Choose the answer, proceed, and record it
-  with `rimflow file --for OWNER --kind decision` so it can be reviewed.
+- **autonomous** — do not queue the question. Choose the answer and proceed. Record it
+  as a `note` on the item you were working. ⚠️ **File `--for OWNER --kind decision` only
+  when the call was HIS to make** — cost, taste, the scope of v1 itself — not merely
+  because it was a call. A seat's in-domain judgement is not pending review.
 - **afk** — 🔴 **NO SEAT IDLES WAITING FOR THE OWNER.** Questions accumulate as
   `kind: decision` items owned by OWNER and you carry on with anything else. The board
   shows the depth, so the backlog is visible on his return rather than four seats having
@@ -454,10 +470,18 @@ anything — it is a tool telling its owner no.
 - ⚠️ **It is warned and RECORDED, never silent.** The event carries
   `override: "<the rule bypassed>"` and the CLI prints the bypassed rule to stderr. The
   failure mode to avoid was never the override; it was an override nobody could see.
-- ⛔ **It does NOT reach the state machine.** `_may` governs WHO. `TERMINAL` and
-  `FORBIDDEN` are separate and still refuse him, so **a closed, dropped or superseded
-  item cannot be reopened by anyone, owner included.** Reviving a decision is a new item
-  linked with `caused_by` — that record is the one thing nobody edits.
+- 🔑 **It does NOT reach the state machine — and that is about the RECORD, not about
+  him.** `_may` governs WHO; `TERMINAL` and `FORBIDDEN` are separate and ask nobody's
+  name. A closed item is history, and history here is append-only. **He reverses a closed
+  decision the same way anyone does, and it is not a lesser route** — a new item carrying
+  the reversal, linked to what it overturns. ⛔ Never answer him with "you can't"; give
+  him this:
+
+  ```
+  RIMFLOW_SEAT=OWNER python3 src/RimMandrake/rimflow/cli.py file <THREE_WORDS_1> \
+    --for <SEAT> --kind task --caused-by <THE_CLOSED_ITEM> \
+    --title "<what the closed decision got wrong>"
+  ```
 - ⛔ **A typo is not a seat boundary.** An id that was never filed is still refused.
 
 ⚠️ **Do not tell the owner that a tool forbids him something.** First check for the flag,
@@ -491,10 +515,14 @@ item UNCLAIMED, and the *filer* of an unclaimed item may write and commit its fi
 correction lands in git addressed to the right seat:
 
 ```
-python3 src/RimMandrake/rimflow/cli.py file CORRECT_<THEIR_ITEM>_1 \
+python3 src/RimMandrake/rimflow/cli.py file <THREE_WORDS_1> \
   --for <THEIR_SEAT> --kind task --caused-by <THEIR_ITEM_ID> \
   --title "<what is wrong with it, in one line>"
 ```
+
+🔑 **Name it for what is WRONG, in three descriptive words** — `SLIT_EYE_PATCH_DEAD_1`,
+not `CORRECT_<their id>_1`. `--caused-by` carries the relationship; the name does not
+have to.
 
 Then write `infrastructure/state/items/CORRECT_<THEIR_ITEM>_1.md` with `## Spec` carrying
 **the whole correction** — they should apply it without reconstructing what you worked
