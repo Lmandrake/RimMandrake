@@ -377,6 +377,7 @@ tile,mutators
 923,Coast;Mountain;Cliffs
 924,Coast;Mountain;Cliffs
 925,Mountain
+931,Oasis
 942,Sandy
 943,Sandy
 944,Sandy
@@ -822,7 +823,7 @@ tile,mutators
 2033,Mountain;HotSprings
 2035,Mountain;River;Cliffs;AB_MagmaticQuagmire;AB_MagmaVents;AB_GeothermalHotspots
 2037,Sandy
-2039,Dunes
+2039,Dunes;Oasis
 2041,Dunes
 2044,Sandy
 2048,Dunes
@@ -3306,7 +3307,7 @@ tile,mutators
 8268,Sandy
 8270,Sandy
 8271,Sandy
-8272,Sandy
+8272,Sandy;Oasis
 8273,Sandy
 8274,Sandy
 8275,Sandy
@@ -4168,7 +4169,7 @@ tile,mutators
 10447,Dunes
 10449,Dunes
 10450,Dunes
-10451,Dunes
+10451,Dunes;Oasis
 10452,Dunes
 10453,Dunes
 10454,Dunes
@@ -4786,6 +4787,7 @@ tile,mutators
 11874,Sandy
 11875,Mountain
 11876,Dunes
+11877,Oasis
 11878,Dunes
 11882,Sandy
 11883,Sandy
@@ -5310,7 +5312,7 @@ tile,mutators
 13345,Sandy
 13346,Sandy
 13347,Sandy
-13348,Sandy
+13348,Sandy;Oasis
 13349,Sandy
 13350,Sandy
 13351,Sandy
@@ -5367,7 +5369,7 @@ tile,mutators
 13446,Sandy
 13447,Sandy
 13448,Sandy
-13449,Sandy
+13449,Sandy;Oasis
 13450,Sandy
 13453,Sandy
 13454,Sandy
@@ -6901,6 +6903,7 @@ tile,mutators
 16997,Dunes
 16998,Dunes
 16999,Dunes
+17001,Oasis
 17002,Mountain
 17003,Mountain
 17004,Mountain
@@ -7323,7 +7326,7 @@ tile,mutators
 18197,Sandy
 18199,Dunes
 18200,Sandy
-18201,Sandy
+18201,Sandy;Oasis
 18202,Sandy
 18203,Sandy
 18204,Sandy
@@ -7657,7 +7660,7 @@ tile,mutators
 19180,Sandy
 19181,Sandy
 19182,Sandy
-19183,Sandy
+19183,Sandy;Oasis
 19184,Sandy
 19186,Sandy
 19187,Sandy
@@ -8127,7 +8130,7 @@ tile,mutators
 20282,Sandy
 20283,Sandy
 20284,Sandy
-20285,Sandy
+20285,Sandy;Oasis
 20286,Sandy
 20287,Sandy
 20288,Sandy

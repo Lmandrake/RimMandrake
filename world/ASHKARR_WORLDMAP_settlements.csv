@@ -71,3 +71,38 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 69,OutlanderCivil,Homestead Defense League,The Dripworks,241,-7.017,90.0,90.0,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 70,OutlanderCivil,Homestead Defense League,Marrowfield,20766,-13.216,90.0,90.0,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 71,OutlanderCivil,Homestead Defense League,Aquifer Station,7777,18.666,-63.731,65.2,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+72,OutlanderCivil,Homestead Defense League,Dryhold,14351,-45.7089,9.4088,46.4600,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+73,OutlanderCivil,Homestead Defense League,Fogline,13779,-41.5043,109.4572,104.4500,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+74,OutlanderCivil,Homestead Defense League,The Catchment,11263,49.4924,-8.2537,50.0000,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+75,OutlanderCivil,Homestead Defense League,Saltfurrow,695,19.645,42.4767,46.0000,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+76,OutlanderCivil,Homestead Defense League,Dewfall,2126,-79.8665,157.6145,99.3600,AridShrubland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+77,OutlanderCivil,Homestead Defense League,Stillwater Farm,655,-43.99,-27.8647,50.5000,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+78,OutlanderCivil,Homestead Defense League,The Vaporworks,685,43.99,27.8647,50.5000,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+79,OutlanderCivil,Homestead Defense League,Nightdew,1417,-57.7654,-108.3406,99.6600,AridShrubland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+80,OutlanderCivil,Homestead Defense League,Cold Catch,4848,-74.5609,25.1413,76.0500,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+81,OutlanderCivil,Homestead Defense League,The Sumps,413,-39.8997,36.8871,52.1500,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+82,OutlanderCivil,Homestead Defense League,Brinefield,815,60.857,-93.9396,91.9200,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+83,OutlanderCivil,Homestead Defense League,Farrow,1752,75.2145,-128.874,99.2200,AridShrubland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+84,OutlanderCivil,Homestead Defense League,The Standpipe,3452,45.2293,-37.1289,55.8400,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+85,OutlanderCivil,Homestead Defense League,Mistfoot,5816,-40.6469,81.2046,83.3400,AridShrubland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+86,OutlanderCivil,Homestead Defense League,Dripstone,15585,69.3013,75.1048,84.7900,AridShrubland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+87,OutlanderCivil,Homestead Defense League,The Long Furrow,16022,-65.1826,112.95,99.4200,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+88,OutlanderCivil,Homestead Defense League,Whistledew,979,-34.5118,-50.5364,58.4200,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+89,OutlanderCivil,Homestead Defense League,Pumphouse,3436,62.3799,23.4783,64.8400,ZBiome_Badlands,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+90,OutlanderCivil,Homestead Defense League,Greenpatch,4669,-25.3808,-84.0981,84.6700,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+91,OutlanderCivil,Homestead Defense League,Cloudtrap,4872,-61.4688,-14.1021,62.4000,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+92,OutlanderCivil,Homestead Defense League,Sweetwell,5538,-73.1979,-123.3616,99.1500,AridShrubland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+93,OutlanderCivil,Homestead Defense League,Hollowdew,5813,-57.2693,33.3333,63.1400,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+94,OutlanderCivil,Homestead Defense League,Thornfurrow,8075,-1.2814,46.3859,46.4000,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+95,OutlanderCivil,Homestead Defense League,Chalkwell,19681,28.8414,59.2288,63.3700,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+96,Jawa_HuttCartel,Hutt Cartel,The Debt House,165,59.7622,-24.3874,62.7000,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+97,Jawa_HuttCartel,Hutt Cartel,Slug Hollow,528,-50.8913,-47.9041,64.9800,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+98,Jawa_HuttCartel,Hutt Cartel,Tollwater,766,-26.551,-67.6278,70.0900,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+99,Jawa_HuttCartel,Hutt Cartel,The Levy,3240,13.0109,55.3788,56.3900,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+100,Jawa_HuttCartel,Hutt Cartel,Fatwell,12868,39.0707,46.6413,57.7900,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+101,Jawa_HuttCartel,Hutt Cartel,The Reckoning,1011,54.172,-52.5028,69.1300,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+102,Jawa_HuttCartel,Hutt Cartel,Oilpalm,19518,52.8395,42.1608,63.4000,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+103,Jawa_HuttCartel,Hutt Cartel,Gorge Station,4865,-59.5491,10.6221,60.1200,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+104,Jawa_HuttCartel,Hutt Cartel,The Skim,1028,63.0058,47.4818,72.1400,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+105,Jawa_HuttCartel,Hutt Cartel,Bloatwater,1820,42.1947,-52.4741,63.1700,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+106,Jawa_HuttCartel,Hutt Cartel,Cartel Ground,4686,-13.9217,-83.3187,83.5200,Desert,beside a near-desert oasis - the well is guarded and is NOT free
