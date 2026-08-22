@@ -50,3 +50,48 @@ no `measuring-large-artifacts` and no `defs.sqlite`, and `weapon_tag_audit`'s
 ## notes
 Filed by BUILD 2026-08-21. Not urgent: neither tool is broken, and the parent
 item measured that a port would make them 3.4× slower.
+
+## ✅ CLOSED 2026-08-22 by BUILD — at `18d98d66`
+
+Evidence: `infrastructure/state/evidence/weapon_tools_projection_2026-08-22_BUILD.md`.
+
+| tool | before | after (db) | after (no db) |
+|---|---|---|---|
+| `weapon_tag_audit.py` | 3.54 s · 1502 MB | **2.45 s · 30 MB** | 4.30 s · 1503 MB |
+| `weapon_affordability.py` | 2.74 s · 1501 MB | **0.98 s · 47 MB** | 3.09 s · 1502 MB |
+
+**stdout byte-identical on every path.** All three criteria met; see the evidence
+file's last section for each, checked one by one.
+
+## 🔴 THE SPEC ABOVE IS HALF WRONG AND THE HALF THAT IS WRONG IS THE USEFUL ONE
+
+*"the db wins on projections and joins"* — the **joins** half is right and the
+`def_tags` number in the spec (0.18 s) holds. The **projections** half is false as
+written: `json_extract` re-parses each row's JSON, so projecting one field off
+every ThingDef measures **6.7 s** against `json.load`'s 3.2 s. Memory collapses
+90×; the clock gets worse. A projection only wins when the query never touches
+most rows.
+
+⇒ The spec's instruction *"move BOTH (projection + `json_extract` for those three
+fields) or move NEITHER"* would, taken literally, have made `weapon_tag_audit`
+**slower**. What worked instead: `def_flags.weapon` is an indexed predicate that
+drops 24,133 of 24,904 rows before any JSON is parsed, and 0 defs carry a
+non-empty `weaponClasses` without that flag — measured, and written into the
+docstring so it can be re-measured rather than trusted.
+
+⇒ And `weapon_affordability`'s cost recursion — the one the spec said *"has to
+carry the cost graph or the recursion cannot run"* — did not need the graph. It
+needed a **by-name lazy index**: the recursion reaches a few hundred defs, not
+24,904. Projecting all of them measured 7.3 s; fetching on the cache miss measures
+0.98 s end to end.
+
+⛔ `def_flags.IsWeapon` was NOT swapped in for `eligible()`, per the spec's own
+prohibition. The flag is used only to decide **which rows to read**, never to
+decide whether a def is eligible — `eligible()` is byte-for-byte the function it
+was, which is what makes the identical output meaningful.
+
+⚠️ **One cost, paid only where there is no db.** The first port made that machine
+worse — three questions meant three `json.load`s of the same 316 MB file, 7.9 s
+against the original 3.5 s. `_load_json_defs` now memoises, bringing it to 4.30 s,
+still ~20% above the original because the ported code asks a third question the
+old code answered inline.
