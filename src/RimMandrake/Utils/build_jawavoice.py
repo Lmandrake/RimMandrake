@@ -17,7 +17,9 @@ MECHANISM (verified against SpeakUp source, see jawaese.py header):
 
 IDENTITY GATE (dual, per the xenotype-not-a-condition finding):
     colonists:  INITIATOR_faction==PlayerColony / PlayerTribe
-    NPC jawas:  INITIATOR_kind==RimMandrake_Jawa / OuterRim_JawaTribal
+    NPC jawas:  INITIATOR_kind==RimMandrake_Jawa / RimMandrake_JawaTribal
+  ⚠️ Corrected 2026-08-21: this line said `OuterRim_JawaTribal`, which is absent
+  from the live capture. GATES below was already right; only the prose was stale.
   Emitted as separate gated entries so a flip to a trait-based gate later is a
   one-line change (GATES below).
 
@@ -37,9 +39,24 @@ import xml.etree.ElementTree as ET
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import jawaese
 
-SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_speakup_src_1p6")
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
-                   "src", "Jawa", "JawaVoice")
+# 🔴 BOTH OF THESE WERE WRONG AND THE SCRIPT HAD BEEN DEAD FOR IT. Corrected
+# 2026-08-21 (JAWAVOICE_BUILDER_IS_ORPHANED_1).
+#   SRC pointed at `Utils/_speakup_src_1p6`, which has never existed. The snapshot is
+#     where this file's own docstring always said it was: `vendor/mod_sources/`.
+#   OUT was short one `..` and resolved to `src/RimMandrake/src/Jawa/JawaVoice`, so a
+#     run would `makedirs` a phantom tree and write nine files nobody would ever read.
+# ⚠️ That second bug was the ONLY thing protecting the nine committed patches. Anyone
+# who fixed the path without noticing the first bug would have pointed a working writer
+# at a missing source. Both are fixed together or neither is.
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_REPO = os.path.abspath(os.path.join(_HERE, "..", "..", ".."))
+SRC = os.path.join(_REPO, "vendor", "mod_sources", "_speakup_src_1p6")
+OUT = os.path.join(_REPO, "src", "Jawa", "JawaVoice")
+if not os.path.isdir(os.path.join(SRC, "Defs")):
+    raise SystemExit(
+        "build_jawavoice: no SpeakUp snapshot at %s\n"
+        "⛔ REFUSING rather than emitting an empty mod over the nine committed\n"
+        "   patches in src/Jawa/JawaVoice/Patches/. Restore the snapshot first." % SRC)
 
 # The two gate predicates. To switch to a trait gate later, replace both with
 # a single ("INITIATOR_trait==Jawaese-speaker",) entry.
@@ -73,7 +90,15 @@ VANILLA_ANCHORS = {
 }
 
 MAX_GLOSSES = 6          # cap variety lines per def to keep patches lean
-PRIORITY = 9             # above SpeakUp's own (they top out ~5)
+# 🔴 250, NOT 9. Corrected 2026-08-21. The nine committed patches carry 250 on all
+# 3,932 rule strings, and so do both sibling generators (genideo.py:179,
+# genxml.py:39) - 9 was left behind here alone. It is the ONLY thing that
+# differed between this generator's output and the committed files: normalise the
+# priority and all eight are byte-identical, Jawaese text included.
+# ⚠️ It is not cosmetic. The priority is what makes a Jawa line beat SpeakUp's
+# English tree; at 9 the reskin loses the roll and the pawns speak English, with
+# nothing logged and every file still present and valid.
+PRIORITY = 250             # above SpeakUp's own (they top out ~5)
 
 
 def clean_leaf(text):
