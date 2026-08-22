@@ -54,7 +54,23 @@ server lives. No equivalent exists for the publisher: `queue/*.md` mtimes older 
 
 A browser page, not a desktop window — WSLg gives Tk no DPI scaling, so anything native renders blurry. Rows are the v1
 bullets from `infrastructure/state/V1.md`, columns DECIDE / BUILD / CHECK, each cell a fill bar with `done/total`; plus
-gauges, KPI tiles, blockers, host memory, repo inventory, and CURRENTLY from `infrastructure/state/status/<SEAT>.json`.
+gauges, KPI tiles, blockers, host memory and repo inventory.
+
+⛔ **CURRENTLY and `infrastructure/state/status/<SEAT>.json` are DELETED, 2026-08-22.** The owner:
+*"It's never showing what the agents are really doing… all the agent status' are wrong."* He was right about
+every tile, and the cause was one thing — **the board printed what seats SAY, and no seat says anything.**
+The four status files had **no writer at all** (`board.py say` is long gone) and were 1–7 days old, so *idle*
+meant "wrote no file this week" while `ps` showed all four windows alive and the ledger showed BUILD filing
+an event 0 minutes earlier. *"CHECK holds the Bridge"* was a lease nobody releases, still on screen six hours
+after the game went down. *STALE 6m* keyed off the **ledger's** age, not the page's, so a seat mid-build read
+as dead.
+
+⭐ **The replacement rule, and it is the same one `measure` enforces: nothing on the page is self-reported.**
+`measured()` in `status_server.py` reads liveness from `ps` (`AGENT_SEAT=<SEAT>`), activity from the
+append-only ledger, the game from the Windows process list, the bridge from a **TCP probe** of `:5174`, and
+durability from `git`. Every tile prints the instrument that produced it; where no instrument exists the
+answer is **UNMEASURED**, never a guess. ⛔ **Do not re-introduce a tile a seat has to remember to update** —
+that is the defect, not the implementation.
 
 ⛔ **`status_matrix.json` is DELETED, 2026-08-22.** It was a dead artifact: the board reads
 `infrastructure/state/derived/board.json`, `derive_matrix.py` refuses to rebuild it against the rendered queues, and it had
