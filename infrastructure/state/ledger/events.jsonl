@@ -1496,3 +1496,7 @@
 {"seat":"BUILD","event":"claim","id":"VEHICLE_SPRITE_ARTEFACT_CLEANUP_1","ts":"2026-08-22T22:47:27Z"}
 {"seat":"BUILD","event":"start","id":"VEHICLE_SPRITE_ARTEFACT_CLEANUP_1","ts":"2026-08-22T22:47:27Z"}
 {"seat":"BUILD","event":"close","id":"VEHICLE_SPRITE_ARTEFACT_CLEANUP_1","sha":"63e63907","ts":"2026-08-22T22:47:27Z"}
+{"seat":"OWNER","event":"file","id":"HUTT_LORDS_AND_POSTS_1","title":"Eight Hutt lords: oasis palaces and eleven deep-desert service posts","kind":"task","target":"v1","needs":"offline","for":"DECIDE","ownerSaid":"The Hutt settlements that are on oasis should all be named (Hutt Lord's name)'s Palace.","ts":"2026-08-22T22:52:20Z"}
+{"seat":"DECIDE","event":"claim","id":"MERIDIAN_WATER_HALVED_1","ts":"2026-08-22T22:52:20Z"}
+{"seat":"DECIDE","event":"claim","id":"GREY_SEA_BRINE_PATCHES_1","ts":"2026-08-22T22:52:20Z"}
+{"seat":"DECIDE","event":"claim","id":"HUTT_LORDS_AND_POSTS_1","ts":"2026-08-22T22:52:21Z"}
