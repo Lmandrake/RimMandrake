@@ -251,6 +251,122 @@ def cmd_xenotypes(args) -> None:
         print(f"  {flag}{row['size']:>5}  {row['defName']:<32} {row['mod'][:30]:<30} {note}")
 
 
+# --------------------------------------------------------------------------
+# The feasibility verdicts.
+#
+# 🔑 These are judgements about the FICTION, not about the numbers.  The owner
+# asked which species could feasibly be big and tall; a Jawa is canonically
+# small and is not a candidate whatever a stat says.  Every verdict here is a
+# RECOMMENDATION for the owner to rule on -- nothing in this file applies
+# anything.
+#
+# Only species we actually field are judged.  A third-party xenotype we do not
+# put on the map is NOT OURS: out of scope unless the owner says otherwise.
+# --------------------------------------------------------------------------
+
+STRONG = "STRONG"        # canonically large AND built to fight
+PLAUSIBLE = "PLAUSIBLE"  # arguably large; the owner could go either way
+TALL = "TALL NOT BIG"    # tall but slight -- a giant frame would read wrong
+HUMAN = "HUMAN SCALE"    # no reason in the fiction to be bigger
+NEVER = "NEVER"          # canonically small; must not be a candidate
+SPECIAL = "SPECIAL"      # big, but a giant weapon still reads wrong
+ALREADY = "ALREADY BIG"  # carries a mechanical size gene already
+SMALLER = "ALREADY SMALL"
+FOREIGN = "NOT OURS"
+
+VERDICTS = {
+    # ---- strong candidates -------------------------------------------------
+    "RimMandrakeWookiee": (STRONG, "2.1 m and the galaxy's byword for strength; the single most obvious candidate"),
+    "RimMandrakeGamorrean": (STRONG, "the def's own text says 'tall, strong bipeds'; porcine brutes hired as muscle"),
+    "Jawa_Xeno_Gamorrean": (STRONG, "our own Gamorrean variant -- same call as RimMandrakeGamorrean, and it already carries the cosmetic big gene"),
+    "RimMandrakeHerglic": (STRONG, "the def calls them 'hulking' and says they 'hit like a wrecking ball'"),
+    "RimMandrakeTrandoshan": (STRONG, "2 m reptilian trophy hunters; large and built for violence"),
+    "RimMandrakeTogorian": (STRONG, "the def's own text: 'large, feline beings'"),
+    "RimMandrakeLasat": (STRONG, "over 2 m and famously powerful in melee"),
+    "RimMandrakeFeeorin": (STRONG, "tall, heavily muscled and long-lived; grows stronger with age"),
+    "RimMandrakeSithMassassi": (STRONG, "the Sith war caste -- bred tall and heavily muscled for exactly this"),
+    # ---- plausible ---------------------------------------------------------
+    "RimMandrakeKlatoonian": (PLAUSIBLE, "the def's own text: 'possessed a strong build, which made them useful laborers'"),
+    "RimMandrakeAqualish": (PLAUSIBLE, "burly and thickset; frequently cast as heavies"),
+    "RimMandrakeCathar": (PLAUSIBLE, "large athletic felinoids, though closer to human height than to a giant"),
+    "RimMandrakeKaleesh": (PLAUSIBLE, "formidable warriors, but canonically near human height -- the fighting is the argument, not the size"),
+    "RimMandrakeChagrian": (PLAUSIBLE, "tall and solidly built, though not warriors by disposition"),
+    "RimMandrakeNelvaanian": (PLAUSIBLE, "lupine and powerfully built; a defensible large frame"),
+    "RimMandrakeGungan": (PLAUSIBLE, "tall amphibians, but rangy rather than heavy"),
+    # ---- tall, not big -----------------------------------------------------
+    "RimMandrakeKaminoan": (TALL, "2.3 m and famously frail -- tall is not big, and a giant weapon on one would read as a joke"),
+    "RimMandrakeMuun": (TALL, "the def says it: 'tall thin humanoids'. Bankers."),
+    "RimMandrakeCerean": (TALL, "the height is in the cranium; the body is ordinary"),
+    "RimMandrakePyke": (TALL, "tall and spindly criminal caste"),
+    "RimMandrakeNagai": (TALL, "the def says 'tall and agile' -- agility is the point, mass is not"),
+    "RimMandrakeIthorian": (TALL, "tall, but gentle herbivore pacifists; arming one with an ogre club is against the species"),
+    "RimMandrakeKelDor": (TALL, "slight build under the mask"),
+    # ---- special -----------------------------------------------------------
+    "RimMandrakeHutt": (SPECIAL, "canonically the largest species we field by a wide margin, so a size gene is RIGHT -- but a Hutt is a sessile slug with vestigial arms and could not swing a giant hammer. Size yes, giant weapons no."),
+    # ---- never -------------------------------------------------------------
+    "MandrakeJawa": (NEVER, "the player xenotype, and canonically ~1 m. Never a candidate."),
+    "RimMandrakeJawa": (NEVER, "canonically ~1 m"),
+    "RimMandrakeEwok": (NEVER, "the def's own text: 'small primitive species', 'diminutive size'"),
+    "RimMandrakeChadraFan": (NEVER, "the def's own text: 'meter-tall, rodent-like humanoids'"),
+    "RimMandrakeUgnaught": (NEVER, "canonically short and stocky labourers"),
+    "RimMandrakeYoderForceGremlin": (NEVER, "the Yoda species; tiny by definition"),
+    "RimMandrakeSullustan": (NEVER, "short"),
+    "RimMandrakeBothan": (NEVER, "short and slight"),
+    "RimMandrakeDefel": (NEVER, "small shadow-dwellers"),
+    "RimMandrakeGand": (NEVER, "small insectoids"),
+    "RimMandrakeGeonosianVariants": (NEVER, "slight winged insectoids"),
+    "RimMandrakeSnivvian": (NEVER, "short"),
+    "RimMandrakeSelkath": (NEVER, "modest build"),
+    "RimMandrakeOrtolan": (NEVER, "the def's own text: 'squat, blue-skinned bipeds'"),
+}
+
+# Everything else of ours is human scale.  Named so the table is complete and so
+# a future reader can see the default was a decision, not an omission.
+OURS_PREFIXES = ("RimMandrake", "MandrakeJawa", "Jawa_", "guy762_")
+
+
+def verdict_for(row: dict) -> tuple[str, str]:
+    name = row["defName"]
+    if name in VERDICTS:
+        return VERDICTS[name]
+    if row["size"] >= 1 + BIG_ENOUGH:
+        return ALREADY, f"already bodySize {row['size']} via {', '.join(row['sizeGenes'])}"
+    if row["size"] < 1:
+        return SMALLER, f"already bodySize {row['size']} via {', '.join(row['sizeGenes'])}"
+    if name.startswith(OURS_PREFIXES):
+        if name == "guy762_debugxenotype_droid":
+            return FOREIGN, "a debug def from a resource mod; not a species we field"
+        return HUMAN, "near-human build in the fiction; no reason to be larger"
+    return FOREIGN, "a third-party xenotype we do not field; out of scope unless the owner says otherwise"
+
+
+def cmd_shortlist(args) -> None:
+    conn = _connect()
+    genes = size_genes(conn)
+    cosm = cosmetic_only_genes(conn, set(genes))
+    rows = xenotypes(conn, genes, cosm)
+    order = {v: i for i, v in enumerate(
+        [STRONG, PLAUSIBLE, SPECIAL, TALL, ALREADY, HUMAN, NEVER, SMALLER, FOREIGN])}
+    for row in rows:
+        row["verdict"], row["why"] = verdict_for(row)
+    rows.sort(key=lambda r: (order[r["verdict"]], -r["size"], r["defName"]))
+    if args.markdown:
+        print("| xenotype | mod | size now | verdict | why |")
+        print("|---|---|---:|---|---|")
+        for row in rows:
+            print(f"| `{row['defName']}` | {row['mod']} | {row['size']} | "
+                  f"**{row['verdict']}** | {row['why']} |")
+    else:
+        for row in rows:
+            print(f"{row['verdict']:<14} {row['size']:>5}  {row['defName']:<32} {row['why']}")
+    counts = {}
+    for row in rows:
+        counts[row["verdict"]] = counts.get(row["verdict"], 0) + 1
+    total = sum(counts.values())
+    print(f"\n{total} xenotypes, each judged once: "
+          + ", ".join(f"{v} {k}" for k, v in sorted(counts.items(), key=lambda kv: order[kv[0]])))
+
+
 def cmd_report(args) -> None:
     conn = _connect()
     genes = size_genes(conn)
@@ -284,6 +400,10 @@ def main() -> None:
     p.set_defaults(func=cmd_genes)
     p = sub.add_parser("xenotypes", help="all installed xenotypes with measured size")
     p.set_defaults(func=cmd_xenotypes)
+    p = sub.add_parser("shortlist",
+                       help="every xenotype with a feasibility verdict, judged on the fiction")
+    p.add_argument("--markdown", action="store_true", help="emit the report table")
+    p.set_defaults(func=cmd_shortlist)
     p = sub.add_parser("report", help="the markdown report")
     p.set_defaults(func=cmd_report)
     args = parser.parse_args()
