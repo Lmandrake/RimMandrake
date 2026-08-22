@@ -13,8 +13,23 @@ memory. Anything unverified is marked UNCERTAIN. Nothing here is built unless it
 **~1 minute** edit → build → deploy → launch → test cycle on the 13-mod list. That is why
 this roster is worth culling rather than admiring.
 
-**Already built: 57 tools** — 32 map/pawn/terrain in `JawaBenchTerrainTools.cs`, 25 world
-tools in `JawaBenchWorldTools.cs`. Nothing below duplicates those.
+🔴 **THAT BASELINE IS STALE — CHECK, 2026-08-22. It said 57; the source now declares 119.**
+Measured two agreeing ways: `[Tool(` attribute declarations across the seven
+`JawaBench*Tools.cs` files, and unique `"jawa/…"` names in attribute position. Both 119.
+Per file: Diagnostic 4 · Event 13 · Faction 3 · Map 16 · Pawn 18 · Terrain 32 · World 33.
+⚠️ Two of those (`jawa/fire_incident`, `jawa/send_letter`) ship only in a `--gm` build, so
+a live count from the running bridge is the authority — a source count is not.
+
+⛔ **So "Nothing below duplicates those" can no longer be trusted, and the cull is the
+thing that pays for it.** The tool count roughly DOUBLED since this roster was written on
+2026-08-19; anything the owner picks may already exist.
+🔑 **The overlap cannot be found mechanically.** This roster describes capabilities in
+prose rather than by proposed tool name — it names exactly ONE `jawa/` tool,
+`jawa/set_roof_batch`, **and that one is already built.** Someone has to re-walk the 121
+rows against the current 119 before the owner spends attention on it.
+
+**Original baseline, kept for provenance:** *Already built: 57 tools — 32 map/pawn/terrain
+in `JawaBenchTerrainTools.cs`, 25 world tools in `JawaBenchWorldTools.cs`.*
 
 Risk key: **low** = read or trivially reversible · **med** = mutates state, reversible by
 reload · **high** = irreversible on a live campaign, or can wedge/end the game.
