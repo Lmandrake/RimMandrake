@@ -223,8 +223,9 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./src/RimMandrake/Utils/show.sh <path>             open it in Explorer
 node --check <file.js>        ⭐ Node 22 IS installed, user-local, 2026-08-22 — no sudo,
                               ~/.local/node symlinked into ~/.local/bin. Lint every board
-                              view before serving it; three sessions in a row said "I have
-                              no JS engine" and shipped an unverified page instead.
+                              view before serving it. REP shipped the board twice in one
+                              session saying "no JS engine here", when installing one took
+                              40 seconds and found the answer.
 ./game up|down|loading|deploying|going-down   announce to every window + stamp the ledger
 python3 src/RimMandrake/Utils/broadcast.py --list  🔴 OWNER ONLY - see below
 ```
