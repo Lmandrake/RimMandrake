@@ -1,7 +1,7 @@
 {
   "artifact": "world/ASHKARR_WORLDMAP_tiles.csv",
   "frozen": true,
-  "frozenOn": "2026-08-21",
+  "frozenOn": "2026-08-22",
   "frozenBy": "BUILD",
   "frozenMeaning": "FROZEN 2026-08-21. This CSV is the 21,872-tile hand-authored planet and it is now AHEAD of the generator that first wrote it. Do NOT run src/RimMandrake/Utils/ashkarr_paint.py over it - that script takes no arguments, rebuilds tiles + settlements + links wholesale the moment it is invoked, and would silently regress every hand edit made since. The output would still be 21,872 valid rows with no error and no visible break, which is why this is a refusal rather than a comment.",
   "whyItPassesTheThreeTests": {
@@ -20,5 +20,10 @@
     "world/ASHKARR_WORLDMAP_mutators.csv",
     "world/ASHKARR_WORLDMAP_landmarks.csv"
   ],
-  "notFrozenWhy": "Only the tiles CSV is known to carry hand edits the painter would lose. ashkarr_paint.py writes the settlements and links CSVs too, so the guard stops those being rebuilt as a side effect - but they are not independently frozen and no separate claim is made about them. If one of them is later hand-edited, say so here."
+  "notFrozenWhy": "Only the tiles CSV is known to carry hand edits the painter would lose. ashkarr_paint.py writes the settlements and links CSVs too, so the guard stops those being rebuilt as a side effect - but they are not independently frozen and no separate claim is made about them. If one of them is later hand-edited, say so here.",
+  "sha256": "d4a5be45cd6265d514a6584f38be2196ed50c8642b059018b97dab98d50e3707",
+  "rows": 21872,
+  "bytes": 1832120,
+  "restampedWhy": "Restamped 2026-08-22 after an independent audit found this file 16 hours stale and STRUCTURALLY UNABLE to notice: it asserted '20,113 rows with rain_mm = 0' (actual at the time: 20,476) and carried no hash and no row count, so the claim read as authoritative while being false. sha256/rows/bytes are the fix - a freeze that cannot detect its own staleness is a comment, not a guard.",
+  "dryRows": 20476
 }

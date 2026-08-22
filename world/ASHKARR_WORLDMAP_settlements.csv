@@ -6,10 +6,10 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 4,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Oxide Deep,20427,-30.262,58.761,63.4,Wasteland,the ore seams - the collapsed silicax oxalate holdings the Jawas robbed
 5,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,The Godmouth,11335,19.867,0.792,19.9,Scarlands,"subterranean dayside rock, beside the Rust Cathedral they worship"
 6,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Founder's Kiln,14574,16.172,-1.574,16.2,Scarlands,"subterranean dayside rock, beside the Rust Cathedral they worship"
-7,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Hollow Nave,6482,10.078,-7.036,12.3,AB_MechanoidIntrusion,"subterranean dayside rock, beside the Rust Cathedral they worship"
+7,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Hollow Nave,19422,11.3654,-7.8252,13.77,Scarlands,"subterranean dayside rock, beside the Rust Cathedral they worship"
 8,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Trade Socket,15207,-14.612,-40.135,42.3,Volcano,low mountains with poisonous volcanic springs - water nobody else can drink
 9,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Nine,7792,10.629,-41.935,43.0,AB_FeraliskInfestedJungle,low mountains with poisonous volcanic springs - water nobody else can drink
-10,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Master,19350,5.085,-8.575,10.0,AB_MechanoidIntrusion,the Rust Cathedral is sacred to them; they keep a seat beside it
+10,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Master,6486,6.3743,-9.3567,11.31,AB_FeraliskInfestedJungle,the Rust Cathedral is sacred to them; they keep a seat beside it
 11,Jawa_AscendantHelix,Ascendant Helix,Helix Landing,3478,27.084,-106.498,104.6,AridShrubland,"cold, isolated research seats on the nightside edge, next to what is strange"
 12,Jawa_AscendantHelix,Ascendant Helix,The Coil,6779,22.67,105.79,104.5,Wasteland,"cold, isolated research seats on the nightside edge, next to what is strange"
 13,Jawa_AscendantHelix,Ascendant Helix,Quiet Lab,4045,27.084,106.498,104.6,ZBiome_Badlands,"cold, isolated research seats on the nightside edge, next to what is strange"

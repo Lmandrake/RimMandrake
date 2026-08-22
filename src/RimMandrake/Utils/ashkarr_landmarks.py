@@ -201,6 +201,61 @@ FORCE_PATCH = [
 ]
 
 
+HILL_ENUM = {"Undefined": None, "Flat": 1, "SmallHills": 2, "LargeHills": 3,
+             "Mountainous": 4, "Impassable": 5}
+
+
+def mutator_defs():
+    """the constraint fields of every TileMutatorDef, for the legality gate below"""
+    out = subprocess.run(["python3", MEASURE, "--rows", "500", "sql",
+                          "SELECT def_name || '\t' || json FROM defs WHERE def_type='TileMutatorDef'"],
+                         capture_output=True, text=True).stdout
+    D = {}
+    for line in out.split("\n"):
+        if "\t{" not in line:
+            continue
+        try:
+            f = json.loads(line[line.index("\t{") + 1:])["fields"]
+        except Exception:
+            continue
+        D[f["defName"]] = {k: f.get(k) for k in
+                           ("biomeWhitelist", "biomeBlacklist", "minHilliness",
+                            "maxHilliness", "coastSidesRange", "canSpawnOnRiver")}
+    return D
+
+
+def mutators_legal(reqs, t, T, MD, coast_n, river_t):
+    """🔴 THE GATE THAT WAS MISSING. A LandmarkDef's own placement rule says nothing about
+    the TILE MUTATORS it drags along, and each of those has its own biomeWhitelist,
+    hilliness bounds, coastSidesRange and canSpawnOnRiver. Without this, 276 of 497
+    landmarks were placed on ground their required mutator forbids (measured 2026-08-22) -
+    and it imports silently, because TileMutatorDef.IsValidTile is not called on the
+    direct-set path the bridge uses.
+    ⇒ Some landmarks are simply IMPOSSIBLE on this planet and that is the correct answer:
+    IceDunes and Crevasse need SeaIce/IceSheet/GlacialPlain, and Ash'karr has no ice
+    biome at all. A rule that places none of them is right, not broken."""
+    d = T[t]
+    for m in reqs:
+        c = MD.get(m)
+        if c is None:
+            continue
+        wl, bl = c.get("biomeWhitelist"), c.get("biomeBlacklist")
+        if wl and d["biome"] not in wl:
+            return False
+        if bl and d["biome"] in bl:
+            return False
+        lo, hi = HILL_ENUM.get(c.get("minHilliness")), HILL_ENUM.get(c.get("maxHilliness"))
+        if (lo is not None and d["hill"] < lo) or (hi is not None and d["hill"] > hi):
+            return False
+        cs = c.get("coastSidesRange") or {}
+        cmin, cmax = cs.get("min", -1), cs.get("max", -1)
+        if cmin >= 0 and not (cmin <= coast_n[t] <= cmax):
+            return False
+        if c.get("canSpawnOnRiver") is False and t in river_t:
+            return False
+    return True
+
+
 def landmark_defs():
     out = subprocess.run(["python3", MEASURE, "--rows", "200", "sql",
                           "SELECT def_name || '\t' || json FROM defs WHERE def_type='LandmarkDef'"],
@@ -264,6 +319,11 @@ def main():
     print("  repaired %d of %d existing landmarks\n" % (repaired, len(lrows)))
 
     # ── EXTEND ────────────────────────────────────────────────────────────────
+    MD = mutator_defs()
+    water_t = {t for t, d in T.items() if d["water"] == 1}
+    coast_n = {t: sum(1 for n in nb[t] if n in water_t) for t in T}
+    _links = list(csv.reader(open(STEM + "_links.csv", encoding="utf-8")))[1:]
+    river_t = {int(x) for k, p_, q_, d_ in _links if k == "river" for x in (p_, q_)}
     placed, by_rule = [], []
 
     # ── FORCED PATCHES ────────────────────────────────────────────────────────
@@ -278,7 +338,8 @@ def main():
             print("  SKIP  %-26s no such LandmarkDef" % name)
             continue
         cand = [t for t, d in T.items()
-                if t not in taken and t not in settlements and d["water"] == 0 and pred(d)]
+                if t not in taken and t not in settlements and d["water"] == 0 and pred(d)
+                and mutators_legal(LD[name], t, T, MD, coast_n, river_t)]
         if not cand:
             print("  FORCE %-26s  no tile matches at all - not placed" % name)
             continue
@@ -310,7 +371,13 @@ def main():
             print("  SKIP  %-26s no such LandmarkDef in this mod set" % name)
             continue
         cand = [t for t, d in T.items()
-                if t not in taken and t not in settlements and d["water"] == 0 and pred(d)]
+                if t not in taken and t not in settlements and d["water"] == 0 and pred(d)
+                and mutators_legal(LD[name], t, T, MD, coast_n, river_t)]
+        if not cand:
+            print("  place %-26s  0   <- IMPOSSIBLE here: no tile satisfies its required "
+                  "mutators" % name)
+            by_rule.append((name, 0, want))
+            continue
         # deterministic: rank by a stable key, never a random draw
         cand.sort(key=lambda t: (-T[t]["elev"], t))
         chosen = []

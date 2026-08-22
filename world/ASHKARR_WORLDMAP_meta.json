@@ -1,441 +1,791 @@
 {
- "planet": "Ash'karr — The Sundered",
- "tiles": 21872,
- "substellar": [
-  0.0,
-  0.0
- ],
- "water_pct": 8.14,
- "regions": [
-  "The Scald",
-  "The Twilight Sea",
-  "The Gray Sea",
-  "The Ammonia Flats",
-  "The Rust Cathedral",
-  "The Scorch",
-  "The Anvil",
-  "The Dune Sea",
-  "The Scald Spine",
-  "The Ashteeth",
-  "The Fall Line",
-  "The Dew Horn",
-  "The Ashfall Range",
-  "The Twilight Crags",
-  "The Gray Crags",
-  "The South Crags",
-  "The Dew Belt",
-  "The Fall Line Barrens",
-  "The Salt",
-  "The Pyrelands",
-  "The Sunreach",
-  "The Nightspill",
-  "The Umbra",
-  "The Salt Gate"
- ],
- "features": [
-  {
-   "id": 0,
-   "name": "The Scald",
-   "kind": "sea",
-   "tiles": 312,
-   "mass": 312,
-   "drawCenter": [
-    0.814192,
-    -0.013242,
-    -0.580445
-   ],
-   "lat": -0.7587,
-   "lon": -35.4854,
-   "maxDrawSizeInTiles": 27.5
-  },
-  {
-   "id": 1,
-   "name": "The Twilight Sea",
-   "kind": "sea",
-   "tiles": 851,
-   "mass": 851,
-   "drawCenter": [
-    -0.01706,
-    0.303841,
-    -0.95257
-   ],
-   "lat": 17.6884,
-   "lon": -91.026,
-   "maxDrawSizeInTiles": 48.8
-  },
-  {
-   "id": 2,
-   "name": "The Gray Sea",
-   "kind": "sea",
-   "tiles": 617,
-   "mass": 617,
-   "drawCenter": [
-    0.008497,
-    0.134848,
-    0.99083
-   ],
-   "lat": 7.7498,
-   "lon": 89.5086,
-   "maxDrawSizeInTiles": 48.2
-  },
-  {
-   "id": 3,
-   "name": "The Ammonia Flats",
-   "kind": "waste",
-   "tiles": 818,
-   "mass": 818,
-   "drawCenter": [
-    -0.924438,
-    0.342847,
-    0.166945
-   ],
-   "lat": 20.0504,
-   "lon": 169.7632,
-   "maxDrawSizeInTiles": 33.6
-  },
-  {
-   "id": 4,
-   "name": "The Rust Cathedral",
-   "kind": "waste",
-   "tiles": 236,
-   "mass": 236,
-   "drawCenter": [
-    0.992031,
-    0.088949,
-    0.089229
-   ],
-   "lat": 5.1031,
-   "lon": 5.1397,
-   "maxDrawSizeInTiles": 20.7
-  },
-  {
-   "id": 5,
-   "name": "The Scorch",
-   "kind": "waste",
-   "tiles": 90,
-   "mass": 58,
-   "drawCenter": [
-    0.956039,
-    0.28275,
-    0.077725
-   ],
-   "lat": 16.4244,
-   "lon": 4.6478,
-   "maxDrawSizeInTiles": 23.2
-  },
-  {
-   "id": 6,
-   "name": "The Anvil",
-   "kind": "waste",
-   "tiles": 642,
-   "mass": 642,
-   "drawCenter": [
-    1.0,
+  "planet": "Ash'karr — The Sundered",
+  "tiles": 21872,
+  "substellar": [
     0.0,
     0.0
-   ],
-   "lat": 0.0,
-   "lon": 0.0,
-   "maxDrawSizeInTiles": 29.5
+  ],
+  "water_pct": 8.14,
+  "regions": [
+    "The Deadstone",
+    "The Dune Sea",
+    "The Glare",
+    "The Twilight Sea",
+    "The Ammonia Flats",
+    "The Nightspill",
+    "The Kiln",
+    "The Umbra",
+    "The Sunreach",
+    "The Long Sand",
+    "The Grey Sea",
+    "The Gray Crags",
+    "The Thornbelt",
+    "The Dew Horn",
+    "The South Crags",
+    "The Dry March",
+    "The Twilight Crags",
+    "The Dew Belt",
+    "The Combs",
+    "The Anvil",
+    "The Ashfall Range",
+    "The Rimewall",
+    "The Scald",
+    "The Softground",
+    "The Sporefields",
+    "The Cold Bloom",
+    "The Salt",
+    "The Rust Cathedral",
+    "The Scour",
+    "The Low Dew",
+    "The Cracklands",
+    "The Ashen Waste",
+    "The Scald Spine",
+    "The High Rot",
+    "The Fall Line",
+    "The Sunward Scrub",
+    "The Fall Line Barrens",
+    "The Cinderdark",
+    "The Last Green",
+    "The Frostbloom",
+    "The Flatdew",
+    "The Blight",
+    "The Deep Bloom",
+    "The Grayrot",
+    "The Warm Rot",
+    "The Cinders",
+    "The Scorch",
+    "The Shelf Rot",
+    "The Pan",
+    "The Knuckles",
+    "The Venom Wood",
+    "The Apron",
+    "The Coldspore",
+    "The Saddle",
+    "The Shoulder",
+    "The Crown Rot",
+    "The Fever Wood",
+    "The Pyrelands",
+    "The Last Scrub",
+    "The Salt Gate"
+  ],
+  "features": [
+    {
+      "id": 0,
+      "name": "The Deadstone",
+      "tiles": 1979,
+      "mass": 1979,
+      "kind": "region",
+      "lat": -0.9944,
+      "lon": -37.7629
+    },
+    {
+      "id": 1,
+      "name": "The Dune Sea",
+      "kind": "waste",
+      "tiles": 1692,
+      "mass": 1692,
+      "drawCenter": [
+        0.997206,
+        0.00029,
+        0.074696
+      ],
+      "lat": -0.2554,
+      "lon": 3.7228,
+      "maxDrawSizeInTiles": 65.2
+    },
+    {
+      "id": 2,
+      "name": "The Glare",
+      "tiles": 866,
+      "mass": 866,
+      "kind": "region",
+      "lat": 40.3726,
+      "lon": 9.3437
+    },
+    {
+      "id": 3,
+      "name": "The Twilight Sea",
+      "kind": "sea",
+      "tiles": 851,
+      "mass": 851,
+      "drawCenter": [
+        -0.01706,
+        0.303841,
+        -0.95257
+      ],
+      "lat": 17.174,
+      "lon": -90.7035,
+      "maxDrawSizeInTiles": 48.8
+    },
+    {
+      "id": 4,
+      "name": "The Ammonia Flats",
+      "kind": "waste",
+      "tiles": 818,
+      "mass": 818,
+      "drawCenter": [
+        -0.924438,
+        0.342847,
+        0.166945
+      ],
+      "lat": 19.6648,
+      "lon": 88.3734,
+      "maxDrawSizeInTiles": 33.6
+    },
+    {
+      "id": 5,
+      "name": "The Nightspill",
+      "kind": "waste",
+      "tiles": 817,
+      "mass": 817,
+      "drawCenter": [
+        -0.417913,
+        -0.071562,
+        -0.905664
+      ],
+      "lat": -7.5879,
+      "lon": -115.9538,
+      "maxDrawSizeInTiles": 87.7
+    },
+    {
+      "id": 6,
+      "name": "The Kiln",
+      "tiles": 816,
+      "mass": 816,
+      "kind": "region",
+      "lat": -40.4956,
+      "lon": 5.9074
+    },
+    {
+      "id": 7,
+      "name": "The Umbra",
+      "kind": "waste",
+      "tiles": 802,
+      "mass": 802,
+      "drawCenter": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "lat": -7.514,
+      "lon": -39.7355,
+      "maxDrawSizeInTiles": 41.4
+    },
+    {
+      "id": 8,
+      "name": "The Sunreach",
+      "kind": "waste",
+      "tiles": 781,
+      "mass": 781,
+      "drawCenter": [
+        -0.414725,
+        -0.03444,
+        0.909295
+      ],
+      "lat": -9.6373,
+      "lon": 115.6537,
+      "maxDrawSizeInTiles": 84.5
+    },
+    {
+      "id": 9,
+      "name": "The Long Sand",
+      "tiles": 670,
+      "mass": 670,
+      "kind": "region",
+      "lat": -53.467,
+      "lon": -43.8079
+    },
+    {
+      "id": 10,
+      "name": "The Grey Sea",
+      "tiles": 617,
+      "mass": 617,
+      "kind": "sea",
+      "lat": 7.6591,
+      "lon": 89.6367
+    },
+    {
+      "id": 11,
+      "name": "The Gray Crags",
+      "kind": "massif",
+      "tiles": 576,
+      "mass": 576,
+      "drawCenter": [
+        -0.401206,
+        0.368233,
+        0.838712
+      ],
+      "lat": 21.1932,
+      "lon": 117.3839,
+      "maxDrawSizeInTiles": 69.7
+    },
+    {
+      "id": 12,
+      "name": "The Thornbelt",
+      "tiles": 492,
+      "mass": 492,
+      "kind": "region",
+      "lat": -47.6337,
+      "lon": 61.2509
+    },
+    {
+      "id": 13,
+      "name": "The Dew Horn",
+      "kind": "massif",
+      "tiles": 491,
+      "mass": 491,
+      "drawCenter": [
+        0.496785,
+        -0.007177,
+        -0.867844
+      ],
+      "lat": -0.3723,
+      "lon": -60.0137,
+      "maxDrawSizeInTiles": 51.2
+    },
+    {
+      "id": 14,
+      "name": "The South Crags",
+      "kind": "massif",
+      "tiles": 432,
+      "mass": 432,
+      "drawCenter": [
+        -0.623093,
+        -0.758824,
+        0.189582
+      ],
+      "lat": -46.1336,
+      "lon": 46.8703,
+      "maxDrawSizeInTiles": 53.1
+    },
+    {
+      "id": 15,
+      "name": "The Dry March",
+      "tiles": 387,
+      "mass": 387,
+      "kind": "region",
+      "lat": 45.8937,
+      "lon": 55.4648
+    },
+    {
+      "id": 16,
+      "name": "The Twilight Crags",
+      "kind": "massif",
+      "tiles": 384,
+      "mass": 384,
+      "drawCenter": [
+        -0.301046,
+        -0.301191,
+        -0.904796
+      ],
+      "lat": 5.3617,
+      "lon": -112.2611,
+      "maxDrawSizeInTiles": 26.2
+    },
+    {
+      "id": 17,
+      "name": "The Dew Belt",
+      "kind": "waste",
+      "tiles": 361,
+      "mass": 361,
+      "drawCenter": [
+        0.422316,
+        -0.067106,
+        -0.903961
+      ],
+      "lat": -6.8667,
+      "lon": -73.492,
+      "maxDrawSizeInTiles": 47.5
+    },
+    {
+      "id": 18,
+      "name": "The Combs",
+      "tiles": 360,
+      "mass": 360,
+      "kind": "region",
+      "lat": 54.0273,
+      "lon": -49.0112
+    },
+    {
+      "id": 19,
+      "name": "The Anvil",
+      "kind": "waste",
+      "tiles": 349,
+      "mass": 349,
+      "drawCenter": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lat": -4.2822,
+      "lon": -3.8829,
+      "maxDrawSizeInTiles": 29.5
+    },
+    {
+      "id": 20,
+      "name": "The Ashfall Range",
+      "kind": "massif",
+      "tiles": 346,
+      "mass": 346,
+      "drawCenter": [
+        0.491034,
+        0.012534,
+        0.87105
+      ],
+      "lat": -0.1757,
+      "lon": 60.4444,
+      "maxDrawSizeInTiles": 39.0
+    },
+    {
+      "id": 21,
+      "name": "The Rimewall",
+      "tiles": 335,
+      "mass": 335,
+      "kind": "region",
+      "lat": 62.208,
+      "lon": -26.0207
+    },
+    {
+      "id": 22,
+      "name": "The Scald",
+      "kind": "sea",
+      "tiles": 312,
+      "mass": 312,
+      "drawCenter": [
+        0.814192,
+        -0.013242,
+        -0.580445
+      ],
+      "lat": -0.7514,
+      "lon": -35.4762,
+      "maxDrawSizeInTiles": 27.5
+    },
+    {
+      "id": 23,
+      "name": "The Softground",
+      "tiles": 275,
+      "mass": 275,
+      "kind": "region",
+      "lat": -69.4344,
+      "lon": -80.8735
+    },
+    {
+      "id": 24,
+      "name": "The Sporefields",
+      "tiles": 255,
+      "mass": 255,
+      "kind": "region",
+      "lat": 58.4323,
+      "lon": 96.1709
+    },
+    {
+      "id": 25,
+      "name": "The Cold Bloom",
+      "tiles": 254,
+      "mass": 254,
+      "kind": "region",
+      "lat": 59.5671,
+      "lon": -83.1788
+    },
+    {
+      "id": 26,
+      "name": "The Salt",
+      "kind": "waste",
+      "tiles": 249,
+      "mass": 249,
+      "drawCenter": [
+        -0.266301,
+        0.020617,
+        0.963669
+      ],
+      "lat": 8.844,
+      "lon": 85.3718,
+      "maxDrawSizeInTiles": 45.9
+    },
+    {
+      "id": 27,
+      "name": "The Rust Cathedral",
+      "kind": "waste",
+      "tiles": 236,
+      "mass": 236,
+      "drawCenter": [
+        0.992031,
+        0.088949,
+        0.089229
+      ],
+      "lat": 5.0737,
+      "lon": 5.128,
+      "maxDrawSizeInTiles": 20.7
+    },
+    {
+      "id": 28,
+      "name": "The Scour",
+      "tiles": 234,
+      "mass": 234,
+      "kind": "region",
+      "lat": -74.0863,
+      "lon": 75.3379
+    },
+    {
+      "id": 29,
+      "name": "The Low Dew",
+      "tiles": 230,
+      "mass": 230,
+      "kind": "region",
+      "lat": -39.1715,
+      "lon": 91.0617
+    },
+    {
+      "id": 30,
+      "name": "The Cracklands",
+      "tiles": 210,
+      "mass": 210,
+      "kind": "region",
+      "lat": 70.295,
+      "lon": -8.4788
+    },
+    {
+      "id": 31,
+      "name": "The Ashen Waste",
+      "tiles": 202,
+      "mass": 202,
+      "kind": "region",
+      "lat": -60.6387,
+      "lon": 131.152
+    },
+    {
+      "id": 32,
+      "name": "The Scald Spine",
+      "kind": "massif",
+      "tiles": 174,
+      "mass": 174,
+      "drawCenter": [
+        0.814697,
+        -0.084812,
+        -0.573652
+      ],
+      "lat": -4.3052,
+      "lon": -46.7802,
+      "maxDrawSizeInTiles": 32.9
+    },
+    {
+      "id": 33,
+      "name": "The High Rot",
+      "tiles": 165,
+      "mass": 165,
+      "kind": "region",
+      "lat": -63.9794,
+      "lon": -114.6527
+    },
+    {
+      "id": 34,
+      "name": "The Fall Line",
+      "kind": "massif",
+      "tiles": 155,
+      "mass": 155,
+      "drawCenter": [
+        0.71616,
+        0.037502,
+        0.696928
+      ],
+      "lat": 4.7363,
+      "lon": 52.4868,
+      "maxDrawSizeInTiles": 35.2
+    },
+    {
+      "id": 35,
+      "name": "The Sunward Scrub",
+      "tiles": 154,
+      "mass": 154,
+      "kind": "region",
+      "lat": 60.9451,
+      "lon": 61.3641
+    },
+    {
+      "id": 36,
+      "name": "The Fall Line Barrens",
+      "kind": "waste",
+      "tiles": 153,
+      "mass": 153,
+      "drawCenter": [
+        0.692233,
+        -0.0,
+        0.721674
+      ],
+      "lat": -0.3349,
+      "lon": 47.5854,
+      "maxDrawSizeInTiles": 32.7
+    },
+    {
+      "id": 37,
+      "name": "The Cinderdark",
+      "tiles": 146,
+      "mass": 146,
+      "kind": "region",
+      "lat": -8.1918,
+      "lon": 130.4971
+    },
+    {
+      "id": 38,
+      "name": "The Last Green",
+      "tiles": 144,
+      "mass": 144,
+      "kind": "region",
+      "lat": -61.8498,
+      "lon": 154.2743
+    },
+    {
+      "id": 39,
+      "name": "The Frostbloom",
+      "tiles": 142,
+      "mass": 142,
+      "kind": "region",
+      "lat": 49.3786,
+      "lon": -9.495
+    },
+    {
+      "id": 40,
+      "name": "The Flatdew",
+      "tiles": 141,
+      "mass": 141,
+      "kind": "region",
+      "lat": 70.8457,
+      "lon": -101.6466
+    },
+    {
+      "id": 41,
+      "name": "The Blight",
+      "tiles": 140,
+      "mass": 140,
+      "kind": "region",
+      "lat": -75.7392,
+      "lon": 26.3523
+    },
+    {
+      "id": 42,
+      "name": "The Deep Bloom",
+      "tiles": 132,
+      "mass": 132,
+      "kind": "region",
+      "lat": 8.8989,
+      "lon": -132.1855
+    },
+    {
+      "id": 43,
+      "name": "The Grayrot",
+      "tiles": 123,
+      "mass": 123,
+      "kind": "region",
+      "lat": 64.325,
+      "lon": 128.1967
+    },
+    {
+      "id": 44,
+      "name": "The Warm Rot",
+      "tiles": 93,
+      "mass": 93,
+      "kind": "region",
+      "lat": -35.2214,
+      "lon": -77.6701
+    },
+    {
+      "id": 45,
+      "name": "The Cinders",
+      "tiles": 93,
+      "mass": 93,
+      "kind": "region",
+      "lat": -28.5609,
+      "lon": 70.211
+    },
+    {
+      "id": 46,
+      "name": "The Scorch",
+      "kind": "waste",
+      "tiles": 90,
+      "mass": 90,
+      "drawCenter": [
+        0.956039,
+        0.28275,
+        0.077725
+      ],
+      "lat": 8.3764,
+      "lon": 6.4929,
+      "maxDrawSizeInTiles": 23.2
+    },
+    {
+      "id": 47,
+      "name": "The Shelf Rot",
+      "tiles": 85,
+      "mass": 85,
+      "kind": "region",
+      "lat": -37.8581,
+      "lon": -90.271
+    },
+    {
+      "id": 48,
+      "name": "The Pan",
+      "tiles": 79,
+      "mass": 79,
+      "kind": "region",
+      "lat": 51.8983,
+      "lon": -89.1791
+    },
+    {
+      "id": 49,
+      "name": "The Knuckles",
+      "tiles": 78,
+      "mass": 78,
+      "kind": "region",
+      "lat": 78.8538,
+      "lon": 76.0241
+    },
+    {
+      "id": 50,
+      "name": "The Venom Wood",
+      "tiles": 72,
+      "mass": 72,
+      "kind": "region",
+      "lat": -19.423,
+      "lon": 143.5591
+    },
+    {
+      "id": 51,
+      "name": "The Apron",
+      "tiles": 70,
+      "mass": 70,
+      "kind": "region",
+      "lat": 60.8679,
+      "lon": -71.9517
+    },
+    {
+      "id": 52,
+      "name": "The Coldspore",
+      "tiles": 69,
+      "mass": 69,
+      "kind": "region",
+      "lat": -27.6736,
+      "lon": -138.5493
+    },
+    {
+      "id": 53,
+      "name": "The Saddle",
+      "tiles": 68,
+      "mass": 68,
+      "kind": "region",
+      "lat": -21.54,
+      "lon": 63.6019
+    },
+    {
+      "id": 54,
+      "name": "The Shoulder",
+      "tiles": 68,
+      "mass": 68,
+      "kind": "region",
+      "lat": -65.8032,
+      "lon": -126.004
+    },
+    {
+      "id": 55,
+      "name": "The Crown Rot",
+      "tiles": 67,
+      "mass": 67,
+      "kind": "region",
+      "lat": 36.8352,
+      "lon": 141.2525
+    },
+    {
+      "id": 56,
+      "name": "The Fever Wood",
+      "tiles": 65,
+      "mass": 65,
+      "kind": "region",
+      "lat": 25.3568,
+      "lon": -41.8678
+    },
+    {
+      "id": 57,
+      "name": "The Pyrelands",
+      "kind": "waste",
+      "tiles": 63,
+      "mass": 63,
+      "drawCenter": [
+        0.532827,
+        0.318319,
+        -0.784072
+      ],
+      "lat": 8.27,
+      "lon": -43.3078,
+      "maxDrawSizeInTiles": 20.8
+    },
+    {
+      "id": 58,
+      "name": "The Last Scrub",
+      "tiles": 61,
+      "mass": 61,
+      "kind": "region",
+      "lat": -15.935,
+      "lon": 136.793
+    },
+    {
+      "id": 59,
+      "name": "The Salt Gate",
+      "kind": "waste",
+      "tiles": 16,
+      "mass": 16,
+      "drawCenter": [
+        0.457672,
+        0.52351,
+        -0.718661
+      ],
+      "lat": 33.9394,
+      "lon": -59.1463,
+      "maxDrawSizeInTiles": 9.0
+    }
+  ],
+  "factions": [
+    "Empire",
+    "Jawa_AscendantHelix",
+    "Jawa_DeepwaterCompact",
+    "Jawa_FreeDroidEnclaves",
+    "Jawa_GeonosianFoundryHive",
+    "Jawa_HuttCartel",
+    "Jawa_IndigenousTribes",
+    "Jawa_Junkers",
+    "Jawa_WildsteamClan",
+    "OutlanderCivil",
+    "Pirate",
+    "TribeCivil"
+  ],
+  "faction_labels": {
+    "Empire": "The Galactic Empire",
+    "Jawa_GeonosianFoundryHive": "Geonosian Foundry Hive",
+    "Jawa_FreeDroidEnclaves": "Free Droid Enclaves",
+    "Jawa_AscendantHelix": "Ascendant Helix",
+    "Pirate": "Blackstar Company",
+    "Jawa_WildsteamClan": "Wildsteam Clan",
+    "Jawa_DeepwaterCompact": "Deepwater Compact",
+    "Jawa_HuttCartel": "Hutt Cartel",
+    "Jawa_Junkers": "the Junkers",
+    "Jawa_IndigenousTribes": "Jawa Trade Moot",
+    "TribeCivil": "Deep Desert Tribes",
+    "OutlanderCivil": "Homestead Defense League"
   },
-  {
-   "id": 7,
-   "name": "The Dune Sea",
-   "kind": "waste",
-   "tiles": 1725,
-   "mass": 1725,
-   "drawCenter": [
-    0.997206,
-    0.00029,
-    0.074696
-   ],
-   "lat": 0.0166,
-   "lon": 4.2838,
-   "maxDrawSizeInTiles": 65.2
+  "settlements": 120,
+  "starved": [],
+  "startingTile": 2476,
+  "start": {
+    "tile": 2476,
+    "lat": "-1.0282",
+    "lon": "56.8669",
+    "arc": "56.87",
+    "biome": "ExtremeDesert",
+    "elev_m": 276,
+    "temp_c": "38.2",
+    "rain_mm": "0",
+    "name": "The Setdown"
   },
-  {
-   "id": 8,
-   "name": "The Scald Spine",
-   "kind": "massif",
-   "tiles": 361,
-   "mass": 360,
-   "drawCenter": [
-    0.814697,
-    -0.084812,
-    -0.573652
-   ],
-   "lat": -4.8652,
-   "lon": -35.1505,
-   "maxDrawSizeInTiles": 32.9
-  },
-  {
-   "id": 9,
-   "name": "The Ashteeth",
-   "kind": "massif",
-   "tiles": 333,
-   "mass": 333,
-   "drawCenter": [
-    0.967752,
-    -0.020212,
-    -0.251094
-   ],
-   "lat": -1.1581,
-   "lon": -14.5453,
-   "maxDrawSizeInTiles": 39.8
-  },
-  {
-   "id": 10,
-   "name": "The Fall Line",
-   "kind": "massif",
-   "tiles": 251,
-   "mass": 251,
-   "drawCenter": [
-    0.71616,
-    0.037502,
-    0.696928
-   ],
-   "lat": 2.1492,
-   "lon": 44.2203,
-   "maxDrawSizeInTiles": 35.2
-  },
-  {
-   "id": 11,
-   "name": "The Dew Horn",
-   "kind": "massif",
-   "tiles": 491,
-   "mass": 491,
-   "drawCenter": [
-    0.496785,
-    -0.007177,
-    -0.867844
-   ],
-   "lat": -0.4112,
-   "lon": -60.2117,
-   "maxDrawSizeInTiles": 51.2
-  },
-  {
-   "id": 12,
-   "name": "The Ashfall Range",
-   "kind": "massif",
-   "tiles": 390,
-   "mass": 390,
-   "drawCenter": [
-    0.491034,
-    0.012534,
-    0.87105
-   ],
-   "lat": 0.7181,
-   "lon": 60.5889,
-   "maxDrawSizeInTiles": 39.0
-  },
-  {
-   "id": 13,
-   "name": "The Twilight Crags",
-   "kind": "massif",
-   "tiles": 384,
-   "mass": 205,
-   "drawCenter": [
-    -0.301046,
-    -0.301191,
-    -0.904796
-   ],
-   "lat": -17.5292,
-   "lon": -108.4035,
-   "maxDrawSizeInTiles": 26.2
-  },
-  {
-   "id": 14,
-   "name": "The Gray Crags",
-   "kind": "massif",
-   "tiles": 576,
-   "mass": 576,
-   "drawCenter": [
-    -0.401206,
-    0.368233,
-    0.838712
-   ],
-   "lat": 21.6067,
-   "lon": 115.5645,
-   "maxDrawSizeInTiles": 69.7
-  },
-  {
-   "id": 15,
-   "name": "The South Crags",
-   "kind": "massif",
-   "tiles": 432,
-   "mass": 432,
-   "drawCenter": [
-    -0.623093,
-    -0.758824,
-    0.189582
-   ],
-   "lat": -49.3606,
-   "lon": 163.0772,
-   "maxDrawSizeInTiles": 53.1
-  },
-  {
-   "id": 16,
-   "name": "The Dew Belt",
-   "kind": "waste",
-   "tiles": 833,
-   "mass": 833,
-   "drawCenter": [
-    0.422316,
-    -0.067106,
-    -0.903961
-   ],
-   "lat": -3.8478,
-   "lon": -64.9588,
-   "maxDrawSizeInTiles": 47.5
-  },
-  {
-   "id": 17,
-   "name": "The Fall Line Barrens",
-   "kind": "waste",
-   "tiles": 551,
-   "mass": 551,
-   "drawCenter": [
-    0.692233,
-    -0.0,
-    0.721674
-   ],
-   "lat": -0.0,
-   "lon": 46.1928,
-   "maxDrawSizeInTiles": 32.7
-  },
-  {
-   "id": 18,
-   "name": "The Salt",
-   "kind": "waste",
-   "tiles": 501,
-   "mass": 315,
-   "drawCenter": [
-    -0.266301,
-    0.020617,
-    0.963669
-   ],
-   "lat": 1.1814,
-   "lon": 105.4476,
-   "maxDrawSizeInTiles": 45.9
-  },
-  {
-   "id": 19,
-   "name": "The Pyrelands",
-   "kind": "waste",
-   "tiles": 233,
-   "mass": 47,
-   "drawCenter": [
-    0.532827,
-    0.318319,
-    -0.784072
-   ],
-   "lat": 18.5613,
-   "lon": -55.8014,
-   "maxDrawSizeInTiles": 20.8
-  },
-  {
-   "id": 20,
-   "name": "The Sunreach",
-   "kind": "waste",
-   "tiles": 1333,
-   "mass": 1333,
-   "drawCenter": [
-    -0.414725,
-    -0.03444,
-    0.909295
-   ],
-   "lat": -1.9737,
-   "lon": 114.5175,
-   "maxDrawSizeInTiles": 84.5
-  },
-  {
-   "id": 21,
-   "name": "The Nightspill",
-   "kind": "waste",
-   "tiles": 1201,
-   "mass": 1190,
-   "drawCenter": [
-    -0.417913,
-    -0.071562,
-    -0.905664
-   ],
-   "lat": -4.1037,
-   "lon": -114.7707,
-   "maxDrawSizeInTiles": 87.7
-  },
-  {
-   "id": 22,
-   "name": "The Umbra",
-   "kind": "waste",
-   "tiles": 1268,
-   "mass": 1268,
-   "drawCenter": [
-    -1.0,
-    0.0,
-    0.0
-   ],
-   "lat": 0.0,
-   "lon": 180.0,
-   "maxDrawSizeInTiles": 41.4
-  },
-  {
-   "id": 23,
-   "name": "The Salt Gate",
-   "kind": "waste",
-   "tiles": 97,
-   "mass": 36,
-   "drawCenter": [
-    0.457672,
-    0.52351,
-    -0.718661
-   ],
-   "lat": 31.568,
-   "lon": -57.5094,
-   "maxDrawSizeInTiles": 9.0
-  }
- ],
- "factions": [
-  "Empire",
-  "Jawa_AscendantHelix",
-  "Jawa_DeepwaterCompact",
-  "Jawa_FreeDroidEnclaves",
-  "Jawa_GeonosianFoundryHive",
-  "Jawa_HuttCartel",
-  "Jawa_IndigenousTribes",
-  "Jawa_Junkers",
-  "Jawa_WildsteamClan",
-  "OutlanderCivil",
-  "Pirate",
-  "TribeCivil"
- ],
- "faction_labels": {
-  "Empire": "The Galactic Empire",
-  "OutlanderCivil": "Homestead Defense League",
-  "TribeCivil": "Deep Desert Tribes",
-  "Pirate": "Blackstar Company",
-  "Jawa_HuttCartel": "Hutt Cartel",
-  "Jawa_FreeDroidEnclaves": "Free Droid Enclaves",
-  "Jawa_WildsteamClan": "Wildsteam Clan",
-  "Jawa_DeepwaterCompact": "Deepwater Compact",
-  "Jawa_GeonosianFoundryHive": "Geonosian Foundry Hive",
-  "Jawa_AscendantHelix": "Ascendant Helix",
-  "Jawa_IndigenousTribes": "Jawa Trade Moot",
-  "Jawa_Junkers": "the Junkers",
-  "Mechanoid": "the Forgotten Arsenal"
- },
- "settlements": 72,
- "starved": [],
- "startingTile": 2476,
- "start": {
-  "tile": 2476,
-  "name": "The Setdown",
-  "lat": -1.0282,
-  "lon": 56.8669,
-  "arc": 56.9,
-  "bearing": 358.8,
-  "biome": "ExtremeDesert",
-  "elev_m": 276,
-  "temp_c": 38.6,
-  "rain_mm": 0
- }
+  "landmarks": 569,
+  "riverLinks": 293,
+  "roadLinks": 1327,
+  "unnamedLandTiles": 1287
 }
