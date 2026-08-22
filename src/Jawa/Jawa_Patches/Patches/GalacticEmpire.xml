@@ -373,6 +373,32 @@
                 </value>
               </li>
 
+              <!-- 🔴 B40's OTHER HALF, added 2026-08-22. R15's comment above says
+                   "Combat groups only", and that is exactly what left the SETTLEMENT group
+                   untouched. Measured in the live 578-mod dump it still fielded
+                   Empire_Fighter_Trooper, _Janissary, _Cataphract and _Champion, five
+                   vanilla mech kinds, a Mechanitor and RBM_MinotaurGuardianHigh, at
+                   commonality 100.
+                   ⇒ B40 took the cataphracts out of the RAIDS and left them defending the
+                   Imperial settlement - the half a player is most likely to look at, because
+                   he walks onto that map and chooses when to leave it.
+                   ⚠️ The options node is replaced WHOLE, so the mech kinds and the modded
+                   Minotaur go with the knights. That is deliberate: a settlement of Imperial
+                   troops is the point, and vanilla's own four are the ones the item names.
+                   🔑 Same three kinds and the same weights as the common raid, so a
+                   settlement reads as the same army a raid does. The Leader is not here - he
+                   is generated once per faction through fixedLeaderKinds. -->
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Settlement"]/options</xpath>
+                <value>
+                  <options>
+                    <Jawa_Empire_Grunt>5</Jawa_Empire_Grunt>
+                    <Jawa_Empire_Heavy>2</Jawa_Empire_Heavy>
+                    <Jawa_Empire_Specialist>1.5</Jawa_Empire_Specialist>
+                  </options>
+                </value>
+              </li>
+
         <!-- Bespoke world-map icon. the def writes it - Data/Royalty/Defs/FactionDefs/Faction_Empire.xml:19, so REPLACE. -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/FactionDef[defName="Empire"]/factionIconPath</xpath>
