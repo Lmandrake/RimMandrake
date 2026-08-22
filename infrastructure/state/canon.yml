@@ -141,12 +141,20 @@ planet:
   rain_mm: {min: 0, median: 0, max: 1668}
   rain_src: >
     world/ASHKARR_WORLDMAP_tiles.csv, re-measured 2026-08-21 after
-    RAIN_DRY_THE_LOWLANDS_1 zeroed 20,113 rows. ⚠️ Was {min: 18, median: 19} on
-    2026-08-20, when every tile carried at least 18 mm; that is dead.
+    RAIN_DRY_THE_JUNGLE_1 zeroed the last 363 rows below hilliness 4. ⚠️ Was
+    {min: 18, median: 19} on 2026-08-20, when every tile carried at least 18 mm;
+    that is dead.
     🔑 0 is not "very dry", it is BANNED: every rain WeatherDef's
     commonalityRainfallFactor curve starts at (0, 0), so at 0 the commonality is
     multiplied by exactly zero and the weather can never be selected.
-    Over the 1,759 tiles that still carry rain: min 18, median 69, max 1668.
+    Over the 1,396 tiles that still carry rain: min 18, median 60, max 1668.
+    ⚠️ MAX DID NOT MOVE, and RAIN_DRY_THE_JUNGLE_1 expected it to. 1668 mm
+    survives on 191 tiles, all at hilliness 4 (175) or 5 (16) — which the owner's
+    ruling explicitly KEEPS. The 121 jungle tiles that were dried also sat at the
+    ceiling, so the ceiling looked like it belonged to them; it did not.
+    The ruling is "rain_mm = 0 below hilliness 4", and it is satisfied: the
+    selector `rain_mm > 0 AND hilliness < 4` now returns 0 rows, down from 363,
+    every one AB_FeraliskInfestedJungle. The 1,396 at hilliness >= 4 are untouched.
 
   start_tile: 2476
   start_name: "The Setdown"
