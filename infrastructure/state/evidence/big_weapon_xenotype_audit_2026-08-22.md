@@ -7,6 +7,26 @@ _Measured 2026-08-22 by BUILD against the live def dump
 
 ---
 
+## 🔴 CORRECTION, 2026-08-22 14:2x — SECTION 2's HEADLINE CLAIM WAS STALE
+
+**"All 70 Star Wars races are mechanically bodySize 1.0" was true of the def dump this
+report measured (captured 2026-08-21T22:44) and FALSE of the repo at the moment the report
+was written.** `src/Jawa/Jawa_Patches/Patches/BodySizeIsReal.xml` was committed at
+`46bba032` and revised at `216d0bb6` earlier the same day — 12:59 — on the owner's own
+instruction, and it swaps **27** Star Wars xenotypes off the cosmetic genes and onto Big
+and Small's real frames (7 × `HalfJotunFrame` 1.75, 15 × `BS_LargeFrame` 1.40,
+4 × `BS_SmallFrame` 0.65, 1 × `BS_RabbitFrame` 0.40). It is deployed; the game copy is
+byte-identical.
+
+⚠️ **The dump is one capture behind the repo, and I read the dump and not the tree.** That
+is the failure this project already has a rule about. The gate mechanism in sections 1, 3
+and 4 is unaffected — none of it came from the stale rows — but **section 2 must be read as
+"before BodySizeIsReal.xml", not as current state.**
+
+⇒ `STAR_WARS_BODY_SIZES_FAKE_1` was filed on that stale premise and has been dropped.
+
+---
+
 ## 🔴 THE ANSWER, IN ONE LINE
 
 **The gate is real, and there is exactly one size threshold in it: body size over 1.99

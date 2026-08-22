@@ -34,3 +34,21 @@ species get real sizes", and names which.
 ## notes
 Filed by BUILD 2026-08-22 out of `BIG_WEAPON_XENOTYPE_AUDIT_1`.
 Full evidence: `infrastructure/state/evidence/big_weapon_xenotype_audit_2026-08-22.md` §2.
+
+## 🔴 DROP THIS ITEM — the premise was stale, 2026-08-22
+
+`src/Jawa/Jawa_Patches/Patches/BodySizeIsReal.xml` already did this, earlier the same day,
+on the owner's own instruction — committed `46bba032`, revised `216d0bb6`, deployed and
+byte-identical to the game copy. It swaps **27** Star Wars xenotypes off the cosmetic genes
+onto Big and Small's real frames: 7 × `HalfJotunFrame` (1.75), 15 × `BS_LargeFrame` (1.40),
+4 × `BS_SmallFrame` (0.65), 1 × `BS_RabbitFrame` (0.40).
+
+The audit that filed this read a def dump captured **2026-08-21T22:44** and never looked at
+the tree. BUILD cannot drop an item owned by OWNER, so it is left standing with this note:
+
+```
+python3 src/RimMandrake/rimflow/cli.py drop STAR_WARS_BODY_SIZES_FAKE_1 --seat OWNER --reason "already done by BodySizeIsReal.xml"
+```
+
+⇒ What genuinely remains is the rungs that file could not reach, and that is
+`RimMandrake_BodySizeGene_*` still writing the cosmetic stat for the species it left alone.
