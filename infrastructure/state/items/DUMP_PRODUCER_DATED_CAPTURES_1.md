@@ -74,3 +74,47 @@ a file from a previous capture, and no reader needed changing to cope with eithe
 ## notes
 Filed by BUILD 2026-08-21 immediately after the owner's ruling, so the sequencing
 survives a context loss: the armed capture comes FIRST.
+
+## BUILT, DEPLOYED AND MIGRATED 2026-08-22 — `b9d3e8b0`. Verification is on the load.
+
+**The precondition was checked, not assumed.** The item said do not start until the armed
+capture had landed. It has: `captures/2026-08-21T22-44-59Z/manifest.json` carries
+`defTypeCollisions` **resolved into separate files** (`AbilityDef.json` 612 *and*
+`VEF.Abilities.AbilityDef.json` 18), 533 types, 78,813 defs, mode `all` — that is the
+`d7cf154` fix having run.
+
+### Done
+- `DefDumper.cs` writes `captures/.writing/`, then an atomic `Directory.Move` to
+  `captures/<capturedUtc with ':' -> '-'>/`. Retention keeps the newest three and skips
+  any capture holding `.keep`, and runs AFTER the rename so a failed publish never costs
+  an old capture. A leftover `.writing` from a dead run is cleared on the next attempt.
+- ⚠️ **A latent bug fixed on the way:** `capturedUtc` was a separate `DateTime.UtcNow` in
+  the manifest writer and in the animals writer, so they could disagree by seconds. It is
+  now stamped once and used for the id, the manifest and `animals.json` alike — the id has
+  to equal the manifest's own value or a reader cannot join them.
+- The live dump is migrated. `defs.sqlite` stays at the root; the frozen OFFICIAL capture
+  carries `.keep`; the registry entry names its `capture`.
+
+### 🔴 Four readers broke on the migration and are fixed with it
+| reader | what it did |
+|---|---|
+| `refresh.frozen_entry` | matched only the dump ROOT, so the migrated dump read as **NOT FROZEN** — it would have demanded a ~23-minute load for nothing. Two regression tests added, and an entry naming a capture still refuses to cover a different one. |
+| `dump_projection` · `xenotype_size_audit` | looked for `defs.sqlite` beside the path they were handed, which under `captures/<id>` does not exist and never will |
+| `measure build` · `measure verify` (the SKILL, `347295b`) | read `manifest.json` from the root. `split_capture_layout()` now returns `(root, source)`; a flat dump returns the same path twice, so there is no flag day. |
+| `measure verify` collision keying (the SKILL) | keyed on the SIMPLE type name, so it asked whether `AbilityDef.json` alone held all 630 AbilityDefs in the db. Reported **22** false disagreements. Now keyed on `capture.source_file` → `full_name`. |
+
+`selftest_frozen_dumps` **32/32**. The skill's own suite went 44/46 with two hard
+`FileNotFoundError`s to 45/46 with the layout fix.
+
+### Verified offline
+2. ✅ `game_paths.py` names the capture as `current capture`.
+4. ✅ selftests pass; `measure count RimWorld.AbilityDef` = 612 off the new layout.
+5. ✅ A `captures/.writing/` directory is invisible to `captures()` — tested directly.
+
+### ⏳ NOT verified, and cannot be without a load
+1. Two consecutive captures, the first left byte-identical.
+3. A fourth capture prunes the oldest — and does NOT prune the one carrying `.keep`.
+
+🔴 **The producer has never run.** Re-gated to `harvest`; the run sheet's first block is
+the checklist, and `[RimDefDump] capture published:` is the line that decides whether a
+capture happened at all.
