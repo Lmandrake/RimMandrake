@@ -102,32 +102,56 @@ Ionic damage floods circuitry with charge.
 - **Decisive against droids, vehicles, turrets, powered armour and shields** —
   it disables rather than destroys, which means it *captures* rather than kills.
 
-🔴 **L4 STANDS, AND IT OVERRULES L16's THIRD BULLET — DECIDE, 2026-08-22, closing
-`ION_CAPTURES_PEOPLE_NOT_DROIDS_1`.** *"A warm breeze"* is literal: **the Jawa ion blaster
-does nothing at all to an unarmoured person.** L16 used to say ion-blaster discharge
-follows L5 against organics; that sentence is struck below, and it is the sentence the
-shipped implementation was built from.
+🔴 **L4 IS AMENDED — IT IS NOT LITERAL, AND THE OWNER'S LOCKED SPEC D1 GOVERNS.**
+_DECIDE, 2026-08-22, closing `ION_CAPTURES_PEOPLE_NOT_DROIDS_1`. **This entry reversed an
+earlier ruling of my own from the same day**, which read L4 literally and declared the ion
+blaster droids-only. That was wrong: it contradicted an owner decision I had not read._
 
+⛔ **"Zero damage to flesh… a warm breeze" is superseded.** The owner locked the weapon's
+behaviour on **2026-08-08**, `design/Jawa/mods/required_mods.md` → **LOCKED SPEC D1**:
+
+> *"SINGLE-TARGET STUN GUN with **tiered effect by target class**… **strongest vs pure
+> machines/mechanoids, strong vs droids & vehicles, weakest vs flesh people** (but still
+> capable of eventually dropping a person with sustained/stacked fire). **This tiering IS
+> the tactical identity** — you can nearly one-shot-disable a mech but must gang up + use
+> terrain to take a healthy raider alive."*
+
+and reaffirmed it the same day against the Outer Rim alternative: *"still BUILD OUR OWN,
+keep the locked spec… only a bespoke def gives industrial-tier + buildable-from-start +
+**capture-on-flesh** + self-contained all at once."*
+
+⇒ **Ion is a GRADIENT, not a switch.** Read L4's second bullet as the *top* of that
+gradient, not as the whole of it. Flesh is the weakest tier — slow, needing stacked fire and
+terrain — **not exempt.**
+
+### 🔴 The real defect: the top tier does not exist
 **Measured live 2026-08-22** (`infrastructure/state/observed/2026-08-22/ion_buildup/`):
-`JawaIon_Damage` ×6 downed a `Tribal_Warrior` alive with **zero injuries**, and ×13 at
-double power did **nothing whatever** to a `Mech_Scyther` — while one vanilla `EMP` stunned
-it for 570 ticks. ⇒ **The gun is exactly backwards from L4, and it is not a partial
-success.**
 
-**Three reasons L4 wins and not L16:**
-1. **L5 dies otherwise.** If ion downs people, the stun class has no job and L5's *"designed
-   reason for team composition"* evaporates. Two verbs collapse into one.
-2. **It is a balance hole, not a flavour choice.** A weapon that downs unarmoured people
-   alive, with no injury, no bleed and no death roll, is strictly dominant over every gun we
-   ship. Free non-lethal captures on every raid is not texture.
-3. **The progression is droid brains.** The Trade Moot's economy and the player's whole
-   advancement route run on captured droids. The one thing the Jawas manufacture must be the
-   thing that takes them.
+| target | applied | result |
+|---|---|---|
+| `Tribal_Warrior` | `JawaIon_Damage` ×6 @ 8 | downed, **alive, zero injury hediffs, no blood** — ✅ **D1's weakest tier, working exactly as specified** |
+| `Mech_Scyther` | `JawaIon_Damage` ×13, up to @ 20 | **nothing.** `stunned=False`, `stunTicks=0`, no hediff |
+| `Mech_Scyther` (control) | vanilla `EMP` ×1 @ 20 | `stunned=True`, 570 ticks |
 
-⛔ **What this does NOT change.** The `DamageWorker_IonBuildup` **mechanism is correct and
-must be kept** — accruing buildup that ends in *down, alive, uninjured* is exactly the
-behaviour L4 wants; only its **target class** is wrong. Do not rewrite it, re-point it. And
-`KNOWN INERT` in the mod source is **stale** — the worker fires.
+⇒ **The weapon is not inverted and it is not backwards. It implements the bottom of D1's
+gradient faithfully and the top of it not at all** — and the top is the half the owner
+called the tactical identity. A Jawa clan whose famous anti-droid weapon cannot touch a
+droid, on a world whose progression is gated on captured droid brains, is the defect.
+
+**Why, mechanically:** the whole effect is the `JawaIon_Stun` **hediff**, and a mechanoid
+cannot receive a hediff. `harmsHealth: false` means it takes no HP either;
+`externalViolenceForMechanoids: true` only classifies the hit as violence;
+`combatLogRules: Damage_EMP` is cosmetic. ⇒ **A hediff-only route can never reach the target
+class this weapon exists to beat.**
+
+✅ **Keep `DamageWorker_IonBuildup` exactly as it is for flesh.** Add the machine tier
+alongside it. Carried by `ION_MACHINE_TIER_MISSING_1` (BUILD). The `KNOWN INERT` comment in
+the mod source is **stale** — the worker fires.
+
+⚠️ **L5 survives this, narrowly, and the reason matters.** Ion drops a person *slowly and
+expensively*; stun/neural drops one *fast*. The two tools still differ, so L5's *"designed
+reason for team composition"* holds — but it is a gradient, not the clean mirror L5 claims.
+**Do not cite L5 to argue ion cannot touch people; the owner ruled otherwise.**
 
 **Derives:** ion is the archetype of the verb-budget weapon (`balance_paradigm.md`
 Axis 10): near-zero damage, entirely new possibility. It must be the *only*
@@ -442,20 +466,15 @@ different sources, which is why they behave alike:
 - They **stun, overwhelm, down and incapacitate** — non-lethally or
   semi-lethally.
 - Against machines they follow L4 (disable).
-- ~~Against organics they follow L5 (neural shock).~~ ⛔ **STRUCK — DECIDE, 2026-08-22.**
-  True of **Force lightning**; **FALSE of the ion blaster.** L4 is literal — an ion bolt
-  through a person is a warm breeze — and this bullet is what the shipped
-  `DamageWorker_IonBuildup` was built from, producing a gun that downs people and cannot
-  touch a droid. ⇒ **The two are NOT the same phenomenon where it matters.** Force lightning
-  follows L5 against organics; ion follows L4 against machines and does nothing else.
-  Keeping both collapses L5 and deletes its designed reason for team composition.
+- Against organics they follow L5 (neural shock).
+  ✅ **CONFIRMED CORRECT — DECIDE, 2026-08-22.** This bullet was briefly struck earlier the
+  same day and the strike was wrong. It agrees with the owner's **LOCKED SPEC D1**
+  (`design/Jawa/mods/required_mods.md`, 2026-08-08): ion is tiered, and flesh is its weakest
+  tier rather than an exempt one. **L4's "warm breeze" is the line that gives**, and it is
+  amended above.
 
-**Derives:** ⚠️ **AMENDED 2026-08-22 — this paragraph generalised from the struck
-bullet.** Electricity is the capture damage type for both target classes, but **not through
-one weapon**: ion captures machines (L4), neural/stun captures people (L5), and a squad
-facing both still needs two tools. Force lightning is the one source that reaches both, and
-that is a Force user's privilege, not a manufacturable gun's. ~~electricity is the *capture*
-damage type for both target classes at once~~ — the single most useful non-lethal tool in the setting, and the reason a
+**Derives:** electricity is the *capture* damage type for both target classes at
+once — the single most useful non-lethal tool in the setting, and the reason a
 Force user or an ion-armed trooper can end a fight without a body. Downed is not
 dead, and this is where most of our prisoners, salvage and mercy come from.
 

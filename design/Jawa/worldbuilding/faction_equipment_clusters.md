@@ -165,16 +165,27 @@ than only in a screenshot.
 plate → beaten by blaster heat. **Ion and stun are exact mirrors of each other** (L4/L5), so
 a force meeting droids *and* people needs two tools and cannot economise.
 
-⭐ **And one consequence was meant to be the whole campaign in a sentence: the Jawa's own
-manufactured weapon, the ion blaster, does ZERO damage to flesh — it captures machines.**
+~~⭐ **And one consequence was meant to be the whole campaign in a sentence: the Jawa's own
+manufactured weapon, the ion blaster, does ZERO damage to flesh — it captures machines.**~~
+⛔ **WRONG, and it was never right — DECIDE, 2026-08-22.** The owner's **LOCKED SPEC D1**
+(`design/Jawa/mods/required_mods.md`, 2026-08-08) specifies a **tiered** effect: strongest
+vs machines, strong vs droids and vehicles, **weakest vs flesh but still able to drop a
+person with stacked fire.** "Zero damage to flesh" was a `setting_physics.md` L4 line that
+overshot the owner's spec, and L4 is now amended there. **Ion and stun are a gradient, not
+exact mirrors** — correct the sentence above this one too.
 
-🔴 **MEASURED 2026-08-22 AND IT IS BACKWARDS. Do not build on the sentence above.**
+🔴 **MEASURED 2026-08-22, AND THE MISSING HALF IS THE MACHINE TIER.**
 `JawaIon_Damage` applied live: six hits **down a flesh pawn alive** with zero injury and no
 blood (`JawaIon_Stun` 0.74 → 1.00, inspect pane *"Downed, unconscious."*), while **thirteen
 hits leave a `Mech_Scyther` completely untouched** — `stunned=False`, no hediff — and a
 single vanilla `EMP` stuns the same mech for 570 ticks.
 
-⇒ **It captures people and ignores droids**, the exact inverse of canon and of L4. The
+⇒ ~~**It captures people and ignores droids**, the exact inverse of canon and of L4.~~
+⚠️ **Re-read against D1 — it is NOT inverted.** Downing a flesh pawn alive with zero injury
+is **D1's weakest tier, working as the owner specified**. What is absent is **D1's top
+tier** — the near-one-shot disable of a machine, which he called *"the tactical identity"*.
+⇒ **Do not "fix" the flesh behaviour. Add the machine tier beside it.**
+`ION_MACHINE_TIER_MISSING_1` (BUILD). The
 mechanism itself is live and correct — `DamageWorker_IonBuildup` fires, and the mod's
 `KNOWN INERT` comment is stale — but its entire effect is a hediff, and a mechanoid cannot
 receive one. Evidence: `infrastructure/state/observed/2026-08-22/ion_buildup/`.
@@ -407,16 +418,14 @@ Follow-ups filed: `IONBLASTER_INTO_THE_GENERATOR_1` (the roster XML is generated
 is a stopgap) and `IONBUILDUP_ACCRUES_ON_FLESH_1` (nobody has ever watched the C# worker
 fire; its own source carries a `VERIFY IN-GAME` note).
 
-~~🔑 And per L16, not L4: *"Downed is not dead, and this is where most of our prisoners,
-salvage and mercy come from."* **A4 in Part 1 should cite L16.**~~
-
-⛔ **REVERSED — DECIDE, 2026-08-22, `ION_TAKES_DROIDS_NOT_PEOPLE_1`.** **L4 wins and L16's
-organic bullet is struck** in `setting_physics.md`. The Jawa ion blaster does **nothing** to
-an unarmoured person — *"a warm breeze"*, literally. ⇒ **A4 cites L4, and "cannot kill a
-person" is not merely restored, it is strengthened to "cannot touch a person."** The
-prisoners and mercy L16 promised come from **stun/neural weapons (L5)** and from Force
-lightning, never from this gun. Keeping L16's reading collapsed L5 and made free non-lethal
-human capture the dominant weapon in the game.
+🔑 And per L16, not L4: *"Downed is not dead, and this is where most of our prisoners,
+salvage and mercy come from."* **A4 in Part 1 should cite L16.**
+✅ **CONFIRMED — DECIDE, 2026-08-22.** This is right and it agrees with the owner's LOCKED
+SPEC D1 (`required_mods.md`, 2026-08-08): ion is **tiered**, flesh is its weakest tier, not
+an exempt one. `setting_physics.md` L4's *"warm breeze"* is the line that gives, and it has
+been amended there. ⚠️ *(An earlier note here on 2026-08-22 reversed this and was itself
+wrong; it is removed rather than struck because it stood for under an hour and nobody acted
+on it.)*
 
 ### R2. The bowcaster is not kinetic — Part 2's Wildsteam row is wrong
 `guy762_bowcaster` fires `KotORBowcasterBolt_default` → **`guy762_RangedDamage_energy`,
@@ -475,10 +484,9 @@ defs are the fact.** Resolution 3 in Finding 8 therefore stays live, and Resolut
 forced.
 
 ## What Part 1–2 owe as a result
-1. ~~A4 recited from **L16**, not L4, and "cannot kill a person" deleted.~~
-   ⛔ **REVERSED — DECIDE, 2026-08-22.** A4 recites from **L4**. L16's organic bullet is
-   struck in `setting_physics.md`; the ion blaster is droids-only and cannot touch an
-   unarmoured person at all. Carried by `ION_TAKES_DROIDS_NOT_PEOPLE_1`.
+1. A4 recited from **L16**, not L4, and "cannot kill a person" deleted.
+   ✅ **CONFIRMED by DECIDE, 2026-08-22** against the owner's LOCKED SPEC D1. Ion is tiered;
+   flesh is the weakest tier, not exempt. `setting_physics.md` L4 amended accordingly.
 2. Wildsteam's primary moved from A1 to A2, vulnerability column rewritten.
 3. Axis A reconciled to the seven forms, with a physics→`armorCategory` mapping table.
 4. Apparel table: defNames moved out of the tag column; `PrestigeCombatGear` replaced for

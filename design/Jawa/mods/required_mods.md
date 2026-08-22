@@ -1384,6 +1384,13 @@ These five are long-standing, widely-used QoL staples with no economy/progressio
   - **Cultural "desire to use ion":** unchanged — express via ideoligion/xenotype weapon preference (Jawa reach for ion), no hard mechanic needed.
 
 - **✅ LOCKED SPEC (user 2026-08-08, via 4-question decision) — the signature Jawa "Ion Blaster" is a NEW custom weapon built for this run:**
+  - ⭐ **D1 IS INTACT AND IT WON A COLLISION — DECIDE, 2026-08-22.** `setting_physics.md`
+    **L4** said *"zero damage to flesh… an ion bolt through a person is a warm breeze"*,
+    which overshoots D1's *weakest* tier into an exempt one. **L4 has been amended there to
+    defer to D1.** ⚠️ A DECIDE ruling earlier that day read L4 literally and declared the gun
+    droids-only; it was reversed within the hour. **D1 has not changed and does not need to.**
+    The live defect is that D1's **top** tier — near-one-shot vs machines — was never built:
+    `ION_MACHINE_TIER_MISSING_1`.
   - **D1 — Form: SINGLE-TARGET STUN GUN with tiered effect by target class.** NOT a grenade, NOT AoE. One handheld ion gun that disables to *differing levels* depending on what it hits: **strongest vs pure machines/mechanoids, strong vs droids & vehicles, weakest vs flesh people** (but still capable of eventually dropping a person with sustained/stacked fire). This tiering IS the tactical identity — you can nearly one-shot-disable a mech but must gang up + use terrain to take a healthy raider alive.
   - **D2 — Mechanism: custom `Jawa_IonStun` hediff (buildup-that-decays → forces DOWN past threshold).** Projectile applies ion buildup on hit; buildup decays over time so lone potshots fade but *coordinated/stacked* fire pushes a target over the down-threshold. Target-class tiering implemented via **different buildup-gain rates (or thresholds) per pawn type** — e.g. mech/droid gains buildup fast (disables quickly), flesh humans gain it slowly (need many hits). **Dual-purpose: this is the SAME stun→down hediff CPERS/Arrest-Here needs** — one authored hediff defines the weapon AND makes the capture pipeline work. No Core `OuterRim_Ion` dependency, no vanilla-EMP weakness-on-flesh problem.
   - **D3 — Buildable from START.** Industrial-tier gate (confirmed: donor `O21_JawaIonBlaster` is `<techLevel>Industrial</techLevel>`), so building it honors the "Jawa start industrial" pillar — "home free." Jawa fab their own scrap-tech stunners from turn 1; also spawn a few in the starting kit.
