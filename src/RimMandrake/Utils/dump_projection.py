@@ -65,16 +65,37 @@ def last_source() -> str:
 
 
 def sqlite_path(dump_root: str) -> str | None:
-    """The db beside a DefDump folder, or None when it was never built.
+    """The db for a dump, or None when it was never built.
 
-    `dump_root` may be the DefDump folder itself or its `defs/` subfolder;
-    both are accepted because the two tools disagree about which they hold.
+    Accepts any of the three things a caller might hold, because they all mean
+    "this dump" and the tools disagree about which they pass:
+
+        …/DefDump                                   the root, flat layout
+        …/DefDump/defs                              the def folder
+        …/DefDump/captures/<id>                     a dated capture
+        …/DefDump/captures/<id>/defs
+
+    🔴 `defs.sqlite` LIVES AT THE DEFDUMP ROOT, OUTSIDE ANY CAPTURE, and that is
+    the ruling (`DUMP_STORAGE_LAYOUT_RULING_1`), not an accident: it is DERIVED,
+    so pruning a capture must never cost the database and re-deriving the
+    database must never look like a new capture. ⚠️ That means `<capture>/defs.sqlite`
+    does not exist and never will — walking up out of `captures/<id>` is required,
+    not defensive. Measured 2026-08-22: these tools broke the moment the flat dump
+    was migrated, because they looked only beside the path they were given.
     """
-    root = dump_root
-    if os.path.basename(os.path.normpath(root)) == "defs":
-        root = os.path.dirname(os.path.normpath(root))
-    cand = os.path.join(root, "defs.sqlite")
-    return cand if os.path.isfile(cand) else None
+    root = os.path.normpath(dump_root)
+    if os.path.basename(root) == "defs":
+        root = os.path.dirname(root)
+    cands = [root]
+    # …/captures/<id>  ->  …  (the DefDump root, two levels up)
+    parent = os.path.dirname(root)
+    if os.path.basename(parent) == "captures":
+        cands.append(os.path.dirname(parent))
+    for base in cands:
+        cand = os.path.join(base, "defs.sqlite")
+        if os.path.isfile(cand):
+            return cand
+    return None
 
 
 def _connect(path: str) -> sqlite3.Connection:

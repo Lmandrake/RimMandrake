@@ -142,6 +142,49 @@ def t_the_shipped_registry_freezes_the_live_dump():
         "Got: %r" % (got,))
 
 
+def t_a_root_freeze_still_covers_a_dated_capture():
+    """🔴 The regression that the flat -> captures/ migration actually caused.
+
+    Every shipped entry names the dump ROOT (`RimWorld by Ludeon Studios/DefDump`),
+    but once the dump is migrated `DEF_DUMP` resolves to `<root>/captures/<id>`.
+    A plain suffix match between the two fails, so the live dump read as NOT
+    FROZEN and would have demanded a ~23-minute load for nothing. Measured
+    2026-08-22 under DUMP_PRODUCER_DATED_CAPTURES_1.
+    """
+    d = with_registry(['{"id":"T","kind":"official","frozen":true,'
+                       '"modlist_count":578,"path":"RimWorld by Ludeon Studios/DefDump",'
+                       '"capturedUtc":"2026-08-21T22:44:59Z"}\n'])
+    try:
+        fe = refresh.frozen_entry(
+            "/x/RimWorld by Ludeon Studios/DefDump/captures/2026-08-21T22-44-59Z")
+        assert fe and fe.get("id") == "T", (
+            "a freeze naming the dump ROOT must still cover a capture UNDER that "
+            "root, or migrating the dump silently unfreezes it. Got: %r" % (fe,))
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def t_a_freeze_naming_one_capture_does_not_cover_another():
+    """🔑 The other half, and without it the fix above is a hole.
+
+    Matching on the root alone would let an entry frozen at capture A report
+    capture B as frozen — the exact silent-replacement failure the registry was
+    hardened against, just reintroduced by the layout change.
+    """
+    d = with_registry(['{"id":"T","kind":"official","frozen":true,'
+                       '"modlist_count":578,"path":"RimWorld by Ludeon Studios/DefDump",'
+                       '"capture":"2026-08-21T22-44-59Z",'
+                       '"capturedUtc":"2026-08-21T22:44:59Z"}\n'])
+    try:
+        fe = refresh.frozen_entry(
+            "/x/RimWorld by Ludeon Studios/DefDump/captures/2026-08-22T09-11-02Z")
+        assert fe is None, (
+            "an entry naming capture 2026-08-21T22-44-59Z must NOT report a "
+            "different capture as frozen. Got: %r" % (fe,))
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
 def t_a_replaced_capture_is_not_reported_as_frozen():
     """🔴 A freeze that cannot detect replacement is not a freeze.
 

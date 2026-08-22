@@ -45,6 +45,46 @@ namespace RimDefDump
         private const string MarkerName = "dump_request.txt";
 
         /// <summary>
+        /// DUMP_PRODUCER_DATED_CAPTURES_1. Owner, 2026-08-21: "Option (a) all the
+        /// way. Keep last three."
+        ///
+        /// A capture goes to DefDump/captures/&lt;capturedUtc&gt;/ and the newest three
+        /// survive. `defs.sqlite` is DERIVED and stays at the root, outside any
+        /// capture, so re-deriving it never costs a capture and pruning never costs
+        /// the database.
+        ///
+        /// The id is the manifest's own capturedUtc with ':' replaced by '-', so it
+        /// stays ISO-8601 with fixed-width fields and a plain lexicographic sort is
+        /// chronological. `game_paths.captures()` matches
+        /// ^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}Z$ and ignores anything else,
+        /// deliberately — so a half-written directory can never masquerade as a
+        /// capture.
+        ///
+        /// ⛔ There is NO `current` or `official` symlink and that is measured, not a
+        /// preference: a symlink WSL creates under LocalLow is unreadable from
+        /// Windows, so the game could never follow one. Current = max(dirname).
+        /// </summary>
+        private const string CapturesDir = "captures";
+
+        /// <summary>The scratch name a capture is built under before it is named.</summary>
+        private const string WritingDir = ".writing";
+
+        /// <summary>A capture holding this file is frozen and never counts against retention.</summary>
+        private const string KeepMarker = ".keep";
+
+        private const int KeepNewest = 3;
+
+        /// <summary>
+        /// Stamped ONCE per run and used for the capture id, the manifest and
+        /// animals.json alike.
+        /// ⚠️ This used to be a separate `DateTime.UtcNow` in each writer, so the
+        /// manifest and animals.json could disagree by a second or more. The id has
+        /// to equal the manifest's own value or a reader cannot join them, which is
+        /// what turned a latent inconsistency into a real one.
+        /// </summary>
+        private static string CapturedUtc = "";
+
+        /// <summary>
         /// Stats to resolve per animal. Deliberately mirrors STAT_MAP in
         /// Utils/animal_inventory.py so the live and offline tables join
         /// column-for-column.
@@ -84,24 +124,155 @@ namespace RimDefDump
             }
 
             bool dumpAll = mode == "all";
-            Log.Message("[RimDefDump] starting, mode=" + mode + ", out=" + root);
+
+            DateTime now = DateTime.UtcNow;
+            CapturedUtc = now.ToString("yyyy-MM-ddTHH:mm:ssZ");
+            string captureId = now.ToString("yyyy-MM-ddTHH-mm-ssZ");
+
+            string capturesRoot = Path.Combine(root, CapturesDir);
+            string writing = Path.Combine(capturesRoot, WritingDir);
+            string final = Path.Combine(capturesRoot, captureId);
+
+            Log.Message("[RimDefDump] starting, mode=" + mode + ", capture=" + captureId
+                        + ", out=" + capturesRoot);
 
             var total = Stopwatch.StartNew();
-            Directory.CreateDirectory(root);
+            Directory.CreateDirectory(capturesRoot);
+
+            // A `.writing` left behind is the debris of a run that died. It is not a
+            // capture and never was — `captures()` cannot see it — so removing it is
+            // safe and is the only way a second attempt can proceed.
+            if (Directory.Exists(writing))
+            {
+                Log.Warning("[RimDefDump] removing a leftover " + WritingDir
+                            + " from an earlier run that did not finish");
+                try { Directory.Delete(writing, true); }
+                catch (Exception ex)
+                {
+                    Log.Error("[RimDefDump] cannot clear " + writing + ": " + ex.Message);
+                    return;
+                }
+            }
+            Directory.CreateDirectory(writing);
 
             var counts = new List<KeyValuePair<string, int>>();
             var typeEntries = new List<DefTypeEntry>();
             var collisions = new List<string>();
-            long animalMs = TimeIt(() => WriteAnimals(root));
+            long animalMs = TimeIt(() => WriteAnimals(writing));
             long allMs = 0;
-            if (dumpAll) allMs = TimeIt(() => WriteAllDefs(root, counts, typeEntries, collisions));
+            if (dumpAll) allMs = TimeIt(() => WriteAllDefs(writing, counts, typeEntries, collisions));
 
-            WriteManifest(root, mode, counts, typeEntries, collisions,
+            WriteManifest(writing, mode, counts, typeEntries, collisions,
                           total.ElapsedMilliseconds, animalMs, allMs);
+
+            // 🔑 THE RENAME IS WHAT MAKES THE CAPTURE EXIST. Everything above wrote into
+            // a name no reader will match, so a crash at any point leaves nothing that
+            // could be mistaken for a finished capture. Directory.Move is atomic on NTFS.
+            if (!Publish(writing, final, captureId)) return;
+
+            Prune(capturesRoot);
 
             total.Stop();
             Log.Message("[RimDefDump] done in " + total.ElapsedMilliseconds + " ms"
                         + " (animals " + animalMs + " ms, all-defs " + allMs + " ms)");
+        }
+
+        /// <summary>
+        /// Name the finished capture. Returns false if it could not be named, in which
+        /// case NOTHING is published and the previous captures are untouched.
+        /// </summary>
+        private static bool Publish(string writing, string final, string captureId)
+        {
+            try
+            {
+                // Two dumps inside one second is not a real scenario (a load is minutes),
+                // but if it ever happened the id would already exist and Move would throw.
+                // Clearing it would destroy a capture written seconds ago, so refuse instead.
+                if (Directory.Exists(final))
+                {
+                    Log.Error("[RimDefDump] capture " + captureId + " already exists; "
+                              + "leaving the new one under " + WritingDir + " rather than "
+                              + "overwriting a capture that is already on disk");
+                    return false;
+                }
+                Directory.Move(writing, final);
+                Log.Message("[RimDefDump] capture published: " + final);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("[RimDefDump] could not publish the capture (nothing was lost, "
+                          + "the previous captures are intact): " + ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Keep the newest <see cref="KeepNewest"/> captures and delete the rest.
+        ///
+        /// 🔴 A CAPTURE HOLDING <see cref="KeepMarker"/> IS NEVER DELETED AND NEVER
+        /// COUNTS AGAINST THE THREE. `refresh.py --freeze --by owner` writes that file
+        /// into a capture somebody decided to keep, and it is the entire contract
+        /// between retention and the freeze — it means the game needs no knowledge of
+        /// the repo, the registry, or which capture anyone froze.
+        ///
+        /// ⚠️ Runs AFTER the rename on purpose. Pruning first would let a capture that
+        /// then failed to publish cost an old one for nothing.
+        /// </summary>
+        private static void Prune(string capturesRoot)
+        {
+            try
+            {
+                var ids = new List<string>();
+                foreach (string dir in Directory.GetDirectories(capturesRoot))
+                {
+                    string name = Path.GetFileName(dir);
+                    if (!IsCaptureId(name)) continue;               // .writing, or junk
+                    if (File.Exists(Path.Combine(dir, KeepMarker))) continue;   // frozen
+                    ids.Add(name);
+                }
+                // The id is fixed-width ISO-8601, so ordinal sort IS chronological.
+                ids.Sort(StringComparer.Ordinal);
+                int drop = ids.Count - KeepNewest;
+                for (int i = 0; i < drop; i++)
+                {
+                    string victim = Path.Combine(capturesRoot, ids[i]);
+                    try
+                    {
+                        Directory.Delete(victim, true);
+                        Log.Message("[RimDefDump] pruned old capture " + ids[i]);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning("[RimDefDump] could not prune " + ids[i] + ": " + ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Retention failing is untidy; it is not a reason to fail the dump.
+                Log.Warning("[RimDefDump] retention pass failed: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// yyyy-MM-ddTHH-mm-ssZ, and nothing else.
+        /// 🔑 Hand-rolled rather than a Regex because this must agree EXACTLY with
+        /// `game_paths.captures()`, which uses that same anchored pattern. A directory
+        /// this rejects is invisible to every reader, so the two must not drift.
+        /// </summary>
+        private static bool IsCaptureId(string name)
+        {
+            if (name == null || name.Length != 20) return false;
+            for (int i = 0; i < 20; i++)
+            {
+                char c = name[i];
+                if (i == 4 || i == 7 || i == 13 || i == 16) { if (c != '-') return false; }
+                else if (i == 10) { if (c != 'T') return false; }
+                else if (i == 19) { if (c != 'Z') return false; }
+                else if (c < '0' || c > '9') return false;
+            }
+            return true;
         }
 
         private static long TimeIt(Action a)
@@ -147,7 +318,7 @@ namespace RimDefDump
                 w.Prop("tool", "RimDefDump");
                 w.Prop("toolVersion", "1.0");
                 w.Prop("mode", mode);
-                w.Prop("capturedUtc", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                w.Prop("capturedUtc", CapturedUtc);
 
                 try { w.Prop("gameVersion", VersionControl.CurrentVersionStringWithRev); }
                 catch { }
@@ -244,7 +415,7 @@ namespace RimDefDump
             {
                 var w = new JsonWriter(sw, IndentBulkFiles);
                 w.StartObject();
-                w.Prop("capturedUtc", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                w.Prop("capturedUtc", CapturedUtc);
 
                 // --- animals -------------------------------------------------
                 int nAnimals = 0;

@@ -581,15 +581,48 @@ def freeze(dump=None, by="", id_="", note="", known_damage=""):
 
 
 def frozen_entry(path):
-    """-> the newest frozen registry entry describing `path`, or None."""
+    """-> the newest frozen registry entry describing `path`, or None.
+
+    🔴 A REGISTRY ENTRY NAMES THE DUMP ROOT; UNDER DATED CAPTURES THE PATH HANDED
+    IN IS THE CAPTURE. `DEF_DUMP` resolves to `<root>/captures/<id>` once the dump
+    is migrated (`DUMP_STORAGE_LAYOUT_RULING_1`), and every shipped entry's `path`
+    is still `RimWorld by Ludeon Studios/DefDump` — so the plain suffix match
+    below stopped matching the moment the dump was migrated, and the live dump
+    read as NOT FROZEN. Measured 2026-08-22, and it cost `selftest_frozen_dumps`
+    its `the_shipped_registry_freezes_the_live_dump` case. The root is therefore
+    tried as well as the capture path.
+
+    🔑 AND WHEN THE ENTRY NAMES A CAPTURE, THAT CAPTURE MUST BE THE ONE ON DISK.
+    Matching the root alone would resurrect exactly the failure the registry was
+    hardened against: the freeze naming one capture while the disk holds another,
+    both 578 mods, and nothing noticing. An entry carrying `capture` matches only
+    its own capture; an entry without one is a flat-layout freeze and matches as
+    it always did.
+    """
     want = os.path.normpath(str(path)).replace("\\", "/").rstrip("/")
+
+    # …/DefDump/captures/<id>  ->  root …/DefDump, capture <id>
+    cap = ""
+    root = want
+    head, tail = os.path.split(want)
+    if os.path.basename(head) == "captures" and _GP._CAPTURE_ID.match(tail):
+        cap = tail
+        root = os.path.dirname(head).replace("\\", "/").rstrip("/")
+
     hit = None
     for e in registry():
         if not e.get("frozen"):
             continue
         p = os.path.normpath(str(e.get("path", ""))).replace("\\", "/").rstrip("/")
-        if p and (want.endswith(p) or p.endswith(want)):
-            hit = e
+        if not p:
+            continue
+        if not (want.endswith(p) or p.endswith(want)
+                or root.endswith(p) or p.endswith(root)):
+            continue
+        entry_cap = str(e.get("capture", ""))
+        if entry_cap and cap and entry_cap != cap:
+            continue          # frozen, but a DIFFERENT capture than the one on disk
+        hit = e
     return hit
 
 

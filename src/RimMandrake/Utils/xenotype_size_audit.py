@@ -58,8 +58,13 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import DEF_DUMP  # noqa: E402
+import dump_projection  # noqa: E402
 
-SQLITE = Path(DEF_DUMP) / "defs.sqlite"
+# 🔴 The db is at the DefDump ROOT, not inside the capture — it is derived, so
+# pruning a capture must never cost it. `DEF_DUMP` is the CAPTURE under the dated
+# layout, so resolving this by hand breaks the day the dump is migrated. It did,
+# on 2026-08-22. `sqlite_path` knows both layouts.
+SQLITE = Path(dump_projection.sqlite_path(str(DEF_DUMP)) or (Path(DEF_DUMP) / "defs.sqlite"))
 
 # Exact stat defNames.  Anything not on one of these two lists is not a size
 # stat at all, whatever its name suggests.
