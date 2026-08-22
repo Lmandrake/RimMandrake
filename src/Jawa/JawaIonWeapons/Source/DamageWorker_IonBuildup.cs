@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace JawaIonWeapons
@@ -51,6 +52,8 @@ namespace JawaIonWeapons
         public override DamageResult Apply(DamageInfo dinfo, Thing victim)
         {
             DamageResult result = base.Apply(dinfo, victim);
+
+            ApplyMachineTier(dinfo, victim);
 
             Pawn pawn = victim as Pawn;
             if (pawn == null || pawn.Dead || pawn.health == null)
@@ -130,6 +133,88 @@ namespace JawaIonWeapons
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// D1's TOP TWO TIERS. Stuns a machine or a droid by re-applying the hit as
+        /// vanilla EMP, which is the only route that reaches them.
+        ///
+        /// WHY causeStun ON OUR OWN DEF HAS NEVER DONE ANYTHING  [read from source]
+        /// =====================================================================
+        /// StunHandler::CanBeStunnedByDamage whitelists Core DamageDefs BY IDENTITY
+        /// for pawns, and a modded def is not on the list:
+        ///
+        ///     if (def == DamageDefOf.Stun) return true;
+        ///     if (def == DamageDefOf.EMP &amp;&amp; !pawn.RaceProps.IsFlesh) return true;
+        ///     if (Biotech &amp;&amp; def == MechBandShockwave &amp;&amp; IsMechanoid) return true;
+        ///     if (def == DamageDefOf.NerveStun &amp;&amp; !IsMechanoid) return true;
+        ///     return false;
+        ///
+        /// So `causeStun: true` on JawaIon_Damage stunned NOTHING, and the earlier
+        /// comment in DamageDefs_JawaIon.xml claiming we inherit "the flesh-vs-mech
+        /// resistance gradient" from EMP was wrong: EMP's mech half is not inherited,
+        /// it is keyed on the def OBJECT. Measured live 2026-08-22: Mech_Scyther took
+        /// JawaIon_Damage x13 at up to 20 and reported stunned=False, stunTicks=0,
+        /// while one vanilla EMP at 20 gave it 570 ticks.
+        ///
+        /// ⚠️ NON-PAWNS ALREADY WORKED and are deliberately left alone. The non-Pawn
+        /// branch of CanBeStunnedByDamage only asks `def.causeStun`, so turrets,
+        /// vehicles-as-things and other stunnable buildings have been taking the ion
+        /// stun correctly all along. Only pawns were dark.
+        ///
+        /// WHY RE-APPLY EMP RATHER THAN CALL StunFor DIRECTLY
+        /// ==================================================
+        /// StunFor is public and would "work", but it skips everything around it:
+        /// EMPResistance, the per-def adaptation timer that stops a mech being
+        /// perma-locked, the stunFromEMP flag that draws the DisabledByEMP effecter,
+        /// and the battle log entry. Adaptation in particular is PRIVATE state inside
+        /// StunHandler, so a direct call could never honour it. Going back through
+        /// Thing::TakeDamage with DamageDefOf.EMP buys all four for free, and EMP is
+        /// harmsHealth:false / makesBlood:false, so it cannot wound or kill.
+        ///
+        /// No recursion: the EMP def runs Core's plain DamageWorker, not this one.
+        /// </summary>
+        private void ApplyMachineTier(DamageInfo dinfo, Thing victim)
+        {
+            Pawn pawn = victim as Pawn;
+            if (pawn == null || pawn.Dead || !pawn.Spawned || pawn.RaceProps == null)
+            {
+                return;
+            }
+
+            // FLESH IS THE BOTTOM TIER AND TAKES NO STUN. D1 is explicit that a person
+            // must be worn down and gang-tackled, never disabled outright; that is the
+            // whole capture-not-kill pillar. The buildup below Apply() is their tier.
+            if (pawn.RaceProps.IsFlesh)
+            {
+                return;
+            }
+
+            IonDamageDef def = dinfo.Def as IonDamageDef;
+            if (def == null)
+            {
+                return;
+            }
+
+            bool machine = pawn.RaceProps.IsMechanoid || pawn.RaceProps.IsDrone;
+            float amount = machine ? def.empAmountMachine : def.empAmountDroid;
+            if (amount <= 0f)
+            {
+                return;
+            }
+
+            DamageInfo emp = new DamageInfo(
+                DamageDefOf.EMP,
+                amount,
+                0f,
+                dinfo.Angle,
+                dinfo.Instigator,
+                null,
+                dinfo.Weapon,
+                DamageInfo.SourceCategory.ThingOrUnknown,
+                dinfo.IntendedTarget);
+            emp.SetIgnoreArmor(true);
+            victim.TakeDamage(emp);
         }
     }
 }

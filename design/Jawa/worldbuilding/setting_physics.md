@@ -148,6 +148,27 @@ class this weapon exists to beat.**
 alongside it. Carried by `ION_MACHINE_TIER_MISSING_1` (BUILD). The `KNOWN INERT` comment in
 the mod source is **stale** — the worker fires.
 
+#### ✅ BUILT 2026-08-22 — and the diagnosis above was half wrong
+🔑 **The hediff was never the obstacle.** Read from RimWorld's own source:
+`StunHandler.CanBeStunnedByDamage` whitelists Core `DamageDef`s **by object identity** for
+pawns — `Stun`, `EMP` (non-flesh), `MechBandShockwave` (mechanoid), `NerveStun` — and
+returns `false` for anything else. So `causeStun: true` on `JawaIon_Damage` **stunned no
+pawn of any kind, flesh or machine.** Inheriting `StunBase` never bought EMP's gradient,
+because the gradient is keyed on the def *object*, not on the parent.
+
+⇒ The fix is in `Source/DamageWorker_IonBuildup.cs`: a non-flesh pawn has the hit
+**re-issued as vanilla `DamageDefOf.EMP`**, which is the only route that reaches it — and
+which brings `EMPResistance`, the adaptation timer that stops a mech being perma-locked,
+and the `DisabledByEMP` effecter with it. Tuning is XML, on a new `IonDamageDef`:
+`empAmountMachine 60` (~1800 ticks, three times a vanilla EMP grenade) and
+`empAmountDroid 24`. **Flesh takes neither** and keeps the buildup untouched.
+
+⚠️ **Non-pawns were never dark.** The non-pawn branch of that same method asks only
+`def.causeStun`, so turrets and stunnable buildings have taken the ion stun all along.
+
+⏳ Live proof outstanding: needs a Scyther stunned and a `Tribal_Warrior` still downing
+alive at ~6 hits with zero injuries.
+
 ⚠️ **L5 survives this, narrowly, and the reason matters.** Ion drops a person *slowly and
 expensively*; stun/neural drops one *fast*. The two tools still differ, so L5's *"designed
 reason for team composition"* holds — but it is a gradient, not the clean mirror L5 claims.

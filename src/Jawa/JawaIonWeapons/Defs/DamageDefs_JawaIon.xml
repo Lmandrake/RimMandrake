@@ -2,77 +2,97 @@
 <Defs>
 
   <!-- ========================================================================
-       Jawa ion damage. Modeled on vanilla EMP (ParentName="EMP") so we inherit
-       vanilla's stun behavior and the built-in target gradient:
-         * mechanoids / droids  -> EMP stuns them hard and fast (very effective)
-         * flesh pawns          -> only briefly dazed per hit (resistant)
-       harmsHealth=false / makesBlood=false guarantees CAPTURE-NOT-KILL: this
-       damage never injures or kills a fleshy target. The "wear-down" that
-       eventually drops a person alive comes from the Jawa_IonStun hediff below
-       (applied via the projectile's comp), NOT from this damage dealing wounds.
-       No custom workerClass -> no C# dependency.
+       JAWA ION DAMAGE - the owner's LOCKED SPEC D1, 2026-08-08
+       (design/Jawa/mods/required_mods.md):
+
+         "SINGLE-TARGET STUN GUN with tiered effect by target class - strongest
+          vs pure machines/mechanoids, strong vs droids & vehicles, weakest vs
+          flesh people (but still capable of eventually dropping a person with
+          sustained/stacked fire). This tiering IS the tactical identity."
+
+       All three tiers now exist, and each is produced by a different mechanism:
+
+         machines / drones     empAmountMachine 60 -> ~1800 stun ticks
+         droids & vehicles     empAmountDroid   24 -> ~720 stun ticks
+         flesh people          NO stun; the JawaIon_Stun buildup below, which
+                               ends in down-alive with zero injuries
+
+       harmsHealth=false / makesBlood=false is the capture-not-kill guarantee
+       and applies to every tier.
   ======================================================================== -->
-  <!-- We inherit ParentName="EMP", so ALL vanilla EMP stun behavior (causeStun,
-       stun duration, the flesh-vs-mech resistance gradient) comes for free.
-       We only override what makes this "ion": labels, no-harm guarantee, tint,
-       and the buildup hediff. We intentionally do NOT re-declare stun fields we
-       cannot verify against 1.6 — inheritance handles them. -->
+
+  <!-- 🔴 CORRECTION 2026-08-22, ION_MACHINE_TIER_MISSING_1. The comment that
+       used to sit here said we inherit "the flesh-vs-mech resistance gradient"
+       from EMP for free. WE DO NOT, and we never did. Read from source:
+       StunHandler::CanBeStunnedByDamage whitelists Core DamageDefs BY IDENTITY
+       for pawns -
+
+           if (def == DamageDefOf.Stun) return true;
+           if (def == DamageDefOf.EMP && !pawn.RaceProps.IsFlesh) return true;
+           if (Biotech && def == MechBandShockwave && IsMechanoid) return true;
+           if (def == DamageDefOf.NerveStun && !IsMechanoid) return true;
+           return false;
+
+       - so `causeStun` below has never stunned a single PAWN of any kind. It is
+       kept only because the NON-pawn branch of that method asks nothing but
+       `def.causeStun`, which is why turrets and stunnable buildings have been
+       taking the ion stun correctly all along.
+
+       MEASURED LIVE 2026-08-22 (infrastructure/state/observed/2026-08-22/ion_buildup/):
+         Mech_Scyther   JawaIon_Damage x13 up to @20   stunned=False, stunTicks=0
+         Mech_Scyther   vanilla EMP x1 @20             stunned=True,  570 ticks
+         Tribal_Warrior JawaIon_Damage x6 @8           downed, alive, no injuries
+
+       The two tiers that were missing are now applied in C# by
+       Source/DamageWorker_IonBuildup.cs, which re-issues the hit as vanilla EMP
+       at the amounts below. That route - rather than a direct StunHandler.StunFor -
+       is what buys EMPResistance, the adaptation timer that stops a mech being
+       perma-locked, and the DisabledByEMP effecter. -->
+
   <!-- FIXED 2026-08-10. This said ParentName="EMP" and the def was being
        DISCARDED every load: "Could not find parent node named EMP for node
        DamageDef". EMP is a CONCRETE def (defName EMP), and ParentName can only
        reference an ABSTRACT def declared with a Name= attribute. Core's own EMP
        does exactly what we now do: ParentName="StunBase", where StunBase is
-       DamageDef Name="StunBase" Abstract="True" in Core Damages_Stun.xml.
-       Consequence while broken: no ion damage type existed, so the weapon's
-       damageDef and the JawaIon_Stun hediff never resolved. -->
-  <DamageDef ParentName="StunBase">
+       DamageDef Name="StunBase" Abstract="True" in Core Damages_Stun.xml. -->
+  <DamageDef Class="JawaIonWeapons.IonDamageDef" ParentName="StunBase">
     <defName>JawaIon_Damage</defName>
     <label>ion</label>
     <deathMessage>{0} was overloaded by ion fire.</deathMessage>
     <harmsHealth>false</harmsHealth>
     <makesBlood>false</makesBlood>
     <explosionColorEdge>(0.55, 0.75, 1.0, 0.85)</explosionColorEdge>
-    <!-- Each hit deposits ion buildup. severityPerDamageDealt is multiplied by
-         the damage amount (8) -> ~0.24 severity per bolt, so ~4 solid hits push
-         a flesh target from 0 toward the ~0.9 "overloaded" collapse stage, and
-         decay (-1.2/day) bleeds it off if fire stops. This is the vanilla,
-         no-C# way to apply an accumulating hediff on damage. VERIFY IN-GAME:
-         confirm severity actually accrues on FLESH pawns (EMP on flesh is a
-         short stun; additionalHediffs should still apply regardless). -->
-    <!-- ADDED 2026-08-11 - THE GUN DID NOTHING AT ALL.
-         Reported in-game as "it never seems to hit, even with 20 shooting".
-         It was hitting every time; the hit simply had no effect of any kind.
-         Core's StunBase (Damages_Stun.xml) declares ONLY harmsHealth=false and
-         makesBlood=false. It carries no workerClass and, crucially, no
-         causeStun. Vanilla EMP is not stunning because it descends from
-         StunBase - it stuns because EMP itself sets causeStun=true. We
-         inherited the "harms nothing" half of EMP and none of the "does
-         something" half, so every bolt landed as a no-op: no injury, no blood,
-         no stun, no message. Indistinguishable from a miss. -->
+
     <!-- WIRED 2026-08-11. Custom worker, see Source/DamageWorker_IonBuildup.cs.
-         The additionalHediffs block below is no longer inert: this worker reads
-         it directly and applies the severity by hand, without ever dealing an
-         injury. It calls base.Apply first, so the impact sound and vanilla
-         bookkeeping are unchanged, and causeStun above is resolved outside the
-         worker (Thing.TakeDamage never reads it), so the mechanoid half is
-         untouched. Verified from IL: vanilla EMP declares no workerClass at all
-         and still stuns, which is the proof that stun does not live here. -->
+         It calls base.Apply first, so the impact sound and vanilla bookkeeping
+         are unchanged. -->
     <workerClass>JawaIonWeapons.DamageWorker_IonBuildup</workerClass>
+
+    <!-- ⚠️ Kept for NON-PAWN targets only - turrets and stunnable buildings.
+         It cannot and never could stun a pawn; see the correction above. -->
     <causeStun>true</causeStun>
+
     <externalViolenceForMechanoids>true</externalViolenceForMechanoids>
     <stunAdaptationTicks>2200</stunAdaptationTicks>
     <impactSoundType>Electric</impactSoundType>
     <combatLogRules>Damage_EMP</combatLogRules>
 
-    <!-- KNOWN INERT: the additionalHediffs block below does not fire.
-         additionalHediffs is read by DamageWorker_AddInjury.ApplyDamageToPart,
-         and a StunBase-derived def never reaches that worker - in Core the only
-         defs using additionalHediffs are injury damages (Damages_MeleeWeapon).
-         So the flesh "wear-down toward a live collapse" mechanic has never run
-         and cannot run from XML alone. Left in place, harmless, because the fix
-         is a decision not a typo: either a small custom DamageWorker in C#, or
-         an injury-based damage def, which trades away the capture-not-kill
-         guarantee. Do not delete this until that is settled. -->
+    <!-- D1's TOP TWO TIERS. EMP-equivalent amounts, not ticks: StunHandler turns
+         a point into 30 ticks and then subtracts the target's EMPResistance, so
+         an armoured mech resists exactly as it does against a vanilla EMP
+         grenade - which lands 20, for 600 ticks. 60 is three times that, which
+         is the "nearly one-shot-disable a mech" half of the spec.
+         ⛔ Flesh gets NEITHER of these. Its tier is the buildup below. -->
+    <empAmountMachine>60</empAmountMachine>
+    <empAmountDroid>24</empAmountDroid>
+
+    <!-- D1's BOTTOM TIER, and the capture-not-kill pillar. The worker reads this
+         block by hand and applies the severity without ever dealing an injury -
+         ~0.24 per bolt at damage 8, so a flesh target collapses alive after
+         roughly six solid hits, and decay bleeds it off if fire stops.
+         🔴 The "KNOWN INERT" note that used to sit here is STRUCK. It was true of
+         the 2026-08-10 def, which had no worker; the worker has read this block
+         since 2026-08-11 and the live measurement above proves it fires. -->
     <additionalHediffs>
       <li>
         <hediff>JawaIon_Stun</hediff>

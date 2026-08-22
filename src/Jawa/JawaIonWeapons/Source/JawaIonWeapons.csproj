@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <Compile Include="DamageWorker_IonBuildup.cs" />
+    <Compile Include="IonDamageDef.cs" />
   </ItemGroup>
 
   <ItemGroup>
