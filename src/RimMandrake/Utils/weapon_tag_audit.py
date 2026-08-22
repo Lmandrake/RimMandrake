@@ -278,6 +278,20 @@ EXTRA_TAGS = {
 }
 
 
+# 🔴 THE FILE THIS GENERATOR OWNS. Both safety guards below - refuse_shrink and
+# preserved_block - are ABOUT THIS FILE, never about wherever --emit-patch is pointed.
+#
+# ⚠️ THEY USED TO READ THE OUTPUT PATH, AND THAT INVERTED THEM. Point --emit-patch at a
+# scratch file to inspect the result before overwriting anything - the careful thing, the
+# thing a reviewer does - and `existing_targets` returned empty, so refuse_shrink found
+# nothing lost and stayed silent, while `preserved_block` found no markers and dropped the
+# hand-authored block. Measured 2026-08-22: emitting to a scratch path produced 9
+# operations against the 154 on disk and silently lost every hand-authored op, with no
+# warning of any kind. CAUTION DISARMED THE GUARD.
+# ⇒ Both now read CANON_PATCH no matter where the output goes.
+CANON_PATCH = Path(__file__).resolve().parents[3] / "src" / "Jawa" / "Jawa_Patches" \
+    / "Patches" / "WeaponTags_Renormalise.xml"
+
 HAND_BEGIN = "<!-- BEGIN HAND-AUTHORED -->"
 HAND_END = "<!-- END HAND-AUTHORED -->"
 
@@ -318,7 +332,9 @@ def refuse_shrink(mapping, path, allow):
     To regenerate for real: capture a def dump with `Jawa_Patches` DISABLED, so the
     dump describes the game before this patch, then re-run. `--allow-shrink` overrides
     this check and is the wrong answer nine times in ten."""
-    was = existing_targets(path)
+    # ⛔ CANON_PATCH, not `path`. See the note at CANON_PATCH: reading the output path
+    # means a scratch target has nothing to lose and the guard never fires.
+    was = existing_targets(CANON_PATCH)
     lost = sorted(was - set(mapping))
     if not lost:
         return
@@ -392,7 +408,10 @@ def emit_patch(mapping, path, allow_shrink=False):
     # (a kind whose tag no weapon carries needs a CHOSEN tag, not a computed one).
     # Carry it across verbatim, or regenerating silently deletes work nobody will miss
     # until pawns spawn bare-handed again.
-    lines += [preserved_block(path), "</Patch>", ""]
+    # ⛔ CANON_PATCH, not `path` - same reason. The hand-authored ops belong to the file
+    # this generator owns, and they must ride along into a scratch emit too, or the diff
+    # a reviewer looks at is not the diff they would get.
+    lines += [preserved_block(CANON_PATCH), "</Patch>", ""]
     # 🪤 An XML comment may not contain '--' ANYWHERE in its BODY - not in a rule line,
     # not in a CLI flag it quotes. One occurrence does not spoil the comment, it kills
     # the FILE: the parser aborts and every operation below is lost. Sanitise the body

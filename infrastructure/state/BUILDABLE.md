@@ -408,6 +408,18 @@ are `MarketValue`, i.e. UNSTUFFED; the engine compares `ThingStuffPair.Price`, w
 dearer. **Its pass is a floor, never a truth** — it says so in its own header, and a live
 run has already contradicted it.
 
+**15 — `weapon_tag_audit.py --emit-patch` had two guards and BOTH were disarmed by
+caution.** Fixed 2026-08-22. `refuse_shrink` and `preserved_block` read the OUTPUT path, so
+aiming `--emit-patch` at a scratch file to inspect the result first — the careful move, the
+one a reviewer makes — meant there was nothing on that path to lose, the shrink guard stayed
+silent, and the hand-authored block was dropped. Measured: a scratch emit produced **9
+operations against the 151 on disk**, silently losing 142, with no warning. 🔑 **The failure
+mode is the inversion: the safe workflow was the unsafe one.** Both guards now read the
+canonical `WeaponTags_Renormalise.xml` regardless of where output goes, and a scratch emit
+correctly refuses. ⛔ The underlying non-idempotency is unfixed and is not a bug: the dump is
+captured with the patch already applied, so every weapon it tagged reads as already-tagged.
+**A real regenerate needs a dump taken with `Jawa_Patches` DISABLED.**
+
 **11 — a generator's own success line cannot tell you it just deleted a def.**
 `gen_pawnkind_roster.py` emits 48 pawn kinds; the committed XML held **49**. The odd one
 was `Jawa_Homestead_DesertRanger`, hand-added to the OUTPUT after an owner ruling, with
