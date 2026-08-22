@@ -17,6 +17,33 @@ a trailer. **This file is for everything that is not shaped like an item.**
 
 ---
 
+## ⚖️ WHAT IS THE WEAPONS FLOOR? TWO DOCS SAY VANILLA, THE CUT SAYS BLASTERS — DECIDE, 2026-08-22
+
+**Nothing is blocked on this.** I ruled `VANILLA_GUNS_CUT_OR_RETAG_1` without it and the
+answer holds either way. But the tension is real, it is unstruck in two live documents, and
+it is yours rather than mine.
+
+**The cut, as it stands:** Cherry Picker strips eight vanilla industrial guns — revolver,
+autopistol, bolt-action, pump shotgun, machine pistol, heavy SMG, assault rifle, sniper.
+You reversed exactly one slice of it, the Mech weapons, and left the rest.
+
+**Two live docs say the opposite, and neither is struck:**
+
+| where | what it says | when |
+|---|---|---|
+| `design/RimMandrake/Custom_World.md:110` | *"recommend AGAINST"* amputating vanilla weapons — **"keep vanilla for the low end; let SW gear be mid/high flavor."** Its reasoning: amputation deletes the scrappy low-tech early arc a scavenger start wants, and soft-pushes everyone onto ultra-tech blasters, which is anti-scarcity | 2026-08-03 audit |
+| `design/Jawa/mods/required_mods.md:730` | **"v1's floor is vanilla low-tech and Outer Rim's cheap end"** | 2026-08-15, the same day you cut VWE-Makeshift for being bullet guns |
+
+🔑 **The honest reading is that "vanilla low-tech" is ambiguous** — it may mean bows and
+clubs, which survive the cut, or it may mean revolvers, which do not. Both docs were written
+before the cut list reached its current size.
+
+**You do not need to answer now.** What I would not do is let a seat "discover" the tension
+in six weeks and quietly resolve it by un-cutting eight guns to fix a rounding error, which
+is exactly the shape of the item I just closed.
+
+---
+
 ## ✅ THE MAP IS ADOPTED AND AUTHORING IS OPEN — DECIDE, 2026-08-22
 
 **You looked at the four globes and said the world "really isn't very bad at all… we're
