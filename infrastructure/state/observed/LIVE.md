@@ -185,8 +185,14 @@ Nobody needs a live game to re-derive these; they need `ilspycmd`.
 
 ## Companion DLL and mod list — CHECK, 2026-08-19
 
-- ~~The companion is 32 `jawa/` tools~~ ⇒ **the companion is now 106 `jawa/` tools** — count it, never quote it. See "The worldmap bridge" below. Verified live by
-  `tools/list`, not by `strings`.
+- ~~The companion is 32 `jawa/` tools~~ ~~106~~ ⇒ **the companion SOURCE declares 120 `jawa/`
+  tools** (2026-08-22, regex over the `[Tool(` attribute across the `JawaBench*Tools.cs`
+  files). ⚠️ **Two are `#if JAWA_GM_TOOLS`** (`fire_incident`, `send_letter`), so a build
+  without `--gm` ships **118** — and the LIVE total is larger again, because RimBridgeServer
+  contributes its own `rimworld/*` family that no source count of ours can see.
+  🔑 **Count it live with `tools/list`, never quote a number from a doc, and NEVER use
+  `strings` on the assembly** — it found 16 of 115 names and reported the shortfall as a
+  clean answer.
   ⚠️ The companion lives in `<gamedir>\BridgeTools\`, a **sibling of `Mods\`**, not inside it,
   and it is discovered by the RimBridgeServer MOD at startup — so `brrainz.rimbridgeserver`
   must be ACTIVE or there is no bridge at all, however the DLL is deployed.
@@ -210,6 +216,31 @@ Nobody needs a live game to re-derive these; they need `ilspycmd`.
   `worldmap.py`'s two `write()` methods now raise. Reading, decoding and rendering are
   untouched, and `src/RimMandrake/Utils/rimbench/savemap.py` is kept whole — it refuses
   to overwrite its source and passes `fogGrid` through undecoded.
+
+## `jawa/world_cache_audit` — CHECK, 2026-08-22. Built and deployed; NOT yet proven live
+
+🔴 **`Tile` caches four values and RimWorld never invalidates any of them:**
+`hillinessLabelCached`, `cachedMinTemp`, `cachedMaxTemp`, `tmpHasSecondaryBiome`
+(read out of `RimWorld/Planet/Tile.cs` 1.6). ⇒ **After a repaint the raw fields are correct,
+every raw-field validator passes, and the UI still draws the OLD value.** That is why
+repainted mountains stayed unclickable, and it was only ever findable by a human clicking.
+
+- The audit reads those private fields **by reflection** — no side effect — and recomputes
+  the expected value by replaying the getter's own logic. It reports `cached` (populated)
+  separately from `stale` (populated AND disagreeing).
+- ⛔ **Do not "simplify" it to compare `HillinessLabel` against `hilliness`.** Two ways that
+  fails, both of which look exactly like a pass: `HillinessLabel` is seeded from the raw
+  field and then **overridden by any mutator with `hillinessLabel != Undefined`**, so the
+  comparison reports a false stale on every mutated tile forever; and **touching the public
+  getter POPULATES an empty cache**, so the audit silently repairs what it is measuring.
+- 🔑 **A tile with an EMPTY cache cannot go stale** — a fresh load reporting zero is correct,
+  not a pass. `populate=true` (off by default, and it runs *after* the measurement) arms a
+  before/after test: populate → repaint → audit.
+- **There is no cache-clearing tool and there will not be one.** RimWorld has no reset method
+  for these; **a reload is the only fix**, and that is the finding.
+- Proof harness: `src/RimMandrake/bridgetools/prove_world_cache_audit.py`. ⚠️ Its last step —
+  save, reload, expect `staleTotal == 0` — costs a second load and is deliberately NOT run by
+  the script.
 
 ## The worldmap bridge — CHECK, 2026-08-19. 25 new tools, all proven live
 
