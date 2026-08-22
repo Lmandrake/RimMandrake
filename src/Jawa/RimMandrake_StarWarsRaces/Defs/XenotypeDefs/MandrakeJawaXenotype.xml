@@ -23,23 +23,27 @@
   is what this file does. The two must be kept in step by hand; if the owner
   edits the .xtp in game, re-transcribe.
 
-  GENES: 37. The first 35 are the .xtp's own order, transcribed verbatim.
+  GENES: 38. The first 35 are the .xtp's own order, transcribed verbatim.
   `inheritable` True matches the .xtp, so children of two Jawa are Jawa.
 
-  🔴 THE DEF AND THE .xtp NOW DIFFER BY EXACTLY TWO GENES, ON PURPOSE
-  ===================================================================
-  `AptitudeTerrible_Plants` is the 36th, added 2026-08-21 (JAWA_CANNOT_FARM_GENE_1),
-  and `RimMandrake_Jawa_MiningDisabled` is the 37th, added 2026-08-22
-  (JAWA_CANNOT_DIG_GENE_1). Both are on the owner's rulings. Neither is in
-  `MandrakeJawa.xtp` and neither must be
+  🔴 THE DEF AND THE .xtp NOW DIFFER BY EXACTLY THREE GENES, ON PURPOSE
+  ====================================================================
+  `AptitudeTerrible_Plants` is the 36th, added 2026-08-21 (JAWA_CANNOT_FARM_GENE_1);
+  `RimMandrake_Jawa_MiningDisabled` is the 37th, added 2026-08-22
+  (JAWA_CANNOT_DIG_GENE_1); and `SEX_AlwaysAphrodor` is the 38th, added 2026-08-22 on
+  the owner's description of the clan as a "single-gender-egg-layer-either-impregnate-
+  the-other variety" - see the long note beside it below for why the ovipositor alone
+  did not deliver that. All three are on the owner's rulings. None is in
+  `MandrakeJawa.xtp` and none must be
   put there: the .xtp is the owner's saved editor artifact and a record of what
   he built by hand, and the repo copy is byte-identical to the live one under
   `LocalLow\Xenotypes\`. Both should stay that way.
   ⛔ THIS PARAGRAPH REPLACES "the two must be kept in step by hand." They are
   deliberately NOT in step. If the owner edits the .xtp in game and someone
-  re-transcribes it over this def, BOTH GENES ARE SILENTLY LOST - the def still
+  re-transcribes it over this def, ALL THREE ARE SILENTLY LOST - the def still
   loads, every Jawa still generates, and the only symptoms are a clan that farms
-  happily and one that digs its own ore. Re-add both after any re-transcribe.
+  happily, digs its own ore, and quietly reverts to two ordinary sexes.
+  Re-add all three after any re-transcribe.
 
   `iconPath` is Outer Rim's Jawa icon, copied into this mod with the rest of
   the species art. Credit for it is Neronix17's.
@@ -95,6 +99,41 @@
       <!-- reproduction: egg-laying, early maturity, short gestation -->
       <li>BS_EarlyMaturity</li>
       <li>VRE_ShortPregnancy</li>
+      <!-- 🔴 OWNER, 2026-08-22: the Jawa are a "single-gender-egg-layer-either-impregnate-
+           the-other variety". THAT TAKES TWO GENES AND ONLY ONE WAS HERE.
+           Read out of the decompiled Intimacy - Gender Works assembly, not inferred:
+
+           `GenderUtilities.ApplyReproductives` walks a pawn's ACTIVE genes and ORs the
+           flags from each `GenderWorksModExtension`. Crucially, the `SEX_Ovipositor`
+           extension sets only `femaleReproductiveReplacement` - it does NOT set the
+           "a gene decided this" flag. So with the ovipositor ALONE that flag stays false,
+           `GetGenderBasedReproductivesForPawn` runs, and every Jawa falls back to the
+           gender default: males become phallors and females become gestors.
+           ⇒ Until this line was added the clan was an ORDINARY TWO-SEX SPECIES that
+           happened to lay eggs, and the ovipositor gene did nothing at all for half of
+           them - its own description says so: "Gestor or aphrodor carriers of this gene
+           will be born with an ovipositor."
+
+           `SEX_AlwaysAphrodor` gives BOTH organs to every carrier regardless of gender,
+           and the ovipositor then replaces the female one. So a Jawa has a phallus and an
+           ovipositor: any Jawa can impregnate any other Jawa, and whichever was
+           impregnated lays an egg. That is the owner's sentence, mechanically.
+           🔑 It is gender-BLIND, not gender-changing. Jawa still roll male or female for
+           appearance, which is why `Hair_BaldOnly` and `Beard_NoBeardOnly` above still do
+           the visual work. Nothing here touches how a Jawa looks.
+
+           ⚠️ CONCEPTION IS DECIDED BY ORGANS AND NEVER BY GENDER once this mod is loaded:
+           its `PregnancyUtility.CanEverProduceChild` prefix replaces the vanilla method
+           outright and asks only whether one partner has a male organ and the other a
+           female one. Sexuality traits are untouched and still decide who WANTS to pair.
+
+           ⛔ NOT `SEX_Meiosis`. It reads like the same idea and is the opposite one:
+           parthenogenesis, self-impregnation, and its own effect description says it
+           "prevents regular conception". It would replace pairing rather than open it up.
+           ⛔ NOT `SEX_AlwaysGestor` or `SEX_AlwaysPhallor` either - those force ONE class
+           on every member of the species, males included, because the flags OR and there
+           is no per-gender branch anywhere in that loop. -->
+      <li>SEX_AlwaysAphrodor</li>
       <li>SEX_Ovipositor</li>
       <!-- appearance -->
       <li>Hair_BaldOnly</li>
