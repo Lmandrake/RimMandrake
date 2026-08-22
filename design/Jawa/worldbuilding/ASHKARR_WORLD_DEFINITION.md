@@ -368,6 +368,45 @@ curve shape and `Desert`/`AridShrubland` listed them at commonality 4.
 
 ---
 
+## 6c. 🔴 TWO THREAT CLASSES, AND THEY ARE NOT THE SAME — owner, 2026-08-22
+
+**Verbatim:** *"HorrorWastes should be on the night-side where the ancient bioweapons have
+adapted to the extreme cold and produced utterly hostile lifeforms. Wasteland (and others)
+are instead contaminated by radiation and more conventional poisoning, as is the
+mechanoidintrusion layer. Different threats."*
+
+🔑 **The planet carries two separate legacies of the old war, and a reader must not merge
+them.** They look alike from orbit and mean opposite things on the ground.
+
+| | **BIOWEAPON — engineered life, still alive** | **CONTAMINATION — poisoned ground** |
+|---|---|---|
+| what it is | ancient bioweapons that *adapted*, and are now utterly hostile lifeforms | radiation and conventional poisoning; the weapon was used and left |
+| biomes | `HorrorWastes` *(nightside — see below)* · `AB_GelatinousSuperorganism` · `AB_OcularForest` · `Scarlands` | `Wasteland` · `AB_MechanoidIntrusion` |
+| the danger | **the wildlife** | **the ground, the air, the water** |
+| anomaly entities | ✅ **may be cast here** | ⛔ **may not** |
+
+⛔ **Do not extend the bioweapon class by analogy.** `AB_MycoticJungle` (1,939 tiles),
+`AB_FeraliskInfestedJungle` (534) and `PoisonForest` (604) all *read* as infested and are
+**not** on the bioweapon list. The owner named four; four is the list.
+
+### 🔴 `HorrorWastes` is not on the map yet, and the nightside is where it goes
+
+**Measured 2026-08-22:** `HorrorWastes` (label *"horror wastes"*, mod *Horrors (Continued)*)
+is installed and loaded and holds **ZERO tiles**. The deep nightside it belongs on is
+currently almost all `AB_RockyCrags`:
+
+| band | tiles | median temp | dominant biome |
+|---|---|---|---|
+| arc ≥ 120 | 5,481 | −48 °C | `AB_RockyCrags` 3,387 |
+| arc ≥ 130 | 3,916 | −56 °C | `AB_RockyCrags` 2,828 |
+| coldest 800 (arc 150–179) | 800 | −82…−67 °C | `AB_RockyCrags` 687 |
+
+⭐ **Carving `HorrorWastes` from the deep-nightside end of `AB_RockyCrags` fixes a second
+problem at the same time.** `AB_RockyCrags` currently spans **−82 °C to +19.8 °C** across
+4,703 tiles — it is a *band*, not a habitat, and casting it as one creature list would put a
+lizard and a snow-thing on the same ground. Splitting its coldest extent off gives both
+biomes a coherent thermal range. Carried by `HORROR_WASTES_ON_NIGHTSIDE_1`.
+
 ## 7. Factions — 120 settlements
 
 > 📌 **Corrected 2026-08-22: this section said 72.** The map has **120**, across the same

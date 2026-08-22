@@ -149,12 +149,19 @@ toughspike · trispike.
 wastes, scarlands"* ⇒ `AB_GelatinousSuperorganism` (96 tiles) · `AB_OcularForest` (3) ·
 `Scarlands` (90) · 🔴 **`HorrorWastes` — installed but has ZERO tiles on Ash'karr.**
 
-⚠️ **Two things follow and both are the owner's:**
-1. **`HorrorWastes` is a biome we own and never placed.** Either it goes on the map (a map
-   edit, and the map is in progress) or he meant `Wasteland` (1,721 tiles). **Do not guess.**
-2. **As named, the anomaly carve-out covers 189 tiles — 0.9% of the planet.** If anomaly
-   creatures are meant to be met rather than theoretical, either those biomes grow or
-   `HorrorWastes` gets placed.
+✅ **RESOLVED 2026-08-22 — `HorrorWastes` goes on the map.** Owner: *"HorrorWastes should be
+on the night-side where the ancient bioweapons have adapted to the extreme cold and produced
+utterly hostile lifeforms."* ⇒ It is **not** a mistake for `Wasteland`, and the two are
+opposite threat classes — see `ASHKARR_WORLD_DEFINITION.md` §6c. Placement is
+`HORROR_WASTES_ON_NIGHTSIDE_1`.
+
+🔴 **DO THAT BEFORE CASTING.** It carves ~1,000–1,500 tiles out of `AB_RockyCrags`, which
+changes the biome list from 23 to 24 **and re-opens the RockyCrags cast** — the one already
+worked. Casting first means casting it twice.
+
+⛔ **`Wasteland` and `AB_MechanoidIntrusion` are CONTAMINATION, not bioweapon** — radiation
+and conventional poisoning, where the danger is the ground rather than the wildlife. **No
+anomaly entity may be cast in either.**
 
 ⛔ **Anomaly entities may not be cast anywhere else**, and that includes the other
 bio-horror biomes (`AB_MycoticJungle` 1,939, `AB_FeraliskInfestedJungle` 534,
