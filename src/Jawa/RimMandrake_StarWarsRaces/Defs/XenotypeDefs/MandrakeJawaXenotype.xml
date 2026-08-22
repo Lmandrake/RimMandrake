@@ -23,8 +23,21 @@
   is what this file does. The two must be kept in step by hand; if the owner
   edits the .xtp in game, re-transcribe.
 
-  GENES: all 35, in the .xtp's own order, transcribed verbatim.
+  GENES: 36. The first 35 are the .xtp's own order, transcribed verbatim.
   `inheritable` True matches the .xtp, so children of two Jawa are Jawa.
+
+  🔴 THE DEF AND THE .xtp NOW DIFFER BY EXACTLY ONE GENE, ON PURPOSE
+  =================================================================
+  `AptitudeTerrible_Plants` is the 36th, added 2026-08-21 on the owner's ruling
+  (JAWA_CANNOT_FARM_GENE_1). It is NOT in `MandrakeJawa.xtp` and it must not be
+  put there: the .xtp is the owner's saved editor artifact and a record of what
+  he built by hand, and the repo copy is byte-identical to the live one under
+  `LocalLow\Xenotypes\`. Both should stay that way.
+  ⛔ THIS PARAGRAPH REPLACES "the two must be kept in step by hand." They are
+  deliberately NOT in step. If the owner edits the .xtp in game and someone
+  re-transcribes it over this def, THE FARMING GENE IS SILENTLY LOST - the def
+  still loads, every Jawa still generates, and the only symptom is a clan that
+  farms happily. Re-add it after any re-transcribe.
 
   `iconPath` is Outer Rim's Jawa icon, copied into this mod with the rest of
   the species art. Credit for it is Neronix17's.
@@ -96,10 +109,22 @@
       <li>Outland_FamiliarScent</li>
       <li>Outland_Evasive</li>
       <li>Outland_AllMale</li>
-      <!-- aptitudes: they build, they make, they haggle -->
+      <!-- aptitudes: they build, they make, they haggle - and they do not farm -->
       <li>AptitudeStrong_Construction</li>
       <li>AptitudeStrong_Crafting</li>
       <li>AptitudeStrong_Social</li>
+      <!-- 🔴 OWNER, 2026-08-21: "We should simply add a line that Jawa genetics has a
+           disability toward farming." This replaced a ScenPart designator rule plus a
+           14-entry Rule_DisallowBuilding list, and it is the better mechanism as well as
+           the smaller one: a scenario rule binds the PLAYER'S UI on one save, a gene binds
+           the PAWN - so it reaches enemy Jawa factions too, survives into any save, and
+           needs no list that decays every time a furniture mod is added.
+           ⚠️ AN APTITUDE, NOT `disabledWorkTags`, and the owner ruled that fork explicitly.
+           There is no `Growing`-only WorkTag - only `PlantWork`, which covers PlantCutting
+           as well - so disabling it would also stop a Jawa harvesting, cutting wild plants
+           and CHOPPING TREES. No wood, on a scavenger clan. -8 makes them bad at farming
+           and leaves the axe in their hands. -->
+      <li>AptitudeTerrible_Plants</li>
       <li>VRE_Curiosity_Social</li>
     </genes>
   </XenotypeDef>
