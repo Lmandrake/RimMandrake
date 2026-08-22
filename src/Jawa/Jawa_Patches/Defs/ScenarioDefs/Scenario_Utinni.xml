@@ -47,10 +47,35 @@
   quoted back as canon. Where the fiction needed a span it uses a comparison
   instead.
 
-  ⛔ INCOMPLETE ON PURPOSE, AND IT IS STILL VALID. The full part list wants a
-  second ScenPart - `ScenPart_DisableIncident` - and NO incident has been chosen
-  yet. That is a scope call, filed as SCENARIO_OPENING_AND_BANS_1. A ScenarioDef
-  with one part loads and runs; adding the second later is an append.
+  ⭐ ONE PART, AND THAT IS THE FINISHED ANSWER - NOT A GAP
+  =======================================================
+  The part list once wanted a second ScenPart, `ScenPart_DisableIncident`, to
+  stop the storyteller drawing the free-colonist events: `WandererJoin`,
+  `RefugeePodCrash`, `WildManWandersIn`. BUILD recommended banning at least
+  `WandererJoin`, on the anti-exponential pillar and on "every colonist is a
+  Jawa".
+
+  🔴 THE OWNER OVERRULED THAT, 2026-08-22, and the reason is better than the
+  recommendation was:
+
+      "keep them in, it allows the Jawa to show that even in those situations,
+      they will be compelled to enslave the individual. If it's a Jawa after
+      all, then there can be the dynamic of whether anyone falls in love with
+      them or not to consider tribal acceptance."
+
+  ⇒ A stranger arriving is not a free colonist in this campaign. It is a
+  SITUATION: the clan's own doctrine says what to do with an outsider, and doing
+  it in front of the player is characterisation the storyteller hands us for
+  nothing. And when the stranger IS a Jawa, the question stops being mechanical
+  and becomes social - whether the colony takes them in turns on whether anyone
+  forms a bond, which is the tribe deciding its own membership.
+
+  ⛔ SO DO NOT ADD `ScenPart_DisableIncident` LATER "to finish the def". It was
+  considered and declined on the fiction, not forgotten. This ScenarioDef is
+  COMPLETE at one part.
+  ⚠️ And the wider test still holds: a ScenPart earns its place only when it
+  expresses something no def, biome, weather or difficulty setting can. Banning
+  an incident nobody wanted banned expresses nothing.
   ============================================================================
 -->
 <Defs>
