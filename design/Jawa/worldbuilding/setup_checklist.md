@@ -99,8 +99,11 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 > 2026-08-20 drop on 2026-08-21 (*"But I like VME_Nomad!"*) and **re-confirmed it to DECIDE
 > the same day**. On an NPC faction the meme is free — its only hazardous precept,
 > `VME_PermanentBases_Despised`, carries `enabledForNPCFactions: false`.
-> ⏳ `JawaTribes.xml:109` is still the 08-20 **removal comment** and is therefore WRONG;
-> restoring the `<li>` is `NOMAD_MEME_RESTORED_TRIBES_1`, filed for BUILD and not yet run.
+> ✅ **DONE 2026-08-21** — `NOMAD_MEME_RESTORED_TRIBES_1` closed at `96f2012`. The `<li>` is
+> back at `JawaTribes.xml:129` and the 08-20 removal comment was REPLACED with the reversal
+> and its `enabledForNPCFactions` reason, rather than left standing under a line that
+> contradicts it. `validate_ideoligion --xml`: 1/1 VALID, impact 10 over 5 memes.
+> ⚠️ The line number in the struck sentence above (109) is now `VME_Trader`; do not chase it.
 > ⛔ **Do not reopen the drop.** The owner read the −50-mood evidence and ruled anyway.
 > <s>CORRECTED 2026-08-21 by DECIDE: the owner DROPPED `VME_Nomad` on 2026-08-20 and
 > `JawaTribes.xml` no longer carries it.</s> ⛔ DEAD — reversed the next day, above.

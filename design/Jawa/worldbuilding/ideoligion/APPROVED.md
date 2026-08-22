@@ -125,9 +125,15 @@ touched, because the file is the owner's approved artifact.
    colony climbs to −50 mood with no practical reset: *"Let's just assume there will be no
    conflict… No further testing for Nomad issues at this time please."*
    ⇒ The recommendation above is **dead**, and the 2026-08-20 drop recorded below is
-   **undone**. The meme is on the Jawa tribes (`NOMAD_MEME_RESTORED_TRIBES_1`, free there —
-   `VME_PermanentBases_Despised` carries `enabledForNPCFactions: false`) and on the player
-   ideo. `Nomadic_Preferred` stays too; it is a precept and costs no meme slot, so the two
+   **undone on the tribes**. ✅ The meme is on the Jawa tribes — `NOMAD_MEME_RESTORED_TRIBES_1`,
+   closed `96f2012`, free there because `VME_PermanentBases_Despised` carries
+   `enabledForNPCFactions: false`.
+   🔴 **BUT NOT ON THE PLAYER IDEO, AND THIS SENTENCE USED TO CLAIM IT WAS.** Corrected
+   2026-08-22: `src/Jawa/ideoligion/The Salvation.rid` still carries **four** memes and no
+   `VME_Nomad`. ⚠️ **That is not drift and must not be "fixed" by editing the `.rid`.** The
+   two files may legitimately differ: the precept is disabled for NPC factions and ENABLED
+   for a player one, so the hazard the owner weighed is real on his ideo and absent on the
+   tribes. The player side is a separate open decision under `DEPLOY_SALVATION_RID_1`. `Nomadic_Preferred` stays too; it is a precept and costs no meme slot, so the two
    were never alternatives.
    ⛔ **Do not reopen this.** The evidence is preserved in
    `infrastructure/state/items/NOMAD_GRAVSHIP_RESET_PATCH_1.md`; the owner read it and ruled
@@ -146,6 +152,10 @@ touched, because the file is the owner's approved artifact.
    - ✅ `Nomadic_Preferred` remains in the `.rid` and needs no meme slot.
    - ✅ `validate_ideoligion.py --xml` → **1/1 VALID**, impact **7 over 4 memes**
      (was 4 memes at the cap; the structure meme carries 0).
+     ⚠️ **STALE FOR THE TRIBES since 2026-08-21.** The `.rid` bullets above still describe
+     the `.rid` accurately, but `JawaTribes.xml` now validates **1/1 VALID, impact 10 over
+     5 memes** with `VME_Nomad` restored. Read this block as a record of the drop, not as
+     the current state of the FactionDef.
 
 ---
 

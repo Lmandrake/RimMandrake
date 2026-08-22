@@ -629,7 +629,10 @@ primitive — had no encoding. It has one now, and it is a real installed meme.
 | Nomadic | `Nomadic_Preferred` | |
 | Cannibalism | `Cannibalism_Abhorrent` | they are not animals, and the distinction matters to them |
 
-⚠️ **`VME_Nomad` was dropped for `PainIsVirtue`, owner's ruling 2026-08-14** — it
+⚠️ **`VME_Nomad` was dropped for `PainIsVirtue` ON THE DEEP DESERT TRIBES, owner's ruling
+2026-08-14** — 🔑 the faction anchor is added 2026-08-22 because this is the top grep hit for
+the meme in the repo and it carried none. ⛔ **This says nothing about the Jawa tribes**,
+where `VME_Nomad` is live and restored (`NOMAD_MEME_RESTORED_TRIBES_1`, `96f2012`). It
 is the only meme gating **both** `Scarification_Heavy` and `Pain_Idealized`, and
 without it the ⭐ body-debt doctrine was two validator errors, not a design. Of
 `VME_Nomad`'s four forced groups only `VME_Travel_Desired` and
@@ -1121,8 +1124,12 @@ explicable. ⭐ **Keep them unexplained.** Every other faction on this map answe
 > the twelve `<ideoName>` values on disk.**
 >
 > 🔑 **Blocker 1 below is therefore ANSWERED: the name is "The Salvation",** not "The
-> Articles of Passage" — §2.0's 2026-08-08 lock is what got built. **Blocker 2
-> (Nomad-primary vs Tunneler-primary) is untouched by this and is still open.**
+> Articles of Passage" — §2.0's 2026-08-08 lock is what got built. ~~**Blocker 2
+> (Nomad-primary vs Tunneler-primary) is untouched by this and is still open.**~~
+> ✅ **CLOSED 2026-08-22.** The shipped meme set is settled and in the tree:
+> `AM_Structure_Scavenger · Trader · VME_Scrapper · VME_Trader · VME_Nomad`. Nomad-primary
+> won by being built. There is no Tunneler meme anywhere in the 578-mod capture, so the
+> other side of the coin never existed.
 
 🔴 ~~**Deliberately empty.**~~ The player's own religion is the only one on this list
 that will be *played* rather than met, and it is the owner's to build. The material
@@ -1135,9 +1142,14 @@ that already exists is in
 1. **The name is contradictory in its own document.** §2.0 locks **"The Salvation"**
    (2026-08-08) with the sect called *the Keepers of the Second Hand*; §2.6 and §3
    still say **"The Articles of Passage"**. One of them is wrong.
-2. **Nomad-primary vs Tunneler-primary is still a coin.** Both are pillar-legal.
+2. ~~**Nomad-primary vs Tunneler-primary is still a coin.** Both are pillar-legal.
    The file itself says to decide it once the playstyle's expedition-weight is
-   known.
+   known.~~
+   ✅ **NOT A COIN, CLOSED 2026-08-22.** Nomad-primary shipped:
+   `AM_Structure_Scavenger · Trader · VME_Scrapper · VME_Trader · VME_Nomad` on
+   `JawaTribes.xml`, validating 1/1 VALID at impact 10 over 5 memes. ⚠️ And the alternative
+   was never available — **no Tunneler meme exists in the 578-mod capture at all**, so this
+   was a choice between one option and nothing.
 
 ⚠️ **The pantheon is not reconciled with the meme/precept build in §2.1–2.6** —
 those sections predate the nine gods and make no reference to them. Whoever
