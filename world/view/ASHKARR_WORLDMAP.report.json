@@ -274,9 +274,9 @@
      120.96
     ],
     "named": [
+     "The Deadstone",
      "The Dune Sea",
-     "The Ammonia Flats",
-     "The Nightspill"
+     "The Glare"
     ],
     "biomes": {
      "AB_RockyCrags": 4430,
@@ -648,7 +648,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Thornbelt"
    },
    {
     "id": 56,
@@ -666,7 +666,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Cracklands"
    },
    {
     "id": 54,
@@ -684,7 +684,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Long Sand"
    },
    {
     "id": 50,
@@ -702,7 +702,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Dry March"
    },
    {
     "id": 57,
@@ -720,7 +720,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Long Sand"
    },
    {
     "id": 52,
@@ -738,7 +738,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Combs"
    },
    {
     "id": 51,
@@ -756,7 +756,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Dry March"
    },
    {
     "id": 58,
@@ -774,7 +774,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Long Sand"
    },
    {
     "id": 53,
@@ -792,7 +792,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Long Sand"
    },
    {
     "id": 55,
@@ -810,7 +810,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Long Sand"
    },
    {
     "id": 23,
@@ -1008,7 +1008,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Cinders"
    },
    {
     "id": 5,
@@ -1044,7 +1044,7 @@
     "coastal": false,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Saddle"
    },
    {
     "id": 71,
@@ -1134,7 +1134,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Thornbelt"
    },
    {
     "id": 68,
@@ -1332,7 +1332,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Combs"
    },
    {
     "id": 28,
@@ -1494,7 +1494,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Cinders"
    },
    {
     "id": 43,
@@ -1530,7 +1530,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Saddle"
    },
    {
     "id": 46,
@@ -1548,7 +1548,7 @@
     "coastal": true,
     "on_river": false,
     "on_road": true,
-    "region": null
+    "region": "The Thornbelt"
    },
    {
     "id": 2,
@@ -1823,25 +1823,51 @@
   ]
  },
  "landmarks": {
-  "count": 16,
+  "count": 481,
   "by_def": {
-   "Oasis": 6,
-   "AncientHeatVent": 3,
-   "AbandonedColonyOutlander": 1,
-   "sw_Sarlacc": 1,
-   "Valley": 1,
-   "AncientLaunchSite": 1,
-   "LavaCrater": 1,
-   "AncientQuarry": 1,
-   "LavaLake": 1
+   "Dunes": 20,
+   "Cliffs": 15,
+   "Ruins": 15,
+   "Oasis": 14,
+   "DryLake": 12,
+   "VEE_DryRiver": 12,
+   "VEE_RockRidge": 12,
+   "AB_PropaneLakes": 12,
+   "Valley": 11,
+   "VEE_PebbleDunes": 10,
+   "VEE_SaltPlains": 10,
+   "VEE_SerpentineCanyons": 10,
+   "VEE_JaggedRocks": 10,
+   "Cavern": 10,
+   "Bay": 10,
+   "IceDunes": 10,
+   "Crevasse": 10,
+   "VEE_QuicksandDunes": 8,
+   "VEE_RedDesert": 8,
+   "VEE_DustBowl": 8
   }
  },
  "regions": {
-  "count": 23,
+  "count": 60,
   "by_def": {
-   "Region": 23
+   "Region": 60
   },
   "named": [
+   {
+    "name": "The Pan",
+    "def": "Region",
+    "tiles": 79
+   },
+   {
+    "name": "The Sporefields",
+    "def": "Region",
+    "tiles": 255
+   },
+   {
+    "name": "The Deadstone",
+    "def": "Region",
+    "tiles": 1979
+   },
    {
     "name": "The Ammonia Flats",
     "def": "Region",
@@ -1873,6 +1899,16 @@
     "tiles": 817
    },
    {
+    "name": "The Cold Bloom",
+    "def": "Region",
+    "tiles": 254
+   },
+   {
+    "name": "The Cracklands",
+    "def": "Region",
+    "tiles": 210
+   },
+   {
     "name": "The Pyrelands",
     "def": "Region",
     "tiles": 63
@@ -1883,14 +1919,49 @@
     "tiles": 851
    },
    {
+    "name": "The Crown Rot",
+    "def": "Region",
+    "tiles": 67
+   },
+   {
     "name": "The Umbra",
     "def": "Region",
     "tiles": 802
    },
    {
+    "name": "The Glare",
+    "def": "Region",
+    "tiles": 866
+   },
+   {
     "name": "The South Crags",
     "def": "Region",
     "tiles": 432
+   },
+   {
+    "name": "The Last Green",
+    "def": "Region",
+    "tiles": 144
+   },
+   {
+    "name": "The Long Sand",
+    "def": "Region",
+    "tiles": 670
+   },
+   {
+    "name": "The Kiln",
+    "def": "Region",
+    "tiles": 816
+   },
+   {
+    "name": "The Low Dew",
+    "def": "Region",
+    "tiles": 230
+   },
+   {
+    "name": "The Coldspore",
+    "def": "Region",
+    "tiles": 69
    },
    {
     "name": "The Scorch",
@@ -1903,9 +1974,59 @@
     "tiles": 617
    },
    {
+    "name": "The Rimewall",
+    "def": "Region",
+    "tiles": 335
+   },
+   {
+    "name": "The Combs",
+    "def": "Region",
+    "tiles": 360
+   },
+   {
+    "name": "The Dry March",
+    "def": "Region",
+    "tiles": 387
+   },
+   {
     "name": "The Gray Crags",
     "def": "Region",
     "tiles": 576
+   },
+   {
+    "name": "The Sunward Scrub",
+    "def": "Region",
+    "tiles": 154
+   },
+   {
+    "name": "The Softground",
+    "def": "Region",
+    "tiles": 275
+   },
+   {
+    "name": "The Warm Rot",
+    "def": "Region",
+    "tiles": 93
+   },
+   {
+    "name": "The Ashen Waste",
+    "def": "Region",
+    "tiles": 202
+   },
+   {
+    "name": "The Scour",
+    "def": "Region",
+    "tiles": 234
+   },
+   {
+    "name": "The Thornbelt",
+    "def": "Region",
+    "tiles": 492
+   },
+   {
+    "name": "The Frostbloom",
+    "def": "Region",
+    "tiles": 142
    },
    {
     "name": "The Rust Cathedral",
@@ -1916,6 +2037,16 @@
     "name": "The Fall Line Barrens",
     "def": "Region",
     "tiles": 153
+   },
+   {
+    "name": "The Saddle",
+    "def": "Region",
+    "tiles": 68
+   },
+   {
+    "name": "The Last Scrub",
+    "def": "Region",
+    "tiles": 61
    },
    {
     "name": "The Dew Horn",
@@ -1938,9 +2069,34 @@
     "tiles": 384
    },
    {
+    "name": "The Apron",
+    "def": "Region",
+    "tiles": 70
+   },
+   {
+    "name": "The Blight",
+    "def": "Region",
+    "tiles": 140
+   },
+   {
     "name": "The Fall Line",
     "def": "Region",
     "tiles": 155
+   },
+   {
+    "name": "The Cinderdark",
+    "def": "Region",
+    "tiles": 146
+   },
+   {
+    "name": "The Knuckles",
+    "def": "Region",
+    "tiles": 78
+   },
+   {
+    "name": "The Grayrot",
+    "def": "Region",
+    "tiles": 123
    },
    {
     "name": "The Salt Gate",
@@ -1948,14 +2104,54 @@
     "tiles": 16
    },
    {
+    "name": "The Fever Wood",
+    "def": "Region",
+    "tiles": 65
+   },
+   {
+    "name": "The Shelf Rot",
+    "def": "Region",
+    "tiles": 85
+   },
+   {
     "name": "The Anvil",
     "def": "Region",
     "tiles": 349
    },
    {
+    "name": "The Venom Wood",
+    "def": "Region",
+    "tiles": 72
+   },
+   {
+    "name": "The Shoulder",
+    "def": "Region",
+    "tiles": 68
+   },
+   {
+    "name": "The Cinders",
+    "def": "Region",
+    "tiles": 93
+   },
+   {
     "name": "The Salt",
     "def": "Region",
     "tiles": 249
+   },
+   {
+    "name": "The Flatdew",
+    "def": "Region",
+    "tiles": 141
+   },
+   {
+    "name": "The Deep Bloom",
+    "def": "Region",
+    "tiles": 132
+   },
+   {
+    "name": "The High Rot",
+    "def": "Region",
+    "tiles": 165
    }
   ]
  },
