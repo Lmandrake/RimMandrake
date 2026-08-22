@@ -1144,3 +1144,4 @@
 {"seat":"CHECK","event":"verify","id":"B58","result":"partial","config":"full-578","evidence":"infrastructure/state/observed/2026-08-22/b58_jawa/README.md","sha":"ef8a9382","ts":"2026-08-22T08:46:21Z"}
 {"seat":"CHECK","event":"finding","id":"B58","type":"integration","severity":"high","name":"JAWA_GEAR_PATCH_WRONG_KIND_1","from":"B58/run-1@full-578","ts":"2026-08-22T08:46:21Z"}
 {"seat":"CHECK","event":"spawn","name":"PLAYER_JAWA_WEARS_JEANS_1","kind":"task","needs":"offline","for":"BUILD","from":"JAWA_GEAR_PATCH_WRONG_KIND_1","ts":"2026-08-22T08:46:21Z"}
+{"seat":"BUILD","event":"file","id":"THOROUGH_RETAG_WEAPONS_ARMOUR_1","title":"The thorough weapon and armour retag: the advice, the measured state, and the dump it is blocked on","kind":"task","target":"v1","needs":"harvest","for":"BUILD","ts":"2026-08-22T08:51:21Z"}
