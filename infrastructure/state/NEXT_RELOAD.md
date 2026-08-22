@@ -36,6 +36,23 @@
 >   answers (101 and 101). A `grep -c` on that log gives 148, 1007 or 122 depending on the
 >   pattern; only one of those is the number of distinct errors.
 >
+> **Body size is REAL now — one bridge read settles the whole thing:**
+> ```
+> jawa/spawn_pawn xenotype=RimMandrakeWookiee   then read its BodySize
+> jawa/spawn_pawn xenotype=MandrakeJawa         then read its BodySize
+> ```
+> - Wookiee **1.75**, Jawa **0.65** — a **2.7x** ratio in carrying capacity, food, melee
+>   and health scale, not in the sprite alone. 1.00 on either means `BodySizeIsReal.xml`
+>   no-opped.
+> - A species in the -0.20 band (`RimMandrakeBothan`, `RimMandrakeSullustan`, …) reads
+>   **0.80** — our own `RimMandrake_BodySizeGene_small`, mechanical since `1c3a673f`.
+> - ⛔ **Nothing may read 2.00 or over.** That is Big and Small's giant-weapon threshold
+>   and anything at or above it silently gains the 23 `BS_GiantWeapon` weapons. The
+>   ceiling is `HalfJotunFrame` at 1.75 on purpose.
+> - `RimMandrakeHerglic` reads **1.75** and carries exactly ONE gene with the `BodySize`
+>   exclusion tag — it used to get `Outland_BodyScale_Large` plus `HalfJotunFrame` and
+>   they fought.
+
 > **On the Configure Factions page — the owner's eyes, nobody else's:**
 > - all **eight** authored `Jawa_*` factions listed, sorted above vanilla's rows.
 >   Seven of them read `maxConfigurableAtWorldCreation −1` until `b95556a3`.
