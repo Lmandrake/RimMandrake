@@ -44,7 +44,9 @@
   real frames share the SAME `exclusionTags` entry, `BodySize`. Two active genes
   with a shared exclusion tag fight in `Pawn_GeneTracker.CheckForOverrides` and one
   silently wins - which one is not worth relying on. So the cosmetic gene is
-  REPLACED. Herglic, Klatoonian and Rakata had no size gene at all and take an Add.
+  REPLACED. ⚠️ Corrected 2026-08-22: only Klatoonian and Rakata had no size gene. HERGLIC
+  DID - `Outland_BodyScale_Large`, same `BodySize` exclusion tag - so its Add became a
+  Replace; see the note on that operation.
 
   THE THREE TIERS, and the line between the top two is MASS, not height:
     1.75  tall AND massive   Wookiee (2.1-2.3 m, heavily muscled) · Herglic (2.2 m,
@@ -66,6 +68,32 @@
   no longer the deciding one: he weighted felt size and storytelling above it, and
   a 2.7 m Kaminoan that fights like a baseliner reads worse than one that is simply
   large. Their frailty is still carried by their own genes.
+
+  🔴 SUPERSEDED IN PART, 2026-08-22 — OUR OWN FIVE GENES ARE NOW MECHANICAL TOO.
+  `RimMandrake_BodySizeGene_big/bigger/biggest/small/smaller` were rewritten from
+  `SM_Cosmetic_BodySizeOffset` to `SM_BodySizeOffset` in
+  `src/Jawa/RimMandrake_StarWarsRaces/Defs/GeneDefs/SW_Genes.xml`, on the owner's
+  instruction: *"I'd like it to affect carrying capacity, food, melee, etc. just as
+  you say. Let's use this stuff right."* They now read
+
+      _biggest  +0.70 -> 1.70      _small    -0.20 -> 0.80
+      _bigger   +0.50 -> 1.50      _smaller  -0.50 -> 0.50
+      _big      +0.20 -> 1.20
+
+  and metabolism moved with them (`_small` +1 -> +3, `_smaller` +2 -> +5) so small
+  species genuinely eat less. ⇒ THE LADDER HAS NO GAP ANY MORE: 0.40 · 0.50 · 0.65 ·
+  0.80 · 1.00 · 1.20 · 1.40 · 1.50 · 1.70 · 1.75. Everything stays under the 1.99
+  giant-weapon threshold, so no species gains giant weapons by accident.
+
+  ⇒ THE SECOND "DELIBERATELY ABSENT" NOTE BELOW IS NOW ANSWERED. The -0.20 band —
+  Bothan, Defel, Gand, Geonosian, Selkath, Snivvian, Sullustan — no longer has to
+  choose between 0.65 and nothing; it sits at 0.80 on our own gene, which is the rung
+  that did not exist when that note was written. Chagrian carries no size gene at all
+  and is untouched either way; that note misremembered it.
+
+  ⇒ AND NELVAANIAN IS NOW 1.20, not 1.75 and not 1.00. The dimorphism objection stands
+  — a gene cannot tell males from females — but 1.20 is a defensible average for a
+  species whose males are 2.0 m and females 1.5 m, where 1.75 would not have been.
 
   ⚠️ STILL DELIBERATELY ABSENT, and each for a reason that survives the new steer:
     * `RimMandrakeNelvaanian` - males 2.0 m / 130 kg, females 1.5 m / 50 kg. A gene
@@ -102,12 +130,22 @@
     </match>
   </Operation>
 
+  <!-- 🔴 Herglic is a REPLACE, not an Add, and the difference is not cosmetic.
+       It already carries `Outland_BodyScale_Large` from Outland Genetics, whose
+       exclusionTags are ['BodySize'] - the SAME tag HalfJotunFrame carries. Adding
+       rather than replacing would leave two active genes fighting in
+       Pawn_GeneTracker.CheckForOverrides, one would silently win, and which one is
+       not worth relying on. Corrected 2026-08-22; the Add was the original. -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes</xpath>
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes/li[text()="Outland_BodyScale_Large"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes/li[text()="Outland_BodyScale_Large"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">HalfJotunFrame</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">HalfJotunFrame</li></value>
+    </nomatch>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
@@ -280,6 +318,16 @@
     <xpath>Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
     <match Class="PatchOperationReplace">
       <xpath>Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
+    </match>
+  </Operation>
+
+  <!-- The Star Wars pack ships its OWN Jawa xenotype alongside our MandrakeJawa.
+       Both must be the same size or two Jawa stand side by side at 0.65 and 0.50. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeJawa"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeJawa"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
     </match>
   </Operation>

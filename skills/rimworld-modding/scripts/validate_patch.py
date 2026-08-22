@@ -584,6 +584,35 @@ UNSUPPORTED_TOKENS = ("starts-with(", "contains(", " or ", " and ", "not(",
                       "text()", "::", "|")
 
 
+def rebase_for_root_element(xp: str) -> str:
+    """
+    Strip the leading `Defs` step so an xpath can be evaluated against the <Defs>
+    ROOT ELEMENT rather than against the document.
+
+    🔴 RimWorld evaluates a patch xpath against the XmlDocument, whose CHILD is
+    <Defs>, so `Defs/XenotypeDef[...]` and `/Defs/XenotypeDef[...]` both mean the
+    same thing there. lxml and ElementTree evaluate against the <Defs> element
+    itself, where `Defs/...` means `Defs/Defs/...` and matches NOTHING.
+
+    ⚠️ `to_elementtree_xpath` already handled this for the ElementPath branch. The
+    lxml branch did not, so EVERY xpath using text(), contains(), starts-with(),
+    not(), an axis or a union - exactly the expressions that force the lxml branch -
+    came back 0 and read as a dead xpath. Found 2026-08-22 when 25 of the 28
+    operations in `BodySizeIsReal.xml` reported 0 while the same expression matched
+    when run against the same file by hand.
+    """
+    s = xp.strip()
+    if s.startswith("/Defs/"):
+        return s[len("/Defs/"):]
+    if s.startswith("//"):
+        return "." + s
+    if s.startswith("/"):
+        return s
+    if s.startswith("Defs/"):
+        return s[len("Defs/"):]
+    return s
+
+
 def to_elementtree_xpath(xp: str) -> str | None:
     """
     Convert a RimWorld xpath into an ElementTree-evaluable one, relative to the
@@ -1124,7 +1153,7 @@ def count_matches(xp: str, docs) -> tuple[int, list[str], list, int, bool]:
         if not HAVE_LXML:
             return 0, [], [], 0, True
         try:
-            compiled = LET.XPath(xp)
+            compiled = LET.XPath(rebase_for_root_element(xp))
         except Exception:
             # Not valid XPath 1.0 at all, or uses a namespace prefix we have
             # no mapping for. Saying "cannot evaluate" is honest; guessing is
