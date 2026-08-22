@@ -1,19 +1,18 @@
 # TRANSIENT — Upgrade plan: canon, ledger, and the board
 
-> 🔴 **THE PLANET IS FROZEN — owner's ruling, 2026-08-21. Do not paint, repaint, re-render
-> or reference-match it.** Verbatim: *"We need to just freeze the world for now as-is and
-> move on to v1. I have to totally rethink how we create that planet. It's really messy and
-> horrible compared to what I was hoping for originally."*
+> ✅ **THE MAP IS ADOPTED, AND AUTHORING IS OPEN AGAIN — owner, 2026-08-22.** Verbatim, after
+> looking at the four-globe sheet: *"That world, upon examination, really isn't very bad at all…
+> we're thinking of trying to adopt it."* ⇒ **Ash'karr as it stands IS the v1 planet**, and work
+> on it continues: continuity repairs, landmarks, named places, settlements, terrain detail.
 >
-> ⛔ **Every instruction in this file to edit the paint, re-run the painter, render and judge
-> the map by eye, or clear a pre-worldgen gate is DEAD FOR V1** — whether or not it is struck
-> below, and whether or not it reads as merely "not started yet". The map that exists IS the
-> v1 map. `refmatch.py` is cancelled, not gated, and does not exist.
-> ✅ **What survives is CORRECTNESS** in artifacts and tools we still ship — a link CSV
-> emitted backwards, a lint excluding the wrong tiles. Fix those.
-> 🔮 The rethink of the authoring METHOD is post-v1: `design/V2_DREAMS.md >
-> PLANET_METHOD_RETHINK_1`. ⛔ It is **not worldgen**, which is out of every version.
-> Ruling: `WORLD_FROZEN_RETHINK_PLANET_1` · canon: `ORTHO_GLOBE_MAP_ACCEPTED_1`.
+> ⛔ **This REPLACES the 2026-08-21 freeze banner**, which said the opposite and is struck. The
+> freeze lasted one evening and did its job — it stopped a redraft nobody wanted.
+> ⚠️ **What did NOT come back:** re-running `ashkarr_paint.py` to regenerate the bundle, the
+> reference-match harness (`refmatch.py` stays cancelled), and worldgen, which is out of every
+> version and always was. **The map is edited DIRECTLY, one map, in place** — that is the whole
+> method, per `the_one_map.md`.
+> 🔮 `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` stands as history, not as a plan.
+> Ruling: `WORLD_ADOPTED_AUTHORING_OPEN_1` · supersedes `WORLD_FROZEN_RETHINK_PLANET_1`.
 
 
 **For secondary review. 2026-08-20. Nothing here is built; nothing here is decided.**
@@ -828,10 +827,12 @@ owner's 2026-08-20 naming ruling forbids. Corrected throughout:
 
 ## 17. ⛔ ~~THE PLANET HARNESS — reference-driven~~ — DEAD FOR V1
 
-> 🔴 **THE WHOLE OF §17 IS DEAD, 2026-08-21.** The owner froze the planet as-is
-> (*"just freeze the world for now as-is and move on to v1. I have to totally rethink how
-> we create that planet"*), so there is nothing left for a reference-matching harness to
-> judge and nothing left to repaint in response to it. ⛔ **Do not build any part of it,
+> 🔴 **THE WHOLE OF §17 IS DEAD — and it stayed dead through the 2026-08-22 reversal.**
+> The reason changed; the conclusion did not. It was killed by the freeze, and the freeze is
+> struck: the owner ADOPTED the map on 2026-08-22 and authoring is open again. ⛔ **But he
+> adopted it by LOOKING, which is precisely the job §17 wanted to automate.** A harness that
+> scores the map against the reference photographs has nothing left to decide once the map is
+> accepted, so there is nothing here for a reference-matching harness to judge. ⛔ **Do not build any part of it,
 > and do not treat the five defect screens, the render loop or the acceptance picture as
 > pending work.** `refmatch.py` is cancelled, not gated, and does not exist. **W1b
 > (`ORTHO_GLOBE_FIRST_RENDER_1`) and W7 are both dead**; the wave list, the briefs and the

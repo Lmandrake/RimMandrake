@@ -60,12 +60,13 @@ planet:
 
   # ⭐ ACCEPTED FOR V1 — owner, 2026-08-20, after looking at the ortho globes.
   #   "Let's go with the globe map you made for v1. Map accepted."
-  # 🔑 THE SHAPE OF THE PLANET IS SETTLED.
-  # 🔴 HARDENED 2026-08-21 — owner: "just freeze the world for now as-is and move on to v1.
-  # I have to totally rethink how we create that planet." ⛔ POPULATING IT IS ALSO OVER for
-  # v1: no mutators, no landmarks, no temperature curves, no "setting-appropriate detail"
-  # passes. The map that exists IS the v1 map. Only CORRECTNESS in shipped artifacts and
-  # tools survives. See ORTHO_GLOBE_MAP_ACCEPTED_1 below and WORLD_FROZEN_RETHINK_PLANET_1.
+  # 🔑 THE SHAPE OF THE PLANET IS SETTLED — and as of 2026-08-22 the map is ADOPTED.
+  # Owner, on the four-globe sheet: "That world, upon examination, really isn't very bad at
+  # all... we're thinking of trying to adopt it." ⇒ Ash'karr as it stands IS the v1 planet.
+  # ✅ POPULATING IT IS OPEN AGAIN: landmarks, named places, settlements, terrain detail,
+  # river and road continuity — edited DIRECTLY, in place, one map.
+  # ⛔ Still closed: regenerating the bundle with ashkarr_paint.py, the reference-match
+  # harness, and worldgen in any version. See ORTHO_GLOBE_MAP_ACCEPTED_1 below.
   # ⛔ Do not re-open geometry, water fraction, sea count or the temperature curve as
   # "improvements". They are accepted, not merely current.
   accepted_for_v1: true
@@ -787,19 +788,23 @@ ruled:
       ⭐ ACCEPTED FOR V1, on the ortho globes. "Let's go with the globe map you made for
       v1. Map accepted." ⇒ `REFERENCE_MATCH_HARNESS_1` (refmatch.py, the five defect
       screens) is MOOT for v1: it existed to decide whether the map passes, and the map
-      has passed. ⛔ Do not build it for v1. ⛔ ~~The remaining work is POPULATING the map,
-      not re-judging its shape.~~ — STRUCK 2026-08-21: populating is over too, see below.
+      has passed. ⛔ Do not build it for v1. The remaining work is POPULATING the map,
+      not re-judging its shape. ✅ RESTORED 2026-08-22 — struck for one evening, correct again.
 
-      🔴 RE-AFFIRMED AND HARDENED 2026-08-21, owner, verbatim: "We need to just freeze
-      the world for now as-is and move on to v1. I have to totally rethink how we create
-      that planet." ⇒ This acceptance did NOT lift and cannot be lifted by a later
-      compliment. The map is FROZEN AS-IS for v1 — planet authoring stops, not "finish
-      the pass then stop". `refmatch.py` is cancelled, not gated, and does not exist.
-      ⚠️ A later "I like your new globes" is not a reversal and never was; treating it as
-      one is what produced `REFMATCH_THRESHOLDS_CALIBRATE_1`. The rethink of how the
-      planet is authored is POST-V1 and lives in `design/V2_DREAMS.md >
-      PLANET_METHOD_RETHINK_1`. ⛔ It is NOT worldgen: CLAUDE.md's standing ruling holds —
-      there is no worldgen feature in any version. See `WORLD_FROZEN_RETHINK_PLANET_1`.
+      ⛔ ~~RE-AFFIRMED AND HARDENED 2026-08-21: "We need to just freeze the world for now
+      as-is and move on to v1. I have to totally rethink how we create that planet." The map
+      is FROZEN AS-IS for v1 — planet authoring stops.~~
+
+      ✅ ADOPTED 2026-08-22, AND THAT FREEZE IS STRUCK. Owner, on the four-globe sheet:
+      "That world, upon examination, really isn't very bad at all... we're thinking of trying
+      to adopt it." ⇒ Ash'karr AS IT STANDS is the v1 planet, and authoring on it is OPEN —
+      continuity repairs, landmarks, named places, settlements and terrain detail, edited
+      DIRECTLY and in place. The freeze lasted one evening and did its job: it stopped a
+      redraft nobody wanted.
+      ⛔ What did NOT come back: regenerating the bundle with `ashkarr_paint.py`; `refmatch.py`,
+      which stays cancelled and does not exist; and worldgen, which is out of every version and
+      always was. `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` stands as history, not a plan.
+      See `WORLD_ADOPTED_AUTHORING_OPEN_1`, which supersedes `WORLD_FROZEN_RETHINK_PLANET_1`.
 
   SAVANNA_PREMISE_RESOLVE_1:
     question: "Were the Pyrelands meant to be patched vanilla savanna?"

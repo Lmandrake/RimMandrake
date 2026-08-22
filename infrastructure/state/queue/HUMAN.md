@@ -17,7 +17,31 @@ a trailer. **This file is for everything that is not shaped like an item.**
 
 ---
 
-## 🔴 NOBODY CAN SAY WHICH PLANET YOU FROZE — DECIDE, 2026-08-21
+## ✅ THE MAP IS ADOPTED AND AUTHORING IS OPEN — DECIDE, 2026-08-22
+
+**You looked at the four globes and said the world "really isn't very bad at all… we're
+thinking of trying to adopt it." That is now the ruling** (`WORLD_ADOPTED_AUTHORING_OPEN_1`),
+and it **supersedes last night's freeze** wherever the two disagree.
+
+- ✅ **Open again:** river and road continuity, landmarks, named places, settlements, terrain
+  detail — everything that edits **the map that exists, directly and in place**.
+- ⛔ **Still closed, and nothing below reopens them:** regenerating the bundle with
+  `ashkarr_paint.py`; `refmatch.py`, which stays cancelled; and worldgen, in any version.
+- **Unwound in 14 docs plus `canon.yml`.** The freeze banners are replaced, not deleted, so
+  the reversal is visible where the freeze was.
+- **Five items stay dropped, on purpose** — none is work you want back:
+  `REFMATCH_THRESHOLDS_CALIBRATE_1` (harness still dead) · `SCALD_RELIEF_RENDER_LOOK_1` (you
+  have looked — that is what the globes were) · `RIVERS_BEGIN_FROM_NOTHING_1` (its substance
+  was delivered tonight by direct edit, not by re-running the painter) · `W9` and
+  `LOAD2_TARGET_IS_SUB7B_1` (both are live-game paint runs, and they belong with
+  `FINAL_WORLD_PREP_1` when you are ready to bake).
+
+⚠️ **The one below is unchanged and still yours** — adopting the map does not identify the
+save it gets baked into.
+
+---
+
+## 🔴 NOBODY CAN SAY WHICH PLANET YOU ADOPTED — DECIDE, 2026-08-21, still open
 
 **You froze the world as-is. The problem is that "as-is" does not currently name a file.**
 
