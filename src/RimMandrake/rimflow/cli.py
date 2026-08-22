@@ -246,6 +246,34 @@ def _mode_file():
     return word if word in ("interactive", "autonomous", "afk") else None
 
 
+def _stale_board():
+    """-> a warning if `queue/*.md` have gone stale, else "".
+
+    🔴 THE PUBLISHER IS BOUNDED AT 8 HOURS AND DIES SILENTLY, ON PURPOSE — and the cost
+    lands the next morning. Measured 2026-08-22: it stopped at 00:21 and the queues sat
+    frozen for 9 hours, so a seat waking would have read a view predating an entire day
+    of rulings. It had already happened once before, for 2h17m, with a seat watching.
+
+    ⚠️ `rimflow` itself reads the LEDGER, so `next` is always current — but the board and
+    every `queue/*.md` reader is not, and nothing else notices. This is the one command
+    every seat runs first, so the warning belongs here.
+    """
+    import time
+    q = os.path.join(model.ROOT, "infrastructure", "state", "queue", "BUILD.md")
+    try:
+        age = (time.time() - os.path.getmtime(q)) / 60.0
+    except OSError:
+        return ""
+    if age < 5:
+        return ""
+    return ("⚠️  THE BOARD IS %d MINUTES STALE — `queue/*.md` and http://localhost:8787 "
+            "are\n    showing a view that old. What you read below is CURRENT (it comes "
+            "from the\n    ledger); the published board is not. The publisher is bounded "
+            "at 8h and dies\n    quietly. Restart it — REP's job, anyone's command:\n"
+            "      setsid nohup ./src/RimMandrake/Utils/board_loop.sh "
+            ">/dev/null 2>&1 </dev/null &\n" % age)
+
+
 def _ctx(args):
     return {"mode": (getattr(args, "mode", None) or os.environ.get("RIMFLOW_MODE")
                      or _mode_file()),
@@ -256,6 +284,9 @@ def _ctx(args):
 # next — the command that matters
 # ---------------------------------------------------------------------------
 def cmd_next(args, seat):
+    warn = _stale_board()
+    if warn:
+        sys.stderr.write(warn)
     _, w = load()
     ctx = _ctx(args)
     it = priority.next_item(w, seat, args.target, ctx)
