@@ -1145,3 +1145,5 @@
 {"seat":"CHECK","event":"finding","id":"B58","type":"integration","severity":"high","name":"JAWA_GEAR_PATCH_WRONG_KIND_1","from":"B58/run-1@full-578","ts":"2026-08-22T08:46:21Z"}
 {"seat":"CHECK","event":"spawn","name":"PLAYER_JAWA_WEARS_JEANS_1","kind":"task","needs":"offline","for":"BUILD","from":"JAWA_GEAR_PATCH_WRONG_KIND_1","ts":"2026-08-22T08:46:21Z"}
 {"seat":"BUILD","event":"file","id":"THOROUGH_RETAG_WEAPONS_ARMOUR_1","title":"The thorough weapon and armour retag: the advice, the measured state, and the dump it is blocked on","kind":"task","target":"v1","needs":"harvest","for":"BUILD","ts":"2026-08-22T08:51:21Z"}
+{"seat":"CHECK","event":"file","id":"IONBLASTER_INTO_THE_GENERATOR_1","title":"Fold JawaIon_Damage into gen_pawnkind_roster.py and delete the stopgap patch","kind":"defect","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-22T08:52:42Z"}
+{"seat":"CHECK","event":"file","id":"IONBUILDUP_ACCRUES_ON_FLESH_1","title":"Prove the ion buildup actually downs a flesh pawn alive","kind":"check","target":"v1","needs":"bridge","for":"CHECK","ts":"2026-08-22T08:52:42Z"}
