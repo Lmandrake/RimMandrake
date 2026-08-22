@@ -108,6 +108,29 @@ below.
 
 > ✅ **ANSWERED at :20 in this same file** — owner, 2026-08-22: *"I like the vanilla weapons being gone."* The floor is spelled out as NEOLITHIC in `required_mods.md:730`. It only reads open because it is a `##` heading inside :20's fold.
 
+## ✅ ANSWERED 2026-08-22 14:11 — THE FLOOR IS BOWS AND KNIVES, FOR ANYONE
+
+**You said:** *"strike the two docs. The cheap end should be bows and knives for anyone... but
+it's ok if you make them cheaper so that nobody just spawns with fists, that's a bit silly."*
+
+- ✅ **Both docs were ALREADY struck** on 2026-08-22, off your earlier *"I like the vanilla
+  weapons being gone"* — the question above was written before that landed and is stale, not
+  outstanding. I have added your wording to both anyway, because they said *"bows and clubs"*
+  and you said **knives**.
+- 🔑 **The half that is new, and it changes work:** a bare-handed pawn is a **pricing** defect.
+  Fix it by making a floor weapon CHEAPER, never by raising a kind's `weaponMoney`. That
+  reverses standing advice in three open items — `first_light.py` wanted to raise
+  `Town_Trader` and `Hunter` budgets to 340 so they could afford an **incendiary launcher**.
+- Filed as `WEAPON_FLOOR_BOWS_KNIVES_1` for DECIDE (offline): name which defs are the floor,
+  what they cost, which tags reach them. The measured victim list already exists — 16 `Jawa_*`
+  role kinds bare 5/5 live, plus every `TribalWarriorBase` kind, whose only tag
+  `NeolithicMeleeDecent` resolves to the empty set.
+- ⚠️ **Three of those cannot be fixed by price at all:** `Jawa_Droid_Leader`,
+  `Jawa_Droid_Specialist`, `Jawa_TradeMoot_Specialist` have no `weaponTags` field, and Droid
+  Grunt/Heavy carry `weaponMoney 0-0`. Those need a tag, not a discount.
+
+<details><summary>the question as it was asked</summary>
+
 ## ⚖️ WHAT IS THE WEAPONS FLOOR? TWO DOCS SAY VANILLA, THE CUT SAYS BLASTERS — DECIDE, 2026-08-22
 
 **Nothing is blocked on this.** I ruled `VANILLA_GUNS_CUT_OR_RETAG_1` without it and the
