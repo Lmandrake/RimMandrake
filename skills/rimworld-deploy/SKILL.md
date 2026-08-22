@@ -74,10 +74,31 @@ spike config — every xpath then legitimately matches nothing and the wall of f
 failures burns a day:
 
 ```bash
---mods-config "$(ls -t deployed/config/ModsConfig.full-*.xml | head -1)"
+--mods-config infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml
 ```
 
-Read the `N active mods → M def files` line before trusting any verdict. 0 errors
+🔴 **CORRECTED 2026-08-22 by CHECK — the command this section used to give was
+`$(ls -t deployed/config/ModsConfig.full-*.xml | head -1)`, and it resolved to the
+WRONG STACK.** Measured on the day: that glob returns
+`deployed/config/ModsConfig.full-574.2026-08-12.xml` — **574 mods, ten days old, and
+it still carries `thereallemon.factioncontrol`**, a mod the owner removed on
+2026-08-21 because it aborted three save loads. The live list is **578 and clean**.
+
+The advice ("pass the newest backup, never a pinned filename") was right; the command
+was globbing the wrong directory. `deployed/config/` is an ARCHIVE of dated snapshots
+and its newest member is only as fresh as the last time someone happened to write one
+there. **`infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` is the owner's
+real list** — it is what `modlist_swap.py --restore` restores FROM (`modlist_swap.py:24`),
+so it is maintained rather than merely deposited.
+
+⚠️ **It is still not the LIVE file.** Confirm they agree before trusting a verdict:
+```bash
+diff <(grep -o '<li>[^<]*</li>' infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml) \
+     <(grep -o '<li>[^<]*</li>' "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml")
+```
+
+Read the `N active mods → M def files` line before trusting any verdict. **If it does
+not say 578, you are validating against a stack the game does not load.** 0 errors
 is the bar.
 
 ⚠️ **It reads `Patches/` only — never `Defs/`.** New content under `Defs/` is
