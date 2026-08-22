@@ -84,7 +84,7 @@
   THE FOUR CONDITION FAN OUT
   ==========================
   47 lines authored across 14 defs, emitted as 188 rules, once per speaker
-  condition (PlayerColony, PlayerTribe, OuterRim_Jawa, OuterRim_JawaTribal).
+  condition (PlayerColony, PlayerTribe, RimMandrake_Jawa, RimMandrake_JawaTribal).
   Grammar conditions AND together and there is no OR, so four cases means four
   copies. Covering only the first would leave tribal starts and every NPC Jawa
   speaking English.
@@ -94,11 +94,11 @@
 
   REGENERATING
   ============
-  Authored lines live in Utils/jawavoice/lines_ideology.py. To change the
+  Authored lines live in src/RimMandrake/Utils/jawavoice/lines_ideology.py. To change the
   writing, edit those and re run:
 
-      python Utils/jawavoice/genideo.py      # rewrites this file
-      python Utils/jawavoice/compose.py      # rescores it against the corpus
+      python src/RimMandrake/Utils/jawavoice/genideo.py      # rewrites this file
+      python src/RimMandrake/Utils/jawavoice/compose.py      # rescores it against the corpus
 
   Never hand edit the four copies of a rule: drift between them is invisible in
   play, because the engine simply picks a different copy.
