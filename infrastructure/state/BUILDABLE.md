@@ -377,6 +377,18 @@ dump with their `weaponTags` stripped, so a tag whose every carrier was cut is *
 from a dump-built index rather than **empty** in it — and a counter over that index cannot
 return anything but zero. ⇒ Attribute cuts from the mod's SOURCE XML.
 
+**12 — `jawa/faction_name_get` flagged the factions that were RIGHT** (fixed 2026-08-21,
+`37ac949`; **undeployed until the next shutdown window**). Its `isGenerated` compared
+`currentName` against `defLabel` — but a faction with a `fixedName` is SUPPOSED to differ
+from its label, that is what a reskin is. Live on 578 mods it reported 24 generated, of
+which **9 were false positives wearing their own `defFixedName`**: `Empire`,
+`Jawa_Junkers`, `PirateYttakin`, `DV_PirateKeshig`, `AG_XenohumanPirates`,
+`CannibalPirate`, `BS_Muspelheim`, `BS_Niflheim`, `BS_OgreFaction`. 🔴 **Worse than a wrong
+number: it aimed the repair at the wrong targets.** `faction_name_set action=clear` rewrote
+the name to `defLabel`, so running the documented fix against `generatedCount` would have
+DELETED nine authored names. ⇒ Until the deploy lands, treat any `generatedCount` from a
+live game as wrong, and do not run `clear`.
+
 **11 — a generator's own success line cannot tell you it just deleted a def.**
 `gen_pawnkind_roster.py` emits 48 pawn kinds; the committed XML held **49**. The odd one
 was `Jawa_Homestead_DesertRanger`, hand-added to the OUTPUT after an owner ruling, with
