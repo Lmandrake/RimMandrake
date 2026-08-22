@@ -54,7 +54,7 @@ it should write directly and say so.
 | `rimworld-deploy` | Writing a file is not deploying it — RimWorld loads C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>, never… |
 | `rimworld-ideoligion` | Design, author, validate and judge RimWorld ideoligions. There is no IdeoDef — an Ideo is a runtime object, and the only XML… |
 | `rimworld-load-round` | How to spend a RimWorld cold load — and how to stop needing one. A 13-mod minimal list loads in 22 SECONDS against ~25 minutes on… |
-| `rimworld-modding` | Author, patch, validate and debug RimWorld mods — XML PatchOperations, custom Defs, C#/Harmony assemblies, load-order problems… |
+| `rimworld-modding` | Author, patch, validate and debug RimWorld mods — XML PatchOperations, custom Defs, C#/Harmony assemblies, def inheritance that… |
 | `rimworld-quests` | Design, author, validate and debug RimWorld quests. A quest is a QuestScriptDef whose node tree runs ONCE at offer time and… |
 | `rimworld-savegame` | Reading, grepping and editing a RimWorld `.rws` savegame — plain XML plus base64/raw-DEFLATE map grids of 2-byte def shortHashes.… |
 | `rimworld-scenario-building` | Authoring a RimWorld scenario and the game-creation settings around it — ScenarioDefs, .rsc scenario files, ScenParts, Custom… |

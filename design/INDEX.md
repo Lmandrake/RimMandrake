@@ -30,6 +30,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `FACTION_ART_SPEC.md` | Faction art — the world map, and what v1 owes it |  |
 | `SALVAGE_PALETTE.md` | SALVAGE_PALETTE.md — which shipped wreck props the player can actually strip |  |
 | `c7_directional_triage.md` | C7 — incomplete directional texture sets, triaged |  |
 | `graphic.md` | Art request — Gamorrean head sprites for RimWorld 1.6 |  |
@@ -42,6 +43,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `BRIDGE_CAPABILITY_ROSTER.md` | The live-bridge capability roster — what is POSSIBLE, for the owner to cull |  |
 | `INHABITED_CAST_BLACKSTAR.md` | `Inhabited` — cast 06: the Blackstar Company |  |
+| `INHABITED_CAST_DEEPWATER.md` | `Inhabited` — cast 12: the Deepwater Compact |  |
 | `INHABITED_CAST_DROIDS.md` | `Inhabited` — cast 04: the Free Droid Enclaves |  |
 | `INHABITED_CAST_EMPIRE.md` | `Inhabited` — cast 11: the Galactic Empire |  |
 | `INHABITED_CAST_GEONOSIAN.md` | `Inhabited` — cast 02: the Geonosian Foundry Hive |  |
@@ -86,9 +88,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Gravship_Campaign_Planning_Discussion_2026-08-02.md` | Gravship Campaign Design Notes |  |
 | `Livestock_Trade_Utility_Pets_v1.md` | The Livestock Trade — Utility, Pet & Companion Creatures | ☁ aspirational |
 | `PLANT_GROWTH_SPEC.md` | PLANT_GROWTH_SPEC.md — freakish plant growth, specified for build |  |
+| `PRE_WORLDGEN_GATE.md` | Before the owner generates the world — what is actually owed |  |
 | `SCENARIO_SETTINGS_SPEC.md` | SCENARIO_SETTINGS_SPEC.md — every setting the campaign start needs, and WHEN it is fixed |  |
 | `SCENARIO_SPEC.md` | SCENARIO_SPEC.md — how the campaign starts |  |
 | `WORLDMAP_BRIDGE_SURFACE.md` | The worldmap bridge surface — every element, and read/write/validate for each |  |
+| `WORLD_REDRAFT.md` | Rebuilding the keeper world, by hand |  |
 | `biome_and_fauna_roster.md` | biome_and_fauna_roster.md — which biomes, which beasts, and what makes each tile feel like itself | ☁ aspirational |
 | `biome_review_comments.md` | biome_review_comments.md — DECIDE's read of the owner's biome cuts |  |
 | `biome_terrain_palette.md` | biome_terrain_palette.md — Authoritative Biome + Terrain Palette |  |
