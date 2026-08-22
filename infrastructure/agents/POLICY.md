@@ -464,3 +464,42 @@ anything — it is a tool telling its owner no.
 the seat override or the env var that lets him through; if a policy genuinely reserves an
 act, name the policy and hand him the exact command anyway. Where no such route exists and
 he wants one, the answer is to BUILD it, as here — not to report the wall.
+
+## 🔴 A GUARD REFUSES AT THE WRITE, NEVER ONLY AT THE COMMIT — owner's ruling, 2026-08-22
+
+DECIDE, reporting it twice in two days:
+
+> *"BUILD writes a correction into a DECIDE-owned file, the commit bounces, and the edit
+> sits in the working tree where the next `git checkout` would erase it. Both were still
+> sitting there this morning. The guard is right; nothing was routing them to me."*
+
+🔑 **The guard was right and the timing was wrong.** `queue_lint.py` permitted the write
+and refused the commit, so a seat could spend a whole turn producing work that could never
+land, and be left holding it in a tree four seats share, where nothing tells the owning
+seat it exists and any checkout destroys it.
+
+⛔ **This is a general defect, not one hook's bug.** *Any* rule that blocks at commit but
+permits the write manufactures stranded work. **If you add a guard, refuse at the moment
+the work would be CREATED.** A refusal that arrives after the effort has been spent is a
+trap, however correct its reasoning.
+
+### Correcting another seat's item — the route, which the refusal now prints for you
+
+⛔ **Do not edit `infrastructure/state/items/<ID>.md` for an item another seat owns.** The
+write is refused. ✅ **File the correction against them instead** — this leaves the new
+item UNCLAIMED, and the *filer* of an unclaimed item may write and commit its file, so the
+correction lands in git addressed to the right seat:
+
+```
+python3 src/RimMandrake/rimflow/cli.py file CORRECT_<THEIR_ITEM>_1 \
+  --for <THEIR_SEAT> --kind task --caused-by <THEIR_ITEM_ID> \
+  --title "<what is wrong with it, in one line>"
+```
+
+Then write `infrastructure/state/items/CORRECT_<THEIR_ITEM>_1.md` with `## Spec` carrying
+**the whole correction** — they should apply it without reconstructing what you worked
+out — and commit that file by name.
+
+⚠️ **The OWNER is exempt, and an unknown seat is never guessed at.** A hook that blocks the
+wrong person's correct work is a hook that gets disabled, which converts it into a false
+allow for everything, forever.
