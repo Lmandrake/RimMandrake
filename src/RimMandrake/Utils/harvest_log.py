@@ -151,9 +151,22 @@ CHECKS = [
     ("crossref", "cross-reference (def loader)",
      r"Could not resolve cross-reference", 25,
      "16 Punch_HitBuilding + 1 VWE_Tool_Whip + 8 BMT_* = 25, all triaged"),
+    # Baseline stays 0, and as of 2026-08-22 that is a CLEANED zero rather than an
+    # aspirational one. The 08-22 08:40 load read 8; all 8 were triaged to two CONFIG
+    # artifacts remembering names from mods we cut or turned off, and both were then
+    # edited (backups: *.bak-2026-08-22):
+    #   pokean.xtp                          3 guy762_* GeneDefs, Star Wars Xenotypes is off
+    #   Mod_3532608331_DeepStorageMod.xml   5 RG_* ThingDefs, 4 Cherry-Picked + 1 from
+    #                                       ReGrowth: Boiling, which we dropped
+    # ⚠️ "Could not load reference to" is Scribe reading a SAVED ARTIFACT, and that is a
+    # different system from "Could not resolve cross-reference" (the def loader against
+    # the live mod set). It fires at STARTUP for .xtp and mod-settings files, not only
+    # when a save is loaded - so a hit here is not evidence about any savegame.
     ("scribe", "stale saved data (Scribe)",
      r"Could not load reference to", 0,
-     "a SAVED FILE holds a dead name - different system from cross-ref"),
+     "a SAVED FILE holds a dead name - different system from cross-ref. "
+     "The 8 seen 2026-08-22 were cleaned out of pokean.xtp and Deep Storage's "
+     "settings; any hit now is NEW"),
     # Added 2026-08-13 after HAR's transpiler on PregnancyUtility.CanEverProduceChild
     # died against Universal Pregnancy's and NOTHING here counted it. The cost was
     # not the bug - it was that with no standing check we could not DATE it: the
