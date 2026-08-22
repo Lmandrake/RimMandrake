@@ -100,6 +100,25 @@ NEO_MELEE = ("club", "spear", "axe", "knife", "dagger", "sword", "mace", "hammer
 NEO_RANGED = ("bow", "sling", "javelin", "throw", "dart", "blowgun", "boomerang")
 
 
+def _family(tag):
+    """The tag family a tag belongs to: its longest leading run of capitalised words.
+
+    `WarcasketBasic` -> `Warcasket`, `NeolithicRangedFlame` -> `NeolithicRanged`,
+    `VEE_HunterIndustrialWeapon` -> `VEE_Hunter`. Crude on purpose: it only has to be
+    good enough to put siblings beside each other for a human to read, and a wrong
+    grouping is visible in one glance where a wrong TAG is invisible for a whole load.
+    """
+    import re as _re
+    if "_" in tag:
+        head = tag.split("_")[0] + "_" + tag.split("_")[1] if tag.count("_") >= 1 else tag
+        parts = _re.findall(r"[A-Z][a-z]*", tag.split("_", 1)[1] if "_" in tag else tag)
+        if len(parts) > 1:
+            return tag.split("_", 1)[0] + "_" + "".join(parts[:-1])
+        return head
+    parts = _re.findall(r"[A-Z][a-z]*", tag)
+    return "".join(parts[:-1]) if len(parts) > 1 else tag
+
+
 def role_of(d):
     """Which tag ladder does this weapon belong on?
 
@@ -434,6 +453,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--emit-patch", metavar="OUT")
+    ap.add_argument("--siblings", action="store_true",
+                    help="for every disarmed kind, show the SURVIVING tags in the same family - a dead tag dies out of a family, and the family is the decision")
     ap.add_argument("--list-unclassified", action="store_true",
                     help="name the surviving guns role_of could not classify - the remaining retag work, which the summary line otherwise hides")
     ap.add_argument("--anyway", action="store_true",
@@ -453,6 +474,31 @@ def main():
     print("\n🔴 pawn kinds with EVERY weapon tag empty: %d" % len(disarmed))
     for n, w in disarmed:
         print("   %-34s %s" % (n, w))
+        if not a.siblings:
+            continue
+        # 🔑 THE SURVIVING SIBLINGS OF A DEAD TAG ARE THE WHOLE DECISION.
+        # A dead tag almost never dies alone - it dies out of a FAMILY, and the family
+        # is what tells you what the kind was meant to hold. `WarcasketBasic` has zero
+        # carriers while `WarcasketAll`, `WarcasketVeteran`, `WarcasketHeavy`,
+        # `WarcasketFlamer` and `WarcasketMelee` all have them, because the cherrypick
+        # took exactly the three basic-tier guns. Printing the family turns "pick a tag
+        # from 390" into "pick one of four, and mind the tier".
+        # ⚠️ IT DOES NOT PICK FOR YOU, deliberately. A sibling is usually a TIER, so
+        # taking the wrong one promotes the kind - `WarcasketAll` on a combatPower-300
+        # footsoldier is an arms-race change dressed as a bug fix. Read the counts,
+        # then choose.
+        for want in w:
+            fam = _family(want)
+            sibs = sorted((t, len(v["kept"])) for t, v in tags.items()
+                          if t != want and _family(t) == fam and v["kept"])
+            if sibs:
+                print("      %-28s family %-14s survivors: %s"
+                      % ("↳ " + want, fam,
+                         ", ".join("%s(%d)" % (t, n) for t, n in sibs[:6])))
+            else:
+                print("      %-28s family %-14s NO SURVIVING SIBLING - the whole family "
+                      "is gone, so a vanilla ladder tag is the only route"
+                      % ("↳ " + want, fam))
     print("\nsurviving Industrial/Spacer guns carrying NO vanilla role tag: %d" % len(untagged))
     m = plan(untagged)
     from collections import Counter

@@ -116,8 +116,19 @@ empty set and spawns bare, silently.
 | `MechanoidGunLongRange` | ✅ fixed pending a load — `Gun_Needle` un-cut (`143ee4e`) |
 | `SentryDroneGunShortRange` | ✅ fixed pending a load — `Gun_Scattergun` un-cut |
 | `NeolithicRangedFlame` | ⛔ deliberate — `Flamebow` stays cut; the archer was re-tagged instead |
-| `Artillery_BaseDestroyer` | 🔴 **OPEN** — both carriers cut |
-| `Flamethrower` | 🔴 **OPEN** — all three carriers cut |
+| `Artillery_BaseDestroyer` | ✅ **NOT A DEFECT** — corrected below |
+| `Flamethrower` | ✅ **NOT AN ARMING DEFECT** — corrected below |
+
+🔴 **CORRECTED an hour later, 2026-08-22: the two rows above were reported as OPEN and
+neither is.** A dead tag is only a defect if a pawn kind ASKS for it, and that was never
+checked. Measured:
+- `Artillery_BaseDestroyer` — **nobody asks for it.** Zero pawn kinds name it. No work owed.
+- `Flamethrower` — four kinds ask (`Mercenary_Heavy`, `Mercenary_Heavy_Yttakin`,
+  `TradersGuild_Heavy`, `VFE_Mercenary`) and **all four have live alternative tags**. They
+  arm; they just never arm with a flamethrower. A flavour loss, not a bare pawn.
+🔑 ⇒ **(A) is discharged apart from what a load must confirm.** The three tags that DID
+leave a kind bare — `MechanoidGunLongRange`, `SentryDroneGunShortRange`,
+`NeolithicRangedFlame` — are the three already fixed. **Always ask who asks.**
 
 **⚠️ And 28 more vanilla tags are down to 1–2 carriers** — `Axe` 1, `LongSword` 1,
 `PumpShotgun` 2, `Neolithic` 2. One more cut anywhere and each becomes a silent hole. That
@@ -151,3 +162,41 @@ theirs** — all third-party, none ours. `apparel_tag_audit.py` (new, `432cf408`
 instrument. 🔑 Severity is different and must not be borrowed from the weapon side: a kind
 with no matching apparel tag is **not naked**, because `apparelRequired` and the general pool
 still dress it. The symptom is a faction losing its LOOK.
+
+
+---
+
+## The method, and the instrument that makes it cheap — 2026-08-22
+
+`weapon_tag_audit.py --siblings` now prints, for every disarmed kind, the **surviving tags
+in the same family**. 🔑 **A dead tag almost never dies alone — it dies out of a family, and
+the family is the decision.** It turns "pick a tag from 390" into "pick one of four".
+
+⚠️ **It deliberately does NOT pick.** A sibling is usually a TIER, so taking the wrong one
+promotes the kind — an arms-race change dressed as a bug fix, against §19.5.
+
+### The nine remaining disarmed kinds, triaged
+
+**2 are FALSE POSITIVES — do not touch.** `DP_ArtilleryPirate` and `DP_RocketPirate` name
+`DP_CannonNoEquipTag` / `DP_RocketNoEquipTag` and carry `weaponMoney 99999~99999`. A tag
+named *NoEquip* plus the 99999 sentinel is a mod saying **deliberately weaponless**; the
+cannon arrives by another route.
+
+**2 have a clean in-family answer:**
+
+| kind | asks for | surviving siblings |
+|---|---|---|
+| `OuterRim_ImperialTrader` | `ORImperialOfficer` | `ORImperialAny`(15), `Heavy`(6), `Light`(4), `Standard`(3), `Sniper`(1), `Fire`(1) |
+| `VFEP_Footsoldier` | `WarcasketBasic` | `WarcasketAll`(8), `Veteran`(6), `Melee`(7), `Heavy`(2), `Flamer`(1) |
+
+🔴 **`VFEP_Footsoldier` is the worked example of why this needs a human.** Measured: its tag
+`WarcasketBasic`'s only carriers were `VFEP_WarcasketGun_Autorifle`, `_Minigun` and
+`_HandheldCannon` — **all three cherrypicked**. So a **combatPower 300** raider arrives
+bare-handed. ⚠️ But every surviving warcasket gun has `MarketValue: None`, so `weaponMoney`
+cannot constrain the roll — handing it `WarcasketAll` promotes a basic-tier footsoldier to
+veteran and heavy weapons. **Armed-but-promoted vs bare is a balance call, not a mechanical
+one.**
+
+**5 have NO surviving sibling** — the whole family is gone, so a vanilla ladder tag is the
+only route: the three `BS_Crossbow*` dvergr kinds (crossbows: `NeolithicRanged*`),
+`VEE_Hunter` (industrial) and `VEE_TribalHunter` (neolithic).
