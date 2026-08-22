@@ -116,17 +116,17 @@ planet:
     world/ASHKARR_WORLDMAP_tiles.csv has 21872 data rows; world/ASHKARR_WORLDMAP_meta.json
     "tiles": 21872. Measured 2026-08-20, the two agree.
 
-  water_pct: 5.29
-  water_tiles: 1158
+  water_pct: 5.19
+  water_tiles: 1135
   water_ice_tiles: 357
-  water_pct_incl_ice: 6.93
+  water_pct_incl_ice: 6.82
   water_src: >
     🔴 RE-MEASURED 2026-08-22 after the owner's combined nightside pass
     (src/RimMandrake/Utils/ashkarr_nightside_pass.py). Was 8.14% / 1780 tiles
     (Ocean 1468 + Lake 312), and that figure is DEAD.
-    Now: Ocean 846 + Lake 312 = 1158 liquid = 5.29%.
-    ⭐ There IS now a third water biome: SeaIce, 357 tiles. Counting it, 1515
-    tiles = 6.93%. Which number applies depends on the question —
+    Now: Ocean 823 + Lake 312 = 1135 liquid = 5.19%.
+    ⭐ There IS now a third water biome: SeaIce, 357 tiles. Counting it, 1492
+    tiles = 6.82%. Which number applies depends on the question —
     liquid for hydrology, incl-ice for "how much of this planet was ocean".
     The drop is the owner's ruling of 2026-08-22 13:04, "shrink the meridian water bodies
     to around half their current size", plus the sub-freezing meridian ocean turning to ice

@@ -15,7 +15,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 13,69.0771,-180.0,110.92,90.0,405,-13.9,0,AB_MycoticJungle,0,0,The Frostcaps,1,0.44
 14,69.0771,0.0,69.08,90.0,1,29.6,0,ZBiome_Badlands,0,0,The Cracklands,2,0.0
 15,35.2596,-45.0,54.73,135.01,20,41.8,0,ZBiome_Grasslands,0,0,The Pyrelands,1,0.06
-16,20.9026,-90.0,90.0,159.1,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+16,20.9026,-90.0,90.0,159.1,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
 17,35.2596,135.0,125.27,44.99,1268,-36.8,0,AB_MycoticJungle,0,0,The Capwood,3,0.31
 18,0.0,-159.0948,159.09,180.0,630,-66.6,0,HorrorWastes,0,0,The Umbra,3,0.0
 19,-20.9026,-90.0,90.0,200.9,742,10.4,0,AB_MycoticJungle,0,0,The Dew Belt,1,0.44
@@ -30,7 +30,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 28,-35.2596,-135.0,125.27,224.99,1122,-34.7,0,AB_MycoticJungle,0,0,The Ashwood,3,0.38
 29,-35.2596,-45.0,54.73,224.99,432,40.6,0,ExtremeDesert,0,0,The Kiln,1,0.0
 30,0.0,20.9052,20.91,0.0,375,58.1,0,Scarlands,0,0,The Scorch,2,0.0
-31,20.9026,90.0,90.0,20.9,-30,14.0,0,Ocean,1,0,The Grey Sea,1,0.0
+31,20.9026,90.0,90.0,20.9,1.0,14.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 32,40.1893,-105.7836,101.99,138.72,1,-1.7,0,AB_TarPits,0,0,The Nightspill,1,0.0
 33,58.5465,-130.1254,109.65,115.07,28,-8.7,0,AB_RockyCrags,0,0,The Rimewall,2,0.0
 34,78.95,-90.0,90.0,101.05,13,13.9,0,PoisonForest,0,0,The Slough,1,0.39
@@ -180,7 +180,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 178,27.2871,-76.4733,78.0,152.05,-30,23.6,0,Ocean,1,0,The Twilight Sea,1,0.0
 179,13.7773,-78.0093,78.36,165.93,-30,23.3,0,Ocean,1,0,The Twilight Sea,1,0.0
 180,13.7773,-101.9907,101.64,165.93,-30,0.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
-181,7.0166,-90.0,90.0,172.98,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+181,7.0166,-90.0,90.0,172.98,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
 182,45.3793,123.2789,112.67,50.48,1503,-23.3,4,AB_RockyCrags,0,0,The Gray Crags,4,0.0
 183,32.2725,118.663,113.93,35.74,597,-19.3,0,AB_RockyCrags,0,0,The Gray Crags,2,0.0
 184,47.8837,142.7859,122.28,61.33,1212,-33.0,0,AB_RockyCrags,0,0,The Rimewall,2,0.0
@@ -355,12 +355,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 353,39.8997,-36.8871,52.15,125.67,110,43.6,0,Desert,0,0,The Glare,2,0.0
 354,27.4125,-43.7231,50.09,143.12,12,44.5,0,AB_FeraliskInfestedJungle,0,4847,The Fever Wood,1,0.53
 355,31.89,-36.3872,46.88,133.63,31,47.8,0,ExtremeDesert,0,0,The Glare,1,0.0
-356,20.7612,-98.4775,97.92,159.03,1.0,4.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+356,20.7612,-98.4775,97.92,159.03,-30,4.5,0,Ocean,1,0,The Twilight Sea,1,0.0
 357,27.667,-94.5296,94.01,152.26,1.0,9.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-358,27.667,-85.4704,85.99,152.26,1.0,17.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-359,20.7612,-81.5225,82.08,159.03,1.0,20.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-360,13.9643,-94.0124,93.89,166.0,1.0,9.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-361,13.9643,-85.9876,86.11,166.0,1.0,17.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+358,27.667,-85.4704,85.99,152.26,-30,17.2,0,Ocean,1,0,The Twilight Sea,1,0.0
+359,20.7612,-81.5225,82.08,159.03,-30,20.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+360,13.9643,-94.0124,93.89,166.0,-30,9.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+361,13.9643,-85.9876,86.11,166.0,-30,17.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 362,37.8411,125.6687,117.42,43.72,1066,-26.1,0,AB_MycoticJungle,0,0,The Sunreach,2,0.42
 363,30.2395,127.7049,121.9,36.38,843,-31.0,0,AB_RockyCrags,0,0,The Sunreach,3,0.0
 364,43.1105,133.6302,120.25,52.29,1066,-30.0,0,AB_MycoticJungle,0,0,The Sunreach,2,0.35
@@ -450,7 +450,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 448,13.9643,94.0124,93.89,14.0,1.0,9.3,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 449,13.9643,85.9876,86.11,14.0,-30,17.1,0,Ocean,1,0,The Grey Sea,1,0.0
 450,27.667,94.5296,94.01,27.74,1.0,9.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-451,20.7612,98.4775,97.92,20.97,-30,4.5,0,Ocean,1,0,The Grey Sea,1,0.0
+451,20.7612,98.4775,97.92,20.97,1.0,4.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 452,47.0906,-101.2533,97.64,132.36,1,3.4,0,AridShrubland,0,0,The Nightspill,1,0.0
 453,46.5646,-112.4274,105.21,131.19,1,-5.6,0,AB_RockyCrags,0,0,The Nightspill,2,0.0
 454,39.4869,-115.8295,109.65,137.53,540,-13.0,10,PoisonForest,0,0,The Twilight Crags,4,0.38
@@ -706,7 +706,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 704,-6.8262,74.8178,74.93,352.93,-30,26.1,0,Ocean,1,0,The Grey Sea,1,0.0
 705,0.0,71.345,71.34,0.0,-30,28.9,0,Ocean,1,0,The Grey Sea,1,0.0
 706,-6.9627,82.3725,82.43,352.98,1.0,20.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-707,0.0,86.3201,86.32,0.0,1.0,16.9,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+707,0.0,86.3201,86.32,0.0,-30,16.9,0,Ocean,1,0,The Grey Sea,1,0.0
 708,6.9627,82.3725,82.43,7.02,1.0,20.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 709,6.8263,74.8178,74.93,7.07,22,26.1,0,ZBiome_Badlands,0,0,The Salt,2,0.0
 710,-4.0096,40.8716,41.03,353.89,540,46.1,0,ExtremeDesert,0,0,The Fall Line,3,0.0
@@ -802,7 +802,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 800,0.0,-108.655,108.66,180.0,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 801,-6.8262,-105.1822,105.07,187.07,590,-6.0,39,AB_RockyCrags,0,0,The Twilight Crags,4,0.0
 802,6.8263,-105.1822,105.07,172.93,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
-803,6.9627,-97.6275,97.57,172.98,1.0,4.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+803,6.9627,-97.6275,97.57,172.98,-30,4.9,0,Ocean,1,0,The Twilight Sea,1,0.0
 804,0.0,-93.6799,93.68,180.0,1.0,9.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 805,-6.9627,-97.6275,97.57,187.02,507,2.1,0,Wasteland,0,0,The Nightspill,2,0.0
 806,-17.7856,-123.2659,121.49,200.99,633,-27.0,0,AB_MycoticJungle,0,0,The Nightspill,2,0.42
@@ -895,12 +895,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 893,39.4978,-42.7447,55.48,129.47,20,41.4,0,Desert,0,0,The Glare,1,0.0
 894,31.5767,-41.6938,50.49,137.26,27,45.1,0,ZBiome_Grasslands,0,0,The Pyrelands,1,0.06
 895,35.7477,-39.4335,51.18,131.43,28,44.7,0,ExtremeDesert,0,0,The Glare,1,0.0
-896,18.5751,-94.1626,93.95,161.38,1.0,9.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-897,23.1475,-94.3337,93.98,156.79,1.0,9.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-898,25.4589,-90.0,90.0,154.54,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-899,23.1475,-85.6663,86.02,156.79,1.0,17.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-900,16.3014,-90.0,90.0,163.7,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-901,18.5751,-85.8374,86.05,161.38,1.0,17.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+896,18.5751,-94.1626,93.95,161.38,-30,9.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+897,23.1475,-94.3337,93.98,156.79,-30,9.2,0,Ocean,1,0,The Twilight Sea,1,0.0
+898,25.4589,-90.0,90.0,154.54,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+899,23.1475,-85.6663,86.02,156.79,-30,17.2,0,Ocean,1,0,The Twilight Sea,1,0.0
+900,16.3014,-90.0,90.0,163.7,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+901,18.5751,-85.8374,86.05,161.38,-30,17.2,0,Ocean,1,0,The Twilight Sea,1,0.0
 902,34.5118,129.4636,121.58,41.69,947,-31.1,0,AB_MycoticJungle,0,0,The Sunreach,2,0.37
 903,31.0255,132.9891,125.75,39.43,1039,-36.4,0,AB_MycoticJungle,0,0,The Capwood,2,0.33
 904,38.8097,131.4201,121.03,47.01,1067,-30.7,0,AB_MycoticJungle,0,0,The Sunreach,2,0.35
@@ -987,9 +987,9 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 985,3.9837,23.2098,23.53,10.02,320,56.8,0,ExtremeDesert,0,0,The Dune Sea,2,0.0
 986,18.5751,85.8374,86.05,18.62,1.0,17.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 987,23.1475,85.6663,86.02,23.21,10,16.4,0,Wasteland,0,0,The Salt,1,0.0
-988,18.5751,94.1626,93.95,18.62,1.0,9.3,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-989,16.3014,90.0,90.0,16.3,1.0,14.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-990,25.4589,90.0,90.0,25.46,-30,14.0,0,Ocean,1,0,The Grey Sea,1,0.0
+988,18.5751,94.1626,93.95,18.62,-30,9.3,0,Ocean,1,0,The Grey Sea,1,0.0
+989,16.3014,90.0,90.0,16.3,-30,14.0,0,Ocean,1,0,The Grey Sea,1,0.0
+990,25.4589,90.0,90.0,25.46,1.0,14.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 991,23.1475,94.3337,93.98,23.21,1.0,9.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 992,44.6846,-106.4898,101.64,134.11,1,-1.4,0,AB_GelatinousSuperorganism,0,0,The Nightspill,1,0.0
 993,42.1372,-111.337,105.65,135.83,1,-5.9,0,Wasteland,0,0,The Nightspill,2,0.0
@@ -1289,7 +1289,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1287,2.2773,104.9295,104.92,2.36,-30,-2.0,0,SeaIce,1,0,The Grey Sea,1,0.0
 1288,-2.2773,104.9295,104.92,357.64,1,-4.8,0,ZBiome_Badlands,0,0,The Gray Crags,2,0.0
 1289,-4.6043,101.2536,101.22,355.31,1.0,0.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-1290,-2.3226,97.4196,97.41,357.66,-30,5.1,0,Ocean,1,0,The Grey Sea,1,0.0
+1290,-2.3226,97.4196,97.41,357.66,1.0,5.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 1291,2.3226,97.4196,97.41,2.34,1.0,5.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 1292,16.662,-61.3574,62.66,161.17,619,32.2,0,AridShrubland,0,0,The Dew Horn,3,0.0
 1293,20.8671,-60.2043,62.33,156.29,883,31.0,0,AridShrubland,0,0,The Dew Horn,3,0.0
@@ -1342,7 +1342,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1340,-2.2773,-104.9295,104.92,182.36,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 1341,-4.6043,-101.2536,101.22,184.69,104,-1.0,46,AB_RockyCrags,0,0,The Nightspill,4,0.0
 1342,2.2773,-104.9295,104.92,177.64,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
-1343,4.6043,-101.2536,101.22,175.31,1.0,0.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+1343,4.6043,-101.2536,101.22,175.31,-30,0.5,0,Ocean,1,0,The Twilight Sea,1,0.0
 1344,2.3226,-97.4196,97.41,177.66,1.0,5.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 1345,-2.3226,-97.4196,97.41,182.34,1.0,5.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 1346,-20.8671,-119.7957,117.67,203.71,608,-22.9,0,AB_MycoticJungle,0,0,The Nightspill,1,0.39
@@ -1867,27 +1867,27 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1865,36.4765,-95.014,94.03,143.42,1.0,9.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 1866,38.6897,-90.0,90.0,141.31,1,13.2,0,AB_TarPits,0,0,The Glass Reach,1,0.0
 1867,36.4765,-84.986,85.97,143.42,1.0,17.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-1868,25.284,-81.158,82.01,154.45,1.0,20.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+1868,25.284,-81.158,82.01,154.45,-30,20.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 1869,22.8371,-77.0534,78.08,156.63,-30,23.5,0,Ocean,1,0,The Twilight Sea,1,0.0
 1870,29.7438,-80.7396,81.97,149.93,-30,20.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 1871,31.666,-75.8009,77.95,147.53,-30,23.6,0,Ocean,1,0,The Twilight Sea,1,0.0
 1872,29.1373,-71.5989,73.99,149.57,-30,26.8,0,Ocean,1,0,The Twilight Sea,1,0.0
 1873,24.7807,-72.423,74.09,154.16,-30,26.7,0,Ocean,1,0,The Twilight Sea,1,0.0
-1874,16.1913,-81.8419,82.17,163.65,1.0,20.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-1875,11.5876,-82.1238,82.29,168.31,1.0,20.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+1874,16.1913,-81.8419,82.17,163.65,-30,20.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+1875,11.5876,-82.1238,82.29,168.31,-30,20.2,0,Ocean,1,0,The Twilight Sea,1,0.0
 1876,18.3288,-77.5617,78.2,161.26,-30,23.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 1877,15.8774,-73.7823,74.42,163.5,-30,26.5,0,Ocean,1,0,The Twilight Sea,1,0.0
 1878,11.3635,-74.3427,74.66,168.21,-30,26.3,0,Ocean,1,0,The Twilight Sea,1,0.0
 1879,9.2004,-78.4079,78.56,170.61,-30,23.2,0,Ocean,1,0,The Twilight Sea,1,0.0
 1880,18.3288,-102.4383,101.8,161.26,-30,-0.2,0,SeaIce,1,0,The Twilight Sea,1,0.0
-1881,16.1913,-98.1581,97.83,163.65,1.0,4.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+1881,16.1913,-98.1581,97.83,163.65,-30,4.6,0,Ocean,1,0,The Twilight Sea,1,0.0
 1882,11.3635,-105.6573,105.34,168.21,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 1883,15.8774,-106.2177,105.58,163.5,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 1884,9.2004,-101.5921,101.44,170.61,1.0,0.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-1885,11.5876,-97.8762,97.71,168.31,1.0,4.7,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-1886,9.3273,-93.8794,93.83,170.65,1.0,9.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-1887,11.6689,-90.0,90.0,168.33,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-1888,9.3273,-86.1206,86.17,170.65,1.0,17.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+1885,11.5876,-97.8762,97.71,168.31,-30,4.7,0,Ocean,1,0,The Twilight Sea,1,0.0
+1886,9.3273,-93.8794,93.83,170.65,-30,9.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+1887,11.6689,-90.0,90.0,168.33,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+1888,9.3273,-86.1206,86.17,170.65,-30,17.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 1889,4.6689,-86.2372,86.25,175.32,1.0,17.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 1890,4.6689,-93.7628,93.75,175.32,1.0,9.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 1891,2.3408,-90.0,90.0,177.66,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
@@ -2247,7 +2247,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 2245,-11.5876,97.8762,97.71,348.31,162,3.1,0,Wasteland,0,0,The Salt,1,0.0
 2246,-9.3273,93.8794,93.83,350.65,13,7.9,0,Wasteland,0,0,The Salt,1,0.0
 2247,-11.6689,90.0,90.0,348.33,3,14.0,0,Wasteland,0,0,The Salt,1,0.0
-2248,-9.3273,86.1206,86.17,350.65,-30,17.1,0,Ocean,1,0,The Grey Sea,1,0.0
+2248,-9.3273,86.1206,86.17,350.65,1.0,17.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2249,-4.6689,86.2372,86.25,355.32,2,15.8,0,Wasteland,0,0,The Salt,1,0.0
 2250,-4.6689,93.7628,93.75,355.32,1.0,9.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2251,-2.3408,90.0,90.0,357.66,1.0,14.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
@@ -2401,7 +2401,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 2399,31.666,75.8009,77.95,32.47,200,23.0,0,Desert,0,0,The Dry March,2,0.0
 2400,24.7807,72.423,74.09,25.84,249,27.1,0,Desert,0,0,The Salt,1,0.0
 2401,22.8371,77.0534,78.08,23.37,48,24.2,0,Wasteland,0,0,The Salt,1,0.0
-2402,29.9548,90.0,90.0,29.95,-30,14.0,0,Ocean,1,0,The Grey Sea,1,0.0
+2402,29.9548,90.0,90.0,29.95,1.0,14.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2403,32.1169,94.7559,94.03,32.21,1.0,9.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2404,32.1169,85.2441,85.97,32.21,21,17.0,0,Wasteland,0,0,The Salt,1,0.0
 2405,36.4765,84.986,85.97,36.58,175,15.8,0,AB_RockyCrags,0,0,The Tallow Ground,3,0.0
@@ -2414,14 +2414,14 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 2412,4.6689,93.7628,93.75,4.68,1.0,9.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2413,9.3273,93.8794,93.83,9.35,1.0,9.4,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2414,18.3288,77.5617,78.2,18.74,26,23.5,0,ZBiome_Badlands,0,0,The Salt,2,0.0
-2415,16.1913,81.8419,82.17,16.35,-30,20.3,0,Ocean,1,0,The Grey Sea,1,0.0
-2416,11.5876,82.1238,82.29,11.69,1.0,20.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+2415,16.1913,81.8419,82.17,16.35,1.0,20.3,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+2416,11.5876,82.1238,82.29,11.69,-30,20.2,0,Ocean,1,0,The Grey Sea,1,0.0
 2417,9.2004,78.4079,78.56,9.39,-30,23.2,0,Ocean,1,0,The Grey Sea,1,0.0
 2418,11.3635,74.3427,74.66,11.79,24,26.3,0,ZBiome_Badlands,0,0,The Salt,2,0.0
 2419,15.8774,73.7823,74.42,16.5,27,26.7,0,ZBiome_Badlands,0,0,The Salt,2,0.0
 2420,25.284,98.842,97.99,25.55,1.0,4.4,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2421,22.8371,102.9467,101.92,23.37,-30,-0.3,0,SeaIce,1,0,The Grey Sea,1,0.0
-2422,29.7438,99.2604,98.03,30.07,-30,4.4,0,Ocean,1,0,The Grey Sea,1,0.0
+2422,29.7438,99.2604,98.03,30.07,1.0,4.4,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2423,31.666,104.1991,102.05,32.47,201,-1.0,0,AB_RockyCrags,0,0,The Sunreach,2,0.0
 2424,29.1373,108.4011,106.01,30.43,148,-4.8,0,AB_RockyCrags,0,0,The Gray Crags,3,0.0
 2425,24.7807,107.577,105.91,25.84,159,-4.3,0,Wasteland,0,0,The Gray Crags,3,0.0
@@ -2515,12 +2515,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 2513,37.8799,-45.443,56.37,132.49,15,40.6,0,ZBiome_Grasslands,0,0,The Pyrelands,1,0.06
 2514,34.2158,-42.0425,52.11,134.56,25,43.9,0,ZBiome_Grasslands,0,0,The Pyrelands,1,0.06
 2515,36.857,-42.3924,53.78,131.97,22,42.7,0,Desert,0,0,The Glare,1,0.0
-2516,18.6032,-91.3882,91.32,161.39,1.0,12.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-2517,20.8867,-92.831,92.64,159.09,1.0,10.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-2518,23.1828,-91.4453,91.33,156.81,1.0,12.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-2519,23.1828,-88.5547,88.67,156.81,1.0,15.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-2520,18.6032,-88.6118,88.68,161.39,1.0,15.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-2521,20.8867,-87.169,87.36,159.09,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+2516,18.6032,-91.3882,91.32,161.39,-30,12.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+2517,20.8867,-92.831,92.64,159.09,-30,10.8,0,Ocean,1,0,The Twilight Sea,1,0.0
+2518,23.1828,-91.4453,91.33,156.81,-30,12.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+2519,23.1828,-88.5547,88.67,156.81,-30,15.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+2520,18.6032,-88.6118,88.68,161.39,-30,15.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+2521,20.8867,-87.169,87.36,159.09,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 2522,33.62,132.4836,124.22,42.04,1120,-35.1,0,AB_MycoticJungle,0,0,The Quiet Ground,3,0.33
 2523,32.6397,135.4328,126.86,42.39,1190,-38.4,0,AB_MycoticJungle,0,0,The Capwood,3,0.31
 2524,36.2157,131.9617,122.65,44.56,1089,-32.9,0,AB_MycoticJungle,0,0,The Sunreach,3,0.34
@@ -2606,7 +2606,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 2604,1.3154,18.6106,18.66,4.12,485,58.6,0,Scarlands,0,0,The Scorch,1,0.0
 2605,2.6445,20.9126,21.07,7.37,339,57.8,0,ExtremeDesert,0,0,The Dune Sea,3,0.0
 2606,18.6032,88.6118,88.68,18.61,1.0,15.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-2607,20.8867,87.169,87.36,20.91,-30,16.1,0,Ocean,1,0,The Grey Sea,1,0.0
+2607,20.8867,87.169,87.36,20.91,1.0,16.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2608,20.8867,92.831,92.64,20.91,1.0,10.8,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2609,18.6032,91.3882,91.32,18.61,1.0,12.4,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2610,23.1828,88.5547,88.67,23.19,1.0,15.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
@@ -2905,7 +2905,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 2903,13.1125,136.2357,134.7,18.61,547,-43.5,0,AB_RockyCrags,0,0,The Deadstone,2,0.0
 2904,14.5426,138.3503,136.33,21.32,587,-45.5,0,PoisonForest,0,0,The Quiet Ground,2,0.32
 2905,13.3425,140.7726,138.91,20.56,574,-48.2,0,AB_RockyCrags,0,0,The Deadstone,2,0.0
-2906,2.3101,99.8746,99.87,2.34,-30,2.2,0,Ocean,1,0,The Grey Sea,1,0.0
+2906,2.3101,99.8746,99.87,2.34,1.0,2.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 2907,2.295,102.3789,102.37,2.35,-30,-0.8,0,SeaIce,1,0,The Grey Sea,1,0.0
 2908,0.0,103.6034,103.6,0.0,-30,-2.0,0,SeaIce,1,0,The Grey Sea,1,0.0
 2909,-2.295,102.3789,102.37,357.65,-30,-0.8,0,SeaIce,1,0,The Grey Sea,1,0.0
@@ -3500,15 +3500,15 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 3498,13.6795,-75.3794,75.8,165.88,-30,25.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 3499,11.4525,-76.9198,77.18,168.25,-30,24.3,0,Ocean,1,0,The Twilight Sea,1,0.0
 3500,16.0025,-103.5489,103.01,163.56,-30,-1.6,0,SeaIce,1,0,The Twilight Sea,1,0.0
-3501,16.1075,-100.8612,100.43,163.61,1.0,1.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+3501,16.1075,-100.8612,100.43,163.61,-30,1.5,0,Ocean,1,0,The Twilight Sea,1,0.0
 3502,11.4525,-103.0802,102.82,168.25,-30,-1.4,0,SeaIce,1,0,The Twilight Sea,1,0.0
 3503,13.6795,-104.6206,104.2,165.88,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
-3504,11.5274,-100.4855,100.27,168.28,1.0,1.7,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-3505,13.859,-99.342,99.07,165.96,1.0,3.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-3506,7.0084,-92.5468,92.53,172.98,1.0,11.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-3507,9.343,-91.2937,91.28,170.65,1.0,12.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-3508,9.343,-88.7063,88.72,170.65,1.0,15.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-3509,7.0084,-87.4533,87.47,172.98,1.0,16.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+3504,11.5274,-100.4855,100.27,168.28,-30,1.7,0,Ocean,1,0,The Twilight Sea,1,0.0
+3505,13.859,-99.342,99.07,165.96,-30,3.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+3506,7.0084,-92.5468,92.53,172.98,-30,11.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+3507,9.343,-91.2937,91.28,170.65,-30,12.5,0,Ocean,1,0,The Twilight Sea,1,0.0
+3508,9.343,-88.7063,88.72,170.65,-30,15.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+3509,7.0084,-87.4533,87.47,172.98,-30,16.0,0,Ocean,1,0,The Twilight Sea,1,0.0
 3510,4.6784,-91.2548,91.25,175.32,1.0,12.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 3511,4.6784,-88.7452,88.75,175.32,1.0,15.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 3512,44.7393,126.8081,115.19,51.06,1642,-27.1,0,AB_RockyCrags,0,0,The Gray Crags,3,0.0
@@ -3869,7 +3869,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 3867,-9.343,91.2937,91.28,350.65,7,12.5,0,Wasteland,0,0,The Salt,1,0.0
 3868,-9.343,88.7063,88.72,350.65,7,14.7,0,Wasteland,0,0,The Salt,1,0.0
 3869,-7.0084,87.4533,87.47,352.98,5,15.0,0,Wasteland,0,0,The Salt,1,0.0
-3870,-4.6784,91.2548,91.25,355.32,-30,12.5,0,Ocean,1,0,The Grey Sea,1,0.0
+3870,-4.6784,91.2548,91.25,355.32,1.0,12.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 3871,-4.6784,88.7452,88.75,355.32,1.0,15.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 3872,-1.2764,170.6536,170.57,352.19,33,-75.1,0,AB_PropaneLakes,0,0,The Ammonia Flats,3,0.20
 3873,-2.5274,172.984,172.54,340.13,221,-77.6,0,HorrorWastes,0,0,The Umbra,3,0.0
@@ -4022,7 +4022,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 4020,24.9822,75.3181,76.72,25.72,143,25.4,0,Wasteland,0,0,The Salt,2,0.0
 4021,25.1503,78.2311,79.36,25.62,77,23.2,0,Wasteland,0,0,The Salt,1,0.0
 4022,32.1687,91.5862,91.34,32.18,1.0,12.4,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-4023,34.3444,93.255,92.69,34.39,-30,10.8,0,Ocean,1,0,The Grey Sea,1,0.0
+4023,34.3444,93.255,92.69,34.39,1.0,10.8,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 4024,32.1687,88.4138,88.66,32.18,35,15.1,0,Wasteland,0,0,The Salt,2,0.0
 4025,34.3444,86.745,87.31,34.39,204,14.8,0,AB_RockyCrags,0,0,The Tallow Ground,2,0.0
 4026,36.5371,88.3276,88.66,36.55,241,13.9,0,AB_RockyCrags,0,0,The Tallow Ground,2,0.0
@@ -4045,7 +4045,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 4043,29.5832,102.3255,100.7,30.16,25,1.3,0,ZBiome_Badlands,0,0,The Salt,2,0.0
 4044,29.3806,105.3738,103.36,30.28,98,-2.3,0,ZBiome_Badlands,0,0,The Salt,3,0.0
 4045,27.0841,106.498,104.65,28.07,39,-2.7,0,ZBiome_Badlands,0,0,The Salt,3,0.0
-4046,11.5274,100.4855,100.27,11.72,1.0,1.7,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+4046,11.5274,100.4855,100.27,11.72,-30,1.7,0,Ocean,1,0,The Grey Sea,1,0.0
 4047,13.859,99.342,99.07,14.04,1.0,3.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 4048,16.1075,100.8612,100.43,16.39,1.0,1.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 4049,16.0025,103.5488,103.01,16.44,-30,-1.6,0,SeaIce,1,0,The Grey Sea,1,0.0
@@ -4555,42 +4555,42 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 4553,33.2963,-33.8047,46.01,130.27,41,48.5,0,ExtremeDesert,0,0,The Glare,2,0.0
 4554,29.2258,-36.189,45.22,136.54,30,48.8,0,Wasteland,0,0,The Glare,1,0.0
 4555,30.6202,-33.6945,44.28,133.15,33,49.6,0,ExtremeDesert,0,0,The Glare,1,0.0
-4556,20.8394,-95.6582,95.29,159.07,1.0,7.7,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4557,23.0773,-97.2161,96.64,156.76,1.0,6.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+4556,20.8394,-95.6582,95.29,159.07,-30,7.7,0,Ocean,1,0,The Twilight Sea,1,0.0
+4557,23.0773,-97.2161,96.64,156.76,-30,6.0,0,Ocean,1,0,The Twilight Sea,1,0.0
 4558,22.9734,-100.0882,99.28,156.7,1.0,2.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 4559,20.6537,-101.2856,100.55,158.97,1.0,1.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4560,18.4368,-99.6913,99.19,161.31,1.0,3.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4561,18.5193,-96.9314,96.57,161.35,1.0,6.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4562,25.4393,-92.9531,92.67,154.53,1.0,10.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4563,27.71,-91.5106,91.34,152.28,1.0,12.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4564,25.3808,-95.9019,95.33,154.5,1.0,7.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+4560,18.4368,-99.6913,99.19,161.31,-30,3.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+4561,18.5193,-96.9314,96.57,161.35,-30,6.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+4562,25.4393,-92.9531,92.67,154.53,-30,10.8,0,Ocean,1,0,The Twilight Sea,1,0.0
+4563,27.71,-91.5106,91.34,152.28,-30,12.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+4564,25.3808,-95.9019,95.33,154.5,-30,7.6,0,Ocean,1,0,The Twilight Sea,1,0.0
 4565,27.5812,-97.5419,96.68,152.21,1.0,6.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 4566,29.9312,-93.0937,92.68,150.03,1.0,10.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 4567,29.8605,-96.182,95.36,150.0,1.0,7.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4568,25.4393,-87.0469,87.33,154.53,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4569,25.3808,-84.0981,84.67,154.5,1.0,18.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4570,27.71,-88.4894,88.66,152.28,1.0,15.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+4568,25.4393,-87.0469,87.33,154.53,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+4569,25.3808,-84.0981,84.67,154.5,-30,18.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+4570,27.71,-88.4894,88.66,152.28,-30,15.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 4571,29.9312,-86.9064,87.32,150.03,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4572,27.5812,-82.4582,83.32,152.21,1.0,19.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4573,29.8605,-83.818,84.64,150.0,1.0,18.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4574,20.8394,-84.3419,84.71,159.07,1.0,18.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4575,18.5193,-83.0686,83.43,161.35,1.0,19.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4576,23.0773,-82.7839,83.36,156.76,1.0,19.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+4572,27.5812,-82.4582,83.32,152.21,-30,19.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+4573,29.8605,-83.818,84.64,150.0,-30,18.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+4574,20.8394,-84.3419,84.71,159.07,-30,18.2,0,Ocean,1,0,The Twilight Sea,1,0.0
+4575,18.5193,-83.0686,83.43,161.35,-30,19.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+4576,23.0773,-82.7839,83.36,156.76,-30,19.3,0,Ocean,1,0,The Twilight Sea,1,0.0
 4577,22.9734,-79.9118,80.72,156.7,-30,21.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 4578,18.4368,-80.3088,80.81,161.31,-30,21.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 4579,20.6537,-78.7144,79.45,158.97,-30,22.4,0,Ocean,1,0,The Twilight Sea,1,0.0
-4580,16.2522,-95.4447,95.23,163.68,1.0,7.7,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4581,16.2891,-92.7242,92.61,163.69,1.0,10.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4582,13.9217,-96.6813,96.48,165.99,1.0,6.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4583,11.6324,-95.2564,95.15,168.32,1.0,7.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4584,11.6598,-92.6299,92.58,168.33,1.0,10.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4585,13.9856,-91.3381,91.3,166.01,1.0,12.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4586,13.9856,-88.6619,88.7,166.01,1.0,15.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4587,16.2891,-87.2758,87.39,163.69,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4588,16.2522,-84.5553,84.77,163.68,1.0,18.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4589,13.9217,-83.3187,83.52,165.99,1.0,19.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4590,11.6598,-87.3701,87.42,168.33,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-4591,11.6324,-84.7436,84.85,168.32,1.0,18.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+4580,16.2522,-95.4447,95.23,163.68,-30,7.7,0,Ocean,1,0,The Twilight Sea,1,0.0
+4581,16.2891,-92.7242,92.61,163.69,-30,10.9,0,Ocean,1,0,The Twilight Sea,1,0.0
+4582,13.9217,-96.6813,96.48,165.99,-30,6.2,0,Ocean,1,0,The Twilight Sea,1,0.0
+4583,11.6324,-95.2564,95.15,168.32,-30,7.8,0,Ocean,1,0,The Twilight Sea,1,0.0
+4584,11.6598,-92.6299,92.58,168.33,-30,10.9,0,Ocean,1,0,The Twilight Sea,1,0.0
+4585,13.9856,-91.3381,91.3,166.01,-30,12.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+4586,13.9856,-88.6619,88.7,166.01,-30,15.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+4587,16.2891,-87.2758,87.39,163.69,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+4588,16.2522,-84.5553,84.77,163.68,-30,18.2,0,Ocean,1,0,The Twilight Sea,1,0.0
+4589,13.9217,-83.3187,83.52,165.99,-30,19.2,0,Ocean,1,0,The Twilight Sea,1,0.0
+4590,11.6598,-87.3701,87.42,168.33,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+4591,11.6324,-84.7436,84.85,168.32,-30,18.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 4592,37.0781,128.8486,120.03,44.14,979,-29.0,0,AB_MycoticJungle,0,0,The Sunreach,2,0.39
 4593,39.64,128.2044,118.44,46.51,1133,-27.8,0,AB_MycoticJungle,0,0,The Sunreach,2,0.4
 4594,40.365,124.9188,115.86,46.03,1227,-25.1,0,AB_RockyCrags,0,0,The Gray Crags,3,0.0
@@ -5102,7 +5102,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 5100,18.4368,80.3088,80.81,18.69,-30,21.4,0,Ocean,1,0,The Grey Sea,1,0.0
 5101,18.5193,83.0686,83.43,18.65,1.0,19.3,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5102,25.4393,87.0469,87.33,25.47,13,15.6,0,Wasteland,0,0,The Salt,1,0.0
-5103,27.71,88.4894,88.66,27.72,-30,15.1,0,Ocean,1,0,The Grey Sea,1,0.0
+5103,27.71,88.4894,88.66,27.72,1.0,15.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5104,25.3808,84.0981,84.67,25.5,19,17.9,0,Wasteland,0,0,The Salt,1,0.0
 5105,27.5812,82.4582,83.32,27.79,25,19.4,0,Wasteland,0,0,The Salt,1,0.0
 5106,29.9312,86.9064,87.32,29.97,23,16.2,0,Wasteland,0,0,The Salt,1,0.0
@@ -5114,7 +5114,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 5112,13.9217,96.6813,96.48,14.01,1.0,6.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5113,16.2522,95.4447,95.23,16.32,1.0,7.7,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5114,16.2522,84.5553,84.77,16.32,1.0,18.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-5115,16.2891,87.2758,87.39,16.31,-30,16.1,0,Ocean,1,0,The Grey Sea,1,0.0
+5115,16.2891,87.2758,87.39,16.31,1.0,16.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5116,13.9856,88.6619,88.7,13.99,1.0,15.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5117,11.6598,87.3701,87.42,11.67,1.0,16.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5118,13.9217,83.3187,83.52,14.01,1.0,19.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
@@ -5127,10 +5127,10 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 5125,29.8605,96.182,95.36,30.0,1.0,7.6,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5126,18.5193,96.9314,96.57,18.65,1.0,6.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5127,20.8394,95.6582,95.29,20.93,1.0,7.7,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-5128,23.0773,97.2161,96.64,23.24,-30,6.0,0,Ocean,1,0,The Grey Sea,1,0.0
+5128,23.0773,97.2161,96.64,23.24,1.0,6.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5129,22.9734,100.0882,99.28,23.3,1.0,2.9,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5130,18.4368,99.6913,99.19,18.69,1.0,3.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-5131,20.6537,101.2856,100.55,21.03,-30,1.3,0,Ocean,1,0,The Grey Sea,1,0.0
+5131,20.6537,101.2856,100.55,21.03,1.0,1.3,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5132,44.8614,-102.8473,99.07,134.41,1,1.6,0,AB_GelatinousSuperorganism,0,0,The Nightspill,1,0.0
 5133,44.9761,-99.1821,96.48,134.65,1,4.8,0,AB_GelatinousSuperorganism,0,0,The Nightspill,1,0.0
 5134,49.2206,-99.5827,96.24,130.38,1,5.2,0,AridShrubland,0,0,The Nightspill,1,0.0
@@ -5481,7 +5481,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 5479,37.0933,116.8257,111.1,40.27,820,-16.5,0,AB_RockyCrags,0,0,The Gray Crags,2,0.0
 5480,36.3577,98.3462,96.71,36.65,1.0,5.9,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5481,36.1818,101.6633,99.39,36.75,102,4.6,0,AB_RockyCrags,0,0,The Sunreach,3,0.0
-5482,32.0146,97.917,96.71,32.26,-30,6.0,0,Ocean,1,0,The Grey Sea,1,0.0
+5482,32.0146,97.917,96.71,32.26,1.0,6.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5483,34.2606,96.504,95.37,34.43,1.0,7.6,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 5484,31.8639,101.0663,99.38,32.35,50,4.1,0,ZBiome_Badlands,0,0,The Salt,3,0.0
 5485,33.9347,102.964,100.73,34.62,188,2.3,0,AB_RockyCrags,0,0,The Sunreach,3,0.0
@@ -6659,15 +6659,15 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 6657,-4.6321,81.2389,81.27,355.31,-30,21.0,0,Ocean,1,0,The Grey Sea,1,0.0
 6658,-9.2973,83.5398,83.63,350.64,1,18.2,0,ZBiome_Badlands,0,0,The Salt,2,0.0
 6659,-9.2548,80.9677,81.09,350.63,-30,21.1,0,Ocean,1,0,The Grey Sea,1,0.0
-6660,-6.9899,84.9096,84.95,352.98,-30,18.0,0,Ocean,1,0,The Grey Sea,1,0.0
-6661,-4.6537,83.7338,83.75,355.32,-30,19.0,0,Ocean,1,0,The Grey Sea,1,0.0
+6660,-6.9899,84.9096,84.95,352.98,1.0,18.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+6661,-4.6537,83.7338,83.75,355.32,1.0,19.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 6662,-2.3316,85.0501,85.05,357.66,1.0,18.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 6663,0.0,83.8398,83.84,0.0,1.0,18.9,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-6664,-2.3379,87.5259,87.53,357.66,-30,16.0,0,Ocean,1,0,The Grey Sea,1,0.0
-6665,0.0,88.7744,88.77,0.0,-30,15.0,0,Ocean,1,0,The Grey Sea,1,0.0
+6664,-2.3379,87.5259,87.53,357.66,1.0,16.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+6665,0.0,88.7744,88.77,0.0,1.0,15.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 6666,2.3379,87.5259,87.53,2.34,1.0,16.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-6667,2.3316,85.0501,85.05,2.34,-30,18.0,0,Ocean,1,0,The Grey Sea,1,0.0
-6668,4.6537,83.7338,83.75,4.68,1.0,19.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+6667,2.3316,85.0501,85.05,2.34,1.0,18.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+6668,4.6537,83.7338,83.75,4.68,-30,19.0,0,Ocean,1,0,The Grey Sea,1,0.0
 6669,4.6321,81.2389,81.27,4.69,-30,21.0,0,Ocean,1,0,The Grey Sea,1,0.0
 6670,9.2973,83.5398,83.63,9.36,1.0,19.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 6671,6.9899,84.9096,84.95,7.02,1.0,18.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
@@ -6914,7 +6914,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 6912,-9.0574,106.6675,106.45,350.55,41,-6.8,0,Wasteland,0,0,The Gray Crags,3,0.0
 6913,-9.1344,104.1366,103.95,350.59,1,-4.2,0,ZBiome_Badlands,0,0,The Gray Crags,2,0.0
 6914,-4.6321,98.7611,98.73,355.31,1.0,3.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-6915,-4.6537,96.2662,96.25,355.32,-30,6.5,0,Ocean,1,0,The Grey Sea,1,0.0
+6915,-4.6537,96.2662,96.25,355.32,1.0,6.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 6916,-6.9258,100.1538,100.08,352.97,1.0,1.9,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 6917,-9.2548,99.0323,98.91,350.63,89,2.4,0,Wasteland,0,0,The Salt,2,0.0
 6918,-9.2973,96.4603,96.38,350.64,23,5.0,0,ZBiome_Badlands,0,0,The Salt,2,0.0
@@ -6922,7 +6922,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 6920,0.0,96.1602,96.16,0.0,1.0,6.6,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 6921,2.3316,94.9499,94.95,2.34,1.0,8.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 6922,-2.3316,94.9499,94.95,357.66,1.0,8.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-6923,-2.3379,92.4741,92.47,357.66,-30,11.0,0,Ocean,1,0,The Grey Sea,1,0.0
+6923,-2.3379,92.4741,92.47,357.66,1.0,11.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 6924,0.0,91.2256,91.23,0.0,1.0,12.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 6925,2.3379,92.4741,92.47,2.34,-30,11.0,0,Ocean,1,0,The Grey Sea,1,0.0
 6926,6.9258,100.1538,100.08,7.03,-30,1.9,0,Ocean,1,0,The Grey Sea,1,0.0
@@ -6981,7 +6981,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 6979,-2.233,-70.1,70.12,182.37,1094,24.9,0,Desert,0,0,The Dew Horn,3,0.0
 6980,6.9258,-79.8462,79.92,172.97,-30,22.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 6981,4.6321,-81.2389,81.27,175.31,-30,21.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-6982,9.2973,-83.5398,83.63,170.64,1.0,19.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+6982,9.2973,-83.5398,83.63,170.64,-30,19.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 6983,9.2548,-80.9677,81.09,170.63,-30,21.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 6984,6.9899,-84.9096,84.95,172.98,1.0,18.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 6985,4.6537,-83.7338,83.75,175.32,1.0,19.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
@@ -7239,10 +7239,10 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 7237,9.1344,-104.1366,103.95,170.59,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 7238,4.6321,-98.7611,98.73,175.31,1.0,3.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 7239,4.6537,-96.2662,96.25,175.32,1.0,6.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-7240,6.9258,-100.1538,100.08,172.97,1.0,1.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-7241,9.2548,-99.0323,98.91,170.63,1.0,3.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-7242,9.2973,-96.4603,96.38,170.64,1.0,6.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-7243,6.9899,-95.0904,95.05,172.98,1.0,7.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+7240,6.9258,-100.1538,100.08,172.97,-30,1.9,0,Ocean,1,0,The Twilight Sea,1,0.0
+7241,9.2548,-99.0323,98.91,170.63,-30,3.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+7242,9.2973,-96.4603,96.38,170.64,-30,6.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+7243,6.9899,-95.0904,95.05,172.98,-30,7.9,0,Ocean,1,0,The Twilight Sea,1,0.0
 7244,0.0,-96.1602,96.16,180.0,1.0,6.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 7245,-2.3316,-94.9499,94.95,182.34,53,8.1,0,Wasteland,0,0,The Grinding Floor,2,0.0
 7246,2.3316,-94.9499,94.95,177.66,1.0,8.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
@@ -7375,12 +7375,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 7373,36.4592,-46.1609,56.15,134.31,16,40.7,0,ZBiome_Grasslands,0,0,The Pyrelands,1,0.06
 7374,35.4513,-43.1453,53.53,133.84,22,42.8,0,ZBiome_Grasslands,0,0,The Pyrelands,1,0.06
 7375,36.6731,-44.2782,54.95,133.15,19,41.7,0,ZBiome_Grasslands,0,0,The Pyrelands,1,0.06
-7376,19.3731,-90.0,90.0,160.63,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-7377,20.1346,-91.4064,91.32,159.86,1.0,12.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-7378,21.6613,-91.4254,91.32,158.33,1.0,12.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-7379,22.427,-90.0,90.0,157.57,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-7380,20.1346,-88.5936,88.68,159.86,1.0,15.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-7381,21.6613,-88.5746,88.68,158.33,1.0,15.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+7376,19.3731,-90.0,90.0,160.63,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+7377,20.1346,-91.4064,91.32,159.86,-30,12.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+7378,21.6613,-91.4254,91.32,158.33,-30,12.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+7379,22.427,-90.0,90.0,157.57,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+7380,20.1346,-88.5936,88.68,159.86,-30,15.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+7381,21.6613,-88.5746,88.68,158.33,-30,15.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 7382,33.8466,134.3052,125.46,43.14,1233,-37.0,0,AB_MycoticJungle,0,0,The Capwood,2,0.31
 7383,34.0452,136.1305,126.68,44.27,1264,-38.4,0,AB_MycoticJungle,0,0,The Capwood,2,0.30
 7384,35.039,133.1487,124.05,43.86,1137,-34.8,0,AB_MycoticJungle,0,0,The Quiet Ground,3,0.32
@@ -7468,7 +7468,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 7466,19.3731,90.0,90.0,19.37,1.0,14.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 7467,20.1346,88.5936,88.68,20.14,1.0,15.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 7468,21.6613,91.4254,91.32,21.67,1.0,12.4,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-7469,20.1346,91.4064,91.32,20.14,-30,12.4,0,Ocean,1,0,The Grey Sea,1,0.0
+7469,20.1346,91.4064,91.32,20.14,1.0,12.4,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 7470,21.6613,88.5746,88.68,21.67,1.0,15.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 7471,22.427,90.0,90.0,22.43,1.0,14.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 7472,40.8433,-107.6124,103.23,137.79,1,-3.0,0,Wasteland,0,0,The Nightspill,1,0.0
@@ -7765,8 +7765,8 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 7763,11.8915,137.1826,135.87,17.21,610,-45.0,0,AB_RockyCrags,0,0,The Deadstone,2,0.0
 7764,13.2296,137.7859,136.14,19.28,601,-45.4,0,AB_RockyCrags,0,0,The Deadstone,2,0.0
 7765,13.3061,139.2986,137.54,19.93,597,-46.9,0,PoisonForest,0,0,The Quiet Ground,1,0.31
-7766,0.7701,99.8083,99.81,0.78,1.0,2.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-7767,1.5353,101.0687,101.06,1.56,-30,0.7,0,Ocean,1,0,The Grey Sea,1,0.0
+7766,0.7701,99.8083,99.81,0.78,-30,2.2,0,Ocean,1,0,The Grey Sea,1,0.0
+7767,1.5353,101.0687,101.06,1.56,1.0,0.7,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 7768,0.7651,102.3116,102.31,0.78,-30,-0.8,0,SeaIce,1,0,The Grey Sea,1,0.0
 7769,-0.7651,102.3116,102.31,359.22,-30,-0.8,0,SeaIce,1,0,The Grey Sea,1,0.0
 7770,-1.5353,101.0687,101.06,358.44,1.0,0.7,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
@@ -8363,12 +8363,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 8361,15.2983,-102.1337,101.7,164.37,-30,-0.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 8362,12.2542,-101.8522,101.58,167.49,1.0,0.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 8363,12.9718,-103.2306,102.89,166.69,-30,-1.5,0,SeaIce,1,0,The Twilight Sea,1,0.0
-8364,13.0566,-100.6062,100.33,166.72,1.0,1.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-8365,14.5835,-100.7314,100.38,165.17,1.0,1.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-8366,6.2362,-91.2672,91.26,173.76,1.0,12.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-8367,7.7912,-91.2801,91.27,172.21,1.0,12.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-8368,8.5697,-90.0,90.0,171.43,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-8369,7.7912,-88.7199,88.73,172.21,1.0,15.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+8364,13.0566,-100.6062,100.33,166.72,-30,1.6,0,Ocean,1,0,The Twilight Sea,1,0.0
+8365,14.5835,-100.7314,100.38,165.17,-30,1.5,0,Ocean,1,0,The Twilight Sea,1,0.0
+8366,6.2362,-91.2672,91.26,173.76,-30,12.5,0,Ocean,1,0,The Twilight Sea,1,0.0
+8367,7.7912,-91.2801,91.27,172.21,-30,12.5,0,Ocean,1,0,The Twilight Sea,1,0.0
+8368,8.5697,-90.0,90.0,171.43,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+8369,7.7912,-88.7199,88.73,172.21,-30,15.0,0,Ocean,1,0,The Twilight Sea,1,0.0
 8370,5.4593,-90.0,90.0,174.54,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 8371,6.2362,-88.7328,88.74,173.76,1.0,15.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 8372,45.8062,125.375,113.8,51.59,1810,-26.4,0,AB_RockyCrags,0,0,The Gray Crags,3,0.0
@@ -8730,7 +8730,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 8728,-8.5697,90.0,90.0,351.43,8,13.7,0,Wasteland,0,0,The Salt,1,0.0
 8729,-7.7912,88.7199,88.73,352.21,7,14.7,0,Wasteland,0,0,The Salt,1,0.0
 8730,-5.4593,90.0,90.0,354.54,1.0,14.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-8731,-6.2362,88.7328,88.74,353.76,-30,15.0,0,Ocean,1,0,The Grey Sea,1,0.0
+8731,-6.2362,88.7328,88.74,353.76,1.0,15.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 8732,-1.2682,172.2059,172.1,350.73,18,-76.1,0,AB_PropaneLakes,0,0,The Ammonia Flats,2,0.21
 8733,-1.2595,173.7616,173.64,348.56,72,-77.5,0,AB_PropaneLakes,0,0,The Ammonia Flats,2,0.22
 8734,1.2595,173.7616,173.64,11.44,1,-76.9,0,AB_PropaneLakes,0,0,The Ammonia Flats,1,0.21
@@ -8905,9 +8905,9 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 8903,28.1132,102.1301,100.68,28.65,1.0,1.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 8904,28.7558,103.7408,102.02,29.46,13,-0.4,0,ZBiome_Badlands,0,0,The Salt,2,0.0
 8905,27.9224,105.1314,103.34,28.77,-30,-2.0,0,SeaIce,1,0,The Grey Sea,1,0.0
-8906,12.2542,101.8522,101.58,12.51,-30,0.1,0,Ocean,1,0,The Grey Sea,1,0.0
-8907,13.0566,100.6062,100.33,13.28,-30,1.6,0,Ocean,1,0,The Grey Sea,1,0.0
-8908,14.5835,100.7314,100.38,14.83,-30,1.5,0,Ocean,1,0,The Grey Sea,1,0.0
+8906,12.2542,101.8522,101.58,12.51,1.0,0.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+8907,13.0566,100.6062,100.33,13.28,1.0,1.6,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+8908,14.5835,100.7314,100.38,14.83,1.0,1.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 8909,15.2983,102.1337,101.7,15.63,-30,-0.0,0,SeaIce,1,0,The Grey Sea,1,0.0
 8910,14.4886,103.3867,102.95,14.88,-30,-1.5,0,SeaIce,1,0,The Grey Sea,1,0.0
 8911,12.9718,103.2306,102.89,13.31,-30,-1.5,0,SeaIce,1,0,The Grey Sea,1,0.0
@@ -9415,42 +9415,42 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 9413,33.2548,-35.5868,47.15,131.59,33,47.7,0,ExtremeDesert,0,0,The Glare,1,0.0
 9414,30.5845,-35.4229,45.45,134.44,31,48.7,0,ExtremeDesert,0,0,The Glare,1,0.0
 9415,31.9417,-34.6288,45.71,132.35,33,48.7,0,ExtremeDesert,0,0,The Glare,1,0.0
-9416,21.5632,-97.117,96.62,158.28,1.0,6.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+9416,21.5632,-97.117,96.62,158.28,-30,6.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 9417,22.2748,-98.5937,97.95,157.5,1.0,4.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 9418,21.4666,-99.95,99.25,158.24,1.0,2.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 9419,19.9542,-99.8178,99.22,159.77,1.0,2.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9420,19.2425,-98.3664,97.9,160.57,1.0,4.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9421,20.0436,-97.0221,96.59,159.82,1.0,6.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9422,26.9441,-92.9976,92.67,153.02,1.0,10.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9423,28.4416,-93.0444,92.68,151.52,1.0,10.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9424,26.1674,-94.4613,94.0,153.76,1.0,9.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+9420,19.2425,-98.3664,97.9,160.57,-30,4.5,0,Ocean,1,0,The Twilight Sea,1,0.0
+9421,20.0436,-97.0221,96.59,159.82,-30,6.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+9422,26.9441,-92.9976,92.67,153.02,-30,10.8,0,Ocean,1,0,The Twilight Sea,1,0.0
+9423,28.4416,-93.0444,92.68,151.52,-30,10.8,0,Ocean,1,0,The Twilight Sea,1,0.0
+9424,26.1674,-94.4613,94.0,153.76,-30,9.2,0,Ocean,1,0,The Twilight Sea,1,0.0
 9425,26.8817,-95.9908,95.34,152.99,1.0,7.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 9426,29.1588,-94.6015,94.02,150.76,1.0,9.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 9427,28.3751,-96.0841,95.35,151.49,1.0,7.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9428,26.1674,-85.5387,86.0,153.76,1.0,17.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9429,26.8817,-84.0092,84.66,152.99,1.0,18.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9430,26.9441,-87.0024,87.33,153.02,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9431,28.4416,-86.9556,87.32,151.52,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9432,28.3751,-83.9159,84.65,151.49,1.0,18.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9433,29.1588,-85.3985,85.98,150.76,1.0,17.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9434,20.0436,-82.9779,83.41,159.82,1.0,19.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9435,19.2425,-81.6336,82.1,160.57,1.0,20.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9436,21.5632,-82.883,83.38,158.28,1.0,19.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9437,22.2748,-81.4063,82.05,157.5,1.0,20.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+9428,26.1674,-85.5387,86.0,153.76,-30,17.2,0,Ocean,1,0,The Twilight Sea,1,0.0
+9429,26.8817,-84.0092,84.66,152.99,-30,18.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+9430,26.9441,-87.0024,87.33,153.02,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+9431,28.4416,-86.9556,87.32,151.52,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+9432,28.3751,-83.9159,84.65,151.49,-30,18.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+9433,29.1588,-85.3985,85.98,150.76,-30,17.2,0,Ocean,1,0,The Twilight Sea,1,0.0
+9434,20.0436,-82.9779,83.41,159.82,-30,19.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+9435,19.2425,-81.6336,82.1,160.57,-30,20.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+9436,21.5632,-82.883,83.38,158.28,-30,19.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+9437,22.2748,-81.4063,82.05,157.5,-30,20.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 9438,19.9542,-80.1822,80.78,159.77,-30,21.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 9439,21.4666,-80.05,80.75,158.24,-30,21.4,0,Ocean,1,0,The Twilight Sea,1,0.0
-9440,14.7153,-95.3794,95.2,165.22,1.0,7.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9441,15.5047,-94.0604,93.91,164.46,1.0,9.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9442,13.1752,-95.3167,95.18,166.77,1.0,7.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9443,12.421,-93.9662,93.87,167.55,1.0,9.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9444,13.2056,-92.6601,92.59,166.78,1.0,10.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9445,14.7489,-92.6915,92.6,165.24,1.0,10.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9446,13.2056,-87.3399,87.41,166.78,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9447,14.7489,-87.3085,87.4,165.24,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9448,15.5047,-85.9396,86.09,164.46,1.0,17.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9449,14.7153,-84.6206,84.8,165.22,1.0,18.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9450,12.4209,-86.0338,86.13,167.55,1.0,17.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
-9451,13.1752,-84.6833,84.82,166.77,1.0,18.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+9440,14.7153,-95.3794,95.2,165.22,-30,7.8,0,Ocean,1,0,The Twilight Sea,1,0.0
+9441,15.5047,-94.0604,93.91,164.46,-30,9.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+9442,13.1752,-95.3167,95.18,166.77,-30,7.8,0,Ocean,1,0,The Twilight Sea,1,0.0
+9443,12.421,-93.9662,93.87,167.55,-30,9.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+9444,13.2056,-92.6601,92.59,166.78,-30,10.9,0,Ocean,1,0,The Twilight Sea,1,0.0
+9445,14.7489,-92.6915,92.6,165.24,-30,10.9,0,Ocean,1,0,The Twilight Sea,1,0.0
+9446,13.2056,-87.3399,87.41,166.78,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+9447,14.7489,-87.3085,87.4,165.24,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+9448,15.5047,-85.9396,86.09,164.46,-30,17.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+9449,14.7153,-84.6206,84.8,165.22,-30,18.2,0,Ocean,1,0,The Twilight Sea,1,0.0
+9450,12.4209,-86.0338,86.13,167.55,-30,17.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+9451,13.1752,-84.6833,84.82,166.77,-30,18.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 9452,38.1945,127.5731,118.64,44.79,1098,-27.8,0,AB_MycoticJungle,0,0,The Sunreach,2,0.4
 9453,39.2906,126.2636,117.24,45.42,1122,-26.2,0,AB_MycoticJungle,0,0,The Sunreach,2,0.42
 9454,38.9101,124.3385,116.04,44.35,1096,-24.5,0,AB_MycoticJungle,0,0,The Gray Crags,2,0.43
@@ -9809,7 +9809,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 9807,-14.7489,87.3085,87.4,345.24,137,14.9,0,Wasteland,0,0,The Salt,2,0.0
 9808,-15.5047,85.9396,86.09,344.46,145,15.4,0,Wasteland,0,0,The Salt,1,0.0
 9809,-14.7153,84.6206,84.8,345.22,69,16.7,0,Wasteland,0,0,The Salt,2,0.0
-9810,-12.4209,86.0338,86.13,347.55,-30,17.1,0,Ocean,1,0,The Grey Sea,1,0.0
+9810,-12.4209,86.0338,86.13,347.55,1.0,17.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 9811,-13.1752,84.6833,84.82,346.77,1.0,18.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 9812,2.6025,165.2337,165.01,10.11,1,-70.6,0,AB_PropaneLakes,0,0,The Ammonia Flats,1,0.23
 9813,2.5894,166.7791,166.53,11.19,1,-71.9,0,AB_PropaneLakes,0,0,The Ammonia Flats,1,0.22
@@ -9974,16 +9974,16 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 9972,14.7153,95.3794,95.2,14.78,1.0,7.8,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 9973,15.5047,94.0604,93.91,15.54,-30,9.3,0,Ocean,1,0,The Grey Sea,1,0.0
 9974,14.7153,84.6206,84.8,14.78,1.0,18.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-9975,15.5047,85.9396,86.09,15.54,1.0,17.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
+9975,15.5047,85.9396,86.09,15.54,-30,17.1,0,Ocean,1,0,The Grey Sea,1,0.0
 9976,14.7489,87.3085,87.4,14.76,1.0,16.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 9977,13.2056,87.3399,87.41,13.22,-30,16.1,0,Ocean,1,0,The Grey Sea,1,0.0
 9978,13.1752,84.6833,84.82,13.23,1.0,18.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 9979,12.421,86.0338,86.13,12.45,-30,17.1,0,Ocean,1,0,The Grey Sea,1,0.0
 9980,26.1674,94.4613,94.0,26.24,1.0,9.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-9981,26.8817,95.9908,95.34,27.01,-30,7.6,0,Ocean,1,0,The Grey Sea,1,0.0
+9981,26.8817,95.9908,95.34,27.01,1.0,7.6,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 9982,26.9441,92.9976,92.67,26.98,1.0,10.8,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 9983,28.4416,93.0444,92.68,28.48,1.0,10.8,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-9984,28.3751,96.0841,95.35,28.51,-30,7.6,0,Ocean,1,0,The Grey Sea,1,0.0
+9984,28.3751,96.0841,95.35,28.51,1.0,7.6,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 9985,29.1588,94.6015,94.02,29.24,1.0,9.2,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 9986,19.2425,98.3664,97.9,19.43,1.0,4.5,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 9987,20.0436,97.0221,96.59,20.18,1.0,6.1,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
@@ -11525,9 +11525,9 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 11523,-0.7773,85.0755,85.08,359.22,1.0,17.9,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 11524,-0.7794,87.5456,87.55,359.22,1.0,16.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 11525,0.7794,87.5456,87.55,0.78,1.0,16.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
-11526,1.5568,86.3041,86.31,1.56,-30,17.0,0,Ocean,1,0,The Grey Sea,1,0.0
+11526,1.5568,86.3041,86.31,1.56,1.0,17.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 11527,0.7773,85.0755,85.08,0.78,-30,17.9,0,Ocean,1,0,The Grey Sea,1,0.0
-11528,6.2032,83.672,83.71,6.24,-30,19.0,0,Ocean,1,0,The Grey Sea,1,0.0
+11528,6.2032,83.672,83.71,6.24,1.0,19.0,0,ExtremeDesert,0,0,The Grey Sea,1,0.0
 11529,5.417,82.4484,82.48,5.46,-30,20.0,0,Ocean,1,0,The Grey Sea,1,0.0
 11530,8.5064,82.2933,82.38,8.58,-30,20.1,0,Ocean,1,0,The Grey Sea,1,0.0
 11531,7.7512,83.6073,83.67,7.8,-30,19.1,0,Ocean,1,0,The Grey Sea,1,0.0
@@ -11841,14 +11841,14 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 11839,-0.7444,-70.1287,70.13,180.79,1054,25.1,114,Desert,0,0,The Dew Horn,4,0.0
 11840,7.7157,-81.0622,81.14,172.19,-30,21.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 11841,6.1746,-81.1525,81.2,173.75,-30,21.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-11842,7.7512,-83.6073,83.67,172.2,-30,19.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-11843,8.5064,-82.2933,82.38,171.42,-30,20.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-11844,6.2032,-83.672,83.71,173.76,-30,19.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-11845,5.417,-82.4484,82.48,174.54,-30,20.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-11846,1.5568,-86.3041,86.31,178.44,-30,17.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-11847,0.7773,-85.0755,85.08,179.22,-30,17.9,0,Ocean,1,0,The Twilight Sea,1,0.0
-11848,0.7794,-87.5456,87.55,179.22,-30,16.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-11849,-0.7794,-87.5456,87.55,180.78,-30,16.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+11842,7.7512,-83.6073,83.67,172.2,1.0,19.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+11843,8.5064,-82.2933,82.38,171.42,1.0,20.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+11844,6.2032,-83.672,83.71,173.76,1.0,19.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+11845,5.417,-82.4484,82.48,174.54,1.0,20.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+11846,1.5568,-86.3041,86.31,178.44,1.0,17.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+11847,0.7773,-85.0755,85.08,179.22,1.0,17.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+11848,0.7794,-87.5456,87.55,179.22,1.0,16.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+11849,-0.7794,-87.5456,87.55,180.78,1.0,16.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 11850,-1.5568,-86.3041,86.31,181.56,125,17.5,0,Desert,0,0,The Dew Belt,3,0.0
 11851,-0.7773,-85.0755,85.08,180.78,49,18.3,0,Desert,0,0,The Dew Belt,3,0.0
 11852,-6.2032,-83.672,83.71,186.24,510,18.0,0,ZBiome_DesertOasis,0,0,The Dew Belt,2,0.2
@@ -12103,12 +12103,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 12101,7.7157,-98.9378,98.86,172.19,-30,3.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 12102,8.5064,-97.7067,97.62,171.42,-30,4.9,0,Ocean,1,0,The Twilight Sea,1,0.0
 12103,7.7512,-96.3927,96.33,172.2,-30,6.4,0,Ocean,1,0,The Twilight Sea,1,0.0
-12104,-0.7773,-94.9246,94.92,180.78,-30,8.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-12105,-1.5568,-93.6959,93.69,181.56,-30,9.6,0,Ocean,1,0,The Twilight Sea,1,0.0
-12106,0.7773,-94.9246,94.92,179.22,-30,8.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-12107,1.5568,-93.6959,93.69,178.44,-30,9.6,0,Ocean,1,0,The Twilight Sea,1,0.0
-12108,0.7794,-92.4544,92.45,179.22,-30,11.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-12109,-0.7794,-92.4544,92.45,180.78,-30,11.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+12104,-0.7773,-94.9246,94.92,180.78,1.0,8.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+12105,-1.5568,-93.6959,93.69,181.56,1.0,9.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+12106,0.7773,-94.9246,94.92,179.22,1.0,8.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+12107,1.5568,-93.6959,93.69,178.44,1.0,9.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+12108,0.7794,-92.4544,92.45,179.22,1.0,11.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+12109,-0.7794,-92.4544,92.45,180.78,1.0,11.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 12110,-7.7157,-98.9378,98.86,187.81,535,0.2,0,AB_RockyCrags,0,0,The Nightspill,2,0.0
 12111,-6.1746,-98.8475,98.8,186.25,456,1.2,0,AB_RockyCrags,0,0,The Nightspill,3,0.0
 12112,-5.417,-97.5516,97.52,185.46,394,3.2,0,Wasteland,0,0,The Nightspill,3,0.0
@@ -13253,13 +13253,13 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 13251,37.3733,-105.2248,102.05,141.63,-30,-0.5,0,SeaIce,1,0,The Twilight Sea,1,0.0
 13252,35.13,-106.4413,103.38,143.74,1,-2.4,0,AB_TarPits,0,0,The Nightspill,1,0.0
 13253,34.5359,-104.6945,102.06,144.57,1,-1.5,0,AB_TarPits,0,0,The Nightspill,1,0.0
-13254,35.3632,-103.1951,100.73,143.91,-30,1.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-13255,36.7817,-103.4351,100.72,142.45,-30,1.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-13256,37.5995,-101.8787,99.39,141.8,-30,2.7,0,Ocean,1,0,The Twilight Sea,1,0.0
-13257,39.0187,-102.094,99.37,140.35,-30,2.8,0,Ocean,1,0,The Twilight Sea,1,0.0
-13258,36.9886,-100.0993,98.05,142.58,-30,4.3,0,Ocean,1,0,The Twilight Sea,1,0.0
-13259,37.7841,-98.5009,96.71,141.91,-30,5.9,0,Ocean,1,0,The Twilight Sea,1,0.0
-13260,39.212,-98.6522,96.69,140.47,-30,6.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+13254,35.3632,-103.1951,100.73,143.91,1.0,1.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+13255,36.7817,-103.4351,100.72,142.45,1.0,1.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+13256,37.5995,-101.8787,99.39,141.8,1.0,2.7,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+13257,39.0187,-102.094,99.37,140.35,1.0,2.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+13258,36.9886,-100.0993,98.05,142.58,1.0,4.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+13259,37.7841,-98.5009,96.71,141.91,1.0,5.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+13260,39.212,-98.6522,96.69,140.47,1.0,6.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 13261,39.8424,-100.4621,98.01,139.68,1,2.8,0,AB_TarPits,0,0,The Nightspill,1,0.0
 13262,41.2849,-100.6307,97.97,138.22,1,2.9,0,AB_TarPits,0,0,The Nightspill,1,0.0
 13263,41.9132,-102.4895,99.26,137.4,1,1.3,0,AB_TarPits,0,0,The Nightspill,1,0.0
@@ -13378,7 +13378,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 13376,39.0187,-77.906,80.63,140.35,1,21.2,0,AB_TarPits,0,0,The Glass Reach,1,0.0
 13377,39.8424,-79.5379,81.99,139.68,1,20.3,0,AB_TarPits,0,0,The Glass Reach,1,0.0
 13378,39.212,-81.3478,83.31,140.47,1,18.6,0,AB_TarPits,0,0,The Glass Reach,1,0.0
-13379,37.7841,-81.4991,83.29,141.91,-30,19.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+13379,37.7841,-81.4991,83.29,141.91,1.0,19.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 13380,36.9886,-79.9007,81.95,142.58,-30,20.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 13381,37.5995,-78.1213,80.61,141.8,-30,21.5,0,Ocean,1,0,The Twilight Sea,1,0.0
 13382,41.9132,-77.5105,80.74,137.4,1,20.8,0,ExtremeDesert,0,0,The Combs,1,0.0
@@ -15081,10 +15081,10 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 15079,3.0226,-73.7772,73.8,176.85,427,26.2,0,Desert,0,0,The Dew Horn,3,0.0
 15080,3.0887,-81.3188,81.33,176.88,-30,20.9,0,Ocean,1,0,The Twilight Sea,1,0.0
 15081,1.5446,-81.3786,81.38,178.44,-30,20.9,0,Ocean,1,0,The Twilight Sea,1,0.0
-15082,3.8702,-82.5208,82.54,176.1,-30,20.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-15083,3.1031,-83.7904,83.8,176.88,-30,19.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-15084,1.5518,-83.8281,83.83,178.44,-30,18.9,0,Ocean,1,0,The Twilight Sea,1,0.0
-15085,0.7743,-82.6113,82.61,179.22,-30,19.9,0,Ocean,1,0,The Twilight Sea,1,0.0
+15082,3.8702,-82.5208,82.54,176.1,1.0,20.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15083,3.1031,-83.7904,83.8,176.88,1.0,19.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15084,1.5518,-83.8281,83.83,178.44,1.0,18.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15085,0.7743,-82.6113,82.61,179.22,1.0,19.9,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 15086,-0.7743,-82.6113,82.61,180.78,159,20.8,0,ZBiome_DesertOasis,0,0,The Dew Belt,3,0.24
 15087,-1.5446,-81.3786,81.38,181.56,277,21.4,0,ZBiome_DesertOasis,0,0,The Dew Belt,3,0.24
 15088,-1.5518,-83.8281,83.83,181.56,170,19.7,0,Desert,0,0,The Dew Belt,3,0.0
@@ -15326,7 +15326,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 15324,-3.7946,-104.9949,104.96,183.93,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 15325,-3.0484,-103.6907,103.67,183.14,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 15326,-3.8242,-102.4654,102.44,183.92,-30,-0.9,0,SeaIce,1,0,The Twilight Sea,1,0.0
-15327,-3.0702,-101.1598,101.14,183.13,-30,0.6,0,Ocean,1,0,The Twilight Sea,1,0.0
+15327,-3.0702,-101.1598,101.14,183.13,1.0,0.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 15328,-5.3527,-102.5621,102.51,185.48,363,-2.4,48,AB_RockyCrags,0,0,The Nightspill,4,0.0
 15329,-6.1378,-101.3572,101.29,186.26,469,-2.4,30,AB_RockyCrags,0,0,The Nightspill,4,0.0
 15330,-5.3882,-100.053,100.01,185.47,351,0.3,143,AB_RockyCrags,0,0,The Nightspill,4,0.0
@@ -15337,22 +15337,22 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 15335,1.5116,-106.1794,106.17,178.43,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 15336,3.7946,-104.9949,104.96,176.07,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 15337,3.0226,-106.2228,106.2,176.85,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
-15338,3.0702,-101.1598,101.14,176.87,-30,0.6,0,Ocean,1,0,The Twilight Sea,1,0.0
-15339,3.8495,-99.9592,99.94,176.09,-30,2.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+15338,3.0702,-101.1598,101.14,176.87,1.0,0.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15339,3.8495,-99.9592,99.94,176.09,1.0,2.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 15340,3.8242,-102.4654,102.44,176.08,-30,-0.9,0,SeaIce,1,0,The Twilight Sea,1,0.0
 15341,5.3527,-102.5621,102.51,174.52,-30,-1.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 15342,5.3882,-100.053,100.01,174.53,-30,2.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-15343,6.1378,-101.3572,101.29,173.74,-30,0.5,0,Ocean,1,0,The Twilight Sea,1,0.0
-15344,1.5446,-98.6215,98.62,178.44,-30,3.7,0,Ocean,1,0,The Twilight Sea,1,0.0
-15345,0.7743,-97.3887,97.39,179.22,-30,5.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-15346,3.0887,-98.6812,98.67,176.88,-30,3.6,0,Ocean,1,0,The Twilight Sea,1,0.0
-15347,3.8702,-97.4792,97.46,176.1,-30,5.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-15348,1.5518,-96.1719,96.17,178.44,-30,6.6,0,Ocean,1,0,The Twilight Sea,1,0.0
-15349,3.1031,-96.2096,96.2,176.88,-30,6.6,0,Ocean,1,0,The Twilight Sea,1,0.0
-15350,-3.0887,-98.6812,98.67,183.12,-30,3.6,0,Ocean,1,0,The Twilight Sea,1,0.0
-15351,-1.5446,-98.6214,98.62,181.56,-30,3.7,0,Ocean,1,0,The Twilight Sea,1,0.0
-15352,-0.7743,-97.3887,97.39,180.78,-30,5.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-15353,-1.5518,-96.1719,96.17,181.56,-30,6.6,0,Ocean,1,0,The Twilight Sea,1,0.0
+15343,6.1378,-101.3572,101.29,173.74,1.0,0.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15344,1.5446,-98.6215,98.62,178.44,1.0,3.7,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15345,0.7743,-97.3887,97.39,179.22,1.0,5.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15346,3.0887,-98.6812,98.67,176.88,1.0,3.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15347,3.8702,-97.4792,97.46,176.1,1.0,5.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15348,1.5518,-96.1719,96.17,178.44,1.0,6.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15349,3.1031,-96.2096,96.2,176.88,1.0,6.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15350,-3.0887,-98.6812,98.67,183.12,1.0,3.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15351,-1.5446,-98.6214,98.62,181.56,1.0,3.7,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15352,-0.7743,-97.3887,97.39,180.78,1.0,5.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+15353,-1.5518,-96.1719,96.17,181.56,1.0,6.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 15354,-3.8702,-97.4792,97.46,183.9,180,4.5,168,Wasteland,0,0,The Nightspill,4,0.0
 15355,-3.1031,-96.2096,96.2,183.12,53,5.6,0,Wasteland,0,0,The Nightspill,3,0.0
 15356,-20.4872,-118.2036,116.28,202.98,581,-21.3,0,AB_MycoticJungle,0,0,The Nightspill,2,0.38
@@ -18415,18 +18415,18 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 18413,19.9722,-31.4759,36.72,145.16,15,53.0,0,AB_FeraliskInfestedJungle,0,1071,The Dune Sea,1,0.60
 18414,18.6678,-33.689,37.97,148.65,26,51.1,0,AB_FeraliskInfestedJungle,0,0,The Dune Sea,2,0.69
 18415,18.6613,-32.1506,36.66,147.6,51,52.1,0,AB_FeraliskInfestedJungle,0,0,The Dune Sea,2,0.70
-18416,25.9676,-100.3836,99.33,153.66,-30,2.8,0,Ocean,1,0,The Twilight Sea,1,0.0
-18417,24.474,-100.2326,99.3,155.18,-30,2.8,0,Ocean,1,0,The Twilight Sea,1,0.0
-18418,24.5855,-97.3197,96.65,155.24,-30,6.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18419,23.7827,-98.7151,97.97,155.97,-30,4.4,0,Ocean,1,0,The Twilight Sea,1,0.0
-18420,26.087,-97.4282,96.67,153.72,-30,6.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18421,26.7783,-98.9749,98.01,152.94,-30,4.4,0,Ocean,1,0,The Twilight Sea,1,0.0
-18422,28.2651,-99.1142,98.02,151.43,-30,4.4,0,Ocean,1,0,The Twilight Sea,1,0.0
-18423,28.9327,-100.7085,99.36,150.64,-30,2.8,0,Ocean,1,0,The Twilight Sea,1,0.0
-18424,29.0676,-97.6609,96.69,150.71,-30,6.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18425,30.5457,-97.786,96.7,149.22,-30,6.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18426,31.2138,-99.414,98.04,148.44,-30,4.4,0,Ocean,1,0,The Twilight Sea,1,0.0
-18427,30.4029,-100.8834,99.37,149.14,-30,2.8,0,Ocean,1,0,The Twilight Sea,1,0.0
+18416,25.9676,-100.3836,99.33,153.66,1.0,2.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18417,24.474,-100.2326,99.3,155.18,1.0,2.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18418,24.5855,-97.3197,96.65,155.24,1.0,6.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18419,23.7827,-98.7151,97.97,155.97,1.0,4.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18420,26.087,-97.4282,96.67,153.72,1.0,6.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18421,26.7783,-98.9749,98.01,152.94,1.0,4.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18422,28.2651,-99.1142,98.02,151.43,1.0,4.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18423,28.9327,-100.7085,99.36,150.64,1.0,2.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18424,29.0676,-97.6609,96.69,150.71,1.0,6.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18425,30.5457,-97.786,96.7,149.22,1.0,6.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18426,31.2138,-99.414,98.04,148.44,1.0,4.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18427,30.4029,-100.8834,99.37,149.14,1.0,2.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18428,28.5396,-106.7566,104.67,150.4,4,-3.2,0,AridShrubland,0,0,The Twilight Crags,2,0.0
 18429,29.986,-107.0274,104.69,148.89,1,-3.4,0,AB_TarPits,0,0,The Nightspill,1,0.0
 18430,29.7152,-110.0656,107.34,148.72,239,-7.6,14,AridShrubland,0,0,The Twilight Crags,4,0.0
@@ -18447,33 +18447,33 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 18445,24.1489,-106.0156,104.58,154.99,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 18446,23.5007,-104.472,103.25,155.82,-30,-1.9,0,SeaIce,1,0,The Twilight Sea,1,0.0
 18447,24.3277,-103.1317,101.95,155.1,-30,-0.3,0,SeaIce,1,0,The Twilight Sea,1,0.0
-18448,23.6579,-101.6006,100.61,155.9,-30,1.3,0,Ocean,1,0,The Twilight Sea,1,0.0
-18449,22.1588,-101.4396,100.58,157.44,-30,1.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+18448,23.6579,-101.6006,100.61,155.9,1.0,1.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18449,22.1588,-101.4396,100.58,157.44,1.0,1.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18450,22.0123,-104.2711,103.21,157.36,-30,-1.9,0,SeaIce,1,0,The Twilight Sea,1,0.0
 18451,21.34,-102.7698,101.88,158.17,-30,-0.3,0,SeaIce,1,0,The Twilight Sea,1,0.0
-18452,31.4374,-90.0,90.0,148.56,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18453,30.6911,-91.5599,91.34,149.3,-30,12.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+18452,31.4374,-90.0,90.0,148.56,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18453,30.6911,-91.5599,91.34,149.3,1.0,12.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18454,28.4638,-90.0,90.0,151.54,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
 18455,29.2046,-91.5347,91.34,150.79,-30,12.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 18456,29.2046,-88.4653,88.66,150.79,-30,15.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-18457,30.6911,-88.4401,88.66,149.3,-30,15.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-18458,31.4122,-86.8548,87.32,148.55,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-18459,32.8836,-86.8011,87.31,147.08,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-18460,30.6424,-85.323,85.98,149.27,-30,17.2,0,Ocean,1,0,The Twilight Sea,1,0.0
-18461,31.3372,-83.7153,84.64,148.51,-30,18.3,0,Ocean,1,0,The Twilight Sea,1,0.0
-18462,32.8042,-83.608,84.63,147.03,-30,18.3,0,Ocean,1,0,The Twilight Sea,1,0.0
-18463,33.5812,-85.1619,85.97,146.32,-30,17.2,0,Ocean,1,0,The Twilight Sea,1,0.0
-18464,32.8836,-93.1989,92.69,147.08,-30,10.8,0,Ocean,1,0,The Twilight Sea,1,0.0
-18465,33.5811,-94.8382,94.03,146.32,-30,9.2,0,Ocean,1,0,The Twilight Sea,1,0.0
-18466,31.4122,-93.1452,92.68,148.55,-30,10.8,0,Ocean,1,0,The Twilight Sea,1,0.0
-18467,30.6424,-94.677,94.02,149.27,-30,9.2,0,Ocean,1,0,The Twilight Sea,1,0.0
-18468,31.3372,-96.2847,95.36,148.51,-30,7.6,0,Ocean,1,0,The Twilight Sea,1,0.0
-18469,32.8042,-96.392,95.37,147.03,-30,7.6,0,Ocean,1,0,The Twilight Sea,1,0.0
-18470,35.7938,-93.3137,92.69,144.16,-30,10.8,0,Ocean,1,0,The Twilight Sea,1,0.0
+18457,30.6911,-88.4401,88.66,149.3,1.0,15.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18458,31.4122,-86.8548,87.32,148.55,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18459,32.8836,-86.8011,87.31,147.08,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18460,30.6424,-85.323,85.98,149.27,1.0,17.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18461,31.3372,-83.7153,84.64,148.51,1.0,18.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18462,32.8042,-83.608,84.63,147.03,1.0,18.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18463,33.5812,-85.1619,85.97,146.32,1.0,17.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18464,32.8836,-93.1989,92.69,147.08,1.0,10.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18465,33.5811,-94.8382,94.03,146.32,1.0,9.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18466,31.4122,-93.1452,92.68,148.55,1.0,10.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18467,30.6424,-94.677,94.02,149.27,1.0,9.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18468,31.3372,-96.2847,95.36,148.51,1.0,7.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18469,32.8042,-96.392,95.37,147.03,1.0,7.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18470,35.7938,-93.3137,92.69,144.16,1.0,10.8,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18471,37.2315,-93.3751,92.69,142.72,1,9.2,0,AB_TarPits,0,0,The Glass Reach,1,0.0
-18472,35.0345,-94.9241,94.03,144.87,-30,9.2,0,Ocean,1,0,The Twilight Sea,1,0.0
-18473,35.7059,-96.6211,95.37,144.11,-30,7.6,0,Ocean,1,0,The Twilight Sea,1,0.0
-18474,37.1396,-96.7436,95.37,142.67,-30,7.6,0,Ocean,1,0,The Twilight Sea,1,0.0
+18472,35.0345,-94.9241,94.03,144.87,1.0,9.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18473,35.7059,-96.6211,95.37,144.11,1.0,7.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18474,37.1396,-96.7436,95.37,142.67,1.0,7.6,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18475,37.9066,-95.1081,94.03,141.98,1,8.2,0,AB_TarPits,0,0,The Glass Reach,1,0.0
 18476,37.2627,-90.0,90.0,142.74,1,13.3,0,AB_TarPits,0,0,The Glass Reach,1,0.0
 18477,37.9697,-88.2961,88.66,142.02,1,14.9,0,AB_TarPits,0,0,The Glass Reach,1,0.0
@@ -18481,12 +18481,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 18479,39.3901,-91.7368,91.34,140.6,1,11.5,0,AB_TarPits,0,0,The Glass Reach,1,0.0
 18480,40.104,-90.0,90.0,139.9,1,13.2,0,AB_GelatinousSuperorganism,0,0,The Glass Reach,1,0.0
 18481,39.3901,-88.2633,88.66,140.6,1,14.7,0,AB_TarPits,0,0,The Glass Reach,1,0.0
-18482,35.0345,-85.0759,85.97,144.87,-30,17.2,0,Ocean,1,0,The Twilight Sea,1,0.0
-18483,35.7938,-86.6863,87.31,144.16,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-18484,37.2315,-86.6249,87.31,142.72,-30,16.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-18485,37.9066,-84.8919,85.97,141.98,-30,17.2,0,Ocean,1,0,The Twilight Sea,1,0.0
-18486,37.1396,-83.2564,84.63,142.67,-30,18.3,0,Ocean,1,0,The Twilight Sea,1,0.0
-18487,35.7059,-83.3789,84.63,144.11,-30,18.3,0,Ocean,1,0,The Twilight Sea,1,0.0
+18482,35.0345,-85.0759,85.97,144.87,1.0,17.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18483,35.7938,-86.6863,87.31,144.16,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18484,37.2315,-86.6249,87.31,142.72,1.0,16.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18485,37.9066,-84.8919,85.97,141.98,1.0,17.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18486,37.1396,-83.2564,84.63,142.67,1.0,18.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18487,35.7059,-83.3789,84.63,144.11,1.0,18.3,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18488,25.9676,-79.6164,80.67,153.66,-30,21.5,0,Ocean,1,0,The Twilight Sea,1,0.0
 18489,26.7783,-81.0252,81.99,152.94,-30,20.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 18490,24.5855,-82.6803,83.35,155.24,-30,19.3,0,Ocean,1,0,The Twilight Sea,1,0.0
@@ -18533,7 +18533,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 18531,12.3265,-80.7655,80.98,167.52,-30,21.2,0,Ocean,1,0,The Twilight Sea,1,0.0
 18532,12.3825,-83.3954,83.55,167.54,-30,19.2,0,Ocean,1,0,The Twilight Sea,1,0.0
 18533,10.841,-83.4691,83.59,169.09,-30,19.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-18534,10.0481,-82.2105,82.33,169.86,-30,20.1,0,Ocean,1,0,The Twilight Sea,1,0.0
+18534,10.0481,-82.2105,82.33,169.86,1.0,20.1,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18535,10.7917,-80.8687,81.03,169.07,-30,21.2,0,Ocean,1,0,The Twilight Sea,1,0.0
 18536,16.8157,-77.7174,78.25,162.81,-30,23.4,0,Ocean,1,0,The Twilight Sea,1,0.0
 18537,17.5124,-76.2819,76.93,162.01,-30,24.5,0,Ocean,1,0,The Twilight Sea,1,0.0
@@ -18560,9 +18560,9 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 18558,7.67,-78.5292,78.63,172.18,-30,23.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 18559,8.4618,-79.7407,79.85,171.4,-30,22.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 18560,16.8157,-102.2827,101.75,162.81,-30,-0.1,0,SeaIce,1,0,The Twilight Sea,1,0.0
-18561,17.6276,-100.9967,100.47,162.06,-30,1.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+18561,17.6276,-100.9967,100.47,162.06,1.0,1.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18562,19.837,-102.6005,101.84,159.71,-30,-0.2,0,SeaIce,1,0,The Twilight Sea,1,0.0
-18563,19.1431,-101.1381,100.51,160.52,-30,1.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+18563,19.1431,-101.1381,100.51,160.52,1.0,1.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18564,19.0176,-103.8946,103.12,160.45,-30,-1.7,0,SeaIce,1,0,The Twilight Sea,1,0.0
 18565,17.5124,-103.7181,103.07,162.01,-30,-1.7,0,SeaIce,1,0,The Twilight Sea,1,0.0
 18566,15.3886,-99.4537,99.11,164.41,-30,3.1,0,Ocean,1,0,The Twilight Sea,1,0.0
@@ -18584,8 +18584,8 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 18582,16.5529,-107.6536,106.9,162.68,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 18583,17.3746,-106.4207,105.65,161.93,-30,-2.0,0,SeaIce,1,0,The Twilight Sea,1,0.0
 18584,9.9306,-102.9361,102.74,169.82,-30,-1.3,0,SeaIce,1,0,The Twilight Sea,1,0.0
-18585,10.7286,-101.7192,101.51,169.05,-30,0.2,0,Ocean,1,0,The Twilight Sea,1,0.0
-18586,7.67,-101.4708,101.37,172.18,-30,0.4,0,Ocean,1,0,The Twilight Sea,1,0.0
+18585,10.7286,-101.7192,101.51,169.05,1.0,0.2,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18586,7.67,-101.4708,101.37,172.18,1.0,0.4,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18587,8.4064,-102.7983,102.66,171.38,-30,-1.2,0,SeaIce,1,0,The Twilight Sea,1,0.0
 18588,8.4618,-100.2593,100.15,171.4,-30,1.8,0,Ocean,1,0,The Twilight Sea,1,0.0
 18589,9.9958,-100.3698,100.21,169.84,-30,1.7,0,Ocean,1,0,The Twilight Sea,1,0.0
@@ -18613,24 +18613,24 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 18611,10.8753,-86.0781,86.15,169.1,-30,17.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 18612,10.0874,-84.8014,84.88,169.87,-30,18.1,0,Ocean,1,0,The Twilight Sea,1,0.0
 18613,8.5398,-84.8567,84.91,171.43,-30,18.1,0,Ocean,1,0,The Twilight Sea,1,0.0
-18614,5.4529,-87.4786,87.49,174.54,-30,16.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18615,3.8958,-87.5028,87.51,176.1,-30,16.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18616,6.2235,-86.2001,86.22,173.76,-30,17.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18617,5.4383,-84.9602,84.98,174.54,-30,18.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18618,3.8854,-85.0086,85.02,176.1,-30,18.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18619,3.1132,-86.2726,86.28,176.88,-30,17.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+18614,5.4529,-87.4786,87.49,174.54,1.0,16.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18615,3.8958,-87.5028,87.51,176.1,1.0,16.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18616,6.2235,-86.2001,86.22,173.76,1.0,17.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18617,5.4383,-84.9602,84.98,174.54,1.0,18.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18618,3.8854,-85.0086,85.02,176.1,1.0,18.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18619,3.1132,-86.2726,86.28,176.88,1.0,17.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18620,6.2235,-93.7999,93.78,173.76,-30,9.5,0,Ocean,1,0,The Twilight Sea,1,0.0
-18621,5.4529,-92.5214,92.51,174.54,-30,11.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18622,3.8854,-94.9914,94.98,176.1,-30,8.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18623,5.4383,-95.0398,95.02,174.54,-30,8.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18624,3.1132,-93.7274,93.72,176.88,-30,9.5,0,Ocean,1,0,The Twilight Sea,1,0.0
-18625,3.8958,-92.4972,92.49,176.1,-30,11.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18626,3.1196,-91.243,91.24,176.88,-30,12.5,0,Ocean,1,0,The Twilight Sea,1,0.0
-18627,3.9003,-90.0,90.0,176.1,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18628,3.1196,-88.757,88.76,176.88,-30,15.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18629,1.5601,-88.7683,88.77,178.44,-30,15.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-18630,1.5601,-91.2317,91.23,178.44,-30,12.5,0,Ocean,1,0,The Twilight Sea,1,0.0
-18631,0.7804,-90.0,90.0,179.22,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
+18621,5.4529,-92.5214,92.51,174.54,1.0,11.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18622,3.8854,-94.9914,94.98,176.1,1.0,8.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18623,5.4383,-95.0398,95.02,174.54,1.0,8.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18624,3.1132,-93.7274,93.72,176.88,1.0,9.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18625,3.8958,-92.4972,92.49,176.1,1.0,11.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18626,3.1196,-91.243,91.24,176.88,1.0,12.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18627,3.9003,-90.0,90.0,176.1,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18628,3.1196,-88.757,88.76,176.88,1.0,15.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18629,1.5601,-88.7683,88.77,178.44,1.0,15.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18630,1.5601,-91.2317,91.23,178.44,1.0,12.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+18631,0.7804,-90.0,90.0,179.22,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 18632,43.2805,126.1511,115.43,49.39,1565,-26.8,0,AB_RockyCrags,0,0,The Gray Crags,3,0.0
 18633,41.8221,125.5222,115.66,47.71,1408,-25.9,0,AB_RockyCrags,0,0,The Gray Crags,3,0.0
 18634,41.0868,128.8614,118.22,48.23,1243,-28.2,0,AB_RockyCrags,0,0,The Sunreach,3,0.0
@@ -19149,9 +19149,9 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 19147,-7.7765,-86.1612,86.2,187.79,312,16.7,0,Desert,0,0,The Dew Belt,2,0.0
 19148,-3.9003,-90.0,90.0,183.9,18,14.6,0,Desert,0,0,The Dew Belt,2,0.0
 19149,-3.1196,-88.757,88.76,183.12,25,15.1,0,Desert,0,0,The Dew Belt,2,0.0
-19150,-0.7804,-90.0,90.0,180.78,-30,14.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-19151,-1.5601,-88.7683,88.77,181.56,-30,15.0,0,Ocean,1,0,The Twilight Sea,1,0.0
-19152,-1.5601,-91.2317,91.23,181.56,-30,12.5,0,Ocean,1,0,The Twilight Sea,1,0.0
+19150,-0.7804,-90.0,90.0,180.78,1.0,14.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+19151,-1.5601,-88.7683,88.77,181.56,1.0,15.0,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
+19152,-1.5601,-91.2317,91.23,181.56,1.0,12.5,0,ExtremeDesert,0,0,The Twilight Sea,1,0.0
 19153,-3.1196,-91.243,91.24,183.12,16,13.7,0,Wasteland,0,0,The Dew Belt,2,0.0
 19154,-6.2235,-86.2001,86.22,186.24,276,16.9,0,Desert,0,0,The Dew Belt,3,0.0
 19155,-5.4529,-87.4786,87.49,185.46,145,16.0,0,Desert,0,0,The Dew Belt,3,0.0

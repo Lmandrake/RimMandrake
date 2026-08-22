@@ -76,18 +76,48 @@ def main():
              and r.get('region') != 'The Scald']
     mer_water = [r for r in water if r['_arc'] > MERIDIAN_ARC]
 
-    # ---- E1 halve the meridian water, margins first -------------------------------
-    # "Margin" = highest elevation. A shrinking sea abandons its shallow rim and keeps
-    # its deepest core, so rank by elevation descending and drop from the top.
-    mer_water.sort(key=lambda r: -r['_el'])
-    n_remove = int(round(len(mer_water) * (1 - HALVE_TO)))
-    removed = mer_water[:n_remove]
+    # ---- E1 halve the meridian water --------------------------------------------
+    # 🔴 THE TWO SEAS SHRINK DIFFERENTLY - owner, 2026-08-22: "The Twilight Sea should not
+    # have the dithered 'dessicating' terrain we just added, only the Grey sea should. It
+    # simply needed its volume reduced."
+    #
+    # The first version ranked ALL meridian water by elevation and dried the top slice.
+    # On a noisy seabed that is salt-and-pepper, not a retreating shoreline - it dithered
+    # the Twilight Sea. Elevation rank is a depth proxy, not a geometry.
+    #
+    #   TWILIGHT SEA -> shoreline EROSION. Rank by distance to the nearest non-water tile
+    #                   and remove the closest first. The sea retreats inward with a clean
+    #                   edge, which is what "simply reduce its volume" means.
+    #   GREY SEA     -> unchanged: elevation-ranked drying PLUS a scattered brine halo,
+    #                   because that one is meant to read as desiccating.
+    import math as _m
+    def _xyz(r):
+        la, lo = _m.radians(fnum(r['lat'])), _m.radians(fnum(r['lon']))
+        return (_m.cos(la)*_m.cos(lo), _m.cos(la)*_m.sin(lo), _m.sin(la))
+    def _sep(a, b):
+        return _m.degrees(_m.acos(max(-1, min(1, sum(x*y for x, y in zip(a, b))))))
 
-    # ---- E2 of those, a scatter nearest the Grey Sea stay as brine remnants --------
-    removed.sort(key=lambda r: angdist(r['_arc'], r['_bear'], *GREY_SEA))
-    n_brine = int(round(len(removed) * BRINE_KEEP))
-    # take every k-th of the nearest band so the remnants are SCATTERED, not a ring
-    near = removed[:max(n_brine * 4, n_brine)]
+    twilight = [r for r in mer_water if r.get('region') == 'The Twilight Sea']
+    other    = [r for r in mer_water if r.get('region') != 'The Twilight Sea']
+
+    removed = []
+    if twilight:
+        wet_ids = {r['tile'] for r in rows if r['biome'] in ('Ocean', 'Lake', 'SeaIce')}
+        dry_pts = [_xyz(r) for r in rows if r['tile'] not in wet_ids]
+        for r in twilight:
+            p = _xyz(r)
+            r['_shore'] = min(_sep(p, q) for q in dry_pts)
+        twilight.sort(key=lambda r: r['_shore'])          # nearest the shore goes first
+        removed += twilight[:int(round(len(twilight) * (1 - HALVE_TO)))]
+
+    other.sort(key=lambda r: -r['_el'])
+    grey_removed = other[:int(round(len(other) * (1 - HALVE_TO)))]
+    removed += grey_removed
+
+    # ---- E2 brine halo, GREY SEA ONLY --------------------------------------------
+    grey_removed.sort(key=lambda r: angdist(r['_arc'], r['_bear'], *GREY_SEA))
+    n_brine = int(round(len(grey_removed) * BRINE_KEEP))
+    near = grey_removed[:max(n_brine * 4, n_brine)]
     step = max(1, len(near) // max(n_brine, 1))
     brine = {id(r) for r in near[::step][:n_brine]}
 
