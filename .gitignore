@@ -231,3 +231,6 @@ infrastructure/state/queue/DECIDE.md
 infrastructure/state/queue/BUILD.md
 infrastructure/state/queue/CHECK.md
 infrastructure/state/queue/REP.md
+
+# Derived ortho globe SVGs — regenerate with worldview.py; the PNGs beside them are committed
+world/view/globes_*/*.svg
