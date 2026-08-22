@@ -1,0 +1,338 @@
+{
+ "Jawa_Blackstar_Grunt": [
+  "Human14337",
+  "Human14354",
+  "Human14364",
+  "Human14369",
+  "Human14379"
+ ],
+ "Jawa_Blackstar_Heavy": [
+  "Human14390",
+  "Human14395",
+  "Human1027",
+  "Human14404",
+  "Human14409"
+ ],
+ "Jawa_Blackstar_Leader": [
+  "Human14414",
+  "Human1037",
+  "Human14431",
+  "Human1015",
+  "Human14455"
+ ],
+ "Jawa_Blackstar_Specialist": [
+  "Human996",
+  "Human14473",
+  "Human14487",
+  "Human14501",
+  "Human1023"
+ ],
+ "Jawa_DeepDesert_Grunt": [
+  "Human14517",
+  "Human1019",
+  "Human14526",
+  "Human14537",
+  "Human14551"
+ ],
+ "Jawa_DeepDesert_Heavy": [
+  "Human14565",
+  "Human14579",
+  "Human14582",
+  "Human14605",
+  "Human14616"
+ ],
+ "Jawa_DeepDesert_Leader": [
+  "Human1003",
+  "Human14633",
+  "Human14643",
+  "Human14665",
+  "Human14678"
+ ],
+ "Jawa_DeepDesert_Specialist": [
+  "Human14692",
+  "Human14717",
+  "Human14726",
+  "Human14693",
+  "Human14735"
+ ],
+ "Jawa_Deepwater_Grunt": [
+  "Human14748",
+  "Human14758",
+  "Human14767",
+  "Human14802",
+  "Human14815"
+ ],
+ "Jawa_Deepwater_Heavy": [
+  "Human14820",
+  "Human14832",
+  "Human14841",
+  "Human14853",
+  "Human14867"
+ ],
+ "Jawa_Deepwater_Leader": [
+  "Human14879",
+  "Human14886",
+  "Human14895",
+  "Human14907",
+  "Human14921"
+ ],
+ "Jawa_Deepwater_Specialist": [
+  "Human14937",
+  "Human14949",
+  "Human14966",
+  "Human14981",
+  "Human14991"
+ ],
+ "Jawa_Droid_Grunt": [
+  "Human15005",
+  "Human15013",
+  "Human15026",
+  "Human15034",
+  "Human15047"
+ ],
+ "Jawa_Droid_Heavy": [
+  "Human15063",
+  "Human15089",
+  "Human15098",
+  "Human15104",
+  "Human15120"
+ ],
+ "Jawa_Droid_Leader": [
+  "Human15125",
+  "Human15135",
+  "Human15141",
+  "Human15153",
+  "Human15160"
+ ],
+ "Jawa_Droid_Specialist": [
+  "Human15180",
+  "Human15190",
+  "Human15222",
+  "Human15229",
+  "Human15259"
+ ],
+ "Jawa_Empire_Grunt": [
+  "Human15275",
+  "Human15302",
+  "Human15317",
+  "Human15322",
+  "Human15351"
+ ],
+ "Jawa_Empire_Heavy": [
+  "Human15356",
+  "Human15367",
+  "Human15376",
+  "Human15380",
+  "Human15303"
+ ],
+ "Jawa_Empire_Leader": [
+  "Human15412",
+  "Human15424",
+  "Human15443",
+  "Human15475",
+  "Human15504"
+ ],
+ "Jawa_Empire_Specialist": [
+  "Human15536",
+  "Human15564",
+  "Human15583",
+  "Human15597",
+  "Human15611"
+ ],
+ "Jawa_Geonosian_Grunt": [
+  "Human15617",
+  "Human15630",
+  "Human15663",
+  "Human15694",
+  "Human15705"
+ ],
+ "Jawa_Geonosian_Heavy": [
+  "Human15709",
+  "Human15725",
+  "Human15740",
+  "Human15749",
+  "Human15754"
+ ],
+ "Jawa_Geonosian_Leader": [
+  "Human15767",
+  "Human15786",
+  "Human15800",
+  "Human15815",
+  "Human15843"
+ ],
+ "Jawa_Geonosian_Specialist": [
+  "Human15849",
+  "Human15881",
+  "Human15894",
+  "Human15902",
+  "Human15915"
+ ],
+ "Jawa_Helix_Grunt": [
+  "Human15931",
+  "Human15962",
+  "Human15973",
+  "Human15989",
+  "Human16002"
+ ],
+ "Jawa_Helix_Heavy": [
+  "Human16015",
+  "Human16049",
+  "Human16056",
+  "Human16067",
+  "Human16079"
+ ],
+ "Jawa_Helix_Leader": [
+  "Human16096",
+  "Human16109",
+  "Human16123",
+  "Human16135",
+  "Human16151"
+ ],
+ "Jawa_Helix_Specialist": [
+  "Human16164",
+  "Human16173",
+  "Human16186",
+  "Human16197",
+  "Human16239"
+ ],
+ "Jawa_Homestead_Grunt": [
+  "Human16276",
+  "Human16292",
+  "Human16301",
+  "Human16329",
+  "Human16344"
+ ],
+ "Jawa_Homestead_Heavy": [
+  "Human16375",
+  "Human16383",
+  "Human16397",
+  "Human16412",
+  "Human16422"
+ ],
+ "Jawa_Homestead_Leader": [
+  "Human16442",
+  "Human16454",
+  "Human16458",
+  "Human16469",
+  "Human16477"
+ ],
+ "Jawa_Homestead_Specialist": [
+  "Human16494",
+  "Human16503",
+  "Human16514",
+  "Human16524",
+  "Human16536"
+ ],
+ "Jawa_Hutt_Grunt": [
+  "Human16549",
+  "Human16564",
+  "Human16575",
+  "Human16585",
+  "Human16616"
+ ],
+ "Jawa_Hutt_Heavy": [
+  "Human16634",
+  "Human16650",
+  "Human16661",
+  "Human16669",
+  "Human16680"
+ ],
+ "Jawa_Hutt_Leader": [
+  "Human16688",
+  "Human16697",
+  "Human16713",
+  "Human16720",
+  "Human16731"
+ ],
+ "Jawa_Hutt_Specialist": [
+  "Human16741",
+  "Human16757",
+  "Human16776",
+  "Human16794",
+  "Human16834"
+ ],
+ "Jawa_Junkers_Grunt": [
+  "Human16850",
+  "Human16872",
+  "Human16880",
+  "Human16886",
+  "Human16892"
+ ],
+ "Jawa_Junkers_Heavy": [
+  "Human16903",
+  "Human16909",
+  "Human16914",
+  "Human16919",
+  "Human16924"
+ ],
+ "Jawa_Junkers_Leader": [
+  "Human16935",
+  "Human16942",
+  "Human16947",
+  "Human16953",
+  "Human16959"
+ ],
+ "Jawa_Junkers_Specialist": [
+  "Human16990",
+  "Human16996",
+  "Human17002",
+  "Human17008",
+  "Human17014"
+ ],
+ "Jawa_TradeMoot_Grunt": [
+  "Human17025",
+  "Human17037",
+  "Human17045",
+  "Human17058",
+  "Human17068"
+ ],
+ "Jawa_TradeMoot_Heavy": [
+  "Human17079",
+  "Human17083",
+  "Human17092",
+  "Human17105",
+  "Human17109"
+ ],
+ "Jawa_TradeMoot_Leader": [
+  "Human17120",
+  "Human17132",
+  "Human17137",
+  "Human17141",
+  "Human17153"
+ ],
+ "Jawa_TradeMoot_Specialist": [
+  "Human17160",
+  "Human17172",
+  "Human17182",
+  "Human17191",
+  "Human17198"
+ ],
+ "Jawa_Wildsteam_Grunt": [
+  "Human17210",
+  "Human17243",
+  "Human17248",
+  "Human17258",
+  "Human17269"
+ ],
+ "Jawa_Wildsteam_Heavy": [
+  "Human17281",
+  "Human17288",
+  "Human17301",
+  "Human17316",
+  "Human17325"
+ ],
+ "Jawa_Wildsteam_Leader": [
+  "Human17340",
+  "Human17351",
+  "Human17356",
+  "Human17365",
+  "Human17373"
+ ],
+ "Jawa_Wildsteam_Specialist": [
+  "Human17388",
+  "Human17396",
+  "Human17417",
+  "Human17428",
+  "Human17440"
+ ]
+}

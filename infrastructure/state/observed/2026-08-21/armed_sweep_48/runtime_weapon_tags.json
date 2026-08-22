@@ -1,0 +1,177 @@
+{
+  "success": true,
+  "message": "11 of 11 def(s) resolved",
+  "requested": 11,
+  "foundCount": 11,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+    "weaponTags",
+    "label"
+  ],
+  "defs": [
+    {
+      "requested": "ThingDef/Gun_Revolver",
+      "found": true,
+      "defName": "Gun_Revolver",
+      "defType": "ThingDef",
+      "label": "revolver",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "weaponTags": [],
+        "label": "revolver"
+      }
+    },
+    {
+      "requested": "ThingDef/Gun_Autopistol",
+      "found": true,
+      "defName": "Gun_Autopistol",
+      "defType": "ThingDef",
+      "label": "autopistol",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "weaponTags": [],
+        "label": "autopistol"
+      }
+    },
+    {
+      "requested": "ThingDef/Gun_BoltActionRifle",
+      "found": true,
+      "defName": "Gun_BoltActionRifle",
+      "defType": "ThingDef",
+      "label": "bolt-action rifle",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "weaponTags": [],
+        "label": "bolt-action rifle"
+      }
+    },
+    {
+      "requested": "ThingDef/Gun_PumpShotgun",
+      "found": true,
+      "defName": "Gun_PumpShotgun",
+      "defType": "ThingDef",
+      "label": "pump shotgun",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "weaponTags": [],
+        "label": "pump shotgun"
+      }
+    },
+    {
+      "requested": "ThingDef/Gun_MachinePistol",
+      "found": true,
+      "defName": "Gun_MachinePistol",
+      "defType": "ThingDef",
+      "label": "machine pistol",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "weaponTags": [],
+        "label": "machine pistol"
+      }
+    },
+    {
+      "requested": "ThingDef/Gun_HeavySMG",
+      "found": true,
+      "defName": "Gun_HeavySMG",
+      "defType": "ThingDef",
+      "label": "heavy SMG",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "weaponTags": [],
+        "label": "heavy SMG"
+      }
+    },
+    {
+      "requested": "ThingDef/Gun_AssaultRifle",
+      "found": true,
+      "defName": "Gun_AssaultRifle",
+      "defType": "ThingDef",
+      "label": "assault rifle",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "weaponTags": [],
+        "label": "assault rifle"
+      }
+    },
+    {
+      "requested": "ThingDef/Gun_SniperRifle",
+      "found": true,
+      "defName": "Gun_SniperRifle",
+      "defType": "ThingDef",
+      "label": "sniper rifle",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "weaponTags": [],
+        "label": "sniper rifle"
+      }
+    },
+    {
+      "requested": "ThingDef/Gun_IncendiaryLauncher",
+      "found": true,
+      "defName": "Gun_IncendiaryLauncher",
+      "defType": "ThingDef",
+      "label": "incendiary launcher",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "weaponTags": [
+          "Gun",
+          "GunHeavy",
+          "IndustrialGunAdvanced"
+        ],
+        "label": "incendiary launcher"
+      }
+    },
+    {
+      "requested": "ThingDef/Gun_Needle",
+      "found": true,
+      "defName": "Gun_Needle",
+      "defType": "ThingDef",
+      "label": "needle gun",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "weaponTags": [],
+        "label": "needle gun"
+      }
+    },
+    {
+      "requested": "ThingDef/Gun_Scattergun",
+      "found": true,
+      "defName": "Gun_Scattergun",
+      "defType": "ThingDef",
+      "label": "scattergun",
+      "modName": "Odyssey",
+      "packageId": "ludeon.rimworld.odyssey",
+      "fields": {
+        "weaponTags": [],
+        "label": "scattergun"
+      }
+    }
+  ],
+  "ticksGame": 1,
+  "operation": {
+    "OperationId": "op_3ef7677b3f7844d19906320c66182738",
+    "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-08-22T00:06:52.4768298+00:00",
+    "CompletedAtUtc": "2026-08-22T00:06:52.5892577+00:00",
+    "DurationMs": 112,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}

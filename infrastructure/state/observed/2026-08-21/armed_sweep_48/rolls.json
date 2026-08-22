@@ -1,0 +1,2162 @@
+[
+ {
+  "kind": "Jawa_Blackstar_Grunt",
+  "name": "Grace Luna",
+  "armed": true,
+  "weapon": "guy762_sonrifle",
+  "childhood": "VBE_EldestCaretaker",
+  "adulthood": "VBE_Bullleaper",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Grunt",
+  "name": "Chris 'Whoops' Fahy",
+  "armed": true,
+  "weapon": "JawaIon_Blaster",
+  "childhood": "VBE_Apprentice",
+  "adulthood": "Slaughterer58",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Grunt",
+  "name": "Montserrat 'Montse' Penarroya",
+  "armed": true,
+  "weapon": "JawaIon_Blaster",
+  "childhood": "VBE_TombMaker",
+  "adulthood": "AnimalFarmer21",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Grunt",
+  "name": "Lorentz Cannon",
+  "armed": true,
+  "weapon": "guy762_brifle",
+  "childhood": "VatgrownSoldier8",
+  "adulthood": "MessageCarrier77",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Grunt",
+  "name": "Minoru McKee",
+  "armed": true,
+  "weapon": "VFEPGun_MiniBlaster",
+  "childhood": "IndustrialOrphan13",
+  "adulthood": "Torturer37",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Heavy",
+  "name": "Ulikura 'Husky' Rewantaz",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "VBE_ClonedHeir",
+  "adulthood": "VBE_PondDesigner",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Heavy",
+  "name": "Blaise 'Lt' Reddoor",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "VBE_TombMaker",
+  "adulthood": "Spaceports_ShuttlePilot",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Heavy",
+  "name": "Jordan Hampton",
+  "armed": false,
+  "weapon": null,
+  "childhood": "Pyromaniac18",
+  "adulthood": "VBE_PathologicalLiar",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Heavy",
+  "name": "Marat Roman",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater",
+  "childhood": "VBE_EldestCaretaker",
+  "adulthood": "Slaughterer58",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Heavy",
+  "name": "Samantha 'Sam' Haxton",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "RangerChild57",
+  "adulthood": "BushSniper94",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Leader",
+  "name": "Drew 'Doc' Michael",
+  "armed": true,
+  "weapon": "OuterRim_DH17Pistol",
+  "childhood": "ChildStar74",
+  "adulthood": "VBE_PrivateContractor",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Leader",
+  "name": "Joshua Marjot",
+  "armed": false,
+  "weapon": null,
+  "childhood": "WolfPackMember26",
+  "adulthood": "BehaviourResearch74",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Leader",
+  "name": "Soren 'Grim' Reber",
+  "armed": true,
+  "weapon": "OuterRim_DE10Blaster",
+  "childhood": "MedievalSlave50",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Leader",
+  "name": "Alex Beaulieu",
+  "armed": false,
+  "weapon": null,
+  "childhood": "RBM_Roamer",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Leader",
+  "name": "Rose Valentine",
+  "armed": true,
+  "weapon": "OuterRim_DE10Blaster",
+  "childhood": "VBE_Apprentice",
+  "adulthood": "MedievalSailor97",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Specialist",
+  "name": "Fedosia Higgins",
+  "armed": false,
+  "weapon": null,
+  "childhood": "RBM_Roamer",
+  "adulthood": "VBE_Chemist",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Specialist",
+  "name": "Phoenix Marx",
+  "armed": true,
+  "weapon": "OuterRim_IonBlaster",
+  "childhood": "VBE_JuniorJeweler",
+  "adulthood": "CaveworldIlluminator95",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Specialist",
+  "name": "Vera Barber",
+  "armed": true,
+  "weapon": "OuterRim_IonBlaster",
+  "childhood": "TestSubject15",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Specialist",
+  "name": "Ivy Sheppard",
+  "armed": true,
+  "weapon": "OuterRim_DLT19XTargetingBlaster",
+  "childhood": "ChildSpy47",
+  "adulthood": "HumanComputer83",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Blackstar_Specialist",
+  "name": "Miesha 'Mie' Aldemar",
+  "armed": false,
+  "weapon": null,
+  "childhood": "Pampered87",
+  "adulthood": "NinjaAssassin31",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Grunt",
+  "name": "Gray Chimpanzee",
+  "armed": true,
+  "weapon": "MA_MegaboneClub",
+  "childhood": "Bully70",
+  "adulthood": "Logger16",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Grunt",
+  "name": "Little Shix",
+  "armed": false,
+  "weapon": null,
+  "childhood": "VBE_Pushover",
+  "adulthood": "UrbworldEntrepreneur14",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Grunt",
+  "name": "Bila Borne",
+  "armed": true,
+  "weapon": "MA_MegaboneClub",
+  "childhood": "VBE_StorytellersKin",
+  "adulthood": "VBE_Masterofceremonies",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Grunt",
+  "name": "Dago Nei",
+  "armed": true,
+  "weapon": "MA_MegaboneClub",
+  "childhood": "Hideaway7",
+  "adulthood": "Digger31",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Grunt",
+  "name": "Bine Armadillo",
+  "armed": true,
+  "weapon": "MA_MegaboneClub",
+  "childhood": "VBE_WretchedChild",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Heavy",
+  "name": "Togua 'Hornet' \u00d1oi",
+  "armed": true,
+  "weapon": "OuterRim_GaderffiiStick",
+  "childhood": "VBE_StrangeChild",
+  "adulthood": "VBE_Oracle",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Heavy",
+  "name": "Gray Lark",
+  "armed": false,
+  "weapon": null,
+  "childhood": "VBE_ReincarnatedSoul",
+  "adulthood": "VBE_CenturionsDeputy",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_DeepDesert_Heavy",
+  "name": "Combo 'Raptor' Camgocabil",
+  "armed": true,
+  "weapon": "MeleeWeapon_Spear",
+  "childhood": "Herder19",
+  "adulthood": "Loner61",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Heavy",
+  "name": "Green Bacacan",
+  "armed": true,
+  "weapon": "MA_DuskSpear",
+  "childhood": "Hideaway7",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Heavy",
+  "name": "Blue Buffalo",
+  "armed": true,
+  "weapon": "MA_MegaboneClub",
+  "childhood": "VBE_HerbalKin",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Leader",
+  "name": "Max Woodward",
+  "armed": false,
+  "weapon": null,
+  "childhood": "VBE_ChildSoldier",
+  "adulthood": "VBE_ForsakenPatriot",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Leader",
+  "name": "Criga 'Scorpion' Chobanalotro",
+  "armed": true,
+  "weapon": "MeleeWeapon_Spear",
+  "childhood": "VBE_TombMaker",
+  "adulthood": "VBE_Jeweler",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Leader",
+  "name": "Gray Herring",
+  "armed": true,
+  "weapon": "MA_GnautHornMace",
+  "childhood": "TribeChild40",
+  "adulthood": "StewKeeper95",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Leader",
+  "name": "Brazada Ienlou",
+  "armed": true,
+  "weapon": "MA_GnautHornMace",
+  "childhood": "VBE_JuniorJeweler",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Leader",
+  "name": "Snake Ioltreba",
+  "armed": true,
+  "weapon": "MA_DuskSpear",
+  "childhood": "FireKeeper44",
+  "adulthood": "Weaver63",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Specialist",
+  "name": "White Endoagaltro",
+  "armed": true,
+  "weapon": "guy762_slugrifle_tusken",
+  "childhood": "VBE_JungleScout",
+  "adulthood": "Gatherer70",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Specialist",
+  "name": "Vexaco Heron",
+  "armed": true,
+  "weapon": "guy762_slugrifle_tusken",
+  "childhood": "VBE_JungleScout",
+  "adulthood": "Digger31",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Specialist",
+  "name": "Bico Bracur",
+  "armed": true,
+  "weapon": "guy762_slugrifle_SovTusken",
+  "childhood": "FireKeeper44",
+  "adulthood": "Digger66",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Specialist",
+  "name": "Gray Queol",
+  "armed": false,
+  "weapon": null,
+  "childhood": "Herder19",
+  "adulthood": "Herder33",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_DeepDesert_Specialist",
+  "name": "Purple Mink",
+  "armed": true,
+  "weapon": "guy762_slugrifle_SovTusken",
+  "childhood": "Herder19",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Grunt",
+  "name": "Kouhei Kent",
+  "armed": true,
+  "weapon": "guy762_slugrifle_cinnagar",
+  "childhood": "VBE_JuniorJeweler",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Grunt",
+  "name": "Bolindo Jones",
+  "armed": true,
+  "weapon": "guy762_sonrifle_carbine",
+  "childhood": "VBE_NatureLover",
+  "adulthood": "MachineCollector55",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Grunt",
+  "name": "Evy Tronso",
+  "armed": true,
+  "weapon": "guy762_brifle",
+  "childhood": "ShopKid36",
+  "adulthood": "VBE_LoneTraveller",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Grunt",
+  "name": "Maxwell McKinney",
+  "armed": true,
+  "weapon": "guy762_brifle",
+  "childhood": "VBE_Rudie",
+  "adulthood": "VBE_Bullleaper",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Grunt",
+  "name": "Rebecca 'Lynx' Edwards",
+  "armed": true,
+  "weapon": "guy762_slugrifle",
+  "childhood": "SpoiledChild33",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Heavy",
+  "name": "Naoki 'Fugly' Norton",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "WreckageExplorer93",
+  "adulthood": "VBE_OliveFarmer",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Heavy",
+  "name": "Antonino 'Toni' Cefalu",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "Pickpocket61",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Heavy",
+  "name": "Sammy 'Sunshine' Mitchell",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "VBE_ChildSoldier",
+  "adulthood": "VBE_Maid",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Heavy",
+  "name": "Larian Lorall",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "PrivilegedChild86",
+  "adulthood": "Guardian55",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Heavy",
+  "name": "Henry 'Lawman' Jensen",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "FrontierMarshal54",
+  "adulthood": "ColonialGovernor78",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Leader",
+  "name": "Giselle 'Chigg' Phillips",
+  "armed": true,
+  "weapon": "OuterRim_VibroDoubleBlade",
+  "childhood": "VBE_TombMaker",
+  "adulthood": "VBE_GalacticMedic",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Leader",
+  "name": "Freya 'Tail' Fairwing",
+  "armed": true,
+  "weapon": "OuterRim_VibroBlade",
+  "childhood": "ShunnedGirl30",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Leader",
+  "name": "Daniel 'Skinny' Muttock",
+  "armed": true,
+  "weapon": "OuterRim_VibroDagger",
+  "childhood": "VBE_OrphanThief",
+  "adulthood": "SH_MED_RuralLord",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Leader",
+  "name": "Shigeko Zavala",
+  "armed": true,
+  "weapon": "OuterRim_VibroAxe",
+  "childhood": "REBC119",
+  "adulthood": "VBE_StarvingArtist",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Leader",
+  "name": "Kena R\u00e9veil",
+  "armed": true,
+  "weapon": "OuterRim_VibroGlaive",
+  "childhood": "ShipChild46",
+  "adulthood": "ArtifactHunter48",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Specialist",
+  "name": "Lottie 'Biscotti' Davies",
+  "armed": true,
+  "weapon": "OuterRim_VibroBlade",
+  "childhood": "VBE_OrphanThief",
+  "adulthood": "SH_MED_PlagueDoctor",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Specialist",
+  "name": "Yoko Riddle",
+  "armed": true,
+  "weapon": "OuterRim_VibroDoubleBlade",
+  "childhood": "VBE_AdventurousDreamer",
+  "adulthood": "VBE_BureaucraticProgrammer",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Specialist",
+  "name": "Basil 'BB' Batter",
+  "armed": false,
+  "weapon": null,
+  "childhood": "Empath47",
+  "adulthood": "FearfulChef49",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Deepwater_Specialist",
+  "name": "Joe 'Overbeck' Dean",
+  "armed": true,
+  "weapon": "OuterRim_VibroBlade",
+  "childhood": "VBE_TroupeChild",
+  "adulthood": "CaveExplorer45",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Deepwater_Specialist",
+  "name": "Sydney 'Syd' Ashcraft",
+  "armed": true,
+  "weapon": "OuterRim_VibroBlade",
+  "childhood": "StoryWriter67",
+  "adulthood": "VBE_SupplyCoordinator",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Grunt",
+  "name": "Masaru Joyce",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristBlaster",
+  "childhood": "MedicalAssistant12",
+  "adulthood": "VBE_RetiredSoldier",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Grunt",
+  "name": "Manuel Friedman",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristBlaster",
+  "childhood": "VBE_HostessInTraining",
+  "adulthood": "VBE_CriminalPriest",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Grunt",
+  "name": "Edouard Gilbert",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristRocket",
+  "childhood": "VBE_AdventurousDreamer",
+  "adulthood": "FurnitureBuilder83",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Grunt",
+  "name": "Jett Pavlica",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristBlasterIon",
+  "childhood": "VBE_OrphanThief",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Grunt",
+  "name": "Ye-Rang Cheon",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristRocket",
+  "childhood": "ChildSpy47",
+  "adulthood": "VBE_DeepSpaceScrapper",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Heavy",
+  "name": "Milo Ford",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristBlasterIon",
+  "childhood": "Scout44",
+  "adulthood": "VBE_Propagandist",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Heavy",
+  "name": "Marina Pugh",
+  "armed": false,
+  "weapon": null,
+  "childhood": "OrganFarm67",
+  "adulthood": "VBE_CorruptPolitician",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Droid_Heavy",
+  "name": "Polo Gutierrez",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristBlaster",
+  "childhood": "Pyromaniac18",
+  "adulthood": "VBE_Landsknecht",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Heavy",
+  "name": "Christian West",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristRocket",
+  "childhood": "VBE_Rudie",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Heavy",
+  "name": "Danny 'Dan' Zitro",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristBlasterIon",
+  "childhood": "ForestChild83",
+  "adulthood": "ForestProwler15",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Leader",
+  "name": "Hanna McDowell",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_BlasterCannon",
+  "childhood": "ComaChild93",
+  "adulthood": "VBE_Sommelier",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Leader",
+  "name": "Hilary Delacruz",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_BlasterCannon",
+  "childhood": "VBE_PodChild",
+  "adulthood": "VBE_ChemfuelFarmer",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Leader",
+  "name": "Fernand Hawkins",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_BlasterCannon",
+  "childhood": "RBM_Roamer",
+  "adulthood": "VBE_Sommelier",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Leader",
+  "name": "Troy Webb",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_BlasterCannon",
+  "childhood": "VBE_ClonedHeir",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Leader",
+  "name": "Ludmilla 'Mila' Fisher",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristBlasterIon",
+  "childhood": "JungleKid35",
+  "adulthood": "Aromatherapist80",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Specialist",
+  "name": "Elise Starett",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristRocket",
+  "childhood": "VBE_OrphanThief",
+  "adulthood": "SH_MED_RuralLord",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Specialist",
+  "name": "Pablo Cholaky",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_BlasterCannon",
+  "childhood": "TechScholar75",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Specialist",
+  "name": "Clark Kaufman",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristRocket",
+  "childhood": "MusicalKid86",
+  "adulthood": "Veterinarian99",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Specialist",
+  "name": "Vamil Marsh",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_BlasterCannon",
+  "childhood": "REBC121",
+  "adulthood": "Evangelist39",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Droid_Specialist",
+  "name": "Rada Pham",
+  "armed": true,
+  "weapon": "OuterRim_DroidWeapon_WristRocket",
+  "childhood": "VBE_Freak",
+  "adulthood": "Bodyguard58",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Grunt",
+  "name": "Zena Limet",
+  "armed": false,
+  "weapon": null,
+  "childhood": "OrganFarm67",
+  "adulthood": "VBE_UrbworldRioter",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Empire_Grunt",
+  "name": "Jake 'Table' Maddams",
+  "armed": true,
+  "weapon": "OuterRim_SE14RBlaster",
+  "childhood": "SpaceCadet77",
+  "adulthood": "SanitationCaptain29",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Grunt",
+  "name": "Nico Storch",
+  "armed": true,
+  "weapon": "OuterRim_EC17Blaster",
+  "childhood": "YouthSoldier99",
+  "adulthood": "SpaceMarine94",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Grunt",
+  "name": "Nektaros Mozis",
+  "armed": true,
+  "weapon": "OuterRim_EC17Blaster",
+  "childhood": "ComaChild93",
+  "adulthood": "OrnamentMaker56",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Grunt",
+  "name": "Lilith Luxemburg",
+  "armed": true,
+  "weapon": "OuterRim_DG29Blaster",
+  "childhood": "HighBaroness37",
+  "adulthood": "ExiledResearcher44",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Heavy",
+  "name": "Theodosia Bardanes",
+  "armed": true,
+  "weapon": "OuterRim_E22BlasterRifle",
+  "childhood": "RoyalBastard64",
+  "adulthood": "VBE_HumanSupremacist",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Heavy",
+  "name": "Pyrrha Trovatelli",
+  "armed": true,
+  "weapon": "OuterRim_E22BlasterRifle",
+  "childhood": "NobleWard61",
+  "adulthood": "InformationBroker77",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Heavy",
+  "name": "Maria Cusere",
+  "armed": false,
+  "weapon": null,
+  "childhood": "StreetRat81",
+  "adulthood": "MilitaryChaplain10",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Empire_Heavy",
+  "name": "Konstantia Botates",
+  "armed": true,
+  "weapon": "OuterRim_E22BlasterRifle",
+  "childhood": "MedicalAssistant12",
+  "adulthood": "VBE_Masterofceremonies",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Heavy",
+  "name": "Bore Apokos",
+  "armed": false,
+  "weapon": null,
+  "childhood": "OrganFarm67",
+  "adulthood": "Mailman2",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Empire_Leader",
+  "name": "Valentin Choumnos",
+  "armed": true,
+  "weapon": "OuterRim_K16BryarBlaster",
+  "childhood": "Mute34",
+  "adulthood": "Spaceports_ShuttlePilot",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Leader",
+  "name": "Thekla Lie",
+  "armed": true,
+  "weapon": "OuterRim_DE10Blaster",
+  "childhood": "StreetRat81",
+  "adulthood": "MenagerieKeeper1",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Leader",
+  "name": "Niktonos Phoces",
+  "armed": true,
+  "weapon": "OuterRim_BARMST12Scattergun",
+  "childhood": "ShopKid36",
+  "adulthood": "HeadButler50",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Leader",
+  "name": "Maria Melisnos",
+  "armed": false,
+  "weapon": null,
+  "childhood": "FrightenedChild43",
+  "adulthood": "VBE_LighthouseKeeper",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Empire_Leader",
+  "name": "Himerius Zedo",
+  "armed": true,
+  "weapon": "OuterRim_A180Blaster",
+  "childhood": "StoryWriter67",
+  "adulthood": "VBE_Informant",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Specialist",
+  "name": "Neilos Daimos",
+  "armed": false,
+  "weapon": null,
+  "childhood": "VBE_JuniorJeweler",
+  "adulthood": "Nurse61",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Empire_Specialist",
+  "name": "Damiane Mavronis",
+  "armed": true,
+  "weapon": "OuterRim_A180Blaster",
+  "childhood": "SicklyChild55",
+  "adulthood": "LowWageWorker7",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Specialist",
+  "name": "Kiogalcesber Osrosnos",
+  "armed": true,
+  "weapon": "OuterRim_DE10Blaster",
+  "childhood": "SicklyChild55",
+  "adulthood": "VBE_CoginTheMachine",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Specialist",
+  "name": "Jayden Grey",
+  "armed": true,
+  "weapon": "OuterRim_DH17Pistol",
+  "childhood": "GalacticPage37",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Empire_Specialist",
+  "name": "Kyratsa Acominata",
+  "armed": true,
+  "weapon": "OuterRim_DG29Blaster",
+  "childhood": "StoryWriter67",
+  "adulthood": "Assembler69",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Grunt",
+  "name": "Lorena Cook",
+  "armed": true,
+  "weapon": "guy762_sonrifle",
+  "childhood": "SicklyChild55",
+  "adulthood": "VBE_ColonyAuditor",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Grunt",
+  "name": "Aerin 'Rin' Weich",
+  "armed": true,
+  "weapon": "guy762_sonrifle_carbine",
+  "childhood": "ShopKid36",
+  "adulthood": "VQE_PowerArchitect02",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Grunt",
+  "name": "Matthew 'Cynapse' Ritchie",
+  "armed": true,
+  "weapon": "guy762_sonrifle",
+  "childhood": "CynapseCustomChildhood",
+  "adulthood": "CynapseCustomAdulthood",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Grunt",
+  "name": "D'ajon 'DJ' Jackson",
+  "armed": true,
+  "weapon": "guy762_sonpistol",
+  "childhood": "Mute34",
+  "adulthood": "ExplosivesExpert26",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Grunt",
+  "name": "Tomine 'Maskinnen' Maske",
+  "armed": false,
+  "weapon": null,
+  "childhood": "SlaveFarmer99",
+  "adulthood": "RocketEngineer53",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Geonosian_Heavy",
+  "name": "Eunbi 'EB' Kim",
+  "armed": true,
+  "weapon": "guy762_sonpistol",
+  "childhood": "ShopKid36",
+  "adulthood": "VBE_Mariner",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Heavy",
+  "name": "Steven Wilcox",
+  "armed": true,
+  "weapon": "guy762_sonrifle",
+  "childhood": "DisasterSurvivor65",
+  "adulthood": "ParamilitaryAgent11",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Heavy",
+  "name": "Eva Proctor",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater",
+  "childhood": "VBE_Simraised",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Heavy",
+  "name": "Tina Franco",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater",
+  "childhood": "VBE_GeneticReincarnation",
+  "adulthood": "VBE_AnimatronicMechanic",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Heavy",
+  "name": "Makar Casey",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater",
+  "childhood": "MedievalLordling19",
+  "adulthood": "VBE_Maid",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Leader",
+  "name": "Adrian Valdez",
+  "armed": true,
+  "weapon": "guy762_sonpistol",
+  "childhood": "VBE_ChildSoldier",
+  "adulthood": "SH_MED_MedievalAlchemist",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Leader",
+  "name": "Emil 'Mlie' Offermo",
+  "armed": false,
+  "weapon": null,
+  "childhood": "CuriousChild33",
+  "adulthood": "Restorer70",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Geonosian_Leader",
+  "name": "Ivo Lutz",
+  "armed": true,
+  "weapon": "guy762_sonrifle_bothan",
+  "childhood": "VBE_NatureLover",
+  "adulthood": "CivilServant2",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Leader",
+  "name": "Kimiko 'Kimmy' Asano",
+  "armed": true,
+  "weapon": "guy762_sonrifle_bothan",
+  "childhood": "MedicalStudent38",
+  "adulthood": "SpaceNavyDoctor72",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Leader",
+  "name": "Mikhail 'Glas' Voronov",
+  "armed": true,
+  "weapon": "guy762_sonpistol_bothan",
+  "childhood": "VBE_Rudie",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Specialist",
+  "name": "Andrew Villanueva",
+  "armed": true,
+  "weapon": "guy762_sonrifle_bothan",
+  "childhood": "MedicalAssistant12",
+  "adulthood": "VBE_DeepSpaceScrapper",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Specialist",
+  "name": "Aletta Bishop",
+  "armed": true,
+  "weapon": "guy762_sonrifle_bothan",
+  "childhood": "VBE_AdventurousDreamer",
+  "adulthood": "VBE_IndustrialTinkerer",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Specialist",
+  "name": "Afeeba 'Feeb' Dafo",
+  "armed": true,
+  "weapon": "guy762_sonrifle_bothan",
+  "childhood": "TestSubject82",
+  "adulthood": "TestSubject92",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Specialist",
+  "name": "Rene Hancock",
+  "armed": true,
+  "weapon": "guy762_sonrifle_bothan",
+  "childhood": "MedicalAssistant12",
+  "adulthood": "VBE_CyberDilettante",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Geonosian_Specialist",
+  "name": "Mikale Mikelson",
+  "armed": true,
+  "weapon": "guy762_sonrifle_bothan",
+  "childhood": "VBE_MedicineProdigy",
+  "adulthood": "FactoryWorker58",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Grunt",
+  "name": "Eren 'Kozscey' Arslan",
+  "armed": true,
+  "weapon": "guy762_bpistol_republic",
+  "childhood": "VBE_JuniorJeweler",
+  "adulthood": "Spaceports_ShuttlePilot",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Grunt",
+  "name": "Juniper Aeron",
+  "armed": true,
+  "weapon": "guy762_bpistol_republic",
+  "childhood": "VBE_HostessInTraining",
+  "adulthood": "VBE_Mariner",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Grunt",
+  "name": "Cade Turner",
+  "armed": true,
+  "weapon": "guy762_hvypistol",
+  "childhood": "ChildSpy47",
+  "adulthood": "VBE_FieldTechnician",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Grunt",
+  "name": "Gregor 'Zappes' Ottmann",
+  "armed": true,
+  "weapon": "guy762_bpistol_republic",
+  "childhood": "VBE_HumanFarm",
+  "adulthood": "VBE_OliveFarmer",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Grunt",
+  "name": "Koyo Momiji",
+  "armed": true,
+  "weapon": "guy762_mininglaser",
+  "childhood": "VBE_InformationSponge",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Heavy",
+  "name": "Lucya Dixon",
+  "armed": true,
+  "weapon": "guy762_disrifle",
+  "childhood": "Pyromaniac18",
+  "adulthood": "VBE_CriminalPriest",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Heavy",
+  "name": "Javier Short",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "VBE_StarshipScamp",
+  "adulthood": "VBE_AnomalousCreatureResearcher",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Heavy",
+  "name": "Jem Anderson",
+  "armed": true,
+  "weapon": "guy762_disrifle",
+  "childhood": "VBE_Bioweapon",
+  "adulthood": "VBE_ColonyAuditor",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Heavy",
+  "name": "Bella Ward",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "VBE_OrphanThief",
+  "adulthood": "Sheriff52",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Heavy",
+  "name": "Erika Belsaas",
+  "armed": false,
+  "weapon": null,
+  "childhood": "ScienceProdigy65",
+  "adulthood": "ParticlePhysicist44",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Helix_Leader",
+  "name": "Kjelt Karlsen",
+  "armed": true,
+  "weapon": "guy762_ionrifle_baragwin",
+  "childhood": "ChildSpy84",
+  "adulthood": "Defector95",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Leader",
+  "name": "Lucy 'Bloom' Watters",
+  "armed": true,
+  "weapon": "guy762_ionrifle_baragwin",
+  "childhood": "MusicalKid86",
+  "adulthood": "VBE_SupplyCoordinator",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Leader",
+  "name": "Nanami Aguilar",
+  "armed": true,
+  "weapon": "guy762_ionpistol_aratech",
+  "childhood": "VBE_MidworldNomad",
+  "adulthood": "Bodyguard58",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Leader",
+  "name": "Samantha von Aachen",
+  "armed": true,
+  "weapon": "guy762_ionpistol_aratech",
+  "childhood": "DisplacedNoble67",
+  "adulthood": "Minister88",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Leader",
+  "name": "Yuto Perez",
+  "armed": true,
+  "weapon": "guy762_ionrifle_baragwin",
+  "childhood": "VBE_Simraised",
+  "adulthood": "VBE_CorporateSpy",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Specialist",
+  "name": "Okami Devlin",
+  "armed": true,
+  "weapon": "OuterRim_DLT19XTargetingBlaster",
+  "childhood": "MedicalAssistant12",
+  "adulthood": "Jailbird40",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Specialist",
+  "name": "Hunter Ebenal",
+  "armed": true,
+  "weapon": "OuterRim_TL50HeavyRepeaterBlaster",
+  "childhood": "ComaChild93",
+  "adulthood": "VBE_Maid",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Helix_Specialist",
+  "name": "Steve 'Gomie' Gomez",
+  "armed": false,
+  "weapon": null,
+  "childhood": "OrganFarm67",
+  "adulthood": "SH_MED_MedievalAlchemist",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Helix_Specialist",
+  "name": "Candice Roughchild",
+  "armed": false,
+  "weapon": null,
+  "childhood": "CoreDilettante33",
+  "adulthood": "Reporter71",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Helix_Specialist",
+  "name": "Hiroto Stephenson",
+  "armed": true,
+  "weapon": "OuterRim_DLT19XTargetingBlaster",
+  "childhood": "RBM_Roamer",
+  "adulthood": "FurnitureBuilder83",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Grunt",
+  "name": "Meredith 'Latch' Abernathy",
+  "armed": true,
+  "weapon": "guy762_holdout",
+  "childhood": "UrbworldUrchin6",
+  "adulthood": "Smuggler23",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Grunt",
+  "name": "Edgar 'Del' Delgrave",
+  "armed": true,
+  "weapon": "guy762_holdout",
+  "childhood": "Scout44",
+  "adulthood": "VBE_CorporateSpy",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Grunt",
+  "name": "Wesley Pickles",
+  "armed": true,
+  "weapon": "guy762_bpistol",
+  "childhood": "SocialPariah3",
+  "adulthood": "Vagabond73",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Grunt",
+  "name": "Erie 'Diver' Riggs",
+  "armed": true,
+  "weapon": "guy762_bpistol",
+  "childhood": "CrimeBossChild39",
+  "adulthood": "MercenaryLeader28",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Grunt",
+  "name": "Bertha Carter",
+  "armed": true,
+  "weapon": "guy762_bpistol",
+  "childhood": "MusicalKid86",
+  "adulthood": "SH_MED_LandlessKnight",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Heavy",
+  "name": "Alyssa 'Sparkles' Orchard",
+  "armed": true,
+  "weapon": "guy762_hvypistol",
+  "childhood": "CoreworldStudent50",
+  "adulthood": "CoreworldJeweler19",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Heavy",
+  "name": "Che 'Alice' Yu",
+  "armed": true,
+  "weapon": "guy762_slugrifle_cinnagar",
+  "childhood": "VBE_ForgottenChild",
+  "adulthood": "Geologist66",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Heavy",
+  "name": "Todd 'Grump' Cervantes",
+  "armed": true,
+  "weapon": "guy762_hvypistol",
+  "childhood": "VBE_MedicineProdigy",
+  "adulthood": "FurnitureBuilder83",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Heavy",
+  "name": "Charlet Turbasson",
+  "armed": true,
+  "weapon": "guy762_slugrifle",
+  "childhood": "VBE_OrphanThief",
+  "adulthood": "VBE_Jeweler",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Heavy",
+  "name": "Sonia Frazier",
+  "armed": true,
+  "weapon": "guy762_brifle",
+  "childhood": "VBE_MedicineProdigy",
+  "adulthood": "Jailbird40",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Leader",
+  "name": "Joe Jezak",
+  "armed": true,
+  "weapon": "OuterRim_BARMST12Scattergun",
+  "childhood": "VBE_HostessInTraining",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Leader",
+  "name": "Bonnie Weber",
+  "armed": true,
+  "weapon": "OuterRim_A180Blaster",
+  "childhood": "ChildSpy47",
+  "adulthood": "VBE_ProsecutedWarVeteran",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Leader",
+  "name": "Anya Perkins",
+  "armed": true,
+  "weapon": "OuterRim_A180Blaster",
+  "childhood": "VBE_ClonedHeir",
+  "adulthood": "Logger95",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Leader",
+  "name": "Elizabeth Heathcliff",
+  "armed": false,
+  "weapon": null,
+  "childhood": "OrganFarm67",
+  "adulthood": "VBE_IndustrialSoldier",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Homestead_Leader",
+  "name": "Ralph 'Humps' Brock",
+  "armed": true,
+  "weapon": "OuterRim_A180Blaster",
+  "childhood": "DustyFarmHand75",
+  "adulthood": "DromedaryKnight37",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Specialist",
+  "name": "Varvara Morgan",
+  "armed": true,
+  "weapon": "OuterRim_CyclerRifle",
+  "childhood": "VBE_PodChild",
+  "adulthood": "VQE_ControlSystemsEngineer03",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Specialist",
+  "name": "Grigory Adams",
+  "armed": true,
+  "weapon": "OuterRim_CyclerRifle",
+  "childhood": "ChildSpy47",
+  "adulthood": "VBE_Translator",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Specialist",
+  "name": "Denis Carrillo",
+  "armed": true,
+  "weapon": "OuterRim_CyclerRifle",
+  "childhood": "REBC121",
+  "adulthood": "VBE_Barber",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Specialist",
+  "name": "Nadezhda McPherson",
+  "armed": true,
+  "weapon": "OuterRim_CyclerRifle",
+  "childhood": "VBE_MidworldNomad",
+  "adulthood": "SH_MED_MedievalCommander",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Homestead_Specialist",
+  "name": "Kisaki Spoosh",
+  "armed": true,
+  "weapon": "OuterRim_CyclerRifle",
+  "childhood": "SicklyChild55",
+  "adulthood": "VBE_DrillOperator",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Grunt",
+  "name": "Drew 'Strapping' Logan",
+  "armed": true,
+  "weapon": "guy762_mininglaser",
+  "childhood": "DisciplinedFarmer28",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Grunt",
+  "name": "Enriqua Lara",
+  "armed": true,
+  "weapon": "guy762_bpistol",
+  "childhood": "ChildSpy47",
+  "adulthood": "Housemate8",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Grunt",
+  "name": "Irma 'Belle' Spears",
+  "armed": false,
+  "weapon": null,
+  "childhood": "FrightenedChild43",
+  "adulthood": null,
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Hutt_Grunt",
+  "name": "Naoko Potter",
+  "armed": true,
+  "weapon": "guy762_mininglaser",
+  "childhood": "VBE_EldestCaretaker",
+  "adulthood": "VBE_Landsknecht",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Grunt",
+  "name": "Sayuri Bean",
+  "armed": true,
+  "weapon": "guy762_sonpistol",
+  "childhood": "VBE_HostessInTraining",
+  "adulthood": "VBE_StructuralEngineer",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Heavy",
+  "name": "Scott Rhodes",
+  "armed": true,
+  "weapon": "guy762_carbine",
+  "childhood": "VBE_JuniorJeweler",
+  "adulthood": "Policeman45",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Heavy",
+  "name": "Xavier Hooper",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "ComaChild93",
+  "adulthood": "VBE_PathologicalLiar",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Heavy",
+  "name": "Henry 'Hank' Black",
+  "armed": true,
+  "weapon": "guy762_brifle",
+  "childhood": "VBE_InformationSponge",
+  "adulthood": "VBE_ForsakenPatriot",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Heavy",
+  "name": "Oliver Villa",
+  "armed": true,
+  "weapon": "guy762_carbine",
+  "childhood": "VBE_GiftedBurnout",
+  "adulthood": "LowWageWorker7",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Heavy",
+  "name": "Orna 'Bear' Bernhardt",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "VBE_GiftedBurnout",
+  "adulthood": "VBE_GalleryJanitor",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Leader",
+  "name": "Naomi Bowles",
+  "armed": true,
+  "weapon": "guy762_ionrifle_baragwin",
+  "childhood": "REBC119",
+  "adulthood": "VBE_FringeShitposter",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Leader",
+  "name": "Jacob Baker",
+  "armed": true,
+  "weapon": "guy762_bpistol_onasi",
+  "childhood": "WreckageExplorer93",
+  "adulthood": "VBE_LoneTraveller",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Leader",
+  "name": "Yakov Travis",
+  "armed": true,
+  "weapon": "guy762_ionpistol_aratech",
+  "childhood": "VBE_GeneticReincarnation",
+  "adulthood": "VBE_PondDesigner",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Leader",
+  "name": "Leanna Cochran",
+  "armed": true,
+  "weapon": "guy762_ionrifle_baragwin",
+  "childhood": "VBE_Simraised",
+  "adulthood": "Chef52",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Leader",
+  "name": "Felix Mellor",
+  "armed": true,
+  "weapon": "guy762_ionpistol_aratech",
+  "childhood": "FeralChild96",
+  "adulthood": "VersatileWorker13",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Specialist",
+  "name": "Alvin Medina",
+  "armed": true,
+  "weapon": "guy762_brifle_dmr",
+  "childhood": "VBE_HostessInTraining",
+  "adulthood": "Geologist66",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Specialist",
+  "name": "Blake Bosco",
+  "armed": true,
+  "weapon": "guy762_hvypistol",
+  "childhood": "VBE_ForgottenChild",
+  "adulthood": "VBE_LoneTraveller",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Specialist",
+  "name": "Filip 'Biscuit' Chyla",
+  "armed": true,
+  "weapon": "guy762_brifle_dmr",
+  "childhood": "VBE_TroupeChild",
+  "adulthood": "VBE_Demoscener",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Specialist",
+  "name": "Karina Rider",
+  "armed": true,
+  "weapon": "guy762_carbine",
+  "childhood": "VBE_ClonedHeir",
+  "adulthood": "VBE_IndustrialSoldier",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Hutt_Specialist",
+  "name": "Walter 'Dark' Draco",
+  "armed": true,
+  "weapon": "guy762_brifle",
+  "childhood": "VBE_ClonedHeir",
+  "adulthood": "Spaceports_ShuttlePilot",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Grunt",
+  "name": "Nico 'Luddel' Luedtke",
+  "armed": true,
+  "weapon": "RR_Weapon_Torch",
+  "childhood": "VBE_OrphanThief",
+  "adulthood": "GlitterworldOfficer60",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Grunt",
+  "name": "Nator Thildes",
+  "armed": true,
+  "weapon": "RR_Weapon_Torch",
+  "childhood": "VBE_GiftedBurnout",
+  "adulthood": "HumanComputer83",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Grunt",
+  "name": "Yegor Hendrix",
+  "armed": true,
+  "weapon": "RR_Weapon_Torch",
+  "childhood": "Scout44",
+  "adulthood": "VBE_AbandonedColonist",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Grunt",
+  "name": "Nobu 'Shorty' Shea",
+  "armed": true,
+  "weapon": "BMT_Toxwood",
+  "childhood": "VBE_Apprentice",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Grunt",
+  "name": "Caitlin 'Cait' Stirr",
+  "armed": true,
+  "weapon": "RR_Weapon_Torch",
+  "childhood": "Gymnast48",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Heavy",
+  "name": "Andrew 'Drew' Nehrlich",
+  "armed": true,
+  "weapon": "guy762_bpistol",
+  "childhood": "MedievalSlave49",
+  "adulthood": "EscapedConvict90",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Heavy",
+  "name": "Charlie Baxter",
+  "armed": true,
+  "weapon": "guy762_holdout",
+  "childhood": "Pyromaniac18",
+  "adulthood": "Ranger96",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Heavy",
+  "name": "Nicklaus 'Shadow' Blackthorn",
+  "armed": true,
+  "weapon": "guy762_holdout",
+  "childhood": "NavyPathfinder53",
+  "adulthood": "ShadowMarine63",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Heavy",
+  "name": "Dmitry 'Supra' Supranovich",
+  "armed": true,
+  "weapon": "guy762_holdout",
+  "childhood": "VBE_ClonedHeir",
+  "adulthood": "VBE_AbandonedColonist",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Heavy",
+  "name": "Otto 'Bucky' Ho",
+  "armed": true,
+  "weapon": "guy762_holdout",
+  "childhood": "VBE_EldestCaretaker",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Leader",
+  "name": "Vladimir Kennedy",
+  "armed": true,
+  "weapon": "OuterRim_GaderffiiStick",
+  "childhood": "RBM_Roamer",
+  "adulthood": "VBE_TraineeCombatMedic",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Leader",
+  "name": "Korwal 'Bomba' Ferrara",
+  "armed": false,
+  "weapon": null,
+  "childhood": "DiplomatsChild97",
+  "adulthood": "WhiteHatHacker82",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Junkers_Leader",
+  "name": "Cara 'Carazan' Zann",
+  "armed": true,
+  "weapon": "OuterRim_GaderffiiStick",
+  "childhood": "CaveworldTunneler48",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Leader",
+  "name": "Leland 'Pants' Marmon",
+  "armed": true,
+  "weapon": "OuterRim_GaderffiiStick",
+  "childhood": "MusicalKid86",
+  "adulthood": "VBE_ChemfuelFarmer",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Leader",
+  "name": "Rowan McFarland",
+  "armed": true,
+  "weapon": "OuterRim_GaderffiiStick",
+  "childhood": "VBE_NatureLover",
+  "adulthood": "VBE_DeepSpaceScrapper",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Specialist",
+  "name": "Edie Rasmussen",
+  "armed": true,
+  "weapon": "guy762_slugrifle",
+  "childhood": "VBE_Rudie",
+  "adulthood": "Torturer37",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Specialist",
+  "name": "Maya Estrada",
+  "armed": true,
+  "weapon": "guy762_slugrifle",
+  "childhood": "IndustrialOrphan13",
+  "adulthood": "Assassin20",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Specialist",
+  "name": "Friti Albertson",
+  "armed": true,
+  "weapon": "guy762_slugrifle",
+  "childhood": "VBE_TombMaker",
+  "adulthood": "LowWageWorker7",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Specialist",
+  "name": "Ida Painstingle",
+  "armed": true,
+  "weapon": "guy762_slugrifle",
+  "childhood": "HunterScavenger64",
+  "adulthood": "Warlordess56",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Junkers_Specialist",
+  "name": "Lumine 'Lumi' LeBlanc",
+  "armed": true,
+  "weapon": "guy762_slugrifle",
+  "childhood": "CaravanChild53",
+  "adulthood": "BountyHunter41",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Grunt",
+  "name": "Lealo Tolas",
+  "armed": true,
+  "weapon": "guy762_holdout",
+  "childhood": "VBE_HerbalKin",
+  "adulthood": "Malingerer28",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Grunt",
+  "name": "Zotrobrei Choco",
+  "armed": true,
+  "weapon": "guy762_ionpistol",
+  "childhood": "Bookworm19",
+  "adulthood": "Butcher40",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Grunt",
+  "name": "Laxe Billa",
+  "armed": true,
+  "weapon": "guy762_ionpistol",
+  "childhood": "FireKeeper44",
+  "adulthood": "VengefulHunter32",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Grunt",
+  "name": "Calo Braloumi",
+  "armed": true,
+  "weapon": "guy762_ionpistol",
+  "childhood": "TribeChild40",
+  "adulthood": "Carver1",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Grunt",
+  "name": "Gove\u00f1o Comba",
+  "armed": true,
+  "weapon": "guy762_ionpistol",
+  "childhood": "CaveChild30",
+  "adulthood": "Gatherer70",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Heavy",
+  "name": "Gobo Magpie",
+  "armed": true,
+  "weapon": "guy762_ionpistol",
+  "childhood": "VBE_ChildofTheAnimaTree",
+  "adulthood": "TreehouseBuilder86",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Heavy",
+  "name": "Turkey Saio",
+  "armed": true,
+  "weapon": "guy762_ionpistol",
+  "childhood": "VBE_GiftedBurnout",
+  "adulthood": "Archer25",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Heavy",
+  "name": "Bidueiro Borne",
+  "armed": true,
+  "weapon": "guy762_sonpistol",
+  "childhood": "VBE_WretchedChild",
+  "adulthood": "Herder33",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Heavy",
+  "name": "Xe\u00f1o Tomaca",
+  "armed": true,
+  "weapon": "guy762_ionpistol",
+  "childhood": "VBE_GiftedBurnout",
+  "adulthood": "Brave88",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Heavy",
+  "name": "Lobster Br\u00edo",
+  "armed": true,
+  "weapon": "guy762_sonpistol",
+  "childhood": "VBE_EldestCaretaker",
+  "adulthood": "VengefulHunter32",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Leader",
+  "name": "Orange Doac\u00f3",
+  "armed": true,
+  "weapon": "guy762_ionrifle_bothan",
+  "childhood": "VBE_StorytellersKin",
+  "adulthood": "Scout59",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Leader",
+  "name": "Xelego Laiocam",
+  "armed": true,
+  "weapon": "guy762_ionrifle",
+  "childhood": "Hideaway7",
+  "adulthood": "Tamer79",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Leader",
+  "name": "Alboi\u00f1o Reindeer",
+  "armed": true,
+  "weapon": "guy762_ionpistol",
+  "childhood": "ReclusiveChild81",
+  "adulthood": "PlankCutter72",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Leader",
+  "name": "Jaguar Camdo",
+  "armed": true,
+  "weapon": "guy762_ionrifle_bothan",
+  "childhood": "VBE_TombMaker",
+  "adulthood": "VBE_PathologicalLiar",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Leader",
+  "name": "Umbra 'Darklight' Nighthawk",
+  "armed": false,
+  "weapon": null,
+  "childhood": "AccursedChild88",
+  "adulthood": "ShamanOfShadows47",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_TradeMoot_Specialist",
+  "name": "Lyrebird Lamea",
+  "armed": true,
+  "weapon": "guy762_ionrifle",
+  "childhood": "BuddingArtist44",
+  "adulthood": "VBE_Thane",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Specialist",
+  "name": "Muffalo Bustlabreicam",
+  "armed": true,
+  "weapon": "guy762_ionrifle",
+  "childhood": "FireKeeper44",
+  "adulthood": "StewKeeper95",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Specialist",
+  "name": "Pigeon Bor\u00f1a",
+  "armed": true,
+  "weapon": "IW_Gun_IonPDW",
+  "childhood": "VBE_EldestCaretaker",
+  "adulthood": "VBE_PathologicalLiar",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Specialist",
+  "name": "White Zebra",
+  "armed": true,
+  "weapon": "IW_Gun_IonPistol",
+  "childhood": "CrashBaby32",
+  "adulthood": "Herder33",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_TradeMoot_Specialist",
+  "name": "Choco Quexos",
+  "armed": true,
+  "weapon": "guy762_ionrifle_bothan",
+  "childhood": "VBE_HerbalKin",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Grunt",
+  "name": "Norbert 'Jerk' Schneider",
+  "armed": true,
+  "weapon": "guy762_bowcaster",
+  "childhood": "VBE_GiftedBurnout",
+  "adulthood": "VBE_Masterofceremonies",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Grunt",
+  "name": "Selintha 'Sel' Silvertome",
+  "armed": true,
+  "weapon": "guy762_bowcaster",
+  "childhood": "StoryWriter67",
+  "adulthood": "VBE_CriminalPriest",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Grunt",
+  "name": "Beatrice Carson",
+  "armed": true,
+  "weapon": "guy762_bowcaster",
+  "childhood": "VBE_TombMaker",
+  "adulthood": "EscapedConvict90",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Grunt",
+  "name": "Rissa Gransier",
+  "armed": true,
+  "weapon": "guy762_bowcaster",
+  "childhood": "ApprenticeOracle83",
+  "adulthood": "CasketBuilder52",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Grunt",
+  "name": "Aleksander 'Sale' Chiki",
+  "armed": true,
+  "weapon": "guy762_bowcaster",
+  "childhood": "RebelliousStudent74",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Heavy",
+  "name": "David Bishop",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater",
+  "childhood": "TechnicalKid1",
+  "adulthood": "NetworkEngineer34",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Heavy",
+  "name": "Nochin 'Noche' Sicart",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "VBE_Simraised",
+  "adulthood": "VBE_CriminalPriest",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Heavy",
+  "name": "Wendy Ritter",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater_carbine",
+  "childhood": "Mute34",
+  "adulthood": "Slaughterer58",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Heavy",
+  "name": "Luc Everse",
+  "armed": false,
+  "weapon": null,
+  "childhood": "OrganFarm67",
+  "adulthood": "VBE_CosplayEnthusiast",
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Wildsteam_Heavy",
+  "name": "Joshua Cheetham",
+  "armed": true,
+  "weapon": "guy762_lgtrepeater",
+  "childhood": "VBE_TroupeChild",
+  "adulthood": "SH_MED_MedievalMason",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Leader",
+  "name": "Matias 'Kalrej' Mora",
+  "armed": false,
+  "weapon": null,
+  "childhood": "OrganFarm67",
+  "adulthood": null,
+  "pacifistBackstory": true
+ },
+ {
+  "kind": "Jawa_Wildsteam_Leader",
+  "name": "Skyler 'Sky' Guy",
+  "armed": true,
+  "weapon": "guy762_bowcaster_war",
+  "childhood": "REBC121",
+  "adulthood": "VBE_CriminalPriest",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Leader",
+  "name": "Andrew 'Grub' Menear",
+  "armed": true,
+  "weapon": "guy762_bowcaster_war",
+  "childhood": "Drudge9",
+  "adulthood": "Sightseer70",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Leader",
+  "name": "Dominic 'Dom' Celeste",
+  "armed": true,
+  "weapon": "guy762_bowcaster_war",
+  "childhood": "Mute34",
+  "adulthood": null,
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Leader",
+  "name": "Joshua 'Zug' Hamby",
+  "armed": true,
+  "weapon": "guy762_bowcaster",
+  "childhood": "HexCellArtist91",
+  "adulthood": "ExoticChef96",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Specialist",
+  "name": "Dennis Richtarski",
+  "armed": true,
+  "weapon": "OuterRim_VibroBlade",
+  "childhood": "MonkeyChild67",
+  "adulthood": "Streamer52",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Specialist",
+  "name": "Vince Day",
+  "armed": true,
+  "weapon": "OuterRim_VibroBlade",
+  "childhood": "VBE_ChildSoldier",
+  "adulthood": "SH_MED_PlagueDoctor",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Specialist",
+  "name": "Wieland Bos",
+  "armed": true,
+  "weapon": "OuterRim_VibroGlaive",
+  "childhood": "CultChild3",
+  "adulthood": "ContractMiner86",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Specialist",
+  "name": "William 'Savage' McMahon",
+  "armed": true,
+  "weapon": "OuterRim_VibroAxe",
+  "childhood": "VBE_Rudie",
+  "adulthood": "VBE_FieldTechnician",
+  "pacifistBackstory": false
+ },
+ {
+  "kind": "Jawa_Wildsteam_Specialist",
+  "name": "Shiro O'Connell",
+  "armed": true,
+  "weapon": "OuterRim_VibroDagger",
+  "childhood": "VBE_EldestCaretaker",
+  "adulthood": "VBE_CoginTheMachine",
+  "pacifistBackstory": false
+ }
+]

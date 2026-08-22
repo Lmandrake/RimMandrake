@@ -1,0 +1,1616 @@
+{
+ "Jawa_Blackstar_Grunt": [
+  [
+   {
+    "def": "guy762_sonrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "JawaIon_Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "JawaIon_Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_brifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "VFEPGun_MiniBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Blackstar_Heavy": [
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "guy762_lgtrepeater",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Blackstar_Leader": [
+  [
+   {
+    "def": "OuterRim_DH17Pistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "OuterRim_DE10Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "OuterRim_DE10Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Blackstar_Specialist": [
+  [],
+  [
+   {
+    "def": "OuterRim_IonBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_IonBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DLT19XTargetingBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  []
+ ],
+ "Jawa_DeepDesert_Grunt": [
+  [
+   {
+    "def": "MA_MegaboneClub",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "MA_MegaboneClub",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "MA_MegaboneClub",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "MA_MegaboneClub",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_DeepDesert_Heavy": [
+  [
+   {
+    "def": "OuterRim_GaderffiiStick",
+    "stuff": "DinoChitin",
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "MeleeWeapon_Spear",
+    "stuff": "DinoChitin",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "MA_DuskSpear",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "MA_MegaboneClub",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_DeepDesert_Leader": [
+  [],
+  [
+   {
+    "def": "MeleeWeapon_Spear",
+    "stuff": "KOTOR_AlloyDurasteel",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "MA_GnautHornMace",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "MA_GnautHornMace",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "MA_DuskSpear",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_DeepDesert_Specialist": [
+  [
+   {
+    "def": "guy762_slugrifle_tusken",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_slugrifle_tusken",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_slugrifle_SovTusken",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "guy762_slugrifle_SovTusken",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Deepwater_Grunt": [
+  [
+   {
+    "def": "guy762_slugrifle_cinnagar",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonrifle_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_brifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_brifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_slugrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Deepwater_Heavy": [
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Deepwater_Leader": [
+  [
+   {
+    "def": "OuterRim_VibroDoubleBlade",
+    "stuff": "DinoChitin",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_VibroBlade",
+    "stuff": "MA_Steelbone",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_VibroDagger",
+    "stuff": "Steel",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_VibroAxe",
+    "stuff": "Gravitonium",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_VibroGlaive",
+    "stuff": "Snailglass",
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Deepwater_Specialist": [
+  [
+   {
+    "def": "OuterRim_VibroBlade",
+    "stuff": "Steel",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_VibroDoubleBlade",
+    "stuff": "KOTOR_AlloyDurasteel",
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "OuterRim_VibroBlade",
+    "stuff": "DinoChitin",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_VibroBlade",
+    "stuff": "DinoChitin",
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Droid_Grunt": [
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristRocket",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristBlasterIon",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristRocket",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Droid_Heavy": [
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristBlasterIon",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristRocket",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristBlasterIon",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Droid_Leader": [
+  [
+   {
+    "def": "OuterRim_DroidWeapon_BlasterCannon",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_BlasterCannon",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_BlasterCannon",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_BlasterCannon",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristBlasterIon",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Droid_Specialist": [
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristRocket",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_BlasterCannon",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristRocket",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_BlasterCannon",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DroidWeapon_WristRocket",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Empire_Grunt": [
+  [],
+  [
+   {
+    "def": "OuterRim_SE14RBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_EC17Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_EC17Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DG29Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Empire_Heavy": [
+  [
+   {
+    "def": "OuterRim_E22BlasterRifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_E22BlasterRifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "OuterRim_E22BlasterRifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  []
+ ],
+ "Jawa_Empire_Leader": [
+  [
+   {
+    "def": "OuterRim_K16BryarBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DE10Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_BARMST12Scattergun",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "OuterRim_A180Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Empire_Specialist": [
+  [],
+  [
+   {
+    "def": "OuterRim_A180Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DE10Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DH17Pistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_DG29Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Geonosian_Grunt": [
+  [
+   {
+    "def": "guy762_sonrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonrifle_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  []
+ ],
+ "Jawa_Geonosian_Heavy": [
+  [
+   {
+    "def": "guy762_sonpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Geonosian_Leader": [
+  [
+   {
+    "def": "guy762_sonpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "guy762_sonrifle_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonrifle_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonpistol_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Geonosian_Specialist": [
+  [
+   {
+    "def": "guy762_sonrifle_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonrifle_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonrifle_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonrifle_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonrifle_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Helix_Grunt": [
+  [
+   {
+    "def": "guy762_bpistol_republic",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bpistol_republic",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_hvypistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bpistol_republic",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_mininglaser",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Helix_Heavy": [
+  [
+   {
+    "def": "guy762_disrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_disrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  []
+ ],
+ "Jawa_Helix_Leader": [
+  [
+   {
+    "def": "guy762_ionrifle_baragwin",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionrifle_baragwin",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol_aratech",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol_aratech",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionrifle_baragwin",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Helix_Specialist": [
+  [
+   {
+    "def": "OuterRim_DLT19XTargetingBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_TL50HeavyRepeaterBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [],
+  [
+   {
+    "def": "OuterRim_DLT19XTargetingBlaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Homestead_Grunt": [
+  [
+   {
+    "def": "guy762_holdout",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_holdout",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Homestead_Heavy": [
+  [
+   {
+    "def": "guy762_hvypistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_slugrifle_cinnagar",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_hvypistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_slugrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_brifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Homestead_Leader": [
+  [
+   {
+    "def": "OuterRim_BARMST12Scattergun",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_A180Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_A180Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "OuterRim_A180Blaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Homestead_Specialist": [
+  [
+   {
+    "def": "OuterRim_CyclerRifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_CyclerRifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_CyclerRifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_CyclerRifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_CyclerRifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Hutt_Grunt": [
+  [
+   {
+    "def": "guy762_mininglaser",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "guy762_mininglaser",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Hutt_Heavy": [
+  [
+   {
+    "def": "guy762_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_brifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Hutt_Leader": [
+  [
+   {
+    "def": "guy762_ionrifle_baragwin",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bpistol_onasi",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol_aratech",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionrifle_baragwin",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol_aratech",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Hutt_Specialist": [
+  [
+   {
+    "def": "guy762_brifle_dmr",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_hvypistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_brifle_dmr",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_brifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Junkers_Grunt": [
+  [
+   {
+    "def": "RR_Weapon_Torch",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "RR_Weapon_Torch",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "RR_Weapon_Torch",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "BMT_Toxwood",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "RR_Weapon_Torch",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Junkers_Heavy": [
+  [
+   {
+    "def": "guy762_bpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_holdout",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_holdout",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_holdout",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_holdout",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Junkers_Leader": [
+  [
+   {
+    "def": "OuterRim_GaderffiiStick",
+    "stuff": "Snailglass",
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "OuterRim_GaderffiiStick",
+    "stuff": "KOTOR_AlloyBronzium",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_GaderffiiStick",
+    "stuff": "MA_Steelbone",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_GaderffiiStick",
+    "stuff": "DA_LeviathanChitin",
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Junkers_Specialist": [
+  [
+   {
+    "def": "guy762_slugrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_slugrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_slugrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_slugrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_slugrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_TradeMoot_Grunt": [
+  [
+   {
+    "def": "guy762_holdout",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_TradeMoot_Heavy": [
+  [
+   {
+    "def": "guy762_ionpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_sonpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_TradeMoot_Leader": [
+  [
+   {
+    "def": "guy762_ionrifle_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionpistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionrifle_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  []
+ ],
+ "Jawa_TradeMoot_Specialist": [
+  [
+   {
+    "def": "guy762_ionrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "IW_Gun_IonPDW",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "IW_Gun_IonPistol",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_ionrifle_bothan",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Wildsteam_Grunt": [
+  [
+   {
+    "def": "guy762_bowcaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bowcaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bowcaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bowcaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bowcaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Wildsteam_Heavy": [
+  [
+   {
+    "def": "guy762_lgtrepeater",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_lgtrepeater_carbine",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [],
+  [
+   {
+    "def": "guy762_lgtrepeater",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Wildsteam_Leader": [
+  [],
+  [
+   {
+    "def": "guy762_bowcaster_war",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bowcaster_war",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bowcaster_war",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "guy762_bowcaster",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ]
+ ],
+ "Jawa_Wildsteam_Specialist": [
+  [
+   {
+    "def": "OuterRim_VibroBlade",
+    "stuff": "DinoChitin",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_VibroBlade",
+    "stuff": "OuterRim_Durasteel",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_VibroGlaive",
+    "stuff": "Steel",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_VibroAxe",
+    "stuff": "Steel",
+    "isPrimary": true
+   }
+  ],
+  [
+   {
+    "def": "OuterRim_VibroDagger",
+    "stuff": "DinoChitin",
+    "isPrimary": true
+   }
+  ]
+ ]
+}

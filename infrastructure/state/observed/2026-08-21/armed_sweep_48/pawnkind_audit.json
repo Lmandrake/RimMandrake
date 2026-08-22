@@ -1,0 +1,438 @@
+{
+  "success": true,
+  "message": "69 tool-using kind(s) audited; every kind that intends to arm can. (15 carry no weaponTags and 0 have a zero budget - both are design, not defects.)",
+  "weaponPairsInGame": 1748,
+  "distinctWeaponTags": 389,
+  "kindsChecked": 69,
+  "skippedNonToolUser": 0,
+  "counts": {
+    "emptyTagPool": 0,
+    "cannotAfford": 0,
+    "healthy": 54,
+    "byDesign_noWeaponTags": 15,
+    "byDesign_zeroBudget": 0
+  },
+  "byDesign_noWeaponTags": [
+    {
+      "kind": "RimMandrakeJawa_Kind",
+      "label": "Jawa",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Hutt",
+      "label": "hutt",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Gand",
+      "label": "gand",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Kubaz",
+      "label": "kubaz",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Taung",
+      "label": "taung",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Mimbanese",
+      "label": "mimbanese",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Zygerrian",
+      "label": "zygerrian",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Lasat",
+      "label": "lasat",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Muun",
+      "label": "muun",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Ortolan",
+      "label": "ortolan",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Nelvaanian",
+      "label": "nelvaanian",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_SithK",
+      "label": "sith (kissai)",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_SithM",
+      "label": "sith (massassi)",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Spawn_Yoder",
+      "label": "yoder",
+      "race": "Human"
+    },
+    {
+      "kind": "Jawa_Colonist",
+      "label": "Jawa scavenger",
+      "race": "Human"
+    }
+  ],
+  "byDesign_zeroBudget": [],
+  "emptyTagPool": [],
+  "cannotAfford": [],
+  "healthy": [
+    {
+      "kind": "Jawa_Gamorrean_Guard",
+      "cheapestEligible": "guy762_baton",
+      "cheapestPrice": 120.0,
+      "weaponMoneyMax": 900.0
+    },
+    {
+      "kind": "Jawa_Gamorrean_Enforcer",
+      "cheapestEligible": "guy762_baton",
+      "cheapestPrice": 120.0,
+      "weaponMoneyMax": 2200.0
+    },
+    {
+      "kind": "Jawa_Tribal_Scavenger",
+      "cheapestEligible": "BMT_ResourceBlueCrystal",
+      "cheapestPrice": 1.0,
+      "weaponMoneyMax": 150.0
+    },
+    {
+      "kind": "Jawa_Tribal_Slinger",
+      "cheapestEligible": "BMT_BlastSpore",
+      "cheapestPrice": 1.0,
+      "weaponMoneyMax": 80.0
+    },
+    {
+      "kind": "Jawa_Tribal_Elder",
+      "cheapestEligible": "VWE_MeleeWeapon_CombatKnife",
+      "cheapestPrice": 45.0,
+      "weaponMoneyMax": 1000.0
+    },
+    {
+      "kind": "Jawa_Empire_Grunt",
+      "cheapestEligible": "OuterRim_DE10Blaster",
+      "cheapestPrice": 570.0,
+      "weaponMoneyMax": 780.0
+    },
+    {
+      "kind": "Jawa_Empire_Heavy",
+      "cheapestEligible": "OuterRim_E22BlasterRifle",
+      "cheapestPrice": 865.0,
+      "weaponMoneyMax": 1200.0
+    },
+    {
+      "kind": "Jawa_Empire_Specialist",
+      "cheapestEligible": "OuterRim_BARMST12Scattergun",
+      "cheapestPrice": 570.0,
+      "weaponMoneyMax": 1080.0
+    },
+    {
+      "kind": "Jawa_Empire_Leader",
+      "cheapestEligible": "OuterRim_BARMST12Scattergun",
+      "cheapestPrice": 570.0,
+      "weaponMoneyMax": 1920.0
+    },
+    {
+      "kind": "Jawa_Hutt_Grunt",
+      "cheapestEligible": "guy762_holdout",
+      "cheapestPrice": 60.0,
+      "weaponMoneyMax": 240.0
+    },
+    {
+      "kind": "Jawa_Hutt_Heavy",
+      "cheapestEligible": "guy762_slugrifle",
+      "cheapestPrice": 100.0,
+      "weaponMoneyMax": 660.0
+    },
+    {
+      "kind": "Jawa_Hutt_Specialist",
+      "cheapestEligible": "guy762_slugrifle",
+      "cheapestPrice": 100.0,
+      "weaponMoneyMax": 960.0
+    },
+    {
+      "kind": "Jawa_Hutt_Leader",
+      "cheapestEligible": "guy762_ionrifle_baragwin",
+      "cheapestPrice": 12000.0,
+      "weaponMoneyMax": 15600.0
+    },
+    {
+      "kind": "Jawa_Homestead_Grunt",
+      "cheapestEligible": "guy762_holdout",
+      "cheapestPrice": 60.0,
+      "weaponMoneyMax": 156.0
+    },
+    {
+      "kind": "Jawa_Homestead_Heavy",
+      "cheapestEligible": "guy762_slugrifle",
+      "cheapestPrice": 100.0,
+      "weaponMoneyMax": 360.0
+    },
+    {
+      "kind": "Jawa_Homestead_Specialist",
+      "cheapestEligible": "OuterRim_CyclerRifle",
+      "cheapestPrice": 365.0,
+      "weaponMoneyMax": 540.0
+    },
+    {
+      "kind": "Jawa_Homestead_DesertRanger",
+      "cheapestEligible": "guy762_slugrifle",
+      "cheapestPrice": 100.0,
+      "weaponMoneyMax": 260.0
+    },
+    {
+      "kind": "Jawa_Homestead_Leader",
+      "cheapestEligible": "guy762_bpistol",
+      "cheapestPrice": 100.0,
+      "weaponMoneyMax": 840.0
+    },
+    {
+      "kind": "Jawa_DeepDesert_Grunt",
+      "cheapestEligible": "MeleeWeapon_Spear",
+      "cheapestPrice": 54.0,
+      "weaponMoneyMax": 180.0
+    },
+    {
+      "kind": "Jawa_DeepDesert_Heavy",
+      "cheapestEligible": "MeleeWeapon_Spear",
+      "cheapestPrice": 54.0,
+      "weaponMoneyMax": 240.0
+    },
+    {
+      "kind": "Jawa_DeepDesert_Specialist",
+      "cheapestEligible": "guy762_slugrifle_tusken",
+      "cheapestPrice": 1975.0,
+      "weaponMoneyMax": 2400.0
+    },
+    {
+      "kind": "Jawa_DeepDesert_Leader",
+      "cheapestEligible": "MeleeWeapon_Spear",
+      "cheapestPrice": 54.0,
+      "weaponMoneyMax": 600.0
+    },
+    {
+      "kind": "Jawa_Droid_Grunt",
+      "cheapestEligible": "OuterRim_DroidWeapon_BlasterCannon",
+      "cheapestPrice": 980.0,
+      "weaponMoneyMax": 1320.0
+    },
+    {
+      "kind": "Jawa_Droid_Heavy",
+      "cheapestEligible": "OuterRim_DroidWeapon_BlasterCannon",
+      "cheapestPrice": 980.0,
+      "weaponMoneyMax": 1680.0
+    },
+    {
+      "kind": "Jawa_Droid_Specialist",
+      "cheapestEligible": "OuterRim_DroidWeapon_BlasterCannon",
+      "cheapestPrice": 980.0,
+      "weaponMoneyMax": 1440.0
+    },
+    {
+      "kind": "Jawa_Droid_Leader",
+      "cheapestEligible": "OuterRim_DroidWeapon_BlasterCannon",
+      "cheapestPrice": 980.0,
+      "weaponMoneyMax": 2160.0
+    },
+    {
+      "kind": "Jawa_Wildsteam_Grunt",
+      "cheapestEligible": "guy762_bowcaster",
+      "cheapestPrice": 1250.0,
+      "weaponMoneyMax": 1560.0
+    },
+    {
+      "kind": "Jawa_Wildsteam_Heavy",
+      "cheapestEligible": "guy762_lgtrepeater_carbine",
+      "cheapestPrice": 550.0,
+      "weaponMoneyMax": 1080.0
+    },
+    {
+      "kind": "Jawa_Wildsteam_Specialist",
+      "cheapestEligible": "OuterRim_VibroDagger",
+      "cheapestPrice": 485.0,
+      "weaponMoneyMax": 744.0
+    },
+    {
+      "kind": "Jawa_Wildsteam_Leader",
+      "cheapestEligible": "guy762_bowcaster",
+      "cheapestPrice": 1250.0,
+      "weaponMoneyMax": 2520.0
+    },
+    {
+      "kind": "Jawa_Deepwater_Grunt",
+      "cheapestEligible": "guy762_slugrifle",
+      "cheapestPrice": 100.0,
+      "weaponMoneyMax": 360.0
+    },
+    {
+      "kind": "Jawa_Deepwater_Heavy",
+      "cheapestEligible": "guy762_lgtrepeater_carbine",
+      "cheapestPrice": 550.0,
+      "weaponMoneyMax": 720.0
+    },
+    {
+      "kind": "Jawa_Deepwater_Specialist",
+      "cheapestEligible": "OuterRim_VibroDagger",
+      "cheapestPrice": 485.0,
+      "weaponMoneyMax": 900.0
+    },
+    {
+      "kind": "Jawa_Deepwater_Leader",
+      "cheapestEligible": "OuterRim_VibroDagger",
+      "cheapestPrice": 485.0,
+      "weaponMoneyMax": 1680.0
+    },
+    {
+      "kind": "Jawa_Geonosian_Grunt",
+      "cheapestEligible": "guy762_sonpistol",
+      "cheapestPrice": 220.0,
+      "weaponMoneyMax": 480.0
+    },
+    {
+      "kind": "Jawa_Geonosian_Heavy",
+      "cheapestEligible": "guy762_sonpistol",
+      "cheapestPrice": 220.0,
+      "weaponMoneyMax": 960.0
+    },
+    {
+      "kind": "Jawa_Geonosian_Specialist",
+      "cheapestEligible": "guy762_sonpistol",
+      "cheapestPrice": 220.0,
+      "weaponMoneyMax": 1200.0
+    },
+    {
+      "kind": "Jawa_Geonosian_Leader",
+      "cheapestEligible": "guy762_sonpistol",
+      "cheapestPrice": 220.0,
+      "weaponMoneyMax": 1800.0
+    },
+    {
+      "kind": "Jawa_Helix_Grunt",
+      "cheapestEligible": "guy762_bpistol",
+      "cheapestPrice": 100.0,
+      "weaponMoneyMax": 720.0
+    },
+    {
+      "kind": "Jawa_Helix_Heavy",
+      "cheapestEligible": "guy762_lgtrepeater_carbine",
+      "cheapestPrice": 550.0,
+      "weaponMoneyMax": 1320.0
+    },
+    {
+      "kind": "Jawa_Helix_Specialist",
+      "cheapestEligible": "OuterRim_CyclerRifle",
+      "cheapestPrice": 365.0,
+      "weaponMoneyMax": 1680.0
+    },
+    {
+      "kind": "Jawa_Helix_Leader",
+      "cheapestEligible": "guy762_ionrifle_baragwin",
+      "cheapestPrice": 12000.0,
+      "weaponMoneyMax": 15000.0
+    },
+    {
+      "kind": "Jawa_Blackstar_Grunt",
+      "cheapestEligible": "guy762_sonrifle_carbine",
+      "cheapestPrice": 295.0,
+      "weaponMoneyMax": 480.0
+    },
+    {
+      "kind": "Jawa_Blackstar_Heavy",
+      "cheapestEligible": "guy762_lgtrepeater_carbine",
+      "cheapestPrice": 550.0,
+      "weaponMoneyMax": 840.0
+    },
+    {
+      "kind": "Jawa_Blackstar_Specialist",
+      "cheapestEligible": "OuterRim_CyclerRifle",
+      "cheapestPrice": 365.0,
+      "weaponMoneyMax": 1320.0
+    },
+    {
+      "kind": "Jawa_Blackstar_Leader",
+      "cheapestEligible": "OuterRim_BARMST12Scattergun",
+      "cheapestPrice": 570.0,
+      "weaponMoneyMax": 2160.0
+    },
+    {
+      "kind": "Jawa_TradeMoot_Grunt",
+      "cheapestEligible": "guy762_holdout",
+      "cheapestPrice": 60.0,
+      "weaponMoneyMax": 300.0
+    },
+    {
+      "kind": "Jawa_TradeMoot_Heavy",
+      "cheapestEligible": "guy762_holdout",
+      "cheapestPrice": 60.0,
+      "weaponMoneyMax": 540.0
+    },
+    {
+      "kind": "Jawa_TradeMoot_Specialist",
+      "cheapestEligible": "guy762_ionpistol",
+      "cheapestPrice": 200.0,
+      "weaponMoneyMax": 1080.0
+    },
+    {
+      "kind": "Jawa_TradeMoot_Leader",
+      "cheapestEligible": "guy762_ionpistol",
+      "cheapestPrice": 200.0,
+      "weaponMoneyMax": 1080.0
+    },
+    {
+      "kind": "Jawa_Junkers_Grunt",
+      "cheapestEligible": "BMT_ResourceBlueCrystal",
+      "cheapestPrice": 1.0,
+      "weaponMoneyMax": 72.0
+    },
+    {
+      "kind": "Jawa_Junkers_Heavy",
+      "cheapestEligible": "guy762_holdout",
+      "cheapestPrice": 60.0,
+      "weaponMoneyMax": 168.0
+    },
+    {
+      "kind": "Jawa_Junkers_Specialist",
+      "cheapestEligible": "guy762_slugrifle",
+      "cheapestPrice": 100.0,
+      "weaponMoneyMax": 240.0
+    },
+    {
+      "kind": "Jawa_Junkers_Leader",
+      "cheapestEligible": "OuterRim_GaderffiiStick",
+      "cheapestPrice": 96.0,
+      "weaponMoneyMax": 420.0
+    }
+  ],
+  "note": "weaponMoney is a CEILING - raise `max` above cheapestPrice. `min` only shifts the roll and never excludes a weapon. Price includes stuff.",
+  "ticksGame": 1,
+  "operation": {
+    "OperationId": "op_81b1bd8bef6748608c5609f7a21d2684",
+    "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-kind-audit",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-08-22T00:04:12.0822108+00:00",
+    "CompletedAtUtc": "2026-08-22T00:04:12.2064168+00:00",
+    "DurationMs": 124,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}
