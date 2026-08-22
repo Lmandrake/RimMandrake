@@ -1074,3 +1074,10 @@
 {"seat":"CHECK","event":"claim","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","ts":"2026-08-22T00:17:03Z"}
 {"seat":"CHECK","event":"start","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","ts":"2026-08-22T00:17:03Z"}
 {"seat":"CHECK","event":"verify","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","result":"partial","config":"full-578","evidence":"infrastructure/state/observed/2026-08-21/misc/ikee_and_seven.md","sha":"96f2012","ts":"2026-08-22T00:17:03Z"}
+{"seat":"BUILD","event":"claim","id":"RAIN_DRY_THE_JUNGLE_1","ts":"2026-08-22T00:17:39Z"}
+{"seat":"BUILD","event":"start","id":"RAIN_DRY_THE_JUNGLE_1","ts":"2026-08-22T00:17:39Z"}
+{"seat":"CHECK","event":"claim","id":"RAKATA_SLEEPERS_LOOK_RIGHT_1","ts":"2026-08-22T00:19:13Z"}
+{"seat":"CHECK","event":"start","id":"RAKATA_SLEEPERS_LOOK_RIGHT_1","ts":"2026-08-22T00:19:14Z"}
+{"seat":"CHECK","event":"verify","id":"RAKATA_SLEEPERS_LOOK_RIGHT_1","result":"partial","config":"full-578","evidence":"infrastructure/state/observed/2026-08-21/rakata/README.md","sha":"318dc04","ts":"2026-08-22T00:19:14Z"}
+{"seat":"CHECK","event":"finding","id":"RAKATA_SLEEPERS_LOOK_RIGHT_1","type":"integration","severity":"high","name":"GESTOR_REPLACES_EVERY_SPECIES_1","from":"RAKATA_SLEEPERS_LOOK_RIGHT_1/run-2@full-578","ts":"2026-08-22T00:19:14Z"}
+{"seat":"CHECK","event":"spawn","name":"INTIMACY_MOD_RENAMES_SPECIES_1","kind":"task","needs":"owner","for":"DECIDE","from":"GESTOR_REPLACES_EVERY_SPECIES_1","ts":"2026-08-22T00:19:14Z"}
