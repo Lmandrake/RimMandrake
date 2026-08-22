@@ -627,8 +627,23 @@ def bridge_probe():
             pass
 
 
+_MEASURED = {"at": 0.0, "v": None}
+MEASURED_TTL = 5      # seconds; the page polls every 3
+
+
 def measured():
-    """Everything on the page that is a READING. Recomputed per request."""
+    """Everything on the page that is a READING.
+
+    ⚠️ Cached for MEASURED_TTL. Measured on a WSL /mnt/d checkout, an uncached
+    call costs ~4s on /board — almost all of it `git status --porcelain` over the
+    9p mount — and the DECK polls that endpoint every 3 seconds. Without this the
+    board becomes the slowest thing on the box and starts timing out, which is a
+    funny way for a board about staleness to fail.
+    🔑 Freshness is not lost, it is DISCLOSED: every tile prints its own read age
+    off `at`, so a cached value says how old it is rather than pretending.
+    """
+    if _MEASURED["v"] is not None and time.time() - _MEASURED["at"] < MEASURED_TTL:
+        return _MEASURED["v"]
     now = time.time()
     procs, act = seat_processes(), seat_activity(now)
     rss = host().get("rimworld_gb")
@@ -636,7 +651,7 @@ def measured():
     for s in SEATS:
         p = procs.get(s) or {"alive": False, "up_s": None, "pid": None}
         seats[s] = dict(p, **act[s])
-    return {
+    out = {
         "at": int(now),
         "game": {"state": "UP" if rss is not None else "DOWN",
                  # Say what was READ, not merely what was consulted: "present in
@@ -650,6 +665,8 @@ def measured():
         "seats_how": "ps AGENT_SEAT=<SEAT> for liveness; ledger events for activity",
         "durability": durability(),
     }
+    _MEASURED.update(at=now, v=out)
+    return out
 
 
 def snapshot():
