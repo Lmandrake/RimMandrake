@@ -73,9 +73,21 @@ Answers pointing toward broad optionality / self-sufficiency → restrict or exc
 - **Delivery:** the start is authored as a **starting SAVE**, not a portable scenario def.
 
 ## 5. Ideology (see `design/Jawa/worldbuilding/ideoligion/APPROVED.md`)
-Fixed ideoligion "The Articles of Passage" (Keepers of the Second Hand): memes **Nomad + Tunneler**,
-two non-multiplying roles (Chief/Captain + Keeper of the Articles), cohesion-only rituals, one
-modest relic. Secular animist scrapper culture — **not** a Force faith (psycasts forbidden).
+⛔ ~~Fixed ideoligion "The Articles of Passage" (Keepers of the Second Hand): memes **Nomad +
+Tunneler**~~ 🔴 **CORRECTED 2026-08-22 — BOTH HALVES WERE WRONG, in the one-page brief a
+newcomer reads first.** The ideoligion is **"The Salvation"** (§2.0 locked it 2026-08-08 and
+that is what got built; it is the twelfth of the twelve `<ideoName>` values on disk). The
+shipped meme set is five, not two: **`AM_Structure_Scavenger` · `Trader` · `VME_Scrapper` ·
+`VME_Trader` · `VME_Nomad`**, on `JawaTribes.xml`, validating 1/1 VALID at impact 10 over 5
+memes. ⚠️ **There is no Tunneler meme anywhere in the 578-mod capture** — it was never an
+available option, so "Nomad vs Tunneler" was a choice between one thing and nothing.
+🔑 `VME_Nomad` is on the **NPC tribes**; the player `.rid` carries four memes and is a
+separate open decision (`DEPLOY_SALVATION_RID_1`), because `VME_PermanentBases_Despised` has
+`enabledForNPCFactions: false` and so is free on an NPC faction and not on a player one.
+⛔ That divergence is deliberate; do not "fix" it by editing the `.rid`.
+
+The rest stands: two non-multiplying roles (Chief/Captain + Keeper of the Articles),
+cohesion-only rituals, one modest relic. Secular animist scrapper culture — **not** a Force faith (psycasts forbidden).
 
 ## 6. Hard "never" list (quick reference; full reasons in `forbidden_mods.md`)
 Combat Extended · psycasts / The Force · genetics-lab breeding & gene-shopping · mechanitor ladder ·

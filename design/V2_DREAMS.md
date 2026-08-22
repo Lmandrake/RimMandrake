@@ -382,8 +382,8 @@ spec:     Standing directive (owner, 2026-08-13): stop fixing art until the owne
 verify:   EMPTY
 criteria: EMPTY
 
-## D12 The Jawa faith — name, and Nomad vs Tunneler
-spec:     The name contradicts itself in its own file: "The Salvation" vs "The Articles of Passage". Nomad-vs-Tunneler is still a coin. Owner's, not any seat's — flag both if he opens it. Section 12 of `faction_religions_spec.md` is a deliberate empty slot because the owner is building it.
+## ~~D12 The Jawa faith — name, and Nomad vs Tunneler~~ — ✅ BOTH HALVES CLOSED 2026-08-22
+spec:     ⛔ ~~The name contradicts itself in its own file: "The Salvation" vs "The Articles of Passage". Nomad-vs-Tunneler is still a coin.~~ **Both are settled and this entry is history.** The name is **"The Salvation"** — §2.0's 2026-08-08 lock is what got built, and it is the twelfth of the twelve `<ideoName>` values on disk. And Nomad-primary was never a coin: the shipped set is `AM_Structure_Scavenger · Trader · VME_Scrapper · VME_Trader · VME_Nomad`, and **no Tunneler meme exists in the 578-mod capture at all**, so the other side never existed. Ruling: `NOMAD_REVERSAL_LEFT_DOCS_STALE_1`.
 verify:   EMPTY
 criteria: EMPTY
 
