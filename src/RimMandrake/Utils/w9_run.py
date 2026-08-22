@@ -137,9 +137,20 @@ def main():
     ap.add_argument("--load", default=None, help="load this save first and wait for it")
     ap.add_argument("--report", default=None)
     ap.add_argument("--skip-links", action="store_true")
+    # 🔴 The help text carries the MEASURED OUTCOME, not a caution. Someone reading
+    # `--help` to decide whether to pass this flag never sees the refusal message
+    # below, which is where the evidence used to live exclusively.
     ap.add_argument("--despite-map", action="store_true",
-                    help="proceed with a map instantiated. Only for a world nobody keeps; "
-                         "everything measured becomes unattributable.")
+                    help="proceed with a map instantiated. MEASURED 2026-08-21, on the "
+                         "owner's screen: the colony was DESTROYED, the game could no "
+                         "longer create a new one, the UI lost its button icons and "
+                         "labels, a world remade in that session came up WITHOUT "
+                         "myLittlePlanetSubcount 7 / planetCoverage 1, and the game had "
+                         "to be taken down. The paint itself was faithful - seven tiles "
+                         "read back exact - so this is not a painting bug: it is moving "
+                         "the ground out from under a map already generated from it, "
+                         "which RimWorld cannot reconcile. Only for a world nobody keeps, "
+                         "and everything measured afterwards is unattributable.")
     ap.add_argument("--despite-abort", action="store_true",
                     help="proceed even though the load aborted. Records it loudly in the "
                          "report. Only justified when the WORLD layer has been shown to be "
