@@ -30,7 +30,13 @@ def eligibility(dn):
     x = A.get(dn)
     if not x: return False, 'not_in_census'
     r = x.get('race') or {}
-    # ANOMALY FIRST. These carry isAnimal=False, so testing "is it an animal" before this
+    # SESSILE BEATS EVERYTHING, including the anomaly carve-out. `fleshmass nucleus` and
+    # `nociosphere` are Anomaly entities that cannot move; they took the anomaly branch and
+    # reached a generated patch as roaming wildlife. A thing that does not move is not fauna.
+    if (x.get('race') or {}).get('doesntMove'):
+        return False, 'sessile'
+
+    # ANOMALY next. These carry isAnimal=False, so testing "is it an animal" before this
     # threw every one of them out as not_an_animal - which is how the owner's "some anomaly
     # may be re-used in the bioweapon-related biomes" would have been silently dropped.
     # NOT `canBecomeShambler` either: that is True on 1,064 of 1,260 and merely means "can be
@@ -42,6 +48,14 @@ def eligibility(dn):
     if str(r.get('fleshType')) in MECH_FLESH: return False, 'mechanoid_flesh'
     if not x.get('isAnimal') or str(x.get('intelligence')) != 'Animal':
         return False, 'not_an_animal'                      # droids, humanlikes, faction units
+
+    # 🔴 Three classes that ARE animals and still must not be cast as wild fauna. All three
+    # were caught only after they reached a generated patch, which is why they are named here.
+    dn = x['defName']; lab = str(x.get('label') or '').lower()
+    if dn.startswith('Dryad_'):
+        return False, 'dryad'          # bound to a Gauranlen tree; wild dryads are meaningless
+    if any(k in lab or k in dn.lower() for k in ('larva', 'pupa', 'nymph', 'hatchling', 'clutch')):
+        return False, 'lifecycle_stage'  # a pupa is a STAGE, not a population - the adult spawns it
     return True, 'wildlife'
 
 def defence(dn):

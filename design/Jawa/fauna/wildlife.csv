@@ -6,7 +6,7 @@ AA_Aerofleet,aerofleet,Alpha Animals,0.20000000298023224,ours,1,wildlife,0.405
 AA_Agaripawn,agaripawn,Alpha Animals,1.399999976158142,ours,1,wildlife,0.685
 AA_Agaripod,agaripod,Alpha Animals,4,ours,1,wildlife,0.8
 AA_AngelMoth,angel moth,Alpha Animals,0.75,ours,1,wildlife,0.419
-AA_AngelMothLarva,angel moth larva,Alpha Animals,0.10000000149011612,ours,1,wildlife,0.403
+AA_AngelMothLarva,angel moth larva,Alpha Animals,0.10000000149011612,ours,0,lifecycle_stage,0.403
 AA_AnimaColossus,anima colossus,Alpha Animals,6,ours,1,wildlife,0.5
 AA_Animalisk,animalisk,Alpha Animals,1,dormant,1,wildlife,0.675
 AA_AnimusVox,animus vox,Alpha Animals,0.6499999761581421,ours,1,wildlife,0.566
@@ -20,7 +20,7 @@ AA_BlackScarab,black scarab,Alpha Animals,0.30000001192092896,dormant,1,wildlife
 AA_BlackSpelopede,black spelopede,Alpha Animals,1,dormant,1,wildlife,0.725
 AA_BlackSpider,blackspider,Alpha Animals,1.5,dormant,1,wildlife,0.746
 AA_Blizzarisk,blizzarisk,Alpha Animals,2,ours,1,wildlife,0.85
-AA_BlizzariskClutchMother,blizzarisk clutch mother,Alpha Animals,3,dormant,1,wildlife,0.975
+AA_BlizzariskClutchMother,blizzarisk clutch mother,Alpha Animals,3,dormant,0,lifecycle_stage,0.975
 AA_BloodShrimp,blood shrimp,Alpha Animals,1,ours,1,wildlife,0.658
 AA_Bobeene,bobeene,Alpha Animals,2.0999999046325684,foreign,1,wildlife,0.452
 AA_BoulderMit,bouldermit,Alpha Animals,4,ours,1,wildlife,0.733
@@ -42,18 +42,18 @@ AA_DecayDrake,decay drake,Alpha Animals,1,ours,1,wildlife,0.575
 AA_DesertAve,desert ave,Alpha Animals,1,ours,1,wildlife,0.425
 AA_DevilSheep,devil sheep,Alpha Animals,0.5,dormant,1,wildlife,0.413
 AA_Drainer,drainer,Alpha Animals,0.5,ours,1,wildlife,0.413
-AA_DrainerLarva,drainer larva,Alpha Animals,0.10000000149011612,ours,1,wildlife,0.403
+AA_DrainerLarva,drainer larva,Alpha Animals,0.10000000149011612,ours,0,lifecycle_stage,0.403
 AA_Dunealisk,dunealisk,Alpha Animals,2,ours,1,wildlife,0.85
-AA_DunealiskClutchMother,dunealisk clutch mother,Alpha Animals,3,dormant,1,wildlife,0.975
+AA_DunealiskClutchMother,dunealisk clutch mother,Alpha Animals,3,dormant,0,lifecycle_stage,0.975
 AA_DuskProwler,dusk prowler,Alpha Animals,1.5,ours,1,wildlife,0.621
 AA_DuskRat,dusk rat,Alpha Animals,0.15000000596046448,ours,1,wildlife,0.554
 AA_EmpressButterfly,Empress butterfly,Alpha Animals,0.75,foreign,1,wildlife,0.419
-AA_EmpressButterflyLarva,Empress butterfly larva,Alpha Animals,0.10000000149011612,foreign,1,wildlife,0.403
+AA_EmpressButterflyLarva,Empress butterfly larva,Alpha Animals,0.10000000149011612,foreign,0,lifecycle_stage,0.403
 AA_EngorgedTentacularAberration,engorged tentacular aberration,Alpha Animals,6,dormant,1,wildlife,0.65
 AA_Erin,erin,Alpha Animals,1,ours,1,wildlife,0.575
 AA_Eyeling,ikee,Alpha Animals,0.4000000059604645,ours,1,wildlife,0.56
 AA_Feralisk,feralisk,Alpha Animals,1,ours,1,wildlife,0.825
-AA_FeraliskClutchMother,feralisk clutch mother,Alpha Animals,3,dormant,1,wildlife,0.975
+AA_FeraliskClutchMother,feralisk clutch mother,Alpha Animals,3,dormant,0,lifecycle_stage,0.975
 AA_FireWasp,fire wasp,Alpha Animals,0.7900000214576721,ours,1,wildlife,0.736
 AA_FissionMouse,fission mouse,Alpha Animals,0.5,ours,1,wildlife,0.413
 AA_FissionMouseSecond,"fission mouse, second generation",Alpha Animals,0.5,dormant,1,wildlife,0.413
@@ -78,7 +78,7 @@ AA_Helixien,helixien,Alpha Animals,4,ours,1,wildlife,0.65
 AA_InfectedAerofleet,infected aerofleet,Alpha Animals,0.20000000298023224,ours,1,wildlife,0.405
 AA_IronhuskBeetle,ironhusk beetle,Alpha Animals,2.5,dormant,1,wildlife,0.713
 AA_Junglelisk,junglelisk,Alpha Animals,1,ours,1,wildlife,0.825
-AA_LarvalAtispec,larval atispec,Alpha Animals,0.10000000149011612,ours,1,wildlife,0.403
+AA_LarvalAtispec,larval atispec,Alpha Animals,0.10000000149011612,ours,0,lifecycle_stage,0.403
 AA_Lockjaw,lockjaw,Alpha Animals,2.5,ours,1,wildlife,0.613
 AA_Locusts,locusts,Alpha Animals,0.009999999776482582,dormant,1,wildlife,0.4
 AA_LuciferBug,luciferbug,Alpha Animals,0.15000000596046448,ours,1,wildlife,0.654
@@ -172,18 +172,18 @@ AM_Siegemelter,siegemelter,Alpha Mechs,4,dormant,0,mechanoid_flesh,0.6
 AM_Starfire,starfire,Alpha Mechs,4,dormant,0,mechanoid_flesh,0.6
 AM_UnshackledDryad,unshackled dryad,Alpha Memes,0.6669999957084656,dormant,1,wildlife,0.617
 AM_WarEmpress,war empress,Alpha Mechs,5,dormant,0,mechanoid_flesh,0.6
-AV_Balloon,Balloon,Alpha Vehicles - Neolithic,5,dormant,0,vehicle_or_automaton,0.3
-AV_Chariot,Chariot,Alpha Vehicles - Neolithic,2,dormant,0,vehicle_or_automaton,0.283
-AV_CoveredCarriage,Covered Carriage,Alpha Vehicles - Neolithic,2.5,dormant,0,vehicle_or_automaton,0.363
-AV_DogSled,eopie sled,Alpha Vehicles - Neolithic,2,dormant,0,vehicle_or_automaton,0.283
-AV_Hwacha,Hwacha,Alpha Vehicles - Neolithic,1,dormant,0,vehicle_or_automaton,0.258
-AV_OutriggerCanoe,Outrigger Canoe,Alpha Vehicles - Neolithic,1.5499999523162842,dormant,0,vehicle_or_automaton,0.272
-AV_OxCart,Ox cart,Alpha Vehicles - Neolithic,4,dormant,0,vehicle_or_automaton,0.367
-AV_Palanquin,Palanquin,Alpha Vehicles - Neolithic,1,dormant,0,vehicle_or_automaton,0.225
-AV_Rickshaw,Rickshaw,Alpha Vehicles - Neolithic,1,dormant,0,vehicle_or_automaton,0.225
-AV_RowBoat,Row boat,Alpha Vehicles - Neolithic,1,dormant,0,vehicle_or_automaton,0.225
-AV_WarChariot,War chariot,Alpha Vehicles - Neolithic,2.5,dormant,0,vehicle_or_automaton,0.296
-AV_Wheelbarrow,Wheelbarrow,Alpha Vehicles - Neolithic,1,dormant,0,vehicle_or_automaton,0.258
+AV_Balloon,Balloon,Alpha Vehicles - Neolithic,5,dormant,0,sessile,0.3
+AV_Chariot,Chariot,Alpha Vehicles - Neolithic,2,dormant,0,sessile,0.283
+AV_CoveredCarriage,Covered Carriage,Alpha Vehicles - Neolithic,2.5,dormant,0,sessile,0.363
+AV_DogSled,eopie sled,Alpha Vehicles - Neolithic,2,dormant,0,sessile,0.283
+AV_Hwacha,Hwacha,Alpha Vehicles - Neolithic,1,dormant,0,sessile,0.258
+AV_OutriggerCanoe,Outrigger Canoe,Alpha Vehicles - Neolithic,1.5499999523162842,dormant,0,sessile,0.272
+AV_OxCart,Ox cart,Alpha Vehicles - Neolithic,4,dormant,0,sessile,0.367
+AV_Palanquin,Palanquin,Alpha Vehicles - Neolithic,1,dormant,0,sessile,0.225
+AV_Rickshaw,Rickshaw,Alpha Vehicles - Neolithic,1,dormant,0,sessile,0.225
+AV_RowBoat,Row boat,Alpha Vehicles - Neolithic,1,dormant,0,sessile,0.225
+AV_WarChariot,War chariot,Alpha Vehicles - Neolithic,2.5,dormant,0,sessile,0.296
+AV_Wheelbarrow,Wheelbarrow,Alpha Vehicles - Neolithic,1,dormant,0,sessile,0.258
 Acklay,acklay,Star Wars Animal Collection (Continued),3,ours,1,wildlife,0.725
 Aiwha,aiwha,Star Wars Animal Collection (Continued),3,foreign,1,wildlife,0.625
 Akk,akk,Star Wars Animal Collection (Continued),3,ours,1,wildlife,0.75
@@ -199,8 +199,8 @@ Arthropleura,arthropleura,Megafauna,3.5,ours,1,wildlife,0.571
 Aurochs,aurochs,Megafauna,3,dormant,1,wildlife,0.475
 BI_Queen,queen,Better Infestations (Continued),1.7999999523162842,dormant,1,wildlife,0.745
 BMT_AaroxisDendoria,aaroxis dendoria,Biomes! Caverns,1,ours,1,wildlife,0.425
-BMT_AaroxisDendoriaLarvae,cinnabar caterpillar,Biomes! Caverns,0.800000011920929,ours,1,wildlife,0.42
-BMT_AaroxisDendoriaPupa,aaroxis dendoria pupa,Biomes! Caverns,1,dormant,1,wildlife,0.625
+BMT_AaroxisDendoriaLarvae,cinnabar caterpillar,Biomes! Caverns,0.800000011920929,ours,0,lifecycle_stage,0.42
+BMT_AaroxisDendoriaPupa,aaroxis dendoria pupa,Biomes! Caverns,1,dormant,0,lifecycle_stage,0.625
 BMT_AcidSlug,acid slug,Biomes! Caverns,4,dormant,1,wildlife,0.883
 BMT_BarbedPangolin,barbed pangolin,Biomes! Polluted Lands,2,dormant,1,wildlife,0.582
 BMT_Basilisk,basilisk,Biomes! Caverns,1.5,dormant,1,wildlife,0.588
@@ -208,12 +208,12 @@ BMT_Batbird,batbird,Biomes! Caverns,0.25,dormant,1,wildlife,0.556
 BMT_BeardedYak,bearded yak,Biomes! Caverns,2.0999999046325684,dormant,1,wildlife,0.452
 BMT_BiliousVarog,bilious varog,Biomes! Polluted Lands,2.4000000953674316,dormant,1,wildlife,0.767
 BMT_BloodletterPetrel,bloodletter petrel,Biomes! Polluted Lands,0.3199999928474426,dormant,1,wildlife,0.548
-BMT_BloodropLarvae,bloodrop larvae,Biomes! Caverns,0.699999988079071,ours,1,wildlife,0.567
+BMT_BloodropLarvae,bloodrop larvae,Biomes! Caverns,0.699999988079071,ours,0,lifecycle_stage,0.567
 BMT_BloodropMoth,bloodrop moth,Biomes! Caverns,0.7699999809265137,ours,1,wildlife,0.569
-BMT_BloodropPupa,bloodrop pupa,Biomes! Caverns,1,dormant,1,wildlife,0.625
+BMT_BloodropPupa,bloodrop pupa,Biomes! Caverns,1,dormant,0,lifecycle_stage,0.625
 BMT_BovineBeetle,bovine beetle,Biomes! Caverns,2.450000047683716,ours,1,wildlife,0.536
-BMT_BovineBeetleLarvae,bovine grub,Biomes! Caverns,0.8999999761581421,ours,1,wildlife,0.572
-BMT_BovineBeetlePupa,bovine pupa,Biomes! Caverns,1,dormant,1,wildlife,0.708
+BMT_BovineBeetleLarvae,bovine grub,Biomes! Caverns,0.8999999761581421,ours,0,lifecycle_stage,0.572
+BMT_BovineBeetlePupa,bovine pupa,Biomes! Caverns,1,dormant,0,lifecycle_stage,0.708
 BMT_BrownBat,brown bat,Biomes! Caverns,0.25,dormant,1,wildlife,0.556
 BMT_BunkerBug,bunker bug,Biomes! Polluted Lands,4,dormant,1,wildlife,0.917
 BMT_CactusCrab,cactus crab,Biomes! Caverns,2.4000000953674316,dormant,1,wildlife,0.718
@@ -227,8 +227,8 @@ BMT_ColonyPustuleHornetQueen,pustule queen,Biomes! Polluted Lands,1,dormant,1,wi
 BMT_Creature_Mantrap,mantrap,Biomes! Polluted Lands,0.7699999809265137,dormant,1,wildlife,0.559
 BMT_CrestedDragon,crested dragon,Biomes! Caverns,0.699999988079071,dormant,1,wildlife,0.567
 BMT_CrystalBeetle,crystalback beetle,Biomes! Caverns,2.450000047683716,ours,1,wildlife,0.506
-BMT_CrystalBeetleLarvae,crystalback grub,Biomes! Caverns,0.8999999761581421,ours,1,wildlife,0.422
-BMT_CrystalBeetlePupa,crystalback pupa,Biomes! Caverns,1,dormant,1,wildlife,0.567
+BMT_CrystalBeetleLarvae,crystalback grub,Biomes! Caverns,0.8999999761581421,ours,0,lifecycle_stage,0.422
+BMT_CrystalBeetlePupa,crystalback pupa,Biomes! Caverns,1,dormant,0,lifecycle_stage,0.567
 BMT_CrystalCrab,crystal crab,Biomes! Caverns,2.4000000953674316,ours,1,wildlife,0.718
 BMT_CrystalFairyMole,crystal fairy mole,Biomes! Caverns,0.8600000143051147,ours,1,wildlife,0.422
 BMT_CrystalMantis,crystal mimic mantis,Biomes! Caverns,2,ours,1,wildlife,0.767
@@ -236,15 +236,15 @@ BMT_Crystalope,crystalope,Biomes! Caverns,2,ours,1,wildlife,0.45
 BMT_DarkAxolotl,dark axolotl,Biomes! Caverns,1,dormant,1,wildlife,0.575
 BMT_Diggerpede,diggerpede,Biomes! Caverns,1.5,dormant,1,wildlife,0.687
 BMT_FacetMoth,facet moth,Biomes! Caverns,0.7699999809265137,ours,1,wildlife,0.419
-BMT_FacetMothLarvae,crystalline caterpillar,Biomes! Caverns,0.699999988079071,ours,1,wildlife,0.417
-BMT_FacetMothPupa,facet pupa,Biomes! Caverns,1,dormant,1,wildlife,0.625
+BMT_FacetMothLarvae,crystalline caterpillar,Biomes! Caverns,0.699999988079071,ours,0,lifecycle_stage,0.417
+BMT_FacetMothPupa,facet pupa,Biomes! Caverns,1,dormant,0,lifecycle_stage,0.625
 BMT_FamineLocust,famine locust,Biomes! Polluted Lands,0.3199999928474426,dormant,1,wildlife,0.608
 BMT_FenridStoat,fenrid stoat,Biomes! Polluted Lands,1.399999976158142,dormant,1,wildlife,0.575
 BMT_FireSalamander,fire salamander,Biomes! Caverns,1.25,foreign,1,wildlife,0.598
 BMT_FleeceSpider,fleece spider,Biomes! Caverns,0.3199999928474426,dormant,1,wildlife,0.608
 BMT_FoundryBeetle,foundry beetle,Biomes! Caverns,2.4000000953674316,foreign,1,wildlife,0.66
-BMT_FoundryBeetleLarvae,foundry grub,Biomes! Caverns,1.7999999523162842,dormant,1,wildlife,0.445
-BMT_FoundryBeetlePupa,foundry pupa,Biomes! Caverns,1,dormant,1,wildlife,0.692
+BMT_FoundryBeetleLarvae,foundry grub,Biomes! Caverns,1.7999999523162842,dormant,0,lifecycle_stage,0.445
+BMT_FoundryBeetlePupa,foundry pupa,Biomes! Caverns,1,dormant,0,lifecycle_stage,0.692
 BMT_FreezerFrog,freezer frog,Biomes! Caverns,0.75,dormant,1,wildlife,0.569
 BMT_FrostweaverSpider,frostweaver,Biomes! Caverns,2.4000000953674316,dormant,1,wildlife,0.735
 BMT_FungalFerret,fungal ferret,Biomes! Caverns,0.5,ours,1,wildlife,0.562
@@ -265,8 +265,8 @@ BMT_HungeringHydra,hungering hydra,Biomes! Caverns,5.5,dormant,1,wildlife,0.817
 BMT_ImperialToad,imperial toad,Biomes! Caverns,0.30000001192092896,dormant,1,wildlife,0.558
 BMT_Jellypot,jellypot,Biomes! Caverns,0.6499999761581421,dormant,1,wildlife,0.676
 BMT_JewelBeetle,jewel beetle,Biomes! Caverns,2.450000047683716,dormant,1,wildlife,0.506
-BMT_JewelBeetleLarvae,jewel grub,Biomes! Caverns,0.8999999761581421,dormant,1,wildlife,0.422
-BMT_JewelBeetlePupa,jewel pupa,Biomes! Caverns,1,dormant,1,wildlife,0.567
+BMT_JewelBeetleLarvae,jewel grub,Biomes! Caverns,0.8999999761581421,dormant,0,lifecycle_stage,0.422
+BMT_JewelBeetlePupa,jewel pupa,Biomes! Caverns,1,dormant,0,lifecycle_stage,0.567
 BMT_LandOctopus,terrestrial octopus,Biomes! Core,0.800000011920929,dormant,1,wildlife,0.57
 BMT_MaceDrake,mace drake,Biomes! Caverns,3.5,dormant,1,wildlife,0.704
 BMT_Maguana,maguana,Biomes! Caverns,2.0999999046325684,foreign,1,wildlife,0.452
@@ -275,15 +275,15 @@ BMT_Maxolotl,maxolotl,Biomes! Core,2.4000000953674316,ours,1,wildlife,0.61
 BMT_Megabat,megabat,Biomes! Caverns,2.200000047683716,dormant,1,wildlife,0.605
 BMT_Megakrill,megakrill,Biomes! Polluted Lands,0.20000000298023224,dormant,1,wildlife,0.455
 BMT_Megaphorid,megaphorid,Biomes! Polluted Lands,0.6000000238418579,dormant,1,wildlife,0.615
-BMT_MegaphoridLarva,megaphorid maggot,Biomes! Polluted Lands,0.3199999928474426,dormant,1,wildlife,0.548
+BMT_MegaphoridLarva,megaphorid maggot,Biomes! Polluted Lands,0.3199999928474426,dormant,0,lifecycle_stage,0.548
 BMT_Megapleura,megapleura,Biomes! Caverns,2.4000000953674316,ours,1,wildlife,0.56
 BMT_Megaroach,megaroach,Biomes! Polluted Lands,0.20000000298023224,dormant,1,wildlife,0.605
 BMT_MetalloSnail,metallosnail,Biomes! Caverns,0.8500000238418579,foreign,1,wildlife,0.696
 BMT_Mole,mole,Biomes! Caverns,0.4000000059604645,dormant,1,wildlife,0.56
 BMT_Molebear,Molebear,Biomes! Caverns,2.1500000953674316,dormant,1,wildlife,0.604
 BMT_MossBeetle,moss beetle,Biomes! Caverns,0.44999998807907104,ours,1,wildlife,0.456
-BMT_MossBeetleLarvae,moss grub,Biomes! Caverns,0.699999988079071,ours,1,wildlife,0.567
-BMT_MossBeetlePupa,moss pupa,Biomes! Caverns,1,dormant,1,wildlife,0.758
+BMT_MossBeetleLarvae,moss grub,Biomes! Caverns,0.699999988079071,ours,0,lifecycle_stage,0.567
+BMT_MossBeetlePupa,moss pupa,Biomes! Caverns,1,dormant,0,lifecycle_stage,0.758
 BMT_MossyFennec,mossy fennec,Biomes! Caverns,0.6000000238418579,ours,1,wildlife,0.565
 BMT_MucklurkerCatfish,mucklurker catfish,Biomes! Polluted Lands,0.8500000238418579,dormant,1,wildlife,0.561
 BMT_MutagenicNorphea,mutagenic norphea,Biomes! Polluted Lands,0.3199999928474426,dormant,1,wildlife,0.458
@@ -298,21 +298,21 @@ BMT_PustuleHornetQueen,pustule queen,Biomes! Polluted Lands,1,dormant,1,wildlife
 BMT_PustuleHornetSpawned,pustule hornet,Biomes! Polluted Lands,0.3199999928474426,dormant,1,wildlife,0.608
 BMT_Rimebeak,rimebeak,Biomes! Caverns,1.399999976158142,dormant,1,wildlife,0.585
 BMT_RoyalRhino,royal rhino beetle,Biomes! Caverns,3,ours,1,wildlife,0.692
-BMT_RoyalRhinoLarvae,royal rhino grub,Biomes! Caverns,0.8999999761581421,dormant,1,wildlife,0.789
-BMT_RoyalRhinoPupa,royal rhino pupa,Biomes! Caverns,1,dormant,1,wildlife,0.875
+BMT_RoyalRhinoLarvae,royal rhino grub,Biomes! Caverns,0.8999999761581421,dormant,0,lifecycle_stage,0.789
+BMT_RoyalRhinoPupa,royal rhino pupa,Biomes! Caverns,1,dormant,0,lifecycle_stage,0.875
 BMT_Sacapillar,sacapillar,Biomes! Polluted Lands,2.4000000953674316,dormant,1,wildlife,0.51
 BMT_SandLeaper,sand leaper,Biomes! Caverns,0.20000000298023224,dormant,1,wildlife,0.455
 BMT_SandPillar,sandpillar,Biomes! Caverns,0.800000011920929,dormant,1,wildlife,0.42
 BMT_Screecher,screecher,Biomes! Polluted Lands,1,dormant,1,wildlife,0.565
 BMT_ShatterjawBeetle,shatterjaw beetle,Biomes! Caverns,1,ours,1,wildlife,0.625
-BMT_ShatterjawBeetleLarvae,shatterjaw grub,Biomes! Caverns,0.8999999761581421,dormant,1,wildlife,0.422
-BMT_ShatterjawBeetlePupa,shatterjaw pupa,Biomes! Caverns,1,dormant,1,wildlife,0.625
+BMT_ShatterjawBeetleLarvae,shatterjaw grub,Biomes! Caverns,0.8999999761581421,dormant,0,lifecycle_stage,0.422
+BMT_ShatterjawBeetlePupa,shatterjaw pupa,Biomes! Caverns,1,dormant,0,lifecycle_stage,0.625
 BMT_ShimmershellSnail,shimmershell snail,Biomes! Caverns,0.6000000238418579,ours,1,wildlife,0.485
 BMT_SilverSheep,silver sheep,Biomes! Caverns,0.8500000238418579,dormant,1,wildlife,0.421
 BMT_SludgeCrawler,sludgecrawler,Biomes! Polluted Lands,2.5999999046325684,dormant,1,wildlife,0.563
 BMT_SmogMoth,smog moth,Biomes! Polluted Lands,0.7699999809265137,dormant,1,wildlife,0.559
-BMT_SmogMothLarvae,smog caterpillar,Biomes! Polluted Lands,0.5,dormant,1,wildlife,0.403
-BMT_SmogPupa,smog pupa,Biomes! Polluted Lands,1,dormant,1,wildlife,0.625
+BMT_SmogMothLarvae,smog caterpillar,Biomes! Polluted Lands,0.5,dormant,0,lifecycle_stage,0.403
+BMT_SmogPupa,smog pupa,Biomes! Polluted Lands,1,dormant,0,lifecycle_stage,0.625
 BMT_SmolderstingScorpion,smoldersting scorpion,Biomes! Caverns,2,foreign,1,wildlife,0.603
 BMT_Snowstalker,snowstalker,Biomes! Caverns,1,dormant,1,wildlife,0.575
 BMT_SonarRabbit,sonar rabbit,Biomes! Caverns,0.20000000298023224,ours,1,wildlife,0.405
@@ -430,14 +430,14 @@ Dromedary,dromedary,Core,2.0999999046325684,ours,1,wildlife,0.452
 Drone_Hunter,hunter drone,Odyssey,0.699999988079071,dormant,0,not_an_animal,0.517
 Drone_Sentry,sentry drone,Odyssey,1,dormant,0,not_an_animal,0.525
 Drone_Wasp,wasp,Odyssey,0.25,dormant,0,not_an_animal,0.506
-Dryad_Barkskin,barkskin dryad,Ideology,0.6499999761581421,dormant,1,wildlife,0.65
-Dryad_Basic,immature dryad,Ideology,0.6669999957084656,dormant,1,wildlife,0.467
-Dryad_Berrymaker,berrymaker dryad,Ideology,0.6669999957084656,dormant,1,wildlife,0.467
-Dryad_Carrier,carrier dryad,Ideology,0.6669999957084656,dormant,1,wildlife,0.467
-Dryad_Clawer,clawer dryad,Ideology,0.6669999957084656,dormant,1,wildlife,0.467
-Dryad_Gaumaker,gaumaker dryad,Ideology,0.6669999957084656,dormant,1,wildlife,0.467
-Dryad_Medicinemaker,medicinemaker dryad,Ideology,0.6669999957084656,dormant,1,wildlife,0.467
-Dryad_Woodmaker,woodmaker dryad,Ideology,0.6669999957084656,dormant,1,wildlife,0.467
+Dryad_Barkskin,barkskin dryad,Ideology,0.6499999761581421,dormant,0,dryad,0.65
+Dryad_Basic,immature dryad,Ideology,0.6669999957084656,dormant,0,dryad,0.467
+Dryad_Berrymaker,berrymaker dryad,Ideology,0.6669999957084656,dormant,0,dryad,0.467
+Dryad_Carrier,carrier dryad,Ideology,0.6669999957084656,dormant,0,dryad,0.467
+Dryad_Clawer,clawer dryad,Ideology,0.6669999957084656,dormant,0,dryad,0.467
+Dryad_Gaumaker,gaumaker dryad,Ideology,0.6669999957084656,dormant,0,dryad,0.467
+Dryad_Medicinemaker,medicinemaker dryad,Ideology,0.6669999957084656,dormant,0,dryad,0.467
+Dryad_Woodmaker,woodmaker dryad,Ideology,0.6669999957084656,dormant,0,dryad,0.467
 Duck,duck,Core,0.30000001192092896,foreign,1,wildlife,0.408
 ERN_Amaro,amaro,Erin's Final Fantasy Animals,1.25,ours,1,wildlife,0.431
 ERN_BigCarbuncle,grand carbuncle,Erin's Final Fantasy Animals,1,dormant,1,wildlife,0.575
@@ -458,7 +458,7 @@ FeralGrazer,feral grazer,Star Wars Animal Collection (Continued),2,ours,1,wildli
 FeralNerf,feral nerf,Star Wars Animal Collection (Continued),1,ours,1,wildlife,0.425
 Fingerspike,fingerspike,Anomaly,0.6000000238418579,dormant,1,anomaly,0.165
 Flamingo,flamingo,Odyssey,0.6000000238418579,dormant,1,wildlife,0.565
-FleshmassNucleus,fleshmass nucleus,Anomaly,1,dormant,1,anomaly,0.525
+FleshmassNucleus,fleshmass nucleus,Anomaly,1,dormant,0,sessile,0.525
 Fox_Arctic,arctic fox,Core,0.550000011920929,ours,1,wildlife,0.564
 Fox_Fennec,fennec fox,Core,0.550000011920929,ours,1,wildlife,0.564
 Fox_Red,red fox,Core,0.550000011920929,ours,1,wildlife,0.564
@@ -830,7 +830,7 @@ KwazelMaw,kwazel maw,Star Wars Animal Collection (Continued),4,ours,1,wildlife,0
 Kwi,Kwi,Star Wars Animal Collection (Continued),3,ours,1,wildlife,0.545
 Kybuck,kybuck,Star Wars Animal Collection (Continued),1,ours,1,wildlife,0.425
 LabradorRetriever,labrador retriever,Core,0.75,dormant,1,wildlife,0.569
-Larva,larva,Odyssey,0.20000000298023224,dormant,1,wildlife,0.605
+Larva,larva,Odyssey,0.20000000298023224,dormant,0,lifecycle_stage,0.605
 LavaFlea,lava flea,Star Wars Animal Collection (Continued),2.4000000953674316,ours,1,wildlife,0.75
 LavaSnail,lava snail,Odyssey,0.8999999761581421,ours,1,wildlife,0.664
 Leaftail,leaf-tail,Star Wars Animal Collection (Continued),0.20000000298023224,ours,1,wildlife,0.555
@@ -925,7 +925,7 @@ Neanderthal,neanderthal,Beasts of the Rim (Continued),1,dormant,1,wildlife,0.575
 Neebray,neebray,Star Wars Animal Collection (Continued),0.20000000298023224,ours,1,wildlife,0.605
 Nerf,nerf,Star Wars Animal Collection (Continued),2,ours,1,wildlife,0.45
 Nexu,nexu,Star Wars Animal Collection (Continued),2.5,ours,1,wildlife,0.646
-Nociosphere,nociosphere,Anomaly,3.5999999046325684,dormant,1,anomaly,0.59
+Nociosphere,nociosphere,Anomaly,3.5999999046325684,dormant,0,sessile,0.59
 Noctol,noctol,Anomaly,1,dormant,1,anomaly,0.252
 Nuna,nuna,Star Wars Animal Collection (Continued),0.6000000238418579,ours,1,wildlife,0.415
 Ollopom,ollopom,Star Wars Animal Collection (Continued),0.6000000238418579,foreign,1,wildlife,0.415
@@ -1101,29 +1101,29 @@ VQEA_Splicetoot,splicetoot,Vanilla Quests Expanded - Ancients,0.800000011920929,
 VQE_IceCrawler,ice crawler,Vanilla Quests Expanded - Cryptoforge,0.800000011920929,dormant,1,wildlife,0.68
 VQE_Megamidge,megamidge,Vanilla Quests Expanded - Cryptoforge,1.2000000476837158,dormant,1,wildlife,0.705
 VRE_CompanionDryad,companion dryad,Vanilla Races Expanded - Phytokin,2.4000000953674316,dormant,1,wildlife,0.66
-VVE_BangBus,Bang Bus,Vanilla Vehicles Expanded,3.5,dormant,0,vehicle_or_automaton,0.581
-VVE_Bulldog,Bulldog,Vanilla Vehicles Expanded,4.5,dormant,0,vehicle_or_automaton,0.6
-VVE_Bunsen,Bunsen,Vanilla Vehicles Expanded,3.5,dormant,0,vehicle_or_automaton,0.588
-VVE_Charley,Charley,Vanilla Vehicles Expanded,1,dormant,0,vehicle_or_automaton,0.458
-VVE_Dinghy,Dinghy,Vanilla Vehicles Expanded,2,dormant,0,vehicle_or_automaton,0.51
-VVE_Dirtbike,Dirtbike,Vanilla Vehicles Expanded,1,dormant,0,vehicle_or_automaton,0.435
-VVE_Frog,Frog,Vanilla Vehicles Expanded,1.5,dormant,0,vehicle_or_automaton,0.524
-VVE_Highwayman,Highwayman,Vanilla Vehicles Expanded,2.75,dormant,0,vehicle_or_automaton,0.569
-VVE_Mosquito,Mosquito,Vanilla Vehicles Expanded,2.25,dormant,0,vehicle_or_automaton,0.543
-VVE_Mule,Mule,Vanilla Vehicles Expanded,3.5,dormant,0,vehicle_or_automaton,0.554
-VVE_Prowler,Prowler,Vanilla Vehicles Expanded,2.5,dormant,0,vehicle_or_automaton,0.539
-VVE_Roadkill,Roadkill,Vanilla Vehicles Expanded,3.5,dormant,0,vehicle_or_automaton,0.588
-VVE_Roadrunner,Roadrunner,Vanilla Vehicles Expanded,3.25,dormant,0,vehicle_or_automaton,0.568
-VVE_Scytheman,Scytheman,Vanilla Vehicles Expanded,1,dormant,0,vehicle_or_automaton,0.502
-VVE_Smuggler,Smuggler,Vanilla Vehicles Expanded,5.5,dormant,0,vehicle_or_automaton,0.593
-VVE_Snatcher,Snatcher,Vanilla Vehicles Expanded,3.25,dormant,0,vehicle_or_automaton,0.568
-VVE_Tango,Tango,Vanilla Vehicles Expanded,4.5,dormant,0,vehicle_or_automaton,0.6
-VVE_Toad,Toad,Vanilla Vehicles Expanded,1.5,dormant,0,vehicle_or_automaton,0.537
-VVE_Traveller,Traveller,Vanilla Vehicles Expanded,3.25,dormant,0,vehicle_or_automaton,0.568
-VVE_Trawler,Trawler,Vanilla Vehicles Expanded,3.25,dormant,0,vehicle_or_automaton,0.581
-VVE_Wagon,Wagon,Vanilla Vehicles Expanded,3.5,dormant,0,vehicle_or_automaton,0.584
-VVE_Warbird,Warbird,Vanilla Vehicles Expanded,6.5,dormant,0,vehicle_or_automaton,0.6
-VVE_Wisent,Wisent,Vanilla Vehicles Expanded,3.5,dormant,0,vehicle_or_automaton,0.587
+VVE_BangBus,Bang Bus,Vanilla Vehicles Expanded,3.5,dormant,0,sessile,0.581
+VVE_Bulldog,Bulldog,Vanilla Vehicles Expanded,4.5,dormant,0,sessile,0.6
+VVE_Bunsen,Bunsen,Vanilla Vehicles Expanded,3.5,dormant,0,sessile,0.588
+VVE_Charley,Charley,Vanilla Vehicles Expanded,1,dormant,0,sessile,0.458
+VVE_Dinghy,Dinghy,Vanilla Vehicles Expanded,2,dormant,0,sessile,0.51
+VVE_Dirtbike,Dirtbike,Vanilla Vehicles Expanded,1,dormant,0,sessile,0.435
+VVE_Frog,Frog,Vanilla Vehicles Expanded,1.5,dormant,0,sessile,0.524
+VVE_Highwayman,Highwayman,Vanilla Vehicles Expanded,2.75,dormant,0,sessile,0.569
+VVE_Mosquito,Mosquito,Vanilla Vehicles Expanded,2.25,dormant,0,sessile,0.543
+VVE_Mule,Mule,Vanilla Vehicles Expanded,3.5,dormant,0,sessile,0.554
+VVE_Prowler,Prowler,Vanilla Vehicles Expanded,2.5,dormant,0,sessile,0.539
+VVE_Roadkill,Roadkill,Vanilla Vehicles Expanded,3.5,dormant,0,sessile,0.588
+VVE_Roadrunner,Roadrunner,Vanilla Vehicles Expanded,3.25,dormant,0,sessile,0.568
+VVE_Scytheman,Scytheman,Vanilla Vehicles Expanded,1,dormant,0,sessile,0.502
+VVE_Smuggler,Smuggler,Vanilla Vehicles Expanded,5.5,dormant,0,sessile,0.593
+VVE_Snatcher,Snatcher,Vanilla Vehicles Expanded,3.25,dormant,0,sessile,0.568
+VVE_Tango,Tango,Vanilla Vehicles Expanded,4.5,dormant,0,sessile,0.6
+VVE_Toad,Toad,Vanilla Vehicles Expanded,1.5,dormant,0,sessile,0.537
+VVE_Traveller,Traveller,Vanilla Vehicles Expanded,3.25,dormant,0,sessile,0.568
+VVE_Trawler,Trawler,Vanilla Vehicles Expanded,3.25,dormant,0,sessile,0.581
+VVE_Wagon,Wagon,Vanilla Vehicles Expanded,3.5,dormant,0,sessile,0.584
+VVE_Warbird,Warbird,Vanilla Vehicles Expanded,6.5,dormant,0,sessile,0.6
+VVE_Wisent,Wisent,Vanilla Vehicles Expanded,3.5,dormant,0,sessile,0.587
 Vapaad,vapaad,Star Wars Animal Collection (Continued),4,ours,1,wildlife,0.868
 Varactyl,varactyl,Star Wars Animal Collection (Continued),3,ours,1,wildlife,0.475
 Veermok,veermok,Star Wars Animal Collection (Continued),2,ours,1,wildlife,0.6
