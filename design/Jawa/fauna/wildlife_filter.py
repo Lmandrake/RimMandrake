@@ -13,7 +13,9 @@ biological exuberance. So that's just one criteria."
 """
 import csv, json, os
 FA = os.path.dirname(os.path.abspath(__file__))
-D = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump"
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from dumppath import dump_root
+D = dump_root()
 A = {x['defName']: x for x in json.load(open(D + "/animals.json", encoding='utf-8'))['animals']}
 
 MECH_FLESH = {'Mechanoid', 'MetalVehicle', 'Asimov_Automaton', 'GR_Mechanoid',

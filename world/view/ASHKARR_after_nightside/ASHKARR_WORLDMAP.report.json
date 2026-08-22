@@ -34,11 +34,18 @@
   "distinct": 27,
   "census": [
    {
-    "biome": "ExtremeDesert",
-    "tiles": 3946,
-    "pct": 18.041,
+    "biome": "Desert",
+    "tiles": 4134,
+    "pct": 18.901,
     "water": false,
-    "temp_c": 43.3
+    "temp_c": 22.6
+   },
+   {
+    "biome": "ExtremeDesert",
+    "tiles": 3519,
+    "pct": 16.089,
+    "water": false,
+    "temp_c": 46.2
    },
    {
     "biome": "AB_RockyCrags",
@@ -46,20 +53,6 @@
     "pct": 15.65,
     "water": false,
     "temp_c": -30.4
-   },
-   {
-    "biome": "Desert",
-    "tiles": 2147,
-    "pct": 9.816,
-    "water": false,
-    "temp_c": 32.1
-   },
-   {
-    "biome": "AridShrubland",
-    "tiles": 2138,
-    "pct": 9.775,
-    "water": false,
-    "temp_c": 13.2
    },
    {
     "biome": "AB_MycoticJungle",
@@ -95,6 +88,13 @@
     "pct": 2.762,
     "water": false,
     "temp_c": -15.0
+   },
+   {
+    "biome": "AridShrubland",
+    "tiles": 578,
+    "pct": 2.643,
+    "water": false,
+    "temp_c": 20.4
    },
    {
     "biome": "AB_PropaneLakes",
@@ -325,10 +325,10 @@
      "The Glare"
     ],
     "biomes": {
-     "ExtremeDesert": 3839,
+     "Desert": 4134,
+     "ExtremeDesert": 3519,
      "AB_RockyCrags": 3413,
-     "Desert": 2147,
-     "AridShrubland": 2138
+     "AB_MycoticJungle": 1939
     }
    },
    {
@@ -343,7 +343,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "ExtremeDesert": 13
+     "AridShrubland": 13
     }
    },
    {
@@ -374,7 +374,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "ExtremeDesert": 11
+     "AridShrubland": 11
     }
    },
    {
@@ -389,7 +389,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "ExtremeDesert": 10
+     "AridShrubland": 10
     }
    },
    {
@@ -404,7 +404,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "ExtremeDesert": 7
+     "AridShrubland": 7
     }
    },
    {
@@ -419,7 +419,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "ExtremeDesert": 7
+     "AridShrubland": 7
     }
    },
    {
@@ -434,7 +434,7 @@
      "The Twilight Sea"
     ],
     "biomes": {
-     "ExtremeDesert": 5
+     "AridShrubland": 5
     }
    },
    {
@@ -449,7 +449,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "ExtremeDesert": 5
+     "AridShrubland": 5
     }
    },
    {
@@ -464,7 +464,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "ExtremeDesert": 5
+     "AridShrubland": 5
     }
    },
    {
@@ -479,7 +479,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "ExtremeDesert": 3
+     "AridShrubland": 3
     }
    },
    {
@@ -494,7 +494,7 @@
      "The Grey Sea"
     ],
     "biomes": {
-     "ExtremeDesert": 3
+     "AridShrubland": 3
     }
    }
   ],
@@ -673,8 +673,8 @@
    "The Galactic Empire": 3
   },
   "by_biome": {
-   "ExtremeDesert": 27,
-   "Desert": 25,
+   "Desert": 27,
+   "ExtremeDesert": 25,
    "Wasteland": 21,
    "AridShrubland": 14,
    "ZBiome_Badlands": 10,
@@ -1094,7 +1094,7 @@
     "name": "Coldquay",
     "faction": "Deepwater Compact",
     "factionDef": "Jawa_DeepwaterCompact",
-    "biome": "Desert",
+    "biome": "AridShrubland",
     "lat": 5.31,
     "lon": -74.92,
     "elevation_m": 82.0,
@@ -1112,7 +1112,7 @@
     "name": "Deepwater Hold",
     "faction": "Deepwater Compact",
     "factionDef": "Jawa_DeepwaterCompact",
-    "biome": "Desert",
+    "biome": "AridShrubland",
     "lat": 2.29,
     "lon": -77.62,
     "elevation_m": 15.0,
@@ -1598,7 +1598,7 @@
     "name": "Dewfall",
     "faction": "Homestead Defense League",
     "factionDef": "OutlanderCivil",
-    "biome": "AridShrubland",
+    "biome": "Desert",
     "lat": -79.87,
     "lon": 157.61,
     "elevation_m": 608.0,
@@ -1634,7 +1634,7 @@
     "name": "Dripstone",
     "faction": "Homestead Defense League",
     "factionDef": "OutlanderCivil",
-    "biome": "AridShrubland",
+    "biome": "Desert",
     "lat": 69.3,
     "lon": 75.1,
     "elevation_m": 113.0,
@@ -1670,7 +1670,7 @@
     "name": "Farrow",
     "faction": "Homestead Defense League",
     "factionDef": "OutlanderCivil",
-    "biome": "AridShrubland",
+    "biome": "Desert",
     "lat": 75.21,
     "lon": -128.87,
     "elevation_m": 33.0,
@@ -1814,7 +1814,7 @@
     "name": "Mistfoot",
     "faction": "Homestead Defense League",
     "factionDef": "OutlanderCivil",
-    "biome": "AridShrubland",
+    "biome": "Desert",
     "lat": -40.65,
     "lon": 81.2,
     "elevation_m": 35.0,
@@ -1832,7 +1832,7 @@
     "name": "Nightdew",
     "faction": "Homestead Defense League",
     "factionDef": "OutlanderCivil",
-    "biome": "AridShrubland",
+    "biome": "Desert",
     "lat": -57.77,
     "lon": -108.34,
     "elevation_m": 1050.0,
@@ -1940,7 +1940,7 @@
     "name": "Sweetwell",
     "faction": "Homestead Defense League",
     "factionDef": "OutlanderCivil",
-    "biome": "AridShrubland",
+    "biome": "Desert",
     "lat": -73.2,
     "lon": -123.36,
     "elevation_m": 782.0,
@@ -2246,7 +2246,7 @@
     "name": "Norba the Wet's Palace",
     "faction": "Hutt Cartel",
     "factionDef": "Jawa_HuttCartel",
-    "biome": "Desert",
+    "biome": "AridShrubland",
     "lat": 7.48,
     "lon": -70.99,
     "elevation_m": 238.0,
@@ -2372,7 +2372,7 @@
     "name": "Vexxa's Casino",
     "faction": "Hutt Cartel",
     "factionDef": "Jawa_HuttCartel",
-    "biome": "Desert",
+    "biome": "AridShrubland",
     "lat": 35.12,
     "lon": -65.4,
     "elevation_m": 1.0,
@@ -2534,7 +2534,7 @@
     "name": "The Ore Moot",
     "faction": "Jawa Trade Moot",
     "factionDef": "Jawa_IndigenousTribes",
-    "biome": "ExtremeDesert",
+    "biome": "AridShrubland",
     "lat": -2.64,
     "lon": 61.92,
     "elevation_m": 1481.0,
@@ -2552,7 +2552,7 @@
     "name": "Tin Camp",
     "faction": "Jawa Trade Moot",
     "factionDef": "Jawa_IndigenousTribes",
-    "biome": "ExtremeDesert",
+    "biome": "AridShrubland",
     "lat": -6.69,
     "lon": 69.83,
     "elevation_m": 1.0,
