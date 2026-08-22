@@ -55,3 +55,28 @@ every one of the 139 xenotypes appears in the output exactly once with a verdict
 
 ## criteria
 The owner can rule on the shortlist without re-deriving how the gate works.
+
+## ⚠️ CORRECTIONS TO THE SPEC ABOVE — measured 2026-08-22 by BUILD
+
+The spec's caution was right and its facts were not. Three of them:
+
+1. **"asked for by 6 pawn kinds, all Big and Small giants"** — it is **30 pawn kinds**
+   across **8** `*Giant` weaponTags, not 6 across 3. Still all Jotun, Ogre, Troll and one
+   boss, so the conclusion drawn from it survives; the number does not.
+2. **"these look like ordinary weaponTags, which means the gate may be nothing but a tag
+   convention"** — the first half is exactly right and the second half draws the wrong
+   conclusion from it. **No code reads the `*Giant` weaponTags.** But a gate exists
+   anyway, on a field the spec never looked at: `ThingDef.weaponClasses` carrying
+   `BS_GiantWeapon`, restricted by `ItemRestrictionDef` and enforced by a Harmony postfix
+   on `EquipmentUtility.CanEquip`. Looking for a modExtension on the weapons finds nothing
+   — they have none and need none.
+3. **"Warcasket weapons are almost certainly gated by the warcasket APPAREL, not by
+   size"** — right about the vanilla intent, and incomplete about the live state. The
+   apparel grants `VFEP_WarcasketTrait`, but three other mods have since patched
+   `BS_Giant`, `RBM_Herculean_Trait`, `VQEA_Enormous` and `AG_ToughSinews` into the same
+   allow-lists. `WarcasketAll` is also not "asked for by exactly one kind": **5 pawn kinds
+   list it in `apparelTags` and 1 in `weaponTags`.**
+
+⇒ The spec's stop condition — *"if the gate turns out to be tag convention only, say so and
+stop"* — did not fire, and correctly so. The full answer is
+`infrastructure/state/evidence/big_weapon_xenotype_audit_2026-08-22.md`.
