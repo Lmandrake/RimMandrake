@@ -813,6 +813,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>KotORRanged_ion</li>
       <li>Jawa_IonWeapon</li>
+      <li>JawaIon_Damage</li>
       <li>KotORRanged_weak</li>
     </weaponTags>
     <apparelRequired>
@@ -835,6 +836,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <initialWillRange>2~5</initialWillRange>
     <weaponTags>
       <li>Jawa_IonWeapon</li>
+      <li>JawaIon_Damage</li>
       <li>KotORRanged_ion</li>
     </weaponTags>
     <apparelRequired>
@@ -858,6 +860,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>KotORRanged_ion</li>
       <li>Jawa_IonWeapon</li>
+      <li>JawaIon_Damage</li>
     </weaponTags>
     <apparelRequired>
       <li>guy762_Robes_jawa</li>

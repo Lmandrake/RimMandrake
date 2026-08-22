@@ -223,10 +223,21 @@ R = [
  ("Blackstar","Specialist","Blackstar hunter",1100,800,None,["ORSniper","KotORRanged_rare"],[]),
  ("Blackstar","Leader","Captain Jaxen Marr",1800,1500,None,["KotORRanged_legendary","ORPistol"],[]),
 
+# 🔑 IONBLASTER_INTO_THE_GENERATOR_1. `JawaIon_Damage` is the campaign's signature weapon
+# tag and it is declared HERE on Heavy/Specialist/Leader, not in a patch. It replaced
+# `Patches/JawaIon_FieldOurOwnGun.xml`, which was a stopgap and is deleted - a patch that
+# adds a tag the generator does not know about drifts the moment this table is re-emitted.
+# ⛔ The GRUNT is excluded on purpose: `JawaIon_Blaster` costs 420 against his 250 ceiling,
+# so the tag there would be a silent no-op. Same reason his `Jawa_IonWeaponLight` is dead
+# weight today - it resolves to `IW_Gun_IonPistol` (800) and `IW_Gun_IonPDW` (1000), both
+# far above 250. It is KEPT rather than dropped because it costs nothing at spawn time and
+# is the hook a cheap light ion weapon would arrive on; the Jawa's lowest-on-the-map budget
+# is a design feature (design/Jawa/mods/required_mods.md), so the ceiling does not move.
+# His live pool is `KotORRanged_ion` -> `guy762_ionpistol` at 200, which always arms.
  ("TradeMoot","Grunt","Jawa scavenger",250,100,("max","Poor"),["KotORRanged_ion","SaV_jawaheavy","Jawa_IonWeaponLight"],["guy762_Robes_jawa"]),
- ("TradeMoot","Heavy","crawler guard",450,130,("max","Normal"),["KotORRanged_ion","Jawa_IonWeapon","KotORRanged_weak"],["guy762_Robes_jawa"]),
- ("TradeMoot","Specialist","Scrap-Singer",900,160,("max","Normal"),["Jawa_IonWeapon","KotORRanged_ion"],["guy762_Robes_jawa"]),
- ("TradeMoot","Leader","First Bargainer Kiknik the Wealthy",900,250,("max","Good"),["KotORRanged_ion","Jawa_IonWeapon"],["guy762_Robes_jawa"]),
+ ("TradeMoot","Heavy","crawler guard",450,130,("max","Normal"),["KotORRanged_ion","Jawa_IonWeapon","JawaIon_Damage","KotORRanged_weak"],["guy762_Robes_jawa"]),
+ ("TradeMoot","Specialist","Scrap-Singer",900,160,("max","Normal"),["Jawa_IonWeapon","JawaIon_Damage","KotORRanged_ion"],["guy762_Robes_jawa"]),
+ ("TradeMoot","Leader","First Bargainer Kiknik the Wealthy",900,250,("max","Good"),["KotORRanged_ion","Jawa_IonWeapon","JawaIon_Damage"],["guy762_Robes_jawa"]),
 
  ("Junkers","Grunt","Junker scrapper",60,400,("max","Awful"),["ORMeleeBlunt","NeolithicMeleeBasic"],[]),
  ("Junkers","Heavy","warcasket Junker",140,700,None,["SimpleGun","KotORRanged_weak"],["VFEP_WarcasketHelmet_Warcasket"]),
