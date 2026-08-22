@@ -62,7 +62,7 @@
 > and stopping at the pawn page**, which is the owner's act, not a bridge call.
 >
 > 🔑 **Nothing below this block has been re-checked against today's work.** The 2026-08-20
-> sheet is still stale and `RUN_SHEET_REASSEMBLE_AFTER_LOAD_1` still owns it.
+> sheet has since been REASSEMBLED by DECIDE (2026-08-22 13:05); `RUN_SHEET_REASSEMBLE_AFTER_LOAD_1` is closed.
 
 
 > ✅ **DISCHARGED 2026-08-22 — the condition below was MET. Kept for provenance; do not
@@ -85,29 +85,11 @@
 > ✅ **BUILD owns the cast fix.** The owner confirmed the item stays filed where it is;
 > CHECK does not take it.
 
-> 🔴 **STALE — CHECK, 2026-08-22 10:40. This sheet was assembled 2026-08-20 07:35 and A
-> WHOLE LOAD HAS HAPPENED SINCE** (the 08-22 08:40 run, 578 mods, rev591, now harvested
-> and closed as `NEXT_LOAD_LOG_HARVEST_1`). Do not spend a cold load off it until DECIDE
-> reassembles it — filed as `RUN_SHEET_REASSEMBLE_AFTER_LOAD_1`.
->
-> **What that load already changed, so §0's brief is answering yesterday's question:**
-> - ⛔ **§9's premise is broken.** `Inhabited` is not a "first run" any more — it ran on
->   2026-08-21/22 and loaded **193 of 294** characters, because the rosters were still
->   emitting the `<li>` shape. ✅ **That is now FIXED** (`c6060ae8`, `b24dde99`) and
->   verified: re-running `cast_to_xml.py` reproduces the committed tree byte-for-byte, so
->   the §9 sequence may run — but its baseline is only valid if `[Inhabited] ready:` reads
->   **294**. If it reads 193, stop: the fix did not reach the game and no §9 number counts.
-> - ✅ **Deploys are CURRENT as of 2026-08-22 12:50, checked not assumed.** A full
->   `deploy_custom_mods.py` sweep reports *everything in sync* (14 files held on purpose,
->   the v2 WreckedMachines park). The companion was rebuilt and deployed to
->   **`7be4d084`** — it had been left at `43d24a6e`, one commit behind, missing
->   `37ac949d` (`faction_name_get` flagged nine factions that were RIGHT).
-> - ⚠️ **`harvest_log.py` changed under this sheet.** It was counting the load-time
->   patch-file manifest as evidence and reporting `303 / 5252 / 2224` RED against baseline
->   0 for MegafaunaYield, `Jawa_Patches` and `JawaVoice`. All three now read 0 / 0 / 2.
->   **Any number in this sheet quoted from the old tool is suspect.**
-> - 🔑 **269 is a dead number.** The cast roster is **294** on disk. Anything here or in an
->   item that verifies against 269 is verifying against a roster the project outgrew.
+> ✅ **REASSEMBLED — DECIDE, 2026-08-22 13:05. The staleness banner that stood here is GONE,
+> not struck: a banner left on a corrected file trains everyone to ignore banners.**
+> §0 below now describes the load that is actually about to happen. `RUN_SHEET_REASSEMBLE_AFTER_LOAD_1`
+> is closed. **Ten items the old brief listed as pending were already done** — that is what made
+> it dangerous rather than merely old, and they are named in §0 so nobody re-adds them.
 
 > 🔴 **STANDING OWNER RULING — 2026-08-15. THERE IS NO WORLDGEN FEATURE, IN ANY VERSION.**
 >
@@ -158,61 +140,97 @@ until the owner personally verifies art is broken. Art *observation* is welcome 
 
 ---
 
-## 0. ⏱️ PRE-LOAD BRIEF — 2026-08-20 07:35, assembled by DECIDE on the owner's *"prepare for game load"*
+## 0. ⏱️ PRE-LOAD BRIEF — reassembled 2026-08-22 13:05 by DECIDE
 
-**Measured, not remembered.** ⚠️ **First written 07:35 while the game was still UP and BUILD
-was mid-commit in this same tree; RE-MEASURED 07:5x with the game DOWN. Three rows moved and
-the corrections are marked — read the right-hand column, not a number you remember.**
+_Closes `RUN_SHEET_REASSEMBLE_AFTER_LOAD_1`. The previous brief was written 2026-08-20 07:35 and
+described a load that has since happened (08-22 08:40, 578 mods, rev591, harvested and closed as
+`NEXT_LOAD_LOG_HARVEST_1`). **Ten items it listed as pending are already done** — that is what
+made it dangerous rather than merely old._
 
-| check | reading (game DOWN, 07:5x) | consequence |
+### State at reassembly — ⛔ RE-MEASURE ALL OF THIS IMMEDIATELY BEFORE LAUNCHING
+
+| check | reading at 13:05 | consequence |
 |---|---|---|
-| RimWorld process | **not in `tasklist`** — the game is down | ⭐ **The deploy window is OPEN RIGHT NOW.** Assemblies are writable |
-| deploy planner | 🟢 **"Everything in sync"** — 0 pending, 14 held (WreckedMachines, parked to v2 2026-08-12) | nothing is waiting on the window; it is open and empty |
-| `modlist_swap.py --status` | LIVE **578 active**, md5 `deefb393…`, matches **FULL** | 🔴 the ~25-minute cold load, not the 22-second minimal one |
-| `ModsConfig.xml` | **578**, mtime **07:37** — rewritten during this session | ⛔ ~~577 / mtime 00:49~~ was my 07:35 reading and is DEAD. `mandrake.inhabited` was enabled in `1254026` |
-| 🔴 new assembly riding | **`Inhabited.dll` — 39,936 bytes, md5-identical repo↔game, and THE ENGINE HAS NEVER LOADED IT** | ⛔ ~~"no assemblies riding"~~ was my 07:35 reading and is DEAD. In-sync copies are not the same claim as *has run*. See the §4 correction in `EXPECTED_FAILURES_next_load.md` |
-| live def dump | 🔴 **STALE** — `+ mandrake.inhabited` since the dump | ⛔ ~~"CURRENT, do not arm"~~ is DEAD: adding a mod lapses the dump. ✅ **Already armed** — `dump_request.txt` reads `all`. Leave it; **delete it after**, the marker is not consumed |
-| offline artefacts | rebuilt — 6 CSVs written to `observed/2026-08-13/inventory` | current |
-| previous `Player.log` | copied to `observed/2026-08-20/Player.log.pre-reload` (707 KB) | overwritten at next launch; tonight's evidence is safe |
+| game | **DOWN** — CHECK 11:25, 341 processes, no RimWorld, bridge port silent | the deploy window is open |
+| deploys | 🟢 **everything in sync**, checked 12:50 — not assumed | nothing waits on the window |
+| companion | deployed at **`7be4d084`** | had been one commit behind at `43d24a6e` |
+| mod list | **578 active**, `factioncontrol` absent, `FULL.LATEST` clean | 🔴 the ~25-minute load, not the 22-second minimal one |
+| cast fix | landed `c6060ae8` · `b24dde99`; regenerates byte-identical | **the reason the hold is discharged** |
 
-🔑 **The lesson worth keeping, because it cost this brief its accuracy:** *four seats share
-one working tree.* A measurement taken while a peer is committing describes a repo that
-stopped existing. **Re-measure immediately before launch, never at the top of the session.**
-
-### 🔴 Verified before launch, because generating on a stub is unrecoverable
-
-`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Worldbuilder\TidallyLocked\Preset.xml`
-— **PRESENT**, 3,895 bytes, mtime 2026-08-20 00:59, **16 `Jawa_` lines**,
-`myLittlePlanetSubcount 7`, `planetCoverage 1`, `saveGenerationParameters True`.
-Matches the state recorded at handover in
-`worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d`.
-⚠️ **This is a READ, not a deploy** — that item is BUILD's by the owner's 2026-08-20 ruling
-and DECIDE is not touching the file again.
-🔴 **On the world-creation page, Configure Planet must read Scale 7 / Coverage 100%. If it
-reads Scale 10 the preset lost its parameters — ABORT, do not generate.**
+🔑 **Why re-measure:** four seats share one working tree. The 2026-08-20 brief was written while
+a peer was mid-commit and three of its rows were wrong within twenty minutes. **A measurement
+taken at the top of a session describes a repo that has stopped existing.**
 
 ### What this load is FOR, in priority order
 
-1. 🔴 **The 82 ideoligion precepts** — `sequence-the-ideoligion-check-before-the-faction-work-e3f1a7`.
-   The largest unmeasured surface on the board, and an ideoligion **bakes at world creation
-   and cannot be retrofitted**. ⚠️ **There is no offline route**: `validate_ideoligion.py`
-   reads IdeoPresetDef and FactionDef XML and answers *"no religions found"* on a `.rid`.
-   **Decision string: none — this one is a DIALOG, not a log line.** Load `The Salvation.rid`
-   and read the precept list on screen. PASS = all 82 present by defName. ⚠️ *"71 missing"*
-   was CHECK's own scrape bug — the block nests `RitualBehavior` / `RitualOutcomeEffect` /
-   `RitualObligationTargetFilter` names, which are not `PreceptDef`s. Do not re-derive it.
-2. **The xenotype, live** — `the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa`.
-   Fixed on disk 2026-08-15, **never confirmed live.** 🔴 The superseded wrong claim was
-   *also* "36/36 references resolve" from an offline check, so **disk evidence cannot close
-   this item** — only a spawn.
-3. **`seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8`** — on the worldgen clock.
-4. Everything already in §2–§6 below.
+**1. 🔴 Prove the cast fix.** `[Inhabited] ready:` must read **294**, not 193. It is why we
+waited, and every §10 number is void without it. → `CAST_ROSTER_SKILLS_DISCARDED_1`,
+`MECH_AND_ARCHER_ARMED_1`. ⚠️ **269 is a dead number** and several item titles still carry it.
 
-⛔ **NOT riding this load, and here is why, so nobody re-derives it:** the eight `INHABITED_*`
-items filed to BUILD today have **no compiled assembly yet** — `ROSTER_SURVIVES_OFFMAP_PROOF_1`
-is a soak that needs a DLL that does not exist. The river and rainfall work is authored into
-`world/ASHKARR_WORLDMAP_tiles.csv` and reaches the game over the **bridge**, not through a
-load.
+**2. 🔴 `WORLD_PORT_SURVIVES_BRIDGE_1` — the owner's own gate, named 2026-08-22.** Step 2 of his
+four-step sequence: *"we need to successfully show that it can survive a port into the game
+through the live bridge."* ⭐ **Until this passes, nothing downstream about the planet is real.**
+Rank it above everything except the cast number.
+
+**3. Things that BAKE AT WORLD CREATION and can never be retrofitted.** Step 3 of the owner's
+sequence — these do **not** wait for the map, they run in parallel with it.
+  - **The 82 ideoligion precepts.** No offline route exists: `validate_ideoligion.py` reads
+    IdeoPresetDef and FactionDef XML and answers *"no religions found"* on a `.rid`.
+    **Decision string: none — this is a DIALOG, not a log line.** Load `The Salvation.rid` and
+    read the precept list on screen; PASS = all 82 present by defName.
+    ⚠️ *"71 missing"* was a scrape bug — the block nests `RitualBehavior` / `RitualOutcomeEffect` /
+    `RitualObligationTargetFilter` names, which are not `PreceptDef`s. **Do not re-derive it.**
+  - **`LEADER_TITLES_ON_THE_IDEO_1`.** 36 of 37 leader titles come from the generated ideo, not
+    the def — the Junkers' Scraplord reads **`Awoken Cheese`**. 🔴 **Live-only, and on the world
+    that will actually be frozen**: every offline instrument reads `def.leaderTitle`, which is
+    correct and unused, so an offline pass reports success while the defect is fully present.
+  - **`PRESET_ONSCREEN_CHECK_UNVERIFIED_1`** — Configure Planet must read **Scale 7 / Coverage
+    100%**. If it reads Scale 10 the preset lost its parameters: **ABORT, do not generate.**
+    Generating on a stub is unrecoverable.
+
+**4. The pawn-equipment rulings of 2026-08-22 — all quicktest-able, no world needed.**
+⚠️ Ride each **only if BUILD has landed it**; an unbuilt item proves nothing and wastes the slot.
+  - ✅ **`ION_MACHINE_TIER_MISSING_1` — BUILD shipped it (`9bca7ee3`), so it rides.** A
+    `Mech_Scyther` must read `stunned=True` in far fewer than 13 hits; a `Tribal_Warrior` must
+    **still** go down alive at ~6 hits with zero injury hediffs. 🔴 **A regression on the flesh
+    half is a failure, not a bonus** — the owner's LOCKED SPEC D1 requires both tiers.
+  - `BLACKSTAR_NAME_MUST_NOT_LEAK_1` — on a generated world, **exactly one** faction may read
+    `Blackstar Company`, and **exactly one** `Galactic Empire`.
+  - `AUTHORED_KINDS_MUST_FIELD_1` — every combat pawn from `TribeCivil`, `Pirate` and `Empire`
+    must be a `Jawa_*` kind, **and** each faction must still send a trade caravan.
+  - `EMPIRE_BLACKSTAR_ALWAYS_WILLING_1` · `BLACKSTAR_DEEPDESERT_POOLS_EMPTY_1` ·
+    `VANILLA_KINDS_GET_BLASTERS_1` · `BARE_HANDS_REMEASURE_AFTER_LOAD_1`.
+
+**5. The remaining live checks** — §5's batch, plus `LAKE_LINT_NARROWED_NOT_OFF_1`,
+`FACTION_NAME_CHECK_TRUSTWORTHY_1`, `JUVENILE_AND_ASHSTORM_UNRUN_1`, `LIGHTSABER_AP_FROM_HAND_1`,
+`DROID_ENCLAVE_FIELDS_DROIDS_1`, `JAWA_FARM_AND_DRILL_LIVE_1`.
+⚠️ `QUICKTEST_VISUAL_ROUND_1` is **already `doing`** — CHECK owns it; do not start a second one.
+
+### ✅ ALREADY DONE — do NOT put these on the load
+The old brief listed several as pending. Verified against the ledger at 13:05:
+`NEXT_LOAD_LOG_HARVEST_1` · `CLASSIC_IDEO_ERASES_FAITHS_1` · `FACTION_LABELS_ONE_LOOK_1` ·
+`IDEO_ABILITY_DEFS_UNREAD_1` · `LOAD_ABORT_IS_FACTIONCONTROL_1` · `SETTLEMENTS_OFF_IMPASSABLE_1` ·
+`INHABITED_ACTION_BRIDGE_CONFIRM_1` · `IONBUILDUP_ACCRUES_ON_FLESH_1` · `DEPLOY_SALVATION_RID_1` ·
+`THE_SCALD_LOST_ITS_WATER_1` (superseded).
+
+### ⛔ NOT riding this load, so nobody re-derives it
+- **The worldmap edits the owner ordered 13:04** — halve the meridian water
+  (`MERIDIAN_WATER_HALVED_1`) and the Grey Sea brine halo (`GREY_SEA_BRINE_PATCHES_1`). They are
+  authored into `world/ASHKARR_WORLDMAP_tiles.csv` and reach the game over the **bridge**, not
+  through a load — and he ruled them explicitly *after* the reload work.
+- **The plant cherrypick.** Nothing is cut (owner, 12:52: *"keep ALL of these plants initially…
+  let's run around the world and see how it looks before we actually cut anything"*).
+  ⭐ **But walking the world IS a legitimate use of this load** — that is observation, not an art
+  fix, so it is permitted under the standing art directive.
+- **`ROSTER_SURVIVES_OFFMAP_PROOF_1` needs TWO loads** — save → quit → reload. Do not expect to
+  close it on this one.
+
+### Which list each item rides
+**578 (this load):** everything above. The cast fix, the ideoligion dialog, the faction/leader
+work and the world port all need the content mods.
+**Minimal 13 (22 seconds, any time):** the ion tiers, the pawn-equipment spawns and the tag
+audits — none of them needs a real world. 🔑 **If BUILD lands more equipment work after this
+load, do NOT wait for another cold start; a minimal swap answers it in about a minute.**
 
 ### At launch, while it grinds
 ```
@@ -225,6 +243,9 @@ python3 src/RimMandrake/Utils/whats_new.py --seat <SEAT> --mark
 python.exe src/RimMandrake/Utils/harvest_log.py
 ```
 You paid for a full load; harvest the WHOLE log, not only what you changed.
+⚠️ **`harvest_log.py` changed under the old sheet** — it was counting the load-time patch manifest
+as evidence and reporting `303 / 5252 / 2224` RED for MegafaunaYield, `Jawa_Patches` and
+`JawaVoice`. All three now read `0 / 0 / 2`. **Any number quoted from the old tool is suspect.**
 
 ---
 
@@ -233,20 +254,40 @@ You paid for a full load; harvest the WHOLE log, not only what you changed.
 Everything in this section is inert or refused while RimWorld runs. If the game is
 already up, skip to §2.
 
-### 1.0 🔴 THIS WINDOW — the deploy manifest, in order. Opened 2026-08-15.
+### 1.0 ✅ THE DEPLOY MANIFEST IS EMPTY — reassembled DECIDE, 2026-08-22 13:05
 
-**Everything in §5 is uninterpretable until this section is finished** — five of the
-six live items are `blocked — needs deploy`, not blocked on a question.
+> 🔴 **The 2026-08-15 manifest that stood here is GONE, and every row of it has shipped.**
+> It listed six numbered deploys against legacy IDs (`B1`/`B0`, `C38`, `C39`, `C41`, `B25`,
+> `B23`). Leaving it would have sent someone to re-deploy work that landed a week ago —
+> which is exactly how this sheet became dangerous rather than merely old.
 
-| # | deploy | item | why this order |
-|---|---|---|---|
-| **0** | `echo all > ".../DefDump/dump_request.txt"` — §1a | — | ✅ **DONE 13:27 CHECK.** Armed for next startup. Right to do — 18.7 s, and it re-reads the stack *after* this window's three deploys. ⚠️ **The urgency I wrote here was FALSE**: the dump is from **today** (`capturedUtc 2026-08-15T15:10:11Z`), not 2026-08-14. See §1a for the folder-mtime trap that caused it |
-| 1 | `python.exe src/RimMandrake/bridgetools/build.py --gm --apply` — or `./src/RimMandrake/Utils/shutdown_deploy.sh` | BUILD **B1**, closes **B0** | An **assembly, solo**. Everything in §3–§6 is a `jawa/*` call, so a wrong companion poisons every result after it. 🔴 `--gm` or `fire_incident` + `send_letter` are stripped and §5's L3 cannot fire at all |
-| 2 | `deploy_custom_mods.py --mod JawaPlantGrowth` (dry run) then `--apply` | CHECK **C38** | The **second and last assembly**. Deploy it **alone**, not beside #3 — a new DLL in a mixed batch poisons attribution for everything beside it. Then add `mandrake.jawaplantgrowth` to `ModsConfig.xml` **after `brrainz.harmony`** or the Harmony postfix never binds |
-| 3 | `deploy_custom_mods.py --mod DesertVehicleReskin` (dry run) then `--apply` | CHECK **C39** only — ⛔ **NOT C41** | Pure XML and loose PNGs — no window needed, but do it now so it rides this load. This is an **update**, the mod is already at `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\DesertVehicleReskin`. 🔴 `mandrake.desertvehiclereskin` must sit **after** `sarg.alphavehiclesneolithic` or the labels change and the art does not. 🔴 **C41 was paired here in error — B62 is UNBUILT** (`ready`, BUILD 2026-08-15; verified on disk: the folder holds 12 PNGs, C41 needs 24, and its 13 extra defs are absent). This deploy carries the eopie sled and nothing else |
-| 4 | `ModsConfig.xml` chores in ONE pass | BUILD **B25** | Not gated on this window at all (§1b) — a config file is writable game up or down. Standing changes: disable `com.yayo.yayoAni.continued`, pin the six `loadBottom`+`loadAfter` userRules. ⛔ **NOT mechanoids** — see §1b |
-| 5 | Write the three signatures into `EXPECTED_FAILURES` | BUILD **B23** | Must land **before launch** or the load spends attention on errors we already know about |
-| 6 | `python.exe src/RimMandrake/Utils/refresh.py` | B25(b) | 🔴 **NOT a launch gate — DECIDE 2026-08-15.** Moved to §9, after the load. The def dump is armed (step 0) and STARTUP recaptures it, so a dump rebuilt now is superseded ~25 min later. Running it pre-launch costs window and buys a fingerprint that dies at the main menu. **Step 5 is the last thing before launch** |
+**Measured 2026-08-22 12:50, not assumed:** `deploy_custom_mods.py` reports **everything in
+sync**, 0 pending, 14 files held on purpose (the WreckedMachines v2 park). The companion is
+deployed at **`7be4d084`**. ⇒ **Nothing is waiting on this window.**
+
+⛔ **Do not skip the window anyway — re-run the planner before launching.** BUILD may land an
+assembly between now and the launch, and an assembly cannot be written while the game runs.
+
+```
+python3 src/RimMandrake/Utils/deploy_custom_mods.py            # plan only
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --apply    # only if the plan is non-empty
+```
+
+### The ordering doctrine — still true, and the reason the old manifest was numbered
+
+Keep these whenever a deploy DOES appear; they are what the dead table was really carrying.
+
+- 🔴 **An assembly deploys SOLO.** Every call in §3–§6 is a `jawa/*` call, so a wrong companion
+  poisons every result after it. Two new DLLs in one load is a bisection you pay for later.
+- 🔴 **A new mod's `ModsConfig.xml` position is part of the deploy**, not a follow-up. A Harmony
+  patch mod must sit **after `brrainz.harmony`** or the postfix never binds; a reskin must sit
+  **after the mod it reskins** or the labels change and the art does not.
+- 🔑 **`ModsConfig.xml` is NOT gated on this window** (§1b). No config file ever waits — owner's
+  ruling 2026-08-15. Only assemblies wait, because the OS locks them.
+- **Expected-failure signatures land BEFORE launch**, never after — a signature invented after
+  reading the log is a story that fits, not evidence. `EXPECTED_FAILURES_next_load.md`.
+- **`refresh.py` is NOT a launch gate** (DECIDE, 2026-08-15). The dump is armed at step 0 and
+  STARTUP recaptures it, so a dump rebuilt now is superseded ~25 minutes later. It runs in §9.
 
 📌 **The window is not the load.** Steps 2 and 3 only make §5 collectable; nothing here
 is finished until the game is up and §5 runs.
@@ -611,7 +652,22 @@ anything that surprised you to the matching
 `skills/rimworld-modding/references/traps-*.md`, and file the rest into the
 per-seat queues.
 
-## 9. 🧪 INHABITED — first run. Owner: *"full 578 now, minimal after"*, 2026-08-20
+## 10. 🧪 INHABITED — ⛔ NOT a first run any more. Owner: *"full 578 now, minimal after"*, 2026-08-20
+
+> 🔴 **RENUMBERED AND ITS PREMISE CORRECTED — DECIDE, 2026-08-22.** This was a second `## 9.`,
+> which is why cross-references to "§9" were ambiguous. **It is §10.**
+>
+> ⛔ **`Inhabited` is NOT a first run.** It ran on 2026-08-21/22 and loaded **193 of 294**
+> characters, because all 101 CharacterDefs carrying a `<skills>` block were discarded at def
+> load. The sequence below says a positive sighting settles the architecture gate — **it cannot,
+> while a third of the cast is absent.**
+>
+> ✅ **The fix has landed** (`c6060ae8`, `b24dde99`) and regenerates byte-identical, so the
+> sequence below MAY now be run. 🔑 **But its baseline is valid ONLY if `[Inhabited] ready:`
+> reads 294.** If it reads **193**, the fix did not reach the game: **stop, and no number in
+> this section counts.**
+> ⚠️ **Do not delete this sequence.** The first-run test is still the right test — it was the
+> ORDERING that broke. It has to run after the cast fix, not before.
 
 **On THIS load (578).** Reach a quicktest colony, then dev menu → **Inhabited**:
 `Create place at current tile` → `Stuff roster (3 pawns)` → `Report roster`.
