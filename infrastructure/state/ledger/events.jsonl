@@ -1166,3 +1166,5 @@
 {"seat":"DECIDE","event":"start","id":"CUT_TABLE_PAIRED_WRONG_1","ts":"2026-08-22T14:29:33Z"}
 {"seat":"DECIDE","event":"file","id":"FIRE_ARCHER_SPEC_STILL_WRONG_1","title":"The shipped fire-archer spec still prescribes a tag with zero carriers","kind":"task","target":"v1","for":"BUILD","ts":"2026-08-22T14:32:01Z"}
 {"seat":"DECIDE","event":"close","id":"CUT_TABLE_PAIRED_WRONG_1","sha":"9c9bd61b","ts":"2026-08-22T14:32:09Z"}
+{"seat":"CHECK","event":"finding","id":"ION_CAPTURES_PEOPLE_NOT_DROIDS_1","type":"integration","severity":"high","name":"EMP_REACHES_ONE_CLASS_OF_FOUR_1","from":"IONBUILDUP_ACCRUES_ON_FLESH_1/run-1@full-578","ts":"2026-08-22T14:33:25Z"}
+{"seat":"CHECK","event":"spawn","name":"ION_DISABLES_ALL_FOUR_CLASSES_1","kind":"task","needs":"offline","for":"BUILD","from":"EMP_REACHES_ONE_CLASS_OF_FOUR_1","ts":"2026-08-22T14:33:25Z"}
