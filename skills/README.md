@@ -3,6 +3,21 @@
 Each loads itself when its `description` matches the task. Read one when you are
 about to do the thing it names — not before.
 
+## 🔴 A skill is INVISIBLE until it is wired — and `skills/` is not where Claude looks
+
+Authoring is `skills/<name>/SKILL.md`. **Discovery is `.claude/skills/<name>`, a symlink
+back into it.** A skill with no symlink loads for nobody, triggers on nothing, and has no
+symptom — the work it encodes simply never happens.
+
+```
+ln -s ../../skills/<name> .claude/skills/<name>
+```
+
+✅ **Enforced since 2026-08-22**: `.claude/hooks/warn_skill_unwired.py` warns (never
+blocks) when a `SKILL.md` is written or committed with no working symlink, and hands over
+that exact command. ⚠️ A **dangling** symlink is as invisible as none, and the hook treats
+it the same. Verified 2026-08-22: 26 skills, 26 working symlinks.
+
 ## Who owns a skill
 
 **Owner's ruling, 2026-08-15: a skill is owned by the seat that USES it. A skill
