@@ -117,6 +117,15 @@ BUDGETS = [
     # briefings were unmeasured entirely — invisible to the very tool that exists to
     # notice accumulation. Archives, so the budget is loose; it exists to catch growth
     # in a directory that should never grow again.
+    # ⚠️ EXPECTED_FAILURES is a PER-LOAD LEDGER, not a document. Each load adds a
+    # signature block written before it and a Results table filled after; six blocks so
+    # far, five closed. Its length tracks LOADS RUN, not rot, and truncating it destroys
+    # the baselines later loads are graded against — `score_inhabited_load.py` parses §4
+    # directly. Charged at 250 it read +1254 OVER every run, which is the unactionable
+    # noise this file's docstring warns trains everyone to ignore the output.
+    # 🔑 The real lever is ARCHIVING closed blocks (§1, §3, §6) to observed/, not
+    # compressing prose. When this budget is hit, do that rather than cutting.
+    ("infrastructure/state/EXPECTED_FAILURES_next_load.md", 1800),
     ("infrastructure/state/preserved/*.md", 1000),
     ("infrastructure/state/*.md", 250),
 ]

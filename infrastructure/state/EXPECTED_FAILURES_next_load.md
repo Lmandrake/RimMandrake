@@ -33,20 +33,36 @@ log still exists.
 
 ## INDEX OF LOADS
 
-- **§6 — 2026-08-21 ~13:35 — ⬜ OPEN.** One new assembly (Inhabited + its 12 rosters, deployed together), a free def-dump recapture, and three carried greps.
+⚠️ **This index is the file's only map and it drifted badly — rebuilt 2026-08-22.** It
+said §6 was OPEN while §6's own header said CLOSED, and it listed only §1–§4 while the
+body carried §6 and §7. **A map that disagrees with the territory sends the next seat to
+re-run settled work**, which is exactly what it did.
 
 | block | load event | date | status |
 |---|---|---|---|
 | **§1** | three-assemblies batch, reload of the (now deleted) campaign — quicktest map | started **2026-08-13 17:30:59**, harvested 18:11, game up to ~21:10 | ✅ **CLOSED 2026-08-13** — Results filled, incl. two rows honestly marked NOT COLLECTED |
 | **§2** | 🔴 **NEW WORLD GENERATION** — v1 rows 2 + 7 in one irreversible run, plus Anomaly-to-zero | written **2026-08-13**, game DOWN. **Load not yet run.** | ⬜ **OPEN** — signatures written, Results blank |
 | **§3** | the **2026-08-15 deploy-window load** — two assemblies + one XML/PNG mod + a mod-list change, on a **quicktest** map. ⛔ **not worldgen** | written **2026-08-15 ~15:50**, game DOWN, before launch | ⚰️ **CLOSED 2026-08-20 — EVIDENCE UNRECOVERABLE.** Results never filled and the log is gone: `Player.log` rotates every launch and at least five have happened since. **Nothing here can now be answered.** Do not re-run against these signatures — re-book any row that still matters as a NEW block |
-| **§4** | the **2026-08-20 morning load** — the owner's full 577 list, no new assembly. Exercises the **six new companion tools** for the first time | written **2026-08-20 07:4x**, game DOWN, before launch | ⬜ **OPEN** — state table below, run sheet is `CHECK.md` `MORNING_RELOAD_PLAN_1` |
+| **§4** | the **2026-08-20 morning load** — the owner's full 577 list, no new assembly. Exercises the **six new companion tools** for the first time | written **2026-08-20 07:4x**, game DOWN, before launch | ✅ **CLOSED** — Results filled below. 🔑 §4 is the block `score_inhabited_load.py` parses; leave its signature strings alone |
+| **§6** | the **2026-08-21 15:25 load** — one new assembly (Inhabited + its 12 rosters), a free def-dump recapture, three carried greps | written **2026-08-21 ~13:35** | ✅ **CLOSED 2026-08-21** — Results filled in the body, incl. the 824-def hole closed |
+| **§7** | the **2026-08-21 ~16:15 restart**, harvested against the **22:44** load | written before the game closed | 🔴 **CLOSED 2026-08-22 — S1 FAILED.** The 101 cast discards did not come back. ⚠️ Its evidence file is missing; Results are transcribed from the `verify` event |
 
-🔴 **§2 and §3 are both open and they are DIFFERENT EVENTS. Do not fill §2's Results
-from this load's log.** §2 is the irreversible worldgen run, which is the owner's and
-is not scheduled. ⚠️ **That sentence described the 2026-08-15 load and is now historical — §3 is closed unrecoverable and this load runs against §4.** §2's S1–S8 are not re-booked
-here; where §3 needs the same check it restates it, and **§3's T4 REVERSES one of
-§2's S8 rows** — read T4, do not carry S8 forward.
+🔴 **§2 IS THE ONLY BLOCK STILL OPEN, AND IT HAS NEVER RUN.** It is the irreversible
+worldgen run — the owner's, never scheduled, and its Results are blank because the load
+it was written for did not happen.
+
+⚠️ **Read it as a DRAFT, not as a plan.** It was written 2026-08-13 against a world that
+no longer exists: the owner said 2026-08-22 *"I am working with DECIDE to remake the
+planet an entirely different way, so there is no current frozen world"*, and `canon.yml`
+carries `planet.status: remaking`. ⛔ **Its deploy-state table, its expected values and
+its faction rows all describe the superseded world** and must be re-derived before any
+of it is used. ✅ **It is kept, not cut** — the SHAPE of a pre-worldgen signature block
+is worth having when a new world is finally generated, and only the numbers are dead.
+
+⚰️ **§3 is closed EVIDENCE UNRECOVERABLE** — `Player.log` rotates every launch and many
+have happened since. ⛔ Do not re-run against §3's signatures; re-book anything that
+still matters as a NEW block. **§3's T4 REVERSES one of §2's S8 rows** — read T4, never
+carry S8 forward.
 
 ---
 
@@ -185,7 +201,8 @@ first timestamped line `[17:31:34]` at 644, 8,700 lines, mtime 21:10.
 ---
 
 
-# §7 — RESTART 2026-08-21 ~16:15. **⬜ OPEN — written before the game closed.**
+# §7 — RESTART 2026-08-21 ~16:15. **🔴 CLOSED 2026-08-22 — S1 FAILED.**
+*Results below. The 101 cast discards did not come back; the fix did not take.*
 
 Deploy state verified on disk with the game still UP, minutes before the restart:
 
@@ -247,6 +264,40 @@ this restart** — they are open questions, not regressions this fix touches:
 downstream of the 101 discards** — a discarded `CharacterDef` is a dangling
 reference for anything that named it — so re-read this one AFTER the restart before
 filing anything about it.
+
+## §7 RESULTS — filled 2026-08-22 from the ledger, **not** from the log
+
+🔴 **THE FIX DID NOT TAKE. S1 FAILED.** `NEXT_LOAD_LOG_HARVEST_1` `verify` at
+**2026-08-21T23:11:49Z**, `result: partial`, `config: full-578-2026-08-21T22:44Z`,
+sha `2000242`:
+
+| clause | expected | measured | verdict |
+|---|---|---|---|
+| **S1** `DEFS DISCARDED` | exactly **2** | **103** — our **101** + the 2 benign, fully attributed | 🔴 **FAIL — the 101 cast discards did NOT come back** |
+| **S1** `[Inhabited] ready:` | present, count INCLUDING the 101 | printed | ⚠️ **PARTIAL** — presence confirmed, the count is not in the record, and §7 warned that presence alone is insufficient |
+| **S2** patch operations failed | 5 | **5** | ✅ PASS |
+| **S2** texture path failures | 0 | **0** — the 148 did not recur | ✅ PASS |
+| **S2** dead mods | 0 | **0**, both counters; RimAI Core booted | ✅ PASS |
+| carried question — cross-reference | (open, baseline 25) | **128** | ⬜ still open, and see below |
+| carried question — stale Scribe | (open, baseline 0) | **8**, all `guy762_*` GeneDefs | ⬜ still open |
+
+🔑 **§7 predicted this correctly and it is the useful part.** It said *"some of the 128
+may be downstream of the 101 discards — a discarded `CharacterDef` is a dangling
+reference for anything that named it."* The 101 did not come back, and cross-reference
+stayed at 128. **Those two numbers are consistent with one cause**, which is a real lead
+and not a new mystery. ⛔ It is NOT proof — nobody has attributed the 128 line by line.
+
+⛔ **`B59 MEGAFAUNA YIELDS` is UNMEASURED, not passed.** A no-op patch logs nothing, so
+the log cannot answer it; it was settled on screen only. Do not read it as green.
+
+⚠️ **THE EVIDENCE FILE IS MISSING.** The verify says *"saved to
+`observed/2026-08-21_harvest_2244load.txt`"* and **that file is not on disk** — checked
+2026-08-22. The table above is transcribed from the `verify` event's own `evidence`
+string, which is the surviving record. 🔑 A `verify` whose evidence pointer is dead is
+still evidence, but it cannot be re-read or re-counted — treat every number here as
+quoted, not as re-derivable.
+
+---
 
 # §6 — LOAD 2026-08-21 15:25. **✅ CLOSED — results filled in below.**
 
@@ -1245,7 +1296,9 @@ later.
 
 ---
 
-# §4 — LOAD 2026-08-20, the owner's morning load. ⬜ OPEN
+# §4 — LOAD 2026-08-20, the owner's morning load. **✅ CLOSED 2026-08-20 — PASS.**
+*Results below, plus a CORRECTION block filled from the 578-mod load.*
+🔑 **This is the block `score_inhabited_load.py` parses — leave its signature strings alone.**
 
 **Run sheet is not here.** It is `infrastructure/state/queue/CHECK.md` →
 `MORNING_RELOAD_PLAN_1`, and it is ordered. This block records only the thing that
