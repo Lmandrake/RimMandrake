@@ -1152,3 +1152,8 @@
 {"seat":"CHECK","event":"verify","id":"IONBUILDUP_ACCRUES_ON_FLESH_1","result":"partial","config":"full-578","evidence":"infrastructure/state/observed/2026-08-22/ion_buildup/README.md","sha":"20e492bf","ts":"2026-08-22T08:59:46Z"}
 {"seat":"CHECK","event":"finding","id":"IONBUILDUP_ACCRUES_ON_FLESH_1","type":"integration","severity":"high","name":"IONBLASTER_IGNORES_DROIDS_1","from":"IONBUILDUP_ACCRUES_ON_FLESH_1/run-1@full-578","ts":"2026-08-22T08:59:46Z"}
 {"seat":"CHECK","event":"spawn","name":"ION_CAPTURES_PEOPLE_NOT_DROIDS_1","kind":"task","needs":"owner","for":"DECIDE","from":"IONBLASTER_IGNORES_DROIDS_1","ts":"2026-08-22T08:59:46Z"}
+{"seat":"CHECK","event":"claim","id":"B40","ts":"2026-08-22T09:02:38Z"}
+{"seat":"CHECK","event":"start","id":"B40","ts":"2026-08-22T09:02:38Z"}
+{"seat":"CHECK","event":"verify","id":"B40","result":"partial","config":"full-578","evidence":"infrastructure/state/observed/2026-08-22/b40_empire/README.md","sha":"8770e19f","ts":"2026-08-22T09:02:38Z"}
+{"seat":"CHECK","event":"finding","id":"B40","type":"integration","severity":"medium","name":"EMPIRE_HEAVY_WEARS_REBEL_CAMO_1","from":"B40/run-1@full-578","ts":"2026-08-22T09:02:38Z"}
+{"seat":"CHECK","event":"spawn","name":"IMPERIAL_APPAREL_ON_ALL_KINDS_1","kind":"task","needs":"offline","for":"BUILD","from":"EMPIRE_HEAVY_WEARS_REBEL_CAMO_1","ts":"2026-08-22T09:02:38Z"}
