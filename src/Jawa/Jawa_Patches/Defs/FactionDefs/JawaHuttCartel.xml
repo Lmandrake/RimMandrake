@@ -63,6 +63,19 @@
          🔑 The priority sorts ASCENDING, so the negative numbers put the campaign's own
          eight factions at the TOP of the page the owner builds the one world from.
          Vanilla's own rows are 10-60. -->
+    <!-- 🔴 LEADER_TITLES_ON_THE_IDEO_1. `Faction.LeaderTitle` reads the primary IDEO's
+         `leaderTitleMale` and only falls back to this def's `leaderTitle`, which is why the
+         authored title was invisible on 36 of 37 factions. The ideo's title is generated
+         from its CULTURE's `leaderTitleMaker`, so the fix is a culture of our own; see
+         `Defs/CultureDefs/JawaLeaderTitles.xml` for the full mechanism.
+         ⛔ `Inherit="False"` IS LOAD-BEARING. `allowedCultures` is a list and the abstract
+         parent supplies one, so a bare child node APPENDS and the game picks between the
+         two at random - the title would then be right on roughly half of all worlds, which
+         is worse than wrong because it looks fixed. -->
+    <allowedCultures Inherit="False">
+      <li>Jawa_Culture_Hutt</li>
+    </allowedCultures>
+
     <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
     <configurationListOrderPriority>-98</configurationListOrderPriority>
     <categoryTag>Outlander</categoryTag>

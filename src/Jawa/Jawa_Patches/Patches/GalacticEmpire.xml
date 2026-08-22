@@ -387,4 +387,22 @@
     </match>
   </Operation>
 
+  <!-- ═══ LEADER_TITLES_ON_THE_IDEO_1, 2026-08-22 ═══════════════════════════════
+       `Faction.LeaderTitle` (RimWorld/Faction.cs:142) prefers the primary IDEO's
+       `leaderTitleMale` and only falls back to `def.leaderTitle`. Measured live:
+       the ideo overrode the def on 36 of 37 factions, so the Galactic Empire's authored
+       title "Emperor" was never the word a player read. The ideo's title is
+       generated from its CULTURE's `leaderTitleMaker`, so the route is a culture
+       of our own - full mechanism in `Defs/CultureDefs/JawaLeaderTitles.xml`.
+       ⛔ Not a patch on the shared vanilla culture: Sophian is shared with every
+       faction of its category in 578 mods and patching it renames all of them.
+       ⚠️ This BAKES at world creation and cannot be retrofitted. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Empire"]/allowedCultures</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/FactionDef[defName="Empire"]/allowedCultures</xpath>
+      <value><allowedCultures><li>Jawa_Culture_Empire</li></allowedCultures></value>
+    </match>
+  </Operation>
+
 </Patch>

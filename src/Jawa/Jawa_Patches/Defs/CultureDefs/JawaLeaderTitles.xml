@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaLeaderTitles.xml              Jawa_Patches - new file, 2026-08-22
+  ============================================================================
+
+  LEADER_TITLES_ON_THE_IDEO_1. DECIDE ruled all twelve authored factions must
+  show their AUTHORED leader title. Measured live 2026-08-22,
+  `jawa/faction_leader_get`: the ideoligion overrode the def on 36 of 37
+  factions. The Junkers' Scraplord read `Awoken Cheese`; Blackstar's Captain
+  read `Ethical Thug`.
+
+  🔑 THE MECHANISM, READ FROM SOURCE RATHER THAN GUESSED
+  =====================================================
+  `Faction.LeaderTitle` (RimWorld/Faction.cs:142) prefers
+  `ideos.PrimaryIdeo.leaderTitleMale` and only falls back to `def.leaderTitle`
+  when that is empty. So the FactionDef field is correct, present, and unread.
+
+  The ideo's title is written ONCE by `IdeoFoundation.GenerateLeaderTitle()`
+  (RimWorld/IdeoFoundation.cs:695):
+
+      if (ideo.culture.leaderTitleMaker == null) { leaderTitleMale = null; }
+      else NameGenerator.GenerateName(request, rootKeyword: "r_leaderTitle")
+
+  ⇒ the title comes from a `RulePackDef` hanging off the ideo's **CultureDef**.
+  ⭐ That is a THIRD route, and better than either the item proposed. A precept
+  cannot supply it, and a post-worldgen bridge pass would have to run in the
+  same session as world creation and then save - fragile, and unavailable to
+  anyone re-rolling. This is declarative, and it bakes correctly because it
+  runs DURING ideo generation.
+
+  Vanilla's own titles are assembled from `LeaderTitleMaker_GlobalStructure`,
+  which offers four `r_leaderTitle` rules at p=6/3/1/1 combining meme and
+  culture adjectives and nouns. Each rulepack below deliberately does NOT
+  include that structure and declares exactly ONE rule at **p=1000**, so the
+  authored string wins outright. ⚠️ `GenerateLeaderTitle` also folds in every
+  meme's `generalRules` via `IncludesBare`; no Core meme defines
+  `r_leaderTitle`, but the priority makes that irrelevant.
+
+  ⚠️ WHY A WHOLE CultureDef PER FACTION AND NOT A PATCH ON THE SHARED ONE.
+  `leaderTitleMaker` lives on the CultureDef, and six of our twelve share
+  `Rustican` with every outlander faction in 578 mods. Patching it would
+  rename the leader of all of them. So each faction gets its own culture, with
+  every other field COPIED FROM ITS BASE - the makers, the style categories and
+  the style item tags are byte-identical, so pawn appearance and deity naming
+  are unchanged. Copied programmatically out of the live 578-mod dump, not
+  retyped.
+
+  ⛔ `allowedCultures` is a LIST, so a bare child node APPENDS and the game
+  would pick between the base culture and ours at random. Every FactionDef edit
+  that goes with this file therefore carries `Inherit="False"` or is a Replace
+  on a def that writes its own node.
+
+  ⚠️ `iconPath` points at OUR OWN faction markers, not at the vanilla path the
+  base culture used. Two reasons: the culture icon then matches the faction it
+  belongs to, and Core ships NO loose `Textures/` folder - its art lives in
+  asset bundles - so `validate_patch.py` reports every vanilla texture path as
+  missing. That is the known blind spot `reading-rimworld-graphics` exists for;
+  using our own PNGs keeps this file provably green instead of permanently red.
+
+  ⚠️ THIS BAKES. An Ideo is generated once at world creation and cannot be
+  retrofitted, so it must be in place before the owner's worldgen click.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- Jawa Trade Moot -> "Prime Trader" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_TradeMoot</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->Prime Trader</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_TradeMoot</defName>
+    <label>jawa trade moot</label>
+    <description>An ancient culture common among rimworld tribes.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_TradeMoot</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoCorunan</ideoNameMaker>
+    <deityNameMaker>NamerDeityCorunan</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerCorunan</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalCorunan</festivalNameMaker>
+    <iconPath>World/JawaFactions/JawaTradeMoot</iconPath>
+    <allowedPlaceTags>
+      <li>OriginTribal</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Totemic</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Tribal</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardTribal</tag><baseWeight>0.3</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>TattooFaceTribal</tag><baseWeight>0.4</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>TattooBodyTribal</tag><baseWeight>0.4</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- the Junkers -> "Scraplord" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_Junkers</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->Scraplord</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_Junkers</defName>
+    <label>the junkers</label>
+    <description>A broad category describing the styles and practices of many pirate groups.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_Junkers</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoKriminul</ideoNameMaker>
+    <deityNameMaker>NamerDeityKriminul</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerKriminul</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalKriminul</festivalNameMaker>
+    <iconPath>World/JawaFactions/Junkers</iconPath>
+    <allowedPlaceTags>
+      <li>OriginSpacer</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Spikecore</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Punk</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardPunk</tag><baseWeight>0.1</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>TattooFacePunk</tag><baseWeight>0.4</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>TattooBodyPunk</tag><baseWeight>0.4</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- Hutt Cartel -> "Lord" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_Hutt</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->Lord</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_Hutt</defName>
+    <label>hutt cartel</label>
+    <description>A hardy industrial culture common among rimworld outlanders.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_Hutt</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
+    <deityNameMaker>NamerDeityRustican</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalRustican</festivalNameMaker>
+    <iconPath>World/JawaFactions/HuttCartel</iconPath>
+    <allowedPlaceTags>
+      <li>OriginSpacer</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Rustic</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Rural</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardRural</tag><baseWeight>0.25</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- Deepwater Compact -> "High Warden" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_Deepwater</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->High Warden</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_Deepwater</defName>
+    <label>deepwater compact</label>
+    <description>A hardy industrial culture common among rimworld outlanders.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_Deepwater</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
+    <deityNameMaker>NamerDeityRustican</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalRustican</festivalNameMaker>
+    <iconPath>World/JawaFactions/DeepwaterCompact</iconPath>
+    <allowedPlaceTags>
+      <li>OriginSpacer</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Rustic</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Rural</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardRural</tag><baseWeight>0.25</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- Wildsteam Clan -> "Elder" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_Wildsteam</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->Elder</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_Wildsteam</defName>
+    <label>wildsteam clan</label>
+    <description>A hardy industrial culture common among rimworld outlanders.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_Wildsteam</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
+    <deityNameMaker>NamerDeityRustican</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalRustican</festivalNameMaker>
+    <iconPath>World/JawaFactions/WildsteamClan</iconPath>
+    <allowedPlaceTags>
+      <li>OriginSpacer</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Rustic</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Rural</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardRural</tag><baseWeight>0.25</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- Geonosian Foundry Hive -> "Archduke" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_Geonosian</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->Archduke</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_Geonosian</defName>
+    <label>geonosian foundry hive</label>
+    <description>A hardy industrial culture common among rimworld outlanders.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_Geonosian</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
+    <deityNameMaker>NamerDeityRustican</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalRustican</festivalNameMaker>
+    <iconPath>World/JawaFactions/GeonosianHive</iconPath>
+    <allowedPlaceTags>
+      <li>OriginSpacer</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Rustic</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Rural</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardRural</tag><baseWeight>0.25</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- Free Droid Enclaves -> "First Speaker" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_Droid</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->First Speaker</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_Droid</defName>
+    <label>free droid enclaves</label>
+    <description>A hardy industrial culture common among rimworld outlanders.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_Droid</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
+    <deityNameMaker>NamerDeityRustican</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalRustican</festivalNameMaker>
+    <iconPath>World/JawaFactions/FreeDroidEnclaves</iconPath>
+    <allowedPlaceTags>
+      <li>OriginSpacer</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Rustic</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Rural</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardRural</tag><baseWeight>0.25</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- Ascendant Helix -> "Director" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_Helix</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->Director</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_Helix</defName>
+    <label>ascendant helix</label>
+    <description>A hardy industrial culture common among rimworld outlanders.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_Helix</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
+    <deityNameMaker>NamerDeityRustican</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalRustican</festivalNameMaker>
+    <iconPath>World/JawaFactions/AscendantHelix</iconPath>
+    <allowedPlaceTags>
+      <li>OriginSpacer</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Rustic</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Rural</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardRural</tag><baseWeight>0.25</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- Galactic Empire -> "Emperor" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_Empire</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->Emperor</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_Empire</defName>
+    <label>galactic empire</label>
+    <description>A techno-feudal culture centered on the planet Sophiamunda.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_Empire</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoSophian</ideoNameMaker>
+    <deityNameMaker>NamerDeitySophian</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerSophian</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalSophian</festivalNameMaker>
+    <iconPath>World/JawaFactions/GalacticEmpire</iconPath>
+    <allowedPlaceTags>
+      <li>OriginTechnoFeudal</li>
+    </allowedPlaceTags>
+    <styleItemTags>
+      <li><tag>Urban</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Rural</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardUrban</tag><baseWeight>0.15</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardRural</tag><baseWeight>0.15</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>MoustacheOnly</tag><baseWeight>0.1</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- Blackstar Company -> "Captain" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_Blackstar</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->Captain</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_Blackstar</defName>
+    <label>blackstar company</label>
+    <description>A broad category describing the styles and practices of many pirate groups.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_Blackstar</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoKriminul</ideoNameMaker>
+    <deityNameMaker>NamerDeityKriminul</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerKriminul</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalKriminul</festivalNameMaker>
+    <iconPath>World/JawaFactions/BlackstarCompany</iconPath>
+    <allowedPlaceTags>
+      <li>OriginSpacer</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Spikecore</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Punk</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardPunk</tag><baseWeight>0.1</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>TattooFacePunk</tag><baseWeight>0.4</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>TattooBodyPunk</tag><baseWeight>0.4</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- Deep Desert Tribes -> "War Chief" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_DeepDesert</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->War Chief</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_DeepDesert</defName>
+    <label>deep desert tribes</label>
+    <description>An ancient culture common among rimworld tribes.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_DeepDesert</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoCorunan</ideoNameMaker>
+    <deityNameMaker>NamerDeityCorunan</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerCorunan</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalCorunan</festivalNameMaker>
+    <iconPath>World/JawaFactions/DeepDesertTribes</iconPath>
+    <allowedPlaceTags>
+      <li>OriginTribal</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Totemic</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Tribal</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardTribal</tag><baseWeight>0.3</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>TattooFaceTribal</tag><baseWeight>0.4</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>TattooBodyTribal</tag><baseWeight>0.4</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+  <!-- Homestead Defense League -> "High Marshal" -->
+  <RulePackDef>
+    <defName>Jawa_LeaderTitle_Homestead</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_leaderTitle(p=1000)->High Marshal</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <CultureDef>
+    <defName>Jawa_Culture_Homestead</defName>
+    <label>homestead defense league</label>
+    <description>A hardy industrial culture common among rimworld outlanders.</description>
+    <leaderTitleMaker>Jawa_LeaderTitle_Homestead</leaderTitleMaker>
+    <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
+    <deityNameMaker>NamerDeityRustican</deityNameMaker>
+    <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
+    <festivalNameMaker>NamerFestivalRustican</festivalNameMaker>
+    <iconPath>World/JawaFactions/HomesteadLeague</iconPath>
+    <allowedPlaceTags>
+      <li>OriginSpacer</li>
+    </allowedPlaceTags>
+    <thingStyleCategories>
+      <li><category>Rustic</category><priority>2</priority></li>
+    </thingStyleCategories>
+    <styleItemTags>
+      <li><tag>Rural</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoBeard</tag><baseWeight>10.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>BeardRural</tag><baseWeight>0.25</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>NoTattoo</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+      <li><tag>Saurid</tag><baseWeight>1.0</baseWeight><weightFactor>1.0</weightFactor></li>
+    </styleItemTags>
+  </CultureDef>
+
+</Defs>
