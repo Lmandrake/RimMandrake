@@ -19,6 +19,22 @@
 > next run. Fixed at `b24dde99`; re-emitting now reproduces all twelve committed files
 > byte-for-byte.
 >
+> ### ✅ ALREADY VERIFIED OFFLINE, 2026-08-22 — do not spend the load re-checking these
+>
+> | checked | result |
+> |---|---|
+> | every custom mod deployed | **in sync**, 14 files held on purpose (`WreckedMachines` + 1 genebank texture, owner parked to v2) |
+> | JawaBench companion | rebuilt and deployed; game copy **byte-identical to HEAD**. It is not a mod — RimBridgeServer loads it from `<RimWorld>/BridgeTools/JawaBench/`, only at startup |
+> | `The Salvation.rid` · `MandrakeJawa.xtp` | both byte-identical to the repo |
+> | ModsConfig | 578 listed, 578 resolved, **0 missing**; fingerprint `49b83562b10df31c` matches the frozen OFFICIAL entry |
+> | load ORDER | every patch loads after what it patches — DesertVehicleReskin 547 > Alpha Vehicles 534; Jawa_Patches 571 > StarWarsRaces 567 and > Big and Small core 536; JawaIonWeapons 570 > Outer Rim Core 539 |
+> | all 68 `Patches/*.xml` | re-validated against the real load set after a validator bug was fixed: **0 errors**, and exactly one dead xpath, which is harmless (`HeadSetForFA_Revive` targets a def Facial Animation generates at runtime) |
+>
+> ⚠️ **`mandrake.phytokinbarkheadfix` and `mandrake.kotorbandoliernorthfix` are STILL out of
+> ModsConfig and that is correct** — the owner's 2026-08-14 baseline-shot ruling (B1, B2)
+> wants the donors' unmodified art. `mandrake.cereanmanefix` is out because its target mod
+> is inactive. ⛔ Do not "fix" the mod list by adding them.
+>
 > ### 🔴 WHAT THIS ONE LOAD MUST PROVE — everything BUILD landed 2026-08-22
 > Grouped by where to look. ⚠️ **53 items across BUILD and CHECK cannot move until the
 > game is up** — 23 BUILD, 30 CHECK, counted 2026-08-22 from the `needs:` lines in
