@@ -26,6 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from game_paths import DEF_DUMP, LOCALLOW, MODS_CONFIG   # noqa: E402
+import dump_projection   # noqa: E402
 
 DUMP = Path(DEF_DUMP)
 REPO = Path(__file__).resolve().parents[3]
@@ -141,13 +142,29 @@ def role_of(d):
 
 
 def load_dump():
+    """The four things this tool actually needs, as PROJECTIONS not as records.
+
+    🔴 It used to `json.load` the whole of `defs/ThingDef.json` — 24,904 records,
+    ~316 MB of text — to read six fields off the ~771 defs that are weapons.
+    Measured cost of that: **3.5 s and 1.50 GB resident**. The same four answers
+    off `defs.sqlite`, using the pre-extracted `def_tags` / `def_flags` side
+    tables and a `json_extract` restricted to weapon-flagged rows: **0.8 s and
+    18 MB**.
+
+    ⚠️ The db is NOT automatically the faster source and this tool is the proof —
+    a naive `json_extract` per field over every ThingDef measures 6.7 s, twice as
+    slow as reading the file. `dump_projection` carries the numbers and the shape
+    that wins. It also falls back to the JSON when no `defs.sqlite` exists, so
+    this still runs on a machine without the `measuring-large-artifacts` skill.
+    """
     defs = DUMP / "defs"
     if not defs.is_dir():
         sys.exit("no def dump at %s - the game must write one before this can run" % defs)
-    things = json.loads((defs / "ThingDef.json").read_text(encoding="utf-8"))["defs"]
-    kinds = json.loads((defs / "PawnKindDef.json").read_text(encoding="utf-8"))["defs"]
+    thing_tags = dump_projection.weapon_tag_pairs(str(DUMP), "ThingDef")
+    kind_tags = dump_projection.weapon_tag_pairs(str(DUMP), "PawnKindDef")
+    weapons = dump_projection.weapon_defs(str(DUMP))
     man = json.loads((DUMP / "manifest.json").read_text(encoding="utf-8"))
-    return things, kinds, man
+    return thing_tags, kind_tags, weapons, man
 
 
 def check_modlist(man, anyway):
@@ -184,17 +201,16 @@ def cut_set(category):
 
 
 def audit(anyway=False):
-    things, kinds, man = load_dump()
+    thing_tags, kind_tags, weapons, man = load_dump()
     check_modlist(man, anyway)
     cut = cut_set("weapons")
 
     tags = {}
-    for d in things:
-        for t in (f(d, "weaponTags") or []):
-            e = tags.setdefault(t, {"all": [], "kept": []})
-            e["all"].append(d["defName"])
-            if d["defName"] not in cut:
-                e["kept"].append(d["defName"])
+    for defname, t in thing_tags:
+        e = tags.setdefault(t, {"all": [], "kept": []})
+        e["all"].append(defname)
+        if defname not in cut:
+            e["kept"].append(defname)
 
     empty = sorted(t for t, v in tags.items() if not v["kept"])
 
@@ -214,13 +230,20 @@ def audit(anyway=False):
     # VEE_HunterIndustrialWeapon, VEE_HunterNeolithicWeapon, DP_CannonNoEquipTag and
     # DP_RocketNoEquipTag. Evidence:
     # infrastructure/state/observed/build/WEAPON_TAGS_MATCH_NOTHING_1_offline.txt
-    neutered = [d["defName"] for d in things
-                if d["defName"] in cut and not (f(d, "weaponTags") or [])]
+    # 🔑 Asked of the NAMED cut list only. A cut weapon that still carries a tag is
+    # not neutered, so the question is about ~200 defNames, never about 24,904.
+    cut_now = dump_projection.defs_by_name(str(DUMP), "ThingDef", sorted(cut),
+                                           ("weaponTags",))
+    neutered = [dn for dn in sorted(cut)
+                if dn in cut_now and not (cut_now[dn].get("weaponTags") or [])]
+
+    kind_wt = {}
+    for defname, t in kind_tags:
+        kind_wt.setdefault(defname, []).append(t)
     disarmed = []
-    for k in kinds:
-        wt = f(k, "weaponTags") or []
+    for defname, wt in kind_wt.items():
         if wt and all(not tags.get(t, {}).get("kept") for t in wt):
-            disarmed.append((k["defName"], wt))
+            disarmed.append((defname, wt))
 
     def eligible(d):
         if d["defName"] in cut:
@@ -250,7 +273,11 @@ def audit(anyway=False):
             return bool(cls) and (not rungs or all(not tags[t]["kept"] for t in rungs))
         return False
 
-    untagged = [d for d in things if eligible(d)]
+    # `weapons` is every def the ENGINE flags as a weapon. Measured 2026-08-22: no
+    # ThingDef carries a non-empty `weaponClasses` without that flag, and every
+    # branch of `eligible()` requires one — so this is the same set as scanning all
+    # 24,904, arrived at without reading them. See `dump_projection.weapon_defs`.
+    untagged = [d for d in weapons if eligible(d)]
     return tags, empty, sorted(disarmed), untagged, neutered
 
 

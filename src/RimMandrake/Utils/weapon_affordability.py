@@ -63,6 +63,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, HERE)
 from game_paths import DEF_DUMP  # noqa: E402
+import dump_projection  # noqa: E402
 ROSTER_GEN = os.path.join(HERE, "gen_pawnkind_roster.py")
 
 _DUMPS = [
@@ -168,25 +169,31 @@ def base_market_value(defname, index, memo, stack=None):
 
 
 def load_weapons(dump):
-    """-> {tag: [(defName, price or None, was_computed), ...]}"""
+    """-> {tag: [(defName, price or None, was_computed), ...]}
+
+    🔴 A PROJECTION, NOT A GRAPH LOAD. This used to `json.load` the whole of
+    `defs/ThingDef.json` — 24,904 records, ~316 MB of text — for five fields.
+    Measured cost of that: **2.7 s and 1.50 GB resident**.
+
+    ⚠️ Unlike `weapon_tag_audit`, this one genuinely needs EVERY def and not just
+    the weapons: `base_market_value` recurses through `costList` into arbitrary
+    materials and cannot know in advance which it will reach. So the win here is
+    memory, not the clock — six fields per record instead of the whole record.
+    `dump_projection.cost_graph` carries the numbers, and falls back to reading
+    the JSON when no `defs.sqlite` exists.
+    """
     path = os.path.join(dump, "ThingDef.json")
     if not os.path.isfile(path):
         die("no ThingDef.json at " + path)
-    with open(path, "r", encoding="utf-8") as fh:
-        data = json.load(fh)
-    defs = data.get("defs", [])
-    index = {d["defName"]: d for d in defs}
+    index, tagged = dump_projection.weapon_cost_index(dump)
     memo = {}
     by_tag = {}
-    for d in defs:
-        f = d.get("fields") or {}
-        tags = f.get("weaponTags")
-        if not tags:
-            continue
+    for defname, tags in tagged:
+        f = (index.get(defname) or {}).get("fields") or {}
         declared = _stat(f, "MarketValue")
-        mv = float(declared) if declared is not None else base_market_value(d["defName"], index, memo)
+        mv = float(declared) if declared is not None else base_market_value(defname, index, memo)
         for t in tags:
-            by_tag.setdefault(t, []).append((d["defName"], mv, declared is None))
+            by_tag.setdefault(t, []).append((defname, mv, declared is None))
     return by_tag
 
 
