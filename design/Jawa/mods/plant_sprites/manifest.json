@@ -1,0 +1,2085 @@
+{
+ "AB_Aaklac": {
+  "file": "AB_Aaklac.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_Aaklac/AB_AaklacA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_Aaklac",
+  "variant": "<dir:ab_aaklaca.png>"
+ },
+ "AB_AgaricusDomeCap": {
+  "file": "AB_AgaricusDomeCap.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_AgaricusDomeCap.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_AgaricusDomeCap",
+  "variant": "<bare>"
+ },
+ "AB_Agarilux": {
+  "file": "AB_Agarilux.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/AgariluxA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "resources.assets",
+  "texPath": "Things/Plant/Agarilux",
+  "variant": "<bundleA>"
+ },
+ "AB_AlienGrass": {
+  "file": "AB_AlienGrass.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Plants/GU_AlienGrass/GU_AlienGrassA.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/GU_AlienGrass",
+  "variant": "<dir:gu_aliengrassa.png>"
+ },
+ "AB_AlienTree": {
+  "file": "AB_AlienTree.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Plants/AB_OcularTree/AB_OcularTreeA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_OcularTree",
+  "variant": "<dir:ab_oculartreea.png>"
+ },
+ "AB_AlienTree_Polluted": {
+  "file": "AB_AlienTree_Polluted.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_PollutedAlienTree.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_PollutedAlienTree",
+  "variant": "<bare>"
+ },
+ "AB_ArbuscularMycorrhiza": {
+  "file": "AB_ArbuscularMycorrhiza.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_ArbuscularMycorrhiza/AB_ArbuscularMycorrhizaA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_ArbuscularMycorrhiza",
+  "variant": "<dir:ab_arbuscularmycorrhizaa.png>"
+ },
+ "AB_BloodBouquet": {
+  "file": "AB_BloodBouquet.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_BloodBouquet.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_BloodBouquet",
+  "variant": "<bare>"
+ },
+ "AB_BrownBarrelCactus": {
+  "file": "AB_BrownBarrelCactus.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_BrownBarrelCactus.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_BrownBarrelCactus",
+  "variant": "<bare>"
+ },
+ "AB_Bryolux": {
+  "file": "AB_Bryolux.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/BryoluxA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "resources.assets",
+  "texPath": "Things/Plant/Bryolux",
+  "variant": "<bundleA>"
+ },
+ "AB_CrystalFlower": {
+  "file": "AB_CrystalFlower.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_CrystalFlower/AB_CrystalFlowerA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_CrystalFlower",
+  "variant": "<dir:ab_crystalflowera.png>"
+ },
+ "AB_CrystalHorn": {
+  "file": "AB_CrystalHorn.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_CrystalHorn/AB_CrystalHornA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_CrystalHorn",
+  "variant": "<dir:ab_crystalhorna.png>"
+ },
+ "AB_DribblingCap": {
+  "file": "AB_DribblingCap.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_DribblingCap/AB_DribblingCapA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_DribblingCap",
+  "variant": "<dir:ab_dribblingcapa.png>"
+ },
+ "AB_EyeGrass": {
+  "file": "AB_EyeGrass.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_EyeGrass.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_EyeGrass",
+  "variant": "<bare>"
+ },
+ "AB_FanPalm": {
+  "file": "AB_FanPalm.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_FanPalm/AB_FanPalmA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_FanPalm",
+  "variant": "<dir:ab_fanpalma.png>"
+ },
+ "AB_FirevineTree": {
+  "file": "AB_FirevineTree.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_FirevineTree.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_FirevineTree",
+  "variant": "<bare>"
+ },
+ "AB_FrostLeaf": {
+  "file": "AB_FrostLeaf.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_FrostLeaf/AB_FrostLeafA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_FrostLeaf",
+  "variant": "<dir:ab_frostleafa.png>"
+ },
+ "AB_GiantAgariTox": {
+  "file": "AB_GiantAgariTox.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_GiantAgariTox.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_GiantAgariTox",
+  "variant": "<bare>"
+ },
+ "AB_GiantAgarilux": {
+  "file": "AB_GiantAgarilux.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_GiantAgarilux/AB_GiantAgariluxA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_GiantAgarilux",
+  "variant": "<dir:ab_giantagariluxa.png>"
+ },
+ "AB_GiantGamma": {
+  "file": "AB_GiantGamma.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_GiantGamma/AB_GiantGammaA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_GiantGamma",
+  "variant": "<dir:ab_giantgammaa.png>"
+ },
+ "AB_GiantSeptimum": {
+  "file": "AB_GiantSeptimum.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_GiantSeptimum.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_GiantSeptimum",
+  "variant": "<bare>"
+ },
+ "AB_GiantStikehr": {
+  "file": "AB_GiantStikehr.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_GiantStikehr/AB_GiantStikehrA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_GiantStikehr",
+  "variant": "<dir:ab_giantstikehra.png>"
+ },
+ "AB_GlobularPlant": {
+  "file": "AB_GlobularPlant.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_GlobularPlant.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_GlobularPlant",
+  "variant": "<bare>"
+ },
+ "AB_GlobularPlant_Polluted": {
+  "file": "AB_GlobularPlant_Polluted.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_GlobularPlant_Polluted.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_GlobularPlant_Polluted",
+  "variant": "<bare>"
+ },
+ "AB_GlowingAgarilux": {
+  "file": "AB_GlowingAgarilux.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/AgariluxA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "resources.assets",
+  "texPath": "Things/Plant/Agarilux",
+  "variant": "<bundleA>"
+ },
+ "AB_GlowingGrass": {
+  "file": "AB_GlowingGrass.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_GlowingGrass/AB_GlowingGrassA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_GlowingGrass",
+  "variant": "<dir:ab_glowinggrassa.png>"
+ },
+ "AB_Glowstool": {
+  "file": "AB_Glowstool.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/GlowstoolA.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "resources.assets",
+  "texPath": "Things/Plant/Glowstool",
+  "variant": "<bundleA>"
+ },
+ "AB_Gomphoeria": {
+  "file": "AB_Gomphoeria.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_Gomphoeria.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_Gomphoeria",
+  "variant": "<bare>"
+ },
+ "AB_GreenRockFern": {
+  "file": "AB_GreenRockFern.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_GreenRockFern.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_GreenRockFern",
+  "variant": "<bare>"
+ },
+ "AB_HalfAlienTree": {
+  "file": "AB_HalfAlienTree.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_HalfAlienTree/AB_HalfAlienTreeA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_HalfAlienTree",
+  "variant": "<dir:ab_halfalientreea.png>"
+ },
+ "AB_HardyGrass": {
+  "file": "AB_HardyGrass.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/GrassA_Leafless.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "resources.assets",
+  "texPath": "Things/Plant/Grass_Leafless",
+  "variant": "<infix:a>"
+ },
+ "AB_Iashiphus": {
+  "file": "AB_Iashiphus.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_Iashiphus.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_Iashiphus",
+  "variant": "<bare>"
+ },
+ "AB_JungleTree": {
+  "file": "AB_JungleTree.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_JungleTree/AB_JungleTreeA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_JungleTree",
+  "variant": "<dir:ab_jungletreea.png>"
+ },
+ "AB_JungleTree_Polluted": {
+  "file": "AB_JungleTree_Polluted.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_JunglePolux.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_JunglePolux",
+  "variant": "<bare>"
+ },
+ "AB_KeeningCordax": {
+  "file": "AB_KeeningCordax.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_KeeningCordax/AB_KeeningCordaxA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_KeeningCordax",
+  "variant": "<dir:ab_keeningcordaxa.png>"
+ },
+ "AB_LandCoral": {
+  "file": "AB_LandCoral.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_LandCoral.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_LandCoral",
+  "variant": "<bare>"
+ },
+ "AB_LargeSlimyTree": {
+  "file": "AB_LargeSlimyTree.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_LargeSlimyTree.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_LargeSlimyTree",
+  "variant": "<bare>"
+ },
+ "AB_LilacBeacon": {
+  "file": "AB_LilacBeacon.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_LilacBeacon/AB_LilacBeaconA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_LilacBeacon",
+  "variant": "<dir:ab_lilacbeacona.png>"
+ },
+ "AB_MangrovePalm": {
+  "file": "AB_MangrovePalm.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_MangrovePalm/AB_MangrovePalmA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_MangrovePalm",
+  "variant": "<dir:ab_mangrovepalma.png>"
+ },
+ "AB_MangroveTree": {
+  "file": "AB_MangroveTree.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_MangroveTree/AB_MangroveTreeA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_MangroveTree",
+  "variant": "<dir:ab_mangrovetreea.png>"
+ },
+ "AB_ParasiticMangrove": {
+  "file": "AB_ParasiticMangrove.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_ParasiticMangrove/AB_ParasiticMangroveA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_ParasiticMangrove",
+  "variant": "<dir:ab_parasiticmangrovea.png>"
+ },
+ "AB_PollutedStikehr": {
+  "file": "AB_PollutedStikehr.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_PollutedStikehr.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_PollutedStikehr",
+  "variant": "<bare>"
+ },
+ "AB_RavenNettle": {
+  "file": "AB_RavenNettle.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_RavenNettle.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_RavenNettle",
+  "variant": "<bare>"
+ },
+ "AB_RecurvedStropharia": {
+  "file": "AB_RecurvedStropharia.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_RecurvedStropharia.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_RecurvedStropharia",
+  "variant": "<bare>"
+ },
+ "AB_RedBugloss": {
+  "file": "AB_RedBugloss.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_RedBugloss/AB_RedBuglossA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_RedBugloss",
+  "variant": "<dir:ab_redbuglossa.png>"
+ },
+ "AB_RedLeaves": {
+  "file": "AB_RedLeaves.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Plants/GU_RedLeaves.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/GU_RedLeaves",
+  "variant": "<bare>"
+ },
+ "AB_RedPlantsTall": {
+  "file": "AB_RedPlantsTall.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Plants/GU_RedLeaves2.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/GU_RedLeaves2",
+  "variant": "<bare>"
+ },
+ "AB_RimeNodules": {
+  "file": "AB_RimeNodules.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_RimeNodules/AB_RimeNodulesA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_RimeNodules",
+  "variant": "<dir:ab_rimenodulesa.png>"
+ },
+ "AB_SessileMechanoid": {
+  "file": "AB_SessileMechanoid.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_SessileMechanoid/AB_SessileMechanoidA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_SessileMechanoid",
+  "variant": "<dir:ab_sessilemechanoida.png>"
+ },
+ "AB_Slimecasia": {
+  "file": "AB_Slimecasia.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_Slimecasia/AB_SlimecasiaA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_Slimecasia",
+  "variant": "<dir:ab_slimecasiaa.png>"
+ },
+ "AB_SlimyFern": {
+  "file": "AB_SlimyFern.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_SlimyFern.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_SlimyFern",
+  "variant": "<bare>"
+ },
+ "AB_SlimyPholiota": {
+  "file": "AB_SlimyPholiota.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_SlimyPholiota/AB_SlimyPholiotaA copy.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_SlimyPholiota",
+  "variant": "<dir:ab_slimypholiotaa copy.png>"
+ },
+ "AB_SlimyTree": {
+  "file": "AB_SlimyTree.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_SlimyTree/AB_SlimyTreeA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_SlimyTree",
+  "variant": "<dir:ab_slimytreea.png>"
+ },
+ "AB_SugarFamewort": {
+  "file": "AB_SugarFamewort.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_SugarFamewort.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_SugarFamewort",
+  "variant": "<bare>"
+ },
+ "AB_TallSlimyGrass": {
+  "file": "AB_TallSlimyGrass.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_SlimeGrass.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_SlimeGrass",
+  "variant": "<bare>"
+ },
+ "AB_TentacularPlant": {
+  "file": "AB_TentacularPlant.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_TentacularPlant.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_TentacularPlant",
+  "variant": "<bare>"
+ },
+ "AB_TinkleGrass": {
+  "file": "AB_TinkleGrass.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_TinkleGrass.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_TinkleGrass",
+  "variant": "<bare>"
+ },
+ "AB_ToxiBulb": {
+  "file": "AB_ToxiBulb.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_ToxiBulb.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_ToxiBulb",
+  "variant": "<bare>"
+ },
+ "AB_ToxicGamma": {
+  "file": "AB_ToxicGamma.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_ToxicGamma.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_ToxicGamma",
+  "variant": "<bare>"
+ },
+ "AB_WeepingToxberry": {
+  "file": "AB_WeepingToxberry.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_WeepingToxberry.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_WeepingToxberry",
+  "variant": "<bare>"
+ },
+ "AB_WildRadagast": {
+  "file": "AB_WildRadagast.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_WildRadagast.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_WildRadagast",
+  "variant": "<bare>"
+ },
+ "AB_WitchesOyster": {
+  "file": "AB_WitchesOyster.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_WitchesOyster.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plants/AB_WitchesOyster",
+  "variant": "<bare>"
+ },
+ "BMT_Arpeau": {
+  "file": "BMT_Arpeau.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Arpeau/Arpeau_A.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Arpeau",
+  "variant": "<dir:arpeau_a.png>"
+ },
+ "BMT_BalefulBolete": {
+  "file": "BMT_BalefulBolete.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/BalefulBolete/BMT_BalefulBolete_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/BalefulBolete",
+  "variant": "<dir:bmt_balefulbolete_a.png>"
+ },
+ "BMT_BleedingTooth": {
+  "file": "BMT_BleedingTooth.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/BleedingTooth/BMT_BleedingToothA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/BleedingTooth",
+  "variant": "<dir:bmt_bleedingtootha.png>"
+ },
+ "BMT_CavernMycelium": {
+  "file": "BMT_CavernMycelium.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Mycelium/Mycelium_A.png",
+  "origSize": [
+   512,
+   512
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Mycelium",
+  "variant": "<dir:mycelium_a.png>"
+ },
+ "BMT_CrimsonCap": {
+  "file": "BMT_CrimsonCap.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/CrimsonCap/CrimsonCap_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/CrimsonCap",
+  "variant": "<dir:crimsoncap_a.png>"
+ },
+ "BMT_Crystal_BlueSowable": {
+  "file": "BMT_Crystal_BlueSowable.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Crystals/BlueMedium/A.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Crystals/BlueMedium",
+  "variant": "<dir:a.png>"
+ },
+ "BMT_Crystalcap": {
+  "file": "BMT_Crystalcap.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Crystalcap/Crystalcap_A.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Crystalcap",
+  "variant": "<dir:crystalcap_a.png>"
+ },
+ "BMT_CrystaltipBrambles": {
+  "file": "BMT_CrystaltipBrambles.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/CrystaltipBrambles/CrystaltipBrambles_A.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/CrystaltipBrambles",
+  "variant": "<dir:crystaltipbrambles_a.png>"
+ },
+ "BMT_Dewshrooms": {
+  "file": "BMT_Dewshrooms.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Seadew/BMT_SeadewA.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Seadew",
+  "variant": "<dir:bmt_seadewa.png>"
+ },
+ "BMT_DulcisPlant": {
+  "file": "BMT_DulcisPlant.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Dulcis/DulcisGrown/DulcisGrown_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Dulcis/DulcisGrown",
+  "variant": "<dir:dulcisgrown_a.png>"
+ },
+ "BMT_FlakespireFungus": {
+  "file": "BMT_FlakespireFungus.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/FlakespireFungus/Flakespirefungus_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/FlakespireFungus",
+  "variant": "<dir:flakespirefungus_a.png>"
+ },
+ "BMT_FruitingBodies": {
+  "file": "BMT_FruitingBodies.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/FruitingBodies/FruitingBodyA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/FruitingBodies",
+  "variant": "<dir:fruitingbodya.png>"
+ },
+ "BMT_Fungusfern": {
+  "file": "BMT_Fungusfern.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Fungusfern/Fungusfern_A.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Fungusfern",
+  "variant": "<dir:fungusfern_a.png>"
+ },
+ "BMT_Gleamtip": {
+  "file": "BMT_Gleamtip.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Gleamtip/Gleamtip_A.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Gleamtip",
+  "variant": "<dir:gleamtip_a.png>"
+ },
+ "BMT_GreyLady": {
+  "file": "BMT_GreyLady.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/GreyLady/GreyLadyGrown/GreyLadyGrownA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/GreyLady/GreyLadyGrown",
+  "variant": "<dir:greyladygrowna.png>"
+ },
+ "BMT_KessingerPlant": {
+  "file": "BMT_KessingerPlant.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Kessinger/Kessinger_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Kessinger",
+  "variant": "<dir:kessinger_a.png>"
+ },
+ "BMT_LuminousSpout": {
+  "file": "BMT_LuminousSpout.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/LuminousSpout/LuminousSpout_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/LuminousSpout",
+  "variant": "<dir:luminousspout_a.png>"
+ },
+ "BMT_MortalMorelPlant": {
+  "file": "BMT_MortalMorelPlant.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/MortalMorel/CavernalMorel_A.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/MortalMorel",
+  "variant": "<dir:cavernalmorel_a.png>"
+ },
+ "BMT_Nogtyl": {
+  "file": "BMT_Nogtyl.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Nogtyl/Nogtyl_A.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Nogtyl",
+  "variant": "<dir:nogtyl_a.png>"
+ },
+ "BMT_NogtylMarsh": {
+  "file": "BMT_NogtylMarsh.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Nogtyl/Nogtyl_A.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Nogtyl",
+  "variant": "<dir:nogtyl_a.png>"
+ },
+ "BMT_Nuitae": {
+  "file": "BMT_Nuitae.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Nuitae/Nuitae_A.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Nuitae",
+  "variant": "<dir:nuitae_a.png>"
+ },
+ "BMT_NuitaeMarsh": {
+  "file": "BMT_NuitaeMarsh.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Nuitae/Nuitae_A.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Nuitae",
+  "variant": "<dir:nuitae_a.png>"
+ },
+ "BMT_Plant_Pestia": {
+  "file": "BMT_Plant_Pestia.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656/Textures/BMT_PollutedLands/Things/Plant/Pestia/Pestia_a.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Plant/Pestia",
+  "variant": "<dir:pestia_a.png>"
+ },
+ "BMT_Plant_PlagueFans": {
+  "file": "BMT_Plant_PlagueFans.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656/Textures/BMT_PollutedLands/Things/Plant/PlagueFans/PlagueFans.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Plant/PlagueFans/PlagueFans",
+  "variant": "<bare>"
+ },
+ "BMT_Plant_PoxSorghum": {
+  "file": "BMT_Plant_PoxSorghum.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656/Textures/BMT_PollutedLands/Things/Plant/PoxSorghum/PoxSorghum.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Plant/PoxSorghum/PoxSorghum",
+  "variant": "<bare>"
+ },
+ "BMT_Plant_ScorchedStars": {
+  "file": "BMT_Plant_ScorchedStars.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656/Textures/BMT_PollutedLands/Things/Plant/ScorchedStars/ScorchedStars_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Plant/ScorchedStars",
+  "variant": "<dir:scorchedstars_a.png>"
+ },
+ "BMT_Plant_SewerReed": {
+  "file": "BMT_Plant_SewerReed.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656/Textures/BMT_PollutedLands/Things/Plant/SewerReed/SewerReed_a.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Plant/SewerReed",
+  "variant": "<dir:sewerreed_a.png>"
+ },
+ "BMT_Plant_TreeMartyr": {
+  "file": "BMT_Plant_TreeMartyr.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656/Textures/BMT_PollutedLands/Things/Plant/MartyrTree/MartyrTree_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Plant/MartyrTree",
+  "variant": "<dir:martyrtree_a.png>"
+ },
+ "BMT_Plant_TreeTwistingThornwood": {
+  "file": "BMT_Plant_TreeTwistingThornwood.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656/Textures/BMT_PollutedLands/Things/Plant/TwistingThornwood/TwistingThornwood_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Plant/TwistingThornwood",
+  "variant": "<dir:twistingthornwood_a.png>"
+ },
+ "BMT_Plant_TwistedDandelion": {
+  "file": "BMT_Plant_TwistedDandelion.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656/Textures/BMT_PollutedLands/Things/Plant/TwistedDandelion/TwistedDandelion_a.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Plant/TwistedDandelion",
+  "variant": "<dir:twisteddandelion_a.png>"
+ },
+ "BMT_Plant_TwistingThorngrass": {
+  "file": "BMT_Plant_TwistingThorngrass.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656/Textures/BMT_PollutedLands/Things/Plant/TwistingThorngrass/TwistingThorngrass_a.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Plant/TwistingThorngrass",
+  "variant": "<dir:twistingthorngrass_a.png>"
+ },
+ "BMT_Plant_TwistingThornweed": {
+  "file": "BMT_Plant_TwistingThornweed.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656/Textures/BMT_PollutedLands/Things/Plant/TwistingThornweed/TwistingThornweed_a.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_PollutedLands/Things/Plant/TwistingThornweed",
+  "variant": "<dir:twistingthornweed_a.png>"
+ },
+ "BMT_Poptop": {
+  "file": "BMT_Poptop.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Poptop/Poptop.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Poptop",
+  "variant": "<dir:poptop.png>"
+ },
+ "BMT_Pusmelon": {
+  "file": "BMT_Pusmelon.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Pusmelon/BMT_PusmelonA.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Pusmelon",
+  "variant": "<dir:bmt_pusmelona.png>"
+ },
+ "BMT_Ravelmush": {
+  "file": "BMT_Ravelmush.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Ravelmush/Ravelmush_A.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Ravelmush",
+  "variant": "<dir:ravelmush_a.png>"
+ },
+ "BMT_RustPuff": {
+  "file": "BMT_RustPuff.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/RustPuff/BMT_RustPuffA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/RustPuff",
+  "variant": "<dir:bmt_rustpuffa.png>"
+ },
+ "BMT_Sagecrust": {
+  "file": "BMT_Sagecrust.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Sagecrust/BMT_SagecrustA.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Sagecrust",
+  "variant": "<dir:bmt_sagecrusta.png>"
+ },
+ "BMT_Shinecap": {
+  "file": "BMT_Shinecap.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Shinecap/ShinecapGrown/ShinecapGrown_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Shinecap/ShinecapGrown",
+  "variant": "<dir:shinecapgrown_a.png>"
+ },
+ "BMT_StarchstalkPlant": {
+  "file": "BMT_StarchstalkPlant.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Starchstalk/Starchstalk_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Starchstalk",
+  "variant": "<dir:starchstalk_a.png>"
+ },
+ "BMT_Stimquill": {
+  "file": "BMT_Stimquill.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Stimquill/StimquillBush_a.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Stimquill",
+  "variant": "<dir:stimquillbush_a.png>"
+ },
+ "BMT_VioletWimple": {
+  "file": "BMT_VioletWimple.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/VioletWimple/BMT_VioletWimpleA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/VioletWimple",
+  "variant": "<dir:bmt_violetwimplea.png>"
+ },
+ "BMT_Wrinklecap": {
+  "file": "BMT_Wrinklecap.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Wrinklecap/Wrinkle1.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Wrinklecap",
+  "variant": "<dir:wrinkle1.png>"
+ },
+ "BMT_WrinklecapMarsh": {
+  "file": "BMT_WrinklecapMarsh.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/Wrinklecap/Wrinkle1.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/Wrinklecap",
+  "variant": "<dir:wrinkle1.png>"
+ },
+ "BMT_YumBulbs": {
+  "file": "BMT_YumBulbs.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433/Textures/BMT_Caverns/Things/Plant/YumBulbs/YumBulbs_A.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "BMT_Caverns/Things/Plant/YumBulbs",
+  "variant": "<dir:yumbulbs_a.png>"
+ },
+ "BurnedTree": {
+  "file": "BurnedTree.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/BurnedTreeA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "resources.assets",
+  "texPath": "Things/Plant/BurnedTree",
+  "variant": "<bundleA>"
+ },
+ "Plant_Agave": {
+  "file": "Plant_Agave.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/AgaveA.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "resources.assets",
+  "texPath": "Things/Plant/Agave",
+  "variant": "<bundleA>"
+ },
+ "Plant_Alocasia": {
+  "file": "Plant_Alocasia.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_alocasia/alocasiaa.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Alocasia",
+  "variant": "<bundledir:alocasiaa>"
+ },
+ "Plant_Berry": {
+  "file": "Plant_Berry.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_berryplant/berrybusha.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_BerryPlant",
+  "variant": "<bundledir:berrybusha>"
+ },
+ "Plant_Berry_Leafless": {
+  "missing": true,
+  "why": "no texture found for texPath 'Things/Plant/BerryPlant_Leafless' (Verse.Graphic_Random) in loose index, bundle cache or resources.assets"
+ },
+ "Plant_Brambles_Leafless": {
+  "file": "Plant_Brambles_Leafless.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/Brambles_LeaflessA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "resources.assets",
+  "texPath": "Things/Plant/Brambles_Leafless",
+  "variant": "<bundleA>"
+ },
+ "Plant_Bulrush": {
+  "file": "Plant_Bulrush.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/bulrush/bulrusha.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/Bulrush",
+  "variant": "<bundleA>"
+ },
+ "Plant_Bush": {
+  "file": "Plant_Bush.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_bush/busha.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Bush",
+  "variant": "<bundledir:busha>"
+ },
+ "Plant_Bush_Leafless": {
+  "file": "Plant_Bush_Leafless.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/Bush_LeaflessA.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "resources.assets",
+  "texPath": "Things/Plant/Bush_Leafless",
+  "variant": "<bundleA>"
+ },
+ "Plant_Chokevine": {
+  "file": "Plant_Chokevine.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_chokevine/chokevinea.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Chokevine",
+  "variant": "<bundledir:chokevinea>"
+ },
+ "Plant_Clivia": {
+  "file": "Plant_Clivia.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_clivia/cliviaa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Clivia",
+  "variant": "<bundledir:cliviaa>"
+ },
+ "Plant_Dandelion": {
+  "file": "Plant_Dandelion.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_dandelion/dandeliona.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Dandelion",
+  "variant": "<bundledir:dandeliona>"
+ },
+ "Plant_DesertDandelion": {
+  "file": "Plant_DesertDandelion.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_desertdandelion/desertdandeliona.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_DesertDandelion",
+  "variant": "<bundledir:desertdandeliona>"
+ },
+ "Plant_Grass": {
+  "file": "Plant_Grass.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_grass/grassa.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Grass",
+  "variant": "<bundledir:grassa>"
+ },
+ "Plant_GrayGrass": {
+  "file": "Plant_GrayGrass.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.biotech/textures/things/plant/graygrass/graygrassa.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/Graygrass",
+  "variant": "<bundleA>"
+ },
+ "Plant_HealrootWild": {
+  "file": "Plant_HealrootWild.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/HealrootA.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "resources.assets",
+  "texPath": "Things/Plant/Healroot",
+  "variant": "<bundleA>"
+ },
+ "Plant_LilyPad": {
+  "file": "Plant_LilyPad.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/lilypad/lilypada.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/LilyPad",
+  "variant": "<bundleA>"
+ },
+ "Plant_Lotus": {
+  "file": "Plant_Lotus.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/lotus/lotusa.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/Lotus",
+  "variant": "<bundleA>"
+ },
+ "Plant_MagmaCactus": {
+  "file": "Plant_MagmaCactus.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/magmacactus/magmacactusa.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/MagmaCactus",
+  "variant": "<bundleA>"
+ },
+ "Plant_Moss": {
+  "file": "Plant_Moss.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_moss/mossa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Moss",
+  "variant": "<bundledir:mossa>"
+ },
+ "Plant_PebbleCactus": {
+  "file": "Plant_PebbleCactus.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.biotech/textures/things/plant/pebblecactus/pebblecactusa.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/PebbleCactus",
+  "variant": "<bundleA>"
+ },
+ "Plant_PincushionCactus": {
+  "file": "Plant_PincushionCactus.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_pincushioncactus/pincushioncactusa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_PincushionCactus",
+  "variant": "<bundledir:pincushioncactusa>"
+ },
+ "Plant_Rafflesia": {
+  "file": "Plant_Rafflesia.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_rafflesia/rafflesiaa.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Rafflesia",
+  "variant": "<bundledir:rafflesiaa>"
+ },
+ "Plant_RatPalm": {
+  "file": "Plant_RatPalm.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_ratpalm/ratpalma.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_RatPalm",
+  "variant": "<bundledir:ratpalma>"
+ },
+ "Plant_Reeds": {
+  "file": "Plant_Reeds.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/reeds/reedsa.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/Reeds",
+  "variant": "<bundleA>"
+ },
+ "Plant_Ripthorn": {
+  "file": "Plant_Ripthorn.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_ripthorn/ripthorna.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Ripthorn",
+  "variant": "<bundledir:ripthorna>"
+ },
+ "Plant_SaguaroCactus": {
+  "file": "Plant_SaguaroCactus.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_saguarocactus/saguarocactusa.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_SaguaroCactus",
+  "variant": "<bundledir:saguarocactusa>"
+ },
+ "Plant_ShrubLow": {
+  "file": "Plant_ShrubLow.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_shrublow/shrublowa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_ShrubLow",
+  "variant": "<bundledir:shrublowa>"
+ },
+ "Plant_TallGrass": {
+  "file": "Plant_TallGrass.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_grass/grassa.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Grass",
+  "variant": "<bundledir:grassa>"
+ },
+ "Plant_Thornvine": {
+  "file": "Plant_Thornvine.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/thornvine/thornvinea.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/Thornvine",
+  "variant": "<bundleA>"
+ },
+ "Plant_TreeBirch": {
+  "file": "Plant_TreeBirch.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treebirch/treebircha.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TreeBirch",
+  "variant": "<bundledir:treebircha>"
+ },
+ "Plant_TreeCecropia": {
+  "file": "Plant_TreeCecropia.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treececropia/treececropiaa.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TreeCecropia",
+  "variant": "<bundledir:treececropiaa>"
+ },
+ "Plant_TreeDrago": {
+  "file": "Plant_TreeDrago.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treedrago/treedragoa.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TreeDrago",
+  "variant": "<bundledir:treedragoa>"
+ },
+ "Plant_TreeOak": {
+  "file": "Plant_TreeOak.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treeoak/treeoaka.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TreeOak",
+  "variant": "<bundledir:treeoaka>"
+ },
+ "Plant_TreePalm": {
+  "file": "Plant_TreePalm.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treepalm/treepalma.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TreePalm",
+  "variant": "<bundledir:treepalma>"
+ },
+ "Plant_TreePine": {
+  "file": "Plant_TreePine.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treepine/treepinea.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TreePine",
+  "variant": "<bundledir:treepinea>"
+ },
+ "Plant_TreePoplar": {
+  "file": "Plant_TreePoplar.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treepoplar/treepoplara.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TreePoplar",
+  "variant": "<bundledir:treepoplara>"
+ },
+ "Plant_TreeSnagroot": {
+  "file": "Plant_TreeSnagroot.png",
+  "from": "observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/treesnagroot/snagroota.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/TreeSnagroot",
+  "variant": "<bundledir:snagroota>"
+ },
+ "Plant_TreeTeak": {
+  "file": "Plant_TreeTeak.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treeteak/treeteaka.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TreeTeak",
+  "variant": "<bundledir:treeteaka>"
+ },
+ "Plant_Witchwood": {
+  "file": "Plant_Witchwood.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_witchwood/witchwooda.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_Witchwood",
+  "variant": "<bundledir:witchwooda>"
+ },
+ "Plant_YellowGrass": {
+  "file": "Plant_YellowGrass.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/yellowgrass/yellowgrassa.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/YellowGrass",
+  "variant": "<bundleA>"
+ },
+ "Plant_YellowTallGrass": {
+  "file": "Plant_YellowTallGrass.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/yellowtallgrass/yellowtallgrassa.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/YellowTallGrass",
+  "variant": "<bundleA>"
+ },
+ "PoisonBrambles": {
+  "file": "PoisonBrambles.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonbrambles/bramblesa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonBrambles",
+  "variant": "<bundledir:bramblesa>"
+ },
+ "PoisonMushroom": {
+  "file": "PoisonMushroom.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonmushroom/poisonmushroomplanta.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonMushroom",
+  "variant": "<bundledir:poisonmushroomplanta>"
+ },
+ "PoisonPlantBush": {
+  "file": "PoisonPlantBush.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonbush/bush.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonBush",
+  "variant": "<bundledir:bush>"
+ },
+ "PoisonPlantDandelion": {
+  "file": "PoisonPlantDandelion.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisondandelion/dandelion.png",
+  "origSize": [
+   32,
+   32
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonDandelion",
+  "variant": "<bundledir:dandelion>"
+ },
+ "PoisonPlantRaspberry": {
+  "file": "PoisonPlantRaspberry.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonraspberryplant/raspberrybusha.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonRaspberryPlant",
+  "variant": "<bundledir:raspberrybusha>"
+ },
+ "PoisonPlantTallGrass": {
+  "file": "PoisonPlantTallGrass.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisongrass/poisongrass.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonGrass",
+  "variant": "<bundledir:poisongrass>"
+ },
+ "PoisonPlantTreeCecropia": {
+  "file": "PoisonPlantTreeCecropia.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreececropia/poisontreececropiaa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonTreeCecropia",
+  "variant": "<bundleA>"
+ },
+ "PoisonPlantTreeTeak": {
+  "file": "PoisonPlantTreeTeak.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreeteak/poisontreeteaka.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonTreeTeak",
+  "variant": "<bundleA>"
+ },
+ "PoisonRafflesia": {
+  "file": "PoisonRafflesia.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonrafflesia/rafflesiaa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonRafflesia",
+  "variant": "<bundledir:rafflesiaa>"
+ },
+ "PoisonShrub": {
+  "file": "PoisonShrub.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonshrub/shrublowa.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonShrub",
+  "variant": "<bundledir:shrublowa>"
+ },
+ "PoisonTreeCypress": {
+  "file": "PoisonTreeCypress.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreecypress/treecypressa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonTreeCypress",
+  "variant": "<bundledir:treecypressa>"
+ },
+ "PoisonTreePalm": {
+  "file": "PoisonTreePalm.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreepalm/treepalma.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonTreePalm",
+  "variant": "<bundledir:treepalma>"
+ },
+ "PoisonTreeWillow": {
+  "file": "PoisonTreeWillow.png",
+  "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreewillow/treewillowa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Plant/PoisonTreeWillow",
+  "variant": "<bundledir:treewillowa>"
+ },
+ "RG_FlowerCactus": {
+  "file": "RG_FlowerCactus.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_flowercactus/flowercactusa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_FlowerCactus",
+  "variant": "<bundledir:flowercactusa>"
+ },
+ "RG_Plant_AridGrass": {
+  "file": "RG_Plant_AridGrass.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_desertgrass/desertgrassa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_DesertGrass",
+  "variant": "<bundledir:desertgrassa>"
+ },
+ "RG_Plant_BlueDandelion": {
+  "file": "RG_Plant_BlueDandelion.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_bluedandelion/bluedandeliona.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_BlueDandelion",
+  "variant": "<bundledir:bluedandeliona>"
+ },
+ "RG_Plant_GlowLeaf": {
+  "file": "RG_Plant_GlowLeaf.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Plant/GlowLeaf/GlowLeafA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/GlowLeaf",
+  "variant": "<dir:glowleafa.png>"
+ },
+ "RG_Plant_LureWeed": {
+  "file": "RG_Plant_LureWeed.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Plant/LureWeed/LureWeedA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/LureWeed",
+  "variant": "<dir:lureweeda.png>"
+ },
+ "RG_Plant_MutatedFern": {
+  "file": "RG_Plant_MutatedFern.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Plant/MutatedFern/MutatedFernA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/MutatedFern",
+  "variant": "<dir:mutatedferna.png>"
+ },
+ "RG_Plant_MutatedFungus": {
+  "file": "RG_Plant_MutatedFungus.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Plant/MutatedFungus/MutatedFungusA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/MutatedFungus",
+  "variant": "<dir:mutatedfungusa.png>"
+ },
+ "RG_Plant_Raspberry": {
+  "file": "RG_Plant_Raspberry.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_raspberryplant/raspberryplant.png",
+  "origSize": [
+   2048,
+   2048
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_RaspberryPlant",
+  "variant": "<bundledir:raspberryplant>"
+ },
+ "RG_Plant_RedDandelion": {
+  "file": "RG_Plant_RedDandelion.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_reddandelion/reddandeliona.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_RedDandelion",
+  "variant": "<bundledir:reddandeliona>"
+ },
+ "RG_Plant_TallPalmTree": {
+  "file": "RG_Plant_TallPalmTree.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treetallpalm/treetallpalma.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TreeTallPalm",
+  "variant": "<bundledir:treetallpalma>"
+ },
+ "RG_Plant_TallToxiGrass": {
+  "file": "RG_Plant_TallToxiGrass.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Plant/ToxiGrass/ToxiGrassA.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/ToxiGrass",
+  "variant": "<dir:toxigrassa.png>"
+ },
+ "RG_Plant_ToxiGrass": {
+  "file": "RG_Plant_ToxiGrass.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Plant/ToxiGrass/ToxiGrassA.png",
+  "origSize": [
+   64,
+   64
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/ToxiGrass",
+  "variant": "<dir:toxigrassa.png>"
+ },
+ "RG_Plant_TreeDwarfPalm": {
+  "file": "RG_Plant_TreeDwarfPalm.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treetinypalm/treetinypalma.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TreeTinyPalm",
+  "variant": "<bundledir:treetinypalma>"
+ },
+ "RG_Plant_TreeSplitpine": {
+  "file": "RG_Plant_TreeSplitpine.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Plant/SplitPine/SplitPineA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/SplitPine",
+  "variant": "<dir:splitpinea.png>"
+ },
+ "RG_Plant_TreeToxiTeak": {
+  "file": "RG_Plant_TreeToxiTeak.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Plant/TreeToxiTeak/ToxiTeakA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/TreeToxiTeak",
+  "variant": "<dir:toxiteaka.png>"
+ },
+ "RG_Plant_TreeToxipine": {
+  "file": "RG_Plant_TreeToxipine.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Plant/Toxipine/ToxipineA.png",
+  "origSize": [
+   256,
+   256
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/Toxipine",
+  "variant": "<dir:toxipinea.png>"
+ },
+ "RG_Plant_TropicalBrambles": {
+  "file": "RG_Plant_TropicalBrambles.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_tropicalbrambles/tropicalbramblesa.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TropicalBrambles",
+  "variant": "<bundledir:tropicalbramblesa>"
+ },
+ "RG_Plant_TropicalFern": {
+  "file": "RG_Plant_TropicalFern.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_tropicalfern/tropicalferna.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TropicalFern",
+  "variant": "<bundledir:tropicalferna>"
+ },
+ "RG_Plant_TropicalIvy": {
+  "file": "RG_Plant_TropicalIvy.png",
+  "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_tropicalivy/tropicalivya.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Things/Plant/RG_TropicalIvy",
+  "variant": "<bundledir:tropicalivya>"
+ },
+ "RG_Tripaloski": {
+  "file": "RG_Tripaloski.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Plant/Tripaloski/TripaloskiA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/Tripaloski",
+  "variant": "<dir:tripaloskia.png>"
+ },
+ "TreeDead": {
+  "file": "TreeDead.png",
+  "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/treedead/treedeada.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "bundle",
+  "texPath": "Plant/TreeDead",
+  "variant": "<bundleA>"
+ },
+ "VCE_Plant_AloeVera": {
+  "file": "VCE_Plant_AloeVera.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2198652536/Textures/Things/Plant/AloeVera/AloeVeraA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/AloeVera",
+  "variant": "<dir:aloeveraa.png>"
+ },
+ "VCE_Plant_BunnyEarsCactus": {
+  "file": "VCE_Plant_BunnyEarsCactus.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2198652536/Textures/Things/Plant/BunnyEarsCactus/BunnyEarsCactusA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/BunnyEarsCactus",
+  "variant": "<dir:bunnyearscactusa.png>"
+ },
+ "VCE_Plant_Echeveria": {
+  "file": "VCE_Plant_Echeveria.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2198652536/Textures/Things/Plant/Echeveria/EcheveriaA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/Echeveria",
+  "variant": "<dir:echeveriaa.png>"
+ },
+ "VCE_Plant_FairyWashboard": {
+  "file": "VCE_Plant_FairyWashboard.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2198652536/Textures/Things/Plant/FairyWashboard/FairyWashboardA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/FairyWashboard",
+  "variant": "<dir:fairywashboarda.png>"
+ },
+ "VCE_Plant_JadePlant": {
+  "file": "VCE_Plant_JadePlant.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2198652536/Textures/Things/Plant/JadePlant/JadePlantA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/JadePlant",
+  "variant": "<dir:jadeplanta.png>"
+ },
+ "VCE_Plant_PeyotePlant": {
+  "file": "VCE_Plant_PeyotePlant.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2198652536/Textures/Things/Plant/Peyote/PeyoteA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/Peyote",
+  "variant": "<dir:peyotea.png>"
+ },
+ "VCE_Plant_PincushionPlant": {
+  "file": "VCE_Plant_PincushionPlant.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2198652536/Textures/Things/Plant/PincushionPlant/PincushionPlantA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/PincushionPlant",
+  "variant": "<dir:pincushionplanta.png>"
+ },
+ "VCE_Plant_SnakePlant": {
+  "file": "VCE_Plant_SnakePlant.png",
+  "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2198652536/Textures/Things/Plant/SnakePlant/SnakePlantA.png",
+  "origSize": [
+   128,
+   128
+  ],
+  "source": "loose",
+  "texPath": "Things/Plant/SnakePlant",
+  "variant": "<dir:snakeplanta.png>"
+ }
+}
