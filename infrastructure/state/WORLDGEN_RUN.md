@@ -27,7 +27,7 @@
 > ⛔ **This REPLACES the 2026-08-21 freeze banner**, which said the opposite and is struck. The
 > freeze lasted one evening and did its job — it stopped a redraft nobody wanted.
 > ⚠️ **What did NOT come back:** re-running `ashkarr_paint.py` to regenerate the bundle, the
-> reference-match harness (`refmatch.py` stays cancelled), and worldgen, which is out of every
+> reference-match harness (`refmatch.py` stays cancelled ⚠️ **— wrong since 2026-08-22: it is DEFERRED TO v2** (`436bf693`)), and worldgen, which is out of every
 > version and always was. **The map is edited DIRECTLY, one map, in place** — that is the whole
 > method, per `the_one_map.md`.
 > 🔮 `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` stands as history, not as a plan.

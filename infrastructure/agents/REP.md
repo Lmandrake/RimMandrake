@@ -13,7 +13,7 @@ publisher and `render.py --overwrite-queues` are yours and run whether or not he
 ```
 src/RimMandrake/Utils/status_server.py      the board -> http://localhost:8787
 src/RimMandrake/Utils/status_board.html     what it renders
-infrastructure/state/status_matrix.json     what it renders
+infrastructure/state/derived/board.json     what it renders (rendered by rimflow, not by you)
 infrastructure/state/queue/HUMAN.md         pending questions + assumed answers
 infrastructure/state/MODE                   interactive | autonomous | afk
 skills/README.md                            the roster and the ownership table
@@ -56,8 +56,10 @@ A browser page, not a desktop window — WSLg gives Tk no DPI scaling, so anythi
 bullets from `infrastructure/state/V1.md`, columns DECIDE / BUILD / CHECK, each cell a fill bar with `done/total`; plus
 gauges, KPI tiles, blockers, host memory, repo inventory, and CURRENTLY from `infrastructure/state/status/<SEAT>.json`.
 
-`status_matrix.json` is DERIVED, never hand-edited: `python3 src/RimMandrake/Utils/derive_matrix.py` counts the queues and
-writes it. Run it after any queue change; hand-keeping it drifts.
+⛔ **`status_matrix.json` is DELETED, 2026-08-22.** It was a dead artifact: the board reads
+`infrastructure/state/derived/board.json`, `derive_matrix.py` refuses to rebuild it against the rendered queues, and it had
+sat frozen at 55 rows / 165 items since 08-20 while the ledger moved to 39 rows / 248. What renders the board is
+`render.py --overwrite-queues`, which is the same command that publishes the queues.
 
 ## Two modes
 

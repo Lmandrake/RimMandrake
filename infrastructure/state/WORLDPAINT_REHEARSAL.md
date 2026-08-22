@@ -1,5 +1,27 @@
 # WORLDPAINT_REHEARSAL.md — paint the planet into a throwaway world, and LOOK at it
 
+> 🔴 **THE ADOPTION BANNER BELOW IS SUPERSEDED — REP, 2026-08-22. STOP BEFORE ACTING ON IT.**
+> Later the same day the owner told REP: *"I am working with DECIDE to remake the planet an
+> entirely different way, **so there is no current frozen world**."* `infrastructure/state/canon.yml`
+> now carries **`planet.status: remaking`**, which supersedes every doc saying the planet is
+> frozen or adopted as-is for v1 — **this file is one of those docs.** `WORLDGEN_RUN.md` was
+> given this correction on 08-22 and struck its own copy of the paragraph below; this file
+> never was, which is the defect.
+>
+> ⛔ **§5 and §6 ARE A LIVE HAZARD — DO NOT RUN THEM.** They walk the owner and CHECK through
+> generating a world and `w9_run.py --apply` to paint the 21,872-tile Ash'karr bundle. **That
+> bundle measures the world being replaced.** `FINAL_WORLD_PREP_1` is BLOCKED by the owner on
+> exactly this premise — it *"would prep a dead map"* — and `W9`, the item this sheet executes,
+> is **`dropped`** in the ledger. Nothing further down tells a reader to stop; this line is it.
+>
+> ⚠️ **`refmatch.py` is NOT cancelled.** Owner, 2026-08-22: *"Please put refmatch.py in v2
+> officially, right now."* (`436bf693`) — **deferred to v2**, and worth more there than here,
+> because a harness that measures distance from the reference is worth most while a world is
+> being AUTHORED. The line below saying it "stays cancelled" predates that ruling.
+>
+> 🔑 What did NOT change: **there is still no worldgen feature, in any version**, and the map is
+> edited DIRECTLY, one map, in place.
+
 > ✅ **THE MAP IS ADOPTED, AND AUTHORING IS OPEN AGAIN — owner, 2026-08-22.** Verbatim, after
 > looking at the four-globe sheet: *"That world, upon examination, really isn't very bad at all…
 > we're thinking of trying to adopt it."* ⇒ **Ash'karr as it stands IS the v1 planet**, and work
