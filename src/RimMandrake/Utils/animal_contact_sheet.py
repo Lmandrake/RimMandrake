@@ -193,6 +193,19 @@ BUNDLE_SUFFIXES = ("_south", "", "_east", "_north", "_side", "_m")
 # is no `Shell_Firefoam` at all. Without this the whole family renders blank.
 BUNDLE_VARIANT_SUFFIXES = tuple("_" + c for c in "abcdefgh")
 
+# 🔴 THE SECOND VARIANT FORM, AND IT HAS NO SEPARATOR — 2026-08-22.
+# `Graphic_Random` art is written BOTH ways. Vanilla shells extract as
+# `Shell_Firefoam_a`; vanilla and ReGrowth plants ship `GrassA.png`, `BushA.png`
+# with the letter welded to the stem and NO bare `Grass.png` at all. A ladder
+# that only knows `_a` misses every one of them.
+# ⚠️ Measured over the 190-plant set that produced
+# `design/Jawa/mods/plant_sprites/manifest.json`: 69 of 190 needed a rung that
+# was not in this ladder. A resolver whose promise is "I can tell MISSING from
+# NOT FOUND" cannot afford holes — `prove-art-missing-before-generating` exists
+# because someone generates art for a sprite that was on disk all along.
+VARIANT_LETTERS = tuple("ABCDEFGH")
+BUNDLE_CAPITAL_SUFFIXES = VARIANT_LETTERS
+
 # Where extract_bundle_textures.py writes its cache. Same repo-relative
 # derivation as DEFAULT_CSV so the tools work from any cwd.
 DEFAULT_BUNDLE_DIR = os.path.normpath(os.path.join(
@@ -279,6 +292,35 @@ def mod_color(name):
 
 
 # ------------------------------------------------------------------ textures
+class TextureIndex(dict):
+    """{relpath -> abs file}, plus a DIRECTORY view built lazily on first miss.
+
+    🔑 `Graphic_Random` and `Graphic_StackCount` name a DIRECTORY, not a file —
+    the game lists it and picks. The flat map cannot answer that, and the ladder
+    used to give up: 85 of 190 plants in the calibration set resolve only by
+    listing the directory the texPath names.
+
+    The view is built once, on demand, and never for a run that has no misses.
+    A dict subclass so every existing `index.get(...)` and `len(index)` caller
+    keeps working unchanged — the same shape `BundleIndex` already uses here.
+    """
+
+    _dirs = None
+
+    def dir_entries(self, d):
+        """Sorted relpaths directly inside directory `d` (lowercased, no recursion)."""
+        if self._dirs is None:
+            dirs = {}
+            for rel in self:
+                head, _, tail = rel.rpartition("/")
+                if tail:
+                    dirs.setdefault(head, []).append(rel)
+            for v in dirs.values():
+                v.sort()
+            self._dirs = dirs
+        return self._dirs.get(d, ())
+
+
 def build_texture_index(mods):
     """
     {lowercased path relative to a Textures/ root -> absolute file} over every
@@ -296,7 +338,7 @@ def build_texture_index(mods):
     No file is opened here. This is a pure directory walk over ~43,500 files and
     costs about a second; decoding happens only for the ~700 we actually place.
     """
-    index = {}
+    index = TextureIndex()
     files_seen = 0
     dirs_seen = 0
     for m in mods:
@@ -325,6 +367,12 @@ class BundleIndex(dict):
     counts names and callers that only iterate keep working.
     """
     has_paths = False
+
+    def __init__(self, *a, **k):
+        super().__init__(*a, **k)
+        # {directory segments -> [(source, stem, abs png), ...]}; see the
+        # bundle-directory rung in resolve_texture().
+        self.by_dir = {}
 
 
 def norm_pkg(pid):
@@ -399,9 +447,22 @@ def load_bundle_index(bundle_dir=None):
             if not segs:
                 continue
             n += 1
-            index.setdefault(segs[-1], []).append(
-                (norm_pkg(row.get("sourceKey") or ""), segs[:-1],
-                 os.path.join(bundle_dir, *rel.split("/"))))
+            src = norm_pkg(row.get("sourceKey") or "")
+            abs_png = os.path.join(bundle_dir, *rel.split("/"))
+            index.setdefault(segs[-1], []).append((src, segs[:-1], abs_png))
+            # 🔴 THE BUNDLE DIRECTORY FORM. When a texPath names a directory, the
+            # flattened bundle entries inside it may carry a DIFFERENT STEM:
+            # `things/plant/rg_bush/busha.png` under texPath `Things/Plant/RG_Bush`.
+            # Keyed by stem alone that is unreachable — the stem is `busha`, not
+            # `rg_bush` — so it needs its own index by containing directory.
+            # ⚠️ Keyed on the LAST directory segment, not the whole tuple. A
+            # container path runs DEEPER than the texPath
+            # (`textures/things/plant/rg_bush` against `Things/Plant/RG_Bush`),
+            # so an exact-tuple key matches nothing. Same reason `trailing_score`
+            # exists for stems; the directory rung is scored the same way.
+            if len(segs) >= 2:
+                index.by_dir.setdefault(segs[-2], []).append(
+                    (src, tuple(segs[:-1]), segs[-1], abs_png))
     # Does this cache carry container paths at all? Answered once here rather
     # than rescanned per def.
     index.has_paths = any(d for cands in index.values() for _, d, _ in cands)
@@ -454,13 +515,58 @@ def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None):
         hit = index.get(base + suf + ".png")
         if hit:
             return hit, (suf or "<bare>")
+
+    # ── the three loose rungs added 2026-08-22 ───────────────────────────────
+    # Order matters: exact-name forms before anything that has to CHOOSE. A rung
+    # that picks one of several files is a last resort, because picking is where
+    # a resolver starts guessing.
+    #
+    # 1. bare-capital variant — `Grass` + `A` -> `GrassA.png`, no separator.
+    # ⚠️ `.lower()` is load-bearing: build_texture_index lowercases every key, so
+    # a literal "A" here matches nothing and the rung silently does nothing. The
+    # unit test caught exactly that; the 190-plant fixture did NOT, because other
+    # rungs happened to cover the same defs.
+    for c in VARIANT_LETTERS:
+        hit = index.get(base + c.lower() + ".png")
+        if hit:
+            return hit, "<capital:%s>" % c
+
+    # 2. INFIX — the letter lands before a trailing qualifier, not at the end:
+    #    `Grass_Leafless` -> `GrassA_Leafless`. One plant in the calibration set
+    #    resolves only this way, and it would otherwise read as missing art.
+    head, sep, tail = base.rpartition("_")
+    if sep and head:
+        for c in VARIANT_LETTERS:
+            hit = index.get(head + c.lower() + "_" + tail + ".png")
+            if hit:
+                return hit, "<infix:%s>" % c.lower()
+
+    # 3. the texPath names a DIRECTORY (`Graphic_Random`, `Graphic_StackCount`).
+    #    List it and take the first variant in sorted order — deterministic, so
+    #    two runs never disagree about which sprite a def has.
+    #    ⛔ `_m` masks are refused outright: a mask is a flat colour-key
+    #    silhouette, and returning one is worse than returning nothing because it
+    #    LOOKS like art and is not.
+    entries = [e for e in index.dir_entries(base)
+               if not e[:-4].endswith("_m")] if hasattr(index, "dir_entries") else []
+    if entries:
+        stem = base.rpartition("/")[2]
+        def _rank(rel):
+            nm = rel.rpartition("/")[2][:-4]
+            # Prefer a file named for its own directory (`rg_bush/busha`) over an
+            # unrelated sibling, then the first variant letter, then sort order.
+            return (0 if nm.startswith(stem) else 1, nm)
+        pick = min(entries, key=_rank)
+        return index[pick], "<dir:%s>" % pick.rpartition("/")[2]
+
     if bundle_index:
         parts = base.split("/")
         stem, want_dirs = parts[-1], tuple(parts[:-1])
         own = norm_pkg(own_pkg)
         blind = not getattr(bundle_index, "has_paths", False)
         best = None
-        for i, suf in enumerate(BUNDLE_SUFFIXES + BUNDLE_VARIANT_SUFFIXES):
+        for i, suf in enumerate(BUNDLE_SUFFIXES + BUNDLE_VARIANT_SUFFIXES
+                                + BUNDLE_CAPITAL_SUFFIXES):
             for src, have_dirs, path in bundle_index.get(stem + suf, ()):
                 is_own = 1 if (own and src == own) else 0
                 score = trailing_score(want_dirs, have_dirs)
@@ -478,6 +584,48 @@ def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None):
                     best = (rank, path, suf)
         if best:
             return best[1], ("<bundle%s>" % (":" + best[2] if best[2] else ""))
+
+        # The bundle DIRECTORY form: texPath names a container and the flattened
+        # entries inside carry a different stem, so no suffix on `stem` can ever
+        # reach them. Look the directory up whole. ~50 of the 190 calibration
+        # plants live here — every ReGrowth retexture of a vanilla plant does.
+        # The stem VARIANT forms, in the bundle. The loose ladder above tries
+        # `GrassA` and `GrassA_Leafless` against the filesystem; the same two
+        # forms occur inside bundles, where they are the STEM of a flattened
+        # entry rather than a filename. Measured: without this pass, 10 of the
+        # 190 calibration plants stayed unresolved — every one of them either a
+        # capital-letter or an infix form that only exists in a bundle.
+        alt_stems = [stem + c.lower() for c in VARIANT_LETTERS]
+        s_head, s_sep, s_tail = stem.rpartition("_")
+        if s_sep and s_head:
+            alt_stems += [s_head + c.lower() + "_" + s_tail for c in VARIANT_LETTERS]
+        for alt in alt_stems:
+            for src, have_dirs, path in bundle_index.get(alt, ()):
+                if not (own and src == own) and blind is False and \
+                        trailing_score(want_dirs, have_dirs) <= 0 and have_dirs:
+                    continue
+                return path, "<bundlevar:%s>" % alt
+
+        want_full = tuple(parts)          # texPath INCLUDING its last segment,
+                                          # which here is a directory name
+        best_dir = None
+        for src, have_dirs, cstem, path in bundle_index.by_dir.get(stem, ()):
+            if cstem.endswith("_m"):
+                continue
+            score = trailing_score(want_full, have_dirs)
+            if score <= 0 and have_dirs:
+                continue
+            is_own = 1 if (own and src == own) else 0
+            # ⚠️ MIN over a NEGATED key, not max. Highest agreement first, then
+            # own mod — but the tie-break must take the FIRST variant
+            # alphabetically (`busha`), and a plain `max` on the tuple would take
+            # the LAST (`bushd`). Measured: that one slip moved 60 of 190 plants
+            # onto a different sibling than the calibration set records.
+            rank = (-score, -is_own, cstem)
+            if best_dir is None or rank < best_dir[0]:
+                best_dir = (rank, cstem, path)
+        if best_dir:
+            return best_dir[2], "<bundledir:%s>" % best_dir[1]
     return None, None
 
 
