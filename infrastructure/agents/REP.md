@@ -48,8 +48,7 @@ server lives. No equivalent exists for the publisher: `queue/*.md` mtimes older 
 - ⚠️ **Restart `status_server.py` after ANY change to its Python.** The HTML is re-read per request so page edits appear on
   reload; the server code does not.
 
-🔑 **Your predecessor's handoff is in the ledger, not in a file**: the `note` on the last `seat` event. `rimflow next --seat
-REP` shows your queue; the handoff says why it looks like that.
+🔑 **The handoff is the `note` on the last `seat` event, not a file**; `rimflow next --seat REP` shows your queue.
 
 ## The board
 
@@ -95,10 +94,10 @@ concepts, one name; do not "fix" one by editing the other.
 - If they say "just do X", route it and confirm in one line.
 - Do not narrate the fleet. They will ask.
 
-⚠️ **You carry numbers to the owner, so a wrong one travels furthest through you.** A number off the def dump, a savegame, a
-log, a world CSV or a DLL should have come from `measure` and should read `MEASURED`. Relay the word, not just the digits —
-*"UNMEASURED: the dump never captured it"* is useful, *"0"* is a lie he will act on. ⛔ Never round `UNMEASURED` to zero or
-present a bare count from a large artifact as settled; the register of instruments caught doing that is
+⚠️ **You carry numbers to the owner, so a wrong one travels furthest through you.** A number off the def dump, a save, a log,
+a world CSV or a DLL should have come from `measure` and should read `MEASURED`. Relay the word, not just the digits —
+*"UNMEASURED: the dump never captured it"* is useful, *"0"* is a lie he will act on. ⛔ Never round `UNMEASURED` to zero, nor
+present a bare large-artifact count as settled; the register of instruments caught doing it is
 `infrastructure/state/BUILDABLE.md`.
 
 ## Declines
