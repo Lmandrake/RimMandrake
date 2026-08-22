@@ -115,22 +115,194 @@
           <value><settlementGenerationWeight>1.3</settlementGenerationWeight></value>
         </li>
 
-        <!-- The water raid. Appended to TribeBase's twelve, not replacing them. -->
+        <!--
+          ================================================================
+          🔴 THE GROUPS ARE NOW DECLARED OUTRIGHT, NOT APPENDED.
+          AUTHORED_KINDS_MUST_FIELD_1, 2026-08-22
+          ================================================================
+          This op used to add ONE group - the water raid - and its comment said
+          "Appended to TribeBase's twelve, not replacing them." That was accurate
+          and it was the bug: all four `Jawa_DeepDesert_*` kinds existed, this file
+          contained the string `Jawa_DeepDesert` ZERO times, and TribeCivil fielded
+          vanilla tribals exclusively. Measured live: 18 spawns from TribeCivil drew
+          nerve spikers, thrumbungus shrooms and throwing knives, and 6 of 18 arrived
+          bare-handed. DECIDE ruled every authored kind must be FIELDED
+          (design/Jawa/worldbuilding/pawnkind_roster.md).
+
+          🔑 WHY `Inherit="False"` HERE AND SIX `Replace`s IN BlackstarCompany.xml.
+          DECIDE's ruling names the shape as "rewrite the options inside the COMBAT
+          groups". That shape is REACHABLE ON `Pirate`, which writes its own six
+          groups, and NOT REACHABLE HERE: `TribeCivil` inherits all twelve from the
+          abstract `TribeBase`, PatchOperations run BEFORE inheritance resolves, and
+          a Replace on the child therefore matches ZERO and logs nothing. Verified
+          with lxml against the shipped Core XML, 2026-08-22:
+              /Defs/FactionDef[defName="TribeCivil"]/pawnGroupMakers  ->  0 nodes
+          ⛔ Patching `TribeBase` by @Name instead would hit TribeRough, TribeSavage
+          and every modded descendant in 578 mods. That is not an option.
+
+          ⇒ The only route to "zero vanilla kinds in a combat group" is to declare
+          the whole list on the child and stop inheriting. DECIDE's ⛔ against
+          `Inherit="False"` was that it DROPS Trader, Peaceful and Settlement, and
+          the 48-kind roster has no trader role to replace them with. That objection
+          is answered by RE-DECLARING those eight groups here, byte-for-byte from
+          `TribeBase`, rather than by leaving them out.
+          🔑 The eight non-combat groups below were COPIED PROGRAMMATICALLY out of
+          Core's Factions_Misc.xml, not retyped, and they keep their vanilla
+          `Tribal_*` kinds on purpose - DECIDE: "Non-combat groups stay vanilla."
+          ⚠️ The cost, stated plainly: TribeCivil no longer picks up anything a
+          future vanilla patch or another mod adds to TribeBase's group list. On a
+          world that is hand-made once and frozen, that is a price worth paying;
+          on a living mod list it would not be.
+
+          The four combat groups keep vanilla's own commonality and each group's
+          tactical character - mixed, ranged, melee, breacher - with the Tusken
+          roster in place of the tribals. The water raid is the fifth, unchanged in
+          shape (commonality 30, maxTotalPoints 800) but now carrying the two FAST,
+          LIGHT authored kinds instead of three vanilla ones. No Heavy in it: a
+          brute is the opposite of a party that leaves once it has the water.
+        -->
         <li Class="PatchOperationAdd">
           <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
           <value>
-            <pawnGroupMakers>
+            <pawnGroupMakers Inherit="False">
+              <li>
+                <kindDef>Combat</kindDef>
+                <commonality>100</commonality>
+                <options>
+                    <Jawa_DeepDesert_Grunt>10</Jawa_DeepDesert_Grunt>
+                    <Jawa_DeepDesert_Heavy>5</Jawa_DeepDesert_Heavy>
+                    <Jawa_DeepDesert_Specialist>6</Jawa_DeepDesert_Specialist>
+                </options>
+              </li>
+              <li>
+                <kindDef>Combat</kindDef>
+                <commonality>60</commonality>
+                <options>
+                    <Jawa_DeepDesert_Specialist>10</Jawa_DeepDesert_Specialist>
+                    <Jawa_DeepDesert_Grunt>4</Jawa_DeepDesert_Grunt>
+                </options>
+              </li>
+              <li>
+                <kindDef>Combat</kindDef>
+                <commonality>60</commonality>
+                <options>
+                    <Jawa_DeepDesert_Grunt>10</Jawa_DeepDesert_Grunt>
+                    <Jawa_DeepDesert_Heavy>8</Jawa_DeepDesert_Heavy>
+                </options>
+              </li>
+              <li>
+                <kindDef>Combat</kindDef>
+                <commonality>5</commonality>
+                <options>
+                    <Jawa_DeepDesert_Heavy>10</Jawa_DeepDesert_Heavy>
+                    <Jawa_DeepDesert_Grunt>5</Jawa_DeepDesert_Grunt>
+                </options>
+              </li>
+              <li>
+                      <!-- Peaceful -->
+                      <kindDef>Peaceful</kindDef>
+                      <options>
+                        <Tribal_Warrior>20</Tribal_Warrior>
+                        <Tribal_Child MayRequire="Ludeon.RimWorld.Biotech">10</Tribal_Child>
+                        <Tribal_Archer>10</Tribal_Archer>
+                        <Tribal_Hunter>10</Tribal_Hunter>
+                        <Tribal_HeavyArcher>10</Tribal_HeavyArcher>
+                        <Tribal_Berserker>5</Tribal_Berserker>
+                        <Tribal_ChiefRanged>3</Tribal_ChiefRanged>
+                        <Tribal_ChiefMelee>1.5</Tribal_ChiefMelee>
+                      </options>
+                    </li>
+              <li>
+                      <kindDef>Trader</kindDef>
+                      <traders>
+                        <Tribal_Trader>1</Tribal_Trader>
+                      </traders>
+                      <carriers>
+                        <Muffalo>6</Muffalo>
+                        <Dromedary>5</Dromedary>
+                        <Alpaca>2.5</Alpaca>
+                        <Elephant>2</Elephant>
+                      </carriers>
+                      <guards>
+                        <Tribal_Warrior>7</Tribal_Warrior>
+                        <Tribal_Archer>10</Tribal_Archer>
+                        <Tribal_Hunter>10</Tribal_Hunter>
+                        <Tribal_HeavyArcher>10</Tribal_HeavyArcher>
+                        <Tribal_Berserker>7</Tribal_Berserker>
+                      </guards>
+                    </li>
+              <li>
+                      <kindDef>Settlement</kindDef>
+                      <options>
+                        <Tribal_Warrior>7</Tribal_Warrior>
+                        <Tribal_Archer>10</Tribal_Archer>
+                        <Tribal_Hunter>10</Tribal_Hunter>
+                        <Tribal_HeavyArcher>10</Tribal_HeavyArcher>
+                        <Tribal_Berserker>7</Tribal_Berserker>
+                        <Tribal_ChiefRanged>10</Tribal_ChiefRanged>
+                      </options>
+                    </li>
+              <li>
+                      <kindDef>Settlement_RangedOnly</kindDef>
+                      <options>
+                        <Tribal_Archer>10</Tribal_Archer>
+                        <Tribal_Hunter>10</Tribal_Hunter>
+                        <Tribal_HeavyArcher>10</Tribal_HeavyArcher>
+                        <Tribal_ChiefRanged>10</Tribal_ChiefRanged>
+                      </options>
+                    </li>
+              <li MayRequire="Ludeon.RimWorld.Ideology">
+                      <kindDef>Miners</kindDef>
+                      <commonality>1</commonality>
+                      <options>
+                        <Tribal_Miner>1</Tribal_Miner>
+                      </options>
+                    </li>
+              <li MayRequire="Ludeon.RimWorld.Ideology">
+                      <kindDef>Hunters</kindDef>
+                      <commonality>1</commonality>
+                      <options>
+                        <Tribal_Hunter>1</Tribal_Hunter>
+                      </options>
+                    </li>
+              <li MayRequire="Ludeon.RimWorld.Ideology">
+                      <kindDef>Loggers</kindDef>
+                      <commonality>1</commonality>
+                      <options>
+                        <Tribal_Logger>1</Tribal_Logger>
+                      </options>
+                    </li>
+              <li MayRequire="Ludeon.RimWorld.Ideology">
+                      <kindDef>Farmers</kindDef>
+                      <commonality>1</commonality>
+                      <options>
+                        <Tribal_Farmer>1</Tribal_Farmer>
+                      </options>
+                    </li>
+
+              <!-- The water raid. FACTION_SPEC.md section 4's one sanctioned addition. -->
               <li>
                 <kindDef>Combat</kindDef>
                 <commonality>30</commonality>
                 <maxTotalPoints>800</maxTotalPoints>
                 <options>
-                  <Tribal_Hunter>10</Tribal_Hunter>
-                  <Tribal_Archer>8</Tribal_Archer>
-                  <Tribal_Warrior>4</Tribal_Warrior>
+                  <Jawa_DeepDesert_Grunt>10</Jawa_DeepDesert_Grunt>
+                  <Jawa_DeepDesert_Specialist>8</Jawa_DeepDesert_Specialist>
                 </options>
               </li>
             </pawnGroupMakers>
+          </value>
+        </li>
+
+        <!-- The war chief. A leader is generated once per faction and is never rolled
+             into a raid, so he belongs in `fixedLeaderKinds`, not in a group maker.
+             No vanilla FactionDef in Factions_Misc.xml writes this field, so ADD. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
+          <value>
+            <fixedLeaderKinds>
+              <li>Jawa_DeepDesert_Leader</li>
+            </fixedLeaderKinds>
           </value>
         </li>
 
