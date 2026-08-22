@@ -1,32 +1,51 @@
 #!/bin/sh
 # board_loop.sh — REP's board publisher. Keeps every seat's queue view current.
 #
-#     ./src/RimMandrake/Utils/board_loop.sh &          8 h, then stops
-#     BOARD_LOOP_HOURS=4 ./src/RimMandrake/Utils/board_loop.sh &
+#     setsid nohup ./src/RimMandrake/Utils/board_loop.sh >/dev/null 2>&1 </dev/null &
+#     BOARD_LOOP_HOURS=4 ./src/RimMandrake/Utils/board_loop.sh &     # window length only
 #
 # 🔴 WHY THIS EXISTS. `queue/*.md` are GENERATED and only `render.py --overwrite-queues`
 # publishes them. Nothing else runs it. On 2026-08-21 they sat frozen for 2h17m while
 # four seats filed 24 items into views nobody was regenerating, and no seat could tell.
 # The board is REP's, so publishing it is REP's.
 #
+# 🔄 IT RENEWS ITSELF — owner, 2026-08-22: "self-restarting". The 8 h window is still
+# real and still logged, but at the end of it the loop re-execs instead of dying, so a
+# lapse can no longer happen silently at a time nobody is watching. The bound now buys
+# what it was always for — a log line saying the loop is still here and why — without
+# costing a frozen view.
+#
+# ⛔ HOW TO STOP IT, since it no longer stops on its own:
+#     touch infrastructure/state/derived/board_loop.stop
+# It exits within 60 s and clears the flag. `kill <pid>` also works; the stop-file
+# exists so a seat that cannot find the pid is not stuck.
+#
+# ✅ HOW TO TELL IT IS ALIVE, without pgrep (which matches its own wrapper):
+#     infrastructure/state/derived/board_loop.heartbeat   — rewritten every cycle
+# Older than ~2 min means dead. `queue/*.md` mtimes say the same thing.
+#
 # ⏱️ 60 s is the cadence render.py documents: ~400 ms, 0.67% of one core.
 #
-# ⚠️ RUN IT DETACHED, or the harness kills it when the turn ends:
-#     setsid nohup ./src/RimMandrake/Utils/board_loop.sh >/dev/null 2>&1 </dev/null &
-# A plain background `&` does NOT survive — measured 2026-08-21, twice.
-#
-# ⚠️ It is BOUNDED on purpose. An unattended loop with no end is how a machine ends up
-# running something nobody remembers starting. Restart it when it lapses; the log says
-# when it began and when it stopped.
+# ⚠️ RUN IT DETACHED, or the harness kills it when the turn ends. A plain background
+# `&` does NOT survive — measured 2026-08-21, twice.
 cd "$(dirname "$0")/../../.." || exit 1
 LOG=infrastructure/state/derived/board_loop.log
+BEAT=infrastructure/state/derived/board_loop.heartbeat
+STOP=infrastructure/state/derived/board_loop.stop
 mkdir -p infrastructure/state/derived
 HOURS=${BOARD_LOOP_HOURS:-8}
 END=$(( $(date +%s) + HOURS * 3600 ))
-echo "$(date -Is) board loop start (${HOURS}h bound, pid $$)" >> "$LOG"
+echo "$(date -Is) board loop start (${HOURS}h window, renews, pid $$)" >> "$LOG"
 while [ "$(date +%s)" -lt "$END" ]; do
+  if [ -f "$STOP" ]; then
+    rm -f "$STOP"
+    echo "$(date -Is) board loop STOPPED by stop-file" >> "$LOG"
+    exit 0
+  fi
   python3 src/RimMandrake/rimflow/render.py --overwrite-queues >/dev/null 2>>"$LOG" \
     || echo "$(date -Is) render FAILED" >> "$LOG"
+  date -Is > "$BEAT"
   sleep 60
 done
-echo "$(date -Is) board loop end" >> "$LOG"
+echo "$(date -Is) board loop window elapsed — renewing" >> "$LOG"
+exec "$0"
