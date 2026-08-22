@@ -226,6 +226,27 @@ sequence — these do **not** wait for the map, they run in parallel with it.
   - `EMPIRE_BLACKSTAR_ALWAYS_WILLING_1` · `BLACKSTAR_DEEPDESERT_POOLS_EMPTY_1` ·
     `VANILLA_KINDS_GET_BLASTERS_1` · `BARE_HANDS_REMEASURE_AFTER_LOAD_1`.
 
+**4b. 🆕 THE WORLD AND ITS FAUNA — authored 2026-08-22 afternoon, AFTER this sheet was
+reassembled at 13:05.** ⚠️ **It is the largest untested block riding the load.**
+  - **The map changed substantially.** `HorrorWastes` (1,200 tiles), `IceSheet` (80) and
+    `SeaIce` (277) are NEW biomes that **have never generated on this planet**. Meridian water
+    halved, the Grey Sea given a brine halo, shore zonation applied, `VEE_SaltPlains` on 389
+    dried-seabed tiles. 🔴 **`WORLD_PORT_SURVIVES_BRIDGE_1` is now testing a far bigger delta
+    than it was written for.**
+  - 🔑 **`SeaIce` and `IceSheet` were UNLOCKED in the live Cherry Picker config** (kill list
+    1341 → 1339, backup `.bak-2026-08-22` alongside). **If either fails to generate, suspect
+    the unlock before suspecting the tiles.**
+  - **`BIOME_CAST_APPLY_1`** — 754 `BiomeAnimalRecord`s across 26 biomes, proposed at
+    `design/Jawa/fauna/BiomeCast_Ashkarr.xml`. ⛔ **BUILD must wrap the 26
+    `PatchOperationReplace`s and re-validate with `--defs` before it ships** — the validator
+    gives 0 errors but 26 warnings, and an unwrapped replace against an absent mod logs a red
+    error every launch.
+  - **What to look for in game:** does each biome field the cast it was given · is the
+    super-huge genuinely rare · does any creature turn up everywhere (only `jellybird` should
+    reach 4+ biomes) · and **is `HorrorWastes`' ground sand-coloured between black rock and
+    ice** — its terrain is still `Sand`/`Soil`/`SoilRich` and that is a known, unfixed defect
+    (`HORROR_WASTES_ON_NIGHTSIDE_1`).
+
 **5. The remaining live checks** — §5's batch, plus `LAKE_LINT_NARROWED_NOT_OFF_1`,
 `FACTION_NAME_CHECK_TRUSTWORTHY_1`, `JUVENILE_AND_ASHSTORM_UNRUN_1`, `LIGHTSABER_AP_FROM_HAND_1`,
 `DROID_ENCLAVE_FIELDS_DROIDS_1`, `JAWA_FARM_AND_DRILL_LIVE_1`.
