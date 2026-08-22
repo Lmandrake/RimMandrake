@@ -1,0 +1,25 @@
+# BEFORE-state evidence for CAST_ROSTER_SKILLS_DISCARDED_1
+# Extracted by CHECK 2026-08-22 12:52 from Player.log (155 MB, last written 08-22 08:40,
+# RimWorld 1.6.4871 rev591, 578 mods). That run PARSED THE PRE-FIX <li> ROSTERS —
+# it began before c6060ae8 (2026-08-21 16:07). The next launch rotates this log away,
+# so these lines are the only surviving proof of the state the fix corrected.
+
+## the Inhabited count that must become 294
+[Inhabited] ready: 2 patches, 193 characters, 0 places, 0 casts.
+
+## def discards, per file (must become zero)
+     11 Exception loading def from file CastRoster_BLACKSTAR.xml
+     12 Exception loading def from file CastRoster_DEEPWATER.xml
+      8 Exception loading def from file CastRoster_DROIDS.xml
+      7 Exception loading def from file CastRoster_EMPIRE.xml
+     10 Exception loading def from file CastRoster_GEONOSIAN.xml
+      8 Exception loading def from file CastRoster_HELIX.xml
+      8 Exception loading def from file CastRoster_HOMESTEAD.xml
+      7 Exception loading def from file CastRoster_HUTT.xml
+      4 Exception loading def from file CastRoster_JAWA.xml
+      9 Exception loading def from file CastRoster_JUNKERS.xml
+      9 Exception loading def from file CastRoster_TUSKEN.xml
+      8 Exception loading def from file CastRoster_WILDSTEAM.xml
+
+## the cross-ref that named the cause (must become zero)
+    101 No RimWorld.SkillDef named li
