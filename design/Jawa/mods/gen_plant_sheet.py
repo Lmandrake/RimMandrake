@@ -167,15 +167,23 @@ TEMPLATE = r'''<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>Ash'karr plant cherrypick</title><style>
 *{box-sizing:border-box}
 body{margin:0;background:#14161a;color:#d8dbe0;font:14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif}
-header{padding:16px 20px;background:#1b1e24;border-bottom:1px solid #2c313a;position:sticky;top:0;z-index:50}
-h1{margin:0 0 4px;font-size:19px;color:#fff}
+header{padding:10px 20px 0;background:#1b1e24;border-bottom:1px solid #2c313a}
+h1{display:inline-block}
+details.brief{margin:8px 0 0}
+details.brief>summary{cursor:pointer;color:#7fa8d0;font-size:12.5px;padding:4px 0;list-style:none;user-select:none}
+details.brief>summary::-webkit-details-marker{display:none}
+details.brief>summary:before{content:'\25b8 ';color:#5a616b}
+details.brief[open]>summary:before{content:'\25be '}
+details.brief>summary:hover{color:#a8c8e8}
+#stick{position:sticky;top:0;z-index:50;background:#1b1e24;border-bottom:1px solid #2c313a;padding:8px 20px}
+h1{margin:0 0 2px;font-size:17px;color:#fff}
 .sub{color:#8b929e;font-size:12.5px}
-.panel{margin:12px 0 0;padding:11px 13px;border-radius:7px;background:#20242b;border-left:3px solid #d08a3e;font-size:12.5px;color:#c3c8d0}
+.panel{margin:8px 0 0;padding:10px 12px;border-radius:7px;background:#20242b;border-left:3px solid #d08a3e;font-size:12.5px;color:#c3c8d0}
 .panel.crit{border-left-color:#d4574e}
 .panel b{color:#fff}
 .panel ul{margin:6px 0 0;padding-left:18px}
 .panel li{margin:3px 0}
-.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 input[type=search],select{background:#14161a;border:1px solid #333a45;color:#d8dbe0;padding:6px 9px;border-radius:5px;font-size:13px}
 input[type=search]{min-width:220px}
 .count{font-size:12.5px;color:#8b929e;margin-left:auto;text-align:right}
@@ -184,7 +192,7 @@ input[type=search]{min-width:220px}
 main{padding:0 20px 60px}
 .grp{margin-top:26px}
 .gh{padding:9px 12px;background:#1b1e24;border:1px solid #2c313a;border-radius:7px 7px 0 0}
-.gh.stick{position:sticky;top:0;z-index:20}
+.gh.stick{position:sticky;top:53px;z-index:20}
 .gh h2{margin:0;font-size:14.5px;color:#fff}
 .gh p{margin:3px 0 0;font-size:12px;color:#8b929e}
 .gh .acts{margin-top:7px;display:flex;gap:6px}
@@ -219,8 +227,8 @@ footer{position:fixed;bottom:0;left:0;right:0;background:#1b1e24;border-top:1px 
 </style></head><body>
 <header>
 <h1>Ash'karr — plant cherrypick</h1>
-<div class="sub">190 plants that can actually appear on this planet, of 669 installed. <b>Default is KEEP.</b> Only what you mark <span class="c">CUT</span> goes on the Cherry Picker kill list — this is a blacklist, so anything you never look at stays in the game.</div>
-
+<div class="sub">190 plants that can appear on this planet, of 669 installed. <b>Default is KEEP</b> — only what you mark <span class="c">CUT</span> is stripped, so anything you never look at stays in.</div>
+<details class="brief"><summary>the five rules I pre-filled with, and the one finding that shrinks this job</summary>
 <div class="panel crit"><b>🔴 Rules I invented to pre-fill this. Overrule any of them in one line.</b>
 <ul>
 <li><b>R1 — a TREE in the core desert that does not read as desert flora is CUT.</b> This is your complaint, and it turns out to be only three plants.</li>
@@ -233,14 +241,15 @@ footer{position:fixed;bottom:0;left:0;right:0;background:#1b1e24;border-top:1px 
 <div class="panel"><b>⭐ The finding that shrinks this job.</b> Of 51 trees, only <b>five</b> reach Desert / ExtremeDesert / AridShrubland — and two of those are the pebble cactus and the saguaro, which you want. So the whole of your complaint is <b>three plants</b>: <span class="c">Plant_TreeDrago</span>, <span class="c">BMT_Plant_TreeTwistingThornwood</span> and <span class="c">BMT_Plant_TreeMartyr</span>. Cutting all three costs <b>no wood at all</b> — pebble cactus and saguaro both drop WoodLog and both survive. The other 46 trees only exist in biomes that are themselves exotic.
 <br><br>⚠️ <b>The one place this could break something:</b> AB_RockyCrags is the largest biome on the planet at 4,703 tiles, and every wood source in it is Alpha Biomes toxic flora. Those are marked <span class="k">LAST WOOD</span> and pre-set to keep.</div>
 
-<div class="bar">
+</details>
+</header>
+<div id="stick"><div class="bar">
 <input type="search" id="q" placeholder="search name, defName, mod, effect…">
 <select id="fs"><option value="">all decisions</option><option value="keep">keep</option><option value="cut">cut</option><option value="undecided">undecided</option></select>
 <select id="ft"><option value="">trees + groundcover</option><option value="tree">trees only</option><option value="ground">groundcover only</option></select>
 <select id="fm"><option value="">all mods</option></select>
 <div class="count" id="count"></div>
-</div>
-</header>
+</div></div>
 <main id="main"></main>
 <footer>
 <button id="btnlink">Link to file…</button>
