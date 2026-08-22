@@ -150,7 +150,10 @@ CHECKS = [
      "baseline 2 = Onimods torches (benign). Was 5; 3 were RimAI collateral"),
     ("crossref", "cross-reference (def loader)",
      r"Could not resolve cross-reference", 25,
-     "16 Punch_HitBuilding + 1 VWE_Tool_Whip + 8 BMT_* = 25, all triaged"),
+     "16 Punch_HitBuilding + 1 VWE_Tool_Whip + 8 BMT_* = 25, all triaged. "
+     "2026-08-22 read 128: the excess 101 were ALL 'No RimWorld.SkillDef named li', "
+     "one per cast def discarded by CAST_ROSTER_SKILLS_DISCARDED_1. When that lands "
+     "this should fall straight back to 25 - if it does not, the remainder is NEW"),
     # Baseline stays 0, and as of 2026-08-22 that is a CLEANED zero rather than an
     # aspirational one. The 08-22 08:40 load read 8; all 8 were triaged to two CONFIG
     # artifacts remembering names from mods we cut or turned off, and both were then
