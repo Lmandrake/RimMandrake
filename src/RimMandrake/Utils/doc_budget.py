@@ -113,6 +113,11 @@ BUDGETS = [
     # 486-line WORLDGEN_FACTION_CHECKLIST, the two biggest run sheets in the repo.
     # A budget tool with a hand-maintained allowlist measures whatever someone
     # remembered to add, which is not the same as measuring the repo.
+    # ⚠️ `state/*.md` does NOT match `state/preserved/*.md`, so 905 lines of rescued
+    # briefings were unmeasured entirely — invisible to the very tool that exists to
+    # notice accumulation. Archives, so the budget is loose; it exists to catch growth
+    # in a directory that should never grow again.
+    ("infrastructure/state/preserved/*.md", 1000),
     ("infrastructure/state/*.md", 250),
 ]
 

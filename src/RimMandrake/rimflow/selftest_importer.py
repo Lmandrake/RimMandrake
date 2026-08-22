@@ -395,8 +395,22 @@ def t_apply_preserves_prose_before_writing_anything():
         assert "OWNER RULINGS" in text, text[:200]
         assert "This heading has no ID" in text, (
             "the heading was rescued without its body")
-        assert "NOT GENERATED" in text, (
-            "the rescue file must say it is hand-written, or the next render eats it")
+        # 🔴 The banner used to read "HAND-WRITTEN. NOT GENERATED. Nothing regenerates
+        # this file" — and this test ASSERTED that wording, which is how a false claim
+        # survived: the function printing it was the generator, opening with "w".
+        # ⚠️ What the file actually needed was not a claim, it was a GUARD. Corrected
+        # 2026-08-22: the banner tells the truth, and the two asserts below pin the
+        # protection instead of the assertion of protection.
+        assert "GENERATED ONCE" in text and "refuses to overwrite" in text, (
+            "the rescue file must say what actually made it, and that it is now safe "
+            "to edit:\n%s" % text[:300])
+        # ⛔ THE GUARD ITSELF. A second run must not touch a file that exists.
+        marked = os.path.join(dest, files[0])
+        open(marked, "a", encoding="utf-8").write("\n<!-- a human edited this -->\n")
+        importer.preserve(r.convert()[1], dest)
+        assert "a human edited this" in open(marked, encoding="utf-8").read(), (
+            "a second preserve() run destroyed a hand-edit — the exact loss the old "
+            "banner promised could not happen")
 
 
 # ---- the irreversible half -------------------------------------------------

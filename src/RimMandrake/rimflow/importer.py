@@ -470,8 +470,21 @@ def convert(parsed, closed, dup_of=None):
 PRESERVED = os.path.join(os.path.dirname(QUEUE), "preserved")
 
 
-def preserve(skipped, dest=None):
-    """Copy every non-item section, verbatim, into preserved/<SOURCE>.md. -> [paths]."""
+def preserve(skipped, dest=None, force=False):
+    """Copy every non-item section, verbatim, into preserved/<SOURCE>.md. -> [paths].
+
+    🔴 REFUSES TO OVERWRITE AN EXISTING FILE — corrected 2026-08-22, and this function
+    is why the rule exists. It wrote the banner *"HAND-WRITTEN. NOT GENERATED. Nothing
+    regenerates this file"* into files it was itself generating, with `open(path, "w")`.
+    Both halves of that sentence were false, and people had hand-edited these files on
+    the strength of it — `preserved/DECIDE.md` twice.
+
+    ⚠️ The 2026-08-20 migration this served is DONE. A second run has nothing to add and
+    everything to destroy, so the generator refuses and the reader stays free — which is
+    what `skills/frozen-artifacts` prescribes for exactly this shape.
+
+    `force=True` overwrites, and the refusal says so.
+    """
     dest = dest or PRESERVED
     by_src = {}
     for head, body in skipped:
@@ -480,10 +493,25 @@ def preserve(skipped, dest=None):
     out = []
     for src, secs in sorted(by_src.items()):
         path = os.path.join(dest, src)
+        if os.path.exists(path) and not force:
+            sys.stderr.write(
+                "\u26d4 preserve() REFUSED to overwrite %s — it already exists.\n"
+                "   The 2026-08-20 migration is done; a second run adds nothing and "
+                "would destroy\n   any hand-edit made since. Read it, or pass "
+                "force=True if you truly mean to\n   replace it.\n" % path)
+            continue
         with open(path, "w", encoding="utf-8") as fh:
             fh.write("<!-- status: live -->\n")
             fh.write("# Prose rescued from `infrastructure/state/queue/%s`\n\n" % src)
-            fh.write("🔴 **HAND-WRITTEN. NOT GENERATED. Nothing regenerates this file.**\n\n")
+            fh.write("🔴 **GENERATED ONCE, by `rimflow/importer.py preserve()`, on "
+                     "2026-08-20 — then hand-edited.**\n"
+                     "✅ Edit it freely: `preserve()` refuses to overwrite a file that "
+                     "exists, so your\nchanges are safe from the only thing that could "
+                     "have taken them.\n"
+                     "⚠️ *This banner used to claim the file was hand-written and that "
+                     "nothing regenerated\nit. Both halves were false — the function "
+                     "printing it was the generator, opening\nwith `\"w\"`. Corrected "
+                     "2026-08-22.*\n\n")
             fh.write("These %d sections carried no fields, so the ledger has nowhere to "
                      "put them —\nan event holds scalars and an item file holds "
                      "spec/verify/criteria, and a briefing\nis neither. They were moved "

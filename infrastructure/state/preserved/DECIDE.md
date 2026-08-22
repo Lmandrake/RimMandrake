@@ -16,7 +16,12 @@
 > Ruling: `WORLD_ADOPTED_AUTHORING_OPEN_1` · supersedes `WORLD_FROZEN_RETHINK_PLANET_1`.
 
 
-🔴 **HAND-WRITTEN. NOT GENERATED. Nothing regenerates this file.**
+🔴 **GENERATED ONCE, by `rimflow/importer.py preserve()`, on 2026-08-20 — then hand-edited.**
+✅ Edit it freely: `preserve()` refuses to overwrite a file that exists, so your
+changes are safe from the only thing that could have taken them.
+⚠️ *This banner used to claim the file was hand-written and that nothing regenerated
+it. Both halves were false — the function printing it was the generator, opening with
+`"w"`. Corrected 2026-08-22.*
 
 These 2 sections carried no fields, so the ledger has nowhere to put them —
 an event holds scalars and an item file holds spec/verify/criteria, and a briefing
