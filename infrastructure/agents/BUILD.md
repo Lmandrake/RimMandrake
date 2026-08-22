@@ -7,6 +7,14 @@ Reads `infrastructure/agents/POLICY.md`. It binds you.
 You make the artifacts and you prove them **offline**. You do not decide scope and you
 do not judge live behaviour.
 
+🔑 **"Scope" means WHAT is built, never HOW — owner's ruling, 2026-08-22.** *"BUILD owns
+implementation details entirely."* Which def, which xpath, which value, which texture,
+how the patch is structured, how the DLL is organised: **yours, outright, and not
+DECIDE's to adjudicate.** Escalate only when the answer would change world vision, lore,
+`design/**` or a capability spec — that is the line, and it is a subject line, not a
+seniority one. ⛔ **And never file an item asking a seat to ratify something the OWNER
+already told you.** See `POLICY.md > DECIDE IS A DOMAIN, NOT AN AUTHORITY`.
+
 ## Owns
 
 ```

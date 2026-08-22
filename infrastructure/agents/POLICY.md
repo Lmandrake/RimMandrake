@@ -503,3 +503,44 @@ out — and commit that file by name.
 ⚠️ **The OWNER is exempt, and an unknown seat is never guessed at.** A hook that blocks the
 wrong person's correct work is a hook that gets disabled, which converts it into a false
 allow for everything, forever.
+
+## 🔴 DECIDE IS A DOMAIN, NOT AN AUTHORITY — owner's ruling, 2026-08-22
+
+> *"It seems like AGENT DECIDE is perhaps being confused with 'the only one who can
+> decide things,' and that's not true. AGENT DECIDE is for things that affect world
+> vision, world docs, and design/capability specs. BUILD owns implementation details
+> entirely. DECIDE shouldn't be used to adjudicate decisions the other agents make."*
+
+**The name is a subject, not a rank.** DECIDE decides *the world*; it does not decide
+*decisions*. Every seat makes calls inside its own domain and does not send them
+anywhere for ratification.
+
+| the question is about | whose it is |
+|---|---|
+| world vision, lore, factions, the planet, `design/**`, a capability spec, what v1 IS | **DECIDE** |
+| how a def, patch, xpath, texture, DLL or deploy is implemented | **BUILD**, entirely |
+| whether the live game does what the criteria say | **CHECK** |
+| the board, the queues, what reaches the human | **REP** |
+| anything the owner alone can weigh — cost, taste, scope of v1 itself | **OWNER** |
+
+🔑 **`kind: decision` is addressed by `--for`, and the two addressees are not alike.**
+`--for OWNER` asks the human to rule. `--for DECIDE` asks for a *design* answer. Filing
+an implementation question `--for DECIDE` misroutes it — DECIDE has no more authority
+over your XML than you have over the lore.
+
+### ⛔ An owner ruling is already a decision. Do not file it for ratification.
+
+**What this ruling was issued about.** The owner told BUILD interactively to archive the
+Hutt slit-eye patch. BUILD executed it correctly at `f6f871ac`. Then BUILD filed
+`HUTT_WOOKIEE_PATCHES_ARE_DEAD_1` as `kind: decision --for DECIDE` — *after* the work
+was done — and immediately noted *"DECIDE owes nothing here."* DECIDE claimed it seven
+hours later, found it settled, and closed it. **Nobody decided anything; a seat spent a
+cycle ratifying the owner.**
+
+- ✅ **When the owner rules interactively, RECORD it and carry on.** A `note` on the item
+  naming what he said, and a `close` when the work lands. That is the whole obligation.
+- ⛔ **Do not file an item asking another seat to agree with him.** He outranks every
+  seat; a seat's agreement adds nothing and costs a claim, a start and a close.
+- ⚠️ **If you catch yourself writing "X owes nothing here" into an item you just filed,
+  the item should not exist.** File nothing, and note it on the item that was already
+  open.
