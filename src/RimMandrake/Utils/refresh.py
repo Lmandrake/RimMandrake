@@ -401,6 +401,45 @@ def registry(strict=False):
     return out
 
 
+# 🔴 A FREEZE WHOSE RECORDED VALUES CAN BE EDITED IS NOT A FREEZE.
+# On 2026-08-21 an already-frozen entry's `modlist_sha` was rewritten in place, with
+# its `capturedUtc` untouched, on a claim that the old value was unreproducible. It was
+# reproducible. Nothing on disk could have said so afterwards, because the capture the
+# number described had already been replaced — the record was the only witness and it
+# had been edited.
+# ⇒ Every entry carries a SEAL: sha256 over its own canonical JSON, minus the seal.
+# The seal cannot stop an edit; it makes one IMPOSSIBLE TO MISS, which is the whole
+# difference between a wrong number and a wrong number nobody can detect.
+# ⛔ If an algorithm improves, ADD a field (`modlist_sha_v2`) or append a NEW entry.
+# Never edit a sealed line — `registry_tamper()` will refuse the next freeze if you do.
+SEAL_FIELD = "seal"
+
+
+def seal_of(entry):
+    """-> the sha256 seal for a registry entry, over everything except the seal."""
+    body = {k: v for k, v in entry.items() if k != SEAL_FIELD}
+    blob = json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:32]
+
+
+def registry_tamper():
+    """-> [(id, why), ...] for every SEALED entry whose contents no longer match.
+
+    🔑 Unsealed entries are not reported. Entries written before the seal existed
+    cannot be checked and saying otherwise would be the same lie this guards against —
+    they are UNMEASURED, not clean. `--seal-audit` prints them as such.
+    """
+    bad = []
+    for e in registry():
+        recorded = e.get(SEAL_FIELD)
+        if not recorded:
+            continue
+        if seal_of(e) != recorded:
+            bad.append((e.get("id"), "seal %s does not match the line's contents"
+                        % recorded[:12]))
+    return bad
+
+
 def freeze(dump=None, by="", id_="", note="", known_damage=""):
     """Build the freeze entry for the capture on disk; write it only for the owner.
 
@@ -413,11 +452,20 @@ def freeze(dump=None, by="", id_="", note="", known_damage=""):
 
     🔑 **Every number comes out of `manifest.json` or out of `dump_fingerprint`,
     none off the command line.** A freeze is a claim about an artifact; a claim
-    assembled from typed-in values is one nobody measured. `OFFICIAL-2026-08-21`
-    was frozen carrying `modlist_sha e0f11692cf69e516`, which reproduces from
-    NOTHING on this machine — not the dump's own mod set (`5ef6eec3daf6c325`),
-    not the live load set (`49b83562b10df31c`). That is what this function exists
-    to make impossible.
+    assembled from typed-in values is one nobody measured.
+
+    ⚠️ **CORRECTED 2026-08-21 — this docstring used to assert that
+    `OFFICIAL-2026-08-21`'s `modlist_sha e0f11692cf69e516` could not be derived
+    from anything on this machine, and that claim is FALSE.** It reproduces: sha256
+    over the sorted, lowercased `mods[].packageid` set, first 16 hex, recomputed
+    from the then-current `manifest.json` and recorded in `c330690`. Two
+    independent routes reached the same number. What had actually happened is
+    that two OTHER algorithms were tried and neither matched — **"I could not
+    reproduce it" was written down as "it reproduces from nothing."** That is the
+    error class `BUILDABLE.md` exists for: a tool that cannot find something
+    reporting absence as fact. On that false basis a FROZEN entry's recorded sha
+    was rewritten in place (`9078a15`), and a freeze whose recorded values can be
+    edited is not a freeze. See `seal_of` below.
     """
     dump = dump or D_DUMP
     mpath = os.path.join(dump, "manifest.json")
@@ -485,8 +533,33 @@ def freeze(dump=None, by="", id_="", note="", known_damage=""):
     if _GP._CAPTURE_ID.match(cap):
         entry["capture"] = cap
 
+    # 🔑 The fingerprint's ALGORITHM is recorded beside its value. Without it, a later
+    # reader who recomputes a different way sees a mismatch and concludes the CAPTURE
+    # changed when only the algorithm did — which is exactly the confusion that got a
+    # frozen entry rewritten. Naming the algorithm makes that diagnosable.
+    entry["modlist_sha_algo"] = ("sha256 of the newline-joined, lowercased "
+                                 "manifest.json mods[].packageId list, first 16 hex "
+                                 "(refresh.dump_fingerprint)")
+    if cur and cur.get("modlist_sha") and cur.get("modlist_sha") != entry.get("modlist_sha"):
+        # ⛔ Superseding records the prior value; it never deletes it. `canon.yml` does
+        # the same, and for the same reason: the old number is the only way to tell a
+        # changed algorithm from a changed capture.
+        entry["supersededModlistSha"] = cur.get("modlist_sha")
+    entry[SEAL_FIELD] = seal_of(entry)
+
     if by != "owner":
         return entry, False
+
+    tampered = registry_tamper()
+    if tampered:
+        raise RuntimeError(
+            "REGISTRY.jsonl has been EDITED after sealing and this freeze is refused:\n"
+            + "\n".join("    %s — %s" % t for t in tampered)
+            + "\n⛔ A frozen entry is append-only. Restore the line from git history "
+              "(`git log -p infrastructure/state/dumps/REGISTRY.jsonl`) rather than "
+              "re-sealing it; re-sealing an edited line launders the edit, which is "
+              "the failure this guard exists for. If the change was deliberate, append "
+              "a NEW entry instead.")
     with open(_registry_path(), "a", encoding="utf-8") as fh:
         fh.write(json.dumps(entry) + "\n")
 

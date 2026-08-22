@@ -469,6 +469,80 @@ def t_an_explicit_id_is_written_as_given():
     shutil.rmtree(reg, ignore_errors=True)
 
 
+def t_a_sealed_entry_that_was_edited_is_detected():
+    """🔴 The defect FROZEN_FINGERPRINT_OVERWRITTEN_1 was filed for: an already
+    frozen `modlist_sha` was rewritten in place, `capturedUtc` untouched, on a
+    claim that the old value was unreproducible. It was reproducible. Nothing on
+    disk could have contradicted it afterwards, because the capture the number
+    described had already been replaced. The seal does not prevent the edit; it
+    makes the edit impossible to miss."""
+    e = json.loads(entry(id="OFFICIAL-2026-09-07",
+                         capturedUtc="2026-09-07T08:00:00Z",
+                         modlist_sha="e0f11692cf69e516"))
+    e[refresh.SEAL_FIELD] = refresh.seal_of(e)
+    reg = with_registry([json.dumps(e) + "\n"])
+    assert refresh.registry_tamper() == [], "a freshly sealed entry read as tampered"
+
+    e["modlist_sha"] = "5ef6eec3daf6c325"          # the in-place rewrite, replayed
+    reg = with_registry([json.dumps(e) + "\n"])
+    bad = refresh.registry_tamper()
+    assert bad and bad[0][0] == "OFFICIAL-2026-09-07", (
+        "an edited frozen entry was NOT detected: %r" % bad)
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_freezing_past_an_edited_entry_raises():
+    """⛔ Detection that does not stop anything is a comment. A freeze appended
+    after a tampered line would bless the edit by carrying on past it."""
+    e = json.loads(entry(id="OFFICIAL-2026-09-08",
+                         capturedUtc="2026-09-08T08:00:00Z"))
+    e[refresh.SEAL_FIELD] = refresh.seal_of(e)
+    e["modlist_count"] = 999                       # edited AFTER sealing
+    reg = with_registry([json.dumps(e) + "\n"])
+    try:
+        refresh.freeze(_capture("2026-09-09T08:00:00Z"), by="owner")
+    except RuntimeError as exc:
+        assert "EDITED after sealing" in str(exc), str(exc)
+    else:
+        raise AssertionError("freeze() appended past an edited frozen entry")
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_an_unsealed_entry_is_unmeasured_not_clean():
+    """🔑 Entries written before the seal existed cannot be checked, and calling
+    them clean would be the same lie the seal guards against."""
+    reg = with_registry([entry(id="OFFICIAL-2026-09-10",
+                               capturedUtc="2026-09-10T08:00:00Z")])
+    assert refresh.SEAL_FIELD not in refresh.registry()[0]
+    assert refresh.registry_tamper() == [], (
+        "an UNSEALED entry was reported as tampered - it is unmeasured, not dirty")
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_a_superseded_fingerprint_is_recorded_not_deleted():
+    """⛔ Superseding records the prior value. The old number is the only way to
+    tell a changed ALGORITHM from a changed CAPTURE, and deleting it is what made
+    the 2026-08-21 rewrite unfalsifiable from disk."""
+    reg = with_registry([entry(id="OFFICIAL-2026-09-11",
+                               capturedUtc="2026-09-11T08:00:00Z",
+                               modlist_sha="e0f11692cf69e516")])
+    e, _ = refresh.freeze(_capture("2026-09-12T08:00:00Z"), by="")
+    assert e.get("supersededModlistSha") == "e0f11692cf69e516", e
+    assert e.get("modlist_sha_algo"), "the fingerprint does not name its algorithm"
+    shutil.rmtree(reg, ignore_errors=True)
+
+
+def t_no_source_still_claims_the_old_sha_is_unreproducible():
+    """The docstring taught the false claim to every future reader. Grep is the
+    right instrument here: the assertion was prose, not a value."""
+    import pathlib
+    src = pathlib.Path(refresh.__file__).read_text(encoding="utf-8")
+    for phrase in ("reproduces from\n    NOTHING", "reproduces from NOTHING"):
+        assert phrase not in src, (
+            "refresh.py still asserts the old sha reproduces from nothing")
+    assert "CORRECTED 2026-08-21" in src, (
+        "the correction is not recorded where the false claim was")
+
 if __name__ == "__main__":
     real = refresh._registry_path
     for k, v in sorted(globals().items()):
