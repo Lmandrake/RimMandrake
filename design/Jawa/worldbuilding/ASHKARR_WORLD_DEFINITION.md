@@ -200,9 +200,29 @@ The Ammonia Flats · The Salt Gate (the deltas).
 > jungles/marshes, then Pyrelands, then desert in the general case (variation by
 > location of course)."*
 
+🔴 **CORRECTED 2026-08-22 — the meridian column of this table is impossible as written, and
+the realised map is right where the table was wrong.** **Every river on Ash'karr is dayside:
+the highest arc carrying a river is 71.52, and there are ZERO river tiles at arc > 74.** So
+"on the river / meridian" describes a place that does not exist. Measured: `AB_MycoticJungle`
+1,874 of 1,939 tiles at arc > 82, `PoisonForest` 575 of 604, `BMT_FungalForest` 394 of 425 —
+**none of them within three tile-hops of any river, and correctly so.**
+⇒ **The meridian green is NOT river jungle. It is the mycoid belt**, and this section's own
+closing line already says so: *"the meridian gets mycoid and poison forest. Two greens that
+mean different things."* The table contradicted it.
+
+✅ **The dayside rule is obeyed exactly.** Owner, 2026-08-22 12:52: jungle *"ABSOLUTELY
+belongs on a desert world but only adjacent to steaming evaporating rivers."*
+`AB_FeraliskInfestedJungle` — 534 tiles, 100% dayside — has **222 tiles on a river, 261 one
+hop out, 51 two hops out and NOT ONE beyond that.**
+
+⚠️ **Open, and the owner's:** whether *"only adjacent to rivers"* also binds the **meridian**
+mycoid belt. If it does, 2,968 tiles change biome. DECIDE's reading is that it does not —
+mycoid forest is watered by the terminator, not by rivers. `MERIDIAN_GREEN_IS_NOT_RIVER_JUNGLE_1`.
+
 | band | dayside | meridian (arc > 82) |
 |---|---|---|
-| **on the river** | `AB_FeraliskInfestedJungle` — vicious jungle | `AB_MycoticJungle` / `PoisonForest` |
+| **on the river** | `AB_FeraliskInfestedJungle` — vicious jungle | ⛔ **n/a — no meridian river exists** |
+| **the meridian equivalent, river-independent** | — | `AB_MycoticJungle` · `PoisonForest` · `BMT_FungalForest` |
 | **bracketing it** | `AB_MiasmicMangrove` · `COMIGO_GreaterSwamp_Tropical` · `ZBiome_DesertOasis` | `PoisonForest` |
 | **then** | **The Pyrelands** — `ZBiome_Grasslands`, whose label is literally *"stormy savanna"* — with `AB_TarPits` interspersed | — (Pyrelands are dayside only) |
 | **then** | desert | — |

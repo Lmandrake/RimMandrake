@@ -63,28 +63,33 @@ DESERT_READS = ('cactus', 'saguaro', 'agave', 'palm', 'succulent', 'yucca',
                 'shrub', 'thistle', 'weed', 'dead', 'snag', 'bramble')
 
 def decide(r, biomes, wood_lifeline):
-    """Returns (state, rule, note). state: keep | cut | undecided
+    """Returns (state, rule, note).
 
-    wood_lifeline is computed AFTER a provisional pass, so it only protects a
-    plant whose loss would actually leave a biome short — not every plant in a
-    biome that happens to have few wood sources.
+    🔴 OWNER'S RULING, 2026-08-22 12:52 — KEEP EVERYTHING FOR NOW.
+    Verbatim: "I would like to keep ALL of these plants initially please. I mostly just
+    wanted to review for absurdities like dessert trees. Let's run around the world and
+    see how it looks before we actually cut anything, even the ones currently marked cut.
+    There WILL be pollution, so we should keep some of those horrible polluted options."
+    ⇒ Nothing is cut. The notes below record what the pass FOUND, so a later cut can be
+    made by looking rather than re-derived from scratch.
     """
     name = r['label'].lower()
     tree = r['isTree'] == 'True'
     g = group_of(biomes)
+    if g == 'A' and tree and not any(k in name for k in DESERT_READS):
+        return 'keep', 'R1', ('FLAGGED, NOT CUT — a tree in the core desert that does not read '
+                              'as desert flora. This is the shape of the thing you objected to. '
+                              'Kept on the owner\'s ruling until the world has been walked.')
     if r['defName'] in wood_lifeline:
-        return 'keep', 'R3', 'LAST WOOD — cutting this leaves its biome with too few wood sources.'
+        return 'keep', 'R3', 'LAST WOOD — its biome has too few other wood sources to lose it.'
     if g == 'J':
-        return 'undecided', 'R4', 'Jungle/wetland flora. Decide whether the BIOME belongs here, not the plant.'
+        return 'keep', 'R4', ('Jungle/wetland. ✅ Owner ruled these BELONG on a desert world '
+                              '— but only adjacent to steaming evaporating rivers.')
     if g == 'E':
-        return 'undecided', 'R4', 'Only appears in an exotic biome. Decide the biome, not the plant.'
+        return 'keep', 'R4', 'Exotic biome flora. Kept; the biome is the real question, not the plant.'
     if not tree:
         return 'keep', 'R5', 'Groundcover. Cutting it makes the desert emptier, not drier.'
-    if g == 'A':
-        if any(k in name for k in DESERT_READS):
-            return 'keep', 'R2', 'Reads as desert flora — this is the register we want.'
-        return 'cut', 'R1', 'A TREE in the core desert that does not read as desert flora.'
-    return 'keep', 'R2', 'Confined to a biome where growth is meant to read as correct.'
+    return 'keep', 'R2', 'Reads correctly for the biome it appears in.'
 
 def main():
     rows = list(csv.DictReader(open(CSV, encoding='utf-8')))
@@ -234,21 +239,42 @@ footer{position:fixed;bottom:0;left:0;right:0;background:#1b1e24;border-top:1px 
 <h1>Ash'karr — plant cherrypick</h1>
 <div class="sub">190 plants that can appear on this planet, of 669 installed. <b>Default is KEEP</b> — only what you mark <span class="c">CUT</span> is stripped, so anything you never look at stays in.</div>
 <details class="brief"><summary>the five rules I pre-filled with, and the one finding that shrinks this job</summary>
-<div class="panel crit"><b>🔴 Rules I invented to pre-fill this. Overrule any of them in one line.</b>
+<div class="panel crit"><b>✅ OWNER'S RULING, 2026-08-22 12:52 — NOTHING IS CUT YET.</b>
+<i>"I would like to keep ALL of these plants initially please. I mostly just wanted to review for
+absurdities like dessert trees. Let's run around the world and see how it looks before we actually
+cut anything, even the ones currently marked cut. There WILL be pollution, so we should keep some
+of those horrible polluted options you cut already."</i>
 <ul>
-<li><b>R1 — a TREE in the core desert that does not read as desert flora is CUT.</b> This is your complaint, and it turns out to be only three plants.</li>
-<li><b>R2 — cacti, saguaro, agave, palms and scrub STAY.</b> They are the Tatooine register; a desert with no succulents reads as a parking lot.</li>
-<li><b>R3 — nothing is cut if it is the last wood in a biome.</b> Hard constraint, overrules R1. Cutting a rung out of a progression is how a tech tree ends up with a gap nobody notices.</li>
-<li><b>R4 — flora confined to an exotic biome is left UNDECIDED on purpose.</b> The real question there is whether Mycotic Jungle or Poison Forest belong on Ash'karr at all, and that is a biome call, not a plant call.</li>
-<li><b>R5 — non-tree groundcover STAYS.</b> Cutting it makes the desert emptier, not drier.</li>
+<li>⛔ <b>Every row is KEEP.</b> The three desert trees are no longer cut — they are <b>flagged R1</b>
+so you can find them again in one click (filter, or search "FLAGGED").</li>
+<li>🌴 <b>Jungle and wetland BELONG here</b> — your ruling — <b>but only adjacent to steaming,
+evaporating rivers.</b> That is now a placement rule for the map, not a plant rule.</li>
+<li>☢️ <b>Pollution is coming</b>, so the Polluted Lands flora stays. Both trees I had cut
+(<code>BMT_Plant_TreeTwistingThornwood</code>, <code>BMT_Plant_TreeMartyr</code>) are Polluted Lands and are back.</li>
 </ul></div>
 
-<div class="panel"><b>⭐ The finding that shrinks this job.</b> Of 51 trees, only <b>five</b> reach Desert / ExtremeDesert / AridShrubland — and two of those are the pebble cactus and the saguaro, which you want. So the whole of your complaint is <b>three plants</b>: <span class="c">Plant_TreeDrago</span>, <span class="c">BMT_Plant_TreeTwistingThornwood</span> and <span class="c">BMT_Plant_TreeMartyr</span>. Cutting all three costs <b>no wood at all</b> — pebble cactus and saguaro both drop WoodLog and both survive. The other 46 trees only exist in biomes that are themselves exotic.
-<br><br>⚠️ <b>The one place this could break something:</b> AB_RockyCrags is the largest biome on the planet at 4,703 tiles, and every wood source in it is Alpha Biomes toxic flora. Those are marked <span class="k">LAST WOOD</span> and pre-set to keep.</div>
+<div class="panel"><b>✅ The map already obeys your jungle rule — and there are TWO greens, not one.</b>
+Measured across all 21,872 tiles, distance from each jungle/wetland tile to the nearest river in tile hops:
+<table style="margin-top:6px;border-collapse:collapse;font-size:12px">
+<tr style="color:#8b929e"><td style="padding:2px 10px 2px 0">biome</td><td style="text-align:right;padding:0 8px">tiles</td><td style="text-align:right;padding:0 8px">on river</td><td style="text-align:right;padding:0 8px">1 hop</td><td style="text-align:right;padding:0 8px">2 hops</td><td style="text-align:right;padding:0 8px">3+</td><td style="padding:0 8px">where it lives</td></tr>
+<tr><td style="padding:1px 10px 1px 0"><b>AB_FeraliskInfestedJungle</b></td><td style="text-align:right;padding:0 8px">534</td><td style="text-align:right;padding:0 8px">222</td><td style="text-align:right;padding:0 8px">261</td><td style="text-align:right;padding:0 8px">51</td><td style="text-align:right;padding:0 8px;color:#5fb87a"><b>0</b></td><td style="padding:0 8px;color:#5fb87a">dayside, 100%</td></tr>
+<tr><td style="padding:1px 10px 1px 0">AB_MiasmicMangrove</td><td style="text-align:right;padding:0 8px">65</td><td style="text-align:right;padding:0 8px">11</td><td style="text-align:right;padding:0 8px">19</td><td style="text-align:right;padding:0 8px">26</td><td style="text-align:right;padding:0 8px;color:#c99a3e">9</td><td style="padding:0 8px">dayside</td></tr>
+<tr><td style="padding:1px 10px 1px 0">AB_MycoticJungle</td><td style="text-align:right;padding:0 8px">1939</td><td style="text-align:right;padding:0 8px">0</td><td style="text-align:right;padding:0 8px">0</td><td style="text-align:right;padding:0 8px">0</td><td style="text-align:right;padding:0 8px">1939</td><td style="padding:0 8px">meridian, 1874 at arc&gt;82</td></tr>
+<tr><td style="padding:1px 10px 1px 0">PoisonForest</td><td style="text-align:right;padding:0 8px">604</td><td style="text-align:right;padding:0 8px">0</td><td style="text-align:right;padding:0 8px">0</td><td style="text-align:right;padding:0 8px">0</td><td style="text-align:right;padding:0 8px">604</td><td style="padding:0 8px">meridian</td></tr>
+<tr><td style="padding:1px 10px 1px 0">BMT_FungalForest</td><td style="text-align:right;padding:0 8px">425</td><td style="text-align:right;padding:0 8px">0</td><td style="text-align:right;padding:0 8px">0</td><td style="text-align:right;padding:0 8px">0</td><td style="text-align:right;padding:0 8px">425</td><td style="padding:0 8px">meridian</td></tr>
+</table>
+⭐ <b>The vicious dayside jungle obeys your rule exactly</b> — not one of Feralisk's 534 tiles is more
+than two hops from water. <b>The other three are not river jungle at all: they are the MERIDIAN
+fungal belt</b>, and <b>every river on this planet is dayside (max arc 71.5) — a meridian river cannot
+exist.</b> <code>ASHKARR_WORLD_DEFINITION.md</code> §5 already says so: <i>"Terrestrial foliage belongs
+to the Scald; the meridian gets mycoid and poison forest. Two greens that mean different things."</i>
+<br><br>🔑 <b>So nothing needs moving unless you say the mycoid belt is ALSO covered by
+"only next to rivers"</b> — if it is, 2,968 tiles change and that is a big authoring job. My reading is
+that it is not, and that mycoid forest is watered by the terminator rather than by rivers.
+Filed as <code>MERIDIAN_GREEN_IS_NOT_RIVER_JUNGLE_1</code>.</div>
 
-</details>
-</header>
-<div id="stick"><div class="bar">
+
+<div class="bar">
 <input type="search" id="q" placeholder="search name, defName, mod, effect…">
 <select id="fs"><option value="">all decisions</option><option value="keep">keep</option><option value="cut">cut</option><option value="undecided">undecided</option></select>
 <select id="ft"><option value="">trees + groundcover</option><option value="tree">trees only</option><option value="ground">groundcover only</option></select>
