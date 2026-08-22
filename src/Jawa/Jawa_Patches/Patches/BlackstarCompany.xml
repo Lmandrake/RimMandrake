@@ -32,9 +32,27 @@
   permanently hostile and turning it off guts it. The dossier's "No" is fiction,
   not an engine instruction. No operation touches the field.
 
-  ⛔ `pawnGroupMakers`, `factionNameMaker`, `settlementNameMaker` and the raid
-  curves are untouched. They are inherited or shipped and already balanced;
-  R15's group surgery is the Empire's alone.
+  ⛔ `factionNameMaker`, `settlementNameMaker` and the raid curves are untouched.
+  They are inherited or shipped and already balanced.
+
+  🔴 `pawnGroupMakers` IS NOW SURGERY TOO - "R15's group surgery is the Empire's
+  alone" is SUPERSEDED, 2026-08-22, by DECIDE's ruling in
+  `design/Jawa/worldbuilding/pawnkind_roster.md`, "Every authored kind must be
+  FIELDED", carried as `AUTHORED_KINDS_MUST_FIELD_1`. All four
+  `Jawa_Blackstar_*` kinds existed and NO FactionDef fielded any of them; this
+  file saying the groups were untouched is exactly why nobody noticed. Measured:
+  `grep -rn Jawa_Blackstar_ src/` returned only their own definitions.
+
+  ⇒ The six COMBAT groups have their `options` replaced; `Settlement` is left
+  vanilla on purpose, and so are Trader and Peaceful wherever they exist. The
+  48-kind roster has no trader or civilian role to put in them, and a faction
+  that cannot send a caravan or defend its own settlement is a worse defect than
+  the one being fixed.
+  ⚠️ The LEADER does not go in a group maker. A leader is generated once per
+  faction, so `Jawa_Blackstar_Leader` goes to `fixedLeaderKinds` - an ADD, since
+  no vanilla FactionDef in `Factions_Misc.xml` writes that field. This is the
+  same mechanism that has been quietly fielding `Jawa_Empire_Leader` all along,
+  and the reason reporting it as "orphaned" was a false positive.
 
   ⚠️ The ideo layer (`fixedIdeo` / `ideoName` "the Contract", deliberately with
   NO Raider meme) is NOT in this file. It lands in `FactionReligions.xml` in its
@@ -138,6 +156,93 @@
         <li Class="PatchOperationAdd">
           <xpath>/Defs/FactionDef[defName="Pirate"]</xpath>
           <value><fixedName>Blackstar Company</fixedName></value>
+        </li>
+
+
+        <!-- ═══ AUTHORED_KINDS_MUST_FIELD_1 - the Company fields itself ═══════════
+             Six Replaces, one per vanilla COMBAT group, keeping each group's own
+             tactical character and its commonality. The xpath selects on kindDef AND
+             commonality because `Pirate` writes all six on the def itself, so they are
+             reachable - unlike TribeCivil, whose groups live on the abstract TribeBase
+             and cannot be Replaced on the child at all.
+             ⚠️ A Replace that matches nothing logs nothing. If a raid ever arrives as
+             vanilla pirates again, suspect a commonality one of these xpaths no longer
+             matches, not a weighting. -->
+
+        <!-- commonality 100: the common raid, ranged with melee mix-ins -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="100"]/options</xpath>
+          <value>
+            <options>
+                    <Jawa_Blackstar_Grunt>10</Jawa_Blackstar_Grunt>
+                    <Jawa_Blackstar_Heavy>5</Jawa_Blackstar_Heavy>
+                    <Jawa_Blackstar_Specialist>3</Jawa_Blackstar_Specialist>
+            </options>
+          </value>
+        </li>
+
+        <!-- commonality 30: close work. Vanilla calls this its melee-only group; the Company has no melee
+               role, so its close-quarters shape is carried by the heavy instead -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="30"]/options</xpath>
+          <value>
+            <options>
+                    <Jawa_Blackstar_Heavy>10</Jawa_Blackstar_Heavy>
+                    <Jawa_Blackstar_Grunt>5</Jawa_Blackstar_Grunt>
+            </options>
+          </value>
+        </li>
+
+        <!-- commonality 20: ranged only -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="20"]/options</xpath>
+          <value>
+            <options>
+                    <Jawa_Blackstar_Grunt>10</Jawa_Blackstar_Grunt>
+                    <Jawa_Blackstar_Specialist>6</Jawa_Blackstar_Specialist>
+            </options>
+          </value>
+        </li>
+
+        <!-- commonality 15: the heavy party. Vanilla's explosives group; the Mandalorian carries it -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="15"]/options</xpath>
+          <value>
+            <options>
+                    <Jawa_Blackstar_Heavy>10</Jawa_Blackstar_Heavy>
+                    <Jawa_Blackstar_Grunt>4</Jawa_Blackstar_Grunt>
+            </options>
+          </value>
+        </li>
+
+        <!-- commonality 10: snipers only - the Blackstar hunter is exactly this -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="10"]/options</xpath>
+          <value>
+            <options>
+                    <Jawa_Blackstar_Specialist>10</Jawa_Blackstar_Specialist>
+            </options>
+          </value>
+        </li>
+
+        <!-- commonality 2.5: the rare small party, maxTotalPoints 1000 on the vanilla group -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="2.5"]/options</xpath>
+          <value>
+            <options>
+                    <Jawa_Blackstar_Grunt>10</Jawa_Blackstar_Grunt>
+            </options>
+          </value>
+        </li>
+
+        <!-- The leader is generated once per faction, not rolled into a raid. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="Pirate"]</xpath>
+          <value>
+            <fixedLeaderKinds>
+              <li>Jawa_Blackstar_Leader</li>
+            </fixedLeaderKinds>
+          </value>
         </li>
 
       </operations>
