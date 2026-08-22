@@ -2013,7 +2013,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 2011,3.8276,-9.3494,10.1,157.62,594,62.7,0,ZBiome_Grasslands,0,0,The Anvil,2,0.05
 2012,7.9879,-25.5528,26.69,161.98,-30,51.6,0,Lake,1,0,The Scald,1,0.0
 2013,11.9146,-23.3724,26.08,151.99,-30,51.8,0,Lake,1,0,The Scald,1,0.0
-2014,16.0026,-30.4373,34.03,150.48,91,54.8,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
+2014,16.0026,-30.4373,34.03,150.48,91,54.8,1668,AB_FeraliskInfestedJungle,0,1085.0,The Dune Sea,4,0.45
 2015,15.9109,-25.8424,30.06,146.82,91,57.5,1668,AB_FeraliskInfestedJungle,0,777,The Dune Sea,4,0.45
 2016,12.0485,-32.4699,34.4,158.32,-30,47.3,0,Lake,1,0,The Scald,1,0.0
 2017,8.0304,-30.0724,31.03,164.28,-30,49.6,0,Lake,1,0,The Scald,1,0.0
@@ -7790,7 +7790,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 7788,-18.6664,-63.7315,65.21,200.64,1156,27.5,830,Desert,0,0,The Dew Horn,4,0.0
 7789,-18.168,-65.2566,66.57,199.87,1062,26.9,660,Desert,0,0,The Dew Horn,4,0.0
 7790,10.6904,-40.4488,41.6,163.78,175,49.3,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
-7791,12.029,-39.8189,41.3,161.59,892,45.6,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
+7791,12.029,-39.8189,41.3,161.59,892,45.6,1668,AB_FeraliskInfestedJungle,0,3830.0,The Scald Spine,4,0.45
 7792,10.6293,-41.9353,43.02,164.31,909,44.3,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
 7793,11.8915,-42.8174,44.13,162.79,767,44.4,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
 7794,13.2296,-42.2141,43.86,160.72,584,45.5,1668,AB_FeraliskInfestedJungle,0,3838,The Scald Spine,4,0.45
@@ -15140,7 +15140,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 15138,-17.0661,-59.8275,61.28,199.55,1779,27.2,0,Desert,0,0,The Dew Horn,3,0.0
 15139,-15.6635,-60.204,61.42,197.91,1804,26.9,0,Desert,0,0,The Dew Horn,3,0.0
 15140,9.2591,-42.602,43.41,166.46,164,48.2,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
-15141,9.1691,-44.0991,44.85,166.94,927,43.0,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,5,0.45
+15141,9.1691,-44.0991,44.85,166.94,927,43.0,1668,AB_FeraliskInfestedJungle,0,2793.0,The Scald Spine,5,0.45
 15142,7.8188,-44.7304,45.27,168.96,788,43.5,1668,ZBiome_DesertOasis,0,0,The Scald Spine,4,0.2
 15143,6.5535,-43.8968,44.28,170.59,-30,40.7,0,Lake,1,0,The Scald,1,0.0
 15144,6.6151,-42.4399,42.86,170.25,-30,41.7,0,Lake,1,0,The Scald,1,0.0
@@ -15172,7 +15172,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 15170,10.7228,-37.5518,38.83,162.74,-30,44.3,0,Lake,1,0,The Scald,1,0.0
 15171,12.0436,-38.3701,39.94,161.03,696,47.5,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
 15172,13.366,-37.7519,39.71,158.79,537,48.6,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
-15173,13.3818,-36.268,38.34,158.09,97,51.9,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
+15173,13.3818,-36.268,38.34,158.09,97,51.9,1668,AB_FeraliskInfestedJungle,0,7139.0,The Dune Sea,4,0.45
 15174,10.7265,-36.0945,37.45,162.17,-30,45.3,0,Lake,1,0,The Scald,1,0.0
 15175,12.0595,-35.4354,37.18,159.77,-30,45.5,0,Lake,1,0,The Scald,1,0.0
 15176,-14.4427,-43.1872,45.08,200.62,1190,41.4,0,Volcano,0,0,The Scald Spine,5,0.0
@@ -17342,7 +17342,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 17340,-5.0267,-48.7734,48.97,186.67,398,43.2,65,ZBiome_Badlands,0,0,The Scald Spine,4,0.0
 17341,-3.7952,-47.9526,48.07,185.1,-30,38.2,0,Lake,1,0,The Scald,1,0.0
 17342,0.0,-49.8481,49.85,180.0,-30,37.0,0,Lake,1,0,The Scald,1,0.0
-17343,1.2319,-50.5539,50.56,178.4,12,44.2,1668,AB_FeraliskInfestedJungle,0,0,The Scald Spine,4,0.45
+17343,1.2319,-50.5539,50.56,178.4,12,44.2,1668,AB_FeraliskInfestedJungle,0,19814.0,The Scald Spine,4,0.45
 17344,-1.2319,-50.5539,50.56,181.6,-30,36.5,0,Lake,1,0,The Scald,1,0.0
 17345,-1.2145,-51.8891,51.9,181.54,125,42.7,1668,ZBiome_DesertOasis,0,0,The Scald Spine,4,0.2
 17346,0.0,-52.5181,52.52,180.0,384,40.9,1668,ZBiome_DesertOasis,0,0,The Scald Spine,4,0.2
@@ -19370,7 +19370,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 19368,16.0233,-31.9537,35.36,151.51,79,54.0,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
 19369,14.6904,-31.114,34.09,153.1,-30,47.5,0,Lake,1,0,The Scald,1,0.0
 19370,14.5792,-25.0098,28.71,148.4,149,57.7,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
-19371,14.6138,-26.5462,30.04,149.74,128,57.3,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
+19371,14.6138,-26.5462,30.04,149.74,128,57.3,1668,AB_FeraliskInfestedJungle,0,777.0,The Dune Sea,4,0.45
 19372,15.9466,-27.3811,31.37,148.15,12,57.0,0,AB_FeraliskInfestedJungle,0,1825,The Dune Sea,3,0.45
 19373,17.2409,-26.6853,31.42,145.35,97,56.5,0,AB_FeraliskInfestedJungle,0,0,The Dune Sea,3,0.45
 19374,17.1984,-25.1372,30.14,143.92,334,56.1,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
@@ -19403,7 +19403,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 19401,13.069,-17.996,22.11,143.08,756,57.0,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
 19402,10.4731,-17.9385,20.68,149.03,768,57.5,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
 19403,10.5136,-19.4855,22.04,150.91,877,56.4,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
-19404,11.8401,-20.2896,23.37,148.84,424,58.3,1539,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
+19404,11.8401,-20.2896,23.37,148.84,424,58.3,1539,AB_FeraliskInfestedJungle,0,28936.0,The Dune Sea,4,0.45
 19405,13.1205,-19.5503,23.4,145.14,806,56.2,1668,AB_FeraliskInfestedJungle,0,0,The Dune Sea,4,0.45
 19406,14.2657,-15.6865,21.08,136.76,692,57.8,0,ZBiome_DesertOasis,0,0,The Dune Sea,1,0.2
 19407,15.5066,-14.9334,21.4,132.89,752,57.3,0,ZBiome_Grasslands,0,0,The Dune Sea,1,0.05

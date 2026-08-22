@@ -365,15 +365,15 @@
   "swampiness_mean": 0.074
  },
  "rivers": {
-  "edges": 238,
+  "edges": 252,
   "broken_entries": [],
   "by_def": {
-   "Creek": 112,
-   "LargeRiver": 51,
-   "River": 46,
-   "HugeRiver": 29
+   "Creek": 114,
+   "River": 54,
+   "LargeRiver": 53,
+   "HugeRiver": 31
   },
-  "tiles_touched": 248,
+  "tiles_touched": 262,
   "networks": 10,
   "largest": [
    {
@@ -389,30 +389,41 @@
     "reaches_sea": false
    },
    {
-    "edges": 74,
-    "tiles": 75,
+    "edges": 82,
+    "tiles": 83,
     "defs": {
-     "River": 23,
+     "River": 29,
      "HugeRiver": 15,
      "Creek": 20,
-     "LargeRiver": 16
+     "LargeRiver": 18
     },
     "head": 17293,
     "head_elev_m": 966.0,
     "reaches_sea": true
    },
    {
-    "edges": 29,
-    "tiles": 30,
+    "edges": 31,
+    "tiles": 32,
     "defs": {
      "LargeRiver": 9,
-     "HugeRiver": 14,
+     "HugeRiver": 16,
      "River": 5,
      "Creek": 1
     },
-    "head": 11347,
+    "head": 6486,
     "head_elev_m": 550.0,
-    "reaches_sea": false
+    "reaches_sea": true
+   },
+   {
+    "edges": 10,
+    "tiles": 11,
+    "defs": {
+     "Creek": 4,
+     "River": 6
+    },
+    "head": 19371,
+    "head_elev_m": 128.0,
+    "reaches_sea": true
    },
    {
     "edges": 10,
@@ -425,26 +436,15 @@
     "reaches_sea": false
    },
    {
-    "edges": 8,
-    "tiles": 9,
-    "defs": {
-     "Creek": 2,
-     "River": 6
-    },
-    "head": 2015,
-    "head_elev_m": 91.0,
-    "reaches_sea": false
-   },
-   {
-    "edges": 7,
-    "tiles": 8,
+    "edges": 9,
+    "tiles": 10,
     "defs": {
      "Creek": 4,
-     "River": 3
+     "River": 5
     },
-    "head": 8331,
-    "head_elev_m": 12.0,
-    "reaches_sea": false
+    "head": 2014,
+    "head_elev_m": 91.0,
+    "reaches_sea": true
    },
    {
     "edges": 6,
@@ -467,7 +467,7 @@
     "reaches_sea": false
    }
   ],
-  "mouths": 2
+  "mouths": 16
  },
  "roads": {
   "edges": 837,
@@ -521,7 +521,7 @@
    "AB_MiasmicMangrove": 1
   },
   "coastal": 45,
-  "on_river": 0,
+  "on_river": 1,
   "on_road": 72,
   "list": [
    {
@@ -844,7 +844,7 @@
     "rain_mm": 1668,
     "hilliness": "Mountainous",
     "coastal": true,
-    "on_river": false,
+    "on_river": true,
     "on_road": true,
     "region": "The Scald Spine"
    },
