@@ -2258,6 +2258,64 @@
     </match>
   </Operation>
 
+<!--
+
+    FLAMEBOW_UNCUT_AND_RETAGGED_1. Owner, 2026-08-22 01:05: "We should put tags on the
+    flame bows so that more people can use them too, like the deep tribes especially."
+
+    ✅ STEP ZERO IS ALREADY DONE and this op would have been a silent no-op without it.
+    `ThingDef/Flamebow` was on the Cherry Picker kill list, and Cherry Picker NEUTERS a cut
+    def by emptying its `weaponTags` at load - so a tag added in XML is wiped before
+    generation ever sees it. It was taken off the list before this was written; verified
+    2026-08-22, `grep -c ThingDef/Flamebow` on the ratified list returns 0.
+
+    THE TAGS, and each one is a tag some kind already asks for:
+      `NeolithicRangedFlame`  KEPT. It is what `Tribal_Archer_Fire` names, and the flamebow
+                              is once again its carrier - that tag had ZERO of them.
+      `NeolithicRangedBasic`  `Tribal_Archer` and every basic archer kind.
+      `NeolithicRangedDecent` `Tribal_HeavyArcher`, `Tribal_Hunter`, `Tribal_Hunter_Fire`.
+
+    ⚠️ PRICE, and it decides where the bow actually lands. The flamebow costs 30 wood plus
+    20 chemfuel over 3000 work; `Tribal_Archer` and `Tribal_Archer_Fire` run weaponMoney
+    80~80, which it exceeds. So `NeolithicRangedBasic` does NOT arm the basic archers with
+    it - `Bow_Short`, un-cut on the owner's ruling the same day at 30 wood over 2400 work,
+    is what arms them. The flamebow reaches play through `NeolithicRangedDecent`, on the
+    hunters and heavy archers who can afford it. That is the right end of the range for an
+    incendiary weapon and it is not a defect.
+
+    🔴 "THE DEEP TRIBES ESPECIALLY" IS NO LONGER REACHABLE THIS WAY, and that is a DECIDE
+    question rather than a tagging one. When the owner said it, `TribeCivil` fielded vanilla
+    `Tribal_*` kinds, so a neolithic tag reached the Deep Desert Tribes. Since
+    AUTHORED_KINDS_MUST_FIELD_1 that faction fields `Jawa_DeepDesert_*` only, and their tags
+    are `ORTuskenMelee`, `ORMeleeBlunt`, `NeolithicMeleeAdvanced` and `SaV_tusken` - combat
+    sticks and the Tusken cycler, per FACTION_SPEC. ⛔ Putting a fire bow in that roster
+    would contradict the faction's own written weapon identity, so it is NOT done here.
+
+-->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Biotech</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="Flamebow"]/weaponTags</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="Flamebow"]/weaponTags</xpath>
+        <value>
+          <li>NeolithicRangedBasic</li>
+          <li>NeolithicRangedDecent</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="Flamebow"]</xpath>
+        <value>
+          <weaponTags>
+            <li>NeolithicRangedFlame</li>
+            <li>NeolithicRangedBasic</li>
+            <li>NeolithicRangedDecent</li>
+          </weaponTags>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
 <!-- END HAND-AUTHORED -->
 
 </Patch>
