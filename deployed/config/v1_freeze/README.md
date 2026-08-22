@@ -77,3 +77,26 @@ bare-handed. The live file and this copy were edited together and are byte-ident
 ⛔ **`ThingDef/Flamebow` stays cut** — the ruling was about mech weaponry, not a neolithic
 fire-bow. The two kinds it disarmed are re-armed as plain archers instead, in
 `src/Jawa/Jawa_Patches/Patches/WeaponTags_Renormalise.xml` (`FIRE_ARCHERS_GET_BOWS_1`).
+
+## Amended 2026-08-22 — three warcasket guns un-cut (`WARCASKET_GUNS_UNCUT_1`)
+
+Owner, 2026-08-22, **reversing his own earlier cut after being shown the cost**:
+*"Please restore WarcasketGun_Autorifle, _Minigin, and _HandheldCannon. After seeing the
+impact, I reverse my previous decision."*
+
+**1,346 `<li>` → 1,343.** Those three were the **only** carriers of `WarcasketBasic`, and
+`VFEP_Footsoldier` — a **combatPower 300** raider — names that tag and nothing else. Cutting
+them left it arriving **bare-handed**.
+
+⚠️ **Why un-cutting was the right lever and re-tagging was not.** The surviving warcasket
+guns are `WarcasketAll`/`Veteran`/`Heavy`/`Flamer`, and every one of them has
+`MarketValue: None` — so `weaponMoney` cannot constrain the roll. Handing the footsoldier
+`WarcasketAll` would have armed it *and promoted it* from basic tier to veteran and heavy
+weapons: an arms-race change dressed as a bug fix, against `concept.md` §19.5. Restoring the
+three basic guns puts the kind back on exactly the tier its author intended and touches no
+balance.
+
+🔑 **This is the second time the same shape has been found**, after `Gun_Needle` /
+`Gun_Scattergun` (`MECH_WEAPONS_UNCUT_1`): a cut weapon that was the sole carrier of a tag
+some pawn kind depends on. The general test is in that item — **a cut is safe only if every
+tag it carried still has another carrier, or nobody asks for it.**

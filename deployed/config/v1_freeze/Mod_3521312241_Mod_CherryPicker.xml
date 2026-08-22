@@ -423,9 +423,6 @@
 			<li>ThingDef/VFEM_Bow_HeavyCrossbow</li>
 			<li>ThingDef/VFEP_Artillery_Cannon</li>
 			<li>ThingDef/VFEP_Artillery_FieldGun</li>
-			<li>ThingDef/VFEP_WarcasketGun_Autorifle</li>
-			<li>ThingDef/VFEP_WarcasketGun_HandheldCannon</li>
-			<li>ThingDef/VFEP_WarcasketGun_Minigun</li>
 			<li>ThingDef/VFES_Artillery_ArtilleryGun</li>
 			<li>ThingDef/VFES_Artillery_Catapult</li>
 			<li>ThingDef/VFES_ComplexHmg_Top</li>
