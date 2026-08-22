@@ -34,7 +34,18 @@
 > ```
 > - ⭐ **`[JawaBench] ready: N tools, build <hex>`** — new this load. Its ABSENCE means the
 >   companion did not load, which used to be indistinguishable from a healthy run.
->   Expect **119** with `--gm`; two fewer means the build flag was wrong.
+>   Expect **120** with `--gm`; **118** means the GM flag was not set, and any other
+>   number means tools did not register. ⚠️ **This line said 119 and contradicted line 109
+>   of this same file, which already said 120.** Measured 2026-08-22: 120 distinct
+>   `jawa/…` names in `src/RimMandrake/bridgetools/JawaBench.BridgeTools/*.cs`, of which
+>   exactly two (`jawa/fire_incident`, `jawa/send_letter`) are the GM pair compiled in
+>   only under `-p:JawaGmTools=true`. Recount rather than trust either number:
+> ```
+> grep -rhoE '"jawa/[a-z_0-9]+"' src/RimMandrake/bridgetools/JawaBench.BridgeTools/*.cs | sort -u | wc -l
+> ```
+> - ✅ **The companion was rebuilt and deployed 2026-08-22 and the game copy is now
+>   byte-identical to HEAD.** It is NOT a mod: RimBridgeServer loads it from
+>   `<RimWorld>/BridgeTools/JawaBench/`, outside ModsConfig, and only at startup.
 > - **`[Inhabited] ready: … 294 characters …`** — not 193. That is the cast fix.
 > - **Zero** `Exception loading def from file CastRoster_*` and **zero**
 >   `SkillDef named li`.
