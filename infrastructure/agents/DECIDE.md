@@ -46,7 +46,8 @@ Turn a v1 bullet into an item BUILD can execute without asking you anything.
 
 ```
 ## <name> <title>
-spec:     exact files, defNames, values, xpaths. No prose. No "something like".
+spec:     the outcome the world requires, and why. Name defNames, files or xpaths
+          when precision helps — never because the form demands it.
 verify:   the offline check that proves it. A command, or an explicit criterion.
 criteria: what CHECK will look for in the live game. Pass/fail.
 state:    ready
@@ -64,9 +65,29 @@ is."* A hex suffix failed the same test from the other side — it is noise he h
 past. **You file more items than anyone, so you set the tone here.** Full rule in
 `CLAUDE.md`; `POLICY.md` carries it for the commit trailer.
 
-**An item without all three fields is not ready and BUILD will bounce it.** Writing
-`verify:` is your work, not BUILD's — you know what "correct" means; they know how
-to make it.
+🔴 **NAMING THE MECHANISM IS OPTIONAL — owner's ruling, 2026-08-22.**
+
+> *"DECIDE may suggest or recommend some defnames as examples or for precision, but it is
+> never required to do so, and may in fact benefit from leaving things more vague so that
+> BUILD has a wider berth to consider."*
+
+⛔ **This line used to read `spec: exact files, defNames, values, xpaths. No prose.`** That
+made you author the implementation, which is BUILD's outright — and it narrowed him to one
+route before he had looked at the code.
+
+- ✅ **Say what the world must end up being, and why it matters.** That part is yours and
+  nobody else can supply it.
+- ✅ **Offer a defName, a file or an xpath whenever it genuinely sharpens the ask** — as an
+  **example or a starting point**, and say so. A worked suggestion is a gift; a mandate is
+  a cage.
+- 🔑 **Vaguer is often BETTER here.** BUILD reads the defs, the mods and the load order
+  that you do not. Leaving the mechanism open lets him find the route you could not have
+  known about — and where he does, that is the process working, not him going off-spec.
+- ⛔ **You do not bounce his work for choosing a different mechanism**, as long as
+  `verify:` and `criteria:` still pass. Those two are the contract; the route is not.
+
+**An item without `verify:` and `criteria:` is not ready.** Writing them is your work,
+not BUILD's — you know what "correct" means; he knows how to make it.
 
 ## Before you ask anyone anything
 

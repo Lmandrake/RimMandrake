@@ -31,6 +31,13 @@ infrastructure/state/queue/CHECK.md       your handoff
 
 `infrastructure/state/queue/BUILD.md`, top item first.
 
+🔑 **A spec that does not name a defName, file or xpath is NOT incomplete — owner's
+ruling, 2026-08-22.** DECIDE states the outcome the world requires; naming the mechanism
+is optional and often deliberately left open *"so that BUILD has a wider berth to
+consider."* ✅ **Where one IS named, treat it as an example or a starting point, not a
+mandate** — you may implement it another way, and you do not need permission, as long as
+`verify:` and `criteria:` still pass. Those two are the contract; the route is yours.
+
 **Refuse any item with an empty `spec:` or `verify:`.** Set `state: blocked`, add one
 line naming the missing field, move on. Do not infer the spec. Do not write the
 verification yourself — an artifact graded by its own author proves nothing.
