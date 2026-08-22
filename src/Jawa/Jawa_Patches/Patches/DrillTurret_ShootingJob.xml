@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  DrillTurret_ShootingJob.xml                Jawa_Patches · authored 2026-08-21
+  ============================================================================
+
+  DRILLTURRET_IS_A_SHOOTING_JOB_1. One field of somebody else's mod, and nothing
+  more.
+
+  WHY
+  ===
+  The campaign's Jawa carry a gene with `disabledWorkTags: Mining` — they do not
+  dig. The drill turret is how they mine anyway: by machine, not by hand. But
+  `OperateDrillTurret` ships with `workType Mining`, so that same gene would bar
+  a Jawa from operating the turret as well as from swinging a pick, which
+  defeats the entire point of having one.
+
+  OWNER, 2026-08-21: "I still like shooting for the laser, please make it so."
+
+  WHY `Hunting` IS WHAT "SHOOTING" MEANS HERE
+  ===========================================
+  Measured across every Core/DLC WorkTypeDef against OFFICIAL-2026-08-21T22-44-59Z.
+  Exactly one carries the Shooting skill:
+
+      Hunting    relevantSkills ['Shooting','Animals']
+                 workTags Violent, Hunting, Shooting, ManualSkilled, Commoner, AllWork
+      Crafting   relevantSkills ['Crafting']
+                 workTags ManualSkilled, Commoner, Crafting, AllWork
+
+  ⚠️ THE COST, ACCEPTED WITH THE RULING RATHER THAN DISCOVERED LATER. `Hunting`
+  carries `Violent`, so a pawn incapable of violence cannot operate the turret,
+  and the job sits in the Hunting work column beside hunting animals. The owner
+  was shown this and chose shooting anyway. `Crafting` was the alternative and
+  is NOT what was ruled — do not "fix" this to Crafting.
+
+  ⛔ NOTHING ELSE OF DrillTurret's IS TOUCHED, and vanilla's own `Drill`
+  WorkGiver is not patched. Re-typing that would change the job for every
+  faction in the game. A Jawa being unable to run a deep drill is the ruling
+  working, not a gap to close later.
+
+  ⚠️ `PatchOperationFindMod` GUARDS THIS, and it is not decoration. A
+  `PatchOperationReplace` whose xpath matches nothing LOGS NOTHING — with the
+  DrillTurret mod absent this would fail silently and forever. The guard turns
+  that into a clean no-op instead.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>MiningCo. DrillTurret (Continued)</li>
+    </mods>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/WorkGiverDef[defName="OperateDrillTurret"]/workType</xpath>
+      <value>
+        <workType>Hunting</workType>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
