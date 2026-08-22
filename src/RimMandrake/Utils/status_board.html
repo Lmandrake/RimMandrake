@@ -218,7 +218,11 @@
 <div class="grid low">
   <div class="panel"><p class="ttl">INVENTORY — DATA VOLUME <span id="invage" style="float:right;font-weight:400"></span></p><div id="invmb"></div></div>
   <div class="panel"><p class="ttl">INVENTORY — COUNT</p><div id="invn"></div></div>
-  <div class="panel"><p class="ttl">CURRENTLY</p><div id="current"></div></div>
+  <!-- ⭐ Was CURRENTLY: four hand-written self-reports, 1-7 days stale. Nothing
+     in this panel is reported by anyone; every line is a reading with its
+     instrument named. -->
+  <div class="panel"><p class="ttl">MEASURED NOW <span id="mnow_at"
+    style="float:right;font-weight:400"></span></p><div id="mnow"></div></div>
 </div>
 
 <script>
@@ -323,8 +327,15 @@ function memRow(label,used,total,warnAt){
 function render(d){
   const o=d.overall;
   el('gauge').innerHTML=gauge(o.pct);
+  // ⚠️ This is the PAGE's own age — how long since a poll succeeded — and nothing
+  // else. It used to be conflated with the ledger's `as_of`, so a seat twenty
+  // minutes into a build made the whole board read STALE. They are different
+  // facts: one means the page stopped updating, the other means nobody has FILED
+  // anything lately, which during a long build is entirely normal.
   const ago=Math.max(0,Math.floor(Date.now()/1000)-d.ts);
-  el('clock').innerHTML='updated '+ago+'s ago'+(ago>20?' <span class="stale">— STALE</span>':'');
+  el('clock').innerHTML = ago<=20
+    ? 'updated '+ago+'s ago'
+    : `<span class="stale">page not refreshing — last poll ${ago<120?ago+'s':Math.round(ago/60)+'m'} ago</span>`;
 
   const rows=d.rows||[];
   const rowDone=r=>Object.values(r.cells||{}).reduce((a,c)=>a+(c.done||0),0);
@@ -334,8 +345,12 @@ function render(d){
   // "Up" means the seat has a session at all. Counting only `busy` reported 1
   // of 4 while all four were open — an idle seat between items is present, not
   // absent, and that is the question this tile answers.
-  const up  =Object.values(d.agents||{}).filter(a=>a.state!=='offline').length;
-  const live=Object.values(d.agents||{}).filter(a=>a.state==='busy').length;
+  // Measured: `up` is how many seat PROCESSES exist, `live` how many wrote a
+  // ledger event in the last 10 minutes. Both were adjectives from a session
+  // list before, and both were wrong.
+  const _ms=(d.measured||{}).seats||{};
+  const up  =Object.values(_ms).filter(a=>a.alive).length;
+  const live=Object.values(_ms).filter(a=>a.alive&&a.last_s!=null&&a.last_s<600).length;
   const gm=gameState(d);
 
   const onYou=(d.blockers||{}).on_human||0;
@@ -366,12 +381,33 @@ function render(d){
       `<td>${stack(roll,rowTot(r),rowMax)}</td></tr>`;
   }).join('');
 
+  // 🔴 MEASURED, 2026-08-22. This strip used to print `agents[s].state` — an
+  // adjective ("idle", "blocked") from `claude agents --json` ranked so a DEAD
+  // background session's last-known `blocked` outranked a live seat, over a
+  // self-reported `item` string from a file nobody had written in up to 7 days.
+  // The owner's verdict was that every tile was wrong, and it was.
+  // ⭐ Now: a dot means the PROCESS EXISTS (ps), the time means WHEN THE SEAT LAST
+  // DID SOMETHING (a ledger event it wrote as a side effect of working). No
+  // adjective is printed anywhere, because every adjective on this panel was a
+  // guess. A seat with no recent event is not called idle — it is shown with the
+  // last thing it actually did, and the reader judges.
+  const M=d.measured||{seats:{}};
+  const mAgo=sec=>sec==null?'never':sec<90?sec+'s':sec<5400?Math.round(sec/60)+'m':
+                  (sec/3600).toFixed(1)+'h';
   el('seats').innerHTML=['DECIDE','BUILD','CHECK','REP'].map(s=>{
-    const a=(d.agents||{})[s]||{state:'offline'};
-    const col={busy:C.grn,idle:C.blu,waiting:C.amb,blocked:C.red}[a.state]||C.mut;
+    const m=(M.seats||{})[s]||{alive:false};
+    // Green = did something in the last 10 min. Blue = alive but quiet. Grey =
+    // no process at all. Quiet is NOT a fault, so it is never red.
+    const col=!m.alive?C.mut:(m.last_s!=null&&m.last_s<600)?C.grn:C.blu;
+    const detail=!m.alive
+      ? '<i style="opacity:.5">no process</i>'
+      : `${m.last_what||'—'} <span style="color:${C.mut}">· ${mAgo(m.last_s)} ago`+
+        `${m.events_60m?' · '+m.events_60m+'/hr':''}</span>`;
     return `<div class="seat"><span class="dot" style="background:${col}"></span>
       <span class="n" style="color:${SEATC[s]}">${s}</span>
-      <span class="i">${a.item||'<i style="opacity:.5">'+a.state+'</i>'}</span></div>`;
+      <span class="i">${detail}</span>
+      <span style="color:${C.mut};font-size:11px;margin-left:auto;white-space:nowrap"
+        >${m.alive?'up '+mAgo(m.up_s):''}</span></div>`;
   }).join('');
 
   const gg=gm.g;
@@ -497,21 +533,38 @@ function render(d){
   // A seat's line is only worth reading if it is recent. Past 45 minutes it is
   // dimmed and dated; four seats were showing lines up to ten hours old with
   // nothing on screen to say so.
-  const SAID_STALE=45*60;
-  el('current').innerHTML=['DECIDE','BUILD','CHECK','REP'].map(s=>{
-    const a=(d.agents||{})[s]||{state:'offline'};
-    const col={busy:C.grn,idle:C.blu,waiting:C.amb,blocked:C.red}[a.state]||C.mut;
-    const age=a.said_at?(Date.now()/1000-a.said_at):null;
-    const old=age!=null&&age>SAID_STALE;
-    return `<div class="cur"${old?' style="opacity:.55"':''}>
-      <div class="h"><span class="dot" style="background:${col};margin:0"></span>
-      <span style="color:${SEATC[s]}">${s}</span>
-      ${a.said_at?`<span style="margin-left:auto;font-weight:400;color:${old?C.amb:C.mut}">
-         said ${agoStr(a.said_at)}</span>`:''}</div>`+
-      (a.item?`<div class="w">${a.item}</div>`+(a.why?`<div class="y">${a.why}</div>`:'')
-            :`<div class="w" style="color:${C.mut};opacity:.6">— no line set (${a.state})</div>`)+
-      `</div>`;
-  }).join('');
+  // ── MEASURED NOW ──────────────────────────────────────────────────────────
+  // Three readings and their instruments. ⛔ The bridge line is a TCP probe, not
+  // `bridge_holder`: that was a lease a seat filed and nothing ever released, and
+  // it read "CHECK holds the bridge" six hours after the game went down.
+  const dur=M.durability||{};
+  const line=(label,value,col,how)=>
+    `<div class="cur"><div class="h">
+       <span class="dot" style="background:${col};margin:0"></span>
+       <span>${label}</span>
+       <span style="margin-left:auto;font-weight:700;color:${col}">${value}</span></div>
+     <div class="y" style="opacity:.7">${how}</div></div>`;
+  const g=M.game||{}, br=M.bridge||{};
+  // ⭐ Durability is the number the commit-and-push doctrine is about and the board
+  // never showed it: what an unplanned reboot would destroy, right now.
+  const risk=(dur.unpushed||0)+(dur.dirty||0);
+  const riskCol=risk===0?C.grn:(dur.unpushed?C.red:C.amb);
+  const riskTxt=risk===0?'nothing at risk'
+    :`${dur.unpushed||0} unpushed · ${dur.dirty||0} uncommitted`;
+  const oldest=dur.oldest_dirty_s!=null
+    ? `oldest uncommitted edit ${mAgo(dur.oldest_dirty_s)} old`
+    : 'no uncommitted edits';
+  el('mnow').innerHTML=
+    line('GAME', g.state||'?', g.state==='UP'?C.grn:C.mut,
+         (g.how||'')+(g.rss_gb?` · ${g.rss_gb} GB resident`:''))+
+    line('BRIDGE', br.state||'?', br.state==='ANSWERING'?C.grn:C.mut, br.how||'')+
+    line('DURABILITY', riskTxt, riskCol,
+         `${oldest}${dur.untracked?` · ${dur.untracked} untracked`:''} · `+
+         `${dur.unpushed_how||''}`)+
+    (dur.dirty_names&&dur.dirty_names.length
+      ? `<div class="y" style="opacity:.6;margin-top:6px">${dur.dirty_names.join('<br>')}</div>`
+      : '');
+  el('mnow_at').textContent=M.at?'read '+mAgo(Math.max(0,Date.now()/1000-M.at))+' ago':'';
 
   const worst=cls.filter(c=>c.count).sort((a,b)=>b.count-a.count)[0];
   el('summary').innerHTML=

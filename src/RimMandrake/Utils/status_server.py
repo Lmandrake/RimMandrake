@@ -14,6 +14,7 @@ Data:
     live                                       host memory, agent liveness
 """
 import argparse
+import calendar
 import json
 import os
 import sys
@@ -222,17 +223,14 @@ def agents():
                 st[seat]["state"] = s
     except Exception:
         pass
-    for s in SEATS:
-        try:
-            with open(os.path.join(STATE, "status", "%s.json" % s)) as fh:
-                d = json.load(fh)
-            st[s]["item"] = d.get("item", "")
-            st[s]["why"] = d.get("why", "")
-            # How old the seat's own line is. Without it a ten-hour-old CURRENTLY
-            # entry reads exactly like one written a minute ago.
-            st[s]["said_at"] = d.get("updated")
-        except Exception:
-            pass
+    # ⛔ DELETED 2026-08-22: this used to load `status/<SEAT>.json` for each seat's
+    # CURRENTLY line. Nobody wrote those files — measured the day they were removed,
+    # they were 1 to 7 days old — so the panel showed a week-old sentence as though
+    # it were current, and the owner reasonably concluded the board was lying.
+    # ⭐ Liveness and activity now come from `measured()`: `ps` for the process and
+    # the append-only ledger for what the seat actually did. Neither can go stale
+    # without the staleness itself being visible, because both carry a timestamp
+    # that is READ rather than declared.
     return st
 
 
@@ -465,6 +463,195 @@ def waiting(m):
             "blocked_seats": seats_of(blocked_by_seat)}
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# MEASURED, NEVER SELF-REPORTED — 2026-08-22
+#
+# 🔴 Owner: *"It's never showing what the agents are really doing... Right now it
+# says CHECK holds the Bridge, but there's no live game. 6m ago, STALE at the top.
+# All the agent status' are wrong."* He was right about every tile, and the cause
+# was one thing: **the board reported what agents SAY, and no agent says anything.**
+#
+#   · the seat tiles came from `infrastructure/state/status/<SEAT>.json`, which the
+#     seats write by hand. Measured that day, the four files were 1 to 7 days old
+#     (DECIDE and REP 08-15, CHECK 08-20, BUILD 08-21), so "idle" meant "has not
+#     written a file this week" — while `ps` showed all four windows alive and the
+#     ledger showed BUILD filing an event 0 minutes earlier.
+#   · "CHECK holds the Bridge" was a sentence CHECK typed into `game.json` at 08:31
+#     and nothing ever clears. A LEASE NOBODY RELEASES IS NOT A MEASUREMENT.
+#   · "STALE 6m" keyed off the last LEDGER EVENT's timestamp, so a seat twenty
+#     minutes into a build read as dead. Page age and ledger age are different
+#     facts and are now reported separately.
+#
+# ⭐ THE RULE FOR EVERYTHING BELOW: nothing here asks an agent anything. Every value
+# is read off the OS, off git, or off the append-only ledger, and each carries the
+# instrument that produced it so the page can print it. Where no instrument exists
+# the answer is UNMEASURED — never a guess, and never a stale claim wearing the
+# clothes of a reading. (Same doctrine as `measure`; see CLAUDE.md.)
+
+LEDGER = os.path.join(STATE, "ledger", "events.jsonl")
+BRIDGE_PORT = 5174          # GABP; skills/rimbridge/SKILL.md
+
+
+def _sh(cmd, timeout=8):
+    try:
+        return subprocess.run(cmd, shell=True, capture_output=True, text=True,
+                              timeout=timeout, cwd=ROOT).stdout.strip()
+    except Exception:
+        return ""
+
+
+def seat_processes():
+    """Which seat windows EXIST and for how long — from `ps`, not from a claim.
+
+    `claude_bounded.sh` is exec'd with `AGENT_SEAT=<SEAT>` exported, so the seat
+    name sits on the wrapper shell's own command line and `etimes` gives uptime
+    for free. ⚠️ Deliberately NOT `claude agents --json`: that list carries dead
+    background sessions whose last known `state` was `blocked`, and the old code
+    ranked `blocked` above `busy`, so one stale row could bury a live seat.
+    """
+    out = {}
+    for line in _sh("ps -eo pid,etimes,args").splitlines():
+        m = re.search(r"AGENT_SEAT=([A-Z]+)\b", line)
+        if not m or m.group(1) not in SEATS:
+            continue
+        parts = line.split(None, 2)
+        try:
+            pid, secs = int(parts[0]), int(parts[1])
+        except (ValueError, IndexError):
+            continue
+        seat = m.group(1)
+        if seat not in out or secs > out[seat]["up_s"]:
+            out[seat] = {"alive": True, "up_s": secs, "pid": pid}
+    return out
+
+
+def seat_activity(now=None):
+    """What each seat has actually DONE, from the append-only ledger.
+
+    🔑 A ledger event is written as a SIDE EFFECT of working — claiming, closing,
+    filing, noting. Nobody has to remember to update it, which is exactly why it
+    can be trusted where `status/<SEAT>.json` could not.
+    """
+    now = now or time.time()
+    out = {s: {"events_60m": 0, "last_s": None, "last_what": ""} for s in SEATS}
+    try:
+        with open(LEDGER, encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    e = json.loads(line)
+                except ValueError:
+                    continue
+                seat, ts = e.get("seat"), e.get("ts")
+                if seat not in out or not ts:
+                    continue
+                try:
+                    # ⚠️ The ledger stamps UTC (`...Z`). `time.mktime` would read the
+                    # struct as LOCAL and land 7 hours out in PDT — which is exactly
+                    # the kind of confidently-wrong number this rewrite exists to
+                    # stop. `timegm` is the UTC-correct inverse.
+                    t = calendar.timegm(time.strptime(ts[:19], "%Y-%m-%dT%H:%M:%S"))
+                except ValueError:
+                    continue
+                age = now - t
+                if age < 3600:
+                    out[seat]["events_60m"] += 1
+                if out[seat]["last_s"] is None or age < out[seat]["last_s"]:
+                    out[seat]["last_s"] = age
+                    out[seat]["last_what"] = " ".join(
+                        x for x in (e.get("event"), e.get("id")) if x)[:70]
+    except OSError:
+        pass
+    for s in out:
+        if out[s]["last_s"] is not None:
+            out[s]["last_s"] = int(out[s]["last_s"])
+    return out
+
+
+def durability():
+    """What an unplanned reboot would cost RIGHT NOW.
+
+    ⭐ The one number the whole commit-and-push doctrine is about, and the board
+    never showed it. Uncommitted work is already lost if the machine goes down;
+    committed-but-unpushed survives exactly one disk.
+    """
+    unpushed = _sh("git rev-list --count @{u}..HEAD 2>/dev/null")
+    dirty, untracked, oldest = [], [], None
+    # ⚠️ NOT via _sh(): it strips the whole output, which eats the leading space
+    # of porcelain's first line (" M path") and shifts that one path by a
+    # character. Porcelain is column-significant — XY, space, then the path.
+    porcelain = subprocess.run("git status --porcelain", shell=True, cwd=ROOT,
+                               capture_output=True, text=True).stdout
+    for line in porcelain.splitlines():
+        if not line.strip():
+            continue
+        path = line[3:].strip().strip('"')
+        (untracked if line.startswith("??") else dirty).append(path)
+    for path in dirty:
+        try:
+            age = time.time() - os.path.getmtime(os.path.join(ROOT, path))
+            oldest = age if oldest is None else max(oldest, age)
+        except OSError:
+            pass
+    return {"unpushed": int(unpushed) if unpushed.isdigit() else None,
+            "unpushed_how": "git rev-list --count @{u}..HEAD",
+            "dirty": len(dirty), "untracked": len(untracked),
+            "oldest_dirty_s": int(oldest) if oldest is not None else None,
+            "dirty_names": sorted(dirty)[:8],
+            "untracked_names": sorted(untracked)[:8]}
+
+
+def bridge_probe():
+    """Is the bridge ANSWERING — a socket, not a lease somebody forgot to release.
+
+    ⛔ This replaces `bridge_holder`, which was a claim a seat filed and nothing
+    ever cleared. It printed "CHECK holds the bridge" six hours after the game
+    went down, which is how the owner found this whole class of defect.
+    """
+    import socket
+    sock = socket.socket()
+    sock.settimeout(0.4)
+    try:
+        sock.connect(("127.0.0.1", BRIDGE_PORT))
+        return {"state": "ANSWERING",
+                "how": "tcp connect 127.0.0.1:%d succeeded" % BRIDGE_PORT}
+    except Exception:
+        return {"state": "NOT ANSWERING",
+                "how": "tcp connect 127.0.0.1:%d refused" % BRIDGE_PORT}
+    finally:
+        try:
+            sock.close()
+        except Exception:
+            pass
+
+
+def measured():
+    """Everything on the page that is a READING. Recomputed per request."""
+    now = time.time()
+    procs, act = seat_processes(), seat_activity(now)
+    rss = host().get("rimworld_gb")
+    seats = {}
+    for s in SEATS:
+        p = procs.get(s) or {"alive": False, "up_s": None, "pid": None}
+        seats[s] = dict(p, **act[s])
+    return {
+        "at": int(now),
+        "game": {"state": "UP" if rss is not None else "DOWN",
+                 # Say what was READ, not merely what was consulted: "present in
+                 # the process list" under a DOWN heading reads as a contradiction.
+                 "how": ("RimWorldWin64 found in the Windows process list"
+                         if rss is not None else
+                         "no RimWorldWin64 in the Windows process list"),
+                 "rss_gb": rss},
+        "bridge": bridge_probe(),
+        "seats": seats,
+        "seats_how": "ps AGENT_SEAT=<SEAT> for liveness; ledger events for activity",
+        "durability": durability(),
+    }
+
+
 def snapshot():
     m = _board() or {"rows": [], "unavailable": True,
                      "why": _BOARD.get("err") or "board.json could not be built"}
@@ -506,6 +693,9 @@ def snapshot():
         "board_why": m.get("why"),
         "host": host(),
         "agents": agents(),
+        # ⭐ The measured half — see the MEASURED block above. Everything
+        # here is a reading; nothing is a seat's self-report.
+        "measured": measured(),
         "inventory": inventory(),
         "ts": int(time.time()),
         # See the note above main(): a five-day-old process served a page whose code
