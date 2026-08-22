@@ -389,7 +389,24 @@ them.** They look alike from orbit and mean opposite things on the ground.
 `AB_FeraliskInfestedJungle` (534) and `PoisonForest` (604) all *read* as infested and are
 **not** on the bioweapon list. The owner named four; four is the list.
 
-### 🔴 `HorrorWastes` is not on the map yet, and the nightside is where it goes
+### 🔴 `HorrorWastes` is not on the map yet, and it goes just PAST the terminator
+
+> 🔴 **OWNER, 2026-08-22, and this NARROWS the placement below — read it first.** Verbatim:
+> *"Actually I think HorrorWastes should live closer to the frozen side of the terminator,
+> agreed taken from RockyCrags, as that is where the bioweapon comes from. The coldest area
+> should have only the MOST alien forms of life, nothing recognizable really."*
+>
+> ⇒ **Not the deep nightside.** `HorrorWastes` belongs in the **frozen band just past the
+> terminator** — the warm end of the cold, roughly **arc 100–130** — because that is where
+> the bioweapon came from and where an adapted, still-recognisable horror would live.
+> ⛔ The earlier proposal of **arc ≥ 140** is SUPERSEDED and must not be built.
+>
+> 🔑 **And the deep nightside is now SPOKEN FOR, as a separate rule.** Beyond that band —
+> the coldest ground, arc ≥ 150, −82…−67 °C — carries **only the most alien life, nothing
+> recognisable**. That is a casting constraint on `BIOME_CREATURE_CAST_1`, not merely a
+> biome boundary: whatever biome holds the coldest tiles, no familiar animal is cast there.
+> ⚠️ It is still `AB_RockyCrags` after this carve, so RockyCrags' own cast is now two
+> different jobs at its two ends.
 
 **Measured 2026-08-22:** `HorrorWastes` (label *"horror wastes"*, mod *Horrors (Continued)*)
 is installed and loaded and holds **ZERO tiles**. The deep nightside it belongs on is
@@ -401,7 +418,7 @@ currently almost all `AB_RockyCrags`:
 | arc ≥ 130 | 3,916 | −56 °C | `AB_RockyCrags` 2,828 |
 | coldest 800 (arc 150–179) | 800 | −82…−67 °C | `AB_RockyCrags` 687 |
 
-⭐ **Carving `HorrorWastes` from the deep-nightside end of `AB_RockyCrags` fixes a second
+⭐ **Carving `HorrorWastes` off `AB_RockyCrags` fixes a second
 problem at the same time.** `AB_RockyCrags` currently spans **−82 °C to +19.8 °C** across
 4,703 tiles — it is a *band*, not a habitat, and casting it as one creature list would put a
 lizard and a snow-thing on the same ground. Splitting its coldest extent off gives both
