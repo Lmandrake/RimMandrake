@@ -3212,6 +3212,22 @@ namespace JawaBench.BridgeTools
 
                 var noTags = new List<object>(); int noTagsN = 0;
                 var zeroBudget = new List<object>(); int zeroBudgetN = 0;
+                // 🔴 PAWNKIND_AUDIT_TAGLESS_BLIND_1. A kind with no weaponTags is USUALLY a
+                // deliberate civilian - see the comment below - but a COMBAT role that has
+                // LOST its tags looks identical and used to vanish into that same bucket.
+                // It is not hypothetical: Jawa_Droid_Leader, Jawa_Droid_Specialist and
+                // Jawa_TradeMoot_Specialist each shipped for a while with no weaponTags
+                // field at all, and this tool called all three intentionally-unarmed
+                // civilians. So the tagless are now SPLIT, and the suspicious half gets its
+                // own line rather than being folded into the exclusion.
+                // ⛔ The fix is NOT to stop excluding tagless kinds - that reported 294
+                // working civilians as broken and is how the exclusion got here.
+                // 🔑 THE DISCRIMINATOR IS DELIBERATELY TWO-PART. `isFighter` alone is not
+                // enough: gen_pawnkind_roster.py emits `isFighter` FROM the tag list, so a
+                // kind that lost its tags would have lost its isFighter too and hidden all
+                // over again. combatPower 40 is the anchor the roster generator itself uses
+                // for a grunt-tier tribal carrying almost nothing; below that is civilian.
+                var taglessFighter = new List<object>(); int taglessFighterN = 0;
                 var emptyPool = new List<object>(); int emptyPoolN = 0;
                 var cannotAfford = new List<object>(); int cannotAffordN = 0;
                 var healthy = new List<object>(); int healthyN = 0;
@@ -3237,9 +3253,21 @@ namespace JawaBench.BridgeTools
                     var tags = k.weaponTags;
                     if (tags == null || tags.Count == 0)
                     {
-                        noTagsN++;
-                        if (noTags.Count < limit)
-                            noTags.Add(new { kind = k.defName, label = k.label, race = k.race.defName });
+                        if (k.isFighter || k.combatPower >= 40f)
+                        {
+                            taglessFighterN++;
+                            if (taglessFighter.Count < limit)
+                                taglessFighter.Add(new { kind = k.defName, label = k.label,
+                                                         race = k.race.defName,
+                                                         isFighter = k.isFighter,
+                                                         combatPower = k.combatPower });
+                        }
+                        else
+                        {
+                            noTagsN++;
+                            if (noTags.Count < limit)
+                                noTags.Add(new { kind = k.defName, label = k.label, race = k.race.defName });
+                        }
                         continue;
                     }
                     // Same for a deliberate zero budget: weaponMoney.max == 0 cannot admit
@@ -3295,26 +3323,38 @@ namespace JawaBench.BridgeTools
 
                 // 🔴 BROKEN is ONLY the kinds that INTEND to arm and cannot. The two
                 // categories above are design, and are reported without scoring.
+                // ⚠️ taglessFighterN is NOT added to `broken`. It is a SUSPICION, not a
+                // measurement - a kind may legitimately be a high-combatPower brawler with
+                // no ranged tags - so it gets its own sentence and its own list, and a human
+                // decides. Scoring it would re-create the false-positive flood.
                 int broken = emptyPoolN + cannotAffordN;
+                string taglessFighterLine = taglessFighterN == 0
+                    ? ""
+                    : " ⚠️ " + taglessFighterN + " of those declare isFighter or combatPower >= 40 and " +
+                      "carry NO weaponTags at all - a combat role that lost its tags looks exactly like " +
+                      "a civilian here; see taglessButLooksLikeAFighter.";
                 return new
                 {
                     success = true,
                     message = broken == 0
                         ? considered + " tool-using kind(s) audited; every kind that intends to arm can. " +
                           "(" + noTagsN + " carry no weaponTags and " + zeroBudgetN + " have a zero budget - " +
-                          "both are design, not defects.)"
+                          "both are design, not defects.)" + taglessFighterLine
                         : broken + " of " + considered + " tool-using kind(s) INTEND to arm and CANNOT: " +
                           emptyPoolN + " whose tags match no loaded weapon, " +
                           cannotAffordN + " that cannot afford the cheapest weapon their tags allow. " +
                           "(Not counted: " + noTagsN + " with no weaponTags and " + zeroBudgetN +
-                          " with weaponMoney.max 0 - both are how a civilian or a child is kept unarmed.)",
+                          " with weaponMoney.max 0 - both are how a civilian or a child is kept unarmed.)" +
+                          taglessFighterLine,
                     weaponPairsInGame = pairs.Count,
                     distinctWeaponTags = cheapestByTag.Count,
                     kindsChecked = considered,
                     skippedNonToolUser = skippedNonCombat,
                     counts = new { emptyTagPool = emptyPoolN, cannotAfford = cannotAffordN,
                                    healthy = healthyN,
-                                   byDesign_noWeaponTags = noTagsN, byDesign_zeroBudget = zeroBudgetN },
+                                   byDesign_noWeaponTags = noTagsN, byDesign_zeroBudget = zeroBudgetN,
+                                   taglessButLooksLikeAFighter = taglessFighterN },
+                    taglessButLooksLikeAFighter = taglessFighter,
                     byDesign_noWeaponTags = noTags,
                     byDesign_zeroBudget = zeroBudget,
                     emptyTagPool = emptyPool,
