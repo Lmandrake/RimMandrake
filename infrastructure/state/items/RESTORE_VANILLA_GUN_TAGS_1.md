@@ -36,6 +36,27 @@ Do not raise `weaponMoney` on anything to work around this. It was tested and re
 across all 48 authored kinds, **0 have a `weaponMoney.min` below their cheapest eligible
 weapon**, and `jawa/pawnkind_audit` reports **0 `cannotAfford`**. Money is not the lever.
 
+## the stripped set — 26 vanilla weapons, and that is a FLOOR
+Comparing every vanilla/DLC `ThingDef` that ships a non-empty `<weaponTags>` block against
+the live dump: **57 ship tags, 31 keep them, 26 are stripped to `[]`.**
+
+    Artillery_AutoMortar  Artillery_Mortar  Bow_Great  Bow_Recurve  Bow_Short  Flamebow
+    Gun_AssaultRifle  Gun_Autopistol  Gun_ChainShotgun  Gun_HeavySMG  Gun_HellcatRifle
+    Gun_Incinerator  Gun_LMG  Gun_MachinePistol  Gun_Minigun  Gun_Needle  Gun_PumpShotgun
+    Gun_Revolver  Gun_Scattergun  Gun_SniperRifle  MeleeWeapon_Axe  MeleeWeapon_Gladius
+    MeleeWeapon_Ikwa  MeleeWeapon_LongSword  MeleeWeapon_Mace  Pila
+
+⚠️ A def that INHERITS its tags from an abstract parent is not counted here, so the real
+number is 26 or more — `Gun_BoltActionRifle` reads `[]` live and is not in the list above.
+
+🔑 **Every basic gun, all three bows, and the whole medieval melee set** — the starting kit
+of every low-tech and mid-tech faction in the campaign.
+
+⇒ It also takes the mechs with it: `Mech_Pikeman`, `Drone_Sentry` and `Tribal_Archer_Fire`
+each spawned **0/5 armed** on this load (`MECH_AND_ARCHER_ARMED_1`), because `Gun_Needle`,
+`Gun_Scattergun` and `Bow_Great` are all in the stripped set. That is the same defect, not
+a second one.
+
 ## finding the culprit
 Not yet named. Look for a `PatchOperationRemove`/`Replace` whose xpath hits `weaponTags`
 across many `ThingDef`s at once — a broad xpath would explain why the two survivors are the

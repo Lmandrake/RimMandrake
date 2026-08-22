@@ -86,3 +86,44 @@ it — and it is the best candidate for the 8 unexplained rolls above.
 `rolls.json` (240 rows: kind, name, armed, weapon, both backstories, pacifist flag) ·
 `equipment_by_kind.json` · `spawned_ids_by_kind.json` · `pawnkind_audit.json` ·
 `runtime_weapon_tags.json`
+
+---
+
+# Addendum — the strip is 26 vanilla weapons wide, and it takes the mechs and the archer with it
+
+## `MECH_AND_ARCHER_ARMED_1`, run in the same window: **0/5, 0/5, 0/5**
+
+    Mech_Pikeman        armed 0/5
+    Drone_Sentry        armed 0/5
+    Tribal_Archer_Fire  armed 0/5
+
+Five spawns each. Not one of the fifteen held anything. The item expected the pikeman on a
+long-range mech gun, the drone on a scattergun and the archer on a plain bow.
+`Gun_Needle`, `Gun_Scattergun`, `Bow_Great` and `Flamebow` all read **`weaponTags: []`** at
+runtime ⇒ **same cause, not a second bug.** `MECH_WEAPONS_UNCUT_1`'s repair has not taken
+on this load.
+
+## The exact stripped set
+
+Every `ThingDef` in `Data/*/Defs/**` that SHIPS a non-empty `<weaponTags>` block, compared
+against the live def dump:
+
+| | |
+|---|---|
+| vanilla/DLC defs shipping non-empty `weaponTags` | 57 |
+| still tagged in the live game | 31 |
+| **stripped to `[]`** | **26** |
+
+    Artillery_AutoMortar  Artillery_Mortar  Bow_Great  Bow_Recurve  Bow_Short  Flamebow
+    Gun_AssaultRifle  Gun_Autopistol  Gun_ChainShotgun  Gun_HeavySMG  Gun_HellcatRifle
+    Gun_Incinerator  Gun_LMG  Gun_MachinePistol  Gun_Minigun  Gun_Needle  Gun_PumpShotgun
+    Gun_Revolver  Gun_Scattergun  Gun_SniperRifle  MeleeWeapon_Axe  MeleeWeapon_Gladius
+    MeleeWeapon_Ikwa  MeleeWeapon_LongSword  MeleeWeapon_Mace  Pila
+
+⚠️ **26 is a FLOOR, not the total.** This compares only defs with an explicit
+`<weaponTags>` block in their own XML; a def inheriting tags from an abstract parent is not
+counted, and `Gun_BoltActionRifle` — measured `[]` at runtime — is one such absentee. The
+true count is 26 or more.
+
+🔑 Read the pattern: **every basic gun, all three bows, and the entire medieval melee set.**
+That is the starting kit of every low-tech and mid-tech faction in the campaign.
