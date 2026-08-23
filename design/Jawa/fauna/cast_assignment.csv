@@ -120,7 +120,7 @@ Wasteland,SW_Electrictick,Electrictick,Insectoids 2 - Isopoda geneline,tiny,0.25
 Wasteland,GraniteSlug,granite slug,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.8141,0.1859,0.605,ours,wildlife,0
 Wasteland,VFEI2_BlackSwarmling,black swarmlings,Alpha Animals,tiny,0.20000000298023224,1.0,0.7126,0.2874,0.605,dormant,wildlife,0
 Wasteland,GR_Beetlefleet,beetlefleet,Vanilla Genetics Expanded,small,0.30000001192092896,0.7,0.938,0.062,0.558,dormant,wildlife,0
-Wasteland,GR_Catbear,catbear,Vanilla Genetics Expanded,small,0.4000000059604645,0.7,0.8529,0.1471,0.56,dormant,wildlife,0
+Wasteland,AA_Skiphound,skiphound,Alpha Animals,small,0.7900000214576721,0.7,0.8541,0.1459,0.56,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 Wasteland,GR_ParagonRat,rodent paragon,Vanilla Genetics Expanded,small,0.30000001192092896,0.7,0.8402,0.1598,0.558,dormant,wildlife,0
 Wasteland,AM_Dryad_Tumorous,tumorous dryad,Alpha Memes,small,0.6669999957084656,0.7,0.8322,0.1678,0.467,dormant,wildlife,0
 Wasteland,BMT_FleeceSpider,fleece spider,Biomes! Caverns,small,0.3199999928474426,0.7,0.8259,0.1741,0.608,dormant,wildlife,0
@@ -245,7 +245,7 @@ AridShrubland,BMT_FungalFerret,fungal ferret,Biomes! Caverns,small,0.5,0.7,0.909
 AridShrubland,MonitorLizard,monitor lizard,Odyssey,small,0.6000000238418579,0.7,0.8074,0.1926,0.605,dormant,wildlife,0
 AridShrubland,Tiger,tiger,Odyssey,med,1.399999976158142,0.4,0.9103,0.0897,0.585,dormant,wildlife,0
 AridShrubland,JRWCyclosphaeroma,Cyclosphaeroma,Jurassic Rimworld - Dinosaurs Only (Continued),med,1.5,0.4,0.8968,0.1032,0.588,dormant,wildlife,0
-AridShrubland,BMT_SandPillar,sandpillar,Biomes! Caverns,med,0.800000011920929,0.4,0.8957,0.1043,0.42,dormant,wildlife,0
+AridShrubland,PaintedSpat,painted spat,Star Wars Animal Collection (Continued),med,1.5,0.4,0.9055,0.0945,0.42,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 AridShrubland,GR_Bearchicken,bearchicken,Vanilla Genetics Expanded,med,0.8100000023841858,0.4,0.8684,0.1316,0.42,dormant,wildlife,0
 AridShrubland,GR_Booman,booman,Vanilla Genetics Expanded,med,1.25,0.4,0.8586,0.1414,0.431,dormant,wildlife,0
 AridShrubland,BMT_TruffleMole,truffle mole,Biomes! Caverns,med,0.8999999761581421,0.4,0.9462,0.0538,0.572,ours,wildlife,0
@@ -341,7 +341,7 @@ BMT_FungalForest,GR_BearBug,bear bug,Vanilla Genetics Expanded,large,2,0.18,0.81
 BMT_FungalForest,DA_Taraal,taraal,Dark Ages : Beasts and Monsters,large,2.5,0.18,0.9196,0.0804,0.613,foreign,wildlife,0
 BMT_FungalForest,MA_Simbakub,Simbakub,Mythic Ages: Megafauna Bestiary,large,1.7000000476837158,0.18,0.8124,0.1876,0.676,dormant,wildlife,0
 BMT_FungalForest,MA_SimbakubAlpha,Simbakub Alpha,Mythic Ages: Megafauna Bestiary,large,2.200000047683716,0.18,0.7921,0.2079,0.715,dormant,wildlife,0
-BMT_FungalForest,Enhydriodon,enhydriodon,Megafauna,huge,3,0.05,0.9055,0.0945,0.625,dormant,wildlife,0
+BMT_FungalForest,JRWCeratosaurus,Ceratosaurus,Jurassic Rimworld - Dinosaurs Only (Continued),huge,3.5,0.05,0.9481,0.0519,0.625,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 BMT_FungalForest,VAEWaste_Toxbear,toxbear,Vanilla Animals Expanded — Waste Animals,huge,4,0.05,0.8866,0.1134,0.65,dormant,wildlife,0
 BMT_FungalForest,JRWAntarctopelta,Antarctopelta,Jurassic Rimworld - Dinosaurs Only (Continued),huge,5,0.05,0.8694,0.1306,0.5,dormant,wildlife,0
 BMT_FungalForest,AA_AnimaColossus,anima colossus,Alpha Animals,SUPER,6,0.008,0.9051,0.0949,0.5,ours,wildlife,0
@@ -441,7 +441,7 @@ ZBiome_DesertOasis,BMT_GastroToad,gastro toad,Biomes! Polluted Lands,small,0.300
 ZBiome_DesertOasis,BMT_TaintedTurtle,tainted turtle,Biomes! Polluted Lands,small,0.5,0.7,0.7561,0.2439,0.619,dormant,wildlife,0
 ZBiome_DesertOasis,Macaw,macaw,Odyssey,small,0.3499999940395355,0.7,0.7521,0.2479,0.409,dormant,wildlife,0
 ZBiome_DesertOasis,Cassowary,cassowary,Core,small,0.6000000238418579,0.7,0.7307,0.2693,0.415,dormant,wildlife,0
-ZBiome_DesertOasis,Capybara,capybara,Core,small,0.75,0.7,0.8048,0.1952,0.419,ours,wildlife,0
+ZBiome_DesertOasis,AA_FissionMouse,fission mouse,Alpha Animals,small,0.5,0.7,0.8547,0.1453,0.419,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 ZBiome_DesertOasis,Ollopom,ollopom,Star Wars Animal Collection (Continued),small,0.6000000238418579,0.7,0.8047,0.1953,0.415,foreign,wildlife,0
 ZBiome_DesertOasis,AA_Plasmorph,plasmorph,Alpha Animals,med,1,0.4,0.9495,0.0505,0.742,ours,wildlife,0
 ZBiome_DesertOasis,BMT_CaveCricket,cave cricket,Biomes! Caverns,med,0.800000011920929,0.4,0.9184,0.0816,0.687,ours,wildlife,0
@@ -503,7 +503,7 @@ AB_GelatinousSuperorganism,Fingerspike,fingerspike,Anomaly,small,0.6000000238418
 AB_GelatinousSuperorganism,GR_Catwolf,catwolf,Vanilla Genetics Expanded,small,0.4000000059604645,0.7,0.7518,0.2482,0.56,dormant,wildlife,0
 AB_GelatinousSuperorganism,Sightstealer,sightstealer,Anomaly,med,0.800000011920929,0.4,0.7931,0.2069,0.17,dormant,anomaly,0
 AB_GelatinousSuperorganism,Noctol,noctol,Anomaly,med,1,0.4,0.725,0.275,0.252,dormant,anomaly,0
-AB_GelatinousSuperorganism,Revenant,revenant,Anomaly,med,1,0.4,0.7185,0.2815,0.225,dormant,anomaly,0
+AB_GelatinousSuperorganism,AA_DecayDrake,decay drake,Alpha Animals,med,1,0.4,0.8708,0.1292,0.225,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 AB_GelatinousSuperorganism,Toughspike,toughspike,Anomaly,med,1,0.4,0.7176,0.2824,0.235,dormant,anomaly,0
 AB_GelatinousSuperorganism,AlligatorMan,alligator man,Beasts of the Rim (Continued),med,1,0.4,0.8653,0.1347,0.575,dormant,wildlife,0
 AB_GelatinousSuperorganism,JRWZephyrosaurus,Zephyrosaurus,Jurassic Rimworld - Dinosaurs Only (Continued),med,1.5,0.4,0.8634,0.1366,0.438,dormant,wildlife,0
@@ -546,7 +546,7 @@ Scarlands,AA_Mantrap,mantrap,Alpha Animals,large,2,0.18,0.7341,0.2659,0.65,ours,
 Scarlands,BMT_CaveSpider,cave spider,Biomes! Caverns,huge,4,0.126,0.9597,0.0403,0.9,ours,wildlife,0
 Scarlands,SW_Juggernautbeetles,Juggernautbeetles,Insectoids 2 - Isopoda geneline,huge,3,0.126,0.8208,0.1792,0.975,dormant,wildlife,0
 Scarlands,SW_Emperorisopod,Emperorisopod,Insectoids 2 - Isopoda geneline,huge,5,0.126,0.817,0.183,1.0,dormant,wildlife,0
-Scarlands,Horax,horax,Star Wars Animal Collection (Continued),SUPER,15,0.0216,0.6927,0.3073,0.95,ours,wildlife,0
+Scarlands,AA_MycoidColossus,mycoid colossus,Alpha Animals,SUPER,6,0.0216,0.9283,0.0717,0.95,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 IceSheet,BMT_Megaroach,megaroach,Biomes! Polluted Lands,tiny,0.20000000298023224,1.0,0.5462,0.4538,0.605,dormant,wildlife,0
 IceSheet,IronScruff_Jellybird,jellybird,Primordial Geysers,tiny,0.20000000298023224,1.0,0.8975,0.1025,0.555,dormant,wildlife,0
 IceSheet,Neebray,neebray,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.5328,0.4672,0.605,ours,wildlife,0
@@ -578,7 +578,7 @@ AB_MiasmicMangrove,GRimCobra,Colorful cobra,GRiNDTerra Biomes,tiny,0.25,1.0,0.83
 AB_MiasmicMangrove,VFEI2_Swarmling,swarmlings,Vanilla Factions Expanded - Insectoids 2,tiny,0.20000000298023224,1.0,0.7181,0.2819,0.605,dormant,wildlife,0
 AB_MiasmicMangrove,Kreetle,kreetle,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.741,0.259,0.605,ours,wildlife,0
 AB_MiasmicMangrove,Shiro,shiro,Star Wars Animal Collection (Continued),small,0.5,0.7,0.6859,0.3141,0.729,ours,wildlife,0
-AB_MiasmicMangrove,DA_BlackScribe,black scribe,Dark Ages : Beasts and Monsters,small,0.5,0.7,0.6662,0.3338,0.738,ours,wildlife,0
+AB_MiasmicMangrove,AA_Swarmling,swarmling,Alpha Animals,small,0.30000001192092896,0.7,0.7924,0.2076,0.738,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 AB_MiasmicMangrove,GRimStoneCrab,Colorful stone crab,GRiNDTerra Biomes,small,0.30000001192092896,0.7,0.649,0.351,0.691,foreign,wildlife,0
 AB_MiasmicMangrove,GRimMonitorLizard,Colorful monitor lizard,GRiNDTerra Biomes,small,0.6000000238418579,0.7,0.5285,0.4715,0.605,foreign,wildlife,0
 AB_MiasmicMangrove,Whisperbird,whisperbird,Star Wars Animal Collection (Continued),small,0.4000000059604645,0.7,0.5005,0.4995,0.56,ours,wildlife,0
@@ -592,10 +592,10 @@ AB_MiasmicMangrove,Runyip,runyip,Star Wars Animal Collection (Continued),med,1.5
 AB_MiasmicMangrove,Anooba,anooba,Star Wars Animal Collection (Continued),med,0.949999988079071,0.4,0.6746,0.3254,0.574,ours,wildlife,0
 AB_MiasmicMangrove,BMT_AaroxisDendoria,aaroxis dendoria,Biomes! Caverns,med,1,0.4,0.662,0.338,0.425,ours,wildlife,0
 AB_MiasmicMangrove,JRWDinilysia,dinilysia,Jurassic Rimworld - Dinosaurs Only (Continued),med,1.5,0.4,0.552,0.448,0.588,dormant,wildlife,0
-AB_MiasmicMangrove,BMT_ShatterjawBeetle,shatterjaw beetle,Biomes! Caverns,med,1,0.4,0.651,0.349,0.625,ours,wildlife,0
+AB_MiasmicMangrove,JRWProtosolpuga,Protosolpuga,Jurassic Rimworld - Dinosaurs Only (Continued),med,1.5,0.4,0.9208,0.0792,0.625,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 AB_MiasmicMangrove,AG_OcularSlinger,ocular slinger,Alpha Genes,large,2.5,0.18,0.7466,0.2534,0.796,dormant,wildlife,0
 AB_MiasmicMangrove,BMT_Molebear,Molebear,Biomes! Caverns,large,2.1500000953674316,0.18,0.745,0.255,0.604,dormant,wildlife,0
-AB_MiasmicMangrove,BMT_BiliousVarog,bilious varog,Biomes! Polluted Lands,large,2.4000000953674316,0.18,0.7359,0.2641,0.767,dormant,wildlife,0
+AB_MiasmicMangrove,JRWGorgonops,Gorgonops,Jurassic Rimworld - Dinosaurs Only (Continued),large,2,0.18,0.9147,0.0853,0.767,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 AB_MiasmicMangrove,AA_RoughPlatedMonitor,rough-plated monitor,Alpha Animals,large,2,0.18,0.8281,0.1719,0.75,ours,wildlife,0
 AB_MiasmicMangrove,Vornskyr,vornskyr,Star Wars Animal Collection (Continued),large,2,0.18,0.8207,0.1793,0.63,ours,wildlife,0
 AB_MiasmicMangrove,Zakkeg,zakkeg,Star Wars Animal Collection (Continued),huge,5,0.05,0.9046,0.0954,1.0,ours,wildlife,0
@@ -640,7 +640,7 @@ AB_PyroclasticConflagration,AA_BlackScarab,black scarab,Alpha Animals,small,0.30
 AB_PyroclasticConflagration,DA_Phrak,phrak,Dark Ages : Beasts and Monsters,small,0.30000001192092896,0.7,0.9447,0.0553,0.608,foreign,wildlife,0
 AB_PyroclasticConflagration,Shyrack,shyrack,Star Wars Animal Collection (Continued),small,0.75,0.7,0.9074,0.0926,0.639,ours,wildlife,0
 AB_PyroclasticConflagration,Tach,tach,Star Wars Animal Collection (Continued),small,0.5,0.7,0.8692,0.1308,0.413,ours,wildlife,0
-AB_PyroclasticConflagration,DA_BlackScribe,black scribe,Dark Ages : Beasts and Monsters,small,0.5,0.7,0.8397,0.1603,0.738,ours,wildlife,0
+AB_PyroclasticConflagration,BMT_SmogMothLarvae,smog caterpillar,Biomes! Polluted Lands,small,0.5,0.7,0.9482,0.0518,0.738,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 AB_PyroclasticConflagration,AA_RayHound,ray-hound,Alpha Animals,med,1.5,0.4,0.7494,0.2506,0.638,ours,wildlife,0
 AB_PyroclasticConflagration,Spelopede,spelopede,Core,med,0.800000011920929,0.4,0.744,0.256,0.68,ours,wildlife,0
 AB_PyroclasticConflagration,Megaspider,megaspider,Core,med,1.2000000476837158,0.4,0.5899,0.4101,0.705,ours,wildlife,0
@@ -679,7 +679,7 @@ Volcano,BMT_Xyrion,xyrion,Biomes! Caverns,med,0.8999999761581421,0.4,0.4898,0.51
 Volcano,Kaadu,kaadu,Star Wars Animal Collection (Continued),med,1.5,0.4,0.383,0.617,0.438,ours,wildlife,0
 Volcano,ERN_Amaro,amaro,Erin's Final Fantasy Animals,med,1.25,0.4,0.3735,0.6265,0.431,ours,wildlife,0
 Volcano,GR_Wolfhorse,wolfhorse,Vanilla Genetics Expanded,large,2.799999952316284,0.18,0.8546,0.1454,0.62,dormant,wildlife,0
-Volcano,Gorilla,gorilla,Odyssey,large,2,0.18,0.8286,0.1714,0.6,dormant,wildlife,0
+Volcano,AA_IronhuskBeetle,ironhusk beetle,Alpha Animals,large,2.5,0.18,0.8811,0.1189,0.6,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 Volcano,BMT_Megabat,megabat,Biomes! Caverns,large,2.200000047683716,0.18,0.8228,0.1772,0.605,dormant,wildlife,0
 Volcano,BMT_SludgeCrawler,sludgecrawler,Biomes! Polluted Lands,large,2.5999999046325684,0.18,0.8214,0.1786,0.563,dormant,wildlife,0
 Volcano,BMT_GiantSnail,giant snail,Biomes! Caverns,large,2.5999999046325684,0.18,0.9058,0.0942,0.573,ours,wildlife,0
@@ -704,7 +704,7 @@ LavaField,GR_Wolfscarab,wolfscarab,Vanilla Genetics Expanded,med,0.8500000238418
 LavaField,VAEWaste_Toxiguana,toxiguana,Vanilla Animals Expanded — Waste Animals,med,1.399999976158142,0.4,0.8999,0.1001,0.585,dormant,wildlife,0
 LavaField,GR_Spidercat,spidercat,Vanilla Genetics Expanded,med,0.8500000238418579,0.4,0.8887,0.1113,0.705,dormant,wildlife,0
 LavaField,Massiff,massiff,Star Wars Animal Collection (Continued),med,0.8500000238418579,0.4,0.9619,0.0381,0.611,ours,wildlife,0
-LavaField,BMT_SandPillar,sandpillar,Biomes! Caverns,med,0.800000011920929,0.4,0.8429,0.1571,0.42,dormant,wildlife,0
+LavaField,AA_RaptorShrimp,raptor shrimp,Alpha Animals,med,1.399999976158142,0.4,0.9516,0.0484,0.42,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 LavaField,BMT_TripleSnapper,triple snapper,Biomes! Polluted Lands,med,1.399999976158142,0.4,0.8429,0.1571,0.717,dormant,wildlife,0
 LavaField,Tiger,tiger,Odyssey,med,1.399999976158142,0.4,0.8246,0.1754,0.585,dormant,wildlife,0
 LavaField,BMT_GiantSlug,giant slug,Biomes! Caverns,large,1.7000000476837158,0.18,0.8075,0.1925,0.509,ours,wildlife,0
