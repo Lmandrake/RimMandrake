@@ -2302,12 +2302,35 @@
     <mods><li>Biotech</li></mods>
     <match Class="PatchOperationConditional">
       <xpath>Defs/ThingDef[defName="Flamebow"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="Flamebow"]/weaponTags</xpath>
-        <value>
-          <li>NeolithicRangedBasic</li>
-          <li>NeolithicRangedDecent</li>
-        </value>
+      <!-- 🔑 ONE CONDITIONAL PER TAG, so the add is IDEMPOTENT. Measured
+           2026-08-23: something upstream of us already puts `Neolithic`,
+           `NeolithicRangedBasic` and `NeolithicRangedDecent` on this def (vanilla
+           Biotech ships only `NeolithicRangedFlame`), and a bare Add on top of
+           that produced
+             Neolithic, NeolithicRangedFlame, NeolithicRangedBasic,
+             NeolithicRangedDecent, NeolithicRangedBasic, NeolithicRangedDecent
+           ⚠️ Harmless - weapon selection tests membership, so a repeated tag
+           changes nothing about what spawns, and 27 ThingDefs across this stack
+           carry duplicates already (`Gun, Gun, SpacerGun` on
+           VWE_Gun_ChargeRocketLauncher). But OUR half of it is avoidable, and a
+           duplicate reads to the next person as a patch applying twice. -->
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationConditional">
+            <xpath>Defs/ThingDef[defName="Flamebow"]/weaponTags/li[text()="NeolithicRangedBasic"]</xpath>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThingDef[defName="Flamebow"]/weaponTags</xpath>
+              <value><li>NeolithicRangedBasic</li></value>
+            </nomatch>
+          </li>
+          <li Class="PatchOperationConditional">
+            <xpath>Defs/ThingDef[defName="Flamebow"]/weaponTags/li[text()="NeolithicRangedDecent"]</xpath>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThingDef[defName="Flamebow"]/weaponTags</xpath>
+              <value><li>NeolithicRangedDecent</li></value>
+            </nomatch>
+          </li>
+        </operations>
       </match>
       <nomatch Class="PatchOperationAdd">
         <xpath>Defs/ThingDef[defName="Flamebow"]</xpath>
