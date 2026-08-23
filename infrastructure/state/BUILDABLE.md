@@ -549,3 +549,33 @@ not exist in the LIVE game"* — true, and only because the OLD patch had delete
 biomes before the capture was taken. ⇒ When a fix targets defs that the defect destroyed,
 the `--live`/`--defnames` check is circular until a clean reload. **Read the xpath match
 counts against the mod folders on disk instead** — those said 26 of 26 matched.
+
+
+**14 — An instrument can print a FRESH capture id over STALE data, and a modlist
+fingerprint will never catch it.** `defs.sqlite` lives at the DefDump **root** and serves
+every capture, so it survives a new load untouched while the capture beside it moves on.
+`weapon_tag_audit.py` read its tags from a 2026-08-21 database and its header from the
+newest capture's manifest, and reported **12** disarmed pawn kinds where the capture it
+named says **2** — it would have closed two already-fixed items as still-broken. ⇒ The
+fingerprint doctrine ("fingerprint, not timestamp") is **necessary but not sufficient**:
+both captures were the same 578 mods, and what changed between them was OUR OWN XML.
+🔑 **Compare CAPTURE IDENTITY** — `defs.sqlite`'s `provenance.captured_utc` against the
+capture's `manifest.capturedUtc`. `dump_projection.py` now does this and falls back to that
+capture's JSON with a one-line warning; the fast path returns after `measure build`.
+
+**15 — A kill list is INTENT; the capture is REALITY, and the capture is already post-cut.**
+Cherry Picker does not delete a cut weapon, it strips `weaponTags` at load — so a genuinely
+cut weapon contributes no tag to a dump at all. Subtracting the kill list from dump-derived
+carriers therefore removes it TWICE, and any weapon deliberately restored (e.g. `Gun_Needle`,
+which is on the list and carries `MechanoidGunLongRange` live) counts as cut while visibly
+armed. ⇒ **Presence in the capture with the tag attached IS survival.** Never re-subtract a
+written intent from a measured fact.
+
+**16 — The def dump cannot audit its own attribution.** `packageId`/`modName` in a capture
+credit whoever PATCHED a def last, not who DEFINED it: `Desert`, `ExtremeDesert` and
+`AridShrubland` are Core biomes that the capture attributes to
+`grimterra.terrainretexturemod`. Emitting that as `MayRequire` gated three vanilla biomes on
+a retexture mod. ⚠️ A check that asks the capture about this returns a confident **0**,
+because it reads the same poisoned field — measured, I wrote that check first. 🔑 **The
+independent source is the game's own `Data/` tree**: whatever Core and the DLCs define there
+needs no `MayRequire`, however many mods touched it afterwards.
