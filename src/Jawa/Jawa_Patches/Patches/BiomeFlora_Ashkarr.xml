@@ -28,9 +28,12 @@
           <GRim1PincushionCactus>0.3</GRim1PincushionCactus> <!-- pincushion cactus -->
           <GRimAgave>0.3</GRimAgave> <!-- agave -->
           <Plant_Chakroot_Wild>0.3</Plant_Chakroot_Wild> <!-- wild chak-root plant -->
+          <VCE_Plant_JadePlant>0.3</VCE_Plant_JadePlant> <!-- jade plant -->
+          <VCE_Plant_AloeVera>0.28</VCE_Plant_AloeVera> <!-- aloe vera plant -->
           <AB_BrownBarrelCactus>0.25</AB_BrownBarrelCactus> <!-- brown barrel cactus -->
           <RG_FlowerCactus>0.25</RG_FlowerCactus> <!-- flower cactus -->
           <Plant_HubbaGourd_Wild>0.25</Plant_HubbaGourd_Wild> <!-- wild hubba gourd plant -->
+          <VCE_Plant_SnakePlant>0.25</VCE_Plant_SnakePlant> <!-- snake plant -->
           <GRimAgavePlant>0.24</GRimAgavePlant> <!-- bush -->
           <GRimPebbleCactus>0.22</GRimPebbleCactus> <!-- pebble cactus - tree -->
           <GRim1PebbleCactus>0.2</GRim1PebbleCactus> <!-- pebble cactus - tree -->
@@ -57,7 +60,10 @@
         <wildPlants>
           <AB_EuphorbiaRimworldia>0.3</AB_EuphorbiaRimworldia> <!-- euphorbia rimworldia -->
           <VCE_Plant_PincushionPlant>0.25</VCE_Plant_PincushionPlant> <!-- pincushion plant -->
+          <VCE_Plant_Echeveria>0.25</VCE_Plant_Echeveria> <!-- echeveria plant -->
+          <VCE_Plant_FairyWashboard>0.22</VCE_Plant_FairyWashboard> <!-- fairy washboard plant -->
           <AB_GargantuanLithops>0.2</AB_GargantuanLithops> <!-- gargantuan lithops -->
+          <VCE_Plant_SweetheartPlant>0.2</VCE_Plant_SweetheartPlant> <!-- sweetheart plant -->
           <Plant_Bloddle>0.1</Plant_Bloddle> <!-- bloddle plant -->
           <AB_EuphorbiaDesiccata>0.06</AB_EuphorbiaDesiccata> <!-- euphorbia desiccata - tree -->
           <AB_DeadBowerTree>0.05</AB_DeadBowerTree> <!-- dead bower tree - tree -->
@@ -133,7 +139,12 @@
           <GRim3BerryBush>0.15</GRim3BerryBush> <!-- berry bush -->
           <GRim4BerryBush>0.15</GRim4BerryBush> <!-- berry bush -->
           <GRim5BerryBush>0.15</GRim5BerryBush> <!-- berry bush -->
+          <VEE_Plant_Bluebell>0.15</VEE_Plant_Bluebell> <!-- bluebell -->
+          <VEE_Plant_Gardenia>0.15</VEE_Plant_Gardenia> <!-- gardenia -->
+          <VEE_Plant_Gentian>0.15</VEE_Plant_Gentian> <!-- gentian -->
+          <VEE_Plant_Petunia>0.15</VEE_Plant_Petunia> <!-- petunia -->
           <ZBiome_Plant_WildRose>0.12</ZBiome_Plant_WildRose> <!-- rose -->
+          <RotR_RoseOfRebirth>0.12</RotR_RoseOfRebirth> <!-- rose of rebirth -->
           <Plant_MujaFruit>0.05</Plant_MujaFruit> <!-- muja fruit bush -->
           <Plant_Nysyllin>0.05</Plant_Nysyllin> <!-- nysyllin plant -->
         </wildPlants>
@@ -150,6 +161,7 @@
           <VEE_Plant_ChollaCactus>0.4</VEE_Plant_ChollaCactus> <!-- cholla cactus - tree -->
           <VEE_Plant_HedgehogCactus>0.4</VEE_Plant_HedgehogCactus> <!-- hedgehog cactus - tree -->
           <VEE_Plant_BeavertailCactus>0.35</VEE_Plant_BeavertailCactus> <!-- beavertail cactus - tree -->
+          <VCE_Plant_BunnyEarsCactus>0.32</VCE_Plant_BunnyEarsCactus> <!-- bunny ears cactus -->
           <VEE_Plant_BarrelCactus>0.3</VEE_Plant_BarrelCactus> <!-- barrel cactus - tree -->
           <GRim1Ripthorn>0.3</GRim1Ripthorn> <!-- ripthorn -->
           <GRim2Ripthorn>0.3</GRim2Ripthorn> <!-- ripthorn -->
@@ -157,9 +169,11 @@
           <GRim1Thornvine>0.28</GRim1Thornvine> <!-- thornvine -->
           <GRim2Thornvine>0.28</GRim2Thornvine> <!-- thornvine -->
           <GRimThornvine>0.28</GRimThornvine> <!-- thornvine -->
+          <VCE_Plant_PeyotePlant>0.28</VCE_Plant_PeyotePlant> <!-- peyote plant -->
           <VEE_Plant_OrganPipeCactus>0.25</VEE_Plant_OrganPipeCactus> <!-- organ pipe cactus - tree -->
           <AB_RavenNettle>0.25</AB_RavenNettle> <!-- raven nettle -->
           <AB_RedBugloss>0.25</AB_RedBugloss> <!-- red bugloss -->
+          <VCE_Plant_Schlumbergera>0.25</VCE_Plant_Schlumbergera> <!-- schlumbergera plant -->
           <Plant_Thornvine>0.22</Plant_Thornvine> <!-- thornvine -->
           <Plant_Psychoid_Wild>0.2</Plant_Psychoid_Wild> <!-- wild psychoid plant -->
           <RG_Plant_LureWeed>0.2</RG_Plant_LureWeed> <!-- lure weed -->
@@ -208,11 +222,15 @@
           <Plant_Tinctoria_Wild>0.3</Plant_Tinctoria_Wild> <!-- wild tinctoria -->
           <Plant_Cotton_Wild>0.3</Plant_Cotton_Wild> <!-- wild cotton plant -->
           <SavannaBush>0.3</SavannaBush> <!-- bush -->
+          <VCE_Wheat>0.3</VCE_Wheat> <!-- wheat plant -->
           <RG_Plant_BlueDandelion>0.25</RG_Plant_BlueDandelion> <!-- dandelions -->
           <RG_Plant_RedDandelion>0.25</RG_Plant_RedDandelion> <!-- dandelions -->
+          <VCE_Sugarcane>0.25</VCE_Sugarcane> <!-- sugarcane plant -->
+          <Plant_Fibercorn_Wild>0.25</Plant_Fibercorn_Wild> <!-- wild fibercorn -->
           <Plant_Cotton>0.24</Plant_Cotton> <!-- cotton plant -->
           <Plant_Tinctoria>0.24</Plant_Tinctoria> <!-- tinctoria -->
           <Plant_Dantuber_Wild>0.2</Plant_Dantuber_Wild> <!-- wild dantuber plant -->
+          <Plant_Fibercorn>0.2</Plant_Fibercorn> <!-- fibercorn -->
           <Plant_Corn>0.1</Plant_Corn> <!-- corn plant -->
           <Plant_Potato>0.1</Plant_Potato> <!-- potato plant -->
           <SavannaTreeAcacia>0.1</SavannaTreeAcacia> <!-- acacia tree - tree -->
@@ -241,9 +259,15 @@
           <GRim2Alocasia>0.35</GRim2Alocasia> <!-- alocasia -->
           <GRimAlocasia>0.35</GRimAlocasia> <!-- alocasia -->
           <AB_FanPalm>0.3</AB_FanPalm> <!-- fan palm - tree -->
+          <Plant_LilyPad>0.3</Plant_LilyPad> <!-- lily pad -->
+          <VBE_Plant_Coffee>0.25</VBE_Plant_Coffee> <!-- coffee plant -->
+          <VBE_Plant_Tea>0.25</VBE_Plant_Tea> <!-- tea grass -->
+          <Plant_Lotus>0.25</Plant_Lotus> <!-- lotus -->
+          <VBE_Plant_Tobacco>0.22</VBE_Plant_Tobacco> <!-- tobacco plant -->
           <Plant_Smokeleaf_Wild>0.2</Plant_Smokeleaf_Wild> <!-- wild smokeleaf plant -->
           <TreePalma>0.2</TreePalma> <!-- Palma tree - tree -->
           <RG_Plant_Tidalis>0.2</RG_Plant_Tidalis> <!-- tidalis -->
+          <VCE_Allspice>0.2</VCE_Allspice> <!-- allspice plant -->
           <GRim1RatPalm>0.18</GRim1RatPalm> <!-- rat palm tree - tree -->
           <GRim2RatPalm>0.18</GRim2RatPalm> <!-- rat palm tree - tree -->
           <GRimRatPalm>0.18</GRimRatPalm> <!-- rat palm tree - tree -->
@@ -255,7 +279,6 @@
           <RG_Plant_TreeDwarfPalm>0.15</RG_Plant_TreeDwarfPalm> <!-- dwarf palm tree - tree -->
           <Plant_TreePalm>0.15</Plant_TreePalm> <!-- palm tree - tree -->
           <Plant_HydenockTree_Wild>0.15</Plant_HydenockTree_Wild> <!-- wild hydenock tree - tree -->
-          <RG_Plant_Raspberry>0.15</RG_Plant_Raspberry> <!-- raspberry bush -->
           <Plant_Ambrosia>0.12</Plant_Ambrosia> <!-- ambrosia bush -->
           <VEE_Plant_ScrewPine>0.12</VEE_Plant_ScrewPine> <!-- screw pine - tree -->
           <Plant_Hops>0.12</Plant_Hops> <!-- hop plant -->
@@ -263,8 +286,17 @@
           <Plant_Strawberry>0.1</Plant_Strawberry> <!-- strawberry plant -->
           <Plant_MotherAmbrosiaLGE>0.1</Plant_MotherAmbrosiaLGE> <!-- ambrosia bush -->
           <Plant_Strawberry_Wild>0.08</Plant_Strawberry_Wild> <!-- wild strawberry plant -->
+          <Plant_TreeOak>0.08</Plant_TreeOak> <!-- oak tree - tree -->
+          <Plant_TreeMaple>0.08</Plant_TreeMaple> <!-- maple tree - tree -->
+          <VEE_Plant_TreeOak_Auburn>0.07</VEE_Plant_TreeOak_Auburn> <!-- auburn oak tree - tree -->
+          <VEE_Plant_TreeMaple_Auburn>0.07</VEE_Plant_TreeMaple_Auburn> <!-- auburn maple tree - tree -->
+          <VEE_Plant_TreeBirch_Auburn>0.06</VEE_Plant_TreeBirch_Auburn> <!-- auburn birch tree - tree -->
+          <VEE_Plant_TreePoplar_Auburn>0.06</VEE_Plant_TreePoplar_Auburn> <!-- auburn poplar tree - tree -->
+          <VEE_Plant_Laurel>0.06</VEE_Plant_Laurel> <!-- laurel tree - tree -->
+          <VEE_Plant_Firewood>0.06</VEE_Plant_Firewood> <!-- firewood tree - tree -->
           <Plant_JoganTree>0.05</Plant_JoganTree> <!-- jogan tree - tree -->
           <Plant_Meiloorun>0.05</Plant_Meiloorun> <!-- meiloorun plant -->
+          <RG_Plant_TreeSplitpine>0.05</RG_Plant_TreeSplitpine> <!-- splitpine tree - tree -->
           <Plant_HydenockTree>0.04</Plant_HydenockTree> <!-- hydenock tree - tree -->
         </wildPlants>
       </value>
@@ -286,18 +318,23 @@
           <BMT_Plant_TwistedDandelion>0.5</BMT_Plant_TwistedDandelion> <!-- twisted dandelion -->
           <PoisonPlantTallGrass>0.5</PoisonPlantTallGrass> <!-- tall grass -->
           <PoisonShrub>0.35</PoisonShrub> <!-- poison shrub -->
+          <Plant_GrayGrass>0.35</Plant_GrayGrass> <!-- gray grass -->
           <BMT_Plant_ScorchedStars>0.3</BMT_Plant_ScorchedStars> <!-- scorched stars -->
           <PoisonAlocasia>0.3</PoisonAlocasia> <!-- poison alocasia -->
           <PoisonBrambles>0.3</PoisonBrambles> <!-- poison brambles -->
           <PoisonPlantBush>0.3</PoisonPlantBush> <!-- bush -->
           <PoisonPlantDandelion>0.3</PoisonPlantDandelion> <!-- dandelions -->
           <BMT_Plant_GreyFern>0.3</BMT_Plant_GreyFern> <!-- grey fern -->
+          <BMT_Plant_Snaketails>0.3</BMT_Plant_Snaketails> <!-- snaketails -->
           <BMT_Plant_PigsEars>0.25</BMT_Plant_PigsEars> <!-- pigs ears -->
           <BMT_Plant_PoxSorghum>0.25</BMT_Plant_PoxSorghum> <!-- pox sorghum -->
+          <BMT_Plant_TumorbulbHyacinth>0.25</BMT_Plant_TumorbulbHyacinth> <!-- tumorbulb hyacinth -->
+          <BMT_SpinyHops>0.22</BMT_SpinyHops> <!-- spiny hop -->
           <BMT_Plant_WildRashroot>0.2</BMT_Plant_WildRashroot> <!-- wild rashroot -->
           <PoisonMushroom>0.2</PoisonMushroom> <!-- wild mushroom -->
           <AB_WeepingToxberry>0.2</AB_WeepingToxberry> <!-- weeping toxberry -->
           <BMT_Plant_CottonCap>0.2</BMT_Plant_CottonCap> <!-- cotton cap -->
+          <Plant_Toxipotato>0.2</Plant_Toxipotato> <!-- toxipotato plant -->
           <BMT_Plant_Rashroot>0.16</BMT_Plant_Rashroot> <!-- rashroot -->
           <BMT_Plant_Doomsprout>0.15</BMT_Plant_Doomsprout> <!-- doomsprout -->
           <PoisonPlantRaspberry>0.15</PoisonPlantRaspberry> <!-- raspberry bush -->
@@ -308,12 +345,14 @@
           <AB_ToxiBulb>0.1</AB_ToxiBulb> <!-- toxibulb - tree -->
           <RG_Plant_TreeToxipine>0.1</RG_Plant_TreeToxipine> <!-- toxipine tree - tree -->
           <RG_Plant_TreeToxiTeak>0.1</RG_Plant_TreeToxiTeak> <!-- toxiteak tree - tree -->
+          <Plant_TreePolux>0.1</Plant_TreePolux> <!-- polux tree - tree -->
           <AB_GiantToxicFlower>0.08</AB_GiantToxicFlower> <!-- giant toxic flower - tree -->
           <PoisonPlantTreeCecropia>0.08</PoisonPlantTreeCecropia> <!-- cecropia tree - tree -->
           <PoisonTreeCypress>0.08</PoisonTreeCypress> <!-- cypress tree - tree -->
           <PoisonTreePalm>0.08</PoisonTreePalm> <!-- palm tree - tree -->
           <PoisonPlantTreeTeak>0.08</PoisonPlantTreeTeak> <!-- teak tree - tree -->
           <PoisonTreeWillow>0.08</PoisonTreeWillow> <!-- willow tree - tree -->
+          <VRE_PoluxBush>0.08</VRE_PoluxBush> <!-- polux bush - tree -->
           <Plant_TreeCypress>0.06</Plant_TreeCypress> <!-- cypress tree - tree -->
         </wildPlants>
       </value>
@@ -400,8 +439,10 @@
           <BMT_Plant_WeepingHagbloom>0.3</BMT_Plant_WeepingHagbloom> <!-- weeping hagbloom -->
           <GrimMush>0.3</GrimMush> <!-- Mushrooms -->
           <GrimShroom>0.3</GrimShroom> <!-- Mushrooms -->
+          <BMT_Plant_TwistingThorngrass>0.3</BMT_Plant_TwistingThorngrass> <!-- twisting thorngrass -->
           <RG_Plant_MutatedFern>0.25</RG_Plant_MutatedFern> <!-- mutated fern -->
           <RG_Plant_MutatedFungus>0.25</RG_Plant_MutatedFungus> <!-- mutated fungus -->
+          <BMT_Plant_TwistingThornweed>0.25</BMT_Plant_TwistingThornweed> <!-- twisting thornweed -->
           <GRimPsilocap>0.2</GRimPsilocap> <!-- pilocap -->
           <RG_Plant_GlowLeaf>0.2</RG_Plant_GlowLeaf> <!-- glow leaf -->
           <BMT_Plant_TreeTwistingThornwood>0.18</BMT_Plant_TreeTwistingThornwood> <!-- twisting thornwood - tree -->
@@ -425,6 +466,7 @@
           <BMT_Plant_TreeWormoak>0.1</BMT_Plant_TreeWormoak> <!-- wormoak tree - tree -->
           <Plant_Witchwood>0.1</Plant_Witchwood> <!-- witchwood tree - tree -->
           <Plant_TreeSnagroot>0.1</Plant_TreeSnagroot> <!-- snagroot tree - tree -->
+          <BMT_Plant_TreeWhistlingCane>0.1</BMT_Plant_TreeWhistlingCane> <!-- whistling cane - tree -->
         </wildPlants>
       </value>
     </match>
@@ -465,6 +507,8 @@
           <BMT_WatOrbs>0.25</BMT_WatOrbs> <!-- watorbs -->
           <BMT_Wheelshroom>0.25</BMT_Wheelshroom> <!-- wheelshroom -->
           <BMT_WrinklecapMarsh>0.25</BMT_WrinklecapMarsh> <!-- wrinklecap -->
+          <BMT_HealrootGrass>0.25</BMT_HealrootGrass> <!-- healroot grass -->
+          <BMT_YumBulbs>0.22</BMT_YumBulbs> <!-- yum bulbs -->
           <BMT_Poptop>0.2</BMT_Poptop> <!-- poptop - tree -->
           <BMT_Dishcap>0.2</BMT_Dishcap> <!-- dish cap - tree -->
           <BMT_GiantLeaf>0.2</BMT_GiantLeaf> <!-- giant leaf -->
@@ -527,6 +571,7 @@
           <Plant_Chokevine>0.3</Plant_Chokevine> <!-- chokevine -->
           <RG_Plant_TemperateFern>0.3</RG_Plant_TemperateFern> <!-- fern -->
           <VEE_Plant_Fern>0.3</VEE_Plant_Fern> <!-- fern -->
+          <VFEI2_TendrilmossVines>0.3</VFEI2_TendrilmossVines> <!-- tendrilmoss vines -->
           <RG_Plant_TemperateIvy>0.28</RG_Plant_TemperateIvy> <!-- ivy -->
           <GRim1Chokevine>0.25</GRim1Chokevine> <!-- chokevine -->
           <GRim2Chokevine>0.25</GRim2Chokevine> <!-- chokevine -->
@@ -552,6 +597,7 @@
           <Plant_TreeCocoa>0.08</Plant_TreeCocoa> <!-- cocoa tree - tree -->
           <Plant_TreeCocoa_Wild>0.06</Plant_TreeCocoa_Wild> <!-- wild cocoa tree - tree -->
           <VCE_ChocolateBush>0.06</VCE_ChocolateBush> <!-- cocoa bush -->
+          <Plant_TreeArchean>0.06</Plant_TreeArchean> <!-- archean tree - tree -->
         </wildPlants>
       </value>
     </match>
@@ -603,20 +649,21 @@
           <GRim3Moss>0.35</GRim3Moss> <!-- moss -->
           <GRim4Moss>0.35</GRim4Moss> <!-- moss -->
           <GRimMoss>0.35</GRimMoss> <!-- moss -->
+          <Plant_Nightgrass>0.35</Plant_Nightgrass> <!-- night grass -->
           <RG_Plant_Coldheart>0.3</RG_Plant_Coldheart> <!-- coldheart -->
           <RG_Plant_TundraCotton>0.25</RG_Plant_TundraCotton> <!-- tundra cotton -->
           <RG_Plant_Nightguide>0.25</RG_Plant_Nightguide> <!-- nightguide -->
+          <Plant_NightRafflesia>0.2</Plant_NightRafflesia> <!-- night rafflesia -->
           <AB_FlashFrozenTree>0.1</AB_FlashFrozenTree> <!-- flash frozen tree -->
           <RG_Tree_TundraTreePine>0.06</RG_Tree_TundraTreePine> <!-- pine tree - tree -->
           <VEE_Plant_GnarledPine>0.05</VEE_Plant_GnarledPine> <!-- gnarled pine tree - tree -->
           <GRim1TreeGrayPine>0.05</GRim1TreeGrayPine> <!-- gray pine tree - tree -->
           <GRim2TreeGrayPine>0.05</GRim2TreeGrayPine> <!-- gray pine tree - tree -->
           <GRimTreeGrayPine>0.05</GRimTreeGrayPine> <!-- gray pine tree - tree -->
-          <Plant_TreePine>0.05</Plant_TreePine> <!-- pine tree - tree -->
+          <Plant_TreeGrayPine>0.05</Plant_TreeGrayPine> <!-- gray pine tree - tree -->
           <RG_Plant_BlueTreePine>0.05</RG_Plant_BlueTreePine> <!-- pine tree - tree -->
           <RG_Plant_LargeTreePine>0.05</RG_Plant_LargeTreePine> <!-- pine tree - tree -->
           <RG_Plant_OrangeTreePine>0.05</RG_Plant_OrangeTreePine> <!-- pine tree - tree -->
-          <Plant_TreeGrayPine>0.0</Plant_TreeGrayPine> <!-- gray pine tree - tree -->
         </wildPlants>
       </value>
     </match>
@@ -650,6 +697,7 @@
           <AB_BloodBouquet>0.5</AB_BloodBouquet> <!-- blood bouquet -->
           <AB_GlobularPlant>0.4</AB_GlobularPlant> <!-- globular aberration -->
           <AB_TentacularPlant>0.35</AB_TentacularPlant> <!-- tentacular aberration -->
+          <AA_RottingMound>0.25</AA_RottingMound> <!-- fermented rotting mound -->
           <AB_GlobularPlant_Polluted>0.18</AB_GlobularPlant_Polluted> <!-- polluted globular aberration - tree -->
           <AB_FleshTree>0.12</AB_FleshTree> <!-- flesh tree - tree -->
         </wildPlants>
@@ -738,6 +786,8 @@
           <GRimMagmaCactus>0.6</GRimMagmaCactus> <!-- magma cactus -->
           <GRimFireweed>0.5</GRimFireweed> <!-- fireweed -->
           <BMT_Sagecrust>0.4</BMT_Sagecrust> <!-- sagecrust -->
+          <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass> <!-- primordial grass -->
+          <IronScruff_PrimordialTallGrass>0.3</IronScruff_PrimordialTallGrass> <!-- primordial tall grass -->
         </wildPlants>
       </value>
     </match>
@@ -751,6 +801,7 @@
         <wildPlants>
           <Plant_MagmaCactus>0.7</Plant_MagmaCactus> <!-- magma cactus -->
           <BMT_FireLavender>0.6</BMT_FireLavender> <!-- fire lavender -->
+          <IronScruff_Bindweed>0.25</IronScruff_Bindweed> <!-- bindweed -->
           <BMT_HeatsinkFungus>0.2</BMT_HeatsinkFungus> <!-- heatsink fungus - tree -->
         </wildPlants>
       </value>
@@ -798,7 +849,10 @@
           <AB_SlimyFern>0.9</AB_SlimyFern> <!-- slimy fern -->
           <AB_Slimecasia>0.6</AB_Slimecasia> <!-- slimecasia -->
           <AB_SlimyTree>0.3</AB_SlimyTree> <!-- slimy tree -->
+          <VEE_Plant_VyspStrands>0.3</VEE_Plant_VyspStrands> <!-- vysp strands -->
+          <VEE_Plant_CyllenCluster>0.25</VEE_Plant_CyllenCluster> <!-- cyllen cluster -->
           <AB_LargeSlimyTree>0.2</AB_LargeSlimyTree> <!-- large slimy tree -->
+          <VEE_Plant_MyrloxTree>0.2</VEE_Plant_MyrloxTree> <!-- myrlox tree -->
         </wildPlants>
       </value>
     </match>
@@ -818,9 +872,13 @@
           <AB_AlienTree>0.4</AB_AlienTree> <!-- ocular tree - tree -->
           <AA_RedLeaves>0.4</AA_RedLeaves> <!-- ocular plant -->
           <AA_RedPlantsTall>0.35</AA_RedPlantsTall> <!-- ocular plant -->
+          <VEE_Plant_PinkGrass>0.35</VEE_Plant_PinkGrass> <!-- pink grass -->
+          <VEE_Plant_TallPinkGrass>0.3</VEE_Plant_TallPinkGrass> <!-- tall pink grass -->
+          <VEE_Plant_PhoraxTree>0.22</VEE_Plant_PhoraxTree> <!-- phorax tree -->
           <AB_AlienTree_Polluted>0.2</AB_AlienTree_Polluted> <!-- mutated ocular tree - tree -->
           <AA_AlienTree>0.2</AA_AlienTree> <!-- ocular tree - tree -->
           <AA_Plant_PollenTrumpet>0.2</AA_Plant_PollenTrumpet> <!-- pollen trumpet -->
+          <VEE_Plant_XyrilTree>0.2</VEE_Plant_XyrilTree> <!-- xyril tree -->
           <AB_HalfAlienTree>0.15</AB_HalfAlienTree> <!-- half transformed ocular tree - tree -->
           <AA_Heat_Ambrosia>0.1</AA_Heat_Ambrosia> <!-- heat resistant ambrosia bush -->
         </wildPlants>

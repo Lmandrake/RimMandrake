@@ -1,7 +1,7 @@
 # Ash'karr's flora — what grows where, and why
 
-> 🔴 **GENERATED** by `design/Jawa/mods/biome_flora.py`. The rosters live in that file's
-> `FAMILIES` dict; edit there and regenerate, never here.
+> 🔴 **GENERATED** by `design/Jawa/mods/biome_flora.py --doc`. The rosters live in that
+> file's `FAMILIES` dict; edit there and regenerate, never here.
 
 **Owner's brief, 2026-08-23, verbatim:** *"distribute the plants per biome… You, agent Decide,
 make those calls right now… Try to avoid using the same plant across different biome types.
@@ -16,17 +16,23 @@ generator refuses to build if any plant crosses.
 `BMT_Plant_TreeTwistingThornwood` and `BMT_Plant_TreeMartyr` in `PoisonForest`, where the
 rest of the Polluted Lands trees live.
 
+⛔ **Four plants are CUT and appear nowhere below** — `Plant_TreePine`, `Plant_TreeBirch`,
+`Plant_TreePoplar`, `RG_Plant_Raspberry`. The owner removed them with Cherry Picker, which
+deletes the ThingDef at load; a BiomeDef still naming one throws a red cross-reference error
+on every load. The full list of everything left unplaced ON PURPOSE — anima, Gauranlen,
+event-spawned and hydroponics-only flora — is the comment block at the foot of `FAMILIES`.
+
 ⚠️ **Climate was deliberately NOT a filter.** He ruled *"we can set the appropriate
-temperatures later"* — 642 of 669 plants will not grow below 0 °C and half this planet is
+temperatures later"* — 650 of 669 plants will not grow below 0 °C and half this planet is
 colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_TOLERANCES_1`.
 
-**8 families · 24 biomes · 546 plants, all distinct.** 4 biomes carry no flora by design: `IceSheet`, `Lake`, `Ocean`, `SeaIce`.
+**8 families · 24 biomes · 604 plants, all distinct.** 4 biomes carry no flora by design: `IceSheet`, `Lake`, `Ocean`, `SeaIce`.
 
 ## A. dayside desert
 
 ### `Desert` — 4,648 tiles · -15 … 62 °C (median 24) · plantDensity 0.45
 
-*was 21 inherited plants → now **27** assigned*
+*was 21 inherited plants → now **30** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
@@ -41,9 +47,12 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.3 | **pincushion cactus** |  | `GRim1PincushionCactus` · GRiNDTerra Biomes |
 | 0.3 | **agave** |  | `GRimAgave` · GRiNDTerra Biomes |
 | 0.3 | **wild chak-root plant** |  | `Plant_Chakroot_Wild` · Star Wars Animal Collection (Continued) |
+| 0.3 | **jade plant** |  | `VCE_Plant_JadePlant` · Vanilla Plants Expanded - Succulents |
+| 0.28 | **aloe vera plant** |  | `VCE_Plant_AloeVera` · Vanilla Plants Expanded - Succulents |
 | 0.25 | **brown barrel cactus** |  | `AB_BrownBarrelCactus` · Alpha Biomes |
 | 0.25 | **flower cactus** |  | `RG_FlowerCactus` · ReGrowth 2 |
 | 0.25 | **wild hubba gourd plant** |  | `Plant_HubbaGourd_Wild` · Star Wars Animal Collection (Continued) |
+| 0.25 | **snake plant** |  | `VCE_Plant_SnakePlant` · Vanilla Plants Expanded - Succulents |
 | 0.24 | **bush** |  | `GRimAgavePlant` · GRiNDTerra Biomes |
 | 0.22 | **pebble cactus** | 🌳 | `GRimPebbleCactus` · GRiNDTerra Biomes |
 | 0.2 | **pebble cactus** | 🌳 | `GRim1PebbleCactus` · GRiNDTerra Biomes |
@@ -58,15 +67,18 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.05 | **hubba gourd** |  | `Plant_HubbaGourd` · Star Wars Animal Collection (Continued) |
 | 0.05 | **chak-root plant** |  | `Plant_Chakroot` · Star Wars Animal Collection (Continued) |
 
-### `ExtremeDesert` — 3,214 tiles · 16 … 66 °C (median 48) · plantDensity 0.008 🔴 **`plantDensity` is near zero — this roster will almost never be seen**
+### `ExtremeDesert` — 3,214 tiles · 16 … 66 °C (median 48) · plantDensity 0.008  🔴 **`plantDensity` is near zero — this roster will almost never be seen**
 
-*was 25 inherited plants → now **9** assigned*
+*was 25 inherited plants → now **12** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
 | 0.3 | **euphorbia rimworldia** |  | `AB_EuphorbiaRimworldia` · Alpha Biomes |
 | 0.25 | **pincushion plant** |  | `VCE_Plant_PincushionPlant` · Vanilla Plants Expanded - Succulents |
+| 0.25 | **echeveria plant** |  | `VCE_Plant_Echeveria` · Vanilla Plants Expanded - Succulents |
+| 0.22 | **fairy washboard plant** |  | `VCE_Plant_FairyWashboard` · Vanilla Plants Expanded - Succulents |
 | 0.2 | **gargantuan lithops** |  | `AB_GargantuanLithops` · Alpha Biomes |
+| 0.2 | **sweetheart plant** |  | `VCE_Plant_SweetheartPlant` · Vanilla Plants Expanded - Succulents |
 | 0.1 | **bloddle plant** |  | `Plant_Bloddle` · Star Wars Animal Collection (Continued) |
 | 0.06 | **euphorbia desiccata** | 🌳 | `AB_EuphorbiaDesiccata` · Alpha Biomes |
 | 0.05 | **dead bower tree** | 🌳 | `AB_DeadBowerTree` · Alpha Biomes |
@@ -76,7 +88,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 ### `AridShrubland` — 709 tiles · -15 … 60 °C (median 26) · plantDensity 0.72
 
-*was 23 inherited plants → now **61** assigned*
+*was 23 inherited plants → now **66** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
@@ -138,19 +150,25 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.15 | **berry bush** |  | `GRim3BerryBush` · GRiNDTerra Biomes |
 | 0.15 | **berry bush** |  | `GRim4BerryBush` · GRiNDTerra Biomes |
 | 0.15 | **berry bush** |  | `GRim5BerryBush` · GRiNDTerra Biomes |
+| 0.15 | **bluebell** |  | `VEE_Plant_Bluebell` · Vanilla Events Expanded |
+| 0.15 | **gardenia** |  | `VEE_Plant_Gardenia` · Vanilla Events Expanded |
+| 0.15 | **gentian** |  | `VEE_Plant_Gentian` · Vanilla Events Expanded |
+| 0.15 | **petunia** |  | `VEE_Plant_Petunia` · Vanilla Events Expanded |
 | 0.12 | **rose** |  | `ZBiome_Plant_WildRose` · More Vanilla Biomes |
+| 0.12 | **rose of rebirth** |  | `RotR_RoseOfRebirth` · Romance On The Rim |
 | 0.05 | **muja fruit bush** |  | `Plant_MujaFruit` · Star Wars Animal Collection (Continued) |
 | 0.05 | **nysyllin plant** |  | `Plant_Nysyllin` · Star Wars Animal Collection (Continued) |
 
 ### `ZBiome_Badlands` — 545 tiles · -21 … 58 °C (median 27) · plantDensity 0.3
 
-*was 13 inherited plants → now **20** assigned*
+*was 13 inherited plants → now **23** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
 | 0.4 | **cholla cactus** | 🌳 | `VEE_Plant_ChollaCactus` · Vanilla Landmarks Expanded |
 | 0.4 | **hedgehog cactus** | 🌳 | `VEE_Plant_HedgehogCactus` · Vanilla Landmarks Expanded |
 | 0.35 | **beavertail cactus** | 🌳 | `VEE_Plant_BeavertailCactus` · Vanilla Landmarks Expanded |
+| 0.32 | **bunny ears cactus** |  | `VCE_Plant_BunnyEarsCactus` · Vanilla Plants Expanded - Succulents |
 | 0.3 | **barrel cactus** | 🌳 | `VEE_Plant_BarrelCactus` · Vanilla Landmarks Expanded |
 | 0.3 | **ripthorn** |  | `GRim1Ripthorn` · GRiNDTerra Biomes |
 | 0.3 | **ripthorn** |  | `GRim2Ripthorn` · GRiNDTerra Biomes |
@@ -158,9 +176,11 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.28 | **thornvine** |  | `GRim1Thornvine` · GRiNDTerra Biomes |
 | 0.28 | **thornvine** |  | `GRim2Thornvine` · GRiNDTerra Biomes |
 | 0.28 | **thornvine** |  | `GRimThornvine` · GRiNDTerra Biomes |
+| 0.28 | **peyote plant** |  | `VCE_Plant_PeyotePlant` · Vanilla Plants Expanded - Succulents |
 | 0.25 | **organ pipe cactus** | 🌳 | `VEE_Plant_OrganPipeCactus` · Vanilla Landmarks Expanded |
 | 0.25 | **raven nettle** |  | `AB_RavenNettle` · Alpha Biomes |
 | 0.25 | **red bugloss** |  | `AB_RedBugloss` · Alpha Biomes |
+| 0.25 | **schlumbergera plant** |  | `VCE_Plant_Schlumbergera` · Vanilla Plants Expanded - Succulents |
 | 0.22 | **thornvine** |  | `Plant_Thornvine` · Odyssey |
 | 0.2 | **wild psychoid plant** |  | `Plant_Psychoid_Wild` · Odyssey |
 | 0.2 | **lure weed** |  | `RG_Plant_LureWeed` · ReGrowth 2 |
@@ -171,12 +191,12 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 ### `ZBiome_Grasslands` — 233 tiles · 28 … 65 °C (median 50) · plantDensity 0.95
 
-*was 21 inherited plants → now **41** assigned*
+*was 21 inherited plants → now **45** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
 | 2.4 | **yellow grass** |  | `Plant_YellowGrass` · Odyssey |
-| 2.0 | **tall yellow grass** |  | `Plant_YellowTallGrass` · Odyssey |
+| 2 | **tall yellow grass** |  | `Plant_YellowTallGrass` · Odyssey |
 | 0.8 | **grass** |  | `Plant_Grass` · ReGrowth 2 |
 | 0.7 | **tall grass** |  | `Plant_TallGrass` · ReGrowth 2 |
 | 0.5 | **haygrass** |  | `Plant_Haygrass` · Core |
@@ -205,11 +225,15 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.3 | **wild tinctoria** |  | `Plant_Tinctoria_Wild` · Odyssey |
 | 0.3 | **wild cotton plant** |  | `Plant_Cotton_Wild` · Odyssey |
 | 0.3 | **bush** |  | `SavannaBush` · Advanced Biomes (Continued) |
+| 0.3 | **wheat plant** |  | `VCE_Wheat` · Vanilla Cooking Expanded |
 | 0.25 | **dandelions** |  | `RG_Plant_BlueDandelion` · ReGrowth 2 |
 | 0.25 | **dandelions** |  | `RG_Plant_RedDandelion` · ReGrowth 2 |
+| 0.25 | **sugarcane plant** |  | `VCE_Sugarcane` · Vanilla Cooking Expanded |
+| 0.25 | **wild fibercorn** |  | `Plant_Fibercorn_Wild` · Odyssey |
 | 0.24 | **cotton plant** |  | `Plant_Cotton` · Core |
 | 0.24 | **tinctoria** |  | `Plant_Tinctoria` · Core |
 | 0.2 | **wild dantuber plant** |  | `Plant_Dantuber_Wild` · Star Wars Animal Collection (Continued) |
+| 0.2 | **fibercorn** |  | `Plant_Fibercorn` · Ideology |
 | 0.1 | **corn plant** |  | `Plant_Corn` · Core |
 | 0.1 | **potato plant** |  | `Plant_Potato` · Core |
 | 0.1 | **acacia tree** | 🌳 | `SavannaTreeAcacia` · Advanced Biomes (Continued) |
@@ -219,12 +243,12 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 ### `ZBiome_DesertOasis` — 227 tiles · 18 … 64 °C (median 35) · plantDensity 0.7
 
-*was 27 inherited plants → now **36** assigned*
+*was 27 inherited plants → now **50** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
 | 1.2 | **reeds** |  | `Plant_Reeds` · Odyssey |
-| 1.0 | **bulrush** |  | `Plant_Bulrush` · Odyssey |
+| 1 | **bulrush** |  | `Plant_Bulrush` · Odyssey |
 | 0.6 | **alocasia** |  | `Plant_Alocasia` · Core |
 | 0.6 | **reeds** |  | `GRimReeds` · GRiNDTerra Biomes |
 | 0.6 | **reeds** |  | `GRim1Reeds` · GRiNDTerra Biomes |
@@ -234,9 +258,15 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.35 | **alocasia** |  | `GRim2Alocasia` · GRiNDTerra Biomes |
 | 0.35 | **alocasia** |  | `GRimAlocasia` · GRiNDTerra Biomes |
 | 0.3 | **fan palm** | 🌳 | `AB_FanPalm` · Alpha Biomes |
+| 0.3 | **lily pad** |  | `Plant_LilyPad` · Odyssey |
+| 0.25 | **coffee plant** |  | `VBE_Plant_Coffee` · Vanilla Brewing Expanded |
+| 0.25 | **tea grass** |  | `VBE_Plant_Tea` · Vanilla Brewing Expanded |
+| 0.25 | **lotus** |  | `Plant_Lotus` · Odyssey |
+| 0.22 | **tobacco plant** |  | `VBE_Plant_Tobacco` · Vanilla Brewing Expanded |
 | 0.2 | **wild smokeleaf plant** |  | `Plant_Smokeleaf_Wild` · Odyssey |
 | 0.2 | **Palma tree** | 🌳 | `TreePalma` · GRiNDTerra Biomes |
 | 0.2 | **tidalis** |  | `RG_Plant_Tidalis` · ReGrowth 2 |
+| 0.2 | **allspice plant** |  | `VCE_Allspice` · Vanilla Cooking Expanded |
 | 0.18 | **rat palm tree** | 🌳 | `GRim1RatPalm` · GRiNDTerra Biomes |
 | 0.18 | **rat palm tree** | 🌳 | `GRim2RatPalm` · GRiNDTerra Biomes |
 | 0.18 | **rat palm tree** | 🌳 | `GRimRatPalm` · GRiNDTerra Biomes |
@@ -248,7 +278,6 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.15 | **dwarf palm tree** | 🌳 | `RG_Plant_TreeDwarfPalm` · ReGrowth 2 |
 | 0.15 | **palm tree** | 🌳 | `Plant_TreePalm` · Core |
 | 0.15 | **wild hydenock tree** | 🌳 | `Plant_HydenockTree_Wild` · Star Wars Animal Collection (Continued) |
-| 0.15 | **raspberry bush** |  | `RG_Plant_Raspberry` · ReGrowth 2 |
 | 0.12 | **ambrosia bush** |  | `Plant_Ambrosia` · Core |
 | 0.12 | **screw pine** | 🌳 | `VEE_Plant_ScrewPine` · Vanilla Landmarks Expanded |
 | 0.12 | **hop plant** |  | `Plant_Hops` · Core |
@@ -256,19 +285,28 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.1 | **strawberry plant** |  | `Plant_Strawberry` · Core |
 | 0.1 | **ambrosia bush** |  | `Plant_MotherAmbrosiaLGE` · Go Explore! |
 | 0.08 | **wild strawberry plant** |  | `Plant_Strawberry_Wild` · Odyssey |
+| 0.08 | **oak tree** | 🌳 | `Plant_TreeOak` · Core |
+| 0.08 | **maple tree** | 🌳 | `Plant_TreeMaple` · Core |
+| 0.07 | **auburn oak tree** | 🌳 | `VEE_Plant_TreeOak_Auburn` · Vanilla Landmarks Expanded |
+| 0.07 | **auburn maple tree** | 🌳 | `VEE_Plant_TreeMaple_Auburn` · Vanilla Landmarks Expanded |
+| 0.06 | **auburn birch tree** | 🌳 | `VEE_Plant_TreeBirch_Auburn` · Vanilla Landmarks Expanded |
+| 0.06 | **auburn poplar tree** | 🌳 | `VEE_Plant_TreePoplar_Auburn` · Vanilla Landmarks Expanded |
+| 0.06 | **laurel tree** | 🌳 | `VEE_Plant_Laurel` · Vanilla Landmarks Expanded |
+| 0.06 | **firewood tree** | 🌳 | `VEE_Plant_Firewood` · Vanilla Landmarks Expanded |
 | 0.05 | **jogan tree** | 🌳 | `Plant_JoganTree` · Star Wars Animal Collection (Continued) |
 | 0.05 | **meiloorun plant** |  | `Plant_Meiloorun` · Star Wars Animal Collection (Continued) |
+| 0.05 | **splitpine tree** | 🌳 | `RG_Plant_TreeSplitpine` · ReGrowth 2 |
 | 0.04 | **hydenock tree** | 🌳 | `Plant_HydenockTree` · Star Wars Animal Collection (Continued) |
 
 ## B. contamination
 
-### `Wasteland` — 1,721 tiles · -45 … 54 °C (median 1) · plantDensity 0.01 🔴 **`plantDensity` is near zero — this roster will almost never be seen**
+### `Wasteland` — 1,721 tiles · -45 … 54 °C (median 1) · plantDensity 0.01  🔴 **`plantDensity` is near zero — this roster will almost never be seen**
 
-*was 9 inherited plants → now **37** assigned*
+*was 9 inherited plants → now **44** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
-| 2.0 | **toxigrass** |  | `RG_Plant_ToxiGrass` · ReGrowth 2 |
+| 2 | **toxigrass** |  | `RG_Plant_ToxiGrass` · ReGrowth 2 |
 | 1.2 | **tall toxigrass** |  | `RG_Plant_TallToxiGrass` · ReGrowth 2 |
 | 0.6 | **gutter plantain** |  | `BMT_Plant_GutterPlantain` · Biomes! Polluted Lands |
 | 0.6 | **toxi grass** |  | `AB_ToxiGrass` · Alpha Biomes |
@@ -276,18 +314,23 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.5 | **twisted dandelion** |  | `BMT_Plant_TwistedDandelion` · Biomes! Polluted Lands |
 | 0.5 | **tall grass** |  | `PoisonPlantTallGrass` · Advanced Biomes (Continued) |
 | 0.35 | **poison shrub** |  | `PoisonShrub` · Advanced Biomes (Continued) |
+| 0.35 | **gray grass** |  | `Plant_GrayGrass` · Biotech |
 | 0.3 | **scorched stars** |  | `BMT_Plant_ScorchedStars` · Biomes! Polluted Lands |
 | 0.3 | **poison alocasia** |  | `PoisonAlocasia` · Advanced Biomes (Continued) |
 | 0.3 | **poison brambles** |  | `PoisonBrambles` · Advanced Biomes (Continued) |
 | 0.3 | **bush** |  | `PoisonPlantBush` · Advanced Biomes (Continued) |
 | 0.3 | **dandelions** |  | `PoisonPlantDandelion` · Advanced Biomes (Continued) |
 | 0.3 | **grey fern** |  | `BMT_Plant_GreyFern` · Biomes! Polluted Lands |
+| 0.3 | **snaketails** |  | `BMT_Plant_Snaketails` · Biomes! Polluted Lands |
 | 0.25 | **pigs ears** |  | `BMT_Plant_PigsEars` · Biomes! Polluted Lands |
 | 0.25 | **pox sorghum** |  | `BMT_Plant_PoxSorghum` · Biomes! Polluted Lands |
+| 0.25 | **tumorbulb hyacinth** |  | `BMT_Plant_TumorbulbHyacinth` · Biomes! Polluted Lands |
+| 0.22 | **spiny hop** |  | `BMT_SpinyHops` · Biomes! Polluted Lands |
 | 0.2 | **wild rashroot** |  | `BMT_Plant_WildRashroot` · Biomes! Polluted Lands |
 | 0.2 | **wild mushroom** |  | `PoisonMushroom` · Advanced Biomes (Continued) |
 | 0.2 | **weeping toxberry** |  | `AB_WeepingToxberry` · Alpha Biomes |
 | 0.2 | **cotton cap** |  | `BMT_Plant_CottonCap` · Biomes! Polluted Lands |
+| 0.2 | **toxipotato plant** |  | `Plant_Toxipotato` · Biotech |
 | 0.16 | **rashroot** |  | `BMT_Plant_Rashroot` · Biomes! Polluted Lands |
 | 0.15 | **doomsprout** |  | `BMT_Plant_Doomsprout` · Biomes! Polluted Lands |
 | 0.15 | **raspberry bush** |  | `PoisonPlantRaspberry` · Advanced Biomes (Continued) |
@@ -298,12 +341,14 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.1 | **toxibulb** | 🌳 | `AB_ToxiBulb` · Alpha Biomes |
 | 0.1 | **toxipine tree** | 🌳 | `RG_Plant_TreeToxipine` · ReGrowth 2 |
 | 0.1 | **toxiteak tree** | 🌳 | `RG_Plant_TreeToxiTeak` · ReGrowth 2 |
+| 0.1 | **polux tree** | 🌳 | `Plant_TreePolux` · Biotech |
 | 0.08 | **giant toxic flower** | 🌳 | `AB_GiantToxicFlower` · Alpha Biomes |
 | 0.08 | **cecropia tree** | 🌳 | `PoisonPlantTreeCecropia` · Advanced Biomes (Continued) |
 | 0.08 | **cypress tree** | 🌳 | `PoisonTreeCypress` · Advanced Biomes (Continued) |
 | 0.08 | **palm tree** | 🌳 | `PoisonTreePalm` · Advanced Biomes (Continued) |
 | 0.08 | **teak tree** | 🌳 | `PoisonPlantTreeTeak` · Advanced Biomes (Continued) |
 | 0.08 | **willow tree** | 🌳 | `PoisonTreeWillow` · Advanced Biomes (Continued) |
+| 0.08 | **polux bush** | 🌳 | `VRE_PoluxBush` · Vanilla Races Expanded - Phytokin |
 | 0.06 | **cypress tree** | 🌳 | `Plant_TreeCypress` · Core |
 
 ### `AB_TarPits` — 57 tiles · -6 … 21 °C (median 3) · plantDensity 0.25
@@ -368,7 +413,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 ### `PoisonForest` — 604 tiles · -52 … 39 °C (median -18) · plantDensity 0.85
 
-*was 19 inherited plants → now **32** assigned*
+*was 19 inherited plants → now **35** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
@@ -379,8 +424,10 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.3 | **weeping hagbloom** |  | `BMT_Plant_WeepingHagbloom` · Biomes! Polluted Lands |
 | 0.3 | **Mushrooms** |  | `GrimMush` · GRiNDTerra Biomes |
 | 0.3 | **Mushrooms** |  | `GrimShroom` · GRiNDTerra Biomes |
+| 0.3 | **twisting thorngrass** |  | `BMT_Plant_TwistingThorngrass` · Biomes! Polluted Lands |
 | 0.25 | **mutated fern** |  | `RG_Plant_MutatedFern` · ReGrowth 2 |
 | 0.25 | **mutated fungus** |  | `RG_Plant_MutatedFungus` · ReGrowth 2 |
+| 0.25 | **twisting thornweed** |  | `BMT_Plant_TwistingThornweed` · Biomes! Polluted Lands |
 | 0.2 | **pilocap** |  | `GRimPsilocap` · GRiNDTerra Biomes |
 | 0.2 | **glow leaf** |  | `RG_Plant_GlowLeaf` · ReGrowth 2 |
 | 0.18 | **twisting thornwood** | 🌳 | `BMT_Plant_TreeTwistingThornwood` · Biomes! Polluted Lands |
@@ -404,14 +451,15 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.1 | **wormoak tree** | 🌳 | `BMT_Plant_TreeWormoak` · Biomes! Polluted Lands |
 | 0.1 | **witchwood tree** | 🌳 | `Plant_Witchwood` · Biotech |
 | 0.1 | **snagroot tree** | 🌳 | `Plant_TreeSnagroot` · Odyssey |
+| 0.1 | **whistling cane** | 🌳 | `BMT_Plant_TreeWhistlingCane` · Biomes! Polluted Lands |
 
 ### `BMT_FungalForest` — 425 tiles · -44 … 24 °C (median -24) · plantDensity 1
 
-*was 27 inherited plants → now **67** assigned*
+*was 27 inherited plants → now **69** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
-| 1.0 | **wrinklecap** |  | `BMT_Wrinklecap` · Biomes! Caverns |
+| 1 | **wrinklecap** |  | `BMT_Wrinklecap` · Biomes! Caverns |
 | 0.8 | **fibershroom** |  | `BMT_Fibershroom` · Biomes! Caverns |
 | 0.6 | **gleamtip** |  | `BMT_Gleamtip` · Biomes! Caverns |
 | 0.5 | **chromacap** |  | `BMT_Chromacap` · Biomes! Caverns |
@@ -440,6 +488,8 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.25 | **watorbs** |  | `BMT_WatOrbs` · Biomes! Caverns |
 | 0.25 | **wheelshroom** |  | `BMT_Wheelshroom` · Biomes! Caverns |
 | 0.25 | **wrinklecap** |  | `BMT_WrinklecapMarsh` · Biomes! Caverns |
+| 0.25 | **healroot grass** |  | `BMT_HealrootGrass` · Biomes! Caverns |
+| 0.22 | **yum bulbs** |  | `BMT_YumBulbs` · Biomes! Caverns |
 | 0.2 | **poptop** | 🌳 | `BMT_Poptop` · Biomes! Caverns |
 | 0.2 | **dish cap** | 🌳 | `BMT_Dishcap` · Biomes! Caverns |
 | 0.2 | **giant leaf** |  | `BMT_GiantLeaf` · Biomes! Caverns |
@@ -483,7 +533,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 ### `AB_FeraliskInfestedJungle` — 534 tiles · 36 … 64 °C (median 46) · plantDensity 0.9
 
-*was 13 inherited plants → now **37** assigned*
+*was 13 inherited plants → now **39** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
@@ -499,6 +549,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.3 | **chokevine** |  | `Plant_Chokevine` · Core |
 | 0.3 | **fern** |  | `RG_Plant_TemperateFern` · ReGrowth 2 |
 | 0.3 | **fern** |  | `VEE_Plant_Fern` · Vanilla Landmarks Expanded |
+| 0.3 | **tendrilmoss vines** |  | `VFEI2_TendrilmossVines` · Vanilla Factions Expanded - Insectoids 2 |
 | 0.28 | **ivy** |  | `RG_Plant_TemperateIvy` · ReGrowth 2 |
 | 0.25 | **chokevine** |  | `GRim1Chokevine` · GRiNDTerra Biomes |
 | 0.25 | **chokevine** |  | `GRim2Chokevine` · GRiNDTerra Biomes |
@@ -524,6 +575,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.08 | **cocoa tree** | 🌳 | `Plant_TreeCocoa` · Core |
 | 0.06 | **wild cocoa tree** | 🌳 | `Plant_TreeCocoa_Wild` · Odyssey |
 | 0.06 | **cocoa bush** |  | `VCE_ChocolateBush` · Vanilla Ideology Expanded - Memes and Structures |
+| 0.06 | **archean tree** | 🌳 | `Plant_TreeArchean` · Odyssey |
 
 ### `AB_MiasmicMangrove` — 65 tiles · 29 … 59 °C (median 41) · plantDensity 0.7
 
@@ -552,7 +604,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 ### `AB_RockyCrags` — 3,816 tiles · -82 … -0 °C (median -45) · plantDensity 0.085
 
-*was 7 inherited plants → now **26** assigned*
+*was 7 inherited plants → now **27** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
@@ -568,20 +620,21 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.35 | **moss** |  | `GRim3Moss` · GRiNDTerra Biomes |
 | 0.35 | **moss** |  | `GRim4Moss` · GRiNDTerra Biomes |
 | 0.35 | **moss** |  | `GRimMoss` · GRiNDTerra Biomes |
+| 0.35 | **night grass** |  | `Plant_Nightgrass` · Odyssey |
 | 0.3 | **coldheart** |  | `RG_Plant_Coldheart` · ReGrowth 2 |
 | 0.25 | **tundra cotton** |  | `RG_Plant_TundraCotton` · ReGrowth 2 |
 | 0.25 | **nightguide** |  | `RG_Plant_Nightguide` · ReGrowth 2 |
+| 0.2 | **night rafflesia** |  | `Plant_NightRafflesia` · Odyssey |
 | 0.1 | **flash frozen tree** |  | `AB_FlashFrozenTree` · Alpha Biomes |
 | 0.06 | **pine tree** | 🌳 | `RG_Tree_TundraTreePine` · ReGrowth 2 |
 | 0.05 | **gnarled pine tree** | 🌳 | `VEE_Plant_GnarledPine` · Vanilla Landmarks Expanded |
 | 0.05 | **gray pine tree** | 🌳 | `GRim1TreeGrayPine` · GRiNDTerra Biomes |
 | 0.05 | **gray pine tree** | 🌳 | `GRim2TreeGrayPine` · GRiNDTerra Biomes |
 | 0.05 | **gray pine tree** | 🌳 | `GRimTreeGrayPine` · GRiNDTerra Biomes |
-| 0.05 | **pine tree** | 🌳 | `Plant_TreePine` · Core |
+| 0.05 | **gray pine tree** | 🌳 | `Plant_TreeGrayPine` · Biotech |
 | 0.05 | **pine tree** | 🌳 | `RG_Plant_BlueTreePine` · ReGrowth 2 |
 | 0.05 | **pine tree** | 🌳 | `RG_Plant_LargeTreePine` · ReGrowth 2 |
 | 0.05 | **pine tree** | 🌳 | `RG_Plant_OrangeTreePine` · ReGrowth 2 |
-| 0.0 | **gray pine tree** | 🌳 | `Plant_TreeGrayPine` · Biotech |
 
 ### `AB_PropaneLakes` — 554 tiles · -82 … -49 °C (median -60) · plantDensity 0.75
 
@@ -598,7 +651,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 ### `HorrorWastes` — 468 tiles · -75 … -34 °C (median -49) · plantDensity 0.5
 
-*was 1 inherited plants → now **7** assigned*
+*was 1 inherited plants → now **8** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
@@ -607,6 +660,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.5 | **blood bouquet** |  | `AB_BloodBouquet` · Alpha Biomes |
 | 0.4 | **globular aberration** |  | `AB_GlobularPlant` · Alpha Biomes |
 | 0.35 | **tentacular aberration** |  | `AB_TentacularPlant` · Alpha Biomes |
+| 0.25 | **fermented rotting mound** |  | `AA_RottingMound` · Alpha Animals |
 | 0.18 | **polluted globular aberration** | 🌳 | `AB_GlobularPlant_Polluted` · Alpha Biomes |
 | 0.12 | **flesh tree** | 🌳 | `AB_FleshTree` · Alpha Biomes |
 
@@ -616,7 +670,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 | commonality | plant | | mod |
 |---:|---|---|---|
-| 1.0 | **Crystal Small** |  | `CrystalSmall` · GRiNDTerra Biomes |
+| 1 | **Crystal Small** |  | `CrystalSmall` · GRiNDTerra Biomes |
 | 0.8 | **crystaltip brambles** |  | `BMT_CrystaltipBrambles` · Biomes! Caverns |
 | 0.6 | **Crystal Shards** |  | `CrystalShard` · GRiNDTerra Biomes |
 | 0.35 | **gleamcap** |  | `BMT_Gleamcap` · Biomes! Caverns |
@@ -634,7 +688,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.25 | **moonless stripes** |  | `BMT_MoonlessStripesPlant` · Biomes! Caverns |
 | 0.25 | **mortal morel** |  | `BMT_MortalMorelPlant` · Biomes! Caverns |
 | 0.25 | **starchstalk** |  | `BMT_StarchstalkPlant` · Biomes! Caverns |
-| 0.25 | **Fiber shroom** |  | `Plant_Fibershroom` · Core |
+| 0.25 | **Fiber shroom** |  | `Plant_Fibershroom` · ? |
 | 0.2 | **stimquill** |  | `BMT_Stimquill` · Biomes! Caverns |
 | 0.2 | **kessinger** |  | `BMT_KessingerPlant` · Biomes! Caverns |
 | 0.2 | **jade glint fungus** |  | `BMT_JadeGlintsCrop` · Biomes! Caverns |
@@ -649,14 +703,14 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.2 | **Psychoid shroom** |  | `Plant_PsychoidShroom` · Tunneler Expanded |
 | 0.2 | **Steel shroom** |  | `Plant_SteelShroom` · Tunneler Expanded |
 | 0.2 | **psyshroom** |  | `Plant_Psykshroom` · Psyshrooms |
-| 0.2 | **Giant shroom** |  | `Plant_Giantshroom` · Core |
-| 0.2 | **Heal shroom** |  | `Plant_Healshroom` · Core |
-| 0.2 | **Jelly shroom** |  | `Plant_Jellyshroom` · Core |
-| 0.2 | **Meatshroom** |  | `Plant_Meatshroom` · Core |
-| 0.2 | **Micro shroom** |  | `Plant_Microshroom` · Core |
+| 0.2 | **Giant shroom** |  | `Plant_Giantshroom` · ? |
+| 0.2 | **Heal shroom** |  | `Plant_Healshroom` · ? |
+| 0.2 | **Jelly shroom** |  | `Plant_Jellyshroom` · ? |
+| 0.2 | **Meatshroom** |  | `Plant_Meatshroom` · ? |
+| 0.2 | **Micro shroom** |  | `Plant_Microshroom` · ? |
 | 0.15 | **blastpod shroom** |  | `BMT_Blastpod` · Biomes! Caverns |
 | 0.15 | **Grey Lady** |  | `BMT_GreyLady` · Biomes! Caverns |
-| 0.15 | **Timbercap** |  | `Plant_Timbercap` · Core |
+| 0.15 | **Timbercap** |  | `Plant_Timbercap` · ? |
 | 0.15 | **nutrifungus** |  | `Plant_Nutrifungus` · Ideology |
 
 ## F. volcanic
@@ -675,7 +729,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 ### `Volcano` — 23 tiles · 40 … 47 °C (median 42) · plantDensity 0.16
 
-*was 8 inherited plants → now **5** assigned*
+*was 8 inherited plants → now **7** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
@@ -684,15 +738,18 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.6 | **magma cactus** |  | `GRimMagmaCactus` · GRiNDTerra Biomes |
 | 0.5 | **fireweed** |  | `GRimFireweed` · GRiNDTerra Biomes |
 | 0.4 | **sagecrust** |  | `BMT_Sagecrust` · Biomes! Caverns |
+| 0.35 | **primordial grass** |  | `IronScruff_PrimordialGrass` · Primordial Geysers |
+| 0.3 | **primordial tall grass** |  | `IronScruff_PrimordialTallGrass` · Primordial Geysers |
 
 ### `LavaField` — 15 tiles · 38 … 47 °C (median 42) · plantDensity 0.5
 
-*was 12 inherited plants → now **3** assigned*
+*was 12 inherited plants → now **4** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
 | 0.7 | **magma cactus** |  | `Plant_MagmaCactus` · Odyssey |
 | 0.6 | **fire lavender** |  | `BMT_FireLavender` · Biomes! Caverns |
+| 0.25 | **bindweed** |  | `IronScruff_Bindweed` · Primordial Geysers |
 | 0.2 | **heatsink fungus** | 🌳 | `BMT_HeatsinkFungus` · Biomes! Caverns |
 
 ## G. machine and scar
@@ -708,7 +765,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.12 | **sessile mechanoid tree** | 🌳 | `AB_SessileMechanoid` · Alpha Biomes |
 | 0.08 | **golden cube tree** | 🌳 | `AB_GoldenCubeTree` · Alpha Biomes |
 
-### `Scarlands` — 90 tiles · 58 … 66 °C (median 59) · plantDensity 0.4
+### `Scarlands` — 90 tiles · 58 … 66 °C (median 60) · plantDensity 0.4
 
 *was 16 inherited plants → now **4** assigned*
 
@@ -723,18 +780,21 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 ### `AB_GelatinousSuperorganism` — 96 tiles · -3 … 22 °C (median 13) · plantDensity 0.2
 
-*was 7 inherited plants → now **4** assigned*
+*was 7 inherited plants → now **7** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
 | 0.9 | **slimy fern** |  | `AB_SlimyFern` · Alpha Biomes |
 | 0.6 | **slimecasia** |  | `AB_Slimecasia` · Alpha Biomes |
 | 0.3 | **slimy tree** |  | `AB_SlimyTree` · Alpha Biomes |
+| 0.3 | **vysp strands** |  | `VEE_Plant_VyspStrands` · Vanilla Events Expanded |
+| 0.25 | **cyllen cluster** |  | `VEE_Plant_CyllenCluster` · Vanilla Events Expanded |
 | 0.2 | **large slimy tree** |  | `AB_LargeSlimyTree` · Alpha Biomes |
+| 0.2 | **myrlox tree** |  | `VEE_Plant_MyrloxTree` · Vanilla Events Expanded |
 
 ### `AB_OcularForest` — 3 tiles · 23 … 23 °C (median 23) · plantDensity 0.35
 
-*was 11 inherited plants → now **13** assigned*
+*was 11 inherited plants → now **17** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
@@ -746,9 +806,12 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.4 | **ocular tree** | 🌳 | `AB_AlienTree` · Alpha Biomes |
 | 0.4 | **ocular plant** |  | `AA_RedLeaves` · Alpha Animals |
 | 0.35 | **ocular plant** |  | `AA_RedPlantsTall` · Alpha Animals |
+| 0.35 | **pink grass** |  | `VEE_Plant_PinkGrass` · Vanilla Events Expanded |
+| 0.3 | **tall pink grass** |  | `VEE_Plant_TallPinkGrass` · Vanilla Events Expanded |
+| 0.22 | **phorax tree** |  | `VEE_Plant_PhoraxTree` · Vanilla Events Expanded |
 | 0.2 | **mutated ocular tree** | 🌳 | `AB_AlienTree_Polluted` · Alpha Biomes |
 | 0.2 | **ocular tree** | 🌳 | `AA_AlienTree` · Alpha Animals |
 | 0.2 | **pollen trumpet** |  | `AA_Plant_PollenTrumpet` · Alpha Animals |
+| 0.2 | **xyril tree** |  | `VEE_Plant_XyrilTree` · Vanilla Events Expanded |
 | 0.15 | **half transformed ocular tree** | 🌳 | `AB_HalfAlienTree` · Alpha Biomes |
 | 0.1 | **heat resistant ambrosia bush** |  | `AA_Heat_Ambrosia` · Alpha Animals |
-
