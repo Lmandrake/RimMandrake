@@ -551,3 +551,22 @@ patch by the ROSTER the biome holds, not by how much of it has sprouted.
 ⚠️ **`ExtremeDesert` (0.008) and `Wasteland` (0.0099) have near-zero `plantDensity`** — 4,935
 tiles, 22.6% of the planet — and will read bare no matter what roster they carry. That is the
 shipped value, deliberately untouched by this pass. See `BARE_BIOMES_NEED_DENSITY_1`.
+
+## 🏷️ PLANT NAMES — 26 Earth names become Star Wars names, DEPLOYED 2026-08-23 10:18
+
+`PlantNames_Ashkarr.xml`, 26 `PatchOperationConditional` → `PatchOperationReplace` on `label`.
+**Labels only** — never defNames, which are save keys.
+
+1. **Zero red errors naming `PlantNames_Ashkarr`.** Each op is wrapped in a Conditional on the
+   same xpath, so an absent def is skipped rather than erroring.
+2. **Then LOOK at any growing zone or stockpile filter.** `corn plant` should read **kessel
+   grain**, `hop plant` **ardees vine**, `haygrass` **bantha fodder**, `cotton plant`
+   **silkstrand**. The item side follows: `chocolate` → **mimbanese sweet**.
+3. ⚠️ **A name that did NOT change is the failure mode**, and it is silent — the Conditional
+   swallows a miss. If one label is stale, that def's xpath did not match.
+
+⚠️ **Deployed by hand, not by `deploy_custom_mods.py`.** At deploy time BUILD had uncommitted
+edits to `JawaFactionRoster.xml` and `BlackstarCompany.xml` and a new untracked
+`Defs/RulePackDefs/`, and the tool has no per-file flag — `--apply` would have pushed a peer's
+mid-edit work into the live game. Only `PlantNames_Ashkarr.xml` was copied; `diff -q` confirms
+repo and game copy identical, and BUILD's files were left drifted, which is correct.
