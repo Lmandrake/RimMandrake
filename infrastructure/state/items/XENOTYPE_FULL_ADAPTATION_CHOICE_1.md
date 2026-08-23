@@ -1,3 +1,20 @@
+## ✅ RULED — the owner chose A, 2026-08-23
+
+> *"Option (A) yes."*
+
+**Leave our species at −4 … 46 °C** (Wookiee −14 … 46). Already deployed as
+`XENOTYPE_TOLERANCES_DEPLOY_1`; **nothing further to build.**
+
+⛔ **B and C are DECLINED, not deferred.** `MinTemp_HugeDecrease` (−300 °C) is one line and cannot
+be walked back once the campaign is balanced around cold immunity; a custom `GeneDef` is content and
+would be BUILD's. **No item is owed to BUILD from this.**
+
+🔑 **What would reopen it:** play showing that natives cannot function on their own planet — not a
+number, and not someone rediscovering that −4 … 46 fails to cover −82 … +66. **That gap is known,
+measured and accepted.**
+
+---
+
 ## spec
 **A choice only the owner can make.** `XENOTYPE_TOLERANCES_DEPLOY_1` took our six authored
 xenotypes as far as vanilla's *realistic* genes go: **−4 … 46 °C** (Wookiee −14 … 46).

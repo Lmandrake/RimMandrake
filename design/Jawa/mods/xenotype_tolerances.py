@@ -45,10 +45,16 @@ efficiency and therefore eats more — and for MandrakeJawa and RimMandrakeTuske
 because the `+1` penalty gene they shed was *paying* for itself. On a scavenger world where food
 is scarce this is a real balance change, and it is the reason not to reach for a bigger gene.
 
-⚠️ **−4 … 46 °C does NOT cover Ash'karr.** The planet runs −82 … +66 and the habitable p05…p95 is
-−64 … +57. Vanilla's realistic tier caps out here. Going further means either `MinTemp_HugeDecrease`
-(−300 °C, which makes our species simply immune to cold) or a **custom GeneDef** — and a new def is
-CONTENT, which is BUILD's, not DECIDE's. Filed as a decision for the owner rather than taken here.
+✅ **−4 … 46 °C does NOT cover Ash'karr, and the owner RULED THAT IS FINE.** 2026-08-23, choosing
+option A of `XENOTYPE_FULL_ADAPTATION_CHOICE_1`: **leave it here.** The planet runs −82 … +66 and
+its habitable p05…p95 is −64 … +57, so our own species stay hardier than offworlders without being
+adapted to the whole world — **temperature remains a real survival pressure**, which is the point.
+
+⛔ **Do NOT "finish the job" later.** The two ways further were both considered and both declined:
+`MinTemp_HugeDecrease` (−300 °C) makes our species effectively immune to cold and **cannot be walked
+back once the campaign is balanced around it**, and a custom `GeneDef` is CONTENT and therefore
+BUILD's, not this seat's. A is the only option that keeps the question open, and it is deliberately
+being kept open until play says otherwise.
 """
 import json
 import os
