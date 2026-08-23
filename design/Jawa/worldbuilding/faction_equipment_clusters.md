@@ -42,6 +42,34 @@ faction reads as deliberate design rather than defaults:
 
 **No empty pools among them.** ⇒ Nobody needs to redo the weapon layer. It works.
 
+> 🔴 **CORRECTED 2026-08-23, BUILD — "no empty pools" is true and "it works" does not follow.**
+> This checked whether a kind's tags reach any weapon. It did not check whether the kind can
+> AFFORD one. Measured against capture `2026-08-23T07-12-04Z`, five authored kinds have a
+> `weaponMoney` **ceiling** 6–10× below the cheapest PRICED weapon their tags reach:
+>
+>     Jawa_Helix_Specialist   budget 1400-1680   pool 21   cheapest priced 12799   7.6x
+>     Jawa_Deepwater_Leader   budget 1400-1680   pool 19   cheapest priced 12799   7.6x
+>     Jawa_Blackstar_Leader   budget 1800-2160   pool 19   cheapest priced 12000   5.6x
+>     + Jawa_Blackstar_Specialist, Jawa_Homestead_Specialist on the same pattern
+>
+> **Cause:** the `KotORRanged_rare` / `_legendary` families hold 12k–26k weapons, and the
+> authored Jawa budgets are 1.4k–2.2k. A full pool the pawn cannot shop in is an empty pool
+> at generation time.
+>
+> ⚠️ **And it is the OPPOSITE direction from `WEAPON_MONEY_ROLL_NOT_CEILING_1` and
+> `BLACKSTAR_DEEPDESERT_POOLS_EMPTY_1`**, both refuted offline because those kinds' `weaponMoney`
+> FLOOR sat *above* their cheapest weapon. Both are real, of different kinds. Filed as
+> `WEAPON_BUDGET_BELOW_POOL_FLOOR_1`.
+>
+> ⚠️ **Do not extend this to every kind that reads afford=0.** 226 of 758 Primary weapons carry
+> no `MarketValue` statBase — Outer Rim and Vanilla Weapons Expanded compute it at runtime from
+> `costList` + `WorkToMake`. For 11 further kinds (all 4 Droid, all 4 Empire,
+> `Deepwater_Specialist`, `Wildsteam_Specialist`, `Junkers_Leader`) the ENTIRE pool is unpriced,
+> so afford=0 there is **UNMEASURED, not proven bare-handed**.
+>
+> ⚠️ Separately, one tier is **inverted**: `Jawa_Wildsteam_Grunt` budget 1300–1560 is HIGHER
+> than `Jawa_Wildsteam_Heavy` at 900–1080.
+
 ### 🔴 Finding 2 — the APPAREL axis is essentially unbuilt
 
 **823 apparel tags have usable gear behind them. The 68 authored kinds ask for FIVE.**
