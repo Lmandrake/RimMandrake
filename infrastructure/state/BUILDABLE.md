@@ -618,3 +618,29 @@ against defs with three life stages — and **`validate_patch.py` reported "OK -
 both the broken and the correct version**, because the surplus xpaths simply match nothing and
 a no-op is not an error. ⇒ Extract from inside `<bodyGraphicData>` only, and **always print
 what a generator produced and read it** before trusting a clean validate.
+
+**21 — Cherry Picker publishes its own removal roster, and it is the only instrument that
+answers "was this actually cut?"** The config is INTENT (see 15); the capture keeps the def
+row with `weaponTags` emptied to `[]` (see 4), so neither says what happened. `Player.log`
+carries `[Cherry Picker] The database was processed in … the following defs were removed:`
+followed by one ` - <DefType>/<defName>, ` line per removal. Measured 2026-08-23 on the
+581-mod load: **1212 removal lines against 1342 typed config entries, and zero removed that
+the config did not ask for.** That comparison is the only cheap proof the list did not die —
+one malformed key loses all 1342 and nothing in the game says so. ⚠️ **Three parsing traps,
+all silent:** the lines carry a **trailing space**; the **last line has no trailing comma**
+(it was `Plant_TreePoplar` this load), so any `grep -F "/Name,"` reads the final entry as
+not-cut; and `grep -n` on `Player.log` disagreed with a Python line index by 3, so find the
+header by CONTENT, never by a remembered line number. The 130-entry shortfall is benign —
+128 name defs absent from the 581-mod dump (uninstalled mods) and 2 are `UnfinishedThing`
+products (`UnfinishedLEGO`, `Unfinished_VerdantBow`) that Cherry Picker will not take.
+
+**22 — A `[ModuleInitializer]` in a RimBridge companion does NOT fire when the assembly
+loads.** It fires on the first code EXECUTED in the module, and RimBridge discovers tools by
+reading `[Tool]` attributes off assembly **metadata** — reflection over metadata executes
+nothing. Measured 2026-08-23: both `[JawaBench]` lines were absent from all 10,358 lines of
+the load and appeared as L10359–10360 the instant a `jawa/` tool was called, while the live
+bridge already answered **246 tools, 121 of them `jawa/`**. ⇒ **Absence of a companion's init
+line from a log is UNMEASURED, never "the deploy did not take."** `JawaBenchInit.cs` chose a
+module initializer over a static constructor precisely to avoid waiting for the first
+invocation; it waits anyway. The instrument that settles it is one command from any seat:
+`python.exe src/RimMandrake/Utils/rimbridge_client.py --list-tools`.

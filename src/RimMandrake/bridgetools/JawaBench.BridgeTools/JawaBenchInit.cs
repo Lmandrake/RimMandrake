@@ -15,11 +15,25 @@
 // connects. A companion that silently failed to load is also the single most
 // likely failure after a deploy.
 //
-// 🔑 WHY A MODULE INITIALIZER AND NOT A STATIC CONSTRUCTOR. A static ctor on the
-// tools class fires on the first tool INVOCATION, which is far too late: by then
-// something has already connected and asked, which is exactly the expensive route
-// this replaces. A module initializer runs when the ASSEMBLY IS LOADED, which is
-// the event we actually want to witness.
+// 🔴 CORRECTED 2026-08-23, MEASURED. THIS FILE USED TO CLAIM A MODULE INITIALIZER
+// "runs when the ASSEMBLY IS LOADED". IT DOES NOT, AND THE WHOLE PREMISE BELOW FAILS.
+// The CLR fires a module initializer before the first code EXECUTED in the module, and
+// RimBridge discovers companion tools by reading [Tool] attributes off assembly
+// METADATA - reflection over metadata executes nothing. Measured against the 15:35 load:
+// both lines below were absent from all 10,358 lines of Player.log while the live bridge
+// already answered 246 tools, 121 of them jawa/, and they appeared as L10359-10360 the
+// instant a jawa/ tool was called. So this behaves exactly like the static constructor it
+// was chosen over: it waits for the first invocation.
+// ⇒ ABSENCE OF THESE LINES FROM A LOG IS UNMEASURED, NEVER "THE DEPLOY DID NOT TAKE."
+// The reading that settles it, from any seat, game up, no CHECK and no map needed:
+//     python.exe src/RimMandrake/Utils/rimbridge_client.py --list-tools
+// ⭐ The lines still earn their keep as permanent provenance in the log - build hash,
+// modSet digest, defDump armed state and engine rev, all stamped at the first contact -
+// which is what actually gets read months later. Filed as JAWABENCH_INIT_LINE_IS_LAZY_1.
+//
+// (The original reasoning, kept because it is still the right REASON to want this:) A
+// static ctor on the tools class fires on the first tool INVOCATION, which is too late to
+// prove a deploy took before anyone connects.
 // ⚠️ net472 has no ModuleInitializerAttribute in its reference assemblies, so it
 // is declared below. Roslyn honours a user-defined one as long as the full name
 // matches exactly; the csproj already sets LangVersion=latest, which is what
