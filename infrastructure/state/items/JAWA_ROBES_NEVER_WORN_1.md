@@ -96,3 +96,53 @@ needed. Re-run the same test after the next cold load and expect robes and hoods
 the RUNNING game holds, never what disk holds. Before filing a live observation as a defect,
 read the def out of the newest capture — that is the running game's own copy — and check it
 says what you think you deployed.
+
+---
+
+## 🔴 UNPROVEN 2026-08-23 by BUILD — the live test could not have seen the fix
+
+    robes + hoods committed and deployed   2026-08-23 01:48:31   (e479d8ae)
+    the game under test LOADED             2026-08-23 00:12
+    the live test ran                      2026-08-23 02:0x
+
+**The running process started 96 minutes before the def existed.** Defs are parsed at
+startup only, so that game never held `apparelRequired` on any Jawa kind — it could not
+have, whatever the disk said.
+
+⚠️ **The item's own "the def is right, and it is deployed" check is the trap, not the
+proof.** It compared the repo copy against the GAME COPY ON DISK and found them identical.
+Both were correct. Neither was what the running game had in memory. **A byte-identical
+deploy check does not close that gap** — it is the same mistake that produced
+`EMPIRE_GRUNT_SPAWNS_BARE_1` the same morning.
+
+⇒ **This item proves nothing about whether Jawa wear robes.** Re-test after the next load,
+against a game that started at or after 01:48.
+
+## ✅ What IS settled, from the source rather than a re-test
+`PawnApparelGenerator.GenerateWorkingPossibleApparelSetFor` (`:884-923`) adds
+`kindDef.apparelRequired` **before** the money loop and independently of it, so the robe and
+hood land whatever `apparelMoney` says. The file's comment is right.
+
+🔑 **Three ways it can still silently fail, and a re-test should distinguish them:**
+1. the def is not in `allApparelPairs` — it is filtered by `pa.thing == reqApparel[i]`, so a
+   piece that never became a generatable pair is skipped with no error;
+2. `CanUseStuff(pawn, pa)` finds no valid stuff;
+3. `workingSet.PairOverlapsAnything(pa)` — the robe and hood must not claim the same slot.
+
+⛔ **The About.xml claim that the fix needs `apparelMoney 0` as well is WRONG** as stated —
+required apparel is not gated on money. What `apparelMoney 0` would change is the pass
+*after* it: the random loop that added the ponchos, kilts and war veil observed in the test.
+
+## ⚠️ ONE QUESTION FOR THE OWNER, deliberately not answered here
+His ruling was *"Jawa wear robes+hoods ONLY"*. This file's own comment documents the
+opposite as deliberate — *"`IndustrialBasic` only dresses whatever slots they leave open"* —
+with `apparelMoney 350~600` on `Jawa_Colonist`.
+
+Both readings are defensible and they produce different Jawa:
+- **ONLY** ⇒ `apparelMoney 0` on all four kinds. A Jawa wears a robe and a hood and nothing
+  else, ever.
+- **robe and hood ALWAYS, plus whatever else fits** ⇒ leave as is. The silhouette is
+  guaranteed; the remaining slots vary.
+
+🔑 **BUILD did not change it.** Reinterpreting a one-word ruling against a file that
+documents the contrary choice, while the owner is away, is not a call to make silently.
