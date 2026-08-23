@@ -1,4 +1,17 @@
-<!-- status: live -->
+<!-- status: superseded -->
+> 🔴 **SUPERSEDED FOR THE CULL, 2026-08-23 — the sheet the owner decides in is
+> `design/Jawa/bridge/dll_capability_roster.html`.** Same queue item, same brief; that
+> one is **185 capabilities across 24 domains**, where this file has 103 rows, and it
+> adds 14 domains this file never covered — research, ideology, genes, quests, caravans,
+> save/load, camera, jobs, zones/bills, animals, time, diagnostics, Anomaly and abilities.
+> ⭐ **This file is still the better prose.** Its per-row reasoning is not reproduced in
+> the sheet; read it for WHY a thing is hard. Take the ROSTER and the cull from the sheet.
+>
+> ⚠️ **One row here is measured wrong and is corrected there:** line 176 calls
+> `AreaManager.TryMakeNewAllowed` absent, so `create_allowed_area` is filed PARTIAL.
+> **It exists** — `Verse/AreaManager.cs:147` in 1.6 — so that capability is open and
+> buildable, not blocked.
+
 # The live-bridge capability roster — what is POSSIBLE, for the owner to cull
 
 **Queue item:** `dll-capability-roster-and-cull-a41c02`. Owner, 2026-08-18: *"Produce the
