@@ -1859,3 +1859,80 @@ touches pawn GENERATION and is a genuinely bigger change than a settings toggle.
 | S1 | ✅ **PASS, pre-load** | owner, 01:12: `Phallor male Rakata` / `Gestor female baseliner` on a new spawn, no restart. Species restored; was `Gestor female … Forsaken soldier` |
 | S2 | | |
 | S3 | | |
+
+
+## §8 — the EQUIPMENT LAYER load. Written 2026-08-23 03:2x, BEFORE the game restarted.
+
+**What is riding it.** No assembly. A large but single-domain XML change: the whole faction
+equipment layer, plus the Ikee. Everything below is `Jawa_Patches` + `RimMandrake_StarWarsRaces`,
+all deployed and VERIFIED in sync.
+
+| change | commits |
+|---|---|
+| apparel clusters on 35 kinds, + leg coverage on 5 | `c6e05ea1` `1a7c3a29` |
+| robes + hoods required on all 9 Jawa kinds; Jawa removed from the Hutt Cartel | `e479d8ae` |
+| stormtrooper lockdown: rifles affordable, wardrobe narrowed | `992e1038` |
+| wealth tiers; warcaskets required on heavy Junkers | `4a1042f0` |
+| faction colours, 43 kinds | `9bb5a5bb` `05126b25` |
+| quality clamps | `8a88b3bc` |
+| item kits, 52 kinds | `5b6ad6b4` |
+| the taboo pass, 45 kinds | `04010dbc` |
+| the Ikee, and one in the player's start | `5450bd5f` |
+
+🔑 **These do not compete for blame.** Every one is a different field on a different def, and
+each has its own offline evidence file under `infrastructure/state/observed/2026-08-23/`.
+
+### 🔴 READ THIS FIRST — the last two loads were scored against defs the game never held
+
+`JAWA_ROBES_NEVER_WORN_1` and `EMPIRE_GRUNT_SPAWNS_BARE_1` were both filed as live defects
+and both were testing the PREVIOUS load's defs. The game loaded at 00:12; those fixes landed
+at 01:48 and 02:08. **Before scoring anything below, confirm the capture is NEWER than
+`04010dbc`** — read `manifest.json`'s `capturedUtc` and compare.
+
+### Expected PRESENT
+
+| # | probe | value that passes |
+|---|---|---|
+| P1 | `[Inhabited] ready:` | **294 characters** |
+| P2 | `[JawaBench] ready:` | **121 tools** |
+| P3 | a fresh capture's `BiomeDef.json` | **80 records** — must not regress §6 |
+
+### Expected ABSENT
+
+| # | grep | baseline |
+|---|---|---|
+| F1 | `Could not resolve cross-reference` | **~25** |
+| F2 | `Exception loading def from file Races_Eyeling` | **0** — the Ikee patch is new |
+| F3 | `Exception loading def from file JawaFactionRoster` | **0** |
+
+### 🔴 THE READINGS THIS LOAD EXISTS FOR — none has a log string
+
+- **S1 stormtroopers.** Spawn 10 `Jawa_Empire_Grunt`. Every one in stormtrooper cuirass +
+  helmet and NOTHING from another trooper family; every one holding an **E-11, DLT-20A or
+  E-22 rifle** — ⛔ **a DE-10 / EC-17 / SE-14R is a FAIL**, those are the pistols the old
+  budget forced. And **0 of 10 bare**; if any spawn bare, `EMPIRE_GRUNT_SPAWNS_BARE_1` still
+  has something to find beyond the budget.
+- **S2 Jawa.** Any Jawa, any kind: robe + hood. No jeans, no tribal poncho.
+- **S3 the Ikee.** Does it read as a creepy eye at drawSize 0.33, or as a smudge? **This is
+  the real risk in the whole batch.** Also: slime trail present, nuzzles happening.
+- **S4 the new game.** Start `Jawa_UtinniStart`: exactly one Ikee, Obedience-trained, Bonded.
+- **S5 colours.** Empire white, Jawa brown, Blackstar near-black, Helix pale blue. ⚠️ Expect
+  PARTIAL effect — `apparelColor` cannot repaint a fixed modded texture, only tintable items.
+- **S6 heavy Junkers** are in full warcaskets, not just the helmet.
+
+### Results — FILL THIS IN AFTER THE LOAD. Blank means unfinished.
+
+| # | outcome | evidence |
+|---|---|---|
+| P1 | | |
+| P2 | | |
+| P3 | | |
+| F1 | | |
+| F2 | | |
+| F3 | | |
+| S1 | | |
+| S2 | | |
+| S3 | | |
+| S4 | | |
+| S5 | | |
+| S6 | | |
