@@ -336,20 +336,19 @@ RESIST = {"Grunt": (8, 14), "Heavy": (12, 18), "Specialist": (14, 22), "Leader":
 WILL   = {"Grunt": (1, 3),  "Heavy": (2, 4),   "Specialist": (2, 5),   "Leader": (4, 7)}
 
 
-# 🔴 combatPower is DECOUPLED from weaponMoney for these kinds, and that is the point.
-# The formula below reads price as a proxy for lethality, which holds while a budget buys
-# a better gun. It BREAKS when a budget is raised to reach a tier that is expensive
-# because it is RARE. Measured 2026-08-23: raising the two Blackstar budgets to reach the
-# KotOR rare/legendary tiers took combatPower from 134 -> 718 and 240 -> 997 — roughly 5x,
-# which is Centipede territory. RimWorld sizes a raid by summing combatPower, so Blackstar
-# would have started arriving as ONE OR TWO pawns instead of a syndicate.
-# ⇒ A 12,800-silver ion pistol is rarer than a 1,300-silver blaster, not ten times deadlier.
-# The owner ruled the BUDGET up; how the threat number is derived from it is BUILD's, and
-# these two keep a threat close to what they had, nudged for genuinely better weapons.
-COMBAT_POWER_OVERRIDE = {
-    ("Blackstar", "Specialist"): 150,   # was 134 on a 1100 budget
-    ("Blackstar", "Leader"):     260,   # was 240 on a 1800 budget
-}
+# ⭐ combatPower is DERIVED from weaponMoney and STAYS derived — owner's ruling
+# 2026-08-23, made with the numbers in front of him.
+#
+# BUILD clamped these two by hand first, on the reasoning that a 12,800-silver KotOR
+# pistol is RARE rather than ten times deadlier, and that RimWorld sizes a raid by
+# summing combatPower — so the derived 718/997 would make Blackstar arrive as one or
+# two pawns instead of a syndicate. That reasoning was put to the owner and he chose
+# THE DIFFICULTY JUMP: Blackstar becomes a small elite strike force with legendary
+# weapons and a much richer drop, not a crowd.
+#
+# ⇒ The clamp is GONE. If Blackstar raids start arriving as a duo, that is the
+# intended shape and not a regression — do not "fix" it back.
+COMBAT_POWER_OVERRIDE = {}
 
 
 def combat_power(wm, am, role, fac=None):

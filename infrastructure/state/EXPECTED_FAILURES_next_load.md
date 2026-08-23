@@ -2167,3 +2167,26 @@ named `Log.Error` that leaves the other rule working.
 `JawaRules`, plus the existing companion). That is past the owner's three-assembly waiver and
 was his explicit call — the mitigation is that every one of them logs a distinct, named line
 at startup, so a bisection is a log grep rather than a re-load.
+
+---
+
+## §16 — the JawaBench CONTEXT line, and Blackstar as an elite. 2026-08-23 14:5x, BUILD.
+
+### The companion now describes its world, not just itself
+`JAWABENCH_HAS_NO_INIT_LINE_1` was already fixed by a peer — the `ready:` line exists.
+Owner's ask was the harder half: *print what makes a log debuggable later.* A second line
+now follows it, and every field is chosen from a failure this project has actually paid for.
+
+| # | reading | what it decides |
+|---|---|---|
+| **K1** | `[JawaBench] ready: <N> tools, build c1f3121ddf9e` | The companion loaded. Game copy was `d49eaf42545b`; if the log still says that, the deploy did not take. |
+| **K2** | `[JawaBench] context: modSet 581/<hash>, toolSet <hash>, defDump ARMED, engine 1.6.4871 rev<N>` | 🔑 **`modSet` is a count AND a digest of the sorted packageIds, because A COUNT IS NOT A ROSTER** — two different 581-mod lists answer "how many" identically, and the dump-vs-live confusion all session came from comparing counts. `toolSet` is a digest of sorted TOOL NAMES for the same reason: "115 tools" cannot tell you one was renamed. |
+| **K3** | `defDump ARMED` | The load was supposed to re-dump. ⚠️ If this says `no`, the dump will NOT refresh and every offline check afterwards is still measuring the 578-mod game. This is the field that would have caught a stale dump days later. |
+| **K4** | `engine` matches the dump's `game_version` | `Version.txt` ships with the install and does NOT track the runtime rev — measured 2026-08-15 reading rev590 while the game ran rev591. This line is the engine's own answer. |
+| **K5** | ⚠️ If either digest reads `unmeasured` | The probe threw and was swallowed. Non-fatal, but that field is then unavailable — do not read `unmeasured` as "unchanged". |
+
+### Blackstar is now an elite strike force, deliberately
+| # | reading | what it decides |
+|---|---|---|
+| **K6** | `Jawa_Blackstar_Leader` combatPower **997**, `_Specialist` **718** | ⭐ **Owner's ruling: take the difficulty jump.** BUILD had clamped these to 260/150 on the argument that a 12,800-silver KotOR pistol is RARE rather than deadlier; that was put to him and he chose the jump. ⛔ **If Blackstar raids start arriving as one or two pawns, that is the INTENDED SHAPE, not a regression.** Few pawns, legendary weapons, a much richer drop. Do not "fix" it back. |
+| **K7** | A Blackstar Leader spawns holding a KotOR legendary weapon, not bare | The original defect. Budget is now 14600~26000 against a cheapest of 12000. |

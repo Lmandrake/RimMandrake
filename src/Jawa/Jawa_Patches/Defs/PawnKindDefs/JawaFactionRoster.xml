@@ -2218,7 +2218,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Blackstar hunter</label>
     <race>Human</race>
     <defaultFactionDef>Pirate</defaultFactionDef>
-    <combatPower>150</combatPower>
+    <combatPower>718</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
     <weaponMoney>12800~16500</weaponMoney>
@@ -2275,7 +2275,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Captain Jaxen Marr</label>
     <race>Human</race>
     <defaultFactionDef>Pirate</defaultFactionDef>
-    <combatPower>260</combatPower>
+    <combatPower>997</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
     <weaponMoney>14600~26000</weaponMoney>

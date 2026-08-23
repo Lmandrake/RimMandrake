@@ -93,11 +93,98 @@ namespace JawaBench.BridgeTools
                 }
 
                 Log.Message("[JawaBench] ready: " + tools + " tools, build " + build);
+
+                // ⭐ A SECOND LINE, AND IT IS THE ONE THAT PAYS LATER. Owner's ask,
+                // 2026-08-23: print state that makes a log debuggable months from now,
+                // not just proof that the assembly loaded.
+                //
+                // Everything below is chosen from a failure this project has ACTUALLY
+                // paid for, and nothing is here because it was easy to reach:
+                //
+                //   modSet     — a count AND a 8-hex digest of the sorted packageIds.
+                //                🔴 A COUNT IS NOT A ROSTER. Two different 580-mod lists
+                //                answer "how many" identically, and the whole
+                //                dump-vs-live class of bug this session came from
+                //                comparing counts. The digest makes a log line and a def
+                //                dump comparable by eye.
+                //   tools      — a digest of the sorted TOOL NAMES, for the same reason.
+                //                "115 tools" cannot tell you that one was renamed.
+                //   dumpArmed  — whether DefDump/dump_request.txt exists. A load that was
+                //                supposed to re-dump and did not is otherwise invisible
+                //                until someone trusts a stale dump days later.
+                //   rev        — the ENGINE's version string. Version.txt ships with the
+                //                install and does not track the runtime rev; measured
+                //                2026-08-15 reading rev590 while the game ran rev591.
+                //
+                // ⛔ Still inside the swallowing try/catch: a companion that throws while
+                // describing itself is worse than one that says nothing.
+                string modSet = "unmeasured";
+                try
+                {
+                    var ids = LoadedModManager.RunningModsListForReading
+                        .Select(m => m.PackageId).Where(x => !string.IsNullOrEmpty(x))
+                        .OrderBy(x => x, StringComparer.Ordinal).ToArray();
+                    modSet = ids.Length + "/" + ShortHash(string.Join(",", ids));
+                }
+                catch { }
+
+                string toolSet = "unmeasured";
+                try
+                {
+                    var names = ToolNames(self.GetTypes());
+                    toolSet = ShortHash(string.Join(",", names));
+                }
+                catch (ReflectionTypeLoadException rtle)
+                {
+                    try
+                    {
+                        toolSet = ShortHash(string.Join(",",
+                            ToolNames(rtle.Types.Where(t => t != null).ToArray()))) + " (partial)";
+                    }
+                    catch { }
+                }
+                catch { }
+
+                string dumpArmed = "unmeasured";
+                try
+                {
+                    string req = System.IO.Path.Combine(GenFilePaths.SaveDataFolderPath,
+                                                        "DefDump", "dump_request.txt");
+                    dumpArmed = System.IO.File.Exists(req) ? "ARMED" : "no";
+                }
+                catch { }
+
+                Log.Message("[JawaBench] context: modSet " + modSet
+                            + ", toolSet " + toolSet
+                            + ", defDump " + dumpArmed
+                            + ", engine " + RimWorld.VersionControl.CurrentVersionStringWithRev);
             }
             catch (Exception e)
             {
                 try { Log.Warning("[JawaBench] init line failed (harmless): " + e.Message); }
                 catch { }
+            }
+        }
+
+        private static System.Collections.Generic.IEnumerable<string> ToolNames(Type[] types)
+        {
+            return types
+                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static |
+                                              BindingFlags.NonPublic | BindingFlags.Instance))
+                .Where(m => m.GetCustomAttributes(typeof(ToolAttribute), inherit: false).Length > 0)
+                .Select(m => m.DeclaringType?.Name + "." + m.Name)
+                .OrderBy(x => x, StringComparer.Ordinal);
+        }
+
+        // Not cryptography — just a stable 8-hex digest so two log lines can be compared
+        // by eye. FNV-1a, written out because it must not change between builds.
+        private static string ShortHash(string s)
+        {
+            unchecked
+            {
+                uint h = 2166136261;
+                foreach (char c in s) { h ^= c; h *= 16777619; }
+                return h.ToString("x8");
             }
         }
 
