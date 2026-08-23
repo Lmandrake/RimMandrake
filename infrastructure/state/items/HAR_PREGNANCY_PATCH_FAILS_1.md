@@ -52,3 +52,26 @@ known-noise list, or the ruling that says vanilla fertility is what this campaig
   (`AlienRace.AlienHarmony.Patch`). Which mod's IL it collided with, if any, is
   UNMEASURED — nobody has looked.
 - Filed by REP from a log reading. No game test was run.
+
+---
+
+## ✅ ANSWERED BY THE OWNER — 2026-08-23 11:47. **WE DO NOT CARE.**
+
+Verbatim: *"I can answer you right now: no, we don't care about cross-species fertility."*
+
+⇒ **Answer 1 of the three.** Cross-species reproduction is not a mechanic this campaign
+relies on, so HAR's failed `PregnancyUtility.CanEverProduceChild` patch costs us nothing.
+Vanilla's fertility answer stands for every pair of our 69 species, by decision and not
+by accident.
+
+⛔ **Do not chase this.** No newer HAR build, no hunt for the mod whose IL collides with
+its transpiler, no reading in any future load's signature list. If
+`Error during patching RimWorld.PregnancyUtility` or `Wrong null argument: brtrue NULL`
+appears in a Player.log again, **it is expected** — this section is the reason, and
+re-filing it is the mistake.
+
+🔑 **Anything downstream that assumed otherwise is now wrong.** If a design doc under
+`design/Jawa/` describes cross-species children, hybrids or interbreeding as a campaign
+element, it is superseded by this line and should be corrected where it stands.
+
+Closed by REP on the owner's spoken ruling.
