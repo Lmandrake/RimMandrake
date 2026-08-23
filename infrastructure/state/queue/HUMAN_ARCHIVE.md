@@ -1615,3 +1615,78 @@ legitimately have no faction. **Zero settlements among them.** No action.
 
 ---
 
+## Four species still render magenta, and two rulings disagree about it — 2026-08-19, BUILD
+`queue/BUILD.md`'s deploy-pass item says *"CHECK is waiting on the D-CHK2 generator fix
+from you — Gand, Selkath, female Chagrian, Jawa mask"*. But D-CHK2 and B66, which folds
+it, are both marked `⛔ v2` by your 2026-08-15 blanket triage. Same day, opposite
+instructions, so I did not start it.
+
+**It is smaller than the item makes it sound.** Measured today: the broken paths are 4
+families, about 25 lines — `OuterRim/Genes/Headbone/ChagrianF`,
+`Pawn/HeadAttachments/gand/mask_*`, `Pawn/HeadAttachments/selkath/fishyjowls_female`,
+`Pawn/HeadAttachments/yelloweyes/YellowEyes_Female`, and 16 `OuterRim/GeneIcons/*BG`.
+The donors still hold every texture, so nothing is lost — only unmigrated.
+
+⚠️ D-CHK2's own offline test is WRONG as written. It says no path may start `UI/`
+without the `RimMandrakeSW/` prefix; but `UI/Icons/Xenotypes/Baseliner`,
+`UI/Icons/Genes/Gene_Furskin` and a dozen more are **vanilla** paths that must stay
+un-prefixed. Only donor-owned paths get rewritten.
+
+Say the word and it is an afternoon in `gen_races_mod.py` plus a re-run. Left alone
+otherwise.
+
+> ⤴ **archived 2026-08-23 (owner closed it)** — CLOSED BY THE OWNER 2026-08-23, verbatim: *"Four species have NO magenta. Close and retire immediately."* He offered screenshots. The item is closed at 06db995a — and note he had ALREADY confirmed this once, in that very commit: *"Owner looked at the magenta sheet and found no magenta; the gate is closed"*.
+
+---
+
+## 🔴 Vanilla Psycasts Expanded is not installed, and nothing decided to drop it — BUILD, 2026-08-20
+
+**One line of your mod list, and it is yours to change. I have not touched `ModsConfig.xml`.**
+
+Verified three ways just now:
+
+| | |
+|---|---|
+| `ModsConfig.xml` | **578 activeMods, zero** matching `vpsy` / `psycast` — parsed as XML, not grepped |
+| on disk | **subscribed**, `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2842502659` |
+| dependencies | Royalty, Harmony and VEF Core are **all active**. Nothing forced it out |
+
+⚠️ **No document records a decision to drop it, and two LIVE documents say the opposite:**
+
+- `design/Jawa/mods/required_mods.md:632` — *"✅ KEEP: Vanilla Psycasts Expanded (VPE) … **the sole Force substrate**"*
+- `design/Jawa/mods/forbidden_mods.md:63` — *"VPE is **KEPT installed** as the NPC-only 'THE FORCE' substrate"*
+
+🔑 **This is why 61 of the 287 dangling citations dangle.** They are not 61 stale names —
+they are one absent mod. ⛔ So nothing should be "fixed" in the docs; the defNames are
+correct.
+
+**What it costs if it stays out:** the docs are explicit that VPE is what makes enemy
+psycasters actually cast — it ships the enemy-cast AI and a storyteller that force-spawns
+them, where vanilla enemies never psycast. Without it, THE FORCE has no substrate and the
+Jedi/Sith layer is inert rather than broken, which is the quiet kind of failure.
+
+⚠️ **`force_users_build_spec.md` found this on 2026-08-13** — lines 91, 206, 996 and a
+`[BUILD]` item at 1095 — and it never propagated back into `required_mods.md`, which still
+reads KEEP. That is exactly the `CLAUDE.md` failure: *superseding a doc means writing INTO
+the doc you superseded.*
+
+**Your options, and I am not choosing:**
+1. **Re-activate it** — one line in `ModsConfig.xml`, and the 61 citations resolve. ⚠️ It is a
+   C# mod, so it needs the game down and a load to prove.
+   ✅ **Re-activate, not re-subscribe — corrected 2026-08-20.** `force_users_build_spec.md:94`
+   and `:995` said *"no folder in the workshop tree owns `VanillaExpanded.VPsycastsE`"*. That is
+   false: folder `2842502659` is on disk. It changes the remedy from a download to a checkbox.
+2. **Confirm it is out on purpose** — then `required_mods.md` and `forbidden_mods.md` are
+   wrong and I will correct them, and THE FORCE needs a different substrate or a v2 tag.
+
+I have filed the doc-currency half either way; only the mod list itself is waiting on you.
+
+
+> ✅ **ANSWERED 2026-08-22 10:57 — owner: *"We are leaving in for v1. We will deal with it more
+> in v2 properly."*** ⇒ ⛔ Cherry-Pick nothing out of the VQE-Ancients archite-power ladder for
+> v1. Filed to `design/V2_DREAMS.md > ARCHITE_LADDER_RETHINK_2`.
+
+> ⤴ **archived 2026-08-23 (owner closed it)** — ANSWERED 2026-08-20 and again 2026-08-23. Owner, verbatim: *"It IS kept as the force substrate... for v2, not v1. So chill and close this."* ⛔ VPE is out of v1 ON PURPOSE — `FORCE_POWERS_ARE_V2_1`. Both design docs this section cites already carry that ruling in a banner at their very top; only this file never heard.
+
+---
+
