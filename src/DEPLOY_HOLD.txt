@@ -93,3 +93,38 @@ GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGeneban
 # ✅ LIFTED 2026-08-21 13:30 by CHECK, on BUILD's own release condition: game DOWN,
 #    0 RimWorldWin64 processes, minutes before the owner's next load. DLL + 12 rosters
 #    deployed together in one --apply. This block is kept as the record of why.
+
+# --- XenotypeTolerances_Ashkarr.xml: HELD, two temperature passes collide -----
+# 2026-08-23 (BUILD), on the owner's "make the calls" instruction. Both patches
+# are correct on their own and the MERGED behaviour is what neither seat designed.
+#
+# HumanTemperatureBand_Ashkarr.xml moves vanilla Human to comfy -40..45 (safe
+# -50..55) on the owner's ruling "gear required at the extremes". This one opens
+# with "vanilla Human is DELIBERATELY NOT PATCHED" and sizes its gene offsets
+# against Human's shipped 16..26 — so with both live the offsets double-count:
+#
+#   Jawa / Hutt / Tusken   safe -70..+75   ground is -82..+66 -> dayside cannot
+#                                          touch them, only the deepest nightside
+#   Wookiee                safe -80..+75   effectively the entire planet
+#   everyone else          safe -50..+55   gear at the four extremes
+#
+# ⇒ The PLAYER'S OWN faction ends up survivable-everywhere, which is precisely the
+#   option the owner was offered and REJECTED. Holding this one keeps the ruling
+#   intact for all 69 species, including the 34 that carry no temperature gene and
+#   which this patch never reached anyway.
+#
+# ⛔ NOT a judgement on the work. Its design intent — natives adapted, outsiders
+#   dress for the planet — is good and is what should survive. It just has to be
+#   re-sized against a -40..45 base instead of 16..26, which is a number change in
+#   design/Jawa/mods/xenotype_tolerances.py, not a rewrite.
+# ⇒ LIFT when those offsets are re-sized. XENOTYPE_TOLERANCE_RESIZE_1.
+# ✅ HOLD LIFTED 2026-08-23, same hour, on the owner's own ruling: "natives get a
+#    modest edge". The offsets were re-sized from the LARGE tier (+/-20, correct
+#    against Human 16..26) to the SMALL tier (+/-10) against the new -40..45 base,
+#    and HUMAN in the generator now reads -40..45 instead of 16..26.
+#      natives   safe -60..+65   (Wookiee -70, Furskin stacks and that is right)
+#      everyone else            safe -50..+55
+#    Ground is -82..+66, so the four extremes still demand gear from BOTH.
+#    Kept as the record of why a finished patch sat undeployed for twenty minutes,
+#    and of the check that caught it: two correct patches, one merged behaviour
+#    that neither seat designed.
