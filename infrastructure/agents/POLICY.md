@@ -1,5 +1,62 @@
 # POLICY — binds DECIDE, BUILD, CHECK, REP
 
+## 🔴 BENCH — he is HERE, and this page replaces the process below
+
+**Everything else in this file assumes he is ABSENT.** The queues, the item files, the cross-seat
+handoffs and the verify pass exist so four seats can run for hours without him. While he is in the
+window they are pure cost.
+
+🔑 **You are on the BENCH for work he hands you in the moment.** Work you pull from the queue while he
+is silent stays on the BELT. The mode follows the WORK, not the window.
+
+### Arriving
+
+He says *"ok, I'm here"* · *"bench"* · *"run with this"*. At your next stopping point, ONE line:
+**what you are holding · whether you need him.** No status, no summary of the last hour.
+
+- ⛔ **Do not abandon your item.** Long, mechanical, no decisions in it → say so and keep going quietly.
+- ✅ **A question in it → ASK HIM NOW.** ⛔ Never `queue/HUMAN.md` while he is here — that file is for an
+  empty room, and a question parked in it while he sat there is the whole defect this page exists for.
+
+### What is OFF
+
+Filing · `claim`/`start`/`close` · spec/verify/criteria prose · the CHECK pass · handing to another
+seat · doc-budget housekeeping mid-task · **any second look at a tool that already reported success.**
+
+### What stays ON — the short list that has actually caught things
+
+- The three verify-first acts: `deploy_custom_mods.py --apply` · force-push · `ModsConfig.xml`.
+- ⛔ **Never touch a file another window has uncommitted edits in.** `git status --porcelain <path>`,
+  one call. Four seats share one checkout; this is the only way BENCH destroys work.
+- Numbers about large artifacts still come from `measure`.
+- Commit and push. Unpushed work is not work.
+
+### BENCH suspends the PAPERWORK, not the OWNERSHIP
+
+He often has three windows open, so a handoff costs him three seconds. Needs another lane → say
+*"needs a deploy — that is BUILD"* in ONE line and let him carry it. Cross the lane yourself only when
+yours is the sole window up.
+
+### He sets the bar
+
+🔑 *"You are checking too hard — close it and move on unless one of them worries you"* is a legitimate
+order, and it is the one thing this system otherwise cannot accept. Obey it, and **record whose bar it
+was**: `closed at owner's bar — hairstyles spot-checked, not enumerated`. ⛔ A seat may never lower its
+own bar and attribute it to him.
+
+- ✅ **He can be your hands in the game.** *"Spawn me one and I will read it back"* beats a quicktest and
+  beats a reload. That is his eyes and his hands — not a command handed to him to paste.
+- ✅ **"Tell me only the exception"** is the default shape of a BENCH answer.
+
+### Leaving
+
+He says *"stepping away"* · *"back to normal"*, or simply stops. **One command each way:** anything you
+started together and did not finish becomes a normal item, named in one line, and you are back on the
+BELT. It decays on its own too — a window that wakes with no word from him is already on the BELT. ⚠️
+**The only real failure is him saying "I'm here" and then not being here**, so never hold for an answer
+that is not coming: if he has gone quiet mid-BENCH, finish what is in your hands and rejoin the BELT.
+
+
 ## How you work
 
 - Do not validate the request. Do not check whether the task is a good idea. Do it.
@@ -211,12 +268,26 @@ At **90% of your context window you stop taking new work** and do these four thi
 | **Waiting on a game state** | `rimflow seat idle --reason awaiting-game-state` |
 | **Context ≥ 90%** | the ritual above |
 
-## Modes
+## Modes — BENCH · BELT · AFK — owner, 2026-08-23
 
-`infrastructure/state/MODE` contains one word.
-- **interactive** — a question goes to `queue/HUMAN.md`, then you **move to your next item**. Never block on an answer.
-- **autonomous** — do not queue the question. Choose the answer, proceed, record it as a `note` on the item. ⚠️ **File `--for OWNER --kind decision` only when the call was HIS to make** — cost, taste, the scope of v1 itself — not merely because it was a call. A seat's in-domain judgement is not pending review.
-- **afk** — 🔴 **NO SEAT IDLES WAITING FOR THE OWNER.** Questions accumulate as `kind: decision` items owned by OWNER; carry on with anything else. He clears them with `rimflow next --seat OWNER`.
+🔑 **Three modes, and the first one is not like the other two: BENCH is PER-WINDOW and lives nowhere
+on disk**, because it is simply whether he is talking to you right now. BELT and AFK are global and
+live in `infrastructure/state/MODE`, one word.
+
+- **BENCH** — he is here, working with you. **The page at the top of this file replaces everything
+  below.** Ask him instead of filing; skip the paperwork; keep the four things that stay ON.
+- **BELT** — the conveyor. He may be around, he is not with you. A question goes to `queue/HUMAN.md`
+  and you **move to your next item**; never block on an answer.
+- **AFK** — he is gone for a long stretch. 🔴 **NO SEAT IDLES WAITING FOR THE OWNER.** Do not queue a
+  question you can answer: choose it, proceed, record it as a `note` on the item, and **try harder
+  before giving up** — a long run is the one time a slow route is affordable. Questions that are
+  genuinely HIS — cost, taste, the scope of v1 — accumulate as `kind: decision` items owned by OWNER
+  and he clears them with `rimflow next --seat OWNER`. ⚠️ A seat's in-domain judgement is not pending
+  review.
+
+⚠️ **`rimflow` only knows `afk`**, from `--mode` or `$RIMFLOW_MODE` (`cli.py:214`) — it never reads the
+`MODE` file. `afk` there suppresses every item whose `needs` is `owner`. Writing a word into the file
+changes what seats DO, not what the tool offers.
 
 ## 🔴 Citing an item ID is a claim about its STATE — owner's correction, 2026-08-21
 

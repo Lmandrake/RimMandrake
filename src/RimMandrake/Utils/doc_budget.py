@@ -133,7 +133,10 @@ BUDGETS = [
     ("infrastructure/state/facts/*.md", None),
     ("infrastructure/state/NEXT_RELOAD_ARCHIVE.md", 2500),
     ("infrastructure/state/OWNER_DECISIONS_ARCHIVE.md", 2500),
-    ("infrastructure/agents/POLICY.md", 320),
+    # 420 since 2026-08-23: the BENCH page (55 lines) went in at the owner's instruction
+    # and is the first thing every seat must read. The trim that pays it back is
+    # TRIM_VALIDATION_LAYERS_1 — 47 obligations, 13 of which fire on every item.
+    ("infrastructure/agents/POLICY.md", 420),
     ("infrastructure/agents/*.md", 150),   # was 120; premise was wrong, see docstring
     ("CLAUDE.md", 300),
     ("infrastructure/state/V1_CHAIN.md", 400),
