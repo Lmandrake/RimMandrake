@@ -81,8 +81,14 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ImperialJumpsuit</li>
     </apparelDisallowTags>
     <minApparelQuality>Normal</minApparelQuality>
-      <!-- white — owner. Matches vanilla Empire_Fighter_Champion/Cataphract exactly -->
-    <apparelColor>(250,250,250)</apparelColor>
+    <!-- 🔑 PURE WHITE IS THE ENGINE'S 'DO NOT TINT' SENTINEL, and that is why it is exact.
+         PawnApparelGenerator.cs:828 reads `if (pawn.kindDef.apparelColor != Color.white)`
+         before calling SetColor - so (255,255,255) skips tinting ENTIRELY and every piece
+         keeps its own painted texture. Stormtrooper plate is white because the ART is
+         white, not because we dyed it. Owner, 2026-08-23: 'make the stormtrooper armor
+         not colorable (fixed at white)'. This is that, without removing a comp.
+         ⚠️ It was (250,250,250), which is NOT Color.white and therefore DID tint. -->
+    <apparelColor>(255,255,255)</apparelColor>
   </PawnKindDef>
 
   <!-- Imperial ARMY trooper - army plate only, never stormtrooper white or an officer's cap. -->
@@ -128,8 +134,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ImperialDeathTrooper</li>
     </apparelDisallowTags>
     <minApparelQuality>Normal</minApparelQuality>
-      <!-- white — owner. Matches vanilla Empire_Fighter_Champion/Cataphract exactly -->
-    <apparelColor>(250,250,250)</apparelColor>
+    <!-- dark grey-olive - owner: 'the favored color the dark grey-olive or near black for
+         everything else. That's the closest match to lore.' Imperial Army, not stormtrooper. -->
+    <apparelColor>(86,90,78)</apparelColor>
   </PawnKindDef>
 
   <!-- Imperial officer - uniform and cap only. -->
@@ -173,8 +180,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ImperialDeathTrooper</li>
     </apparelDisallowTags>
     <minApparelQuality>Normal</minApparelQuality>
-      <!-- white — owner. Matches vanilla Empire_Fighter_Champion/Cataphract exactly -->
-    <apparelColor>(250,250,250)</apparelColor>
+    <!-- dark grey-olive - the Imperial officer's uniform colour. -->
+    <apparelColor>(86,90,78)</apparelColor>
   </PawnKindDef>
 
   <!-- senior officer, black uniform. Officer wardrobe only. -->
@@ -218,8 +225,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ImperialDeathTrooper</li>
     </apparelDisallowTags>
     <minApparelQuality>Excellent</minApparelQuality>
-      <!-- white — owner. Matches vanilla Empire_Fighter_Champion/Cataphract exactly -->
-    <apparelColor>(250,250,250)</apparelColor>
+    <!-- near-black - the senior officer already wears the _Black uniform and cap; the tint
+         deepens it rather than fighting it. -->
+    <apparelColor>(42,44,40)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef>

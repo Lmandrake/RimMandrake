@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Namer_BlackstarCompany.xml                Jawa_Patches - new file 2026-08-23
+  ============================================================================
+
+  BLACKSTAR_NAMES_EVERY_PIRATE_1. Owner's ruling 2026-08-23: "Fix it properly."
+
+  🔴 WHY THE NAME MOVED OFF `fixedName`. `Pirate` is ALSO `PirateBandBase` - vanilla
+  gives it a Name= attribute as well as a defName, so it is simultaneously a concrete
+  faction and the abstract parent of every other pirate. Anything added to it is
+  inherited, so a single `fixedName` made SIX factions call themselves Blackstar
+  Company: Pirate, CannibalPirate, PirateYttakin, PirateWaster, DV_PirateKeshig and
+  AG_XenohumanPirates.
+
+  ⛔ TWO OBVIOUS FIXES DO NOT WORK, and both were ruled out from the ENGINE SOURCE:
+     - Blanking the child with <fixedName></fixedName> resolves to the EMPTY STRING,
+       because XmlInheritance.RecursiveNodeCopyOverwriteElements strips the parent's
+       text when the child node has no content. FactionGenerator.cs:149 then reads
+       `if (factionDef.fixedName != null)` - a NULL test, not NullOrEmpty - so the
+       faction would be named "". Five factions called nothing is worse than five
+       called Blackstar.
+     - Inherit="False" only clears CHILD ELEMENTS of the node it sits on. It cannot
+       un-inherit a scalar from the parent.
+
+  ✅ SO THE NAME COMES FROM A NAMER INSTEAD. `factionNameMaker` is ALSO inherited, but
+  unlike fixedName it can be overridden per child with a real value - and three of the
+  five already override it with their own namers (NamerFactionPirateYttakin,
+  NamerFactionPirateWaster, DV_NamerFactionPirateKeshig). Only CannibalPirate and
+  AG_XenohumanPirates inherit NamerFactionPirate, and BlackstarCompany.xml now pins
+  those two back to vanilla explicitly.
+
+  🔑 A one-rule pack always produces the same string, so this is a fixed name in
+  everything but mechanism - and the mechanism is the point, because it is overridable.
+  ============================================================================
+-->
+<Defs>
+
+  <RulePackDef>
+    <defName>Jawa_NamerFactionBlackstar</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name->Blackstar Company</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+</Defs>

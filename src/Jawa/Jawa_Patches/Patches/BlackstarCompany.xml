@@ -153,9 +153,39 @@
              (checked in Core/Defs/FactionDefs/Factions_Misc.xml), so this is an ADD.
              A Replace would match nothing and log red. factionNameMaker stays: it still
              names this faction's SETTLEMENTS. -->
-        <li Class="PatchOperationAdd">
-          <xpath>/Defs/FactionDef[defName="Pirate"]</xpath>
-          <value><fixedName>Blackstar Company</fixedName></value>
+        <!-- 🔴 REPLACED 2026-08-23, BLACKSTAR_NAMES_EVERY_PIRATE_1. This used to ADD
+             <fixedName>Blackstar Company</fixedName> here, and it named SIX factions,
+             not one: `Pirate` carries Name="PirateBandBase" as well as its defName, so
+             it is the abstract parent of every other pirate and everything added to it
+             is inherited. Measured live - DV_PirateKeshig and AG_XenohumanPirates both
+             reported stored="Blackstar Company" against their own labels.
+             ⛔ Do NOT put the name back on fixedName. See
+             Defs/RulePackDefs/Namer_BlackstarCompany.xml for why blanking the children
+             and Inherit="False" both fail, with the engine source that proves it. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/factionNameMaker</xpath>
+          <value><factionNameMaker>Jawa_NamerFactionBlackstar</factionNameMaker></value>
+        </li>
+
+        <!-- 🔑 THE TWO CHILDREN THAT INHERIT OUR NAMER, PINNED BACK TO VANILLA.
+             PirateYttakin, PirateWaster and DV_PirateKeshig already override
+             factionNameMaker with their own; these two do not, so without this they
+             would inherit Jawa_NamerFactionBlackstar and the bug would survive its own
+             fix in a smaller form. Both get the vanilla pirate namer explicitly and
+             keep generated names. -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="CannibalPirate"]</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="CannibalPirate"]/factionNameMaker</xpath>
+            <value><factionNameMaker>NamerFactionPirate</factionNameMaker></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/factionNameMaker</xpath>
+            <value><factionNameMaker>NamerFactionPirate</factionNameMaker></value>
+          </match>
         </li>
 
 
