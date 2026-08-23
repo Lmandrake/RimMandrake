@@ -1873,9 +1873,22 @@ touches pawn GENERATION and is a genuinely bigger change than a settings toggle.
 
 ## §8 — the EQUIPMENT LAYER load. Written 2026-08-23 03:2x, BEFORE the game restarted.
 
-**What is riding it.** No assembly. A large but single-domain XML change: the whole faction
-equipment layer, plus the Ikee. Everything below is `Jawa_Patches` + `RimMandrake_StarWarsRaces`,
-all deployed and VERIFIED in sync.
+**What is riding it.** 🔴 **CORRECTED 2026-08-23 10:2x — this block originally said "No
+assembly." THAT IS NO LONGER TRUE.** A NEW MOD with a NEW ASSEMBLY now rides this load, and
+so does a MOD-LIST CHANGE:
+
+    mandrake.jawaikee    NEW mod, NEW assembly JawaIkee.dll, built 0 warnings 0 errors
+                         registered in ModsConfig at position 569 of 579 (was 578)
+                         previous ModsConfig backed up to infrastructure/state/modlists/
+
+⚠️ **That changes the attribution calculus and the doctrine that governs it.** An assembly
+fails in a different place from XML — at type resolution, before any def is read — so it
+cannot be confused with the equipment changes. Its expected-failure signature is F4 below,
+written here BEFORE the launch as the assembly waiver requires.
+
+The rest is a large but single-domain XML change: the whole faction equipment layer, plus the
+Ikee's def-side tuning. All `Jawa_Patches` + `RimMandrake_StarWarsRaces`, deployed and
+VERIFIED in sync.
 
 | change | commits |
 |---|---|
@@ -1914,6 +1927,9 @@ at 01:48 and 02:08. **Before scoring anything below, confirm the capture is NEWE
 | F1 | `Could not resolve cross-reference` | **~25** |
 | F2 | `Exception loading def from file Races_Eyeling` | **0** — the Ikee patch is new |
 | F3 | `Exception loading def from file JawaFactionRoster` | **0** |
+| F4 | 🔴 **the new assembly.** `Could not load assembly` or `ReflectionTypeLoadException` naming **JawaIkee**, or `Could not find type named JawaIkee.` | **0** — this is the NEW-ASSEMBLY signature and it fails at type resolution, before any def is read, so it cannot be confused with the XML above |
+| F5 | `Could not resolve cross-reference` naming a `XenotypeDef` | **0** — the ten tolerant xenotypes are `MayRequire`-guarded, so a mod-list change should shorten the list rather than error |
+| F6 | mod count in `ModsConfig.xml` | **579**, not 578 — `mandrake.jawaikee` was added |
 
 ### 🔴 THE READINGS THIS LOAD EXISTS FOR — none has a log string
 
@@ -1929,6 +1945,14 @@ at 01:48 and 02:08. **Before scoring anything below, confirm the capture is NEWE
 - **S5 colours.** Empire white, Jawa brown, Blackstar near-black, Helix pale blue. ⚠️ Expect
   PARTIAL effect — `apparelColor` cannot repaint a fixed modded texture, only tintable items.
 - **S6 heavy Junkers** are in full warcaskets, not just the helmet.
+- **S7 the ikee thought.** Put an ikee next to a Jawa and next to a non-tolerant pawn. The
+  Jawa should read **"ikee underfoot" +4**; the other should read **"the ikee is watching me"
+  −5**. ⚠️ Both mood numbers and the 12-cell radius are FIRST GUESSES; the question is not
+  whether they fire but whether +4 reads as comforting rather than as noise in the mood tab.
+- **S8 the Blackstar name.** The faction list should show **one** "Blackstar Company", not
+  four. `CannibalPirate` and `AG_XenohumanPirates` should carry generated pirate names.
+- **S9 stormtrooper white.** The plate should look like its own art, not dyed. Officers should
+  read dark grey-olive and the Leader near-black.
 
 ### Results — FILL THIS IN AFTER THE LOAD. Blank means unfinished.
 
@@ -1946,3 +1970,9 @@ at 01:48 and 02:08. **Before scoring anything below, confirm the capture is NEWE
 | S4 | | |
 | S5 | | |
 | S6 | | |
+| S7 | | |
+| S8 | | |
+| S9 | | |
+| F4 | | |
+| F5 | | |
+| F6 | | |
