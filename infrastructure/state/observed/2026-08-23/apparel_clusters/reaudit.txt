@@ -1,0 +1,56 @@
+RE-AUDIT with MarketValue ESTIMATED from costList / costStuffCount
+(RimWorld's StatWorker_MarketValue derives it the same way; a def dump can never
+ hold it because it depends on stuff chosen at generation)
+
+kind                                budget  pool  afford  cheapest  torso legs head
+----------------------------------------------------------------------------------------
+✅ Jawa_Empire_Grunt            500~600       32      17  46        Y     Y    Y
+✅ Jawa_Empire_Heavy            700~840       32      18  46        Y     Y    Y
+✅ Jawa_Empire_Specialist       700~840       32      18  46        Y     Y    Y
+✅ Jawa_Empire_Leader           1200~1440      32      32  46        Y     Y    Y
+⚠️ Jawa_Hutt_Grunt              250~300       25       7  1         -     -    Y
+⚠️ Jawa_Hutt_Heavy              400~480       25       9  1         -     -    Y
+⚠️ Jawa_Hutt_Specialist         600~720       25      12  1         Y     -    Y
+✅ Jawa_Hutt_Leader             2000~2400      45      36  1         Y     Y    Y
+✅ Jawa_Homestead_Grunt         180~216       17      15  10        Y     Y    Y
+✅ Jawa_Homestead_Heavy         250~300       17      17  10        Y     Y    Y
+✅ Jawa_Homestead_Specialist    300~360       17      17  10        Y     Y    Y
+✅ Jawa_Homestead_Leader        500~600       17      17  10        Y     Y    Y
+✅ Jawa_DeepDesert_Grunt        100~120        5       2  20        Y     Y    Y
+✅ Jawa_DeepDesert_Heavy        150~180        5       4  20        Y     Y    Y
+✅ Jawa_DeepDesert_Specialist   200~240        5       4  20        Y     Y    Y
+✅ Jawa_DeepDesert_Leader       350~420        5       5  20        Y     Y    Y
+✅ Jawa_Droid_Grunt             180~216        9       2  175       Y     Y    Y
+✅ Jawa_Droid_Heavy             200~240       15       2  175       Y     Y    Y
+✅ Jawa_Droid_Specialist        180~216        9       2  175       Y     Y    Y
+✅ Jawa_Droid_Leader            600~720       21       6  175       Y     Y    Y
+✅ Jawa_Wildsteam_Grunt         150~180       18       8  36        Y     Y    Y
+✅ Jawa_Wildsteam_Heavy         200~240       18      12  36        Y     Y    Y
+✅ Jawa_Wildsteam_Specialist    250~300       18      14  36        Y     Y    Y
+✅ Jawa_Wildsteam_Leader        400~480       18      15  36        Y     Y    Y
+✅ Jawa_Deepwater_Grunt         400~480       29       6  100       Y     Y    Y
+✅ Jawa_Deepwater_Heavy         550~660       29       8  100       Y     Y    Y
+✅ Jawa_Deepwater_Specialist    650~780       29      11  100       Y     Y    Y
+✅ Jawa_Deepwater_Leader        1100~1320      29      14  100       Y     Y    Y
+✅ Jawa_Geonosian_Grunt         60~72         7       3  20        Y     Y    -
+✅ Jawa_Geonosian_Heavy         80~96         7       3  20        Y     Y    -
+✅ Jawa_Geonosian_Specialist    100~120        7       3  20        Y     Y    -
+✅ Jawa_Geonosian_Leader        200~240        7       4  20        Y     Y    -
+✅ Jawa_Helix_Grunt             700~840       42      15  189       Y     Y    Y
+✅ Jawa_Helix_Heavy             900~1080      42      20  189       Y     Y    Y
+✅ Jawa_Helix_Specialist        1100~1320      58      20  189       Y     Y    Y
+✅ Jawa_Helix_Leader            1800~2160      38      12  189       Y     Y    Y
+⚠️ Jawa_Blackstar_Grunt         350~420       31       5  250       -     -    Y
+⚠️ Jawa_Blackstar_Specialist    800~960       31       9  250       Y     -    Y
+✅ Jawa_Blackstar_Leader        1500~1800      35      12  250       Y     Y    Y
+✅ Jawa_Junkers_Grunt           400~480       51      25  81        Y     Y    Y
+✅ Jawa_Junkers_Heavy           700~840       51      34  81        Y     Y    Y
+✅ Jawa_Junkers_Specialist      900~1080      51      38  81        Y     Y    Y
+✅ Jawa_Junkers_Leader          1400~1680      51      44  81        Y     Y    Y
+
+kinds failing (no affordable, or no torso, or no legs): 5
+    Jawa_Hutt_Grunt
+    Jawa_Hutt_Heavy
+    Jawa_Hutt_Specialist
+    Jawa_Blackstar_Grunt
+    Jawa_Blackstar_Specialist

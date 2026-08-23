@@ -163,6 +163,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <apparelTags>
       <li>SaV_apparel_huttgoon</li>
       <li>KotORArmor_mid</li>
+      <li>SaV_apparel_thug</li>
     </apparelTags>
   </PawnKindDef>
 
@@ -185,6 +186,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <apparelTags>
       <li>SaV_apparel_huttgoon</li>
       <li>KotORArmor_mid</li>
+      <li>SaV_apparel_thug</li>
     </apparelTags>
   </PawnKindDef>
 
@@ -207,6 +209,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <apparelTags>
       <li>SaV_apparel_huttgoon</li>
       <li>KotORArmor_mid</li>
+      <li>SaV_apparel_thug</li>
     </apparelTags>
   </PawnKindDef>
 
@@ -905,6 +908,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <apparelTags>
       <li>SaV_outfit_merc</li>
       <li>KotORArmor_mid</li>
+      <li>KotORClothing_undersuit</li>
     </apparelTags>
   </PawnKindDef>
 
@@ -951,6 +955,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <apparelTags>
       <li>SaV_outfit_merc</li>
       <li>KotORArmor_mid</li>
+      <li>KotORClothing_undersuit</li>
     </apparelTags>
   </PawnKindDef>
 
