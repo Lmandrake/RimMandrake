@@ -39,10 +39,23 @@ def main():
              '       share morphemes and the ecosystem reads as evolved rather than assembled.',
              '',
              '       🔴 LABEL ONLY. No defName is touched. -->', '']
+    # 🔴 CONDITIONAL, NOT A BARE REPLACE - CREATURE_NAMES_APPLY_1, BUILD 2026-08-22.
+    # A PatchOperationReplace whose xpath matches nothing is a RED ERROR every launch,
+    # not a silent no-op, so 41 bare ones is 41 errors the day a donor mod drops a
+    # creature or is switched off.
+    # ⚠️ No MayRequire is emitted and none is wanted: the conditional tests the DEF
+    # rather than the mod, which is strictly stronger. A mod can be installed and
+    # still have renamed or removed the creature - `MayRequire` passes on intent,
+    # this passes on reality.
+    # 🔑 No <nomatch>: a creature that is not there needs no name.
     for dn, old, new, mod in sorted(pairs):
-        parts.append(f'  <Operation Class="PatchOperationReplace">')
-        parts.append(f'    <xpath>/Defs/ThingDef[defName="{dn}"]/label</xpath>')
-        parts.append(f'    <value><label>{new}</label></value>')
+        xp = f'/Defs/ThingDef[defName="{dn}"]/label'
+        parts.append(f'  <Operation Class="PatchOperationConditional">')
+        parts.append(f'    <xpath>{xp}</xpath>')
+        parts.append(f'    <match Class="PatchOperationReplace">')
+        parts.append(f'      <xpath>{xp}</xpath>')
+        parts.append(f'      <value><label>{new}</label></value>')
+        parts.append(f'    </match>')
         parts.append(f'  </Operation>   <!-- was "{old}" - {mod} -->')
         parts.append('')
     parts.append('</Patch>')

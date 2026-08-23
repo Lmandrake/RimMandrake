@@ -9,209 +9,300 @@
 
        🔴 LABEL ONLY. No defName is touched. -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Andrewsarchus"]/label</xpath>
-    <value><label>krondar</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Andrewsarchus"]/label</xpath>
+      <value><label>krondar</label></value>
+    </match>
   </Operation>   <!-- was "andrewsarchus" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Castoroides"]/label</xpath>
-    <value><label>grondik</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Castoroides"]/label</xpath>
+      <value><label>grondik</label></value>
+    </match>
   </Operation>   <!-- was "castoroides" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Daeodon"]/label</xpath>
-    <value><label>borrak</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Daeodon"]/label</xpath>
+      <value><label>borrak</label></value>
+    </match>
   </Operation>   <!-- was "daeodon" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Dinopithecus"]/label</xpath>
-    <value><label>vekka</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Dinopithecus"]/label</xpath>
+      <value><label>vekka</label></value>
+    </match>
   </Operation>   <!-- was "dinopithecus" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/ThingDef[defName="Dinornis"]/label</xpath>
-    <value><label>kessik</label></value>
-  </Operation>   <!-- was "dinornis" - Megafauna -->
-
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Diprotodon"]/label</xpath>
-    <value><label>obbak</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Diprotodon"]/label</xpath>
+      <value><label>obbak</label></value>
+    </match>
   </Operation>   <!-- was "diprotodon" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Enhydriodon"]/label</xpath>
-    <value><label>lussik</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Enhydriodon"]/label</xpath>
+      <value><label>lussik</label></value>
+    </match>
   </Operation>   <!-- was "enhydriodon" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Gigantophis"]/label</xpath>
-    <value><label>sserrakoth</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Gigantophis"]/label</xpath>
+      <value><label>sserrakoth</label></value>
+    </match>
   </Operation>   <!-- was "gigantophis" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Gomphotaria"]/label</xpath>
-    <value><label>morrak</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Gomphotaria"]/label</xpath>
+      <value><label>morrak</label></value>
+    </match>
   </Operation>   <!-- was "gomphotaria" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWAgilisaurus"]/label</xpath>
-    <value><label>sskarr</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWAgilisaurus"]/label</xpath>
+      <value><label>sskarr</label></value>
+    </match>
   </Operation>   <!-- was "Agilisaurus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWArchaeopteryx"]/label</xpath>
-    <value><label>zhikka</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWArchaeopteryx"]/label</xpath>
+      <value><label>zhikka</label></value>
+    </match>
   </Operation>   <!-- was "Archaeopteryx" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWBrachiosaurus"]/label</xpath>
-    <value><label>ssorrbantha</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWBrachiosaurus"]/label</xpath>
+      <value><label>ssorrbantha</label></value>
+    </match>
   </Operation>   <!-- was "Brachiosaurus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWCoelophysis"]/label</xpath>
-    <value><label>sslek</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWCoelophysis"]/label</xpath>
+      <value><label>sslek</label></value>
+    </match>
   </Operation>   <!-- was "Coelophysis" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/ThingDef[defName="JRWCompsognathus"]/label</xpath>
-    <value><label>sskek</label></value>
-  </Operation>   <!-- was "Compsognathus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
-
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWCyclosphaeroma"]/label</xpath>
-    <value><label>karrik</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWCyclosphaeroma"]/label</xpath>
+      <value><label>karrik</label></value>
+    </match>
   </Operation>   <!-- was "Cyclosphaeroma" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWDimetrodon"]/label</xpath>
-    <value><label>sszhakar</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWDimetrodon"]/label</xpath>
+      <value><label>sszhakar</label></value>
+    </match>
   </Operation>   <!-- was "Dimetrodon" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWDinilysia"]/label</xpath>
-    <value><label>sserrik</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWDinilysia"]/label</xpath>
+      <value><label>sserrik</label></value>
+    </match>
   </Operation>   <!-- was "dinilysia" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWDryosaurus"]/label</xpath>
-    <value><label>ssdarr</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWDryosaurus"]/label</xpath>
+      <value><label>ssdarr</label></value>
+    </match>
   </Operation>   <!-- was "Dryosaurus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWEstemmenosuchus"]/label</xpath>
-    <value><label>ssgrondak</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWEstemmenosuchus"]/label</xpath>
+      <value><label>ssgrondak</label></value>
+    </match>
   </Operation>   <!-- was "Estemmenosuchus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWGeosternbergia"]/label</xpath>
-    <value><label>vhazh</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWGeosternbergia"]/label</xpath>
+      <value><label>vhazh</label></value>
+    </match>
   </Operation>   <!-- was "Geosternbergia" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWHynerpeton"]/label</xpath>
-    <value><label>sslugg</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWHynerpeton"]/label</xpath>
+      <value><label>sslugg</label></value>
+    </match>
   </Operation>   <!-- was "Hynerpeton" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWHypsilophodon"]/label</xpath>
-    <value><label>ssvek</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWHypsilophodon"]/label</xpath>
+      <value><label>ssvek</label></value>
+    </match>
   </Operation>   <!-- was "Hypsilophodon" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWKileskus"]/label</xpath>
-    <value><label>krissh</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWKileskus"]/label</xpath>
+      <value><label>krissh</label></value>
+    </match>
   </Operation>   <!-- was "Kileskus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWMicroceratus"]/label</xpath>
-    <value><label>ssbik</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWMicroceratus"]/label</xpath>
+      <value><label>ssbik</label></value>
+    </match>
   </Operation>   <!-- was "Microceratus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWOuranosaurus"]/label</xpath>
-    <value><label>ssvarrak</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWOuranosaurus"]/label</xpath>
+      <value><label>ssvarrak</label></value>
+    </match>
   </Operation>   <!-- was "Ouranosaurus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/ThingDef[defName="JRWProtovermes"]/label</xpath>
-    <value><label>ssik</label></value>
-  </Operation>   <!-- was "Protovermes" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
-
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWRhamphorhynchus"]/label</xpath>
-    <value><label>vhikk</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWRhamphorhynchus"]/label</xpath>
+      <value><label>vhikk</label></value>
+    </match>
   </Operation>   <!-- was "Rhamphorhynchus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWTorosaurus"]/label</xpath>
-    <value><label>ssborrak</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWTorosaurus"]/label</xpath>
+      <value><label>ssborrak</label></value>
+    </match>
   </Operation>   <!-- was "Torosaurus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWWonambi"]/label</xpath>
-    <value><label>ssorrak</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWWonambi"]/label</xpath>
+      <value><label>ssorrak</label></value>
+    </match>
   </Operation>   <!-- was "wonambi" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWYurlunggur"]/label</xpath>
-    <value><label>sshaggan</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWYurlunggur"]/label</xpath>
+      <value><label>sshaggan</label></value>
+    </match>
   </Operation>   <!-- was "yurlunggur" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="JRWZephyrosaurus"]/label</xpath>
-    <value><label>sszhal</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="JRWZephyrosaurus"]/label</xpath>
+      <value><label>sszhal</label></value>
+    </match>
   </Operation>   <!-- was "Zephyrosaurus" - Jurassic Rimworld - Dinosaurs Only (Continued) -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Josephoartigasia"]/label</xpath>
-    <value><label>grondrak</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Josephoartigasia"]/label</xpath>
+      <value><label>grondrak</label></value>
+    </match>
   </Operation>   <!-- was "josephoartigasia" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Palaeeudyptes"]/label</xpath>
-    <value><label>korrik</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Palaeeudyptes"]/label</xpath>
+      <value><label>korrik</label></value>
+    </match>
   </Operation>   <!-- was "palaeeudyptes" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Procoptodon"]/label</xpath>
-    <value><label>jakkir</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Procoptodon"]/label</xpath>
+      <value><label>jakkir</label></value>
+    </match>
   </Operation>   <!-- was "procoptodon" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Purussaurus"]/label</xpath>
-    <value><label>sskorrath</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Purussaurus"]/label</xpath>
+      <value><label>sskorrath</label></value>
+    </match>
   </Operation>   <!-- was "purussaurus" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Quinkana"]/label</xpath>
-    <value><label>sskorrak</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Quinkana"]/label</xpath>
+      <value><label>sskorrak</label></value>
+    </match>
   </Operation>   <!-- was "quinkana" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="ShortfacedBear"]/label</xpath>
-    <value><label>rannak</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="ShortfacedBear"]/label</xpath>
+      <value><label>rannak</label></value>
+    </match>
   </Operation>   <!-- was "Short-faced bear" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/ThingDef[defName="Sivatherium"]/label</xpath>
-    <value><label>obbakar</label></value>
-  </Operation>   <!-- was "sivatherium" - Megafauna -->
-
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Smilodon"]/label</xpath>
-    <value><label>dhakar</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Smilodon"]/label</xpath>
+      <value><label>dhakar</label></value>
+    </match>
   </Operation>   <!-- was "smilodon" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Titanoboa"]/label</xpath>
-    <value><label>ssorrakoth</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Titanoboa"]/label</xpath>
+      <value><label>ssorrakoth</label></value>
+    </match>
   </Operation>   <!-- was "titanoboa" - Megafauna -->
 
-  <Operation Class="PatchOperationReplace">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="WoollyMammoth"]/label</xpath>
-    <value><label>vhorbantha</label></value>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="WoollyMammoth"]/label</xpath>
+      <value><label>vhorbantha</label></value>
+    </match>
   </Operation>   <!-- was "woolly mammoth" - Megafauna -->
 
 </Patch>
