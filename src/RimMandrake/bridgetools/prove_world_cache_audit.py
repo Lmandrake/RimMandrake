@@ -50,7 +50,11 @@ def check(label, cond, detail=""):
 
 # ---------------------------------------------------------------- 0. it exists
 print("== 0. the tool is registered in the LIVE bridge ==")
-tools = call("rimworld/list_tools") or {}
+# 🔴 THERE IS NO `rimworld/list_tools` TOOL. Asking for one is how this script
+# died at step 0 every time it was run, which is why it had never once got past
+# here. The tool ROSTER is an MCP protocol method, not a bridge tool: `tools/list`,
+# sent through _request, not through tools/call.
+tools = S._request("tools/list", {}) or {}
 names = json.dumps(tools)
 check("world_cache_audit is registered", "world_cache_audit" in names,
       "(absence here means the companion did not reload - the DLL only loads at startup)")
