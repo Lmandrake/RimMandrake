@@ -2,8 +2,8 @@
   "posture": "blacklist",
   "postureMeaning": "Default is KEEP. Only entries with decision=='cut' go on the Cherry Picker kill list. An undecided entry STAYS in the game.",
   "savedBy": "plant_review.html",
-  "savedAt": "2026-08-22T19:51:16.117Z",
-  "decidedCount": 73,
+  "savedAt": "2026-08-23T06:32:47.759Z",
+  "decidedCount": 77,
   "total": 192,
   "decisions": {
     "Plant_GrayGrass": {
@@ -49,7 +49,7 @@
       "touched": false
     },
     "Plant_TreeDrago": {
-      "decision": "cut",
+      "decision": "keep",
       "note": "",
       "label": "drago tree",
       "mod": "Core",
@@ -63,7 +63,7 @@
       "touched": false
     },
     "BMT_Plant_TreeTwistingThornwood": {
-      "decision": "cut",
+      "decision": "keep",
       "note": "",
       "label": "twisting thornwood",
       "mod": "Biomes! Polluted Lands",
@@ -154,7 +154,7 @@
       "touched": false
     },
     "BMT_Plant_TreeMartyr": {
-      "decision": "cut",
+      "decision": "keep",
       "note": "",
       "label": "martyr tree",
       "mod": "Biomes! Polluted Lands",
@@ -217,11 +217,11 @@
       "touched": false
     },
     "RG_Plant_Raspberry": {
-      "decision": "keep",
+      "decision": "cut",
       "note": "",
       "label": "raspberry bush",
       "mod": "ReGrowth 2",
-      "touched": false
+      "touched": true
     },
     "BMT_Plant_TwistedDandelion": {
       "decision": "keep",
@@ -1036,35 +1036,35 @@
       "touched": false
     },
     "AB_CrystalHorn": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "crystal horn",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_CrystalFlower": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "crystal flower",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_FrostLeaf": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "frost leaf",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_RimeNodules": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "rime nodules",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_HardyGrass": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "hardy grass",
       "mod": "Alpha Biomes",
@@ -1078,133 +1078,133 @@
       "touched": false
     },
     "BMT_Gleamtip": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "gleamtip",
       "mod": "Biomes! Caverns",
       "touched": false
     },
     "BMT_Fungusfern": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "fungusfern",
       "mod": "Biomes! Caverns",
       "touched": false
     },
     "BMT_CrystaltipBrambles": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "crystaltip brambles",
       "mod": "Biomes! Caverns",
       "touched": false
     },
     "BMT_YumBulbs": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "yum bulbs",
       "mod": "Biomes! Caverns",
       "touched": false
     },
     "BMT_Crystalcap": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "crystalcap",
       "mod": "Biomes! Caverns",
       "touched": false
     },
     "BMT_LuminousSpout": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "luminous spout",
       "mod": "Biomes! Caverns",
       "touched": false
     },
     "BMT_Crystal_BlueSowable": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "fast growing crystal",
       "mod": "Biomes! Caverns",
       "touched": false
     },
     "AB_ToxiBulb": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "toxibulb",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_TallSlimyGrass": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "tall slimy grass",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_SlimyTree": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "slimy tree",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_LargeSlimyTree": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "large slimy tree",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_Slimecasia": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "slimecasia",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_SlimyFern": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "slimy fern",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_GreenRockFern": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "green rock fern",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_Iashiphus": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "iashiphus",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_SugarFamewort": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "sugar famewort",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_RavenNettle": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "raven nettle",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_FanPalm": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "fan palm",
       "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_KeeningCordax": {
-      "decision": "undecided",
+      "decision": "keep",
       "note": "",
       "label": "keening cordax",
       "mod": "Alpha Biomes",
@@ -1239,25 +1239,25 @@
       "touched": false
     },
     "Plant_TreePine": {
-      "decision": "keep",
+      "decision": "cut",
       "note": "",
       "label": "pine tree",
       "mod": "Core",
-      "touched": false
+      "touched": true
     },
     "Plant_TreeBirch": {
-      "decision": "keep",
+      "decision": "cut",
       "note": "",
       "label": "birch tree",
       "mod": "Core",
-      "touched": false
+      "touched": true
     },
     "Plant_TreePoplar": {
-      "decision": "keep",
+      "decision": "cut",
       "note": "",
       "label": "poplar tree",
       "mod": "Core",
-      "touched": false
+      "touched": true
     },
     "Plant_MagmaCactus": {
       "decision": "keep",
