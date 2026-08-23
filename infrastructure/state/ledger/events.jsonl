@@ -2003,3 +2003,4 @@
 {"seat":"BUILD","event":"close","id":"DROID_RAIDS_HARMONY_RELATIONS_1","sha":"44aae154","ts":"2026-08-23T21:15:33Z"}
 {"seat":"BUILD","event":"close","id":"JAWA_ROBES_NEVER_WORN_1","sha":"44aae154","ts":"2026-08-23T21:15:33Z"}
 {"seat":"BUILD","event":"close","id":"BLACKSTAR_DEEPDESERT_POOLS_EMPTY_1","sha":"44aae154","ts":"2026-08-23T21:15:33Z"}
+{"seat":"DECIDE","event":"file","id":"REDRAW_TWO_HEADLINER_CREATURES_1","title":"Redraw AA_Atispec and AA_Behemoth - the owner authorised these two by name, with art direction","kind":"task","target":"v1","caused_by":"CREATURE_ART_REVIEW_FLAGS_1","for":"BUILD","ts":"2026-08-23T21:41:46Z"}
