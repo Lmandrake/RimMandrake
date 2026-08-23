@@ -512,3 +512,42 @@ a 14-mod debug list reports every real mod's defs as *"does not exist in the liv
 unacceptable outcome.
 **Why minimal, in one number:** `ROSTER_SURVIVES_OFFMAP_PROOF_1` needs save → quit → RELOAD,
 so it costs **two** loads. ~45 s on minimal against ~50 min on the 578.
+
+---
+
+## 🌱 BIOME FLORA — 24 rosters replaced, DEPLOYED 2026-08-23 03:27, never yet loaded
+
+`BiomeFlora_Ashkarr.xml` (24 `PatchOperationConditional` → `PatchOperationReplace`) is in the
+game copy and verified byte-identical to the repo. **Defs parse only at startup**, so nothing
+about it is true until the next cold load.
+
+**The lines that decide it, in order:**
+
+1. 🔴 **`BiomeDef` count must still be 80.** An `<li>` inside a `LoadDataFromXmlCustom` field
+   discards the WHOLE def silently — that is exactly how 26 BiomeDefs were lost on 2026-08-23.
+   This patch uses the dictionary-key form (`<Plant_TreeDrago>0.08</...>`) precisely to avoid
+   it, but **the count is the proof, not the intent.** 54 means it happened again.
+2. **Zero `Could not resolve cross-reference` naming a plant defName.** All 132 were checked
+   against the live dump (68,518 defNames, 578 mods) before deploy, so a hit here means a mod
+   changed underneath us, not a typo.
+3. **Zero red errors naming `BiomeFlora_Ashkarr`.** ⚠️ A `PatchOperationReplace` that matches
+   nothing IS a red error — but each is wrapped in a Conditional on the same xpath, and all 24
+   biomes were confirmed to carry a `wildPlants` node, so all 24 should apply.
+
+**Then LOOK, which is the only real verdict.** One map each in `Desert`, `HorrorWastes` and
+`AB_MycoticJungle`:
+
+| biome | what proves it | what failure looks like |
+|---|---|---|
+| `Desert` | drago tree, saguaro, agave, pincushion cactus, hardy grass | the old 21-plant list, incl. thornwood and martyr, which now belong to `PoisonForest` |
+| `HorrorWastes` | horrorweb, blood bouquet, tentacular/globular aberration, flesh tree | 🔴 **agave** — that is the shipped roster, so the patch did not apply |
+| `AB_MycoticJungle` | agarilux, domecap, stropharia, witches' oyster, devilstrand | anything from another family |
+
+⚠️ **A biome reading BARE is not necessarily a failed patch.** 642 of 669 plants have
+`minGrowthTemperature` 0.0 °C and half this planet is below that — the rosters are assigned by
+look and lore, and `NORMALIZE_TEMPERATURE_TOLERANCES_1` is what makes them grow. Judge the
+patch by the ROSTER the biome holds, not by how much of it has sprouted.
+
+⚠️ **`ExtremeDesert` (0.008) and `Wasteland` (0.0099) have near-zero `plantDensity`** — 4,935
+tiles, 22.6% of the planet — and will read bare no matter what roster they carry. That is the
+shipped value, deliberately untouched by this pass. See `BARE_BIOMES_NEED_DENSITY_1`.
