@@ -39,7 +39,7 @@ defect, not a preference; `--check` cannot catch it because the def dump predate
 went stale the moment anyone edited `FAMILIES`. It lives here now: one file owns the rosters,
 the patch and the prose about them.
 """
-import argparse, collections, csv, json, os, sqlite3, sys
+import argparse, collections, csv, json, os, sqlite3, sys, textwrap
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
@@ -449,6 +449,25 @@ FAMILIES = {
 
 PLANTLESS = {'Ocean', 'Lake', 'SeaIce', 'IceSheet'}   # by design, not by omission
 
+# 🔴 DECIDE'S DENSITY RULING, 2026-08-23 (`BARE_BIOMES_NEED_DENSITY_1`).
+# A roster nobody sees fixes nothing. Two biomes ship a `plantDensity` so low that whatever
+# we assign them reads as bare ground — together 4,935 tiles, 22.6% of the planet.
+# ⛔ Only these two are touched. Density is a DIFFERENT lever from roster and it feeds the
+# fire ecology (`hydrology_and_fire_ecology.md` R-H3 makes plant growth the fuel), so this
+# is a named exception list, never a sweep.
+DENSITY = {
+  # biome: (new, shipped, why)
+  'Wasteland': (0.12, 0.0099,
+     "1,721 tiles of CONTAMINATION-class ground carrying an eight-plant toxic roster - "
+     "toxigrass, gutter plantain, twisted dandelion, scorched stars - that exists to say "
+     "THIS GROUND IS POISONED. At 0.0099 it says nothing. Poisoned ground reads more "
+     "strongly with sick plants on it than with nothing. 12x up, still visibly barren."),
+}
+# ⛔ `ExtremeDesert` stays at its shipped 0.008 and that is a RULING, not an oversight.
+# It is the lethal core of the dayside, median 48.2 C, and its four succulents are MEANT to
+# be scarce. Bare ground there is the honest reading of the place; a player crossing 3,214
+# tiles of genuinely dead sand is experiencing the planet, not a defect.
+
 
 def load():
     con = sqlite3.connect(f'file:{DB}?mode=ro', uri=True)
@@ -624,10 +643,24 @@ def main() -> int:
             out.append('    </match>')
             out.append('  </Operation>')
             out.append('')
+    out.append('  <!-- ============ plantDensity - the named exception list ============ -->')
+    for b, (new_d, old_d, why) in DENSITY.items():
+        out.append(f'  <!-- {b}: {old_d} -> {new_d}.')
+        for line in textwrap.wrap(why, 92):
+            out.append(f'       {line}')
+        out.append('  -->')
+        out.append('  <Operation Class="PatchOperationConditional">')
+        out.append(f'    <xpath>/Defs/BiomeDef[defName="{b}"]/plantDensity</xpath>')
+        out.append('    <match Class="PatchOperationReplace">')
+        out.append(f'      <xpath>/Defs/BiomeDef[defName="{b}"]/plantDensity</xpath>')
+        out.append(f'      <value><plantDensity>{new_d}</plantDensity></value>')
+        out.append('    </match>')
+        out.append('  </Operation>')
+        out.append('')
     out.append('</Patch>')
     os.makedirs(os.path.dirname(PATCH), exist_ok=True)
     open(PATCH, 'w', encoding='utf-8').write('\n'.join(out) + '\n')
-    print(f"\nwrote {PATCH}  ({nb} operations)")
+    print(f"\nwrote {PATCH}  ({nb} roster + {len(DENSITY)} density operations)")
     return 0
 
 

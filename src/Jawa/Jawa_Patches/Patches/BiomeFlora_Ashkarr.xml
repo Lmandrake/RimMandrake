@@ -886,4 +886,19 @@
     </match>
   </Operation>
 
+  <!-- ============ plantDensity - the named exception list ============ -->
+  <!-- Wasteland: 0.0099 -> 0.12.
+       1,721 tiles of CONTAMINATION-class ground carrying an eight-plant toxic roster - toxigrass,
+       gutter plantain, twisted dandelion, scorched stars - that exists to say THIS GROUND IS
+       POISONED. At 0.0099 it says nothing. Poisoned ground reads more strongly with sick plants on
+       it than with nothing. 12x up, still visibly barren.
+  -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/plantDensity</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/plantDensity</xpath>
+      <value><plantDensity>0.12</plantDensity></value>
+    </match>
+  </Operation>
+
 </Patch>
