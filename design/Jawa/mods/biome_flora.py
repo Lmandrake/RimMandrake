@@ -469,6 +469,56 @@ DENSITY = {
 # tiles of genuinely dead sand is experiencing the planet, not a defect.
 
 
+# ── the head-and-tail rule ────────────────────────────────────────────────────────
+# 🔴 **DECIDE's ruling, 2026-08-23.** A biome whose plants all carry a similar weight has
+# no dominant flora, and a biome with no dominant flora has no identity. The third pass
+# ("the 84 leftovers land") fixed the zoo effect ACROSS biomes and quietly recreated it
+# WITHIN the big ones: `BMT_FungalForest`'s top five carried 19.7% of 69 plants, against
+# 84% for `HorrorWastes` — and HorrorWastes is the one you can name by looking at it.
+#
+# 🔑 **The ROSTER is not touched; only the WEIGHTS are.** Every plant keeps its home, so
+# the no-crossing guarantee cannot reopen and no plant is made homeless. The transform is
+# `w ** p`, which is monotone — it NEVER reorders two plants, it only widens the gap the
+# author already wrote.
+#
+# ✅ **Fuel-neutral, and that was CHECKED, not assumed.** `WildPlantSpawner.cs:699` picks a
+# plant with `GetCommonalityOfPlant(plant) / PlantsCommonalitiesSum` — a RELATIVE weight —
+# while the NUMBER of plants comes from `GetDesiredPlantsCountAt(cell, plantDensityFactor)`.
+# Rescaling commonalities cannot change plant MASS, so the fire-ecology rule R-H3 in
+# `hydrology_and_fire_ecology.md` is not in play here.
+HEAD_N      = 5      # "the flora you actually notice"
+HEAD_FLOOR  = 0.50   # below this share the biome reads as soup — shape it
+HEAD_TARGET = 0.60   # shape up to here and no further; a 95% head is a monoculture
+TAIL_FLOOR  = 0.01   # ⛔ never 0 — a 0.0 commonality NEVER spawns (cf. Plant_TreeGrayPine)
+
+
+def _head_share(ws, n=HEAD_N):
+    ws = sorted(ws, reverse=True)
+    tot = sum(ws)
+    return sum(ws[:n]) / tot if tot else 0.0
+
+
+def shape(roster):
+    """Widen an over-flat roster until its top HEAD_N carry ~HEAD_TARGET of the weight.
+
+    Returns (roster, exponent). An exponent of 1.0 means the roster was already shaped
+    and nothing was changed.
+    """
+    if len(roster) <= HEAD_N or _head_share(roster.values()) >= HEAD_FLOOR:
+        return roster, 1.0
+    lo, hi = 1.0, 8.0
+    for _ in range(50):                              # bisect for the gentlest exponent
+        mid = (lo + hi) / 2
+        if _head_share([w ** mid for w in roster.values()]) < HEAD_TARGET:
+            lo = mid
+        else:
+            hi = mid
+    top = max(roster.values())
+    scale = top / (top ** hi)                        # keep the head's authored number
+    return {k: max(TAIL_FLOOR, round((w ** hi) * scale, 4))
+            for k, w in roster.items()}, hi
+
+
 def load():
     con = sqlite3.connect(f'file:{DB}?mode=ro', uri=True)
     plants, biomes = {}, {}
@@ -596,6 +646,14 @@ def main() -> int:
     tiles = placed()
     bad, owner = check(plants, biomes, tiles)
 
+    shaped = []
+    for _fam, _bs in FAMILIES.items():
+        for _b in list(_bs):
+            _new, _p = shape(_bs[_b])
+            if _p != 1.0:
+                _bs[_b] = _new
+                shaped.append((_b, _p))
+
     nb = sum(len(bs) for bs in FAMILIES.values())
     print(f"\n{len(FAMILIES)} families · {nb} biomes · {len(owner)} distinct plants · "
           f"{sum(len(r) for bs in FAMILIES.values() for r in bs.values())} assignments")
@@ -603,6 +661,9 @@ def main() -> int:
     if bad:
         print(f"\n🔴 {bad} problem(s) — nothing written."); return 1
     print("✅ every defName resolves · no plant crosses a family · every placed biome covered")
+    if shaped:
+        print(f"head-and-tail rule reshaped {len(shaped)} over-flat roster(s): "
+              + ", ".join(f"{b} ^{p:.2f}" for b, p in sorted(shaped, key=lambda kv: -kv[1])))
     if a.doc:
         doc(plants, biomes, tiles)
     if not a.write:
