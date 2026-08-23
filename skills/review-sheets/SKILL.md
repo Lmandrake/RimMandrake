@@ -1,6 +1,6 @@
 ---
 name: review-sheets
-description: Build an interactive HTML sheet so a human can review, curate and record preferences over hundreds of game elements — sprites, defs, biomes, species, world-map elements — instead of answering hundreds of questions in chat. Covers pre-filling the decisions so the human only disagrees, showing what each entry actually DOES rather than its name, marking contested calls, auto-saving to a real file rather than localStorage, and freezing the result so nothing regenerates over it. Use when a curation task is too large for conversation, when someone must pick keep/cut across a mod stack, or when a decision needs to be captured as data rather than prose.
+description: Build an interactive HTML sheet so a human can review, curate and record decisions over hundreds of items — sprites, defs, biomes, species, rows of any kind — instead of answering hundreds of questions in chat. Covers the three things that decide whether the sheet is usable at all (a COLLAPSIBLE brief that does not eat a sticky header, the save path PRESENT and copyable on a button press, and a sticky group label that follows while scrolling), plus pre-filling decisions so the human only disagrees, showing what each entry DOES rather than its name, auto-saving to a real file rather than localStorage, and freezing the result. Use whenever a curation or review task is too large for conversation, when someone must pick keep/cut across many items, when a decision needs capturing as data rather than prose, and whenever you are about to hand a human a generated HTML page they must WORK in — even a small one, because these three defects are what make such pages unusable.
 ---
 
 # Sheets a human can actually decide with
@@ -127,9 +127,57 @@ When the human says he is done:
 * ⚠️ **Say what freezing costs.** Under whitelist posture, rows left undecided are
   *stripped*. Name them at freeze time; the human may not realise he is cutting them.
 
-## 8. Layout traps that cost real time
+## 8. 🔴 The chrome: three things that decide whether the sheet is usable at all
 
-* 🔴 **Sticky group headers cover short groups.** Two mods had exactly ONE def each and
+**Every one of these is a complaint from a human who could not work in a sheet that had it
+wrong.** They are cheap to build and they are the difference between a page someone reviews and
+a page someone abandons. ⭐ **A ready-made, dependency-free implementation is
+`assets/sheet_chrome.html` — copy it rather than rebuilding it.**
+
+### 8a. The brief FOLDS, and remembers
+
+> *"the top instructions are persistent and block the screen"*
+
+The header must be sticky, because the filters have to stay reachable. That makes an always-open
+brief a permanent hole in the screen — on a 600-row list the human scrolls past it hundreds of
+times. So give it a fold toggle, and **persist the fold**: re-collapsing it on every visit is the
+same annoyance wearing a different hat.
+
+⚠️ **Keep the filter bar OUTSIDE the folding region.** Folding away the search box to see the rows
+is a worse trade than the one you were fixing.
+
+### 8b. The save path is PRESENT, and copies on a button
+
+> *"It MUST have the file to link to already present and easily copied (with a button press)"*
+
+🔑 **`showSaveFilePicker()` accepts a filename and not a folder** — a browser rule you cannot code
+around — so the human must put the file in the right place themselves. **A path they have to
+retype is a path they will get wrong**, and a decisions file written to the wrong folder is
+invisible in the worst way: the sheet says *saved*, and the generator quietly finds nothing.
+
+So print the **full native path** in the page and put a **copy** button on it. Print the sheet's
+own path too — it is what they need to reopen it. Give the button a fallback that selects the text
+when the clipboard API is refused, which happens on `file://` pages.
+
+### 8c. The group name FOLLOWS while scrolling
+
+> *"I really like when the different blocks have a persistent name that follows along with you
+> while you scroll"*
+
+Scroll into a long list and the question is always *"what am I looking at now?"*. A sticky group
+label answers it continuously — and it is what makes bulk judgement possible, because whole groups
+share a character and get decided in one motion.
+
+⚠️ **Set `top` from the MEASURED header height, never a constant.** The header changes height when
+the brief folds, and a stale offset leaves labels floating in mid-page or buried under the bar.
+Re-measure at the end of every render and on resize.
+⚠️ **De-stick groups of ≤3** — see 9a below; this is the same bug and it is easy to reintroduce.
+
+---
+
+## 9. Layout traps that cost real time
+
+* 🔴 **(9a) Sticky group headers cover short groups.** Two mods had exactly ONE def each and
   the sticky header sat on top of the only row — unreadable, unclickable. Disable
   stickiness for groups of ≤3.
 * Make the note field visually distinct from the effect line and the label, or the human
@@ -137,13 +185,13 @@ When the human says he is done:
 * Dark, dense, single self-contained `.html`, no CDN — these are opened from disk, often
   offline. Inline the CSS and JS.
 
-## 9. What to ask the human, and when
+## 10. What to ask the human, and when
 
 * Ask for the **posture** before generating (whitelist vs blacklist changes everything).
 * Ask for a **ruling on invented rules** — do not bury them.
 * Do NOT ask for the 400 routine calls. That is the whole point.
 
-## 10. 🔴 Prove the sheet actually wrote before you consume its file
+## 11. 🔴 Prove the sheet actually wrote before you consume its file
 
 Measured 2026-08-17, and it nearly deployed an agent's guesses as the owner's decisions.
 

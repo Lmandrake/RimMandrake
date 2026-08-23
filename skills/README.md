@@ -67,7 +67,7 @@ it should write directly and say so.
 | `generating-rimworld-sprites` | Produces RimWorld-ready sprite art that matches an existing reference asset — correct canvas, real alpha, silhouette inside the… |
 | `gravship-layout` | Author, save and load RimWorld gravship layouts (ShipLayoutDefV2) as XML — write a ship directly with no map, no build and no… |
 | `reading-rimworld-graphics` | Finding and reading RimWorld texture assets from disk — loose PNGs, Unity AssetBundles, and the base game's resources.assets — so… |
-| `review-sheets` | Build an interactive HTML sheet so a human can review, curate and record preferences over hundreds of game elements — sprites… |
+| `review-sheets` | Build an interactive HTML sheet so a human can review, curate and record decisions over hundreds of items. ⭐ **INSTALLED MACHINE-WIDE 2026-08-23** (`~/.claude/skills/review-sheets`) — it is generic, and every project gets it. Carries `assets/sheet_chrome.html`: the folding brief, the copy-path button and the sticky group label, which are the three things that decide whether a generated page is usable at all |
 | `rimbridge` | Drive a live RimWorld from outside via the RimBridgeServer GABP bridge and its JawaBench companion - author the planet, author… |
 | `rimbridge-companion` | Write, build, deploy and prove new [Tool] methods in the JawaBench companion DLL so the RimBridge bridge can do something it… |
 | `rimworld-content-moderation` | Deciding what content stays in a RimWorld campaign out of a large mod stack — building contact sheets of real sprites straight… |
