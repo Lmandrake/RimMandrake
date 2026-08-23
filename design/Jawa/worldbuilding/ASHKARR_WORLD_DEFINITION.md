@@ -317,8 +317,29 @@ a def can survive the cut and appear on zero tiles. ⚠️ **Was 24 until 2026-0
 - Nightside: `AB_RockyCrags` is the ground (26%), with `PoisonForest`,
   `AB_MycoticJungle`, `BMT_FungalForest`, `HorrorWastes` as lobes and patches;
   `Glowforest` and `BMT_CrystalCaverns` as isolated points past arc 150.
-- ⛔ Blacklisted and not used: `SeaIce`, `IceSheet`, `Tundra`, `TropicalRainforest`,
+- ⛔ Blacklisted and not used: ~~`SeaIce`, `IceSheet`,~~ `Tundra`, `TropicalRainforest`,
   `Savanna` (the Advanced Biomes one), and the rest of the 29-entry list.
+
+  > 🔴 **CORRECTED 2026-08-23 — `SeaIce` and `IceSheet` are BOTH on the planet** and have
+  > been since the nightside pass. Measured: **`SeaIce` 277 tiles** (the frozen meridian
+  > water, `Twilight Sea` 203 + `Grey Sea` 74) and **`IceSheet` 80** (the ancient-ice pools
+  > in `Deadstone`). They were unblacklisted deliberately; this line was never told.
+
+- 🌊 **The meridian coast, authored 2026-08-23** (`ashkarr_shore_and_ice.py`), on the
+  owner's ruling *"more variety in the deserts… some arid scrubland against the ocean
+  waters… make the frozen ice not have a hard vertical line at the terminator."*
+  - **The drained Twilight/Grey Sea floor is zoned by distance to the water that
+    survived**, not left as one biome. 369 tiles: **170 `AridShrubland`** against the
+    water, **185 `Desert`** one step in, **14 `ExtremeDesert`** left as deep playa. The
+    170 shrubland tiles give up their `VEE_SaltPlains` mutator — a salt plain with scrub
+    standing on it is a contradiction.
+  - **The ice margin interleaves with open water over ~14.5° of arc** instead of ending on
+    a line. Before: `Ocean` reached arc 101.51 and `SeaIce` began at 101.64 — a 0.13° gap,
+    zero overlap, every water tile freezing at one value. 🔑 The margin is driven by
+    **coast proximity**, because real fast ice forms first in sheltered shallow water and
+    last in the open — not by noise. Ice total is held at exactly 277: the shape moved,
+    the amount did not. Ice masses went 3 → 15 with the largest two at 169 and 91, so it
+    is fingers and floes rather than speckle.
 
 ## 6b. 🔴 RAIN — the rule, and the one number that enforces it
 
