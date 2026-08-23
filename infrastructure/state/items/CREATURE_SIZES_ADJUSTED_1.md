@@ -1,3 +1,56 @@
+## ✅ APPROVED FOR v1 — owner, 2026-08-23
+
+> *"nice job on the animals. I approve for v1. We'll have to meet them and see how it
+> feels during live play."*
+
+**The deliverable this item asked for — *a resize list, per creature, naming which field
+and why* — is `design/Jawa/fauna/CREATURE_RESIZE_LIST.md`.** 25 changes out of 621 cast
+creatures. BUILD executes it under `CREATURE_RESIZE_PATCH_1`.
+
+| | |
+|---|---|
+| creatures reviewed | **621** (the cast, not the 1,260-animal census) |
+| 🔽 shrink, `drawSize` only | **23** |
+| 🔼 enlarge, `bodySize` + `drawSize` | **2** |
+| unchanged | **596** |
+
+⚠️ **Approved as generated, not row by row.** The sheet wrote its own file at
+`2026-08-23T08:13:26Z` with `savedBy: creature_size_review.html`, so it really was opened
+and linked — and **0 of 621 rows were overridden**. He agreed with the pre-fill rather than
+editing it. 🔑 That is a real decision and it is recorded as what it is, not dressed up as
+621 individual judgements. A row that looks wrong in game is a correction, not a reversal.
+
+## How each criterion was met
+
+- ✅ **"Each biome has its one super-huge."** It did not: `AB_MiasmicMangrove` and
+  `IceSheet` had **none**. The sheet proposed the fix rather than reporting the gap —
+  `Zakkeg` and `BMT_Thrumbungus`, each already the biggest thing cast in its own biome.
+  **24 of 26 → 26 of 26.**
+- ✅ **"No shrunk creature has lost mechanical relevance it needed."** Guaranteed by
+  construction: **every shrink is `drawSize` only**, which moves nothing but the picture.
+- ✅ **"`bodySize` changes are deliberate and listed separately."** There are exactly two,
+  both promotions, both called out as the risky half — `Zakkeg` 5 → 8.2 and
+  `BMT_Thrumbungus` 4 → 8.2 roughly double meat, melee scaling and food need.
+
+## 🔑 The art evidence was already on disk
+
+The owner's *"adjust for low-quality graphics"* had a measurable proxy waiting in
+`design/Jawa/fauna/sprite_features.csv`: **`px`, the sprite's real pixel area.** The flag is
+each band's own 25th percentile — *the weakest quarter of its own size class* — so it never
+asks small art to clear a big-art bar. The worst case was `JRWBrachiosaurus` at **887 px**
+carrying a `huge` silhouette, and `AA_Behemoth` at **1,614 px** carrying a SUPER one.
+⚠️ **px measures RESOLUTION, not whether the art is good.** It decided where to look; it did
+not decide.
+
+## ⏳ What is deliberately NOT settled
+
+🔑 The owner named the real test himself: **live play.** ⛔ Nothing in the list is frozen,
+and the two promotions especially should be watched before anyone trusts them. The sheet
+regenerates from `gen_creature_size_sheet.py` and merges his file per row, so a second pass
+after play costs nothing and loses nothing.
+
+---
+
 ## spec
 🔴 **OWNER'S BRIEF, 2026-08-22 13:33 — the fauna pass is v1 and it is NOW.** Verbatim:
 *"move the animal assignment task to v1 and right now… This is exciting! The biomes are
