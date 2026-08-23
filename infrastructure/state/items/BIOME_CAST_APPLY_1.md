@@ -62,3 +62,52 @@ small to matter. ⛔ No anomaly entity appears anywhere else.
 ## verify
 `validate_patch.py --defs` clean; then in game, spawn each biome and confirm the cast is the
 one listed, that the super-huge is genuinely rare, and that no creature turns up everywhere.
+
+## ✅ ALL THREE BUILD TASKS DONE, AND IT SHIPS — 2026-08-22
+
+⚠️ **It is 26 biomes and 754 records, not the 25 / 725 above.** DECIDE added one after this
+item was filed. Regenerating rather than hand-editing is what surfaced it — the file says
+so at the top and it was right.
+
+### 1. Wrapped — in the GENERATOR, not the file
+`design/Jawa/fauna/gen_cast_patch.py` now emits a `PatchOperationConditional` on the
+biome's own `wildAnimals` node, with the `PatchOperationReplace` inside its `<match>`.
+
+🔑 **`MayRequire` alone was not enough, and that is this project's own rule:** it checks
+that the MOD is present, never that the DEF still is. A biome renamed or dropped upstream
+leaves `MayRequire` passing and the bare Replace erroring — and a Replace that matches
+nothing is a **red error every launch**, not a silent no-op. The conditional tests reality
+instead of intent, so an absent biome now costs nothing.
+⛔ **No `<nomatch>` on purpose:** if the biome is gone, the cast should be gone too, not
+added to something that was never cast.
+
+### 2. Re-validated with `--defs`
+**0 errors, 0 warnings** against the real 578-mod load set — the 25 unwrapped-Replace
+warnings are gone — and **every one of the 26 operations matches exactly 1 node.**
+
+### 3. `MayRequire` packageIds confirmed, all 26
+Each one checked against the owner recorded in the def dump *and* against the installed
+mod list: **0 problems.** 23 modded biomes each name their real owner
+(`sarg.alphabiomes`, `grimterra.terrainretexturemod`, `mlie.advancedbiomes`,
+`zylle.morevanillabiomes`, `biomesteam.biomescaverns`, `mlie.horrors`), and three are
+deliberately unguarded — `SeaIce` and `IceSheet` (`ludeon.rimworld`) and `Scarlands` /
+`LavaField` (`ludeon.rimworld.odyssey`).
+⚠️ Odyssey is a DLC, not core, and the generator's `startswith("ludeon.rimworld")` test
+leaves it unguarded too. That is now harmless **only because the conditional wraps it** —
+without Odyssey the biome def is absent and the operation simply does not fire.
+
+### Shipped
+`src/Jawa/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml`, deployed and verified in sync.
+Jawa_Patches loads at **571**, after every biome mod it touches.
+
+🔑 **Shipping was BUILD's call and here is the reasoning.** It validates 0/0, it degrades
+safely now that every operation is conditional, and this item's own verify — *"in game,
+spawn each biome and confirm the cast"* — cannot be done any other way than on a load.
+Holding it back would have cost a second ~25-minute load for nothing.
+⛔ **Backing it out is one command** if the wildlife reads wrong:
+`rm "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml"`
+
+⏳ **Still open, and none of it is BUILD's:** the shrink-for-bad-art call
+(`CREATURE_ART_REVIEW_FLAGS_1`), per-creature commonality (`CREATURE_DENSITY_PER_TILE_1`),
+combat/diet/temperature normalisation, and `animalDensity` per biome — `AB_RockyCrags`
+still runs 1.8 over a 29-creature cast.
