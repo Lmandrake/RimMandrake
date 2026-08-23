@@ -44,3 +44,17 @@ JSON layout. Pointed at the root it fails with `no TraitDef.json` and reads as b
 is fine. `validate_patch.py --live` has the same blind spot. See `DUMP_LAYOUT_BROKE_TOOLS_1`.
 ✅ **The generator has NOT diverged** — measured 2026-08-23: a full `--write` over all 12
 roster files changed only the two intended blocks. Regenerating is safe.
+
+---
+
+# ⛔ CLOSED UNBUILT 2026-08-23 — owner: *"remove the DECIDE item before it gets picked up."*
+
+Not done, and deliberately not left open for someone to pick up. **Nothing is broken by
+closing it:** the dead `guy762_KelDorMask` reference is already gone at the prose source and
+regenerated, so the red cross-reference error is closed and those two characters wear exactly
+what they wore before — nothing. This item was only ever the *nicer* outcome.
+
+What it would have cost: a `gene:` field in `cast_to_xml.py`, plus confirming
+`Inhabited.CharacterDef` can consume one at all — unverified, and possibly a C# change.
+Reopen it under a new name if Rah'da Onn and Kaad'ro Tenth-Breath ever need to actually
+wear the mask their prose is built around.
