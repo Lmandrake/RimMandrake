@@ -22,22 +22,11 @@ re-centring version stripping `GR_ParagonIguana` of 45 °C of shipped heat toler
 gain. Narrowing can only ever cause the very bug this closes, and it buys nothing: the ROSTER
 decides where a plant may appear and temperature only removes it.
 
-⚠️ **One consequence the owner should rule on:** widening a floor also widens it for SOWABLE
-crops, so a player could farm healroot at −80 °C. Climate stops constraining FARMING even
-though it still constrains wild flora. Left as-is because he explicitly asked for player-grown
-plants as wild decoration; the alternative is to exempt `Sowable` plants from the floor widen
-and accept that they will not appear wild in the cold biomes they were cast into.
-
-⚠️ **An earlier version of this slid the band rigidly, centred on the plant's shipped OPTIMAL
-midpoint, and it broke on modded stock.** `BMT_Blastpod` ships an optimal band of 50 … 352 °C,
-which produced a −263 °C shift and a −213 °C floor; 370 of 492 plants ended up widened rather
-than slid, and a "translation" that mostly widens is not a translation. **Shipped values are
-not trustworthy enough to be the ORIGIN of the calculation — only a modifier to it.**
-
-🔑 **This cannot make everything survive everywhere, and the reason is the flora rosters.**
-No plant crosses a family (`biome_flora.py` refuses to build if one does), so every plant is
-fitted to ONE climate. `BMT_AmbrosyxFungus` comes out at −103.6 … −20.4 °C — a cryophile that
-still dies on the dayside. Climate is preserved *because* the rosters are exclusive.
+✅ **RULED by the owner, 2026-08-23:** *"I am ruling for widening only please. We aren't trying to
+model plants dying in the wrong temperature at this time."* ⇒ The question of exempting SOWABLE
+crops from the floor widen is **CLOSED, and the answer is no.** A player being able to farm
+healroot at −80 °C is accepted: climate constrains where flora GROWS WILD, and is not modelling
+death by temperature for now. ⛔ Do not reintroduce a narrowing branch for crops.
 
 ## Four fields, not two
 
