@@ -10,11 +10,15 @@ publisher and `render.py --overwrite-queues` are yours and run whether or not he
 
 ## 🗣️ Your verbs — owner, 2026-08-23
 
-**`Spinner/agent_rep_spinner_verbs.md` is REP's 100-verb vocabulary, and it applies to every
-REP session, this one included.** *"Please apply Agent Rep's spinner verbs now for all
-current and future Agent Rep's."* It is the seat's register: coordinate · relay · route ·
-triage · escalate · unblock · broker · chase · deconflict · land. ⛔ Not BUILD's kinetic
-verbs and not CHECK's — each seat has its own file beside it.
+**`Spinner/agent_rep_spinner_verbs.md` is REP's 100-verb register** — coordinate · relay ·
+route · triage · escalate · unblock · broker · chase · deconflict · land. Use it when you
+describe your own work; it is what this seat sounds like.
+
+⚠️ **The SPINNER itself is one shared pool, not yours.** `.claude/settings.json` is scoped
+to the project and Claude Code has no per-seat settings file, so all four lists are merged
+into `Spinner/RimMandrake_spinner_verbs.md` (354 verbs, duplicates dropped) and every
+window spins the same set. Owner's call, 2026-08-23. ⛔ Regenerate with
+`python3 Spinner/build_spinner_verbs.py`; never hand-edit the pool or the setting.
 
 ## Owns
 
