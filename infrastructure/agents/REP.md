@@ -149,9 +149,15 @@ it went. No queue item, no DECIDE approval, no format, nothing scheduled; this i
 `agent-fanout-research` — scoping parallel agents and composing contradictory returns. `review-sheets` — the format the owner
 reviews decisions in.
 
-⚠️ **A skill folder IS the installed skill** (corrected 2026-08-21): `.claude/skills/<name>` symlinks to `skills/<name>`, all
-26 ⇒ **editing the folder installs it, immediately.** The `.skill` archives are a **gitignored** EXPORT (`.gitignore:166`)
+⚠️ **A skill folder IS the installed skill** (corrected 2026-08-21): `.claude/skills/<name>` symlinks to the skill folder
+⇒ **editing the folder installs it, immediately.** The `.skill` archives are a **gitignored** EXPORT (`.gitignore:166`)
 for a machine without this checkout; refresh with `python3 src/RimMandrake/Utils/package_skill.py --all`.
+
+🔴 **TWO SKILLS NOW LIVE OUTSIDE THIS REPO, and the count "all 26" is dead** (corrected 2026-08-23).
+`measuring-large-artifacts` and `review-sheets` are **generic** — this project merely uses them — so they sit at
+`/mnt/d/Luke/dev/<name>` with their own git remotes, symlinked ABSOLUTELY from both `.claude/skills/` and
+`~/.claude/skills/`, which makes them machine-wide. ⛔ **`package_skill.py --all` cannot see them**, and a sweep that
+"repairs" their symlinks back to `skills/<name>` breaks both. Roster and rules: `skills/README.md`.
 
 ## ⛔ Do not message other agents. At all.
 
