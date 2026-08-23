@@ -87,7 +87,11 @@ touched rows are real and landed on disk.
       of some resource in some biome** (57 biome-resource pairs), and each now carries a red
       cost line in the sheet naming exactly what a cut would delete.
 - [ ] ⏳ **The owner walks the world.** That is what the ruling is pending on, and it is the
-      only thing left.
+      only thing left. ⭐ **The route is written:** `design/Jawa/mods/plant_walk_list.md`
+      (`plant_walk_list.py`) — one landing tile per biome with its region, temperature and
+      elevation, core desert first, naming at each stop the trees that do NOT read as desert
+      flora and the plants whose loss would delete a resource from that biome. Every tile of
+      a biome grows the same roster, so 23 landings settle all 192 plants.
 
 ## state of the evidence, 2026-08-22 — read this before reopening the pass
 
