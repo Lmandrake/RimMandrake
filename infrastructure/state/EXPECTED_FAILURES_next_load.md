@@ -2056,3 +2056,40 @@ is only the **slider's memory**; the value the generator consumes is
 nothing useful** — MLP's transpiler on `DoWindowContents` reads its own field and assigns
 both back every frame, so vanilla-only would be stamped over with 10. The mod sets MLP's
 first and vanilla's last.
+
+---
+
+## §12 — THE WHOLE BUILD, validated with `--live` actually running. 2026-08-23 12:2x, BUILD.
+
+🔑 **Every earlier `--live` check this session proved less than it claimed.** Pointed at the
+DefDump root, `validate_patch.py --live` printed one notice, ran no live checks, and still
+ended `OK - 0 errors`. That is fixed (`DUMP_LAYOUT_BROKE_TOOLS_1`), and this is the first
+sweep where the live half genuinely ran.
+
+    51 patch file(s) · 0 ERRORS · 3896 warnings
+    --live resolved to captures/2026-08-23T07-12-04Z — 68,518 defNames, 452 types, rev591
+
+**Every warning classified, not sampled:**
+
+| count | class | verdict |
+|---|---|---|
+| 3887 | `inner xpath differs from the conditional test` | ✅ the add-if-missing idiom. The validator's own text says *"Intentional for add-if-missing patterns"*. Required, not optional: the C# defaults these fields, so a bare Replace cannot work. |
+| 4 + 3 | `xpath matches 2 (or 3) nodes in ONE mod folder` | ⚠️ third-party **duplicate defNames** — `Ling_Cockroach` (Rim cockroach), `BMT_CarveShroom` (Biomes! Caverns). RimWorld dedups; our op touching both is harmless. Not ours to fix. |
+| 2 | `not wrapped in PatchOperationConditional` | ✅ **DELIBERATE, and now documented in both files so a later sweep does not "fix" them.** See below. |
+| 1 | the dump holds 578 mods, ModsConfig lists 580 | 🔑 real, and the reading to carry into the load. |
+
+### The two unwrapped operations are correct as they are
+`JawaWorld_Name.xml` targets **Core** (`RulePacks_Namer_World.xml`); `ForceGremlin_NoHair.xml`
+targets **our own** `RimMandrakeXenotypes.xml`. The general advice assumes the target mod might
+be ABSENT — neither can be. ⇒ The only way either stops matching is a rename, and there a red
+error is exactly what we want: wrapped in a `Conditional`, the world would quietly take its
+**vanilla name** and nobody would notice until they looked at the planet. **A patch that
+matches nothing logs nothing** is the failure this project keeps getting bitten by; a loud
+error is the better half of the trade.
+
+### G8 — the reading
+⚠️ **The def dump is 578 mods and the game will load 580** (`mandrake.jawaikee`,
+`mandrake.planetpresetprime`). So every "this def does not exist" answer above is about a
+game that is not the one about to run. **`dump_request.txt` already reads `all`** — reaching
+the main menu re-dumps (~27 s) and closes that gap. Until it does, treat an ABSENCE from the
+dump as unproven; a PRESENCE is still fine.

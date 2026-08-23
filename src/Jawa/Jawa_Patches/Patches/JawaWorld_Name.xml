@@ -23,6 +23,15 @@
     appears here and in labels only — never in a defName or a translation key.
   -->
 
+  <!-- ⚠️ DELIBERATELY NOT wrapped in PatchOperationConditional, and validate_patch.py
+       WARNS about that on every run. Leave it. The general advice is right - an
+       unguarded Replace that matches nothing is a RED ERROR every launch - but it
+       assumes the target might be ABSENT. This one targets **Core**, which cannot be
+       absent, so the only way it stops matching is Ludeon renaming the def in a game
+       update. In that case a red error is exactly what we want: wrapped, the world
+       would quietly get its VANILLA name and nobody would find out until they looked
+       at the planet. A silent miss is the failure mode this project has been bitten
+       by repeatedly; a loud one is a gift. Verified 2026-08-23: 1 match. -->
   <Operation Class="PatchOperationReplace">
     <xpath>/Defs/RulePackDef[defName="NamerWorld"]/rulePack/rulesStrings</xpath>
     <value>

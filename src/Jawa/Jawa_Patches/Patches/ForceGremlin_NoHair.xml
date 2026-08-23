@@ -11,6 +11,12 @@
      (exclusionTag HairColor), so it does not collide with a hair STYLE gene.
 -->
 <Patch>
+  <!-- ⚠️ DELIBERATELY NOT wrapped in PatchOperationConditional, and validate_patch.py
+       WARNS about that on every run. Leave it. The target is OUR OWN mod
+       (mandrake.starwarsraces, RimMandrakeXenotypes.xml), so "the mod might be absent"
+       does not apply - if it were, this patch has bigger problems than a red line. A
+       Conditional here would convert "our own def got renamed and the fix stopped
+       applying" into silence. Verified 2026-08-23: 1 match. -->
   <Operation Class="PatchOperationAdd">
     <xpath>/Defs/XenotypeDef[defName="RimMandrakeYoderForceGremlin"]/genes</xpath>
     <value>
