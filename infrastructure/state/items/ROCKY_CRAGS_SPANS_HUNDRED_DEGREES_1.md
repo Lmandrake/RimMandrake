@@ -1,3 +1,31 @@
+## ✅ CLOSED 2026-08-23 on the owner's instruction — the decision was made and applied
+
+He answered it with a fourth option none of the three listed below anticipated:
+*"we will use HorrorWastes instead of RockyCrags for any tile above 0C"* — and told DECIDE
+to close this item immediately.
+
+**Applied the same day**, `ashkarr_warm_crags_to_horror.py --apply`, committed `eb7da875`:
+**339 tiles** moved, across `Knuckles` (78), `Tallow Ground` (58), `Glass Reach` (55),
+`Grinding Floor` (44), `Rimewall` (41), `Sunreach` (35).
+`AB_RockyCrags` **4,155 → 3,816**, span **101.8 → 82.0 °C**.
+
+⭐ **It also dissolved the `HorrorWastes` shell defect for free** — that biome's own def is a
+*dry region* with `Sand`/`Soil`/`SoilRich` terrain and `Plant_Agave`, i.e. a hot dry biome,
+which is exactly what the warm band is. It fits there with no def change at all.
+
+## ⚠️ What this item does NOT claim to have solved
+
+`HorrorWastes` now spans **94.7 °C** (−74.9 … +19.8), because it holds the warm band AND the
+468 cold nightside pockets. **The thermal problem moved; it did not go.**
+
+🔑 **That residual is NOT lost — it lives on `HORROR_WASTES_ON_NIGHTSIDE_1`**, which owns the
+468 pockets and is the item REP's incoming note bears on. ⛔ Do not re-file it here.
+
+⚠️ **And `AB_RockyCrags`' creature cast is re-opened by this**, since every tile it had above
+freezing now belongs to another biome. Also carried on the HorrorWastes item.
+
+---
+
 ## 🔴 THE OWNER ANSWERED THIS, 2026-08-23 — and picked none of the three options
 
 > *"we will use HorrorWastes instead of RockyCrags for any tile above 0C"*
