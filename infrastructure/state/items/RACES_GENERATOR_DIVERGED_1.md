@@ -98,3 +98,57 @@ captures carry the guy762 donor xenotypes and all three report 578 mods — meas
 The refusal itself is correct — regenerating really would ship 63 species against 69 on disk,
 and that would delete six from a live mod. Only the diagnosis is wrong. Find the true cause in
 `pick_species` before costing Option 1.
+
+---
+
+## ⬅ 2026-08-23, "generator wins" ATTEMPTED. Three real bugs fixed; the remainder is a DESIGN call.
+
+Owner ruled **generator wins**, so this was taken as far as it goes. It does not go all the
+way, and the reason is worth having precisely.
+
+### Fixed, and they were real
+1. **`species_table`'s disk fallback was never reaching two of its three callers.** The
+   function grew it on 2026-08-19; `main()` and the namer check still called
+   `species_table(x)` with no `donor_defs`. The function was fixed, its callers were not.
+2. **`pick_species` had only HALF a disk fallback.** Genes fell back to donor XML; the
+   METADATA did not. A donor xenotype on disk but absent from the dump — most of them, since
+   BTD's Harmony patch deletes the SWX and Outer Rim duplicates at load — rebuilt with blank
+   description, blank icon, `inheritable false`, `canGenerateAsCombatant false`. Measured on
+   Abednedo. New `_fields_from_xml` closes it. **Half a fallback is worse than none: it looks
+   like it works.**
+3. **Six species have no donor at all** — Anzati, Muun, Ortolan, Togorian (zero hits and zero
+   near-matches across all 97 donor XenotypeDefs), plus Herglic (donor carries no genes).
+   They exist only in this generator's own output. Now carried verbatim in `ORPHAN_XENOTYPES`
+   and emitted into the sorted catalogue.
+
+### 🔴 What stops it, and it is not a bug
+With all three fixed the species count matches — 69 in, 69 out — **and the rebuild is still
+356 genes lighter**: 1073 against the 1429 the mod ships. Whole families vanish: every
+`Outland_*` skin, `Outland_EggLayer`, `Outland_DeceleratedPregnancy`, `Outland_ThickSkin`.
+
+**The donor a species resolves to today is not the donor it was built from in August.** Which
+donor is *right* for each of 63 species is a question about how each species LOOKS — lore and
+appearance — not a mechanical port. ⇒ **That is DECIDE's, and it is the whole remaining job.**
+
+### ⭐ The guard is now able to see this, which it could not before
+`_shipped_gene_count()` + the gene check in `_guard_species_regression`. **A count of species
+is not a roster** — the species guard passed on a rebuild that stripped 356 genes, because a
+species that survives with half its appearance still counts as one species. The generator now
+refuses with the real number and names this item.
+
+⚠️ **NEAR-MISS on the way, recorded so it is not repeated:** adding `ORPHAN_XENOTYPES` and
+making the guard count it *without wiring the emission* passed the guard on a 63-species
+catalogue and **deleted 6 species and 6 pawn kinds from the live mod**, including that
+morning's `initialResistanceRange` work. Caught by diffing against git, reverted, 891 files
+verified in sync. 🔑 **A guard must count what was WRITTEN, never what is on hand to write.**
+
+### Where that leaves the three routes
+- **(1) Generator wins** — still the ruling, still correct, and now blocked only on the
+  per-species donor decision above. Everything mechanical is done.
+- **(2) File wins** — no longer necessary; the header is not the problem any more.
+- **(3) Split** — already how `DroidFemaleTexture_Fix.xml` carries the droid gender rule.
+
+**Next concrete step for DECIDE:** for each of the 63, decide whether the August gene list or
+the current donor's is right. The 356 differences are dominated by `Outland_*`, so the real
+question may be a single one — *is Outland Genetics a donor we still draw from?* — rather than
+63 separate ones.

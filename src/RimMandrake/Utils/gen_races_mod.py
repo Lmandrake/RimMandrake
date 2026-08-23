@@ -411,6 +411,44 @@ def _is_specific(gene, species):
     return bool(key) and key in re.sub(r"[^a-z]", "", gene.lower())
 
 
+
+def _fields_from_xml(el):
+    """The dump's `fields` shape, rebuilt from a donor's XML element.
+
+    🔴 THE SAME ONE-WAY LEAK AS `species_table`, one field set later. `pick_species`
+    was given a read-the-donors'-XML fallback for GENES on 2026-08-19, but the
+    species' METADATA — description, iconPath, inheritable, canGenerateAsCombatant,
+    combatPowerFactor — kept coming from the dump alone. A donor xenotype that is on
+    disk but absent from the dump (BTD's Harmony patch deletes the SWX and Outer Rim
+    duplicates at load, so most of them are) therefore built with EMPTY metadata:
+    blank description, blank icon, `inheritable false`, `canGenerateAsCombatant
+    false`. MEASURED 2026-08-23 on Abednedo — `OuterRim_Abednedo` is in the donor XML
+    and not in the dump, and regenerating blanked all four.
+
+    Half a fallback is worse than none: it looks like it works.
+    """
+    def t(tag, default=None):
+        v = el.findtext(tag)
+        return default if v is None else v
+    f = {}
+    for tag in ("label", "description", "iconPath", "nameMaker", "nameMakerFemale"):
+        v = el.findtext(tag)
+        if v is not None:
+            f[tag] = v
+    for tag in ("inheritable", "canGenerateAsCombatant"):
+        v = el.findtext(tag)
+        if v is not None:
+            f[tag] = (v.strip().lower() == "true")
+    for tag in ("combatPowerFactor", "chanceToUseNameMaker"):
+        v = el.findtext(tag)
+        if v is not None:
+            try:
+                f[tag] = float(v)
+            except ValueError:
+                pass
+    return f
+
+
 def pick_species(x, g, donor_defs):
     """Compose each species from the DONORS' XML ON DISK, unioning head genes.
 
@@ -472,7 +510,9 @@ def pick_species(x, g, donor_defs):
             if not glist:
                 skipped.append((species, "every gene unresolvable: %s" % missing[:3]))
                 continue
-        built.append(dict(species=species, src=src, f=(x.get(src) or {}).get("fields", {}),
+        # dump first, donor XML second - see _fields_from_xml for why both are needed
+        _f = (x.get(src) or {}).get("fields", {}) or _fields_from_xml(base_el)
+        built.append(dict(species=species, src=src, f=_f,
                           genes=glist, headless=not [n for n in glist if _forces_head(n, g, donor_defs)]))
     if stripped:
         print("== genes STRIPPED (owner's ruling: never drop a species for a gene)")
@@ -827,6 +867,14 @@ def write_xenotypes(built, defmap, x, tbl):
             ET.SubElement(gl, "li").text = \
                 defmap.get(gn, JAWA_GENES.get(gn, gn))
         els.append(e)
+    # 🔑 The six species no donor defines. They are parsed from their verbatim XML
+    # and merged into the SAME sorted order the rest come out in, so the file reads
+    # as one catalogue rather than 63 plus an appendix. See ORPHAN_XENOTYPES for why
+    # they cannot simply be built like the others.
+    # ⛔ This is the step whose absence made the guard pass on a 63-species output.
+    for _name, _xml in ORPHAN_XENOTYPES.items():
+        els.append(ET.fromstring(_xml))
+    els.sort(key=lambda el: el.findtext("defName") or "")
     write_xml(os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml"),
               header("RimMandrakeXenotypes.xml",
                      "One XenotypeDef per species. Gene lists are inherited from "
@@ -934,6 +982,32 @@ def _shipped_species_count():
         return len(ET.parse(p).getroot().findall("XenotypeDef"))
     except ET.ParseError:
         return 0
+
+
+def _shipped_gene_count():
+    """How many GENE entries the shipped xenotypes carry, in total.
+
+    🔴 A COUNT OF SPECIES IS NOT A ROSTER, and this is the proof. On 2026-08-23 the
+    species guard was satisfied — 69 in, 69 out — and the regeneration was STILL
+    lossy: the shipped catalogue carries **1429** gene entries and the rebuild
+    produced **1073**. 356 genes gone, whole families with them (every `Outland_*`
+    skin, `Outland_EggLayer`, `Outland_DeceleratedPregnancy`, `Outland_ThickSkin`),
+    because the donor a species resolves to today is not the donor it was built
+    from in August.
+
+    A species that survives with half its genes is exactly the silent loss the
+    species guard exists to prevent, and counting species could never see it.
+    """
+    p = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
+    if not os.path.exists(p):
+        return 0
+    try:
+        root = ET.parse(p).getroot()
+    except ET.ParseError:
+        return 0
+    return sum(len(gl.findall("li"))
+               for xd in root.findall("XenotypeDef")
+               for gl in xd.findall("genes"))
 
 
 
@@ -1209,12 +1283,36 @@ def _guard_species_regression(built, skipped):
     ORPHAN_XENOTYPES) and EMIT them — not to relax this guard. Making the guard
     count the table without emitting it was tried on 2026-08-23 and deleted six
     species and six pawn kinds from the live mod. Reverted from git."""
-    # 🔴 DO NOT ADD len(ORPHAN_XENOTYPES) HERE. Tried 2026-08-23 and it was a
-    # NEAR-MISS: the table alone does not put the six in the OUTPUT, so the guard
-    # passed on a catalogue of 63 and the generator deleted 6 species and 6 pawn
-    # kinds from the live mod. Caught by diffing, reverted from git. The guard must
-    # count what was actually WRITTEN, never what is merely on hand to write.
-    have, want = len(built), _shipped_species_count()
+    # ⚠️ The +len(ORPHAN_XENOTYPES) is legitimate ONLY because write_xenotypes now
+    # actually emits them, and it was NOT on 2026-08-23: the table existed, the
+    # guard counted it, nothing wrote it, and the generator deleted 6 species and
+    # 6 pawn kinds from the live mod while reporting success. Caught by diffing,
+    # reverted from git.
+    # 🔑 THE RULE THAT COST: a guard must count what was WRITTEN, never what is
+    # merely on hand to write. If you ever split these two again, delete this term.
+    have, want = len(built) + len(ORPHAN_XENOTYPES), _shipped_species_count()
+
+    # ⭐ THE GENE GUARD. Added 2026-08-23 after the species guard passed on a
+    # rebuild that was still 356 genes lighter. Checked FIRST because it is the
+    # one that catches the subtler loss, and a message about species would send
+    # the reader down the wrong path entirely.
+    have_g = sum(len(b["genes"]) for b in built) + sum(
+        x.count("<li>") for x in ORPHAN_XENOTYPES.values())
+    want_g = _shipped_gene_count()
+    if want_g and have_g < want_g:
+        raise SystemExit(
+            "REFUSING TO WRITE: the species count matches (%d) but the rebuild "
+            "carries %d gene entries against the %d the mod ships — %d would be "
+            "LOST.\n"
+            "A count of species is not a roster: every species survives and some "
+            "of them come back with their appearance stripped.\n"
+            "CAUSE (measured 2026-08-23): the donor a species resolves to now is "
+            "not the donor it was built from in August, so whole families go — "
+            "Outland_* skins, Outland_EggLayer, Outland_ThickSkin.\n"
+            "This is NOT a bug to route around. Deciding which donor is right for "
+            "each species is a design call: RACES_GENERATOR_DIVERGED_1."
+            % (have, have_g, want_g, want_g - have_g))
+
     if want and have < want:
         lost = "\n  ".join("%-14s %s" % (s, why) for s, why in skipped)
         raise SystemExit(
