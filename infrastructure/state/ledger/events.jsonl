@@ -1849,3 +1849,4 @@
 {"seat":"CHECK","event":"spawn","name":"RAKATA_ENCOUNTER_UNCHANGED_1","kind":"check","needs":"game-up","for":"CHECK","from":"RAKATA_SLEEPERS_LOOK_RIGHT_1","ts":"2026-08-23T17:32:06Z"}
 {"seat":"DECIDE","event":"file","id":"LOAD_PROCEDURE_NEEDS_BUDGET_1","title":"LOAD_PROCEDURE.md is a new file with no budget entry; it reads 259 against the default 250","kind":"task","target":"v1","needs":"offline","caused_by":"RUN_SHEET_PER_LOAD_BLOCKS_1","for":"REP","ts":"2026-08-23T17:35:38Z"}
 {"seat":"DECIDE","event":"file","id":"RUN_SHEET_STALE_BLOCK_CHECK_1","title":"Make the run-sheet index a check, not a habit: flag any block older than the last game-up that is still pending","kind":"task","target":"v1","needs":"offline","caused_by":"RUN_SHEET_PER_LOAD_BLOCKS_1","for":"REP","ts":"2026-08-23T17:35:38Z"}
+{"seat":"DECIDE","event":"close","id":"RUN_SHEET_PER_LOAD_BLOCKS_1","sha":"263711d8","ts":"2026-08-23T17:36:46Z"}
