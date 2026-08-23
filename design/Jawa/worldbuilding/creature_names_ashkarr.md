@@ -89,6 +89,21 @@ without a codex.
 | sivatherium | **obbakar** | SUPER | ⭐ bestiary's own elder-form of `obbak` |
 | titanoboa | **ssorrakoth** | SUPER | elder form of `ssorrak` |
 
+## ⚠️ Four names are RESERVE, not live — and this is a drift the doc caused
+
+**`Protovermes` → ssik · `Compsognathus` → sskek · `dinornis` → kessik · `sivatherium` → obbakar.**
+
+All four **exist in the dump**. They are not broken defs. They were in the cast when this
+table was written and **fell out of it when the cast was re-run twice afterwards** — once
+for density-scaled commonality, once for the diet constraints. The generator emits no
+rename for them because it only renames what is cast.
+
+🔑 **The names stand as reserve.** If any of the four returns to a cast, its name is already
+coined and in-clade. ⛔ **Do not read an empty rename as a missing def** — `gen_name_patch.py`
+now says so out loud when the list is non-empty.
+⚠️ **The lesson: this doc is authored against a SNAPSHOT of the cast.** Re-run the generator
+after any re-cast, and read its warning.
+
 ## What this does NOT change
 ⛔ **No `defName` is touched.** A rename is `<label>` and `<description>` only. defNames are
 referenced by quests, incidents and other mods' patches, and changing one breaks them

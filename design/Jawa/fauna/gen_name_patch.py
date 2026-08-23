@@ -63,6 +63,12 @@ def main():
     print(f"wrote {OUT}: {len(pairs)} renames")
     if unmatched:
         print(f"⚠️ {len(unmatched)} table rows matched no cast creature: {unmatched}")
+        print("   These are NOT missing defs. They are names authored against an older cast:")
+        print("   the cast was re-run after the naming doc was written (density scaling, then")
+        print("   diet constraints) and these creatures fell out of it. The names are held in")
+        print("   reserve - if the creature returns to a cast, its name is already coined.")
+        print("   🔴 If this list is ever non-empty, RE-READ the doc against the cast before")
+        print("      assuming a def is broken.")
 
 if __name__ == '__main__':
     main()
