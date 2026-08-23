@@ -62,3 +62,27 @@ is now closed. That is a DECIDE call on whether the species list is finished.
 - Filed by REP from git history plus a read of the generator. Nobody has attempted a
   regeneration; that the diff is "only initialResistanceRange plus today's edits" is
   UNVERIFIED and is the first thing to establish.
+
+---
+
+## ⬅ UPDATE 2026-08-23 by BUILD — the resistance fix shipped WITHOUT regenerating
+
+`PAWNKIND_RESISTANCE_UNDEFINED_1` / `SPECIES_KINDS_NO_RESISTANCE_1` are closed, and this
+item's warning is why they were closed the way they were. `initialResistanceRange`
+`10~20` — the same value the generator holds at line 912 — was written onto all 69 kinds
+**in the XML**, not by running the generator. So the booby trap in this item's first
+bullet was never sprung: robes/hoods and faction colours are intact.
+
+🔑 **A third fact, measured today, changes what "run the generator" costs.**
+`gen_races_mod.py` no longer *can* be run: it **REFUSES**, because it would ship 63
+species against the 69 on disk. `pick_species` reads the def dump at
+`captures/2026-08-23T07-12-04Z`, which was captured with the donor mods switched off, so
+their xenotypes are absent. ⇒ **Option 1 (generator wins) is now blocked on a second
+defect** — fix `pick_species` to fall back to the donors' XML the way `_gene_exists`
+does, or take a dump with `guy762.starwarsxenotypes` and `neronix17.outerrim.galacticdiversity`
+active — *before* any porting work is worth starting.
+
+✅ **The header no longer lies.** `RimMandrakePawnKinds.xml` now says it is hand-owned,
+names the three edits the generator has never heard of, and points here. That was the
+part of this item that was actively costing people; what remains is the genuine choice
+between the three options above.

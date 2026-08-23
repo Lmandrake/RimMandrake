@@ -1935,3 +1935,5 @@
 {"seat":"OWNER","event":"close","id":"HAR_PREGNANCY_PATCH_FAILS_1","sha":"6c884e30","ownerSaid":"I can answer you right now: no, we don't care about cross-species fertility.","override":"OWNER may not `close` HAR_PREGNANCY_PATCH_FAILS_1 — it belongs to DECIDE. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-08-23T18:48:48Z"}
 {"seat":"DECIDE","event":"file","id":"PLANT_TOLERANCES_DEPLOY_1","title":"Deploy PlantTolerances_Ashkarr.xml with the flora patch, or the flora load proves nothing","kind":"task","target":"v1","caused_by":"NORMALIZE_TEMPERATURE_TOLERANCES_1","for":"BUILD","ts":"2026-08-23T18:50:06Z"}
 {"seat":"DECIDE","event":"needs","id":"PLANT_TOLERANCES_DEPLOY_1","to":"deploy","ts":"2026-08-23T18:50:25Z"}
+{"seat":"BUILD","event":"close","id":"SPECIES_KINDS_NO_RESISTANCE_1","sha":"176ffa50","ts":"2026-08-23T18:50:27Z"}
+{"seat":"BUILD","event":"close","id":"PAWNKIND_RESISTANCE_UNDEFINED_1","sha":"176ffa50","ts":"2026-08-23T18:50:27Z"}
