@@ -430,3 +430,84 @@ as evidence and reporting `303 / 5252 / 2224` RED for MegafaunaYield, `Jawa_Patc
 `JawaVoice`. All three now read `0 / 0 / 2`. **Any number quoted from the old tool is suspect.**
 
 ---
+
+
+---
+
+## 📦 The 2026-08-22 evening load's header block, archived 2026-08-23 by DECIDE
+
+**Why it moved:** it stood at the top of `NEXT_RELOAD.md` announcing 🔴 *"F1 is the gate:
+`Exception loading def from file Biomes_` must be 0. It was 22"*. **Measured 2026-08-23: the
+live capture holds 80 BiomeDefs.** The gate is passed, the `<li>` defect is fixed, and the
+block was telling whoever launched next to stop at a gate that is already green. That is a
+correctness fault, not only length. Everything below is preserved verbatim.
+
+> ## 🔴 THE 2026-08-22 EVENING LOAD RAN, AND IT IS SPENT — REP, 2026-08-22 23:5x
+>
+> **Everything below this block was written at 21:50 for THAT load.** It is history now,
+> not a plan. Read it for the offline verifications it banked (still valid); do not read
+> it as the run sheet for the next launch.
+>
+> **Score: 7 of 8 signatures passed. F6 FAILED — 3,037 `Could not resolve cross-reference`
+> against a baseline of 25.** Cause measured, not guessed: **26 of the planet's 28 BiomeDefs
+> did not exist in the running game.** Our own generated `BiomeCast_Ashkarr.xml` wrote
+> `<li>` wrappers into `wildAnimals`, whose `LoadDataFromXmlCustom` reads the node NAME as
+> the animal — `ArgumentNullException`, and RimWorld discarded the whole BiomeDef, 22 times.
+> ⚠️ **It is the same shape as the `SkillGain` bug this file celebrates fixing above** —
+> `<li>` inside a custom-loader field — found in a different generator a day later.
+> It escalated past cosmetic: world generation itself now dies in
+> `WorldPathGrid.CalculatedMovementDifficultyAt` on a null biome, so **no new game can start
+> in a process that loaded the broken file.**
+>
+> ### 🔑 THE NEXT LOAD IS THE BIOME RESTORATION LOAD, AND IT HAS A GATE
+>
+> **Its five signatures are already written, before the launch, as the waiver requires** —
+> the block headed *"the BIOME RESTORATION load"* at the foot of
+> `infrastructure/state/EXPECTED_FAILURES_next_load.md`. ⚠️ **That block is numbered `§6`
+> and `§6` is already a closed load with a filled Results table** — filed as
+> `BIOME_BLOCK_MISNUMBERED_SIX_1` for CHECK. Read it by its title, not its number, until
+> that is fixed.
+>
+> 🔴 **F1 is the gate: `Exception loading def from file Biomes_` must be 0. It was 22.**
+> Until it reads 0, **nothing else on this load is attributable** — a missing biome poisons
+> world gen, faction placement, animal spawns and every count downstream of them. Score F1
+> first and stop if it fails.
+>
+> ### WHAT IS QUEUED BEHIND THE GATE — measured 2026-08-22 23:5x, not remembered
+>
+> ```
+> grep -c "^needs:    \(bridge\|game-up\|harvest\)" infrastructure/state/queue/*.md
+> ```
+>
+> | seat | doing | ready | proposed | total gated on a load |
+> |---|---|---|---|---|
+> | **BUILD** | 10 | 14 | 5 | **29** |
+> | **CHECK** | 6 | 9 | 16 | **31** |
+> | **DECIDE** | 1 | 0 | 0 | **1** |
+> | | **17** | **23** | **21** | **61** |
+>
+> ⭐ **40 are ready for testing** (`doing` + `ready` — claimed by a seat and unblocked).
+> ⚠️ **21 are `proposed`** — filed, nobody has taken them. They are not "ready"; a proposed
+> item has no seat committed to reading its result, and riding one on a load usually buys
+> an unread answer. Claim it first or leave it.
+>
+> ⛔ **AND THE HONEST GAP: most of those 40 carry no named decision string.** §2 of
+> `skills/rimworld-load-round/SKILL.md` is explicit — *"an item with no named string is not
+> verifiable; it is a hope."* Only the five biome signatures are written down for this load.
+> **Whoever launches owes the rest a string and a baseline BEFORE the game starts**, and
+> that is per item, in its own seat's hand.
+>
+> ### ⏳ Two things the DOWN window is the only chance for
+>
+> 1. **Assemblies deploy only while the game is closed** — the OS locks them otherwise.
+> 2. **The previous `Player.log` is overwritten at next launch.** The evening load's log is
+>    the only evidence for the biome diagnosis; copy it out before launching.
+>
+
+
+> 📦 **The 2026-08-22 evening load's hold-condition block and its pre-load brief moved to
+> `infrastructure/state/NEXT_RELOAD_ARCHIVE.md` on 2026-08-23** — that load ran and is scored.
+> Nothing was deleted. ⚠️ This is the SECOND time this file has had to be cleared of a spent
+> load; the standing fix is per-load blocks with an index, filed as `RUN_SHEET_PER_LOAD_BLOCKS_1`.
+
+

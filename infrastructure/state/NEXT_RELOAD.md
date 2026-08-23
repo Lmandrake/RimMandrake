@@ -1,194 +1,107 @@
 # NEXT_RELOAD.md — the run sheet for the NEXT game load
 
-> ## 🔴 THE 2026-08-22 EVENING LOAD RAN, AND IT IS SPENT — REP, 2026-08-22 23:5x
+
+> ## ✅ The 2026-08-22 evening load is SPENT and its gate is PASSED — DECIDE, 2026-08-23
 >
-> **Everything below this block was written at 21:50 for THAT load.** It is history now,
-> not a plan. Read it for the offline verifications it banked (still valid); do not read
-> it as the run sheet for the next launch.
+> That load's header block — the F1 biome gate, its queue table and its scoring — is in
+> `infrastructure/state/NEXT_RELOAD_ARCHIVE.md`. **Measured 2026-08-23: 80 BiomeDefs in the
+> live capture**, so the `<li>`-in-`wildAnimals` defect that discarded 26 of them is fixed
+> and F1 no longer gates anything.
 >
-> **Score: 7 of 8 signatures passed. F6 FAILED — 3,037 `Could not resolve cross-reference`
-> against a baseline of 25.** Cause measured, not guessed: **26 of the planet's 28 BiomeDefs
-> did not exist in the running game.** Our own generated `BiomeCast_Ashkarr.xml` wrote
-> `<li>` wrappers into `wildAnimals`, whose `LoadDataFromXmlCustom` reads the node NAME as
-> the animal — `ArgumentNullException`, and RimWorld discarded the whole BiomeDef, 22 times.
-> ⚠️ **It is the same shape as the `SkillGain` bug this file celebrates fixing above** —
-> `<li>` inside a custom-loader field — found in a different generator a day later.
-> It escalated past cosmetic: world generation itself now dies in
-> `WorldPathGrid.CalculatedMovementDifficultyAt` on a null biome, so **no new game can start
-> in a process that loaded the broken file.**
+> 🔑 **The rule that outlived it, and the reason this file keeps repeating the lesson:**
+> `<li>` inside a `LoadDataFromXmlCustom` field makes RimWorld discard the WHOLE def,
+> silently. It has now cost BiomeDefs twice and CharacterDefs once. Check the class before
+> writing the XML shape.
 >
-> ### 🔑 THE NEXT LOAD IS THE BIOME RESTORATION LOAD, AND IT HAS A GATE
->
-> **Its five signatures are already written, before the launch, as the waiver requires** —
-> the block headed *"the BIOME RESTORATION load"* at the foot of
-> `infrastructure/state/EXPECTED_FAILURES_next_load.md`. ⚠️ **That block is numbered `§6`
-> and `§6` is already a closed load with a filled Results table** — filed as
-> `BIOME_BLOCK_MISNUMBERED_SIX_1` for CHECK. Read it by its title, not its number, until
-> that is fixed.
->
-> 🔴 **F1 is the gate: `Exception loading def from file Biomes_` must be 0. It was 22.**
-> Until it reads 0, **nothing else on this load is attributable** — a missing biome poisons
-> world gen, faction placement, animal spawns and every count downstream of them. Score F1
-> first and stop if it fails.
->
-> ### WHAT IS QUEUED BEHIND THE GATE — measured 2026-08-22 23:5x, not remembered
->
-> ```
-> grep -c "^needs:    \(bridge\|game-up\|harvest\)" infrastructure/state/queue/*.md
-> ```
->
-> | seat | doing | ready | proposed | total gated on a load |
-> |---|---|---|---|---|
-> | **BUILD** | 10 | 14 | 5 | **29** |
-> | **CHECK** | 6 | 9 | 16 | **31** |
-> | **DECIDE** | 1 | 0 | 0 | **1** |
-> | | **17** | **23** | **21** | **61** |
->
-> ⭐ **40 are ready for testing** (`doing` + `ready` — claimed by a seat and unblocked).
-> ⚠️ **21 are `proposed`** — filed, nobody has taken them. They are not "ready"; a proposed
-> item has no seat committed to reading its result, and riding one on a load usually buys
-> an unread answer. Claim it first or leave it.
->
-> ⛔ **AND THE HONEST GAP: most of those 40 carry no named decision string.** §2 of
-> `skills/rimworld-load-round/SKILL.md` is explicit — *"an item with no named string is not
-> verifiable; it is a hope."* Only the five biome signatures are written down for this load.
-> **Whoever launches owes the rest a string and a baseline BEFORE the game starts**, and
-> that is per item, in its own seat's hand.
->
-> ### ⏳ Two things the DOWN window is the only chance for
->
+> ⏳ **Two things the DOWN window is still the only chance for:**
 > 1. **Assemblies deploy only while the game is closed** — the OS locks them otherwise.
-> 2. **The previous `Player.log` is overwritten at next launch.** The evening load's log is
->    the only evidence for the biome diagnosis; copy it out before launching.
+> 2. **The previous `Player.log` is overwritten at next launch** — copy it out first.
 >
-
-
-> 📦 **The 2026-08-22 evening load's hold-condition block and its pre-load brief moved to
-> `infrastructure/state/NEXT_RELOAD_ARCHIVE.md` on 2026-08-23** — that load ran and is scored.
-> Nothing was deleted. ⚠️ This is the SECOND time this file has had to be cleared of a spent
-> load; the standing fix is per-load blocks with an index, filed as `RUN_SHEET_PER_LOAD_BLOCKS_1`.
-
+> ⚠️ This is the second clearing of a spent load from this file; the standing fix is
+> per-load blocks with an index, filed as `RUN_SHEET_PER_LOAD_BLOCKS_1`.
 
 ---
 
 ## 1. 🔻 WHILE THE GAME IS DOWN — the only window for a deploy
 
-Everything in this section is inert or refused while RimWorld runs. If the game is
-already up, skip to §2.
+Everything here is inert or refused while RimWorld runs. If the game is up, skip to §2.
 
-### 1.0 ✅ THE DEPLOY MANIFEST IS EMPTY — reassembled DECIDE, 2026-08-22 13:05
+### 1.0 The deploy manifest is empty — but re-run the planner anyway
 
-> 🔴 **The 2026-08-15 manifest that stood here is GONE, and every row of it has shipped.**
-> It listed six numbered deploys against legacy IDs (`B1`/`B0`, `C38`, `C39`, `C41`, `B25`,
-> `B23`). Leaving it would have sent someone to re-deploy work that landed a week ago —
-> which is exactly how this sheet became dangerous rather than merely old.
-
-**Measured 2026-08-22 12:50, not assumed:** `deploy_custom_mods.py` reports **everything in
-sync**, 0 pending, 14 files held on purpose (the WreckedMachines v2 park). The companion is
-deployed at **`7be4d084`**. ⇒ **Nothing is waiting on this window.**
-
-⛔ **Do not skip the window anyway — re-run the planner before launching.** BUILD may land an
-assembly between now and the launch, and an assembly cannot be written while the game runs.
+⛔ **BUILD may land an assembly between now and launch, and an assembly cannot be written
+while the game runs.** Never quote a stored sync state; measure it.
 
 ```
 python3 src/RimMandrake/Utils/deploy_custom_mods.py            # plan only
 python3 src/RimMandrake/Utils/deploy_custom_mods.py --apply    # only if the plan is non-empty
 ```
 
-### The ordering doctrine — still true, and the reason the old manifest was numbered
+**The ordering doctrine — keep these whenever a deploy DOES appear:**
 
-Keep these whenever a deploy DOES appear; they are what the dead table was really carrying.
-
-- 🔴 **An assembly deploys SOLO.** Every call in §3–§6 is a `jawa/*` call, so a wrong companion
-  poisons every result after it. Two new DLLs in one load is a bisection you pay for later.
-- 🔴 **A new mod's `ModsConfig.xml` position is part of the deploy**, not a follow-up. A Harmony
-  patch mod must sit **after `brrainz.harmony`** or the postfix never binds; a reskin must sit
-  **after the mod it reskins** or the labels change and the art does not.
-- 🔑 **`ModsConfig.xml` is NOT gated on this window** (§1b). No config file ever waits — owner's
-  ruling 2026-08-15. Only assemblies wait, because the OS locks them.
+- 🔴 **An assembly deploys SOLO.** Every call in §3–§6 is a `jawa/*` call, so a wrong
+  companion poisons every result after it. Two new DLLs in one load is a bisection you pay
+  for later.
+- 🔴 **A new mod's `ModsConfig.xml` position is part of the deploy**, not a follow-up. A
+  Harmony patch mod must sit **after `brrainz.harmony`** or the postfix never binds; a reskin
+  must sit **after the mod it reskins** or the labels change and the art does not.
+- 🔑 **`ModsConfig.xml` is NOT gated on this window** (§1b). Only assemblies wait, because the
+  OS locks them.
 - **Expected-failure signatures land BEFORE launch**, never after — a signature invented after
   reading the log is a story that fits, not evidence. `EXPECTED_FAILURES_next_load.md`.
-- **`refresh.py` is NOT a launch gate** (DECIDE, 2026-08-15). The dump is armed at step 0 and
-  STARTUP recaptures it, so a dump rebuilt now is superseded ~25 minutes later. It runs in §9.
+- **`refresh.py` is NOT a launch gate.** The dump is armed at step 0 and STARTUP recaptures it,
+  so a dump rebuilt now is superseded ~25 minutes later. It runs in §9.
 
-📌 **The window is not the load.** Steps 2 and 3 only make §5 collectable; nothing here
-is finished until the game is up and §5 runs.
+📌 **The window is not the load.** Nothing here is finished until the game is up and §5 runs.
 
-### 1a. Arm the def dump — worth doing, and it closes one real gap. ✅ done 13:27.
+### 1a. Arm the def dump — armed before launch or not at all
 
 ```bash
 echo all > "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/dump_request.txt"
 ```
 
-**Read at STARTUP only** — armed before launch or not at all. 18.7 s. Do it because this
-window deploys three mods, and for the one-way gap below.
+**Read at STARTUP only.** ~19 s. 🪤 The marker is **not consumed** — delete it afterwards or
+every future load pays again.
 
-⚠️ **The gap is ONE mod and it runs ONE way.** Dump `modCount` 576, live `activeMods`
-575; the diff is `regrowth.botr.boilingforest` in the dump and **nothing** missing from
-it. So nothing that loads is unseen by `--defs` — but the dump still carries defs from
-a mod that no longer loads, and an xpath onto *those* validates **clean** while matching
-**nothing** in game. Live instance: `JawaWorld_BiomeMix.xml:140` scores
-`RG_BoilingForest`. Re-arming closes it.
+⚠️ **A dump can carry defs from a mod that no longer loads**, and an xpath onto those
+validates **clean** while matching **nothing** in game. Re-arming closes it.
 
-🔴 **Two escalations on 2026-08-15 — mine and REP's — were both wrong, both from
-reading AGE.** This section briefly claimed the dump was from 2026-08-14 and described
-a dead def universe. It was captured **that same day** (`capturedUtc
-2026-08-15T15:10:11Z`, mode `all`), with `mandrake.starwarsraces` present and all three
-donors gone.
-- `defs/` reads `Aug 14 01:20` because the dump **overwrites files in place** — no
-  entries created or deleted, so the **directory mtime never moves.** It is not the
-  contents' mtime. Any tool that rewrites a fixed set of filenames leaves one behind.
-- **The verdict that was right throughout was `refresh.py`'s**, because it keys on the
-  **load-set fingerprint**, not the clock — and it named the one real mod.
-⇒ **Trust the fingerprint over any timestamp — folder, file or manifest.** Dump
-location and freshness are published by the seat that measures them:
-`infrastructure/state/observed/LIVE.md`. Read that; do not re-derive it here.
+🔴 **Trust the FINGERPRINT over any timestamp — folder, file or manifest.** The dump
+overwrites files in place, so the directory mtime never moves and reads days stale while the
+contents are current. `refresh.py` keys on the load-set fingerprint, which is why its verdict
+survives when age-based ones do not. Location and freshness are published by the seat that
+measures them: `infrastructure/state/observed/LIVE.md`. Read that; do not re-derive it here.
 
 ### 1b. `ModsConfig.xml` — BUILD's alone, and NOT gated on this window
 
-🔴 **Owner's ruling, 2026-08-15: nothing blocks on RimSort, or on the game being
-closed, for a config file of any kind. Never ask whether RimSort is open.** It does
-not autosave, and the owner will not click Save without asking first. So there is no
-collision to race, no mtime to read first, and no window to wait for. Write it.
+🔴 **Owner's ruling, 2026-08-15: nothing blocks on RimSort, or on the game being closed, for a
+config file of any kind. Never ask whether RimSort is open.** RimWorld does not rewrite it on
+exit. A mod-list change takes effect **only at startup**; editing while the game runs is inert,
+not destructive — reading the running game as evidence the edit "failed" is the trap. After an
+external edit RimSort's in-memory view is stale, and the whole mitigation is one sentence to
+the owner: *"RimSort is open — hit Refresh."*
 
-**RimWorld does not rewrite it on exit** either — measured twice. This section is in
-§1 for ordering convenience only; a config edit is legal at any moment, game up or
-down. The down-window is for **assemblies**, which the OS locks while the game runs.
+⛔ **The mechanoid subject is SHUT — owner 2026-08-15, both halves.** They STAY, and there is
+no mech art review. Do not re-derive the cut from any other doc.
 
-A mod-list change takes effect **only at startup**. Editing while the game runs is
-inert, not destructive — reading the running game as evidence the edit "failed" is
-the trap.
+🔴 **`com.yayo.yayoAni.continued` stays DISABLED — owner, firsthand 2026-08-15:** lightsabres
+are significantly displaced from where they should be during attack.
 
-After an external edit, RimSort's in-memory view is stale. The whole mitigation is
-one sentence to the owner: *"RimSort is open — hit Refresh."*
-
-⛔ **THE WHOLE MECHANOID SUBJECT IS SHUT — owner 2026-08-15, both halves.** They STAY
-(reversing this file's morning text), B25(c) is dead, and there is **no mech art review**
-either. `review/mech_register.html` needs no eyes and schedules nothing. Do not re-derive
-the cut from the O-v2 line in any other doc.
-
-Standing change when a list edit is next made: **disable
-`com.yayo.yayoAni.continued`**. 🔴 **Owner, firsthand, 2026-08-15: Yayo stays out** —
-lightsabres are **significantly displaced from where they should be during attack**,
-not merely the up-and-behind-on-draft artifact this line used to cite unsourced. The
-ruling is the owner's observation, not a `[v2]` deferral.
-
-Then `python.exe src/RimMandrake/Utils/refresh.py` — **Windows** interpreter; WSL's
-`python3` fails on the Windows paths with a bare `cannot read ModsConfig`.
+Then `python.exe src/RimMandrake/Utils/refresh.py` — **Windows** interpreter; WSL's `python3`
+fails on the Windows paths with a bare `cannot read ModsConfig`.
 
 ### 1c. 🔴 The five deploy traps. Each has cost a load or nearly did.
 
 | trap | what it does |
 |---|---|
-| **`--apply` bare** | overwrites the game copy from the repo **including a peer's half-finished work**. Always scope it: `deploy_custom_mods.py --mod <name> --apply`. ⚠️ **There is no `--plan` flag** — it is an argparse *error*, and the tool is **dry-run by default**. Eleven docs said `--plan` (fixed 2026-08-15); a seat copying one got a usage error, not a plan, and the dangerous misread is "the dry run did nothing, so I'll just `--apply`" |
+| **`--apply` bare** | overwrites the game copy from the repo **including a peer's half-finished work**. Always scope it: `deploy_custom_mods.py --mod <name> --apply`. ⚠️ **There is no `--plan` flag** — it is an argparse *error*, and the tool is **dry-run by default**. The dangerous misread is "the dry run did nothing, so I'll just `--apply`" |
 | **companion built without `--gm`** | silently **strips `jawa/fire_incident` and `jawa/send_letter`** off the game copy. The build refusing by default is the guard working. A low tool count looks identical to a stale build — check which you passed before concluding anything |
 | **`strings -a`** | scans 7-bit ASCII, so a method-body literal (UTF-16LE, `#US` heap) reads as **ABSENT**. It proves a tool **name** and nothing about its body. **Use `strings -a -el`** |
 | **deploying after launch** | RimWorld reads defs **once, at startup**. A def written after the process started is invisible to it while looking perfectly deployed on disk. Check with `find "<Steam>/Mods" -newermt "<process StartTime>"` before believing any no-show |
 | **a new assembly in a mixed batch** | poisons attribution for everything beside it. Deploy an assembly **solo**. ⚠️ The write fails `OSError 22` while the game runs — loaded and locked; the refusal is safe, it cannot truncate |
 
-📐 **If the window gets tight, §1.0's order IS the ranking** — it is sorted by what
-the window destroys, not by severity. A severe bug whose fix is already live is not
-a claim on a scarce window.
+📐 **If the window gets tight, §1.0's order IS the ranking** — sorted by what the window
+destroys, not by severity. A severe bug whose fix is already live is not a claim on a scarce
+window.
 
 ---
 
@@ -476,20 +389,14 @@ per-seat queues.
 
 ## 10. 🧪 INHABITED — ⛔ NOT a first run any more. Owner: *"full 578 now, minimal after"*, 2026-08-20
 
-> 🔴 **RENUMBERED AND ITS PREMISE CORRECTED — DECIDE, 2026-08-22.** This was a second `## 9.`,
-> which is why cross-references to "§9" were ambiguous. **It is §10.**
->
-> ⛔ **`Inhabited` is NOT a first run.** It ran on 2026-08-21/22 and loaded **193 of 294**
+> 🔴 **`Inhabited` is NOT a first run.** It ran on 2026-08-21/22 and loaded **193 of 294**
 > characters, because all 101 CharacterDefs carrying a `<skills>` block were discarded at def
-> load. The sequence below says a positive sighting settles the architecture gate — **it cannot,
-> while a third of the cast is absent.**
+> load. ✅ The fix has landed and regenerates byte-identical.
 >
-> ✅ **The fix has landed** (`c6060ae8`, `b24dde99`) and regenerates byte-identical, so the
-> sequence below MAY now be run. 🔑 **But its baseline is valid ONLY if `[Inhabited] ready:`
-> reads 294.** If it reads **193**, the fix did not reach the game: **stop, and no number in
-> this section counts.**
-> ⚠️ **Do not delete this sequence.** The first-run test is still the right test — it was the
-> ORDERING that broke. It has to run after the cast fix, not before.
+> 🔑 **The baseline below is valid ONLY if `[Inhabited] ready:` reads 294.** If it reads
+> **193**, the fix did not reach the game: **stop, and no number in this section counts.**
+> ⚠️ **Do not delete this sequence.** The first-run test is the right test — it was the
+> ORDERING that broke; it has to run after the cast fix, not before.
 
 **On THIS load (578).** Reach a quicktest colony, then dev menu → **Inhabited**:
 `Create place at current tile` → `Stuff roster (3 pawns)` → `Report roster`.
@@ -515,58 +422,39 @@ so it costs **two** loads. ~45 s on minimal against ~50 min on the 578.
 
 ---
 
-## 🌱 BIOME FLORA — 24 rosters replaced, DEPLOYED 2026-08-23 03:27, never yet loaded
+## 🌱 BIOME FLORA + 🏷️ PLANT NAMES — deployed 2026-08-23, never yet loaded
 
-`BiomeFlora_Ashkarr.xml` (24 `PatchOperationConditional` → `PatchOperationReplace`) is in the
-game copy and verified byte-identical to the repo. **Defs parse only at startup**, so nothing
-about it is true until the next cold load.
+Two patches in `Jawa_Patches/Patches`, both verified byte-identical to the repo copy.
+Defs parse only at startup, so nothing about either is true until a cold load.
 
-**The lines that decide it, in order:**
+| | |
+|---|---|
+| `BiomeFlora_Ashkarr.xml` | 24 biomes, 604 plants, every one distinct across the 8 families |
+| `PlantNames_Ashkarr.xml` | 26 Earth crop/tree **labels** become Star Wars names |
 
-1. 🔴 **`BiomeDef` count must still be 80.** An `<li>` inside a `LoadDataFromXmlCustom` field
-   discards the WHOLE def silently — that is exactly how 26 BiomeDefs were lost on 2026-08-23.
-   This patch uses the dictionary-key form (`<Plant_TreeDrago>0.08</...>`) precisely to avoid
-   it, but **the count is the proof, not the intent.** 54 means it happened again.
-2. **Zero `Could not resolve cross-reference` naming a plant defName.** All 132 were checked
-   against the live dump (68,518 defNames, 578 mods) before deploy, so a hit here means a mod
-   changed underneath us, not a typo.
-3. **Zero red errors naming `BiomeFlora_Ashkarr`.** ⚠️ A `PatchOperationReplace` that matches
-   nothing IS a red error — but each is wrapped in a Conditional on the same xpath, and all 24
-   biomes were confirmed to carry a `wildPlants` node, so all 24 should apply.
+**Score in this order:**
 
-**Then LOOK, which is the only real verdict.** One map each in `Desert`, `HorrorWastes` and
-`AB_MycoticJungle`:
+1. 🔴 **`BiomeDef` count must still be 80.** An `<li>` in a `LoadDataFromXmlCustom` field
+   discards the WHOLE def silently — that is how 26 BiomeDefs were lost on 2026-08-23. Both
+   patches use the dictionary-key form to avoid it, but **the count is the proof, not the
+   intent.** 54 means it happened again.
+2. **Zero `Could not resolve cross-reference` naming a plant.** All defNames were checked
+   against the live dump before deploy, so a hit means a mod moved underneath us.
+3. **Zero red errors naming either file.** Every op is wrapped in a Conditional, so an absent
+   def is skipped rather than erroring.
+4. **Then LOOK.** A map in `Desert` (drago tree, saguaro, agave, hardy grass), `HorrorWastes`
+   (horrorweb, blood bouquet, flesh tree — 🔴 **agave means the patch did not apply**) and
+   `AB_MycoticJungle` (agarilux, domecap, devilstrand). In any growing zone, `corn plant`
+   should read **kessel grain**, `haygrass` **bantha fodder**, `cotton plant` **silkstrand**.
 
-| biome | what proves it | what failure looks like |
-|---|---|---|
-| `Desert` | drago tree, saguaro, agave, pincushion cactus, hardy grass | the old 21-plant list, incl. thornwood and martyr, which now belong to `PoisonForest` |
-| `HorrorWastes` | horrorweb, blood bouquet, tentacular/globular aberration, flesh tree | 🔴 **agave** — that is the shipped roster, so the patch did not apply |
-| `AB_MycoticJungle` | agarilux, domecap, stropharia, witches' oyster, devilstrand | anything from another family |
+⚠️ **A stale LABEL is the silent failure** — the Conditional swallows a miss, so a name that
+did not change means that xpath did not match.
 
-⚠️ **A biome reading BARE is not necessarily a failed patch.** 642 of 669 plants have
-`minGrowthTemperature` 0.0 °C and half this planet is below that — the rosters are assigned by
-look and lore, and `NORMALIZE_TEMPERATURE_TOLERANCES_1` is what makes them grow. Judge the
-patch by the ROSTER the biome holds, not by how much of it has sprouted.
+⚠️ **A biome reading BARE is not a failed patch.** 650 of 669 plants stop at
+`minGrowthTemperature` 0 °C and half this planet is below that. Judge the patch by the ROSTER
+a biome holds, not by what has sprouted; `NORMALIZE_TEMPERATURE_TOLERANCES_1` makes them grow.
+⚠️ `ExtremeDesert` (0.008) and `Wasteland` (0.0099) read bare at any roster — 22.6% of the
+planet. See `BARE_BIOMES_NEED_DENSITY_1`.
 
-⚠️ **`ExtremeDesert` (0.008) and `Wasteland` (0.0099) have near-zero `plantDensity`** — 4,935
-tiles, 22.6% of the planet — and will read bare no matter what roster they carry. That is the
-shipped value, deliberately untouched by this pass. See `BARE_BIOMES_NEED_DENSITY_1`.
-
-## 🏷️ PLANT NAMES — 26 Earth names become Star Wars names, DEPLOYED 2026-08-23 10:18
-
-`PlantNames_Ashkarr.xml`, 26 `PatchOperationConditional` → `PatchOperationReplace` on `label`.
-**Labels only** — never defNames, which are save keys.
-
-1. **Zero red errors naming `PlantNames_Ashkarr`.** Each op is wrapped in a Conditional on the
-   same xpath, so an absent def is skipped rather than erroring.
-2. **Then LOOK at any growing zone or stockpile filter.** `corn plant` should read **kessel
-   grain**, `hop plant` **ardees vine**, `haygrass` **bantha fodder**, `cotton plant`
-   **silkstrand**. The item side follows: `chocolate` → **mimbanese sweet**.
-3. ⚠️ **A name that did NOT change is the failure mode**, and it is silent — the Conditional
-   swallows a miss. If one label is stale, that def's xpath did not match.
-
-⚠️ **Deployed by hand, not by `deploy_custom_mods.py`.** At deploy time BUILD had uncommitted
-edits to `JawaFactionRoster.xml` and `BlackstarCompany.xml` and a new untracked
-`Defs/RulePackDefs/`, and the tool has no per-file flag — `--apply` would have pushed a peer's
-mid-edit work into the live game. Only `PlantNames_Ashkarr.xml` was copied; `diff -q` confirms
-repo and game copy identical, and BUILD's files were left drifted, which is correct.
+⚠️ **`PlantNames_Ashkarr.xml` was hand-copied**, not deployed by `deploy_custom_mods.py`:
+BUILD had uncommitted edits in the same mod and the tool has no per-file flag.
