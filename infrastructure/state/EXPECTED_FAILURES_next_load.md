@@ -1715,16 +1715,29 @@ independent evidence; there is no A/B here.
 consumed, so this load pays ~27 s and ~1.2 GB again. That is *wanted* this once — P1 is
 read straight off the new capture — but delete it afterwards.
 
-### Results — FILL THIS IN AFTER THE LOAD. Blank means unfinished.
+### Results — SCORED 2026-08-23 00:1x by `src/RimMandrake/Utils/score_biome_load.py`.
+
+✅ **EVERY ROW PASSES. The biomes are back and the planet is stampable.**
 
 | # | outcome | evidence |
 |---|---|---|
-| P1 | | |
-| P2 | | |
-| P3 | | |
-| P4 | | |
-| F1 | | |
-| F2 | | |
-| F3 | | |
-| F4 | | |
-| F5 | | |
+| P1 | ✅ **PASS** | capture `2026-08-23T07-12-04Z` holds **80** `BiomeDef` records, against **54** on the broken load. Scored first on purpose — see the trap below |
+| P2 | ✅ **PASS**, and on BOTH instruments | dump-based: **28 of 28** map biomes resolve, **0 tiles (0.0%)** would fail to stamp, against 20,737 tiles / 94.8% before. Live, off the bridge via `check_map_biomes_live.py`: *"every biome the map names exists in the running game"* |
+| P3 | ✅ **PASS** | L5136 `[Inhabited] ready: 2 patches, 294 characters, 0 places, 0 casts.` — unchanged, no regression |
+| P4 | ✅ **PASS on the live reading**, log line not yet written | `tools/list` off the running bridge returns **246 tools, 121 of them `jawa/`** — the value under test. ⚠️ The `[JawaBench] ready:` line is written LAST and had not appeared at scoring time; the scorer reported it ABSENT and that is the scorer being early, not a failure. Same correction §5 already carries |
+| F1 | ✅ **PASS** | **0** `Exception loading def from file Biomes_`, against **22**. This is the exception that discarded the biomes and it is gone |
+| F2 | ✅ **PASS** | **0** `BiomeAnimalRecord.LoadDataFromXmlCustom` |
+| F3 | ✅ **PASS** | **0** `There are 54 defs of this type loaded`, against **26** |
+| F4 | ✅ **PASS** | `Could not resolve cross-reference` = **27**, against **3,037**, on a baseline of 25. The two extra are noise at this scale, not a regression — the whole 3,010-line excess was the biome damage |
+| F5 | ✅ **PASS** | **0** naming `SWPotF_RaceDef_ysalamir` or `GiantAnt_Race`. The generator's new PawnKindDef check skipped both rather than emitting a dangling reference, and nothing downstream missed them |
+
+🔑 **The trap fired exactly as written, and reading P1 first is why it was caught
+being harmless.** All 26 operations are `PatchOperationConditional`, so a still-broken
+game would have produced a clean ABSENT table — F1, F2, F3 and F5 would all have read
+zero. They read zero here *and* P1 reads 80, which is what makes them meaningful. The
+log fell from **1,060,589 lines to 9,801**: 99% of the previous load was the
+"Possible Matches:" candidate dump hanging off those 3,037 cross-reference failures.
+
+⚠️ **Still armed:** `DefDump\dump_request.txt` reads `all` and was NOT consumed by
+this load either. It is what produced the capture that scored P1, so it earned its
+keep twice — but every future load pays ~27 s and ~1.2 GB until someone deletes it.
