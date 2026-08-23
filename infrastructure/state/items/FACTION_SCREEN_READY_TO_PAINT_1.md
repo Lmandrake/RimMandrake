@@ -1,3 +1,70 @@
+## 🔴 CORRECTED 2026-08-23, BEFORE ANYONE ACTED ON IT — read this first
+
+**DECIDE asserted that `requiredCountAtGameStart` forces 28 unwanted factions into every
+world, and flagged it as unverified. It is WRONG.** Read from source
+(`RimWorld/FactionGenerator.cs:62-86`):
+
+```csharp
+private static void InitializeFactions(PlanetLayer layer, List<FactionDef> factions)
+{
+    if (factions != null)                    // ← the page ALWAYS passes a list
+    {
+        foreach (FactionDef faction in factions)
+            if (CanExistOnLayer(layer, faction)) AddFactionToManager(layer, faction);
+        return;                              // ← EARLY RETURN
+    }
+    // requiredCountAtGameStart is only reached BELOW this line
+}
+```
+
+`WorldGenStep_Factions.cs:11` calls it as
+`GenerateFactionsIntoWorldLayer(layer, Current.CreatingWorld.info.factions)` — **non-null**.
+⇒ **`requiredCountAtGameStart` is never consulted for a world made through the page.** It
+applies only when a world is generated with no list at all (dev / quick worlds).
+
+⛔ **DO NOT ZERO `requiredCountAtGameStart` ON THE 29.** It would change nothing on the page
+and would break the one path that does use it. The proposed patch is withdrawn.
+
+## ✅ And the page is already correct — verified from source, not inferred
+
+`Page_CreateWorldParams.ResetFactionCounts()` (`Page_CreateWorldParams.cs:68-90`) builds the
+default roster as:
+
+1. for each **configurable** faction (`maxConfigurableAtWorldCreation > 0`), add it
+   `startingCountAtWorldCreation` times — **so a def at 0 is simply never added**;
+2. then remove any faction that a configurable faction's `replacesFaction` points at.
+
+**Measured against both clauses:**
+- All twelve of ours are configurable, each at `startingCountAtWorldCreation 1`. ✅
+- All 29 others sit at `startingCountAtWorldCreation 0`. ✅ They are rows the owner *could*
+  add; nothing adds them for him.
+- Only **5** defs in the whole 86-def stack declare `replacesFaction`, and **not one points
+  at any of our twelve** (`BS_LittlePeople`, `OutlanderRoughPig`, `VRESaurids_OutlanderRoughSaurid`
+  → `OutlanderRough`; `TribeRoughNeanderthal` → `TribeRough`; `TribeSavageImpid` →
+  `TribeSavage`). ✅ Nothing silently removes `Pirate` or any other host.
+
+🔑 **So the default roster is exactly our twelve, one each, and nothing else.** The owner's
+*"extra Junker"* was caused wholly by the `maxConfigurableAtWorldCreation: -1` defect, which
+is fixed and live.
+
+## ⇒ What is left is ONE thing: look at it
+
+- [ ] Open a new world to Configure Factions and **count the rows**. PASS = the twelve, one
+      each, sorted to the top, nothing added that he did not choose.
+- [ ] Then close `AUTHORED_FACTIONS_OFF_THE_SCREEN_1` on that evidence.
+- [ ] ⛔ No def edits. Nothing below this line needs building.
+
+⚠️ Bridge calls at that screen take over 25 s against a 30 s default timeout — use
+`timeout=150` and a fresh connection per call, or a late response is read as the next call's
+answer.
+
+---
+
+*The original spec follows, kept because its measurements are good and only its
+mechanism was wrong.*
+
+---
+
 ## spec
 
 🔴 **OWNER, 2026-08-23:** *"I was having to go in and add an extra Junker every game just to

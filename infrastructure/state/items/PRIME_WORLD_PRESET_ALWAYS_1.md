@@ -1,3 +1,33 @@
+## ⭐ THE EXACT HOOK, READ FROM SOURCE 2026-08-23 — patch `Page_CreateWorldParams.Reset()`
+
+```csharp
+// RimWorld/Page_CreateWorldParams.cs:56-66
+public void Reset()
+{
+    seedString = GenText.RandomSeedString();
+    planetCoverage = ((Prefs.DevMode && UnityData.isEditor) ? 0.05f
+                      : (ModsConfig.OdysseyActive ? 0.5f : 0.3f));
+    rainfall = OverallRainfall.Normal;   temperature = OverallTemperature.Normal;
+    population = OverallPopulation.Normal;  landmarkDensity = LandmarkDensity.Normal;
+    pollution = (ModsConfig.BiotechActive ? 0.05f : 0f);
+    ResetFactionCounts();
+}
+```
+
+`PreOpen()` calls `Reset()` once, behind an `initialized` flag. ⇒ **Postfix `Reset()`, not
+`PreOpen()`** — it is the method that actually assigns the value, it runs exactly once, and
+it is also where the faction roster is built if that is ever wanted too.
+
+🔑 **Vanilla's default here is 0.5, not 0.3** — `ModsConfig.OdysseyActive` is true for us
+(`ludeon.rimworld.odyssey` is in the active list). The world measured at 0.3 on 2026-08-23
+was therefore **set by hand to something wrong**, not left at the default. Either way it is
+not 1.0, and that is what this fixes.
+
+✅ **A postfix leaves the field public and settable**, so the slider still overrides it — the
+"primes, does not lock" requirement is satisfied by construction.
+
+---
+
 ## spec
 
 🔴 **OWNER, 2026-08-23:** *"So how can we always prime the game to have span=7, coverage=100%
