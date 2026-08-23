@@ -745,17 +745,43 @@ FACTION_MARKS = [
 ]
 
 
-def marker(shape, x, y, r, fill, stroke="#0d0f14", sw=1.2, extra=""):
-    """One faction icon. Every shape is drawn to the same visual weight."""
-    a = 'fill="%s" stroke="%s" stroke-width="%.2f"%s' % (fill, stroke, sw, extra)
+def marker(shape, x, y, r, fill, stroke="#000000", sw=3.6, extra="", title=None):
+    """One faction icon. Every shape is drawn to the same visual weight.
+
+    🔴 Owner 2026-08-23: "add black outlines to the faction icons on the worldmap,
+    they are quite hard to see." The outline used to be #0d0f14 at 1.2 px, which is
+    a near-black hairline against a hillshaded biome fill - present in the file and
+    invisible on the map.
+
+    🔑 The outline is painted with paint-order="stroke", so the stroke goes UNDER the
+    fill and ONLY ITS OUTER HALF SHOWS - the colour keeps its full radius. That is
+    what lets the width go to 3.6 px (a 1.8 px visible black ring on a 10 px icon,
+    about 18% of its diameter) without the black eating any of the fill. A centred
+    stroke at that width would swallow half the colour, and shape plus colour is the
+    identity here (see FACTION_MARKS). ⚠️ Halving is the thing to remember if you
+    retune this: the visible ring is sw/2, not sw.
+    stroke-linejoin="round" keeps the star and cross points from growing spikes.
+    ⚠️ `ring` is the exception and needs TWO circles, because its colour IS its
+    stroke - there is no fill for a paint-order trick to sit under. That is why this
+    returns a <g> rather than a bare element, and why `title` is a parameter now
+    instead of the caller doing string surgery on the first "/>".
+    """
+    a = ('fill="%s" stroke="%s" stroke-width="%.2f" paint-order="stroke" '
+         'stroke-linejoin="round"%s' % (fill, stroke, sw, extra))
+    body = None
     if shape == "circle":
-        return '<circle cx="%.1f" cy="%.1f" r="%.1f" %s/>' % (x, y, r, a)
-    if shape == "ring":
-        return ('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="none" stroke="%s" '
-                'stroke-width="%.1f"/>' % (x, y, r, fill, sw * 2.2))
-    if shape == "square":
-        return '<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" %s/>' % (
+        body = '<circle cx="%.1f" cy="%.1f" r="%.1f" %s/>' % (x, y, r, a)
+    elif shape == "ring":
+        body = ('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="none" stroke="%s" '
+                'stroke-width="%.1f"/>'
+                '<circle cx="%.1f" cy="%.1f" r="%.1f" fill="none" stroke="%s" '
+                'stroke-width="%.1f"/>' % (x, y, r, stroke, sw * 2.2 + sw,
+                                           x, y, r, fill, sw * 2.2))
+    elif shape == "square":
+        body = '<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" %s/>' % (
             x - r * .88, y - r * .88, r * 1.76, r * 1.76, a)
+    if body is not None:
+        return _mark_wrap(body, title)
     pts = {
         "triangle": [(0, -1.15), (1.0, .72), (-1.0, .72)],
         "down":     [(0, 1.15), (1.0, -.72), (-1.0, -.72)],
@@ -776,8 +802,17 @@ def marker(shape, x, y, r, fill, stroke="#0d0f14", sw=1.2, extra=""):
             out.append((math.cos(ang) * rad, math.sin(ang) * rad))
         pts[shape] = out
     q = pts.get(shape) or pts["triangle"]
-    return '<polygon points="%s" %s/>' % (
-        " ".join("%.1f,%.1f" % (x + dx * r, y + dy * r) for dx, dy in q), a)
+    return _mark_wrap('<polygon points="%s" %s/>' % (
+        " ".join("%.1f,%.1f" % (x + dx * r, y + dy * r) for dx, dy in q), a), title)
+
+
+def _mark_wrap(body, title):
+    """A marker is a <g> so that `ring` can be two elements and every shape can carry
+    a hover title the same way. ⛔ Do not go back to injecting the title by replacing
+    the first "/>" in the string - that silently put the tooltip on the halo circle."""
+    if not title:
+        return body
+    return '<g><title>%s</title>%s</g>' % (title, body)
 
 
 def hillshade(pv):
@@ -990,11 +1025,9 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
                 continue
             f = pv.factions.get(st["faction"], {})
             shape, col = FACTION_MARKS[f.get("index", 0) % len(FACTION_MARKS)]
-            svg.add(marker(shape, xy[0][0], xy[0][1], 5.0 * sc, col, sw=1.3 * sc,
-                           extra=""). replace("/>", "><title>%s — %s</title></%s>"
-                    % (esc(st["name"]), esc(f.get("name") or st["faction"]),
-                       "circle" if shape in ("circle", "ring") else
-                       "rect" if shape == "square" else "polygon"), 1))
+            svg.add(marker(shape, xy[0][0], xy[0][1], 5.0 * sc, col, sw=3.6 * sc,
+                           title="%s — %s" % (esc(st["name"]),
+                                              esc(f.get("name") or st["faction"]))))
             if "labels" in show:
                 px, py = float(xy[0][0]), float(xy[0][1])
                 name = st["name"] or ""
@@ -1140,7 +1173,7 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
         for j, k in enumerate(order):
             f = pv.factions.get(k, {})
             shape, col = FACTION_MARKS[f.get("index", 0) % len(FACTION_MARKS)]
-            svg.add(marker(shape, x + 9, y - 5, 7.5, col, sw=1.2))
+            svg.add(marker(shape, x + 9, y - 5, 7.5, col, sw=3.6))
             svg.add('<text x="%d" y="%d" font-size="15" font-weight="bold" '
                     'fill="#f0f4ff">%s <tspan font-weight="normal" opacity="0.6">'
                     '(%d)</tspan></text>' % (x + 24, y, esc(f.get("name", k)), len(by[k])))
