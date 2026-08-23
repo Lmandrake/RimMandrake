@@ -23,6 +23,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | §6 BATCH C — the cheapest launch gate | — | ⏳ PENDING |
 | §10 INHABITED — baseline, gated on `[Inhabited] ready: 294` | — | ⏳ PENDING |
 | 🌱 BIOME FLORA + 🏷️ PLANT NAMES | 2026-08-23 | ⏳ PENDING |
+| 🌡️ TOLERANCES + 🏹 ANCIENT ARSENAL + 🦴 CAST SUBSTITUTIONS | 2026-08-23 (cast NOT yet) | ⏳ PENDING |
 
 🔴 **WHEN A LOAD IS SCORED:** move its block whole into
 `infrastructure/state/NEXT_RELOAD_ARCHIVE.md` with its result, and delete its index row.
@@ -223,3 +224,49 @@ planet. See `BARE_BIOMES_NEED_DENSITY_1`.
 
 ⚠️ **`PlantNames_Ashkarr.xml` was hand-copied**, not deployed by `deploy_custom_mods.py`:
 BUILD had uncommitted edits in the same mod and the tool has no per-file flag.
+
+---
+
+## 🌡️ TOLERANCES + 🏹 ANCIENT ARSENAL + 🦴 CAST SUBSTITUTIONS — DECIDE, 2026-08-23
+
+🔑 **Score this block off the FRESH DUMP, not the log.** A `PatchOperation` that works logs
+nothing, so "no errors" proves nothing here. The dump is armed (`DefDump/dump_request.txt` = `all`,
+set 15:00) — ⚠️ **the marker is not consumed; delete it after or every future load pays 27 s and
+1.2 GB again.** Every check below is a deterministic read with a stated baseline.
+
+⛔ **BLOCKER — the cast is NOT deployed.** `design/Jawa/fauna/BiomeCast_Ashkarr.xml` differs from
+the game copy: the **12 substitutions are absent**, so the ten creatures the owner rejected in his
+art review will still spawn. `BIOME_CAST_SUBSTITUTIONS_DEPLOY_1`, BUILD's. **If it does not deploy
+before launch, score the other four and mark the cast rows VOID — not failed.**
+
+| # | check, against the fresh dump | baseline (before) | pass (after) |
+|---|---|---|---|
+| T1 | `BiomeDef` count | 80 | **still 80** — 54 means an `<li>` crept into a `LoadDataFromXmlCustom` field |
+| T2 | `MA_CapryakScatterbow` `weaponTags` | `["Gun","NeolithicRangedAdvanced"]` | **`Gun` GONE**, neolithic tag kept |
+| T3 | `AncientSoldier.weaponMoney` | `300~900` | **`1200~2600`** |
+| T4 | `AncientSoldier_Leader.weaponMoney` | `500~1400` | **`2500~6000`** |
+| T5 | `AncientSoldierBoss.weaponTags` | `["AMHP","Gun"]` | **contains `IndustrialGunAdvanced`** |
+| T6 | a cold-biome plant's `minGrowthTemperature`, e.g. `AB_FlashFrozenTree` | `-60` | **`-89.6`** |
+| T7 | a refitted animal's `ComfyTemperatureMin`, e.g. `BMT_Megakrill` | `-60` | **`-90.6`** |
+| T8 | each of the 6 authored xenotypes' gene list | no `MinTemp_LargeDecrease` | **contains it**; and `MinTemp_SmallIncrease` GONE from `MandrakeJawa` and `RimMandrakeTusken` |
+| T9 | `Gorilla` / `Capybara` / `Enhydriodon` / `Revenant` commonality in their old biomes | > 0 | **0 or absent** ⚠️ only if the cast deployed |
+
+**Log strings — expected ABSENT, all of them:**
+```
+grep -E "AncientArsenal_Ashkarr|PlantTolerances_Ashkarr|AnimalTolerances_Ashkarr|XenotypeTolerances_Ashkarr|BiomeCast_Ashkarr" Player.log
+Could not resolve cross-reference .*(Tolerances|Arsenal|BiomeCast)
+```
+⚠️ **Absence is necessary, not sufficient** — hence T1–T9, which are expected-PRESENT.
+
+**Then, and only then, look at it:**
+1. A map in `AB_PropaneLakes` (median −59.8 °C) and `AB_MechanoidIntrusion` (+62.5 °C) — **plants
+   growing and animals alive at both extremes.** Bare ground at a correct roster is the failure the
+   tolerance work exists to close.
+2. Thaw sleepers from an ancient cryptosleep casket — **none holds a scatterbow**, and the kit
+   reads spacer-era. Baseline: 2 of 6 held one.
+3. 🔴 **A silent `exclusionTag` collision shows up as a xenotype that STOPS GENERATING PAWNS, not
+   as a red error.** Generate a pawn from each of the six authored factions before calling T8 clean.
+
+⚠️ **Attribution:** these are five XML patches with named, non-overlapping dump checks, so they
+batch safely. ⛔ They do NOT batch with an assembly — if `JawaIkee` or a rebuilt companion rides
+this same load, an unexplained result belongs to the assembly first.
