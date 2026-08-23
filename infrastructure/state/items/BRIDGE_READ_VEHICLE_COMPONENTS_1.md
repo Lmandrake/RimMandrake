@@ -38,11 +38,36 @@ on an install where Vehicle Framework is absent.
 A vehicle's damage state is readable from outside the game without opening its health tab.
 
 ## notes
-⚠️ **NOT built before the 2026-08-22 load, and that was a decision.** 53 items across
-BUILD and CHECK are parked on that load. A new reflection-based tool cannot be proven
-offline, and the honest sequencing is to let the load do the work it is already loaded
-with. 🔑 The cost of waiting is one tool; the cost of a companion that fails to register
-is every bridge item in the run sheet.
-✅ **It is cheap to add once the names are verified** — the companion rebuilds and deploys
-in about a minute (`python.exe src/RimMandrake/bridgetools/build.py --gm --apply`), and it
-only needs the game DOWN, which is a window that comes around every load.
+✅ **BUILT AND DEPLOYED 2026-08-22 at `9e79e3d2`.** `jawa/vehicle_components` is the
+companion's 121st tool; build 0 warnings / 0 errors, game copy byte-identical.
+
+⚠️ **I had written this item off as too risky to build before the load, and then the
+risk went away.** The reasoning was: 53 items are parked on that load, and an unproven
+reflection tool that fails to register could cost all of them. What changed is that the
+names stopped being guesses — every member below was read out of `Vehicles.dll`'s CLI
+metadata tables with a raw ECMA-335 reader, because the mod ships no source and a byte
+scan cannot prove a name:
+
+```
+Vehicles.VehiclePawn extends Verse.Pawn
+  .statHandler   FIELD    -> Vehicles.VehicleStatHandler
+    .components  FIELD    -> List<Vehicles.VehicleComponent>
+      .props     FIELD    -> .key, .label  (label can be null; fall back to key)
+      .Health .MaxHealth .HealthPercent .Efficiency .Depth   PROPERTIES
+```
+
+🔑 **Three traps that a guess would have walked into.** `statHandler` and `components`
+are FIELDS — `GetProperty` returns null on both and the tool would have gone silently
+empty. `props.health` is an `int` base value while `MaxHealth` is the float that folds in
+`SetHealthModifier` and `AddHealthModifiers`, so reading the field loses every modifier.
+And `VehiclePawn` is public and NOT sealed, so the vehicle test walks the base chain
+instead of comparing the leaf type name.
+
+⛔ **There is no damage-tier enum** — every `System.Enum` TypeDef in `Vehicles.dll` was
+enumerated and none describes component state; the health tab's colour bands are
+hard-coded float thresholds. So the tool reports `efficiency` as a float and invents no
+tier.
+
+⏳ **Unproven until the load.** It is folded into the L5 row of `NEXT_RELOAD.md`, which
+already spawns four vehicles. ⛔ An empty `components` list is NOT a pass: the tool
+REFUSES when its chain breaks, precisely because empty reads the same as undamaged.
