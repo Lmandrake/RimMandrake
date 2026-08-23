@@ -241,3 +241,4 @@ infrastructure/state/queue/REP.md
 
 # Derived ortho globe SVGs — regenerate with worldview.py; the PNGs beside them are committed
 world/view/globes_*/*.svg
+world/view/ASHKARR_current/*.svg

@@ -1,12 +1,23 @@
 #!/usr/bin/env python3
 """ashkarr_csv_view.py — LOOK at the authored CSV without going through a savegame.
 
-🔑 **Why this exists.** The owner's method is *"iterate by LOOKING"* and the renderer we
-have, `worldview.py`, reads a **savegame**. The authored map lives in
-`world/ASHKARR_WORLDMAP_tiles.csv`, and the only route from one to the other is
-`ashkarr_paint.py --write`, **which its own docstring says REGRESSES the CSV** — it
-regenerates from its model and does not reproduce the direct authoring edits made since.
-⇒ There was no way to see an edit to the CSV. This is that way.
+⚠️ **READ THIS BEFORE REACHING FOR IT — it is NOT the map viewer.**
+
+🔴 **`worldview.py` already renders the CSV bundle and this file's first docstring said it
+could not.** That was wrong: its `save` argument takes *"a .rws savegame, **or a bundle stem
+like world/ashkarr**"*, and `class BundlePlanet` reads `<stem>_tiles.csv` directly. The real
+map — hexes, region labels, settlements, rivers, roads, the terminator circle, the biome
+legend with percentages and the faction roster — comes from:
+
+    python3 src/RimMandrake/Utils/worldview.py world/ASHKARR_WORLDMAP \
+        --layer biome --projection equirect --png --out world/view/ASHKARR_current
+
+**Use that for looking at the planet. Always.**
+
+✅ **What this file is still for:** a fast A/B of ONE edit. It draws a bare dot map in a
+second or two from any CSV you point it at, including a backup copy, so a before/after pair
+of the same view can be put side by side while iterating. `worldview.py` takes minutes and
+7 MB per render, which is the right price for the real map and the wrong one for a diff.
 
 It borrows `worldview.BIOME_COLOR` so the colours match the renders already in
 `world/view/` and nothing has to be re-learned.
