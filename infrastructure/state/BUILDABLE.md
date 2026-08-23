@@ -502,3 +502,27 @@ capture instead — read-only SQL over the structured `defs` table of
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs.sqlite`
 (788 MB, mtime 2026-08-21 16:10; there is no copy in the repo), with a
 known answer (`Human`) run first to validate the query shape.
+
+**9 — A gene's `disabledWorkTags` matches a work TAG, so checking a WorkGiver's `workType`
+answers the wrong question.** Measured 2026-08-22 in the live def set (capture
+`2026-08-23T05-05-29Z`, 578 mods): vanilla's `Drill` WorkGiver is **not** `workType Mining`
+on this stack — it is `FSFDrilling`, retyped by **[FSF] Complex Jobs**. `Jawa_MiningDisabled`
+still bars a Jawa from the deep drill only because `FSFDrilling`'s WorkTypeDef happens to
+carry the **`Mining` workTag**. ⇒ To answer "does this gene stop this job", read the
+**WorkTypeDef's `workTags`**, never the WorkGiver's `workType`. ⚠️ And note the dependency:
+if [FSF] Complex Jobs is removed or drops that tag, the ban silently lapses with no error.
+
+**10 — Def-dump JSON records nest every field under `fields`, so a top-level read returns
+`None` for everything and looks like a measured absence.** `e["disabledWorkTags"]` is `None`
+on all 3,846 GeneDefs; `e["fields"]["disabledWorkTags"]` is the real value. The keys that ARE
+top-level are only `defName defType defTypeFull fields label modName packageId shortHash`.
+⇒ Any census that reads a def field must go through `fields`, and a script returning all-`None`
+across a whole type is the signature of this mistake, not of an empty field.
+
+**11 — The live def set answers "is it in the running game" WITHOUT a bridge call.** A capture
+under `DefDump/captures/<id>/` is post-load, post-patch, post-override — so it settles
+"did the patch apply", "did the def survive a dedup mod", "which xenotypes carry gene X"
+offline. ⚠️ It cannot answer anything about BEHAVIOUR (can this pawn do this job), and the
+game appends parts of its own at load — a `ScenarioDef` reads 5 parts in the dump where the
+XML authors 3, because Odyssey adds two `ScenPart_PlanetLayer`. Count authored parts in the
+file, not in the dump.
