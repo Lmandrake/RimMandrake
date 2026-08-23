@@ -54,3 +54,18 @@ The line appears in a cold-load `Player.log` with a tool count on it, and
   companion from a current one without md5-ing files.
 - ⛔ Do NOT add `JawaBench` to `EXPECTED` in the harvest tool before the line
   exists — it would read RED on every load and train everyone to ignore it.
+
+
+---
+
+## 🔴 CORRECTION — BUILD, 2026-08-23, against capture `2026-08-23T07-12-04Z`
+
+**Done, and the prediction it was written against was wrong.**
+
+✅ `Player.log` reads `[JawaBench] ready: 121 tools, build d49eaf42545b`. The item predicted
+**115**; the measured count is **121**, independently corroborated off the live bridge
+(`tools/list` = 246 tools, 121 of them `jawa/`).
+
+⚠️ **One piece of residue, now fixed:** `harvest_log.py` still carried a comment explaining why
+JawaBench was deliberately absent from `EXPECTED`, so a missing ready line would never have been
+reported. It is an EXPECTED-PRESENT check now.

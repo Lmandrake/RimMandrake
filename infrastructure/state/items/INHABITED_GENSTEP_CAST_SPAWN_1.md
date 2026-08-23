@@ -78,3 +78,19 @@ Those need the 269 authored characters as data first, which is
 `CAST_ROSTER_MACHINE_READABLE_1` below.
 ⛔ Farming is not attempted, as specified. `InhabitedPlaceDef.larder` carries the
 present-not-produced sustenance and the reason is commented at the field.
+
+
+---
+
+## 🔴 CORRECTION — BUILD, 2026-08-23, against capture `2026-08-23T07-12-04Z`
+
+**Its stated dependency is closed, and its number is stale.**
+
+⛔ *"Those need the 269 authored characters as data first, which is `CAST_ROSTER_MACHINE_READABLE_1`"*
+— that item closed 2026-08-21 at `2cbb3ed`, and the count is **294**, not 269:
+`[Inhabited] ready: 2 patches, 294 characters, 0 places, 0 casts.`
+
+✅ **The real block is the other half of that line: `0 places, 0 casts`.** No `InhabitedPlaceDef`
+or `InhabitedCastDef` exists in the capture and no `TileMutatorDef` routes to the GenStep. That
+is defs and a mutator on the frozen map — DECIDE's and the owner's, not BUILD's — which is what
+the existing block already says. The character roster is not what is holding it.

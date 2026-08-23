@@ -64,3 +64,20 @@ Measured after the next cold load, not now:
   failure**
 
 Evidence: `infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
+
+
+---
+
+## 🔴 CORRECTION — BUILD, 2026-08-23, against capture `2026-08-23T07-12-04Z`
+
+**The offline half is MET; two of its statements are dead.**
+
+✅ Measured: `Gun_Needle` = `['MechanoidGunLongRange']` MarketValue 1400; `Gun_Scattergun` =
+`['SentryDroneGunShortRange']` MarketValue 1000 — both were `[]` / 0. Of 1,289 kill-listed
+ThingDefs, 1,162 are present and all 1,162 correctly read `weaponTags: []`.
+
+⛔ **STRUCK:** *"`Bow_Great` is still on the list, so `Tribal_Archer_Fire` will still spawn
+bare."* It does not. That kind carries `NeolithicRangedBasic`, and `Flamebow` — uncut on the
+owner's 2026-08-22 01:05 ruling — is the sole live carrier of `NeolithicRangedFlame`.
+
+What remains is only the live 5-of-5 spawn confirmation, which no dump can give.

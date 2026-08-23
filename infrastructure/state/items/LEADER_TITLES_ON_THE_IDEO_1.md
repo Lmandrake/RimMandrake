@@ -60,3 +60,17 @@ world.
 This is the *title* also reading `High Stellarch`, from the ideo. Same faction, different
 cause — fixing `fixedLeaderKinds` will not change the title.
 Evidence: `infrastructure/state/observed/2026-08-22/faction_labels/`.
+
+
+---
+
+## 🔴 CORRECTION — BUILD, 2026-08-23, against capture `2026-08-23T07-12-04Z`
+
+**A third route was found and shipped, and this item says not to look for one.**
+
+⛔ *"Two candidate routes… Do not invent a third route."* The third route exists and is the one
+in the game: **`CultureDef.leaderTitleMaker`**, shipped at `3bbe6a99`. Measured: 12
+`Jawa_Culture_*` defs each name their own `Jawa_LeaderTitle_*` rule pack.
+
+⇒ The instruction not to look further was written before the answer was found. Only the live
+`effectiveTitle` reading on the pre-freeze world is still owed.

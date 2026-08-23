@@ -200,3 +200,21 @@ one.**
 **5 have NO surviving sibling** — the whole family is gone, so a vanilla ladder tag is the
 only route: the three `BS_Crossbow*` dvergr kinds (crossbows: `NeolithicRanged*`),
 `VEE_Hunter` (industrial) and `VEE_TribalHunter` (neolithic).
+
+
+---
+
+## 🔴 CORRECTION — BUILD, 2026-08-23, against capture `2026-08-23T07-12-04Z`
+
+**Its stated blocker is withdrawn LOWER IN ITS OWN FILE, and its headline number is dead.**
+
+⛔ *"A real retag needs a def dump captured with `Jawa_Patches` DISABLED, which is a
+load-window action and the first thing to do at the next shutdown"* — contradicted further
+down the same file: *"No re-dump is needed, and the earlier claim that one was is withdrawn…
+EXTEND, never regenerate."* **Nobody should spend a load window on this.**
+
+⛔ *"12 kinds with every tag empty"* measures **2**, and both are this item's own declared
+false positives (`DP_ArtilleryPirate`, `DP_RocketPirate`). See `7f005f7c` for the two audit
+defects that produced the 12.
+
+✅ **Still real and unchanged: the ARMOUR half** — 8 of 446 kinds. That is the live work here.

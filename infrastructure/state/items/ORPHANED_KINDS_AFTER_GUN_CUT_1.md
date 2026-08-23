@@ -77,3 +77,27 @@ weapon. For these 17 vanilla kinds `cannotAfford` is the literal diagnosis.
 
 Evidence: `infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
 Sibling: `RESTORE_VANILLA_GUN_TAGS_1`, which is mis-titled and carries the correction.
+
+
+---
+
+## 🔴 CORRECTION — BUILD, 2026-08-23, against capture `2026-08-23T07-12-04Z`
+
+**This item asks DECIDE for a scope call, and nine tenths of its subject no longer exists.**
+
+Its case rests on *"29 INTEND to arm and CANNOT"* / *"12 emptyTagPool"*. Both numbers came out
+of `weapon_tag_audit.py`, which carried **two defects** fixed at `7f005f7c`: it read tags from
+a `defs.sqlite` built two days earlier while printing the newest capture's timestamp, and it
+subtracted the Cherry Picker kill list from a capture that is **already post-cut**.
+
+✅ **The measured figure is 2** — `DP_ArtilleryPirate` and `DP_RocketPirate`, both declared
+`*NoEquipTag` sentinels carrying `weaponMoney 99999`. They are correct by design.
+
+Cleared as false positives: `Mech_Pikeman`, `Drone_Sentry`, `Tribal_Archer_Fire`,
+`BS_Crossbowman`, `BS_CrossbowDvergr`, `BS_DvergrTraditionalist`, `OuterRim_ImperialTrader`,
+`VEE_Hunter`, `VEE_TribalHunter`, `VFEP_Footsoldier`.
+
+⛔ **Do not put this to DECIDE as written.** Re-measure first; there may be nothing to decide.
+Also struck: *"Bow_Great is still cut, so the fire archer is not fixed"* — `Tribal_Archer_Fire`
+carries `NeolithicRangedBasic` and is armed, and `Flamebow` is the live carrier of
+`NeolithicRangedFlame` (see `FLAMEBOW_UNCUT_AND_RETAGGED_1`, `e38d6fb5`).

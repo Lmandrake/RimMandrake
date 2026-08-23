@@ -280,16 +280,26 @@ EXPECTED = [
     # <skills> block are discarded at load (CAST_ROSTER_SKILLS_DISCARDED_1).
     # Read the number every time; a present line is not a passing one.
     ("Inhabited ready (READ THE COUNT)", r"\[Inhabited\] ready:"),
+    # ✅ ADDED 2026-08-23. JawaBench HAS a startup line now, so its absence is a
+    # real finding rather than a permanent false RED. Read the COUNT, not just
+    # the presence: `[JawaBench] ready: 121 tools, build d49eaf42545b`.
+    #   121 = the current build   ·   120 = vehicle_components missing
+    #   119 = the whole 2026-08-22 build never landed   ·   106 = never deployed
+    ("JawaBench ready (READ THE COUNT)", r"\[JawaBench\] ready:"),
 ]
 
-# ⚠️ NOT in EXPECTED, deliberately, and this is the finding rather than an
-# omission: JawaBench has NO startup line. Every Log call in
+# 🔴 SUPERSEDED 2026-08-23 — this block used to say JawaBench was deliberately
+# EXCLUDED from EXPECTED because it had no startup line: "Every Log call in
 # JawaBench.BridgeTools is a Log.Warning inside a catch, so the assembly is
-# silent when it works AND silent when it never loaded. A load where the
-# companion is missing is indistinguishable from one where it is fine, and no
-# grep can separate them — the tool count has to be asked of a running bridge.
-# Filed as JAWABENCH_HAS_NO_INIT_LINE_1. Adding it to EXPECTED now would only
-# manufacture a permanent false RED against an instrument that does not exist.
+# silent when it works AND silent when it never loaded." That was true when it
+# was written and it is not true now — JAWABENCH_HAS_NO_INIT_LINE_1 added the
+# line, and tonight's log carries it. The entry above is that fix.
+#
+# ⚠️ THE TRAP THAT REMAINS, and it bit the scoring of §5 and §6: BOTH ready lines
+# are among the LAST lines the game writes. Scoring a log while the game is still
+# loading reports them ABSENT, which reads identically to the assembly failing.
+# An absent line means "not finished loading" until the process has settled — ask
+# a running bridge for the tool count when you need the answer early.
 
 # Questions this script STRUCTURALLY CANNOT answer, and that a green run above
 # will silently imply it did. Added 2026-08-12 after W6 exposed the gap: the

@@ -35,3 +35,19 @@ nothing inherits from, with `permanentEnemy true` preserved (R12).
 ## scope note from DECIDE
 ⛔ Do not move the reskin off `Pirate` as a first move. That is the expensive answer and
 it is only correct if step 1 or 2 proves the cheap one is broken.
+
+
+---
+
+## 🔴 CORRECTION — BUILD, 2026-08-23, against capture `2026-08-23T07-12-04Z`
+
+**The leak is real; verify step 2 names a field that does not exist.**
+
+⛔ *"`PirateWaster` declares `replacesFaction: Pirate`"* — measured, it does **not**. Only
+five FactionDefs in the whole load set carry `replacesFaction` (`TribeRoughNeanderthal`,
+`TribeSavageImpid`, `OutlanderRoughPig`, `VRESaurids_OutlanderRoughSaurid`, `BS_LittlePeople`)
+and none of them is a pirate. A check written against that step fails on a correct setup.
+
+✅ **The defect itself stands:** six FactionDefs still wear `fixedName: "Blackstar Company"` —
+`Pirate`, `CannibalPirate`, `PirateYttakin`, `PirateWaster`, `DV_PirateKeshig`,
+`AG_XenohumanPirates`. The five siblings do read `startingCountAtWorldCreation 0`.
