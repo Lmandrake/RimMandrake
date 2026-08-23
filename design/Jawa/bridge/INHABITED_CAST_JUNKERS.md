@@ -68,7 +68,7 @@ adult: counts fasteners off the line. Still sends a tithe to an address that is 
 
 **Kaad'ro Tenth-Breath** · Kel Dor · m · 55
 `traits: VoidFascination, Ascetic, Delicate`
-`apparel: guy762_KelDorMask`
+<!-- CAST_ROSTER_DEAD_MASK_1, 2026-08-23: the `apparel: guy762_KelDorMask` line that was here named a def from guy762.StarWarsXenotypes, a mod switched off and consolidated into mandrake.starwarsraces (C36). It resolved to nothing, logged a red cross-reference error every load, and this character wore no mask in play. Renaming it to RimMandrake_KelDorMask does NOT work - that def is ParentName="ResourceBase", not apparel. In this stack a Kel Dor mask is a GENE, RimMandrake_HeadAttachment_keldormask, and cast_to_xml.py cannot express a gene: it parses weapon/apparel/item/skills and nothing else. Giving these two the gene is CAST_MASK_AS_GENE_1. -->
 childhood: two hundred years of family in the upper atmosphere. He came down in a hull.
 adult: cutter, day shift. Climbs the standing spine every single night.
 > He cannot breathe your air and never forgets it — the mask, the goggles, the ninety-second margin if either cracks. Every night he free-climbs sixty metres of unsecured wreck to sit on the highest plate on the field and look straight up, and he has been told what a fall would do to him, and he goes up anyway, and he is the gentlest man in the camp about everything else.

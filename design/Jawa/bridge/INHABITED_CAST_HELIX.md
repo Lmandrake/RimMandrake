@@ -125,7 +125,7 @@ adult: signs for every crate on Vat Row so that no curator has to touch one.
 
 **Rah'da Onn** · Kel Dor · m · 55
 `traits: CreepyBreathing, Abrasive, GreatMemory`
-`apparel: guy762_KelDorMask`
+<!-- CAST_ROSTER_DEAD_MASK_1, 2026-08-23: the `apparel: guy762_KelDorMask` line that was here named a def from guy762.StarWarsXenotypes, a mod switched off and consolidated into mandrake.starwarsraces (C36). It resolved to nothing, logged a red cross-reference error every load, and this character wore no mask in play. Renaming it to RimMandrake_KelDorMask does NOT work - that def is ParentName="ResourceBase", not apparel. In this stack a Kel Dor mask is a GENE, RimMandrake_HeadAttachment_keldormask, and cast_to_xml.py cannot express a gene: it parses weapon/apparel/item/skills and nothing else. Giving these two the gene is CAST_MASK_AS_GENE_1. -->
 childhood: taught young that the air of every world but one would kill him. Found it clarifying.
 adult: walks the vat halls during the purge, four times a year, alone, because he does not breathe what is in there.
 > The mask rasps on every exhale and he leans in when he speaks. He is the only person who has seen what a hall of stock does when the atmosphere goes, he remembers all of it in order, and he will describe it at the table, unprompted, with his goggles pushed up on his head. In thirty years nobody has asked him to stop. Nobody has asked him anything else either.
