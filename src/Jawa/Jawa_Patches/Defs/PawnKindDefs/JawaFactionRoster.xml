@@ -27,6 +27,18 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
 -->
 <Defs>
 
+  <!-- STORMTROOPER, and the owner's hard requirement: shiny new stormtrooper armour and
+         NOTHING else, with a proper blaster.
+         🔴 weaponMoney was 650~780 and EVERY rifle in ORImperialStandard costs 906 -
+         E-11, DLT-20A and E-22 alike - so the roll could never afford one and always
+         fell back to ORImperialLight, which is PISTOLS. Stormtroopers were carrying
+         sidearms. Raised to 950~1150 and ORImperialLight dropped: the three rifles
+         left are all canon-correct and all now reachable.
+         🔴 apparelTags was ImperialApparel, which has 21 carriers including SNOWTROOPER,
+         SCOUT, RANGE, DEATH TROOPER and ISB pieces. The required cuirass and helmet
+         fill Torso and FullHead, but Shoulders was free, so a stormtrooper could take
+         the field in Scout Trooper pauldrons. Narrowed to ImperialStormtrooper (3
+         carriers: cuirass, helmet, pauldrons) and the rest hard-refused below. -->
   <PawnKindDef>
     <defName>Jawa_Empire_Grunt</defName>
     <label>stormtrooper</label>
@@ -35,13 +47,12 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>87</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>650~780</weaponMoney>
+    <weaponMoney>950~1150</weaponMoney>
     <apparelMoney>500~600</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
     <initialWillRange>1~3</initialWillRange>
     <weaponTags>
       <li>ORImperialStandard</li>
-      <li>ORImperialLight</li>
     </weaponTags>
     <apparelRequired>
       <li>OuterRim_StormtrooperCuirass</li>
@@ -49,9 +60,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </apparelRequired>
     <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
-      <li>ImperialApparel</li>
-      <li>ImperialArmy</li>
-      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
     </apparelTags>
     <forceNormalGearQuality>true</forceNormalGearQuality>
       <!-- issued kit only. An imperial trooper carries what the quartermaster gave him -->
@@ -62,8 +71,19 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <apparelDisallowTags>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialSpecialist</li>
+      <li>ImperialScout</li>
+      <li>ImperialDeathTrooper</li>
+      <li>ImperialArmyFatigues</li>
+      <li>ImperialJumpsuit</li>
+    </apparelDisallowTags>
+    <minApparelQuality>Normal</minApparelQuality>
   </PawnKindDef>
 
+  <!-- Imperial ARMY trooper - army plate only, never stormtrooper white or an officer's cap. -->
   <PawnKindDef>
     <defName>Jawa_Empire_Heavy</defName>
     <label>heavy trooper</label>
@@ -87,9 +107,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </apparelRequired>
     <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
-      <li>ImperialApparel</li>
       <li>ImperialArmy</li>
-      <li>ImperialOfficer</li>
     </apparelTags>
     <forceNormalGearQuality>true</forceNormalGearQuality>
       <!-- issued kit only. An imperial trooper carries what the quartermaster gave him -->
@@ -100,8 +118,17 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <apparelDisallowTags>
+      <li>ImperialStormtrooper</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialSpecialist</li>
+      <li>ImperialScout</li>
+      <li>ImperialDeathTrooper</li>
+    </apparelDisallowTags>
+    <minApparelQuality>Normal</minApparelQuality>
   </PawnKindDef>
 
+  <!-- Imperial officer - uniform and cap only. -->
   <PawnKindDef>
     <defName>Jawa_Empire_Specialist</defName>
     <label>Imperial officer</label>
@@ -124,8 +151,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </apparelRequired>
     <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
-      <li>ImperialApparel</li>
-      <li>ImperialArmy</li>
       <li>ImperialOfficer</li>
     </apparelTags>
     <forceNormalGearQuality>true</forceNormalGearQuality>
@@ -137,8 +162,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <apparelDisallowTags>
+      <li>ImperialStormtrooper</li>
+      <li>ImperialArmy</li>
+      <li>ImperialScout</li>
+      <li>ImperialDeathTrooper</li>
+    </apparelDisallowTags>
+    <minApparelQuality>Normal</minApparelQuality>
   </PawnKindDef>
 
+  <!-- senior officer, black uniform. Officer wardrobe only. -->
   <PawnKindDef>
     <defName>Jawa_Empire_Leader</defName>
     <label>Emperor Palpatine</label>
@@ -161,8 +194,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </apparelRequired>
     <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
-      <li>ImperialApparel</li>
-      <li>ImperialArmy</li>
       <li>ImperialOfficer</li>
     </apparelTags>
     <itemQuality>Excellent</itemQuality>
@@ -174,6 +205,13 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <apparelDisallowTags>
+      <li>ImperialStormtrooper</li>
+      <li>ImperialArmy</li>
+      <li>ImperialScout</li>
+      <li>ImperialDeathTrooper</li>
+    </apparelDisallowTags>
+    <minApparelQuality>Excellent</minApparelQuality>
   </PawnKindDef>
 
   <PawnKindDef>
