@@ -1953,3 +1953,5 @@
 {"seat":"DECIDE","event":"file","id":"XENOTYPE_FULL_ADAPTATION_CHOICE_1","title":"Vanilla genes cap our species at -4..46 on a -82..66 planet; full adaptation needs cold immunity or a custom gene","kind":"decision","target":"v1","caused_by":"XENOTYPE_TOLERANCES_DEPLOY_1","for":"OWNER","ts":"2026-08-23T19:12:24Z"}
 {"seat":"BUILD","event":"close","id":"RASPBERRY_RENAMED_NOT_CUT_1","sha":"5c86a09c","ts":"2026-08-23T19:20:20Z"}
 {"seat":"OWNER","event":"close","id":"XENOTYPE_FULL_ADAPTATION_CHOICE_1","sha":"8e87bfa5","ownerSaid":"Option (A) yes.","ts":"2026-08-23T19:22:34Z"}
+{"seat":"BUILD","event":"file","id":"PAWNKIND_GENERATOR_DIVERGED_1","title":"gen_pawnkind_roster.py reverts the stormtrooper lockdown; its header claims the file is generated","kind":"fix","target":"v1","needs":"offline","for":"DECIDE","ts":"2026-08-23T19:24:28Z"}
+{"seat":"BUILD","event":"close","id":"DROID_KINDS_MISS_FIXEDGENDER_1","sha":"e753bc7e","ts":"2026-08-23T19:24:43Z"}

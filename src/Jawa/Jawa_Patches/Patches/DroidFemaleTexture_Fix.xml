@@ -120,4 +120,78 @@
     </match>
   </Operation>
 
+  <!-- ####################################################################
+       BLOCK 2 - OUR OWN droid kinds. DROID_KINDS_MISS_FIXEDGENDER_1, 2026-08-23.
+       ####################################################################
+
+       The block above patches Droid Depot's SEVEN OWN pawn kinds and its
+       diagnosis is still exactly right. It is incomplete only because it
+       could not anticipate us: Jawa_Patches later authored four kinds of our
+       own on the same droid races, in Defs/PawnKindDefs/JawaFactionRoster.xml,
+       and none carries fixedGender. All four field for Jawa_FreeDroidEnclaves,
+       so that faction visibly spawns bodiless droids.
+
+       ⚠️ ONLY THE PROTOCOL ONE HAS BEEN SEEN FAILING, and that is not evidence
+       the others are fine - it is the only one that happened to roll female.
+       The log's count of 2 is not the size of this.
+
+       🔑 WHY A PATCH AND NOT THE GENERATOR. gen_pawnkind_roster.py builds
+       JawaFactionRoster.xml and the rule belongs there. It cannot go there
+       today: MEASURED 2026-08-23, regenerating that file REVERTS the
+       stormtrooper lockdown (weaponMoney 950~1150 -> 650~780, ORImperialLight
+       back in, apparelTags widened from ImperialStormtrooper to the 21-carrier
+       ImperialApparel) plus the inventory options and the disallow tags. The
+       generator has diverged from the file the same way gen_races_mod.py has.
+       Putting the rule here keeps ONE file responsible for the whole
+       male-only-droid-art rule, which is defensible on its own merits, and
+       costs nothing if the generator is ever reconciled - these ops carry
+       [not(fixedGender)] and become no-ops the moment the field is emitted.
+       Reconciling it is RACES_GENERATOR_DIVERGED_1's sibling and is filed as
+       PAWNKIND_GENERATOR_DIVERGED_1.
+       -->
+
+  <!-- Jawa_Droid_Specialist : race OuterRim_ProtocolDroid : SEEN FAILING twice in the 2026-08-23 log -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Specialist"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Specialist"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Jawa_Droid_Grunt : race OuterRim_ImperialLaborDroid : not yet seen - it simply has not rolled female -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Grunt"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Grunt"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Jawa_Droid_Heavy : race OuterRim_KXSecurityDroid : not yet seen - it simply has not rolled female -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Heavy"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Heavy"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Jawa_Droid_Leader : race OuterRim_SuperTacticalDroid : not yet seen - it simply has not rolled female -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Leader"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Leader"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
 </Patch>
