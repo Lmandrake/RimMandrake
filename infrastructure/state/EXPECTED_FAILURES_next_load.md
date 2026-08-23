@@ -2457,3 +2457,37 @@ it says Cherry Picker will not take an `UnfinishedThing`.
 malformed key loses all 1342, and nothing in the game says so; 1212 removals says it did not
 happen this load. The config itself is clean — 1342 entries, every one prefixed, no
 duplicates, no malformed names.
+
+## §10–§17 RESULTS, part 2 — read from the WORLD SCREEN, 2026-08-23 16:1x
+
+**Event:** owner at `Page_SelectStartingSite`, world generated, **no landing site chosen**.
+Seed `raven`, `planetCoverage 1.0`, **21,872 tiles**, 36.74% water / 63.26% land,
+overallRainfall Normal, overallTemperature Normal.
+
+| reading | verdict |
+|---|---|
+| **H4** | ✅ `[PlanetPresetPrime] ready: coverage 1, subdivisions 7, MLP slider primed` (L10361). |
+| **H5** | ✅ **decisive** — `jawa/world_stats` reads `planetCoverage 1.0` and `tilesCount 21872` with the owner having touched no control. `PRIME_WORLD_PRESET_ALWAYS_1`'s criteria met end to end, on a real worldgen. |
+| **§3 T6a** | ✅ **zero** lines on the `Exception loading def from file Jawa` / `XenotypeChance.LoadDataFromXmlCustom` / `ParseAndReturnDef_RimWorld_FactionDef` grep. Corroborated by the free side-effect: `Possible Matches` is **45**, against ~98,000 on the pre-fix load, and the whole log is **10,756 lines** against ~99,700. **B56 closes.** |
+| **§3 T6b** | ✅ **better than the expectation** — T6b predicted seven of the eight would be absent from a world nobody hand-configures. On this real worldgen **all EIGHT are present**, with 18 settlements between them: `Jawa_IndigenousTribes` 5, `Jawa_AscendantHelix` 3, `Jawa_HuttCartel` 2, `Jawa_WildsteamClan` 2, `Jawa_GeonosianFoundryHive` 2, `Jawa_FreeDroidEnclaves` 2, `Jawa_Junkers` 1, `Jawa_DeepwaterCompact` 1. T6b's table admits this explicitly — `canMakeRandomly` rolled the seven in. ⇒ `seven-factions-have-no-required-count-9c4e17` in `queue/DECIDE.md` is **less urgent than it reads**: they generate without a required count. |
+| **`factionWarning`** | ✅ **false alarm, checked not assumed.** `world_objects_get` prints *"A Settlement with a null faction is DESTROYED on load"* whenever any object lacks a faction. All **80** faction-less objects here are asteroids and derelict stations (`BigAsteroidBasic` 40, `VGE_*` 37, `AsteroidBasic` 3). **All 35 Settlements carry a faction.** Nothing is at risk. |
+
+⚠️ **Vanilla factions are still generating** — `OutlanderCivil` 5, `Pirate` 4, `TribeCivil` 3, `Empire` 1, plus `Insect` 24. §2's S3 ("faction exclusion took") is written against the superseded world and is **not** scored here.
+
+### 🔴 The water is 4.5× the design target, and this is the pre-click moment to say so
+
+`the_one_map.md` records the owner's own ruling — *"There's WAY too much water, so reduce
+that to a third the value shown"* — and fixes Ash'karr at **8.14% water** (1,780 of 21,872
+tiles). **This world reads 36.74% — 8,036 water tiles.** It also reads Normal rainfall and
+Normal temperature, where the design is a tidally locked world with an ochre dayside and an
+ice nightside.
+
+⇒ **This is a stock-parameter generation, not Ash'karr.** Harmless if it is a test world for
+the live readings; wrong before landing if it is meant to become the frozen planet.
+
+### 🐛 Bridge trap found — `rimworld/get_game_info` THROWS on the world screen
+
+`InvalidCastException: Specified cast is not valid` out of `Verse.Find.get_MapUI` →
+`get_Selector`, inside `DiagnosticsCapabilityModule.GetGameInfo`. It is not a refusal, it is
+an unhandled cast on a screen with no map. **Use `jawa/world_stats` / `jawa/world_info_get`
+at `Page_SelectStartingSite`; `get_game_info` is unavailable there.**
