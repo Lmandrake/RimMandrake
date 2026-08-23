@@ -168,6 +168,9 @@ h1{margin:0 0 6px;font-size:19px}.sub{color:var(--dim);font-size:13px}
 input,select,button{background:#0f1216;color:var(--fg);border:1px solid var(--line);border-radius:5px;padding:6px 9px;font:inherit}
 button{cursor:pointer}button:hover{border-color:#4a5361}
 #link{font-size:12px;color:var(--dim);margin-left:auto}
+.pathbar{margin-top:9px;font-size:12px;background:#0f1216;border:1px solid var(--line);border-radius:5px;padding:8px 11px}
+.pathbar code{color:#cfe3ff;font-family:ui-monospace,monospace;font-size:12px}
+.pathbar b{color:var(--ok)}.pathbar .pn{display:block;color:var(--dim);margin-top:4px}
 .row{display:grid;grid-template-columns:132px 1fr 300px;gap:14px;padding:14px 22px;border-bottom:1px solid var(--line)}
 .row.hide{display:none}
 .spr{width:132px;height:132px;background:#0b0d10 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M0 0h8v8H0zM8 8h8v8H8z' fill='%23161a1f'/%3E%3C/svg%3E");border:1px solid var(--line);border-radius:5px;display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -205,11 +208,22 @@ Default for every row is <b>keep</b> — only the flagged rows carry a proposal.
 <button id="save">Link file…</button><button id="copy">Copy JSON</button>
 <span id="link">not linked — decisions are in this tab only</span>
 </div>
+<div class="pathbar">🔑 <b>Save it exactly here</b>, or the generator cannot merge your calls back:
+<code>D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_art_decisions.json</code>
+<span class="pn">⚠️ the file picker cannot be given a folder — that is a browser rule, not an oversight — so the path is printed here to be read. The sheet itself is <code>D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_art_review.html</code></span></div>
 </header>
 <div id="list"></div>
 <script>
 const DATA=__DATA__, PRIOR=__PRIOR__;
 const D={}; let handle=null, timer=null;
+// 🔑 A FileSystemFileHandle is structured-cloneable, so IndexedDB can hold it and localStorage
+// cannot. Without this the link dies on every reload and the human silently stops saving.
+const IDB='ashkarr_art_fs', IKEY='handle';
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(IDB,1);
+  r.onupgradeneeded=()=>r.result.createObjectStore('h');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
+async function idbPut(h){try{const db=await idb();db.transaction('h','readwrite').objectStore('h').put(h,IKEY);}catch(e){}}
+async function idbGet(){try{const db=await idb();return await new Promise(res=>{
+  const q=db.transaction('h','readonly').objectStore('h').get(IKEY);q.onsuccess=()=>res(q.result||null);q.onerror=()=>res(null);});}catch(e){return null;}}
 // 🔴 merge PER ROW: a row already decided is left exactly alone, every other takes the prefill.
 let kept=0, filled=0;
 for(const it of DATA){
@@ -292,9 +306,19 @@ el('save').onclick=async()=>{
   if(!window.showSaveFilePicker){ el('link').textContent='this browser has no File System Access API — use Copy JSON'; return; }
   try{ handle=await window.showSaveFilePicker({suggestedName:'creature_art_decisions.json',
         types:[{description:'JSON',accept:{'application/json':['.json']}}]});
+       await idbPut(handle);
        el('link').textContent='linked — autosaving'; save(); }
   catch(e){}
 };
+// ⭐ Chrome needs a gesture to re-grant after a restart, so OFFER the reconnect rather than
+// failing quietly - a sheet that looks linked and is not is the worst of the three states.
+(async()=>{ const h=await idbGet(); if(!h) return;
+  const perm = await h.queryPermission({mode:'readwrite'});
+  if(perm==='granted'){ handle=h; el('link').textContent='relinked to your file — autosaving'; }
+  else { el('link').innerHTML='<b style="color:#ffb454;cursor:pointer" id="regrant">click to reconnect your file</b>';
+         el('regrant').onclick=async()=>{ if(await h.requestPermission({mode:'readwrite'})==='granted'){
+           handle=h; el('link').textContent='relinked — autosaving'; save(); } }; }
+})();
 el('copy').onclick=()=>{ navigator.clipboard.writeText(payload()); el('link').textContent='copied to clipboard'; };
 render();
 console.log('prefilled '+filled+' rows, kept '+kept+' existing decisions untouched');
