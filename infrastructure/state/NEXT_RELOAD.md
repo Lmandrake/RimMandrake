@@ -28,7 +28,7 @@
 > | `The Salvation.rid` · `MandrakeJawa.xtp` | both byte-identical to the repo |
 > | ModsConfig | 578 listed, 578 resolved, **0 missing**; fingerprint `49b83562b10df31c` matches the frozen OFFICIAL entry |
 > | load ORDER | every patch loads after what it patches — DesertVehicleReskin 547 > Alpha Vehicles 534; Jawa_Patches 571 > StarWarsRaces 567 and > Big and Small core 536; JawaIonWeapons 570 > Outer Rim Core 539 |
-> | all 68 `Patches/*.xml` | re-validated against the real load set after a validator bug was fixed: **0 errors**, and exactly one dead xpath, which is harmless (`HeadSetForFA_Revive` targets a def Facial Animation generates at runtime) |
+> | all **69** `Patches/*.xml` | re-validated against the real load set after a validator bug was fixed: **0 errors** across 69 files. Exactly one dead xpath and it is harmless (`HeadSetForFA_Revive` targets a def Facial Animation generates at runtime). The 1,883 warnings are the add-if-missing idiom, already triaged. `validate_patch.py` now has a selftest (`selftest_validate_patch.py`, 8/8) proved to fail without the fix |
 >
 > ⚠️ **`mandrake.phytokinbarkheadfix` and `mandrake.kotorbandoliernorthfix` are STILL out of
 > ModsConfig and that is correct** — the owner's 2026-08-14 baseline-shot ruling (B1, B2)
