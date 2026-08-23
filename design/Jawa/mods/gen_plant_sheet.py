@@ -248,6 +248,9 @@ tr.cut{background:#241a1a}tr.undec{background:#241f16}
 .dec button.on[data-s=undecided]{background:#4d3d1c;border-color:#7a642f;color:#fff}
 .note{width:100%;margin-top:5px;background:#0f1115;border:1px dashed #3a414c;color:#c9b98a;padding:4px 6px;border-radius:4px;font-size:12px;font-family:inherit}
 .bio{font-size:11px;color:#666d78;margin-top:3px}
+.tgt{margin-left:auto;color:#8b929e}
+.tgt code{background:#0f1115;padding:2px 5px;border-radius:3px;color:#c9b98a;user-select:all}
+button.mini{font-size:11px;padding:2px 6px;margin-left:6px}
 footer{position:fixed;bottom:0;left:0;right:0;background:#1b1e24;border-top:1px solid #2c313a;padding:8px 20px;display:flex;gap:10px;align-items:center;font-size:12.5px;z-index:60}
 #link{color:#8b929e}#link b{color:#5fb87a}#link.bad b{color:#e0685e}
 .hidden{display:none}
@@ -303,7 +306,10 @@ Filed as <code>MERIDIAN_GREEN_IS_NOT_RIVER_JUNGLE_1</code>.</div>
 <footer>
 <button id="btncopy">Copy JSON</button>
 <button id="btnlink">Link to file…</button>
+<button id="btnre" style="display:none">Reconnect file</button>
 <span id="link">not linked — <b>your work is in this browser only</b></span>
+<span class="tgt">save as <code id="tgtpath">D:\Luke\dev\Rimworld\design\Jawa\mods\plant_decisions.json</code>
+<button id="btnpath" class="mini">copy path</button></span>
 </footer>
 <script>
 const DATA = /*__DATA__*/;
@@ -343,6 +349,35 @@ function payload(extra){
   return o;
 }
 
+// 🔑 REMEMBER THE FILE ACROSS RELOADS. A FileSystemFileHandle is structured-cloneable,
+// so IndexedDB can hold it - localStorage cannot. Chrome still needs one gesture to
+// re-grant permission after a restart, which is what the Reconnect button is for.
+// ⚠️ The browser will not accept a PATH in showSaveFilePicker's suggestedName - it is a
+// filename only, by design, so no page can aim a save at an arbitrary directory. The
+// handle is the only way to land in the right folder without navigating, and the exact
+// path is printed in the footer for the first time.
+const IDB='ashkarr_plants_fs', IKEY='handle';
+function idb(){ return new Promise((res,rej)=>{ const r=indexedDB.open(IDB,1);
+  r.onupgradeneeded=()=>r.result.createObjectStore('h'); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function idbPut(h){ try{ const db=await idb(); const tx=db.transaction('h','readwrite');
+  tx.objectStore('h').put(h,IKEY); }catch(e){} }
+async function idbGet(){ try{ const db=await idb(); return await new Promise(res=>{
+  const q=db.transaction('h','readonly').objectStore('h').get(IKEY); q.onsuccess=()=>res(q.result||null); q.onerror=()=>res(null); }); }catch(e){ return null; } }
+
+async function adopt(h, {write=true}={}){
+  fileHandle = h;
+  try{ const f = await h.getFile(); const txt = await f.text();
+    if(txt.trim()){ const j = JSON.parse(txt);
+      for(const k of Object.keys(j)) if(!['posture','postureMeaning','savedBy','savedAt','decidedCount','total','decisions'].includes(k)) carried[k]=j[k];
+      // 🔴 THE FILE FILLS GAPS; IT NEVER OVERWRITES THIS SESSION'S WORK.
+      if(j.decisions) for(const d in j.decisions){
+        if(state[d] && j.decisions[d].touched && !state[d].touched){
+          state[d]={s:j.decisions[d].decision,note:j.decisions[d].note||'',touched:true}; } }
+    }
+  }catch(e){}
+  await idbPut(h); render(); if(write) await writeFile();
+}
+
 // A whole-file writer must carry through top-level keys it does not own.
 let carried = {};
 async function writeFile(){
@@ -363,29 +398,34 @@ function queueWrite(){ saveLocal(); if(!fileHandle) return; clearTimeout(t); t=s
 function setLink(msg, bad){ const el=document.getElementById('link'); el.className = bad?'bad':''; el.innerHTML = fileHandle ? ('linked · <b>'+msg+'</b>') : ('not linked — <b>your work is in this browser only</b>'); }
 
 document.getElementById('btnlink').onclick = async ()=>{
-  if(!window.showSaveFilePicker){ alert("This browser has no File System Access API (Firefox does not). Use Copy JSON and paste it into design/Jawa/mods/plant_decisions.json"); return; }
+  if(!window.showSaveFilePicker){ alert("This browser has no File System Access API (Firefox does not). Use Copy JSON and paste it into D:\\Luke\\dev\\Rimworld\\design\\Jawa\\mods\\plant_decisions.json"); return; }
   try{
-    fileHandle = await window.showSaveFilePicker({suggestedName:'plant_decisions.json',
-      types:[{description:'JSON',accept:{'application/json':['.json']}}]});
-    // read what is already there and carry unknown top-level keys through
-    try{ const f = await fileHandle.getFile(); const txt = await f.text();
-      if(txt.trim()){ const j = JSON.parse(txt);
-        for(const k of Object.keys(j)) if(!['posture','postureMeaning','savedBy','savedAt','decidedCount','total','decisions'].includes(k)) carried[k]=j[k];
-        // 🔴 THE FILE FILLS GAPS; IT NEVER OVERWRITES THIS SESSION'S WORK.
-        // This line used to let any row the FILE marked touched clobber the live one,
-        // so linking a file saved in an earlier session silently reverted every
-        // decision made since. Measured 2026-08-22: seven PoisonForest trees the owner
-        // had just cut would have gone back to `keep` on the click that was supposed to
-        // SAVE them. In-memory touched always wins; the file only supplies rows this
-        // session never touched.
-        if(j.decisions) for(const d in j.decisions){
-          if(state[d] && j.decisions[d].touched && !state[d].touched){
-            state[d]={s:j.decisions[d].decision,note:j.decisions[d].note||'',touched:true}; } }
-      }
-    }catch(e){}
-    render(); await writeFile();
+    const prior = await idbGet();
+    const opts = {suggestedName:'plant_decisions.json',
+      types:[{description:'JSON',accept:{'application/json':['.json']}}]};
+    // startIn accepts a handle; this is what puts the picker in the right folder.
+    if(prior) opts.startIn = prior;
+    await adopt(await window.showSaveFilePicker(opts));
   }catch(e){}
 };
+document.getElementById('btnre').onclick = async ()=>{
+  const h = await idbGet(); if(!h) return;
+  try{ const p = await h.requestPermission({mode:'readwrite'});
+    if(p==='granted'){ document.getElementById('btnre').style.display='none'; await adopt(h); }
+    else setLink('permission refused', true);
+  }catch(e){ setLink('reconnect failed: '+e.message, true); }
+};
+document.getElementById('btnpath').onclick = ()=>{
+  navigator.clipboard.writeText(document.getElementById('tgtpath').textContent)
+    .then(()=>setLink('path copied'),()=>{});
+};
+(async ()=>{ const h = await idbGet(); if(!h) return;
+  try{ const p = await h.queryPermission({mode:'readwrite'});
+    if(p==='granted') await adopt(h, {write:false});
+    else { const b=document.getElementById('btnre'); b.style.display='';
+           setLink('a file is remembered — click Reconnect file', true); }
+  }catch(e){}
+})();
 document.getElementById('btncopy').onclick = ()=>{
   navigator.clipboard.writeText(JSON.stringify(payload(),null,2))
     .then(()=>setLink('copied to clipboard'),()=>alert('clipboard blocked'));
