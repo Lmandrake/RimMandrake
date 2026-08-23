@@ -318,7 +318,8 @@ vanilla/mod vessels we patch.** ⛔ **That is not eight *Jawa* factions.** The `
 Hutts and the Free Droids are not Jawa. Precisely: **two factions are Jawa peoples** (Trade Moot,
 the Junkers), and **exactly one GENERATES Jawa pawns** — `faction_world_spec.md:48`, *"No faction
 generates Jawa except the Trade Moot — the player race is not a common sight."* The fourteenth,
-the Unbound Hive, is **cut**; docs still saying "14 factions" are stale.
+the Unbound Hive, is **cut**; any doc still carrying the old count is stale.
+<!-- canon-ok: the sentence above deliberately refers to the superseded pre-cut count without stating it, so canon's 13 stands unchallenged. -->
 
 | faction | defName | tech | what its dwelling IS, per the docs |
 |---|---|---|---|
@@ -543,3 +544,147 @@ only one that cannot show the owner a house this week.
 (🅐's strength — a floorplan a human approved) filled by rule-driven furnishing (🅑's strength —
 variety and parameter response) is strictly better than either alone, and it is the natural
 end state of steps 2–4 above.
+
+---
+
+## 8. 🔴 THE FORMAT AXIS IS DECIDED: LUA — owner, 2026-08-22
+
+> *"The more we think about it, the more we know that we will need something like lua for
+> rapid prototyping and debugging without constant game reloads."*
+
+**That settles the format axis** (§0) and leaves the generation axis (🅐/🅑/🅒) open — which is
+exactly the separation this document argued for. A Lua template can express any of the three:
+🅐 is a script that stamps a fixed grid, 🅑 is a script with rules, 🅒 is a script that calls a
+solver. **The downselect is now only about how much the script decides.**
+
+🔑 **And note what the justification actually is.** It is not expressiveness — a DSL or JSON
+could describe a house. It is the **EDIT–RUN LOOP**. A 25-minute cold load makes any generator
+that can only be judged in-game effectively untunable; you get a handful of iterations a day.
+A text file that renders in milliseconds gets hundreds.
+
+### A PROTOTYPE EXISTS AND WORKS — `src/RimMandrake/Utils/rimplace/`, 2026-08-22
+
+Built the same day, driven by Lua files, **no game involved at any point.**
+
+```bash
+python3 -m venv ~/.local/venvs/rimlua && ~/.local/venvs/rimlua/bin/pip install lupa
+cd /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils
+~/.local/venvs/rimlua/bin/python -m rimplace render dwelling --rect 0,0,18,10 --rooms 3
+```
+
+| command | what it does |
+|---|---|
+| `render` | **draws the house as text.** The debug loop |
+| `lint` | every check that does not need a game |
+| `calls` | the exact ordered `jawa/*` calls it would make |
+| `verify` | every defName checked against the live def dump |
+| `selftest` | 23 cases, **over half negative controls** |
+
+**What the prototype demonstrates that the spec could only assert:**
+
+1. **A `.lua` file produces a house in milliseconds.** One 3-room Jawa dwelling renders, lints
+   and compiles to **15 bridge calls / 72 build ops**.
+2. **Faction canon can live in the template as a branch**, and it works: the Free Droid
+   Enclaves' dwelling comes out with **no beds and no kitchen**, its rooms named ChargingHall /
+   Fabrication / Storeroom. The Wildsteam Clan's comes out **unwalled**.
+3. **The cold nursery branch fires** on a hot tile — cooler into the wall, nest inside — and the
+   plan carries the honest note that *the template cannot prove the room holds 32 °C.*
+4. **The linter earned its place immediately.** It caught four real bugs while the first
+   template was being written: two adjacent rooms double-placing their shared wall column, a
+   light claiming the stove's corner, a cooler placed *on top of* a wall instead of *into* it,
+   and an absolute path in the IR that made two identical houses compare unequal.
+5. **Refusal works.** An 8×6 footprint asked for 3 rooms is **refused**, not silently downgraded.
+
+🔑 **Three properties designed in deliberately, each worth keeping in whatever wins:**
+
+- 🔴 **It refuses to trust its own palette.** `verify` checks every defName against
+  `DefDump/defs.sqlite`, **validating its query shape against a known answer (`Human`) first**,
+  and reports **UNMEASURED** — never a pass — if the dump is unreadable. That turns *"never
+  guess a defName"* from a rule someone must remember into a gate the tool enforces.
+- 🔴 **The Lua sandbox is real.** `os`, `io`, `require`, `dofile`, `loadfile` and `load` are
+  removed before a template runs, with three selftests proving it. Templates are data, and data
+  we may one day ship.
+- 🔴 **Every linter check has a negative control.** A check that cannot fail reads exactly like
+  a pass — the failure mode `BUILDABLE.md` exists to catalogue.
+
+⚠️ **What the prototype is NOT.** It has never touched a running game; `calls` output is
+unexecuted. It has no site model, so `ctx:buildable()` is vacuous and the plan says so. And its
+per-faction **materials are invented** (§5.4) — the engine is real, the palette is a placeholder.
+
+---
+
+## 9. 🅒 IS NO LONGER GATED — the measurement came back
+
+§6🅒 said its cost hung on one unanswered question: *can RimWorld's own structure generators run
+against a rect on an already-generated live map?* **Measured in the 1.6 source, 2026-08-22: YES,
+for both, and vanilla ships debug actions that do exactly it.**
+
+| engine | live-map proof | verdict for a dwelling |
+|---|---|---|
+| **`BaseGen`** | `Verse/DebugActionsMapManagement.cs:23-53`, `allowedGameStates = PlayingOnMap`: assigns `globalSettings.map`, pushes a symbol at a rect, calls `Generate()` | ⭐ **the only shipped system that makes an actual DWELLING** — `basePart_indoors` splits a rect into rooms and fills them with beds, tables, chairs, lights, heaters. Already parameterises on faction via `RandomCheapWallStuff(faction)` / `RandomBasicFloorDef(faction)` |
+| **`LayoutWorker`** | `Verse/DebugActionsIdeo.cs:425-450` — pick two corners on `Find.CurrentMap`, `GenerateStructureSketch`, `Worker.Spawn` | better **geometry** (true BSP, corridors, door graph, merge/prune) but **every shipped `LayoutRoomDef` fills rooms with derelict loot** — a dwelling means authoring our own |
+| **`Sketch` / `SketchGen`** | `DebugActionsMapManagement.SketchGen` | ⭐ **`SpawnMode.Blueprint` yields player-buildable blueprints**, and `buildRoofsInstantly` roofs the suggested cells |
+| **`PrefabUtility`** | fully map-parameterised, no mapgen dependency | exactly a captured-room format, and vanilla ships the round trip |
+
+🪤 **But the obstacle is real and nasty: `BaseGen` is a process-global static singleton.**
+`BaseGen.globalSettings` and `BaseGen.symbolStack` are shared with map generation and carry
+mutable counters that nothing on a live-map path resets. **A leftover push from a prior call
+resolves into your next rect.** ⇒ Reset settings before every call, and drive the narrow
+`basePart_indoors` / `interior_*` symbols — **never `settlement`**, which also pushes
+`pawnGroup` and `LordMaker` work.
+
+⚠️ **Two more measured constraints that change the plan:**
+- **`LayoutRoomDef` is effectively Odyssey content** — Core ships 1; the 63-def file is under
+  `Data/Odyssey/`. Reference reading unless Odyssey is a hard dependency.
+- **`PrefabDef.things`/`terrain`/`prefabs` are `internal`**, so an external assembly cannot
+  populate a runtime-built `PrefabDef` without reflection.
+
+🔑 **The most valuable thing in that measurement, and it is nearly free:** `Room.Role` is
+recomputed as a plain argmax over `RoomRoleDef` workers. **If the generated room holds exactly
+one non-prisoner humanlike bed, RimWorld itself labels it a Bedroom.** ⇒ **The game will
+validate our output for us** — a far stronger acceptance test than any linter we write.
+
+---
+
+## 10. Acceptance — what only a live game can settle
+
+The linter covers geometry. These four need the bridge, and they are the whole live cost:
+
+1. **The rooms classify.** Build a 3-room dwelling, read `Room.Role` back. Expect
+   `Bedroom`/`Barracks`, `DiningRoom`, `Storeroom`. ⇒ *the game agrees it is a house.*
+2. **The shell holds temperature.** Build the Jawa nursery on a hot tile, run time forward,
+   read the room temperature. **Must be ≤32 °C.** No offline check can ever prove this, and the
+   clutch depends on it.
+3. **Nothing was silently refused.** `placed == cellsRequested`, and `refused[]` empty or
+   explained. The zone-builder incident — a 6×6 stockpile that took 11 of 36 cells and reported
+   success — is the failure this exists to prevent.
+4. **The plan and the map agree.** Re-read every placed cell and diff against the BuildPlan. A
+   `success: true` from `build_batch` is not evidence; the read-back is.
+
+⚠️ **One cheap measurement first:** run `verify` against the live dump for every faction
+palette. A wrong defName costs a load to discover and nothing to prevent.
+
+---
+
+## 11. Open decisions — owner or DECIDE, not this seat
+
+| # | decision | why it blocks |
+|---|---|---|
+| 1 | 🔴 **Per-faction building materials.** No doc assigns a wall, floor or roof material to ANY faction; six of thirteen have no stated architecture at all | 🅑 and 🅒 cannot choose materials honestly. The prototype's palette is **invented placeholder** |
+| 2 | ⚠️ **Is wood scarce, and for whom?** Measured: only **11 Woody stuff defs**, and desert biomes carry cacti rather than trees — but **no doc rules on it**, and Wildsteam is canonically the only faction that plants | decides whether wood is in any palette but Wildsteam's |
+| 3 | ⚠️ **Two contested tech levels** — Deep Desert Tribes and the Trade Moot each read Neolithic in one doc and Industrial in another | `techLevel` is a hard palette ceiling; a torch and a standing lamp hang on it |
+| 4 | **Do the three subterranean factions get dwellings at all** (Trade Moot, Geonosians, Junkers), or excavations? | a surface-rectangle generator cannot express them |
+| 5 | **Which generation approach** — 🅐 / 🅑 / 🅒, or the staged path in §7 | the actual downselect |
+
+🔑 **Two measured facts that should inform #1 and #3:**
+
+- **Tech filtering must use `researchPrerequisites → ResearchProjectDef.techLevel`, NOT
+  `ThingDef.techLevel`.** Measured: **3,106 of 3,233 buildable ThingDefs have `techLevel`
+  Undefined**, so the obvious field is useless; the research route is populated for all 515
+  projects. ⚠️ And this stack re-gates even vanilla basics — `Wall` and `Door` sit behind
+  `VFET_Construction`.
+- **A Jawa dwelling has a real modded palette already**, measured in the dump:
+  `guy762_PoweredWall_SandcrawlerInteriorWallA`, `guy762_PoweredWall_TatooineStuccoWallA/B/C`,
+  `guy762_Autodoor1x1_SandcrawlerA`, `OuterRim_TatooineBed`, `OuterRim_TatooineStool`,
+  `OuterRim_TatooineDresser`, `KotOR_MoistureVaporator_big`, `OuterRim_StorageCrate`.
+  ⛔ **There is no `Jawa_*` or `RimMandrake*` buildable ThingDef at all.**
