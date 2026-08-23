@@ -21,6 +21,7 @@
           <Plant_PincushionCactus>0.8</Plant_PincushionCactus> <!-- pincushion cactus -->
           <Plant_Agave>0.6</Plant_Agave> <!-- agave -->
           <Plant_DesertDandelion>0.45</Plant_DesertDandelion> <!-- dandelions -->
+          <Plant_PebbleCactus>0.35</Plant_PebbleCactus> <!-- pebble cactus - tree -->
           <AB_BrownBarrelCactus>0.25</AB_BrownBarrelCactus> <!-- brown barrel cactus -->
           <Plant_SaguaroCactus>0.12</Plant_SaguaroCactus> <!-- saguaro cactus - tree -->
           <Plant_TreeDrago>0.08</Plant_TreeDrago> <!-- drago tree - tree -->
@@ -180,6 +181,7 @@
           <BMT_Plant_Toxcaps>0.6</BMT_Plant_Toxcaps> <!-- toxcaps -->
           <BMT_Plant_Pestia>0.5</BMT_Plant_Pestia> <!-- pestia -->
           <BMT_Plant_WeepingHagbloom>0.3</BMT_Plant_WeepingHagbloom> <!-- weeping hagbloom -->
+          <BMT_Plant_TreeTwistingThornwood>0.18</BMT_Plant_TreeTwistingThornwood> <!-- twisting thornwood - tree -->
           <BMT_Plant_TreeBlotBirch>0.15</BMT_Plant_TreeBlotBirch> <!-- blot birch tree - tree -->
           <BMT_Plant_TreeScalpedCypress>0.12</BMT_Plant_TreeScalpedCypress> <!-- scalped cypress - tree -->
           <BMT_Plant_TreeMartyr>0.1</BMT_Plant_TreeMartyr> <!-- martyr tree - tree -->

@@ -47,6 +47,7 @@ FAMILIES = {
   'Desert': {                       # 4,648 tiles - the face of the planet
     'AB_HardyGrass': 2.2, 'Plant_PincushionCactus': 0.8, 'Plant_Agave': 0.6,
     'Plant_DesertDandelion': 0.45, 'AB_BrownBarrelCactus': 0.25,
+    'Plant_PebbleCactus': 0.35,     # tree - walk list: reads correctly for desert ground
     'Plant_SaguaroCactus': 0.12,    # tree
     'Plant_TreeDrago': 0.08},       # tree - owner: "I love the strange drago tree"
   'ExtremeDesert': {                # 3,214 - plantDensity 0.008, all but sterile
@@ -100,6 +101,7 @@ FAMILIES = {
     'BMT_Plant_PaganThorns': 0.8, 'BMT_Plant_PlagueFans': 0.7,
     'BMT_Plant_Toxcaps': 0.6, 'BMT_Plant_Pestia': 0.5,
     'BMT_Plant_WeepingHagbloom': 0.30,
+    'BMT_Plant_TreeTwistingThornwood': 0.18,  # owner: "I love the … twisting thornwood"
     'BMT_Plant_TreeBlotBirch': 0.15, 'BMT_Plant_TreeScalpedCypress': 0.12,
     'BMT_Plant_TreeMartyr': 0.10,   # owner: "I love the … martyr"
     'BMT_Plant_TreeWormoak': 0.10},

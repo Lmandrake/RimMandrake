@@ -12,17 +12,21 @@ decorate the biomes."*
 family a shared plant is kinship; across two it is the zoo effect he objected to. The
 generator refuses to build if any plant crosses.
 
+⭐ **His three named favourites all have a home** — `Plant_TreeDrago` in `Desert`,
+`BMT_Plant_TreeTwistingThornwood` and `BMT_Plant_TreeMartyr` in `PoisonForest`, where the
+rest of the Polluted Lands trees live.
+
 ⚠️ **Climate was deliberately NOT a filter.** He ruled *"we can set the appropriate
 temperatures later"* — 642 of 669 plants will not grow below 0 °C and half this planet is
 colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_TOLERANCES_1`.
 
-**8 families · 24 biomes · 132 plants, all distinct.** 4 biomes carry no flora by design: `IceSheet`, `Lake`, `Ocean`, `SeaIce`.
+**8 families · 24 biomes · 134 plants, all distinct.** 4 biomes carry no flora by design: `IceSheet`, `Lake`, `Ocean`, `SeaIce`.
 
 ## A. dayside desert
 
 ### `Desert` — 4,648 tiles · -15 … 62 °C (median 24) · plantDensity 0.45
 
-*was 21 inherited plants → now **7** assigned*
+*was 21 inherited plants → now **8** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
@@ -30,6 +34,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.8 | **pincushion cactus** |  | `Plant_PincushionCactus` · Core |
 | 0.6 | **agave** |  | `Plant_Agave` · Core |
 | 0.45 | **dandelions** |  | `Plant_DesertDandelion` · ReGrowth 2 |
+| 0.35 | **pebble cactus** | 🌳 | `Plant_PebbleCactus` · Biotech |
 | 0.25 | **brown barrel cactus** |  | `AB_BrownBarrelCactus` · Alpha Biomes |
 | 0.12 | **saguaro cactus** | 🌳 | `Plant_SaguaroCactus` · Core |
 | 0.08 | **drago tree** | 🌳 | `Plant_TreeDrago` · Core |
@@ -146,7 +151,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 
 ### `PoisonForest` — 604 tiles · -52 … 39 °C (median -18) · plantDensity 0.85
 
-*was 19 inherited plants → now **9** assigned*
+*was 19 inherited plants → now **10** assigned*
 
 | commonality | plant | | mod |
 |---:|---|---|---|
@@ -155,6 +160,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.6 | **toxcaps** |  | `BMT_Plant_Toxcaps` · Biomes! Polluted Lands |
 | 0.5 | **pestia** |  | `BMT_Plant_Pestia` · Biomes! Polluted Lands |
 | 0.3 | **weeping hagbloom** |  | `BMT_Plant_WeepingHagbloom` · Biomes! Polluted Lands |
+| 0.18 | **twisting thornwood** | 🌳 | `BMT_Plant_TreeTwistingThornwood` · Biomes! Polluted Lands |
 | 0.15 | **blot birch tree** | 🌳 | `BMT_Plant_TreeBlotBirch` · Biomes! Polluted Lands |
 | 0.12 | **scalped cypress** | 🌳 | `BMT_Plant_TreeScalpedCypress` · Biomes! Polluted Lands |
 | 0.1 | **martyr tree** | 🌳 | `BMT_Plant_TreeMartyr` · Biomes! Polluted Lands |
