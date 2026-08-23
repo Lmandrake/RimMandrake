@@ -7,11 +7,11 @@ draw from Tinctora, Healroot, and other normally player-grown plants as you deco
 biomes."* Then: *"We can set the appropriate temperatures later, don't worry about that as a
 constraint."*
 
-**Done and DEPLOYED 2026-08-23 03:27.** `design/Jawa/mods/biome_flora.py` holds the rosters and
-emits `src/Jawa/Jawa_Patches/Patches/BiomeFlora_Ashkarr.xml` (24 operations). The readable
+**Done and DEPLOYED 2026-08-23; last extended 10:44.** `design/Jawa/mods/biome_flora.py` holds the rosters and
+emits `src/Jawa/Jawa_Patches/Patches/BiomeFlora_Ashkarr.xml` (25 operations — 24 rosters plus the `Wasteland` density raise). The readable
 version is `design/Jawa/worldbuilding/biome_flora_rosters.md`.
 
-**8 families · 24 biomes · 134 plants, every one distinct.** 4 biomes carry no flora by design
+**8 families · 24 biomes · 604 plants, every one distinct.** ⚠️ **The 134 in the first draft of this item was superseded by three later passes** (`a2292cf1` 134->546, `f9bf9da4` the 84 leftovers, `6c1f16a1` Wasteland density); 604 is what the generator, the doc, the patch and the deployed copy all now say. 4 biomes carry no flora by design
 (`Ocean`, `Lake`, `SeaIce`, `IceSheet`). The families are the design: dayside desert ·
 contamination · mycoid belt · river jungle · frozen nightside · volcanic · machine and scar ·
 alien. **`--check` fails the build if any plant appears in two of them.**
@@ -37,7 +37,7 @@ alien. **`--check` fails the build if any plant appears in two of them.**
 naming a plant · zero red errors naming `BiomeFlora_Ashkarr` · then a map in `Desert`,
 `HorrorWastes` and `AB_MycoticJungle`.
 
-**Already proven offline:** all 134 defNames exist in the live dump (68,518 defNames, 578
+**Already proven offline:** all 604 defNames exist in the live dump (68,518 defNames, 578
 mods); all 24 target biomes carry a `wildPlants` node, so every Conditional matches and every
 Replace runs; the deployed copy is byte-identical to the repo.
 
