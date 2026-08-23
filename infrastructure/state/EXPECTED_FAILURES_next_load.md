@@ -1823,6 +1823,29 @@ fail loudly — read the biome's `wildAnimals` in the capture, do not trust a cl
 entries, not 6. ⚠️ If it still reads 6, our operation is not the (only) source — which is the
 open question `4ffd9fb4` records. Not a failure of this load, but say so rather than assuming.
 
+### ⭐ S1 IS ALREADY ANSWERED, AND WITHOUT A RELOAD — owner, 2026-08-23 01:12
+
+**This block predicted S1 needed a cold load. It did not, and the prediction was wrong.**
+The owner, reading the pane on a NEWLY SPAWNED pawn with the new setting and no restart:
+
+> *"Currently it says `Gestor female baseliner` or `Phallor male Rakata`. That's not after a
+> reload, just a new spawn with the new mod config setting."*
+
+⇒ ✅ **The species word is BACK.** `Rakata` and `baseliner` are both xenotype labels, and both
+now appear where the old behaviour showed only `Gestor`. Baseline for comparison, measured
+before the change: `Gestor female, age 32 (100), Forsaken soldier` on a Rakatan sleeper — the
+species was absent entirely.
+
+🔑 **What this corrects, and it is a doctrine point, not a detail:** mod settings are consulted
+at PAWN GENERATION, so a setting change reaches every pawn generated after it — no restart
+required. A restart is only needed when a DEF must be re-parsed. This block said otherwise and
+was wrong; do not carry the "settings need a reload" claim forward.
+
+⚠️ **Still open, and it is the owner's call, not a measurement:** `Gestor`/`Phallor` has not
+disappeared — it is now a PREFIX beside the species rather than a replacement for it. If the
+word itself is unwanted, that is option 3 (cherrypick `GeneDef/SEX_AlwaysGestor`), which
+touches pawn GENERATION and is a genuinely bigger change than a settings toggle.
+
 ### Results — FILL THIS IN AFTER THE LOAD. Blank means unfinished.
 
 | # | outcome | evidence |
@@ -1833,6 +1856,6 @@ open question `4ffd9fb4` records. Not a failure of this load, but say so rather 
 | F1 | | |
 | F2 | | |
 | F3 | | |
-| S1 | | |
+| S1 | ✅ **PASS, pre-load** | owner, 01:12: `Phallor male Rakata` / `Gestor female baseliner` on a new spawn, no restart. Species restored; was `Gestor female … Forsaken soldier` |
 | S2 | | |
 | S3 | | |
