@@ -119,6 +119,10 @@
     </inventoryOptions>
       <!-- dusty dark brown — Jawa, Trade Moot tribal roles -->
     <apparelColor>(77,58,42)</apparelColor>
+      <!-- Trade Moot tribal roles - same clamp as the rest of the Moot. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <maxApparelQuality>Normal</maxApparelQuality>
+    <itemQuality>Poor</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef ParentName="TribalArcherBase">
@@ -150,6 +154,10 @@
     </inventoryOptions>
       <!-- dusty dark brown — Jawa, Trade Moot tribal roles -->
     <apparelColor>(77,58,42)</apparelColor>
+      <!-- Trade Moot tribal roles - same clamp as the rest of the Moot. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <maxApparelQuality>Normal</maxApparelQuality>
+    <itemQuality>Poor</itemQuality>
   </PawnKindDef>
 
   <!-- `weaponTags` IS REQUIRED HERE and on neither sibling. `TribalChiefBase`
@@ -192,6 +200,10 @@
     </inventoryOptions>
       <!-- dusty dark brown — Jawa, Trade Moot tribal roles -->
     <apparelColor>(77,58,42)</apparelColor>
+      <!-- Trade Moot tribal roles - same clamp as the rest of the Moot. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <maxApparelQuality>Normal</maxApparelQuality>
+    <itemQuality>Poor</itemQuality>
   </PawnKindDef>
 
 </Defs>

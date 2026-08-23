@@ -402,6 +402,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
+    <itemQuality>Normal</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -437,6 +439,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
+    <itemQuality>Normal</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -472,6 +476,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
+    <itemQuality>Normal</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -507,6 +513,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
+    <itemQuality>Normal</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -542,6 +550,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dusty sandy tan — owner. Tusken, sand-coloured by living in it -->
     <apparelColor>(186,163,122)</apparelColor>
+      <!-- design: 'max Normal'. No quality clamp on the weapon itself - a scavenged rifle is
+         whatever it was when they found it. -->
+    <itemQuality>Normal</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -576,6 +587,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dusty sandy tan — owner. Tusken, sand-coloured by living in it -->
     <apparelColor>(186,163,122)</apparelColor>
+      <!-- design: 'max Normal'. No quality clamp on the weapon itself - a scavenged rifle is
+         whatever it was when they found it. -->
+    <itemQuality>Normal</itemQuality>
   </PawnKindDef>
 
   <!-- 🔴 REVERTED 2026-08-23. I cut this to 400~500 as 'a Tusken outspending a stormtrooper'.
@@ -612,6 +626,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dusty sandy tan — owner. Tusken, sand-coloured by living in it -->
     <apparelColor>(186,163,122)</apparelColor>
+      <!-- design: 'max Normal'. No quality clamp on the weapon itself - a scavenged rifle is
+         whatever it was when they found it. -->
+    <itemQuality>Normal</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -646,6 +663,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dusty sandy tan — owner. Tusken, sand-coloured by living in it -->
     <apparelColor>(186,163,122)</apparelColor>
+      <!-- design: 'max Normal'. No quality clamp on the weapon itself - a scavenged rifle is
+         whatever it was when they found it. -->
+    <itemQuality>Normal</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -820,6 +840,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dull dark green — owner. Tribal hides and boiler grime -->
     <apparelColor>(52,72,45)</apparelColor>
+      <!-- design: 'min Good - few weapons, each old and well-made'. A forged culture keeps a
+         small number of good things rather than many poor ones. -->
+    <forceWeaponQuality>Good</forceWeaponQuality>
+    <itemQuality>Good</itemQuality>
   </PawnKindDef>
 
   <!-- raised above the Grunt to restore the ladder - and 2000 reaches the war bowcaster. -->
@@ -857,6 +881,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dull dark green — owner. Tribal hides and boiler grime -->
     <apparelColor>(52,72,45)</apparelColor>
+      <!-- design: 'min Good - few weapons, each old and well-made'. A forged culture keeps a
+         small number of good things rather than many poor ones. -->
+    <forceWeaponQuality>Good</forceWeaponQuality>
+    <itemQuality>Good</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -893,6 +921,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dull dark green — owner. Tribal hides and boiler grime -->
     <apparelColor>(52,72,45)</apparelColor>
+      <!-- design: 'min Good - few weapons, each old and well-made'. A forged culture keeps a
+         small number of good things rather than many poor ones. -->
+    <forceWeaponQuality>Good</forceWeaponQuality>
+    <itemQuality>Good</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -928,6 +960,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dull dark green — owner. Tribal hides and boiler grime -->
     <apparelColor>(52,72,45)</apparelColor>
+      <!-- design: 'min Good - few weapons, each old and well-made'. A forged culture keeps a
+         small number of good things rather than many poor ones. -->
+    <forceWeaponQuality>Good</forceWeaponQuality>
+    <itemQuality>Good</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -963,6 +999,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dull dark teal — owner. Deep water, sealed suits -->
     <apparelColor>(38,74,74)</apparelColor>
+      <!-- design: 'min Good'. Sealed-suit divers maintain their kit because failure drowns them. -->
+    <forceWeaponQuality>Good</forceWeaponQuality>
+    <itemQuality>Good</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -998,6 +1037,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dull dark teal — owner. Deep water, sealed suits -->
     <apparelColor>(38,74,74)</apparelColor>
+      <!-- design: 'min Good'. Sealed-suit divers maintain their kit because failure drowns them. -->
+    <forceWeaponQuality>Good</forceWeaponQuality>
+    <itemQuality>Good</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1033,6 +1075,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dull dark teal — owner. Deep water, sealed suits -->
     <apparelColor>(38,74,74)</apparelColor>
+      <!-- design: 'min Good'. Sealed-suit divers maintain their kit because failure drowns them. -->
+    <forceWeaponQuality>Good</forceWeaponQuality>
+    <itemQuality>Good</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1068,6 +1113,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dull dark teal — owner. Deep water, sealed suits -->
     <apparelColor>(38,74,74)</apparelColor>
+      <!-- design: 'min Good'. Sealed-suit divers maintain their kit because failure drowns them. -->
+    <forceWeaponQuality>Good</forceWeaponQuality>
+    <minApparelQuality>Good</minApparelQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1235,6 +1283,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- very pale baby blue — owner. Clinical, expensive, Arkanian -->
     <apparelColor>(208,226,240)</apparelColor>
+      <!-- design: 'min Excellent - few and perfect'. forceWeaponQuality is an EXACT value, not
+         a floor, so Excellent here means every Helix weapon is Excellent - which is
+         exactly the stated character: no waste, no spares, nothing improvised. -->
+    <forceWeaponQuality>Excellent</forceWeaponQuality>
+    <itemQuality>Excellent</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1270,6 +1323,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- very pale baby blue — owner. Clinical, expensive, Arkanian -->
     <apparelColor>(208,226,240)</apparelColor>
+      <!-- design: 'min Excellent - few and perfect'. forceWeaponQuality is an EXACT value, not
+         a floor, so Excellent here means every Helix weapon is Excellent - which is
+         exactly the stated character: no waste, no spares, nothing improvised. -->
+    <forceWeaponQuality>Excellent</forceWeaponQuality>
+    <itemQuality>Excellent</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1306,6 +1364,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- very pale baby blue — owner. Clinical, expensive, Arkanian -->
     <apparelColor>(208,226,240)</apparelColor>
+      <!-- design: 'min Excellent - few and perfect'. forceWeaponQuality is an EXACT value, not
+         a floor, so Excellent here means every Helix weapon is Excellent - which is
+         exactly the stated character: no waste, no spares, nothing improvised. -->
+    <forceWeaponQuality>Excellent</forceWeaponQuality>
+    <itemQuality>Excellent</itemQuality>
   </PawnKindDef>
 
   <!-- 🔴 REVERTED 2026-08-23. Cut to 4000~5000; KotORRanged_legendary/rare start at 12000, so
@@ -1346,6 +1409,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- very pale baby blue — owner. Clinical, expensive, Arkanian -->
     <apparelColor>(208,226,240)</apparelColor>
+      <!-- design: 'min Excellent - few and perfect'. forceWeaponQuality is an EXACT value, not
+         a floor, so Excellent here means every Helix weapon is Excellent - which is
+         exactly the stated character: no waste, no spares, nothing improvised. -->
+    <forceWeaponQuality>Excellent</forceWeaponQuality>
+    <minApparelQuality>Excellent</minApparelQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1533,6 +1601,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dusty dark brown — owner, the Jawa colour -->
     <apparelColor>(77,58,42)</apparelColor>
+      <!-- design: 'max Poor->Normal', the tightest clamp of any faction, paired with the widest
+         variety - because everything a Jawa carries came off something else. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <itemQuality>Poor</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1576,6 +1648,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dusty dark brown — owner, the Jawa colour -->
     <apparelColor>(77,58,42)</apparelColor>
+      <!-- design: 'max Poor->Normal', the tightest clamp of any faction, paired with the widest
+         variety - because everything a Jawa carries came off something else. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <itemQuality>Poor</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1618,6 +1694,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dusty dark brown — owner, the Jawa colour -->
     <apparelColor>(77,58,42)</apparelColor>
+      <!-- design: 'max Poor->Normal', the tightest clamp of any faction, paired with the widest
+         variety - because everything a Jawa carries came off something else. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <itemQuality>Poor</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1662,6 +1742,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- dusty dark brown — owner, the Jawa colour -->
     <apparelColor>(77,58,42)</apparelColor>
+      <!-- design: 'max Poor->Normal', the tightest clamp of any faction, paired with the widest
+         variety - because everything a Jawa carries came off something else. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <itemQuality>Poor</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1694,6 +1778,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- design: 'max Awful->Poor on WEAPONS; armour UNCLAMPED'. That asymmetry is the faction:
+         the armour was cut off a body and the gun was not. Apparel is deliberately left
+         without a clamp - do not 'finish' it by adding one. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <itemQuality>Poor</itemQuality>
   </PawnKindDef>
 
   <!-- owner 2026-08-23: 'Heavy junkers should be required to be in warcaskets of course.'
@@ -1734,6 +1823,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- design: 'max Awful->Poor on WEAPONS; armour UNCLAMPED'. That asymmetry is the faction:
+         the armour was cut off a body and the gun was not. Apparel is deliberately left
+         without a clamp - do not 'finish' it by adding one. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <itemQuality>Poor</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1766,6 +1860,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- design: 'max Awful->Poor on WEAPONS; armour UNCLAMPED'. That asymmetry is the faction:
+         the armour was cut off a body and the gun was not. Apparel is deliberately left
+         without a clamp - do not 'finish' it by adding one. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <itemQuality>Poor</itemQuality>
   </PawnKindDef>
 
   <!-- the Junker boss is also cased. Same base tier - Junkers are not rich, they are
@@ -1805,6 +1904,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>VFEP_WarcasketShoulders_Warcasket</li>
       <li>VFEP_WarcasketHelmet_Warcasket</li>
     </apparelRequired>
+      <!-- design: 'max Awful->Poor on WEAPONS; armour UNCLAMPED'. That asymmetry is the faction:
+         the armour was cut off a body and the gun was not. Apparel is deliberately left
+         without a clamp - do not 'finish' it by adding one. -->
+    <forceWeaponQuality>Poor</forceWeaponQuality>
   </PawnKindDef>
 
   <!-- ⭐ THE DESERT TROOPER — owner, 2026-08-20: "the Homestead Defense League
@@ -1868,6 +1971,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
+    <itemQuality>Normal</itemQuality>
   </PawnKindDef>
 
 
