@@ -14,9 +14,19 @@ survives everywhere has no climate."* So no plant gets a band wider than its own
 plus a bounded hardiness allowance.
 
     need_lo, need_hi = p05(home tiles) − SWING, p95(home tiles) + SWING
-    width            = clamp(shipped width, need width, need width + HARDINESS_CAP)
-    band             = need, grown symmetrically to that width
+    band             = [ min(shipped min, need_lo) , max(shipped max, need_hi) ]
     optimal band     = the same FRACTION of the band the plant shipped with, clamped sane
+
+🔴 **WIDEN ONLY — never narrow.** Corrected 2026-08-23, after the animal pass showed the
+re-centring version stripping `GR_ParagonIguana` of 45 °C of shipped heat tolerance for no
+gain. Narrowing can only ever cause the very bug this closes, and it buys nothing: the ROSTER
+decides where a plant may appear and temperature only removes it.
+
+⚠️ **One consequence the owner should rule on:** widening a floor also widens it for SOWABLE
+crops, so a player could farm healroot at −80 °C. Climate stops constraining FARMING even
+though it still constrains wild flora. Left as-is because he explicitly asked for player-grown
+plants as wild decoration; the alternative is to exempt `Sowable` plants from the floor widen
+and accept that they will not appear wild in the cold biomes they were cast into.
 
 ⚠️ **An earlier version of this slid the band rigidly, centred on the plant's shipped OPTIMAL
 midpoint, and it broke on modded stock.** `BMT_Blastpod` ships an optimal band of 50 … 352 °C,
@@ -127,12 +137,16 @@ def compute(plants):
             already += 1
             continue
 
+        # 🔴 WIDEN ONLY. Narrowing can only ever CAUSE the bug this closes - a plant that
+        # never grows - and it buys nothing, because the ROSTER decides where a plant may
+        # appear and temperature only removes it. Corrected 2026-08-23 after the animal pass
+        # showed the same rule stripping GR_ParagonIguana of 45 °C of shipped heat tolerance.
         shipped_w = cur['maxGrowthTemperature'] - cur['minGrowthTemperature']
-        w = min(max(shipped_w, need_w), need_w + HARDINESS_CAP)   # hardiness, bounded
-        extra = (w - need_w) / 2.0
-        bonus += extra > 0.05
-        new = {'minGrowthTemperature': need_lo - extra,
-               'maxGrowthTemperature': need_hi + extra}
+        new = {'minGrowthTemperature': min(cur['minGrowthTemperature'], need_lo),
+               'maxGrowthTemperature': max(cur['maxGrowthTemperature'], need_hi)}
+        w = new['maxGrowthTemperature'] - new['minGrowthTemperature']
+        bonus += (new['minGrowthTemperature'] == cur['minGrowthTemperature']) or \
+                 (new['maxGrowthTemperature'] == cur['maxGrowthTemperature'])
 
         # keep the shipped OPTIMAL band as a fraction of the shipped band, clamped sane
         if shipped_w > 1.0:
@@ -202,7 +216,7 @@ def main() -> int:
     rows, bonus, already = compute(plants)
 
     print(f"\n{len(rows)} plants refitted · {already} already survived their whole home and "
-          f"were left untouched · {bonus} kept extra hardiness beyond their biome's demand")
+          f"were left untouched · {bonus} kept a shipped bound already generous enough")
     if rows:
         lo = [r[2]['minGrowthTemperature'] for r in rows]
         hi = [r[2]['maxGrowthTemperature'] for r in rows]
