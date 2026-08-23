@@ -1,0 +1,16 @@
+scanned 10,736 lines of Player.log
+
+       0  F1 Exception loading def from file Biomes_
+       0  F2 BiomeAnimalRecord.LoadDataFromXmlCustom
+       0  F3 There are 54 defs of this type loaded
+      27  F4 Could not resolve cross-reference
+          | Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+       0  F5a SWPotF_RaceDef_ysalamir
+       0  F5b GiantAnt_Race
+       1  P3 [Inhabited] ready:
+          | [Inhabited] ready: 2 patches, 294 characters, 0 places, 0 casts.
+       1  P4 [JawaBench] ready:
+          | [JawaBench] ready: 121 tools, build d49eaf42545b
+       0  -- SkillDef named li (was 101)
+       0  -- Exception loading def from file CastRoster_
+       0  -- There are 80 defs of this type loaded

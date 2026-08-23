@@ -1,0 +1,11 @@
+live BiomeDefs in capture 2026-08-23T07-12-04Z: 80
+
+map: world/ASHKARR_WORLDMAP_tiles.csv
+biome column: 'biome'   columns: ['tile', 'lat', 'lon', 'arc', 'bearing', 'elev_m', 'temp_c', 'rain_mm']
+
+tiles: 21,872   distinct biomes named: 28
+
+== biomes the map names that are ABSENT from the running game: 0 ==
+   NONE — every biome the map names exists in the running game
+
+   ✅ P2 PASSES. 21,872 tiles across 28 biomes, all resolvable.

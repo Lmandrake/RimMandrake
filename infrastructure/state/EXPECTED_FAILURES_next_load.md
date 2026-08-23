@@ -1741,3 +1741,29 @@ log fell from **1,060,589 lines to 9,801**: 99% of the previous load was the
 ⚠️ **Still armed:** `DefDump\dump_request.txt` reads `all` and was NOT consumed by
 this load either. It is what produced the capture that scored P1, so it earned its
 keep twice — but every future load pays ~27 s and ~1.2 GB until someone deletes it.
+
+### §6 — P4's caveat is now CLOSED, and the whole block independently corroborated
+
+**BUILD, 2026-08-23 00:2x, scoring separately off the capture and the log rather than off
+`score_biome_load.py`.** Two instruments, two seats, same answer on all nine rows.
+
+- ✅ **P4's log line has now been written and it reads the passing value:**
+  `[JawaBench] ready: 121 tools, build d49eaf42545b`. CHECK's ABSENT reading was the
+  scorer running before the last two lines of the file existed, exactly as it said. **The
+  caveat is discharged; P4 passes on BOTH the live bridge and the log.**
+- ✅ **P2 confirmed a third way, entirely offline.** Cross-checking
+  `world/ASHKARR_WORLDMAP_tiles.csv` against the capture's 80 `BiomeDef` records:
+  **21,872 tiles, 28 distinct biomes, 0 absent.**
+- ✅ **F4's composition, which a count alone does not show.** Of the 27, **zero** are
+  `BiomeDef` or `AnimalBiomeRecord` — 16 `SoundDef`, 1 `ThingDef`, 10 untyped. So the
+  27-vs-25 gap is unrelated pre-existing noise and the biome class is *entirely* gone,
+  not merely reduced.
+- ⚠️ **Line counts differ between the two scorings (9,801 vs 10,736) and neither is
+  wrong** — the game was still writing. A log line count is only stable once the process
+  exits; quote the byte size and the timestamp with it, or quote a string count instead.
+
+🔑 **What earned this load, recorded so it is not re-learned:** the defect was a generator
+emitting `<li>` into a `LoadDataFromXmlCustom` field. `validate_patch.py` now REFUSES that
+shape across 45 measured dictionary-keyed fields (`58a95da2`), regression-tested against a
+known-bad and known-good, with repo (129 files) and deployed (127) sweeps both clean. The
+third occurrence of this bug should be impossible rather than merely unlikely.
