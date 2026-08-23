@@ -241,4 +241,7 @@ infrastructure/state/queue/REP.md
 
 # Derived ortho globe SVGs — regenerate with worldview.py; the PNGs beside them are committed
 world/view/globes_*/*.svg
-world/view/ASHKARR_current/*.svg
+# The worldview SVG is 7 MB per render and the PNG beside it is the artifact
+# anyone actually looks at. Regenerate with:
+#   python3 src/RimMandrake/Utils/worldview.py world/ASHKARR_WORLDMAP --layer biome --projection equirect --png
+world/view/*.svg
