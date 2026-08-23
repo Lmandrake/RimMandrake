@@ -2137,3 +2137,33 @@ the option the owner had explicitly turned down. Owner ruled: **natives get a mo
 | **N3** | ⚠️ No pawn carries BOTH `MinTemp_SmallDecrease` and `MinTemp_SmallIncrease`. | `MinTemperature` is an exclusionTag, so only one may apply; the patch REMOVES the lesser tier before adding. MandrakeJawa and Tusken shipped with the `+4.5 °C` cold PENALTY that gets removed. If both survive, the removal branch missed. |
 | **N4** | Zero red errors naming `XenotypeTolerances_Ashkarr`. | 0 errors offline, 11 warnings all the intentional add-if-missing shape. |
 | **N5** | 🔑 **Ancient Arsenal:** the scatterbow is tagged, ancient budgets raised, the boss draws from a real pool. | `AncientArsenal_Ashkarr.xml`, validated 0 errors / 3 warnings. ⚠️ **Two of its three warnings are `<match>` branches with 0 nodes on disk**, so the `<nomatch>` path is what will actually fire — that path is the untested half. |
+
+---
+
+## §15 — JawaRules, a NEW ASSEMBLY carrying TWO rules. 2026-08-23 14:1x, BUILD.
+
+`mandrake.jawarules`, position **580 of 581**. Two unrelated colony rules in one DLL, on
+purpose: a second assembly would have widened the bisection for no benefit, and each rule
+logs its own line so a batched load can still blame exactly one.
+
+🔑 **Patched BY HAND, not by `PatchAll`.** A `[HarmonyPatch]` target is a STRING the
+compiler never checks; with `PatchAll` a wrong name throws inside a static constructor, the
+CLR caches it, and the WHOLE MOD is dead for the session — silently, looking exactly like a
+mod that did nothing. Each target is resolved with `AccessTools.Method` and a miss is a
+named `Log.Error` that leaves the other rule working.
+
+| # | reading | what it decides |
+|---|---|---|
+| **J1** | ✅ **EXPECTED-PRESENT:** `[JawaRules] no-sow: armed for xenotype MandrakeJawa` | The rule loaded. ⛔ Its ABSENCE is not "no news" — see J3. |
+| **J2** | ✅ **EXPECTED-PRESENT:** `[JawaRules] droid-relations: armed for humanlike pawns with no relations tracker` | Same, for the other rule. |
+| **J3** | 🔴 `[JawaRules] <rule>: TARGET METHOD NOT FOUND` or `patch FAILED` | The only way a rule can be off. Unlike a `PatchAll` failure this NAMES which one and does not take the other down. |
+| **J4** | A Jawa colonist **will not sow** a growing zone OR a hydroponics basin; a Baseliner in the same colony **will**. | The ruling. Both halves — keyed on the PAWN, so recruiting an outsider to farm stays valuable. |
+| **J5** | 🔴 **The same Jawa still HARVESTS, still CUTS plants, still CHOPS trees.** | ⚠️ **This is the failure mode, not a bonus check.** A `PlantWork` tag ban would have killed all three, which is why it was rejected. `WorkGiver_GrowerHarvest` and `WorkGiver_PlantsCut` are separate classes and are untouched. |
+| **J6** | `Plants disabled` reads **False** on a Jawa. | If it reads True a work TAG was disabled and the wrong instrument was used. |
+| **J7** | A droid raid arrives and **no NRE** mentions `Pawn_RelationsTracker` or `relations`. | `PawnComponentsUtility.CreateInitialComponents` creates `relations` only `if (RaceProps.IsFlesh)`, and `IsFlesh` is `FleshType.isOrganic` (`RaceProperties.cs:340`). MEASURED: all four OuterRim droid races are Humanlike with `fleshType Asimov_Automaton`, `isOrganic false` — so every humanlike droid generated with `relations == null`. |
+| **J8** | ⚠️ **Vanilla mechanoids still have NO relations.** | The guard is `Humanlike`, and vanilla mechs are Animal intelligence, so they must be untouched. If a centipede grows a social tab, the guard is wrong. |
+
+⚠️ **Assembly count for this load is now FIVE** (`JawaIkee`, `Inhabited`, `PlanetPresetPrime`,
+`JawaRules`, plus the existing companion). That is past the owner's three-assembly waiver and
+was his explicit call — the mitigation is that every one of them logs a distinct, named line
+at startup, so a bisection is a log grep rather than a re-load.

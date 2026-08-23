@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Jawa Rules (local)</name>
+  <packageId>mandrake.jawarules</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Two colony rules that a def cannot express, in one assembly so a batched load can still attribute a failure to one of them.
+
+1. THE JAWA MAY NOT SOW. DECIDE's ruling: the Jawa keep harvesting, plant cutting and tree chopping, but they do not plant. A -8 aptitude says "bad at this"; the design needs "does not do this". A PlantWork work-tag ban was rejected because Growing and PlantCutting share that tag, so it would have removed harvest and cut as well.
+
+The hook is a postfix on WorkGiver_GrowerSow.ExtraRequirements(IPlantToGrowSettable, Pawn), which is declared on that class and takes the pawn. It covers the growing zone and the hydroponics basin together, because both arrive as the same IPlantToGrowSettable. It is keyed on the PAWN, never the colony, so a recruited outsider can still farm - which is the point, and makes an outsider worth recruiting.
+
+2. HUMANLIKE DROIDS GET A RELATIONS TRACKER. PawnComponentsUtility.CreateInitialComponents creates pawn.relations only when RaceProps.IsFlesh, and IsFlesh is FleshType.isOrganic. Our droid races use fleshType Asimov_Automaton, whose isOrganic is false, so every humanlike droid was generated with relations == null and anything reaching for it threw. Measured, not assumed: all four OuterRim droid races report Humanlike intelligence and that flesh type.
+
+The postfix gives a relations tracker to any HUMANLIKE pawn that lacks one. Humanlike is the guard that keeps it off vanilla mechanoids, which are Animal-intelligence tool users and are supposed to have no relations.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
