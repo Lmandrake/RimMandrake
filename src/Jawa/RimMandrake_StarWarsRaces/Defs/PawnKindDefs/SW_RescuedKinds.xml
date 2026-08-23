@@ -123,6 +123,8 @@
         <MandrakeJawa>999</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
+      <!-- dusty dark brown — Jawa -->
+    <apparelColor>(77,58,42)</apparelColor>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_TribalPawnKind">
     <defName>RimMandrake_JawaTribal</defName>
@@ -141,6 +143,8 @@
       <li>ORHermit</li>
       <li>KotORClothing_civilian_hooded</li>
     </apparelTags>
+      <!-- dusty dark brown — Jawa -->
+    <apparelColor>(77,58,42)</apparelColor>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
     <defName>RimMandrake_Kaminoan</defName>

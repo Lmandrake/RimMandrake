@@ -423,6 +423,8 @@
       <li>ORHermit</li>
       <li>KotORClothing_civilian_hooded</li>
     </apparelTags>
+      <!-- dusty dark brown — Jawa -->
+    <apparelColor>(77,58,42)</apparelColor>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
     <defName>RimMandrakeKaleesh_Kind</defName>

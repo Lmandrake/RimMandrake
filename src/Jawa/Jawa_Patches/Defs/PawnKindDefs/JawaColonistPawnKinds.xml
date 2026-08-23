@@ -82,6 +82,8 @@
         <MandrakeJawa>1.0</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
+      <!-- dusty dark brown — the player's own Jawa -->
+    <apparelColor>(77,58,42)</apparelColor>
   </PawnKindDef>
 
   <!-- The indigenous tribes' rank and file. Tribal parent, not Colonist, so
@@ -115,6 +117,8 @@
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- dusty dark brown — Jawa, Trade Moot tribal roles -->
+    <apparelColor>(77,58,42)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef ParentName="TribalArcherBase">
@@ -144,6 +148,8 @@
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- dusty dark brown — Jawa, Trade Moot tribal roles -->
+    <apparelColor>(77,58,42)</apparelColor>
   </PawnKindDef>
 
   <!-- `weaponTags` IS REQUIRED HERE and on neither sibling. `TribalChiefBase`
@@ -184,6 +190,8 @@
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- dusty dark brown — Jawa, Trade Moot tribal roles -->
+    <apparelColor>(77,58,42)</apparelColor>
   </PawnKindDef>
 
 </Defs>
