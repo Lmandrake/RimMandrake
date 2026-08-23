@@ -1,0 +1,65 @@
+kind                              wpn budget  wAff     app budget  aAff  ladder
+------------------------------------------------------------------------------------
+Jawa_Empire_Grunt               950.0~1150.0     3   900.0~1100.0     3  
+Jawa_Empire_Heavy              1000.0~1200.0     4  1100.0~1300.0     5  
+Jawa_Empire_Specialist          900.0~1080.0    12  1000.0~1200.0     6  
+Jawa_Empire_Leader             1600.0~1920.0     9  2000.0~2400.0     6  
+Jawa_Hutt_Grunt                  200.0~240.0     8    250.0~300.0    11  
+Jawa_Hutt_Heavy                  550.0~660.0     7    400.0~480.0    13  
+Jawa_Hutt_Specialist             800.0~960.0    14    600.0~720.0    16  
+Jawa_Hutt_Leader               3000.0~3600.0     0  2000.0~2400.0    36  🔴 0 wpn
+Jawa_Homestead_Grunt             130.0~156.0     2    180.0~216.0    15  
+Jawa_Homestead_Heavy             300.0~360.0     5    250.0~300.0    17  
+Jawa_Homestead_Specialist        450.0~540.0     2    300.0~360.0    17  
+Jawa_Homestead_Leader            700.0~840.0    13    500.0~600.0    17  
+Jawa_DeepDesert_Grunt            150.0~180.0     3    100.0~120.0     2  
+Jawa_DeepDesert_Heavy            200.0~240.0     8    150.0~180.0     4  
+Jawa_DeepDesert_Specialist       400.0~500.0     0    200.0~240.0     4  🔴 0 wpn
+Jawa_DeepDesert_Leader           500.0~600.0    15    350.0~420.0     5  
+Jawa_Droid_Grunt               1100.0~1320.0     5    180.0~216.0     2  
+Jawa_Droid_Heavy               1400.0~1680.0     5    200.0~240.0     2  
+Jawa_Droid_Specialist          1200.0~1440.0     5    180.0~216.0     2  
+Jawa_Droid_Leader              1800.0~2160.0     5    600.0~720.0     6  
+Jawa_Wildsteam_Grunt             500.0~600.0     0    150.0~180.0     8  🔴 0 wpn
+Jawa_Wildsteam_Heavy            900.0~1080.0     2    200.0~240.0    12  
+Jawa_Wildsteam_Specialist        620.0~744.0    12    250.0~300.0    14  
+Jawa_Wildsteam_Leader          1600.0~1920.0     1    400.0~480.0    15  
+Jawa_Deepwater_Grunt             300.0~360.0     6    400.0~480.0     6  
+Jawa_Deepwater_Heavy             600.0~720.0     1    550.0~660.0     8  
+Jawa_Deepwater_Specialist        750.0~900.0    12    650.0~780.0    11  
+Jawa_Deepwater_Leader          1400.0~1680.0     6  1100.0~1320.0    14  
+Jawa_Geonosian_Grunt             400.0~480.0     3      60.0~72.0     3  
+Jawa_Geonosian_Heavy             800.0~960.0     5      80.0~96.0     3  
+Jawa_Geonosian_Specialist      1000.0~1200.0     4    100.0~120.0     3  
+Jawa_Geonosian_Leader          1500.0~1800.0     5    200.0~240.0     4  
+Jawa_Helix_Grunt               1400.0~1700.0    13    700.0~840.0    15  
+Jawa_Helix_Heavy               2000.0~2400.0    10   900.0~1080.0    20  
+Jawa_Helix_Specialist          2600.0~3100.0     8  1100.0~1320.0    20  
+Jawa_Helix_Leader              4000.0~5000.0     0  1800.0~2160.0    12  🔴 0 wpn
+Jawa_Blackstar_Grunt             400.0~480.0     7    350.0~420.0     7  
+Jawa_Blackstar_Heavy             700.0~840.0     2    500.0~600.0     0  
+Jawa_Blackstar_Specialist      1100.0~1320.0     8    800.0~960.0    11  
+Jawa_Blackstar_Leader          1800.0~2160.0     8  1500.0~1800.0    12  
+Jawa_TradeMoot_Grunt             250.0~300.0     3    100.0~120.0     8  
+Jawa_TradeMoot_Heavy             450.0~540.0    12    130.0~156.0    10  
+Jawa_TradeMoot_Specialist       900.0~1080.0     7    160.0~192.0    12  
+Jawa_TradeMoot_Leader           900.0~1080.0     7    250.0~300.0    12  
+Jawa_Junkers_Grunt                 60.0~72.0     6    250.0~300.0    17  
+Jawa_Junkers_Heavy               140.0~168.0     2    600.0~720.0    30  
+Jawa_Junkers_Specialist          200.0~240.0     1    700.0~850.0    34  
+Jawa_Junkers_Leader              350.0~420.0     1  1000.0~1200.0    39  
+Jawa_Homestead_DesertRanger      200.0~260.0     1    240.0~300.0     0  
+
+=== TIER LADDERS (weapon max by role; must ascend) ===
+  Jawa_Blackstar           [480.0, 840.0, 1320.0, 2160.0]  ✅
+  Jawa_DeepDesert          [180.0, 240.0, 500.0, 600.0]  ✅
+  Jawa_Deepwater           [360.0, 720.0, 900.0, 1680.0]  ✅
+  Jawa_Droid               [1320.0, 1680.0, 1440.0, 2160.0]  🔴 NOT ASCENDING
+  Jawa_Empire              [1150.0, 1200.0, 1080.0, 1920.0]  🔴 NOT ASCENDING
+  Jawa_Geonosian           [480.0, 960.0, 1200.0, 1800.0]  ✅
+  Jawa_Helix               [1700.0, 2400.0, 3100.0, 5000.0]  ✅
+  Jawa_Homestead           [156.0, 360.0, 540.0, 840.0]  ✅
+  Jawa_Hutt                [240.0, 660.0, 960.0, 3600.0]  ✅
+  Jawa_Junkers             [72.0, 168.0, 240.0, 420.0]  ✅
+  Jawa_TradeMoot           [300.0, 540.0, 1080.0, 1080.0]  ✅
+  Jawa_Wildsteam           [600.0, 1080.0, 744.0, 1920.0]  🔴 NOT ASCENDING

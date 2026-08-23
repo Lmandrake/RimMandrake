@@ -1,0 +1,55 @@
+kind                           tier                    wpnMoney  wAff     apMoney  aAff
+------------------------------------------------------------------------------------------------
+Jawa_Empire_Grunt              VERY RICH            950.0~1150.0     3 500.0~600.0     1
+Jawa_Empire_Heavy              VERY RICH            1000.0~1200.0     4 700.0~840.0     3
+Jawa_Empire_Specialist         VERY RICH            900.0~1080.0    12 700.0~840.0     6
+Jawa_Empire_Leader             VERY RICH            1600.0~1920.0     9 1200.0~1440.0     6
+Jawa_Hutt_Grunt                MID                  200.0~240.0     8 250.0~300.0    11
+Jawa_Hutt_Heavy                MID                  550.0~660.0     7 400.0~480.0    13
+Jawa_Hutt_Specialist           MID                  800.0~960.0    14 600.0~720.0    16
+Jawa_Hutt_Leader               MID                  13000.0~15600.0     3 2000.0~2400.0    36
+Jawa_Homestead_Grunt           ?                    130.0~156.0     2 180.0~216.0    15
+Jawa_Homestead_Heavy           ?                    300.0~360.0     5 250.0~300.0    17
+Jawa_Homestead_Specialist      ?                    450.0~540.0     2 300.0~360.0    17
+Jawa_Homestead_Leader          ?                    700.0~840.0    13 500.0~600.0    17
+Jawa_DeepDesert_Grunt          ?                    150.0~180.0     3 100.0~120.0     2
+Jawa_DeepDesert_Heavy          ?                    200.0~240.0     8 150.0~180.0     4
+Jawa_DeepDesert_Specialist     ?                    2000.0~2400.0     2 200.0~240.0     4
+Jawa_DeepDesert_Leader         ?                    500.0~600.0    15 350.0~420.0     5
+Jawa_Droid_Grunt               ?                    1100.0~1320.0     5 180.0~216.0     2
+Jawa_Droid_Heavy               ?                    1400.0~1680.0     5 200.0~240.0     2
+Jawa_Droid_Specialist          ?                    1200.0~1440.0     5 180.0~216.0     2
+Jawa_Droid_Leader              ?                    1800.0~2160.0     5 600.0~720.0     6
+Jawa_Wildsteam_Grunt           ?                    1300.0~1560.0     1 150.0~180.0     8
+Jawa_Wildsteam_Heavy           ?                    900.0~1080.0     2 200.0~240.0    12
+Jawa_Wildsteam_Specialist      ?                    620.0~744.0    12 250.0~300.0    14
+Jawa_Wildsteam_Leader          ?                    2100.0~2520.0     2 400.0~480.0    15
+Jawa_Deepwater_Grunt           MID                  300.0~360.0     6 400.0~480.0     6
+Jawa_Deepwater_Heavy           MID                  600.0~720.0     1 550.0~660.0     8
+Jawa_Deepwater_Specialist      MID                  750.0~900.0    12 650.0~780.0    11
+Jawa_Deepwater_Leader          MID                  1400.0~1680.0     6 1100.0~1320.0    14
+Jawa_Geonosian_Grunt           ?                    400.0~480.0     3   60.0~72.0     3
+Jawa_Geonosian_Heavy           ?                    800.0~960.0     5   80.0~96.0     3
+Jawa_Geonosian_Specialist      ?                    1000.0~1200.0     4 100.0~120.0     3
+Jawa_Geonosian_Leader          ?                    1500.0~1800.0     5 200.0~240.0     4
+Jawa_Helix_Grunt               VERY RICH            600.0~720.0     5 700.0~840.0    15
+Jawa_Helix_Heavy               VERY RICH            1100.0~1320.0     5 900.0~1080.0    20
+Jawa_Helix_Specialist          VERY RICH            1400.0~1680.0     8 1100.0~1320.0    20
+Jawa_Helix_Leader              VERY RICH            12500.0~15000.0     3 1800.0~2160.0    12
+Jawa_Blackstar_Grunt           ?                    400.0~480.0     7 350.0~420.0     7
+Jawa_Blackstar_Heavy           ?                    700.0~840.0     2 500.0~600.0     0
+Jawa_Blackstar_Specialist      ?                    1100.0~1320.0     8 800.0~960.0    11
+Jawa_Blackstar_Leader          ?                    1800.0~2160.0     8 1500.0~1800.0    12
+Jawa_TradeMoot_Grunt           CHARACTERISTIC ONLY  250.0~300.0     3 100.0~120.0     8
+Jawa_TradeMoot_Heavy           CHARACTERISTIC ONLY  450.0~540.0    12 130.0~156.0    10
+Jawa_TradeMoot_Specialist      CHARACTERISTIC ONLY  900.0~1080.0     7 160.0~192.0    12
+Jawa_TradeMoot_Leader          CHARACTERISTIC ONLY  900.0~1080.0     7 250.0~300.0    12
+Jawa_Junkers_Grunt             CHARACTERISTIC ONLY    60.0~72.0     6 400.0~480.0    25
+Jawa_Junkers_Heavy             CHARACTERISTIC ONLY  140.0~168.0     2 700.0~840.0    34
+Jawa_Junkers_Specialist        CHARACTERISTIC ONLY  200.0~240.0     1 900.0~1080.0    38
+Jawa_Junkers_Leader            CHARACTERISTIC ONLY  350.0~420.0     1 1400.0~1680.0    44
+Jawa_Homestead_DesertRanger    ?                    200.0~260.0     1 240.0~300.0     0
+
+
+=== ISSUES ===
+  🔴 Jawa_Blackstar_Heavy         REQUIRED far over budget   required set 14500 vs apparelMoney max 600.0
