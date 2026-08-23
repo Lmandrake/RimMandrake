@@ -144,46 +144,40 @@ broadcast reaches windows through that same inbound socket, so `refuse` drops HI
 game-state announcements too — the one class of message that must get through. Working
 example: `D:\Luke\dev\Rimworld\.claude\hooks\block_peer_messages.py`.
 
-## 🔴 NEVER HAND THE OWNER A TASK WITHOUT THE MEANS — owner's ruling, 2026-08-21
+## 🔴 RUN IT YOURSELF. DO NOT HAND HIM A COMMAND TO PASTE — owner's ruling, 2026-08-22
 
-**If you tell him he has to do something, you give him the command in the same
-breath. Every time. No exceptions.**
+> *"From now on, for ALL agents, instead of asking me to type `! python` for me, JUST
+> RUN IT YOURSELF, ok? No more of this cut-paste weirdness. Make this true."*
 
-Issued after a session ended with *"ready for you to close with `rimflow next
---seat OWNER`"* — a gesture at a tool, not a command — and the owner's reply was
-**"Well how the hell am I supposed to do it then?"** He was right. Naming a
-capability is not handing it over.
+**This supersedes the 2026-08-21 rule that said to hand him the command.** That rule
+was right that naming a tool is not handing it over; it was wrong about the remedy.
+**The remedy is to execute it.** ⛔ A `!`-prefixed line for him to paste is now the
+DEFECT, not the fix.
 
-**The rule has two halves, and both are absolute:**
+**In order, and you rarely get past ①:**
 
-| when you say | you must immediately give |
+| | |
 |---|---|
-| "you need to run…", "only you can…", "this is yours to do" | the **exact, complete, paste-able command** |
-| "look at these graphics", "check that page", "see the render" | the **complete path or URL**, in full |
+| **① RUN IT** | It is a command you can run. Run it. Report the outcome in one line. |
+| **② ROUTE AROUND THE GUARD** | A guard refused YOU? That is not automatically a task for HIM. Find the flag, the seat override, the env var. In `rimflow` that is **`--owner-said "<his verbatim words>"`** — when he told you to do it, quoting him IS the authorization, and it lands on the event as evidence better than any paste. |
+| **③ ASK, IN WORDS** | Only if the act is genuinely his — his hands, his eyes, his account, his credentials, or his authorization that he has not yet given. **Then ask him a QUESTION**, do not issue him a command line. |
 
-⛔ **What does NOT count.** The name of a tool. A subcommand with the arguments
-left off. "use `rimflow`". "the usual deploy script". A relative fragment. A
-folder when you meant a file. "the screenshot" without saying which. If he would
-have to reconstruct, search, or guess *anything*, you have not given it to him.
+⛔ **What "genuinely his" is NOT:** a permission rule inside our own tooling · a seat
+boundary · something you could do but feel unsure about · a thing that would be
+"cleaner" coming from him · anything he has already told you to do.
 
-✅ **In Claude Code, prefix it with `!` so it runs in his session** and the output
-lands in the conversation:
+✅ **What it genuinely IS:** an interactive login (`gcloud auth login`), a GUI he must
+look at, a purchase, a destructive act on someone else's work he has not authorized,
+launching or closing the game — and **`./game up|down|loading`, which he types.**
 
-```
-! python3 src/RimMandrake/rimflow/cli.py close ITEM_ID --seat OWNER --sha a3fcc44
-```
+🔑 **If you truly must hand one over, it is still complete and still quoted** —
+`python.exe "D:\path\with\backslashes.py"` — because zsh eats unquoted backslashes.
+The old rule's standard for completeness stands; only its default changed.
 
-🔑 **This applies even when the command is "obvious" to you.** You have the whole
-file open and the flag names in context; he has a sentence. The asymmetry is the
-entire reason the rule exists — the same asymmetry that made full paths mandatory
-in the section above. **This is that rule's sibling: paths for things, commands
-for actions.**
-
-⚠️ **And first ask whether he needs to do it at all.** A permission guard that
-refuses YOU is not automatically a task for HIM. Before handing anything over,
-check for a flag, a seat override, or an env var that lets you finish it
-yourself — and if a policy genuinely reserves the act for him, say which policy
-and why in one line, then give the command anyway.
+⭐ **The other half of the 2026-08-21 rule is UNCHANGED and still absolute:** anything
+you ask him to LOOK at — graphics, a page, a render, a file — comes with **the
+complete native path**, every time. He cannot look at something you did not locate.
+**Paths for things; for actions, you act.**
 
 ## Always give full paths — plain, native, absolute
 
