@@ -1884,3 +1884,6 @@
 {"seat":"DECIDE","event":"claim","id":"BRIDGE_CANNOT_MAKE_A_WORLD_1","ts":"2026-08-23T17:55:41Z"}
 {"seat":"DECIDE","event":"start","id":"BRIDGE_CANNOT_MAKE_A_WORLD_1","ts":"2026-08-23T17:55:41Z"}
 {"seat":"DECIDE","event":"close","id":"BRIDGE_CANNOT_MAKE_A_WORLD_1","sha":"4db871d6","ts":"2026-08-23T17:55:50Z"}
+{"seat":"DECIDE","event":"claim","id":"DINOSAUR_IMAGE_REVIEW_SHEET_1","ts":"2026-08-23T17:56:03Z"}
+{"seat":"DECIDE","event":"start","id":"DINOSAUR_IMAGE_REVIEW_SHEET_1","ts":"2026-08-23T17:56:03Z"}
+{"seat":"DECIDE","event":"unblock","id":"CREATURE_ART_REVIEW_FLAGS_1","ts":"2026-08-23T17:56:44Z"}
