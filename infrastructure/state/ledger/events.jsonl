@@ -1887,3 +1887,4 @@
 {"seat":"DECIDE","event":"claim","id":"DINOSAUR_IMAGE_REVIEW_SHEET_1","ts":"2026-08-23T17:56:03Z"}
 {"seat":"DECIDE","event":"start","id":"DINOSAUR_IMAGE_REVIEW_SHEET_1","ts":"2026-08-23T17:56:03Z"}
 {"seat":"DECIDE","event":"unblock","id":"CREATURE_ART_REVIEW_FLAGS_1","ts":"2026-08-23T17:56:44Z"}
+{"seat":"DECIDE","event":"close","id":"DINOSAUR_IMAGE_REVIEW_SHEET_1","sha":"97cad263","ts":"2026-08-23T17:56:58Z"}
