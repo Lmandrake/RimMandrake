@@ -2172,3 +2172,23 @@ Advanced trainability, petness 0.9, starts bonded to a founder.
 - **Do not make it breed fast.** `gestationPeriodDays` is −1 (it does not breed). A colony
   drowning in slime-trailing eyeballs is a different game, and probably a worse one.
 - **Do not raise its health back.** The fragility is characterful — it is a pet you can lose.
+
+## CREATURE_REDRAW_CANDIDATES_1 Three creatures the owner kept for their silhouette and tagged for a v2 redraw
+
+🔴 **His own words, reviewing all 621 cast creatures on 2026-08-23.** He kept all three and chose
+**shrink** for now — shrinking is free and reversible, redrawing is neither — but tagged each as a
+redraw candidate in the same breath. That is a deferral he made himself, not one inferred for him.
+
+| creature | biome | his note |
+|---|---|---|
+| `BMT_Screecher` — screecher | `PoisonForest` | *"It has an interesting shape… v2 tag for redraw candidate"* |
+| `BMT_SludgeCrawler` — sludgecrawler | `Volcano` | *"Fascinating profile shape, so keep in and make smaller. Good v2 redraw candidate."* |
+| `BMT_TripleSnapper` — triple snapper | `ZBiome_DesertOasis` | *"Fascinating outline and unique. Keep and shrink, v2 redraw candidate"* |
+
+🔑 **The pattern worth carrying forward: he judges by SILHOUETTE, not resolution.** All three have
+weak or muddy art and he kept every one, because the outline is interesting. The two he ordered
+redrawn now (`REDRAW_TWO_HEADLINER_CREATURES_1`) were not the worst-scoring — they were the ones
+worth honouring. ⇒ **A metric can rank art quality; it cannot rank worth.**
+
+⛔ **Not scheduled, and not a blocker.** All three ship in v1 shrunk, which he considers adequate.
+Evidence: `design/Jawa/fauna/creature_art_decisions.json`, frozen, his own file.
