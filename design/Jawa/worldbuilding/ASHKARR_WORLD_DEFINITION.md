@@ -399,6 +399,36 @@ curve shape and `Desert`/`AridShrubland` listed them at commonality 4.
 
 ## 6c. 🔴 TWO THREAT CLASSES, AND THEY ARE NOT THE SAME — owner, 2026-08-22
 
+> ⭐ **CLARIFIED AND PLACED, owner 2026-08-23 — read this before the 08-22 quote below.**
+> *"as we go from hot to cold over the terminator, we pass through the mycoid layer, then pass
+> into the horror wastes … and only when it becomes truly cold do the horror wastes peter out
+> and go into the truly alien methane, ethane, ice as a mineral type regimes. I hadn't intended
+> horror wastes to be in the deepest cold."*
+>
+> 🔑 **`HorrorWastes` is a BAND in the transition, not a polar cap.** The 08-22 phrase *"adapted
+> to the extreme cold"* was once read as *the deepest cold* and the warm half of the biome was
+> deleted for it (commit `0ccf44fe`). **That reading was wrong and is reversed.**
+
+**THE NIGHTSIDE STACK, hot to cold — this is the authored order and biomes must not interleave:**
+
+| layer | biome | tiles | range |
+|---|---|---|---|
+| mycoid | `AB_MycoticJungle` · `BMT_FungalForest` | 1,939 · 425 | fades out around −31…−39 °C |
+| crags | `AB_RockyCrags` | **1,118** | **−30 … −0.0 °C** |
+| **the wastes** | **`HorrorWastes`** | **1,686** | **−55 … −30 °C** |
+| alien chemistry | `AB_PropaneLakes` (basins) · `BMT_CrystalCaverns` (highlands) | 1,584 · 577 | below −55 °C |
+
+⭐ **This fixed a second defect for free.** `AB_RockyCrags` was **3,816 tiles spanning −82.0 to
+−0.0 °C** — the biggest biome on the planet and not a habitat at all, but a band running from
+deep nightside to the terminator, so casting it put a lizard and a snow-thing on one creature
+list. It is now a coherent −30 … 0 °C place.
+
+⚠️ **Do not "restore" crags to the deep cold, and do not re-scatter the wastes as pockets.**
+The layering is the ruling. The surgical script that made it, and may be re-run safely, is
+`src/RimMandrake/Utils/ashkarr_layer_nightside.py`; the tiles CSV is FROZEN and must not be
+repainted.
+
+
 **Verbatim:** *"HorrorWastes should be on the night-side where the ancient bioweapons have
 adapted to the extreme cold and produced utterly hostile lifeforms. Wasteland (and others)
 are instead contaminated by radiation and more conventional poisoning, as is the
