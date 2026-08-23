@@ -2127,3 +2127,44 @@ so it stays safe to do later — **verify that before relying on it.**
 
 🔑 Pairs with `biome_and_fauna_roster.md` and `fauna_placement.md`, which already hold design
 work for this and should be the starting point rather than a blank page.
+
+
+## IKEE_POSTERCHILD_IDEAS_1 — making the Ikee the creepy Star Wars pet
+_BUILD, 2026-08-23, answering the owner's "What else could we do to make it a posterchild
+for the creepy little Star Wars pet?" Filed here because none of it was asked for yet._
+
+**Already built** (`Ikee_Tuning.xml`): third size, 4 nuzzles/day, slime trail, tames instantly,
+Advanced trainability, petness 0.9, starts bonded to a founder.
+
+### ⭐ cheap, high payoff — all XML, all v1-able
+1. **Give it a name list of its own.** A `NameMaker`/`RulePackDef` of Jawaese chirps —
+   *Ikee, Nyeta, Utinni, Mubta, Toga* — so every clan's Ikee is named in the language the
+   Jawa actually shout. Right now it draws vanilla animal names, which is the single most
+   immersion-breaking thing left about it.
+2. **It follows the eye.** `race.nuzzleMtbHours` is done; add `CompProperties_Targetable`?
+   No — simpler: RimWorld draws bonded pets following their master already. What is missing
+   is the LOOK: an `AnimalBiomeRecord`-free `race.specialTrainables` entry, or simply making
+   sure it is not `hideTrainingTab`.
+3. **Make it EAT the disgusting thing.** `race.foodType` is `OmnivoreRoughAnimal`. Adding
+   `CorpseOrHumanlikeMeatOrKibble` would let it eat corpses — a scavenger's pet that cleans
+   up after a raid is both useful and horrible, and it fits the Jawa economy exactly.
+4. **A tiny, wrong sound.** `lifeStageAges[].soundCall` is currently `Pawn_Iguana_Call`.
+   Anything wetter would do more for "creepy" than any stat on this list.
+5. **Let it be venerated.** An ideoligion `PreceptDef` making the Ikee a venerated animal
+   gives `ScenPart_StartingAnimal` a x8 weight AND gives the clan a mood reason to keep them.
+   The Salvation already has the machinery for it.
+
+### ⭐⭐ the one that would actually make it a posterchild
+6. **It should react to being LOOKED at, or look back.** The joke of a giant eyeball pet is
+   that it watches you. A `HediffGiver` or a small comp that fires a thought on nearby pawns —
+   *"the ikee is watching me"* — mild negative for most, **positive for Jawa** — turns a
+   re-skinned animal into a character. That is a C# comp, so it is a companion-DLL job rather
+   than XML, but it is small: one `ThoughtWorker_Precept`-shaped check for "is there an Ikee
+   within N cells".
+
+### ⚠️ things I would NOT do
+- **Do not make it combat-capable.** It keeps a toxic sting at power 8; leave it. A pet that
+  can fight stops being unsettling and becomes a unit.
+- **Do not make it breed fast.** `gestationPeriodDays` is −1 (it does not breed). A colony
+  drowning in slime-trailing eyeballs is a different game, and probably a worse one.
+- **Do not raise its health back.** The fragility is characterful — it is a pet you can lose.
