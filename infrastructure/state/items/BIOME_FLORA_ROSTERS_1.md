@@ -47,7 +47,7 @@ Replace runs; the deployed copy is byte-identical to the repo.
 - [x] Player-grown flora used as decoration — healroot, tinctoria, psychoid, smokeleaf,
       devilstrand, haygrass, cotton, ambrosia.
 - [x] Deployed and verified in sync.
-- [ ] ⏳ Confirmed by a cold load and by looking.
+- [x] Confirmed by a cold load — 80 BiomeDefs, zero errors, all 604 plants resolve. ⏳ The LOOK is `BIOME_FLORA_LOOKS_RIGHT_1`, filed for CHECK.
 
 ## Watch out
 ⚠️ **Judge the patch by the ROSTER a biome holds, not by how much has sprouted.** 642 of 669
@@ -58,3 +58,23 @@ the planet. Density was left at its shipped value on purpose; `BARE_BIOMES_NEED_
 carries the question and DECIDE's recommendation.
 ⚠️ **Every plant kept is FUEL.** `hydrology_and_fire_ecology.md` R-H3 makes plant growth the
 fuel for a savanna that burns forever, so a roster change is a fire-ecology change.
+
+## HARVEST — the 2026-08-23 22:49Z load, read by DECIDE
+✅ **The three offline readings this item asked for all pass**, against the first capture that matches the
+live mod list (581 mods, `capturedUtc 2026-08-23T22:49:51Z`, 79,093 defs, 534 types, `orphan=0`):
+
+| reading | wanted | got |
+|---|---|---|
+| `BiomeDef` count | **80** (54 would mean an `<li>` crept back into `wildPlants`) | **MEASURED 80** |
+| red errors naming `BiomeFlora_Ashkarr` | zero | **0 mentions in the whole log** |
+| cross-reference errors naming a roster plant | zero | **0 of the 25 in the log** |
+
+Re-proven against the NEW capture rather than the 578-mod one the spec was written on: **all 604 roster
+plant defNames resolve, and all 24 target biomes exist** — so every `PatchOperationConditional` matched and
+every `Replace` ran. The 25 cross-reference errors in this load are other mods' (16 `Pawn_Melee_Punch_HitBuilding`
+sound refs, a `VWE_Tool_Whip` trader entry, and nine `BMT_*` names); ⚠️ **`BMT_BoomSpore` is a plant-shaped
+name and is NOT one of ours** — it appears zero times in `biome_flora.py` and zero times in the patch.
+
+⏳ **What is still open is only the LOOK**, filed as `BIOME_FLORA_LOOKS_RIGHT_1` for CHECK: a map in `Desert`,
+`HorrorWastes` and `AB_MycoticJungle`. 🔑 **Judge it by the roster the biome HOLDS, not by how much sprouted** —
+the Watch out section below is the reason, and it has not changed.
