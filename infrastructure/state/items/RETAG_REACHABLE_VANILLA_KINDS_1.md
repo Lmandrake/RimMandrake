@@ -37,3 +37,26 @@ reachable kinds that intend to arm and cannot, excluding the two sentinels.
 - [ ] Measured against a matching capture, not a provisional one.
 - [ ] Every reachable kind that intends to arm can afford something sensible.
 - [ ] No kind was cut and no `weaponMoney` was raised to reach an incendiary launcher.
+
+## RESULT — closed 2026-08-23, DECIDE: nothing to retag
+🔑 **The blocking measurement finally landed and it says the job is already done.** The 2026-08-23T22:49:51Z
+capture holds **581 mods and `ModsConfig.xml` holds 581** — the first matching capture since this item was
+filed. `weapon_tag_audit.py` accepted it without `--anyway` and reported:
+
+```
+pawn kinds with EVERY weapon tag empty: 2
+   DP_ArtilleryPirate   ['DP_CannonNoEquipTag']
+   DP_RocketPirate      ['DP_RocketNoEquipTag']
+```
+
+Both are the sentinels step 4 said must still read as unarmed. **Excluding them, zero reachable kinds intend
+to arm and cannot** — so there was no kind to retag, no tag to add, and step 2's reachability cut never had a
+population to run against. The ruling in `ORPHANED_KINDS_AFTER_GUN_CUT_1` stands unamended; it simply had
+nothing left to bite on once the bows were un-cut and the duplicate-animal regression was reverted.
+
+⚠️ **What this does NOT prove.** The audit is blind to a tag whose every carrier was cut — such a tag is
+absent from the dump rather than present-and-empty, and only the mod's SOURCE XML can attribute it. A kind
+listing only such a tag does surface here as "every tag empty", which is how the two sentinels were caught;
+a kind listing it *alongside* a live tag does not, and is correctly not a problem. Separately the audit
+counted **36 surviving Industrial/Spacer guns carrying no vanilla role tag**, left alone — that is a
+different question and not this item's.
