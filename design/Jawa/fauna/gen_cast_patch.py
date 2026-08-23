@@ -39,17 +39,31 @@ def main():
     for b in sorted(byb, key=lambda x: -len(byb[x])):
         pkg = PKG.get(b)
         req = f' MayRequire="{pkg}"' if pkg and not str(pkg).startswith('ludeon.rimworld') else ''
-        parts.append(f'  <Operation Class="PatchOperationReplace"{req}>')
-        parts.append(f'    <xpath>/Defs/BiomeDef[defName="{b}"]/wildAnimals</xpath>')
-        parts.append('    <value>')
-        parts.append('      <wildAnimals>')
+        # 🔴 WRAPPED IN A CONDITIONAL, NOT A BARE REPLACE - BIOME_CAST_APPLY_1, BUILD.
+        # A PatchOperationReplace whose xpath matches nothing is a RED ERROR every
+        # launch, not a silent no-op, and 25 bare ones is 25 errors.
+        # ⚠️ MayRequire is NOT enough on its own and that is this project's own rule:
+        # it checks that the MOD is present, never that the DEF still is. A biome
+        # renamed or removed upstream leaves MayRequire passing and the Replace
+        # erroring. The conditional tests the wildAnimals node itself - reality
+        # rather than intent - so it degrades to doing nothing.
+        # 🔑 There is deliberately NO <nomatch>: if the biome is absent we want the
+        # cast absent too, not added to something that was never cast.
+        xp = f'/Defs/BiomeDef[defName="{b}"]/wildAnimals'
+        parts.append(f'  <Operation Class="PatchOperationConditional"{req}>')
+        parts.append(f'    <xpath>{xp}</xpath>')
+        parts.append('    <match Class="PatchOperationReplace">')
+        parts.append(f'      <xpath>{xp}</xpath>')
+        parts.append('      <value>')
+        parts.append('        <wildAnimals>')
         for r in sorted(byb[b], key=lambda r: (-float(r['commonality']), r['defName'])):
             note = f"{r['band']}, {r['status']}"
-            parts.append(f'        <li><animal>{r["defName"]}</animal>'
+            parts.append(f'          <li><animal>{r["defName"]}</animal>'
                          f'<commonality>{r["commonality"]}</commonality></li>'
                          f' <!-- {r["label"]} - {note} -->')
-        parts.append('      </wildAnimals>')
-        parts.append('    </value>')
+        parts.append('        </wildAnimals>')
+        parts.append('      </value>')
+        parts.append('    </match>')
         parts.append('  </Operation>')
         parts.append('')
     parts.append('</Patch>')
