@@ -107,6 +107,24 @@
 > - A leftover `captures/.writing/` after the load means the capture died mid-write. That
 >   is safe by construction — no reader will match it — but it wants looking at.
 >
+> **⭐ EVERY BIOME'S WILDLIFE IS REPLACED THIS LOAD — new, and the biggest content change here.**
+> `BiomeCast_Ashkarr.xml` shipped at `c60cd9b1`: **26 biomes, 754 records**, replacing
+> shipped `wildAnimals` lists that held ~1,024 records almost all at commonality 0.
+> - Expect **~29 creatures per biome** on the pyramid 4 tiny · 8 small · 8 med · 5 large ·
+>   3 huge · **1 super-huge**, at 1.0 / 0.7 / 0.4 / 0.18 / 0.07 / **0.012**.
+> - 🔑 **581 creatures appear in exactly ONE biome and NONE appears in four or more** —
+>   the ubiquity the owner objected to. If one creature turns up everywhere, that is the
+>   finding.
+> - **458 dormant creatures are brought to life.** Seeing unfamiliar fauna is the expected
+>   result, not a bug.
+> - ⛔ **`animalDensity` is untouched.** `AB_RockyCrags` still runs 1.8 over what is now a
+>   29-creature cast rather than 14, so it should read very differently — that is known and
+>   is `CREATURE_DENSITY_PER_TILE_1`, not a new defect.
+> - Backing it out is one command:
+> ```
+> rm "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml"
+> ```
+
 > **Body size is REAL now — one bridge read settles the whole thing:**
 > ```
 > jawa/spawn_pawn xenotype=RimMandrakeWookiee   then read its BodySize
