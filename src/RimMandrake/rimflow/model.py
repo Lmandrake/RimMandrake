@@ -201,7 +201,13 @@ VERBS = {
     # nobody could follow. Found 2026-08-20 by the first seat that tried to follow it.
     "seat":      {"who": "self",  "req": ("state",), "opt": ("reason", "item", "note")},
     "bridge":    {"who": ("CHECK",), "req": ("state",), "opt": ()},
-    "game":      {"who": ("OWNER",), "req": ("state",), "opt": ("measured", "evidence")},
+    # 🔑 `text` is what --note lands in, and it was MISSING here until
+    # 2026-08-23: cmd_game has always set ev["text"], so every `rimflow game
+    # --note` and every `./game up "note"` raised SchemaError instead. The flag
+    # was advertised in --help and dead on arrival - it is GAME_STATE_HAS_NO_STAMPER_1's
+    # second half, the prose game.json used to carry, and it had nowhere to go.
+    "game":      {"who": ("OWNER",), "req": ("state",),
+                  "opt": ("measured", "evidence", "text")},
     "admin":     {"who": ("OWNER",), "req": ("reason",), "opt": ("patch",)},
 }
 
