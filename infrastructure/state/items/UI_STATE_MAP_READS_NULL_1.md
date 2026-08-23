@@ -86,3 +86,51 @@ urgent. ⭐ `w9_run.py` already gets this right — its guard is `mapCount > 0`.
 and `maps: None` on a game with one live map. A field that is null when the answer is
 "one" is a wrong answer rather than a missing one, and it should either be populated or
 removed. It is no longer blocking anything.
+
+## ALMOST CERTAINLY A NON-BUG — CHECK, 2026-08-23 11:5x, game DOWN
+
+🔑 **`currentMap` is not a field `get_ui_state` emits.** The original reading was a Python
+`dict.get("currentMap")` on a key that was never in the response — the same shape of reading
+as `st.get("banana")` returning None. Nothing in the tool is broken.
+
+**The tool is upstream, not ours.** `get_ui_state` belongs to RimBridgeServer
+(`brrainz.rimbridgeserver`), not to JawaBench. Its documented purpose is *"the current
+RimWorld window stack and input state"* —
+`vendor/mod_sources/RimBridgeServer-main/docs/tool-reference.md:579-583`. Upstream's own smoke
+test asserts on `mainTabOpen` / `openMainTabId` / `openMainTabType`
+(`Tests/RimBridgeServer.LiveSmoke/SmokeScenarioCatalog.cs:1176-1181`) and on no map field.
+`get_game_info` has no map object either — its shape is `{status, ticksGame, mapCount,
+selectedPawns}`, which is why `reload_check.py:116-119` already takes `mapCount` from there
+and only `programState`/`hasCurrentGame` from `get_ui_state`.
+
+⇒ The item's closing demand — *"a field that is null when the answer is one should either be
+populated or removed"* — is about a field that does not exist.
+
+**`Find.CurrentMap` was not the mechanism either.** `Find.cs:114` is
+`Current.Game?.CurrentMap`; `Game.cs:118-127` returns null iff `currentMapIndex < 0` (default
+`-1`, `Game.cs:17`). ⛔ **Opening the WORLD view does not null it** —
+`MainButtonWorker_ToggleWorld.cs:16` only sets `wantedMode`, and the only non-load
+`CurrentMap = null` in the entire decompile is `Game.cs:753`, the last map being removed.
+The engine treats "maps exist, current is null" as a defect it repairs at load
+(`Game.cs:596-600`).
+
+**✅ The right guard, for anyone who needs one.** `rimbridge/wait_for_game_loaded`
+(`docs/tool-reference.md:730-745`) returns a `state` carrying **`currentMapIndex`**, which is
+`Game.currentMapIndex` verbatim — `-1` IS the engine's null. That, not `mapCount`, is the
+true `Find.CurrentMap != null` test.
+
+### ⚠️ Why this is "almost certainly" and not "settled"
+
+RimBridgeServer ships **no C# source** — the vendored tree's `1.6/Assemblies` is empty and the
+only binary is
+`C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3727949765\1.6\Assemblies\RimBridgeServer.dll`.
+The field list above was recovered by a literal-string read of that DLL. 🔴 **A byte scan can
+prove a name is PRESENT; it can never prove one is ABSENT** — .NET keeps strings in metadata
+blobs a scan never reaches. So the "there is no `currentMap` key" half rests on a scan plus
+the docs plus the upstream test, not on a decompile.
+
+### The one observation that closes this, next load — seconds, not a test
+
+Call `rimworld/get_ui_state` and print **`sorted(resp.keys())` raw**, not `.get("currentMap")`.
+If there is no `currentMap` key, this item is a non-bug and closes; if there IS one and it
+reads null on a populated map, the original finding stands and nothing above applies.

@@ -46,10 +46,25 @@ BionicArm is in a pocket or in an arm is a CharacterApplier question; this tool
 parses ThingDefs and lets the applier decide.
 
 ⚠️ ThingDef names are NOT checked against the def dump here, and that is
-deliberate. The dump on this machine is captured under a reduced mod list --
-`guy762_KelDorMask` is real, is authored, and is absent from it, while it is
-present in the 578-mod live capture. Checking against the smaller of the two
-would fail a correct name. The prose is validated where it is written.
+deliberate. A dump captured under a reduced mod list is smaller than the live
+game, and checking against the smaller of the two would fail a correct name.
+The prose is validated where it is written.
+
+🔴 CORRECTED BY CHECK 2026-08-23 — THE EXAMPLE THIS PARAGRAPH USED WAS WRONG,
+and it was wrong in the direction that hides a real defect. It used to say
+`guy762_KelDorMask` "is real, is authored, and is absent from [the reduced
+dump], while it is present in the 578-mod live capture." It is NOT present in
+the 578-mod capture. `guy762.StarWarsXenotypes` was deliberately switched OFF
+and consolidated into `mandrake.starwarsraces` (item C36; canon.yml:829), so
+the def does not exist in the running game at all -- the 578-mod load logs
+`Could not resolve cross-reference to Verse.ThingDef named guy762_KelDorMask
+(wanter=apparel)` twice, once for each cast roster that still asks for it.
+Filed as CAST_ROSTER_DEAD_MASK_1.
+
+The DECISION above still stands -- a reduced dump genuinely cannot validate
+these names. But note what it costs: this exact class of error is then caught
+only by reading a load log, and this one survived for months behind an example
+that asserted it was fine.
 
 ⚠️ THE DROID FILE IS DIFFERENT ON PURPOSE, by owner ruling: `chassis` stands in
 for race and `service-years` for age. Handled, not normalised away.

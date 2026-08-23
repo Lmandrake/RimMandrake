@@ -70,3 +70,35 @@ nobody should reach for it because the bridge happens to be answering.
 - ⚠️ `rimworld/get_game_info` answers here, contrary to the note that it throws at
   `Page_SelectStartingSite` — because this is `programState: Playing`, not the site screen.
   The two states behave differently and the probe must not assume which one it is in.
+
+## SETTLED OFFLINE — CHECK, 2026-08-23 11:4x, game DOWN
+
+**This item no longer needs the live game.** Both halves are measured from disk.
+
+**What our map requires: 21872 tiles, `planetCoverage 1`, MLP subcount 7.**
+- `design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md:70` and `:753`
+- `world/ASHKARR_WORLDMAP_meta.json:3` `"tiles": 21872`; `world/ASHKARR_WORLDMAP_tiles.csv.frozen.json:25` `"rows": 21872`
+- `src/RimMandrake/Utils/w9_run.py:67` `EXPECT_TILES = 21872`
+- the CSV itself: `measure csv world/ASHKARR_WORLDMAP_tiles.csv` -> **MEASURED 21872** (`sha256:65c7be190c1a21b7`)
+- MLP grid is 10·3ⁿ+2, n=7 -> 21872 ✓
+
+**What the running world was: coverage 0.3, subdivisions 10.** Not inferred — that world is
+saved on disk. `Saves/rimbridge_save_20260823_002929.rws`, `Saves/CHECK_pool_roundtrip.rws`
+and `Autosave-1.rws` all carry `<seedString>seductive</seedString>`,
+`<planetCoverage>0.300000012</planetCoverage>`, `<subdivisions>10</subdivisions>`. Our own
+authored worlds (`world/WORLDMAP_gen.rws`, `_source.rws`, `_sub7b_source.rws`,
+`Saves/WORLDMAP_gen2.rws`) all carry `<planetCoverage>1</planetCoverage>` /
+`<subdivisions>7</subdivisions>`.
+
+⇒ **0.3 / subdiv-10 against 1.0 / subdiv-7 is decisive on its own.** The exact
+tiles↔coverage arithmetic at subcount 10 is UNMEASURED and does not matter.
+
+🔑 **And the cause is in third-party source, not in our files** — see the mechanism recorded
+in `PRESET_ONSCREEN_CHECK_UNVERIFIED_1`: Worldbuilder's
+`Page_CreateWorldParams_Reset_Patch.cs:32-34` forces `subdivisions = 10` unconditionally and
+returns early at `:41` when no preset is *selected*; `WorldPreset.cs:189` defaults subcount
+to 10 and `WorldGenerationData.cs:67` defaults coverage to 0.3. The observed world is exactly
+those two defaults.
+
+⚠️ The item's second blocker (`mapCount 1`) is live-only and now moot: that world is unusable
+whatever its map count.
