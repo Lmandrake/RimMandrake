@@ -44,10 +44,19 @@ command line, so `pgrep -f board_loop.sh` matches ITSELF and answers UP while th
 ```
 ps -eo pid,etime,args | grep -E '[b]oard_loop\.sh'    || echo "board loop DOWN"
 ps -eo pid,etime,args | grep -E '[s]tatus_server\.py' || echo "status server DOWN"
+curl -s -m 5 -o /dev/null -w 'board %{http_code}\n' http://localhost:8787/   # 🔴 this one DECIDES
 ```
 
-✅ **The board answers for itself:** `curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8787/` — a `200` proves the
-server lives. No equivalent exists for the publisher: `queue/*.md` mtimes older than ~2 min mean the loop is dead.
+🔴 **The `ps` check is NECESSARY AND NOT SUFFICIENT for the board — the HTTP probe is the one that decides.**
+A process existing is not a service answering. On 2026-08-23 `status_server.py` had been up 18h44m, `ps` said
+alive and `ss` said LISTEN with a backlog, and `curl` returned `000` on a five-second timeout: the socket was
+accepting and nothing behind it ever wrote a response. A seat that ran the documented `ps` check and stopped
+there would have reported the board UP while it had been blank for hours. **Run the `curl` every time; a `200`
+is the only thing that proves the board lives.** (`BOARD_SERVER_HANGS_SILENTLY_1`; the wedge itself is fixed —
+the server is `ThreadingHTTPServer` with a 20 s handler timeout since `c950d9c1` — but the check stands, because
+the next way it dies will not be that one.)
+
+⚠️ **No equivalent exists for the publisher**: `queue/*.md` mtimes older than ~2 min mean the loop is dead.
 
 - **The publisher is BOUNDED (8 h) and dies silently.** `queue/*.md` are generated and ONLY `render.py --overwrite-queues`
   writes them; when the loop lapses every seat reads a frozen view and cannot tell.

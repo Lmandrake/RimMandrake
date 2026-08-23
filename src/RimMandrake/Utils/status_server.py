@@ -22,7 +22,7 @@ import re
 import subprocess
 import threading
 import time
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import PLAYER_LOG as _PLAYER_LOG  # noqa: E402
@@ -752,6 +752,14 @@ def snapshot():
 
 
 class H(BaseHTTPRequestHandler):
+    # 🔴 A client that connects and never finishes its request used to wedge the
+    # WHOLE board: single-threaded HTTPServer blocked in handle_request() forever
+    # while the socket kept ACCEPTING, so `ps` and `ss` both read healthy and
+    # `curl` returned 000. Found 2026-08-23 after 18h44m of apparent health.
+    # The timeout kills such a client; ThreadingHTTPServer below stops one client
+    # from being able to block another. BOARD_SERVER_HANGS_SILENTLY_1.
+    timeout = 20
+
     def log_message(self, *a):
         pass
 
@@ -869,7 +877,9 @@ def main():
     # Warm the readings before the first request so a fresh server does not
     # serve one 4-second page. Everything after it is stale-while-revalidate.
     threading.Thread(target=_measure_refresh, daemon=True).start()
-    HTTPServer(("0.0.0.0", a.port), H).serve_forever()
+    srv = ThreadingHTTPServer(("0.0.0.0", a.port), H)
+    srv.daemon_threads = True
+    srv.serve_forever()
 
 
 if __name__ == "__main__":
