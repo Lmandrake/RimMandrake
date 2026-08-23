@@ -1767,3 +1767,72 @@ emitting `<li>` into a `LoadDataFromXmlCustom` field. `validate_patch.py` now RE
 shape across 45 measured dictionary-keyed fields (`58a95da2`), regression-tested against a
 known-bad and known-good, with repo (129 files) and deployed (127) sweeps both clean. The
 third occurrence of this bug should be impossible rather than merely unlikely.
+
+
+## §7 — the GESTOR/PHALLOR + MAYREQUIRE load. Written 2026-08-23 01:0x, BEFORE the game restarted.
+
+**What is riding it.** No new assembly. One mod-settings change made by the OWNER in the
+mod's own options window, and two XML edits to `Jawa_Patches`:
+
+| change | by | why it needs a load |
+|---|---|---|
+| `integrateReproductiveGenesIntoXenotypes` -> **False** | owner, 01:03, options window | mod settings are read at PAWN GENERATION; pawns already generated keep the old label |
+| `BiomeCast_Ashkarr.xml` — 3 `MayRequire` removed | `a70062a7` | Core biomes were gated on `grimterra.terrainretexturemod` |
+| `WeaponTags_Renormalise.xml` — Flamebow add made idempotent | `4ffd9fb4` | cosmetic; proves out as a tag count |
+
+🔑 **These cannot steal each other's blame:** one is a mod setting read at generation, one is
+a biome patch, one is a weapon tag list.
+
+### Expected PRESENT — absence of these IS the failure
+
+| # | string / probe | value that passes |
+|---|---|---|
+| P1 | `[Inhabited] ready:` | **294 characters** — must not regress §6 |
+| P2 | `[JawaBench] ready:` | **121 tools** — must not regress §6. ⚠️ Both ready lines are among the LAST lines written; absent during a load means UNFINISHED, not failed |
+| P3 | a fresh capture's `BiomeDef.json` | **80 records** — must not regress §6 |
+
+### Expected ABSENT — any hit is a failure
+
+| # | grep | baseline |
+|---|---|---|
+| F1 | `Exception loading def from file Biomes_` | **0** |
+| F2 | `Could not resolve cross-reference` | **~25**. Above 100 means biomes are dropping again |
+| F3 | `Flamebow` in any patch error | **0** |
+
+### 🔴 THE READING THIS LOAD EXISTS FOR — and no grep can take it
+
+**S1 — the species word is back.** ⛔ **There is NO log string for this and there never will
+be.** It is an inspect pane on a live humanlike:
+
+    a Rakatan sleeper reads `Rakata`, NOT `Gestor`
+    a Jawa reads `Jawa`, NOT `Gestor` or `Phallor`
+
+🔑 **A clean log is not evidence.** `INTIMACY_MOD_RENAMES_SPECIES_1` is settled here or not at
+all. Bridge: `jawa/inspect_string` on a generated pawn. Baseline, measured on the 578-mod
+stack: `Gestor female, age 32 (100), Forsaken soldier` where the pawn is a Rakatan sleeper.
+
+⚠️ **Check a pawn generated AFTER this load**, not a saved one — the setting is consulted at
+generation time, which is the whole reason this needs a reload rather than a save reload.
+
+**S2 — the three Core biomes still take the cast without their MayRequire.** Measured off the
+new capture, not the log: `Desert`, `ExtremeDesert` and `AridShrubland` each carry the cast's
+`wildAnimals` list. ⚠️ A `PatchOperationConditional` returns true on no match, so this cannot
+fail loudly — read the biome's `wildAnimals` in the capture, do not trust a clean log.
+
+**S3 — Flamebow's tag list has no duplicates.** Capture: `Flamebow.weaponTags` should read 4
+entries, not 6. ⚠️ If it still reads 6, our operation is not the (only) source — which is the
+open question `4ffd9fb4` records. Not a failure of this load, but say so rather than assuming.
+
+### Results — FILL THIS IN AFTER THE LOAD. Blank means unfinished.
+
+| # | outcome | evidence |
+|---|---|---|
+| P1 | | |
+| P2 | | |
+| P3 | | |
+| F1 | | |
+| F2 | | |
+| F3 | | |
+| S1 | | |
+| S2 | | |
+| S3 | | |
