@@ -2025,3 +2025,34 @@ are UNCHANGED and still pending — these are additional, not a replacement.
 
 ⚠️ **A live test proves what the RUNNING game holds, never what disk holds.** All seven above
 are about the *next* process. Nothing here is evidence about the one that ran until 11:25.
+
+---
+
+## §11 — PlanetPresetPrime, a NEW ASSEMBLY. Written 2026-08-23 11:5x by BUILD, game DOWN.
+
+🔴 **This is a new DLL, and §3 of `rimworld-load-round` says an assembly rides SOLO.** It is
+batched anyway under the owner's standing three-assembly waiver, whose one mandatory
+condition is that the failure signature is written down BEFORE the game starts. This is
+that signature. It is deliberately distinguishable from every other assembly in the batch.
+
+`mandrake.planetpresetprime`, added to `ModsConfig.xml` at **position 579 of 580** — after
+`oblitus.mylittleplanet` at 236, which is the ordering that matters.
+
+| # | reading | what it decides |
+|---|---|---|
+| **H1** | ✅ **EXPECTED-PRESENT, at startup:** `[PlanetPresetPrime] loaded: will prime coverage 1, subdivisions 7. MLP type found.` | The one line that separates *loaded and working* from *never loaded*. ⚠️ **Absence of an error is NOT evidence here** — a mod that failed to load is silent in exactly the same way, which is why this line exists at all (`JAWABENCH_HAS_NO_INIT_LINE_1`). |
+| **H2** | If H1 reads `MLP type ABSENT` instead | The reflective lookup of `WorldGenRules.WorldGenRules` failed. The mod still sets vanilla `subdivisions`, but MLP's slider transpiler will stamp its own default 10 over it on the first drawn frame. **Non-fatal, and it means the planet will be the wrong size anyway.** |
+| **H3** | ⛔ **UNIQUE TO THIS ASSEMBLY:** any log line containing `PlanetPresetPrime` and `Harmony` / `patching` / `ReflectionTypeLoadException` | No other assembly in this batch names that string, so a Harmony failure here can never be misread as JawaBench's or Inhabited's. That distinguishability is the whole basis for batching it. |
+| **H4** | `[PlanetPresetPrime] ready: coverage 1, subdivisions 7, MLP slider primed` | Fires only when the world-creation page opens. **Do not read its absence as a fault** — the page may never open in a session. H1 is the load reading; H4 is the it-actually-fired reading. |
+| **H5** | 🔑 **The real proof, from the bridge, not the screen:** `python.exe src/RimMandrake/Utils/w9_run.py` (dry run) prints `planetCoverage 1` and `tilesCount 21872` **with nobody having touched a control**. | `PRIME_WORLD_PRESET_ALWAYS_1`'s criteria. ⚠️ Bridge calls at that screen take **over 25 s** against a 30 s default timeout — use `timeout=150` and a fresh connection per call, or a late reply is read as the next call's answer and you get an id-mismatch cascade that looks like four separate failures. |
+| **H6** | The coverage control and the MLP slider are **still draggable**. | This primes, it does not lock. Coverage is a button over the fixed set {0.3, 0.5, 1.0} (`Page_CreateWorldParams.cs:32`), so 1.0 is one of its three legal values and the owner can still click it anywhere the unpatched game allowed. |
+
+⚠️ **Two corrections to `PRIME_WORLD_PRESET_ALWAYS_1`'s spec, both found while building.**
+① The item said *"a postfix leaves the field public and settable"* — `planetCoverage` is
+`private float` (`Page_CreateWorldParams.cs:16`), so it is set through `AccessTools`.
+② The item said to set "the My Little Planet subcount". `WorldGenRules.WorldGenRules.subcount`
+is only the **slider's memory**; the value the generator consumes is
+`PlanetLayerSettingsDefOf.Surface.settings.subdivisions`. **Setting either one alone does
+nothing useful** — MLP's transpiler on `DoWindowContents` reads its own field and assigns
+both back every frame, so vanilla-only would be stamped over with 10. The mod sets MLP's
+first and vanilla's last.

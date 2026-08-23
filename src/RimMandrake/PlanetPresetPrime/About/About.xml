@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Planet Preset Prime (local)</name>
+  <packageId>mandrake.planetpresetprime</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>A development ergonomics fix, not player-facing content. Players never see the world-creation page - they receive a savegame holding the frozen world - but WE re-create test worlds constantly, and the page forgets its settings every single time.
+
+RimWorld persists nothing about the planet preset. Page_CreateWorldParams.Reset() re-chooses planetCoverage from a hardcoded default on every open, and My Little Planet's subdivision count is likewise re-chosen. Config/Prefs.xml has 63 keys and not one of them mentions planet, coverage, subcount or seed; My Little Planet writes no mod config at all.
+
+Ash'karr is a 21,872-tile planet, which is coverage 1.0 at subcount 7. Open the page at the defaults instead and you get 119,904 tiles - and world/ASHKARR_WORLDMAP_tiles.csv addresses 0..21871, so every one of those rows then points at different ground. A paint run reports success while writing a scrambled planet. That is the failure this exists to prevent.
+
+One Harmony postfix on Page_CreateWorldParams.Reset() sets both values. Reset() is the method that actually assigns them and it runs exactly once, behind PreOpen's initialized flag.
+
+It PRIMES, it does not LOCK. The fields stay public and settable, so dragging a slider still overrides it.
+
+This is only half the defence and the other half is deliberately kept: src/RimMandrake/Utils/w9_run.py holds EXPECT_TILES = 21872 and refuses to import when the live world disagrees. The mod stops the mistake being made; the guard stops it being acted on.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>oblitus.mylittleplanet</li>
+  </loadAfter>
+</ModMetaData>
