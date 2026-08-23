@@ -3,8 +3,8 @@
   "postureMeaning": "Default is KEEP. Only entries with decision 'shrink' or 'enlarge' are work. An undecided entry is left exactly as it ships.",
   "fieldMeaning": "drawSize is visual only. bodySize moves meat, leather, hunting yield, carrying capacity, food need and melee damage.",
   "savedBy": "creature_size_review.html",
-  "savedAt": "2026-08-23T08:13:26.343Z",
-  "decidedCount": 0,
+  "savedAt": "2026-08-23T18:04:02.981Z",
+  "decidedCount": 2,
   "total": 621,
   "decisions": {
     "AA_SummitCrab": {
@@ -6014,26 +6014,26 @@
       "touched": false
     },
     "GRimStoneCrab": {
-      "decision": "keep",
-      "field": "",
+      "decision": "shrink",
+      "field": "drawSize",
       "note": "",
       "label": "Colorful stone crab",
       "mod": "GRiNDTerra Biomes",
       "band": "small",
       "px": 1098,
       "bodySize": 0.30000001192092896,
-      "touched": false
+      "touched": true
     },
     "StoneCrab": {
-      "decision": "keep",
-      "field": "",
+      "decision": "shrink",
+      "field": "drawSize",
       "note": "",
       "label": "stone crab",
       "mod": "Odyssey",
       "band": "small",
       "px": 1095,
       "bodySize": 0.30000001192092896,
-      "touched": false
+      "touched": true
     },
     "Mink": {
       "decision": "keep",
