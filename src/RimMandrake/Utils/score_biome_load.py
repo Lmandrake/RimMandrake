@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Score §6 of EXPECTED_FAILURES_next_load.md in one pass. Run after the load.
+"""Score the BIOME RESTORATION block of EXPECTED_FAILURES_next_load.md. Run after the load.
+
+⚠️ FIND THAT BLOCK BY ITS TITLE, NOT ITS NUMBER. This docstring said "§6" until
+2026-08-23; the block was renumbered to §9 because §6 was already the closed 2026-08-21
+load with a filled Results table. ✅ Nothing functional depended on it — the signature
+strings live in this file and it reads the engine log directly, never the markdown — but a
+reader following "§6" landed on another load's answers. Block numbers in that file have
+now collided twice; see BIOME_BLOCK_MISNUMBERED_SIX_1.
 
     python3 src/RimMandrake/Utils/score_biome_load.py
 
