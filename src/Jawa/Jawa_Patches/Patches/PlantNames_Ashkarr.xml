@@ -86,6 +86,14 @@
   </Operation>  <!-- cocoa tree -> mimbanese cacao · Mimban - canon jungle world -->
 
   <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RG_Plant_Raspberry"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RG_Plant_Raspberry"]/label</xpath>
+      <value><label>muja bramble</label></value>
+    </match>
+  </Operation>  <!-- raspberry bush -> muja bramble · muja - canon Star Wars fruit; 'bramble' carries the bush role and keeps it distinct from pallie berry and shuura bush. NOT cut: owner, 2026-08-23, 'Do not cut raspberries, they can just be renamed.' -->
+
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RawCorn"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="RawCorn"]/label</xpath>

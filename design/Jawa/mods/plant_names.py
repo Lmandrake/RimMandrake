@@ -17,9 +17,12 @@ renaming `Plant_Corn` breaks every save, recipe, bill, stockpile filter and mod 
 names it. A label is cosmetic and free. ⚠️ None of these 25 defs ships a `description`, so
 there is no prose left contradicting the new names — checked, not assumed.
 
-⛔ **The owner's four Cherry Picker cuts are EXCLUDED** — `Plant_TreePine`, `Plant_TreeBirch`,
-`Plant_TreePoplar`, `RG_Plant_Raspberry`. Cherry Picker removes those defs at load, so a patch
-against them is dead weight. Their VLE `_Auburn` cousins are separate defs and ARE renamed.
+⛔ **The owner's THREE Cherry Picker cuts are EXCLUDED** — `Plant_TreePine`, `Plant_TreeBirch`,
+`Plant_TreePoplar`. Cherry Picker removes those defs at load, so a patch against them is dead
+weight. Their VLE `_Auburn` cousins are separate defs and ARE renamed.
+⭐ **`RG_Plant_Raspberry` was the fourth and is NOT cut** — owner, 2026-08-23: *"Cut the three
+trees. Do not cut raspberries, they can just be renamed."* It is renamed here instead, and it
+keeps `RawBerries` in AridShrubland's 709 tiles. `RASPBERRY_RENAMED_NOT_CUT_1`.
 
 ⚠️ Every operation is wrapped in `PatchOperationConditional` on the same xpath, because a
 `PatchOperationReplace` that matches nothing is a RED ERROR, not a no-op.
@@ -43,6 +46,7 @@ RENAMES = {
  'Plant_Potato':    ('koyo tuber',      'canon', 'koyo - canon fruit; "tuber" carries the crop role'),
  'Plant_Strawberry':('pallie berry',    'canon', 'pallie - canon Tatooine fruit, so it belongs on a desert world'),
  'Plant_Berry':     ('shuura bush',     'canon', 'shuura - canon Naboo fruit; kept distinct from pallie'),
+ 'RG_Plant_Raspberry':('muja bramble',  'canon', "muja - canon Star Wars fruit; 'bramble' carries the bush role and keeps it distinct from pallie berry and shuura bush. NOT cut: owner, 2026-08-23, 'Do not cut raspberries, they can just be renamed.'"),
  'Plant_Hops':      ('ardees vine',     'canon', '⭐ ardees is the base of Huttese "Jawa juice" - the most on-brand word in the setting for THIS clan'),
  'Plant_TreeCocoa': ('mimbanese cacao', 'canon', 'Mimban - canon jungle world'),
  'Plant_Haygrass':  ('bantha fodder',   'canon', '⭐ banthas are the beast of the Jawas and Tuskens; what you grow to feed them names itself'),
@@ -86,7 +90,6 @@ LEFT_ALONE = {
  'Plant_TreePine': "CUT by the owner - Cherry Picker removes the def",
  'Plant_TreeBirch': "CUT by the owner",
  'Plant_TreePoplar': "CUT by the owner",
- 'RG_Plant_Raspberry': "CUT by the owner",
 }
 
 
