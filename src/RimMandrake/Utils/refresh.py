@@ -108,6 +108,13 @@ def _measure_scripts():
 # second one has no test. They are now aliases of the one seam.
 D_CONFIG = _GP.MODS_CONFIG
 D_DUMP = _GP.DEF_DUMP
+# 🔴 DEF_DUMP is the CAPTURE (DefDump/captures/<id>/); DUMP_ROOT is the folder
+# that HOLDS the captures. `defs.sqlite` lives at the ROOT, deliberately — it is
+# derived, it is explicitly outside the freeze, and one database serves every
+# capture. Joining D_DUMP for it reported a present 788 MB file as MISSING and
+# sent a reader to `measure build` for a 30-second rebuild he did not need.
+# (REFRESH_SQLITE_WRONG_DIR_1; measure's own cli.py:80 says "stays at the root".)
+D_DUMP_ROOT = _GP.DUMP_ROOT
 INVENTORY = os.path.join(ROOT, "observed", "2026-08-13",
                          "inventory")
 STAMP = os.path.join(INVENTORY, "GENERATED_FROM.json")
@@ -741,7 +748,7 @@ def status(fp, steps_failed=False):
     # disk. That distinction is the reason it gets its own row instead of being
     # folded into the dump's — a reader who sees "GAME LOAD" on both will defer
     # a 30-second rebuild for 25 minutes he does not need to spend.
-    _sqlite = os.path.join(D_DUMP, "defs.sqlite")
+    _sqlite = os.path.join(D_DUMP_ROOT, "defs.sqlite")
     if not os.path.isfile(_sqlite):
         rows.append(("DefDump/defs.sqlite", "absent", "MISSING",
                      "measure build"))
