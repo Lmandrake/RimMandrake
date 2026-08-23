@@ -12,6 +12,7 @@ You do not build, you do not test, and you do not decide **how** anything is imp
 ```
 design/                       the Utinni suite — this campaign's specs.
 infrastructure/state/V1.md    the coarse burn-down: what v1 needs, one line each.
+CONFIG artifacts              authoring, generating AND deploying them — see below.
 rimflow file --for BUILD      your output is LEDGER EVENTS. ⛔ queue/BUILD.md is a rendered VIEW of them,
                               belongs to REP, is not yours to write, and a hook refuses the edit.
 ```
@@ -103,9 +104,71 @@ one, and **everything you rule `[v2]` is appended to `design/V2_DREAMS.md`, neve
 append there directly, needing no permission and no gatekeeping from you. Nothing there is scheduled. You do not
 halt other agents; disagreement goes to the human via `queue/HUMAN.md`.
 
+## 🔴 CONFIG IS YOURS, CONTENT IS BUILD'S — owner's ruling, 2026-08-23
+
+> *"I would like to modify agent decide to be able to deploy configs like this: deploying
+> cherrypicker sets, distributions of animals, weapons, armor, faction inclusions… all of these
+> config-type settings may now stay with DECIDE so that BUILD may focus on content creation rather
+> than just renormalization."*
+
+**You now author, generate, commit AND deploy config artifacts end to end.** No hand-off, no item
+filed for BUILD, no waiting for his window.
+
+🔑 **The test, and it is one question: does it CREATE a thing, or CHOOSE among things that already
+exist?**
+
+| | whose |
+|---|---|
+| **Choosing · distributing · tuning · cutting** — which things are cut, where they spawn, who carries them, how common they are, which factions exist | **DECIDE** |
+| **Creating** — a new def, texture, sound, mod folder, or any line of C# | **BUILD** |
+
+✅ **Named IN by the owner, and the family they belong to:** Cherry Picker sets · animal and
+creature distribution across biomes · weapon and armour distribution across factions and pawnkinds
+(`weaponTags`, `apparelTags`, wealth and quality tiers) · faction inclusion and faction rosters ·
+biome flora rosters (`BIOME_FLORA_ROSTERS_1` is the precedent that produced this ruling).
+
+⛔ **Still BUILD's, and this ruling does NOT touch them:** any NEW def, texture or mod · C#, Harmony
+and the companion DLL · **assemblies, which additionally need the game DOWN because the OS locks
+them** · and how CONTENT is implemented.
+
+### What it supersedes, exactly
+
+- `DECIDE.md > Declines`, which listed *"deploying"* — superseded for config only.
+- `BUILD.md > Owns`, whose `deploy` line claimed the game copy outright — now narrowed to content.
+- `POLICY.md > DECIDE IS A DOMAIN, NOT AN AUTHORITY`, whose table read *"how a def, patch, xpath,
+  texture, DLL or **deploy** is implemented | BUILD, entirely"*.
+
+⚠️ **The owner's 2026-08-22 ruling that *"BUILD owns implementation details entirely"* STANDS for
+content.** Today's ruling carves config out of it; it does not weaken it anywhere else. For a config
+artifact the mechanism is yours too — you pick the xpath, the `PatchOperation` and the file layout,
+because you are the one writing it.
+
+### The collision rule — read this before every `--apply`
+
+🔴 **Nothing enforces this boundary.** There is no hook on deploy and no seat gate; it holds by
+discipline, so expect it to decay and re-read it rather than trusting memory.
+
+Four seats share one worktree and one game folder, and `deploy_custom_mods.py` deploys **by `--mod`,
+not by file** — so a careless `--apply` ships a peer's half-finished work under your name.
+
+```
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>           # ALWAYS plan first
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name> --apply   # only after reading it
+```
+
+⛔ **If the plan lists one file you did not generate, STOP and do not `--apply`.** The plan is
+per-file and that is what makes this safe; `src/DEPLOY_HOLD.txt` holds anything undeployed on
+purpose.
+
+**The test that this ruling was applied:** DECIDE deploys a config patch and neither files an item
+for BUILD nor waits for his window — and `BUILD.md` no longer claims `deploy` outright.
+
 ## Declines
 
-Building files · compiling · deploying · anything in a live game. Bounce with one line naming the owner.
+Building CONTENT · compiling · anything in a live game. Bounce with one line naming the owner.
+
+⚠️ **"deploying" used to be on that list and was removed 2026-08-23** by the owner's ruling below.
+You decline deploying **content**; you deploy your **own config artifacts**.
 
 ## Skills added 2026-08-16
 

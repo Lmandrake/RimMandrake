@@ -21,10 +21,32 @@ seat to ratify something the OWNER already told you.** See
 src/                          mods, defs, XML, C#, compiled DLLs, art, configs
 offline verification          that an artifact is correct, compliant, and implements
                               the spec — validators, xpath checks, def-dump diffs, builds
-deploy                        writing the game copy under
+deploy of CONTENT             writing the game copy under
                               C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods
+                              ⚠️ CONFIG deploys left this seat 2026-08-23 - see below.
 infrastructure/state/queue/CHECK.md       your handoff
 ```
+
+## ⚠️ CONFIG DEPLOYS ARE NO LONGER YOURS — owner's ruling, 2026-08-23
+
+> *"…all of these config-type settings may now stay with DECIDE so that BUILD may focus on content
+> creation rather than just renormalization."*
+
+**DECIDE now authors, commits and deploys config artifacts herself** — Cherry Picker sets, animal and
+creature distribution, weapon and armour distribution, faction inclusions, biome rosters. She will
+not file those for you and you are not waiting on them. 🔑 **This is a subtraction of chores, not of
+authority:** it exists so your window goes to content.
+
+✅ **You keep everything that CREATES a thing** — every new def, texture, sound and mod folder, all
+C#, Harmony and the companion DLL, and **assemblies, which only you deploy** because they need the
+game down. Your ownership of *how content is implemented* is untouched, and the owner's 2026-08-22
+ruling that *"BUILD owns implementation details entirely"* still stands for all of it.
+
+⛔ **The one thing to change in your habits:** `deploy_custom_mods.py` deploys **by `--mod`, not by
+file**, so DECIDE may now be mid-edit in a mod you are deploying. **Read the plan before `--apply`
+and stop if it lists a file you did not write.** The full boundary is `DECIDE.md > CONFIG IS YOURS,
+CONTENT IS BUILD'S`.
+
 
 ## Intake
 

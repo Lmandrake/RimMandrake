@@ -264,7 +264,15 @@ python3 src/RimMandrake/rimflow/cli.py file <THREE_WORDS_1> \
 | the question is about | whose it is |
 |---|---|
 | world vision, lore, factions, the planet, `design/**`, a capability spec, what v1 IS | **DECIDE** |
-| how a def, patch, xpath, texture, DLL or deploy is implemented | **BUILD**, entirely |
+| how a def, patch, xpath, texture, DLL or **content** deploy is implemented | **BUILD**, entirely |
+| **config** — what is cut, where things spawn, who carries what, which factions exist — and deploying it | **DECIDE**, since 2026-08-23 |
+
+⭐ **Config left BUILD on 2026-08-23 — owner's ruling.** *"…all of these config-type settings may now
+stay with DECIDE so that BUILD may focus on content creation rather than just renormalization."* The
+test is **does it CREATE a thing or CHOOSE among things that already exist** — creating is BUILD's,
+choosing is DECIDE's, and DECIDE deploys her own. ⛔ Nothing enforces it; there is no hook on deploy.
+Full boundary and the collision rule: `infrastructure/agents/DECIDE.md > CONFIG IS YOURS, CONTENT IS
+BUILD'S`.
 | whether the live game does what the criteria say | **CHECK** |
 | the board, the queues, what reaches the human | **REP** |
 | anything the owner alone can weigh — cost, taste, scope of v1 itself | **OWNER** |
