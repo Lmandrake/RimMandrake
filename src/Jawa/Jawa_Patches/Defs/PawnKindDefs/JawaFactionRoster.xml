@@ -255,6 +255,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Gold</thingDef><countRange>2~8</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -290,6 +311,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Gold</thingDef><countRange>2~8</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -325,6 +367,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Gold</thingDef><countRange>2~8</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <!-- 🔴 REVERTED 2026-08-23. Cut to 3000~3600 as 'not intermediate'; the legendary tier starts
@@ -367,6 +430,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Luciferium</thingDef><countRange>1~3</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -404,6 +488,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
     <itemQuality>Normal</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -441,6 +547,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
     <itemQuality>Normal</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -478,6 +606,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
     <itemQuality>Normal</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -515,6 +665,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
     <itemQuality>Normal</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -553,6 +725,26 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <!-- design: 'max Normal'. No quality clamp on the weapon itself - a scavenged rifle is
          whatever it was when they found it. -->
     <itemQuality>Normal</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -590,6 +782,26 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <!-- design: 'max Normal'. No quality clamp on the weapon itself - a scavenged rifle is
          whatever it was when they found it. -->
     <itemQuality>Normal</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <!-- 🔴 REVERTED 2026-08-23. I cut this to 400~500 as 'a Tusken outspending a stormtrooper'.
@@ -629,6 +841,26 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <!-- design: 'max Normal'. No quality clamp on the weapon itself - a scavenged rifle is
          whatever it was when they found it. -->
     <itemQuality>Normal</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -666,6 +898,26 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <!-- design: 'max Normal'. No quality clamp on the weapon itself - a scavenged rifle is
          whatever it was when they found it. -->
     <itemQuality>Normal</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -699,6 +951,24 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
     <apparelColor>(122,110,84)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -733,6 +1003,24 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
     <apparelColor>(122,110,84)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -766,6 +1054,24 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
     <apparelColor>(122,110,84)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -802,6 +1108,24 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
     <apparelColor>(122,110,84)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <!-- 🔴 REVERTED 2026-08-23. Cut to 500~600; the bowcaster costs 1250 and KotORBowcaster is
@@ -844,6 +1168,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          small number of good things rather than many poor ones. -->
     <forceWeaponQuality>Good</forceWeaponQuality>
     <itemQuality>Good</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <!-- raised above the Grunt to restore the ladder - and 2000 reaches the war bowcaster. -->
@@ -885,6 +1231,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          small number of good things rather than many poor ones. -->
     <forceWeaponQuality>Good</forceWeaponQuality>
     <itemQuality>Good</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -925,6 +1293,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          small number of good things rather than many poor ones. -->
     <forceWeaponQuality>Good</forceWeaponQuality>
     <itemQuality>Good</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -964,6 +1354,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          small number of good things rather than many poor ones. -->
     <forceWeaponQuality>Good</forceWeaponQuality>
     <itemQuality>Good</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1002,6 +1414,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <!-- design: 'min Good'. Sealed-suit divers maintain their kit because failure drowns them. -->
     <forceWeaponQuality>Good</forceWeaponQuality>
     <itemQuality>Good</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1040,6 +1474,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <!-- design: 'min Good'. Sealed-suit divers maintain their kit because failure drowns them. -->
     <forceWeaponQuality>Good</forceWeaponQuality>
     <itemQuality>Good</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1078,6 +1534,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <!-- design: 'min Good'. Sealed-suit divers maintain their kit because failure drowns them. -->
     <forceWeaponQuality>Good</forceWeaponQuality>
     <itemQuality>Good</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1116,6 +1594,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <!-- design: 'min Good'. Sealed-suit divers maintain their kit because failure drowns them. -->
     <forceWeaponQuality>Good</forceWeaponQuality>
     <minApparelQuality>Good</minApparelQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1148,6 +1648,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- chitin red-brown — owner. Matches the carapace the hive already wears -->
     <apparelColor>(104,62,42)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1181,6 +1703,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- chitin red-brown — owner. Matches the carapace the hive already wears -->
     <apparelColor>(104,62,42)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1214,6 +1758,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- chitin red-brown — owner. Matches the carapace the hive already wears -->
     <apparelColor>(104,62,42)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1248,6 +1814,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- chitin red-brown — owner. Matches the carapace the hive already wears -->
     <apparelColor>(104,62,42)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1288,6 +1876,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          exactly the stated character: no waste, no spares, nothing improvised. -->
     <forceWeaponQuality>Excellent</forceWeaponQuality>
     <itemQuality>Excellent</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1328,6 +1938,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          exactly the stated character: no waste, no spares, nothing improvised. -->
     <forceWeaponQuality>Excellent</forceWeaponQuality>
     <itemQuality>Excellent</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1369,6 +2001,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          exactly the stated character: no waste, no spares, nothing improvised. -->
     <forceWeaponQuality>Excellent</forceWeaponQuality>
     <itemQuality>Excellent</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <!-- 🔴 REVERTED 2026-08-23. Cut to 4000~5000; KotORRanged_legendary/rare start at 12000, so
@@ -1414,6 +2068,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          exactly the stated character: no waste, no spares, nothing improvised. -->
     <forceWeaponQuality>Excellent</forceWeaponQuality>
     <minApparelQuality>Excellent</minApparelQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1450,6 +2126,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- near-black — owner. It is in the name, and it makes them read instantly against white stormtroopers and brown Jawa -->
     <apparelColor>(38,38,42)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1485,6 +2182,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- near-black — owner. It is in the name, and it makes them read instantly against white stormtroopers and brown Jawa -->
     <apparelColor>(38,38,42)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1521,6 +2239,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- near-black — owner. It is in the name, and it makes them read instantly against white stormtroopers and brown Jawa -->
     <apparelColor>(38,38,42)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1559,6 +2298,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- near-black — owner. It is in the name, and it makes them read instantly against white stormtroopers and brown Jawa -->
     <apparelColor>(38,38,42)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1605,6 +2365,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          variety - because everything a Jawa carries came off something else. -->
     <forceWeaponQuality>Poor</forceWeaponQuality>
     <itemQuality>Poor</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1652,6 +2433,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          variety - because everything a Jawa carries came off something else. -->
     <forceWeaponQuality>Poor</forceWeaponQuality>
     <itemQuality>Poor</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1698,6 +2500,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          variety - because everything a Jawa carries came off something else. -->
     <forceWeaponQuality>Poor</forceWeaponQuality>
     <itemQuality>Poor</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1746,6 +2569,27 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          variety - because everything a Jawa carries came off something else. -->
     <forceWeaponQuality>Poor</forceWeaponQuality>
     <itemQuality>Poor</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1783,6 +2627,25 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          without a clamp - do not 'finish' it by adding one. -->
     <forceWeaponQuality>Poor</forceWeaponQuality>
     <itemQuality>Poor</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <!-- owner 2026-08-23: 'Heavy junkers should be required to be in warcaskets of course.'
@@ -1828,6 +2691,25 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          without a clamp - do not 'finish' it by adding one. -->
     <forceWeaponQuality>Poor</forceWeaponQuality>
     <itemQuality>Poor</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1865,6 +2747,25 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          without a clamp - do not 'finish' it by adding one. -->
     <forceWeaponQuality>Poor</forceWeaponQuality>
     <itemQuality>Poor</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <!-- the Junker boss is also cased. Same base tier - Junkers are not rich, they are
@@ -1908,6 +2809,25 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          the armour was cut off a body and the gun was not. Apparel is deliberately left
          without a clamp - do not 'finish' it by adding one. -->
     <forceWeaponQuality>Poor</forceWeaponQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
   <!-- ⭐ THE DESERT TROOPER — owner, 2026-08-20: "the Homestead Defense League
@@ -1973,6 +2893,28 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </inventoryOptions>
       <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
     <itemQuality>Normal</itemQuality>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
   </PawnKindDef>
 
 
