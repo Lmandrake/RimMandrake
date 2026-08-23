@@ -1619,3 +1619,6 @@
 {"seat":"BUILD","event":"start","id":"MAP_BIOMES_REMOVED_LIVE_1","ts":"2026-08-23T06:37:23Z"}
 {"seat":"BUILD","event":"verify","id":"MAP_BIOMES_REMOVED_LIVE_1","result":"partial","config":"offline: repo + deployed + capture 2026-08-23T05-05-29Z (self-poisoned for the 26 biomes)","evidence":"infrastructure/state/observed/2026-08-22/biome_cast/verify.md","sha":"58a95da2","ts":"2026-08-23T06:37:23Z"}
 {"seat":"BUILD","event":"needs","id":"MAP_BIOMES_REMOVED_LIVE_1","to":"harvest","ts":"2026-08-23T06:37:23Z"}
+{"seat":"DECIDE","event":"claim","id":"HORROR_WASTES_ON_NIGHTSIDE_1","ts":"2026-08-23T06:39:07Z"}
+{"seat":"DECIDE","event":"start","id":"HORROR_WASTES_ON_NIGHTSIDE_1","ts":"2026-08-23T06:39:07Z"}
+{"seat":"DECIDE","event":"file","id":"ROCKY_CRAGS_SPANS_HUNDRED_DEGREES_1","title":"AB_RockyCrags runs -82 to +20 C as one biome; the HorrorWastes carve did not narrow it","kind":"decision","target":"v1","needs":"owner","spec":"/tmp/claude-1000/-mnt-d-Luke-dev-Rimworld/24c7465d-01d9-4086-8502-d18f4a03400e/scratchpad/crags.md","caused_by":"HORROR_WASTES_ON_NIGHTSIDE_1","for":"DECIDE","ts":"2026-08-23T06:41:35Z"}

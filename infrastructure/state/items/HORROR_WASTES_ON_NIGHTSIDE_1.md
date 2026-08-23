@@ -76,9 +76,61 @@ Owed alongside the tiles: a cold terrain set, and a cast of cold-viable hostiles
 `AB_RockyCrags` failure repeated, so the cast has to land with the tiles, not after.
 
 ## ✅ TILES PLACED 2026-08-22 — and the terrain defect is now MEASURED
-`ashkarr_nightside_pass.py --apply` moved **1,200** of `AB_RockyCrags`' coldest tiles
+~~`ashkarr_nightside_pass.py --apply` moved **1,200** of `AB_RockyCrags`' coldest tiles
 (arc ≥ 140) to `HorrorWastes`. `AB_RockyCrags` 4,703 → 3,423 and its thermal span narrows,
-which was the second reason for doing it.
+which was the second reason for doing it.~~
+
+> 🔴 **STRUCK 2026-08-23 — re-measured off `world/ASHKARR_WORLDMAP_tiles.csv`, all three
+> numbers are wrong as the world now stands.** The pass was redone as scattered pockets and
+> the record was never updated.
+>
+> | this item said | measured 2026-08-23 |
+> |---|---|
+> | 1,200 tiles moved | **468** — `Deadstone` 346, `Umbra` 65, `Ammonia Flats` 57 |
+> | `AB_RockyCrags` = 3,423 | **4,155** |
+> | its thermal span narrows | **unchanged: −82 … +19.8 °C** |
+>
+> 🔑 **HorrorWastes did not take the cold end.** Of the coldest 500 tiles on the planet,
+> **383 are still `AB_RockyCrags`** and 63 are `HorrorWastes`; **177 `AB_RockyCrags` tiles
+> are colder than the coldest `HorrorWastes` tile** (−74.9 °C). The pockets were cut from
+> *within* the cold band, not off its end.
+>
+> ⇒ **The thermal-coherence goal is a DIFFERENT problem and has been split out** to
+> `ROCKY_CRAGS_SPANS_HUNDRED_DEGREES_1`. Do not weld it back onto this item.
+
+## 🔴 DECIDE's ruling, 2026-08-23 — the TILES are right; the SHELL is the defect
+
+**1. `HorrorWastes` stays at 468 nightside pockets.** Measured −74.9 … −33.9 °C, median
+−49.3, arc 125–171. That is *"the night-side where the ancient bioweapons have adapted to the
+extreme cold"* — his brief, satisfied. ⭐ And scattered pockets read better for ancient
+bioweapon sites than a contiguous band would. **This half is done. Do not resize it.**
+
+**2. The shell is still wrong, and it is worse than this item recorded.** Off the live dump,
+2026-08-23:
+
+| field | value | why it is wrong here |
+|---|---|---|
+| `terrainsByFertility` | `Sand` · `Soil` · `SoilRich` | 🔴 warm sand at −49 °C, between near-black `AB_RockyCrags` rock and pale `SeaIce` |
+| `wildPlants` | 🔴 **exactly one: `Plant_Agave`** | a desert succulent on the deep nightside |
+| `plantDensity` | 0.5 | high, for a roster of one |
+| `animalDensity` | 3.6 | very high — near-empty at high density repeats the `AB_RockyCrags` failure |
+
+⚠️ **CORRECTION to what DECIDE told the owner on 2026-08-22:** she said `HorrorWastes` has
+*no plant at all*. That came from `plant_cherrypick_candidates.csv`, which was built **before**
+these tiles existed and therefore carries no `HorrorWastes` rows. The biome itself has one
+plant, and it is agave. ⇒ **The plant pass never saw this biome**, and the candidate CSV must
+be rebuilt before `PLANT_CHERRYPICK_PASS_1` can claim to cover the planet.
+
+**3. ⛔ `BiomeDef.wildAnimals` CANNOT be read from the def dump — this item's "three animals"
+claim is UNMEASURED, not measured.** All **80** BiomeDefs report exactly **1024** entries,
+byte-identical and alphabetically sorted, `SeaIce` and `AB_RockyCrags` included. That is a
+truncation or merge artifact. `Bulwark` / `Terrorworm` / `Visceral` may well be right — but it
+did not come from this dump and nobody can re-derive it there.
+
+**Still owed, and none of it is tile work:**
+1. A **cold terrain set** for `HorrorWastes`.
+2. A **flora roster**, or `plantDensity 0` and a stated reason. Agave must go either way.
+3. A **cast** of cold-viable hostiles, landing with the density, not after.
 
 🔴 **Its ground colour proves the terrain is wrong for where it now sits.** Sampled from the
 real terrain textures (`biome_fit.py`, 25 biomes):
