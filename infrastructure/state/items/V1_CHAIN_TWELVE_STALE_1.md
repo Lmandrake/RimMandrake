@@ -1,3 +1,45 @@
+## ✅ ALL TWELVE APPLIED 2026-08-23 — and two of the corrections were themselves wrong
+
+Every row re-measured before editing, as this item's own warning demanded. **Ten of the
+twelve held. Two did not:**
+
+| the item said | measured 2026-08-23 |
+|---|---|
+| `ideoName` carried by **12** files | 🔴 **13** — it missed `JawaLeaderTitles.xml` |
+| Cherry Picker holds **1,342** keys | 🔴 **1,339**, all distinct (1289 ThingDef · 26 BiomeDef · 8 IncidentDef · 7 PawnKindDef · 5 HediffDef · 2 RecipeDef) |
+
+⚠️ **A correction file needed correcting.** That is the argument for the rule this sweep
+put into `V1_CHAIN.md` itself: **stop writing counts into prose that nothing regenerates.**
+
+🔴 **The mod delta moved a third time.** The chain said 578 live / 575 freeze; this item said
+the delta was 11 added / 8 removed; tonight it measures **live 583, freeze 580, 12 added /
+9 removed.** Three readings, three answers, in three days. ⇒ Row 0 no longer carries a
+number — it names `ModsConfig.xml` and `deployed/config/v1_freeze/ModsConfig.xml` and says
+to read them.
+
+**Verified and applied:**
+- `B53` **done** (row 7) — lines 102, 121-123 and 216-218 struck.
+- `JawaFactionRoster.xml` ships **49** literal PawnKindDef defNames.
+- `B9`, `B25a`, `C24` — **all three never filed**, confirmed by `rimflow show`. Struck in
+  place at lines 322, 190 and 243 with where each actually lives. ⛔ Not closed: there is
+  nothing to close.
+- `refmatch.py` is **v2, deferred not cancelled** (`436bf693`, later than the banner).
+- `V1.md` carries **14** rows (0-13), not 8 — lines 45 and 51.
+- **5** reskins, not 6: `Pirate` · `TribeCivil` · `Empire` · `OutlanderCivil` · `Mechanoid`.
+  R7's sixth, the Unbound Hive / `Insect`, **has no patch file on disk**.
+- "624 installed-but-inactive mods" → **UNMEASURED**, and line 186 now says so rather than
+  carrying the number.
+
+⭐ **One correction goes FURTHER than the item asked.** Line 226 said *"not one faction has
+a defName"*, and the item corrected it to 8. It is **12**: the four culture-bearing reskins
+(`OutlanderCivil` · `TribeCivil` · `Pirate` · `Empire`) each carry a `fixedName`, an
+`allowedCultures` and their own `pawnGroupMakers`, and all four are placed in
+`world/ASHKARR_WORLDMAP_settlements.csv`. See `FOUR_CULTURES_NO_FACTION_1`, closed the same
+day for the same reason: **a census that reads `Defs/FactionDefs/` and not `Patches/` will
+keep reporting 8.**
+
+---
+
 ## spec
 REP swept `infrastructure/state/V1_CHAIN.md` on 2026-08-22 with a subagent: **57 assertions
 verified true, 12 wrong.** The file argues the v1 dependency chain, so a wrong link in it

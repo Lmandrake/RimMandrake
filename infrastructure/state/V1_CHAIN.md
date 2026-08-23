@@ -8,7 +8,7 @@
 > ⛔ **This REPLACES the 2026-08-21 freeze banner**, which said the opposite and is struck. The
 > freeze lasted one evening and did its job — it stopped a redraft nobody wanted.
 > ⚠️ **What did NOT come back:** re-running `ashkarr_paint.py` to regenerate the bundle, the
-> reference-match harness (`refmatch.py` stays cancelled), and worldgen, which is out of every
+> reference-match harness (~~`refmatch.py` stays cancelled~~ **`refmatch.py` is v2 — DEFERRED, not cancelled**, owner 2026-08-22, `436bf693`, later than this banner ⟵ 🔴 CORRECTED 2026-08-23, DECIDE), and worldgen, which is out of every
 > version and always was. **The map is edited DIRECTLY, one map, in place** — that is the whole
 > method, per `the_one_map.md`.
 > 🔮 `design/V2_DREAMS.md > PLANET_METHOD_RETHINK_1` stands as history, not as a plan.
@@ -42,13 +42,13 @@
 > on.** That is why the faction roster and the faith text stay v1.
 
 
-DECIDE owns this file. It is the content half of v1. `V1.md` is the eight-row
+DECIDE owns this file. It is the content half of v1. `V1.md` is the ~~eight~~ **fourteen**-row (0-13) ⟵ 🔴 CORRECTED 2026-08-23, DECIDE — 
 scoreboard; **this is the dependency graph underneath it**, and where the two
 disagree about scope, this file is newer.
 
 ## Owner's rulings, 2026-08-14
 
-1. **v1 = the 8 rows + the FULL faction roster + one playable session.**
+1. **v1 = the ~~8~~ **14** rows ⟵ 🔴 CORRECTED 2026-08-23, DECIDE  + the FULL faction roster + one playable session.**
 2. **Row 4 is closed.** Scrapfields ships at whatever density it produces; the
    count is `[v2]`.
 3. **Row 3 is reopened.** Registration is not resolution — the quest must reach
@@ -92,16 +92,16 @@ for this order; it is not a preference.
 
 | # | domain | needs | state |
 |---|---|---|---|
-| 0 | **Mod freeze** | — | ⛔ **UNFROZEN 2026-08-19 — owner: *"Unfreeze mod count, let's not treat this as a criteria to monitor for v1."*** The set moves and that is fine. Live reads **578** today against the 575 freeze copy (8 added, 5 removed). ⇒ **Do not reconcile it, do not police it, do not file drift as a defect.** The list that matters is whatever is active the moment the owner generates his world — captured THEN, from `ModsConfig.xml`, as shipping documentation |
-| 1 | **Item cherrypick** | 0 | ✅ **FROZEN AND CLOSED for v1 — owner, 2026-08-15.** Armour, weapons, items, beasts and others done; 1,308 keys live. Remaining categories return later **if needed** |
+| 0 | **Mod freeze** | — | ⛔ **UNFROZEN 2026-08-19 — owner: *"Unfreeze mod count, let's not treat this as a criteria to monitor for v1."*** The set moves and that is fine. Live reads **578** today against the 575 freeze copy (8 added, 5 removed). ⇒ **Do not reconcile it, do not police it, do not file drift as a defect.** The list that matters is whatever is active the moment the owner generates his world — captured THEN, from `ModsConfig.xml`, as shipping documentation |  ⟵ 🔴 **CORRECTED 2026-08-23: do not write a mod count in this file.** Measured tonight: live **583**, freeze **580**, delta **12 added / 9 removed** — and it had already moved twice since this row was written (578/575, then 11/8). ⇒ **Read it, never quote it:** live is `ModsConfig.xml`, freeze is `deployed/config/v1_freeze/ModsConfig.xml`.
+| 1 | **Item cherrypick** | 0 | ✅ **FROZEN AND CLOSED for v1 — owner, 2026-08-15.** Armour, weapons, items, beasts and others done; **1,339** keys (~~1,308~~ ⟵ 🔴 CORRECTED 2026-08-23, DECIDE; all distinct — 1289 ThingDef, 26 BiomeDef, 8 IncidentDef, 7 PawnKindDef, 5 HediffDef, 2 RecipeDef) live. Remaining categories return later **if needed** |
 | 2 | **Normalize weapons · armour · beasts** | 1 | open — balance pass over what survives |
 | 3 | **Equipment types → pawns** | 2 | open — the tags a `PawnKindDef` actually consumes |
 | 4 | **Xenotypes** | — | enforced in shipped XML (`ea5cfb4`), **not yet proven live** — this process read the broken copies at launch |
 | 5 | **Droids** | 0, 4 | taxonomy ruled; pawn track unbuilt; NRE route open |
 | 6 | **Religions** | — | ✅ text written and DEPLOYED for all 11. §12 is the owner's |
-| 7 | **Pawntypes** | 3, 4, 5 | 48 proposed, 0 literal defNames. 19 ship, none matching |
+| 7 | **Pawntypes** | 3, 4, 5 | ~~48 proposed, 0 literal defNames. 19 ship, none matching~~ ✅ **DONE — `B53` closed. `JawaFactionRoster.xml` ships 49 literal PawnKindDef defNames** ⟵ 🔴 CORRECTED 2026-08-23, DECIDE |
 | 8 | **Biomes** | 2 | ✅ ratified (W3) |
-| 9 | **Factions** | 6, 7 | ✅ 5 reskins + 8 authored, all BUILT AND DEPLOYED |
+| 9 | **Factions** | 6, 7 | ✅ 5 reskins + 8 authored = **12 factions on the planet**, all BUILT AND DEPLOYED. The 5 reskins are `Pirate`, `TribeCivil`, `Empire`, `OutlanderCivil`, `Mechanoid` ⟵ 🔴 CORRECTED 2026-08-23, DECIDE |
 | 10 | **Worldmap** | 9 | 🔴 **MANUAL, AND IT IS TWO ACTS.** (i) the owner generates any seed with the planet type set, then (ii) 🔑 **the companion stamps the 21,872 authored tiles into the LIVE world over the bridge before any map exists**, then he places the ship and saves. ⚠️ **A saved vanilla world is NOT step 10 done** — without act (ii) it is not our planet. `ASHKARR_WORLD_DEFINITION.md` §12. Blocked on step 9 shipping first |
 | 11 | **Gravship** | 2 | ✅ built and exported |
 | 12 | **Scenario** | 2, 7, 11 | specced — `SCENARIO_SPEC.md`. ⚠️ **NO LONGER PURELY DOWNSTREAM: R-S2 reversed 2026-08-19** — the `ScenarioDef` must EXIST BEFORE he starts his campaign, because the engine embeds its parts at game creation and nothing may edit the save afterwards. Its part list is owed ahead of step 10, not after it |
@@ -183,11 +183,11 @@ had gone missing from the live Cherry Picker config and are restored (24 keys).
 Better Stacktraces · Cherry Picker · Character Editor + retexture · Slower Pawn
 Tick Rate · Dubs Performance Analyzer · Performance Optimizer · RimDefDump.
 
-**The 624 installed-but-inactive mods are OUT OF SCOPE** — owner's ruling,
+**The installed-but-inactive mods ~~(624)~~ — 🔴 **UNMEASURED, and do not round it to a number**: the workshop tree holds 1,254 content dirs against 583 active, and `ls`-counting dirs is not a mod census ⟵ 🔴 CORRECTED 2026-08-23, DECIDE — are OUT OF SCOPE** — owner's ruling,
 2026-08-14. Do not sweep them and do not file an item to. They remain available
 as a RESEARCH reference — "does a mod already do X" is a fair question to answer
 against them — but nothing in them is v1 work.
-**Load ORDER is not pinned** (B25a); that one is still open.
+**Load ORDER is not pinned** ~~(B25a)~~ — 🔴 **`B25a` WAS NEVER FILED and appears in no queue** ⟵ 🔴 CORRECTED 2026-08-23, DECIDE. The concern may still be real; it has no item, so do not cite an ID for it.
 
 **Two claimed contradictions, both settled:**
 - `lee.theforce.lightsaber` "active but not installed" is **false** — it is
@@ -207,13 +207,13 @@ to invent tag values on purpose. What is owed: the actual tag strings carried by
 the surviving weapon and apparel defs, read out of the live dump.
 
 ### 6 · Religions
-✅ **All eleven carry `ideoName`, `ideoDescription`, `forcedMemes` and
+✅ **All ~~eleven~~ THIRTEEN files carry `ideoName` ⟵ 🔴 CORRECTED 2026-08-23, DECIDE — 8 authored FactionDefs + 4 reskin patches + `JawaLeaderTitles.xml`; `ForgottenArsenal.xml` carries none. Eleven was never a count of anything.** They carry `ideoName`, `ideoDescription`, `forcedMemes` and
 `requiredPreceptsOnly` as literal XML, and are deployed.** Section 12 (Jawa) is
 deliberately empty and stays that way: the player faith ships as
 `src/Jawa/ideoligion/The Salvation.rid`.
 
 ### 7 · Pawntypes
-48 kinds proposed (12 factions × Grunt/Heavy/Specialist/Leader), zero literal
+~~48 kinds proposed (12 factions × Grunt/Heavy/Specialist/Leader), zero literal~~ 🔴 **STALE — 49 literal defNames ship and `B53` is closed.** Formerly: zero literal
 defNames, `combatPower` unset on all of them. 19 PawnKindDefs ship and none
 match the roster.
 🔴 **`Jawa_Colonist` has no `weaponTags` and no `apparelRequired`.** The Jawa
@@ -223,7 +223,7 @@ robe-and-hood lock exists in the repo but was applied to a **donor** kind
 ### 9 · Factions
 `Jawa_IndigenousTribes` is the model of done — `pawnGroupMakers`, `xenotypeSet`,
 `forcedMemes`, `fixedIdeo`, and its three referenced kinds exist. Author the
-8 authored factions against it; the 6 reskins are patches (R14).
+8 authored factions against it; the ~~6~~ **5** reskins are patches (R14) ⟵ 🔴 CORRECTED 2026-08-23, DECIDE — `Pirate`, `TribeCivil`, `Empire`, `OutlanderCivil`, `Mechanoid`. **There is no sixth**: R7's Unbound Hive / `Insect` has no patch file on disk. ⭐ And all four culture-bearing reskins ship a defName and a `fixedName`, so *"not one faction has a defName"* is false — **twelve** factions field pawns on this planet.
 
 **One gap survives the rulings below: not one faction has a defName.** Everything
 else that was open — the 12/14 count, the vessel column, goodwill, the leader
@@ -240,7 +240,7 @@ There is **no goodwill field on `FactionDef`.** The entire relation vocabulary i
 `permanentEnemyToEveryoneExcept` · `permanentEnemyToEveryoneExceptPlayer` ·
 `hostileToFactionlessHumanlikes`. ⇒ `faction_roster_v2.md:42` is wrong and every
 number it authorised is unbuildable. v1 expresses hostility through those six and
-nothing else. Graded goodwill is `[v2]` and gated on Faction Customizer
+nothing else. Graded goodwill is `[v2]` and gated on Faction Customizer ⟵ 🔴 **`C24` WAS NEVER FILED** ⟵ 🔴 CORRECTED 2026-08-23, DECIDE; it is `design/V2_DREAMS.md:283`, and `:778` reuses the same ID for something unrelated. Do not treat it as a gate.
 persistence (CHECK C24).
 
 **R2 · The Homestead's "never raids" is `raidsForbidden`, not a precept.**
@@ -319,7 +319,7 @@ Vanilla `Pirate` ships `permanentEnemy: true` and Blackstar Company reskins it.
 Patching that false would gut the vanilla raid economy for no gain. ⇒ Blackstar
 keeps it, the Galactic Empire is the authored permanent enemy, and the two are
 not in conflict. **The Junkers still lose theirs** (they are authored) — BUILD B9
-stands.
+stands. ⟵ 🔴 **CORRECTED 2026-08-23: `B9` WAS NEVER FILED.** It lives at `design/V2_DREAMS.md:92`, parked to v2, so nothing here is gated on a BUILD item that exists.
 
 **R13 · The six stage-2 defects, disposed.**
 - **D1** Homestead raid frequency → `raidsForbidden: true` per R2. "Very low" is struck.
