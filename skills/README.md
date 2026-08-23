@@ -10,13 +10,17 @@ back into it.** A skill with no symlink loads for nobody, triggers on nothing, a
 symptom — the work it encodes simply never happens.
 
 ```
-ln -s ../../skills/<name> .claude/skills/<name>
+ln -s ../../skills/<name> .claude/skills/<name>            # a skill in THIS repo
+ln -s /mnt/d/Luke/dev/<name> .claude/skills/<name>         # one that lives OUTSIDE it
 ```
+
+⚠️ **A skill outside this repo must be linked by ABSOLUTE path.** The relative form
+resolves inside the checkout and dangles the moment the skill is not there.
 
 ✅ **Enforced since 2026-08-22**: `.claude/hooks/warn_skill_unwired.py` warns (never
 blocks) when a `SKILL.md` is written or committed with no working symlink, and hands over
 that exact command. ⚠️ A **dangling** symlink is as invisible as none, and the hook treats
-it the same. Verified 2026-08-22: 26 skills, 26 working symlinks.
+it the same. Verified 2026-08-23: **25 skills in this repo + 1 linked in from outside it** (`review-sheets`, below) = 26 symlinks under `.claude/skills/`, all working.
 
 ## Who owns a skill
 
@@ -41,7 +45,7 @@ it, and the `.skill` zips are gitignored.
 | **CHECK** — the live game | `rimbridge` · `rimworld-world-editing` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` · `rimworld-start-prep` (the mod list before a launch is the same domain as the launch) |
 | **BUILD** — how it is made | `rimworld-modding` · `rimworld-deploy` · `rimbridge-companion` (a companion DLL is implementation, 2026-08-22) · `rimworld-quests` · `rimworld-xenotypes` · `rimworld-scenario-building` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` · `reading-rimworld-graphics` (art is BUILD's; a reader of it is not a separate domain) · `rimworld-ideoligion` (**authoring** half) |
 | **DECIDE** — the world | `rimworld-content-moderation` (a keep/cut call is what v1 contains) · `rimworld-ideoligion` (**the judging rubric** — judging a religion is world vision; authoring it is BUILD's) |
-| **REP** — shared, and what reaches the human | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `agent-fanout-research` · `calibrating-binary-formats` · `frozen-artifacts` · `review-sheets` (a sheet exists so a human can decide) · `deciding-and-superseding` (⚠️ moved from DECIDE 2026-08-22 — it is about **propagating** a ruling into items and queues, which is the board; DECIDE makes rulings, it does not own the machinery for spreading them), and this README |
+| **REP** — shared, and what reaches the human | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `agent-fanout-research` · `calibrating-binary-formats` · `frozen-artifacts` · `deciding-and-superseding` (⚠️ moved from DECIDE 2026-08-22 — it is about **propagating** a ruling into items and queues, which is the board; DECIDE makes rulings, it does not own the machinery for spreading them), and this README |
 
 _Assignments came from the seats that use them, not from a guess at the table.
 DECIDE claimed `rimworld-content-moderation` and disclaimed the other on
@@ -52,6 +56,31 @@ so and the table changes._
 skill. A seat that finds a defect in another seat's skill files a queue item
 rather than editing it — except where the fix is a fact it just measured, which
 it should write directly and say so.
+
+## ⭐ Two skills live OUTSIDE this repo, and are installed machine-wide
+
+**They are generic. This project merely uses them** — so they are their own git
+repos, symlinked into `~/.claude/skills/`, and **every project on this machine
+gets them.** ⚠️ The generated roster below reads `skills/` and therefore **cannot
+see either one**; a skill missing from that table is not necessarily missing.
+
+| skill | lives at | remote | wired by |
+|---|---|---|---|
+| `measuring-large-artifacts` | `D:\Luke\dev\measuring-large-artifacts` | `Lmandrake/measuring-large-artifacts` | `~/.claude/skills/` only |
+| `review-sheets` | `D:\Luke\dev\review-sheets` | `Lmandrake/review-sheet` (⚠️ singular; the **skill** is `review-sheets`, plural, everywhere) | `~/.claude/skills/` **and** `.claude/skills/` |
+
+🔑 **No seat in this repo owns them.** The ownership table above is about who
+repairs a skill *in this checkout*; these are repaired in their own repos, and a
+fix is committed and pushed THERE. Filing a queue item against one is pointless —
+nothing in `infrastructure/state/queue/` reaches a different repository.
+
+⚠️ **`package_skill.py` cannot package them either**, for the same reason it
+cannot see them: it walks `skills/`. Their distribution is `git clone` plus the
+`ln -s` in each one's own README.
+
+🔴 **`review-sheets` moved out on 2026-08-23.** Anything still naming
+`skills/review-sheets` as a path is stale — the skill is unchanged and still
+loads under the same name; only its location moved.
 
 <!-- doc_roster:BEGIN — generated, do not hand-edit -->
 | skill | when it loads |
@@ -67,7 +96,6 @@ it should write directly and say so.
 | `generating-rimworld-sprites` | Produces RimWorld-ready sprite art that matches an existing reference asset — correct canvas, real alpha, silhouette inside the… |
 | `gravship-layout` | Author, save and load RimWorld gravship layouts (ShipLayoutDefV2) as XML — write a ship directly with no map, no build and no… |
 | `reading-rimworld-graphics` | Finding and reading RimWorld texture assets from disk — loose PNGs, Unity AssetBundles, and the base game's resources.assets — so… |
-| `review-sheets` | Build an interactive HTML sheet so a human can review, curate and record decisions over hundreds of items. ⭐ **INSTALLED MACHINE-WIDE 2026-08-23** (`~/.claude/skills/review-sheets`) — it is generic, and every project gets it. Carries `assets/sheet_chrome.html`: the folding brief, the copy-path button and the sticky group label, which are the three things that decide whether a generated page is usable at all |
 | `rimbridge` | Drive a live RimWorld from outside via the RimBridgeServer GABP bridge and its JawaBench companion - author the planet, author… |
 | `rimbridge-companion` | Write, build, deploy and prove new [Tool] methods in the JawaBench companion DLL so the RimBridge bridge can do something it… |
 | `rimworld-content-moderation` | Deciding what content stays in a RimWorld campaign out of a large mod stack — building contact sheets of real sprites straight… |
