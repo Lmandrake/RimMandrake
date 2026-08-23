@@ -2216,3 +2216,99 @@ reads `race/nameGenerator` is the rare BOND relation, which needed no code at al
 | **P5** | A bonded animal keeps its bond name; a player-renamed animal is never overwritten. | The postfix only replaces a name that is `null` or `Numerical`. |
 | **P6** | 🔑 **Offline, after the re-dump:** ThingDef rows with `race.nameGenerator == "Jawa_NamerPetSW"` should be **160**, and `SWAnimalNamerMale`'s count should have dropped by exactly that. | ⚠️ **A patch that matched nothing shows up HERE and nowhere else** — it logs nothing. Query `defs.sqlite`; never `grep`. |
 | **P7** | No `Could not get new name` in the log. | 132 names is a FLOOR, not a target: `NameGenerator` rejects names already `UsedThisGame` and retries 150 times before giving up. A big menagerie can exhaust it — appending is one `<li>`. |
+
+---
+
+# §10–§17 RESULTS — the 2026-08-23 15:38 load. Filled by CHECK 2026-08-23 16:0x, log LIVE.
+
+**Event:** cold load, 581 mods, engine **1.6.4871 rev591**, finished **15:52:57**. Bridge up on
+5174, **246 tools / 121 `jawa/`**, main menu, no world, no map. Def dump re-captured:
+`DefDump/captures/2026-08-23T22-49-51Z`, mode `all`, 79,093 defs / 534 types.
+
+⚠️ **This block answers only the readings a LOG or the fresh DUMP can answer.** Everything
+needing a map or the world-creation page is listed UNRUN at the bottom — it is not failed.
+
+## Passed
+
+| reading | evidence |
+|---|---|
+| **H1** | `[PlanetPresetPrime] loaded: will prime coverage 1, subdivisions 7. MLP type found.` (L4835). H2's `MLP type ABSENT` did not occur. |
+| **H3** | zero lines matching `PlanetPresetPrime` + Harmony/patching/ReflectionTypeLoadException. |
+| **J1 J2 P1** | L4836–4838, all three armed lines verbatim. |
+| **J3** | zero `TARGET METHOD NOT FOUND`, zero `patch FAILED`. |
+| **K1** | `[JawaBench] ready: 121 tools, build c1f3121ddf9e` — the expected build. The deploy took. |
+| **K2 K4 K5** | `context: modSet 581/fc658bb0, toolSet 4e5294ac, defDump ARMED, engine 1.6.4871 rev591`. Neither digest read `unmeasured`. |
+| **K3** | `ARMED`, and it fired — `[RimDefDump] starting, mode=all` L4816, `done in 14677 ms` L4833. |
+| **G1** | zero `Could not resolve cross-reference` naming `AB_PackedIce`, `AB_SnowOverRocks`, `AB_DarkMud`, `AB_FertileMud`. |
+| **G2 T4 N4** | zero errors naming `JawaTerrain_HorrorWastes`, `HumanTemperatureBand_Ashkarr`, `XenotypeTolerances_Ashkarr`, `AncientArsenal_Ashkarr`, `PetNames_Ashkarr`. |
+| **G4** | `neolithic_floor_roster.py` against the NEW capture: **39 surviving, 3 cut** — exact. `Bow_Recurve` carries `Neolithic, NeolithicRangedDecent, VEE_HunterNeolithicWeapon`; `NeolithicRangedDecent` has 8 carriers. Unreachable-floor weapons fell 6 → 1 (`GU_RedWood`). |
+| **G5** | all three cuts present in Cherry Picker's removal list; all seven keeps absent from it. ⚠️ `VFEP_WarcasketGun_*` is **11 defs, not 3** — none cut. |
+| **G6** | `Plant_TreePine`, `Plant_TreeBirch`, `Plant_TreePoplar` all in the removal list; `RG_Plant_Raspberry` not in it and present. |
+| **G7** | ✅ **decisive** — `[Cherry Picker] The database was processed in 00.66907 seconds` (L1641) then **1212 removal lines** (L1642–2853) against a 1342-entry config. The list did not die at entry 1. |
+| **P7** | zero `Could not get new name`. |
+
+## 🔴 P6 — the mechanism passes; the number 160 is wrong everywhere it is written
+
+| measured | |
+|---|---|
+| ThingDefs on `race.nameGenerator == Jawa_NamerPetSW` | **320** (320 distinct defNames) |
+| ThingDefs on `race.nameGeneratorFemale == Jawa_NamerPetSW` | **320** |
+| ThingDefs still on `SWAnimalNamerMale` / `SWAnimalNamerFemale` | **0** / **0** |
+| source mod | all 320 from Star Wars Animal Collection (Continued), all `isAnimal: true` |
+
+The repoint is **complete and clean**. The expected value was wrong: `PetNames_Ashkarr.xml`'s
+own header says *"the ~320 ThingDefs"*, while commit `39e6bf27`'s subject and body, and P6
+above, all say **160**. ⇒ **320 is the measured truth; correct the 160 wherever it is quoted.**
+
+## 🔴 FINDING — `JawaBenchInit`'s module initializer is LAZY, and that defeats the item
+
+`[JawaBench] ready:` / `context:` were **absent from the entire 10,358-line log** at load end.
+They appeared only after CHECK invoked a `jawa/` tool, as L10359–10360.
+
+`JawaBenchInit.cs`'s header states the opposite as its whole design basis: *"a static ctor on
+the tools class fires on the first tool INVOCATION, which is far too late… A module
+initializer runs when the ASSEMBLY IS LOADED."* Measured, it behaves exactly like the static
+ctor it rejected. RimBridge registers tools by reading `[Tool]` attributes off **metadata**,
+which never executes module code, so nothing triggers the initializer until a call arrives.
+
+⇒ `JAWABENCH_HAS_NO_INIT_LINE_1`'s stated payoff — *prove the companion loaded without
+bringing the bridge up* — **is not delivered.** The 2026-08-23 00:15 log showed the line only
+because a call happened to land immediately after load (same relative position: L9798
+transpiling → L9799 ready).
+
+⚠️ **K1's failure taxonomy has a third case it did not anticipate.** It reads *"if the log
+still says `d49eaf42545b`, the deploy did not take"* — but the log said **nothing at all**,
+which under the current mechanism is the NORMAL state of a load nobody has called into.
+
+## 🔴 FINDING — a def dump does NOT show a Cherry Picker cut. Use the log.
+
+The dump is captured at L4816, **well after** Cherry Picker runs at L1641 — and cut defs are
+still in it: of the 1342 typed CP entries, **1210 are still present** in the 22:49:51Z
+capture, `Bow_Great_Unique`, `Plant_TreePine` and `Plant_TreeBirch` among them.
+
+⇒ **Presence in the dump is not evidence a cut failed, and absence is not evidence it
+worked.** The authoritative instrument is Cherry Picker's own removal block in `Player.log`
+(L1641–2853 this load). G5 and G6 as written ask the dump a question it cannot answer; they
+are answered above from the log instead.
+
+## Our one defect in the XML errors
+
+`mandrake.jawafactionslate`'s `About.xml` carries `<loadBottom>true</loadBottom>`, which is
+not a field on `ModMetaDataInternal` — logged twice (L25, L611). Harmless to the load, ours,
+and noise in every log from here on.
+
+## Error census — nothing of ours
+
+25 `Could not resolve cross-reference`, **all third-party**: 16× vanilla
+`Pawn_Melee_Punch_HitBuilding`, 8× Biomes! Caverns `BMT_*`, 1× `VWE_Tool_Whip`.
+0 `Could not load reference to`. 0 `ReflectionTypeLoadException`. 5 XML errors, one ours
+(above). XML Extensions: 24,165 patch operations, **5 failed** — unattributed, none naming
+one of ours.
+
+## ⬜ UNRUN — needs a map or the world-creation page. NOT failed.
+
+**G3** · **T1 T2 T3 T5** · **N1 N2 N3 N5** · **J4 J5 J6 J7 J8** · **P2 P3 P4 P5** ·
+**K6 K7** · **H4 H5 H6**
+
+🔑 **P2 is the one that matters most of these** — `[JawaRules] pet-names: armed` is printed,
+but *armed* is not *reached*; only taming an animal and reading its name settles it.
