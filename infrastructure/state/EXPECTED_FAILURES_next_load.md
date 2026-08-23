@@ -2312,3 +2312,148 @@ one of ours.
 
 🔑 **P2 is the one that matters most of these** — `[JawaRules] pet-names: armed` is printed,
 but *armed* is not *reached*; only taming an animal and reading its name settles it.
+
+---
+
+## §10–§17 RESULTS — the 2026-08-23 15:35 load. Filled by BUILD 2026-08-23 16:0x.
+
+**The load is COMPLETE**: 10,358 lines, `RimWorld 1.6.4871 rev591`, `[MeleeAnim] Scanning 581
+mods`, ends `Finished transpiling 1459 methods - 8/23/2026 3:52:57 PM`, main menu reached,
+`GABP server running standalone on port 5174`. All five assemblies in the batch are accounted
+for below.
+
+⚠️ **This fills the OFFLINE half only.** Every row marked ⬜ needs a running map, a spawned pawn
+or a tamed animal, and that is CHECK's lane, not BUILD's. ⛔ Do not read a ⬜ as a pass.
+
+### The log, whole-file counts
+
+| | this load | prior baseline | note |
+|---|---|---|---|
+| `Could not resolve cross-reference` | **25** | 27 | −2. 16× `SoundDef Pawn_Melee_Punch_HitBuilding`, 8× `BMT_*`, 1× `VWE_Tool_Whip`. **None of ours.** |
+| `XML error` | **5** | — | 2× our own `<loadBottom>` in Jawa Faction Slate's `About.xml` (cosmetic), 3× third-party `<wildness>`/`<drawStyleCategory>` |
+| `^Exception` ∪ `NullReferenceException` | **11** | — | all third-party: XmlElement ctor, ElectricTorches ×2, `SW_Genes.xml` unknown type ×4, three `ConfigErrors()` NREs (`CannibalPirate`, `PirateYttakin`, `TG_Husbandry`) |
+
+### Results
+
+| # | verdict | evidence |
+|---|---|---|
+| **G1** | ✅ **PASS** | Zero occurrences of `AB_PackedIce`, `AB_SnowOverRocks`, `AB_DarkMud`, `AB_FertileMud` anywhere in the log — not merely absent from the cross-reference lines. |
+| **G2** | ✅ **PASS, better than written** | 25, not 27. The two Conditionals fired without adding a failure. |
+| **G3** | ⬜ **LOOK** — needs a `HorrorWastes` quicktest map | |
+| **G4** | ✅ **PASS** | `MEASURED 42 neolithic weapon defs … 39 survive the live cut list, 3 are CUT`. `Bow_Recurve` carries `Neolithic \| NeolithicRangedDecent \| VEE_HunterNeolithicWeapon`, uncut. ⚠️ `neolithic_floor_roster.py` takes its cut list from the Cherry Picker **config**, which is INTENT — see the note under G8. |
+| **G5** | ✅ **PASS** | `Bow_Great_Unique`, `MA_VerdantBow`, `VWE_Throwing_Rocks` all appear in the removal block. `Bow_Short`, `Flamebow`, `Gun_Needle`, `Gun_Scattergun` do not. ⚠️ **`VFEP_WarcasketGun_*` is ELEVEN defs, not the three this signature says** — none of the eleven was removed. |
+| **G6** | ✅ **PASS** | `Plant_TreePine`, `Plant_TreeBirch`, `Plant_TreePoplar` all removed; `RG_Plant_Raspberry` not removed (it now labels as *muja bramble* — the rename the owner ruled on, not a cut). |
+| **G7** | ✅ **PASS — the list did not die** | **MEASURED 1212 removals** against **1342 typed config entries**, and **zero removed that the config did not ask for**. Spot-check `IncidentDef/ShamblerAssault`, the first and oldest entry, removed. See the 130 below. |
+| **H1** | ✅ **PASS** | `[PlanetPresetPrime] loaded: will prime coverage 1, subdivisions 7. MLP type found.` — the reflective `WorldGenRules` lookup succeeded, so H2 does not apply. |
+| **H3** | ✅ **PASS** | Zero `ReflectionTypeLoadException` in the log; the single `PlanetPresetPrime` line carries no Harmony text. |
+| **H4** | ⬜ **NOT APPLICABLE, exactly as the signature predicted.** | `ready:` never fired because the world-creation page never opened this session. ⛔ This is not a fault and must not be filed as one. |
+| **H5 H6** | ⬜ live, at `Page_SelectStartingSite` | |
+| **T4 N4** | ✅ **PASS** | Zero errors naming `HumanTemperatureBand_Ashkarr` or `XenotypeTolerances_Ashkarr`. Both patches are deliberately unwrapped, so silence here means the xpaths still match. |
+| **T1 T2 T3 T5 · N1 N2 N3 N5** | ⬜ live — read `ComfortableTemperatureRange` off a spawned INSTANCE | ⛔ Reading the def is not these readings. |
+| **J1** | ✅ **PASS** | `[JawaRules] no-sow: armed for xenotype MandrakeJawa` |
+| **J2** | ✅ **PASS** | `[JawaRules] droid-relations: armed for humanlike pawns with no relations tracker` |
+| **J3** | ✅ **PASS (absent)** | Zero `TARGET METHOD NOT FOUND`, zero `patch FAILED`. Both hand-resolved targets bound. |
+| **J4–J8** | ⬜ live | The only `Pawn_RelationsTracker` hit in the log is a RIMMSqol patch *registration*, not an NRE. |
+| **K1** | ✅ **PASS — the deploy took** | `[JawaBench] ready: 121 tools, build c1f3121ddf9e`. The old `d49eaf42545b` appears nowhere. |
+| **K2** | ✅ **PASS** | `[JawaBench] context: modSet 581/fc658bb0, toolSet 4e5294ac, defDump ARMED, engine 1.6.4871 rev591` |
+| **K3** | ✅ **PASS, and the capture landed** | `defDump ARMED`, and `captures/2026-08-23T22-49-51Z/` exists: **MEASURED 581 mods, 79,093 defNames, 534 def types, `coverage` complete, declared == on-disk for every type.** |
+| **K4** | ✅ **PASS** | Log `rev591` == the capture's own `gameVersion 1.6.4871 rev591`. |
+| **K5** | ✅ **PASS** | Neither digest read `unmeasured`; both probes returned. |
+| **K6 K7** | ⬜ live — needs a Blackstar raid | |
+| **P1** | ✅ **PASS** | `[JawaRules] pet-names: armed; tamed and newborn animals will draw from their race namer` |
+| **P2** | ⬜ **THE ONE THAT MATTERS** — tame an animal and read its name | "armed" is not "working"; if it reads `"<Race> 1"` the target was inlined. |
+| **P3 P4 P5** | ⬜ live | |
+| **P6** | ✅ **PASS — and the signature's number was wrong** | See the correction below. |
+| **P7** | ✅ **PASS (absent)** | Zero `Could not get new name`. |
+
+### 🔴 P6's expected number was 160. The measured answer is 320, and 320 is CORRECT.
+
+    MEASURED 320  ThingDef rows with race.nameGenerator == 'Jawa_NamerPetSW'
+    MEASURED 320  same, nameGeneratorFemale
+    MEASURED   0  ThingDef rows still on SWAnimalNamerMale or SWAnimalNamerFemale
+    @ defs.sqlite  mods=581/d7b4f552aca233de  captured=2026-08-23T22:49:51Z
+
+All 320 come from **Star Wars Animal Collection (Continued)**, which holds exactly 320
+race-bearing ThingDefs — the repoint hit **every one and nothing else**, which is the patch's
+stated scope. `PetNames_Ashkarr.xml`'s own header says *"the ~320 ThingDefs that already carry
+SWAnimalNamerMale"*. ⇒ **The patch is right; "160 races" in this block, in the item and in
+commit `39e6bf27`'s subject is the error.** The orphaned `SWAnimalNamerMale` RulePackDef still
+exists and is now referenced by nothing.
+
+### ⚠️ A `[JawaBench]` line is LAZY. It is NOT a startup reading, and K1/K2 imply it is.
+
+Both `[JawaBench]` lines were **absent from the log for the entire load** and
+`tools.register-extensions` read `durationMs=0` against `1` on the previous load. That reads
+exactly like a dead companion, and it is not one: the live bridge answers **246 tools, 121 of
+them `jawa/`**. The two lines appeared at 10359–10360 only *after* the first bridge call.
+
+🔑 **`JawaBenchInit.Announce` is a module initializer, and the CLR fires those on the first
+executed code in the module — not when the assembly is loaded.** RimBridge registers the tools
+by *reflecting* over types, which executes nothing, so the announcement waits for the first
+`jawa/*` traffic. The previous load looked like a startup line only because something connected
+immediately after startup.
+
+⛔ **So the line cannot prove "the companion loaded" before anyone connects** — which is the
+expensive route `JAWABENCH_HAS_NO_INIT_LINE_1` was written to replace. It still earns its keep
+as permanent provenance in the log, and connecting now costs one command from any seat:
+
+    python.exe src/RimMandrake/Utils/rimbridge_client.py --list-tools
+
+⇒ **Absence of `[JawaBench]` from a log is UNMEASURED, never "it did not load."** Ask the
+bridge for its tool list; that is the only reading that settles it.
+
+### G8 is CLOSED
+
+§12's G8 said the dump held 578 against a game loading 580, so every "this def does not exist"
+answer was unproven. The re-dump landed: **581 mods, matching `ModsConfig.xml`'s 581 exactly
+(`refresh.py --fingerprint`: listed active 581, resolved 581, MISSING 0).** Absence from the
+dump is now evidence again.
+
+⚠️ **And a stale dump had already lied here.** Run against the 2026-08-21 capture,
+`neolithic_floor_roster.py` reported **6** surviving floor weapons with no `weaponTags` —
+`GU_RedWood`, `MeleeWeapon_Ikwa`, `Bow_Great`, `Bow_Recurve`, `Bow_Short`, `Pila`. Against the
+fresh capture the same command reports **1**, `GU_RedWood`. Five of the six were an artifact of
+measuring a game that was not running.
+
+### ⚠️ The cut list in every offline tool is INTENT, not outcome
+
+`neolithic_floor_roster.py` and its siblings read
+`Config/Mod_3521312241_Mod_CherryPicker.xml`. That file is what Cherry Picker was **asked**
+to remove. What it **actually** removed is its own block in the log —
+`[Cherry Picker] The database was processed in … the following defs were removed:` followed
+by one ` - <DefType>/<defName>, ` line per removal.
+
+🔴 **And the dump answers neither question.** Measured this load: CP ran at `Player.log`
+L1641 and the capture was taken at L4816 — thousands of lines later — and cut defs are
+still in the capture. Of the 1342 typed config entries, **1210 are still present in
+`captures/2026-08-23T22-49-51Z`.** "Captured after the cut" is the intuition that fails
+here; the dumper does not read the collection CP removes from, so ordering is not the
+safeguard it looks like.
+
+⚠️ Reading the log block has a trap of its own: **the removal lines carry a trailing
+space**, so a `grep '/Name,\?$'` anchor silently matches nothing and reads as *not cut*.
+
+### G7 in detail — 130 config entries produced no removal, and 128 of them are dead keys
+
+    MEASURED 1342  typed <li> entries in the live Cherry Picker config
+    MEASURED 1212  removal lines in the log's removal block
+    MEASURED    0  removed WITHOUT being asked
+    MEASURED  130  asked but not removed
+       of those  128  name a def ABSENT from the 581-mod dump  -> dead keys, benign
+       of those    2  name a def PRESENT in the dump           -> asked, not cut
+
+The 128 are leftovers from mods no longer installed — 65 `AEXP_*`, 22 `Meat_*`, 15
+`Grimstone*`, 7 `Wall*`, 4 `RG_*` and a scatter of others. Cherry Picker skips a key it
+cannot resolve, silently and correctly; they cost nothing but they will never do anything
+either.
+
+⚠️ **The two that matter are `ThingDef/UnfinishedLEGO` and `ThingDef/Unfinished_VerdantBow`** —
+both exist in the running game and both were asked for and not removed. They are crafting
+intermediates, and `Unfinished_VerdantBow` is the partner of `MA_VerdantBow`, which *was*
+cut. Low stakes, but it is the one place the config and the outcome genuinely disagree, and
+it says Cherry Picker will not take an `UnfinishedThing`.
+
+🔑 **The config↔log comparison above is the cheap proof the whole list still applies.** One
+malformed key loses all 1342, and nothing in the game says so; 1212 removals says it did not
+happen this load. The config itself is clean — 1342 entries, every one prefixed, no
+duplicates, no malformed names.
