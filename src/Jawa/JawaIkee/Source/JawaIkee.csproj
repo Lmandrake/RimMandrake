@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    RimWorld 1.6 runs Unity/Mono against .NET Framework 4.7.2, so this targets net472.
+    No Visual Studio on this machine; reference assemblies come from NuGet.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\JawaIkee\Source\JawaIkee.csproj -c Release
+  -->
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>JawaIkee</AssemblyName>
+    <RootNamespace>JawaIkee</RootNamespace>
+    <Version>1.0.0</Version>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <DebugType>none</DebugType>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(GameDir)</AssemblySearchPaths>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518-beta" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.jawaikee</packageId>
+  <name>Jawa Ikee</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <description>The ikee watches. Jawa and the species that keep creepy pets find it comforting; everyone else does not.</description>
+  <modDependencies>
+    <li>
+      <packageId>sarg.alphaanimals</packageId>
+      <displayName>Alpha Animals</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>sarg.alphaanimals</li>
+    <li>mandrake.starwarsraces</li>
+  </loadAfter>
+</ModMetaData>

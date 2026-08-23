@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Thought_IkeeWatching.xml                        JawaIkee - new 2026-08-23
+  ============================================================================
+  Owner, 2026-08-23: "activate the V2 C# build item 'The Ikee's watching me' as a
+  positive mood buff for Jawa, Hutt, and other Star Wars aliens known to keep creepy
+  pets, but every other xenotype receives a creep factor."
+
+  🔑 THE TOLERANT LIST IS DATA, NOT CODE. It sits on this def as a DefModExtension
+  so it can be tuned without rebuilding the assembly. Add or remove <li> entries.
+
+  ⚠️ MayRequire on each entry: every one of these xenotypes comes from
+  mandrake.starwarsraces, so without the guard a mod-list change turns this def into
+  a red error at load rather than a shorter list.
+  ============================================================================
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>Jawa_IkeeWatching</defName>
+    <workerClass>JawaIkee.ThoughtWorker_IkeeNearby</workerClass>
+    <validWhileDespawned>false</validWhileDespawned>
+    <modExtensions>
+      <li Class="JawaIkee.IkeeToleranceExtension">
+        <radius>12</radius>
+        <tolerantXenotypes>
+          <!-- the clan itself -->
+          <li MayRequire="mandrake.starwarsraces">MandrakeJawa</li>
+          <!-- Hutt space: the cartel keeps worse things than this in its palaces -->
+          <li MayRequire="mandrake.starwarsraces">RimMandrakeHutt</li>
+          <li MayRequire="mandrake.starwarsraces">RimMandrakeGamorrean</li>
+          <li MayRequire="mandrake.starwarsraces">RimMandrakeNikto</li>
+          <li MayRequire="mandrake.starwarsraces">RimMandrakeKlatoonian</li>
+          <li MayRequire="mandrake.starwarsraces">RimMandrakeWeequay</li>
+          <!-- hunters and scavengers who keep live trophies -->
+          <li MayRequire="mandrake.starwarsraces">RimMandrakeTrandoshan</li>
+          <li MayRequire="mandrake.starwarsraces">RimMandrakeRodian</li>
+          <li MayRequire="mandrake.starwarsraces">RimMandrakeAqualish</li>
+          <!-- hive-minded: an extra eye is unremarkable -->
+          <li MayRequire="mandrake.starwarsraces">RimMandrakeGeonosianVariants</li>
+        </tolerantXenotypes>
+      </li>
+    </modExtensions>
+    <stages>
+      <!-- stage 0 - tolerant -->
+      <li>
+        <label>ikee underfoot</label>
+        <description>There is an ikee nearby, watching everything with that one enormous wet eye. It knows where the good scrap is. It is a comfort, in the way a thing that never blinks can be.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+      <!-- stage 1 - everyone else -->
+      <li>
+        <label>the ikee is watching me</label>
+        <description>There is an ikee nearby. It is mostly eye, it is damp, and it has been looking at me for some time. It has not looked at anything else.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
