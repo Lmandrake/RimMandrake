@@ -347,6 +347,75 @@ class Findings:
 # Static checks
 # --------------------------------------------------------------------------
 
+# --------------------------------------------------------------------------
+# The dictionary-keyed field trap
+# --------------------------------------------------------------------------
+#
+# A List<Foo> whose Foo declares LoadDataFromXmlCustom and reads the NODE NAME
+# as a def reference is DICTIONARY-KEYED: the entry's tag is the def and its
+# text is the value.
+#
+#     <wildAnimals><AA_Skyeel>1.0</AA_Skyeel></wildAnimals>      correct
+#     <wildAnimals><li><animal>AA_Skyeel</animal>...</li></...>  DISCARDS THE DEF
+#
+# The <li> form makes FirstChild an element rather than text, the parse throws
+# ArgumentNullException, and RimWorld drops the ENTIRE def. Nothing in the patch
+# reports it; the def simply stops existing.
+#
+# This cost this project twice in one day: 101 CharacterDefs via `skillGains`
+# and 26 BiomeDefs -- 94.8% of the planet -- via `wildAnimals`.
+#
+# The list is MEASURED, not remembered: for every field in the 1,558 vanilla def
+# files, take the set of child tag names and ask what fraction are defNames in a
+# 578-mod def dump. A field whose children are >=80% defNames, and which vanilla
+# never writes with <li>, is dictionary-keyed. Regenerate with:
+#     infrastructure/state/observed/2026-08-22/biome_cast/custom_loader_fields.txt
+DICT_KEYED_FIELDS = {
+    "statBases", "skillGains", "costList", "statOffsets", "skillRequirements",
+    "possessions", "prefabs", "killedLeavings", "equippedStatOffsets",
+    "products", "mutatorChances", "xenotypeChances", "terrain", "roomDefs",
+    "scatterTerrain", "escorts", "baseWeatherCommonalities", "wildAnimals",
+    "junkScaterrers", "saltwater_Uncommon", "saltwater_Common",
+    "freshwater_Uncommon", "freshwater_Common", "coastalWildAnimals",
+    "butcherProducts", "wildPlants", "pollutionWildAnimals",
+    "comboLandmarkMutators", "scatter", "traits", "traders",
+    "structureMemeWeights", "guards", "carriers", "perimeterScatteredThings",
+    "killedLeavingsRanges", "fixedInventory", "perimeterScatterTerrain",
+    "mtbDaysByBiome", "itemsToDrop", "customCountRanges", "bodyTypeGraphicPaths",
+    "mineableCounts", "killedLeavingsPlayerHostile", "fillInterior",
+}
+
+
+def check_dict_keyed_fields(root: ET.Element, f: Findings) -> None:
+    """
+    Refuse an <li> written as a direct child of a dictionary-keyed field.
+
+    This is a whole-def-loss defect and it is invisible at load: the patch
+    applies, the XML is well-formed, and the def vanishes.
+    """
+    for el in root.iter():
+        if el.tag not in DICT_KEYED_FIELDS:
+            continue
+        if not any(isinstance(c.tag, str) and c.tag == "li" for c in el):
+            continue
+        n = sum(1 for c in el if isinstance(c.tag, str) and c.tag == "li")
+        example = ""
+        first = next((c for c in el if isinstance(c.tag, str) and c.tag == "li"), None)
+        if first is not None:
+            inner = [c.tag for c in first if isinstance(c.tag, str)]
+            if inner:
+                example = (f" Found <li><{inner[0]}>...; the correct form is "
+                           f"<SomeDefName>value</SomeDefName>.")
+        f.error(
+            f"<{el.tag}> holds {n} <li> element(s). This field is DICTIONARY-KEYED - "
+            f"its entry tag IS the defName and its text is the value.{example} "
+            f"An <li> here throws inside LoadDataFromXmlCustom and RimWorld "
+            f"DISCARDS THE ENTIRE DEF, silently, with nothing in the patch to show "
+            f"for it. This exact defect cost 26 BiomeDefs and 101 CharacterDefs in "
+            f"one day."
+        )
+
+
 COMMENT_RE = re.compile(rb"<!--(.*?)-->", re.DOTALL)
 
 
@@ -2118,6 +2187,7 @@ def validate_file(path: str, docs, scanner: PatchScanner | None,
                    "told apart from a typo.")
         return f.report(quiet), len(f.errors), len(f.warnings)
 
+    check_dict_keyed_fields(root, f)
     to_evaluate = check_structure(root, f)
 
     if have_defs:

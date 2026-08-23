@@ -1,0 +1,11 @@
+live set: 1737 PawnKindDef, 24904 ThingDef, 54 BiomeDef (capture 2026-08-23T05-05-29Z)
+
+patch replaces wildAnimals on 26 BiomeDefs
+
+total records: 744, distinct creature names: 619
+
+== names that are NOT a PawnKindDef in the live set: 0 ==
+   NONE — all resolve as PawnKindDef
+
+== the 26 target biomes: present in THIS capture? (expected NO — they are the destroyed ones) ==
+   0 of 26 present now; 26 absent (the regression this patch caused)

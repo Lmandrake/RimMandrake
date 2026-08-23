@@ -1,0 +1,139 @@
+
+validate_patch.py - 1 XML file(s): 1 <Patch>, 0 <Defs>
+  SCANNED     Patches/: operation shape, guards, value shape, live xpath hit counts
+              Defs/:    XML parse, comment bodies, missing/duplicate defName, ParentName
+                        resolution, Class attributes, texPath existence and case
+  NOT SCANNED field names, field types, value ranges, C# class members, and any node
+              a PatchOperation creates at load time. This is not a def linter.
+
+  info    xpath engine: lxml 6.0.2.0 - full XPath 1.0, the same class of engine RimWorld itself uses, so text(), contains(), starts-with(), not() and boolean predicates are CHECKED.
+  info    load set: 578 active mods, 578 found on disk, target version 1.6 -> 8,739 def files
+defName list infrastructure/state/observed/2026-08-22/scenario_parts/defnames_2026-08-23T05-05-29Z.txt: 68500 defNames across 452 def types, RimWorld 1.6.4871 rev591, 578 mods
+
+=== src/Jawa/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml ===
+  ERROR   Operation[1] (PatchOperationConditional): 'AB_RockyCrags' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals
+  ERROR   Operation[1] > match (PatchOperationReplace): 'AB_RockyCrags' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals
+  ERROR   Operation[3] (PatchOperationConditional): 'ExtremeDesert' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals
+  ERROR   Operation[3] > match (PatchOperationReplace): 'ExtremeDesert' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals
+  ERROR   Operation[4] (PatchOperationConditional): 'AB_MycoticJungle' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals
+  ERROR   Operation[4] > match (PatchOperationReplace): 'AB_MycoticJungle' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals
+  ERROR   Operation[5] (PatchOperationConditional): 'Wasteland' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="Wasteland"]/wildAnimals
+  ERROR   Operation[5] > match (PatchOperationReplace): 'Wasteland' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="Wasteland"]/wildAnimals
+  ERROR   Operation[6] (PatchOperationConditional): 'PoisonForest' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="PoisonForest"]/wildAnimals
+  ERROR   Operation[6] > match (PatchOperationReplace): 'PoisonForest' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="PoisonForest"]/wildAnimals
+  ERROR   Operation[10] (PatchOperationConditional): 'HorrorWastes' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals
+  ERROR   Operation[10] > match (PatchOperationReplace): 'HorrorWastes' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals
+  ERROR   Operation[11] (PatchOperationConditional): 'BMT_FungalForest' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals
+  ERROR   Operation[11] > match (PatchOperationReplace): 'BMT_FungalForest' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals
+  ERROR   Operation[12] (PatchOperationConditional): 'AB_MechanoidIntrusion' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals
+  ERROR   Operation[12] > match (PatchOperationReplace): 'AB_MechanoidIntrusion' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals
+  ERROR   Operation[14] (PatchOperationConditional): 'ZBiome_DesertOasis' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals
+  ERROR   Operation[14] > match (PatchOperationReplace): 'ZBiome_DesertOasis' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals
+  ERROR   Operation[15] (PatchOperationConditional): 'BMT_CrystalCaverns' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals
+  ERROR   Operation[15] > match (PatchOperationReplace): 'BMT_CrystalCaverns' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals
+  ERROR   Operation[16] (PatchOperationConditional): 'AB_GelatinousSuperorganism' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals
+  ERROR   Operation[16] > match (PatchOperationReplace): 'AB_GelatinousSuperorganism' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals
+  ERROR   Operation[18] (PatchOperationConditional): 'AB_TarPits' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals
+  ERROR   Operation[18] > match (PatchOperationReplace): 'AB_TarPits' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals
+  ERROR   Operation[19] (PatchOperationConditional): 'AB_PyroclasticConflagration' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals
+  ERROR   Operation[19] > match (PatchOperationReplace): 'AB_PyroclasticConflagration' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals
+  ERROR   Operation[20] (PatchOperationConditional): 'Volcano' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="Volcano"]/wildAnimals
+  ERROR   Operation[20] > match (PatchOperationReplace): 'Volcano' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="Volcano"]/wildAnimals
+  ERROR   Operation[22] (PatchOperationConditional): 'AB_OcularForest' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals
+  ERROR   Operation[22] > match (PatchOperationReplace): 'AB_OcularForest' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals
+  ERROR   Operation[23] (PatchOperationConditional): 'SeaIce' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="SeaIce"]/wildAnimals
+  ERROR   Operation[23] > match (PatchOperationReplace): 'SeaIce' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="SeaIce"]/wildAnimals
+  ERROR   Operation[24] (PatchOperationConditional): 'AB_FeraliskInfestedJungle' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals
+  ERROR   Operation[24] > match (PatchOperationReplace): 'AB_FeraliskInfestedJungle' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals
+  ERROR   Operation[25] (PatchOperationConditional): 'AB_MiasmicMangrove' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals
+  ERROR   Operation[25] > match (PatchOperationReplace): 'AB_MiasmicMangrove' does not exist in the LIVE game (checked against a def dump of 578 mods). Typo, renamed def, or lost to an override.
+              /Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals
+  info    Operation[1] (PatchOperationConditional): 1 match(es)  in Alpha Biomes: Biomes_ForsakenCrags.xml(1)
+  info    Operation[1] > match (PatchOperationReplace): 1 match(es)  in Alpha Biomes: Biomes_ForsakenCrags.xml(1)
+  info    Operation[2] (PatchOperationConditional): 2 match(es)  in Core: Biomes_WarmArid.xml(1), GRiNDTerra Terrain Retexture: Biomes_NewArid.xml(1)
+  info    Operation[2] > match (PatchOperationReplace): 2 match(es) across 2 mod folders  in Core: Biomes_WarmArid.xml(1), GRiNDTerra Terrain Retexture: Biomes_NewArid.xml(1). Several mods define this def; RimWorld merges them into one document and this operation patches every matching node. Usually correct - do NOT add a positional predicate to 'fix' it.
+  info    Operation[3] (PatchOperationConditional): 2 match(es)  in Core: Biomes_WarmArid.xml(1), GRiNDTerra Terrain Retexture: Biomes_NewArid.xml(1)
+  info    Operation[3] > match (PatchOperationReplace): 2 match(es) across 2 mod folders  in Core: Biomes_WarmArid.xml(1), GRiNDTerra Terrain Retexture: Biomes_NewArid.xml(1). Several mods define this def; RimWorld merges them into one document and this operation patches every matching node. Usually correct - do NOT add a positional predicate to 'fix' it.
+  info    Operation[4] (PatchOperationConditional): 1 match(es)  in Alpha Biomes: Biomes_MycoticJungle.xml(1)
+  info    Operation[4] > match (PatchOperationReplace): 1 match(es)  in Alpha Biomes: Biomes_MycoticJungle.xml(1)
+  info    Operation[5] (PatchOperationConditional): 1 match(es)  in Advanced Biomes (Continued): Biomes_Wasteland.xml(1)
+  info    Operation[5] > match (PatchOperationReplace): 1 match(es)  in Advanced Biomes (Continued): Biomes_Wasteland.xml(1)
+  info    Operation[6] (PatchOperationConditional): 1 match(es)  in Advanced Biomes (Continued): Biomes_PoisonForest.xml(1)
+  info    Operation[6] > match (PatchOperationReplace): 1 match(es)  in Advanced Biomes (Continued): Biomes_PoisonForest.xml(1)
+  info    Operation[7] (PatchOperationConditional): 1 match(es)  in Alpha Biomes: Biomes_PropaneLakes.xml(1)
+  info    Operation[7] > match (PatchOperationReplace): 1 match(es)  in Alpha Biomes: Biomes_PropaneLakes.xml(1)
+  info    Operation[8] (PatchOperationConditional): 1 match(es)  in More Vanilla Biomes: ZBiome_Badlands.xml(1)
+  info    Operation[8] > match (PatchOperationReplace): 1 match(es)  in More Vanilla Biomes: ZBiome_Badlands.xml(1)
+  info    Operation[9] (PatchOperationConditional): 2 match(es)  in Core: Biomes_WarmArid.xml(1), GRiNDTerra Terrain Retexture: Biomes_NewArid.xml(1)
+  info    Operation[9] > match (PatchOperationReplace): 2 match(es) across 2 mod folders  in Core: Biomes_WarmArid.xml(1), GRiNDTerra Terrain Retexture: Biomes_NewArid.xml(1). Several mods define this def; RimWorld merges them into one document and this operation patches every matching node. Usually correct - do NOT add a positional predicate to 'fix' it.
+  info    Operation[10] (PatchOperationConditional): 1 match(es)  in Horrors (Continued): Biomes_Arid_Horrors.xml(1)
+  info    Operation[10] > match (PatchOperationReplace): 1 match(es)  in Horrors (Continued): Biomes_Arid_Horrors.xml(1)
+  info    Operation[11] (PatchOperationConditional): 1 match(es)  in Biomes! Caverns: BMT_FungalForest.xml(1)
+  info    Operation[11] > match (PatchOperationReplace): 1 match(es)  in Biomes! Caverns: BMT_FungalForest.xml(1)
+  info    Operation[12] (PatchOperationConditional): 1 match(es)  in Alpha Biomes: Biomes_MechanoidIntrusion.xml(1)
+  info    Operation[12] > match (PatchOperationReplace): 1 match(es)  in Alpha Biomes: Biomes_MechanoidIntrusion.xml(1)
+  info    Operation[13] (PatchOperationConditional): 1 match(es)  in More Vanilla Biomes: ZBiome_Grasslands.xml(1)
+  info    Operation[13] > match (PatchOperationReplace): 1 match(es)  in More Vanilla Biomes: ZBiome_Grasslands.xml(1)
+  info    Operation[14] (PatchOperationConditional): 1 match(es)  in More Vanilla Biomes: ZBiome_DesertOasis.xml(1)
+  info    Operation[14] > match (PatchOperationReplace): 1 match(es)  in More Vanilla Biomes: ZBiome_DesertOasis.xml(1)
+  info    Operation[15] (PatchOperationConditional): 1 match(es)  in Biomes! Caverns: BMT_CrystalCaverns.xml(1)
+  info    Operation[15] > match (PatchOperationReplace): 1 match(es)  in Biomes! Caverns: BMT_CrystalCaverns.xml(1)
+  info    Operation[16] (PatchOperationConditional): 1 match(es)  in Alpha Biomes: Biomes_GelatinousSuperorganism.xml(1)
+  info    Operation[16] > match (PatchOperationReplace): 1 match(es)  in Alpha Biomes: Biomes_GelatinousSuperorganism.xml(1)
+  info    Operation[17] (PatchOperationConditional): 1 match(es)  in Odyssey: Scarlands.xml(1)
+  info    Operation[17] > match (PatchOperationReplace): 1 match(es)  in Odyssey: Scarlands.xml(1)
+  info    Operation[18] (PatchOperationConditional): 1 match(es)  in Alpha Biomes: Biomes_TarPits.xml(1)
+  info    Operation[18] > match (PatchOperationReplace): 1 match(es)  in Alpha Biomes: Biomes_TarPits.xml(1)
+  info    Operation[19] (PatchOperationConditional): 1 match(es)  in Alpha Biomes: Biomes_PyroclasticConflagration.xml(1)
+  info    Operation[19] > match (PatchOperationReplace): 1 match(es)  in Alpha Biomes: Biomes_PyroclasticConflagration.xml(1)
+  info    Operation[20] (PatchOperationConditional): 1 match(es)  in Advanced Biomes (Continued): Biomes_Volcano.xml(1)
+  info    Operation[20] > match (PatchOperationReplace): 1 match(es)  in Advanced Biomes (Continued): Biomes_Volcano.xml(1)
+  info    Operation[21] (PatchOperationConditional): 1 match(es)  in Odyssey: LavaField.xml(1)
+  info    Operation[21] > match (PatchOperationReplace): 1 match(es)  in Odyssey: LavaField.xml(1)
+  info    Operation[22] (PatchOperationConditional): 1 match(es)  in Alpha Biomes: Biomes_OcularForest.xml(1)
+  info    Operation[22] > match (PatchOperationReplace): 1 match(es)  in Alpha Biomes: Biomes_OcularForest.xml(1)
+  info    Operation[23] (PatchOperationConditional): 1 match(es)  in Core: Biomes_Cold.xml(1)
+  info    Operation[23] > match (PatchOperationReplace): 1 match(es)  in Core: Biomes_Cold.xml(1)
+  info    Operation[24] (PatchOperationConditional): 1 match(es)  in Alpha Biomes: Biomes_FeraliskInfestedJungle.xml(1)
+  info    Operation[24] > match (PatchOperationReplace): 1 match(es)  in Alpha Biomes: Biomes_FeraliskInfestedJungle.xml(1)
+  info    Operation[25] (PatchOperationConditional): 1 match(es)  in Alpha Biomes: Biomes_MiasmicMangrove.xml(1)
+  info    Operation[25] > match (PatchOperationReplace): 1 match(es)  in Alpha Biomes: Biomes_MiasmicMangrove.xml(1)
+  info    Operation[26] (PatchOperationConditional): 1 match(es)  in Core: Biomes_Cold.xml(1)
+  info    Operation[26] > match (PatchOperationReplace): 1 match(es)  in Core: Biomes_Cold.xml(1)
+
+FAIL - 36 error(s), 0 warning(s)

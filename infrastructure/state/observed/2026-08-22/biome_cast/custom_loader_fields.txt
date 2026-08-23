@@ -1,0 +1,52 @@
+live def set: 68479 defNames across 534 types
+
+== DICTIONARY-KEYED: children are DEFNAMES, and vanilla never uses <li> here ==
+   an <li> in one of these discards the ENTIRE def, silently
+
+   statBases                       1379 uses,  104 distinct child names, 100.0% are defNames
+   skillGains                       838 uses,   12 distinct child names, 100.0% are defNames
+   costList                         412 uses,   47 distinct child names, 100.0% are defNames
+   statOffsets                      247 uses,   89 distinct child names, 100.0% are defNames
+   skillRequirements                116 uses,    5 distinct child names, 100.0% are defNames
+   possessions                      113 uses,   70 distinct child names, 100.0% are defNames
+   prefabs                           92 uses,  156 distinct child names, 100.0% are defNames
+   killedLeavings                    84 uses,   20 distinct child names, 100.0% are defNames
+   equippedStatOffsets               71 uses,   20 distinct child names, 100.0% are defNames
+   products                          57 uses,   46 distinct child names, 100.0% are defNames
+   mutatorChances                    51 uses,   77 distinct child names, 100.0% are defNames
+   xenotypeChances                   43 uses,   12 distinct child names, 100.0% are defNames
+   terrain                           33 uses,    8 distinct child names, 100.0% are defNames
+   roomDefs                          30 uses,  126 distinct child names, 100.0% are defNames
+   scatterTerrain                    26 uses,    4 distinct child names, 100.0% are defNames
+   escorts                           24 uses,   14 distinct child names, 100.0% are defNames
+   baseWeatherCommonalities          22 uses,   20 distinct child names, 100.0% are defNames
+   wildAnimals                       17 uses,   79 distinct child names, 100.0% are defNames
+   junkScaterrers                    17 uses,   20 distinct child names, 100.0% are defNames
+   saltwater_Uncommon                16 uses,    4 distinct child names, 100.0% are defNames
+   saltwater_Common                  16 uses,    3 distinct child names, 100.0% are defNames
+   freshwater_Uncommon               16 uses,    4 distinct child names, 100.0% are defNames
+   freshwater_Common                 16 uses,    4 distinct child names, 100.0% are defNames
+   coastalWildAnimals                16 uses,    8 distinct child names, 100.0% are defNames
+   butcherProducts                   16 uses,    9 distinct child names, 100.0% are defNames
+   wildPlants                        15 uses,   58 distinct child names, 100.0% are defNames
+   pollutionWildAnimals              15 uses,   10 distinct child names, 100.0% are defNames
+   comboLandmarkMutators             14 uses,   17 distinct child names, 100.0% are defNames
+   scatter                           12 uses,   10 distinct child names, 100.0% are defNames
+   traits                             6 uses,    7 distinct child names, 100.0% are defNames
+   traders                            6 uses,    4 distinct child names, 100.0% are defNames
+   structureMemeWeights               6 uses,    9 distinct child names, 100.0% are defNames
+   guards                             6 uses,   22 distinct child names, 100.0% are defNames
+   carriers                           6 uses,    4 distinct child names, 100.0% are defNames
+   perimeterScatteredThings           5 uses,   18 distinct child names, 100.0% are defNames
+   killedLeavingsRanges               5 uses,    3 distinct child names, 100.0% are defNames
+   fixedInventory                     5 uses,   10 distinct child names, 100.0% are defNames
+   perimeterScatterTerrain            4 uses,    3 distinct child names, 100.0% are defNames
+   mtbDaysByBiome                     4 uses,   12 distinct child names,  83.3% are defNames
+   itemsToDrop                        4 uses,    4 distinct child names, 100.0% are defNames
+   customCountRanges                  4 uses,    3 distinct child names, 100.0% are defNames
+   bodyTypeGraphicPaths               4 uses,    7 distinct child names, 100.0% are defNames
+   mineableCounts                     3 uses,    7 distinct child names, 100.0% are defNames
+   killedLeavingsPlayerHostile        3 uses,    3 distinct child names, 100.0% are defNames
+   fillInterior                       3 uses,    3 distinct child names, 100.0% are defNames
+
+45 fields
