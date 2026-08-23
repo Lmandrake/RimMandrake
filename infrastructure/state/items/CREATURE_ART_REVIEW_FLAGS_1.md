@@ -1,3 +1,48 @@
+## ✅ CLOSED — the owner reviewed all 621 himself, 2026-08-23
+
+**Delivered as a sheet, not a list**, because 621 rows is not a conversation:
+`D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_art_review.html`.
+
+🔑 **Proven to be HIS file before a single ruling was acted on.** `savedBy` /`savedAt` are stamped
+only by the page and never by a prefill, so what was trusted is the stamp, not *"I'm done"* —
+the failure mode this guard exists for is committing the generator's own guesses under his name.
+
+**621 rows · 588 keep · 21 shrink · 10 replace · 2 redraw · 12 notes · 8 rows overruled.**
+
+### ⭐ The finding worth keeping: the metrics measured the wrong thing
+
+The sheet ranked by **resolution** — px, contrast, fill, saturation. **He judged by SILHOUETTE,
+ALIENNESS and LEGIBILITY**, and said so in his own words:
+
+- *"Fascinating profile shape, so keep in and make smaller"* · *"Keep for the silhouette… it's
+  very exotic"* — weak art KEPT because the outline is interesting.
+- *"terrestrial, not wanted"* · *"Too terrestrial, shouldn't be here"* — good art CUT because the
+  creature is recognisably from Earth.
+- *"It's familiar outline is also a negative"* — 🔑 **familiarity is a defect on this planet.**
+- *"I can't even see what this thing is"* — legibility, which no sharpness measure captures.
+
+🔴 **`AA_Atispec` is the case that proves it.** 2,850 px, contrast 0.30 — comfortably fine, and
+pre-filled `keep`. He ruled **redraw**: *"So alien and bizarre I want to honor it."* ⇒ **A metric
+can rank art QUALITY. It cannot rank WORTH.** Any future art pass should sort by resolution and
+then be looked at by him, never decided by the sort.
+
+### Where each ruling went
+| ruling | it turned out to be | filed as |
+|---|---|---|
+| 10 × `replace` | 🔑 **a CASTING verdict, not an art one** — 12 cast rows refilled | `BIOME_CAST_SUBSTITUTIONS_DEPLOY_1` |
+| 21 × `shrink` | `drawSize` only; `bodySize` untouched | `CREATURE_RESIZE_LIST.md`, second pass |
+| 2 × `redraw` | the art freeze lifted for exactly two | `REDRAW_TWO_HEADLINER_CREATURES_1` |
+| 3 × v2 tag | his own deferral, in his words | `design/V2_DREAMS.md` |
+
+⚠️ **Five of the 21 shrinks could not be sized by the documented formula** — their sprites are
+already above their band median, so `sqrt(px / band median)` returns ×0.95, a no-op. His reason
+was silhouette, not resolution. ×0.80 was chosen by DECIDE and is flagged in the list as the one
+number nobody has ruled on.
+
+✅ **Criteria met: zero art files modified by this item.**
+
+---
+
 ## spec
 🔴 **OWNER'S BRIEF, 2026-08-22 13:33 — the fauna pass is v1 and it is NOW.** Verbatim:
 *"move the animal assignment task to v1 and right now… This is exciting! The biomes are
