@@ -1592,3 +1592,5 @@
 {"seat":"OWNER","event":"game","state":"UP","ownerSaid":"game UP","ts":"2026-08-23T06:00:18Z"}
 {"seat":"OWNER","event":"game","state":"UP","ownerSaid":"game UP","ts":"2026-08-23T06:01:07Z"}
 {"seat":"DECIDE","event":"needs","id":"PLANT_CHERRYPICK_PASS_1","to":"game-up","ts":"2026-08-23T06:02:26Z"}
+{"seat":"OWNER","event":"game","state":"UP","ts":"2026-08-23T06:06:12Z"}
+{"seat":"CHECK","event":"file","id":"MAP_BIOMES_REMOVED_LIVE_1","title":"26 of the 28 biomes the planet is painted in no longer load","kind":"build","target":"v1","needs":"offline","for":"BUILD","ts":"2026-08-23T06:06:18Z"}
