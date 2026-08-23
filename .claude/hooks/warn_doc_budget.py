@@ -141,6 +141,9 @@ def main():
         print("", file=sys.stderr)
         print("  🔴 FIX IT IN THIS COMMIT. %d line%s over, and you are the seat that "
               "grew it." % (over, "" if over == 1 else "s"), file=sys.stderr)
+        print("     \u26d4 NEVER CUT A FACT. If a thing we learned will not fit, move it "
+              "to infrastructure/state/facts/<topic>.md (unbudgeted) and leave a pointer.",
+              file=sys.stderr)
         print("     Cut, in this order — the RULE stays, the story of how it was "
               "learned goes:", file=sys.stderr)
         print("       1. provenance — \"this used to say\", \"measured 2026-..\", "
@@ -148,7 +151,7 @@ def main():
         print("       2. anything the file itself later contradicts", file=sys.stderr)
         print("       3. text that only restates another doc — leave a one-line "
               "pointer", file=sys.stderr)
-        print("     ⛔ Never cut a rule, a full path, or a paste-able command.",
+        print("     ⛔ Never cut a rule, a fact, a full path, or a paste-able command.",
               file=sys.stderr)
         print("     Git history keeps everything you delete. The doc is for what is "
               "TRUE now.", file=sys.stderr)

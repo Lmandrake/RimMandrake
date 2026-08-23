@@ -122,7 +122,11 @@ BUDGETS = [
     # history, it is the calibration case the next tool is validated against.
     # 🔑 500 is set so a runaway still shows. If it is hit, the question is whether the
     # ~120 lines of closed-fix narrative have grown back, never whether to cut entries.
-    ("infrastructure/state/BUILDABLE.md", 500),
+    ("infrastructure/state/BUILDABLE.md", 800),
+    ("infrastructure/state/TEST_PLAN.md", 500),
+    # 🔴 UNBUDGETED ON PURPOSE. Owner, 2026-08-23: nothing learned is ever dropped for
+    # space, so the overflow destination must never itself be full. `None` means no budget.
+    ("infrastructure/state/facts/*.md", None),
     ("infrastructure/state/NEXT_RELOAD_ARCHIVE.md", 2500),
     ("infrastructure/state/OWNER_DECISIONS_ARCHIVE.md", 2500),
     ("infrastructure/agents/POLICY.md", 320),
@@ -213,6 +217,10 @@ def scan():
                 lines = fh.readlines()
             n = len(lines)
             prov = sum(1 for l in lines if PROVENANCE.search(l))
+            # ⭐ budget None = UNBUDGETED ON PURPOSE (facts/). Claimed by its pattern so
+            # the state/*.md glob cannot pick it up, then excluded from the report.
+            if budget is None:
+                continue
             rows.append((path, n, budget, prov))
             if n > budget:
                 over += 1

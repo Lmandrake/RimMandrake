@@ -50,6 +50,10 @@ nobody re-files it" — the commit already records it. Count with
 `grep -cE '^#{2,4} ' infrastructure/state/NEXT_RELOAD.md` — never from memory; the
 figure written here was 4x out within a day.
 
+**0. Never cut a FACT.** Only its narration. A thing we learned that will not fit goes to
+`infrastructure/state/facts/<topic>.md` — unbudgeted, append-only — with a one-line pointer
+left behind. ⛔ A budget may cost us words. It may never cost us knowledge.
+
 **4. One in, one out.** Adding a section to a budgeted file means removing or
 compressing one. A file at budget is not full; it is *finished*, and the next
 addition must earn its place against what is already there.
