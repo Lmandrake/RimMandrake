@@ -152,3 +152,60 @@ verified in sync. 🔑 **A guard must count what was WRITTEN, never what is on h
 the current donor's is right. The 356 differences are dominated by `Outland_*`, so the real
 question may be a single one — *is Outland Genetics a donor we still draw from?* — rather than
 63 separate ones.
+
+---
+
+# ✅ CLOSED 2026-08-23 — owner: *"Make the calls right now, you, immediately."*
+
+The calls, made by BUILD and applied. **The mod on disk is UNCHANGED** — 69 xenotypes,
+1429 genes, 69 pawn kinds, the resistance fix and the honest header all intact, 891 files
+in sync. What changed is that running the generator can no longer take any of that away.
+
+## The five calls
+
+**① The shipped gene lists win outright — the generator may ADD, never SUBTRACT.**
+Decisive measurement: `neronix17.outland.genetics` is **ACTIVE** and every "lost" gene
+resolves. The rebuild was discarding **valid** appearance, not stale references.
+
+**② And it does not add either — not to a species that already has a list.** A union was
+built and measured first: it kept all 1429 and added **435**. Nothing lost, but 69 species
+would quietly gain `Aggression_Aggressive`, second skin colours and second head-forcers —
+an untested appearance and balance change to every pawn in the mod, arriving disguised as
+a no-op regeneration. **The shipped lists are the curated, playtested state.** A new gene
+for a species is now a deliberate edit.
+
+**③ Shipped METADATA wins too**, for the same reason and by the same measurement — rebuilt
+values differed in *both* directions. `RimMandrakeXenotypes.xml` is now a **NO-OP**.
+
+**④ `RimMandrakePawnKinds.xml` is hand-owned and the generator will not overwrite it.**
+It carries robes/hoods, faction colours across 31 kinds, and `initialResistanceRange` on
+all 69 — none derivable. A rebuild yields 63, so running it DELETED SIX. It now preserves
+and says so; delete the file to force a fresh build.
+
+**⑤ `write_xml` never subtracts, generically.** A rebuild whose species count matched
+perfectly still dropped **17** gene defs — `RimMandrake_DevaronianHorns`,
+`RimMandrake_GeonosianHead`, `RimMandrake_Eyes_HugeRed` — which the shipped xenotypes still
+NAME. Any def already in a file that a run did not produce is carried. ⚠️ The asymmetry is
+deliberate: **an unreferenced def costs nothing, a missing one costs a face.**
+
+### Verified, per file, nothing lost anywhere
+    RimMandrakeXenotypes.xml   69 species, 1429 genes   NO-OP
+    RimMandrakePawnKinds.xml   69 kinds                 preserved, untouched
+    SW_Genes.xml               109 -> 151   lost 0
+    SW_HeadTypes.xml           104 -> 118   lost 0
+    SW_Support.xml              26 ->  29   lost 0
+    About.xml                  now says 69, not 63      NO-OP
+
+## ⛔ The one call that was NOT to ship the additions
+A run now offers 59 new defs (42 genes, 14 head types, 3 support). All are `RimMandrake_`
+prefixed, all parse, all inert unless referenced — **and they are not in the build.** The
+mod was restored to its shipped state. Adopting 59 untested defs into a live mod in the
+hour before a cold load is a content change nobody asked for, and it is separable from the
+thing that was actually broken. Run the generator whenever you want them; it is safe now.
+
+## ⚠️ The trade, stated because it is real
+**These rules RATCHET.** Every file only grows, and each run reads what the last one wrote —
+so one bad run becomes the new floor, and a genuinely dead def now needs deleting by hand.
+Taken knowingly: the failure prevented is silent, the cost imposed is visible.
+🔑 **Always `git checkout` the mod before testing a change to this generator**, or you will
+measure against your own last output. That mistake was made here and cost a cycle.

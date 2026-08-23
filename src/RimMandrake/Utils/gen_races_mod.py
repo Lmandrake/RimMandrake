@@ -201,11 +201,44 @@ def assert_comment_safe(path):
         raise SystemExit("unterminated XML comment: %s" % path)
 
 
-def write_xml(path, header_lines, elements):
+def write_xml(path, header_lines, elements, keep_existing=True):
+    """Write a Defs file. 🔑 NEVER SUBTRACT, unless the caller says otherwise.
+
+    ⭐ OWNER'S RULING 2026-08-23: this generator may ADD, it may never SUBTRACT.
+    MEASURED that day, on a rebuild whose species count matched perfectly: SW_Genes
+    lost **17** defs — `RimMandrake_DevaronianHorns`, `RimMandrake_GeonosianHead`,
+    `RimMandrake_Eyes_HugeRed` among them — while gaining 42. The losses are
+    APPEARANCE genes the shipped xenotypes still name, so dropping them is a
+    cross-reference error and a species losing its face. The gains are inert if
+    nothing references them.
+
+    ⇒ Any def already in the file that this run did not produce is CARRIED. The
+    asymmetry is deliberate: an unreferenced def costs nothing, a missing one costs
+    a face.
+
+    ⚠️ IT RATCHETS. A file only ever grows this way, and a genuinely dead def now
+    needs deleting by hand. That is the trade, taken knowingly: the failure it
+    prevents is silent and the cost it imposes is visible.
+    """
     os.makedirs(os.path.dirname(path), exist_ok=True)
     root = ET.Element("Defs")
     for e in elements:
         root.append(e)
+    if keep_existing and os.path.exists(path):
+        try:
+            old_root = ET.parse(path).getroot()
+        except ET.ParseError:
+            old_root = None
+        if old_root is not None:
+            have = {e.findtext("defName") for e in root}
+            carried = [e for e in old_root
+                       if e.findtext("defName") and e.findtext("defName") not in have]
+            if carried:
+                print("  %s: carried %d existing def(s) this run did not rebuild"
+                      % (os.path.basename(path), len(carried)), file=sys.stderr)
+                for e in carried:
+                    root.append(e)
+            root[:] = sorted(root, key=lambda e: e.findtext("defName") or "")
     ET.indent(root, space="  ")
     body = ET.tostring(root, encoding="unicode")
     head = comment_safe(['<?xml version="1.0" encoding="utf-8"?>', "<!--"]
@@ -786,7 +819,11 @@ def write_about(n_species, n_swx, n_or):
         deps += "    </li>\n"
     after = "".join("    <li>%s</li>\n" % p
                     for p in [d[0] for d in DEPENDENCIES] + SOFT_AFTER)
-    desc = DESC.format(N=n_species, SWX=n_swx, OR=n_or)
+    # 🔑 Count what the mod SHIPS, not what this run rebuilt. Six species have no
+    # donor and are carried verbatim (ORPHAN_XENOTYPES), so `n_species` is 63 and the
+    # catalogue is 69 - and an About.xml advertising 63 is simply a false claim on the
+    # mod page. Same rule as everywhere else here: the shipped artifact is the answer.
+    desc = DESC.format(N=(_shipped_species_count() or n_species), SWX=n_swx, OR=n_or)
     desc = desc.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     p = os.path.join(OUT, "About/About.xml")
     os.makedirs(os.path.dirname(p), exist_ok=True)
@@ -832,13 +869,80 @@ def namemaker_for(b, x, tbl, defmap):
     return None, None, None
 
 
+_SHIPPED_GENES = {}
+
+
+def _shipped_kind_count():
+    p = os.path.join(OUT, "Defs/PawnKindDefs/RimMandrakePawnKinds.xml")
+    if not os.path.exists(p):
+        return 0
+    try:
+        return len(ET.parse(p).getroot().findall("PawnKindDef"))
+    except ET.ParseError:
+        return 0
+
+
+def _shipped_meta():
+    """The per-species metadata the mod on disk ships, keyed by our defName.
+
+    Same rule as `_shipped_gene_lists`, same reason: what is live and playtested
+    wins over what today's donor resolution happens to produce. `description`,
+    `iconPath`, `label`, `inheritable`, `canGenerateAsCombatant`,
+    `combatPowerFactor` and the nameMaker fields all differed on a rebuild - in
+    BOTH directions - because the donor a species resolves to now is not the one
+    it was built from in August.
+    """
+    p = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
+    if not os.path.exists(p):
+        return {}
+    try:
+        root = ET.parse(p).getroot()
+    except ET.ParseError:
+        return {}
+    out = {}
+    for xd in root.findall("XenotypeDef"):
+        dn = xd.findtext("defName")
+        if not dn:
+            continue
+        out[dn] = {c.tag: (c.text or "") for c in xd if c.tag != "genes"}
+    return out
+
+
+_SHIPPED_META = {}
+
+
+
+
 def write_xenotypes(built, defmap, x, tbl):
+    global _SHIPPED_GENES, _SHIPPED_META
+    # Read the catalogue we currently ship BEFORE overwriting it. This IS the
+    # never-subtract rule; without it the write below is the lossy one.
+    # ⚠️ IT RATCHETS: this reads the file the last run WROTE, so one bad run
+    # becomes the new floor. Always restore from git before testing a change here.
+    _SHIPPED_GENES = _shipped_gene_lists()
+    _SHIPPED_META = _shipped_meta()
     els = []
     unnamed = []
     for b in built:
         f = b["f"]
         e = ET.Element("XenotypeDef")
-        ET.SubElement(e, "defName").text = clean_name(b["species"])
+        _dn = clean_name(b["species"])
+        _meta = _SHIPPED_META.get(_dn)
+        if _meta:
+            # ⭐ SHIPPED METADATA WINS, exactly as the gene list does. Rebuilt values
+            # differed in BOTH directions on 2026-08-23 - blanked descriptions and
+            # icons where the dump lacked the donor, and changed labels and
+            # combatPowerFactors where it had a different one. What is live and
+            # playtested is the answer; a regeneration is not the place to relitigate
+            # 69 species' identities.
+            for _t, _v in _meta.items():
+                ET.SubElement(e, _t).text = _v
+            gl = ET.SubElement(e, "genes")
+            for gn in _SHIPPED_GENES.get(_dn, []):
+                ET.SubElement(gl, "li").text = gn
+            els.append(e)
+            continue
+        ET.SubElement(e, "defName").text = _dn
         ET.SubElement(e, "label").text = f.get("label") or b["species"]
         ET.SubElement(e, "description").text = f.get("description") or ""
         icon = f.get("iconPath") or ""
@@ -863,9 +967,24 @@ def write_xenotypes(built, defmap, x, tbl):
         else:
             unnamed.append(b["species"])
         gl = ET.SubElement(e, "genes")
-        for gn in b["genes"]:
-            ET.SubElement(gl, "li").text = \
-                defmap.get(gn, JAWA_GENES.get(gn, gn))
+        # map first, then union with what we already ship — see _shipped_gene_lists.
+        mapped = [defmap.get(gn, JAWA_GENES.get(gn, gn)) for gn in b["genes"]]
+        keep = _SHIPPED_GENES.get(clean_name(b["species"]))
+        if keep:
+            # ⭐ THE SHIPPED LIST WINS OUTRIGHT. Not a union - measured 2026-08-23,
+            # unioning ADDED 435 genes across the 69 species, because today's donor
+            # resolution differs from August's. Nothing was lost, but a species
+            # quietly gaining Aggression_Aggressive, a second skin colour or a
+            # second head-forcer is an untested appearance and balance change to
+            # every pawn in the mod - and it would arrive disguised as a no-op
+            # regeneration. The shipped lists are the curated, playtested state.
+            # ⇒ The generator preserves them verbatim and proposes nothing.
+            # A genuinely new gene for a species is a deliberate edit, made here.
+            names = list(keep)
+        else:
+            names = mapped
+        for gn in names:
+            ET.SubElement(gl, "li").text = gn
         els.append(e)
     # 🔑 The six species no donor defines. They are parsed from their verbatim XML
     # and merged into the SAME sorted order the rest come out in, so the file reads
@@ -875,6 +994,22 @@ def write_xenotypes(built, defmap, x, tbl):
     for _name, _xml in ORPHAN_XENOTYPES.items():
         els.append(ET.fromstring(_xml))
     els.sort(key=lambda el: el.findtext("defName") or "")
+    # ⭐ THE GENE GUARD, against what is ACTUALLY ABOUT TO BE WRITTEN.
+    # The never-subtract union should make loss impossible; this proves it rather
+    # than assuming it. If it ever fires, the union broke - do not raise the
+    # threshold to get a build out.
+    _have_g = sum(len(e.find("genes").findall("li"))
+                  for e in els if e.find("genes") is not None)
+    _want_g = _shipped_gene_count()
+    if _want_g and _have_g < _want_g:
+        raise SystemExit(
+            "REFUSING TO WRITE: %d gene entries about to be written against the %d "
+            "the mod ships - %d would be LOST.\n"
+            "The never-subtract union in _shipped_gene_lists should make this "
+            "impossible, so if you are reading this it is broken. Fix the union; "
+            "do NOT lower this number."
+            % (_have_g, _want_g, _want_g - _have_g))
+
     write_xml(os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml"),
               header("RimMandrakeXenotypes.xml",
                      "One XenotypeDef per species. Gene lists are inherited from "
@@ -963,7 +1098,20 @@ def write_pawnkinds(built):
         # DICTIONARY-KEYED by defName. An <li> here silently discards the def.
         ET.SubElement(xc, dn).text = "1.0"
         els.append(e)
-    write_xml(os.path.join(OUT, "Defs/PawnKindDefs/RimMandrakePawnKinds.xml"),
+    # ⛔ THIS FILE IS HAND-OWNED AND THE GENERATOR MUST NOT REWRITE IT.
+    # It carries three days of edits this generator cannot derive - robes and hoods
+    # (e479d8ae), faction colours across 31 kinds (9bb5a5bb), and
+    # initialResistanceRange on all 69 (this morning). A rebuild produces 63 kinds,
+    # so running it DELETES SIX and silently reverts the rest; that happened on
+    # 2026-08-23 and was recovered from git.
+    # 🔑 The generator still OWNS the file - it creates it if it is missing - it just
+    # does not overwrite a curated one. Delete the file to force a fresh build.
+    _pk = os.path.join(OUT, "Defs/PawnKindDefs/RimMandrakePawnKinds.xml")
+    if os.path.exists(_pk):
+        print("  PawnKinds: preserved (hand-owned, %d kinds). Delete the file to "
+              "rebuild from scratch." % _shipped_kind_count(), file=sys.stderr)
+        return
+    write_xml(_pk,
               header("RimMandrakePawnKinds.xml",
                      "One colonist-grade kind per species. A XenotypeDef cannot be "
                      "spawned on\nits own -- pawn generation takes a PawnKindDef -- "
@@ -972,6 +1120,46 @@ def write_pawnkinds(built):
 
 
 # ---------------------------------------------------------------- main
+
+
+def _shipped_gene_lists():
+    """Every gene list the mod ON DISK currently ships, keyed by our defName.
+
+    ⭐ OWNER'S RULING 2026-08-23: **the generator may ADD, it may never SUBTRACT.**
+
+    Measured that day: a clean rebuild came back 356 gene entries lighter than the
+    catalogue on disk — 1073 against 1429 — dropping whole families (`Outland_*`
+    skins, `Outland_EggLayer`, `Outland_ThickSkin`, `Outland_DeceleratedPregnancy`).
+    ⇒ Not stale references. `neronix17.outland.genetics` is ACTIVE and every one of
+    those genes resolves in the live def set. The rebuild was discarding valid
+    appearance, because the donor a species resolves to today is not the donor it
+    was built from in August.
+
+    🔑 So our own previous output becomes the DONOR OF LAST RESORT. A gene this mod
+    already ships, which still resolves, is kept — in the order it already has, so
+    the file barely moves — and anything the current donors newly offer is appended.
+    A pawn can gain an attribute from a regeneration; it can never silently lose its
+    face.
+
+    ⚠️ These names are ALREADY REWRITTEN to our copies (`defmap` was applied when
+    they were written), so this must be unioned at WRITE time, after mapping — never
+    into `pick_species`'s pre-map list, where every name would miss.
+    """
+    p = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
+    if not os.path.exists(p):
+        return {}
+    try:
+        root = ET.parse(p).getroot()
+    except ET.ParseError:
+        return {}
+    out = {}
+    for xd in root.findall("XenotypeDef"):
+        dn = xd.findtext("defName")
+        gl = xd.find("genes")
+        if dn and gl is not None:
+            out[dn] = [li.text for li in gl.findall("li") if li.text]
+    return out
+
 
 def _shipped_species_count():
     """How many species the mod on disk currently ships. 0 if it is absent."""
@@ -1296,22 +1484,13 @@ def _guard_species_regression(built, skipped):
     # rebuild that was still 356 genes lighter. Checked FIRST because it is the
     # one that catches the subtler loss, and a message about species would send
     # the reader down the wrong path entirely.
-    have_g = sum(len(b["genes"]) for b in built) + sum(
-        x.count("<li>") for x in ORPHAN_XENOTYPES.values())
-    want_g = _shipped_gene_count()
-    if want_g and have_g < want_g:
-        raise SystemExit(
-            "REFUSING TO WRITE: the species count matches (%d) but the rebuild "
-            "carries %d gene entries against the %d the mod ships — %d would be "
-            "LOST.\n"
-            "A count of species is not a roster: every species survives and some "
-            "of them come back with their appearance stripped.\n"
-            "CAUSE (measured 2026-08-23): the donor a species resolves to now is "
-            "not the donor it was built from in August, so whole families go — "
-            "Outland_* skins, Outland_EggLayer, Outland_ThickSkin.\n"
-            "This is NOT a bug to route around. Deciding which donor is right for "
-            "each species is a design call: RACES_GENERATOR_DIVERGED_1."
-            % (have, have_g, want_g, want_g - have_g))
+    # 🔑 The GENE loss check does NOT live here. It cannot: this runs before the
+    # defmap exists, so it could only count the rebuild, and the rebuild alone is
+    # legitimately smaller than the union the writer now emits. Counting it here
+    # would refuse forever while nothing was being lost.
+    # ⇒ It lives in write_xenotypes, against the elements about to be written.
+    # A guard must count what gets WRITTEN — that is the whole lesson of the
+    # 2026-08-23 near-miss, and putting this one in the wrong place would repeat it.
 
     if want and have < want:
         lost = "\n  ".join("%-14s %s" % (s, why) for s, why in skipped)

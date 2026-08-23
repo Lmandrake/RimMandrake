@@ -1988,3 +1988,5 @@
 {"seat":"DECIDE","event":"needs","id":"RETAG_REACHABLE_VANILLA_KINDS_1","to":"harvest","ts":"2026-08-23T20:10:42Z"}
 {"seat":"DECIDE","event":"close","id":"ORPHANED_KINDS_AFTER_GUN_CUT_1","sha":"f088103f","ts":"2026-08-23T20:10:46Z"}
 {"seat":"DECIDE","event":"reassign","id":"LEADER_TITLES_ON_THE_IDEO_1","to":"CHECK","reason":"Design ruled 2026-08-22, mechanism shipped and verified deployed 2026-08-23. Only a live effectiveTitle reading on the pre-freeze world remains, which is CHECK's domain. Corrects DECIDE's own mis-route earlier today.","ts":"2026-08-23T20:12:21Z"}
+{"seat":"OWNER","event":"close","id":"PAWNKIND_GENERATOR_DIVERGED_1","sha":"a0ca51df","ownerSaid":"Make the calls right now, you, immediately","override":"OWNER may not `close` PAWNKIND_GENERATOR_DIVERGED_1 — it belongs to DECIDE. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-08-23T20:14:16Z"}
+{"seat":"BUILD","event":"close","id":"RACES_GENERATOR_DIVERGED_1","sha":"a0ca51df","ts":"2026-08-23T20:14:16Z"}
