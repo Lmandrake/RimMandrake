@@ -1,0 +1,15 @@
+
+validate_patch.py - 1 XML file(s): 0 <Patch>, 1 <Defs>
+  SCANNED     Patches/: operation shape, guards, value shape, live xpath hit counts
+              Defs/:    XML parse, comment bodies, missing/duplicate defName, ParentName
+                        resolution, Class attributes, texPath existence and case
+  NOT SCANNED field names, field types, value ranges, C# class members, and any node
+              a PatchOperation creates at load time. This is not a def linter.
+
+  info    xpath engine: lxml 6.0.2.0 - full XPath 1.0, the same class of engine RimWorld itself uses, so text(), contains(), starts-with(), not() and boolean predicates are CHECKED.
+  info    load set: 578 active mods, 578 found on disk, target version 1.6 -> 8,739 def files
+defName list infrastructure/state/observed/2026-08-22/scenario_parts/defnames_2026-08-23T05-05-29Z.txt: 68500 defNames across 452 def types, RimWorld 1.6.4871 rev591, 578 mods
+
+=== src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml ===
+
+OK - 0 errors, 0 warning(s)

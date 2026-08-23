@@ -160,6 +160,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_weak</li>
       <li>SWKotORWeaponCategoryTag_pistol</li>
     </weaponTags>
+      <apparelTags>
+      <li>SaV_apparel_huttgoon</li>
+      <li>KotORArmor_mid</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -178,6 +182,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_mid</li>
       <li>SWKotORWeaponCategoryTag_heavyranged</li>
     </weaponTags>
+      <apparelTags>
+      <li>SaV_apparel_huttgoon</li>
+      <li>KotORArmor_mid</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -196,6 +204,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_mid</li>
       <li>SWKotORWeaponCategoryTag_pistol</li>
     </weaponTags>
+      <apparelTags>
+      <li>SaV_apparel_huttgoon</li>
+      <li>KotORArmor_mid</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -215,6 +227,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_rare</li>
     </weaponTags>
     <itemQuality>Masterwork</itemQuality>
+      <apparelTags>
+      <li>SaV_apparel_huttgoon</li>
+      <li>KotORArmor_mid</li>
+      <li>Royal</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -234,6 +251,12 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_weak</li>
     </weaponTags>
     <maxApparelQuality>Good</maxApparelQuality>
+      <apparelTags>
+      <li>Outlander</li>
+      <li>Western</li>
+      <li>ORScrapper</li>
+      <li>KotORClothing_civilian_villager</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -253,6 +276,12 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_mid</li>
     </weaponTags>
     <maxApparelQuality>Good</maxApparelQuality>
+      <apparelTags>
+      <li>Outlander</li>
+      <li>Western</li>
+      <li>ORScrapper</li>
+      <li>KotORClothing_civilian_villager</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -272,6 +301,12 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORSniper</li>
     </weaponTags>
     <maxApparelQuality>Good</maxApparelQuality>
+      <apparelTags>
+      <li>Outlander</li>
+      <li>Western</li>
+      <li>ORScrapper</li>
+      <li>KotORClothing_civilian_villager</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -291,6 +326,12 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>SWKotORWeaponCategoryTag_pistol</li>
     </weaponTags>
     <maxApparelQuality>Excellent</maxApparelQuality>
+      <apparelTags>
+      <li>Outlander</li>
+      <li>Western</li>
+      <li>ORScrapper</li>
+      <li>KotORClothing_civilian_villager</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -311,6 +352,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>NeolithicMeleeAdvanced</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
+      <apparelTags>
+      <li>ORTusken</li>
+      <li>SaV_apparel_tusken</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -330,6 +375,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>NeolithicMeleeAdvanced</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
+      <apparelTags>
+      <li>ORTusken</li>
+      <li>SaV_apparel_tusken</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -348,6 +397,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>SaV_tusken</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
+      <apparelTags>
+      <li>ORTusken</li>
+      <li>SaV_apparel_tusken</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -367,6 +420,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>NeolithicMeleeAdvanced</li>
     </weaponTags>
     <maxApparelQuality>Good</maxApparelQuality>
+      <apparelTags>
+      <li>ORTusken</li>
+      <li>SaV_apparel_tusken</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -378,12 +435,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <isFighter>true</isFighter>
     <useFactionXenotypes>false</useFactionXenotypes>
     <weaponMoney>1100~1320</weaponMoney>
-    <apparelMoney>120~144</apparelMoney>
+    <apparelMoney>180~216</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
     <initialWillRange>1~3</initialWillRange>
     <weaponTags>
       <li>ORDroidWeapon</li>
     </weaponTags>
+      <apparelTags>
+      <li>KotORDroidArmorT1</li>
+      <li>DroidArmor</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -401,6 +462,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>ORDroidWeapon</li>
     </weaponTags>
+      <apparelTags>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT1</li>
+      <li>DroidArmor</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -418,6 +484,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>ORDroidWeapon</li>
     </weaponTags>
+      <apparelTags>
+      <li>KotORDroidArmorT1</li>
+      <li>DroidArmor</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -429,13 +499,19 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <isFighter>true</isFighter>
     <useFactionXenotypes>false</useFactionXenotypes>
     <weaponMoney>1800~2160</weaponMoney>
-    <apparelMoney>400~480</apparelMoney>
+    <apparelMoney>600~720</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
     <initialWillRange>4~7</initialWillRange>
     <weaponTags>
       <li>ORDroidWeapon</li>
     </weaponTags>
     <itemQuality>Excellent</itemQuality>
+      <apparelTags>
+      <li>KotORDroidArmorT3</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT1</li>
+      <li>DroidArmor</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -454,6 +530,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORBowcaster</li>
     </weaponTags>
     <minApparelQuality>Good</minApparelQuality>
+      <apparelTags>
+      <li>ORBoneArmour</li>
+      <li>ORChitinArmour</li>
+      <li>Neolithic</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -473,6 +554,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>SWKotORWeaponCategoryTag_heavyranged</li>
     </weaponTags>
     <minApparelQuality>Good</minApparelQuality>
+      <apparelTags>
+      <li>ORBoneArmour</li>
+      <li>ORChitinArmour</li>
+      <li>Neolithic</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -492,6 +578,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORVibroweapon</li>
     </weaponTags>
     <minApparelQuality>Good</minApparelQuality>
+      <apparelTags>
+      <li>ORBoneArmour</li>
+      <li>ORChitinArmour</li>
+      <li>Neolithic</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -510,6 +601,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORBowcaster</li>
     </weaponTags>
     <minApparelQuality>Excellent</minApparelQuality>
+      <apparelTags>
+      <li>ORBoneArmour</li>
+      <li>ORChitinArmour</li>
+      <li>Neolithic</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -529,6 +625,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>SWKotORWeaponCategoryTag_rifle</li>
     </weaponTags>
     <minApparelQuality>Good</minApparelQuality>
+      <apparelTags>
+      <li>EVA</li>
+      <li>Vacsuit</li>
+      <li>KotORHeadband_gasmask</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -548,6 +649,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_strong</li>
     </weaponTags>
     <minApparelQuality>Good</minApparelQuality>
+      <apparelTags>
+      <li>EVA</li>
+      <li>Vacsuit</li>
+      <li>KotORHeadband_gasmask</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -567,6 +673,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORMeleeSharp</li>
     </weaponTags>
     <minApparelQuality>Good</minApparelQuality>
+      <apparelTags>
+      <li>EVA</li>
+      <li>Vacsuit</li>
+      <li>KotORHeadband_gasmask</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -586,6 +697,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_rare</li>
     </weaponTags>
     <itemQuality>Excellent</itemQuality>
+      <apparelTags>
+      <li>EVA</li>
+      <li>Vacsuit</li>
+      <li>KotORHeadband_gasmask</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -603,6 +719,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>KotORRanged_sonic</li>
     </weaponTags>
+      <apparelTags>
+      <li>ORChitinArmour</li>
+      <li>KotORClothing_civilian_prole</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -621,6 +741,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_sonic</li>
       <li>SWKotORWeaponCategoryTag_heavyranged</li>
     </weaponTags>
+      <apparelTags>
+      <li>ORChitinArmour</li>
+      <li>KotORClothing_civilian_prole</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -639,6 +763,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_sonic</li>
       <li>KotORRanged_rare</li>
     </weaponTags>
+      <apparelTags>
+      <li>ORChitinArmour</li>
+      <li>KotORClothing_civilian_prole</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -658,6 +786,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_legendary</li>
     </weaponTags>
     <itemQuality>Excellent</itemQuality>
+      <apparelTags>
+      <li>ORChitinArmour</li>
+      <li>KotORClothing_civilian_prole</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -677,6 +809,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_strong</li>
     </weaponTags>
     <minApparelQuality>Excellent</minApparelQuality>
+      <apparelTags>
+      <li>PrestigeCombatGear</li>
+      <li>KotORArmor_mid</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -696,6 +832,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_strong</li>
     </weaponTags>
     <minApparelQuality>Excellent</minApparelQuality>
+      <apparelTags>
+      <li>PrestigeCombatGear</li>
+      <li>KotORArmor_mid</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -715,6 +855,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORSniper</li>
     </weaponTags>
     <minApparelQuality>Excellent</minApparelQuality>
+      <apparelTags>
+      <li>PrestigeCombatGear</li>
+      <li>KotORArmor_heavy</li>
+      <li>KotORArmor_mid</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -734,6 +879,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_rare</li>
     </weaponTags>
     <itemQuality>Masterwork</itemQuality>
+      <apparelTags>
+      <li>PrestigeCombatGear</li>
+      <li>KotORArmor_heavy</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -753,6 +902,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>SimpleGun</li>
     </weaponTags>
     <requiredWorkTags>Violent</requiredWorkTags>
+      <apparelTags>
+      <li>SaV_outfit_merc</li>
+      <li>KotORArmor_mid</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -795,6 +948,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_rare</li>
     </weaponTags>
     <requiredWorkTags>Violent</requiredWorkTags>
+      <apparelTags>
+      <li>SaV_outfit_merc</li>
+      <li>KotORArmor_mid</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -814,6 +971,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORPistol</li>
     </weaponTags>
     <requiredWorkTags>Violent</requiredWorkTags>
+      <apparelTags>
+      <li>SaV_outfit_merc</li>
+      <li>MNCFactionArmor</li>
+      <li>KotORArmor_mid</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
