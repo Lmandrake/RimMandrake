@@ -254,8 +254,15 @@ R = [
 
  ("Blackstar","Grunt","hired gun",400,350,None,["SWKotORWeaponCategoryTag_rifle","SimpleGun"],[]),
  ("Blackstar","Heavy","Mandalorian",700,500,None,["SWKotORWeaponCategoryTag_heavyranged","KotORRanged_strong"],["guy762_MandoArmor_battle","guy762_MandoHelmet_supercom"]),
- ("Blackstar","Specialist","Blackstar hunter",1100,800,None,["ORSniper","KotORRanged_rare"],[]),
- ("Blackstar","Leader","Captain Jaxen Marr",1800,1500,None,["KotORRanged_legendary","ORPistol"],[]),
+ # 🔴 BUDGETS RAISED 2026-08-23 on the owner's ruling. MEASURED: these two kinds could
+ # afford NOTHING their tags named — Specialist 1320 against KotORRanged_rare whose
+ # cheapest survivor is 12799, Leader 2160 against KotORRanged_legendary at 12000. Nothing
+ # was cut; the tiers are simply ~10x a mid-tier budget, so the pool resolved empty and the
+ # pawn rolled bare. Asked whether to repoint the tags or raise the budgets, the owner
+ # chose RAISE. ⚠️ combatPower is derived from these numbers, so raiding difficulty and
+ # drop value both go up deliberately. BLACKSTAR_DEEPDESERT_POOLS_EMPTY_1.
+ ("Blackstar","Specialist","Blackstar hunter",12800,800,None,["ORSniper","KotORRanged_rare"],[]),
+ ("Blackstar","Leader","Captain Jaxen Marr",14600,1500,None,["KotORRanged_legendary","ORPistol"],[]),
 
 # 🔑 IONBLASTER_INTO_THE_GENERATOR_1. `JawaIon_Damage` is the campaign's signature weapon
 # tag and it is declared HERE on Heavy/Specialist/Leader, not in a patch. It replaced
@@ -329,7 +336,25 @@ RESIST = {"Grunt": (8, 14), "Heavy": (12, 18), "Specialist": (14, 22), "Leader":
 WILL   = {"Grunt": (1, 3),  "Heavy": (2, 4),   "Specialist": (2, 5),   "Leader": (4, 7)}
 
 
-def combat_power(wm, am, role):
+# 🔴 combatPower is DECOUPLED from weaponMoney for these kinds, and that is the point.
+# The formula below reads price as a proxy for lethality, which holds while a budget buys
+# a better gun. It BREAKS when a budget is raised to reach a tier that is expensive
+# because it is RARE. Measured 2026-08-23: raising the two Blackstar budgets to reach the
+# KotOR rare/legendary tiers took combatPower from 134 -> 718 and 240 -> 997 — roughly 5x,
+# which is Centipede territory. RimWorld sizes a raid by summing combatPower, so Blackstar
+# would have started arriving as ONE OR TWO pawns instead of a syndicate.
+# ⇒ A 12,800-silver ion pistol is rarer than a 1,300-silver blaster, not ten times deadlier.
+# The owner ruled the BUDGET up; how the threat number is derived from it is BUILD's, and
+# these two keep a threat close to what they had, nudged for genuinely better weapons.
+COMBAT_POWER_OVERRIDE = {
+    ("Blackstar", "Specialist"): 150,   # was 134 on a 1100 budget
+    ("Blackstar", "Leader"):     260,   # was 240 on a 1800 budget
+}
+
+
+def combat_power(wm, am, role, fac=None):
+    if (fac, role) in COMBAT_POWER_OVERRIDE:
+        return COMBAT_POWER_OVERRIDE[(fac, role)]
     base = 35 + (wm + am) / 22.0
     return int(round(base * {"Grunt": 1.0, "Heavy": 1.15, "Specialist": 1.1, "Leader": 1.3}[role]))
 
@@ -2228,7 +2253,7 @@ KIT = {
       <li>WarcasketAll</li>
       <li>WarcasketVeteran</li>
     </apparelDisallowTags>""",
- 'Jawa_Blackstar_Specialist': """    <weaponMoney>1100~1320</weaponMoney>
+ 'Jawa_Blackstar_Specialist': """    <weaponMoney>12800~16500</weaponMoney>
     <apparelMoney>800~960</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
     <initialWillRange>2~5</initialWillRange>
@@ -2275,7 +2300,7 @@ KIT = {
       <li>WarcasketAll</li>
       <li>WarcasketVeteran</li>
     </apparelDisallowTags>""",
- 'Jawa_Blackstar_Leader': """    <weaponMoney>1800~2160</weaponMoney>
+ 'Jawa_Blackstar_Leader': """    <weaponMoney>14600~26000</weaponMoney>
     <apparelMoney>1500~1800</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
     <initialWillRange>4~7</initialWillRange>
@@ -2816,7 +2841,7 @@ def emit():
               "    <label>%s</label>" % label,
               "    <race>%s</race>" % race,
               "    <defaultFactionDef>%s</defaultFactionDef>" % FACTIONS[fac],
-              "    <combatPower>%d</combatPower>" % combat_power(wm, am, role),
+              "    <combatPower>%d</combatPower>" % combat_power(wm, am, role, fac),
               "    <isFighter>%s</isFighter>" % ("false" if not wt else "true"),
               # 🔑 The whole point of the roster: ONE kind spawns the faction's whole
               # species mix wearing that faction's gear, so species never appear in a

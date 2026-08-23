@@ -64,7 +64,16 @@
       <li>guy762_JawaHood</li>
     </apparelRequired>
     <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
-    <apparelMoney>350~600</apparelMoney>
+    <!-- 🔴 apparelMoney 0 — OWNER'S RULING 2026-08-23: "Jawa wear robes+hoods ONLY".
+         Asked directly, with this file's own contrary comment in front of him, and he
+         chose ONLY. So the random pass gets nothing to spend and a Jawa spawns in the
+         robe and the hood and nothing else.
+         🔑 This does NOT threaten the robe and hood. PawnApparelGenerator.cs:889 adds
+         apparelRequired BEFORE the money loop and independently of it, so they land at
+         any budget; 0 only silences the pass that was adding tribal ponchos, kilts and
+         war veils on top. Verified against the 1.6 source, not assumed.
+         ⚠️ Spawn kit only. A Jawa can still craft, buy and wear anything in play. -->
+    <apparelMoney>0</apparelMoney>
     <backstoryCryptosleepCommonality>1</backstoryCryptosleepCommonality>
     <techHediffsChance>0.03</techHediffsChance>
     <techHediffsMoney>50~800</techHediffsMoney>
@@ -102,6 +111,16 @@
       <li>guy762_Robes_jawa</li>
       <li>guy762_JawaHood</li>
     </apparelRequired>
+    <!-- 🔴 apparelMoney 0 — OWNER'S RULING 2026-08-23: "Jawa wear robes+hoods ONLY".
+         Asked directly, with this file's own contrary comment in front of him, and he
+         chose ONLY. So the random pass gets nothing to spend and a Jawa spawns in the
+         robe and the hood and nothing else.
+         🔑 This does NOT threaten the robe and hood. PawnApparelGenerator.cs:889 adds
+         apparelRequired BEFORE the money loop and independently of it, so they land at
+         any budget; 0 only silences the pass that was adding tribal ponchos, kilts and
+         war veils on top. Verified against the 1.6 source, not assumed.
+         ⚠️ Spawn kit only. A Jawa can still craft, buy and wear anything in play. -->
+    <apparelMoney>0</apparelMoney>
     <apparelTags>
       <li>SaV_apparel_jawa</li>
       <li>ORHermit</li>
@@ -137,6 +156,16 @@
       <li>guy762_Robes_jawa</li>
       <li>guy762_JawaHood</li>
     </apparelRequired>
+    <!-- 🔴 apparelMoney 0 — OWNER'S RULING 2026-08-23: "Jawa wear robes+hoods ONLY".
+         Asked directly, with this file's own contrary comment in front of him, and he
+         chose ONLY. So the random pass gets nothing to spend and a Jawa spawns in the
+         robe and the hood and nothing else.
+         🔑 This does NOT threaten the robe and hood. PawnApparelGenerator.cs:889 adds
+         apparelRequired BEFORE the money loop and independently of it, so they land at
+         any budget; 0 only silences the pass that was adding tribal ponchos, kilts and
+         war veils on top. Verified against the 1.6 source, not assumed.
+         ⚠️ Spawn kit only. A Jawa can still craft, buy and wear anything in play. -->
+    <apparelMoney>0</apparelMoney>
     <apparelTags>
       <li>SaV_apparel_jawa</li>
       <li>ORHermit</li>
@@ -183,6 +212,16 @@
       <li>guy762_Robes_jawa</li>
       <li>guy762_JawaHood</li>
     </apparelRequired>
+    <!-- 🔴 apparelMoney 0 — OWNER'S RULING 2026-08-23: "Jawa wear robes+hoods ONLY".
+         Asked directly, with this file's own contrary comment in front of him, and he
+         chose ONLY. So the random pass gets nothing to spend and a Jawa spawns in the
+         robe and the hood and nothing else.
+         🔑 This does NOT threaten the robe and hood. PawnApparelGenerator.cs:889 adds
+         apparelRequired BEFORE the money loop and independently of it, so they land at
+         any budget; 0 only silences the pass that was adding tribal ponchos, kilts and
+         war veils on top. Verified against the 1.6 source, not assumed.
+         ⚠️ Spawn kit only. A Jawa can still craft, buy and wear anything in play. -->
+    <apparelMoney>0</apparelMoney>
     <apparelTags>
       <li>SaV_apparel_jawa</li>
       <li>ORHermit</li>
