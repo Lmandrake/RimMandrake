@@ -93,12 +93,49 @@ without a codex.
 
 **`Protovermes` → ssik · `Compsognathus` → sskek · `dinornis` → kessik · `sivatherium` → obbakar.**
 
-All four **exist in the dump**. They are not broken defs. They were in the cast when this
-table was written and **fell out of it when the cast was re-run twice afterwards** — once
-for density-scaled commonality, once for the diet constraints. The generator emits no
-rename for them because it only renames what is cast.
+~~All four **exist in the dump**. They are not broken defs.~~
 
-🔑 **The names stand as reserve.** If any of the four returns to a cast, its name is already
+> 🔴 **CORRECTED 2026-08-23, DECIDE — two of the four do NOT exist.** Measured against the
+> live capture `2026-08-23T07-12-04Z` *and* the 2026-08-21 database, both empty:
+>
+> | name | exists? | ruling |
+> |---|---|---|
+> | `Protovermes` → **ssik** | 🔴 **NO — absent from both dumps.** Its mod is not installed | ⛔ **DEAD.** Not a reserve; there is nothing to hold a name for |
+> | `Compsognathus` → **sskek** | 🔴 **NO — absent from both dumps** | ⛔ **DEAD** |
+> | `dinornis` → **kessik** | ✅ yes, Megafauna | ⏸️ **RESERVE**, and the reason is below |
+> | `sivatherium` → **obbakar** | ✅ yes, Megafauna | ⏸️ **RESERVE**, and the reason is below |
+>
+> ⚠️ **"Reserve" and "dead" are different states and the doc merged them.** A reserve name is
+> waiting for a creature that exists; a dead one names nothing at all. `ssik` and `sskek` are
+> free to be re-used by any future creature — nothing holds them.
+
+### ⏸️ Why the two live ones stay OUT of the cast — DECIDE, 2026-08-23
+
+⛔ **Neither is cast, and the cast is NOT being re-opened for them.** Measured:
+
+| | `Dinornis` | `Sivatherium` |
+|---|---|---|
+| bodySize | 5 | **8** — SUPER-class (the 24 cast SUPERs median 8.2) |
+| sprite | 2,851 px | 2,526 px |
+| its band's weak line | 2,884 (huge) | 3,311 (SUPER) |
+| comfy temperature | −30 … **40** | −20 … **40** |
+| biomes on Ash'karr where its own mod gives it commonality > 0 | 4, all at **0.004 – 0.01** | 🔴 **none** |
+
+- **`Sivatherium` fails on all three counts.** No native reach on this planet at all; `ComfyTemperatureMax 40` excludes the hot desert that is 35% of the ground; and at bodySize 8 with a 2,526 px sprite it would enter the cast as an immediate shrink candidate under `CREATURE_RESIZE_PATCH_1`.
+- **`Dinornis` is closer but not close enough.** Its native reach is real but vanishing (0.004 in `AB_MiasmicMangrove`), and its sprite sits *below* its own band's weak line.
+- 🔑 **And the cast is settled.** The owner approved creature sizes against it on 2026-08-23; re-opening it to add two marginal animals would invalidate a decision hours old for no gain the world can see.
+
+✅ **Both names stand as reserve, in-clade and ready.** `obbakar` in particular is the
+bestiary's own elder-form of `obbak`, and **`Diprotodon` — the creature that carries `obbak` —
+IS cast**, so the pairing is waiting if a later re-cast wants it.
+
+⚠️ **TWO DEFS ARE CALLED SIVATHERIUM.** `Sivatherium` (Megafauna, bodySize 8) and
+`MA_Sivatherium` (Mythic Ages: Megafauna Bestiary, bodySize 3.3). **This row means the
+Megafauna one.** A generator matching on label would pick either.
+⚠️ **`Sivatherium`'s label carries a trailing space in the dump** — `'sivatherium '`. Anything
+matching on label must strip it; anything renaming it fixes it for free.
+
+🔑 **The names stand as reserve.** If either live one returns to a cast, its name is already
 coined and in-clade. ⛔ **Do not read an empty rename as a missing def** — `gen_name_patch.py`
 now says so out loud when the list is non-empty.
 ⚠️ **The lesson: this doc is authored against a SNAPSHOT of the cast.** Re-run the generator
