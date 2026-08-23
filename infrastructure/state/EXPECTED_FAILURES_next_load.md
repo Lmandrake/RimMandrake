@@ -2190,3 +2190,29 @@ now follows it, and every field is chosen from a failure this project has actual
 |---|---|---|
 | **K6** | `Jawa_Blackstar_Leader` combatPower **997**, `_Specialist` **718** | ⭐ **Owner's ruling: take the difficulty jump.** BUILD had clamped these to 260/150 on the argument that a 12,800-silver KotOR pistol is RARE rather than deadlier; that was put to him and he chose the jump. ⛔ **If Blackstar raids start arriving as one or two pawns, that is the INTENDED SHAPE, not a regression.** Few pawns, legendary weapons, a much richer drop. Do not "fix" it back. |
 | **K7** | A Blackstar Leader spawns holding a KotOR legendary weapon, not bare | The original defect. Budget is now 14600~26000 against a cheapest of 12000. |
+
+---
+
+## §17 — STAR WARS PET NAMES. Written 2026-08-23 15:1x by BUILD, game DOWN.
+
+Owner, verbatim: *"generate lore-accurate and humorous Star Wars pet names as a generator
+when pets are created or tamed. That's important immersion."* Three parts:
+`Defs/RulePackDefs/Jawa_PetNames.xml` (132 names), `Patches/PetNames_Ashkarr.xml` (160
+matches), and a third patch in the `JawaRules` assembly — **because def XML alone cannot
+deliver this.**
+
+🔑 **Both moments he named ignore the race namer.** Taming goes
+`DoRecruit → Recruit → Pawn.SetFaction → GenerateNecessaryName()`, and birth goes
+`PawnGenerator.GeneratePawn → GenerateNecessaryName()`. That method hard-codes
+**`NameStyle.Numeric`** — literally *"Dromedary 1"*. The only routine vanilla path that
+reads `race/nameGenerator` is the rare BOND relation, which needed no code at all.
+
+| # | reading | what it decides |
+|---|---|---|
+| **P1** | ✅ `[JawaRules] pet-names: armed; tamed and newborn animals will draw from their race namer` | The patch attached. ⚠️ **"armed" is NOT "working"** — see P2. |
+| **P2** | 🔴 **THE READING THAT MATTERS: tame an animal and read its name.** PASS = a corpus name. FAIL = `"<Race> 1"`. | `GenerateNecessaryName` is a short non-virtual method and **the JIT may INLINE it into `SetFaction`. Harmony does not error when its target was inlined — it silently does nothing**, and P1 still prints "armed", because *patched* and *reached* are different claims. If P2 fails the cause is almost certainly inlining, and the fallback is a postfix on `PawnBioAndNameGenerator.GeneratePawnName` guarded on `style == NameStyle.Numeric`. |
+| **P3** | Over ~15 tames, roughly **2 in 3 lore, 1 in 3 humour**. | The ruling, expressed as grammar weights `p=6` / `p=3` — retunable in the def and nowhere else. |
+| **P4** | ⛔ **No MECHANOID is named this way.** | `GenerateNecessaryName` also fires for Biotech mechs; the postfix guards on `RaceProps.Animal`. A centipede called "Warranty Void" means the guard is wrong. |
+| **P5** | A bonded animal keeps its bond name; a player-renamed animal is never overwritten. | The postfix only replaces a name that is `null` or `Numerical`. |
+| **P6** | 🔑 **Offline, after the re-dump:** ThingDef rows with `race.nameGenerator == "Jawa_NamerPetSW"` should be **160**, and `SWAnimalNamerMale`'s count should have dropped by exactly that. | ⚠️ **A patch that matched nothing shows up HERE and nowhere else** — it logs nothing. Query `defs.sqlite`; never `grep`. |
+| **P7** | No `Could not get new name` in the log. | 132 names is a FLOOR, not a target: `NameGenerator` rejects names already `UsedThisGame` and retries 150 times before giving up. A big menagerie can exhaust it — appending is one `<li>`. |

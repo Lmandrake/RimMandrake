@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ========================================================================
+    Jawa_PetNames.xml            Jawa_Patches - authored 2026-08-23
+    ========================================================================
+    STAR_WARS_PET_NAMES_1. Owner, verbatim: "generate lore-accurate and
+    humorous Star Wars pet names as a generator when pets are created or
+    tamed. That's important immersion."
+
+    THE RATIO IS 2 LORE : 1 HUMOUR, and it is expressed as grammar WEIGHTS
+    rather than in code, so it can be retuned here and nowhere else.
+    Rule selection is weighted by p=, so 6:3 is about 67% lore / 33% humour.
+    Why two-thirds: the lore register is the TEXTURE and has to be what you
+    mostly see, or the setting stops feeling like Star Wars and starts
+    feeling like a joke mod. The humour register is CHARACTERISATION - a
+    Jawa outfit that names one animal in three "Warranty Void" reads as
+    scrappers with a sense of trade; one in two reads as memes.
+
+    72 lore + 60 humour = 132 names. That size is a FLOOR, not a target:
+    NameGenerator.GenerateName rejects names already UsedThisGame and retries
+    150 times before logging "Could not get new name", so a real menagerie can
+    exhaust a small corpus. Appending is one <li>.
+
+    Every output goes through GenText.ToTitleCaseSmart, which capitalises
+    after every space and hyphen and lowercases NOTHING - so these are
+    written already-cased and nothing surprises you. "M'aloo" survives.
+
+    <li> IS CORRECT HERE. RulePack is a plain class with ordinary List<T>
+    fields and no LoadDataFromXmlCustom - this is not the BiomeDef trap
+    where an <li> discards the whole def.
+    ========================================================================
+  -->
+
+  <RulePackDef>
+    <defName>Jawa_NamerPetSW</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name(p=6)-&gt;[loreName]</li>
+        <li>r_name(p=3)-&gt;[jokeName]</li>
+        <li>loreName-&gt;Bantha</li>
+        <li>loreName-&gt;Nerf</li>
+        <li>loreName-&gt;Womp</li>
+        <li>loreName-&gt;Massiff</li>
+        <li>loreName-&gt;Vornskr</li>
+        <li>loreName-&gt;Dewback</li>
+        <li>loreName-&gt;Ronto</li>
+        <li>loreName-&gt;Tauntaun</li>
+        <li>loreName-&gt;Mynock</li>
+        <li>loreName-&gt;Anooba</li>
+        <li>loreName-&gt;Nexu</li>
+        <li>loreName-&gt;Blurrg</li>
+        <li>loreName-&gt;Eopie</li>
+        <li>loreName-&gt;Shaak</li>
+        <li>loreName-&gt;Varactyl</li>
+        <li>loreName-&gt;Fathier</li>
+        <li>loreName-&gt;Gundark</li>
+        <li>loreName-&gt;Kaadu</li>
+        <li>loreName-&gt;Narglatch</li>
+        <li>loreName-&gt;Scurrier</li>
+        <li>loreName-&gt;Happabore</li>
+        <li>loreName-&gt;Luggabeast</li>
+        <li>loreName-&gt;Steelpecker</li>
+        <li>loreName-&gt;Ysalamir</li>
+        <li>loreName-&gt;Krayt</li>
+        <li>loreName-&gt;Rancor</li>
+        <li>loreName-&gt;Sarlacc</li>
+        <li>loreName-&gt;Reek</li>
+        <li>loreName-&gt;Acklay</li>
+        <li>loreName-&gt;Porg</li>
+        <li>loreName-&gt;Convor</li>
+        <li>loreName-&gt;Voorpak</li>
+        <li>loreName-&gt;Jakku</li>
+        <li>loreName-&gt;Lothal</li>
+        <li>loreName-&gt;Endor</li>
+        <li>loreName-&gt;Hoth</li>
+        <li>loreName-&gt;Dantooine</li>
+        <li>loreName-&gt;Ryloth</li>
+        <li>loreName-&gt;Sullust</li>
+        <li>loreName-&gt;Mantell</li>
+        <li>loreName-&gt;Kessel</li>
+        <li>loreName-&gt;Bespin</li>
+        <li>loreName-&gt;Yavin</li>
+        <li>loreName-&gt;Malastare</li>
+        <li>loreName-&gt;Geonosis</li>
+        <li>loreName-&gt;Mustafar</li>
+        <li>loreName-&gt;Utapau</li>
+        <li>loreName-&gt;Crait</li>
+        <li>loreName-&gt;Achuta</li>
+        <li>loreName-&gt;Sleemo</li>
+        <li>loreName-&gt;Poodoo</li>
+        <li>loreName-&gt;Chuba</li>
+        <li>loreName-&gt;Peedunkee</li>
+        <li>loreName-&gt;Wanga</li>
+        <li>loreName-&gt;Bargon</li>
+        <li>loreName-&gt;Koona</li>
+        <li>loreName-&gt;Mookee</li>
+        <li>loreName-&gt;Skocha</li>
+        <li>loreName-&gt;Utinni</li>
+        <li>loreName-&gt;Ootini</li>
+        <li>loreName-&gt;Togo</li>
+        <li>loreName-&gt;M'aloo</li>
+        <li>loreName-&gt;Gonk</li>
+        <li>loreName-&gt;Artoo</li>
+        <li>loreName-&gt;Threepio</li>
+        <li>loreName-&gt;Arfive</li>
+        <li>loreName-&gt;Beebee</li>
+        <li>loreName-&gt;Deetoo</li>
+        <li>loreName-&gt;Emtee</li>
+        <li>loreName-&gt;Kaytoo</li>
+        <li>loreName-&gt;Chopper</li>
+        <li>loreName-&gt;Treadwell</li>
+
+        <li>jokeName-&gt;Warranty Void</li>
+        <li>jokeName-&gt;Some Assembly</li>
+        <li>jokeName-&gt;As-Is</li>
+        <li>jokeName-&gt;No Refunds</li>
+        <li>jokeName-&gt;Third Owner</li>
+        <li>jokeName-&gt;Mostly Working</li>
+        <li>jokeName-&gt;Fully Functional</li>
+        <li>jokeName-&gt;Slight Damage</li>
+        <li>jokeName-&gt;Runs Fine</li>
+        <li>jokeName-&gt;Only Driven Once</li>
+        <li>jokeName-&gt;Two Careful Owners</li>
+        <li>jokeName-&gt;Sold As Seen</li>
+        <li>jokeName-&gt;Best Offer</li>
+        <li>jokeName-&gt;Final Sale</li>
+        <li>jokeName-&gt;Restocking Fee</li>
+        <li>jokeName-&gt;Bulk Discount</li>
+        <li>jokeName-&gt;Trade-In</li>
+        <li>jokeName-&gt;Free With Purchase</li>
+        <li>jokeName-&gt;Buyer Beware</li>
+        <li>jokeName-&gt;Certified Preowned</li>
+        <li>jokeName-&gt;Chief Financial Officer</li>
+        <li>jokeName-&gt;The Management</li>
+        <li>jokeName-&gt;Senior Partner</li>
+        <li>jokeName-&gt;Regional Manager</li>
+        <li>jokeName-&gt;Head Of Security</li>
+        <li>jokeName-&gt;Quality Control</li>
+        <li>jokeName-&gt;Acting Supervisor</li>
+        <li>jokeName-&gt;The Auditor</li>
+        <li>jokeName-&gt;Board Member</li>
+        <li>jokeName-&gt;Majority Shareholder</li>
+        <li>jokeName-&gt;Compliance</li>
+        <li>jokeName-&gt;Legal Department</li>
+        <li>jokeName-&gt;Procurement</li>
+        <li>jokeName-&gt;Logistics</li>
+        <li>jokeName-&gt;The Investor</li>
+        <li>jokeName-&gt;Spare Parts</li>
+        <li>jokeName-&gt;Loose Wire</li>
+        <li>jokeName-&gt;Power Coupling</li>
+        <li>jokeName-&gt;Bad Motivator</li>
+        <li>jokeName-&gt;Restraining Bolt</li>
+        <li>jokeName-&gt;Cracked Housing</li>
+        <li>jokeName-&gt;Load Bearing</li>
+        <li>jokeName-&gt;Duct Tape</li>
+        <li>jokeName-&gt;Percussive Repair</li>
+        <li>jokeName-&gt;Sand In Everything</li>
+        <li>jokeName-&gt;Vaporator</li>
+        <li>jokeName-&gt;Coolant Leak</li>
+        <li>jokeName-&gt;Reboot</li>
+        <li>jokeName-&gt;Firmware</li>
+        <li>jokeName-&gt;Undocumented Feature</li>
+        <li>jokeName-&gt;Known Issue</li>
+        <li>jokeName-&gt;Sold For Scrap</li>
+        <li>jokeName-&gt;Salvage Rights</li>
+        <li>jokeName-&gt;Ballast</li>
+        <li>jokeName-&gt;Counterweight</li>
+        <li>jokeName-&gt;Utinni Surcharge</li>
+        <li>jokeName-&gt;Marked Up</li>
+        <li>jokeName-&gt;Inventory</li>
+        <li>jokeName-&gt;Overstock</li>
+        <li>jokeName-&gt;Shrinkage</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+</Defs>

@@ -33,6 +33,10 @@ namespace JawaRules
             Apply(h, AccessTools.Method(typeof(PawnComponentsUtility), "CreateInitialComponents"),
                   typeof(Patch_CreateInitialComponents), "droid-relations",
                   "armed for humanlike pawns with no relations tracker");
+
+            Apply(h, AccessTools.Method(typeof(Pawn), "GenerateNecessaryName"),
+                  typeof(Patch_GenerateNecessaryName), "pet-names",
+                  "armed; tamed and newborn animals will draw from their race namer");
         }
 
         // Two separate log lines on purpose: this assembly carries two unrelated rules
@@ -123,6 +127,60 @@ namespace JawaRules
                 Log.WarningOnce("[JawaRules] could not add a relations tracker to "
                                 + (pawn == null ? "a null pawn" : pawn.def?.defName)
                                 + ": " + e.Message, 0x4A57A1);
+            }
+        }
+    }
+
+    // STAR_WARS_PET_NAMES_1, part 3 of 3. The corpus is a RulePackDef and the patch
+    // points the races at it - but BOTH moments the owner named would ignore it.
+    //
+    // 🔴 WHY DEF XML ALONE CANNOT DELIVER THIS. Read from the 1.6 source:
+    //   TAMED  -> InteractionWorker_RecruitAttempt.DoRecruit -> RecruitUtility.Recruit
+    //             -> Pawn.SetFaction -> Pawn.GenerateNecessaryName()
+    //   BORN   -> PawnGenerator.GeneratePawn -> the same GenerateNecessaryName()
+    // and that method hard-codes NameStyle.Numeric - literally "Dromedary 1". The
+    // race's nameGenerator is NEVER consulted on either path. The only routine
+    // vanilla route that reads it is the BOND relation, which is rare and already
+    // works with no code at all.
+    //
+    // ⚠️ GenerateNecessaryName is a short non-virtual method and the JIT MAY INLINE
+    // it into SetFaction. Harmony does not error when its target was inlined - it
+    // silently does nothing, which is this project's most-paid-for failure class.
+    // If the next load still shows "Dromedary 1", that is the cause, and the fallback
+    // is a postfix on PawnBioAndNameGenerator.GeneratePawnName guarded on
+    // style == NameStyle.Numeric - a much larger method and far less inline-prone.
+    // The Apply() line above will still say "armed", because being patched and being
+    // REACHED are different claims. Only the in-game name settles it.
+    public static class Patch_GenerateNecessaryName
+    {
+        public static void Postfix(Pawn __instance)
+        {
+            try
+            {
+                var p = __instance;
+                if (p == null || p.RaceProps == null) return;
+
+                // ⛔ Animals only. GenerateNecessaryName also fires for Biotech MECHS,
+                // and a mechanoid called "Warranty Void" is a different feature.
+                if (!p.RaceProps.Animal) return;
+                if (p.Faction == null || p.Faction != Faction.OfPlayer) return;
+
+                // Only replace a name nobody chose. A bonded animal already has a real
+                // name from the Full path, and a player rename must never be clobbered.
+                if (p.Name != null && !p.Name.Numerical) return;
+
+                var namer = p.RaceProps.GetNameGenerator(p.gender);
+                if (namer == null) return;
+
+                string n = NameGenerator.GenerateName(
+                    namer, x => !new NameSingle(x).UsedThisGame);
+                if (!string.IsNullOrEmpty(n))
+                    p.Name = new NameSingle(n);
+            }
+            catch (Exception e)
+            {
+                // Naming is cosmetic; taming and birth are not. Never throw here.
+                Log.WarningOnce("[JawaRules] pet-names: " + e.Message, 0x4A57A2);
             }
         }
     }

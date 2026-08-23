@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!--
+    ========================================================================
+    PetNames_Ashkarr.xml         Jawa_Patches - authored 2026-08-23
+    ========================================================================
+    STAR_WARS_PET_NAMES_1, part 2 of 3. The corpus is
+    Defs/RulePackDefs/Jawa_PetNames.xml; the Harmony hook that makes TAMING
+    and BIRTH use it at all is in the JawaRules assembly.
+
+    SCOPE, and why it is not "every animal". This repoints the ~320 ThingDefs
+    that already carry SWAnimalNamerMale - Star Wars Animal Collection's own
+    namer - and nothing else.
+    ⛔ NOT the 1721 rows on NamerAnimalGenericMale. That would rename every
+    animal on the planet including hostile fauna nobody ever tames, and a
+    thumper called "Restocking Fee" charging the colony is not the joke.
+    ⭐ Selecting BY THE EXISTING NAMER rather than by a def list means the set
+    tracks the donor mod: an animal it adds later is covered automatically,
+    and one it removes takes its own row with it.
+
+    The donor's namer is Star Wars PERSON names - Aedalus, Ailyn, Amber - so
+    there is no creature register and no humour register anywhere in the
+    stack. That gap is the whole item.
+
+    Both nameGenerator and nameGeneratorFemale point at ONE def: the corpus is
+    deliberately unisex, and RaceProperties.GetNameGenerator falls back to
+    nameGenerator when the female one is null anyway.
+
+    ⚠️ A patch that matches nothing LOGS NOTHING. The Conditional here is a
+    guard, not proof - the proof is the offline count in the item's verify,
+    which reads the dump and checks SWAnimalNamerMale's row count dropped by
+    exactly the number these gained.
+    ========================================================================
+  -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef/race/nameGenerator[text()="SWAnimalNamerMale"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef/race/nameGenerator[text()="SWAnimalNamerMale"]</xpath>
+      <value><nameGenerator>Jawa_NamerPetSW</nameGenerator></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef/race/nameGeneratorFemale[text()="SWAnimalNamerFemale"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef/race/nameGeneratorFemale[text()="SWAnimalNamerFemale"]</xpath>
+      <value><nameGeneratorFemale>Jawa_NamerPetSW</nameGeneratorFemale></value>
+    </match>
+  </Operation>
+
+</Patch>
