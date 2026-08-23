@@ -1876,3 +1876,6 @@
 {"seat":"DECIDE","event":"claim","id":"WORLDGEN_CITATIONS_REPOINT_DECIDE_1","ts":"2026-08-23T17:51:00Z"}
 {"seat":"DECIDE","event":"start","id":"WORLDGEN_CITATIONS_REPOINT_DECIDE_1","ts":"2026-08-23T17:51:00Z"}
 {"seat":"DECIDE","event":"close","id":"WORLDGEN_CITATIONS_REPOINT_DECIDE_1","sha":"5c14b7cb","ts":"2026-08-23T17:52:06Z"}
+{"seat":"DECIDE","event":"claim","id":"XENOTYPE_ROSTER_PURE_SW_1","ts":"2026-08-23T17:52:21Z"}
+{"seat":"DECIDE","event":"start","id":"XENOTYPE_ROSTER_PURE_SW_1","ts":"2026-08-23T17:52:21Z"}
+{"seat":"DECIDE","event":"file","id":"XENOTYPE_NONFACTION_SPAWN_ROUTES_1","title":"A xenotype can reach a player without any faction fielding it: wanderers, quest pawns, refugees, sanguophages","kind":"task","target":"v1","needs":"offline","caused_by":"XENOTYPE_ROSTER_PURE_SW_1","for":"CHECK","ts":"2026-08-23T17:54:02Z"}

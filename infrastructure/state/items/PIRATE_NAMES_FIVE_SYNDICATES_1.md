@@ -33,3 +33,22 @@ all six — that is the bug this closes.
 with their own namers. Replace those overrides; do not add beside them.
 ⚠️ Only `Pirate` has settlements, so the other five surface in raid letters and the faction tab,
 not on the world map. That is expected, not a failed deploy.
+
+## 🔴 CORRECTION FROM DECIDE, same day — read this BEFORE spending time on it
+
+**Measured while ruling `XENOTYPE_ROSTER_PURE_SW_1`, hours after this item was filed: all five
+of these factions carry `startingCountAtWorldCreation: 0` and therefore never enter the world.**
+
+| faction | startingCountAtWorldCreation |
+|---|---:|
+| `Pirate` | **1** — generates, 4 settlements, keeps Blackstar Company |
+| `PirateWaster` · `PirateYttakin` · `CannibalPirate` · `AG_XenohumanPirates` · `DV_PirateKeshig` | **0** |
+
+⇒ **The names are correct and the reasoning stands, but the payoff is smaller than this item
+implies.** These five appear only if the owner adds them by hand at the Configure Factions page
+(`maxConfigurableAtWorldCreation` is 9999, so he can).
+
+🔑 **It is still worth doing, and cheaply** — five one-rule namers is minutes, and it means the
+factions are correct *if* he ever enables one. ⛔ **But do not treat it as urgent, and do not
+raise any `startingCountAtWorldCreation` to "make it visible"** — that would add a pirate
+faction to a hand-made, frozen world, which is a world change and not a naming one.
