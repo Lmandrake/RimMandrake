@@ -12,6 +12,9 @@ sheet can merge his calls per-row over the prefill.
 """
 import base64, csv, json, os, sys, collections
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from plant_harvest_coverage import sole_sources   # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 MODS = os.path.join(ROOT, 'design', 'Jawa', 'mods')
 CSV  = os.path.join(MODS, 'plant_cherrypick_candidates.csv')
@@ -138,6 +141,12 @@ def main():
         except Exception as e:
             print(f'  sprites: manifest unreadable ({e}); shipping without', file=sys.stderr)
 
+    # 🔴 THE COST OF A CUT, per biome. `gen_plant_sheet` guarded WoodLog alone; this is
+    # every resource. A plant that is the only supplier of something inside a biome does
+    # not thin that biome when cut - it deletes the resource from it, silently.
+    # Discharges the second criterion of PLANT_CHERRYPICK_PASS_1.
+    sole = sole_sources(rows, tiles)
+
     items = []
     for r in rows:
         biomes = {b for b in r['biomes'].split('|') if b in tiles}
@@ -157,6 +166,8 @@ def main():
             'b': sorted(biomes), 'eff': ' · '.join(bits),
             's': state, 'rule': rule, 'note': note,
             'life': r['defName'] in lifeline,
+            'sole': [{'b': b, 'res': res} for b, res in
+                     sorted(sole.get(r['defName'], []), key=lambda br: -tiles[br[0]])],
             'img': sprites.get(r['defName'], ''),
         })
     order = {g: n for n, (g, _t, _d) in enumerate(GROUPS)}
@@ -171,6 +182,8 @@ def main():
     print(f"  {len(items)} plants · prefill: keep {n['keep']} · cut {n['cut']} · undecided {n['undecided']}")
     print(f"  sprites embedded: {len(sprites)}/{len(items)}")
     print(f"  wood lifelines protected: {len(lifeline)}")
+    print(f"  sole-source plants flagged: {sum(1 for i in items if i['sole'])} "
+          f"({sum(len(i['sole']) for i in items)} biome-resource pairs)")
 
 TEMPLATE = r'''<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -221,6 +234,10 @@ tr.cut{background:#241a1a}tr.undec{background:#241f16}
 .tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px;background:#262b33;color:#8b929e;margin-right:4px}
 .tag.tree{background:#3a2f1c;color:#d0a95e}
 .tag.life{background:#1e3524;color:#6fc98c}
+.tag.sole{background:#3a2020;color:#e88f86}
+.cost{margin-top:5px;padding:5px 8px;border-radius:4px;background:#2a1a1a;border-left:3px solid #d4574e;color:#e0b3ae;font-size:12px}
+.cost b{color:#fff}
+.cost code{background:#14161a;padding:0 3px;border-radius:3px;color:#f0c8c2}
 .tag.rule{background:#2a2436;color:#a48fd0}
 .reach{width:88px;text-align:right;font-size:12px;color:#9aa2ad;white-space:nowrap}
 .reach b{color:#d8dbe0;display:block;font-size:13px}
@@ -278,6 +295,7 @@ Filed as <code>MERIDIAN_GREEN_IS_NOT_RIVER_JUNGLE_1</code>.</div>
 <input type="search" id="q" placeholder="search name, defName, mod, effect…">
 <select id="fs"><option value="">all decisions</option><option value="keep">keep</option><option value="cut">cut</option><option value="undecided">undecided</option></select>
 <select id="ft"><option value="">trees + groundcover</option><option value="tree">trees only</option><option value="ground">groundcover only</option></select>
+<select id="fc"><option value="">any cut cost</option><option value="sole">🔴 sole source only</option><option value="wood">🔴 last wood in a biome</option></select>
 <select id="fm"><option value="">all mods</option></select>
 <div class="count" id="count"></div>
 </div></div>
@@ -369,11 +387,13 @@ function set(d, s){ state[d].s = s; state[d].touched = true; queueWrite(); rende
 function setNote(d, v){ state[d].note = v; state[d].touched = true; queueWrite(); }
 function bulk(g, s){ for(const it of ITEMS) if(it.g===g && visible(it)) { state[it.d].s=s; state[it.d].touched=true; } queueWrite(); render(); }
 
-let q='', fs='', ft='', fm='';
+let q='', fs='', ft='', fm='', fc='';
 function visible(it){
   if(fs && state[it.d].s!==fs) return false;
   if(ft==='tree' && !it.t) return false;
   if(ft==='ground' && it.t) return false;
+  if(fc==='sole' && !(it.sole&&it.sole.length)) return false;
+  if(fc==='wood' && !(it.sole||[]).some(x=>x.res==='WoodLog')) return false;
   if(fm && it.m!==fm) return false;
   if(q){ const h=(it.l+' '+it.d+' '+it.m+' '+it.eff+' '+it.note).toLowerCase(); if(!h.includes(q)) return false; }
   return true;
@@ -411,8 +431,9 @@ function row(it){
   <td class="spr">${img}</td>
   <td><div class="nm">${esc(it.l)}</div><div class="dn">${esc(it.d)} · ${esc(it.m)}</div>
     <div class="eff">${esc(it.eff)}</div>
-    <div class="tags">${it.t?'<span class="tag tree">TREE</span>':''}${it.life?'<span class="tag life">LAST WOOD</span>':''}<span class="tag rule">${it.rule}</span></div>
+    <div class="tags">${it.t?'<span class="tag tree">TREE</span>':''}${it.life?'<span class="tag life">LAST WOOD</span>':''}${it.sole&&it.sole.length?'<span class="tag sole">SOLE SOURCE</span>':''}<span class="tag rule">${it.rule}</span></div>
     <div class="why">${esc(it.note)}</div>
+    ${it.sole&&it.sole.length?`<div class="cost">🔴 <b>Cutting this deletes a resource from a biome.</b> ${it.sole.map(x=>`<code>${esc(x.res)}</code> from <code>${esc(x.b)}</code>`).join(' · ')} — it is the only plant there that yields it.</div>`:''}
     <div class="bio">${esc(bio)}</div>
     <input class="note" placeholder="your note…" value="${esc(s.note||'')}" oninput="setNote('${it.d}',this.value)">
   </td>
@@ -430,6 +451,7 @@ document.getElementById('fm').innerHTML='<option value="">all mods</option>'+mod
 document.getElementById('q').oninput=e=>{q=e.target.value.toLowerCase();render();};
 document.getElementById('fs').onchange=e=>{fs=e.target.value;render();};
 document.getElementById('ft').onchange=e=>{ft=e.target.value;render();};
+document.getElementById('fc').onchange=e=>{fc=e.target.value;render();};
 document.getElementById('fm').onchange=e=>{fm=e.target.value;render();};
 render(); setLink('');
 </script></body></html>'''
