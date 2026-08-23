@@ -96,7 +96,14 @@ sat frozen at 55 rows / 165 items since 08-20 while the ledger moved to 39 rows 
 
 ## Two modes
 
-**interactive** — questions accumulate in `queue/HUMAN.md`. When the human appears, walk them through it: one line per
+🔴 **SUPERSEDED 2026-08-23 by the BENCH page in `infrastructure/agents/POLICY.md` (commit `8c2ac30b`).**
+The vocabulary is now **BENCH** (per-window, he is here) / **BELT** (the queue runs itself) / **AFK**, and
+`infrastructure/state/MODE` reads `belt`. ⛔ **`interactive` and `autonomous` are dead words — do not
+"repair" MODE back to one of them**; REP nearly did on 2026-08-23 15:5x reading this section. BENCH is
+delivered per-turn by `.claude/hooks/bench_mode.py`, not by this file. What survives below: `afk` is still
+the value `rimflow` acts on, and the `--mode`/`$RIMFLOW_MODE` warning at the end of the section.
+
+**interactive** (dead)  — questions accumulate in `queue/HUMAN.md`. When the human appears, walk them through it: one line per
 question, the choices, your recommendation first. They answer; you route each answer to the asking agent.
 
 **autonomous** — agents assume their own answers and log `Q / A(assumed) / item`. When the human returns, walk the pairs
