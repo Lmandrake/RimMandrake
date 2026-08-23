@@ -1536,3 +1536,6 @@
 {"seat":"BUILD","event":"claim","id":"VALIDATE_PATCH_NEEDS_SELFTEST_1","ts":"2026-08-23T00:04:19Z"}
 {"seat":"BUILD","event":"start","id":"VALIDATE_PATCH_NEEDS_SELFTEST_1","ts":"2026-08-23T00:04:19Z"}
 {"seat":"BUILD","event":"close","id":"VALIDATE_PATCH_NEEDS_SELFTEST_1","sha":"7715b1bf","ts":"2026-08-23T00:06:48Z"}
+{"seat":"BUILD","event":"claim","id":"SABER_GUARD_NAMES_WRONG_MOD_1","ts":"2026-08-23T00:08:10Z"}
+{"seat":"BUILD","event":"start","id":"SABER_GUARD_NAMES_WRONG_MOD_1","ts":"2026-08-23T00:23:53Z"}
+{"seat":"BUILD","event":"close","id":"SABER_GUARD_NAMES_WRONG_MOD_1","sha":"d56e05b1","ts":"2026-08-23T00:23:53Z"}
