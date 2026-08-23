@@ -1710,3 +1710,4 @@
 {"seat":"DECIDE","event":"start","id":"PLANT_LIST_MISSES_MUTATOR_ROUTE_1","ts":"2026-08-23T08:20:40Z"}
 {"seat":"OWNER","event":"close","id":"INTIMACY_MOD_RENAMES_SPECIES_1","sha":"0bdf3a95","ownerSaid":"Ignore the additional gestor/phallor word and move on for v1 please","override":"OWNER may not `close` INTIMACY_MOD_RENAMES_SPECIES_1 — it belongs to BUILD. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-08-23T08:21:19Z"}
 {"seat":"BUILD","event":"note","id":"AUTHORED_FACTIONS_WEAR_ANYTHING_1","text":"The design exists: design/Jawa/worldbuilding/faction_equipment_clusters.md PART 3 item 3, with a per-faction apparel cluster table already written. This item is its implementation, not a new design question.","ts":"2026-08-23T08:21:54Z"}
+{"seat":"DECIDE","event":"close","id":"PLANT_LIST_MISSES_MUTATOR_ROUTE_1","sha":"4ca6f273","ts":"2026-08-23T08:23:21Z"}

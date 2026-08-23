@@ -10,53 +10,53 @@ the biome. The core desert is first because it is what you objected to.
 you a world with every plant still in it. Mark what looks wrong; the cost of each cut
 is already on its row in `plant_review.html`.
 
-## 🔴 `Desert` — 4,124 tiles (18.9% of the planet)
+## 🔴 `Desert` — 4,309 tiles (19.7% of the planet)
 
-**Land on tile `13015`** — *Kiln*, 45.1°C, 186 m, rain 0 mm.
+**Land on tile `20384`** — *Thornbelt*, 29.3°C, 162 m, rain 0 mm.
 
 🔴 **3 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,601 tiles
-- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,126 tiles
-- **martyr tree** (`BMT_Plant_TreeMartyr`, Biomes! Polluted Lands) — reaches 4,548 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
+- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,232 tiles
+- **martyr tree** (`BMT_Plant_TreeMartyr`, Biomes! Polluted Lands) — reaches 5,018 tiles
 
-✅ *4 more tree-class plants read correctly for the ground — pebble cactus, saguaro cactus, cholla cactus, hoodia cactus.*
+✅ *2 more tree-class plants read correctly for the ground — pebble cactus, saguaro cactus.*
 
 ⚠️ **2 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
 
 - **agave** (`Plant_Agave`) — only source of `RawAgave`
 - **pox sorghum** (`BMT_Plant_PoxSorghum`) — only source of `BMT_PoxSorghumHarvested`
 
-*23 plants reachable in total.*
+*21 plants reachable in total.*
 
-## 🔴 `ExtremeDesert` — 3,569 tiles (16.3% of the planet)
+## 🔴 `ExtremeDesert` — 3,214 tiles (14.7% of the planet)
 
-**Land on tile `11164`** — *Dune Sea*, 54.0°C, 143 m, rain 0 mm.
+**Land on tile `18332`** — *Glare*, 50.0°C, 195 m, rain 0 mm.
 
 🔴 **2 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,601 tiles
-- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,126 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
+- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,232 tiles
 
-✅ *4 more tree-class plants read correctly for the ground — pebble cactus, saguaro cactus, cholla cactus, hoodia cactus.*
+✅ *2 more tree-class plants read correctly for the ground — pebble cactus, saguaro cactus.*
 
 ⚠️ **3 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
 
 - **agave** (`Plant_Agave`) — only source of `RawAgave`
-- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`) — only source of `BMT_Toxwood`
 - **pox sorghum** (`BMT_Plant_PoxSorghum`) — only source of `BMT_PoxSorghumHarvested`
+- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`) — only source of `BMT_Toxwood`
 
-*27 plants reachable in total.*
+*25 plants reachable in total.*
 
-## 🔴 `AridShrubland` — 539 tiles (2.5% of the planet)
+## 🔴 `AridShrubland` — 709 tiles (3.2% of the planet)
 
-**Land on tile `6933`** — *Dew Horn*, 32.4°C, 439 m, rain 658 mm.
+**Land on tile `2917`** — *Dew Horn*, 32.7°C, 137 m, rain 138 mm.
 
 🔴 **3 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,601 tiles
-- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,126 tiles
-- **martyr tree** (`BMT_Plant_TreeMartyr`, Biomes! Polluted Lands) — reaches 4,548 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
+- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,232 tiles
+- **martyr tree** (`BMT_Plant_TreeMartyr`, Biomes! Polluted Lands) — reaches 5,018 tiles
 
 ✅ *2 more tree-class plants read correctly for the ground — pebble cactus, saguaro cactus.*
 
@@ -68,15 +68,15 @@ is already on its row in `plant_review.html`.
 
 *23 plants reachable in total.*
 
-## `AB_RockyCrags` — 4,155 tiles (19.0% of the planet)
+## `AB_RockyCrags` — 3,816 tiles (17.4% of the planet)
 
-**Land on tile `19060`** — *Deadstone*, -51.5°C, 624 m, rain 0 mm.
+**Land on tile `7762`** — *Deadstone*, -46.2°C, 641 m, rain 0 mm.
 
 🔴 **3 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **polluted stikehr** (`AB_PollutedStikehr`, Alpha Biomes) — reaches 4,440 tiles
-- **toxic gamma** (`AB_ToxicGamma`, Alpha Biomes) — reaches 4,440 tiles
-- **giant septimum** (`AB_GiantSeptimum`, Alpha Biomes) — reaches 4,440 tiles
+- **toxic gamma** (`AB_ToxicGamma`, Alpha Biomes) — reaches 3,816 tiles
+- **polluted stikehr** (`AB_PollutedStikehr`, Alpha Biomes) — reaches 3,816 tiles
+- **giant septimum** (`AB_GiantSeptimum`, Alpha Biomes) — reaches 3,816 tiles
 
 ⚠️ **1 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
 
@@ -94,12 +94,12 @@ is already on its row in `plant_review.html`.
 
 ⚠️ **6 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
 
-- **agaricus domecap** (`AB_AgaricusDomeCap`) — only source of `AB_PsychotropicFungus`
-- **witches' oyster** (`AB_WitchesOyster`) — only source of `AB_PinkRawFungus`
-- **slimy pholiota** (`AB_SlimyPholiota`) — only source of `AB_BlueRawFungus`
-- **dribbling cap** (`AB_DribblingCap`) — only source of `AB_WeaponPoisonDart`
 - **glowstool** (`AB_Glowstool`) — only source of `RawFungus`
+- **witches' oyster** (`AB_WitchesOyster`) — only source of `AB_PinkRawFungus`
+- **agaricus domecap** (`AB_AgaricusDomeCap`) — only source of `AB_PsychotropicFungus`
 - **arbuscular mycorrhiza** (`AB_ArbuscularMycorrhiza`) — only source of `WoodLog`
+- **dribbling cap** (`AB_DribblingCap`) — only source of `AB_WeaponPoisonDart`
+- **slimy pholiota** (`AB_SlimyPholiota`) — only source of `AB_BlueRawFungus`
 
 *15 plants reachable in total.*
 
@@ -120,18 +120,30 @@ is already on its row in `plant_review.html`.
 
 *9 plants reachable in total.*
 
+## `HorrorWastes` — 807 tiles (3.7% of the planet)
+
+**Land on tile `87`** — *Deadstone*, -44.6°C, 582 m, rain 0 mm.
+
+**No trees here.** Groundcover only.
+
+⚠️ **1 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
+
+- **agave** (`Plant_Agave`) — only source of `RawAgave`
+
+*1 plants reachable in total.*
+
 ## `PoisonForest` — 604 tiles (2.8% of the planet)
 
 **Land on tile `14982`** — *Quiet Ground*, -42.0°C, 477 m, rain 0 mm.
 
 🔴 **6 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **cecropia tree** (`PoisonPlantTreeCecropia`, Advanced Biomes (Continued)) — reaches 604 tiles
+- **teak tree** (`Plant_TreeTeak`, Core) — reaches 604 tiles
+- **cecropia tree** (`Plant_TreeCecropia`, Core) — reaches 604 tiles
 - **teak tree** (`PoisonPlantTreeTeak`, Advanced Biomes (Continued)) — reaches 604 tiles
+- **cecropia tree** (`PoisonPlantTreeCecropia`, Advanced Biomes (Continued)) — reaches 604 tiles
 - **cypress tree** (`PoisonTreeCypress`, Advanced Biomes (Continued)) — reaches 604 tiles
 - **willow tree** (`PoisonTreeWillow`, Advanced Biomes (Continued)) — reaches 604 tiles
-- **cecropia tree** (`Plant_TreeCecropia`, Core) — reaches 604 tiles
-- **teak tree** (`Plant_TreeTeak`, Core) — reaches 604 tiles
 
 ✅ *1 more tree-class plants read correctly for the ground — palm tree.*
 
@@ -150,9 +162,9 @@ is already on its row in `plant_review.html`.
 ⚠️ **4 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
 
 - **crystal horn** (`AB_CrystalHorn`) — only source of `AB_RawCrystalHorn`
-- **crystal flower** (`AB_CrystalFlower`) — only source of `AB_CrystalWood`
 - **frost leaf** (`AB_FrostLeaf`) — only source of `AB_RawFrostLeaf`
 - **rime nodules** (`AB_RimeNodules`) — only source of `AB_RawRimeNodules`
+- **crystal flower** (`AB_CrystalFlower`) — only source of `AB_CrystalWood`
 
 *5 plants reachable in total.*
 
@@ -162,7 +174,7 @@ is already on its row in `plant_review.html`.
 
 🔴 **1 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **oak tree** (`Plant_TreeOak`, Core) — reaches 546 tiles
+- **oak tree** (`Plant_TreeOak`, Core) — reaches 545 tiles
 
 ✅ *1 more tree-class plants read correctly for the ground — pebble cactus.*
 
@@ -197,23 +209,23 @@ is already on its row in `plant_review.html`.
 
 - **arpeau** (`BMT_Arpeau`, Biomes! Caverns) — reaches 552 tiles
 - **flakespire fungus** (`BMT_FlakespireFungus`, Biomes! Caverns) — reaches 425 tiles
-- **shine cap** (`BMT_Shinecap`, Biomes! Caverns) — reaches 425 tiles
 - **nogtyl** (`BMT_Nogtyl`, Biomes! Caverns) — reaches 425 tiles
 - **nogtyl** (`BMT_NogtylMarsh`, Biomes! Caverns) — reaches 425 tiles
 - **poptop** (`BMT_Poptop`, Biomes! Caverns) — reaches 425 tiles
 - **ravelmush** (`BMT_Ravelmush`, Biomes! Caverns) — reaches 425 tiles
+- **shine cap** (`BMT_Shinecap`, Biomes! Caverns) — reaches 425 tiles
 
 ⚠️ **9 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
 
 - **mycelium** (`BMT_CavernMycelium`) — only source of `BMT_MycelialBlocks`
 - **dulcis** (`BMT_DulcisPlant`) — only source of `BMT_RawDulcis`
 - **Grey Lady** (`BMT_GreyLady`) — only source of `Cloth`
-- **violet wimple** (`BMT_VioletWimple`) — only source of `RawFungus`
 - **kessinger** (`BMT_KessingerPlant`) — only source of `BMT_Kessinger`
-- **starchstalk** (`BMT_StarchstalkPlant`) — only source of `BMT_Starchstalk`
-- **shine cap** (`BMT_Shinecap`) — only source of `BMT_Glimmerslime`
 - **mortal morel** (`BMT_MortalMorelPlant`) — only source of `BMT_MedicineFungal`
+- **shine cap** (`BMT_Shinecap`) — only source of `BMT_Glimmerslime`
+- **starchstalk** (`BMT_StarchstalkPlant`) — only source of `BMT_Starchstalk`
 - **stimquill** (`BMT_Stimquill`) — only source of `BMT_StimquillDrug`
+- **violet wimple** (`BMT_VioletWimple`) — only source of `RawFungus`
 
 *27 plants reachable in total.*
 
@@ -237,7 +249,7 @@ is already on its row in `plant_review.html`.
 
 🔴 **1 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,601 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
 
 ✅ *2 more tree-class plants read correctly for the ground — pebble cactus, dwarf palm tree.*
 
@@ -253,7 +265,7 @@ is already on its row in `plant_review.html`.
 
 🔴 **1 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,601 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
 
 ✅ *6 more tree-class plants read correctly for the ground — pebble cactus, saguaro cactus, rat palm tree, dwarf palm tree, palm tree, palm tree.*
 
@@ -360,8 +372,8 @@ is already on its row in `plant_review.html`.
 
 ⚠️ **2 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
 
-- **firevine tree** (`AB_FirevineTree`) — only source of `WoodLog`
 - **brown barrel cactus** (`AB_BrownBarrelCactus`) — only source of `AB_RawBrownBarrelCactus`
+- **firevine tree** (`AB_FirevineTree`) — only source of `WoodLog`
 
 *4 plants reachable in total.*
 
@@ -371,9 +383,9 @@ is already on its row in `plant_review.html`.
 
 🔴 **3 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
+- **poplar tree** (`Plant_TreePoplar`, Core) — reaches 23 tiles
 - **pine tree** (`Plant_TreePine`, Core) — reaches 23 tiles
 - **birch tree** (`Plant_TreeBirch`, Core) — reaches 23 tiles
-- **poplar tree** (`Plant_TreePoplar`, Core) — reaches 23 tiles
 
 ⚠️ **2 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
 
@@ -388,7 +400,7 @@ is already on its row in `plant_review.html`.
 
 🔴 **1 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,601 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
 
 ✅ *1 more tree-class plants read correctly for the ground — pebble cactus.*
 
@@ -405,16 +417,16 @@ is already on its row in `plant_review.html`.
 
 🔴 **4 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **ocular tree** (`AB_AlienTree`, Alpha Biomes) — reaches 3 tiles
 - **mutated ocular tree** (`AB_AlienTree_Polluted`, Alpha Biomes) — reaches 3 tiles
 - **polluted globular aberration** (`AB_GlobularPlant_Polluted`, Alpha Biomes) — reaches 3 tiles
+- **ocular tree** (`AB_AlienTree`, Alpha Biomes) — reaches 3 tiles
 - **half transformed ocular tree** (`AB_HalfAlienTree`, Alpha Biomes) — reaches 3 tiles
 
 ⚠️ **3 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
 
+- **half transformed ocular tree** (`AB_HalfAlienTree`) — only source of `WoodLog`
 - **tentacular aberration** (`AB_TentacularPlant`) — only source of `AB_RawTentacularFruit`
 - **blood bouquet** (`AB_BloodBouquet`) — only source of `AB_RawBloodBouquet`
-- **half transformed ocular tree** (`AB_HalfAlienTree`) — only source of `WoodLog`
 
 *11 plants reachable in total.*
 

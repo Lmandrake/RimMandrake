@@ -1,193 +1,193 @@
-defName,label,mod,packageId,isTree,treeCategory,growDays,harvestedThingDef,tilesReachable,biomes
-Plant_GrayGrass,gray grass,Biotech,ludeon.rimworld.biotech,False,None,2.5,,14234,AB_FeraliskInfestedJungle|AB_GelatinousSuperorganism|AB_MiasmicMangrove|AB_MycoticJungle|AB_PropaneLakes|AB_PyroclasticConflagration|AB_TarPits|AridShrubland|Desert|ExtremeDesert|LavaField|Scarlands|Wasteland|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands
-Plant_Agave,agave,Core,ludeon.rimworld,False,None,6,RawAgave,10089,AridShrubland|Desert|ExtremeDesert|LavaField|Wasteland|ZBiome_DesertOasis
-Plant_PebbleCactus,pebble cactus,Biotech,ludeon.rimworld.biotech,True,Full,28,WoodLog,9204,AB_TarPits|AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands
-Plant_PincushionCactus,pincushion cactus,Core,ludeon.rimworld,False,None,2.5,,9147,AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands
-RG_FlowerCactus,flower cactus,ReGrowth 2,regrowth.botr.core,False,None,2.5,,9132,AridShrubland|Desert|ExtremeDesert|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands
-RG_Plant_AridGrass,grass,ReGrowth 2,regrowth.botr.core,False,None,2.5,,8905,AridShrubland|Desert|ExtremeDesert|ZBiome_Badlands|ZBiome_Grasslands
-Plant_TreeDrago,drago tree,Core,ludeon.rimworld,True,Full,15,WoodLog,8601,AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_DesertOasis|ZBiome_Grasslands
-Plant_SaguaroCactus,saguaro cactus,Core,ludeon.rimworld,True,Full,5,WoodLog,8353,AridShrubland|Desert|ExtremeDesert|ZBiome_DesertOasis
-BMT_Plant_TreeTwistingThornwood,twisting thornwood,Biomes! Polluted Lands,biomesteam.biomespollutedlands,True,Full,15,BMT_Toxwood,8126,AridShrubland|Desert|ExtremeDesert
-BMT_Plant_TwistingThornweed,twisting thornweed,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8126,AridShrubland|Desert|ExtremeDesert
-BMT_Plant_ScorchedStars,scorched stars,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8126,AridShrubland|Desert|ExtremeDesert
-BMT_Plant_PoxSorghum,pox sorghum,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5.5,BMT_PoxSorghumHarvested,8126,AridShrubland|Desert|ExtremeDesert
-BMT_Plant_SewerReed,sewer reed,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8126,AridShrubland|Desert|ExtremeDesert
-BMT_Plant_Pestia,pestia,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8126,AridShrubland|Desert|ExtremeDesert
-BMT_Plant_PlagueFans,plague fans,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,4,,8126,AridShrubland|Desert|ExtremeDesert
-BMT_Plant_TwistingThorngrass,twisting thorngrass,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,2.5,,8126,AridShrubland|Desert|ExtremeDesert
-Plant_Grass,grass,ReGrowth 2,regrowth.botr.core,False,None,2.5,,6934,AB_FeraliskInfestedJungle|AB_TarPits|ExtremeDesert|LavaField|Volcano|Wasteland|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands
-Plant_Bush,bush,Core,ludeon.rimworld,False,None,3,,6261,AB_MiasmicMangrove|AridShrubland|Desert|LavaField|PoisonForest|Volcano|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands
-Plant_Dandelion,dandelions,Core,ludeon.rimworld,False,None,2.5,,6173,AridShrubland|Desert|LavaField|PoisonForest|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands
-Plant_Reeds,reeds,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,5569,AridShrubland|Desert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands
-Plant_DesertDandelion,dandelions,ReGrowth 2,regrowth.botr.core,False,None,2.5,,5554,AridShrubland|Desert|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands
-BMT_Plant_TreeMartyr,martyr tree,Biomes! Polluted Lands,biomesteam.biomespollutedlands,True,Full,10,BMT_Toxwood,4548,AridShrubland|Desert
-AB_PollutedStikehr,polluted stikehr,Alpha Biomes,sarg.alphabiomes,True,Full,15,WoodLog,4440,AB_RockyCrags
-AB_ToxicGamma,toxic gamma,Alpha Biomes,sarg.alphabiomes,True,Full,2,WoodLog,4440,AB_RockyCrags
-AB_GiantStikehr,giant stikehr,Alpha Biomes,sarg.alphabiomes,False,None,15,WoodLog,4440,AB_RockyCrags
-AB_GlowingGrass,grass,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,4440,AB_RockyCrags
-AB_GiantSeptimum,giant septimum,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,4440,AB_RockyCrags
-AB_WildRadagast,wild ragadast,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawRagadast,4440,AB_RockyCrags
-AB_GiantGamma,giant gamma,Alpha Biomes,sarg.alphabiomes,False,None,3,,4440,AB_RockyCrags
-VCE_Plant_AloeVera,aloe vera plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3578,ExtremeDesert
-VCE_Plant_BunnyEarsCactus,bunny ears cactus,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3578,ExtremeDesert
-VCE_Plant_Echeveria,echeveria plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3578,ExtremeDesert
-VCE_Plant_FairyWashboard,fairy washboard plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3578,ExtremeDesert
-VCE_Plant_JadePlant,jade plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3578,ExtremeDesert
-VCE_Plant_PeyotePlant,peyote plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3578,ExtremeDesert
-VCE_Plant_PincushionPlant,pincushion plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3578,ExtremeDesert
-VCE_Plant_SnakePlant,snake plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3578,ExtremeDesert
-Plant_Ripthorn,ripthorn,Biotech,ludeon.rimworld.biotech,False,None,3,,2590,Scarlands|Wasteland|ZBiome_Badlands|ZBiome_Grasslands
-RG_Plant_Raspberry,raspberry bush,ReGrowth 2,regrowth.botr.core,False,None,4,RawBerries,2401,AridShrubland
-BMT_Plant_TwistedDandelion,twisted dandelion,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,2.5,,2401,AridShrubland
-Plant_Berry,berry bush,Core,ludeon.rimworld,False,None,6,RawBerries,2020,AB_FeraliskInfestedJungle|AB_MiasmicMangrove|LavaField|PoisonForest|Volcano|ZBiome_Badlands|ZBiome_Grasslands
-AB_AgaricusDomeCap,agaricus domecap,Alpha Biomes,sarg.alphabiomes,False,None,10,AB_PsychotropicFungus,1939,AB_MycoticJungle
-AB_WitchesOyster,witches' oyster,Alpha Biomes,sarg.alphabiomes,False,None,5,AB_PinkRawFungus,1939,AB_MycoticJungle
-AB_LilacBeacon,lilac beacon,Alpha Biomes,sarg.alphabiomes,False,None,10,AB_PurpleRawFungus,1939,AB_MycoticJungle
-AB_RecurvedStropharia,recurved stropharia,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_MushroomWoodLog,1939,AB_MycoticJungle
-AB_SlimyPholiota,slimy pholiota,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_BlueRawFungus,1939,AB_MycoticJungle
-AB_DribblingCap,dribbling cap,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_WeaponPoisonDart,1939,AB_MycoticJungle
-AB_Glowstool,glowstool,Alpha Biomes,sarg.alphabiomes,False,None,10,RawFungus,1939,AB_MycoticJungle
-AB_Agarilux,agarilux,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_PurpleRawFungus,1939,AB_MycoticJungle
-AB_Bryolux,bryolux,Alpha Biomes,sarg.alphabiomes,False,None,5,,1939,AB_MycoticJungle
-AB_GlowingAgarilux,glowing agarilux,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_PurpleRawFungus,1939,AB_MycoticJungle
-AB_GiantAgarilux,giant agarilux,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_MushroomWoodLog,1939,AB_MycoticJungle
-AB_ArbuscularMycorrhiza,arbuscular mycorrhiza,Alpha Biomes,sarg.alphabiomes,False,None,15,WoodLog,1939,AB_MycoticJungle
-AB_GiantAgariTox,agaritox,Alpha Biomes,sarg.alphabiomes,True,Full,15,AB_MushroomWoodLog,1939,AB_MycoticJungle
-AB_LandCoral,amethyst land coral fungus,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,1939,AB_MycoticJungle
-Plant_Brambles_Leafless,brambles,Odyssey,ludeon.rimworld.odyssey,False,None,3,,1811,Scarlands|Wasteland
-Plant_Witchwood,witchwood tree,Biotech,ludeon.rimworld.biotech,True,Full,28,WoodLog,1811,Scarlands|Wasteland
-Plant_Berry_Leafless,berry bush,Odyssey,ludeon.rimworld.odyssey,False,None,6,RawBerries,1721,Wasteland
-Plant_Bush_Leafless,bush,Odyssey,ludeon.rimworld.odyssey,False,None,3,,1721,Wasteland
-TreeDead,dead tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,32.5,WoodLog,1721,Wasteland
-Plant_TallGrass,tall grass,ReGrowth 2,regrowth.botr.core,False,None,3,,1436,AB_FeraliskInfestedJungle|AB_MiasmicMangrove|PoisonForest|ZBiome_Grasslands
-Plant_RatPalm,rat palm tree,Biotech,ludeon.rimworld.biotech,True,Full,28,WoodLog,883,AB_FeraliskInfestedJungle|AB_MiasmicMangrove|AB_TarPits|ZBiome_DesertOasis
-Plant_Alocasia,alocasia,Core,ludeon.rimworld,False,None,3,,826,AB_FeraliskInfestedJungle|AB_MiasmicMangrove|ZBiome_DesertOasis
-PoisonPlantTallGrass,tall grass,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,,604,PoisonForest
-PoisonPlantDandelion,dandelions,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,2.5,,604,PoisonForest
-PoisonPlantBush,bush,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,,604,PoisonForest
-PoisonBrambles,poison brambles,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,,604,PoisonForest
-PoisonRafflesia,poison rafflesia,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,,604,PoisonForest
-PoisonShrub,poison shrub,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,,604,PoisonForest
-PoisonPlantTreeCecropia,cecropia tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,14,WoodLog,604,PoisonForest
-PoisonPlantTreeTeak,teak tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,32.5,WoodLog,604,PoisonForest
-PoisonTreeCypress,cypress tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,14,WoodLog,604,PoisonForest
-PoisonTreePalm,palm tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,14,WoodLog,604,PoisonForest
-PoisonTreeWillow,willow tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,13,WoodLog,604,PoisonForest
-PoisonPlantRaspberry,raspberry bush,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,6,RawBerries,604,PoisonForest
-PoisonMushroom,wild mushroom,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,RawPoisonMushroom,604,PoisonForest
-Plant_TreeCecropia,cecropia tree,Core,ludeon.rimworld,True,Full,14,WoodLog,604,PoisonForest
-Plant_TreeTeak,teak tree,Core,ludeon.rimworld,True,Full,32.5,WoodLog,604,PoisonForest
-Plant_ShrubLow,low shrubs,Core,ludeon.rimworld,False,None,3,,599,AB_FeraliskInfestedJungle|AB_MiasmicMangrove
-AB_CrystalHorn,crystal horn,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawCrystalHorn,554,AB_PropaneLakes
-AB_CrystalFlower,crystal flower,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_CrystalWood,554,AB_PropaneLakes
-AB_FrostLeaf,frost leaf,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawFrostLeaf,554,AB_PropaneLakes
-AB_RimeNodules,rime nodules,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawRimeNodules,554,AB_PropaneLakes
-BMT_CavernMycelium,mycelium,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.5,BMT_MycelialBlocks,552,BMT_CrystalCaverns|BMT_FungalForest
-BMT_DulcisPlant,dulcis,Biomes! Caverns,biomesteam.biomescaverns,False,None,7,BMT_RawDulcis,552,BMT_CrystalCaverns|BMT_FungalForest
-BMT_GreyLady,Grey Lady,Biomes! Caverns,biomesteam.biomescaverns,False,None,8,Cloth,552,BMT_CrystalCaverns|BMT_FungalForest
-BMT_Arpeau,arpeau,Biomes! Caverns,biomesteam.biomescaverns,True,Full,5,BMT_MushroomLog,552,BMT_CrystalCaverns|BMT_FungalForest
-BMT_Nuitae,nuitae,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,552,BMT_CrystalCaverns|BMT_FungalForest
-Plant_TreeOak,oak tree,Core,ludeon.rimworld,True,Full,30,WoodLog,546,ZBiome_Badlands
-AB_JungleTree_Polluted,deep jungle polux,Alpha Biomes,sarg.alphabiomes,True,Full,22,WoodLog,534,AB_FeraliskInfestedJungle
-AB_WeepingToxberry,weeping toxberry,Alpha Biomes,sarg.alphabiomes,False,None,3,,534,AB_FeraliskInfestedJungle
-AB_JungleTree,deep jungle tree,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,534,AB_FeraliskInfestedJungle
-AB_Gomphoeria,gomphoeria,Alpha Biomes,sarg.alphabiomes,False,None,3,,534,AB_FeraliskInfestedJungle
-AB_RedBugloss,red bugloss,Alpha Biomes,sarg.alphabiomes,False,None,3,,534,AB_FeraliskInfestedJungle
-AB_Aaklac,aaklac,Alpha Biomes,sarg.alphabiomes,False,None,3,,534,AB_FeraliskInfestedJungle
-Plant_Chokevine,chokevine,Core,ludeon.rimworld,False,None,5,,525,AB_MiasmicMangrove|ZBiome_DesertOasis|ZBiome_Grasslands
-Plant_LilyPad,lily pad,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,460,ZBiome_DesertOasis|ZBiome_Grasslands
-RG_Plant_TreeDwarfPalm,dwarf palm tree,ReGrowth 2,regrowth.botr.core,True,Full,6,WoodLog,460,ZBiome_DesertOasis|ZBiome_Grasslands
-RG_Plant_RedDandelion,dandelions,ReGrowth 2,regrowth.botr.core,False,None,2.5,,460,ZBiome_DesertOasis|ZBiome_Grasslands
-BMT_Dewshrooms,dewshrooms,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.5,,425,BMT_FungalForest
-BMT_FruitingBodies,mold fruiting bodies,Biomes! Caverns,biomesteam.biomescaverns,False,None,4.5,,425,BMT_FungalForest
-BMT_Pusmelon,pusmelon,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.799999952316284,,425,BMT_FungalForest
-BMT_RustPuff,rustpuff,Biomes! Caverns,biomesteam.biomescaverns,False,None,5.5,,425,BMT_FungalForest
-BMT_Sagecrust,sagecrust,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.5,,425,BMT_FungalForest
-BMT_BalefulBolete,baleful bolete,Biomes! Caverns,biomesteam.biomescaverns,False,None,5,,425,BMT_FungalForest
-BMT_BleedingTooth,bleeding tooth,Biomes! Caverns,biomesteam.biomescaverns,False,None,2,,425,BMT_FungalForest
-BMT_CrimsonCap,crimson cap,Biomes! Caverns,biomesteam.biomescaverns,False,None,5,,425,BMT_FungalForest
-BMT_VioletWimple,violet wimple,Biomes! Caverns,biomesteam.biomescaverns,False,None,5,RawFungus,425,BMT_FungalForest
-BMT_FlakespireFungus,flakespire fungus,Biomes! Caverns,biomesteam.biomescaverns,True,Full,18,BMT_MushroomLog,425,BMT_FungalForest
-BMT_KessingerPlant,kessinger,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,BMT_Kessinger,425,BMT_FungalForest
-BMT_StarchstalkPlant,starchstalk,Biomes! Caverns,biomesteam.biomescaverns,False,None,6,BMT_Starchstalk,425,BMT_FungalForest
-BMT_Shinecap,shine cap,Biomes! Caverns,biomesteam.biomescaverns,True,Full,30,BMT_Glimmerslime,425,BMT_FungalForest
-BMT_MortalMorelPlant,mortal morel,Biomes! Caverns,biomesteam.biomescaverns,False,None,10,BMT_MedicineFungal,425,BMT_FungalForest
-BMT_Stimquill,stimquill,Biomes! Caverns,biomesteam.biomescaverns,False,None,5.5,BMT_StimquillDrug,425,BMT_FungalForest
-BMT_Wrinklecap,wrinklecap,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,425,BMT_FungalForest
-BMT_NuitaeMarsh,nuitae,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,425,BMT_FungalForest
-BMT_WrinklecapMarsh,wrinklecap,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,425,BMT_FungalForest
-BMT_Nogtyl,nogtyl,Biomes! Caverns,biomesteam.biomescaverns,True,Full,7,WoodLog,425,BMT_FungalForest
-BMT_NogtylMarsh,nogtyl,Biomes! Caverns,biomesteam.biomescaverns,True,Full,7,WoodLog,425,BMT_FungalForest
-BMT_Poptop,poptop,Biomes! Caverns,biomesteam.biomescaverns,True,Full,1,,425,BMT_FungalForest
-BMT_Ravelmush,ravelmush,Biomes! Caverns,biomesteam.biomescaverns,True,Full,5,BMT_MushroomLog,425,BMT_FungalForest
-Plant_Clivia,clivia,Core,ludeon.rimworld,False,None,3,,292,AB_MiasmicMangrove|ZBiome_DesertOasis
-Plant_HealrootWild,wild healroot,Core,ludeon.rimworld,False,None,10,MedicineHerbal,250,Volcano|ZBiome_DesertOasis
-AB_HardyGrass,hardy grass,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,236,AB_MechanoidIntrusion
-AB_SessileMechanoid,sessile mechanoid tree,Alpha Biomes,sarg.alphabiomes,True,Full,40,WoodLog,236,AB_MechanoidIntrusion
-Plant_Bulrush,bulrush,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,233,ZBiome_Grasslands
-Plant_YellowGrass,yellow grass,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,233,ZBiome_Grasslands
-Plant_YellowTallGrass,tall yellow grass,Odyssey,ludeon.rimworld.odyssey,False,None,3,,233,ZBiome_Grasslands
-Plant_TreePalm,palm tree,Core,ludeon.rimworld,True,Full,14,WoodLog,227,ZBiome_DesertOasis
-Plant_Lotus,lotus,Odyssey,ludeon.rimworld.odyssey,False,None,1.5,,227,ZBiome_DesertOasis
-RG_Plant_TropicalIvy,ivy,ReGrowth 2,regrowth.botr.core,False,None,15,,227,ZBiome_DesertOasis
-RG_Plant_TropicalFern,fern,ReGrowth 2,regrowth.botr.core,False,None,3,,227,ZBiome_DesertOasis
-RG_Plant_TallPalmTree,palm tree,ReGrowth 2,regrowth.botr.core,True,Full,48,WoodLog,227,ZBiome_DesertOasis
-RG_Plant_TropicalBrambles,brambles,ReGrowth 2,regrowth.botr.core,False,None,3,,227,ZBiome_DesertOasis
-RG_Plant_BlueDandelion,dandelions,ReGrowth 2,regrowth.botr.core,False,None,2.5,,227,ZBiome_DesertOasis
-BMT_Gleamtip,gleamtip,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.5,,127,BMT_CrystalCaverns
-BMT_Fungusfern,fungusfern,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,127,BMT_CrystalCaverns
-BMT_CrystaltipBrambles,crystaltip brambles,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,127,BMT_CrystalCaverns
-BMT_YumBulbs,yum bulbs,Biomes! Caverns,biomesteam.biomescaverns,False,None,5,,127,BMT_CrystalCaverns
-BMT_Crystalcap,crystalcap,Biomes! Caverns,biomesteam.biomescaverns,True,Full,30,BMT_MushroomLog,127,BMT_CrystalCaverns
-BMT_LuminousSpout,luminous spout,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.5,,127,BMT_CrystalCaverns
-BMT_Crystal_BlueSowable,fast growing crystal,Biomes! Caverns,biomesteam.biomescaverns,False,None,33.29999923706055,BMT_ResourceBlueCrystal,127,BMT_CrystalCaverns
-AB_ToxiBulb,toxibulb,Alpha Biomes,sarg.alphabiomes,True,Full,2,WoodLog,96,AB_GelatinousSuperorganism
-AB_TallSlimyGrass,tall slimy grass,Alpha Biomes,sarg.alphabiomes,False,None,3,,96,AB_GelatinousSuperorganism
-AB_SlimyTree,slimy tree,Alpha Biomes,sarg.alphabiomes,False,None,32.5,AB_RawSlime,96,AB_GelatinousSuperorganism
-AB_LargeSlimyTree,large slimy tree,Alpha Biomes,sarg.alphabiomes,False,None,32.5,AB_RawSlime,96,AB_GelatinousSuperorganism
-AB_Slimecasia,slimecasia,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawSlime,96,AB_GelatinousSuperorganism
-AB_SlimyFern,slimy fern,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawSlime,96,AB_GelatinousSuperorganism
-Plant_Thornvine,thornvine,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,90,Scarlands
-Plant_TreeSnagroot,snagroot tree,Odyssey,ludeon.rimworld.odyssey,True,Full,52,WoodLog,90,Scarlands
-RG_Plant_ToxiGrass,toxigrass,ReGrowth 2,regrowth.botr.core,False,None,2.5,,90,Scarlands
-RG_Plant_TallToxiGrass,tall toxigrass,ReGrowth 2,regrowth.botr.core,False,None,3,,90,Scarlands
-RG_Plant_MutatedFungus,mutated fungus,ReGrowth 2,regrowth.botr.core,False,None,3,,90,Scarlands
-RG_Plant_GlowLeaf,glow leaf,ReGrowth 2,regrowth.botr.core,False,None,3.5,,90,Scarlands
-RG_Plant_LureWeed,lure weed,ReGrowth 2,regrowth.botr.core,False,None,3.5,,90,Scarlands
-RG_Plant_MutatedFern,mutated fern,ReGrowth 2,regrowth.botr.core,False,None,15,,90,Scarlands
-RG_Plant_TreeToxipine,toxipine tree,ReGrowth 2,regrowth.botr.core,True,Full,32,WoodLog,90,Scarlands
-RG_Plant_TreeSplitpine,splitpine tree,ReGrowth 2,regrowth.botr.core,True,Full,42,WoodLog,90,Scarlands
-RG_Plant_TreeToxiTeak,toxiteak tree,ReGrowth 2,regrowth.botr.core,True,Full,35.5,WoodLog,90,Scarlands
-RG_Tripaloski,tripaloski,ReGrowth 2,regrowth.botr.core,False,None,45,RawFungus,90,Scarlands
-AB_MangroveTree,mangrove tree,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,65,AB_MiasmicMangrove
-AB_ParasiticMangrove,parasitic mangrove,Alpha Biomes,sarg.alphabiomes,False,None,3,MedicineHerbal,65,AB_MiasmicMangrove
-AB_MangrovePalm,mangrove palm,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,65,AB_MiasmicMangrove
-Plant_Rafflesia,giant rafflesia,Core,ludeon.rimworld,False,None,3,,65,AB_MiasmicMangrove
-AB_GreenRockFern,green rock fern,Alpha Biomes,sarg.alphabiomes,False,None,3,,57,AB_TarPits
-AB_Iashiphus,iashiphus,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawIashiphus,57,AB_TarPits
-AB_SugarFamewort,sugar famewort,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawSugarFamewort,57,AB_TarPits
-AB_RavenNettle,raven nettle,Alpha Biomes,sarg.alphabiomes,False,None,3,,57,AB_TarPits
-AB_FanPalm,fan palm,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,57,AB_TarPits
-AB_KeeningCordax,keening cordax,Alpha Biomes,sarg.alphabiomes,True,Full,14,AB_CordaxResin,57,AB_TarPits
-AB_FirevineTree,firevine tree,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,31,AB_PyroclasticConflagration
-AB_TinkleGrass,tinkle grass,Alpha Biomes,sarg.alphabiomes,False,None,1,,31,AB_PyroclasticConflagration
-AB_BrownBarrelCactus,brown barrel cactus,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawBrownBarrelCactus,31,AB_PyroclasticConflagration
-Plant_Moss,moss,Core,ludeon.rimworld,False,None,4,,23,Volcano
-Plant_TreePine,pine tree,Core,ludeon.rimworld,True,Full,20,WoodLog,23,Volcano
-Plant_TreeBirch,birch tree,Core,ludeon.rimworld,True,Full,20,WoodLog,23,Volcano
-Plant_TreePoplar,poplar tree,Core,ludeon.rimworld,True,Full,15.050000190734863,WoodLog,23,Volcano
-Plant_MagmaCactus,magma cactus,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,15,LavaField
-BurnedTree,burned stump,Core,ludeon.rimworld,False,None,30,WoodLog,15,LavaField
-AB_AlienTree,ocular tree,Alpha Biomes,sarg.alphabiomes,True,Full,5,GU_RedWood,3,AB_OcularForest
-AB_AlienTree_Polluted,mutated ocular tree,Alpha Biomes,sarg.alphabiomes,True,Full,5,GU_RedWood,3,AB_OcularForest
-AB_GlobularPlant_Polluted,polluted globular aberration,Alpha Biomes,sarg.alphabiomes,True,Full,5,GU_RedWood,3,AB_OcularForest
-AB_EyeGrass,flowering ocular grass,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_OcularForest
-AB_TentacularPlant,tentacular aberration,Alpha Biomes,sarg.alphabiomes,False,None,5,AB_RawTentacularFruit,3,AB_OcularForest
-AB_GlobularPlant,globular aberration,Alpha Biomes,sarg.alphabiomes,False,None,5,GU_RedWood,3,AB_OcularForest
-AB_BloodBouquet,blood bouquet,Alpha Biomes,sarg.alphabiomes,False,None,5,AB_RawBloodBouquet,3,AB_OcularForest
-AB_AlienGrass,ocular grass,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_OcularForest
-AB_RedLeaves,ocular plant,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_OcularForest
-AB_RedPlantsTall,ocular plant,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_OcularForest
-AB_HalfAlienTree,half transformed ocular tree,Alpha Biomes,sarg.alphabiomes,True,Full,5,WoodLog,3,AB_OcularForest
-VEE_Plant_ChollaCactus,cholla cactus,Vanilla Landmarks Expanded,vanillaexpanded.vexploratione,True,Full,5,WoodLog,8,Desert|ExtremeDesert
-VEE_Plant_HoodiaCactus,hoodia cactus,Vanilla Landmarks Expanded,vanillaexpanded.vexploratione,True,Full,5,WoodLog,8,Desert|ExtremeDesert
+defName,label,mod,packageId,isTree,treeCategory,growDays,harvestedThingDef,tilesReachable,biomes,mutators,routes
+Plant_GrayGrass,gray grass,Biotech,ludeon.rimworld.biotech,False,None,2.5,,14339,AB_FeraliskInfestedJungle|AB_GelatinousSuperorganism|AB_MiasmicMangrove|AB_MycoticJungle|AB_PropaneLakes|AB_PyroclasticConflagration|AB_TarPits|AridShrubland|Desert|ExtremeDesert|LavaField|Scarlands|Wasteland|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,Oasis,biome+mutator
+Plant_Agave,agave,Core,ludeon.rimworld,False,None,6,RawAgave,11002,AridShrubland|Desert|ExtremeDesert|HorrorWastes|LavaField|Wasteland|ZBiome_DesertOasis,,biome
+Plant_PebbleCactus,pebble cactus,Biotech,ludeon.rimworld.biotech,True,Full,28,WoodLog,9309,AB_TarPits|AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+Plant_PincushionCactus,pincushion cactus,Core,ludeon.rimworld,False,None,2.5,,9252,AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+RG_FlowerCactus,flower cactus,ReGrowth 2,regrowth.botr.core,False,None,2.5,,9237,AridShrubland|Desert|ExtremeDesert|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+RG_Plant_AridGrass,grass,ReGrowth 2,regrowth.botr.core,False,None,2.5,,9010,AridShrubland|Desert|ExtremeDesert|ZBiome_Badlands|ZBiome_Grasslands,,biome
+Plant_TreeDrago,drago tree,Core,ludeon.rimworld,True,Full,15,WoodLog,8707,AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+Plant_SaguaroCactus,saguaro cactus,Core,ludeon.rimworld,True,Full,5,WoodLog,8459,AridShrubland|Desert|ExtremeDesert|ZBiome_DesertOasis,,biome
+BMT_Plant_Pestia,pestia,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8232,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_PlagueFans,plague fans,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,4,,8232,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_PoxSorghum,pox sorghum,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5.5,BMT_PoxSorghumHarvested,8232,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_ScorchedStars,scorched stars,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8232,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_SewerReed,sewer reed,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8232,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_TreeTwistingThornwood,twisting thornwood,Biomes! Polluted Lands,biomesteam.biomespollutedlands,True,Full,15,BMT_Toxwood,8232,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_TwistingThorngrass,twisting thorngrass,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,2.5,,8232,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_TwistingThornweed,twisting thornweed,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8232,AridShrubland|Desert|ExtremeDesert,,biome
+Plant_Bush,bush,Core,ludeon.rimworld,False,None,3,,6730,AB_MiasmicMangrove|AridShrubland|Desert|LavaField|PoisonForest|Volcano|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+Plant_Dandelion,dandelions,Core,ludeon.rimworld,False,None,2.5,,6642,AridShrubland|Desert|LavaField|PoisonForest|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+Plant_Grass,grass,ReGrowth 2,regrowth.botr.core,False,None,2.5,,6620,AB_FeraliskInfestedJungle|AB_TarPits|ExtremeDesert|LavaField|Volcano|Wasteland|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,Oasis,biome+mutator
+Plant_Reeds,reeds,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,6045,AridShrubland|Desert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,Oasis,biome+mutator
+Plant_DesertDandelion,dandelions,ReGrowth 2,regrowth.botr.core,False,None,2.5,,6023,AridShrubland|Desert|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+BMT_Plant_TreeMartyr,martyr tree,Biomes! Polluted Lands,biomesteam.biomespollutedlands,True,Full,10,BMT_Toxwood,5018,AridShrubland|Desert,,biome
+AB_ToxicGamma,toxic gamma,Alpha Biomes,sarg.alphabiomes,True,Full,2,WoodLog,3816,AB_RockyCrags,,biome
+AB_PollutedStikehr,polluted stikehr,Alpha Biomes,sarg.alphabiomes,True,Full,15,WoodLog,3816,AB_RockyCrags,,biome
+AB_GiantStikehr,giant stikehr,Alpha Biomes,sarg.alphabiomes,False,None,15,WoodLog,3816,AB_RockyCrags,,biome
+AB_GiantSeptimum,giant septimum,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,3816,AB_RockyCrags,,biome
+AB_GlowingGrass,grass,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3816,AB_RockyCrags,,biome
+AB_WildRadagast,wild ragadast,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawRagadast,3816,AB_RockyCrags,,biome
+AB_GiantGamma,giant gamma,Alpha Biomes,sarg.alphabiomes,False,None,3,,3816,AB_RockyCrags,,biome
+VCE_Plant_AloeVera,aloe vera plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3214,ExtremeDesert,,biome
+VCE_Plant_BunnyEarsCactus,bunny ears cactus,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3214,ExtremeDesert,,biome
+VCE_Plant_Echeveria,echeveria plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3214,ExtremeDesert,,biome
+VCE_Plant_FairyWashboard,fairy washboard plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3214,ExtremeDesert,,biome
+VCE_Plant_JadePlant,jade plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3214,ExtremeDesert,,biome
+VCE_Plant_PeyotePlant,peyote plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3214,ExtremeDesert,,biome
+VCE_Plant_PincushionPlant,pincushion plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3214,ExtremeDesert,,biome
+VCE_Plant_SnakePlant,snake plant,Vanilla Plants Expanded - Succulents,vanillaexpanded.vplantsesucculents,False,None,3,,3214,ExtremeDesert,,biome
+Plant_Ripthorn,ripthorn,Biotech,ludeon.rimworld.biotech,False,None,3,,2589,Scarlands|Wasteland|ZBiome_Badlands|ZBiome_Grasslands,,biome
+Plant_Berry,berry bush,Core,ludeon.rimworld,False,None,6,RawBerries,2019,AB_FeraliskInfestedJungle|AB_MiasmicMangrove|LavaField|PoisonForest|Volcano|ZBiome_Badlands|ZBiome_Grasslands,,biome
+AB_GiantAgariTox,agaritox,Alpha Biomes,sarg.alphabiomes,True,Full,15,AB_MushroomWoodLog,1939,AB_MycoticJungle,,biome
+AB_LandCoral,amethyst land coral fungus,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,1939,AB_MycoticJungle,,biome
+AB_Glowstool,glowstool,Alpha Biomes,sarg.alphabiomes,False,None,10,RawFungus,1939,AB_MycoticJungle,,biome
+AB_LilacBeacon,lilac beacon,Alpha Biomes,sarg.alphabiomes,False,None,10,AB_PurpleRawFungus,1939,AB_MycoticJungle,,biome
+AB_WitchesOyster,witches' oyster,Alpha Biomes,sarg.alphabiomes,False,None,5,AB_PinkRawFungus,1939,AB_MycoticJungle,,biome
+AB_AgaricusDomeCap,agaricus domecap,Alpha Biomes,sarg.alphabiomes,False,None,10,AB_PsychotropicFungus,1939,AB_MycoticJungle,,biome
+AB_Agarilux,agarilux,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_PurpleRawFungus,1939,AB_MycoticJungle,,biome
+AB_GiantAgarilux,giant agarilux,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_MushroomWoodLog,1939,AB_MycoticJungle,,biome
+AB_ArbuscularMycorrhiza,arbuscular mycorrhiza,Alpha Biomes,sarg.alphabiomes,False,None,15,WoodLog,1939,AB_MycoticJungle,,biome
+AB_DribblingCap,dribbling cap,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_WeaponPoisonDart,1939,AB_MycoticJungle,,biome
+AB_RecurvedStropharia,recurved stropharia,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_MushroomWoodLog,1939,AB_MycoticJungle,,biome
+AB_SlimyPholiota,slimy pholiota,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_BlueRawFungus,1939,AB_MycoticJungle,,biome
+AB_GlowingAgarilux,glowing agarilux,Alpha Biomes,sarg.alphabiomes,False,None,15,AB_PurpleRawFungus,1939,AB_MycoticJungle,,biome
+AB_Bryolux,bryolux,Alpha Biomes,sarg.alphabiomes,False,None,5,,1939,AB_MycoticJungle,,biome
+Plant_Witchwood,witchwood tree,Biotech,ludeon.rimworld.biotech,True,Full,28,WoodLog,1811,Scarlands|Wasteland,,biome
+Plant_Brambles_Leafless,brambles,Odyssey,ludeon.rimworld.odyssey,False,None,3,,1811,Scarlands|Wasteland,,biome
+Plant_Berry_Leafless,berry bush,Odyssey,ludeon.rimworld.odyssey,False,None,6,RawBerries,1721,Wasteland,,biome
+Plant_Bush_Leafless,bush,Odyssey,ludeon.rimworld.odyssey,False,None,3,,1721,Wasteland,,biome
+TreeDead,dead tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,32.5,WoodLog,1721,Wasteland,,biome
+Plant_TallGrass,tall grass,ReGrowth 2,regrowth.botr.core,False,None,3,,1436,AB_FeraliskInfestedJungle|AB_MiasmicMangrove|PoisonForest|ZBiome_Grasslands,,biome
+Plant_RatPalm,rat palm tree,Biotech,ludeon.rimworld.biotech,True,Full,28,WoodLog,941,AB_FeraliskInfestedJungle|AB_MiasmicMangrove|AB_TarPits|ZBiome_DesertOasis,Oasis,biome+mutator
+Plant_Alocasia,alocasia,Core,ludeon.rimworld,False,None,3,,826,AB_FeraliskInfestedJungle|AB_MiasmicMangrove|ZBiome_DesertOasis,,biome
+RG_Plant_Raspberry,raspberry bush,ReGrowth 2,regrowth.botr.core,False,None,4,RawBerries,709,AridShrubland,,biome
+BMT_Plant_TwistedDandelion,twisted dandelion,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,2.5,,709,AridShrubland,,biome
+Plant_TreeTeak,teak tree,Core,ludeon.rimworld,True,Full,32.5,WoodLog,604,PoisonForest,,biome
+Plant_TreeCecropia,cecropia tree,Core,ludeon.rimworld,True,Full,14,WoodLog,604,PoisonForest,,biome
+PoisonPlantTallGrass,tall grass,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,,604,PoisonForest,,biome
+PoisonPlantTreeTeak,teak tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,32.5,WoodLog,604,PoisonForest,,biome
+PoisonPlantTreeCecropia,cecropia tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,14,WoodLog,604,PoisonForest,,biome
+PoisonPlantRaspberry,raspberry bush,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,6,RawBerries,604,PoisonForest,,biome
+PoisonPlantBush,bush,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,,604,PoisonForest,,biome
+PoisonPlantDandelion,dandelions,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,2.5,,604,PoisonForest,,biome
+PoisonMushroom,wild mushroom,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,RawPoisonMushroom,604,PoisonForest,,biome
+PoisonBrambles,poison brambles,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,,604,PoisonForest,,biome
+PoisonRafflesia,poison rafflesia,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,,604,PoisonForest,,biome
+PoisonShrub,poison shrub,Advanced Biomes (Continued),mlie.advancedbiomes,False,None,3,,604,PoisonForest,,biome
+PoisonTreeCypress,cypress tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,14,WoodLog,604,PoisonForest,,biome
+PoisonTreePalm,palm tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,14,WoodLog,604,PoisonForest,,biome
+PoisonTreeWillow,willow tree,Advanced Biomes (Continued),mlie.advancedbiomes,True,Full,13,WoodLog,604,PoisonForest,,biome
+Plant_ShrubLow,low shrubs,Core,ludeon.rimworld,False,None,3,,599,AB_FeraliskInfestedJungle|AB_MiasmicMangrove,,biome
+AB_CrystalHorn,crystal horn,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawCrystalHorn,554,AB_PropaneLakes,,biome
+AB_FrostLeaf,frost leaf,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawFrostLeaf,554,AB_PropaneLakes,,biome
+AB_RimeNodules,rime nodules,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawRimeNodules,554,AB_PropaneLakes,,biome
+AB_CrystalFlower,crystal flower,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_CrystalWood,554,AB_PropaneLakes,,biome
+BMT_Arpeau,arpeau,Biomes! Caverns,biomesteam.biomescaverns,True,Full,5,BMT_MushroomLog,552,BMT_CrystalCaverns|BMT_FungalForest,,biome
+BMT_CavernMycelium,mycelium,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.5,BMT_MycelialBlocks,552,BMT_CrystalCaverns|BMT_FungalForest,,biome
+BMT_DulcisPlant,dulcis,Biomes! Caverns,biomesteam.biomescaverns,False,None,7,BMT_RawDulcis,552,BMT_CrystalCaverns|BMT_FungalForest,,biome
+BMT_GreyLady,Grey Lady,Biomes! Caverns,biomesteam.biomescaverns,False,None,8,Cloth,552,BMT_CrystalCaverns|BMT_FungalForest,,biome
+BMT_Nuitae,nuitae,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,552,BMT_CrystalCaverns|BMT_FungalForest,,biome
+Plant_TreeOak,oak tree,Core,ludeon.rimworld,True,Full,30,WoodLog,545,ZBiome_Badlands,,biome
+AB_JungleTree_Polluted,deep jungle polux,Alpha Biomes,sarg.alphabiomes,True,Full,22,WoodLog,534,AB_FeraliskInfestedJungle,,biome
+AB_WeepingToxberry,weeping toxberry,Alpha Biomes,sarg.alphabiomes,False,None,3,,534,AB_FeraliskInfestedJungle,,biome
+AB_RedBugloss,red bugloss,Alpha Biomes,sarg.alphabiomes,False,None,3,,534,AB_FeraliskInfestedJungle,,biome
+AB_Gomphoeria,gomphoeria,Alpha Biomes,sarg.alphabiomes,False,None,3,,534,AB_FeraliskInfestedJungle,,biome
+AB_Aaklac,aaklac,Alpha Biomes,sarg.alphabiomes,False,None,3,,534,AB_FeraliskInfestedJungle,,biome
+AB_JungleTree,deep jungle tree,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,534,AB_FeraliskInfestedJungle,,biome
+Plant_Chokevine,chokevine,Core,ludeon.rimworld,False,None,5,,525,AB_MiasmicMangrove|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+Plant_LilyPad,lily pad,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,460,ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+RG_Plant_RedDandelion,dandelions,ReGrowth 2,regrowth.botr.core,False,None,2.5,,460,ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+RG_Plant_TreeDwarfPalm,dwarf palm tree,ReGrowth 2,regrowth.botr.core,True,Full,6,WoodLog,460,ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+BMT_BalefulBolete,baleful bolete,Biomes! Caverns,biomesteam.biomescaverns,False,None,5,,425,BMT_FungalForest,,biome
+BMT_BleedingTooth,bleeding tooth,Biomes! Caverns,biomesteam.biomescaverns,False,None,2,,425,BMT_FungalForest,,biome
+BMT_CrimsonCap,crimson cap,Biomes! Caverns,biomesteam.biomescaverns,False,None,5,,425,BMT_FungalForest,,biome
+BMT_FlakespireFungus,flakespire fungus,Biomes! Caverns,biomesteam.biomescaverns,True,Full,18,BMT_MushroomLog,425,BMT_FungalForest,,biome
+BMT_FruitingBodies,mold fruiting bodies,Biomes! Caverns,biomesteam.biomescaverns,False,None,4.5,,425,BMT_FungalForest,,biome
+BMT_KessingerPlant,kessinger,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,BMT_Kessinger,425,BMT_FungalForest,,biome
+BMT_MortalMorelPlant,mortal morel,Biomes! Caverns,biomesteam.biomescaverns,False,None,10,BMT_MedicineFungal,425,BMT_FungalForest,,biome
+BMT_Nogtyl,nogtyl,Biomes! Caverns,biomesteam.biomescaverns,True,Full,7,WoodLog,425,BMT_FungalForest,,biome
+BMT_NogtylMarsh,nogtyl,Biomes! Caverns,biomesteam.biomescaverns,True,Full,7,WoodLog,425,BMT_FungalForest,,biome
+BMT_NuitaeMarsh,nuitae,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,425,BMT_FungalForest,,biome
+BMT_Poptop,poptop,Biomes! Caverns,biomesteam.biomescaverns,True,Full,1,,425,BMT_FungalForest,,biome
+BMT_Pusmelon,pusmelon,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.799999952316284,,425,BMT_FungalForest,,biome
+BMT_Ravelmush,ravelmush,Biomes! Caverns,biomesteam.biomescaverns,True,Full,5,BMT_MushroomLog,425,BMT_FungalForest,,biome
+BMT_RustPuff,rustpuff,Biomes! Caverns,biomesteam.biomescaverns,False,None,5.5,,425,BMT_FungalForest,,biome
+BMT_Sagecrust,sagecrust,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.5,,425,BMT_FungalForest,,biome
+BMT_Dewshrooms,dewshrooms,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.5,,425,BMT_FungalForest,,biome
+BMT_Shinecap,shine cap,Biomes! Caverns,biomesteam.biomescaverns,True,Full,30,BMT_Glimmerslime,425,BMT_FungalForest,,biome
+BMT_StarchstalkPlant,starchstalk,Biomes! Caverns,biomesteam.biomescaverns,False,None,6,BMT_Starchstalk,425,BMT_FungalForest,,biome
+BMT_Stimquill,stimquill,Biomes! Caverns,biomesteam.biomescaverns,False,None,5.5,BMT_StimquillDrug,425,BMT_FungalForest,,biome
+BMT_VioletWimple,violet wimple,Biomes! Caverns,biomesteam.biomescaverns,False,None,5,RawFungus,425,BMT_FungalForest,,biome
+BMT_Wrinklecap,wrinklecap,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,425,BMT_FungalForest,,biome
+BMT_WrinklecapMarsh,wrinklecap,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,425,BMT_FungalForest,,biome
+Plant_Clivia,clivia,Core,ludeon.rimworld,False,None,3,,292,AB_MiasmicMangrove|ZBiome_DesertOasis,,biome
+Plant_TreePalm,palm tree,Core,ludeon.rimworld,True,Full,14,WoodLog,285,ZBiome_DesertOasis,Oasis,biome+mutator
+Plant_HealrootWild,wild healroot,Core,ludeon.rimworld,False,None,10,MedicineHerbal,250,Volcano|ZBiome_DesertOasis,,biome
+AB_SessileMechanoid,sessile mechanoid tree,Alpha Biomes,sarg.alphabiomes,True,Full,40,WoodLog,236,AB_MechanoidIntrusion,,biome
+AB_HardyGrass,hardy grass,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,236,AB_MechanoidIntrusion,,biome
+Plant_Bulrush,bulrush,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,233,ZBiome_Grasslands,,biome
+Plant_YellowGrass,yellow grass,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,233,ZBiome_Grasslands,,biome
+Plant_YellowTallGrass,tall yellow grass,Odyssey,ludeon.rimworld.odyssey,False,None,3,,233,ZBiome_Grasslands,,biome
+Plant_Lotus,lotus,Odyssey,ludeon.rimworld.odyssey,False,None,1.5,,227,ZBiome_DesertOasis,,biome
+RG_Plant_BlueDandelion,dandelions,ReGrowth 2,regrowth.botr.core,False,None,2.5,,227,ZBiome_DesertOasis,,biome
+RG_Plant_TropicalBrambles,brambles,ReGrowth 2,regrowth.botr.core,False,None,3,,227,ZBiome_DesertOasis,,biome
+RG_Plant_TropicalIvy,ivy,ReGrowth 2,regrowth.botr.core,False,None,15,,227,ZBiome_DesertOasis,,biome
+RG_Plant_TropicalFern,fern,ReGrowth 2,regrowth.botr.core,False,None,3,,227,ZBiome_DesertOasis,,biome
+RG_Plant_TallPalmTree,palm tree,ReGrowth 2,regrowth.botr.core,True,Full,48,WoodLog,227,ZBiome_DesertOasis,,biome
+BMT_Crystal_BlueSowable,fast growing crystal,Biomes! Caverns,biomesteam.biomescaverns,False,None,33.29999923706055,BMT_ResourceBlueCrystal,127,BMT_CrystalCaverns,,biome
+BMT_Crystalcap,crystalcap,Biomes! Caverns,biomesteam.biomescaverns,True,Full,30,BMT_MushroomLog,127,BMT_CrystalCaverns,,biome
+BMT_CrystaltipBrambles,crystaltip brambles,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,127,BMT_CrystalCaverns,,biome
+BMT_Fungusfern,fungusfern,Biomes! Caverns,biomesteam.biomescaverns,False,None,3,,127,BMT_CrystalCaverns,,biome
+BMT_Gleamtip,gleamtip,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.5,,127,BMT_CrystalCaverns,,biome
+BMT_LuminousSpout,luminous spout,Biomes! Caverns,biomesteam.biomescaverns,False,None,3.5,,127,BMT_CrystalCaverns,,biome
+BMT_YumBulbs,yum bulbs,Biomes! Caverns,biomesteam.biomescaverns,False,None,5,,127,BMT_CrystalCaverns,,biome
+AB_ToxiBulb,toxibulb,Alpha Biomes,sarg.alphabiomes,True,Full,2,WoodLog,96,AB_GelatinousSuperorganism,,biome
+AB_Slimecasia,slimecasia,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawSlime,96,AB_GelatinousSuperorganism,,biome
+AB_SlimyFern,slimy fern,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawSlime,96,AB_GelatinousSuperorganism,,biome
+AB_TallSlimyGrass,tall slimy grass,Alpha Biomes,sarg.alphabiomes,False,None,3,,96,AB_GelatinousSuperorganism,,biome
+AB_SlimyTree,slimy tree,Alpha Biomes,sarg.alphabiomes,False,None,32.5,AB_RawSlime,96,AB_GelatinousSuperorganism,,biome
+AB_LargeSlimyTree,large slimy tree,Alpha Biomes,sarg.alphabiomes,False,None,32.5,AB_RawSlime,96,AB_GelatinousSuperorganism,,biome
+Plant_Thornvine,thornvine,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,90,Scarlands,,biome
+Plant_TreeSnagroot,snagroot tree,Odyssey,ludeon.rimworld.odyssey,True,Full,52,WoodLog,90,Scarlands,,biome
+RG_Plant_ToxiGrass,toxigrass,ReGrowth 2,regrowth.botr.core,False,None,2.5,,90,Scarlands,,biome
+RG_Plant_TallToxiGrass,tall toxigrass,ReGrowth 2,regrowth.botr.core,False,None,3,,90,Scarlands,,biome
+RG_Plant_MutatedFungus,mutated fungus,ReGrowth 2,regrowth.botr.core,False,None,3,,90,Scarlands,,biome
+RG_Plant_GlowLeaf,glow leaf,ReGrowth 2,regrowth.botr.core,False,None,3.5,,90,Scarlands,,biome
+RG_Plant_LureWeed,lure weed,ReGrowth 2,regrowth.botr.core,False,None,3.5,,90,Scarlands,,biome
+RG_Plant_MutatedFern,mutated fern,ReGrowth 2,regrowth.botr.core,False,None,15,,90,Scarlands,,biome
+RG_Tripaloski,tripaloski,ReGrowth 2,regrowth.botr.core,False,None,45,RawFungus,90,Scarlands,,biome
+RG_Plant_TreeToxipine,toxipine tree,ReGrowth 2,regrowth.botr.core,True,Full,32,WoodLog,90,Scarlands,,biome
+RG_Plant_TreeSplitpine,splitpine tree,ReGrowth 2,regrowth.botr.core,True,Full,42,WoodLog,90,Scarlands,,biome
+RG_Plant_TreeToxiTeak,toxiteak tree,ReGrowth 2,regrowth.botr.core,True,Full,35.5,WoodLog,90,Scarlands,,biome
+Plant_Rafflesia,giant rafflesia,Core,ludeon.rimworld,False,None,3,,65,AB_MiasmicMangrove,,biome
+AB_MangroveTree,mangrove tree,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,65,AB_MiasmicMangrove,,biome
+AB_ParasiticMangrove,parasitic mangrove,Alpha Biomes,sarg.alphabiomes,False,None,3,MedicineHerbal,65,AB_MiasmicMangrove,,biome
+AB_MangrovePalm,mangrove palm,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,65,AB_MiasmicMangrove,,biome
+AB_GreenRockFern,green rock fern,Alpha Biomes,sarg.alphabiomes,False,None,3,,57,AB_TarPits,,biome
+AB_Iashiphus,iashiphus,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawIashiphus,57,AB_TarPits,,biome
+AB_SugarFamewort,sugar famewort,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawSugarFamewort,57,AB_TarPits,,biome
+AB_RavenNettle,raven nettle,Alpha Biomes,sarg.alphabiomes,False,None,3,,57,AB_TarPits,,biome
+AB_FanPalm,fan palm,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,57,AB_TarPits,,biome
+AB_KeeningCordax,keening cordax,Alpha Biomes,sarg.alphabiomes,True,Full,14,AB_CordaxResin,57,AB_TarPits,,biome
+AB_BrownBarrelCactus,brown barrel cactus,Alpha Biomes,sarg.alphabiomes,False,None,3,AB_RawBrownBarrelCactus,31,AB_PyroclasticConflagration,,biome
+AB_TinkleGrass,tinkle grass,Alpha Biomes,sarg.alphabiomes,False,None,1,,31,AB_PyroclasticConflagration,,biome
+AB_FirevineTree,firevine tree,Alpha Biomes,sarg.alphabiomes,True,Full,14,WoodLog,31,AB_PyroclasticConflagration,,biome
+Plant_Moss,moss,Core,ludeon.rimworld,False,None,4,,23,Volcano,,biome
+Plant_TreePoplar,poplar tree,Core,ludeon.rimworld,True,Full,15.050000190734863,WoodLog,23,Volcano,,biome
+Plant_TreePine,pine tree,Core,ludeon.rimworld,True,Full,20,WoodLog,23,Volcano,,biome
+Plant_TreeBirch,birch tree,Core,ludeon.rimworld,True,Full,20,WoodLog,23,Volcano,,biome
+BurnedTree,burned stump,Core,ludeon.rimworld,False,None,30,WoodLog,15,LavaField,,biome
+Plant_MagmaCactus,magma cactus,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,15,LavaField,,biome
+VEE_Plant_ChollaCactus,cholla cactus,Vanilla Landmarks Expanded,vanillaexpanded.vexploratione,True,Full,5,WoodLog,8,,VEE_RedDesertPlants,mutator
+VEE_Plant_HoodiaCactus,hoodia cactus,Vanilla Landmarks Expanded,vanillaexpanded.vexploratione,True,Full,5,WoodLog,8,,VEE_RedDesertPlants,mutator
+AB_EyeGrass,flowering ocular grass,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_OcularForest,,biome
+AB_AlienTree_Polluted,mutated ocular tree,Alpha Biomes,sarg.alphabiomes,True,Full,5,GU_RedWood,3,AB_OcularForest,,biome
+AB_GlobularPlant_Polluted,polluted globular aberration,Alpha Biomes,sarg.alphabiomes,True,Full,5,GU_RedWood,3,AB_OcularForest,,biome
+AB_AlienGrass,ocular grass,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_OcularForest,,biome
+AB_RedLeaves,ocular plant,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_OcularForest,,biome
+AB_RedPlantsTall,ocular plant,Alpha Biomes,sarg.alphabiomes,False,None,2.5,,3,AB_OcularForest,,biome
+AB_AlienTree,ocular tree,Alpha Biomes,sarg.alphabiomes,True,Full,5,GU_RedWood,3,AB_OcularForest,,biome
+AB_HalfAlienTree,half transformed ocular tree,Alpha Biomes,sarg.alphabiomes,True,Full,5,WoodLog,3,AB_OcularForest,,biome
+AB_TentacularPlant,tentacular aberration,Alpha Biomes,sarg.alphabiomes,False,None,5,AB_RawTentacularFruit,3,AB_OcularForest,,biome
+AB_GlobularPlant,globular aberration,Alpha Biomes,sarg.alphabiomes,False,None,5,GU_RedWood,3,AB_OcularForest,,biome
+AB_BloodBouquet,blood bouquet,Alpha Biomes,sarg.alphabiomes,False,None,5,AB_RawBloodBouquet,3,AB_OcularForest,,biome

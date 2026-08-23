@@ -10,25 +10,22 @@ The table below is the roster **before** those cuts, so it still reads as the fu
 supply picture. For what the cuts actually cost, run
 `plant_harvest_coverage.py --against-decisions`.
 
-**28 biomes on the planet · 23 carry reachable plants · 4 are plantless by design.**
-
-## 🔴 A biome with no reachable plant at all
-
-- **`HorrorWastes`** — 468 tiles, and not one plant in the candidate list reaches it. Nothing grows there in any season.
+**28 biomes on the planet · 24 carry reachable plants · 4 are plantless by design.**
 
 ## Per biome
 
 | biome | tiles | plants | resources | wood sources | fragile (sole-source) |
 |---|---:|---:|---:|---:|---|
-| `AB_RockyCrags` | 4155 | 7 | 2 | 4 | `AB_RawRagadast` |
-| `Desert` | 4124 | 23 | 4 | 5 | `BMT_PoxSorghumHarvested`, `RawAgave` |
-| `ExtremeDesert` | 3569 | 27 | 4 | 5 | `BMT_PoxSorghumHarvested`, `BMT_Toxwood`, `RawAgave` |
+| `Desert` | 4309 | 21 | 4 | 3 | `BMT_PoxSorghumHarvested`, `RawAgave` |
+| `AB_RockyCrags` | 3816 | 7 | 2 | 4 | `AB_RawRagadast` |
+| `ExtremeDesert` | 3214 | 25 | 4 | 3 | `BMT_PoxSorghumHarvested`, `BMT_Toxwood`, `RawAgave` |
 | `AB_MycoticJungle` | 1939 | 15 | 8 | ⚠️ **1** | `AB_BlueRawFungus`, `AB_PinkRawFungus`, `AB_PsychotropicFungus`, `AB_WeaponPoisonDart`, `RawFungus`, `WoodLog` |
 | `Wasteland` | 1721 | 9 | 3 | 2 | `RawAgave`, `RawBerries` |
+| `HorrorWastes` | 807 | 1 | 1 | 🔴 **0** | `RawAgave` |
+| `AridShrubland` | 709 | 23 | 5 | 3 | `BMT_PoxSorghumHarvested`, `RawAgave`, `RawBerries` |
 | `PoisonForest` | 604 | 19 | 3 | 7 | `RawPoisonMushroom` |
 | `AB_PropaneLakes` | 554 | 5 | 4 | 🔴 **0** | `AB_CrystalWood`, `AB_RawCrystalHorn`, `AB_RawFrostLeaf`, `AB_RawRimeNodules` |
 | `ZBiome_Badlands` | 545 | 13 | 2 | 2 | `RawBerries` |
-| `AridShrubland` | 539 | 23 | 5 | 3 | `BMT_PoxSorghumHarvested`, `RawAgave`, `RawBerries` |
 | `AB_FeraliskInfestedJungle` | 534 | 13 | 2 | 3 | `RawBerries` |
 | `BMT_FungalForest` | 425 | 27 | 11 | 2 | `BMT_Glimmerslime`, `BMT_Kessinger`, `BMT_MedicineFungal`, `BMT_MycelialBlocks`, `BMT_RawDulcis`, `BMT_Starchstalk`, `BMT_StimquillDrug`, `Cloth`, `RawFungus` |
 | `AB_MechanoidIntrusion` | 236 | 2 | 1 | ⚠️ **1** | `WoodLog` |
@@ -46,6 +43,7 @@ supply picture. For what the cuts actually cost, run
 
 ## 🔴 Biomes with no wood at all — before any cut
 
+- **`HorrorWastes`** (807 tiles) — no plant here yields `WoodLog`. A colony landing on it has no wood without hauling it in.
 - **`AB_PropaneLakes`** (554 tiles) — no plant here yields `WoodLog`. A colony landing on it has no wood without hauling it in.
 - **`BMT_CrystalCaverns`** (127 tiles) — no plant here yields `WoodLog`. A colony landing on it has no wood without hauling it in.
 
@@ -65,7 +63,7 @@ Cut the named plant and the biome joins the list above.
 
 | plant | resource(s) | biome(s) |
 |---|---|---|
-| `Plant_Agave` | `RawAgave` | `Desert`, `ExtremeDesert`, `Wasteland`, `AridShrubland`, `ZBiome_DesertOasis`, `LavaField` |
+| `Plant_Agave` | `RawAgave` | `Desert`, `ExtremeDesert`, `Wasteland`, `HorrorWastes`, `AridShrubland`, `ZBiome_DesertOasis`, `LavaField` |
 | `Plant_Berry` | `RawBerries` | `ZBiome_Badlands`, `AB_FeraliskInfestedJungle`, `ZBiome_Grasslands`, `AB_MiasmicMangrove`, `Volcano`, `LavaField` |
 | `BMT_Plant_PoxSorghum` | `BMT_PoxSorghumHarvested` | `Desert`, `ExtremeDesert`, `AridShrubland` |
 | `BMT_CavernMycelium` | `BMT_MycelialBlocks` | `BMT_FungalForest`, `BMT_CrystalCaverns` |

@@ -1,3 +1,58 @@
+## ✅ FIXED 2026-08-23 — and the builder did not exist at all
+
+**`design/Jawa/mods/gen_plant_candidates.py`** now builds the list from both routes.
+
+🔴 **The item says *"the BUILDER is still wrong; only its output was patched"*. It was
+worse than that: there was no builder.** The CSV was produced ad hoc when
+`PLANT_CHERRYPICK_PASS_1` was filed (`43e2913f`) and no script writing it existed anywhere
+in the repo — `gen_plant_sheet.py`, `plant_harvest_coverage.py` and `plant_walk_list.py`
+all only READ it. The candidate list was an orphan artifact, hand-patched twice.
+
+## ⭐ The verification is exact
+
+```
+MEASURED 192 reachable plants over 28 biomes and 74 mutators
+  by biome only: 185 · both: 5 · 🔴 MUTATOR ONLY: 2
+     VEE_Plant_ChollaCactus   8 tiles via VEE_RedDesertPlants
+     VEE_Plant_HoodiaCactus   8 tiles via VEE_RedDesertPlants
+  vs the hand-patched CSV: +0 / -0
+```
+
+**The builder reproduces the hand-patched list exactly** — same 192 rows, and it finds the
+two cacti on its own instead of needing them appended. That is this item's stated verify
+(*"a strict superset of today's 192, every added row attributable to a named mutator"*)
+met at equality, which is the strongest form of it.
+
+🔑 **The 5 both-route plants are the warning the item named.** `Oasis` adds five plants that
+were already in the list *by coincidence* — they also grow in `ZBiome_DesertOasis`. A
+biome-only scan would keep looking correct until a mutator changed.
+
+## 🔴 It also repaired a gap NOT in this item, and the numbers moved
+
+The old CSV predated `HorrorWastes` having any tiles, so the plant pass had never seen it.
+DECIDE told the owner on 2026-08-22 that HorrorWastes *"has no plant at all"* — that came
+from the stale CSV. **The biome has exactly one: `Plant_Agave`.**
+
+| | before | after |
+|---|---|---|
+| biomes carrying flora | 23 | **24** |
+| biomes with NO wood | 2 | **3** — `HorrorWastes` joins `AB_PropaneLakes`, `BMT_CrystalCaverns` |
+| sole-source biome-resource pairs | 57 | **58** |
+| rows whose reach changed | — | **46 of 192** |
+
+⚠️ `Plant_Agave` gained **913 tiles** (10,089 → 11,002). The other 45 moved because of the
+2026-08-23 coast pass and the warm-crags transfer, not because of this fix.
+
+🔑 **`HorrorWastes`: 807 tiles, one plant, no wood.** The coverage report now says so on its
+own. That is the shell defect already filed under `HORROR_WASTES_ON_NIGHTSIDE_1`; the
+instrument can see it now instead of reporting the biome as absent.
+
+✅ **Downstream regenerated and consistent:** `plant_review.html` (192 rows, JS lints, the
+owner's 4 cuts merge untouched), `plant_harvest_coverage.md`, `plant_walk_list.md`.
+`--against-decisions` still reports the two accepted losses and nothing new.
+
+---
+
 ## spec
 🔴 **The plant candidate list is built from `BiomeDef.wildPlants` ONLY, and that is not the
 only route a plant reaches a map.** `TileMutatorDef.additionalWildPlants[].plant` and
