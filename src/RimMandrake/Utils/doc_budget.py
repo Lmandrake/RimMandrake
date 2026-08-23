@@ -103,6 +103,14 @@ BUDGETS = [
     # the stop conditions, for a NET +11. Four copies of that text would be ~1,200 lines.
     # 🔑 The real lever here is moving per-seat detail OUT into the four seat files, not
     # compressing prose. A budget that cannot be met gets ignored rather than obeyed.
+    # 🔴 ARCHIVES ARE NOT DOCUMENTS — same reasoning as DECIDE_ARCHIVE and CHECK_CLOSED
+    # above. Added 2026-08-23 with the two files themselves: their length is a function of
+    # how many loads have run and how many rulings have been made, not of rot, and charging
+    # them at state/*.md's 250 produces an OVER line nobody can act on. ⛔ That is the exact
+    # failure this file's docstring names - unactionable OVER trains everyone to ignore the
+    # output, which is how HUMAN.md reached 1,527 lines unremarked.
+    ("infrastructure/state/NEXT_RELOAD_ARCHIVE.md", 2500),
+    ("infrastructure/state/OWNER_DECISIONS_ARCHIVE.md", 2500),
     ("infrastructure/agents/POLICY.md", 320),
     ("infrastructure/agents/*.md", 150),   # was 120; premise was wrong, see docstring
     ("CLAUDE.md", 300),
