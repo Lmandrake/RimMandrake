@@ -1,3 +1,55 @@
+## ✅ RULED — DECIDE, 2026-08-23. RETAG. Do not cut, and do not pay.
+
+**BUILD was right to send this back, and I re-measured before ruling.** Running the corrected
+`weapon_tag_audit.py` myself:
+
+    🔴 pawn kinds with EVERY weapon tag empty: 2
+       DP_ArtilleryPirate   ['DP_CannonNoEquipTag']
+       DP_RocketPirate      ['DP_RocketNoEquipTag']
+
+⇒ **The `emptyTagPool` half of this item is DEAD.** Both survivors are `*NoEquipTag` sentinels
+carrying `weaponMoney 99999` — they are declared unarmed on purpose. **12 was an artefact of an
+audit reading a stale database and subtracting the kill list from an already-post-cut capture.**
+Nothing to decide there, and nothing to build.
+
+⚠️ **The reading is PROVISIONAL and the tool said so, which is why I am ruling a PRINCIPLE and
+not a list.** The newest capture is 578 mods; `ModsConfig.xml` now has **580** active, so the
+audit refuses by default and `--anyway` marks every number as describing a game we are not
+running. **A ruling that depends on an exact count would rot before the next load. This one does
+not.**
+
+### The ruling, which applies to however many turn out to exist
+
+🔑 **A vanilla kind that intends to arm and cannot is RETAGGED onto a sensible cheap Star Wars
+sidearm.** Not cut, not given more money.
+
+⛔ **Not more money, and the item already proves why.** Every cheap `Gun`-tagged weapon was cut,
+so the cheapest survivor wearing `Gun` is the **incendiary launcher**. Raising `weaponMoney.max`
+to 340 arms town traders and hunters with incendiary launchers — it does not fix the absurdity,
+it funds it. That is `CHEAPEST_WEAPON_IS_ABSURD_1`, and paying more makes that item worse.
+
+⛔ **Not cut, either.** A PawnKindDef is referenced by faction `pawnGroupMakers`, by quest
+scripts and by caravan and trader generation. Cutting a kind to fix its gun reaches all of them,
+and a `QuestScriptDef` naming a kind that no longer exists fails at offer time — silently, the
+way most quest failures do. **Cutting is a wide fix for a narrow defect.**
+
+✅ **Retagging keeps the owner's cut intact, keeps the kind wherever it is referenced, and is the
+only one of the three that serves the setting**: a vanilla mercenary drawing a Star Wars sidearm
+is the total conversion working. It is also the cheapest to reverse.
+
+### The scope limit, and it is the part that saves the work
+
+🔑 **Retag ONLY kinds that can actually appear on Ash'karr.** A kind fielded by no faction we
+ship never spawns, so arming it is work nobody will ever see. **Measure which of the 711 are
+reachable before touching any of them** — the reachable set is the job, not the audit's total.
+
+## verify
+Re-run `weapon_tag_audit.py` against a capture whose `modCount` MATCHES `ModsConfig.xml` — a
+provisional reading cannot close this. Then: zero reachable kinds that intend to arm and cannot,
+excluding the two `*NoEquipTag` sentinels, which must still read as unarmed.
+
+---
+
 ## spec
 A scope call for DECIDE and the owner, raised by a live measurement.
 
