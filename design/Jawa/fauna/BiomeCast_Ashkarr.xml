@@ -50,7 +50,7 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="grimterra.terrainretexturemod">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
@@ -90,7 +90,7 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="grimterra.terrainretexturemod">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
@@ -330,7 +330,7 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="grimterra.terrainretexturemod">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
