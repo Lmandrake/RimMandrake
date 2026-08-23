@@ -12,6 +12,15 @@
   ============================================================================
 -->
 <Defs>
+  <GeneCategoryDef>
+    <defName>RimMandrake_BodySize_Category</defName>
+    <label>body size</label>
+    <displayPriorityInXenotype>508</displayPriorityInXenotype>
+  </GeneCategoryDef>
+  <StyleItemCategoryDef>
+    <defName>RimMandrake_Cerean</defName>
+    <label>RimMandrake_Cerean</label>
+  </StyleItemCategoryDef>
   <FurDef>
     <defName>RimMandrake_FurDef_gaunt</defName>
     <noGraphic>true</noGraphic>
@@ -26,11 +35,6 @@
     </bodyTypeGraphicPaths>
   </FurDef>
   <GeneCategoryDef>
-    <defName>RimMandrake_BodySize_Category</defName>
-    <label>body size</label>
-    <displayPriorityInXenotype>508</displayPriorityInXenotype>
-  </GeneCategoryDef>
-  <GeneCategoryDef>
     <defName>RimMandrake_Lifespan_Category</defName>
     <label>lifespan</label>
     <displayPriorityInXenotype>507</displayPriorityInXenotype>
@@ -40,8 +44,4 @@
     <label>cosmetic (Star Wars)</label>
     <displayPriorityInXenotype>762</displayPriorityInXenotype>
   </GeneCategoryDef>
-  <StyleItemCategoryDef>
-    <defName>RimMandrake_Cerean</defName>
-    <label>RimMandrake_Cerean</label>
-  </StyleItemCategoryDef>
 </Defs>

@@ -12,6 +12,102 @@
   ============================================================================
 -->
 <Defs>
+  <EffecterDef>
+    <defName>RimMandrake_Effecter_InkSprayDirectional</defName>
+    <children>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerTriggered</subEffecterClass>
+        <positionRadius>0.15</positionRadius>
+        <fleckDef>RimMandrake_Fleck_InkSpray</fleckDef>
+        <burstCount>10~15</burstCount>
+        <speed>0.6~3.0</speed>
+        <scale>0.5~1.2</scale>
+        <angle>-15~15</angle>
+        <positionLerpFactor>0.8</positionLerpFactor>
+        <fleckUsesAngleForVelocity>true</fleckUsesAngleForVelocity>
+      </li>
+    </children>
+  </EffecterDef>
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RimMandrake_Fleck_InkSpray</defName>
+    <graphicData>
+      <texPath>Things/Mote/AcidSpray</texPath>
+      <color>(0,0,65)</color>
+      <renderInstanced>true</renderInstanced>
+    </graphicData>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.04</fadeInTime>
+    <solidTime>0.2</solidTime>
+    <fadeOutTime>1</fadeOutTime>
+    <growthRate>0.9</growthRate>
+  </FleckDef>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RimMandrake_GandMask</defName>
+    <label>Gand breath mask</label>
+    <description>A specialized breath mask for Gand.\n\nNOTE: This is not an apparel item! This can only be applied to a pawn with a simple surgery!\n\nNOTE: The mask variant is randomized upon installation.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RimMandrake_InstallHediff_gandmask</RecipeDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/gand_mask_item</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>50</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+      <Mass>0.5</Mass>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <useHitPoints>true</useHitPoints>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <techLevel>Spacer</techLevel>
+  </ThingDef>
+  <BigAndSmall.GraphicSetDef>
+    <defName>RimMandrake_GandMaskCustomization_default</defName>
+    <conditionalGraphics>
+      <triggerFlags>
+        <whitelist>
+          <guy762AltTag_GandMaskDefault />
+        </whitelist>
+      </triggerFlags>
+      <texturePaths>
+        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_KotOR2</li>
+        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_yuun</li>
+      </texturePaths>
+    </conditionalGraphics>
+  </BigAndSmall.GraphicSetDef>
+  <BigAndSmall.GraphicSetDef>
+    <defName>RimMandrake_GandMaskCustomization_yuun</defName>
+    <conditionalGraphics>
+      <triggerFlags>
+        <whitelist>
+          <guy762AltTag_Yuun />
+        </whitelist>
+      </triggerFlags>
+      <texturePaths>
+        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_yuun</li>
+      </texturePaths>
+    </conditionalGraphics>
+  </BigAndSmall.GraphicSetDef>
+  <BigAndSmall.GraphicSetDef>
+    <defName>RimMandrake_GandMaskCustomization_zuckuss</defName>
+    <conditionalGraphics>
+      <triggerFlags>
+        <whitelist>
+          <guy762AltTag_Zuckuss />
+        </whitelist>
+      </triggerFlags>
+      <texturePaths>
+        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_Zuckuss</li>
+      </texturePaths>
+    </conditionalGraphics>
+  </BigAndSmall.GraphicSetDef>
   <AbilityDef>
     <defName>RimMandrake_GeneAbility_ink</defName>
     <label>ink spray</label>
@@ -70,92 +166,6 @@
     </verbProperties>
     <jobDef>CastJump</jobDef>
   </AbilityDef>
-  <BigAndSmall.GraphicSetDef>
-    <defName>RimMandrake_GandMaskCustomization_default</defName>
-    <conditionalGraphics>
-      <triggerFlags>
-        <whitelist>
-          <guy762AltTag_GandMaskDefault />
-        </whitelist>
-      </triggerFlags>
-      <texturePaths>
-        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_KotOR2</li>
-        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_yuun</li>
-      </texturePaths>
-    </conditionalGraphics>
-  </BigAndSmall.GraphicSetDef>
-  <BigAndSmall.GraphicSetDef>
-    <defName>RimMandrake_GandMaskCustomization_yuun</defName>
-    <conditionalGraphics>
-      <triggerFlags>
-        <whitelist>
-          <guy762AltTag_Yuun />
-        </whitelist>
-      </triggerFlags>
-      <texturePaths>
-        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_yuun</li>
-      </texturePaths>
-    </conditionalGraphics>
-  </BigAndSmall.GraphicSetDef>
-  <BigAndSmall.GraphicSetDef>
-    <defName>RimMandrake_GandMaskCustomization_zuckuss</defName>
-    <conditionalGraphics>
-      <triggerFlags>
-        <whitelist>
-          <guy762AltTag_Zuckuss />
-        </whitelist>
-      </triggerFlags>
-      <texturePaths>
-        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_Zuckuss</li>
-      </texturePaths>
-    </conditionalGraphics>
-  </BigAndSmall.GraphicSetDef>
-  <DamageDef>
-    <defName>RimMandrake_RangedDamage_ink</defName>
-    <label>ink</label>
-    <workerClass>DamageWorker_AddGlobal</workerClass>
-    <canInterruptJobs>true</canInterruptJobs>
-    <makesBlood>false</makesBlood>
-    <defaultDamage>10</defaultDamage>
-    <hediff>RimMandrake_hediff_ink</hediff>
-    <harmsHealth>false</harmsHealth>
-    <consideredHelpful>false</consideredHelpful>
-    <modExtensions>
-      <li Class="guy762_Ionization.ModExtension_HediffGiver">
-        <hediffToAdd>RimMandrake_hediff_ink</hediffToAdd>
-        <severityFixed>1</severityFixed>
-      </li>
-    </modExtensions>
-  </DamageDef>
-  <EffecterDef>
-    <defName>RimMandrake_Effecter_InkSprayDirectional</defName>
-    <children>
-      <li>
-        <subEffecterClass>SubEffecter_SprayerTriggered</subEffecterClass>
-        <positionRadius>0.15</positionRadius>
-        <fleckDef>RimMandrake_Fleck_InkSpray</fleckDef>
-        <burstCount>10~15</burstCount>
-        <speed>0.6~3.0</speed>
-        <scale>0.5~1.2</scale>
-        <angle>-15~15</angle>
-        <positionLerpFactor>0.8</positionLerpFactor>
-        <fleckUsesAngleForVelocity>true</fleckUsesAngleForVelocity>
-      </li>
-    </children>
-  </EffecterDef>
-  <FleckDef ParentName="FleckBase_Thrown">
-    <defName>RimMandrake_Fleck_InkSpray</defName>
-    <graphicData>
-      <texPath>Things/Mote/AcidSpray</texPath>
-      <color>(0,0,65)</color>
-      <renderInstanced>true</renderInstanced>
-    </graphicData>
-    <altitudeLayer>MoteOverhead</altitudeLayer>
-    <fadeInTime>0.04</fadeInTime>
-    <solidTime>0.2</solidTime>
-    <fadeOutTime>1</fadeOutTime>
-    <growthRate>0.9</growthRate>
-  </FleckDef>
   <HediffDef>
     <defName>RimMandrake_GeneHediff_claws</defName>
     <label>claws</label>
@@ -336,30 +346,6 @@
       </li>
     </comps>
   </HediffDef>
-  <HediffDef>
-    <defName>RimMandrake_hediff_ink</defName>
-    <label>ink</label>
-    <labelNoun>ink</labelNoun>
-    <description>Ink in the eyes. It impairs vision, but can be cleared in a few moments.</description>
-    <hediffClass>HediffWithComps</hediffClass>
-    <battleStateLabel>blind</battleStateLabel>
-    <maxSeverity>1</maxSeverity>
-    <stages>
-      <li>
-        <capMods>
-          <li>
-            <capacity>Sight</capacity>
-            <setMax>0.2</setMax>
-          </li>
-        </capMods>
-      </li>
-    </stages>
-    <comps>
-      <li Class="HediffCompProperties_SelfHeal">
-        <healAmount>0.1</healAmount>
-      </li>
-    </comps>
-  </HediffDef>
   <RecipeDef Name="RimMandrake_InstallHediffMaskBase" ParentName="SurgeryFlesh" Abstract="True">
     <surgerySuccessChanceFactor>100</surgerySuccessChanceFactor>
     <deathOnFailedSurgeryChance>0</deathOnFailedSurgeryChance>
@@ -461,81 +447,6 @@
       <li>Jaw</li>
     </appliedOnFixedBodyParts>
   </RecipeDef>
-  <RecipeDef Name="RimMandrake_RemoveHediffMaskBase" ParentName="SurgeryFlesh" Abstract="True">
-    <isViolation>true</isViolation>
-    <surgerySuccessChanceFactor>100</surgerySuccessChanceFactor>
-    <deathOnFailedSurgeryChance>0</deathOnFailedSurgeryChance>
-    <workerClass>Recipe_RemoveImplant</workerClass>
-    <workAmount>500</workAmount>
-    <developmentalStageFilter>Child, Adult</developmentalStageFilter>
-    <workSkill>Crafting</workSkill>
-    <recipeUsers>
-      <li>Human</li>
-      <li MayRequire="Ludeon.RimWorld.Anomaly">CreepJoiner</li>
-    </recipeUsers>
-    <effectWorking>Tailor</effectWorking>
-    <soundWorking>Recipe_Tailor</soundWorking>
-  </RecipeDef>
-  <RecipeDef ParentName="RimMandrake_RemoveHediffMaskBase">
-    <defName>RimMandrake_RemoveHediff_gandmask</defName>
-    <label>remove Gand breath mask</label>
-    <description>Remove Gand breath mask.</description>
-    <descriptionHyperlinks>
-      <ThingDef>RimMandrake_GandMask</ThingDef>
-      <HediffDef>RimMandrake_GeneHediff_gandmask</HediffDef>
-    </descriptionHyperlinks>
-    <jobString>Removing Gand breath mask.</jobString>
-    <removesHediff>RimMandrake_GeneHediff_gandmask</removesHediff>
-  </RecipeDef>
-  <RecipeDef ParentName="RimMandrake_RemoveHediffMaskBase">
-    <defName>RimMandrake_RemoveHediff_kaleeshmask</defName>
-    <label>remove Kaleesh skull mask</label>
-    <description>Remove Kaleesh skull mask.</description>
-    <descriptionHyperlinks>
-      <ThingDef>RimMandrake_KaleeshMask</ThingDef>
-      <HediffDef>RimMandrake_GeneHediff_kaleeshmask</HediffDef>
-    </descriptionHyperlinks>
-    <jobString>Removing Kaleesh skull mask.</jobString>
-    <removesHediff>RimMandrake_GeneHediff_kaleeshmask</removesHediff>
-  </RecipeDef>
-  <RecipeDef ParentName="RimMandrake_RemoveHediffMaskBase">
-    <defName>RimMandrake_RemoveHediff_keldormask</defName>
-    <label>remove Kel Dor breath mask</label>
-    <description>Remove Kel Dor breath mask.</description>
-    <descriptionHyperlinks>
-      <ThingDef>RimMandrake_KelDorMask</ThingDef>
-      <HediffDef>RimMandrake_GeneHediff_keldormask</HediffDef>
-    </descriptionHyperlinks>
-    <jobString>Removing Kel Dor breath mask.</jobString>
-    <removesHediff>RimMandrake_GeneHediff_keldormask</removesHediff>
-  </RecipeDef>
-  <ThingDef ParentName="ResourceBase">
-    <defName>RimMandrake_GandMask</defName>
-    <label>Gand breath mask</label>
-    <description>A specialized breath mask for Gand.\n\nNOTE: This is not an apparel item! This can only be applied to a pawn with a simple surgery!\n\nNOTE: The mask variant is randomized upon installation.</description>
-    <descriptionHyperlinks>
-      <RecipeDef>RimMandrake_InstallHediff_gandmask</RecipeDef>
-    </descriptionHyperlinks>
-    <graphicData>
-      <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/gand_mask_item</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <statBases>
-      <MarketValue>50</MarketValue>
-      <MaxHitPoints>50</MaxHitPoints>
-      <Flammability>0.4</Flammability>
-      <Mass>0.5</Mass>
-    </statBases>
-    <resourceReadoutPriority>Middle</resourceReadoutPriority>
-    <stackLimit>10</stackLimit>
-    <drawGUIOverlay>true</drawGUIOverlay>
-    <useHitPoints>true</useHitPoints>
-    <thingCategories>
-      <li>ItemsMisc</li>
-    </thingCategories>
-    <tradeability>All</tradeability>
-    <techLevel>Spacer</techLevel>
-  </ThingDef>
   <ThingDef ParentName="ResourceBase">
     <defName>RimMandrake_KaleeshMask</defName>
     <label>Kaleesh skull mask</label>
@@ -590,6 +501,134 @@
     <tradeability>All</tradeability>
     <techLevel>Spacer</techLevel>
   </ThingDef>
+  <SoundDef>
+    <defName>RimMandrake_Pawn_SandP_Call</defName>
+    <context>MapOnly</context>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Pawn/SandP/Call/</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>20</volumeRange>
+        <pitchRange>0.95~1.05</pitchRange>
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>RimMandrake_Pawn_SandP_Death</defName>
+    <context>MapOnly</context>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Pawn/SandP/Death/</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>20</volumeRange>
+        <pitchRange>0.95~1.05</pitchRange>
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>RimMandrake_Pawn_SandP_Wounded</defName>
+    <context>MapOnly</context>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Pawn/SandP/Wounded/</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>20</volumeRange>
+        <pitchRange>0.95~1.05</pitchRange>
+        <sustainLoop>False</sustainLoop>
+        <repeatMode>NeverTwice</repeatMode>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <DamageDef>
+    <defName>RimMandrake_RangedDamage_ink</defName>
+    <label>ink</label>
+    <workerClass>DamageWorker_AddGlobal</workerClass>
+    <canInterruptJobs>true</canInterruptJobs>
+    <makesBlood>false</makesBlood>
+    <defaultDamage>10</defaultDamage>
+    <hediff>RimMandrake_hediff_ink</hediff>
+    <harmsHealth>false</harmsHealth>
+    <consideredHelpful>false</consideredHelpful>
+    <modExtensions>
+      <li Class="guy762_Ionization.ModExtension_HediffGiver">
+        <hediffToAdd>RimMandrake_hediff_ink</hediffToAdd>
+        <severityFixed>1</severityFixed>
+      </li>
+    </modExtensions>
+  </DamageDef>
+  <RecipeDef Name="RimMandrake_RemoveHediffMaskBase" ParentName="SurgeryFlesh" Abstract="True">
+    <isViolation>true</isViolation>
+    <surgerySuccessChanceFactor>100</surgerySuccessChanceFactor>
+    <deathOnFailedSurgeryChance>0</deathOnFailedSurgeryChance>
+    <workerClass>Recipe_RemoveImplant</workerClass>
+    <workAmount>500</workAmount>
+    <developmentalStageFilter>Child, Adult</developmentalStageFilter>
+    <workSkill>Crafting</workSkill>
+    <recipeUsers>
+      <li>Human</li>
+      <li MayRequire="Ludeon.RimWorld.Anomaly">CreepJoiner</li>
+    </recipeUsers>
+    <effectWorking>Tailor</effectWorking>
+    <soundWorking>Recipe_Tailor</soundWorking>
+  </RecipeDef>
+  <RecipeDef ParentName="RimMandrake_RemoveHediffMaskBase">
+    <defName>RimMandrake_RemoveHediff_gandmask</defName>
+    <label>remove Gand breath mask</label>
+    <description>Remove Gand breath mask.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RimMandrake_GandMask</ThingDef>
+      <HediffDef>RimMandrake_GeneHediff_gandmask</HediffDef>
+    </descriptionHyperlinks>
+    <jobString>Removing Gand breath mask.</jobString>
+    <removesHediff>RimMandrake_GeneHediff_gandmask</removesHediff>
+  </RecipeDef>
+  <RecipeDef ParentName="RimMandrake_RemoveHediffMaskBase">
+    <defName>RimMandrake_RemoveHediff_kaleeshmask</defName>
+    <label>remove Kaleesh skull mask</label>
+    <description>Remove Kaleesh skull mask.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RimMandrake_KaleeshMask</ThingDef>
+      <HediffDef>RimMandrake_GeneHediff_kaleeshmask</HediffDef>
+    </descriptionHyperlinks>
+    <jobString>Removing Kaleesh skull mask.</jobString>
+    <removesHediff>RimMandrake_GeneHediff_kaleeshmask</removesHediff>
+  </RecipeDef>
+  <RecipeDef ParentName="RimMandrake_RemoveHediffMaskBase">
+    <defName>RimMandrake_RemoveHediff_keldormask</defName>
+    <label>remove Kel Dor breath mask</label>
+    <description>Remove Kel Dor breath mask.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RimMandrake_KelDorMask</ThingDef>
+      <HediffDef>RimMandrake_GeneHediff_keldormask</HediffDef>
+    </descriptionHyperlinks>
+    <jobString>Removing Kel Dor breath mask.</jobString>
+    <removesHediff>RimMandrake_GeneHediff_keldormask</removesHediff>
+  </RecipeDef>
+  <ThoughtDef MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>RimMandrake_ThoughtDef_PsyHarmonize</defName>
+    <thoughtClass>Thought_PsychicHarmonizer</thoughtClass>
+    <effectMultiplyingStat>PsychicSensitivity</effectMultiplyingStat>
+    <stackLimit>100</stackLimit>
+    <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
+    <stages>
+      <li>
+        <label>psychic harmony: {HARMONIZER_labelShort}</label>
+        <description>The psychic harmonization makes me feel some of the emotions of the person radiating it as long as we're close together.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
   <ThingDef ParentName="BaseFilth">
     <defName>RimMandrake_filth_ink</defName>
     <label>ink</label>
@@ -613,6 +652,30 @@
       <cleaningSound>Interact_CleanFilth_Fluid</cleaningSound>
     </filth>
   </ThingDef>
+  <HediffDef>
+    <defName>RimMandrake_hediff_ink</defName>
+    <label>ink</label>
+    <labelNoun>ink</labelNoun>
+    <description>Ink in the eyes. It impairs vision, but can be cleared in a few moments.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <battleStateLabel>blind</battleStateLabel>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <setMax>0.2</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_SelfHeal">
+        <healAmount>0.1</healAmount>
+      </li>
+    </comps>
+  </HediffDef>
   <ThingDef>
     <defName>RimMandrake_throwngrenade_ink</defName>
     <label>ink</label>
@@ -640,18 +703,4 @@
       <filthCount>1</filthCount>
     </projectile>
   </ThingDef>
-  <ThoughtDef MayRequire="Ludeon.RimWorld.Royalty">
-    <defName>RimMandrake_ThoughtDef_PsyHarmonize</defName>
-    <thoughtClass>Thought_PsychicHarmonizer</thoughtClass>
-    <effectMultiplyingStat>PsychicSensitivity</effectMultiplyingStat>
-    <stackLimit>100</stackLimit>
-    <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
-    <stages>
-      <li>
-        <label>psychic harmony: {HARMONIZER_labelShort}</label>
-        <description>The psychic harmonization makes me feel some of the emotions of the person radiating it as long as we're close together.</description>
-        <baseMoodEffect>4</baseMoodEffect>
-      </li>
-    </stages>
-  </ThoughtDef>
 </Defs>

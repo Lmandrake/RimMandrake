@@ -230,15 +230,24 @@ def write_xml(path, header_lines, elements, keep_existing=True):
         except ET.ParseError:
             old_root = None
         if old_root is not None:
-            have = {e.findtext("defName") for e in root}
-            carried = [e for e in old_root
-                       if e.findtext("defName") and e.findtext("defName") not in have]
+            # 🪤 ABSTRACT PARENTS HAVE NO defName — they are keyed by a Name= ATTRIBUTE.
+            # Keying this carry on defName alone silently skipped every abstract, and an
+            # abstract that vanishes takes its CHILDREN with it: a ParentName that
+            # resolves to nothing is a SILENT DISCARD in RimWorld, so the def simply does
+            # not exist in game. MEASURED 2026-08-23 — three defs died exactly this way
+            # (RimMandrake_GunganEars on RimMandrake_GeneEarsBase, two head types on
+            # RimMandrake_HeavyBoneBase) and the only reason it was caught is that the
+            # offline validator resolves ParentName.
+            def _key(e):
+                return e.findtext("defName") or e.get("Name")
+            have = {_key(e) for e in root}
+            carried = [e for e in old_root if _key(e) and _key(e) not in have]
             if carried:
                 print("  %s: carried %d existing def(s) this run did not rebuild"
                       % (os.path.basename(path), len(carried)), file=sys.stderr)
                 for e in carried:
                     root.append(e)
-            root[:] = sorted(root, key=lambda e: e.findtext("defName") or "")
+            root[:] = sorted(root, key=lambda e: _key(e) or "")
     ET.indent(root, space="  ")
     body = ET.tostring(root, encoding="unicode")
     head = comment_safe(['<?xml version="1.0" encoding="utf-8"?>', "<!--"]
@@ -1033,6 +1042,18 @@ def write_rescued_kinds(kinds, tbl, built, texidx):
         for cand in tbl.get(b["species"], ()):
             if cand:
                 orname[cand] = clean_name(b["species"])
+    # 🔴 THE ORPHANS BELONG IN THIS MAP TOO, and leaving them out was a HARD STOP.
+    # `built` excludes the six species no donor can rebuild, but they ARE in our
+    # output (ORPHAN_XENOTYPES) — so a rescued pawn kind pointing at, say,
+    # OuterRim_Herglic had nothing to repoint to and line ~1065 raised SystemExit.
+    # ⚠️ That exit is BEFORE copy_textures, so the whole texture pass never ran, and
+    # THAT is why the 42 genes this generator adds had no art and failed validation
+    # with 64 errors. The missing art was never the bug; an early exit was.
+    for _sp in ORPHAN_XENOTYPES:
+        for cand in tbl.get(_sp, ()):
+            if cand and cand not in orname:
+                orname[cand] = clean_name(_sp)
+        orname.setdefault("OuterRim_" + _sp, clean_name(_sp))
     els, missing = [], []
     for name, new in sorted(RESCUE_KIND_PARENTS.items()):
         if "@" + name not in kinds:
@@ -1063,7 +1084,21 @@ def write_rescued_kinds(kinds, tbl, built, texidx):
         els.append(c)
     if missing:
         raise SystemExit("rescued pawn kinds unresolved: %s" % missing)
-    write_xml(os.path.join(OUT, "Defs/PawnKindDefs/SW_RescuedKinds.xml"),
+    # ⛔ HAND-OWNED, like RimMandrakePawnKinds.xml, and for a reason write_xml cannot
+    # catch. Its never-subtract rule works at DEF level: it carries whole defs a run
+    # did not rebuild. This file's curation is at FIELD level — the Jawa robes and
+    # hoods (e479d8ae) and the faction colours (9bb5a5bb) sit INSIDE defs the run DOES
+    # rebuild, so regenerating keeps all 16 defNames and quietly strips the equipment.
+    # MEASURED 2026-08-23: 16 -> 16 defs, 0 lost, and apparelRequired, apparelTags and
+    # apparelColor gone from the Jawa kinds. "Nothing lost" at the def level is not
+    # "nothing lost".
+    # 🔑 Delete the file to force a fresh build.
+    _rk = os.path.join(OUT, "Defs/PawnKindDefs/SW_RescuedKinds.xml")
+    if os.path.exists(_rk):
+        print("  RescuedKinds: preserved (hand-owned equipment the generator cannot "
+              "derive). Delete the file to rebuild from scratch.", file=sys.stderr)
+        return
+    write_xml(_rk,
               header("SW_RescuedKinds.xml",
                      "Outer Rim Galactic Diversity's own species pawn kinds, "
                      "copied and renamed\nbecause our FactionDefs field them "

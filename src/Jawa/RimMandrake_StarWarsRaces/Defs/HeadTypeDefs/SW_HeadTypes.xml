@@ -268,14 +268,34 @@
     <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/duros/Female_Fivehead_Wide</graphicPath>
     <gender>Female</gender>
   </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_GeonosianHeadBase">
+    <defName>RimMandrake_Female_GeonosianHead</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/geonosian/Female_Geonosian</graphicPath>
+    <gender>Female</gender>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_GunganHeadBase">
+    <defName>RimMandrake_Female_GunganHead</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/gungan/Female_Gungan</graphicPath>
+    <gender>Female</gender>
+  </HeadTypeDef>
   <HeadTypeDef ParentName="RimMandrake_HeavyBoneBase">
     <defName>RimMandrake_Female_HeavyBoneNormal</defName>
     <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/Sov_sith/Female_Bone_Normal</graphicPath>
     <gender>Female</gender>
   </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_IthorianHeadBase">
+    <defName>RimMandrake_Female_IthorianHead</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/ithorian/Female_Ithorian</graphicPath>
+    <gender>Female</gender>
+  </HeadTypeDef>
   <HeadTypeDef ParentName="RimMandrake_KubazJawBase">
     <defName>RimMandrake_Female_Kubaz</defName>
     <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/kubaz/Female_Kubaz</graphicPath>
+    <gender>Female</gender>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_RodianJawBase">
+    <defName>RimMandrake_Female_Rodian</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/rodian/Female_Rodian</graphicPath>
     <gender>Female</gender>
   </HeadTypeDef>
   <HeadTypeDef ParentName="RimMandrake_SelkathHeadBase">
@@ -286,6 +306,11 @@
   <HeadTypeDef ParentName="RimMandrake_TaungHeadBase">
     <defName>RimMandrake_Female_TaungHead</defName>
     <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/taung/taung_female</graphicPath>
+    <gender>Female</gender>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_TrandoshanJawBase">
+    <defName>RimMandrake_Female_Trandoshan</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/trandoshan/Female_Trandoshan</graphicPath>
     <gender>Female</gender>
   </HeadTypeDef>
   <HeadTypeDef Name="RimMandrake_FiveheadBase" Abstract="True">
@@ -315,6 +340,16 @@
     <modExtensions>
 		  </modExtensions>
   </HeadTypeDef>
+  <HeadTypeDef Name="RimMandrake_GeonosianHeadBase" Abstract="True" ParentName="AverageBase">
+    <eyeOffsetEastWest>(0.075, 0, 0.295)</eyeOffsetEastWest>
+    <narrow>true</narrow>
+    <randomChosen>false</randomChosen>
+    <requiredGenes>
+      <li>RimMandrake_Head_geonosian</li>
+    </requiredGenes>
+    <modExtensions>
+		  </modExtensions>
+  </HeadTypeDef>
   <HeadTypeDef ParentName="AverageBase">
     <defName>RimMandrake_Geonosian_Normal</defName>
     <graphicPath>RimMandrakeSW/OR/Things/Pawn/Humanlike/Heads/Geonosian/Normal</graphicPath>
@@ -328,6 +363,16 @@
         <shaderType>CutoutComplex</shaderType>
       </li>
     </modExtensions>
+  </HeadTypeDef>
+  <HeadTypeDef Name="RimMandrake_GunganHeadBase" Abstract="True">
+    <eyeOffsetEastWest>(0.1375, 0, 0.475)</eyeOffsetEastWest>
+    <narrow>true</narrow>
+    <randomChosen>false</randomChosen>
+    <requiredGenes>
+      <li>RimMandrake_Head_gungan</li>
+    </requiredGenes>
+    <modExtensions>
+		  </modExtensions>
   </HeadTypeDef>
   <HeadTypeDef ParentName="AverageBase">
     <defName>RimMandrake_Gungan_FemaleNormal</defName>
@@ -401,6 +446,16 @@
         <shaderType>CutoutComplex</shaderType>
       </li>
     </modExtensions>
+  </HeadTypeDef>
+  <HeadTypeDef Name="RimMandrake_IthorianHeadBase" Abstract="True" ParentName="AverageBase">
+    <eyeOffsetEastWest>(0.42, 0, 0.42)</eyeOffsetEastWest>
+    <narrow>false</narrow>
+    <randomChosen>false</randomChosen>
+    <requiredGenes>
+      <li>RimMandrake_Head_ithorian</li>
+    </requiredGenes>
+    <modExtensions>
+		  </modExtensions>
   </HeadTypeDef>
   <HeadTypeDef ParentName="AverageBase">
     <defName>RimMandrake_Ithorian_Normal</defName>
@@ -486,14 +541,34 @@
     <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/duros/Male_Fivehead_Wide</graphicPath>
     <gender>Male</gender>
   </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_GeonosianHeadBase">
+    <defName>RimMandrake_Male_GeonosianHead</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/geonosian/Male_Geonosian</graphicPath>
+    <gender>Male</gender>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_GunganHeadBase">
+    <defName>RimMandrake_Male_GunganHead</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/gungan/Male_Gungan</graphicPath>
+    <gender>Male</gender>
+  </HeadTypeDef>
   <HeadTypeDef ParentName="RimMandrake_HeavyBoneBase">
     <defName>RimMandrake_Male_HeavyBoneNormal</defName>
     <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/Sov_sith/Male_Bone_Normal</graphicPath>
     <gender>Male</gender>
   </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_IthorianHeadBase">
+    <defName>RimMandrake_Male_IthorianHead</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/ithorian/Male_Ithorian</graphicPath>
+    <gender>Male</gender>
+  </HeadTypeDef>
   <HeadTypeDef ParentName="RimMandrake_KubazJawBase">
     <defName>RimMandrake_Male_Kubaz</defName>
     <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/kubaz/Male_Kubaz</graphicPath>
+    <gender>Male</gender>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_RodianJawBase">
+    <defName>RimMandrake_Male_Rodian</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/rodian/Male_Rodian</graphicPath>
     <gender>Male</gender>
   </HeadTypeDef>
   <HeadTypeDef ParentName="RimMandrake_SelkathHeadBase">
@@ -504,6 +579,11 @@
   <HeadTypeDef ParentName="RimMandrake_TaungHeadBase">
     <defName>RimMandrake_Male_TaungHead</defName>
     <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/taung/taung_male</graphicPath>
+    <gender>Male</gender>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_TrandoshanJawBase">
+    <defName>RimMandrake_Male_Trandoshan</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/trandoshan/Male_Trandoshan</graphicPath>
     <gender>Male</gender>
   </HeadTypeDef>
   <HeadTypeDef Name="RimMandrake_MirialanHeadBase" ParentName="AverageBase" Abstract="True">
@@ -708,6 +788,13 @@
       <li>RimMandrake_RakatanHead</li>
     </requiredGenes>
   </HeadTypeDef>
+  <HeadTypeDef Name="RimMandrake_RodianJawBase" Abstract="True" ParentName="AverageBase">
+    <narrow>false</narrow>
+    <randomChosen>false</randomChosen>
+    <requiredGenes>
+      <li>RimMandrake_Head_rodian</li>
+    </requiredGenes>
+  </HeadTypeDef>
   <HeadTypeDef Name="RimMandrake_SelkathHeadBase" Abstract="True" ParentName="AverageBase">
     <eyeOffsetEastWest>(-0.05, 0, 0.245)</eyeOffsetEastWest>
     <narrow>false</narrow>
@@ -717,6 +804,19 @@
     </requiredGenes>
     <modExtensions>
 		  </modExtensions>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="AverageBase">
+    <defName>RimMandrake_Selkath_Normal</defName>
+    <graphicPath>RimMandrakeSW/OR/Things/Pawn/Humanlike/Heads/Selkath/Normal</graphicPath>
+    <gender>None</gender>
+    <requiredGenes>
+      <li>RimMandrake_SelkathHead</li>
+    </requiredGenes>
+    <modExtensions>
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+        <useSkinShader>false</useSkinShader>
+      </li>
+    </modExtensions>
   </HeadTypeDef>
   <HeadTypeDef ParentName="AverageBase">
     <defName>RimMandrake_Sullustan</defName>
@@ -797,6 +897,13 @@
       </li>
     </modExtensions>
   </HeadTypeDef>
+  <HeadTypeDef Name="RimMandrake_TrandoshanJawBase" Abstract="True" ParentName="AverageBase">
+    <narrow>false</narrow>
+    <randomChosen>false</randomChosen>
+    <requiredGenes>
+      <li>RimMandrake_Head_trandoshan</li>
+    </requiredGenes>
+  </HeadTypeDef>
   <HeadTypeDef ParentName="AverageBase">
     <defName>RimMandrake_Twilek_FemaleNormal</defName>
     <graphicPath>RimMandrakeSW/OR/Things/Pawn/Humanlike/Heads/Twilek/Female_Normal</graphicPath>
@@ -861,6 +968,27 @@
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
+  </HeadTypeDef>
+  <HeadTypeDef Name="RimMandrake_WookieeHeadBase" ParentName="AverageBase" Abstract="True">
+    <randomChosen>false</randomChosen>
+    <gender>None</gender>
+    <selectionWeight>99999</selectionWeight>
+    <requiredGenes>
+      <li>Furskin</li>
+      <li>RimMandrake_Head_wookiee</li>
+    </requiredGenes>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_WookieeHeadBase">
+    <defName>RimMandrake_Wookiee_Average1</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/wookiee/wookiee1</graphicPath>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_WookieeHeadBase">
+    <defName>RimMandrake_Wookiee_Average2</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/wookiee/wookiee2</graphicPath>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_WookieeHeadBase">
+    <defName>RimMandrake_Wookiee_Average3</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/wookiee/wookiee3</graphicPath>
   </HeadTypeDef>
   <HeadTypeDef MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Name="RimMandrake_shortFurskinAverageBase" ParentName="AverageBase" Abstract="True">
     <randomChosen>false</randomChosen>

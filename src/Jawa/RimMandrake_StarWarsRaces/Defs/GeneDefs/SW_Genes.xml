@@ -225,6 +225,100 @@
     </renderNodeProperties>
     <prerequisite>RimMandrake_Head_selkath</prerequisite>
   </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_Beard_fourtusks</defName>
+    <label>four tusks</label>
+    <description>Carriers of this gene grow four large tusks.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_FourTusks</iconPath>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayOrderInCategory>788</displayOrderInCategory>
+    <iconColor>(0.75, 0.75, 0.75)</iconColor>
+    <biostatCpx>0</biostatCpx>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/kaleesh/tusks</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <useRottenColor>true</useRottenColor>
+        <useSkinShader>false</useSkinShader>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <skipFlag>Beard</skipFlag>
+        <visibleFacing>
+          <li>East</li>
+          <li>South</li>
+          <li>West</li>
+        </visibleFacing>
+        <narrowCrownHorizontalOffset>0.03</narrowCrownHorizontalOffset>
+        <drawData>
+          <defaultData>
+            <layer>67</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_Beard_hugetusks</defName>
+    <label>huge tusks</label>
+    <description>Carriers of this gene grow two huge tusks.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HugeTusks</iconPath>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayOrderInCategory>788</displayOrderInCategory>
+    <iconColor>(0.75, 0.75, 0.75)</iconColor>
+    <biostatCpx>0</biostatCpx>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/aqualish/HugeTusks</texPath>
+        <narrowCrownHorizontalOffset>0.03</narrowCrownHorizontalOffset>
+        <useRottenColor>true</useRottenColor>
+        <colorType>Skin</colorType>
+        <shaderTypeDef>CutoutComplex</shaderTypeDef>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <skipFlag>Beard</skipFlag>
+        <drawData>
+          <defaultData>
+            <layer>65</layer>
+          </defaultData>
+        </drawData>
+        <visibleFacing>
+          <li>East</li>
+          <li>South</li>
+          <li>West</li>
+        </visibleFacing>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_Beard_squidmouth</defName>
+    <label>tentacle mouth</label>
+    <description>Carriers of this gene grow facial tentacles and large tusks.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SquidMouth</iconPath>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayOrderInCategory>783</displayOrderInCategory>
+    <biostatCpx>0</biostatCpx>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/quarren/squidmouth</texPath>
+        <narrowCrownHorizontalOffset>0.03</narrowCrownHorizontalOffset>
+        <useRottenColor>true</useRottenColor>
+        <colorType>Skin</colorType>
+        <shaderTypeDef>CutoutComplex</shaderTypeDef>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <drawData>
+          <defaultData>
+            <layer>65</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
     <defName>RimMandrake_BithHead</defName>
     <label>bith head</label>
@@ -295,7 +389,7 @@
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RimMandrake_BodySizeGene_big</defName>
     <label>Big Frame</label>
-    <description>Body size 1.20 against a baseliner's 1.00. Real size: carrying capacity, food, melee and health scale all move with it.</description>
+    <description>taller-than-normal</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
@@ -304,14 +398,14 @@
     <biostatCpx>1</biostatCpx>
     <biostatMet>-1</biostatMet>
     <statOffsets>
-      <SM_BodySizeOffset>0.2</SM_BodySizeOffset>
+      <SM_Cosmetic_BodySizeOffset>0.2</SM_Cosmetic_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RimMandrake_BodySizeGene_bigger</defName>
     <label>Bigger Frame</label>
-    <description>Body size 1.50 against a baseliner's 1.00. Real size: carrying capacity, food, melee and health scale all move with it.</description>
+    <description>wookiee size</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
@@ -320,14 +414,14 @@
     <biostatCpx>1</biostatCpx>
     <biostatMet>-2</biostatMet>
     <statOffsets>
-      <SM_BodySizeOffset>0.5</SM_BodySizeOffset>
+      <SM_Cosmetic_BodySizeOffset>0.5</SM_Cosmetic_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RimMandrake_BodySizeGene_biggest</defName>
     <label>Biggest Frame</label>
-    <description>Body size 1.70 against a baseliner's 1.00. Real size: carrying capacity, food, melee and health scale all move with it.</description>
+    <description>hutt size</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
@@ -336,39 +430,55 @@
     <biostatCpx>1</biostatCpx>
     <biostatMet>-3</biostatMet>
     <statOffsets>
-      <SM_BodySizeOffset>0.7</SM_BodySizeOffset>
+      <SM_Cosmetic_BodySizeOffset>0.7</SM_Cosmetic_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RimMandrake_BodySizeGene_small</defName>
     <label>Small Frame</label>
-    <description>Body size 0.80 against a baseliner's 1.00. Real size: eats less, carries less, hits lighter.</description>
+    <description>shorter-than-normal</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BodySizeSmall</iconPath>
     <displayOrderInCategory>764</displayOrderInCategory>
     <biostatCpx>1</biostatCpx>
-    <biostatMet>3</biostatMet>
+    <biostatMet>1</biostatMet>
     <statOffsets>
-      <SM_BodySizeOffset>-0.2</SM_BodySizeOffset>
+      <SM_Cosmetic_BodySizeOffset>-0.2</SM_Cosmetic_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RimMandrake_BodySizeGene_smaller</defName>
     <label>Smaller Frame</label>
-    <description>Body size 0.50 against a baseliner's 1.00. Real size: eats much less, carries much less, hits much lighter.</description>
+    <description>jawa size</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BodySizeSmaller</iconPath>
     <displayOrderInCategory>763</displayOrderInCategory>
     <biostatCpx>1</biostatCpx>
-    <biostatMet>5</biostatMet>
+    <biostatMet>2</biostatMet>
     <statOffsets>
-      <SM_BodySizeOffset>-0.5</SM_BodySizeOffset>
+      <SM_Cosmetic_BodySizeOffset>-0.5</SM_Cosmetic_BodySizeOffset>
+    </statOffsets>
+    <selectionWeight>0.0</selectionWeight>
+  </GeneDef>
+  <GeneDef ParentName="RimMandrake_BodySizeGene_base">
+    <defName>RimMandrake_BodySizeGene_smallest</defName>
+    <label>Smallest Frame</label>
+    <description>yoda size</description>
+    <exclusionTags>
+      <li>BodySize</li>
+    </exclusionTags>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BodySizeSmallest</iconPath>
+    <displayOrderInCategory>762</displayOrderInCategory>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>3</biostatMet>
+    <statOffsets>
+      <SM_Cosmetic_BodySizeOffset>-0.7</SM_Cosmetic_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
@@ -442,6 +552,41 @@
         <rotDrawMode>Fresh, Rotting</rotDrawMode>
         <texPaths>
           <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/mimbanese/RidgedBrow</li>
+        </texPaths>
+        <visibleFacing>
+          <li>East</li>
+          <li>South</li>
+          <li>West</li>
+        </visibleFacing>
+        <narrowCrownHorizontalOffset>0.03</narrowCrownHorizontalOffset>
+        <drawData>
+          <defaultData>
+            <layer>53</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_Brow_facespines</defName>
+    <label>facial spines</label>
+    <description>Carriers of this gene grow pointy spines on their face.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_FaceSpines</iconPath>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconColor>(0.75, 0.75, 0.75)</iconColor>
+    <displayOrderInCategory>786</displayOrderInCategory>
+    <biostatCpx>0</biostatCpx>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <parentTagDef>Head</parentTagDef>
+        <colorType>Skin</colorType>
+        <shaderTypeDef>CutoutComplex</shaderTypeDef>
+        <useRottenColor>true</useRottenColor>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <texPaths>
+          <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/nikto/facespines</li>
         </texPaths>
         <visibleFacing>
           <li>East</li>
@@ -714,6 +859,85 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneEarsBase">
+    <defName>RimMandrake_Ears_big</defName>
+    <label>big ears</label>
+    <description>Carriers of this gene will grow larger-than-usual ears.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BigEar</iconPath>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/sullustan/BigEars</texPath>
+        <colorType>Skin</colorType>
+        <parentTagDef>Head</parentTagDef>
+        <useSkinShader>true</useSkinShader>
+        <useRottenColor>true</useRottenColor>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <skipFlag>Hair</skipFlag>
+        <drawData>
+          <defaultData>
+            <layer>70</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneEarsBase">
+    <defName>RimMandrake_Ears_fin</defName>
+    <label>fin ears</label>
+    <description>Carriers of this gene will grow large, pointed, fin-like ears.</description>
+    <displayOrderInCategory>782</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_EarFin</iconPath>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/quarren/earfins</texPath>
+        <colorType>Skin</colorType>
+        <parentTagDef>Head</parentTagDef>
+        <useSkinShader>true</useSkinShader>
+        <useRottenColor>true</useRottenColor>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <skipFlag>Hair</skipFlag>
+        <drawData>
+          <defaultData>
+            <layer>51</layer>
+          </defaultData>
+          <dataNorth>
+            <layer>80</layer>
+          </dataNorth>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneEarsBase">
+    <defName>RimMandrake_Ears_round</defName>
+    <label>round ears</label>
+    <description>Carriers of this gene will grow round, bear-like ears.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_EarRound</iconPath>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/ewok/RoundEars</texPath>
+        <colorType>Skin</colorType>
+        <parentTagDef>Head</parentTagDef>
+        <useSkinShader>true</useSkinShader>
+        <useRottenColor>true</useRottenColor>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <skipFlag>Hair</skipFlag>
+        <drawData>
+          <defaultData>
+            <layer>70</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneEarsBase">
     <defName>RimMandrake_Ears_smallwebbed</defName>
     <label>small webbed ears</label>
     <description>Carriers of this gene grow small, floppy, webbed ears.</description>
@@ -725,6 +949,35 @@
         <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
         <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
         <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/taung/webears</texPath>
+        <colorType>Skin</colorType>
+        <parentTagDef>Head</parentTagDef>
+        <useSkinShader>true</useSkinShader>
+        <useRottenColor>true</useRottenColor>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <skipFlag>Hair</skipFlag>
+        <drawData>
+          <defaultData>
+            <layer>80</layer>
+          </defaultData>
+          <dataSouth>
+            <layer>-3</layer>
+          </dataSouth>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneEarsBase">
+    <defName>RimMandrake_Ears_webbed</defName>
+    <label>webbed ears</label>
+    <description>Carriers of this gene grow huge, floppy, webbed ears.</description>
+    <displayOrderInCategory>783</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_EarWebbed</iconPath>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/gungan/webbedears</texPath>
         <colorType>Skin</colorType>
         <parentTagDef>Head</parentTagDef>
         <useSkinShader>true</useSkinShader>
@@ -852,6 +1105,90 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
+    <defName>RimMandrake_Eyes_BigOrange</defName>
+    <label>orange big eyes</label>
+    <labelShortAdj>big-eyed</labelShortAdj>
+    <description>Carriers of this gene have large, orange eyes.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BigOrangeEyes</iconPath>
+    <displayOrderInCategory>1771</displayOrderInCategory>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/bigeyes/bigeyes_orange</texPath>
+        <anchorTag>RightEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Right</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+          </defaultData>
+        </drawData>
+      </li>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/bigeyes/bigeyes_orange</texPath>
+        <anchorTag>LeftEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Left</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+            <flip>true</flip>
+          </defaultData>
+          <dataWest>
+            <flip>false</flip>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneEyeColor">
+    <defName>RimMandrake_Eyes_BigRed</defName>
+    <label>red big eyes</label>
+    <labelShortAdj>big-eyed</labelShortAdj>
+    <description>Carriers of this gene have large, red eyes.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BigRedEyes</iconPath>
+    <displayOrderInCategory>1770</displayOrderInCategory>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/bigeyes/bigeyes_red</texPath>
+        <anchorTag>RightEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Right</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+          </defaultData>
+        </drawData>
+      </li>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/bigeyes/bigeyes_red</texPath>
+        <anchorTag>LeftEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Left</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+            <flip>true</flip>
+          </defaultData>
+          <dataWest>
+            <flip>false</flip>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneEyeColor">
     <defName>RimMandrake_Eyes_BigYellow</defName>
     <label>yellow big eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
@@ -883,6 +1220,143 @@
         <drawData>
           <defaultData>
             <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+            <flip>true</flip>
+          </defaultData>
+          <dataWest>
+            <flip>false</flip>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneEyeColor">
+    <defName>RimMandrake_Eyes_Blue</defName>
+    <label>blue eyes</label>
+    <labelShortAdj>blue-eyed</labelShortAdj>
+    <description>Carriers of this gene have blue-pigmented eyes.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BlueEyes</iconPath>
+    <displayOrderInCategory>7</displayOrderInCategory>
+    <exclusionTags>
+      <li>EyeColor_ReplacedByPotFSithEyes</li>
+    </exclusionTags>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/blueeyes/BlueEyes_Male</texPath>
+        <texPathFemale>RimMandrakeSW/SWX/Pawn/HeadAttachments/blueeyes/BlueEyes_Female</texPathFemale>
+        <anchorTag>RightEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Right</side>
+        <drawData>
+          <defaultData>
+            <layer>54</layer>
+            <offset>(0, 0, -0.25)</offset>
+          </defaultData>
+        </drawData>
+      </li>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/blueeyes/BlueEyes_Male</texPath>
+        <texPathFemale>RimMandrakeSW/SWX/Pawn/HeadAttachments/blueeyes/BlueEyes_Female</texPathFemale>
+        <anchorTag>LeftEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Left</side>
+        <drawData>
+          <defaultData>
+            <layer>54</layer>
+            <offset>(0, 0, -0.25)</offset>
+            <flip>true</flip>
+          </defaultData>
+          <dataWest>
+            <flip>false</flip>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneEyeColor">
+    <defName>RimMandrake_Eyes_FourBig</defName>
+    <label>four eyes</label>
+    <labelShortAdj>four-eyed</labelShortAdj>
+    <description>Carriers of this gene have two sets of large, black eyes.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_FourEyes</iconPath>
+    <displayOrderInCategory>787</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/foureyes/foureyes</texPath>
+        <anchorTag>RightEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Right</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+          </defaultData>
+        </drawData>
+      </li>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/foureyes/foureyes</texPath>
+        <anchorTag>LeftEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Left</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+            <flip>true</flip>
+          </defaultData>
+          <dataWest>
+            <flip>false</flip>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneEyeColor">
+    <defName>RimMandrake_Eyes_Green</defName>
+    <label>green eyes</label>
+    <labelShortAdj>green-eyed</labelShortAdj>
+    <description>Carriers of this gene have green-pigmented eyes.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_GreenEyes</iconPath>
+    <displayOrderInCategory>7</displayOrderInCategory>
+    <exclusionTags>
+      <li>EyeColor_ReplacedByPotFSithEyes</li>
+    </exclusionTags>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/greeneyes/GreenEyes_Male</texPath>
+        <texPathFemale>RimMandrakeSW/SWX/Pawn/HeadAttachments/greeneyes/GreenEyes_Female</texPathFemale>
+        <anchorTag>RightEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Right</side>
+        <drawData>
+          <defaultData>
+            <layer>54</layer>
+            <offset>(0, 0, -0.25)</offset>
+          </defaultData>
+        </drawData>
+      </li>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/greeneyes/GreenEyes_Male</texPath>
+        <texPathFemale>RimMandrakeSW/SWX/Pawn/HeadAttachments/greeneyes/GreenEyes_Female</texPathFemale>
+        <anchorTag>LeftEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Left</side>
+        <drawData>
+          <defaultData>
+            <layer>54</layer>
             <offset>(0, 0, -0.25)</offset>
             <flip>true</flip>
           </defaultData>
@@ -979,6 +1453,50 @@
       </li>
     </renderNodeProperties>
   </GeneDef>
+  <GeneDef ParentName="GeneEyeColor">
+    <defName>RimMandrake_Eyes_InvertedYellow</defName>
+    <label>yellow inverted eyes</label>
+    <labelShortAdj>big-eyed</labelShortAdj>
+    <description>Carriers of this gene have huge yellow eyes.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_InvertedYellowEyes</iconPath>
+    <displayOrderInCategory>1775</displayOrderInCategory>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/biginvertedeyes/YellowBigInvertedEyes_Male</texPath>
+        <texPathFemale>RimMandrakeSW/SWX/Pawn/HeadAttachments/biginvertedeyes/YellowBigInvertedEyes_Female</texPathFemale>
+        <anchorTag>RightEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Right</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+          </defaultData>
+        </drawData>
+      </li>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/biginvertedeyes/YellowBigInvertedEyes_Male</texPath>
+        <texPathFemale>RimMandrakeSW/SWX/Pawn/HeadAttachments/biginvertedeyes/YellowBigInvertedEyes_Female</texPathFemale>
+        <anchorTag>LeftEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Left</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+            <flip>true</flip>
+          </defaultData>
+          <dataWest>
+            <flip>false</flip>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
   <GeneDef>
     <defName>RimMandrake_Face_jowls</defName>
     <label>jowls</label>
@@ -1001,6 +1519,42 @@
         <skipFlag>Beard</skipFlag>
         <texPaths>
           <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/klatoonian/Jowls</li>
+        </texPaths>
+        <visibleFacing>
+          <li>East</li>
+          <li>South</li>
+          <li>West</li>
+        </visibleFacing>
+        <narrowCrownHorizontalOffset>0.03</narrowCrownHorizontalOffset>
+        <drawData>
+          <defaultData>
+            <layer>51</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_Face_jowlsBigHead</defName>
+    <label>jowls and forehead crease</label>
+    <description>Carriers of this gene have large, dog-like facial jowls and a forehead crease.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BithJowls</iconPath>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconColor>(0.75, 0.75, 0.75)</iconColor>
+    <displayOrderInCategory>768</displayOrderInCategory>
+    <biostatCpx>0</biostatCpx>
+    <prerequisite>RimMandrake_Head_duros</prerequisite>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <parentTagDef>Head</parentTagDef>
+        <colorType>Skin</colorType>
+        <useRottenColor>true</useRottenColor>
+        <useSkinShader>true</useSkinShader>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <texPaths>
+          <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/bith/Jowls2</li>
         </texPaths>
         <visibleFacing>
           <li>East</li>
@@ -1493,6 +2047,13 @@
     <displayOrderInCategory>139</displayOrderInCategory>
   </GeneDef>
   <GeneDef ParentName="GeneHairColorBase">
+    <defName>RimMandrake_Hair_DarkRed</defName>
+    <label>dark red hair</label>
+    <hairColorOverride>(140,0,25)</hairColorOverride>
+    <selectionWeight>0.05</selectionWeight>
+    <displayOrderInCategory>191</displayOrderInCategory>
+  </GeneDef>
+  <GeneDef ParentName="GeneHairColorBase">
     <defName>RimMandrake_Hair_Lavender</defName>
     <label>lavender hair</label>
     <hairColorOverride>(160,145,200)</hairColorOverride>
@@ -1512,6 +2073,39 @@
     <hairColorOverride>(125,95,100)</hairColorOverride>
     <selectionWeight>0.05</selectionWeight>
     <displayOrderInCategory>189</displayOrderInCategory>
+  </GeneDef>
+  <GeneDef ParentName="GeneHeadboneBase">
+    <defName>RimMandrake_Hair_rodian</defName>
+    <label>head spines</label>
+    <description>Carriers of this gene grow flexible spines on their head.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadSpines</iconPath>
+    <displayOrderInCategory>766</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <exclusionTags Inherit="False" />
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/rodian/mohawk</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <colorType>Skin</colorType>
+        <useRottenColor>true</useRottenColor>
+        <useSkinShader>true</useSkinShader>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <skipFlag>Hair</skipFlag>
+        <drawData>
+          <defaultData>
+            <layer>80</layer>
+          </defaultData>
+          <dataEast>
+            <layer>60</layer>
+          </dataEast>
+          <dataWest>
+            <layer>60</layer>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
   </GeneDef>
   <GeneDef>
     <defName>RimMandrake_HeadAttachment_gandmask</defName>
@@ -1682,6 +2276,30 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
+    <defName>RimMandrake_Head_geonosian</defName>
+    <label>bug head</label>
+    <description>Carriers of this gene have long, chitinous insectoid heads.</description>
+    <displayOrderInCategory>797</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_GeonosianHead</iconPath>
+    <forcedHeadTypes>
+      <li>RimMandrake_Male_GeonosianHead</li>
+      <li>RimMandrake_Female_GeonosianHead</li>
+    </forcedHeadTypes>
+  </GeneDef>
+  <GeneDef ParentName="GeneJawBase">
+    <defName>RimMandrake_Head_gungan</defName>
+    <label>billed head</label>
+    <description>Carriers of this gene have billed, frog-like heads.</description>
+    <displayOrderInCategory>794</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_GunganHead</iconPath>
+    <forcedHeadTypes>
+      <li>RimMandrake_Male_GunganHead</li>
+      <li>RimMandrake_Female_GunganHead</li>
+    </forcedHeadTypes>
+  </GeneDef>
+  <GeneDef ParentName="GeneJawBase">
     <defName>RimMandrake_Head_hutt</defName>
     <label>fat head</label>
     <description>Carriers of this gene have enlarged, widened jaws.</description>
@@ -1698,6 +2316,18 @@
         <headPosMultiplier>0.35</headPosMultiplier>
       </li>
     </modExtensions>
+  </GeneDef>
+  <GeneDef ParentName="GeneJawBase">
+    <defName>RimMandrake_Head_ithorian</defName>
+    <label>flat head</label>
+    <description>Carriers of this gene have protruded, flat, slug-like heads.</description>
+    <displayOrderInCategory>800</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_IthorianHead</iconPath>
+    <forcedHeadTypes>
+      <li>RimMandrake_Male_IthorianHead</li>
+      <li>RimMandrake_Female_IthorianHead</li>
+    </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
     <defName>RimMandrake_Head_kubaz</defName>
@@ -1721,6 +2351,18 @@
     <forcedHeadTypes>
       <li>RimMandrake_Male_Egghead</li>
       <li>RimMandrake_Female_Egghead</li>
+    </forcedHeadTypes>
+  </GeneDef>
+  <GeneDef ParentName="GeneJawBase">
+    <defName>RimMandrake_Head_rodian</defName>
+    <label>tapered jaw</label>
+    <description>Carriers of this gene have tapered, anteater-like mouths.</description>
+    <displayOrderInCategory>771</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_JawRodian</iconPath>
+    <forcedHeadTypes>
+      <li>RimMandrake_Male_Rodian</li>
+      <li>RimMandrake_Female_Rodian</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
@@ -1772,6 +2414,96 @@
       <li>RimMandrake_Male_TaungHead</li>
       <li>RimMandrake_Female_TaungHead</li>
     </forcedHeadTypes>
+  </GeneDef>
+  <GeneDef ParentName="GeneJawBase">
+    <defName>RimMandrake_Head_trandoshan</defName>
+    <label>lizard jaw</label>
+    <description>Carriers of this gene have large, lizard-like mouths.</description>
+    <displayOrderInCategory>778</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_JawTrandoshan</iconPath>
+    <forcedHeadTypes>
+      <li>RimMandrake_Male_Trandoshan</li>
+      <li>RimMandrake_Female_Trandoshan</li>
+    </forcedHeadTypes>
+  </GeneDef>
+  <GeneDef ParentName="GeneJawBase">
+    <defName>RimMandrake_Head_wookiee</defName>
+    <label>shaggy furskin</label>
+    <labelShortAdj>shaggy</labelShortAdj>
+    <description>Carriers of this gene have long, shaggy fur.</description>
+    <displayOrderInCategory>792</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_ShaggyFur</iconPath>
+    <prerequisite>Furskin</prerequisite>
+    <forcedHeadTypes>
+      <li>RimMandrake_Wookiee_Average1</li>
+      <li>RimMandrake_Wookiee_Average2</li>
+      <li>RimMandrake_Wookiee_Average3</li>
+    </forcedHeadTypes>
+  </GeneDef>
+  <GeneDef ParentName="GeneHeadboneBase">
+    <defName>RimMandrake_Headbone_BigHorns</defName>
+    <label>big-horns</label>
+    <description>Carriers of this gene grow two large horns protruding from the forehead.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneBighorns</iconPath>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <symbolPack>
+      <prefixSymbols>
+        <li>
+          <symbol>horn</symbol>
+        </li>
+        <li>
+          <symbol>knob</symbol>
+        </li>
+        <li>
+          <symbol>spike</symbol>
+        </li>
+        <li>
+          <symbol>devil</symbol>
+        </li>
+        <li>
+          <symbol>demon</symbol>
+        </li>
+        <li>
+          <symbol>luci</symbol>
+        </li>
+        <li>
+          <symbol>beelze</symbol>
+        </li>
+        <li>
+          <symbol>hell</symbol>
+        </li>
+      </prefixSymbols>
+      <suffixSymbols>
+        <li>
+          <symbol>horn</symbol>
+        </li>
+        <li>
+          <symbol>spike</symbol>
+        </li>
+        <li>
+          <symbol>vil</symbol>
+        </li>
+      </suffixSymbols>
+    </symbolPack>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/devaronian/bighorns</texPath>
+        <color>(255, 255, 255)</color>
+        <parentTagDef>Head</parentTagDef>
+        <drawData>
+          <defaultData>
+            <layer>80</layer>
+          </defaultData>
+          <dataNorth>
+            <layer>10</layer>
+          </dataNorth>
+        </drawData>
+      </li>
+    </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneHeadboneBase">
     <defName>RimMandrake_Headbone_nautolan</defName>
@@ -1843,6 +2575,88 @@
         <useSkinShader>true</useSkinShader>
         <parentTagDef>Head</parentTagDef>
         <skipFlag>Hair</skipFlag>
+        <drawData>
+          <defaultData>
+            <layer>80</layer>
+          </defaultData>
+          <dataSouth>
+            <layer>68</layer>
+          </dataSouth>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneHeadboneBase">
+    <defName>RimMandrake_Headbone_togruta</defName>
+    <label>montrals</label>
+    <description>Carriers of this gene have large organic growths on their heads, including two rigid horns and three flexible head-tails.</description>
+    <displayOrderInCategory>774</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneTogruta</iconPath>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/togruta/montrals</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <colorType>Hair</colorType>
+        <useRottenColor>true</useRottenColor>
+        <shaderTypeDef>CutoutComplex</shaderTypeDef>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <drawData>
+          <defaultData>
+            <layer>67</layer>
+          </defaultData>
+          <dataNorth>
+            <layer>70</layer>
+          </dataNorth>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneHeadboneBase">
+    <defName>RimMandrake_Headbone_trandoshan</defName>
+    <label>ridged crown</label>
+    <description>Carriers of this gene have ridged crowns on their heads.</description>
+    <displayOrderInCategory>777</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneTrandoshan</iconPath>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/trandoshan/ridgedcrown</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <colorType>Skin</colorType>
+        <useRottenColor>true</useRottenColor>
+        <useSkinShader>true</useSkinShader>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <skipFlag>Hair</skipFlag>
+        <drawData>
+          <defaultData>
+            <layer>68</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneHeadboneBase">
+    <defName>RimMandrake_Headbone_twilek</defName>
+    <label>head-tails</label>
+    <description>Carriers of this gene grow two large head tails protruding from the back of the head.</description>
+    <displayOrderInCategory>762</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneTwilek</iconPath>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/twilek/twilek</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <colorType>Skin</colorType>
+        <useRottenColor>true</useRottenColor>
+        <useSkinShader>true</useSkinShader>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
         <drawData>
           <defaultData>
             <layer>80</layer>
@@ -2127,6 +2941,39 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneNoseBase">
+    <defName>RimMandrake_Nose_Cat</defName>
+    <label>cat-like nose</label>
+    <description>Carriers of this gene have smaller, cat-like noses</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_NoseCat</iconPath>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <missingGeneRomanceChanceFactor>0.2</missingGeneRomanceChanceFactor>
+    <displayOrderInCategory>789</displayOrderInCategory>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/cathar/CatNose</texPath>
+        <narrowCrownHorizontalOffset>0.03</narrowCrownHorizontalOffset>
+        <useSkinShader>true</useSkinShader>
+        <useRottenColor>true</useRottenColor>
+        <colorType>Skin</colorType>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <skipFlag>Beard</skipFlag>
+        <visibleFacing>
+          <li>East</li>
+          <li>South</li>
+          <li>West</li>
+        </visibleFacing>
+        <drawData>
+          <defaultData>
+            <layer>66</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneNoseBase">
     <defName>RimMandrake_Nose_Dog</defName>
     <label>dog-like nose</label>
     <description>Carriers of this gene have smaller, dog-like noses</description>
@@ -2178,6 +3025,38 @@
         <colorType>Skin</colorType>
         <parentTagDef>Head</parentTagDef>
         <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <visibleFacing>
+          <li>East</li>
+          <li>South</li>
+          <li>West</li>
+        </visibleFacing>
+        <drawData>
+          <defaultData>
+            <layer>66</layer>
+          </defaultData>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+  <GeneDef ParentName="GeneNoseBase">
+    <defName>RimMandrake_Nose_Snout</defName>
+    <label>snout</label>
+    <description>Carriers of this gene have an elongated, canine-like snout.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Snout</iconPath>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayOrderInCategory>775</displayOrderInCategory>
+    <renderNodeProperties>
+      <li>
+        <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
+        <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
+        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/bothan/snout</texPath>
+        <narrowCrownHorizontalOffset>-0.01</narrowCrownHorizontalOffset>
+        <useSkinShader>true</useSkinShader>
+        <useRottenColor>true</useRottenColor>
+        <colorType>Skin</colorType>
+        <parentTagDef>Head</parentTagDef>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <skipFlag>Beard</skipFlag>
         <visibleFacing>
           <li>East</li>
           <li>South</li>
@@ -2282,6 +3161,64 @@
           <symbol>rakatan</symbol>
         </li>
       </wholeNameSymbols>
+    </symbolPack>
+  </GeneDef>
+  <GeneDef ParentName="GeneVoiceBase">
+    <defName>RimMandrake_SandVoiceGene</defName>
+    <label>Devolved voice</label>
+    <description>Carriers have a voice that mainly supports barks,grunts and honks.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SovSandVoice</iconPath>
+    <displayOrderInCategory>125</displayOrderInCategory>
+    <soundCall>RimMandrake_Pawn_SandP_Call</soundCall>
+    <soundDeath>RimMandrake_Pawn_SandP_Death</soundDeath>
+    <soundWounded>RimMandrake_Pawn_SandP_Wounded</soundWounded>
+  </GeneDef>
+  <GeneDef ParentName="RimMandrake_GeneHeadBase">
+    <defName>RimMandrake_SelkathHead</defName>
+    <label>selkath head</label>
+    <description>Carriers of this gene have the Selkath racial head type.</description>
+    <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_SelkathHead</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <forcedHeadTypes>
+      <li>RimMandrake_Selkath_Normal</li>
+    </forcedHeadTypes>
+    <displayOrderInCategory>9100</displayOrderInCategory>
+    <symbolPack>
+      <wholeNameSymbols>
+        <li>
+          <symbol>selkath</symbol>
+        </li>
+      </wholeNameSymbols>
+    </symbolPack>
+  </GeneDef>
+  <GeneDef ParentName="GeneSkinColorOverride">
+    <defName>RimMandrake_Skin_BrightGreen</defName>
+    <label>bright green skin</label>
+    <labelShortAdj>bright green</labelShortAdj>
+    <description>Carriers of this gene produce a pigment that gives their skin a bright green color.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
+    <skinColorOverride>(165,200,75)</skinColorOverride>
+    <displayOrderInCategory>91</displayOrderInCategory>
+    <symbolPack>
+      <wholeNameSymbols>
+        <li>
+          <symbol>greenskin</symbol>
+        </li>
+      </wholeNameSymbols>
+      <prefixSymbols>
+        <li>
+          <symbol>green</symbol>
+        </li>
+        <li>
+          <symbol>moss</symbol>
+        </li>
+        <li>
+          <symbol>jade</symbol>
+        </li>
+        <li>
+          <symbol>leaf</symbol>
+        </li>
+      </prefixSymbols>
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
@@ -2762,6 +3699,16 @@
       <LifespanFactor>4.0</LifespanFactor>
     </statFactors>
   </GeneDef>
+  <GeneDef ParentName="RimMandrake_LifespanGeneBase">
+    <defName>RimMandrake_lifespan_six</defName>
+    <label>600-year lifespan</label>
+    <description>Carriers of this gene live for approximately 600 years.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Lifespan6x</iconPath>
+    <displayOrderInCategory>764</displayOrderInCategory>
+    <statFactors>
+      <LifespanFactor>6.0</LifespanFactor>
+    </statFactors>
+  </GeneDef>
   <GeneDef MayRequire="Ludeon.RimWorld.Royalty">
     <defName>RimMandrake_statgene_PsyHarmonize</defName>
     <label>psychic harmonization</label>
@@ -2788,6 +3735,21 @@
       </li>
     </modExtensions>
   </GeneDef>
+  <GeneDef MayRequire="pathfinding.framework">
+    <defName>RimMandrake_statgene_amphibious</defName>
+    <label>amphibious</label>
+    <description>Carriers of this gene have evolved to move around efficiently in both land and in water.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Amphibious</iconPath>
+    <displayOrderInCategory>702</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <biostatCpx>2</biostatCpx>
+    <selectionWeight>0</selectionWeight>
+    <modExtensions>
+      <li Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+  </GeneDef>
   <GeneDef ParentName="GeneAggressionBase">
     <defName>RimMandrake_statgene_compliant</defName>
     <label>compliant</label>
@@ -2808,6 +3770,44 @@
       <li>Turn_Exclusion_FreeSpirit</li>
     </exclusionTags>
     <biostatMet>-1</biostatMet>
+  </GeneDef>
+  <GeneDef MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>RimMandrake_statgene_force</defName>
+    <label>natural force-user</label>
+    <description>Carriers of this gene have evolved a natural ability to use the force.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_ForceNatural</iconPath>
+    <displayOrderInCategory>700</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <biostatCpx>10</biostatCpx>
+    <biostatArc>3</biostatArc>
+    <selectionWeight>0</selectionWeight>
+    <modExtensions>
+      <li MayRequire="Ludeon.RimWorld.Royalty" Class="BigAndSmall.PawnExtension">
+        <applyPartHediff>
+          <li>
+            <hediff>PsychicAmplifier</hediff>
+            <bodyparts>
+              <li>Brain</li>
+            </bodyparts>
+          </li>
+        </applyPartHediff>
+      </li>
+    </modExtensions>
+  </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_statgene_fourthroats</defName>
+    <label>four throats</label>
+    <description>Carriers of this gene have four throats for four times the speaking power.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_FourThroats</iconPath>
+    <displayOrderInCategory>781</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <biostatCpx>1</biostatCpx>
+    <capMods>
+      <li>
+        <capacity>Talking</capacity>
+        <postFactor>4</postFactor>
+      </li>
+    </capMods>
   </GeneDef>
   <GeneDef>
     <defName>RimMandrake_statgene_metabolismcheat</defName>
@@ -2851,6 +3851,108 @@
             </bodyparts>
           </li>
         </applyPartHediff>
+      </li>
+    </modExtensions>
+  </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_statgene_senses</defName>
+    <label>heightened senses</label>
+    <description>Carriers of this gene have hyper-tuned sight and hearing, but as a result are extremely vulnerable to sonic attacks.</description>
+    <iconPath>UI/Icons/Genes/Gene_EarHuman</iconPath>
+    <displayOrderInCategory>780</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <biostatCpx>1</biostatCpx>
+    <capMods>
+      <li>
+        <capacity>Sight</capacity>
+        <postFactor>1.25</postFactor>
+      </li>
+      <li>
+        <capacity>Hearing</capacity>
+        <postFactor>1.25</postFactor>
+      </li>
+    </capMods>
+    <damageFactors>
+      <guy762_RangedDamage_sonic MayRequire="guy762.KotORWeapons">2</guy762_RangedDamage_sonic>
+      <guy762_GrenadeDamage_sonic MayRequire="guy762.KotORWeapons">2</guy762_GrenadeDamage_sonic>
+      <Thump>2</Thump>
+    </damageFactors>
+  </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_tattooGene_mirialan</defName>
+    <label>geometric tattoos</label>
+    <description>Members of this species decorate their faces with tattoos of geometric shapes.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooMirialan</iconPath>
+    <displayOrderInCategory>795</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <modExtensions>
+      <li Class="GeneTattooTagFilter.ModExtension_GeneTattooTagFilter">
+        <faceFilter>
+          <whitelist>true</whitelist>
+          <tags>
+            <li>guy762_SWTattoo_Mirialan</li>
+          </tags>
+        </faceFilter>
+      </li>
+    </modExtensions>
+  </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_tattooGene_pantoran</defName>
+    <label>yellow tattoos</label>
+    <description>Members of this species decorate their faces with yellow tattoos.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooPantoran</iconPath>
+    <displayOrderInCategory>797</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <modExtensions>
+      <li Class="GeneTattooTagFilter.ModExtension_GeneTattooTagFilter">
+        <faceFilter>
+          <whitelist>true</whitelist>
+          <tags>
+            <li>guy762_SWTattoo_Pantoran</li>
+          </tags>
+        </faceFilter>
+      </li>
+    </modExtensions>
+  </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_tattooGene_togruta</defName>
+    <label>white tattoos</label>
+    <description>Members of this species decorate their faces with white tattoos.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooTogruta</iconPath>
+    <displayOrderInCategory>796</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <modExtensions>
+      <li Class="GeneTattooTagFilter.ModExtension_GeneTattooTagFilter">
+        <faceFilter>
+          <whitelist>true</whitelist>
+          <tags>
+            <li>guy762_SWTattoo_Togruta</li>
+          </tags>
+        </faceFilter>
+      </li>
+    </modExtensions>
+  </GeneDef>
+  <GeneDef>
+    <defName>RimMandrake_tattooGene_zabrak</defName>
+    <label>dark tattoos</label>
+    <description>Members of this species decorate their faces and bodies with intricate black tattoos.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooZabrak</iconPath>
+    <displayOrderInCategory>798</displayOrderInCategory>
+    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <modExtensions>
+      <li Class="GeneTattooTagFilter.ModExtension_GeneTattooTagFilter">
+        <bodyFilter>
+          <whitelist>true</whitelist>
+          <tags>
+            <li>guy762_SWTattoo_ZabrakBody</li>
+          </tags>
+        </bodyFilter>
+        <faceFilter>
+          <whitelist>true</whitelist>
+          <tags>
+            <li>guy762_SWTattoo_ZabrakFace</li>
+          </tags>
+        </faceFilter>
       </li>
     </modExtensions>
   </GeneDef>
