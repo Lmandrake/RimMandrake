@@ -710,7 +710,7 @@ state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no co
 
 ## point-seats-at-checks-live-file-3f70d1
 row:      doctrine
-spec:     CHECK has started `infrastructure/state/observed/LIVE.md` — what is true of the
+spec:     CHECK has started `observed/LIVE.md` — what is true of the
           RUNNING game and its live artefacts, published by the seat that measures them.
           Three facts in it today: where the current def dump is and how to read its
           freshness, how Facial Animation's opt-out is keyed and that its coverage is
