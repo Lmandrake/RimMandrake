@@ -28,8 +28,10 @@ GROUPS = [
      'Desert · ExtremeDesert · AridShrubland. 7,863 tiles, 36% of the planet. Anything here is in the raids, the caravans and every screenshot.'),
     ('B', 'Rocky Crags — the single biggest biome',
      "AB_RockyCrags, 4,703 tiles. ⚠️ Its only wood comes from Alpha Biomes toxic flora. Cut those and the biggest biome on Ash'karr has no wood at all."),
-    ('J', '🌴 JUNGLE AND WETLAND — the green on your rivers',
-     "AB_MycoticJungle 1,939 · PoisonForest 604 · AB_FeraliskInfestedJungle 534 · BMT_FungalForest 425 · AB_MiasmicMangrove 65. <b>3,567 tiles, 16% of the planet.</b> ⭐ <b>222 of the 309 river-adjacent tiles — 72% — are Feralisk Infested Jungle</b>, whose plantDensity is 0.9, the densest large biome here. This is the jungle you are seeing. Every big jungle tree is in this group; they were previously buried under “exotic” and that was the defect. 🔑 <b>Left undecided on purpose — the honest question is whether these biomes belong on a desert world at all, and that is a BIOME call worth more than every plant call combined.</b>"),
+    ('J', '💧 THE RIVER JUNGLE — green that stands in water',
+     "AB_FeraliskInfestedJungle 534 · AB_MiasmicMangrove 65. <b>599 tiles.</b> ⭐ <b>233 of them — 39% — carry a river</b>, and they sit in a tight equatorial band (arc 11–69, mean 43). This is the green you ruled BELONGS on a desert world, because it is watered by something you can point at."),
+    ('M', '🍄 THE MYCOID BELT — a different green, and not a jungle',
+     "AB_MycoticJungle 1,939 · PoisonForest 604 · BMT_FungalForest 425. <b>2,968 tiles, 14% of the planet.</b> 🔴 <b>ZERO river tiles across all three</b> — measured, not assumed — and they sit on a separate arc band (57–144, mean 111). ⚠️ <b>These were filed under “jungle” with the river biomes and that was the defect you spotted.</b> They are watered by the terminator, not by water, so “only next to rivers” never applied to them. Judge them as their own place. 🌲 This is also where the traditional trees live — cypress, willow, teak, cecropia."),
     ('C', 'Oasis, Badlands and Grasslands — the small green exceptions',
      'ZBiome_DesertOasis 227 · ZBiome_Badlands 546 · ZBiome_Grasslands 233. Small, deliberate, and the only place lush growth is meant to read as correct.'),
     ('D', 'Wasteland and Scarlands',
@@ -41,8 +43,8 @@ GROUPS = [
 ]
 GROUP_BIOMES = {
     'B': {'AB_RockyCrags'},
-    'J': {'AB_MycoticJungle', 'AB_FeraliskInfestedJungle', 'AB_MiasmicMangrove',
-          'BMT_FungalForest', 'PoisonForest'},
+    'J': {'AB_FeraliskInfestedJungle', 'AB_MiasmicMangrove'},
+    'M': {'AB_MycoticJungle', 'BMT_FungalForest', 'PoisonForest'},
     'C': {'ZBiome_DesertOasis', 'ZBiome_Badlands', 'ZBiome_Grasslands'},
     'D': {'Wasteland', 'Scarlands'},
     'F': {'Volcano', 'LavaField', 'AB_OcularForest', 'AB_PyroclasticConflagration'},
@@ -57,7 +59,7 @@ def tile_counts():
 
 def group_of(biomes):
     if biomes & CORE_DESERT: return 'A'
-    for g in ('B', 'J', 'C', 'D', 'F'):
+    for g in ('B', 'J', 'M', 'C', 'D', 'F'):
         if biomes & GROUP_BIOMES[g]: return g
     return 'E'
 
@@ -86,8 +88,12 @@ def decide(r, biomes, wood_lifeline):
     if r['defName'] in wood_lifeline:
         return 'keep', 'R3', 'LAST WOOD — its biome has too few other wood sources to lose it.'
     if g == 'J':
-        return 'keep', 'R4', ('Jungle/wetland. ✅ Owner ruled these BELONG on a desert world '
-                              '— but only adjacent to steaming evaporating rivers.')
+        return 'keep', 'R4', ('River jungle. ✅ Owner ruled these BELONG on a desert world '
+                              '— and 39% of these tiles carry a river, so the condition holds.')
+    if g == 'M':
+        return 'keep', 'R6', ('Mycoid belt — NOT the river jungle. Zero river tiles; watered by '
+                              'the terminator. The "only next to rivers" ruling never reached '
+                              'here, so this is an open question rather than a settled one.')
     if g == 'E':
         return 'keep', 'R4', 'Exotic biome flora. Kept; the biome is the real question, not the plant.'
     if not tree:

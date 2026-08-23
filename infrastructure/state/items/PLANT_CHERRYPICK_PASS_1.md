@@ -93,6 +93,41 @@ touched rows are real and landed on disk.
       flora and the plants whose loss would delete a resource from that biome. Every tile of
       a biome grows the same roster, so 23 landings settle all 192 plants.
 
+## 🔴 THE OWNER'S DECISIONS LANDED, 2026-08-23 06:32Z — 4 cuts, and both fired the trap
+
+`plant_decisions.json`, `savedBy: plant_review.html`, **77/192 touched, 0 undecided**.
+
+| cut | where | consequence |
+|---|---|---|
+| `Plant_TreePine` · `Plant_TreeBirch` · `Plant_TreePoplar` | `Volcano`, 23 tiles | 🔴 **wood 3 → 0.** The biome has no wood at all. `VOLCANO_LOST_ALL_WOOD_1` gives it the drago tree |
+| `RG_Plant_Raspberry` | `AridShrubland`, 539 tiles | ⚠️ `RawBerries` gone from the biome. **ACCEPTED** — a minor forageable, agave covers foraging, and a desert scrubland without raspberry bushes reads better |
+
+🔑 **He explicitly KEEPS `Plant_TreeDrago`, `BMT_Plant_TreeTwistingThornwood` and
+`BMT_Plant_TreeMartyr`** — verbatim, *"I love the strange drago tree, twisting thornwood,
+and martyr."* The three `cut` rows those carried in the earlier file were stale prefill and
+were never his.
+
+⭐ **The check is now a command, not a memory:**
+`python3 design/Jawa/mods/plant_harvest_coverage.py --against-decisions` re-derives coverage
+with his cuts removed and exits 1 naming every resource that would leave a biome. **Run it
+after every future cut.** It found both of these on its first run; neither was visible from
+the sheet, because a row shows what one plant supplies and never what survives it.
+
+## ✅ The mycoid belt is split from the river jungle, on his observation
+
+He was right that they were collapsed together. Measured 2026-08-23:
+
+| group | biomes | tiles | river tiles | arc band |
+|---|---|---|---:|---|
+| **J — river jungle** | `AB_FeraliskInfestedJungle`, `AB_MiasmicMangrove` | 599 | **233 (39%)** | 11–69, mean 43 |
+| **M — mycoid belt** | `AB_MycoticJungle`, `PoisonForest`, `BMT_FungalForest` | 2,968 | 🔴 **0** | 57–144, mean 111 |
+
+Two different places: the river jungle stands in water and satisfies his *"only next to
+steaming rivers"* condition; the mycoid belt has **not one river tile** and is watered by
+the terminator. The sheet now files them separately, and the 56 mycoid plants carry rule
+`R6` saying the river ruling never reached them. This is the same finding as
+`MERIDIAN_GREEN_IS_NOT_RIVER_JUNGLE_1`, now measured from the tile table.
+
 ## state of the evidence, 2026-08-22 — read this before reopening the pass
 
 - **192 rows, prefill `keep 192 / cut 0 / undecided 0`.** ⚠️ The decisions file on disk

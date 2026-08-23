@@ -26,6 +26,16 @@ defect. That is the point: it is the decision aid the sheet was missing.
 
     python3 design/Jawa/mods/plant_harvest_coverage.py            # report to stdout
     python3 design/Jawa/mods/plant_harvest_coverage.py --md <out.md>
+    python3 design/Jawa/mods/plant_harvest_coverage.py --against-decisions   # 🔴 run after EVERY cut
+
+⭐ **`--against-decisions` is the one that earns its keep.** It re-derives coverage with the
+owner's `cut` rows removed and names every resource that would leave a biome. Measured the
+first time it ran, 2026-08-22, against his own four cuts: `Volcano` lost **all three** of its
+wood sources and `AridShrubland` lost berries entirely. Neither was visible from the sheet,
+because a row shows what one plant supplies, never what survives it.
+
+⚠️ **A non-zero exit means a resource disappeared, not that the cut is wrong.** The owner may
+well accept it; the tool's job is to make sure he is accepting it rather than missing it.
 """
 from __future__ import annotations
 import argparse, collections, csv, os, sys
@@ -79,6 +89,51 @@ def sole_sources(rows, tiles) -> dict[str, list[tuple[str, str]]]:
     return dict(out)
 
 
+def load_decisions(path=None):
+    """The owner's file. ⚠️ Returns (cut_set, provenance) and REFUSES a file that no page
+    wrote — `savedBy` is stamped only by plant_review.html, never by a generator, so its
+    absence means these are somebody's guesses rather than his decisions."""
+    import json
+    path = path or os.path.join(ROOT, 'design', 'Jawa', 'mods', 'plant_decisions.json')
+    if not os.path.exists(path):
+        return None, f"no decisions file at {path}"
+    d = json.load(open(path, encoding='utf-8'))
+    if not d.get('savedBy'):
+        return None, ("REFUSED — this file carries no `savedBy`, so nothing proves the review "
+                      "page ever wrote it. It may be a pre-fill wearing the owner's name.")
+    cut = {k for k, v in (d.get('decisions') or {}).items() if v.get('decision') == 'cut'}
+    return cut, f"{d['savedBy']} @ {d.get('savedAt')} · {d.get('decidedCount')}/{d.get('total')} touched"
+
+
+def against_decisions(rows, tiles, cut) -> tuple[str, int]:
+    """What the cut set actually costs, biome by biome. Returns (text, n_losses)."""
+    before = coverage(rows, tiles)
+    after = coverage([r for r in rows if r['defName'] not in cut], tiles)
+    L, losses = [], 0
+    A = L.append
+    A(f"CUT SET: {len(cut)} plant(s) — " + ", ".join(f"`{c}`" for c in sorted(cut)))
+    A("")
+    for b in sorted(before, key=lambda x: -tiles[x]):
+        lost = [(res, defs) for res, defs in before[b].items() if not after[b].get(res)]
+        wb, wa = len(before[b].get('WoodLog', [])), len(after[b].get('WoodLog', []))
+        pb = sum(1 for r in rows if b in (r.get('biomes') or '').split('|'))
+        pa = sum(1 for r in rows if b in (r.get('biomes') or '').split('|') and r['defName'] not in cut)
+        if not lost and wa == wb and pa == pb:
+            continue
+        A(f"### `{b}` — {tiles[b]:,} tiles")
+        A("")
+        A(f"plants {pb} → {pa} · wood sources {wb} → " + (f"🔴 **{wa}**" if wa == 0 else str(wa)))
+        A("")
+        for res, defs in lost:
+            losses += 1
+            A(f"- 🔴 **`{res}` leaves this biome entirely.** Its only source here was "
+              + ", ".join(f"`{d}`" for d in defs) + ".")
+        A("")
+    if not losses:
+        A("✅ No resource leaves any biome. Every cut plant has a survivor covering it.")
+    return "\n".join(L) + "\n", losses
+
+
 def report(rows, tiles) -> str:
     cov = coverage(rows, tiles)
     sole = sole_sources(rows, tiles)
@@ -90,8 +145,17 @@ def report(rows, tiles) -> str:
     A("`plant_cherrypick_candidates.csv` × `world/ASHKARR_WORLDMAP_tiles.csv`.")
     A("Discharges the second criterion of `PLANT_CHERRYPICK_PASS_1`.")
     A("")
-    A("⚠️ **Nothing is cut.** The owner ruled keep-all on 2026-08-22 pending a walk of the")
-    A("world, so every figure below is the *price* of a future cut, not a present defect.")
+    cut, prov = load_decisions()
+    if cut:
+        A(f"🔪 **{len(cut)} plant(s) cut by the owner** — "
+          + ", ".join(f"`{c}`" for c in sorted(cut)) + f".  <sub>{prov}</sub>")
+        A("")
+        A("The table below is the roster **before** those cuts, so it still reads as the full")
+        A("supply picture. For what the cuts actually cost, run")
+        A("`plant_harvest_coverage.py --against-decisions`.")
+    else:
+        A("⚠️ **Nothing is cut.** Every figure below is the *price* of a future cut, not a")
+        A("present defect.")
     A("")
 
     missing = sorted(b for b in tiles if b not in cov and b not in PLANTLESS_BY_DESIGN)
@@ -159,8 +223,26 @@ def report(rows, tiles) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--md")
+    ap.add_argument("--against-decisions", action="store_true",
+                    help="re-derive coverage with the owner's cuts removed; exit 1 if a "
+                         "resource leaves a biome")
+    ap.add_argument("--decisions", help="path to the decisions file")
     args = ap.parse_args()
     rows, tiles = load_rows(), tile_counts()
+
+    if args.against_decisions:
+        cut, prov = load_decisions(args.decisions)
+        if cut is None:
+            print(f"UNMEASURED {prov}")
+            return 2
+        text, losses = against_decisions(rows, tiles, cut)
+        print(f"decisions: {prov}")
+        print()
+        sys.stdout.write(text)
+        if losses:
+            print(f"\n🔴 {losses} resource(s) would leave a biome. Exit 1 — this is a "
+                  f"finding for the owner, not a refusal.")
+        return 1 if losses else 0
     text = report(rows, tiles)
     if args.md:
         open(args.md, "w", encoding="utf-8").write(text)
