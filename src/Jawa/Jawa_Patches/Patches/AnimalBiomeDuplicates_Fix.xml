@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+  ############################################################################
+  # 2026-08-23 - THE "EXACTLY 3 PAIRS" BELOW IS NO LONGER TRUE.
+  #
+  # BiomeCast_Ashkarr.xml (generated 2026-08-22) replaced the wildAnimals
+  # roster of 26 biomes and reintroduced this same crash. Today's Player.log
+  # shows 18 distinct duplicate keys - and that is a FLOOR, because each
+  # biome's cache build throws at its first collision and stops.
+  #
+  # The instruction at the end of the DETECTION block - re-run
+  # src/RimMandrake/Utils/animal_inventory.py after any mod update - was not
+  # followed. It is still the only instrument that can size this.
+  #
+  # Open item: BIOME_CAST_DUPLICATE_ANIMALS_1
+  # The three fixes below are still correct and still needed. They are simply
+  # no longer the whole list.
+  ############################################################################
+-->
+<!--
   ============================================================================
   AnimalBiomeDuplicates_Fix.xml            Jawa_Patches · authored 2026-08-10
   ============================================================================
