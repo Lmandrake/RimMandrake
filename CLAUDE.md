@@ -138,6 +138,22 @@ a doc was answered by a better one and never told.
   text is a drift machine; one source plus a script is not. Where only discipline
   enforces it, expect decay and write the pointer instead.
 
+## 🔴 RUN IT. DO NOT HAND HIM A COMMAND TO PASTE — owner, 2026-08-22
+
+> *"From now on, for ALL agents, instead of asking me to type `! python` for me, JUST RUN
+> IT YOURSELF, ok? No more of this cut-paste weirdness. Make this true."*
+
+⛔ **A `!`-prefixed line for him to paste is the DEFECT now, not the fix.** ① Run it and
+report the outcome. ② A guard that refuses YOU is not a task for HIM — find the flag or
+override; in `rimflow` that is **`--owner-said "<his verbatim words>"`**, which records his
+authorization on the event. ③ Only if the act is genuinely his — his hands, his eyes, his
+account, an authorization he has not given — **ask a question, not a command line.**
+
+🔴 **Enforced, not merely written:** `.claude/hooks/block_paste_handoff.py` on `Stop` blocks
+the turn when your final message hands him one. ✅ `./game up|down|loading` and `broadcast.py`
+pass — those are his. ⭐ **Paths are the opposite half and unchanged:** anything he must LOOK
+at still comes with the complete native path.
+
 ## Git
 
 - **Commit explicit paths. Never `git add -A`, `git add .`, or `git commit -a`.**

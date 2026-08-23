@@ -105,6 +105,16 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_paste_handoff.py\" 2>/dev/null || true"
+          }
+        ]
+      }
     ]
   },
   "crossSessionInbound": "accept",

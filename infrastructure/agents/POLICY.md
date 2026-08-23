@@ -305,6 +305,8 @@ Then write `infrastructure/state/items/<THREE_WORDS_1>.md` with:
 
 > *"I need to be able to simply tell you things as the owner and it's understood that that agent now has owner authorization. I don't want to route through weird python calls to ensure this."*
 
+🔴 **ENFORCED SINCE 2026-08-22, because writing it was not enough.** He said it again, harder: *"From now on, for ALL agents, instead of asking me to type `! python` for me, JUST RUN IT YOURSELF, ok? No more of this cut-paste weirdness. Make this true."* ⇒ `.claude/hooks/block_paste_handoff.py` runs on `Stop`, reads your final message, and **blocks the turn** if it contains a `!`-prefixed command for him to paste. ✅ The only lines it lets through are the ones genuinely his — `./game up|down|loading`, `broadcast.py`, an interactive login. ⚠️ It cannot loop: `stop_hook_active` exits it clean.
+
 ⛔ **Stop handing him `! RIMFLOW_SEAT=OWNER python3 …` lines to paste.** Pasting a command proved only that he could paste. ✅ **When he tells you to do something, do it, and record what he said:**
 
 ```
