@@ -158,168 +158,180 @@ def _sev(flag, px, ct, fl):
 
 PAGE = r"""<meta charset="utf-8"><title>Ash'karr — creature art flags</title>
 <style>
-:root{--bg:#14161a;--fg:#e8e6e3;--dim:#9aa0a8;--line:#2a2f37;--card:#1b1f26;--warn:#ffb454;--bad:#ff6b6b;--ok:#7ec699}
+:root{--bg:#14161a;--fg:#e8e6e3;--dim:#9aa0a8;--line:#2a2f37;--card:#1b1f26;--warn:#ffb454;--ok:#7ec699}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,sans-serif}
-header{padding:18px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:9}
-h1{margin:0 0 6px;font-size:19px}.sub{color:var(--dim);font-size:13px}
-.panel{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--warn);padding:10px 14px;margin:10px 0;border-radius:5px;font-size:13px}
+header{border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20}
+.hrow{display:flex;align-items:center;gap:12px;padding:10px 22px}
+h1{margin:0;font-size:17px}.sub{color:var(--dim);font-size:13px}
+#fold{margin-left:auto;background:#0f1216;border:1px solid var(--line);color:var(--fg);border-radius:5px;padding:5px 12px;cursor:pointer;font:inherit}
+#brief{padding:0 22px 12px}
+body.folded #brief{display:none}
+.panel{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--warn);padding:9px 13px;margin:8px 0;border-radius:5px;font-size:13px}
 .panel b{color:var(--warn)}.panel.ok{border-left-color:var(--ok)}.panel.ok b{color:var(--ok)}
-.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
-input,select,button{background:#0f1216;color:var(--fg);border:1px solid var(--line);border-radius:5px;padding:6px 9px;font:inherit}
-button{cursor:pointer}button:hover{border-color:#4a5361}
+.pathbar{background:#0f1216;border:1px solid var(--line);border-radius:5px;padding:9px 12px;margin:8px 0;font-size:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pathbar code{color:#cfe3ff;font-family:ui-monospace,monospace}
+.pathbar button{background:#1d2733;border:1px solid #2f4358;color:#cfe3ff;border-radius:4px;padding:4px 10px;cursor:pointer;font:inherit}
+.pathbar button:hover{border-color:#4d6a8a}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:0 22px 11px}
+input,select{background:#0f1216;color:var(--fg);border:1px solid var(--line);border-radius:5px;padding:6px 9px;font:inherit}
 #link{font-size:12px;color:var(--dim);margin-left:auto}
-.pathbar{margin-top:9px;font-size:12px;background:#0f1216;border:1px solid var(--line);border-radius:5px;padding:8px 11px}
-.pathbar code{color:#cfe3ff;font-family:ui-monospace,monospace;font-size:12px}
-.pathbar b{color:var(--ok)}.pathbar .pn{display:block;color:var(--dim);margin-top:4px}
+.gh{position:sticky;z-index:10;background:#10141a;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:6px 22px;font-size:12px;font-weight:600;color:var(--warn);letter-spacing:.03em}
+.gh.nostick{position:static}
 .row{display:grid;grid-template-columns:132px 1fr 300px;gap:14px;padding:14px 22px;border-bottom:1px solid var(--line)}
-.row.hide{display:none}
-.spr{width:132px;height:132px;background:#0b0d10 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M0 0h8v8H0zM8 8h8v8H8z' fill='%23161a1f'/%3E%3C/svg%3E");border:1px solid var(--line);border-radius:5px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.spr{width:132px;height:132px;background:#0b0d10;border:1px solid var(--line);border-radius:5px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .spr img{max-width:100%;max-height:100%;image-rendering:pixelated}
 .nm{font-weight:600}.meta{color:var(--dim);font-size:12px;margin:2px 0 6px}
-.why{font-size:13px}.why b{color:var(--warn)}
+.why b{color:var(--warn)}
 .tags span{display:inline-block;font-size:11px;padding:1px 7px;border-radius:9px;border:1px solid var(--line);margin-right:5px;color:var(--warn)}
 .ev{font-size:11px;color:var(--dim);font-family:ui-monospace,monospace;margin-top:5px}
-.ctl{display:flex;flex-direction:column;gap:6px}
-.ctl label{font-size:12px;color:var(--dim)}
+.ctl{display:flex;flex-direction:column;gap:6px}.ctl label{font-size:12px;color:var(--dim)}
 textarea{width:100%;min-height:52px;background:#101821;color:#cfe3ff;border:1px solid #24405c;border-radius:5px;padding:6px;font:inherit;resize:vertical}
-.count{font-variant-numeric:tabular-nums}
 </style>
 <header>
-<h1>Ash'karr — creature art, flagged for review</h1>
-<div class="sub">__NTOT__ creatures actually cast on the planet · <b class="count" id="nf">__NFLAG__</b> flagged · sorted worst first</div>
+<div class="hrow"><h1>Ash'karr — creature art flags</h1>
+<span class="sub"><b id="nf">__NFLAG__</b> shown of __NTOT__ cast · worst first</span>
+<button id="fold">▾ brief</button></div>
 
+<div id="brief">
 <div class="panel ok"><b>⭐ The magenta check came back clean, and that is a result.</b>
-Measured across all __NTOT__ cast creatures: <b>ZERO</b> carry a magenta placeholder. <b>Nothing here is a MISSING texture</b> and nothing is flagged as one.
-<i>Blind spot, stated:</i> a <code>Graphic_Multi</code> def resolves per facing, so a missing side never renders magenta and this test cannot see it. Absence of magenta is evidence, not proof.</div>
-
-<div class="panel"><b>🔴 These thresholds are invented by the generator and you have not ruled on them.</b>
-They are percentiles of the cast's own measured spread — px &lt; 2,579 (p25), contrast &lt; 0.138 (p05), saturation &lt; 0.111 (p25), fill &gt; 0.814 (p95) — which makes them defensible and still arbitrary.
-<b>They decide only where you look first.</b> px measures RESOLUTION, never quality: a crisp small sprite and a muddy huge one score alike. If you disagree with a call, the call is wrong, not the sprite.</div>
-
-<div class="panel"><b>⛔ FLAG ONLY — this sheet fixes nothing.</b> No sprite is generated and no texture edited, here or after.
-<b>Prefer shrink over redraw:</b> the resize path already ships, so shrinking is free and reversible; redrawing is neither.
-Default for every row is <b>keep</b> — only the flagged rows carry a proposal.</div>
+Across all __NTOT__ cast creatures: <b>ZERO</b> carry a magenta placeholder. <b>Nothing here is a MISSING texture.</b>
+<i>Blind spot:</i> a <code>Graphic_Multi</code> def resolves per facing, so a missing side never renders magenta. Absence of magenta is evidence, not proof.</div>
+<div class="panel"><b>🔴 These thresholds are invented and you have not ruled on them.</b>
+Percentiles of the cast's own spread — px &lt; 2,579 (p25), contrast &lt; 0.138 (p05), sat &lt; 0.111 (p25), fill &gt; 0.814 (p95).
+<b>They decide only where you look first.</b> px is RESOLUTION, never quality. If you disagree with a call, the call is wrong.</div>
+<div class="panel"><b>⛔ FLAG ONLY — nothing here fixes art.</b> <b>Prefer shrink over redraw</b>: the resize path ships, so shrinking is free and reversible. Default is <b>keep</b>.</div>
+<div class="pathbar"><b style="color:var(--ok)">Save decisions to</b>
+<code id="p1">D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_art_decisions.json</code>
+<button data-copy="p1">copy path</button>
+<span style="color:var(--dim)">the picker cannot be given a folder — a browser rule — so copy this into its filename box</span></div>
+<div class="pathbar"><b style="color:var(--ok)">This sheet</b>
+<code id="p2">D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_art_review.html</code>
+<button data-copy="p2">copy path</button></div>
+</div>
 
 <div class="bar">
-<input id="q" placeholder="search name, mod, biome, reason…" size="30">
+<input id="q" placeholder="search name, mod, biome, reason…" size="26">
 <select id="fl"><option value="">all rows</option><option value="flagged" selected>flagged only</option><option value="BLUR">BLUR</option><option value="MUDDY">MUDDY</option><option value="BLOB">BLOB</option><option value="HEADLINER_WEAK">HEADLINER_WEAK</option></select>
 <select id="fm"><option value="">all mods</option></select>
 <select id="fs"><option value="">any decision</option><option value="keep">keep</option><option value="shrink">shrink</option><option value="replace">replace</option><option value="redraw">redraw</option></select>
-<button id="save">Link file…</button><button id="copy">Copy JSON</button>
+<button id="save" style="background:#0f1216;border:1px solid var(--line);color:var(--fg);border-radius:5px;padding:6px 9px;cursor:pointer;font:inherit">Link file…</button>
+<button id="copy" style="background:#0f1216;border:1px solid var(--line);color:var(--fg);border-radius:5px;padding:6px 9px;cursor:pointer;font:inherit">Copy JSON</button>
 <span id="link">not linked — decisions are in this tab only</span>
 </div>
-<div class="pathbar">🔑 <b>Save it exactly here</b>, or the generator cannot merge your calls back:
-<code>D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_art_decisions.json</code>
-<span class="pn">⚠️ the file picker cannot be given a folder — that is a browser rule, not an oversight — so the path is printed here to be read. The sheet itself is <code>D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_art_review.html</code></span></div>
 </header>
 <div id="list"></div>
 <script>
 const DATA=__DATA__, PRIOR=__PRIOR__;
 const D={}; let handle=null, timer=null;
-// 🔑 A FileSystemFileHandle is structured-cloneable, so IndexedDB can hold it and localStorage
-// cannot. Without this the link dies on every reload and the human silently stops saving.
+const el=id=>document.getElementById(id);
+
+// ── collapsible brief. It is sticky, so left open it eats the screen on every scroll.
+// The state is remembered because re-collapsing it on every visit is the same annoyance.
+const FOLDKEY='ashkarr_art_folded';
+function setFold(f){ document.body.classList.toggle('folded',f); el('fold').textContent=f?'▸ brief':'▾ brief';
+  try{localStorage.setItem(FOLDKEY,f?'1':'')}catch(e){} measure(); }
+el('fold').onclick=()=>setFold(!document.body.classList.contains('folded'));
+try{ setFold(localStorage.getItem(FOLDKEY)==='1'); }catch(e){ setFold(false); }
+
+// ── copy-path buttons. A path you must retype is a path you will get wrong.
+for(const b of document.querySelectorAll('[data-copy]')) b.onclick=async()=>{
+  try{ await navigator.clipboard.writeText(el(b.dataset.copy).textContent);
+       const t=b.textContent; b.textContent='copied ✓'; setTimeout(()=>b.textContent=t,1200); }
+  catch(e){ const r=document.createRange(); r.selectNode(el(b.dataset.copy));
+       getSelection().removeAllRanges(); getSelection().addRange(r); b.textContent='press ⌘/Ctrl+C'; }
+};
+
+// ── the sticky group label needs to sit exactly under the header, whatever height it is now
+function measure(){ const h=document.querySelector('header').offsetHeight;
+  document.documentElement.style.setProperty('--hh', h+'px');
+  for(const g of document.querySelectorAll('.gh')) g.style.top=h+'px'; }
+addEventListener('resize', measure);
+
 const IDB='ashkarr_art_fs', IKEY='handle';
 function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(IDB,1);
   r.onupgradeneeded=()=>r.result.createObjectStore('h');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
 async function idbPut(h){try{const db=await idb();db.transaction('h','readwrite').objectStore('h').put(h,IKEY);}catch(e){}}
 async function idbGet(){try{const db=await idb();return await new Promise(res=>{
   const q=db.transaction('h','readonly').objectStore('h').get(IKEY);q.onsuccess=()=>res(q.result||null);q.onerror=()=>res(null);});}catch(e){return null;}}
-// 🔴 merge PER ROW: a row already decided is left exactly alone, every other takes the prefill.
+
 let kept=0, filled=0;
-for(const it of DATA){
-  const p = PRIOR && PRIOR.decisions && PRIOR.decisions[it.id];
-  if(p && p.state){ D[it.id]={...p}; kept++; }
-  else { D[it.id]={state:it.state, note:''}; filled++; }
-}
-const el=id=>document.getElementById(id);
+for(const it of DATA){ const p=PRIOR&&PRIOR.decisions&&PRIOR.decisions[it.id];
+  if(p&&p.state){ D[it.id]={...p}; kept++; } else { D[it.id]={state:it.state,note:''}; filled++; } }
 const mods=[...new Set(DATA.map(i=>i.mod))].sort();
 for(const m of mods){const o=document.createElement('option');o.value=m;o.textContent=m;el('fm').appendChild(o);}
 
 function card(it){
   const d=D[it.id];
-  const img = it.img ? `<img src="data:image/png;base64,${it.img}" alt="">` : `<span style="color:#6b7280;font-size:11px">no sprite cached</span>`;
-  const tags = it.flags.map(f=>`<span>${f}</span>`).join('');
-  const why = it.why.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
-  return `<div class="row" data-id="${it.id}">
-    <div class="spr">${img}</div>
-    <div>
-      <div class="nm">${it.label} <span style="color:#6b7280;font-weight:400">${it.id}</span></div>
-      <div class="meta">${it.mod} · band <b style="color:#e8e6e3">${it.band}</b> · cast in ${it.biome}</div>
-      <div class="tags">${tags}</div>
-      <div class="why">${why}</div>
-      <div class="ev">px ${it.px.toLocaleString()} · contrast ${it.ct} · sat ${it.sat} · fill ${it.fill}${it.field?' · field '+it.field:''}</div>
-    </div>
-    <div class="ctl">
-      <label>decision</label>
-      <select class="st">
-        ${['keep','shrink','replace','redraw','undecided'].map(s=>`<option value="${s}"${d.state===s?' selected':''}>${s}</option>`).join('')}
-      </select>
-      <label>your note — overrides everything above</label>
-      <textarea class="nt" placeholder="why you disagree, or what to do instead">${(d.note||'').replace(/</g,'&lt;')}</textarea>
-    </div></div>`;
+  const img=it.img?`<img src="data:image/png;base64,${it.img}" alt="">`:`<span style="color:#6b7280;font-size:11px">no sprite</span>`;
+  const why=it.why.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+  return `<div class="row" data-id="${it.id}"><div class="spr">${img}</div><div>
+    <div class="nm">${it.label} <span style="color:#6b7280;font-weight:400">${it.id}</span></div>
+    <div class="meta">band <b style="color:#e8e6e3">${it.band}</b> · cast in ${it.biome}</div>
+    <div class="tags">${it.flags.map(f=>`<span>${f}</span>`).join('')}</div>
+    <div class="why">${why}</div>
+    <div class="ev">px ${it.px.toLocaleString()} · contrast ${it.ct} · sat ${it.sat} · fill ${it.fill}${it.field?' · field '+it.field:''}</div>
+  </div><div class="ctl"><label>decision</label>
+    <select class="st">${['keep','shrink','replace','redraw','undecided'].map(s=>`<option value="${s}"${d.state===s?' selected':''}>${s}</option>`).join('')}</select>
+    <label>your note — overrides everything above</label>
+    <textarea class="nt" placeholder="why you disagree, or what to do instead">${(d.note||'').replace(/</g,'&lt;')}</textarea>
+  </div></div>`;
 }
 
 function render(){
-  const q=el('q').value.toLowerCase(), f=el('fl').value, m=el('fm').value, s=el('fs').value;
-  let shown=0;
-  el('list').innerHTML = DATA.map(it=>{
-    let ok = true;
-    if(f==='flagged') ok = it.flags.length>0; else if(f) ok = it.flags.includes(f);
-    if(ok && m) ok = it.mod===m;
-    if(ok && s) ok = D[it.id].state===s;
-    if(ok && q) ok = (it.id+' '+it.label+' '+it.mod+' '+it.biome+' '+it.why).toLowerCase().includes(q);
-    if(!ok) return '';
-    shown++; return card(it);
-  }).join('');
-  el('nf').textContent = shown;
-  for(const r of document.querySelectorAll('.row')){
-    const id=r.dataset.id;
-    r.querySelector('.st').onchange = e=>{ D[id].state=e.target.value; save(); };
-    r.querySelector('.nt').oninput  = e=>{ D[id].note =e.target.value; save(); };
+  const q=el('q').value.toLowerCase(), f=el('fl').value, m=el('fm').value, st=el('fs').value;
+  const shown=DATA.filter(it=>{
+    let ok=true;
+    if(f==='flagged') ok=it.flags.length>0; else if(f) ok=it.flags.includes(f);
+    if(ok&&m) ok=it.mod===m;
+    if(ok&&st) ok=D[it.id].state===st;
+    if(ok&&q) ok=(it.id+' '+it.label+' '+it.mod+' '+it.biome+' '+it.why).toLowerCase().includes(q);
+    return ok;});
+  // group by MOD - whole groups share a character and get decided in one motion
+  const groups=new Map();
+  for(const it of shown){ if(!groups.has(it.mod)) groups.set(it.mod,[]); groups.get(it.mod).push(it); }
+  let html='';
+  for(const [mod,items] of groups){
+    // ⚠️ a sticky label taller than its group covers the only row in it
+    html+=`<div class="gh${items.length<=3?' nostick':''}">${mod} · ${items.length}</div>`;
+    html+=items.map(card).join('');
   }
+  el('list').innerHTML=html||'<div style="padding:40px 22px;color:#9aa0a8">nothing matches those filters.</div>';
+  el('nf').textContent=shown.length;
+  measure();
+  for(const r of document.querySelectorAll('.row')){ const id=r.dataset.id;
+    r.querySelector('.st').onchange=e=>{D[id].state=e.target.value;save();};
+    r.querySelector('.nt').oninput =e=>{D[id].note =e.target.value;save();}; }
 }
 ['q','fl','fm','fs'].forEach(i=>el(i).oninput=render);
 
 function payload(){
-  // ⭐ carry through every top-level key this page did not author — a whole-file writer
-  // that only emits its own keys DELETES things like a freeze marker written elsewhere.
-  const out = Object.assign({}, PRIOR);
-  out.posture = 'flag-only';
-  out.postureMeaning = 'A decision here is a FLAG for the owner. Nothing in this file edits art. Rows left `keep` are accepted as-is.';
-  out.decisions = D;
-  out.savedAt = new Date().toISOString();   // 🔴 only the PAGE writes this. A consumer must
-  out.savedBy = 'creature_art_review.html'; // refuse to run without it, or it will ship the
-  return JSON.stringify(out, null, 2);      // generator's guesses under the owner's name.
+  const out=Object.assign({},PRIOR);
+  out.posture='flag-only';
+  out.postureMeaning='A decision here is a FLAG for the owner. Nothing in this file edits art. Rows left `keep` are accepted as-is.';
+  out.decisions=D; out.savedAt=new Date().toISOString(); out.savedBy='creature_art_review.html';
+  return JSON.stringify(out,null,2);
 }
-async function save(){
-  clearTimeout(timer);
-  timer=setTimeout(async()=>{
-    if(!handle) return;
-    const decided = Object.values(D).filter(v=>v.state && v.state!=='undecided').length;
-    if(decided < 10){ el('link').textContent='REFUSED to write — only '+decided+' decided rows looks like a bug, not a review'; return; }
-    try{ const w=await handle.createWritable(); await w.write(payload()); await w.close();
-         el('link').textContent='saved '+new Date().toLocaleTimeString(); }
-    catch(e){ el('link').textContent='write failed: '+e.message; }
-  }, 900);
-}
+async function save(){ clearTimeout(timer); timer=setTimeout(async()=>{ if(!handle) return;
+  const decided=Object.values(D).filter(v=>v.state&&v.state!=='undecided').length;
+  if(decided<10){ el('link').textContent='REFUSED to write — only '+decided+' decided rows looks like a bug, not a review'; return; }
+  try{ const w=await handle.createWritable(); await w.write(payload()); await w.close();
+       el('link').textContent='saved '+new Date().toLocaleTimeString(); }
+  catch(e){ el('link').textContent='write failed: '+e.message; } },900); }
 el('save').onclick=async()=>{
-  if(!window.showSaveFilePicker){ el('link').textContent='this browser has no File System Access API — use Copy JSON'; return; }
+  if(!window.showSaveFilePicker){ el('link').textContent='no File System Access API here — use Copy JSON'; return; }
   try{ handle=await window.showSaveFilePicker({suggestedName:'creature_art_decisions.json',
         types:[{description:'JSON',accept:{'application/json':['.json']}}]});
-       await idbPut(handle);
-       el('link').textContent='linked — autosaving'; save(); }
-  catch(e){}
+       await idbPut(handle); el('link').textContent='linked — autosaving'; save(); }catch(e){}
 };
-// ⭐ Chrome needs a gesture to re-grant after a restart, so OFFER the reconnect rather than
-// failing quietly - a sheet that looks linked and is not is the worst of the three states.
+el('copy').onclick=()=>{navigator.clipboard.writeText(payload());el('link').textContent='copied to clipboard';};
 (async()=>{ const h=await idbGet(); if(!h) return;
-  const perm = await h.queryPermission({mode:'readwrite'});
+  const perm=await h.queryPermission({mode:'readwrite'});
   if(perm==='granted'){ handle=h; el('link').textContent='relinked to your file — autosaving'; }
-  else { el('link').innerHTML='<b style="color:#ffb454;cursor:pointer" id="regrant">click to reconnect your file</b>';
-         el('regrant').onclick=async()=>{ if(await h.requestPermission({mode:'readwrite'})==='granted'){
-           handle=h; el('link').textContent='relinked — autosaving'; save(); } }; }
+  else{ el('link').innerHTML='<b style="color:#ffb454;cursor:pointer" id="regrant">click to reconnect your file</b>';
+        el('regrant').onclick=async()=>{ if(await h.requestPermission({mode:'readwrite'})==='granted'){
+          handle=h; el('link').textContent='relinked — autosaving'; save(); } }; }
 })();
-el('copy').onclick=()=>{ navigator.clipboard.writeText(payload()); el('link').textContent='copied to clipboard'; };
 render();
 console.log('prefilled '+filled+' rows, kept '+kept+' existing decisions untouched');
 </script>
