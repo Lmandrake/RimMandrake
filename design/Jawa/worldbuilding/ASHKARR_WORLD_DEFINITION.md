@@ -819,8 +819,24 @@ engine half-sees the river. Use the Overlay methods — §12.2.
 RiverDefs `Creek/River/LargeRiver/HugeRiver`; RoadDefs `DirtPath/DirtRoad/StoneRoad/
 AncientAsphaltRoad/AncientAsphaltHighway`.
 
-⭐ **`tileFeature` is the one genuinely unauthored piece.** Our 24 region names exist only
-as CSV text. A `WorldFeature` is a *runtime object*, not a def:
+⭐ ~~**`tileFeature` is the one genuinely unauthored piece.** Our 24 region names exist only
+as CSV text.~~
+
+> 🔴 **CORRECTED 2026-08-23 — this is AUTHORED, and the count is wrong twice over.**
+> Measured off `world/ASHKARR_WORLDMAP_meta.json`: the map carries **71 regions, and all
+> 71 already have a `features` record** — `{id, name, tiles, mass, kind, lat, lon,
+> drawCenter, maxDrawSizeInTiles}`, i.e. exactly the centroid and angular extent this
+> paragraph says are missing. **0 of 71 regions lack one.** The importer exists too:
+> `w9_run.py` stage 6 calls `jawa/world_features_import` with
+> `featureDef: WB_MapLabelFeature`.
+> ⚠️ **What IS still true:** none of it has been carried into a game and read back — that
+> is `WORLD_PORT_SURVIVES_BRIDGE_1`, and stage 6 has never run. And `w9_run.py`'s own
+> comment still says *"the 23 region labels"*, so the importer's stated scope is 23 against
+> a map that has 71. **Check the stage handles all 71 before trusting it.**
+> ⇒ The gap is a PROOF gap, not an authoring gap. Do not schedule work to invent region
+> features; schedule work to prove the import.
+
+The paragraph below is kept for its API description, which is still correct: A `WorldFeature` is a *runtime object*, not a def:
 `{def (FeatureDef), uniqueID (int), name (string), drawCenter (Vector3 on the unit
 sphere, where the label is drawn), maxDrawSizeInTiles (float), layer}`. `FeatureDef`
 (25 ship) supplies `workerClass`, `minSize`/`maxSize`, `rootBiomes` and a `nameMaker`

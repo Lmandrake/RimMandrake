@@ -25,7 +25,8 @@ THE STAGES, and the two ordering rules that are engine facts rather than taste:
     4b  mutators, add    🔴 AFTER landmarks - AddLandmark also rolls the def's own
                             mutatorChances onto its tile, on top of whatever is there
     5   settlements
-    6   features         the 23 region labels
+    6   features         the region labels — ⚠️ 71 as of 2026-08-23, not the 23 this
+                         line used to claim. Verify the stage handles all of them.
     commit -> lint -> screenshot
 
 Stages 3b, 4 and 4b were added 2026-08-21 on the owner's order; before that the paint
