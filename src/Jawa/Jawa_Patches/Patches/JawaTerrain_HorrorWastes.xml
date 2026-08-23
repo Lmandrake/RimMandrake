@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaTerrain_HorrorWastes.xml           Jawa_Patches · authored 2026-08-23
+  ============================================================================
+
+  HORROR_WASTES_COLD_TERRAIN_1.
+
+  HorrorWastes (Horrors (Continued)) was authored for a warm dry band. On
+  Ash'karr it holds 468 nightside tiles at -74.9 .. -33.9 C, median -49.3,
+  scattered through Deadstone, Umbra and Ammonia Flats. Its ground was
+  Sand 0.01-0.45 / Soil 0.45-0.90 / SoilRich 0.90-0.99 - warm sand and
+  farmland loam on the deep nightside.
+
+  THE READ (DECIDE's brief): dark biological muck breaking through frost.
+  NOT a snowfield. Brighter and dirtier than the near-black crags around it
+  (AB_RockyCrags is [30,29,34]); broken rather than the flat pale sheet of
+  sea ice (Ice is [155,164,172]).
+
+  ==========================================================================
+  TWO CORRECTIONS TO THE BRIEF, both measured, both load-bearing
+  ==========================================================================
+
+  1. AB_Ice IS NOT A TERRAIN DEF. It is a TEXTURE, Terrain/Surfaces/AB_Ice,
+     worn by AB_SolidPropane and AB_PropaneLake. The brief offered it or
+     AB_PackedIce; only AB_PackedIce exists, and its texture is
+     Terrain/Surfaces/AB_WhiteIce - measured [189,193,201], paler than the
+     [151,167,191] the brief expected. Still the bare-frozen tier: distinct
+     from the crags, and the sea ice it resembles is a neighbouring BIOME,
+     never an adjacent cell on the same map.
+
+  2. AB_DarkMud HAS FERTILITY 0, and so does AB_PackedIce. The brief put
+     AB_DarkMud at the TOP of the fertility order. Vanilla PlantBase sets
+     <fertilityMin>0.7</fertilityMin> (Plants_Bases.xml:23) and
+     PlantUtility.cs:85 refuses to spawn a plant where
+     fertilityGrid.FertilityAt(c) < fertilityMin. Six of the eight plants
+     BiomeFlora_Ashkarr.xml just assigned to this biome inherit that 0.7 -
+     only HorrorWeb and AA_RottingMound declare 0. Ending the ramp on a
+     sterile terrain would have left the new roster unable to root anywhere
+     and reported nothing.
+
+     So the ramp ends on AB_FertileMud instead: fertility 1.0, measured
+     [55,42,33] - dark brown organic muck, the same read, and the flora
+     actually grows in it. AB_DarkMud [33,26,20] keeps the dominant middle
+     band, where its sterility is the point: near-black frozen organics
+     with nothing living in them.
+
+  AB_Obsidian [46,46,46] stays rejected - too close to the crags' [30,29,34]
+  to read as a different place.
+
+  Colours are means over the real textures, design/Jawa/fauna/biome_palette.json.
+
+  NOT THIS ITEM'S JOB: animalDensity stays 3.6 and the cast belongs to
+  BIOME_CREATURE_CAST_1. plantDensity stays 0.5 - it was flagged as high for
+  a roster of ONE (Plant_Agave), and BiomeFlora_Ashkarr.xml has since given
+  the biome eight plants, so the complaint no longer holds.
+
+  Both operations are wrapped in a Conditional: a Replace that matches
+  nothing is a RED ERROR, not a no-op, and MayRequire only checks the mod,
+  never that the def survived.
+  ==========================================================================
+-->
+<Patch>
+
+  <!-- ==== the ground ================================================= -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/terrainsByFertility</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/terrainsByFertility</xpath>
+      <value>
+        <terrainsByFertility>
+          <!-- bare frozen ground: pale, sterile, the uncommon extreme -->
+          <li>
+            <terrain>AB_PackedIce</terrain>
+            <min>-999</min>
+            <max>0.30</max>
+          </li>
+          <!-- frost breaking over stone - fertility 0.7, so the roster roots here -->
+          <li>
+            <terrain>AB_SnowOverRocks</terrain>
+            <min>0.30</min>
+            <max>0.50</max>
+          </li>
+          <!-- near-black frozen organics - dominant, and nothing grows in it -->
+          <li>
+            <terrain>AB_DarkMud</terrain>
+            <min>0.50</min>
+            <max>0.80</max>
+          </li>
+          <!-- the deep muck - fertility 1.0, where the horror flora actually lives -->
+          <li>
+            <terrain>AB_FertileMud</terrain>
+            <min>0.80</min>
+            <max>999</max>
+          </li>
+        </terrainsByFertility>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- ==== the description, which still said "a dry region" =========== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/description</xpath>
+      <value>
+        <description>A frozen region, contorted by alien fauna and flora to be unrecognizable. Dark organic matter breaks through the frost in patches, refusing to die in a cold that should have killed it. A terrible place of disease, Horrors and suffering. It is difficult indeed to survive in such a place.</description>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
