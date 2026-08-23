@@ -396,8 +396,17 @@ gated on the same Faction Customizer question as CHECK C24.
 - **`pawnGroupMakers` options must name kinds that resolve in the live dump.**
   An invented kind name is the single most likely way this spec fails silently.
 - **Ideo text is the deliverable.** `ideoName`, `ideoDescription` and the deity
-  name/type pairs are the only strings the engine renders; 9 of 11 entries in
-  `faction_religions_spec.md` still have none.
+  name/type pairs are the only strings the engine renders.
+  ⛔ ~~9 of 11 entries in `faction_religions_spec.md` still have none.~~ **FALSE, and it was
+  false for a while — corrected 2026-08-22.** All **eleven** authored faiths carry an
+  `ideoDescription`, and all eleven are **built** into `src/Jawa/**/FactionDefs`. Measured:
+  335–388 characters each in the spec, every one inside the 250–500 band.
+  ⚠️ **This stale line caused a DECIDE item (`NINE_FAITHS_GET_THEIR_PARAGRAPH_1`) to be filed
+  for work that was already finished.** Verify against `src/`, not against this bullet.
+  🔴 **Two BUILT descriptions are out of band and are worth a look:** `JawaHuttCartel`
+  the Reckoning of Debts at **665** chars (the spec entry reads 388 — the two have drifted),
+  and `JawaTribes` The Salvation at **2,374**. ⛔ The Salvation is the PLAYER's faith and the
+  owner's own; its length is his call, not a defect.
 - 🔴 **`leaderTitle` ON THE DEF IS NOT WHAT THE PLAYER READS. Every one above is
   currently invisible.** `Faction.LeaderTitle` prefers the primary ideoligion's
   `leaderTitleMale`/`leaderTitleFemale` and only falls back to `def.leaderTitle`.
