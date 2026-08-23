@@ -1985,4 +1985,23 @@ at 01:48 and 02:08. **Before scoring anything below, confirm the capture is NEWE
 | S10 | | |
 | F4 | | |
 | F5 | | |
-| F6 | | |
+| F6 | ✅ **PASS**, offline | `ModsConfig.xml` parses to **579** `activeMods` (`knownExpansions` is 5 — do not add them); `mandrake.jawaikee` present at **position 569**. Measured 2026-08-23 11:3x by CHECK, game DOWN. This one never needed a load. |
+
+### Pre-load baseline — the 00:12 load, measured by CHECK 2026-08-23 11:2x
+
+🔑 **The game that ran 2026-08-23 00:12 → 11:25 held NONE of §8's changes** — every commit in
+the table above was deployed after it started. Its log is therefore the clean BEFORE picture,
+and it is harvested at
+`D:\Luke\dev\Rimworld\observed\logs\Player.2026-08-23_1122.going-down.log` (gitignored;
+1,550,641 bytes). Score the next load against these MEASURED numbers, not against the
+estimates written in the tables above.
+
+| probe | BEFORE (00:12 load) | note |
+|---|---|---|
+| F1 `Could not resolve cross-reference` | **27** | ⚠️ the table above guesses "~25". **27 is the measured baseline.** 16 of the 27 are one repeated `SoundDef Pawn_Melee_Punch_HitBuilding`; the rest are `BMT_*` pawnkinds, `guy762_KelDorMask`, `VWE_Tool_Whip`. None is ours. |
+| P1 `[Inhabited] ready:` | `2 patches, **294 characters**, 0 places, 0 casts` | already at the passing value BEFORE the batch — so P1 matching after the load proves no regression, NOT that anything new worked. |
+| P2 `[JawaBench] ready:` | **121 tools**, build `d49eaf42545b` | same caveat as P1. |
+| F4 `JawaIkee` assembly | **not applicable** | the mod was registered after this process started; the new-assembly signature is genuinely unproven and F4 is the reading that matters most. |
+| `initial resistance range is undefined` | **69** | ⛔ **PRE-EXISTING, not caused by the equipment layer.** Every generated Star Wars species kind. Filed as `SPECIES_KINDS_NO_RESISTANCE_1` for BUILD (`86963bc7`). If the next load still reads 69, the fix did not ship; if it reads 0, it did. |
+| `Exception in ConfigErrors() of CannibalPirate` / `PirateYttakin` | **present, 2** | Worldbuilder's `IdeoUtility_IsMemeAllowedFor` postfix calling `Find.FactionManager` during def error-checking. Third-party, pre-existing, and **not** evidence about S8's Blackstar naming. |
+| `<loadBottom>` XML error, `mandrake.jawafactionslate` | **present, 1** | benign. RimWorld's `ModMetaDataInternal` has no such field and says so; RimSort, which the field is aimed at, does read it. Not a defect — do not "fix" it by deleting the field. |
