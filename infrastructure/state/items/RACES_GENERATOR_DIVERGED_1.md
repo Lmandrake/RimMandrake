@@ -86,3 +86,15 @@ active — *before* any porting work is worth starting.
 names the three edits the generator has never heard of, and points here. That was the
 part of this item that was actively costing people; what remains is the genuine choice
 between the three options above.
+
+### 🔴 CORRECTION 2026-08-23, same day, same seat — the cause named above is WRONG
+
+The update above says `pick_species` reads a dump "captured with the donors switched off, so
+their xenotypes are absent", and tells you to re-take a dump with `guy762.starwarsxenotypes`
+active. **That is `gen_races_mod.py`'s own error message, and it does not hold.** All three
+captures carry the guy762 donor xenotypes and all three report 578 mods — measured, see
+`DUMP_LAYOUT_BROKE_TOOLS_1`. **Re-taking the dump will not lift the refusal.**
+
+The refusal itself is correct — regenerating really would ship 63 species against 69 on disk,
+and that would delete six from a live mod. Only the diagnosis is wrong. Find the true cause in
+`pick_species` before costing Option 1.

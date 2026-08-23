@@ -42,3 +42,37 @@ the latest. The known-good full capture today is `2026-08-21T22-44-59Z` at 578 m
 serialise `Vector2`/`Color` (`drawSize`, `colorSpectrum` read null), nor dictionary-keyed
 custom fields (`wildBiomes`, `wildPlants`, `terrainsByFertility` all read null), nor
 `TerrainDef` bodies. Anything needing those must read the mod XML on disk.
+
+---
+
+## ⬅ HALF DONE 2026-08-23 by BUILD — `validate_patch.py` is fixed; `cast_to_xml.py` is not
+
+✅ **`skills/rimworld-modding/scripts/validate_patch.py --live` now:**
+- resolves a DefDump ROOT to its newest `captures/<ISO>/defs` and **prints which one**;
+- when it cannot, prints `ERROR   --live: ... LIVE CHECKS DID NOT RUN` and the summary line
+  says an `OK` covers the `--defs` half only — it no longer degrades to a quiet notice;
+- **compares the capture's `modCount` against live `ModsConfig.xml` `activeMods` and warns.**
+  Measured on the fix: `the live dump holds 578 mods but ModsConfig.xml now lists 580 active`.
+  That is the reading that matters — the fingerprint is the mod set, not the clock.
+
+⛔ **`cast_to_xml.py` still needs `--dump <capture>/defs`.** It fails loudly (`no TraitDef.json`),
+which is the safe direction, so it was left for this item rather than fixed blind.
+
+## 🔴 CORRECTION — `gen_races_mod.py`'s stated cause is WRONG, and it was repeated
+
+`gen_races_mod.py` refuses to write with: *"the dump ... was captured with the donors switched
+off, so their xenotypes are absent."* **Measured 2026-08-23: that is false.** All three
+captures contain the guy762 donor xenotypes —
+
+    2026-08-21T22-44-59Z  XenotypeDef.json  446,272 bytes, guy762_* present
+    2026-08-23T05-05-29Z  XenotypeDef.json  447,124 bytes, guy762_* present
+    2026-08-23T07-12-04Z  XenotypeDef.json  447,133 bytes, guy762_* present
+
+— and all three report `modCount 578`. ⇒ **The 63-vs-69 shortfall has some other cause**, and
+`pick_species` is still where to look, but "the donors are missing from the dump" is not it and
+chasing that will waste the time.
+
+⚠️ **This was repeated in good faith into `RACES_GENERATOR_DIVERGED_1` and into commit
+`9ede4d4c`'s message**, both of which say Option 1 is blocked on re-taking a dump with the
+donors active. **It is not.** The refusal is real and the guard is right to fire; only the
+explanation is wrong. Diagnose it from `pick_species` directly.

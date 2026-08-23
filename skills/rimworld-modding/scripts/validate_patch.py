@@ -1369,6 +1369,10 @@ class LiveIndex:
         self.game_version = ""
         self.mod_count = 0
         self.loaded = False
+        #: True when --live was asked for and could NOT be honoured. The run must
+        #: not end "OK" on that: the caller asked for live checks and did not get
+        #: them, which is a different outcome from not asking.
+        self.skipped_loudly = False
         #: (collided type name -> counts in write order, total defs lost).
         #: Non-empty means the ground truth this validator is checking against
         #: has holes, and a `0` read from it means "unmeasured", not "none".
@@ -1386,8 +1390,36 @@ class LiveIndex:
             if os.path.basename(dumpdir.rstrip("\\/")).lower() == "defs":
                 defs_dir = dumpdir
             else:
-                print(f"  (--live: no defs/ under {dumpdir}; live checks skipped)")
-                return idx
+                # 🔴 RimDefDump moved to DefDump/captures/<ISO>/{defs,manifest.json}
+                # with a defs.sqlite at the root. Pointed at the ROOT — which is the
+                # obvious thing to pass, and what every doc says to pass — this used
+                # to print one line and return an EMPTY index, so every live check
+                # silently did not run and the file still ended "OK - 0 errors".
+                # Queue items that specify "validate with BOTH --defs and --live"
+                # were getting half of that and nobody could tell. Resolve the root
+                # to its newest capture instead, and SAY which one.
+                caps = os.path.join(dumpdir, "captures")
+                picked = None
+                if os.path.isdir(caps):
+                    for name in sorted(os.listdir(caps), reverse=True):
+                        cand = os.path.join(caps, name, "defs")
+                        if os.path.isdir(cand):
+                            picked = (name, cand)
+                            break
+                if picked:
+                    print(f"  info    --live: resolved {dumpdir} -> captures/{picked[0]}")
+                    defs_dir = picked[1]
+                else:
+                    # ⛔ LOUD, not a notice. A skipped live check that still prints
+                    # OK is worse than no live check at all, because the author
+                    # believes it ran.
+                    print(f"  ERROR   --live: no defs/ and no captures/*/defs under "
+                          f"{dumpdir} — LIVE CHECKS DID NOT RUN. Every 'does this def "
+                          f"exist in the running game' question in this run is "
+                          f"UNANSWERED, not answered 'yes'. Point --live at a capture "
+                          f"folder, or re-take the dump.")
+                    idx.skipped_loudly = True
+                    return idx
 
         # 🔴 defs/ ACCUMULATES; it is not a snapshot. RimDefDump writes a file per
         # def type that exists NOW and never deletes the file for a type that has
@@ -2379,8 +2411,33 @@ def main() -> int:
                   + (f" across {len(live.by_type)} def types" if live.by_type else "")
                   + (f", RimWorld {live.game_version}" if live.game_version else "")
                   + (f", {live.mod_count} mods" if live.mod_count else ""))
+            # 🔑 THE FINGERPRINT IS THE MOD SET, NOT THE CLOCK. A dump taken against
+            # a different mod set answers "does this def exist" about a game that is
+            # not the one about to run — and it answers it CONFIDENTLY, which is the
+            # whole problem. Say so rather than letting a stale dump pass as ground
+            # truth. Counting activeMods specifically: `grep -c "<li>"` returns 6
+            # because the file is ~11 long lines, and `grep -o | wc -l` over-counts
+            # by exactly the 5 knownExpansions.
+            try:
+                import xml.etree.ElementTree as _ET
+                _cfg = args.mods_config or find_mods_config()[0]
+                if live.mod_count and _cfg and os.path.isfile(_cfg):
+                    _n = len(_ET.parse(_cfg).getroot().find("activeMods"))
+                    if _n != live.mod_count:
+                        print(f"  WARN    the live dump holds {live.mod_count} mods but "
+                              f"ModsConfig.xml now lists {_n} active. Every 'this def "
+                              f"does not exist' below is about the {live.mod_count}-mod "
+                              f"game, not the one that will load. Re-take the dump "
+                              f"(echo all > DefDump/dump_request.txt, then reach the "
+                              f"main menu) before trusting an absence.")
+            except Exception:
+                pass
         else:
-            print(f"{source}: nothing usable found; live checks skipped")
+            if getattr(live, "skipped_loudly", False):
+                print(f"{source}: LIVE CHECKS DID NOT RUN — see the ERROR above. "
+                      f"An 'OK' below covers the --defs half ONLY.")
+            else:
+                print(f"{source}: nothing usable found; live checks skipped")
 
     index = LoadSetIndex(docs) if (args.defs and docs) else None
     tex_cache: dict = {}
