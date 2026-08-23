@@ -1,3 +1,47 @@
+## 🔴 SIZED — the `gene:` route is DEAD. Measured by DECIDE, 2026-08-23.
+
+This item asked the right question — *"Check `Inhabited.CharacterDef` accepts a gene at all
+before touching the parser. If the C# has no genes field, this becomes a mod change too."*
+**It has no genes field. Answered, not guessed.**
+
+    Inhabited.dll #Strings heap, 585 names:   'genes'  ->  0 matches
+
+⇒ ⛔ **Do not add a `gene:` line to `cast_to_xml.py`.** The parser would emit a field
+`Inhabited` cannot read, and an unknown field in a def is ignored **silently** — the sheet
+would look done and the two characters would still spawn bare-faced.
+
+### How that was measured, because `strings` cannot do it
+`CLAUDE.md` is explicit that `strings -a -el` is not a census — it found 16 of 115 names on the
+companion DLL. The reason is that it scans UTF-16 while the `#Strings` heap is packed UTF-8
+inside the metadata blob. So a reader was written for it:
+`src/RimMandrake/Utils/clr_metadata_names.py` (⚠️ left for BUILD to keep, move or fold into
+`measuring-large-artifacts` — tooling is not DECIDE's to own).
+
+✅ **Validated before it was trusted**: every field the shipped XML provably uses — `traits`,
+`skills`, `weapon`, `apparel`, `items`, `chassis` — is present in the heap, and so is the type
+`CharacterDef`. An instrument that cannot find a known answer must not be trusted for an unknown
+one.
+
+### Two candidate routes that are NOT dead — and what is and is not proven about them
+`hediffs`, `AddHediff`, `HediffDef`, `xenotype`, `XenotypeDef` and `CustomXenotype` all DO appear
+in the heap.
+
+🔑 **That is suggestive and it is NOT proof.** `#Strings` also holds names this assembly
+REFERENCES in others, and `hediffs` and `xenotype` are both RimWorld's own member names. So they
+may be `CharacterDef` fields, or they may be calls into `Pawn.health.hediffSet` / `Pawn.genes`.
+**Someone must read the declaring type to tell.** What is settled is only the negative.
+
+⭐ **If `hediffs` turns out to be a CharacterDef field, this item gets much cheaper**, because the
+gene the spec wants exists only to apply `RimMandrake_GeneHediff_keldormask` — and the hediff
+could then be applied directly. That would make it the small parser change this item hoped for
+instead of a mod change.
+
+⇒ **Reassigned to BUILD**: reading a third-party assembly's declaring type, and any parser or mod
+change that follows, is implementation. The DESIGN is unchanged and already ruled — both
+characters are defined by the mask and must visibly wear one.
+
+---
+
 ## spec
 Two `Inhabited` cast characters are **defined by a breath mask** and, since
 `CAST_ROSTER_DEAD_MASK_1` closed, wear nothing at all:
