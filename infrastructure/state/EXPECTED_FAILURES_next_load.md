@@ -1901,6 +1901,9 @@ VERIFIED in sync.
 | item kits, 52 kinds | `5b6ad6b4` |
 | the taboo pass, 45 kinds | `04010dbc` |
 | the Ikee, and one in the player's start | `5450bd5f` |
+| the ikee-watching thought, NEW MOD + NEW ASSEMBLY | `9311cee6` |
+| Blackstar named by a namer; stormtrooper stops being dyed | `5d1c1908` |
+| **25 approved creature resizes, 75 ops** | `38a1ffc4` |
 
 🔑 **These do not compete for blame.** Every one is a different field on a different def, and
 each has its own offline evidence file under `observed/2026-08-23/`.
@@ -1953,6 +1956,12 @@ at 01:48 and 02:08. **Before scoring anything below, confirm the capture is NEWE
   four. `CannibalPirate` and `AG_XenohumanPirates` should carry generated pirate names.
 - **S9 stormtrooper white.** The plate should look like its own art, not dyed. Officers should
   read dark grey-olive and the Leader near-black.
+- **S10 the creature resizes.** 23 creatures should be drawn SMALLER and 2 — `Zakkeg` and
+  `BMT_Thrumbungus` — noticeably BIGGER. ⭐ The two enlarges are the risky half: both roughly
+  double meat, melee scaling and food need, and they exist because `AB_MiasmicMangrove` and
+  `IceSheet` had no super-huge creature at all. Watch those two before the 23.
+  ⛔ **And confirm the 23 shrinks did NOT lose meat** — they are `drawSize` only by design; if
+  a shrunken creature butchers smaller, a `bodySize` edit leaked in and that is a real defect.
 
 ### Results — FILL THIS IN AFTER THE LOAD. Blank means unfinished.
 
@@ -1973,6 +1982,7 @@ at 01:48 and 02:08. **Before scoring anything below, confirm the capture is NEWE
 | S7 | | |
 | S8 | | |
 | S9 | | |
+| S10 | | |
 | F4 | | |
 | F5 | | |
 | F6 | | |
