@@ -315,3 +315,37 @@ Decide and record which animals get the Jawa namer:
 `RecruitUtility.cs`, `Pawn.cs`, `PawnGenerator.cs`, `NameGenerator.cs`, `GenText.cs`,
 `LanguageWorker_English.cs`) and against the live def dump. Corpus written here,
 not deferred.
+
+## ✅ DECIDE re-verified the load-bearing finding, 2026-08-23 — it holds, and it changes `needs`
+
+The claim that an XML-only `RulePackDef` patch delivers nothing is dramatic enough to check
+twice, so it was checked against the source a second time and independently:
+
+- **`Verse/Pawn.cs:4180-4186`** — `GenerateNecessaryName()` is what taming reaches via
+  `SetFaction`, and it hardcodes `PawnBioAndNameGenerator.GeneratePawnName(this,
+  NameStyle.Numeric)`. It never consults `RaceProps`' namer. ⇒ *"Dromedary 1"*.
+- **`Verse/Pawn_AgeTracker.cs:807`** — birth does the same, also `NameStyle.Numeric`.
+- **`RaceProperties.GetNameGenerator`** (`RaceProperties.cs:414`) has exactly **one** caller,
+  `PawnBioAndNameGenerator.cs:308`, on the non-numeric path. The only animal callers that
+  reach it are **`RelationsUtility.cs:132`** (bond formation) and
+  **`ScenPart_StartingAnimal.cs:170`** (scenario starting animals).
+- **`nameOnTameChance`** appears only at `RaceProperties.cs:509`, inside a `ConfigError`. No
+  reader in the shipped source. ⚠️ Still UNVERIFIED whether a third-party assembly Harmony-reads it.
+
+⇒ **CONFIRMED. The corpus is XML; the trigger is C#.** Ship the `RulePackDef` first — it is
+independently useful, it makes bonded animals and scenario starts name correctly on its own,
+and it is what the postfix will call.
+
+🔴 **CORRECTION to this item's `needs`: it is filed `offline`, and the C# half is NOT.**
+A Harmony postfix means building and deploying an assembly, and **the OS locks a loaded DLL —
+that half needs the game DOWN**, which only the owner can do. ⇒ Work it as two stages:
+
+| stage | needs | what it is |
+|---|---|---|
+| 1. the `RulePackDef` + 132-name corpus | `offline` | writable any time, game up or down |
+| 2. the Harmony postfix on `GenerateNecessaryName` | 🔴 **game DOWN** | assembly deploy; see `rimbridge-companion` |
+
+⭐ **Look at BUILD's own file before writing stage 1.** As of 2026-08-23 10:18 there is an
+untracked `src/Jawa/Jawa_Patches/Defs/RulePackDefs/Namer_BlackstarCompany.xml` in the working
+tree — BUILD is already writing `RulePackDef`s in this mod. **Match that pattern rather than
+inventing a second one.**
