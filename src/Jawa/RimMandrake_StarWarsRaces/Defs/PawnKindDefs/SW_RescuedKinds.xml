@@ -132,6 +132,15 @@
         <MandrakeJawa>999</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
+      <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+      <li>guy762_JawaHood</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_apparel_jawa</li>
+      <li>ORHermit</li>
+      <li>KotORClothing_civilian_hooded</li>
+    </apparelTags>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
     <defName>RimMandrake_Kaminoan</defName>

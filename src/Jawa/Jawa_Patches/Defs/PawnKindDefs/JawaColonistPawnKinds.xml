@@ -44,7 +44,9 @@
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <chemicalAddictionChance>0.06</chemicalAddictionChance>
     <apparelTags>
-      <li>IndustrialBasic</li>
+      <li>SaV_apparel_jawa</li>
+      <li>ORHermit</li>
+      <li>KotORClothing_civilian_hooded</li>
     </apparelTags>
     <!-- 🔴 THE APPAREL IS THE PAWN. SCENARIO_SPEC.md:142 - "All six: xenotype MandrakeJawa,
          apparel locked to the Jawa robe and hood" - and faction_equipment_guidance.md lists
@@ -94,6 +96,15 @@
         <MandrakeJawa>1.0</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
+      <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+      <li>guy762_JawaHood</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_apparel_jawa</li>
+      <li>ORHermit</li>
+      <li>KotORClothing_civilian_hooded</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef ParentName="TribalArcherBase">
@@ -104,6 +115,15 @@
         <MandrakeJawa>1.0</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
+      <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+      <li>guy762_JawaHood</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_apparel_jawa</li>
+      <li>ORHermit</li>
+      <li>KotORClothing_civilian_hooded</li>
+    </apparelTags>
   </PawnKindDef>
 
   <!-- `weaponTags` IS REQUIRED HERE and on neither sibling. `TribalChiefBase`
@@ -125,6 +145,15 @@
         <MandrakeJawa>1.0</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
+      <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+      <li>guy762_JawaHood</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_apparel_jawa</li>
+      <li>ORHermit</li>
+      <li>KotORClothing_civilian_hooded</li>
+    </apparelTags>
   </PawnKindDef>
 
 </Defs>

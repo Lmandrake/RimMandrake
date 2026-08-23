@@ -187,7 +187,12 @@
         <Baseliner>0.014</Baseliner>
         <RimMandrakeBothan MayRequire="mandrake.starwarsraces">0.014</RimMandrakeBothan>
         <RimMandrakeFeeorin MayRequire="mandrake.starwarsraces">0.014</RimMandrakeFeeorin>
-        <MandrakeJawa MayRequire="mandrake.starwarsraces">0.014</MandrakeJawa>
+        <!-- 🔴 MandrakeJawa REMOVED 2026-08-23 on the owner's ruling: "Let's take the
+             Jawa out of any faction except player and Trade Moot then..."
+             It was the ONLY non-Trade-Moot faction carrying Jawa, at 0.014. The point
+             is that a Jawa must always be a robed Jawa, and a Jawa generated inside the
+             Hutt Cartel would have drawn cartel apparel instead. Its 0.014 is left
+             unclaimed; RimWorld fills the remainder with Baseliner. -->
         <RimMandrakeKubaz MayRequire="mandrake.starwarsraces">0.014</RimMandrakeKubaz>
         <RimMandrakeMuun MayRequire="mandrake.starwarsraces">0.014</RimMandrakeMuun>
         <RimMandrakeOrtolan MayRequire="mandrake.starwarsraces">0.014</RimMandrakeOrtolan>

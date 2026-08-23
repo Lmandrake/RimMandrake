@@ -408,15 +408,21 @@
     <defName>RimMandrakeJawa_Kind</defName>
     <label>Jawa</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
-    <apparelTags>
-      <li>IndustrialBasic</li>
-    </apparelTags>
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <RimMandrakeJawa>1.0</RimMandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
+      <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+      <li>guy762_JawaHood</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_apparel_jawa</li>
+      <li>ORHermit</li>
+      <li>KotORClothing_civilian_hooded</li>
+    </apparelTags>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
     <defName>RimMandrakeKaleesh_Kind</defName>

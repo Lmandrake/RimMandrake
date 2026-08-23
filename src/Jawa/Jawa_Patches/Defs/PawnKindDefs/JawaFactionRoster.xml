@@ -1000,10 +1000,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>SaV_jawaheavy</li>
       <li>Jawa_IonWeaponLight</li>
     </weaponTags>
-    <apparelRequired>
-      <li>guy762_Robes_jawa</li>
-    </apparelRequired>
     <maxApparelQuality>Poor</maxApparelQuality>
+      <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+      <li>guy762_JawaHood</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_apparel_jawa</li>
+      <li>ORHermit</li>
+      <li>KotORClothing_civilian_hooded</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1024,10 +1030,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>JawaIon_Damage</li>
       <li>KotORRanged_weak</li>
     </weaponTags>
-    <apparelRequired>
-      <li>guy762_Robes_jawa</li>
-    </apparelRequired>
     <maxApparelQuality>Normal</maxApparelQuality>
+      <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+      <li>guy762_JawaHood</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_apparel_jawa</li>
+      <li>ORHermit</li>
+      <li>KotORClothing_civilian_hooded</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1047,10 +1059,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>JawaIon_Damage</li>
       <li>KotORRanged_ion</li>
     </weaponTags>
-    <apparelRequired>
-      <li>guy762_Robes_jawa</li>
-    </apparelRequired>
     <maxApparelQuality>Normal</maxApparelQuality>
+      <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+      <li>guy762_JawaHood</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_apparel_jawa</li>
+      <li>ORHermit</li>
+      <li>KotORClothing_civilian_hooded</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1070,10 +1088,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>Jawa_IonWeapon</li>
       <li>JawaIon_Damage</li>
     </weaponTags>
-    <apparelRequired>
-      <li>guy762_Robes_jawa</li>
-    </apparelRequired>
     <maxApparelQuality>Good</maxApparelQuality>
+      <apparelRequired>
+      <li>guy762_Robes_jawa</li>
+      <li>guy762_JawaHood</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_apparel_jawa</li>
+      <li>ORHermit</li>
+      <li>KotORClothing_civilian_hooded</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
