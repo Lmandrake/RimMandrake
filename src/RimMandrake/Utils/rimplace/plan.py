@@ -198,20 +198,30 @@ MAX_OPS = 4096
 
 
 def _rects_from_cells(cells: dict) -> list[tuple[str, list]]:
-    """Greedy horizontal-run compression. Keeps the call list short and, more
-    importantly, readable by a human reviewing a dry run."""
+    """Greedy 2D rectangle decomposition, per defName.
+
+    A horizontal-run-only version emitted 21 set_terrain_batch calls for one
+    three-room house. That is fine for a house and ruinous for a settlement,
+    where the call count is what decides whether a village takes seconds or
+    minutes. Merging vertically as well cuts it to a handful.
+    """
     out = []
     for defName in sorted(set(cells.values())):
-        pts = sorted([c for c, d in cells.items() if d == defName],
-                     key=lambda c: (c[1], c[0]))
-        i = 0
-        while i < len(pts):
-            x, z = pts[i]
-            run = 1
-            while (i + run < len(pts) and pts[i + run] == (x + run, z)):
-                run += 1
-            out.append((defName, [x, z, run, 1]))
-            i += run
+        remaining = {c for c, d in cells.items() if d == defName}
+        while remaining:
+            x0, z0 = min(remaining, key=lambda c: (c[1], c[0]))
+            # widen east
+            w = 1
+            while (x0 + w, z0) in remaining:
+                w += 1
+            # then grow north while the whole row of that width is present
+            h = 1
+            while all((x0 + dx, z0 + h) in remaining for dx in range(w)):
+                h += 1
+            for dz in range(h):
+                for dx in range(w):
+                    remaining.discard((x0 + dx, z0 + dz))
+            out.append((defName, [x0, z0, w, h]))
     return out
 
 
