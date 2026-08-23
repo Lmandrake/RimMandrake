@@ -56,3 +56,43 @@ bypassed too and the fix moves out of XML — which is exactly what About.xml sa
 ## criteria
 
 A Jawa looks like a Jawa on sight, without anyone checking a def to find out why not.
+
+
+---
+
+## 🔴 CORRECTION — BUILD, 2026-08-23. The premise is false, and `apparelRequired` WORKED.
+
+**This item concludes that `apparelRequired` is unreliable. It is not. It did exactly what it
+was told — the running game was simply told something else.**
+
+### the timeline, measured
+
+    00:12   the running game finished loading (capture 2026-08-23T07-12-04Z written)
+    01:48   e479d8ae  robe + hood set on all nine Jawa kinds, deployed
+    02:0x   this item's live test
+
+**RimWorld parses defs at STARTUP.** A change deployed at 01:48 cannot reach a game that
+loaded at 00:12, however byte-identical the repo and the game folder are. The deploy check in
+this item is correct and irrelevant — it compares two files on DISK, and the process is
+holding neither.
+
+### what the RUNNING game actually holds for the kind that was tested
+
+    Jawa_Tribal_Scavenger   apparelRequired  ['Apparel_WarVeil']
+                            apparelTags      ['Neolithic']
+
+⇒ **`Apparel_WarVeil` is in the observed spawn list.** The pawns wore the veil *because the
+live def requires the veil*, and drew `VFET_Apparel_TribalHeavy` / `VAE_Apparel_TribalPoncho`
+/ `VAE_Apparel_TribalKilt` from `Neolithic`, *because the live def names `Neolithic`*.
+
+🔑 **Every single observed item is explained by the live def. Nothing failed.** The result is
+positive evidence that `apparelRequired` is honoured, which is the opposite of this item's
+conclusion.
+
+⛔ **Do not hunt for a mod that strips `apparelRequired`.** The suspect named below was never
+needed. Re-run the same test after the next cold load and expect robes and hoods.
+
+⚠️ **The general lesson, and it has now cost two items in one night:** a live test proves what
+the RUNNING game holds, never what disk holds. Before filing a live observation as a defect,
+read the def out of the newest capture — that is the running game's own copy — and check it
+says what you think you deployed.

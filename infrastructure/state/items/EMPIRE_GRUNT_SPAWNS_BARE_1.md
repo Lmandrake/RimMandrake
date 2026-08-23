@@ -48,3 +48,39 @@ proportion as meaningful; what is established is that it happens, not how often.
 
 An Empire grunt arrives with a weapon every time, and the reason the two did not is
 written down rather than fixed by moving a number until the symptom stops.
+
+
+---
+
+## 🔴 CORRECTION — BUILD, 2026-08-23. Cause identified, fix deployed, and the evidence here CONFIRMS it.
+
+**This item measured the PRE-FIX defs.** The game loaded at 00:12; the fix landed at 02:08
+(`992e1038`), and RimWorld parses defs only at startup.
+
+### what the RUNNING game held during this test
+
+    Jawa_Empire_Grunt   weaponTags  ['ORImperialStandard', 'ORImperialLight']
+                        weaponMoney 650~780
+
+### and here is why that produces exactly what was observed
+
+Every rifle in `ORImperialStandard` costs **906** — E-11, DLT-20A and E-22 alike — against a
+**780** ceiling. The rifles were unreachable by construction, so the roll fell through to
+`ORImperialLight`, which is **entirely sidearms**.
+
+⭐ **This item's own evidence is the proof.** The eight armed pawns drew
+`OuterRim_DE10Blaster` ×4, `OuterRim_EC17Blaster` ×2, `OuterRim_SE14RBlaster` ×1 — **all four
+of those are tagged `ORPistol`**, and not one of the three rifles appeared in ten spawns.
+That is not a coincidence; it is the budget.
+
+✅ **FIXED at `992e1038`:** `weaponMoney` → **950~1150** and `ORImperialLight` dropped, leaving
+the three canon rifles, all now affordable (3 of 3).
+
+⚠️ **The 2-of-10 bare is a SEPARATE and still-open question.** The budget explains why they
+carried pistols; it does not obviously explain why two carried nothing, since the pistols at
+573-592 sat well inside the old 650-780 band. Re-measure after the next cold load: if the
+bare rate goes to 0 the budget was the whole story, and if it does not, this item still has
+something to find.
+
+⛔ **The item is right that `weaponMoney.min` is not the answer** — that trap stays closed.
+The defect was the **ceiling**, not the floor.

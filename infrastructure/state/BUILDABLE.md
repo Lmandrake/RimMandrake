@@ -579,3 +579,23 @@ a retexture mod. ⚠️ A check that asks the capture about this returns a confi
 because it reads the same poisoned field — measured, I wrote that check first. 🔑 **The
 independent source is the game's own `Data/` tree**: whatever Core and the DLCs define there
 needs no `MayRequire`, however many mods touched it afterwards.
+
+
+**17 — A live test proves what the RUNNING game holds, never what disk holds — and a
+byte-identical deploy check does NOT close that gap.** RimWorld parses defs at **startup**, so
+anything deployed after the current session began is invisible to it. This cost two items in
+one night: `JAWA_ROBES_NEVER_WORN_1` concluded that `apparelRequired` is unreliable, and
+`EMPIRE_GRUNT_SPAWNS_BARE_1` measured a weapon roll against a budget that had already been
+raised. Both had verified repo == game-folder and both were still testing yesterday's defs.
+🔑 **Before filing a live observation as a defect, read the def out of the NEWEST CAPTURE** —
+that is the running game's own copy of what it loaded — and confirm it says what you think you
+deployed. In the robe case every observed garment was explained by the live def, which made
+the result positive evidence that the mechanism WORKS.
+
+**18 — `apparelRequired` is honoured and ignores `apparelMoney`; `apparelTags` is the budgeted
+half.** Measured 2026-08-23 across the Jawa and Empire rosters: required items appear on the
+pawn regardless of budget (`Jawa_Blackstar_Heavy` requires a 14,500-silver Mandalorian set on a
+600 budget and wears it), while tag-driven purchases are capped by `apparelMoney`. ⇒ Use
+`apparelRequired` for anything that MUST appear — a uniform, a robe, a warcasket — and
+`apparelTags` only for variety you are willing to lose. ⚠️ And check body coverage: a tag family
+can be all helmets and cuirasses, leaving the pawn with no trousers, which no validator reports.
