@@ -2020,3 +2020,4 @@
 {"seat":"DECIDE","event":"start","id":"RETAG_REACHABLE_VANILLA_KINDS_1","ts":"2026-08-23T23:01:30Z"}
 {"seat":"DECIDE","event":"close","id":"RETAG_REACHABLE_VANILLA_KINDS_1","sha":"108341c9","ts":"2026-08-23T23:02:12Z"}
 {"seat":"DECIDE","event":"file","id":"BIOME_FLORA_LOOKS_RIGHT_1","title":"Look at the new biome flora on a live map — Desert, HorrorWastes, AB_MycoticJungle","kind":"task","target":"v1","needs":"bridge","caused_by":"BIOME_FLORA_ROSTERS_1","for":"CHECK","ts":"2026-08-23T23:04:08Z"}
+{"seat":"DECIDE","event":"close","id":"BIOME_FLORA_ROSTERS_1","sha":"cf437a75","ts":"2026-08-23T23:04:40Z"}
