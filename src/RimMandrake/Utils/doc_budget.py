@@ -123,6 +123,10 @@ BUDGETS = [
     # 🔑 500 is set so a runaway still shows. If it is hit, the question is whether the
     # ~120 lines of closed-fix narrative have grown back, never whether to cut entries.
     ("infrastructure/state/BUILDABLE.md", 800),
+    # Standing procedure, not a per-load payload — the half of the old run sheet that does
+    # not change. It should grow only when a load teaches us a new invariant, so a budget
+    # above its current size is the point: it must have room for the next one.
+    ("infrastructure/state/LOAD_PROCEDURE.md", 400),
     ("infrastructure/state/TEST_PLAN.md", 500),
     # 🔴 UNBUDGETED ON PURPOSE. Owner, 2026-08-23: nothing learned is ever dropped for
     # space, so the overflow destination must never itself be full. `None` means no budget.
