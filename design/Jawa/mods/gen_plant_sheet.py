@@ -301,8 +301,8 @@ Filed as <code>MERIDIAN_GREEN_IS_NOT_RIVER_JUNGLE_1</code>.</div>
 </div></div>
 <main id="main"></main>
 <footer>
-<button id="btnlink">Link to file…</button>
 <button id="btncopy">Copy JSON</button>
+<button id="btnlink">Link to file…</button>
 <span id="link">not linked — <b>your work is in this browser only</b></span>
 </footer>
 <script>
@@ -371,7 +371,16 @@ document.getElementById('btnlink').onclick = async ()=>{
     try{ const f = await fileHandle.getFile(); const txt = await f.text();
       if(txt.trim()){ const j = JSON.parse(txt);
         for(const k of Object.keys(j)) if(!['posture','postureMeaning','savedBy','savedAt','decidedCount','total','decisions'].includes(k)) carried[k]=j[k];
-        if(j.decisions) for(const d in j.decisions){ if(state[d] && j.decisions[d].touched){ state[d]={s:j.decisions[d].decision,note:j.decisions[d].note||'',touched:true}; } }
+        // 🔴 THE FILE FILLS GAPS; IT NEVER OVERWRITES THIS SESSION'S WORK.
+        // This line used to let any row the FILE marked touched clobber the live one,
+        // so linking a file saved in an earlier session silently reverted every
+        // decision made since. Measured 2026-08-22: seven PoisonForest trees the owner
+        // had just cut would have gone back to `keep` on the click that was supposed to
+        // SAVE them. In-memory touched always wins; the file only supplies rows this
+        // session never touched.
+        if(j.decisions) for(const d in j.decisions){
+          if(state[d] && j.decisions[d].touched && !state[d].touched){
+            state[d]={s:j.decisions[d].decision,note:j.decisions[d].note||'',touched:true}; } }
       }
     }catch(e){}
     render(); await writeFile();
