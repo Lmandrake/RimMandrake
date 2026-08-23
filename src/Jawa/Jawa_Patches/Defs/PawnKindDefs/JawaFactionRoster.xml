@@ -677,6 +677,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
+    <apparelColor>(122,110,84)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -709,6 +711,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
+    <apparelColor>(122,110,84)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -740,6 +744,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
+    <apparelColor>(122,110,84)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -774,6 +780,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
+    <apparelColor>(122,110,84)</apparelColor>
   </PawnKindDef>
 
   <!-- 🔴 REVERTED 2026-08-23. Cut to 500~600; the bowcaster costs 1250 and KotORBowcaster is
@@ -1090,6 +1098,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Steel</thingDef><countRange>10~30</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- chitin red-brown — owner. Matches the carapace the hive already wears -->
+    <apparelColor>(104,62,42)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1121,6 +1131,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Steel</thingDef><countRange>10~30</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- chitin red-brown — owner. Matches the carapace the hive already wears -->
+    <apparelColor>(104,62,42)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1152,6 +1164,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Steel</thingDef><countRange>10~30</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- chitin red-brown — owner. Matches the carapace the hive already wears -->
+    <apparelColor>(104,62,42)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1184,6 +1198,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Steel</thingDef><countRange>10~30</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- chitin red-brown — owner. Matches the carapace the hive already wears -->
+    <apparelColor>(104,62,42)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1364,6 +1380,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Silver</thingDef><countRange>50~150</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- near-black — owner. It is in the name, and it makes them read instantly against white stormtroopers and brown Jawa -->
+    <apparelColor>(38,38,42)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1397,6 +1415,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Silver</thingDef><countRange>50~150</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- near-black — owner. It is in the name, and it makes them read instantly against white stormtroopers and brown Jawa -->
+    <apparelColor>(38,38,42)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1431,6 +1451,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>Silver</thingDef><countRange>50~150</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- near-black — owner. It is in the name, and it makes them read instantly against white stormtroopers and brown Jawa -->
+    <apparelColor>(38,38,42)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1467,6 +1489,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
         <li><thingDef>GoJuice</thingDef><countRange>2~4</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
+      <!-- near-black — owner. It is in the name, and it makes them read instantly against white stormtroopers and brown Jawa -->
+    <apparelColor>(38,38,42)</apparelColor>
   </PawnKindDef>
 
   <PawnKindDef>

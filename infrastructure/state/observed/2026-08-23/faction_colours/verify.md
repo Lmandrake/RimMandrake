@@ -45,3 +45,33 @@ grey-green such as `(120,124,110)` is a one-line change per kind.
 🔑 **My recommendation if you only pick one: Blackstar.** Black mercenaries against white
 stormtroopers and brown Jawa is three factions instantly legible on one screen, which is what
 the colour layer is for.
+
+
+---
+
+## Final three, owner 2026-08-23 02:46
+
+    Blackstar              (38,38,42)     near-black
+    Free Droid Enclaves    (122,110,84)   oxidised bronze
+    Geonosian Foundry Hive (104,62,42)    chitin red-brown
+
+⛔ **Junkers, Hutt Cartel and Homestead League deliberately have NO apparelColor** — owner:
+*"should just be whatever comes randomly."* That is a decision, not an omission: do not
+"finish" the palette by colouring them later. Random colour is the point for a scrapper
+faction, a criminal one and a settler one — they wear what they got hold of.
+
+**Total: 43 kinds coloured across 9 families; 3 families deliberately random.**
+
+## "eww… what's it made of?" — answered
+
+`OuterRim_ChitinCuirass`, Outer Rim - Core:
+> *"A commonly used armour made from giant plates of chitin."*
+
+So: **giant insect shell.** For the Geonosian Foundry Hive — who ARE insectoid — that reads
+two ways and both are good. Either it is their own shed carapace worked into plate, which is
+practical and a little sacred, or it is **other** insects' shells, which is quietly horrible
+in exactly the way a hive should be.
+
+⚠️ One irony worth knowing: the costList is 80 durasteel + 3 hypertech components. Mechanically
+it is metal; the chitin is narrative. The red-brown colour you picked sits on top of that and
+is what a player will actually read.
