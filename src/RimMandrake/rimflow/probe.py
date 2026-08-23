@@ -78,8 +78,10 @@ def _process_alive():
 def _bridge_answers():
     """True/False/None — does something accept a connection on the bridge port?
 
-    Only ever used to separate `UP` from `LOADING`, so a None here is harmless: it means
-    the coarse answer stays `LOADING`, which is the conservative one.
+    Only ever used to separate `UP` from `LOADING`. ⚠️ A None is conservative for the
+    VERDICT and was NOT harmless for the MESSAGE: `measure` used to render None and
+    False identically as "bridge silent", so "I never looked" and "I looked and got
+    nothing" were indistinguishable to every reader. They are now worded apart.
     """
     port = os.environ.get("GABP_SERVER_PORT")
     if not port:
@@ -120,8 +122,19 @@ def measure(use_cache=True):
         implies, evidence = "DOWN", "tasklist.exe lists no %s" % PROCESS
     elif bridge:
         implies, evidence = "UP", "%s running, bridge answers" % PROCESS
+    elif bridge is False:
+        implies, evidence = "LOADING", "%s running, bridge did not answer" % PROCESS
     else:
-        implies, evidence = "LOADING", "%s running, bridge silent" % PROCESS
+        # 🔴 bridge is None: THE PROBE NEVER LOOKED. This used to print "bridge
+        # silent" — identical wording to a real negative — so every seat read
+        # ignorance as a measurement. Measured 2026-08-23: it said "bridge silent"
+        # all session while the bridge was up the whole time, because
+        # GABP_SERVER_PORT is simply not set in a plain shell.
+        # 🔑 An instrument must never spell ignorance the same way as a finding.
+        implies, evidence = ("LOADING",
+                             "%s running; BRIDGE NOT PROBED — GABP_SERVER_PORT is "
+                             "unset, so LOADING here is a DEFAULT, not a reading. "
+                             "Set that variable to get a real answer." % PROCESS)
 
     reading = {"running": running, "bridge": bridge, "implies": implies,
                "evidence": evidence, "at": time.time()}
