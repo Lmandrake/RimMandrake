@@ -192,6 +192,7 @@ Defs parse only at startup, so nothing about either is true until a cold load.
 | | |
 |---|---|
 | `BiomeFlora_Ashkarr.xml` | 24 biomes, 604 plants, every one distinct across the 8 families |
+| `PlantTolerances_Ashkarr.xml` | 🔴 **added 2026-08-23, MUST ship in the same build** — 577 plants refitted onto Ash'karr's climate. Without it 642 of 669 plants stop at 0 °C, half the planet is colder, and a CORRECT roster grows nothing. **Score the flora only if this is deployed too**; otherwise the flora result is void, not a fail. `PLANT_TOLERANCES_DEPLOY_1` |
 | `PlantNames_Ashkarr.xml` | 26 Earth crop/tree **labels** become Star Wars names |
 
 **Score in this order:**
