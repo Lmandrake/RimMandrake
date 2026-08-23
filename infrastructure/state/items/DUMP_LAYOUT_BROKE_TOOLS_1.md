@@ -76,3 +76,24 @@ chasing that will waste the time.
 `9ede4d4c`'s message**, both of which say Option 1 is blocked on re-taking a dump with the
 donors active. **It is not.** The refusal is real and the guard is right to fire; only the
 explanation is wrong. Diagnose it from `pick_species` directly.
+
+---
+
+# ✅ CLOSED 2026-08-23 — both tools now take a DefDump ROOT
+
+`cast_to_xml.py` joins `validate_patch.py`. It resolves a root to its newest
+`captures/<ISO>/defs`, **prints the capture and its modCount** (`dump:
+captures/2026-08-23T07-12-04Z, 578 mods`), and works with `--dump <root>`, `--dump
+<capture>/defs`, or no `--dump` at all.
+
+🔑 **Resolved ONCE at the call site, not inside each loader.** The first attempt put it in
+`load_traits`, and `load_skills` then went straight back to looking in the unresolved root —
+`no SkillDef.json`. A per-consumer fix for a per-invocation problem leaves exactly as many
+holes as there are consumers.
+
+⚠️ The two tools still fail differently and that asymmetry is deliberate: `cast_to_xml.py`
+DIES when it cannot find a dump, `validate_patch.py` now raises an ERROR that taints its
+summary. Both are loud. The bug being closed was that one of them used to be silent and
+still printed `OK`.
+
+Verified: a full `--write` over all 12 cast rosters is a **NO-OP**.

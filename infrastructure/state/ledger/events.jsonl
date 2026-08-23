@@ -1997,3 +1997,4 @@
 {"seat":"BUILD","event":"close","id":"ANIMAL_TOLERANCES_DEPLOY_1","sha":"526d8f75","ts":"2026-08-23T20:41:10Z"}
 {"seat":"BUILD","event":"close","id":"XENOTYPE_TOLERANCES_DEPLOY_1","sha":"526d8f75","ts":"2026-08-23T20:41:10Z"}
 {"seat":"BUILD","event":"close","id":"ANCIENT_ARSENAL_DEPLOY_1","sha":"526d8f75","ts":"2026-08-23T20:41:10Z"}
+{"seat":"BUILD","event":"close","id":"DUMP_LAYOUT_BROKE_TOOLS_1","sha":"2899b728","ts":"2026-08-23T20:42:52Z"}

@@ -157,13 +157,51 @@ def first_existing(paths, what):
     die("could not find " + what + "; tried:\n  " + "\n  ".join(paths))
 
 
+def _resolve_dump(dump_dir):
+    """Accept a DefDump ROOT as well as a defs/ folder.
+
+    🔴 The dump moved to `DefDump/captures/<ISO>/{defs,manifest.json}` with a
+    `defs.sqlite` at the root, and this tool still wanted the old flat `defs/`.
+    Pointed at the root — the obvious thing to pass, and what the docs say to pass —
+    it died with `no TraitDef.json` and read as BROKEN when it was fine. Measured
+    2026-08-23; `validate_patch.py --live` had the same blind spot, except that one
+    failed SILENTLY and still printed OK. DUMP_LAYOUT_BROKE_TOOLS_1.
+
+    ⚠️ Newest is not automatically right. A capture taken during a debug
+    configuration describes a game nobody will run, so the chosen capture and its
+    modCount are printed rather than assumed.
+    """
+    if os.path.isfile(os.path.join(dump_dir, "TraitDef.json")):
+        return dump_dir
+    direct = os.path.join(dump_dir, "defs")
+    if os.path.isfile(os.path.join(direct, "TraitDef.json")):
+        return direct
+    caps = os.path.join(dump_dir, "captures")
+    if os.path.isdir(caps):
+        for name in sorted(os.listdir(caps), reverse=True):
+            cand = os.path.join(caps, name, "defs")
+            if os.path.isfile(os.path.join(cand, "TraitDef.json")):
+                mods = ""
+                man = os.path.join(caps, name, "manifest.json")
+                if os.path.isfile(man):
+                    m = re.search(r'"modCount"\s*:\s*(\d+)',
+                                  open(man, encoding="utf-8").read())
+                    if m:
+                        mods = ", %s mods" % m.group(1)
+                sys.stderr.write("  dump: captures/%s%s\n" % (name, mods))
+                return cand
+    return dump_dir
+
+
 def load_traits(dump_dir):
     """-> {defName: {normalised degree label: degree int}}  plus the degree set."""
     path = os.path.join(dump_dir, "TraitDef.json")
     if not os.path.isfile(path):
-        die("no TraitDef.json at " + path + "\n"
-            "      The def dump is how a trait name is proven to exist. Refresh it\n"
-            "      (src/RimMandrake/Utils/refresh.py) or pass --dump.")
+        die("no TraitDef.json under " + dump_dir + "\n"
+            "      Tried it directly, as <dir>/defs, and as the newest\n"
+            "      captures/<ISO>/defs. The def dump is how a trait name is proven\n"
+            "      to exist. Refresh it (src/RimMandrake/Utils/refresh.py) or pass\n"
+            "      --dump pointing at a capture.")
     with open(path, "r", encoding="utf-8") as fh:
         data = json.load(fh)
     out = {}
@@ -557,6 +595,10 @@ def main():
     args = ap.parse_args()
 
     dump = args.dump or first_existing(_DUMPS, "the def dump")
+    # Resolve the dump ONCE here, not inside each loader - resolving per-loader is
+    # how load_skills kept looking in the unresolved root after load_traits had
+    # already found the capture.
+    dump = _resolve_dump(dump)
     traitdb = load_traits(dump)
     skilldb = load_skills(dump)
     print("traits known: %d, skills known: %d, from %s"
