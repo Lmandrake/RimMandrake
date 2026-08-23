@@ -138,8 +138,12 @@ worldgen hooks stripped; the file is deleted, its surviving numbers are restated
 
 **Sea** — ⛔ ~~~25% of tiles water, accept **22–28%**~~ — **DEAD**, killed by the owner
 2026-08-18 along with the spec that carried it; see the ruling table below. The live
-figure is **8.14% water** (1,780 of 21,872 tiles, measured 2026-08-20). **Exactly three**
-connected bodies, no
+figure is ~~8.14% water (1,780 of 21,872 tiles, measured 2026-08-20)~~ — 🔴 **superseded:
+6.46% water, 1,412 of 21,872 tiles**, measured by CHECK 2026-08-23 on the live planet
+(`jawa/world_stats`) and agreeing with `_tiles.csv` to the tile. The bundle was edited
+after the 2026-08-20 reading and this line was never told: **Ocean fell 1,468 → 823**,
+`Lake` held at 312, and **277 `SeaIce` tiles appeared** — the nightside ice pass. **Exactly
+three** connected bodies of ≥ 8 tiles (5 counting puddles), largest 2.97% of the planet, no
 strays. Perimeter²/area **≥ 25** (a circle is 4π ≈ 12.6). Two centroids in the
 terminator band, **one deliberately out near the antistellar point**, frozen. Elongated
 and torn, ⛔ **never a ring**, ⛔ never smoothed. Hypersaline — the sea is food and mass,

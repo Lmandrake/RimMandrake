@@ -794,7 +794,7 @@ than discovered:
 | **Rivers 200 · Roads 600** | ⭐ **OVERWRITE.** We authored both in `_links.csv`. Vanilla's flow into vanilla's coastlines. Push ours after clearing theirs |
 | **Factions 500** | ⭐ **OVERWRITE.** 72 holdings are placed by lore in `_settlements.csv`; siting by habitability is banned (§7). Re-`Tile` the existing world objects rather than deleting and remaking them |
 | **Landmarks 650 · Mutators 700** | ⚠️ **THE ONE THAT BITES.** These were picked from the vanilla tile's biome and terrain, so after our stamp a Landmark can sit on a biome that forbids it. Decide by LOOKING at the first render; the fallback is to clear and re-roll them after the stamp |
-| **Features 1000** | ⭐ **OVERWRITE.** We have 24 named regions in `_tiles.csv`; vanilla named them at random |
+| **Features 1000** | ⭐ **OVERWRITE.** ~~24~~ → **71 named regions** in `_tiles.csv`, covering **all 21,872 tiles with none left unnamed** (measured on the live stamp, 2026-08-23); vanilla named them at random. 🔑 The FeatureDef is **`WB_MapLabelFeature`** — `world_features_import` defaults to `'Region'`, which **does not exist** and refuses the whole import. |
 | Pollution 450 | harmless; we stamp pollution to zero anyway |
 | AncientSites 300 · AncientRoads 400 | ⚠️ decide by LOOKING at the first render |
 
