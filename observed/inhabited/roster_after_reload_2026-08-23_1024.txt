@@ -1,0 +1,30 @@
+
+=====================================================================
+ROSTER REPORT  Test place
+  real time : 2026-08-23 00:28:59
+  game tick : 1   day 0
+=====================================================================
+[Inhabited] ROSTER REPORT  tick=1  day=0  place=Test place tile=99960,0  held=3  alive=3  state=Inhabited
+  Human41377  Alanora 'Vex' Vexus  age=50y (182691389 ticks)  relations=0  hediffs=3  traits=7  dead=False  faction=The Razor Mantiss
+  Human41387  Emily 'Chili' Middleton  age=25y (90142595 ticks)  relations=0  hediffs=8  traits=7  dead=False  faction=The Razor Mantiss
+  Human41399  Naoko Landry  age=54y (195699819 ticks)  relations=1  hediffs=7  traits=7  dead=False  faction=The Razor Mantiss
+
+=====================================================================
+ROSTER REPORT  Test place
+  real time : 2026-08-23 00:28:59
+  game tick : 1   day 0
+=====================================================================
+[Inhabited] ROSTER REPORT  tick=1  day=0  place=Test place tile=99960,0  held=3  alive=3  state=Inhabited
+  Human41377  Alanora 'Vex' Vexus  age=50y (182691389 ticks)  relations=0  hediffs=3  traits=7  dead=False  faction=The Razor Mantiss
+  Human41387  Emily 'Chili' Middleton  age=25y (90142595 ticks)  relations=0  hediffs=8  traits=7  dead=False  faction=The Razor Mantiss
+  Human41399  Naoko Landry  age=54y (195699819 ticks)  relations=1  hediffs=7  traits=7  dead=False  faction=The Razor Mantiss
+
+=====================================================================
+ROSTER REPORT  Test place
+  real time : 2026-08-23 10:24:11
+  game tick : 1   day 0
+=====================================================================
+[Inhabited] ROSTER REPORT  tick=1  day=0  place=Test place tile=99960,0  held=3  alive=3  state=Inhabited
+  Human41377  Alanora 'Vex' Vexus  age=50y (182691389 ticks)  relations=0  hediffs=3  traits=7  dead=False  faction=The Razor Mantiss
+  Human41387  Emily 'Chili' Middleton  age=25y (90142595 ticks)  relations=0  hediffs=8  traits=7  dead=False  faction=The Razor Mantiss
+  Human41399  Naoko Landry  age=54y (195699819 ticks)  relations=1  hediffs=7  traits=7  dead=False  faction=The Razor Mantiss
