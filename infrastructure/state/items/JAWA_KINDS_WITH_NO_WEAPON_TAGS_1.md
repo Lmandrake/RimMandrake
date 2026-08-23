@@ -54,3 +54,46 @@ that an appearance change must not become a behavioural one by accident.
 
 `WEAPON_FLOOR_BOWS_KNIVES_1`'s "no kind is bare 5/5" is either true, or false only for
 kinds a human has deliberately marked as unarmed.
+
+## ✅ DECIDE'S RULING, 2026-08-23 — all fourteen are DELIBERATE-UNARMED. Nothing to edit.
+
+**And two of this item's premises are wrong. Both corrections matter more than the ruling.**
+
+### ⛔ Correction 1: `weaponMoney` is ALREADY `0..0` on all fourteen — there is nothing dead to drop
+
+This item proposes *"drop the dead `weaponMoney`"* so the def stops implying a weapon it can
+never draw. Measured off the live capture: **every one of the fourteen carries
+`weaponMoney {min: 0, max: 0}`.** That is not a misleading leftover — it is the def **already
+saying, correctly, that this kind buys no weapon.** The suggested edit would remove a field
+that is doing its job. ⇒ **No def change on any of the fourteen.**
+
+### ⛔ Correction 2: thirteen of the fourteen are fielded by NOTHING AT ALL
+
+Searched every `FactionDef`, `PawnGroupMakerDef`, `ScenarioDef`, `QuestScriptDef` and
+`RaidStrategyDef` for an exact-quoted reference:
+
+| kind | referenced by |
+|---|---|
+| `Jawa_Spawn_Gand` · `Kubaz` · `Taung` · `Mimbanese` · `Zygerrian` · `Lasat` · `Muun` · `Ortolan` · `Nelvaanian` · `SithK` · `SithM` · `Yoder` | 🔴 **nothing** |
+| `Jawa_Colonist` | nothing in defs — a colonist takes its gear from the **scenario**, and unarmed is how vanilla colonists generate |
+| `Jawa_Spawn_Hutt` | `Jawa_HuttCartel` → `pawnGroupMakers[1]` (**Trader**) → **`guards`**, selectionWeight **1** against Gamorrean Guard 6 and Enforcer 2 |
+
+⇒ **Twelve species enablers never enter a raid, a trade caravan or a settlement.** Their whole
+job is to make a species exist in the world. An enabler nobody fields cannot spawn bare in play,
+so `combatPower 40` on them is inert too.
+
+### ⭐ And the fourteenth is not a defect either — it is the best detail in the file
+
+`Jawa_Spawn_Hutt` appears **once**, as a rare **trade-caravan guard**. 🔑 **A Hutt is not a
+guard — a Hutt is what guards are FOR.** An unarmed Hutt arriving with a caravan, at weight 1
+in 9, behind two Gamorreans who do carry weapons, is the crime lord riding along with his own
+muscle. That reads exactly right, and arming it would break it. **Leave it.**
+
+## criteria — answered
+`WEAPON_FLOOR_BOWS_KNIVES_1`'s *"no kind is bare 5/5"* stands, with these **fourteen named as
+deliberately unarmed**. Its PASS condition should read: *no kind is bare 5/5 except the fourteen
+on the deliberate list.* ⭐ Excluding them the roster is healthy — 270 spawns across the 54
+tagged kinds produced **3 bare, 1.1%**, none of them 5/5.
+⛔ **Do not re-file this as a bare-hands defect.** Two items have now reached for `weaponMoney`
+as the cause; it is 0–0 on purpose, and the 70 bare pawns are twelve enablers nothing fields,
+one colonist, and one Hutt being a Hutt.
