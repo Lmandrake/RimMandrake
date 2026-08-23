@@ -32,12 +32,27 @@ REUSE_PENALTY = 0.75                    # per biome already using this creature
 # would essentially never appear in a sparse biome, which defeats the point of having one.
 DENSITY_REF = 1.8                       # AB_RockyCrags: a middling biome
 RARE_SCALED = {'SUPER': (0.008, 0.20), 'huge': (0.05, 0.35)}   # (floor, ceiling) after scaling
+# 🔴 DIET. A cast that cannot eat is not a cast.
+#   - A strict vegetarian in a biome with no plants starves. SeaIce (plantDensity 0) was
+#     given 14 herbivores and IceSheet 12.
+#   - A cast that is more predator than prey eats itself. ZBiome_DesertOasis reached 1.07
+#     carnivores per prey animal.
+NO_PLANT_DENSITY = 0.02          # at or below this, treat the biome as having no forage
+MAX_CARNIVORE_SHARE = 0.40       # of the whole cast
 ANOMALY_BIOMES = {'HorrorWastes', 'AB_GelatinousSuperorganism', 'AB_OcularForest', 'Scarlands'}
 
 def band(b):
     b = float(b or 0)
     return ('tiny' if b < 0.3 else 'small' if b < 0.8 else 'med' if b < 1.6
             else 'large' if b < 3.0 else 'huge' if b < 6.0 else 'SUPER')
+
+def biome_plant_density():
+    import json as _j
+    from dumppath import defs_dir
+    bl = _j.load(open(defs_dir() + '/BiomeDef.json', encoding='utf-8'))
+    bl = bl if isinstance(bl, list) else bl.get('defs')
+    return {x['defName']: ((x.get('fields') or {}).get('plantDensity'))
+            for x in bl if isinstance(x, dict)}
 
 def biome_density():
     import json as _j
@@ -78,6 +93,7 @@ def commonality_for(biome, bnd, DENS):
 def main():
     A, W, fit, tiles = load()
     DENS = biome_density()
+    PDENS = biome_plant_density()
     biomes = sorted(tiles, key=lambda b: -len(tiles[b]))
     used = collections.Counter()
     cast = {}
@@ -99,6 +115,17 @@ def main():
             if lo is None or hi is None or not (lo <= cold and hi >= hot): continue
             if dn not in fit[b]:                              continue
             pool.append(dn)
+
+        pd = PDENS.get(b)
+        barren = pd is not None and pd <= NO_PLANT_DENSITY
+        def food(dn):
+            return str(((A.get(dn, {}).get('race') or {}).get('foodType')))
+        if barren:
+            # nothing to graze: a strict vegetarian here is a starvation report waiting to
+            # happen. Omnivores stay - they can eat the carnivores' leavings.
+            pool = [d for d in pool if 'Vegetarian' not in food(d)]
+        carn_cap = int(round(sum(n for _, n in SLOTS) * MAX_CARNIVORE_SHARE))
+        carn_used = 0
 
         chosen = []
         for bnd, want in SLOTS:
@@ -125,6 +152,10 @@ def main():
                     take = [hp[0][1]]
                     promote.append((b, hp[0][1], (A[hp[0][1]].get('race') or {}).get('baseBodySize')))
             for d in take:
+                if 'Carnivore' in food(d):
+                    if carn_used >= carn_cap:
+                        continue          # cast is already predator-heavy; skip this one
+                    carn_used += 1
                 used[d] += 1
                 chosen.append((d, bnd))
         cast[b] = chosen
