@@ -1,0 +1,2499 @@
+{
+  "posture": "flag-only",
+  "postureMeaning": "A decision here is a FLAG for the owner. Nothing in this file edits art. Rows left `keep` are accepted as-is.",
+  "decisions": {
+    "JRWBrachiosaurus": {
+      "state": "shrink",
+      "note": "Shrink a lot. It's familiar outline is also a negative, so make it very small to make it interestingly different than Earth"
+    },
+    "JRWDimetrodon": {
+      "state": "shrink",
+      "note": ""
+    },
+    "AA_Behemoth": {
+      "state": "redraw",
+      "note": "It's classic, beautiful, amazing, and comes from the cold part of the world that needs some love. Regenerate to be truly alien, dangerous, mystical, and intimidating."
+    },
+    "JRWOuranosaurus": {
+      "state": "shrink",
+      "note": ""
+    },
+    "JRWAntarctopelta": {
+      "state": "shrink",
+      "note": ""
+    },
+    "GR_Catbear": {
+      "state": "replace",
+      "note": ""
+    },
+    "Ronto": {
+      "state": "shrink",
+      "note": ""
+    },
+    "BMT_Screecher": {
+      "state": "shrink",
+      "note": "It has an interesting shape... v2 tag for redraw candidate"
+    },
+    "GR_Paraceramuffalo": {
+      "state": "shrink",
+      "note": ""
+    },
+    "KwazelMaw": {
+      "state": "shrink",
+      "note": ""
+    },
+    "GreaterKraytDragon": {
+      "state": "shrink",
+      "note": ""
+    },
+    "BMT_Pillbug": {
+      "state": "shrink",
+      "note": ""
+    },
+    "Enhydriodon": {
+      "state": "replace",
+      "note": "Too terrestrial, shouldn't be here"
+    },
+    "Torton": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_SandPillar": {
+      "state": "replace",
+      "note": ""
+    },
+    "Horax": {
+      "state": "replace",
+      "note": ""
+    },
+    "Procoptodon": {
+      "state": "shrink",
+      "note": ""
+    },
+    "AA_Atispec": {
+      "state": "redraw",
+      "note": "So alien and bizarre I want to honor it. Regenerate the art to be alien, beautiful, horrible, and fierce."
+    },
+    "GR_Thrumbalope": {
+      "state": "shrink",
+      "note": ""
+    },
+    "Gomphotaria": {
+      "state": "shrink",
+      "note": ""
+    },
+    "GR_Thrumbolizard": {
+      "state": "shrink",
+      "note": ""
+    },
+    "BMT_BiliousVarog": {
+      "state": "replace",
+      "note": ""
+    },
+    "Roggwart": {
+      "state": "shrink",
+      "note": ""
+    },
+    "GR_Thrumbospider": {
+      "state": "shrink",
+      "note": ""
+    },
+    "BMT_SludgeCrawler": {
+      "state": "shrink",
+      "note": "Fascinating profile shape, so keep in and make smaller. Good v2 redraw candidate."
+    },
+    "MA_Capryak": {
+      "state": "shrink",
+      "note": ""
+    },
+    "BMT_ShatterjawBeetle": {
+      "state": "replace",
+      "note": ""
+    },
+    "DA_BlackScribe": {
+      "state": "replace",
+      "note": ""
+    },
+    "Revenant": {
+      "state": "replace",
+      "note": "I can't even see what this thing is... not a good candidate"
+    },
+    "Gorilla": {
+      "state": "replace",
+      "note": "Terrestrial, not wanted"
+    },
+    "Noctol": {
+      "state": "shrink",
+      "note": "Keep for the silhouette... it's very exotic"
+    },
+    "SW_Emperorisopod": {
+      "state": "keep",
+      "note": "Very wild and strange, let's keep this for sure. "
+    },
+    "JRWTorosaurus": {
+      "state": "shrink",
+      "note": ""
+    },
+    "KraytDragon": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_TripleSnapper": {
+      "state": "shrink",
+      "note": "Fascinating outline and unique. Keep and shrink, v2 redraw candidate"
+    },
+    "Capybara": {
+      "state": "replace",
+      "note": "terrestrial, not wanted"
+    },
+    "AA_AcanthamoebaGiganteaHuge": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_AcanthamoebaGiganteaLarge": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_AcanthamoebaGiganteaSmall": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_AngelMoth": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_AnimaColossus": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Animalisk": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_AnimusVox": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_ArcticLion": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_AuroraSylph": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Barbslinger": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_BedBug": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_BlackScarab": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_BlackSpelopede": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_BlackSpider": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Blizzarisk": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_BloodShrimp": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_BoulderMit": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Bumbledrone": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_BumbledroneHierophant": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_BumbledroneQueen": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Cactipine": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_ChameleonYak": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_ChemfuelMyrmidon": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Cinderlisk": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_CrescendoAnole": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_CrystalMit": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_CrystallineCaracal": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Darkbeast": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_DesertAve": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_DevilSheep": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Dunealisk": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_DuskRat": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_EngorgedTentacularAberration": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Erin": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Eyeling": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Feralisk": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_FireWasp": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_FissionMouseSecond": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_FissionMouseThird": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_FrostAve": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_FrostLynx": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_FrostboundBehemoth": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Frostling": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Frostmite": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_FungalHusk": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Gallatross": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Genix": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_GiantCrownedSilkie": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_GreenGoo": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_GreyCoatedMouflon": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_InfectedAerofleet": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Junglelisk": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Locusts": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_MammothWorm": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Mantrap": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_MegaLouse": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Metallovore": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Needlepost": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Needleroll": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_NightMule": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_OcularNightling": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_PebbleMit": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_PhoenixOwlcat": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Plasmorph": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Radyak": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Ravager": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_RayHound": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Razorjack": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_RedGoo": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_RedSpore": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_RipperHound": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_RoughPlatedMonitor": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_SandProwler": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_SandSquid": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_ShockGoat": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Skyeel": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Slurrypede": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_SpinedGow": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_SummitCrab": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Thermadon": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_Thunderbeast": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_UnblinkingEye": {
+      "state": "keep",
+      "note": ""
+    },
+    "AA_WindBeast": {
+      "state": "keep",
+      "note": ""
+    },
+    "AG_OcularSlinger": {
+      "state": "keep",
+      "note": ""
+    },
+    "AM_Dryad_Corruptor": {
+      "state": "keep",
+      "note": ""
+    },
+    "AM_Dryad_Ocular": {
+      "state": "keep",
+      "note": ""
+    },
+    "AM_Dryad_Spitter": {
+      "state": "keep",
+      "note": ""
+    },
+    "AM_Dryad_Tumorous": {
+      "state": "keep",
+      "note": ""
+    },
+    "AM_Dryad_Unstable": {
+      "state": "keep",
+      "note": ""
+    },
+    "AM_UnshackledDryad": {
+      "state": "keep",
+      "note": ""
+    },
+    "Alligator": {
+      "state": "keep",
+      "note": ""
+    },
+    "AlligatorMan": {
+      "state": "keep",
+      "note": ""
+    },
+    "Alpaca": {
+      "state": "keep",
+      "note": ""
+    },
+    "Alphabeaver": {
+      "state": "keep",
+      "note": ""
+    },
+    "Andrewsarchus": {
+      "state": "keep",
+      "note": ""
+    },
+    "Anooba": {
+      "state": "keep",
+      "note": ""
+    },
+    "BI_Queen": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_AaroxisDendoria": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Basilisk": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Batbird": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_BeardedYak": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_BloodletterPetrel": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_BloodropMoth": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_BrownBat": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_BunkerBug": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_CactusCrab": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_CarrionVulture": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_CaveCricket": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_CaveLemming": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_CaveSpider": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_ChemSnail": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_ColonyPustuleHornet": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_ColonyPustuleHornetQueen": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Creature_Mantrap": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_CrestedDragon": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_DarkAxolotl": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Diggerpede": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_FacetMoth": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_FamineLocust": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_FenridStoat": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_FireSalamander": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_FleeceSpider": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_FoundryBeetle": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_FreezerFrog": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_FrostweaverSpider": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_FungalFerret": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_FungalWeevil": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_GastroToad": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Gembug": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_GiantSlug": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_GiantSnail": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_GlarralPenguin": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_GlowBat": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_GlowSlug": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Glowtail": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_GoetoTadpole": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_GoetoToad": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_HoarfrostMastodon": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_HungeringHydra": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_ImperialToad": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Jellypot": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_LandOctopus": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Maguana": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Megabat": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Megakrill": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Megaphorid": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Megapleura": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Megaroach": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_MetalloSnail": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Mole": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Molebear": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_MossyFennec": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_MucklurkerCatfish": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_MutagenicNorphea": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_MutatingTumorfishAdult": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_MutatingTumorfishFry": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_MutatingTumorfishSpawn": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Polluwog": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_PustuleHornet": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_PustuleHornetQueen": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_PustuleHornetSpawned": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Rimebeak": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Sacapillar": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_SandLeaper": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_ShimmershellSnail": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_SilverSheep": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_SmogMoth": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_SmolderstingScorpion": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Snowstalker": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_SonarRabbit": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Stoneback": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Swarmcaller": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_TaintedTurtle": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Thrumbungus": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_ToxSheep": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_TruffleMole": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Varmot": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_WasteHound": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Woollybat": {
+      "state": "keep",
+      "note": ""
+    },
+    "BMT_Xyrion": {
+      "state": "keep",
+      "note": ""
+    },
+    "Badger": {
+      "state": "keep",
+      "note": ""
+    },
+    "Bardelot": {
+      "state": "keep",
+      "note": ""
+    },
+    "BiomesIslands_Flamingo": {
+      "state": "keep",
+      "note": ""
+    },
+    "Bison": {
+      "state": "keep",
+      "note": ""
+    },
+    "Blarth": {
+      "state": "keep",
+      "note": ""
+    },
+    "Bluebird": {
+      "state": "keep",
+      "note": ""
+    },
+    "Boarwolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "BogHound": {
+      "state": "keep",
+      "note": ""
+    },
+    "Boma": {
+      "state": "keep",
+      "note": ""
+    },
+    "Boomrat": {
+      "state": "keep",
+      "note": ""
+    },
+    "Borcatu": {
+      "state": "keep",
+      "note": ""
+    },
+    "Bordok": {
+      "state": "keep",
+      "note": ""
+    },
+    "Bulbfreak": {
+      "state": "keep",
+      "note": ""
+    },
+    "Bullfrog": {
+      "state": "keep",
+      "note": ""
+    },
+    "Cannok": {
+      "state": "keep",
+      "note": ""
+    },
+    "Caribou": {
+      "state": "keep",
+      "note": ""
+    },
+    "Cassowary": {
+      "state": "keep",
+      "note": ""
+    },
+    "Castoroides": {
+      "state": "keep",
+      "note": ""
+    },
+    "Cat": {
+      "state": "keep",
+      "note": ""
+    },
+    "Cat_Scimitar": {
+      "state": "keep",
+      "note": ""
+    },
+    "Chicken": {
+      "state": "keep",
+      "note": ""
+    },
+    "Chimera": {
+      "state": "keep",
+      "note": ""
+    },
+    "Chinchilla": {
+      "state": "keep",
+      "note": ""
+    },
+    "ChrysalideRancor": {
+      "state": "keep",
+      "note": ""
+    },
+    "Clodhopper": {
+      "state": "keep",
+      "note": ""
+    },
+    "Cobra": {
+      "state": "keep",
+      "note": ""
+    },
+    "ColossusToad": {
+      "state": "keep",
+      "note": ""
+    },
+    "Convor": {
+      "state": "keep",
+      "note": ""
+    },
+    "Cougar": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_ArcticOwlcat": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_ForestOwlcat": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_ImperialRedhound": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_IroncasketBeetle": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_Karabal": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_Phrak": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_Pilgrim": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_SilverMole": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_Snaptoad": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_SnowTaraal": {
+      "state": "keep",
+      "note": ""
+    },
+    "DA_Taraal": {
+      "state": "keep",
+      "note": ""
+    },
+    "Dactillion": {
+      "state": "keep",
+      "note": ""
+    },
+    "Daeodon": {
+      "state": "keep",
+      "note": ""
+    },
+    "Devourers": {
+      "state": "keep",
+      "note": ""
+    },
+    "Dewback": {
+      "state": "keep",
+      "note": ""
+    },
+    "Dinopithecus": {
+      "state": "keep",
+      "note": ""
+    },
+    "Diprotodon": {
+      "state": "keep",
+      "note": ""
+    },
+    "Donkey": {
+      "state": "keep",
+      "note": ""
+    },
+    "Dreadmeld": {
+      "state": "keep",
+      "note": ""
+    },
+    "Dromedary": {
+      "state": "keep",
+      "note": ""
+    },
+    "ERN_Amaro": {
+      "state": "keep",
+      "note": ""
+    },
+    "ERN_Chocobo": {
+      "state": "keep",
+      "note": ""
+    },
+    "Emu": {
+      "state": "keep",
+      "note": ""
+    },
+    "EnergySpider": {
+      "state": "keep",
+      "note": ""
+    },
+    "Eopie": {
+      "state": "keep",
+      "note": ""
+    },
+    "Falumpaset": {
+      "state": "keep",
+      "note": ""
+    },
+    "Fanback": {
+      "state": "keep",
+      "note": ""
+    },
+    "Fingerspike": {
+      "state": "keep",
+      "note": ""
+    },
+    "Flamingo": {
+      "state": "keep",
+      "note": ""
+    },
+    "Fox_Arctic": {
+      "state": "keep",
+      "note": ""
+    },
+    "Fox_Fennec": {
+      "state": "keep",
+      "note": ""
+    },
+    "Fox_Red": {
+      "state": "keep",
+      "note": ""
+    },
+    "FrilledGorg": {
+      "state": "keep",
+      "note": ""
+    },
+    "FrogDog": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_AnimusHare": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_BearBug": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Bearalope": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Bearcat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Bearchicken": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Bearffalo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Bearman": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Bearmole": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Bearodile": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Bearscarab": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Bearwolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Beaverwolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Beetlefleet": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Boomabear": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Boomachicken": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Boomalisk": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Booman": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Boombeetle": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Boomcat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Boomffalo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Boomhorse": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Boomsnake": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Boomsquirrel": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Boomwolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Catalope": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Catchicken": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Catffalo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Cathorse": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Catman": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Catrabbit": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Catwolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Chickenbear": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Chickencat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Chickenffalo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Chickenlizard": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Chickenlodon": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Chickenlope": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Chickenrabbit": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Chickenspider": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Chickenwolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Crocorse": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Doedicoon": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Dogman": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Elasmobearium": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_FleshMonstrosity": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Fleshling": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Lizardman": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Lizardochs": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Manalope": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Manbear": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Mancat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Manffalo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Manscarab": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Mansquirrel": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Mantistanis": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Manwolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Molebear": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Molehorse": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Moleman": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Muffalobear": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Muffalocat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Muffalochicken": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Muffalohorse": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Muffalokomodo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Muffaloman": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Muffalope": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Muffalopede": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Muffalorat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Muffalowolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Needlechicken": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_ParagonBear": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_ParagonChicken": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_ParagonFeline": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_ParagonHumanoid": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_ParagonIguana": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_ParagonInsectoid": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_ParagonMuffalo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_ParagonRat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_ParagonThrumbo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_ParagonWolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Rabbitchicken": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Ratffalo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Snakecat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Spidercat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Spiderhorse": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Spidersnake": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Squirralope": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Thrumbear": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Thrumbocat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Thrumborat": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Thrumdraeodon": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Thrumffalo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Thrumwolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Turkeyman": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Wolfalope": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Wolfbear": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Wolfbeaver": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Wolfchicken": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Wolffalo": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Wolfhorse": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Wolfscarab": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_Wolfsnake": {
+      "state": "keep",
+      "note": ""
+    },
+    "GR_WoolyWolf": {
+      "state": "keep",
+      "note": ""
+    },
+    "GRimCobra": {
+      "state": "keep",
+      "note": ""
+    },
+    "GRimLavaSnail": {
+      "state": "keep",
+      "note": ""
+    },
+    "GRimMonitorLizard": {
+      "state": "keep",
+      "note": ""
+    },
+    "GRimStoneCrab": {
+      "state": "keep",
+      "note": ""
+    },
+    "GRimTortoise": {
+      "state": "keep",
+      "note": ""
+    },
+    "Gazelle": {
+      "state": "keep",
+      "note": ""
+    },
+    "GiantAnt_Race": {
+      "state": "keep",
+      "note": ""
+    },
+    "Gigantophis": {
+      "state": "keep",
+      "note": ""
+    },
+    "Gizka": {
+      "state": "keep",
+      "note": ""
+    },
+    "Goose": {
+      "state": "keep",
+      "note": ""
+    },
+    "Gorehulk": {
+      "state": "keep",
+      "note": ""
+    },
+    "Gorg": {
+      "state": "keep",
+      "note": ""
+    },
+    "Gornt": {
+      "state": "keep",
+      "note": ""
+    },
+    "GraniteSlug": {
+      "state": "keep",
+      "note": ""
+    },
+    "Grank": {
+      "state": "keep",
+      "note": ""
+    },
+    "Grazer": {
+      "state": "keep",
+      "note": ""
+    },
+    "GuineaPig": {
+      "state": "keep",
+      "note": ""
+    },
+    "Hare": {
+      "state": "keep",
+      "note": ""
+    },
+    "HermitCrab": {
+      "state": "keep",
+      "note": ""
+    },
+    "Heron": {
+      "state": "keep",
+      "note": ""
+    },
+    "HiveQueen": {
+      "state": "keep",
+      "note": ""
+    },
+    "Husky": {
+      "state": "keep",
+      "note": ""
+    },
+    "Iguana": {
+      "state": "keep",
+      "note": ""
+    },
+    "Insectomorph": {
+      "state": "keep",
+      "note": ""
+    },
+    "Iriaz": {
+      "state": "keep",
+      "note": ""
+    },
+    "IridonianReek": {
+      "state": "keep",
+      "note": ""
+    },
+    "IronScruff_Flatworm": {
+      "state": "keep",
+      "note": ""
+    },
+    "IronScruff_Hydrazoa": {
+      "state": "keep",
+      "note": ""
+    },
+    "IronScruff_Jellybird": {
+      "state": "keep",
+      "note": ""
+    },
+    "IronScruff_Tardigrade": {
+      "state": "keep",
+      "note": ""
+    },
+    "JOE_Landopus": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWAgilisaurus": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWArchaeopteryx": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWCoelophysis": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWCyclosphaeroma": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWDinilysia": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWDryosaurus": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWEstemmenosuchus": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWGeosternbergia": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWGigantophis": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWHynerpeton": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWHypsilophodon": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWKileskus": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWMicroceratus": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWRhamphorhynchus": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWWonambi": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWYurlunggur": {
+      "state": "keep",
+      "note": ""
+    },
+    "JRWZephyrosaurus": {
+      "state": "keep",
+      "note": ""
+    },
+    "Jakobeast": {
+      "state": "keep",
+      "note": ""
+    },
+    "Josephoartigasia": {
+      "state": "keep",
+      "note": ""
+    },
+    "JungleRancor": {
+      "state": "keep",
+      "note": ""
+    },
+    "Kaadu": {
+      "state": "keep",
+      "note": ""
+    },
+    "KellDragon": {
+      "state": "keep",
+      "note": ""
+    },
+    "Kinrath": {
+      "state": "keep",
+      "note": ""
+    },
+    "Klorslug": {
+      "state": "keep",
+      "note": ""
+    },
+    "KowakianMonkeyLizard": {
+      "state": "keep",
+      "note": ""
+    },
+    "Kreetle": {
+      "state": "keep",
+      "note": ""
+    },
+    "Krykna": {
+      "state": "keep",
+      "note": ""
+    },
+    "Kybuck": {
+      "state": "keep",
+      "note": ""
+    },
+    "LabradorRetriever": {
+      "state": "keep",
+      "note": ""
+    },
+    "LavaFlea": {
+      "state": "keep",
+      "note": ""
+    },
+    "LavaSnail": {
+      "state": "keep",
+      "note": ""
+    },
+    "Leaftail": {
+      "state": "keep",
+      "note": ""
+    },
+    "Ling_Cockroach": {
+      "state": "keep",
+      "note": ""
+    },
+    "Locust": {
+      "state": "keep",
+      "note": ""
+    },
+    "LongtailGorg": {
+      "state": "keep",
+      "note": ""
+    },
+    "Lothcat": {
+      "state": "keep",
+      "note": ""
+    },
+    "Lynx": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Aminox": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Direhorse": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Dunbear": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Duskhorn": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Furpotamus": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Gnaut": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Harpeagle": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Hellboar": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Manehound": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Narkospider": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Plastemmoth": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_PlastemmothAlpha": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Raptorkhan": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Simbakub": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_SimbakubAlpha": {
+      "state": "keep",
+      "note": ""
+    },
+    "MA_Sporemole": {
+      "state": "keep",
+      "note": ""
+    },
+    "Maalraas": {
+      "state": "keep",
+      "note": ""
+    },
+    "Macaw": {
+      "state": "keep",
+      "note": ""
+    },
+    "MandrillMan": {
+      "state": "keep",
+      "note": ""
+    },
+    "MarshHaunt": {
+      "state": "keep",
+      "note": ""
+    },
+    "Massiff": {
+      "state": "keep",
+      "note": ""
+    },
+    "MastiffPhalone": {
+      "state": "keep",
+      "note": ""
+    },
+    "Megascarab": {
+      "state": "keep",
+      "note": ""
+    },
+    "Megaspider": {
+      "state": "keep",
+      "note": ""
+    },
+    "Megavole": {
+      "state": "keep",
+      "note": ""
+    },
+    "Metalhorror": {
+      "state": "keep",
+      "note": ""
+    },
+    "Mink": {
+      "state": "keep",
+      "note": ""
+    },
+    "MonitorLizard": {
+      "state": "keep",
+      "note": ""
+    },
+    "Monkey": {
+      "state": "keep",
+      "note": ""
+    },
+    "Moose": {
+      "state": "keep",
+      "note": ""
+    },
+    "Mott": {
+      "state": "keep",
+      "note": ""
+    },
+    "Mudhorn": {
+      "state": "keep",
+      "note": ""
+    },
+    "Muskox": {
+      "state": "keep",
+      "note": ""
+    },
+    "MutantCow": {
+      "state": "keep",
+      "note": ""
+    },
+    "Mynock": {
+      "state": "keep",
+      "note": ""
+    },
+    "Neebray": {
+      "state": "keep",
+      "note": ""
+    },
+    "Nerf": {
+      "state": "keep",
+      "note": ""
+    },
+    "Nuna": {
+      "state": "keep",
+      "note": ""
+    },
+    "Ollopom": {
+      "state": "keep",
+      "note": ""
+    },
+    "Ostrich": {
+      "state": "keep",
+      "note": ""
+    },
+    "Otter": {
+      "state": "keep",
+      "note": ""
+    },
+    "Palaeeudyptes": {
+      "state": "keep",
+      "note": ""
+    },
+    "Panda": {
+      "state": "keep",
+      "note": ""
+    },
+    "Panther": {
+      "state": "keep",
+      "note": ""
+    },
+    "Penguin": {
+      "state": "keep",
+      "note": ""
+    },
+    "Pikobis": {
+      "state": "keep",
+      "note": ""
+    },
+    "PoisonButterfly": {
+      "state": "keep",
+      "note": ""
+    },
+    "PoisonDeer": {
+      "state": "keep",
+      "note": ""
+    },
+    "PoisonRat": {
+      "state": "keep",
+      "note": ""
+    },
+    "Porcupine": {
+      "state": "keep",
+      "note": ""
+    },
+    "Porg": {
+      "state": "keep",
+      "note": ""
+    },
+    "PrairieDog": {
+      "state": "keep",
+      "note": ""
+    },
+    "Purussaurus": {
+      "state": "keep",
+      "note": ""
+    },
+    "Quinkana": {
+      "state": "keep",
+      "note": ""
+    },
+    "RG_Hemolope": {
+      "state": "keep",
+      "note": ""
+    },
+    "RG_KiwiBird": {
+      "state": "keep",
+      "note": ""
+    },
+    "RG_Neutrolope": {
+      "state": "keep",
+      "note": ""
+    },
+    "RG_Rabbit": {
+      "state": "keep",
+      "note": ""
+    },
+    "RG_Rimclaw": {
+      "state": "keep",
+      "note": ""
+    },
+    "RG_WoollyStegosaurus": {
+      "state": "keep",
+      "note": ""
+    },
+    "Rabbuck": {
+      "state": "keep",
+      "note": ""
+    },
+    "Rancor": {
+      "state": "keep",
+      "note": ""
+    },
+    "Rat": {
+      "state": "keep",
+      "note": ""
+    },
+    "Rikknit": {
+      "state": "keep",
+      "note": ""
+    },
+    "Runyip": {
+      "state": "keep",
+      "note": ""
+    },
+    "Rycrit": {
+      "state": "keep",
+      "note": ""
+    },
+    "SWPotF_RaceDef_ysalamir": {
+      "state": "keep",
+      "note": ""
+    },
+    "SW_Electricfish": {
+      "state": "keep",
+      "note": ""
+    },
+    "SW_Electricgryllotalpa": {
+      "state": "keep",
+      "note": ""
+    },
+    "SW_Electrictick": {
+      "state": "keep",
+      "note": ""
+    },
+    "SW_Grenadierworm": {
+      "state": "keep",
+      "note": ""
+    },
+    "SW_Juggernautbeetles": {
+      "state": "keep",
+      "note": ""
+    },
+    "Scavrat": {
+      "state": "keep",
+      "note": ""
+    },
+    "Scurrier": {
+      "state": "keep",
+      "note": ""
+    },
+    "Scuttlebug": {
+      "state": "keep",
+      "note": ""
+    },
+    "SeaLion": {
+      "state": "keep",
+      "note": ""
+    },
+    "SeaTurtle": {
+      "state": "keep",
+      "note": ""
+    },
+    "Seal": {
+      "state": "keep",
+      "note": ""
+    },
+    "Sheep": {
+      "state": "keep",
+      "note": ""
+    },
+    "Shiro": {
+      "state": "keep",
+      "note": ""
+    },
+    "ShiroTrap": {
+      "state": "keep",
+      "note": ""
+    },
+    "ShortfacedBear": {
+      "state": "keep",
+      "note": ""
+    },
+    "Shyrack": {
+      "state": "keep",
+      "note": ""
+    },
+    "Sightstealer": {
+      "state": "keep",
+      "note": ""
+    },
+    "Sketto": {
+      "state": "keep",
+      "note": ""
+    },
+    "Smilodon": {
+      "state": "keep",
+      "note": ""
+    },
+    "Snowhare": {
+      "state": "keep",
+      "note": ""
+    },
+    "Sparrow": {
+      "state": "keep",
+      "note": ""
+    },
+    "Spelopede": {
+      "state": "keep",
+      "note": ""
+    },
+    "Squall": {
+      "state": "keep",
+      "note": ""
+    },
+    "Squirrel": {
+      "state": "keep",
+      "note": ""
+    },
+    "Stintaril": {
+      "state": "keep",
+      "note": ""
+    },
+    "StoneCrab": {
+      "state": "keep",
+      "note": ""
+    },
+    "Strill": {
+      "state": "keep",
+      "note": ""
+    },
+    "TYR_HotfootRat": {
+      "state": "keep",
+      "note": ""
+    },
+    "TYR_KangarooRat": {
+      "state": "keep",
+      "note": ""
+    },
+    "TYR_Lemming": {
+      "state": "keep",
+      "note": ""
+    },
+    "TYR_Mouse": {
+      "state": "keep",
+      "note": ""
+    },
+    "TYR_MousePoison": {
+      "state": "keep",
+      "note": ""
+    },
+    "Tach": {
+      "state": "keep",
+      "note": ""
+    },
+    "Taozin": {
+      "state": "keep",
+      "note": ""
+    },
+    "Tauntaun": {
+      "state": "keep",
+      "note": ""
+    },
+    "Tibidee": {
+      "state": "keep",
+      "note": ""
+    },
+    "Tiger": {
+      "state": "keep",
+      "note": ""
+    },
+    "Titanoboa": {
+      "state": "keep",
+      "note": ""
+    },
+    "Tooke": {
+      "state": "keep",
+      "note": ""
+    },
+    "Tortoise": {
+      "state": "keep",
+      "note": ""
+    },
+    "Toughspike": {
+      "state": "keep",
+      "note": ""
+    },
+    "Trispike": {
+      "state": "keep",
+      "note": ""
+    },
+    "Tukata": {
+      "state": "keep",
+      "note": ""
+    },
+    "Turkey": {
+      "state": "keep",
+      "note": ""
+    },
+    "Urusai": {
+      "state": "keep",
+      "note": ""
+    },
+    "Uvak": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Hydra": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Megatardi": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Pestigator": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Toxafox": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Toxbear": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Toxiguana": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Toxlion": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Toxscorpion": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Wasteboar": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Wastedeer": {
+      "state": "keep",
+      "note": ""
+    },
+    "VAEWaste_Wasteffalo": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Acidspitter": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_BlackEmpress": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_BlackQueen": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_BlackSwarmling": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Boomtick": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Durapod": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Empress": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Fuelmite": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Gigalocust": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Gigamite": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Hellbeetle": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Macrofly": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Megapede": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Megathrips": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Megawasp": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_RoyalMegascarab": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_RoyalMegaspider": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_RoyalSpelopede": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Silverfish": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Swarmling": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Tankroach": {
+      "state": "keep",
+      "note": ""
+    },
+    "VFEI2_Venomite": {
+      "state": "keep",
+      "note": ""
+    },
+    "VQEA_Splicefiend": {
+      "state": "keep",
+      "note": ""
+    },
+    "VQEA_Splicehulk": {
+      "state": "keep",
+      "note": ""
+    },
+    "VQEA_Spliceling": {
+      "state": "keep",
+      "note": ""
+    },
+    "VQEA_Splicetoot": {
+      "state": "keep",
+      "note": ""
+    },
+    "VQE_IceCrawler": {
+      "state": "keep",
+      "note": ""
+    },
+    "VQE_Megamidge": {
+      "state": "keep",
+      "note": ""
+    },
+    "Veermok": {
+      "state": "keep",
+      "note": ""
+    },
+    "Voorpak": {
+      "state": "keep",
+      "note": ""
+    },
+    "Vornskyr": {
+      "state": "keep",
+      "note": ""
+    },
+    "Vulptex": {
+      "state": "keep",
+      "note": ""
+    },
+    "Walrus": {
+      "state": "keep",
+      "note": ""
+    },
+    "WarWyrm": {
+      "state": "keep",
+      "note": ""
+    },
+    "WasteRat": {
+      "state": "keep",
+      "note": ""
+    },
+    "Whisperbird": {
+      "state": "keep",
+      "note": ""
+    },
+    "Wolf_Arctic": {
+      "state": "keep",
+      "note": ""
+    },
+    "Wolf_Timber": {
+      "state": "keep",
+      "note": ""
+    },
+    "Wolverine": {
+      "state": "keep",
+      "note": ""
+    },
+    "WompRat": {
+      "state": "keep",
+      "note": ""
+    },
+    "Woolamander": {
+      "state": "keep",
+      "note": ""
+    },
+    "WoollyMammoth": {
+      "state": "keep",
+      "note": ""
+    },
+    "Worrt": {
+      "state": "keep",
+      "note": ""
+    },
+    "Yobshrimp": {
+      "state": "keep",
+      "note": ""
+    },
+    "YorkshireTerrier": {
+      "state": "keep",
+      "note": ""
+    },
+    "Zakkeg": {
+      "state": "keep",
+      "note": ""
+    },
+    "Zeer": {
+      "state": "keep",
+      "note": ""
+    }
+  },
+  "savedAt": "2026-08-23T21:37:35.116Z",
+  "savedBy": "creature_art_review.html",
+  "frozen": true,
+  "frozenOn": "2026-08-23",
+  "frozenBy": "owner",
+  "frozenMeaning": "These are the OWNER's own art rulings, made in creature_art_review.html on 2026-08-23 and proven to be his by the savedBy/savedAt stamp, which only the page writes and no prefill emits. 621 rows: 588 keep, 21 shrink, 10 replace, 2 redraw, 12 notes. He overruled the generator on 8 rows. DO NOT regenerate this file from gen_creature_art_sheet.py's judge() - that would replace his calls with the machine's guesses under his name. The generator READS this file and merges it per row, which is safe; nothing may WRITE it except the sheet itself.",
+  "frozenUnfreeze": [
+    "Ask the owner. There is no automated route: this file has no generator, only an author."
+  ]
+}
