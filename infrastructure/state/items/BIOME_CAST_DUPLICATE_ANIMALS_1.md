@@ -156,3 +156,43 @@ Animals 4, Megafauna 3, Mythic Ages 3, Beasts of the Rim 2, Dark Ages 2, Little 
   still picks purely on the biome side and will reintroduce this on the next regeneration.
   🔑 That file is under `design/`, so under the owner's 2026-08-23 ruling the generator fix is
   **DECIDE's** to author and file back with `--needs deploy`.
+
+---
+
+## ⬅ 2026-08-23 — ② IS DONE: the generator now emits its own de-dup
+
+`design/Jawa/fauna/gen_cast_patch.py` computes the collisions itself and writes the
+animal-side removals **into the same file as the roster**, so a regeneration can no longer
+reintroduce them. That is the whole failure this item was filed for: on 2026-08-22 the cast
+was regenerated, the hand-maintained fix file was not, and 30 collisions shipped.
+
+⚠️ **The scan had to be rewritten before it was usable.** A recursive glob over the 1,254
+workshop mods ran past **seven minutes** on this mount and was killed; pruning the art,
+audio and language trees in an `os.walk` brought it to ~7 min → it still walks a lot, but it
+completes. It reads base XML, so it remains a **FLOOR** — a third-party patch that ADDS a
+`wildBiomes` entry is invisible, and the def dump cannot help because it does not serialise
+`wildBiomes` at all.
+
+### It found 29, and that is CORRECT rather than short
+| set | count | |
+|---|---|---|
+| generator, against the new 746-row cast | **29** | collisions OUR roster creates |
+| `AnimalBiomeDuplicates_Fix.xml` | **34** | a strict SUPERSET — verified, nothing is uncovered |
+| in the hand file, not the generator | 5 | 3 are the ORIGINAL 08-10 pairs (Armadillo ×2, Titan) which are donor-vs-donor and not ours to know; 2 (`AA_CrystallineCaracal`, `TYR_KangarooRat`) went stale when the owner's substitutions replaced those cast rows |
+| in the generator, not the hand file | **0** | ✅ |
+
+## 🔑 WHAT IS DEPLOYED, and why it is the conservative half
+The **hand file at 34 ops** ships; the generator's embedded block does **not**. Both are
+correct and the overlap would be harmless — each op is a `Conditional`+`Remove` that no-ops
+when the node is already gone — but shipping both makes two sources of one truth on the
+evening of a load, and the superset already covers everything.
+
+⇒ **Next regeneration is the moment to switch over:** adopt the generator's embedded block
+and trim the hand file back to its original three, which are the only ones the generator
+cannot derive. Until then the hand file is authoritative and the generator's block is proven
+but parked.
+
+## ⭐ AND IT CAUGHT ONE IMMEDIATELY
+Re-running the cross against the owner's twelve substitutions found **exactly one new
+collision** — `PaintedSpat × AridShrubland`. Deploying that roster without checking would
+have reintroduced the crash for it. Op 34 covers it; validated 1 match, 0 errors.

@@ -367,4 +367,21 @@
     </match>
   </Operation>
 
+  <!-- == BLOCK 3: the substitution pass, 2026-08-23 == -->
+  <!-- The owner rejected ten cast creatures ("terrestrial, not wanted"; "I can't even
+       see what this thing is") and twelve slots were refilled. ELEVEN of the twelve
+       replacements are clean. This one is not: PaintedSpat's own race already claims
+       AridShrubland through wildBiomes, so casting it there is the same collision all
+       over again - one line of it.
+       🔑 Caught by re-running the cast-vs-wildBiomes cross BEFORE deploying the new
+       roster, which is the check BIOME_CAST_DUPLICATE_ANIMALS_1 exists to make routine.
+       31 collisions in the new 746-row cast; 30 were already covered above; this is
+       the only new one. -->
+  <Operation Class="PatchOperationConditional">   <!-- 34. PaintedSpat x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="PaintedSpat"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="PaintedSpat"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
 </Patch>

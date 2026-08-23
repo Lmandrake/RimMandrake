@@ -63,6 +63,72 @@ def _vanilla_biomes():
     return out
 
 
+
+def _animal_side_biomes():
+    """biome -> {animal defName} taken from each RACE's own wildBiomes, off DISK.
+
+    🔴 WHY THIS EXISTS. BiomeDef.CommonalityOfAnimal (BiomeDef.cs:341) builds
+    cachedAnimalCommonalities with two plain .Add() calls and no overwrite check. An
+    animal reaches a biome from two directions - the BIOME's wildAnimals (which this
+    generator REPLACES) and the ANIMAL's own race/wildBiomes. Same animal, same biome,
+    both directions => ArgumentException.
+
+    ⚠️ AND THE DAMAGE OUTLIVES THE EXCEPTION. The cache field is assigned BEFORE the
+    loops that fill it, so when loop 2 throws it is left non-null and half-built and
+    the `== null` guard never rebuilds it. Every animal that would have registered via
+    wildBiomes after the collision point returns commonality 0 and NEVER SPAWNS WILD in
+    that biome, for the rest of the session, with no further error. Choose Wild Animal
+    Spawns dies outright; Biome Compatibility Project aborts the rest of the post-load
+    queue.
+
+    This generator caused exactly that on 2026-08-22 by picking purely on the biome
+    side. 30 pairs, measured 2026-08-23.
+
+    ⚠️ THIS IS A FLOOR, not a total. It reads base XML, so a third-party
+    PatchOperation that ADDS a wildBiomes entry is invisible here - and the def dump
+    cannot help, because it does not serialise wildBiomes at all (a
+    Dictionary<BiomeDef,float>, dropped like wildPlants). Score the remainder from a
+    load's Player.log.
+    """
+    import re
+    roots = ['/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100',
+             '/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods',
+             '/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data']
+    out = collections.defaultdict(set)
+    pat = re.compile(r'<ThingDef\b.*?</ThingDef>', re.S)
+    wb = re.compile(r'<wildBiomes>(.*?)</wildBiomes>', re.S)
+    dn = re.compile(r'<defName>([^<]+)</defName>')
+    # ⚠️ PRUNE, DO NOT GLOB. A recursive glob over the 1,254 workshop mods on this
+    # mount ran past seven minutes and had to be killed. Walking with the art and
+    # audio trees pruned takes seconds, because those directories hold the
+    # overwhelming majority of the files and none of the defs.
+    SKIP = {'Textures', 'Sounds', 'Languages', 'Assemblies', 'About',
+            'News', 'Source', 'Materials', '.git'}
+    for root in roots:
+        if not os.path.isdir(root):
+            continue
+        for dp, dnames, fnames in os.walk(root):
+            dnames[:] = [d for d in dnames if d not in SKIP]
+            for fn in fnames:
+                if not fn.endswith('.xml'):
+                    continue
+                try:
+                    txt = open(os.path.join(dp, fn), encoding='utf-8-sig',
+                               errors='replace').read()
+                except OSError:
+                    continue
+                if '<wildBiomes>' not in txt:
+                    continue
+                for m in pat.finditer(txt):
+                    blk = m.group(0)
+                    w, d = wb.search(blk), dn.search(blk)
+                    if not w or not d:
+                        continue
+                    for b in re.findall(r'<([A-Za-z0-9_]+)>[^<]*</\1>', w.group(1)):
+                        out[b].add(d.group(1))
+    return out
+
+
 def main():
     # ⚠️ Resolve packageId across EVERY capture, newest first, not just the newest.
     # A capture taken during a load that discarded biomes holds 54 of them instead
@@ -177,9 +243,53 @@ def main():
         parts.append('    </match>')
         parts.append('  </Operation>')
         parts.append('')
+    # ================================================================
+    # THE DE-DUP, EMITTED WITH THE CAST SO THE TWO CANNOT DRIFT
+    # ================================================================
+    # 🔑 This used to live in a hand-maintained AnimalBiomeDuplicates_Fix.xml, and
+    # that is exactly how the 2026-08-22 regression happened: the cast was
+    # regenerated, the hand file was not, and 30 collisions shipped. Generating both
+    # from one run means a regeneration can never reintroduce them.
+    #
+    # DIRECTION: always remove the ANIMAL-side wildBiomes entry, never our roster.
+    # Nothing is lost in play - our own roster still spawns the animal in that biome,
+    # at the commonality we chose.
+    aside = _animal_side_biomes()
+    dups = []
+    for b in sorted(byb):
+        cast_here = {r['defName'] for r in byb[b] if r['defName'] in PAWNKINDS}
+        for a in sorted(cast_here & aside.get(b, set())):
+            dups.append((b, a))
+    if dups:
+        parts.append('  <!-- ============================================================')
+        parts.append('       DE-DUP: the animal-side wildBiomes entries our own roster')
+        parts.append('       collides with. Generated WITH the cast above, deliberately -')
+        parts.append('       a hand-maintained copy is what let 30 of these ship on')
+        parts.append('       2026-08-22. BIOME_CAST_DUPLICATE_ANIMALS_1.')
+        parts.append('')
+        parts.append('       Same animal reaching one biome from BOTH directions throws')
+        parts.append('       ArgumentException in BiomeDef.CommonalityOfAnimal, and the')
+        parts.append('       half-built cache it leaves behind silently zeroes every')
+        parts.append('       animal that would have registered after it - for the rest')
+        parts.append('       of the session, with no further error.')
+        parts.append(f'       {len(dups)} pair(s) this run. A FLOOR: a third-party patch that')
+        parts.append('       ADDS a wildBiomes entry is invisible to a base-XML scan.')
+        parts.append('       ============================================================ -->')
+        parts.append('')
+        for b, a in dups:
+            xp = f'/Defs/ThingDef[defName="{a}"]/race/wildBiomes/{b}'
+            parts.append('  <Operation Class="PatchOperationConditional">'
+                         f'   <!-- {a} x {b} -->')
+            parts.append(f'    <xpath>{xp}</xpath>')
+            parts.append('    <match Class="PatchOperationRemove">')
+            parts.append(f'      <xpath>{xp}</xpath>')
+            parts.append('    </match>')
+            parts.append('  </Operation>')
+        parts.append('')
     parts.append('</Patch>')
     open(OUT, 'w', encoding='utf-8').write('\n'.join(parts))
-    print(f"wrote {OUT}: {len(byb)} biomes, {len(rows)} records")
+    print(f"wrote {OUT}: {len(byb)} biomes, {len(rows)} records, "
+          f"{len(dups)} duplicate pair(s) de-duped")
     nomay = [b for b in byb if not PKG.get(b)]
     if nomay:
         print(f"⚠️ no packageId resolved for: {nomay} - BUILD must confirm the MayRequire")

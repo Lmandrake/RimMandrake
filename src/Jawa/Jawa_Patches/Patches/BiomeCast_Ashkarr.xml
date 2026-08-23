@@ -180,13 +180,13 @@
           <SW_Electrictick>1.0</SW_Electrictick> <!-- Electrictick - tiny, dormant -->
           <VFEI2_BlackSwarmling>1.0</VFEI2_BlackSwarmling> <!-- black swarmlings - tiny, dormant -->
           <VFEI2_Swarmling>1.0</VFEI2_Swarmling> <!-- swarmlings - tiny, dormant -->
+          <AA_Skiphound>0.7</AA_Skiphound> <!-- skiphound - small, substituted -->
           <AM_Dryad_Tumorous>0.7</AM_Dryad_Tumorous> <!-- tumorous dryad - small, dormant -->
           <BMT_BloodletterPetrel>0.7</BMT_BloodletterPetrel> <!-- bloodletter petrel - small, dormant -->
           <BMT_FleeceSpider>0.7</BMT_FleeceSpider> <!-- fleece spider - small, dormant -->
           <Borcatu>0.7</Borcatu> <!-- Borcatu - small, ours -->
           <DA_ForestOwlcat>0.7</DA_ForestOwlcat> <!-- forest owlcat - small, dormant -->
           <GR_Beetlefleet>0.7</GR_Beetlefleet> <!-- beetlefleet - small, dormant -->
-          <GR_Catbear>0.7</GR_Catbear> <!-- catbear - small, dormant -->
           <GR_ParagonRat>0.7</GR_ParagonRat> <!-- rodent paragon - small, dormant -->
           <GR_Bearalope>0.4</GR_Bearalope> <!-- bearalope - med, dormant -->
           <GR_Bearwolf>0.4</GR_Bearwolf> <!-- bearwolf - med, dormant -->
@@ -348,13 +348,13 @@
           <Gazelle>0.7</Gazelle> <!-- gazelle - small, dormant -->
           <MonitorLizard>0.7</MonitorLizard> <!-- monitor lizard - small, dormant -->
           <Urusai>0.7</Urusai> <!-- urusai - small, ours -->
-          <BMT_SandPillar>0.4</BMT_SandPillar> <!-- sandpillar - med, dormant -->
           <BMT_TruffleMole>0.4</BMT_TruffleMole> <!-- truffle mole - med, ours -->
           <Cougar>0.4</Cougar> <!-- cougar - med, ours -->
           <GR_Bearchicken>0.4</GR_Bearchicken> <!-- bearchicken - med, dormant -->
           <GR_Booman>0.4</GR_Booman> <!-- booman - med, dormant -->
           <JRWCyclosphaeroma>0.4</JRWCyclosphaeroma> <!-- Cyclosphaeroma - med, dormant -->
           <Megavole>0.4</Megavole> <!-- megavole - med, foreign -->
+          <PaintedSpat>0.4</PaintedSpat> <!-- painted spat - med, substituted -->
           <Tiger>0.4</Tiger> <!-- tiger - med, dormant -->
           <Castoroides>0.18</Castoroides> <!-- castoroides - large, dormant -->
           <GR_Cathorse>0.18</GR_Cathorse> <!-- cathorse - large, dormant -->
@@ -441,8 +441,8 @@
           <MA_Simbakub>0.18</MA_Simbakub> <!-- Simbakub - large, dormant -->
           <MA_SimbakubAlpha>0.18</MA_SimbakubAlpha> <!-- Simbakub Alpha - large, dormant -->
           <VAEWaste_Wasteffalo>0.18</VAEWaste_Wasteffalo> <!-- wasteffalo - large, dormant -->
-          <Enhydriodon>0.05</Enhydriodon> <!-- enhydriodon - huge, dormant -->
           <JRWAntarctopelta>0.05</JRWAntarctopelta> <!-- Antarctopelta - huge, dormant -->
+          <JRWCeratosaurus>0.05</JRWCeratosaurus> <!-- Ceratosaurus - huge, substituted -->
           <VAEWaste_Toxbear>0.05</VAEWaste_Toxbear> <!-- toxbear - huge, dormant -->
           <AA_AnimaColossus>0.008</AA_AnimaColossus> <!-- anima colossus - SUPER, ours -->
         </wildAnimals>
@@ -540,9 +540,9 @@
           <BMT_BrownBat>1.0</BMT_BrownBat> <!-- brown bat - tiny, dormant -->
           <BMT_Polluwog>1.0</BMT_Polluwog> <!-- polluwog - tiny, dormant -->
           <TYR_KangarooRat>1.0</TYR_KangarooRat> <!-- kangaroo rat - tiny, dormant -->
+          <AA_FissionMouse>0.7</AA_FissionMouse> <!-- fission mouse - small, substituted -->
           <BMT_GastroToad>0.7</BMT_GastroToad> <!-- gastro toad - small, dormant -->
           <BMT_TaintedTurtle>0.7</BMT_TaintedTurtle> <!-- tainted turtle - small, dormant -->
-          <Capybara>0.7</Capybara> <!-- capybara - small, ours -->
           <Cassowary>0.7</Cassowary> <!-- cassowary - small, dormant -->
           <Emu>0.7</Emu> <!-- emu - small, dormant -->
           <Macaw>0.7</Macaw> <!-- macaw - small, dormant -->
@@ -628,12 +628,12 @@
           <GR_Chickenbear>0.7</GR_Chickenbear> <!-- chickenbear - small, dormant -->
           <GR_Manbear>0.7</GR_Manbear> <!-- manbear - small, dormant -->
           <YorkshireTerrier>0.7</YorkshireTerrier> <!-- yorkshire terrier - small, dormant -->
+          <AA_DecayDrake>0.4</AA_DecayDrake> <!-- decay drake - med, substituted -->
           <AlligatorMan>0.4</AlligatorMan> <!-- alligator man - med, dormant -->
           <JRWCoelophysis>0.4</JRWCoelophysis> <!-- Coelophysis - med, dormant -->
           <JRWHypsilophodon>0.4</JRWHypsilophodon> <!-- Hypsilophodon - med, dormant -->
           <JRWZephyrosaurus>0.4</JRWZephyrosaurus> <!-- Zephyrosaurus - med, dormant -->
           <Noctol>0.4</Noctol> <!-- noctol - med, dormant -->
-          <Revenant>0.4</Revenant> <!-- revenant - med, dormant -->
           <Sightstealer>0.4</Sightstealer> <!-- sightstealer - med, dormant -->
           <Toughspike>0.4</Toughspike> <!-- toughspike - med, dormant -->
           <AA_ChameleonYak>0.18</AA_ChameleonYak> <!-- chameleon yak - large, ours -->
@@ -684,7 +684,7 @@
           <BMT_CaveSpider>0.126</BMT_CaveSpider> <!-- cave spider - huge, ours -->
           <SW_Emperorisopod>0.126</SW_Emperorisopod> <!-- Emperorisopod - huge, dormant -->
           <SW_Juggernautbeetles>0.126</SW_Juggernautbeetles> <!-- Juggernautbeetles - huge, dormant -->
-          <Horax>0.0216</Horax> <!-- horax - SUPER, ours -->
+          <AA_MycoidColossus>0.0216</AA_MycoidColossus> <!-- mycoid colossus - SUPER, substituted -->
         </wildAnimals>
       </value>
     </match>
@@ -743,8 +743,8 @@
           <AA_BlackScarab>0.7</AA_BlackScarab> <!-- black scarab - small, dormant -->
           <BMT_FacetMoth>0.7</BMT_FacetMoth> <!-- facet moth - small, ours -->
           <BMT_SmogMoth>0.7</BMT_SmogMoth> <!-- smog moth - small, dormant -->
+          <BMT_SmogMothLarvae>0.7</BMT_SmogMothLarvae> <!-- smog caterpillar - small, substituted -->
           <Chinchilla>0.7</Chinchilla> <!-- chinchilla - small, ours -->
-          <DA_BlackScribe>0.7</DA_BlackScribe> <!-- black scribe - small, ours -->
           <DA_Phrak>0.7</DA_Phrak> <!-- phrak - small, foreign -->
           <Shyrack>0.7</Shyrack> <!-- shyrack - small, ours -->
           <Tach>0.7</Tach> <!-- tach - small, ours -->
@@ -799,11 +799,11 @@
           <Tukata>0.35</Tukata> <!-- tuk'ata - huge, ours -->
           <Uvak>0.35</Uvak> <!-- uvak - huge, ours -->
           <VAEWaste_Pestigator>0.35</VAEWaste_Pestigator> <!-- pestigator - huge, dormant -->
+          <AA_IronhuskBeetle>0.18</AA_IronhuskBeetle> <!-- ironhusk beetle - large, substituted -->
           <BMT_GiantSnail>0.18</BMT_GiantSnail> <!-- giant snail - large, ours -->
           <BMT_Megabat>0.18</BMT_Megabat> <!-- megabat - large, dormant -->
           <BMT_SludgeCrawler>0.18</BMT_SludgeCrawler> <!-- sludgecrawler - large, dormant -->
           <GR_Wolfhorse>0.18</GR_Wolfhorse> <!-- wolfhorse - large, dormant -->
-          <Gorilla>0.18</Gorilla> <!-- gorilla - large, dormant -->
           <ChrysalideRancor>0.0864</ChrysalideRancor> <!-- chrysalide rancor - SUPER, ours -->
         </wildAnimals>
       </value>
@@ -829,7 +829,7 @@
           <Squall>0.7</Squall> <!-- squall - small, ours -->
           <Tortoise>0.7</Tortoise> <!-- tortoise - small, dormant -->
           <AA_Animalisk>0.4</AA_Animalisk> <!-- animalisk - med, dormant -->
-          <BMT_SandPillar>0.4</BMT_SandPillar> <!-- sandpillar - med, dormant -->
+          <AA_RaptorShrimp>0.4</AA_RaptorShrimp> <!-- raptor shrimp - med, substituted -->
           <BMT_TripleSnapper>0.4</BMT_TripleSnapper> <!-- triple snapper - med, dormant -->
           <GR_Spidercat>0.4</GR_Spidercat> <!-- spidercat - med, dormant -->
           <GR_Wolfscarab>0.4</GR_Wolfscarab> <!-- wolfscarab - med, dormant -->
@@ -977,9 +977,9 @@
           <Kreetle>1.0</Kreetle> <!-- kreetle - tiny, ours -->
           <VFEI2_BlackSwarmling>1.0</VFEI2_BlackSwarmling> <!-- black swarmlings - tiny, dormant -->
           <VFEI2_Swarmling>1.0</VFEI2_Swarmling> <!-- swarmlings - tiny, dormant -->
+          <AA_Swarmling>0.7</AA_Swarmling> <!-- swarmling - small, substituted -->
           <BMT_CrestedDragon>0.7</BMT_CrestedDragon> <!-- crested dragon - small, dormant -->
           <BMT_Gembug>0.7</BMT_Gembug> <!-- gembug - small, ours -->
-          <DA_BlackScribe>0.7</DA_BlackScribe> <!-- black scribe - small, ours -->
           <GRimMonitorLizard>0.7</GRimMonitorLizard> <!-- Colorful monitor lizard - small, foreign -->
           <GRimStoneCrab>0.7</GRimStoneCrab> <!-- Colorful stone crab - small, foreign -->
           <MonitorLizard>0.7</MonitorLizard> <!-- monitor lizard - small, dormant -->
@@ -989,14 +989,14 @@
           <AA_Thermadon>0.4</AA_Thermadon> <!-- thermadon - med, ours -->
           <Anooba>0.4</Anooba> <!-- anooba - med, ours -->
           <BMT_AaroxisDendoria>0.4</BMT_AaroxisDendoria> <!-- aaroxis dendoria - med, ours -->
-          <BMT_ShatterjawBeetle>0.4</BMT_ShatterjawBeetle> <!-- shatterjaw beetle - med, ours -->
           <DA_Karabal>0.4</DA_Karabal> <!-- karabal - med, ours -->
           <JRWDinilysia>0.4</JRWDinilysia> <!-- dinilysia - med, dormant -->
+          <JRWProtosolpuga>0.4</JRWProtosolpuga> <!-- Protosolpuga - med, substituted -->
           <Runyip>0.4</Runyip> <!-- runyip - med, ours -->
           <AA_RoughPlatedMonitor>0.18</AA_RoughPlatedMonitor> <!-- rough-plated monitor - large, ours -->
           <AG_OcularSlinger>0.18</AG_OcularSlinger> <!-- ocular slinger - large, dormant -->
-          <BMT_BiliousVarog>0.18</BMT_BiliousVarog> <!-- bilious varog - large, dormant -->
           <BMT_Molebear>0.18</BMT_Molebear> <!-- Molebear - large, dormant -->
+          <JRWGorgonops>0.18</JRWGorgonops> <!-- Gorgonops - large, substituted -->
           <Vornskyr>0.18</Vornskyr> <!-- vornskyr - large, ours -->
           <VFEI2_BlackQueen>0.05</VFEI2_BlackQueen> <!-- black insectoid queen - huge, dormant -->
           <Zakkeg>0.05</Zakkeg> <!-- zakkeg - huge, ours -->

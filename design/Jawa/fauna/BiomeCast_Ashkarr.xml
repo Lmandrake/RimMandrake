@@ -1042,4 +1042,194 @@
     </match>
   </Operation>
 
+  <!-- ============================================================
+       DE-DUP: the animal-side wildBiomes entries our own roster
+       collides with. Generated WITH the cast above, deliberately -
+       a hand-maintained copy is what let 30 of these ship on
+       2026-08-22. BIOME_CAST_DUPLICATE_ANIMALS_1.
+
+       Same animal reaching one biome from BOTH directions throws
+       ArgumentException in BiomeDef.CommonalityOfAnimal, and the
+       half-built cache it leaves behind silently zeroes every
+       animal that would have registered after it - for the rest
+       of the session, with no further error.
+       29 pair(s) this run. A FLOOR: a third-party patch that
+       ADDS a wildBiomes entry is invisible to a base-XML scan.
+       ============================================================ -->
+
+  <Operation Class="PatchOperationConditional">   <!-- Diprotodon x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="Diprotodon"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Diprotodon"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- MA_Direhorse x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="MA_Direhorse"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="MA_Direhorse"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- MA_Harpeagle x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- PaintedSpat x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="PaintedSpat"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="PaintedSpat"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Quinkana x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Torton x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="Torton"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Torton"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Urusai x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="Urusai"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Urusai"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Gigantophis x Desert -->
+    <xpath>/Defs/ThingDef[defName="Gigantophis"]/race/wildBiomes/Desert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Gigantophis"]/race/wildBiomes/Desert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Dunealisk x ExtremeDesert -->
+    <xpath>/Defs/ThingDef[defName="AA_Dunealisk"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Dunealisk"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Cannok x ExtremeDesert -->
+    <xpath>/Defs/ThingDef[defName="Cannok"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Cannok"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Devourers x ExtremeDesert -->
+    <xpath>/Defs/ThingDef[defName="Devourers"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Devourers"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Falumpaset x ExtremeDesert -->
+    <xpath>/Defs/ThingDef[defName="Falumpaset"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Falumpaset"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- KwazelMaw x ExtremeDesert -->
+    <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Scurrier x ExtremeDesert -->
+    <xpath>/Defs/ThingDef[defName="Scurrier"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Scurrier"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Sketto x ExtremeDesert -->
+    <xpath>/Defs/ThingDef[defName="Sketto"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Sketto"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Stintaril x ExtremeDesert -->
+    <xpath>/Defs/ThingDef[defName="Stintaril"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Stintaril"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Tooke x ExtremeDesert -->
+    <xpath>/Defs/ThingDef[defName="Tooke"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Tooke"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- WarWyrm x ExtremeDesert -->
+    <xpath>/Defs/ThingDef[defName="WarWyrm"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="WarWyrm"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_ArcticLion x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="AA_ArcticLion"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_ArcticLion"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Frostmite x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="AA_Frostmite"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Frostmite"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- DA_ArcticOwlcat x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="DA_ArcticOwlcat"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="DA_ArcticOwlcat"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- DA_SnowTaraal x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="DA_SnowTaraal"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="DA_SnowTaraal"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- GraniteSlug x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="GraniteSlug"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="GraniteSlug"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Krykna x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="Krykna"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Krykna"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- MA_Manehound x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="MA_Manehound"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="MA_Manehound"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Mynock x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="Mynock"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Mynock"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Neebray x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="Neebray"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Neebray"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Bardelot x SeaIce -->
+    <xpath>/Defs/ThingDef[defName="Bardelot"]/race/wildBiomes/SeaIce</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Bardelot"]/race/wildBiomes/SeaIce</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Penguin x SeaIce -->
+    <xpath>/Defs/ThingDef[defName="Penguin"]/race/wildBiomes/SeaIce</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Penguin"]/race/wildBiomes/SeaIce</xpath>
+    </match>
+  </Operation>
+
 </Patch>
