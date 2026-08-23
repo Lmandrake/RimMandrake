@@ -1,3 +1,42 @@
+## 🔴 REFUTED 2026-08-23 — all twelve cultures have a faction, and all sixteen kinds are fielded
+
+**The measurement looked only in `src/Jawa/Jawa_Patches/Defs/FactionDefs/` and the four
+missing factions are in `src/Jawa/Jawa_Patches/Patches/`.** Eight cultures ride *authored*
+`Jawa_*` FactionDefs; the other four ride *existing vanilla* defs, renamed by patch:
+
+| culture | rides | fixedName | settlements on the planet |
+|---|---|---|---:|
+| `Jawa_Culture_Homestead` | `OutlanderCivil` | Homestead Defense League | **37** — the largest faction on Ash'karr |
+| `Jawa_Culture_DeepDesert` | `TribeCivil` | Deep Desert Tribes | 9 |
+| `Jawa_Culture_Blackstar` | `Pirate` | Blackstar Company | 4 |
+| `Jawa_Culture_Empire` | `Empire` | The Galactic Empire | 3 |
+
+Each patch sets `allowedCultures` to exactly one culture — the right one — in
+`HomesteadDefenseLeague.xml`, `DeepDesertTribes.xml`, `BlackstarCompany.xml` and
+`GalacticEmpire.xml`, alongside `label`, `description`, `fixedName` and `pawnGroupMakers`.
+
+✅ **The sixteen pawnkinds are NOT homeless.** Every `_Grunt` / `_Heavy` / `_Leader` /
+`_Specialist` of all four cultures appears in a `pawnGroupMakers` patch, plus a
+`Jawa_Homestead_DesertRanger` the item never counted.
+
+✅ **`Jawa_IndigenousTribes` → `Jawa_Culture_TradeMoot` is confirmed correct**, and it is
+distinct from `TribeCivil` → `Jawa_Culture_DeepDesert`. Two tribal factions, two cultures.
+
+🔑 **MEASURED against the world, not just the defs:** `world/ASHKARR_WORLDMAP_settlements.csv`
+places **120 settlements across 12 faction defs**, and all four of these are among them.
+The planet already fields them.
+
+⚠️ **The lesson, and it is the same one that produced this item:** *a Jawa faction is not
+the same thing as a faction in `Defs/FactionDefs/`.* Four of our twelve are vanilla defs
+wearing our names. **Any future census of "our factions" must read `Patches/` too**, or it
+will report this gap again. The owner's instinct — *"There's only 8 factions? I think
+there's a few more..."* — was right, and the answer is **twelve**.
+
+⛔ Do NOT author four new `Jawa_*` FactionDefs. The settlement layer already commits to
+the vanilla defNames; new defs would orphan 53 of 120 settlements.
+
+---
+
 ## spec
 
 Found 2026-08-22 while answering the owner's *"There's only 8 factions? I think there's a few
