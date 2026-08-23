@@ -139,9 +139,35 @@ designator rule and not a gene.
 names a defName that resolves" — is struck with the rule itself.**
 - `validate_patch.py --defs` clean, and every patched xpath reported as MATCHING, not merely
   well-formed. A `PatchOperationReplace` that matches nothing logs nothing.
-- the `ScenarioDef` carries exactly two parts: `ScenPart_GameStartDialog` and
-  `ScenPart_DisableIncident`
-- `MandrakeJawa` carries the farming gene and the mining gene, and **no other xenotype does**
+- ⛔ ~~the `ScenarioDef` carries exactly two parts: `ScenPart_GameStartDialog` and
+  `ScenPart_DisableIncident`~~ **STRUCK 2026-08-22 by BUILD — this clause is wrong on BOTH
+  halves, and the rulings that overturned it are recorded inside
+  `src/Jawa/Jawa_Patches/Defs/ScenarioDefs/Scenario_Utinni.xml` itself.**
+  1. `ScenPart_DisableIncident` was **declined by the owner** 2026-08-22 on the fiction —
+     *"keep them in, it allows the Jawa to show that even in those situations, they will be
+     compelled to enslave the individual."* A wanderer is a SITUATION, not a free colonist.
+     ⛔ Do not add it later "to finish the def".
+  2. Two parts **cannot start a game.** The def also needs
+     `ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes` (ONE part, carrying
+     `xenotypeCounts` MandrakeJawa ×6 — the six founders; the plain `ConfigureStartingPawns`
+     cannot set a xenotype at all) and `ScenPart_PlayerPawnsArriveMethod` (`Standing`, because
+     the clan is already aboard the hull rather than dropping out of the sky).
+  ✅ **The clause as it should read:** `Jawa_UtinniStart` carries exactly three AUTHORED parts —
+  `ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes`, `ScenPart_PlayerPawnsArriveMethod`,
+  `ScenPart_GameStartDialog` — and **no `ScenPart_DisableIncident`**.
+  ⚠️ **The live def set reports FIVE, and that is not a defect.** Measured in capture
+  `2026-08-23T05-05-29Z`: the game appends two `ScenPart_PlanetLayer` parts to the scenario at
+  load (Odyssey's planet layers). They are engine-added, they are in no XML of ours, and a
+  count taken from the dump must expect them. Count AUTHORED parts in the file; count 5 in the
+  dump.
+- `MandrakeJawa` carries the farming gene and the mining gene, and **no other xenotype carries
+  the MINING gene**. ⚠️ **Narrowed 2026-08-22 by BUILD, and measured.** `AptitudeTerrible_Plants`
+  is a **vanilla Biotech gene**, not ours, and three other authored xenotypes legitimately carry
+  it for their own flavour — `RimMandrakeSithMassassi`, `RimMandrakeSullustan`,
+  `RimMandrakeWeequay`. Reading the original clause literally would demand stripping a vanilla
+  aptitude out of three unrelated species to satisfy a checkbox. ⇒ **Exclusivity is a real
+  requirement for `RimMandrake_Jawa_MiningDisabled` (which IS ours, and is exclusive — measured
+  1 of 1) and was never a requirement for the shared Biotech aptitude.**
 - `OperateDrillTurret`'s `workType` reads the chosen value and **not** `Mining`, in the LIVE
   def set — the patch is against another mod's def, so a repo-only check proves nothing
 - ⛔ vanilla's `Drill` WorkGiver is **unmodified**, and `DrillTurret`'s own defs are otherwise

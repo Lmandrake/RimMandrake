@@ -24,11 +24,30 @@
   on the xenotype). `Mining` covers the `Mining` work type and nothing else, so
   the hard lever is clean here and it is what the owner asked for.
 
-  🔑 AND THE DEEP DRILL GOES WITH IT, DELIBERATELY. Vanilla's `Drill` WorkGiver
-  is `workType Mining`, so this gene stops a Jawa operating one. The owner
-  accepted that asymmetry explicitly: the laser works, the drill beside it does
-  not. ⛔ Do not "fix" it by patching vanilla's Drill WorkGiver — that would
-  re-type the job for every faction in the game.
+  🔑 AND THE DEEP DRILL GOES WITH IT, DELIBERATELY. This gene stops a Jawa
+  operating one. The owner accepted that asymmetry explicitly: the laser works,
+  the drill beside it does not. ⛔ Do not "fix" it by patching the Drill
+  WorkGiver — that would re-type the job for every faction in the game.
+
+  🔴 CORRECTED 2026-08-22, BUILD — THE MECHANISM IS THE workTAG, NOT THE workTYPE.
+  This block used to say "vanilla's `Drill` WorkGiver is `workType Mining`". IT IS
+  NOT, on this stack. Measured in the live def set (capture 2026-08-23T05-05-29Z,
+  578 mods):
+
+      Drill               workType = FSFDrilling      <- [FSF] Complex Jobs, NOT Core
+      FSFDrilling         workTags = ManualSkilled, Commoner, Mining, AllWork
+      OperateDrillTurret  workType = Hunting          <- ours, fe0064c
+      Hunting             workTags = Violent, Commoner, Hunting, Shooting, AllWork
+
+  ⇒ THE DESIGN STILL HOLDS, but not for the reason written. `disabledWorkTags`
+  matches a WorkTAG, and `FSFDrilling` carries the `Mining` tag, so the Jawa is
+  still barred from the deep drill. ⚠️ THE TRAP: a future reader who checks
+  "is Drill still workType Mining?" will find `FSFDrilling`, conclude the ruling
+  broke, and patch something. It did not break. Check the WorkTypeDef's `workTags`,
+  never the WorkGiver's `workType`.
+  ⚠️ And it is now load-order dependent on a THIRD-PARTY mod: if [FSF] Complex Jobs
+  is ever removed or retags `FSFDrilling` without `Mining`, a Jawa silently gains
+  the deep drill and nothing will report it.
 
   ⚠️ THE TURRET STILL WORKS BECAUSE IT IS NO LONGER A MINING JOB.
   `DRILLTURRET_IS_A_SHOOTING_JOB_1` (fe0064c) moved `OperateDrillTurret` to

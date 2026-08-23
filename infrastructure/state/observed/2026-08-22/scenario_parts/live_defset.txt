@@ -1,0 +1,24 @@
+LIVE DEF SET — capture 2026-08-23T05-05-29Z, 578 mods, RimWorld 1.6.4871 rev591
+(this is the post-load def set the running game built: it answers 'in the LIVE def set'
+ without a bridge call, which belongs to CHECK)
+
+== §3  WorkGiverDef workType ==
+  Drill                  workType='FSFDrilling'  Core
+  OperateDrillTurret     workType='Hunting'     MiningCo. DrillTurret (Continued)
+
+== §1a/§2  the two genes ==
+  RimMandrake_Jawa_MiningDisabled    disabledWorkTags='Mining'   aptitudes=None  (RimMandrake - Star Wars Races)
+  AptitudeTerrible_Plants            disabledWorkTags='None'     aptitudes=[{'$type': 'Aptitude', 'skill': 'Plants', 'level': -8}]  (Biotech)
+
+== exclusivity: which xenotypes in the WHOLE live set carry each gene ==
+  XenotypeDef records in live set: 139
+  RimMandrake_Jawa_MiningDisabled    -> 1 xenotype(s): MandrakeJawa
+  AptitudeTerrible_Plants            -> 20 xenotype(s): AG_Efreet, AG_Nereid, BS_BrokenTitan, BS_FireJotun, BS_FrostJotun, BS_FrostJotunInBlue, BS_Jotun, BS_Surtr, BS_Svartalf, BS_Ymir, BX_Beliar, Highmate, Hussar, MandrakeJawa, PureBlood, RimMandrakeSithMassassi, RimMandrakeSullustan, RimMandrakeWeequay, Starjack, XylTitan
+
+== §1  the ScenarioDef, as the game resolved it ==
+  Jawa_UtinniStart — 5 parts, mod=Jawa Patches (local)
+      ScenPart_PlanetLayer
+      ScenPart_PlanetLayer
+      ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes
+      ScenPart_PlayerPawnsArriveMethod
+      ScenPart_GameStartDialog

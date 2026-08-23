@@ -1,0 +1,27 @@
+
+validate_patch.py - 3 XML file(s): 1 <Patch>, 2 <Defs>
+  SCANNED     Patches/: operation shape, guards, value shape, live xpath hit counts
+              Defs/:    XML parse, comment bodies, missing/duplicate defName, ParentName
+                        resolution, Class attributes, texPath existence and case
+  NOT SCANNED field names, field types, value ranges, C# class members, and any node
+              a PatchOperation creates at load time. This is not a def linter.
+
+  info    xpath engine: lxml 6.0.2.0 - full XPath 1.0, the same class of engine RimWorld itself uses, so text(), contains(), starts-with(), not() and boolean predicates are CHECKED.
+  info    load set: 578 active mods, 578 found on disk, target version 1.6 -> 8,739 def files
+defName list infrastructure/state/observed/2026-08-22/scenario_parts/defnames_2026-08-23T05-05-29Z.txt: 68500 defNames across 452 def types, RimWorld 1.6.4871 rev591, 578 mods
+
+=== src/Jawa/Jawa_Patches/Patches/DrillTurret_ShootingJob.xml ===
+  info    Operation[1] > match (PatchOperationReplace): 1 match(es)  in MiningCo. DrillTurret (Continued): WorkGivers.xml(1)
+
+OK - 0 errors, 0 warning(s)
+
+=== src/Jawa/Jawa_Patches/Defs/ScenarioDefs/Scenario_Utinni.xml ===
+
+OK - 0 errors, 0 warning(s)
+
+=== src/Jawa/RimMandrake_StarWarsRaces/Defs/GeneDefs/Jawa_MiningDisabled.xml ===
+  WARN    GeneDef 'RimMandrake_Jawa_MiningDisabled': <iconPath>UI/Icons/Genes/Skills/Mining/Terrible</iconPath> - no file, folder or _north/_south/_east/_west variant of that path exists under any Textures/ root scanned. Cannot be called a typo: the GAME's own textures are inside Unity asset bundles, not loose files, so a correct vanilla path looks identical to a wrong one from here. 'ui/' is not this mod's namespace either. Check it against a def that already works.
+
+OK - 0 errors, 1 warning(s)
+OK TOTAL - 3 file(s), 0 error(s), 1 warning(s)
+     ⇒ nothing here fails. 1 warning(s) are advisory; the add-if-missing `nomatch` shape is the common one and is intentional.
