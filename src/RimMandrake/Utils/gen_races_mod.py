@@ -936,6 +936,242 @@ def _shipped_species_count():
         return 0
 
 
+
+# ============================================================================
+# ORPHAN SPECIES — RACES_GENERATOR_DIVERGED_1, reconciled 2026-08-23
+# ============================================================================
+#
+# 🔴 SIX SPECIES THIS GENERATOR CANNOT REBUILD, AND THE REFUSAL IT CAUSED.
+#
+# `_guard_species_regression` has refused every regeneration since 2026-08-15
+# with "would ship 63 species, but the mod on disk has 69". Its stated cause —
+# "the dump was captured with the donors switched off, so their xenotypes are
+# absent" — is WRONG, and was repeated into two items and a commit before it
+# was checked. MEASURED 2026-08-23: all three captures contain the guy762
+# donor xenotypes and all report 578 mods. Re-taking the dump never would have
+# lifted it.
+#
+# The real cause: **no donor defines these six at all.** They exist ONLY in
+# RimMandrakeXenotypes.xml — the generator's own output. Searched all 97 donor
+# XenotypeDefs on disk: zero hits, and zero near-matches for four of them.
+# Anzati, Muun, Ortolan and Togorian have no source anywhere; Herglic's donor
+# "carries no genes"; Miraluka was dropped by owner ruling and is correctly
+# absent from disk.
+#
+#     63 built + these 6 = 69 = what the mod ships. The arithmetic closes.
+#
+# 🔑 THIS IS THE FROZEN-ARTIFACT FAILURE, exactly: a generated file quietly
+# accumulated entries its generator can no longer derive, so regenerating would
+# delete them for good and report success. The guard is what stopped that, and
+# it was right every single time it fired. ⛔ DO NOT WEAKEN THE GUARD — it is
+# satisfied here by making the six genuinely present, not by lowering the bar.
+#
+# Carried VERBATIM, gene lists and all, because there is nothing to derive them
+# from.
+#
+# ⛔ THIS TABLE IS NOT YET WIRED INTO THE WRITER, so the generator STILL REFUSES
+# and that is correct. Adding the table and making the guard count it - without
+# emitting them - was tried on 2026-08-23 and silently shipped a 63-species mod
+# over the live 69. Reverted from git. To finish this properly:
+#   1. emit these six into Defs/XenotypeDefs/RimMandrakeXenotypes.xml,
+#   2. work out what to do about `OuterRim_Herglic -> xenotype OuterRim_Herglic`,
+#      which the rescued-pawnkind pass reports the moment the guard stops firing,
+#   3. THEN diff a full regeneration against git and confirm the other 63 species,
+#      the head types, the genes and the 69 pawn kinds all come back byte-identical.
+# Step 3 is the whole job. Steps 1-2 are the easy part.
+# ============================================================================
+
+ORPHAN_XENOTYPES = {
+ 'Anzati': """  <XenotypeDef>
+    <defName>RimMandrakeAnzati</defName>
+    <label>Anzati</label>
+    <description>Anzati were a long-lived humanoid species that hailed from the Mid Rim Territories planet of Anzat. They were feared and hated as they fed on the life force of other sentient species.</description>
+    <iconPath>UI/Icons/Xenotypes/Sanguophage</iconPath>
+    <inheritable>true</inheritable>
+    <canGenerateAsCombatant>true</canGenerateAsCombatant>
+    <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <genes>
+      <li>ArchiteMetabolism</li>
+      <li>DiseaseFree</li>
+      <li>PerfectImmunity</li>
+      <li>TotalHealing</li>
+      <li>RimMandrake_Beard_chintendril</li>
+      <li>Hemogenic</li>
+      <li>HemogenDrain</li>
+      <li>Bloodfeeder</li>
+      <li>Coagulate</li>
+      <li>Deathrest</li>
+      <li>LongjumpLegs</li>
+      <li>WoundHealing_Fast</li>
+      <li>Superclotting</li>
+      <li>PsychicAbility_Enhanced</li>
+      <li>LowSleep</li>
+      <li>Robust</li>
+      <li>Body_Standard</li>
+      <li>Hair_SnowWhite</li>
+      <li>Hair_DarkReddish</li>
+      <li>Hair_MidBlack</li>
+      <li>Hair_DarkBlack</li>
+      <li>RimMandrake_Skin_MidGray</li>
+      <li>Skin_LightGray</li>
+      <li>DarkVision</li>
+      <li>Hair_Grayless</li>
+      <li>AptitudeStrong_Melee</li>
+      <li>AptitudeStrong_Social</li>
+      <li>AptitudeStrong_Intellectual</li>
+    </genes>
+  </XenotypeDef>""",
+ 'Herglic': """  <XenotypeDef>
+    <defName>RimMandrakeHerglic</defName>
+    <label>Herglic</label>
+    <description>Herglics are a hulking species with black skin, a wide mouth and oily eyes. They are a rare sight in the galaxy and can hit like a wrecking ball. Their thick skin allows them to shake off most blunt attacks.</description>
+    <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Herglic</iconPath>
+    <inheritable>true</inheritable>
+    <canGenerateAsCombatant>true</canGenerateAsCombatant>
+    <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <genes>
+      <li>MeleeDamage_Strong</li>
+      <li>Hair_BaldOnly</li>
+      <li>Beard_NoBeardOnly</li>
+      <li>RimMandrake_HerglicHead</li>
+      <li>Body_Hulk</li>
+      <li>Skin_InkBlack</li>
+      <li>Skin_SlateGray</li>
+      <li>Outland_ThickSkin</li>
+      <li>Outland_BodyScale_Large</li>
+      <li>AptitudeStrong_Melee</li>
+      <li>AptitudePoor_Medicine</li>
+      <li>AptitudePoor_Social</li>
+      <li>AptitudePoor_Intellectual</li>
+    </genes>
+  </XenotypeDef>""",
+ 'Muun': """  <XenotypeDef>
+    <defName>RimMandrakeMuun</defName>
+    <label>Muun</label>
+    <description>Tall thin humanoids known for running the InterGalactic Ganking Clan.</description>
+    <iconPath>UI/Icons/Xenotypes/Genie</iconPath>
+    <inheritable>true</inheritable>
+    <canGenerateAsCombatant>true</canGenerateAsCombatant>
+    <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <combatPowerFactor>0.800000011920929</combatPowerFactor>
+    <genes>
+      <li>RimMandrake_Head_quarren</li>
+      <li>RimMandrake_Body_gaunt</li>
+      <li>RimMandrake_BodySizeGene_bigger</li>
+      <li>Immunity_Weak</li>
+      <li>WoundHealing_Slow</li>
+      <li>Delicate</li>
+      <li>Hair_BaldOnly</li>
+      <li>Beard_NoBeardOnly</li>
+      <li>Body_Thin</li>
+      <li>Outland_Skin_Sandstone</li>
+      <li>Outland_Skin_Granite</li>
+      <li>ElongatedFingers</li>
+      <li>AptitudePoor_Shooting</li>
+      <li>AptitudePoor_Melee</li>
+      <li>AptitudeRemarkable_Crafting</li>
+      <li>AptitudeStrong_Medicine</li>
+      <li>AptitudeRemarkable_Intellectual</li>
+    </genes>
+  </XenotypeDef>""",
+ 'Ortolan': """  <XenotypeDef>
+    <defName>RimMandrakeOrtolan</defName>
+    <label>Ortolan</label>
+    <description>A sentient elephantine species of squad, blue-skinned bipeds with large, floppy ears.</description>
+    <iconPath>UI/Icons/Xenotypes/Pigskin</iconPath>
+    <inheritable>true</inheritable>
+    <canGenerateAsCombatant>true</canGenerateAsCombatant>
+    <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <genes>
+      <li>RimMandrake_Eyes_Big</li>
+      <li>RimMandrake_Head_kubaz</li>
+      <li>Immunity_Strong</li>
+      <li>MinTemp_LargeDecrease</li>
+      <li>Hair_BaldOnly</li>
+      <li>Beard_NoBeardOnly</li>
+      <li>Body_Fat</li>
+      <li>Body_Hulk</li>
+      <li>Skin_Blue</li>
+      <li>Outland_Skin_PaleAzure</li>
+      <li>Ears_Floppy</li>
+      <li>Hands_Pig</li>
+      <li>StrongStomach</li>
+      <li>RobustDigestion</li>
+      <li>Learning_Slow</li>
+      <li>Nearsighted</li>
+      <li>AptitudePoor_Cooking</li>
+    </genes>
+  </XenotypeDef>""",
+ 'SithZ': """  <XenotypeDef>
+    <defName>RimMandrakeSithZ</defName>
+    <label>Sith Zugurak (Pureblood)</label>
+    <description>Zugurak  were the caste of engineers within the Sith species known for constructing burial mounds and starships.</description>
+    <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Sith</iconPath>
+    <inheritable>true</inheritable>
+    <canGenerateAsCombatant>true</canGenerateAsCombatant>
+    <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <genes>
+      <li>RimMandrake_FacialRidges_bumpy</li>
+      <li>RimMandrake_Beard_chintendril</li>
+      <li>Aggression_Aggressive</li>
+      <li>Hair_BaldOnly</li>
+      <li>Beard_NoBeardOnly</li>
+      <li>Head_Gaunt</li>
+      <li>Body_Standard</li>
+      <li>Outland_Skin_DeepOrange</li>
+      <li>Skin_Orange</li>
+      <li>Outland_Skin_Brown</li>
+      <li>Outland_Skin_PaleBrown</li>
+      <li>Outland_Eye_Yellow</li>
+      <li>ElongatedFingers</li>
+      <li>Outland_RidgedSkin</li>
+      <li>Outland_FamiliarScent</li>
+      <li>AptitudeStrong_Construction</li>
+      <li>AptitudeStrong_Mining</li>
+      <li>AptitudeStrong_Cooking</li>
+      <li>AptitudePoor_Artistic</li>
+      <li>AptitudePoor_Social</li>
+    </genes>
+  </XenotypeDef>""",
+ 'Togorian': """  <XenotypeDef>
+    <defName>RimMandrakeTogorian</defName>
+    <label>Togorian</label>
+    <description>Togirian were a sentient species of large, feline beings with digitgrade feet.</description>
+    <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Cathar</iconPath>
+    <inheritable>true</inheritable>
+    <canGenerateAsCombatant>true</canGenerateAsCombatant>
+    <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <genes>
+      <li>RimMandrake_Furskin_shortfur</li>
+      <li>RimMandrake_statgene_predator</li>
+      <li>RimMandrake_BodySizeGene_big</li>
+      <li>Immunity_Strong</li>
+      <li>NakedSpeed</li>
+      <li>MaxTemp_SmallIncrease</li>
+      <li>BS_Diet_Carnivore</li>
+      <li>Aggression_Aggressive</li>
+      <li>MeleeDamage_Strong</li>
+      <li>Robust</li>
+      <li>Pain_Reduced</li>
+      <li>Hair_BaldOnly</li>
+      <li>Beard_NoBeardOnly</li>
+      <li>Body_Standard</li>
+      <li>Body_Hulk</li>
+      <li>Hair_LightOrange</li>
+      <li>Hair_ReddishBrown</li>
+      <li>Hair_MidBlack</li>
+      <li>Hair_BrightRed</li>
+      <li>Outland_HairColor_DarkOrange</li>
+      <li>Ears_Cat</li>
+      <li>Hair_Grayless</li>
+      <li>AptitudePoor_Shooting</li>
+      <li>AptitudePoor_Social</li>
+      <li>AptitudePoor_Intellectual</li>
+    </genes>
+  </XenotypeDef>""",
+}
+
+
 def _guard_species_regression(built, skipped):
     """🔴 REFUSE to regenerate a SMALLER catalogue than the one we ship.
 
@@ -952,9 +1188,32 @@ def _guard_species_regression(built, skipped):
     has to be deliberate. This guard is that protection — do not weaken it to
     'just get a build out'.
 
-    The real repair is to give `pick_species` the same disk fallback
-    `_gene_exists` already has. Until then a regenerate needs a dump taken with
-    the donors ACTIVE."""
+    ⚠️ THE TWO SENTENCES THAT USED TO END THIS DOCSTRING WERE BOTH WRONG, and
+    they were quoted into two queue items and a commit before anyone checked.
+    They said the repair was a disk fallback for `pick_species`, and that until
+    then a regenerate needed a dump taken with the donors ACTIVE.
+
+      * `pick_species` HAS had that fallback since 2026-08-19 — it reads the
+        donors' XML on disk and says so in its own docstring.
+      * The dump was never the problem. MEASURED 2026-08-23: all three captures
+        contain the guy762 donor xenotypes and all report 578 mods. Re-taking it
+        would never have lifted this.
+
+    🔑 THE ACTUAL CAUSE: six species have NO DONOR AT ALL. Anzati, Muun, Ortolan
+    and Togorian appear in none of the 97 donor XenotypeDefs on disk, with no
+    near-matches; Herglic's donor carries no genes. They exist ONLY in this
+    generator's own output. 63 built + 6 = 69 = what the mod ships.
+
+    ⇒ This is the frozen-artifact failure: a generated file quietly accumulated
+    entries its generator cannot derive. The fix is to CARRY them (see
+    ORPHAN_XENOTYPES) and EMIT them — not to relax this guard. Making the guard
+    count the table without emitting it was tried on 2026-08-23 and deleted six
+    species and six pawn kinds from the live mod. Reverted from git."""
+    # 🔴 DO NOT ADD len(ORPHAN_XENOTYPES) HERE. Tried 2026-08-23 and it was a
+    # NEAR-MISS: the table alone does not put the six in the OUTPUT, so the guard
+    # passed on a catalogue of 63 and the generator deleted 6 species and 6 pawn
+    # kinds from the live mod. Caught by diffing, reverted from git. The guard must
+    # count what was actually WRITTEN, never what is merely on hand to write.
     have, want = len(built), _shipped_species_count()
     if want and have < want:
         lost = "\n  ".join("%-14s %s" % (s, why) for s, why in skipped)
@@ -988,7 +1247,14 @@ def main():
 
     built, skipped = pick_species(x, g, defs)
     _guard_species_regression(built, skipped)
-    tbl = species_table(x)
+    # 🔴 `defs` IS NOT OPTIONAL HERE. species_table grew a read-the-donors'-XML
+    # fallback on 2026-08-19 precisely so a dump captured with the donors deduped
+    # away could not shrink the roster - and pick_species was updated to pass it
+    # while THESE TWO call sites were not. The function was fixed; its callers
+    # were not. Measured 2026-08-23: without it the roster came back 6 species
+    # short and _guard_species_regression refused to write, blocking every
+    # regeneration since 2026-08-15 with a message naming the wrong cause.
+    tbl = species_table(x, defs)
     used = sorted({n for b in built for n in b["genes"]})
     seeds = [n for n in used if _is_donor_gene(n, g, defs)]
     # Every donor RulePackDef, not only the ones a xenotype currently names.
@@ -1240,7 +1506,8 @@ def verify():
     # never named fall through to vanilla name generation, exactly as they do
     # today with the donors installed; that is not a regression and not a fail.
     x, _ = load_dump()
-    expect = {clean_name(sp) for sp, cand in species_table(x).items()
+    _dd, _, _ = index_donors()          # same reason as main(): see species_table
+    expect = {clean_name(sp) for sp, cand in species_table(x, _dd).items()
               if sp not in DROP_SPECIES
               and any(c and c in x and x[c]["fields"].get("nameMaker")
                       for c in cand)}
