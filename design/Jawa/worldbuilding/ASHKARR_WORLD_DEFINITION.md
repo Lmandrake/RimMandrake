@@ -1089,3 +1089,67 @@ of the three waters. They should be rare: this planet is 8.14% water (1,780 of 2
   landmark with `extraGenSteps: sw_SarlaccPit`. 🔑 **v1 takes the mod's landmark**; the
   bespoke encounter is v2 and belongs in `design/V2_DREAMS.md`, not in a queue.
 
+
+---
+
+## Stamping the bundle onto a live planet — measured 2026-08-23 by CHECK
+
+The whole bundle went onto the owner's generated world at `Page_SelectStartingSite`,
+before a landing site was picked. **21,872 tiles matched, 0 mismatched, 100.0%**
+(`jawa/world_tile_validate`, which reads RAW fields). Order and results:
+
+| step | tool | result |
+|---|---|---|
+| tiles | `world_tile_import` | 21,872 applied, 0 skipped |
+| rivers + roads | `world_links_import` `clearFirst:true` | 293 rivers, 1,373 roads |
+| named regions | `world_features_import` **`featureDef: WB_MapLabelFeature`** | 71 created, 21,872 named, 0 unnamed |
+| settlements | `world_settlements_import` `clearExisting:true` | 120 placed, 35 generated ones removed |
+| mutators | `world_mutators_set` clear, then add per def | 74 defs, 9,717 assignments, 0 failures |
+| landmarks | `world_landmarks_set` `forced:true` | 51 defs, 569 tiles, 0 failures |
+| commit | `world_commit` | 8 draw-layer steps, 0 failed |
+
+⚠️ **Water came out at 6.46% (1,412 tiles), not the 8.14% this file and `the_one_map.md`
+both carried.** The live planet agrees with `_tiles.csv` exactly; the DOCS were stale.
+
+### 🔴 `world_features_import` sizes labels unusably for a 71-region planet
+
+It derives `maxDrawSizeInTiles` from each region's extent. On this bundle that produced
+**8.8 → 99.6 tiles, median 28.3** — and a 99.6-tile label on a globe showing ~70 tiles
+across is **wider than the planet**. The owner's word was *"WILDLY too large world labels
+crowding"*, and they visibly intersected the sphere and overprinted each other.
+
+**The fix, applied and confirmed by looking:** rescale every feature after importing.
+
+```python
+# for each feature from jawa/world_features_get:
+new = max(5.0, min(16.0, current * 0.30))
+jawa/world_features_set {action:'update', featureId:<id>, maxDrawSizeInTiles:new}
+# then jawa/world_commit
+```
+Result: **5.0 / 8.5 / 16.0** min/median/max — labels read cleanly, no clipping, no crowding.
+
+⛔ **This is NOT persisted in the bundle.** There is no label-size column in `_tiles.csv`,
+so **a re-import re-breaks it** and this rescale must be re-run every time. Filed as
+`FEATURE_LABELS_SIZED_UNUSABLY_1`.
+
+### 🔴 The magenta tiles are missing MOD art, not our bundle and not the stamp
+
+Five tiles render bright magenta. They are exactly the five sarlacc landmarks:
+
+| landmark | tiles | region |
+|---|---|---|
+| `sw_DeadSarlacc` | 1837, 15623, 20456, 15905 | Glare · Dry Marches · Kiln · Pale Flats |
+| `sw_Sarlacc` | 2920 | Dew Belt |
+
+**Star Wars Animal Collection (Continued)** (`mlie.starwarsanimalcollection`, active)
+declares both LandmarkDefs pointing at `World/Landmarks/Landmark_DeadSarlacc` and
+`Landmark_Sarlacc` — and **ships neither.** The mod has no `Textures/World/Landmarks/`
+directory at all and no file matching `*sarlacc*` anywhere in its `Textures/`.
+
+⭐ **Everything else was cleared by measurement, not assumption:** all 17 `VEE_*` landmark
+icons are present (`VEE_SulfuricLake.png` included — an early hypothesis that died on the
+check), and all three `AB_*` icons are present. Ludeon-expansion landmarks ship inside
+`resources.assets` and correctly have no loose PNG.
+
+⇒ Two ways out, both cheap: **drop the 5 landmarks**, or **draw the two textures**
+(`generating-rimworld-sprites`). Nothing about the stamp needs redoing either way.
