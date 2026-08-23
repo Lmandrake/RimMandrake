@@ -227,41 +227,56 @@ node --check <file.js>        ⭐ Node 22 IS installed, user-local, 2026-08-22 �
                               session saying "no JS engine here", when installing one took
                               40 seconds and found the answer.
 ./game up|down|loading|deploying|going-down   announce to every window + stamp the ledger
+./game --said "game up" up    🔑 what a SEAT runs the instant the owner says it
 python3 src/RimMandrake/Utils/broadcast.py --list  🔴 OWNER ONLY - see below
 ```
 
 ### 🔑 Declaring game state: just say it
 
-**Owner, 2026-08-22 — he no longer types anything to stamp the board.** Say *"game is up"*,
-*"game is loading"*, *"game is going down"* to whichever agent you are talking to, and it
-stamps the ledger immediately, recording your words as the authorization:
+**Owner, 2026-08-22 — he no longer types anything to stamp the board.** Say *"game up"*,
+*"game loading"*, *"game down"*, *"game is going down"* to whichever agent you are talking
+to, and 🔴 **that agent runs the FULL command on the spot — the identical one he would
+have typed:**
 
 ```
-python3 src/RimMandrake/rimflow/cli.py game UP --owner-said "game is up"
+./game --said "game up" up
 ```
+
+⭐ **IDENTICAL, and that is the ruling, not a convenience** — owner, 2026-08-22:
+*"make it so that when I say game up, game down, game loading it is IDENTICAL to that
+!./game command. Fix it for this specific thing."* ⇒ It **announces to every window AND
+stamps the ledger**, in one act, because the failure it exists to prevent is the seats and
+the board holding different beliefs about the game. ⛔ **Stamping the ledger alone is no
+longer the right answer** to him saying it; the older instruction to run
+`rimflow game UP --owner-said "…"` by itself is superseded — that path still works and is
+what `./game` calls underneath, but on its own it leaves the other windows deaf.
+
+- `--said "<his words>"` is **provenance, not permission**: his verbatim sentence is
+  recorded on the ledger event as the authorization. Pass what he actually said.
+- ⛔ **`--owner-said` will refuse bare ASSENT** — *"yes"*, *"ok"*, *"go ahead"* — because
+  that is him agreeing to something *you* said, and the ledger would record your words as
+  his. A short INSTRUCTION is fine: **"game up" passes.** (Corrected 2026-08-22: the guard
+  used to demand 12 characters and so refused his own phrases.)
 
 ⛔ **A seat still may not INFER game state** — that is guessing on everyone's behalf, and
-it is what the rule always banned. Quoting you is not inferring. ✅ **And neither is
-MEASURING it** — owner, 2026-08-22: *"Any agent is absolutely able to check what it
-literally is."* `./game` takes the reading and corrects the ledger from it, from any seat.
-⛔ **So never write "X says up but the owner said down"** — run it and there is nothing to
-report. The full ruling is `infrastructure/GAME_STATE_WORKFLOW.md`.
+it is what the rule always banned. Quoting him **as he says it** is not inferring. ✅ **And
+neither is MEASURING it** — owner, 2026-08-22: *"Any agent is absolutely able to check what
+it literally is."* `./game` with no argument takes the reading and corrects the ledger from
+it, from any seat. ⛔ **So never write "X says up but the owner said down"** — run it and
+there is nothing to report. The full ruling is `infrastructure/GAME_STATE_WORKFLOW.md`.
 
-⚠️ **That stamps the LEDGER, which is what makes `rimflow next` start offering or
-withholding `needs: game-up` / `bridge` / `deploy` work.** It does NOT wake the other
-windows. **`./game up` does both**, in one word, and is still the better move when other
-seats are running:
-
-🔴 **`broadcast.py` is the OWNER's tool and agents do not run it.** It reaches every
-agent window at once, by writing the peer socket directly — which permission rules do
-not gate. That is the point, and it is also why **an agent running it is breaking the
-no-messaging ruling by the back door.** It exists so the owner can announce a change of
-GAME STATE (*game is up* · *game is loading* · *WRAP is initiated*) in one command.
+🔴 **`broadcast.py` is still the OWNER's tool and agents do not run it — with exactly one
+carve-out, this one.** It reaches every agent window at once by writing the peer socket
+directly, which permission rules do not gate; that is why an agent running it *to say
+anything else* is breaking the no-messaging ruling by the back door. ✅ **Relaying his
+game-state sentence in the moment he says it is not "anything else".** ⛔ Everything else
+— a finding, a status, a state you worked out for yourself — remains his alone.
 ```
-./game up                      # same thing, one word - announces AND stamps the ledger
-./game                         # no argument: what the board thinks vs what is running
-python3 src/RimMandrake/Utils/broadcast.py "Game is up"
-python3 src/RimMandrake/Utils/broadcast.py --to CHECK,BUILD "Game is loading"
+./game --said "game up" up     # 🔑 what an agent runs the moment he says it
+./game up                      # the owner's own form - announces AND stamps
+./game                         # no argument: MEASURE it; corrects the ledger, any seat
+python3 src/RimMandrake/Utils/broadcast.py "Game is up"          # 🔴 OWNER ONLY
+python3 src/RimMandrake/Utils/broadcast.py --to CHECK,BUILD "…"  # 🔴 OWNER ONLY
 ```
 
 Paths in prose are always full and native, in backticks:

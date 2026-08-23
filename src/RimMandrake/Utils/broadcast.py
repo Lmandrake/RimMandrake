@@ -16,7 +16,13 @@ OWNER's `game` event, so there is no second command to forget:
 
 It prints what it recorded. Prose that merely mentions the game records nothing.
 
-🔴 THIS IS A USER TOOL. AGENTS DO NOT RUN IT.
+🔴 THIS IS A USER TOOL. AGENTS DO NOT RUN IT — with ONE carve-out, added 2026-08-22.
+⭐ THE CARVE-OUT: when the owner SAYS "game up" / "game down" / "game loading" to an
+agent, that agent runs `./game <state> --said "<his words>"` immediately, which lands
+here. He ruled it identical to him typing it himself: *"make it so that when I say game
+up, game down, game loading it is IDENTICAL to that !./game command."* It is a relay of
+his sentence, in the moment, and nothing else — ⛔ a state an agent INFERRED, and any
+message that is not a game state, remain his alone.
 Owner's ruling, 2026-08-19: agents do not message each other, at all. `SendMessage`
 and `ListAgents` are DENIED to them in `.claude/settings.json`, so an agent has no
 way to reach a peer through the supported channel. This script deliberately goes
@@ -281,8 +287,13 @@ def record_game(state, text):
     if not os.path.exists(cli):
         return "rimflow not found; state NOT recorded"
     env = dict(os.environ, RIMFLOW_SEAT="OWNER")
+    # \u2b50 Carry his verbatim words onto the event when an agent is relaying him
+    # (./game --said "..."), so the ledger records WHO authorized the state and not
+    # merely that it changed. Absent -> the event is OWNER's, unattributed, as before.
+    said = (os.environ.get("RIMFLOW_OWNER_SAID") or "").strip()
+    extra = ["--owner-said", said] if said else []
     try:
-        p = subprocess.run([sys.executable, cli, "game", state],
+        p = subprocess.run([sys.executable, cli, "game", state] + extra,
                            capture_output=True, text=True, timeout=30,
                            cwd=REPO, env=env)
     except Exception as e:                       # noqa: BLE001 - never gate the send

@@ -162,8 +162,10 @@ An agent keeps clearing items for the current deployment until **exactly one** o
 | *"Game is closed"* | `DOWN` | harvest work outranks everything until exhausted |
 | *"WRAP is initiated"* | — | finish, commit, push, hand off |
 
-⚠️ These reach every window through `broadcast.py`, which is **the owner's tool only.** An agent
-running it is breaking the no-peer-messaging ruling by the back door.
+⚠️ These reach every window through `broadcast.py`, which is **the owner's tool only —
+with one carve-out, added 2026-08-22: the seat he says it TO runs `./game --said "<his
+words>" <state>` on the spot.** See §7. Anything else an agent sends through it is
+breaking the no-peer-messaging ruling by the back door.
 
 ---
 
@@ -217,3 +219,28 @@ recorded  : UP  → corrected to DOWN, measured now
 
 **Announcing to the other windows is still the owner's**, and still `./game up|down|loading`.
 That sends the one message that legitimately crosses windows AND stamps the ledger.
+
+### ⭐ AND WHEN HE SAYS IT TO *YOU*, YOU RUN IT — owner, 2026-08-22
+
+*"make it so that when I say game up, game down, game loading it is IDENTICAL to that
+!./game command. Fix it for this specific thing."*
+
+🔴 **The instant he types a game-state sentence to your window, run the whole command —
+announce AND stamp — with his words carried on it:**
+
+```
+./game --said "game up" up          # down | loading | deploying | going-down
+```
+
+- ⛔ **A ledger stamp alone is no longer the right answer.** It leaves the other windows
+  deaf, which is the exact split this doctrine exists to prevent. Superseded: any earlier
+  line telling a seat to run `rimflow game <STATE> --owner-said "…"` on its own.
+- ⭐ **`--said` is provenance, not permission** — his verbatim sentence lands on the event.
+  ⛔ `--owner-said` refuses bare **assent** (*"yes"*, *"ok"*, *"go ahead"*): that is him
+  agreeing to something YOU said. A short **instruction** passes — **"game up" is fine.**
+  (The old guard demanded 12 characters and so refused his own phrasing; fixed 2026-08-22
+  in `src/RimMandrake/rimflow/cli.py`.)
+- ⛔ **This is the ONLY thing a seat may run `broadcast.py` for**, directly or through
+  `./game`. Relaying his game-state sentence *in the moment he says it* is not peer
+  messaging. A state you INFERRED, or any other message, is — and stays refused.
+

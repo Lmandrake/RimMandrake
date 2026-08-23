@@ -1149,6 +1149,21 @@ def build_parser():
 READ_ONLY = ("show", "why", "sweep", "render", "reindex")
 
 
+# \u26d4 Bare assent is not an instruction. These are the words that mean "I agree
+# with what you just said" rather than "do this" — the whole class the `--owner-said`
+# guard exists to refuse. A short INSTRUCTION ("game up", "drop it") is admitted.
+ASSENT_ONLY = frozenset((
+    "y", "n", "ok", "okay", "yes", "yep", "yeah", "yup", "sure", "fine", "go",
+    "go ahead", "do it", "please", "please do", "approved", "agreed", "correct",
+    "right", "confirmed", "sounds good", "good", "great", "perfect", "no", "nope",
+))
+
+
+def _norm_said(said):
+    """Lowercase, strip punctuation and collapse space, so 'Yes!' == 'yes'."""
+    return " ".join("".join(c for c in said.lower() if c.isalnum() or c.isspace()).split())
+
+
 def main(argv=None):
     _bind_paths()
     p = build_parser()
@@ -1178,11 +1193,18 @@ def main(argv=None):
                 "The owner asking about a thing is not the owner authorizing it. Quote "
                 "the words\nwhere he told you to act; if there are none, act as your "
                 "own seat and say whose\ncall it was, or ask him.\n" % said[:80])
-        if len(said) < 12:
-            die("`--owner-said` carries the OWNER's own words and is the record that "
-                "he authorized this.\nQuote him verbatim — %r is too short to be a "
-                "quote.\n\n\u26a0\ufe0f  If he did not say it, you may not do it as him."
-                % said)
+        # \U0001f534 OWNER, 2026-08-22: the floor used to be a blunt `len < 12`, and it
+        # refused HIS OWN documented phrases — "game UP" is 7 characters and "game is
+        # up", the example printed in CLAUDE.md, is 10. He said *"Simply do (1) right
+        # now"*. \u26d4 The guard's REAL job was never length: it was to stop
+        # `--owner-said yes` standing in for an instruction he never gave. So reject
+        # bare ASSENT, which is him agreeing to something said elsewhere, and let a
+        # short but complete instruction through.
+        if _norm_said(said) in ASSENT_ONLY:
+            die("`--owner-said` must quote the INSTRUCTION, not the agreement.\n%r is "
+                "him assenting to something YOU said; the ledger would record your "
+                "words as his.\n\nQuote the sentence that says what to do — "
+                "'game up' is fine, 'yes' is not.\n" % said)
         seat = "OWNER"
         model.OWNER_SAID = said
     return args.fn(args, seat) or 0

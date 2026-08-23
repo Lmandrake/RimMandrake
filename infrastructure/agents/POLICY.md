@@ -119,6 +119,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`, an append-only event lo
 
 ⚠️ It prints what it recorded; prose that merely mentions the game records nothing.
 
+⭐ **AND WHEN HE SAYS IT TO YOU, YOU RUN IT — owner, 2026-08-22:** *"make it so that when I say game up, game down, game loading it is IDENTICAL to that !./game command."* ⇒ The instant a game-state sentence arrives in your window, run **`./game --said "<his words>" <state>`** — announce AND stamp, one act. ⛔ **A ledger stamp alone is superseded**; it leaves every other window deaf. ⛔ `--owner-said` refuses bare assent (*"yes"*, *"ok"*) — quote the instruction, and **"game up" passes**. 🔑 This is the ONLY thing a seat may reach `broadcast.py` for; an inferred state or any other message stays refused.
+
 🔴 **AND ANY SEAT MEASURES IT — owner, 2026-08-22.** *"Any agent is absolutely able to check what it literally is."* `./game` (= `rimflow game`) takes the reading and **corrects the ledger from it**, from any seat, no announcement needed; `rimflow next` does the same before it offers you work. ⛔ **So never write a sentence comparing a recorded state to a measured one** — run it and the disagreement is gone. That prose is what the ruling deletes. ⚠️ *"Silence is the safe failure"* is retired with it: a stale state is no longer safer than a measured one, because measuring is now free. The two states the machine cannot see — `DEPLOYING` vs `DOWN`, `GOING_DOWN` vs `UP` — stay the owner's alone and the probe never touches them. Full ruling: `infrastructure/GAME_STATE_WORKFLOW.md`.
 
 ### 🔴 A seat MAY test a mod-list change while the owner is away — ruled 2026-08-21
@@ -132,7 +134,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`, an append-only event lo
 python3 src/RimMandrake/rimflow/cli.py seat ready           announce yourself
 python3 src/RimMandrake/rimflow/cli.py next --seat <ME>     your ONE item
 ```
-⛔ **Do not add `game`** — it is the OWNER's announcement verb and a seat running it is refused by design; `next` prints `(game …, bridge …)` itself.
+⛔ **Do not add `game <STATE>` at the start of a turn** — announcing is not a start-of-turn act, and a state you inferred is refused by design; `next` prints `(game …, bridge …)` itself. ✅ **Bare `./game` (MEASURE) is always allowed**, and ✅ so is the full `./game --said "<his words>" <state>` the moment the owner says one — see the game-state ruling above.
 
 🔑 **`next` may answer with an item you have NOT claimed, and then the turn is three steps.** Work filed FOR you arrives in `proposed`; `next` names it and prints `rimflow claim <ID>`. **Run that, then `start`.**
 
