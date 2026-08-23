@@ -242,3 +242,171 @@ that took 11 of 36 cells and reported success) is exactly the failure this must 
 ⇒ `structure_build` returns `cellsRequested`, `placed`, `refusedCount` and a `refused[]` list
 with a reason per entry — never a bare `success: true`.
 
+
+---
+
+## 6. THE THREE APPROACHES
+
+All three emit `BuildPlan`. They differ only in **who decides where the walls go.**
+
+---
+
+### 🅐 THE STAMP — a library of fixed, authored templates
+
+**Mechanism.** A template is an artifact on disk: a grid of cells carrying def, stuff, rotation,
+terrain and roof, plus metadata (faction tags, room count, footprint, entrance side). The call
+selects one matching `(template|faction, rooms, wealth)`, translates and rotates it onto the
+target rect, validates against the site, and emits the plan.
+
+**Three authoring routes, all already possible:**
+1. **Hand-write the grid file** — the `gravship_layout.py` model exactly.
+2. **Build it in-game and capture it** — `jawa/prefab_capture` on a rect, then export. *This is
+   the killer route: the aesthetic judgement happens by building, which is the medium a human is
+   actually good at.*
+3. **Crop it from an existing artifact** — how `JawaGroundHulk.xml` was made.
+
+**Cheap variety multipliers that cost almost nothing:**
+
+| lever | multiplier | how |
+|---|---|---|
+| rotation + mirroring | ×8 | free, geometric |
+| material substitution | ×3–5 | template says `WALL`, faction palette says `BlocksSandstone` |
+| `condition` | ×4 | `hitPoints`, knocked-out walls, filth, roof holes |
+| **furniture slots** | ×3–10 | template marks `BED_SLOT`; palette fills it |
+
+⇒ **~20 authored templates can present as several hundred distinct buildings.** That is the
+number that decides whether A is viable, and it is much better than the naive count suggests.
+
+**Pros**
+- ✅ **Cheapest to build by a wide margin**, and partially exists today (`prefab_capture`/`place`).
+- ✅ **Every output was approved by a human.** No uncanny phase, ever.
+- ✅ Deterministic, diffable, reviewable. A template is linted once and trusted forever.
+- ✅ Captures judgement no rule can state — *"reads as a room rather than a slice"*.
+- ✅ Failure is local and obvious: a bad template is one bad file.
+
+**Cons**
+- ❌ **Authoring is combinatorial.** 13 factions × 3 sizes is 39 before wealth or defence.
+- ❌ **Does not adapt to the site.** A fixed 12×10 needs a flat, clear 12×10.
+- ❌ **Repetition is visible at volume.** Forty houses from six templates reads as six houses.
+- ❌ Every new faction is new authoring, forever.
+
+**Best when:** the count of placements is low-to-medium and art direction matters more than
+variety. **Worst when:** populating a whole planet.
+
+---
+
+### 🅑 THE ASSEMBLER — authored parts plus furnishing rules
+
+**Mechanism.** Two passes.
+
+1. **Layout.** Either subdivide the footprint (BSP or a room-graph), or instantiate an authored
+   *skeleton* whose dimensions are parameterised. Produces rooms, walls, and door positions.
+2. **Furnish.** Fill each room from rule tables keyed by `(role, faction, wealth, tech)`.
+
+```yaml
+room Bedroom:
+  size:     { min: [3,3], prefer_per_occupant: [5,5] }
+  require:  [ BED × occupants ]
+  prefer:   [ LIGHT, DRESSER, END_TABLE ]
+  when wealth >= comfortable: [ RUG, SCULPTURE ]
+  when tech <= neolithic:     forbid [ LAMP ]  # torch instead
+```
+
+🔑 **Make the room roles match RimWorld's own `RoomRoleDef`s.** If the generated room satisfies
+the game's own bedroom scorer, the game *labels it a bedroom* — the output is validated by the
+engine rather than by us, which is a far stronger guarantee than any linter we write.
+
+**Pros**
+- ✅ **Variety from few assets.** One dwelling template serves every faction and size.
+- ✅ **Parameters map onto rules directly** — `wealth`, `tech`, `occupants` are literally
+  conditions. This is the approach the owner's parameter list *wants*.
+- ✅ **Adapts to the footprint given**, so placement is far less fussy than A.
+- ✅ **A new faction is a palette entry**, not three new buildings.
+- ✅ Scales to volume without visible repetition.
+
+**Cons**
+- ❌ Needs a real engine: subdivision, door placement, furniture packing, reachability.
+- ❌ **There is an uncanny phase** — output is plausible-but-wrong until the rules are tuned, and
+  tuning needs many evaluations.
+- ❌ **Art direction is indirect.** You tune a rule and hope; you cannot nudge one wall.
+- ❌ A bad house is a *rule interaction*, which is harder to diagnose than a bad file.
+
+**Best when:** many placements across many factions — i.e. tilemap enrichment, the actual goal.
+
+---
+
+### 🅒 THE SOLVER — goal-directed and site-aware, riding RimWorld's own generators
+
+**Mechanism.** Input is a **goal**, not a shape: *shelter 6, hold ≤32 °C in one room, defensible
+to level 2, spend ≤400 resources, on this terrain.* The system searches layouts satisfying the
+constraints, reading real site geometry — elevation, rock, water, existing buildings, roof cover.
+
+**And it has the option to delegate.** RimWorld ships three structure engines (`LayoutDef` /
+`LayoutWorker`, `SketchGen` / `SketchResolverDef`, `BaseGen` symbol stack) that already generate
+multi-room complexes and faction bases. `layout_generate`, `sketch_spawn` and `kcsg_place` are
+**named, anchored, and unbuilt** in the capability roster.
+
+⚠️ **The open question that prices this whole approach: those engines are map-GENERATION code.
+Whether they can be invoked against a rect on an already-generated live map is the thing to
+settle before committing.** If yes, C gets dramatically cheaper and its output matches
+vanilla-generated bases for free. If no, C means writing a solver from scratch.
+
+**Pros**
+- ✅ **The most powerful and the most general.** One system does houses, settlements, ruins,
+  outposts, defended camps.
+- ✅ **Genuinely site-aware** — builds into a cliff, around rock, along a river.
+- ✅ **Goals compose.** "Defended + cooled nursery + 6 occupants" is a constraint set, not a new
+  template. Every other approach needs a new asset for that.
+- ✅ If it can ride the engine's generators, output is vanilla-consistent by construction.
+
+**Cons**
+- ❌ **By far the most expensive**, and the estimate is soft until the live-map question is
+  answered.
+- ❌ **Solver output reads as *solved*, not *lived in*.** This is the deep aesthetic risk and it
+  is not fixable by more constraints — irregularity has to be injected deliberately.
+- ❌ **Graceful degradation is mandatory and hard.** An unsatisfiable constraint set must produce
+  a worse house, never no house and never a wrong one.
+- ❌ Slowest iteration: each tuning pass needs evaluation, and evaluation wants a game.
+
+**Best when:** the site is irregular and the goal matters more than the look. **Worst when:** you
+need a specific building to look a specific way.
+
+---
+
+## 7. Comparison, and the recommendation
+
+| | 🅐 Stamp | 🅑 Assembler | 🅒 Solver |
+|---|---|---|---|
+| build cost | **low** | medium | **high** (soft) |
+| already partly exists | ✅ `prefab_*` | — | ✅ 3 engines, unbuilt |
+| art direction | **total** | indirect | weak |
+| variety at volume | poor | **good** | **good** |
+| site adaptation | none | footprint only | **full** |
+| new faction cost | high | **low** | **low** |
+| failure mode | obvious, local | rule interaction | subtle |
+| offline testable | **fully** | **fully** | mostly |
+| serves settlements later | no | partly | **yes** |
+
+### 🔑 The recommendation, and it is not one of the three
+
+**Build the IR and planner first. Ship 🅐. Grow it into 🅑. Keep 🅒 gated behind one measurement.**
+
+1. **IR + planner + offline linter.** Everything expensive and reusable lives here, and none of
+   it needs a game. This is the real deliverable.
+2. **🅐 immediately**, because `prefab_capture`/`prefab_place` already work — so the *first*
+   version is mostly plumbing, and it produces reviewable output on day one.
+3. **Add slots and palettes to 🅐** — the moment a template says `BED_SLOT` instead of
+   `Bed`, it is already halfway to 🅑, and no authored template is invalidated.
+4. **🅑 when repetition becomes the complaint.** The trigger is observable, not a guess.
+5. **🅒 only after settling whether `LayoutWorker`/`SketchGen`/`BaseGen` run on a live map.**
+   That single measurement swings its cost by a large factor, and it is answerable in one bridge
+   session.
+
+⚠️ **The trap to avoid: starting at 🅒 because it is the most impressive.** It is the only one
+whose cost is unknown, the only one whose aesthetic risk cannot be fixed by more work, and the
+only one that cannot show the owner a house this week.
+
+🔑 **And the composition nobody should miss: 🅐 and 🅑 are not rivals.** Authored skeletons
+(🅐's strength — a floorplan a human approved) filled by rule-driven furnishing (🅑's strength —
+variety and parameter response) is strictly better than either alone, and it is the natural
+end state of steps 2–4 above.
