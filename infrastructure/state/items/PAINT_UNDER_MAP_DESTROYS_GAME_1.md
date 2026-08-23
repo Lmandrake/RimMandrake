@@ -1,4 +1,40 @@
 ## spec
+
+🔴 **OWNER'S CORRECTION, 2026-08-23, and it demotes this item's headline — verbatim:**
+*"I think painting under a player colony is actually fine to do... it just destroys the
+player colony. So you must create a new one in order to continue in the game... I did
+this recently and it worked fine. So let's please not record that we cannot paint into
+an existing game... that must still be verified true if we are to believe it, and I
+think it may in fact be false. I am happy to do this test with you when you are ready."*
+
+⇒ **The title of this item is now a HYPOTHESIS, not a measurement.** Split what was
+recorded on 2026-08-21 into the part he agrees with and the part he disputes:
+
+| observed 2026-08-21 | status after his correction |
+|---|---|
+| the colony/map was destroyed | ✅ **AGREED, and it is EXPECTED, not damage.** Paint moves the ground out from under a generated map; that map cannot survive it. Make a new colony and carry on |
+| the game could no longer create a new colony | ❓ **DISPUTED.** He has since painted under a colony and made a new one without trouble |
+| UI buttons lost icons and names | ❓ **UNVERIFIED.** One observation, one session, never reproduced |
+| the preset lost `myLittlePlanetSubcount 7` / `planetCoverage 1` | ❓ **SEPARATE ITEM** — `PRESET_ONSCREEN_CHECK_UNVERIFIED_1`. May have its own cause and must not be used as evidence for this one |
+
+⛔ **Do not write, cite or act on "we cannot paint into an existing game."** That
+sentence is not established, the owner believes it is false, and this item is where the
+claim came from. Anything downstream that leans on it is leaning on one unreproduced
+session.
+
+⚠️ **The `--despite-map` guard and `w9_run.py`'s `mapCount > 0` refusal stay for now** —
+a guard that costs a colony is cheap and the colony loss IS real. But its message must
+say *"this will destroy the current colony; make a new one"*, **not** *"this destroys
+the game"*.
+
+🔑 **THE TEST IS OFFERED AND UNBLOCKED.** He said he is happy to run it together. It is
+cheap on a scratch quicktest: paint under a live map, then try to make a new colony and
+drive the UI. Until that runs, everything below is a single observation.
+
+---
+
+### The 2026-08-21 observation, kept verbatim as the thing to be re-tested
+
 🔴 **MEASURED 2026-08-21, on the owner's own screen. This is no longer a warning inherited
 from 2026-08-18 — it happened again, and it was watched happening.**
 
