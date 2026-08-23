@@ -1873,3 +1873,6 @@
 {"seat":"DECIDE","event":"start","id":"BLACKSTAR_NAME_ROUTE_DECISION_1","ts":"2026-08-23T17:48:00Z"}
 {"seat":"DECIDE","event":"file","id":"PIRATE_NAMES_FIVE_SYNDICATES_1","title":"Give the five inherited pirate factions their own canon Star Wars names, per DECIDE's table","kind":"task","target":"v1","needs":"offline","caused_by":"BLACKSTAR_NAME_ROUTE_DECISION_1","for":"BUILD","ts":"2026-08-23T17:50:12Z"}
 {"seat":"DECIDE","event":"close","id":"BLACKSTAR_NAME_ROUTE_DECISION_1","sha":"dc86e84c","ts":"2026-08-23T17:50:37Z"}
+{"seat":"DECIDE","event":"claim","id":"WORLDGEN_CITATIONS_REPOINT_DECIDE_1","ts":"2026-08-23T17:51:00Z"}
+{"seat":"DECIDE","event":"start","id":"WORLDGEN_CITATIONS_REPOINT_DECIDE_1","ts":"2026-08-23T17:51:00Z"}
+{"seat":"DECIDE","event":"close","id":"WORLDGEN_CITATIONS_REPOINT_DECIDE_1","sha":"5c14b7cb","ts":"2026-08-23T17:52:06Z"}
