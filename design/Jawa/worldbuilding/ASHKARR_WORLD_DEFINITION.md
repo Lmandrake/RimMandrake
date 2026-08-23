@@ -118,11 +118,21 @@ numeric check.
 
 ## 3. The gazetteer — every named place, in (arc, bearing)
 
-### Water — 8.14% of the planet, three bodies
+### Water — 5.19% liquid, 6.46% counting ice
 
-**1,780 water tiles of 21,872 = 8.138%**, measured from `world/ASHKARR_WORLDMAP_tiles.csv`
-2026-08-20 and rounded to **8.14%** in `_meta.json`. That 1,780 is exactly `Ocean` 1,468 +
-`Lake` 312; there is no third water biome. (~~8.1%~~ was this file's rounding; cite 8.14%.)
+🔴 **RE-MEASURED 2026-08-22/23. `Ocean` 823 + `Lake` 312 = 1,135 liquid tiles = 5.19%.**
+Counting the third water biome `SeaIce` (277), 1,412 tiles = **6.46%**. Which figure applies
+depends on the question: **liquid for hydrology, incl-ice for "how much of this planet was
+ocean".** Canon: `infrastructure/state/canon.yml > planet.water_pct`.
+
+⛔ **~~8.14% / 1,780 tiles~~ is DEAD** — it counted `Ocean` at 1,468, before the owner's ruling of
+2026-08-22 13:04 to *"shrink the meridian water bodies to around half their current size"* and
+before the sub-freezing meridian ocean turned to ice rather than drying. There IS now a third
+water biome, which this paragraph used to deny.
+⛔ **Do not read water from `_meta.json`** — it is a build output of an older pass and still says
+8.14. ⚠️ `IceSheet` (80 tiles) is LAND ice and is NOT water: its `water` column is 0 on all 80.
+✅ The check that catches all of this: water column = 1,412, `Ocean+Lake+SeaIce` = 1,412, and
+elevation ≤ 0 = 1,412 — three routes, one number.
 | name | centre | radius | water level | character |
 |---|---|---|---|---|
 | **Scald** | (35, 185) | 10.5 | ⛔ ~~**perched, ~1410 m**~~ → **−30 m, at sea level** | ⭐ a crater lake, **the one shape ruled round**. 🔴 **It no longer spills: it is a terminal pan.** See the note below |
@@ -483,9 +493,19 @@ them.** They look alike from orbit and mean opposite things on the ground.
 > should have only the MOST alien forms of life, nothing recognizable really."*
 >
 > ⇒ **Not the deep nightside.** `HorrorWastes` belongs in the **frozen band just past the
-> terminator** — the warm end of the cold, roughly **arc 100–130** — because that is where
-> the bioweapon came from and where an adapted, still-recognisable horror would live.
+> terminator** — the warm end of the cold — because that is where the bioweapon came from and
+> where an adapted, still-recognisable horror would live.
 > ⛔ The earlier proposal of **arc ≥ 140** is SUPERSEDED and must not be built.
+>
+> ⚠️ **The figure `arc 100–130` is superseded by a TEMPERATURE band, 2026-08-23 — the intent is
+> unchanged.** The owner re-ruled it as a sequence: *"we pass through the mycoid layer, then pass
+> into the horror wastes… and only when it becomes truly cold do the horror wastes peter out."*
+> Built as **−55 … −30 °C** (1,686 tiles, arc 124–144). ⇒ Arc could not express it: `arc 100–130`
+> overlaps the mycoid layer, whose own p25 is **−31.4 °C**, and would put the wastes *inside* the
+> layer they are supposed to come after. **Temperature orders the stack; arc only approximated it.**
+> ✅ **This doc was RIGHT and the build was wrong for a day.** Commit `0ccf44fe` deleted the warm
+> half of `HorrorWastes` as *"never his ruling"* while this paragraph already said the opposite.
+> Anyone reconciling the two: **this paragraph wins.**
 >
 > 🔑 **And the deep nightside is now SPOKEN FOR, as a separate rule.** Beyond that band —
 > the coldest ground, arc ≥ 150, −82…−67 °C — carries **only the most alien life, nothing
@@ -593,7 +613,7 @@ across the Anvil, so nothing rules a straight line through any of them.
 world/ASHKARR_WORLDMAP_tiles.csv        ⭐ THE MAP: 21872 rows —
                                         tile, lat, lon, arc, bearing, elev_m, temp_c,
                                         rain_mm, biome, water, river_flow, region
-world/ASHKARR_WORLDMAP_settlements.csv  72 rows — faction, name, tile, arc, biome, why
+world/ASHKARR_WORLDMAP_settlements.csv  120 rows (was 72, re-measured 2026-08-23) — faction, name, tile, arc, biome, why
 world/ASHKARR_WORLDMAP_links.csv        every river and road edge
 world/ASHKARR_WORLDMAP_meta.json        planet, regions, factions, counts
 ```
