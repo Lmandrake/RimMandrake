@@ -526,3 +526,26 @@ offline. ⚠️ It cannot answer anything about BEHAVIOUR (can this pawn do this
 game appends parts of its own at load — a `ScenarioDef` reads 5 parts in the dump where the
 XML authors 3, because Odyssey adds two `ScenPart_PlanetLayer`. Count authored parts in the
 file, not in the dump.
+
+**12 — `validate_patch.py` now REFUSES an `<li>` inside a dictionary-keyed field, and that
+class of bug is the most expensive one this project has hit.** A `List<Foo>` whose `Foo`
+declares `LoadDataFromXmlCustom` and reads the NODE NAME as a def reference takes
+`<SomeDefName>value</SomeDefName>`; an `<li>` there throws inside the loader and RimWorld
+**discards the ENTIRE def**, silently, with nothing in the patch or the load to show for it.
+It cost **101 CharacterDefs** (`skillGains`) and **26 BiomeDefs — 94.8% of the planet**
+(`wildAnimals`) on the same day. ⇒ **45 fields are guarded**, list measured from the 1,558
+vanilla def files against the 578-mod capture (a field whose distinct child tag names are
+≥80% defNames and which vanilla never writes with `<li>`), not remembered. Includes
+`statBases`, `costList`, `skillGains`, `skillRequirements`, `xenotypeChances`, `wildAnimals`,
+`wildPlants`, `baseWeatherCommonalities`. Derivation:
+`infrastructure/state/observed/2026-08-22/biome_cast/custom_loader_fields.txt`.
+🔑 **Run the validator on any generated XML before deploying it** — both generators that hit
+this shipped clean-looking files that passed every check we had.
+
+**13 — A def-dump capture can be POISONED BY THE BUG YOU ARE INVESTIGATING, and it then
+reports your fix as broken.** Validating the *repaired* `BiomeCast_Ashkarr.xml` against
+capture `2026-08-23T05-05-29Z` produced **36 errors** of the form *"'AB_MycoticJungle' does
+not exist in the LIVE game"* — true, and only because the OLD patch had deleted those 18
+biomes before the capture was taken. ⇒ When a fix targets defs that the defect destroyed,
+the `--live`/`--defnames` check is circular until a clean reload. **Read the xpath match
+counts against the mod folders on disk instead** — those said 26 of 26 matched.
