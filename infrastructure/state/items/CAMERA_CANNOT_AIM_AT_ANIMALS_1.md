@@ -1,5 +1,36 @@
 ## spec
 
+🔴 **HALF OF THIS ITEM WAS MY OWN MISREADING — CORRECTED 2026-08-23 02:2x, BEFORE
+ANYONE ACTED ON IT.**
+
+**Coordinates ARE readable.** `jawa/pawn_get` returns a `position` object —
+`{'x': 112, 'z': 112}` for a colonist — which is exactly what `screenshot_cell_rect`
+needs. The claim below that "nothing can give you x/z" is WRONG.
+
+🔑 **Why every reading came back `x=0, z=0`, and it is worth remembering:**
+`jawa/spawn_pawn` takes `x` and `z`, **I omitted them**, and everything I spawned went
+to the map ORIGIN. The zeros were the truth. I then read those zeros as "the tool does
+not report position" and filed a defect against the tool. ⚠️ **A field that reads 0 for
+every row is ambiguous between 'not populated' and 'genuinely zero', and the way to tell
+them apart is to read a subject you did NOT create** — a starting colonist read 112,112
+immediately and would have settled it in one call.
+
+⚠️ Also note `jawa/list_pawns` is a BRIEF listing and `jawa/pawn_get` is the deep read.
+Position lives on the deep read. Reaching for the listing and concluding the data does
+not exist is the same mistake in a different coat.
+
+### What ACTUALLY remains, and it is still real
+
+`rimworld/jump_camera_to_pawn` **succeeds for a colonist by `pawnName` and fails for an
+animal**, by name or by id, returning `success: false` with no message. That half stands
+exactly as measured. But it is no longer a dead end, because `screenshot_cell_rect` can
+now be aimed using the position from `pawn_get` without the camera at all.
+
+---
+
+### The original filing, kept for the camera half
+
+
 **Nothing can point the camera at a spawned animal, so nothing can photograph one.**
 Measured 2026-08-23 01:0x on a live dev quicktest map:
 
