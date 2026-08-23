@@ -109,6 +109,20 @@ BUDGETS = [
     # them at state/*.md's 250 produces an OVER line nobody can act on. ⛔ That is the exact
     # failure this file's docstring names - unactionable OVER trains everyone to ignore the
     # output, which is how HUMAN.md reached 1,527 lines unremarked.
+    # 🔴 BUILDABLE.md IS A REGISTER, AND THE METRIC WAS A FALSE POSITIVE ON IT.
+    # Measured 2026-08-23: charged at state/*.md's 250 it read +351, the worst overrun in
+    # the repo, with the HIGHEST provenance density (13.1%) — and both numbers were the
+    # file OBEYING ITS OWN CHARTER, which is *"every line carries the date and how it was
+    # measured; a fact with no measurement behind it does not belong here."* A dated,
+    # hash-carrying line is what this file is FOR, so PROVENANCE regex counts it as rot.
+    # ⛔ An audit found roughly 120 lines of genuine history in it, not 350. Cutting to 250
+    # deletes live facts — and the biggest block, the register of instruments caught
+    # returning a confident wrong number, is the most load-bearing content in the repo:
+    # five hooks, items and skills cite INTO it, and a FIXED instrument's entry is not
+    # history, it is the calibration case the next tool is validated against.
+    # 🔑 500 is set so a runaway still shows. If it is hit, the question is whether the
+    # ~120 lines of closed-fix narrative have grown back, never whether to cut entries.
+    ("infrastructure/state/BUILDABLE.md", 500),
     ("infrastructure/state/NEXT_RELOAD_ARCHIVE.md", 2500),
     ("infrastructure/state/OWNER_DECISIONS_ARCHIVE.md", 2500),
     ("infrastructure/agents/POLICY.md", 320),
