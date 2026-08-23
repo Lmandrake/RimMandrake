@@ -54,6 +54,14 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ImperialOfficer</li>
     </apparelTags>
     <forceNormalGearQuality>true</forceNormalGearQuality>
+      <!-- issued kit only. An imperial trooper carries what the quartermaster gave him -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -84,6 +92,14 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ImperialOfficer</li>
     </apparelTags>
     <forceNormalGearQuality>true</forceNormalGearQuality>
+      <!-- issued kit only. An imperial trooper carries what the quartermaster gave him -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -113,6 +129,14 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ImperialOfficer</li>
     </apparelTags>
     <forceNormalGearQuality>true</forceNormalGearQuality>
+      <!-- issued kit only. An imperial trooper carries what the quartermaster gave him -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -142,6 +166,14 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ImperialOfficer</li>
     </apparelTags>
     <itemQuality>Excellent</itemQuality>
+      <!-- issued kit only. An imperial trooper carries what the quartermaster gave him -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -165,6 +197,18 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORArmor_mid</li>
       <li>SaV_apparel_thug</li>
     </apparelTags>
+      <!-- cartel vice and portable wealth - the richest and least disciplined roster -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>SmokeleafJoint</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>Yayo</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Flake</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>Ambrosia</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>40~120</countRange></li>
+        <li><thingDef>Gold</thingDef><countRange>2~8</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -188,6 +232,18 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORArmor_mid</li>
       <li>SaV_apparel_thug</li>
     </apparelTags>
+      <!-- cartel vice and portable wealth - the richest and least disciplined roster -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>SmokeleafJoint</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>Yayo</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Flake</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>Ambrosia</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>40~120</countRange></li>
+        <li><thingDef>Gold</thingDef><countRange>2~8</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -211,6 +267,18 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORArmor_mid</li>
       <li>SaV_apparel_thug</li>
     </apparelTags>
+      <!-- cartel vice and portable wealth - the richest and least disciplined roster -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>SmokeleafJoint</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>Yayo</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Flake</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>Ambrosia</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>40~120</countRange></li>
+        <li><thingDef>Gold</thingDef><countRange>2~8</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -235,6 +303,20 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORArmor_mid</li>
       <li>Royal</li>
     </apparelTags>
+      <!-- cartel vice and portable wealth - the richest and least disciplined roster -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>SmokeleafJoint</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>Yayo</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Flake</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>Ambrosia</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>40~120</countRange></li>
+        <li><thingDef>Gold</thingDef><countRange>2~8</countRange></li>
+        <li><thingDef>Gold</thingDef><countRange>10~30</countRange></li>
+        <li><thingDef>Luciferium</thingDef><countRange>1~3</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -260,6 +342,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORScrapper</li>
       <li>KotORClothing_civilian_villager</li>
     </apparelTags>
+      <!-- settlers and salvagers - modest, practical, a little cash -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>6~15</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -285,6 +377,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORScrapper</li>
       <li>KotORClothing_civilian_villager</li>
     </apparelTags>
+      <!-- settlers and salvagers - modest, practical, a little cash -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>6~15</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -310,6 +412,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORScrapper</li>
       <li>KotORClothing_civilian_villager</li>
     </apparelTags>
+      <!-- settlers and salvagers - modest, practical, a little cash -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>6~15</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -335,6 +447,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORScrapper</li>
       <li>KotORClothing_civilian_villager</li>
     </apparelTags>
+      <!-- settlers and salvagers - modest, practical, a little cash -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>6~15</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -359,6 +481,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORTusken</li>
       <li>SaV_apparel_tusken</li>
     </apparelTags>
+      <!-- Tusken: no industry, herbal medicine and dried meat, jade as portable wealth -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>10~25</countRange></li>
+        <li><thingDef>Jade</thingDef><countRange>1~4</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -382,6 +513,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORTusken</li>
       <li>SaV_apparel_tusken</li>
     </apparelTags>
+      <!-- Tusken: no industry, herbal medicine and dried meat, jade as portable wealth -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>10~25</countRange></li>
+        <li><thingDef>Jade</thingDef><countRange>1~4</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -404,6 +544,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORTusken</li>
       <li>SaV_apparel_tusken</li>
     </apparelTags>
+      <!-- Tusken: no industry, herbal medicine and dried meat, jade as portable wealth -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>10~25</countRange></li>
+        <li><thingDef>Jade</thingDef><countRange>1~4</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -427,6 +576,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORTusken</li>
       <li>SaV_apparel_tusken</li>
     </apparelTags>
+      <!-- Tusken: no industry, herbal medicine and dried meat, jade as portable wealth -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>10~25</countRange></li>
+        <li><thingDef>Jade</thingDef><countRange>1~4</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -448,6 +606,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORDroidArmorT1</li>
       <li>DroidArmor</li>
     </apparelTags>
+      <!-- droids need parts and fuel, never food or medicine -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Chemfuel</thingDef><countRange>10~30</countRange></li>
+        <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -470,6 +638,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORDroidArmorT1</li>
       <li>DroidArmor</li>
     </apparelTags>
+      <!-- droids need parts and fuel, never food or medicine -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Chemfuel</thingDef><countRange>10~30</countRange></li>
+        <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -491,6 +669,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORDroidArmorT1</li>
       <li>DroidArmor</li>
     </apparelTags>
+      <!-- droids need parts and fuel, never food or medicine -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Chemfuel</thingDef><countRange>10~30</countRange></li>
+        <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -515,6 +703,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORDroidArmorT1</li>
       <li>DroidArmor</li>
     </apparelTags>
+      <!-- droids need parts and fuel, never food or medicine -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Chemfuel</thingDef><countRange>10~30</countRange></li>
+        <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -538,6 +736,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORChitinArmour</li>
       <li>Neolithic</li>
     </apparelTags>
+      <!-- tribal steam-tech: hides and herbs, plus fuel for the boilers -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>8~20</countRange></li>
+        <li><thingDef>Chemfuel</thingDef><countRange>8~20</countRange></li>
+        <li><thingDef>WoodLog</thingDef><countRange>10~25</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -562,6 +770,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORChitinArmour</li>
       <li>Neolithic</li>
     </apparelTags>
+      <!-- tribal steam-tech: hides and herbs, plus fuel for the boilers -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>8~20</countRange></li>
+        <li><thingDef>Chemfuel</thingDef><countRange>8~20</countRange></li>
+        <li><thingDef>WoodLog</thingDef><countRange>10~25</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -586,6 +804,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORChitinArmour</li>
       <li>Neolithic</li>
     </apparelTags>
+      <!-- tribal steam-tech: hides and herbs, plus fuel for the boilers -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>8~20</countRange></li>
+        <li><thingDef>Chemfuel</thingDef><countRange>8~20</countRange></li>
+        <li><thingDef>WoodLog</thingDef><countRange>10~25</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -609,6 +837,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORChitinArmour</li>
       <li>Neolithic</li>
     </apparelTags>
+      <!-- tribal steam-tech: hides and herbs, plus fuel for the boilers -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>8~20</countRange></li>
+        <li><thingDef>Chemfuel</thingDef><countRange>8~20</countRange></li>
+        <li><thingDef>WoodLog</thingDef><countRange>10~25</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -633,6 +871,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>Vacsuit</li>
       <li>KotORHeadband_gasmask</li>
     </apparelTags>
+      <!-- sealed-suit divers carry rations and real medicine, not herbs -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Neutroamine</thingDef><countRange>2~6</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -657,6 +904,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>Vacsuit</li>
       <li>KotORHeadband_gasmask</li>
     </apparelTags>
+      <!-- sealed-suit divers carry rations and real medicine, not herbs -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Neutroamine</thingDef><countRange>2~6</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -681,6 +937,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>Vacsuit</li>
       <li>KotORHeadband_gasmask</li>
     </apparelTags>
+      <!-- sealed-suit divers carry rations and real medicine, not herbs -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Neutroamine</thingDef><countRange>2~6</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -705,6 +970,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>Vacsuit</li>
       <li>KotORHeadband_gasmask</li>
     </apparelTags>
+      <!-- sealed-suit divers carry rations and real medicine, not herbs -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Neutroamine</thingDef><countRange>2~6</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~2</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -726,6 +1000,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORChitinArmour</li>
       <li>KotORClothing_civilian_prole</li>
     </apparelTags>
+      <!-- hive insectoids: insect jelly is food AND identity; foundry stock beside it -->
+    <inventoryOptions>
+      <skipChance>0.25</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>InsectJelly</thingDef><countRange>2~6</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>10~30</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -748,6 +1031,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORChitinArmour</li>
       <li>KotORClothing_civilian_prole</li>
     </apparelTags>
+      <!-- hive insectoids: insect jelly is food AND identity; foundry stock beside it -->
+    <inventoryOptions>
+      <skipChance>0.25</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>InsectJelly</thingDef><countRange>2~6</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>10~30</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -770,6 +1062,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORChitinArmour</li>
       <li>KotORClothing_civilian_prole</li>
     </apparelTags>
+      <!-- hive insectoids: insect jelly is food AND identity; foundry stock beside it -->
+    <inventoryOptions>
+      <skipChance>0.25</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>InsectJelly</thingDef><countRange>2~6</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>10~30</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -793,6 +1094,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORChitinArmour</li>
       <li>KotORClothing_civilian_prole</li>
     </apparelTags>
+      <!-- hive insectoids: insect jelly is food AND identity; foundry stock beside it -->
+    <inventoryOptions>
+      <skipChance>0.25</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>InsectJelly</thingDef><countRange>2~6</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>10~30</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -816,6 +1126,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>PrestigeCombatGear</li>
       <li>KotORArmor_mid</li>
     </apparelTags>
+      <!-- Arkanian geneticists: glitterworld medicine and lab stock, never street drugs -->
+    <inventoryOptions>
+      <skipChance>0.35</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineUltratech</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Neutroamine</thingDef><countRange>3~8</countRange></li>
+        <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Gold</thingDef><countRange>3~10</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -839,6 +1159,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>PrestigeCombatGear</li>
       <li>KotORArmor_mid</li>
     </apparelTags>
+      <!-- Arkanian geneticists: glitterworld medicine and lab stock, never street drugs -->
+    <inventoryOptions>
+      <skipChance>0.35</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineUltratech</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Neutroamine</thingDef><countRange>3~8</countRange></li>
+        <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Gold</thingDef><countRange>3~10</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -863,6 +1193,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORArmor_heavy</li>
       <li>KotORArmor_mid</li>
     </apparelTags>
+      <!-- Arkanian geneticists: glitterworld medicine and lab stock, never street drugs -->
+    <inventoryOptions>
+      <skipChance>0.35</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineUltratech</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Neutroamine</thingDef><countRange>3~8</countRange></li>
+        <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Gold</thingDef><countRange>3~10</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -886,6 +1226,18 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>PrestigeCombatGear</li>
       <li>KotORArmor_heavy</li>
     </apparelTags>
+      <!-- Arkanian geneticists: glitterworld medicine and lab stock, never street drugs -->
+    <inventoryOptions>
+      <skipChance>0.35</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineUltratech</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Neutroamine</thingDef><countRange>3~8</countRange></li>
+        <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Gold</thingDef><countRange>3~10</countRange></li>
+        <li><thingDef>MedicineUltratech</thingDef><countRange>2~4</countRange></li>
+        <li><thingDef>ComponentSpacer</thingDef><countRange>2~4</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -910,6 +1262,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORArmor_mid</li>
       <li>KotORClothing_undersuit</li>
     </apparelTags>
+      <!-- professional mercenaries: combat drugs, real medicine, and paid in silver -->
+    <inventoryOptions>
+      <skipChance>0.35</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>2~4</countRange></li>
+        <li><thingDef>GoJuice</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>50~150</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -933,6 +1295,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>guy762_MandoHelmet_supercom</li>
     </apparelRequired>
     <requiredWorkTags>Violent</requiredWorkTags>
+      <!-- professional mercenaries: combat drugs, real medicine, and paid in silver -->
+    <inventoryOptions>
+      <skipChance>0.35</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>2~4</countRange></li>
+        <li><thingDef>GoJuice</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>50~150</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -957,6 +1329,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORArmor_mid</li>
       <li>KotORClothing_undersuit</li>
     </apparelTags>
+      <!-- professional mercenaries: combat drugs, real medicine, and paid in silver -->
+    <inventoryOptions>
+      <skipChance>0.35</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>2~4</countRange></li>
+        <li><thingDef>GoJuice</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>50~150</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -981,6 +1363,18 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>MNCFactionArmor</li>
       <li>KotORArmor_mid</li>
     </apparelTags>
+      <!-- professional mercenaries: combat drugs, real medicine, and paid in silver -->
+    <inventoryOptions>
+      <skipChance>0.35</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>2~4</countRange></li>
+        <li><thingDef>GoJuice</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>50~150</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>150~400</countRange></li>
+        <li><thingDef>GoJuice</thingDef><countRange>2~4</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1010,6 +1404,17 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORHermit</li>
       <li>KotORClothing_civilian_hooded</li>
     </apparelTags>
+      <!-- the clan trades in salvage; a Jawa carries stock, not supplies -->
+    <inventoryOptions>
+      <skipChance>0.25</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~15</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1040,6 +1445,17 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORHermit</li>
       <li>KotORClothing_civilian_hooded</li>
     </apparelTags>
+      <!-- the clan trades in salvage; a Jawa carries stock, not supplies -->
+    <inventoryOptions>
+      <skipChance>0.25</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~15</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1069,6 +1485,17 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORHermit</li>
       <li>KotORClothing_civilian_hooded</li>
     </apparelTags>
+      <!-- the clan trades in salvage; a Jawa carries stock, not supplies -->
+    <inventoryOptions>
+      <skipChance>0.25</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~15</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1098,6 +1525,19 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORHermit</li>
       <li>KotORClothing_civilian_hooded</li>
     </apparelTags>
+      <!-- the clan trades in salvage; a Jawa carries stock, not supplies -->
+    <inventoryOptions>
+      <skipChance>0.25</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~15</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>60~150</countRange></li>
+        <li><thingDef>ComponentSpacer</thingDef><countRange>1~1</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1120,6 +1560,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>WarcasketAll</li>
     </apparelTags>
     <maxApparelQuality>Awful</maxApparelQuality>
+      <!-- warcasket scrappers run on chemfuel and carry what they stripped -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1144,6 +1594,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <apparelTags>
       <li>WarcasketAll</li>
     </apparelTags>
+      <!-- warcasket scrappers run on chemfuel and carry what they stripped -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1166,6 +1626,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>WarcasketAll</li>
     </apparelTags>
     <maxApparelQuality>Poor</maxApparelQuality>
+      <!-- warcasket scrappers run on chemfuel and carry what they stripped -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -1187,6 +1657,17 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>WarcasketAll</li>
     </apparelTags>
     <itemQuality>Masterwork</itemQuality>
+      <!-- warcasket scrappers run on chemfuel and carry what they stripped -->
+    <inventoryOptions>
+      <skipChance>0.3</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
+        <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~2</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
   <!-- ⭐ THE DESERT TROOPER — owner, 2026-08-20: "the Homestead Defense League
@@ -1240,6 +1721,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </apparelRequired>
     <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
     <maxApparelQuality>Good</maxApparelQuality>
+      <!-- settlers and salvagers - modest, practical, a little cash -->
+    <inventoryOptions>
+      <skipChance>0.4</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Pemmican</thingDef><countRange>6~15</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
   </PawnKindDef>
 
 
