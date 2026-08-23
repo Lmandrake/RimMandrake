@@ -10,15 +10,43 @@ were actually cast is both the intent and far easier to read.
 """
 import csv, json, os, sys, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from dumppath import defs_dir
+from dumppath import defs_dir, captures_newest_first
 
 FA = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(FA, 'BiomeCast_Ashkarr.xml')
 
 def main():
-    bl = json.load(open(defs_dir() + '/BiomeDef.json', encoding='utf-8'))
-    bl = bl if isinstance(bl, list) else bl.get('defs')
-    PKG = {x['defName']: x.get('packageId') for x in bl if isinstance(x, dict)}
+    # ⚠️ Resolve packageId across EVERY capture, newest first, not just the newest.
+    # A capture taken during a load that discarded biomes holds 54 of them instead
+    # of 80, and reading only that one drops MayRequire from exactly the biomes
+    # this patch exists to fix - silently, because a missing packageId only emits
+    # a warning. Any capture that ever saw the biome is good enough for its owner.
+    PKG = {}
+    for cap in captures_newest_first():
+        f = os.path.join(cap, 'defs', 'BiomeDef.json')
+        if not os.path.isfile(f):
+            continue
+        bl = json.load(open(f, encoding='utf-8'))
+        bl = bl if isinstance(bl, list) else bl.get('defs')
+        for x in bl:
+            if isinstance(x, dict):
+                PKG.setdefault(x['defName'], x.get('packageId'))
+
+    # wildAnimals takes a PawnKindDef. Read the roster so a ThingDef-only name is
+    # caught here rather than as a cross-reference error on the next cold load.
+    PAWNKINDS = set()
+    for cap in captures_newest_first():
+        f = os.path.join(cap, 'defs', 'PawnKindDef.json')
+        if not os.path.isfile(f):
+            continue
+        pl = json.load(open(f, encoding='utf-8'))
+        pl = pl if isinstance(pl, list) else pl.get('defs')
+        PAWNKINDS |= {x['defName'] for x in pl if isinstance(x, dict)}
+        break
+    if not PAWNKINDS:
+        sys.exit('no PawnKindDef.json in any capture - refusing to emit a cast that '
+                 'cannot be checked against the pawnkind roster')
+    skipped = []
 
     rows = list(csv.DictReader(open(os.path.join(FA, 'cast_assignment.csv'), encoding='utf-8')))
     byb = collections.defaultdict(list)
@@ -58,8 +86,24 @@ def main():
         parts.append('        <wildAnimals>')
         for r in sorted(byb[b], key=lambda r: (-float(r['commonality']), r['defName'])):
             note = f"{r['band']}, {r['status']}"
-            parts.append(f'          <li><animal>{r["defName"]}</animal>'
-                         f'<commonality>{r["commonality"]}</commonality></li>'
+            if r['defName'] not in PAWNKINDS:
+                # wildAnimals resolves a PawnKindDef. A ThingDef name here is a
+                # dangling cross-reference, not a fallback. Named, never dropped
+                # in silence.
+                skipped.append((b, r['defName']))
+                parts.append(f'          <!-- SKIPPED {r["defName"]} - {r["label"]}:'
+                             f' not a PawnKindDef; wildAnimals cannot resolve it -->')
+                continue
+            # 🔴 THE NODE NAME IS THE ANIMAL AND THE NODE TEXT IS THE COMMONALITY.
+            # BiomeAnimalRecord.LoadDataFromXmlCustom is
+            #     commonality = ParseHelper.FromString<float>(xmlRoot.FirstChild.Value)
+            # so `<li><animal>X</animal><commonality>N</commonality></li>` makes
+            # FirstChild an ELEMENT whose .Value is null -> ArgumentNullException
+            # -> RimWorld discards the ENTIRE BiomeDef, silently, and the patch
+            # reports success. That shipped on 2026-08-22 and cost all 26 biomes
+            # this file touches; see MAP_BIOMES_REMOVED_LIVE_1. The rule was
+            # already written in Jawa_Patches/Patches/Ikee_Rename.xml lines 37-46.
+            parts.append(f'          <{r["defName"]}>{r["commonality"]}</{r["defName"]}>'
                          f' <!-- {r["label"]} - {note} -->')
         parts.append('        </wildAnimals>')
         parts.append('      </value>')
@@ -72,6 +116,11 @@ def main():
     nomay = [b for b in byb if not PKG.get(b)]
     if nomay:
         print(f"⚠️ no packageId resolved for: {nomay} - BUILD must confirm the MayRequire")
+    if skipped:
+        print(f"⚠️ {len(skipped)} cast entries SKIPPED - not PawnKindDefs, so wildAnimals "
+              f"could not resolve them:")
+        for b, d in skipped:
+            print(f"     {b:<30} {d}")
 
 if __name__ == '__main__':
     main()

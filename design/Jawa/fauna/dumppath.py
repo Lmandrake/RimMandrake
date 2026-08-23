@@ -19,3 +19,16 @@ def dump_root():
 
 def defs_dir():   return os.path.join(dump_root(), 'defs')
 def animals():    return os.path.join(dump_root(), 'animals.json')
+
+def captures_newest_first():
+    """Every capture dir that has a defs/, newest first.
+
+    ⚠️ `dump_root()` returns only the newest, which is right for "what does the
+    game have NOW" and wrong for "what is this def's owning mod" - a capture taken
+    during a load that discarded defs answers the second question with a hole.
+    """
+    caps = sorted(glob.glob(os.path.join(BASE, 'captures', '*')))
+    out = [c for c in reversed(caps) if os.path.isdir(os.path.join(c, 'defs'))]
+    if os.path.isdir(os.path.join(BASE, 'defs')):
+        out.append(BASE)
+    return out
