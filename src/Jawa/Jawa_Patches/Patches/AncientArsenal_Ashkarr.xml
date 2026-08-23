@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- DECIDE's ruling, 2026-08-23 — ANCIENT_SOLDIER_WEAPON_BUDGET_1.
+       Owner: "the ancients should have WAAAY more money to spend on their equipment",
+       and "Both are awesome. Do it!" when handed the two rulings.
+
+       🔴 THIS IS A DELIBERATE DIFFICULTY CHANGE. Better-armed ancients hit harder.
+       RAKATA_SLEEPERS_LOOK_RIGHT_1 required that the Rakata work NOT alter how ancients
+       fight; that constraint is SUPERSEDED here, on the owner's instruction, and its item
+       has been told so. Nothing else about ancients changes.
+
+       MEASURED against the live dump, 2026-08-23 — and it corrected the filed item twice:
+
+       * The `Gun` pool is 72 tagged / 48 priced: min 420, p25 1500, median 2000,
+         p75 2800, max 4800.
+       * ⛔ The item blamed three KotOR guns priced 60-100. They do NOT carry `Gun` at
+         all - they are `SpacerGun`, and were never in this pool. The real affordable set
+         at 300~900 was THREE weapons, of which the scatterbow was one.
+       * 🔴 `AMHP` is carried by ZERO weapons. AncientSoldierBoss lists ["AMHP","Gun"],
+         so half its tag set matches nothing and it silently draws from `Gun` alone -
+         capped at 4800 however much money it is given. A tag that matches nothing
+         contributes nothing and reports nothing. AMHP is LEFT in place (harmless, and a
+         mod may supply it later); the fix is to give the boss a pool worth its budget. -->
+
+  <!-- ============ 1. the scatterbow is not a gun ============ -->
+  <!-- MA_CapryakScatterbow (520) carries ["Gun","NeolithicRangedAdvanced"], so a bow from
+       a megafauna mod sits inside the industrial gun pool and surfaces on EVERY low-budget
+       `Gun` kind, not just ancients. Observed live: two of six thawed sleepers held one.
+       This is the narrow fix and it is independent of anyone's money. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MA_CapryakScatterbow"]/weaponTags/li[text()="Gun"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="MA_CapryakScatterbow"]/weaponTags/li[text()="Gun"]</xpath>
+    </match>
+  </Operation>
+
+  <!-- ============ 2. an ancient soldier can afford ancient kit ============ -->
+  <!-- 300~900 bought from a three-weapon pool. 1200~2600 spans the `Gun` pool's p25..p75,
+       so a sleeper comes out holding mid-tier industrial kit instead of whatever was cheap. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AncientSoldier"]/weaponMoney</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AncientSoldier"]/weaponMoney</xpath>
+      <value><weaponMoney>1200~2600</weaponMoney></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="AncientSoldier"]</xpath>
+      <value><weaponMoney>1200~2600</weaponMoney></value>
+    </nomatch>
+  </Operation>
+
+  <!-- The leader's tag is IndustrialGunAdvanced, whose pool starts at 1400 - so 500~1400
+       could only ever reach the very bottom of it, or nothing at all. 2500~6000 reaches
+       the p25 (4825) of the pool it was always pointed at. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AncientSoldier_Leader"]/weaponMoney</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AncientSoldier_Leader"]/weaponMoney</xpath>
+      <value><weaponMoney>2500~6000</weaponMoney></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="AncientSoldier_Leader"]</xpath>
+      <value><weaponMoney>2500~6000</weaponMoney></value>
+    </nomatch>
+  </Operation>
+
+  <!-- ============ 3. the boss gets a pool worth its money ============ -->
+  <!-- ⭐ Its money is NOT raised, deliberately. 2100~7500 was already more than the `Gun`
+       pool's 4800 ceiling, so more money bought literally nothing - the defect was the
+       POOL, not the budget. Adding IndustrialGunAdvanced lets the existing 7500 reach a
+       pool whose p25 is 4825. This is the single largest difficulty change in this file. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AncientSoldierBoss"]/weaponTags/li[text()="IndustrialGunAdvanced"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="AncientSoldierBoss"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li></value>
+    </nomatch>
+  </Operation>
+
+</Patch>
