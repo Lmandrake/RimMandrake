@@ -55,7 +55,8 @@ signature arm cannot kill a person; it captures machines."* **Measured, it is ba
 It captures people and ignores machines. A scavenger clan that takes prisoners is a fine
 story, but it is not the canonical Jawa ion blaster and it is not what L4 describes.
 
-⇒ Filed as `IONBLASTER_IGNORES_DROIDS_1`. The fix is BUILD's and is probably one of:
+⇒ ⚠️ **CORRECTED 2026-08-23: this said `Filed as IONBLASTER_IGNORES_DROIDS_1` and no such
+item was ever filed.** The finding IS tracked, under three real ids — `ION_CAPTURES_PEOPLE_NOT_DROIDS_1` (**done**), `ION_TAKES_DROIDS_NOT_PEOPLE_1` (**superseded**) and `ION_MACHINE_TIER_MISSING_1` (**proposed**, needs bridge). Nothing was lost; the name in this line was. The fix is BUILD's and is probably one of:
 add a stun/EMP application path for mechanoids in `DamageWorker_IonBuildup`; or add `EMP`
 as a secondary damage on the projectile; or accept the inversion and rewrite the doctrine.
 ⛔ **Not CHECK's call** — this changes what the campaign's signature weapon means.

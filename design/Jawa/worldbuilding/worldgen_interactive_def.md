@@ -703,7 +703,7 @@ Tribes, Junkers, Hutt Cartel, Wildsteam, Binary Star Raiders and the Confederacy
 cut (`FACTION_SPEC.md:49`, `:55`, `:331`) and the cut landed:
 `src/Jawa/Jawa_Patches/Patches/ForgottenArsenal.xml:10` records "roster went 14 -> 13". The
 frozen planet has **12 factions holding settlements**, plus Mechanoid — the Forgotten
-Arsenal — which holds none by design and is kept (`MECHANOIDS_STAY_ON_1`). 12 + 1 = **13**.
+Arsenal — which holds none by design and is kept ⚠️ (**this cited `MECHANOIDS_STAY_ON_1` until 2026-08-23; there is no such item — that string is the naming EXAMPLE in `CLAUDE.md` and it leaked in here as a citation. The Arsenal being kept is true and unaffected; only the reference was invented**). 12 + 1 = **13**.
 `canon.yml` → `factions.count`.
 
 ⚠️ **Pipeline conflict, caught and removed:** `populate_ashkarr.py` also renamed world
