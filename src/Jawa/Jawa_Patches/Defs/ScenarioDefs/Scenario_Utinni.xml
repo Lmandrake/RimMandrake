@@ -149,6 +149,29 @@
           </xenotypeCounts>
         </li>
 
+        <!-- ⭐ THE CLAN'S IKEE. Owner, 2026-08-23: "The player faction will start
+             with one." One creepy little eye that follows you around, bonded to a
+             founder from the first tick.
+
+             🔑 bondToRandomPlayerPawnChance 1.0 does two things, both wanted: it
+             creates the Bond relation with a starting Jawa AND completes Obedience
+             training, so the Ikee arrives already devoted rather than as livestock.
+             Verified against RimWorld's own ScenPart_StartingAnimal source: the bond
+             branch requires training.CanAssignToTrain(Obedience) to be Accepted,
+             which the Ikee satisfies because Ikee_Tuning.xml raises its trainability
+             to Advanced.
+
+             ⚠️ animalKind takes the PawnKindDef. AA_Eyeling is declared TWICE in
+             Races_Eyeling.xml - once as a ThingDef and once as a PawnKindDef sharing
+             the defName - which is the same trap Ikee_Rename.xml documents. This
+             field resolves the PawnKindDef, which is the correct one. -->
+        <li Class="ScenPart_StartingAnimal">
+          <def>StartingAnimal</def>
+          <animalKind>AA_Eyeling</animalKind>
+          <count>1</count>
+          <bondToRandomPlayerPawnChance>1.0</bondToRandomPlayerPawnChance>
+        </li>
+
         <!-- Already aboard the hull, not falling out of the sky. -->
         <li Class="ScenPart_PlayerPawnsArriveMethod">
           <def>PlayerPawnsArriveMethod</def>

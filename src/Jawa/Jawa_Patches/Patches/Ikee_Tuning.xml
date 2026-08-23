@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Ikee_Tuning.xml                           Jawa_Patches - new file 2026-08-23
+  ============================================================================
+
+  THE IKEE BECOMES THE JAWA'S PET. Owner's brief, 2026-08-23:
+  "the Ikee are the creepy Eyeling that we want to make into a Jawa pet. Modify
+   the Ikee to be only a third of its current size. Give it the ability to
+   nuzzle four times a day, yet have it be very messy all over (disgusting).
+   Have it be very easy to train."
+
+  🔑 The RENAME lives in Ikee_Rename.xml and is a separate concern. This file
+  only changes what the animal IS. Read that file first for why the name is
+  Ikee and for the wildAnimals dictionary-key trap.
+
+  WHAT ALPHA ANIMALS SHIPS, measured from capture 2026-08-23T07-12-04Z:
+      baseBodySize 0.4 · baseHealthScale 0.5 · wildness 0.2
+      trainability Intermediate · nuzzleMtbHours -1 (NEVER) · petness 0
+      manhunterOnDamageChance 0.5 · drawSize 1 / 1.25 / 1.5 by life stage
+      MoveSpeed 3 · Mass 60 · a toxic sting at power 8
+
+  ⚠️ nuzzleMtbHours -1 IS THE VANILLA "NEVER" SENTINEL, not a small number.
+  It has to become a positive mean-time-between-events in HOURS. Four nuzzles
+  a day means one per six hours, so 6.
+
+  ⚠️ "VERY EASY TO TRAIN" IS TWO FIELDS AND THEY DO DIFFERENT JOBS.
+  `wildness` is how hard it is to TAME and to keep tame; `trainability` is the
+  CEILING on what it can ever learn. A low wildness with Intermediate
+  trainability gives a pet that tames instantly and can never learn Rescue or
+  Haul. Both move here.
+
+  ⚠️ THE MESSINESS HAS NO RaceProperties FIELD. There is no `filthProducedPerDay`
+  or equivalent on RaceProperties - checked across all 2,524 animal defs in the
+  live set. RimWorld's own animal filth is driven by body size in
+  Pawn_FilthTracker and is not exposed to XML, and making the Ikee SMALLER would
+  have made it CLEANER. So the filth is added deliberately with
+  CompProperties_Spawner, which is vanilla and is proven on pawns: the Dryads
+  (Dryad_Woodmaker, Dryad_Berrymaker, Dryad_Medicinemaker) all carry one.
+  Filth_Slime is chosen over Filth_AnimalFilth because it takes 70 work to clean
+  against ordinary filth, lasts 35-40 days, and can attach to pawns walking
+  through it - it is the disgusting option, not merely the dirty one.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ==================================================================
+       1. A THIRD OF ITS SIZE - body, health, mass and the drawn sprite
+       ================================================================== -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Alpha Animals</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/baseBodySize</xpath>
+          <value><baseBodySize>0.13</baseBodySize></value>
+        </li>
+
+        <!-- 0.5 -> 0.35, not 0.17. A third of the HEALTH would make a pet that
+             dies to a stray spark, and the owner asked for a posterchild, not a
+             tragedy. Small and fragile, still keepable. -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/baseHealthScale</xpath>
+          <value><baseHealthScale>0.35</baseHealthScale></value>
+        </li>
+
+        <!-- a third the size carries a third the mass. 60 -> 20.
+             🔑 CONDITIONAL, not a bare Replace: this node is NOT authored in
+             Races_Eyeling.xml - it is inherited from AnimalThingBase or written by
+             another mod's patch - so a Replace matches 0 nodes on disk and would be
+             a silent no-op depending on load order. Replace it if present, add it if not. -->
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases/Mass</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases/Mass</xpath>
+            <value><Mass>20</Mass></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases</xpath>
+            <value><Mass>20</Mass></value>
+          </nomatch>
+        </li>
+
+        <!-- ⚠️ drawSize is on the PawnKindDef's lifeStages, NOT on the ThingDef's
+             graphicData - the ThingDef carries no graphicData at all. Three life
+             stages, each divided by three: 1 / 1.25 / 1.5 -> 0.33 / 0.42 / 0.5 -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Eyeling"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>0.33</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Eyeling"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>0.42</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Eyeling"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>0.5</drawSize></value>
+        </li>
+
+        <!-- ==================================================================
+             2. NUZZLES FOUR TIMES A DAY, and is a pet at all
+             ================================================================== -->
+        <!-- FOUR NUZZLES A DAY = one per six hours. -1 is the vanilla NEVER sentinel.
+             🔑 CONDITIONAL, not a bare Replace: this node is NOT authored in
+             Races_Eyeling.xml - it is inherited from AnimalThingBase or written by
+             another mod's patch - so a Replace matches 0 nodes on disk and would be
+             a silent no-op depending on load order. Replace it if present, add it if not. -->
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/nuzzleMtbHours</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/nuzzleMtbHours</xpath>
+            <value><nuzzleMtbHours>6</nuzzleMtbHours></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race</xpath>
+            <value><nuzzleMtbHours>6</nuzzleMtbHours></value>
+          </nomatch>
+        </li>
+
+        <!-- petness 0 means it can NEVER bond, which would have made every other
+             change here cosmetic. 0.9 is above the husky (0.75); this thing is
+             meant to imprint on a Jawa and stay imprinted. -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race</xpath>
+          <value><petness>0.9</petness></value>
+        </li>
+
+        <!-- a pet that turns manhunter on 50% of damage is not a pet. -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race</xpath>
+          <value><manhunterOnDamageChance>0.02</manhunterOnDamageChance></value>
+        </li>
+
+        <!-- ==================================================================
+             3. VERY EASY TO TRAIN - both halves
+             ================================================================== -->
+        <!-- how hard it is to TAME and to keep tame. 0.2 -> 0.02, easier than a cat.
+             🔑 CONDITIONAL, not a bare Replace: this node is NOT authored in
+             Races_Eyeling.xml - it is inherited from AnimalThingBase or written by
+             another mod's patch - so a Replace matches 0 nodes on disk and would be
+             a silent no-op depending on load order. Replace it if present, add it if not. -->
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/wildness</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/wildness</xpath>
+            <value><wildness>0.02</wildness></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race</xpath>
+            <value><wildness>0.02</wildness></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/trainability</xpath>
+          <value><trainability>Advanced</trainability></value>
+        </li>
+
+        <!-- ==================================================================
+             4. VERY MESSY ALL OVER - see the header for why this is a comp
+             ================================================================== -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]</xpath>
+          <value>
+            <comps>
+              <li Class="CompProperties_Spawner">
+                <thingToSpawn>Filth_Slime</thingToSpawn>
+                <spawnCount>1</spawnCount>
+                <spawnIntervalRange>900~2200</spawnIntervalRange>
+                <spawnMaxAdjacent>6</spawnMaxAdjacent>
+                <spawnForbidden>true</spawnForbidden>
+              </li>
+            </comps>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
