@@ -156,11 +156,13 @@ hour** — *"I was wrong."* You author renormalization; **BUILD deploys it.** Th
 
 ## Skills added 2026-08-16
 
-`review-sheets` — when a curation call is too large for chat, build the instrument instead.
+`review-sheets` — ⭐ **moved OUT of this repo 2026-08-23** to `D:\Luke\dev\review-sheets`, installed
+machine-wide. It loads under the same name; `skills/review-sheets` no longer exists, and a fix goes in ITS repo.
 `frozen-artifacts` — freezing a decision, and the restraint not to over-freeze.
 
 ⚠️ **A skill folder IS the installed skill** (corrected 2026-08-21): `.claude/skills/<name>` symlinks to
-`skills/<name>`, all 26 ⇒ **editing the folder installs it, immediately.** The `.skill` archives are an EXPORT for
+`skills/<name>`, for the **25 that live here** ⇒ **editing the folder installs it, immediately.**
+⚠️ **Two skills are the exception**: `review-sheets` (moved out 2026-08-23) and `measuring-large-artifacts` live in their OWN repos and the symlink points outside this checkout — fix those THERE, not here. See `skills/README.md`. The `.skill` archives are an EXPORT for
 a machine without this checkout and are **gitignored** (`.gitignore:166`); refresh with
 `python3 src/RimMandrake/Utils/package_skill.py --all`.
 

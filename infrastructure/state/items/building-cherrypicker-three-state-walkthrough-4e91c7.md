@@ -18,7 +18,7 @@ and that distinction is what the sheet must capture.
 (3 research + 30 buildables + 5 pherocore recipes) has NEVER been applied —
 it is the natural first payload for this sheet.
 No buildings review sheet exists; nine other registers do
-(`design/Jawa/worldbuilding/review/`). `skills/review-sheets` covers building
+(`design/Jawa/worldbuilding/review/`). the `review-sheets` skill covers building
 one, including pre-filling the decisions so the owner only disagrees.
 
 ## verify

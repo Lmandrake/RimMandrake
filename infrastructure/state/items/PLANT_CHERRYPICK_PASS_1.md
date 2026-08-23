@@ -43,7 +43,7 @@ pass is a fire-ecology pass.
 - **Biome cuts ARE.** Biome assignment bakes at world creation.
 
 ## instrument
-`skills/review-sheets` — an HTML sheet with the sprites, prefilled keep/cut so the owner
+the `review-sheets` skill — an HTML sheet with the sprites, prefilled keep/cut so the owner
 only disagrees, autosaving to a real file.
 `design/Jawa/worldbuilding/biome_roster_for_review.html` is the precedent.
 `src/RimMandrake/Utils/cherrypick_review.py` and `cherrypick_build.py` already exist —
@@ -71,7 +71,7 @@ file records the agent's guesses under the owner's name.
 wood or resource supply hangs on one plant; and `plant_decisions.json` carries
 `savedBy: plant_review.html` with a **later** `savedAt` than the last generator run.
 
-🔴 **`savedBy` is the only check that cannot be fooled** (`skills/review-sheets` §10). A
+🔴 **`savedBy` is the only check that cannot be fooled** (`review-sheets` §11 — `savedBy` is this project's instance of the stamp key only the page writes). A
 pre-fill generator must never emit it. Measured 2026-08-22: the file HAS it — the owner's 73
 touched rows are real and landed on disk.
 

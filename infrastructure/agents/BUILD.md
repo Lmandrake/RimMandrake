@@ -140,7 +140,8 @@ requiring a running RimWorld. Bounce with one line.
 `calibrating-binary-formats` — when a file's bytes do not mean what they look like.
 
 ⚠️ **A skill folder IS the installed skill** (corrected 2026-08-21): `.claude/skills/<name>` is a
-symlink to `skills/<name>`, for all 26. ⇒ **Editing the folder installs it, immediately.** The
+symlink to `skills/<name>`, for the **25 that live here**. ⇒ **Editing the folder installs it, immediately.**
+⚠️ **Two skills are the exception**: `review-sheets` (moved out 2026-08-23) and `measuring-large-artifacts` live in their OWN repos and the symlink points outside this checkout — fix those THERE, not here. See `skills/README.md`. The
 `skills/<name>.skill` archives are an EXPORT for handing a skill to a machine without this checkout
 — nothing here loads from one, and they are **gitignored** (`.gitignore:166`). Refresh them with
 `python3 src/RimMandrake/Utils/package_skill.py --all`.

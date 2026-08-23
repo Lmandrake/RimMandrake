@@ -134,7 +134,8 @@ rimflow spawn --from BLACKSTAR_SPAWNS_VESSELLESS_1 --for BUILD --name BLACKSTAR_
 `agent-fanout-research` — parallel investigation; the disk thread beats the web on local facts.
 
 ⚠️ **A skill folder IS the installed skill** (corrected 2026-08-21): `.claude/skills/<name>` symlinks to
-`skills/<name>`, all 26 ⇒ **editing the folder installs it, immediately.** The `.skill` archives are an
+`skills/<name>`, for the **25 that live here** ⇒ **editing the folder installs it, immediately.**
+⚠️ **Two skills are the exception**: `review-sheets` (moved out 2026-08-23) and `measuring-large-artifacts` live in their OWN repos and the symlink points outside this checkout — fix those THERE, not here. See `skills/README.md`. The `.skill` archives are an
 EXPORT for a machine without this checkout and are **gitignored** (`.gitignore:166`); refresh them with
 `python3 src/RimMandrake/Utils/package_skill.py --all`.
 
