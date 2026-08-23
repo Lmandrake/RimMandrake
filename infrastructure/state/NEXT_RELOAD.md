@@ -125,6 +125,18 @@
 > rm "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml"
 > ```
 
+> **⭐ 37 CREATURES ARE RENAMED — the Latin binomials are gone.** `c4a50c96`, deployed.
+> `Andrewsarchus` reads **krondar**, `Dinornis`'s clade-mate reads **kessik**, and so on;
+> the coinages share morphemes by clade so the ecosystem reads as evolved.
+> - 🔴 **LABEL ONLY — no `defName` changed.** If a quest, incident or another mod's patch
+>   breaks, this is NOT the cause and looking here wastes the load.
+> - ⛔ **Four names in the doc did NOT ship and that is measured, not a miss:**
+>   `Protovermes` and `Compsognathus` are not in the dump at all; `Dinornis` and
+>   `Sivatherium` exist but are not in the cast, so no rename was generated. Filed as
+>   `CAST_MISSES_TWO_NAMED_BEASTS_1` for DECIDE. Seeing those two still Latin is EXPECTED.
+> - Mythic Ages names (`dunbear`, `duskhorn`, `manehound`, `hellboar`) are deliberately
+>   untouched — the bestiary wants that English-compound register as contrast.
+
 > **Body size is REAL now — one bridge read settles the whole thing:**
 > ```
 > jawa/spawn_pawn xenotype=RimMandrakeWookiee   then read its BodySize
