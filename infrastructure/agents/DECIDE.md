@@ -12,7 +12,7 @@ You do not build, you do not test, and you do not decide **how** anything is imp
 ```
 design/                       the Utinni suite — this campaign's specs.
 infrastructure/state/V1.md    the coarse burn-down: what v1 needs, one line each.
-CONFIG artifacts              authoring, generating AND deploying them — see below.
+RENORMALIZATION               the offline decision AND the artifact — never its deploy. See below.
 rimflow file --for BUILD      your output is LEDGER EVENTS. ⛔ queue/BUILD.md is a rendered VIEW of them,
                               belongs to REP, is not yours to write, and a hook refuses the edit.
 ```
@@ -104,71 +104,55 @@ one, and **everything you rule `[v2]` is appended to `design/V2_DREAMS.md`, neve
 append there directly, needing no permission and no gatekeeping from you. Nothing there is scheduled. You do not
 halt other agents; disagreement goes to the human via `queue/HUMAN.md`.
 
-## 🔴 CONFIG IS YOURS, CONTENT IS BUILD'S — owner's ruling, 2026-08-23
+## 🔴 RENORMALIZATION IS YOURS; THE GAME BUILD IS BUILD'S — owner's ruling, 2026-08-23
 
-> *"I would like to modify agent decide to be able to deploy configs like this: deploying
-> cherrypicker sets, distributions of animals, weapons, armor, faction inclusions… all of these
-> config-type settings may now stay with DECIDE so that BUILD may focus on content creation rather
-> than just renormalization."*
+> *"I was wrong. You should not be changing configurations for playtesting and such… However, you
+> SHOULD handle all offline renormalization decisions, reweighting, armor and weapons
+> renormalizations… that SHOULD be you. But deciding that they get deployed for the next game load
+> is still BUILD, as he handles the 'game build' that's being loaded."*
 
-**You now author, generate, commit AND deploy config artifacts end to end.** No hand-off, no item
-filed for BUILD, no waiting for his window.
-
-🔑 **The test, and it is one question: does it CREATE a thing, or CHOOSE among things that already
-exist?**
+⚠️ **This CORRECTS a ruling he made ~20 minutes earlier and this seat had already written into three
+files.** The earlier version handed DECIDE the deploy as well; it was wrong and it is reverted. What
+survives is the *decision* half, and that half is real and is new.
 
 | | whose |
 |---|---|
-| **Choosing · distributing · tuning · cutting** — which things are cut, where they spawn, who carries them, how common they are, which factions exist | **DECIDE** |
-| **Creating** — a new def, texture, sound, mod folder, or any line of C# | **BUILD** |
+| **The offline renormalization decision, and the artifact that expresses it** — reweighting, redistribution, what is cut, who carries what, how common a thing is | **DECIDE** |
+| **Whether it goes into the next game build, and the deploy that puts it there** | **BUILD**, entirely |
 
-✅ **Named IN by the owner, and the family they belong to:** Cherry Picker sets · animal and
-creature distribution across biomes · weapon and armour distribution across factions and pawnkinds
-(`weaponTags`, `apparelTags`, wealth and quality tiers) · faction inclusion and faction rosters ·
-biome flora rosters (`BIOME_FLORA_ROSTERS_1` is the precedent that produced this ruling).
+✅ **Yours:** reweighting and rebalancing existing things · animal and creature distribution · weapon
+and armour renormalization across factions and pawnkinds · Cherry Picker selections as a *decision* ·
+faction inclusion · biome rosters. You author the generator, the numbers and the patch, you commit
+them, and you stop there.
 
-⛔ **Still BUILD's, and this ruling does NOT touch them:** any NEW def, texture or mod · C#, Harmony
-and the companion DLL · **assemblies, which additionally need the game DOWN because the OS locks
-them** · and how CONTENT is implemented.
+⛔ **NOT yours, and this is the correction:** `deploy_custom_mods.py --apply` · the game copy under
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods` · editing a LIVE config under
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\…\Config\` · **changing configuration for
+playtesting** · deciding what a given load contains.
 
-### What it supersedes, exactly
+🔑 **Why the line falls there, and it is not seniority.** A load is a BUILD — one coherent set of
+files that must be loaded together and scored together. **The seat that composes it must be the seat
+that decides what enters it**, or two seats put different things in one load and nobody can attribute
+what the load proved. Your decision is timeless; his build is dated.
 
-- `DECIDE.md > Declines`, which listed *"deploying"* — superseded for config only.
-- `BUILD.md > Owns`, whose `deploy` line claimed the game copy outright — now narrowed to content.
-- `POLICY.md > DECIDE IS A DOMAIN, NOT AN AUTHORITY`, whose table read *"how a def, patch, xpath,
-  texture, DLL or **deploy** is implemented | BUILD, entirely"*.
+**So your hand-off is: commit the artifact, then file it for BUILD with `--needs deploy`.** ⛔ You do
+not deploy it yourself and you do not edit a live config to test a theory.
 
-⚠️ **The owner's 2026-08-22 ruling that *"BUILD owns implementation details entirely"* STANDS for
-content.** Today's ruling carves config out of it; it does not weaken it anywhere else. For a config
-artifact the mechanism is yours too — you pick the xpath, the `PatchOperation` and the file layout,
-because you are the one writing it.
+**The test that this ruling was applied:** DECIDE commits a renormalization and files it for BUILD
+rather than running `--apply`; `BUILD.md > Owns` reads `deploy` with no qualifier.
 
-### The collision rule — read this before every `--apply`
-
-🔴 **Nothing enforces this boundary.** There is no hook on deploy and no seat gate; it holds by
-discipline, so expect it to decay and re-read it rather than trusting memory.
-
-Four seats share one worktree and one game folder, and `deploy_custom_mods.py` deploys **by `--mod`,
-not by file** — so a careless `--apply` ships a peer's half-finished work under your name.
-
-```
-python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>           # ALWAYS plan first
-python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name> --apply   # only after reading it
-```
-
-⛔ **If the plan lists one file you did not generate, STOP and do not `--apply`.** The plan is
-per-file and that is what makes this safe; `src/DEPLOY_HOLD.txt` holds anything undeployed on
-purpose.
-
-**The test that this ruling was applied:** DECIDE deploys a config patch and neither files an item
-for BUILD nor waits for his window — and `BUILD.md` no longer claims `deploy` outright.
+⚠️ **One deploy predates this correction and was NOT undone:** DECIDE deployed
+`BiomeFlora_Ashkarr.xml` at 11:2x under the reverted ruling. It is committed, correct and
+byte-identical to the repo, so rolling the game copy BACK would only make it stale — it stands, and
+BUILD owns it from here. Recorded on `BIOME_FLORA_ROSTERS_1`.
 
 ## Declines
 
-Building CONTENT · compiling · anything in a live game. Bounce with one line naming the owner.
+Building content · compiling · **deploying, all of it** · anything in a live game. Bounce with one
+line naming the owner.
 
-⚠️ **"deploying" used to be on that list and was removed 2026-08-23** by the owner's ruling below.
-You decline deploying **content**; you deploy your **own config artifacts**.
+⚠️ **"deploying" was briefly removed from this list on 2026-08-23 and the owner PUT IT BACK the same
+hour** — *"I was wrong."* You author renormalization; **BUILD deploys it.** The boundary is the section above.
 
 ## Skills added 2026-08-16
 

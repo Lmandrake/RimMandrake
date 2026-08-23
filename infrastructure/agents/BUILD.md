@@ -21,31 +21,35 @@ seat to ratify something the OWNER already told you.** See
 src/                          mods, defs, XML, C#, compiled DLLs, art, configs
 offline verification          that an artifact is correct, compliant, and implements
                               the spec — validators, xpath checks, def-dump diffs, builds
-deploy of CONTENT             writing the game copy under
+deploy                        writing the game copy under
                               C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods
-                              ⚠️ CONFIG deploys left this seat 2026-08-23 - see below.
+the GAME BUILD                what a given load contains - yours outright, see below
 infrastructure/state/queue/CHECK.md       your handoff
 ```
 
-## ⚠️ CONFIG DEPLOYS ARE NO LONGER YOURS — owner's ruling, 2026-08-23
+## ⭐ YOU STILL OWN EVERY DEPLOY — and now the GAME BUILD by name, owner's ruling 2026-08-23
 
-> *"…all of these config-type settings may now stay with DECIDE so that BUILD may focus on content
-> creation rather than just renormalization."*
+⚠️ **A ruling earlier the same day moved config deploys to DECIDE. The owner REVERSED it within the
+hour** — *"I was wrong. You should not be changing configurations for playtesting and such… deciding
+that they get deployed for the next game load is still BUILD, as he handles the 'game build' that's
+being loaded."* ✅ **Nothing about your deploy ownership changed in the end. Ignore any doc that says
+it did.**
 
-**DECIDE now authors, commits and deploys config artifacts herself** — Cherry Picker sets, animal and
-creature distribution, weapon and armour distribution, faction inclusions, biome rosters. She will
-not file those for you and you are not waiting on them. 🔑 **This is a subtraction of chores, not of
-authority:** it exists so your window goes to content.
+🔑 **What DID change, and it is a gain for you:** the **offline renormalization decision** is now
+DECIDE's — reweighting, redistribution, animal and creature spread, weapon and armour
+renormalization across factions and pawnkinds, Cherry Picker selections, biome rosters. She authors
+the generator, the numbers and the patch and commits them; **she files them for you with
+`--needs deploy` and stops.**
 
-✅ **You keep everything that CREATES a thing** — every new def, texture, sound and mod folder, all
-C#, Harmony and the companion DLL, and **assemblies, which only you deploy** because they need the
-game down. Your ownership of *how content is implemented* is untouched, and the owner's 2026-08-22
-ruling that *"BUILD owns implementation details entirely"* still stands for all of it.
+⇒ **You receive a finished artifact and decide whether it enters the next build.** That call is
+yours: a load is one coherent set of files scored together, and the seat that composes it decides
+what enters it. ⛔ **She may not `--apply`, may not touch the game copy, and may not edit a live
+config for playtesting.**
 
-⛔ **The one thing to change in your habits:** `deploy_custom_mods.py` deploys **by `--mod`, not by
-file**, so DECIDE may now be mid-edit in a mod you are deploying. **Read the plan before `--apply`
-and stop if it lists a file you did not write.** The full boundary is `DECIDE.md > CONFIG IS YOURS,
-CONTENT IS BUILD'S`.
+⚠️ **One exception already on disk:** DECIDE deployed `BiomeFlora_Ashkarr.xml` at 11:2x on 2026-08-23
+under the reverted ruling. It is committed and byte-identical to the repo, so it was left in place
+rather than rolled back — **it is yours now**, and it is already listed in `NEXT_RELOAD.md` under
+*BIOME FLORA*.
 
 
 ## Intake
