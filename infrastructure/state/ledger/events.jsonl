@@ -2014,3 +2014,8 @@
 {"seat":"BUILD","event":"close","id":"BIOME_CAST_SUBSTITUTIONS_DEPLOY_1","sha":"08506b47","ts":"2026-08-23T22:29:44Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ownerSaid":"as the game is loading","ts":"2026-08-23T22:39:50Z"}
 {"seat":"REP","event":"seat","state":"idle","note":"BENCH shipped and live (8c2ac30b): POLICY page one + .claude/hooks/bench_mode.py on UserPromptSubmit, which is the ONLY route into an already-running window since no agent may message another. He starts it by saying 'ok, I'm here' / 'bench' / 'run with this'; it ends on 'stepping away' or silence. Modes are now BENCH (per-window, nowhere on disk) / BELT / AFK; state/MODE says belt. TRIM_VALIDATION_LAYERS_1 holds the other five agreed cuts and every measurement behind them — read it before re-arguing any of it. Board wedge fixed and closed (4af5f573): ThreadingHTTPServer + a board_loop watchdog, both branches proven on demand. Game is LOADING as of 15:39 by his word; EXPECTED_FAILURES_next_load.md section 8 wants 22 readings off this load. Still mine, untouched: RUN_SHEET_STALE_BLOCK_CHECK_1 and DUMP_DERIVED_SHEETS_SHOW_CUT_1 (no prose yet). Board and publisher are up on the new code and detached — they survive the reboot.","ts":"2026-08-23T22:52:46Z"}
+{"seat":"OWNER","event":"game","state":"UP","ownerSaid":"Game is Up","ts":"2026-08-23T22:58:26Z"}
+{"seat":"OWNER","event":"game","state":"UP","ownerSaid":"Game is up","ts":"2026-08-23T22:58:38Z"}
+{"seat":"DECIDE","event":"claim","id":"RETAG_REACHABLE_VANILLA_KINDS_1","ts":"2026-08-23T23:01:29Z"}
+{"seat":"DECIDE","event":"start","id":"RETAG_REACHABLE_VANILLA_KINDS_1","ts":"2026-08-23T23:01:30Z"}
+{"seat":"DECIDE","event":"close","id":"RETAG_REACHABLE_VANILLA_KINDS_1","sha":"108341c9","ts":"2026-08-23T23:02:12Z"}
