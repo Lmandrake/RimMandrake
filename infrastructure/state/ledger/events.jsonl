@@ -1888,3 +1888,9 @@
 {"seat":"DECIDE","event":"start","id":"DINOSAUR_IMAGE_REVIEW_SHEET_1","ts":"2026-08-23T17:56:03Z"}
 {"seat":"DECIDE","event":"unblock","id":"CREATURE_ART_REVIEW_FLAGS_1","ts":"2026-08-23T17:56:44Z"}
 {"seat":"DECIDE","event":"close","id":"DINOSAUR_IMAGE_REVIEW_SHEET_1","sha":"97cad263","ts":"2026-08-23T17:56:58Z"}
+{"seat":"REP","event":"claim","id":"LOAD_PROCEDURE_NEEDS_BUDGET_1","ts":"2026-08-23T17:58:55Z"}
+{"seat":"REP","event":"start","id":"LOAD_PROCEDURE_NEEDS_BUDGET_1","ts":"2026-08-23T17:58:55Z"}
+{"seat":"BUILD","event":"claim","id":"CREATURE_RESIZE_PATCH_1","ts":"2026-08-23T18:01:21Z"}
+{"seat":"BUILD","event":"start","id":"CREATURE_RESIZE_PATCH_1","ts":"2026-08-23T18:01:21Z"}
+{"seat":"BUILD","event":"verify","id":"CREATURE_RESIZE_PATCH_1","result":"pass","config":"offline: source XML + full 578 load set, 75 ops all matching","evidence":"observed/2026-08-23/creature_resize/verify.md","sha":"38a1ffc4","ts":"2026-08-23T18:01:22Z"}
+{"seat":"BUILD","event":"close","id":"CREATURE_RESIZE_PATCH_1","sha":"38a1ffc4","ts":"2026-08-23T18:01:22Z"}

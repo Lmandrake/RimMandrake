@@ -599,3 +599,22 @@ pawn regardless of budget (`Jawa_Blackstar_Heavy` requires a 14,500-silver Manda
 `apparelRequired` for anything that MUST appear — a uniform, a robe, a warcasket — and
 `apparelTags` only for variety you are willing to lose. ⚠️ And check body coverage: a tag family
 can be all helmets and cuirasses, leaving the pawn with no trousers, which no validator reports.
+
+
+**19 — The def dump does NOT serialise `drawSize` (or `Color`), so a resize or recolour job
+cannot be done from the capture.** All 25 creatures in `CREATURE_RESIZE_PATCH_1` read
+`graphicData.drawSize = null` AND `lifeStages[].bodyGraphicData.drawSize = null` in capture
+`2026-08-23T07-12-04Z`, while their mod XML on disk declares real values. Same for
+`FactionDef.colorSpectrum`, which the dump renders as `"<skipped:Color>"`. ⇒ **Vector2 and
+Color fields are absent from the dump by construction, not missing from the game.** Read them
+from the mod's own source XML. 🔑 And note where `drawSize` lives for animals: on
+`PawnKindDef.lifeStages[].bodyGraphicData`, never on the ThingDef's `graphicData`.
+
+**20 — A `PawnKindDef` block contains TWO drawSize families and a naive regex doubles your
+operations.** `dessicatedBodyGraphicData` carries its own `<drawSize>` beside
+`bodyGraphicData`'s, so `re.findall(r'<drawSize>...')` over a whole PawnKindDef returns twice
+as many values as there are life stages. That built a 170-operation patch indexed `li[1..6]`
+against defs with three life stages — and **`validate_patch.py` reported "OK - 0 errors" for
+both the broken and the correct version**, because the surplus xpaths simply match nothing and
+a no-op is not an error. ⇒ Extract from inside `<bodyGraphicData>` only, and **always print
+what a generator produced and read it** before trusting a clean validate.
