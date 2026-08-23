@@ -41,13 +41,6 @@
     "temp_c": 22.0
    },
    {
-    "biome": "AB_RockyCrags",
-    "tiles": 3816,
-    "pct": 17.447,
-    "water": false,
-    "temp_c": -42.9
-   },
-   {
     "biome": "ExtremeDesert",
     "tiles": 3214,
     "pct": 14.695,
@@ -67,6 +60,27 @@
     "pct": 7.869,
     "water": false,
     "temp_c": -0.8
+   },
+   {
+    "biome": "HorrorWastes",
+    "tiles": 1686,
+    "pct": 7.708,
+    "water": false,
+    "temp_c": -43.6
+   },
+   {
+    "biome": "AB_PropaneLakes",
+    "tiles": 1584,
+    "pct": 7.242,
+    "water": false,
+    "temp_c": -64.8
+   },
+   {
+    "biome": "AB_RockyCrags",
+    "tiles": 1118,
+    "pct": 5.112,
+    "water": false,
+    "temp_c": -15.0
    },
    {
     "biome": "Ocean",
@@ -90,11 +104,11 @@
     "temp_c": -15.0
    },
    {
-    "biome": "AB_PropaneLakes",
-    "tiles": 554,
-    "pct": 2.533,
+    "biome": "BMT_CrystalCaverns",
+    "tiles": 577,
+    "pct": 2.638,
     "water": false,
-    "temp_c": -60.6
+    "temp_c": -64.9
    },
    {
     "biome": "ZBiome_Badlands",
@@ -109,13 +123,6 @@
     "pct": 2.441,
     "water": false,
     "temp_c": 46.9
-   },
-   {
-    "biome": "HorrorWastes",
-    "tiles": 468,
-    "pct": 2.14,
-    "water": false,
-    "temp_c": -53.7
    },
    {
     "biome": "BMT_FungalForest",
@@ -158,13 +165,6 @@
     "pct": 1.038,
     "water": false,
     "temp_c": 36.1
-   },
-   {
-    "biome": "BMT_CrystalCaverns",
-    "tiles": 127,
-    "pct": 0.581,
-    "water": false,
-    "temp_c": -62.2
    },
    {
     "biome": "AB_GelatinousSuperorganism",
@@ -333,9 +333,9 @@
     ],
     "biomes": {
      "Desert": 4623,
-     "AB_RockyCrags": 3806,
      "ExtremeDesert": 3214,
-     "AB_MycoticJungle": 1939
+     "AB_MycoticJungle": 1939,
+     "Wasteland": 1721
     }
    },
    {
@@ -689,12 +689,14 @@
    "AridShrubland": 17,
    "ZBiome_Badlands": 10,
    "AB_FeraliskInfestedJungle": 6,
-   "AB_RockyCrags": 4,
    "PoisonForest": 3,
    "Scarlands": 3,
+   "HorrorWastes": 2,
    "Volcano": 2,
    "AB_MycoticJungle": 1,
+   "BMT_CrystalCaverns": 1,
    "ZBiome_Grasslands": 1,
+   "AB_PropaneLakes": 1,
    "AB_MiasmicMangrove": 1
   },
   "coastal": 37,
@@ -707,7 +709,7 @@
     "name": "Cold Archive",
     "faction": "Ascendant Helix",
     "factionDef": "Jawa_AscendantHelix",
-    "biome": "AB_RockyCrags",
+    "biome": "HorrorWastes",
     "lat": 51.82,
     "lon": 155.73,
     "elevation_m": 1331.0,
@@ -815,7 +817,7 @@
     "name": "The Revision",
     "faction": "Ascendant Helix",
     "factionDef": "Jawa_AscendantHelix",
-    "biome": "AB_RockyCrags",
+    "biome": "HorrorWastes",
     "lat": 43.85,
     "lon": -141.89,
     "elevation_m": 816.0,
@@ -1175,7 +1177,7 @@
     "name": "Coldfire",
     "faction": "Free Droid Enclaves",
     "factionDef": "Jawa_FreeDroidEnclaves",
-    "biome": "AB_RockyCrags",
+    "biome": "BMT_CrystalCaverns",
     "lat": 30.46,
     "lon": -175.78,
     "elevation_m": 1586.0,
@@ -1247,7 +1249,7 @@
     "name": "The Cracking Station",
     "faction": "Free Droid Enclaves",
     "factionDef": "Jawa_FreeDroidEnclaves",
-    "biome": "AB_RockyCrags",
+    "biome": "AB_PropaneLakes",
     "lat": 1.23,
     "lon": 178.44,
     "elevation_m": 33.0,
