@@ -1560,3 +1560,63 @@ def dump now carries `CharacterDef.json` with **269 defs**, attributed to `Inhab
 (local)` — plus empty `InhabitedPlaceDef.json` and `InhabitedCastDef.json`, which is the
 correct reading of "the mechanism is in and the content is not". That is RimWorld
 reporting our def types back to us, which no log line could establish on its own.
+
+---
+
+## §5 — the 2026-08-22 EVENING load. Written 21:5x, BEFORE the game started.
+
+**What is riding it.** Two assemblies and a full 578-mod stack:
+
+| assembly | deployed | what is new since it last ran |
+|---|---|---|
+| `JawaBench.BridgeTools.dll` | md5 `1b24c77e`, 2026-08-22, `--gm` | **121 `jawa/` tools** (was 106 at last publish). New: `jawa/world_cache_audit` (CHECK, `fe4c081c`+`63e63907`), `jawa/vehicle_components` (peer, `9e79e3d2`) |
+| `Inhabited` | in sync, 18 files | the cast roster fix — `cast_to_xml.py` no longer emits the `<li><skill>` shape that discarded 101 defs |
+
+🔑 **These two fail in completely different places**, which is what makes batching them
+affordable: the companion fails at bridge startup (or a tool is simply absent from
+`tools/list`), `Inhabited` fails at def load or at its own ready line. **Neither can steal
+the other's blame.**
+
+### Expected PRESENT — absence of these IS the failure
+
+| # | string | value that passes |
+|---|---|---|
+| P1 | `[Inhabited] ready:` | 🔴 **294 characters.** 193 means the cast fix did not reach the game and NOTHING downstream of it counts |
+| P2 | `[JawaBench] ready:` | 🔴 **121 tools.** 120 means `vehicle_components` is missing; 119 means the whole 2026-08-22 build did not land; 106 means the deploy never happened |
+| P3 | `[RimDefDump] starting` … `done in` | only if the dump is armed — see the launch note |
+
+### Expected ABSENT — any hit is a failure
+
+| # | grep | baseline |
+|---|---|---|
+| F1 | `Exception loading def from file CastRoster_` | **0** |
+| F2 | `SkillDef named li` | **0** — this was 101 before the fix; it is the single most diagnostic string on the whole load |
+| F3 | `ReflectionTypeLoadException` / `Could not load assembly` near `JawaBench` | 0 |
+| F4 | `Could not find type named JawaBench.` | 0 |
+| F5 | Harmony exception naming `mandrake.inhabited` | 0 |
+| F6 | `Could not resolve cross-reference` | ⚠️ **baseline 25**, not 0. Above 25 is a regression; at 25 is clean |
+
+### 🪤 The trap specific to THIS load
+
+⚠️ **`jawa/world_cache_audit` has NEVER RUN.** It resolves four private `Tile` fields by
+reflection at static-init time. **If RimWorld renamed any of them, the tool returns a
+REFUSAL naming which field failed — it does NOT return zero divergences.** That refusal is
+a PASS for the load (the guard works) and a FAIL for the tool. Distinguish them; do not
+score a refusal as a broken load.
+
+⚠️ **A tool missing from `tools/list` is NOT the same as the companion failing to load.**
+P2 separates them: a wrong count with a present ready line means one tool; an absent ready
+line means the assembly.
+
+### Results — FILL THIS IN AFTER THE LOAD. Blank means unfinished.
+
+| # | outcome | evidence |
+|---|---|---|
+| P1 | | |
+| P2 | | |
+| F1 | | |
+| F2 | | |
+| F3 | | |
+| F4 | | |
+| F5 | | |
+| F6 | | |

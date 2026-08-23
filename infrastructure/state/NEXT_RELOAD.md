@@ -48,7 +48,7 @@
 > ```
 > measure count-errors "C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log" --top 12
 > ```
-> - ⭐ **`[JawaBench] ready: N tools, build <hex>`** — new this load. Its ABSENCE means the
+> - ⭐ **`[JawaBench] ready: N tools, build <hex>`** — 🔴 **N must be 121.** Its ABSENCE means the
 >   companion did not load, which used to be indistinguishable from a healthy run.
 >   Expect **121** with `--gm`; **119** means the GM flag was not set, and any other
 >   number means tools did not register. ⚠️ **This line said 119 and contradicted line 109
@@ -181,8 +181,12 @@
 >   ```
 >   python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\prove_world_cache_audit.py
 >   ```
->   ⭐ **Read `[JawaBench] ready:` for 120, not 119** — `jawa/world_cache_audit` is new this
->   load, so 119 means the companion deploy did not take. The harness arms a cache, repaints
+>   ⭐ **Read `[JawaBench] ready:` for 121** *(this line said 120 until 2026-08-22 21:5x;
+>   a peer added `jawa/vehicle_components` at `9e79e3d2` and the DLL was rebuilt to md5
+>   `1b24c77e`)* — `jawa/world_cache_audit` is new this
+>   load, so **120 means `vehicle_components` is missing and 106 means the whole
+>   2026-08-22 build never landed**. ⚠️ 119 is a DIFFERENT fault — it means the `--gm`
+>   flag was not set, so the two GM-gated tools are absent. The harness arms a cache, repaints
 >   under it and requires a non-zero stale count; **its last step needs a SECOND load** (save,
 >   reload, expect `staleTotal == 0`) and it says so rather than pretending.
 >
