@@ -1583,3 +1583,7 @@
 {"seat":"DECIDE","event":"needs","id":"WEAPON_FLOOR_BOWS_KNIVES_1","to":"bridge","ts":"2026-08-23T05:06:54Z"}
 {"seat":"DECIDE","event":"reassign","id":"WEAPON_FLOOR_BOWS_KNIVES_1","to":"DECIDE","reason":"briefly back to DECIDE so her own correction to the watch-out can be committed; reassigned to CHECK immediately after","ts":"2026-08-23T05:07:13Z"}
 {"seat":"DECIDE","event":"reassign","id":"WEAPON_FLOOR_BOWS_KNIVES_1","to":"CHECK","reason":"DECIDE's roster is delivered; everything left is the live 5x spawn census","ts":"2026-08-23T05:07:42Z"}
+{"seat":"BUILD","event":"claim","id":"RESTORE_SUPERSEDED_MODLIST_SHA_1","ts":"2026-08-23T05:54:53Z"}
+{"seat":"BUILD","event":"start","id":"RESTORE_SUPERSEDED_MODLIST_SHA_1","ts":"2026-08-23T05:54:53Z"}
+{"seat":"BUILD","event":"verify","id":"RESTORE_SUPERSEDED_MODLIST_SHA_1","result":"pass","config":"offline: REGISTRY.jsonl + selftest_frozen_dumps.py","evidence":"infrastructure/state/observed/2026-08-22/registry_repair/verify.md","sha":"8c16d94a","ts":"2026-08-23T05:54:53Z"}
+{"seat":"BUILD","event":"close","id":"RESTORE_SUPERSEDED_MODLIST_SHA_1","sha":"b0a0a1d7","ts":"2026-08-23T05:55:01Z"}
