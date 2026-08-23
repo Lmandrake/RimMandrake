@@ -1,0 +1,200 @@
+{
+ "Procoptodon": {
+  "stages": [
+   "1.5",
+   "2.5",
+   "3.4"
+  ],
+  "ver": "1.6"
+ },
+ "Gomphotaria": {
+  "stages": [
+   "1.8",
+   "2.6",
+   "4"
+  ],
+  "ver": "1.6"
+ },
+ "Andrewsarchus": {
+  "stages": [
+   "2.6",
+   "3",
+   "3.6"
+  ],
+  "ver": "1.6"
+ },
+ "AA_Atispec": {
+  "stages": [
+   "4.5"
+  ],
+  "ver": "1.6"
+ },
+ "AA_Behemoth": {
+  "stages": [
+   "4.2",
+   "5.77",
+   "7"
+  ],
+  "ver": "1.6"
+ },
+ "GR_Thrumbalope": {
+  "stages": [
+   "2.5",
+   "4.0",
+   "4.8"
+  ],
+  "ver": "1.6"
+ },
+ "GR_Thrumbospider": {
+  "stages": [
+   "2.5",
+   "4",
+   "4.8"
+  ],
+  "ver": "1.6"
+ },
+ "GR_Thrumbolizard": {
+  "stages": [
+   "2.5",
+   "4.0",
+   "4.8"
+  ],
+  "ver": "1.6"
+ },
+ "GR_Paraceramuffalo": {
+  "stages": [
+   "3.5",
+   "4.8",
+   "6.5"
+  ],
+  "ver": "1.6"
+ },
+ "VAEWaste_Pestigator": {
+  "stages": [
+   "2",
+   "3",
+   "4"
+  ],
+  "ver": "1.6"
+ },
+ "BMT_Thrumbungus": {
+  "stages": [
+   "2.5",
+   "4.0",
+   "4.8"
+  ],
+  "ver": "1.6"
+ },
+ "Dactillion": {
+  "stages": [
+   "1.0",
+   "2",
+   "3.5"
+  ],
+  "ver": "1.6"
+ },
+ "GreaterKraytDragon": {
+  "stages": [
+   "2.0",
+   "5.0",
+   "10.0"
+  ],
+  "ver": "1.6"
+ },
+ "KwazelMaw": {
+  "stages": [
+   "2.0",
+   "4.0",
+   "6.0"
+  ],
+  "ver": "1.6"
+ },
+ "Roggwart": {
+  "stages": [
+   "2.0",
+   "4.0",
+   "6.0"
+  ],
+  "ver": "1.6"
+ },
+ "Ronto": {
+  "stages": [
+   "2",
+   "4.0",
+   "7.0"
+  ],
+  "ver": "1.6"
+ },
+ "Torton": {
+  "stages": [
+   "1.5",
+   "3.5",
+   "7.0"
+  ],
+  "ver": "1.6"
+ },
+ "Zakkeg": {
+  "stages": [
+   "1.5",
+   "3.0",
+   "5.0"
+  ],
+  "ver": "1.6"
+ },
+ "MA_Capryak": {
+  "stages": [
+   "1.4",
+   "2.4",
+   "4.0"
+  ],
+  "ver": "1.6"
+ },
+ "MA_Hellboar": {
+  "stages": [
+   "1.2",
+   "2.3",
+   "3.5"
+  ],
+  "ver": "1.6"
+ },
+ "JRWAntarctopelta": {
+  "stages": [
+   "4.5",
+   "5",
+   "6"
+  ],
+  "ver": "1.6"
+ },
+ "JRWBrachiosaurus": {
+  "stages": [
+   "3",
+   "6",
+   "10"
+  ],
+  "ver": "1.6"
+ },
+ "JRWDimetrodon": {
+  "stages": [
+   "2.5",
+   "3",
+   "4"
+  ],
+  "ver": "1.6"
+ },
+ "JRWOuranosaurus": {
+  "stages": [
+   "5",
+   "6.5",
+   "7"
+  ],
+  "ver": "1.6"
+ },
+ "JRWTorosaurus": {
+  "stages": [
+   "2",
+   "3",
+   "4"
+  ],
+  "ver": "1.6"
+ }
+}

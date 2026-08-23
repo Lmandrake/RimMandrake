@@ -1,0 +1,102 @@
+
+validate_patch.py - 1 XML file(s): 1 <Patch>, 0 <Defs>
+  SCANNED     Patches/: operation shape, guards, value shape, live xpath hit counts
+              Defs/:    XML parse, comment bodies, missing/duplicate defName, ParentName
+                        resolution, Class attributes, texPath existence and case
+  NOT SCANNED field names, field types, value ranges, C# class members, and any node
+              a PatchOperation creates at load time. This is not a def linter.
+
+  info    xpath engine: lxml 6.0.2.0 - full XPath 1.0, the same class of engine RimWorld itself uses, so text(), contains(), starts-with(), not() and boolean predicates are CHECKED.
+  info    load set: 579 active mods, 579 found on disk, target version 1.6 -> 8,741 def files
+defName list observed/2026-08-22/scenario_parts/defnames_2026-08-23T05-05-29Z.txt: 68500 defNames across 452 def types, RimWorld 1.6.4871 rev591, 578 mods
+
+=== src/Jawa/Jawa_Patches/Patches/CreatureResize_Ashkarr.xml ===
+  WARN    Operation[1] > operations/li[4] > nomatch (PatchOperationAdd): inner xpath differs from the conditional test.
+              test:  Defs/ThingDef[defName="Zakkeg"]/race/baseBodySize
+              inner: Defs/ThingDef[defName="Zakkeg"]/race
+            Intentional for add-if-missing patterns; otherwise it means you test one node and edit another.
+  WARN    Operation[1] > operations/li[8] > nomatch (PatchOperationAdd): inner xpath differs from the conditional test.
+              test:  Defs/ThingDef[defName="BMT_Thrumbungus"]/race/baseBodySize
+              inner: Defs/ThingDef[defName="BMT_Thrumbungus"]/race
+            Intentional for add-if-missing patterns; otherwise it means you test one node and edit another.
+  info    Operation[1] > operations/li[1] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[2] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[3] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[4] (PatchOperationConditional): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[4] > match (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[4] > nomatch (PatchOperationAdd): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[5] (PatchOperationReplace): 1 match(es)  in Biomes! Caverns: BMT_Thrumbungus.xml(1)
+  info    Operation[1] > operations/li[6] (PatchOperationReplace): 1 match(es)  in Biomes! Caverns: BMT_Thrumbungus.xml(1)
+  info    Operation[1] > operations/li[7] (PatchOperationReplace): 1 match(es)  in Biomes! Caverns: BMT_Thrumbungus.xml(1)
+  info    Operation[1] > operations/li[8] (PatchOperationConditional): 1 match(es)  in Biomes! Caverns: BMT_Thrumbungus.xml(1)
+  info    Operation[1] > operations/li[8] > match (PatchOperationReplace): 1 match(es)  in Biomes! Caverns: BMT_Thrumbungus.xml(1)
+  info    Operation[1] > operations/li[8] > nomatch (PatchOperationAdd): 1 match(es)  in Biomes! Caverns: BMT_Thrumbungus.xml(1)
+  info    Operation[1] > operations/li[9] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Brachiosaurus.xml(1)
+  info    Operation[1] > operations/li[10] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Brachiosaurus.xml(1)
+  info    Operation[1] > operations/li[11] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Brachiosaurus.xml(1)
+  info    Operation[1] > operations/li[12] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Dimetrodon.xml(1)
+  info    Operation[1] > operations/li[13] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Dimetrodon.xml(1)
+  info    Operation[1] > operations/li[14] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Dimetrodon.xml(1)
+  info    Operation[1] > operations/li[15] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Ouranosaurus.xml(1)
+  info    Operation[1] > operations/li[16] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Ouranosaurus.xml(1)
+  info    Operation[1] > operations/li[17] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Ouranosaurus.xml(1)
+  info    Operation[1] > operations/li[18] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Antarctopelta.xml(1)
+  info    Operation[1] > operations/li[19] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Antarctopelta.xml(1)
+  info    Operation[1] > operations/li[20] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Antarctopelta.xml(1)
+  info    Operation[1] > operations/li[21] (PatchOperationReplace): 1 match(es)  in Alpha Animals: Races_Behemoth.xml(1)
+  info    Operation[1] > operations/li[22] (PatchOperationReplace): 1 match(es)  in Alpha Animals: Races_Behemoth.xml(1)
+  info    Operation[1] > operations/li[23] (PatchOperationReplace): 1 match(es)  in Alpha Animals: Races_Behemoth.xml(1)
+  info    Operation[1] > operations/li[24] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[25] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[26] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[27] (PatchOperationReplace): 1 match(es)  in Megafauna: Races_Animal_Megafauna_v1.0-v1.1.xml(1)
+  info    Operation[1] > operations/li[28] (PatchOperationReplace): 1 match(es)  in Megafauna: Races_Animal_Megafauna_v1.0-v1.1.xml(1)
+  info    Operation[1] > operations/li[29] (PatchOperationReplace): 1 match(es)  in Megafauna: Races_Animal_Megafauna_v1.0-v1.1.xml(1)
+  info    Operation[1] > operations/li[30] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[31] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[32] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[33] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_ColossalHybrids.xml(1)
+  info    Operation[1] > operations/li[34] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_ColossalHybrids.xml(1)
+  info    Operation[1] > operations/li[35] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_ColossalHybrids.xml(1)
+  info    Operation[1] > operations/li[36] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_Megafaunahybrids.xml(1)
+  info    Operation[1] > operations/li[37] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_Megafaunahybrids.xml(1)
+  info    Operation[1] > operations/li[38] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_Megafaunahybrids.xml(1)
+  info    Operation[1] > operations/li[39] (PatchOperationReplace): 1 match(es)  in Megafauna: Races_Animal_Megafauna_v1.2-v1.3.1.xml(1)
+  info    Operation[1] > operations/li[40] (PatchOperationReplace): 1 match(es)  in Megafauna: Races_Animal_Megafauna_v1.2-v1.3.1.xml(1)
+  info    Operation[1] > operations/li[41] (PatchOperationReplace): 1 match(es)  in Megafauna: Races_Animal_Megafauna_v1.2-v1.3.1.xml(1)
+  info    Operation[1] > operations/li[42] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[43] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[44] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[45] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_ColossalHybrids.xml(1)
+  info    Operation[1] > operations/li[46] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_ColossalHybrids.xml(1)
+  info    Operation[1] > operations/li[47] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_ColossalHybrids.xml(1)
+  info    Operation[1] > operations/li[48] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[49] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[50] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[51] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_ColossalHybrids.xml(1)
+  info    Operation[1] > operations/li[52] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_ColossalHybrids.xml(1)
+  info    Operation[1] > operations/li[53] (PatchOperationReplace): 1 match(es)  in Vanilla Genetics Expanded: Races_Animal_ColossalHybrids.xml(1)
+  info    Operation[1] > operations/li[54] (PatchOperationReplace): 1 match(es)  in Mythic Ages: Megafauna Bestiary: Animal_Capryak.xml(1)
+  info    Operation[1] > operations/li[55] (PatchOperationReplace): 1 match(es)  in Mythic Ages: Megafauna Bestiary: Animal_Capryak.xml(1)
+  info    Operation[1] > operations/li[56] (PatchOperationReplace): 1 match(es)  in Mythic Ages: Megafauna Bestiary: Animal_Capryak.xml(1)
+  info    Operation[1] > operations/li[57] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Torosaurus.xml(1)
+  info    Operation[1] > operations/li[58] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Torosaurus.xml(1)
+  info    Operation[1] > operations/li[59] (PatchOperationReplace): 1 match(es)  in Jurassic Rimworld - Dinosaurs Only (Continued): Race_Torosaurus.xml(1)
+  info    Operation[1] > operations/li[60] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[61] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[62] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[63] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[64] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[65] (PatchOperationReplace): 1 match(es)  in Star Wars Animal Collection (Continued): Races_Animal_SW.xml(1)
+  info    Operation[1] > operations/li[66] (PatchOperationReplace): 1 match(es)  in Vanilla Animals Expanded — Waste Animals: Races_Pestigator.xml(1)
+  info    Operation[1] > operations/li[67] (PatchOperationReplace): 1 match(es)  in Vanilla Animals Expanded — Waste Animals: Races_Pestigator.xml(1)
+  info    Operation[1] > operations/li[68] (PatchOperationReplace): 1 match(es)  in Vanilla Animals Expanded — Waste Animals: Races_Pestigator.xml(1)
+  info    Operation[1] > operations/li[69] (PatchOperationReplace): 1 match(es)  in Mythic Ages: Megafauna Bestiary: Animal_Hellboar.xml(1)
+  info    Operation[1] > operations/li[70] (PatchOperationReplace): 1 match(es)  in Mythic Ages: Megafauna Bestiary: Animal_Hellboar.xml(1)
+  info    Operation[1] > operations/li[71] (PatchOperationReplace): 1 match(es)  in Mythic Ages: Megafauna Bestiary: Animal_Hellboar.xml(1)
+  info    Operation[1] > operations/li[72] (PatchOperationReplace): 1 match(es)  in Alpha Animals: Races_Atispec.xml(1)
+  info    Operation[1] > operations/li[73] (PatchOperationReplace): 1 match(es)  in Megafauna: Races_Animal_Megafauna_v1.2-v1.3.1.xml(1)
+  info    Operation[1] > operations/li[74] (PatchOperationReplace): 1 match(es)  in Megafauna: Races_Animal_Megafauna_v1.2-v1.3.1.xml(1)
+  info    Operation[1] > operations/li[75] (PatchOperationReplace): 1 match(es)  in Megafauna: Races_Animal_Megafauna_v1.2-v1.3.1.xml(1)
+
+OK - 0 errors, 2 warning(s)

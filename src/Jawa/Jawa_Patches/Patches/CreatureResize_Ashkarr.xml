@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  CreatureResize_Ashkarr.xml                Jawa_Patches - new file 2026-08-23
+  ============================================================================
+  CREATURE_RESIZE_PATCH_1. Owner approved 2026-08-23: "nice job on the animals. I
+  approve for v1. We'll have to meet them and see how it feels during live play."
+
+  Source of truth: design/Jawa/fauna/CREATURE_RESIZE_LIST.md, generated from
+  creature_size_decisions.json (savedBy creature_size_review.html). 25 of 621 cast
+  creatures. The magnitudes are DERIVED - drawSize multiplier = sqrt(px / band
+  median px), clamped 0.55-0.95 - and must NOT be re-derived here.
+
+  TWO FIELDS, DELIBERATELY NOT MERGED
+     drawSize   the picture and nothing else               -> all 23 shrinks
+     bodySize   meat, leather, hunting yield, carrying
+                capacity, food need, melee scaling         -> ONLY the 2 promotions
+  Zero bodySize edits among the 23 shrinks. Shrinking to hide weak art is a
+  RENDERING decision; taking meat off a creature because its sprite is small is a
+  balance change nobody asked for.
+
+  🔴 drawSize IS NOT ON THE ThingDef, AND THE DEF DUMP DOES NOT CARRY IT.
+  It lives on PawnKindDef.lifeStages[].bodyGraphicData.drawSize. The capture reports
+  null for all 25 because the dumper does not serialise the Vector2 - so every
+  CURRENT value below was read from the mod's own source XML on disk, and the new
+  value is current x the approved multiplier, PER LIFE STAGE.
+
+  ⚠️ TRAP, HIT WHILE WRITING THIS: a PawnKindDef block also contains
+  dessicatedBodyGraphicData, which has its own <drawSize>. A regex for <drawSize>
+  over the whole block returns TWICE as many values as there are life stages and
+  produces operations indexed li[1..6] against a def with 3. Extract only from
+  inside <bodyGraphicData>.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationSequence">
+    <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Zakkeg"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.46</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Zakkeg"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>4.92</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Zakkeg"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>8.20</drawSize></value>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="Zakkeg"]/race/baseBodySize</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="Zakkeg"]/race/baseBodySize</xpath>
+            <value><baseBodySize>8.2</baseBodySize></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="Zakkeg"]/race</xpath>
+            <value><baseBodySize>8.2</baseBodySize></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="BMT_Thrumbungus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>5.12</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="BMT_Thrumbungus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>8.20</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="BMT_Thrumbungus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>9.84</drawSize></value>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="BMT_Thrumbungus"]/race/baseBodySize</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="BMT_Thrumbungus"]/race/baseBodySize</xpath>
+            <value><baseBodySize>8.2</baseBodySize></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="BMT_Thrumbungus"]/race</xpath>
+            <value><baseBodySize>8.2</baseBodySize></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWBrachiosaurus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.65</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWBrachiosaurus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.30</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWBrachiosaurus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>5.50</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWDimetrodon"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.38</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWDimetrodon"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.65</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWDimetrodon"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.20</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWOuranosaurus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.00</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWOuranosaurus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.90</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWOuranosaurus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>4.20</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWAntarctopelta"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.79</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWAntarctopelta"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.10</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWAntarctopelta"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.72</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.60</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.58</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>4.34</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="KwazelMaw"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.34</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="KwazelMaw"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.68</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="KwazelMaw"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>4.02</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Procoptodon"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.14</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Procoptodon"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.90</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Procoptodon"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.58</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Ronto"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.42</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Ronto"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.84</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Ronto"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>4.97</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Thrumbalope"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.93</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Thrumbalope"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.08</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Thrumbalope"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.70</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Paraceramuffalo"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.52</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Paraceramuffalo"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.46</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Paraceramuffalo"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>4.68</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Gomphotaria"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.42</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Gomphotaria"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.05</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Gomphotaria"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.16</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GreaterKraytDragon"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.48</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GreaterKraytDragon"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.70</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GreaterKraytDragon"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>7.40</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Thrumbolizard"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.98</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Thrumbolizard"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.16</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Thrumbolizard"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.79</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Roggwart"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.60</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Roggwart"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.20</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Roggwart"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>4.80</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Thrumbospider"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.00</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Thrumbospider"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.20</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GR_Thrumbospider"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.84</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="MA_Capryak"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.12</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="MA_Capryak"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.92</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="MA_Capryak"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.20</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWTorosaurus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.64</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWTorosaurus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.46</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="JRWTorosaurus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.28</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Torton"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.20</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Torton"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.80</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Torton"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>5.60</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Dactillion"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>0.85</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Dactillion"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.70</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Dactillion"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.98</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="VAEWaste_Pestigator"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.72</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="VAEWaste_Pestigator"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.58</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="VAEWaste_Pestigator"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.44</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="MA_Hellboar"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.04</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="MA_Hellboar"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.00</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="MA_Hellboar"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.04</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Atispec"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.69</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Andrewsarchus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.29</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Andrewsarchus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>2.64</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Andrewsarchus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>3.17</drawSize></value>
+        </li>
+    </operations>
+  </Operation>
+
+</Patch>

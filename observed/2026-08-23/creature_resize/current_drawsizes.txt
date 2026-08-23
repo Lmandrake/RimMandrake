@@ -1,0 +1,322 @@
+{
+ "Procoptodon": {
+  "drawSizes": [
+   "1.5",
+   "1.5",
+   "1.5",
+   "2.5",
+   "2.5",
+   "2.5",
+   "3.4",
+   "3.4",
+   "3.4"
+  ],
+  "ver": "1.6",
+  "file": "1055485938/1.6/Defs/ThingDefs_Races/Races_Animal_Megafauna_v1.0-v1.1.x"
+ },
+ "Gomphotaria": {
+  "drawSizes": [
+   "1.8",
+   "1.6",
+   "1.6",
+   "2.6",
+   "2.3",
+   "2.3",
+   "4",
+   "3.8",
+   "3.8"
+  ],
+  "ver": "1.6",
+  "file": "1055485938/1.6/Defs/ThingDefs_Races/Races_Animal_Megafauna_v1.2-v1.3.1"
+ },
+ "Andrewsarchus": {
+  "drawSizes": [
+   "2.6",
+   "2.6",
+   "2.6",
+   "3",
+   "3",
+   "3",
+   "3.6",
+   "3.5",
+   "3.5"
+  ],
+  "ver": "1.6",
+  "file": "1055485938/1.6/Defs/ThingDefs_Races/Races_Animal_Megafauna_v1.2-v1.3.1"
+ },
+ "AA_Atispec": {
+  "drawSizes": [
+   "4.5",
+   "4.5"
+  ],
+  "ver": "1.6",
+  "file": "1541721856/1.6/Defs/ThingDefs_Races/Races_Atispec.xml"
+ },
+ "AA_Behemoth": {
+  "drawSizes": [
+   "4.2",
+   "4.2",
+   "5.77",
+   "5.77",
+   "7",
+   "7"
+  ],
+  "ver": "1.6",
+  "file": "1541721856/1.6/Defs/ThingDefs_Races/Races_Behemoth.xml"
+ },
+ "GR_Thrumbalope": {
+  "drawSizes": [
+   "2.5",
+   "2.5",
+   "4.0",
+   "4",
+   "4.8",
+   "4.8"
+  ],
+  "ver": "1.6",
+  "file": "2801160906/1.6/Defs/ThingDefs_Races/Races_Animal_ColossalHybrids.xml"
+ },
+ "GR_Thrumbospider": {
+  "drawSizes": [
+   "2.5",
+   "2.5",
+   "4",
+   "4",
+   "4.8",
+   "4.8"
+  ],
+  "ver": "1.6",
+  "file": "2801160906/1.6/Defs/ThingDefs_Races/Races_Animal_ColossalHybrids.xml"
+ },
+ "GR_Thrumbolizard": {
+  "drawSizes": [
+   "2.5",
+   "2.5",
+   "4.0",
+   "4",
+   "4.8",
+   "4.8"
+  ],
+  "ver": "1.6",
+  "file": "2801160906/1.6/Defs/ThingDefs_Races/Races_Animal_ColossalHybrids.xml"
+ },
+ "GR_Paraceramuffalo": {
+  "drawSizes": [
+   "3.5",
+   "3.5",
+   "4.8",
+   "4.8",
+   "6.5",
+   "6.5"
+  ],
+  "ver": "1.6",
+  "file": "2801160906/1.6/Mods/Megafauna/Defs/ThingDefs_Races/Races_Animal_Megafa"
+ },
+ "VAEWaste_Pestigator": {
+  "drawSizes": [
+   "2",
+   "2",
+   "3",
+   "3",
+   "4",
+   "4"
+  ],
+  "ver": "1.6",
+  "file": "2962126499/1.6/Defs/ThingDefs_Races/Races_Pestigator.xml"
+ },
+ "BMT_Thrumbungus": {
+  "drawSizes": [
+   "2.5",
+   "2.5",
+   "4.0",
+   "4.0",
+   "4.8",
+   "4.8"
+  ],
+  "ver": "1.6",
+  "file": "2969748433/1.6/Defs/Animals/BMT_Thrumbungus.xml"
+ },
+ "Dactillion": {
+  "drawSizes": [
+   "1.0",
+   "1.0",
+   "2",
+   "2",
+   "3.5",
+   "3.5"
+  ],
+  "ver": "1.6",
+  "file": "3497316713/1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml"
+ },
+ "GreaterKraytDragon": {
+  "drawSizes": [
+   "2.0",
+   "2.0",
+   "5.0",
+   "5.0",
+   "10.0",
+   "10.0"
+  ],
+  "ver": "1.6",
+  "file": "3497316713/1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml"
+ },
+ "KwazelMaw": {
+  "drawSizes": [
+   "2.0",
+   "2.0",
+   "2.0",
+   "4.0",
+   "4.0",
+   "4.0",
+   "6.0",
+   "6.0",
+   "6.0"
+  ],
+  "ver": "1.6",
+  "file": "3497316713/1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml"
+ },
+ "Roggwart": {
+  "drawSizes": [
+   "2.0",
+   "2.0",
+   "4.0",
+   "4.0",
+   "6.0",
+   "6.0"
+  ],
+  "ver": "1.6",
+  "file": "3497316713/1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml"
+ },
+ "Ronto": {
+  "drawSizes": [
+   "2",
+   "2",
+   "4.0",
+   "4.0",
+   "7.0",
+   "7.0"
+  ],
+  "ver": "1.6",
+  "file": "3497316713/1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml"
+ },
+ "Torton": {
+  "drawSizes": [
+   "1.5",
+   "3.5",
+   "1.5",
+   "1.5",
+   "3.5",
+   "3.5",
+   "3.5",
+   "3.5",
+   "7.0",
+   "7.0",
+   "7.0",
+   "7.0"
+  ],
+  "ver": "1.6",
+  "file": "3497316713/1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml"
+ },
+ "Zakkeg": {
+  "drawSizes": [
+   "1.5",
+   "1.5",
+   "3.0",
+   "3.0",
+   "5.0",
+   "5.0"
+  ],
+  "ver": "1.6",
+  "file": "3497316713/1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml"
+ },
+ "MA_Capryak": {
+  "drawSizes": [
+   "1.4",
+   "1.4",
+   "2.4",
+   "2.4",
+   "2.4",
+   "2.4",
+   "4.0",
+   "4.0",
+   "3.8",
+   "3.8"
+  ],
+  "ver": "1.6",
+  "file": "3537788184/1.6/Defs/ThingDefs_Races/Animal_Capryak.xml"
+ },
+ "MA_Hellboar": {
+  "drawSizes": [
+   "1.2",
+   "1.2",
+   "2.3",
+   "3.5",
+   "3.5",
+   "3.5"
+  ],
+  "ver": "1.6",
+  "file": "3537788184/1.6/Defs/ThingDefs_Races/Animal_Hellboar.xml"
+ },
+ "JRWAntarctopelta": {
+  "drawSizes": [
+   "4.5",
+   "1.5",
+   "5",
+   "2.5",
+   "6",
+   "2.5"
+  ],
+  "ver": "1.6",
+  "file": "3541510004/1.6/Defs/ThingDef_Races/Race_Antarctopelta.xml"
+ },
+ "JRWBrachiosaurus": {
+  "drawSizes": [
+   "3",
+   "3",
+   "6",
+   "3",
+   "10",
+   "3"
+  ],
+  "ver": "1.6",
+  "file": "3541510004/1.6/Defs/ThingDef_Races/Race_Brachiosaurus.xml"
+ },
+ "JRWDimetrodon": {
+  "drawSizes": [
+   "2.5",
+   "1.5",
+   "3",
+   "2.5",
+   "4",
+   "2.5"
+  ],
+  "ver": "1.6",
+  "file": "3541510004/1.6/Defs/ThingDef_Races/Race_Dimetrodon.xml"
+ },
+ "JRWOuranosaurus": {
+  "drawSizes": [
+   "5",
+   "1.5",
+   "6.5",
+   "2.5",
+   "7",
+   "2.5"
+  ],
+  "ver": "1.6",
+  "file": "3541510004/1.6/Defs/ThingDef_Races/Race_Ouranosaurus.xml"
+ },
+ "JRWTorosaurus": {
+  "drawSizes": [
+   "2",
+   "1.5",
+   "3",
+   "2.5",
+   "4",
+   "2.5"
+  ],
+  "ver": "1.6",
+  "file": "3541510004/1.6/Defs/ThingDef_Races/Race_Torosaurus.xml"
+ }
+}
+
+MISSING: []
