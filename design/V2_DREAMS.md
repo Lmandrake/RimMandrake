@@ -2192,3 +2192,73 @@ worth honouring. ⇒ **A metric can rank art quality; it cannot rank worth.**
 
 ⛔ **Not scheduled, and not a blocker.** All three ship in v1 shrunk, which he considers adequate.
 Evidence: `design/Jawa/fauna/creature_art_decisions.json`, frozen, his own file.
+
+---
+
+## GREAT_NAMESPACE_RENAME_1 One word, "Jawa", is doing four jobs — split it into Utinni, RimMandrake, external skills, and the species
+
+🔴 **Owner, 2026-08-23, and this entry exists because he asked for the description
+BEFORE the spec:** *"Actually just record this as a v2 item, don't DO the work yet.
+Let's save tokens, we are in a constrained state. I just wanted the complete
+description, not fields filled in yet."*
+
+**Scope he set, verbatim:** *"I'm afraid it's everything, everywhere. Consistency is
+the whole point."* — mod folders, packageIds, defNames, C# assemblies and namespaces,
+and the `jawa/*` bridge tool protocol. **`JawaBench` folds into the RimMandrake tier.**
+
+⛔ **NOTHING IS RENAMED BY THIS ENTRY.** No target names are chosen either; the mapping
+table is the future spec's job, not this one's.
+
+### The four tiers the name has to be split into
+
+| tier | what it is | what belongs to it |
+|---|---|---|
+| **Utinni** | THE SCENARIO — this campaign's fiction | the factions, cultures, the scenario, the ideoligion |
+| **RimMandrake** | reusable RimWorld tooling for ANY scenario | the bridge companion, `RimDefDump`, `PlanetPresetPrime`, the art fixes |
+| **external skills** | generalizable beyond RimWorld entirely | already-external `measuring-large-artifacts`, and its future siblings |
+| **Jawa** | a Star Wars SPECIES — legitimate content, **never a namespace** | the species and its gear |
+
+### 🔴 The premise needs one correction, and the truth is worse
+
+**`Jawa_Jawa` DOES NOT EXIST.** Measured 2026-08-23: zero matches, case-insensitive,
+across every file under `src/`. The doubling he remembered is a **path** doubling —
+`src/Jawa/Jawa_Patches`, `src/Jawa/Jawa_Armoury`, `src/Jawa/Jawa_Doctrine`.
+
+🔑 **The real overload is bigger.** `Jawa_` already prefixes **8 NPC FactionDefs that
+have nothing to do with Jawas** — `Jawa_HuttCartel`, `Jawa_Junkers`,
+`Jawa_AscendantHelix`, `Jawa_GeonosianFoundryHive`, `Jawa_DeepwaterCompact`,
+`Jawa_FreeDroidEnclaves`, `Jawa_WildsteamClan`, `Jawa_IndigenousTribes`. In those names
+`Jawa_` is already being used to mean **"the campaign"** — which is exactly the slot
+`Utinni_` should occupy. The word is doing the scenario's job *and* the species' job in
+the same identifier space.
+
+### The hazards that make this "painful", ranked
+
+1. 🔴 **One packageId carries the whole blast radius.** **166 of the 247** occurrences of
+   `mandrake.starwarsraces` are `MayRequire="mandrake.starwarsraces"` attributes inside
+   `src/Jawa/Jawa_Patches/`. ⚠️ **A `MayRequire` naming a packageId that no longer exists
+   fails SILENTLY** — the element is dropped and nothing is logged. Rename that id
+   carelessly and 166 patch elements evaporate with a clean load.
+2. 🔴 **Three incompatible species schemes run at once:** `RimMandrakeTwilek` (glued, no
+   separator, **69** of them), `Jawa_Xeno_Gamorrean` (1), and bare **`MandrakeJawa`** (1)
+   — and that last one is the **player species**, hard-referenced twice by the ScenarioDef
+   and by `MandrakeJawa.xtp`.
+3. ⚠️ **The folder tree is crossed against its own content.** `JawaRules` lives under
+   `src/RimMandrake/`; `RimMandrake_StarWarsRaces` lives under `src/Jawa/`.
+4. ⚠️ **3 defNames carry no project token at all** — `MandrakeJawa`, `Stranded`,
+   `StrandedTravellerTaken`. Nothing marks them as ours.
+
+### ⏳ The window, and why it expires
+
+**No savegame exists yet** — `canon.yml` carries his 2026-08-22 ruling that *"there is no
+current frozen world"*. 🔑 **defName renames are free at the save layer only until the
+frozen savegame is authored.** After that, RimWorld's Scribe reports `Could not load
+reference to <name>` and **no mod change can fix it** — the dead name is inside the save,
+and the save is the product we ship.
+
+⛔ **This is recorded, not scheduled.** He has deferred it deliberately and may choose to
+deploy it before v2 (TBD, his call). The window is written down so the choice stays
+visible instead of expiring in silence.
+
+📏 **The measured inventory is `infrastructure/state/facts/naming_inventory.md`** — the
+full census, so whoever writes the spec never pays for it again.
