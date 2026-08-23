@@ -1,0 +1,670 @@
+defName,label,mod,isTree,treeCategory,purpose,growDays,harvestedThingDef,minGrowthTemp,maxGrowthTemp,minOptTemp,maxOptTemp,fertilityMin,ignoresFertility,cavePlant,pollution,wildOrder,wildClusterRadius,sowTags,texPath
+Plant_Fibershroom,Fiber shroom,,False,None,Misc,19,shroomfiber,0,58,6,42,0.10000000149011612,False,True,CleanOnly,2,-1,Ground|Hydroponic|BMT_Fungiponics,Things/Plants/FiberShroom
+Plant_Giantshroom,Giant shroom,,False,None,Misc,16,RawFungus,0,58,6,42,0.10000000149011612,False,True,CleanOnly,2,-1,Ground|Hydroponic|BMT_Fungiponics,Things/Plants/GiantShroom
+Plant_Healshroom,Heal shroom,,False,None,Misc,7,MedicineHerbal,0,58,6,42,0.10000000149011612,False,True,CleanOnly,2,-1,Ground|Hydroponic|BMT_Fungiponics,Things/Plants/HealShroom
+Plant_Jellyshroom,Jelly shroom,,False,None,Misc,9,InsectJelly,0,58,6,42,0.10000000149011612,False,True,CleanOnly,2,-1,Ground|Hydroponic|BMT_Fungiponics,Things/Plants/JellyShroom
+Plant_Meatshroom,Meatshroom,,False,None,Misc,6,Meat_Megaspider,0,58,6,42,0.10000000149011612,False,True,CleanOnly,2,-1,Ground|Hydroponic|BMT_Fungiponics,Things/Plants/MeatShroom
+Plant_Microshroom,Micro shroom,,False,None,Misc,3,RawFungus,0,58,6,42,0.10000000149011612,False,True,CleanOnly,2,-1,Ground|Hydroponic|BMT_Fungiponics,Things/Plants/MicroShroom
+Plant_Timbercap,Timbercap,,False,None,Misc,15,WoodLog,0,58,6,42,0.10000000149011612,False,True,CleanOnly,2,-1,Ground|Hydroponic|BMT_Fungiponics,Things/Plant/Timbershroom
+PlantTallYellowGrass,tall grass,Advanced Biomes (Continued),False,None,Misc,3,,0,58,6,42,0.4000000059604645,False,False,CleanOnly,2,-1,,Plant/YellowGrass
+PoisonAlocasia,poison alocasia,Advanced Biomes (Continued),False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Plant/PoisonAlocasia
+PoisonBrambles,poison brambles,Advanced Biomes (Continued),False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Plant/PoisonBrambles
+PoisonMushroom,wild mushroom,Advanced Biomes (Continued),False,None,Misc,3,RawPoisonMushroom,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,3,,Plant/PoisonMushroom
+PoisonPlantBush,bush,Advanced Biomes (Continued),False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Plant/PoisonBush
+PoisonPlantDandelion,dandelions,Advanced Biomes (Continued),False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Plant/PoisonDandelion
+PoisonPlantRaspberry,raspberry bush,Advanced Biomes (Continued),False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Plant/PoisonRaspberryPlant
+PoisonPlantTallGrass,tall grass,Advanced Biomes (Continued),False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Plant/PoisonGrass
+PoisonPlantTreeCecropia,cecropia tree,Advanced Biomes (Continued),True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Plant/PoisonTreeCecropia
+PoisonPlantTreeTeak,teak tree,Advanced Biomes (Continued),True,Full,Misc,32.5,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Plant/PoisonTreeTeak
+PoisonRafflesia,poison rafflesia,Advanced Biomes (Continued),False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,,Plant/PoisonRafflesia
+PoisonShrub,poison shrub,Advanced Biomes (Continued),False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Plant/PoisonShrub
+PoisonTreeCypress,cypress tree,Advanced Biomes (Continued),True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Plant/PoisonTreeCypress
+PoisonTreePalm,palm tree,Advanced Biomes (Continued),True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Plant/PoisonTreePalm
+PoisonTreeWillow,willow tree,Advanced Biomes (Continued),True,Full,Misc,13,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,17,Ground,Plant/PoisonTreeWillow
+SavannaBush,bush,Advanced Biomes (Continued),False,None,Misc,3,,0,58,6,42,0.4000000059604645,False,False,CleanOnly,2,4,,Plant/SavannaBush
+SavannaTreeAcacia,acacia tree,Advanced Biomes (Continued),True,Full,Misc,32.5,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Plant/TreeAcacia
+SavannaTreeBaobab,baobab tree,Advanced Biomes (Continued),True,Full,Misc,32.5,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Plant/TreeBaobab
+SwordFern,sword fern,Advanced Biomes (Continued),False,None,Misc,3,,0,58,6,42,0.4000000059604645,False,False,CleanOnly,2,4,,Plant/SwordFern
+TreeCedar,redcedar tree,Advanced Biomes (Continued),True,Full,Misc,20,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Plant/TreeCedar
+TreeDead,dead tree,Advanced Biomes (Continued),True,Full,Misc,32.5,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Plant/TreeDead
+WetlandTreeMangrove,mangrove tree,Advanced Biomes (Continued),True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,4,Ground,Plant/TreeMangrove
+AA_AlienGrass,ocular grass,Alpha Animals,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plants/GU_AlienGrass
+AA_AlienTree,ocular tree,Alpha Animals,True,Full,Misc,5,GU_RedWood,0,58,6,42,0.05000000074505806,False,False,CleanOnly,2,-1,,Things/Plants/AB_OcularTree
+AA_Heat_Ambrosia,heat resistant ambrosia bush,Alpha Animals,False,None,Food,6,Ambrosia,0,58,6,42,0.10000000149011612,False,False,CleanOnly,2,-1,,Things/Plant/Ambrosia
+AA_Plant_PollenTrumpet,pollen trumpet,Alpha Animals,False,None,Beauty,0.5,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Ground|Decorative,Things/Plants/AA_PollenTrumpet
+AA_RedLeaves,ocular plant,Alpha Animals,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plants/GU_RedLeaves
+AA_RedPlantsTall,ocular plant,Alpha Animals,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plants/GU_RedLeaves2
+AA_RottingMound,fermented rotting mound,Alpha Animals,False,None,Misc,0.0010000000474974513,,0,58,6,42,0,False,False,CleanOnly,1,-1,,Things/Item/Resource/AA_RottingMound
+AB_Aaklac,aaklac,Alpha Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,,Things/Plants/AB_Aaklac
+AB_AgaricusDomeCap,agaricus domecap,Alpha Biomes,False,None,Food,10,AB_PsychotropicFungus,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,3,Ground,Things/Plants/AB_AgaricusDomeCap
+AB_Agarilux,agarilux,Alpha Biomes,False,None,Food,15,AB_PurpleRawFungus,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,-1,Ground,Things/Plant/Agarilux
+AB_AgariluxPrime,Agarilux Prime,Alpha Biomes,False,None,Food,6000,RawFungus,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,-1,,Things/Plants/AB_AgariluxPrime
+AB_AlienGrass,ocular grass,Alpha Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plants/GU_AlienGrass
+AB_AlienTree,ocular tree,Alpha Biomes,True,Full,Misc,5,GU_RedWood,0,58,6,42,0.05000000074505806,False,False,CleanOnly,2,-1,Ground,Things/Plants/AB_OcularTree
+AB_AlienTree_Polluted,mutated ocular tree,Alpha Biomes,True,Full,Misc,5,GU_RedWood,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,3,8,Ground,Things/Plants/AB_PollutedAlienTree
+AB_ArbuscularMycorrhiza,arbuscular mycorrhiza,Alpha Biomes,False,None,Food,15,WoodLog,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,-1,Ground,Things/Plants/AB_ArbuscularMycorrhiza
+AB_BloodBouquet,blood bouquet,Alpha Biomes,False,None,Misc,5,AB_RawBloodBouquet,0,58,6,42,0.05000000074505806,False,False,CleanOnly,2,-1,,Things/Plants/AB_BloodBouquet
+AB_BrownBarrelCactus,brown barrel cactus,Alpha Biomes,False,None,Misc,3,AB_RawBrownBarrelCactus,0,110,10,100,0.05000000074505806,False,False,CleanOnly,2,4,,Things/Plants/AB_BrownBarrelCactus
+AB_Bryolux,bryolux,Alpha Biomes,False,None,Misc,5,,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,3,,Things/Plant/Bryolux
+AB_CrystalFlower,crystal flower,Alpha Biomes,False,None,Misc,3,AB_CrystalWood,-60,10,-50,5,0.699999988079071,True,False,CleanOnly,2,4,,Things/Plants/AB_CrystalFlower
+AB_CrystalHorn,crystal horn,Alpha Biomes,False,None,Misc,3,AB_RawCrystalHorn,-60,10,-50,5,0.25,False,False,CleanOnly,2,4,,Things/Plants/AB_CrystalHorn
+AB_DeadBowerTree,dead bower tree,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_DeadBowerTree
+AB_DessertTree,dessert tree,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_DessertTree
+AB_DribblingCap,dribbling cap,Alpha Biomes,False,None,Food,15,AB_WeaponPoisonDart,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,-1,Ground,Things/Plants/AB_DribblingCap
+AB_EuphorbiaDesiccata,euphorbia desiccata,Alpha Biomes,True,Full,Misc,2,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,3,Ground,Things/Plants/AB_EuphorbiaDesiccata
+AB_EuphorbiaRimworldia,euphorbia rimworldia,Alpha Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,3,,Things/Plants/AB_EuphorbiaRimworldia
+AB_EyeGrass,flowering ocular grass,Alpha Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,1,-1,,Things/Plants/AB_EyeGrass
+AB_FanPalm,fan palm,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.8500000238418579,False,False,CleanOnly,3,10,Ground|Ground,Things/Plants/AB_FanPalm
+AB_FirevineTree,firevine tree,Alpha Biomes,True,Full,Misc,14,WoodLog,0,110,10,100,0.05000000074505806,False,False,CleanOnly,3,10,Ground|Ground,Things/Plants/AB_FirevineTree
+AB_FlashFrozenTree,flash frozen tree,Alpha Biomes,False,None,Misc,9.999999747378752e-05,WoodLog,-60,10,-50,5,0,False,False,CleanOnly,2,-1,,Things/Plants/AB_FlashFrozenTree
+AB_FleshTree,flesh tree,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_FleshTree
+AB_Flowers,flowers,Alpha Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plants/AB_Flowers
+AB_FrostLeaf,frost leaf,Alpha Biomes,False,None,Misc,3,AB_RawFrostLeaf,-60,10,-50,5,0,False,False,CleanOnly,2,4,,Things/Plants/AB_FrostLeaf
+AB_GargantuanLithops,gargantuan lithops,Alpha Biomes,False,None,Misc,3,Steel,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,3,,Things/Plants/AB_Lithops
+AB_GiantAgariTox,agaritox,Alpha Biomes,True,Full,Misc,15,AB_MushroomWoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plants/AB_GiantAgariTox
+AB_GiantAgarilux,giant agarilux,Alpha Biomes,False,None,Food,15,AB_MushroomWoodLog,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,-1,Ground,Things/Plants/AB_GiantAgarilux
+AB_GiantFlower,giant mutant hibiscus,Alpha Biomes,True,Full,Misc,14,,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,,Things/Plants/AB_GiantFlower
+AB_GiantGamma,giant gamma,Alpha Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,10,Ground,Things/Plants/AB_GiantGamma
+AB_GiantSeptimum,giant septimum,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_GiantSeptimum
+AB_GiantStikehr,giant stikehr,Alpha Biomes,False,None,Food,15,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Ground,Things/Plants/AB_GiantStikehr
+AB_GiantSunflower,giant sunflower,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_GiantSunflower
+AB_GiantToxicFlower,giant toxic flower,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plants/AB_GiantToxicFlower
+AB_GiantTulip,giant tulips,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_GiantTulip
+AB_GlobularPlant,globular aberration,Alpha Biomes,False,None,Misc,5,GU_RedWood,0,58,6,42,0.05000000074505806,False,False,CleanOnly,2,-1,,Things/Plants/AB_GlobularPlant
+AB_GlobularPlant_Polluted,polluted globular aberration,Alpha Biomes,True,Full,Misc,5,GU_RedWood,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,3,8,Ground,Things/Plants/AB_GlobularPlant_Polluted
+AB_GlowingAgarilux,glowing agarilux,Alpha Biomes,False,None,Food,15,AB_PurpleRawFungus,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,-1,,Things/Plant/Agarilux
+AB_GlowingGrass,grass,Alpha Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plants/AB_GlowingGrass
+AB_Glowstool,glowstool,Alpha Biomes,False,None,Food,10,RawFungus,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,3,Ground,Things/Plant/Glowstool
+AB_GoldenCubeTree,golden cube tree,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_CubeTree
+AB_Gomphoeria,gomphoeria,Alpha Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,3,,Things/Plants/AB_Gomphoeria
+AB_GreenRockFern,green rock fern,Alpha Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plants/AB_GreenRockFern
+AB_HalfAlienTree,half transformed ocular tree,Alpha Biomes,True,Full,Misc,5,WoodLog,0,58,6,42,0.05000000074505806,False,False,CleanOnly,2,-1,,Things/Plants/AB_HalfAlienTree
+AB_HardyGrass,hardy grass,Alpha Biomes,False,None,Misc,2.5,,0,58,6,42,0.30000001192092896,False,False,Any,1,-1,,Things/Plant/Grass_Leafless
+AB_Iashiphus,iashiphus,Alpha Biomes,False,None,Misc,3,AB_RawIashiphus,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,3,,Things/Plants/AB_Iashiphus
+AB_JungleTree,deep jungle tree,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_JungleTree
+AB_JungleTree_Polluted,deep jungle polux,Alpha Biomes,True,Full,Misc,22,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,10,Ground,Things/Plants/AB_JunglePolux
+AB_KeeningCordax,keening cordax,Alpha Biomes,True,Full,Misc,14,AB_CordaxResin,0,58,6,42,0.8500000238418579,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_KeeningCordax
+AB_LandCoral,amethyst land coral fungus,Alpha Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,1,-1,,Things/Plants/AB_LandCoral
+AB_LargeSlimyTree,large slimy tree,Alpha Biomes,False,None,Misc,32.5,AB_RawSlime,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plants/AB_LargeSlimyTree
+AB_LilacBeacon,lilac beacon,Alpha Biomes,False,None,Food,10,AB_PurpleRawFungus,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,3,Ground,Things/Plants/AB_LilacBeacon
+AB_LuminescentTree,luminescent tree,Alpha Biomes,True,Full,Misc,20,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_LuminescentTree
+AB_MangrovePalm,mangrove palm,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,True,False,CleanOnly,3,10,Ground,Things/Plants/AB_MangrovePalm
+AB_MangroveTree,mangrove tree,Alpha Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,True,False,CleanOnly,3,10,Ground,Things/Plants/AB_MangroveTree
+AB_ParasiticMangrove,parasitic mangrove,Alpha Biomes,False,None,Misc,3,MedicineHerbal,0,58,6,42,0.699999988079071,True,False,CleanOnly,2,3,,Things/Plants/AB_ParasiticMangrove
+AB_PollutedStikehr,polluted stikehr,Alpha Biomes,True,Full,Misc,15,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,1,8,Ground,Things/Plants/AB_PollutedStikehr
+AB_RavenNettle,raven nettle,Alpha Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,,Things/Plants/AB_RavenNettle
+AB_RecurvedStropharia,recurved stropharia,Alpha Biomes,False,None,Food,15,AB_MushroomWoodLog,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,-1,Ground,Things/Plants/AB_RecurvedStropharia
+AB_RedBugloss,red bugloss,Alpha Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plants/AB_RedBugloss
+AB_RedLeaves,ocular plant,Alpha Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plants/GU_RedLeaves
+AB_RedPlantsTall,ocular plant,Alpha Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plants/GU_RedLeaves2
+AB_RimeNodules,rime nodules,Alpha Biomes,False,None,Misc,3,AB_RawRimeNodules,-60,10,-50,5,0,False,False,CleanOnly,2,4,,Things/Plants/AB_RimeNodules
+AB_SessileMechanoid,sessile mechanoid tree,Alpha Biomes,True,Full,Misc,40,WoodLog,0,58,6,42,0.10000000149011612,False,False,CleanOnly,3,8,Ground,Things/Plants/AB_SessileMechanoid
+AB_Slimecasia,slimecasia,Alpha Biomes,False,None,Misc,3,AB_RawSlime,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plants/AB_Slimecasia
+AB_SlimyFern,slimy fern,Alpha Biomes,False,None,Misc,3,AB_RawSlime,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plants/AB_SlimyFern
+AB_SlimyPholiota,slimy pholiota,Alpha Biomes,False,None,Food,15,AB_BlueRawFungus,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,-1,Ground,Things/Plants/AB_SlimyPholiota
+AB_SlimyTree,slimy tree,Alpha Biomes,False,None,Misc,32.5,AB_RawSlime,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plants/AB_SlimyTree
+AB_SugarFamewort,sugar famewort,Alpha Biomes,False,None,Misc,3,AB_RawSugarFamewort,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,3,,Things/Plants/AB_SugarFamewort
+AB_TallSlimyGrass,tall slimy grass,Alpha Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plants/AB_SlimeGrass
+AB_TangleTea,tangle tea,Alpha Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plants/AB_TangleTea
+AB_TarPuddle,tar puddle,Alpha Biomes,False,None,Food,9.999999747378752e-05,,0,58,6,42,0,False,False,CleanOnly,1,-1,,Things/Plants/AB_TarPuddle
+AB_TechnoTree,techno tree,Alpha Biomes,True,Full,Misc,20,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plants/AB_TechnoTree
+AB_TentacularPlant,tentacular aberration,Alpha Biomes,False,None,Misc,5,AB_RawTentacularFruit,0,58,6,42,0.05000000074505806,False,False,CleanOnly,2,-1,,Things/Plants/AB_TentacularPlant
+AB_TinkleGrass,tinkle grass,Alpha Biomes,False,None,Misc,1,,0,110,10,100,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plants/AB_TinkleGrass
+AB_ToxiBulb,toxibulb,Alpha Biomes,True,Full,Misc,2,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plants/AB_ToxiBulb
+AB_ToxiGrass,toxi grass,Alpha Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,1,-1,,Things/Plants/AB_ToxiGrass
+AB_ToxicGamma,toxic gamma,Alpha Biomes,True,Full,Misc,2,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground|Ground,Things/Plants/AB_ToxicGamma
+AB_WeepingToxberry,weeping toxberry,Alpha Biomes,False,None,Misc,3,,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,2,-1,,Things/Plants/AB_WeepingToxberry
+AB_WildRadagast,wild ragadast,Alpha Biomes,False,None,Misc,3,AB_RawRagadast,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,Ground,Things/Plants/AB_WildRadagast
+AB_WitchesOyster,witches' oyster,Alpha Biomes,False,None,Food,5,AB_PinkRawFungus,0,58,6,42,0.949999988079071,False,False,CleanOnly,1,3,Ground,Things/Plants/AB_WitchesOyster
+AG_DarkGamma,dark gamma,Alpha Genes,False,None,Beauty,5,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Decorative,Things/Plant/AG_DarkGamma
+AG_Gamma,gamma,Alpha Genes,False,None,Beauty,5,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Decorative,Things/Plant/AG_Gamma
+AG_Septimum,septimum,Alpha Genes,False,None,Misc,10,AG_Ultima,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground,Things/Plant/AG_Septimum
+AM_Plant_CorruptedPodGauranlen,corrupted Gauranlen pod,Alpha Memes,False,None,Misc,6,AM_CorruptedGauranlenSeed,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,,Things/Plants/AM_CorruptedGaumakerPod
+ChoppedStump_Harbinger,chopped harbinger stump,Anomaly,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/StumpChopped_HarbingerTree
+Plant_TreeHarbinger,harbinger tree,Anomaly,True,Super,Misc,10,Bioferrite,0,58,6,42,0.5,False,False,Any,3,8,,Things/Plant/TreeHarbinger
+SmashedStump_Harbinger,smashed harbinger stump,Anomaly,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/StumpSmashed_HarbingerTree
+BMT_AbyssalGrapesVine,abyssal grapes,Biomes! Caverns,False,None,Food,14,BMT_AbyssalGrapes,0,58,6,42,0.699999988079071,False,True,CleanOnly,2,10,Ground,BMT_Caverns/Things/Plant/AbyssalGrapes
+BMT_AmbrosyxFungus,ambrosyx fungus,Biomes! Caverns,False,None,Food,6,BMT_AmbrosyxShroom,-50,352.22198486328125,-50,352.22198486328125,0.699999988079071,False,True,CleanOnly,2,4,,BMT_Caverns/Things/Plant/Ambrosyx
+BMT_Arpeau,arpeau,Biomes! Caverns,True,Full,Misc,5,BMT_MushroomLog,0,58,6,42,0.699999988079071,True,False,CleanOnly,1,20,,BMT_Caverns/Things/Plant/Arpeau
+BMT_BalefulBolete,baleful bolete,Biomes! Caverns,False,None,Beauty,5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,3,8,Ground|Decorative,BMT_Caverns/Things/Plant/BalefulBolete
+BMT_BiolumiAlgaeCarnelian,bioluminescence algae,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.15000000596046448,True,False,CleanOnly,2,4,,BMT_Caverns/Things/Plant/BioluminescenceAlgae/Carnelian
+BMT_BiolumiAlgaeChrysoberyl,bioluminescence algae,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.15000000596046448,True,False,CleanOnly,2,4,,BMT_Caverns/Things/Plant/BioluminescenceAlgae/Chrysoberyl
+BMT_BiolumiAlgaeCitrine,bioluminescence algae,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.15000000596046448,True,False,CleanOnly,2,4,,BMT_Caverns/Things/Plant/BioluminescenceAlgae/Citrine
+BMT_BiolumiAlgaeKunzite,bioluminescence algae,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.15000000596046448,True,False,CleanOnly,2,4,,BMT_Caverns/Things/Plant/BioluminescenceAlgae/Kunzite
+BMT_BiolumiAlgaeTanzanite,bioluminescence algae,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.15000000596046448,True,False,CleanOnly,2,4,,BMT_Caverns/Things/Plant/BioluminescenceAlgae/Tanzanite
+BMT_BiolumiAlgaeTurquoise,bioluminescence algae,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.15000000596046448,True,False,CleanOnly,2,4,,BMT_Caverns/Things/Plant/BioluminescenceAlgae/Turquoise
+BMT_BlackLily,black lily,Biomes! Caverns,False,None,Beauty,2,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,8,,BMT_Caverns/Things/Plant/BlackLily
+BMT_Blastpod,blastpod shroom,Biomes! Caverns,False,None,Health,5,BMT_BlastSpore,50,352.22198486328125,50,352.22198486328125,0.699999988079071,False,True,CleanOnly,3,8,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/Boomshroom/BoomshroomGrown
+BMT_BleedingTooth,bleeding tooth,Biomes! Caverns,False,None,Misc,2,,0,58,6,42,0.699999988079071,False,False,Any,2,-1,,BMT_Caverns/Things/Plant/BleedingTooth
+BMT_BloomingCactus,blooming cactus,Biomes! Caverns,False,None,Beauty,6,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,8,,BMT_Caverns/Things/Plant/BloomingCactus
+BMT_BrightWispcap,bright wispcap,Biomes! Caverns,False,None,Misc,5,,0,58,6,42,0.10000000149011612,False,False,CleanOnly,3,3,Ground|Decorative,BMT_Caverns/Things/Plant/BrightWispcap
+BMT_BrightWisptoll,bright wisptoll,Biomes! Caverns,True,Full,Misc,5,,0,58,6,42,0.10000000149011612,False,False,Any,3,3,Ground|Ground,BMT_Caverns/Things/Plant/BrightWisptoll
+BMT_Brightbell,shinebell,Biomes! Caverns,False,None,Misc,5,RawFungus,0,58,6,42,0.05000000074505806,False,False,CleanOnly,3,8,Ground|Decorative,BMT_Caverns/Things/Plant/Brightbell
+BMT_Brightbells,brightbells,Biomes! Caverns,False,None,Misc,4,,0,58,6,42,0.5,False,True,CleanOnly,0,1,,Things/Plant/BMT_Brightbells
+BMT_BrightbellsPlanted,brightbells,Biomes! Caverns,False,None,Misc,4,,0,58,6,42,0.10000000149011612,False,True,CleanOnly,0,1,BMT_Fungiponics,Things/Plant/BMT_Brightbells
+BMT_BurnedMushroom,burned shroom,Biomes! Caverns,False,None,Misc,30,BMT_MushroomLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/BurnedTree
+BMT_Candlesnuff,candlesnuff,Biomes! Caverns,True,Full,Misc,12,BMT_MushroomLog,50,352.22198486328125,50,352.22198486328125,0.699999988079071,False,False,CleanOnly,3,3,Ground,BMT_Caverns/Things/Plant/Candlesnuff/CandlesnuffGrown
+BMT_CapscoolFungus,capscool,Biomes! Caverns,False,None,Health,10,BMT_CoolingSalve,50,352.22198486328125,50,352.22198486328125,0.699999988079071,False,True,CleanOnly,2,4,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/Capscool/CapscoolGrown
+BMT_CarveShroom,carvefungus,Biomes! Caverns,False,None,Misc,8,RawFungus,-50,30,6,42,0.05000000074505806,False,False,CleanOnly,3,8,,BMT_Caverns/Things/Plant/Carveshroom
+BMT_CavernMycelium,mycelium,Biomes! Caverns,False,None,Misc,3.5,BMT_MycelialBlocks,-50,352.22198486328125,-50,352.22198486328125,0.05000000074505806,False,False,CleanOnly,1,4,Ground,BMT_Caverns/Things/Plant/Mycelium
+BMT_Chromacap,chromacap,Biomes! Caverns,False,None,Misc,2,Dye,0,58,6,42,0.05000000074505806,False,False,CleanOnly,2,-1,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/Chromacap
+BMT_Chubshroom,chubshroom,Biomes! Caverns,False,None,Misc,5,,-50,30,-50,30,0.05000000074505806,False,False,CleanOnly,3,8,,BMT_Caverns/Things/Plant/Chubshroom
+BMT_CoralClub,coral club,Biomes! Caverns,False,None,Misc,5,RawFungus,0,58,6,42,0.05000000074505806,False,False,CleanOnly,3,8,,BMT_Caverns/Things/Plant/CoralClub
+BMT_CrimsonCap,crimson cap,Biomes! Caverns,False,None,Beauty,5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,3,8,Ground,BMT_Caverns/Things/Plant/CrimsonCap
+BMT_Crystal_BlueSowable,fast growing crystal,Biomes! Caverns,False,None,Misc,33.29999923706055,BMT_ResourceBlueCrystal,0,58,6,42,0.10000000149011612,False,False,Any,3,4,,BMT_Caverns/Things/Crystals/BlueMedium
+BMT_Crystalcap,crystalcap,Biomes! Caverns,True,Full,Misc,30,BMT_MushroomLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,3,Ground,BMT_Caverns/Things/Plant/Crystalcap
+BMT_CrystaltipBrambles,crystaltip brambles,Biomes! Caverns,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,BMT_Caverns/Things/Plant/CrystaltipBrambles
+BMT_Curlbranch,curlbranch,Biomes! Caverns,True,Full,Misc,15,BMT_MushroomLog,-50,30,-50,30,0.05000000074505806,False,False,CleanOnly,3,8,Ground|Ground,BMT_Caverns/Things/Plant/Curlbranch
+BMT_DarkWispcap,dark wispcap,Biomes! Caverns,False,None,Misc,5,,0,58,6,42,0.10000000149011612,False,False,CleanOnly,3,3,Ground|Decorative,BMT_Caverns/Things/Plant/DarkWispcap
+BMT_DarkWisptoll,dark wisptoll,Biomes! Caverns,True,Full,Misc,5,,0,58,6,42,0.10000000149011612,False,False,Any,3,3,Ground|Ground,BMT_Caverns/Things/Plant/DarkWisptoll
+BMT_Dewshrooms,dewshrooms,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,BMT_Caverns/Things/Plant/Seadew
+BMT_Dishcap,dish cap,Biomes! Caverns,True,Full,Misc,14,BMT_MushroomLog,0,58,6,42,0.699999988079071,False,False,Any,3,3,Ground,BMT_Caverns/Things/Plant/Dishcap
+BMT_DulcisPlant,dulcis,Biomes! Caverns,False,None,Food,7,BMT_RawDulcis,-45,352.22198486328125,-45,352.22198486328125,0.699999988079071,False,True,Any,2,5,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/Dulcis/DulcisGrown
+BMT_ExplodingAngel,exploding angel,Biomes! Caverns,True,Full,Misc,5,RawFungus,50,352.22198486328125,50,352.22198486328125,0.75,False,False,CleanOnly,3,8,Ground,BMT_Caverns/Things/Plant/ExplodingAngel/ExplodingAngelGrown
+BMT_Fibershroom,fibershroom,Biomes! Caverns,False,None,Misc,6,BMT_MushroomLog,0,58,6,42,0.20000000298023224,False,False,CleanOnly,2,-1,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/Fibershroom
+BMT_FireLavender,fire lavender,Biomes! Caverns,False,None,Misc,5,,50,352.22198486328125,50,352.22198486328125,0.05000000074505806,False,False,CleanOnly,3,8,Ground,BMT_Caverns/Things/Plant/FireLavender
+BMT_FlakespireFungus,flakespire fungus,Biomes! Caverns,True,Full,Misc,18,BMT_MushroomLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,3,Ground,BMT_Caverns/Things/Plant/FlakespireFungus
+BMT_FloorMold,floor mold,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,BMT_Caverns/Things/Plant/FloorMold
+BMT_Frigu,frigu,Biomes! Caverns,True,Full,Misc,12,BMT_MushroomLog,-50,30,-50,30,0.699999988079071,False,False,CleanOnly,3,3,Ground|Ground,BMT_Caverns/Things/Plant/Frigu
+BMT_FruitingBodies,mold fruiting bodies,Biomes! Caverns,False,None,Misc,4.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,5,,BMT_Caverns/Things/Plant/FruitingBodies
+BMT_FungalTendril,tendralus,Biomes! Caverns,False,None,Misc,5,,-50,30,-50,30,0.05000000074505806,False,False,CleanOnly,3,8,,BMT_Caverns/Things/Plant/FungalTendril
+BMT_Fungusfern,fungusfern,Biomes! Caverns,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,BMT_Caverns/Things/Plant/Fungusfern
+BMT_GiantLeaf,giant leaf,Biomes! Caverns,False,None,Food,12,BMT_RawGiantLeaf,0,58,6,42,1,False,False,CleanOnly,2,10,Ground,BMT_Caverns/Things/Plant/GiantLeaf
+BMT_Gleamcap,gleamcap,Biomes! Caverns,False,None,Misc,24,BMT_GleamcapSalve,0,58,6,42,0.5,False,True,CleanOnly,0,4,,Things/Plant/BMT_Gleamcap
+BMT_GleamcapPlanted,gleamcap,Biomes! Caverns,False,None,Misc,12,BMT_GleamcapSalve,0,58,6,42,0.10000000149011612,False,True,CleanOnly,0,4,BMT_Fungiponics,Things/Plant/BMT_Gleamcap
+BMT_Gleamtip,gleamtip,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,BMT_Caverns/Things/Plant/Gleamtip
+BMT_Glittercap,glittercap,Biomes! Caverns,False,None,Beauty,1.5,,-50,30,-50,30,0.05000000074505806,False,False,CleanOnly,3,8,Ground|Decorative,BMT_Caverns/Things/Plant/Glittercap
+BMT_Glowbulb,glowbulb,Biomes! Caverns,False,None,Food,14,BMT_RawGlowbulb,0,58,6,42,0.5,False,True,CleanOnly,0,3,,Things/Plant/BMT_Glowbulb
+BMT_GlowbulbPlanted,glowbulb,Biomes! Caverns,False,None,Food,14,BMT_RawGlowbulb,0,58,6,42,0.10000000149011612,False,True,CleanOnly,0,3,BMT_Fungiponics,Things/Plant/BMT_Glowbulb
+BMT_GlowingSucculent,glimmering cactus,Biomes! Caverns,False,None,Misc,4,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,8,,BMT_Caverns/Things/Plant/GlowSucculent
+BMT_Greatbulb,greatbulb,Biomes! Caverns,False,None,Misc,5,BMT_RawGlowbulb,0,58,6,42,0.05000000074505806,False,False,CleanOnly,3,8,,BMT_Caverns/Things/Plant/Greatbulb
+BMT_GreenArpeau,arpeau,Biomes! Caverns,True,Full,Misc,5,BMT_MushroomLog,0,58,6,42,0.699999988079071,True,False,CleanOnly,1,20,,BMT_Caverns/Things/Plant/ArpeauGreen
+BMT_GreyLady,Grey Lady,Biomes! Caverns,False,None,Misc,8,Cloth,0,58,6,42,0.699999988079071,False,True,CleanOnly,2,3,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/GreyLady/GreyLadyGrown
+BMT_Greyfields,greyfields,Biomes! Caverns,False,None,Food,14,BMT_RawGreyfields,0,58,6,42,0.5,False,True,CleanOnly,1,6,,Things/Plant/BMT_Greyfields
+BMT_GreyfieldsPlanted,greyfields,Biomes! Caverns,False,None,Food,6,BMT_RawGreyfields,0,58,6,42,0.10000000149011612,False,True,CleanOnly,1,6,BMT_Fungiponics,Things/Plant/BMT_Greyfields
+BMT_HealrootGrass,healroot grass,Biomes! Caverns,False,None,Misc,2,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,2,-1,,BMT_Caverns/Things/Plant/HealrootGrass
+BMT_HeatsinkFungus,heatsink fungus,Biomes! Caverns,True,Full,Health,5,,50,352.22198486328125,50,352.22198486328125,0.05000000074505806,False,False,CleanOnly,3,1,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/HeatsinkFungus
+BMT_JadeGlintsCrop,jade glint fungus,Biomes! Caverns,False,None,Food,8,BMT_JadeGlints,0,58,6,42,0.25,False,True,Any,2,6,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/JadeGlints
+BMT_JuiceCactus,juice cactus,Biomes! Caverns,False,None,Food,3.5,BMT_CactusJuice,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,8,Ground,BMT_Caverns/Things/Plant/JuiceCactus
+BMT_KessingerPlant,kessinger,Biomes! Caverns,False,None,Food,3,BMT_Kessinger,0,58,6,42,0.10000000149011612,False,True,CleanOnly,2,10,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/Kessinger
+BMT_LuminousSpout,luminous spout,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.05000000074505806,True,False,CleanOnly,1,4,,BMT_Caverns/Things/Plant/LuminousSpout
+BMT_MoonlessStripesPlant,moonless stripes,Biomes! Caverns,False,None,Misc,8,BMT_MoonlessSilk,50,352.22198486328125,50,352.22198486328125,0.699999988079071,False,True,CleanOnly,2,3,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/MoonlessStripes
+BMT_MortalMorelPlant,mortal morel,Biomes! Caverns,False,None,Health,10,BMT_MedicineFungal,-50,352.22198486328125,-45,352.22198486328125,1,False,True,CleanOnly,2,4,,BMT_Caverns/Things/Plant/MortalMorel
+BMT_MortalMorelPlantGrowable,mortal morel,Biomes! Caverns,False,None,Health,10,BMT_MedicineFungal,-50,352.22198486328125,6,42,1,False,True,CleanOnly,2,-1,Ground|BMT_Fungiponics,BMT_Caverns/Things/Plant/MortalMorel
+BMT_Mycelium,mycelium,Biomes! Caverns,False,None,Misc,20,BMT_MycelialBlocks,0,58,6,42,0.8999999761581421,False,False,CleanOnly,2,-1,,Things/Plant/BMT_Mycelium
+BMT_Nogtyl,nogtyl,Biomes! Caverns,True,Full,Misc,7,WoodLog,0,58,6,42,0,False,False,Any,1,4,Ground,BMT_Caverns/Things/Plant/Nogtyl
+BMT_NogtylMarsh,nogtyl,Biomes! Caverns,True,Full,Misc,7,WoodLog,0,58,6,42,0.10000000149011612,False,False,Any,1,15,Ground,BMT_Caverns/Things/Plant/Nogtyl
+BMT_Nuitae,nuitae,Biomes! Caverns,False,None,Misc,3,,0,58,6,42,0.10000000149011612,True,False,Any,1,4,,BMT_Caverns/Things/Plant/Nuitae
+BMT_NuitaeMarsh,nuitae,Biomes! Caverns,False,None,Misc,3,,0,58,6,42,0.10000000149011612,False,False,Any,1,4,,BMT_Caverns/Things/Plant/Nuitae
+BMT_Poptop,poptop,Biomes! Caverns,True,Full,Misc,1,,0,58,6,42,0.05000000074505806,False,False,Any,3,3,Ground|Ground,BMT_Caverns/Things/Plant/Poptop
+BMT_PowerFungus,power fungus,Biomes! Caverns,False,None,Beauty,1.5,,0,58,6,42,0.20000000298023224,False,False,CleanOnly,1,-1,Ground|Decorative,BMT_Caverns/Things/Building/PowergeneratingShroom/PowerFungusImmature
+BMT_Pusmelon,pusmelon,Biomes! Caverns,False,None,Misc,3.799999952316284,,0,58,6,42,0.5,False,False,CleanOnly,1,6,,BMT_Caverns/Things/Plant/Pusmelon
+BMT_Ravelmush,ravelmush,Biomes! Caverns,True,Full,Misc,5,BMT_MushroomLog,0,58,6,42,0.05000000074505806,False,False,CleanOnly,3,8,Ground|Ground,BMT_Caverns/Things/Plant/Ravelmush
+BMT_ReindeerMoss,reindeer moss,Biomes! Caverns,False,None,Misc,3,,-50,30,-50,30,0.699999988079071,False,False,CleanOnly,1,4,,BMT_Caverns/Things/Plant/ReindeerMoss
+BMT_RimeFlower,rime flower,Biomes! Caverns,False,None,Beauty,5,,-50,30,-50,30,0.05000000074505806,False,False,CleanOnly,3,8,,BMT_Caverns/Things/Plant/RimeFlower
+BMT_RimeFlowerGrowable,rime flower,Biomes! Caverns,False,None,Beauty,5,,-50,30,6,42,0.05000000074505806,False,False,CleanOnly,3,8,Ground|Decorative,BMT_Caverns/Things/Plant/RimeFlower
+BMT_RoyalBracket,royal bracket,Biomes! Caverns,False,None,Food,30,BMT_RawRoyalBracket,0,58,6,42,0.5,False,True,CleanOnly,2,5,,Things/Plant/BMT_RoyalBracket
+BMT_RoyalBracketPlanted,royal bracket,Biomes! Caverns,False,None,Food,30,BMT_RawRoyalBracket,0,58,6,42,0.10000000149011612,False,True,CleanOnly,2,5,BMT_Fungiponics,Things/Plant/BMT_RoyalBracket
+BMT_RustPuff,rustpuff,Biomes! Caverns,False,None,Misc,5.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,6,,BMT_Caverns/Things/Plant/RustPuff
+BMT_Sagecrust,sagecrust,Biomes! Caverns,False,None,Misc,3.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,3,,BMT_Caverns/Things/Plant/Sagecrust
+BMT_Shimbershroom,shimbershroom,Biomes! Caverns,True,Full,Misc,10,BMT_MushroomLog,0,58,6,42,0.05000000074505806,False,False,CleanOnly,3,3,Ground,BMT_Caverns/Things/Plant/Shimbershroom/ShimbershroomGrown
+BMT_Shimmershroom,shimmershroom,Biomes! Caverns,False,None,Food,10,BMT_RawShimmershroom,0,58,6,42,0.5,False,True,CleanOnly,0,7,,Things/Plant/BMT_Shimmershroom
+BMT_ShimmershroomPlanted,shimmershroom,Biomes! Caverns,False,None,Food,10,BMT_RawShimmershroom,0,58,6,42,0.10000000149011612,False,True,CleanOnly,0,7,BMT_Fungiponics,Things/Plant/BMT_Shimmershroom
+BMT_Shinecap,shine cap,Biomes! Caverns,True,Full,Misc,30,BMT_Glimmerslime,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground|Ground,BMT_Caverns/Things/Plant/Shinecap/ShinecapGrown
+BMT_Skulltop,skulltop,Biomes! Caverns,True,Full,Misc,8,BMT_MushroomLog,0,58,6,42,0.05000000074505806,False,False,Any,2,5,Ground,BMT_Caverns/Things/Plant/Skulltop/Skulltop
+BMT_StarchstalkPlant,starchstalk,Biomes! Caverns,False,None,Food,6,BMT_Starchstalk,0,58,6,42,0.5,False,True,Any,2,5,Ground|Hydroponic,BMT_Caverns/Things/Plant/Starchstalk
+BMT_Stimquill,stimquill,Biomes! Caverns,False,None,Misc,5.5,BMT_StimquillDrug,0,58,6,42,0.05000000074505806,False,True,CleanOnly,2,6,,BMT_Caverns/Things/Plant/Stimquill
+BMT_StinkLattice,stink lattice,Biomes! Caverns,True,Full,Misc,4,,50,352.22198486328125,50,352.22198486328125,0.05000000074505806,False,False,Any,2,5,Ground,BMT_Caverns/Things/Plant/StinkLattice/StinkLatticeGrown
+BMT_VioletWimple,violet wimple,Biomes! Caverns,False,None,Misc,5,RawFungus,0,58,6,42,0.05000000074505806,False,False,CleanOnly,3,8,,BMT_Caverns/Things/Plant/VioletWimple
+BMT_VoltaicFungus,voltaic fungus,Biomes! Caverns,True,Full,Misc,14,BMT_MushroomLog,0,58,6,42,0.699999988079071,False,False,Any,3,3,Ground,BMT_Caverns/Things/Plant/Dishcap
+BMT_WatOrbs,watorbs,Biomes! Caverns,False,None,Misc,1.5,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,8,,BMT_Caverns/Things/Plant/WatOrbs
+BMT_Wheelshroom,wheelshroom,Biomes! Caverns,False,None,Misc,5,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,8,,BMT_Caverns/Things/Plant/Wheelshroom
+BMT_Wrinklecap,wrinklecap,Biomes! Caverns,False,None,Misc,3,,0,58,6,42,0.10000000149011612,True,False,CleanOnly,1,4,,BMT_Caverns/Things/Plant/Wrinklecap
+BMT_WrinklecapMarsh,wrinklecap,Biomes! Caverns,False,None,Misc,3,,0,58,6,42,0.10000000149011612,False,False,CleanOnly,1,4,,BMT_Caverns/Things/Plant/Wrinklecap
+BMT_YumBulbs,yum bulbs,Biomes! Caverns,False,None,Beauty,5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,3,8,Ground|Decorative,BMT_Caverns/Things/Plant/YumBulbs
+BiomesIslands_CoconutPalm,coral coconut tree,Biomes! Core,False,None,Food,20,BiomesIslands_Coconuts,0,58,6,42,0.5,False,False,CleanOnly,2,12,Ground,BiomesCore_Things/Plant/CoconutPalm/CoconutPalm
+BMT_Plant_BloomingCorpse,blooming corpse,Biomes! Polluted Lands,False,None,Misc,4,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,4,,BMT_PollutedLands/Things/Plant/BloomingCorpse/BloomingCorpse
+BMT_Plant_CottonCap,cotton cap,Biomes! Polluted Lands,False,None,Misc,6,Cloth,0,58,6,42,0.5,False,False,PollutedOnly,2,-1,Ground|Hydroponic,BMT_PollutedLands/Things/Plant/CottonCap/CottonCap
+BMT_Plant_CryingWolfberryBush,crying wolfberry bush,Biomes! Polluted Lands,True,Full,Food,8,BMT_CryingWolfBerries,0,58,6,42,0.5,False,False,PollutedOnly,2,8,Ground|Ground|Hydroponic,BMT_PollutedLands/Things/Plant/CryingWolfberryBush/CryingWolfberryBush
+BMT_Plant_Doomsprout,doomsprout,Biomes! Polluted Lands,False,None,Misc,10,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,4,,BMT_PollutedLands/Things/Plant/Doomsprout/Doomsprout
+BMT_Plant_EclipsusFlower,eclipsus,Biomes! Polluted Lands,False,None,Misc,5,,0,58,6,42,0.05000000074505806,True,False,PollutedOnly,1,8,,BMT_PollutedLands/Things/Plant/Eclipsus
+BMT_Plant_EclipsusLeaves,eclipsus,Biomes! Polluted Lands,False,None,Misc,5,,0,58,6,42,0.05000000074505806,True,False,PollutedOnly,1,8,,BMT_PollutedLands/Things/Plant/EclipsusLeaf
+BMT_Plant_GreyFern,grey fern,Biomes! Polluted Lands,False,None,Misc,3,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,4,,BMT_PollutedLands/Things/Plant/GreyFern
+BMT_Plant_GutterPlantain,gutter plantain,Biomes! Polluted Lands,False,None,Misc,3,,0,58,6,42,0.05000000074505806,True,False,PollutedOnly,1,8,,BMT_PollutedLands/Things/Plant/GutterPlantain
+BMT_Plant_Mantrap,mantrap,Biomes! Polluted Lands,False,None,Misc,7,,0,58,6,42,0.30000001192092896,False,False,PollutedOnly,2,4,,BMT_PollutedLands/Things/Plant/Mantrap/Mantrap
+BMT_Plant_PaganThorns,pagan thorns,Biomes! Polluted Lands,False,None,Beauty,2.5,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,1,4,Ground,BMT_PollutedLands/Things/Plant/PaganThorns
+BMT_Plant_PaganThornsPotted,pagan thorns,Biomes! Polluted Lands,False,None,Beauty,2.5,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,1,4,Decorative,BMT_PollutedLands/Things/Plant/PaganThorns
+BMT_Plant_Pestia,pestia,Biomes! Polluted Lands,False,None,Misc,5,,0,58,6,42,0.05000000074505806,True,False,PollutedOnly,1,8,,BMT_PollutedLands/Things/Plant/Pestia
+BMT_Plant_PigsEars,pigs ears,Biomes! Polluted Lands,False,None,Misc,4,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,4,,BMT_PollutedLands/Things/Plant/PigsEars
+BMT_Plant_PlagueFans,plague fans,Biomes! Polluted Lands,False,None,Misc,4,,0,58,6,42,0.05000000074505806,True,False,PollutedOnly,1,8,,BMT_PollutedLands/Things/Plant/PlagueFans/PlagueFans
+BMT_Plant_PoxSorghum,pox sorghum,Biomes! Polluted Lands,False,None,Food,5.5,BMT_PoxSorghumHarvested,0,58,6,42,0.5,False,False,PollutedOnly,2,-1,Ground|Hydroponic,BMT_PollutedLands/Things/Plant/PoxSorghum/PoxSorghum
+BMT_Plant_Rashroot,rashroot,Biomes! Polluted Lands,False,None,Health,7,MedicineHerbal,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,4,Ground|Hydroponic,BMT_PollutedLands/Things/Plant/Rashroot/Rashroot
+BMT_Plant_ScorchedStars,scorched stars,Biomes! Polluted Lands,False,None,Misc,5,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,4,,BMT_PollutedLands/Things/Plant/ScorchedStars
+BMT_Plant_SewerReed,sewer reed,Biomes! Polluted Lands,False,None,Misc,5,,0,58,6,42,0.05000000074505806,True,False,PollutedOnly,1,8,,BMT_PollutedLands/Things/Plant/SewerReed
+BMT_Plant_Snaketails,snaketails,Biomes! Polluted Lands,False,None,Misc,3,,0,58,6,42,0.05000000074505806,True,False,PollutedOnly,1,8,,BMT_PollutedLands/Things/Plant/Snaketails/Snaketails
+BMT_Plant_Toxcaps,toxcaps,Biomes! Polluted Lands,False,None,Misc,2.5,,0,58,6,42,0,False,False,PollutedOnly,1,-1,,BMT_PollutedLands/Things/Plant/Toxcaps
+BMT_Plant_ToxicIvy,toxic ivy,Biomes! Polluted Lands,False,None,Misc,2.5,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,1,-1,,BMT_PollutedLands/Things/Plant/ToxicIvy
+BMT_Plant_TreeBarbedLarch,barbed larch tree,Biomes! Polluted Lands,True,Full,Misc,20,BMT_Toxwood,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,3,8,Ground,BMT_PollutedLands/Things/Plant/BarbedLarch
+BMT_Plant_TreeBlotBirch,blot birch tree,Biomes! Polluted Lands,True,Full,Misc,20,BMT_Toxwood,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,3,8,Ground,BMT_PollutedLands/Things/Plant/BlotBirch
+BMT_Plant_TreeClawhandCitron,clawhand citron,Biomes! Polluted Lands,True,Full,Food,15.5,BMT_ClawhandCitron,0,58,6,42,0.5,False,False,PollutedOnly,2,8,Ground|Ground,BMT_PollutedLands/Things/Plant/ClawhandCitron/ClawhandCitron
+BMT_Plant_TreeMartyr,martyr tree,Biomes! Polluted Lands,True,Full,Misc,10,BMT_Toxwood,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,3,-1,Ground,BMT_PollutedLands/Things/Plant/MartyrTree
+BMT_Plant_TreeScalpedCypress,scalped cypress,Biomes! Polluted Lands,True,Full,Misc,35,BMT_Toxwood,0,58,6,42,0.5,True,False,PollutedOnly,3,-1,Ground,BMT_PollutedLands/Things/Plant/ScalpedCypress
+BMT_Plant_TreeSeepingEucalyptus,seeping eucalyptus,Biomes! Polluted Lands,True,Full,Misc,30,BMT_Toxwood,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,3,8,Ground,BMT_PollutedLands/Things/Plant/SeepingEucalyptus
+BMT_Plant_TreeSnakeWillow,snake willow,Biomes! Polluted Lands,True,Full,Misc,13,BMT_Toxwood,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,3,-1,Ground,BMT_PollutedLands/Things/Plant/SnakeWillow
+BMT_Plant_TreeTanglerootMangrove,tangleroot mangrove,Biomes! Polluted Lands,True,Full,Misc,12,BMT_Toxwood,0,58,6,42,0.05000000074505806,True,False,PollutedOnly,3,-1,Ground,BMT_PollutedLands/Things/Plant/TanglerootMangrove
+BMT_Plant_TreeTwistingThornwood,twisting thornwood,Biomes! Polluted Lands,True,Full,Misc,15,BMT_Toxwood,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,3,-1,Ground,BMT_PollutedLands/Things/Plant/TwistingThornwood
+BMT_Plant_TreeWhistlingCane,whistling cane,Biomes! Polluted Lands,True,Full,Misc,30,BMT_Toxwood,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,3,8,Ground,BMT_PollutedLands/Things/Plant/WhistlingCane
+BMT_Plant_TreeWormoak,wormoak tree,Biomes! Polluted Lands,True,Full,Misc,30,BMT_Toxwood,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,3,8,Ground,BMT_PollutedLands/Things/Plant/Wormoak
+BMT_Plant_TumorbulbHyacinth,tumorbulb hyacinth,Biomes! Polluted Lands,False,None,Misc,5,,0,58,6,42,0.10000000149011612,True,False,PollutedOnly,1,8,,BMT_PollutedLands/Things/Plant/TumorbulbHyacinth
+BMT_Plant_TwistedDandelion,twisted dandelion,Biomes! Polluted Lands,False,None,Beauty,2.5,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,1,4,Ground,BMT_PollutedLands/Things/Plant/TwistedDandelion
+BMT_Plant_TwistingThorngrass,twisting thorngrass,Biomes! Polluted Lands,False,None,Misc,2.5,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,1,-1,,BMT_PollutedLands/Things/Plant/TwistingThorngrass
+BMT_Plant_TwistingThornweed,twisting thornweed,Biomes! Polluted Lands,False,None,Misc,5,,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,4,,BMT_PollutedLands/Things/Plant/TwistingThornweed
+BMT_Plant_WeepingHagbloom,weeping hagbloom,Biomes! Polluted Lands,False,None,Food,6,BMT_HagbloomNectar,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,-1,,BMT_PollutedLands/Things/Plant/WeepingHagbloom
+BMT_Plant_WildRashroot,wild rashroot,Biomes! Polluted Lands,False,None,Health,7,MedicineHerbal,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,4,,BMT_PollutedLands/Things/Plant/Rashroot/Rashroot
+BMT_RainbowTongue,rainbow tongue,Biomes! Polluted Lands,False,None,Misc,2,Dye,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,-1,Ground|Hydroponic,BMT_PollutedLands/Things/Plant/RainbowTongue/RainbowTongue
+BMT_SpinyHops,spiny hop,Biomes! Polluted Lands,False,None,Misc,5,RawHops,0,58,6,42,0.10000000149011612,False,False,PollutedOnly,2,-1,Ground|Hydroponic,BMT_PollutedLands/Things/Plant/SpinyHops/SpinyHops
+ChoppedStump_Polluted,chopped stump,Biotech,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/PollutedChopped
+ChoppedStump_Polux,chopped polux stump,Biotech,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/TreePolux/Chopped
+Plant_GrayGrass,gray grass,Biotech,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,1,-1,,Things/Plant/Graygrass
+Plant_PebbleCactus,pebble cactus,Biotech,True,Full,Misc,28,WoodLog,0,75,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/PebbleCactus
+Plant_RatPalm,rat palm tree,Biotech,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/RG_RatPalm
+Plant_Ripthorn,ripthorn,Biotech,False,None,Misc,3,,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,2,4,,Things/Plant/RG_Ripthorn
+Plant_Toxipotato,toxipotato plant,Biotech,False,None,Food,4.900000095367432,RawToxipotato,0,58,6,42,0.5,False,False,PollutedOnly,2,-1,Ground|Hydroponic,Things/Plant/RG_Toxipotato
+Plant_TreeGrayPine,gray pine tree,Biotech,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/RG_TreeGrayPine
+Plant_TreePolux,polux tree,Biotech,True,Super,Misc,10,WoodLog,0,58,6,42,0.07999999821186066,False,False,Any,3,8,,Things/Plant/RG_PoluxTree
+Plant_Witchwood,witchwood tree,Biotech,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/RG_Witchwood
+SmashedStump_Polluted,smashed stump,Biotech,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/PollutedSmashed
+SmashedStump_Polux,smashed polux stump,Biotech,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/TreePolux/Smashed
+Agarilux,agarilux,Core,False,None,Food,60,RawFungus,0,58,6,42,0.009999999776482582,False,True,Any,1,-1,,Things/Plant/RG_Agarilux
+Bryolux,bryolux,Core,False,None,Misc,60,,0,58,6,42,0.009999999776482582,False,True,Any,1,3,,Things/Plant/Bryolux
+BurnedTree,burned stump,Core,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/BurnedTree
+ChoppedStump,chopped stump,Core,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/Chopped
+Glowstool,glowstool,Core,False,None,Food,40,RawFungus,0,58,6,42,0.009999999776482582,False,True,Any,1,3,,Things/Plant/RG_Glowstool
+Plant_Agave,agave,Core,False,None,Food,6,RawAgave,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,8,,Things/Plant/Agave
+Plant_Alocasia,alocasia,Core,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/RG_Alocasia
+Plant_Ambrosia,ambrosia bush,Core,False,None,Food,6,Ambrosia,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,,Things/Plant/Ambrosia
+Plant_Astragalus,astragalus,Core,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/RG_Astragalus
+Plant_Berry,berry bush,Core,False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Things/Plant/RG_BerryPlant
+Plant_Bush,bush,Core,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/RG_Bush
+Plant_Chokevine,chokevine,Core,False,None,Misc,5,,0,58,6,42,0.699999988079071,False,False,Any,1,6,,Things/Plant/RG_Chokevine
+Plant_Clivia,clivia,Core,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,3,,Things/Plant/RG_Clivia
+Plant_Corn,corn plant,Core,False,None,Food,11.300000190734863,RawCorn,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground,Things/Plant/CornPlant
+Plant_Cotton,cotton plant,Core,False,None,Misc,8,Cloth,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/CottonPlant
+Plant_Dandelion,dandelions,Core,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_Dandelion
+Plant_Daylily,daylily,Core,False,None,Beauty,1.5,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Ground|Decorative,Things/Plant/Daylily
+Plant_Devilstrand,devilstrand,Core,False,None,Misc,22.5,DevilstrandCloth,0,58,6,42,0.5,False,False,Any,2,5,Ground,Things/Plant/RG_Devilstrand
+Plant_Haygrass,haygrass,Core,False,None,Food,7,Hay,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Ground,Things/Plant/Haygrass
+Plant_Healroot,healroot,Core,False,None,Health,7,MedicineHerbal,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/Healroot
+Plant_HealrootWild,wild healroot,Core,False,None,Misc,10,MedicineHerbal,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/Healroot
+Plant_Hops,hop plant,Core,False,None,Misc,5,RawHops,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/HopsPlant
+Plant_Moss,moss,Core,False,None,Misc,4,,0,58,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/RG_Moss
+Plant_PincushionCactus,pincushion cactus,Core,False,None,Misc,2.5,,0,75,6,42,0.05000000074505806,False,False,CleanOnly,2,4,,Things/Plant/RG_PincushionCactus
+Plant_Potato,potato plant,Core,False,None,Food,5.800000190734863,RawPotatoes,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/RG_PotatoPlant
+Plant_Psychoid,psychoid plant,Core,False,None,Misc,9,PsychoidLeaves,0,58,6,42,0.5,False,False,Any,2,-1,Ground|Hydroponic,Things/Plant/PsychoidPlant
+Plant_Rafflesia,giant rafflesia,Core,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,,Things/Plant/RG_Rafflesia
+Plant_Rice,rice plant,Core,False,None,Food,3,RawRice,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/RG_RicePlant
+Plant_Rose,rose,Core,False,None,Beauty,1.5,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Ground|Decorative,Things/Plant/Rose
+Plant_SaguaroCactus,saguaro cactus,Core,True,Full,Misc,5,WoodLog,0,75,6,42,0.05000000074505806,False,False,CleanOnly,3,-1,Ground,Things/Plant/RG_SaguaroCactus
+Plant_ShrubLow,low shrubs,Core,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,3,,Things/Plant/RG_ShrubLow
+Plant_Smokeleaf,smokeleaf plant,Core,False,None,Misc,7.5,SmokeleafLeaves,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/SmokeleafPlant
+Plant_Strawberry,strawberry plant,Core,False,None,Food,4.599999904632568,RawBerries,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/RG_StrawberryPlant
+Plant_Timbershroom,timbershroom,Core,True,Full,Misc,20,WoodLog,0,58,6,42,0.009999999776482582,False,True,Any,1,8,Ground,Things/Plant/RG_Timbershroom
+Plant_Tinctoria,tinctoria,Core,False,None,Misc,2,Dye,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/Tinctoria
+Plant_TreeBamboo,bamboo tree,Core,True,Full,Misc,12,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,5,Ground,Things/Plant/RG_TreeBamboo
+Plant_TreeBirch,birch tree,Core,True,Full,Misc,20,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_TreeBirch
+Plant_TreeCecropia,cecropia tree,Core,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plant/RG_TreeCecropia
+Plant_TreeCocoa,cocoa tree,Core,True,Full,Misc,16,Chocolate,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground|Ground,Things/Plant/TreeCocoa
+Plant_TreeCypress,cypress tree,Core,True,Full,Misc,35,WoodLog,0,58,6,42,0.699999988079071,True,False,CleanOnly,3,17,Ground,Things/Plant/RG_TreeCypress
+Plant_TreeDrago,drago tree,Core,True,Full,Misc,15,WoodLog,0,75,6,42,0.699999988079071,False,False,CleanOnly,3,6,Ground,Things/Plant/RG_TreeDrago
+Plant_TreeMaple,maple tree,Core,True,Full,Misc,27,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,17,Ground,Things/Plant/RG_TreeMaple
+Plant_TreeOak,oak tree,Core,True,Full,Misc,30,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_TreeOak
+Plant_TreePalm,palm tree,Core,True,Full,Misc,14,WoodLog,0,75,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plant/RG_TreePalm
+Plant_TreePine,pine tree,Core,True,Full,Misc,20,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_TreePine
+Plant_TreePoplar,poplar tree,Core,True,Full,Misc,15.050000190734863,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_TreePoplar
+Plant_TreeTeak,teak tree,Core,True,Full,Misc,32.5,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_TreeTeak
+Plant_TreeWillow,willow tree,Core,True,Full,Misc,13,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,17,Ground,Things/Plant/RG_TreeWillow
+SmashedStump,smashed stump,Core,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/Smashed
+AreebianBush,bush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/AreebianBush
+AreebianCactus,Cactus,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,3,,Things/Plant/AreebianCactus
+BushDandys,bush,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,6,,Things/Plant/BushDandys
+CaveCrystal,Cave crystals,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,True,Any,1,3,,Things/Plant/CaveCrystal
+CaveShroom,Caveshrooms,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,True,Any,1,5,,Things/Plant/CaveShroom
+CoralTreeBlack,Coral Tree,GRiNDTerra Biomes,False,None,Misc,4,,0,58,6,42,0.05000000074505806,False,False,Any,1,4,,Things/Plant/TreeGRimtacle3
+CoralTreeBlue,Coral Tree,GRiNDTerra Biomes,False,None,Misc,4,,0,58,6,42,0.05000000074505806,False,False,Any,1,4,,Things/Plant/TreeGRimtacle2
+CoralTreeOrange,Coral Tree,GRiNDTerra Biomes,False,None,Misc,4,,0,58,6,42,0.05000000074505806,False,False,Any,1,4,,Things/Plant/TreeGRimtacle
+CrystalBig,Crystal Big,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,2,3,,Things/Plant/CrystalBig
+CrystalShard,Crystal Shards,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,3,,Things/Plant/ShardBig
+CrystalSmall,Crystal Small,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,3,,Things/Plant/CrystalSmall
+DandyGrass,grass,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/DandyGrass
+DandyTallGrass,tall grass,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/DandyGrassTall
+Dandys,flowers,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/Dandys
+GRim1Alocasia,alocasia,GRiNDTerra Biomes,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/GRim1Alocasia
+GRim1BambooBush,bush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/GRim1BambooBush
+GRim1BerryBush,berry bush,GRiNDTerra Biomes,False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Things/Plant/GRim1BerryBush
+GRim1Bush,bush,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/GRim1Bush
+GRim1BushPoplar,bush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/GRim1BushPoplar
+GRim1Chokevine,chokevine,GRiNDTerra Biomes,False,None,Misc,5,,0,58,6,42,0.699999988079071,False,False,Any,1,6,,Things/Plant/GRim1Chokevine
+GRim1Fireweed,fireweed,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/GRim1Fireweed
+GRim1Moss,moss,GRiNDTerra Biomes,False,None,Misc,4,,0,58,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/GRim1Moss
+GRim1PebbleCactus,pebble cactus,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,75,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRim1PebbleCactus
+GRim1PincushionCactus,pincushion cactus,GRiNDTerra Biomes,False,None,Misc,2.5,,0,75,6,42,0.05000000074505806,False,False,CleanOnly,2,4,,Things/Plant/GRim1PincushionCactus
+GRim1RatPalm,rat palm tree,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRim1RatPalm
+GRim1Reeds,reeds,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.699999988079071,True,False,CleanOnly,2,-1,,Things/Plant/GRim1Reeds
+GRim1Ripthorn,ripthorn,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,2,4,,Things/Plant/GRim1Ripthorn
+GRim1SaguaroCactus,saguaro cactus,GRiNDTerra Biomes,True,Full,Misc,5,WoodLog,0,75,6,42,0.05000000074505806,False,False,CleanOnly,3,-1,Ground,Things/Plant/GRim1SaguaroCactus
+GRim1ShrubLow,low shrubs,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,3,,Things/Plant/GRim1ShrubLow
+GRim1Thornvine,thornvine,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/GRim1Thornvine
+GRim1TreeGrayPine,gray pine tree,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRim1TreeGrayPine
+GRim1TreeSnagroot,snagroot tree,GRiNDTerra Biomes,True,Full,Misc,52,WoodLog,0,58,6,42,0.5,False,False,Any,3,8,Ground,Things/Plant/GRim1TreeSnagroot
+GRim1Witchwood,witchwood tree,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRim1Witchwood
+GRim2Alocasia,alocasia,GRiNDTerra Biomes,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/GRim2Alocasia
+GRim2BerryBush,berry bush,GRiNDTerra Biomes,False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Things/Plant/GRim2BerryBush
+GRim2Bush,bush,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/GRim2Bush
+GRim2BushPoplar,bush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/GRim2BushPoplar
+GRim2Chokevine,chokevine,GRiNDTerra Biomes,False,None,Misc,5,,0,58,6,42,0.699999988079071,False,False,Any,1,6,,Things/Plant/GRim2Chokevine
+GRim2Moss,moss,GRiNDTerra Biomes,False,None,Misc,4,,0,58,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/GRim2Moss
+GRim2RatPalm,rat palm tree,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRim2RatPalm
+GRim2Ripthorn,ripthorn,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,2,4,,Things/Plant/GRim2Ripthorn
+GRim2ShrubLow,low shrubs,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,3,,Things/Plant/GRim2ShrubLow
+GRim2Thornvine,thornvine,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/GRim2Thornvine
+GRim2TreeGrayPine,gray pine tree,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRim2TreeGrayPine
+GRim2Witchwood,witchwood tree,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRim2Witchwood
+GRim3BerryBush,berry bush,GRiNDTerra Biomes,False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Things/Plant/GRim3BerryBush
+GRim3Bush,bush,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/GRim3Bush
+GRim3Chokevine,chokevine,GRiNDTerra Biomes,False,None,Misc,5,,0,58,6,42,0.699999988079071,False,False,Any,1,6,,Things/Plant/GRim3Chokevine
+GRim3Moss,moss,GRiNDTerra Biomes,False,None,Misc,4,,0,58,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/GRim3Moss
+GRim4BerryBush,berry bush,GRiNDTerra Biomes,False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Things/Plant/GRim4BerryBush
+GRim4Bush,bush,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/GRim4Bush
+GRim4Moss,moss,GRiNDTerra Biomes,False,None,Misc,4,,0,58,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/GRim4Moss
+GRim5BerryBush,berry bush,GRiNDTerra Biomes,False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Things/Plant/GRim5BerryBush
+GRimAgave,agave,GRiNDTerra Biomes,False,None,Food,6,RawAgave,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,8,,Things/Plant/GRimAgave
+GRimAgavePlant,bush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,6,,Things/Plant/GRimAgavePlant
+GRimAlocasia,alocasia,GRiNDTerra Biomes,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/GRimAlocasia
+GRimBambooBush,bush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/GRimBambooBush
+GRimBerryBush,berry bush,GRiNDTerra Biomes,False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Things/Plant/GRimBerryBush
+GRimBlackGrass,grass,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/GRimBlackGrass
+GRimBlackTallGrass,tall grass,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/GRimBlackTallGrass
+GRimBlueGrass,grass,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/GRimBlueGrass
+GRimBlueTallGrass,tall grass,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/GRimBlueTallGrass
+GRimBrambles,brambles,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,Any,1,4,,Things/Plant/GRimBrambles
+GRimBulrush,bulrush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.699999988079071,True,False,CleanOnly,2,-1,,Things/Plant/GRimBulrush
+GRimBush,bush,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/GRimBush
+GRimBushPoplar,bush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/GRimBushPoplar
+GRimChokevine,chokevine,GRiNDTerra Biomes,False,None,Misc,5,,0,58,6,42,0.699999988079071,False,False,Any,1,6,,Things/Plant/GRimChokevine
+GRimClivia,Cyprivia,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/GRimClivia
+GRimFireweed,fireweed,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/GRimFireweed
+GRimGreenGrass,grass,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/GRimGreenGrass
+GRimGreenTallGrass,tall grass,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/GRimGreenTallGrass
+GRimMagmaCactus,magma cactus,GRiNDTerra Biomes,False,None,Misc,2.5,,0,74,6,68,0.05000000074505806,False,False,CleanOnly,2,4,,Things/Plant/GRimMagmaCactus
+GRimMoss,moss,GRiNDTerra Biomes,False,None,Misc,4,,0,58,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/GRimMoss
+GRimNavyGrass,grass,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/GRimNavyGrass
+GRimNavyTallGrass,tall grass,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/GRimNavyTallGrass
+GRimOrangeGrass,grass,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/GRimOrangeGrass
+GRimOrangeTallGrass,tall grass,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/GRimOrangeTallGrass
+GRimPebbleCactus,pebble cactus,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,75,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRimPebbleCactus
+GRimPincushionCactus,pincushion cactus,GRiNDTerra Biomes,False,None,Misc,2.5,,0,75,6,42,0.05000000074505806,False,False,CleanOnly,2,4,,Things/Plant/GRimPincushionCactus
+GRimPsilocap,pilocap,GRiNDTerra Biomes,False,None,Misc,20,,0,58,6,42,0.009999999776482582,False,False,Any,2,6,,Things/Plant/GRimPsilocap
+GRimPurpleGrass,grass,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/GRimPurpleGrass
+GRimPurpleTallGrass,tall grass,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/GRimPurpleTallGrass
+GRimRatPalm,rat palm tree,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRimRatPalm
+GRimRedGrass,grass,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/GRimRedGrass
+GRimRedTallGrass,tall grass,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/GRimRedTallGrass
+GRimReeds,reeds,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.699999988079071,True,False,CleanOnly,2,-1,,Things/Plant/GRimReeds
+GRimRipthorn,ripthorn,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.05000000074505806,False,False,PollutedOnly,2,4,,Things/Plant/GRimRipthorn
+GRimSaguaroCactus,saguaro cactus,GRiNDTerra Biomes,True,Full,Misc,5,WoodLog,0,75,6,42,0.05000000074505806,False,False,CleanOnly,3,-1,Ground,Things/Plant/GRimSaguaroCactus
+GRimShrubLow,low shrubs,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,3,,Things/Plant/GRimShrubLow
+GRimTealGrass,grass,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/GRimTealGrass
+GRimTealTallGrass,tall grass,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/GRimTealTallGrass
+GRimThornvine,thornvine,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/GRimThornvine
+GRimTreeDead,Dead tree,GRiNDTerra Biomes,True,Full,Misc,14,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plant/GRimTreeDead
+GRimTreeGrayPine,gray pine tree,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRimTreeGrayPine
+GRimTreePolux,GRim tree,GRiNDTerra Biomes,True,Full,Misc,15,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,6,Ground,Things/Plant/GRimTreePolux
+GRimTreeSnagroot,snagroot tree,GRiNDTerra Biomes,True,Full,Misc,52,WoodLog,0,58,6,42,0.5,False,False,Any,3,8,Ground,Things/Plant/GRimTreeSnagroot
+GRimTreeWillow,willow tree,GRiNDTerra Biomes,True,Full,Misc,13,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,17,Ground,Things/Plant/GRimTreeWillow
+GRimWitchwood,witchwood tree,GRiNDTerra Biomes,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/GRimWitchwood
+GRimYellowGrass,grass,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/GRimYellowGrass
+GRimYellowTallGrass,tall grass,GRiNDTerra Biomes,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/GRimYellowTallGrass
+Grim3Shrub,bush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,6,,Things/Plant/GRim3Shrub
+GrimCoral,Coral,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,3,,Things/Plant/GRimCoral
+GrimMush,Mushrooms,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,3,,Things/Plant/GRimMush
+GrimPepper,Grimpepper plant,GRiNDTerra Biomes,False,None,Food,3,RawGrimPepper,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/GrimPepper
+GrimShroom,Mushrooms,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,5,,Things/Plant/GRimShroom
+Grimtacle,Tentacle,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,8,,Things/Plant/GRimtacle
+JungleShrub,bush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,6,,Things/Plant/JungleShrub
+Mushpine,Mushroom tree,GRiNDTerra Biomes,True,Full,Misc,20,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,6,Ground,Things/Plant/Mushpine
+NewGreenBush,bush,GRiNDTerra Biomes,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/NewGreenBush
+TreeAreeb,Areeb tree,GRiNDTerra Biomes,True,Full,Misc,18,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/TreeAreeb
+TreeBlareebian,Blareebian tree,GRiNDTerra Biomes,True,Full,Misc,18,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/TreeBlareebian
+TreeCrystal,Crystal tree,GRiNDTerra Biomes,True,Full,Misc,18,WoodLog,0,58,6,42,0.699999988079071,False,False,Any,3,6,Ground,Things/Plant/TreeCrystal
+TreeCypre,Cypre tree,GRiNDTerra Biomes,True,Full,Misc,18,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/TreeCypre
+TreeDragoberry,Dragoberry tree,GRiNDTerra Biomes,False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Things/Plant/TreeDragoberry
+TreeGralma,Gralma tree,GRiNDTerra Biomes,True,Full,Misc,18,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/TreeGralma
+TreeGrimber,Grimber tree,GRiNDTerra Biomes,True,Full,Misc,18,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/TreeGrimber
+TreePalma,Palma tree,GRiNDTerra Biomes,True,Full,Misc,18,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/TreePalma
+Plant_MotherAmbrosiaLGE,ambrosia bush,Go Explore!,False,None,Food,6,Ambrosia,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,,Things/Plant/Ambrosia
+Plant_HydroDevilstrand_GT,hydroponic devilstrand,GravTech,False,None,Misc,20,DevilstrandCloth,0,58,6,42,2,False,False,Any,2,-1,Hydroponic,Plant/HydroDevilstrand
+HorrorWeb,horrorweb,Horrors (Continued),False,None,Misc,30,Cloth,0,58,6,42,0,False,False,CleanOnly,1,4,,Things/Webs/HorrorWeb3
+ChoppedStump_Gauranlen,chopped gauranlen stump,Ideology,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/StumpChoppedGauranlen
+Plant_Fibercorn,fibercorn,Ideology,False,None,Misc,6,WoodLog,0,58,6,42,0.20000000298023224,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/RG_Fibercorn
+Plant_MossGauranlen,Gauranlen moss,Ideology,False,None,Misc,5,,0,58,6,42,0.07999999821186066,False,False,CleanOnly,2,-1,,Things/Plant/RG_GauranlenMoss
+Plant_Nutrifungus,nutrifungus,Ideology,False,None,Food,6,RawFungus,0,58,6,42,0.30000001192092896,False,True,CleanOnly,1,-1,Ground|Hydroponic|BMT_Fungiponics,Things/Plant/RG_Nutrifungus
+Plant_PodGauranlen,Gauranlen pod,Ideology,False,None,Misc,6,GauranlenSeed,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,,Things/Plant/GauranlenPod
+Plant_TreeBonsai,bonsai tree,Ideology,True,Mini,Beauty,1.5,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,DecorativeTree,Things/Plant/RG_BonsaiTree
+Plant_TreeGauranlen,Gauranlen tree,Ideology,True,Super,Misc,10,WoodLog,0,58,6,42,0.07999999821186066,False,False,CleanOnly,3,8,,Things/Plant/RG_GauranlenTree
+SmashedStump_Gauranlen,smashed gauranlen stump,Ideology,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/StumpSmashedGauranlen
+ZBiome_Plant_WildDaylily,daylily,More Vanilla Biomes,False,None,Beauty,2.5,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,6,,Things/Plant/Daylily
+ZBiome_Plant_WildRose,rose,More Vanilla Biomes,False,None,Beauty,2.5,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,,Things/Plant/Rose
+Boomshroom,boomshroom,Odyssey,False,None,Misc,60,Chemfuel,0,58,6,42,0.009999999776482582,False,False,Any,2,6,Ground|Hydroponic,Things/Plant/RG_Boomshroom
+ChoppedStump_Archean,chopped Archean stump,Odyssey,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/TreeArchean/StumpChoppedArcheanTree
+Plant_Berry_Leafless,berry bush,Odyssey,False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Things/Plant/BerryPlant_Leafless
+Plant_Brambles_Leafless,brambles,Odyssey,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,Any,1,4,,Things/Plant/Brambles_Leafless
+Plant_Bulrush,bulrush,Odyssey,False,None,Misc,2.5,,0,58,6,42,0.699999988079071,True,False,CleanOnly,2,-1,,Things/Plant/Bulrush
+Plant_Bush_Leafless,bush,Odyssey,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/Bush_Leafless
+Plant_Cotton_Wild,wild cotton plant,Odyssey,False,None,Misc,8,Cloth,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,5,,Things/Plant/CottonPlant
+Plant_Fibercorn_Wild,wild fibercorn,Odyssey,False,None,Misc,6,WoodLog,0,58,6,42,0.20000000298023224,False,False,CleanOnly,2,5,,Things/Plant/RG_Fibercorn
+Plant_Fireweed,fireweed,Odyssey,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/Fireweed
+Plant_LilyPad,lily pad,Odyssey,False,None,Misc,2.5,,0,58,6,42,0.699999988079071,True,False,CleanOnly,2,-1,,Things/Plant/LilyPad
+Plant_Lotus,lotus,Odyssey,False,None,Beauty,1.5,,0,58,6,42,0.699999988079071,True,False,CleanOnly,2,-1,,Things/Plant/Lotus
+Plant_MagmaCactus,magma cactus,Odyssey,False,None,Misc,2.5,,0,74,6,68,0.05000000074505806,False,False,CleanOnly,2,4,,Things/Plant/MagmaCactus
+Plant_NightRafflesia,night rafflesia,Odyssey,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,,Things/Plant/RG_NightRafflesia
+Plant_Nightgrass,night grass,Odyssey,False,None,Misc,5,,0,58,6,42,0.05000000074505806,False,False,Any,1,2,Ground,Things/Plant/Nightgrass
+Plant_Psilocap,wild psilocap,Odyssey,False,None,Food,20,Drug_Psilocap,0,58,6,42,0.009999999776482582,False,False,Any,1,6,Ground|Hydroponic,Things/Plant/RG_Psilocap
+Plant_Psychoid_Wild,wild psychoid plant,Odyssey,False,None,Misc,9,PsychoidLeaves,0,58,6,42,0.5,False,False,Any,2,5,,Things/Plant/PsychoidPlant
+Plant_Reeds,reeds,Odyssey,False,None,Misc,2.5,,0,58,6,42,0.699999988079071,True,False,CleanOnly,2,-1,,Things/Plant/Reeds
+Plant_Smokeleaf_Wild,wild smokeleaf plant,Odyssey,False,None,Misc,7.5,SmokeleafLeaves,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,5,,Things/Plant/SmokeleafPlant
+Plant_Strawberry_Wild,wild strawberry plant,Odyssey,False,None,Food,4.599999904632568,RawBerries,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,5,,Things/Plant/RG_StrawberryPlant
+Plant_Thornvine,thornvine,Odyssey,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/Thornvine
+Plant_Tinctoria_Wild,wild tinctoria,Odyssey,False,None,Misc,2,Dye,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,5,,Things/Plant/Tinctoria
+Plant_TreeArchean,archean tree,Odyssey,True,Super,Misc,30,WoodLog,0,58,6,42,0,False,False,Any,3,8,,Things/Plant/TreeArchean/ArcheanTree
+Plant_TreeCocoa_Wild,wild cocoa tree,Odyssey,True,Full,Misc,16,Chocolate,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,5,,Things/Plant/TreeCocoa
+Plant_TreeSnagroot,snagroot tree,Odyssey,True,Full,Misc,52,WoodLog,0,58,6,42,0.5,False,False,Any,3,8,Ground,Things/Plant/TreeSnagroot
+Plant_Willowgill,willowgill,Odyssey,False,None,Misc,40,,0,58,6,42,0.009999999776482582,False,False,CleanOnly,1,12,Ground|Hydroponic,Things/Plant/RG_Willowgill
+Plant_YellowGrass,yellow grass,Odyssey,False,None,Misc,2.5,,0,75,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/YellowGrass
+Plant_YellowTallGrass,tall yellow grass,Odyssey,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/YellowTallGrass
+SmashedStump_Archean,smashed Archean stump,Odyssey,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/TreeArchean/StumpSmashedArcheanTree
+IronScruff_Bindweed,bindweed,Primordial Geysers,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plants/IronScruff_Bindweed
+IronScruff_Juniper,juniper shrub,Primordial Geysers,False,None,Food,14,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,3,,Things/Plants/IronScruff_JuniperPlant
+IronScruff_PrimordialGrass,primordial grass,Primordial Geysers,False,None,Misc,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plants/IronScruff_PrimordialGrassPlant
+IronScruff_PrimordialTallGrass,primordial tall grass,Primordial Geysers,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plants/IronScruff_PrimordialGrassPlant
+Plant_Psilocap_Decorative,potted psilocap,Psilocap Cultivation,False,None,Beauty,2.825000047683716,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Decorative,Psilocap_Immature
+Plant_Psilocap_Farmed,psilocap,Psilocap Cultivation,False,None,Misc,11.300000190734863,Drug_Psilocap,0,58,6,42,0.5,False,False,Any,2,-1,Ground|Hydroponic,Things/Plant/Psilocap
+Plant_Psykshroom,psyshroom,Psyshrooms,False,None,Misc,11,RawPsykcaps,0,58,6,42,0.30000001192092896,False,True,CleanOnly,1,-1,Ground|Hydroponic,Psykmod/Psykshroom
+Plant_Brambles,brambles,ReGrowth 2,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,Any,1,4,,Things/Plant/RG_Brambles
+Plant_DesertDandelion,dandelions,ReGrowth 2,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_DesertDandelion
+Plant_Grass,grass,ReGrowth 2,False,None,Misc,2.5,,0,75,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/RG_Grass
+Plant_TallGrass,tall grass,ReGrowth 2,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/RG_Grass
+RG_Cibarius,cibarius,ReGrowth 2,False,None,Food,22,RawFungus,0,58,6,42,0.03999999910593033,False,False,CleanOnly,2,-1,,Things/Plant/RG_Cibarius
+RG_FlowerCactus,flower cactus,ReGrowth 2,False,None,Beauty,2.5,,0,58,6,42,0.03999999910593033,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_FlowerCactus
+RG_NeoAmanita,neo amanita,ReGrowth 2,False,None,Food,16,RawFungus,0,58,6,42,0.03999999910593033,False,False,CleanOnly,2,-1,,Things/Plant/RG_NeoAmanita
+RG_Plant_AridGrass,grass,ReGrowth 2,False,None,Misc,2.5,,0,75,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/RG_DesertGrass
+RG_Plant_BerryCultivated,berry bush,ReGrowth 2,False,None,Food,5,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,Ground,Things/Plant/BerryPlant
+RG_Plant_BlueDandelion,dandelions,ReGrowth 2,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_BlueDandelion
+RG_Plant_BlueTreePine,pine tree,ReGrowth 2,True,Full,Misc,40,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_BlueTreePine
+RG_Plant_BorealFern,fern,ReGrowth 2,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/RG_BorealFern
+RG_Plant_BramblesRed,brambles,ReGrowth 2,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,Any,1,4,,Things/Plant/RG_RedBrambles
+RG_Plant_BramblesYellow,brambles,ReGrowth 2,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,Any,1,4,,Things/Plant/RG_YellowBrambles
+RG_Plant_Cathedralis,cathedralis,ReGrowth 2,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_Cathedralis
+RG_Plant_Coldheart,coldheart,ReGrowth 2,False,None,Misc,15,,0,58,6,42,0.05000000074505806,False,False,Any,1,4,,Things/Plant/RG_Coldheart
+RG_Plant_CreepStern,creep stern,ReGrowth 2,False,None,Misc,15,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/RG_CreepStern
+RG_Plant_CrimsonCushion,crimson cushion,ReGrowth 2,False,None,Misc,5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/RG_TundraScrubsRed
+RG_Plant_Dervish,dervish,ReGrowth 2,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,6,4,Ground,Things/Plant/RG_Dervish
+RG_Plant_GlowLeaf,glow leaf,ReGrowth 2,False,None,Beauty,3.5,,0,58,6,42,0.699999988079071,False,False,Any,1,-1,,Things/Plant/GlowLeaf
+RG_Plant_LargeTreePine,pine tree,ReGrowth 2,True,Full,Misc,56,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_LargeTreePine
+RG_Plant_LupineIceland,lupine,ReGrowth 2,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_LupineIceland
+RG_Plant_LureWeed,lure weed,ReGrowth 2,False,None,Beauty,3.5,,0,58,6,42,0.699999988079071,False,False,Any,1,4,,Things/Plant/LureWeed
+RG_Plant_MutatedFern,mutated fern,ReGrowth 2,False,None,Misc,15,,0,58,6,42,0.05000000074505806,False,False,Any,1,4,,Things/Plant/MutatedFern
+RG_Plant_MutatedFungus,mutated fungus,ReGrowth 2,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,Any,1,4,,Things/Plant/MutatedFungus
+RG_Plant_Nightguide,nightguide,ReGrowth 2,False,None,Misc,15,,0,58,6,42,0.05000000074505806,False,False,Any,1,4,,Things/Plant/RG_Nightguide
+RG_Plant_OrangeTreePine,pine tree,ReGrowth 2,True,Full,Misc,25,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_OrangeTreePine
+RG_Plant_Oxalis,oxalis,ReGrowth 2,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_TropicalOxalis
+RG_Plant_Plumeria,plumeria,ReGrowth 2,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_Plumeria
+RG_Plant_Raspberry,raspberry bush,ReGrowth 2,False,None,Food,4,RawBerries,0,58,6,42,0.4000000059604645,False,False,CleanOnly,2,5,,Things/Plant/RG_RaspberryPlant
+RG_Plant_RaspberryCultivated,raspberry bush,ReGrowth 2,False,None,Food,4,RawBerries,0,58,6,42,0.4000000059604645,False,False,CleanOnly,2,-1,Ground,Things/Plant/RG_RaspberryPlant
+RG_Plant_RedDandelion,dandelions,ReGrowth 2,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_RedDandelion
+RG_Plant_SwampPod,swamp pod,ReGrowth 2,False,None,Misc,18,,0,58,6,42,0.03999999910593033,False,False,CleanOnly,2,4,,Things/Plant/RG_SwampPod
+RG_Plant_TallPalmTree,palm tree,ReGrowth 2,True,Full,Misc,48,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_TreeTallPalm
+RG_Plant_TallToxiGrass,tall toxigrass,ReGrowth 2,False,None,Misc,3,,0,75,6,42,0.05000000074505806,False,False,Any,1,4,,Things/Plant/ToxiGrass
+RG_Plant_TemperateFern,fern,ReGrowth 2,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/RG_TemperateFern
+RG_Plant_TemperateIvy,ivy,ReGrowth 2,False,None,Misc,15,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/RG_TemperateIvy
+RG_Plant_Tidalis,tidalis,ReGrowth 2,False,None,Misc,15,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/RG_Tidalis
+RG_Plant_TigerLily,tiger lily,ReGrowth 2,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_TigerLily
+RG_Plant_ToxiGrass,toxigrass,ReGrowth 2,False,None,Misc,2.5,,0,75,6,42,0.05000000074505806,False,False,Any,1,-1,,Things/Plant/ToxiGrass
+RG_Plant_TreeCornish,cornish tree,ReGrowth 2,True,Full,Misc,20,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_TreeCornish
+RG_Plant_TreeDwarfPalm,dwarf palm tree,ReGrowth 2,True,Full,Misc,6,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,10,Ground,Things/Plant/RG_TreeTinyPalm
+RG_Plant_TreeSplitpine,splitpine tree,ReGrowth 2,True,Full,Misc,42,WoodLog,0,58,6,42,0.699999988079071,False,False,Any,3,8,Ground,Things/Plant/SplitPine
+RG_Plant_TreeToxiTeak,toxiteak tree,ReGrowth 2,True,Full,Misc,35.5,WoodLog,0,58,6,42,0.699999988079071,False,False,Any,3,8,Ground,Things/Plant/TreeToxiTeak
+RG_Plant_TreeToxipine,toxipine tree,ReGrowth 2,True,Full,Misc,32,WoodLog,0,58,6,42,0.699999988079071,False,False,Any,3,8,Ground,Things/Plant/Toxipine
+RG_Plant_TreeWhiteWillow,willow tree,ReGrowth 2,True,Full,Misc,13,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,17,Ground,Things/Plant/RG_WhiteWillow
+RG_Plant_TropicalBrambles,brambles,ReGrowth 2,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,Any,1,4,,Things/Plant/RG_TropicalBrambles
+RG_Plant_TropicalChokevine,chokevine,ReGrowth 2,False,None,Misc,5,,0,58,6,42,0.699999988079071,False,False,Any,1,6,,Things/Plant/RG_TropicalChokevine
+RG_Plant_TropicalFern,fern,ReGrowth 2,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/RG_TropicalFern
+RG_Plant_TropicalIvy,ivy,ReGrowth 2,False,None,Misc,15,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/RG_TropicalIvy
+RG_Plant_TundraCotton,tundra cotton,ReGrowth 2,False,None,Beauty,4.599999904632568,Cloth,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/RG_TundraCotton
+RG_Plant_TundraGrass,grass,ReGrowth 2,False,None,Misc,2.5,,0,75,6,42,0.05000000074505806,False,False,CleanOnly,1,-1,,Things/Plant/RG_TundraGrass
+RG_Plant_TundraTallGrass,tall grass,ReGrowth 2,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,1,4,,Things/Plant/RG_TundraTallGrass
+RG_Potokus,potokus,ReGrowth 2,False,None,Food,14,RawFungus,0,58,6,42,0.03999999910593033,False,False,CleanOnly,2,-1,,Things/Plant/RG_Potokus
+RG_SychiCap,Sychi cap,ReGrowth 2,False,None,Food,8,RawFungus,0,58,6,42,0.03999999910593033,False,False,CleanOnly,2,-1,,Things/Plant/RG_SychiCap
+RG_Tree_TundraTreePine,pine tree,ReGrowth 2,True,Full,Misc,20,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/RG_TundraTreePine
+RG_Tripaloski,tripaloski,ReGrowth 2,False,None,Food,45,RawFungus,0,58,6,42,0.03999999910593033,False,False,Any,2,-1,,Things/Plant/Tripaloski
+RotR_RoseOfRebirth,rose of rebirth,Romance On The Rim,False,None,Misc,30,,0,58,6,42,0,False,False,CleanOnly,2,-1,,RotR_Things/Plant/RotR_RoseOfRebirth
+ChoppedStump_Anima,chopped anima stump,Royalty,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/AnimaChopped
+Plant_GrassAnima,anima grass,Royalty,False,None,Misc,1,,0,58,6,42,0.07999999821186066,False,False,CleanOnly,1,-1,,Things/Plant/Grass_Anima
+Plant_TreeAnima,anima tree,Royalty,True,Super,Misc,25,WoodLog,0,58,6,42,0.07999999821186066,False,False,CleanOnly,3,8,,Things/Plant/RG_TreeAnima
+SmashedStump_Anima,smashed anima stump,Royalty,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/AnimaSmashed
+Plant_Bloddle,bloddle plant,Star Wars Animal Collection (Continued),False,None,Food,4,RawBloddle,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,swplants/Bloddle
+Plant_Bubblespore,bubble spore plant,Star Wars Animal Collection (Continued),False,None,Misc,3,RawBubblespore,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,swplants/BubbleSpore
+Plant_Bubblespore_Wild,wild bubble spore plant,Star Wars Animal Collection (Continued),False,None,Misc,3,RawBubblespore,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,5,,swplants/BubbleSpore
+Plant_Chakroot,chak-root plant,Star Wars Animal Collection (Continued),False,None,Food,4,RawChakroot,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,swplants/Chakroot
+Plant_Chakroot_Wild,wild chak-root plant,Star Wars Animal Collection (Continued),False,None,Food,4,RawChakroot,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,5,,swplants/Chakroot
+Plant_Dantuber,dantuber plant,Star Wars Animal Collection (Continued),False,None,Food,5,RawDantuber,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,swplants/Dantuber
+Plant_Dantuber_Wild,wild dantuber plant,Star Wars Animal Collection (Continued),False,None,Food,5,RawDantuber,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,5,,swplants/Dantuber
+Plant_FelucianGlowspore,felucian glowspore,Star Wars Animal Collection (Continued),True,Full,Misc,10,RawFelucianLettuce,0,75,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground|Ground,swplants/FelucianGlowspore
+Plant_FelucianGlowspore_Wild,wild felucian glowspore,Star Wars Animal Collection (Continued),True,Full,Misc,10,RawFelucianLettuce,0,75,6,42,0.699999988079071,False,False,CleanOnly,3,5,,swplants/FelucianGlowspore
+Plant_HubbaGourd,hubba gourd,Star Wars Animal Collection (Continued),False,None,Food,3,RawHubbaGourd,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,swplants/HubbaGourd
+Plant_HubbaGourd_Wild,wild hubba gourd plant,Star Wars Animal Collection (Continued),False,None,Food,3,RawHubbaGourd,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,5,,swplants/HubbaGourd
+Plant_HydenockTree,hydenock tree,Star Wars Animal Collection (Continued),True,Full,Misc,10,Dye,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground|Ground,swplants/HydenockTree
+Plant_HydenockTree_Wild,wild hydenock tree,Star Wars Animal Collection (Continued),True,Full,Misc,10,Dye,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,5,,swplants/HydenockTree
+Plant_JoganTree,jogan tree,Star Wars Animal Collection (Continued),True,Full,Misc,10,RawJoganFruit,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground|Ground,swplants/JoganTree
+Plant_JoganTree_Wild,wild jogan tree,Star Wars Animal Collection (Continued),True,Full,Misc,10,RawJoganFruit,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,5,,swplants/JoganTree
+Plant_ManaxFungus,manax fungus,Star Wars Animal Collection (Continued),False,None,Misc,15,RawManaxFungus,0,58,6,42,0.800000011920929,False,False,CleanOnly,2,-1,Ground,swplants/ManaxFungus
+Plant_Meiloorun,meiloorun plant,Star Wars Animal Collection (Continued),False,None,Food,10,RawMeiloorun,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground,swplants/Meiloorun
+Plant_Meiloorun_Wild,wild meiloorun plant,Star Wars Animal Collection (Continued),False,None,Food,10,RawMeiloorun,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,5,,swplants/Meiloorun
+Plant_MujaFruit,muja fruit bush,Star Wars Animal Collection (Continued),False,None,Food,5,RawMujaFruit,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground,swplants/MujaFruit
+Plant_MujaFruit_Wild,wild muja fruit bush,Star Wars Animal Collection (Continued),False,None,Food,5,RawMujaFruit,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,5,,swplants/MujaFruit
+Plant_MunchFungus,munch-fungus,Star Wars Animal Collection (Continued),False,None,Food,7,RawMunchFungus,0,58,6,42,0.699999988079071,False,True,Any,1,-1,Ground|Hydroponic,swplants/MunchFungus
+Plant_MunchFungus_Wild,wild munch-fungus,Star Wars Animal Collection (Continued),False,None,Food,7,RawMunchFungus,0,58,6,42,0.699999988079071,False,True,Any,1,5,,swplants/MunchFungus
+Plant_Nysyllin,nysyllin plant,Star Wars Animal Collection (Continued),False,None,Misc,10,RawNysyllin,0,75,6,42,0.800000011920929,False,False,CleanOnly,2,-1,Ground,swplants/Nysillin
+Plant_Nysyllin_Wild,wild nysyllin plant,Star Wars Animal Collection (Continued),False,None,Misc,10,RawNysyllin,0,75,6,42,0.800000011920929,False,False,CleanOnly,2,5,,swplants/Nysillin
+Plant_TookeTrap,tooke-trap plant,Star Wars Animal Collection (Continued),False,None,Beauty,3,RawTookeTrapRoot,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Decorative,swplants/TookeTrap
+Plant_TookeTrap_Wild,wild tooke-trap plant,Star Wars Animal Collection (Continued),False,None,Beauty,3,RawTookeTrapRoot,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,5,,swplants/TookeTrap
+Plant_Cottonshroom,Cotton shroom,Tunneler Expanded,False,None,Misc,19,Cloth,0,58,6,42,0.10000000149011612,False,True,CleanOnly,1,-1,Ground|Hydroponic,Things/Plants/CottonShroom
+Plant_DevilShroom,Devil shroom,Tunneler Expanded,False,None,Misc,22,Luciferium,0,58,6,42,0.10000000149011612,False,True,CleanOnly,1,-1,Ground|Hydroponic,Things/Plants/DevilShroom
+Plant_GoldShroom,Gold shroom,Tunneler Expanded,False,None,Misc,15,Gold,0,58,6,42,0.10000000149011612,False,True,CleanOnly,1,-1,Ground|Hydroponic,Things/Plants/GoldShroom
+Plant_NeutroShroom,Neutro shroom,Tunneler Expanded,False,None,Misc,20,Neutroamine,0,58,6,42,0.10000000149011612,False,True,CleanOnly,1,-1,Ground|Hydroponic,Things/Plants/NeutroShroom
+Plant_PsychoidShroom,Psychoid shroom,Tunneler Expanded,False,None,Misc,9,PsychoidLeaves,0,58,6,42,0.10000000149011612,False,True,CleanOnly,1,-1,Ground|Hydroponic,Things/Plants/PsychoidShroom
+Plant_SteelShroom,Steel shroom,Tunneler Expanded,False,None,Misc,15,Steel,0,58,6,42,0.10000000149011612,False,True,CleanOnly,1,-1,Ground|Hydroponic,Things/Plants/SteelShroom
+VBE_Plant_Coffee,coffee plant,Vanilla Brewing Expanded,False,None,Misc,12,VBE_RawCoffee,0,58,6,42,1,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plants/VBE_CoffeePlant
+VBE_Plant_Tea,tea grass,Vanilla Brewing Expanded,False,None,Misc,9.5,VBE_RawTea,0,58,6,42,1,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plants/VBE_TeaGrass
+VBE_Plant_Tobacco,tobacco plant,Vanilla Brewing Expanded,False,None,Misc,8.5,VBE_RawTobacco,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plants/VBE_TobaccoPlant
+VCE_Allspice,allspice plant,Vanilla Cooking Expanded,False,None,Food,6.400000095367432,VCE_RawSpices,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground|Hydroponic,Things/Plant/Crops/VCE_Allspice
+VCE_Sugarcane,sugarcane plant,Vanilla Cooking Expanded,False,None,Food,12,VCE_RawSugar,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground,Things/Plant/Crops/VCE_SugarCane
+VCE_Wheat,wheat plant,Vanilla Cooking Expanded,False,None,Food,15,VCE_Flour,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,Ground,Things/Plant/Crops/VCE_Wheat
+VEE_Plant_Bluebell,bluebell,Vanilla Events Expanded,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Ground|Decorative,Things/Plants/Bluebells
+VEE_Plant_CyllenCluster,cyllen cluster,Vanilla Events Expanded,False,None,Food,7,,0,58,6,42,0,False,False,Any,2,-1,,Things/Plants/PsychicPlants/CyllenCluster
+VEE_Plant_CyllenCluster_Wilted,wilted cyllen cluster,Vanilla Events Expanded,False,None,Misc,30,,0,58,6,42,0,False,False,Any,2,-1,,Things/Plants/WiltedPsychicPlants/WiltedCyllenCluster
+VEE_Plant_Gardenia,gardenia,Vanilla Events Expanded,False,None,Beauty,1.7999999523162842,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Ground|Decorative,Things/Plants/Gardenia
+VEE_Plant_Gentian,gentian,Vanilla Events Expanded,False,None,Beauty,2.200000047683716,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Ground|Decorative,Things/Plants/Gentians
+VEE_Plant_MyrloxTree,myrlox tree,Vanilla Events Expanded,False,None,Food,30,WoodLog,0,58,6,42,0,False,False,Any,3,-1,,Things/Plants/PsychicPlants/MyrloxTree/MyrloxTree
+VEE_Plant_MyrloxTree_Wilted,wilted myrlox tree,Vanilla Events Expanded,False,None,Misc,30,,0,58,6,42,0,False,False,Any,2,-1,,Things/Plants/WiltedPsychicPlants/WiltedMyrloxTree
+VEE_Plant_Petunia,petunia,Vanilla Events Expanded,False,None,Beauty,1.7999999523162842,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Ground|Decorative,Things/Plants/Petunias
+VEE_Plant_PhoraxTree,phorax tree,Vanilla Events Expanded,False,None,Food,30,WoodLog,0,58,6,42,0,False,False,Any,3,-1,,Things/Plants/PsychicPlants/PhoraxTree/PhoraxTree
+VEE_Plant_PhoraxTree_Wilted,wilted phorax tree,Vanilla Events Expanded,False,None,Misc,30,,0,58,6,42,0,False,False,Any,2,-1,,Things/Plants/WiltedPsychicPlants/WiltedPhoraxTree
+VEE_Plant_PinkGrass,pink grass,Vanilla Events Expanded,False,None,Food,2,,0,58,6,42,0,False,False,Any,1,-1,,Things/Plants/PsychicPlants/PinkGrass
+VEE_Plant_PsychicLotus,psychic lotus,Vanilla Events Expanded,False,None,Food,12,,0,58,6,42,0,False,False,Any,2,-1,,Things/Plants/PsychicPlants/PsychicLotus
+VEE_Plant_PsychicLotusSeedling,psychic lotus seedling,Vanilla Events Expanded,False,None,Food,5.5,,0,58,6,42,0,False,False,Any,2,-1,,Things/Plants/PsychicPlants/PsychicLotus_Seedling
+VEE_Plant_PsychicLotus_Wilted,wilted psychic lotus,Vanilla Events Expanded,False,None,Misc,30,,0,58,6,42,0,False,False,Any,2,-1,,Things/Plants/WiltedPsychicPlants/WiltedPsychicLotus
+VEE_Plant_TallPinkGrass,tall pink grass,Vanilla Events Expanded,False,None,Food,2,,0,58,6,42,0,False,False,Any,1,-1,,Things/Plants/PsychicPlants/TallPinkGrass
+VEE_Plant_VyspStrands,vysp strands,Vanilla Events Expanded,False,None,Food,4,,0,58,6,42,0,False,False,Any,2,-1,,Things/Plants/PsychicPlants/VyspStrands
+VEE_Plant_VyspStrands_Wilted,wilted vysp strands,Vanilla Events Expanded,False,None,Misc,30,,0,58,6,42,0,False,False,Any,2,-1,,Things/Plants/WiltedPsychicPlants/WiltedVyspStrand
+VEE_Plant_XyrilTree,xyril tree,Vanilla Events Expanded,False,None,Food,30,WoodLog,0,58,6,42,0,False,False,Any,3,-1,,Things/Plants/PsychicPlants/XyrilTree/XyrilTree
+VEE_Plant_XyrilTree_Wilted,wilted xyril tree,Vanilla Events Expanded,False,None,Misc,30,,0,58,6,42,0,False,False,Any,2,-1,,Things/Plants/WiltedPsychicPlants/WiltedXyrilTree
+VFEI2_TendrilmossVines,tendrilmoss vines,Vanilla Factions Expanded - Insectoids 2,False,None,Food,4,VFEI2_Tendrilmoss,0,58,6,42,0.05000000074505806,False,False,CleanOnly,2,-1,,Things/Plant/Tendrillmoss
+VGE_OxyalgaePlant,oxyalgae plant,Vanilla Gravship Expanded - Chapter 1,False,None,Misc,5,VGE_Oxyalgae,0,58,6,42,2,False,False,CleanOnly,1,-1,Hydroponic|Oxyalgae,Things/Plant/OxyalgaePlant
+VCE_ChocolateBush,cocoa bush,Vanilla Ideology Expanded - Memes and Structures,False,None,Beauty,8,Chocolate,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,-1,Ground|Hydroponic|Decorative|VCE_ChocolateBushSowableDetection,Things/Building/Misc/CocoaBush
+VEE_ButtercupFlower,buttercup,Vanilla Landmarks Expanded,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/ButtercupFlower
+VEE_DayBoomshroom,light-resistant boomshroom,Vanilla Landmarks Expanded,False,None,Misc,60,Chemfuel,0,58,6,42,0.009999999776482582,False,False,Any,2,6,,Things/Plant/Boomshroom
+VEE_DayPsilocap,light-resistant psilocap,Vanilla Landmarks Expanded,False,None,Food,20,Drug_Psilocap,0,58,6,42,0.009999999776482582,False,False,Any,2,6,,Things/Plant/Psilocap
+VEE_DayWillowgill,light-resistant willowgill,Vanilla Landmarks Expanded,False,None,Misc,40,,0,58,6,42,0.009999999776482582,False,False,CleanOnly,1,12,,Things/Plant/Willowgill
+VEE_ForgetMeNot,forget-me-not,Vanilla Landmarks Expanded,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,Ground,Things/Plant/ForgetMeNot
+VEE_Gorse,gorse,Vanilla Landmarks Expanded,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/Gorse
+VEE_Heather,heather,Vanilla Landmarks Expanded,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/Heather
+VEE_Knapweed,knapweed,Vanilla Landmarks Expanded,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/Knapweed
+VEE_Loosestrife,loosestrife,Vanilla Landmarks Expanded,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/Loosestrife
+VEE_Mangrove,mangrove,Vanilla Landmarks Expanded,True,Full,Misc,2,WoodLog,0,58,6,42,0.699999988079071,True,False,CleanOnly,3,8,Ground,Things/Plant/Tree_Mangrove
+VEE_Mangrove_ChoppedStump,mangrove chopped stump,Vanilla Landmarks Expanded,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/Tree_ChoppedStump_Mangrove
+VEE_Mangrove_SmashedStump,mangrove smashed stump,Vanilla Landmarks Expanded,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/Tree_SmashedStump_Mangrove
+VEE_Plant_AnimaBell,anima bell,Vanilla Landmarks Expanded,False,None,Beauty,2.5,,0,58,6,42,0.05000000074505806,False,False,CleanOnly,1,4,,Things/Plant/AnimaBell
+VEE_Plant_AnimaBrambles,anima brambles,Vanilla Landmarks Expanded,False,None,Misc,3,,0,58,6,42,0.009999999776482582,False,False,CleanOnly,1,4,,Things/Plant/AnimaBrambles
+VEE_Plant_AnimaBush,anima bush,Vanilla Landmarks Expanded,False,None,Misc,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/AnimaBush
+VEE_Plant_AnimaHeartBlossom,anima heart blossom,Vanilla Landmarks Expanded,False,None,Misc,3,VEE_AnimaPearls,0,58,6,42,0.699999988079071,False,False,CleanOnly,2,-1,,Things/Plant/AnimaHeartBlossom
+VEE_Plant_AnimaHusk,anima husk,Vanilla Landmarks Expanded,True,Full,Misc,28,WoodLog,0,58,6,42,0.5,False,False,PollutedOnly,3,8,Ground,Things/Plant/AnimaHusk
+VEE_Plant_AnimaRoot,anima root,Vanilla Landmarks Expanded,False,None,Misc,3,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,3,,Things/Plant/AnimaRoot
+VEE_Plant_BarrelCactus,barrel cactus,Vanilla Landmarks Expanded,True,Full,Misc,5,WoodLog,0,75,6,42,0.05000000074505806,False,False,CleanOnly,3,-1,Ground,Things/Plant/BarrelCactus
+VEE_Plant_BeavertailCactus,beavertail cactus,Vanilla Landmarks Expanded,True,Full,Misc,5,WoodLog,0,75,6,42,0.05000000074505806,False,False,CleanOnly,3,-1,Ground,Things/Plant/BeavertailCactus
+VEE_Plant_ChollaCactus,cholla cactus,Vanilla Landmarks Expanded,True,Full,Misc,5,WoodLog,0,75,6,42,0.05000000074505806,False,False,CleanOnly,3,-1,Ground,Things/Plant/ChollaCactus
+VEE_Plant_DatePalm,date palm,Vanilla Landmarks Expanded,True,Full,Misc,16,VEE_RawDates,0,75,6,42,0.699999988079071,True,False,CleanOnly,3,10,Ground,Things/Plant/Tree_DatePalm
+VEE_Plant_FakeAnimaTree,anima tree,Vanilla Landmarks Expanded,True,Full,Misc,30,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/AnimaTreeFake
+VEE_Plant_Fern,fern,Vanilla Landmarks Expanded,False,None,Misc,3,,0,75,6,42,0.699999988079071,False,False,CleanOnly,2,4,,Things/Plant/Fern
+VEE_Plant_Firewood,firewood tree,Vanilla Landmarks Expanded,True,Full,Misc,27,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,17,Ground,Things/Plant/Tree_Firewood
+VEE_Plant_Firewood_ChoppedStump,chopped stump,Vanilla Landmarks Expanded,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/Tree_ChoppedStump_Firewood
+VEE_Plant_Firewood_SmashedStump,smashed stump,Vanilla Landmarks Expanded,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/Tree_SmashedStump_Firewood
+VEE_Plant_GnarledPine,gnarled pine tree,Vanilla Landmarks Expanded,True,Full,Misc,20,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/Tree_GnarledPine
+VEE_Plant_GrandAnimaTree,grand anima tree,Vanilla Landmarks Expanded,True,Full,Misc,25,VEE_AnimaPearls,0,58,6,42,0.019999999552965164,False,False,CleanOnly,3,8,,Things/Plant/GrandAnimaTree
+VEE_Plant_HedgehogCactus,hedgehog cactus,Vanilla Landmarks Expanded,True,Full,Misc,5,WoodLog,0,75,6,42,0.05000000074505806,False,False,CleanOnly,3,-1,Ground,Things/Plant/HedgehogCactus
+VEE_Plant_HoodiaCactus,hoodia cactus,Vanilla Landmarks Expanded,True,Full,Misc,5,WoodLog,0,75,6,42,0.05000000074505806,False,False,CleanOnly,3,-1,Ground,Things/Plant/HoodiaCactus
+VEE_Plant_JuniperBush,juniper bush,Vanilla Landmarks Expanded,False,None,Food,6,RawBerries,0,58,6,42,0.5,False,False,CleanOnly,2,5,,Things/Plant/JuniperBush/JuniperBush
+VEE_Plant_Laurel,laurel tree,Vanilla Landmarks Expanded,True,Full,Misc,27,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,17,Ground,Things/Plant/LaurelTree
+VEE_Plant_LaurelTree_ChoppedStump,chopped stump,Vanilla Landmarks Expanded,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/Tree_ChoppedStump_LaurelTree
+VEE_Plant_LaurelTree_SmashedStump,smashed stump,Vanilla Landmarks Expanded,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/Tree_SmashedStump_LaurelTree
+VEE_Plant_MysticCap,mystic cap,Vanilla Landmarks Expanded,False,None,Food,10,RawFungus,0,58,6,42,0.009999999776482582,False,False,CleanOnly,1,3,Ground,Things/Plant/MysticCap
+VEE_Plant_OrganPipeCactus,organ pipe cactus,Vanilla Landmarks Expanded,True,Full,Misc,5,WoodLog,0,75,6,42,0.05000000074505806,False,False,CleanOnly,3,-1,Ground,Things/Plant/OrganPipeCactus
+VEE_Plant_ScrewPine,screw pine,Vanilla Landmarks Expanded,True,Full,Misc,2,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,3,Ground,Things/Plant/Tree_ScrewPine
+VEE_Plant_ScrewPine_ChoppedStump,chopped stump,Vanilla Landmarks Expanded,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/Tree_ChoppedStump_ScrewPine
+VEE_Plant_ScrewPine_SmashedStump,smashed stump,Vanilla Landmarks Expanded,False,None,Misc,30,WoodLog,0,58,6,42,0.009999999776482582,False,False,CleanOnly,2,-1,,Things/Plant/Stumps/Tree_SmashedStump_ScrewPine
+VEE_Plant_TreeAnima_Ancient,ancient anima tree,Vanilla Landmarks Expanded,True,Super,Misc,25,VEE_AnimaPearls,0,58,6,42,0.07999999821186066,False,False,CleanOnly,3,8,,Things/Plant/AncientAnimaTree
+VEE_Plant_TreeBirch_Auburn,auburn birch tree,Vanilla Landmarks Expanded,True,Full,Misc,20,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/AutumnTrees/TreeOrangeBirch
+VEE_Plant_TreeMaple_Auburn,auburn maple tree,Vanilla Landmarks Expanded,True,Full,Misc,27,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,17,Ground,Things/Plant/AutumnTrees/TreeSugarMaple
+VEE_Plant_TreeOak_Auburn,auburn oak tree,Vanilla Landmarks Expanded,True,Full,Misc,30,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/AutumnTrees/TreeRedOak
+VEE_Plant_TreePoplar_Auburn,auburn poplar tree,Vanilla Landmarks Expanded,True,Full,Misc,15.050000190734863,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/AutumnTrees/TreeYellowPoplar
+VEE_Plant_YoungAnimaTree,anima sapling,Vanilla Landmarks Expanded,True,Full,Misc,30,WoodLog,0,58,6,42,0.699999988079071,False,False,CleanOnly,3,8,Ground,Things/Plant/AnimaSapling
+VCE_Plant_AloeVera,aloe vera plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/AloeVera
+VCE_Plant_BunnyEarsCactus,bunny ears cactus,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/BunnyEarsCactus
+VCE_Plant_Echeveria,echeveria plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/Echeveria
+VCE_Plant_FairyWashboard,fairy washboard plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/FairyWashboard
+VCE_Plant_JadePlant,jade plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/JadePlant
+VCE_Plant_PeyotePlant,peyote plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/Peyote
+VCE_Plant_PincushionPlant,pincushion plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/PincushionPlant
+VCE_Plant_Schlumbergera,schlumbergera plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/Schlumbergera
+VCE_Plant_SnakePlant,snake plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/SnakePlant
+VCE_Plant_SweetheartPlant,sweetheart plant,Vanilla Plants Expanded - Succulents,False,None,Beauty,3,,0,58,6,42,0.699999988079071,False,False,CleanOnly,1,8,Ground|Decorative,Things/Plant/SweetheartPlant
+VRE_PoluxBush,polux bush,Vanilla Races Expanded - Phytokin,True,Super,Misc,10,WoodLog,0,58,6,42,0.05000000074505806,False,False,Any,3,8,,Things/Plant/PoluxBush
