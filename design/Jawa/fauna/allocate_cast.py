@@ -25,13 +25,27 @@ SLOTS = [('tiny', 4), ('small', 8), ('med', 8), ('large', 5), ('huge', 3), ('SUP
 # Commonality per band: the pyramid is about VARIETY; this is about how often you meet them.
 COMMONALITY = {'tiny': 1.00, 'small': 0.70, 'med': 0.40, 'large': 0.18, 'huge': 0.07,
                'SUPER': 0.012}          # the set piece is genuinely rare
-REUSE_PENALTY = 0.55                    # per biome already using this creature
+REUSE_PENALTY = 0.75                    # per biome already using this creature
+# 🔴 The rare bands are scaled INVERSELY with the biome's animalDensity, against a reference.
+# Commonality is RELATIVE, and total spawns scale with density - so a flat 0.012 makes the
+# set piece 65x rarer in ExtremeDesert (density 0.1) than in AB_MiasmicMangrove (6.5). It
+# would essentially never appear in a sparse biome, which defeats the point of having one.
+DENSITY_REF = 1.8                       # AB_RockyCrags: a middling biome
+RARE_SCALED = {'SUPER': (0.008, 0.20), 'huge': (0.05, 0.35)}   # (floor, ceiling) after scaling
 ANOMALY_BIOMES = {'HorrorWastes', 'AB_GelatinousSuperorganism', 'AB_OcularForest', 'Scarlands'}
 
 def band(b):
     b = float(b or 0)
     return ('tiny' if b < 0.3 else 'small' if b < 0.8 else 'med' if b < 1.6
             else 'large' if b < 3.0 else 'huge' if b < 6.0 else 'SUPER')
+
+def biome_density():
+    import json as _j
+    from dumppath import defs_dir
+    bl = _j.load(open(defs_dir() + '/BiomeDef.json', encoding='utf-8'))
+    bl = bl if isinstance(bl, list) else bl.get('defs')
+    return {x['defName']: ((x.get('fields') or {}).get('animalDensity') or 1.0)
+            for x in bl if isinstance(x, dict)}
 
 def load():
     A = {x['defName']: x for x in json.load(open(animals_path(), encoding='utf-8'))['animals']}
@@ -53,8 +67,17 @@ def pct(v, p):
     v = sorted(v)
     return v[max(0, min(len(v) - 1, int(round(p * (len(v) - 1)))))]
 
+def commonality_for(biome, bnd, DENS):
+    c = COMMONALITY[bnd]
+    if bnd not in RARE_SCALED:
+        return c
+    d = float(DENS.get(biome) or DENSITY_REF) or DENSITY_REF
+    lo, hi = RARE_SCALED[bnd]
+    return round(max(lo, min(hi, c * (DENSITY_REF / d))), 4)
+
 def main():
     A, W, fit, tiles = load()
+    DENS = biome_density()
     biomes = sorted(tiles, key=lambda b: -len(tiles[b]))
     used = collections.Counter()
     cast = {}
@@ -118,7 +141,7 @@ def main():
                 bel, sta = fit[b][d]
                 w.writerow([b, d, A[d].get('label'), A[d].get('modName'), bnd,
                             (A[d].get('race') or {}).get('baseBodySize'),
-                            COMMONALITY[bnd], bel, sta, W[d]['defence'],
+                            commonality_for(b, bnd, DENS), bel, sta, W[d]['defence'],
                             W[d]['status'], W[d]['reason'], int((b, d) in promo)])
     tot = sum(len(v) for v in cast.values())
     print(f"wrote {out}: {tot} (biome, creature) assignments across {len(biomes)} biomes")

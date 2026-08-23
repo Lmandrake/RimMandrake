@@ -71,15 +71,15 @@
         <li><animal>GR_Boomwolf</animal><commonality>0.4</commonality></li> <!-- boomwolf - med, dormant -->
         <li><animal>GR_Wolfbeaver</animal><commonality>0.4</commonality></li> <!-- wolfbeaver - med, dormant -->
         <li><animal>VQEA_Splicetoot</animal><commonality>0.4</commonality></li> <!-- splicetoot - med, dormant -->
+        <li><animal>Andrewsarchus</animal><commonality>0.315</commonality></li> <!-- andrewsarchus - huge, dormant -->
+        <li><animal>JRWBrachiosaurus</animal><commonality>0.315</commonality></li> <!-- Brachiosaurus - huge, dormant -->
+        <li><animal>Josephoartigasia</animal><commonality>0.315</commonality></li> <!-- josephoartigasia - huge, dormant -->
         <li><animal>BMT_CactusCrab</animal><commonality>0.18</commonality></li> <!-- cactus crab - large, dormant -->
         <li><animal>GR_Boomabear</animal><commonality>0.18</commonality></li> <!-- boomabear - large, dormant -->
         <li><animal>GR_Boomffalo</animal><commonality>0.18</commonality></li> <!-- boomffalo - large, dormant -->
         <li><animal>GR_Boomhorse</animal><commonality>0.18</commonality></li> <!-- boomhorse - large, dormant -->
         <li><animal>GR_Manwolf</animal><commonality>0.18</commonality></li> <!-- manwolf - large, dormant -->
-        <li><animal>Andrewsarchus</animal><commonality>0.07</commonality></li> <!-- andrewsarchus - huge, dormant -->
-        <li><animal>JRWBrachiosaurus</animal><commonality>0.07</commonality></li> <!-- Brachiosaurus - huge, dormant -->
-        <li><animal>Josephoartigasia</animal><commonality>0.07</commonality></li> <!-- josephoartigasia - huge, dormant -->
-        <li><animal>Gigantophis</animal><commonality>0.012</commonality></li> <!-- gigantophis - SUPER, dormant -->
+        <li><animal>Gigantophis</animal><commonality>0.054</commonality></li> <!-- gigantophis - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
@@ -108,15 +108,15 @@
         <li><animal>VFEI2_Fuelmite</animal><commonality>0.4</commonality></li> <!-- fuelmite - med, dormant -->
         <li><animal>VFEI2_Macrofly</animal><commonality>0.4</commonality></li> <!-- macrofly - med, dormant -->
         <li><animal>VFEI2_Megawasp</animal><commonality>0.4</commonality></li> <!-- megawasp - med, dormant -->
+        <li><animal>Falumpaset</animal><commonality>0.35</commonality></li> <!-- falumpaset - huge, ours -->
+        <li><animal>GR_Lizardochs</animal><commonality>0.35</commonality></li> <!-- lizardochs - huge, dormant -->
+        <li><animal>KwazelMaw</animal><commonality>0.35</commonality></li> <!-- kwazel maw - huge, ours -->
+        <li><animal>WarWyrm</animal><commonality>0.2</commonality></li> <!-- war wyrm - SUPER, foreign -->
         <li><animal>GR_Manffalo</animal><commonality>0.18</commonality></li> <!-- manffalo - large, dormant -->
         <li><animal>GR_ParagonInsectoid</animal><commonality>0.18</commonality></li> <!-- insectoid paragon - large, dormant -->
         <li><animal>VAEWaste_Megatardi</animal><commonality>0.18</commonality></li> <!-- megatardi - large, dormant -->
         <li><animal>VFEI2_Acidspitter</animal><commonality>0.18</commonality></li> <!-- acidspitter - large, dormant -->
         <li><animal>VFEI2_Gigalocust</animal><commonality>0.18</commonality></li> <!-- gigalocust - large, dormant -->
-        <li><animal>Falumpaset</animal><commonality>0.07</commonality></li> <!-- falumpaset - huge, ours -->
-        <li><animal>GR_Lizardochs</animal><commonality>0.07</commonality></li> <!-- lizardochs - huge, dormant -->
-        <li><animal>KwazelMaw</animal><commonality>0.07</commonality></li> <!-- kwazel maw - huge, ours -->
-        <li><animal>WarWyrm</animal><commonality>0.012</commonality></li> <!-- war wyrm - SUPER, foreign -->
       </wildAnimals>
     </value>
   </Operation>
@@ -150,10 +150,10 @@
         <li><animal>GR_ParagonMuffalo</animal><commonality>0.18</commonality></li> <!-- muffalo paragon - large, dormant -->
         <li><animal>Grazer</animal><commonality>0.18</commonality></li> <!-- grazer - large, dormant -->
         <li><animal>Smilodon</animal><commonality>0.18</commonality></li> <!-- smilodon - large, dormant -->
-        <li><animal>GR_Thrumbalope</animal><commonality>0.07</commonality></li> <!-- thrumbalope - huge, dormant -->
-        <li><animal>HiveQueen</animal><commonality>0.07</commonality></li> <!-- hive queen - huge, dormant -->
-        <li><animal>ShortfacedBear</animal><commonality>0.07</commonality></li> <!-- Short-faced bear - huge, dormant -->
-        <li><animal>AA_Gallatross</animal><commonality>0.012</commonality></li> <!-- gallatross - SUPER, dormant -->
+        <li><animal>GR_Thrumbalope</animal><commonality>0.0663</commonality></li> <!-- thrumbalope - huge, dormant -->
+        <li><animal>HiveQueen</animal><commonality>0.0663</commonality></li> <!-- hive queen - huge, dormant -->
+        <li><animal>ShortfacedBear</animal><commonality>0.0663</commonality></li> <!-- Short-faced bear - huge, dormant -->
+        <li><animal>AA_Gallatross</animal><commonality>0.0114</commonality></li> <!-- gallatross - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
@@ -182,15 +182,15 @@
         <li><animal>GR_Spidercat</animal><commonality>0.4</commonality></li> <!-- spidercat - med, dormant -->
         <li><animal>GR_Wolfscarab</animal><commonality>0.4</commonality></li> <!-- wolfscarab - med, dormant -->
         <li><animal>SeaLion</animal><commonality>0.4</commonality></li> <!-- sea lion - med, dormant -->
+        <li><animal>Daeodon</animal><commonality>0.35</commonality></li> <!-- daeodon - huge, dormant -->
+        <li><animal>GR_Bearscarab</animal><commonality>0.35</commonality></li> <!-- bearscarab - huge, dormant -->
+        <li><animal>WoollyMammoth</animal><commonality>0.35</commonality></li> <!-- woolly mammoth - huge, dormant -->
+        <li><animal>AA_Atispec</animal><commonality>0.2</commonality></li> <!-- atispec - SUPER, dormant -->
         <li><animal>GR_Crocorse</animal><commonality>0.18</commonality></li> <!-- crocorse - large, dormant -->
         <li><animal>GR_Ratffalo</animal><commonality>0.18</commonality></li> <!-- ratffalo - large, dormant -->
         <li><animal>GR_Spiderhorse</animal><commonality>0.18</commonality></li> <!-- spiderhorse - large, dormant -->
         <li><animal>GR_Thrumbocat</animal><commonality>0.18</commonality></li> <!-- thrumbocat - large, dormant -->
         <li><animal>Walrus</animal><commonality>0.18</commonality></li> <!-- walrus - large, dormant -->
-        <li><animal>Daeodon</animal><commonality>0.07</commonality></li> <!-- daeodon - huge, dormant -->
-        <li><animal>GR_Bearscarab</animal><commonality>0.07</commonality></li> <!-- bearscarab - huge, dormant -->
-        <li><animal>WoollyMammoth</animal><commonality>0.07</commonality></li> <!-- woolly mammoth - huge, dormant -->
-        <li><animal>AA_Atispec</animal><commonality>0.012</commonality></li> <!-- atispec - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
@@ -224,10 +224,10 @@
         <li><animal>GiantAnt_Race</animal><commonality>0.18</commonality></li> <!-- giant ant - large, dormant -->
         <li><animal>MA_Raptorkhan</animal><commonality>0.18</commonality></li> <!-- raptorkhan - large, ours -->
         <li><animal>SW_Grenadierworm</animal><commonality>0.18</commonality></li> <!-- Grenadierworm - large, dormant -->
-        <li><animal>MA_Furpotamus</animal><commonality>0.07</commonality></li> <!-- furpotamus - huge, dormant -->
-        <li><animal>RG_WoollyStegosaurus</animal><commonality>0.07</commonality></li> <!-- woolly stegosaurus - huge, dormant -->
-        <li><animal>VFEI2_BlackEmpress</animal><commonality>0.07</commonality></li> <!-- black empress - huge, dormant -->
-        <li><animal>AA_Behemoth</animal><commonality>0.012</commonality></li> <!-- Behemoth - SUPER, dormant -->
+        <li><animal>MA_Furpotamus</animal><commonality>0.1575</commonality></li> <!-- furpotamus - huge, dormant -->
+        <li><animal>RG_WoollyStegosaurus</animal><commonality>0.1575</commonality></li> <!-- woolly stegosaurus - huge, dormant -->
+        <li><animal>VFEI2_BlackEmpress</animal><commonality>0.1575</commonality></li> <!-- black empress - huge, dormant -->
+        <li><animal>AA_Behemoth</animal><commonality>0.027</commonality></li> <!-- Behemoth - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
@@ -256,15 +256,15 @@
         <li><animal>Krykna</animal><commonality>0.4</commonality></li> <!-- krykna - med, ours -->
         <li><animal>Rabbuck</animal><commonality>0.4</commonality></li> <!-- rabbuck - med, foreign -->
         <li><animal>VQE_Megamidge</animal><commonality>0.4</commonality></li> <!-- megamidge - med, dormant -->
+        <li><animal>AA_FrostboundBehemoth</animal><commonality>0.252</commonality></li> <!-- frostbound behemoth - huge, ours -->
+        <li><animal>BMT_HoarfrostMastodon</animal><commonality>0.252</commonality></li> <!-- hoarfrost mastodon - huge, dormant -->
+        <li><animal>GR_ParagonThrumbo</animal><commonality>0.252</commonality></li> <!-- colossal paragon - huge, dormant -->
         <li><animal>AA_ArcticLion</animal><commonality>0.18</commonality></li> <!-- arctic lion - large, ours -->
         <li><animal>AA_Blizzarisk</animal><commonality>0.18</commonality></li> <!-- blizzarisk - large, ours -->
         <li><animal>GR_Muffalochicken</animal><commonality>0.18</commonality></li> <!-- muffalochicken - large, dormant -->
         <li><animal>IronScruff_Tardigrade</animal><commonality>0.18</commonality></li> <!-- giant tardigrade - large, dormant -->
         <li><animal>MA_Manehound</animal><commonality>0.18</commonality></li> <!-- manehound - large, dormant -->
-        <li><animal>AA_FrostboundBehemoth</animal><commonality>0.07</commonality></li> <!-- frostbound behemoth - huge, ours -->
-        <li><animal>BMT_HoarfrostMastodon</animal><commonality>0.07</commonality></li> <!-- hoarfrost mastodon - huge, dormant -->
-        <li><animal>GR_ParagonThrumbo</animal><commonality>0.07</commonality></li> <!-- colossal paragon - huge, dormant -->
-        <li><animal>GR_Paraceramuffalo</animal><commonality>0.012</commonality></li> <!-- paraceramuffalo - SUPER, dormant -->
+        <li><animal>GR_Paraceramuffalo</animal><commonality>0.0432</commonality></li> <!-- paraceramuffalo - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
@@ -293,15 +293,15 @@
         <li><animal>Gornt</animal><commonality>0.4</commonality></li> <!-- gornt - med, dormant -->
         <li><animal>PoisonDeer</animal><commonality>0.4</commonality></li> <!-- deer - med, dormant -->
         <li><animal>VAEWaste_Wastedeer</animal><commonality>0.4</commonality></li> <!-- wastedeer - med, dormant -->
+        <li><animal>JRWTorosaurus</animal><commonality>0.21</commonality></li> <!-- Torosaurus - huge, dormant -->
+        <li><animal>MA_Capryak</animal><commonality>0.21</commonality></li> <!-- Capryak - huge, dormant -->
+        <li><animal>VQEA_Splicefiend</animal><commonality>0.21</commonality></li> <!-- splicefiend - huge, dormant -->
         <li><animal>Dinopithecus</animal><commonality>0.18</commonality></li> <!-- dinopithecus - large, dormant -->
         <li><animal>GR_ParagonHumanoid</animal><commonality>0.18</commonality></li> <!-- humanoid paragon - large, dormant -->
         <li><animal>GR_Thrumwolf</animal><commonality>0.18</commonality></li> <!-- thrumwolf - large, dormant -->
         <li><animal>RG_Hemolope</animal><commonality>0.18</commonality></li> <!-- hemolope - large, dormant -->
         <li><animal>VQEA_Spliceling</animal><commonality>0.18</commonality></li> <!-- spliceling - large, dormant -->
-        <li><animal>JRWTorosaurus</animal><commonality>0.07</commonality></li> <!-- Torosaurus - huge, dormant -->
-        <li><animal>MA_Capryak</animal><commonality>0.07</commonality></li> <!-- Capryak - huge, dormant -->
-        <li><animal>VQEA_Splicefiend</animal><commonality>0.07</commonality></li> <!-- splicefiend - huge, dormant -->
-        <li><animal>Titanoboa</animal><commonality>0.012</commonality></li> <!-- titanoboa - SUPER, dormant -->
+        <li><animal>Titanoboa</animal><commonality>0.036</commonality></li> <!-- titanoboa - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
@@ -372,10 +372,10 @@
         <li><animal>MA_Narkospider</animal><commonality>0.18</commonality></li> <!-- narkospider - large, dormant -->
         <li><animal>MA_Sporemole</animal><commonality>0.18</commonality></li> <!-- Sporemole - large, foreign -->
         <li><animal>VAEWaste_Toxscorpion</animal><commonality>0.18</commonality></li> <!-- toxscorpion - large, dormant -->
-        <li><animal>GR_Mantistanis</animal><commonality>0.07</commonality></li> <!-- mantistanis - huge, dormant -->
-        <li><animal>GR_Muffalokomodo</animal><commonality>0.07</commonality></li> <!-- muffalokomodo - huge, dormant -->
-        <li><animal>GR_Thrumbolizard</animal><commonality>0.07</commonality></li> <!-- thrumbolizard - huge, dormant -->
-        <li><animal>Ronto</animal><commonality>0.012</commonality></li> <!-- ronto - SUPER, ours -->
+        <li><animal>GR_Mantistanis</animal><commonality>0.05</commonality></li> <!-- mantistanis - huge, dormant -->
+        <li><animal>GR_Muffalokomodo</animal><commonality>0.05</commonality></li> <!-- muffalokomodo - huge, dormant -->
+        <li><animal>GR_Thrumbolizard</animal><commonality>0.05</commonality></li> <!-- thrumbolizard - huge, dormant -->
+        <li><animal>Ronto</animal><commonality>0.008</commonality></li> <!-- ronto - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -409,10 +409,10 @@
         <li><animal>GR_ParagonBear</animal><commonality>0.18</commonality></li> <!-- ursine paragon - large, dormant -->
         <li><animal>Maalraas</animal><commonality>0.18</commonality></li> <!-- maalraas - large, ours -->
         <li><animal>Palaeeudyptes</animal><commonality>0.18</commonality></li> <!-- palaeeudyptes - large, dormant -->
-        <li><animal>AA_BoulderMit</animal><commonality>0.07</commonality></li> <!-- bouldermit - huge, ours -->
-        <li><animal>BMT_HungeringHydra</animal><commonality>0.07</commonality></li> <!-- hungering hydra - huge, dormant -->
-        <li><animal>MA_Duskhorn</animal><commonality>0.07</commonality></li> <!-- duskhorn - huge, dormant -->
-        <li><animal>AA_EngorgedTentacularAberration</animal><commonality>0.012</commonality></li> <!-- engorged tentacular aberration - SUPER, dormant -->
+        <li><animal>AA_BoulderMit</animal><commonality>0.05</commonality></li> <!-- bouldermit - huge, ours -->
+        <li><animal>BMT_HungeringHydra</animal><commonality>0.05</commonality></li> <!-- hungering hydra - huge, dormant -->
+        <li><animal>MA_Duskhorn</animal><commonality>0.05</commonality></li> <!-- duskhorn - huge, dormant -->
+        <li><animal>AA_EngorgedTentacularAberration</animal><commonality>0.008</commonality></li> <!-- engorged tentacular aberration - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
@@ -446,10 +446,10 @@
         <li><animal>MA_Simbakub</animal><commonality>0.18</commonality></li> <!-- Simbakub - large, dormant -->
         <li><animal>MA_SimbakubAlpha</animal><commonality>0.18</commonality></li> <!-- Simbakub Alpha - large, dormant -->
         <li><animal>VAEWaste_Wasteffalo</animal><commonality>0.18</commonality></li> <!-- wasteffalo - large, dormant -->
-        <li><animal>Enhydriodon</animal><commonality>0.07</commonality></li> <!-- enhydriodon - huge, dormant -->
-        <li><animal>MA_Dunbear</animal><commonality>0.07</commonality></li> <!-- dunbear - huge, dormant -->
-        <li><animal>VAEWaste_Toxbear</animal><commonality>0.07</commonality></li> <!-- toxbear - huge, dormant -->
-        <li><animal>AA_AnimaColossus</animal><commonality>0.012</commonality></li> <!-- anima colossus - SUPER, ours -->
+        <li><animal>Enhydriodon</animal><commonality>0.05</commonality></li> <!-- enhydriodon - huge, dormant -->
+        <li><animal>MA_Dunbear</animal><commonality>0.05</commonality></li> <!-- dunbear - huge, dormant -->
+        <li><animal>VAEWaste_Toxbear</animal><commonality>0.05</commonality></li> <!-- toxbear - huge, dormant -->
+        <li><animal>AA_AnimaColossus</animal><commonality>0.008</commonality></li> <!-- anima colossus - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -478,15 +478,15 @@
         <li><animal>VFEI2_Hellbeetle</animal><commonality>0.4</commonality></li> <!-- hellbeetle - med, dormant -->
         <li><animal>VFEI2_RoyalSpelopede</animal><commonality>0.4</commonality></li> <!-- royal spelopede - med, dormant -->
         <li><animal>VFEI2_Venomite</animal><commonality>0.4</commonality></li> <!-- venomite - med, dormant -->
+        <li><animal>GR_Thrumboman</animal><commonality>0.35</commonality></li> <!-- thrumboman - huge, dormant -->
+        <li><animal>GR_Thrumdraeodon</animal><commonality>0.35</commonality></li> <!-- thrumdraeodon - huge, dormant -->
+        <li><animal>VFEI2_Empress</animal><commonality>0.35</commonality></li> <!-- empress - huge, dormant -->
+        <li><animal>GR_Thrumbear</animal><commonality>0.2</commonality></li> <!-- thrumbear - SUPER, dormant -->
         <li><animal>Cow</animal><commonality>0.18</commonality></li> <!-- cow - large, dormant -->
         <li><animal>GR_Chickenlodon</animal><commonality>0.18</commonality></li> <!-- chickenlodon - large, dormant -->
         <li><animal>RG_Neutrolope</animal><commonality>0.18</commonality></li> <!-- neutrolope - large, dormant -->
         <li><animal>VFEI2_RoyalMegaspider</animal><commonality>0.18</commonality></li> <!-- royal megaspider - large, dormant -->
         <li><animal>VFEI2_Tankroach</animal><commonality>0.18</commonality></li> <!-- tankroach - large, dormant -->
-        <li><animal>GR_Thrumboman</animal><commonality>0.07</commonality></li> <!-- thrumboman - huge, dormant -->
-        <li><animal>GR_Thrumdraeodon</animal><commonality>0.07</commonality></li> <!-- thrumdraeodon - huge, dormant -->
-        <li><animal>VFEI2_Empress</animal><commonality>0.07</commonality></li> <!-- empress - huge, dormant -->
-        <li><animal>GR_Thrumbear</animal><commonality>0.012</commonality></li> <!-- thrumbear - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
@@ -515,15 +515,15 @@
         <li><animal>BMT_Woollybat</animal><commonality>0.4</commonality></li> <!-- woolly bat - med, ours -->
         <li><animal>RG_Rimclaw</animal><commonality>0.4</commonality></li> <!-- rimclaw - med, ours -->
         <li><animal>SW_Electricfish</animal><commonality>0.4</commonality></li> <!-- Electricfish - med, dormant -->
+        <li><animal>BMT_BunkerBug</animal><commonality>0.35</commonality></li> <!-- bunker bug - huge, dormant -->
+        <li><animal>IridonianReek</animal><commonality>0.35</commonality></li> <!-- iridonian reek - huge, ours -->
+        <li><animal>SW_Emperorisopod</animal><commonality>0.35</commonality></li> <!-- Emperorisopod - huge, dormant -->
+        <li><animal>GreaterKraytDragon</animal><commonality>0.2</commonality></li> <!-- greater krayt dragon - SUPER, ours -->
         <li><animal>AA_Cinderlisk</animal><commonality>0.18</commonality></li> <!-- cinderlisk - large, ours -->
         <li><animal>AA_SandProwler</animal><commonality>0.18</commonality></li> <!-- sand prowler - large, ours -->
         <li><animal>AA_Slurrypede</animal><commonality>0.18</commonality></li> <!-- slurrypede - large, ours -->
         <li><animal>BMT_SmolderstingScorpion</animal><commonality>0.18</commonality></li> <!-- smoldersting scorpion - large, foreign -->
         <li><animal>VAEWaste_Toxlion</animal><commonality>0.18</commonality></li> <!-- toxlion - large, dormant -->
-        <li><animal>BMT_BunkerBug</animal><commonality>0.07</commonality></li> <!-- bunker bug - huge, dormant -->
-        <li><animal>IridonianReek</animal><commonality>0.07</commonality></li> <!-- iridonian reek - huge, ours -->
-        <li><animal>SW_Emperorisopod</animal><commonality>0.07</commonality></li> <!-- Emperorisopod - huge, dormant -->
-        <li><animal>GreaterKraytDragon</animal><commonality>0.012</commonality></li> <!-- greater krayt dragon - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -557,10 +557,10 @@
         <li><animal>Boarwolf</animal><commonality>0.18</commonality></li> <!-- Boar-wolf - large, ours -->
         <li><animal>Fanback</animal><commonality>0.18</commonality></li> <!-- fanback - large, ours -->
         <li><animal>Insectomorph</animal><commonality>0.18</commonality></li> <!-- insectomorph - large, ours -->
-        <li><animal>GR_Bearodile</animal><commonality>0.07</commonality></li> <!-- bearodile - huge, dormant -->
-        <li><animal>MA_Hellboar</animal><commonality>0.07</commonality></li> <!-- Hellboar - huge, ours -->
-        <li><animal>Zeer</animal><commonality>0.07</commonality></li> <!-- zeer - huge, ours -->
-        <li><animal>KraytDragon</animal><commonality>0.012</commonality></li> <!-- krayt dragon - SUPER, ours -->
+        <li><animal>GR_Bearodile</animal><commonality>0.05</commonality></li> <!-- bearodile - huge, dormant -->
+        <li><animal>MA_Hellboar</animal><commonality>0.05</commonality></li> <!-- Hellboar - huge, ours -->
+        <li><animal>Zeer</animal><commonality>0.05</commonality></li> <!-- zeer - huge, ours -->
+        <li><animal>KraytDragon</animal><commonality>0.008</commonality></li> <!-- krayt dragon - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -594,10 +594,10 @@
         <li><animal>BMT_Molebear</animal><commonality>0.18</commonality></li> <!-- Molebear - large, dormant -->
         <li><animal>Boma</animal><commonality>0.18</commonality></li> <!-- boma - large, ours -->
         <li><animal>Dromedary</animal><commonality>0.18</commonality></li> <!-- dromedary - large, ours -->
-        <li><animal>Dactillion</animal><commonality>0.07</commonality></li> <!-- dactillion - huge, ours -->
-        <li><animal>EnergySpider</animal><commonality>0.07</commonality></li> <!-- energy spider - huge, ours -->
-        <li><animal>Katarn</animal><commonality>0.07</commonality></li> <!-- katarn - huge, ours -->
-        <li><animal>Rancor</animal><commonality>0.012</commonality></li> <!-- Rancor - SUPER, ours -->
+        <li><animal>Dactillion</animal><commonality>0.084</commonality></li> <!-- dactillion - huge, ours -->
+        <li><animal>EnergySpider</animal><commonality>0.084</commonality></li> <!-- energy spider - huge, ours -->
+        <li><animal>Katarn</animal><commonality>0.084</commonality></li> <!-- katarn - huge, ours -->
+        <li><animal>Rancor</animal><commonality>0.0144</commonality></li> <!-- Rancor - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -627,14 +627,14 @@
         <li><animal>VQE_IceCrawler</animal><commonality>0.4</commonality></li> <!-- ice crawler - med, dormant -->
         <li><animal>VQE_Megamidge</animal><commonality>0.4</commonality></li> <!-- megamidge - med, dormant -->
         <li><animal>AA_FrostLynx</animal><commonality>0.18</commonality></li> <!-- frost lynx - large, dormant -->
-        <li><animal>GR_Muffalocat</animal><commonality>0.18</commonality></li> <!-- muffalocat - large, dormant -->
+        <li><animal>AA_RedSpore</animal><commonality>0.18</commonality></li> <!-- red spore - large, ours -->
         <li><animal>GR_Muffalope</animal><commonality>0.18</commonality></li> <!-- muffalope - large, dormant -->
         <li><animal>GR_Muffalowolf</animal><commonality>0.18</commonality></li> <!-- muffalowolf - large, dormant -->
         <li><animal>Jakobeast</animal><commonality>0.18</commonality></li> <!-- jakobeast - large, ours -->
-        <li><animal>Gomphotaria</animal><commonality>0.07</commonality></li> <!-- gomphotaria - huge, foreign -->
-        <li><animal>MA_Aminox</animal><commonality>0.07</commonality></li> <!-- aminox - huge, foreign -->
-        <li><animal>MA_Plastemmoth</animal><commonality>0.07</commonality></li> <!-- Plastemmoth - huge, dormant -->
-        <li><animal>GR_Thrumffalo</animal><commonality>0.012</commonality></li> <!-- thrumffalo - SUPER, dormant -->
+        <li><animal>Gomphotaria</animal><commonality>0.0504</commonality></li> <!-- gomphotaria - huge, foreign -->
+        <li><animal>MA_Aminox</animal><commonality>0.0504</commonality></li> <!-- aminox - huge, foreign -->
+        <li><animal>MA_Plastemmoth</animal><commonality>0.0504</commonality></li> <!-- Plastemmoth - huge, dormant -->
+        <li><animal>GR_Thrumffalo</animal><commonality>0.0086</commonality></li> <!-- thrumffalo - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
@@ -668,10 +668,10 @@
         <li><animal>JRWAgilisaurus</animal><commonality>0.18</commonality></li> <!-- Agilisaurus - large, dormant -->
         <li><animal>JRWKileskus</animal><commonality>0.18</commonality></li> <!-- Kileskus - large, dormant -->
         <li><animal>JRWRhamphorhynchus</animal><commonality>0.18</commonality></li> <!-- Rhamphorhynchus - large, dormant -->
-        <li><animal>JRWDimetrodon</animal><commonality>0.07</commonality></li> <!-- Dimetrodon - huge, dormant -->
-        <li><animal>JRWEstemmenosuchus</animal><commonality>0.07</commonality></li> <!-- Estemmenosuchus - huge, dormant -->
-        <li><animal>JRWOuranosaurus</animal><commonality>0.07</commonality></li> <!-- Ouranosaurus - huge, dormant -->
-        <li><animal>Purussaurus</animal><commonality>0.012</commonality></li> <!-- purussaurus - SUPER, dormant -->
+        <li><animal>JRWDimetrodon</animal><commonality>0.063</commonality></li> <!-- Dimetrodon - huge, dormant -->
+        <li><animal>JRWEstemmenosuchus</animal><commonality>0.063</commonality></li> <!-- Estemmenosuchus - huge, dormant -->
+        <li><animal>JRWOuranosaurus</animal><commonality>0.063</commonality></li> <!-- Ouranosaurus - huge, dormant -->
+        <li><animal>Purussaurus</animal><commonality>0.0108</commonality></li> <!-- purussaurus - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
@@ -705,10 +705,10 @@
         <li><animal>AA_SpinedGow</animal><commonality>0.18</commonality></li> <!-- spined gow - large, ours -->
         <li><animal>BMT_FoundryBeetle</animal><commonality>0.18</commonality></li> <!-- foundry beetle - large, foreign -->
         <li><animal>LavaFlea</animal><commonality>0.18</commonality></li> <!-- lava flea - large, ours -->
-        <li><animal>BMT_CaveSpider</animal><commonality>0.07</commonality></li> <!-- cave spider - huge, ours -->
-        <li><animal>SW_Juggernautbeetles</animal><commonality>0.07</commonality></li> <!-- Juggernautbeetles - huge, dormant -->
-        <li><animal>Tukata</animal><commonality>0.07</commonality></li> <!-- tuk'ata - huge, ours -->
-        <li><animal>Horax</animal><commonality>0.012</commonality></li> <!-- horax - SUPER, ours -->
+        <li><animal>BMT_CaveSpider</animal><commonality>0.126</commonality></li> <!-- cave spider - huge, ours -->
+        <li><animal>SW_Juggernautbeetles</animal><commonality>0.126</commonality></li> <!-- Juggernautbeetles - huge, dormant -->
+        <li><animal>Tukata</animal><commonality>0.126</commonality></li> <!-- tuk'ata - huge, ours -->
+        <li><animal>Horax</animal><commonality>0.0216</commonality></li> <!-- horax - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -729,7 +729,7 @@
         <li><animal>BMT_PustuleHornetSpawned</animal><commonality>0.7</commonality></li> <!-- pustule hornet - small, dormant -->
         <li><animal>DA_ArcticOwlcat</animal><commonality>0.7</commonality></li> <!-- arctic owlcat - small, dormant -->
         <li><animal>IronScruff_Flatworm</animal><commonality>0.7</commonality></li> <!-- flatworm hound - small, dormant -->
-        <li><animal>AA_FrostAve</animal><commonality>0.4</commonality></li> <!-- frost ave - med, foreign -->
+        <li><animal>AA_Darkbeast</animal><commonality>0.4</commonality></li> <!-- darkbeast - med, ours -->
         <li><animal>AA_GiantCrownedSilkie</animal><commonality>0.4</commonality></li> <!-- giant crowned silkie - med, ours -->
         <li><animal>BMT_ColonyPustuleHornetQueen</animal><commonality>0.4</commonality></li> <!-- pustule queen - med, dormant -->
         <li><animal>BMT_PustuleHornetQueen</animal><commonality>0.4</commonality></li> <!-- pustule queen - med, dormant -->
@@ -737,15 +737,15 @@
         <li><animal>GR_Bearffalo</animal><commonality>0.4</commonality></li> <!-- bearffalo - med, dormant -->
         <li><animal>GR_Muffalopede</animal><commonality>0.4</commonality></li> <!-- muffalopede - med, dormant -->
         <li><animal>GR_Wolffalo</animal><commonality>0.4</commonality></li> <!-- wolffalo - med, dormant -->
+        <li><animal>BMT_Thrumbungus</animal><commonality>0.35</commonality></li> <!-- thrumbungus - huge, dormant -->
+        <li><animal>GR_Thrumhorse</animal><commonality>0.35</commonality></li> <!-- thrumhorse - huge, dormant -->
+        <li><animal>Thrumbo</animal><commonality>0.35</commonality></li> <!-- thrumbo - huge, dormant -->
         <li><animal>AA_Radyak</animal><commonality>0.18</commonality></li> <!-- radyak - large, ours -->
         <li><animal>DA_SnowTaraal</animal><commonality>0.18</commonality></li> <!-- snow taraal - large, foreign -->
         <li><animal>GR_Chickenlodon</animal><commonality>0.18</commonality></li> <!-- chickenlodon - large, dormant -->
         <li><animal>Gigantelope</animal><commonality>0.18</commonality></li> <!-- gigantelope - large, foreign -->
         <li><animal>Ling_Cockroach</animal><commonality>0.18</commonality></li> <!-- Giant Cockroach - large, ours -->
-        <li><animal>BMT_Thrumbungus</animal><commonality>0.07</commonality></li> <!-- thrumbungus - huge, dormant -->
-        <li><animal>GR_Thrumhorse</animal><commonality>0.07</commonality></li> <!-- thrumhorse - huge, dormant -->
-        <li><animal>Thrumbo</animal><commonality>0.07</commonality></li> <!-- thrumbo - huge, dormant -->
-        <li><animal>Tibidee</animal><commonality>0.012</commonality></li> <!-- tibidee - SUPER, ours -->
+        <li><animal>Tibidee</animal><commonality>0.108</commonality></li> <!-- tibidee - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -759,10 +759,10 @@
         <li><animal>VFEI2_BlackSwarmling</animal><commonality>1.0</commonality></li> <!-- black swarmlings - tiny, dormant -->
         <li><animal>VFEI2_Swarmling</animal><commonality>1.0</commonality></li> <!-- swarmlings - tiny, dormant -->
         <li><animal>BMT_CrestedDragon</animal><commonality>0.7</commonality></li> <!-- crested dragon - small, dormant -->
+        <li><animal>BMT_Gembug</animal><commonality>0.7</commonality></li> <!-- gembug - small, ours -->
         <li><animal>DA_BlackScribe</animal><commonality>0.7</commonality></li> <!-- black scribe - small, ours -->
         <li><animal>GRimMonitorLizard</animal><commonality>0.7</commonality></li> <!-- Colorful monitor lizard - small, foreign -->
         <li><animal>GRimStoneCrab</animal><commonality>0.7</commonality></li> <!-- Colorful stone crab - small, foreign -->
-        <li><animal>MonitorLizard</animal><commonality>0.7</commonality></li> <!-- monitor lizard - small, dormant -->
         <li><animal>Shiro</animal><commonality>0.7</commonality></li> <!-- shiro - small, ours -->
         <li><animal>Vulptex</animal><commonality>0.7</commonality></li> <!-- vulptex - small, ours -->
         <li><animal>Whisperbird</animal><commonality>0.7</commonality></li> <!-- whisperbird - small, ours -->
@@ -779,10 +779,10 @@
         <li><animal>AG_OcularSlinger</animal><commonality>0.18</commonality></li> <!-- ocular slinger - large, dormant -->
         <li><animal>MastiffPhalone</animal><commonality>0.18</commonality></li> <!-- mastiff phalone - large, ours -->
         <li><animal>Vornskyr</animal><commonality>0.18</commonality></li> <!-- vornskyr - large, ours -->
-        <li><animal>KellDragon</animal><commonality>0.07</commonality></li> <!-- kell dragon - huge, ours -->
-        <li><animal>VFEI2_BlackQueen</animal><commonality>0.07</commonality></li> <!-- black insectoid queen - huge, dormant -->
-        <li><animal>Zakkeg</animal><commonality>0.07</commonality></li> <!-- zakkeg - huge, ours -->
-        <li><animal>Taozin</animal><commonality>0.012</commonality></li> <!-- taozin - SUPER, ours -->
+        <li><animal>KellDragon</animal><commonality>0.05</commonality></li> <!-- kell dragon - huge, ours -->
+        <li><animal>VFEI2_BlackQueen</animal><commonality>0.05</commonality></li> <!-- black insectoid queen - huge, dormant -->
+        <li><animal>Zakkeg</animal><commonality>0.05</commonality></li> <!-- zakkeg - huge, ours -->
+        <li><animal>Taozin</animal><commonality>0.008</commonality></li> <!-- taozin - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -816,10 +816,10 @@
         <li><animal>Boomalope</animal><commonality>0.18</commonality></li> <!-- boomalope - large, ours -->
         <li><animal>GR_ParagonFeline</animal><commonality>0.18</commonality></li> <!-- feline paragon - large, dormant -->
         <li><animal>Nerf</animal><commonality>0.18</commonality></li> <!-- nerf - large, ours -->
-        <li><animal>Procoptodon</animal><commonality>0.07</commonality></li> <!-- procoptodon - huge, dormant -->
-        <li><animal>VFEI2_Gigamite</animal><commonality>0.07</commonality></li> <!-- gigamite - huge, dormant -->
-        <li><animal>VQEA_Splicehulk</animal><commonality>0.07</commonality></li> <!-- splicehulk - huge, dormant -->
-        <li><animal>Sivatherium</animal><commonality>0.012</commonality></li> <!-- sivatherium  - SUPER, ours -->
+        <li><animal>Procoptodon</animal><commonality>0.05</commonality></li> <!-- procoptodon - huge, dormant -->
+        <li><animal>VFEI2_Gigamite</animal><commonality>0.05</commonality></li> <!-- gigamite - huge, dormant -->
+        <li><animal>VQEA_Splicehulk</animal><commonality>0.05</commonality></li> <!-- splicehulk - huge, dormant -->
+        <li><animal>Sivatherium</animal><commonality>0.008</commonality></li> <!-- sivatherium  - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -834,10 +834,10 @@
         <li><animal>Tooke</animal><commonality>1.0</commonality></li> <!-- tooke - tiny, ours -->
         <li><animal>AA_BlackScarab</animal><commonality>0.7</commonality></li> <!-- black scarab - small, dormant -->
         <li><animal>BMT_FacetMoth</animal><commonality>0.7</commonality></li> <!-- facet moth - small, ours -->
-        <li><animal>BMT_Gembug</animal><commonality>0.7</commonality></li> <!-- gembug - small, ours -->
         <li><animal>BMT_SmogMoth</animal><commonality>0.7</commonality></li> <!-- smog moth - small, dormant -->
         <li><animal>DA_BlackScribe</animal><commonality>0.7</commonality></li> <!-- black scribe - small, ours -->
         <li><animal>DA_Phrak</animal><commonality>0.7</commonality></li> <!-- phrak - small, foreign -->
+        <li><animal>MonitorLizard</animal><commonality>0.7</commonality></li> <!-- monitor lizard - small, dormant -->
         <li><animal>Shyrack</animal><commonality>0.7</commonality></li> <!-- shyrack - small, ours -->
         <li><animal>Tach</animal><commonality>0.7</commonality></li> <!-- tach - small, ours -->
         <li><animal>AA_BlackSpider</animal><commonality>0.4</commonality></li> <!-- blackspider - med, dormant -->
@@ -853,10 +853,10 @@
         <li><animal>MarshHaunt</animal><commonality>0.18</commonality></li> <!-- marsh haunt - large, ours -->
         <li><animal>Nexu</animal><commonality>0.18</commonality></li> <!-- nexu - large, ours -->
         <li><animal>Veermok</animal><commonality>0.18</commonality></li> <!-- veermok - large, ours -->
-        <li><animal>AA_MammothWorm</animal><commonality>0.07</commonality></li> <!-- mammoth worm - huge, ours -->
-        <li><animal>Mudhorn</animal><commonality>0.07</commonality></li> <!-- mudhorn - huge, ours -->
-        <li><animal>Roggwart</animal><commonality>0.07</commonality></li> <!-- roggwart - huge, ours -->
-        <li><animal>JungleRancor</animal><commonality>0.012</commonality></li> <!-- Jungle Rancor - SUPER, foreign -->
+        <li><animal>AA_MammothWorm</animal><commonality>0.105</commonality></li> <!-- mammoth worm - huge, ours -->
+        <li><animal>Mudhorn</animal><commonality>0.105</commonality></li> <!-- mudhorn - huge, ours -->
+        <li><animal>Roggwart</animal><commonality>0.105</commonality></li> <!-- roggwart - huge, ours -->
+        <li><animal>JungleRancor</animal><commonality>0.018</commonality></li> <!-- Jungle Rancor - SUPER, foreign -->
       </wildAnimals>
     </value>
   </Operation>
@@ -877,23 +877,23 @@
         <li><animal>Monkey</animal><commonality>0.7</commonality></li> <!-- monkey - small, ours -->
         <li><animal>Pikobis</animal><commonality>0.7</commonality></li> <!-- pikobis - small, ours -->
         <li><animal>Scavrat</animal><commonality>0.7</commonality></li> <!-- Scavrats - small, ours -->
-        <li><animal>AA_Animalisk</animal><commonality>0.4</commonality></li> <!-- animalisk - med, dormant -->
         <li><animal>AA_RipperHound</animal><commonality>0.4</commonality></li> <!-- ripper hound - med, ours -->
         <li><animal>AA_Thunderbeast</animal><commonality>0.4</commonality></li> <!-- thunderbeast - med, ours -->
         <li><animal>BMT_LandOctopus</animal><commonality>0.4</commonality></li> <!-- terrestrial octopus - med, dormant -->
         <li><animal>BMT_Xyrion</animal><commonality>0.4</commonality></li> <!-- xyrion - med, ours -->
         <li><animal>Donkey</animal><commonality>0.4</commonality></li> <!-- donkey - med, ours -->
-        <li><animal>GR_Wolfscarab</animal><commonality>0.4</commonality></li> <!-- wolfscarab - med, dormant -->
+        <li><animal>ERN_Amaro</animal><commonality>0.4</commonality></li> <!-- amaro - med, ours -->
+        <li><animal>Kaadu</animal><commonality>0.4</commonality></li> <!-- kaadu - med, ours -->
         <li><animal>Panther</animal><commonality>0.4</commonality></li> <!-- panther - med, ours -->
+        <li><animal>GR_Muffalohorse</animal><commonality>0.35</commonality></li> <!-- muffalohorse - huge, dormant -->
+        <li><animal>Uvak</animal><commonality>0.35</commonality></li> <!-- uvak - huge, ours -->
+        <li><animal>VAEWaste_Pestigator</animal><commonality>0.35</commonality></li> <!-- pestigator - huge, dormant -->
         <li><animal>BMT_GiantSnail</animal><commonality>0.18</commonality></li> <!-- giant snail - large, ours -->
         <li><animal>BMT_Megabat</animal><commonality>0.18</commonality></li> <!-- megabat - large, dormant -->
         <li><animal>BMT_SludgeCrawler</animal><commonality>0.18</commonality></li> <!-- sludgecrawler - large, dormant -->
         <li><animal>GR_Wolfhorse</animal><commonality>0.18</commonality></li> <!-- wolfhorse - large, dormant -->
         <li><animal>Gorilla</animal><commonality>0.18</commonality></li> <!-- gorilla - large, dormant -->
-        <li><animal>GR_Muffalohorse</animal><commonality>0.07</commonality></li> <!-- muffalohorse - huge, dormant -->
-        <li><animal>Uvak</animal><commonality>0.07</commonality></li> <!-- uvak - huge, ours -->
-        <li><animal>VAEWaste_Pestigator</animal><commonality>0.07</commonality></li> <!-- pestigator - huge, dormant -->
-        <li><animal>ChrysalideRancor</animal><commonality>0.012</commonality></li> <!-- chrysalide rancor - SUPER, ours -->
+        <li><animal>ChrysalideRancor</animal><commonality>0.0864</commonality></li> <!-- chrysalide rancor - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -914,11 +914,11 @@
         <li><animal>Mott</animal><commonality>0.7</commonality></li> <!-- mott - small, ours -->
         <li><animal>Squall</animal><commonality>0.7</commonality></li> <!-- squall - small, ours -->
         <li><animal>Tortoise</animal><commonality>0.7</commonality></li> <!-- tortoise - small, dormant -->
+        <li><animal>AA_Animalisk</animal><commonality>0.4</commonality></li> <!-- animalisk - med, dormant -->
         <li><animal>BMT_SandPillar</animal><commonality>0.4</commonality></li> <!-- sandpillar - med, dormant -->
         <li><animal>BMT_TripleSnapper</animal><commonality>0.4</commonality></li> <!-- triple snapper - med, dormant -->
         <li><animal>GR_Spidercat</animal><commonality>0.4</commonality></li> <!-- spidercat - med, dormant -->
-        <li><animal>Kaadu</animal><commonality>0.4</commonality></li> <!-- kaadu - med, ours -->
-        <li><animal>Kybuck</animal><commonality>0.4</commonality></li> <!-- kybuck - med, ours -->
+        <li><animal>GR_Wolfscarab</animal><commonality>0.4</commonality></li> <!-- wolfscarab - med, dormant -->
         <li><animal>Massiff</animal><commonality>0.4</commonality></li> <!-- massiff - med, ours -->
         <li><animal>Tiger</animal><commonality>0.4</commonality></li> <!-- tiger - med, dormant -->
         <li><animal>VAEWaste_Toxiguana</animal><commonality>0.4</commonality></li> <!-- toxiguana - med, dormant -->
@@ -927,10 +927,10 @@
         <li><animal>BMT_Megapleura</animal><commonality>0.18</commonality></li> <!-- megapleura - large, ours -->
         <li><animal>Bison</animal><commonality>0.18</commonality></li> <!-- bison - large, ours -->
         <li><animal>DA_Snaptoad</animal><commonality>0.18</commonality></li> <!-- giant snaptoad - large, foreign -->
-        <li><animal>Dewback</animal><commonality>0.07</commonality></li> <!-- dewback - huge, ours -->
-        <li><animal>MA_Sivatherium</animal><commonality>0.07</commonality></li> <!-- sivatherium - huge, ours -->
-        <li><animal>Skalder</animal><commonality>0.07</commonality></li> <!-- skalder - huge, ours -->
-        <li><animal>Beldon</animal><commonality>0.012</commonality></li> <!-- beldon - SUPER, ours -->
+        <li><animal>Dewback</animal><commonality>0.0573</commonality></li> <!-- dewback - huge, ours -->
+        <li><animal>MA_Sivatherium</animal><commonality>0.0573</commonality></li> <!-- sivatherium - huge, ours -->
+        <li><animal>Skalder</animal><commonality>0.0573</commonality></li> <!-- skalder - huge, ours -->
+        <li><animal>Beldon</animal><commonality>0.0098</commonality></li> <!-- beldon - SUPER, ours -->
       </wildAnimals>
     </value>
   </Operation>
@@ -964,10 +964,10 @@
         <li><animal>JRWDryosaurus</animal><commonality>0.18</commonality></li> <!-- Dryosaurus - large, dormant -->
         <li><animal>JRWGeosternbergia</animal><commonality>0.18</commonality></li> <!-- Geosternbergia - large, ours -->
         <li><animal>MutantCow</animal><commonality>0.18</commonality></li> <!-- cow - large, dormant -->
-        <li><animal>Bulbfreak</animal><commonality>0.07</commonality></li> <!-- bulbfreak - huge, dormant -->
-        <li><animal>Dreadmeld</animal><commonality>0.07</commonality></li> <!-- dreadmeld - huge, dormant -->
-        <li><animal>GR_FleshMonstrosity</animal><commonality>0.07</commonality></li> <!-- flesh monstrosity - huge, dormant -->
-        <li><animal>AA_UnblinkingEye</animal><commonality>0.012</commonality></li> <!-- unblinking eye - SUPER, dormant -->
+        <li><animal>Bulbfreak</animal><commonality>0.05</commonality></li> <!-- bulbfreak - huge, dormant -->
+        <li><animal>Dreadmeld</animal><commonality>0.05</commonality></li> <!-- dreadmeld - huge, dormant -->
+        <li><animal>GR_FleshMonstrosity</animal><commonality>0.05</commonality></li> <!-- flesh monstrosity - huge, dormant -->
+        <li><animal>AA_UnblinkingEye</animal><commonality>0.008</commonality></li> <!-- unblinking eye - SUPER, dormant -->
       </wildAnimals>
     </value>
   </Operation>
