@@ -1935,8 +1935,14 @@
     `NeolithicRangedFlame` is KEPT beside it, so un-cutting `Flamebow` later restores the
     fire bows with no further edit.
 
-    ⛔ `Flamebow` STAYS CUT - the owner's 2026-08-21 ruling was about MECH weaponry
-    (MECH_WEAPONS_UNCUT_1), not a neolithic fire-bow. These become plain archers.
+    🔴 SUPERSEDED 2026-08-22 - `Flamebow` IS UNCUT, and this paragraph used to say the
+    opposite. The owner ruled at 01:05 that day: "We should put tags on the flame bows so
+    that more people can use them too, like the deep tribes especially."
+    FLAMEBOW_UNCUT_AND_RETAGGED_1 removed it from the Cherry Picker list and tagged it
+    (e38d6fb5), and the operation at the end of this file is that work. Measured in capture
+    2026-08-23T07-12-04Z it carries Neolithic, NeolithicRangedFlame, NeolithicRangedBasic
+    and NeolithicRangedDecent, and it is the SOLE carrier of NeolithicRangedFlame - so
+    re-cutting it disarms Tribal_Archer_Fire again. These are fire archers, not plain ones.
 
     ⚠️ `Tribal_Hunter_Fire` is NOT patched here, and that is deliberate. The item's spec
     said it was disarmed too; it is not. It has no Inherit="False", so it resolves to
