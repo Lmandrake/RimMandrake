@@ -137,7 +137,11 @@ if FAILURES:
 else:
     print("ALL CHECKS PASSED.")
 print("""
-STILL OWED, and it costs a second load - do NOT record this item as closed
+DONE 2026-08-23 - the reload half was run in-session and PASSED (staleTotal 0).
+Kept as the procedure. It does NOT cost a second cold load: rimworld/load_game_ready
+is enough. ⚠ load_game_ready's success LEADS the world grid - the first audit after
+it can refuse with 'No world grid'; retry before believing it.
+Originally written as: STILL OWED, and it costs a second load - do NOT record as closed
 without it:
     save the world, reload it, run
         jawa/world_cache_audit  tiles=%s
