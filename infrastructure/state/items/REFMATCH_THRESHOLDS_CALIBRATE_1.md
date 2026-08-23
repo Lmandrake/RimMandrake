@@ -10,7 +10,7 @@
 > is the WEAKER of the two, as this item's own spec says: approval of the RENDERING, not
 > a finding about the world. **Liking a rendering does not reverse "do not build it."**
 > ⇒ **`refmatch.py` was NOT written.** Blocked on the owner; one sentence settles it.
-> Evidence: `infrastructure/state/observed/build/REFMATCH_THRESHOLDS_CALIBRATE_1_offline.txt`
+> Evidence: `observed/build/REFMATCH_THRESHOLDS_CALIBRATE_1_offline.txt`
 
 ## spec
 

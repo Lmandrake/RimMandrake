@@ -60,7 +60,7 @@ validates **clean** while matching **nothing** in game. Re-arming closes it.
 overwrites files in place, so the directory mtime never moves and reads days stale while the
 contents are current. `refresh.py` keys on the load-set fingerprint, which is why its verdict
 survives when age-based ones do not. Location and freshness are published by the seat that
-measures them: `infrastructure/state/observed/LIVE.md`. Read that; do not re-derive it here.
+measures them: `observed/LIVE.md`. Read that; do not re-derive it here.
 
 ### 1b. `ModsConfig.xml` — BUILD's alone, and NOT gated on this window
 

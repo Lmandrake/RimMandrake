@@ -216,7 +216,7 @@ tier** — the near-one-shot disable of a machine, which he called *"the tactica
 `ION_MACHINE_TIER_MISSING_1` (BUILD). The
 mechanism itself is live and correct — `DamageWorker_IonBuildup` fires, and the mod's
 `KNOWN INERT` comment is stale — but its entire effect is a hediff, and a mechanoid cannot
-receive one. Evidence: `infrastructure/state/observed/2026-08-22/ion_buildup/`.
+receive one. Evidence: `observed/2026-08-22/ion_buildup/`.
 Ruling needed: `ION_CAPTURES_PEOPLE_NOT_DROIDS_1` (DECIDE, needs owner).
 
 ## Axis B — cultural idiom (how they came to hold it)
@@ -370,7 +370,7 @@ physics**, and only the owner can say which gives way. Three coherent resolution
 `Tribal_Archer_Fire`, `VEE_Hunter`, `VEE_TribalHunter`, `VFEP_Footsoldier`,
 `OuterRim_ImperialTrader`, `DP_ArtilleryPirate`, `DP_RocketPirate`, and the three
 `BS_*Crossbow*` kinds. This matches the live spawn test exactly — see
-`infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
+`observed/2026-08-21/armed_sweep_48/`.
 
 ⚠️ **Attribution caveat, stated because it matters:** the def dump was captured with Cherry
 Picker **active**, so cut weapons already read `weaponTags: []` in it. A tag whose only

@@ -648,17 +648,18 @@ def _dead_evidence(evidence):
     ⚠️ Checked HERE because this is the one moment it is cheap: the seat still has the
     file open and can save it in seconds. An hour later the log has rotated.
 
-    🔴 TWO `observed/` DIRECTORIES, AND THEY ARE DIFFERENT PLACES. Harvests and saved
-    logs live at the REPO ROOT (`observed/`); per-experiment output lives under
-    `infrastructure/state/observed/`. Searching only the second is how REP wrongly
-    declared a live harvest file missing on 2026-08-22 — both roots are tried below,
-    and a path is only dead when neither resolves.
+    🔑 ONE `observed/`, at the repo root. The former second root at
+    `infrastructure/state/observed/` was merged into it on 2026-08-23. Ledger events
+    written before that date cite the old prefix, so it is still accepted below and
+    rewritten onto the surviving root — never re-add a second search root.
     """
+    legacy = "infrastructure/state/observed/"
     out = []
     for m in sorted(set(_EVIDENCE_PATH_RE.findall(evidence or ""))):
-        if not any(os.path.exists(c) for c in
-                   (m, os.path.join(model.ROOT, m),
-                    os.path.join(model.ROOT, "infrastructure", "state", m))):
+        cands = [m, os.path.join(model.ROOT, m)]
+        if m.startswith(legacy):
+            cands.append(os.path.join(model.ROOT, m[len("infrastructure/state/"):]))
+        if not any(os.path.exists(c) for c in cands):
             out.append(m)
     return out
 

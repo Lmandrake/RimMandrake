@@ -15,7 +15,7 @@ REP swept `infrastructure/state/TEST_PLAN.md` on 2026-08-22 with a subagent: mos
 
 **UNMEASURED, and it matters:** line 198 row 1 claims *"✅ ALREADY PASSED LIVE — 144 cells, 0
 failed verify."* **No capture of that run exists in either `observed/` directory** — the root one
-and `infrastructure/state/observed/` were both checked. Either produce the capture or downgrade
+and `observed/` were both checked. Either produce the capture or downgrade
 the row from PASSED to UNMEASURED. To measure: re-run `jawa/set_terrain` and read back with
 `rimworld/get_cell_info`.
 
@@ -29,5 +29,5 @@ that resolves.
 
 ## Watch out
 🪤 **Two directories are named `observed/`** — the repo root one holds harvested logs,
-`infrastructure/state/observed/` holds per-experiment captures. A bare `observed/…` in evidence
+`observed/` holds per-experiment captures. A bare `observed/…` in evidence
 means the ROOT one. Checking only one has produced a false "evidence missing" verdict three times.

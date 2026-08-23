@@ -56,4 +56,4 @@ a quicktest, because the titles are per-ideo and each world rolls its own.
 pawn. This is the Empire's leader *title* also reading `High Stellarch`, from the ideo. Two
 defects, one faction, different causes — fixing `fixedLeaderKinds` will not change the title.
 
-Evidence: `infrastructure/state/observed/2026-08-22/faction_labels/`.
+Evidence: `observed/2026-08-22/faction_labels/`.

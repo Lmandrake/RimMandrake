@@ -31,6 +31,6 @@ On a world where all twelve authored factions wear their `fixedName`,
 `jawa/faction_name_get` reports **0** of them as generated, and still reports the fifteen
 third-party factions that carry no `fixedName`.
 
-Evidence: `infrastructure/state/observed/2026-08-21/faction_names/`.
+Evidence: `observed/2026-08-21/faction_names/`.
 Register: add to `infrastructure/state/BUILDABLE.md` alongside the other instruments caught
 returning a confident wrong number.

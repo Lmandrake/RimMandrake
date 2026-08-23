@@ -57,4 +57,4 @@ The species names only appear if he opens the gene tab.
 A ruling recorded, and if it is (2) or (3), `jawa/inspect_string` on a Rakatan sleeper reads
 its species rather than `Gestor`.
 
-Evidence: `infrastructure/state/observed/2026-08-21/rakata/`.
+Evidence: `observed/2026-08-21/rakata/`.

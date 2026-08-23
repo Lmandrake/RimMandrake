@@ -71,4 +71,4 @@ answer itself.
 After the next cold load: `Flamebow` reads non-empty `weaponTags`, and a 5-roll spawn of
 `Tribal_Archer_Fire` comes back **5/5 armed**.
 
-Evidence: `infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
+Evidence: `observed/2026-08-21/armed_sweep_48/`.

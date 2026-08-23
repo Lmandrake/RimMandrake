@@ -67,5 +67,5 @@ would hand a screen row to every outlander faction in 578 mods.
 `jawa/get_defs` reports `maxConfigurableAtWorldCreation > 0` on all eight `Jawa_*`
 factions, and the owner confirms all eight appear on the Configure Factions page.
 
-Evidence: `infrastructure/state/observed/2026-08-22/configure_factions/`.
+Evidence: `observed/2026-08-22/configure_factions/`.
 Retires: `PRE_WORLDGEN_GATE.md` §2 item 1 as written — see that file's correction.

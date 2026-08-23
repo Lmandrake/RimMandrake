@@ -68,4 +68,4 @@ the two together rather than discovering the second one later.
 different fix from `FLAMEBOW_UNCUT_AND_RETAGGED_1`, and doing the roster first may make the
 flamebow question moot for this faction.
 
-Evidence: `infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
+Evidence: `observed/2026-08-21/armed_sweep_48/`.

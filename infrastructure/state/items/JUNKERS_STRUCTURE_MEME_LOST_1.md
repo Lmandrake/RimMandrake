@@ -10,7 +10,7 @@ authored `forcedMemes` list (`Patches/BlackstarCompany.xml:118-124`):
 structure the faith was designed around is not the one the game uses.
 
 Reproduced identically on two dev-quicktest worlds, 578 mods.
-Evidence: `infrastructure/state/observed/2026-08-21/B54_faction_faiths/`.
+Evidence: `observed/2026-08-21/B54_faction_faiths/`.
 
 ## the mechanism — DIAGNOSED, and this item first said it was not
 🔴 **My own first filing said "`Jawa_Junkers` is `ParentName="PirateBandBase"` and the

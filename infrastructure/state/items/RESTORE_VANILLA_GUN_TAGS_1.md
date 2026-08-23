@@ -63,7 +63,7 @@ Measured after the next cold load, not now:
 - every other def on the kill list still reads `[]` — **that is the pass condition, not a
   failure**
 
-Evidence: `infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
+Evidence: `observed/2026-08-21/armed_sweep_48/`.
 
 
 ---

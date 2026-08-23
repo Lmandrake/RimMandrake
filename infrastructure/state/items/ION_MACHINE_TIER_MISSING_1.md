@@ -11,7 +11,7 @@ The owner locked this weapon on **2026-08-08**, `design/Jawa/mods/required_mods.
 > the tactical identity** — you can nearly one-shot-disable a mech but must gang up + use
 > terrain to take a healthy raider alive."*
 
-Measured live 2026-08-22 (`infrastructure/state/observed/2026-08-22/ion_buildup/`):
+Measured live 2026-08-22 (`observed/2026-08-22/ion_buildup/`):
 
 | target | applied | result |
 |---|---|---|

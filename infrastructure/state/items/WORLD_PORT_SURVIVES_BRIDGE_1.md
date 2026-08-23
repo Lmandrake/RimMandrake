@@ -20,7 +20,7 @@ tile, against the source the owner and DECIDE are editing:
 - settlements: faction, name, tile
 - named regions and landmarks
 🔴 **`world_commit` or the edits are not visible** — see the `rimworld-world-editing` skill.
-Capture the read-back to `infrastructure/state/observed/` and name the file in the close.
+Capture the read-back to `observed/` and name the file in the close.
 
 ## criteria
 A diff of source-vs-read-back that is EMPTY, or whose every difference is explained and accepted.

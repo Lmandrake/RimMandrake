@@ -46,4 +46,4 @@ replaces the hediff must key on the *target class*, not simply on "is it flesh" 
 armoured stormtrooper is a legitimate ion target and an unarmoured tribal is not.
 ⚠️ Do not let this reintroduce a general non-lethal capture on humans; DECIDE ruled that a
 balance hole, not a bonus.
-Evidence: `infrastructure/state/observed/2026-08-22/ion_buildup/`.
+Evidence: `observed/2026-08-22/ion_buildup/`.

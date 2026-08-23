@@ -538,7 +538,7 @@ vanilla def files against the 578-mod capture (a field whose distinct child tag 
 ≥80% defNames and which vanilla never writes with `<li>`), not remembered. Includes
 `statBases`, `costList`, `skillGains`, `skillRequirements`, `xenotypeChances`, `wildAnimals`,
 `wildPlants`, `baseWeatherCommonalities`. Derivation:
-`infrastructure/state/observed/2026-08-22/biome_cast/custom_loader_fields.txt`.
+`observed/2026-08-22/biome_cast/custom_loader_fields.txt`.
 🔑 **Run the validator on any generated XML before deploying it** — both generators that hit
 this shipped clean-looking files that passed every check we had.
 

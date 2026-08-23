@@ -53,4 +53,4 @@ show up in play rather than sitting in a craftable nobody used.
 A ruling recorded, and — if (1) or (2) — a `Mech_Scyther` hit with the Jawa ion blaster
 reads `stunned=True` on `jawa/list_pawns`.
 
-Evidence: `infrastructure/state/observed/2026-08-22/ion_buildup/`.
+Evidence: `observed/2026-08-22/ion_buildup/`.

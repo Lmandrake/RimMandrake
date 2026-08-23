@@ -49,4 +49,4 @@ raids; they are still what defends an Imperial settlement.**
 Four spawns of each Empire kind come back in Imperial-family apparel, and no rebel,
 Sandpeople or Sith piece appears on any of them.
 
-Evidence: `infrastructure/state/observed/2026-08-22/b40_empire/`.
+Evidence: `observed/2026-08-22/b40_empire/`.

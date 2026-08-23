@@ -52,5 +52,5 @@ that decides the shape of the fix and I could not settle it from the defs alone 
 Six spawns of whichever kind the scenario uses come back wearing `guy762_Robes_jawa` and
 `guy762_JawaHood`, and no jeans.
 
-Evidence: `infrastructure/state/observed/2026-08-22/b58_jawa/`.
+Evidence: `observed/2026-08-22/b58_jawa/`.
 Context: `design/Jawa/worldbuilding/faction_equipment_clusters.md` Finding 2.

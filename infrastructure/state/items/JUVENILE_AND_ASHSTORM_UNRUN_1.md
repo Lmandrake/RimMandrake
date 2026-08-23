@@ -8,7 +8,7 @@ them honestly as unrunnable.
 | `GRIMTERRA_JUVENILES_RENDER_1` | `verify pass` 2026-08-21T08:24:12Z | *"JUVENILES are UNMEASURED"* · *"Recorded UNMEASURED, not passed"* |
 | `ASH_STORM_OVER_PYRELANDS_1` | `verify pass` 2026-08-21T10:00:27Z | *"the ash storm over a stormy-savanna tile — NOT ATTEMPTED"* |
 
-Source: `infrastructure/state/observed/2026-08-21/quicktest_visual/README.md`, lines 5, 25
+Source: `observed/2026-08-21/quicktest_visual/README.md`, lines 5, 25
 and 30 — `QUICKTEST_VISUAL_ROUND_1`, 2026-08-21T20:25Z, which **supersedes both passes**.
 
 ⇒ A seat following the `pass` events without walking the supersede chain believes two
@@ -32,7 +32,7 @@ visual checks are settled that nobody has ever seen.
 
 ## Verify
 
-A capture under `infrastructure/state/observed/<date>/` showing juvenile GRiNDTerra animals
+A capture under `observed/<date>/` showing juvenile GRiNDTerra animals
 rendering, and an ash storm over a stormy-savanna tile — or a stated reason each remains
 unreachable, with the routes tried.
 

@@ -3,7 +3,7 @@
 Read Armor Penetration off a lightsaber **held by a colonist**, not one lying on the ground.
 
 The closed item `lightsaber-…-6a91d3` was verified **pass** and closed at `cc9dcb93`. Its own
-capture, `infrastructure/state/observed/2026-08-22/lightsaber_ap/README.md:27-31`, says the
+capture, `observed/2026-08-22/lightsaber_ap/README.md:27-31`, says the
 item's literal criterion was not met:
 
 > *"The item's criteria says 'equip any lightsaber'; I did equip one on a colonist

@@ -369,7 +369,7 @@ class Findings:
 # files, take the set of child tag names and ask what fraction are defNames in a
 # 578-mod def dump. A field whose children are >=80% defNames, and which vanilla
 # never writes with <li>, is dictionary-keyed. Regenerate with:
-#     infrastructure/state/observed/2026-08-22/biome_cast/custom_loader_fields.txt
+#     observed/2026-08-22/biome_cast/custom_loader_fields.txt
 DICT_KEYED_FIELDS = {
     "statBases", "skillGains", "costList", "statOffsets", "skillRequirements",
     "possessions", "prefabs", "killedLeavings", "equippedStatOffsets",

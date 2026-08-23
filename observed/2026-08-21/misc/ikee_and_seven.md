@@ -2,7 +2,7 @@
 
 
 > 🔴 **SUPERSEDED IN PART, 2026-08-22 — do not read the faction roster here as settled.**
-> `infrastructure/state/observed/2026-08-22/configure_factions/README.md` (`AUTHORED_FACTIONS_OFF_THE_SCREEN_1`)
+> `observed/2026-08-22/configure_factions/README.md` (`AUTHORED_FACTIONS_OFF_THE_SCREEN_1`)
 > finds that *"seven of the twelve authored factions may simply not exist"* in the owner's
 > world. This file's *"all seven generated, all seven hold settlements"* was measured on a
 > DIFFERENT world — and the owner is now remaking the planet (`canon.yml planet.status: remaking`).

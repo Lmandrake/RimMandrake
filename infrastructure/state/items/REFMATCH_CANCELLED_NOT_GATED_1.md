@@ -17,7 +17,7 @@ RENDERING … not a ruling that the world has zero defects."* Liking a rendering
 reversal of *do not build it*. That item never cites the ruling at all, which is the
 shape of a doc that was answered by a better one and never told rather than of a
 deliberate reversal. It is now **blocked on you**, with the full evidence at
-`infrastructure/state/observed/build/REFMATCH_THRESHOLDS_CALIBRATE_1_offline.txt`.
+`observed/build/REFMATCH_THRESHOLDS_CALIBRATE_1_offline.txt`.
 
 ⚠️ **The stale plan that produced the confusion has been corrected** —
 `TRANSIENT_upgrade_plan.md` said W7 *"does not start until the owner has looked"*, which

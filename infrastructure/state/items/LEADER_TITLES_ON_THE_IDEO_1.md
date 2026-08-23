@@ -59,7 +59,7 @@ world.
 `IMPERIAL_RAID_ROSTER_1` is the Empire's leader *kind* being Royalty's high stellarch pawn.
 This is the *title* also reading `High Stellarch`, from the ideo. Same faction, different
 cause — fixing `fixedLeaderKinds` will not change the title.
-Evidence: `infrastructure/state/observed/2026-08-22/faction_labels/`.
+Evidence: `observed/2026-08-22/faction_labels/`.
 
 
 ---

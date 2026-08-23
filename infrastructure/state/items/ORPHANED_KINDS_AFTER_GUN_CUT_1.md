@@ -75,7 +75,7 @@ Un-cutting the weapons. The cut is the owner's curation and it stands.
 is real but **scoped to the 48 authored kinds**, where 0 of 48 can roll below their cheapest
 weapon. For these 17 vanilla kinds `cannotAfford` is the literal diagnosis.
 
-Evidence: `infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
+Evidence: `observed/2026-08-21/armed_sweep_48/`.
 Sibling: `RESTORE_VANILLA_GUN_TAGS_1`, which is mis-titled and carries the correction.
 
 

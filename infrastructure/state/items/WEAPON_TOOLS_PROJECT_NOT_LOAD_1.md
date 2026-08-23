@@ -1,7 +1,7 @@
 ## spec
 Split off `DUMP_READERS_USE_THE_DB_1` after the measurement below contradicted its
 premise. Evidence:
-`infrastructure/state/observed/build/DUMP_READERS_USE_THE_DB_1_2026-08-21.md`.
+`observed/build/DUMP_READERS_USE_THE_DB_1_2026-08-21.md`.
 
 🔴 **These two must NOT be ported the way the other three were.** Measured
 2026-08-21 against `OFFICIAL-2026-08-21`: `db.records('ThingDef')` costs

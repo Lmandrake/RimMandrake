@@ -204,7 +204,7 @@ pawn whose backstory does **not** disable `Violent` is a defect in our defs, ful
 There is no acceptable rate; the bar is **zero**.
 
 Measured 2026-08-21, 240 spawns across the 48 kinds
-(`infrastructure/state/observed/2026-08-21/armed_sweep_48/rolls.json`) — **8 such rolls,
+(`observed/2026-08-21/armed_sweep_48/rolls.json`) — **8 such rolls,
 and they are not scattered:**
 
 | family | rolls | bare | of which pacifist | 🔴 unexplained |

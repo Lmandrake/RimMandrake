@@ -13,7 +13,7 @@ against a live game; nothing is compiled-and-hoped.
 | the world element census + every API signature | `design/Jawa/worldbuilding/WORLDMAP_BRIDGE_SURFACE.md` |
 | ~95 more candidate tools, already researched | `design/Jawa/bridge/BRIDGE_CAPABILITY_ROSTER.md` |
 | the living-NPC mod concept (DECIDE owns it) | `design/Jawa/bridge/LIVING_NPC_TEMPLATES.md` |
-| live facts BUILD/DECIDE would need a game for | `infrastructure/state/observed/LIVE.md` |
+| live facts BUILD/DECIDE would need a game for | `observed/LIVE.md` |
 | what passed and how | `infrastructure/state/queue/CHECK.md` — W1-W8, M1-M4, P1-P4, E1-E3 |
 
 ## What made it possible

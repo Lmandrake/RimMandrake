@@ -38,4 +38,4 @@ rewritten to match it.
 came back **UNMEASURED** — the dump reports 0 `TraitDef`s with `Violent` in `degreeDatas`,
 which is a dump blind spot, not a proven zero. Settle that before assuming all 8 belong to
 the gun-tag defect.
-Evidence: `infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
+Evidence: `observed/2026-08-21/armed_sweep_48/`.

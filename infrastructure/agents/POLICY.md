@@ -327,11 +327,12 @@ The event carries `ownerSaid`, so the ledger holds **what he actually said** —
 - ✅ **This is not a loophole to route around a seat rule.** `--owner-said` is for acts that are HIS: closing his items, overriding a seat boundary, editing a frozen record. A design call is still DECIDE's and an implementation call is still BUILD's, whatever he happened to say.
 - 🔑 **`CLAUDE.md` already required this** — *"first ask whether he needs to do it at all… check for a flag, a seat override, or an env var that lets you finish it yourself."* The rule was there and seats kept handing him pastes anyway.
 
-## ⚠️ THERE ARE TWO `observed/` DIRECTORIES
+## `observed/` — one directory, at the repo root
 
-`observed/` (repo root) holds harvested logs and `Player.log` snapshots.
-`infrastructure/state/observed/` holds per-experiment captures. 🔑 **A bare `observed/…`
-in a `rimflow` evidence string means the REPO ROOT one** — that is what every existing
-`verify` follows. ⛔ **Never declare evidence missing without checking both**; doing so has
-produced a false "missing" verdict three times. `rimflow verify` checks both and warns only
-when neither resolves. Each directory has a README naming the other.
+`/mnt/d/Luke/dev/Rimworld/observed/` holds everything captured from a running game:
+harvested logs and `Player.log` snapshots, per-experiment `<date>/<subject>/` captures,
+and `LIVE.md`. 🔑 **A bare `observed/…` in a `rimflow` evidence string resolves there and
+nowhere else.** The former second root under `infrastructure/state/` was merged in on
+2026-08-23; `rimflow verify` still accepts that old prefix in pre-merge ledger events.
+⛔ **Never add a second capture root** — the split produced a false "evidence is missing"
+verdict three times. The payload rules are in `observed/README.md`.

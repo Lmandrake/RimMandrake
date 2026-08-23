@@ -125,7 +125,7 @@ gradient, not as the whole of it. Flesh is the weakest tier — slow, needing st
 terrain — **not exempt.**
 
 ### 🔴 The real defect: the top tier does not exist
-**Measured live 2026-08-22** (`infrastructure/state/observed/2026-08-22/ion_buildup/`):
+**Measured live 2026-08-22** (`observed/2026-08-22/ion_buildup/`):
 
 | target | applied | result |
 |---|---|---|

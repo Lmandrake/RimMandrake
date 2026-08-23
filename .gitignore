@@ -112,13 +112,8 @@ observed/**/*.rws
 # Harvested logs — unreproducible but transient; the findings go in a doc.
 observed/**/*.log
 observed/**/logs/
-# 🔴 The SECOND observed root. `observed/**` above only anchors at the repo root,
-# so a 148 MB Player.log under infrastructure/state/observed/ was NOT covered —
-# found untracked and stageable 2026-08-22. A file that size hard-rejects the
-# push for EVERY seat until it is rewritten out of history.
-infrastructure/state/observed/**/*.log
-infrastructure/state/observed/**/Player.log*
-infrastructure/state/observed/**/logs/
+# Regenerable def-name dumps written beside an experiment.
+observed/**/defnames_*.txt
 # Def dumps — 1.3 GB regenerable; the manifest beside them is the work product.
 observed/**/DefDump/
 observed/**/defs/

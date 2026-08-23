@@ -27,7 +27,7 @@ appear in a Deep Desert combat group; no vanilla pirate kind in a Blackstar one.
 18 live spawns from `TribeCivil` today draw `NerveSpiker`, `BMT_ThrumbungusShroom`,
 `VWE_Throwing_Knives` and **bare 6 of 18**. The authored kinds draw gaderffii sticks and
 Tusken cyclers — the faction the owner described on 2026-08-22.
-Evidence: `infrastructure/state/observed/2026-08-21/armed_sweep_48/`.
+Evidence: `observed/2026-08-21/armed_sweep_48/`.
 
 ## why it slipped through
 `DeepDesertTribes.xml` contains the string `Jawa_DeepDesert` **zero times**; its one

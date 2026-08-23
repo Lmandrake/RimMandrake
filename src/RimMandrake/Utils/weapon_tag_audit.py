@@ -245,7 +245,7 @@ def audit(anyway=False):
     # (Gun_Scattergun), NeolithicRangedFlame (Flamebow), WarcasketBasic, BS_CrossbowTag,
     # VEE_HunterIndustrialWeapon, VEE_HunterNeolithicWeapon, DP_CannonNoEquipTag and
     # DP_RocketNoEquipTag. Evidence:
-    # infrastructure/state/observed/build/WEAPON_TAGS_MATCH_NOTHING_1_offline.txt
+    # observed/build/WEAPON_TAGS_MATCH_NOTHING_1_offline.txt
     # 🔑 Asked of the NAMED cut list only. A cut weapon that still carries a tag is
     # not neutered, so the question is about ~200 defNames, never about 24,904.
     cut_now = dump_projection.defs_by_name(str(DUMP), "ThingDef", sorted(cut),

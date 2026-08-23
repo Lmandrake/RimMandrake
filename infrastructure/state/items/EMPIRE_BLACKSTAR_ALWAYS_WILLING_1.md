@@ -11,7 +11,7 @@ disables `Violent`.** Eight kinds:
     Jawa_Blackstar_Grunt   Heavy  Leader  Specialist
 
 Measured 2026-08-21: **5 of 20 Empire rolls** drew a violence-disabling backstory
-(`infrastructure/state/observed/2026-08-21/armed_sweep_48/rolls.json`).
+(`observed/2026-08-21/armed_sweep_48/rolls.json`).
 
 ⛔ **Do not apply this to the other ten factions.** DECIDE ruled their pacifist rolls are
 wanted texture; narrowing them is a regression, not a bonus.

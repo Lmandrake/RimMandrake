@@ -33,7 +33,7 @@
   `NeolithicRangedFlame` and whose budget is 80. That tag had ZERO usable
   carriers while the flamebow was cut, which is why the kind spawned 0/5 armed
   when measured live on 2026-08-21
-  (`infrastructure/state/observed/2026-08-21/armed_sweep_48/`).
+  (`observed/2026-08-21/armed_sweep_48/`).
 
   WHAT THIS FILE ADDS, AND THE ARITHMETIC BEHIND EACH TAG
   ========================================================

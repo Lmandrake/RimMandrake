@@ -5,7 +5,7 @@ bare while its backstory permits violence is a defect, and the acceptable count 
 Ruling: `design/Jawa/worldbuilding/pawnkind_roster.md`, *"Who may arrive unable to fight"*.
 
 Measured 2026-08-21, 240 spawns
-(`infrastructure/state/observed/2026-08-21/armed_sweep_48/rolls.json`):
+(`observed/2026-08-21/armed_sweep_48/rolls.json`):
 
 | family | rolls | bare | pacifist | unexplained |
 |---|---|---|---|---|

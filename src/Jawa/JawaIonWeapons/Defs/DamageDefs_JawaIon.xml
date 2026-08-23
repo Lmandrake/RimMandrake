@@ -38,7 +38,7 @@
        `def.causeStun`, which is why turrets and stunnable buildings have been
        taking the ion stun correctly all along.
 
-       MEASURED LIVE 2026-08-22 (infrastructure/state/observed/2026-08-22/ion_buildup/):
+       MEASURED LIVE 2026-08-22 (observed/2026-08-22/ion_buildup/):
          Mech_Scyther   JawaIon_Damage x13 up to @20   stunned=False, stunTicks=0
          Mech_Scyther   vanilla EMP x1 @20             stunned=True,  570 ticks
          Tribal_Warrior JawaIon_Damage x6 @8           downed, alive, no injuries

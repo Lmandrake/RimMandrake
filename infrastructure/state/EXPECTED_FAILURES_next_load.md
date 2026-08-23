@@ -298,7 +298,7 @@ comes from — measured output, re-countable, not quoted from memory.
 
 ⚠️ **THERE ARE TWO `observed/` DIRECTORIES AND THEY ARE DIFFERENT PLACES.** Harvests and
 saved logs live at the **repo root**, `observed/`; per-experiment output lives under
-`infrastructure/state/observed/`. REP searched only the second on 2026-08-22, declared
+`observed/`. REP searched only the second on 2026-08-22, declared
 this evidence missing, and had to correct it — **check both before calling any evidence
 gone.** The ledger's evidence strings are written relative to the repo root.
 
@@ -1903,7 +1903,7 @@ VERIFIED in sync.
 | the Ikee, and one in the player's start | `5450bd5f` |
 
 🔑 **These do not compete for blame.** Every one is a different field on a different def, and
-each has its own offline evidence file under `infrastructure/state/observed/2026-08-23/`.
+each has its own offline evidence file under `observed/2026-08-23/`.
 
 ### 🔴 READ THIS FIRST — the last two loads were scored against defs the game never held
 

@@ -174,7 +174,7 @@ against an empty type is **UNMEASURED, not passed** — give it its own exit cod
 and its own word, or it silently becomes a green tick.
 
 📌 Dump location, freshness and known holes are published by the seat that
-measures them: `infrastructure/state/observed/LIVE.md`. **Read it; do not
+measures them: `observed/LIVE.md`. **Read it; do not
 re-derive it**, and do not copy its numbers into another doc where they will rot.
 
 ## 8. After deploying

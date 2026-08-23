@@ -222,7 +222,7 @@ method · `mods/repurposed_graphics.md` is a licensing register.
 
 | file | claims | verdict |
 |---|---|---|
-| `infrastructure/state/observed/LIVE.md` | **106** | ✅ correct |
+| `observed/LIVE.md` | **106** | ✅ correct |
 | `skills/rimbridge-companion/SKILL.md:18` | "91 tools already ship" | stale by 15 |
 | 🔴 `design/Jawa/bridge/BRIDGE_CAPABILITY_ROSTER.md:14` | "Already built: **57** tools" | **stale by 49** |
 | `skills/rimbridge/references/capability-matrix.md` | 20 `jawa/` + stock | frozen 2026-08-11 |

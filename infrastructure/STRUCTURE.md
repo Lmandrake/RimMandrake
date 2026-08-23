@@ -134,6 +134,8 @@ dumps, `Player.log` and screenshots are gitignored and stay on disk.
 | Path | Holds |
 |---|---|
 | `observed/2026-08-13/dumps/` | 🔴 **The current generated-data home, not a snapshot.** The def-name and mod manifests every offline validator joins against. |
+| `observed/<date>/<subject>/` | Per-experiment captures — a `README.md` and the artefacts one run produced. |
+| `observed/LIVE.md` | Facts you would otherwise need a running game to learn. Published by CHECK. |
 
 ⚠️ **Judge a directory here by its inbound references, never by how old its stamp
 looks.** Auditing on the date alone deletes live data.

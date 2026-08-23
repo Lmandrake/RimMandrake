@@ -24,7 +24,7 @@ tag table cannot pair** — read the `Inherit` attribute in the source def befor
 
 ## spec
 Filed by BUILD out of `WEAPON_TAGS_MATCH_NOTHING_1`. Full evidence:
-`infrastructure/state/observed/build/WEAPON_TAGS_MATCH_NOTHING_1_offline.txt`.
+`observed/build/WEAPON_TAGS_MATCH_NOTHING_1_offline.txt`.
 
 🔴 **`FIFTEEN_TAGLESS_KINDS_RULING_1`'s premise is wrong. The cut IS the cause, for 14 of
 the 15** — and BUILD gave DECIDE that wrong premise, so this is BUILD's error to report,
