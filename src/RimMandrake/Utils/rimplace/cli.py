@@ -1,0 +1,162 @@
+"""rimplace - run a Lua structure template offline and see the house.
+
+    render   run a template and DRAW it            (the debug loop)
+    lint     run it and report what is wrong
+    calls    emit the exact jawa/* bridge calls
+    verify   check every defName against the live def dump
+    selftest prove the engine still works
+
+Needs the lupa Lua runtime:
+    python3 -m venv ~/.local/venvs/rimlua
+    ~/.local/venvs/rimlua/bin/pip install lupa
+    ~/.local/venvs/rimlua/bin/python -m rimplace render <template>
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sqlite3
+import sys
+from pathlib import Path
+
+_HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(_HERE.parent))
+
+from rimplace.core import Palette, Rect                       # noqa: E402
+from rimplace.luaenv import TemplateError, run_template       # noqa: E402
+from rimplace.plan import calls_summary, compile_calls, lint, render  # noqa: E402
+
+REPO = _HERE.parents[3]
+TEMPLATES = REPO / "design" / "Jawa" / "templates"
+DUMP_SQLITE = Path("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
+                   "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+
+
+def _resolve_template(name: str) -> Path:
+    p = Path(name)
+    if p.exists():
+        return p
+    for cand in (TEMPLATES / name, TEMPLATES / f"{name}.lua"):
+        if cand.exists():
+            return cand
+    raise SystemExit(f"template not found: {name} (looked in {TEMPLATES})")
+
+
+def _params(a) -> dict:
+    return {
+        "faction": a.faction, "rooms": a.rooms, "occupants": a.occupants,
+        "wealth": a.wealth, "techLevel": a.tech, "defended": a.defended,
+        "condition": a.condition, "climate": a.climate,
+        "temperature_c": a.temperature, "seed": a.seed,
+    }
+
+
+def _build(a):
+    path = _resolve_template(a.template)
+    pal_data = json.loads((_HERE / "palette.json").read_text(encoding="utf-8"))
+    palette = Palette(pal_data, a.faction, a.tech, a.wealth)
+    rect = Rect(*[int(v) for v in a.rect.split(",")])
+    try:
+        return path, run_template(path, rect, _params(a), palette, a.seed)
+    except TemplateError as e:
+        raise SystemExit(f"TEMPLATE ERROR: {e}")
+
+
+# --------------------------------------------------------------------------- #
+def _verified_defs(plan) -> set[str] | None:
+    """Look every defName up in the live dump. Returns None if the dump is not
+    readable - and the caller then reports UNMEASURED rather than passing."""
+    if not DUMP_SQLITE.exists():
+        return None
+    want = plan.defnames()
+    con = sqlite3.connect(f"file:{DUMP_SQLITE}?mode=ro", uri=True)
+    try:
+        # validate the query shape against a known answer first
+        n = con.execute("SELECT COUNT(*) FROM defs WHERE def_name='Human'").fetchone()[0]
+        if n == 0:
+            return None          # query shape is wrong; report UNMEASURED, never pass
+        qs = ",".join("?" * len(want))
+        rows = con.execute(
+            f"SELECT DISTINCT def_name FROM defs WHERE def_name IN ({qs})",
+            tuple(want)).fetchall()
+        return {r[0] for r in rows}
+    except sqlite3.Error:
+        return None
+    finally:
+        con.close()
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(prog="rimplace", description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("command", choices=["render", "lint", "calls", "verify", "selftest"])
+    ap.add_argument("template", nargs="?", default="dwelling")
+    ap.add_argument("--rect", default="0,0,16,12", help="x,z,w,h")
+    ap.add_argument("--faction", default="Jawa_IndigenousTribes")
+    ap.add_argument("--rooms", type=int, default=2)
+    ap.add_argument("--occupants", type=int, default=2)
+    ap.add_argument("--wealth", default="modest")
+    ap.add_argument("--tech", default="Industrial")
+    ap.add_argument("--defended", default="none")
+    ap.add_argument("--condition", default="kept")
+    ap.add_argument("--climate", default="auto")
+    ap.add_argument("--temperature", type=float, default=0.0)
+    ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument("--roof", action="store_true", help="show roof in render")
+    ap.add_argument("--json", action="store_true", help="emit the BuildPlan")
+    a = ap.parse_args(argv)
+
+    if a.command == "selftest":
+        from rimplace.selftest import run_selftest
+        return run_selftest()
+
+    path, plan = _build(a)
+
+    if a.command == "render":
+        print(render(plan, show_roof=a.roof))
+        if a.json:
+            print(plan.to_json())
+        findings = lint(plan)
+        errs = [f for f in findings if f.level == "ERROR"]
+        if errs:
+            print(f"\n  ⚠ {len(errs)} error(s) - run `lint` for detail")
+        return 0
+
+    if a.command == "lint":
+        vd = _verified_defs(plan)
+        findings = lint(plan, vd)
+        if vd is None:
+            print("  UNMEASURED: def dump not readable; defName checks SKIPPED")
+        print(f"  {path.name}: {len(findings)} finding(s)")
+        for f in findings:
+            print(f"  {f}")
+        return 1 if any(f.level == "ERROR" for f in findings) else 0
+
+    if a.command == "calls":
+        calls = compile_calls(plan, faction=a.faction)
+        print(calls_summary(calls))
+        print()
+        for c in calls:
+            p = {k: v for k, v in c["params"].items() if k != "_dryRun"}
+            s = json.dumps(p)
+            print(f"  {c['tool']:<26} {s[:150]}{'…' if len(s) > 150 else ''}")
+        return 0
+
+    if a.command == "verify":
+        vd = _verified_defs(plan)
+        want = sorted(plan.defnames())
+        if vd is None:
+            print(f"  UNMEASURED - the def dump is not readable at\n    {DUMP_SQLITE}")
+            print("  This is not a pass. Nothing was checked.")
+            return 2
+        missing = [d for d in want if d not in vd]
+        print(f"  {len(want)} distinct defName(s) in the plan; "
+              f"{len(want) - len(missing)} found, {len(missing)} MISSING")
+        for d in missing:
+            print(f"    MISSING  {d}")
+        return 1 if missing else 0
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
