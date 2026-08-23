@@ -1,3 +1,23 @@
+## ⛔ CLOSED BY THE OWNER — DO NOT REOPEN THIS, 2026-08-23
+
+**The owner closed this item himself at 20:15 UTC**, recorded on the ledger:
+
+> *"remove the DECIDE item before it gets picked up"*
+
+⚠️ **DECIDE picked it up anyway, ~17 minutes later, and that was a mistake.** It was read from a
+stale `rimflow next` listing taken before the close, and its state was not re-checked first. The
+sizing below is therefore **unrequested work on a deliberately closed item.**
+
+✅ **It is kept only because it is a measured negative that is cheap to keep and expensive to
+re-derive.** It creates NO work: the item stays `done`, it is not in any seat's actionable queue,
+and 🔴 **nothing here is a reason to reopen it.** If the mask question ever returns, this note
+saves someone the measurement — that is its whole value.
+
+⛔ **The reassign to BUILD on this item is bookkeeping, not a handoff.** No work is owed by BUILD
+and none was requested of him.
+
+---
+
 ## 🔴 SIZED — the `gene:` route is DEAD. Measured by DECIDE, 2026-08-23.
 
 This item asked the right question — *"Check `Inhabited.CharacterDef` accepts a gene at all
