@@ -28,8 +28,11 @@ command runs anyway. Length is a judgement call and sometimes the long file is
 right — this is a red flag on the way past, not a veto. Same contract as
 `warn_unclosed_queue_item.py`.
 
-⚠️ Queue files are reported but never counted as actionable, matching
-doc_budget.py: they are append-only and their length tracks open work, not rot.
+⚠️ RENDERED queue files are reported but never counted as actionable, matching
+doc_budget.py: they are regenerated from the ledger, so their length tracks open work
+rather than rot. ⭐ `HUMAN.md` is the exception and DOES warn — owner, 2026-08-23 — because
+no generator owns it, so every line in it was put there by hand and growth is a decision.
+`doc_budget.is_queue_view()` is the single place that distinction lives.
 
 Stdlib only, and fail-open in code rather than in the shell wrapper — a hook
 that crashes must never cost a commit.
@@ -55,12 +58,16 @@ _HEREDOC_RE = re.compile(r"<<-?\s*['\"]?(\w+)['\"]?.*?^\1", re.S | re.M)
 _PATH_RE = re.compile(r"[\w./-]+\.(?:md|jsonl)")
 
 
-def budget_for(rel, budgets, queue_classes):
-    """Budget and queue-flag for one path. First match wins, as in doc_budget."""
+def budget_for(rel, budgets, is_view):
+    """Budget and queue-flag for one path. First match wins, as in doc_budget.
+
+    ⚠️ `is_view` is doc_budget.is_queue_view, passed in rather than re-derived, so the
+    one file that is under queue/ but is NOT a rendered view — HUMAN.md — cannot drift
+    between the tool and the hook. Two copies of that rule is how it comes back."""
     import fnmatch
     for pattern, budget in budgets:
         if fnmatch.fnmatch(rel, pattern):
-            return budget, rel.startswith(queue_classes)
+            return budget, is_view(rel)
     return None, False
 
 
@@ -72,10 +79,14 @@ def overruns(paths):
     except Exception:
         return []                                # nothing to measure against
     budgets = getattr(doc_budget, "BUDGETS", [])
+    # 🔑 Ask doc_budget, never re-derive: is_queue_view() knows HUMAN.md is not one.
+    is_view = getattr(doc_budget, "is_queue_view", None)
     queues = tuple(getattr(doc_budget, "QUEUE_CLASSES", ()))
+    # fail-open to the old behaviour if an older doc_budget is on disk
+    view_fn = is_view or (lambda p: p.startswith(queues))
     out = []
     for rel in paths:
-        budget, is_q = budget_for(rel, budgets, queues)
+        budget, is_q = budget_for(rel, budgets, view_fn)
         if budget is None:
             continue                             # unbudgeted by design: length is content
         try:
