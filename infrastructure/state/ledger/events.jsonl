@@ -1894,3 +1894,4 @@
 {"seat":"BUILD","event":"start","id":"CREATURE_RESIZE_PATCH_1","ts":"2026-08-23T18:01:21Z"}
 {"seat":"BUILD","event":"verify","id":"CREATURE_RESIZE_PATCH_1","result":"pass","config":"offline: source XML + full 578 load set, 75 ops all matching","evidence":"observed/2026-08-23/creature_resize/verify.md","sha":"38a1ffc4","ts":"2026-08-23T18:01:22Z"}
 {"seat":"BUILD","event":"close","id":"CREATURE_RESIZE_PATCH_1","sha":"38a1ffc4","ts":"2026-08-23T18:01:22Z"}
+{"seat":"REP","event":"close","id":"LOAD_PROCEDURE_NEEDS_BUDGET_1","sha":"0b29a47f","ts":"2026-08-23T18:02:22Z"}
