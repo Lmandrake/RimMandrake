@@ -11,16 +11,25 @@ grid is built - say what we want instead.
 
     python3 src/RimMandrake/Utils/set_planet_subcount.py 8
 
-⚠️ AlienWorldsFramework.Refresh() DELETES and rewrites that folder at every
-startup, so this has to be re-run after each launch, before generating.
+🔴 TARGET CORRECTED 2026-08-22. This script used to write the Steam WORKSHOP
+copy, which the preset master retired on 2026-08-19 and which AlienWorlds'
+WorldbuilderCompat.Refresh() regenerates as a stub. Writing there reported
+success and changed nothing the game reads. The live target is LocalLow, which
+Worldbuilder scans FIRST and which wins on first-wins duplicate resolution.
+Doctrine and the full mechanism live in the master:
+  design/Jawa/worldbuilding/TidallyLocked_Preset.xml
+
+⚠️ Refresh() has NOT fired on the LocalLow copy across the 2026-08-21 and
+2026-08-22 launches - but the failure is silent and costs 21,872 tiles, so CHECK
+the file after every launch before generating a world.
 Verify by reading <subdivisions> back out of the saved world, never by trusting
 the slider - the slider shows the value that is about to be overwritten.
 """
 import re
 import sys
 
-PRESET = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/"
-          "3626210061/Worldbuilder/TidallyLocked/Preset.xml")
+PRESET = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
+          "RimWorld by Ludeon Studios/Worldbuilder/TidallyLocked/Preset.xml")
 FIELD = "myLittlePlanetSubcount"
 
 # Worldbuilder's Page_CreateWorldParams_Reset_Patch reads these off the preset and

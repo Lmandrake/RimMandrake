@@ -6,12 +6,21 @@
      ⚠️ MEASURED 2026-08-21, AND IT CONTRADICTS THE PARAGRAPH BELOW: the deployed
      LocalLow copy SURVIVED a full cold launch of the 450-mod list untouched — still
      dated 2026-08-20 00:59 afterwards, with myLittlePlanetSubcount, planetCoverage,
-     saveGenerationParameters and all 16 Jawa_* lines intact. So "destroys this file on
+     saveGenerationParameters and all 15 Jawa_* lines intact. So "destroys this file on
      EVERY game launch" is NOT what is happening now. Read the note below as the
      mechanism that COULD fire rather than one that reliably does — something (a mod
      update, load order, or a condition inside Refresh) is gating it. 🔑 Do not rely on
      either reading: CHECK the file after a launch before generating a world, because
      the failure is silent and costs 21,872 tiles of hand-authored data.
+
+     ✅ RE-VERIFIED 2026-08-22 22:00 by CHECK, mid-load, on the FULL 578-mod list:
+     the LocalLow copy is STILL dated 2026-08-20 00:59 and still carries
+     myLittlePlanetSubcount=7, planetCoverage=1, saveGenerationParameters=True and
+     all 13 generationData fields. Second launch in a row that Refresh() did not fire.
+     Its only difference from this master is this comment block — the XML is identical,
+     so nothing was rewritten into the live file mid-load.
+     🔑 Worldbuilder caches the PARSED preset, so a file that was already correct
+     BEFORE launch needs no in-game reload. A file fixed AFTER launch does.
 
      ⛔ DO NOT deploy to the Steam workshop path any more:
        C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3626210061\Worldbuilder\TidallyLocked\Preset.xml
