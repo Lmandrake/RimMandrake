@@ -53,7 +53,7 @@ alive and `ss` said LISTEN with a backlog, and `curl` returned `000` on a five-s
 accepting and nothing behind it ever wrote a response. A seat that ran the documented `ps` check and stopped
 there would have reported the board UP while it had been blank for hours. **Run the `curl` every time; a `200`
 is the only thing that proves the board lives.** (`BOARD_SERVER_HANGS_SILENTLY_1`; the wedge itself is fixed —
-the server is `ThreadingHTTPServer` with a 20 s handler timeout since `c950d9c1` — but the check stands, because
+the server is `ThreadingHTTPServer` with a 20 s handler timeout, fixed 2026-08-23 — but the check stands, because
 the next way it dies will not be that one.)
 
 ⚠️ **No equivalent exists for the publisher**: `queue/*.md` mtimes older than ~2 min mean the loop is dead.
