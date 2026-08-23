@@ -44,3 +44,27 @@ roster is the failure this closes.**
 `Conditional` on the def; `MayRequire` only checks the MOD.
 ⚠️ **Do not widen tolerance to infinity.** Temperature is what makes the nightside hostile and
 the dayside lethal; a world where everything survives everywhere has no climate.
+
+---
+
+## ⬅ STATUS 2026-08-23 — two thirds shipped, one third measured and filed
+
+| leg | state |
+|---|---|
+| **plants** | ✅ `PlantTolerances_Ashkarr.xml`, 577 plants, deployed. 0 errors. |
+| **animals** | ✅ `AnimalTolerances_Ashkarr.xml`, 456 cast animals, deployed. 0 errors. |
+| **xenotypes** | 🔴 NOT DONE — measured and filed as `XENOTYPE_TOLERANCES_BAND_1` for DECIDE |
+
+### ⚠️ A number in this item's own spec is wrong
+This file reasons from *"a baseline human is roughly −17…+40 °C comfy"*. **That is a CLOTHED
+human.** Measured from `ThingDef Human` `statBases`: baseline naked is comfy **16…26**, and
+what actually matters is `SafeTemperatureRange`, which `GenTemperature.cs:86` defines as comfy
+**±10** → safe **6…36**.
+
+⇒ The real gap is **bigger** than this item implies: **88.0 °C short on cold**, 30.1 on heat,
+and **34 of our 69 species carry no temperature-affecting gene at all**. Full measurement,
+mechanism and the three candidate routes are in `XENOTYPE_TOLERANCES_BAND_1`.
+
+🔑 **The remaining work is a DESIGN call, not a build one** — what band a person survives on
+Ash'karr — and the owner's 2026-08-23 renormalization ruling puts that with DECIDE. BUILD
+measured it and stopped there deliberately.
