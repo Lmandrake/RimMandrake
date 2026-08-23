@@ -1,3 +1,21 @@
+## 🔴 DROPPED 2026-08-23 — the owner ruled the Volcano does not need wood
+
+> *"Volcano doesn't need wood, that's fine."* — owner, 2026-08-23
+
+⛔ **Do not add `Plant_TreeDrago` to `Volcano`.** The 23-tile biome stays woodless, and it
+stays woodless **by choice** — which is the only thing this item ever actually asked for.
+A colony landing there hauls its wood in.
+
+✅ **The `AridShrubland` half stands as ruled:** `RG_Plant_Raspberry` was its only
+`RawBerries` source and the loss is accepted.
+
+🔑 **What survives this drop is the CHECK, not the fix.**
+`python3 design/Jawa/mods/plant_harvest_coverage.py --against-decisions` still reports
+`Volcano` losing `WoodLog`, and that is now a KNOWN and ACCEPTED line, not a defect.
+⚠️ Anyone reading its non-zero exit must not re-file this.
+
+---
+
 ## spec
 
 🔴 **The owner's plant cuts left the `Volcano` biome with NO wood at all.** Found by

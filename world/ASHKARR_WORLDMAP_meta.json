@@ -5,7 +5,7 @@
     0.0,
     0.0
   ],
-  "water_pct": 8.14,
+  "water_pct": 6.46,
   "regions": [
     "Deadstone",
     "Dune Sea",
@@ -897,5 +897,7 @@
   "landmarks": 569,
   "riverLinks": 293,
   "roadLinks": 1373,
-  "unnamedLandTiles": 0
+  "unnamedLandTiles": 0,
+  "water_pct_liquid": 5.19,
+  "water_note": "Corrected 2026-08-23. 6.46% is Ocean 823 + Lake 312 + SeaIce 277 = 1412 of 21872, which equals both the `water` column and the elevation<=0 count. 5.19% is liquid only. The old 8.14% predates the owner's meridian halving and is dead. Canon is infrastructure/state/canon.yml, not this file."
 }

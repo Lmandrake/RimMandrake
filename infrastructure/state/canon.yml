@@ -118,15 +118,24 @@ planet:
 
   water_pct: 5.19
   water_tiles: 1135
-  water_ice_tiles: 357
-  water_pct_incl_ice: 6.82
+  water_ice_tiles: 277
+  water_pct_incl_ice: 6.46
   water_src: >
     🔴 RE-MEASURED 2026-08-22 after the owner's combined nightside pass
     (src/RimMandrake/Utils/ashkarr_nightside_pass.py). Was 8.14% / 1780 tiles
     (Ocean 1468 + Lake 312), and that figure is DEAD.
     Now: Ocean 823 + Lake 312 = 1135 liquid = 5.19%.
-    ⭐ There IS now a third water biome: SeaIce, 357 tiles. Counting it, 1492
-    tiles = 6.82%. Which number applies depends on the question —
+    ⭐ There IS now a third water biome: SeaIce, 277 tiles. Counting it, 1412
+    tiles = 6.46%. Which number applies depends on the question —
+    🔴 CORRECTED 2026-08-23 on the owner's instruction to update the canon water.
+    The ice figure read 357 / 6.82% and BOTH were wrong: 357 is SeaIce (277) plus
+    IceSheet (80), and IceSheet is LAND ice — measured, its `water` column is 0 on
+    all 80 tiles, while all 277 SeaIce tiles carry water=1. So it was counting a
+    glacier as ocean. The liquid figure (5.19% / 1135) was right and is unchanged.
+    ⚠️ The three totals agree exactly and that is the check: water column = 1412,
+    Ocean+Lake+SeaIce = 1412, elevation <= 0 = 1412.
+    ⛔ `world/ASHKARR_WORLDMAP_meta.json` still says water_pct 8.14 — it is a build
+    output of an older pass and is not canon; do not read water from it.
     liquid for hydrology, incl-ice for "how much of this planet was ocean".
     The drop is the owner's ruling of 2026-08-22 13:04, "shrink the meridian water bodies
     to around half their current size", plus the sub-freezing meridian ocean turning to ice

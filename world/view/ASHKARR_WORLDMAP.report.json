@@ -42,10 +42,10 @@
    },
    {
     "biome": "AB_RockyCrags",
-    "tiles": 4155,
-    "pct": 18.997,
+    "tiles": 3816,
+    "pct": 17.447,
     "water": false,
-    "temp_c": -38.9
+    "temp_c": -42.9
    },
    {
     "biome": "ExtremeDesert",
@@ -74,6 +74,13 @@
     "pct": 3.763,
     "water": true,
     "temp_c": 18.3
+   },
+   {
+    "biome": "HorrorWastes",
+    "tiles": 807,
+    "pct": 3.69,
+    "water": false,
+    "temp_c": -28.4
    },
    {
     "biome": "AridShrubland",
@@ -109,13 +116,6 @@
     "pct": 2.441,
     "water": false,
     "temp_c": 46.9
-   },
-   {
-    "biome": "HorrorWastes",
-    "tiles": 468,
-    "pct": 2.14,
-    "water": false,
-    "temp_c": -53.7
    },
    {
     "biome": "BMT_FungalForest",
@@ -333,7 +333,7 @@
     ],
     "biomes": {
      "Desert": 4284,
-     "AB_RockyCrags": 4145,
+     "AB_RockyCrags": 3806,
      "ExtremeDesert": 3214,
      "AB_MycoticJungle": 1939
     }
@@ -688,11 +688,12 @@
    "Wasteland": 21,
    "AridShrubland": 17,
    "ZBiome_Badlands": 10,
-   "AB_RockyCrags": 6,
    "AB_FeraliskInfestedJungle": 6,
+   "AB_RockyCrags": 4,
    "PoisonForest": 3,
    "Scarlands": 3,
    "Volcano": 2,
+   "HorrorWastes": 2,
    "AB_MycoticJungle": 1,
    "ZBiome_Grasslands": 1,
    "AB_MiasmicMangrove": 1
@@ -2723,7 +2724,7 @@
     "name": "Ammonia Landing",
     "faction": "the Junkers",
     "factionDef": "Jawa_Junkers",
-    "biome": "AB_RockyCrags",
+    "biome": "HorrorWastes",
     "lat": 34.12,
     "lon": 99.74,
     "elevation_m": 20.0,
@@ -2759,7 +2760,7 @@
     "name": "Cryohaul",
     "faction": "the Junkers",
     "factionDef": "Jawa_Junkers",
-    "biome": "AB_RockyCrags",
+    "biome": "HorrorWastes",
     "lat": 40.65,
     "lon": 98.8,
     "elevation_m": 44.0,
