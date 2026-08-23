@@ -2005,3 +2005,23 @@ estimates written in the tables above.
 | `initial resistance range is undefined` | **69** | ⛔ **PRE-EXISTING, not caused by the equipment layer.** Every generated Star Wars species kind. Filed as `SPECIES_KINDS_NO_RESISTANCE_1` for BUILD (`86963bc7`). If the next load still reads 69, the fix did not ship; if it reads 0, it did. |
 | `Exception in ConfigErrors() of CannibalPirate` / `PirateYttakin` | **present, 2** | Worldbuilder's `IdeoUtility_IsMemeAllowedFor` postfix calling `Find.FactionManager` during def error-checking. Third-party, pre-existing, and **not** evidence about S8's Blackstar naming. |
 | `<loadBottom>` XML error, `mandrake.jawafactionslate` | **present, 1** | benign. RimWorld's `ModMetaDataInternal` has no such field and says so; RimSort, which the field is aimed at, does read it. Not a defect — do not "fix" it by deleting the field. |
+
+---
+
+## §10 — the COLD-GROUND + CHERRY-PICKER load. Written 2026-08-23 11:4x by BUILD, game DOWN.
+
+Three changes, all offline-verified, none of them yet seen by a running game. §8's 22 readings
+are UNCHANGED and still pending — these are additional, not a replacement.
+
+| # | reading | what it decides |
+|---|---|---|
+| **G1** | 🔴 **No `Could not resolve cross-reference` naming `AB_PackedIce`, `AB_SnowOverRocks`, `AB_DarkMud` or `AB_FertileMud`.** | `JawaTerrain_HorrorWastes.xml` names four Alpha Biomes terrains. All four resolve in the 2026-08-20 dump, so a miss here means a load-order or dedup problem, not a typo. |
+| **G2** | **F1 total stays at the §8 baseline of 27**, +0 from this batch. | Two new `PatchOperationConditional`s. A Replace that matched nothing would be a RED ERROR; a Conditional that matched nothing is silent, so G1+G2 together are the only evidence the ops fired. |
+| **G3** | ⚠️ **LOOK, do not grep.** A quicktest map on a `HorrorWastes` tile: the ground is pale ice and near-black frozen muck, **not warm sand**, and horror flora is present in the dark-brown fertile patches. | The whole point of the item. `AB_DarkMud` and `AB_PackedIce` are fertility 0 — if the map comes up with plants *everywhere* or *nowhere*, the fertility ramp is wrong. Expect plants clustered, not uniform. |
+| **G4** | `NeolithicRangedDecent` resolves with `Bow_Recurve` in it. Run `python3 src/RimMandrake/Utils/neolithic_floor_roster.py`; PASS = **39 surviving, 3 cut**. | `UNCUT_VANILLA_NEOLITHIC_BOWS_1`. Before this, a tribal hunter asking for a decent neolithic ranged weapon was handed a mushroom or an ogre's rock. |
+| **G5** | `Bow_Great_Unique`, `MA_VerdantBow` and `VWE_Throwing_Rocks` are **still cut**, and `Bow_Short`, `Flamebow`, `Gun_Needle`, `Gun_Scattergun` and the three `VFEP_WarcasketGun_*` are **still present**. | The un-cut must not overshoot, and the ten unratified keys must not have crept back in. See `UNRATIFIED_CHERRYPICK_CUTS_1`. |
+| **G6** | `Plant_TreePine`, `Plant_TreeBirch` and `Plant_TreePoplar` are absent from a `Volcano` map; **`RG_Plant_Raspberry` is still PRESENT** in `AridShrubland`. | `PLANT_CUTS_REACH_CHERRYPICKER_1` plus the owner's 2026-08-23 ruling that raspberry is renamed, not cut. |
+| **G7** | 🔑 **Spot-check that an unrelated pre-existing pick still applies.** | Cherry Picker loses the *entire* list to one malformed key. The list went from 1343 to 1342 entries this session; G7 is the only reading that proves it did not die at entry 1. |
+
+⚠️ **A live test proves what the RUNNING game holds, never what disk holds.** All seven above
+are about the *next* process. Nothing here is evidence about the one that ran until 11:25.
