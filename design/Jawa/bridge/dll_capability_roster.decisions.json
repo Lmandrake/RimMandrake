@@ -1,0 +1,20 @@
+{
+  "sheet": "dll_capability_roster",
+  "posture": "default-include",
+  "meaning": "DEFAULT INCLUDE. Every capability in the roster is a build target EXCEPT the ids in `struck`. A row absent from this file was never touched and IS a build target. `flagged` means the owner wants it discussed, not skipped.",
+  "savedAt": "2026-08-23T07:39:32.284Z",
+  "rosterRows": 185,
+  "alreadyBuilt": 63,
+  "buildCount": 180,
+  "struckCount": 5,
+  "flaggedCount": 0,
+  "struck": [
+    "Genes & xenotypes::relabel-only",
+    "Lords, raids & AI groups::pawn_set_duty alone",
+    "Anomaly & entities (DLC)::containment / study state",
+    "Anomaly & entities (DLC)::void awakening scripting",
+    "Save/load & scribe::ClearAllMapsAndWorld"
+  ],
+  "flagged": [],
+  "notes": {}
+}
