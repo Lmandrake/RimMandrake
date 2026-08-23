@@ -42,3 +42,18 @@ ones that affect volcanoes"* and this one affects `AridShrubland`; it is a real 
 decision of his and it stands, but **confirm before deploying** rather than after.
 ⚠️ **The repo copy is never what the game loads.** Diff the deployed config against the repo
 copy; do not grep one and conclude about the other.
+
+---
+
+## 🔴 OWNER'S RULING, 2026-08-23, on the one entry this item told BUILD to confirm
+
+> *"Cut the three trees. Do not cut raspberries, they can just be renamed."*
+
+⇒ **Three keys were written, not four.** `Plant_TreePine`, `Plant_TreeBirch` and
+`Plant_TreePoplar` are ratified and live. **`RG_Plant_Raspberry` is NOT cut and must not
+be** — it stays in `AridShrubland`'s 709 tiles, keeping `RawBerries` there, and gets a
+Star Wars LABEL instead. The rename is `RASPBERRY_RENAMED_NOT_CUT_1`.
+
+⚠️ `design/Jawa/mods/plant_decisions.json` still records raspberry as a cut. It is the
+owner's saved review artifact and was deliberately NOT rewritten; this ruling overrides
+that row. `cherrypick_build.py` never reads that file, so nothing acts on it.

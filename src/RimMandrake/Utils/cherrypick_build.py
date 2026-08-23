@@ -42,6 +42,11 @@ WHERE THE LIST COMES FROM. Three sources, unioned:
 
 ⛔ A cut recorded in (3) but absent from (1) is REPORTED, never added. Changing
 what is cut is the owner's decision, not this script's — see queue/HUMAN.md.
+🔴 The code did NOT do this until 2026-08-23; it unioned them in, and that quietly
+pushed 10 unratified cuts live — including two bows against the owner's standing
+weapon floor. Removing a key from (1) is now enough to un-cut it, except where the
+owner's own recorded decision must be overridden, which is what OWNER_EXCLUDE is
+for (keyed by bare defName).
 
     python3 cherrypick_build.py                 # validate only
     python3 cherrypick_build.py --write         # validate, then write the file
@@ -110,6 +115,15 @@ THINGDEF_OK_CATEGORIES = {1, 2, 3, 4, "Pawn", "Item", "Building", "Plant"}
 OWNER_EXCLUDE = {
     "AridShrubland": "1,988 tiles of the frozen Ash'karr map are this biome",
     "Lake": "312 tiles of the frozen Ash'karr map are this biome",
+    # UNCUT_VANILLA_NEOLITHIC_BOWS_1, DECIDE 2026-08-22. The owner's weapon floor
+    # is "bows and knives for anyone". These four went out as collateral of the
+    # vanilla INDUSTRIAL gun cut and are ruled back in. They are still recorded as
+    # cuts in decisions_weapons.json, so without this they are re-added every run.
+    # Bow_Great_Unique, MA_VerdantBow and VWE_Throwing_Rocks stay cut.
+    "Bow_Recurve": "un-cut: the ONLY vanilla carrier of NeolithicRangedDecent",
+    "Bow_Great": "un-cut: the only vanilla carrier of NeolithicRangedChief",
+    "Pila": "un-cut: NeolithicRangedHeavy, part of the bows-and-knives floor",
+    "MeleeWeapon_Ikwa": "un-cut: a knife by any reading of the weapon floor",
 }
 
 # ---------------------------------------------------------------- the list
@@ -466,7 +480,7 @@ def main():
     # The recorded decisions, typed from the dump. Everything the owner cut goes in
     # except what they held back by name.
     index, _ = load_index({t for t in CATEGORY_TYPE.values()})
-    held, untypable, from_dec = [], [], 0
+    held, untypable, unratified, from_dec = [], [], [], 0
     for name in sorted(decided):
         if name in OWNER_EXCLUDE:
             held.append(name)
@@ -477,17 +491,30 @@ def main():
             continue
         key = "%s/%s" % (dtype, name)
         if key not in seen:
-            keys.append(key)
-            seen.add(key)
-            from_dec += 1
+            # 🔴 REPORTED, NEVER ADDED - restored 2026-08-23. This branch used to
+            # append the key. It silently carried 10 unratified cuts into the live
+            # config on the run that added the three tree cuts, among them
+            # ThingDef/Bow_Short and ThingDef/Flamebow - two BOWS, against the
+            # owner's standing "bows and knives for anyone" floor - plus
+            # BiomeDef/IceSheet and BiomeDef/SeaIce on a frozen, hand-authored
+            # planet. Changing what is cut is the owner's decision; this script
+            # writes his ratified list, it does not extend it.
+            unratified.append(key)
 
     print("sources: %d ratified + %d hand-authored (%d new) + %d recorded "
-          "decisions (%d new)"
-          % (len(ratified), len(KEYS), from_keys, len(decided), from_dec))
+          "decisions (%d not ratified, NOT written)"
+          % (len(ratified), len(KEYS), from_keys, len(decided), len(unratified)))
     if held:
         print("  held back by the owner, NOT cut:")
         for n in held:
             print("    %-24s %s" % (n, OWNER_EXCLUDE[n]))
+    if unratified:
+        print("  🔴 %d recorded cut(s) are NOT in the ratified list and were NOT "
+              "written. Ratify them in deployed/config/v1_freeze/ to cut them, "
+              "or leave them - either way it is the owner's call, not this "
+              "script's:" % len(unratified))
+        for k in sorted(unratified):
+            print("    %s" % k)
     if untypable:
         print("  %d recorded cut(s) with no resolvable def type, skipped: %s"
               % (len(untypable), ", ".join(untypable)))
