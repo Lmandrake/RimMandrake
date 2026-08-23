@@ -51,6 +51,7 @@ from __future__ import annotations
 import json
 import os
 import sqlite3
+import sys
 
 __all__ = ["sqlite_path", "last_source", "weapon_tag_pairs", "weapon_defs",
            "defs_by_name", "weapon_cost_index"]
@@ -94,8 +95,73 @@ def sqlite_path(dump_root: str) -> str | None:
     for base in cands:
         cand = os.path.join(base, "defs.sqlite")
         if os.path.isfile(cand):
-            return cand
+            if _sqlite_describes(cand, root):
+                return cand
+            return None            # stale -> caller falls back to the capture's JSON
     return None
+
+
+_WARNED = set()
+
+
+def _sqlite_describes(db_path: str, capture_root: str) -> bool:
+    """Does this defs.sqlite hold the SAME capture the caller is asking about?
+
+    🔴 THE FAILURE THIS EXISTS TO STOP, measured 2026-08-23. `defs.sqlite` lives at
+    the DefDump root and serves every capture, so it survives a new load untouched
+    while the capture beside it moves on. `weapon_tag_audit.py` read its TAGS from
+    a database built on 2026-08-21 and its HEADER from the newest capture's
+    manifest, and printed:
+
+        dump matches the live list: 578 mods, captured 2026-08-23T07:12:04Z
+        🔴 pawn kinds with EVERY weapon tag empty: 12
+
+    The capture it named says 2. `Mech_Pikeman`, `Drone_Sentry` and
+    `Tribal_Archer_Fire` were all re-armed and it reported them disarmed — it would
+    have closed a fixed item as still-broken, wearing a fresh timestamp.
+
+    ⚠️ A modlist fingerprint cannot catch this. Both captures are the same 578 mods;
+    what changed between them was OUR OWN XML. So compare the CAPTURE IDENTITY, not
+    the mod set.
+
+    Returns True when they match, or when neither side states its provenance (in
+    which case there is nothing to contradict). On a mismatch it warns and returns
+    False, and the caller falls back to the capture's own JSON — slower, and right.
+    """
+    import json as _json
+    want = None
+    man = os.path.join(capture_root, "manifest.json")
+    if os.path.isfile(man):
+        try:
+            want = _json.loads(open(man, encoding="utf-8").read()).get("capturedUtc")
+        except Exception:
+            want = None
+    got = None
+    try:
+        with _connect(db_path) as conn:
+            row = conn.execute(
+                "select value from provenance where key = 'captured_utc'").fetchone()
+            got = row[0] if row else None
+    except Exception:
+        got = None
+    if not want or not got:
+        return True
+    if _norm_utc(want) == _norm_utc(got):
+        return True
+    if (db_path, got, want) in _WARNED:          # once per run, not once per query
+        return False
+    _WARNED.add((db_path, got, want))
+    sys.stderr.write(
+        "⚠️  defs.sqlite describes capture %s, but you are asking about %s.\n"
+        "    Falling back to that capture's JSON: the database is NOT a reading of\n"
+        "    the load you mean, and a modlist fingerprint cannot tell them apart.\n"
+        "    Rebuild it with `measure build` to get the fast path back.\n"
+        % (got, want))
+    return False
+
+
+def _norm_utc(s: str) -> str:
+    return str(s).replace("-", "").replace(":", "").replace("Z", "").replace("T", "").strip()
 
 
 def _connect(path: str) -> sqlite3.Connection:

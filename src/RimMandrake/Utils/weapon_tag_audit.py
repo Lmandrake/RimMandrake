@@ -209,8 +209,24 @@ def audit(anyway=False):
     for defname, t in thing_tags:
         e = tags.setdefault(t, {"all": [], "kept": []})
         e["all"].append(defname)
-        if defname not in cut:
-            e["kept"].append(defname)
+        # 🔴 CORRECTED 2026-08-23, BUILD. This used to be `if defname not in cut`,
+        # and it subtracted the kill list a SECOND time — reporting 6 kinds as
+        # disarmed that the capture proves are armed, `Mech_Pikeman`,
+        # `Drone_Sentry` and `Tribal_Archer_Fire` among them. It would have closed
+        # RESTORE_VANILLA_GUN_TAGS_1 and MECH_AND_ARCHER_ARMED_1 as still-broken.
+        #
+        # 🔑 THE KILL LIST IS INTENT; THE CAPTURE IS REALITY, and the capture is
+        # ALREADY post-cut — the block below says so itself: Cherry Picker strips
+        # `weaponTags` at load rather than deleting the def, so a genuinely cut
+        # weapon contributes NO tag here and can never reach this line. Anything
+        # that does reach it is a weapon that survived the cut still carrying the
+        # tag. `Gun_Needle` is on the kill list AND carries
+        # `MechanoidGunLongRange` in the live capture, because it was deliberately
+        # restored; the list had not caught up and the list was believed.
+        #
+        # ⇒ Presence in the capture with the tag attached IS survival. Do not
+        # re-subtract a written intent from a measured fact.
+        e["kept"].append(defname)
 
     empty = sorted(t for t, v in tags.items() if not v["kept"])
 
