@@ -700,9 +700,12 @@ player reaches the landing-site screen.
 ## S3 — faction exclusion took (v1 row 2)
 
 **The list is `D:\Luke\dev\Rimworld\infrastructure\state\WORLDGEN_FACTION_CHECKLIST.md`**
-— RATIFIED by a retired seat: **20 untick** (12 ordinary count rows in its §1, 8 hidden
-checkboxes in its §2), **6 keep** (its §4), plus `OuterRim_RebelAlliance` recorded
-present/absent (its §5).
+⚠️ **Corrected 2026-08-23.** It used to read: 20 untick (§1 + §2), 6 keep (§4), plus
+`OuterRim_RebelAlliance` recorded present/absent (§5). **§1, §2 and §5 are now in
+`infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md`** — the unticks are done
+in XML by `OnlyOurFactions.xml` and the page opens as our twelve at one each. Live: **4
+keeps** in §4, two of which (`JDSCIS_CIS_Faction`, `guy762_KotORFaction_RogueDroids`) default
+to 0 and must be set by hand, plus §4b's 13 rows.
 
 🔴 **Row 2's evidence is NOT a log grep. Nothing in `Player.log` records what was
 ticked.** The only call that produces the evidence:
@@ -907,8 +910,8 @@ grep -nE "Patch operation Verse\.PatchOperationRemove failed|No Verse\.XenotypeD
 **Before the irreversible click:**
 1. **S4** — both label checks on the Configure Factions page. A miss here means
    **stop and fix the deploy**, and it is the only point where that is still cheap.
-2. **S3, the act** — drive the 20 unticks and confirm the 6 keeps, from
-   `WORLDGEN_FACTION_CHECKLIST.md`. Set **Anomaly → `AmbientHorror`, threat slider
+2. **S3, the act** — ⚠️ **2026-08-23: there are no unticks to drive.** Confirm the **4**
+   keeps and set the two that default to 0, from `WORLDGEN_FACTION_CHECKLIST.md`. Set **Anomaly → `AmbientHorror`, threat slider
    dragged to 0** on the same screens (S5).
 
 **Immediately after the world exists:**

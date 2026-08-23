@@ -137,8 +137,12 @@ Nothing to decide. Wait for the main menu.
 
 ## 2. 🔴 Configure Factions, by hand. This is the irreversible step.
 
-**`infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` is the screen.** 21 untick / 4 keep,
-plus Section 4b — *our own factions, each at least 1*.
+**`infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` is the screen.** ⚠️ **Corrected
+2026-08-23: there is no untick pass any more** — `OnlyOurFactions.xml` already zeroes all 21
+(the rows moved to `infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md`).
+What is left is **4 keeps** — two of them, `JDSCIS_CIS_Faction` and
+`guy762_KotORFaction_RogueDroids`, defaulting to 0 and needing a hand-set — plus Section 4b,
+*our own factions, each at least 1*.
 
 🔴 **Permanent at world creation. A faction absent here is absent from every player's game
 forever**, and the only remedy is regenerating, which discards everything after this step.

@@ -145,6 +145,9 @@ BUDGETS = [
     # infrastructure/state/ except the three per-file entries above, so 2,596 lines
     # were invisible to the budget — including the 939-line EXPECTED_FAILURES and the
     # 486-line WORLDGEN_FACTION_CHECKLIST, the two biggest run sheets in the repo.
+    # ⚠️ 2026-08-23: that checklist is 178 lines now. It was split live/archive along with
+    # WORLDGEN_RUN.md and WORLDPAINT_REHEARSAL.md; the moved bulk is charged separately
+    # below, under infrastructure/state/archive/.
     # A budget tool with a hand-maintained allowlist measures whatever someone
     # remembered to add, which is not the same as measuring the repo.
     # ⚠️ `state/*.md` does NOT match `state/preserved/*.md`, so 905 lines of rescued
@@ -161,6 +164,15 @@ BUDGETS = [
     # compressing prose. When this budget is hit, do that rather than cutting.
     ("infrastructure/state/EXPECTED_FAILURES_next_load.md", 1800),
     ("infrastructure/state/preserved/*.md", 1000),
+    # 🔴 Added 2026-08-23 when three run sheets were split live/archive. `state/*.md` does
+    # NOT match `state/archive/*.md`, so without these the moved bulk would be invisible to
+    # the budget - the same blind spot `state/preserved/*.md` had. Per-file, not a glob, so a
+    # NEW archive has to be added deliberately rather than inheriting an exemption.
+    # Archives are byte-moved history and never grow after the split; a budget hit means
+    # somebody is WRITING to an archive, which is the thing to notice.
+    ("infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md", 2500),
+    ("infrastructure/state/archive/WORLDGEN_RUN_ARCHIVE.md", 2500),
+    ("infrastructure/state/archive/WORLDPAINT_REHEARSAL_ARCHIVE.md", 2500),
     ("infrastructure/state/*.md", 250),
 ]
 

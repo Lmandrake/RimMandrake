@@ -885,8 +885,12 @@ placement rather than authoring.
 - Their tunnels are a reason to own the ion weapons and the vibroblades.
 
 🔴 **THIS IS NOT A FREE v2 DECISION — IT HAS A v1 DEADLINE.**
-`GiantAnt_Faction` sits on `WORLDGEN_FACTION_CHECKLIST.md` **Section 2**, marked
-untick / drive to 0. **A faction absent at world creation can never be added
+`GiantAnt_Faction` is zeroed by `src/Jawa/JawaFactionSlate/Patches/OnlyOurFactions.xml`
+(`startingCountAtWorldCreation 0`), so it is never added to the default roster. *(It used to
+sit on the checklist's Section 2 untick list; that section moved to
+`infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md` on 2026-08-23.)*
+⚠️ Its row is still ON the page — `maxConfigurableAtWorldCreation` is not zeroed — so the
+owner CAN set it to 1 at world creation if this dream is wanted. **A faction absent at world creation can never be added
 later.** If it is unticked at v1's worldgen, this dream needs a NEW WORLD to
 happen at all.
 

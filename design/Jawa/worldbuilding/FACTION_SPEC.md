@@ -53,12 +53,15 @@ dossiers. `Mechanoid` — the Forgotten Arsenal — holds none by design and is 
 | 11 | Jawa Trade Moot | `Jawa_IndigenousTribes` | **authored — ALREADY SHIPS** (R19) | The Salvation *(shared with the player)* |
 | 12 | the Junkers | `Jawa_Junkers` | **authored** | no doctrine, only the ladder |
 | 13 | the Forgotten Arsenal | *(patch)* `Mechanoid` | **reskin**, label only — `hidden`, no settlements, no diplomacy | none |
-| ~~14~~ | ~~the Unbound Hive~~ | — | 🔴 **CUT FROM v1** — `WORLDGEN_FACTION_CHECKLIST.md` Section 2 unticks `Insect`. A label on a faction that never generates does nothing. | none |
+| ~~14~~ | ~~the Unbound Hive~~ | — | 🔴 **CUT FROM v1** — `Insect` never generates: it sits at `startingCountAtWorldCreation 0`, so the default roster never adds it. *(Was the checklist's Section 2 untick row; that section moved to `infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md` on 2026-08-23.)* A label on a faction that never generates does nothing. | none |
 
 **5 reskins · 8 authored, of which 1 already ships.** ⇒ **7 new `FactionDef`s.**
 
-🔴 **Before assigning ANY vanilla vessel, confirm it is not on
-`WORLDGEN_FACTION_CHECKLIST.md`'s untick lists.** All six were checked
+🔴 **Before assigning ANY vanilla vessel, confirm it is not zeroed by
+`src/Jawa/JawaFactionSlate/Patches/OnlyOurFactions.xml`.** *(This used to read
+"`WORLDGEN_FACTION_CHECKLIST.md`'s untick lists"; those sections moved to
+`infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md` on 2026-08-23 and the slate
+XML is now the mechanism.)* All six were checked
 2026-08-14: `Insect` collided and the Unbound Hive is cut. `Empire`,
 `OutlanderCivil`, `TribeCivil`, `Pirate` and `Mechanoid` are clear —
 `Empire`'s only checkbox is a Section 4 KEEP confirmation.

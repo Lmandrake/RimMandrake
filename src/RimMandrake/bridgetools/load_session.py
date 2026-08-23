@@ -253,7 +253,11 @@ def i_factions(s, cfg):
     world. A retired seat's queue, item B-new, was written when the Rebel Alliance failing
     to generate was an unexplained mystery. It is not one any more: ruling R2
     ruled it stays suppressed, and `Jawa_Patches\\Patches\\RebelAlliance_Suppress.xml`
-    exists to do exactly that. `WORLDGEN_FACTION_CHECKLIST.md:244` --
+    exists to do exactly that.
+    ⚠️ Re-pointed 2026-08-23: Section 5 was moved out of the live checklist and now
+    lives in `infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md`,
+    block 'MOVED: lines 347-451'. Cite it by SECTION, never by line number. The
+    ruling itself also survives on the live Section 4 Rebel Alliance row --
     "ABSENT is the DESIRED outcome ... do NOT revert the patch at the screen."
 
     So PRESENT is the failure here: it means the suppression patch did not take.

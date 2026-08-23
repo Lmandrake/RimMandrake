@@ -8,11 +8,13 @@
   of vanilla `Mechanoid`.
 
   🔴 THE UNBOUND HIVE WAS CUT FROM THIS FILE, 2026-08-14. It reskinned vanilla
-  `Insect`, and `Insect` is on an UNTICK row of
-  `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` section 2 — the owner
-  turns it off at the world screen, so a label patch on it can never be seen.
-  DECIDE cut the faction; the roster went 14 -> 13. `Mechanoid` is on no untick
-  row, so this half is unaffected.
+  `Insect`, and `Insect` never generates: its startingCountAtWorldCreation is 0,
+  so the default roster never adds it and a label patch on it can never be seen.
+  (Re-pointed 2026-08-23: this used to cite section 2 of
+  infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md, which moved to
+  infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md.)
+  DECIDE cut the faction; the roster went 14 -> 13. `Mechanoid` is one of the 13
+  and is set at the screen, so this half is unaffected.
   ⇒ Before reskinning ANY vanilla faction, confirm its vessel is absent from
   that checklist's untick sections. This is the second thing that list has
   caught.

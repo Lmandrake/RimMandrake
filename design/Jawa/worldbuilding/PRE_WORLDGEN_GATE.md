@@ -94,11 +94,14 @@ ideoligion is fully measured and nothing about it is open.**
 ⚠️ **All three must be DEPLOYED, not merely committed.** The game reads
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`, never this repo.
 
-⚠️ **`WORLDGEN_FACTION_CHECKLIST.md`** (`infrastructure/state/`) is ratified — 21 untick,
-**4 keep** as of 2026-08-21 — and needs no build. It is one screen the owner ticks during
-the run. 🔴 **But four of its rows currently do not appear on that screen.**
-`JawaFactionSlate/Patches/OnlyOurFactions.xml` zeroes `maxConfigurableAtWorldCreation`,
-which deletes a faction from `FactionGenerator.ConfigurableFactions` rather than capping it.
+⚠️ **`WORLDGEN_FACTION_CHECKLIST.md`** (`infrastructure/state/`) needs no build. It is one
+screen the owner ticks during the run. 🔴 **CORRECTED 2026-08-23: the 21-row untick list is
+DEAD and archived** (`infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md`) —
+`JawaFactionSlate/Patches/OnlyOurFactions.xml` zeroes `startingCountAtWorldCreation` on 48
+defs, so the page opens as our twelve at one each. **4 keeps** remain (R5, 2026-08-21), of
+which `JDSCIS_CIS_Faction` and `guy762_KotORFaction_RogueDroids` default to 0 and must be set
+by hand. ⚠️ **That XML no longer touches `maxConfigurableAtWorldCreation`** — a row is never
+deleted from `FactionGenerator.ConfigurableFactions`, only defaulted to zero.
 ⇒ `SLATE_KEEPS_CONFIGURABLE_1` must land before the run, or the checklist is a trap.
 
 ---

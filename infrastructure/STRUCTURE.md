@@ -199,6 +199,7 @@ this?* A rule is durable; a queue is meant to be consumed.
 | `infrastructure/state/OWNER_DECISIONS.md` | Every question only the owner can answer, and their rulings. |
 | `infrastructure/state/EXPECTED_FAILURES_next_load.md` | Expected-failure signatures, written **before** a load so triage is judgeable. |
 | `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` | The Configure Factions page, box by box, for world creation. |
+| `infrastructure/state/archive/` | Blocks moved out of a live state doc, byte-unchanged, one archive per source file. **History — never executed.** Holds the archives of `WORLDGEN_FACTION_CHECKLIST.md`, `WORLDGEN_RUN.md` and `WORLDPAINT_REHEARSAL.md` (split 2026-08-23). |
 | `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
 | `infrastructure/state/TEST_PLAN.md` | How deployed material gets proved in-game. Written by a retired seat; still cited by `load_session.py`. |
 | `infrastructure/state/status/<SEAT>.json` | What each seat says it is doing, written by `say.py`, rendered by the board. |
