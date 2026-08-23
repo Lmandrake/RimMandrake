@@ -1533,3 +1533,6 @@
 {"seat":"BUILD","event":"claim","id":"BRIDGE_READ_VEHICLE_COMPONENTS_1","ts":"2026-08-23T00:02:38Z"}
 {"seat":"BUILD","event":"start","id":"BRIDGE_READ_VEHICLE_COMPONENTS_1","ts":"2026-08-23T00:02:38Z"}
 {"seat":"BUILD","event":"needs","id":"BRIDGE_READ_VEHICLE_COMPONENTS_1","to":"bridge","ts":"2026-08-23T00:02:38Z"}
+{"seat":"BUILD","event":"claim","id":"VALIDATE_PATCH_NEEDS_SELFTEST_1","ts":"2026-08-23T00:04:19Z"}
+{"seat":"BUILD","event":"start","id":"VALIDATE_PATCH_NEEDS_SELFTEST_1","ts":"2026-08-23T00:04:19Z"}
+{"seat":"BUILD","event":"close","id":"VALIDATE_PATCH_NEEDS_SELFTEST_1","sha":"7715b1bf","ts":"2026-08-23T00:06:48Z"}
