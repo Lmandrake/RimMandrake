@@ -311,19 +311,22 @@ That is a live measurement, and it belongs in the acceptance test in §8 — not
 
 ### 5.4 Faction architecture — what the docs actually say
 
-🔴 **Correction worth stating plainly, because this spec would have been built on the error:
-there is exactly ONE Jawa NPC faction.** `faction_world_spec.md:48` — *"No faction generates Jawa
-except the Trade Moot — the player race is not a common sight."* **The `Jawa_` prefix on eight
-`FactionDef`s is a namespace, not a claim about who the faction is** (`FACTION_SPEC` R18). The
-campaign has **13 factions**, not fourteen; several docs still say fourteen and are stale.
+🔴 **Correction worth stating plainly, because this spec would have been built on the error.**
+`canon.yml > factions.count: 13` = **8 authored by us (all carrying the `Jawa_` prefix) + 5
+vanilla/mod vessels we patch.** ⛔ **That is not eight *Jawa* factions.** The `Jawa_` prefix is a
+**namespace, not a claim about who the faction is** (`FACTION_SPEC` R18) — the Geonosians, the
+Hutts and the Free Droids are not Jawa. Precisely: **two factions are Jawa peoples** (Trade Moot,
+the Junkers), and **exactly one GENERATES Jawa pawns** — `faction_world_spec.md:48`, *"No faction
+generates Jawa except the Trade Moot — the player race is not a common sight."* The fourteenth,
+the Unbound Hive, is **cut**; docs still saying "14 factions" are stale.
 
 | faction | defName | tech | what its dwelling IS, per the docs |
 |---|---|---|---|
 | Galactic Empire | `Empire` *(patch)* | Ultra | *"heavily fortified installations"*, perimeter turrets, kill corridors, **water condensers and reservoir bunkers**; *"wide sterile scars visible from orbit"* |
 | Hutt Cartel | `Jawa_HuttCartel` | Industrial | drug labs, prisons, barracks, throne room, warehouse, **walled cistern**; sited *beside* an oasis, never on it |
 | Homestead Defense League | `OutlanderCivil` *(patch)* | Industrial | **vaporator arrays and cistern storage — *"the faction's defining infrastructure"***; ⭐ **sandbags rather than full walls**; ⛔ no spacer chrome |
-| Deep Desert Tribes | `TribeCivil` *(patch)* | Industrial ⚠️ | **stone huts, caves, bedrolls, animal pens, concealed cisterns**; *"traps and natural chokepoints instead of turret grids"*; fire answer is **move** — *"no permanent structures at all"* |
-| Jawa Trade Moot | `Jawa_IndigenousTribes` | ⚠️ **unresolved** | **subterranean**; *"canyon fortresses, sandcrawler circuits, salvage markets"*; condensers on the crawler spine, buried cisterns at circuit nodes; **never sites on open water** |
+| Deep Desert Tribes | `TribeCivil` *(patch)* | ⚠️ **Neolithic vs Industrial — contested** | **stone huts, caves, bedrolls, animal pens, concealed cisterns**; *"traps and natural chokepoints instead of turret grids"*; fire answer is **move** — *"no permanent structures at all"* |
+| Jawa Trade Moot | `Jawa_IndigenousTribes` | ⚠️ **Neolithic vs Industrial — contested** | **subterranean**; *"canyon fortresses, sandcrawler circuits, salvage markets"*; condensers on the crawler spine, buried cisterns at circuit nodes; **never sites on open water** |
 | the Junkers | `Jawa_Junkers` | Industrial, degraded | **warrens** dug into wreck fields and tailings; squatters who *"manufacture nothing"*; wealth is *"in what they are wearing"* |
 | Geonosian Foundry Hive | `Jawa_GeonosianFoundryHive` | Spacer | **subterranean** — *"ancient factories under the rock"*; fabrication halls, arena; fire answer is **burrow**: *"surface entrances only"* |
 | Deepwater Compact | `Jawa_DeepwaterCompact` | Industrial | **layered walls, sandbags, turrets, EMP traps**; purification and cistern halls. *"Inside our walls no one raises a hand."* |
@@ -332,6 +335,12 @@ campaign has **13 factions**, not fourteen; several docs still say fourteen and 
 | Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | Spacer | charging hall, fabrication, battery bunker; ⭐ **no food stores and no beds** |
 | Ascendant Helix | `Jawa_AscendantHelix` | Spacer | *"sterile labs and secure vaults; no large food or textile economy"*; cryptosleep, gene banks |
 | the Forgotten Arsenal | `Mechanoid` *(label patch)* | — | ⛔ **deliberately no settlements at all** — `settlementGenerationWeight 0` |
+
+⚠️ **Two tech levels are genuinely contested between docs** — the Deep Desert Tribes and the
+Trade Moot each read Neolithic in the faction spec and Industrial (salvage-grade) in the roster.
+🔴 **`techLevel` is a HARD palette ceiling in this design**, so an unresolved tech level is an
+unresolved *palette*. Both are listed in §9 as blocking decisions: a generator cannot honestly
+choose between a torch and a standing lamp until someone rules.
 
 🔑 **Read that table as a test suite, not as flavour.** It already falsifies a naive generator
 four times over, and each is a cheap unit test on the BuildPlan:
