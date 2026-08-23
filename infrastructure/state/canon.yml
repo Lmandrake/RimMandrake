@@ -85,6 +85,21 @@ planet:
   # ✅ Set it back to `frozen` when step 4 has happened — a saved game, on disk — and the
   # planet rules bite again.
   status: remaking
+  # ⭐ THE MAP STANDS — owner, 2026-08-23, answering CANON_SUSPENDED_FOR_REMAKE_1.
+  # Asked whether the hand-remake was still happening, he chose "the current map stands".
+  # ⇒ 🔑 EVERY NUMBER UNDER `planet:` IS LIVE AGAIN. The comment above says they "MEASURE A
+  # WORLD THAT IS BEING REPLACED" — that is NO LONGER TRUE and must not be quoted forward.
+  # Ash'karr as painted, including the nightside layering of 2026-08-23
+  # (ashkarr_layer_nightside.py), IS the v1 planet. Nothing here is a record of a dead world.
+  # ⛔ BUT `status` STAYS `remaking`, and that is deliberate, not an oversight. The owner's
+  # own four-step sequence above makes THE FREEZE A SAVEGAME: map -> port-survival proof
+  # through the live bridge -> factions/leader names/ideoligions correct at initiation ->
+  # save the game. Step 1 is now settled; steps 2-4 have not happened. Setting `frozen`
+  # here would assert a saved world that does not exist.
+  # ✅ What changed in practice: check_canon's planet rules stay ADVISORY, but their reports
+  # are now MEANINGFUL rather than misleading — they compare against the live planet.
+  # 🔑 Flip to `frozen` when a game has been SAVED with the map ported. Not before, and not
+  # on the strength of a render or a CSV.
   status_src: >
     Owner, 2026-08-22, to REP. Supersedes WORLD_FROZEN_RETHINK_PLANET_1 and every doc
     saying the planet is frozen as-is for v1. The ACCEPTED_ON/ACCEPTED_BY fields below
@@ -286,9 +301,17 @@ planet:
     AB_OcularForest: 3
 
 settlements:
-  total: 72
-  src: "world/ASHKARR_WORLDMAP_settlements.csv — 72 data rows; meta.json \"settlements\": 72."
+  total: 120
+  src: >
+    🔴 RE-MEASURED 2026-08-23: world/ASHKARR_WORLDMAP_settlements.csv has 120 data rows.
+    Was 72, which was true when written and is now a count of an earlier state of THIS
+    world — not of a dead one. ⛔ Do not read settlements from meta.json; it is a build
+    output of an older pass and still says 72.
   superseded:
+    - value: "72"
+      why: >
+        a correct count of this same world before the settlement passes of 2026-08-22/23.
+        Superseded by measurement, not by a ruling.
     - value: "66"
       why: "a count of an earlier paint of this world."
     - value: "37"

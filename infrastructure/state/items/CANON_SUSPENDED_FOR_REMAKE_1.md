@@ -1,3 +1,41 @@
+## ✅ ANSWERED — the map stands, so nothing here was ever dead, 2026-08-23
+
+**Owner, asked directly whether the hand-remake was still happening: "the current map stands."**
+
+🔑 **That dissolves this item's premise rather than answering its table.** Every question below
+is framed as *"measurement of the dead paint — or a target the new world must hit?"* There is no
+new world. **Ash'karr as painted IS the v1 planet**, including today's nightside layering, so
+every planet value is a LIVE description of the world we are shipping. None of them is a record
+of something replaced.
+
+⛔ **`planet.status` STAYS `remaking`, and that is not an oversight.** The owner's own four-step
+sequence, recorded in `canon.yml`, makes **the freeze a SAVEGAME**: map → port-survival proof
+through the live bridge → factions, leader names and ideoligions correct at initiation → save the
+game. **Step 1 is now settled; steps 2–4 have not happened.** Writing `frozen` would assert a
+saved world that does not exist, so the planet rules stay ADVISORY — but their reports are now
+*meaningful* instead of misleading, because they compare against the live planet.
+
+### What was actually wrong, measured 2026-08-23
+
+⭐ **Six of the seven values in the table below needed NOTHING**, and the table itself was the
+stale part:
+
+| the table says | measured / read today |
+|---|---|
+| `water` 8.14% | ⛔ **canon has not said 8.14 since 2026-08-22.** It reads 5.19% liquid / **6.46% incl-ice**, re-measured, and my own count of the CSV agrees exactly at 6.46%. |
+| `tiles` 21872 | ✅ unchanged and correct |
+| `terminator` +14 °C | ✅ already reconciled in canon: ruled +14, realised median **+13.0** after the 5.5 °C/km lapse. My measurement of arc 88–92 returns +13.0. Both true. |
+| `habitable_ring_arc` [40, 57] | ✅ **not a conflict, and canon already says so**: *"a DESIGN band, not a settlement census… Do not 'correct' one against the other."* I measured settlements at arc 19…116 and did NOT file it. |
+| `axis` arc | ✅ durable — how the mod evaluates its curve |
+| `lake` keep | ✅ The Scald exists (312 tiles, arc ≤ 82) and still defends it |
+| `settlements` 72 | 🔴 **the one genuinely stale value — now 120.** Corrected in canon with its own `superseded:` entry. |
+
+⚠️ **`72` is superseded by MEASUREMENT, not by a ruling** — it was a correct count of this same
+world before the settlement passes of 2026-08-22/23. It is not a dead world's number and must not
+be filed beside the `37` and `66` entries as though it were.
+
+---
+
 ## Spec
 
 The owner told REP on 2026-08-22: *"I am working with DECIDE to remake the planet an
