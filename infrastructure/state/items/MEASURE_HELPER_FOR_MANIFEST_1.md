@@ -51,7 +51,21 @@ each.
 ## verify
 a script that asks each of the 13 call sites for the AbilityDef count and
 shows it is `[612, 18, 0]` or an explicit refusal, never a bare 0. Plus
-`selftest_measure.py` still 26/26 and `validate_patch.py`'s own selftest green.
+`selftest_measure.py` and `validate_patch.py`'s own selftest both green.
+
+⚠️ **CORRECTED 2026-08-22 under `MEASURE_HELPER_SELFTEST_LINE_WRONG_1`.** This line
+used to read *"`selftest_measure.py` still 26/26 and `validate_patch.py`'s own selftest
+green"*, and it was wrong twice:
+
+- **26/26 was a frozen number.** The suite is **46 tests** now (45 passing, 3 skipped as
+  of 2026-08-22). A verify step that names a count goes stale the moment anyone adds a
+  test, and then it either fails for the wrong reason or gets "corrected" to whatever the
+  day's number is — which is not a check at all. It now names the suite, not a tally.
+- 🔴 **`validate_patch.py` had NO selftest when this was written.** The step could never
+  have passed. One exists as of `6d1e2eb5`
+  (`src/RimMandrake/Utils/selftest_validate_patch.py`, 8/8, and proved to fail when the
+  bug it guards is reintroduced), so this half is satisfiable now — but for as long as it
+  stood, this verify step was unrunnable and nobody noticed.
 
 ## criteria
 no tool in the repo can read the dump manifest in a way that silently
