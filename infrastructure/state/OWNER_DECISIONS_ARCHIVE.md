@@ -104,3 +104,14 @@ exactly one Empire patch.
 🪤 **A rename is a DELETE plus an ADD, and the deploy tool will not delete on its own** —
 it reports the orphan as a `-` line and keeps it, so a renamed file leaves both versions
 live until someone passes `--prune`. Check for a `-` line after every rename.
+
+
+---
+
+## Rows 8, 9 and 12 — answered by the owner 2026-08-23, removed from the Open table
+
+| 8 | **Dinosaurs — owner wants to REVIEW THEM NEXT TO THEIR IMAGES** and pick "the wildest and weirdest". Not a keep/cut ruling: a request for a new deliverable, an image-backed review sheet of the roster. | Taste, and it cannot be exercised from defNames alone. | The fauna roster §3–§4. `[v2]`, but the deliverable is now specified. | `design/Jawa/worldbuilding/biome_and_fauna_roster.md` §7 |
+| 9 | **The xenotype keep/reflavor set** — how "pure SW" versus "populated galaxy" should the roster feel? | Pure taste; there is no technical answer to find. | The Cherry Picker §2 deletions. `[v2]` | `design/Jawa/mods/cherry_picker_killlist.md` |
+| 12 | 🔴 **O12 — droid raids are broken and it is our patch that broke them. Three routes, pick one.** (1) **Drop the KotOR flesh type from `DroidsAreMachines.xml`** — restores tending, loses vanilla EMP on them, **does not touch our ion weapon** (its guard moved to `IsMechanoid` on 08-13); (2) **~5 lines of Harmony** in an assembly we already ship, giving Humanlike pawns a relations tracker regardless of `IsFlesh`; (3) **accept broken droid raids.** ⛔ Retargeting to vanilla `Mechanoid` is EXCLUDED — it would make our own ion weapon block them. | A trade between three kinds of loss, none of them technical: tending vs EMP vs shipping a broken antagonist. | 🔴 **`guy762_KotORFaction_RogueDroids` raids — a v1 KEEP and the quest-critical antagonist of the KotOR distress call.** ✅ Worldgen is clear on four independent grounds; this does not block a world. | **CONFIRMED LIVE 2026-08-14** — a retired seat ran it: 1st `KotORDroidGood_3C` spawned clean, **2nd threw NRE, 0/1 spawned**, exactly as the chain predicted. |
+
+> ⤴ Ruled in one pass. Verbatim: *"O12 droid raids: ~5 lines of Harmony. Dinosaurs: v1, build the sheet now. Xenotypes: Pure SW - cut the non-canon."* Filed as `DROID_RAIDS_HARMONY_RELATIONS_1`, `DINOSAUR_IMAGE_REVIEW_SHEET_1` and `XENOTYPE_ROSTER_PURE_SW_1`.

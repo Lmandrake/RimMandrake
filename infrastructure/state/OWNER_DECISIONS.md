@@ -70,11 +70,22 @@ after already being answered._
 
 ## Open
 
+> ✅ **ALL THREE OPEN ROWS ANSWERED 2026-08-23 — the list is empty.** Rows 8, 9 and 12 were
+> put to the owner and ruled in one pass, and under this file's own rule an answered row is
+> removed rather than left struck through. Each is now an item carrying his words:
+>
+> | was | ruling | item |
+> |---|---|---|
+> | **12** droid raids | ~5 lines of Harmony — the only route that loses nothing | `DROID_RAIDS_HARMONY_RELATIONS_1` |
+> | **8** dinosaurs | **v1**, not v2 — the [v2] tag predated his fauna ruling. Folds into the fauna pass | `DINOSAUR_IMAGE_REVIEW_SHEET_1` |
+> | **9** xenotypes | **PURE SW** — cut the non-canon, do not reflavor it | `XENOTYPE_ROSTER_PURE_SW_1` |
+>
+> ⚠️ **An empty Open table is the state this file is supposed to be in.** A row here means a
+> seat is blocked on him; if it stays empty, that is the list working, not the list dying.
+
+
 | # | the ask | why the owner and not a seat | blocked until answered | source |
 |---|---|---|---|---|
-| 8 | **Dinosaurs — owner wants to REVIEW THEM NEXT TO THEIR IMAGES** and pick "the wildest and weirdest". Not a keep/cut ruling: a request for a new deliverable, an image-backed review sheet of the roster. | Taste, and it cannot be exercised from defNames alone. | The fauna roster §3–§4. `[v2]`, but the deliverable is now specified. | `design/Jawa/worldbuilding/biome_and_fauna_roster.md` §7 |
-| 9 | **The xenotype keep/reflavor set** — how "pure SW" versus "populated galaxy" should the roster feel? | Pure taste; there is no technical answer to find. | The Cherry Picker §2 deletions. `[v2]` | `design/Jawa/mods/cherry_picker_killlist.md` |
-| 12 | 🔴 **O12 — droid raids are broken and it is our patch that broke them. Three routes, pick one.** (1) **Drop the KotOR flesh type from `DroidsAreMachines.xml`** — restores tending, loses vanilla EMP on them, **does not touch our ion weapon** (its guard moved to `IsMechanoid` on 08-13); (2) **~5 lines of Harmony** in an assembly we already ship, giving Humanlike pawns a relations tracker regardless of `IsFlesh`; (3) **accept broken droid raids.** ⛔ Retargeting to vanilla `Mechanoid` is EXCLUDED — it would make our own ion weapon block them. | A trade between three kinds of loss, none of them technical: tending vs EMP vs shipping a broken antagonist. | 🔴 **`guy762_KotORFaction_RogueDroids` raids — a v1 KEEP and the quest-critical antagonist of the KotOR distress call.** ✅ Worldgen is clear on four independent grounds; this does not block a world. | **CONFIRMED LIVE 2026-08-14** — a retired seat ran it: 1st `KotORDroidGood_3C` spawned clean, **2nd threw NRE, 0/1 spawned**, exactly as the chain predicted. |
 
 ---
 
