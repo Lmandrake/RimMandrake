@@ -16,17 +16,17 @@ supply picture. For what the cuts actually cost, run
 
 | biome | tiles | plants | resources | wood sources | fragile (sole-source) |
 |---|---:|---:|---:|---:|---|
-| `Desert` | 4309 | 21 | 4 | 3 | `BMT_PoxSorghumHarvested`, `RawAgave` |
+| `Desert` | 4648 | 21 | 4 | 3 | `BMT_PoxSorghumHarvested`, `RawAgave` |
 | `AB_RockyCrags` | 3816 | 7 | 2 | 4 | `AB_RawRagadast` |
 | `ExtremeDesert` | 3214 | 25 | 4 | 3 | `BMT_PoxSorghumHarvested`, `BMT_Toxwood`, `RawAgave` |
 | `AB_MycoticJungle` | 1939 | 15 | 8 | ⚠️ **1** | `AB_BlueRawFungus`, `AB_PinkRawFungus`, `AB_PsychotropicFungus`, `AB_WeaponPoisonDart`, `RawFungus`, `WoodLog` |
 | `Wasteland` | 1721 | 9 | 3 | 2 | `RawAgave`, `RawBerries` |
-| `HorrorWastes` | 807 | 1 | 1 | 🔴 **0** | `RawAgave` |
 | `AridShrubland` | 709 | 23 | 5 | 3 | `BMT_PoxSorghumHarvested`, `RawAgave`, `RawBerries` |
 | `PoisonForest` | 604 | 19 | 3 | 7 | `RawPoisonMushroom` |
 | `AB_PropaneLakes` | 554 | 5 | 4 | 🔴 **0** | `AB_CrystalWood`, `AB_RawCrystalHorn`, `AB_RawFrostLeaf`, `AB_RawRimeNodules` |
 | `ZBiome_Badlands` | 545 | 13 | 2 | 2 | `RawBerries` |
 | `AB_FeraliskInfestedJungle` | 534 | 13 | 2 | 3 | `RawBerries` |
+| `HorrorWastes` | 468 | 1 | 1 | 🔴 **0** | `RawAgave` |
 | `BMT_FungalForest` | 425 | 27 | 11 | 2 | `BMT_Glimmerslime`, `BMT_Kessinger`, `BMT_MedicineFungal`, `BMT_MycelialBlocks`, `BMT_RawDulcis`, `BMT_Starchstalk`, `BMT_StimquillDrug`, `Cloth`, `RawFungus` |
 | `AB_MechanoidIntrusion` | 236 | 2 | 1 | ⚠️ **1** | `WoodLog` |
 | `ZBiome_Grasslands` | 233 | 21 | 2 | 3 | `RawBerries` |
@@ -43,8 +43,8 @@ supply picture. For what the cuts actually cost, run
 
 ## 🔴 Biomes with no wood at all — before any cut
 
-- **`HorrorWastes`** (807 tiles) — no plant here yields `WoodLog`. A colony landing on it has no wood without hauling it in.
 - **`AB_PropaneLakes`** (554 tiles) — no plant here yields `WoodLog`. A colony landing on it has no wood without hauling it in.
+- **`HorrorWastes`** (468 tiles) — no plant here yields `WoodLog`. A colony landing on it has no wood without hauling it in.
 - **`BMT_CrystalCaverns`** (127 tiles) — no plant here yields `WoodLog`. A colony landing on it has no wood without hauling it in.
 
 ## ⚠️ Biomes hanging on ONE wood source
@@ -63,7 +63,7 @@ Cut the named plant and the biome joins the list above.
 
 | plant | resource(s) | biome(s) |
 |---|---|---|
-| `Plant_Agave` | `RawAgave` | `Desert`, `ExtremeDesert`, `Wasteland`, `HorrorWastes`, `AridShrubland`, `ZBiome_DesertOasis`, `LavaField` |
+| `Plant_Agave` | `RawAgave` | `Desert`, `ExtremeDesert`, `Wasteland`, `AridShrubland`, `HorrorWastes`, `ZBiome_DesertOasis`, `LavaField` |
 | `Plant_Berry` | `RawBerries` | `ZBiome_Badlands`, `AB_FeraliskInfestedJungle`, `ZBiome_Grasslands`, `AB_MiasmicMangrove`, `Volcano`, `LavaField` |
 | `BMT_Plant_PoxSorghum` | `BMT_PoxSorghumHarvested` | `Desert`, `ExtremeDesert`, `AridShrubland` |
 | `BMT_CavernMycelium` | `BMT_MycelialBlocks` | `BMT_FungalForest`, `BMT_CrystalCaverns` |

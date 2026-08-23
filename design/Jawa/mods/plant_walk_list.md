@@ -10,15 +10,15 @@ the biome. The core desert is first because it is what you objected to.
 you a world with every plant still in it. Mark what looks wrong; the cost of each cut
 is already on its row in `plant_review.html`.
 
-## 🔴 `Desert` — 4,309 tiles (19.7% of the planet)
+## 🔴 `Desert` — 4,648 tiles (21.3% of the planet)
 
-**Land on tile `20384`** — *Thornbelt*, 29.3°C, 162 m, rain 0 mm.
+**Land on tile `15789`** — *Long Sand*, 17.7°C, 153 m, rain 0 mm.
 
 🔴 **3 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
-- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,232 tiles
-- **martyr tree** (`BMT_Plant_TreeMartyr`, Biomes! Polluted Lands) — reaches 5,018 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 9,046 tiles
+- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,571 tiles
+- **martyr tree** (`BMT_Plant_TreeMartyr`, Biomes! Polluted Lands) — reaches 5,357 tiles
 
 ✅ *2 more tree-class plants read correctly for the ground — pebble cactus, saguaro cactus.*
 
@@ -35,8 +35,8 @@ is already on its row in `plant_review.html`.
 
 🔴 **2 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
-- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,232 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 9,046 tiles
+- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,571 tiles
 
 ✅ *2 more tree-class plants read correctly for the ground — pebble cactus, saguaro cactus.*
 
@@ -54,9 +54,9 @@ is already on its row in `plant_review.html`.
 
 🔴 **3 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
-- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,232 tiles
-- **martyr tree** (`BMT_Plant_TreeMartyr`, Biomes! Polluted Lands) — reaches 5,018 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 9,046 tiles
+- **twisting thornwood** (`BMT_Plant_TreeTwistingThornwood`, Biomes! Polluted Lands) — reaches 8,571 tiles
+- **martyr tree** (`BMT_Plant_TreeMartyr`, Biomes! Polluted Lands) — reaches 5,357 tiles
 
 ✅ *2 more tree-class plants read correctly for the ground — pebble cactus, saguaro cactus.*
 
@@ -119,18 +119,6 @@ is already on its row in `plant_review.html`.
 - **berry bush** (`Plant_Berry_Leafless`) — only source of `RawBerries`
 
 *9 plants reachable in total.*
-
-## `HorrorWastes` — 807 tiles (3.7% of the planet)
-
-**Land on tile `87`** — *Deadstone*, -44.6°C, 582 m, rain 0 mm.
-
-**No trees here.** Groundcover only.
-
-⚠️ **1 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
-
-- **agave** (`Plant_Agave`) — only source of `RawAgave`
-
-*1 plants reachable in total.*
 
 ## `PoisonForest` — 604 tiles (2.8% of the planet)
 
@@ -201,6 +189,18 @@ is already on its row in `plant_review.html`.
 
 *13 plants reachable in total.*
 
+## `HorrorWastes` — 468 tiles (2.1% of the planet)
+
+**Land on tile `15293`** — *Deadstone*, -46.4°C, 753 m, rain 0 mm.
+
+**No trees here.** Groundcover only.
+
+⚠️ **1 plant(s) here supply something nothing else here does** — cutting one deletes the resource from this biome:
+
+- **agave** (`Plant_Agave`) — only source of `RawAgave`
+
+*1 plants reachable in total.*
+
 ## `BMT_FungalForest` — 425 tiles (1.9% of the planet)
 
 **Land on tile `21036`** — *Nightspill*, -21.4°C, 711 m, rain 0 mm.
@@ -249,7 +249,7 @@ is already on its row in `plant_review.html`.
 
 🔴 **1 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 9,046 tiles
 
 ✅ *2 more tree-class plants read correctly for the ground — pebble cactus, dwarf palm tree.*
 
@@ -265,7 +265,7 @@ is already on its row in `plant_review.html`.
 
 🔴 **1 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 9,046 tiles
 
 ✅ *6 more tree-class plants read correctly for the ground — pebble cactus, saguaro cactus, rat palm tree, dwarf palm tree, palm tree, palm tree.*
 
@@ -400,7 +400,7 @@ is already on its row in `plant_review.html`.
 
 🔴 **1 tree(s) here do NOT read as desert flora** — this is the shape of the thing you objected to:
 
-- **drago tree** (`Plant_TreeDrago`, Core) — reaches 8,707 tiles
+- **drago tree** (`Plant_TreeDrago`, Core) — reaches 9,046 tiles
 
 ✅ *1 more tree-class plants read correctly for the ground — pebble cactus.*
 

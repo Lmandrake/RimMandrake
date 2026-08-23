@@ -1,26 +1,26 @@
 defName,label,mod,packageId,isTree,treeCategory,growDays,harvestedThingDef,tilesReachable,biomes,mutators,routes
-Plant_GrayGrass,gray grass,Biotech,ludeon.rimworld.biotech,False,None,2.5,,14339,AB_FeraliskInfestedJungle|AB_GelatinousSuperorganism|AB_MiasmicMangrove|AB_MycoticJungle|AB_PropaneLakes|AB_PyroclasticConflagration|AB_TarPits|AridShrubland|Desert|ExtremeDesert|LavaField|Scarlands|Wasteland|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,Oasis,biome+mutator
+Plant_GrayGrass,gray grass,Biotech,ludeon.rimworld.biotech,False,None,2.5,,14678,AB_FeraliskInfestedJungle|AB_GelatinousSuperorganism|AB_MiasmicMangrove|AB_MycoticJungle|AB_PropaneLakes|AB_PyroclasticConflagration|AB_TarPits|AridShrubland|Desert|ExtremeDesert|LavaField|Scarlands|Wasteland|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,Oasis,biome+mutator
 Plant_Agave,agave,Core,ludeon.rimworld,False,None,6,RawAgave,11002,AridShrubland|Desert|ExtremeDesert|HorrorWastes|LavaField|Wasteland|ZBiome_DesertOasis,,biome
-Plant_PebbleCactus,pebble cactus,Biotech,ludeon.rimworld.biotech,True,Full,28,WoodLog,9309,AB_TarPits|AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
-Plant_PincushionCactus,pincushion cactus,Core,ludeon.rimworld,False,None,2.5,,9252,AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
-RG_FlowerCactus,flower cactus,ReGrowth 2,regrowth.botr.core,False,None,2.5,,9237,AridShrubland|Desert|ExtremeDesert|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
-RG_Plant_AridGrass,grass,ReGrowth 2,regrowth.botr.core,False,None,2.5,,9010,AridShrubland|Desert|ExtremeDesert|ZBiome_Badlands|ZBiome_Grasslands,,biome
-Plant_TreeDrago,drago tree,Core,ludeon.rimworld,True,Full,15,WoodLog,8707,AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
-Plant_SaguaroCactus,saguaro cactus,Core,ludeon.rimworld,True,Full,5,WoodLog,8459,AridShrubland|Desert|ExtremeDesert|ZBiome_DesertOasis,,biome
-BMT_Plant_Pestia,pestia,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8232,AridShrubland|Desert|ExtremeDesert,,biome
-BMT_Plant_PlagueFans,plague fans,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,4,,8232,AridShrubland|Desert|ExtremeDesert,,biome
-BMT_Plant_PoxSorghum,pox sorghum,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5.5,BMT_PoxSorghumHarvested,8232,AridShrubland|Desert|ExtremeDesert,,biome
-BMT_Plant_ScorchedStars,scorched stars,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8232,AridShrubland|Desert|ExtremeDesert,,biome
-BMT_Plant_SewerReed,sewer reed,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8232,AridShrubland|Desert|ExtremeDesert,,biome
-BMT_Plant_TreeTwistingThornwood,twisting thornwood,Biomes! Polluted Lands,biomesteam.biomespollutedlands,True,Full,15,BMT_Toxwood,8232,AridShrubland|Desert|ExtremeDesert,,biome
-BMT_Plant_TwistingThorngrass,twisting thorngrass,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,2.5,,8232,AridShrubland|Desert|ExtremeDesert,,biome
-BMT_Plant_TwistingThornweed,twisting thornweed,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8232,AridShrubland|Desert|ExtremeDesert,,biome
-Plant_Bush,bush,Core,ludeon.rimworld,False,None,3,,6730,AB_MiasmicMangrove|AridShrubland|Desert|LavaField|PoisonForest|Volcano|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
-Plant_Dandelion,dandelions,Core,ludeon.rimworld,False,None,2.5,,6642,AridShrubland|Desert|LavaField|PoisonForest|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+Plant_PebbleCactus,pebble cactus,Biotech,ludeon.rimworld.biotech,True,Full,28,WoodLog,9648,AB_TarPits|AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+Plant_PincushionCactus,pincushion cactus,Core,ludeon.rimworld,False,None,2.5,,9591,AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+RG_FlowerCactus,flower cactus,ReGrowth 2,regrowth.botr.core,False,None,2.5,,9576,AridShrubland|Desert|ExtremeDesert|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+RG_Plant_AridGrass,grass,ReGrowth 2,regrowth.botr.core,False,None,2.5,,9349,AridShrubland|Desert|ExtremeDesert|ZBiome_Badlands|ZBiome_Grasslands,,biome
+Plant_TreeDrago,drago tree,Core,ludeon.rimworld,True,Full,15,WoodLog,9046,AridShrubland|Desert|ExtremeDesert|LavaField|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+Plant_SaguaroCactus,saguaro cactus,Core,ludeon.rimworld,True,Full,5,WoodLog,8798,AridShrubland|Desert|ExtremeDesert|ZBiome_DesertOasis,,biome
+BMT_Plant_Pestia,pestia,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8571,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_PlagueFans,plague fans,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,4,,8571,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_PoxSorghum,pox sorghum,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5.5,BMT_PoxSorghumHarvested,8571,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_ScorchedStars,scorched stars,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8571,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_SewerReed,sewer reed,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8571,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_TreeTwistingThornwood,twisting thornwood,Biomes! Polluted Lands,biomesteam.biomespollutedlands,True,Full,15,BMT_Toxwood,8571,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_TwistingThorngrass,twisting thorngrass,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,2.5,,8571,AridShrubland|Desert|ExtremeDesert,,biome
+BMT_Plant_TwistingThornweed,twisting thornweed,Biomes! Polluted Lands,biomesteam.biomespollutedlands,False,None,5,,8571,AridShrubland|Desert|ExtremeDesert,,biome
+Plant_Bush,bush,Core,ludeon.rimworld,False,None,3,,7069,AB_MiasmicMangrove|AridShrubland|Desert|LavaField|PoisonForest|Volcano|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+Plant_Dandelion,dandelions,Core,ludeon.rimworld,False,None,2.5,,6981,AridShrubland|Desert|LavaField|PoisonForest|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
 Plant_Grass,grass,ReGrowth 2,regrowth.botr.core,False,None,2.5,,6620,AB_FeraliskInfestedJungle|AB_TarPits|ExtremeDesert|LavaField|Volcano|Wasteland|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,Oasis,biome+mutator
-Plant_Reeds,reeds,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,6045,AridShrubland|Desert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,Oasis,biome+mutator
-Plant_DesertDandelion,dandelions,ReGrowth 2,regrowth.botr.core,False,None,2.5,,6023,AridShrubland|Desert|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
-BMT_Plant_TreeMartyr,martyr tree,Biomes! Polluted Lands,biomesteam.biomespollutedlands,True,Full,10,BMT_Toxwood,5018,AridShrubland|Desert,,biome
+Plant_Reeds,reeds,Odyssey,ludeon.rimworld.odyssey,False,None,2.5,,6384,AridShrubland|Desert|LavaField|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,Oasis,biome+mutator
+Plant_DesertDandelion,dandelions,ReGrowth 2,regrowth.botr.core,False,None,2.5,,6362,AridShrubland|Desert|ZBiome_Badlands|ZBiome_DesertOasis|ZBiome_Grasslands,,biome
+BMT_Plant_TreeMartyr,martyr tree,Biomes! Polluted Lands,biomesteam.biomespollutedlands,True,Full,10,BMT_Toxwood,5357,AridShrubland|Desert,,biome
 AB_ToxicGamma,toxic gamma,Alpha Biomes,sarg.alphabiomes,True,Full,2,WoodLog,3816,AB_RockyCrags,,biome
 AB_PollutedStikehr,polluted stikehr,Alpha Biomes,sarg.alphabiomes,True,Full,15,WoodLog,3816,AB_RockyCrags,,biome
 AB_GiantStikehr,giant stikehr,Alpha Biomes,sarg.alphabiomes,False,None,15,WoodLog,3816,AB_RockyCrags,,biome
