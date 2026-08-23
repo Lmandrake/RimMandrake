@@ -1,3 +1,22 @@
+## ⚠️ TWO OF THIS ITEM'S CLAIMS WERE SUPERSEDED, 2026-08-23
+
+**Read these before citing anything below.** This item is `done` and its work stands; two
+statements in it no longer hold.
+
+1. ⛔ **"every sleeper … looks Rakatan instead of like an ordinary human" is NARROWED to
+   every ancient SOLDIER sleeper.** `Slave` is a seventh kind shipping in these complexes
+   and it carries no forcing. **DECIDE ruled 2026-08-23 that it stays an ordinary human, on
+   purpose** — the Rakata were enslavers, so a human slave among five Rakata is the story
+   rather than an oversight, and `Slave` is a Core kind that must not be patched to fix one
+   face. Ruling and reasoning: `ANCIENT_SLAVE_KIND_NOT_RAKATA_1`.
+2. ⛔ **The constraint that this work "must not alter how ancients fight" is LIFTED.** The
+   owner ruled 2026-08-23 that *"the ancients should have WAAAY more money to spend on their
+   equipment"*, and `ANCIENT_SOLDIER_WEAPON_BUDGET_1` acts on it: soldier 300~900 → 1200~2600,
+   leader 500~1400 → 2500~6000, and the boss gains `IndustrialGunAdvanced`. **Ancients now
+   hit harder, deliberately.** Patch: `src/Jawa/Jawa_Patches/Patches/AncientArsenal_Ashkarr.xml`.
+
+---
+
 ## spec
 Six ancient pawn kinds now force `RimMandrakeRakata` at 1.0 with
 `useFactionXenotypes false`, so every sleeper thawed out of a cryptosleep casket
