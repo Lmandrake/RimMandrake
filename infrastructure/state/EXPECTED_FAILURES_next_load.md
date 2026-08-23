@@ -1608,15 +1608,60 @@ score a refusal as a broken load.
 P2 separates them: a wrong count with a present ready line means one tool; an absent ready
 line means the assembly.
 
-### Results — FILL THIS IN AFTER THE LOAD. Blank means unfinished.
+### Results — SCORED 2026-08-22 23:0x by CHECK, one Python pass over all 1,058,800 log lines.
+
+**Seven of eight pass. F6 is a real and large regression, and it has a named cause.**
 
 | # | outcome | evidence |
 |---|---|---|
-| P1 | | |
-| P2 | | |
-| F1 | | |
-| F2 | | |
-| F3 | | |
-| F4 | | |
-| F5 | | |
-| F6 | | |
+| P1 | ✅ **PASS** | L1058179 `[Inhabited] ready: 2 patches, 294 characters, 0 places, 0 casts.` — **294**, the passing value. The cast fix reached the game; 193 would have voided everything downstream |
+| P2 | ✅ **PASS** | L1058800 `[JawaBench] ready: 121 tools, build d49eaf42545b` — **121**, exactly the value under test. ⭐ Independently corroborated off the LIVE bridge, not the log: `tools/list` returns **246 tools, 121 of them `jawa/`** |
+| F1 | ✅ clean | 0 `Exception loading def from file CastRoster_` |
+| F2 | ✅ clean | 0 `SkillDef named li` — the string that was **101** before the fix. The single most diagnostic line on this load, and it is gone |
+| F3 | ✅ clean | 0 `ReflectionTypeLoadException`, 0 `Could not load assembly` |
+| F4 | ✅ clean | 0 `Could not find type named JawaBench.` |
+| F5 | ✅ clean | 0 `mandrake.inhabited` |
+| F6 | 🔴 **FAIL — 3,037 against a baseline of 25** | and the cause is measured, not guessed: **the desert and ice BiomeDefs do not exist in the running game.** See the block below |
+
+⚠️ **P3 also fired, unasked:** L1058161 `[RimDefDump] starting, mode=all,
+capture=2026-08-23T05-05-29Z`. The dump WAS armed; `dump_request.txt` lives inside
+`DefDump\`, not beside it, and is still unconsumed — it will fire again next load.
+
+🔑 **A correction to this section's own instrument.** §5 says *"an absent ready line
+means the assembly [failed]"*. Both ready lines are the **last two lines of the file** and
+were not yet written while the game was still loading, so an absent line during a load
+means only that the load has not finished. **Score P1/P2 off `tools/list` and the def dump
+when the answer is needed early**; the log lines arrive last.
+
+### 🔴 F6 — what the 3,037 actually are, and why it blocks the planet
+
+**MEASURED from the LIVE game via `jawa/get_defs`, calibrated against known-good defs
+(`ThingDef/Steel` resolves, `BiomeDef/Tundra` resolves, so the instrument works):**
+
+| present in the running game | ABSENT from the running game |
+|---|---|
+| `Ocean` `Lake` `BorealForest` `Tundra` `TemperateForest` `TropicalRainforest` `ColdBog` `Underground` | `Desert` `ExtremeDesert` `AridShrubland` `IceSheet` `SeaIce` `Wasteland` `Volcano` `LavaField` `Scarlands` `PoisonForest` `HorrorWastes` — plus every `AB_*`, `ZBiome_*` and `BMT_*` biome the map uses |
+
+Every one of those absences is a Core or active-mod biome, and the 3,037 cross-reference
+failures are overwhelmingly `No RimWorld.BiomeDef named <one of them> found to give to
+RimWorld.AnimalBiomeRecord` — mods' animal biome records dangling on biomes that are gone.
+99% of the log's bulk is the "Possible Matches:" candidate dump attached to each.
+
+🔴 **This blocks the planet stamp, and that is the point of recording it here.**
+`world\ASHKARR_WORLDMAP_tiles.csv` names **28 distinct biomes over 21,872 tiles**, and
+**26 of them — 20,737 tiles, 94.8% of Ash'karr — do not resolve in the running game.**
+Stamping would put almost the whole planet on biomes that do not exist, and the failure
+is silent. The read-only re-check is:
+
+```
+python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\check_map_biomes_live.py
+```
+
+⚠️ **Cherry Picker is NOT the cause and its own biome cuts are not landing.** Its
+`<keys>` removal list names `BorealForest`, `Tundra`, `TemperateForest`, `ColdBog`,
+`Savanna`, `Wetland` and 20 more — and every one of those **survived**. It does not name
+`Desert`, `AridShrubland`, `IceSheet` or `SeaIce` at all. The inversion is unexplained and
+is itself a finding.
+
+⚠️ **`Could not load reference to` is 0**, so nothing here is save-side. This is the
+def loader against the live mod set, and a mod-list change is what would move it.
