@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Namer_PirateSyndicates.xml                Jawa_Patches - new file 2026-08-23
+  ============================================================================
+  PIRATE_NAMES_FIVE_SYNDICATES_1. DECIDE's ruling on BLACKSTAR_NAME_ROUTE_DECISION_1:
+  the five inherited pirate factions get authored canon names instead of generated ones.
+
+  🔑 SAME PATTERN AS Namer_BlackstarCompany.xml, and for the same reason: `fixedName`
+  is unusable because `Pirate` is ALSO `PirateBandBase`, the parent every pirate
+  inherits from, so anything set there reaches all six. `factionNameMaker` is inherited
+  too but CAN be overridden per child - which is exactly what these five do.
+
+  ⚠️ Three of the five (PirateYttakin, PirateWaster, DV_PirateKeshig) already carried
+  their OWN vanilla namers, so those are REPLACED. The other two (CannibalPirate,
+  AG_XenohumanPirates) were pinned to NamerFactionPirate by BlackstarCompany.xml on
+  2026-08-23 to stop them inheriting the Blackstar name; that pin is now superseded by
+  their own names here, and BlackstarCompany.xml's two pinning ops were removed.
+
+  ⛔ `Pirate` is NOT in this file. It keeps Blackstar Company, which is the only pirate
+  faction actually placed on the planet - 4 settlements and its own cast roster.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- PirateWaster - pollution-adapted wasters -->
+  <RulePackDef>
+    <defName>Jawa_NamerFactionPirateWaster</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name->Nova Blades</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- PirateYttakin - hairy cold-adapted brutes -->
+  <RulePackDef>
+    <defName>Jawa_NamerFactionPirateYttakin</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name->the Ohnaka Gang</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- CannibalPirate - cannibal ideoligion -->
+  <RulePackDef>
+    <defName>Jawa_NamerFactionCannibalPirate</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name->Crimson Dawn</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- AG_XenohumanPirates - gene-modified xenohumans -->
+  <RulePackDef>
+    <defName>Jawa_NamerFactionAG_XenohumanPirates</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name->Black Sun</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- DV_PirateKeshig - the Keshig xenotype -->
+  <RulePackDef>
+    <defName>Jawa_NamerFactionDV_PirateKeshig</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name->Kanjiklub</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+</Defs>

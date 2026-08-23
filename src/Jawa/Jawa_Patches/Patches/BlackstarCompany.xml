@@ -167,24 +167,91 @@
           <value><factionNameMaker>Jawa_NamerFactionBlackstar</factionNameMaker></value>
         </li>
 
-        <!-- 🔑 THE TWO CHILDREN THAT INHERIT OUR NAMER, PINNED BACK TO VANILLA.
-             PirateYttakin, PirateWaster and DV_PirateKeshig already override
-             factionNameMaker with their own; these two do not, so without this they
-             would inherit Jawa_NamerFactionBlackstar and the bug would survive its own
-             fix in a smaller form. Both get the vanilla pirate namer explicitly and
-             keep generated names. -->
+        <!-- 🔑 THE FIVE INHERITED PIRATES GET THEIR OWN CANON NAMES.
+             PIRATE_NAMES_FIVE_SYNDICATES_1, on DECIDE's ruling 2026-08-23. This block
+             replaced two ops that pinned CannibalPirate and AG_XenohumanPirates back to
+             the vanilla namer - a stopgap so they would not inherit Blackstar Company.
+             They have names of their own now and the stopgap is gone.
+             ⚠️ Each op is DOUBLY conditional: the outer test skips everything if the
+             FactionDef is not loaded, so a dropped mod is a silent no-op rather than a
+             red error; the inner one REPLACES an existing factionNameMaker or ADDS one.
+             Three of the five ship their own vanilla namer and take the replace branch;
+             two do not and take the add branch.
+             ⛔ `Pirate` is deliberately absent - it keeps Blackstar Company, and it is
+             the only pirate faction actually placed on the planet. -->
+        <!-- PirateWaster -> Nova Blades -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="CannibalPirate"]</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="CannibalPirate"]/factionNameMaker</xpath>
-            <value><factionNameMaker>NamerFactionPirate</factionNameMaker></value>
+          <xpath>/Defs/FactionDef[defName="PirateWaster"]</xpath>
+          <match Class="PatchOperationConditional">
+            <xpath>/Defs/FactionDef[defName="PirateWaster"]/factionNameMaker</xpath>
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/FactionDef[defName="PirateWaster"]/factionNameMaker</xpath>
+              <value><factionNameMaker>Jawa_NamerFactionPirateWaster</factionNameMaker></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/FactionDef[defName="PirateWaster"]</xpath>
+              <value><factionNameMaker>Jawa_NamerFactionPirateWaster</factionNameMaker></value>
+            </nomatch>
           </match>
         </li>
+        <!-- PirateYttakin -> the Ohnaka Gang -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="PirateYttakin"]</xpath>
+          <match Class="PatchOperationConditional">
+            <xpath>/Defs/FactionDef[defName="PirateYttakin"]/factionNameMaker</xpath>
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/FactionDef[defName="PirateYttakin"]/factionNameMaker</xpath>
+              <value><factionNameMaker>Jawa_NamerFactionPirateYttakin</factionNameMaker></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/FactionDef[defName="PirateYttakin"]</xpath>
+              <value><factionNameMaker>Jawa_NamerFactionPirateYttakin</factionNameMaker></value>
+            </nomatch>
+          </match>
+        </li>
+        <!-- CannibalPirate -> Crimson Dawn -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="CannibalPirate"]</xpath>
+          <match Class="PatchOperationConditional">
+            <xpath>/Defs/FactionDef[defName="CannibalPirate"]/factionNameMaker</xpath>
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/FactionDef[defName="CannibalPirate"]/factionNameMaker</xpath>
+              <value><factionNameMaker>Jawa_NamerFactionCannibalPirate</factionNameMaker></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/FactionDef[defName="CannibalPirate"]</xpath>
+              <value><factionNameMaker>Jawa_NamerFactionCannibalPirate</factionNameMaker></value>
+            </nomatch>
+          </match>
+        </li>
+        <!-- AG_XenohumanPirates -> Black Sun -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]</xpath>
-          <match Class="PatchOperationReplace">
+          <match Class="PatchOperationConditional">
             <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/factionNameMaker</xpath>
-            <value><factionNameMaker>NamerFactionPirate</factionNameMaker></value>
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/factionNameMaker</xpath>
+              <value><factionNameMaker>Jawa_NamerFactionAG_XenohumanPirates</factionNameMaker></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]</xpath>
+              <value><factionNameMaker>Jawa_NamerFactionAG_XenohumanPirates</factionNameMaker></value>
+            </nomatch>
+          </match>
+        </li>
+        <!-- DV_PirateKeshig -> Kanjiklub -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]</xpath>
+          <match Class="PatchOperationConditional">
+            <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]/factionNameMaker</xpath>
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]/factionNameMaker</xpath>
+              <value><factionNameMaker>Jawa_NamerFactionDV_PirateKeshig</factionNameMaker></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]</xpath>
+              <value><factionNameMaker>Jawa_NamerFactionDV_PirateKeshig</factionNameMaker></value>
+            </nomatch>
           </match>
         </li>
 
