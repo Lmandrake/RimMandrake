@@ -79,3 +79,51 @@ Harmony patch or a `StatPart` rather than a gene. The assemblies were not census
 ⚠️ Route 1 patches a **vanilla core def**, so its blast radius is every humanlike in the game,
 raiders included. That is arguably correct for a shared planet, but it is a consequence to
 accept deliberately rather than discover.
+
+---
+
+## 🔴 OWNER'S RULING 2026-08-23, AND IT IS BUILT — `HumanTemperatureBand_Ashkarr.xml`
+
+Asked directly with the biome numbers in front of him. He chose **"Gear required at the
+extremes"** over survivable-everywhere and over a modest widening.
+
+⇒ **comfy −40 … +45, therefore safe −50 … +55.** Route 1: two `PatchOperationReplace` on
+`ThingDef Human` `statBases`. Validated against the 580-mod set — both hit **Core:
+Races_Humanlike.xml, 1 match each, 0 errors** — and deployed.
+
+| Ash'karr extreme | median °C | a baseline naked pawn |
+|---|---|---|
+| `BMT_CrystalCaverns` | −62.4 | **needs gear** |
+| `AB_PropaneLakes` | −59.8 | **needs gear** |
+| `HorrorWastes` | −49.3 | survives |
+| `AB_RockyCrags` | −45.3 | survives |
+| `ExtremeDesert` | +48.2 | survives |
+| `AB_MechanoidIntrusion` | +62.5 | **needs gear** |
+| `ExtremeDesert` PEAK | +66.1 | **needs gear** |
+| coldest ground | −82.0 | **needs gear** |
+
+Four extremes demand clothing and shelter; the rest of the planet is livable. That is the
+ruling expressed as a number.
+
+🔑 **Gene offsets still stack, which is the whole reason route 1 was chosen.** The
+distribution moves and the relative character survives: Jawa keep their heat gene and end up
+able to work the dayside peak their own biome reaches, Chiss stay the cold-hardy ones,
+`AG_ColdImmunity` (−273) and Outland's (−999) still make their carriers immune. And the 34
+species with no temperature gene are reached without touching one of them.
+
+⚠️ **Accepted deliberately:** this moves EVERY humanlike, raiders included. Correct for a
+shared planet — the enemy lives here too.
+
+## ⛔ This item is CLOSED by the build, not handed on
+It was filed for DECIDE because the band was a design call. **The owner made that call
+directly**, so there is nothing left for DECIDE to decide — `POLICY.md` is explicit that a
+seat must never file an item asking another to ratify what the OWNER already said. What
+remained was one two-operation patch, which is implementation and BUILD's outright.
+
+## Still UNMEASURED, and it needs the load
+- Nothing was read off a **spawned pawn**. Apparel, hediffs and any Harmony `StatPart` in the
+  580-mod stack can shift the final number, and the assemblies were not censused.
+- 🔑 **The reading:** dev-spawn a pawn of a species carrying NO temperature gene (`Ugnaught`,
+  `Twilek`, `KelDor`) and read `ComfortableTemperatureRange` off the instance. **PASS = −40…+45.**
+  Then a map at `AB_PropaneLakes` and one at `ExtremeDesert` — the first should hurt an
+  unclothed pawn and the second should not.

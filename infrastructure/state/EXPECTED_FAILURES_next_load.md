@@ -2093,3 +2093,22 @@ error is the better half of the trade.
 game that is not the one about to run. **`dump_request.txt` already reads `all`** — reaching
 the main menu re-dumps (~27 s) and closes that gap. Until it does, treat an ABSENCE from the
 dump as unproven; a PRESENCE is still fine.
+
+---
+
+## §13 — the TEMPERATURE BAND load. Written 2026-08-23 12:4x by BUILD, game DOWN.
+
+`HumanTemperatureBand_Ashkarr.xml` completes `NORMALIZE_TEMPERATURE_TOLERANCES_1` — plants,
+animals and now people. Owner's ruling: **gear required at the extremes**, comfy −40…+45,
+safe −50…+55.
+
+| # | reading | what it decides |
+|---|---|---|
+| **T1** | 🔑 **Dev-spawn a pawn of a species carrying NO temperature gene — `Ugnaught`, `Twilek` or `KelDor` — and read `ComfortableTemperatureRange` OFF THE INSTANCE.** PASS = **−40…+45**. | ⛔ **Reading the def is not this reading.** Apparel, hediffs and any Harmony `StatPart` in the 580-mod stack can shift the final number, and the assemblies were never censused. This is the only probe that closes that. |
+| **T2** | A pawn with a heat gene (`Jawa`) reads roughly **−40…+65**, and one with a cold gene (`Chiss`) reads roughly **−50…+45**. | Proves the gene offsets still STACK — the entire reason route 1 was chosen over 69 per-species ops. If every species reads identical −40…+45, the offsets are being overwritten and the relative character is gone. |
+| **T3** | An unclothed pawn on an `AB_PropaneLakes` map (−59.8) **takes hypothermia**; one on an `ExtremeDesert` map (+48.2) **does not** overheat. | The ruling itself. Both outcomes are required — "survives everywhere" is the failure, not just "dies everywhere". |
+| **T4** | Zero red errors naming `HumanTemperatureBand_Ashkarr`. | ⚠️ Both ops are **deliberately unwrapped**. If Ludeon ever renames the stat this WILL log loudly, and that is the design: wrapped, every pawn on the planet would silently revert to 6…36 and the first sign would be colonists dying of cold in a biome we had signed off. |
+| **T5** | ⚠️ **Raiders got this too.** Watch one raid arrive in a cold biome and confirm the attackers are not freezing to death before they reach the colony. | Accepted deliberately — the enemy lives on this planet too — but it is the consequence most likely to read as a bug in play. |
+
+⚠️ **T1 and T3 are the pair.** T1 alone proves the number reached the pawn; T3 alone proves the
+climate still bites. Neither implies the other.

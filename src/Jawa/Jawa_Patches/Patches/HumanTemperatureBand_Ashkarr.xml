@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!--
+    ==========================================================================
+    HumanTemperatureBand_Ashkarr.xml        Jawa_Patches - authored 2026-08-23
+    ==========================================================================
+
+    The XENOTYPE third of NORMALIZE_TEMPERATURE_TOLERANCES_1. Plants shipped as
+    PlantTolerances_Ashkarr.xml (577) and animals as AnimalTolerances_Ashkarr.xml
+    (456). This is people.
+
+    OWNER'S RULING, 2026-08-23, asked with the numbers in front of him:
+    GEAR REQUIRED AT THE EXTREMES. Not "survivable everywhere" - temperature is
+    what makes the nightside hostile and the dayside lethal, and a world where
+    everything survives everywhere has no climate.
+
+    ==========================================================================
+    THE MECHANISM, and why this is ONE operation and not sixty-nine
+    ==========================================================================
+
+    A XenotypeDef is a LIST OF GENE NAMES and nothing else. Tolerance is the
+    StatDef ComfyTemperatureMin/Max (StatDefOf.cs:56), fed by GeneDef statOffsets
+    in StatWorker.GetValueUnfinalized (StatWorker.cs:184-207).
+
+    MEASURED 2026-08-23: 35 of our 69 species carry a temperature gene and
+    34 CARRY NONE AT ALL. Patching genes reaches at most half of them. Patching
+    the base stat reaches every humanlike in the game, and - the point - it
+    leaves every existing gene offset intact as RELATIVE flavour. Jawa stay the
+    heat-hardy ones, Chiss stay the cold-hardy ones; the whole distribution just
+    moves. That is also the precedent plants and animals already set: both were
+    normalized by moving the BASE field, never by adding modifiers.
+
+    ==========================================================================
+    THE NUMBERS
+    ==========================================================================
+
+    SafeTemperatureRange is comfy +/-10 (GenTemperature.cs:86), and SAFE is the
+    number that matters - it is the hypothermia/heatstroke boundary. So:
+
+        comfy -40 .. +45   =>   safe -50 .. +55
+
+    Against Ash'karr's real ground, MEASURED across all 21,872 tiles:
+
+        BMT_CrystalCaverns  -62.4   NEEDS GEAR
+        AB_PropaneLakes     -59.8   NEEDS GEAR
+        HorrorWastes        -49.3   survives
+        AB_RockyCrags       -45.3   survives
+        ExtremeDesert med   +48.2   survives
+        AB_MechanoidIntr    +62.5   NEEDS GEAR
+        ExtremeDesert peak  +66.1   NEEDS GEAR
+        coldest ground      -82.0   NEEDS GEAR
+
+    Four extremes demand clothing and shelter; the rest of the planet is
+    livable. That is the ruling, expressed as a number.
+
+    Vanilla shipped 16..26 (safe 6..36), which left every one of our species
+    88.0 C short of the coldest ground and 30.1 C short of the hottest.
+
+    ==========================================================================
+    CONSEQUENCES, accepted deliberately rather than discovered
+    ==========================================================================
+
+    * This patches a VANILLA CORE def, so it moves EVERY humanlike - our 69
+      species, vanilla xenotypes, and every NPC faction including raiders.
+      That is correct for a shared planet: the enemy lives here too.
+    * Gene offsets STACK on top. A species with MinTemp_LargeDecrease (-20)
+      lands at comfy -60 / safe -70. Alpha Genes' AG_ColdImmunity (-273) and
+      Outland's -999 still make their carriers immune, as intended.
+    * Jawa carry a heat gene, so they end up able to work the dayside peak
+      their own biome reaches. That is the right species to have that property.
+
+    NOT wrapped in a PatchOperationConditional, DELIBERATELY, and
+    validate_patch.py warns about it every run. The target is Core, which
+    cannot be absent - the only way this stops matching is Ludeon renaming the
+    stat in a game update, and there a RED ERROR is exactly what we want.
+    Wrapped, every pawn on the planet would quietly revert to 6..36 and the
+    first sign would be colonists dying of cold in a biome we had signed off.
+    A patch that matches nothing logs nothing; that is the failure this
+    project keeps paying for. Same reasoning as JawaWorld_Name.xml.
+    ==========================================================================
+  -->
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Human"]/statBases/ComfyTemperatureMin</xpath>
+    <value><ComfyTemperatureMin>-40</ComfyTemperatureMin></value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Human"]/statBases/ComfyTemperatureMax</xpath>
+    <value><ComfyTemperatureMax>45</ComfyTemperatureMax></value>
+  </Operation>
+
+</Patch>

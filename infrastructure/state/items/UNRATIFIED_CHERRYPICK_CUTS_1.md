@@ -31,3 +31,24 @@ NOT in the ratified list, so they are NOT cut and nothing is cutting them:**
 - [ ] Each of the ten real keys is either added to `deployed/config/v1_freeze/Mod_3521312241_Mod_CherryPicker.xml` or left alone deliberately.
 - [ ] The two `<nodef#>` keys are never ratified.
 - [ ] The three bows are reconciled against the weapon floor before anything is cut.
+
+---
+
+## 🔴 OWNER'S RULING, 2026-08-23: **cut nothing. All twelve stay.**
+
+Asked directly, with the three bows and the two ice biomes named. The answer was
+**"Cut nothing; leave all twelve."**
+
+⇒ The live Cherry Picker list stays at **1342 keys** and is correct as it stands. The twelve
+remain recorded in `observed/inventory/decisions_*.json` and **inert**, which is now the
+intended state, not a defect.
+
+✅ **This is also the ruling that vindicates the `cherrypick_build.py` change.** Had the script
+kept unioning unratified decisions into its output, all twelve — `Bow_Short` and `Flamebow`
+among them — would have gone live against this ruling, silently, on the next run by anyone.
+The script now reports them and writes only the ratified list.
+
+⛔ **Do not re-file this.** A future run of `cherrypick_build.py` will list these twelve again
+under *"NOT in the ratified list and were NOT written"*. **That output is now expected and
+means the system is working.** The two `ThingDef/<nodef#>` keys must never be ratified in any
+case — they carry XML-illegal characters and would make the game discard every key in the file.
