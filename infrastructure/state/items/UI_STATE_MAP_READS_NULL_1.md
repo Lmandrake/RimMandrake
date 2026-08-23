@@ -64,3 +64,25 @@ guard must refuse that one too.
 A caller can tell "no map exists" from "a map exists and I cannot see it" using this
 tool alone. Until then, anything guarding on map existence reads the engine, not the
 bridge.
+
+---
+
+## 🔑 RESOLVED IN THE PART THAT MATTERED — 2026-08-23 10:3x
+
+**There IS a correct instrument, and it is not this one.** `rimworld/get_game_info`
+returns **`mapCount`**, and on a map holding 29 pawns it reads **`mapCount: 1`** while
+`get_ui_state` on the same game still reads `currentMap: None`.
+
+Confirmed on **two independent game states** — the original dev quicktest, and the
+reloaded `rimbridge_save_20260823_002929` — so it is not a one-off of a bridge-started
+game.
+
+⇒ **Anything guarding on map existence must read `get_game_info.mapCount`, not
+`get_ui_state.currentMap`.** That includes `ASHKARR_WORLD_DEFINITION.md` §12.4's
+"refuse if a map is instantiated" rule, which was the whole reason this item was filed as
+urgent. ⭐ `w9_run.py` already gets this right — its guard is `mapCount > 0`.
+
+**What remains is cosmetic but still wrong:** `get_ui_state` reports `currentMap: None`
+and `maps: None` on a game with one live map. A field that is null when the answer is
+"one" is a wrong answer rather than a missing one, and it should either be populated or
+removed. It is no longer blocking anything.
