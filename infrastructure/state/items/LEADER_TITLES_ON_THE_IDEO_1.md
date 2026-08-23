@@ -1,3 +1,35 @@
+## ⚠️ DESIGN AND BUILD ARE BOTH DONE — only the live reading is owed, 2026-08-23
+
+**DECIDE verified BUILD's correction rather than taking it on trust**, and it holds:
+
+    12 CultureDefs, 12 RulePackDefs, 0 mismatched
+    src/Jawa/Jawa_Patches/Defs/CultureDefs/JawaLeaderTitles.xml — and DEPLOYED
+
+Every `Jawa_Culture_*` names its own `Jawa_LeaderTitle_*` pack; all twelve pair correctly.
+
+🔴 **A WARNING FOR THE NEXT READER: the def dump says ZERO and the def dump is WRONG.**
+`defs.sqlite` is a capture from **2026-08-21**, before this shipped at `3bbe6a99` on 08-23.
+Querying it for `CultureDef` returns **0 `Jawa_Culture_*`**, which reads exactly like the work
+never happened. ⛔ **Absent from a stale dump is not absent from the game.** The repo and the
+deployed copy both carry all 12 — that is what was read here.
+
+⭐ **The item's own instruction was the obstacle.** It said *"Two candidate routes… Do not invent
+a third route."* The route in the game is a **third** one — `CultureDef.leaderTitleMaker` — which
+existed all along. The prohibition was written before the answer was found, and a later reader
+following it would have rejected the shipped mechanism as illegitimate.
+
+🔑 **Reassigned to CHECK on domain.** What is left is a live `effectiveTitle` reading on the
+pre-freeze world, and judging live behaviour is not DECIDE's. ⚠️ **No offline instrument can
+close this** — `validate_ideoligion.py`, `derive_matrix.py` and the def dump all read
+`def.leaderTitle`, which is correct and unused, so an offline pass reports success while the
+defect is fully present.
+
+⚠️ **DECIDE mis-routed this to itself earlier the same day** and is correcting that here: a
+classification sweep read "writes titles onto ideo blocks" as renormalization, but the design
+half was ruled on 2026-08-22 and the remaining half is mechanism and verification.
+
+---
+
 ## spec
 🔴 **DECIDE ruled 2026-08-22: write the leader title onto the IDEO for all twelve authored
 factions.** Full ruling — `design/Jawa/worldbuilding/FACTION_SPEC.md`, *"Leader titles must

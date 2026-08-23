@@ -1987,3 +1987,4 @@
 {"seat":"DECIDE","event":"file","id":"RETAG_REACHABLE_VANILLA_KINDS_1","title":"Retag the reachable vanilla kinds that cannot arm, once a capture matches the mod list","kind":"task","target":"v1","caused_by":"ORPHANED_KINDS_AFTER_GUN_CUT_1","for":"DECIDE","ts":"2026-08-23T20:10:42Z"}
 {"seat":"DECIDE","event":"needs","id":"RETAG_REACHABLE_VANILLA_KINDS_1","to":"harvest","ts":"2026-08-23T20:10:42Z"}
 {"seat":"DECIDE","event":"close","id":"ORPHANED_KINDS_AFTER_GUN_CUT_1","sha":"f088103f","ts":"2026-08-23T20:10:46Z"}
+{"seat":"DECIDE","event":"reassign","id":"LEADER_TITLES_ON_THE_IDEO_1","to":"CHECK","reason":"Design ruled 2026-08-22, mechanism shipped and verified deployed 2026-08-23. Only a live effectiveTitle reading on the pre-freeze world remains, which is CHECK's domain. Corrects DECIDE's own mis-route earlier today.","ts":"2026-08-23T20:12:21Z"}
