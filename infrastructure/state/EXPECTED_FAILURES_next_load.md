@@ -2112,3 +2112,28 @@ safe −50…+55.
 
 ⚠️ **T1 and T3 are the pair.** T1 alone proves the number reached the pawn; T3 alone proves the
 climate still bites. Neither implies the other.
+
+---
+
+## §14 — the NATIVE EDGE, and a collision that nearly shipped. 2026-08-23 13:3x, BUILD.
+
+`XenotypeTolerances_Ashkarr.xml` re-sized and deployed. Two temperature passes had
+collided: it sized its gene offsets against Human's shipped 16…26 and declared vanilla
+Human deliberately unpatched, while `HumanTemperatureBand_Ashkarr.xml` had already moved
+Human to comfy −40…+45. **Both correct alone; together the offsets double-counted** and put
+the player's own faction at safe −70…+75 against ground of −82…+66 — survivable everywhere,
+the option the owner had explicitly turned down. Owner ruled: **natives get a modest edge.**
+
+| | comfy | safe | at the four extremes |
+|---|---|---|---|
+| natives — Jawa, Hutt, Tusken, Gamorrean | −50…+55 | **−60…+65** | still need gear |
+| Wookiee (Furskin stacks) | −60…+55 | **−70…+65** | still needs gear below −70 |
+| everyone else, raiders included | −40…+45 | **−50…+55** | need gear sooner |
+
+| # | reading | what it decides |
+|---|---|---|
+| **N1** | Dev-spawn a **Jawa** and a **vanilla-human raider** and read `ComfortableTemperatureRange` off BOTH instances. PASS = **−50…+55** and **−40…+45**. | The whole ruling in one probe: the edge exists AND it is only 10 °C. If they read the same, the xenotype patch did not apply; if the Jawa reads −60…+65 comfy, the LARGE tier came back and it double-counted again. |
+| **N2** | A Wookiee reads comfy **−60**…+55. | Proves `Furskin` still stacks — it is in the `Fur` exclusion group, not `MinTemperature`, and that is the one gene here that is *supposed* to add on top. |
+| **N3** | ⚠️ No pawn carries BOTH `MinTemp_SmallDecrease` and `MinTemp_SmallIncrease`. | `MinTemperature` is an exclusionTag, so only one may apply; the patch REMOVES the lesser tier before adding. MandrakeJawa and Tusken shipped with the `+4.5 °C` cold PENALTY that gets removed. If both survive, the removal branch missed. |
+| **N4** | Zero red errors naming `XenotypeTolerances_Ashkarr`. | 0 errors offline, 11 warnings all the intentional add-if-missing shape. |
+| **N5** | 🔑 **Ancient Arsenal:** the scatterbow is tagged, ancient budgets raised, the boss draws from a real pool. | `AncientArsenal_Ashkarr.xml`, validated 0 errors / 3 warnings. ⚠️ **Two of its three warnings are `<match>` branches with 0 nodes on disk**, so the `<nomatch>` path is what will actually fire — that path is the untested half. |
