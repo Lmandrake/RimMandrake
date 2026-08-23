@@ -143,4 +143,228 @@
     </match>
   </Operation>
 
+  <!-- ####################################################################
+       BLOCK 2 - the BiomeCast_Ashkarr regression, 2026-08-23.
+       ####################################################################
+
+       The three fixes above are the ORIGINAL 08-10 set and are untouched.
+       These 30 are new, and they exist because BiomeCast_Ashkarr.xml
+       REPLACES the wildAnimals roster of 26 biomes and cast animals into
+       biomes those animals' own races already claim through wildBiomes.
+
+       MEASURED 2026-08-23. Three numbers were in play and none of them was
+       right:
+
+         3   what src/RimMandrake/Utils/animal_inventory.py reports. It is a
+             TRUE answer to a DIFFERENT QUESTION - the script says so itself
+             at line 130, "Patches apply at load; this reads base XML". It
+             cannot see BiomeCast_Ashkarr.xml, so it re-reports only the
+             original three. BIOME_CAST_DUPLICATE_ANIMALS_1 said to size
+             this regression from that script. That instruction is WRONG and
+             would have had a reader declare the regression already fixed.
+         18  distinct duplicate keys in the 2026-08-23 log. A floor: each
+             biome's cache build throws at its FIRST collision and stops.
+         30  THIS LIST. Our patched rosters crossed against every animal-side
+             wildBiomes entry in the raw mod XML.
+
+       30 is ALSO A FLOOR, and deliberately so: a third-party PatchOperation
+       that ADDS a wildBiomes entry is invisible to a raw def scan. The only
+       instrument that can close that gap is a def dump taken with these
+       patches live - and the dump does not serialise wildBiomes at all
+       (it is a Dictionary<BiomeDef,float>, dropped like wildPlants), so it
+       cannot be measured offline today. Score it from the next load.
+
+       DIRECTION: always remove the ANIMAL-side entry, never our roster.
+       Nothing is lost in play - our own roster still spawns the animal in
+       that biome, at the commonality we chose. Each pair has exactly ONE
+       animal-side registration (verified), so no [2] predicate is needed.
+       -->
+  <!-- == Desert : 1 pair(s) : Megafauna == -->
+  <Operation Class="PatchOperationConditional">   <!-- 4. Gigantophis x Desert (Megafauna) -->
+    <xpath>/Defs/ThingDef[defName="Gigantophis"]/race/wildBiomes/Desert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Gigantophis"]/race/wildBiomes/Desert</xpath>
+    </match>
+  </Operation>
+  <!-- == ExtremeDesert : 10 pair(s) : Alpha Animals; Star Wars Animal Collection (Continued) == -->
+  <Operation Class="PatchOperationConditional">   <!-- 5. AA_Dunealisk x ExtremeDesert (Alpha Animals) -->
+    <xpath>/Defs/ThingDef[defName="AA_Dunealisk"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Dunealisk"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 6. Cannok x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Cannok"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Cannok"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 7. Devourers x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Devourers"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Devourers"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 8. Falumpaset x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Falumpaset"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Falumpaset"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 9. KwazelMaw x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 10. Scurrier x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Scurrier"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Scurrier"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 11. Sketto x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Sketto"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Sketto"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 12. Stintaril x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Stintaril"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Stintaril"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 13. Tooke x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Tooke"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Tooke"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 14. WarWyrm x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="WarWyrm"]/race/wildBiomes/ExtremeDesert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="WarWyrm"]/race/wildBiomes/ExtremeDesert</xpath>
+    </match>
+  </Operation>
+  <!-- == AridShrubland : 6 pair(s) : Megafauna; Mythic Ages: Megafauna Bestiary; Star Wars Animal Collection (Continued) == -->
+  <Operation Class="PatchOperationConditional">   <!-- 15. Diprotodon x AridShrubland (Megafauna) -->
+    <xpath>/Defs/ThingDef[defName="Diprotodon"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Diprotodon"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 16. MA_Direhorse x AridShrubland (Mythic Ages: Megafauna Bestiary) -->
+    <xpath>/Defs/ThingDef[defName="MA_Direhorse"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="MA_Direhorse"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 17. MA_Harpeagle x AridShrubland (Mythic Ages: Megafauna Bestiary) -->
+    <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 18. Quinkana x AridShrubland (Megafauna) -->
+    <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 19. Torton x AridShrubland (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Torton"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Torton"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 20. Urusai x AridShrubland (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Urusai"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Urusai"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <!-- == ZBiome_DesertOasis : 1 pair(s) : Little Critters == -->
+  <Operation Class="PatchOperationConditional">   <!-- 21. TYR_KangarooRat x ZBiome_DesertOasis (Little Critters) -->
+    <xpath>/Defs/ThingDef[defName="TYR_KangarooRat"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="TYR_KangarooRat"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
+    </match>
+  </Operation>
+  <!-- == Scarlands : 1 pair(s) : Alpha Animals == -->
+  <Operation Class="PatchOperationConditional">   <!-- 22. AA_CrystallineCaracal x Scarlands (Alpha Animals) -->
+    <xpath>/Defs/ThingDef[defName="AA_CrystallineCaracal"]/race/wildBiomes/Scarlands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_CrystallineCaracal"]/race/wildBiomes/Scarlands</xpath>
+    </match>
+  </Operation>
+  <!-- == SeaIce : 2 pair(s) : Beasts of the Rim (Continued) == -->
+  <Operation Class="PatchOperationConditional">   <!-- 23. Bardelot x SeaIce (Beasts of the Rim (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Bardelot"]/race/wildBiomes/SeaIce</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Bardelot"]/race/wildBiomes/SeaIce</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 24. Penguin x SeaIce (Beasts of the Rim (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Penguin"]/race/wildBiomes/SeaIce</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Penguin"]/race/wildBiomes/SeaIce</xpath>
+    </match>
+  </Operation>
+  <!-- == IceSheet : 9 pair(s) : Alpha Animals; Dark Ages : Beasts and Monsters; Mythic Ages: Megafauna Bestiary; Star Wars Animal Collection (Continued) == -->
+  <Operation Class="PatchOperationConditional">   <!-- 25. AA_ArcticLion x IceSheet (Alpha Animals) -->
+    <xpath>/Defs/ThingDef[defName="AA_ArcticLion"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_ArcticLion"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 26. AA_Frostmite x IceSheet (Alpha Animals) -->
+    <xpath>/Defs/ThingDef[defName="AA_Frostmite"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Frostmite"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 27. DA_ArcticOwlcat x IceSheet (Dark Ages : Beasts and Monsters) -->
+    <xpath>/Defs/ThingDef[defName="DA_ArcticOwlcat"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="DA_ArcticOwlcat"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 28. DA_SnowTaraal x IceSheet (Dark Ages : Beasts and Monsters) -->
+    <xpath>/Defs/ThingDef[defName="DA_SnowTaraal"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="DA_SnowTaraal"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 29. GraniteSlug x IceSheet (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="GraniteSlug"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="GraniteSlug"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 30. Krykna x IceSheet (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Krykna"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Krykna"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 31. MA_Manehound x IceSheet (Mythic Ages: Megafauna Bestiary) -->
+    <xpath>/Defs/ThingDef[defName="MA_Manehound"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="MA_Manehound"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 32. Mynock x IceSheet (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Mynock"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Mynock"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- 33. Neebray x IceSheet (Star Wars Animal Collection (Continued)) -->
+    <xpath>/Defs/ThingDef[defName="Neebray"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Neebray"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+
 </Patch>

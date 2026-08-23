@@ -112,3 +112,47 @@ it does not close ②.
   changes the urgency, not the correctness.
 - Filed by REP from a log reading plus a source read. No game test was run, and the pair
   enumeration came from a tracing pass, not from the detector.
+
+---
+
+## 🔴 MEASURED 2026-08-23 by BUILD — **the number is 30**, and step ① of this item is WRONG
+
+**Do not run `animal_inventory.py` to size this.** It reports **3** — the original 08-10
+pairs, unchanged — and that is a *true answer to a different question*. The script says so
+itself at `src/RimMandrake/Utils/animal_inventory.py:130`: *"PatchOperation results. Patches
+apply at load; this reads base XML."* ⇒ **It cannot see `BiomeCast_Ashkarr.xml`**, which is
+the file that caused this regression. This item's *"① Measure first … That is the real list"*
+would have had a reader conclude the regression was already fixed.
+
+**The measurement that works:** cross the rosters `BiomeCast_Ashkarr.xml` REPLACES (26
+biomes) against every `animal.wildBiomes` row in `biome_animals.csv`, which
+`animal_inventory.py` does emit and which *is* the (b) side.
+
+| count | value | what it is |
+|---|---|---|
+| `animal_inventory.py` conflicts.csv | **3** | ⛔ blind to our patch. Not this defect. |
+| distinct duplicate keys in the log | **18** | floor — each biome throws at its FIRST collision |
+| **our patched rosters × animal-side wildBiomes** | **30** | ✅ the list that was fixed |
+
+**30 is ALSO a floor**, deliberately: a third-party `PatchOperation` that *adds* a
+`wildBiomes` entry is invisible to a raw def scan. That gap cannot be closed offline today —
+the def dump does not serialise `wildBiomes` at all (a `Dictionary<BiomeDef,float>`, dropped
+like `wildPlants`), so there is no post-patch source to read. **Score the remainder from the
+next load.**
+
+Spread: `IceSheet` 10 · `ExtremeDesert` 10 · `AridShrubland` 6 · `SeaIce` 2 · `Desert`,
+`ZBiome_DesertOasis`, `Scarlands` 1 each. By mod: Star Wars Animal Collection 15, Alpha
+Animals 4, Megafauna 3, Mythic Ages 3, Beasts of the Rim 2, Dark Ages 2, Little Critters 1.
+
+## What is DONE and what is NOT
+
+- ✅ **③ the stopgap is shipped.** `AnimalBiomeDuplicates_Fix.xml` now carries 33 operations —
+  the original 3 plus these 30 — each a `Conditional`+`Remove` on the **animal side**, never
+  on our roster. Validated against the 580-mod set: **33/33 hit exactly one match, 0 errors,
+  0 warnings.** Every pair has exactly one animal-side registration, so no `[2]` predicate is
+  needed anywhere in the new block.
+- ✅ The *"exactly 3 pairs"* header correction is in the file.
+- ⛔ **② IS NOT DONE and this item stays open for it.** `design/Jawa/fauna/gen_cast_patch.py`
+  still picks purely on the biome side and will reintroduce this on the next regeneration.
+  🔑 That file is under `design/`, so under the owner's 2026-08-23 ruling the generator fix is
+  **DECIDE's** to author and file back with `--needs deploy`.
