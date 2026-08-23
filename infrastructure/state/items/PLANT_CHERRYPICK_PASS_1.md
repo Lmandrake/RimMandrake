@@ -86,7 +86,7 @@ touched rows are real and landed on disk.
       `design/Jawa/mods/plant_harvest_coverage.py`. **41 of 192 plants are the sole supplier
       of some resource in some biome** (57 biome-resource pairs), and each now carries a red
       cost line in the sheet naming exactly what a cut would delete.
-- [ ] ⏳ **The owner walks the world.** That is what the ruling is pending on, and it is the
+- [x] ✅ **The owner walked the world, 2026-08-23 03:11.** That is what the ruling is pending on, and it is the
       only thing left. ⭐ **The route is written:** `design/Jawa/mods/plant_walk_list.md`
       (`plant_walk_list.py`) — one landing tile per biome with its region, temperature and
       elevation, core desert first, naming at each stop the trees that do NOT read as desert
@@ -148,3 +148,48 @@ the terminator. The sheet now files them separately, and the 56 mycoid plants ca
 - **The builder is still wrong and that is a different item.** `PLANT_LIST_MISSES_MUTATOR_ROUTE_1`
   — the candidate list reads `BiomeDef.wildPlants` only and never the mutator route; the two
   VEE cacti in the CSV were appended by hand. A regenerate today would drop them.
+
+
+## ✅ WALKED AND CLOSED, 2026-08-23 03:11 — the owner's words
+
+> *"So I looked through the plants. I cut only the ones that affect volcanoes. I hoped that
+> would be enough. Consider this walked."*
+
+**The file on disk agrees, and it is his.** `plant_decisions.json`, `savedBy:
+plant_review.html`, `savedAt` **2026-08-23T10:10:35Z** — one minute after the sheet was
+rebuilt against the post-split world, so the provenance criterion is satisfied by a save that
+post-dates its own generator. **192 rows · 188 keep · 4 cut · 77 touched · undecided 0.**
+
+| cut | mod | where it bites |
+|---|---|---|
+| `Plant_TreePine` · `Plant_TreeBirch` · `Plant_TreePoplar` | Core | `Volcano`, 23 tiles — **wood 3 → 0** |
+| `RG_Plant_Raspberry` | ReGrowth 2 | `AridShrubland`, 709 tiles — `RawBerries` leaves the biome |
+
+🔑 **Both consequences were already ruled and neither is outstanding.**
+`VOLCANO_LOST_ALL_WOOD_1` is **dropped** — the owner ruled the volcano does not need wood — so
+3 → 0 is the intended outcome, not a regression. The berries he accepted explicitly earlier in
+this item: a minor forageable, agave covers foraging, and a desert scrubland without raspberry
+bushes reads better.
+
+⚠️ **ONE DISCREPANCY, recorded rather than resolved, because it is his to resolve.** He said he
+cut *"only the ones that affect volcanoes"*; the file carries **four** cuts, and
+`RG_Plant_Raspberry` affects `AridShrubland`, not `Volcano`. It is a real, `touched: true`
+decision of his from the earlier session and it still stands — but if it was meant to be
+reverted, it is one click in the sheet and no other file needs editing. **Nothing here was
+changed on his behalf.**
+
+⭐ **He KEEPS the three trees this pass was opened about** — `Plant_TreeDrago`,
+`BMT_Plant_TreeTwistingThornwood`, `BMT_Plant_TreeMartyr`, verbatim *"I love the strange drago
+tree, twisting thornwood, and martyr."* The desert trees he originally objected to are
+deliberate. ⇒ **The pass ends with the objection withdrawn, not with cuts.**
+
+### verify — RUN, not remembered, 2026-08-23 03:11
+
+    gen_plant_sheet.py            192 plants · prefill keep 192 · cut 0 · undecided 0   ✅
+    plant_harvest_coverage.py     192 plants · 24 biomes with flora · 41 sole-source ·
+                                  3 biomes with no wood                                 ✅
+    plant_decisions.json          plant_review.html · 2026-08-23T10:10:35.213Z · 77      ✅
+
+⛔ **Recording the cuts is NOT applying them.** They reach the game only through Cherry
+Picker's settings file, and nothing has written it — the live config still carries **zero
+plants**. Carried by `PLANT_CUTS_REACH_CHERRYPICKER_1`.

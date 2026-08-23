@@ -2,7 +2,7 @@
   "posture": "blacklist",
   "postureMeaning": "Default is KEEP. Only entries with decision=='cut' go on the Cherry Picker kill list. An undecided entry STAYS in the game.",
   "savedBy": "plant_review.html",
-  "savedAt": "2026-08-23T06:32:47.759Z",
+  "savedAt": "2026-08-23T10:10:35.213Z",
   "decidedCount": 77,
   "total": 192,
   "decisions": {
@@ -62,41 +62,6 @@
       "mod": "Core",
       "touched": false
     },
-    "BMT_Plant_TreeTwistingThornwood": {
-      "decision": "keep",
-      "note": "",
-      "label": "twisting thornwood",
-      "mod": "Biomes! Polluted Lands",
-      "touched": false
-    },
-    "BMT_Plant_TwistingThornweed": {
-      "decision": "keep",
-      "note": "",
-      "label": "twisting thornweed",
-      "mod": "Biomes! Polluted Lands",
-      "touched": false
-    },
-    "BMT_Plant_ScorchedStars": {
-      "decision": "keep",
-      "note": "",
-      "label": "scorched stars",
-      "mod": "Biomes! Polluted Lands",
-      "touched": false
-    },
-    "BMT_Plant_PoxSorghum": {
-      "decision": "keep",
-      "note": "",
-      "label": "pox sorghum",
-      "mod": "Biomes! Polluted Lands",
-      "touched": false
-    },
-    "BMT_Plant_SewerReed": {
-      "decision": "keep",
-      "note": "",
-      "label": "sewer reed",
-      "mod": "Biomes! Polluted Lands",
-      "touched": false
-    },
     "BMT_Plant_Pestia": {
       "decision": "keep",
       "note": "",
@@ -111,6 +76,34 @@
       "mod": "Biomes! Polluted Lands",
       "touched": false
     },
+    "BMT_Plant_PoxSorghum": {
+      "decision": "keep",
+      "note": "",
+      "label": "pox sorghum",
+      "mod": "Biomes! Polluted Lands",
+      "touched": false
+    },
+    "BMT_Plant_ScorchedStars": {
+      "decision": "keep",
+      "note": "",
+      "label": "scorched stars",
+      "mod": "Biomes! Polluted Lands",
+      "touched": false
+    },
+    "BMT_Plant_SewerReed": {
+      "decision": "keep",
+      "note": "",
+      "label": "sewer reed",
+      "mod": "Biomes! Polluted Lands",
+      "touched": false
+    },
+    "BMT_Plant_TreeTwistingThornwood": {
+      "decision": "keep",
+      "note": "",
+      "label": "twisting thornwood",
+      "mod": "Biomes! Polluted Lands",
+      "touched": false
+    },
     "BMT_Plant_TwistingThorngrass": {
       "decision": "keep",
       "note": "",
@@ -118,11 +111,11 @@
       "mod": "Biomes! Polluted Lands",
       "touched": false
     },
-    "Plant_Grass": {
+    "BMT_Plant_TwistingThornweed": {
       "decision": "keep",
       "note": "",
-      "label": "grass",
-      "mod": "ReGrowth 2",
+      "label": "twisting thornweed",
+      "mod": "Biomes! Polluted Lands",
       "touched": false
     },
     "Plant_Bush": {
@@ -137,6 +130,13 @@
       "note": "",
       "label": "dandelions",
       "mod": "Core",
+      "touched": false
+    },
+    "Plant_Grass": {
+      "decision": "keep",
+      "note": "",
+      "label": "grass",
+      "mod": "ReGrowth 2",
       "touched": false
     },
     "Plant_Reeds": {
@@ -230,31 +230,17 @@
       "mod": "Biomes! Polluted Lands",
       "touched": false
     },
-    "VEE_Plant_ChollaCactus": {
+    "AB_ToxicGamma": {
       "decision": "keep",
       "note": "",
-      "label": "cholla cactus",
-      "mod": "Vanilla Landmarks Expanded",
-      "touched": false
-    },
-    "VEE_Plant_HoodiaCactus": {
-      "decision": "keep",
-      "note": "",
-      "label": "hoodia cactus",
-      "mod": "Vanilla Landmarks Expanded",
+      "label": "toxic gamma",
+      "mod": "Alpha Biomes",
       "touched": false
     },
     "AB_PollutedStikehr": {
       "decision": "keep",
       "note": "",
       "label": "polluted stikehr",
-      "mod": "Alpha Biomes",
-      "touched": false
-    },
-    "AB_ToxicGamma": {
-      "decision": "keep",
-      "note": "",
-      "label": "toxic gamma",
       "mod": "Alpha Biomes",
       "touched": false
     },
@@ -265,17 +251,17 @@
       "mod": "Alpha Biomes",
       "touched": false
     },
-    "AB_GlowingGrass": {
-      "decision": "keep",
-      "note": "",
-      "label": "grass",
-      "mod": "Alpha Biomes",
-      "touched": false
-    },
     "AB_GiantSeptimum": {
       "decision": "keep",
       "note": "",
       "label": "giant septimum",
+      "mod": "Alpha Biomes",
+      "touched": false
+    },
+    "AB_GlowingGrass": {
+      "decision": "keep",
+      "note": "",
+      "label": "grass",
       "mod": "Alpha Biomes",
       "touched": false
     },
@@ -300,104 +286,6 @@
       "mod": "Core",
       "touched": true
     },
-    "AB_AgaricusDomeCap": {
-      "decision": "keep",
-      "note": "",
-      "label": "agaricus domecap",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_WitchesOyster": {
-      "decision": "keep",
-      "note": "",
-      "label": "witches' oyster",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_LilacBeacon": {
-      "decision": "keep",
-      "note": "",
-      "label": "lilac beacon",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_RecurvedStropharia": {
-      "decision": "keep",
-      "note": "",
-      "label": "recurved stropharia",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_SlimyPholiota": {
-      "decision": "keep",
-      "note": "",
-      "label": "slimy pholiota",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_DribblingCap": {
-      "decision": "keep",
-      "note": "",
-      "label": "dribbling cap",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_Glowstool": {
-      "decision": "keep",
-      "note": "",
-      "label": "glowstool",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_Agarilux": {
-      "decision": "keep",
-      "note": "",
-      "label": "agarilux",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_Bryolux": {
-      "decision": "keep",
-      "note": "",
-      "label": "bryolux",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_GlowingAgarilux": {
-      "decision": "keep",
-      "note": "",
-      "label": "glowing agarilux",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_GiantAgarilux": {
-      "decision": "keep",
-      "note": "",
-      "label": "giant agarilux",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_ArbuscularMycorrhiza": {
-      "decision": "keep",
-      "note": "",
-      "label": "arbuscular mycorrhiza",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_GiantAgariTox": {
-      "decision": "keep",
-      "note": "",
-      "label": "agaritox",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
-    "AB_LandCoral": {
-      "decision": "keep",
-      "note": "",
-      "label": "amethyst land coral fungus",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
     "Plant_TallGrass": {
       "decision": "keep",
       "note": "",
@@ -419,151 +307,11 @@
       "mod": "Core",
       "touched": true
     },
-    "PoisonPlantTallGrass": {
-      "decision": "keep",
-      "note": "",
-      "label": "tall grass",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonPlantDandelion": {
-      "decision": "keep",
-      "note": "",
-      "label": "dandelions",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonPlantBush": {
-      "decision": "keep",
-      "note": "",
-      "label": "bush",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonBrambles": {
-      "decision": "keep",
-      "note": "",
-      "label": "poison brambles",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonRafflesia": {
-      "decision": "keep",
-      "note": "",
-      "label": "poison rafflesia",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonShrub": {
-      "decision": "keep",
-      "note": "",
-      "label": "poison shrub",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonPlantTreeCecropia": {
-      "decision": "keep",
-      "note": "",
-      "label": "cecropia tree",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonPlantTreeTeak": {
-      "decision": "keep",
-      "note": "",
-      "label": "teak tree",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonTreeCypress": {
-      "decision": "keep",
-      "note": "",
-      "label": "cypress tree",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonTreePalm": {
-      "decision": "keep",
-      "note": "",
-      "label": "palm tree",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonTreeWillow": {
-      "decision": "keep",
-      "note": "",
-      "label": "willow tree",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonPlantRaspberry": {
-      "decision": "keep",
-      "note": "",
-      "label": "raspberry bush",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "PoisonMushroom": {
-      "decision": "keep",
-      "note": "",
-      "label": "wild mushroom",
-      "mod": "Advanced Biomes (Continued)",
-      "touched": true
-    },
-    "Plant_TreeCecropia": {
-      "decision": "keep",
-      "note": "",
-      "label": "cecropia tree",
-      "mod": "Core",
-      "touched": true
-    },
-    "Plant_TreeTeak": {
-      "decision": "keep",
-      "note": "",
-      "label": "teak tree",
-      "mod": "Core",
-      "touched": true
-    },
     "Plant_ShrubLow": {
       "decision": "keep",
       "note": "",
       "label": "low shrubs",
       "mod": "Core",
-      "touched": true
-    },
-    "BMT_CavernMycelium": {
-      "decision": "keep",
-      "note": "",
-      "label": "mycelium",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_DulcisPlant": {
-      "decision": "keep",
-      "note": "",
-      "label": "dulcis",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_GreyLady": {
-      "decision": "keep",
-      "note": "",
-      "label": "Grey Lady",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_Arpeau": {
-      "decision": "keep",
-      "note": "",
-      "label": "arpeau",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_Nuitae": {
-      "decision": "keep",
-      "note": "",
-      "label": "nuitae",
-      "mod": "Biomes! Caverns",
       "touched": true
     },
     "AB_JungleTree_Polluted": {
@@ -580,10 +328,10 @@
       "mod": "Alpha Biomes",
       "touched": true
     },
-    "AB_JungleTree": {
+    "AB_RedBugloss": {
       "decision": "keep",
       "note": "",
-      "label": "deep jungle tree",
+      "label": "red bugloss",
       "mod": "Alpha Biomes",
       "touched": true
     },
@@ -594,17 +342,17 @@
       "mod": "Alpha Biomes",
       "touched": true
     },
-    "AB_RedBugloss": {
-      "decision": "keep",
-      "note": "",
-      "label": "red bugloss",
-      "mod": "Alpha Biomes",
-      "touched": true
-    },
     "AB_Aaklac": {
       "decision": "keep",
       "note": "",
       "label": "aaklac",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_JungleTree": {
+      "decision": "keep",
+      "note": "",
+      "label": "deep jungle tree",
       "mod": "Alpha Biomes",
       "touched": true
     },
@@ -615,164 +363,17 @@
       "mod": "Core",
       "touched": true
     },
-    "BMT_Dewshrooms": {
-      "decision": "keep",
-      "note": "",
-      "label": "dewshrooms",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_FruitingBodies": {
-      "decision": "keep",
-      "note": "",
-      "label": "mold fruiting bodies",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_Pusmelon": {
-      "decision": "keep",
-      "note": "",
-      "label": "pusmelon",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_RustPuff": {
-      "decision": "keep",
-      "note": "",
-      "label": "rustpuff",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_Sagecrust": {
-      "decision": "keep",
-      "note": "",
-      "label": "sagecrust",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_BalefulBolete": {
-      "decision": "keep",
-      "note": "",
-      "label": "baleful bolete",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_BleedingTooth": {
-      "decision": "keep",
-      "note": "",
-      "label": "bleeding tooth",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_CrimsonCap": {
-      "decision": "keep",
-      "note": "",
-      "label": "crimson cap",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_VioletWimple": {
-      "decision": "keep",
-      "note": "",
-      "label": "violet wimple",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_FlakespireFungus": {
-      "decision": "keep",
-      "note": "",
-      "label": "flakespire fungus",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_KessingerPlant": {
-      "decision": "keep",
-      "note": "",
-      "label": "kessinger",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_StarchstalkPlant": {
-      "decision": "keep",
-      "note": "",
-      "label": "starchstalk",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_Shinecap": {
-      "decision": "keep",
-      "note": "",
-      "label": "shine cap",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_MortalMorelPlant": {
-      "decision": "keep",
-      "note": "",
-      "label": "mortal morel",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_Stimquill": {
-      "decision": "keep",
-      "note": "",
-      "label": "stimquill",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_Wrinklecap": {
-      "decision": "keep",
-      "note": "",
-      "label": "wrinklecap",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_NuitaeMarsh": {
-      "decision": "keep",
-      "note": "",
-      "label": "nuitae",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_WrinklecapMarsh": {
-      "decision": "keep",
-      "note": "",
-      "label": "wrinklecap",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_Nogtyl": {
-      "decision": "keep",
-      "note": "",
-      "label": "nogtyl",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_NogtylMarsh": {
-      "decision": "keep",
-      "note": "",
-      "label": "nogtyl",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_Poptop": {
-      "decision": "keep",
-      "note": "",
-      "label": "poptop",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
-    "BMT_Ravelmush": {
-      "decision": "keep",
-      "note": "",
-      "label": "ravelmush",
-      "mod": "Biomes! Caverns",
-      "touched": true
-    },
     "Plant_Clivia": {
       "decision": "keep",
       "note": "",
       "label": "clivia",
+      "mod": "Core",
+      "touched": true
+    },
+    "Plant_Rafflesia": {
+      "decision": "keep",
+      "note": "",
+      "label": "giant rafflesia",
       "mod": "Core",
       "touched": true
     },
@@ -797,11 +398,396 @@
       "mod": "Alpha Biomes",
       "touched": true
     },
-    "Plant_Rafflesia": {
+    "AB_GiantAgariTox": {
       "decision": "keep",
       "note": "",
-      "label": "giant rafflesia",
+      "label": "agaritox",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_LandCoral": {
+      "decision": "keep",
+      "note": "",
+      "label": "amethyst land coral fungus",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_Glowstool": {
+      "decision": "keep",
+      "note": "",
+      "label": "glowstool",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_LilacBeacon": {
+      "decision": "keep",
+      "note": "",
+      "label": "lilac beacon",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_WitchesOyster": {
+      "decision": "keep",
+      "note": "",
+      "label": "witches' oyster",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_AgaricusDomeCap": {
+      "decision": "keep",
+      "note": "",
+      "label": "agaricus domecap",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_Agarilux": {
+      "decision": "keep",
+      "note": "",
+      "label": "agarilux",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_GiantAgarilux": {
+      "decision": "keep",
+      "note": "",
+      "label": "giant agarilux",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_ArbuscularMycorrhiza": {
+      "decision": "keep",
+      "note": "",
+      "label": "arbuscular mycorrhiza",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_DribblingCap": {
+      "decision": "keep",
+      "note": "",
+      "label": "dribbling cap",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_RecurvedStropharia": {
+      "decision": "keep",
+      "note": "",
+      "label": "recurved stropharia",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_SlimyPholiota": {
+      "decision": "keep",
+      "note": "",
+      "label": "slimy pholiota",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_GlowingAgarilux": {
+      "decision": "keep",
+      "note": "",
+      "label": "glowing agarilux",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "AB_Bryolux": {
+      "decision": "keep",
+      "note": "",
+      "label": "bryolux",
+      "mod": "Alpha Biomes",
+      "touched": true
+    },
+    "Plant_TreeTeak": {
+      "decision": "keep",
+      "note": "",
+      "label": "teak tree",
       "mod": "Core",
+      "touched": true
+    },
+    "Plant_TreeCecropia": {
+      "decision": "keep",
+      "note": "",
+      "label": "cecropia tree",
+      "mod": "Core",
+      "touched": true
+    },
+    "PoisonPlantTallGrass": {
+      "decision": "keep",
+      "note": "",
+      "label": "tall grass",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonPlantTreeTeak": {
+      "decision": "keep",
+      "note": "",
+      "label": "teak tree",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonPlantTreeCecropia": {
+      "decision": "keep",
+      "note": "",
+      "label": "cecropia tree",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonPlantRaspberry": {
+      "decision": "keep",
+      "note": "",
+      "label": "raspberry bush",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonPlantBush": {
+      "decision": "keep",
+      "note": "",
+      "label": "bush",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonPlantDandelion": {
+      "decision": "keep",
+      "note": "",
+      "label": "dandelions",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonMushroom": {
+      "decision": "keep",
+      "note": "",
+      "label": "wild mushroom",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonBrambles": {
+      "decision": "keep",
+      "note": "",
+      "label": "poison brambles",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonRafflesia": {
+      "decision": "keep",
+      "note": "",
+      "label": "poison rafflesia",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonShrub": {
+      "decision": "keep",
+      "note": "",
+      "label": "poison shrub",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonTreeCypress": {
+      "decision": "keep",
+      "note": "",
+      "label": "cypress tree",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonTreePalm": {
+      "decision": "keep",
+      "note": "",
+      "label": "palm tree",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "PoisonTreeWillow": {
+      "decision": "keep",
+      "note": "",
+      "label": "willow tree",
+      "mod": "Advanced Biomes (Continued)",
+      "touched": true
+    },
+    "BMT_Arpeau": {
+      "decision": "keep",
+      "note": "",
+      "label": "arpeau",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_CavernMycelium": {
+      "decision": "keep",
+      "note": "",
+      "label": "mycelium",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_DulcisPlant": {
+      "decision": "keep",
+      "note": "",
+      "label": "dulcis",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_GreyLady": {
+      "decision": "keep",
+      "note": "",
+      "label": "Grey Lady",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_Nuitae": {
+      "decision": "keep",
+      "note": "",
+      "label": "nuitae",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_BalefulBolete": {
+      "decision": "keep",
+      "note": "",
+      "label": "baleful bolete",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_BleedingTooth": {
+      "decision": "keep",
+      "note": "",
+      "label": "bleeding tooth",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_CrimsonCap": {
+      "decision": "keep",
+      "note": "",
+      "label": "crimson cap",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_FlakespireFungus": {
+      "decision": "keep",
+      "note": "",
+      "label": "flakespire fungus",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_FruitingBodies": {
+      "decision": "keep",
+      "note": "",
+      "label": "mold fruiting bodies",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_KessingerPlant": {
+      "decision": "keep",
+      "note": "",
+      "label": "kessinger",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_MortalMorelPlant": {
+      "decision": "keep",
+      "note": "",
+      "label": "mortal morel",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_Nogtyl": {
+      "decision": "keep",
+      "note": "",
+      "label": "nogtyl",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_NogtylMarsh": {
+      "decision": "keep",
+      "note": "",
+      "label": "nogtyl",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_NuitaeMarsh": {
+      "decision": "keep",
+      "note": "",
+      "label": "nuitae",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_Poptop": {
+      "decision": "keep",
+      "note": "",
+      "label": "poptop",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_Pusmelon": {
+      "decision": "keep",
+      "note": "",
+      "label": "pusmelon",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_Ravelmush": {
+      "decision": "keep",
+      "note": "",
+      "label": "ravelmush",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_RustPuff": {
+      "decision": "keep",
+      "note": "",
+      "label": "rustpuff",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_Sagecrust": {
+      "decision": "keep",
+      "note": "",
+      "label": "sagecrust",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_Dewshrooms": {
+      "decision": "keep",
+      "note": "",
+      "label": "dewshrooms",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_Shinecap": {
+      "decision": "keep",
+      "note": "",
+      "label": "shine cap",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_StarchstalkPlant": {
+      "decision": "keep",
+      "note": "",
+      "label": "starchstalk",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_Stimquill": {
+      "decision": "keep",
+      "note": "",
+      "label": "stimquill",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_VioletWimple": {
+      "decision": "keep",
+      "note": "",
+      "label": "violet wimple",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_Wrinklecap": {
+      "decision": "keep",
+      "note": "",
+      "label": "wrinklecap",
+      "mod": "Biomes! Caverns",
+      "touched": true
+    },
+    "BMT_WrinklecapMarsh": {
+      "decision": "keep",
+      "note": "",
+      "label": "wrinklecap",
+      "mod": "Biomes! Caverns",
       "touched": true
     },
     "Plant_Ripthorn": {
@@ -825,6 +811,13 @@
       "mod": "Odyssey",
       "touched": false
     },
+    "RG_Plant_RedDandelion": {
+      "decision": "keep",
+      "note": "",
+      "label": "dandelions",
+      "mod": "ReGrowth 2",
+      "touched": false
+    },
     "RG_Plant_TreeDwarfPalm": {
       "decision": "keep",
       "note": "",
@@ -832,11 +825,11 @@
       "mod": "ReGrowth 2",
       "touched": false
     },
-    "RG_Plant_RedDandelion": {
+    "Plant_TreePalm": {
       "decision": "keep",
       "note": "",
-      "label": "dandelions",
-      "mod": "ReGrowth 2",
+      "label": "palm tree",
+      "mod": "Core",
       "touched": false
     },
     "Plant_HealrootWild": {
@@ -867,18 +860,25 @@
       "mod": "Odyssey",
       "touched": false
     },
-    "Plant_TreePalm": {
-      "decision": "keep",
-      "note": "",
-      "label": "palm tree",
-      "mod": "Core",
-      "touched": false
-    },
     "Plant_Lotus": {
       "decision": "keep",
       "note": "",
       "label": "lotus",
       "mod": "Odyssey",
+      "touched": false
+    },
+    "RG_Plant_BlueDandelion": {
+      "decision": "keep",
+      "note": "",
+      "label": "dandelions",
+      "mod": "ReGrowth 2",
+      "touched": false
+    },
+    "RG_Plant_TropicalBrambles": {
+      "decision": "keep",
+      "note": "",
+      "label": "brambles",
+      "mod": "ReGrowth 2",
       "touched": false
     },
     "RG_Plant_TropicalIvy": {
@@ -902,18 +902,11 @@
       "mod": "ReGrowth 2",
       "touched": false
     },
-    "RG_Plant_TropicalBrambles": {
+    "Plant_Witchwood": {
       "decision": "keep",
       "note": "",
-      "label": "brambles",
-      "mod": "ReGrowth 2",
-      "touched": false
-    },
-    "RG_Plant_BlueDandelion": {
-      "decision": "keep",
-      "note": "",
-      "label": "dandelions",
-      "mod": "ReGrowth 2",
+      "label": "witchwood tree",
+      "mod": "Biotech",
       "touched": false
     },
     "Plant_Brambles_Leafless": {
@@ -921,13 +914,6 @@
       "note": "",
       "label": "brambles",
       "mod": "Odyssey",
-      "touched": false
-    },
-    "Plant_Witchwood": {
-      "decision": "keep",
-      "note": "",
-      "label": "witchwood tree",
-      "mod": "Biotech",
       "touched": false
     },
     "Plant_Berry_Leafless": {
@@ -1007,6 +993,13 @@
       "mod": "ReGrowth 2",
       "touched": false
     },
+    "RG_Tripaloski": {
+      "decision": "keep",
+      "note": "",
+      "label": "tripaloski",
+      "mod": "ReGrowth 2",
+      "touched": false
+    },
     "RG_Plant_TreeToxipine": {
       "decision": "keep",
       "note": "",
@@ -1028,24 +1021,10 @@
       "mod": "ReGrowth 2",
       "touched": false
     },
-    "RG_Tripaloski": {
-      "decision": "keep",
-      "note": "",
-      "label": "tripaloski",
-      "mod": "ReGrowth 2",
-      "touched": false
-    },
     "AB_CrystalHorn": {
       "decision": "keep",
       "note": "",
       "label": "crystal horn",
-      "mod": "Alpha Biomes",
-      "touched": false
-    },
-    "AB_CrystalFlower": {
-      "decision": "keep",
-      "note": "",
-      "label": "crystal flower",
       "mod": "Alpha Biomes",
       "touched": false
     },
@@ -1063,10 +1042,10 @@
       "mod": "Alpha Biomes",
       "touched": false
     },
-    "AB_HardyGrass": {
+    "AB_CrystalFlower": {
       "decision": "keep",
       "note": "",
-      "label": "hardy grass",
+      "label": "crystal flower",
       "mod": "Alpha Biomes",
       "touched": false
     },
@@ -1077,31 +1056,17 @@
       "mod": "Alpha Biomes",
       "touched": false
     },
-    "BMT_Gleamtip": {
+    "AB_HardyGrass": {
       "decision": "keep",
       "note": "",
-      "label": "gleamtip",
-      "mod": "Biomes! Caverns",
+      "label": "hardy grass",
+      "mod": "Alpha Biomes",
       "touched": false
     },
-    "BMT_Fungusfern": {
+    "BMT_Crystal_BlueSowable": {
       "decision": "keep",
       "note": "",
-      "label": "fungusfern",
-      "mod": "Biomes! Caverns",
-      "touched": false
-    },
-    "BMT_CrystaltipBrambles": {
-      "decision": "keep",
-      "note": "",
-      "label": "crystaltip brambles",
-      "mod": "Biomes! Caverns",
-      "touched": false
-    },
-    "BMT_YumBulbs": {
-      "decision": "keep",
-      "note": "",
-      "label": "yum bulbs",
+      "label": "fast growing crystal",
       "mod": "Biomes! Caverns",
       "touched": false
     },
@@ -1112,6 +1077,27 @@
       "mod": "Biomes! Caverns",
       "touched": false
     },
+    "BMT_CrystaltipBrambles": {
+      "decision": "keep",
+      "note": "",
+      "label": "crystaltip brambles",
+      "mod": "Biomes! Caverns",
+      "touched": false
+    },
+    "BMT_Fungusfern": {
+      "decision": "keep",
+      "note": "",
+      "label": "fungusfern",
+      "mod": "Biomes! Caverns",
+      "touched": false
+    },
+    "BMT_Gleamtip": {
+      "decision": "keep",
+      "note": "",
+      "label": "gleamtip",
+      "mod": "Biomes! Caverns",
+      "touched": false
+    },
     "BMT_LuminousSpout": {
       "decision": "keep",
       "note": "",
@@ -1119,10 +1105,10 @@
       "mod": "Biomes! Caverns",
       "touched": false
     },
-    "BMT_Crystal_BlueSowable": {
+    "BMT_YumBulbs": {
       "decision": "keep",
       "note": "",
-      "label": "fast growing crystal",
+      "label": "yum bulbs",
       "mod": "Biomes! Caverns",
       "touched": false
     },
@@ -1130,6 +1116,20 @@
       "decision": "keep",
       "note": "",
       "label": "toxibulb",
+      "mod": "Alpha Biomes",
+      "touched": false
+    },
+    "AB_Slimecasia": {
+      "decision": "keep",
+      "note": "",
+      "label": "slimecasia",
+      "mod": "Alpha Biomes",
+      "touched": false
+    },
+    "AB_SlimyFern": {
+      "decision": "keep",
+      "note": "",
+      "label": "slimy fern",
       "mod": "Alpha Biomes",
       "touched": false
     },
@@ -1151,20 +1151,6 @@
       "decision": "keep",
       "note": "",
       "label": "large slimy tree",
-      "mod": "Alpha Biomes",
-      "touched": false
-    },
-    "AB_Slimecasia": {
-      "decision": "keep",
-      "note": "",
-      "label": "slimecasia",
-      "mod": "Alpha Biomes",
-      "touched": false
-    },
-    "AB_SlimyFern": {
-      "decision": "keep",
-      "note": "",
-      "label": "slimy fern",
       "mod": "Alpha Biomes",
       "touched": false
     },
@@ -1210,10 +1196,24 @@
       "mod": "Alpha Biomes",
       "touched": false
     },
-    "AB_FirevineTree": {
+    "VEE_Plant_ChollaCactus": {
       "decision": "keep",
       "note": "",
-      "label": "firevine tree",
+      "label": "cholla cactus",
+      "mod": "Vanilla Landmarks Expanded",
+      "touched": false
+    },
+    "VEE_Plant_HoodiaCactus": {
+      "decision": "keep",
+      "note": "",
+      "label": "hoodia cactus",
+      "mod": "Vanilla Landmarks Expanded",
+      "touched": false
+    },
+    "AB_BrownBarrelCactus": {
+      "decision": "keep",
+      "note": "",
+      "label": "brown barrel cactus",
       "mod": "Alpha Biomes",
       "touched": false
     },
@@ -1224,10 +1224,10 @@
       "mod": "Alpha Biomes",
       "touched": false
     },
-    "AB_BrownBarrelCactus": {
+    "AB_FirevineTree": {
       "decision": "keep",
       "note": "",
-      "label": "brown barrel cactus",
+      "label": "firevine tree",
       "mod": "Alpha Biomes",
       "touched": false
     },
@@ -1237,6 +1237,13 @@
       "label": "moss",
       "mod": "Core",
       "touched": false
+    },
+    "Plant_TreePoplar": {
+      "decision": "cut",
+      "note": "",
+      "label": "poplar tree",
+      "mod": "Core",
+      "touched": true
     },
     "Plant_TreePine": {
       "decision": "cut",
@@ -1252,12 +1259,12 @@
       "mod": "Core",
       "touched": true
     },
-    "Plant_TreePoplar": {
-      "decision": "cut",
+    "BurnedTree": {
+      "decision": "keep",
       "note": "",
-      "label": "poplar tree",
+      "label": "burned stump",
       "mod": "Core",
-      "touched": true
+      "touched": false
     },
     "Plant_MagmaCactus": {
       "decision": "keep",
@@ -1266,17 +1273,10 @@
       "mod": "Odyssey",
       "touched": false
     },
-    "BurnedTree": {
+    "AB_EyeGrass": {
       "decision": "keep",
       "note": "",
-      "label": "burned stump",
-      "mod": "Core",
-      "touched": false
-    },
-    "AB_AlienTree": {
-      "decision": "keep",
-      "note": "",
-      "label": "ocular tree",
+      "label": "flowering ocular grass",
       "mod": "Alpha Biomes",
       "touched": false
     },
@@ -1291,34 +1291,6 @@
       "decision": "keep",
       "note": "",
       "label": "polluted globular aberration",
-      "mod": "Alpha Biomes",
-      "touched": false
-    },
-    "AB_EyeGrass": {
-      "decision": "keep",
-      "note": "",
-      "label": "flowering ocular grass",
-      "mod": "Alpha Biomes",
-      "touched": false
-    },
-    "AB_TentacularPlant": {
-      "decision": "keep",
-      "note": "",
-      "label": "tentacular aberration",
-      "mod": "Alpha Biomes",
-      "touched": false
-    },
-    "AB_GlobularPlant": {
-      "decision": "keep",
-      "note": "",
-      "label": "globular aberration",
-      "mod": "Alpha Biomes",
-      "touched": false
-    },
-    "AB_BloodBouquet": {
-      "decision": "keep",
-      "note": "",
-      "label": "blood bouquet",
       "mod": "Alpha Biomes",
       "touched": false
     },
@@ -1343,10 +1315,38 @@
       "mod": "Alpha Biomes",
       "touched": false
     },
+    "AB_AlienTree": {
+      "decision": "keep",
+      "note": "",
+      "label": "ocular tree",
+      "mod": "Alpha Biomes",
+      "touched": false
+    },
     "AB_HalfAlienTree": {
       "decision": "keep",
       "note": "",
       "label": "half transformed ocular tree",
+      "mod": "Alpha Biomes",
+      "touched": false
+    },
+    "AB_TentacularPlant": {
+      "decision": "keep",
+      "note": "",
+      "label": "tentacular aberration",
+      "mod": "Alpha Biomes",
+      "touched": false
+    },
+    "AB_GlobularPlant": {
+      "decision": "keep",
+      "note": "",
+      "label": "globular aberration",
+      "mod": "Alpha Biomes",
+      "touched": false
+    },
+    "AB_BloodBouquet": {
+      "decision": "keep",
+      "note": "",
+      "label": "blood bouquet",
       "mod": "Alpha Biomes",
       "touched": false
     }
