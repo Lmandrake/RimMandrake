@@ -50,7 +50,7 @@
 > ```
 > - ⭐ **`[JawaBench] ready: N tools, build <hex>`** — new this load. Its ABSENCE means the
 >   companion did not load, which used to be indistinguishable from a healthy run.
->   Expect **120** with `--gm`; **118** means the GM flag was not set, and any other
+>   Expect **121** with `--gm`; **119** means the GM flag was not set, and any other
 >   number means tools did not register. ⚠️ **This line said 119 and contradicted line 109
 >   of this same file, which already said 120.** Measured 2026-08-22: 120 distinct
 >   `jawa/…` names in `src/RimMandrake/bridgetools/JawaBench.BridgeTools/*.cs`, of which
@@ -59,6 +59,18 @@
 > ```
 > grep -rhoE '"jawa/[a-z_0-9]+"' src/RimMandrake/bridgetools/JawaBench.BridgeTools/*.cs | sort -u | wc -l
 > ```
+> - ⭐ **`jawa/vehicle_components` is the 121st and is NEW this load** — it was 120 before
+>   `726d8386`. It reads a Vehicle Framework vehicle's component health, which is NOT in
+>   `health.hediffSet`, so `jawa/pawn_health` reports a wrecked vehicle as undamaged.
+>   Fold it into the L5 row, which already spawns four vehicles:
+> ```
+> jawa/vehicle_components                     # no args: lists every spawned vehicle
+> jawa/vehicle_components pawn=<thingId>      # one vehicle, component by component
+> ```
+>   Expect a non-empty `components` list with `key`, `label`, `health`, `maxHealth`,
+>   `efficiency`. ⛔ **An empty list is NOT a pass** — the tool is built to REFUSE when its
+>   reflection chain breaks precisely because empty reads the same as undamaged. On a
+>   non-vehicle pawn it must answer `isVehicle: false` and point at `jawa/pawn_health`.
 > - ✅ **The companion was rebuilt and deployed 2026-08-22 and the game copy is now
 >   byte-identical to HEAD.** It is NOT a mod: RimBridgeServer loads it from
 >   `<RimWorld>/BridgeTools/JawaBench/`, outside ModsConfig, and only at startup.
