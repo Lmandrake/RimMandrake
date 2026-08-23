@@ -243,6 +243,130 @@ that took 11 of 36 cells and reported success) is exactly the failure this must 
 with a reason per entry — never a bare `success: true`.
 
 
+### 5.2 The world this builds on — Ash'karr
+
+**Tidally locked desert planet, 21,872 tiles.** The lock is a **point, not a latitude band**:
+temperature correlates −0.98 with *arc* (angular distance from the substellar point). Noon is
++70 °C, the terminator +14, the antistellar −80. **The habitable ring is arc 40–57.**
+
+⚠️ `canon.yml > planet.status: remaking` — every planet number is being replaced, and
+`check_canon` currently downgrades planet rules to ADVISORY. **Cite arc bands, not absolute
+tile numbers**, and treat the biome mix below as current-not-frozen.
+
+**Biomes actually painted** (25 of 36 survivors; top of the distribution): `AB_RockyCrags` 20.3 %
+· `ExtremeDesert` 16.4 · `AridShrubland` 11.0 · `Desert` 9.8 · `AB_MycoticJungle` 8.9 ·
+`Wasteland` 7.9 (salt plains) · `Ocean` 6.7 · `PoisonForest` 2.8 · `AB_PropaneLakes` 2.5 ·
+`ZBiome_Badlands` 2.5 · `BMT_FungalForest` 1.9 · `ZBiome_Grasslands` 1.07 (the Pyrelands).
+
+**Ground you will actually build on:** `Sand`, `SoftSand`, `Gravel`, rare `Soil`/`SoilRich`,
+`Mud`/`Marsh` at river edges; plus Alpha Biomes' `AB_FineSand`, `AB_CompactedSand`,
+`AB_ForsakenSand`, `AB_CrackedMud`, `AB_ParchedEarth`, `AB_VolcanicGravel`, `AB_SolidifiedLava`,
+`AB_Obsidian`, `AB_BlackPebbles`, `AB_Tar`, `AB_MycoticSoil`.
+
+**Scarcity, and it drives materials directly:**
+- 🔴 **Water is the master scarce resource.** *Every potable tile is defended.* This is why so
+  many faction dwellings below are organised around a **cistern** — that is not decoration, it
+  is the settlement's reason for existing.
+- **Deep desert is rich in salvage, scrap, buried wrecks and surface metal** and poor in food,
+  water and components. **Steel, ore and obsidian come from the volcanic province only.**
+- ⚠️ **Wood scarcity is a genuine documentation gap.** No doc rules on it. Inferable only:
+  trees carry a ×2.5 growth multiplier *"because trees are a wood economy"*, the Mycotic Jungle
+  offers a *"wood-substitute"*, and wooded tiles are called rare and hard-sited to one faction.
+  ⇒ **The palette cannot currently answer "may this faction build in wood?" from canon.** Flagged
+  in §9 as a decision the owner or DECIDE owes before 🅑 or 🅒 can pick materials honestly.
+
+### 5.3 🔴 The cold nursery — the one constraint that makes this architectural
+
+`jawa_society.md` §4.3a, owner's ruling 2026-08-22, verbatim:
+
+> *"That would mean Jawa MUST build deep cave-like homes in the wild or (in modern days) build
+> refrigerated egg chambers in order to reproduce. That's fantastic."*
+
+Measured, not asserted: a laid egg carries `CompProperties_TemperatureSensitiveHumanEgg` with
+`maxSafeTemperature 32`; above it the egg becomes `SEX_HumanEgg_Ruined` — no hatch, no child.
+**6,276 of 21,872 tiles (29 %) exceed 32 °C on their annual mean**, and an annual mean
+*understates* summer peaks. `MandrakeJawa` adults are comfortable to **46 °C**.
+
+> *"There is a fourteen-degree window in which the clan is perfectly comfortable and its own
+> clutch cooks… The nursery is not a precaution against a hostile world; it is a precaution
+> against a world the adults find pleasant."*
+
+⛔ **Do not "fix" the 32 °C ceiling — it is the pillar.**
+
+🔑 **Why this belongs in a template spec, and why it is the best argument in the whole document:**
+*"keep one room below 32 °C"* is **a goal, not a shape.** It cannot be expressed as a fixed
+template, because whether a room holds 32 °C depends on the tile's arc, the season, the wall
+material, the roof, and whether the room is buried. Satisfying it requires reading the site.
+
+⇒ **This single requirement is the cleanest illustration of the A/B/C fork:**
+
+| approach | how it handles the nursery | honest verdict |
+|---|---|---|
+| 🅐 Stamp | author a "Jawa dwelling **with cold room**" variant; the cold room contains a cooler and is walled in stone | works, but the template *asserts* the room is cold without checking |
+| 🅑 Assembler | a `Nursery` room role whose rules require a cooler + insulation when `faction=Jawa` | works, and scales — but still does not verify the result |
+| 🅒 Solver | takes `hold ≤32 °C` as a constraint, reads the tile's arc and season, and decides burial depth / cooler count / wall material to satisfy it | **the only one that can be wrong loudly instead of quietly** |
+
+⚠️ **And note what none of them can do offline: prove the room actually holds temperature.**
+That is a live measurement, and it belongs in the acceptance test in §8 — not in the linter.
+
+### 5.4 Faction architecture — what the docs actually say
+
+🔴 **Correction worth stating plainly, because this spec would have been built on the error:
+there is exactly ONE Jawa NPC faction.** `faction_world_spec.md:48` — *"No faction generates Jawa
+except the Trade Moot — the player race is not a common sight."* **The `Jawa_` prefix on eight
+`FactionDef`s is a namespace, not a claim about who the faction is** (`FACTION_SPEC` R18). The
+campaign has **13 factions**, not fourteen; several docs still say fourteen and are stale.
+
+| faction | defName | tech | what its dwelling IS, per the docs |
+|---|---|---|---|
+| Galactic Empire | `Empire` *(patch)* | Ultra | *"heavily fortified installations"*, perimeter turrets, kill corridors, **water condensers and reservoir bunkers**; *"wide sterile scars visible from orbit"* |
+| Hutt Cartel | `Jawa_HuttCartel` | Industrial | drug labs, prisons, barracks, throne room, warehouse, **walled cistern**; sited *beside* an oasis, never on it |
+| Homestead Defense League | `OutlanderCivil` *(patch)* | Industrial | **vaporator arrays and cistern storage — *"the faction's defining infrastructure"***; ⭐ **sandbags rather than full walls**; ⛔ no spacer chrome |
+| Deep Desert Tribes | `TribeCivil` *(patch)* | Industrial ⚠️ | **stone huts, caves, bedrolls, animal pens, concealed cisterns**; *"traps and natural chokepoints instead of turret grids"*; fire answer is **move** — *"no permanent structures at all"* |
+| Jawa Trade Moot | `Jawa_IndigenousTribes` | ⚠️ **unresolved** | **subterranean**; *"canyon fortresses, sandcrawler circuits, salvage markets"*; condensers on the crawler spine, buried cisterns at circuit nodes; **never sites on open water** |
+| the Junkers | `Jawa_Junkers` | Industrial, degraded | **warrens** dug into wreck fields and tailings; squatters who *"manufacture nothing"*; wealth is *"in what they are wearing"* |
+| Geonosian Foundry Hive | `Jawa_GeonosianFoundryHive` | Spacer | **subterranean** — *"ancient factories under the rock"*; fabrication halls, arena; fire answer is **burrow**: *"surface entrances only"* |
+| Deepwater Compact | `Jawa_DeepwaterCompact` | Industrial | **layered walls, sandbags, turrets, EMP traps**; purification and cistern halls. *"Inside our walls no one raises a hand."* |
+| Wildsteam Clan | `Jawa_WildsteamClan` | Industrial | ⭐ **open, tree-integrated, unwalled**; communal halls, animal shelters; *"minimal turrets due to ideology; defenders fight directly"* |
+| Blackstar Company | `Pirate` *(patch)* | Industrial | *"small high-security compounds"*; food and water **bought in** |
+| Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | Spacer | charging hall, fabrication, battery bunker; ⭐ **no food stores and no beds** |
+| Ascendant Helix | `Jawa_AscendantHelix` | Spacer | *"sterile labs and secure vaults; no large food or textile economy"*; cryptosleep, gene banks |
+| the Forgotten Arsenal | `Mechanoid` *(label patch)* | — | ⛔ **deliberately no settlements at all** — `settlementGenerationWeight 0` |
+
+🔑 **Read that table as a test suite, not as flavour.** It already falsifies a naive generator
+four times over, and each is a cheap unit test on the BuildPlan:
+
+1. **Free Droid Enclaves must produce a dwelling with no beds and no kitchen.** A generator that
+   always places one bed per occupant is wrong for an entire faction.
+2. **Wildsteam must produce an *unwalled* dwelling** — `defended` must be able to reach zero, and
+   ideology forbids the turrets a "defended" flag would otherwise add.
+3. **Deep Desert Tribes' canonical answer to fire is to have no permanent structure at all**, so
+   "build a house here" is sometimes the wrong request for that faction.
+4. **Three factions are subterranean** (Trade Moot, Geonosians, Junkers). A surface-rectangle
+   generator cannot express them; they need excavation — `designate_batch` mining, or placement
+   under existing overhead mountain.
+
+⚠️ **The gaps, stated so nobody mistakes silence for permission.** No doc names a **stuff
+material**, a wall/roof/floor def, or a room-programme size for **any** faction, and **there is
+no Jawa dwelling spec of any kind** — the phrase *"rag nest"* appears nowhere in
+`jawa_society.md`; it exists only as `JAWA_RAG_NEST_1` in `V2_DREAMS.md`, and that is a
+**furniture def, not a dwelling.** ⇒ The per-faction *palette* in §7's plan is **new design
+work**, and it is DECIDE's or the owner's to approve, not this seat's to invent.
+
+### 5.5 Neighbouring specs — the seams
+
+Two documents already occupy adjacent ground and this spec must not duplicate either:
+
+- **`design/Jawa/worldbuilding/tile_augmentation_catalogue.md`** — 30 rows of what is *placed on*
+  a world tile (derelict refineries, abandoned moisture-farm homesteads, fortified toll posts,
+  junkyards), with defNames, rarity and defenders. **That catalogue is the demand side; this
+  spec is the supply side.** Several of its rows are flagged as needing an authored structure
+  layout — those rows are this engine's first real customers.
+- **`design/Jawa/bridge/INHABITED_DESIGN.md`** (which architecturally supersedes
+  `LIVING_NPC_TEMPLATES.md`) — the *population* layer: `TileMutatorDef.extraGenSteps` → a GenStep
+  → `LordMaker`. **The seam: this engine builds the place; `Inhabited` puts people in it.** They
+  meet at a rect and a faction, and neither should know how the other works.
+
 ---
 
 ## 6. THE THREE APPROACHES
