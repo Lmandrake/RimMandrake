@@ -420,6 +420,33 @@ them.** They look alike from orbit and mean opposite things on the ground.
 
 ### 🔴 `HorrorWastes` is not on the map yet, and it goes just PAST the terminator
 
+> 🔴 **SUPERSEDED 2026-08-23 by DECIDE — it IS on the map, and this heading is the last thing
+> here that is still true in spirit.** `HorrorWastes` holds **468 tiles**, −74.9 … −33.9 °C,
+> median −49.3, arc 125–171, elevation median 753 m — scattered nightside pockets in
+> `Deadstone` (346), `Umbra` (65) and `Ammonia Flats` (57), not the contiguous band this
+> section proposed. **Do not resize it.**
+>
+> ⚠️ **And it briefly held 807.** On 2026-08-23 00:16 the owner ruled *"we will use
+> HorrorWastes instead of RockyCrags for any tile above 0C"* (`eb7da875`) — a cleanup of
+> `AB_RockyCrags`, whose warm end read wrong at +19.8 °C. Correctly applied, it also gave
+> `HorrorWastes` 339 tiles at 0.1 … 19.8 °C, so the biome became **two places 20 °C apart
+> with no tile in the gap** — `AB_RockyCrags`' own hundred-degree-span defect inherited whole.
+>
+> 🔑 **DECIDE's ruling: the warm 339 went to `Desert`, and the cold 468 keep the name.** Both
+> owner rulings survive — the warm tiles left `AB_RockyCrags` (his 00:16 instruction) *and*
+> `HorrorWastes` is cold (his 2026-08-22 instruction). `HorrorWastes` is **bioweapon class**
+> per the table above; a Junker scavenging outpost cannot sit on an active bioweapon site, and
+> two did — `Cryohaul` and `Ammonia Landing`, both sited as `AB_RockyCrags` and both now
+> `Desert` again. `Desert` was not chosen by taste: it already spans −15.0 … +62.4 °C across
+> arc 14–115 and **already held 1,324 land tiles in the same 0–20 °C band**, so nothing new is
+> asserted about the planet and no def changes. Pass:
+> `src/RimMandrake/Utils/ashkarr_horror_is_one_place.py`.
+>
+> ⛔ **What is still owed is the SHELL, not tiles.** The shipped `HorrorWastes` def was
+> authored for the warm band it no longer holds — `terrainsByFertility` `Sand`/`Soil`/
+> `SoilRich`, one `wildPlants` entry (`Plant_Agave`), `plantDensity` 0.5, `animalDensity` 3.6.
+> All of it reads wrong at −49 °C. Carried by `HORROR_WASTES_ON_NIGHTSIDE_1`.
+
 > 🔴 **OWNER, 2026-08-22, and this NARROWS the placement below — read it first.** Verbatim:
 > *"Actually I think HorrorWastes should live closer to the frozen side of the terminator,
 > agreed taken from RockyCrags, as that is where the bioweapon comes from. The coldest area

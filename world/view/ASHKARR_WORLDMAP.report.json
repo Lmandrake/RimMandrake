@@ -35,10 +35,10 @@
   "census": [
    {
     "biome": "Desert",
-    "tiles": 4309,
-    "pct": 19.701,
+    "tiles": 4648,
+    "pct": 21.251,
     "water": false,
-    "temp_c": 23.2
+    "temp_c": 22.0
    },
    {
     "biome": "AB_RockyCrags",
@@ -76,13 +76,6 @@
     "temp_c": 18.3
    },
    {
-    "biome": "HorrorWastes",
-    "tiles": 807,
-    "pct": 3.69,
-    "water": false,
-    "temp_c": -28.4
-   },
-   {
     "biome": "AridShrubland",
     "tiles": 709,
     "pct": 3.242,
@@ -116,6 +109,13 @@
     "pct": 2.441,
     "water": false,
     "temp_c": 46.9
+   },
+   {
+    "biome": "HorrorWastes",
+    "tiles": 468,
+    "pct": 2.14,
+    "water": false,
+    "temp_c": -53.7
    },
    {
     "biome": "BMT_FungalForest",
@@ -332,7 +332,7 @@
      "Glare"
     ],
     "biomes": {
-     "Desert": 4284,
+     "Desert": 4623,
      "AB_RockyCrags": 3806,
      "ExtremeDesert": 3214,
      "AB_MycoticJungle": 1939
@@ -683,7 +683,7 @@
    "The Galactic Empire": 3
   },
   "by_biome": {
-   "Desert": 26,
+   "Desert": 28,
    "ExtremeDesert": 23,
    "Wasteland": 21,
    "AridShrubland": 17,
@@ -693,7 +693,6 @@
    "PoisonForest": 3,
    "Scarlands": 3,
    "Volcano": 2,
-   "HorrorWastes": 2,
    "AB_MycoticJungle": 1,
    "ZBiome_Grasslands": 1,
    "AB_MiasmicMangrove": 1
@@ -2724,7 +2723,7 @@
     "name": "Ammonia Landing",
     "faction": "the Junkers",
     "factionDef": "Jawa_Junkers",
-    "biome": "HorrorWastes",
+    "biome": "Desert",
     "lat": 34.12,
     "lon": 99.74,
     "elevation_m": 20.0,
@@ -2760,7 +2759,7 @@
     "name": "Cryohaul",
     "faction": "the Junkers",
     "factionDef": "Jawa_Junkers",
-    "biome": "HorrorWastes",
+    "biome": "Desert",
     "lat": 40.65,
     "lon": 98.8,
     "elevation_m": 44.0,

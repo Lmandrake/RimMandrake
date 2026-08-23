@@ -27,7 +27,15 @@ thermal problem, it does not remove it:
 Both biomes still span more than 80 °C, because `HorrorWastes` now holds BOTH the warm band
 (0.1 … 19.8 °C) and the 468 cold nightside pockets (−74.9 … −33.9 °C). 🔑 **The open question
 is what happens to those 468 pockets**, and REP's incoming note on the horror wastes is
-expected to answer it. Until then this script deliberately leaves them alone: the owner ruled
+expected to answer it.
+
+🔴 **ANSWERED 2026-08-23 by DECIDE, and this script's result is HALF SUPERSEDED.** The 468
+pockets keep `HorrorWastes`; the 339 warm tiles this script moved were moved on again, to
+`Desert`. The owner's threshold was right about `AB_RockyCrags` and `HorrorWastes` was the
+wrong destination — it is bioweapon class (§6c), and its shipped def is warm-authored, so
+sending it the warm band made the biome two places 20 °C apart with no tile in the gap.
+⇒ **Do not re-run this script.** It would take the warm tiles back off `Desert`. The pass
+that stands is `ashkarr_horror_is_one_place.py`. Until then this script deliberately leaves them alone: the owner ruled
 on the warm tiles and only on the warm tiles.
 
     python3 src/RimMandrake/Utils/ashkarr_warm_crags_to_horror.py

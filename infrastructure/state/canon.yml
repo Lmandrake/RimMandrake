@@ -243,34 +243,41 @@ planet:
         hand-made world, not a finding. Still asserted at
         ASHKARR_WORLD_DEFINITION.md:237 and fauna_placement.md:13 until that item runs.
 
-  biomes_on_map: 25
+  biomes_on_map: 28
   biomes_on_map_src: >
-    25 distinct biome defNames appear on at least one tile. ⚠️ Was 24 until 2026-08-21,
+    28 distinct biome defNames appear on at least one tile. 🔴 RE-DERIVED 2026-08-23 from
+    world/ASHKARR_WORLDMAP_tiles.csv by DECIDE: the whole block below was stale — it read 25
+    biomes and carried Desert 2147 (actual 4648), AridShrubland 2401 (actual 709) and Ocean
+    1468 (actual 823), and had no row at all for HorrorWastes, SeaIce or IceSheet. These are a
+    pure derivation from the tiles CSV, so they are re-derived rather than ruled. ⚠️ Was 24 until 2026-08-21,
     when OCULAR_FOREST_SUMMITS_1 painted AB_OcularForest on 3 Ashfall Range summit tiles
     (4299 · 9158 · 9159) that were ExtremeDesert. ⚠️ This answers a DIFFERENT
     question from the "36 / 37 / ~35 survivors" figures in the design tier, which count
     biome DEFS surviving a Cherry Picker cut, not biomes actually painted. A def can
     survive the cut and appear on zero tiles.
   biome_tile_counts:
-    AB_RockyCrags: 4440
-    ExtremeDesert: 3578
-    AridShrubland: 2401
-    Desert: 2147
+    Desert: 4648
+    AB_RockyCrags: 3816
+    ExtremeDesert: 3214
     AB_MycoticJungle: 1939
     Wasteland: 1721
-    Ocean: 1468
+    Ocean: 823
+    AridShrubland: 709
     PoisonForest: 604
     AB_PropaneLakes: 554
-    ZBiome_Badlands: 546
+    ZBiome_Badlands: 545
     AB_FeraliskInfestedJungle: 534
+    HorrorWastes: 468
     BMT_FungalForest: 425
     Lake: 312
+    SeaIce: 277
     AB_MechanoidIntrusion: 236
     ZBiome_Grasslands: 233
     ZBiome_DesertOasis: 227
     BMT_CrystalCaverns: 127
     AB_GelatinousSuperorganism: 96
     Scarlands: 90
+    IceSheet: 80
     AB_MiasmicMangrove: 65
     AB_TarPits: 57
     AB_PyroclasticConflagration: 31

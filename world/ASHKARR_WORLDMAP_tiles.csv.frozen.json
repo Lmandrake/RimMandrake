@@ -21,9 +21,9 @@
     "world/ASHKARR_WORLDMAP_landmarks.csv"
   ],
   "notFrozenWhy": "Only the tiles CSV is known to carry hand edits the painter would lose. ashkarr_paint.py writes the settlements and links CSVs too, so the guard stops those being rebuilt as a side effect - but they are not independently frozen and no separate claim is made about them. If one of them is later hand-edited, say so here.  ⚠️ 2026-08-23: world/ASHKARR_WORLDMAP_mutators.csv HAS now been hand-edited - ashkarr_shore_and_ice.py removed VEE_SaltPlains from the 170 tiles that became AridShrubland, dropping those rows entirely (6700 -> 6530) because the file's convention is one row per tile that HAS mutators. Saying so here, as this field asks.",
-  "sha256": "181e0239805cd814b0a44c239fc2f148a4f0ce9f3f63578040a33eeb7f401ea2",
+  "sha256": "65c7be190c1a21b7124ad8335240aaac7d762684c98a89731d3f4f92f83a964f",
   "rows": 21872,
-  "bytes": 1749869,
+  "bytes": 1747835,
   "restampedWhy": "Restamped 2026-08-22 after an independent audit found this file 16 hours stale and STRUCTURALLY UNABLE to notice: it asserted '20,113 rows with rain_mm = 0' (actual at the time: 20,476) and carried no hash and no row count, so the claim read as authoritative while being false. sha256/rows/bytes are the fix - a freeze that cannot detect its own staleness is a comment, not a guard.  Restamped again 2026-08-23 by DECIDE after ashkarr_shore_and_ice.py - a SURGICAL edit of the class this freeze explicitly leaves free - changed 447 biome values (369 drained-seabed tiles zoned into AridShrubland/Desert/ExtremeDesert, 92 water tiles re-decided across the ice margin). Only the `biome` column moved; rows, elevation, water and region are untouched. The hash is restamped because a stale hash is exactly the failure this marker was rewritten to prevent.  🔴 AND THE GUARD HAD ALREADY BEEN BYPASSED ONCE: the stamped bytes read 1848464 while the file on disk was 1751503 - 96,961 bytes stale - so a surgical edit had landed between 2026-08-22 and now WITHOUT restamping. Nothing reported it, because nothing checks. ⇒ The stamp is only a guard if something VERIFIES it; whoever next touches this file should make the check a command rather than a habit.",
   "dryRows": 20476
 }
