@@ -1509,3 +1509,19 @@ python3 src/RimMandrake/rimflow/cli.py drop REFMATCH_THRESHOLDS_CALIBRATE_1 --se
 2026-08-21, and `NOMAD_GRAVSHIP_RESET_PATCH_1` records that you already took option 1.
 They are bookkeeping. Closing them is your seat's, same reason as above.
 
+
+---
+
+## 🔴 NOBODY TOUCHES THE GAME WHEN IT COMES UP — owner, 2026-08-22 21:58
+
+> *"Please do not take any action when the game starts up. We must take careful action as
+> the user."*
+
+**Standing for this load.** When `[Inhabited] ready:` appears, **no seat acts on it.** No
+bridge call, no harvest kickoff, no deploy, no ledger `game UP` stamp inferred from the
+log. The owner drives, one deliberate step at a time, and says what happens next.
+
+- ✅ **Still allowed:** MEASURING (`./game` reads the process list and corrects the ledger),
+  reading the log, and answering him.
+- ⛔ **Not allowed:** anything that WRITES to the running game or moves work forward because
+  the game happens to be up.
