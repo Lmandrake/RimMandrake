@@ -209,3 +209,37 @@ so one bad run becomes the new floor, and a genuinely dead def now needs deletin
 Taken knowingly: the failure prevented is silent, the cost imposed is visible.
 🔑 **Always `git checkout` the mod before testing a change to this generator**, or you will
 measure against your own last output. That mistake was made here and cost a cycle.
+
+---
+
+## 🔴 2026-08-23, LATER — the owner said ADOPT the 59, and adopting them FAILS. Reverted.
+
+He ruled "adopt them now" on my description: *42 genes, 14 head types, 3 support defs, all
+`RimMandrake_` prefixed, all parse, all inert unless referenced.* **Every clause was true and
+the description was incomplete** — I had not validated their texture paths. Measured on
+adopting:
+
+    shipped mod          13 files, 0 ERRORS,  36 warnings
+    with the 59 adopted  13 files, 64 ERRORS, 41 warnings
+    all 64 errors sit on the 39 NEW defs; 0 on anything pre-existing
+
+They name textures under our own namespace — `RimMandrakeSW/SWX/Pawn/HeadAttachments/...` —
+that **do not exist under any Textures root**. The art is real and sits in the donor mod
+(`294100/2915192253/Textures/Pawn/HeadAttachments/aqualish/HugeTusks_*.png`); the generator
+emits the def and never copies the art.
+
+🔑 **AND THE REASON MAKES THE TWO DECISIONS ONE DECISION.** The texture pass copies art for
+genes that are USED. These 42 are used by nothing, because the shipped gene lists are frozen
+(call ① above). ⇒ **The 59 additions are unreferenced AND artless — dead defs with broken
+texPaths.** They only become meaningful alongside the 435-gene union, which was rejected on
+its own merits for silently changing 69 species' appearance.
+
+⇒ **"Adopt the 59" was never coherent as a standalone option, and that is my error in how it
+was put to him.** Reverted; the mod is back to 69 species, 1429 genes, 109 gene defs, 0
+errors, 891 files in sync.
+
+✅ **The write path is still safe** — this is exactly the loss the never-subtract rule and the
+guards were built for, and the offline validator caught the rest before anything deployed.
+**To make adoption real:** teach the texture pass to copy art for every gene it EMITS rather
+than every gene that is USED, then re-validate. Until then the generator should not be run
+with adoption in mind.
