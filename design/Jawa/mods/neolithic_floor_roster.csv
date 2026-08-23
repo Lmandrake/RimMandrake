@@ -1,0 +1,43 @@
+defName,label,mod,melee,cut,weaponTags,weaponClasses,marketValue,stuff
+AG_ForsakenSpear,forsaken spear,Alpha Genes,melee,,WForsaken|Ultratech|ForsakenMelee|NeolithicMeleeBasic|NeolithicMeleeDecent,RangedHeavy,,
+BMT_BunkerClaw,bunker bug claw,Biomes! Polluted Lands,melee,,MedievalMeleeDecent|NeolithicMeleeAdvanced|NeolithicMeleeDecent,Melee|MeleePiercer,800,
+BMT_CaveSpiderHead,cave spider head,Biomes! Caverns,melee,,MedievalMeleeDecent|NeolithicMeleeAdvanced|NeolithicMeleeDecent,Melee|MeleePiercer,200,
+BMT_CrystalMantisClaw,crystal mimic mantis claw,Biomes! Caverns,melee,,NeolithicMeleeBasic|NeolithicMeleeDecent,Melee|MeleePiercer,150,
+BMT_FungalMantisClaw,fungal mimic mantis claw,Biomes! Caverns,melee,,NeolithicMeleeBasic|NeolithicMeleeDecent,Melee|MeleePiercer,150,
+BMT_ResourceBlueCrystal,crystal,Biomes! Caverns,melee,,NeolithicMeleeBasic|NeolithicMeleeDecent,Melee|MeleeBlunt|Neolithic,1,
+BMT_Toxwood,tox wood,Biomes! Polluted Lands,melee,,NeolithicMeleeBasic|NeolithicMeleeDecent,Melee|MeleeBlunt|Neolithic,1,
+BS_GiantHammer,giant primitive hammer,Big and Small - Genes & More,melee,,NeolithicMeleeGiant|NeolithicMeleeBasic|NeolithicMeleeDecent,BS_GiantWeapon,,Stony
+BS_GiantSalvageClub,giant salvage club,Big and Small - Weapons,melee,,NeolithicMeleeGiant|NeolithicMeleeBasic|NeolithicMeleeDecent,BS_GiantWeapon,,
+BS_GiantShard,giant shard knife,Big and Small - Weapons,melee,,NeolithicMeleeGiant|NeolithicMeleeBasic|NeolithicMeleeDecent,BS_GiantWeapon,,Metallic|Woody|Stony
+BS_OgreClub,giant club,Big and Small - Genes & More,melee,,NeolithicMeleeGiant|NeolithicMeleeBasic|NeolithicMeleeDecent,BS_GiantWeapon,,Metallic|Woody|Stony
+GS_Gaffi,Gaffi stick,Star Wars KotOR Resources and Materials,melee,,KotORMelee|SandClub|NeolithicMeleeBasic|NeolithicMeleeDecent,Melee|Ultratech,100,Metallic|Woody|Stony
+GU_RedWood,red wood,Alpha Animals,melee,,,,1.2000000476837158,
+MA_AminoxWarmaul,aminox warmaul,Mythic Ages: Megafauna Bestiary,melee,,NeolithicMeleeAdvanced|Blunt,MeleeBlunt|Melee|MeleeBlunt,760,
+MA_Brontorhin,brontorhin,Mythic Ages: Megafauna Bestiary,melee,,MedievalMeleeDecent|NeolithicMeleeAdvanced|NeolithicMeleeDecent,Melee|MeleeBlunt,520,
+MA_ClawSaber,claw saber,Mythic Ages: Megafauna Bestiary,melee,,NeolithicMeleeAdvanced|Knife,Melee|MeleePiercer|Melee|MeleePiercer,240,
+MA_DuskSpear,dusk spear,Mythic Ages: Megafauna Bestiary,melee,,NeolithicMeleeAdvanced|Spear,Melee|MeleePiercer|Melee|MeleePiercer,220,
+MA_MegaboneClub,megabone club,Mythic Ages: Megafauna Bestiary,melee,,NeolithicMeleeAdvanced|Blunt,MeleeBlunt|Melee|MeleeBlunt,120,
+MA_Rhinhammer,rhinhammer,Mythic Ages: Megafauna Bestiary,melee,,NeolithicMeleeAdvanced|Blunt,MeleeBlunt|Melee|MeleeBlunt,820,
+MA_ScarodonFangDagger,scarodon fang dagger,Mythic Ages: Megafauna Bestiary,melee,,NeolithicMeleeAdvanced|Knife,Melee|MeleePiercer|Melee|MeleePiercer,360,
+MeleeWeapon_BreachAxe,breach axe,Core,melee,,NeolithicMeleeDestructive|NeolithicMeleeBasic|NeolithicMeleeDecent,MeleeBlunt,,Metallic
+MeleeWeapon_Club,club,Core,melee,,NeolithicMeleeBasic,Melee|MeleeBlunt|Neolithic,,Metallic|Woody|Stony
+MeleeWeapon_Knife,knife,Core,melee,,MedievalMeleeBasic|NeolithicMeleeBasic,Melee|MeleePiercer|Neolithic,,Metallic
+MeleeWeapon_Spear,spear,Core,melee,,NeolithicMeleeAdvanced|MedievalMeleeAdvanced|Spear,Melee|MeleePiercer|Neolithic,,Metallic|Woody
+RR_Weapon_Torch,torch,Research Reinvented: Stepping Stones,melee,,NeolithicMeleeBasic,Melee|MeleeBlunt|Neolithic,,
+VFET_Chunk,chunk,Vanilla Factions Expanded - Tribals,melee,,NeolithicMeleeBasic,Melee|MeleeBlunt|Neolithic,,VFET_StoneChunks
+VFET_Stake,stake,Vanilla Factions Expanded - Tribals,melee,,NeolithicMeleeBasic,Melee|MeleePiercer|Neolithic,10,
+AB_WeaponPoisonDart,dribbling cap poison dart,Alpha Biomes,ranged,,GrenadeDestructive,,4,
+AG_ForsakenBow,forsaken bow,Alpha Genes,ranged,,WForsaken|Ultratech|ForsakenRanged|NeolithicRangedBasic|NeolithicRangedDecent,RangedHeavy,,
+BMT_BlastSpore,blast spore sac,Biomes! Caverns,ranged,,GrenadeDestructive|GrenadeFlame|NeolithicRangedBasic|NeolithicRangedDecent,Ranged,1,
+BMT_ThrumbungusShroom,Thrumbungus mushroom,Biomes! Caverns,ranged,,GrenadeTox|NeolithicRangedAdvanced|NeolithicRangedChief|NeolithicRangedDecent|NeolithicRangedHeavy,Ranged,200,
+BS_GiantPrimitiveBow,Giant Bow,Big and Small - Genes & More,ranged,,RangedMedievalGiant|RangedNeolithicAdvancedGiant|NeolithicRangedBasic|NeolithicRangedDecent,BS_GiantWeapon,,
+BS_OgreThrowinRock,Throwing Chunks,Big and Small - Genes & More,ranged,,RangedNeolithicGiant|NeolithicRangedAdvanced|NeolithicRangedChief|NeolithicRangedDecent|NeolithicRangedHeavy,BS_GiantWeapon,50,
+Bow_Short,short bow,Core,ranged,,,,0,Woody
+VWE_Throwing_Knives,throwing knives,Vanilla Weapons Expanded,ranged,,Neolithic|NeolithicRangedBasic|NoRelic,Neolithic|Ranged|RangedLight|ShortShots,,Metallic
+MeleeWeapon_Ikwa,ikwa,Core,melee,CUT,,,0,Metallic|Woody
+Bow_Great,greatbow,Core,ranged,CUT,,,0,Woody
+Bow_Great_Unique,unique greatbow,Odyssey,ranged,CUT,,,0,Woody
+Bow_Recurve,recurve bow,Core,ranged,CUT,,,0,
+MA_VerdantBow,Verdant Bow,Mythic Ages: Megafauna Bestiary,ranged,CUT,,,0,
+Pila,pila,Core,ranged,CUT,,,0,Woody
+VWE_Throwing_Rocks,throwing rocks,Vanilla Weapons Expanded,ranged,CUT,,,0,Stony
