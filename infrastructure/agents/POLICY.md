@@ -62,6 +62,12 @@ Maps, saves, colonies, deployed mod folders, live game state — destroy them fr
 
 ## Writing
 
+- 🔴 **NEVER CUT A FACT.** A thing we learned that will not fit its doc goes to
+  `infrastructure/state/facts/<topic>.md` — unbudgeted, append-only — with a one-line pointer
+  left behind. The two rules below trim WORDS; neither may cost KNOWLEDGE.
+  ⚠️ The budget hooks are **exit 1: their warnings reach the owner's terminal, not your tool
+  result.** Run `python3 src/RimMandrake/Utils/doc_budget.py` yourself after appending to
+  anything under `infrastructure/state/`; nothing will tell you.
 - Do not keep provenance — git holds it. Do not comment on past project states, stale files, or paths not taken. If any competent engineer already knows it, do not write it.
 - **No tombstones.** No "we tried X and it failed", no closed-item ledgers. Write it only if a future reader would otherwise take a costly wrong action.
 - A lesson goes into the relevant skill, or a new skill. Never into a log of lessons.
