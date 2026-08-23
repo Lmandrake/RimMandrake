@@ -1720,3 +1720,4 @@
 {"seat":"BUILD","event":"start","id":"AUTHORED_FACTIONS_WEAR_ANYTHING_1","ts":"2026-08-23T08:34:00Z"}
 {"seat":"BUILD","event":"verify","id":"AUTHORED_FACTIONS_WEAR_ANYTHING_1","result":"partial","config":"offline: repo + deployed + capture 2026-08-23T07-12-04Z, full 578","evidence":"infrastructure/state/observed/2026-08-23/apparel_clusters/verify.md","sha":"c6e05ea1","ts":"2026-08-23T08:34:00Z"}
 {"seat":"BUILD","event":"needs","id":"AUTHORED_FACTIONS_WEAR_ANYTHING_1","to":"bridge","ts":"2026-08-23T08:34:00Z"}
+{"seat":"DECIDE","event":"file","id":"FACTION_SCREEN_READY_TO_PAINT_1","title":"The twelve are configurable now; 29 other factions still force themselves into every world","kind":"task","target":"v1","needs":"game-up","spec":"/tmp/claude-1000/-mnt-d-Luke-dev-Rimworld/24c7465d-01d9-4086-8502-d18f4a03400e/scratchpad/fac.md","caused_by":"AUTHORED_FACTIONS_OFF_THE_SCREEN_1","for":"BUILD","ts":"2026-08-23T08:38:39Z"}
