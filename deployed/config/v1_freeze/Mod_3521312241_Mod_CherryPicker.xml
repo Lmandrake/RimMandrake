@@ -1322,12 +1322,10 @@
 			<li>BiomeDef/Grasslands</li>
 			<li>ThingDef/Gun_DeadColumn</li>
 			<li>ThingDef/Gun_Incinerator</li>
-			<li>BiomeDef/IceSheet</li>
 			<li>BiomeDef/Labyrinth</li>
 			<li>BiomeDef/MetalHell</li>
 			<li>BiomeDef/RG_BoilingForest</li>
 			<li>BiomeDef/Savanna</li>
-			<li>BiomeDef/SeaIce</li>
 			<li>BiomeDef/TemperateForest</li>
 			<li>BiomeDef/TemperateSwamp</li>
 			<li>BiomeDef/TropicalRainforest</li>
@@ -1343,6 +1341,10 @@
 			<li>BiomeDef/ZBiome_Iceberg_NoBeach</li>
 			<li>BiomeDef/ZBiome_Marsh</li>
 			<li>BiomeDef/ZBiome_Sandbar_NoBeach</li>
+			<li>ThingDef/Husky</li>
+			<li>ThingDef/LabradorRetriever</li>
+			<li>ThingDef/Fox_Fennec</li>
+			<li>ThingDef/Capybara</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>

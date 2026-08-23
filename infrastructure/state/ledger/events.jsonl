@@ -1904,3 +1904,5 @@
 {"seat":"BUILD","event":"start","id":"BLACKSTAR_NAMES_EVERY_PIRATE_1","ts":"2026-08-23T18:05:48Z"}
 {"seat":"BUILD","event":"verify","id":"BLACKSTAR_NAMES_EVERY_PIRATE_1","result":"pass","config":"offline: full 578 load set","evidence":"observed/2026-08-23/pirate_names/verify.md","sha":"b9a6e901","ts":"2026-08-23T18:05:48Z"}
 {"seat":"BUILD","event":"close","id":"BLACKSTAR_NAMES_EVERY_PIRATE_1","sha":"b9a6e901","ts":"2026-08-23T18:05:49Z"}
+{"seat":"OWNER","event":"file","id":"DUMP_DERIVED_SHEETS_SHOW_CUT_1","title":"Every dump-derived sheet and census silently includes cut content: 1,162 defs the game no longer has","kind":"task","target":"v1","needs":"offline","for":"REP","ownerSaid":"I had really thought I had already removed all of these terrestrial animals somewhere already","ts":"2026-08-23T18:11:58Z"}
+{"seat":"BUILD","event":"claim","id":"HORROR_WASTES_COLD_TERRAIN_1","ts":"2026-08-23T18:13:16Z"}

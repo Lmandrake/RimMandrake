@@ -78,8 +78,32 @@ it. Check dependencies first; usually nothing declares one.
 
 ### 🪤 Do not validate Cherry Picker entries against a def dump
 
-Cherry Picker removes defs **at load**, so the def dump is the *post-removal*
-state. **A cut that worked is ABSENT from the dump.**
+🔴 **CORRECTED 2026-08-23 — this section had the direction BACKWARDS, and the old text is
+below so the mistake is not re-derived.** It claimed the dump is the *post-removal* state and
+that *"a cut that worked is ABSENT from the dump."* **Measured against the running game:**
+
+- The kill list holds **1,289 `ThingDef` entries**. **1,162 of them are STILL PRESENT in
+  `defs.sqlite`** — 90%.
+- `Player.log` shows Cherry Picker ran and reported **1,209 defs removed**, including
+  `ThingDef/Cat`, `ThingDef/BlackBear` and every other spot-checked entry.
+
+⇒ **The def dump is captured BEFORE Cherry Picker removes anything.** A cut that worked is
+**PRESENT** in the dump, not absent. The dump is not evidence about cuts in either direction.
+
+🔑 **What this actually breaks, and it is bigger than the check:** every census, count and
+**contact sheet** built from the dump silently includes cut content. The owner reviewed an
+animal art sheet on 2026-08-23 and asked why animals he had already removed were still
+there — they were not still there; the sheet was showing 1,162 defs that no longer exist in
+his game. **Filter any dump-derived roster against the kill list before showing it to anyone.**
+
+✅ **The instrument that CAN answer "did this cut take effect" is `Player.log`.** Cherry Picker
+prints `[Cherry Picker] The database was processed in … the following defs were removed:`
+followed by one `- <DefType>/<defName>,` line each. That is the runtime truth.
+
+> ⛔ **The superseded text, kept only so nobody reconstructs it:** *"Cherry Picker removes defs
+> at load, so the def dump is the post-removal state. A cut that worked is ABSENT from the
+> dump."* It was never measured; it was reasoned from how Cherry Picker works and the capture
+> order was assumed.
 
 ⇒ Checking config entries against a dump inverts the meaning of the result:
 - **does not resolve** → the cut is already in effect. Correct, not broken.
