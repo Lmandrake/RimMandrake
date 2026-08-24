@@ -24,7 +24,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | §10 INHABITED — baseline, gated on `[Inhabited] ready: 294` | — | ⏳ PENDING |
 | 🌱 BIOME FLORA + 🏷️ PLANT NAMES | 2026-08-23 | ⏳ PENDING |
 | 🌡️ TOLERANCES + 🏹 ANCIENT ARSENAL + 🦴 CAST SUBSTITUTIONS | 2026-08-23 (cast NOT yet) | ⏳ PENDING |
-| 🔧 §19 TWO DLLs WAITING ON THE DOWN WINDOW | ⛔ **NOT DEPLOYED** | ⏳ PENDING |
+| 🔧 §19 TWO DLLs WAITING ON THE DOWN WINDOW | ✅ **BOTH DEPLOYED 2026-08-24 01:3x** | ⏳ readings pending |
 | 🎯 §20 RE-ROLL THE ROSTER — the 2026-08-24 harvest is the BEFORE | 2026-08-24 | ⏳ PENDING |
 
 🔴 **WHEN A LOAD IS SCORED:** move its block whole into
@@ -276,7 +276,18 @@ this same load, an unexplained result belongs to the assembly first.
 
 ---
 
-## 🔧 §19 — TWO ASSEMBLIES ARE BUILT AND COMMITTED AND CANNOT DEPLOY WHILE THE GAME RUNS
+## 🔧 §19 — ✅ BOTH DEPLOYED, 2026-08-24 01:3x, IN THE DOWN WINDOW
+
+> ✅ **DONE by CHECK.** `JawaRules.dll` → `deploy_custom_mods.py --apply`, VERIFIED in sync.
+> `JawaBench.BridgeTools.dll` → `build.py --gm --apply`, game copy moved `c1f3121ddf9e` →
+> **`c88df17ff577`**. Full deploy plan afterwards reads *"Everything in sync"* (0 files, 14 held).
+> ⚠️ **The JawaBench build is NOT `b4d69b7c8c4d`** as this block expected — it is a later build
+> carrying `world_tile_export`'s pollution fix (commit `ab02ef75`) on top of the extended exporter.
+> **`pollution` is now BASE column 10**, not an extended-only column, so the default export
+> round-trips losslessly. The §19 reading below still holds: extended is still 20 columns.
+> ⛔ **The readings below have NOT been taken.** They need the next load.
+
+## 🔧 §19 (original text) — TWO ASSEMBLIES ARE BUILT AND COMMITTED AND CANNOT DEPLOY WHILE THE GAME RUNS
 
 Written 2026-08-23 19:5x by BUILD. ⛔ **Neither of these is drift and neither is a
 mistake** — the OS memory-maps a loaded DLL, so both simply cannot be written until
