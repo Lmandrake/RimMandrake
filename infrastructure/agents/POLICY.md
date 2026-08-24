@@ -285,9 +285,24 @@ live in `infrastructure/state/MODE`, one word.
   and he clears them with `rimflow next --seat OWNER`. ⚠️ A seat's in-domain judgement is not pending
   review.
 
-⚠️ **`rimflow` only knows `afk`**, from `--mode` or `$RIMFLOW_MODE` (`cli.py:214`) — it never reads the
-`MODE` file. `afk` there suppresses every item whose `needs` is `owner`. Writing a word into the file
-changes what seats DO, not what the tool offers.
+🔴 **`rimflow` DOES read the `MODE` file, and `afk` in it now bites — corrected 2026-08-23.** This
+paragraph used to say the file was never read and cited a line number that had moved; both were wrong,
+and wrong in the direction that matters. The resolution order is `--mode` → `$RIMFLOW_MODE` →
+`infrastructure/state/MODE` (`cli.py:_mode_file`, wired at `cli.py:280`).
+
+- ✅ **`belt` and `afk` are the two words that belong in the file.** Writing `afk` suppresses every item
+  whose `needs` is `owner`, from the moment it is written — no flag, no env var.
+- ⛔ **`bench` is NOT a global mode and the file refuses it, on stderr.** BENCH is per-window, delivered
+  per turn by `.claude/hooks/bench_mode.py`, and has no global truth to write down.
+- ⚠️ **`interactive` and `autonomous` are dead words** (`REP.md:99`). They are still accepted and
+  normalised to `belt`, because that is exactly what they already did — neither ever equalled `afk`, so
+  neither suppressed anything. ⛔ Do not "repair" MODE back to one of them.
+
+🔑 **Why this drifted twice and how it was caught.** The channel was inert until 2026-08-22 because
+nothing read the file; it went inert again the moment the vocabulary moved to BENCH · BELT · AFK, because
+the reader still only knew the three OLD words and `belt` fell through to `None`. **Both times it failed
+silently and a doc kept saying something true-sounding.** An unrecognised word now names itself on stderr,
+so a third drift announces itself instead of being discovered by reading the source.
 
 ## 🔴 Citing an item ID is a claim about its STATE — owner's correction, 2026-08-21
 

@@ -229,14 +229,42 @@ def _scalars(it):
     return "  ".join(bits)
 
 
+# The words `infrastructure/state/MODE` may hold, and what each resolves to.
+#
+# 🔴 The live vocabulary is BENCH · BELT · AFK (owner, 2026-08-23) and only two of the
+# three belong in this file. BENCH is PER-WINDOW — it is simply whether he is talking to
+# a given window right now, it is delivered per turn by `.claude/hooks/bench_mode.py`,
+# and it has no global truth to write down. A `MODE` file reading `bench` is therefore a
+# misunderstanding, not a setting, and is refused loudly below rather than ignored.
+#
+# ⚠️ `interactive` and `autonomous` are DEAD WORDS, superseded the same day (`REP.md:99`).
+# They are still accepted here and normalised to `belt` because that is EXACTLY what they
+# already did: neither equalled `afk`, so neither ever suppressed anything, and mapping
+# them preserves behaviour byte for byte while retiring the vocabulary. ⛔ Do not "repair"
+# MODE back to one of them.
+_MODE_WORDS = {
+    "belt": "belt",
+    "afk": "afk",
+    "interactive": "belt",   # legacy, behaviour-preserving
+    "autonomous": "belt",    # legacy, behaviour-preserving
+}
+
+
 def _mode_file():
     """`infrastructure/state/MODE`, or None. 🔴 NOTHING READ THIS FILE UNTIL 2026-08-22.
 
-    `POLICY.md > Modes` and `REP.md` both document it as the switch between
+    `POLICY.md > Modes` and `REP.md` both documented it as the switch between
     `interactive`, `autonomous` and `afk`, REP owns it, and the owner sets it — and the
     only readers were a `--mode` flag nobody passes and `$RIMFLOW_MODE`. So `afk`
     suppressed nothing and the documented mechanism was inert: a dead channel with
     three docs pointing at it.
+
+    ⚠️ **Corrected 2026-08-23.** The file HAS been read since 2026-08-22 (resolved into
+    the context at the bottom of this module), but it only recognised the three words
+    above — so when the owner moved the vocabulary to BENCH · BELT · AFK and MODE was
+    set to `belt`, the channel went inert again for a second, different reason and no
+    one was told. An unrecognised word now says so on stderr instead of returning a
+    silent None.
     """
     try:
         with open(os.path.join(model.ROOT, "infrastructure", "state", "MODE"),
@@ -244,7 +272,16 @@ def _mode_file():
             word = fh.read().strip().split()[0].lower()
     except (OSError, IndexError):
         return None
-    return word if word in ("interactive", "autonomous", "afk") else None
+    if word in _MODE_WORDS:
+        return _MODE_WORDS[word]
+    if word == "bench":
+        print("rimflow: MODE reads `bench`, which is not a global mode — BENCH is "
+              "per-window and is delivered by .claude/hooks/bench_mode.py. Ignoring; "
+              "write `belt` or `afk`.", file=sys.stderr)
+    else:
+        print("rimflow: MODE reads `%s`, which is not a mode word — ignoring. "
+              "Valid: belt | afk." % word, file=sys.stderr)
+    return None
 
 
 def _stale_board():

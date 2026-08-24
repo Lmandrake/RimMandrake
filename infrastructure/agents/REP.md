@@ -103,6 +103,10 @@ The vocabulary is now **BENCH** (per-window, he is here) / **BELT** (the queue r
 delivered per-turn by `.claude/hooks/bench_mode.py`, not by this file. What survives below: `afk` is still
 the value `rimflow` acts on, and the `--mode`/`$RIMFLOW_MODE` warning at the end of the section.
 
+⭐ **Updated 2026-08-23:** `rimflow` now knows `belt` and `afk`, normalises the two dead words below to
+`belt`, and refuses `bench` on stderr. So **writing `afk` into `infrastructure/state/MODE` takes effect
+immediately** — it is a live switch, not a note to seats. `POLICY.md > Modes` carries the detail.
+
 **interactive** (dead)  — questions accumulate in `queue/HUMAN.md`. When the human appears, walk them through it: one line per
 question, the choices, your recommendation first. They answer; you route each answer to the asking agent.
 
