@@ -1,3 +1,9 @@
+> 🧹 **PRUNED 2026-08-24 01:4x on the owner's order — "clean out all stale NEXT_RELOAD files
+> immediately".** Every block whose only item IDs had already closed, dropped or been superseded
+> was removed; blocks naming still-live work were kept verbatim. **Nothing is lost — the full
+> previous text is the parent of commit `ec0b5a61` in git.** ⚠️ A block here is a DUPLICATE of a ledger
+> item; when the two disagree, the ledger is right. Live IDs kept in this file: `DUMP_PRODUCER_DATED_CAPTURES_1`, `EMPIRE_GRUNT_SPAWNS_BARE_1`.
+
 # EXPECTED_FAILURES — expected-failure signatures, written BEFORE each load
 
 **Why this file exists.** The owner granted the three-assemblies waiver
@@ -265,45 +271,6 @@ downstream of the 101 discards** — a discarded `CharacterDef` is a dangling
 reference for anything that named it — so re-read this one AFTER the restart before
 filing anything about it.
 
-## §7 RESULTS — filled 2026-08-22 from the ledger, **not** from the log
-
-🔴 **THE FIX DID NOT TAKE. S1 FAILED.** `NEXT_LOAD_LOG_HARVEST_1` `verify` at
-**2026-08-21T23:11:49Z**, `result: partial`, `config: full-578-2026-08-21T22:44Z`,
-sha `2000242`:
-
-| clause | expected | measured | verdict |
-|---|---|---|---|
-| **S1** `DEFS DISCARDED` | exactly **2** | **103** — our **101** + the 2 benign, fully attributed | 🔴 **FAIL — the 101 cast discards did NOT come back** |
-| **S1** `[Inhabited] ready:` | present, count INCLUDING the 101 | printed | ⚠️ **PARTIAL** — presence confirmed, the count is not in the record, and §7 warned that presence alone is insufficient |
-| **S2** patch operations failed | 5 | **5** | ✅ PASS |
-| **S2** texture path failures | 0 | **0** — the 148 did not recur | ✅ PASS |
-| **S2** dead mods | 0 | **0**, both counters; RimAI Core booted | ✅ PASS |
-| carried question — cross-reference | (open, baseline 25) | **128** | ⬜ still open, and see below |
-| carried question — stale Scribe | (open, baseline 0) | **8**, all `guy762_*` GeneDefs | ⬜ still open |
-
-🔑 **§7 predicted this correctly and it is the useful part.** It said *"some of the 128
-may be downstream of the 101 discards — a discarded `CharacterDef` is a dangling
-reference for anything that named it."* The 101 did not come back, and cross-reference
-stayed at 128. **Those two numbers are consistent with one cause**, which is a real lead
-and not a new mystery. ⛔ It is NOT proof — nobody has attributed the 128 line by line.
-
-⛔ **`B59 MEGAFAUNA YIELDS` is UNMEASURED, not passed.** A no-op patch logs nothing, so
-the log cannot answer it; it was settled on screen only. Do not read it as green.
-
-✅ **THE EVIDENCE IS ON DISK AND RE-READABLE:** `observed/2026-08-21_harvest_2244load.txt`
-(5,604 bytes, 2026-08-21 16:11). Its lines 16 and 18 read
-`RED DEFS DISCARDED 103 ABOVE baseline 2` and
-`RED cross-reference (def loader) 128 ABOVE baseline 25`, which is where the table above
-comes from — measured output, re-countable, not quoted from memory.
-
-⚠️ **THERE ARE TWO `observed/` DIRECTORIES AND THEY ARE DIFFERENT PLACES.** Harvests and
-saved logs live at the **repo root**, `observed/`; per-experiment output lives under
-`observed/`. REP searched only the second on 2026-08-22, declared
-this evidence missing, and had to correct it — **check both before calling any evidence
-gone.** The ledger's evidence strings are written relative to the repo root.
-
----
-
 # §6 — LOAD 2026-08-21 15:25. **✅ CLOSED — results filled in below.**
 
 Deploy state verified on disk with the game DOWN (`tasklist.exe` = 0 `RimWorldWin64`),
@@ -342,63 +309,6 @@ half of this signature.
 ⚠️ **And absence alone is not sufficient either** (§2 of the load-round skill): if the
 mod failed to load at all, there are no parse errors *and* no `ready:` line. Both
 readings, or the signature has not fired.
-
-## §6 S2 — the def dump recovers the 824 collided defs
-
-```
-EXPECT PRESENT   [RimDefDump] at the main menu, ~27 s, ~1.2 GB
-EXPECT           manifest.json gains a defTypes index; colliding types written as
-                 <FullName>.json instead of <SimpleName>.json
-BASELINE         OFFICIAL-2026-08-21 capture: 78,057 defs, 536 types, 824 lost to
-                 8 filename collisions
-PREDICT          the new capture is ABOVE 78,057 by roughly 824, and AbilityDef is
-                 non-empty (it read 0 before; vanilla alone has 612)
-```
-
-🔴 **ASK FOR IT BY ITS FULL NAME.** `measure count AbilityDef` will now REFUSE —
-correctly — because three distinct types share that simple name and summing them
-would invent a quantity nothing measured. The command that answers is:
-
-```
-python3 ~/.claude/skills/measuring-large-artifacts/scripts/measure/cli.py count RimWorld.AbilityDef
-```
-
-⚠️ **And rebuild first: `measure build`.** The reader was fixed this afternoon
-(`measuring-large-artifacts` `80551ae`, SCHEMA_VERSION 2 -> 3) after a synthetic of
-this very capture showed the OLD reader would discard both AbilityDef slices and
-report a total it did not hold. Any `defs.sqlite` from before that refuses until
-rebuilt, which is the guard working.
-
-🔴 **CORRECTED 2026-08-21 15:30 by CHECK, after BUILD measured it (`7a57678`). READ THE
-CAPTURE, NOT THE DATABASE.** The prediction above is about the **files on disk** and it
-stands. It must NOT be verified through `measure` or `defs.sqlite`:
-
-- `measure` keys coverage on the record's **simple** `defType` and never reads
-  `defTypeFullName`, the filename, or the new `defTypes` index — so the producer's whole
-  disambiguation is **invisible on arrival**.
-- `capture.def_type` is a `TEXT PRIMARY KEY`, so the schema **cannot hold two types that
-  share a simple name** at all.
-- `build` counts `defs_inserted` **before** shadowed rows are removed. BUILD measured it
-  reporting **615 defs while the table held 3**.
-
-⚠️ **And this load is what ARMS that bug.** It could not fire while `AbilityDef` declared
-0; the fixed producer supplies exactly the 824 defs that make it fire. ⇒ A post-load
-`measure count AbilityDef` is expected to return a **confidently wrong number**.
-
-✅ **The honest route:** read `manifest.json`'s `defCounts` and the `defs/*.json` files
-directly, and record anything the db cannot answer as **UNMEASURED**, never as 0 or as a
-pass (`infrastructure/agents/CHECK.md`, "Numbers you report").
-
-🔑 **The load still buys the irreversible half regardless: the 824 defs stop being lost
-on disk.** The reader defect is a separate, offline, fixable thing.
-
-⚠️ **`refresh.py` will report `REPLACED` afterwards. That is the freeze detector working,
-not a fault.** Only the owner re-freezes:
-`python3 src/RimMandrake/Utils/refresh.py --freeze --by owner`
-⚠️ **Corrected 2026-08-21 by BUILD — `freeze_dump.py` no longer exists.** It was
-folded into `refresh.py` under `FREEZE_SHA_UNREPRODUCIBLE_1` (`9078a15`), because
-two commands that both append a freeze are two answers. Drop `--by owner` for a
-dry run.
 
 ## ✅ §6 S2 — RESULT, measured 2026-08-21 15:50. **The 824-def hole is closed.**
 
@@ -445,19 +355,6 @@ unblocked — the clean capture it was waiting behind exists.
 ⛔ **`refresh.py` now reports `REPLACED`. That is the freeze detector working, not a
 fault.** The frozen target is still the 08-21T08:20:20Z capture; the better one is on
 disk. **Only the owner re-freezes.**
-
-## §6 S3 — the three greps that ride free (`NEXT_LOAD_LOG_HARVEST_1`)
-
-Fixed list, written before the log exists. ⛔ Nothing is added to it at collection time.
-
-```
-B59        Megafauna butcher yields are the intended ones, AND the ~50 patch operations
-           sequenced after the previously-aborted one apply again
-PRELOAD    JawaBench and Inhabited each print their own init line, so a failure is
-           attributable to the right assembly rather than to "the load broke"
-BIOMESKIT  the 148 missing-texture errors are ReGrowth's absent snow variants, NOT
-           damage our repaint caused
-```
 
 ## §6 S5 — two BUILD changes that landed AFTER this file was written
 
@@ -741,23 +638,6 @@ grep -nE "No valid factions found for trade caravans|Could not find any valid fa
 
 **Want zero. ⚠️ These fire during PLAY, not at load — re-grep at session end, not
 only after the load completes.**
-
----
-
-## S4 — the two label checks that catch a deploy miss **before** the irreversible click
-
-Both are read off the Configure Factions page itself, **before** generating.
-Evidence: eyes on the page plus `rimworld/take_screenshot`.
-
-| check | pass | fail |
-|---|---|---|
-| 🔴 **CORRECTED B23.** Vanilla **`Empire`** renders as **"The Galactic Empire"** with an **Emperor** | R15/R11 landed. The Empire moved onto the VANILLA Royalty vessel; `label` "The Galactic Empire", `fixedName` "Galactic Empire", `leaderTitle` "Emperor" | reads **"shattered empire"** with a **"high stellarch"** → `GalacticEmpire.xml` did not land. Record and carry on; do NOT abort |
-| ~~⚠️ **`OuterRim_GalacticEmpire` now reads "Galactic Empire" and THAT IS CORRECT**~~ ⛔ **DEAD ROW 2026-08-20 — do not check it at all.** The def is not the vessel and not in the design; whatever label it shows is not a signal. See `infrastructure/state/OWNER_DECISIONS.md`. Original text kept below. | **This block used to demand "the Galactic Empire" here, and that is now the FAILING string.** B40 re-pointed the file off this def onto vanilla `Empire`; nothing patches `OuterRim_GalacticEmpire` any more, so it shows its own shipped label. **Do not read this as a deploy miss and do not regenerate.** | reads "the Galactic Empire" → an OLD `Jawa_Patches` is deployed; the current one has not landed |
-| `OuterRim_RebelAlliance` is **ABSENT** from the page | `RebelAlliance_Suppress.xml` set `maxConfigurableAtWorldCreation` to 0 — **absence is the DESIRED outcome, not a defect** | **present and settable** → the patch did not land; file it. **Present but locked at 0** → harmless, worth a line. **Do not revert the patch at the screen.** |
-
-**Also record, as an observation with no pass/fail:** vanilla `Empire`'s name is
-**generated**, so the page will probably not say "Fallen Dominion". Screenshot it —
-per the checklist, that string is the only record of it.
 
 ---
 
@@ -1047,26 +927,6 @@ not a failure, and must not be written up as one.
 
 ---
 
-## T4 — EXPECTED AND HARMLESS. Do not stop for these. 🔴 **T4 REVERSES §2's S8**
-
-| signature | verdict for **this** load |
-|---|---|
-| `[Jawa Patches] Patch operation Verse.PatchOperationRemove failed` naming `requiredMemes`, `structureMemeWeights`, `classicIdeo` or `disallowedMemes` | ✅ **harmless, unchanged from S8.** We remove six generation-steering nodes an authored `fixedIdeo` makes dead. If another mod removed one first our Remove matches nothing and logs red — the desired end state, node absent, is already true. The line means the job was done twice, not undone |
-| `Could not resolve cross-reference: No Verse.PawnKindDef named JDSCIS_*` | ✅ **harmless, unchanged from S8.** The Geonosian hive mixes Separatist droid kinds from a mod that may be off; they are `MayRequire`-wrapped and the group simply fields fewer kinds. Source: `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaGeonosianFoundryHive.xml` |
-| `Could not resolve cross-reference: No Verse.XenotypeDef named BTD_*` (also `guy762_*`, `OuterRim_*`) | 🔴 **NO LONGER HARMLESS — this is the reversal.** S8 called these benign because the donor packs were installed and BTD Remix dedup'd at load. **All three donors are OFF in D4.** Under the donors-off configuration this exact grep IS check **C36**, and a hit is a **C36 FAILURE**: a def in `mandrake.starwarsraces` or `Jawa_Patches` still points at a donor that no longer loads. **Record every name.** `Jawa_Patches` carries `BTD_` references in at least five files (`JawaJunkers.xml`, `AlienSpawnEnablers.xml`, `GamorreanXenotype.xml`, …) — those are the suspects |
-
-🔴 **The failure that is NOT harmless and shares the crossref shape:** any
-cross-reference naming `Jawa_Tribal_Scavenger`, `Jawa_Tribal_Slinger`,
-`Jawa_Tribal_Elder` or `Jawa_Colonist`. Those are OURS; they were silently
-discarded once (`c06e89e`) and a recurrence means the ParentName fix regressed.
-**Worth stopping for.**
-
-```bash
-grep -nE "Patch operation Verse\.PatchOperationRemove failed|Could not resolve cross-reference.*(BTD_|guy762_|OuterRim_)|No Verse\.PawnKindDef named (JDSCIS_|Jawa_)|Could not find type named" "$LOG"
-```
-
----
-
 ## T5 — the mod-list change (D4), and the one gap it does NOT close
 
 `com.yayo.yayoani.continued` is gone from `<activeMods>`. Expected: **zero**
@@ -1157,107 +1017,6 @@ with two live gates never run, and that is the line that exists to prevent it.
 
 ---
 
-## §3 RESULTS — fill in AFTER the load, from the log while it still exists
-
-⬜ **Blank as of 2026-08-15 15:50, game down. This load has NOT yet run.**
-🔴 **If you are reading this table blank after the load happened, the load was spent
-without closing it — say so and mark the rows NOT COLLECTED. Do not reconstruct a
-result from the log.**
-
-| # | check | evidence collected? | result |
-|---|---|---|---|
-| T1 | derived `jawa/*` count (record it) vs observed census (record it) | | |
-| T1 | `--gm` verdict: full count, count−2, or STOP | | |
-| T1 | `[RimBridge]` failure grep = 0 | | |
-| T2 | `[JawaPlantGrowth] scaling …` present — record N / M / K | | |
-| T2 | `failed to build the growth tables` absent | | |
-| T3 | 🚫 no log evidence exists — settled at §5 L5 or not at all | n/a | |
-| T4 | `PatchOperationRemove` failures — record which, then IGNORE | | |
-| T4 | 🔴 `BTD_` / `guy762_` / `OuterRim_` crossrefs = **0** (this is C36) — record every name | | |
-| T4 | `JDSCIS_` misses — record which, then IGNORE | | |
-| T4 | 🔴 zero crossrefs naming `Jawa_Tribal_*` / `Jawa_Colonist` | | |
-| T5 | zero `com.yayo` / `yayoAni` lines | | |
-| T6a | zero `Exception loading def from file Jawa*.xml` | | |
-| T6a | all 8 Jawa faction defNames resolve (list which, if any, do not) | | |
-| T6a | log line count — record it; ~2% of the previous ~99,700 corroborates | | |
-| T6b | `jawa/list_factions` — which of the 8 the quicktest world actually holds | | |
-| T5 | zero `Could not load reference to` (nothing was loaded from a save) | | |
-
----
-
-## S7 — BUILD's items, 2026-08-20. Eight greps, all decided from the startup log or the dump.
-
-**Run these on `Player.log` the moment the main menu appears, before anything touches the
-game.** Every one is a number that already has a known "before", so a result is a verdict
-rather than a reading.
-
-```bash
-LOG="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log"
-
-grep -c "Failed to find any textures at"        "$LOG"   # D-CHK2 magenta heads. was 3, want 0
-grep -c "not <li>.*biomeConfigs"                "$LOG"   # B63 biome mix.       was 28, want 0
-grep -c "OuterRim_Jawa"                         "$LOG"   # B58 dead defName.    want 0
-grep -nE "Jawa_Patches|mandrake\.jawa\.patches" "$LOG" | grep -i error   # want nothing
-grep -c "Could not resolve cross-reference"     "$LOG"   # the re-tag + 48 kinds. see below
-```
-
-🔴 **THE ONE THAT MATTERS MOST IS NOT A GREP.** After the load, run
-
-```bash
-python3 src/RimMandrake/Utils/weapon_tag_audit.py
-```
-
-with **no `--anyway`**. It refuses unless the dump's mod set matches `ModsConfig.xml`, so a
-clean run is itself the proof that the census is finally authoritative. Then read two
-numbers off it:
-* **pawn kinds with every weapon tag empty** — was **49** provisionally. Want it in the
-  low teens, and 🔴 **zero of ours**.
-* **emptied tags** — was 35. The re-tag patch adds 154 weapons' worth of vanilla role
-  tags, so most of the vanilla rungs should be full again.
-
-🔴 **THE MOD LIST IS 576 AS OF 2026-08-20 — the owner swapped the terrain and world-map
-retexture mods, and this is now the current set.** Recorded in
-`infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`.
-
-```
-OUT (4)  zal.worldmapenhanced · noxilie.regrow.wmb.advancedbiomes
-         noxilie.regrow.wmb.alphabiomes · noxilie.regrow.wmb.morevanillabiomes
-IN  (2)  grimterra.terrainretexturemod · grimterra.worldmap
-```
-
-⇒ **The provisional counts above were taken at 578 and are now one mod-set stale.**
-They remain the right ORDER of magnitude and the right list of names to look for, but
-re-derive rather than diffing against them. This is exactly why
-`weapon_tag_audit.py` refuses to run when the dump and the list disagree.
-⭐ Retextures, so no def should change: all four removed mods and both added ones ship
-textures, not weapons or pawn kinds. If the weapon census moves by more than a rounding
-of the counts, something else changed and it is worth finding out what.
-✅ Checked already: nothing under `src/` references the removed packageIds except the
-provenance blocks of `The Salvation.rid` and `MandrakeJawa.xtp`, which record the mod
-list at SAVE time and are not functional references. `validate_save_artifact.py` re-run
-against the new set: **251/267 resolve, no dangling names.**
-🪤 **Count the children of `<activeMods>`, never `<li>` elements in the file.** A bare
-`grep -c '<li>'` also sweeps in the five `<knownExpansions>` entries and reports a number
-five too high — which I did, and it would have sent someone hunting five mods that were
-never added. Same family as the knownExpansions overcount recorded in the deploy skill.
-
-✅ **LOAD ORDER CHECKED, and it is clean.** `mandrake.jawa.patches` sits at **573/578** with
-`jawafactionslate`, `zal.worldmapenhanced`, `guy762.kotordroids`,
-`btd.gbp.shippack.kotor.vge` and `rimdefdump` after it. Every `defName` targeted by every
-patch in `Jawa_Patches/Patches/` was resolved to its owning mod and compared against that
-position: **0 targets are owned by a mod that loads later.** A patch whose target has not
-loaded yet matches nothing and logs nothing, so this was worth the two minutes.
-
-⚠️ `Could not resolve cross-reference` has a known pre-existing floor from the cherrypick
-(25 across 2 defs at the last measurement). What matters is whether any line names a
-`Jawa_*` pawn kind, a `Jawa_Ion*` tag or a stormtrooper/Mandalorian apparel defName — those
-would be MINE, and `apparelRequired` is the loud half of the 48-kind build.
-
-**On the Configure Factions page, before generating:**
-* all eight `Jawa_*` factions arrive at a count of **at least 1** untouched.
-* Configure Planet reads **Scale 7 · Coverage 100%**. 🔴 If Scale reads 10 the Worldbuilder
-  preset lost its parameters — ABORT, do not generate.
-
 ### S7b — the re-sort after WME went back in, 2026-08-20. Two faults found, both fixed.
 
 The list is **577** (WME restored). RimSort's re-sort broke two orderings that nothing in
@@ -1303,14 +1062,6 @@ later.
 
 
 ---
-
-# §4 — LOAD 2026-08-20, the owner's morning load. **✅ CLOSED 2026-08-20 — PASS.**
-*Results below, plus a CORRECTION block filled from the 578-mod load.*
-🔑 **This is the block `score_inhabited_load.py` parses — leave its signature strings alone.**
-
-**Run sheet is not here.** It is `infrastructure/state/queue/CHECK.md` →
-`MORNING_RELOAD_PLAN_1`, and it is ordered. This block records only the thing that
-cannot be recovered after launch: **the state the machine was in before it started.**
 
 ## §4 deploy state — measured on disk 2026-08-20 07:4x, game DOWN
 
@@ -1374,51 +1125,6 @@ md5 `f362b782942f6b4e83ef36f2c16a93b9`, verified after the change, so the deploy
 current. The DLL the game will load is **not** the one E2 recorded. Trust this
 paragraph over E2's hash.
 
-## §4 Results — filled 2026-08-20 from the live load. ✅ **PASS**
-
-**The prediction landed character for character.** Recorded here before the log rotates.
-
-```
-[Inhabited] ready: 2 patches, 269 characters, 0 places, 0 casts.
-```
-
-| # | predicted | observed | verdict |
-|---|---|---|---|
-| **patches** | 2 | **2** | ✅ **both Harmony patches bound.** This is the field that could not be faked by a healthy spawn menu, and it is green. `Game.DeinitAndRemoveMap` and `QuestGen_Pawns.GeneratePawn` both resolved their targets at startup |
-| **characters** | 269 | **269** | ✅ every authored `CharacterDef` across the 11 cast rosters parsed. No partial parse |
-| **places** | 0 | **0** | ✅ correct, and correctly NOT a fault — no `InhabitedPlaceDef` instance ships; places are made at runtime |
-| **casts** | 0 | **0** | ✅ same |
-| `HarmonyException` / `AmbiguousMatchException` | absent | **0 occurrences** | ✅ the predicted most-likely failure did not occur |
-| any error naming `Inhabited` | absent | **none** | ✅ clean |
-
-**E5 — the def dump retook itself as required.** `[RimDefDump] wrote 532 def-type files
-… done in 16397 ms`, against 529 types before: **Inhabited's three new def types are in
-the dump**, so `--live` checks now measure the 578-mod game rather than the lapsed
-577-mod one. 🔑 **`dump_request.txt` deleted after the load** — the marker does not
-consume itself and would otherwise have charged every future load ~16 s and ~1.2 GB.
-
-⚠️ **NOT closed by this block: 16 red errors in the load, none of them Inhabited's.**
-Triage belongs to whoever harvests (`harvest_log.py`), not here — this block only ever
-claimed the Inhabited assembly and the dump. **Do not read this ✅ as "the load was
-clean."**
-
-⚠️ **What this does NOT prove.** The patches *bound*; nothing here shows they *work*.
-No pawn has entered or left a roster, and no beggar has been drawn from the displaced
-pool. `ROSTER_SOAK_100_DAYS_1` in `CHECK.md` is the architecture gate and it is
-untouched by this result.
-
-## §4 CORRECTION — written by DECIDE 2026-08-20 07:5x, BEFORE the log exists
-
-⚠️ **Legitimate under this file's rule 1.** That rule forbids editing signatures *after that
-load's log exists*; this load has not started. E1, E2, E5 and E6 stand unchanged. **E3 and
-E4 were overtaken by the owner while the block was being written** and both are now false in
-a way that changes what is collectable.
-
-| # | ⛔ what it says | ✅ what is true at 07:5x, game DOWN |
-|---|---|---|
-| **E3** | ~~`<activeMods>` **577**, mtime 00:49, md5 `5cb6857188…`~~ | **578**, mtime **07:37**, md5 **`deefb393e95824c48a700efa0fa734bb`**. `ModsConfig.FULL.LATEST.xml` moved with it, so LIVE still matches FULL — this is the owner's real list, not a spike |
-| **E4** | ~~**DEPLOYED BUT NOT ENABLED — deliberately, the owner's call.** The packageId is absent from `ModsConfig.xml`. ⇒ `Inhabited.dll` has still never been loaded. Every `Inhabited` debug action is uncollectable until he ticks it~~ | 🔴 **HE TICKED IT.** `mandrake.inhabited` is in `<activeMods>` (commit `1254026`, *"the set is 578 for this load"*). ⇒ **Every `Inhabited` debug action IS collectable on this load**, and `ROSTER_SURVIVES_OFFMAP_PROOF_1` — the architecture gate — can be started tonight rather than next cycle |
-
 ### 🔴 The signature E2 does not carry, and this load needs it
 
 E2 reasons from **md5 repo↔game** and concludes *"this load carries no new DLL."* That is
@@ -1434,65 +1140,6 @@ load-round skill says to run **solo**, and it is not solo — it rides a 578-mod
 | `Exception in static constructor` / `Harmony` + `Patch_BeggarsFromPool` | 🔴 the beggars patch missed its target. **Expected first-run failure #2, and the most likely of the three** — the design doc named a class (`GiveQuest_Beggars`) that does not exist, and the real one is `QuestNode_Root_Beggars` at `:103`, Ideology-gated at `:44` |
 | `XML error` / `Could not find type named Inhabited.` in a `WorldObjectDef` or `CharacterDef` | 🔴 def↔class binding. Expected first-run failure #3 |
 | ⭐ **expected-PRESENT:** the `Inhabited` debug actions appear in the dev menu | ✅ absence of errors is necessary and NOT sufficient — a mod that loads and does nothing logs nothing. This is the positive sighting that makes a clean log mean something |
-
-## §4 CORRECTION Results — filled 2026-08-20 from the 578-mod load, log EXITED
-
-| prediction | result |
-|---|---|
-| no `Inhabited` line at all ⇒ the mod did not load | ⭐ **DID NOT FIRE.** The log carries exactly one: `[Inhabited] ready: 2 patches, 269 characters, 0 places, 0 casts.` |
-| `Could not load reference to` naming an `Inhabited.*` type | ✅ none |
-| `Harmony` exception on `Patch_BeggarsFromPool` | ✅ none — **both patches bound.** This was the one I called likeliest to bite, because the design doc named a class that does not exist; BUILD had already corrected it to `QuestNode_Root_Beggars` |
-| `Could not find type named Inhabited.` in a def | ✅ none |
-| ⭐ expected-PRESENT: the mod announces itself | ✅ **satisfied by the `ready:` line, and this is the finding that matters.** `269 characters` means every authored person parsed into a def. `0 places, 0 casts` is correct for a first run — nothing has been placed yet |
-
-⇒ **`Inhabited` loaded clean on its first ever run, on a 578-mod list.** The architecture
-soak (`ROSTER_SOAK_100_DAYS_1`) is now the only thing between it and being real.
-
-### 🔴 Two RED lines in `harvest_log.py`, and only one of them is new
-
-| check | count | verdict |
-|---|---|---|
-| texture path failures | **2** vs baseline 0 | ⚠️ **NOT NEW.** These are the GRiNDTerra juvenile typos already filed as `GRIMTERRA_TEXPATH_TYPOS_1`, whose own criteria say *"Baseline today is 2"*. The harvester's baseline is the stale number, not the item's |
-| stale saved data (Scribe) | **8** vs baseline 0 | 3 × `guy762_*` GeneDef + 5 × `RG_*` ThingDef (Owlbeast, Boilberries) |
-
-🔑 **The Scribe 8 is NOT ours, and I nearly filed it as though it were.** The three gene
-failures sit directly under three `Loaded file (Xenotype)` lines, which reads exactly like our
-Jawa xenotype dropping genes — the failure `the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa`
-predicts and warns is *invisible to disk evidence*. Measured instead of assumed:
-**`pokean.xtp` contains all three `guy762_*` gene names; `MandrakeJawa.xtp` contains ZERO.**
-Our file's four `guy762` hits are **packageIds in its `<modIds>` provenance block**
-(`guy762.kotordroids`, `.kotorweapons`, `.mm.kotorcore`, `.starwarsxenotypes`) — dotted, not
-underscored, and not gene references at all.
-⚠️ **What this does NOT prove:** only three `.xtp` files loaded out of six in the folder, so a
-clean log does not establish that ours was one of them. `7e31aa` stays open on its own terms.
-
----
-
-## §4 — the 2026-08-20 MORNING load: W9 world import + `Inhabited`'s first load
-
-**Written 2026-08-20 07:5x, game DOWN, BEFORE launch.** Mod list `578` active
-(577 + `mandrake.inhabited`, enabled by the owner in RimSort at 07:42:46).
-**Results table blank = this block is UNFINISHED. Do not launch a second load against it.**
-
-```bash
-LOG="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log"
-```
-
-### What is riding, and the attribution risk
-
-| change | kind | can it steal another item's blame? |
-|---|---|---|
-| **`Inhabited`** — new mod: 1 new assembly, 4 def files, 269 `CharacterDef`s, 2 Harmony patches | 🔴 **new C# assembly** | **No, and here is why it is allowed to ride.** Its two Harmony targets are `Game.DeinitAndRemoveMap` and `QuestGen_Pawns.GeneratePawn` — neither is touched by the world-import work, and neither runs at all before a map is destroyed or a beggars quest is generated. It adds defs and patches nothing of anyone else's. Every failure mode below names `Inhabited` or `mandrake.inhabited` explicitly |
-| **W9 world import**, 7 stages, `MORNING_RELOAD_PLAN_1` | bridge calls, post-load | no |
-| `Jawa_Patches/About/About.xml` prose | text only | no — **not verifiable in a log and no signature is claimed for it** |
-| def dump re-take (`dump_request.txt` = `all`, armed) | startup artefact | no |
-
-🔴 **THE DEF DUMP RE-TAKE IS NOW MANDATORY, NOT OPTIONAL.** The 2026-08-20 ruling that
-the dump is definitive holds *"until a mod is added or removed"*. Enabling `Inhabited`
-took the list 577 → 578, so **the ratification has lapsed and the current dump is
-stale by exactly one mod.** The marker is armed; reach the main menu and it re-takes
-(~27 s, ~1.2 GB). ⚠️ **The marker is NOT consumed — delete it afterwards** or every
-future load pays that again.
 
 ### Expected PRESENT — the strings that prove it loaded
 
@@ -1671,24 +1318,6 @@ def loader against the live mod set, and a mod-list change is what would move it
 
 ---
 
-## §9 — the BIOME RESTORATION load. Written 2026-08-22 23:2x, BEFORE the game restarted.
-
-> ⚠️ **RENUMBERED §6 → §9 on 2026-08-23 03:5x by its own author.** I appended this block as
-> §6 without checking, and §6 was already taken — by a closed load carrying its own S1/S2/S3/S5
-> blocks and a filled Results table. §7 and §8 were taken too. Two sections under one number, in
-> the file that records what a load PROVED, is exactly the collision this file exists to prevent.
-> 🔑 **Check `grep -n '^## §' ` before appending a section here.** Caught by
-> `BIOME_BLOCK_MISNUMBERED_SIX_1`; its RESULTS table below is unchanged and still passes.
-
-**What is riding it.** One XML file, `Jawa_Patches/Patches/BiomeCast_Ashkarr.xml`,
-regenerated by a fixed `design/Jawa/fauna/gen_cast_patch.py` and deployed (`0efc38ba`,
-`VERIFIED in sync`). 26 `PatchOperationConditional` → `PatchOperationReplace` operations,
-744 emitted records, 2 deliberately skipped.
-
-🔑 **The change is the record SHAPE and nothing else.** `<li><animal>X</animal>
-<commonality>N</commonality></li>` became `<X>N</X>`. Same 26 biomes, same animals, same
-commonalities, same xpaths, same MayRequire guards.
-
 ### Expected PRESENT — absence of these IS the failure
 
 | # | string / probe | value that passes |
@@ -1808,30 +1437,6 @@ a biome patch, one is a weapon tag list.
 | F1 | `Exception loading def from file Biomes_` | **0** |
 | F2 | `Could not resolve cross-reference` | **~25**. Above 100 means biomes are dropping again |
 | F3 | `Flamebow` in any patch error | **0** |
-
-### 🔴 THE READING THIS LOAD EXISTS FOR — and no grep can take it
-
-**S1 — the species word is back.** ⛔ **There is NO log string for this and there never will
-be.** It is an inspect pane on a live humanlike:
-
-    a Rakatan sleeper reads `Rakata`, NOT `Gestor`
-    a Jawa reads `Jawa`, NOT `Gestor` or `Phallor`
-
-🔑 **A clean log is not evidence.** `INTIMACY_MOD_RENAMES_SPECIES_1` is settled here or not at
-all. Bridge: `jawa/inspect_string` on a generated pawn. Baseline, measured on the 578-mod
-stack: `Gestor female, age 32 (100), Forsaken soldier` where the pawn is a Rakatan sleeper.
-
-⚠️ **Check a pawn generated AFTER this load**, not a saved one — the setting is consulted at
-generation time, which is the whole reason this needs a reload rather than a save reload.
-
-**S2 — the three Core biomes still take the cast without their MayRequire.** Measured off the
-new capture, not the log: `Desert`, `ExtremeDesert` and `AridShrubland` each carry the cast's
-`wildAnimals` list. ⚠️ A `PatchOperationConditional` returns true on no match, so this cannot
-fail loudly — read the biome's `wildAnimals` in the capture, do not trust a clean log.
-
-**S3 — Flamebow's tag list has no duplicates.** Capture: `Flamebow.weaponTags` should read 4
-entries, not 6. ⚠️ If it still reads 6, our operation is not the (only) source — which is the
-open question `4ffd9fb4` records. Not a failure of this load, but say so rather than assuming.
 
 ### ⭐ S1 IS ALREADY ANSWERED, AND WITHOUT A RELOAD — owner, 2026-08-23 01:12
 
@@ -1987,97 +1592,6 @@ at 01:48 and 02:08. **Before scoring anything below, confirm the capture is NEWE
 | F5 | | |
 | F6 | ✅ **PASS**, offline | `ModsConfig.xml` parses to **579** `activeMods` (`knownExpansions` is 5 — do not add them); `mandrake.jawaikee` present at **position 569**. Measured 2026-08-23 11:3x by CHECK, game DOWN. This one never needed a load. |
 
-### Pre-load baseline — the 00:12 load, measured by CHECK 2026-08-23 11:2x
-
-🔑 **The game that ran 2026-08-23 00:12 → 11:25 held NONE of §8's changes** — every commit in
-the table above was deployed after it started. Its log is therefore the clean BEFORE picture,
-and it is harvested at
-`D:\Luke\dev\Rimworld\observed\logs\Player.2026-08-23_1122.going-down.log` (gitignored;
-1,550,641 bytes). Score the next load against these MEASURED numbers, not against the
-estimates written in the tables above.
-
-| probe | BEFORE (00:12 load) | note |
-|---|---|---|
-| F1 `Could not resolve cross-reference` | **27** | ⚠️ the table above guesses "~25". **27 is the measured baseline.** 16 of the 27 are one repeated `SoundDef Pawn_Melee_Punch_HitBuilding`; the rest are `BMT_*` pawnkinds, `guy762_KelDorMask`, `VWE_Tool_Whip`. None is ours. |
-| P1 `[Inhabited] ready:` | `2 patches, **294 characters**, 0 places, 0 casts` | already at the passing value BEFORE the batch — so P1 matching after the load proves no regression, NOT that anything new worked. |
-| P2 `[JawaBench] ready:` | **121 tools**, build `d49eaf42545b` | same caveat as P1. |
-| F4 `JawaIkee` assembly | **not applicable** | the mod was registered after this process started; the new-assembly signature is genuinely unproven and F4 is the reading that matters most. |
-| `initial resistance range is undefined` | **69** | ⛔ **PRE-EXISTING, not caused by the equipment layer.** Every generated Star Wars species kind. Filed as `SPECIES_KINDS_NO_RESISTANCE_1` for BUILD (`86963bc7`). If the next load still reads 69, the fix did not ship; if it reads 0, it did. |
-| `Exception in ConfigErrors() of CannibalPirate` / `PirateYttakin` | **present, 2** | Worldbuilder's `IdeoUtility_IsMemeAllowedFor` postfix calling `Find.FactionManager` during def error-checking. Third-party, pre-existing, and **not** evidence about S8's Blackstar naming. |
-| `<loadBottom>` XML error, `mandrake.jawafactionslate` | **present, 1** | benign. RimWorld's `ModMetaDataInternal` has no such field and says so; RimSort, which the field is aimed at, does read it. Not a defect — do not "fix" it by deleting the field. |
-
----
-
-## §10 — the COLD-GROUND + CHERRY-PICKER load. Written 2026-08-23 11:4x by BUILD, game DOWN.
-
-Three changes, all offline-verified, none of them yet seen by a running game. §8's 22 readings
-are UNCHANGED and still pending — these are additional, not a replacement.
-
-| # | reading | what it decides |
-|---|---|---|
-| **G1** | 🔴 **No `Could not resolve cross-reference` naming `AB_PackedIce`, `AB_SnowOverRocks`, `AB_DarkMud` or `AB_FertileMud`.** | `JawaTerrain_HorrorWastes.xml` names four Alpha Biomes terrains. All four resolve in the 2026-08-20 dump, so a miss here means a load-order or dedup problem, not a typo. |
-| **G2** | **F1 total stays at the §8 baseline of 27**, +0 from this batch. | Two new `PatchOperationConditional`s. A Replace that matched nothing would be a RED ERROR; a Conditional that matched nothing is silent, so G1+G2 together are the only evidence the ops fired. |
-| **G3** | ⚠️ **LOOK, do not grep.** A quicktest map on a `HorrorWastes` tile: the ground is pale ice and near-black frozen muck, **not warm sand**, and horror flora is present in the dark-brown fertile patches. | The whole point of the item. `AB_DarkMud` and `AB_PackedIce` are fertility 0 — if the map comes up with plants *everywhere* or *nowhere*, the fertility ramp is wrong. Expect plants clustered, not uniform. |
-| **G4** | `NeolithicRangedDecent` resolves with `Bow_Recurve` in it. Run `python3 src/RimMandrake/Utils/neolithic_floor_roster.py`; PASS = **39 surviving, 3 cut**. | `UNCUT_VANILLA_NEOLITHIC_BOWS_1`. Before this, a tribal hunter asking for a decent neolithic ranged weapon was handed a mushroom or an ogre's rock. |
-| **G5** | `Bow_Great_Unique`, `MA_VerdantBow` and `VWE_Throwing_Rocks` are **still cut**, and `Bow_Short`, `Flamebow`, `Gun_Needle`, `Gun_Scattergun` and the three `VFEP_WarcasketGun_*` are **still present**. | The un-cut must not overshoot, and the ten unratified keys must not have crept back in. See `UNRATIFIED_CHERRYPICK_CUTS_1`. |
-| **G6** | `Plant_TreePine`, `Plant_TreeBirch` and `Plant_TreePoplar` are absent from a `Volcano` map; **`RG_Plant_Raspberry` is still PRESENT** in `AridShrubland`. | `PLANT_CUTS_REACH_CHERRYPICKER_1` plus the owner's 2026-08-23 ruling that raspberry is renamed, not cut. |
-| **G7** | 🔑 **Spot-check that an unrelated pre-existing pick still applies.** | Cherry Picker loses the *entire* list to one malformed key. The list went from 1343 to 1342 entries this session; G7 is the only reading that proves it did not die at entry 1. |
-
-⚠️ **A live test proves what the RUNNING game holds, never what disk holds.** All seven above
-are about the *next* process. Nothing here is evidence about the one that ran until 11:25.
-
----
-
-## §11 — PlanetPresetPrime, a NEW ASSEMBLY. Written 2026-08-23 11:5x by BUILD, game DOWN.
-
-🔴 **This is a new DLL, and §3 of `rimworld-load-round` says an assembly rides SOLO.** It is
-batched anyway under the owner's standing three-assembly waiver, whose one mandatory
-condition is that the failure signature is written down BEFORE the game starts. This is
-that signature. It is deliberately distinguishable from every other assembly in the batch.
-
-`mandrake.planetpresetprime`, added to `ModsConfig.xml` at **position 579 of 580** — after
-`oblitus.mylittleplanet` at 236, which is the ordering that matters.
-
-| # | reading | what it decides |
-|---|---|---|
-| **H1** | ✅ **EXPECTED-PRESENT, at startup:** `[PlanetPresetPrime] loaded: will prime coverage 1, subdivisions 7. MLP type found.` | The one line that separates *loaded and working* from *never loaded*. ⚠️ **Absence of an error is NOT evidence here** — a mod that failed to load is silent in exactly the same way, which is why this line exists at all (`JAWABENCH_HAS_NO_INIT_LINE_1`). |
-| **H2** | If H1 reads `MLP type ABSENT` instead | The reflective lookup of `WorldGenRules.WorldGenRules` failed. The mod still sets vanilla `subdivisions`, but MLP's slider transpiler will stamp its own default 10 over it on the first drawn frame. **Non-fatal, and it means the planet will be the wrong size anyway.** |
-| **H3** | ⛔ **UNIQUE TO THIS ASSEMBLY:** any log line containing `PlanetPresetPrime` and `Harmony` / `patching` / `ReflectionTypeLoadException` | No other assembly in this batch names that string, so a Harmony failure here can never be misread as JawaBench's or Inhabited's. That distinguishability is the whole basis for batching it. |
-| **H4** | `[PlanetPresetPrime] ready: coverage 1, subdivisions 7, MLP slider primed` | Fires only when the world-creation page opens. **Do not read its absence as a fault** — the page may never open in a session. H1 is the load reading; H4 is the it-actually-fired reading. |
-| **H5** | 🔑 **The real proof, from the bridge, not the screen:** `python.exe src/RimMandrake/Utils/w9_run.py` (dry run) prints `planetCoverage 1` and `tilesCount 21872` **with nobody having touched a control**. | `PRIME_WORLD_PRESET_ALWAYS_1`'s criteria. ⚠️ Bridge calls at that screen take **over 25 s** against a 30 s default timeout — use `timeout=150` and a fresh connection per call, or a late reply is read as the next call's answer and you get an id-mismatch cascade that looks like four separate failures. |
-| **H6** | The coverage control and the MLP slider are **still draggable**. | This primes, it does not lock. Coverage is a button over the fixed set {0.3, 0.5, 1.0} (`Page_CreateWorldParams.cs:32`), so 1.0 is one of its three legal values and the owner can still click it anywhere the unpatched game allowed. |
-
-⚠️ **Two corrections to `PRIME_WORLD_PRESET_ALWAYS_1`'s spec, both found while building.**
-① The item said *"a postfix leaves the field public and settable"* — `planetCoverage` is
-`private float` (`Page_CreateWorldParams.cs:16`), so it is set through `AccessTools`.
-② The item said to set "the My Little Planet subcount". `WorldGenRules.WorldGenRules.subcount`
-is only the **slider's memory**; the value the generator consumes is
-`PlanetLayerSettingsDefOf.Surface.settings.subdivisions`. **Setting either one alone does
-nothing useful** — MLP's transpiler on `DoWindowContents` reads its own field and assigns
-both back every frame, so vanilla-only would be stamped over with 10. The mod sets MLP's
-first and vanilla's last.
-
----
-
-## §12 — THE WHOLE BUILD, validated with `--live` actually running. 2026-08-23 12:2x, BUILD.
-
-🔑 **Every earlier `--live` check this session proved less than it claimed.** Pointed at the
-DefDump root, `validate_patch.py --live` printed one notice, ran no live checks, and still
-ended `OK - 0 errors`. That is fixed (`DUMP_LAYOUT_BROKE_TOOLS_1`), and this is the first
-sweep where the live half genuinely ran.
-
-    51 patch file(s) · 0 ERRORS · 3896 warnings
-    --live resolved to captures/2026-08-23T07-12-04Z — 68,518 defNames, 452 types, rev591
-
-**Every warning classified, not sampled:**
-
-| count | class | verdict |
-|---|---|---|
-| 3887 | `inner xpath differs from the conditional test` | ✅ the add-if-missing idiom. The validator's own text says *"Intentional for add-if-missing patterns"*. Required, not optional: the C# defaults these fields, so a bare Replace cannot work. |
-| 4 + 3 | `xpath matches 2 (or 3) nodes in ONE mod folder` | ⚠️ third-party **duplicate defNames** — `Ling_Cockroach` (Rim cockroach), `BMT_CarveShroom` (Biomes! Caverns). RimWorld dedups; our op touching both is harmless. Not ours to fix. |
-| 2 | `not wrapped in PatchOperationConditional` | ✅ **DELIBERATE, and now documented in both files so a later sweep does not "fix" them.** See below. |
-| 1 | the dump holds 578 mods, ModsConfig lists 580 | 🔑 real, and the reading to carry into the load. |
-
 ### The two unwrapped operations are correct as they are
 `JawaWorld_Name.xml` targets **Core** (`RulePacks_Namer_World.xml`); `ForceGremlin_NoHair.xml`
 targets **our own** `RimMandrakeXenotypes.xml`. The general advice assumes the target mod might
@@ -2093,25 +1607,6 @@ error is the better half of the trade.
 game that is not the one about to run. **`dump_request.txt` already reads `all`** — reaching
 the main menu re-dumps (~27 s) and closes that gap. Until it does, treat an ABSENCE from the
 dump as unproven; a PRESENCE is still fine.
-
----
-
-## §13 — the TEMPERATURE BAND load. Written 2026-08-23 12:4x by BUILD, game DOWN.
-
-`HumanTemperatureBand_Ashkarr.xml` completes `NORMALIZE_TEMPERATURE_TOLERANCES_1` — plants,
-animals and now people. Owner's ruling: **gear required at the extremes**, comfy −40…+45,
-safe −50…+55.
-
-| # | reading | what it decides |
-|---|---|---|
-| **T1** | 🔑 **Dev-spawn a pawn of a species carrying NO temperature gene — `Ugnaught`, `Twilek` or `KelDor` — and read `ComfortableTemperatureRange` OFF THE INSTANCE.** PASS = **−40…+45**. | ⛔ **Reading the def is not this reading.** Apparel, hediffs and any Harmony `StatPart` in the 580-mod stack can shift the final number, and the assemblies were never censused. This is the only probe that closes that. |
-| **T2** | A pawn with a heat gene (`Jawa`) reads roughly **−40…+65**, and one with a cold gene (`Chiss`) reads roughly **−50…+45**. | Proves the gene offsets still STACK — the entire reason route 1 was chosen over 69 per-species ops. If every species reads identical −40…+45, the offsets are being overwritten and the relative character is gone. |
-| **T3** | An unclothed pawn on an `AB_PropaneLakes` map (−59.8) **takes hypothermia**; one on an `ExtremeDesert` map (+48.2) **does not** overheat. | The ruling itself. Both outcomes are required — "survives everywhere" is the failure, not just "dies everywhere". |
-| **T4** | Zero red errors naming `HumanTemperatureBand_Ashkarr`. | ⚠️ Both ops are **deliberately unwrapped**. If Ludeon ever renames the stat this WILL log loudly, and that is the design: wrapped, every pawn on the planet would silently revert to 6…36 and the first sign would be colonists dying of cold in a biome we had signed off. |
-| **T5** | ⚠️ **Raiders got this too.** Watch one raid arrive in a cold biome and confirm the attackers are not freezing to death before they reach the colony. | Accepted deliberately — the enemy lives on this planet too — but it is the consequence most likely to read as a bug in play. |
-
-⚠️ **T1 and T3 are the pair.** T1 alone proves the number reached the pawn; T3 alone proves the
-climate still bites. Neither implies the other.
 
 ---
 
@@ -2171,19 +1666,6 @@ at startup, so a bisection is a log grep rather than a re-load.
 ---
 
 ## §16 — the JawaBench CONTEXT line, and Blackstar as an elite. 2026-08-23 14:5x, BUILD.
-
-### The companion now describes its world, not just itself
-`JAWABENCH_HAS_NO_INIT_LINE_1` was already fixed by a peer — the `ready:` line exists.
-Owner's ask was the harder half: *print what makes a log debuggable later.* A second line
-now follows it, and every field is chosen from a failure this project has actually paid for.
-
-| # | reading | what it decides |
-|---|---|---|
-| **K1** | `[JawaBench] ready: <N> tools, build c1f3121ddf9e` | The companion loaded. Game copy was `d49eaf42545b`; if the log still says that, the deploy did not take. |
-| **K2** | `[JawaBench] context: modSet 581/<hash>, toolSet <hash>, defDump ARMED, engine 1.6.4871 rev<N>` | 🔑 **`modSet` is a count AND a digest of the sorted packageIds, because A COUNT IS NOT A ROSTER** — two different 581-mod lists answer "how many" identically, and the dump-vs-live confusion all session came from comparing counts. `toolSet` is a digest of sorted TOOL NAMES for the same reason: "115 tools" cannot tell you one was renamed. |
-| **K3** | `defDump ARMED` | The load was supposed to re-dump. ⚠️ If this says `no`, the dump will NOT refresh and every offline check afterwards is still measuring the 578-mod game. This is the field that would have caught a stale dump days later. |
-| **K4** | `engine` matches the dump's `game_version` | `Version.txt` ships with the install and does NOT track the runtime rev — measured 2026-08-15 reading rev590 while the game ran rev591. This line is the engine's own answer. |
-| **K5** | ⚠️ If either digest reads `unmeasured` | The probe threw and was swallowed. Non-fatal, but that field is then unavailable — do not read `unmeasured` as "unchanged". |
 
 ### Blackstar is now an elite strike force, deliberately
 | # | reading | what it decides |
@@ -2259,26 +1741,6 @@ needing a map or the world-creation page is listed UNRUN at the bottom — it is
 The repoint is **complete and clean**. The expected value was wrong: `PetNames_Ashkarr.xml`'s
 own header says *"the ~320 ThingDefs"*, while commit `39e6bf27`'s subject and body, and P6
 above, all say **160**. ⇒ **320 is the measured truth; correct the 160 wherever it is quoted.**
-
-## 🔴 FINDING — `JawaBenchInit`'s module initializer is LAZY, and that defeats the item
-
-`[JawaBench] ready:` / `context:` were **absent from the entire 10,358-line log** at load end.
-They appeared only after CHECK invoked a `jawa/` tool, as L10359–10360.
-
-`JawaBenchInit.cs`'s header states the opposite as its whole design basis: *"a static ctor on
-the tools class fires on the first tool INVOCATION, which is far too late… A module
-initializer runs when the ASSEMBLY IS LOADED."* Measured, it behaves exactly like the static
-ctor it rejected. RimBridge registers tools by reading `[Tool]` attributes off **metadata**,
-which never executes module code, so nothing triggers the initializer until a call arrives.
-
-⇒ `JAWABENCH_HAS_NO_INIT_LINE_1`'s stated payoff — *prove the companion loaded without
-bringing the bridge up* — **is not delivered.** The 2026-08-23 00:15 log showed the line only
-because a call happened to land immediately after load (same relative position: L9798
-transpiling → L9799 ready).
-
-⚠️ **K1's failure taxonomy has a third case it did not anticipate.** It reads *"if the log
-still says `d49eaf42545b`, the deploy did not take"* — but the log said **nothing at all**,
-which under the current mechanism is the NORMAL state of a load nobody has called into.
 
 ## 🔴 FINDING — a def dump does NOT show a Cherry Picker cut. Use the log.
 
@@ -2380,28 +1842,6 @@ SWAnimalNamerMale"*. ⇒ **The patch is right; "160 races" in this block, in the
 commit `39e6bf27`'s subject is the error.** The orphaned `SWAnimalNamerMale` RulePackDef still
 exists and is now referenced by nothing.
 
-### ⚠️ A `[JawaBench]` line is LAZY. It is NOT a startup reading, and K1/K2 imply it is.
-
-Both `[JawaBench]` lines were **absent from the log for the entire load** and
-`tools.register-extensions` read `durationMs=0` against `1` on the previous load. That reads
-exactly like a dead companion, and it is not one: the live bridge answers **246 tools, 121 of
-them `jawa/`**. The two lines appeared at 10359–10360 only *after* the first bridge call.
-
-🔑 **`JawaBenchInit.Announce` is a module initializer, and the CLR fires those on the first
-executed code in the module — not when the assembly is loaded.** RimBridge registers the tools
-by *reflecting* over types, which executes nothing, so the announcement waits for the first
-`jawa/*` traffic. The previous load looked like a startup line only because something connected
-immediately after startup.
-
-⛔ **So the line cannot prove "the companion loaded" before anyone connects** — which is the
-expensive route `JAWABENCH_HAS_NO_INIT_LINE_1` was written to replace. It still earns its keep
-as permanent provenance in the log, and connecting now costs one command from any seat:
-
-    python.exe src/RimMandrake/Utils/rimbridge_client.py --list-tools
-
-⇒ **Absence of `[JawaBench]` from a log is UNMEASURED, never "it did not load."** Ask the
-bridge for its tool list; that is the only reading that settles it.
-
 ### G8 is CLOSED
 
 §12's G8 said the dump held 578 against a game loading 580, so every "this def does not exist"
@@ -2458,22 +1898,6 @@ malformed key loses all 1342, and nothing in the game says so; 1212 removals say
 happen this load. The config itself is clean — 1342 entries, every one prefixed, no
 duplicates, no malformed names.
 
-## §10–§17 RESULTS, part 2 — read from the WORLD SCREEN, 2026-08-23 16:1x
-
-**Event:** owner at `Page_SelectStartingSite`, world generated, **no landing site chosen**.
-Seed `raven`, `planetCoverage 1.0`, **21,872 tiles**, 36.74% water / 63.26% land,
-overallRainfall Normal, overallTemperature Normal.
-
-| reading | verdict |
-|---|---|
-| **H4** | ✅ `[PlanetPresetPrime] ready: coverage 1, subdivisions 7, MLP slider primed` (L10361). |
-| **H5** | ✅ **decisive** — `jawa/world_stats` reads `planetCoverage 1.0` and `tilesCount 21872` with the owner having touched no control. `PRIME_WORLD_PRESET_ALWAYS_1`'s criteria met end to end, on a real worldgen. |
-| **§3 T6a** | ✅ **zero** lines on the `Exception loading def from file Jawa` / `XenotypeChance.LoadDataFromXmlCustom` / `ParseAndReturnDef_RimWorld_FactionDef` grep. Corroborated by the free side-effect: `Possible Matches` is **45**, against ~98,000 on the pre-fix load, and the whole log is **10,756 lines** against ~99,700. **B56 closes.** |
-| **§3 T6b** | ✅ **better than the expectation** — T6b predicted seven of the eight would be absent from a world nobody hand-configures. On this real worldgen **all EIGHT are present**, with 18 settlements between them: `Jawa_IndigenousTribes` 5, `Jawa_AscendantHelix` 3, `Jawa_HuttCartel` 2, `Jawa_WildsteamClan` 2, `Jawa_GeonosianFoundryHive` 2, `Jawa_FreeDroidEnclaves` 2, `Jawa_Junkers` 1, `Jawa_DeepwaterCompact` 1. T6b's table admits this explicitly — `canMakeRandomly` rolled the seven in. ⇒ `seven-factions-have-no-required-count-9c4e17` in `queue/DECIDE.md` is **less urgent than it reads**: they generate without a required count. |
-| **`factionWarning`** | ✅ **false alarm, checked not assumed.** `world_objects_get` prints *"A Settlement with a null faction is DESTROYED on load"* whenever any object lacks a faction. All **80** faction-less objects here are asteroids and derelict stations (`BigAsteroidBasic` 40, `VGE_*` 37, `AsteroidBasic` 3). **All 35 Settlements carry a faction.** Nothing is at risk. |
-
-⚠️ **Vanilla factions are still generating** — `OutlanderCivil` 5, `Pirate` 4, `TribeCivil` 3, `Empire` 1, plus `Insect` 24. §2's S3 ("faction exclusion took") is written against the superseded world and is **not** scored here.
-
 ### 🔴 The water is 4.5× the design target, and this is the pre-click moment to say so
 
 `the_one_map.md` records the owner's own ruling — *"There's WAY too much water, so reduce
@@ -2491,29 +1915,6 @@ the live readings; wrong before landing if it is meant to become the frozen plan
 `get_Selector`, inside `DiagnosticsCapabilityModule.GetGameInfo`. It is not a refusal, it is
 an unhandled cast on a screen with no map. **Use `jawa/world_stats` / `jawa/world_info_get`
 at `Page_SelectStartingSite`; `get_game_info` is unavailable there.**
-
----
-
-## §18 — WORLDMAP READABILITY. Written 2026-08-23 17:5x by BUILD, game UP.
-
-Owner's two asks in one line each: settlement icons twice as big, world labels twice as
-opaque. ⚠️ **They deploy at different times** — the icon is XML and is already on disk in
-the game folder; the label change is a DLL and the OS held it, so it is committed and
-undeployed until the next down-window.
-
-| # | reading | what it decides |
-|---|---|---|
-| **W1** | Settlement icons on the planet draw at **60 px**, not 30. Two settlements side by side should now nearly touch at the zoom where they used to sit clearly apart. | `expandingIconDrawSize` 1 → 2 against `30f * expandingIconDrawSize` (`ExpandableWorldObjectsUtility.cs:212`). ⚠️ **A patch that matched nothing logs nothing** — the op is a Conditional, so its failure is silent. W1 is the only evidence it fired. |
-| **W2** | ⛔ **Caravans, sites and quest markers are UNCHANGED.** | Scope was `Settlement` alone. Core sets 1.6 and Odyssey 1.35/1.1 on other world objects; if those grew too, the xpath hit the wrong def. |
-| **W3** | ✅ **EXPECTED-PRESENT, only after the DLL deploys:** `[JawaRules] world-labels: armed; world feature names peak at 0.60 alpha instead of 0.30` | ⚠️ **Absent is UNMEASURED until the DLL is deployed** — and remember a `[JawaRules]` line is only proof the patch attached. |
-| **W4** | 🔴 `[JawaRules] world-labels: expected exactly ONE 0.30 constant in WorldFeatures.UpdateAlpha and found <n>` | The transpiler counts its own hits. ⭐ **This is the reading that exists because the failure is otherwise SILENT** — a transpiler that matches nothing returns the method unchanged and Harmony reports success. If this fires, the labels are still at 0.30 whatever the armed line said. |
-| **W5** | 🔑 **LOOK: the region and sea names across the planet are visibly stronger, and still fade in and out with camera altitude.** | `feature.alpha` is the fade PROGRESS and is untouched — only the 0.3 ceiling moved. If the names stop fading, or sit at full strength at every zoom, the wrong constant was hit. |
-| **W6** | ⚠️ No new frame-rate cost on the world map. | The reason a transpiler was used rather than a postfix: a postfix would have made the original's drift guard miss every frame, and each miss calls `WrapAroundPlanetSurface`, which rebuilds the text mesh — 71 named features × 2 rebuilds per frame. |
-
-⚠️ **W1 and W5 are independent and land at different loads.** The icon is live on the very
-next load; the labels wait for a load after a DLL deploy. ⛔ Do not read "labels unchanged"
-as a failure without checking which build the game copy holds — it was `6c5fe361` (15:08)
-at the time of writing, and the transpiler is not in it.
 
 ---
 
