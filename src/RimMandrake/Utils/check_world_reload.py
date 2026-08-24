@@ -113,14 +113,20 @@ def main():
               % (val.get("matched"), val.get("rows"), mism, len(named), len(unnamed),
                  wrong or "none"))
 
-        # P5 - lint. 18 roadless settlements is INTENT as of 2026-08-24 (9 Tusken
-        # holdings + 5 droid seats + 3 unplanned + the rest), not a regression.
+        # P5 - lint. 🔴 The baseline is 23, NOT 18. 18 was a pre-Rust-Cathedral reading I
+        # quoted from memory when writing these predictions; the Cathedral pass then cut 63
+        # more road edges. Measured live 2026-08-24: 9 Deep Desert Tribes (owner: they build
+        # no roads), 8 Free Droid Enclaves, 2 Ascendant Helix, 3 unplanned settlements and
+        # Kettle Deep - every one intended. A count BELOW 23 means something re-laid roads
+        # the owner ruled away, which is the failure this check is actually for.
+        NOROAD_BASELINE = 23
         lint = rb.call("jawa/world_lint", {})
         checks = lint.get("checks", {})
         noroad = (checks.get("settlementsWithNoRoad") or {}).get("count")
         trunk = (checks.get("riverSystems") or {}).get("trunkSystemsReachingNoSea")
-        score("P5 lint unchanged", noroad == 18 and trunk == 1,
-              "noRoad=%s (predicted 18), orphanTrunks=%s (predicted 1)" % (noroad, trunk))
+        score("P5 lint unchanged", noroad == NOROAD_BASELINE and trunk == 1,
+              "noRoad=%s (baseline %d), orphanTrunks=%s (baseline 1)"
+              % (noroad, NOROAD_BASELINE, trunk))
 
         # P6 - the settlements are where they were put.
         objs = rb.call("jawa/world_objects_get", {"limit": 4000})
