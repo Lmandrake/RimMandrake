@@ -78,30 +78,18 @@ the next way it dies will not be that one.)
 
 ## The board
 
-A browser page, not a desktop window — WSLg gives Tk no DPI scaling, so anything native renders blurry. Rows are the v1
-bullets from `infrastructure/state/V1.md`, columns DECIDE / BUILD / CHECK, each cell a fill bar with `done/total`; plus
-gauges, KPI tiles, blockers, host memory and repo inventory.
+A browser page, not a desktop window — WSLg gives Tk no DPI scaling. Rows are the v1 bullets from
+`infrastructure/state/V1.md`, columns DECIDE / BUILD / CHECK, each cell a fill bar with `done/total`;
+plus gauges, KPI tiles, blockers, host memory and repo inventory.
 
-⛔ **CURRENTLY and `infrastructure/state/status/<SEAT>.json` are DELETED, 2026-08-22.** The owner:
-*"It's never showing what the agents are really doing… all the agent status' are wrong."* He was right about
-every tile, and the cause was one thing — **the board printed what seats SAY, and no seat says anything.**
-The four status files had **no writer at all** (`board.py say` is long gone) and were 1–7 days old, so *idle*
-meant "wrote no file this week" while `ps` showed all four windows alive and the ledger showed BUILD filing
-an event 0 minutes earlier. *"CHECK holds the Bridge"* was a lease nobody releases, still on screen six hours
-after the game went down. *STALE 6m* keyed off the **ledger's** age, not the page's, so a seat mid-build read
-as dead.
-
-⭐ **The replacement rule, and it is the same one `measure` enforces: nothing on the page is self-reported.**
-`measured()` in `status_server.py` reads liveness from `ps` (`AGENT_SEAT=<SEAT>`), activity from the
-append-only ledger, the game from the Windows process list, the bridge from a **TCP probe** of `:5174`, and
-durability from `git`. Every tile prints the instrument that produced it; where no instrument exists the
-answer is **UNMEASURED**, never a guess. ⛔ **Do not re-introduce a tile a seat has to remember to update** —
-that is the defect, not the implementation.
-
-⛔ **`status_matrix.json` is DELETED, 2026-08-22.** It was a dead artifact: the board reads
-`infrastructure/state/derived/board.json`, `derive_matrix.py` refuses to rebuild it against the rendered queues, and it had
-sat frozen at 55 rows / 165 items since 08-20 while the ledger moved to 39 rows / 248. What renders the board is
-`render.py --overwrite-queues`, which is the same command that publishes the queues.
+⭐ **NOTHING ON THE PAGE IS SELF-REPORTED — this is the rule, not an implementation detail.**
+`measured()` in `status_server.py` reads liveness from `ps` (`AGENT_SEAT=`), activity from the
+ledger, the game from the Windows process list, the bridge from `rimbridge_client`, durability from
+`git`. Every tile prints the instrument behind it; where none exists the answer is **UNMEASURED**,
+never a guess. ⛔ **Do not re-introduce a tile a seat must remember to update** — four such tiles
+were deleted 2026-08-22 after the owner found every one of them wrong, all for the same reason: the
+board printed what seats SAY, and no seat says anything. `CURRENTLY`, `status/<SEAT>.json` and
+`status_matrix.json` are gone; do not recreate them.
 
 ## Modes — superseded, and the pointer is all that is left
 
@@ -191,29 +179,21 @@ reaches him at all. Those are yours outright.
 **v2 ideas:** when the human throws out an idea that is not v1, append it to the end of `design/V2_DREAMS.md`, then say where
 it went. No queue item, no DECIDE approval, no format, nothing scheduled; this is the one thing you may write.
 
-## Skills added 2026-08-16
+## Skills
 
-`agent-fanout-research` — scoping parallel agents and composing contradictory returns. `review-sheets` — the format the owner
-reviews decisions in.
+⚠️ **A skill folder IS the installed skill**: `.claude/skills/<name>` symlinks to it, so editing the
+folder installs it immediately. The `.skill` archives are a gitignored EXPORT for a machine with no
+checkout; refresh with `python3 src/RimMandrake/Utils/package_skill.py --all`.
 
-⚠️ **A skill folder IS the installed skill** (corrected 2026-08-21): `.claude/skills/<name>` symlinks to the skill folder
-⇒ **editing the folder installs it, immediately.** The `.skill` archives are a **gitignored** EXPORT (`.gitignore:166`)
-for a machine without this checkout; refresh with `python3 src/RimMandrake/Utils/package_skill.py --all`.
-
-🔴 **TWO SKILLS NOW LIVE OUTSIDE THIS REPO, and the count "all 26" is dead** (corrected 2026-08-23).
-`measuring-large-artifacts` and `review-sheets` are **generic** — this project merely uses them — so they sit at
-`/mnt/d/Luke/dev/<name>` with their own git remotes, symlinked ABSOLUTELY from both `.claude/skills/` and
-`~/.claude/skills/`, which makes them machine-wide. ⛔ **`package_skill.py --all` cannot see them**, and a sweep that
-"repairs" their symlinks back to `skills/<name>` breaks both. Roster and rules: `skills/README.md`.
+🔴 **`measuring-large-artifacts` and `review-sheets` live OUTSIDE this repo** at `/mnt/d/Luke/dev/<name>`
+with their own remotes, symlinked absolutely from `.claude/skills/` and `~/.claude/skills/`. ⛔
+`package_skill.py --all` cannot see them, and a sweep that "repairs" their symlinks back into
+`skills/<name>` breaks both. Roster: `skills/README.md`.
 
 ## ⛔ Do not message other agents. At all.
 
-Owner's ruling, 2026-08-19: **`SendMessage` to another agent window is OFF.** Waking another seat is a **USER function**,
-enforced at the SENDING end by `.claude/hooks/block_peer_messages.py` — a message naming a seat is refused before it leaves.
-⚠️ `crossSessionInbound` is **`accept`, on purpose**: it is how the owner's `broadcast.py` reaches you, and `refuse` would
-drop HIS announcements. No exception for urgency, a reversed ruling, or a peer about to destroy work — **that goes to the
-OWNER, in your reply**; everything else to `infrastructure/state/queue/<SEAT>.md` or `queue/HUMAN.md`. ✅ Your own subagents
-are not peers — spawn and resume them freely. Full rule in `POLICY.md`.
+Owner, 2026-08-19. **Full rule in `CLAUDE.md` and `POLICY.md`; it is not restated here.** ✅ Your own
+subagents are not peers — spawn and resume them freely.
 
 ## 🔴 The ledger — 2026-08-20
 
