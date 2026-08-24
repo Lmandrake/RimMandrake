@@ -2076,3 +2076,4 @@
 {"seat":"OWNER","event":"needs","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","to":"game-up","ownerSaid":"This is BENCH mode, and I'm the Owner. Modify (1) immediately to what I said","ts":"2026-08-24T08:33:17Z"}
 {"seat":"BUILD","event":"close","id":"MECH_AND_ARCHER_ARMED_1","sha":"13a7c2f0","ts":"2026-08-24T08:33:23Z"}
 {"seat":"BUILD","event":"close","id":"ORDERS_DESIGNATORS_ENUMERATE_ZERO_1","sha":"13a7c2f0","ts":"2026-08-24T08:33:23Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ownerSaid":"Game is Down","ts":"2026-08-24T08:36:38Z"}
