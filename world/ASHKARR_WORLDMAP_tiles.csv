@@ -174,7 +174,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 172,47.8837,-37.2141,57.72,118.67,391,37.6,0,Desert,0,0,Glare,3,0.0
 173,35.9504,-28.4298,44.61,123.28,182,48.9,0,ExtremeDesert,0,0,Glare,3,0.0
 174,22.6644,-50.4835,54.04,151.57,65,40.8,0,ZBiome_Grasslands,0,0,Dew Horn,3,0.45
-175,23.9221,-35.7468,42.11,142.79,17,50.2,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.57
+175,23.9221,-35.7468,42.11,142.79,17,50.2,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 176,27.2871,-103.5267,102.0,152.05,-350,-0.4,0,SeaIce,1,0,Twilight Sea,1,0.0
 177,34.3737,-90.0,90.0,145.63,1.0,14.0,0,Desert,0,0,Twilight Sea,1,0.0
 178,27.2871,-76.4733,78.0,152.05,-350,23.6,0,Ocean,1,0,Twilight Sea,1,0.0
@@ -353,13 +353,13 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 351,30.2395,-52.2951,58.1,143.62,272,36.8,69,ZBiome_Grasslands,0,0,Dew Horn,4,0.48
 352,43.1105,-46.3698,59.75,127.71,16,38.3,0,Desert,0,0,Glare,1,0.0
 353,39.8997,-36.8871,52.15,125.67,110,43.6,0,Desert,0,0,Glare,2,0.0
-354,27.4125,-43.7231,50.09,143.12,12,44.5,0,BiomeCypreJungle,0,4847,Fever Wood,1,0.53
+354,27.4125,-43.7231,50.09,143.12,12,44.5,0,AB_MiasmicMangrove,0,4847,Fever Wood,1,0.95
 355,31.89,-36.3872,46.88,133.63,31,47.8,0,ExtremeDesert,0,0,Glare,1,0.0
 356,20.7612,-98.4775,97.92,159.03,-350,4.5,0,SeaIce,1,0,Twilight Sea,1,0.0
 357,27.667,-94.5296,94.01,152.26,1.0,9.2,0,AridShrubland,0,0,Twilight Sea,1,0.0
 358,27.667,-85.4704,85.99,152.26,-350,17.2,0,Ocean,1,0,Twilight Sea,1,0.0
-359,20.7612,-81.5225,82.08,159.03,-350,20.3,0,Ocean,1,0,Twilight Sea,1,0.0
-360,13.9643,-94.0124,93.89,166.0,-350,9.3,0,Ocean,1,0,Twilight Sea,1,0.0
+359,20.7612,-81.5225,82.08,159.03,8,20.3,0,Wasteland,1,0,Twilight Sea,1,0.15
+360,13.9643,-94.0124,93.89,166.0,19,9.3,0,ZBiome_Badlands,1,0,Twilight Sea,1,0.15
 361,13.9643,-85.9876,86.11,166.0,-350,17.1,0,Ocean,1,0,Twilight Sea,1,0.0
 362,37.8411,125.6687,117.42,43.72,1066,-26.1,0,AB_MycoticJungle,0,0,Sunreach,2,0.42
 363,30.2395,127.7049,121.9,36.38,843,-31.0,0,HorrorWastes,0,0,Sunreach,3,0.0
@@ -772,7 +772,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 770,7.6333,-47.6515,48.11,169.72,685,40.0,0,ZBiome_DesertOasis,0,0,Scald Spine,3,0.24
 771,4.0096,-40.8716,41.03,173.89,-350,42.9,0,Lake,1,0,Scald,1,0.0
 772,15.2031,-48.814,50.55,160.15,1,42.9,0,AB_FeraliskInfestedJungle,0,0,Dew Belt,1,0.42
-773,19.645,-42.4767,46.0,152.14,158,45.7,0,ZBiome_DesertOasis,0,0,Fever Wood,1,0.22
+773,19.645,-42.4767,46.0,152.14,158,45.7,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.7
 774,16.037,-34.9741,38.05,153.37,220,49.2,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,3,0.65
 775,8.0507,-34.5157,35.33,165.98,-350,46.7,0,Lake,1,0,Scald,1,0.0
 776,-15.2031,-48.814,50.55,199.85,727,41.4,1112,BiomeCypreJungle,0,24,Scald Spine,4,0.40
@@ -801,7 +801,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 799,-15.2031,-131.186,129.45,199.85,1136,-39.7,0,HorrorWastes,0,0,Deadstone,3,0.0
 800,0.0,-108.655,108.66,180.0,-350,-5.3,0,SeaIce,1,0,Twilight Sea,1,0.0
 801,-6.8262,-105.1822,105.07,187.07,590,-6.0,39,AB_RockyCrags,0,0,Twilight Crags,4,0.0
-802,6.8263,-105.1822,105.07,172.93,-350,-1.6,0,Ocean,1,0,Twilight Sea,1,0.0
+802,6.8263,-105.1822,105.07,172.93,30,-1.6,0,AB_MiasmicMangrove,1,0,Twilight Sea,1,0.85
 803,6.9627,-97.6275,97.57,172.98,-350,4.9,0,Ocean,1,0,Twilight Sea,1,0.0
 804,0.0,-93.6799,93.68,180.0,1.0,9.6,0,Desert,0,0,Twilight Sea,1,0.0
 805,-6.9627,-97.6275,97.57,187.02,507,2.1,0,Wasteland,0,0,Nightspill,2,0.0
@@ -889,8 +889,8 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 887,73.6735,0.0,73.67,90.0,223,24.1,0,ZBiome_Badlands,0,0,Cracklands,2,0.0
 888,66.4539,10.0224,66.83,85.66,25,31.5,0,ZBiome_Badlands,0,0,Cracklands,2,0.0
 889,70.9585,12.1871,71.4,85.83,97,26.8,0,ZBiome_Badlands,0,0,Cracklands,2,0.0
-890,34.5118,-50.5364,58.42,138.31,7,38.7,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.48
-891,31.0255,-47.0109,54.25,140.57,13,41.9,0,BiomeCypreJungle,0,24717,Fever Wood,2,0.53
+890,34.5118,-50.5364,58.42,138.31,7,38.7,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+891,31.0255,-47.0109,54.25,140.57,13,41.9,0,AB_MiasmicMangrove,0,24717,Fever Wood,2,0.95
 892,38.8097,-48.5799,58.97,132.99,10,38.5,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
 893,39.4978,-42.7447,55.48,129.47,20,41.4,0,Desert,0,0,Glare,1,0.0
 894,31.5767,-41.6938,50.49,137.26,27,45.1,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.06
@@ -899,7 +899,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 897,23.1475,-94.3337,93.98,156.79,-350,9.2,0,Ocean,1,0,Twilight Sea,1,0.0
 898,25.4589,-90.0,90.0,154.54,-350,14.0,0,Ocean,1,0,Twilight Sea,1,0.0
 899,23.1475,-85.6663,86.02,156.79,-350,17.2,0,Ocean,1,0,Twilight Sea,1,0.0
-900,16.3014,-90.0,90.0,163.7,-350,14.0,0,Ocean,1,0,Twilight Sea,1,0.0
+900,16.3014,-90.0,90.0,163.7,41,14.0,0,Wasteland,1,0,Twilight Sea,1,0.15
 901,18.5751,-85.8374,86.05,161.38,-350,17.2,0,Ocean,1,0,Twilight Sea,1,0.0
 902,34.5118,129.4636,121.58,41.69,947,-31.1,0,AB_MycoticJungle,0,0,Sunreach,2,0.37
 903,31.0255,132.9891,125.75,39.43,1039,-36.4,0,AB_MycoticJungle,0,0,Capwood,2,0.33
@@ -1019,7 +1019,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1017,42.7379,-79.21,82.1,136.75,1,19.9,0,AridShrubland,0,0,Combs,1,0.0
 1018,44.6846,-73.5103,78.36,134.11,7,22.9,0,AridShrubland,0,0,Combs,1,0.0
 1019,42.1372,-68.663,74.35,135.83,1,25.7,0,AridShrubland,0,0,Combs,1,0.0
-1020,35.9587,-75.0449,77.94,143.1,-350,23.6,0,Ocean,1,0,Twilight Sea,1,0.0
+1020,35.9587,-75.0449,77.94,143.1,15,23.6,0,ZBiome_Badlands,1,0,Twilight Sea,1,0.15
 1021,37.7523,-69.6875,74.07,140.45,-350,26.7,0,Ocean,1,0,Twilight Sea,1,0.0
 1022,74.8777,98.7759,92.28,75.05,42,10.4,0,Desert,0,0,Knuckles,2,0.0
 1023,77.822,112.4271,94.62,78.72,1,7.6,0,Desert,0,0,Knuckles,2,0.0
@@ -1295,7 +1295,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1293,20.8671,-60.2043,62.33,156.29,883,31.0,0,AridShrubland,0,0,Dew Horn,3,0.0
 1294,22.2379,-68.5887,70.25,156.29,-350,29.8,0,Ocean,1,0,Twilight Sea,1,0.0
 1295,23.7971,-63.8334,66.2,153.83,186,30.9,130,AridShrubland,0,0,Dew Horn,4,0.0
-1296,17.8538,-69.4313,70.46,161.02,-350,29.6,0,Ocean,1,0,Twilight Sea,1,0.0
+1296,17.8538,-69.4313,70.46,161.02,26,29.6,0,AB_MiasmicMangrove,1,0,Twilight Sea,1,0.85
 1297,15.1987,-65.8436,66.74,163.42,-350,32.6,0,Ocean,1,0,Twilight Sea,1,0.0
 1298,4.6043,-78.7464,78.78,175.31,-350,23.0,0,Ocean,1,0,Twilight Sea,1,0.0
 1299,2.2773,-75.0705,75.08,177.64,261,25.7,0,AridShrubland,0,0,Dew Belt,3,0.0
@@ -1828,7 +1828,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1826,36.6046,-59.9483,66.3,139.37,1,31.2,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.04
 1827,33.5117,-55.995,62.21,141.38,1,34.4,0,AB_MiasmicMangrove,0,0,Salt Gate,1,0.81
 1828,35.1188,-65.4,70.09,142.28,1,27.5,0,AridShrubland,0,0,Combs,1,0.0
-1829,30.807,-66.5483,70.01,146.98,-350,30.0,0,Ocean,1,0,Twilight Sea,1,0.0
+1829,30.807,-66.5483,70.01,146.98,37,30.0,0,Wasteland,1,0,Twilight Sea,1,0.15
 1830,27.9987,-62.6317,66.05,149.09,-350,33.2,0,Ocean,1,0,Twilight Sea,1,0.0
 1831,29.2275,-57.5101,62.05,146.44,1,34.5,0,Wasteland,0,0,Dew Horn,1,0.0
 1832,43.715,-40.1791,56.48,124.01,84,40.4,0,Desert,0,0,Glare,3,0.0
@@ -1847,13 +1847,13 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1845,26.8195,-48.8265,54.02,146.11,5,41.5,0,ZBiome_Grasslands,0,0,Dew Horn,3,0.48
 1846,18.5907,-52.0074,54.31,156.89,1,40.6,0,ZBiome_Grasslands,0,0,Dew Horn,1,0.43
 1847,21.8634,-55.372,58.17,154.0,384,35.8,95,ZBiome_Badlands,0,0,Dew Horn,4,0.0
-1848,19.2062,-47.2452,50.13,154.62,1,43.3,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.43
-1849,23.2796,-45.5622,49.97,148.93,4,44.1,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.48
-1850,23.6995,-40.6395,45.99,146.02,6,47.0,0,BiomeCypreJungle,0,6537,Fever Wood,1,0.52
+1848,19.2062,-47.2452,50.13,154.62,1,43.3,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+1849,23.2796,-45.5622,49.97,148.93,4,44.1,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+1850,23.6995,-40.6395,45.99,146.02,6,47.0,0,AB_MiasmicMangrove,0,6537,Fever Wood,1,0.95
 1851,27.7894,-38.6219,46.28,139.83,25,47.9,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
 1852,27.9495,-33.5616,42.6,136.18,30,50.5,0,Wasteland,0,0,Glare,1,0.0
 1853,23.9441,-30.9123,38.36,139.16,27,53.2,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.60
-1854,19.9039,-37.727,41.95,149.39,2,49.1,0,BiomeCypreJungle,0,7127,Fever Wood,2,0.55
+1854,19.9039,-37.727,41.95,149.39,2,49.1,0,AB_MiasmicMangrove,0,7127,Fever Wood,2,0.95
 1855,19.9846,-33.0269,38.01,146.29,11,52.0,0,BiomeCypreJungle,0,1007,Dune Sea,1,0.59
 1856,25.284,-98.842,97.99,154.45,1.0,4.4,0,Desert,0,0,Twilight Sea,1,0.0
 1857,29.7438,-99.2604,98.03,149.93,1.0,4.4,0,Desert,0,0,Twilight Sea,1,0.0
@@ -2509,8 +2509,8 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 2507,71.3246,-4.116,71.37,91.39,46,27.2,0,Desert,0,0,Cracklands,2,0.0
 2508,68.9106,7.3739,69.09,87.17,39,29.3,0,ZBiome_Badlands,0,0,Cracklands,2,0.0
 2509,71.3246,4.116,71.37,88.61,135,26.7,0,ZBiome_Badlands,0,0,Cracklands,3,0.0
-2510,33.62,-47.5165,55.78,137.96,15,40.9,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.53
-2511,32.6397,-44.5672,53.14,137.61,22,43.1,0,ZBiome_Grasslands,0,0,Fever Wood,1,0.56
+2510,33.62,-47.5165,55.78,137.96,15,40.9,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+2511,32.6397,-44.5672,53.14,137.61,22,43.1,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 2512,36.2157,-48.0384,57.35,135.44,14,39.8,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
 2513,37.8799,-45.443,56.37,132.49,15,40.6,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.06
 2514,34.2158,-42.0425,52.11,134.56,25,43.9,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.06
@@ -3467,13 +3467,13 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 3465,25.181,-51.0694,55.34,148.85,366,38.6,47,ZBiome_Grasslands,0,0,Dew Horn,4,0.05
 3466,20.1644,-49.9106,52.81,154.36,1,41.5,0,AB_FeraliskInfestedJungle,0,0,Dew Horn,1,0.44
 3467,21.0514,-52.6207,55.49,154.16,57,39.6,0,ZBiome_Grasslands,0,0,Dew Horn,3,0.05
-3468,21.729,-47.763,51.36,151.71,1,42.9,0,BiomeCypreJungle,0,24914,Fever Wood,1,0.45
+3468,21.729,-47.763,51.36,151.71,1,42.9,0,AB_MiasmicMangrove,0,24914,Fever Wood,1,0.95
 3469,24.2677,-48.2893,52.66,148.87,4,42.3,0,AB_FeraliskInfestedJungle,0,0,Dew Horn,1,0.47
-3470,22.5216,-38.0366,43.32,146.06,7,48.8,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.54
-3471,25.151,-38.3348,44.76,142.88,16,48.3,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.54
+3470,22.5216,-38.0366,43.32,146.06,7,48.8,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+3471,25.151,-38.3348,44.76,142.88,16,48.3,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 3472,26.5693,-35.9758,43.63,139.59,26,49.6,0,Wasteland,0,0,Glare,1,0.0
-3473,25.2855,-33.4057,40.99,139.37,26,51.4,0,BiomeCypreJungle,0,499,Fever Wood,1,0.59
-3474,21.2816,-35.4988,40.66,146.15,8,50.3,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.57
+3473,25.2855,-33.4057,40.99,139.37,26,51.4,0,AB_MiasmicMangrove,0,499,Fever Wood,1,0.95
+3474,21.2816,-35.4988,40.66,146.15,8,50.3,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 3475,22.6298,-33.2273,39.46,142.74,19,52.0,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.60
 3476,27.454,-100.5419,99.34,152.15,1.0,2.8,0,Desert,0,0,Twilight Sea,1,0.0
 3477,29.5832,-102.3255,100.7,149.84,1.0,1.2,0,AridShrubland,0,0,Twilight Sea,1,0.0
@@ -3498,7 +3498,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 3496,16.1075,-79.1388,79.57,163.61,-350,22.3,0,Ocean,1,0,Twilight Sea,1,0.0
 3497,16.0025,-76.4512,76.99,163.56,-350,24.4,0,Ocean,1,0,Twilight Sea,1,0.0
 3498,13.6795,-75.3794,75.8,165.88,-350,25.4,0,Ocean,1,0,Twilight Sea,1,0.0
-3499,11.4525,-76.9198,77.18,168.25,-350,24.3,0,Ocean,1,0,Twilight Sea,1,0.0
+3499,11.4525,-76.9198,77.18,168.25,11,24.3,0,ZBiome_Badlands,1,0,Twilight Sea,1,0.15
 3500,16.0025,-103.5489,103.01,163.56,-350,-1.6,0,Ocean,1,0,Twilight Sea,1,0.0
 3501,16.1075,-100.8612,100.43,163.61,-350,1.5,0,Ocean,1,0,Twilight Sea,1,0.0
 3502,11.4525,-103.0802,102.82,168.25,-350,-1.4,0,SeaIce,1,0,Twilight Sea,1,0.0
@@ -4544,11 +4544,11 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 4542,38.6552,-33.9517,49.63,124.92,193,45.2,0,ExtremeDesert,0,0,Glare,2,0.0
 4543,41.3328,-33.9835,51.49,122.44,274,43.0,0,Desert,0,0,Glare,3,0.0
 4544,28.4354,-46.5188,52.76,143.27,24,42.5,0,AB_FeraliskInfestedJungle,0,0,Dew Horn,2,0.52
-4545,30.0231,-44.1423,51.59,140.32,19,43.9,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.55
+4545,30.0231,-44.1423,51.59,140.32,19,43.9,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 4546,25.8524,-46.0367,51.34,146.05,6,43.4,0,BiomeCypreJungle,0,23354,Dew Horn,1,0.50
-4547,24.8109,-43.3067,48.66,146.02,6,45.2,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.52
-4548,26.316,-40.9939,47.42,142.99,14,46.4,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.52
-4549,28.9425,-41.3449,48.93,140.07,23,45.9,0,ZBiome_Grasslands,0,0,Fever Wood,1,0.53
+4547,24.8109,-43.3067,48.66,146.02,6,45.2,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+4548,26.316,-40.9939,47.42,142.99,14,46.4,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+4549,28.9425,-41.3449,48.93,140.07,23,45.9,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 4550,30.4368,-38.9001,47.86,136.9,29,47.0,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.06
 4551,33.0905,-39.1705,49.49,134.11,29,45.9,0,ExtremeDesert,0,0,Glare,1,0.0
 4552,34.5586,-36.5702,48.59,130.86,33,46.7,0,ExtremeDesert,0,0,Glare,1,0.0
@@ -5309,7 +5309,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 5307,35.7226,-71.7983,75.31,142.87,-350,25.8,0,Ocean,1,0,Twilight Sea,1,0.0
 5308,35.449,-68.5851,72.7,142.59,-350,27.8,0,Ocean,1,0,Twilight Sea,1,0.0
 5309,33.1312,-67.5401,71.34,144.77,-350,28.9,0,Ocean,1,0,Twilight Sea,1,0.0
-5310,31.4226,-72.6896,75.29,147.38,-350,25.8,0,Ocean,1,0,Twilight Sea,1,0.0
+5310,31.4226,-72.6896,75.29,147.38,22,25.8,0,AB_MiasmicMangrove,1,0,Twilight Sea,1,0.85
 5311,31.14,-69.6058,72.65,147.19,-350,27.9,0,Ocean,1,0,Twilight Sea,1,0.0
 5312,73.8121,90.0,90.0,73.81,76,13.0,0,Desert,0,0,Knuckles,2,0.0
 5313,72.3873,82.5146,87.74,72.53,33,14.9,0,Desert,0,0,Slough,1,0.0
@@ -6959,7 +6959,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 6957,20.1654,-70.3937,71.64,158.7,-350,28.7,0,Ocean,1,0,Twilight Sea,1,0.0
 6958,20.5177,-75.9212,76.83,158.9,-350,24.5,0,Ocean,1,0,Twilight Sea,1,0.0
 6959,22.67,-74.2103,75.46,156.54,-350,25.6,0,Ocean,1,0,Twilight Sea,1,0.0
-6960,18.1965,-74.8321,75.61,161.19,-350,25.5,0,Ocean,1,0,Twilight Sea,1,0.0
+6960,18.1965,-74.8321,75.61,161.19,33,25.5,0,Wasteland,1,0,Twilight Sea,1,0.15
 6961,18.0408,-72.1221,73.03,161.11,-350,27.6,0,Ocean,1,0,Twilight Sea,1,0.0
 6962,15.7278,-71.1317,71.86,163.43,-350,28.5,0,Ocean,1,0,Twilight Sea,1,0.0
 6963,15.5086,-68.4865,69.31,163.39,-350,30.6,0,Ocean,1,0,Twilight Sea,1,0.0
@@ -7057,15 +7057,15 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 7055,13.6873,-50.873,52.18,162.57,1,41.9,0,BiomeCypreJungle,0,19595,Dew Belt,1,0.40
 7056,16.1447,-51.4119,53.19,159.68,1,41.4,0,AB_FeraliskInfestedJungle,0,0,Dew Belt,1,0.41
 7057,17.6801,-49.3495,51.63,157.21,1,42.2,0,BiomeCypreJungle,0,19363,Dew Belt,1,0.43
-7058,17.0864,-42.0599,44.79,155.35,145,45.8,0,ZBiome_DesertOasis,0,0,Fever Wood,2,0.22
-7059,18.5041,-39.9142,43.34,152.45,176,47.1,0,ZBiome_DesertOasis,0,0,Fever Wood,2,0.24
-7060,18.1789,-44.6277,47.46,154.95,84,44.6,0,ZBiome_DesertOasis,0,0,Fever Wood,2,0.2
-7061,20.7213,-45.0931,48.68,151.89,54,44.5,0,ZBiome_DesertOasis,0,0,Fever Wood,1,0.2
-7062,22.2208,-42.8917,47.29,149.03,80,45.5,0,ZBiome_DesertOasis,0,0,Fever Wood,1,0.22
-7063,21.094,-40.2795,44.62,149.18,46,47.4,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,2,0.53
+7058,17.0864,-42.0599,44.79,155.35,145,45.8,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,2,0.85
+7059,18.5041,-39.9142,43.34,152.45,176,47.1,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,2,0.85
+7060,18.1789,-44.6277,47.46,154.95,84,44.6,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,2,0.85
+7061,20.7213,-45.0931,48.68,151.89,54,44.5,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+7062,22.2208,-42.8917,47.29,149.03,80,45.5,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+7063,21.094,-40.2795,44.62,149.18,46,47.4,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,2,0.85
 7064,14.6877,-37.1323,39.54,156.53,396,47.3,1390,AB_FeraliskInfestedJungle,0,0,Dune Sea,4,0.64
 7065,13.3889,-34.7785,36.96,157.35,128,48.7,1529,AB_FeraliskInfestedJungle,0,0,Dune Sea,4,0.62
-7066,17.3007,-37.4117,40.68,152.86,176,48.8,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,3,0.54
+7066,17.3007,-37.4117,40.68,152.86,176,48.8,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,3,0.85
 7067,18.6554,-35.2356,39.3,149.66,70,50.4,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,2,0.56
 7068,17.3506,-32.8097,36.66,150.03,162,50.6,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,3,0.68
 7069,14.7067,-32.6204,35.45,154.04,144,50.0,1529,AB_FeraliskInfestedJungle,0,0,Dune Sea,4,0.65
@@ -7182,7 +7182,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 7180,22.4728,-108.6114,107.15,156.42,218,-4.2,16,AridShrubland,0,0,Twilight Crags,4,0.0
 7181,22.67,-105.7897,104.54,156.54,-350,-3.7,0,SeaIce,1,0,Twilight Sea,1,0.0
 7182,20.5177,-104.0788,103.17,158.9,-350,-1.8,0,Ocean,1,0,Twilight Sea,1,0.0
-7183,18.1965,-105.1679,104.39,161.19,-350,1.3,0,Ocean,1,0,Twilight Sea,1,0.0
+7183,18.1965,-105.1679,104.39,161.19,44,1.3,0,ZBiome_Badlands,1,0,Twilight Sea,1,0.15
 7184,-6.6609,-139.0123,138.57,190.1,720,-47.8,0,HorrorWastes,0,0,Deadstone,2,0.0
 7185,-5.2719,-136.9096,136.65,187.69,700,-45.3,0,HorrorWastes,0,0,Deadstone,2,0.0
 7186,-1.3378,-139.1796,139.16,182.05,483,-46.6,0,HorrorWastes,0,0,Deadstone,2,0.0
@@ -8329,12 +8329,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 8327,21.297,-51.0049,54.11,153.36,14,40.8,0,ZBiome_Grasslands,0,0,Dew Horn,2,0.45
 8328,22.8909,-48.8452,52.68,150.72,1,42.1,0,AB_FeraliskInfestedJungle,0,0,Dew Horn,1,0.45
 8329,24.0419,-49.9471,54.01,149.77,81,40.9,0,ZBiome_Grasslands,0,0,Dew Horn,3,0.46
-8330,22.5797,-36.4274,42.02,145.0,10,49.8,0,BiomeCypreJungle,0,406,Fever Wood,1,0.56
-8331,23.8698,-37.3724,43.39,143.91,13,49.1,0,BiomeCypreJungle,0,67,Fever Wood,1,0.55
-8332,25.2193,-36.6859,43.49,141.75,20,49.4,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.56
-8333,25.2641,-35.0424,42.23,140.58,24,50.5,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.58
-8334,22.6157,-34.8239,40.73,143.89,15,51.0,0,BiomeCypreJungle,0,754,Fever Wood,1,0.59
-8335,23.9506,-34.1266,40.84,141.63,21,51.2,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.59
+8330,22.5797,-36.4274,42.02,145.0,10,49.8,0,AB_MiasmicMangrove,0,406,Fever Wood,1,0.95
+8331,23.8698,-37.3724,43.39,143.91,13,49.1,0,AB_MiasmicMangrove,0,67,Fever Wood,1,0.95
+8332,25.2193,-36.6859,43.49,141.75,20,49.4,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+8333,25.2641,-35.0424,42.23,140.58,24,50.5,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+8334,22.6157,-34.8239,40.73,143.89,15,51.0,0,AB_MiasmicMangrove,0,754,Fever Wood,1,0.95
+8335,23.9506,-34.1266,40.84,141.63,21,51.2,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 8336,28.1132,-102.1301,100.68,151.35,1.0,1.2,0,AridShrubland,0,0,Twilight Sea,1,0.0
 8337,28.7558,-103.7408,102.02,150.54,-350,-0.4,0,SeaIce,1,0,Twilight Sea,1,0.0
 8338,26.456,-104.901,103.31,152.75,-350,-3.0,0,SeaIce,1,0,Twilight Sea,1,0.0
@@ -9403,12 +9403,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 9401,41.1851,-37.9488,53.6,125.1,39,42.9,0,Desert,0,0,Glare,2,0.0
 9402,39.9707,-34.9415,51.08,124.34,188,44.0,0,ExtremeDesert,0,0,Glare,2,0.0
 9403,41.2751,-35.9631,52.53,123.78,181,42.8,0,Desert,0,0,Glare,3,0.0
-9404,27.2387,-45.4257,51.39,144.15,9,43.5,0,BiomeCypreJungle,0,22712,Fever Wood,1,0.52
-9405,28.6292,-44.7947,51.47,142.23,13,43.7,0,BiomeCypreJungle,0,26176,Fever Wood,1,0.54
-9406,26.0302,-44.3554,50.02,145.06,8,44.4,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.52
-9407,26.1848,-42.674,48.72,144.04,11,45.4,0,BiomeCypreJungle,0,5493,Fever Wood,1,0.52
-9408,27.5622,-42.0205,48.81,142.06,17,45.7,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.53
-9409,28.7983,-43.0696,50.2,141.17,18,44.9,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.54
+9404,27.2387,-45.4257,51.39,144.15,9,43.5,0,AB_MiasmicMangrove,0,22712,Fever Wood,1,0.95
+9405,28.6292,-44.7947,51.47,142.23,13,43.7,0,AB_MiasmicMangrove,0,26176,Fever Wood,1,0.95
+9406,26.0302,-44.3554,50.02,145.06,8,44.4,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+9407,26.1848,-42.674,48.72,144.04,11,45.4,0,AB_MiasmicMangrove,0,5493,Fever Wood,1,0.95
+9408,27.5622,-42.0205,48.81,142.06,17,45.7,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+9409,28.7983,-43.0696,50.2,141.17,18,44.9,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 9410,30.5234,-37.1587,46.64,135.69,30,47.9,0,ExtremeDesert,0,0,Glare,1,0.0
 9411,31.812,-38.152,48.07,134.88,30,46.9,0,ExtremeDesert,0,0,Glare,1,0.0
 9412,33.1862,-37.376,48.31,132.87,31,46.8,0,ExtremeDesert,0,0,Glare,1,0.0
@@ -11917,12 +11917,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 11915,13.8672,-49.3457,50.76,161.98,1,42.8,0,BiomeCypreJungle,0,34,Dew Belt,1,0.41
 11916,15.0175,-50.3613,51.96,160.79,1,42.1,0,BiomeCypreJungle,0,19554,Dew Belt,1,0.41
 11917,16.3486,-49.8536,51.78,159.01,1,42.1,0,BiomeCypreJungle,0,19496,Dew Belt,1,0.42
-11918,18.4151,-41.483,44.7,153.31,167,46.4,0,ZBiome_DesertOasis,0,0,Fever Wood,1,0.23
-11919,19.7513,-40.8898,44.64,151.25,131,46.8,0,ZBiome_DesertOasis,0,0,Fever Wood,2,0.23
-11920,18.3067,-43.0545,46.07,154.14,162,45.3,0,ZBiome_DesertOasis,0,0,Fever Wood,1,0.22
-11921,19.5187,-44.0653,47.37,152.99,109,44.8,0,ZBiome_DesertOasis,0,0,Fever Wood,2,0.21
-11922,20.8662,-43.4869,47.32,151.02,114,45.1,0,ZBiome_DesertOasis,0,0,Fever Wood,2,0.22
-11923,20.9904,-41.8821,45.96,150.11,121,46.1,0,ZBiome_DesertOasis,0,0,Fever Wood,2,0.23
+11918,18.4151,-41.483,44.7,153.31,167,46.4,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.7
+11919,19.7513,-40.8898,44.64,151.25,131,46.8,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,2,0.85
+11920,18.3067,-43.0545,46.07,154.14,162,45.3,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+11921,19.5187,-44.0653,47.37,152.99,109,44.8,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,2,0.7
+11922,20.8662,-43.4869,47.32,151.02,114,45.1,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,2,0.7
+11923,20.9904,-41.8821,45.96,150.11,121,46.1,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,2,0.85
 11924,14.7099,-35.6233,38.17,155.74,47,49.6,1390,BiomeCypreJungle,0,7139,Dune Sea,4,0.64
 11925,14.7162,-34.1191,36.8,154.91,346,48.4,1529,AB_FeraliskInfestedJungle,0,0,Dune Sea,4,0.64
 11926,16.0142,-36.5007,39.41,154.24,1,49.9,1251,BiomeCypreJungle,0,7141,Dune Sea,4,0.65
@@ -12619,18 +12619,18 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 12617,72.4605,13.1599,72.94,85.88,129,25.3,0,ZBiome_Badlands,0,0,Cracklands,2,0.0
 12618,69.9033,15.514,70.67,84.41,171,27.2,0,ZBiome_Badlands,0,0,Cracklands,2,0.0
 12619,71.3841,16.6697,72.19,84.48,113,26.1,0,ZBiome_Badlands,0,0,Cracklands,2,0.0
-12620,34.7896,-48.6974,57.18,137.24,13,39.9,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.51
+12620,34.7896,-48.6974,57.18,137.24,13,39.9,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 12621,35.9427,-49.9086,58.57,136.54,10,38.8,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
 12622,35.6406,-51.77,59.81,137.61,5,37.7,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
-12623,34.2059,-52.3667,59.67,139.36,1,37.6,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.46
+12623,34.2059,-52.3667,59.67,139.36,1,37.6,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 12624,33.0837,-51.1424,58.29,140.08,4,38.6,0,BiomeCypreJungle,0,22550,Dew Horn,1,0.48
-12625,33.3656,-49.3329,57.03,139.04,10,39.8,0,BiomeCypreJungle,0,23258,Fever Wood,1,0.50
-12626,32.2031,-48.1581,55.64,139.79,12,40.8,0,BiomeCypreJungle,0,23982,Fever Wood,2,0.52
-12627,32.4349,-46.3645,54.38,138.72,17,42.0,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.54
+12625,33.3656,-49.3329,57.03,139.04,10,39.8,0,AB_MiasmicMangrove,0,23258,Fever Wood,1,0.95
+12626,32.2031,-48.1581,55.64,139.79,12,40.8,0,AB_MiasmicMangrove,0,23982,Fever Wood,2,0.95
+12627,32.4349,-46.3645,54.38,138.72,17,42.0,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 12628,30.7893,-48.778,55.52,141.61,160,39.8,13,AB_FeraliskInfestedJungle,0,0,Dew Horn,4,0.50
 12629,29.6193,-47.6358,54.14,142.42,99,41.2,0,AB_FeraliskInfestedJungle,0,0,Dew Horn,2,0.51
-12630,29.8339,-45.8902,52.86,141.38,14,42.8,0,BiomeCypreJungle,0,25452,Fever Wood,1,0.54
-12631,31.2356,-45.2402,52.98,139.5,19,43.0,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.55
+12630,29.8339,-45.8902,52.86,141.38,14,42.8,0,AB_MiasmicMangrove,0,25452,Fever Wood,1,0.95
+12631,31.2356,-45.2402,52.98,139.5,19,43.0,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 12632,37.643,-47.3537,57.56,133.64,13,39.6,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
 12633,39.0707,-46.6413,57.79,131.85,12,39.4,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
 12634,37.3756,-49.2572,58.76,134.77,10,38.7,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
@@ -12643,9 +12643,9 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 12641,40.7189,-43.9156,56.91,128.86,18,40.4,0,Desert,0,0,Glare,1,0.0
 12642,39.6636,-40.7913,54.35,128.24,25,42.4,0,Desert,0,0,Glare,1,0.0
 12643,40.9072,-41.9278,55.79,127.64,22,41.3,0,Desert,0,0,Glare,1,0.0
-12644,31.4194,-43.4673,51.73,138.4,23,44.1,0,ZBiome_Grasslands,0,0,Fever Wood,1,0.55
+12644,31.4194,-43.4673,51.73,138.4,23,44.1,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 12645,32.8173,-42.768,51.91,136.48,25,44.1,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.06
-12646,30.1866,-42.3936,50.33,139.21,24,45.1,0,ZBiome_Grasslands,0,0,Fever Wood,1,0.54
+12646,30.1866,-42.3936,50.33,139.21,24,45.1,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 12647,30.3245,-40.6457,49.08,138.08,27,46.1,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
 12648,31.7075,-39.9215,49.27,136.09,29,46.1,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.06
 12649,32.9675,-40.9685,50.69,135.31,27,45.0,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.06
@@ -15166,9 +15166,9 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 15164,14.6119,-40.1346,42.29,157.98,531,44.8,1251,ZBiome_DesertOasis,0,0,Scald Spine,4,0.63
 15165,14.6572,-38.6331,40.91,157.27,498,45.9,0,ZBiome_DesertOasis,0,0,Scald Spine,3,0.64
 15166,15.8572,-41.083,43.52,156.62,308,45.5,1112,ZBiome_DesertOasis,0,0,Scald Spine,4,0.23
-15167,17.1775,-40.5055,43.41,154.55,200,46.6,0,ZBiome_DesertOasis,0,0,Fever Wood,3,0.23
+15167,17.1775,-40.5055,43.41,154.55,200,46.6,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,3,0.7
 15168,15.9773,-38.0274,40.77,155.07,342,47.3,1251,AB_FeraliskInfestedJungle,0,0,Scald Spine,4,0.65
-15169,17.2485,-38.9564,42.04,153.72,248,47.4,0,ZBiome_DesertOasis,0,0,Fever Wood,3,0.24
+15169,17.2485,-38.9564,42.04,153.72,248,47.4,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,3,0.85
 15170,10.7228,-37.5518,38.83,162.74,-350,44.3,0,Lake,1,0,Scald,1,0.0
 15171,12.0436,-38.3701,39.94,161.03,696,44.0,1529,AB_FeraliskInfestedJungle,0,0,Dune Sea,4,0.62
 15172,13.366,-37.7519,39.71,158.79,537,45.7,1390,AB_FeraliskInfestedJungle,0,0,Dune Sea,4,0.63
@@ -18367,32 +18367,32 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 18365,20.4991,-55.8389,58.27,155.69,294,36.6,12,ZBiome_Badlands,0,0,Dew Horn,4,0.0
 18366,21.5546,-56.9908,59.56,154.78,555,34.1,19,ZBiome_Badlands,0,0,Dew Horn,4,0.0
 18367,22.9272,-56.531,59.47,153.11,676,33.5,115,ZBiome_Badlands,0,0,Dew Horn,4,0.0
-18368,19.0204,-48.8346,51.52,155.4,1,42.3,0,BiomeCypreJungle,0,25582,Fever Wood,1,0.43
-18369,20.3702,-48.306,51.42,153.56,1,42.6,0,BiomeCypreJungle,0,25288,Fever Wood,1,0.44
-18370,18.0318,-46.2018,48.84,155.72,38,43.8,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.44
+18368,19.0204,-48.8346,51.52,155.4,1,42.3,0,AB_MiasmicMangrove,0,25582,Fever Wood,1,0.95
+18369,20.3702,-48.306,51.42,153.56,1,42.6,0,AB_MiasmicMangrove,0,25288,Fever Wood,1,0.95
+18370,18.0318,-46.2018,48.84,155.72,38,43.8,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 18371,17.8655,-47.7761,50.24,156.48,1,43.0,0,BiomeCypreJungle,0,6582,Dew Belt,1,0.43
-18372,19.3724,-45.6551,48.75,153.82,24,44.3,0,ZBiome_DesertOasis,0,0,Fever Wood,1,0.2
-18373,20.5559,-46.6998,50.05,152.74,1,43.6,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.45
-18374,21.914,-46.1391,50.0,150.84,1,43.9,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.46
+18372,19.3724,-45.6551,48.75,153.82,24,44.3,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18373,20.5559,-46.6998,50.05,152.74,1,43.6,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18374,21.914,-46.1391,50.0,150.84,1,43.9,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 18375,23.0962,-47.2043,51.32,149.84,2,43.1,0,BiomeCypreJungle,0,24463,Dew Horn,1,0.46
 18376,24.4711,-46.6292,51.32,147.95,5,43.3,0,BiomeCypreJungle,0,23941,Dew Horn,1,0.48
-18377,24.6522,-44.9679,49.98,147.0,5,44.2,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.50
-18378,22.0779,-44.5151,48.64,149.95,33,44.8,0,ZBiome_DesertOasis,0,0,Fever Wood,1,0.22
-18379,23.4414,-43.92,48.63,147.99,4,45.0,0,ZBiome_DesertOasis,0,0,Fever Wood,1,0.50
-18380,23.7954,-39.0035,44.68,144.98,9,47.9,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.53
-18381,25.0603,-39.9888,46.05,143.96,12,47.2,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.53
-18382,23.5815,-42.2787,47.31,147.02,5,46.0,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.52
-18383,24.9469,-41.6466,47.35,145.01,9,46.2,0,BiomeCypreJungle,0,6065,Fever Wood,1,0.52
-18384,22.3424,-41.27,45.96,148.07,78,46.4,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.52
-18385,22.4426,-39.6512,44.63,147.09,5,47.8,0,BiomeCypreJungle,0,6882,Fever Wood,1,0.53
+18377,24.6522,-44.9679,49.98,147.0,5,44.2,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18378,22.0779,-44.5151,48.64,149.95,33,44.8,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18379,23.4414,-43.92,48.63,147.99,4,45.0,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18380,23.7954,-39.0035,44.68,144.98,9,47.9,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18381,25.0603,-39.9888,46.05,143.96,12,47.2,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18382,23.5815,-42.2787,47.31,147.02,5,46.0,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18383,24.9469,-41.6466,47.35,145.01,9,46.2,0,AB_MiasmicMangrove,0,6065,Fever Wood,1,0.95
+18384,22.3424,-41.27,45.96,148.07,78,46.4,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18385,22.4426,-39.6512,44.63,147.09,5,47.8,0,AB_MiasmicMangrove,0,6882,Fever Wood,1,0.95
 18386,26.5083,-37.6436,44.88,140.76,23,48.6,0,Wasteland,0,0,Glare,1,0.0
 18387,27.8668,-36.9287,45.03,138.65,28,48.8,0,Wasteland,0,0,Glare,1,0.0
-18388,26.4238,-39.3167,46.15,141.89,19,47.6,0,ZBiome_Grasslands,0,0,Fever Wood,1,0.53
-18389,27.6879,-40.3196,47.53,140.96,21,46.7,0,ZBiome_Grasslands,0,0,Fever Wood,1,0.53
+18388,26.4238,-39.3167,46.15,141.89,19,47.6,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18389,27.6879,-40.3196,47.53,140.96,21,46.7,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 18390,29.0618,-39.6222,47.68,138.93,26,46.9,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
 18391,29.1562,-37.903,46.44,137.76,29,48.0,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.06
-18392,26.6066,-34.3143,42.4,138.38,28,50.6,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.58
-18393,26.6208,-32.6608,41.18,137.12,29,51.5,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.58
+18392,26.6066,-34.3143,42.4,138.38,28,50.6,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18393,26.6208,-32.6608,41.18,137.12,29,51.5,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 18394,27.9201,-35.2415,43.81,137.44,29,49.7,0,Wasteland,0,0,Glare,1,0.0
 18395,29.2708,-34.4816,44.02,135.29,31,49.7,0,Wasteland,0,0,Glare,1,0.0
 18396,29.2913,-32.7824,42.84,133.99,32,50.5,0,Wasteland,0,0,Glare,1,0.0
@@ -18403,12 +18403,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 18401,25.2644,-30.1612,38.56,136.79,28,53.2,0,Wasteland,0,0,Dune Sea,1,0.0
 18402,23.9112,-29.3217,37.15,137.84,28,54.1,0,Wasteland,0,0,Dune Sea,1,0.0
 18403,22.598,-30.0625,36.96,140.28,25,54.1,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.59
-18404,21.177,-38.6807,43.29,148.21,3,48.6,0,BiomeCypreJungle,0,7078,Fever Wood,1,0.54
-18405,21.2396,-37.0868,41.97,147.2,5,49.6,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.55
-18406,18.5737,-38.3492,41.98,151.56,138,48.4,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,3,0.54
-18407,19.8375,-39.3062,43.29,150.34,94,48.0,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,2,0.53
-18408,18.624,-36.7893,40.63,150.63,2,49.6,0,BiomeCypreJungle,0,7133,Fever Wood,2,0.55
-18409,19.9505,-36.1534,40.63,148.4,4,50.2,0,AB_FeraliskInfestedJungle,0,0,Fever Wood,1,0.56
+18404,21.177,-38.6807,43.29,148.21,3,48.6,0,AB_MiasmicMangrove,0,7078,Fever Wood,1,0.95
+18405,21.2396,-37.0868,41.97,147.2,5,49.6,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
+18406,18.5737,-38.3492,41.98,151.56,138,48.4,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,3,0.85
+18407,19.8375,-39.3062,43.29,150.34,94,48.0,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,2,0.85
+18408,18.624,-36.7893,40.63,150.63,2,49.6,0,AB_MiasmicMangrove,0,7133,Fever Wood,2,0.95
+18409,19.9505,-36.1534,40.63,148.4,4,50.2,0,COMIGO_GreaterSwamp_Tropical,0,0,Fever Wood,1,0.85
 18410,19.9774,-34.5864,39.31,147.36,7,50.8,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.58
 18411,21.3027,-33.9175,39.36,145.05,13,51.4,0,BiomeCypreJungle,0,954,Dune Sea,1,0.59
 18412,21.3035,-32.3441,38.08,143.91,17,52.4,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.60
