@@ -1176,7 +1176,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1174,-19.7468,-23.7126,30.49,221.75,265,55.0,0,AB_FeraliskInfestedJungle,0,55,Dune Sea,3,0.37
 1175,-23.7932,-26.1702,34.79,224.99,26,53.9,0,AB_FeraliskInfestedJungle,0,10650,Dune Sea,2,0.39
 1176,-27.6621,-23.7174,35.82,232.5,124,52.6,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,2,0.40
-1177,-27.3331,-18.8328,32.78,238.01,101,54.2,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.35
+1177,-27.3331,-18.8328,32.78,238.01,101,54.2,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.35
 1178,-46.1644,11.4512,47.25,280.79,433,43.8,0,ExtremeDesert,0,0,Kiln,1,0.0
 1179,-50.4298,12.6873,51.58,280.29,388,40.8,0,ExtremeDesert,0,0,Kiln,3,0.0
 1180,-47.8477,24.143,52.24,290.32,417,41.1,4,Desert,0,0,Kiln,4,0.0
@@ -1533,8 +1533,8 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1531,18.9355,-170.5204,158.9,115.64,1129,-72.6,0,BMT_CrystalCaverns,0,0,Ammonia Flats,3,0.0
 1532,-33.6451,-8.088,34.49,258.06,1,53.8,0,ExtremeDesert,0,0,Dune Sea,1,0.0
 1533,-30.4052,-11.219,32.22,251.66,1,55.0,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.05
-1534,-31.0258,-16.0161,34.55,245.36,1,53.3,0,AB_FeraliskInfestedJungle,0,5042,Dune Sea,1,0.38
-1535,-35.2073,-17.9694,38.99,246.38,1,50.7,0,AB_FeraliskInfestedJungle,0,2025,Dune Sea,1,0.43
+1534,-31.0258,-16.0161,34.55,245.36,1,53.3,0,ZBiome_Grasslands,0,5042,Dune Sea,1,0.38
+1535,-35.2073,-17.9694,38.99,246.38,1,50.7,0,ZBiome_Grasslands,0,2025,Dune Sea,1,0.43
 1536,-38.6964,-14.4312,40.9,252.72,1,49.7,0,AridShrubland,0,0,Kiln,1,0.0
 1537,-37.7209,-9.2703,38.68,258.24,1,51.1,0,ExtremeDesert,0,0,Dune Sea,1,0.0
 1538,-33.6451,8.088,34.49,281.94,14,55.0,0,ExtremeDesert,0,0,Dune Sea,1,0.0
@@ -2345,7 +2345,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 2343,-35.9755,-33.8911,47.8,232.47,338,44.5,0,Desert,0,0,Kiln,2,0.0
 2344,-31.9679,-31.1381,43.44,230.36,343,47.0,0,ZBiome_Grasslands,0,0,Pyrelands,2,0.05
 2345,-31.8235,-25.9985,40.21,234.77,181,49.1,0,ZBiome_Grasslands,0,0,Pyrelands,1,0.05
-2346,-35.6877,-23.1154,41.67,241.34,245,47.8,0,AridShrubland,0,0,Kiln,1,0.0
+2346,-35.6877,-23.1154,41.67,241.34,245,47.8,0,ZBiome_Grasslands,0,0,Kiln,1,0.0
 2347,-39.8661,-25.384,46.1,242.83,117,46.6,0,Desert,0,0,Kiln,1,0.0
 2348,-33.5117,-55.995,62.21,218.62,380,35.9,0,ExtremeDesert,0,0,Long Sand,3,0.0
 2349,-29.2275,-57.5101,62.05,213.56,893,33.4,60,ExtremeDesert,0,0,Dew Horn,4,0.0
@@ -3153,8 +3153,8 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 3151,21.4069,-170.5319,156.68,112.76,1198,-71.2,0,BMT_CrystalCaverns,0,0,Ammonia Flats,2,0.0
 3152,-32.8805,-10.7918,34.42,253.85,29,53.6,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.05
 3153,-32.0058,-13.437,34.43,249.61,1,53.5,0,ZBiome_DesertOasis,0,0,Dune Sea,1,0.18
-3154,-33.6075,-15.6858,36.69,247.86,1,52.2,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.41
-3155,-36.1659,-15.1642,38.81,250.31,1,51.1,0,AridShrubland,0,0,Dune Sea,1,0.2
+3154,-33.6075,-15.6858,36.69,247.86,1,52.2,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.41
+3155,-36.1659,-15.1642,38.81,250.31,1,51.1,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.2
 3156,-37.0059,-12.2612,38.71,254.26,53,50.9,0,Desert,0,0,Dune Sea,1,0.0
 3157,-35.3208,-10.1491,36.57,256.03,89,52.1,0,ExtremeDesert,0,0,Dune Sea,1,0.0
 3158,-35.3208,10.1491,36.57,283.97,16,53.9,0,ExtremeDesert,0,0,Dune Sea,2,0.0
@@ -6211,8 +6211,8 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 6209,5.0518,172.9819,171.36,35.89,1,-75.1,0,AB_PropaneLakes,0,0,Ammonia Flats,2,0.0
 6210,6.3743,170.6433,168.69,34.49,1,-73.0,0,AB_PropaneLakes,0,0,Ammonia Flats,1,0.23
 6211,8.9127,170.63,167.1,43.93,1,-71.4,0,AB_PropaneLakes,0,0,Ammonia Flats,1,0.24
-6212,-25.8463,-16.4594,30.34,239.68,1,56.4,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.37
-6213,-28.4378,-16.2693,32.42,242.65,1,54.6,0,AB_FeraliskInfestedJungle,0,6932,Dune Sea,1,0.37
+6212,-25.8463,-16.4594,30.34,239.68,1,56.4,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.37
+6213,-28.4378,-16.2693,32.42,242.65,1,54.6,0,ZBiome_Grasslands,0,6932,Dune Sea,1,0.37
 6214,-27.9041,-11.4816,30.0,249.4,1,56.5,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.05
 6215,-29.4641,-13.7315,32.24,247.21,1,54.7,0,ZBiome_DesertOasis,0,0,Dune Sea,1,0.18
 6216,-25.3936,-11.6606,27.78,246.94,1,57.8,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.05
@@ -6243,10 +6243,10 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 6241,-29.1416,-26.1018,38.34,231.72,242,50.3,0,ZBiome_Grasslands,0,0,Dune Sea,2,0.05
 6242,-30.3365,-23.5729,37.72,235.65,208,50.6,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.05
 6243,-28.8348,-21.193,35.24,236.71,113,52.7,0,ZBiome_DesertOasis,0,0,Dune Sea,1,0.17
-6244,-29.9608,-18.6172,34.81,241.02,76,52.9,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.37
-6245,-32.5863,-18.3393,36.89,243.79,44,51.8,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.39
+6244,-29.9608,-18.6172,34.81,241.02,76,52.9,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.37
+6245,-32.5863,-18.3393,36.89,243.79,44,51.8,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.39
 6246,-33.0117,-23.3755,39.67,238.59,227,49.0,0,Desert,0,0,Dune Sea,1,0.0
-6247,-34.1438,-20.6995,39.27,242.47,203,49.3,0,AridShrubland,0,0,Dune Sea,2,0.19
+6247,-34.1438,-20.6995,39.27,242.47,203,49.3,0,ZBiome_Grasslands,0,0,Dune Sea,2,0.19
 6248,-43.7027,12.5921,45.13,282.85,384,45.8,0,ExtremeDesert,0,0,Kiln,1,0.0
 6249,-41.2094,13.5763,43.01,285.01,327,48.1,0,ExtremeDesert,0,0,Kiln,2,0.0
 6250,-40.0818,8.1693,40.77,279.58,318,49.0,0,ExtremeDesert,0,0,Kiln,1,0.0
@@ -6321,7 +6321,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 6319,-17.8517,11.8353,21.31,302.49,269,62.0,0,ExtremeDesert,0,0,Dune Sea,2,0.0
 6320,-42.0646,-19.27,45.51,249.91,15,47.1,0,AridShrubland,0,0,Kiln,1,0.0
 6321,-40.3967,-16.7747,43.18,251.27,72,47.9,0,ZBiome_Badlands,0,0,Kiln,1,0.49
-6322,-36.8017,-20.3241,41.33,245.1,96,48.8,0,Wasteland,0,0,Kiln,3,0.44
+6322,-36.8017,-20.3241,41.33,245.1,96,48.8,0,ZBiome_Grasslands,0,0,Kiln,3,0.44
 6323,-37.8103,-17.4311,41.08,248.89,1,49.5,0,Wasteland,0,0,Kiln,1,0.45
 6324,-38.3598,-22.7917,43.71,243.92,147,47.5,0,ZBiome_Badlands,0,0,Kiln,2,0.2
 6325,-41.0223,-22.3901,45.77,246.35,93,46.8,0,AridShrubland,0,0,Kiln,2,0.0
@@ -11071,8 +11071,8 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 11069,6.2901,173.7583,171.15,45.39,1,-75.1,0,AB_PropaneLakes,0,0,Ammonia Flats,2,0.0
 11070,6.3333,172.2,169.96,39.28,1,-74.1,0,AB_PropaneLakes,0,0,Ammonia Flats,2,0.0
 11071,7.6205,171.4162,168.54,41.87,1,-72.9,0,AB_PropaneLakes,0,0,Ammonia Flats,1,0.23
-11072,-27.071,-15.559,30.93,242.31,1,55.8,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.38
-11073,-28.2771,-14.6498,31.57,244.82,1,55.2,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.39
+11072,-27.071,-15.559,30.93,242.31,1,55.8,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.38
+11073,-28.2771,-14.6498,31.57,244.82,1,55.2,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.39
 11074,-26.742,-12.3635,29.27,246.98,1,56.9,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.05
 11075,-28.0989,-13.0537,30.76,247.07,1,55.8,0,ZBiome_DesertOasis,0,0,Dune Sea,1,0.18
 11076,-25.5611,-13.238,28.58,244.42,1,57.4,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.05
@@ -14343,10 +14343,10 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 14341,-27.5587,-22.0982,34.77,234.21,112,53.1,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.38
 14342,-27.4491,-20.4698,33.76,236.05,63,53.8,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.36
 14343,-26.069,-19.7426,32.28,235.38,20,55.1,0,AB_FeraliskInfestedJungle,0,9135,Dune Sea,1,0.36
-14344,-25.9634,-18.0993,31.29,237.46,31,55.7,0,AB_FeraliskInfestedJungle,0,8502,Dune Sea,1,0.36
-14345,-27.2093,-17.1902,31.83,240.11,62,54.9,0,AB_FeraliskInfestedJungle,0,7778,Dune Sea,1,0.36
+14344,-25.9634,-18.0993,31.29,237.46,31,55.7,0,ZBiome_Grasslands,0,8502,Dune Sea,1,0.36
+14345,-27.2093,-17.1902,31.83,240.11,62,54.9,0,ZBiome_Grasslands,0,7778,Dune Sea,1,0.36
 14346,-28.7125,-19.5523,34.26,238.58,104,53.2,0,ZBiome_DesertOasis,0,0,Dune Sea,1,0.16
-14347,-28.5812,-17.9085,33.32,240.56,90,53.7,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.36
+14347,-28.5812,-17.9085,33.32,240.56,90,53.7,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.36
 14348,-46.5852,13.5426,48.07,282.49,363,43.7,0,ExtremeDesert,0,0,Kiln,1,0.0
 14349,-45.1437,13.06,46.6,282.67,411,44.5,0,ExtremeDesert,0,0,Kiln,1,0.0
 14350,-44.7279,11.0419,45.79,280.94,435,44.9,0,ExtremeDesert,0,0,Kiln,1,0.0
@@ -16483,18 +16483,18 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 16481,-29.0461,-10.588,30.76,251.69,1,56.0,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.05
 16482,-29.2636,-12.1492,31.48,249.41,1,55.3,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.05
 16483,-30.6306,-12.7995,32.96,249.49,1,54.3,0,ZBiome_DesertOasis,0,0,Dune Sea,1,0.18
-16484,-30.8374,-14.3974,33.73,247.39,1,53.7,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.40
-16485,-32.219,-15.0517,35.22,247.6,1,53.0,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.40
-16486,-29.8126,-16.969,33.91,243.01,24,53.6,0,AB_FeraliskInfestedJungle,0,5996,Dune Sea,1,0.37
-16487,-29.6474,-15.3385,33.06,245.07,26,54.1,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.38
-16488,-31.1955,-17.6588,35.4,243.39,1,52.7,0,AB_FeraliskInfestedJungle,0,0,Dune Sea,1,0.38
-16489,-32.4124,-16.6833,36.03,245.67,1,52.4,0,AB_FeraliskInfestedJungle,0,4037,Dune Sea,1,0.39
-16490,-33.8065,-17.336,37.52,246.01,1,51.6,0,AB_FeraliskInfestedJungle,0,3030,Dune Sea,1,0.41
-16491,-35.0012,-16.2859,38.16,248.17,1,51.3,0,AridShrubland,0,0,Dune Sea,1,0.42
-16492,-33.985,-19.0108,38.38,244.21,61,50.7,0,AridShrubland,0,0,Dune Sea,2,0.41
-16493,-35.3908,-19.669,39.86,244.65,109,49.5,0,ZBiome_Badlands,0,0,Dune Sea,3,0.43
-16494,-36.6147,-18.5834,40.46,246.79,1,49.9,0,Wasteland,0,1028,Kiln,1,0.45
-16495,-36.4012,-16.86,39.62,248.53,1,50.4,0,ZBiome_Badlands,0,0,Dune Sea,1,0.45
+16484,-30.8374,-14.3974,33.73,247.39,1,53.7,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.40
+16485,-32.219,-15.0517,35.22,247.6,1,53.0,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.40
+16486,-29.8126,-16.969,33.91,243.01,24,53.6,0,ZBiome_Grasslands,0,5996,Dune Sea,1,0.37
+16487,-29.6474,-15.3385,33.06,245.07,26,54.1,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.38
+16488,-31.1955,-17.6588,35.4,243.39,1,52.7,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.38
+16489,-32.4124,-16.6833,36.03,245.67,1,52.4,0,ZBiome_Grasslands,0,4037,Dune Sea,1,0.39
+16490,-33.8065,-17.336,37.52,246.01,1,51.6,0,ZBiome_Grasslands,0,3030,Dune Sea,1,0.41
+16491,-35.0012,-16.2859,38.16,248.17,1,51.3,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.42
+16492,-33.985,-19.0108,38.38,244.21,61,50.7,0,ZBiome_Grasslands,0,0,Dune Sea,2,0.41
+16493,-35.3908,-19.669,39.86,244.65,109,49.5,0,ZBiome_Grasslands,0,0,Dune Sea,3,0.43
+16494,-36.6147,-18.5834,40.46,246.79,1,49.9,0,ZBiome_Grasslands,0,1028,Kiln,1,0.45
+16495,-36.4012,-16.86,39.62,248.53,1,50.4,0,ZBiome_Grasslands,0,0,Dune Sea,1,0.45
 16496,-37.5648,-15.6798,40.26,250.64,1,50.1,0,ZBiome_Badlands,0,0,Kiln,1,0.45
 16497,-37.2968,-13.9591,39.46,252.43,1,50.6,0,AridShrubland,0,0,Dune Sea,1,0.0
 16498,-40.1097,-14.9301,42.35,252.99,1,48.6,0,AridShrubland,0,0,Kiln,1,0.0
@@ -21358,9 +21358,9 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 21356,-35.8004,-24.8684,42.62,239.75,260,47.2,0,Desert,0,0,Kiln,1,0.0
 21357,-37.0853,-23.851,43.15,241.86,220,47.2,0,AridShrubland,0,0,Kiln,2,0.0
 21358,-34.4081,-24.1129,41.15,239.19,217,48.2,0,Desert,0,0,Kiln,1,0.0
-21359,-34.2862,-22.3982,40.19,240.8,264,48.4,0,AridShrubland,0,0,Kiln,1,0.0
-21360,-35.551,-21.3833,40.75,242.97,248,48.2,0,ZBiome_Badlands,0,0,Kiln,2,0.2
-21361,-36.9573,-22.0785,42.23,243.45,164,47.9,0,ZBiome_Badlands,0,0,Kiln,2,0.2
+21359,-34.2862,-22.3982,40.19,240.8,264,48.4,0,ZBiome_Grasslands,0,0,Kiln,1,0.0
+21360,-35.551,-21.3833,40.75,242.97,248,48.2,0,ZBiome_Grasslands,0,0,Kiln,2,0.2
+21361,-36.9573,-22.0785,42.23,243.45,164,47.9,0,ZBiome_Grasslands,0,0,Kiln,2,0.2
 21362,-39.9464,-27.2637,47.04,241.32,133,46.0,0,Desert,0,0,Kiln,2,0.0
 21363,-38.5703,-26.4421,45.57,240.82,188,46.4,0,Desert,0,0,Kiln,2,0.0
 21364,-38.4784,-24.6066,44.62,242.35,166,46.9,0,AridShrubland,0,0,Kiln,2,0.0
