@@ -296,6 +296,26 @@ sibling** — pass the reference as image 1 and the approved facing as image 2,
 and ask for a match on palette, material and damage language. That buys most of
 the consistency at full resolution.
 
+🔴 **BUT TWO-IMAGE EDITS HANG ON THIS INSTALL — measured 2026-08-23.** Four
+consecutive `edit` calls carrying two `--image` arguments produced **no output at
+all** and were killed by their own 780 s timeout, with codex's stderr suggesting
+re-authentication. The very next **single**-image edit succeeded in **79 s**, and
+so had two before it, so it is neither auth nor rate limiting — it is the second
+image. ⛔ **It is NOT the documented variadic-`-i` bug**: `codex_image.py:241`
+already appends the `--` terminator for any non-empty image list, and that was
+read and confirmed before blaming it.
+
+✅ **The working fallback, and it is nearly as good:** edit each facing from ITS
+OWN reference only, and put the approved sibling's treatment into the PROMPT as
+words — *"segmented chitin plating with clean segment breaks, speckled shell,
+wet translucent flesh with a bioluminescent glow inside it, deep red and rose
+palette, hard black outline"*. Write that description down when the first facing
+is approved; it is the anchor, and it costs one 80-second call per facing.
+
+⚠️ Budget for it: a hung two-image call costs the FULL timeout before it fails,
+so a batch of four is 52 wasted minutes. If you try the two-image form again,
+give it a **120 s** timeout, not 780.
+
 ## Before it ships
 
 Deploying is a separate claim from writing. The game reads the Steam Mods
