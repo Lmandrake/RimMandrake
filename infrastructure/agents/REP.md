@@ -94,44 +94,52 @@ that is the defect, not the implementation.
 sat frozen at 55 rows / 165 items since 08-20 while the ledger moved to 39 rows / 248. What renders the board is
 `render.py --overwrite-queues`, which is the same command that publishes the queues.
 
-## Two modes
+## Modes — superseded, and the pointer is all that is left
 
-🔴 **SUPERSEDED 2026-08-23 by the BENCH page in `infrastructure/agents/POLICY.md` (commit `8c2ac30b`).**
-The vocabulary is now **BENCH** (per-window, he is here) / **BELT** (the queue runs itself) / **AFK**, and
-`infrastructure/state/MODE` reads `belt`. ⛔ **`interactive` and `autonomous` are dead words — do not
-"repair" MODE back to one of them**; REP nearly did on 2026-08-23 15:5x reading this section. BENCH is
-delivered per-turn by `.claude/hooks/bench_mode.py`, not by this file. What survives below: `afk` is still
-the value `rimflow` acts on, and the `--mode`/`$RIMFLOW_MODE` warning at the end of the section.
+🔴 **SUPERSEDED 2026-08-23 by the BENCH page at the top of `infrastructure/agents/POLICY.md`
+(commit `8c2ac30b`).** The vocabulary is **BENCH** (per-window, he is here) / **BELT** (the queue runs
+itself) / **AFK**, and `infrastructure/state/MODE` reads `belt`. ⛔ **`interactive` and `autonomous`
+are dead words — do not "repair" MODE back to one of them**; this seat nearly did on 2026-08-23.
+BENCH is delivered per-turn by `.claude/hooks/bench_mode.py`, not by any file you read on wake.
 
-⭐ **Updated 2026-08-23:** `rimflow` now knows `belt` and `afk`, normalises the two dead words below to
-`belt`, and refuses `bench` on stderr. So **writing `afk` into `infrastructure/state/MODE` takes effect
-immediately** — it is a live switch, not a note to seats. `POLICY.md > Modes` carries the detail.
+⚠️ **What survives, and is still true: `rimflow` does NOT read `infrastructure/state/MODE`.** It takes
+the mode from `--mode` or `$RIMFLOW_MODE` (`cli.py:214`), and the only value it acts on is `afk`, which
+suppresses every item whose `needs` is `owner` (`priority.py:50`). **Writing a word into that file
+changes what SEATS do, not what the TOOL offers.** Two mode concepts, one name; do not "fix" one by
+editing the other.
 
-**interactive** (dead)  — questions accumulate in `queue/HUMAN.md`. When the human appears, walk them through it: one line per
-question, the choices, your recommendation first. They answer; you route each answer to the asking agent.
+## 🪑 THE BENCH SCAN — he asks, you go and look — owner, 2026-08-23
 
-**autonomous** — agents assume their own answers and log `Q / A(assumed) / item`. When the human returns, walk the pairs
-**newest first**, ask only "keep or change", and route the changes. Do not re-explain what was decided.
+⛔ **Never automatic, never scheduled, never volunteered.** It runs when he asks and only then.
 
-🔴 **`afk` is a THIRD value and it is the one the tooling actually acts on.**
+**His trigger, in whatever words he uses:** *"anything ripe to take?"* · *"anything in trouble?"* ·
+*"what needs me?"* · *"where are we stuck?"* ⇒ **all of them run the SAME scan and return BOTH halves**,
+so he never has to remember which phrase gets which.
 
-| value | who reads it |
+**What you read — all three, because the ledger alone cannot answer "workload":**
+
+| source | what it is for |
 |---|---|
-| `interactive` · `autonomous` | **this doctrine only.** No code reads them; they tell REP how to handle questions |
-| **`afk`** | 🔑 the vocabulary `rimflow` uses: `priority.py:50` suppresses every item whose `needs` is `owner` |
+| `infrastructure/state/ledger/events.jsonl` | history, distress scoring, per-seat counts |
+| `infrastructure/state/items/<ID>.md` | what the work actually IS — never report an ID bare |
+| `ps` for `AGENT_SEAT=`, `git status --porcelain`, `./game` | 🔑 what each window is doing **now**. Filed work is not current work |
 
-⚠️ **`rimflow` does NOT read this file.** It takes the mode from `--mode` or `$RIMFLOW_MODE` (`cli.py:214`), never from
-`infrastructure/state/MODE` — writing `afk` there suppresses nothing unless a seat also has it in its environment. Two mode
-concepts, one name; do not "fix" one by editing the other.
+**What you return — a briefing, not a dump:**
 
-## Orders
+1. **One line per seat.** Open count, how much needs the game, how much needs him, what the window is
+   actually doing. Four lines, not four paragraphs.
+2. **RIPE** — unblocked, ready, would move the moment someone took it.
+3. **IN TROUBLE** — scored by `facts/distress_signals.md`. ⛔ Never more than five, ranked.
+4. **Every item he could unstick gets TWO CLAUSES, one line:**
+   `DO: ~2 min, look at the render and say yes/no. DON'T: CHECK guesses, and a wrong call repaints the region.`
+   🔑 The DON'T clause is the half that decides, and it is the half that is easy to leave out.
 
-⛔ **THE ORDER CHANNEL IS GONE — owner, 2026-08-19.** No live traffic between agents; `block_peer_messages.py` refuses it.
+⚠️ **The scoring weights are MEASURED and their provenance is in the fact file.** Relay a score with
+what produced it, never a bare number — and remember what the same measurement refuted: **prose
+thinness predicts nothing.** Do not report an item as at-risk because it is short.
 
-- ✅ **`WRAP` / `STATUS` / `STOP` are items now:** `rimflow file --for <SEAT> --kind task`.
-- 🔴 **Only the OWNER interrupts a running window** — if something must stop NOW tell HIM; you never had that power.
-- 🔴 **An order is `WRAP` / `STATUS` / `STOP` and a sentence of why.** Not a briefing, not a thank-you, not a summary, not a
-  place to think out loud at a peer. If you are explaining, you are writing a queue item.
+⛔ **The cross-seat view is REP's and his.** A seat that runs it globally learns things it has no route
+for — messaging is off. Any seat may scan ITSELF; only this one scans everybody.
 
 ## Talking to the human, and the numbers you relay
 
