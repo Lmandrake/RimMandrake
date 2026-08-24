@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Jawa_BackgroundWater — a biome that NO TILE WILL EVER HAVE.
+
+    It exists for exactly one field read, in exactly one place:
+      WorldDrawLayer_Terrain.cs:48
+        req.secondaryTex = planetLayer.Def.backgroundBiome.DrawMaterial.mainTexture;
+
+    That is how RimWorld paints the water half of every TerrainMask landmark —
+    Peninsula, Bay, CoastalIsland. It takes the background biome's RAW TEXTURE and
+    bypasses the shader entirely.
+
+    🔴 WHY OURS AND NOT Ocean. `RW - Planet Atmosphere` (workshop 3272330410)
+    repoints Ocean.texture AND Lake.texture at `TerrainReplace/Water`, which is a
+    1x1 PNG of RGB(0,0,0) — measured, 119 bytes on disk. So every cape on the
+    planet paints its sea with one black pixel. The OPEN ocean looks correct
+    because its colour comes from the WorldOcean SHADER reading per-vertex
+    elevation; the landmark path never touches the shader. Two code paths, one
+    texture, and only one of them was ever going to look right.
+    ⛔ Do not "fix" this by repatching Ocean.texture. That material draws the whole
+    sea, and the Atmosphere mod flattened it deliberately.
+
+    ⚠️ `implemented` false keeps it out of worldgen biome scoring. `isBackgroundBiome`
+    true matches Ocean and Lake, and matters only to LandmarkDef.IsValidTile — which
+    can never see it, because no tile carries this biome.
+  -->
+
+  <BiomeDef>
+    <defName>Jawa_BackgroundWater</defName>
+    <label>mineral water</label>
+    <description>Sediment-laden, mineral-saturated and faintly toxic. The water of Ash'karr carries more suspended rock than life.</description>
+    <implemented>false</implemented>
+    <isBackgroundBiome>true</isBackgroundBiome>
+    <canBuildBase>false</canBuildBase>
+    <canAutoChoose>false</canAutoChoose>
+    <allowRoads>false</allowRoads>
+    <allowRivers>false</allowRivers>
+    <texture>World/Biomes/Jawa_SickWater</texture>
+  </BiomeDef>
+
+</Defs>

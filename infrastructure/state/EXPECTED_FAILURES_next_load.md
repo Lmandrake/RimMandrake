@@ -2514,3 +2514,38 @@ undeployed until the next down-window.
 next load; the labels wait for a load after a DLL deploy. ⛔ Do not read "labels unchanged"
 as a failure without checking which build the game copy holds — it was `6c5fe361` (15:08)
 at the time of writing, and the transpiler is not in it.
+
+---
+
+## §18 — THE CAPE WATER COLOUR. Written 2026-08-23 21:2x by CHECK, game UP, deployed.
+
+Peninsulas, bays and coastal islands render their water half as **solid black**. Root
+cause traced through the 1.6 source and confirmed by decoding the file:
+
+`WorldDrawLayer_Terrain.cs:48` paints a TerrainMask landmark's water with
+`planetLayer.Def.backgroundBiome.DrawMaterial.**mainTexture**` — the raw texture, with
+the shader bypassed. `PlanetLayerDef.Surface.backgroundBiome` is `Ocean`, and
+**`RW - Planet Atmosphere` (workshop 3272330410) repoints `Ocean.texture` AND
+`Lake.texture` at `TerrainReplace/Water`, a 1×1 PNG of RGB(0,0,0)** — 119 bytes, pixel
+decoded, pure black. The OPEN sea looks right because its colour comes from the
+`WorldOcean` shader reading per-vertex elevation; the landmark path never touches it.
+
+⭐ `PlanetLayerDef.backgroundBiome` is referenced in **exactly one place** in the whole
+codebase, so repointing it is surgical. Measured: `Ocean` and `Lake` are the ONLY two
+water biomes flattened to 1×1 — SeaIce, IceSheet, AB_PropaneLakes, AB_TarPits and
+BMT_EarthenDepths all still carry real 500×500 or 512×512 art.
+
+Deployed: `Jawa_BackgroundWater` BiomeDef (`implemented false`, so it never enters
+worldgen scoring) + `Jawa_SickWater.png` + a Replace on the Surface layer.
+
+| # | reading | what it decides |
+|---|---|---|
+| **W1** | 🔑 **LOOK at any cape.** The water inside a Peninsula / Bay / CoastalIsland mask is **murky green-brown-blue**, not black. | The whole item. Owner's brief: *"a sickly desert world, not a sparkling blue mountain stream — mineralized, filled with sediment, semi-toxic."* Texture measures mean RGB (59, 71, 70), std (18, 16, 13), range 9..121. |
+| **W2** | ⛔ **The OPEN sea is unchanged** — still the blue it was at −350 m. | The one regression that would matter. `backgroundBiome` must not touch the shader path. If the sea changed, the theory is wrong. |
+| **W3** | Zero red errors naming `Jawa_BackgroundWater`, `PlanetLayer_BackgroundWater` or `Jawa_SickWater`. | ⚠️ The Replace is deliberately UNWRAPPED. Core cannot be absent, so a match failure means Ludeon renamed the def and we want it loud. |
+| **W4** | `Jawa_BackgroundWater` appears in the re-dump as a BiomeDef but on **ZERO tiles**. | `implemented false` keeping it out of worldgen. A tile carrying it would be the failure. |
+| **W5** | ⚠️ **False pass to watch for:** the capes could look fixed because the tiles under them changed, not because the mask did. | Confirm on a cape whose LAND half is unchanged desert — then only the water half can have moved. |
+
+⚠️ **Validated offline before deploy:** `validate_patch.py --live` against the 22:49:51Z
+dump — the xpath hits **exactly 1 node in Core `PlanetLayers.xml`**, 0 errors. The texture
+tiles seamlessly: wrap seams measure 12.5 / 14.3 against an interior seam of 14.7.

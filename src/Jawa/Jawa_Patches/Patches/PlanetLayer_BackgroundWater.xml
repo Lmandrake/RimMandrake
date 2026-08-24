@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    Point the Surface planet layer's backgroundBiome at our own water.
+
+    🔑 `PlanetLayerDef.backgroundBiome` is referenced in ONE place in the whole 1.6
+    codebase — WorldDrawLayer_Terrain.cs:48 — so this changes the colour of the
+    water inside Peninsula / Bay / CoastalIsland masks and NOTHING ELSE. It does
+    not touch the sea, the shader, elevation, or any biome a tile actually has.
+
+    ⚠️ Do not confuse `PlanetLayerDef.backgroundBiome` (a BiomeDef reference, this
+    file) with `BiomeDef.isBackgroundBiome` (a bool, used by LandmarkDef.IsValidTile
+    to decide which neighbours count as water for landmark rotation). Different
+    fields, similar names, unrelated jobs.
+
+    Deliberately NOT wrapped in a Conditional: Surface is a Core def and cannot be
+    absent. If Ludeon ever renames it we want the red error, because the silent
+    failure is capes going black again and nobody noticing for weeks.
+  -->
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PlanetLayerDef[defName="Surface"]/backgroundBiome</xpath>
+    <value><backgroundBiome>Jawa_BackgroundWater</backgroundBiome></value>
+  </Operation>
+
+</Patch>
