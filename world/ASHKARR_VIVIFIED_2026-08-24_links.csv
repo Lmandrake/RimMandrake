@@ -350,7 +350,6 @@ road,470,10105,DirtRoad
 road,493,10239,DirtRoad
 road,493,10242,DirtRoad
 road,510,10341,StoneRoad
-road,510,10344,StoneRoad
 road,524,10424,StoneRoad
 road,524,10426,StoneRoad
 road,526,10436,DirtRoad
@@ -778,7 +777,6 @@ road,3868,8728,StoneRoad
 road,3868,20770,StoneRoad
 road,3869,8729,StoneRoad
 road,3869,20768,StoneRoad
-road,3869,20776,StoneRoad
 road,4024,8884,StoneRoad
 road,4024,21706,StoneRoad
 road,4027,8883,StoneRoad
@@ -935,8 +933,6 @@ road,5456,10321,StoneRoad
 road,5456,13557,StoneRoad
 road,5460,10320,StoneRoad
 road,5460,21724,StoneRoad
-road,5484,10344,StoneRoad
-road,5484,21813,StoneRoad
 road,5538,19948,DirtRoad
 road,5542,10403,DirtRoad
 road,5542,20052,DirtRoad
@@ -1306,9 +1302,6 @@ road,11479,14716,StoneRoad
 road,11488,11489,StoneRoad
 road,11498,11502,StoneRoad
 road,11502,11503,StoneRoad
-road,11777,11778,StoneRoad
-road,11777,20748,StoneRoad
-road,11778,11779,StoneRoad
 road,11813,11814,StoneRoad
 road,11814,18270,StoneRoad
 road,11828,11829,StoneRoad

@@ -25,25 +25,28 @@ from rimbridge_client import RimBridge, resolve_endpoint  # noqa: E402
 _HERE = os.path.dirname(os.path.abspath(__file__))          # …/src/RimMandrake/Utils
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(_HERE)))
 WORLD = os.path.join(REPO, "world")
-BASELINE = os.path.join(WORLD, "ASHKARR_DRAFT_2026-08-24_tiles.csv")
+# The CURRENT bundle, re-harvested from the live world whenever it is edited. The older
+# ASHKARR_DRAFT_2026-08-24_tiles.csv is the 02:1x harvest and is deliberately NOT used here:
+# it predates the crag island, and pointing at it made P4 report six phantom regressions.
+BASELINE = os.path.join(WORLD, "ASHKARR_VIVIFIED_2026-08-24_tiles.csv")
 PROBE_EXPORT = os.path.join(WORLD, "_reload_probe_tiles.csv")
 
 # ⚠️ Tiles edited AFTER the baseline was harvested. P4 compares live against the harvest,
 # so without this every later edit reads as a regression and the check cries wolf on its
 # own author. Add to this as the world is authored; never quietly relax the comparison.
 KNOWN_DELTA = {
-    # 2026-08-24 02:2x - the crag island painted into the open ocean NE of the Twilight
-    # Crags isle. world/_newisland_patch.csv is the source of truth for these six.
-    1883: "AB_RockyCrags", 18578: "AB_RockyCrags", 18579: "AB_RockyCrags",
-    18580: "AB_RockyCrags", 18581: "AB_RockyCrags", 18583: "AB_RockyCrags",
+    # EMPTY as of 2026-08-24 08:3x: the bundle was re-harvested from the live world after
+    # the settlement cull, so the baseline and the world agree again. Append here whenever
+    # the world is edited without re-harvesting - P4 fails on any mismatch it cannot name.
 }
 
 # The eleven settlements moved on 2026-08-24, and where they must be.
+# ⚠️ Cell Seven, Vent Forty and Vent Twelve were MOVED on 2026-08-24 and then CULLED the
+# same day. Asserting a moved settlement that no longer exists is how a check starts lying.
 MOVED = {
     "No Master": 19350, "Second Speaker": 9936, "Helix Landing": 11944,
     "The Coil": 15926, "Quiet Lab": 5499, "The Free Charge": 3653,
-    "Cell Seven": 11250, "No Owner": 21549, "Vent Forty": 11243,
-    "Vent Twelve": 14480, "The Cracking Yard": 13180,
+    "No Owner": 21549, "The Cracking Yard": 13180,
 }
 
 results = []
@@ -119,7 +122,7 @@ def main():
         # no roads), 8 Free Droid Enclaves, 2 Ascendant Helix, 3 unplanned settlements and
         # Kettle Deep - every one intended. A count BELOW 23 means something re-laid roads
         # the owner ruled away, which is the failure this check is actually for.
-        NOROAD_BASELINE = 23
+        NOROAD_BASELINE = 20   # 23 before the 2026-08-24 settlement cull removed 3 roadless ones
         lint = rb.call("jawa/world_lint", {})
         checks = lint.get("checks", {})
         noroad = (checks.get("settlementsWithNoRoad") or {}).get("count")
@@ -133,10 +136,12 @@ def main():
         pos = {(o.get("name") or o.get("label")): o["tile"]
                for o in objs.get("objects", []) if o.get("isSettlement")}
         wrong = {k: (pos.get(k), v) for k, v in MOVED.items() if pos.get(k) != v}
+        SETTLEMENTS_BASELINE = 111   # 124 before the 2026-08-24 cull of 13
         score("P6 moved settlements held",
-              len(pos) == 124 and not wrong,
-              "%d settlements, %d of 11 moves intact %s"
-              % (len(pos), 11 - len(wrong), wrong if wrong else ""))
+              len(pos) == SETTLEMENTS_BASELINE and not wrong,
+              "%d settlements (baseline %d), %d of %d moves intact %s"
+              % (len(pos), SETTLEMENTS_BASELINE, len(MOVED) - len(wrong), len(MOVED),
+                 wrong if wrong else ""))
 
     try:
         os.remove(PROBE_EXPORT)

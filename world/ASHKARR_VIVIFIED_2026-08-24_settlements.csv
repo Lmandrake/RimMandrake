@@ -35,16 +35,10 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 170,Jawa_Junkers,the Junkers,The Fuel Works,11779,-7.7512,96.3927,96.3,ZBiome_Badlands,"past the terminator on the warm downwind flank, scavenging the cold swirl"
 171,Jawa_Junkers,the Junkers,Cryohaul,5456,40.6469,98.7954,96.7,Desert,"past the terminator on the warm downwind flank, scavenging the cold swirl"
 172,Jawa_Junkers,the Junkers,Ammonia Landing,510,34.1238,99.7416,98.1,Desert,"past the terminator on the warm downwind flank, scavenging the cold swirl"
-173,Jawa_Junkers,the Junkers,Warmside Camp,21813,30.4029,100.8834,99.4,ZBiome_Badlands,"past the terminator on the warm downwind flank, scavenging the cold swirl"
-174,Jawa_Junkers,the Junkers,Bonepick Station,20748,-8.4618,100.2593,100.1,Wasteland,"past the terminator on the warm downwind flank, scavenging the cold swirl"
-175,Jawa_Junkers,the Junkers,Tailings End,6654,0.0000,68.9412,68.9,ZBiome_Badlands,squatting the worked-out mining fields the Geonosians did not finish
 176,Jawa_Junkers,the Junkers,The Slagfield,3226,6.6906,69.8342,70.0,Wasteland,squatting the worked-out mining fields the Geonosians did not finish
 177,Jawa_Junkers,the Junkers,The Claim Jump,16905,2.8831,66.5075,66.5,ZBiome_Badlands,squatting the worked-out mining fields the Geonosians did not finish
 178,Jawa_IndigenousTribes,Jawa Trade Moot,The Ore Moot,12415,-2.6413,61.9233,62.0,AridShrubland,the crawler circuit's anchor: the mine the sandcrawlers were stolen from
-179,Jawa_IndigenousTribes,Jawa Trade Moot,Crawler Ground,6678,9.1344,75.8635,76.0,ZBiome_Badlands,canyon fortresses and crawler circuit nodes across the near-desert
 180,Jawa_IndigenousTribes,Jawa Trade Moot,Ridge Cache,2641,40.0313,-70.8526,75.5,Wasteland,canyon fortresses and crawler circuit nodes across the near-desert
-181,Jawa_IndigenousTribes,Jawa Trade Moot,Wreck Circuit,20705,-17.3746,73.5793,74.3,AridShrubland,canyon fortresses and crawler circuit nodes across the near-desert
-182,Jawa_IndigenousTribes,Jawa Trade Moot,Sandmoot,11537,6.0422,73.6122,73.7,ZBiome_Badlands,canyon fortresses and crawler circuit nodes across the near-desert
 183,Jawa_IndigenousTribes,Jawa Trade Moot,The Bartering Rock,11502,-12.7524,71.5763,72.0,Wasteland,canyon fortresses and crawler circuit nodes across the near-desert
 184,Jawa_IndigenousTribes,Jawa Trade Moot,Tin Camp,3221,-6.6906,69.8342,70.0,AridShrubland,canyon fortresses and crawler circuit nodes across the near-desert
 185,TribeCivil,Deep Desert Tribes,Duneward,71,23.5048,21.5067,31.4,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
@@ -56,18 +50,14 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 191,TribeCivil,Deep Desert Tribes,Ashfoot,6566,18.5277,25.9836,31.5,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
 192,TribeCivil,Deep Desert Tribes,Knife Canyon,303,-29.6668,6.6438,30.3,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
 193,TribeCivil,Deep Desert Tribes,The Blind Wells,3156,-37.0059,-12.2612,38.7,Desert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-194,OutlanderCivil,Homestead Defense League,Dewhome,2234,-16.1913,81.8419,82.2,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 195,OutlanderCivil,Homestead Defense League,Condenser Flats,9956,21.5632,82.8830,83.4,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
-196,OutlanderCivil,Homestead Defense League,Bell Cistern,20776,-6.2235,86.2001,86.2,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 197,OutlanderCivil,Homestead Defense League,Mistcatch,421,-13.9643,85.9876,86.1,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
-198,OutlanderCivil,Homestead Defense League,Stillmarket,21706,31.4122,86.8548,87.3,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 199,OutlanderCivil,Homestead Defense League,Rainshadow,9962,26.9441,87.0024,87.3,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 200,OutlanderCivil,Homestead Defense League,Vaporfall,20770,-10.1118,87.3991,87.4,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 201,OutlanderCivil,Homestead Defense League,Longfurrow,6990,-2.3379,-87.5259,87.5,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 202,OutlanderCivil,Homestead Defense League,Cistern Hill,15065,14.2704,-64.6714,65.5,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 203,OutlanderCivil,Homestead Defense League,Greenline,15051,22.4097,-64.2142,66.3,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 204,OutlanderCivil,Homestead Defense League,The Dripworks,241,-7.0166,90.0000,90.0,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
-205,OutlanderCivil,Homestead Defense League,Marrowfield,20766,-13.2158,90.0000,90.0,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 206,OutlanderCivil,Homestead Defense League,Aquifer Station,7777,18.6664,-63.7315,65.2,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 207,OutlanderCivil,Homestead Defense League,Dryhold,14351,-45.7089,9.4088,46.5,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
 208,OutlanderCivil,Homestead Defense League,Fogline,13779,-41.5043,109.4572,104.4,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
@@ -105,12 +95,9 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 240,Jawa_HuttCartel,Hutt Cartel,Vexxa's Spicehouse,1820,42.1947,-52.4741,63.2,Desert,beside a near-desert oasis - the well is guarded and is NOT free
 241,Jawa_HuttCartel,Hutt Cartel,Mokka the Unpaid's Palace,4686,-13.9217,-83.3187,83.5,Desert,beside a near-desert oasis - the well is guarded and is NOT free
 242,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Cracking Yard,13180,-1.3102,17.0742,17.1,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
-243,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Twelve,14480,-8.6675,3.1248,9.2,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
 244,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Owner,21549,7.7953,14.8014,16.7,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
-245,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Cell Seven,11250,-2.4539,0.7802,2.6,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
 246,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Free Charge,3653,-13.2798,-25.7212,28.7,AB_PyroclasticConflagration,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
 247,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Second Speaker,9936,-3.8728,12.4513,13.0,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
-248,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Forty,11243,-7.6205,8.5838,11.5,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
 249,Jawa_AscendantHelix,Ascendant Helix,Cold Archive,10940,51.8249,155.7348,124.3,HorrorWastes,"a cold, isolated research seat on the nightside edge - the Helix does not raid, it retrieves, and it wants no neighbours"
 250,Jawa_AscendantHelix,Ascendant Helix,The Revision,17595,43.8465,-141.8897,124.6,HorrorWastes,"a cold, isolated research seat on the nightside edge - the Helix does not raid, it retrieves, and it wants no neighbours"
 251,Jawa_AscendantHelix,Ascendant Helix,Specimen Hall,1707,-4.1506,-115.9846,115.9,AB_MycoticJungle,"a cold, isolated research seat on the nightside edge - the Helix does not raid, it retrieves, and it wants no neighbours"

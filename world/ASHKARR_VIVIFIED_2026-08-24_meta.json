@@ -48,7 +48,7 @@
    "landmarkDensity"
   ],
   "notPersistedNote": "WorldInfo.ExposeData does not scribe these two. Whatever they read now, they revert on the next load.",
-  "ticksGame": 308
+  "ticksGame": 901
  },
  "layers": {
   "success": true,
@@ -96,30 +96,30 @@
     "scenarioTag": "Orbit2"
    }
   ],
-  "ticksGame": 308
+  "ticksGame": 901
  },
  "stats": {
   "success": true,
-  "message": "6.43% water over 21872 tiles, in 3 body/bodies of >= 8 tiles (14 counting puddles). Largest is 2.79% of the planet.",
+  "message": "6.41% water over 21872 tiles, in 3 body/bodies of >= 8 tiles (14 counting puddles). Largest is 2.76% of the planet.",
   "tilesTotal": 21872,
-  "waterTiles": 1407,
-  "waterPct": 6.43,
-  "landPct": 93.57,
-  "coastalTiles": 306,
+  "waterTiles": 1401,
+  "waterPct": 6.41,
+  "landPct": 93.59,
+  "coastalTiles": 312,
   "bodiesOverMinSize": 3,
   "bodiesTotal": 14,
   "minBodySize": 8,
-  "largestBodyPct": 2.79,
+  "largestBodyPct": 2.76,
   "bodies": [
    {
-    "tiles": 610,
-    "pct": 2.79,
-    "perimeterEdges": 476,
-    "perimeterTiles": 253,
-    "raggedness": 104.93,
-    "raggednessEdges": 371.44,
-    "centroidLat": 16.707,
-    "centroidLatNorm": 0.1856
+    "tiles": 604,
+    "pct": 2.76,
+    "perimeterEdges": 494,
+    "perimeterTiles": 265,
+    "raggedness": 116.27,
+    "raggednessEdges": 404.03,
+    "centroidLat": 16.716,
+    "centroidLatNorm": 0.1857
    },
    {
     "tiles": 465,
@@ -256,7 +256,7 @@
   "biomes": {
    "Desert": 4151,
    "ExtremeDesert": 3189,
-   "AB_RockyCrags": 1996,
+   "AB_RockyCrags": 2002,
    "AB_MycoticJungle": 1939,
    "HorrorWastes": 1711,
    "Wasteland": 1699,
@@ -291,8 +291,8 @@
  "lint": {
   "success": true,
   "tilesScanned": 21872,
-  "totalFindings": 24,
-  "verdict": "24 findings across 21872 tiles.",
+  "totalFindings": 21,
+  "verdict": "21 findings across 21872 tiles.",
   "checks": {
    "staleMarineMutators": {
     "count": 0,
@@ -340,7 +340,7 @@
     "examples": []
    },
    "settlementsWithNoRoad": {
-    "count": 23,
+    "count": 20,
     "examples": [
      {
       "tile": 15926,
@@ -415,6 +415,6 @@
     "examples": []
    }
   },
-  "ticksGame": 308
+  "ticksGame": 901
  }
 }

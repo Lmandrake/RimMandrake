@@ -1,0 +1,80 @@
+[
+ {
+  "id": 196,
+  "name": "Bell Cistern",
+  "tile": 20776,
+  "faction": "Homestead Defense League"
+ },
+ {
+  "id": 205,
+  "name": "Marrowfield",
+  "tile": 20766,
+  "faction": "Homestead Defense League"
+ },
+ {
+  "id": 194,
+  "name": "Dewhome",
+  "tile": 2234,
+  "faction": "Homestead Defense League"
+ },
+ {
+  "id": 198,
+  "name": "Stillmarket",
+  "tile": 21706,
+  "faction": "Homestead Defense League"
+ },
+ {
+  "id": 182,
+  "name": "Sandmoot",
+  "tile": 11537,
+  "faction": "Jawa Trade Moot"
+ },
+ {
+  "id": 181,
+  "name": "Wreck Circuit",
+  "tile": 20705,
+  "faction": "Jawa Trade Moot"
+ },
+ {
+  "id": 179,
+  "name": "Crawler Ground",
+  "tile": 6678,
+  "faction": "Jawa Trade Moot"
+ },
+ {
+  "id": 175,
+  "name": "Tailings End",
+  "tile": 6654,
+  "faction": "the Junkers"
+ },
+ {
+  "id": 173,
+  "name": "Warmside Camp",
+  "tile": 21813,
+  "faction": "the Junkers"
+ },
+ {
+  "id": 174,
+  "name": "Bonepick Station",
+  "tile": 20748,
+  "faction": "the Junkers"
+ },
+ {
+  "id": 248,
+  "name": "Vent Forty",
+  "tile": 11243,
+  "faction": "Free Droid Enclaves"
+ },
+ {
+  "id": 243,
+  "name": "Vent Twelve",
+  "tile": 14480,
+  "faction": "Free Droid Enclaves"
+ },
+ {
+  "id": 245,
+  "name": "Cell Seven",
+  "tile": 11250,
+  "faction": "Free Droid Enclaves"
+ }
+]
