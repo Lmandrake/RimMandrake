@@ -1,3 +1,33 @@
+## 🔴 REWRITTEN FOR THE 2026-08-24 REBOOT — read this instead of the plan below
+
+**Most of the plan below is DEAD.** It was written 2026-08-20 to *import* the world through
+W9's stages. The world has since been authored live and is in git as
+`world/ASHKARR_DRAFT_2026-08-24.rws` plus its harvested bundle. ⛔ **Do not run
+`w9_run.py`, and do not import tiles, links, mutators, landmarks or settlements.** Doing so
+would overwrite the authored planet with the 2026-08-23 CSVs.
+
+**What the down-window is actually for now, in order:**
+
+1. 🔴 **Deploy the companion DLL** — this is the only thing that genuinely needs the game
+   down. `python.exe src/RimMandrake/bridgetools/build.py --gm --apply`. It carries
+   `world_tile_export`'s pollution fix (commit `ab02ef75`); the game copy is `c1f3121ddf9e`.
+   ⚠️ `--gm` is not optional: without it the deploy silently drops `fire_incident` and
+   `send_letter`, and build.py will refuse rather than let it happen.
+2. **Load `ASHKARR_DRAFT_2026-08-24`** — present in the Saves folder under that name.
+   ⚠️ `WORLDMAP_V1_original.rws` in the SAVES FOLDER is the same world under a wrong name,
+   because `save_game` ignored `saveName` (see `skills/rimbridge/references/silent-failures.md`
+   §2b). The repo's `world/WORLDMAP_V1_original.rws` is still the true 2026-08-23 original.
+3. **Prove the world survived the round trip** — `jawa/world_tile_validate` against
+   `world/ASHKARR_DRAFT_2026-08-24_tiles.csv`, then `world_lint`, then LOOK at
+   `world/view/after3/PREV.biome.ortho.png`.
+4. **Re-export with the fixed tool** and confirm the header now carries `pollution` as
+   column 10, and that the 539 Cathedral values come back non-zero. That is the proof the
+   deploy did anything.
+5. **Only then**, if there is appetite, the Inhabited soak below — it is the one part of
+   the original plan still alive, and it needs its own save → quit → reload.
+
+**from:** CHECK, 2026-08-24, during the live authoring session.
+
 ## spec
 🔑 **THE WHOLE POINT: three Inhabited items need `save → quit to desktop → reload`,
 and the W9 world edits want exactly the same cycle to prove they persist. One quit
