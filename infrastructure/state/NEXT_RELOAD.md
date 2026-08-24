@@ -19,6 +19,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🌡️ TOLERANCES + 🏹 ANCIENT ARSENAL + 🦴 CAST SUBSTITUTIONS | 2026-08-23 (cast NOT yet) | ⏳ PENDING |
 | 🔧 §19 TWO DLLs WAITING ON THE DOWN WINDOW | ✅ **BOTH DEPLOYED 2026-08-24 01:3x** | ⏳ readings pending |
 | 🎯 §20 RE-ROLL THE ROSTER — the 2026-08-24 harvest is the BEFORE | 2026-08-24 | ⏳ PENDING |
+| 🏷️ §21 WORLD LABELS LIFTED OFF THE SURFACE — ⛔ **DLL NOT DEPLOYED** | 2026-08-24 | ⏳ PENDING |
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
 
 🔴 **WHEN A LOAD IS SCORED:** move its block whole into
@@ -248,3 +249,40 @@ inside the range. **The audit cannot see a roll, and a clean audit is not a pass
 `Open` present and actionable (measured 2026-08-24, with a map loaded). If a later load reports zero
 again, check whether a map exists before filing anything — the architect menu is map-scoped, and that
 is what `ORDERS_DESIGNATORS_ENUMERATE_ZERO_1` turned out to be.
+
+---
+## 🏷️ §21 — THE WORLD LABELS ARE LIFTED OFF THE PLANET. ⛔ The DLL is BUILT, NOT DEPLOYED.
+
+🔴 **Owner, 2026-08-24, from a snapshot:** *"the labels for the world continue to intersect the
+surface … They need to be slightly farther out from the planet."*
+
+`JawaRules.dll` gains a second transpiler, `world-label-lift`. Every glyph of a world feature name
+is projected onto a shell above the planet, and the shell height is one literal written four times
+at `WorldFeatureTextMesh_TextMeshPro.cs:146-149` — `layer.Radius + 0.4f`. It is now **1.5**.
+
+⚠️ **The game locks a loaded assembly, so this needs the down window** — it is built and committed
+and will otherwise sit in the repo looking deployed.
+
+```bash
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaRules --apply
+```
+
+### The reading, and the trap in it
+
+**W5** — the log line `[JawaRules] world-label-lift: armed; world feature names sit 1.50 above the
+surface instead of 0.40`.
+
+🔴 **`armed` is NOT the reading.** The transpiler counts its own substitutions and **expects exactly
+FOUR** — one per quad corner. Anything else logs a named error, because a partial hit would lift
+some corners of a glyph and not others and **shear the text**. Read the error line, not the armed line.
+
+⚠️ **AND THE NUMBER MAY NOT BE THE PROBLEM.** For scale, the game's own shells on this sphere are
+clouds at **+0.2** and atmospheric glow at **+16.1**, so 0.4 is hard against the surface and 1.5 is
+still far below the glow. But a glyph quad's four corners are each normalised onto the shell
+individually, so the chord sag *inside* one glyph is ~0.1 at most — which means a shell at +0.4
+should not intersect a terrain mesh whose vertices sit at exactly `Radius`. **The observed
+intersection has a cause this patch does not identify.**
+
+⇒ 🔑 **If 1.5 does not clear it, do NOT simply raise it again.** The labels detach visibly from the
+limb long before brute force would fix an unrelated cause. Find what is actually drawing above
+`Radius` — a mod's world layer is the first suspect.

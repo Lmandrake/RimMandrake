@@ -48,6 +48,14 @@ namespace JawaRules
                   + Patch_WorldFeatures_UpdateAlpha.WantedAlpha.ToString("0.00")
                   + " alpha instead of "
                   + Patch_WorldFeatures_UpdateAlpha.VanillaAlpha.ToString("0.00"));
+
+            ApplyTranspiler(h, AccessTools.Method(typeof(WorldFeatureTextMesh_TextMeshPro),
+                                                  "WrapAroundPlanetSurface"),
+                  typeof(Patch_WorldFeatureText_Lift), "world-label-lift",
+                  "armed; world feature names sit "
+                  + Patch_WorldFeatureText_Lift.WantedLift.ToString("0.00")
+                  + " above the surface instead of "
+                  + Patch_WorldFeatureText_Lift.VanillaLift.ToString("0.00"));
         }
 
         // Two separate log lines on purpose: this assembly carries two unrelated rules
@@ -284,6 +292,78 @@ namespace JawaRules
                           + ". The label opacity is NOT what was asked for. A game "
                           + "update changed the method; re-read it before trusting "
                           + "the 'armed' line above.");
+            }
+        }
+    }
+
+    // 🔴 Owner, 2026-08-24: "the labels for the world continue to intersect the surface …
+    // They need to be slightly farther out from the planet."
+    //
+    // Every glyph of a world feature name is re-projected onto a shell just above the
+    // planet, and the shell's height is one literal, written four times:
+    //
+    //     WorldFeatureTextMesh_TextMeshPro.cs:146-149
+    //         …MultiplyPoint(…).normalized * (layer.Radius + 0.4f)
+    //
+    // For scale, the game's own shells around the same sphere are clouds at +0.2 and the
+    // atmospheric glow at +16.1. So 0.4 is hard against the surface, and lifting it to
+    // 1.5 leaves the text an order of magnitude clear of the terrain while staying ten
+    // times below the glow.
+    //
+    // ⚠️ WHAT THIS DOES NOT CLAIM. A perfect sphere at +0.4 should not intersect a
+    // terrain mesh whose vertices sit at exactly Radius - each glyph quad's four corners
+    // are individually normalised onto the shell, so the chord sag inside one glyph is
+    // ~0.1 at most. The observed intersection therefore has a cause this patch does not
+    // identify, and raising the shell treats the symptom the owner reported rather than
+    // that cause. ⇒ **If 1.5 does not clear it, the number is not the problem** - do not
+    // simply keep raising it, because the labels will detach from the limb long before
+    // an unrelated cause is fixed by brute force.
+    //
+    // ⛔ A POSTFIX CANNOT DO THIS, for the same structural reason as the alpha patch but
+    // worse: WrapAroundPlanetSurface has already written the vertex buffer and called
+    // UpdateVertexData by the time a postfix runs, so a postfix would have to walk and
+    // rewrite every vertex of every glyph a second time, per rebuild.
+    //
+    // ⚠️ FOUR hits, not one - the literal appears once per quad corner. A count of
+    // anything else means the method changed shape and is a named error, and the IL is
+    // returned intact so the game still runs.
+    //
+    // ⭐ WorldFeatureTextMesh_Legacy.WrapAroundPlanetSurface is an EMPTY method body, so
+    // there is deliberately nothing to patch on the legacy path. Its labels are not
+    // wrapped onto the sphere at all and never were.
+    public static class Patch_WorldFeatureText_Lift
+    {
+        public const float VanillaLift = 0.4f;
+        public const float WantedLift = 1.5f;
+        private const int ExpectedHits = 4;
+
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> src)
+        {
+            int hits = 0;
+            foreach (var ins in src)
+            {
+                if (ins.opcode == OpCodes.Ldc_R4
+                    && ins.operand is float f
+                    && Mathf.Approximately(f, VanillaLift))
+                {
+                    hits++;
+                    var rep = new CodeInstruction(OpCodes.Ldc_R4, WantedLift);
+                    rep.labels.AddRange(ins.labels);
+                    rep.blocks.AddRange(ins.blocks);
+                    yield return rep;
+                    continue;
+                }
+                yield return ins;
+            }
+
+            if (hits != ExpectedHits)
+            {
+                Log.Error("[JawaRules] world-label-lift: expected exactly " + ExpectedHits
+                          + " " + VanillaLift.ToString("0.00") + " constants in "
+                          + "WorldFeatureTextMesh_TextMeshPro.WrapAroundPlanetSurface and "
+                          + "found " + hits + ". The labels are NOT lifted, or are lifted "
+                          + "on only some corners, which would SHEAR the glyphs. Re-read "
+                          + "the method before trusting the 'armed' line above.");
             }
         }
     }
