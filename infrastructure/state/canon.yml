@@ -228,8 +228,16 @@ planet:
     selector `rain_mm > 0 AND hilliness < 4` now returns 0 rows, down from 363,
     every one AB_FeraliskInfestedJungle. The 1,396 at hilliness >= 4 are untouched.
 
-  start_tile: 2476
-  start_name: "The Setdown"
+  start_tile: null          # ⛔ STRUCK 2026-08-24 - was 2476
+  start_name: null          # ⛔ STRUCK 2026-08-24 - was "The Setdown"
+  start_struck: >
+    🔴 Owner, 2026-08-24: "There is no canon start colony for the player yet, strike that
+    from the lore docs." The Setdown siting is WITHDRAWN, not merely superseded - nothing
+    on the map is the player's home. ⚠️ ashkarr_paint.py still carries HOME_LATLON /
+    HOME_NAME and ABORTS if that lat/lon stops being ExtremeDesert; ashkarr_populate.py
+    and ashkarr_repair.py still place an AbandonedColonyOutlander landmark at/next to
+    2476. Those are stale, not authoritative, and were left running rather than ripped out
+    without a ruling. See ASHKARR_WORLD_DEFINITION.md §7b.
   start_src: >
     meta.json start{}; sited 2026-08-19 and argued at ashkarr_paint.py:74-95. arc 56.9,
     bearing 358.8, ExtremeDesert, 276 m, 38.6 °C, 18 mm, nearest standing water 26° away.

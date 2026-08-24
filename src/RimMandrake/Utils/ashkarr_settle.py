@@ -2,6 +2,18 @@
 # -*- coding: utf-8 -*-
 """ashkarr_settle.py - more moisture farmers, more Hutts, more oases, and roads to them.
 
+⛔ STALE IN FOUR PLACES AS OF 2026-08-24 - the owner re-ruled faction placement live and
+   this script was NOT rewritten. Re-running it as-is will fight the map:
+     1. HUTT_* requires a free adjacent well for every Hutt site. That rule now binds the
+        8 PALACES only; the 11 service houses are dry by design.
+     2. Free Droid Enclaves are gated to arc <= 55 and to undrinkable water. The rule is
+        now DISTANCE FROM ORGANICS (above all the Empire); Cathedral ground, volcanic
+        terrain and quiet dark-side seats are all legal, water is irrelevant.
+     3. BARREN_REGIONS + HELIX_BARREN_OK: the Free Droid dark-side seats are now exempt too.
+     4. Roads: the Deep Desert Tribes build none. 91 road edges into Tusken holdings were
+        removed 2026-08-24; the MST here would lay them straight back.
+   Rulings: design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md §7 and §7c.
+
 Owner, 2026-08-22: *"more settlements and roads, though do keep large areas of
 barrenness please. Making a lot more Hutts in the desert could make sense here (more
 oases though), and the moisture farmers could definitely be all over the place."*

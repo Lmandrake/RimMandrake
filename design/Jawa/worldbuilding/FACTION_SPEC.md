@@ -144,7 +144,8 @@ description Wealthy, decentralised, transactional. Owns the oases and sells
 pawnSingular Cartel enforcer   pawnsPlural Cartel enforcers
 leaderTitle  Lord              techLevel Industrial   categoryTag Outlander
 humanlikeFaction true    canMakeRandomly true   maxCountAtGameStart 1
-settlementGenerationWeight 1.15        -- 8 settlements, all oasis tiles
+settlementGenerationWeight 1.15        -- 19 settlements: 8 PALACES on oasis tiles,
+                                       -- 11 service houses with no water at all (2026-08-24)
 permanentEnemy false · naturalEnemy false   -- hostile but negotiable
 canRequestTraders true · high caravan frequency
 ideoName  the Reckoning of Debts        -- spec entry 2, deityPresets authored
@@ -195,7 +196,9 @@ description  Battle droids abandoned after the war who woke up and decided they
 pawnSingular droid            pawnsPlural droids
 leaderTitle  First Speaker    techLevel Spacer     categoryTag Outlander
 humanlikeFaction  🔴 MUST BE SET EXPLICITLY - load-bearing here    (R3)
-settlementGenerationWeight 0.45        -- 3, on water tiles and remote ruins
+settlementGenerationWeight 0.45        -- 12; sited AWAY FROM ORGANICS, above all the
+                                       -- Empire. Cathedral ground, volcanic terrain,
+                                       -- and quiet dark-side seats (2026-08-24)
 permanentEnemy false · raids suppressed except post-goodwill-collapse retaliation
 canRequestTraders true, very rare caravans
 ideoName     the Continuity Protocol
@@ -271,7 +274,9 @@ description  A small, obscenely wealthy gene-cult that believes the body is a
 pawnSingular curator          pawnsPlural curators
 leaderTitle  Director         techLevel Spacer      categoryTag Outlander
                               -- "Director" belongs HERE, not to the Empire (R11)
-settlementGenerationWeight 0.45        -- 3, isolated and secure
+settlementGenerationWeight 0.45        -- 7, where the BIOWEAPON is: horror wastes,
+                                       -- terminator mycoid, poison forest, and the
+                                       -- Scald's ocular forest (2026-08-24)
 permanentEnemy false                   -- neutral; retrieval ops, not raids
 ideoName     the Ascendant Genome
 🔴 AUTHORED, not a reskin: `Ancients` is hidden, settlementGenerationWeight 0,

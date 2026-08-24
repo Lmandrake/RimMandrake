@@ -597,7 +597,7 @@ tiles.
 
 ## Water doctrine — **Require (oasis-anchored)**
 
-Every Cartel settlement sits on or immediately beside an oasis tile, and that tile is faction territory rather than a shared resource. The water *is* the asset; the compound exists to control it.
+🔴 **Corrected 2026-08-24 by the owner — this used to say EVERY Cartel settlement.** It binds the **8 palaces** only. A palace sits immediately beside an oasis tile, never on it, and that tile is faction territory rather than a shared resource: the water *is* the asset, and the compound exists to control it. ⭐ **The other 11 holdings — tolls, markets, kennels, waystations, vaults, the casino, the spicehouse, the skimhouse — hold no water at all.** A lesser Hutt who cannot own a well **charges for a service instead**, and that is what separates a greater Hutt from the rest. *Mokka the Unpaid's Palace* is the one palace off a well; the name is the reason.
 
 - The oasis is the settlement's second boss objective alongside the Hutt.
 - Drawing water at a Cartel oasis without paying triggers a demand, a toll, or a raid.
@@ -612,8 +612,8 @@ Every Cartel settlement sits on or immediately beside an oasis tile, and that ti
 | Vessel | **AUTHORED** — no vanilla vessel |
 | ~~Starting goodwill~~ | ~~−35~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
 | Permanent enemy | No |
-| Target settlements | 8 |
-| Settlement distribution | Oasis tiles, trade routes, roads, warm lowlands |
+| Target settlements | **19** — 8 palaces + 11 service houses (2026-08-24) |
+| Settlement distribution | Palaces beside oasis tiles; service houses on trade routes, roads and warm lowlands, dry |
 | Raid frequency | Medium, distance-scaled |
 | Caravan frequency | High |
 | Trader types | Bulk goods, exotic goods, weapons, **water**, slaves/prisoners if enabled |
@@ -1197,8 +1197,8 @@ The Enclaves settle *on* water tiles deliberately and crack them for hydrogen fu
 | Vessel | **AUTHORED** — no vanilla vessel |
 | ~~Starting goodwill~~ | ~~0~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
 | Permanent enemy | No |
-| Target settlements | 3 |
-| Settlement distribution | **Water tiles**, remote ruins, abandoned industrial sites |
+| Target settlements | **12** (2026-08-24) |
+| Settlement distribution | 🔴 **Owner, 2026-08-24: the binding rule is DISTANCE FROM ORGANICS — above all from the Empire.** Within that: the **Rust Cathedral**, holy to them and whose pollution and heat they are immune to, and its plateau; **volcanic terrain**, which suits them well; **remote ruins and abandoned industrial sites**; and **a few quiet, hidden seats on the dark side**. ~~Water tiles~~ — they drink nothing, and the old "contaminated sources" line was never on the map |
 | Raid frequency | Disabled under normal conditions |
 | Caravan frequency | Very rare |
 | Trader types | Components, repair parts, weapons, technical goods |
@@ -1796,8 +1796,8 @@ Closed-loop recyclers make the Helix siting-indifferent, but growth vats and bio
 | Vessel | **AUTHORED.** `Ancients` is impossible — it is `hidden: true`, `settlementGenerationWeight: 0`, `maxCountAtGameStart: 0`, `canMakeRandomly: false`, so it cannot settle, cannot appear in the faction list and cannot be diplomatic |
 | ~~Starting goodwill~~ | ~~0~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
 | Permanent enemy | No |
-| Target settlements | 3 |
-| Settlement distribution | Isolated highlands, cold deserts, secure research sites |
+| Target settlements | **7** (2026-08-24) |
+| Settlement distribution | 🔴 **Owner, 2026-08-24: the Helix sits where the BIOWEAPON is.** `HorrorWastes` first; then the terminator's mycoid tiles and poison forests; plus **one outpost on the ocular forest of the Scald's mountainous shore**. Still isolated, still cold, still secure — but sited on the strange life, not merely away from people |
 | Raid frequency | Low — **retrieval operations only** |
 | Caravan frequency | Low |
 | Trader types | Exotic goods, genes, medicine, implants, components |
@@ -2675,7 +2675,7 @@ production at all, range set by the last thing they stole.
 # Implementation checklist
 
 1. Generate the twelve factions and inspect settlement distribution.
-2. Correct settlement counts and **water-tile placement** with a faction/world editor. The Deepwater Compact must hold the natural water; the Cartel must hold the oases; the Enclaves must sit on contaminated sources; Tuskens and Geonosians must be dry-sited.
+2. Correct settlement counts and **water-tile placement** with a faction/world editor. The Deepwater Compact must hold the natural water; **the Cartel's 8 PALACES** must hold the oases (its 11 service houses are dry by design, 2026-08-24); Tuskens and Geonosians must be dry-sited. ~~the Enclaves must sit on contaminated sources~~ — ⛔ **struck 2026-08-24: the Free Droid rule is distance from organics, not water.**
 3. Apply the NPC-vs-NPC relations matrix.
 4. Verify equipment tags per faction so no two factions draw from one unrestricted pool.
 5. Confirm forced pawn-kind race overrides for Hutts, Gamorreans, stormtroopers, Sith, Geonosian castes, droid chassis, Helix labour-line, and faction leaders.

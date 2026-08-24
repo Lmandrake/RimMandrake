@@ -72,9 +72,10 @@ as they are made; new-content ideas go to `worldgen_interactive_build_concepts.m
   ✅ **40–57 IS SETTLED — the owner ruled it 2026-08-21.** ~~CONTESTED~~. The tile count at
   `:134`/`:455` below was the winning evidence; `ashkarr_paint.py:76-77`'s **34–57** was a
   siting decision rather than a measurement, and it lost.
-  ⭐ **The Setdown did not move and never could have** — arc 56.9 is inside 57 either way, so
-  "the outer edge of the ring" reads true under both. That phrase was never evidence for
-  either figure, which is what made the argument circular for two days.
+  ⭐ ~~**The Setdown did not move and never could have** — arc 56.9 is inside 57 either way.~~
+  ⛔ **The Setdown was STRUCK 2026-08-24** (owner: *"There is no canon start colony for the
+  player yet"*) — see `ASHKARR_WORLD_DEFINITION.md` §7b. The ring figure is unaffected: it
+  never rested on the start site, which is what made that argument circular for two days.
 - ~~As generated: land 75% / ocean 25%. Temperature **−105.7 … +67.9 °C**, median −38.~~
   ⛔ **SUPERSEDED 2026-08-20 — a reading of `WORLDMAP_gen.rws`, not of the frozen planet.**
   The shipped world is **water 8.14%** (1,780 of 21,872 tiles: Ocean 1,468 + Lake 312), so

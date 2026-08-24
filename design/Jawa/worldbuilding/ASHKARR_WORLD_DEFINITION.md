@@ -546,58 +546,45 @@ terminator. 🔑 **Small story-critical zones fill first**, or they starve.
 | faction | defName | n | where, and why |
 |---|---|---|---|
 | The Galactic Empire | `Empire` | 3 | the seat/spaceport on the plateau rim; **the Scald Gate**; **the Fall Line pass** — choke points. 🔴 **RULED 2026-08-23, owner: "Only three, as I requested, not a gap."** The other ~7–8 Imperial holdings are ORBITAL and are not world tiles (`faction_roster_v2.md:761`); this is no longer an inference |
-| Hutt Cartel | `Jawa_HuttCartel` | 8 | **beside** a near-desert oasis, never on it — *"you can raid the well without besieging the town"* |
-| Homestead Defense League | `OutlanderCivil` | 13 | the arable margin of the terminator; stores water, has no source |
-| Deep Desert Tribes | `TribeCivil` | 9 | canyons, caves, isolated ridges — **never a water tile** |
+| Hutt Cartel | `Jawa_HuttCartel` | 19 | 🔴 **RULED 2026-08-24, owner: the oasis rule binds the PALACES only.** The **8 palaces** are the greater Hutts and each sits **beside** a near-desert oasis, never on it — *"you can raid the well without besieging the town"*. The other **11 — the tolls, markets, kennels, waystations, vaults, the casino, the spicehouse, the skimhouse — hold no water at all**, and that is the point: a lesser Hutt who cannot own a well sells a SERVICE instead. ⚠️ *Mokka the Unpaid's Palace* is the one palace off a well; the name is now canon for why |
+| Homestead Defense League | `OutlanderCivil` | 37 | the arable margin of the terminator; stores water, has no source |
+| Deep Desert Tribes | `TribeCivil` | 9 | canyons, caves, isolated ridges — **never a water tile**. 🔴 **RULED 2026-08-24, owner: "they do not build roads"** — every road that led to a Tusken holding was removed from the map (91 edges, spurs pruned back to their junctions). ⛔ Do not re-run an MST that reconnects them; a Tusken settlement is reached across open sand or not at all |
 | Jawa Trade Moot | `Jawa_IndigenousTribes` | 7 | crawler **circuit** nodes; one anchored on the mine the sandcrawlers were stolen from |
 | the Junkers | `Jawa_Junkers` | 8 | 🔴 owner 2026-08-18: past the terminator on the **warm downwind flank**, plus the **old mining fields**. The docs only ever said *"wreck fields, wherever things fell"* — this is a new ruling |
 | Geonosian Foundry Hive | `Jawa_GeonosianFoundryHive` | 5 | **two clusters**: the ore seams, and the plateau beside the Rust Cathedral |
-| Deepwater Compact | `Jawa_DeepwaterCompact` | 5 | the seas; **two on the Scald** despite the Empire |
+| Deepwater Compact | `Jawa_DeepwaterCompact` | 6 | the seas; **two on the Scald** despite the Empire |
 | Wildsteam Clan | `Jawa_WildsteamClan` | 4 | 2 on the Scald's jungles, 2 in the meridian's poison marsh |
 | Blackstar Company | `Pirate` | 4 | road junctions and ruins; they follow the money |
-| Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | 3 | volcanic springs, plus the ruled plateau seat beside the Cathedral |
-| Ascendant Helix | `Jawa_AscendantHelix` | 3 | the nightside edge — near the strange biomes, not near the people |
+| Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | 12 | 🔴 **RULED 2026-08-24, owner.** ⛔ **The one hard rule is DISTANCE FROM ORGANICS — above all from the Empire.** Within that: the **Rust Cathedral is holy to them and they are immune to its pollution and heat**, so the plateau cluster is right and *Second Speaker* now stands on Cathedral ground itself; **volcanic terrain is excellent** and at least one seat belongs on it (*The Free Charge*, moved off the Scald's jungle onto the pyroclastic conflagration above it); and **a few quiet, hidden seats on the dark side are welcome** — *The Trade Socket*, *Vent Nine*, *Coldfire*, *The Cracking Station* stay, and the barren-region ban does not bind them. ✅ Their Geonosian neighbours are the allies they share the Cathedral with, not the organics they avoid |
+| Ascendant Helix | `Jawa_AscendantHelix` | 7 | 🔴 **RULED 2026-08-24, owner: the Helix sits where the BIOWEAPON is.** `HorrorWastes`, the mycoid tiles and the poison forests of the terminator host them — *Cold Archive* and *The Revision* in the Horror Wastes, *The Fair Copy* in poison forest, *Specimen Hall* on mycoid, and *The Coil* and *Quiet Lab* moved out of the Homestead belt onto terminator mycoid. ⭐ **One outpost holds the new ocular forest on the Scald's mountainous shore** (*Helix Landing*) — see §7c |
 | the Forgotten Arsenal | `Mechanoid` | 0 | hidden; no world-map site, which is the intent |
 
 Every holding's tile and its one-line reason are in `ASHKARR_WORLDMAP_settlements.csv`.
 
-## 7b. ⭐ THE SETDOWN — where the player's clan lands. Sited 2026-08-19
+## 7b. ⛔ THERE IS NO CANON START SITE — struck 2026-08-24
 
-The docs had only *"the habitable ring is ~34–57° of arc"* and left the rest open. ⚠️ **That figure was overruled 2026-08-21 — the ring is 40–57°** (`canon.yml > world.habitable_ring_arc`). ✅ **The Setdown does not move:** arc 56.9 is inside 57 under either reading, which is why the siting was never the thing in dispute.
-It is now decided, and it is in the recipe as `HOME_LATLON` / `HOME_NAME`.
+🔴 **Owner, 2026-08-24: *"There is no canon start colony for the player yet, strike that
+from the lore docs."*** This section used to site THE SETDOWN at tile 2476 / lat −1.028,
+lon +56.867 in the Fall Line Barrens, and to hand that lat/lon to the recipe as
+`HOME_LATLON` / `HOME_NAME`. **That siting is withdrawn.** Nothing on the map is the
+player's home, no doc may name one, and any generator key still carrying those
+coordinates is stale rather than authoritative.
 
-| | |
-|---|---|
-| **tile** | **2476** — lat −1.028, lon +56.867 |
-| **arc / bearing** | **56.9 / 358.8** — the outer edge of the habitable ring, on the **GRAY (downwind) flank** |
-| **region** | Fall Line Barrens |
-| **ground** | `ExtremeDesert`, 276 m, **38.6 °C**, **0 mm** of rain (~~18 mm~~, zeroed 2026-08-21 by `RAIN_DRY_THE_LOWLANDS_1`; the tile is `hilliness` 1), flat, with the tail of the Fall Line breaking to 583 m within ~2 tiles |
-| **water** | **none.** Nearest river tile 26°, nearest sea further. Scald is over the horizon and over a mountain range |
+⚠️ The reasoning that produced it was not wrong and is not being disowned — a start wants
+the map to point somewhere, kin one caravan out, the ship's parts in a second ring, and
+water as pressure rather than a resource. **Whoever sites the start next should argue from
+those, not inherit an answer.** The habitable ring (arc 40–57, `canon.yml`) is unaffected.
 
-Why here and nowhere else — each of these is the reason, not a nice-to-have:
+## 7c. ⭐ THE OCULAR FOREST ON THE SCALD SHORE — added 2026-08-24
 
-1. 🔑 **The campaign has a direction built into the ground.** Everything the clan
-   needs lies **outward** toward the terminator; everything that will kill them lies
-   **sunward**. No other tile in the ring makes the map itself point somewhere.
-2. **Kin are one caravan out, not zero.** The Jawa Trade Moot's anchor **The Ore Moot**
-   — *the mine the sandcrawlers were stolen from* — is **5.3°** away.
-3. **The parts are the second ring.** The ship needs a thruster, a fuel tank and a
-   pilot console; the Junkers squat the worked-out mining fields at **The Claim Jump
-   10.4°**, **Tailings End 12.1°**, **The Slagfield 15.1°**. The v2 flight goal has a
-   destination on the map from turn one.
-4. **The Empire is a presence, not a garrison next door** — Ashgarrison at **16.2°**.
-5. ⭐ **Water is the campaign's pressure, not a resource on the map.** No river, no
-   oasis, no coast. This is what the water doctrine asks for and no wetter tile gives.
-6. **Fall Line is the range that things fall along.** The clan lives in its
-   barrens; that is where a dead gravship was found and woken.
-
-⚠️ `SCENARIO_SPEC.md` requires the start biome to be Desert / ExtremeDesert /
-AridShrubland. `ExtremeDesert` is the harshest of the three and grows nothing —
-that is the intent, but it is the one choice here worth a playtest before it is final.
-
-🔑 **Resolved by lat/lon, never by tile number**, so it survives a geometry rebuild;
-the recipe **aborts** if that lat/lon stops being `ExtremeDesert`, because the home
-site is a decision and not an output.
+🔴 **Owner, 2026-08-24: *"Occular forests should added along the mountainous shore of the
+Scald, and there should be one Helix outpost there."*** **16 tiles** of `AB_OcularForest`
+now break the cooler, outer, mountainous rim of the Scald crater (arc 41–51, 38–43 °C), in
+two groves rather than a continuous band, taking only `ZBiome_Badlands` and one strip of
+`BiomeCypreJungle` — ⛔ **no oasis tile was converted**, the Scald's seven are the only
+fresh water in the hottest country on the planet. *Helix Landing* holds the eastern grove.
+⚠️ The three original ocular tiles sit at 22.8 °C; these run 15–20 °C hotter, which is a
+deliberate stretch of the biome, not an oversight.
 
 ## 8. Roads
 
@@ -624,8 +611,8 @@ pictures of the CSV above.
 
 ## 10. Open questions for the owner
 
-1. ~~The player start is unsited.~~ **CLOSED 2026-08-19 — see §7b.** The Setdown,
-   tile 2476. The one thing left to confirm by play is `ExtremeDesert` vs `Desert`.
+1. **The player start is unsited.** ⛔ **REOPENED 2026-08-24** — the 2026-08-19 siting was struck by the owner; see §7b. ~~The Setdown,
+   tile 2476.~~
 2. ~~The Empire's three seats are choke points by inference.~~ 🔴 **CLOSED 2026-08-23 —
    owner: *"I confirm (A) is correct. Only three, as I requested, not a gap."*** Three is
    deliberate and is not a shortfall to be filled later. 🔑 **The reason is already in the
@@ -684,7 +671,7 @@ Before trusting any future rebuild, run it twice and `md5sum` the three CSVs.
 
 ### What is NOT done, in the order it probably matters
 
-1. ~~The player start is unsited.~~ **DONE — §7b.** The Setdown, tile 2476, arc 56.9 on
+1. **The player start is unsited.** ⛔ **REOPENED 2026-08-24, owner — see §7b.** ~~The Setdown, tile 2476, arc 56.9 on
    the gray flank. `ExtremeDesert` vs `Desert` is the one call worth a playtest.
 2. ~~Region labels collide on the render.~~ **DONE.** The anchor separation was the
    wrong test — what collides is the projected **text box**. `worldview.py` now tests
@@ -1012,9 +999,11 @@ A `Dunes` tile has **no junk, no plants, no ruins, no shrines, no ancient struct
 geysers and no landmark.** On a campaign whose entire economy is scavenging wrecks, that
 is not "harsh terrain" — it is the mutator that deletes the game's content from the tile.
 
-**Our exposure: 1,083 tiles — 5.0% of the planet — are `ExtremeDesert` AND `Flat`, and
-🔴 THE SETDOWN IS ONE OF THEM.** Tile 2476 is `ExtremeDesert`, hilliness `Flat`. If
-vanilla's Mutators step at order 700 rolls `Dunes` there, the player's opening map has
+**Our exposure: 1,083 tiles — 5.0% of the planet — are `ExtremeDesert` AND `Flat`.**
+⚠️ **Updated 2026-08-24:** this used to read *"and THE SETDOWN IS ONE OF THEM"* and rest its
+whole argument on tile 2476. **There is no canon start tile any more (§7b), so the exposure
+is now a general one** — whatever tile the start eventually takes, if it is `ExtremeDesert`
+and `Flat` and vanilla's Mutators step at order 700 rolls `Dunes` on it, the opening map has
 nothing on it to scavenge. Exactly one faction holding sits on eligible ground.
 
 ⇒ **RULING. `Dunes` is banned on the start tile and every tile adjacent to it,
@@ -1056,7 +1045,7 @@ whole value of one is that it means a specific place on this specific planet.
 
 | our named place | landmark | note |
 |---|---|---|
-| **The Setdown**, one tile adjacent — never the home tile itself | `Ruins` or `AbandonedColonyOutlander` | ⭐ **where the dead gravship was found and woken.** The campaign's own backstory, on the map. Not on 2476: the ship needs 4,057 clear substructure cells |
+| ~~**The Setdown**, one tile adjacent~~ | `Ruins` or `AbandonedColonyOutlander` | ⛔ **UNSITED 2026-08-24 — the start site was struck (§7b), so there is no home tile to sit beside.** The idea survives the siting: the dead gravship's ruin is the campaign's backstory on the map, and it goes one tile from wherever the start lands, never on it — the ship needs 4,057 clear substructure cells. `ashkarr_populate.py:85` still pins it to 2476 and is now stale |
 | **Scald Gate** | `Valley` | the one breach in the Spine. No biome list — gated on `minHilliness: Mountainous` only, which the Spine satisfies |
 | **The Ore Moot** | `AncientQuarry` | *the mine the sandcrawlers were stolen from.* Mountainous; ore-rich |
 | **Sarlacc Ground** | `sw_Sarlacc` | ships in Star Wars Animal Collection; blacklists ice only, `maxHilliness: Mountainous`, and combos onto Dunes/Sandy/Hollow/Chasm/Valley/Cavern — authored for exactly this |

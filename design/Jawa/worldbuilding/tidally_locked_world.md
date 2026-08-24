@@ -101,6 +101,24 @@ have foreclosed:** the water is reachable, guarded, and *not* the same tile as t
 settlement. **You can raid the well without besieging the town** — and that is a
 far better decision than a binary.
 
+### 🔴 The rule binds the PALACES only — owner, 2026-08-24
+
+⚠️ **This section used to read as though it bound all nineteen Hutt holdings, and the map
+never obeyed it: 8 sit on a well and 11 are nowhere near one.** The owner ruled the map
+right and the doc wrong.
+
+- **A palace is a well.** The **8 palaces** are the greater Hutts — *Vexxa the Unblinking*,
+  *Rulla the Deep*, *Zeddo the Patient*, *Norba the Wet*, *Hurgo the Vast*, *Bloatu the
+  Ninth*, *Gorga the Immense*, *Mokka the Unpaid*. Each sits **beside** its oasis, never on
+  it, exactly as above. ⭐ *Mokka the Unpaid* is the one palace with no well beside it, and
+  the name now carries the reason.
+- **The other 11 sell a SERVICE instead** — the tolls, the markets, the kennels, the
+  waystations, the vaults, the casino, the spicehouse, the skimhouse. **A lesser Hutt who
+  cannot own water survives by charging for something else**, and holds ground that has no
+  water at all.
+- 🔑 **So Hutt rank is legible from the map**: a name ending in *Palace* means a well is one
+  tile away; anything else means the road, the cargo or the vice is the whole asset.
+
 ---
 
 ## Faction positions, revised
