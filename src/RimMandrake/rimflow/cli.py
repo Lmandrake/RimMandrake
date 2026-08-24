@@ -596,6 +596,60 @@ def cmd_why(args, seat):
 # ---------------------------------------------------------------------------
 # WRITERS — every one of these is one event
 # ---------------------------------------------------------------------------
+OPEN_STATES_EXCLUDED = ("done", "dropped", "superseded")
+
+
+def _replaces(args, seat, w):
+    """Close the parent when a successor takes its work over — or ask whether one did.
+
+    ⚠️ NEVER auto-closes on `caused_by` alone. A parent is usually BROADER than the child:
+    `B40` was rewritten out from under itself by `AUTHORED_KINDS_MUST_FIELD_1` and STILL
+    owed an in-game raid-tier check. Auto-closing would have dropped that silently, which
+    is the exact failure `supersede --by` exists to prevent. So this asks; it never assumes.
+    """
+    items = model.replay(model.read(model.EVENTS)).items
+    parent = args.replaces
+    if parent:
+        it = items.get(parent)
+        if it is None:
+            print("⚠️  --replaces %s: no such item. NOTHING was superseded; %s is filed."
+                  % (parent, args.id))
+            return
+        if it.state in OPEN_STATES_EXCLUDED:
+            print("⚠️  --replaces %s: already %s. Left alone; %s is filed."
+                  % (parent, it.state, args.id))
+            return
+        try:
+            _emit({"seat": seat, "event": "supersede", "id": parent, "by": args.id,
+                   "reason": "superseded by %s, which takes over its work" % args.id},
+                  w, quiet=True)
+            print("%s -> superseded by %s." % (parent, args.id))
+        except SystemExit:
+            print("⚠️  %s is filed, but %s was NOT superseded — it belongs to another seat."
+                  % (args.id, parent))
+            print("     python3 src/RimMandrake/rimflow/cli.py supersede %s --by %s"
+                  % (parent, args.id))
+            raise
+        return
+    # No --replaces. Ask ONLY when the shape says a parent may be dying: this item
+    # descends from another that is still open. Silent otherwise — 410 filings to date,
+    # and a line printed on every one of them is noise, not a prompt.
+    cb = args.caused_by
+    if not cb:
+        return
+    it = items.get(str(cb).split("/")[0])
+    if it is None or it.state in OPEN_STATES_EXCLUDED:
+        return
+    print("")
+    print("🔑 Does %s REPLACE %s, or only descend from it?" % (args.id, it.id))
+    print("   %s is still open (%s)." % (it.id, it.state))
+    print("   Takes over its work  -> supersede it now, so it closes naming its successor:")
+    print("     python3 src/RimMandrake/rimflow/cli.py supersede %s --by %s"
+          % (it.id, args.id))
+    print("   Only part of it      -> leave it open. A parent is usually BROADER than")
+    print("                           its child, and closing it drops the remainder.")
+
+
 def cmd_file(args, seat):
     _, w = load()
     ev = {"seat": seat, "event": "file", "id": args.id, "title": args.title,
@@ -604,6 +658,7 @@ def cmd_file(args, seat):
     ev["for"] = args.for_
     _emit(ev, w, quiet=True)
     print("%s filed for %s, state proposed." % (args.id, args.for_))
+    _replaces(args, seat, w)
     have = {n.lower() for n, _ in read_prose(args.id)}
     miss = [s for s in ("spec", "verify", "criteria") if s not in have]
     if miss:
@@ -1049,6 +1104,14 @@ def build_parser():
     s.add_argument("--needs", choices=model.NEEDS)
     s.add_argument("--spec", help="path to a draft spec, recorded as provenance")
     s.add_argument("--caused-by", dest="caused_by")
+    # 🔑 owner, 2026-08-23: "make rimflow file ask - does this replace an existing item?"
+    # Nine items were closed by hand at the bench that evening; THREE of them were alive
+    # only because a successor took the work over and nobody went back. `supersede` already
+    # existed and was simply never reached for - filing is the verb people know. So the ask
+    # lives HERE, at the moment the successor is born, not in a rule anyone must remember.
+    s.add_argument("--replaces", dest="replaces", metavar="ID",
+                   help="this item takes over ID's work: supersede ID in the same act, "
+                        "so the parent closes and names its successor")
 
     add("claim", "take ownership; always reaches `ready`",
         _simple("claim")).add_argument("id")
