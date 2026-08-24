@@ -2549,3 +2549,63 @@ worldgen scoring) + `Jawa_SickWater.png` + a Replace on the Surface layer.
 ⚠️ **Validated offline before deploy:** `validate_patch.py --live` against the 22:49:51Z
 dump — the xpath hits **exactly 1 node in Core `PlanetLayers.xml`**, 0 errors. The texture
 tiles seamlessly: wrap seams measure 12.5 / 14.3 against an interior seam of 14.7.
+
+---
+
+## §19 — DECIDE's two changes. Written 2026-08-23 21:4x, BEFORE the restart, game still UP.
+
+⚠️ **Both are XML only and neither can steal the other's blame** — different defs, different
+mods, no shared xpath. They ride along free. **The one ASSEMBLY in this load is BUILD's
+`JawaRules.dll`; its signature is BUILD's to write, not mine.**
+
+🔑 **Both succeed SILENTLY.** A patch that matches nothing logs nothing, so "no red errors"
+proves neither. Each item below therefore names an **expected-PRESENT** reading, and the proof
+is a query against the next capture — not the absence of a line.
+
+### §19.1 The scatterbow stops being a gun — `AncientArsenal_Ashkarr.xml` op 1
+
+**Baseline, measured on the 2026-08-23T22:49:51Z capture (581 mods):**
+`MA_CapryakScatterbow` weaponTags = `['Gun', 'NeolithicRangedAdvanced', 'VEE_HunterNeolithicWeapon']`
+
+```sql
+select t.tag from def_tags t join defs d on d.id=t.def_id
+where d.def_name='MA_CapryakScatterbow' and d.def_type='ThingDef' and t.kind='weaponTags'
+```
+
+| outcome | what it means |
+|---|---|
+| `Gun` **absent**, other two present | ✅ the `Inherit="False"` sever worked. Done. |
+| `Gun` still present | ⛔ the sever did not take. ⚠️ **Do NOT go back to `PatchOperationRemove`** — there is no node to remove; `Gun` comes from Core's abstract `BaseHumanMakeableGun` and is appended after patching. Suspect the AttributeSet xpath or load order instead. |
+| `Gun` absent but **`VEE_HunterNeolithicWeapon` also gone** | 🔑 informative, not a disaster: it means that tag reached the def through the PARENT chain rather than a sibling patch, so `Inherit="False"` took it too. Re-add it explicitly; the sever is still correct. |
+
+⭐ **Prior art on this exact operation: it was deployed for days, validated clean, and did
+nothing.** Treat "it validated" as worth zero here.
+
+### §19.2 Sixteen species may wield giant and warcasket weapons
+
+Owner's ruling 2026-08-23. `BS_GiantWeaponWielder` added to 16 XenotypeDefs — 15 by
+`GiantWeaponWielders_Ashkarr.xml`, and `Jawa_Xeno_Gamorrean` by a **direct edit** to our own
+`Defs/XenotypeDefs/GamorreanXenotype.xml`.
+
+**Baseline gene counts, same capture, all 16 with `BS_GiantWeaponWielder` ABSENT:**
+Wookiee 27 · RimMandrakeGamorrean 28 · Jawa_Xeno_Gamorrean 26 · Herglic 13 · Trandoshan 22 ·
+Togorian 25 · Lasat 24 · Feeorin 26 · SithMassassi 22 · Aqualish 17 · Cathar 25 · Chagrian 25 ·
+Gungan 14 · Kaleesh 26 · Klatoonian 25 · Nelvaanian 17
+
+**Expected: every count +1, and the gene present in all 16.**
+
+🔑 **The split route is deliberate and it is the diagnostic** — read the two groups separately:
+
+| outcome | what it means |
+|---|---|
+| all 16 have it | ✅ done |
+| the 15 fail, `Jawa_Xeno_Gamorrean` succeeds | ⛔ the PATCH is at fault — xpath or load order. The direct def edit proves the gene itself is fine. |
+| all 16 fail incl. the direct edit | ⛔ not the patch — `BS_GiantWeaponWielder` did not load. Check `redmattis.bigsmall.core` is active. |
+| some of the 15 only | ⛔ per-def; read which, they are one operation each |
+| any def shows the gene **twice** | ⛔ should be impossible — every op is add-if-missing — but if seen, the guard xpath is not matching |
+
+**Then the play-side confirmation:** a pawn of one of the 16 can equip `BS_GiantHammer`.
+⚠️ **Not required for the def check to pass**, and the two are separate claims.
+
+⛔ **What this does NOT change:** body size. `BS_GiantWeaponWielder` grants `BS_Giant` and
+alters no size stat. If anything looks bigger, that is `BodySizeIsReal.xml` and unrelated.
