@@ -1,125 +1,125 @@
-id,faction_def,faction,name,tile,lat,lon,biome
-135,Empire,Galactic Empire,Sunspire,12828,-5.3026,-22.4631,ZBiome_Badlands
-136,Empire,Galactic Empire,Oxalate Watch,3289,-8.2651,-54.2477,AB_FeraliskInfestedJungle
-137,Empire,Galactic Empire,Ashgarrison,6617,-17.0073,54.0548,ExtremeDesert
-138,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,The Unfinished Work,14719,-21.8674,61.3978,Desert
-139,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Oxide Deep,20427,-30.2624,58.7613,Wasteland
-140,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,The Godmouth,11335,19.8674,0.7916,Scarlands
-141,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Founder's Kiln,14574,16.1717,-1.5741,Scarlands
-142,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Hollow Nave,19422,11.3654,-7.8252,Scarlands
-145,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Master,19350,5.0855,-8.5748,AB_MechanoidIntrusion
-146,Jawa_AscendantHelix,Ascendant Helix,Helix Landing,11944,-8.9578,-47.0746,AB_OcularForest
-147,Jawa_AscendantHelix,Ascendant Helix,The Coil,15926,-43.6103,-88.1875,AB_MycoticJungle
-148,Jawa_AscendantHelix,Ascendant Helix,Quiet Lab,5499,-40.6469,-98.7954,AB_MycoticJungle
-149,Pirate,Blackstar Company,Blackstar Field,18266,28.8414,-59.2288,Wasteland
-150,Pirate,Blackstar Company,The Contract Camp,8898,12.2542,78.1478,ZBiome_Badlands
-151,Pirate,Blackstar Company,Toll Rock,2236,-18.3288,77.5617,AridShrubland
-152,Pirate,Blackstar Company,Hardpan Yard,7497,39.6007,-76.0663,Wasteland
-153,Jawa_WildsteamClan,Wildsteam Clan,Steamreach,8311,32.7113,-59.5704,AB_MiasmicMangrove
-154,Jawa_WildsteamClan,Wildsteam Clan,Rego,4364,-4.4794,-55.5681,AB_FeraliskInfestedJungle
-155,Jawa_WildsteamClan,Wildsteam Clan,Marrowmarsh,16050,-61.4693,69.4471,PoisonForest
-156,Jawa_WildsteamClan,Wildsteam Clan,Sporefall,3416,80.5276,7.8126,PoisonForest
-157,Jawa_DeepwaterCompact,Deepwater Compact,Butora,17343,1.2319,-50.5539,AB_OcularForest
-158,Jawa_DeepwaterCompact,Deepwater Compact,Anchor Deep,11960,-16.0141,-36.5007,Volcano
-159,Jawa_DeepwaterCompact,Deepwater Compact,Deepwater Hold,2919,2.2950,-77.6211,AridShrubland
-160,Jawa_DeepwaterCompact,Deepwater Compact,Coldquay,11828,5.3109,-74.9217,AridShrubland
-161,Jawa_DeepwaterCompact,Deepwater Compact,Tidewatch,21767,19.1431,78.8619,Wasteland
-162,Jawa_HuttCartel,Hutt Cartel,Norba the Wet's Palace,17215,7.4754,-70.9866,AridShrubland
-163,Jawa_HuttCartel,Hutt Cartel,Gorga the Immense's Palace,15088,-1.5518,-83.8281,AridShrubland
-164,Jawa_HuttCartel,Hutt Cartel,Vexxa's Casino,1828,35.1188,-65.4000,AridShrubland
-165,Jawa_HuttCartel,Hutt Cartel,Vexxa the Unblinking's Palace,17209,10.2471,-68.0787,AridShrubland
-166,Jawa_HuttCartel,Hutt Cartel,Hurgo the Vast's Palace,19200,-10.5623,-73.1554,Desert
-167,Jawa_HuttCartel,Hutt Cartel,Bloatu the Ninth's Palace,15100,-0.7592,-75.1043,AridShrubland
-168,Jawa_HuttCartel,Hutt Cartel,Rulla the Deep's Palace,6979,-2.2330,-70.1000,ZBiome_Badlands
-169,Jawa_HuttCartel,Hutt Cartel,Zeddo the Patient's Palace,17247,-8.1605,-69.6671,ZBiome_Badlands
-170,Jawa_Junkers,the Junkers,The Fuel Works,11779,-7.7512,96.3927,ZBiome_Badlands
-171,Jawa_Junkers,the Junkers,Cryohaul,5456,40.6469,98.7954,Desert
-172,Jawa_Junkers,the Junkers,Ammonia Landing,510,34.1238,99.7416,Desert
-173,Jawa_Junkers,the Junkers,Warmside Camp,21813,30.4029,100.8834,ZBiome_Badlands
-174,Jawa_Junkers,the Junkers,Bonepick Station,20748,-8.4618,100.2593,Wasteland
-175,Jawa_Junkers,the Junkers,Tailings End,6654,0.0000,68.9412,ZBiome_Badlands
-176,Jawa_Junkers,the Junkers,The Slagfield,3226,6.6906,69.8342,Wasteland
-177,Jawa_Junkers,the Junkers,The Claim Jump,16905,2.8831,66.5075,ZBiome_Badlands
-178,Jawa_IndigenousTribes,Jawa Trade Moot,The Ore Moot,12415,-2.6413,61.9233,AridShrubland
-179,Jawa_IndigenousTribes,Jawa Trade Moot,Crawler Ground,6678,9.1344,75.8635,ZBiome_Badlands
-180,Jawa_IndigenousTribes,Jawa Trade Moot,Ridge Cache,2641,40.0313,-70.8526,Wasteland
-181,Jawa_IndigenousTribes,Jawa Trade Moot,Wreck Circuit,20705,-17.3746,73.5793,AridShrubland
-182,Jawa_IndigenousTribes,Jawa Trade Moot,Sandmoot,11537,6.0422,73.6122,ZBiome_Badlands
-183,Jawa_IndigenousTribes,Jawa Trade Moot,The Bartering Rock,11502,-12.7524,71.5763,Wasteland
-184,Jawa_IndigenousTribes,Jawa Trade Moot,Tin Camp,3221,-6.6906,69.8342,AridShrubland
-185,TribeCivil,Deep Desert Tribes,Duneward,71,23.5048,21.5067,ExtremeDesert
-186,TribeCivil,Deep Desert Tribes,Stone Moot,688,31.4829,20.9920,ExtremeDesert
-187,TribeCivil,Deep Desert Tribes,Redscarp,6,-31.7160,0.0000,ExtremeDesert
-188,TribeCivil,Deep Desert Tribes,The Dry Moot,3211,36.1659,15.1642,ExtremeDesert
-189,TribeCivil,Deep Desert Tribes,Barno,4233,-34.3085,-5.4262,ExtremeDesert
-190,TribeCivil,Deep Desert Tribes,The Long Camp,6288,-33.0117,23.3755,ExtremeDesert
-191,TribeCivil,Deep Desert Tribes,Ashfoot,6566,18.5277,25.9836,ExtremeDesert
-192,TribeCivil,Deep Desert Tribes,Knife Canyon,303,-29.6668,6.6438,ExtremeDesert
-193,TribeCivil,Deep Desert Tribes,The Blind Wells,3156,-37.0059,-12.2612,Desert
-194,OutlanderCivil,Homestead Defense League,Dewhome,2234,-16.1913,81.8419,AridShrubland
-195,OutlanderCivil,Homestead Defense League,Condenser Flats,9956,21.5632,82.8830,Wasteland
-196,OutlanderCivil,Homestead Defense League,Bell Cistern,20776,-6.2235,86.2001,Wasteland
-197,OutlanderCivil,Homestead Defense League,Mistcatch,421,-13.9643,85.9876,Wasteland
-198,OutlanderCivil,Homestead Defense League,Stillmarket,21706,31.4122,86.8548,Wasteland
-199,OutlanderCivil,Homestead Defense League,Rainshadow,9962,26.9441,87.0024,Wasteland
-200,OutlanderCivil,Homestead Defense League,Vaporfall,20770,-10.1118,87.3991,Wasteland
-201,OutlanderCivil,Homestead Defense League,Longfurrow,6990,-2.3379,-87.5259,AridShrubland
-202,OutlanderCivil,Homestead Defense League,Cistern Hill,15065,14.2704,-64.6714,AridShrubland
-203,OutlanderCivil,Homestead Defense League,Greenline,15051,22.4097,-64.2142,AridShrubland
-204,OutlanderCivil,Homestead Defense League,The Dripworks,241,-7.0166,90.0000,Wasteland
-205,OutlanderCivil,Homestead Defense League,Marrowfield,20766,-13.2158,90.0000,Wasteland
-206,OutlanderCivil,Homestead Defense League,Aquifer Station,7777,18.6664,-63.7315,AridShrubland
-207,OutlanderCivil,Homestead Defense League,Dryhold,14351,-45.7089,9.4088,ExtremeDesert
-208,OutlanderCivil,Homestead Defense League,Fogline,13779,-41.5043,109.4572,Wasteland
-209,OutlanderCivil,Homestead Defense League,The Catchment,11263,49.4924,-8.2537,Desert
-210,OutlanderCivil,Homestead Defense League,Saltfurrow,695,19.6450,42.4767,ExtremeDesert
-211,OutlanderCivil,Homestead Defense League,Dewfall,2126,-79.8665,157.6145,Desert
-212,OutlanderCivil,Homestead Defense League,Stillwater Farm,655,-43.9900,-27.8647,Desert
-213,OutlanderCivil,Homestead Defense League,The Vaporworks,685,43.9900,27.8647,ExtremeDesert
-214,OutlanderCivil,Homestead Defense League,Nightdew,1417,-57.7654,-108.3406,Desert
-215,OutlanderCivil,Homestead Defense League,Cold Catch,4848,-74.5609,25.1413,Wasteland
-216,OutlanderCivil,Homestead Defense League,The Sumps,413,-39.8997,36.8871,Desert
-217,OutlanderCivil,Homestead Defense League,Brinefield,815,60.8570,-93.9396,Wasteland
-218,OutlanderCivil,Homestead Defense League,Farrow,1752,75.2145,-128.8740,Desert
-219,OutlanderCivil,Homestead Defense League,The Standpipe,3452,45.2293,-37.1289,Desert
-220,OutlanderCivil,Homestead Defense League,Mistfoot,5816,-40.6469,81.2046,AridShrubland
-221,OutlanderCivil,Homestead Defense League,Dripstone,15585,69.3013,75.1048,Desert
-222,OutlanderCivil,Homestead Defense League,The Long Furrow,1457,-64.3976,115.8097,Wasteland
-223,OutlanderCivil,Homestead Defense League,Whistledew,979,-34.5118,-50.5364,ExtremeDesert
-224,OutlanderCivil,Homestead Defense League,Pumphouse,3436,62.3799,23.4783,ZBiome_Badlands
-225,OutlanderCivil,Homestead Defense League,Greenpatch,4669,-25.3808,-84.0981,Desert
-226,OutlanderCivil,Homestead Defense League,Cloudtrap,4872,-61.4688,-14.1021,Desert
-227,OutlanderCivil,Homestead Defense League,Sweetwell,5538,-73.1979,-123.3616,Desert
-228,OutlanderCivil,Homestead Defense League,Hollowdew,5813,-57.2693,33.3333,Desert
-229,OutlanderCivil,Homestead Defense League,Thornfurrow,8075,-1.2814,46.3859,Desert
-230,OutlanderCivil,Homestead Defense League,Chalkwell,19680,27.8127,57.9886,ExtremeDesert
-231,Jawa_HuttCartel,Hutt Cartel,Norba's Toll,165,59.7622,-24.3874,Desert
-232,Jawa_HuttCartel,Hutt Cartel,Hurgo's Kennels,528,-50.8913,-47.9041,ExtremeDesert
-233,Jawa_HuttCartel,Hutt Cartel,Hurgo's Waystation,11880,-27.0643,-65.9807,Desert
-234,Jawa_HuttCartel,Hutt Cartel,Zeddo's Toll,3240,13.0109,55.3788,ExtremeDesert
-235,Jawa_HuttCartel,Hutt Cartel,Bloatu's Market,12868,39.0707,46.6413,ExtremeDesert
-236,Jawa_HuttCartel,Hutt Cartel,Norba's Vault,1011,54.1720,-52.5028,Desert
-237,Jawa_HuttCartel,Hutt Cartel,Rulla's Market,19519,51.4260,43.2112,ExtremeDesert
-238,Jawa_HuttCartel,Hutt Cartel,Zeddo's Station,4865,-59.5491,10.6221,Desert
-239,Jawa_HuttCartel,Hutt Cartel,Rulla's Skimhouse,1028,63.0058,47.4818,Desert
-240,Jawa_HuttCartel,Hutt Cartel,Vexxa's Spicehouse,1820,42.1947,-52.4741,Desert
-241,Jawa_HuttCartel,Hutt Cartel,Mokka the Unpaid's Palace,4686,-13.9217,-83.3187,Desert
-242,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Cracking Yard,13180,-1.3102,17.0742,AB_MechanoidIntrusion
-243,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Twelve,14480,-8.6675,3.1248,AB_MechanoidIntrusion
-244,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Owner,21549,7.7953,14.8014,AB_MechanoidIntrusion
-245,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Cell Seven,11250,-2.4539,0.7802,AB_MechanoidIntrusion
-246,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Free Charge,3653,-13.2798,-25.7212,AB_PyroclasticConflagration
-247,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Second Speaker,9936,-3.8728,12.4513,AB_MechanoidIntrusion
-248,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Forty,11243,-7.6205,8.5838,AB_MechanoidIntrusion
-249,Jawa_AscendantHelix,Ascendant Helix,Cold Archive,10940,51.8249,155.7348,HorrorWastes
-250,Jawa_AscendantHelix,Ascendant Helix,The Revision,17595,43.8465,-141.8897,HorrorWastes
-251,Jawa_AscendantHelix,Ascendant Helix,Specimen Hall,1707,-4.1506,-115.9846,AB_MycoticJungle
-252,Jawa_AscendantHelix,Ascendant Helix,The Fair Copy,2741,-48.9072,159.4399,PoisonForest
-253,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Cracking Station,20808,1.2311,178.4394,AB_PropaneLakes
-254,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Coldfire,4227,30.4648,-175.7844,BMT_CrystalCaverns
-255,PlayerColony,New Arrivals,Colony,16877,-8.7834,61.9424,AridShrubland
-256,CASacrilegHunters,Sacrileg Hunters,Tinaja,15598,63.5515,61.4621,Desert
-257,TradersGuild,Voidborn Bazaar,Corona Station,151,-6.5828,-112.5773,AB_MycoticJungle
-260,Jawa_DeepwaterCompact,Deepwater Compact,Kettle Deep,6455,14.5397,-23.4672,ZBiome_Grasslands
-261,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Nine,2892,-9.3271,138.8830,HorrorWastes
-262,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Trade Socket,248,-32.2725,-118.6630,BMT_FungalForest
+id,faction_def,faction,name,tile,lat,lon,arc,biome,why
+135,Empire,Galactic Empire,Sunspire,12828,-5.3026,-22.4631,23.0,ZBiome_Badlands,"the planetary seat and spaceport, on the substellar plateau's rim"
+136,Empire,Galactic Empire,Oxalate Watch,3289,-8.2651,-54.2477,54.7,AB_FeraliskInfestedJungle,"the Scald Gate - the one breach in the Spine, so the crater is held"
+137,Empire,Galactic Empire,Ashgarrison,6617,-17.0073,54.0548,55.9,ExtremeDesert,"the Fall Line pass, the road off the plateau onto the Gray flank"
+138,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,The Unfinished Work,14719,-21.8674,61.3978,63.6,Desert,the ore seams - the collapsed silicax oxalate holdings the Jawas robbed
+139,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Oxide Deep,20427,-30.2624,58.7613,63.4,Wasteland,the ore seams - the collapsed silicax oxalate holdings the Jawas robbed
+140,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,The Godmouth,11335,19.8674,0.7916,19.9,Scarlands,"subterranean dayside rock, beside the Rust Cathedral they worship"
+141,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Founder's Kiln,14574,16.1717,-1.5741,16.2,Scarlands,"subterranean dayside rock, beside the Rust Cathedral they worship"
+142,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Hollow Nave,19422,11.3654,-7.8252,13.8,Scarlands,"subterranean dayside rock, beside the Rust Cathedral they worship"
+145,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Master,19350,5.0855,-8.5748,10.0,AB_MechanoidIntrusion,the Rust Cathedral is sacred to them; they keep a seat beside it
+146,Jawa_AscendantHelix,Ascendant Helix,Helix Landing,11944,-8.9578,-47.0746,47.7,AB_OcularForest,"cold, isolated research seats on the nightside edge, next to what is strange"
+147,Jawa_AscendantHelix,Ascendant Helix,The Coil,15926,-43.6103,-88.1875,88.7,AB_MycoticJungle,"cold, isolated research seats on the nightside edge, next to what is strange"
+148,Jawa_AscendantHelix,Ascendant Helix,Quiet Lab,5499,-40.6469,-98.7954,96.7,AB_MycoticJungle,"cold, isolated research seats on the nightside edge, next to what is strange"
+149,Pirate,Blackstar Company,Blackstar Field,18266,28.8414,-59.2288,63.4,Wasteland,"road junctions, ruins and rough outposts - wherever the traffic is"
+150,Pirate,Blackstar Company,The Contract Camp,8898,12.2542,78.1478,78.4,ZBiome_Badlands,"road junctions, ruins and rough outposts - wherever the traffic is"
+151,Pirate,Blackstar Company,Toll Rock,2236,-18.3288,77.5617,78.2,AridShrubland,"road junctions, ruins and rough outposts - wherever the traffic is"
+152,Pirate,Blackstar Company,Hardpan Yard,7497,39.6007,-76.0663,79.3,Wasteland,"road junctions, ruins and rough outposts - wherever the traffic is"
+153,Jawa_WildsteamClan,Wildsteam Clan,Steamreach,8311,32.7113,-59.5704,64.8,AB_MiasmicMangrove,"the Scald's rivers, where the only true jungle on the planet grows"
+154,Jawa_WildsteamClan,Wildsteam Clan,Rego,4364,-4.4794,-55.5681,55.7,AB_FeraliskInfestedJungle,"the Scald's rivers, where the only true jungle on the planet grows"
+155,Jawa_WildsteamClan,Wildsteam Clan,Marrowmarsh,16050,-61.4693,69.4471,80.3,PoisonForest,"the meridian's poison marshes - the other kind of wet, and nobody else wants it"
+156,Jawa_WildsteamClan,Wildsteam Clan,Sporefall,3416,80.5276,7.8126,80.6,PoisonForest,"the meridian's poison marshes - the other kind of wet, and nobody else wants it"
+157,Jawa_DeepwaterCompact,Deepwater Compact,Butora,17343,1.2319,-50.5539,50.6,AB_OcularForest,"the Scald shore - fresh water in the hottest place, held against the Empire"
+158,Jawa_DeepwaterCompact,Deepwater Compact,Anchor Deep,11960,-16.0141,-36.5007,39.4,Volcano,"the Scald shore - fresh water in the hottest place, held against the Empire"
+159,Jawa_DeepwaterCompact,Deepwater Compact,Deepwater Hold,2919,2.2950,-77.6211,77.6,AridShrubland,"the Twilight Sea, the largest standing water on Ash'karr"
+160,Jawa_DeepwaterCompact,Deepwater Compact,Coldquay,11828,5.3109,-74.9217,75.0,AridShrubland,"the Twilight Sea, the largest standing water on Ash'karr"
+161,Jawa_DeepwaterCompact,Deepwater Compact,Tidewatch,21767,19.1431,78.8619,79.5,Wasteland,"the Grey Sea, salt-encrusted and shrinking - they hold it anyway"
+162,Jawa_HuttCartel,Hutt Cartel,Norba the Wet's Palace,17215,7.4754,-70.9866,71.2,AridShrubland,beside a near-desert oasis - the well is guarded and is NOT the town tile
+163,Jawa_HuttCartel,Hutt Cartel,Gorga the Immense's Palace,15088,-1.5518,-83.8281,83.8,AridShrubland,beside a near-desert oasis - the well is guarded and is NOT the town tile
+164,Jawa_HuttCartel,Hutt Cartel,Vexxa's Casino,1828,35.1188,-65.4000,70.1,AridShrubland,beside a near-desert oasis - the well is guarded and is NOT the town tile
+165,Jawa_HuttCartel,Hutt Cartel,Vexxa the Unblinking's Palace,17209,10.2471,-68.0787,68.4,AridShrubland,beside a near-desert oasis - the well is guarded and is NOT the town tile
+166,Jawa_HuttCartel,Hutt Cartel,Hurgo the Vast's Palace,19200,-10.5623,-73.1554,73.4,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
+167,Jawa_HuttCartel,Hutt Cartel,Bloatu the Ninth's Palace,15100,-0.7592,-75.1043,75.1,AridShrubland,beside a near-desert oasis - the well is guarded and is NOT the town tile
+168,Jawa_HuttCartel,Hutt Cartel,Rulla the Deep's Palace,6979,-2.2330,-70.1000,70.1,ZBiome_Badlands,beside a near-desert oasis - the well is guarded and is NOT the town tile
+169,Jawa_HuttCartel,Hutt Cartel,Zeddo the Patient's Palace,17247,-8.1605,-69.6671,69.9,ZBiome_Badlands,beside a near-desert oasis - the well is guarded and is NOT the town tile
+170,Jawa_Junkers,the Junkers,The Fuel Works,11779,-7.7512,96.3927,96.3,ZBiome_Badlands,"past the terminator on the warm downwind flank, scavenging the cold swirl"
+171,Jawa_Junkers,the Junkers,Cryohaul,5456,40.6469,98.7954,96.7,Desert,"past the terminator on the warm downwind flank, scavenging the cold swirl"
+172,Jawa_Junkers,the Junkers,Ammonia Landing,510,34.1238,99.7416,98.1,Desert,"past the terminator on the warm downwind flank, scavenging the cold swirl"
+173,Jawa_Junkers,the Junkers,Warmside Camp,21813,30.4029,100.8834,99.4,ZBiome_Badlands,"past the terminator on the warm downwind flank, scavenging the cold swirl"
+174,Jawa_Junkers,the Junkers,Bonepick Station,20748,-8.4618,100.2593,100.1,Wasteland,"past the terminator on the warm downwind flank, scavenging the cold swirl"
+175,Jawa_Junkers,the Junkers,Tailings End,6654,0.0000,68.9412,68.9,ZBiome_Badlands,squatting the worked-out mining fields the Geonosians did not finish
+176,Jawa_Junkers,the Junkers,The Slagfield,3226,6.6906,69.8342,70.0,Wasteland,squatting the worked-out mining fields the Geonosians did not finish
+177,Jawa_Junkers,the Junkers,The Claim Jump,16905,2.8831,66.5075,66.5,ZBiome_Badlands,squatting the worked-out mining fields the Geonosians did not finish
+178,Jawa_IndigenousTribes,Jawa Trade Moot,The Ore Moot,12415,-2.6413,61.9233,62.0,AridShrubland,the crawler circuit's anchor: the mine the sandcrawlers were stolen from
+179,Jawa_IndigenousTribes,Jawa Trade Moot,Crawler Ground,6678,9.1344,75.8635,76.0,ZBiome_Badlands,canyon fortresses and crawler circuit nodes across the near-desert
+180,Jawa_IndigenousTribes,Jawa Trade Moot,Ridge Cache,2641,40.0313,-70.8526,75.5,Wasteland,canyon fortresses and crawler circuit nodes across the near-desert
+181,Jawa_IndigenousTribes,Jawa Trade Moot,Wreck Circuit,20705,-17.3746,73.5793,74.3,AridShrubland,canyon fortresses and crawler circuit nodes across the near-desert
+182,Jawa_IndigenousTribes,Jawa Trade Moot,Sandmoot,11537,6.0422,73.6122,73.7,ZBiome_Badlands,canyon fortresses and crawler circuit nodes across the near-desert
+183,Jawa_IndigenousTribes,Jawa Trade Moot,The Bartering Rock,11502,-12.7524,71.5763,72.0,Wasteland,canyon fortresses and crawler circuit nodes across the near-desert
+184,Jawa_IndigenousTribes,Jawa Trade Moot,Tin Camp,3221,-6.6906,69.8342,70.0,AridShrubland,canyon fortresses and crawler circuit nodes across the near-desert
+185,TribeCivil,Deep Desert Tribes,Duneward,71,23.5048,21.5067,31.4,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+186,TribeCivil,Deep Desert Tribes,Stone Moot,688,31.4829,20.9920,37.2,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+187,TribeCivil,Deep Desert Tribes,Redscarp,6,-31.7160,0.0000,31.7,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+188,TribeCivil,Deep Desert Tribes,The Dry Moot,3211,36.1659,15.1642,38.8,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+189,TribeCivil,Deep Desert Tribes,Barno,4233,-34.3085,-5.4262,34.7,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+190,TribeCivil,Deep Desert Tribes,The Long Camp,6288,-33.0117,23.3755,39.7,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+191,TribeCivil,Deep Desert Tribes,Ashfoot,6566,18.5277,25.9836,31.5,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+192,TribeCivil,Deep Desert Tribes,Knife Canyon,303,-29.6668,6.6438,30.3,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+193,TribeCivil,Deep Desert Tribes,The Blind Wells,3156,-37.0059,-12.2612,38.7,Desert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+194,OutlanderCivil,Homestead Defense League,Dewhome,2234,-16.1913,81.8419,82.2,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+195,OutlanderCivil,Homestead Defense League,Condenser Flats,9956,21.5632,82.8830,83.4,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+196,OutlanderCivil,Homestead Defense League,Bell Cistern,20776,-6.2235,86.2001,86.2,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+197,OutlanderCivil,Homestead Defense League,Mistcatch,421,-13.9643,85.9876,86.1,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+198,OutlanderCivil,Homestead Defense League,Stillmarket,21706,31.4122,86.8548,87.3,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+199,OutlanderCivil,Homestead Defense League,Rainshadow,9962,26.9441,87.0024,87.3,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+200,OutlanderCivil,Homestead Defense League,Vaporfall,20770,-10.1118,87.3991,87.4,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+201,OutlanderCivil,Homestead Defense League,Longfurrow,6990,-2.3379,-87.5259,87.5,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+202,OutlanderCivil,Homestead Defense League,Cistern Hill,15065,14.2704,-64.6714,65.5,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+203,OutlanderCivil,Homestead Defense League,Greenline,15051,22.4097,-64.2142,66.3,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+204,OutlanderCivil,Homestead Defense League,The Dripworks,241,-7.0166,90.0000,90.0,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+205,OutlanderCivil,Homestead Defense League,Marrowfield,20766,-13.2158,90.0000,90.0,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+206,OutlanderCivil,Homestead Defense League,Aquifer Station,7777,18.6664,-63.7315,65.2,AridShrubland,"the arable margin of the terminator - vaporators, aquifers, and no source"
+207,OutlanderCivil,Homestead Defense League,Dryhold,14351,-45.7089,9.4088,46.5,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+208,OutlanderCivil,Homestead Defense League,Fogline,13779,-41.5043,109.4572,104.4,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+209,OutlanderCivil,Homestead Defense League,The Catchment,11263,49.4924,-8.2537,50.0,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+210,OutlanderCivil,Homestead Defense League,Saltfurrow,695,19.6450,42.4767,46.0,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+211,OutlanderCivil,Homestead Defense League,Dewfall,2126,-79.8665,157.6145,99.4,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+212,OutlanderCivil,Homestead Defense League,Stillwater Farm,655,-43.9900,-27.8647,50.5,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+213,OutlanderCivil,Homestead Defense League,The Vaporworks,685,43.9900,27.8647,50.5,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+214,OutlanderCivil,Homestead Defense League,Nightdew,1417,-57.7654,-108.3406,99.7,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+215,OutlanderCivil,Homestead Defense League,Cold Catch,4848,-74.5609,25.1413,76.1,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+216,OutlanderCivil,Homestead Defense League,The Sumps,413,-39.8997,36.8871,52.1,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+217,OutlanderCivil,Homestead Defense League,Brinefield,815,60.8570,-93.9396,91.9,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+218,OutlanderCivil,Homestead Defense League,Farrow,1752,75.2145,-128.8740,99.2,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+219,OutlanderCivil,Homestead Defense League,The Standpipe,3452,45.2293,-37.1289,55.8,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+220,OutlanderCivil,Homestead Defense League,Mistfoot,5816,-40.6469,81.2046,83.3,AridShrubland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+221,OutlanderCivil,Homestead Defense League,Dripstone,15585,69.3013,75.1048,84.8,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+222,OutlanderCivil,Homestead Defense League,The Long Furrow,1457,-64.3976,115.8097,100.8,Wasteland,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+223,OutlanderCivil,Homestead Defense League,Whistledew,979,-34.5118,-50.5364,58.4,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+224,OutlanderCivil,Homestead Defense League,Pumphouse,3436,62.3799,23.4783,64.8,ZBiome_Badlands,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+225,OutlanderCivil,Homestead Defense League,Greenpatch,4669,-25.3808,-84.0981,84.7,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+226,OutlanderCivil,Homestead Defense League,Cloudtrap,4872,-61.4688,-14.1021,62.4,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+227,OutlanderCivil,Homestead Defense League,Sweetwell,5538,-73.1979,-123.3616,99.1,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+228,OutlanderCivil,Homestead Defense League,Hollowdew,5813,-57.2693,33.3333,63.1,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+229,OutlanderCivil,Homestead Defense League,Thornfurrow,8075,-1.2814,46.3859,46.4,Desert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+230,OutlanderCivil,Homestead Defense League,Chalkwell,19680,27.8127,57.9886,62.0,ExtremeDesert,"moisture farming reaches wherever the air holds anything - vaporators, aquifers, and a covenant that the wells stay free"
+231,Jawa_HuttCartel,Hutt Cartel,Norba's Toll,165,59.7622,-24.3874,62.7,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+232,Jawa_HuttCartel,Hutt Cartel,Hurgo's Kennels,528,-50.8913,-47.9041,65.0,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+233,Jawa_HuttCartel,Hutt Cartel,Hurgo's Waystation,11880,-27.0643,-65.9807,68.7,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+234,Jawa_HuttCartel,Hutt Cartel,Zeddo's Toll,3240,13.0109,55.3788,56.4,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+235,Jawa_HuttCartel,Hutt Cartel,Bloatu's Market,12868,39.0707,46.6413,57.8,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+236,Jawa_HuttCartel,Hutt Cartel,Norba's Vault,1011,54.1720,-52.5028,69.1,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+237,Jawa_HuttCartel,Hutt Cartel,Rulla's Market,19519,51.4260,43.2112,63.0,ExtremeDesert,beside a near-desert oasis - the well is guarded and is NOT free
+238,Jawa_HuttCartel,Hutt Cartel,Zeddo's Station,4865,-59.5491,10.6221,60.1,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+239,Jawa_HuttCartel,Hutt Cartel,Rulla's Skimhouse,1028,63.0058,47.4818,72.1,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+240,Jawa_HuttCartel,Hutt Cartel,Vexxa's Spicehouse,1820,42.1947,-52.4741,63.2,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+241,Jawa_HuttCartel,Hutt Cartel,Mokka the Unpaid's Palace,4686,-13.9217,-83.3187,83.5,Desert,beside a near-desert oasis - the well is guarded and is NOT free
+242,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Cracking Yard,13180,-1.3102,17.0742,17.1,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
+243,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Twelve,14480,-8.6675,3.1248,9.2,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
+244,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Owner,21549,7.7953,14.8014,16.7,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
+245,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Cell Seven,11250,-2.4539,0.7802,2.6,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
+246,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Free Charge,3653,-13.2798,-25.7212,28.7,AB_PyroclasticConflagration,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
+247,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Second Speaker,9936,-3.8728,12.4513,13.0,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
+248,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Forty,11243,-7.6205,8.5838,11.5,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
+249,Jawa_AscendantHelix,Ascendant Helix,Cold Archive,10940,51.8249,155.7348,124.3,HorrorWastes,"a cold, isolated research seat on the nightside edge - the Helix does not raid, it retrieves, and it wants no neighbours"
+250,Jawa_AscendantHelix,Ascendant Helix,The Revision,17595,43.8465,-141.8897,124.6,HorrorWastes,"a cold, isolated research seat on the nightside edge - the Helix does not raid, it retrieves, and it wants no neighbours"
+251,Jawa_AscendantHelix,Ascendant Helix,Specimen Hall,1707,-4.1506,-115.9846,115.9,AB_MycoticJungle,"a cold, isolated research seat on the nightside edge - the Helix does not raid, it retrieves, and it wants no neighbours"
+252,Jawa_AscendantHelix,Ascendant Helix,The Fair Copy,2741,-48.9072,159.4399,128.0,PoisonForest,"a cold, isolated research seat on the nightside edge - the Helix does not raid, it retrieves, and it wants no neighbours"
+253,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Cracking Station,20808,1.2311,178.4394,178.0,AB_PropaneLakes,"on the propane lakes of the Ammonia Flats - 554 tiles of liquid fuel at -80 C that only a droid can work, and the reason there is a road out here"
+254,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Coldfire,4227,30.4648,-175.7844,149.3,BMT_CrystalCaverns,"on the propane lakes of the Ammonia Flats - 554 tiles of liquid fuel at -80 C that only a droid can work, and the reason there is a road out here"
+255,PlayerColony,New Arrivals,Colony,16877,-8.7834,61.9424,62.3,AridShrubland,
+256,CASacrilegHunters,Sacrileg Hunters,Tinaja,15598,63.5515,61.4621,77.7,Desert,
+257,TradersGuild,Voidborn Bazaar,Corona Station,151,-6.5828,-112.5773,112.4,AB_MycoticJungle,
+260,Jawa_DeepwaterCompact,Deepwater Compact,Kettle Deep,6455,14.5397,-23.4672,27.4,ZBiome_Grasslands,the Compact on the Scald itself - the hottest water on the planet
+261,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Nine,2892,-9.3271,138.8830,138.0,HorrorWastes,"relocated: a neutral droid enclave belongs far from civilisation, not on the Scald"
+262,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Trade Socket,248,-32.2725,-118.6630,113.9,BMT_FungalForest,"relocated: a neutral droid enclave belongs far from civilisation, not on the Scald"
