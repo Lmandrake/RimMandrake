@@ -1059,6 +1059,7 @@ whole value of one is that it means a specific place on this specific planet.
 | the oases (`ZBiome_DesertOasis`) | `Oasis` | temp range **20–60 °C**; our arc 30–60 band runs 38–58 °C, so it fits — but it does **not** fit sunward of that |
 | the deep waste, a few | `AncientHeatVent` | desert-exclusive, and a heat plume on the hottest world in the setting is the right kind of joke |
 | the Junkers' fields | `Ruins` · `AbandonedColonyTribal` | wherever things fell |
+| **The Kiln**, the five-tile dead core | `Ruins` / a crater — ⚠️ **see the legality note below** | *the Hutt seat that was killed by a parcel.* The region is already named for it |
 
 ⛔ **Never place:** `Iceberg`, `IceDunes`, `Crevasse`, `FrozenRuins`, `VEE_DetachedIceberg`,
 `VEE_IceSpires`, `VEE_GlacialMoraine`, `VEE_PermafrostBasin` (all ice-gated) ·
@@ -1068,6 +1069,51 @@ whole value of one is that it means a specific place on this specific planet.
 🔑 The coastal shapes — `Bay`, `Cove`, `Fjord`, `Peninsula`, `Harbor`, `CoastalAtoll` —
 **are** whitelisted for dry biomes, so they are legal, but only on a tile touching one
 of the three waters. They should be rare: this planet is 8.14% water (1,780 of 21,872 tiles).
+
+#### ⭐ THE KILN — the blast is already drawn on the frozen map (owner, 2026-08-23)
+
+> **Owner, verbatim:** *"'The Kiln' was an old Hutt settlement, the most powerful on the planet, but
+> they messed with the wrong crime syndicate and ended up with a massive Thermal Detonator released
+> in a cargo shipment, taking out the entire area to this day."*
+
+🔑 **Nothing needs to be edited on the map for this to be true**, and that is the whole reason to
+record it here. Measured against `world/ASHKARR_WORLDMAP_tiles.csv` (frozen), the **Kiln** region is
+**878 tiles**, arc 40–60°, elev 1–776 m, 34–53 °C, and it breaks down as **418 `ExtremeDesert` · 412
+`Desert` · 20 `ZBiome_Badlands` · 10 `AridShrubland` · 7 `PoisonForest` · 6 `ZBiome_Grasslands` · 5
+`Wasteland`**. Those five `Wasteland` tiles are the entry:
+
+| tile | arc | bearing | elev | temp | hilliness |
+|---:|---:|---:|---:|---:|---:|
+| 650 | 43.4 | 247.6 | 1 m | 48.3 °C | 1 |
+| 6323 | 41.1 | 248.9 | 1 m | 49.5 °C | 1 |
+| 11181 | 42.6 | 249.2 | 1 m | 48.7 °C | 1 |
+| 11182 | 42.8 | 245.5 | 79 m | 48.2 °C | 2 |
+| 11183 | 41.9 | 247.2 | 1 m | 49.0 °C | 1 |
+
+**A contiguous five-tile blob — 2.3° of arc, 3.7° of bearing — of dead flat ground at sea level, the
+hottest and lowest in the region, and the ONLY `Wasteland` in 878 tiles that are otherwise sand.**
+That is a crater, and it was on the map before the story existed. ⇒ **The Kiln is sited here.** The
+detonation is why the region carries the name; §5b's *"the waste is the default state"* is doing the
+work, and no tile changes.
+
+🔑 **The map already tells the aftermath too.** There is **no Hutt holding anywhere in the Kiln** —
+the Cartel never came back. The only four settlements in the region are Homestead Defense League
+moisture farms — **Dryhold** (14351), **Stillwater Farm** (655), **The Sumps** (413) and
+**Whistledew** (979) — people who arrived afterwards, farm the edge of it, and do not dig in the
+middle.
+
+⚠️ **The one open question is the landmark, and it is a legality question, not a taste one.** Tile
+11183 already carries `DryLake`, and §13.3's own table flags `DryLake` as whitelisting
+Desert/ExtremeDesert/AridShrubland — **11183 is `Wasteland`**, so that placement may be illegal today
+and is worth checking before anything is added beside it. `VEE_MeteorCrater`, `VEE_ToxicCrater` and
+`TerraformingScar` are all installed and all read correctly for a blast core; their biome gating is
+nested and was **not** measured here, so ⛔ do not place one on a `Wasteland` tile on the strength of
+this paragraph. 🔑 **The lore does not depend on the answer** — the crater is the ground, not the
+landmark.
+
+**The faction half of this — why the Cartel has no capital and never will again — is
+`faction_roster_v2.md` § 1. Hutt Cartel, "THE KILN".** ⛔ **Who did it is deliberately unnamed** and
+is the owner's word to give; the Pyke Syndicate is the candidate already standing in canon.
 
 ### 13.4 What is NOT settled
 

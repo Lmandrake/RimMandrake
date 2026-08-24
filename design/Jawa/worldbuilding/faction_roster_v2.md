@@ -533,6 +533,44 @@ A wealthy, decentralised criminal faction built around **oasis control**. Cheap 
 >
 > **⭐ ORBITAL MECHANICS — MiningCo. Spaceship reflavored into the Cartel (user, 2026-08-08; mod detail in `design/Jawa/mods/required_mods.md` MiningCo section).** The Cartel's "only non-Imperial orbital node" was until now pure narrative. **MiningCo. Spaceship (Continued)** (`Mlie.MiningCoSpaceship`, 1.6, no deps) supplies the working mechanics, reskinned Hutt: (a) **cargo spaceships that physically land on-map to trade** bulk goods (passive + a richer "requested" variant) — a literal Hutt trade shuttle on the pad; (b) **airstrikes-for-hire** — pay silver and the Cartel bombs your attackers ("MiningCo. cannot be held responsible for collateral damage" → very Hutt mercenary muscle); (c) **orbital medical healing** — send an injured pawn up to the Hutt station, pay silver near a trade beacon, they return by drop-pod healed. Requires the player to build an orbital relay + landing pad = the extortion toll relationship this dossier already describes. **Every service is a silver SINK (pillar-safe — drains, never compounds).** Install TODO: reflavor patch (name/icon/leader titles/apparel → Hutt) + ensure the mod's events point at THIS hand-authored Hutt FactionDef rather than spawning a second faction. Combat Extended airstrike incompat is moot (not running CE).
 
+## ⭐ THE KILN — why there is no Hutt capital, and why there never will be again (owner, 2026-08-23)
+
+> **Owner, verbatim:** *"'The Kiln' was an old Hutt settlement, the most powerful on the planet, but
+> they messed with the wrong crime syndicate and ended up with a massive Thermal Detonator released
+> in a cargo shipment, taking out the entire area to this day."*
+
+**The Kiln was the seat.** Not one palace among eight — *the* seat, the single greatest holding on
+Ash'karr, and every Hutt lord on the planet owed their standing to their place in its shade. Then a
+consignment came in through the Cartel's own freight, cleared by the Cartel's own factors, and
+detonated. The seat, the lords who were sitting in it, and the ground they were sitting on all went
+at once.
+
+🔑 **This is the answer to "decentralised".** The Mechanical identity above opens by calling the
+Cartel *a wealthy, decentralised criminal faction* — that is not a Hutt preference, it is a scar.
+After the Kiln no lord would ever again put every Hutt on the planet inside one blast radius, and the
+present shape of the faction is the shape of that refusal: **eight oasis palaces, one lord each, far
+enough apart that no single shipment can reach two of them** (`HUTT_LORDS_AND_POSTS_1`), and eleven
+deep-desert posts that are services rather than seats. A Hutt who proposes a capital is proposing the
+Kiln again, and is told so.
+
+⭐ **The irony the Cartel has never fixed, and it is playable.** They were killed by their own cargo
+manifest and they *still* run the densest freight network on the planet — High caravan frequency,
+reskinned MiningCo landing shuttles, a bulk-goods economy. A Hutt compound will search a beggar to
+the skin and wave a sealed crate through, because the alternative is admitting the Kiln could happen
+twice. 💡 *Suggestion, not a mandate:* this is a ready-made hook for a smuggling or sabotage quest
+against a Cartel holding, and a reason a player-run caravan gets less scrutiny than it should.
+
+⛔ **Nobody says who did it.** The Cartel knows; it does not name them, and a Hutt asked directly
+changes the subject. 🔑 **Deliberately left open — this is the owner's word to give.** The candidate
+already standing in canon is the **Pyke Syndicate**, which this same document has crossing Tusken
+territory with spice convoys (Relations table, *Tusken Clans ↔ Hutt Cartel*); naming them would cost
+one word and would tie the Cartel's oldest wound to a faction already on the board. It is not named
+until he names it.
+
+**Where it is on the map:** `ASHKARR_WORLD_DEFINITION.md` §13.3. The Kiln is a **878-tile region** of
+the dayside desert, and the blast is still the only thing like it there — see that entry for the
+tiles.
+
 ## Water doctrine — **Require (oasis-anchored)**
 
 Every Cartel settlement sits on or immediately beside an oasis tile, and that tile is faction territory rather than a shared resource. The water *is* the asset; the compound exists to control it.
