@@ -113,6 +113,11 @@ four times across one night, to a bar of `socket.connect(("127.0.0.1", 5174))` r
 having guessed the port, and **having been told otherwise by its own tool**, which said on every run:
 `BRIDGE NOT PROBED — GABP_SERVER_PORT is unset, so LOADING here is a DEFAULT, not a reading.`
 
+- 🔴 **THE MECHANISM, measured 2026-08-24 02:0x:** RimBridge binds **Windows** loopback and WSL2 is
+  NAT-mode, so `127.0.0.1:5174` **has no route from WSL at all**. A socket probe from here can only
+  ever return refused — it is not a weak reading, it is *no* reading. ⇒ **Run it under
+  `python.exe`, never `python3`.** `rimbridge_client` prints this exact diagnosis when called from
+  WSL; this seat spent a night guessing instead of running the client once.
 - 🔑 **The instrument is `resolve_endpoint()` + a real `session/hello`**, not a socket poke:
   `sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils")` → `rimbridge_client`.
   It scrapes host, port AND **token** out of `Player.log`; the token changes every launch, so an
