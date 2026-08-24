@@ -25,6 +25,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🌱 BIOME FLORA + 🏷️ PLANT NAMES | 2026-08-23 | ⏳ PENDING |
 | 🌡️ TOLERANCES + 🏹 ANCIENT ARSENAL + 🦴 CAST SUBSTITUTIONS | 2026-08-23 (cast NOT yet) | ⏳ PENDING |
 | 🔧 §19 TWO DLLs WAITING ON THE DOWN WINDOW | ⛔ **NOT DEPLOYED** | ⏳ PENDING |
+| 🎯 §20 RE-ROLL THE ROSTER — the 2026-08-24 harvest is the BEFORE | 2026-08-24 | ⏳ PENDING |
 
 🔴 **WHEN A LOAD IS SCORED:** move its block whole into
 `infrastructure/state/NEXT_RELOAD_ARCHIVE.md` with its result, and delete its index row.
@@ -319,3 +320,41 @@ and `seasonal_shift_c` read **MEASURED** in the provenance block.
 companion IGNORED it"*. The bridge discards a parameter the deployed tool does not declare
 and still returns `success: true` (`BUILDABLE.md` 23), so that warning is the only evidence
 the deploy did not take. ⛔ Do not read a successful call as a successful deploy.
+
+---
+## 🎯 §20 — RE-ROLL THE ROSTER AFTER THE LOAD. The pre-reboot harvest is the BEFORE half.
+
+Written 2026-08-24 01:3x by BUILD, from a live harvest of **285 pawns** taken minutes before the
+game went down. Full result: `infrastructure/state/facts/roll_arm_harvest_2026-08-24.md`.
+
+🔑 **Why this belongs to the load and not to the queue.** These numbers are the state of the
+CURRENT build. Any def, tag or backstory change that lands in the down window moves them, and a
+number with no BEFORE cannot tell "my fix worked" from "the roll came up differently".
+
+### One command, no map needed for the first two; a map IS needed for the roll
+
+```bash
+python.exe src/RimMandrake/Utils/rimbench/roll_arm_harvest.py   --kinds D:\Luke\dev\Rimworld\TRANSIENT_kinds49.txt --rolls 5 --x 10 --z 10   --out D:\Luke\dev\Rimworld\infrastructure\state\facts\roll_arm_harvest_AFTER.json
+```
+⚠️ Rebuild the kinds file first — it is a transient, derived from
+`src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml` (one `<defName>` per line, or
+`Kind=FactionDef` where the name does not carry its faction).
+⚠️ **`python.exe`, not `python3`** — the bridge binds Windows loopback.
+
+### The three readings, and what each one settles
+
+| # | reading | BEFORE (2026-08-24, pre-reboot) | what a change means |
+|---|---|---|---|
+| **R1** | bare pawns across the 49 roster kinds, 5 rolls each | **21 of 285 (7.4%)**, in **16 of 49** kinds; worst `Jawa_Homestead_Heavy` 3/5 | ⬇️ = the arming work landed. ⬆️ = a tag or budget change disarmed someone |
+| **R2** | violence-disabled backstories in the bare cohort | **13 of 21 bare pawns**; **0 of 264 armed** | the backstory filter is the larger half of the fix; R2 → 0 while R1 stays ~8 is the expected shape if only that half lands |
+| **R3** | `MA_CapryakScatterbow` resolved `weaponTags` | `["Gun","NeolithicRangedAdvanced","VEE_HunterNeolithicWeapon"]` | 🔴 **`Gun` must be GONE and `NeolithicRangedAdvanced` must REMAIN.** That is `ANCIENT_SCATTERBOW_TAG_SEVER_1`, and it only scores if its XML deploy went out before this load |
+
+⛔ **Do not score R1 with `jawa/pawnkind_audit`.** Measured on this same game, the audit reported
+`cannotAfford: 0`, `emptyTagPool: 0` and *"every kind that intends to arm can"* while 21 pawns were
+standing on the map holding nothing. It tests `weaponMoney.max` — the ceiling — and generation rolls
+inside the range. **The audit cannot see a roll, and a clean audit is not a pass.**
+
+✅ **Free while you are there:** the Orders architect category enumerates **64** designators with
+`Open` present and actionable (measured 2026-08-24, with a map loaded). If a later load reports zero
+again, check whether a map exists before filing anything — the architect menu is map-scoped, and that
+is what `ORDERS_DESIGNATORS_ENUMERATE_ZERO_1` turned out to be.
