@@ -103,6 +103,29 @@ Codex quota. Treat each call as costing something real: use `--dry-run` while
 iterating on prompt wording, and generate at low ambition first — one small
 image proves the plumbing before a large one proves the art.
 
+### 🔴 ROUGHLY ONE CALL IN FOUR HANGS FOREVER. BUDGET AND RETRY FOR IT.
+
+**Measured 2026-08-23/24 over 13 `edit` calls in one sitting** against a
+`auth_mode: chatgpt` install: most returned in **79–81 s**; several produced **no
+output at all** and were killed only by their own timeout. Codex emits **no error
+of its own** — the failure message you see is always the wrapper's.
+
+| do | why |
+|---|---|
+| ⏱️ **Cap `--timeout` at 120 s** | A good call returns in ~80 s. Anything past 120 is not coming, and a hang burns the WHOLE budget before reporting — a batch of four at the 780 s default is **52 minutes for nothing**. |
+| 🔁 **Wrap every call in a retry loop, 3–5 attempts** | The same prompt, unchanged, succeeds on a later attempt. Retrying is cheaper than diagnosing. |
+| ⛔ **Do not infer a CAUSE from a handful of calls** | Three two-image calls hung in a row and "the second image" looked certain; the next single-image call hung identically. The sample was confounded. |
+
+⛔ **NEVER "clean up strays" with a pattern that matches your own harness:**
+
+    pgrep -f codex_image.py | xargs -r kill -9      # kills the PARENT TOO
+
+A script created by a heredoc carries its own text — that string included — in the
+parent shell's command line, so this **SIGKILLs the batch it is retrying** and the
+job dies with an unexplained exit 1 or 144 partway through. ✅ `timeout` already
+reaps the child; no cleanup line is needed. This cost three batches before it was
+spotted, and every one of them looked like "codex hung again".
+
 ## Validation plan — what you owe whoever checks this
 
 `chroma_key.py` validates its own output, and that is a claim about the file,

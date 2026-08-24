@@ -296,6 +296,58 @@ sibling** — pass the reference as image 1 and the approved facing as image 2,
 and ask for a match on palette, material and damage language. That buys most of
 the consistency at full resolution.
 
+⚠️ **Codex `edit` hangs on roughly one call in four, with no error of its own.**
+Cap `--timeout` at **120 s** (a good call returns in ~80) and wrap every facing in a
+retry loop. 🔑 **The full measurement, the budgeting table and the harness bug that
+made it look worse than it is live in `../generating-images/SKILL.md` >
+"Cost and timing"** — they are engine facts, not sprite facts, so they are kept in
+one place rather than two.
+
+⚠️ **Two-image anchoring is not reliable here** — it hung three times running, which
+looked like the cause and was not. ✅ **Anchor with WORDS instead:** edit each facing
+from ITS OWN reference and carry the approved sibling's treatment in the prompt —
+*"segmented chitin plating with clean segment breaks, speckled shell, wet translucent
+flesh with a bioluminescent glow inside it, deep red and rose palette, hard black
+outline"*. Write that sentence down the moment the first facing is approved. Measured
+2026-08-24: it held three facings together on two different creatures.
+
+## Multi-facing assets
+
+RimWorld `Graphic_Multi` things ship four facings that must agree — a hole in
+one flank appears in every view that can see that flank.
+
+**Prove one facing before attempting four.** Four-view consistency fails for
+reasons unrelated to whether the pipeline works, and one facing is enough to
+learn whether the art direction survives downscaling.
+
+### ⚠️ Generate facings individually, not as a 2×2 sheet
+
+The sheet is the obvious way to get consistency — one machine drawn four ways,
+in one pass. **Measured 2026-08-12, it is the wrong trade**, and the reason is
+resolution rather than art.
+
+A generation returns roughly a fixed pixel budget regardless of what is in it.
+Put four facings in one image and each gets a quarter of it:
+
+| approach | pixels per facing | oversampling vs a 512×640 sprite |
+|---|---|---|
+| 2×2 sheet (1254×1254) | ~393,000 | **1.2×** |
+| individual (1120×1405) | ~1,574,000 | **4.8×** |
+
+**4× fewer pixels per facing, leaving almost no downsampling headroom.** The
+crispness of a finished sprite comes from generating well above target and
+area-averaging down; at 1.2× there is nothing to average.
+
+What the sheet *did* do well, so this is a trade rather than a failure: it held
+the 2×2 layout, kept each cell's own viewing direction, and produced four
+panels more stylistically alike than four independent runs. It still did not
+deliver verifiable damage correspondence between views.
+
+**Recommendation: generate each facing individually, anchored to a chosen
+sibling** — pass the reference as image 1 and the approved facing as image 2,
+and ask for a match on palette, material and damage language. That buys most of
+the consistency at full resolution.
+
 🔴 **CODEX `edit` FAILS INTERMITTENTLY HERE, AND A FAILURE COSTS THE WHOLE
 TIMEOUT.** Measured 2026-08-23 over seven calls in one sitting: **four succeeded in
 79-81 s** and **three produced no output at all** and were killed by their own
