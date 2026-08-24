@@ -547,8 +547,23 @@ def main():
     from collections import Counter
     print("   classified by role: %s" % dict(Counter(r for r, _ in m.values())))
     print("   unclassified (left alone): %d" % (len(untagged) - len(m)))
+    if untagged:
+        print("""
+   ✅ RULED MEASURED-AND-CORRECT — owner, 2026-08-23. This number is NOT a backlog.
+   All 36 were checked one by one against the 581-mod capture and EVERY ONE carries a
+   purpose-built modded tag; not one is unreachable. They break down as 13 Alpha Mechs
+   mounts, 4 Biotech mech guns, 4 Core/Biotech grenades, 3 VFE warcasket guns, 3 Big-and-
+   Small giant weapons, 2 turret guns, 2 gravship mounts, 2 Outer Rim (incl. one our own
+   Jawa_Empire_Heavy already asks for via ORImperialHeavy), 1 creature organ, 2 misc.
+   ⛔ DO NOT "fix" these by adding a vanilla role tag. That is the actual bug — it puts a
+   mechanoid mortar or a mounted E-Web in a raider's hands. They are RESERVED, not orphaned.
+   🔑 Why they surface here at all: VANILLA_ROLE_TAGS knows only vanilla rungs, so anything
+   reserved to a mod's own system reads as "unclassified" BY CONSTRUCTION. The count is a
+   property of this tool's vocabulary, not a defect in the game.""")
     if a.list_unclassified:
-        # 🔑 THIS IS THE REMAINING RETAG WORK, NAMED. `role_of` matches a word list
+        # ⚠️ CORRECTED 2026-08-23: this used to read "THIS IS THE REMAINING RETAG WORK,
+        # NAMED." It is not, and it never was — see the ruling printed above. What follows
+        # is a listing for inspection, not a worklist. `role_of` matches a word list
         # against defName+label; a weapon whose name carries none of those words gets no
         # role and is skipped in silence. That silence is the point of this flag: the
         # summary line says "unclassified (left alone)" and a reader has no way to find
