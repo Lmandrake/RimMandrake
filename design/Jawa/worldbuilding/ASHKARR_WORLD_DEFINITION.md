@@ -1059,7 +1059,7 @@ whole value of one is that it means a specific place on this specific planet.
 | the oases (`ZBiome_DesertOasis`) | `Oasis` | temp range **20–60 °C**; our arc 30–60 band runs 38–58 °C, so it fits — but it does **not** fit sunward of that |
 | the deep waste, a few | `AncientHeatVent` | desert-exclusive, and a heat plume on the hottest world in the setting is the right kind of joke |
 | the Junkers' fields | `Ruins` · `AbandonedColonyTribal` | wherever things fell |
-| **The Kiln**, the five-tile dead core | `Ruins` / a crater — ⚠️ **see the legality note below** | *the Hutt seat that was killed by a parcel.* The region is already named for it |
+| **The Kiln**, the five-tile dead core | `Ruins` / a crater — ⚠️ **see the legality note below** | *the Hutt seat the Pykes killed with a parcel their own manifest cleared.* The region is already named for it |
 
 ⛔ **Never place:** `Iceberg`, `IceDunes`, `Crevasse`, `FrozenRuins`, `VEE_DetachedIceberg`,
 `VEE_IceSpires`, `VEE_GlacialMoraine`, `VEE_PermafrostBasin` (all ice-gated) ·
@@ -1112,8 +1112,10 @@ this paragraph. 🔑 **The lore does not depend on the answer** — the crater i
 landmark.
 
 **The faction half of this — why the Cartel has no capital and never will again — is
-`faction_roster_v2.md` § 1. Hutt Cartel, "THE KILN".** ⛔ **Who did it is deliberately unnamed** and
-is the owner's word to give; the Pyke Syndicate is the candidate already standing in canon.
+`faction_roster_v2.md` § 1. Hutt Cartel, "THE KILN".** 🔴 **It was the PYKE SYNDICATE — canon,
+owner's ruling 2026-08-23**, and not as an outside attacker: Pykes are **7% of the Hutt Cartel**,
+its paid spice handlers, negotiators and officers, so the parcel arrived on a correct manifest
+cleared by the people whose job was to clear it. **The Cartel employs them to this day.**
 
 ### 13.4 What is NOT settled
 

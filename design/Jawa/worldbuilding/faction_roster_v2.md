@@ -560,12 +560,36 @@ the skin and wave a sealed crate through, because the alternative is admitting t
 twice. 💡 *Suggestion, not a mandate:* this is a ready-made hook for a smuggling or sabotage quest
 against a Cartel holding, and a reason a player-run caravan gets less scrutiny than it should.
 
-⛔ **Nobody says who did it.** The Cartel knows; it does not name them, and a Hutt asked directly
-changes the subject. 🔑 **Deliberately left open — this is the owner's word to give.** The candidate
-already standing in canon is the **Pyke Syndicate**, which this same document has crossing Tusken
-territory with spice convoys (Relations table, *Tusken Clans ↔ Hutt Cartel*); naming them would cost
-one word and would tie the Cartel's oldest wound to a faction already on the board. It is not named
-until he names it.
+## 🔴 IT WAS THE PYKE SYNDICATE — canon, owner's ruling 2026-08-23
+
+**The Hutts squeezed the spice.** They leaned on the Syndicate the way they lean on everyone who
+draws water near them — a bigger cut, then the refining itself — and the Syndicate answered the only
+way a supplier can answer a monopolist: through the supply. The consignment was cleared by Cartel
+factors, on a Cartel manifest, into the Cartel's own seat.
+
+🔑 **This is not an outside syndicate, and that is the whole point.** Pykes were not raiders at the
+gate — **they were staff.** The species table below puts them at **7% of the Hutt Cartel, "Paid —
+spice handlers, negotiators, officers"**, and the allegiance table has `Pyke | Hutt, Geonosian`,
+the only species on the planet drawing from two masters. They handled the freight, they negotiated
+the terms, and they held officer rank. ⇒ **Nobody had to smuggle anything into the Kiln.** The
+people who put it there were the people whose job was to clear it, and the manifest was correct.
+
+🔴 **And the Cartel still employs them. Today. At 7%.** That is the fact that makes this worth
+having in canon, and it is not an oversight in the roster — it is the Cartel's character. The Pykes
+refine and move the spice; a Hutt who purges them is a Hutt who has cut his own revenue off at the
+root to buy a feeling. So the Cartel swallowed it, kept paying, and rebuilt as eight seats instead
+of one — **the structure is the revenge they could afford.** Every Hutt palace on Ash'karr is run by
+a lord who knows exactly who killed the Kiln and signs their wages every month.
+
+⚠️ **How it is spoken about.** The Cartel does not deny it and does not discuss it. A Hutt asked
+directly gives the ledger answer — *the Syndicate delivers, the Syndicate is paid* — and changes the
+subject. A **Pyke** asked directly does not deny it either, which is worse, and is the single most
+useful thing a player can learn in a Cartel compound.
+
+💡 *Hooks this opens, suggestions rather than mandates:* a Cartel lord who wants the Pyke officers in
+his own house removed and cannot be seen to order it · a Pyke officer offering the player better
+terms than his employer · and the Geonosian half of `Pyke | Hutt, Geonosian`, which means the Hive
+is buying from the same people.
 
 **Where it is on the map:** `ASHKARR_WORLD_DEFINITION.md` §13.3. The Kiln is a **878-tile region** of
 the dayside desert, and the blast is still the only thing like it there — see that entry for the
@@ -611,7 +635,7 @@ Two tiers. The Nikto were bound into permanent servitude to the Hutts by the Tre
 | **Trandoshan** | 10% | Paid | Heavy hunters, melee specialists |
 | **Aqualish** | 9% | Paid | Shotgunners, bruisers, miners |
 | **Twi'lek** | 8% | Paid | Traders, social specialists, medics |
-| **Pyke** | 7% | Paid | Spice handlers, negotiators, officers |
+| **Pyke** | 7% | Paid | Spice handlers, negotiators, officers — 🔴 **and the people who destroyed the Kiln.** See § THE KILN above: this 7% is not a leftover, it is the Cartel deciding revenue beats revenge |
 | **Devaronian** | 5% | Paid | Raiders, incendiary specialists |
 | **Herglic** | 4% | Paid | Heavy labour and bodyguards |
 | **Zeltron** | 2% | Paid | Traders, recruiters, social roles |
