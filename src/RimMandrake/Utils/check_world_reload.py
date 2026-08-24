@@ -28,6 +28,16 @@ WORLD = os.path.join(REPO, "world")
 BASELINE = os.path.join(WORLD, "ASHKARR_DRAFT_2026-08-24_tiles.csv")
 PROBE_EXPORT = os.path.join(WORLD, "_reload_probe_tiles.csv")
 
+# ⚠️ Tiles edited AFTER the baseline was harvested. P4 compares live against the harvest,
+# so without this every later edit reads as a regression and the check cries wolf on its
+# own author. Add to this as the world is authored; never quietly relax the comparison.
+KNOWN_DELTA = {
+    # 2026-08-24 02:2x - the crag island painted into the open ocean NE of the Twilight
+    # Crags isle. world/_newisland_patch.csv is the source of truth for these six.
+    1883: "AB_RockyCrags", 18578: "AB_RockyCrags", 18579: "AB_RockyCrags",
+    18580: "AB_RockyCrags", 18581: "AB_RockyCrags", 18583: "AB_RockyCrags",
+}
+
 # The eleven settlements moved on 2026-08-24, and where they must be.
 MOVED = {
     "No Master": 19350, "Second Speaker": 9936, "Helix Landing": 11944,
@@ -86,10 +96,22 @@ def main():
         # P4 - the whole planet matches what was harvested before the quit.
         val = rb.call("jawa/world_tile_validate",
                       {"path": BASELINE, "expectTiles": 21872})
+        mism = val.get("mismatched") or 0
+        # Every mismatch must be a tile we KNOW we edited since the harvest, and it must
+        # now hold what we edited it to. A mismatch we cannot name is a real regression.
+        diffs = val.get("diffs") or []
+        named = [d for d in diffs if d.get("tile") in KNOWN_DELTA]
+        unnamed = [d for d in diffs if d.get("tile") not in KNOWN_DELTA]
+        got = rb.call("jawa/world_tile_get",
+                      {"tiles": ",".join(str(t) for t in KNOWN_DELTA)}).get("tiles", [])
+        wrong = [t["tile"] for t in got if t["biome"] != KNOWN_DELTA[t["tile"]]]
         score("P4 planet matches the harvest",
-              val.get("success") and val.get("mismatched") == 0,
-              "%s/%s matched, byField=%s"
-              % (val.get("matched"), val.get("rows"), val.get("byField")))
+              val.get("success") and not unnamed and not wrong
+              and mism <= len(KNOWN_DELTA),
+              "%s/%s matched; %d mismatched, %d of them known edits, %d unexplained; "
+              "known tiles holding the wrong biome: %s"
+              % (val.get("matched"), val.get("rows"), mism, len(named), len(unnamed),
+                 wrong or "none"))
 
         # P5 - lint. 18 roadless settlements is INTENT as of 2026-08-24 (9 Tusken
         # holdings + 5 droid seats + 3 unplanned + the rest), not a regression.

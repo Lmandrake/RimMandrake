@@ -2079,3 +2079,5 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ownerSaid":"Game is Down","ts":"2026-08-24T08:36:38Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ownerSaid":"game is loading","ts":"2026-08-24T08:46:55Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ownerSaid":"Game is loading","ts":"2026-08-24T08:47:12Z"}
+{"seat":"OWNER","event":"game","state":"UP","ownerSaid":"game is up","ts":"2026-08-24T09:04:16Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ownerSaid":"game is down","ts":"2026-08-24T14:35:40Z"}
