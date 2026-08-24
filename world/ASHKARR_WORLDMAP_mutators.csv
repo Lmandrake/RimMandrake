@@ -1707,6 +1707,7 @@ tile,mutators
 5807,VEE_DeepOreDevoid;VEE_MineralDevoid
 5810,VEE_DeepOreDevoid;VEE_MineralDevoid
 5814,VEE_DeepOreDevoid;VEE_MineralDevoid
+5816,VEE_Cenotes
 5817,VEE_DeepOreDevoid;VEE_MineralDevoid
 5818,VEE_SaltPlains
 5819,VEE_SaltPlains
@@ -3167,10 +3168,12 @@ tile,mutators
 10660,VEE_DeepOreDevoid;VEE_MineralDevoid
 10666,VEE_DeepOreDevoid;VEE_MineralDevoid
 10671,VEE_DeepOreDevoid;VEE_MineralDevoid
+10676,VEE_Cenotes
 10677,VEE_DeepOreDevoid;VEE_MineralDevoid
 10678,VEE_SaltPlains
 10679,VEE_SaltPlains
 10680,VEE_DeepOreDevoid;VEE_MineralDevoid
+10681,VEE_Cenotes
 10683,VEE_DeepOreDevoid;VEE_MineralDevoid
 10686,VEE_DeepOreDevoid;VEE_MineralDevoid
 10690,VEE_DeepOreDevoid;VEE_MineralDevoid
@@ -4154,9 +4157,11 @@ tile,mutators
 13906,VEE_DeepOreDevoid;VEE_MineralDevoid
 13909,VEE_DeepOreDevoid;VEE_MineralDevoid
 13914,VEE_DeepOreDevoid;VEE_MineralDevoid
-13918,VEE_DeepOreDevoid;VEE_MineralDevoid
+13917,VEE_Cenotes
+13918,VEE_DeepOreDevoid;VEE_MineralDevoid;VEE_Cenotes
 13921,VEE_DeepOreDevoid;VEE_MineralDevoid
-13924,VEE_DeepOreDevoid;VEE_MineralDevoid
+13924,VEE_DeepOreDevoid;VEE_MineralDevoid;VEE_Cenotes
+13925,VEE_Cenotes
 13927,VEE_DeepOreDevoid;VEE_MineralDevoid
 13930,VEE_DeepOreDevoid;VEE_MineralDevoid
 13933,VEE_DeepOreDevoid;VEE_MineralDevoid
