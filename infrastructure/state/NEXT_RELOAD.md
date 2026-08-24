@@ -354,11 +354,12 @@ number with no BEFORE cannot tell "my fix worked" from "the roll came up differe
 ### One command, no map needed for the first two; a map IS needed for the roll
 
 ```bash
-python.exe src/RimMandrake/Utils/rimbench/roll_arm_harvest.py   --kinds D:\Luke\dev\Rimworld\TRANSIENT_kinds49.txt --rolls 5 --x 10 --z 10   --out D:\Luke\dev\Rimworld\infrastructure\state\facts\roll_arm_harvest_AFTER.json
+python.exe src/RimMandrake/Utils/rimbench/roll_arm_harvest.py --rolls 5 --out D:\Luke\dev\Rimworld\infrastructure\state\facts\roll_arm_harvest_AFTER.json
 ```
-⚠️ Rebuild the kinds file first — it is a transient, derived from
-`src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml` (one `<defName>` per line, or
-`Kind=FactionDef` where the name does not carry its faction).
+✅ **No setup step.** With `--kinds` omitted the script derives the 49-kind roster straight from
+`src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml`, so a kind added since this was
+written is included automatically. (`--kinds <file>` still works and accepts `Kind=FactionDef`
+for kinds whose name does not carry their faction — mechs, vanilla tribals.)
 ⚠️ **`python.exe`, not `python3`** — the bridge binds Windows loopback.
 
 ### The three readings, and what each one settles
