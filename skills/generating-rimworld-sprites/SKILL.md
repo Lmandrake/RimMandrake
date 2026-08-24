@@ -18,6 +18,48 @@ Builds on `generating-images` (engine, chroma key) and `editing-images`
 (invariants, drift detection). Read
 `../generating-images/references/codex-contract.md` for the verified CLI facts.
 
+## 🔴 HOW BIG SHOULD THE TEXTURE BE? 128 px PER CELL OF OCCUPANCY
+
+**Owner's ruling, 2026-08-23:** *"2048x2048 be used for a 16x16 creature… 128 pixels per
+cell occupancy for modern, high quality art."*
+
+    texture edge (px)  =  drawSize (cells)  x  128        then round UP to a power of two
+
+🔑 **`drawSize` is measured in CELLS and is completely independent of pixel resolution.**
+Raising a texture from 256 to 1024 changes nothing about the creature's footprint, its
+collision, or any def — it occupies exactly the same ground and simply stops being blocky.
+⇒ **Resolution is never a reason to touch `drawSize`, and `drawSize` is never a reason to
+leave a texture small.**
+
+| drawSize | 128 px/cell wants | ship |
+|---|---|---|
+| 1.0 | 128 | 128 or 256 |
+| 2.0 | 256 | 256 |
+| 3.7 | 473 | **512** |
+| 4.3 | 557 | **512** or 1024 |
+| 8.0 | 1024 | **1024** |
+| 16.0 | 2048 | **2048** |
+
+⚠️ **Mod convention is FAR below this and is not the standard to copy.** Measured over
+Alpha Animals' 350 loose creature textures: **321 are 256x256** and only **four** reach
+512 — including creatures we draw at 3.69 cells, i.e. **69 px per cell**. That is the
+blockiness a player sees on a big animal, and it is the donor mod's budget decision, not a
+constraint.
+
+### There is no engine ceiling, and the constant that looks like one is dead
+
+- `StaticTextureAtlas.MaxTextureSizeForTiles = 512` **is never read anywhere in the 1.6
+  codebase** — measured, its declaration is the only match. ⛔ Do not treat 512 as a cap.
+- The real bound is `MaxPixelsPerAtlas = (SystemInfo.maxTextureSize / 2)^2`
+  (`StaticTextureAtlas.cs:31`), GPU-dependent and typically 8192 or 16384 on anything
+  modern, and `GlobalTextureAtlasManager.BakeStaticAtlases` simply **flushes a batch and
+  starts a new atlas** when the budget is reached.
+- ⇒ A large texture costs **atlas budget and a draw call**, never correctness. For a
+  handful of headliner creatures that is not a real cost; for 300 animals it would be.
+
+⭐ **Past ~128 px/cell you are paying VRAM for pixels no zoom will ever show.** Going above
+the table is a deliberate choice for a headliner, not a default.
+
 ## ⚠️ The size trap — read this before generating anything
 
 `gpt-image-2` requires **both edges to be multiples of 16** and **total pixels
