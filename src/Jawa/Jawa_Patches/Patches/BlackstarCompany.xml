@@ -143,6 +143,88 @@
           </value>
         </li>
 
+        <!-- ============================================================
+             DARK RED, ON THE BLACK RING. Owner, 2026-08-23: "make the Blackstar
+             faction actually look dark red with that black background."
+
+             🔑 THE WORLD-MAP ICON IS TINTED BY THE FACTION COLOUR, and that is the
+             whole mechanism this pair of ops relies on. Traced in the engine rather
+             than assumed:
+               Settlement.cs:40   ExpandingIcon   => Faction.def.FactionIcon
+               Settlement.cs:74   Material        => MatFrom(..., Faction.Color, ...)
+               WorldObject.cs:191 ExpandingIconColor => def.expandingIconColor ?? Material.color
+             The `Settlement` WorldObjectDef declares NO expandingIconColor
+             (Core/Defs/WorldObjectDefs/WorldObjects.xml), so it falls through to
+             Material.color, which IS Faction.Color. ⇒ Set the spectrum and the icon
+             on the planet changes. The icon art itself is a pure-white silhouette and
+             GUI.color MULTIPLIES, so it takes the colour exactly; the black ring added
+             2026-08-23 stays black because black multiplied by anything is black.
+
+             ⭐ EXISTING SAVES PICK THIS UP, no save surgery. `Faction` scribes only
+             `colorFromSpectrum`, a float POSITION along the spectrum (Faction.cs:22,
+             276) - the Color itself is computed live at Faction.cs:108-120. Change the
+             spectrum and every already-generated Blackstar re-reads it on load.
+
+             🔴 AND THIS IS WHY THE SECOND OP EXISTS. `Pirate` carries
+             Name="PirateBandBase" and is the ABSTRACT PARENT of every other pirate
+             faction, so a field set here is INHERITED by every child that does not
+             declare its own. That is exactly how BLACKSTAR_NAMES_EVERY_PIRATE_1
+             happened - a fixedName on this def named SIX factions. Left alone, dark red
+             would repaint every pirate in the stack and flatten the five syndicates
+             PIRATE_NAMES_FIVE_SYNDICATES_1 deliberately made distinct.
+
+             ⇒ The children get vanilla Pirate's ORIGINAL spectrum pinned onto
+             themselves first. `[not(colorSpectrum)]` means it touches only the ones
+             that would otherwise inherit; a child with its own colour keeps it. It is
+             written against the ParentName ATTRIBUTE rather than a list of five
+             defNames on purpose - a pirate faction from a mod nobody has enumerated is
+             covered too, and this file has already been bitten once by enumerating.
+             ⚠️ It reaches DIRECT children only. A grandchild through another abstract
+             would still inherit, and no such def exists in the 581-mod list.
+
+             ✅ MEASURED against the live mod set, and the guard matches exactly the
+             right three. Every FactionDef carrying ParentName="PirateBandBase":
+               PirateYttakin        Biotech        no own colour -> GUARDED
+               PirateWaster         Biotech        no own colour -> GUARDED
+               AG_XenohumanPirates  Alpha Genes    no own colour -> GUARDED
+               CannibalPirate       Ideology       declares (0.67,0,0.9)..(0.88,0.48,1)
+               DV_PirateKeshig      Det's Keshig   declares (198,86,86) Inherit="False"
+               Jawa_Junkers         ours           declares its own
+               VU_* / BS_Hell       mods not active
+             `validate_patch.py` over Data + workshop + Mods (all three def roots)
+             reports this op at
+             **3 matches, in Biotech(2) and Alpha Genes(1)** - the three named above.
+             ============================================================ -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[@ParentName="PirateBandBase"][not(colorSpectrum)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[@ParentName="PirateBandBase"][not(colorSpectrum)]</xpath>
+            <value>
+              <colorSpectrum>
+                <li>(0.78, 0, 0.27)</li>
+                <li>(1, 0.74, 0.83)</li>
+              </colorSpectrum>
+            </value>
+          </match>
+        </li>
+
+        <!-- Blackstar itself. Pirate declares its own colorSpectrum
+             (Core/Defs/FactionDefs/Factions_Misc.xml), so REPLACE matches; an Add would
+             duplicate the element. Both ends sit inside a narrow dark-red band so every
+             roll of colorFromSpectrum lands dark red - (128,23,23) to (168,31,31).
+             ⚠️ Chosen by LOOKING, not by taste: rendered against pale desert and dark
+             rock at 34, 72 and 140 px. 0.45 went muddy at world-map size and 0.70 read
+             as bright rather than dark. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/colorSpectrum</xpath>
+          <value>
+            <colorSpectrum>
+              <li>(0.50, 0.09, 0.09)</li>
+              <li>(0.66, 0.12, 0.12)</li>
+            </colorSpectrum>
+          </value>
+        </li>
+
         <!-- Bespoke world-map icon. the def writes it - Core/Defs/FactionDefs/Factions_Misc.xml:522, so REPLACE. -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/FactionDef[defName="Pirate"]/factionIconPath</xpath>
