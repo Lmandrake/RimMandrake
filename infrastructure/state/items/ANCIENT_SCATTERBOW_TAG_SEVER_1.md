@@ -45,3 +45,16 @@ comes back missing it, the operation was changed to a Replace and that is the re
 `["Gun", "NeolithicRangedAdvanced", "VEE_HunterNeolithicWeapon"]` — **`Gun` IS present**, so the
 defect is real in the running game and the sever is confirmed not deployed. This is the BEFORE the
 post-reload capture must be scored against. `facts/scatterbow_baseline.json`.
+
+## ⚠️ The deploy was ALREADY DONE — corrected 2026-08-24
+This item says *"It is not deployed — that is yours."* **It was deployed on 2026-08-23 16:11.**
+`deploy_custom_mods.py --mod Jawa_Patches` reports `in sync (116 files)`, and the game copy of
+`Patches/AncientArsenal_Ashkarr.xml` is byte-identical to the repo, `Inherit="False"` included.
+
+🔑 **So the live `Gun` reading taken 2026-08-24 does NOT refute the sever.** The running game was
+loaded at ~15:35 on 2026-08-23, before the 16:11 deploy, so it never saw the patch. **The sever is
+still completely untested**, and the next load is its first.
+
+⛔ **Two outcomes and they look nothing alike — do not conflate them.** If the post-load capture
+still shows `Gun`, that is the `PatchOperationConditional` matching nothing and saying nothing
+(it returns true either way), NOT a deploy that failed. Score it at `NEXT_RELOAD.md` §20 R3.
