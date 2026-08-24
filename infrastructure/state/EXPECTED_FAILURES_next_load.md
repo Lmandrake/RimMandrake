@@ -2647,3 +2647,34 @@ that an AssetBundle hid art from a disk sweep; the first was the sarlacc.
 ⭐ **Unfixed and worth knowing:** the same investigation flagged **GRiNDTerra Biomes** —
 12 of its 15 textures are outside the envelope, `Biome_GRimworld` at block std 17.86 and
 `Biome_Toxlands` also at 1024². Whether those biomes occupy Ash'karr tiles is **UNMEASURED**.
+
+---
+
+## §21 — THE WORLD ROUND TRIP. Written 2026-08-24 01:4x by CHECK, game DOWN, both DLLs deployed.
+
+🔑 **Written BEFORE the load, on purpose.** Every threshold below was fixed while the
+evidence was still in the running game, so none of it can be bent to fit whatever the
+reload produces. One command scores all six:
+
+```
+python.exe src/RimMandrake/Utils/check_world_reload.py
+```
+
+| # | prediction | why it can fail SILENTLY |
+|---|---|---|
+| **P1** | the bridge reports **≥ 121 `jawa/` tools** | companions register at RimBridgeServer startup only. A low count means the deploy did not take; **0 means the bundle never loaded**, which reads identically to "the tool is missing" |
+| **P2** ⭐ | `world_tile_export` with no flags returns **10 columns, the tenth `pollution`** | **THE DEPLOY PROOF.** The old DLL returns nine columns and no error. An unknown parameter is dropped before the tool runs, so a stale companion is indistinguishable from a correct one unless you read the header |
+| **P3** | the ~236 Cathedral tiles read back **pollution ≥ 0.85** | pollution is scribed per tile; if the save round trip drops it the tiles come back 0 and the map still looks right, because the biome layer does not draw pollution |
+| **P4** | `world_tile_validate` against `world/ASHKARR_DRAFT_2026-08-24_tiles.csv` → **21872 matched, 0 mismatched** | ⛔ **not** against `ASHKARR_WORLDMAP_tiles.csv` — that is the 2026-08-23 state and is 787 tiles behind |
+| **P5** | `world_lint`: **`settlementsWithNoRoad` = 18**, **1 orphan river trunk** | 18 is INTENT as of 2026-08-24 — 9 Tusken holdings the owner ruled roadless, 5 droid seats deliberately unroaded, 3 unplanned settlements, 1 other. A number **lower** than 18 means something re-laid roads; higher means something else broke |
+| **P6** | **124 settlements**, and all **11 moved ones** at their 2026-08-24 tiles | `world_objects_set` writes the object, not the save; the proof is that the tile survived a quit |
+
+⚠️ **If P2 fails but P1 passes**, the bridge is up on the OLD companion: the deploy was
+overwritten, or RimWorld was launched from a different install. Do not re-deploy blind —
+compare `build.py`'s reported game copy against `c88df17ff577` first.
+
+🔴 **P4 failing while P3 passes is the interesting case**, and it would mean the save
+carries the world but the CSV baseline was harvested wrong. The harvest used 200-tile
+chunks *after* a first attempt at 400 silently returned half; if P4 fails, suspect the
+baseline before suspecting the game, and re-harvest before concluding anything about the
+round trip.
