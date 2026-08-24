@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace JawaRules
@@ -37,6 +41,13 @@ namespace JawaRules
             Apply(h, AccessTools.Method(typeof(Pawn), "GenerateNecessaryName"),
                   typeof(Patch_GenerateNecessaryName), "pet-names",
                   "armed; tamed and newborn animals will draw from their race namer");
+
+            ApplyTranspiler(h, AccessTools.Method(typeof(WorldFeatures), "UpdateAlpha"),
+                  typeof(Patch_WorldFeatures_UpdateAlpha), "world-labels",
+                  "armed; world feature names peak at "
+                  + Patch_WorldFeatures_UpdateAlpha.WantedAlpha.ToString("0.00")
+                  + " alpha instead of "
+                  + Patch_WorldFeatures_UpdateAlpha.VanillaAlpha.ToString("0.00"));
         }
 
         // Two separate log lines on purpose: this assembly carries two unrelated rules
@@ -54,6 +65,32 @@ namespace JawaRules
             try
             {
                 h.Patch(target, postfix: new HarmonyMethod(patchClass, "Postfix"));
+                Log.Message("[JawaRules] " + rule + ": " + detail);
+            }
+            catch (Exception e)
+            {
+                Log.Error("[JawaRules] " + rule + ": patch FAILED, rule NOT in effect — "
+                          + e.Message);
+            }
+        }
+
+        // ⚠️ Apply() above hardcodes a POSTFIX. This one exists because world-labels
+        // needs a TRANSPILER and nothing else does - see that patch class for why a
+        // postfix is the wrong instrument there rather than merely a different one.
+        // Same contract: a missing target is one named error, not a dead assembly.
+        private static void ApplyTranspiler(Harmony h, MethodBase target, Type patchClass,
+                                            string rule, string detail)
+        {
+            if (target == null)
+            {
+                Log.Error("[JawaRules] " + rule + ": TARGET METHOD NOT FOUND — this rule is "
+                          + "NOT in effect. A game update renamed it. The other rules in "
+                          + "this assembly are unaffected.");
+                return;
+            }
+            try
+            {
+                h.Patch(target, transpiler: new HarmonyMethod(patchClass, "Transpiler"));
                 Log.Message("[JawaRules] " + rule + ": " + detail);
             }
             catch (Exception e)
@@ -181,6 +218,72 @@ namespace JawaRules
             {
                 // Naming is cosmetic; taming and birth are not. Never throw here.
                 Log.WarningOnce("[JawaRules] pet-names: " + e.Message, 0x4A57A2);
+            }
+        }
+    }
+
+    // 🔴 Owner, 2026-08-23: "make the world labels twice as opaque."
+    //
+    // The world labels are the italic names printed across the planet - the regions,
+    // seas and ranges from `WorldFeature`. They peak at THIRTY PERCENT alpha:
+    //
+    //     WorldFeatures.cs:17   private const float BaseAlpha = 0.3f;
+    //     WorldFeatures.cs:102  float num = 0.3f * feature.alpha;
+    //
+    // `feature.alpha` is the 0..1 FADE PROGRESS driven by camera altitude, not the
+    // opacity - it reaches 1 and the text still draws at 0.3. So 0.3 is the ceiling
+    // and it is the only number worth changing. Doubled: 0.60.
+    //
+    // ⛔ A POSTFIX IS THE WRONG INSTRUMENT HERE, AND NOT MERELY A DIFFERENT ONE.
+    // The original writes the colour only when it has drifted:
+    //     if (!Mathf.Approximately(text.Color.a, num)) { text.Color = …; text.WrapAroundPlanetSurface(…); }
+    // A postfix that raised the alpha afterwards would leave `text.Color.a` at 0.6·a
+    // while the original keeps computing 0.3·a, so that guard would MISS ON EVERY
+    // FRAME - and `WrapAroundPlanetSurface` rebuilds the text mesh geometry. Two mesh
+    // rebuilds per named feature per frame, for 71 features, to change one constant.
+    //
+    // ⇒ Transpile the constant instead. The guard keeps working, the cost is zero, and
+    // there is exactly one `ldc.r4 0.3` in the method to hit. `BaseAlpha` being a const
+    // means the compiler has already inlined it, so the literal is what is in the IL.
+    //
+    // ⚠️ IT COUNTS ITS OWN HITS AND SAYS SO. A transpiler that matches nothing returns
+    // the method unchanged and Harmony reports SUCCESS - the silent-failure shape this
+    // project keeps paying for. Anything other than exactly one substitution is a named
+    // error in the log, and the IL is still returned intact so the game runs either way.
+    public static class Patch_WorldFeatures_UpdateAlpha
+    {
+        public const float VanillaAlpha = 0.3f;
+        public const float WantedAlpha = 0.6f;
+
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> src)
+        {
+            int hits = 0;
+            foreach (var ins in src)
+            {
+                if (ins.opcode == OpCodes.Ldc_R4
+                    && ins.operand is float f
+                    && Mathf.Approximately(f, VanillaAlpha))
+                {
+                    hits++;
+                    // Carry the labels and exception blocks across, or a branch target
+                    // that pointed at this instruction lands nowhere.
+                    var rep = new CodeInstruction(OpCodes.Ldc_R4, WantedAlpha);
+                    rep.labels.AddRange(ins.labels);
+                    rep.blocks.AddRange(ins.blocks);
+                    yield return rep;
+                    continue;
+                }
+                yield return ins;
+            }
+
+            if (hits != 1)
+            {
+                Log.Error("[JawaRules] world-labels: expected exactly ONE "
+                          + VanillaAlpha.ToString("0.00") + " constant in "
+                          + "WorldFeatures.UpdateAlpha and found " + hits
+                          + ". The label opacity is NOT what was asked for. A game "
+                          + "update changed the method; re-read it before trusting "
+                          + "the 'armed' line above.");
             }
         }
     }
