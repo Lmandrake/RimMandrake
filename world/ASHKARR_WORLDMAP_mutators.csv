@@ -2287,7 +2287,7 @@ tile,mutators
 7640,AncientRuins
 7645,Caves
 7649,Caves
-7653,River
+7653,River;VEE_SaltPlains
 7668,Dunes
 7674,VEE_MineralDevoid;VEE_DeepOreDevoid
 7685,VEE_MineralDevoid;VEE_DeepOreDevoid
@@ -3540,8 +3540,8 @@ tile,mutators
 11905,Mountain;Oasis
 11912,River
 11913,River
-11914,River
-11915,River
+11914,River;VEE_SaltPlains
+11915,River;VEE_SaltPlains
 11916,River
 11917,River
 11918,Oasis
@@ -4164,7 +4164,7 @@ tile,mutators
 14312,Oasis
 14314,Oasis
 14317,Oasis
-14319,River
+14319,River;VEE_SaltPlains
 14320,Mountain;Oasis
 14322,Mountain;River
 14323,River
@@ -4178,7 +4178,7 @@ tile,mutators
 14331,River
 14332,River
 14333,River
-14335,River
+14335,River;VEE_SaltPlains
 14337,River
 14338,Oasis
 14339,Oasis
@@ -4441,7 +4441,7 @@ tile,mutators
 15120,Mountain
 15121,Mountain
 15125,Dunes
-15127,Dunes;VEE_MineralDevoid;VEE_DeepOreDevoid
+15127,Dunes;VEE_MineralDevoid;VEE_DeepOreDevoid;VEE_SaltPlains
 15128,Mountain
 15129,Mountain
 15130,Mountain
@@ -4864,6 +4864,7 @@ tile,mutators
 16629,Dunes
 16630,Dunes;VEE_MineralDevoid;VEE_DeepOreDevoid
 16631,Dunes
+16634,VEE_SaltPlains
 16636,Dunes
 16640,Mountain;MineralRich
 16641,Mountain;MineralRich;VEE_DeepOreRich
@@ -5005,6 +5006,7 @@ tile,mutators
 16877,Mountain
 16878,Mountain
 16879,Mountain
+16882,VEE_SaltPlains
 16884,Dunes;VEE_MineralDevoid;VEE_DeepOreDevoid
 16885,Dunes
 16886,Coast;Dunes
@@ -5221,7 +5223,7 @@ tile,mutators
 17320,Mountain
 17321,Mountain
 17323,Cavern
-17324,River
+17324,River;VEE_SaltPlains
 17326,River
 17327,Mountain
 17328,River
