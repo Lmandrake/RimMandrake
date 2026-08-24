@@ -644,3 +644,22 @@ line from a log is UNMEASURED, never "the deploy did not take."** `JawaBenchInit
 module initializer over a static constructor precisely to avoid waiting for the first
 invocation; it waits anyway. The instrument that settles it is one command from any seat:
 `python.exe src/RimMandrake/Utils/rimbridge_client.py --list-tools`.
+
+**23 — The bridge SILENTLY IGNORES a parameter the deployed tool does not declare.**
+Measured 2026-08-23: `jawa/world_tile_export` was asked for `extended=true` against a
+companion built before that parameter existed. It returned **`success: true`**, wrote the
+old nine-column file, and reported no warning of any kind. ⇒ **A successful call is not
+evidence that your argument was honoured**, and a client that infers "the new build is
+deployed" from "the call did not fail" will confidently mislabel its own output —
+`vivify_world.py` did exactly that for one run, printing `(EXTENDED)` over a nine-column
+file. ✅ **Verify from the RESULT, not from the absence of an error:** `world_tile_export`
+returns its own `columns` list, built from the same constant that writes the header, so
+`"tempMin" in columns` cannot disagree with the file. Any tool gaining a parameter should
+return something a caller can test the same way.
+
+**24 — `river_flow` is OURS and has no engine counterpart.** The column in
+`world/ASHKARR_WORLDMAP_tiles.csv` is authored by `ashkarr_headwaters.py` and
+`ashkarr_join_mouths.py` — RimWorld models rivers as links carrying a `RiverDef`, plus a
+per-tile `riverDist`, and stores no flow scalar anywhere. ⇒ A harvest from the live game
+can never MEASURE it; it is CARRIED from the authored bundle by construction, and a
+future tool that claims to have measured it has invented it.

@@ -86,6 +86,8 @@ import csv
 import json
 import math
 import os
+import re
+import subprocess
 import sys
 
 # The authored bundle's header, in order. ⛔ This tuple IS the compatibility contract
@@ -231,6 +233,126 @@ def build_rows(export, reference):
     return out, prov
 
 
+# ---------------------------------------------------------------------------
+# LIVE HARVEST
+# ---------------------------------------------------------------------------
+# 🔑 WHY THIS SHELLS OUT INSTEAD OF IMPORTING THE CLIENT. RimBridge binds WINDOWS
+# loopback and WSL2 is NAT-mode, so 127.0.0.1:5174 has no route from this side —
+# `rimbridge_client.py` says exactly that and refuses. But every path this tool
+# handles is a `/mnt/...` path, and Windows python cannot read the repo through one
+# reliably. So the script stays WSL-side and spawns `python.exe` per call. It costs
+# a process per bridge call; there are about a dozen of them for a whole planet.
+
+CLIENT = "src/RimMandrake/Utils/rimbridge_client.py"
+
+
+def win_to_wsl(path):
+    r"""`C:/x/y` or `C:\x\y` -> `/mnt/c/x/y`. Returned paths mix both separators."""
+    p = (path or "").replace("\\", "/")
+    m = re.match(r"^([A-Za-z]):/(.*)$", p)
+    return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2)) if m else p
+
+
+def call(tool, params=None, timeout=900):
+    """One bridge call. Returns the parsed payload, or exits with the refusal.
+
+    ⚠️ `--yes-i-know-this-is-live` is passed for every call here. That guard exists to
+    stop an ACCIDENTAL write; everything this tool calls is a read, and the guard's
+    heuristic cannot tell them apart. Nothing below writes to the game.
+    """
+    cmd = ["python.exe", CLIENT, "--call", tool, "--yes-i-know-this-is-live"]
+    if params:
+        cmd += ["--json", json.dumps(params)]
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+    out = r.stdout or ""
+    i = out.find("{")
+    if i < 0:
+        sys.exit("bridge call %s produced no JSON.\n%s\n%s"
+                 % (tool, out.strip()[:400], (r.stderr or "").strip()[:400]))
+    try:
+        d = json.loads(out[i:])
+    except ValueError as e:
+        sys.exit("bridge call %s returned unparseable JSON: %s" % (tool, e))
+    if d.get("success") is False:
+        sys.exit("bridge refused %s: %s" % (tool, d.get("message")))
+    return d
+
+
+def harvest_live(batch=3000):
+    """The whole planet, from the running game. Returns (export, extended_ok).
+
+    ⭐ TWO CALLS' WORTH OF WORK, NOT 21,872. `world_tile_export` writes every tile to
+    a file server-side in one call (86 ms measured for 21,872), and `world_tile_get`
+    answers 3,000 tiles per call for the scalars the export does not carry. Eight
+    batches covers this planet. ⛔ Do not "simplify" this to a per-tile loop.
+    """
+    # 1 — the base table, in one call. Ask for the extended form first; a companion
+    #     that predates it refuses the unknown parameter and we fall back, rather than
+    #     the caller having to know which DLL is deployed.
+    res = call("jawa/world_tile_export", {"format": "csv", "extended": True})
+
+    # 🔴 THE BRIDGE SILENTLY IGNORES A PARAMETER THE DEPLOYED TOOL DOES NOT DECLARE.
+    # Measured 2026-08-23: asking a pre-extended companion for extended=true returns
+    # success:true and writes the nine-column file. ⛔ So "the call worked" proves
+    # NOTHING about whether the parameter was honoured, and an earlier version of this
+    # function inferred it exactly that way and cheerfully printed "(EXTENDED)" over a
+    # nine-column file. The tool's OWN `columns` list is the answer; it is built from
+    # the same constant that writes the header, so it cannot disagree with the file.
+    cols = res.get("columns") or []
+    extended_ok = "tempMin" in cols
+    path = win_to_wsl(res.get("path"))
+    if not os.path.exists(path):
+        sys.exit("the game reported writing %s but it is not readable from here.\n"
+                 "Translated to: %s" % (res.get("path"), path))
+    print("  world_tile_export -> %d tiles, %d columns%s"
+          % (res.get("tilesTotal", -1), len(cols),
+             "  EXTENDED" if extended_ok else ""))
+    print("                       %s" % path)
+    if not extended_ok:
+        print("  ⚠️  asked for extended=true and the deployed companion IGNORED it — it "
+              "predates the parameter.\n"
+              "      The call still returned success:true. Deploy the new "
+              "JawaBench.BridgeTools.dll to fill the derived columns.")
+    export = read_export(path)
+
+    # 2 — the scalars `world_tile_export` has never carried. Skipped entirely when the
+    #     extended export already supplied them, because then it is pure duplication.
+    if not extended_ok:
+        ids = sorted(int(t) for t in export)
+        got = 0
+        for lo in range(ids[0], ids[-1] + 1, batch):
+            hi = min(lo + batch - 1, ids[-1])
+            d = call("jawa/world_tile_get",
+                     {"range": "%d-%d" % (lo, hi), "limit": batch})
+            for t in d.get("tiles", []):
+                row = export.get(str(t["tile"]))
+                if row is None:
+                    continue
+                # Named exactly as the extended export names them, so the single
+                # EXTENDED_FROM_EXPORT mapping serves both sources and there is no
+                # second translation table to drift.
+                row["feature"] = t.get("feature") or ""
+                row["featureId"] = t.get("featureId", -1)
+                row["waterCovered"] = 1 if t.get("waterCovered") else 0
+                row["pollution"] = t.get("pollution", "")
+                row["riverDist"] = t.get("riverDist", "")
+                row["roadCount"] = t.get("roadCount", "")
+                row["riverCount"] = t.get("riverCount", "")
+                row["mutatorCount"] = t.get("mutatorCount", "")
+                got += 1
+        print("  world_tile_get     -> %d tiles enriched in %d call(s)"
+              % (got, (ids[-1] - ids[0]) // batch + 1))
+    return export, extended_ok
+
+
+def live_meta():
+    """Provenance for the sidecar: which world this actually was."""
+    info = call("jawa/world_info_get").get("info", {}) or {}
+    return {k: info.get(k) for k in
+            ("name", "seedString", "planetCoverage", "overallRainfall",
+             "overallTemperature", "overallPopulation", "pollution", "factionCount")}
+
+
 def diff(rows, reference):
     """Where the live world disagrees with what we authored, column by column.
 
@@ -268,7 +390,7 @@ def diff(rows, reference):
     return compared, counts, examples
 
 
-def write_bundle(rows, prov, out_stem, source_note):
+def write_bundle(rows, prov, out_stem, source_note, live_info=None):
     path = out_stem + "_tiles.csv"
     os.makedirs(os.path.dirname(os.path.abspath(path)) or ".", exist_ok=True)
     cols = list(BASE_COLUMNS + EXTRA_COLUMNS)
@@ -285,6 +407,7 @@ def write_bundle(rows, prov, out_stem, source_note):
             "tiles": len(rows),
             "columns": cols,
             "provenance": prov,
+            "world": live_info,
             "note": ("MEASURED = the live game answered this run. CARRIED = copied from "
                      "the reference bundle. DERIVED = computed from measured values. "
                      "UNMEASURED = nothing on the live side offers it yet - for "
@@ -301,8 +424,8 @@ def main():
     src.add_argument("--from-export", metavar="FILE",
                      help="a CSV already written by jawa/world_tile_export. OFFLINE.")
     src.add_argument("--live", action="store_true",
-                     help="call the bridge. ⛔ The bridge belongs to CHECK - do not use "
-                          "this unless it is yours. NOT IMPLEMENTED YET.")
+                     help="harvest through the bridge. ⚠️ The bridge is shared - hold it "
+                          "before using this.")
     ap.add_argument("--reference", default="world/ASHKARR_WORLDMAP",
                     help="authored bundle stem to carry columns from and diff against")
     ap.add_argument("--out", default="world/ASHKARR_VIVIFIED",
@@ -311,20 +434,26 @@ def main():
                     help="report the drift and write nothing")
     a = ap.parse_args()
 
+    live_info = None
     if a.live:
-        sys.exit("--live is not implemented yet, deliberately.\n"
-                 "The offline half is what exists: run jawa/world_tile_export from a "
-                 "seat that holds the bridge, then point --from-export at the file it "
-                 "wrote. See the module docstring.")
-
-    export = read_export(a.from_export)
+        print("harvesting the live world through the bridge...")
+        export, extended_ok = harvest_live()
+        live_info = live_meta()
+        print("  world_info_get     -> %s (seed %s, coverage %s)"
+              % (live_info.get("name"), live_info.get("seedString"),
+                 live_info.get("planetCoverage")))
+        source_note = "live bridge harvest of %s (seed %s)" % (
+            live_info.get("name"), live_info.get("seedString"))
+    else:
+        export = read_export(a.from_export)
+        source_note = "jawa/world_tile_export file: " + a.from_export
     reference, ref_path = read_reference(a.reference)
     if reference is None:
         print("⚠️  no reference bundle at %s - water, river_flow and region will be "
               "EMPTY, not carried." % ref_path)
 
     rows, prov = build_rows(export, reference)
-    print("MEASURED %d tiles from %s" % (len(rows), a.from_export))
+    print("MEASURED %d tiles from %s" % (len(rows), a.from_export or source_note))
 
     if reference:
         compared, counts, examples = diff(rows, reference)
@@ -345,8 +474,7 @@ def main():
         print("\n--diff-only: nothing written.")
         return 0
 
-    path, side = write_bundle(rows, prov, a.out,
-                              "jawa/world_tile_export file: " + a.from_export)
+    path, side = write_bundle(rows, prov, a.out, source_note, live_info)
     print("\nwrote %s\n      %s" % (path, side))
     if prov["temp_min_c"] != MEASURED:
         print("⚠️  temp_min_c and temp_max_c are EMPTY. This export came from the "
