@@ -24,6 +24,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | §10 INHABITED — baseline, gated on `[Inhabited] ready: 294` | — | ⏳ PENDING |
 | 🌱 BIOME FLORA + 🏷️ PLANT NAMES | 2026-08-23 | ⏳ PENDING |
 | 🌡️ TOLERANCES + 🏹 ANCIENT ARSENAL + 🦴 CAST SUBSTITUTIONS | 2026-08-23 (cast NOT yet) | ⏳ PENDING |
+| 🔧 §19 TWO DLLs WAITING ON THE DOWN WINDOW | ⛔ **NOT DEPLOYED** | ⏳ PENDING |
 
 🔴 **WHEN A LOAD IS SCORED:** move its block whole into
 `infrastructure/state/NEXT_RELOAD_ARCHIVE.md` with its result, and delete its index row.
@@ -270,3 +271,51 @@ Could not resolve cross-reference .*(Tolerances|Arsenal|BiomeCast)
 ⚠️ **Attribution:** these are five XML patches with named, non-overlapping dump checks, so they
 batch safely. ⛔ They do NOT batch with an assembly — if `JawaIkee` or a rebuilt companion rides
 this same load, an unexplained result belongs to the assembly first.
+
+
+---
+
+## 🔧 §19 — TWO ASSEMBLIES ARE BUILT AND COMMITTED AND CANNOT DEPLOY WHILE THE GAME RUNS
+
+Written 2026-08-23 19:5x by BUILD. ⛔ **Neither of these is drift and neither is a
+mistake** — the OS memory-maps a loaded DLL, so both simply cannot be written until
+RimWorld exits. **This block is the reminder; without it they sit in the repo forever
+looking deployed.**
+
+🔴 **DO THESE FIRST IN THE DOWN WINDOW, BEFORE ANYTHING THAT COSTS TIME.** A DLL deploy is
+seconds and the window is the only place it can happen; an XML deploy can be done any time
+and does not need the window at all.
+
+| # | assembly | what it adds | deploy with |
+|---|---|---|---|
+| 1 | `JawaRules.dll` | the world-label transpiler: world feature names peak at **0.60** alpha instead of 0.30 (`WorldFeatures.UpdateAlpha`) | `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaRules --apply` |
+| 2 | `JawaBench.BridgeTools.dll` | `jawa/world_tile_export` gains `extended=true` — eleven derived columns including `tempMin`, `tempMax`, `seasonalShift` | `python.exe src/RimMandrake/bridgetools/build.py --gm --apply` |
+
+⚠️ **`--gm` IS MANDATORY on the JawaBench build.** Without it the build drops
+`jawa/fire_incident` and `jawa/send_letter` and its own guard refuses the deploy. ⛔ Do not
+reach for `--allow-tool-removal` to get past that; the flag is the fix.
+
+⚠️ **Build state at the time of writing:** JawaBench built from commit `b4d69b7c8c4d`, game
+copy holds `c1f3121ddf9e`. JawaRules built 2026-08-23 ~19:0x, game copy is the 15:08 build
+`6c5fe361`. A deploy plan reporting *"built from a DIFFERENT COMMIT"* on either is expected
+and is not a reason to stop.
+
+### Readings after the load
+
+The signatures are `§18` in `EXPECTED_FAILURES_next_load.md` — **W3** and **W4** are the
+JawaRules half. ⭐ **W4 is the one that matters**: the transpiler counts its own
+substitutions, because a transpiler that matches nothing leaves the method unchanged and
+Harmony still reports success.
+
+For JawaBench, the reading is one command and it needs no map:
+
+```bash
+python3 src/RimMandrake/Utils/vivify_world.py --live --diff-only
+```
+
+✅ **PASS** = the header line reads **20 columns EXTENDED**, and `temp_min_c`, `temp_max_c`
+and `seasonal_shift_c` read **MEASURED** in the provenance block.
+🔴 **FAIL, and it is a SILENT one** = it prints *"asked for extended=true and the deployed
+companion IGNORED it"*. The bridge discards a parameter the deployed tool does not declare
+and still returns `success: true` (`BUILDABLE.md` 23), so that warning is the only evidence
+the deploy did not take. ⛔ Do not read a successful call as a successful deploy.

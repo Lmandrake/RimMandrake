@@ -11,6 +11,7 @@ focused research probe; keep them assembly-free and dependency-light.
 | **`animal_contact_sheet.py`** | **`animals.csv` + every mod's `Textures/`** | **paginated sprite sheets + index CSV + missing CSV** |
 | **`deploy_custom_mods.py`** | **`src/Jawa/` + `src/RimMandrake/` + RimWorld's `Mods/`** | **pushes our authored mods into the game — the repo copy is NOT what the game loads; see `src/README.md`** |
 | **`mod_inventory.py`** | **`DefDump/manifest.json` (runtime) + `ModsConfig.xml` + every `About/About.xml`** | **`observed/2026-08-13/live_mod_inventory.md` — active load order + inactive pool, the authority on mod identity** |
+| **`vivify_world.py`** | **the LIVE world through the bridge, or a `world_tile_export` file** | **`<stem>_tiles.csv` in the authored bundle's exact column order + a `_provenance.json` saying which columns were MEASURED** |
 
 ## Retired 2026-08-20
 
@@ -550,3 +551,124 @@ with the tile they stand on. `--png` rasterises through headless Chrome.
 own neighbour ORDER (which is the river/road adjacency slot), and the two
 projections. `--selftest` proves 12 pentagons, shared hex corners to 1e-16, and a
 60 deg turn between neighbour slots.
+
+
+---
+
+## vivify_world.py — the planet as the GAME holds it, in our own CSV  (v1.0, 2026-08-23)
+
+🔴 **Owner's ask, 2026-08-23:** *"the utility that sucks a map out of a live game and dumps
+it as precisely the same style of CSV that you currently use to store our map... but with
+all the numbers populated (such as max/min instead of just mean temperature). That would
+make a 'vivified' version of our initial CSV with perfectly game-consistent numbers."*
+
+### The distinction it exists to make
+
+`world/ASHKARR_WORLDMAP_tiles.csv` is **AUTHORED** — what we asked the planet to be. The
+running game is what the engine **MADE** of that request, after biome resolution, after
+Cherry Picker, after every mod's patches. Those are two different objects, and until this
+tool only the first one existed on disk.
+
+⇒ Running it answers a question nothing else can: **has the world we authored actually
+arrived in the game, and where has it not?**
+
+### Run
+
+```bash
+# LIVE — the bridge. Ten calls for a 21,872-tile planet.
+python3 src/RimMandrake/Utils/vivify_world.py --live \
+    --reference world/ASHKARR_WORLDMAP --out world/ASHKARR_VIVIFIED
+
+# OFFLINE — a jawa/world_tile_export file someone else already wrote.
+python3 src/RimMandrake/Utils/vivify_world.py \
+    --from-export "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/world_tiles_raven.csv" \
+    --reference world/ASHKARR_WORLDMAP --out world/ASHKARR_VIVIFIED
+
+# Just the drift. Writes nothing.
+python3 src/RimMandrake/Utils/vivify_world.py --live --diff-only
+```
+
+⚠️ **`--live` needs the bridge**, which is shared. Hold it first. The offline mode exists
+precisely so the tool is usable when someone else has it.
+
+### The output is a drop-in, and that is a contract not a hope
+
+The first **fourteen** columns are byte-for-byte the authored header, in order:
+
+```
+tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hilliness,swampiness
+```
+
+Nine more are **APPENDED** after them: `temp_min_c temp_max_c seasonal_shift_c pollution
+river_dist road_count river_count mutator_count feature_id`.
+
+`csv.DictReader` keys by name and ignores extras, so `worldview.py` and every `ashkarr_*.py`
+read a vivified bundle unchanged. ✅ **Proven, not assumed** — the vivified bundle was
+rendered through `worldview.py` with no modification: 21,872 tiles, 71 regions, 563
+landmarks. ⛔ **Do not reorder or rename the first fourteen** to make room for a new field.
+Append, or every reader breaks at once.
+
+### Provenance is mandatory, per column, every run
+
+🔑 **A column quietly copied from the authored bundle while wearing the word "vivified" is
+the worst thing this tool could produce.** So every column is written with an origin, and
+the run prints it and writes it to `<stem>_provenance.json`:
+
+| | |
+|---|---|
+| **MEASURED** | the live game answered for this column, this run |
+| **CARRIED** | copied from the reference bundle — the live source does not offer it |
+| **DERIVED** | computed here from measured values (`arc` and `bearing`, from lat/lon) |
+| **UNMEASURED** | nothing offers it yet. The cell is **EMPTY**, never `0` |
+
+⛔ **Empty, never zero.** A `0` in `river_count` reads as *"this tile has no rivers"*; an
+empty cell reads as *"nobody asked the game"*. Those must not be the same character.
+
+`arc` and `bearing` use `ashkarr_paint.py:ab_of` verbatim — arc is angular distance from the
+SUBSTELLAR POINT, not colatitude, because the planet is tidally locked.
+
+### What it can and cannot measure, as of 2026-08-23
+
+| MEASURED live | CARRIED | UNMEASURED |
+|---|---|---|
+| tile lat lon elev_m temp_c rain_mm biome hilliness swampiness water region pollution river_dist road_count river_count mutator_count feature_id | `river_flow` | `temp_min_c` `temp_max_c` `seasonal_shift_c` |
+
+- 🔑 **`river_flow` is CARRIED by construction and always will be.** It is authored by
+  `ashkarr_headwaters.py` and `ashkarr_join_mouths.py`; RimWorld models rivers as links
+  carrying a `RiverDef` plus a per-tile `riverDist` and **stores no flow scalar anywhere**.
+  A future tool claiming to have measured it has invented it. (`BUILDABLE.md` 24.)
+- ⏳ **The three temperature columns are the owner's original ask and need a DLL.**
+  `jawa/world_tile_export` gained an `extended=true` parameter that appends them; the
+  companion carrying it is **built and committed, not deployed** — the OS holds the DLL
+  while the game runs. Deploy it in a down-window, re-run, and the three columns fill
+  themselves with **no change to this tool**.
+
+### 🔴 The trap this tool was itself caught by
+
+Asking the **deployed** companion for `extended=true` when it predates that parameter
+returns **`success: true`**, writes the old nine-column file, and warns about nothing. The
+first version inferred "the call did not fail, so the new build is live" and printed
+`(EXTENDED)` over a nine-column file.
+
+✅ **`extended_ok` now reads the tool's own returned `columns` list**, which is built from
+the same constant that writes the CSV header and therefore cannot disagree with the file.
+An unhonoured parameter is now a named warning. (`BUILDABLE.md` 23.)
+
+### Cost
+
+Ten bridge calls for a full-coverage planet, not 21,872. `jawa/world_tile_export` writes
+every tile server-side in **one** call (86 ms measured for 21,872 rows);
+`jawa/world_tile_get` answers **3,000 tiles per call** for the scalars the export does not
+carry, so eight batches covers the planet. ⛔ Do not "simplify" this into a per-tile loop.
+
+### What it has already found
+
+- **21,872 / 21,872 tiles agree** on lat, lon, elevation, temperature, rainfall,
+  hilliness, swampiness and region. The authored world arrives in the game intact.
+- **`biome` is the column that drifts**, and it drifts because the authored bundle moves:
+  32 differences at 18:08 and 244 at 18:16 on 2026-08-23, entirely because `b5135747`
+  landed from another window in between. ⚠️ **The diff is against a target other seats are
+  editing** — read it with `git log -1 -- world/ASHKARR_WORLDMAP_tiles.csv` beside it.
+- **11 tiles in the Twilight Sea** are authored `water=1` and live `water=0`, with land
+  biomes and positive elevation — almost certainly the eleven islands added in `12eae828`,
+  with the authored `water` column not yet caught up.
