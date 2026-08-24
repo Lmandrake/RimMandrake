@@ -3310,11 +3310,35 @@ namespace JawaBench.BridgeTools
                 "over an array-of-objects because repeating nine key names 119,904 times " +
                 "roughly triples the file for nothing.",
                 DefaultValue = "csv")]
-            string format = "csv")
+            string format = "csv",
+            [ToolParameter(Description =
+                "false (default) — the original nine columns, byte-identical to what " +
+                "this tool has always written. true — append eleven DERIVED columns that " +
+                "no raw tile field carries: tempMin, tempMax and seasonalShift (the " +
+                "engine's own seasonal extremes, not the mean), pollution, riverDist, " +
+                "feature and featureId (the named world region the tile belongs to), " +
+                "waterCovered, roadCount, riverCount and mutatorCount. " +
+                "⚠️ COSTS REAL TIME: each tile's min and max each sample the seasonal " +
+                "curve 133 times, so a full-coverage planet is roughly 32 million " +
+                "evaluations and the main thread is held for all of it. Ask for it when " +
+                "you want it, not by default.",
+                DefaultValue = false)]
+            bool extended = false)
         {
             var fmt = (format ?? "csv").Trim().ToLowerInvariant();
             if (fmt != "csv" && fmt != "json")
                 return Fail($"format must be 'csv' or 'json', got '{format}'.");
+            // ⛔ REFUSED rather than half-done. The JSON writer emits its own `columns`
+            // list and its rows are positional arrays; extending one without the other
+            // would produce a file whose header says nine and whose rows carry twenty,
+            // which parses cleanly and is wrong. CSV is the form the Python side reads,
+            // so that is the form that got the columns. Say so instead of silently
+            // dropping them.
+            if (extended && fmt == "json")
+                return Fail("extended=true is CSV only. The JSON writer emits positional " +
+                            "rows against its own column list, and extending one without " +
+                            "the other would yield a file that parses and lies. Use " +
+                            "format='csv', or ask for the JSON writer to be extended.");
 
             // PHASE 1 — read the grid, on the main thread and nowhere else.
             // Only the READ is in here. Formatting 119,904 rows and pushing them
@@ -3369,12 +3393,45 @@ namespace JawaBench.BridgeTools
                         Hilliness = t.hilliness.ToString(),
                         Swampiness = t.swampiness
                     };
+
+                    if (!extended) continue;
+
+                    // 🔴 GenTemperature.MinTemperatureAtTile, NOT Tile.MinTemperature.
+                    // The property caches into cachedMinTemp and NOTHING in the codebase
+                    // resets it, so after any climate write it reports the value from
+                    // before the write for the rest of the session — a validator built on
+                    // it would confirm its own edits while the planet stayed wrong. The
+                    // free function recomputes, and recomputing is the entire reason this
+                    // column is worth having. Same rule as TileRaw in the World tools.
+                    rows[i].TempMin = GenTemperature.MinTemperatureAtTile(i);
+                    rows[i].TempMax = GenTemperature.MaxTemperatureAtTile(i);
+                    rows[i].SeasonalShift = GenTemperature.SeasonalShiftAmplitudeAt(i);
+
+                    // The remaining fields live on SurfaceTile rather than Tile. grid[int]
+                    // IS the surface layer (see the header note), so this cast succeeds for
+                    // every row — but it is checked rather than assumed, because a failed
+                    // cast here would be eleven silently-zero columns, not an error.
+                    // Fully qualified rather than adding `using RimWorld.Planet;` to a
+                    // 6,000-line file that already has Verse and RimWorld in scope —
+                    // that namespace carries Tile, World and Settlement, and a new
+                    // ambiguity here would surface as errors far from this line.
+                    var st = t as RimWorld.Planet.SurfaceTile;
+                    if (st == null) continue;
+                    rows[i].Pollution = st.pollution;
+                    rows[i].RiverDist = st.riverDist;
+                    rows[i].Feature = st.feature?.name;
+                    rows[i].FeatureId = st.feature != null ? st.feature.uniqueID : -1;
+                    rows[i].WaterCovered = st.WaterCovered;
+                    rows[i].RoadCount = st.potentialRoads != null ? st.potentialRoads.Count : 0;
+                    rows[i].RiverCount = st.potentialRivers != null ? st.potentialRivers.Count : 0;
+                    rows[i].MutatorCount = st.mutatorsNullable != null ? st.mutatorsNullable.Count : 0;
                 }
 
                 var info = world.info;
                 return new TileHarvest
                 {
                     Rows = rows,
+                    Extended = extended,
                     Previewing = Find.World == null,
                     SeedString = info?.seedString,
                     PlanetCoverage = info?.planetCoverage ?? -1f
@@ -3458,7 +3515,7 @@ namespace JawaBench.BridgeTools
                 path = outPath,
                 bytesWritten = bytes,
                 format = fmt,
-                columns = TileColumns,
+                columns = harvest.Extended ? TileColumnsExtended : TileColumns,
                 latMin = Math.Round(latMin, 4),
                 latMax = Math.Round(latMax, 4),
                 longMin = Math.Round(lonMin, 4),
@@ -5840,6 +5897,19 @@ namespace JawaBench.BridgeTools
             "temperature", "rainfall", "hilliness", "swampiness"
         };
 
+        // The extended set APPENDS to the base set and never reorders it, so a
+        // consumer keyed on column NAME reads either file, and a consumer keyed on
+        // POSITION still reads the first nine correctly. That is the whole
+        // compatibility contract with vivify_world.py on the Python side.
+        private static readonly string[] TileColumnsExtended =
+        {
+            "tile", "lat", "long", "biome", "elevation",
+            "temperature", "rainfall", "hilliness", "swampiness",
+            "tempMin", "tempMax", "seasonalShift", "pollution", "riverDist",
+            "feature", "featureId", "waterCovered", "roadCount", "riverCount",
+            "mutatorCount"
+        };
+
         // One surface tile, flattened. A struct in a flat array rather than a
         // list of objects: a full-coverage planet is ~119,904 of these, and this
         // array is built on the MAIN THREAD, where every allocation is a tick the
@@ -5854,6 +5924,21 @@ namespace JawaBench.BridgeTools
             public float Rainfall;
             public string Hilliness;
             public float Swampiness;
+
+            // Extended set. Left at their defaults when extended=false, and never
+            // written to the file in that case, so a default export is byte-identical
+            // to what it was before this field group existed.
+            public float TempMin;
+            public float TempMax;
+            public float SeasonalShift;
+            public float Pollution;
+            public int RiverDist;
+            public string Feature;
+            public int FeatureId;
+            public bool WaterCovered;
+            public int RoadCount;
+            public int RiverCount;
+            public int MutatorCount;
         }
 
         // What phase 1 hands to phase 2: the tiles plus the provenance that makes
@@ -5861,6 +5946,7 @@ namespace JawaBench.BridgeTools
         private sealed class TileHarvest
         {
             public TileRow[] Rows;
+            public bool Extended;
             public bool Previewing;
             public string SeedString;
             public float PlanetCoverage;
@@ -5883,7 +5969,8 @@ namespace JawaBench.BridgeTools
         private static void WriteTileCsv(
             TextWriter sw, TileHarvest harvest, CancellationToken cancellationToken)
         {
-            sw.Write(string.Join(",", TileColumns));
+            var cols = harvest.Extended ? TileColumnsExtended : TileColumns;
+            sw.Write(string.Join(",", cols));
             sw.Write('\n');
             var rows = harvest.Rows;
             for (var i = 0; i < rows.Length; i++)
@@ -5899,6 +5986,22 @@ namespace JawaBench.BridgeTools
                 sw.Write(','); sw.Write(F(r.Rainfall, ValueFormat));
                 sw.Write(','); sw.Write(Csv(r.Hilliness));
                 sw.Write(','); sw.Write(F(r.Swampiness, ValueFormat));
+                if (harvest.Extended)
+                {
+                    sw.Write(','); sw.Write(F(r.TempMin, ValueFormat));
+                    sw.Write(','); sw.Write(F(r.TempMax, ValueFormat));
+                    sw.Write(','); sw.Write(F(r.SeasonalShift, ValueFormat));
+                    sw.Write(','); sw.Write(F(r.Pollution, ValueFormat));
+                    sw.Write(','); sw.Write(r.RiverDist.ToString(CultureInfo.InvariantCulture));
+                    sw.Write(','); sw.Write(Csv(r.Feature));
+                    sw.Write(','); sw.Write(r.FeatureId.ToString(CultureInfo.InvariantCulture));
+                    // 0/1 rather than True/False: this is read by pandas and by csv.reader
+                    // on the Python side, where "False" is a truthy non-empty string.
+                    sw.Write(','); sw.Write(r.WaterCovered ? "1" : "0");
+                    sw.Write(','); sw.Write(r.RoadCount.ToString(CultureInfo.InvariantCulture));
+                    sw.Write(','); sw.Write(r.RiverCount.ToString(CultureInfo.InvariantCulture));
+                    sw.Write(','); sw.Write(r.MutatorCount.ToString(CultureInfo.InvariantCulture));
+                }
                 // '\n' not Environment.NewLine: this file is read on the WSL
                 // side by Python, and CRLF would ride into the last column of
                 // every row unless the reader is told about it.
