@@ -21,8 +21,15 @@ ROOT = Path(__file__).resolve().parents[2]
 POLICY = ROOT / "infrastructure" / "agents" / "POLICY.md"
 
 # He does not type a command. These are the ways he actually says it.
+# ⚠️ Widened 2026-08-23 after a real miss: he wrote "I want to go into Bench now" and
+# the pattern only knew "go to bench", so the rulebook never landed and the window ran
+# a BENCH turn on BELT rules. A false positive here costs one extra print of a page he
+# asked for; a false negative costs the whole mode. Lean permissive.
 ARRIVE = re.compile(
-    r"\b(i'?m here|i am here|on the bench|bench mode|go(ing)? to bench|"
+    r"\b(i'?m here|i am here|on the bench|in the bench|bench mode|"
+    r"(go|going|get|getting|switch|switching|move|moving|drop|put me|jump)\s+"
+    r"(in)?to\s+(the\s+)?bench|"
+    r"bench\s+(now|please)|(into|onto)\s+bench|"
     r"run with (this|it)|let'?s knock (this|it) out|work with me)\b", re.I)
 DEPART = re.compile(
     r"\b(stepping away|step away|back to normal|you'?re on your own|"
