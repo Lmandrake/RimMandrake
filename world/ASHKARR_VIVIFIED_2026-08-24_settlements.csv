@@ -18,7 +18,7 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 153,Jawa_WildsteamClan,Wildsteam Clan,Steamreach,8311,32.7113,-59.5704,64.8,AB_MiasmicMangrove,"the Scald's rivers, where the only true jungle on the planet grows"
 154,Jawa_WildsteamClan,Wildsteam Clan,Rego,4364,-4.4794,-55.5681,55.7,AB_FeraliskInfestedJungle,"the Scald's rivers, where the only true jungle on the planet grows"
 155,Jawa_WildsteamClan,Wildsteam Clan,Marrowmarsh,16050,-61.4693,69.4471,80.3,PoisonForest,"the meridian's poison marshes - the other kind of wet, and nobody else wants it"
-156,Jawa_WildsteamClan,Wildsteam Clan,Sporefall,3416,80.5276,7.8126,80.6,PoisonForest,"the meridian's poison marshes - the other kind of wet, and nobody else wants it"
+156,Jawa_WildsteamClan,Wildsteam Clan,Sporefall,11919,19.7513,-40.8898,44.6,COMIGO_GreaterSwamp_Tropical,"the meridian's poison marshes - the other kind of wet, and nobody else wants it"
 157,Jawa_DeepwaterCompact,Deepwater Compact,Butora,17343,1.2319,-50.5539,50.6,AB_OcularForest,"the Scald shore - fresh water in the hottest place, held against the Empire"
 158,Jawa_DeepwaterCompact,Deepwater Compact,Anchor Deep,11960,-16.0141,-36.5007,39.4,Volcano,"the Scald shore - fresh water in the hottest place, held against the Empire"
 159,Jawa_DeepwaterCompact,Deepwater Compact,Deepwater Hold,2919,2.2950,-77.6211,77.6,AridShrubland,"the Twilight Sea, the largest standing water on Ash'karr"
@@ -29,9 +29,7 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 164,Jawa_HuttCartel,Hutt Cartel,Vexxa's Casino,1828,35.1188,-65.4000,70.1,AridShrubland,beside a near-desert oasis - the well is guarded and is NOT the town tile
 165,Jawa_HuttCartel,Hutt Cartel,Vexxa the Unblinking's Palace,17209,10.2471,-68.0787,68.4,AridShrubland,beside a near-desert oasis - the well is guarded and is NOT the town tile
 166,Jawa_HuttCartel,Hutt Cartel,Hurgo the Vast's Palace,19200,-10.5623,-73.1554,73.4,Desert,beside a near-desert oasis - the well is guarded and is NOT the town tile
-167,Jawa_HuttCartel,Hutt Cartel,Bloatu the Ninth's Palace,15100,-0.7592,-75.1043,75.1,AridShrubland,beside a near-desert oasis - the well is guarded and is NOT the town tile
 168,Jawa_HuttCartel,Hutt Cartel,Rulla the Deep's Palace,6979,-2.2330,-70.1000,70.1,ZBiome_Badlands,beside a near-desert oasis - the well is guarded and is NOT the town tile
-169,Jawa_HuttCartel,Hutt Cartel,Zeddo the Patient's Palace,17247,-8.1605,-69.6671,69.9,ZBiome_Badlands,beside a near-desert oasis - the well is guarded and is NOT the town tile
 170,Jawa_Junkers,the Junkers,The Fuel Works,11779,-7.7512,96.3927,96.3,ZBiome_Badlands,"past the terminator on the warm downwind flank, scavenging the cold swirl"
 171,Jawa_Junkers,the Junkers,Cryohaul,5456,40.6469,98.7954,96.7,Desert,"past the terminator on the warm downwind flank, scavenging the cold swirl"
 172,Jawa_Junkers,the Junkers,Ammonia Landing,510,34.1238,99.7416,98.1,Desert,"past the terminator on the warm downwind flank, scavenging the cold swirl"
@@ -41,15 +39,15 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 180,Jawa_IndigenousTribes,Jawa Trade Moot,Ridge Cache,2641,40.0313,-70.8526,75.5,Wasteland,canyon fortresses and crawler circuit nodes across the near-desert
 183,Jawa_IndigenousTribes,Jawa Trade Moot,The Bartering Rock,11502,-12.7524,71.5763,72.0,Wasteland,canyon fortresses and crawler circuit nodes across the near-desert
 184,Jawa_IndigenousTribes,Jawa Trade Moot,Tin Camp,3221,-6.6906,69.8342,70.0,AridShrubland,canyon fortresses and crawler circuit nodes across the near-desert
-185,TribeCivil,Deep Desert Tribes,Duneward,71,23.5048,21.5067,31.4,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-186,TribeCivil,Deep Desert Tribes,Stone Moot,688,31.4829,20.9920,37.2,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-187,TribeCivil,Deep Desert Tribes,Redscarp,6,-31.7160,0.0000,31.7,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-188,TribeCivil,Deep Desert Tribes,The Dry Moot,3211,36.1659,15.1642,38.8,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-189,TribeCivil,Deep Desert Tribes,Barno,4233,-34.3085,-5.4262,34.7,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-190,TribeCivil,Deep Desert Tribes,The Long Camp,6288,-33.0117,23.3755,39.7,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-191,TribeCivil,Deep Desert Tribes,Ashfoot,6566,18.5277,25.9836,31.5,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-192,TribeCivil,Deep Desert Tribes,Knife Canyon,303,-29.6668,6.6438,30.3,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
-193,TribeCivil,Deep Desert Tribes,The Blind Wells,3156,-37.0059,-12.2612,38.7,Desert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+185,TribeCivil,Deep Desert Tribes,Duneward,16617,-23.4585,-3.1435,23.7,Desert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+186,TribeCivil,Deep Desert Tribes,Stone Moot,11165,-18.6069,29.0820,34.1,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+187,TribeCivil,Deep Desert Tribes,Redscarp,2849,26.1704,21.3728,33.3,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+188,TribeCivil,Deep Desert Tribes,The Dry Moot,6431,32.5863,-18.3393,36.9,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+189,TribeCivil,Deep Desert Tribes,Barno,21629,-1.3394,29.2171,29.2,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+190,TribeCivil,Deep Desert Tribes,The Long Camp,16536,-29.6474,15.3385,33.1,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+191,TribeCivil,Deep Desert Tribes,Ashfoot,9146,35.6355,5.7268,36.0,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+192,TribeCivil,Deep Desert Tribes,Knife Canyon,1537,-37.7209,-9.2703,38.7,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
+193,TribeCivil,Deep Desert Tribes,The Blind Wells,8869,13.3330,28.7707,31.5,ExtremeDesert,"the near-desert: canyons, caves and isolated ridges, and never a water tile"
 195,OutlanderCivil,Homestead Defense League,Condenser Flats,9956,21.5632,82.8830,83.4,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 197,OutlanderCivil,Homestead Defense League,Mistcatch,421,-13.9643,85.9876,86.1,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
 199,OutlanderCivil,Homestead Defense League,Rainshadow,9962,26.9441,87.0024,87.3,Wasteland,"the arable margin of the terminator - vaporators, aquifers, and no source"
@@ -94,7 +92,6 @@ id,faction_def,faction,name,tile,lat,lon,arc,biome,why
 239,Jawa_HuttCartel,Hutt Cartel,Rulla's Skimhouse,1028,63.0058,47.4818,72.1,Desert,beside a near-desert oasis - the well is guarded and is NOT free
 240,Jawa_HuttCartel,Hutt Cartel,Vexxa's Spicehouse,1820,42.1947,-52.4741,63.2,Desert,beside a near-desert oasis - the well is guarded and is NOT free
 241,Jawa_HuttCartel,Hutt Cartel,Mokka the Unpaid's Palace,4686,-13.9217,-83.3187,83.5,Desert,beside a near-desert oasis - the well is guarded and is NOT free
-242,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Cracking Yard,13180,-1.3102,17.0742,17.1,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
 244,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Owner,21549,7.7953,14.8014,16.7,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
 246,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Free Charge,3653,-13.2798,-25.7212,28.7,AB_PyroclasticConflagration,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"
 247,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Second Speaker,9936,-3.8728,12.4513,13.0,AB_MechanoidIntrusion,"they settle on water nobody else can drink and crack it for fuel, so attackers arrive thirsty at a source that would kill them"

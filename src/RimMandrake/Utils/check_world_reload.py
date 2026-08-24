@@ -41,12 +41,27 @@ KNOWN_DELTA = {
 }
 
 # The eleven settlements moved on 2026-08-24, and where they must be.
-# ⚠️ Cell Seven, Vent Forty and Vent Twelve were MOVED on 2026-08-24 and then CULLED the
-# same day. Asserting a moved settlement that no longer exists is how a check starts lying.
+# Every settlement whose tile was AUTHORED rather than generated. ⚠️ Cell Seven, Vent Forty,
+# Vent Twelve and The Cracking Yard were moved on 2026-08-24 and then culled the same day -
+# asserting a settlement that no longer exists is how a check starts lying, so they are out.
 MOVED = {
-    "No Master": 19350, "Second Speaker": 9936, "Helix Landing": 11944,
-    "The Coil": 15926, "Quiet Lab": 5499, "The Free Charge": 3653,
-    "No Owner": 21549, "The Cracking Yard": 13180,
+    "No Master":           19350,
+    "Second Speaker":      9936,
+    "Helix Landing":       11944,
+    "The Coil":            15926,
+    "Quiet Lab":           5499,
+    "The Free Charge":     3653,
+    "No Owner":            21549,
+    "Sporefall":           11919,
+    "Duneward":            16617,
+    "Stone Moot":          11165,
+    "Redscarp":            2849,
+    "The Dry Moot":        6431,
+    "Barno":               21629,
+    "The Long Camp":       16536,
+    "Ashfoot":             9146,
+    "Knife Canyon":        1537,
+    "The Blind Wells":     8869,
 }
 
 results = []
@@ -122,7 +137,7 @@ def main():
         # no roads), 8 Free Droid Enclaves, 2 Ascendant Helix, 3 unplanned settlements and
         # Kettle Deep - every one intended. A count BELOW 23 means something re-laid roads
         # the owner ruled away, which is the failure this check is actually for.
-        NOROAD_BASELINE = 20   # 23 before the 2026-08-24 settlement cull removed 3 roadless ones
+        NOROAD_BASELINE = 19   # 9 Tusken + 8 droid + 2 Helix, all deliberate
         lint = rb.call("jawa/world_lint", {})
         checks = lint.get("checks", {})
         noroad = (checks.get("settlementsWithNoRoad") or {}).get("count")
@@ -136,7 +151,7 @@ def main():
         pos = {(o.get("name") or o.get("label")): o["tile"]
                for o in objs.get("objects", []) if o.get("isSettlement")}
         wrong = {k: (pos.get(k), v) for k, v in MOVED.items() if pos.get(k) != v}
-        SETTLEMENTS_BASELINE = 111   # 124 before the 2026-08-24 cull of 13
+        SETTLEMENTS_BASELINE = 108   # 124 -> 111 (cull of 13) -> 108 (Cracking Yard + 2 Hutt palaces)
         score("P6 moved settlements held",
               len(pos) == SETTLEMENTS_BASELINE and not wrong,
               "%d settlements (baseline %d), %d of %d moves intact %s"

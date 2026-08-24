@@ -152,6 +152,8 @@ river,6474,11334,LargeRiver
 river,6474,16726,LargeRiver
 river,6486,11347,HugeRiver
 river,6486,19390,HugeRiver
+river,6641,11503,Creek
+river,6641,16884,Creek
 river,7041,17326,Creek
 river,7043,17324,Creek
 river,7052,11912,River
@@ -268,6 +270,7 @@ river,16489,16490,River
 river,16726,16727,River
 river,16869,16871,Creek
 river,16882,16883,Creek
+river,16882,16884,Creek
 river,16897,16898,Creek
 river,17294,17295,Creek
 river,17295,17296,Creek

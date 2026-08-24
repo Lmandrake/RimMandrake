@@ -546,16 +546,16 @@ terminator. 🔑 **Small story-critical zones fill first**, or they starve.
 | faction | defName | n | where, and why |
 |---|---|---|---|
 | The Galactic Empire | `Empire` | 3 | the seat/spaceport on the plateau rim; **the Scald Gate**; **the Fall Line pass** — choke points. 🔴 **RULED 2026-08-23, owner: "Only three, as I requested, not a gap."** The other ~7–8 Imperial holdings are ORBITAL and are not world tiles (`faction_roster_v2.md:761`); this is no longer an inference |
-| Hutt Cartel | `Jawa_HuttCartel` | 19 | 🔴 **RULED 2026-08-24, owner: the oasis rule binds the PALACES only.** The **8 palaces** are the greater Hutts and each sits **beside** a near-desert oasis, never on it — *"you can raid the well without besieging the town"*. The other **11 — the tolls, markets, kennels, waystations, vaults, the casino, the spicehouse, the skimhouse — hold no water at all**, and that is the point: a lesser Hutt who cannot own a well sells a SERVICE instead. ⚠️ *Mokka the Unpaid's Palace* is the one palace off a well; the name is now canon for why |
-| Homestead Defense League | `OutlanderCivil` | 37 | the arable margin of the terminator; stores water, has no source |
-| Deep Desert Tribes | `TribeCivil` | 9 | canyons, caves, isolated ridges — **never a water tile**. 🔴 **RULED 2026-08-24, owner: "they do not build roads"** — every road that led to a Tusken holding was removed from the map (91 edges, spurs pruned back to their junctions). ⛔ Do not re-run an MST that reconnects them; a Tusken settlement is reached across open sand or not at all |
-| Jawa Trade Moot | `Jawa_IndigenousTribes` | 7 | crawler **circuit** nodes; one anchored on the mine the sandcrawlers were stolen from |
-| the Junkers | `Jawa_Junkers` | 8 | 🔴 owner 2026-08-18: past the terminator on the **warm downwind flank**, plus the **old mining fields**. The docs only ever said *"wreck fields, wherever things fell"* — this is a new ruling |
+| Hutt Cartel | `Jawa_HuttCartel` | 17 | 🔴 **RULED 2026-08-24, owner: the oasis rule binds the PALACES only.** The **palaces** are the greater Hutts and each sits **beside** a near-desert oasis, never on it. ⚠️ **There were 8; the owner cut *Bloatu the Ninth's* and *Zeddo the Patient's* on 2026-08-24, leaving 6** — *"you can raid the well without besieging the town"*. The other **11 — the tolls, markets, kennels, waystations, vaults, the casino, the spicehouse, the skimhouse — hold no water at all**, and that is the point: a lesser Hutt who cannot own a well sells a SERVICE instead. ⚠️ *Mokka the Unpaid's Palace* is the one palace off a well; the name is now canon for why |
+| Homestead Defense League | `OutlanderCivil` | 33 | the arable margin of the terminator; stores water, has no source |
+| Deep Desert Tribes | `TribeCivil` | 9 | 🔴 **RULED 2026-08-24, owner: *"dwell within the sands only, very far from any other settlement and each other… they prefer the deep desert locations and are very private."*** Re-scattered by farthest-point placement across `Desert`/`ExtremeDesert` at arc 24–39 and **51–60 °C**, every one beyond a 9-hex search for water. **Nearest two tribes went 5.2° → 14.6° apart**, nearest tribe-to-anyone 12.5° → 14.6°. ⛔ Distance alone is not the rule — an earlier pass scattered them to −13.8 °C on the cold side, and a Tusken at −13.8 °C is not a Tusken. Canyons, caves, isolated ridges — **never a water tile**. 🔴 **RULED 2026-08-24, owner: "they do not build roads"** — every road that led to a Tusken holding was removed from the map (91 edges, spurs pruned back to their junctions). ⛔ Do not re-run an MST that reconnects them; a Tusken settlement is reached across open sand or not at all |
+| Jawa Trade Moot | `Jawa_IndigenousTribes` | 4 | crawler **circuit** nodes; one anchored on the mine the sandcrawlers were stolen from |
+| the Junkers | `Jawa_Junkers` | 5 | 🔴 owner 2026-08-18: past the terminator on the **warm downwind flank**, plus the **old mining fields**. The docs only ever said *"wreck fields, wherever things fell"* — this is a new ruling |
 | Geonosian Foundry Hive | `Jawa_GeonosianFoundryHive` | 5 | **two clusters**: the ore seams, and the plateau beside the Rust Cathedral |
 | Deepwater Compact | `Jawa_DeepwaterCompact` | 6 | the seas; **two on the Scald** despite the Empire |
-| Wildsteam Clan | `Jawa_WildsteamClan` | 4 | 2 on the Scald's jungles, 2 in the meridian's poison marsh |
+| Wildsteam Clan | `Jawa_WildsteamClan` | 4 | 2 on the Scald's jungles, 1 in the meridian's poison marsh, and ***Sporefall* in the Fever Wood on the road** (owner, 2026-08-24) — tropical swamp at 47 °C, the wettest ground the clan holds |
 | Blackstar Company | `Pirate` | 4 | road junctions and ruins; they follow the money |
-| Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | 12 — **8 of them inside the Rust Cathedral, see §7d** | 🔴 **RULED 2026-08-24, owner.** ⛔ **The one hard rule is DISTANCE FROM ORGANICS — above all from the Empire.** Within that: the **Rust Cathedral is holy to them and they are immune to its pollution and heat**, so the plateau cluster is right and *Second Speaker* now stands on Cathedral ground itself; **volcanic terrain is excellent** and at least one seat belongs on it (*The Free Charge*, moved off the Scald's jungle onto the pyroclastic conflagration above it); and **a few quiet, hidden seats on the dark side are welcome** — *The Trade Socket*, *Vent Nine*, *Coldfire*, *The Cracking Station* stay, and the barren-region ban does not bind them. ✅ Their Geonosian neighbours are the allies they share the Cathedral with, not the organics they avoid |
+| Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | 8 — halved around the Cathedral 2026-08-24, see §7d | 🔴 **RULED 2026-08-24, owner.** ⛔ **The one hard rule is DISTANCE FROM ORGANICS — above all from the Empire.** Within that: the **Rust Cathedral is holy to them and they are immune to its pollution and heat**, so the plateau cluster is right and *Second Speaker* now stands on Cathedral ground itself; **volcanic terrain is excellent** and at least one seat belongs on it (*The Free Charge*, moved off the Scald's jungle onto the pyroclastic conflagration above it); and **a few quiet, hidden seats on the dark side are welcome** — *The Trade Socket*, *Vent Nine*, *Coldfire*, *The Cracking Station* stay, and the barren-region ban does not bind them. ✅ Their Geonosian neighbours are the allies they share the Cathedral with, not the organics they avoid |
 | Ascendant Helix | `Jawa_AscendantHelix` | 7 | 🔴 **RULED 2026-08-24, owner: the Helix sits where the BIOWEAPON is.** `HorrorWastes`, the mycoid tiles and the poison forests of the terminator host them — *Cold Archive* and *The Revision* in the Horror Wastes, *The Fair Copy* in poison forest, *Specimen Hall* on mycoid, and *The Coil* and *Quiet Lab* moved out of the Homestead belt onto terminator mycoid. ⭐ **One outpost holds the new ocular forest on the Scald's mountainous shore** (*Helix Landing*) — see §7c |
 | the Forgotten Arsenal | `Mechanoid` | 0 | hidden; no world-map site, which is the intent |
 
@@ -615,6 +615,24 @@ deliberate stretch of the biome, not an oversight.
   ⛔ **The other five are deliberately unroaded** and the Cathedral has no road web: a
   place organics cannot survive should not be paved for their caravans. Say so if that is
   wrong — reconnecting them is five short paths.
+
+## 7e. THE GREY SEA THINNING AND THE ASHFALL CREEK — 2026-08-24
+
+🔴 **Owner: halve the settlements around the Grey Sea.** Homestead 9 → 5, Trade Moot 6 → 3,
+Junkers 7 → 4, and the Free Droid seats on Cathedral ground 7 → 4. **The cut was made on
+SPACING, not at random** — every removal was one half of a pair sitting 3.8–4.6° from its own
+kin, so what is left reads as scattered holdings rather than a thinned grid. The anchors were
+kept: *The Ore Moot*, both Junker stories, and *No Master*, the only droid seat with a road.
+The planet went **124 → 108** across the day's cuts.
+
+🔑 **A road does not need a settlement.** The first pass pruned every road touching a removed
+holding and severed **12 other settlements** from the net. Corrected: a through-route survives
+as a road across open country and only true dead ends are pruned — 7 edges, 0 orphans.
+
+💧 **The Ashfall creek now reaches the Grey Sea.** It fell 1,342 m → 1 m and then simply
+stopped, 5.4° short of the water. Three `Creek` links carry it out across tiles at 1 m, laid
+**mouth first** because `OverlayRiver` sets `riverDist = max(d, previous + 1)` and the wrong
+order gives wrong distances. Rivers reaching no sea: **9 → 8**.
 
 ## 8. Roads
 

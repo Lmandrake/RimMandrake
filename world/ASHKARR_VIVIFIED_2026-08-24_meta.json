@@ -48,7 +48,7 @@
    "landmarkDensity"
   ],
   "notPersistedNote": "WorldInfo.ExposeData does not scribe these two. Whatever they read now, they revert on the next load.",
-  "ticksGame": 901
+  "ticksGame": 902
  },
  "layers": {
   "success": true,
@@ -96,7 +96,7 @@
     "scenarioTag": "Orbit2"
    }
   ],
-  "ticksGame": 901
+  "ticksGame": 902
  },
  "stats": {
   "success": true,
@@ -291,8 +291,8 @@
  "lint": {
   "success": true,
   "tilesScanned": 21872,
-  "totalFindings": 21,
-  "verdict": "21 findings across 21872 tiles.",
+  "totalFindings": 20,
+  "verdict": "20 findings across 21872 tiles.",
   "checks": {
    "staleMarineMutators": {
     "count": 0,
@@ -320,7 +320,7 @@
    },
    "riverSystems": {
     "total": 16,
-    "reachingNoSea": 9,
+    "reachingNoSea": 8,
     "trunkSystemsReachingNoSea": 1,
     "note": "Only TRUNK systems (HugeRiver/LargeRiver) are defects. Low-accumulation rivers are ALLOWED to die in playas and salt pans - owner's ruling.",
     "orphanTrunks": [
@@ -340,7 +340,7 @@
     "examples": []
    },
    "settlementsWithNoRoad": {
-    "count": 20,
+    "count": 19,
     "examples": [
      {
       "tile": 15926,
@@ -353,53 +353,53 @@
       "faction": "Jawa_AscendantHelix"
      },
      {
-      "tile": 71,
+      "tile": 16617,
       "name": "Duneward",
       "faction": "TribeCivil"
      },
      {
-      "tile": 688,
+      "tile": 11165,
       "name": "Stone Moot",
       "faction": "TribeCivil"
      },
      {
-      "tile": 6,
+      "tile": 2849,
       "name": "Redscarp",
       "faction": "TribeCivil"
      },
      {
-      "tile": 3211,
+      "tile": 6431,
       "name": "The Dry Moot",
       "faction": "TribeCivil"
      },
      {
-      "tile": 4233,
+      "tile": 21629,
       "name": "Barno",
       "faction": "TribeCivil"
      },
      {
-      "tile": 6288,
+      "tile": 16536,
       "name": "The Long Camp",
       "faction": "TribeCivil"
      },
      {
-      "tile": 6566,
+      "tile": 9146,
       "name": "Ashfoot",
       "faction": "TribeCivil"
      },
      {
-      "tile": 303,
+      "tile": 1537,
       "name": "Knife Canyon",
       "faction": "TribeCivil"
      },
      {
-      "tile": 3156,
+      "tile": 8869,
       "name": "The Blind Wells",
       "faction": "TribeCivil"
      },
      {
-      "tile": 13180,
-      "name": "The Cracking Yard",
+      "tile": 21549,
+      "name": "No Owner",
       "faction": "Jawa_FreeDroidEnclaves"
      }
     ]
@@ -415,6 +415,6 @@
     "examples": []
    }
   },
-  "ticksGame": 901
+  "ticksGame": 902
  }
 }
