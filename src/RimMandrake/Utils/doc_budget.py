@@ -137,6 +137,11 @@ BUDGETS = [
     # and is the first thing every seat must read. The trim that pays it back is
     # TRIM_VALIDATION_LAYERS_1 — 47 obligations, 13 of which fire on every item.
     ("infrastructure/agents/POLICY.md", 420),
+    # 🔑 REP carries three rules the other seats do not: the BENCH SCAN he asks for by name,
+    # the bridge-reading correction, and the guard-refusal rule — all owner-issued 2026-08-23/24,
+    # all 61 lines of them. Raised on his word that night rather than deleting a rule he had just
+    # given. ⛔ A seat may NOT raise its own budget to pass its own check; this one is his.
+    ("infrastructure/agents/REP.md", 230),
     ("infrastructure/agents/*.md", 150),   # was 120; premise was wrong, see docstring
     ("CLAUDE.md", 300),
     ("infrastructure/state/V1_CHAIN.md", 400),
