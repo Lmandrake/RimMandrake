@@ -701,8 +701,50 @@ def _simple(verb, extra=()):
         _emit(ev, w, quiet=True)
         it = model.replay(model.read(model.EVENTS)).items.get(args.id)
         print("%s %s -> %s" % (verb, args.id, it.state if it else "?"))
+        # `drop` and `supersede` end an item just as `close` does, and anything waiting on
+        # it is just as stranded — more so, since a dropped blocker will never deliver.
+        if verb in ("drop", "supersede"):
+            _announce_unblocks(args.id)
         return 0
     return run
+
+
+def _announce_unblocks(target):
+    """Name the items whose live block waits on `target`, now that `target` is terminal.
+
+    🔴 A BLOCK NEVER LIFTS ITSELF. `block --on X` records the dependency and nothing ever
+    reads it backwards, so an item can wait on a blocker that finished days ago and no
+    signal is produced. Measured 2026-08-24: `WEAPON_MONEY_ROLL_NOT_CEILING_1` sat blocked
+    43 h on `BARE_HANDS_REMEASURE_AFTER_LOAD_1`, which had been `done` for 15 of them. The
+    dependency was in the ledger the whole time; nobody was ever told.
+
+    ⛔ Deliberately does NOT auto-unblock. The blocker closing is EVIDENCE that the block
+    may be stale, never proof — a blocker can close `dropped`, or close without delivering
+    what the blocked item was actually waiting for. The seat still confirms. This only
+    makes the information arrive at the one moment it is free.
+    """
+    try:
+        st = model.replay(model.read(model.EVENTS))
+    except Exception:
+        return
+    waiting = [it for it in st.items.values()
+               if getattr(it, "blocked", False)
+               and getattr(it, "blocked_on", None) == target
+               and it.id != target]
+    if not waiting:
+        return
+    print("")
+    print("🔑 %d item(s) are BLOCKED ON %s, which just went terminal:"
+          % (len(waiting), target))
+    for it in waiting:
+        print("   %s  (%s)" % (it.id, it.state))
+        print("     %s" % (it.blocked_reason or "")[:140])
+    print("   If %s delivered what they were waiting for, lift it — they will not lift"
+          % target)
+    print("   themselves, and nothing else will ever tell you:")
+    for it in waiting:
+        print("     python3 src/RimMandrake/rimflow/cli.py unblock %s --reason \"%s "
+              "closed\"" % (it.id, target))
 
 
 def cmd_close(args, seat):
@@ -719,6 +761,7 @@ def cmd_close(args, seat):
             % args.id)
     _emit({"seat": seat, "event": "close", "id": args.id, "sha": sha}, w, quiet=True)
     print("%s closed at %s." % (args.id, sha))
+    _announce_unblocks(args.id)
     return 0
 
 
