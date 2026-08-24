@@ -2609,3 +2609,41 @@ Gungan 14 · Kaleesh 26 · Klatoonian 25 · Nelvaanian 17
 
 ⛔ **What this does NOT change:** body size. `BS_GiantWeaponWielder` grants `BS_Giant` and
 alters no size stat. If anything looks bigger, that is `BodySizeIsReal.xml` and unrelated.
+
+## §19 — THE SMEAR, and the same defect in our own art. 2026-08-23 21:4x, CHECK.
+
+🔴 **Root cause of the HorrorWastes smearing, and it is a CONTRACT nobody wrote down.**
+`WorldDrawLayer_Terrain.Regenerate` writes **elevation** into `uvs` — the world terrain
+mesh carries **no texture UVs at all** — and `BiomeDef` assigns the biome PNG straight
+onto the shared `WorldTerrain` material. The shader therefore projects the texture across
+the **sphere**, not per tile. A near-flat texture hides that completely; large-scale
+blotches ride the projection and stretch. **That stretching is the artifact.**
+
+⇒ **A world biome texture must be nearly flat.** Measured:
+
+| texture | size | Lstd | 8×8 block std | p1..p99 | dark<16 |
+|---|---|---:|---:|---:|---:|
+| Core `Desert` | 500² | **0.00** | **0.00** | 0.0 | 0% |
+| Core `AridShrubland` | 500² | **0.00** | **0.00** | 0.0 | 0% |
+| Core `Ocean` | 500² | 3.40 | 2.83 | 13.0 | 0% |
+| `HorrorBiome` **BROKEN** | **1024²** | **20.06** | **19.75** | **90.6** | **7.92%** |
+| our `Jawa_SickWater` **as first shipped** | 500² | **16.06** | **8.51** | **75.8** | 0% |
+
+⚠️ **We shipped the same defect an hour earlier and did not know.** The water texture
+built for §18 was a third of the way to HorrorWastes' numbers. Both are now rebuilt.
+
+⚠️ The Horrors mod ships **no Textures folder** — the PNG is inside the AssetBundle
+`Mlie_Horrors`, which is why file searches never find it. This is the second time today
+that an AssetBundle hid art from a disk sweep; the first was the sarlacc.
+
+| # | reading | what it decides |
+|---|---|---|
+| **S1** | 🔑 **LOOK at the Horror Wastes.** No smear, no stretched blotching bleeding across neighbouring tiles. The biome reads as flat cold dark ground. | The whole item. New texture 512², Lstd 2.99, block std 2.63, p1..p99 13.1, zero pixels below 16 — i.e. Core Ocean's profile. |
+| **S2** | The Horror Wastes read **COLD** (blue-grey), not warm brown. | Deliberate: this biome's own terrain ramp in the same file commits it to `AB_PackedIce` and `AB_DarkMud` — pale ice over near-black frozen muck. Base RGB (44,48,54). |
+| **S3** | The cape water from §18 also shows **no smear**. | Same defect, same fix. Rebuilt to Lstd 1.60, block std 0.72, colour unchanged at mean RGB (59,71,69). |
+| **S4** | Zero red errors naming `Jawa_HorrorWastes` or `JawaTerrain_HorrorWastes`. | The op is Conditional-wrapped with an Add fallback, so an upstream rename degrades rather than erroring. |
+| **S5** | ⚠️ **False pass:** the smear could look fixed simply because the camera is further out. | Judge it at the SAME zoom the artifact was reported at, over a large Horror Wastes mass — Deadstone holds 1432 tiles of it. |
+
+⭐ **Unfixed and worth knowing:** the same investigation flagged **GRiNDTerra Biomes** —
+12 of its 15 textures are outside the envelope, `Biome_GRimworld` at block std 17.86 and
+`Biome_Toxlands` also at 1024². Whether those biomes occupy Ash'karr tiles is **UNMEASURED**.

@@ -109,4 +109,44 @@
     </match>
   </Operation>
 
+  <!--
+    🔴 THE SMEAR. HorrorWastes' own world texture is the reason this biome appears to
+    bleed across the planet. Measured against the shipped art:
+
+      HorrorBiome.png   1024x1024  luminance std 20.06  8x8 block std 19.75  p1..p99 90.6
+      Core Ocean         500x500   luminance std  3.40  8x8 block std  2.83  p1..p99 13.0
+      Core Desert        500x500   luminance std  0.00  8x8 block std  0.00  - ONE FLAT COLOUR
+
+    ⭐ WHY FLATNESS IS THE CONTRACT. The world terrain mesh carries NO texture UVs:
+    WorldDrawLayer_Terrain.Regenerate writes ELEVATION into `uvs`, and BiomeDef assigns
+    the PNG straight onto the shared WorldTerrain material. The shader therefore projects
+    the texture across the SPHERE rather than per tile. A near-flat texture hides that
+    projection completely; large-scale blotches ride it and stretch. That stretching IS
+    the artifact. 7.92% of the original's pixels are below luminance 16, and it is pure
+    greyscale (channel spread 1.0) - the only biome texture on the planet at 1024x1024.
+
+    ⚠️ The mod ships NO Textures folder: the PNG lives inside the AssetBundle
+    `Mlie_Horrors`, which is why a file search never finds it. Extracted copy:
+    observed/inventory/bundle_textures/mlie.horrors/textures/world/biomes/horrorbiome.png
+
+    Our replacement keeps the ORIGINAL's fine grain - FFT high-pass, zeroing radial
+    frequencies below 12, which preserves tiling exactly - and remaps it onto a COLD
+    dark base. Cold, not the warm grey a first pass produced, because this file's own
+    terrain ramp above commits the biome to AB_PackedIce and AB_DarkMud: pale ice over
+    near-black frozen muck. Measured result 512x512, Lstd 2.99, block std 2.63,
+    p1..p99 13.1, zero pixels below 16, wrap seams 0.48/0.46 against an interior 0.41.
+  -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/texture</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/texture</xpath>
+      <value><texture>World/Biomes/Jawa_HorrorWastes</texture></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]</xpath>
+      <value><texture>World/Biomes/Jawa_HorrorWastes</texture></value>
+    </nomatch>
+  </Operation>
+
 </Patch>
