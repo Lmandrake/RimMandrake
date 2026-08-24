@@ -67,6 +67,7 @@ tile,mutators
 229,VEE_DeepOreDevoid;VEE_MineralDevoid
 233,Dunes
 236,DryGround
+239,CoastalIsland
 241,VEE_DeepOreDevoid;VEE_MineralDevoid
 250,Caves
 254,Dunes
@@ -104,6 +105,7 @@ tile,mutators
 355,Dunes
 359,CoastalIsland
 360,CoastalIsland
+361,CoastalIsland
 363,Caves
 370,Caves;Mountain
 371,Caves
@@ -394,6 +396,7 @@ tile,mutators
 1286,CoastalIsland
 1290,CoastalIsland
 1291,CoastalIsland
+1294,CoastalIsland
 1295,Coast;Mountain
 1296,CoastalIsland
 1300,VEE_SaltPlains
@@ -813,6 +816,7 @@ tile,mutators
 2496,Caves
 2510,Pond;VEE_IncreasedInfestations;VEE_RotstinkVents;VEE_StagnantRivulet
 2511,AB_LocustPlagues;Marshy;VEE_RotstinkVents
+2520,CoastalIsland
 2529,Caves
 2532,Caves
 2533,Caves
@@ -1111,7 +1115,9 @@ tile,mutators
 3485,VEE_SaltPlains
 3486,VEE_SaltPlains
 3487,VEE_SaltPlains
+3493,CoastalIsland
 3499,CoastalIsland
+3507,CoastalIsland
 3511,VEE_SaltPlains
 3512,AncientRuins;Caves;MineralRich
 3513,Caves;MineralRich
@@ -1425,6 +1431,7 @@ tile,mutators
 4558,VEE_SaltPlains
 4565,VEE_SaltPlains
 4567,VEE_SaltPlains
+4569,CoastalIsland
 4571,VEE_SaltPlains
 4594,Caves;MineralRich
 4601,Caves
@@ -2054,6 +2061,7 @@ tile,mutators
 6639,Dunes
 6640,Dunes;VEE_DeepOreDevoid;VEE_MineralDevoid
 6641,Dunes
+6645,CoastalIsland
 6654,Coast;Mountain
 6658,Peninsula
 6660,VEE_SaltPlains
@@ -2265,6 +2273,7 @@ tile,mutators
 7216,Caves
 7217,Caves
 7219,Caves
+7221,CoastalIsland
 7226,Caves;Mountain
 7227,Caves;Mountain
 7228,Caves;Mountain
@@ -2310,6 +2319,8 @@ tile,mutators
 7341,VEE_DeepOreDevoid;VEE_MineralDevoid
 7342,Oasis
 7352,Caves
+7376,CoastalIsland
+7380,CoastalIsland
 7387,VEE_Cenotes
 7393,Caves
 7400,AB_GeothermalHotspots;AB_MagmaVents;AB_MagmaticQuagmire;LavaFlow
@@ -2597,6 +2608,8 @@ tile,mutators
 8345,VEE_SaltPlains
 8346,VEE_SaltPlains
 8347,VEE_SaltPlains
+8367,CoastalIsland
+8368,CoastalIsland
 8372,Caves;MineralRich
 8373,Caves;MineralRich;Mountain;VEE_DeepOreRich
 8374,Caves;Cliffs;MineralRich;VEE_DeepOreRich
@@ -2684,6 +2697,12 @@ tile,mutators
 8706,DryGround
 8708,VEE_DeepOreDevoid;VEE_MineralDevoid
 8711,VEE_DeepOreDevoid;VEE_MineralDevoid
+8714,CoastalIsland
+8715,CoastalIsland
+8716,CoastalIsland
+8717,CoastalIsland
+8718,CoastalIsland
+8719,CoastalIsland
 8720,DryGround
 8727,VEE_DeepOreDevoid;VEE_MineralDevoid
 8731,VEE_SaltPlains
@@ -2898,6 +2917,14 @@ tile,mutators
 9414,Dunes
 9415,Dunes;VEE_DeepOreDevoid;VEE_MineralDevoid
 9427,VEE_SaltPlains
+9428,CoastalIsland
+9429,CoastalIsland
+9446,CoastalIsland
+9447,CoastalIsland
+9448,CoastalIsland
+9449,CoastalIsland
+9450,CoastalIsland
+9451,CoastalIsland
 9456,VEE_Cenotes
 9458,Caves
 9460,Caves
@@ -3530,6 +3557,7 @@ tile,mutators
 11501,Dunes
 11502,Coast;VEE_DeepOreDevoid;VEE_MineralDevoid
 11503,Coast
+11505,CoastalIsland
 11518,VEE_SaltPlains
 11519,Coast
 11520,VEE_SaltPlains
@@ -3935,6 +3963,9 @@ tile,mutators
 12653,Dunes;VEE_DeepOreDevoid;VEE_MineralDevoid
 12654,Dunes
 12655,Dunes
+12677,CoastalIsland
+12679,CoastalIsland
+12687,CoastalIsland
 12738,Caves
 12739,Caves
 12740,Caves
@@ -4509,6 +4540,8 @@ tile,mutators
 14735,VEE_DeepOreDevoid;VEE_MineralDevoid
 14738,Dunes;VEE_DeepOreDevoid;VEE_MineralDevoid
 14742,Dunes
+14753,CoastalIsland
+14755,CoastalIsland
 14780,Dunes;VEE_DeepOreDevoid;VEE_MineralDevoid
 14786,Dunes
 14790,Dunes
@@ -4577,6 +4610,10 @@ tile,mutators
 15040,VEE_DustBowl;VEE_DustStorms;VEE_Fertility_Reduced;VEE_PlantLife_Decimated
 15041,Mountain
 15043,Mountain
+15045,CoastalIsland
+15046,CoastalIsland
+15047,CoastalIsland
+15048,CoastalIsland
 15050,Mountain
 15051,Coast;Mountain
 15054,Coast;Mountain
@@ -4698,6 +4735,8 @@ tile,mutators
 15329,Caves;Cliffs
 15330,Caves;Mountain
 15331,Caves;Mountain
+15335,CoastalIsland
+15337,CoastalIsland
 15344,VEE_SaltPlains
 15345,VEE_SaltPlains
 15346,VEE_SaltPlains
@@ -5206,6 +5245,8 @@ tile,mutators
 16886,Coast;Dunes
 16887,Coast;VEE_AlluvialFan;VEE_DeepOreDevoid;VEE_MineralDevoid
 16888,Coast
+16894,CoastalIsland
+16895,CoastalIsland
 16898,Coast;VEE_SerpentineCanyons
 16899,Mountain
 16900,Cliffs
@@ -5447,6 +5488,8 @@ tile,mutators
 17464,Caves
 17465,Caves
 17495,Peninsula
+17506,CoastalIsland
+17507,CoastalIsland
 17522,Mountain
 17524,Mountain
 17525,Mountain
@@ -5722,7 +5765,16 @@ tile,mutators
 18485,VEE_SaltPlains
 18486,VEE_SaltPlains
 18487,VEE_SaltPlains
+18490,CoastalIsland
+18491,CoastalIsland
+18513,CoastalIsland
+18519,CoastalIsland
+18520,CoastalIsland
 18534,VEE_SaltPlains
+18596,CoastalIsland
+18597,CoastalIsland
+18602,CoastalIsland
+18604,CoastalIsland
 18615,VEE_SaltPlains
 18616,VEE_SaltPlains
 18617,VEE_SaltPlains
