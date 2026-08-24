@@ -19,7 +19,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🌡️ TOLERANCES + 🏹 ANCIENT ARSENAL + 🦴 CAST SUBSTITUTIONS | 2026-08-23 (cast NOT yet) | ⏳ PENDING |
 | 🔧 §19 TWO DLLs WAITING ON THE DOWN WINDOW | ✅ **BOTH DEPLOYED 2026-08-24 01:3x** | ⏳ readings pending |
 | 🎯 §20 RE-ROLL THE ROSTER — the 2026-08-24 harvest is the BEFORE | 2026-08-24 | ⏳ PENDING |
-| 🏷️ §21 WORLD LABELS LIFTED OFF THE SURFACE — ⛔ **DLL NOT DEPLOYED** | 2026-08-24 | ⏳ PENDING |
+| 🏷️ §21 WORLD LABELS LIFTED — ✅ **DEPLOYED** 2026-08-24 07:3x | 2026-08-24 | ⏳ READING PENDING |
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
 
 🔴 **WHEN A LOAD IS SCORED:** move its block whole into
@@ -251,7 +251,10 @@ again, check whether a map exists before filing anything — the architect menu 
 is what `ORDERS_DESIGNATORS_ENUMERATE_ZERO_1` turned out to be.
 
 ---
-## 🏷️ §21 — THE WORLD LABELS ARE LIFTED OFF THE PLANET. ⛔ The DLL is BUILT, NOT DEPLOYED.
+## 🏷️ §21 — THE WORLD LABELS ARE LIFTED OFF THE PLANET
+
+> ✅ **DEPLOYED 2026-08-24 07:3x in the down window**, hash `d423ad7350315f8e0fbb8e9d8e86af5d` on both
+> sides. Only the reading below is still owed.
 
 🔴 **Owner, 2026-08-24, from a snapshot:** *"the labels for the world continue to intersect the
 surface … They need to be slightly farther out from the planet."*
@@ -259,13 +262,6 @@ surface … They need to be slightly farther out from the planet."*
 `JawaRules.dll` gains a second transpiler, `world-label-lift`. Every glyph of a world feature name
 is projected onto a shell above the planet, and the shell height is one literal written four times
 at `WorldFeatureTextMesh_TextMeshPro.cs:146-149` — `layer.Radius + 0.4f`. It is now **1.5**.
-
-⚠️ **The game locks a loaded assembly, so this needs the down window** — it is built and committed
-and will otherwise sit in the repo looking deployed.
-
-```bash
-python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaRules --apply
-```
 
 ### The reading, and the trap in it
 
@@ -286,3 +282,31 @@ intersection has a cause this patch does not identify.**
 ⇒ 🔑 **If 1.5 does not clear it, do NOT simply raise it again.** The labels detach visibly from the
 limb long before brute force would fix an unrelated cause. Find what is actually drawing above
 `Radius` — a mod's world layer is the first suspect.
+
+---
+## 🎨 §22 — THE CREATURE ART IS ON THE ADULT PATHS NOW. Deployed; needs only eyes on it.
+
+🔴 **Owner, 2026-08-24, from a screenshot:** *"I don't see new art for Eopie or Bantha."* He was
+right, and the cause was not the deploy.
+
+**`_j` is the JUVENILE life stage.** SW Animal Collection's PawnKindDefs read `BanthaW_j` /
+`Eopie_j` for calves and **`BanthaW` / `Eopie` for adults**. Only the `_j` pair had ever been
+supplied, so the redraw was bound to an animal that was not on the map — the bridge counted **11
+eopies and 7 banthas, every one adult**.
+
+✅ **Deployed 2026-08-24, `Jawa_Patches` in sync at 140 files:** `BanthaW_{n,e,s}` + masks,
+`Eopie_{n,e,s}`, and `Eopie{A..E}_{n,e,s}`.
+
+- **Bantha is fully covered.** Its ten `alternateGraphics` are COLOUR tints carrying no `texPath`,
+  so every adult bantha is `BanthaW` tinted.
+- **Eopie needed all six paths.** `alternateGraphicChance` is **0.8** across five *separate
+  texPaths* `EopieA..EopieE`, so overriding the base alone would have reached one eopie in five.
+
+⚠️ **The herd is now UNIFORM and that was the owner's call, not an oversight** — the mod's five
+eopie colour variants are overridden rather than preserved. 🔑 Zeroing `alternateGraphicChance`
+would give the identical look while leaving those five variants intact on disk, if it is revisited.
+
+### The reading
+Look at a bantha and an eopie. That is the whole test — no command, no capture. ⛔ **Do not score
+this by checking that the files are deployed.** They were deployed and identical for the whole of
+the previous session and still could not appear, which is exactly the failure this section records.
