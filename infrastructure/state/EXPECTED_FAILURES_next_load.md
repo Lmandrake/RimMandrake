@@ -2108,3 +2108,26 @@ I had run, instead of the one I remembered. ⭐ **P5's new baseline is 23**, and
 ✅ **Everything the load was for is proven.** The new companion is live, `world_tile_export`
 carries `pollution` as base column 10, the Cathedral's poison survived the save/load round
 trip, and all 21,872 tiles match the pre-quit harvest field for field.
+
+### §21 RESULTS, second load — 2026-08-24 08:0x, after ~5 h of play and a quit. **6/6.**
+
+```
+PASS  P1 companion registered      121 jawa/ tools
+PASS  P2 pollution is base col 10  10 columns, last = 'pollution'
+PASS  P3 Cathedral pollution held  60 of 772 sampled, min read back 0.90
+PASS  P4 planet matches harvest    21866/21872; 6 mismatched, 6 KNOWN edits, 0 unexplained
+PASS  P5 lint unchanged            noRoad=23 (baseline 23), orphanTrunks=1
+PASS  P6 moved settlements held    124 settlements, 11 of 11 moves intact
+```
+
+⭐ **P4 is the result worth keeping.** The six mismatches are exactly the crag island painted
+into the open ocean after the harvest, and every one holds the biome it was painted to — so a
+live `world_tile_set` edit survives save → quit → reload intact. Nothing else moved across
+21,872 tiles, and five hours of play cost no settlements.
+
+🔑 **Both failures of the first run were MINE, in the instrument, not the world.** P5 asserted
+18 when the measured baseline was 23, and P4 could not tell an authored edit from a
+regression. Both are fixed in `src/RimMandrake/Utils/check_world_reload.py` — P5 carries the
+baseline with the reason attached, and P4 requires each mismatch to be a NAMED edit holding
+its expected biome, so an unexplained one still fails. ⚠️ `KNOWN_DELTA` must be appended to
+as the world is authored; a check nobody trusts is worse than no check.
