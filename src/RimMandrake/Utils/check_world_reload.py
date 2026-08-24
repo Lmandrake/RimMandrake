@@ -22,7 +22,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rimbridge_client import RimBridge, resolve_endpoint  # noqa: E402
 
-REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_HERE = os.path.dirname(os.path.abspath(__file__))          # …/src/RimMandrake/Utils
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(_HERE)))
 WORLD = os.path.join(REPO, "world")
 BASELINE = os.path.join(WORLD, "ASHKARR_DRAFT_2026-08-24_tiles.csv")
 PROBE_EXPORT = os.path.join(WORLD, "_reload_probe_tiles.csv")
@@ -116,7 +117,7 @@ def main():
     bad = [r for r in results if not r[0]]
     print("\n%d/%d passed." % (len(results) - len(bad), len(results)))
     if bad:
-        print("🔴 FAILED: " + ", ".join(r[1] for r in bad))
+        print("FAILED: " + ", ".join(r[1] for r in bad))
     return 1 if bad else 0
 
 

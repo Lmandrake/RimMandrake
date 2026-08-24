@@ -1,0 +1,420 @@
+{
+ "info": {
+  "success": true,
+  "info": {
+   "name": "Ash'karr",
+   "seedString": "raven",
+   "seed": 766758233,
+   "planetCoverage": 1.0,
+   "persistentRandomValue": -1622588257,
+   "overallRainfall": "Normal",
+   "overallTemperature": "Normal",
+   "overallPopulation": "Normal",
+   "landmarkDensity": "Normal",
+   "initialMapSize": {
+    "x": 250,
+    "y": 1,
+    "z": 250
+   },
+   "pollution": 0.05,
+   "factionCount": 21,
+   "factions": [
+    "Jawa_IndigenousTribes",
+    "Jawa_Junkers",
+    "Jawa_HuttCartel",
+    "Jawa_DeepwaterCompact",
+    "Jawa_WildsteamClan",
+    "Jawa_GeonosianFoundryHive",
+    "Jawa_FreeDroidEnclaves",
+    "Jawa_AscendantHelix",
+    "OutlanderCivil",
+    "TribeCivil",
+    "Pirate",
+    "Empire",
+    "Mechanoid",
+    "Insect",
+    "Entities",
+    "Ancients",
+    "AncientsHostile",
+    "HoraxCult",
+    "AM_EnemyPirate",
+    "TribalHostile",
+    "DP_GenericHostile"
+   ]
+  },
+  "tilesCount": 21872,
+  "notPersisted": [
+   "overallPopulation",
+   "landmarkDensity"
+  ],
+  "notPersistedNote": "WorldInfo.ExposeData does not scribe these two. Whatever they read now, they revert on the next load.",
+  "ticksGame": 308
+ },
+ "layers": {
+  "success": true,
+  "tilesCount": 21872,
+  "layerCount": 3,
+  "hasWorldData": true,
+  "seed": "raven",
+  "planetCoverage": 1.0,
+  "worldName": "Ash'karr",
+  "layers": [
+   {
+    "layerId": 0,
+    "def": "Surface",
+    "label": "planet",
+    "tilesCount": 21872,
+    "isRootSurface": true,
+    "radius": 100.0,
+    "viewAngle": 180.0,
+    "averageTileSize": 2.575567,
+    "isSpace": false,
+    "scenarioTag": "Surface"
+   },
+   {
+    "layerId": 1,
+    "def": "Orbit",
+    "label": "orbit",
+    "tilesCount": 2432,
+    "isRootSurface": false,
+    "radius": 130.0,
+    "viewAngle": 180.0,
+    "averageTileSize": 10.0299139,
+    "isSpace": true,
+    "scenarioTag": "Orbit"
+   },
+   {
+    "layerId": 2,
+    "def": "Orbit2",
+    "label": "deep orbit",
+    "tilesCount": 2432,
+    "isRootSurface": false,
+    "radius": 260.0,
+    "viewAngle": 180.0,
+    "averageTileSize": 20.0598278,
+    "isSpace": true,
+    "scenarioTag": "Orbit2"
+   }
+  ],
+  "ticksGame": 308
+ },
+ "stats": {
+  "success": true,
+  "message": "6.43% water over 21872 tiles, in 3 body/bodies of >= 8 tiles (14 counting puddles). Largest is 2.79% of the planet.",
+  "tilesTotal": 21872,
+  "waterTiles": 1407,
+  "waterPct": 6.43,
+  "landPct": 93.57,
+  "coastalTiles": 306,
+  "bodiesOverMinSize": 3,
+  "bodiesTotal": 14,
+  "minBodySize": 8,
+  "largestBodyPct": 2.79,
+  "bodies": [
+   {
+    "tiles": 610,
+    "pct": 2.79,
+    "perimeterEdges": 476,
+    "perimeterTiles": 253,
+    "raggedness": 104.93,
+    "raggednessEdges": 371.44,
+    "centroidLat": 16.707,
+    "centroidLatNorm": 0.1856
+   },
+   {
+    "tiles": 465,
+    "pct": 2.13,
+    "perimeterEdges": 412,
+    "perimeterTiles": 207,
+    "raggedness": 92.15,
+    "raggednessEdges": 365.04,
+    "centroidLat": 5.88,
+    "centroidLatNorm": 0.0653
+   },
+   {
+    "tiles": 312,
+    "pct": 1.43,
+    "perimeterEdges": 154,
+    "perimeterTiles": 73,
+    "raggedness": 17.08,
+    "raggednessEdges": 76.01,
+    "centroidLat": -0.751,
+    "centroidLatNorm": 0.0083
+   },
+   {
+    "tiles": 5,
+    "pct": 0.02,
+    "perimeterEdges": 16,
+    "perimeterTiles": 5,
+    "raggedness": 5.0,
+    "raggednessEdges": 51.2,
+    "centroidLat": -24.646,
+    "centroidLatNorm": 0.2738
+   },
+   {
+    "tiles": 4,
+    "pct": 0.02,
+    "perimeterEdges": 14,
+    "perimeterTiles": 4,
+    "raggedness": 4.0,
+    "raggednessEdges": 49.0,
+    "centroidLat": -62.399,
+    "centroidLatNorm": 0.6933
+   },
+   {
+    "tiles": 3,
+    "pct": 0.01,
+    "perimeterEdges": 12,
+    "perimeterTiles": 3,
+    "raggedness": 3.0,
+    "raggednessEdges": 48.0,
+    "centroidLat": 36.629,
+    "centroidLatNorm": 0.407
+   },
+   {
+    "tiles": 1,
+    "pct": 0.0,
+    "perimeterEdges": 6,
+    "perimeterTiles": 1,
+    "raggedness": 1.0,
+    "raggednessEdges": 36.0,
+    "centroidLat": -45.019,
+    "centroidLatNorm": 0.5002
+   },
+   {
+    "tiles": 1,
+    "pct": 0.0,
+    "perimeterEdges": 6,
+    "perimeterTiles": 1,
+    "raggedness": 1.0,
+    "raggednessEdges": 36.0,
+    "centroidLat": 39.212,
+    "centroidLatNorm": 0.4357
+   },
+   {
+    "tiles": 1,
+    "pct": 0.0,
+    "perimeterEdges": 6,
+    "perimeterTiles": 1,
+    "raggedness": 1.0,
+    "raggednessEdges": 36.0,
+    "centroidLat": -12.44,
+    "centroidLatNorm": 0.1382
+   },
+   {
+    "tiles": 1,
+    "pct": 0.0,
+    "perimeterEdges": 6,
+    "perimeterTiles": 1,
+    "raggedness": 1.0,
+    "raggednessEdges": 36.0,
+    "centroidLat": -7.777,
+    "centroidLatNorm": 0.0864
+   },
+   {
+    "tiles": 1,
+    "pct": 0.0,
+    "perimeterEdges": 6,
+    "perimeterTiles": 1,
+    "raggedness": 1.0,
+    "raggednessEdges": 36.0,
+    "centroidLat": -10.875,
+    "centroidLatNorm": 0.1208
+   },
+   {
+    "tiles": 1,
+    "pct": 0.0,
+    "perimeterEdges": 6,
+    "perimeterTiles": 1,
+    "raggedness": 1.0,
+    "raggednessEdges": 36.0,
+    "centroidLat": 35.794,
+    "centroidLatNorm": 0.3977
+   },
+   {
+    "tiles": 1,
+    "pct": 0.0,
+    "perimeterEdges": 6,
+    "perimeterTiles": 1,
+    "raggedness": 1.0,
+    "raggednessEdges": 36.0,
+    "centroidLat": 28.933,
+    "centroidLatNorm": 0.3215
+   },
+   {
+    "tiles": 1,
+    "pct": 0.0,
+    "perimeterEdges": 6,
+    "perimeterTiles": 1,
+    "raggedness": 1.0,
+    "raggednessEdges": 36.0,
+    "centroidLat": 31.214,
+    "centroidLatNorm": 0.3468
+   }
+  ],
+  "bodiesListed": 14,
+  "biomes": {
+   "Desert": 4151,
+   "ExtremeDesert": 3189,
+   "AB_RockyCrags": 1996,
+   "AB_MycoticJungle": 1939,
+   "HorrorWastes": 1711,
+   "Wasteland": 1699,
+   "ZBiome_Badlands": 1076,
+   "AB_PropaneLakes": 818,
+   "AridShrubland": 748,
+   "BMT_CrystalCaverns": 578,
+   "PoisonForest": 542,
+   "BMT_FungalForest": 425,
+   "ZBiome_DesertOasis": 236,
+   "AB_MechanoidIntrusion": 236,
+   "ZBiome_Grasslands": 227,
+   "BiomeCypreJungle": 185,
+   "AB_FeraliskInfestedJungle": 172,
+   "AB_GelatinousSuperorganism": 96,
+   "AB_MiasmicMangrove": 92,
+   "Scarlands": 90,
+   "AB_TarPits": 62,
+   "COMIGO_GreaterSwamp_Tropical": 60,
+   "IceSheet": 49,
+   "AB_PyroclasticConflagration": 31,
+   "Volcano": 23,
+   "AB_OcularForest": 19,
+   "LavaField": 15
+  },
+  "previewOnly": false,
+  "seedString": "raven",
+  "planetCoverage": 1.0,
+  "overallRainfall": "Normal",
+  "overallTemperature": "Normal"
+ },
+ "lint": {
+  "success": true,
+  "tilesScanned": 21872,
+  "totalFindings": 24,
+  "verdict": "24 findings across 21872 tiles.",
+  "checks": {
+   "staleMarineMutators": {
+    "count": 0,
+    "note": "Marine mutator on a tile that is not coastal by real adjacency - the classic survivor of a repaint.",
+    "examples": []
+   },
+   "waterBiomeOnRaisedLand": {
+    "count": 0,
+    "note": "Ocean or SeaIce biome with elevation > 0. Lake is EXCLUDED - a lake at altitude is ordinary geography, and including it made this check fire once per authored lake.",
+    "examples": []
+   },
+   "lakesAboveSeaLevel": {
+    "count": 0,
+    "note": "INFORMATIONAL, scores ZERO. Lake tiles above sea level, which is normal. Here so a genuinely suspicious count is still visible."
+   },
+   "landBiomeSubmerged": {
+    "count": 0,
+    "note": "Land biome with elevation <= 0.",
+    "examples": []
+   },
+   "singleTileIslands": {
+    "count": 0,
+    "note": "Land tile with every neighbour water.",
+    "examples": []
+   },
+   "riverSystems": {
+    "total": 16,
+    "reachingNoSea": 9,
+    "trunkSystemsReachingNoSea": 1,
+    "note": "Only TRUNK systems (HugeRiver/LargeRiver) are defects. Low-accumulation rivers are ALLOWED to die in playas and salt pans - owner's ruling.",
+    "orphanTrunks": [
+     {
+      "sampleTile": 256,
+      "systemTiles": 102,
+      "largestRiver": "LargeRiver"
+     }
+    ]
+   },
+   "settlementsOnWater": {
+    "count": 0,
+    "examples": []
+   },
+   "settlementsOnImpassable": {
+    "count": 0,
+    "examples": []
+   },
+   "settlementsWithNoRoad": {
+    "count": 23,
+    "examples": [
+     {
+      "tile": 15926,
+      "name": "The Coil",
+      "faction": "Jawa_AscendantHelix"
+     },
+     {
+      "tile": 5499,
+      "name": "Quiet Lab",
+      "faction": "Jawa_AscendantHelix"
+     },
+     {
+      "tile": 71,
+      "name": "Duneward",
+      "faction": "TribeCivil"
+     },
+     {
+      "tile": 688,
+      "name": "Stone Moot",
+      "faction": "TribeCivil"
+     },
+     {
+      "tile": 6,
+      "name": "Redscarp",
+      "faction": "TribeCivil"
+     },
+     {
+      "tile": 3211,
+      "name": "The Dry Moot",
+      "faction": "TribeCivil"
+     },
+     {
+      "tile": 4233,
+      "name": "Barno",
+      "faction": "TribeCivil"
+     },
+     {
+      "tile": 6288,
+      "name": "The Long Camp",
+      "faction": "TribeCivil"
+     },
+     {
+      "tile": 6566,
+      "name": "Ashfoot",
+      "faction": "TribeCivil"
+     },
+     {
+      "tile": 303,
+      "name": "Knife Canyon",
+      "faction": "TribeCivil"
+     },
+     {
+      "tile": 3156,
+      "name": "The Blind Wells",
+      "faction": "TribeCivil"
+     },
+     {
+      "tile": 13180,
+      "name": "The Cracking Yard",
+      "faction": "Jawa_FreeDroidEnclaves"
+     }
+    ]
+   },
+   "stackedSettlements": {
+    "count": 0,
+    "examples": []
+   },
+   "lushBiomesOffRiver": {
+    "count": 0,
+    "checked_": [],
+    "note": "Nile-style ruling: a 1-2 tile lush band follows EVERY river. Lush terrain away from one is the defect.",
+    "examples": []
+   }
+  },
+  "ticksGame": 308
+ }
+}

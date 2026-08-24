@@ -2079,3 +2079,32 @@ carries the world but the CSV baseline was harvested wrong. The harvest used 200
 chunks *after* a first attempt at 400 silently returned half; if P4 fails, suspect the
 baseline before suspecting the game, and re-harvest before concluding anything about the
 round trip.
+
+### §21 RESULTS — scored 2026-08-24 02:1x by CHECK, game UP, both DLLs live. **5/6.**
+
+```
+PASS  P1 companion registered      121 jawa/ tools
+PASS  P2 pollution is base col 10  10 columns, last = 'pollution'      ⭐ THE DEPLOY PROOF
+PASS  P3 Cathedral pollution held  60 sampled of 772 at >=0.90, min read back 0.90
+PASS  P4 planet matches harvest    21872/21872 matched, byField={}
+FAIL  P5 lint unchanged            noRoad=23 (predicted 18), orphanTrunks=1 (predicted 1)
+PASS  P6 moved settlements held    124 settlements, 11 of 11 moves intact
+```
+
+🔑 **P5 failed because the PREDICTION was stale, not because the world moved.** 18 was the
+lint reading from *before* the Rust Cathedral pass; that pass then cut 63 more road edges
+and laid 5, and my own offline count at the time said 22. The live figure is **23, and every
+one is intended**: **9** Deep Desert Tribes (owner: *"they do not build roads"*), **8** Free
+Droid Enclaves (the five moved onto Cathedral ground, plus Second Speaker, Vent Nine and The
+Trade Socket — *No Master* kept its redirected road, as designed), **2** Ascendant Helix (The
+Coil and Quiet Lab, moved to isolated terminator mycoid), **3** unplanned settlements
+(Colony, Tinaja, Corona Station) and **Kettle Deep**, which was roadless before any of this.
+
+⚠️ **The lesson is about the instrument, not the world.** A prediction written from a number
+I had already superseded is worth nothing — I should have read the post-Cathedral lint, which
+I had run, instead of the one I remembered. ⭐ **P5's new baseline is 23**, and a figure
+*below* 23 now means something re-laid roads the owner ruled away.
+
+✅ **Everything the load was for is proven.** The new companion is live, `world_tile_export`
+carries `pollution` as base column 10, the Cathedral's poison survived the save/load round
+trip, and all 21,872 tiles match the pre-quit harvest field for field.
