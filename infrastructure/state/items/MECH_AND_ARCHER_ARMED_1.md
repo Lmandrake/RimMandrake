@@ -44,3 +44,8 @@ On the next load, re-take the def dump and run
 Spawn a `Mech_Pikeman`, a `Drone_Sentry` and a `Tribal_Archer_Fire`, and confirm each
 holds a weapon — the pikeman a long-range mech gun, the drone a scattergun, the archer a
 plain bow (not on fire).
+
+## ✅ CLOSED — the live half met, 2026-08-24
+5 spawn rolls each on the live map: `Mech_Pikeman` **5/5 armed**, `Drone_Sentry` **5/5**,
+`Tribal_Archer_Fire` **5/5**. Evidence: `infrastructure/state/facts/roll_arm_harvest_2026-08-24.md`
+§3 and `roll_arm_harvest_rest.json`.

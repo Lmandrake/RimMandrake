@@ -1,0 +1,3750 @@
+{
+ "bare": [
+  {
+   "requested": "BackstoryDef/AccursedChild88",
+   "found": true,
+   "defName": "AccursedChild88",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "accursed child",
+    "workDisables": "Firefighting, Cleaning, Hauling, Mining"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CivilServant2",
+   "found": true,
+   "defName": "CivilServant2",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "civil servant",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ConArtist80",
+   "found": true,
+   "defName": "ConArtist80",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "con artist",
+    "workDisables": "Violent"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CoreworldJeweler19",
+   "found": true,
+   "defName": "CoreworldJeweler19",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "coreworld jeweler",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CoreworldStudent50",
+   "found": true,
+   "defName": "CoreworldStudent50",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "coreworld student",
+    "workDisables": "Cooking, PlantWork"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CuriousChild33",
+   "found": true,
+   "defName": "CuriousChild33",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "curious child",
+    "workDisables": "Violent"
+   }
+  },
+  {
+   "requested": "BackstoryDef/DesertRat47",
+   "found": true,
+   "defName": "DesertRat47",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "desert rat",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Digger31",
+   "found": true,
+   "defName": "Digger31",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "digger",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Empath47",
+   "found": true,
+   "defName": "Empath47",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "empath",
+    "workDisables": "Violent, Social, Animals"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ExiledResearcher44",
+   "found": true,
+   "defName": "ExiledResearcher44",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "exiled researcher",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/FrightenedChild43",
+   "found": true,
+   "defName": "FrightenedChild43",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "frightened child",
+    "workDisables": "Violent"
+   }
+  },
+  {
+   "requested": "BackstoryDef/HighBaroness37",
+   "found": true,
+   "defName": "HighBaroness37",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "high baroness",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MilitiaSoldier79",
+   "found": true,
+   "defName": "MilitiaSoldier79",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "militia soldier",
+    "workDisables": "Cooking, Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/OrganFarm67",
+   "found": true,
+   "defName": "OrganFarm67",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "organ farm",
+    "workDisables": "Violent"
+   }
+  },
+  {
+   "requested": "BackstoryDef/OskarCustomAdulthood",
+   "found": true,
+   "defName": "OskarCustomAdulthood",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "mod designer",
+    "workDisables": "Violent"
+   }
+  },
+  {
+   "requested": "BackstoryDef/OskarCustomChildhood",
+   "found": true,
+   "defName": "OskarCustomChildhood",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "art slave",
+    "workDisables": "Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Philosopher97",
+   "found": true,
+   "defName": "Philosopher97",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "philosopher",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Pyromaniac18",
+   "found": true,
+   "defName": "Pyromaniac18",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "pyromaniac",
+    "workDisables": "Firefighting"
+   }
+  },
+  {
+   "requested": "BackstoryDef/RBM_Roamer",
+   "found": true,
+   "defName": "RBM_Roamer",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Roo's Minotaur Xenotype",
+   "packageId": "tug.minotaur",
+   "fields": {
+    "title": "roamer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/RebelChild8",
+   "found": true,
+   "defName": "RebelChild8",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "rebel child",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Restorer70",
+   "found": true,
+   "defName": "Restorer70",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "restorer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SH_MED_MedievalAlchemist",
+   "found": true,
+   "defName": "SH_MED_MedievalAlchemist",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Medieval Alchemist",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SH_MED_MedievalLabourer",
+   "found": true,
+   "defName": "SH_MED_MedievalLabourer",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Medieval Labourer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ShamanOfShadows47",
+   "found": true,
+   "defName": "ShamanOfShadows47",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "shaman of shadows",
+    "workDisables": "Violent"
+   }
+  },
+  {
+   "requested": "BackstoryDef/StoryWriter67",
+   "found": true,
+   "defName": "StoryWriter67",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "story writer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_CannibalisticSurgeon",
+   "found": true,
+   "defName": "VBE_CannibalisticSurgeon",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Cannibalistic surgeon",
+    "workDisables": "Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Florist",
+   "found": true,
+   "defName": "VBE_Florist",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Florist",
+    "workDisables": "Violent"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_MattressTester",
+   "found": true,
+   "defName": "VBE_MattressTester",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Mattress tester",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_NatureLover",
+   "found": true,
+   "defName": "VBE_NatureLover",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Nature lover",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_ReincarnatedSoul",
+   "found": true,
+   "defName": "VBE_ReincarnatedSoul",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Reincarnated soul",
+    "workDisables": "Violent"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Veterinarian99",
+   "found": true,
+   "defName": "Veterinarian99",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "veterinarian",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/WarRefugee51",
+   "found": true,
+   "defName": "WarRefugee51",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "war refugee",
+    "workDisables": "Violent"
+   }
+  }
+ ],
+ "armed": [
+  {
+   "requested": "BackstoryDef/AbandonedChild23",
+   "found": true,
+   "defName": "AbandonedChild23",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "abandoned child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Actor72",
+   "found": true,
+   "defName": "Actor72",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "actor",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/AddictionCounsel60",
+   "found": true,
+   "defName": "AddictionCounsel60",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "counselor",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/AnimalCaretaker20",
+   "found": true,
+   "defName": "AnimalCaretaker20",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "animal caretaker",
+    "workDisables": "Intellectual"
+   }
+  },
+  {
+   "requested": "BackstoryDef/AnimalFarmer21",
+   "found": true,
+   "defName": "AnimalFarmer21",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "animal farmer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/AntisocialChild83",
+   "found": true,
+   "defName": "AntisocialChild83",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "antisocial child",
+    "workDisables": "Social, Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ApocalypseSurvivor23",
+   "found": true,
+   "defName": "ApocalypseSurvivor23",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "apocalypse survivor",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ApprenticeOracle83",
+   "found": true,
+   "defName": "ApprenticeOracle83",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "apprentice oracle",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Archer25",
+   "found": true,
+   "defName": "Archer25",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "archer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ArtStudent79",
+   "found": true,
+   "defName": "ArtStudent79",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "art student",
+    "workDisables": "Mining"
+   }
+  },
+  {
+   "requested": "BackstoryDef/AspiringEngineer58",
+   "found": true,
+   "defName": "AspiringEngineer58",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "aspiring engineer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Athlete47",
+   "found": true,
+   "defName": "Athlete47",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "athlete",
+    "workDisables": "Social, Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/BloodyWanderer28",
+   "found": true,
+   "defName": "BloodyWanderer28",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "bloody wanderer",
+    "workDisables": "Social, Firefighting"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Bodyguard58",
+   "found": true,
+   "defName": "Bodyguard58",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "bodyguard",
+    "workDisables": "Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Bookworm19",
+   "found": true,
+   "defName": "Bookworm19",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "bookworm",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Brave88",
+   "found": true,
+   "defName": "Brave88",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "brave",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/BuddingArtist44",
+   "found": true,
+   "defName": "BuddingArtist44",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "budding artist",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Bully70",
+   "found": true,
+   "defName": "Bully70",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "bully",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/BushSniper94",
+   "found": true,
+   "defName": "BushSniper94",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "bush sniper",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Butcher40",
+   "found": true,
+   "defName": "Butcher40",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "butcher",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CaravanChild53",
+   "found": true,
+   "defName": "CaravanChild53",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "caravan child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Carver1",
+   "found": true,
+   "defName": "Carver1",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "carver",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CasketBuilder52",
+   "found": true,
+   "defName": "CasketBuilder52",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "casket builder",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CaveBuilder81",
+   "found": true,
+   "defName": "CaveBuilder81",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "cave builder",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CaveExplorer45",
+   "found": true,
+   "defName": "CaveExplorer45",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "cave explorer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CaveworldIlluminator95",
+   "found": true,
+   "defName": "CaveworldIlluminator95",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "caveworld illuminator",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CaveworldTunneler48",
+   "found": true,
+   "defName": "CaveworldTunneler48",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "caveworld tunneler",
+    "workDisables": "Intellectual, Crafting"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Chef52",
+   "found": true,
+   "defName": "Chef52",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "chef",
+    "workDisables": "ManualDumb, Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ChildSpy47",
+   "found": true,
+   "defName": "ChildSpy47",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "child spy",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ChildStar74",
+   "found": true,
+   "defName": "ChildStar74",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "child star",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CivilServant2",
+   "found": true,
+   "defName": "CivilServant2",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "civil servant",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CivilServant25",
+   "found": true,
+   "defName": "CivilServant25",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "Civil servant",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ComaChild93",
+   "found": true,
+   "defName": "ComaChild93",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "coma child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CommonerHeir5",
+   "found": true,
+   "defName": "CommonerHeir5",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "commoner heir",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CommonerLord45",
+   "found": true,
+   "defName": "CommonerLord45",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "commoner lord",
+    "workDisables": "Cooking, Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CosmeticReject64",
+   "found": true,
+   "defName": "CosmeticReject64",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "traveling handywoman",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Counselor26",
+   "found": true,
+   "defName": "Counselor26",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "counselor",
+    "workDisables": "Cooking"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CrashBaby32",
+   "found": true,
+   "defName": "CrashBaby32",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "crash baby",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CriminalSurgeon99",
+   "found": true,
+   "defName": "CriminalSurgeon99",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "criminal surgeon",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/CultChild3",
+   "found": true,
+   "defName": "CultChild3",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "cult child",
+    "workDisables": "Intellectual"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Defector78",
+   "found": true,
+   "defName": "Defector78",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "defector",
+    "workDisables": "Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/DestroyerGeneral26",
+   "found": true,
+   "defName": "DestroyerGeneral26",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "destroyer-general",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Digger31",
+   "found": true,
+   "defName": "Digger31",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "digger",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Digger66",
+   "found": true,
+   "defName": "Digger66",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "digger",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/DisasterSurvivor65",
+   "found": true,
+   "defName": "DisasterSurvivor65",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "disaster survivor",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/DisplacedNoble67",
+   "found": true,
+   "defName": "DisplacedNoble67",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "displaced noble",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/DromedaryKnight37",
+   "found": true,
+   "defName": "DromedaryKnight37",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "dromedary knight",
+    "workDisables": "Hauling"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Drudge9",
+   "found": true,
+   "defName": "Drudge9",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "drudge",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/DustyFarmHand75",
+   "found": true,
+   "defName": "DustyFarmHand75",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "dusty farm hand",
+    "workDisables": "Intellectual, Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Evangelist39",
+   "found": true,
+   "defName": "Evangelist39",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "evangelist",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Excavator55",
+   "found": true,
+   "defName": "Excavator55",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "excavator",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ExiledPrince58",
+   "found": true,
+   "defName": "ExiledPrince58",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "exiled prince",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ExpertHandyman8",
+   "found": true,
+   "defName": "ExpertHandyman8",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "expert handyman",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/FeralChild96",
+   "found": true,
+   "defName": "FeralChild96",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "feral child",
+    "workDisables": "Social, Intellectual"
+   }
+  },
+  {
+   "requested": "BackstoryDef/FerventResearcher72",
+   "found": true,
+   "defName": "FerventResearcher72",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "fervent researcher",
+    "workDisables": "ManualDumb, ManualSkilled"
+   }
+  },
+  {
+   "requested": "BackstoryDef/FireKeeper44",
+   "found": true,
+   "defName": "FireKeeper44",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "fire keeper",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ForestChild83",
+   "found": true,
+   "defName": "ForestChild83",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "forest child",
+    "workDisables": "Intellectual"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ForestProwler15",
+   "found": true,
+   "defName": "ForestProwler15",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "forest prowler",
+    "workDisables": "Mining"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Forester96",
+   "found": true,
+   "defName": "Forester96",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "forester",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Framer37",
+   "found": true,
+   "defName": "Framer37",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "framer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/FurnitureBuilder83",
+   "found": true,
+   "defName": "FurnitureBuilder83",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "furniture builder",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/GameFanatic86",
+   "found": true,
+   "defName": "GameFanatic86",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "game fanatic",
+    "workDisables": "Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Gatherer70",
+   "found": true,
+   "defName": "Gatherer70",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "gatherer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Geologist66",
+   "found": true,
+   "defName": "Geologist66",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "geologist",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Gigolo68",
+   "found": true,
+   "defName": "Gigolo68",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "gigolo",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/GlitterworldKid85",
+   "found": true,
+   "defName": "GlitterworldKid85",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "glitterworld kid",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Healer46",
+   "found": true,
+   "defName": "Healer46",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "healer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/HearthTender66",
+   "found": true,
+   "defName": "HearthTender66",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "hearth tender",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Herder19",
+   "found": true,
+   "defName": "Herder19",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "herder",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Herder33",
+   "found": true,
+   "defName": "Herder33",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "herder",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Hideaway7",
+   "found": true,
+   "defName": "Hideaway7",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "hideaway",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/HouseServant63",
+   "found": true,
+   "defName": "HouseServant63",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "house servant",
+    "workDisables": "Intellectual"
+   }
+  },
+  {
+   "requested": "BackstoryDef/HumanComputer83",
+   "found": true,
+   "defName": "HumanComputer83",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "human computer",
+    "workDisables": "Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Hunter89",
+   "found": true,
+   "defName": "Hunter89",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "hunter",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/IndustrialOrphan13",
+   "found": true,
+   "defName": "IndustrialOrphan13",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "industrial orphan",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/InformationBroker77",
+   "found": true,
+   "defName": "InformationBroker77",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "information broker",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/JoywireAddict76",
+   "found": true,
+   "defName": "JoywireAddict76",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "joywire addict",
+    "workDisables": "Intellectual, Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Logger16",
+   "found": true,
+   "defName": "Logger16",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "logger",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Logger95",
+   "found": true,
+   "defName": "Logger95",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "logger",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Loner61",
+   "found": true,
+   "defName": "Loner61",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "loner",
+    "workDisables": "Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/LoreKeeper51",
+   "found": true,
+   "defName": "LoreKeeper51",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "lore keeper",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/LowWageWorker7",
+   "found": true,
+   "defName": "LowWageWorker7",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "low-wage worker",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MadScientist47",
+   "found": true,
+   "defName": "MadScientist47",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "mad scientist",
+    "workDisables": "Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Malingerer28",
+   "found": true,
+   "defName": "Malingerer28",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "malingerer",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MedicalAssistant12",
+   "found": true,
+   "defName": "MedicalAssistant12",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "medical assistant",
+    "workDisables": "Firefighting"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MedievalSlave49",
+   "found": true,
+   "defName": "MedievalSlave49",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "medieval slave",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MentalPatient69",
+   "found": true,
+   "defName": "MentalPatient69",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "mental patient",
+    "workDisables": "Cooking, Firefighting, Mining"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MercenaryCaptain98",
+   "found": true,
+   "defName": "MercenaryCaptain98",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "mercenary captain",
+    "workDisables": "Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MercenaryRecruit36",
+   "found": true,
+   "defName": "MercenaryRecruit36",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "mercenary recruit",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MilitaryRecruit49",
+   "found": true,
+   "defName": "MilitaryRecruit49",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "military recruit",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Minister88",
+   "found": true,
+   "defName": "Minister88",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "minister",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MuffaloShaman95",
+   "found": true,
+   "defName": "MuffaloShaman95",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "muffalo shaman",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MusicIdol50",
+   "found": true,
+   "defName": "MusicIdol50",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "music idol",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/MusicalKid86",
+   "found": true,
+   "defName": "MusicalKid86",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "musical kid",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Mute34",
+   "found": true,
+   "defName": "Mute34",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "mute",
+    "workDisables": "Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/NathanCustomAdulthood",
+   "found": true,
+   "defName": "NathanCustomAdulthood",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "digger",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/NathanCustomChildhood",
+   "found": true,
+   "defName": "NathanCustomChildhood",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "cave child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/NavyTechOfficer0",
+   "found": true,
+   "defName": "NavyTechOfficer0",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "navy tech officer",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/NobleWard61",
+   "found": true,
+   "defName": "NobleWard61",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "noble ward",
+    "workDisables": "ManualDumb, Firefighting, PlantWork, Mining"
+   }
+  },
+  {
+   "requested": "BackstoryDef/OldMoneyHeir46",
+   "found": true,
+   "defName": "OldMoneyHeir46",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "Old money heir",
+    "workDisables": "Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Orphan11",
+   "found": true,
+   "defName": "Orphan11",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "orphan",
+    "workDisables": "Social, Animals"
+   }
+  },
+  {
+   "requested": "BackstoryDef/OrphanedAcrobat84",
+   "found": true,
+   "defName": "OrphanedAcrobat84",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "orphaned acrobat",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Paramedic45",
+   "found": true,
+   "defName": "Paramedic45",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "paramedic",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ParamilitaryAgent11",
+   "found": true,
+   "defName": "ParamilitaryAgent11",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "paramilitary agent",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Pickpocket61",
+   "found": true,
+   "defName": "Pickpocket61",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "pickpocket",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/PilotFan16",
+   "found": true,
+   "defName": "PilotFan16",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "pilot fan",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/PizzaLover94",
+   "found": true,
+   "defName": "PizzaLover94",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "pizza lover",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/PlankCutter72",
+   "found": true,
+   "defName": "PlankCutter72",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "plank cutter",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Policeman45",
+   "found": true,
+   "defName": "Policeman45",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "policeman",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ProstheticSurgeon0",
+   "found": true,
+   "defName": "ProstheticSurgeon0",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "prosthetic surgeon",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Pyromaniac18",
+   "found": true,
+   "defName": "Pyromaniac18",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "pyromaniac",
+    "workDisables": "Firefighting"
+   }
+  },
+  {
+   "requested": "BackstoryDef/QuarryWorker29",
+   "found": true,
+   "defName": "QuarryWorker29",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "quarry worker",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/RBM_Roamer",
+   "found": true,
+   "defName": "RBM_Roamer",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Roo's Minotaur Xenotype",
+   "packageId": "tug.minotaur",
+   "fields": {
+    "title": "roamer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/RBM_WildBeast",
+   "found": true,
+   "defName": "RBM_WildBeast",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Roo's Minotaur Xenotype",
+   "packageId": "tug.minotaur",
+   "fields": {
+    "title": "wild beast",
+    "workDisables": "ManualSkilled, Social, Intellectual"
+   }
+  },
+  {
+   "requested": "BackstoryDef/REBC119",
+   "found": true,
+   "defName": "REBC119",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Medieval witch",
+    "workDisables": "Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/REBC121",
+   "found": true,
+   "defName": "REBC121",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Trainee alchemist",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Rancher43",
+   "found": true,
+   "defName": "Rancher43",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "rancher",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Ranger96",
+   "found": true,
+   "defName": "Ranger96",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "ranger",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/RangerChild57",
+   "found": true,
+   "defName": "RangerChild57",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "ranger child",
+    "workDisables": "Firefighting, PlantWork"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ReclusiveChild81",
+   "found": true,
+   "defName": "ReclusiveChild81",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "reclusive child",
+    "workDisables": "Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ReclusiveProdigy96",
+   "found": true,
+   "defName": "ReclusiveProdigy96",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "reclusive prodigy",
+    "workDisables": "Social, Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Recruiter14",
+   "found": true,
+   "defName": "Recruiter14",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "recruiter",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Roboticist41",
+   "found": true,
+   "defName": "Roboticist41",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "roboticist",
+    "workDisables": "Cooking, PlantWork"
+   }
+  },
+  {
+   "requested": "BackstoryDef/RoyalBastard64",
+   "found": true,
+   "defName": "RoyalBastard64",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Royalty",
+   "packageId": "ludeon.rimworld.royalty",
+   "fields": {
+    "title": "royal bastard",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/RoyalCook18",
+   "found": true,
+   "defName": "RoyalCook18",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Royalty",
+   "packageId": "ludeon.rimworld.royalty",
+   "fields": {
+    "title": "royal cook",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/RoyalMasseuse43",
+   "found": true,
+   "defName": "RoyalMasseuse43",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Royalty",
+   "packageId": "ludeon.rimworld.royalty",
+   "fields": {
+    "title": "royal masseuse",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SH_MED_LandlessKnight",
+   "found": true,
+   "defName": "SH_MED_LandlessKnight",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Landless knight",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SH_MED_MedievalCommander",
+   "found": true,
+   "defName": "SH_MED_MedievalCommander",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Medieval commander",
+    "workDisables": "Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SH_MED_MedievalLabourer",
+   "found": true,
+   "defName": "SH_MED_MedievalLabourer",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Medieval Labourer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SH_MED_MedievalMason",
+   "found": true,
+   "defName": "SH_MED_MedievalMason",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Medieval Mason",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SH_MED_MedievalRoyalty",
+   "found": true,
+   "defName": "SH_MED_MedievalRoyalty",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Medieval royalty",
+    "workDisables": "ManualDumb, ManualSkilled"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SH_MED_MedievalScholar",
+   "found": true,
+   "defName": "SH_MED_MedievalScholar",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Medieval scholar",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SH_MED_ReligiousKnight",
+   "found": true,
+   "defName": "SH_MED_ReligiousKnight",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Shavius's Medieval Flavour Pack",
+   "packageId": "shavius.medieval.flavour",
+   "fields": {
+    "title": "Religious knight",
+    "workDisables": "Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Scout44",
+   "found": true,
+   "defName": "Scout44",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "scout",
+    "workDisables": "Intellectual, Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Scout59",
+   "found": true,
+   "defName": "Scout59",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "scout",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ServingBoy97",
+   "found": true,
+   "defName": "ServingBoy97",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Royalty",
+   "packageId": "ludeon.rimworld.royalty",
+   "fields": {
+    "title": "serving boy",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ShelterChild50",
+   "found": true,
+   "defName": "ShelterChild50",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "shelter child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Sheriff52",
+   "found": true,
+   "defName": "Sheriff52",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "sheriff",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ShopKid36",
+   "found": true,
+   "defName": "ShopKid36",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "shop kid",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ShunnedGirl30",
+   "found": true,
+   "defName": "ShunnedGirl30",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "shunned girl",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SicklyChild55",
+   "found": true,
+   "defName": "SicklyChild55",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "sickly child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Smuggler23",
+   "found": true,
+   "defName": "Smuggler23",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "smuggler",
+    "workDisables": "Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SpaceMarine9",
+   "found": true,
+   "defName": "SpaceMarine9",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "space marine",
+    "workDisables": "Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SpaceMarine94",
+   "found": true,
+   "defName": "SpaceMarine94",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "space marine",
+    "workDisables": "Cooking"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SpaceTactician28",
+   "found": true,
+   "defName": "SpaceTactician28",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "space tactician",
+    "workDisables": "Social, Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Spaceports_ShuttlePilot",
+   "found": true,
+   "defName": "Spaceports_ShuttlePilot",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Rimsential - Spaceports (Continued)",
+   "packageId": "zal.spaceports",
+   "fields": {
+    "title": "Shuttle pilot",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SpaceyachtPilot89",
+   "found": true,
+   "defName": "SpaceyachtPilot89",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "spaceyacht pilot",
+    "workDisables": "Cooking"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SpoiledChild33",
+   "found": true,
+   "defName": "SpoiledChild33",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "spoiled child",
+    "workDisables": "Firefighting"
+   }
+  },
+  {
+   "requested": "BackstoryDef/StarfighterPilot79",
+   "found": true,
+   "defName": "StarfighterPilot79",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "starfighter pilot",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/StarshipJanitor33",
+   "found": true,
+   "defName": "StarshipJanitor33",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "starship janitor",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/SteamworldTinker38",
+   "found": true,
+   "defName": "SteamworldTinker38",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "steamworld tinker",
+    "workDisables": "Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/StilettoAssassin34",
+   "found": true,
+   "defName": "StilettoAssassin34",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "stiletto assassin",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/StoryWriter67",
+   "found": true,
+   "defName": "StoryWriter67",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "story writer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/StreetChild4",
+   "found": true,
+   "defName": "StreetChild4",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "street child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Teacher20",
+   "found": true,
+   "defName": "Teacher20",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "teacher",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/TestSubject90",
+   "found": true,
+   "defName": "TestSubject90",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "test subject",
+    "workDisables": "Intellectual"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Tinkerer11",
+   "found": true,
+   "defName": "Tinkerer11",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "tinkerer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/ToolMechanic77",
+   "found": true,
+   "defName": "ToolMechanic77",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "tool mechanic",
+    "workDisables": "Animals, PlantWork"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Torturer37",
+   "found": true,
+   "defName": "Torturer37",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "torturer",
+    "workDisables": "Caring, Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/TraumatizedYouth87",
+   "found": true,
+   "defName": "TraumatizedYouth87",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "traumatized youth",
+    "workDisables": "Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/TribeChild40",
+   "found": true,
+   "defName": "TribeChild40",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "tribe child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/UrbworldDrone32",
+   "found": true,
+   "defName": "UrbworldDrone32",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "urbworld drone",
+    "workDisables": "Intellectual, Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/UrbworldUrchin6",
+   "found": true,
+   "defName": "UrbworldUrchin6",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "urbworld urchin",
+    "workDisables": "PlantWork"
+   }
+  },
+  {
+   "requested": "BackstoryDef/UrbworldUrchin61",
+   "found": true,
+   "defName": "UrbworldUrchin61",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "urbworld urchin",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/UrbworldUrchin90",
+   "found": true,
+   "defName": "UrbworldUrchin90",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "urbworld urchin",
+    "workDisables": "Artistic, Crafting"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_AbandonedColonist",
+   "found": true,
+   "defName": "VBE_AbandonedColonist",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Abandoned colonist",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_AdventurousDreamer",
+   "found": true,
+   "defName": "VBE_AdventurousDreamer",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Adventurous dreamer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_AnimatronicMechanic",
+   "found": true,
+   "defName": "VBE_AnimatronicMechanic",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Animatronic mechanic",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_AnomalousCreatureResearcher",
+   "found": true,
+   "defName": "VBE_AnomalousCreatureResearcher",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Anomalous creature researcher",
+    "workDisables": "Animals"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Apprentice",
+   "found": true,
+   "defName": "VBE_Apprentice",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Apprentice",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Bioweapon",
+   "found": true,
+   "defName": "VBE_Bioweapon",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Bioweapon",
+    "workDisables": "Social, Intellectual, Artistic, Firefighting"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_BloodlineFounder",
+   "found": true,
+   "defName": "VBE_BloodlineFounder",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Bloodline founder",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_BountyHunter",
+   "found": true,
+   "defName": "VBE_BountyHunter",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Bounty hunter",
+    "workDisables": "Intellectual, Artistic, Mining"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Bullleaper",
+   "found": true,
+   "defName": "VBE_Bullleaper",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Bull leaper",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_CannibalisticSurgeon",
+   "found": true,
+   "defName": "VBE_CannibalisticSurgeon",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Cannibalistic surgeon",
+    "workDisables": "Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_ChemfuelFarmer",
+   "found": true,
+   "defName": "VBE_ChemfuelFarmer",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Chemfuel farmer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_ChildSoldier",
+   "found": true,
+   "defName": "VBE_ChildSoldier",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Child soldier",
+    "workDisables": "Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_ChildofTheAnimaTree",
+   "found": true,
+   "defName": "VBE_ChildofTheAnimaTree",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Child of the anima tree",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_ClonedHeir",
+   "found": true,
+   "defName": "VBE_ClonedHeir",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Cloned heir",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_CoginTheMachine",
+   "found": true,
+   "defName": "VBE_CoginTheMachine",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Cog in the machine",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_ColonyAuditor",
+   "found": true,
+   "defName": "VBE_ColonyAuditor",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Colony auditor",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_CommunityDoctor",
+   "found": true,
+   "defName": "VBE_CommunityDoctor",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Community doctor",
+    "workDisables": "Animals"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_CorporateSpy",
+   "found": true,
+   "defName": "VBE_CorporateSpy",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Corporate spy",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_CosplayEnthusiast",
+   "found": true,
+   "defName": "VBE_CosplayEnthusiast",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Cosplay enthusiast",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_CriminalPriest",
+   "found": true,
+   "defName": "VBE_CriminalPriest",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Criminal priest",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_CultLeader",
+   "found": true,
+   "defName": "VBE_CultLeader",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Cult leader",
+    "workDisables": "Caring, Cleaning, Hauling, PlantWork, Mining"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_CyberDilettante",
+   "found": true,
+   "defName": "VBE_CyberDilettante",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Cyber dilettante",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_DeepSpaceScrapper",
+   "found": true,
+   "defName": "VBE_DeepSpaceScrapper",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Deep space scrapper",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Demoscener",
+   "found": true,
+   "defName": "VBE_Demoscener",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Demoscener",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_DrillOperator",
+   "found": true,
+   "defName": "VBE_DrillOperator",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Drill operator",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_EldestCaretaker",
+   "found": true,
+   "defName": "VBE_EldestCaretaker",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Eldest caretaker",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_EnlistedTeen",
+   "found": true,
+   "defName": "VBE_EnlistedTeen",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Enlisted teen",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_FashionDesigner",
+   "found": true,
+   "defName": "VBE_FashionDesigner",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Fashion designer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_FoodCritic",
+   "found": true,
+   "defName": "VBE_FoodCritic",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Food critic",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_ForgottenChild",
+   "found": true,
+   "defName": "VBE_ForgottenChild",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Forgotten child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_ForsakenPatriot",
+   "found": true,
+   "defName": "VBE_ForsakenPatriot",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Forsaken patriot",
+    "workDisables": "Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Freak",
+   "found": true,
+   "defName": "VBE_Freak",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Freak",
+    "workDisables": "Caring, Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_GalacticMedic",
+   "found": true,
+   "defName": "VBE_GalacticMedic",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Galactic medic",
+    "workDisables": "Intellectual"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_GalleryJanitor",
+   "found": true,
+   "defName": "VBE_GalleryJanitor",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Gallery janitor",
+    "workDisables": "Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_GeneticReincarnation",
+   "found": true,
+   "defName": "VBE_GeneticReincarnation",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Genetic reincarnation",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_GiftedBurnout",
+   "found": true,
+   "defName": "VBE_GiftedBurnout",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Gifted burnout",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_HerbalKin",
+   "found": true,
+   "defName": "VBE_HerbalKin",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Herbal kin",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_HostessInTraining",
+   "found": true,
+   "defName": "VBE_HostessInTraining",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Hostess in training",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_HumanSupremacist",
+   "found": true,
+   "defName": "VBE_HumanSupremacist",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Human supremacist",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_ImperialCircusPerformer",
+   "found": true,
+   "defName": "VBE_ImperialCircusPerformer",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Imperial circus performer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_IndustrialGunsmith",
+   "found": true,
+   "defName": "VBE_IndustrialGunsmith",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Industrial gunsmith ",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Jeweler",
+   "found": true,
+   "defName": "VBE_Jeweler",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Jeweler",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_JungleScout",
+   "found": true,
+   "defName": "VBE_JungleScout",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Jungle scout",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_JuniorJeweler",
+   "found": true,
+   "defName": "VBE_JuniorJeweler",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Junior jeweler",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_LighthouseKeeper",
+   "found": true,
+   "defName": "VBE_LighthouseKeeper",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Lighthouse keeper",
+    "workDisables": "Social, Animals, PlantWork"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_LivingCure",
+   "found": true,
+   "defName": "VBE_LivingCure",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Living cure",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_LoneTraveller",
+   "found": true,
+   "defName": "VBE_LoneTraveller",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Lone traveller",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Maid",
+   "found": true,
+   "defName": "VBE_Maid",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Maid",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Mariner",
+   "found": true,
+   "defName": "VBE_Mariner",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Mariner",
+    "workDisables": "PlantWork"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Masterofceremonies",
+   "found": true,
+   "defName": "VBE_Masterofceremonies",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Master of ceremonies",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_MedicineProdigy",
+   "found": true,
+   "defName": "VBE_MedicineProdigy",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Medical prodigy",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_MidworldNomad",
+   "found": true,
+   "defName": "VBE_MidworldNomad",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Midworld nomad",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_MilitiaRecruit",
+   "found": true,
+   "defName": "VBE_MilitiaRecruit",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Militia recruit",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_NatureLover",
+   "found": true,
+   "defName": "VBE_NatureLover",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Nature lover",
+    "workDisables": "ManualDumb"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Oracle",
+   "found": true,
+   "defName": "VBE_Oracle",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Oracle",
+    "workDisables": "ManualDumb, Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_OrphanThief",
+   "found": true,
+   "defName": "VBE_OrphanThief",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Orphan thief",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_PathologicalLiar",
+   "found": true,
+   "defName": "VBE_PathologicalLiar",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Pathological liar",
+    "workDisables": "ManualSkilled"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_PirateKid",
+   "found": true,
+   "defName": "VBE_PirateKid",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Pirate kid",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_PodChild",
+   "found": true,
+   "defName": "VBE_PodChild",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Pod child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_PrivateContractor",
+   "found": true,
+   "defName": "VBE_PrivateContractor",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Private contractor",
+    "workDisables": "Caring, Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Propagandist",
+   "found": true,
+   "defName": "VBE_Propagandist",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Propagandist",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_ProsecutedWarVeteran",
+   "found": true,
+   "defName": "VBE_ProsecutedWarVeteran",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Prosecuted war veteran",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Pushover",
+   "found": true,
+   "defName": "VBE_Pushover",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Pushover",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_RetiredSoldier",
+   "found": true,
+   "defName": "VBE_RetiredSoldier",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Retired soldier",
+    "workDisables": "Caring, Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Rudie",
+   "found": true,
+   "defName": "VBE_Rudie",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Rudie",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Simraised",
+   "found": true,
+   "defName": "VBE_Simraised",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Sim-raised",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Standardbearer",
+   "found": true,
+   "defName": "VBE_Standardbearer",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Standard-bearer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_StarvingArtist",
+   "found": true,
+   "defName": "VBE_StarvingArtist",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Starving artist",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_StorytellersKin",
+   "found": true,
+   "defName": "VBE_StorytellersKin",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Storyteller's kin",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_StrangeChild",
+   "found": true,
+   "defName": "VBE_StrangeChild",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Strange child",
+    "workDisables": "Social"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_StructuralEngineer",
+   "found": true,
+   "defName": "VBE_StructuralEngineer",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Structural engineer",
+    "workDisables": "Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_SupplyCoordinator",
+   "found": true,
+   "defName": "VBE_SupplyCoordinator",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Supply coordinator",
+    "workDisables": "ManualSkilled, Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_TaxCollector",
+   "found": true,
+   "defName": "VBE_TaxCollector",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Tax collector",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_TombMaker",
+   "found": true,
+   "defName": "VBE_TombMaker",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Tomb maker",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_TrainDriver",
+   "found": true,
+   "defName": "VBE_TrainDriver",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Train driver",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_TraineeCombatMedic",
+   "found": true,
+   "defName": "VBE_TraineeCombatMedic",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Trainee combat medic",
+    "workDisables": "ManualSkilled, Social, Animals, Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_Translator",
+   "found": true,
+   "defName": "VBE_Translator",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Translator",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_TroupeChild",
+   "found": true,
+   "defName": "VBE_TroupeChild",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Troupe child",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_TunerPunk",
+   "found": true,
+   "defName": "VBE_TunerPunk",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Tuner punk",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_UrbworldRioter",
+   "found": true,
+   "defName": "VBE_UrbworldRioter",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Urbworld rioter",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_WarOrphan",
+   "found": true,
+   "defName": "VBE_WarOrphan",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "War orphan",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VBE_WretchedChild",
+   "found": true,
+   "defName": "VBE_WretchedChild",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Backstories Expanded",
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "fields": {
+    "title": "Wretched child",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VQE_FieldRepairTech04",
+   "found": true,
+   "defName": "VQE_FieldRepairTech04",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Quests Expanded - The Generator",
+   "packageId": "vanillaquestsexpanded.generator",
+   "fields": {
+    "title": "field repair tech",
+    "workDisables": "Intellectual"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VQE_PowerArchitect02",
+   "found": true,
+   "defName": "VQE_PowerArchitect02",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Vanilla Quests Expanded - The Generator",
+   "packageId": "vanillaquestsexpanded.generator",
+   "fields": {
+    "title": "power architect",
+    "workDisables": "Artistic"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VengefulChild43",
+   "found": true,
+   "defName": "VengefulChild43",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "vengeful child",
+    "workDisables": "Caring"
+   }
+  },
+  {
+   "requested": "BackstoryDef/VersatileWorker13",
+   "found": true,
+   "defName": "VersatileWorker13",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "versatile worker",
+    "workDisables": "Social, Intellectual, Firefighting"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Veterinarian99",
+   "found": true,
+   "defName": "Veterinarian99",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "veterinarian",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/Warrior94",
+   "found": true,
+   "defName": "Warrior94",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "warrior",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/WealthyStudent59",
+   "found": true,
+   "defName": "WealthyStudent59",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "wealthy student",
+    "workDisables": "Animals, Cleaning"
+   }
+  },
+  {
+   "requested": "BackstoryDef/WreckageExplorer93",
+   "found": true,
+   "defName": "WreckageExplorer93",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "wreckage explorer",
+    "workDisables": "None"
+   }
+  },
+  {
+   "requested": "BackstoryDef/YouthSoldier99",
+   "found": true,
+   "defName": "YouthSoldier99",
+   "defType": "BackstoryDef",
+   "label": null,
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "title": "youth soldier",
+    "workDisables": "Artistic"
+   }
+  }
+ ]
+}

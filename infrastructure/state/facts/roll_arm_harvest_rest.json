@@ -1,0 +1,5570 @@
+{
+ "capturedUtc": "2026-08-24T08-28-57Z",
+ "rolls": 5,
+ "kindCount": 22,
+ "method": "live spawn roll, not weaponMoney.max -- see WEAPON_MONEY_ROLL_NOT_CEILING_1",
+ "kinds": {
+  "Jawa_Spawn_Hutt": {
+   "faction": "Jawa_HuttCartel",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Hutt in faction Jawa_HuttCartel.",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99310",
+      "name": "Wessac",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeRodian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99311",
+      "name": "Maskinnen",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeKlatoonian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99321",
+      "name": "Jin",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeHutt",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99322",
+      "name": "Strapping",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeFalleen",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99323",
+      "name": "Stumpy",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeHutt",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99310",
+     "name": "Don Wessac",
+     "kindDef": "Jawa_Spawn_Hutt",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "RimMandrakeRodian",
+     "equipment": [],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": "Pyromaniac18",
+     "adulthood": "VBE_TrainDriver",
+     "traits": [
+      "Pyromaniac",
+      "Kind",
+      "Bisexual",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99311",
+     "name": "Tomine 'Maskinnen' Maske",
+     "kindDef": "Jawa_Spawn_Hutt",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "RimMandrakeKlatoonian",
+     "equipment": [],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": "SlaveFarmer99",
+     "adulthood": "RocketEngineer53",
+     "traits": [
+      "Greedy",
+      "Very_Passioned_Learning",
+      "Straight",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99321",
+     "name": "Taejin 'Jin' Kang",
+     "kindDef": "Jawa_Spawn_Hutt",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "RimMandrakeHutt",
+     "equipment": [],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": "VBE_TroupeChild",
+     "adulthood": "VBE_OliveFarmer",
+     "traits": [
+      "FastLearner",
+      "NaturalMood",
+      "Gay",
+      "Greedy",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99322",
+     "name": "Drew 'Strapping' Logan",
+     "kindDef": "Jawa_Spawn_Hutt",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "RimMandrakeFalleen",
+     "equipment": [],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": "DisciplinedFarmer28",
+     "adulthood": "StalwartFarmer21",
+     "traits": [
+      "Industriousness",
+      "RT_Clumsy",
+      "Bisexual",
+      "Greedy",
+      "Isekai_Rank_D"
+     ]
+    },
+    {
+     "id": "Human99323",
+     "name": "Yulian 'Stumpy' Lin",
+     "kindDef": "Jawa_Spawn_Hutt",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "RimMandrakeHutt",
+     "equipment": [],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": "VBE_PodChild",
+     "adulthood": "Inventor6",
+     "traits": [
+      "NaturalMood",
+      "RT_Rowdy",
+      "Isekai_CursedLuck",
+      "Gay",
+      "Greedy",
+      "Isekai_Rank_E",
+      "Isekai_Prodigy"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_Gand": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Gand in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99324",
+      "name": "Semyon",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeGand",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99328",
+      "name": "Gilma",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeGand",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99332",
+      "name": "Riku",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeGand",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99337",
+      "name": "Forn",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeGand",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99341",
+      "name": "Sloan",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeGand",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99324",
+     "name": "Semyon Roberson",
+     "kindDef": "Jawa_Spawn_Gand",
+     "faction": null,
+     "xenotype": "RimMandrakeGand",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Apparel_Tunic",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "Leather_Giantala"
+      ],
+      [
+       "VAE_Apparel_Tunic",
+       "Leather_Rabbuck"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Bardelot"
+      ]
+     ],
+     "childhood": "Mute34",
+     "adulthood": null,
+     "traits": [
+      "Isekai_Fortress",
+      "Industriousness",
+      "BiAce",
+      "Isekai_Rank_E",
+      "Isekai_MerchantEye"
+     ]
+    },
+    {
+     "id": "Human99328",
+     "name": "Gilma McFarland",
+     "kindDef": "Jawa_Spawn_Gand",
+     "faction": null,
+     "xenotype": "RimMandrakeGand",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Apparel_Tunic",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "Leather_Patch"
+      ],
+      [
+       "VAE_Apparel_Tunic",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Zarander"
+      ]
+     ],
+     "childhood": "CultChild3",
+     "adulthood": "VBE_IndustrialTinkerer",
+     "traits": [
+      "TooSmart",
+      "Isekai_Lucky",
+      "Bisexual",
+      "Isekai_Rank_C",
+      "Isekai_Protagonist",
+      "Isekai_SlowGrind"
+     ]
+    },
+    {
+     "id": "Human99332",
+     "name": "Riku Beltran",
+     "kindDef": "Jawa_Spawn_Gand",
+     "faction": null,
+     "xenotype": "RimMandrakeGand",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "BMT_Leather_Amphibian"
+      ],
+      [
+       "Apparel_Pants",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Zarander"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Synthread"
+      ]
+     ],
+     "childhood": "VBE_ReluctantCadet",
+     "adulthood": "RoyalCook18",
+     "traits": [
+      "Gourmand",
+      "RT_Sluggish",
+      "Bisexual",
+      "Isekai_Rank_C"
+     ]
+    },
+    {
+     "id": "Human99337",
+     "name": "Forn Bruni",
+     "kindDef": "Jawa_Spawn_Gand",
+     "faction": null,
+     "xenotype": "RimMandrakeGand",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "KOTOR_FabricArmorweave"
+      ],
+      [
+       "Apparel_Pants",
+       "BMT_WeakChitin"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "They_AntCarapace"
+      ]
+     ],
+     "childhood": "VBE_ClonedHeir",
+     "adulthood": "VBE_PondDesigner",
+     "traits": [
+      "Brawler",
+      "RT_Restful",
+      "Bisexual",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99341",
+     "name": "Laila Sloan",
+     "kindDef": "Jawa_Spawn_Gand",
+     "faction": null,
+     "xenotype": "RimMandrakeGand",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "KOTOR_FabricArmorweave"
+      ],
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Toraton"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Plain"
+      ]
+     ],
+     "childhood": "WarRefugee51",
+     "adulthood": "Nurse61",
+     "traits": [
+      "Immunity",
+      "Bisexual",
+      "Isekai_Rank_F"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_Kubaz": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Kubaz in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99346",
+      "name": "Shadowcat",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeKubaz",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99352",
+      "name": "Theo",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeKubaz",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99356",
+      "name": "Pockers",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeKubaz",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99360",
+      "name": "Veliki",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeKubaz",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99365",
+      "name": "Lucy",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeKubaz",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99346",
+     "name": "Kitty 'Shadowcat' Pryde",
+     "kindDef": "Jawa_Spawn_Kubaz",
+     "faction": null,
+     "xenotype": "RimMandrakeKubaz",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Cloth"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Worm"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Bardelot"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "MA_Leather_Hellboar"
+      ],
+      [
+       "Apparel_Parka",
+       "OuterRim_Durafiber"
+      ]
+     ],
+     "childhood": "Scout44",
+     "adulthood": "VBE_Demoscener",
+     "traits": [
+      "GreatMemory",
+      "VTE_Schizoid",
+      "VTE_Perfectionist",
+      "Straight",
+      "PsychicSensitivity",
+      "Isekai_Rank_F",
+      "Isekai_BattleManiac",
+      "Isekai_Resilient"
+     ]
+    },
+    {
+     "id": "Human99352",
+     "name": "Theodore 'Theo' Imeson",
+     "kindDef": "Jawa_Spawn_Kubaz",
+     "faction": null,
+     "xenotype": "RimMandrakeKubaz",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "Leather_Gigantelope"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Bardelot"
+      ],
+      [
+       "Apparel_Parka",
+       "OuterRim_Durafiber"
+      ]
+     ],
+     "childhood": "StewardsAssisant28",
+     "adulthood": "RimworldExile32",
+     "traits": [
+      "Masochist",
+      "RT_Feeble",
+      "GreatMemory",
+      "Bisexual",
+      "PsychicSensitivity",
+      "Isekai_Rank_C"
+     ]
+    },
+    {
+     "id": "Human99356",
+     "name": "Alex 'Pockers' Pocklington",
+     "kindDef": "Jawa_Spawn_Kubaz",
+     "faction": null,
+     "xenotype": "RimMandrakeKubaz",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "Apparel_BasicShirt",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "MA_WorhinWool"
+      ],
+      [
+       "Apparel_BasicShirt",
+       "Leather_ReptoFur"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "DA_Leather_Karabal"
+      ]
+     ],
+     "childhood": "WarRefugee51",
+     "adulthood": null,
+     "traits": [
+      "VTE_Prude",
+      "VTE_Insomniac",
+      "Gigantism",
+      "Bisexual",
+      "PsychicSensitivity",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99360",
+     "name": "Karlo Veliki",
+     "kindDef": "Jawa_Spawn_Kubaz",
+     "faction": null,
+     "xenotype": "RimMandrakeKubaz",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Cloth"
+      ],
+      [
+       "Apparel_Pants",
+       "WoolMuffalo"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Felinoid"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Gigantelope"
+      ]
+     ],
+     "childhood": "REBC119",
+     "adulthood": "SH_MED_MedievalMason",
+     "traits": [
+      "Isekai_Resilient",
+      "Gay",
+      "PsychicSensitivity",
+      "Isekai_Rank_F",
+      "Isekai_CursedLuck"
+     ]
+    },
+    {
+     "id": "Human99365",
+     "name": "Lucy Niara",
+     "kindDef": "Jawa_Spawn_Kubaz",
+     "faction": null,
+     "xenotype": "RimMandrakeKubaz",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Leather_SmallDino"
+      ],
+      [
+       "Apparel_Pants",
+       "BMT_FragileChitin"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Reptavian"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Light"
+      ],
+      [
+       "Apparel_Parka",
+       "Leather_Zarander"
+      ]
+     ],
+     "childhood": "VBE_OrphanThief",
+     "adulthood": "VBE_FringeShitposter",
+     "traits": [
+      "Bloodlust",
+      "HomoAce",
+      "PsychicSensitivity",
+      "Isekai_Rank_D"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_Taung": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Taung in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99371",
+      "name": "Ingrid",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTaung",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99377",
+      "name": "Skye",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTaung",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99380",
+      "name": "Mie",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTaung",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99385",
+      "name": "Tycho",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTaung",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99391",
+      "name": "Daniela",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTaung",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99371",
+     "name": "Ingrid Wilkerson",
+     "kindDef": "Jawa_Spawn_Taung",
+     "faction": null,
+     "xenotype": "RimMandrakeTaung",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Cloth"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Bardelot"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Rabbuck"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Fambaa"
+      ],
+      [
+       "Apparel_Parka",
+       "Leather_Bird"
+      ]
+     ],
+     "childhood": "VBE_Freak",
+     "adulthood": "SH_MED_MedievalLabourer",
+     "traits": [
+      "Beauty",
+      "RT_EasilyAmused",
+      "Ascetic",
+      "Bisexual",
+      "Isekai_Rank_B"
+     ]
+    },
+    {
+     "id": "Human99377",
+     "name": "Skye Lorne",
+     "kindDef": "Jawa_Spawn_Taung",
+     "faction": null,
+     "xenotype": "RimMandrakeTaung",
+     "equipment": [],
+     "apparel": [
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Footwear_Shoes",
+       "MA_Leather_Raptorkhan"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "BMT_FragileChitin"
+      ]
+     ],
+     "childhood": "LaborCampOrphan91",
+     "adulthood": "UrbworldEnforcer11",
+     "traits": [
+      "Tough",
+      "BiAce",
+      "Isekai_Rank_E",
+      "Isekai_IronWill"
+     ]
+    },
+    {
+     "id": "Human99380",
+     "name": "Miesha 'Mie' Aldemar",
+     "kindDef": "Jawa_Spawn_Taung",
+     "faction": null,
+     "xenotype": "RimMandrakeTaung",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "BMT_MoonlessSilk"
+      ],
+      [
+       "Apparel_Pants",
+       "WoolSheep"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Zarander"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Jerbal"
+      ]
+     ],
+     "childhood": "Pampered87",
+     "adulthood": "NinjaAssassin31",
+     "traits": [
+      "Beauty",
+      "VTE_IronStomach",
+      "Gay",
+      "Isekai_Rank_D"
+     ]
+    },
+    {
+     "id": "Human99385",
+     "name": "Tycho Weiss",
+     "kindDef": "Jawa_Spawn_Taung",
+     "faction": null,
+     "xenotype": "RimMandrakeTaung",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "WoolNerf"
+      ],
+      [
+       "Apparel_Pants",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Dog"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Yippa"
+      ],
+      [
+       "Apparel_Parka",
+       "OuterRim_Durafiber"
+      ]
+     ],
+     "childhood": "VBE_EldestCaretaker",
+     "adulthood": "Actor72",
+     "traits": [
+      "Isekai_CraftsmanSoul",
+      "HomoAce",
+      "Isekai_Rank_F",
+      "Isekai_MerchantEye"
+     ]
+    },
+    {
+     "id": "Human99391",
+     "name": "Daniela Ben\u00edtez",
+     "kindDef": "Jawa_Spawn_Taung",
+     "faction": null,
+     "xenotype": "RimMandrakeTaung",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Apparel_Tunic",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "Leather_Fox"
+      ],
+      [
+       "VAE_Apparel_Tunic",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Nerf"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "DevilstrandCloth"
+      ],
+      [
+       "Apparel_Parka",
+       "OuterRim_Durafiber"
+      ]
+     ],
+     "childhood": "StoryWriter67",
+     "adulthood": "VBE_AquaponicWorker",
+     "traits": [
+      "Small",
+      "Kind",
+      "BodyPurist",
+      "Gay",
+      "Isekai_Rank_A",
+      "Isekai_CraftsmanSoul"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_Mimbanese": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Mimbanese in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99397",
+      "name": "Makar",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeMimbanese",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99402",
+      "name": "Lozano",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeMimbanese",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99407",
+      "name": "Cork",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeMimbanese",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99412",
+      "name": "Malone",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeMimbanese",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99418",
+      "name": "Dunerat",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeMimbanese",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99397",
+     "name": "Makar Chang",
+     "kindDef": "Jawa_Spawn_Mimbanese",
+     "faction": null,
+     "xenotype": "RimMandrakeMimbanese",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Leather_Yippa"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Plain"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Insectile"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "BMT_MoonlessSilk"
+      ]
+     ],
+     "childhood": "VBE_TombMaker",
+     "adulthood": "VBE_IndustrialSoldier",
+     "traits": [
+      "Tough",
+      "QuickSleeper",
+      "NightOwl",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99402",
+     "name": "Naoki Lozano",
+     "kindDef": "Jawa_Spawn_Mimbanese",
+     "faction": null,
+     "xenotype": "RimMandrakeMimbanese",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Cloth"
+      ],
+      [
+       "Apparel_Pants",
+       "WoolMastmot"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Giantala"
+      ],
+      [
+       "Apparel_Parka",
+       "OuterRim_Durafiber"
+      ]
+     ],
+     "childhood": "VBE_Rudie",
+     "adulthood": "Hunter89",
+     "traits": [
+      "Nimble",
+      "DislikesWomen",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_C"
+     ]
+    },
+    {
+     "id": "Human99407",
+     "name": "Courtney 'Cork' Cogens",
+     "kindDef": "Jawa_Spawn_Mimbanese",
+     "faction": null,
+     "xenotype": "RimMandrakeMimbanese",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Leather_Zarander"
+      ],
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "BiomesCore_CrabShell"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_SmallDino"
+      ]
+     ],
+     "childhood": "VBE_ChildSoldier",
+     "adulthood": "Drifter67",
+     "traits": [
+      "RT_Composed",
+      "HomoAce",
+      "Ascetic",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99412",
+     "name": "Klara Malone",
+     "kindDef": "Jawa_Spawn_Mimbanese",
+     "faction": null,
+     "xenotype": "RimMandrakeMimbanese",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Leather_Saurian"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_ReptoFur"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Megasquid"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Bardelot"
+      ],
+      [
+       "Apparel_Parka",
+       "Cloth"
+      ]
+     ],
+     "childhood": "OrganFarm67",
+     "adulthood": null,
+     "traits": [
+      "NaturalMood",
+      "Isekai_CursedLuck",
+      "Straight",
+      "Ascetic",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99418",
+     "name": "Kashiyu 'Dunerat' Kouseki",
+     "kindDef": "Jawa_Spawn_Mimbanese",
+     "faction": null,
+     "xenotype": "RimMandrakeMimbanese",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Leather_Giantala"
+      ],
+      [
+       "Apparel_Pants",
+       "Synthread"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_GuineaPig"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Dread"
+      ]
+     ],
+     "childhood": "FireKeeper44",
+     "adulthood": "Tamer79",
+     "traits": [
+      "Ascetic",
+      "Gay",
+      "Isekai_Rank_E"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_Zygerrian": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Zygerrian in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99423",
+      "name": "Squirt",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeZygerrian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99427",
+      "name": "Dennis",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeZygerrian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99429",
+      "name": "Alec",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeZygerrian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99433",
+      "name": "Mitsuya",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeZygerrian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99438",
+      "name": "Tom",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeZygerrian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99423",
+     "name": "Freddie 'Squirt' Durham",
+     "kindDef": "Jawa_Spawn_Zygerrian",
+     "faction": null,
+     "xenotype": "RimMandrakeZygerrian",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "MA_Leather_Gnaut"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Wolf"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Toraton"
+      ]
+     ],
+     "childhood": "VBE_JuniorJeweler",
+     "adulthood": "LivestockFarmer8",
+     "traits": [
+      "VTE_AnimalHater",
+      "Isekai_Brilliant",
+      "VeryUgly",
+      "Bisexual",
+      "Isekai_Rank_F",
+      "Isekai_PowerSpike"
+     ]
+    },
+    {
+     "id": "Human99427",
+     "name": "Dennis Richtarski",
+     "kindDef": "Jawa_Spawn_Zygerrian",
+     "faction": null,
+     "xenotype": "RimMandrakeZygerrian",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "GigantelopeWool"
+      ]
+     ],
+     "childhood": "MonkeyChild67",
+     "adulthood": "Streamer52",
+     "traits": [
+      "RT_Rowdy",
+      "VTE_Kleptomaniac",
+      "Bisexual",
+      "Isekai_Rank_B"
+     ]
+    },
+    {
+     "id": "Human99429",
+     "name": "Alec Birchall",
+     "kindDef": "Jawa_Spawn_Zygerrian",
+     "faction": null,
+     "xenotype": "RimMandrakeZygerrian",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Apparel_Tunic",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "Leather_Reptomammal"
+      ],
+      [
+       "VAE_Apparel_Tunic",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "MA_Leather_Hellboar"
+      ]
+     ],
+     "childhood": "VBE_StrangeChild",
+     "adulthood": null,
+     "traits": [
+      "Psychopath",
+      "Isekai_Enlightened",
+      "RT_Inefficient",
+      "Gay",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99433",
+     "name": "Yiyang 'Mitsuya' Jiang",
+     "kindDef": "Jawa_Spawn_Zygerrian",
+     "faction": null,
+     "xenotype": "RimMandrakeZygerrian",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "KOTOR_FabricArmorweave"
+      ],
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Nerf"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Bardelot"
+      ]
+     ],
+     "childhood": "TransferStudent10",
+     "adulthood": "Politician57",
+     "traits": [
+      "RT_Inquisitive",
+      "GreatMemory",
+      "VTE_BigBoned",
+      "Bisexual",
+      "Isekai_Rank_D",
+      "Isekai_Undying"
+     ]
+    },
+    {
+     "id": "Human99438",
+     "name": "Tom Bates",
+     "kindDef": "Jawa_Spawn_Zygerrian",
+     "faction": null,
+     "xenotype": "RimMandrakeZygerrian",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "MA_WorhinWool"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Crustapod"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Gigantelope"
+      ]
+     ],
+     "childhood": "VBE_ForgottenChild",
+     "adulthood": null,
+     "traits": [
+      "Tough",
+      "RT_Efficient",
+      "Gay",
+      "Isekai_Rank_F"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_Lasat": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Lasat in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99442",
+      "name": "Samo",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeLasat",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99446",
+      "name": "Bradford",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeLasat",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99450",
+      "name": "Syl",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeLasat",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99454",
+      "name": "Dumbo",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeLasat",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99458",
+      "name": "Suarez",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeLasat",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99442",
+     "name": "Samuel 'Samo' O'Donnell",
+     "kindDef": "Jawa_Spawn_Lasat",
+     "faction": null,
+     "xenotype": "RimMandrakeLasat",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Cloth"
+      ],
+      [
+       "Apparel_Pants",
+       "WoolCoarse"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Giantala"
+      ]
+     ],
+     "childhood": "REBC121",
+     "adulthood": "Recruiter14",
+     "traits": [
+      "goodanimals",
+      "Straight",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99446",
+     "name": "Manabu Bradford",
+     "kindDef": "Jawa_Spawn_Lasat",
+     "faction": null,
+     "xenotype": "RimMandrakeLasat",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "Apparel_Pants",
+       "WoolSheep"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Reptavian"
+      ]
+     ],
+     "childhood": "CaveworldTender26",
+     "adulthood": "SpaceMarine16",
+     "traits": [
+      "Undergrounder",
+      "DislikesWomen",
+      "VTE_Workaholic",
+      "Bisexual",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99450",
+     "name": "Sylla 'Syl' Graardor",
+     "kindDef": "Jawa_Spawn_Lasat",
+     "faction": null,
+     "xenotype": "RimMandrakeLasat",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "DevilstrandCloth"
+      ],
+      [
+       "Apparel_Pants",
+       "DevilstrandCloth"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_ReptoFur"
+      ]
+     ],
+     "childhood": "VBE_JuniorJeweler",
+     "adulthood": "PlankCutter72",
+     "traits": [
+      "Isekai_Prodigy",
+      "DrugDesire",
+      "VTE_HeatInclined",
+      "Bisexual",
+      "Isekai_Rank_F",
+      "Isekai_PowerSpike"
+     ]
+    },
+    {
+     "id": "Human99454",
+     "name": "MJ 'Dumbo' Berger",
+     "kindDef": "Jawa_Spawn_Lasat",
+     "faction": null,
+     "xenotype": "RimMandrakeLasat",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "Apparel_BasicShirt",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "WoolSheep"
+      ],
+      [
+       "Apparel_BasicShirt",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "BMT_WeakChitin"
+      ]
+     ],
+     "childhood": "VBE_JungleScout",
+     "adulthood": "Herder33",
+     "traits": [
+      "Nerves",
+      "Transhumanist",
+      "HomoAce",
+      "Isekai_Rank_F",
+      "Isekai_NaturalTalent"
+     ]
+    },
+    {
+     "id": "Human99458",
+     "name": "Rene Suarez",
+     "kindDef": "Jawa_Spawn_Lasat",
+     "faction": null,
+     "xenotype": "RimMandrakeLasat",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "AM_AramidCloth"
+      ],
+      [
+       "Apparel_Pants",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Felinoid"
+      ]
+     ],
+     "childhood": "Mute34",
+     "adulthood": "VQE_FieldRepairTech04",
+     "traits": [
+      "Isekai_GlassCannon",
+      "Straight",
+      "Isekai_Rank_F"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_Muun": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Muun in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99462",
+      "name": "Coby",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeMuun",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99466",
+      "name": "Cassie",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeMuun",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99480",
+      "name": "Mac",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeMuun",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99483",
+      "name": "Jones",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeMuun",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99488",
+      "name": "Smelly",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeMuun",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99462",
+     "name": "Coby Burke",
+     "kindDef": "Jawa_Spawn_Muun",
+     "faction": null,
+     "xenotype": "RimMandrakeMuun",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Apparel_Tunic",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Apparel_Tunic",
+       "BMT_WeakChitin"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Rabbuck"
+      ]
+     ],
+     "childhood": "VBE_Bioweapon",
+     "adulthood": "Slaughterer58",
+     "traits": [
+      "Psychopath",
+      "Straight",
+      "Delicate",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99466",
+     "name": "Cassandra 'Cassie' Craig",
+     "kindDef": "Jawa_Spawn_Muun",
+     "faction": null,
+     "xenotype": "RimMandrakeMuun",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Leather_Bardelot"
+      ],
+      [
+       "Apparel_Pants",
+       "BMT_WeakChitin"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Patch"
+      ]
+     ],
+     "childhood": "REBC121",
+     "adulthood": "SH_MED_MedievalMason",
+     "traits": [
+      "VTE_HeatInclined",
+      "Bisexual",
+      "Delicate",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99480",
+     "name": "Cassian 'Mac' MacGerailt",
+     "kindDef": "Jawa_Spawn_Muun",
+     "faction": null,
+     "xenotype": "RimMandrakeMuun",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "BMT_WeakChitin"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Patch"
+      ]
+     ],
+     "childhood": "VBE_StorytellersKin",
+     "adulthood": null,
+     "traits": [
+      "RT_HeatIntolerant",
+      "DrugDesire",
+      "ShootingAccuracy",
+      "Bisexual",
+      "Delicate",
+      "Isekai_Rank_C"
+     ]
+    },
+    {
+     "id": "Human99483",
+     "name": "Celia Jones",
+     "kindDef": "Jawa_Spawn_Muun",
+     "faction": null,
+     "xenotype": "RimMandrakeMuun",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Leather_Light"
+      ],
+      [
+       "Apparel_Pants",
+       "BMT_SpiderSilk"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Amaro"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Cloth"
+      ]
+     ],
+     "childhood": "VBE_ForgottenChild",
+     "adulthood": "VBE_Demoscener",
+     "traits": [
+      "Nerves",
+      "RT_Abstinent",
+      "VTE_AnimalLover",
+      "Gay",
+      "Delicate",
+      "Isekai_Rank_D"
+     ]
+    },
+    {
+     "id": "Human99488",
+     "name": "Danil 'Smelly' Blackwell",
+     "kindDef": "Jawa_Spawn_Muun",
+     "faction": null,
+     "xenotype": "RimMandrakeMuun",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Wolf"
+      ]
+     ],
+     "childhood": "IndustrialOrphan13",
+     "adulthood": "VBE_DeposedRoyalty",
+     "traits": [
+      "Nerves",
+      "VTE_DrunkenMaster",
+      "Gay",
+      "Delicate",
+      "Isekai_Rank_C"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_Ortolan": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Ortolan in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99491",
+      "name": "Emi",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeOrtolan",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99496",
+      "name": "Wikol",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeOrtolan",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99499",
+      "name": "Kyle",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeOrtolan",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99505",
+      "name": "Bomba",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeOrtolan",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99509",
+      "name": "Devin",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeOrtolan",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99491",
+     "name": "Emi Moreno",
+     "kindDef": "Jawa_Spawn_Ortolan",
+     "faction": null,
+     "xenotype": "RimMandrakeOrtolan",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Cloth"
+      ],
+      [
+       "Apparel_Pants",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Reptavian"
+      ],
+      [
+       "Apparel_Parka",
+       "WoolMegasloth"
+      ]
+     ],
+     "childhood": "MusicalKid86",
+     "adulthood": null,
+     "traits": [
+      "Isekai_Brilliant",
+      "VTE_Gastronomist",
+      "Bisexual",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99496",
+     "name": "Partin 'Wikol' Mukan",
+     "kindDef": "Jawa_Spawn_Ortolan",
+     "faction": null,
+     "xenotype": "RimMandrakeOrtolan",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Nerf"
+      ]
+     ],
+     "childhood": "REBC119",
+     "adulthood": null,
+     "traits": [
+      "RT_ChronicallyIll",
+      "Transhumanist",
+      "Straight",
+      "Isekai_Rank_B"
+     ]
+    },
+    {
+     "id": "Human99499",
+     "name": "Kyle Mueller",
+     "kindDef": "Jawa_Spawn_Ortolan",
+     "faction": null,
+     "xenotype": "RimMandrakeOrtolan",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Leather_Zarander"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Toraton"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Gigantelope"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "BMT_BatWool"
+      ],
+      [
+       "Apparel_Parka",
+       "OuterRim_Durafiber"
+      ]
+     ],
+     "childhood": "RBM_Roamer",
+     "adulthood": "Counselor26",
+     "traits": [
+      "VTE_Snob",
+      "Passioned_Learning",
+      "SpeedOffset",
+      "Straight",
+      "Isekai_Rank_D",
+      "Isekai_MerchantEye"
+     ]
+    },
+    {
+     "id": "Human99505",
+     "name": "Korwal 'Bomba' Ferrara",
+     "kindDef": "Jawa_Spawn_Ortolan",
+     "faction": null,
+     "xenotype": "RimMandrakeOrtolan",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Leather_Giantala"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Zarander"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Toraton"
+      ]
+     ],
+     "childhood": "DiplomatsChild97",
+     "adulthood": "WhiteHatHacker82",
+     "traits": [
+      "Delicate",
+      "RT_Restless",
+      "Isekai_CraftsmanSoul",
+      "Bisexual",
+      "Isekai_Rank_C"
+     ]
+    },
+    {
+     "id": "Human99509",
+     "name": "Devin Star",
+     "kindDef": "Jawa_Spawn_Ortolan",
+     "faction": null,
+     "xenotype": "RimMandrakeOrtolan",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "WoolNerf"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Tough"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Light"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "DA_Leather_Karabal"
+      ]
+     ],
+     "childhood": "ApocalypseSurvivor23",
+     "adulthood": "HumanComputer83",
+     "traits": [
+      "Manipulative",
+      "RT_Inquisitive",
+      "Gay",
+      "Isekai_Rank_F",
+      "Isekai_CursedLuck"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_Nelvaanian": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Nelvaanian in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99514",
+      "name": "Eddy",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeNelvaanian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99520",
+      "name": "Emers",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeNelvaanian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99524",
+      "name": "Luna",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeNelvaanian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99528",
+      "name": "Stephanie",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeNelvaanian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99532",
+      "name": "Baker",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeNelvaanian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99514",
+     "name": "Edgar 'Eddy' Deschle",
+     "kindDef": "Jawa_Spawn_Nelvaanian",
+     "faction": null,
+     "xenotype": "RimMandrakeNelvaanian",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "MA_Leather_Gnaut"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Zarander"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "DA_Leather_Troll"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Cloth"
+      ],
+      [
+       "Apparel_Parka",
+       "Leather_Reptomammal"
+      ]
+     ],
+     "childhood": "VBE_GiftedBurnout",
+     "adulthood": "VBE_LighthouseKeeper",
+     "traits": [
+      "TooSmart",
+      "VTE_AbsentMinded",
+      "Straight",
+      "Ascetic",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99520",
+     "name": "Steven Emers",
+     "kindDef": "Jawa_Spawn_Nelvaanian",
+     "faction": null,
+     "xenotype": "RimMandrakeNelvaanian",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Leather_Megasquid"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Gigantelope"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Dog"
+      ]
+     ],
+     "childhood": "MedicalAssistant12",
+     "adulthood": "QuarryWorker29",
+     "traits": [
+      "RT_Frail",
+      "HeteroAce",
+      "Ascetic",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99524",
+     "name": "Estelle Luna",
+     "kindDef": "Jawa_Spawn_Nelvaanian",
+     "faction": null,
+     "xenotype": "RimMandrakeNelvaanian",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Apparel_Tunic",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Apparel_Tunic",
+       "BMT_WeakChitin"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Mammavian"
+      ]
+     ],
+     "childhood": "Bookworm19",
+     "adulthood": "Framer37",
+     "traits": [
+      "VTE_Gastronomist",
+      "VTE_Wanderlust",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99528",
+     "name": "Stephanie Thomas",
+     "kindDef": "Jawa_Spawn_Nelvaanian",
+     "faction": null,
+     "xenotype": "RimMandrakeNelvaanian",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Bird"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "BMT_WeakChitin"
+      ]
+     ],
+     "childhood": "Hideaway7",
+     "adulthood": "Weaver63",
+     "traits": [
+      "Isekai_PowerSpike",
+      "Isekai_MerchantEye",
+      "VTE_BigBoned",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99532",
+     "name": "Tony Baker",
+     "kindDef": "Jawa_Spawn_Nelvaanian",
+     "faction": null,
+     "xenotype": "RimMandrakeNelvaanian",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Leather_Reptavian"
+      ],
+      [
+       "Apparel_Pants",
+       "DA_WoolMuffton"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_SoftFur"
+      ],
+      [
+       "Apparel_Parka",
+       "Leather_Light"
+      ]
+     ],
+     "childhood": "SicklyChild55",
+     "adulthood": "SH_MED_MedievalMason",
+     "traits": [
+      "VTE_Lush",
+      "goodplants",
+      "Nerves",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_E",
+      "Isekai_Resilient"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_SithK": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_SithK in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99538",
+      "name": "Thesa",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeSithKissaiPureblood",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99543",
+      "name": "Onesan",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeSithKissaiPureblood",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99546",
+      "name": "Flebe",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeSithKissaiPureblood",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99551",
+      "name": "Lutz",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeSithKissaiPureblood",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99555",
+      "name": "Ira",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeSithKissaiPureblood",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99538",
+     "name": "Theresa 'Thesa' Spees",
+     "kindDef": "Jawa_Spawn_SithK",
+     "faction": null,
+     "xenotype": "RimMandrakeSithKissaiPureblood",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "KOTOR_FabricArmorweave"
+      ],
+      [
+       "Apparel_Pants",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Light"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "OuterRim_Durafiber"
+      ]
+     ],
+     "childhood": "VBE_ClonedHeir",
+     "adulthood": "VBE_Translator",
+     "traits": [
+      "Brawler",
+      "RT_Ravenous",
+      "Straight",
+      "Isekai_Rank_D"
+     ]
+    },
+    {
+     "id": "Human99543",
+     "name": "Ryoko 'Onesan' Minese",
+     "kindDef": "Jawa_Spawn_SithK",
+     "faction": null,
+     "xenotype": "RimMandrakeSithKissaiPureblood",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "AG_Ultima"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Bardelot"
+      ]
+     ],
+     "childhood": "StreetUrchin74",
+     "adulthood": "SpaceMerchant97",
+     "traits": [
+      "VTE_Workaholic",
+      "Bisexual",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99546",
+     "name": "Flebe Tyronian",
+     "kindDef": "Jawa_Spawn_SithK",
+     "faction": null,
+     "xenotype": "RimMandrakeSithKissaiPureblood",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Leather_Wampa"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_ReptoFur"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Zarander"
+      ],
+      [
+       "Apparel_Parka",
+       "OuterRim_Durafiber"
+      ]
+     ],
+     "childhood": "AngryStudent88",
+     "adulthood": "MadAccountant61",
+     "traits": [
+      "DislikesWomen",
+      "Straight",
+      "Isekai_Rank_C",
+      "Isekai_ShadowStep"
+     ]
+    },
+    {
+     "id": "Human99551",
+     "name": "Tatyana Lutz",
+     "kindDef": "Jawa_Spawn_SithK",
+     "faction": null,
+     "xenotype": "RimMandrakeSithKissaiPureblood",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Leather_Patch"
+      ],
+      [
+       "Apparel_Pants",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Bardelot"
+      ]
+     ],
+     "childhood": "ShopKid36",
+     "adulthood": "Hunter89",
+     "traits": [
+      "RT_Clumsy",
+      "Bisexual",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99555",
+     "name": "Ira Fuse",
+     "kindDef": "Jawa_Spawn_SithK",
+     "faction": null,
+     "xenotype": "RimMandrakeSithKissaiPureblood",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Apparel_Tunic",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Apparel_Tunic",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Nerf"
+      ]
+     ],
+     "childhood": "VBE_YoungAstronomer",
+     "adulthood": null,
+     "traits": [
+      "RT_Hardy",
+      "Isekai_GlassCannon",
+      "Gay",
+      "Isekai_Rank_E"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_SithM": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_SithM in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99559",
+      "name": "Ronja",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeSithMassassi",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99564",
+      "name": "Evgeny",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeSithMassassi",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99570",
+      "name": "Nicole",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeSithMassassi",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99574",
+      "name": "Jewels",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeSithMassassi",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99578",
+      "name": "Draper",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeSithMassassi",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99559",
+     "name": "Ronja Schwarz",
+     "kindDef": "Jawa_Spawn_SithM",
+     "faction": null,
+     "xenotype": "RimMandrakeSithMassassi",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "BiomesCore_GreenChitin"
+      ],
+      [
+       "Apparel_Pants",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Tough"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Megasquid"
+      ]
+     ],
+     "childhood": "VBE_GiftedBurnout",
+     "adulthood": "VBE_StarvingArtist",
+     "traits": [
+      "TooSmart",
+      "Kind",
+      "Straight",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99564",
+     "name": "Evgeny Garrison",
+     "kindDef": "Jawa_Spawn_SithM",
+     "faction": null,
+     "xenotype": "RimMandrakeSithMassassi",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots",
+      "VAE_Handwear_Gloves",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Leather_Rabbuck"
+      ],
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "DA_Leather_Karabal"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Insectile"
+      ],
+      [
+       "Apparel_Parka",
+       "Cloth"
+      ]
+     ],
+     "childhood": "MedievalSlave49",
+     "adulthood": "VBE_Marauder",
+     "traits": [
+      "RT_HeatIntolerant",
+      "RT_Gifted",
+      "VTE_AnimalLover",
+      "Bisexual",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99570",
+     "name": "Nicole Faulkner",
+     "kindDef": "Jawa_Spawn_SithM",
+     "faction": null,
+     "xenotype": "RimMandrakeSithMassassi",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "Leather_Mammavian"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Zarander"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Saurian"
+      ]
+     ],
+     "childhood": "UrbworldUrchin61",
+     "adulthood": "VBE_CannibalisticSurgeon",
+     "traits": [
+      "Cannibal",
+      "GreatMemory",
+      "RT_ColdIntolerant",
+      "Gay",
+      "Isekai_Rank_D"
+     ]
+    },
+    {
+     "id": "Human99574",
+     "name": "Julian 'Jewels' Carol",
+     "kindDef": "Jawa_Spawn_SithM",
+     "faction": null,
+     "xenotype": "RimMandrakeSithMassassi",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Cloth"
+      ],
+      [
+       "Apparel_Pants",
+       "WoolMastmot"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Insectile"
+      ]
+     ],
+     "childhood": "UrbworldUrchin61",
+     "adulthood": "SpaceTactician28",
+     "traits": [
+      "RT_Gifted",
+      "VTE_CouchPotato",
+      "RT_Coordinated",
+      "Bisexual",
+      "Isekai_Rank_F",
+      "Isekai_SilverTongue"
+     ]
+    },
+    {
+     "id": "Human99578",
+     "name": "Chris Draper",
+     "kindDef": "Jawa_Spawn_SithM",
+     "faction": null,
+     "xenotype": "RimMandrakeSithMassassi",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "BMT_WeakChitin"
+      ]
+     ],
+     "childhood": "ComputerGeek62",
+     "adulthood": "Technician9",
+     "traits": [
+      "VTE_AnimalLover",
+      "Ascetic",
+      "Bisexual",
+      "Isekai_Rank_D"
+     ]
+    }
+   ]
+  },
+  "Jawa_Spawn_Yoder": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Spawn_Yoder in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99581",
+      "name": "Gitta",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeYoderForceGremlin",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99585",
+      "name": "Lowe",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeYoderForceGremlin",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99590",
+      "name": "Big Red",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeYoderForceGremlin",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99594",
+      "name": "Jerk",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeYoderForceGremlin",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99597",
+      "name": "Kay",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeYoderForceGremlin",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99581",
+     "name": "Gitta McMahon",
+     "kindDef": "Jawa_Spawn_Yoder",
+     "faction": null,
+     "xenotype": "RimMandrakeYoderForceGremlin",
+     "equipment": [],
+     "apparel": [
+      "VAE_Apparel_Tunic",
+      "Apparel_Pants",
+      "VAE_Footwear_Boots"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_Tunic",
+       "Cloth"
+      ],
+      [
+       "Apparel_Pants",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Footwear_Boots",
+       "Leather_Megasquid"
+      ]
+     ],
+     "childhood": "RBM_WildBeast",
+     "adulthood": "VBE_ProsecutedWarVeteran",
+     "traits": [
+      "SlowLearner",
+      "Immunity",
+      "Gay",
+      "Kind",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99585",
+     "name": "Nadezhda Lowe",
+     "kindDef": "Jawa_Spawn_Yoder",
+     "faction": null,
+     "xenotype": "RimMandrakeYoderForceGremlin",
+     "equipment": [],
+     "apparel": [
+      "Apparel_BasicShirt",
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes",
+      "VAE_Handwear_Gloves"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_BasicShirt",
+       "DA_WoolMuffton"
+      ],
+      [
+       "Apparel_Pants",
+       "Leather_Reptomammal"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Toraton"
+      ],
+      [
+       "VAE_Handwear_Gloves",
+       "Leather_Toraton"
+      ]
+     ],
+     "childhood": "VBE_TroupeChild",
+     "adulthood": "Housemate8",
+     "traits": [
+      "Isekai_Mighty",
+      "Bisexual",
+      "Kind",
+      "Isekai_Rank_D"
+     ]
+    },
+    {
+     "id": "Human99590",
+     "name": "Jackson 'Big Red' Hightower",
+     "kindDef": "Jawa_Spawn_Yoder",
+     "faction": null,
+     "xenotype": "RimMandrakeYoderForceGremlin",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "Apparel_BasicShirt",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "KOTOR_FabricArmorweave"
+      ],
+      [
+       "Apparel_BasicShirt",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Nerf"
+      ]
+     ],
+     "childhood": "ConstructionGrunt84",
+     "adulthood": "MilitaryInventor35",
+     "traits": [
+      "VTE_RefinedPalate",
+      "Bisexual",
+      "Kind",
+      "Isekai_Rank_C"
+     ]
+    },
+    {
+     "id": "Human99594",
+     "name": "Max 'Jerk' Hancock",
+     "kindDef": "Jawa_Spawn_Yoder",
+     "faction": null,
+     "xenotype": "RimMandrakeYoderForceGremlin",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Footwear_Shoes"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "Cloth"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Saurian"
+      ]
+     ],
+     "childhood": "REBC119",
+     "adulthood": "VBE_Sommelier",
+     "traits": [
+      "Gourmand",
+      "Pyromaniac",
+      "NaturalMood",
+      "HomoAce",
+      "Kind",
+      "Isekai_Rank_B"
+     ]
+    },
+    {
+     "id": "Human99597",
+     "name": "Kaylee 'Kay' Erickson",
+     "kindDef": "Jawa_Spawn_Yoder",
+     "faction": null,
+     "xenotype": "RimMandrakeYoderForceGremlin",
+     "equipment": [],
+     "apparel": [
+      "Apparel_Pants",
+      "VAE_Apparel_Tunic",
+      "VAE_Footwear_Shoes",
+      "Apparel_Parka"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_Pants",
+       "Leather_Gigantelope"
+      ],
+      [
+       "VAE_Apparel_Tunic",
+       "Leather_Roggwart"
+      ],
+      [
+       "VAE_Footwear_Shoes",
+       "Leather_Worm"
+      ],
+      [
+       "Apparel_Parka",
+       "OuterRim_Durafiber"
+      ]
+     ],
+     "childhood": "StoryWriter67",
+     "adulthood": "SH_MED_MedievalAlchemist",
+     "traits": [
+      "VTE_Groundbreaker",
+      "Trustworthy",
+      "VTE_Coward",
+      "Bisexual",
+      "Kind",
+      "Isekai_Rank_E"
+     ]
+    }
+   ]
+  },
+  "Jawa_Gamorrean_Guard": {
+   "faction": "Jawa_HuttCartel",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Gamorrean_Guard in faction Jawa_HuttCartel.",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99602",
+      "name": "Kit",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "Jawa_Xeno_Gamorrean",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99606",
+      "name": "Mal",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "Jawa_Xeno_Gamorrean",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99612",
+      "name": "JelirthThirth",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "Jawa_Xeno_Gamorrean",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99616",
+      "name": "Us",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "Jawa_Xeno_Gamorrean",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99641",
+      "name": "Moz",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "Jawa_Xeno_Gamorrean",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 5,
+   "bare": 0,
+   "pawns": [
+    {
+     "id": "Human99602",
+     "name": "Holly 'Kit' Kettu",
+     "kindDef": "Jawa_Gamorrean_Guard",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "Jawa_Xeno_Gamorrean",
+     "equipment": [
+      "guy762_vaxe"
+     ],
+     "apparel": [
+      "guy762_Clothing_gamorrean",
+      "guy762_Hat_gamorrean"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Clothing_gamorrean",
+       "Leather_Jerbal"
+      ],
+      [
+       "guy762_Hat_gamorrean",
+       "Leather_Giantala"
+      ]
+     ],
+     "childhood": "ReclusiveProdigy96",
+     "adulthood": "FerventResearcher72",
+     "traits": [
+      "TooSmart",
+      "Transhumanist",
+      "Straight",
+      "Ascetic",
+      "Isekai_Rank_A",
+      "Isekai_IronWill"
+     ]
+    },
+    {
+     "id": "Human99606",
+     "name": "Darrien 'Mal' Maliphalo",
+     "kindDef": "Jawa_Gamorrean_Guard",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "Jawa_Xeno_Gamorrean",
+     "equipment": [
+      "guy762_vaxe"
+     ],
+     "apparel": [
+      "guy762_Clothing_gamorrean",
+      "guy762_Hat_gamorrean"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Clothing_gamorrean",
+       "Leather_Fox"
+      ],
+      [
+       "guy762_Hat_gamorrean",
+       "Leather_Mammavian"
+      ]
+     ],
+     "childhood": "WealthyStudent59",
+     "adulthood": "Roboticist41",
+     "traits": [
+      "VTE_CatPerson",
+      "Isekai_Mighty",
+      "Nerves",
+      "Straight",
+      "Ascetic",
+      "Isekai_Rank_E",
+      "Isekai_Enlightened"
+     ]
+    },
+    {
+     "id": "Human99612",
+     "name": "Wuck JelirthThirth",
+     "kindDef": "Jawa_Gamorrean_Guard",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "Jawa_Xeno_Gamorrean",
+     "equipment": [
+      "guy762_vglaive"
+     ],
+     "apparel": [
+      "guy762_Clothing_gamorrean",
+      "guy762_Hat_gamorrean"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Clothing_gamorrean",
+       "Leather_Pig"
+      ],
+      [
+       "guy762_Hat_gamorrean",
+       "Leather_Giantala"
+      ]
+     ],
+     "childhood": "MusicalKid86",
+     "adulthood": "VBE_ForsakenPatriot",
+     "traits": [
+      "Nimble",
+      "Isekai_Mighty",
+      "RT_Persuasive",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_D",
+      "Isekai_Genius"
+     ]
+    },
+    {
+     "id": "Human99616",
+     "name": "Zinez 'Us' XisreOgsho",
+     "kindDef": "Jawa_Gamorrean_Guard",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "Jawa_Xeno_Gamorrean",
+     "equipment": [
+      "guy762_vglaive"
+     ],
+     "apparel": [
+      "guy762_Clothing_gamorrean",
+      "AM_LassoCloth",
+      "guy762_Hat_gamorrean"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Clothing_gamorrean",
+       "Leather_Reptomammal"
+      ],
+      [
+       "AM_LassoCloth",
+       null
+      ],
+      [
+       "guy762_Hat_gamorrean",
+       "BMT_CrystalChitin"
+      ]
+     ],
+     "childhood": "VBE_Rudie",
+     "adulthood": "Defector78",
+     "traits": [
+      "Nimble",
+      "Gay",
+      "Ascetic",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99641",
+     "name": "Moz Blerp",
+     "kindDef": "Jawa_Gamorrean_Guard",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "Jawa_Xeno_Gamorrean",
+     "equipment": [
+      "guy762_vglaive"
+     ],
+     "apparel": [
+      "guy762_Clothing_gamorrean",
+      "guy762_Hat_gamorrean"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Clothing_gamorrean",
+       "Leather_Yippa"
+      ],
+      [
+       "guy762_Hat_gamorrean",
+       "Leather_Saurian"
+      ]
+     ],
+     "childhood": "VBE_TombMaker",
+     "adulthood": null,
+     "traits": [
+      "Isekai_Mighty",
+      "Industriousness",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_F"
+     ]
+    }
+   ]
+  },
+  "Jawa_Gamorrean_Enforcer": {
+   "faction": "Jawa_HuttCartel",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Gamorrean_Enforcer in faction Jawa_HuttCartel.",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99645",
+      "name": "Druunfigh",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "Jawa_Xeno_Gamorrean",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99649",
+      "name": "JigibDelluc",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "Jawa_Xeno_Gamorrean",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99655",
+      "name": "Bla",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "Jawa_Xeno_Gamorrean",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99661",
+      "name": "Jif",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "Jawa_Xeno_Gamorrean",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99666",
+      "name": "Samantha",
+      "faction": "Jawa_HuttCartel",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "Jawa_Xeno_Gamorrean",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 4,
+   "bare": 1,
+   "pawns": [
+    {
+     "id": "Human99645",
+     "name": "Druunfigh Murgoff",
+     "kindDef": "Jawa_Gamorrean_Enforcer",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "Jawa_Xeno_Gamorrean",
+     "equipment": [],
+     "apparel": [
+      "guy762_Clothing_gamorrean",
+      "guy762_HvyArmor_gamorrean",
+      "guy762_Hat_gamorrean"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Clothing_gamorrean",
+       "Leather_Zarander"
+      ],
+      [
+       "guy762_HvyArmor_gamorrean",
+       null
+      ],
+      [
+       "guy762_Hat_gamorrean",
+       "Leather_Panthera"
+      ]
+     ],
+     "childhood": "WarRefugee51",
+     "adulthood": "Veterinarian99",
+     "traits": [
+      "NightOwl",
+      "Isekai_Brilliant",
+      "VTE_HeavySleeper",
+      "Gay",
+      "Ascetic",
+      "Isekai_Rank_D"
+     ]
+    },
+    {
+     "id": "Human99649",
+     "name": "Vrort JigibDelluc",
+     "kindDef": "Jawa_Gamorrean_Enforcer",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "Jawa_Xeno_Gamorrean",
+     "equipment": [
+      "guy762_vaxe"
+     ],
+     "apparel": [
+      "guy762_HvyArmor_gamorrean",
+      "guy762_Hat_gamorrean"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_HvyArmor_gamorrean",
+       null
+      ],
+      [
+       "guy762_Hat_gamorrean",
+       "Leather_Toraton"
+      ]
+     ],
+     "childhood": "REBC119",
+     "adulthood": "VBE_Bullleaper",
+     "traits": [
+      "Nimble",
+      "Nudist",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99655",
+     "name": "Tegber 'Bla' Vrenn",
+     "kindDef": "Jawa_Gamorrean_Enforcer",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "Jawa_Xeno_Gamorrean",
+     "equipment": [
+      "guy762_vglaive"
+     ],
+     "apparel": [
+      "guy762_Clothing_gamorrean",
+      "guy762_HvyArmor_gamorrean",
+      "guy762_Hat_gamorrean"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Clothing_gamorrean",
+       "Leather_Bantha"
+      ],
+      [
+       "guy762_HvyArmor_gamorrean",
+       null
+      ],
+      [
+       "guy762_Hat_gamorrean",
+       "Leather_Tough"
+      ]
+     ],
+     "childhood": "REBC119",
+     "adulthood": "SH_MED_MedievalCommander",
+     "traits": [
+      "Beauty",
+      "Isekai_HollowCore",
+      "SpeedOffset",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_E",
+      "Isekai_Mighty"
+     ]
+    },
+    {
+     "id": "Human99661",
+     "name": "Bafbraff 'Jif' UgshanPofbrorm",
+     "kindDef": "Jawa_Gamorrean_Enforcer",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "Jawa_Xeno_Gamorrean",
+     "equipment": [
+      "guy762_vglaive"
+     ],
+     "apparel": [
+      "guy762_Clothing_gamorrean",
+      "guy762_HvyArmor_gamorrean",
+      "guy762_Hat_gamorrean"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Clothing_gamorrean",
+       "DA_Leather_Drog"
+      ],
+      [
+       "guy762_HvyArmor_gamorrean",
+       null
+      ],
+      [
+       "guy762_Hat_gamorrean",
+       "Leather_Mammavian"
+      ]
+     ],
+     "childhood": "VBE_ChildSoldier",
+     "adulthood": null,
+     "traits": [
+      "VTE_Neat",
+      "Gay",
+      "Ascetic",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99666",
+     "name": "Samantha von Aachen",
+     "kindDef": "Jawa_Gamorrean_Enforcer",
+     "faction": "Jawa_HuttCartel",
+     "xenotype": "Jawa_Xeno_Gamorrean",
+     "equipment": [
+      "guy762_vaxe_hutt"
+     ],
+     "apparel": [
+      "guy762_Clothing_gamorrean",
+      "guy762_HvyArmor_gamorrean",
+      "guy762_Hat_gamorrean"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Clothing_gamorrean",
+       "DA_Leather_Troll"
+      ],
+      [
+       "guy762_HvyArmor_gamorrean",
+       null
+      ],
+      [
+       "guy762_Hat_gamorrean",
+       "Leather_Zarander"
+      ]
+     ],
+     "childhood": "DisplacedNoble67",
+     "adulthood": "Minister88",
+     "traits": [
+      "Industriousness",
+      "Isekai_CraftsmanSoul",
+      "VTE_IronStomach",
+      "Gay",
+      "Ascetic",
+      "Isekai_Rank_F"
+     ]
+    }
+   ]
+  },
+  "Jawa_Colonist": {
+   "faction": "player",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Colonist in faction PlayerColony.",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99672",
+      "name": "Cyrik",
+      "faction": "PlayerColony",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99686",
+      "name": "Lubov",
+      "faction": "PlayerColony",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99689",
+      "name": "Micro",
+      "faction": "PlayerColony",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99692",
+      "name": "Niklas",
+      "faction": "PlayerColony",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99695",
+      "name": "Yu",
+      "faction": "PlayerColony",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 0,
+   "bare": 5,
+   "pawns": [
+    {
+     "id": "Human99672",
+     "name": "Cyrik Duplantier",
+     "kindDef": "Jawa_Colonist",
+     "faction": "PlayerColony",
+     "xenotype": "MandrakeJawa",
+     "equipment": [],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "guy762_JawaHood"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "guy762_JawaHood",
+       null
+      ]
+     ],
+     "childhood": "MedievalSlave49",
+     "adulthood": "VBE_DrillOperator",
+     "traits": [
+      "VTE_DrunkenMaster",
+      "Jealous",
+      "Bisexual",
+      "Wimp",
+      "Isekai_Rank_E",
+      "Isekai_SilverTongue"
+     ]
+    },
+    {
+     "id": "Human99686",
+     "name": "Lubov Barber",
+     "kindDef": "Jawa_Colonist",
+     "faction": "PlayerColony",
+     "xenotype": "MandrakeJawa",
+     "equipment": [],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "guy762_JawaHood"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "guy762_JawaHood",
+       null
+      ]
+     ],
+     "childhood": "VBE_GeneticReincarnation",
+     "adulthood": "QuarryWorker29",
+     "traits": [
+      "RT_Ignorant",
+      "VTE_Desensitized",
+      "Isekai_NaturalTalent",
+      "Gay",
+      "Wimp",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99689",
+     "name": "Matthew 'Micro' Porter",
+     "kindDef": "Jawa_Colonist",
+     "faction": "PlayerColony",
+     "xenotype": "MandrakeJawa",
+     "equipment": [],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "guy762_JawaHood"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "guy762_JawaHood",
+       null
+      ]
+     ],
+     "childhood": "ShelterChild50",
+     "adulthood": "VBE_Dietetician",
+     "traits": [
+      "Gourmand",
+      "VTE_Snob",
+      "Gay",
+      "Wimp",
+      "Isekai_Rank_D",
+      "Isekai_SilverTongue"
+     ]
+    },
+    {
+     "id": "Human99692",
+     "name": "Niklas Fischer",
+     "kindDef": "Jawa_Colonist",
+     "faction": "PlayerColony",
+     "xenotype": "MandrakeJawa",
+     "equipment": [],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "guy762_JawaHood"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "guy762_JawaHood",
+       null
+      ]
+     ],
+     "childhood": "MercenaryRecruit18",
+     "adulthood": "Ranger6",
+     "traits": [
+      "Isekai_BerserkerBlood",
+      "RT_Efficient",
+      "VTE_MartialArtist",
+      "Bisexual",
+      "Wimp",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99695",
+     "name": "Sly Yu",
+     "kindDef": "Jawa_Colonist",
+     "faction": "PlayerColony",
+     "xenotype": "MandrakeJawa",
+     "equipment": [],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "guy762_JawaHood"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "guy762_JawaHood",
+       null
+      ]
+     ],
+     "childhood": "VBE_GiftedBurnout",
+     "adulthood": "Logger95",
+     "traits": [
+      "TooSmart",
+      "VTE_Squeamish",
+      "Bisexual",
+      "Wimp",
+      "Isekai_Rank_C"
+     ]
+    }
+   ]
+  },
+  "Jawa_Tribal_Scavenger": {
+   "faction": "TribeCivil",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Tribal_Scavenger in faction TribeCivil.",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99698",
+      "name": "Igor",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeNelvaanian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99704",
+      "name": "Fugly",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99710",
+      "name": "Marie",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99715",
+      "name": "Sky",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99720",
+      "name": "Teddy",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 5,
+   "bare": 0,
+   "pawns": [
+    {
+     "id": "Human99698",
+     "name": "Igor Cervantes",
+     "kindDef": "Jawa_Tribal_Scavenger",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeNelvaanian",
+     "equipment": [
+      "BMT_PustuleHornetStinger"
+     ],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "Apparel_WarVeil"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "Apparel_WarVeil",
+       "Cloth"
+      ]
+     ],
+     "childhood": "VBE_HerbalKin",
+     "adulthood": "Archer25",
+     "traits": [
+      "SpeedOffset",
+      "Recluse",
+      "Delicate",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_D",
+      "Isekai_HealerTouch"
+     ]
+    },
+    {
+     "id": "Human99704",
+     "name": "Galina 'Fugly' Arroyo",
+     "kindDef": "Jawa_Tribal_Scavenger",
+     "faction": "TribeCivil",
+     "xenotype": "MandrakeJawa",
+     "equipment": [
+      "SkalderTusk"
+     ],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "Apparel_WarVeil"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "Apparel_WarVeil",
+       "Silk"
+      ]
+     ],
+     "childhood": "ReclusiveChild81",
+     "adulthood": "Carver1",
+     "traits": [
+      "SpeedOffset",
+      "VTE_Insatiable",
+      "Gay",
+      "Wimp",
+      "Isekai_Rank_C"
+     ]
+    },
+    {
+     "id": "Human99710",
+     "name": "Marie Yearwood",
+     "kindDef": "Jawa_Tribal_Scavenger",
+     "faction": "TribeCivil",
+     "xenotype": "MandrakeJawa",
+     "equipment": [
+      "BMT_FungalMantisClaw"
+     ],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "Apparel_WarVeil"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "Apparel_WarVeil",
+       "Cloth"
+      ]
+     ],
+     "childhood": "Hideaway7",
+     "adulthood": "PlankCutter72",
+     "traits": [
+      "Isekai_AwakenedPotential",
+      "Bisexual",
+      "Wimp",
+      "Isekai_Rank_F",
+      "Isekai_BattleManiac"
+     ]
+    },
+    {
+     "id": "Human99715",
+     "name": "Haneul 'Sky' Lee",
+     "kindDef": "Jawa_Tribal_Scavenger",
+     "faction": "TribeCivil",
+     "xenotype": "MandrakeJawa",
+     "equipment": [
+      "SkalderTusk"
+     ],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "Apparel_WarVeil"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "Apparel_WarVeil",
+       "AG_Ultima"
+      ]
+     ],
+     "childhood": "Herder19",
+     "adulthood": "VBE_PathologicalLiar",
+     "traits": [
+      "DrugDesire",
+      "RT_Restless",
+      "RT_Rowdy",
+      "Bisexual",
+      "Wimp",
+      "Isekai_Rank_B"
+     ]
+    },
+    {
+     "id": "Human99720",
+     "name": "Teddy Davidson",
+     "kindDef": "Jawa_Tribal_Scavenger",
+     "faction": "TribeCivil",
+     "xenotype": "MandrakeJawa",
+     "equipment": [
+      "MA_GnautHorn"
+     ],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "Apparel_WarVeil"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "Apparel_WarVeil",
+       "GigantelopeWool"
+      ]
+     ],
+     "childhood": "AbandonedChild23",
+     "adulthood": "Healer46",
+     "traits": [
+      "Isekai_BattleManiac",
+      "Gourmand",
+      "Psychopath",
+      "Straight",
+      "Wimp",
+      "Isekai_Rank_F"
+     ]
+    }
+   ]
+  },
+  "Jawa_Tribal_Slinger": {
+   "faction": "TribeCivil",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Tribal_Slinger in faction TribeCivil.",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99726",
+      "name": "Dodo",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeKaleesh",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99733",
+      "name": "Addi",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTusken",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99739",
+      "name": "Brigitte",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99747",
+      "name": "Newton",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99754",
+      "name": "Embi",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTogorian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 5,
+   "bare": 0,
+   "pawns": [
+    {
+     "id": "Human99726",
+     "name": "Dorothee 'Dodo' Schwarz",
+     "kindDef": "Jawa_Tribal_Slinger",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeKaleesh",
+     "equipment": [
+      "VWE_Throwing_Knives"
+     ],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "guy762_JawaHood"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "guy762_JawaHood",
+       null
+      ]
+     ],
+     "childhood": "VBE_TombMaker",
+     "adulthood": "Warrior94",
+     "traits": [
+      "RT_Unconvincing",
+      "RT_Athletic",
+      "VTE_Technophobe",
+      "Straight",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99733",
+     "name": "Ada 'Addi' Marie",
+     "kindDef": "Jawa_Tribal_Slinger",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeTusken",
+     "equipment": [
+      "NerveSpiker"
+     ],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "guy762_JawaHood"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "guy762_JawaHood",
+       null
+      ]
+     ],
+     "childhood": "BuddingArtist44",
+     "adulthood": "Excavator55",
+     "traits": [
+      "Kleptomaniac",
+      "Beauty",
+      "Pyromaniac",
+      "Straight",
+      "Ascetic",
+      "Isekai_Rank_C"
+     ]
+    },
+    {
+     "id": "Human99739",
+     "name": "Brigitte Gaubert",
+     "kindDef": "Jawa_Tribal_Slinger",
+     "faction": "TribeCivil",
+     "xenotype": "MandrakeJawa",
+     "equipment": [
+      "NerveSpiker"
+     ],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "guy762_JawaHood"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "guy762_JawaHood",
+       null
+      ]
+     ],
+     "childhood": "TribeChild40",
+     "adulthood": "Healer46",
+     "traits": [
+      "DislikesMen",
+      "VTE_Groundbreaker",
+      "Straight",
+      "Wimp",
+      "Isekai_Rank_D"
+     ]
+    },
+    {
+     "id": "Human99747",
+     "name": "Newton Maynard",
+     "kindDef": "Jawa_Tribal_Slinger",
+     "faction": "TribeCivil",
+     "xenotype": "MandrakeJawa",
+     "equipment": [
+      "Bow_Short"
+     ],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "guy762_JawaHood"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "guy762_JawaHood",
+       null
+      ]
+     ],
+     "childhood": "VBE_ChildofTheAnimaTree",
+     "adulthood": "LoreKeeper51",
+     "traits": [
+      "PsychicSensitivity",
+      "Bisexual",
+      "Wimp",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99754",
+     "name": "Andy 'Embi' Neidorf",
+     "kindDef": "Jawa_Tribal_Slinger",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeTogorian",
+     "equipment": [
+      "Bow_Short"
+     ],
+     "apparel": [
+      "guy762_Robes_jawa",
+      "guy762_JawaHood"
+     ],
+     "apparelStuff": [
+      [
+       "guy762_Robes_jawa",
+       null
+      ],
+      [
+       "guy762_JawaHood",
+       null
+      ]
+     ],
+     "childhood": "VengefulChild43",
+     "adulthood": "Malingerer28",
+     "traits": [
+      "VTE_Snob",
+      "VTE_Neat",
+      "Bisexual",
+      "Isekai_Rank_D",
+      "Isekai_Enlightened"
+     ]
+    }
+   ]
+  },
+  "Jawa_Tribal_Elder": {
+   "faction": "TribeCivil",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Jawa_Tribal_Elder in faction TribeCivil.",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99760",
+      "name": "Leboy",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99767",
+      "name": "Toby",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeLasat",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99772",
+      "name": "Tendie",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99777",
+      "name": "Sun",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "MandrakeJawa",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99784",
+      "name": "Ramon",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTusken",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 5,
+   "bare": 0,
+   "pawns": [
+    {
+     "id": "Human99760",
+     "name": "David 'Leboy' Davy",
+     "kindDef": "Jawa_Tribal_Elder",
+     "faction": "TribeCivil",
+     "xenotype": "MandrakeJawa",
+     "equipment": [
+      "MA_AminoxHorn"
+     ],
+     "apparel": [
+      "Apparel_PlateArmor",
+      "Apparel_TribalHeaddress"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_PlateArmor",
+       "KOTOR_AlloyDurasteel"
+      ],
+      [
+       "Apparel_TribalHeaddress",
+       "DevilstrandCloth"
+      ]
+     ],
+     "childhood": "VBE_HerbalKin",
+     "adulthood": "Excavator55",
+     "traits": [
+      "RT_Abstinent",
+      "VTE_Desensitized",
+      "Bisexual",
+      "Wimp",
+      "Isekai_Rank_A",
+      "Isekai_Lucky"
+     ]
+    },
+    {
+     "id": "Human99767",
+     "name": "Toby Key",
+     "kindDef": "Jawa_Tribal_Elder",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeLasat",
+     "equipment": [
+      "MA_SivatheriumHorn"
+     ],
+     "apparel": [
+      "Apparel_PlateArmor",
+      "Apparel_TribalHeaddress"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_PlateArmor",
+       "Steel"
+      ],
+      [
+       "Apparel_TribalHeaddress",
+       "WoolMastmot"
+      ]
+     ],
+     "childhood": "FireKeeper44",
+     "adulthood": "Digger31",
+     "traits": [
+      "Brawler",
+      "Bisexual",
+      "Isekai_Rank_C"
+     ]
+    },
+    {
+     "id": "Human99772",
+     "name": "Justin 'Tendie' Patterson",
+     "kindDef": "Jawa_Tribal_Elder",
+     "faction": "TribeCivil",
+     "xenotype": "MandrakeJawa",
+     "equipment": [
+      "VWE_MeleeWeapon_Halberd"
+     ],
+     "apparel": [
+      "Apparel_PlateArmor",
+      "Apparel_TribalHeaddress"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_PlateArmor",
+       "Silver"
+      ],
+      [
+       "Apparel_TribalHeaddress",
+       "BMT_CrimsonSilk"
+      ]
+     ],
+     "childhood": "VBE_StorytellersKin",
+     "adulthood": "Excavator55",
+     "traits": [
+      "RT_EasilyAmused",
+      "Jealous",
+      "TorturedArtist",
+      "Bisexual",
+      "Wimp",
+      "Isekai_Rank_F"
+     ]
+    },
+    {
+     "id": "Human99777",
+     "name": "Minjun Sun",
+     "kindDef": "Jawa_Tribal_Elder",
+     "faction": "TribeCivil",
+     "xenotype": "MandrakeJawa",
+     "equipment": [
+      "MeleeWeapon_Spear"
+     ],
+     "apparel": [
+      "Apparel_PlateArmor",
+      "Apparel_TribalHeaddress"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_PlateArmor",
+       "Snailglass"
+      ],
+      [
+       "Apparel_TribalHeaddress",
+       "OuterRim_Durafiber"
+      ]
+     ],
+     "childhood": "VBE_TombMaker",
+     "adulthood": "VBE_Oracle",
+     "traits": [
+      "PsychicSensitivity",
+      "Isekai_SlowGrind",
+      "Gay",
+      "Wimp",
+      "Isekai_Rank_D"
+     ]
+    },
+    {
+     "id": "Human99784",
+     "name": "Ramon Tapia",
+     "kindDef": "Jawa_Tribal_Elder",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeTusken",
+     "equipment": [
+      "BMT_CaveSpiderHead"
+     ],
+     "apparel": [
+      "Apparel_PlateArmor",
+      "Apparel_TribalHeaddress"
+     ],
+     "apparelStuff": [
+      [
+       "Apparel_PlateArmor",
+       "Steel"
+      ],
+      [
+       "Apparel_TribalHeaddress",
+       "Cloth"
+      ]
+     ],
+     "childhood": "VBE_EldestCaretaker",
+     "adulthood": "Brave88",
+     "traits": [
+      "VTE_Rebel",
+      "Bisexual",
+      "Ascetic",
+      "Isekai_Rank_F"
+     ]
+    }
+   ]
+  },
+  "Mech_Pikeman": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Mech_Pikeman in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Mech_Pikeman99790",
+      "name": "Pikeman",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": null,
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Mech_Pikeman99792",
+      "name": "Pikeman",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": null,
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Mech_Pikeman99794",
+      "name": "Pikeman",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": null,
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Mech_Pikeman99796",
+      "name": "Pikeman",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": null,
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Mech_Pikeman99798",
+      "name": "Pikeman",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": null,
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 5,
+   "bare": 0,
+   "pawns": [
+    {
+     "id": "Mech_Pikeman99790",
+     "name": "pikeman",
+     "kindDef": "Mech_Pikeman",
+     "faction": null,
+     "xenotype": null,
+     "equipment": [
+      "Gun_Needle"
+     ],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": null,
+     "adulthood": null,
+     "traits": []
+    },
+    {
+     "id": "Mech_Pikeman99792",
+     "name": "pikeman",
+     "kindDef": "Mech_Pikeman",
+     "faction": null,
+     "xenotype": null,
+     "equipment": [
+      "Gun_Needle"
+     ],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": null,
+     "adulthood": null,
+     "traits": []
+    },
+    {
+     "id": "Mech_Pikeman99794",
+     "name": "pikeman",
+     "kindDef": "Mech_Pikeman",
+     "faction": null,
+     "xenotype": null,
+     "equipment": [
+      "Gun_Needle"
+     ],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": null,
+     "adulthood": null,
+     "traits": []
+    },
+    {
+     "id": "Mech_Pikeman99796",
+     "name": "pikeman",
+     "kindDef": "Mech_Pikeman",
+     "faction": null,
+     "xenotype": null,
+     "equipment": [
+      "Gun_Needle"
+     ],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": null,
+     "adulthood": null,
+     "traits": []
+    },
+    {
+     "id": "Mech_Pikeman99798",
+     "name": "pikeman",
+     "kindDef": "Mech_Pikeman",
+     "faction": null,
+     "xenotype": null,
+     "equipment": [
+      "Gun_Needle"
+     ],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": null,
+     "adulthood": null,
+     "traits": []
+    }
+   ]
+  },
+  "Drone_Sentry": {
+   "faction": "none",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Drone_Sentry in faction (none).",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Drone_Sentry99800",
+      "name": "Sentry drone",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": null,
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Drone_Sentry99802",
+      "name": "Sentry drone",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": null,
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Drone_Sentry99804",
+      "name": "Sentry drone",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": null,
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Drone_Sentry99806",
+      "name": "Sentry drone",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": null,
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Drone_Sentry99808",
+      "name": "Sentry drone",
+      "faction": null,
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": null,
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 5,
+   "bare": 0,
+   "pawns": [
+    {
+     "id": "Drone_Sentry99800",
+     "name": "sentry drone",
+     "kindDef": "Drone_Sentry",
+     "faction": null,
+     "xenotype": null,
+     "equipment": [
+      "Gun_Scattergun"
+     ],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": null,
+     "adulthood": null,
+     "traits": []
+    },
+    {
+     "id": "Drone_Sentry99802",
+     "name": "sentry drone",
+     "kindDef": "Drone_Sentry",
+     "faction": null,
+     "xenotype": null,
+     "equipment": [
+      "Gun_Scattergun"
+     ],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": null,
+     "adulthood": null,
+     "traits": []
+    },
+    {
+     "id": "Drone_Sentry99804",
+     "name": "sentry drone",
+     "kindDef": "Drone_Sentry",
+     "faction": null,
+     "xenotype": null,
+     "equipment": [
+      "Gun_Scattergun"
+     ],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": null,
+     "adulthood": null,
+     "traits": []
+    },
+    {
+     "id": "Drone_Sentry99806",
+     "name": "sentry drone",
+     "kindDef": "Drone_Sentry",
+     "faction": null,
+     "xenotype": null,
+     "equipment": [
+      "Gun_Scattergun"
+     ],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": null,
+     "adulthood": null,
+     "traits": []
+    },
+    {
+     "id": "Drone_Sentry99808",
+     "name": "sentry drone",
+     "kindDef": "Drone_Sentry",
+     "faction": null,
+     "xenotype": null,
+     "equipment": [
+      "Gun_Scattergun"
+     ],
+     "apparel": [],
+     "apparelStuff": [],
+     "childhood": null,
+     "adulthood": null,
+     "traits": []
+    }
+   ]
+  },
+  "Tribal_Archer_Fire": {
+   "faction": "TribeCivil",
+   "spawnRaw": {
+    "success": true,
+    "message": "Spawned 5/5 Tribal_Archer_Fire in faction TribeCivil.",
+    "spawnedCount": 5,
+    "failedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+     {
+      "ok": true,
+      "id": "Human99810",
+      "name": "Bees",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTusken",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99818",
+      "name": "Solace",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeNelvaanian",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99825",
+      "name": "Yaowen",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTusken",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99831",
+      "name": "Vlad",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTusken",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     },
+     {
+      "ok": true,
+      "id": "Human99836",
+      "name": "Noah",
+      "faction": "TribeCivil",
+      "hostile": false,
+      "x": 12,
+      "z": 12,
+      "spawned": true,
+      "xenotype": "RimMandrakeTusken",
+      "xenotypeRequested": null,
+      "xenotypeApplied": true
+     }
+    ],
+    "ticksGame": 307
+   },
+   "rolls": 5,
+   "armed": 5,
+   "bare": 0,
+   "pawns": [
+    {
+     "id": "Human99810",
+     "name": "Zach 'Bees' Besaw",
+     "kindDef": "Tribal_Archer_Fire",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeTusken",
+     "equipment": [
+      "NerveSpiker"
+     ],
+     "apparel": [
+      "VFET_Apparel_TribalHeavy",
+      "VAE_Apparel_TribalPoncho"
+     ],
+     "apparelStuff": [
+      [
+       "VFET_Apparel_TribalHeavy",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VAE_Apparel_TribalPoncho",
+       "Cloth"
+      ]
+     ],
+     "childhood": "VBE_JuniorJeweler",
+     "adulthood": "Digger31",
+     "traits": [
+      "Nerves",
+      "VTE_ColdInclined",
+      "Ascetic",
+      "Straight",
+      "Isekai_Rank_F",
+      "Isekai_BeastWhisperer"
+     ]
+    },
+    {
+     "id": "Human99818",
+     "name": "Anna 'Solace' Young",
+     "kindDef": "Tribal_Archer_Fire",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeNelvaanian",
+     "equipment": [
+      "NerveSpiker"
+     ],
+     "apparel": [
+      "VFET_Apparel_TribalLight",
+      "VAE_Apparel_TribalKilt",
+      "VAE_Apparel_TribalPoncho",
+      "ROMB_Apparel_SkullMask"
+     ],
+     "apparelStuff": [
+      [
+       "VFET_Apparel_TribalLight",
+       "Cloth"
+      ],
+      [
+       "VAE_Apparel_TribalKilt",
+       "Leather_Zarander"
+      ],
+      [
+       "VAE_Apparel_TribalPoncho",
+       "Cloth"
+      ],
+      [
+       "ROMB_Apparel_SkullMask",
+       null
+      ]
+     ],
+     "childhood": "VBE_ChildofTheAnimaTree",
+     "adulthood": null,
+     "traits": [
+      "PsychicSensitivity",
+      "Gay",
+      "Ascetic",
+      "Isekai_Rank_E"
+     ]
+    },
+    {
+     "id": "Human99825",
+     "name": "Yaowen Pei",
+     "kindDef": "Tribal_Archer_Fire",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeTusken",
+     "equipment": [
+      "VWE_Throwing_Knives"
+     ],
+     "apparel": [
+      "VAE_Apparel_TribalKilt",
+      "VFET_Apparel_TribalLight",
+      "ROMB_Apparel_SkullMask"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_TribalKilt",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "VFET_Apparel_TribalLight",
+       "Cloth"
+      ],
+      [
+       "ROMB_Apparel_SkullMask",
+       null
+      ]
+     ],
+     "childhood": "ReclusiveChild81",
+     "adulthood": "VBE_Jeweler",
+     "traits": [
+      "VTE_RefinedPalate",
+      "Isekai_SilverTongue",
+      "Gay",
+      "Ascetic",
+      "Isekai_Rank_C"
+     ]
+    },
+    {
+     "id": "Human99831",
+     "name": "Vlad Nolan",
+     "kindDef": "Tribal_Archer_Fire",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeTusken",
+     "equipment": [
+      "Flamebow"
+     ],
+     "apparel": [
+      "VAE_Apparel_TribalKilt",
+      "Sihv_Apparel_BoneArmor"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_TribalKilt",
+       "Cloth"
+      ],
+      [
+       "Sihv_Apparel_BoneArmor",
+       null
+      ]
+     ],
+     "childhood": "VBE_GiftedBurnout",
+     "adulthood": "Digger66",
+     "traits": [
+      "TooSmart",
+      "Undergrounder",
+      "Straight",
+      "Ascetic",
+      "Isekai_Rank_D"
+     ]
+    },
+    {
+     "id": "Human99836",
+     "name": "Noah Bruce",
+     "kindDef": "Tribal_Archer_Fire",
+     "faction": "TribeCivil",
+     "xenotype": "RimMandrakeTusken",
+     "equipment": [
+      "NerveSpiker"
+     ],
+     "apparel": [
+      "VAE_Apparel_TribalKilt",
+      "VFET_Apparel_TribalLight",
+      "VAE_Apparel_TribalPoncho",
+      "ROMB_Apparel_SkullMask"
+     ],
+     "apparelStuff": [
+      [
+       "VAE_Apparel_TribalKilt",
+       "Leather_Insectile"
+      ],
+      [
+       "VFET_Apparel_TribalLight",
+       "Cloth"
+      ],
+      [
+       "VAE_Apparel_TribalPoncho",
+       "OuterRim_Durafiber"
+      ],
+      [
+       "ROMB_Apparel_SkullMask",
+       null
+      ]
+     ],
+     "childhood": "Hideaway7",
+     "adulthood": "PlankCutter72",
+     "traits": [
+      "SpeedOffset",
+      "VTE_ColdInclined",
+      "Nerves",
+      "Straight",
+      "Ascetic",
+      "Isekai_Rank_E"
+     ]
+    }
+   ]
+  }
+ },
+ "errors": []
+}

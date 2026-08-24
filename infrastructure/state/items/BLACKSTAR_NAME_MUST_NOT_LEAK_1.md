@@ -51,3 +51,9 @@ and none of them is a pirate. A check written against that step fails on a corre
 ✅ **The defect itself stands:** six FactionDefs still wear `fixedName: "Blackstar Company"` —
 `Pirate`, `CannibalPirate`, `PirateYttakin`, `PirateWaster`, `DV_PirateKeshig`,
 `AG_XenohumanPirates`. The five siblings do read `startingCountAtWorldCreation 0`.
+
+## Read live 2026-08-24 — no leak visible, and this world CANNOT show one
+`jawa/list_factions`: exactly one faction is named **"Blackstar Company"** (`Pirate`, 4 settlements).
+⚠️ **That is not evidence the fixedName does not leak.** This world generated only ONE faction from
+`PirateBandBase`, so a leak would have nothing to leak onto. The test needs a world with two or more
+pirate-base factions, or a def-level check of what inherits the `fixedName`.

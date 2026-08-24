@@ -43,3 +43,13 @@ Without it, every one of those needs a gizmo or a context menu that may not exis
 ## criteria
 
 A casket can be opened from the bridge without destroying what is inside it.
+
+## ⛔ CLOSED — REFUTED live, 2026-08-24
+`rimworld/list_architect_designators` on Orders returns **64 designators**, and `Open` is present,
+`visible: true`, `actionable: true`. Reproduced three ways: stable id `architect-category:orders`,
+raw defName `Orders`, and with `includeHidden: true`.
+
+🔑 **The original zero was almost certainly taken with no map loaded** — the architect menu is
+map-scoped. ⚠️ A wrong parameter name does NOT produce the zero: `category` instead of `categoryId`
+returns *"A category id is required"*, loudly. Evidence: `facts/roll_arm_harvest_2026-08-24.md` §4,
+`facts/orders_designators.json`.

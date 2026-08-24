@@ -1,0 +1,91 @@
+{
+ "scatterbow_baseline": {
+  "success": true,
+  "message": "4 of 4 def(s) resolved",
+  "requested": 4,
+  "foundCount": 4,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "weaponTags",
+   "tradeTags",
+   "techLevel"
+  ],
+  "defs": [
+   {
+    "requested": "ThingDef/MA_CapryakScatterbow",
+    "found": true,
+    "defName": "MA_CapryakScatterbow",
+    "defType": "ThingDef",
+    "label": "Capryak Scatterbow",
+    "modName": "Mythic Ages: Megafauna Bestiary",
+    "packageId": "veterano.mythicages.megafaunabestiary",
+    "fields": {
+     "tradeTags": [
+      "WeaponRanged"
+     ],
+     "techLevel": "Industrial",
+     "weaponTags": [
+      "Gun",
+      "NeolithicRangedAdvanced",
+      "VEE_HunterNeolithicWeapon"
+     ]
+    }
+   },
+   {
+    "requested": "ThingDef/Flamebow",
+    "found": true,
+    "defName": "Flamebow",
+    "defType": "ThingDef",
+    "label": "flamebow",
+    "modName": "Biotech",
+    "packageId": "ludeon.rimworld.biotech",
+    "fields": {
+     "tradeTags": [
+      "WeaponRanged"
+     ],
+     "techLevel": "Industrial",
+     "weaponTags": [
+      "Neolithic",
+      "NeolithicRangedFlame",
+      "NeolithicRangedBasic",
+      "NeolithicRangedDecent"
+     ]
+    }
+   },
+   {
+    "requested": "ThingDef/Gun_Needle",
+    "found": true,
+    "defName": "Gun_Needle",
+    "defType": "ThingDef",
+    "label": "needle gun",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "tradeTags": null,
+     "techLevel": "Spacer",
+     "weaponTags": [
+      "MechanoidGunLongRange"
+     ]
+    }
+   },
+   {
+    "requested": "ThingDef/Gun_Scattergun",
+    "found": true,
+    "defName": "Gun_Scattergun",
+    "defType": "ThingDef",
+    "label": "scattergun",
+    "modName": "Odyssey",
+    "packageId": "ludeon.rimworld.odyssey",
+    "fields": {
+     "tradeTags": null,
+     "techLevel": "Spacer",
+     "weaponTags": [
+      "SentryDroneGunShortRange"
+     ]
+    }
+   }
+  ],
+  "ticksGame": 307
+ }
+}

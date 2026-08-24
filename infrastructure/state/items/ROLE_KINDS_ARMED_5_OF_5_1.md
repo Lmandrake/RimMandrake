@@ -35,3 +35,13 @@ re-tier it; the fix is one number per row in the generator.**
 **Imported from `queue/CHECK.md`. Its `state:` read, verbatim:**
 
 ready
+
+## MEASURED LIVE 2026-08-24 — true per kind, false per pawn
+5 rolls each on the live map, all 49 roster kinds: **no kind is 0/5**, so the literal claim holds.
+But **16 of 49 kinds roll bare at least once**, and **21 of 285 pawns spawned bare (7.4%)**.
+Worst: `Jawa_Homestead_Heavy` **3 of 5 bare**; then `Jawa_Wildsteam_Grunt` and
+`Jawa_Geonosian_Heavy` at 2 of 5.
+
+🔑 Two causes, measured: **13 of the 21 carry a violence-disabling backstory**
+(`EMPIRE_BLACKSTAR_ALWAYS_WILLING_1`) and **8 do not** (the `weaponMoney` roll). Fixing either alone
+leaves bare pawns on the field. Evidence: `facts/roll_arm_harvest_2026-08-24.md` §1–2.

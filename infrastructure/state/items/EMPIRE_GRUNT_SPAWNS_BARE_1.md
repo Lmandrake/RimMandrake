@@ -84,3 +84,10 @@ something to find.
 
 ⛔ **The item is right that `weaponMoney.min` is not the answer** — that trap stays closed.
 The defect was the **ceiling**, not the floor.
+
+## ⚠️ MEASURED LIVE 2026-08-24 — the premise is wrong
+`Jawa_Empire_Grunt` rolled **5 of 5 ARMED**. It is **not** "the only kind still spawning
+bare-handed": 16 of 49 roster kinds roll bare, and the worst is `Jawa_Homestead_Heavy` at 3 of 5.
+(A single earlier probe spawn of Empire_Grunt did come up bare — which is the point: this is a ROLL,
+and one sample cannot tell a broken kind from an unlucky one.)
+⇒ Retarget or supersede this item; the real shape is in `facts/roll_arm_harvest_2026-08-24.md` §1–2.

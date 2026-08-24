@@ -39,3 +39,9 @@ comes back missing it, the operation was changed to a Replace and that is the re
 
 🔑 **The budget half of the parent item needs nothing.** `AncientSoldier` 1200~2600 and `AncientSoldier_Leader`
 2500~6000 are already live and already correct; do not re-raise them while you are in this file.
+
+## Pre-deploy baseline, measured live 2026-08-24
+`MA_CapryakScatterbow` currently resolves to
+`["Gun", "NeolithicRangedAdvanced", "VEE_HunterNeolithicWeapon"]` — **`Gun` IS present**, so the
+defect is real in the running game and the sever is confirmed not deployed. This is the BEFORE the
+post-reload capture must be scored against. `facts/scatterbow_baseline.json`.

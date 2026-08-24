@@ -32,3 +32,23 @@ Other ten families: pacifist incidence within noise of the 2026-08-21 baseline (
 ⚠️ Violence-disabling **traits** were never measured — the dump reports 0 `TraitDef`s with
 `Violent` in `degreeDatas`, which is a dump blind spot rather than a proven zero. If a
 trait route exists, backstory filtering alone will not close this.
+
+## 🔴 MEASURED LIVE 2026-08-24 — this item names the wrong two factions
+285 pawns rolled; backstories resolved through `jawa/get_defs`:
+
+| cohort | distinct backstories | disable `Violent` |
+|---|---|---|
+| bare (21 pawns) | 32 | **10** |
+| armed (264 pawns) | 256 | **0** |
+
+**Zero overlap — a violence-disabling backstory is SUFFICIENT to produce a bare pawn.** Not one of
+264 armed pawns carried one.
+
+🔑 **It is roster-wide, not an Empire/Blackstar problem.** The 13 pacifist rolls landed on
+**Droid ×3, Wildsteam ×2, Geonosian ×2, TradeMoot ×2, Homestead, Hutt, Gamorrean, Empire ×1** —
+Blackstar rolled **none**. Widen the fix to every authored combat kind or it will keep reappearing
+under a different faction's name.
+
+⚠️ **It is not NECESSARY, so a backstory filter alone will not close the bare-pawn problem:** the
+other **8 of 21** bare pawns can do violence and rolled bare anyway. That is the `weaponMoney` roll —
+a separate defect with a separate fix. Evidence: `facts/roll_arm_harvest_2026-08-24.md` §2.

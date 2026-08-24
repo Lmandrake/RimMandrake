@@ -39,3 +39,17 @@ Filed by BUILD 2026-08-21 on the owner's question: *"Did we fix all of these str
 so we don't keep generating false negative results? This is very disturbing."* Three of the
 seven were fixed in code, one was already filed, and this was the last one living only in a
 ledger note.
+
+## 🔴 CONFIRMED LIVE 2026-08-24, and the blindness is wider than filed
+Measured side by side on one game:
+
+| instrument | verdict |
+|---|---|
+| `jawa/pawnkind_audit` | `cannotAfford: 0` · `emptyTagPool: 0` · `healthy: 54` · *"every kind that intends to arm can"* |
+| 5 spawn rolls per kind | **21 of 285 pawns bare**, across **16 of 49** roster kinds |
+
+⇒ The defect is not only that a tagless combat role is counted as a civilian. **The audit returns a
+clean bill of health on kinds that demonstrably field bare pawns**, because it tests
+`weaponMoney.max` — the ceiling — and generation rolls inside the range.
+⛔ **Do not use it to answer "is this kind armed."** Roll it: `src/RimMandrake/Utils/rimbench/roll_arm_harvest.py`.
+Evidence: `infrastructure/state/facts/roll_arm_harvest_2026-08-24.md` §1.
