@@ -545,7 +545,7 @@ terminator. 🔑 **Small story-critical zones fill first**, or they starve.
 
 | faction | defName | n | where, and why |
 |---|---|---|---|
-| The Galactic Empire | `Empire` | 3 | the seat/spaceport on the plateau rim; **the Scald Gate**; **the Fall Line pass** — choke points ⚠️ INFERRED from *"strategic passes"* |
+| The Galactic Empire | `Empire` | 3 | the seat/spaceport on the plateau rim; **the Scald Gate**; **the Fall Line pass** — choke points. 🔴 **RULED 2026-08-23, owner: "Only three, as I requested, not a gap."** The other ~7–8 Imperial holdings are ORBITAL and are not world tiles (`faction_roster_v2.md:761`); this is no longer an inference |
 | Hutt Cartel | `Jawa_HuttCartel` | 8 | **beside** a near-desert oasis, never on it — *"you can raid the well without besieging the town"* |
 | Homestead Defense League | `OutlanderCivil` | 13 | the arable margin of the terminator; stores water, has no source |
 | Deep Desert Tribes | `TribeCivil` | 9 | canyons, caves, isolated ridges — **never a water tile** |
@@ -626,8 +626,15 @@ pictures of the CSV above.
 
 1. ~~The player start is unsited.~~ **CLOSED 2026-08-19 — see §7b.** The Setdown,
    tile 2476. The one thing left to confirm by play is `ExtremeDesert` vs `Desert`.
-2. The Empire's three seats are choke points by inference; the docs say only *"roads,
-   strategic passes"* and the spaceport.
+2. ~~The Empire's three seats are choke points by inference.~~ 🔴 **CLOSED 2026-08-23 —
+   owner: *"I confirm (A) is correct. Only three, as I requested, not a gap."*** Three is
+   deliberate and is not a shortfall to be filled later. 🔑 **The reason is already in the
+   roster and should never have read as an inference:** `faction_roster_v2.md:761` sets the
+   Empire's target at **3 SURFACE seats**, because ~7–8 of its ~10 holdings are **orbital**
+   and are not world tiles at all. The Empire holds this planet from above; the three seats
+   on the ground are the spaceport and the two passes that reach it. ⛔ Do not "correct" the
+   Empire's count upward against the Homestead's 37 or the Hutts' 19 — those factions live
+   here and the Empire is garrisoning a backwater.
 3. ~~`faction_world_spec.md` §4 is still written in latitude bands.~~ **CLOSED
    2026-08-19** — §4 now carries a SUPERSEDED banner with the latitude→arc
    substitution and the two statements in it that are outright false.
@@ -1059,7 +1066,7 @@ whole value of one is that it means a specific place on this specific planet.
 | the oases (`ZBiome_DesertOasis`) | `Oasis` | temp range **20–60 °C**; our arc 30–60 band runs 38–58 °C, so it fits — but it does **not** fit sunward of that |
 | the deep waste, a few | `AncientHeatVent` | desert-exclusive, and a heat plume on the hottest world in the setting is the right kind of joke |
 | the Junkers' fields | `Ruins` · `AbandonedColonyTribal` | wherever things fell |
-| **The Kiln**, the five-tile dead core | `Ruins` / a crater — ⚠️ **see the legality note below** | *the Hutt seat the Pykes killed with a parcel their own manifest cleared.* The region is already named for it |
+| **The Kiln**, the five-tile dead core | ✅ **settled 2026-08-23 by the owner with CHECK** — read the landmark bundle for the value | *the Hutt seat the Pykes killed with a parcel their own manifest cleared.* The region is already named for it |
 
 ⛔ **Never place:** `Iceberg`, `IceDunes`, `Crevasse`, `FrozenRuins`, `VEE_DetachedIceberg`,
 `VEE_IceSpires`, `VEE_GlacialMoraine`, `VEE_PermafrostBasin` (all ice-gated) ·
@@ -1102,14 +1109,12 @@ moisture farms — **Dryhold** (14351), **Stillwater Farm** (655), **The Sumps**
 **Whistledew** (979) — people who arrived afterwards, farm the edge of it, and do not dig in the
 middle.
 
-⚠️ **The one open question is the landmark, and it is a legality question, not a taste one.** Tile
-11183 already carries `DryLake`, and §13.3's own table flags `DryLake` as whitelisting
-Desert/ExtremeDesert/AridShrubland — **11183 is `Wasteland`**, so that placement may be illegal today
-and is worth checking before anything is added beside it. `VEE_MeteorCrater`, `VEE_ToxicCrater` and
-`TerraformingScar` are all installed and all read correctly for a blast core; their biome gating is
-nested and was **not** measured here, so ⛔ do not place one on a `Wasteland` tile on the strength of
-this paragraph. 🔑 **The lore does not depend on the answer** — the crater is the ground, not the
-landmark.
+✅ **The landmark question is CLOSED — the owner settled it with CHECK, 2026-08-23**, and this doc no
+longer poses it. What was open: tile 11183 carries `DryLake` while being `Wasteland`, which §13.3's
+own table suggests may be illegal, and the blast core had nothing marking it. ⇒ **Whatever now sits on
+the core is recorded by that work, not here** — read the landmark bundle rather than this paragraph,
+which is deliberately not restating a value it did not measure. 🔑 **The lore never depended on the
+answer:** the crater is the ground, not the landmark.
 
 **The faction half of this — why the Cartel has no capital and never will again — is
 `faction_roster_v2.md` § 1. Hutt Cartel, "THE KILN".** 🔴 **It was the PYKE SYNDICATE — canon,
