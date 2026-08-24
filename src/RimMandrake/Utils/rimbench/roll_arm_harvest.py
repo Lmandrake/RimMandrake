@@ -79,7 +79,8 @@ def summarise(p):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--kinds", required=True, help="file with one PawnKindDef defName per line")
+    ap.add_argument("--kinds", help="file with one PawnKindDef defName per line, or `Kind=FactionDef`. "
+                                    "Omit to derive the 49-kind roster from the mod's own XML.")
     ap.add_argument("--rolls", type=int, default=5)
     ap.add_argument("--x", type=int, default=10)
     ap.add_argument("--z", type=int, default=10)
@@ -88,12 +89,28 @@ def main():
 
     # A line may be `KindDefName` (faction derived from the name) or `KindDefName=FactionDef`
     # for kinds whose name does not carry their faction -- mechs, vanilla tribals.
+    if not a.kinds:
+        # Derive the roster rather than carry a transient list that goes stale the moment a kind
+        # is added. NEXT_RELOAD.md §20 depends on this working with no setup step.
+        import re
+        roster = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "..",
+                              "src", "Jawa", "Jawa_Patches", "Defs", "PawnKindDefs",
+                              "JawaFactionRoster.xml")
+        roster = os.path.normpath(roster)
+        src = open(roster, encoding="utf-8").read()
+        kinds = [(n, None) for n in dict.fromkeys(re.findall(r"<defName>([^<]+)</defName>", src))]
+        print("derived %d kinds from %s" % (len(kinds), roster))
+        return run(a, kinds)
     kinds = []
     for line in open(a.kinds):
         line = line.strip()
         if not line or line.startswith("#"):
             continue
         kinds.append(tuple(line.split("=", 1)) if "=" in line else (line, None))
+    return run(a, kinds)
+
+
+def run(a, kinds):
     host, port, token = resolve_endpoint()
     stamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%SZ")
     rows, errors = {}, []
