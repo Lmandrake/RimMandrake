@@ -113,6 +113,7 @@
       <li>AptitudeTerrible_Intellectual</li>
 
       <!-- constitution -->
+      <li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li>   <!-- owner's ruling 2026-08-23: giant + warcasket weapons. Grants BS_Giant; changes NO body size. Sibling patch: Patches/GiantWeaponWielders_Ashkarr.xml -->
       <li>Robust</li>
       <li>MeleeDamage_Strong</li>
       <li>Unstoppable</li>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  GiantWeaponWielders_Ashkarr.xml            Jawa_Patches · authored 2026-08-23
+  ============================================================================
+
+  🔴 OWNER'S RULING, 2026-08-23, verbatim: "For the sake of interest, please
+  include both the Nine plus seven plausible as a yes."
+
+  Sixteen Star Wars species may wield giant and warcasket weapons. Fifteen are
+  patched here; the sixteenth, Jawa_Xeno_Gamorrean, is OUR OWN def and the gene
+  is written straight into Defs/XenotypeDefs/GamorreanXenotype.xml instead —
+  patching your own mod's def from your own mod's Patches folder is indirection
+  for nothing.
+
+  WHAT THE GENE DOES, AND WHAT IT DOES NOT
+  ========================================
+  BS_GiantWeaponWielder (Big and Small - Genes & More, redmattis.bigsmall.core)
+  grants the BS_Giant trait, which opens BOTH gates at once: all 23 giant
+  weapons AND all 15 warcasket weapons. It costs biostatCpx 1, biostatMet 0.
+
+  ⭐ It changes NO body size. That is the whole reason it is the right mechanism
+  and a size gene is the wrong one: the size route needs totalSize > 1.99, which
+  is ogre scale — twice a human's mass. Right for a Jotun, wrong for a Wookiee.
+  Body size is settled separately and already shipped, in BodySizeIsReal.xml.
+
+  ⛔ NOT RULED IN: RimMandrakeHutt. Canonically the largest species we field, so
+  a size gene would be right, but a sessile slug with vestigial arms cannot
+  swing a giant hammer. Size yes, giant weapons no. Do not "complete the set".
+
+  WHY EVERY OPERATION IS add-if-missing
+  =====================================
+  The Conditional tests for the gene and acts only on `nomatch`, so re-running
+  or re-deploying this file cannot produce a duplicate <li>. All sixteen were
+  measured against the 2026-08-23T22:49:51Z capture (581 mods) before this file
+  was written: every defName exists, every def carries a LITERAL <genes> node in
+  its own XML, and none of them already had the gene.
+
+  🔑 That <genes> check is not ceremony. A patch cannot remove or extend a list
+  that the def INHERITS rather than declares — the xpath matches nothing and a
+  Conditional returns true on no match, so it fails in total silence. That trap
+  cost this repo a live defect the same day (see AncientArsenal_Ashkarr.xml
+  operation 1). None of these fifteen has a ParentName; all fifteen declare
+  <genes> themselves. Verified, not assumed.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ============ THE NINE — canonically large and built to fight ============ -->
+  <!-- Wookiee — the canonical strong-and-huge species; the roster's own Wildsteam Clan is built on them -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Gamorrean — upstream def; the Hutts' door-muscle, bought by the crate and armed with axes -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeGamorrean"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeGamorrean"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Herglic — cetacean bulk, already on HalfJotunFrame in BodySizeIsReal -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Trandoshan — heavy hunters and melee specialists in the Cartel's own species table -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeTrandoshan"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeTrandoshan"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Togorian — two-plus metres of felinoid, built for the charge -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeTogorian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeTogorian"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Lasat — heavy-worlder frame and reach -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeLasat"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeLasat"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Feeorin — large, long-lived, and gets stronger with age -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeFeeorin"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeFeeorin"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Sith Massassi — warrior-caste, bred bigger than the base Sith -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeSithMassassi"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeSithMassassi"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+
+  <!-- ============ THE SEVEN — the owner's call, ruled IN 2026-08-23 ============ -->
+  <!-- Aqualish — shotgunners and bruisers; broad rather than tall -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeAqualish"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeAqualish"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Cathar — lighter than the rest of this list, ruled in for the melee charge -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeCathar"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeCathar"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Chagrian — tall and heavy-headed -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeChagrian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeChagrian"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Gungan — long-limbed and far stronger than the comic reading suggests -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeGungan"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeGungan"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Kaleesh — warrior culture; Grievous' own species -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeKaleesh"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeKaleesh"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Klatoonian — Hutt labour and enforcement stock -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeKlatoonian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeKlatoonian"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+  <!-- Nelvaanian — hunter-warriors, heavy upper build -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RimMandrakeNelvaanian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/XenotypeDef[defName="RimMandrakeNelvaanian"]/genes</xpath>
+      <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
+    </nomatch>
+  </Operation>
+
+</Patch>
