@@ -103,28 +103,48 @@ Codex quota. Treat each call as costing something real: use `--dry-run` while
 iterating on prompt wording, and generate at low ambition first — one small
 image proves the plumbing before a large one proves the art.
 
-### 🔴 ROUGHLY ONE CALL IN FOUR HANGS FOREVER. BUDGET AND RETRY FOR IT.
+### 🔴 RUN GENERATIONS IN THE FOREGROUND, ONE PER CALL. DO NOT BATCH THEM.
 
-**Measured 2026-08-23/24 over 13 `edit` calls in one sitting** against a
-`auth_mode: chatgpt` install: most returned in **79–81 s**; several produced **no
-output at all** and were killed only by their own timeout. Codex emits **no error
-of its own** — the failure message you see is always the wrapper's.
+**Measured 2026-08-24 over ~20 `edit` calls in one sitting** against an
+`auth_mode: chatgpt` install:
 
-| do | why |
+| how it was run | result |
 |---|---|
-| ⏱️ **Cap `--timeout` at 120 s** | A good call returns in ~80 s. Anything past 120 is not coming, and a hang burns the WHOLE budget before reporting — a batch of four at the 780 s default is **52 minutes for nothing**. |
-| 🔁 **Wrap every call in a retry loop, 3–5 attempts** | The same prompt, unchanged, succeeds on a later attempt. Retrying is cheaper than diagnosing. |
-| ⛔ **Do not infer a CAUSE from a handful of calls** | Three two-image calls hung in a row and "the second image" looked certain; the next single-image call hung identically. The sample was confounded. |
+| **Foreground, one call per turn, `--timeout` ~105 s** | **8 of 9 succeeded**, 79–93 s each. The one failure succeeded on an immediate retry. |
+| **Backgrounded batch script looping over facings** | Repeatedly reported **failed** (exit 1, exit 144) partway through — *sometimes while the shell was still alive and still writing files*. |
 
-⛔ **NEVER "clean up strays" with a pattern that matches your own harness:**
+⇒ **The generator is reliable; batching it is what was not.** A long-running
+background job here can be reported dead, and killed, while its work is incomplete —
+so a retry loop inside one never gets to retry, and its partial output turns up later
+looking like a ghost.
 
-    pgrep -f codex_image.py | xargs -r kill -9      # kills the PARENT TOO
+**The rules that follow from that:**
 
-A script created by a heredoc carries its own text — that string included — in the
-parent shell's command line, so this **SIGKILLs the batch it is retrying** and the
-job dies with an unexplained exit 1 or 144 partway through. ✅ `timeout` already
-reaps the child; no cleanup line is needed. This cost three batches before it was
-spotted, and every one of them looked like "codex hung again".
+- ✅ **One generation per invocation, in the foreground.** ~80 s fits inside a normal
+  command budget. Retry at the CALLER's level, not inside a script.
+- ⏱️ **Cap `--timeout` near 105 s.** A good call returns in 79–93 s; past ~110 s it is
+  not coming, and the default 780 s burns thirteen minutes to learn nothing.
+- 🔁 **A failure is not a diagnosis — just run it again.** The identical prompt
+  succeeded on the next attempt every time it was tried.
+- ⚠️ **Check for orphans before re-running a batch.** Two copies of a killed script
+  were still alive and racing on the same output paths; `codex_image.py` refuses to
+  overwrite, which is the only reason it was harmless. Kill by **PID**.
+
+⛔ **AND NEVER "CLEAN UP STRAYS" BY PATTERN:**
+
+    pgrep -f codex_image.py | xargs -r kill -9      # matches the PARENT too
+
+A script written by a heredoc carries its own text — that string included — in the
+parent shell's argv, so this SIGKILLs the batch it is retrying. ✅ `timeout` already
+reaps the child.
+
+⚠️ **TWO WRONG DIAGNOSES WERE PUBLISHED HERE BEFORE THE RIGHT ONE, AND THAT IS THE
+LESSON WORTH MORE THAN THE FIX.** First "the second `--image` causes it" — three
+two-image calls hung in a row, then a single-image call hung identically. Then "the
+`pgrep` line causes it" — removing the line changed nothing. Both were confident,
+both fitted the evidence to hand, and both were wrong because the sample was small
+and confounded. ⇒ **Before blaming a component, run the simplest possible version of
+the call by hand.** That took 77 seconds and settled it.
 
 ## Validation plan — what you owe whoever checks this
 
