@@ -117,6 +117,25 @@ suppresses every item whose `needs` is `owner` (`priority.py:50`). **Writing a w
 changes what SEATS do, not what the TOOL offers.** Two mode concepts, one name; do not "fix" one by
 editing the other.
 
+## ⛔ A RAW TCP CONNECT IS NOT A BRIDGE READING — owner's correction, 2026-08-24
+
+He: *"You aren't correct about the Bridge. It was working fine and being used… CHECK knows this and
+is fine. Agent BUILD uses it fine too."* **He was right.** This seat reported "the bridge is down"
+four times across one night, to a bar of `socket.connect(("127.0.0.1", 5174))` refusing from WSL —
+having guessed the port, and **having been told otherwise by its own tool**, which said on every run:
+`BRIDGE NOT PROBED — GABP_SERVER_PORT is unset, so LOADING here is a DEFAULT, not a reading.`
+
+- 🔑 **The instrument is `resolve_endpoint()` + a real `session/hello`**, not a socket poke:
+  `sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils")` → `rimbridge_client`.
+  It scrapes host, port AND **token** out of `Player.log`; the token changes every launch, so an
+  endpoint that resolves with an empty token means the log has not been written yet — **that is
+  "too early to say", never "down".**
+- ⛔ **Never relay a bridge state this seat did not get from that client.** REP carries numbers to
+  him, so a wrong one travels furthest through her — and "the bridge is down" sent him to fix a
+  thing that was not broken, twice.
+- ⚠️ `./game` saying `BRIDGE NOT PROBED` is the tool being **honest about ignorance**. Answer it by
+  setting `GABP_SERVER_PORT` or by calling the client — not by substituting your own guess.
+
 ## 🪑 THE BENCH SCAN — he asks, you go and look — owner, 2026-08-23
 
 ⛔ **Never automatic, never scheduled, never volunteered.** It runs when he asks and only then.

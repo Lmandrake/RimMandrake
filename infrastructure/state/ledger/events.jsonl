@@ -2077,3 +2077,5 @@
 {"seat":"BUILD","event":"close","id":"MECH_AND_ARCHER_ARMED_1","sha":"13a7c2f0","ts":"2026-08-24T08:33:23Z"}
 {"seat":"BUILD","event":"close","id":"ORDERS_DESIGNATORS_ENUMERATE_ZERO_1","sha":"13a7c2f0","ts":"2026-08-24T08:33:23Z"}
 {"seat":"OWNER","event":"game","state":"DOWN","ownerSaid":"Game is Down","ts":"2026-08-24T08:36:38Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ownerSaid":"game is loading","ts":"2026-08-24T08:46:55Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ownerSaid":"Game is loading","ts":"2026-08-24T08:47:12Z"}
