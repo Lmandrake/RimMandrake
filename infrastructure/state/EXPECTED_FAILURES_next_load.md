@@ -2491,3 +2491,26 @@ the live readings; wrong before landing if it is meant to become the frozen plan
 `get_Selector`, inside `DiagnosticsCapabilityModule.GetGameInfo`. It is not a refusal, it is
 an unhandled cast on a screen with no map. **Use `jawa/world_stats` / `jawa/world_info_get`
 at `Page_SelectStartingSite`; `get_game_info` is unavailable there.**
+
+---
+
+## §18 — WORLDMAP READABILITY. Written 2026-08-23 17:5x by BUILD, game UP.
+
+Owner's two asks in one line each: settlement icons twice as big, world labels twice as
+opaque. ⚠️ **They deploy at different times** — the icon is XML and is already on disk in
+the game folder; the label change is a DLL and the OS held it, so it is committed and
+undeployed until the next down-window.
+
+| # | reading | what it decides |
+|---|---|---|
+| **W1** | Settlement icons on the planet draw at **60 px**, not 30. Two settlements side by side should now nearly touch at the zoom where they used to sit clearly apart. | `expandingIconDrawSize` 1 → 2 against `30f * expandingIconDrawSize` (`ExpandableWorldObjectsUtility.cs:212`). ⚠️ **A patch that matched nothing logs nothing** — the op is a Conditional, so its failure is silent. W1 is the only evidence it fired. |
+| **W2** | ⛔ **Caravans, sites and quest markers are UNCHANGED.** | Scope was `Settlement` alone. Core sets 1.6 and Odyssey 1.35/1.1 on other world objects; if those grew too, the xpath hit the wrong def. |
+| **W3** | ✅ **EXPECTED-PRESENT, only after the DLL deploys:** `[JawaRules] world-labels: armed; world feature names peak at 0.60 alpha instead of 0.30` | ⚠️ **Absent is UNMEASURED until the DLL is deployed** — and remember a `[JawaRules]` line is only proof the patch attached. |
+| **W4** | 🔴 `[JawaRules] world-labels: expected exactly ONE 0.30 constant in WorldFeatures.UpdateAlpha and found <n>` | The transpiler counts its own hits. ⭐ **This is the reading that exists because the failure is otherwise SILENT** — a transpiler that matches nothing returns the method unchanged and Harmony reports success. If this fires, the labels are still at 0.30 whatever the armed line said. |
+| **W5** | 🔑 **LOOK: the region and sea names across the planet are visibly stronger, and still fade in and out with camera altitude.** | `feature.alpha` is the fade PROGRESS and is untouched — only the 0.3 ceiling moved. If the names stop fading, or sit at full strength at every zoom, the wrong constant was hit. |
+| **W6** | ⚠️ No new frame-rate cost on the world map. | The reason a transpiler was used rather than a postfix: a postfix would have made the original's drift guard miss every frame, and each miss calls `WrapAroundPlanetSurface`, which rebuilds the text mesh — 71 named features × 2 rebuilds per frame. |
+
+⚠️ **W1 and W5 are independent and land at different loads.** The icon is live on the very
+next load; the labels wait for a load after a DLL deploy. ⛔ Do not read "labels unchanged"
+as a failure without checking which build the game copy holds — it was `6c5fe361` (15:08)
+at the time of writing, and the transpiler is not in it.
