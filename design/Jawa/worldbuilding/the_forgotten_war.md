@@ -139,8 +139,14 @@ later "fixes" one of them.
 
 🔴 **There is exactly ONE patch of it in the world.**
 
-- **One.** Not a biome that generates — a **place**, sited by hand.
-- **Far from anywhere that matters.** Its remoteness is the point.
+- **One.** Not a biome that generates — a **place**, sited by hand. **236 tiles**, arc 1–20,
+  58–66 °C, and since 2026-08-24 **dead flat and saturated with pollution (0.90–1.00, with a
+  four-ring halo out to 0.18)** — see `ASHKARR_WORLD_DEFINITION.md` §7d.
+- **Far from anywhere that matters.** Its remoteness is the point. ⭐ **But it is no longer
+  empty:** the owner ruled 2026-08-24 that the Enclaves live *in* it, and **8 of the 12 Free
+  Droid settlements now stand on Cathedral ground.** Remote from ORGANICS is what the line
+  always meant — the droids are immune to the heat and the poison, which is exactly why the
+  place can be a home to them and to no one else.
 - **Sacred to the `Jawa_FreeDroidEnclaves`** — the battle droids who "woke up and
   decided they belong to themselves" (`FACTION_SPEC.md` §5).
 

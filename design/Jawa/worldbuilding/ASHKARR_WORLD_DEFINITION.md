@@ -555,7 +555,7 @@ terminator. 🔑 **Small story-critical zones fill first**, or they starve.
 | Deepwater Compact | `Jawa_DeepwaterCompact` | 6 | the seas; **two on the Scald** despite the Empire |
 | Wildsteam Clan | `Jawa_WildsteamClan` | 4 | 2 on the Scald's jungles, 2 in the meridian's poison marsh |
 | Blackstar Company | `Pirate` | 4 | road junctions and ruins; they follow the money |
-| Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | 12 | 🔴 **RULED 2026-08-24, owner.** ⛔ **The one hard rule is DISTANCE FROM ORGANICS — above all from the Empire.** Within that: the **Rust Cathedral is holy to them and they are immune to its pollution and heat**, so the plateau cluster is right and *Second Speaker* now stands on Cathedral ground itself; **volcanic terrain is excellent** and at least one seat belongs on it (*The Free Charge*, moved off the Scald's jungle onto the pyroclastic conflagration above it); and **a few quiet, hidden seats on the dark side are welcome** — *The Trade Socket*, *Vent Nine*, *Coldfire*, *The Cracking Station* stay, and the barren-region ban does not bind them. ✅ Their Geonosian neighbours are the allies they share the Cathedral with, not the organics they avoid |
+| Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | 12 — **8 of them inside the Rust Cathedral, see §7d** | 🔴 **RULED 2026-08-24, owner.** ⛔ **The one hard rule is DISTANCE FROM ORGANICS — above all from the Empire.** Within that: the **Rust Cathedral is holy to them and they are immune to its pollution and heat**, so the plateau cluster is right and *Second Speaker* now stands on Cathedral ground itself; **volcanic terrain is excellent** and at least one seat belongs on it (*The Free Charge*, moved off the Scald's jungle onto the pyroclastic conflagration above it); and **a few quiet, hidden seats on the dark side are welcome** — *The Trade Socket*, *Vent Nine*, *Coldfire*, *The Cracking Station* stay, and the barren-region ban does not bind them. ✅ Their Geonosian neighbours are the allies they share the Cathedral with, not the organics they avoid |
 | Ascendant Helix | `Jawa_AscendantHelix` | 7 | 🔴 **RULED 2026-08-24, owner: the Helix sits where the BIOWEAPON is.** `HorrorWastes`, the mycoid tiles and the poison forests of the terminator host them — *Cold Archive* and *The Revision* in the Horror Wastes, *The Fair Copy* in poison forest, *Specimen Hall* on mycoid, and *The Coil* and *Quiet Lab* moved out of the Homestead belt onto terminator mycoid. ⭐ **One outpost holds the new ocular forest on the Scald's mountainous shore** (*Helix Landing*) — see §7c |
 | the Forgotten Arsenal | `Mechanoid` | 0 | hidden; no world-map site, which is the intent |
 
@@ -585,6 +585,30 @@ two groves rather than a continuous band, taking only `ZBiome_Badlands` and one 
 fresh water in the hottest country on the planet. *Helix Landing* holds the eastern grove.
 ⚠️ The three original ocular tiles sit at 22.8 °C; these run 15–20 °C hotter, which is a
 deliberate stretch of the biome, not an oversight.
+
+## 7d. ⭐ THE RUST CATHEDRAL IS FLAT, POISONED, AND ENTIRELY THEIRS — 2026-08-24
+
+🔴 **Owner, 2026-08-24.** Three rulings, all applied to the live world:
+
+- ⛔ **No mountains and no hills anywhere in `AB_MechanoidIntrusion`.** All **236 tiles**
+  are `Flat`; the 25 that carried hills were levelled. ⭐ Their elevation was already
+  606–628 m — the Cathedral was never a range, only labelled as one, so nothing had to be
+  dug away. **It is a floor**, and it should read as one.
+- ☣️ **The pollution is massive and it bleeds outward.** The 236 intrusion tiles run
+  **0.90–1.00**, then a four-ring halo falls **0.66 → 0.46 → 0.30 → 0.18** across 303 more
+  tiles, so the poison has an edge that is weather rather than a border. **539 tiles
+  total.** ⚠️ Planet baseline is `pollution: 0.05`; this is the only place on Ash'karr that
+  is genuinely toxic ground.
+- 🤖 **Every Free Droid seat that ringed the intrusion is now INSIDE it.** *Cell Seven*,
+  *No Master*, *Vent Forty*, *Vent Twelve*, *The Cracking Yard* and *No Owner* moved off
+  the surrounding `ExtremeDesert` and jungle onto Cathedral ground, joining *Second
+  Speaker*. **Eight of the twelve Enclaves now stand in the holy poison**, which is only
+  possible because they are immune to both it and the heat — the fact that makes the
+  Cathedral theirs and nobody else's.
+- 🛣️ **Only *No Master* kept a road**, redirected onto its new tile in five hops.
+  ⛔ **The other five are deliberately unroaded** and the Cathedral has no road web: a
+  place organics cannot survive should not be paved for their caravans. Say so if that is
+  wrong — reconnecting them is five short paths.
 
 ## 8. Roads
 
