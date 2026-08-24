@@ -208,12 +208,13 @@ mutation against an independent channel**, cheapest first:
    a success signal (see traps).
 2. **`get_cell_info`** — what is actually in a cell, including `stuffDefName`.
 3. **`save_game` then parse the `.rws`** — exact hediff severities and body
-   parts; the only way to measure damage. ⚠️ **The parameter is `saveName`, and it
-   IS honoured** — `{"saveName": "rt_probe"}` wrote `rt_probe.rws` (measured
-   2026-08-20). Omit it and you get `rimbridge_save_<timestamp>.rws`, which is
-   where the old "it ignores your filename" note came from: the name was being
-   passed under the wrong key and silently dropped, exactly like every other
-   unknown parameter name.
+   parts; the only way to measure damage. 🔴 **`saveName` was NOT honoured on
+   2026-08-24** — asked for `ASHKARR_worldwork_2026_08_24`, it answered with that
+   path and `exists: true`, and the game had written its CURRENT slot,
+   `WORLDMAP_V1_original.rws`, **overwriting it**. ⚠️ The opposite was measured on
+   2026-08-20 (`{"saveName": "rt_probe"}` did write `rt_probe.rws`), so this is
+   state-dependent, not a flat lie. **Stat the Saves folder yourself before you
+   believe the path**, and never assume the slot you overwrote was expendable.
 
 🔑 **The envelope's `Success` is not the tool's `success`.** `"Status": 2,
 "Success": true` on the operation envelope sits directly above `"success": false`

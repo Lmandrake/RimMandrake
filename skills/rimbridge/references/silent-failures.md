@@ -55,6 +55,26 @@ work types say another.
 
 ---
 
+## 2b. 🔴 Tools that report a path, a name or a count they did not honour
+
+Measured 2026-08-24, live, on the campaign world.
+
+| call | what it reported | what actually happened |
+|---|---|---|
+| 🔴 **`rimworld/save_game` with `saveName`** | `success: true`, `path: …\Saves\ASHKARR_worldwork_2026_08_24.rws`, **`exists: true`**, `sizeBytes: 21258468` | **No such file was ever created.** The game wrote its CURRENT save slot — `WORLDMAP_V1_original.rws` — **overwriting it**. The `exists`/`sizeBytes` pair was stat'd against a file that is not the one named |
+| **`jawa/world_tile_get`** | 200 rows for a 400-id request | **caps at 200 tiles per call.** It DOES set `truncated`, and that field is the only thing between you and a half-empty census |
+| **`jawa/world_links_get`** | fewer edges than the world holds | **same 200-tile cap.** A 1,498-tile sweep in 200-chunks returned **915 road edges**; the same sweep in 100-chunks returned **1,224** — the true number. It reports `count` and `requested`, and they differ |
+
+🔑 **The lesson is one line: an id-list tool answers about the ids it CHOSE, not the ids you
+sent.** Compare `requested` against `count`, or diff the ids you asked for against the ids
+you got back, on every bulk read. A census assembled from truncated chunks is not short by
+an obvious amount — it is short by exactly the amount you will not notice.
+
+⚠️ **And `save_game`'s entry contradicts a note in the `rimbridge` skill** that said
+`saveName` "IS honoured — measured 2026-08-20". Both measurements are real; something
+between them changed, or the 2026-08-20 test was run in a state where the current slot
+happened to match. **Treat the written path as a claim and stat the Saves folder yourself.**
+
 ## 3. Getters that lie
 
 | getter | lies because | read instead |
