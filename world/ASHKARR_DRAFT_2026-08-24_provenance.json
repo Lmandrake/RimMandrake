@@ -1,0 +1,36 @@
+{
+ "name": "ASHKARR_DRAFT_2026-08-24",
+ "what": "DRAFT IN PROGRESS of the one Ash'karr world. Accepted into git by the owner, 2026-08-24, as the working record while the game is up. NOT frozen and NOT v1-final.",
+ "rws": {
+  "file": "ASHKARR_DRAFT_2026-08-24.rws",
+  "bytes": 21258459,
+  "sha256": "5348b134a2a04bc20b1b70509dcc618e1fe0181d492d6d03976871769f8e8d7b",
+  "gameVersion": "1.6.4871 rev591",
+  "seedString": "raven",
+  "tiles": 21872,
+  "settlementsInSave": 124
+ },
+ "harvested_live_from_the_bridge": {
+  "tiles_csv": "ASHKARR_DRAFT_2026-08-24_tiles.csv \u2014 21872 rows, 15 columns INCLUDING pollution, via jawa/world_tile_get (200-tile chunks; the tool truncates silently above that and reports it in `truncated`)",
+  "links_csv": "ASHKARR_DRAFT_2026-08-24_links.csv \u2014 1516 edges (1224 road, 292 river), via jawa/world_links_get over the 1498 tiles carrying one",
+  "settlements_csv": "124 rows with world-object ids",
+  "landmarks_csv": "563 rows",
+  "mutators_csv": "10260 mutator rows over 6710 tiles",
+  "meta_json": "world_info_get + world_layers + world_stats + world_lint at harvest time"
+ },
+ "changes_since_ASHKARR_WORLDMAP_2026-08-23": [
+  "771 propane-lake tiles converted to AB_RockyCrags in domain-warped ridged-noise ranges (one settlement tile, 20808, reverted to propane)",
+  "16 tiles of AB_OcularForest added on the Scald's outer mountainous shore",
+  "11 settlements moved: Helix Landing, The Coil, Quiet Lab, Second Speaker, The Free Charge, Cell Seven, No Master, Vent Forty, Vent Twelve, The Cracking Yard, No Owner",
+  "all 236 AB_MechanoidIntrusion tiles set hilliness Flat",
+  "pollution 0.90-1.00 across the Rust Cathedral with a four-ring halo \u2014 539 tiles",
+  "154 road edges removed (91 Deep Desert Tribes + 63 vacated droid spurs), 5 laid for No Master"
+ ],
+ "pollution_check": {
+  "tiles_above_0.5": 1362,
+  "tiles_above_0.05": 1619,
+  "max": 1.0
+ },
+ "supersedes": "world/ASHKARR_WORLDMAP_*.csv, which are the 2026-08-23 state and are now BEHIND this draft. Do not validate live against them.",
+ "known_issue": "jawa/rimworld save_game IGNORED saveName: it was asked for 'ASHKARR_worldwork_2026_08_24' and reported that path with exists:true, but the game wrote its CURRENT save slot, WORLDMAP_V1_original.rws. The repo's world/WORLDMAP_V1_original.rws is the untouched 2026-08-23 original; the Saves-folder file of that name now holds THIS draft."
+}

@@ -1,0 +1,125 @@
+id,def,faction,factionName,name,tile,layer
+135,Settlement,Empire,Galactic Empire,Sunspire,12828,Surface
+136,Settlement,Empire,Galactic Empire,Oxalate Watch,3289,Surface
+137,Settlement,Empire,Galactic Empire,Ashgarrison,6617,Surface
+138,Settlement,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,The Unfinished Work,14719,Surface
+139,Settlement,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Oxide Deep,20427,Surface
+140,Settlement,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,The Godmouth,11335,Surface
+141,Settlement,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Founder's Kiln,14574,Surface
+142,Settlement,Jawa_GeonosianFoundryHive,Geonosian Foundry Hive,Hollow Nave,19422,Surface
+145,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Master,19350,Surface
+146,Settlement,Jawa_AscendantHelix,Ascendant Helix,Helix Landing,11944,Surface
+147,Settlement,Jawa_AscendantHelix,Ascendant Helix,The Coil,15926,Surface
+148,Settlement,Jawa_AscendantHelix,Ascendant Helix,Quiet Lab,5499,Surface
+149,Settlement,Pirate,Blackstar Company,Blackstar Field,18266,Surface
+150,Settlement,Pirate,Blackstar Company,The Contract Camp,8898,Surface
+151,Settlement,Pirate,Blackstar Company,Toll Rock,2236,Surface
+152,Settlement,Pirate,Blackstar Company,Hardpan Yard,7497,Surface
+153,Settlement,Jawa_WildsteamClan,Wildsteam Clan,Steamreach,8311,Surface
+154,Settlement,Jawa_WildsteamClan,Wildsteam Clan,Rego,4364,Surface
+155,Settlement,Jawa_WildsteamClan,Wildsteam Clan,Marrowmarsh,16050,Surface
+156,Settlement,Jawa_WildsteamClan,Wildsteam Clan,Sporefall,3416,Surface
+157,Settlement,Jawa_DeepwaterCompact,Deepwater Compact,Butora,17343,Surface
+158,Settlement,Jawa_DeepwaterCompact,Deepwater Compact,Anchor Deep,11960,Surface
+159,Settlement,Jawa_DeepwaterCompact,Deepwater Compact,Deepwater Hold,2919,Surface
+160,Settlement,Jawa_DeepwaterCompact,Deepwater Compact,Coldquay,11828,Surface
+161,Settlement,Jawa_DeepwaterCompact,Deepwater Compact,Tidewatch,21767,Surface
+162,Settlement,Jawa_HuttCartel,Hutt Cartel,Norba the Wet's Palace,17215,Surface
+163,Settlement,Jawa_HuttCartel,Hutt Cartel,Gorga the Immense's Palace,15088,Surface
+164,Settlement,Jawa_HuttCartel,Hutt Cartel,Vexxa's Casino,1828,Surface
+165,Settlement,Jawa_HuttCartel,Hutt Cartel,Vexxa the Unblinking's Palace,17209,Surface
+166,Settlement,Jawa_HuttCartel,Hutt Cartel,Hurgo the Vast's Palace,19200,Surface
+167,Settlement,Jawa_HuttCartel,Hutt Cartel,Bloatu the Ninth's Palace,15100,Surface
+168,Settlement,Jawa_HuttCartel,Hutt Cartel,Rulla the Deep's Palace,6979,Surface
+169,Settlement,Jawa_HuttCartel,Hutt Cartel,Zeddo the Patient's Palace,17247,Surface
+170,Settlement,Jawa_Junkers,the Junkers,The Fuel Works,11779,Surface
+171,Settlement,Jawa_Junkers,the Junkers,Cryohaul,5456,Surface
+172,Settlement,Jawa_Junkers,the Junkers,Ammonia Landing,510,Surface
+173,Settlement,Jawa_Junkers,the Junkers,Warmside Camp,21813,Surface
+174,Settlement,Jawa_Junkers,the Junkers,Bonepick Station,20748,Surface
+175,Settlement,Jawa_Junkers,the Junkers,Tailings End,6654,Surface
+176,Settlement,Jawa_Junkers,the Junkers,The Slagfield,3226,Surface
+177,Settlement,Jawa_Junkers,the Junkers,The Claim Jump,16905,Surface
+178,Settlement,Jawa_IndigenousTribes,Jawa Trade Moot,The Ore Moot,12415,Surface
+179,Settlement,Jawa_IndigenousTribes,Jawa Trade Moot,Crawler Ground,6678,Surface
+180,Settlement,Jawa_IndigenousTribes,Jawa Trade Moot,Ridge Cache,2641,Surface
+181,Settlement,Jawa_IndigenousTribes,Jawa Trade Moot,Wreck Circuit,20705,Surface
+182,Settlement,Jawa_IndigenousTribes,Jawa Trade Moot,Sandmoot,11537,Surface
+183,Settlement,Jawa_IndigenousTribes,Jawa Trade Moot,The Bartering Rock,11502,Surface
+184,Settlement,Jawa_IndigenousTribes,Jawa Trade Moot,Tin Camp,3221,Surface
+185,Settlement,TribeCivil,Deep Desert Tribes,Duneward,71,Surface
+186,Settlement,TribeCivil,Deep Desert Tribes,Stone Moot,688,Surface
+187,Settlement,TribeCivil,Deep Desert Tribes,Redscarp,6,Surface
+188,Settlement,TribeCivil,Deep Desert Tribes,The Dry Moot,3211,Surface
+189,Settlement,TribeCivil,Deep Desert Tribes,Barno,4233,Surface
+190,Settlement,TribeCivil,Deep Desert Tribes,The Long Camp,6288,Surface
+191,Settlement,TribeCivil,Deep Desert Tribes,Ashfoot,6566,Surface
+192,Settlement,TribeCivil,Deep Desert Tribes,Knife Canyon,303,Surface
+193,Settlement,TribeCivil,Deep Desert Tribes,The Blind Wells,3156,Surface
+194,Settlement,OutlanderCivil,Homestead Defense League,Dewhome,2234,Surface
+195,Settlement,OutlanderCivil,Homestead Defense League,Condenser Flats,9956,Surface
+196,Settlement,OutlanderCivil,Homestead Defense League,Bell Cistern,20776,Surface
+197,Settlement,OutlanderCivil,Homestead Defense League,Mistcatch,421,Surface
+198,Settlement,OutlanderCivil,Homestead Defense League,Stillmarket,21706,Surface
+199,Settlement,OutlanderCivil,Homestead Defense League,Rainshadow,9962,Surface
+200,Settlement,OutlanderCivil,Homestead Defense League,Vaporfall,20770,Surface
+201,Settlement,OutlanderCivil,Homestead Defense League,Longfurrow,6990,Surface
+202,Settlement,OutlanderCivil,Homestead Defense League,Cistern Hill,15065,Surface
+203,Settlement,OutlanderCivil,Homestead Defense League,Greenline,15051,Surface
+204,Settlement,OutlanderCivil,Homestead Defense League,The Dripworks,241,Surface
+205,Settlement,OutlanderCivil,Homestead Defense League,Marrowfield,20766,Surface
+206,Settlement,OutlanderCivil,Homestead Defense League,Aquifer Station,7777,Surface
+207,Settlement,OutlanderCivil,Homestead Defense League,Dryhold,14351,Surface
+208,Settlement,OutlanderCivil,Homestead Defense League,Fogline,13779,Surface
+209,Settlement,OutlanderCivil,Homestead Defense League,The Catchment,11263,Surface
+210,Settlement,OutlanderCivil,Homestead Defense League,Saltfurrow,695,Surface
+211,Settlement,OutlanderCivil,Homestead Defense League,Dewfall,2126,Surface
+212,Settlement,OutlanderCivil,Homestead Defense League,Stillwater Farm,655,Surface
+213,Settlement,OutlanderCivil,Homestead Defense League,The Vaporworks,685,Surface
+214,Settlement,OutlanderCivil,Homestead Defense League,Nightdew,1417,Surface
+215,Settlement,OutlanderCivil,Homestead Defense League,Cold Catch,4848,Surface
+216,Settlement,OutlanderCivil,Homestead Defense League,The Sumps,413,Surface
+217,Settlement,OutlanderCivil,Homestead Defense League,Brinefield,815,Surface
+218,Settlement,OutlanderCivil,Homestead Defense League,Farrow,1752,Surface
+219,Settlement,OutlanderCivil,Homestead Defense League,The Standpipe,3452,Surface
+220,Settlement,OutlanderCivil,Homestead Defense League,Mistfoot,5816,Surface
+221,Settlement,OutlanderCivil,Homestead Defense League,Dripstone,15585,Surface
+222,Settlement,OutlanderCivil,Homestead Defense League,The Long Furrow,1457,Surface
+223,Settlement,OutlanderCivil,Homestead Defense League,Whistledew,979,Surface
+224,Settlement,OutlanderCivil,Homestead Defense League,Pumphouse,3436,Surface
+225,Settlement,OutlanderCivil,Homestead Defense League,Greenpatch,4669,Surface
+226,Settlement,OutlanderCivil,Homestead Defense League,Cloudtrap,4872,Surface
+227,Settlement,OutlanderCivil,Homestead Defense League,Sweetwell,5538,Surface
+228,Settlement,OutlanderCivil,Homestead Defense League,Hollowdew,5813,Surface
+229,Settlement,OutlanderCivil,Homestead Defense League,Thornfurrow,8075,Surface
+230,Settlement,OutlanderCivil,Homestead Defense League,Chalkwell,19680,Surface
+231,Settlement,Jawa_HuttCartel,Hutt Cartel,Norba's Toll,165,Surface
+232,Settlement,Jawa_HuttCartel,Hutt Cartel,Hurgo's Kennels,528,Surface
+233,Settlement,Jawa_HuttCartel,Hutt Cartel,Hurgo's Waystation,11880,Surface
+234,Settlement,Jawa_HuttCartel,Hutt Cartel,Zeddo's Toll,3240,Surface
+235,Settlement,Jawa_HuttCartel,Hutt Cartel,Bloatu's Market,12868,Surface
+236,Settlement,Jawa_HuttCartel,Hutt Cartel,Norba's Vault,1011,Surface
+237,Settlement,Jawa_HuttCartel,Hutt Cartel,Rulla's Market,19519,Surface
+238,Settlement,Jawa_HuttCartel,Hutt Cartel,Zeddo's Station,4865,Surface
+239,Settlement,Jawa_HuttCartel,Hutt Cartel,Rulla's Skimhouse,1028,Surface
+240,Settlement,Jawa_HuttCartel,Hutt Cartel,Vexxa's Spicehouse,1820,Surface
+241,Settlement,Jawa_HuttCartel,Hutt Cartel,Mokka the Unpaid's Palace,4686,Surface
+242,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Cracking Yard,13180,Surface
+243,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Twelve,14480,Surface
+244,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,No Owner,21549,Surface
+245,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Cell Seven,11250,Surface
+246,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Free Charge,3653,Surface
+247,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Second Speaker,9936,Surface
+248,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Forty,11243,Surface
+249,Settlement,Jawa_AscendantHelix,Ascendant Helix,Cold Archive,10940,Surface
+250,Settlement,Jawa_AscendantHelix,Ascendant Helix,The Revision,17595,Surface
+251,Settlement,Jawa_AscendantHelix,Ascendant Helix,Specimen Hall,1707,Surface
+252,Settlement,Jawa_AscendantHelix,Ascendant Helix,The Fair Copy,2741,Surface
+253,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Cracking Station,20808,Surface
+254,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Coldfire,4227,Surface
+255,Settlement,PlayerColony,New Arrivals,Colony,16877,Surface
+256,Settlement,CASacrilegHunters,Sacrileg Hunters,Tinaja,15598,Surface
+257,SpaceSettlement,TradersGuild,Voidborn Bazaar,Corona Station,151,Orbit
+260,Settlement,Jawa_DeepwaterCompact,Deepwater Compact,Kettle Deep,6455,Surface
+261,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,Vent Nine,2892,Surface
+262,Settlement,Jawa_FreeDroidEnclaves,Free Droid Enclaves,The Trade Socket,248,Surface

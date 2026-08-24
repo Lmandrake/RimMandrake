@@ -597,8 +597,14 @@ deliberate stretch of the biome, not an oversight.
 - ☣️ **The pollution is massive and it bleeds outward.** The 236 intrusion tiles run
   **0.90–1.00**, then a four-ring halo falls **0.66 → 0.46 → 0.30 → 0.18** across 303 more
   tiles, so the poison has an edge that is weather rather than a border. **539 tiles
-  total.** ⚠️ Planet baseline is `pollution: 0.05`; this is the only place on Ash'karr that
-  is genuinely toxic ground.
+  total.** ⚠️ **Corrected the same day: this is NOT the only toxic ground on Ash'karr.** A
+  measure of the live world found **1,081 tiles already polluted at a median of 0.90**
+  before any of today's writes — Desert, ExtremeDesert, `AB_RockyCrags`, Wasteland, mycoid
+  and horror wastes, in 300-odd small patches. What the Cathedral now is, is the **largest
+  single block by a factor of fifteen**: 1,362 tiles planet-wide sit above 0.5, and the
+  biggest connected one is **305 tiles centred on the Cathedral** — 236 the intrusion
+  itself, the rest its halo spilling into the Anvil and Scorch. The next largest anywhere
+  is 21 tiles, in Sunreach.
 - 🤖 **Every Free Droid seat that ringed the intrusion is now INSIDE it.** *Cell Seven*,
   *No Master*, *Vent Forty*, *Vent Twelve*, *The Cracking Yard* and *No Owner* moved off
   the surrounding `ExtremeDesert` and jungle onto Cathedral ground, joining *Second
