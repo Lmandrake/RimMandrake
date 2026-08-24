@@ -41,3 +41,11 @@ looks at them. **He is the authority on whether they honour the original — no 
 - [ ] `AA_Atispec` and `AA_Behemoth` redrawn to his direction.
 - [ ] Silhouettes preserved.
 - [ ] No other creature's art touched.
+
+## closed — owner approved at the bench, 2026-08-24
+> *"Item (1) has already been approved by me. Accept and close."*
+
+Four creatures drawn and deployed, not two: **Atispec** and **Behemoth** (the two he authorised by
+name in this item), plus **Bantha** and **Eopie** — the freeze was extended to those two by voice and
+that extension is recorded only in commit `25a07700`'s body. ⛔ **Nothing beyond these four is
+authorised.** Every other creature he reviewed on 2026-08-23 remains `keep`, `shrink` or `replace`.
