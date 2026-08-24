@@ -140,25 +140,70 @@
              authorised the redraw and it ships at 1,024 px. The premise of the shrink is
              gone, so the derived multiplier does not apply and its row is marked overridden.
 
-             🔑 8.00 IS NOT A TASTE CALL, IT IS THE ART'S CEILING. Owner's sizing rule,
-             2026-08-23: texture edge = drawSize x 128. At 1,024 px the largest honest
-             drawSize is 1024/128 = 8.00 exactly. Above that the sprite is upscaled and goes
-             soft, which is the opposite of what he asked for. ⇒ To go bigger than 8.00 the
-             ART must be regenerated at 2,048 px first. Do not simply raise the number.
+             🔴 DOUBLED AGAIN 2026-08-24, same sitting: "double it again, AND do it for
+             bodySize fully. This is now the night side's heaviest hitter and most amazing
+             thing." Adult drawSize 8.00 -> 16.00, all three stages x2 again.
 
-             Life stages keep their original proportions: x1.843 on all three, which lands
-             the adult on the ceiling. -->
+             ⚠️ 16.00 IS PAST WHAT THE ART SUPPORTS, KNOWINGLY, AND HE WAS TOLD. The sizing
+             rule is texture edge = drawSize x 128, so 16.00 wants a 2,048 px sprite and the
+             approved art is 1,024 - it renders at 64 px/cell, HALF the standard. ⛔ The fix
+             is NOT to upscale the file: resampling 1024 -> 2048 adds no detail and would only
+             make the number look compliant while the art stayed soft. It is to REGENERATE
+             at 2,048 px, which is a new generation and needs his approval because he
+             approved THIS sprite.
+
+             🔑 In practice the softness only shows at maximum zoom-in - at normal play zoom a
+             16-tile creature is well under 1,024 px on screen. That is why this ships rather
+             than blocking. Do not read it as the rule being wrong.
+
+             Life stages keep their original proportions throughout: x1.843 then x2. -->
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>4.79</drawSize></value>
+          <value><drawSize>9.58</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>6.60</drawSize></value>
+          <value><drawSize>13.20</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>8.00</drawSize></value>
+          <value><drawSize>16.00</drawSize></value>
+        </li>
+        <!-- 🔴 bodySize AND healthScale, "fully", on his instruction. This file's standing rule
+             is that drawSize and bodySize are NEVER merged - drawSize is the picture, bodySize
+             is meat, leather, hunting yield, carrying capacity, food need and melee scaling.
+             ⭐ That rule is not being broken, it is being INVOKED: he asked for the mechanical
+             half explicitly and by name, which is exactly the case the rule reserves.
+
+             Matched numerically to adult drawSize, which is this file's own precedent - Zakkeg
+             carries drawSize 8.20 and baseBodySize 8.2. Alpha Animals shipped 8 / 10; both
+             double, to 16 / 20.
+
+             ⚠️ WHAT THIS DOES NOT DO: melee damage. RimWorld tool `power` is a flat per-tool
+             number and does NOT scale with bodySize, so "heaviest hitter" here means it is
+             enormously durable and enormously heavy, not that it swings harder. Raising the
+             dragonclaw tools is a separate, deliberate combat change - ask before doing it. -->
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseBodySize</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseBodySize</xpath>
+            <value><baseBodySize>16</baseBodySize></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race</xpath>
+            <value><baseBodySize>16</baseBodySize></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseHealthScale</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseHealthScale</xpath>
+            <value><baseHealthScale>20</baseHealthScale></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race</xpath>
+            <value><baseHealthScale>20</baseHealthScale></value>
+          </nomatch>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="KwazelMaw"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>

@@ -32,7 +32,7 @@ resolution can carry, so the multiplier is `sqrt(px / band median px)`, clamped 
 | 🔽 shrink `JRWDimetrodon` — Dimetrodon | Jurassic Rimworld - Dinosaurs Only (Continued) | huge | 1,070 px | `drawSize` | `drawSize` **×0.55** | AB_GelatinousSuperorganism |
 | 🔽 shrink `JRWOuranosaurus` — Ouranosaurus | Jurassic Rimworld - Dinosaurs Only (Continued) | huge | 1,345 px | `drawSize` | `drawSize` **×0.60** | AB_GelatinousSuperorganism |
 | 🔽 shrink `JRWAntarctopelta` — Antarctopelta | Jurassic Rimworld - Dinosaurs Only (Continued) | huge | 1,415 px | `drawSize` | `drawSize` **×0.62** | BMT_FungalForest |
-| ⛔ ~~shrink~~ **OVERRIDDEN — see below** `AA_Behemoth` — Behemoth | Alpha Animals | SUPER | ~~1,614 px~~ **1,024 px, redrawn** | `drawSize` | 🔴 **PROMOTED to 8.00**, not ×0.62 | PoisonForest |
+| ⛔ ~~shrink~~ **OVERRIDDEN — see below** `AA_Behemoth` — Behemoth | Alpha Animals | SUPER | ~~1,614 px~~ **1,024 px, redrawn** | `drawSize` **+ `bodySize`** | 🔴 **PROMOTED to 16.00 / bodySize 16**, not ×0.62 | PoisonForest |
 | 🔽 shrink `KwazelMaw` — kwazel maw | Star Wars Animal Collection (Continued) | huge | 1,681 px | `drawSize` | `drawSize` **×0.67** | ExtremeDesert |
 | 🔽 shrink `Procoptodon` — procoptodon | Megafauna | huge | 2,158 px | `drawSize` | `drawSize` **×0.76** | AB_TarPits |
 | 🔽 shrink `Ronto` — ronto | Star Wars Animal Collection (Continued) | SUPER | 2,163 px | `drawSize` | `drawSize` **×0.71** | AB_FeraliskInfestedJungle |
@@ -172,12 +172,30 @@ The verdict comes from play.
 weakest headliner in the cast. 🔑 **That premise no longer holds.** The owner authorised the redraw
 and it ships at **1,024 px**, so the derived multiplier is measuring art that does not exist.
 
-Adult `drawSize` is now **8.00** (was 4.34; the pre-shrink original was 7.00). Life stages
-4.79 / 6.60 / 8.00 — ×1.843, keeping the original proportions.
+Then, in the same sitting: *"double it again, AND do it for bodySize fully. This is now the night
+side's heaviest hitter and most amazing thing."*
 
-⚠️ **8.00 is the ART'S CEILING, not a preference.** The sizing rule is texture edge =
-drawSize × 128, so 1,024 px supports exactly 8.00. **Going bigger means regenerating the art at
-2,048 px first** — raising the number alone upscales the sprite and makes it soft.
+| | shipped by Alpha Animals | after the shrink | **now** |
+|---|---|---|---|
+| adult `drawSize` | 7.00 | 4.34 | **16.00** |
+| life stages | 4.19 / 5.77 / 7.00 | 2.60 / 3.58 / 4.34 | **9.58 / 13.20 / 16.00** |
+| `baseBodySize` | 8 | 8 | **16** |
+| `baseHealthScale` | 10 | 10 | **20** |
+
+`bodySize` is matched numerically to adult `drawSize`, which is this file's own precedent — Zakkeg
+carries `drawSize` 8.20 with `baseBodySize` 8.2.
+
+⚠️ **16.00 IS PAST WHAT THE ART SUPPORTS, and that was a knowing call, not an oversight.** The
+sizing rule is texture edge = drawSize × 128, so 16.00 wants a **2,048 px** sprite and the approved
+art is **1,024** — it renders at **64 px/cell, half the standard**. ⛔ **Do not "fix" this by
+upscaling the PNG**: resampling 1024 → 2048 adds no detail and only makes the number look
+compliant. The real fix is a **regeneration at 2,048 px**, which needs the owner's approval because
+he approved *this* sprite. 🔑 In practice the softness shows only at maximum zoom — at play zoom a
+16-tile creature is well under 1,024 px on screen — which is why it ships.
+
+⚠️ **`bodySize` does NOT raise melee damage.** RimWorld tool `power` is a flat per-tool number and
+does not scale with body size, so this Behemoth is enormously durable and heavy, not harder-hitting.
+Raising the dragonclaw tools is a separate combat change and has not been made.
 
 ⛔ **Do not regenerate this row from `creature_size_decisions.json`.** It would silently restore
 the shrink. The live values are in `src/Jawa/Jawa_Patches/Patches/CreatureResize_Ashkarr.xml`.
