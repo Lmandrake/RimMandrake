@@ -3276,7 +3276,10 @@ namespace JawaBench.BridgeTools
             Description =
                 "Dump a per-tile table of the whole SURFACE layer to a file — index, " +
                 "latitude, longitude, biome, elevation, temperature, rainfall, hilliness, " +
-                "swampiness. This is the key that makes OFFLINE savegame world editing " +
+                "swampiness and pollution. Those are EXACTLY the fields a tile write can " +
+                "set, so the default export round-trips losslessly through " +
+                "world_tile_import with no flag to remember. This is the key that makes " +
+                "OFFLINE savegame world editing " +
                 "geographic: the .rws stores tiles in index order with no coordinates, " +
                 "because lat/long are derived from the geodesic subdivision at load time " +
                 "and never serialised. Export once, join on tile index, and every row in " +
@@ -3312,10 +3315,10 @@ namespace JawaBench.BridgeTools
                 DefaultValue = "csv")]
             string format = "csv",
             [ToolParameter(Description =
-                "false (default) — the original nine columns, byte-identical to what " +
-                "this tool has always written. true — append eleven DERIVED columns that " +
+                "false (default) — the ten writable columns, and nothing that costs " +
+                "time to compute. true — append ten DERIVED columns that " +
                 "no raw tile field carries: tempMin, tempMax and seasonalShift (the " +
-                "engine's own seasonal extremes, not the mean), pollution, riverDist, " +
+                "engine's own seasonal extremes, not the mean), riverDist, " +
                 "feature and featureId (the named world region the tile belongs to), " +
                 "waterCovered, roadCount, riverCount and mutatorCount. " +
                 "⚠️ COSTS REAL TIME: each tile's min and max each sample the seasonal " +
@@ -3394,6 +3397,18 @@ namespace JawaBench.BridgeTools
                         Swampiness = t.swampiness
                     };
 
+                    // 🔴 POLLUTION IS BASE, NOT EXTENDED - corrected 2026-08-24.
+                    // It is a RAW writable field and jawa/world_tile_import accepts a
+                    // `pollution` column, so omitting it from the default export made the
+                    // export -> import round trip LOSSY AND SILENT: a world with 539
+                    // poisoned tiles exported and re-imported clean, with no error and no
+                    // warning, because the reader simply never saw the column. That is the
+                    // exact failure class this companion exists to prevent.
+                    // It costs one cast and one field read - unlike the extended block
+                    // below, whose tempMin/tempMax sample the seasonal curve 133 times each.
+                    var sfc = t as RimWorld.Planet.SurfaceTile;
+                    if (sfc != null) rows[i].Pollution = sfc.pollution;
+
                     if (!extended) continue;
 
                     // 🔴 GenTemperature.MinTemperatureAtTile, NOT Tile.MinTemperature.
@@ -3417,7 +3432,6 @@ namespace JawaBench.BridgeTools
                     // ambiguity here would surface as errors far from this line.
                     var st = t as RimWorld.Planet.SurfaceTile;
                     if (st == null) continue;
-                    rows[i].Pollution = st.pollution;
                     rows[i].RiverDist = st.riverDist;
                     rows[i].Feature = st.feature?.name;
                     rows[i].FeatureId = st.feature != null ? st.feature.uniqueID : -1;
@@ -5894,18 +5908,23 @@ namespace JawaBench.BridgeTools
         private static readonly string[] TileColumns =
         {
             "tile", "lat", "long", "biome", "elevation",
-            "temperature", "rainfall", "hilliness", "swampiness"
+            "temperature", "rainfall", "hilliness", "swampiness", "pollution"
         };
 
         // The extended set APPENDS to the base set and never reorders it, so a
         // consumer keyed on column NAME reads either file, and a consumer keyed on
-        // POSITION still reads the first nine correctly. That is the whole
+        // POSITION still reads the base columns correctly. That is the whole
         // compatibility contract with vivify_world.py on the Python side.
+        // ⚠️ 2026-08-24: `pollution` MOVED from position 13 to position 10 when it
+        // was promoted into the base set. Name-keyed readers are unaffected; a
+        // POSITION-keyed reader of an EXTENDED file written before that date will
+        // now read tempMin where it expects pollution. vivify_world.py keys on
+        // name (its COLS map) and was checked. Nothing else reads the extended form.
         private static readonly string[] TileColumnsExtended =
         {
             "tile", "lat", "long", "biome", "elevation",
-            "temperature", "rainfall", "hilliness", "swampiness",
-            "tempMin", "tempMax", "seasonalShift", "pollution", "riverDist",
+            "temperature", "rainfall", "hilliness", "swampiness", "pollution",
+            "tempMin", "tempMax", "seasonalShift", "riverDist",
             "feature", "featureId", "waterCovered", "roadCount", "riverCount",
             "mutatorCount"
         };
@@ -5986,12 +6005,12 @@ namespace JawaBench.BridgeTools
                 sw.Write(','); sw.Write(F(r.Rainfall, ValueFormat));
                 sw.Write(','); sw.Write(Csv(r.Hilliness));
                 sw.Write(','); sw.Write(F(r.Swampiness, ValueFormat));
+                sw.Write(','); sw.Write(F(r.Pollution, ValueFormat));
                 if (harvest.Extended)
                 {
                     sw.Write(','); sw.Write(F(r.TempMin, ValueFormat));
                     sw.Write(','); sw.Write(F(r.TempMax, ValueFormat));
                     sw.Write(','); sw.Write(F(r.SeasonalShift, ValueFormat));
-                    sw.Write(','); sw.Write(F(r.Pollution, ValueFormat));
                     sw.Write(','); sw.Write(r.RiverDist.ToString(CultureInfo.InvariantCulture));
                     sw.Write(','); sw.Write(Csv(r.Feature));
                     sw.Write(','); sw.Write(r.FeatureId.ToString(CultureInfo.InvariantCulture));
@@ -6060,6 +6079,7 @@ namespace JawaBench.BridgeTools
                 sw.Write(','); sw.Write(F(r.Rainfall, ValueFormat));
                 sw.Write(','); sw.Write(Jstr(r.Hilliness));
                 sw.Write(','); sw.Write(F(r.Swampiness, ValueFormat));
+                sw.Write(','); sw.Write(F(r.Pollution, ValueFormat));
                 sw.Write(']');
             }
             sw.Write("]}");
