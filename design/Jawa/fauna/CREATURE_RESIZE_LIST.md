@@ -32,7 +32,7 @@ resolution can carry, so the multiplier is `sqrt(px / band median px)`, clamped 
 | 🔽 shrink `JRWDimetrodon` — Dimetrodon | Jurassic Rimworld - Dinosaurs Only (Continued) | huge | 1,070 px | `drawSize` | `drawSize` **×0.55** | AB_GelatinousSuperorganism |
 | 🔽 shrink `JRWOuranosaurus` — Ouranosaurus | Jurassic Rimworld - Dinosaurs Only (Continued) | huge | 1,345 px | `drawSize` | `drawSize` **×0.60** | AB_GelatinousSuperorganism |
 | 🔽 shrink `JRWAntarctopelta` — Antarctopelta | Jurassic Rimworld - Dinosaurs Only (Continued) | huge | 1,415 px | `drawSize` | `drawSize` **×0.62** | BMT_FungalForest |
-| 🔽 shrink `AA_Behemoth` — Behemoth | Alpha Animals | SUPER | 1,614 px | `drawSize` | `drawSize` **×0.62** | PoisonForest |
+| ⛔ ~~shrink~~ **OVERRIDDEN — see below** `AA_Behemoth` — Behemoth | Alpha Animals | SUPER | ~~1,614 px~~ **1,024 px, redrawn** | `drawSize` | 🔴 **PROMOTED to 8.00**, not ×0.62 | PoisonForest |
 | 🔽 shrink `KwazelMaw` — kwazel maw | Star Wars Animal Collection (Continued) | huge | 1,681 px | `drawSize` | `drawSize` **×0.67** | ExtremeDesert |
 | 🔽 shrink `Procoptodon` — procoptodon | Megafauna | huge | 2,158 px | `drawSize` | `drawSize` **×0.76** | AB_TarPits |
 | 🔽 shrink `Ronto` — ronto | Star Wars Animal Collection (Continued) | SUPER | 2,163 px | `drawSize` | `drawSize` **×0.71** | AB_FeraliskInfestedJungle |
@@ -161,3 +161,23 @@ the first pass carries. Current values come from each mod's source XML, per crea
 this page states MULTIPLIERS and not absolutes.
 🔑 **And he named the real test again:** these are the changes worth making before anyone plays.
 The verdict comes from play.
+
+---
+## ⛔ AA_Behemoth is no longer on this list's terms — owner, 2026-08-24
+
+> *"Behemoth (forsakendragon) is so cool it really deserves to be MUCH larger now. One of the
+> most massive creatures."*
+
+**This list shrank it ×0.62 because its art was bad** — 1,614 px carrying a SUPER silhouette, the
+weakest headliner in the cast. 🔑 **That premise no longer holds.** The owner authorised the redraw
+and it ships at **1,024 px**, so the derived multiplier is measuring art that does not exist.
+
+Adult `drawSize` is now **8.00** (was 4.34; the pre-shrink original was 7.00). Life stages
+4.79 / 6.60 / 8.00 — ×1.843, keeping the original proportions.
+
+⚠️ **8.00 is the ART'S CEILING, not a preference.** The sizing rule is texture edge =
+drawSize × 128, so 1,024 px supports exactly 8.00. **Going bigger means regenerating the art at
+2,048 px first** — raising the number alone upscales the sprite and makes it soft.
+
+⛔ **Do not regenerate this row from `creature_size_decisions.json`.** It would silently restore
+the shrink. The live values are in `src/Jawa/Jawa_Patches/Patches/CreatureResize_Ashkarr.xml`.

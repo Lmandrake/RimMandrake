@@ -130,17 +130,35 @@
           <xpath>Defs/PawnKindDef[defName="JRWAntarctopelta"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>3.72</drawSize></value>
         </li>
+        <!-- 🔴 AA_Behemoth IS A PROMOTION, NOT A SHRINK. Owner, 2026-08-24, on seeing the
+             redraw in game: "Behemoth (forsakendragon) is so cool it really deserves to be
+             MUCH larger now. One of the most massive creatures."
+
+             ⛔ DO NOT re-derive these from CREATURE_RESIZE_LIST.md. The list's x0.62 was
+             computed from the OLD art - 1,614 px carrying a SUPER silhouette, the weakest
+             headliner in the cast, shrunk to hide it. That art no longer exists: the owner
+             authorised the redraw and it ships at 1,024 px. The premise of the shrink is
+             gone, so the derived multiplier does not apply and its row is marked overridden.
+
+             🔑 8.00 IS NOT A TASTE CALL, IT IS THE ART'S CEILING. Owner's sizing rule,
+             2026-08-23: texture edge = drawSize x 128. At 1,024 px the largest honest
+             drawSize is 1024/128 = 8.00 exactly. Above that the sprite is upscaled and goes
+             soft, which is the opposite of what he asked for. ⇒ To go bigger than 8.00 the
+             ART must be regenerated at 2,048 px first. Do not simply raise the number.
+
+             Life stages keep their original proportions: x1.843 on all three, which lands
+             the adult on the ceiling. -->
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>2.60</drawSize></value>
+          <value><drawSize>4.79</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.58</drawSize></value>
+          <value><drawSize>6.60</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>4.34</drawSize></value>
+          <value><drawSize>8.00</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="KwazelMaw"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
