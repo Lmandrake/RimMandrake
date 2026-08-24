@@ -3306,7 +3306,7 @@ tile,mutators
 11109,Dunes
 11110,Dunes
 11111,Dunes;VEE_MineralDevoid;VEE_DeepOreDevoid
-11113,Dunes;VEE_ToxicCrater
+11113,Dunes
 11114,Dunes
 11115,Dunes;VEE_MineralDevoid;VEE_DeepOreDevoid
 11126,Dunes;VEE_MineralDevoid;VEE_DeepOreDevoid
@@ -3345,7 +3345,7 @@ tile,mutators
 11180,VEE_SaltPlains;DryGround
 11181,VEE_SaltPlains;MineralRich
 11182,VEE_SaltPlains;MineralRich
-11183,River;DryLake;VEE_SaltPlains;MineralRich
+11183,VEE_SaltPlains;MineralRich;VEE_ToxicCrater
 11184,VEE_SaltPlains;DryGround
 11185,VEE_SaltPlains;DryGround
 11188,Dunes
