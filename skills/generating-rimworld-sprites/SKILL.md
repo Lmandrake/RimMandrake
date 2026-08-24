@@ -296,6 +296,72 @@ sibling** — pass the reference as image 1 and the approved facing as image 2,
 and ask for a match on palette, material and damage language. That buys most of
 the consistency at full resolution.
 
+🔴 **CODEX `edit` FAILS INTERMITTENTLY HERE, AND A FAILURE COSTS THE WHOLE
+TIMEOUT.** Measured 2026-08-23 over seven calls in one sitting: **four succeeded in
+79-81 s** and **three produced no output at all** and were killed by their own
+timeout, with codex's stderr suggesting re-authentication.
+
+⚠️ **CORRECTION, and it is the point of this entry.** The first three failures were
+all two-image calls and this file briefly said the SECOND IMAGE was the cause. Then
+a **single**-image call failed the same way. ⇒ **It is not the second image**, it is
+not the documented variadic-`-i` bug either (`codex_image.py:241` already appends the
+`--` terminator, which was read before blaming it) — it is **intermittent**, and the
+sample that looked conclusive was four calls deep and confounded.
+
+**How to work with it:**
+- ⏱️ **Cap the timeout at 120 s, never 780.** A failure burns the entire budget before
+  it reports, so a batch of four hung calls at 780 s is **52 minutes for nothing**. A
+  good call returns in ~80 s; anything past 120 s is not coming.
+- 🔁 **Retry rather than diagnose.** Three of seven failed and the same prompt
+  succeeded on a later attempt. Wrap each facing in a retry loop instead of
+  reasoning about why one died.
+- ⛔ **Do not draw a conclusion about the CAUSE from a handful of calls in one
+  sitting.** This entry exists because that is exactly what happened.
+
+✅ **Anchoring still works without the second image:** edit each facing from ITS OWN
+reference and carry the approved sibling's treatment in the PROMPT as words —
+*"segmented chitin plating with clean segment breaks, speckled shell, wet translucent
+flesh with a bioluminescent glow inside it, deep red and rose palette, hard black
+outline"*. Write that description down the moment the first facing is approved; it is
+the anchor, and it survives whichever call shape you end up using.
+
+## Multi-facing assets
+
+RimWorld `Graphic_Multi` things ship four facings that must agree — a hole in
+one flank appears in every view that can see that flank.
+
+**Prove one facing before attempting four.** Four-view consistency fails for
+reasons unrelated to whether the pipeline works, and one facing is enough to
+learn whether the art direction survives downscaling.
+
+### ⚠️ Generate facings individually, not as a 2×2 sheet
+
+The sheet is the obvious way to get consistency — one machine drawn four ways,
+in one pass. **Measured 2026-08-12, it is the wrong trade**, and the reason is
+resolution rather than art.
+
+A generation returns roughly a fixed pixel budget regardless of what is in it.
+Put four facings in one image and each gets a quarter of it:
+
+| approach | pixels per facing | oversampling vs a 512×640 sprite |
+|---|---|---|
+| 2×2 sheet (1254×1254) | ~393,000 | **1.2×** |
+| individual (1120×1405) | ~1,574,000 | **4.8×** |
+
+**4× fewer pixels per facing, leaving almost no downsampling headroom.** The
+crispness of a finished sprite comes from generating well above target and
+area-averaging down; at 1.2× there is nothing to average.
+
+What the sheet *did* do well, so this is a trade rather than a failure: it held
+the 2×2 layout, kept each cell's own viewing direction, and produced four
+panels more stylistically alike than four independent runs. It still did not
+deliver verifiable damage correspondence between views.
+
+**Recommendation: generate each facing individually, anchored to a chosen
+sibling** — pass the reference as image 1 and the approved facing as image 2,
+and ask for a match on palette, material and damage language. That buys most of
+the consistency at full resolution.
+
 🔴 **BUT TWO-IMAGE EDITS HANG ON THIS INSTALL — measured 2026-08-23.** Four
 consecutive `edit` calls carrying two `--image` arguments produced **no output at
 all** and were killed by their own 780 s timeout, with codex's stderr suggesting
