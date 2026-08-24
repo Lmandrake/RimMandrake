@@ -286,6 +286,14 @@ this same load, an unexplained result belongs to the assembly first.
 > **`pollution` is now BASE column 10**, not an extended-only column, so the default export
 > round-trips losslessly. The §19 reading below still holds: extended is still 20 columns.
 > ⛔ **The readings below have NOT been taken.** They need the next load.
+>
+> ✅ **Confirmed independently by BUILD 2026-08-24 01:4x, off the DEPLOYED binary rather than off
+> the build command.** `build.tool_surface()` on the game copy reads **121 tools**, with
+> `fire_incident`, `send_letter`, `weather_set`, `game_condition` and `fire_raid` all present —
+> so it is genuinely the `--gm` build, not merely reported as one. Hashes match the repo:
+> `JawaRules.dll` `f611bc35…` (11,776 B), `JawaBench.BridgeTools.dll` `c924ac52…` (1,255,936 B).
+> 🔑 That check exists because a non-`--gm` deploy loses those five tools **silently**, and
+> `build.py`'s own guard cannot vouch for a file someone else wrote.
 
 ## 🔧 §19 (original text) — TWO ASSEMBLIES ARE BUILT AND COMMITTED AND CANNOT DEPLOY WHILE THE GAME RUNS
 
