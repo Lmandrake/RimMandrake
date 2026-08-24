@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!--
+    ========================================================================
+    WorldMapReadability_Ashkarr.xml    Jawa_Patches - authored 2026-08-23
+    ========================================================================
+    🔴 Owner, 2026-08-23: "make the worldmap faction icons twice as big".
+
+    🔑 THE ENGINE MULTIPLIES A FLAT 30 px BY THIS FIELD, so "twice as big" is
+    literally the number 2. `ExpandableWorldObjectsUtility.cs:212`:
+
+        float num = 30f * o.def.expandingIconDrawSize;
+
+    and `WorldObjectDef.cs:88` defaults the field to `1f`. ⇒ Settlement icons
+    are drawn at 30 px today and 60 px after this.
+
+    ⚠️ IT IS AN ADD, NOT A REPLACE, AND THAT IS MEASURED. Core's `Settlement`
+    WorldObjectDef (`Core/Defs/WorldObjectDefs/WorldObjects.xml`) declares
+    `expandingIcon`, `expandingIconPriority`, `fullyExpandedInSpace` and
+    `canBePlayerHome` - and NO `expandingIconDrawSize`. A Replace would match
+    nothing, and ⛔ a PatchOperationReplace that matches nothing is a RED ERROR
+    while a Conditional that matches nothing is SILENT. The Conditional here
+    takes the add branch today and would take the replace branch if Ludeon ever
+    adds the field, so it survives an update either way.
+
+    ⛔ SCOPE IS `Settlement` ONLY, deliberately. Every WorldObjectDef carries
+    this field and several already set their own - Core sets 1.6 on one, Odyssey
+    sets 1.35 on three and 1.1 on another. Those are hand-tuned relative sizes
+    and doubling them all would flatten the hierarchy the game uses to say which
+    objects matter. The owner asked for the FACTION icons; the faction icon on
+    the planet is `Settlement.ExpandingIcon => Faction.def.FactionIcon`
+    (`Settlement.cs:40`), so `Settlement` is the whole of the ask.
+
+    🔑 The icons this enlarges are the ones that gained a black ring the same
+    day - see `outline_faction_icons.py`. The ring was sized at 7 px on a 128 px
+    source against a ~30 px draw; at 60 px it reads twice as thick, which is
+    the intent, not a defect.
+    ========================================================================
+  -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/WorldObjectDef[defName="Settlement"]/expandingIconDrawSize</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/WorldObjectDef[defName="Settlement"]/expandingIconDrawSize</xpath>
+      <value><expandingIconDrawSize>2</expandingIconDrawSize></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/WorldObjectDef[defName="Settlement"]</xpath>
+      <value><expandingIconDrawSize>2</expandingIconDrawSize></value>
+    </nomatch>
+  </Operation>
+
+</Patch>
