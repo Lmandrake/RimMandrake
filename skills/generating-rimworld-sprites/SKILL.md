@@ -318,6 +318,18 @@ sample that looked conclusive was four calls deep and confounded.
 - ⛔ **Do not draw a conclusion about the CAUSE from a handful of calls in one
   sitting.** This entry exists because that is exactly what happened.
 
+🔴 **AND SOME OF THOSE "HANGS" WERE THE RETRY HARNESS KILLING ITSELF.** A cleanup
+line of the shape
+
+    pgrep -f codex_image.py | xargs -r kill -9      # ⛔ NEVER
+
+matches the **parent shell too**, because a script created by a heredoc carries its
+own text — including that string — in the parent's command line. So the retry loop
+SIGKILLed the job it was retrying, and the batch died with an unexplained exit 1 or
+144 partway through. ✅ **`timeout` already reaps the child; no cleanup line is
+needed.** If you must kill strays, match on something that cannot appear in the
+parent's own argv.
+
 ✅ **Anchoring still works without the second image:** edit each facing from ITS OWN
 reference and carry the approved sibling's treatment in the PROMPT as words —
 *"segmented chitin plating with clean segment breaks, speckled shell, wet translucent
