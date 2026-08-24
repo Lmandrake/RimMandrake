@@ -588,9 +588,28 @@ def _who_refusal(ev, item):
                 "--owner-said \"<his words>\"\n"
                 "\u26a0\ufe0f  That stamps the LEDGER only. Waking the other windows is "
                 "still his, and\n    `./game up` does both in one word.")
-    return ("only %s may `%s` (seat is %s)"
+    # 🔴 A REFUSAL THAT DOES NOT NAME THE ROUTE THROUGH IT STOPS THE WRONG PERSON.
+    # Owner, 2026-08-24 01:3x, after REP was refused `needs` on work HE had just ordered,
+    # reported the refusal back to him and stopped — while `--owner-said` was sitting right
+    # there and REP had used it a dozen times the same night. The rule was never the
+    # problem; the message was. Every other refusal in this file teaches the way through,
+    # and this one — the generic seat rule, the one hit most often — did not.
+    # ⛔ Do not shorten this back to one line. ⛔ And do not widen the rule instead: the seat
+    # boundary is real and the override is supposed to be RECORDED, which is exactly what
+    # `--owner-said` does.
+    return ("only %s may `%s` (seat is %s)\n\n"
+            "\u2705 If the OWNER told you to do this, that is not a refusal — quote him and "
+            "it lands,\n   with his words recorded on the event as the authorization:\n"
+            "    python3 src/RimMandrake/rimflow/cli.py %s %s \u2026 --owner-said "
+            "\"<his words, verbatim>\"\n\n"
+            "\u26a0\ufe0f  Pass what he ACTUALLY said. Bare assent (\"yes\", \"ok\", "
+            "\"go ahead\") is refused on\n    purpose — that is him agreeing to something "
+            "YOU said, and the ledger would record\n    your words as his. A short "
+            "instruction is fine.\n\n"
+            "\u26d4 If he did NOT tell you to, the rule stands. Route it to %s instead."
             % (" or ".join("the owning seat" if w == "owner" else w for w in who),
-               verb, seat))
+               verb, seat, verb, ev.get("id") or "<ID>",
+               " or ".join("its owning seat" if w == "owner" else w for w in who)))
 
 
 def _may(ev, item, world):
