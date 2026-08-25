@@ -36,9 +36,11 @@ answering; `game_loaded` is not proof of a usable game. That is why `UP` here me
 process is alive and the bridge replies", never "the save is playable".
 """
 
+import io
 import json
 import os
 import socket
+import sys
 import subprocess
 import time
 
@@ -75,6 +77,31 @@ def _process_alive():
     return PROCESS.lower() in (out.stdout or "").lower()
 
 
+def _under_wsl():
+    """WSL2 is NAT-mode: 127.0.0.1 in this namespace is NOT Windows' loopback."""
+    try:
+        return "microsoft" in io.open("/proc/sys/kernel/osrelease").read().lower()
+    except OSError:
+        return False
+
+
+def _bridge_port():
+    """The port, from the env if set, else scraped out of Player.log like the client."""
+    env = os.environ.get("GABP_SERVER_PORT")
+    if env:
+        try:
+            return int(env)
+        except ValueError:
+            pass
+    try:
+        sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+        from rimbridge_client import discover_from_log
+        _host, port, _tok = discover_from_log()
+        return int(port) if port else None
+    except Exception:
+        return None
+
+
 def _bridge_answers():
     """True/False/None — does something accept a connection on the bridge port?
 
@@ -82,10 +109,27 @@ def _bridge_answers():
     VERDICT and was NOT harmless for the MESSAGE: `measure` used to render None and
     False identically as "bridge silent", so "I never looked" and "I looked and got
     nothing" were indistinguishable to every reader. They are now worded apart.
+
+    🔴 **Corrected 2026-08-25 (CHECK).** This used to `socket.create_connection` to
+    `127.0.0.1` unconditionally. RimBridge binds **Windows** loopback and WSL2 is
+    NAT-mode, so from any agent seat that socket is refused *while the bridge is
+    answering fine* — the probe returned a clean `False` and `./game` reported
+    `LOADING` for a fully-up game, which parks BUILD's deploys. Under WSL the reading
+    is now taken with `netstat.exe`, which sees the real Windows listener.
     """
-    port = os.environ.get("GABP_SERVER_PORT")
+    port = _bridge_port()
     if not port:
         return None
+    if _under_wsl():
+        try:
+            out = subprocess.run(["netstat.exe", "-ano", "-p", "TCP"],
+                                 capture_output=True, text=True, timeout=15)
+        except (OSError, subprocess.SubprocessError):
+            return None          # could not look — NOT a negative
+        for line in (out.stdout or "").splitlines():
+            if "LISTENING" in line and (":%d " % port) in line + " ":
+                return True
+        return False
     try:
         with socket.create_connection(("127.0.0.1", int(port)), timeout=2):
             return True
@@ -132,9 +176,9 @@ def measure(use_cache=True):
         # GABP_SERVER_PORT is simply not set in a plain shell.
         # 🔑 An instrument must never spell ignorance the same way as a finding.
         implies, evidence = ("LOADING",
-                             "%s running; BRIDGE NOT PROBED — GABP_SERVER_PORT is "
-                             "unset, so LOADING here is a DEFAULT, not a reading. "
-                             "Set that variable to get a real answer." % PROCESS)
+                             "%s running; BRIDGE NOT PROBED — no port found in the "
+                             "environment or in Player.log, so LOADING here is a "
+                             "DEFAULT, not a reading." % PROCESS)
 
     reading = {"running": running, "bridge": bridge, "implies": implies,
                "evidence": evidence, "at": time.time()}
@@ -160,4 +204,16 @@ def contradicts(recorded, reading):
         return "DOWN"
     if reading.get("running") is True and recorded in _RUNNING_CONTRADICTS:
         return implied
+    # 🔴 The third case, added 2026-08-25 (CHECK). The docstring above warns that a
+    # third case is "probably something only the owner can see" — this one is the
+    # opposite, and it is the case the machine sees BEST. `LOADING` means exactly
+    # "process alive, bridge not yet answering"; the moment the bridge answers, that
+    # is measured false. This module's own table already promises this correction
+    # ("→ `UP` if the bridge answers, else `LOADING`") and only reached it from DOWN
+    # and DEPLOYING, so a game that came up left the board reading LOADING forever.
+    # ⚠️ It is only ever taken on a POSITIVE bridge reading — never on None, and never
+    # to move UP back to LOADING, which is the owner's GOING_DOWN territory.
+    if (recorded == "LOADING" and reading.get("running") is True
+            and reading.get("bridge") is True):
+        return "UP"
     return None
