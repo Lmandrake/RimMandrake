@@ -206,8 +206,14 @@ VERBS = {
     # --note` and every `./game up "note"` raised SchemaError instead. The flag
     # was advertised in --help and dead on arrival - it is GAME_STATE_HAS_NO_STAMPER_1's
     # second half, the prose game.json used to carry, and it had nowhere to go.
+    # ⭐ `ranBy` records whose HANDS ran the command when the authority is the
+    # owner's - an agent relaying his spoken words through `./game --said`. It was
+    # added to cmd_game on 2026-08-25 and NOT added here, so every agent relay
+    # broadcast to all four windows and then failed schema on the stamp: the seats
+    # heard the new state and the ledger kept the old one, which is the exact
+    # split-brain `./game` exists to prevent. Caught 2026-08-25 on a real `down`.
     "game":      {"who": ("OWNER",), "req": ("state",),
-                  "opt": ("measured", "evidence", "text")},
+                  "opt": ("measured", "evidence", "text", "ranBy")},
     "admin":     {"who": ("OWNER",), "req": ("reason",), "opt": ("patch",)},
 }
 

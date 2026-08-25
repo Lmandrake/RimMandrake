@@ -622,6 +622,62 @@ def t_reassign_still_cannot_revive_a_terminal_item():
     assert it.owner == "CHECK", it.owner
 
 
+def t_game_takes_ran_by():
+    """`ranBy` — whose HANDS ran it when the AUTHORITY is the owner's.
+
+    Regression, 2026-08-25. `cmd_game` began writing this field and the `game` verb's
+    schema was never taught it, so `./game --said "game is down" down` announced DOWN
+    to all four windows and then died on validate. The seats moved, the ledger did not.
+    Announcing without stamping is the precise split-brain `./game` exists to prevent.
+    """
+    model.validate(ev(seat="OWNER", event="game", state="DOWN", ranBy="BUILD"))
+
+
+def t_every_field_the_cli_emits_is_in_its_schema():
+    """The general form of the bug above, so the next one cannot ship either.
+
+    `cmd_<verb>` and `VERBS[<verb>]` are two hand-kept lists of the same field set,
+    which per CLAUDE.md is a drift machine unless something enforces it. Nothing did.
+    This reads cli.py's own source and asserts every literal key a `cmd_*` builder puts
+    on its event is a field that verb accepts — the one check that fails when the two
+    halves are edited apart.
+    """
+    import ast
+    cli_src = os.path.join(HERE, "cli.py")
+    tree = ast.parse(open(cli_src, encoding="utf-8").read())
+    universal = {"ts", "seat", "event", "id", "caused_by", "override", "ownerSaid"}
+    checked = 0
+    for fn in [n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)]:
+        verb = fn.name[4:] if fn.name.startswith("cmd_") else None
+        if verb not in model.VERBS:
+            continue
+        spec = model.VERBS[verb]
+        known = set(spec["req"]) | set(spec["opt"]) | universal
+        for node in ast.walk(fn):
+            keys = []
+            if isinstance(node, ast.Assign):
+                for t in node.targets:
+                    if (isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name)
+                            and t.value.id == "ev"
+                            and isinstance(t.slice, ast.Constant)
+                            and isinstance(t.slice.value, str)):
+                        keys.append(t.slice.value)
+            elif isinstance(node, ast.Dict):
+                # the inline `_emit({...})` form
+                lits = [k.value for k in node.keys
+                        if isinstance(k, ast.Constant) and isinstance(k.value, str)]
+                if "event" in lits:
+                    keys = [k for k in lits if k != "event"]
+            for k in keys:
+                checked += 1
+                assert k in known, (
+                    "cmd_%s emits %r but VERBS[%r] does not accept it — the event will "
+                    "pass every test that never calls validate() and then be refused at "
+                    "the ledger, after any side effect the command already had."
+                    % (verb, k, verb))
+    assert checked >= 4, "found only %d emitted fields; the walker stopped matching" % checked
+
+
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 if __name__ == "__main__":
