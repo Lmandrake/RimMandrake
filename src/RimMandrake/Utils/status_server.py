@@ -726,6 +726,15 @@ def snapshot():
         # OWNER last announced; host() reads whether the process actually exists. They
         # can differ — a load can abort while `game_loaded` still says UP — so all three
         # travel to the page rather than one being picked here.
+        # ⛔ DELETED 2026-08-24: `status/game.json` was the FIFTH self-reported tile and
+        # the purge of 2026-08-22 missed it. Last written 08-22 08:31, unchanged through
+        # every game up and down since, and this merge kept publishing its `state`,
+        # `note`, `left` and `lease` as current — including the "CHECK holds the bridge"
+        # sentence the comment at :480 already calls out as a lease nobody releases.
+        # The jload stays because every consumer in the page is guarded and renders
+        # "no seat has declared game state" when it is empty; the live answers are
+        # `ledger` (what the OWNER announced, via ./game) and host() (does the process
+        # exist). ⚠️ If this file ever reappears, something started hand-stamping again.
         "game": dict(jload("status/game.json", {}),
                      load_done=load_finished(),
                      ledger=m.get("game"),

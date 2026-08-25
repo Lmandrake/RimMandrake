@@ -61,7 +61,10 @@ NEVER_RUN = ("broadcast.py",        # writes the peer socket — owner's tool
              "status_server.py",    # binds a port and blocks
              "first_light.py",      # drives the live bridge
              "w9_run.py",           # drives the live bridge
-             "refresh.py")          # long, and writes derived artefacts
+             "refresh.py",          # long, and writes derived artefacts
+             "board_loop.sh")       # no arg parsing: `--help` runs the publish loop
+                                    # and re-execs itself. Measured 2026-08-24: it hit
+                                    # the 60 s timeout and reported as a doc failure.
 
 
 def commands():
@@ -127,6 +130,28 @@ def main():
         # 3. every long flag the docs use must appear in that --help text.
         #    ⭐ This is the check that would have caught `w9_run.py --dry`.
         helptext = (r.stdout or "") + (r.stderr or "")
+
+        # 🔴 CALIBRATION, 2026-08-24. This check used to compare a SUBCOMMAND's flags
+        # against the PARENT's --help and report three false failures — `--owner-said`,
+        # `--for`, `--kind` all exist on `rimflow` verbs and are used daily. A detector
+        # that cries wolf three times in four is worse than no detector: it gets
+        # ignored, then removed. An argparse subparser lists its flags only under
+        # `<prog> <verb> --help`, so fetch that too.
+        first = (args.strip().split() or [""])[0]
+        if re.match(r"^[a-z][a-z-]*$", first):
+            try:
+                sub = subprocess.run(cmd[:-1] + [first, "--help"], capture_output=True,
+                                     text=True, cwd=ROOT, timeout=60)
+                helptext += (sub.stdout or "") + (sub.stderr or "")
+            except Exception:                                   # noqa: BLE001
+                pass                                            # parent help still applies
+        elif first.startswith("<"):
+            # The verb itself is a placeholder (`cli.py <verb> … --owner-said`), so
+            # there is no subcommand help to fetch. Report it, never fail it —
+            # UNMEASURED is an honest answer and a false FAIL is not.
+            skips += 1
+            continue
+
         for flag in re.findall(r"(?<!\w)--[a-z][a-z0-9-]+", args):
             if flag not in helptext:
                 fails.append((label, "documents %s, which --help does not list" % flag))

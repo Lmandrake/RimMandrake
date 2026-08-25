@@ -106,10 +106,13 @@ from design and discussion."*
 - ⛔ **No new `B*` / `C*` / `D*` / `W*` IDs.** That scheme is closed. It reads as
   precedence it does not have, and nobody can remember what `D55` was.
 
-**The tooling already accepts it — verified 2026-08-20, no change needed.**
-`src/RimMandrake/Utils/derive_matrix.py` takes the first whitespace-delimited token
-after `## ` as the ID, and its `Closes:` trailer regex is
+**The tooling already accepts it — re-verified 2026-08-24, no change needed.**
+`src/RimMandrake/rimflow/render.py` owns the grammar: the first whitespace-delimited
+token after `## ` is the ID, and the `Closes:` trailer regex is
 `[A-Za-z][A-Za-z0-9._-]*`, which admits underscores and digits.
+⚠️ **Corrected 2026-08-24:** this used to cite `Utils/derive_matrix.py`. That tool is
+superseded — its `main()` now refuses on generated queues and names `render.py` itself,
+so the paragraph was pointing at an authority that no longer runs.
 
 ⚠️ **Legacy IDs stay exactly as they are. Do not rename them.** `POLICY.md` is right
 that renumbering an item away breaks the board's count and cannot be recovered — a

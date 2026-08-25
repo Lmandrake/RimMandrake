@@ -211,11 +211,12 @@ jawa/set_pawn_rotation   pawnId=<each pawn from §4>   dir=unlock
 stays locked across **every future load**. This is litter that outlives the
 session, and it is invisible until someone wonders why a pawn will not turn.
 
-Then stamp `infrastructure/state/status/game.json` **and** record one line with
-`rimflow seat busy --note "<what you left on the map>"` — spawned pawns, painted
-terrain, the quicktest map itself. A release that only writes a state file goes
-unnoticed; the owner ruled the announcement mandatory. ⚠️ It goes on the **ledger**,
-which the board reads; `say.py` wrote to a panel deleted 2026-08-22 and is gone.
+Then record one line with `rimflow seat busy --note "<what you left on the map>"` —
+spawned pawns, painted terrain, the quicktest map itself. A release nobody announces
+goes unnoticed; the owner ruled the announcement mandatory. ⚠️ It goes on the
+**ledger**, which the board reads. ⛔ **Do not hand-stamp a status file.**
+`say.py` and `status/game.json` were both self-reports nobody restamped — deleted
+2026-08-22 and 2026-08-24. Game state comes from `./game`, which writes the ledger.
 
 ---
 
