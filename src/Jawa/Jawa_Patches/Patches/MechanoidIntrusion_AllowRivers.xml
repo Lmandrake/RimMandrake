@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  MechanoidIntrusion_AllowRivers.xml        Jawa_Patches - new file 2026-08-25
+  ============================================================================
+
+  The rivers of Ash'karr come from the Rust Cathedral, and the world map would
+  not draw them.
+
+  THE FAULT, MEASURED ON THE LIVE WORLD 2026-08-25
+  ================================================
+  Thirteen river edges cross the Rust Cathedral. None of them were ever missing:
+
+      6486 -> 11347 -> 11342 -> 11343 -> 14568 -> 14569 -> 14564   HugeRiver
+     14564 -> 2835  -> 14570 -> 14571 -> 6470  -> 11330 -> 675     LargeRiver
+
+  The two systems meet at 14564 at 639 m, the crest of the plateau, and the
+  LargeRiver falls ~300 m off the far side into the Scorch. A `Headwater`
+  mutator now sits on 14564: the ancient machine vents its own coolant and
+  every river on this side of the planet starts there.
+
+  `jawa/world_links_get` on those tiles reported, after that work:
+
+      14564  allowRivers=False  visibleRivers=0  hiddenByBiome=True
+      11347  allowRivers=True   visibleRivers=2  hiddenByBiome=False   (outside)
+
+  `SurfaceTile.Rivers` is a biome-FILTERED view. `AB_MechanoidIntrusion` sets
+  `allowRivers=false`, so the links are held and simply never drawn - the river
+  runs up to the purple from both sides and stops. Nothing is broken in the
+  world; one boolean is hiding it.
+
+  WHY A PATCH AND NOT A BRIDGE CALL
+  =================================
+  This is a BiomeDef field, not per-tile state. Nothing in the 246-tool bridge
+  surface writes a def field at runtime - checked the whole list. Def data is
+  built at load, so this takes effect on the next game start and not before.
+
+  WHAT WAS VERIFIED BEFORE WRITING THIS
+  =====================================
+  1. The field is real and spelled this way: `BiomeDef.cs:23  public bool
+     allowRivers = true;`. A patch at a field that does not exist matches
+     nothing, and a PatchOperation that matches nothing logs nothing.
+  2. `allowRivers` is DECLARED on this def rather than left at its default -
+     it reads False in the resolved def dump, so <match> is the branch that
+     fires. The <nomatch> branch is kept anyway: Alpha Biomes may reorganise
+     the def, and a silent no-op is exactly the failure this file exists to fix.
+  3. Eleven biomes set allowRivers=false. This touches ONE of them.
+
+  ⛔ `allowRoads` is ALSO false on this biome and is deliberately NOT changed.
+  Every Cathedral tile reported `potentialRoads: []`, so no road is being
+  hidden there - flipping it would change nothing visible and would let future
+  road-laying run onto the plateau, which no ruling asks for.
+
+  ⚠️ SCOPE. This is biome-wide, not region-wide. Any other AB_MechanoidIntrusion
+  tile anywhere on the planet will also start drawing rivers it already holds.
+  On Ash'karr that biome exists only as the Rust Cathedral's 236 tiles, so the
+  blast radius is the intended one - but that is a fact about THIS world, not a
+  property of the patch.
+
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Biomes</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/allowRivers</xpath>
+
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/allowRivers</xpath>
+        <value>
+          <allowRivers>true</allowRivers>
+        </value>
+      </match>
+
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]</xpath>
+        <value>
+          <allowRivers>true</allowRivers>
+        </value>
+      </nomatch>
+
+    </match>
+  </Operation>
+
+</Patch>
