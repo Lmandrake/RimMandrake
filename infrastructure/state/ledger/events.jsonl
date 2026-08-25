@@ -2087,3 +2087,4 @@
 {"seat":"DECIDE","event":"file","id":"BRIDGE_GATE_HARDCODES_CHECK_1","title":"A needs:bridge item is only offerable while CHECK holds the bridge, so any other seat starves","kind":"task","target":"v1","for":"REP","ts":"2026-08-24T15:08:53Z"}
 {"seat":"OWNER","event":"game","state":"UP","ownerSaid":"The game is freshly up at the main screen","ts":"2026-08-25T03:34:17Z"}
 {"seat":"OWNER","event":"file","id":"MODEL_TIER_ROUTING_1","title":"Agent_Policy.md: model tier follows who catches the error; wired into POLICY, CLAUDE.md, four seats, two subagent skills, and a PreToolUse guard","kind":"task","target":"v1","needs":"offline","for":"REP","ownerSaid":"Implement this and fix the files nothing reads. Be harsh and lean towards trimming. Let's get efficient!","ts":"2026-08-25T05:05:52Z"}
+{"seat":"REP","event":"close","id":"MODEL_TIER_ROUTING_1","sha":"9e9acc41","ts":"2026-08-25T05:06:35Z"}
