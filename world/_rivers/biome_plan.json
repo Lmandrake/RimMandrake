@@ -1,0 +1,1114 @@
+[
+ {
+  "tile": 145,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.77
+ },
+ {
+  "tile": 324,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": -0.27
+ },
+ {
+  "tile": 773,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.11
+ },
+ {
+  "tile": 863,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.56
+ },
+ {
+  "tile": 1177,
+  "from": "ZBiome_Grasslands",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 1210,
+  "from": "Desert",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.73
+ },
+ {
+  "tile": 1670,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.63
+ },
+ {
+  "tile": 1677,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.63
+ },
+ {
+  "tile": 1853,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 2018,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.78
+ },
+ {
+  "tile": 2483,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "AridShrubland",
+  "d": 0,
+  "mode": "dry",
+  "p": 0.49
+ },
+ {
+  "tile": 2796,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.86
+ },
+ {
+  "tile": 2828,
+  "from": "ExtremeDesert",
+  "to": "Desert",
+  "d": 3,
+  "mode": "dry",
+  "p": 0.39
+ },
+ {
+  "tile": 2830,
+  "from": "ExtremeDesert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.37
+ },
+ {
+  "tile": 2831,
+  "from": "ExtremeDesert",
+  "to": "Desert",
+  "d": 3,
+  "mode": "dry",
+  "p": -0.11
+ },
+ {
+  "tile": 2934,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.61
+ },
+ {
+  "tile": 3177,
+  "from": "Desert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.12
+ },
+ {
+  "tile": 3466,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.78
+ },
+ {
+  "tile": 3639,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.66
+ },
+ {
+  "tile": 3640,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.57
+ },
+ {
+  "tile": 4271,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.71
+ },
+ {
+  "tile": 4353,
+  "from": "ZBiome_DesertOasis",
+  "to": "Desert",
+  "d": 4,
+  "mode": "stranded",
+  "p": 0.0
+ },
+ {
+  "tile": 4359,
+  "from": "ZBiome_Badlands",
+  "to": "AridShrubland",
+  "d": 0,
+  "mode": "dry",
+  "p": 0.49
+ },
+ {
+  "tile": 4365,
+  "from": "BiomeCypreJungle",
+  "to": "AridShrubland",
+  "d": 1,
+  "mode": "dry",
+  "p": -0.01
+ },
+ {
+  "tile": 4378,
+  "from": "BiomeCypreJungle",
+  "to": "AridShrubland",
+  "d": 1,
+  "mode": "dry",
+  "p": 0.43
+ },
+ {
+  "tile": 4379,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.85
+ },
+ {
+  "tile": 4381,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.77
+ },
+ {
+  "tile": 4544,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.71
+ },
+ {
+  "tile": 4546,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.66
+ },
+ {
+  "tile": 4548,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 4710,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.78
+ },
+ {
+  "tile": 4719,
+  "from": "ZBiome_Grasslands",
+  "to": "Desert",
+  "d": 4,
+  "mode": "stranded",
+  "p": 0.0
+ },
+ {
+  "tile": 4723,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.57
+ },
+ {
+  "tile": 6245,
+  "from": "ZBiome_Grasslands",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 6367,
+  "from": "Desert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.27
+ },
+ {
+  "tile": 6441,
+  "from": "ExtremeDesert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.47
+ },
+ {
+  "tile": 6445,
+  "from": "Desert",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.73
+ },
+ {
+  "tile": 6446,
+  "from": "Desert",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.73
+ },
+ {
+  "tile": 6448,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.71
+ },
+ {
+  "tile": 6474,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.68
+ },
+ {
+  "tile": 7021,
+  "from": "Desert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.43
+ },
+ {
+  "tile": 7056,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.84
+ },
+ {
+  "tile": 7063,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.75
+ },
+ {
+  "tile": 7067,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.75
+ },
+ {
+  "tile": 7343,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.56
+ },
+ {
+  "tile": 7656,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.46
+ },
+ {
+  "tile": 7688,
+  "from": "ExtremeDesert",
+  "to": "Desert",
+  "d": 3,
+  "mode": "dry",
+  "p": 0.41
+ },
+ {
+  "tile": 7690,
+  "from": "ExtremeDesert",
+  "to": "Desert",
+  "d": 3,
+  "mode": "dry",
+  "p": 0.27
+ },
+ {
+  "tile": 7794,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.9
+ },
+ {
+  "tile": 7795,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.61
+ },
+ {
+  "tile": 8150,
+  "from": "BiomeCypreJungle",
+  "to": "AridShrubland",
+  "d": 1,
+  "mode": "dry",
+  "p": 0.49
+ },
+ {
+  "tile": 8152,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.77
+ },
+ {
+  "tile": 8326,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.78
+ },
+ {
+  "tile": 8328,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.78
+ },
+ {
+  "tile": 9212,
+  "from": "ZBiome_DesertOasis",
+  "to": "Desert",
+  "d": 3,
+  "mode": "dry",
+  "p": 0.41
+ },
+ {
+  "tile": 9224,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.66
+ },
+ {
+  "tile": 9225,
+  "from": "BiomeCypreJungle",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": -0.2
+ },
+ {
+  "tile": 9229,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": -0.27
+ },
+ {
+  "tile": 9232,
+  "from": "ZBiome_DesertOasis",
+  "to": "Desert",
+  "d": 3,
+  "mode": "dry",
+  "p": -0.28
+ },
+ {
+  "tile": 9233,
+  "from": "ZBiome_DesertOasis",
+  "to": "Desert",
+  "d": 4,
+  "mode": "stranded",
+  "p": 0.0
+ },
+ {
+  "tile": 9235,
+  "from": "ZBiome_DesertOasis",
+  "to": "Desert",
+  "d": 4,
+  "mode": "stranded",
+  "p": 0.0
+ },
+ {
+  "tile": 9236,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.84
+ },
+ {
+  "tile": 9239,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "ZBiome_DesertOasis",
+  "d": 2,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 9241,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.85
+ },
+ {
+  "tile": 9406,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.78
+ },
+ {
+  "tile": 9408,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 9409,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 11301,
+  "from": "ExtremeDesert",
+  "to": "Desert",
+  "d": 3,
+  "mode": "dry",
+  "p": 0.24
+ },
+ {
+  "tile": 11304,
+  "from": "Desert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.48
+ },
+ {
+  "tile": 11305,
+  "from": "Desert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.48
+ },
+ {
+  "tile": 11306,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.49
+ },
+ {
+  "tile": 11308,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.71
+ },
+ {
+  "tile": 11309,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.71
+ },
+ {
+  "tile": 11310,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.75
+ },
+ {
+  "tile": 11333,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.64
+ },
+ {
+  "tile": 11916,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.77
+ },
+ {
+  "tile": 11917,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.77
+ },
+ {
+  "tile": 11918,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "ZBiome_DesertOasis",
+  "d": 2,
+  "mode": "wet",
+  "p": 0.67
+ },
+ {
+  "tile": 11922,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.16
+ },
+ {
+  "tile": 12456,
+  "from": "ZBiome_Badlands",
+  "to": "AridShrubland",
+  "d": 0,
+  "mode": "dry",
+  "p": 0.42
+ },
+ {
+  "tile": 12458,
+  "from": "ZBiome_Badlands",
+  "to": "AridShrubland",
+  "d": 0,
+  "mode": "dry",
+  "p": 0.49
+ },
+ {
+  "tile": 12459,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.56
+ },
+ {
+  "tile": 12461,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.56
+ },
+ {
+  "tile": 12463,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "AridShrubland",
+  "d": 0,
+  "mode": "dry",
+  "p": 0.49
+ },
+ {
+  "tile": 12475,
+  "from": "ZBiome_DesertOasis",
+  "to": "Desert",
+  "d": 4,
+  "mode": "stranded",
+  "p": 0.0
+ },
+ {
+  "tile": 12481,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.63
+ },
+ {
+  "tile": 12628,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.57
+ },
+ {
+  "tile": 12629,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.71
+ },
+ {
+  "tile": 12631,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "ZBiome_DesertOasis",
+  "d": 2,
+  "mode": "wet",
+  "p": 0.85
+ },
+ {
+  "tile": 12822,
+  "from": "ZBiome_Grasslands",
+  "to": "Desert",
+  "d": 4,
+  "mode": "stranded",
+  "p": 0.0
+ },
+ {
+  "tile": 14341,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 14342,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 14343,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 1.04
+ },
+ {
+  "tile": 14532,
+  "from": "ExtremeDesert",
+  "to": "Desert",
+  "d": 3,
+  "mode": "dry",
+  "p": 0.02
+ },
+ {
+  "tile": 14533,
+  "from": "ExtremeDesert",
+  "to": "Desert",
+  "d": 3,
+  "mode": "dry",
+  "p": 0.3
+ },
+ {
+  "tile": 14540,
+  "from": "ExtremeDesert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.48
+ },
+ {
+  "tile": 14541,
+  "from": "ExtremeDesert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.49
+ },
+ {
+  "tile": 14542,
+  "from": "Desert",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.72
+ },
+ {
+  "tile": 14543,
+  "from": "Desert",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 14544,
+  "from": "Desert",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 14545,
+  "from": "Desert",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.73
+ },
+ {
+  "tile": 15119,
+  "from": "Desert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": -0.19
+ },
+ {
+  "tile": 15158,
+  "from": "BiomeCypreJungle",
+  "to": "AridShrubland",
+  "d": 1,
+  "mode": "dry",
+  "p": 0.14
+ },
+ {
+  "tile": 15159,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.68
+ },
+ {
+  "tile": 15167,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.4
+ },
+ {
+  "tile": 16492,
+  "from": "ZBiome_Grasslands",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.75
+ },
+ {
+  "tile": 16616,
+  "from": "Desert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.49
+ },
+ {
+  "tile": 16621,
+  "from": "Desert",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.49
+ },
+ {
+  "tile": 16622,
+  "from": "Desert",
+  "to": "ZBiome_DesertOasis",
+  "d": 2,
+  "mode": "wet",
+  "p": 0.63
+ },
+ {
+  "tile": 16722,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.64
+ },
+ {
+  "tile": 16723,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.71
+ },
+ {
+  "tile": 16726,
+  "from": "BiomeCypreJungle",
+  "to": "AridShrubland",
+  "d": 1,
+  "mode": "dry",
+  "p": 0.45
+ },
+ {
+  "tile": 16728,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": 0.33
+ },
+ {
+  "tile": 16902,
+  "from": "ZBiome_Badlands",
+  "to": "AridShrubland",
+  "d": 0,
+  "mode": "dry",
+  "p": 0.42
+ },
+ {
+  "tile": 16903,
+  "from": "ZBiome_Badlands",
+  "to": "AridShrubland",
+  "d": 0,
+  "mode": "dry",
+  "p": 0.42
+ },
+ {
+  "tile": 17194,
+  "from": "ZBiome_DesertOasis",
+  "to": "Desert",
+  "d": 4,
+  "mode": "stranded",
+  "p": 0.0
+ },
+ {
+  "tile": 17274,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.56
+ },
+ {
+  "tile": 17275,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "AridShrubland",
+  "d": 0,
+  "mode": "dry",
+  "p": 0.49
+ },
+ {
+  "tile": 17302,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.63
+ },
+ {
+  "tile": 17304,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.6
+ },
+ {
+  "tile": 17306,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.84
+ },
+ {
+  "tile": 17308,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.77
+ },
+ {
+  "tile": 17334,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.84
+ },
+ {
+  "tile": 17347,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.7
+ },
+ {
+  "tile": 17350,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "ZBiome_DesertOasis",
+  "d": 2,
+  "mode": "wet",
+  "p": 0.81
+ },
+ {
+  "tile": 18360,
+  "from": "ZBiome_DesertOasis",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.84
+ },
+ {
+  "tile": 18373,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "ZBiome_DesertOasis",
+  "d": 2,
+  "mode": "wet",
+  "p": 0.54
+ },
+ {
+  "tile": 18377,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.78
+ },
+ {
+  "tile": 18382,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 18384,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 18399,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.73
+ },
+ {
+  "tile": 18405,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 18406,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "ZBiome_Badlands",
+  "d": 2,
+  "mode": "dry",
+  "p": -0.03
+ },
+ {
+  "tile": 18409,
+  "from": "COMIGO_GreaterSwamp_Tropical",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.82
+ },
+ {
+  "tile": 19390,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.66
+ },
+ {
+  "tile": 19391,
+  "from": "BiomeCypreJungle",
+  "to": "AB_FeraliskInfestedJungle",
+  "d": 1,
+  "mode": "wet",
+  "p": 0.66
+ },
+ {
+  "tile": 19392,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.78
+ },
+ {
+  "tile": 19394,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.78
+ },
+ {
+  "tile": 19396,
+  "from": "AB_FeraliskInfestedJungle",
+  "to": "BiomeCypreJungle",
+  "d": 0,
+  "mode": "wet",
+  "p": 0.78
+ }
+]

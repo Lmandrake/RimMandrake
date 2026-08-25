@@ -1,0 +1,38 @@
+{
+ "0": [
+  "BiomeCypreJungle",
+  "AridShrubland",
+  "AB_MiasmicMangrove",
+  "Volcano",
+  "Lake"
+ ],
+ "1": [
+  "AB_FeraliskInfestedJungle",
+  "AridShrubland",
+  "Lake",
+  "COMIGO_GreaterSwamp_Tropical",
+  "ZBiome_Badlands",
+  "ZBiome_Grasslands",
+  "AB_MiasmicMangrove",
+  "ZBiome_DesertOasis"
+ ],
+ "2": [
+  "ZBiome_DesertOasis",
+  "AridShrubland",
+  "Lake",
+  "ZBiome_Badlands",
+  "AB_MiasmicMangrove",
+  "ZBiome_Grasslands",
+  "Ocean",
+  "Wasteland"
+ ],
+ "3": [
+  "ZBiome_Grasslands",
+  "ZBiome_Badlands",
+  "Desert",
+  "Lake",
+  "AridShrubland",
+  "Ocean",
+  "Wasteland"
+ ]
+}
