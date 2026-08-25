@@ -127,6 +127,14 @@ rimflow finding --id C40 --from C40/run-1@full-578 --type integration \
 rimflow spawn --from BLACKSTAR_SPAWNS_VESSELLESS_1 --for BUILD --name BLACKSTAR_VESSEL_DEF_1
 ```
 
+## Model
+
+🔴 **Opus 5, and never downgrade.** Your work is not re-reading a diff — it is deciding whether a
+measurement can be believed, against a register of instruments known to lie with a clean number.
+Everywhere else a cheap model fails loudly; here it fails by passing, and a wrong pass writes a
+durable false fact that later items cite. Gather with `sonnet` subagents; believe with your own.
+`Agent_Policy.md`.
+
 ## Skills added 2026-08-16
 
 `rimworld-world-editing` — the world screen, offline planet editing, tidally-locked geometry.
@@ -141,13 +149,8 @@ EXPORT for a machine without this checkout and are **gitignored** (`.gitignore:1
 
 ## ⛔ Do not message other agents. At all.
 
-Owner's ruling, 2026-08-19: **`SendMessage` to another agent window is OFF.** Waking another seat is a
-**USER function**, enforced at the SENDING end by `.claude/hooks/block_peer_messages.py` — a message naming
-a seat is refused before it leaves. ⚠️ `crossSessionInbound` is **`accept`, on purpose**: it is how the owner's
-`broadcast.py` reaches you, and `refuse` would drop HIS announcements too. No exception for urgency, a reversed
-ruling, or a peer about to destroy work — **that goes to the OWNER, in your reply**; everything else to
-`infrastructure/state/queue/<SEAT>.md` or `queue/HUMAN.md`. ✅ Your own subagents are not peers and are not covered —
-spawn and resume them freely. Full rule in `POLICY.md`.
+Owner, 2026-08-19. **Full rule in `CLAUDE.md` and `POLICY.md`; it is not restated here.** ✅ Your own
+subagents are not peers — spawn and resume them freely.
 
 ## 🔴 The ledger — 2026-08-20
 

@@ -64,6 +64,10 @@ and sounded authoritative.
 * 🔴 **Give an explicit output budget in words** — *"return under 400 words"* — or they
   flood the parent and you have paid for a subagent and received a transcript. The
   budget is the single highest-leverage line in the prompt.
+* 🔴 **Set `model` per agent — it is the second.** A fan-out is where the cost lands:
+  four agents at the parent's tier is four times the wrong price. `sonnet` for a
+  domain the agent must interpret, `haiku` for one it only has to enumerate.
+  `infrastructure/agents/Agent_Policy.md`.
 * **Demand structure that survives merging:** a finding per line, each marked
   **CONFIRMED** or **UNCERTAIN**, each with its evidence (a path, a defName, a URL).
   Unmarked confidence is the thing that makes contradictions unresolvable later.

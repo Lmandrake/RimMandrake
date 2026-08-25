@@ -49,8 +49,11 @@ One question. Bounded inputs. An explicit stop condition.
   problem being handed downstream at full price.
 - **Stop condition** — "stop after the first match", "check these 6 files only",
   "if X is absent, return NOT FOUND and stop". Without one it keeps looking.
-- **Cheap model for cheap work.** `model: haiku` for greps, censuses, existence
-  checks.
+- 🔴 **Always pass `model`.** Omitting it inherits the parent — which is how every
+  grep in this project's history ran on Opus. `haiku` for greps, censuses and
+  existence checks; `sonnet` when the agent must interpret what it finds; `opus`
+  only if you will act on the return without re-deriving it, which means asking why
+  it is a subagent. Full ladder: `infrastructure/agents/Agent_Policy.md`.
 
 ## What must come back
 

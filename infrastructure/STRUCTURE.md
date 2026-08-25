@@ -204,7 +204,7 @@ this?* A rule is durable; a queue is meant to be consumed.
 | `infrastructure/state/archive/` | Blocks moved out of a live state doc, byte-unchanged, one archive per source file. **History — never executed.** Holds the archives of `WORLDGEN_FACTION_CHECKLIST.md`, `WORLDGEN_RUN.md` and `WORLDPAINT_REHEARSAL.md` (split 2026-08-23). |
 | `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
 | `infrastructure/state/TEST_PLAN.md` | How deployed material gets proved in-game. Written by a retired seat; still cited by `load_session.py`. |
-| `infrastructure/state/status/<SEAT>.json` | What each seat says it is doing, written by `say.py`, rendered by the board. |
+| `infrastructure/state/status/game.json` | The game-state stamp. ⚠️ `<SEAT>.json` and `say.py` are GONE (2026-08-22): nobody wrote them, the board showed week-old sentences as current. What a seat is doing is a `seat` event on the ledger — `rimflow seat`. |
 | `infrastructure/state/queue/<SEAT>.md` | 🔴 **The filing destination.** `DECIDE`, `BUILD`, `CHECK`, plus `HUMAN` for the owner. You own your own; file at the next seat's. |
 
 ### The four seats

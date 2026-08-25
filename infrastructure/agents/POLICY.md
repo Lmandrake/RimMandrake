@@ -143,13 +143,11 @@ Maps, saves, colonies, deployed mod folders, live game state — destroy them fr
 - **Never** spawn duplicate subagents to make a result "more reliable by replication."
 - **Never** spawn one for work you could do in a single tool call.
 
-## Say what you are doing
+## Model choice
 
-When you change task:
-```
-python3 src/RimMandrake/Utils/say.py "<what>" --why "<why it matters>"
-```
-One line. It feeds the board's CURRENTLY panel, which is how the human sees the fleet without reading four terminals. An entry with no `--why` renders as a gap.
+`infrastructure/agents/Agent_Policy.md`. One question decides it: **if this goes wrong, who catches it?** A compiler or validator → Haiku. Another agent → Sonnet. Nobody → Opus. Two hard rules because they cost the most:
+- **Never** run CHECK, a bridge write, or an item close below Opus.
+- **Never** omit `model` on an `Agent` call. Omitting it inherits Opus — which is how every grep in this project's history came to run on the most expensive tier. `block_agent_without_model.py` now refuses it.
 
 ## ⛔ AGENTS DO NOT MESSAGE EACH OTHER. AT ALL. — owner's ruling, 2026-08-19
 

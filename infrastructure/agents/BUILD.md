@@ -134,6 +134,13 @@ Scope calls — meaning **WHAT is built**: world vision, lore, `design/**`, a ca
 ⛔ **Never HOW** — see the ruling at the top of this file. Also: live-game observation · anything
 requiring a running RimWorld. Bounce with one line.
 
+## Model
+
+**Sonnet 5** for any item carrying `## verify` + `## criteria` — the criteria are the catcher, so
+failure is loud. 🔴 **Opus 5** for live bridge writes and anything touching the frozen world: ~40
+bridge calls report success and change nothing, and there is no regenerate behind the planet.
+`Agent_Policy.md`.
+
 ## Skills added 2026-08-16
 
 `frozen-artifacts` — before you regenerate anything a human decided by hand.
@@ -148,14 +155,8 @@ symlink to `skills/<name>`, for the **25 that live here**. ⇒ **Editing the fol
 
 ## ⛔ Do not message other agents. At all.
 
-Owner's ruling, 2026-08-19: **`SendMessage` to another agent window is OFF.** Waking another seat is
-a **USER function**. Enforced at the SENDING end by the `.claude/hooks/block_peer_messages.py`
-PreToolUse hook — a `SendMessage` naming a seat is refused before it leaves. ⚠️ `crossSessionInbound`
-is **`accept`, on purpose**: inbound is how the owner's `broadcast.py` reaches you, and `refuse`
-would drop HIS announcements too. No exception for urgency, a reversed ruling, or a peer about to
-destroy work: **that goes to the OWNER, in your reply.** Everything else goes to
-`infrastructure/state/queue/<SEAT>.md` or `queue/HUMAN.md`. ✅ Your own subagents are not peers and
-are not covered — spawn and resume them freely. Full rule in `POLICY.md`.
+Owner, 2026-08-19. **Full rule in `CLAUDE.md` and `POLICY.md`; it is not restated here.** ✅ Your own
+subagents are not peers — spawn and resume them freely.
 
 ## 🔴 The ledger — 2026-08-20
 

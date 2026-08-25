@@ -2085,3 +2085,5 @@
 {"seat":"OWNER","event":"game","state":"UP","ownerSaid":"game is up","ts":"2026-08-24T15:07:14Z"}
 {"seat":"DECIDE","event":"reassign","id":"AUTHORED_KINDS_MUST_FIELD_1","to":"BUILD","reason":"DECIDE's ruling is made and recorded in design/Jawa/worldbuilding/pawnkind_roster.md; what remains is FactionDef pawnGroupMakers XML, which is BUILD's","ts":"2026-08-24T15:08:21Z"}
 {"seat":"DECIDE","event":"file","id":"BRIDGE_GATE_HARDCODES_CHECK_1","title":"A needs:bridge item is only offerable while CHECK holds the bridge, so any other seat starves","kind":"task","target":"v1","for":"REP","ts":"2026-08-24T15:08:53Z"}
+{"seat":"OWNER","event":"game","state":"UP","ownerSaid":"The game is freshly up at the main screen","ts":"2026-08-25T03:34:17Z"}
+{"seat":"OWNER","event":"file","id":"MODEL_TIER_ROUTING_1","title":"Agent_Policy.md: model tier follows who catches the error; wired into POLICY, CLAUDE.md, four seats, two subagent skills, and a PreToolUse guard","kind":"task","target":"v1","needs":"offline","for":"REP","ownerSaid":"Implement this and fix the files nothing reads. Be harsh and lean towards trimming. Let's get efficient!","ts":"2026-08-25T05:05:52Z"}

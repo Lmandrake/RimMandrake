@@ -1,7 +1,8 @@
 # RimWorld 1.6 — Jawa scavenger clan on a desert world
 
-Read `infrastructure/agents/POLICY.md` and your own `infrastructure/agents/<SEAT>.md`.
-They are short. This file is only what neither of them covers.
+Read `infrastructure/agents/POLICY.md`, `infrastructure/agents/Agent_Policy.md` (which model does
+which work) and your own `infrastructure/agents/<SEAT>.md`. They are short. This file is only what
+none of them covers.
 
 ## 🔴 There is no worldgen feature, in any version — owner, 2026-08-15
 

@@ -184,6 +184,11 @@ reaches him at all. Those are yours outright.
 **v2 ideas:** when the human throws out an idea that is not v1, append it to the end of `design/V2_DREAMS.md`, then say where
 it went. No queue item, no DECIDE approval, no format, nothing scheduled; this is the one thing you may write.
 
+## Model
+
+**Sonnet 5** for board work, queue triage and state aggregation. **Opus 5** when composing for the
+owner or carrying a number to him — a wrong one travels furthest through this seat. `Agent_Policy.md`.
+
 ## Skills
 
 ⚠️ **A skill folder IS the installed skill**: `.claude/skills/<name>` symlinks to it, so editing the

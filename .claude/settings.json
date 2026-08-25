@@ -73,6 +73,17 @@
         ]
       },
       {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_agent_without_model.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking the subagent carries an explicit model"
+          }
+        ]
+      },
+      {
         "matcher": "Write|Edit|MultiEdit|Bash",
         "hooks": [
           {

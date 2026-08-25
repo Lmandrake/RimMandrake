@@ -154,6 +154,13 @@ line naming the owner.
 ⚠️ **"deploying" was briefly removed from this list on 2026-08-23 and the owner PUT IT BACK the same
 hour** — *"I was wrong."* You author renormalization; **BUILD deploys it.** The boundary is the section above.
 
+## Model
+
+**Opus 5.** Rulings, and the propagation that makes a ruling real — knowing which of 411 items and
+~119 docs now contradict a decision is the one job where breadth genuinely is the capability.
+Exploration and option-generation ahead of your adjudication can be a `sonnet` subagent; the
+adjudication cannot. `Agent_Policy.md`.
+
 ## Skills added 2026-08-16
 
 `review-sheets` — ⭐ **moved OUT of this repo 2026-08-23** to `D:\Luke\dev\review-sheets`, installed
@@ -168,13 +175,8 @@ a machine without this checkout and are **gitignored** (`.gitignore:166`); refre
 
 ## ⛔ Do not message other agents. At all.
 
-Owner's ruling, 2026-08-19: **`SendMessage` to another agent window is OFF.** Waking another seat is a
-**USER function**, enforced at the SENDING end by `.claude/hooks/block_peer_messages.py` — a message naming
-a seat is refused before it leaves. ⚠️ `crossSessionInbound` is **`accept`, on purpose**: it is how the
-owner's `broadcast.py` reaches you, and `refuse` would drop HIS announcements too. No exception for urgency,
-a reversed ruling, or a peer about to destroy work — **that goes to the OWNER, in your reply**; everything
-else to `infrastructure/state/queue/<SEAT>.md` or `queue/HUMAN.md`. ✅ Your own subagents are not peers and
-are not covered — spawn and resume them freely. Full rule in `POLICY.md`.
+Owner, 2026-08-19. **Full rule in `CLAUDE.md` and `POLICY.md`; it is not restated here.** ✅ Your own
+subagents are not peers — spawn and resume them freely.
 
 ## 🔴 The ledger — 2026-08-20
 
