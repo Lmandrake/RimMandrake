@@ -2088,3 +2088,6 @@
 {"seat":"OWNER","event":"game","state":"UP","ownerSaid":"The game is freshly up at the main screen","ts":"2026-08-25T03:34:17Z"}
 {"seat":"OWNER","event":"file","id":"MODEL_TIER_ROUTING_1","title":"Agent_Policy.md: model tier follows who catches the error; wired into POLICY, CLAUDE.md, four seats, two subagent skills, and a PreToolUse guard","kind":"task","target":"v1","needs":"offline","for":"REP","ownerSaid":"Implement this and fix the files nothing reads. Be harsh and lean towards trimming. Let's get efficient!","ts":"2026-08-25T05:05:52Z"}
 {"seat":"REP","event":"close","id":"MODEL_TIER_ROUTING_1","sha":"9e9acc41","ts":"2026-08-25T05:06:35Z"}
+{"seat":"OWNER","event":"game","state":"UP","ts":"2026-08-25T06:46:17Z"}
+{"seat":"OWNER","event":"file","id":"DEAD_ARTIFACT_SWEEP_1","title":"Cut the write-only artifacts: game.json, 25 spent reports, superseded scripts, 2GB of def dumps; recalibrate the doc-command detector","kind":"task","target":"v1","needs":"offline","for":"REP","ownerSaid":"Do it all. Well done!","ts":"2026-08-25T06:46:50Z"}
+{"seat":"REP","event":"close","id":"DEAD_ARTIFACT_SWEEP_1","sha":"15434748","ts":"2026-08-25T06:47:43Z"}
