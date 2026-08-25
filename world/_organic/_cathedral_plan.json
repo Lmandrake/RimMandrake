@@ -1,0 +1,1213 @@
+{
+"69": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"Junkyard",
+"AncientWarehouse"
+],
+"262": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"AncientRuins",
+"Junkyard"
+],
+"442": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"443": [
+"AncientHeatVent",
+"AncientRuins"
+],
+"676": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"677": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientGarrison"
+],
+"678": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"Junkyard",
+"MineralRich"
+],
+"679": [
+"AncientHeatVent",
+"MineralRich",
+"VEE_Volcano"
+],
+"983": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"1214": [
+"AncientHeatVent",
+"AncientRuins",
+"MineralRich"
+],
+"1216": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"1217": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"1218": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"1219": [
+"AncientHeatVent",
+"Junkyard",
+"AncientGarrison"
+],
+"1576": [
+"AB_DerelictClusters"
+],
+"2010": [
+"AB_DerelictClusters",
+"AncientWarehouse"
+],
+"2372": [
+"AB_AncientGreyPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"2373": [
+"AB_AncientFreezingVent",
+"Junkyard"
+],
+"2374": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"2375": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins",
+"MineralRich"
+],
+"2376": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"MineralRich"
+],
+"2377": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"Junkyard",
+"MineralRich"
+],
+"2380": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"Junkyard"
+],
+"2381": [
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks"
+],
+"2834": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"MineralRich"
+],
+"2835": [
+"AncientHeatVent",
+"AncientChemfuelRefinery"
+],
+"2836": [
+"AB_AncientBloodRainVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"2837": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"Junkyard"
+],
+"2838": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"MineralRich"
+],
+"2839": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"3992": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"3993": [
+"AB_AncientGreyPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"MineralRich"
+],
+"3994": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"3995": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"3996": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientUplink"
+],
+"3997": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"MineralRich"
+],
+"4001": [
+"VEE_MechanoidShipChunks",
+"Junkyard"
+],
+"5072": [
+"AncientHeatVent",
+"MineralRich",
+"AB_DerelictArchonexus"
+],
+"5073": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"5076": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"Junkyard"
+],
+"5078": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"5080": [
+"AB_AncientBloodRainVent",
+"AB_DerelictClusters",
+"AncientRuins"
+],
+"5081": [
+"AncientHeatVent",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"Junkyard"
+],
+"5082": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"Junkyard"
+],
+"5083": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"MineralRich"
+],
+"6381": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"6382": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"6384": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"Junkyard"
+],
+"6385": [
+"AncientHeatVent",
+"AncientRuins",
+"MineralRich"
+],
+"6386": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"6390": [
+"AncientRuins",
+"Junkyard",
+"TerraformingScar"
+],
+"6471": [
+"AB_DerelictClusters",
+"MineralRich"
+],
+"6476": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"6477": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"6478": [
+"AB_DerelictClusters"
+],
+"6479": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"MineralRich",
+"TerraformingScar"
+],
+"6480": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"MineralRich"
+],
+"6481": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"6482": [
+"AB_DerelictClusters"
+],
+"6483": [
+"AncientHeatVent"
+],
+"6484": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"6485": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"AncientRuins",
+"Junkyard"
+],
+"6488": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"Junkyard"
+],
+"6489": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"Junkyard",
+"MineralRich"
+],
+"6490": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"6491": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"Junkyard"
+],
+"6492": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"Junkyard"
+],
+"6493": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"MineralRich"
+],
+"6494": [
+"AB_AncientDeathPallVent",
+"AB_DerelictClusters"
+],
+"6495": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"Junkyard"
+],
+"6496": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"6497": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins",
+"Junkyard",
+"MineralRich"
+],
+"6498": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks"
+],
+"6499": [
+"AB_AncientGreyPallVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"MineralRich"
+],
+"7694": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"7695": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"7696": [
+"AB_DerelictClusters",
+"MineralRich"
+],
+"7697": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"TerraformingScar"
+],
+"7698": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientInfestedSettlement"
+],
+"7699": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"8852": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"8853": [
+"AB_AncientGreyPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"8854": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"AncientRuins",
+"MineralRich"
+],
+"8855": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"8856": [
+"AB_AncientGreyPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"MineralRich"
+],
+"8857": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"Junkyard",
+"MineralRich"
+],
+"9932": [
+"AB_DerelictClusters",
+"AncientChemfuelRefinery"
+],
+"9934": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins"
+],
+"9936": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"9938": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"Junkyard"
+],
+"9939": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"MineralRich"
+],
+"9940": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"9941": [
+"AB_DerelictClusters"
+],
+"9942": [
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks"
+],
+"9943": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"11241": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"11243": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"MineralRich"
+],
+"11244": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"MineralRich"
+],
+"11245": [
+"AncientHeatVent",
+"Junkyard"
+],
+"11246": [
+"AB_DerelictClusters",
+"Junkyard",
+"MineralRich"
+],
+"11250": [
+"AB_DerelictClusters"
+],
+"11336": [
+"AB_AncientGreyPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"11337": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins",
+"Junkyard",
+"MineralRich"
+],
+"11338": [
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientUplink"
+],
+"11339": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"Junkyard"
+],
+"11340": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"MineralRich"
+],
+"11341": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientWarehouse"
+],
+"11342": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"11343": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"MineralRich"
+],
+"11344": [
+"AncientHeatVent",
+"Junkyard"
+],
+"11345": [
+"AncientHeatVent",
+"AncientRuins"
+],
+"11346": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins"
+],
+"11348": [
+"AB_AncientDeathPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"11349": [
+"AB_AncientDeathPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"11350": [
+"AB_AncientGreyPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"Junkyard"
+],
+"11351": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"11352": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks"
+],
+"11353": [
+"AB_AncientFreezingVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"TerraformingScar"
+],
+"11354": [
+"AB_AncientBloodRainVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"11355": [
+"AB_AncientGreyPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"MineralRich"
+],
+"11356": [
+"AncientRuins",
+"Junkyard",
+"AncientInfestedSettlement"
+],
+"11357": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"11359": [
+"AncientHeatVent"
+],
+"13179": [
+"AB_DerelictClusters"
+],
+"13180": [
+"AB_AncientFreezingVent"
+],
+"13181": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"13182": [
+"Junkyard"
+],
+"13183": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"Junkyard"
+],
+"13186": [
+"AB_DerelictClusters"
+],
+"13187": [
+"AB_AncientFreezingVent",
+"AB_AmbientRadiation",
+"Junkyard"
+],
+"14480": [
+"AncientHeatVent",
+"VEE_MechanoidShipChunks"
+],
+"14482": [
+"AncientHeatVent",
+"AB_AmbientRadiation"
+],
+"14483": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins"
+],
+"14484": [
+"AB_DerelictClusters",
+"MineralRich"
+],
+"14564": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"14565": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"14567": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"14569": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins",
+"MineralRich"
+],
+"14570": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins"
+],
+"14571": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"MineralRich"
+],
+"14572": [
+"AncientHeatVent",
+"AncientRuins"
+],
+"14576": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"MineralRich"
+],
+"14577": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"14578": [
+"AB_AncientGreyPallVent",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"14579": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"Junkyard"
+],
+"14580": [
+"AB_AncientDeathPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"14581": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"14582": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks"
+],
+"14583": [
+"AB_AncientGreyPallVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"MineralRich"
+],
+"14584": [
+"AncientHeatVent",
+"VEE_MechanoidShipChunks"
+],
+"14585": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"Junkyard"
+],
+"14586": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins",
+"Junkyard"
+],
+"14587": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"14588": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"14589": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"Junkyard",
+"AncientGarrison"
+],
+"14590": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"14591": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"14592": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"MineralRich"
+],
+"14593": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"Junkyard"
+],
+"14594": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks"
+],
+"14595": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"14596": [
+"AncientHeatVent"
+],
+"14597": [
+"AncientHeatVent"
+],
+"14598": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins",
+"Junkyard"
+],
+"14599": [
+"AncientHeatVent",
+"MineralRich"
+],
+"16738": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"16740": [
+"AncientHeatVent",
+"AncientRuins"
+],
+"16741": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"Junkyard"
+],
+"16744": [
+"AB_DerelictClusters",
+"MineralRich"
+],
+"19338": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"MineralRich",
+"AncientChemfuelRefinery"
+],
+"19340": [
+"AB_AncientGreyPallVent",
+"AB_DerelictClusters"
+],
+"19341": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"19342": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"19343": [
+"AB_AncientDeathPallVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks"
+],
+"19344": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"Junkyard"
+],
+"19345": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"19350": [
+"AncientHeatVent",
+"AncientRuins"
+],
+"21512": [
+"AncientHeatVent",
+"AncientRuins"
+],
+"21513": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AncientRuins",
+"MineralRich"
+],
+"21514": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"21515": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientUplink"
+],
+"21516": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"AncientInfestedSettlement"
+],
+"21517": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"Junkyard"
+],
+"21518": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"21519": [
+"AncientHeatVent",
+"AB_AmbientRadiation"
+],
+"21520": [
+"AncientHeatVent",
+"VEE_MechanoidShipChunks"
+],
+"21521": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"MineralRich"
+],
+"21522": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"Junkyard"
+],
+"21523": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"Junkyard"
+],
+"21524": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"MineralRich",
+"AncientWarehouse"
+],
+"21525": [
+"AB_DerelictClusters"
+],
+"21526": [
+"AB_AncientDeathPallVent",
+"AB_DerelictClusters"
+],
+"21527": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"Junkyard"
+],
+"21528": [
+"VEE_MechanoidShipChunks",
+"Junkyard"
+],
+"21529": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"21530": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"21531": [
+"Junkyard"
+],
+"21532": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"21533": [
+"AncientHeatVent",
+"AncientRuins"
+],
+"21534": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"21535": [
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"Junkyard",
+"MineralRich"
+],
+"21536": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"21537": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"21538": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"MineralRich"
+],
+"21539": [
+"AncientHeatVent"
+],
+"21540": [
+"AncientHeatVent",
+"MineralRich"
+],
+"21541": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks"
+],
+"21542": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks"
+],
+"21543": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation"
+],
+"21544": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"21545": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientGarrison"
+],
+"21546": [
+"AB_AncientGreyPallVent",
+"AB_AmbientRadiation"
+],
+"21547": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"Junkyard",
+"AncientLaunchSite"
+],
+"21549": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"Junkyard",
+"MineralRich"
+],
+"21551": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"21560": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"Junkyard"
+],
+"21561": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"MineralRich"
+],
+"21562": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins"
+],
+"21563": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"21564": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"21565": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"TerraformingScar"
+],
+"21566": [
+"AB_AncientBloodRainVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"Junkyard",
+"MineralRich",
+"AncientWarehouse"
+],
+"21567": [
+"AncientHeatVent",
+"AB_DerelictClusters"
+],
+"21568": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins",
+"AncientGarrison"
+],
+"21569": [
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"AncientRuins",
+"MineralRich"
+],
+"21570": [
+"AncientHeatVent",
+"AB_AmbientRadiation",
+"VEE_MechanoidShipChunks",
+"AncientRuins"
+],
+"21571": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"AB_AmbientRadiation",
+"MineralRich"
+],
+"21574": [
+"AncientHeatVent",
+"AB_DerelictClusters",
+"VEE_MechanoidShipChunks",
+"Junkyard",
+"AncientUplink",
+"AncientChemfuelRefinery"
+],
+"21575": [
+"AncientHeatVent"
+],
+"11358": [
+"AncientGarrison"
+]
+}

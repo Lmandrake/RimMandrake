@@ -1,0 +1,2251 @@
+{
+ "mutators": [
+  {
+   "defName": "AB_AgariluxPrime_Mutator",
+   "label": "agarilux prime sprout",
+   "note": "This area contains a wayward Agarilux Prime growing outside the Mycotic Jungle. It will release spores that destroy everything surrounding it"
+  },
+  {
+   "defName": "AB_AmbientRadiation",
+   "label": "ambient radiation",
+   "note": "Low levels of background radiation permeate the area, subtly affecting health and mutation rates"
+  },
+  {
+   "defName": "AB_AncientBloodRainVent",
+   "label": "blood rain vent",
+   "note": "This area has a number of gigantic corroded vents. An ancient mechanism buried deep beneath the earth will occasionally vent huge red clouds of a vaporized blood-like substance that will coalesce into a disgusting blood rain"
+  },
+  {
+   "defName": "AB_AncientDeathPallVent",
+   "label": "death pall vent",
+   "note": "This area has a number of ancient runic grates of unknown origin. An ancient mechanism buried deep beneath the earth will occasionally vent clouds of microscopic self-powered archites that affect corpses reanimating them to create a twisted imitation of life"
+  },
+  {
+   "defName": "AB_AncientFreezingVent",
+   "label": "ancient freezing vent",
+   "note": "This area has a number of massive freezing vents. An ancient mechanism buried deep beneath the earth will occasionally vent large amounts of freezing cold air, lowering temperatures greatly"
+  },
+  {
+   "defName": "AB_AncientGreyPallVent",
+   "label": "gray pall vent",
+   "note": "This area has a number of rusted, forebodding vents. An ancient mechanism buried deep beneath the earth will occasionally vent large amounts of sickly looking smoke that will plunge the area into a preternatural darkness"
+  },
+  {
+   "defName": "AB_BlizzariskNest",
+   "label": "blizzarisk nest",
+   "note": "This area is infested with Blizzarisks [biome-locked: AB_PropaneLakes,SeaIce,IceSheet,Tundra,GlacialPlain,BiomeGRimonade...]"
+  },
+  {
+   "defName": "AB_BumbledroneNests",
+   "label": "bumbledrone nests",
+   "note": "This area has several dangerous Bumbledrone nests"
+  },
+  {
+   "defName": "AB_ButterflySwarms",
+   "label": "butterfly swarms",
+   "note": "Harmless swarms of beautiful butterflies roam this area [biome-locked: AB_IdyllicMeadows,BiomeArcticOasis,BiomeCypreJungle,BiomeGRimberlands,BiomeGRimerald,BiomeGRimethyst...]"
+  },
+  {
+   "defName": "AB_DerelictArchonexus",
+   "label": "derelict archonexus",
+   "note": "A bunch of derelict archonexus structures are present in this area"
+  },
+  {
+   "defName": "AB_DerelictBioLab",
+   "label": "derelict biolab",
+   "note": "A derelict biolab is present in this area. Investigating it might attract unwanted company [max hilliness Flat]"
+  },
+  {
+   "defName": "AB_DerelictClusters",
+   "label": "derelict clusters",
+   "note": "This area is littered with derelict mechanoid clusters, from which some materials could be scavenged [biome-locked: AB_MechanoidIntrusion,BiomeGrindland,BiomeToxlands]"
+  },
+  {
+   "defName": "AB_DerelictKemeticTemple",
+   "label": "derelict kemetic temple",
+   "note": "A derelict kemetic temple is present in this area [biome-locked: AB_TarPits,AB_GallatrossGraveyard,Desert,ExtremeDesert,AridShrubland,BiomeAreeb...]"
+  },
+  {
+   "defName": "AB_DerelictResort",
+   "label": "derelict resort",
+   "note": "A derelict resort is present in this area [needs avg temp 20-40C; biome-locked: AB_TarPits,AB_GallatrossGraveyard,Desert,ExtremeDesert,AridShrubland,Grasslands...; requires coastline (1-6 coast sides)]"
+  },
+  {
+   "defName": "AB_DessertTrees",
+   "label": "dessert trees",
+   "note": "Weird dessert trees grow wild in this area. They look VERY tasty [EXCLUDED from AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "AB_DigestiveSurface",
+   "label": "digestive surface",
+   "note": "The ground here will digest dropped items if left too long [biome-locked: AB_GelatinousSuperorganism]"
+  },
+  {
+   "defName": "AB_DiminutiveRegion",
+   "label": "diminutive region",
+   "note": "The limits of this region are very restrictive. Map will be set to 100x100 tiles"
+  },
+  {
+   "defName": "AB_DunealiskNest",
+   "label": "dunealisk nest",
+   "note": "This area is infested with Dunealisks [biome-locked: Desert,ExtremeDesert,AB_GallatrossGraveyard,BiomeGRimberlands,BiomeGRimond,BiomeGRimworld]"
+  },
+  {
+   "defName": "AB_EdibleAirborneMicrofungi",
+   "label": "edible airborne micro-fungi",
+   "note": "Microscopic spores present in this biome can be collected and used as edible ingredients (find the collector under \"build biome structures\" in the Furniture Architect menu) [biome-locked: Glowforest,AB_MycoticJungle,BiomeGRuby]"
+  },
+  {
+   "defName": "AB_ExplodingAnimals",
+   "label": "exploding animals",
+   "note": "Something in this area makes all animals explode violently on death"
+  },
+  {
+   "defName": "AB_ExtremeTemperatureFluctuations",
+   "label": "extreme temperature fluctuations",
+   "note": "Wild swings between scorching days and freezing nights challenge survival and crop stability"
+  },
+  {
+   "defName": "AB_FeraliskNest",
+   "label": "feralisk nest",
+   "note": "This area is infested with Feralisks"
+  },
+  {
+   "defName": "AB_FleshTrees",
+   "label": "flesh trees",
+   "note": "Weird flesh trees grow wild in this area. They don't look tasty [EXCLUDED from AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "AB_GelatinousMemoryEcho",
+   "label": "gelatinous memory echo",
+   "note": "The superorganism retains echoes of past events, stored like data in a living neural lattice. These memory echoes occasionally bleed into reality [biome-locked: AB_GelatinousSuperorganism]"
+  },
+  {
+   "defName": "AB_GeothermalHotspots",
+   "label": "geothermal hotspots",
+   "note": "High geothermal activity allows construction of efficient geothermal plants (find them under \"build biome structures\" in the Furniture Architect menu) [biome-locked: AB_PyroclasticConflagration,BiomeGRimphire]"
+  },
+  {
+   "defName": "AB_GiantFossils",
+   "label": "giant fossils",
+   "note": "Gigantic skeletons of long-gone beasts litter this land [biome-locked: AB_TarPits,AB_GallatrossGraveyard,Desert,ExtremeDesert,AridShrubland,BiomeAreeb...]"
+  },
+  {
+   "defName": "AB_GoldenTrees",
+   "label": "golden cube trees",
+   "note": "This area is achieving PERFECTION [EXCLUDED from AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "AB_HealingSprings",
+   "label": "healing springs",
+   "note": "This region contains natural springs imbued with curative properties [blocks ponds; biome-locked: BorealForest,LavaField,TemperateForest,Tundra,GlacialPlain,Desert...; needs no river; min hilliness Mountainous; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "AB_LocustPlagues",
+   "label": "locust plagues",
+   "note": "Ravenous locusts plagues infest this area, making short work of any yellow grass lying unprotected [biome-locked: Grasslands,BiomeGRimerald,BiomeGRuquoise,BiomeMist,BiomeToxlands]"
+  },
+  {
+   "defName": "AB_LuminescentTrees",
+   "label": "luminescent trees",
+   "note": "Unusual luminescent trees grow in this area"
+  },
+  {
+   "defName": "AB_MagmaVents",
+   "label": "magma vents",
+   "note": "Fiery fissures in the earth that intermittently erupt with jets of molten rock and searing gas [biome-locked: AB_PyroclasticConflagration,BiomeGRimphire]"
+  },
+  {
+   "defName": "AB_MagmaticQuagmire",
+   "label": "magmatic quagmire",
+   "note": "A seething landscape of molten rock and blistering heat\u2014where the ground bubbles, cracks, and burns beneath your feet [blocks ponds; biome-locked: AB_PyroclasticConflagration,BiomeGRimphire; max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "AB_MoldyEnvironment",
+   "label": "moldy environment",
+   "note": "The ubiquitous presence of fungal spores in this region makes staying outdoors almost unbearable [biome-locked: AB_MycoticJungle,BiomeGRuby]"
+  },
+  {
+   "defName": "AB_MutagenicSprings",
+   "label": "mutagenic ocular springs",
+   "note": "This region contains weird ocular springs that mutate the body of both colonists and animals [blocks ponds; biome-locked: AB_OcularForest,BiomeToxlands; needs no river; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "AB_NarrowRegion",
+   "label": "narrow region",
+   "note": "The limits of this region make it have an irregular size. Map will be set to 100x400 tiles"
+  },
+  {
+   "defName": "AB_OcularTransformation",
+   "label": "ocular transformation",
+   "note": "This area has begun to transform into an ocular forest"
+  },
+  {
+   "defName": "AB_OversaturatedSoil",
+   "label": "oversaturated soil",
+   "note": "Fertile ground areas are even more fertile than usual [biome-locked: AB_IdyllicMeadows,BiomeGRimerald,BiomeGRuquoise]"
+  },
+  {
+   "defName": "AB_PetalStorms",
+   "label": "petal storms",
+   "note": "Occasional flurries of flower petals that improve mood but reduce visibility [biome-locked: AB_IdyllicMeadows,BiomeGRuquoise]"
+  },
+  {
+   "defName": "AB_PollinationFrenzy",
+   "label": "pollination frenzy",
+   "note": "Plant density is increased here due to heavy pollination, but at the risk of causing tougher allergies [plant density x1.1; biome-locked: AB_IdyllicMeadows,BiomeGRimberlands,BiomeGRimerald,BiomeGRuquoise,BiomeGRuby]"
+  },
+  {
+   "defName": "AB_PropaneLakes",
+   "label": "propane lakes",
+   "note": "Lakes of liquid hydrocarbons that seem to defy the laws of physics [biome-locked: GlacialPlain,SeaIce,IceSheet,Tundra,BiomeGRimonade,BiomeArcticOasis; requires coastline (0-1 coast sides)]"
+  },
+  {
+   "defName": "AB_QuicksandPits",
+   "label": "quicksand pits",
+   "note": "This region contains pools of shallow quicksand that impede movement [blocks ponds; biome-locked: Desert,AridShrubland,ExtremeDesert,AB_GallatrossGraveyard,BiomeGRimworld,BiomeGRimberlands...; needs no river; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "AB_QuiveringSurface",
+   "label": "quivering surface",
+   "note": "The very ground beneath your colony trembles, pulses, and reacts\u2014it is alive. Movement will be harder in this terrain [biome-locked: AB_GelatinousSuperorganism]"
+  },
+  {
+   "defName": "AB_ResidualOverclocking",
+   "label": "residual overclocking",
+   "note": "This region still hums with the unstable energy of forgotten mechanoid infrastructure. Collectors can be built to tune into these energies (find them under \"build biome structures\" in the Furniture Architect menu) [biome-locked: AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "AB_SterileGround",
+   "label": "sterile ground",
+   "note": "No wild plants grow here besides simple grass, but disease chance is lowered by 75%"
+  },
+  {
+   "defName": "AB_SymbioticNutrients",
+   "label": "symbiotic nutrients",
+   "note": "Simply being around this landscape makes people require 10% less nutrients to feel full [biome-locked: AB_GelatinousSuperorganism]"
+  },
+  {
+   "defName": "AB_TarLakes",
+   "label": "tar lakes",
+   "note": "A shallow pool of a dense tar-like substance. Impassable, and can't be bridged over [landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "AB_TechnoTrees",
+   "label": "technological trees",
+   "note": "A strange kind of trees grows in this area. They appear to be half synthetic"
+  },
+  {
+   "defName": "AB_WideRegion",
+   "label": "wide region",
+   "note": "The limits of this region make it have an irregular size. Map will be set to 400x100 tiles"
+  },
+  {
+   "defName": "AbandonedColonyOutlander",
+   "label": "abandoned colony",
+   "note": "A recently abandoned colony [EXCLUDED from AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "AbandonedColonyTribal",
+   "label": "abandoned colony",
+   "note": "A recently abandoned colony [EXCLUDED from AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "AncientChemfuelRefinery",
+   "label": "ancient chemfuel refinery",
+   "note": "An abandoned industrial installation containing large quantities of chemfuel. It may also contain dangerous security systems [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...]"
+  },
+  {
+   "defName": "AncientGarrison",
+   "label": "ancient garrison",
+   "note": "A long-abandoned military structure. It may still contain valuable items, as well as active security systems. Use caution while exploring these ruins [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...]"
+  },
+  {
+   "defName": "AncientHeatVent",
+   "label": "ancient heat vent",
+   "note": "Ancient ducts will regularly vent heat from an underground megastructure, dramatically raising the temperature of the surrounding area [biome-locked: AridShrubland,Desert,ExtremeDesert,Savanna,AB_RockyCrags,AB_GallatrossGraveyard...]"
+  },
+  {
+   "defName": "AncientInfestedSettlement",
+   "label": "infested settlement",
+   "note": "A once-prosperous settlement that was destroyed by an insect infestation. It may still contain valuable resources [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...]"
+  },
+  {
+   "defName": "AncientLaunchSite",
+   "label": "ancient launch site",
+   "note": "An abandoned collection of launch pads used to deliver supplies to orbital platforms. It contains working transport pods [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...; EXCLUDED from AB_MechanoidIntrusion; needs no river]"
+  },
+  {
+   "defName": "AncientQuarry",
+   "label": "ancient quarry",
+   "note": "This area was once mined for its natural resources, and the remains of the ancient quarry are still here [spawns AncientMiningCharge/AncientExplosivesCrate/AncientExcavator/AncientDrillPlatform/AncientTuneller; min hilliness Mountainous]"
+  },
+  {
+   "defName": "AncientRuins",
+   "label": "ruins",
+   "note": "The remains of an ancient settlement. These ruins may contain a wide variety of possible threats [EXCLUDED from AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "AncientRuins_Frozen",
+   "label": "frozen ruins",
+   "note": "The ruins of an ancient settlement, now encased in solid ice. These ruins may contain untold dangers [biome-locked: IceSheet,GlacialPlain,AB_PropaneLakes,ZBiome_GlacialShield]"
+  },
+  {
+   "defName": "AncientSmokeVent",
+   "label": "ancient smoke vent",
+   "note": "This area has a number of massive exhaust vents. An ancient mechanism buried deep beneath the earth will occasionally vent large amounts of smoke, blocking out the sun for days at a time [biome-locked: Scarlands,BorealForest,TemperateForest,TropicalRainforest,AridShrubland,Desert...]"
+  },
+  {
+   "defName": "AncientToxVent",
+   "label": "ancient toxic vent",
+   "note": "Massive toxic vents will regularly spew toxic fallout into the air. The vents connect to an ancient substructure buried deep beneath the earth [biome-locked: Scarlands,BorealForest,TemperateForest,TropicalRainforest,AridShrubland,Desert...]"
+  },
+  {
+   "defName": "AncientUplink",
+   "label": "ancient uplink",
+   "note": "This area contains an uplink used for communication with a low orbit satellite. Hacking the uplink will reveal a hidden location in orbit"
+  },
+  {
+   "defName": "AncientWarehouse",
+   "label": "ancient warehouse",
+   "note": "An abandoned warehouse. It still contains valuables. It may also contain dangerous security systems [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...]"
+  },
+  {
+   "defName": "AnimalHabitat",
+   "label": "animal habitat",
+   "note": "A natural habitat for {ANIMALKIND_labelPlural}. They appear in greater numbers here"
+  },
+  {
+   "defName": "AnimalLife_Decreased",
+   "label": "decreased animal life",
+   "note": "Animals are less abundant here than normal [animal density x0.5]"
+  },
+  {
+   "defName": "AnimalLife_Increased",
+   "label": "increased animal life",
+   "note": "Animals are more abundant here [animal density x1.5]"
+  },
+  {
+   "defName": "ArcheanTrees",
+   "label": "archean trees",
+   "note": "This area contains ancient archean trees. These trees host a special microbial community in their roots which converts nearby terrain into rich soil. Their delicate root system makes it impossible to replant them [biome-locked: AridShrubland,BorealForest,ColdBog,GlacialPlain,Grasslands,LavaField...]"
+  },
+  {
+   "defName": "Archipelago",
+   "label": "archipelago",
+   "note": "A network of several small islands dotting the coast [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; needs no river; requires coastline (2-5 coast sides)]"
+  },
+  {
+   "defName": "Basin",
+   "label": "basin",
+   "note": "A natural depression in a mountain range, in which groundwater feeds a small lake [flattens elevation; biome-locked: BorealForest,ColdBog,GlacialPlain,Glowforest,Grasslands,LavaField...; min hilliness Mountainous]"
+  },
+  {
+   "defName": "Bay",
+   "label": "bay",
+   "note": "A large indentation in the coastline that provides shelter from strong coastal winds [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (1-5 coast sides)]"
+  },
+  {
+   "defName": "CaveLakes",
+   "label": "cave pools",
+   "note": "Small bodies of water can be found within caves in this area"
+  },
+  {
+   "defName": "Cavern",
+   "label": "cavern",
+   "note": "A network of caves formed by various geological processes [flattens elevation; min hilliness Mountainous]"
+  },
+  {
+   "defName": "Caves",
+   "label": "caves",
+   "note": "Small cave networks can be found within the rocks"
+  },
+  {
+   "defName": "Chasm",
+   "label": "chasm",
+   "note": "Geological movement has caused deep fissures in this mountain [flattens elevation; min hilliness Mountainous]"
+  },
+  {
+   "defName": "Cliffs",
+   "label": "cliffs",
+   "note": "Steep cliffs surround three sides of this area [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...; min hilliness Mountainous]"
+  },
+  {
+   "defName": "Coast",
+   "label": "coast",
+   "note": "This tile borders the coast"
+  },
+  {
+   "defName": "CoastalAtoll",
+   "label": "coastal atoll",
+   "note": "An island surrounding a large lagoon. There's very little land to build on here [blocks ponds; biome-locked: AridShrubland,Desert,Grasslands,TemperateForest,TropicalRainforest,BiomeArcticOasis...; needs no river; max hilliness SmallHills; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "CoastalIsland",
+   "label": "coastal island",
+   "note": "A large island near the shore [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; needs no river; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "Cove",
+   "label": "bay",
+   "note": "A large indentation in the coastline that provides shelter from strong coastal winds [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (1-5 coast sides)]"
+  },
+  {
+   "defName": "Crevasse",
+   "label": "crevasse",
+   "note": "A massive rift created by glacial movement [biome-locked: GlacialPlain,ZBiome_AlpineMeadow,ZBiome_GlacialShield; max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "DA_LeviathanNest",
+   "label": "leviathan nestbed",
+   "note": "This coast is home to a leviathan nest deep beneath the water surface. The large crustaceans are more common and can attack if disturbed [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (1-5 coast sides)]"
+  },
+  {
+   "defName": "DA_SnaptoadBreedingGrounds",
+   "label": "snaptoad breeding grounds",
+   "note": "A wetland used by giant snaptoads as spawning pools. Its waters teem with the dangerous amphibians and their offsprings [biome-locked: ColdBog,TemperateSwamp,TropicalSwamp]"
+  },
+  {
+   "defName": "DryGround",
+   "label": "dry ground",
+   "note": "The ground in this area is drier than normal. There are no small ponds or bodies of water [blocks ponds; biome-locked: Scarlands,BorealForest,Tundra,BiomeArcticOasis,BiomeAreeb,BiomeCypreJungle...]"
+  },
+  {
+   "defName": "DryLake",
+   "label": "dry lake",
+   "note": "The remains of a former lake [biome-locked: Desert,ExtremeDesert,Tundra,AridShrubland,Grasslands,Savanna...; needs no river; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "Dunes",
+   "label": "dunes",
+   "note": "A barren expanse of sand. This area is extremely inhospitable [chunk density x0.15; junk density x0; geyser count x0; plant density x0; blocks other landmarks; flattens elevation; biome-locked: ExtremeDesert,Savanna,BiomeAreeb,BiomeGRimberlands,BiomeGRimond,BiomeGRimworld; max hilliness Flat]"
+  },
+  {
+   "defName": "Fertile",
+   "label": "fertile",
+   "note": "This area contains more fertile soil than normal [terrain patches: SoilRich; biome-locked: BorealForest,ColdBog,Glowforest,Grasslands,TemperateForest,TemperateSwamp...]"
+  },
+  {
+   "defName": "Fish_Decreased",
+   "label": "decreased fish",
+   "note": "This area has fewer fish than normal [fish population x0.35]"
+  },
+  {
+   "defName": "Fish_Increased",
+   "label": "increased fish",
+   "note": "This area has more fish than normal [fish population x1.5; EXCLUDED from AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "Fjord",
+   "label": "fjord",
+   "note": "A long, narrow sea inlet surrounded by steep terrain [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; needs no river; min hilliness Mountainous; requires coastline (1-5 coast sides)]"
+  },
+  {
+   "defName": "FoggyMutator",
+   "label": "foggy",
+   "note": "Fog is common in this area [biome-locked: BorealForest,ColdBog,TemperateForest,TemperateSwamp,TropicalRainforest,TropicalSwamp...]"
+  },
+  {
+   "defName": "GL_Archipelago",
+   "label": "GL_Archipelago",
+   "note": "Geological Landforms procedural terrain: scatters the tile into a chain of small islands across open water"
+  },
+  {
+   "defName": "GL_Atoll",
+   "label": "GL_Atoll",
+   "note": "Geological Landforms procedural terrain: a ring-shaped coral-like island around a central lagoon"
+  },
+  {
+   "defName": "GL_Badlands",
+   "label": "GL_Badlands",
+   "note": "Geological Landforms procedural terrain: eroded, broken dry terrain with sharp small ridgelines"
+  },
+  {
+   "defName": "GL_BiomeTransitions",
+   "label": "GL_BiomeTransitions",
+   "note": "Biome Transitions add-on for Geological Landforms: blends two neighbouring biomes' terrain across the tile so the border is not a hard line"
+  },
+  {
+   "defName": "GL_Caldera",
+   "label": "GL_Caldera",
+   "note": "Geological Landforms procedural terrain: a collapsed volcanic crater rim enclosing a basin"
+  },
+  {
+   "defName": "GL_Canyon",
+   "label": "GL_Canyon",
+   "note": "Geological Landforms procedural terrain: a deep carved canyon/gorge cuts across the tile"
+  },
+  {
+   "defName": "GL_CaveEntrance",
+   "label": "GL_CaveEntrance",
+   "note": "Geological Landforms procedural terrain: a mountain face opening into a cave system"
+  },
+  {
+   "defName": "GL_Cirque",
+   "label": "GL_Cirque",
+   "note": "Geological Landforms procedural terrain: a glacially-carved steep-walled mountain hollow"
+  },
+  {
+   "defName": "GL_Cliff",
+   "label": "GL_Cliff",
+   "note": "Geological Landforms procedural terrain: a sheer cliff face divides the tile"
+  },
+  {
+   "defName": "GL_CliffAndCoast",
+   "label": "GL_CliffAndCoast",
+   "note": "Geological Landforms procedural terrain: cliff face directly meeting open water"
+  },
+  {
+   "defName": "GL_CliffCorner",
+   "label": "GL_CliffCorner",
+   "note": "Geological Landforms procedural terrain: two cliff faces meeting at a corner"
+  },
+  {
+   "defName": "GL_Coast",
+   "label": "GL_Coast",
+   "note": "Geological Landforms procedural terrain: a straight open-water coastline"
+  },
+  {
+   "defName": "GL_CoastCorner",
+   "label": "GL_CoastCorner",
+   "note": "Geological Landforms procedural terrain: coastline bending around a headland"
+  },
+  {
+   "defName": "GL_CoastalIsland",
+   "label": "GL_CoastalIsland",
+   "note": "Geological Landforms procedural terrain: an island sitting just off a coastline"
+  },
+  {
+   "defName": "GL_Cove",
+   "label": "GL_Cove",
+   "note": "Geological Landforms procedural terrain: a small sheltered inlet of water"
+  },
+  {
+   "defName": "GL_CoveWithIsland",
+   "label": "GL_CoveWithIsland",
+   "note": "Geological Landforms procedural terrain: a sheltered inlet with an island inside it"
+  },
+  {
+   "defName": "GL_Crater",
+   "label": "GL_Crater",
+   "note": "Geological Landforms procedural terrain: a large bowl-shaped impact/volcanic crater"
+  },
+  {
+   "defName": "GL_DesertPlateau",
+   "label": "GL_DesertPlateau",
+   "note": "Geological Landforms procedural terrain: a flat elevated dry tableland with steep edges"
+  },
+  {
+   "defName": "GL_DryLake",
+   "label": "GL_DryLake",
+   "note": "Geological Landforms procedural terrain: a dried lakebed basin, flat and low"
+  },
+  {
+   "defName": "GL_Fjord",
+   "label": "GL_Fjord",
+   "note": "Geological Landforms procedural terrain: a long narrow steep-walled water inlet"
+  },
+  {
+   "defName": "GL_Glacier",
+   "label": "GL_Glacier",
+   "note": "Geological Landforms procedural terrain: a mass of ice terrain dominates the tile"
+  },
+  {
+   "defName": "GL_Gorge",
+   "label": "GL_Gorge",
+   "note": "Geological Landforms procedural terrain: a narrow steep-sided river-cut gorge"
+  },
+  {
+   "defName": "GL_IceOasis",
+   "label": "GL_IceOasis",
+   "note": "Geological Landforms procedural terrain: a pocket of unfrozen water amid ice terrain"
+  },
+  {
+   "defName": "GL_Island",
+   "label": "GL_Island",
+   "note": "Geological Landforms procedural terrain: a single landmass surrounded by open water"
+  },
+  {
+   "defName": "GL_Lake",
+   "label": "GL_Lake",
+   "note": "Geological Landforms procedural terrain: an inland body of standing water"
+  },
+  {
+   "defName": "GL_LakeWithIsland",
+   "label": "GL_LakeWithIsland",
+   "note": "Geological Landforms procedural terrain: a lake with an island in the middle"
+  },
+  {
+   "defName": "GL_Landbridge",
+   "label": "GL_Landbridge",
+   "note": "Geological Landforms procedural terrain: a narrow land strip connecting two larger landmasses"
+  },
+  {
+   "defName": "GL_LoneMountain",
+   "label": "GL_LoneMountain",
+   "note": "Geological Landforms procedural terrain: a single isolated mountain peak"
+  },
+  {
+   "defName": "GL_Oasis",
+   "label": "GL_Oasis",
+   "note": "Geological Landforms procedural terrain: a fertile water pocket surrounded by dry terrain"
+  },
+  {
+   "defName": "GL_Peninsula",
+   "label": "GL_Peninsula",
+   "note": "Geological Landforms procedural terrain: a landmass jutting out into open water"
+  },
+  {
+   "defName": "GL_Rift",
+   "label": "GL_Rift",
+   "note": "Geological Landforms procedural terrain: a long fractured valley/fault-line depression"
+  },
+  {
+   "defName": "GL_River",
+   "label": "GL_River",
+   "note": "Geological Landforms procedural terrain: a river channel crosses the tile"
+  },
+  {
+   "defName": "GL_RiverConfluence",
+   "label": "GL_RiverConfluence",
+   "note": "Geological Landforms procedural terrain: two rivers merging into one"
+  },
+  {
+   "defName": "GL_RiverDelta",
+   "label": "GL_RiverDelta",
+   "note": "Geological Landforms procedural terrain: a river fanning out into channels at a coastline"
+  },
+  {
+   "defName": "GL_RiverIsland",
+   "label": "GL_RiverIsland",
+   "note": "Geological Landforms procedural terrain: an island sitting within a river channel"
+  },
+  {
+   "defName": "GL_RiverSource",
+   "label": "GL_RiverSource",
+   "note": "Geological Landforms procedural terrain: the headwater origin point of a river"
+  },
+  {
+   "defName": "GL_RiverTerrain",
+   "label": "GL_RiverTerrain",
+   "note": "Geological Landforms procedural terrain: generic river-adjacent terrain shaping"
+  },
+  {
+   "defName": "GL_SecludedCove",
+   "label": "GL_SecludedCove",
+   "note": "Geological Landforms procedural terrain: a small enclosed water inlet ringed by land"
+  },
+  {
+   "defName": "GL_SecludedValley",
+   "label": "GL_SecludedValley",
+   "note": "Geological Landforms procedural terrain: a valley enclosed by high ground on most sides"
+  },
+  {
+   "defName": "GL_Sinkhole",
+   "label": "GL_Sinkhole",
+   "note": "Geological Landforms procedural terrain: a deep round collapsed depression in the ground"
+  },
+  {
+   "defName": "GL_Skerry",
+   "label": "GL_Skerry",
+   "note": "Geological Landforms procedural terrain: small rocky islets scattered in open water"
+  },
+  {
+   "defName": "GL_SurfaceCave",
+   "label": "GL_SurfaceCave",
+   "note": "Geological Landforms procedural terrain: a cave mouth opening onto the surface"
+  },
+  {
+   "defName": "GL_SwampHill",
+   "label": "GL_SwampHill",
+   "note": "Geological Landforms procedural terrain: raised hilly ground rising out of swamp"
+  },
+  {
+   "defName": "GL_Tombolo",
+   "label": "GL_Tombolo",
+   "note": "Geological Landforms procedural terrain: a sand/gravel bar connecting an island to the coast"
+  },
+  {
+   "defName": "GL_Valley",
+   "label": "GL_Valley",
+   "note": "Geological Landforms procedural terrain: a low tract of land between higher ground on both sides"
+  },
+  {
+   "defName": "Harbor",
+   "label": "harbor",
+   "note": "An abandoned coastal settlement [EXCLUDED from AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "Headwater",
+   "label": "headwater",
+   "note": "A river's origin point"
+  },
+  {
+   "defName": "Hollow",
+   "label": "hollow",
+   "note": "A small open area surrounded by cliffs [flattens elevation; min hilliness Mountainous]"
+  },
+  {
+   "defName": "HotSprings",
+   "label": "hot springs",
+   "note": "A hot water spring, heated by geothermal activity [blocks ponds; biome-locked: BorealForest,LavaField,TemperateForest,Tundra,GlacialPlain,Wetland...; needs no river; min hilliness Mountainous; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "IceCaves",
+   "label": "ice caves",
+   "note": "Small cave networks can be found within the ice"
+  },
+  {
+   "defName": "IceDunes",
+   "label": "ice dunes",
+   "note": "Massive rolling hills made from compacted windswept snow [biome-locked: SeaIce,IceSheet,BiomeArcticOasis,BiomeGRimonade; max hilliness Flat]"
+  },
+  {
+   "defName": "Iceberg",
+   "label": "iceberg",
+   "note": "A floating mass of ice, detached from the larger ice sheet [needs avg temp -100-0C; junk density x0; geyser count x0; blocks ponds; biome-locked: SeaIce,IceSheet,Tundra,ColdBog,BorealForest,BiomeArcticOasis...; needs no river; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "InsectMegahive",
+   "label": "insect megahive",
+   "note": "This area hosts a massive subterranean insect hive [min hilliness Mountainous]"
+  },
+  {
+   "defName": "Junkyard",
+   "label": "junkyard",
+   "note": "An old dumping ground for various kinds of junk [spawns ScarlandsJunkClusters/ScarlandsJunkPrefabs; junk density x15; max hilliness SmallHills]"
+  },
+  {
+   "defName": "Lake",
+   "label": "lake",
+   "note": "A large body of fresh water [biome-locked: BorealForest,GlacialPlain,Glowforest,TemperateForest,TropicalRainforest,Grasslands...; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "LakeWithIsland",
+   "label": "lake with island",
+   "note": "A large body of fresh water encircles one or more islands [biome-locked: BorealForest,GlacialPlain,Glowforest,TemperateForest,TropicalRainforest,Grasslands...; needs no river; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "LakeWithIslands",
+   "label": "lake with island",
+   "note": "A large body of fresh water encircles one or more islands [biome-locked: BorealForest,GlacialPlain,Glowforest,TemperateForest,TropicalRainforest,Grasslands...; needs no river; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "Lakeshore",
+   "label": "lakeshore",
+   "note": "This tile borders a lake"
+  },
+  {
+   "defName": "LavaCaves",
+   "label": "lava caves",
+   "note": "Small lava-filled cave networks can be found here"
+  },
+  {
+   "defName": "LavaCrater",
+   "label": "lava lake",
+   "note": "A lake of deep lava terrain surrounded by volcanic rock [biome-locked: LavaField,Wasteland,AB_PyroclasticConflagration,BiomeGRimphire,BiomeGRimworld,BiomeToxlands; needs no river; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "LavaFlow",
+   "label": "lava flow",
+   "note": "The surrounding landscape routinely funnels large amounts of lava into this area, making it extremely inhospitable [blocks ponds; biome-locked: LavaField,AB_PyroclasticConflagration,BiomeGRimphire,BiomeGRimworld,BiomeToxlands; needs no river; max hilliness SmallHills; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "LavaLake",
+   "label": "lava lake",
+   "note": "A lake of deep lava terrain surrounded by volcanic rock [biome-locked: LavaField,Wasteland,AB_PyroclasticConflagration,BiomeGRimphire,BiomeGRimworld,BiomeToxlands; needs no river; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "Marshy",
+   "label": "marshy",
+   "note": "Patches of marsh break up this area [terrain patches: Marsh,MarshyTerrain; biome-locked: Grasslands,TemperateForest,Tundra,AB_FeraliskInfestedJungle,AB_GelatinousSuperorganism,AB_MiasmicMangrove...]"
+  },
+  {
+   "defName": "MineralRich",
+   "label": "mineral rich",
+   "note": "Concentrates valuable ore veins and strips out junk mineables (obsidian, compressed-junk variants) so digging here pays off [biome-blacklisted on IceSheet/SeaIce/AB_PropaneLakes/AB_GelatinousSuperorganism/AB_IdyllicMeadows]"
+  },
+  {
+   "defName": "MixedBiome",
+   "label": "mixed biome",
+   "note": "This area is at the boundary of two distinct biomes and has elements of both [blocks other landmarks; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...]"
+  },
+  {
+   "defName": "Mountain",
+   "label": "mountain",
+   "note": "A mountain fills one side of this tile"
+  },
+  {
+   "defName": "Muddy",
+   "label": "muddy",
+   "note": "This area is muddier than normal [terrain patches: Mud; biome-locked: Grasslands,TemperateForest,Tundra,ColdBog,TemperateSwamp,TropicalSwamp...]"
+  },
+  {
+   "defName": "Oasis",
+   "label": "oasis",
+   "note": "A lush spring featuring abundant plant life and water [needs avg temp 20-60C; biome-locked: Desert,ExtremeDesert,Savanna,AB_GallatrossGraveyard,AB_TarPits,BiomeArcticOasis...; needs no river]"
+  },
+  {
+   "defName": "ObsidianDeposits",
+   "label": "obsidian deposits",
+   "note": "This area has deposits of volcanic obsidian, which can be mined for obsidian glass [biome-locked: LavaField,Volcano,BiomeGRimphire,BiomeGRimworld,BiomeToxlands]"
+  },
+  {
+   "defName": "Peninsula",
+   "label": "peninsula",
+   "note": "An outcropping of land surrounded by ocean [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "PlantGrove",
+   "label": "plant grove",
+   "note": "This area contains a large number of {0}s [biome-locked: TemperateForest,TemperateSwamp,ColdBog,BorealForest,TropicalSwamp,TropicalRainforest...]"
+  },
+  {
+   "defName": "PlantLife_Decreased",
+   "label": "decreased plant life",
+   "note": "Plant life is less abundant here [plant density x0.5]"
+  },
+  {
+   "defName": "PlantLife_Increased",
+   "label": "increased plant life",
+   "note": "Plant life is more abundant here [plant density x1.3; EXCLUDED from AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "Plateau",
+   "label": "plateau",
+   "note": "A small rise with sharp cliffs and a flat top [biome-locked: AridShrubland,Grasslands,Glowforest,Desert,Tundra,Savanna...; max hilliness Flat]"
+  },
+  {
+   "defName": "Pollution_Increased",
+   "label": "increased pollution",
+   "note": "This area is contaminated with toxic pollutants"
+  },
+  {
+   "defName": "Pond",
+   "label": "pond",
+   "note": "A small body of fresh water [biome-locked: AridShrubland,BorealForest,GlacialPlain,Glowforest,Grasslands,TemperateForest...; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "River",
+   "label": "river",
+   "note": "A stream of fresh water flows through here"
+  },
+  {
+   "defName": "RiverConfluence",
+   "label": "river confluence",
+   "note": "A merging of two rivers"
+  },
+  {
+   "defName": "RiverDelta",
+   "label": "delta",
+   "note": "A river splitting into many branches as it enters the ocean [blocks ponds]"
+  },
+  {
+   "defName": "RiverIsland",
+   "label": "river island",
+   "note": "A river splitting into two and then merging again"
+  },
+  {
+   "defName": "Sandy",
+   "label": "sandy",
+   "note": "Large patches of sand are scattered throughout this area [terrain patches: Sand; biome-locked: TropicalRainforest,TemperateForest,Tundra,Grasslands,LavaField,Glowforest...]"
+  },
+  {
+   "defName": "SteamGeysers_Increased",
+   "label": "high geothermal activity",
+   "note": "Steam geysers are more common in this area [geyser count x2; EXCLUDED from AB_MechanoidIntrusion]"
+  },
+  {
+   "defName": "Stockpile",
+   "label": "stockpile",
+   "note": "This area contains an underground stockpile of resources. Be careful, some of the ancient defense systems may still be active"
+  },
+  {
+   "defName": "SunnyMutator",
+   "label": "sunny",
+   "note": "Clear weather is much more common here"
+  },
+  {
+   "defName": "TerraformingScar",
+   "label": "terraforming scar",
+   "note": "A misaligned blast from an ancient terraforming device has warped the earth into serpentine spirals. The area has since recovered, though the twisted and deformed hills remain [flattens elevation; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...]"
+  },
+  {
+   "defName": "ToxicLake",
+   "label": "toxic lake",
+   "note": "A body of water that has been poisoned by chemicals leaching out of the ground. The water will cause toxic buildup [biome-locked: Glowforest,Scarlands,Wasteland,BiomeGRimerald,BiomeGRimonade,BiomeGRimworld...; needs no river]"
+  },
+  {
+   "defName": "UndergroundCave",
+   "label": "underground cave",
+   "note": "Fully roofed cave layout carved underground (Core; genOrder -100, category Caves) [min hilliness unset \u2014 can appear on flat land as a buried cavern pocket]"
+  },
+  {
+   "defName": "VEE_AbandonedFarmland",
+   "label": "abandoned farmland",
+   "note": "This region contains ancient farms that were abandoned long ago due to the presence of droughts [blocks ponds; biome-locked: Grasslands,BiomeGRuquoise,BiomeGRimerald; needs no river; requires coastline (0-2 coast sides)]"
+  },
+  {
+   "defName": "VEE_AbundantPredators",
+   "label": "abundant predators",
+   "note": "Animals considered predators appear in greater numbers here"
+  },
+  {
+   "defName": "VEE_AbundantPrey",
+   "label": "abundant prey",
+   "note": "Animals considered prey appear in greater numbers here"
+  },
+  {
+   "defName": "VEE_AggressiveHerds",
+   "label": "aggressive herds",
+   "note": "Animals in this region have increased manhunter on damage chances"
+  },
+  {
+   "defName": "VEE_AlluvialFan",
+   "label": "aluvial fan",
+   "note": "A broad, fan-shaped spread of rich sediment deposited where flowing water from a river slows and disperses across the land [max hilliness Flat; requires coastline (1-6 coast sides)]"
+  },
+  {
+   "defName": "VEE_Alphabeavers",
+   "label": "alphabeavers",
+   "note": "Alphabeavers have been spotted in this region"
+  },
+  {
+   "defName": "VEE_AnimaFauna",
+   "label": "anima fauna",
+   "note": "The placid environment of the anima forest attracts some anima-touched animals [biome-locked: TemperateForest]"
+  },
+  {
+   "defName": "VEE_AnimaFlora",
+   "label": "anima flora",
+   "note": "This region contains a dense forest with anima trees and lesser anima growths, quietly resonating with psychic energy. The air feels attentive, as if the land itself is listening [spawns VEE_AncientAnimaTree; biome-locked: TemperateForest,BiomeGrindland,BiomeGRuquoise]"
+  },
+  {
+   "defName": "VEE_AnimaSoils",
+   "label": "anima soils",
+   "note": "This area contains soil infused with latent anima energy, subtly influencing plants, animals, and minds [biome-locked: TemperateForest,BiomeGrindland,BiomeGRuquoise]"
+  },
+  {
+   "defName": "VEE_AnimaSoils_Coast",
+   "label": "anima soils",
+   "note": "This area contains soil infused with latent anima energy, subtly influencing plants, animals, and minds [biome-locked: TemperateForest,BiomeGrindland,BiomeGRuquoise; requires coastline (1-6 coast sides)]"
+  },
+  {
+   "defName": "VEE_AuburnTree_Birches",
+   "label": "auburn birches",
+   "note": "In this forested area many trees remain locked in shades of red and gold, as if autumn never fully passes [biome-locked: TemperateForest,TemperateSwamp,BorealForest,Tundra,BiomeArcticOasis,BiomeGRimerald...]"
+  },
+  {
+   "defName": "VEE_AuburnTree_Maples",
+   "label": "auburn maples",
+   "note": "In this forested area many trees remain locked in shades of red and gold, as if autumn never fully passes [biome-locked: TemperateForest,TemperateSwamp,BorealForest,Tundra,BiomeArcticOasis,BiomeGRimerald...]"
+  },
+  {
+   "defName": "VEE_AuburnTree_Oaks",
+   "label": "auburn oaks",
+   "note": "In this forested area many trees remain locked in shades of red and gold, as if autumn never fully passes [biome-locked: TemperateForest,TemperateSwamp,BorealForest,Tundra,BiomeArcticOasis,BiomeGRimerald...]"
+  },
+  {
+   "defName": "VEE_AuburnTree_Poplars",
+   "label": "auburn poplars",
+   "note": "In this forested area many trees remain locked in shades of red and gold, as if autumn never fully passes [biome-locked: TemperateForest,TemperateSwamp,BorealForest,Tundra,BiomeArcticOasis,BiomeGRimerald...]"
+  },
+  {
+   "defName": "VEE_BasaltCape",
+   "label": "basalt cape",
+   "note": "A jutting headland of dark basalt, fractured into sharp columns by ancient lava flows. Rich in volcanic rocks [blocks ponds; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_Blooming_Buttercup",
+   "label": "blooming buttercups",
+   "note": "This area can grow a large number of colorful wild buttercups [biome-locked: TemperateForest,TemperateSwamp,Grasslands,BiomeCypreJungle,BiomeGRimerald,BiomeGRuquoise...]"
+  },
+  {
+   "defName": "VEE_Blooming_ForgetMeNot",
+   "label": "blooming forget-me-nots",
+   "note": "This area can grow a large number of colorful wild forget-me-nots [biome-locked: TemperateForest,TemperateSwamp,Grasslands,BiomeCypreJungle,BiomeGRimerald,BiomeGRuquoise...]"
+  },
+  {
+   "defName": "VEE_Blooming_Knapweed",
+   "label": "blooming knapweed",
+   "note": "This area can grow a large number of colorful wild knapweed [biome-locked: TemperateForest,TemperateSwamp,Grasslands]"
+  },
+  {
+   "defName": "VEE_Blooming_Loosestrife",
+   "label": "blooming loosestrife",
+   "note": "This area can grow a large number of colorful wild loosestrife [biome-locked: TemperateForest,TemperateSwamp,Grasslands,BiomeCypreJungle,BiomeGRimerald,BiomeGRuquoise...]"
+  },
+  {
+   "defName": "VEE_BombardedSurface",
+   "label": "bombarded surface",
+   "note": "This region was subject to orbital or artillery bombardment in a past long gone, and the craters from that bombardment are still present [spawns CratersLarge/CratersMedium/CratersSmall]"
+  },
+  {
+   "defName": "VEE_BurnedForest",
+   "label": "burned forest",
+   "note": "A forested area that has been recently affected by a severe wildfire [biome-locked: BorealForest,TemperateForest,TropicalRainforest,BiomeAreeb,BiomeCypreJungle,BiomeGRimberlands...]"
+  },
+  {
+   "defName": "VEE_Cactus_Barrel",
+   "label": "barrel cacti",
+   "note": "This area can grow a large number of wild barrel cacti [biome-locked: Desert,AridShrubland,BiomeAreeb,BiomeGRimberlands,BiomeGRimond]"
+  },
+  {
+   "defName": "VEE_Cactus_Beavertail",
+   "label": "beavertail cacti",
+   "note": "This area can grow a large number of wild beavertail cacti [biome-locked: Desert,AridShrubland,BiomeAreeb,BiomeGRimberlands,BiomeGRimond]"
+  },
+  {
+   "defName": "VEE_Cactus_Hedgehog",
+   "label": "hedgehog cacti",
+   "note": "This area can grow a large number of wild hedgehog cacti [biome-locked: Desert,AridShrubland,BiomeAreeb,BiomeGRimberlands,BiomeGRimond]"
+  },
+  {
+   "defName": "VEE_Cactus_OrganPipe",
+   "label": "organ pipe cacti",
+   "note": "This area can grow a large number of wild organ pipe cacti [biome-locked: Desert,AridShrubland,BiomeAreeb,BiomeGRimberlands,BiomeGRimond]"
+  },
+  {
+   "defName": "VEE_CalmBasin",
+   "label": "calm basin",
+   "note": "A wide, shallow crater filled with fine, undisturbed sand. Shielded from the wind by its sloped rim, the basin remains eerily still [max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_Cenotes",
+   "label": "cenotes",
+   "note": "A scattered network of deep, water-filled sinkholes formed by collapsed stone [spawns VEE_Cenotes_Large/VEE_Cenotes_Small]"
+  },
+  {
+   "defName": "VEE_ColossalFauna",
+   "label": "colossal fauna",
+   "note": "All fauna in this area is much larger than usual"
+  },
+  {
+   "defName": "VEE_ContaminatedCoast",
+   "label": "contaminated coast",
+   "note": "A stretch of shoreline where irradiated waters lap against the land, poisoning the shallows and disrupting all nearby life [blocks ponds; needs no river; max hilliness Flat; requires coastline (1-6 coast sides)]"
+  },
+  {
+   "defName": "VEE_ContaminatedReservoir",
+   "label": "contaminated reservoir",
+   "note": "A stagnant body of water saturated with lingering radiation, its depths unsafe for drinking or fishing and its shores hostile to life [needs no river]"
+  },
+  {
+   "defName": "VEE_ContaminatedRiver",
+   "label": "contaminated river",
+   "note": "A flowing waterway tainted by lingering radiation, spreading contamination downstream and rendering its waters unsafe for use [max hilliness Flat]"
+  },
+  {
+   "defName": "VEE_CoralReef",
+   "label": "coral reef",
+   "note": "A large atoll separated from the shore with a ring of corals growing around it [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; max hilliness Flat; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_CraterLake",
+   "label": "crater lake",
+   "note": "A vast ring of rocky walls encircles a serene, deep-blue lake [max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_DeadlifeVents",
+   "label": "deadlife geysers",
+   "note": "Sinister geysers that exhale eerie, ash-like dust\u2014capable of reawakening the dead under its haunting influence"
+  },
+  {
+   "defName": "VEE_DeepOreDevoid",
+   "label": "no deep ores",
+   "note": "This area is so poor in deep ores that they are almost non-existant"
+  },
+  {
+   "defName": "VEE_DeepOrePoor",
+   "label": "deep ore poor",
+   "note": "This area is poor in deep ores, decreasing the yield of deep drills by 25%"
+  },
+  {
+   "defName": "VEE_DeepOreRich",
+   "label": "deep ore rich",
+   "note": "This area is rich in deep ores, increasing the yield of deep drills by 25%"
+  },
+  {
+   "defName": "VEE_DeepSnow",
+   "label": "solid snow",
+   "note": "This region is covered in heavy, compacted layers of snow that resist movement and muffle sound [needs avg temp -100-5C; biome-locked: IceSheet,SeaIce,Tundra,BiomeGRimonade,BiomeArcticOasis]"
+  },
+  {
+   "defName": "VEE_DetachedIceberg",
+   "label": "detached iceberg",
+   "note": "A floating mass of ice, detached from the larger ice sheet and quite distant from the shore [needs avg temp -100-0C; junk density x0; geyser count x0; blocks ponds; biome-locked: SeaIce,IceSheet,Tundra,ColdBog,BorealForest,BiomeGRimonade...; needs no river; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_DistressedWildlife",
+   "label": "distressed wildlife",
+   "note": "All animals in this region have increased wildness"
+  },
+  {
+   "defName": "VEE_DomesticatedEscapees",
+   "label": "domesticated escapees",
+   "note": "Farm animals like chickens, pigs, and cows will appear in the wild in small herds, remnants of lost settlements or farms"
+  },
+  {
+   "defName": "VEE_DriftwoodShore",
+   "label": "driftwood",
+   "note": "A stretch of coastline littered with bleached logs and broken timber, deposited by tides and storms from distant shores [spawns VEE_DriftwoodShore; chunk density x0.25; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; needs no river; requires coastline (1-6 coast sides)]"
+  },
+  {
+   "defName": "VEE_DryRiver",
+   "label": "dry river",
+   "note": "A section of this river that has dried up, presumably due to absence of precipitation up-river [blocks ponds; biome-locked: Desert,ExtremeDesert,Tundra,AridShrubland,Grasslands,TemperateForest...; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_DustBowl",
+   "label": "dust bowl",
+   "note": "A sun-scorched wasteland choked with dust and dry winds. Vegetation is nearly gone, and relentless sandstorms make survival harsh and unforgiving [needs no river; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_DustStorms",
+   "label": "dust storms",
+   "note": "Dust storms that impede vision are much stronger in this area [biome-locked: AridShrubland,Desert,ExtremeDesert,Grasslands,LavaField,Scarlands...]"
+  },
+  {
+   "defName": "VEE_EasyToTraverse",
+   "label": "easy to traverse",
+   "note": "Certain geographical features in this region make it easier to traverse"
+  },
+  {
+   "defName": "VEE_FeralKinship",
+   "label": "feral kinship",
+   "note": "All animals in this region have a decreased wildness"
+  },
+  {
+   "defName": "VEE_FertileRains",
+   "label": "fertile rains",
+   "note": "This region is subject to unusually nutrient-rich rainfall, boosting plant growth for its duration [needs avg temp 0-80C]"
+  },
+  {
+   "defName": "VEE_Fertility_Reduced",
+   "label": "decreased soil fertility",
+   "note": "This area contains no fertile soils"
+  },
+  {
+   "defName": "VEE_FirewoodTrees",
+   "label": "firewood trees",
+   "note": "This region is rich in firewood trees, adapted to fertile volcanic terrain [biome-locked: LavaField,BiomeGRimphire]"
+  },
+  {
+   "defName": "VEE_FleshPits",
+   "label": "flesh pits",
+   "note": "A scattered network of anomalous cave entrances, leading to a subterranean realm of pulsating flesh and grotesque abominations [spawns VEE_FleshPits_Large/VEE_FleshPits_Small]"
+  },
+  {
+   "defName": "VEE_FloodPlains",
+   "label": "flood plains",
+   "note": "A low-lying stretch of land shaped by seasonal flooding, where nutrient-rich waters periodically spill over the banks and retreat, leaving fertile soil in their wake [max hilliness Flat]"
+  },
+  {
+   "defName": "VEE_FrequentAuroras",
+   "label": "frequent auroras",
+   "note": "Auroras happen much more often in this region"
+  },
+  {
+   "defName": "VEE_GeomagneticStorm",
+   "label": "geomagnetic storm",
+   "note": "An intense geomagnetic event blankets the region, completely disabling all electrical devices"
+  },
+  {
+   "defName": "VEE_GlacialMoraine",
+   "label": "glacial moraine",
+   "note": "Long ridges of rock and sediment left behind by retreating ice. The ground is uneven and unstable, full of ponds of melted glacial water [terrain patches: VEE_PebbleDunes; biome-locked: IceSheet,GlacialPlain,BiomeGRimonade,BiomeArcticOasis; max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_GravelBeach",
+   "label": "gravel beach",
+   "note": "A harsh shoreline of loose gravel and rounded stones, where waves grind rock against rock [requires coastline (1-6 coast sides)]"
+  },
+  {
+   "defName": "VEE_HardToTraverse",
+   "label": "hard to traverse",
+   "note": "Certain geographical features in this region make it harder to traverse"
+  },
+  {
+   "defName": "VEE_IceAndFire",
+   "label": "ice and fire",
+   "note": "A floating mass of ice, with an active lava lake inside. It doesn't get more metal than this [needs avg temp -100-0C; junk density x0; geyser count x0; blocks ponds; biome-locked: SeaIce,IceSheet,Tundra,ColdBog,BorealForest,BiomeGRimonade...; needs no river; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_IceSpires",
+   "label": "ice spires",
+   "note": "Tall, narrow columns of ice rise from the frozen ground, shaped by wind and extreme cold [biome-locked: SeaIce,IceSheet,BiomeGRimonade,BiomeArcticOasis; max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_IncreasedDiseases",
+   "label": "increased diseases",
+   "note": "Diseases are 25% more common in this region"
+  },
+  {
+   "defName": "VEE_IncreasedInfestations",
+   "label": "increased infestations",
+   "note": "Insectoid infestations are more common in this region"
+  },
+  {
+   "defName": "VEE_JadeChunks",
+   "label": "jadeite chunks",
+   "note": "This area contains small deposits of jadeite [spawns VEE_JadeChunks; chunk density x0.25; biome-locked: TemperateForest,BiomeGrindland,BiomeToxlands,BiomeGRimphire]"
+  },
+  {
+   "defName": "VEE_JadeiteMountains",
+   "label": "jadeite mountains",
+   "note": "The stone found in this region is a jade rich mineral"
+  },
+  {
+   "defName": "VEE_JaggedRocks",
+   "label": "jagged rocks",
+   "note": "Thin rock ridges criss cross this region [max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_LargeRiverBanks",
+   "label": "large river banks",
+   "note": "The river present in this region has larger banks"
+  },
+  {
+   "defName": "VEE_LargerRegion",
+   "label": "larger region",
+   "note": "This region is 30% larger than usual"
+  },
+  {
+   "defName": "VEE_LaurelForest",
+   "label": "laurel forest",
+   "note": "A dense evergreen forest thriving in mild temperatures and constant humidity. Broad-leaved trees trap moisture from passing clouds, keeping the ground shaded and damp year-round [biome-locked: TropicalRainforest,BiomeCypreJungle,BiomeGRimethyst,BiomeGRuby,BiomeGRimberlands,BiomeGRimerald]"
+  },
+  {
+   "defName": "VEE_LessSolarPower",
+   "label": "reduced solar exposure",
+   "note": "Insolation is weaker in this area, reducing the output of solar power by 25%"
+  },
+  {
+   "defName": "VEE_LittoralDunes",
+   "label": "littoral dunes",
+   "note": "A band of fertile, wind-shaped dunes running along the shoreline, built from sand pulled inland from the sea [biome-locked: ExtremeDesert,Desert,BiomeAreeb,BiomeGRimberlands,BiomeGRimond,BiomeGRimworld...; requires coastline (1-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_LoneIsland",
+   "label": "detached coastal island",
+   "note": "A large island separated from the shore [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_LoneIslandWithLake",
+   "label": "central lake island",
+   "note": "A large island separated from the shore with a freshwater lake inside it [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_LoneIslandWithMountain",
+   "label": "resurgent island",
+   "note": "A large island separated from the shore with a tall peak in its center [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; max hilliness Flat; requires coastline (3-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_LushLavaFields",
+   "label": "lush lava fields",
+   "note": "Ancient lava flows broken by cracks and cooled rock now support dense vegetation. Heat lingers beneath the surface, creating a strange landscape where living growth spreads across black stone [terrain patches: LavaDeep,VEE_VolcanicSoilRich,VolcanicRock; biome-locked: LavaField,BiomeGRimworld,BiomeGrindland]"
+  },
+  {
+   "defName": "VEE_MangroveTerrain",
+   "label": "coastal wetland",
+   "note": "Large interconnected backish water pools dominate the area [blocks ponds; biome-locked: BorealForest,ColdBog,Glowforest,TemperateForest,TemperateSwamp,TropicalRainforest...; max hilliness Flat; requires coastline (1-6 coast sides)]"
+  },
+  {
+   "defName": "VEE_MangroveTrees",
+   "label": "mangrove trees",
+   "note": "This area is filled with large amounts of mangrove trees whose roots can thrive in brackish water [requires coastline (1-6 coast sides)]"
+  },
+  {
+   "defName": "VEE_MarineSanctuary",
+   "label": "marine sanctuary",
+   "note": "Coastal animals appear in greater numbers here [requires coastline (1-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_MechanoidShipChunks",
+   "label": "mechanoid chunks",
+   "note": "Chunks of a crashed mechanoid ship are found around this region [spawns VEE_MechanoidShipChunks]"
+  },
+  {
+   "defName": "VEE_Megafauna",
+   "label": "abundant megafauna",
+   "note": "This region has an abundance of megafauna, brought back to life by genetic engineering"
+  },
+  {
+   "defName": "VEE_MeteorCrater",
+   "label": "meteor crater",
+   "note": "A vast impact site with jagged rocky edges and a debris-littered basin [max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_Microfauna",
+   "label": "microfauna",
+   "note": "All fauna in this area is much smaller than usual"
+  },
+  {
+   "defName": "VEE_MigratoryHerds",
+   "label": "migratory herds",
+   "note": "Groups of herd animals will periodically cross this region"
+  },
+  {
+   "defName": "VEE_MineableComponentSpacer",
+   "label": "advanced component deposits",
+   "note": "This area has deposits of advanced ancient machinery, which can be mined for advanced components"
+  },
+  {
+   "defName": "VEE_MineralDevoid",
+   "label": "mineral devoid",
+   "note": "Vanilla Landmarks Expanded: opposite of Mineral Rich \u2014 strips out ore veins, leaving little worth mining"
+  },
+  {
+   "defName": "VEE_Moor",
+   "label": "moor",
+   "note": "An open, windswept landscape of low shrubs and grasses growing over waterlogged soil. The ground is peaty and uneven, shaped by constant exposure and poor drainage [terrain patches: Mud,WaterShallow; biome-locked: ColdBog,BiomeGRimethyst,BiomeGRuby]"
+  },
+  {
+   "defName": "VEE_MoorFlora",
+   "label": "moor plants",
+   "note": "This region is rich in low, hardy shrubs and grasses mingled with twisted, gnarled pines, all adapted to acidic, waterlogged soil and constant wind [biome-locked: ColdBog,BiomeGRimethyst,BiomeGRuby,BiomeAreeb,BiomeCypreJungle,BiomeMist]"
+  },
+  {
+   "defName": "VEE_MoreSolarPower",
+   "label": "increased solar exposure",
+   "note": "Insolation is stronger in this area, increasing the output of solar power by 25%"
+  },
+  {
+   "defName": "VEE_Mossy",
+   "label": "mossy",
+   "note": "This area contains large patches of mossy soil [terrain patches: VEE_MossySoil; biome-locked: TropicalRainforest,BiomeCypreJungle,BiomeGRimethyst,BiomeGRuby,BiomeToxlands,BiomeGRimerald]"
+  },
+  {
+   "defName": "VEE_Mycelium",
+   "label": "mycelium",
+   "note": "A variety of light-resistant mushrooms similar to the ones growing in glowforests are common in this area"
+  },
+  {
+   "defName": "VEE_NaturalAerie",
+   "label": "natural aerie",
+   "note": "Flying animals appear in greater numbers here"
+  },
+  {
+   "defName": "VEE_NoDiseases",
+   "label": "no diseases",
+   "note": "Diseases very rarely strike in this region, making them almost a nonexistent threat"
+  },
+  {
+   "defName": "VEE_NoTrees",
+   "label": "lack of trees",
+   "note": "Trees of any kind do not grow here naturally"
+  },
+  {
+   "defName": "VEE_NoWind",
+   "label": "no wind",
+   "note": "Winds are virtually absent in this region"
+  },
+  {
+   "defName": "VEE_NobleSteeds",
+   "label": "noble steeds",
+   "note": "Horses and Donkeys will appear in this area"
+  },
+  {
+   "defName": "VEE_ObsidianChunks",
+   "label": "obsidian chunks",
+   "note": "This area contains small chunks of obsidian [spawns VEE_ObsidianChunks; chunk density x0.25]"
+  },
+  {
+   "defName": "VEE_PebbleDunes",
+   "label": "pebble dunes",
+   "note": "Low dunes of rounded pebbles shaped by constant wind and shifting ground [biome-locked: ExtremeDesert,Desert,AridShrubland,Grasslands,BiomeAreeb,BiomeGRimberlands...; max hilliness Flat]"
+  },
+  {
+   "defName": "VEE_PermafrostBasin",
+   "label": "permafrost basin",
+   "note": "A shallow basin where the ground remains permanently frozen beneath a thin surface thaw [needs avg temp -100-5C; biome-locked: Tundra,BiomeGRimonade,BiomeArcticOasis; max hilliness Flat]"
+  },
+  {
+   "defName": "VEE_PlantLife_Decimated",
+   "label": "decimated",
+   "note": "Plant life is extremely scarce here [plant density x0.15]"
+  },
+  {
+   "defName": "VEE_PlantLife_Overgrown",
+   "label": "overgrown",
+   "note": "Plant life is extremely more abundant here [plant density x4]"
+  },
+  {
+   "defName": "VEE_PlentifulGrass",
+   "label": "plentiful grass",
+   "note": "Grass is very common in this region [biome-locked: TemperateForest,BiomeArcticOasis,BiomeGRimerald]"
+  },
+  {
+   "defName": "VEE_PoisonousFlora",
+   "label": "poisonous flora",
+   "note": "Harvesting any flora in this area will cause toxic buildup. Crops planted by colonists won't be affected"
+  },
+  {
+   "defName": "VEE_QuicksandDunes",
+   "label": "quicksand dunes",
+   "note": "A barren expanse of sand and shallow quicksand that impedes movement. This area is extremely inhospitable [chunk density x0.15; junk density x0; geyser count x0; plant density x0; blocks other landmarks; flattens elevation; biome-locked: ExtremeDesert,BiomeGRimworld; max hilliness Flat]"
+  },
+  {
+   "defName": "VEE_QuicksandPits",
+   "label": "quicksand pits",
+   "note": "This region contains pools of shallow quicksand that impede movement [blocks ponds; biome-locked: Desert,AridShrubland,ExtremeDesert,BiomeAreeb,BiomeGRimberlands,BiomeGRimond...; needs no river; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_RagingWind",
+   "label": "raging winds",
+   "note": "Winds are extraordinarily stronger in this area [biome-locked: AridShrubland,Desert,ExtremeDesert,IceSheet,SeaIce,Tundra...]"
+  },
+  {
+   "defName": "VEE_RedDesert",
+   "label": "red desert",
+   "note": "A vast desert of iron-rich sand, stained red by the slow grinding of ancient stone [biome-locked: Desert,ExtremeDesert,BiomeGRimberlands,BiomeGRimworld,BiomeGRuby]"
+  },
+  {
+   "defName": "VEE_RedDesertPlants",
+   "label": "red desert cacti",
+   "note": "This region contains some cacti adapted to the red sands [biome-locked: Desert,ExtremeDesert,BiomeGRimberlands,BiomeGRimworld,BiomeAreeb,BiomeGRimond...]"
+  },
+  {
+   "defName": "VEE_ReducedDiseases",
+   "label": "reduced diseases",
+   "note": "Diseases are 25% less common in this region"
+  },
+  {
+   "defName": "VEE_ReducedPredators",
+   "label": "reduced predators",
+   "note": "Animals considered predators appear in lesser numbers here"
+  },
+  {
+   "defName": "VEE_ReducedPrey",
+   "label": "reduced prey",
+   "note": "Animals considered prey appear in lesser numbers here"
+  },
+  {
+   "defName": "VEE_RelictDelta",
+   "label": "relict delta",
+   "note": "A fan of dried channels and silt deposits, shaped by a river that once split and flowed here long ago [biome-locked: Desert,ExtremeDesert,AridShrubland,Grasslands,TemperateForest,BiomeAreeb...; max hilliness Flat; requires coastline (1-6 coast sides)]"
+  },
+  {
+   "defName": "VEE_ResurgentCaldera",
+   "label": "resurgent caldera",
+   "note": "Ancient volcanic collapse zone with steep crater walls, a central rocky dome, and echoes of past eruptions [max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_RisingWaters",
+   "label": "rising waters",
+   "note": "An extremely flat coastal plain where the tides push far inland. Large stretches of land are regularly submerged [max hilliness Flat; requires coastline (1-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_RockRidge",
+   "label": "rock ridge",
+   "note": "A rock ridge separating this region in two [max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_RodentPlagues",
+   "label": "rodent plagues",
+   "note": "This area is infested with rats"
+  },
+  {
+   "defName": "VEE_RotstinkVents",
+   "label": "rotstink geysers",
+   "note": "Foul geysers that intermittently belch clouds of corpse-born miasma, choking the air with the stench of decay"
+  },
+  {
+   "defName": "VEE_RottenStench",
+   "label": "rotten stench",
+   "note": "Acrid vapors seep from the ground, blanketing the area in a foul smell that burns the lungs and sours the mood"
+  },
+  {
+   "defName": "VEE_SaltPlains",
+   "label": "salt plains",
+   "note": "The dried surface of an inland ocean. Sterile and hard to traverse [biome-locked: Desert,ExtremeDesert,Tundra,AridShrubland,Grasslands,BiomeAreeb...; needs no river; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_Sandstorms",
+   "label": "sandstorms",
+   "note": "Sandstorms are much more frequent in this area [biome-locked: AridShrubland,Desert,ExtremeDesert,Grasslands,TemperateForest,TemperateSwamp...]"
+  },
+  {
+   "defName": "VEE_SerpentineCanyons",
+   "label": "serpentine canyons",
+   "note": "Geological movement has caused several deep fissures in this mountain [flattens elevation; min hilliness Mountainous]"
+  },
+  {
+   "defName": "VEE_Sinkholes",
+   "label": "sinkholes",
+   "note": "This region contains several collapses in the ground forming deep, unstable pits, often exposing bare rock beneath the surface [spawns VEE_Sinkholes]"
+  },
+  {
+   "defName": "VEE_SkygazingSpot",
+   "label": "skygazing spot",
+   "note": "A serene atmospheric phenomenon encourages colonists to spend more time gazing at the sky. Increases the chance of skygazing and boosts the joy it provides"
+  },
+  {
+   "defName": "VEE_SmallerRegion",
+   "label": "smaller region",
+   "note": "This region is 30% smaller than usual"
+  },
+  {
+   "defName": "VEE_SmokeVents",
+   "label": "smoke geysers",
+   "note": "Smoldering fissures that intermittently exhale thick, acrid smoke, reducing visibility and choking the lungs"
+  },
+  {
+   "defName": "VEE_StagnantRivulet",
+   "label": "stagnant rivulet",
+   "note": "A slow-moving river where water barely flows, its course clogged with silt and shallow pools [max hilliness Flat]"
+  },
+  {
+   "defName": "VEE_SteamGeysers_Decreased",
+   "label": "no geothermal activity",
+   "note": "Steam geysers are absent from this area [geyser count x0]"
+  },
+  {
+   "defName": "VEE_StoneForest",
+   "label": "stone forest",
+   "note": "A strange expanse of towering stone spires and jagged rock formations, rising like gigantic, petrified trees from the ground [max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_StrongerTides",
+   "label": "stronger tides",
+   "note": "Tides in this region are particularly strong, increasing output of tidal generators by 40% [requires coastline (1-6 coast sides)]"
+  },
+  {
+   "defName": "VEE_SulfuricLake",
+   "label": "sulfuric lake",
+   "note": "A stagnant volcanic lake with a strong, foul sulfuric odor. While the water is very mildly toxic, the surrounding soil is rich in nutrients, supporting hardy, sulfur-tolerant plant life [spawns VEE_SulfurVents; needs no river]"
+  },
+  {
+   "defName": "VEE_SulfuricRiver",
+   "label": "sulfuric river",
+   "note": "A foul-smelling river carrying acidic, sulfur-laden waters, its banks scorched and inhospitable to most forms of life [spawns VEE_SulfurVents; max hilliness Flat]"
+  },
+  {
+   "defName": "VEE_TornadoAlley",
+   "label": "tornado alley",
+   "note": "Frequent and intense tornadoes sweep through this region, threatening the colony"
+  },
+  {
+   "defName": "VEE_ToxicCrater",
+   "label": "toxic crater",
+   "note": "A blasted ring of stone surrounds a stagnant, foul-smelling pool. The water glows faintly [blocks ponds; needs no river; max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_ToxicVents",
+   "label": "toxic geysers",
+   "note": "Volatile fissures that periodically spew noxious green gas, poisoning the air and sickening anything that breathes it"
+  },
+  {
+   "defName": "VEE_TropicalBeach",
+   "label": "tropical beach",
+   "note": "A warm coastal region shaped by steady tides and seasonal storms. Sandy beaches and shallow waters support dense vegetation along the shoreline [blocks ponds; biome-locked: TropicalRainforest,BiomeAreeb,BiomeCypreJungle,BiomeGRimberlands,BiomeGRimond,BiomeGRimphire...; requires coastline (1-5 coast sides)]"
+  },
+  {
+   "defName": "VEE_TropicalBeachFlora",
+   "label": "tropical beach flora",
+   "note": "This region is rich in palm trees, including cocoa trees, screw pines and date palms [biome-locked: TropicalRainforest,BiomeAreeb,BiomeCypreJungle,BiomeGRimberlands,BiomeGRimond,BiomeGRimphire...]"
+  },
+  {
+   "defName": "VEE_UndergroundGasDeposits",
+   "label": "underground gas deposits",
+   "note": "This region is rich in deep Helixien gas deposits"
+  },
+  {
+   "defName": "VEE_VenomousEcosystem",
+   "label": "venomous ecosystem",
+   "note": "Venomous animals appear in greater numbers here"
+  },
+  {
+   "defName": "VEE_VolcanicRichSoil",
+   "label": "rich volcanic soil",
+   "note": "This area has patches of volcanic soil that have higher than average fertility [terrain patches: VEE_VolcanicSoilRich]"
+  },
+  {
+   "defName": "VEE_VolcanicSandDesert",
+   "label": "volcanic sand desert",
+   "note": "A barren desert of black volcanic sand, born from long-dead eruptions [biome-locked: Desert,ExtremeDesert,BiomeGRimberlands,BiomeGRimworld,BiomeGRimphire,BiomeGRimond]"
+  },
+  {
+   "defName": "VEE_VolcanicSandDesertFlora",
+   "label": "volcanic sand flora",
+   "note": "This region contains some cacti adapted to the volcanic sands, and an absence of grass [biome-locked: Desert,ExtremeDesert,BiomeGRimberlands,BiomeGRimworld,BiomeGRimphire,BiomeGRimond]"
+  },
+  {
+   "defName": "VEE_Volcano",
+   "label": "volcano",
+   "note": "Charred stone ridges form the rim of an ancient caldera, its heart glowing with molten fury [blocks ponds; needs no river; max hilliness Flat; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "VEE_WanderingCompanions",
+   "label": "wandering companions",
+   "note": "Animals are more used to humans in this region, making it easier for colonists to bond with them"
+  },
+  {
+   "defName": "VEE_WastelandFauna",
+   "label": "wasteland fauna",
+   "note": "Wasteland animals appear in greater numbers here"
+  },
+  {
+   "defName": "VEE_WildRice",
+   "label": "wild rice",
+   "note": "This area can grow a large number of wild {0}"
+  },
+  {
+   "defName": "VEE_WildSucculents",
+   "label": "wild succulents",
+   "note": "This area can grow a large number of wild {0}"
+  },
+  {
+   "defName": "VEE_WildWheat",
+   "label": "wild wheat",
+   "note": "This area can grow a large number of wild {0}"
+  },
+  {
+   "defName": "Valley",
+   "label": "valley",
+   "note": "A steep valley carved through a mountain [flattens elevation; min hilliness Mountainous; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "WetClimate",
+   "label": "wet climate",
+   "note": "Precipitation is much more common here [biome-locked: BorealForest,ColdBog,IceSheet,SeaIce,TemperateForest,TemperateSwamp...]"
+  },
+  {
+   "defName": "Wetland",
+   "label": "wetland",
+   "note": "Large interconnected waterways dominate the area [blocks ponds; biome-locked: BorealForest,ColdBog,Glowforest,TemperateForest,TemperateSwamp,TropicalRainforest...; landlocked (0 coast sides required)]"
+  },
+  {
+   "defName": "WildAlderaanPlants",
+   "label": "wild plants",
+   "note": "This area can grow a large number of {0}s [biome-locked: TemperateForest,TemperateSwamp,ColdBog,BorealForest,TropicalSwamp,TropicalRainforest]"
+  },
+  {
+   "defName": "WildDantooinePlants",
+   "label": "wild plants",
+   "note": "When enough light is available, this area can grow a large number of {0}s [biome-locked: AridShrubland,Grasslands,Tundra]"
+  },
+  {
+   "defName": "WildFelucianPlants",
+   "label": "wild plants",
+   "note": "This area can grow a large number of {0}s [biome-locked: TropicalRainforest,TropicalSwamp]"
+  },
+  {
+   "defName": "WildGalacticPlants",
+   "label": "wild plants",
+   "note": "This area can grow a large number of {0}s [biome-locked: AridShrubland,BorealForest,ColdBog,GlacialPlain,Grasslands,LavaField...]"
+  },
+  {
+   "defName": "WildNabooPlants",
+   "label": "wild plants",
+   "note": "When enough spores have settled, this area can grow a large number of {0}s [biome-locked: ColdBog,TemperateSwamp,TropicalSwamp]"
+  },
+  {
+   "defName": "WildPlants",
+   "label": "wild plants",
+   "note": "When warm enough, this area can grow a large number of {0} [biome-locked: AridShrubland,BorealForest,ColdBog,GlacialPlain,Grasslands,LavaField...]"
+  },
+  {
+   "defName": "WildRylothPlants",
+   "label": "wild plants",
+   "note": "When enough spores have settled, this area can grow a large number of {0}s [biome-locked: Glowforest]"
+  },
+  {
+   "defName": "WildTattooinePlants",
+   "label": "wild plants",
+   "note": "When enough moisture condenses, this area can grow a large number of {0}s [biome-locked: AridShrubland,Desert,ExtremeDesert]"
+  },
+  {
+   "defName": "WildTropicalPlants",
+   "label": "wild plants",
+   "note": "This area can grow a large number of {0}s [biome-locked: TropicalRainforest,TropicalSwamp,AB_MiasmicMangrove,AB_MycoticJungle,AB_FeraliskInfestedJungle,BiomeArcticOasis...]"
+  },
+  {
+   "defName": "WindyMutator",
+   "label": "windy",
+   "note": "Winds are much stronger in this area [biome-locked: AridShrubland,Desert,ExtremeDesert,IceSheet,SeaIce,Tundra...]"
+  },
+  {
+   "defName": "ZMD_NoMutator",
+   "label": "none",
+   "note": "no added feature in this category"
+  },
+  {
+   "defName": "sw_DeadSarlaccCave",
+   "label": "a dead sarlacc",
+   "note": "This area hosts a dead sarlacc creature. These sessile creatures are known to have millenia long lifespans, but are ultimately mortal. Whether from disease, starvation, burrowing insectoids or even old age they eventually die and leave a cavern where the bulk of their corpse has rotted away [spawns sw_DeadSarlaccPit; max hilliness Mountainous]"
+  },
+  {
+   "defName": "sw_SarlaccLair",
+   "label": "sarlacc pit",
+   "note": "This area hosts a juvenile sarlacc creature. These sessile creatures are known to have millenia long lifespans, the circular maws on the surface are supported by a massive undergorund body [spawns sw_SarlaccPit; max hilliness Mountainous]"
+  }
+ ],
+ "landmarks": [
+  {
+   "defName": "AB_HealingSprings",
+   "label": "healing springs",
+   "note": "This region contains natural springs imbued with curative properties [blocks ponds; biome-locked: BorealForest,LavaField,TemperateForest,Tundra,GlacialPlain,Desert...; needs no river; min hilliness Mountainous; landlocked (0 coast sides required)] [commonality=0.25]"
+  },
+  {
+   "defName": "AB_MagmaticQuagmire",
+   "label": "magmatic quagmire",
+   "note": "A seething landscape of molten rock and blistering heat\u2014where the ground bubbles, cracks, and burns beneath your feet [blocks ponds; biome-locked: AB_PyroclasticConflagration,BiomeGRimphire; max hilliness Flat; landlocked (0 coast sides required)] (also always brings AB_MagmaVents+AB_GeothermalHotspots) [commonality=0.15]"
+  },
+  {
+   "defName": "AB_MutagenicSprings",
+   "label": "mutagenic ocular springs",
+   "note": "This region contains weird ocular springs that mutate the body of both colonists and animals [blocks ponds; biome-locked: AB_OcularForest,BiomeToxlands; needs no river; landlocked (0 coast sides required)] [commonality=0.25]"
+  },
+  {
+   "defName": "AB_PropaneLakes",
+   "label": "propane lakes",
+   "note": "Lakes of liquid hydrocarbons that seem to defy the laws of physics [biome-locked: GlacialPlain,SeaIce,IceSheet,Tundra,BiomeGRimonade,BiomeArcticOasis; requires coastline (0-1 coast sides)] often also brings IceCaves [category=lake; commonality=1]"
+  },
+  {
+   "defName": "AB_QuicksandPits",
+   "label": "quicksand pits",
+   "note": "This region contains pools of shallow quicksand that impede movement [blocks ponds; biome-locked: Desert,AridShrubland,ExtremeDesert,AB_GallatrossGraveyard,BiomeGRimworld,BiomeGRimberlands...; needs no river; landlocked (0 coast sides required)] [commonality=0.25]"
+  },
+  {
+   "defName": "AB_TarLakes",
+   "label": "tar lakes",
+   "note": "A shallow pool of a dense tar-like substance. Impassable, and can't be bridged over [landlocked (0 coast sides required)] [category=lake; commonality=1]"
+  },
+  {
+   "defName": "AbandonedColonyOutlander",
+   "label": "abandoned colony",
+   "note": "A recently abandoned colony [EXCLUDED from AB_MechanoidIntrusion] [category=structure; commonality=0.25]"
+  },
+  {
+   "defName": "AbandonedColonyTribal",
+   "label": "abandoned colony",
+   "note": "A recently abandoned colony [EXCLUDED from AB_MechanoidIntrusion] [category=structure; commonality=0.25]"
+  },
+  {
+   "defName": "AncientChemfuelRefinery",
+   "label": "ancient chemfuel refinery",
+   "note": "An abandoned industrial installation containing large quantities of chemfuel. It may also contain dangerous security systems [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...] [category=structure; commonality=0.2]"
+  },
+  {
+   "defName": "AncientGarrison",
+   "label": "ancient garrison",
+   "note": "A long-abandoned military structure. It may still contain valuable items, as well as active security systems. Use caution while exploring these ruins [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...] [category=structure; commonality=0.2]"
+  },
+  {
+   "defName": "AncientHeatVent",
+   "label": "ancient vent",
+   "note": "Ancient ducts will regularly vent heat from an underground megastructure, dramatically raising the temperature of the surrounding area [biome-locked: AridShrubland,Desert,ExtremeDesert,Savanna,AB_RockyCrags,AB_GallatrossGraveyard...] [commonality=0.15]"
+  },
+  {
+   "defName": "AncientInfestedSettlement",
+   "label": "infested settlement",
+   "note": "A once-prosperous settlement that was destroyed by an insect infestation. It may still contain valuable resources [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...] [category=structure; commonality=0.2]"
+  },
+  {
+   "defName": "AncientLaunchSite",
+   "label": "ancient launch site",
+   "note": "An abandoned collection of launch pads used to deliver supplies to orbital platforms. It contains working transport pods [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...; EXCLUDED from AB_MechanoidIntrusion; needs no river] [category=structure; commonality=0.2]"
+  },
+  {
+   "defName": "AncientQuarry",
+   "label": "ancient quarry",
+   "note": "This area was once mined for its natural resources, and the remains of the ancient quarry are still here [spawns AncientMiningCharge/AncientExplosivesCrate/AncientExcavator/AncientDrillPlatform/AncientTuneller; min hilliness Mountainous] (also always brings Cavern+MineralRich) [category=mountain; commonality=0.25]"
+  },
+  {
+   "defName": "AncientSmokeVent",
+   "label": "ancient vent",
+   "note": "This area has a number of massive exhaust vents. An ancient mechanism buried deep beneath the earth will occasionally vent large amounts of smoke, blocking out the sun for days at a time [biome-locked: Scarlands,BorealForest,TemperateForest,TropicalRainforest,AridShrubland,Desert...] [commonality=0.15]"
+  },
+  {
+   "defName": "AncientToxVent",
+   "label": "ancient vent",
+   "note": "Massive toxic vents will regularly spew toxic fallout into the air. The vents connect to an ancient substructure buried deep beneath the earth [biome-locked: Scarlands,BorealForest,TemperateForest,TropicalRainforest,AridShrubland,Desert...] [commonality=0.15]"
+  },
+  {
+   "defName": "AncientWarehouse",
+   "label": "ancient warehouse",
+   "note": "An abandoned warehouse. It still contains valuables. It may also contain dangerous security systems [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...] [category=structure; commonality=0.2]"
+  },
+  {
+   "defName": "Archipelago",
+   "label": "archipelago",
+   "note": "A network of several small islands dotting the coast [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; needs no river; requires coastline (2-5 coast sides)] [category=coastal; commonality=0.75]"
+  },
+  {
+   "defName": "Basin",
+   "label": "basin",
+   "note": "A natural depression in a mountain range, in which groundwater feeds a small lake [flattens elevation; biome-locked: BorealForest,ColdBog,GlacialPlain,Glowforest,Grasslands,LavaField...; min hilliness Mountainous] [category=mountain; commonality=0.5]"
+  },
+  {
+   "defName": "Bay",
+   "label": "bay",
+   "note": "A large indentation in the coastline that provides shelter from strong coastal winds [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (1-5 coast sides)] [category=coastal; commonality=0.75]"
+  },
+  {
+   "defName": "Cavern",
+   "label": "cavern",
+   "note": "A network of caves formed by various geological processes [flattens elevation; min hilliness Mountainous] [category=mountain; commonality=0.5]"
+  },
+  {
+   "defName": "Chasm",
+   "label": "chasm",
+   "note": "Geological movement has caused deep fissures in this mountain [flattens elevation; min hilliness Mountainous] [category=mountain; commonality=0.5]"
+  },
+  {
+   "defName": "Cliffs",
+   "label": "cliffs",
+   "note": "Steep cliffs surround three sides of this area [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...; min hilliness Mountainous] [category=mountain; commonality=0.5]"
+  },
+  {
+   "defName": "CoastalAtoll",
+   "label": "coastal atoll",
+   "note": "An island surrounding a large lagoon. There's very little land to build on here [blocks ponds; biome-locked: AridShrubland,Desert,Grasslands,TemperateForest,TropicalRainforest,BiomeArcticOasis...; needs no river; max hilliness SmallHills; requires coastline (3-5 coast sides)] [category=coastal; commonality=0.5]"
+  },
+  {
+   "defName": "CoastalIsland",
+   "label": "coastal island",
+   "note": "A large island near the shore [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; needs no river; requires coastline (3-5 coast sides)] [category=coastal; commonality=0.75]"
+  },
+  {
+   "defName": "Cove",
+   "label": "bay",
+   "note": "A large indentation in the coastline that provides shelter from strong coastal winds [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (1-5 coast sides)] [category=coastal; commonality=0.75]"
+  },
+  {
+   "defName": "Crevasse",
+   "label": "crevasse",
+   "note": "A massive rift created by glacial movement [biome-locked: GlacialPlain,ZBiome_AlpineMeadow,ZBiome_GlacialShield; max hilliness Flat; landlocked (0 coast sides required)] often also brings IceCaves [commonality=0.05]"
+  },
+  {
+   "defName": "DA_SnaptoadSpawningPools",
+   "label": "snaptoad spawning pools",
+   "note": "Large interconnected waterways dominate the area [blocks ponds; biome-locked: BorealForest,ColdBog,Glowforest,TemperateForest,TemperateSwamp,TropicalRainforest...; landlocked (0 coast sides required)] (also always brings DA_SnaptoadBreedingGrounds) often also brings Fish_Increased [commonality=0.55]"
+  },
+  {
+   "defName": "DryLake",
+   "label": "dry lake",
+   "note": "The remains of a former lake [biome-locked: Desert,ExtremeDesert,Tundra,AridShrubland,Grasslands,Savanna...; needs no river; landlocked (0 coast sides required)] [commonality=0.2]"
+  },
+  {
+   "defName": "Dunes",
+   "label": "dunes",
+   "note": "A barren expanse of sand. This area is extremely inhospitable [chunk density x0.15; junk density x0; geyser count x0; plant density x0; blocks other landmarks; flattens elevation; biome-locked: ExtremeDesert,Savanna,BiomeAreeb,BiomeGRimberlands,BiomeGRimond,BiomeGRimworld; max hilliness Flat] [commonality=0.2]"
+  },
+  {
+   "defName": "Fjord",
+   "label": "fjord",
+   "note": "A long, narrow sea inlet surrounded by steep terrain [biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; needs no river; min hilliness Mountainous; requires coastline (1-5 coast sides)] [category=coastal; commonality=0.5]"
+  },
+  {
+   "defName": "FrozenRuins",
+   "label": "frozen ruins",
+   "note": "The ruins of an ancient settlement, now encased in solid ice. These ruins may contain untold dangers [biome-locked: IceSheet,GlacialPlain,AB_PropaneLakes,ZBiome_GlacialShield] [category=structure; commonality=0.05]"
+  },
+  {
+   "defName": "Harbor",
+   "label": "harbor",
+   "note": "An abandoned coastal settlement [EXCLUDED from AB_MechanoidIntrusion] (also always brings Bay) [category=coastal; commonality=0.2]"
+  },
+  {
+   "defName": "Hollow",
+   "label": "hollow",
+   "note": "A small open area surrounded by cliffs [flattens elevation; min hilliness Mountainous] [category=mountain; commonality=0.5]"
+  },
+  {
+   "defName": "HotSprings",
+   "label": "hot springs",
+   "note": "A hot water spring, heated by geothermal activity [blocks ponds; biome-locked: BorealForest,LavaField,TemperateForest,Tundra,GlacialPlain,Wetland...; needs no river; min hilliness Mountainous; landlocked (0 coast sides required)] [commonality=0.25]"
+  },
+  {
+   "defName": "IceDunes",
+   "label": "ice dunes",
+   "note": "Massive rolling hills made from compacted windswept snow [biome-locked: SeaIce,IceSheet,BiomeArcticOasis,BiomeGRimonade; max hilliness Flat] [commonality=0.2]"
+  },
+  {
+   "defName": "Iceberg",
+   "label": "iceberg",
+   "note": "A floating mass of ice, detached from the larger ice sheet [needs avg temp -100-0C; junk density x0; geyser count x0; blocks ponds; biome-locked: SeaIce,IceSheet,Tundra,ColdBog,BorealForest,BiomeArcticOasis...; needs no river; requires coastline (3-5 coast sides)] [category=coastal; commonality=0.15]"
+  },
+  {
+   "defName": "Lake",
+   "label": "lake",
+   "note": "A large body of fresh water [biome-locked: BorealForest,GlacialPlain,Glowforest,TemperateForest,TropicalRainforest,Grasslands...; landlocked (0 coast sides required)] [category=lake; commonality=0.5]"
+  },
+  {
+   "defName": "LakeWithIsland",
+   "label": "lake",
+   "note": "A large body of fresh water encircles one or more islands [biome-locked: BorealForest,GlacialPlain,Glowforest,TemperateForest,TropicalRainforest,Grasslands...; needs no river; landlocked (0 coast sides required)] [category=lake; commonality=0.5]"
+  },
+  {
+   "defName": "LakeWithIslands",
+   "label": "lake",
+   "note": "A large body of fresh water encircles one or more islands [biome-locked: BorealForest,GlacialPlain,Glowforest,TemperateForest,TropicalRainforest,Grasslands...; needs no river; landlocked (0 coast sides required)] [category=lake; commonality=0.5]"
+  },
+  {
+   "defName": "LavaCrater",
+   "label": "lava lake",
+   "note": "A lake of deep lava terrain surrounded by volcanic rock [biome-locked: LavaField,Wasteland,AB_PyroclasticConflagration,BiomeGRimphire,BiomeGRimworld,BiomeToxlands; needs no river; landlocked (0 coast sides required)] [category=lake; commonality=0.1]"
+  },
+  {
+   "defName": "LavaFlow",
+   "label": "lava flow",
+   "note": "The surrounding landscape routinely funnels large amounts of lava into this area, making it extremely inhospitable [blocks ponds; biome-locked: LavaField,AB_PyroclasticConflagration,BiomeGRimphire,BiomeGRimworld,BiomeToxlands; needs no river; max hilliness SmallHills; landlocked (0 coast sides required)] [commonality=0.2]"
+  },
+  {
+   "defName": "LavaLake",
+   "label": "lava lake",
+   "note": "A lake of deep lava terrain surrounded by volcanic rock [biome-locked: LavaField,Wasteland,AB_PyroclasticConflagration,BiomeGRimphire,BiomeGRimworld,BiomeToxlands; needs no river; landlocked (0 coast sides required)] [category=lake; commonality=0.1]"
+  },
+  {
+   "defName": "Oasis",
+   "label": "oasis",
+   "note": "A lush spring featuring abundant plant life and water [needs avg temp 20-60C; biome-locked: Desert,ExtremeDesert,Savanna,AB_GallatrossGraveyard,AB_TarPits,BiomeArcticOasis...; needs no river] [category=lake; commonality=0.25]"
+  },
+  {
+   "defName": "Peninsula",
+   "label": "peninsula",
+   "note": "An outcropping of land surrounded by ocean [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (3-5 coast sides)] [category=coastal; commonality=0.75]"
+  },
+  {
+   "defName": "Plateau",
+   "label": "plateau",
+   "note": "A small rise with sharp cliffs and a flat top [biome-locked: AridShrubland,Grasslands,Glowforest,Desert,Tundra,Savanna...; max hilliness Flat] often also brings Caves [category=mountain; commonality=0.4]"
+  },
+  {
+   "defName": "Pond",
+   "label": "lake",
+   "note": "A small body of fresh water [biome-locked: AridShrubland,BorealForest,GlacialPlain,Glowforest,Grasslands,TemperateForest...; landlocked (0 coast sides required)] [category=lake; commonality=0.5]"
+  },
+  {
+   "defName": "Ruins",
+   "label": "ruins",
+   "note": "The remains of an ancient settlement. These ruins may contain a wide variety of possible threats [EXCLUDED from AB_MechanoidIntrusion] [category=structure; commonality=1]"
+  },
+  {
+   "defName": "TerraformingScar",
+   "label": "terraforming scar",
+   "note": "A misaligned blast from an ancient terraforming device has warped the earth into serpentine spirals. The area has since recovered, though the twisted and deformed hills remain [flattens elevation; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,Glowforest...] [commonality=0.1]"
+  },
+  {
+   "defName": "ToxicLake",
+   "label": "toxic lake",
+   "note": "A body of water that has been poisoned by chemicals leaching out of the ground. The water will cause toxic buildup [biome-locked: Glowforest,Scarlands,Wasteland,BiomeGRimerald,BiomeGRimonade,BiomeGRimworld...; needs no river] [commonality=0.15]"
+  },
+  {
+   "defName": "VEE_AbandonedFarmland",
+   "label": "abandoned farmlands",
+   "note": "This region contains ancient farms that were abandoned long ago due to the presence of droughts [blocks ponds; biome-locked: Grasslands,BiomeGRuquoise,BiomeGRimerald; needs no river; requires coastline (0-2 coast sides)] [commonality=0.25]"
+  },
+  {
+   "defName": "VEE_AlluvialFan",
+   "label": "alluvial fan",
+   "note": "A broad, fan-shaped spread of rich sediment deposited where flowing water from a river slows and disperses across the land [max hilliness Flat; requires coastline (1-6 coast sides)] [category=coastal; commonality=0.6]"
+  },
+  {
+   "defName": "VEE_AnimaCoast",
+   "label": "anima coast",
+   "note": "This area contains soil infused with latent anima energy, subtly influencing plants, animals, and minds [biome-locked: TemperateForest,BiomeGrindland,BiomeGRuquoise; requires coastline (1-6 coast sides)] (also always brings VEE_AnimaFlora+VEE_AnimaFauna+VEE_JadeChunks+VEE_JadeiteMountains) [commonality=0.15]"
+  },
+  {
+   "defName": "VEE_AnimaForest",
+   "label": "anima forest",
+   "note": "This area contains soil infused with latent anima energy, subtly influencing plants, animals, and minds [biome-locked: TemperateForest,BiomeGrindland,BiomeGRuquoise] (also always brings VEE_AnimaFlora+VEE_AnimaFauna+VEE_JadeChunks+VEE_JadeiteMountains) [commonality=0.15]"
+  },
+  {
+   "defName": "VEE_AuburnForest",
+   "label": "auburn forest",
+   "note": "In this forested area many trees remain locked in shades of red and gold, as if autumn never fully passes [biome-locked: TemperateForest,TemperateSwamp,BorealForest,Tundra,BiomeArcticOasis,BiomeGRimerald...] (also always brings VEE_AuburnTree_Poplars+VEE_AuburnTree_Maples+VEE_AuburnTree_Birches) [commonality=0.25]"
+  },
+  {
+   "defName": "VEE_BasaltCape",
+   "label": "basalt cape",
+   "note": "A jutting headland of dark basalt, fractured into sharp columns by ancient lava flows. Rich in volcanic rocks [blocks ponds; requires coastline (3-5 coast sides)] (also always brings VEE_ObsidianChunks) [category=coastal; commonality=0.75]"
+  },
+  {
+   "defName": "VEE_BloomingFields",
+   "label": "blooming fields",
+   "note": "This area can grow a large number of colorful wild buttercups [biome-locked: TemperateForest,TemperateSwamp,Grasslands,BiomeCypreJungle,BiomeGRimerald,BiomeGRuquoise...] (also always brings VEE_Blooming_ForgetMeNot+VEE_Blooming_Knapweed+VEE_Blooming_Loosestrife) [commonality=0.5]"
+  },
+  {
+   "defName": "VEE_BurnedForest",
+   "label": "burned forest",
+   "note": "A forested area that has been recently affected by a severe wildfire [biome-locked: BorealForest,TemperateForest,TropicalRainforest,BiomeAreeb,BiomeCypreJungle,BiomeGRimberlands...] [commonality=0.5]"
+  },
+  {
+   "defName": "VEE_CactusFields",
+   "label": "cactus fields",
+   "note": "This area can grow a large number of wild barrel cacti [biome-locked: Desert,AridShrubland,BiomeAreeb,BiomeGRimberlands,BiomeGRimond] (also always brings VEE_Cactus_Beavertail+VEE_Cactus_Hedgehog+VEE_Cactus_OrganPipe+VEE_PlantLife_Overgrown) [commonality=0.5]"
+  },
+  {
+   "defName": "VEE_CalmBasin",
+   "label": "calm basin",
+   "note": "A wide, shallow crater filled with fine, undisturbed sand. Shielded from the wind by its sloped rim, the basin remains eerily still [max hilliness Flat; landlocked (0 coast sides required)] (also always brings VEE_NoWind) often also brings MineralRich [category=mountain; commonality=1]"
+  },
+  {
+   "defName": "VEE_Cenotes",
+   "label": "cenotes",
+   "note": "A scattered network of deep, water-filled sinkholes formed by collapsed stone [spawns VEE_Cenotes_Large/VEE_Cenotes_Small] [commonality=0.25]"
+  },
+  {
+   "defName": "VEE_ContaminatedCoast",
+   "label": "contaminated coast",
+   "note": "A stretch of shoreline where irradiated waters lap against the land, poisoning the shallows and disrupting all nearby life [blocks ponds; needs no river; max hilliness Flat; requires coastline (1-6 coast sides)] [commonality=0.3]"
+  },
+  {
+   "defName": "VEE_ContaminatedReservoir",
+   "label": "contaminated reservoir",
+   "note": "A stagnant body of water saturated with lingering radiation, its depths unsafe for drinking or fishing and its shores hostile to life [needs no river] [commonality=0.3]"
+  },
+  {
+   "defName": "VEE_ContaminatedRiver",
+   "label": "contaminated river",
+   "note": "A flowing waterway tainted by lingering radiation, spreading contamination downstream and rendering its waters unsafe for use [max hilliness Flat] [commonality=0.3]"
+  },
+  {
+   "defName": "VEE_CoralReef",
+   "label": "coral reef",
+   "note": "A large atoll separated from the shore with a ring of corals growing around it [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; max hilliness Flat; requires coastline (3-5 coast sides)] [category=coastal; commonality=1]"
+  },
+  {
+   "defName": "VEE_CradleOfLife",
+   "label": "cradle of life",
+   "note": "Plant life is extremely more abundant here [plant density x4] often also brings VEE_AbundantPrey+VEE_ColossalFauna [commonality=0.5]"
+  },
+  {
+   "defName": "VEE_CraterLake",
+   "label": "crater lake",
+   "note": "A vast ring of rocky walls encircles a serene, deep-blue lake [max hilliness Flat; landlocked (0 coast sides required)] often also brings MineralRich [category=mountain; commonality=1]"
+  },
+  {
+   "defName": "VEE_DetachedIceberg",
+   "label": "detached iceberg",
+   "note": "A floating mass of ice, detached from the larger ice sheet and quite distant from the shore [needs avg temp -100-0C; junk density x0; geyser count x0; blocks ponds; biome-locked: SeaIce,IceSheet,Tundra,ColdBog,BorealForest,BiomeGRimonade...; needs no river; requires coastline (3-5 coast sides)] [category=coastal; commonality=0.15]"
+  },
+  {
+   "defName": "VEE_DriftwoodShore",
+   "label": "driftwood shore",
+   "note": "A stretch of coastline littered with bleached logs and broken timber, deposited by tides and storms from distant shores [spawns VEE_DriftwoodShore; chunk density x0.25; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; needs no river; requires coastline (1-6 coast sides)] [category=coastal; commonality=0.75]"
+  },
+  {
+   "defName": "VEE_DryRiver",
+   "label": "dry river",
+   "note": "A section of this river that has dried up, presumably due to absence of precipitation up-river [blocks ponds; biome-locked: Desert,ExtremeDesert,Tundra,AridShrubland,Grasslands,TemperateForest...; landlocked (0 coast sides required)] [commonality=0.2]"
+  },
+  {
+   "defName": "VEE_DustBowl",
+   "label": "dust bowl",
+   "note": "A sun-scorched wasteland choked with dust and dry winds. Vegetation is nearly gone, and relentless sandstorms make survival harsh and unforgiving [needs no river; landlocked (0 coast sides required)] (also always brings VEE_PlantLife_Decimated+VEE_Fertility_Reduced+VEE_DustStorms) [commonality=0.2]"
+  },
+  {
+   "defName": "VEE_FleshPits",
+   "label": "flesh pits",
+   "note": "A scattered network of anomalous cave entrances, leading to a subterranean realm of pulsating flesh and grotesque abominations [spawns VEE_FleshPits_Large/VEE_FleshPits_Small] [commonality=0.5]"
+  },
+  {
+   "defName": "VEE_FloodPlains",
+   "label": "flood plains",
+   "note": "A low-lying stretch of land shaped by seasonal flooding, where nutrient-rich waters periodically spill over the banks and retreat, leaving fertile soil in their wake [max hilliness Flat] [commonality=0.6]"
+  },
+  {
+   "defName": "VEE_GlacialMoraine",
+   "label": "glacial moraine",
+   "note": "Long ridges of rock and sediment left behind by retreating ice. The ground is uneven and unstable, full of ponds of melted glacial water [terrain patches: VEE_PebbleDunes; biome-locked: IceSheet,GlacialPlain,BiomeGRimonade,BiomeArcticOasis; max hilliness Flat; landlocked (0 coast sides required)] [commonality=0.5]"
+  },
+  {
+   "defName": "VEE_GravelBeach",
+   "label": "gravel beach",
+   "note": "A harsh shoreline of loose gravel and rounded stones, where waves grind rock against rock [requires coastline (1-6 coast sides)] [category=coastal; commonality=0.2]"
+  },
+  {
+   "defName": "VEE_IceAndFire",
+   "label": "ice and fire",
+   "note": "A floating mass of ice, with an active lava lake inside. It doesn't get more metal than this [needs avg temp -100-0C; junk density x0; geyser count x0; blocks ponds; biome-locked: SeaIce,IceSheet,Tundra,ColdBog,BorealForest,BiomeGRimonade...; needs no river; requires coastline (3-5 coast sides)] [category=coastal; commonality=0.15]"
+  },
+  {
+   "defName": "VEE_IceSpires",
+   "label": "ice spires",
+   "note": "Tall, narrow columns of ice rise from the frozen ground, shaped by wind and extreme cold [biome-locked: SeaIce,IceSheet,BiomeGRimonade,BiomeArcticOasis; max hilliness Flat; landlocked (0 coast sides required)] [commonality=0.2]"
+  },
+  {
+   "defName": "VEE_JaggedRocks",
+   "label": "jagged rocks",
+   "note": "Thin rock ridges criss cross this region [max hilliness Flat; landlocked (0 coast sides required)] [category=mountain; commonality=1]"
+  },
+  {
+   "defName": "VEE_LaurelForest",
+   "label": "laurel forest",
+   "note": "A dense evergreen forest thriving in mild temperatures and constant humidity. Broad-leaved trees trap moisture from passing clouds, keeping the ground shaded and damp year-round [biome-locked: TropicalRainforest,BiomeCypreJungle,BiomeGRimethyst,BiomeGRuby,BiomeGRimberlands,BiomeGRimerald] (also always brings VEE_Mossy) [commonality=0.25]"
+  },
+  {
+   "defName": "VEE_LittoralDunes",
+   "label": "littoral dunes",
+   "note": "A band of fertile, wind-shaped dunes running along the shoreline, built from sand pulled inland from the sea [biome-locked: ExtremeDesert,Desert,BiomeAreeb,BiomeGRimberlands,BiomeGRimond,BiomeGRimworld...; requires coastline (1-5 coast sides)] often also brings PlantLife_Increased [category=coastal; commonality=0.75]"
+  },
+  {
+   "defName": "VEE_LoneIsland",
+   "label": "lone island",
+   "note": "A large island separated from the shore [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (3-5 coast sides)] [category=coastal; commonality=1]"
+  },
+  {
+   "defName": "VEE_LoneIslandWithLake",
+   "label": "central lake island",
+   "note": "A large island separated from the shore with a freshwater lake inside it [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; requires coastline (3-5 coast sides)] [category=coastal; commonality=1]"
+  },
+  {
+   "defName": "VEE_LoneIslandWithMountain",
+   "label": "resurgent island",
+   "note": "A large island separated from the shore with a tall peak in its center [blocks ponds; biome-locked: AridShrubland,BorealForest,ColdBog,Desert,ExtremeDesert,GlacialPlain...; max hilliness Flat; requires coastline (3-5 coast sides)] [category=coastal; commonality=1]"
+  },
+  {
+   "defName": "VEE_LushLavaFields",
+   "label": "lush lava fields",
+   "note": "Ancient lava flows broken by cracks and cooled rock now support dense vegetation. Heat lingers beneath the surface, creating a strange landscape where living growth spreads across black stone [terrain patches: LavaDeep,VEE_VolcanicSoilRich,VolcanicRock; biome-locked: LavaField,BiomeGRimworld,BiomeGrindland] (also always brings VEE_FirewoodTrees) often also brings PlantLife_Increased [commonality=0.25]"
+  },
+  {
+   "defName": "VEE_Mangrove",
+   "label": "mangrove",
+   "note": "Large interconnected backish water pools dominate the area [blocks ponds; biome-locked: BorealForest,ColdBog,Glowforest,TemperateForest,TemperateSwamp,TropicalRainforest...; max hilliness Flat; requires coastline (1-6 coast sides)] (also always brings VEE_MangroveTrees) [commonality=0.5]"
+  },
+  {
+   "defName": "VEE_MeteorCrater",
+   "label": "meteor crater",
+   "note": "A vast impact site with jagged rocky edges and a debris-littered basin [max hilliness Flat; landlocked (0 coast sides required)] often also brings MineralRich [category=mountain; commonality=1]"
+  },
+  {
+   "defName": "VEE_Moor",
+   "label": "moor",
+   "note": "An open, windswept landscape of low shrubs and grasses growing over waterlogged soil. The ground is peaty and uneven, shaped by constant exposure and poor drainage [terrain patches: Mud,WaterShallow; biome-locked: ColdBog,BiomeGRimethyst,BiomeGRuby] (also always brings VEE_MoorFlora) [commonality=0.5]"
+  },
+  {
+   "defName": "VEE_PebbleDunes",
+   "label": "pebble dunes",
+   "note": "Low dunes of rounded pebbles shaped by constant wind and shifting ground [biome-locked: ExtremeDesert,Desert,AridShrubland,Grasslands,BiomeAreeb,BiomeGRimberlands...; max hilliness Flat] often also brings VEE_HardToTraverse [commonality=0.2]"
+  },
+  {
+   "defName": "VEE_PermafrostBasin",
+   "label": "permafrost basin",
+   "note": "A shallow basin where the ground remains permanently frozen beneath a thin surface thaw [needs avg temp -100-5C; biome-locked: Tundra,BiomeGRimonade,BiomeArcticOasis; max hilliness Flat] (also always brings VEE_DeepSnow) often also brings VEE_HardToTraverse [commonality=0.15]"
+  },
+  {
+   "defName": "VEE_QuicksandDunes",
+   "label": "quicksand dunes",
+   "note": "A barren expanse of sand and shallow quicksand that impedes movement. This area is extremely inhospitable [chunk density x0.15; junk density x0; geyser count x0; plant density x0; blocks other landmarks; flattens elevation; biome-locked: ExtremeDesert,BiomeGRimworld; max hilliness Flat] often also brings VEE_HardToTraverse [commonality=0.2]"
+  },
+  {
+   "defName": "VEE_QuicksandPits",
+   "label": "quicksand pits",
+   "note": "This region contains pools of shallow quicksand that impede movement [blocks ponds; biome-locked: Desert,AridShrubland,ExtremeDesert,BiomeAreeb,BiomeGRimberlands,BiomeGRimond...; needs no river; landlocked (0 coast sides required)] (also always brings VEE_Sandstorms) [commonality=0.25]"
+  },
+  {
+   "defName": "VEE_RedDesert",
+   "label": "red sand desert",
+   "note": "A vast desert of iron-rich sand, stained red by the slow grinding of ancient stone [biome-locked: Desert,ExtremeDesert,BiomeGRimberlands,BiomeGRimworld,BiomeGRuby] (also always brings VEE_RedDesertPlants+VEE_Sandstorms+VEE_Cactus_Barrel+VEE_Cactus_Hedgehog) [commonality=0.2]"
+  },
+  {
+   "defName": "VEE_RelictDelta",
+   "label": "relict delta",
+   "note": "A fan of dried channels and silt deposits, shaped by a river that once split and flowed here long ago [biome-locked: Desert,ExtremeDesert,AridShrubland,Grasslands,TemperateForest,BiomeAreeb...; max hilliness Flat; requires coastline (1-6 coast sides)] [commonality=0.6]"
+  },
+  {
+   "defName": "VEE_ResurgentCaldera",
+   "label": "resurgent caldera",
+   "note": "Ancient volcanic collapse zone with steep crater walls, a central rocky dome, and echoes of past eruptions [max hilliness Flat; landlocked (0 coast sides required)] often also brings MineralRich [category=mountain; commonality=1]"
+  },
+  {
+   "defName": "VEE_RisingWaters",
+   "label": "rising waters",
+   "note": "An extremely flat coastal plain where the tides push far inland. Large stretches of land are regularly submerged [max hilliness Flat; requires coastline (1-5 coast sides)] often also brings VEE_StrongerTides+Fish_Increased [category=coastal; commonality=0.5]"
+  },
+  {
+   "defName": "VEE_RockRidge",
+   "label": "rock ridge",
+   "note": "A rock ridge separating this region in two [max hilliness Flat; landlocked (0 coast sides required)] [category=mountain; commonality=1]"
+  },
+  {
+   "defName": "VEE_SaltPlains",
+   "label": "salt plains",
+   "note": "The dried surface of an inland ocean. Sterile and hard to traverse [biome-locked: Desert,ExtremeDesert,Tundra,AridShrubland,Grasslands,BiomeAreeb...; needs no river; landlocked (0 coast sides required)] often also brings PlantLife_Decreased+Fish_Decreased [commonality=0.2]"
+  },
+  {
+   "defName": "VEE_SerpentineCanyons",
+   "label": "serpentine canyons",
+   "note": "Geological movement has caused several deep fissures in this mountain [flattens elevation; min hilliness Mountainous] [category=mountain; commonality=0.25]"
+  },
+  {
+   "defName": "VEE_Sinkholes",
+   "label": "sinkholes",
+   "note": "This region contains several collapses in the ground forming deep, unstable pits, often exposing bare rock beneath the surface [spawns VEE_Sinkholes] [commonality=0.2]"
+  },
+  {
+   "defName": "VEE_StagnantRivulet",
+   "label": "stagnant rivulet",
+   "note": "A slow-moving river where water barely flows, its course clogged with silt and shallow pools [max hilliness Flat] [commonality=0.3]"
+  },
+  {
+   "defName": "VEE_StoneForest",
+   "label": "stone forest",
+   "note": "A strange expanse of towering stone spires and jagged rock formations, rising like gigantic, petrified trees from the ground [max hilliness Flat; landlocked (0 coast sides required)] [category=mountain; commonality=1]"
+  },
+  {
+   "defName": "VEE_SulfuricLake",
+   "label": "sulfuric lake",
+   "note": "A stagnant volcanic lake with a strong, foul sulfuric odor. While the water is very mildly toxic, the surrounding soil is rich in nutrients, supporting hardy, sulfur-tolerant plant life [spawns VEE_SulfurVents; needs no river] (also always brings PlantLife_Increased+VEE_RottenStench) [commonality=0.15]"
+  },
+  {
+   "defName": "VEE_SulfuricRiver",
+   "label": "sulfuric river",
+   "note": "A foul-smelling river carrying acidic, sulfur-laden waters, its banks scorched and inhospitable to most forms of life [spawns VEE_SulfurVents; max hilliness Flat] (also always brings PlantLife_Increased+VEE_RottenStench) [commonality=0.15]"
+  },
+  {
+   "defName": "VEE_TemperateGrasslands",
+   "label": "temperate grasslands",
+   "note": "Plant life is extremely more abundant here [plant density x4] (also always brings VEE_NoTrees+VEE_PlentifulGrass) [commonality=0.25]"
+  },
+  {
+   "defName": "VEE_ToxicCrater",
+   "label": "toxic crater lake",
+   "note": "A blasted ring of stone surrounds a stagnant, foul-smelling pool. The water glows faintly [blocks ponds; needs no river; max hilliness Flat; landlocked (0 coast sides required)] often also brings MineralRich [category=mountain; commonality=1]"
+  },
+  {
+   "defName": "VEE_TropicalBeach",
+   "label": "tropical beach",
+   "note": "A warm coastal region shaped by steady tides and seasonal storms. Sandy beaches and shallow waters support dense vegetation along the shoreline [blocks ponds; biome-locked: TropicalRainforest,BiomeAreeb,BiomeCypreJungle,BiomeGRimberlands,BiomeGRimond,BiomeGRimphire...; requires coastline (1-5 coast sides)] (also always brings VEE_TropicalBeachFlora) [commonality=0.25]"
+  },
+  {
+   "defName": "VEE_VolcanicSandDesert",
+   "label": "volcanic sand desert",
+   "note": "A barren desert of black volcanic sand, born from long-dead eruptions [biome-locked: Desert,ExtremeDesert,BiomeGRimberlands,BiomeGRimworld,BiomeGRimphire,BiomeGRimond] (also always brings VEE_VolcanicSandDesertFlora) [commonality=0.2]"
+  },
+  {
+   "defName": "VEE_Volcano",
+   "label": "volcano",
+   "note": "Charred stone ridges form the rim of an ancient caldera, its heart glowing with molten fury [blocks ponds; needs no river; max hilliness Flat; landlocked (0 coast sides required)] often also brings MineralRich [category=mountain; commonality=1]"
+  },
+  {
+   "defName": "VEE_WindBlownPlateau",
+   "label": "wind-blown plateau",
+   "note": "A small rise with sharp cliffs and a flat top [biome-locked: AridShrubland,Grasslands,Glowforest,Desert,Tundra,Savanna...; max hilliness Flat] (also always brings VEE_RagingWind) often also brings VEE_NaturalAerie+VEE_TornadoAlley+VEE_HardToTraverse+VEE_Fertility_Reduced [category=mountain; commonality=0.4]"
+  },
+  {
+   "defName": "Valley",
+   "label": "valley",
+   "note": "A steep valley carved through a mountain [flattens elevation; min hilliness Mountainous; landlocked (0 coast sides required)] [category=mountain; commonality=1]"
+  },
+  {
+   "defName": "Wetland",
+   "label": "wetland",
+   "note": "Large interconnected waterways dominate the area [blocks ponds; biome-locked: BorealForest,ColdBog,Glowforest,TemperateForest,TemperateSwamp,TropicalRainforest...; landlocked (0 coast sides required)] [commonality=0.5]"
+  },
+  {
+   "defName": "sw_DeadSarlacc",
+   "label": "dead Sarlacc",
+   "note": "This area hosts a dead sarlacc creature. These sessile creatures are known to have millenia long lifespans, but are ultimately mortal. Whether from disease, starvation, burrowing insectoids or even old age they eventually die and leave a cavern where the bulk of their corpse has rotted away [spawns sw_DeadSarlaccPit; max hilliness Mountainous] [commonality=0.1]"
+  },
+  {
+   "defName": "sw_Sarlacc",
+   "label": "sarlacc pit",
+   "note": "This area hosts a juvenile sarlacc creature. These sessile creatures are known to have millenia long lifespans, the circular maws on the surface are supported by a massive undergorund body [spawns sw_SarlaccPit; max hilliness Mountainous] [commonality=0.1]"
+  }
+ ]
+}
