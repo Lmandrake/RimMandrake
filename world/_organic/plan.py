@@ -27,6 +27,25 @@ def hill_margin(t):
     flat=sum(1 for n in nb[t] if tiles[n]['hill']=='Flat')
     return tt['hill'] in ('SmallHills','LargeHills') and flat>=2
 
+LANDOK=lambda t: (not tiles[t]['water']) and tiles[t]['hill']!='Impassable' and tiles[t]['biome'] not in NOROAD
+_comp={};_sizes={}
+def _build_comps():
+    cid=0
+    for s in tiles:
+        if s in _comp or not LANDOK(s): continue
+        st=[s];n=0
+        while st:
+            u=st.pop()
+            if u in _comp: continue
+            _comp[u]=cid;n+=1
+            for v in nb[u]:
+                if v not in _comp and LANDOK(v): st.append(v)
+        _sizes[cid]=n;cid+=1
+_build_comps()
+def same_land(a,b):
+    """a settlement must not hop onto an island its roads can never reach."""
+    return _comp.get(a) is not None and _comp.get(a)==_comp.get(b)
+
 def affordance(t):
     if not passable(t): return -99
     tt=tiles[t]; s=0.0
@@ -45,9 +64,10 @@ def affordance(t):
     return s
 
 # ---------- terrain-weighted routing ----------
+NOROAD={'AB_MechanoidIntrusion','AB_PropaneLakes','IceSheet','Lake','Ocean','SeaIce'}
 def terrcost(u,v):
     tv=tiles[v]
-    if tv['water'] or tv['hill']=='Impassable': return INF
+    if tv['water'] or tv['hill']=='Impassable' or tv['biome'] in NOROAD: return INF
     tu=tiles[u]
     c=0.45
     c+=HILL[tv['hill']]
@@ -69,7 +89,7 @@ def route(src,dst,used,reuse=0.32):
         if u==dst: break
         if d>dist.get(u,INF): continue
         for v in nb[u]:
-            if v!=dst and (tiles[v]['water'] or tiles[v]['hill']=='Impassable'): continue
+            if v!=dst and (tiles[v]['water'] or tiles[v]['hill']=='Impassable' or tiles[v]['biome'] in NOROAD): continue
             c=terrcost(u,v)
             if c==INF: continue
             if (min(u,v),max(u,v)) in used: c*=reuse
@@ -121,6 +141,7 @@ def bend(o,radius,extra=None,require=None,wa=1.0):
     for t,d in ring.items():
         if t not in tiles or not passable(t): continue
         if too_close(t,cur): continue
+        if LANDOK(cur) and not same_land(cur,t): continue
         if require and not require(t): continue
         s=wa*affordance(t)-0.28*d+cluster_term(t,o['factionName'],o['id'])
         if extra: s+=extra(t)
