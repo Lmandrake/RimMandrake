@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  PodCarIsLandspeeder.xml                   Jawa_Patches - new file 2026-08-24
+  ============================================================================
+
+  Reskins Core's `AncientPodCar` as a wrecked landspeeder. Owner's request,
+  2026-08-24: "reskin the Ancient Podcar graphic and name to be Wrecked
+  Landspeeder ... pretty ancient and destroyed, already mostly looted and sun
+  scorched."
+
+  APPEARANCE ONLY. `size`, `fillPercent`, `passability`, `pathCost`,
+  `MaxHitPoints` and `killedLeavings` are all left as Core wrote them, so every
+  ancient-ruin PrefabDef and MapGenerator that places one keeps placing one and
+  it behaves identically. Three strings and one texPath change, nothing else.
+
+  WHY A NEW texPath RATHER THAN AN OVERRIDING LOOSE PNG. Core's art lives in
+  `resources.assets`, and a loose mod PNG at the same path would win regardless
+  of load order - which works, but leaves no way to tell from the def whether
+  the swap happened. Repointing texPath makes the reskin visible in the def
+  dump and reversible by deleting one Replace.
+
+  ⚠️ `rotatable` is false and `graphicClass` is `Graphic_Single`, so this is
+  ONE view and there is no `_north`/`_east` sibling to keep in step.
+
+  ⚠️ The texture is 512x256 (2:1) against a `drawSize` of (3,2) (1.5:1), which
+  is the same shape mismatch Core's own PodCar.png (256x128) carries - the
+  engine compresses the art into the quad, and the art is drawn pre-stretched to
+  survive it. Do not "fix" the canvas to 3:2; that would squash the hull.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AncientPodCar"]/label</xpath>
+    <value>
+      <label>wrecked landspeeder</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AncientPodCar"]/description</xpath>
+    <value>
+      <description>A civilian repulsorlift speeder, dead on the sand for longer than anyone here can count. The canopy is gone, the drive coils were pulled out of it generations ago, and what the salvagers left the sun has been bleaching and cooking ever since. Sand has drifted into the cockpit well and packed itself solid.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AncientPodCar"]/graphicData/texPath</xpath>
+    <value>
+      <texPath>Things/Building/Ruins/WreckedLandspeeder</texPath>
+    </value>
+  </Operation>
+
+</Patch>
