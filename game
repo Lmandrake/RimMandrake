@@ -45,6 +45,16 @@ fi
 # `.claude/hooks/selftest_documented_commands.py` found this documented three times in
 # CLAUDE.md while `./game --help` exited 2 — the exact class of defect that test exists
 # to catch, caught on its first run.
+# 🔴 HELP IS MATCHED IN ANY POSITION, not just $1 — fixed 2026-08-25.
+# It used to be `case "${1}"`, so `./game --help` printed help but `./game up --help`
+# fell through to the note-append below and BROADCAST "Game is up — --help" to every
+# window, stamping an UP event with no `ownerSaid`. That happened twice on 2026-08-25,
+# two minutes apart, and cost the seats two false announcements each. A flag anywhere
+# in the line is a request for the usage, never a message.
+for _a in "$@"; do
+    case "$_a" in -h|--help|help) set -- --help ;; esac
+done
+
 case "${1}" in
     -h|--help|help)
         echo "usage: ./game [--said \"<owner's words>\"] up|down|loading|deploying|going-down [\"note\"]"
@@ -86,6 +96,18 @@ case "${1,,}" in
         exit 2 ;;
 esac
 shift
+# ⛔ A note may never start with a dash. The note slot is free text appended after an
+# em dash and sent to every window; a flag landing here is always a mistyped command,
+# never something the owner meant to say. Refusing costs nothing and the alternative
+# is a false announcement — see the help note above for what that looked like.
+for _a in "$@"; do
+    case "$_a" in -*)
+        echo "refusing: '$_a' looks like a flag, not a note." >&2
+        echo "the note is free text appended to the announcement and sent to EVERY window." >&2
+        echo "for the usage:  ./game --help" >&2
+        exit 2 ;;
+    esac
+done
 [ $# -gt 0 ] && sentence="$sentence — $*"
 
 exec python3 "$bc" "$sentence"

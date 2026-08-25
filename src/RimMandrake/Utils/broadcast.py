@@ -286,7 +286,34 @@ def record_game(state, text):
     cli = os.path.join(REPO, "src/RimMandrake/rimflow/cli.py")
     if not os.path.exists(cli):
         return "rimflow not found; state NOT recorded"
+    # \U0001f534 CAPTURE WHO ACTUALLY RAN THIS before forcing OWNER — added 2026-08-25.
+    # `RIMFLOW_SEAT="OWNER"` below is a CONSTANT, not identity, and `frame()` stamps
+    # from-name="OWNER" on every message for the same reason: this tool was built on
+    # the assumption only the owner would run it. On 2026-08-25 `./game up --help`
+    # fired twice from some window and NOTHING in the message or the ledger could say
+    # which — the owner asked "who keeps saying this?" and the honest answer was that
+    # the system cannot know. It can now.
+    # \u26a0 RIMFLOW_SEAT is almost never set in a seat's shell — it is only source #1
+    # of four in rimflow's own resolve_seat(). Reading it alone would make this whole
+    # field silently never fire, which is the defect class it exists to catch. So it
+    # walks the same order rimflow does, minus --seat, which is not ours to see.
+    ran_by = (os.environ.get("RIMFLOW_SEAT")
+              or os.environ.get("AGENT_SEAT") or "").strip().upper()
+    if not ran_by:
+        sid = os.environ.get("CLAUDE_SESSION_ID")
+        if sid:
+            try:
+                with open(os.path.join(REPO, ".claude", "session_roles", sid),
+                          encoding="utf-8") as fh:
+                    for w in fh.read().replace("-", " ").split():
+                        if w.upper() in ("DECIDE", "BUILD", "CHECK", "REP", "OWNER"):
+                            ran_by = w.upper()
+                            break
+            except OSError:
+                pass
     env = dict(os.environ, RIMFLOW_SEAT="OWNER")
+    if ran_by and ran_by != "OWNER":
+        env["RIMFLOW_RAN_BY"] = ran_by
     # \u2b50 Carry his verbatim words onto the event when an agent is relaying him
     # (./game --said "..."), so the ledger records WHO authorized the state and not
     # merely that it changed. Absent -> the event is OWNER's, unattributed, as before.

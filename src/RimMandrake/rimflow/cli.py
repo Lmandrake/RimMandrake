@@ -963,6 +963,13 @@ def cmd_game(args, seat):
         return 0
 
     ev = {"seat": seat, "event": "game", "state": args.state}
+    # \u2b50 `seat` here is OWNER whenever broadcast.py is the caller, because it forces
+    # RIMFLOW_SEAT — the event says WHOSE authority the state change carries, which is
+    # always his. `ranBy` says whose HANDS were on it, which is a different question and
+    # the one nobody could answer on 2026-08-25. Absent when the owner ran it himself.
+    ran_by = (os.environ.get("RIMFLOW_RAN_BY") or "").strip().upper()
+    if ran_by and ran_by != seat:
+        ev["ranBy"] = ran_by
     note = (getattr(args, "note", None) or "").strip()
     if note:
         ev["text"] = note
