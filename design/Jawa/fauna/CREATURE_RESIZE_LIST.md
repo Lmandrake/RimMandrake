@@ -193,9 +193,43 @@ compliant. The real fix is a **regeneration at 2,048 px**, which needs the owner
 he approved *this* sprite. 🔑 In practice the softness shows only at maximum zoom — at play zoom a
 16-tile creature is well under 1,024 px on screen — which is why it ships.
 
-⚠️ **`bodySize` does NOT raise melee damage.** RimWorld tool `power` is a flat per-tool number and
-does not scale with body size, so this Behemoth is enormously durable and heavy, not harder-hitting.
-Raising the dragonclaw tools is a separate combat change and has not been made.
+## ⚔️ And then every other attribute, ×2 — owner, 2026-08-24: *"Yes, scale ALL its attributes along with bodysize."*
+
+| field | was | now |
+|---|---|---|
+| `MeatAmount` | 250 | **500** |
+| `LeatherAmount` | 50 | **100** |
+| `MarketValue` | 50,000 | **100,000** |
+| dragonclaw `power` (×2 tools) | 18 | **36** |
+| dragonclaw surprise `Stun` | 22 | **44** |
+| razorfangs `power` | 15 | **30** |
+| razorfangs surprise `Stun` | 14 | **28** |
+| devour `power` | 5 | **10** |
+| `ArmorRating_Sharp` | 0.60 | **0.85** ⚠️ |
+| `ArmorRating_Blunt` | 0.40 | **0.75** ⚠️ |
+| `ArmorRating_Heat` | 0.30 | **0.60** ⚠️ |
+
+🔑 **The tool `power` operations are the ones that actually delivered "heaviest hitter."** RimWorld
+reads `power` as a flat per-tool number that does **not** scale with `bodySize` — without them the
+creature would have doubled in size and health and hit exactly as hard as before.
+
+⚠️ **ARMOUR IS RAISED HARD BUT DELIBERATELY NOT DOUBLED.** `ArmorRating_*` are **fractions, not
+points**: Sharp 0.60 doubled is **1.20**, and at ≥1.00 the armour roll deflects *every* sharp hit —
+the creature becomes literally unkillable by bullets and blades. That is not a heavy hitter, it is a
+bug that looks like a feature until a raid cannot be stopped. ⛔ **Do not "finish the job" by taking
+these to 1.20.** True immunity is a different design and should be said out loud.
+
+### ⛔ Deliberately untouched, so the omission reads as a decision
+
+| field | why not |
+|---|---|
+| `MoveSpeed` 4 | doubling makes a 16-tile monster faster than a sprinting human — nothing disengages, nothing escapes. That is chase balance, not mass; mass makes a thing *slower* if anything |
+| `ComfyTemperatureMin/Max` | owned by `AnimalTolerances_Ashkarr.xml`, set from the tiles it lives on. Two patches writing one field is how a value silently depends on load order |
+| `baseHungerRate` 0.3 | food need **already** scales with `bodySize` in engine — doubling this doubles the appetite twice over |
+| `Wildness` 0.99, `Flammability` 0 | already at ceiling and floor |
+
+✅ **Every operation verified against the real 581-mod load set:** each matches exactly one node in
+`Alpha Animals: Races_Behemoth.xml`. `validate_patch.py` with `--defs`, 0 errors.
 
 ⛔ **Do not regenerate this row from `creature_size_decisions.json`.** It would silently restore
 the shrink. The live values are in `src/Jawa/Jawa_Patches/Patches/CreatureResize_Ashkarr.xml`.

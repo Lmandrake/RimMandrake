@@ -205,6 +205,93 @@
             <value><baseHealthScale>20</baseHealthScale></value>
           </nomatch>
         </li>
+
+        <!-- ================= EVERYTHING ELSE, x2 ================= -->
+        <!-- 🔴 Owner, 2026-08-24: "Yes, scale ALL its attributes along with bodysize."
+             Straight x2 on every stat where doubling means what he means. The three that are
+             NOT doubled are called out below with the reason, so the omission reads as a
+             decision and not as work someone forgot to finish. -->
+
+        <!-- Yield and worth: twice the animal, twice what comes off it. -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/MeatAmount</xpath>
+          <value><MeatAmount>500</MeatAmount></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/LeatherAmount</xpath>
+          <value><LeatherAmount>100</LeatherAmount></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/MarketValue</xpath>
+          <value><MarketValue>100000</MarketValue></value>
+        </li>
+
+        <!-- 🔑 THE MELEE HALF - this is what "heaviest hitter" actually needed. bodySize does
+             NOT scale tool power: RimWorld reads `power` as a flat per-tool number, so without
+             these four operations the creature would have doubled in size and health and hit
+             exactly as hard as before. Both dragonclaws 18 -> 36, razorfangs 15 -> 30, devour
+             5 -> 10, and the surprise-attack stuns with them. -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="left dragonclaw"]/power</xpath>
+          <value><power>36</power></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="left dragonclaw"]/surpriseAttack/extraMeleeDamages/li[def="Stun"]/amount</xpath>
+          <value><amount>44</amount></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="right dragonclaw"]/power</xpath>
+          <value><power>36</power></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="right dragonclaw"]/surpriseAttack/extraMeleeDamages/li[def="Stun"]/amount</xpath>
+          <value><amount>44</amount></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="razorfangs"]/power</xpath>
+          <value><power>30</power></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="razorfangs"]/surpriseAttack/extraMeleeDamages/li[def="Stun"]/amount</xpath>
+          <value><amount>28</amount></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="devour"]/power</xpath>
+          <value><power>10</power></value>
+        </li>
+
+        <!-- ⚠️ ARMOUR IS RAISED HARD BUT DELIBERATELY NOT DOUBLED, AND THIS IS THE ONE THAT WOULD
+             HAVE BITTEN. ArmorRating_* are FRACTIONS, not points. Sharp 0.60 doubled is 1.20,
+             and at >= 1.00 the armour roll deflects EVERY sharp hit - the creature becomes
+             literally unkillable by bullets and blades, which is not "heaviest hitter", it is
+             a bug that looks like a feature until a raid cannot be stopped. Raised to a brutal
+             but beatable 0.85 / 0.75 / 0.60. ⛔ Do not "finish the job" by taking these to
+             1.20; if the owner wants true immunity that is a different design and should be
+             said out loud. -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>0.85</ArmorRating_Sharp></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.75</ArmorRating_Blunt></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>0.60</ArmorRating_Heat></value>
+        </li>
+
+        <!-- ⛔ DELIBERATELY UNTOUCHED, all three:
+             MoveSpeed 4        - doubling makes a 16-tile monster faster than a sprinting
+                                  human, so nothing can disengage from it and nothing can
+                                  catch it. That is a chase-balance change, not a mass one;
+                                  mass makes a thing slower if anything. Ask before raising.
+             ComfyTemperature*  - owned by AnimalTolerances_Ashkarr.xml, which sets them from
+                                  the tiles it actually lives on. Two patches writing one
+                                  field is how a value silently depends on load order.
+             baseHungerRate 0.3 - food need ALREADY scales with bodySize in engine, so
+                                  doubling this would double the appetite twice over.
+             Wildness 0.99 and Flammability 0 are at their ceiling and floor already. -->
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="KwazelMaw"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>1.34</drawSize></value>
