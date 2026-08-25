@@ -36,7 +36,7 @@ for row in csv.reader(open(W + "world_neighbors_sub7b.csv")):
     nb[int(row[0])] = [int(x) for x in row[1:] if int(x) >= 0]
 
 river_edges, road_edges = [], []
-for l in csv.DictReader(open(W + "_now/live_links.csv")):
+for l in csv.DictReader(open(os.environ.get("LINKS", W + "_now/live_links.csv"))):
     (river_edges if l["kind"] == "river" else road_edges).append(
         (int(l["a"]), int(l["b"]), l["def"]))
 
@@ -93,14 +93,19 @@ for t, d in tiles.items():
     if d["biome"] in WATER or d["water"] or d["hill"] >= 5 or d["arc"] > MAX_ARC:
         blocked.add(t)
 
-def reroute(a, b, want_steps, keep_out, amp_frac, waves):
+def reroute(a, b, want_steps, keep_out, amp_frac, waves, min_tiles=0.0):
     """Dijkstra from a to b, costed to hug a sinusoid bulging off the a-b great circle."""
     va, vb = vec(a), vec(b)
     total = arcv(va, vb)
     if total < 1e-6: return None
     pole = norm(cross(va, vb))
     if dot(pole, pole) < 1e-9: return None
-    amp = math.radians(total * amp_frac)
+    # 🔑 A fraction of the run length is NOT enough on a SHORT run: 0.20 of a
+    # 4-step run is 0.8 of one tile width, so the straight path stayed cheapest
+    # and the first pass left every 5-tile creek dead straight. Floor the bulge
+    # in TILE WIDTHS so a short run can actually step sideways.
+    step_deg = arc(a, nb[a][0]) or 1.0
+    amp = max(math.radians(total * amp_frac), math.radians(step_deg * min_tiles))
     om = math.radians(total)
     so = math.sin(om)
     samples = []
@@ -189,8 +194,10 @@ def plan():
             # anything past 1.75 is rejected outright and the closest to TARGET wins.
             TARGET, CEILING = 1.35, 1.75
             best = None
-            for amp_frac, waves in ((0.20, 2.0), (0.16, 3.0), (0.26, 1.0), (0.12, 2.0)):
-                cand = reroute(a, b, span, keep_out, amp_frac, waves)
+            opts = ((0.20, 2.0, 0.0), (0.16, 3.0, 0.0), (0.26, 1.0, 0.0), (0.12, 2.0, 0.0),
+                    (0.20, 1.0, 1.2), (0.20, 2.0, 1.2), (0.28, 1.0, 1.6), (0.28, 2.0, 1.6))
+            for amp_frac, waves, min_tiles in opts:
+                cand = reroute(a, b, span, keep_out, amp_frac, waves, min_tiles)
                 if not cand or len(cand) < span + 2:
                     continue
                 if len(cand) - 1 > span * 2 + 2:
