@@ -83,6 +83,12 @@ All in `D:\Luke\dev\Rimworld\research\Jawa\`.
 and all visible in the first `worldview.py` render:
 
 1. ⛔ **Circular seas.** Ash'karr had four discs and one literal annulus.
+   ⭐ **EXCEPT THE SCALD — owner, 2026-08-25:** *"The scald is a crater ocean, leave the
+   scald itself as a circle."* ⇒ Its disc is the IMPACT, and it is correct. Measured that
+   day: 312 tiles of unbroken `Lake`, radius CV 0.376, the roundest water on the planet —
+   **and that is the intended read, not a defect.** ⛔ Do not tear its shoreline, do not
+   add islands or bays to it, and do not cite defect 1 or 4 against it. The ruling covers
+   the Scald ALONE; Twilight Sea and Grey Sea are still judged by the list.
 2. ⛔ **Comb rivers** — straight trunks with regular perpendicular teeth.
 3. ⛔ **Rectangular roads** — closed boxes and ruler-straight diagonals.
 4. ⛔ **Concentric biome rings** about the substellar point — a bullseye, so every
