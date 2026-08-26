@@ -895,3 +895,9 @@ xenotypes disagreed by 33 °C.
 📌 **`mapCount: 1` does not mean drivable.** `start_debug_game_ready` returns while
 `programState` is `MapInitializing` and `currentMapId` is null, and `spawn_pawn` then refuses with
 "No current map". Poll `get_cell_info` → `state.currentMapId`.
+
+🔴 **`rimworld/set_time_speed` is a silent no-op** — it returned `success, timeSpeed "Superfast"` and
+`ticksGame` did not move across six polls over two minutes, with `windowsForcePause: false`.
+`get_game_info` has no `paused` field; read `get_cell_info` → `state.paused` / `state.timeSpeed`.
+✅ **`rimworld/step_game_ticks` advances the sim reliably** (600 ticks → clock 5696→6296) and is what
+any timed test should use.

@@ -218,3 +218,28 @@ echoes the request either way and never says it was overridden.**
 
 ⇒ **Census the ARRIVALS.** `jawa/list_pawns` before and after, diff the ids, group by `factionName`.
 A raid test that reads `resolved` has not verified which faction raided.
+
+## 🔴 `rimworld/set_time_speed` — reports the speed it set, and the game stays PAUSED
+
+Measured 2026-08-26, quicktest map, no window forcing pause.
+
+```
+set_time_speed {speed: 3, ultraSpeedBoost: true}
+  -> success true, timeSpeed "Superfast", ultraSpeedBoostAvailable true
+
+get_cell_info -> state.paused TRUE, state.timeSpeed "Paused"
+ticksGame over 6 real seconds: 5696 -> 5696          delta 0
+after 5 further polls 20 s apart:  still 5696
+```
+
+`get_ui_state` showed `windowsForcePause: false`, `anyWindowAbsorbingAllInput: false`,
+`programState: Playing`. Nothing was blocking it; the speed simply did not take.
+
+⛔ **`rimworld/get_game_info` does not expose `paused` at all**, so the obvious check cannot see this.
+🔑 **Read `rimworld/get_cell_info` → `state.paused` / `state.timeSpeed`**, and diff `ticksGame` across
+a few real seconds. A speed that "was set" is not a game that is running.
+
+✅ **`rimworld/step_game_ticks` works and is the reliable route.** Same session, immediately after:
+`{ticks: 600}` → `status completed, completedTicks 600`, and `ticksGame` 5696 → **6296**. It is one
+tick per Unity frame, so ~3 000 ticks is a few seconds of wall clock — budget for it, but it actually
+advances the simulation. Any test that needs time to pass should use it, not the speed control.
