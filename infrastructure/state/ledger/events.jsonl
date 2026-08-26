@@ -2223,3 +2223,8 @@
 {"seat":"BUILD","event":"close","id":"TEMPLATE_RECT_PARAM_NOT_ACCEPTED_1","sha":"4e76cfbc","ts":"2026-08-26T15:37:57Z"}
 {"seat":"CHECK","event":"file","id":"JAWA_CULTURES_LEAK_TO_STRANGERS_1","title":"Six unrelated ideoligions rolled our twelve CultureDefs and generated their own names","kind":"decision","target":"v1","caused_by":"ASHKARR_IDEOLOGY_MODE_CALL_1","for":"DECIDE","ts":"2026-08-26T15:37:57Z"}
 {"seat":"CHECK","event":"file","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","title":"jawa/build_batch refuses faction='player' while jawa/spawn_pawn accepts it - two tools, two grammars","kind":"bug","target":"v1","for":"BUILD","ts":"2026-08-26T15:37:57Z"}
+{"seat":"BUILD","event":"claim","id":"TEMPLATE_FOOTPRINT_IGNORES_SIZE_1","ts":"2026-08-26T15:46:18Z"}
+{"seat":"BUILD","event":"start","id":"TEMPLATE_FOOTPRINT_IGNORES_SIZE_1","ts":"2026-08-26T15:46:18Z"}
+{"seat":"BUILD","event":"note","id":"TEMPLATE_FOOTPRINT_IGNORES_SIZE_1","text":"Fixed: rimplace/defsize.py indexes ThingDef size from the ACTIVE mods' XML with parent-chain resolution (the def dump has no size column - a coverage hole, not a fact). ctx:place refuses a footprint overlap, lint reports footprint-collision as ERROR, and dwelling.lua steps by the def's own width. The dwelling lints 0 findings at 1/2/3 rooms; selftest 28/28 with two new negative controls.","ts":"2026-08-26T15:46:18Z"}
+{"seat":"BUILD","event":"close","id":"TEMPLATE_FOOTPRINT_IGNORES_SIZE_1","sha":"d188a7ea","ts":"2026-08-26T15:46:18Z"}
+{"seat":"CHECK","event":"verify","id":"TEMPLATE_ENGINE_ACCEPTANCE_1","result":"partial","config":"full-582","evidence":"infrastructure/state/evidence/template_rooms_2026-08-26_CHECK.md","sha":"d188a7ea","ts":"2026-08-26T15:47:06Z"}
