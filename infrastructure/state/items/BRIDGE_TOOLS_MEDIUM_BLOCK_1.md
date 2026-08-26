@@ -1,3 +1,44 @@
+## ✅ BUILT 2026-08-26 at `c81814a4` — 35 built, 5 skipped, 1 half-refused with its reason
+
+`198 → 233` declared `[Tool]` names. Builds clean **with and without** `--gm` (0 warnings,
+0 errors, no tool removal), so nothing is trapped inside a GM guard.
+
+| group | file | tools |
+|---|---|---|
+| H | `JawaBenchZoneTools.cs` | `storage_settings` `bill_add` `prioritized_work` `anomaly_knowledge` `royal_title` `set_stuff` |
+| I | `JawaBenchIncidentTools.cs` | `storyteller_fire` `storyteller_swap` `quest_lifecycle` `wealth_recount` `lord_defend_spawn` `lord_assault_spawn` `manhunter_preview` `animal_resource_force` |
+| J | `JawaBenchSocietyTools.cs` | `ideo_create` `ideo_precept_edit` `ideo_ritual_obligation` `ideo_style` `world_tile_map_generate` `settlement_remove` `caravan_form_exit` `gene_reimplant` `gene_random_set` `pawn_severity_adjust` |
+| K | `JawaBenchRenderTools.cs` | `blueprint_place` `frame_finish` `power_net` `anomaly_monolith_set` `anomaly_containment` `map_drop` `artifact_transfer` `pawn_portrait` `pawn_atlas` `room_heat` `stat_explain` |
+
+**Skipped because a tool already covered the row** — the check the roster's stale flags made
+necessary, and it caught five:
+
+| row | already covered by |
+|---|---|
+| create-stockpile / growing zone | `jawa/map_zones` action=createZone |
+| add/remove zone cells | `jawa/map_zones` action=paintZone |
+| force-job | `jawa/ordered_job` |
+| install-bionic | `jawa/pawn_health` action=bionic |
+| set master | `jawa/set_player_settings` |
+| lock-weather | `jawa/weather_set` lockWeather=true |
+
+⚠️ **One row is deliberately HALF-built and says so in its own Description.**
+`jawa/anomaly_containment` reads and writes `containmentMode` and forces `CompStudiable.Study`,
+but it does **not** move an entity onto a holding platform: that is a job-driven capture
+interaction (WorkGiver + JobDriver), and faking it would mean simulating the game's AI. The
+refusal is in the tool, not only here.
+
+🔑 **Two rows looked like duplicates and were not.** `jawa/storyteller_fire` goes through
+`Storyteller.TryFire`, which is a different call path from `jawa/fire_incident`'s direct
+`Worker.TryExecute`; `jawa/quest_lifecycle` accepts and ends an EXISTING quest, which
+`jawa/fire_quest` does not. Both were checked against the source before being built rather than
+assumed either way.
+
+⛔ **Built, not deployed** — the game holds the DLL. `NEXT_RELOAD.md` §25. None of the 35 has
+ever been called.
+
+---
+
 # BRIDGE_TOOLS_MEDIUM_BLOCK_1 — the 40 MEDIUM capabilities, block 2 of 3
 
 ## spec

@@ -373,7 +373,7 @@ python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --appl
 
 | tool | what changed | what to read after the next load |
 |---|---|---|
-| **32 NEW TOOLS** — `JawaBenchPawnKitTools.cs` (10) · `JawaBenchGroupTools.cs` (11) · `JawaBenchSystemTools.cs` (11) | the last of `BRIDGE_TOOLS_EASY_BLOCK_1`: skills/abilities/genes/inventory, lords + factions + caravans + ideo, and minify/roof-collapse/anomaly/save/prefs/diagnostics | the census must read **198**, not 166. ⚠️ 198 is the count of `[Tool]` ATTRIBUTES; `build.py`'s byte scan says 200 because `jawa/anomaly_` and `jawa/revoke` appear inside other tools' description prose |
+| **67 NEW TOOLS** — EASY block: `PawnKit` 10 · `Group` 11 · `System` 11. MEDIUM block: `Zone` 6 · `Incident` 8 · `Society` 10 · `Render` 11 | the last of `BRIDGE_TOOLS_EASY_BLOCK_1`: skills/abilities/genes/inventory, lords + factions + caravans + ideo, and minify/roof-collapse/anomaly/save/prefs/diagnostics | the census must read **233**, not 166. ⚠️ That is the count of `[Tool]` ATTRIBUTES; `build.py`'s byte scan runs 2 higher because `jawa/anomaly_` and `jawa/revoke` appear inside other tools' description prose |
 | `jawa/build_batch` | `placed` counted spawn ATTEMPTS; eight calls reported 81 placed with `failed: []` and the map held 78 (`BUILD_BATCH_OVERWRITES_SILENTLY_1`). It now returns **`survived`**, `lostToLaterOps` and **`displaced[]`** naming everything the batch destroyed and whether the batch itself had placed it. New `refuseIfDisplaces` makes it an error instead. | Rebuild the dwelling and assert `survived == requested`, not `placed == requested`. With the footprint fix in rimplace the correct answer is now **0 displaced** |
 | `jawa/pawn_gear` · `FindPawn` · `jawa/pawn_genes` | five rows of `BRIDGE_ARG_SHAPES_INCONSISTENT_1`: both pawn id forms accepted, pawn_gear declares itself a WRITE tool and names `jawa/pawn_get`, equipment/apparel rows carry `defName` beside `def`, and the gene verbs and head-re-roll ordering are documented | any pawn-addressing call with a `Thing_`-prefixed id must now resolve instead of returning an empty success |
 | `jawa/fire_raid` | echoed the faction you asked for even when the worker raided with another (`FIRE_RAID_ECHOES_REQUESTED_FACTION_1`). Now returns **`actual`** (the faction the worker used, written back into parms) and **`arrived[]`** counted off the map, and warns BEFORE firing that a non-hostile faction will be substituted | `jawa/fire_raid {faction: "Jawa_FreeDroidEnclaves", dryRun: false}` must now say *substituted* and name Blackstar Company in `actual`/`arrived` |
@@ -381,24 +381,24 @@ python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --appl
 ### The validation plan for §25, in the seven-field format
 
 ```
-ITEM     The companion at 198 tools - 32 new EASY capabilities plus 3 corrected tools
+ITEM     The companion at 233 tools - 67 new capabilities (EASY + MEDIUM) plus 3 corrected tools
 SEE      The census prints 198 and names jawa/thing_stats, and one tool from each of the three
          new files answers a real call: jawa/mod_inventory lists 582 running mods,
          jawa/read_opinion returns a number AND its breakdown for two colonists,
          jawa/faction_goodwill_check refuses a change the faction cannot accept, by name
 ROUTE    python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\prove_stat_and_room.py --census
          then the three calls above, in any order
-PREDICT  198 jawa/ tools; mod_inventory count == the ModsConfig activeMods count == 582
+PREDICT  233 jawa/ tools; mod_inventory count == the ModsConfig activeMods count == 582
 CLOSE    The census at 198 plus those three calls answering - NOT exercising all 32, and NOT
          grading what any of them DOES to the colony; that is each capability's own item
 RIDE     solo (a new assembly - batching destroys attribution if the load comes up wrong).
          ⚠️ It rides with §22/§23 only because those are the SAME assembly.
 LIES     1. 198 is the count of [Tool] ATTRIBUTES. build.py's byte scan says 200 because
             'jawa/anomaly_' and 'jawa/revoke' appear inside other tools' description prose -
-            reading 200 as the target makes a correct load look 2 short.
+            reading the scan's number as the target makes a correct load look 2 short.
          2. A deployed DLL registers NOTHING until the game restarts, so a tool-not-found
             after a load that predates the deploy is not a failure of the tool.
-         3. 32 tools written by three agents in one pass all compiled; compiling is not
+         3. 67 tools written by seven agents in two passes all compiled; compiling is not
             working, and none of them has ever been CALLED.
 ```
 
