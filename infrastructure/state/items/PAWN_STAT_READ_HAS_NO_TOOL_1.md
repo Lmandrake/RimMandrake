@@ -1,3 +1,15 @@
+WRITTEN AND BUILT 2026-08-26 - it just is not deployed.
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchStatTools.cs` adds **`jawa/pawn_stats`**.
+`build.py --gm` succeeds with **0 warnings, 0 errors** and reports no tool removal, so it is purely
+additive. The game is running and the OS holds the DLL memory-mapped, so it cannot land until the
+next down window - `NEXT_RELOAD.md` sec 22. What to run the moment it does is `NEXT_RELOAD.md` sec 23.
+
+CLOSE THIS ITEM ONLY AFTER THE LIVE TOOL LIST SHOWS THE NAME. A build that compiled is not a tool
+the bridge serves, and treating it as one is the same mistake as reading a def instead of the
+instance.
+
+---
+
 # PAWN_STAT_READ_HAS_NO_TOOL_1 — the bridge cannot read a StatDef off a pawn
 
 Measured 2026-08-26, seat CHECK, while working `LIVE_HALF_OF_LOAD_1`. Four rows of that item
