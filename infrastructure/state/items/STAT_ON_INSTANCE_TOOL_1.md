@@ -1,3 +1,49 @@
+## ✅ BUILT AND DEPLOYED 2026-08-26, seat BUILD, in the game-down window
+
+**`jawa/thing_stats`** is written, compiled (0 warnings, 0 errors, no tool removal) and deployed to
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`
+with `build.py --gm --apply`. Source:
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchStatTools.cs`, beside `jawa/pawn_stats`.
+The deployed DLL's tool-name surface reads **166**, `jawa/thing_stats` among them.
+
+⛔ **That is not the same claim as "the tool works".** RimBridgeServer discovers companions only at
+STARTUP, so it does not exist in any running game until the next launch. This item stays open on
+`bridge` for exactly that reason.
+
+**What it does, against the spec above:** takes `thing` (one id, or several comma-separated) or
+`pawn` + `slot` (`equipment|apparel|inventory`), plus named StatDefs. Every row returns `value`
+(`Thing.GetStatValue` — the instance) **beside `defBase`** (`ThingDef.GetStatValueAbstract` with this
+thing's stuff — what a def-only reader would have said), plus `delta`, `movedFromDef` and the
+`statParts` that can move it. An unknown StatDef is refused **by name with suggestions**; an
+unresolved thing id is refused by name, and if the id was really a defName the refusal lists the
+live ids carrying that def. 🔴 **A named stat that resolved nowhere returns `success:false`** — the
+one thing the first draft got wrong, and the exact failure `BRIDGE_ARG_SHAPES_INCONSISTENT_1` is
+filed against: an empty collection with `success:true` cannot be told apart from a true empty result.
+
+### Validation plan — run it at the next load
+
+```
+ITEM     jawa/thing_stats — a StatDef evaluated on a live item, with the def-level number beside it
+SEE      One answer holding two rows for the same weapon def: a ground copy and a held copy, each
+         with value AND defBase, and movedFromDef true wherever a StatPart is in play
+ROUTE    python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\prove_stat_and_room.py
+         (census must read 166 and list jawa/thing_stats; check 3b reads a held weapon)
+         then, for the lightsaber question: jawa/spawn_batch a second copy on the ground, and
+         jawa/thing_stats {thing: "<groundId>,<heldId>", stats: "ArmorPenetrationSharp"}
+PREDICT  166 jawa/ tools live; a vanilla steel weapon reads movedFromDef=false on Mass and
+         true on nothing; a lightsaber's ArmorPenetration* differs between the two ids
+CLOSE    One run where both ids come back with value and defBase — NOT chasing every StatPart in
+         the mod stack, and NOT grading the lightsaber's number itself (that is
+         LIGHTSABER_AP_FROM_HAND_1's own item)
+RIDE     batch (no new mod, no def change — it is a companion tool and rides with §23)
+LIES     The census is the whole gate: a deployed DLL registers NOTHING until the game restarts,
+         so a "tool not found" after a load that predates this deploy is not a failure of the tool.
+         And movedFromDef=false is only meaningful once defBase is non-null — a null defBase means
+         the base could not be computed, never "nothing moved it".
+```
+
+---
+
 ## spec
 
 **The bridge can read a def's fields and a thing's inspect text, but it cannot ask the

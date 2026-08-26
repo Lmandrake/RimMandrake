@@ -1,3 +1,10 @@
+> ✅ **THE DEPLOY IS DONE, 2026-08-26, game down.** CHECK deployed at 06:36 (165 tools); BUILD
+> redeployed later in the same window after adding `jawa/thing_stats`, so the game copy now
+> carries **166**. Measured on the deployed DLL with `build.py`'s own `tool_surface`, not by
+> `strings`: **written 166, deployed 166, missing 0.**
+> ⛔ The item is NOT closed by that. `--list-tools` against a RUNNING game is the only proof,
+> and companions are discovered at startup — so this closes on the first census after a load.
+
 # COMPANION_DLL_42_TOOLS_BEHIND_1 — written, committed, and not in the running game
 
 Measured 2026-08-26, seat CHECK. The arithmetic is exact and leaves nothing to interpret:

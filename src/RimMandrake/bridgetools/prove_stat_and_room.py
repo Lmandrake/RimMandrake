@@ -17,11 +17,13 @@ They exist because four queue rows had no instrument at all:
 WHAT IT CHECKS, IN THE ONLY ORDER THAT MAKES SENSE
 ==================================================
   1. CENSUS. Does the running game register the tools the deployed DLL contains?
-     Everything below is meaningless until this passes. Expect 165 jawa/ tools.
+     Everything below is meaningless until this passes. Expect 166 jawa/ tools.
   2. pawn_stats REFUSES a bad stat name instead of skipping it. This is checked
      BEFORE any real reading, because a tool that silently drops a stat reports
      an empty answer that reads exactly like "the pawn does not have it".
   3. pawn_stats on one pawn per xenotype -> the four temperature rows.
+  3b. thing_stats on a HELD weapon -> value beside defBase, so a StatPart that
+     moved the number is visible. STAT_ON_INSTANCE_TOOL_1.
   4. room_get on a built structure -> the two template rows.
 
 USAGE
@@ -39,8 +41,8 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
 import rimbridge_client as rc
 
-EXPECT_TOOLS = 165          # source-declared at deploy time, commit 2b519568
-NEW = ("jawa/pawn_stats", "jawa/room_get")
+EXPECT_TOOLS = 166          # source-declared at deploy time, 2026-08-26 BUILD (+jawa/thing_stats)
+NEW = ("jawa/pawn_stats", "jawa/room_get", "jawa/thing_stats")
 
 # The genes measured off live instances on 2026-08-26. The stat must move in the
 # direction the genes say; the exact numbers are what this run establishes.
@@ -138,6 +140,49 @@ def main(argv=None):
     print("   \u26d4 Do NOT grade T2 until JAWA_TEMP_RANGE_TWO_CRITERIA_1 is answered:")
     print("      T2 says the Jawa should read -40...+65, N1 says -50...+55, for the same stat.")
     print("      The genes say N1. Picking the criterion after looking is not a test.")
+
+
+    # ---- 3b. thing_stats: the same rule, for ITEMS -------------------------
+    # STAT_ON_INSTANCE_TOOL_1. Runs before the room block on purpose: that one
+    # returns early without --rect, and this must not be skipped by an argument
+    # that has nothing to do with it.
+    print("\n3b. thing_stats  (STAT_ON_INSTANCE_TOOL_1 - the instance, beside the def)")
+    armed = None
+    for q in ps[:40]:
+        g = call("jawa/pawn_get", {"pawn": q["id"]})
+        eq = g.get("equipment") or []
+        if eq:
+            armed = (q["id"], eq[0].get("def"))
+            break
+    if armed is None:
+        note(False, "an armed pawn to read",
+             "no pawn on this map is holding anything - UNMEASURED, not a pass")
+    else:
+        pid, wdef = armed
+        r = call("jawa/thing_stats", {"pawn": pid, "slot": "equipment",
+                                      "stats": "MeleeWeapon_AverageDPS,ArmorPenetrationSharp,Mass"})
+        things = r.get("things") or []
+        st = (things[0].get("stats") if things else []) or []
+        note(r.get("success") is True and bool(st), "read a HELD weapon's stats",
+             "%s on %s" % (wdef, pid))
+        note(bool(st) and all("defBase" in x for x in st),
+             "defBase reported beside every value",
+             "without it, 'a StatPart moved this' cannot be seen at all")
+        for x in st:
+            print("     %-26s value %-10s defBase %-10s moved=%s  parts=%s"
+                  % (x.get("defName"), x.get("value"), x.get("defBase"),
+                     x.get("movedFromDef"), (x.get("statParts") or [])[:2]))
+        # A stat that does not exist must be REFUSED BY NAME, never reported as 0.
+        bad = call("jawa/thing_stats", {"pawn": pid, "slot": "equipment",
+                                        "stats": "ArmourPenetrationSharp"})
+        ref = ((bad.get("details") or {}).get("refused")) or bad.get("refused") or []
+        note(bad.get("success") is False and bool(ref),
+             "a bogus stat name fails loudly", (bad.get("message") or "")[:70])
+        note(any("ArmourPenetrationSharp" == (x.get("stat") or "") for x in ref),
+             "and the refusal NAMES the stat asked for", str([x.get("stat") for x in ref][:3]))
+        print("   \u26a0 The ground-vs-held comparison this tool exists for is TWO calls:")
+        print("      jawa/spawn_batch a second copy, then jawa/thing_stats {thing: '<groundId>,<heldId>'}")
+        print("      One answer, both rows, defBase beside each. That is LIGHTSABER_AP_FROM_HAND_1.")
 
     # ---- 4. rooms ---------------------------------------------------------
     print("\n4. room_get  (TEMPLATE_ENGINE_ACCEPTANCE_1 criteria 1 and 2)")

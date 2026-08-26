@@ -1,4 +1,8 @@
-WRITTEN AND BUILT 2026-08-26 - it just is not deployed.
+✅ **DEPLOYED 2026-08-26, game down** — first by CHECK at 06:36, and again by BUILD later the
+same window when `jawa/thing_stats` was added. The game copy of the companion DLL carries
+**166** `jawa/` tool names, `jawa/room_get` among them.
+⛔ **Still open, and correctly so:** RimBridgeServer discovers companions only at STARTUP, so
+the tool exists in no running game until the next launch. The line below stands unchanged.
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchStatTools.cs` adds **`jawa/room_get`**.
 `build.py --gm` succeeds with **0 warnings, 0 errors** and reports no tool removal, so it is purely
 additive. The game is running and the OS holds the DLL memory-mapped, so it cannot land until the

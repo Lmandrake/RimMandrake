@@ -249,8 +249,15 @@ the previous session and still could not appear, which is exactly the failure th
 > build's own report: artifact and game copy are both `sha256 b52b37cba71f4861…`, 1,523,712 B,
 > against the old 1,255,936 B. Built from commit `2b519568`; source declares **165** `jawa/` tools.
 > ⚠️ **RimBridgeServer discovers companions only at STARTUP**, so none of them exists until RimWorld
-> is launched. The first thing to do in the new session is `--list-tools` and confirm 165 — the
+> is launched. The first thing to do in the new session is `--list-tools` and confirm the count — the
 > live list is the only proof; a build that compiled is not a tool the bridge serves.
+>
+> 🔴 **CORRECTED 2026-08-26, later in the same down window, by BUILD: the number is 166, not 165.**
+> BUILD added **`jawa/thing_stats`** (`STAT_ON_INSTANCE_TOOL_1` — a StatDef evaluated on a live ITEM,
+> with the def-level number returned beside it) and redeployed with `build.py --gm --apply`,
+> 0 warnings, 0 errors, no tool removal. Measured on the DEPLOYED DLL with `build.py`'s own
+> `tool_surface`: **written 166, deployed 166, missing 0.** `prove_stat_and_room.py` now expects 166
+> and carries the thing_stats checks as block 3b. **Confirm 166.**
 
 
 🔴 **Do the companion deploy FIRST in the next down window.** The arithmetic is exact:
@@ -297,7 +304,8 @@ python.exe ... prove_stat_and_room.py --rect 170,170,18,10     # add the room ch
 ```
 
 🔑 **Its first check is the only one that matters until it passes:** does the running game register
-165 `jawa/` tools, and are `jawa/pawn_stats` and `jawa/room_get` in the LIVE list. Companions are
+**166** `jawa/` tools (corrected 2026-08-26 — BUILD added `jawa/thing_stats` in the same down
+window), and are `jawa/pawn_stats`, `jawa/room_get` and `jawa/thing_stats` in the LIVE list. Companions are
 discovered at startup only, so a deployed DLL proves nothing until that census passes.
 Its second check is that `pawn_stats` **refuses** a bogus stat name and suggests the real one —
 run before any reading, because a tool that silently drops a stat returns an empty answer that
