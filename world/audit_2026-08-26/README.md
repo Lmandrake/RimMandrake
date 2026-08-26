@@ -162,3 +162,38 @@ never for terrain. `world_lint` unchanged at 22 findings.
 **What it unlocks.** Geological Landforms gates its dramatic landforms on hilliness:
 Crater and Rift need 3.4-5.0, Valley needs 3.7-4.8. Eligible tiles go 1,573 -> 2,746 and
 1,517 -> 2,391. Caldera (1.0-2.2, Inland) was always available on ~14,800 tiles.
+
+## Sharpened 2026-08-26, later: the GL_* defs are COMPUTED, not stored — and they ARE live
+
+The earlier section is right that the write is refused. It was incomplete about why, and it
+implied the landforms were dormant. They are not.
+
+**The evidence.** The in-game world-tile pane for tile 18404 lists eight features:
+insect megahive, bumbledrone nests, rotstink geysers, increased fish, flood plains,
+increased solar exposure, **biome transitions**, marshy. `jawa/world_mutators_get` on the
+same tile returns exactly seven — every one of those **except** `biome transitions`.
+
+Tile 18404 borders two different biomes (`BiomeCypreJungle` x2,
+`COMIGO_GreaterSwamp_Tropical` x2), and `GL_BiomeTransitions` — from the separate
+**Biome Transitions** mod (`m00nl1ght.geologicallandforms.biometransitions`), same author,
+same `GL_` prefix, which is what made it look like one family — shares
+`GeologicalLandforms.TileMutatorWorker_Landform` with all 45 landform defs.
+
+🔑 **So a `GL_*` feature is derived from the tile's real geometry at display time and never
+enters `Tile.mutatorsNullable`.** That explains all three observations at once:
+
+* `world_mutators_get` never lists them — it reads the stored list, and they are not in it.
+* a write reports `added: 1` and vanishes — `AddMutator` appends, then the worker's
+  `OnAddedToTile` takes it back out, because the list is not where they live.
+* the histogram scored all 45 as "never used" — **that number was measuring the wrong thing.**
+  ⛔ Do not quote "45 landforms unused" from the earlier section; it is an artefact of a
+  read that cannot see them.
+
+⇒ The landform system is ACTIVE on Ash'karr and driven by exactly the tile properties we
+author. The hilliness pass is therefore the correct lever, and its effect is real.
+
+⚠️ **Still unproven, and honestly so:** I have seen a `GL_*` feature appear in-game on a
+real tile, which proves the mechanism. I have NOT seen the word "caldera" or "canyon" in a
+mountain tile's pane, because no bridge tool selects an arbitrary world tile — `world_view`
+centres the globe without selecting, and the pane keeps whatever was last clicked. Clicking
+one Gray Crags tile in game would close it in two seconds.
