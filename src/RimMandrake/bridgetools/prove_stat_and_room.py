@@ -137,7 +137,8 @@ def main(argv=None):
     print("\n   the table these four rows are graded on:")
     for xn, lo, hi, why in rows:
         print("     %-24s %8s ... %-8s  %s" % (xn, lo, hi, why))
-    print("   \u26d4 Do NOT grade T2 until JAWA_TEMP_RANGE_TWO_CRITERIA_1 is answered:")
+    print("   \u26d4 T2 and N1 are BOTH UNGRADED until the owner rules. He said, 2026-08-26:")
+    print("      \"Measure it, then ask again\" - so this table goes back to him, it is not a verdict.")
     print("      T2 says the Jawa should read -40...+65, N1 says -50...+55, for the same stat.")
     print("      The genes say N1. Picking the criterion after looking is not a test.")
 
