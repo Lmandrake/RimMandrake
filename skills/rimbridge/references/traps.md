@@ -580,3 +580,26 @@ jawa/spawn_pawn        -> "No current map. Load a game first."
 ⚠️ **`mapCount: 1` answers "does a map exist", NOT "can I drive it".** `Find.CurrentMap` was still
 null. Poll `rimworld/get_cell_info` → `state.currentMapId` until it is non-null (a few seconds); that
 is the only reading that means the map will accept a write.
+
+## 🔴 The bridge SILENTLY DROPS any parameter a tool's schema does not declare
+
+Proven 2026-08-26 on purpose, after two calls in one session were mis-named and nothing complained.
+
+```
+jawa/new_allowed_area {label: "CHECK_correct"}           -> success, label "CHECK_correct"
+jawa/new_allowed_area {name: "CHECK_wrong", banana: 42}  -> success, label "Area 3"
+jawa/time_clock       {zzz: "nonsense"}                  -> success, full correct payload
+```
+
+`success: true` every time. ⇒ **A typo in a parameter name is invisible.** It is caught only when the
+tool then misses a *required* field and refuses; where a default exists you get a successful call
+that did something else — `new_allowed_area` wants `label` not `name`, `stop_job` wants `mode` not
+`action`, and both quietly used their defaults.
+
+⚠️ **Four grammars on tools that look alike, all in one session:**
+`rect` (`room_get`) · `rects` (`destroy_batch`) · `ops` (`set_terrain_batch`, `set_roof_batch`,
+`paint_area`, `build_batch`) · and `faction: "player"` accepted by `spawn_pawn`, refused by
+`build_batch` which wants `PlayerColony`.
+
+🔑 **Read the schema, not the sibling tool.** `b.list_tools()` carries the accepted keys; diff your
+arguments against them before a batch. This is a property of the BRIDGE, not of any one tool.
