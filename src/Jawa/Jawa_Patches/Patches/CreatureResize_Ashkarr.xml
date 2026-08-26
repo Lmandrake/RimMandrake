@@ -159,15 +159,15 @@
              Life stages keep their original proportions throughout: x1.843 then x2. -->
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>19.16</drawSize></value>
+          <value><drawSize>10.81</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>26.40</drawSize></value>
+          <value><drawSize>14.90</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>32.00</drawSize></value>
+          <value><drawSize>18.06</drawSize></value>
         </li>
         <!-- 🔴 bodySize AND healthScale, "fully", on his instruction. This file's standing rule
              is that drawSize and bodySize are NEVER merged - drawSize is the picture, bodySize
