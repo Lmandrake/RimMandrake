@@ -29,6 +29,9 @@ DEF_FILES = [
     f"{GAME}/Data/Odyssey/Defs/TileMutators/Landmarks.xml",
     f"{WORKSHOP}/1841354677/1.6/Mods/Odyssey/Defs/TileMutators/Landmarks.xml",
     f"{WORKSHOP}/3656316229/1.6/Defs/TileMutators/Landmarks.xml",
+    # Star Wars Animal Collection files its two Sarlacc landmarks with the BUILDINGS,
+    # not under TileMutators, and their icons are named Landmark_* not sw_*.
+    f"{WORKSHOP}/3497316713/1.6/Defs/ThingDefs_Buildings/SW_Buildings_Natural.xml",
 ]
 SOLID_COVERAGE = 32.0        # >= this and few colours -> a solid stamp, worth repainting
 FLAT_COLOURS = 6
@@ -78,9 +81,12 @@ def texture_index():
     # ONE level only.  Measured 2026-08-25 over 1254 workshop mods: the root-level
     # glob finds all 43 landmark PNGs in 4.4 s; going one level deeper costs 18 s and
     # two levels 49 s and both find NOTHING.  A recursive walk never finishes at all.
+    # Alpha Biomes files its landmark icons under Textures/UI/Icons/AB_Landmarks/, NOT
+    # under World/Landmarks -- the iconTexturePath is the only thing that knows.
     for root in (WORKSHOP, f"{GAME}/Mods"):
-        for p in glob.glob(f"{root}/*/Textures/World/Landmarks/*.png"):
-            idx.setdefault(p.split("/Textures/", 1)[1][:-4].lower(), p)
+        for sub in ("World/Landmarks", "UI/Icons/AB_Landmarks", "UI/Icons/AB_MutatorIcons"):
+            for p in glob.glob(f"{root}/*/Textures/{sub}/*.png"):
+                idx.setdefault(p.split("/Textures/", 1)[1][:-4].lower(), p)
     ic = f"{BUNDLE}/index.csv"
     if os.path.exists(ic):
         for r in csv.DictReader(open(ic)):
