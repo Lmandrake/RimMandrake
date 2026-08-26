@@ -789,3 +789,17 @@ space from `jawa/*`.** Prefix it: `pawnId = "Thing_" + jawa/list_pawns id`
 By name it refuses only on AMBIGUITY — three pawns called `Qormot` on one map — and uniquely
 named animals aim first try. ⚠️ `rimworld/list_colonists` lists colonists ONLY (3 rows against
 72 pawns), which is why the id space looked closed to animals.
+
+📌 **`jawa/build_batch`'s `placed` is spawn ATTEMPTS, not survivors** — 81 reported placed,
+`failed: []`, 78 on the map: three were destroyed by a later op in the same run whose multi-cell
+footprint covered them, and both ops reported success. Read cells back after `jawa/map_commit`.
+
+📌 **`jawa/set_terrain_batch` / `jawa/set_roof_batch` take `ops` (`'<Def>:x,z,w,h'` joined by `;`),
+never `rect`.** `rect` fails loudly with *"ops is required"*, so nothing is lost silently — but
+`rimplace` currently compiles `rect` and 4 of its 13 calls cannot run.
+
+📌 **No tool reads a `Room` (role, temperature) or a pawn's `StatDef` value.** Both are
+UNMEASURED from outside the game; `jawa/room_get` and `jawa/pawn_stats` are filed.
+
+📌 **The template engine works.** `rimplace dwelling` placed 112 terrain, 180 roof and 78 of 81
+things into a live map on 2026-08-26 — its first cells ever placed in a running game.

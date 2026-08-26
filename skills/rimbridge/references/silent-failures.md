@@ -169,3 +169,34 @@ MAP generation from the tile's hilliness, topology and elevation.
 The validity array is evaluated AFTER the add, so it reports the landmark you just wrote.
 `added >= 1` plus a read-back showing your def is the only trustworthy signal. Conversely a
 landmark CAN be placed on a tile the engine considers invalid — the flag never blocks.
+
+## `jawa/build_batch` — `placed` counts spawn attempts, not survivors
+
+Measured 2026-08-26, full 582-mod list, one run of 8 calls / 81 ops.
+
+```
+reported: placed 4+1+1+3+3+1+3+65 = 81, failed: [] on every call
+map held: 78
+```
+
+The three missing things were each **destroyed by a LATER op in the same run** whose multi-cell
+footprint covered them — a `Table1x2c` (1×2) over a `DiningChair`, and a third `Shelf` over the
+two before it. 🔴 **Both the destroying op and the destroyed op reported success.**
+
+⇒ Diffing `placed` against `requested` — the obvious check, and the one a build-verification pass
+will reach for — sees a perfect run. **The only honest success signal is a cell-by-cell read-back
+with `rimworld/get_cells_info` after `jawa/map_commit`.**
+
+⚠️ Also: `jawa/set_terrain_batch` and `jawa/set_roof_batch` take **`ops`** (`'<Def>:x,z,w,h'`
+joined by `;`), NOT a `rect` parameter. Passing `rect` fails loudly — `success: false`,
+*"ops is required"* — so this one is safe, but a compiler that emits `rect` loses every cell.
+
+## Nothing reads a `Room` or a pawn's `StatDef` from outside the game
+
+`rimworld/get_cell_info` has **no room object** (terrain, roof, fog, walkable, zone, areas,
+things, designations — that is all), and no tool in the 246 reads room temperature or role.
+`jawa/pawn_get` returns identity, apparel, equipment, hediffs, needs, skills, traits and xenotype
+and **no stats**; `rimworld/select_pawn` is colonist-only and `Dialog_InfoCard` has no
+parameterless constructor, so the UI route is shut too.
+🔑 A question about `Room.Role`, room temperature or `ComfortableTemperatureRange` is
+**UNMEASURED** today — not "probably fine".
