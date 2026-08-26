@@ -148,3 +148,24 @@ happened to match. **Treat the written path as a claim and stat the Saves folder
 > Two instruments, always. `jawa/world_stats`' biome histogram and `jawa/pawn_get`'s
 > `levelRaw` exist precisely so a write can be checked by something other than the writer.
 > ⛔ **A tool returning `success: true` is not evidence.** It never was.
+
+## `jawa/world_mutators_set` on any `GL_*` def — reports `added: 1`, changes nothing
+
+Measured 2026-08-26 on six genuinely empty world tiles across six biome/hilliness
+combinations. Every `GL_*` (Geological Landforms / Biome Transitions) write returned
+`success: true, added: 1` and left the tile empty; a normal mutator landed on the same tile
+in the same call. Nothing was logged, and no category conflict was possible.
+
+⇒ **Not a bug.** Those defs are computed at display time and never enter
+`Tile.mutatorsNullable`; the mod's `TileMutatorWorker_Landform` removes what `AddMutator`
+appended. There is no way to author them and no reason to — landform assignment happens at
+MAP generation from the tile's hilliness, topology and elevation.
+
+🔑 The tell that they are live anyway: an in-game world-tile pane listing a feature that
+`world_mutators_get` does not return for the same tile.
+
+## `jawa/world_landmarks_set` — `isValidTile: false` on a landmark that was placed correctly
+
+The validity array is evaluated AFTER the add, so it reports the landmark you just wrote.
+`added >= 1` plus a read-back showing your def is the only trustworthy signal. Conversely a
+landmark CAN be placed on a tile the engine considers invalid — the flag never blocks.

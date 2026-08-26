@@ -120,3 +120,151 @@ Two ways to settle it, in order of strength:
    of all: `Tile.AddMutator` never validates biome, so a write **cannot fail** on a gate that
    is never checked. An agent correctly refused `FoggyMutator` on `Ocean` on exactly this
    reasoning after its probe appeared to succeed.
+
+---
+
+# Measured 2026-08-26, authoring ~11,000 mutators and 150 landmarks on Ash'karr
+
+Every entry below is a mistake that was made and caught in one session.
+
+## 🔴 `world_landmarks_set`'s `isValidTile` is evaluated AFTER the add. It is not a gate.
+
+```
+world_landmarks_set {action:add, def:sw_Sarlacc, tiles:"6", checkValid:true}
+  -> added: 1
+     validity: [{tile: 6, isValidTile: FALSE}]
+     tiles:    [{landmark: "sw_Sarlacc", landmarkName: "White Sarlacci Burrow", ...}]
+```
+
+The landmark **is on the tile** and named. `isValidTile` reports false because a landmark now
+occupies it — the flag describes the state *after* your own write. ⛔ It never blocks the add,
+and it is worthless as a pre-check.
+
+✅ **The only honest success signal is `added >= 1` AND the read-back row showing your def in
+`landmark`.** Everything else lies in one direction or the other.
+
+## 🔴 The LANDMARK and the MUTATOR often have DIFFERENT defNames
+
+`AncientRuins` is a TileMutatorDef. The LandmarkDef is `Ruins`. Nine placements failed with
+*"No LandmarkDef 'AncientRuins'"* on the assumption that one name served both.
+
+⚠️ Others that differ or exist on only one side: `sw_Sarlacc` is a LandmarkDef with **no**
+mutator (its mutator is `sw_SarlaccLair`); `VEE_CactusFields` is landmark-only. **Check
+which def type you actually hold before writing.**
+
+## 🔴 A landmark's `mutatorChances` rolls BYPASS any category guard you apply to your own writes
+
+`AddLandmark` also rolls the def's `mutatorChances` and `comboLandmarkMutators` onto the tile.
+Those adds go through `Tile.AddMutator` like any other, so they displace same-category
+mutators — and your careful guard never saw them.
+
+Measured: 7 displacements from one landmark pass. Six were correct specialisations
+(`Cavern` / `VEE_SerpentineCanyons` / `VEE_Cenotes` replacing a generic `Mountain`). **One was
+a real defect** — a `VEE_DryRiver` landmark on a LIVE river tile displaced its `River`.
+
+✅ **Diff whole-planet LOSSES after any landmark pass, not just your intended gains.**
+
+## 🔴 A remove does NOT restore what an add displaced
+
+```
+before: ['Cliffs', 'VEE_MoreSolarPower']
+add VEE_JaggedRocks   -> Cliffs displaced (both category Mountain)
+remove VEE_JaggedRocks
+after : ['VEE_MoreSolarPower']            <- Cliffs is GONE
+```
+
+⇒ **Any add/remove probe on a categorised mutator is destructive.** Read the tile first and
+put back what you displaced. This bit during an experiment, on a tile nobody meant to edit.
+
+## ⚠️ `overrideCategories` is a SECOND displacement path your guard probably misses
+
+`AddMutator` removes on `categories` overlap **and separately** on
+`mutator.overrideCategories` matching the existing def's `categories`. A collision guard built
+on `categories` alone will miss it — measured once, `VEE_SerpentineCanyons` took out a `Caves`.
+
+## 🔴 The 45 `GL_*` defs cannot be written, and that is CORRECT
+
+Geological Landforms (and its sibling **Biome Transitions**, same author, same `GL_` prefix,
+different mod) register `TileMutatorDef`s that are **computed at display time and never enter
+`Tile.mutatorsNullable`**.
+
+Control, six genuinely empty tiles across six biome/hilliness combinations:
+
+```
+tile   biome            hilliness    def                 added  LANDED
+10140  ExtremeDesert    Flat         GL_DesertPlateau      1     NO
+10140  ExtremeDesert    Flat         VEE_PebbleDunes       1     YES
+297    AB_RockyCrags    Mountainous  GL_Caldera            1     NO
+297    AB_RockyCrags    Mountainous  Cavern                1     YES
+```
+
+No category conflict was possible, nothing was logged, and `Tile.AddMutator` has no early
+return — so the mod's worker removes it again. Proof they are live regardless:
+`Player.log` reports `Loaded 49 landforms`, and the in-game pane for a tile bordering two
+biomes lists `biome transitions` that `world_mutators_get` does **not** return.
+
+⛔ **So a "never used" count over `GL_*` defs is measuring the wrong thing.** They are assigned
+at MAP generation from tile requirements (`<workshop>/2773943594/1.6/Landforms-v1/*.xml`:
+Topology, Commonness, hilliness / elevation / temperature ranges). ⇒ **The lever is hilliness
+and elevation, not mutators**, and no landform ever shows on the world-tile pane, before or
+after a reload.
+
+## 🔴 Every canyon and chasm def needs Mountainous, and they are ALL category `Mountain`
+
+```
+VEE_SerpentineCanyons · Chasm · Cavern · Hollow · Cliffs   minHilliness = Mountainous
+VEE_RockRidge · VEE_JaggedRocks · VEE_StoneForest · Crevasse   maxHilliness = Flat
+```
+
+⇒ There is **no canyon vocabulary at LargeHills or SmallHills** — the two families gate at
+opposite ends. To carve a canyon system you must raise the whole structure to Mountainous
+first. And because they share the `Mountain` category, **a tile holds exactly one of them**;
+build variety by walking different defs along the ridge, not by stacking.
+
+## 🔴 `elevation <= 0` IS water, and a sub-zero tile generates NO ROCK
+
+```csharp
+SurfaceTile.WaterCovered => elevation <= 0f;
+GenStep_RocksFromGrid.Generate: if (map.TileInfo.WaterCovered) { return; }
+```
+
+That return takes rock, rock roofs and `GenStep_ScatterLumpsMineable` with it;
+`GenStep_RockChunks` bails the same way. And it cannot even persist —
+`SurfaceLayer.cs:98` stores `WaterCovered ? elevation : Mathf.Max(elevation, 1f)`, so a land
+tile's elevation is clamped to at least **1 m** on save.
+
+🔑 **A chasm floor is not the world tile's elevation.**
+`TileMutatorWorker_Chasm.GeneratePostElevationFertility` writes `MapGenerator.Elevation` —
+the MAP grid — raising cells above `ChasmThreshold 0.5`. The chasm is the *gap between raised
+rock*: depth comes from raising walls. Taking a tile sub-zero makes a canyon **shallower and
+drowned**, not deeper.
+
+## ⚠️ `FeatureDef` is a WORLDGEN classifier. Nothing reads it at draw time.
+
+`FeatureWorker.cs:33` uses `def.nameMaker` once, when the region is created.
+`WorldFeatures.cs` draws from `name`, `drawCenter`, `drawAngle`, `maxDrawSizeInTiles` — never
+`def`. ⇒ Retyping named regions onto `Sea` / `MountainRange` / `Desert` changes **nothing**
+visible or mechanical. Do not spend a pass on it.
+
+⚠️ And `maxDrawSizeInTiles` cannot differentiate labels downward: `EffectiveDrawSizeCurve`
+starts at `(10 -> 15)` and `SimpleCurve` clamps below its first point, so **anything under 10
+draws identically to 10**. Differentiation only goes up, and up collides on a globe carrying
+70+ named regions. The flat default of 10.0 is usually correct.
+
+## ⚠️ Mutators persist as shortHash BYTE ARRAYS. `grep` on a save cannot see them.
+
+`<tileMutatorDefsDeflate>` / `<tileMutatorTilesDeflate>` — base64 + raw DEFLATE, 2-byte
+little-endian shortHashes. Landmarks DO store as defName text, which makes the contrast
+maximally misleading: grepping a save finds `sw_Sarlacc` and returns **0** for
+`VEE_MoreSolarPower` on 4,362 tiles.
+
+✅ To verify a mutator pass in a save, decode the array and count shortHashes:
+
+```python
+raw = zlib.decompress(base64.b64decode(re.sub(rb'\s+', b'', m.group(1))), -15)
+counts = collections.Counter(struct.unpack('<%dH' % (len(raw)//2), raw))
+```
+
+⚠️ Compare against TOTALS, not against how many you added — the pre-existing count is in
+there too. That mistake produced a false "SOMETHING DID NOT PERSIST" verdict on a pass that
+was perfect.

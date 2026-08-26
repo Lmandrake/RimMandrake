@@ -157,6 +157,26 @@ wrong one look right:**
 4. **`AddLandmark` does not enforce `IsValidTile`.** It will happily stack a landmark on a
    settlement and say nothing. Ordering is ours to police.
 
+### 🔴 Five more, measured 2026-08-26 across ~11,000 mutator and 150 landmark writes
+
+Full evidence in `references/mutators-and-objects.md`; these are the ones that cost a repair.
+
+1. **`world_landmarks_set`'s `isValidTile` is evaluated AFTER the add** — it reports the
+   landmark you just placed, never blocks anything, and is worthless as a pre-check.
+   Success is `added >= 1` **plus** the read-back showing your def.
+2. **The landmark and the mutator often have different defNames.** `AncientRuins` is the
+   mutator; the landmark is `Ruins`. `sw_Sarlacc` has no mutator at all.
+3. **A landmark's `mutatorChances` rolls bypass any category guard you wrote** — they go
+   through `AddMutator` and displace. Diff whole-planet LOSSES after every landmark pass.
+   ⚠️ And a **remove does not restore** what an add displaced; probes are destructive.
+4. **The 45 `GL_*` defs cannot be written and that is correct** — Geological Landforms
+   computes them at display time; they never enter `mutatorsNullable`, so a "never used"
+   count over them measures nothing. Landforms are assigned at MAP generation from
+   hilliness/topology/elevation, and never appear on the world-tile pane.
+5. **`elevation <= 0` is water and generates NO ROCK** (`GenStep_RocksFromGrid` returns on
+   `WaterCovered`), and a land tile's elevation is clamped to >= 1 m on save. A chasm's
+   depth is the MAP elevation grid, not the world tile — you deepen it with hilliness.
+
 Full element census and every signature:
 `design/Jawa/worldbuilding/WORLDMAP_BRIDGE_SURFACE.md`. Live facts: `LIVE.md`.
 
