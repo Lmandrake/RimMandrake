@@ -1,0 +1,15 @@
+# Derived: re-harvestable from the live bridge in one call (vivify_world.py --live) or
+# rebuildable by the scripts here. Provenance is committed, bulk is not.
+__pycache__/
+*_tiles.csv
+_links_raw.json
+_verify_links.json
+_landmarks.json
+_objects.json
+_features.json
+before_*.csv
+comfort_*.csv
+after_landmarks.csv
+after_settlements.csv
+*_meta.json
+*_provenance.json
