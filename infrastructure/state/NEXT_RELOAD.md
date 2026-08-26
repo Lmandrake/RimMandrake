@@ -49,6 +49,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
 | 🔧 §22 FORTY-FOUR UNDEPLOYED BRIDGE TOOLS | ✅ **DEPLOYED 2026-08-26 06:36; REDEPLOYED at 166 tools ~07:0x** | ⏳ readings pending |
 | 🔬 §23 THE ROWS THAT UNBLOCK ON `jawa/pawn_stats` + `jawa/room_get` + `jawa/thing_stats` | 2026-08-26 | ⏳ PENDING — **run its census FIRST** |
+| 🐛 §26 DUPLICATE ANIMALS + FOUR DISCARDED GENES — deployed, scored from the LOG alone | 2026-08-26 | ⏳ PENDING |
 | 🔧 §25 COMPANION: 32 NEW TOOLS + 3 FIXES BUILT, WAITING ON A DOWN WINDOW | — | ⏳ **DEPLOY FIRST** next time the game is down |
 | 🧥 §24 THE JAWA HOOD — fix deployed, needs one spawn to prove | ✅ **DEPLOYED 2026-08-26 06:5x** | ⏳ READING PENDING |
 
@@ -316,6 +317,49 @@ stands until someone reads its description; check it after the deploy before clo
 whole reason the window matters. `python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --apply`
 
 
+## 🐛 §26 TWO DEF-LAYER BUGS ARE DEPLOYED — both scored from the LOG, no bridge, no clicking
+
+Found by `harvest_log.py` on the 2026-08-26 08:53 load, which scored **two RED lines above
+baseline**. Both fixes are deployed to the game folder already; defs are parsed at startup, so
+the next load is their first.
+
+### 1. The duplicate-animal crash — DEAD MODS 2, baseline 0
+
+A dead mod is the highest-priority finding in any log, and this one kills three:
+`ChooseWildAnimalSpawns` dies in its static constructor, Giddy-Up's biome cache never completes,
+and Biome Compatibility Project aborts the rest of the post-load queue.
+
+```
+grep -c "same key has already been added"      was 12 distinct keys   ->  expect 0
+harvest_log.py  DEAD MODS (static ctor)        was 2                  ->  expect 0
+```
+
+⚠️ **The log could only ever name 12** — `BiomeDef.CommonalityOfAnimal` throws on the first
+duplicate key **per biome** and stops. The capture found **27** pairs across those same 12
+biomes. `AnimalBiomeDuplicates_Generated.xml` removes all 27 animal-side entries.
+🔑 **Then re-run the instrument against the NEW capture**, because the log going quiet only
+proves the first collision in each biome is gone:
+```
+python3 src/RimMandrake/Utils/biome_animal_conflicts.py     expect: 0 pairs
+```
+A non-zero there is a pair this pass could not reach, NOT a patch that failed.
+Item: `BIOME_DUPLICATES_STILL_LIVE_1`.
+
+### 2. Four tattoo genes discarded whole — DEFS DISCARDED 6, baseline 2
+
+`SW_Genes.xml` carried a `modExtension` naming `GeneTattooTagFilter.ModExtension_GeneTattooTagFilter`,
+a type no installed mod provides. RimWorld does not drop the extension — **it drops the entire
+GeneDef**, so Mirialan, Pantoran, Togruta and Zabrak had no tattoo gene at all.
+
+```
+harvest_log.py  DEFS DISCARDED                 was 6   ->  expect 2 (the two VFE torches, benign)
+grep "SW_Genes.xml"                            was 4   ->  expect 0
+```
+✅ And the four genes should now be in the capture: `RimMandrake_tattooGene_mirialan`,
+`_pantoran`, `_togruta`, `_zabrak`. ⛔ Presence in the dump is the check here, not a spawn — a
+def that loads is exactly what was missing.
+
+---
 ## 🔧 §25 TWO COMPANION FIXES ARE BUILT AND WAITING ON THE NEXT DOWN WINDOW
 
 Written and compiled 2026-08-26 by BUILD at `97403eec`, **0 warnings, 0 errors, no tool
