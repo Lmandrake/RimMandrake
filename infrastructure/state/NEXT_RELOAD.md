@@ -378,6 +378,30 @@ python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --appl
 | `jawa/pawn_gear` · `FindPawn` · `jawa/pawn_genes` | five rows of `BRIDGE_ARG_SHAPES_INCONSISTENT_1`: both pawn id forms accepted, pawn_gear declares itself a WRITE tool and names `jawa/pawn_get`, equipment/apparel rows carry `defName` beside `def`, and the gene verbs and head-re-roll ordering are documented | any pawn-addressing call with a `Thing_`-prefixed id must now resolve instead of returning an empty success |
 | `jawa/fire_raid` | echoed the faction you asked for even when the worker raided with another (`FIRE_RAID_ECHOES_REQUESTED_FACTION_1`). Now returns **`actual`** (the faction the worker used, written back into parms) and **`arrived[]`** counted off the map, and warns BEFORE firing that a non-hostile faction will be substituted | `jawa/fire_raid {faction: "Jawa_FreeDroidEnclaves", dryRun: false}` must now say *substituted* and name Blackstar Company in `actual`/`arrived` |
 
+### The validation plan for §25, in the seven-field format
+
+```
+ITEM     The companion at 198 tools - 32 new EASY capabilities plus 3 corrected tools
+SEE      The census prints 198 and names jawa/thing_stats, and one tool from each of the three
+         new files answers a real call: jawa/mod_inventory lists 582 running mods,
+         jawa/read_opinion returns a number AND its breakdown for two colonists,
+         jawa/faction_goodwill_check refuses a change the faction cannot accept, by name
+ROUTE    python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\prove_stat_and_room.py --census
+         then the three calls above, in any order
+PREDICT  198 jawa/ tools; mod_inventory count == the ModsConfig activeMods count == 582
+CLOSE    The census at 198 plus those three calls answering - NOT exercising all 32, and NOT
+         grading what any of them DOES to the colony; that is each capability's own item
+RIDE     solo (a new assembly - batching destroys attribution if the load comes up wrong).
+         ⚠️ It rides with §22/§23 only because those are the SAME assembly.
+LIES     1. 198 is the count of [Tool] ATTRIBUTES. build.py's byte scan says 200 because
+            'jawa/anomaly_' and 'jawa/revoke' appear inside other tools' description prose -
+            reading 200 as the target makes a correct load look 2 short.
+         2. A deployed DLL registers NOTHING until the game restarts, so a tool-not-found
+            after a load that predates the deploy is not a failure of the tool.
+         3. 32 tools written by three agents in one pass all compiled; compiling is not
+            working, and none of them has ever been CALLED.
+```
+
 ⚠️ **`resolved` still exists and still means THE REQUEST.** It was not renamed — other callers read
 it — but both its own comment and the ResultDescription now say so, and `actual` is the outcome.
 
