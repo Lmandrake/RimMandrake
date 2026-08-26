@@ -34,3 +34,37 @@ form (render it with `python3 src/RimMandrake/Utils/worldview.py world/audit_202
    (`Cavern`/`SerpentineCanyons`/`Cenotes` replacing a generic `Mountain`), one was a real
    defect — a `VEE_DryRiver` landmark landed on a live river tile (863) and displaced `River`.
    Repaired. Diff whole-planet LOSSES after any landmark pass, not just your intended gains.
+
+## Second pass, same day — the nine empty regions, the vegetation liars, the stacked landmarks
+
+`ops2.json` + `apply2.py`. Every one of the 72 named regions now carries at least one
+landmark (was 15 with none this morning, 9 after the six passes). Thornbelt and Sunward
+Scrub got cacti and succulents; Thornend got `VEE_PoisonousFlora`, because its HorrorWastes
+biome is not in the cactus whitelist and the obvious fix was illegal there. The three
+landmarks sitting on settlement tiles were RELOCATED, not deleted — the gravel beach at
+Seabarter needed a ring-3 search to find a coastal tile.
+
+Live world saved as `ASHKARR_ALLPASSES_2026-08-26`.
+
+## 🔴 The 45 GL_* landforms CANNOT be placed. Measured, not assumed.
+
+`gltest2.py` is the control. On one tile that already held mutators:
+
+```
+before: ['Cliffs', 'VEE_MoreSolarPower']
+add GL_Caldera    success=True added=1  -> present after: False
+add GL_Canyon     success=True added=1  -> present after: False
+add GL_Sinkhole   success=True added=1  -> present after: False
+add VEE_JaggedRocks success=True added=1 -> present after: True
+```
+
+All 45 resolve live (`get_defs` foundCount 45/45) and all carry a real worker
+(`GeologicalLandforms.TileMutatorWorker_Landform`), no biome/hilliness/coast gates at all,
+and `chanceOnNonLandmarkTile: 0` — so worldgen never rolls them either. Geological
+Landforms evidently rejects the write itself; `world_mutators_set` reports `added: 1`
+regardless. **This is a new entry in the silent-failure catalogue.**
+
+⚠️ **A remove does NOT restore what an add displaced.** The probe's `VEE_JaggedRocks`
+(category Mountain) displaced `Cliffs`; removing VEE_JaggedRocks left the tile with
+neither. Repaired by hand. Any add/remove probe on a categorised mutator is destructive —
+read the tile first and put back what you displaced.
