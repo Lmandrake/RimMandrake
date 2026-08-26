@@ -2127,3 +2127,6 @@
 {"seat":"CHECK","event":"file","id":"JAWA_HOOD_NEVER_WORN_1","title":"Jawa spawn in guy762_Robes_jawa but never guy762_JawaHood - 0 of 16 live","kind":"bug","target":"v1","caused_by":"C40","for":"BUILD","ts":"2026-08-26T10:36:49Z"}
 {"seat":"CHECK","event":"file","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","title":"Colonist/Baseliner pawns appear in Jawa factions during spawn runs - observed, not explained","kind":"bug","target":"v1","caused_by":"C40","for":"CHECK","ts":"2026-08-26T10:37:03Z"}
 {"seat":"CHECK","event":"needs","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","to":"bridge","ts":"2026-08-26T10:37:20Z"}
+{"seat":"CHECK","event":"claim","id":"WORLDGEN_CITATIONS_REPOINT_CHECK_1","ts":"2026-08-26T10:37:56Z"}
+{"seat":"CHECK","event":"start","id":"WORLDGEN_CITATIONS_REPOINT_CHECK_1","ts":"2026-08-26T10:37:56Z"}
+{"seat":"CHECK","event":"close","id":"WORLDGEN_CITATIONS_REPOINT_CHECK_1","sha":"dd0880b6","ts":"2026-08-26T10:38:56Z"}

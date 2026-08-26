@@ -18,6 +18,11 @@
 > ⚠️ **`maxConfigurableAtWorldCreation` is deliberately NOT zeroed**, so a row is never deleted
 > from the page and the owner can always add one back.
 > ⛔ **The archive is history. Do not execute the untick list out of it.**
+>
+> ⚠️ **CORRECTED 2026-08-26 (WORLDGEN_CITATIONS_REPOINT_CHECK_1): "Nothing was deleted" is no
+> longer true.** The archive file this header points at was deleted whole at `892beac2`
+> (2026-08-26), with no successor file. The moved sections still exist only in git — read them
+> with `git show 892beac2^:infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md`.
 
 **What is LIVE below:** R3 (vanilla `Empire` *is* the Galactic Empire) · Section 4, the KEEPs
 to confirm · Section 4b, our own factions · the tally.

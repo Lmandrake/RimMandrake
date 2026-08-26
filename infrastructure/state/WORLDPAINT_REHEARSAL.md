@@ -21,6 +21,11 @@
 > `OnlyOurFactions.xml` sets both `startingCountAtWorldCreation` and
 > `maxConfigurableAtWorldCreation` to 0. Verified 2026-08-23: it zeroes only the first, on 48
 > defs, and its header forbids ever touching the second again.
+>
+> ⚠️ **CORRECTED 2026-08-26 (WORLDGEN_CITATIONS_REPOINT_CHECK_1): "Nothing was deleted" is no
+> longer true.** The archive file this header points at was deleted whole at `892beac2`
+> (2026-08-26), with no successor file. The moved sections still exist only in git — read them
+> with `git show 892beac2^:infrastructure/state/archive/WORLDPAINT_REHEARSAL_ARCHIVE.md`.
 
 **What is LIVE below:** §4 — what the bundle actually carries, the eleven derived mutator rules
 and the two engine facts they rest on — and §7, what must not happen.

@@ -47,8 +47,13 @@ the three settlement-anchored landmarks resolve 2.4–2.9° from their anchor, w
 second ring — the first legal one, because `IsValidTile` refuses a settlement tile *and*
 its neighbours, so the census's "one tile adjacent" was not placeable.
 
-Live, on the rehearsal run — `infrastructure/state/WORLDPAINT_REHEARSAL.md` §6, decision
-strings 6b, 7, 7b and 8.
+Live, on the rehearsal run — **§6, decision strings 6b, 7, 7b and 8.**
+⚠️ **REPOINTED 2026-08-26 (WORLDGEN_CITATIONS_REPOINT_CHECK_1).** §6 is no longer in
+`infrastructure/state/WORLDPAINT_REHEARSAL.md` — the live file now holds only §4 and §7. §5/§6/§6b were
+split to `infrastructure/state/archive/WORLDPAINT_REHEARSAL_ARCHIVE.md` at `c4455458`, and that archive
+was deleted whole at `892beac2`. Read §6 with
+`git show 892beac2^:infrastructure/state/archive/WORLDPAINT_REHEARSAL_ARCHIVE.md`.
+🔑 Cite by SECTION, never by line number.
 
 ## criteria
 - stage 3b removes **49** leftover landmarks
