@@ -503,3 +503,29 @@ Its whole top-level set is window/UI state plus `programState` and `hasCurrentGa
 no `currentMap`, `maps` or `mapCount` key — **absent, not null.** `hasCurrentGame` is true for a
 loaded GAME with no map instantiated, so a "is a map live" guard built on it passes exactly when
 it should refuse. 🔑 Use `rimworld/get_game_info` → `mapCount` (measured 1 on a 72-pawn map).
+
+## 🔴 `rimworld/search_debug_actions` WEDGES the bridge on a full mod list
+
+Measured 2026-08-26, seat CHECK, **582 active mods**, one map, game paused.
+
+```
+rimworld/search_debug_actions {"query": "generate map", "limit": 10}
+  -> timed out after 30s
+  -> every subsequent bridge call then timed out for MINUTES
+  -> RimWorldWin64.exe alive throughout at ~7 GB
+```
+
+🔑 **A `limit` on the RESULT does not limit the WORK.** The tool walks the whole dev-menu surface
+before it filters, and on a 582-mod list that surface is enormous — §4 measures 1,119 matches for
+"apparel" on a *three-mod* list. The call runs on the game's main thread, so **every other bridge
+call queues behind it** and the bridge reads as wedged (stuck, not crashed; it frees when the call
+finishes).
+
+⛔ **Do not call it on a full mod list**, and do not assume a narrow `query` makes it cheap — the
+query is applied after the walk. ✅ On the 13-mod minimal list it is affordable; that is where
+debug-action work belongs.
+
+⚠️ **If you have already fired it:** do not reconnect in a tight loop. Wait, with a long client
+timeout (`RimBridge(..., timeout=120)`), and check `tasklist.exe | grep -i rimworld` to confirm the
+process is alive rather than assuming a crash. The §4 warning that enumerating debug actions
+"destroyed a 568-mod game" is the same failure at a larger scale.

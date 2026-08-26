@@ -2171,3 +2171,4 @@
 {"seat":"CHECK","event":"start","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","ts":"2026-08-26T11:04:05Z"}
 {"seat":"CHECK","event":"verify","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","result":"partial","config":"full-582","evidence":"infrastructure/state/evidence/stray_colonists_2026-08-26_CHECK.md","sha":"f26dc749","ts":"2026-08-26T11:05:14Z"}
 {"seat":"CHECK","event":"close","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","sha":"f26dc749","ts":"2026-08-26T11:05:14Z"}
+{"seat":"CHECK","event":"file","id":"DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1","title":"rimworld/search_debug_actions walks the whole dev menu before filtering and wedges the bridge on 582 mods","kind":"bug","target":"v1","for":"BUILD","ts":"2026-08-26T11:10:31Z"}
