@@ -2257,3 +2257,5 @@
 {"seat":"BUILD","event":"start","id":"BRIDGE_TOOLS_MEDIUM_BLOCK_1","ts":"2026-08-26T16:30:32Z"}
 {"seat":"BUILD","event":"close","id":"BRIDGE_TOOLS_MEDIUM_BLOCK_1","sha":"d4cad32d","ts":"2026-08-26T16:30:32Z"}
 {"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T16:31:05Z"}
+{"seat":"BUILD","event":"file","id":"DUMPER_SWALLOWS_CACHE_THROW_1","title":"The def dumper publishes the engine's cached answer and swallows the exception behind it","kind":"defect","target":"v1","for":"BUILD","ts":"2026-08-26T16:32:58Z"}
+{"seat":"BUILD","event":"needs","id":"DUMPER_SWALLOWS_CACHE_THROW_1","to":"deploy","reason":"RimDefDump is an assembly; the OS locks it while the game runs","ts":"2026-08-26T16:32:58Z"}
