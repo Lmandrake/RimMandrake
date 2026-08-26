@@ -28,18 +28,11 @@ findings            a build is wrong -> BUILD. World vision, lore, design/** or 
 
 ### 🔴 The bridge is a RECORD, not a grant — corrected 2026-08-22
 
-⛔ **You are NOT the gatekeeper and you grant the bridge to nobody.** Peer messaging is off and hook-blocked since
-2026-08-19, so a borrower waiting on a grant waits forever. ✅ **The ledger serialises it instead:**
-
-```
-rimflow bridge            # who holds it, right now
-rimflow bridge take       # free? then it is yours
-rimflow bridge release    # the moment you stop, not the end of your turn
-```
-
-🔑 **You hold it by default and you take it first**; you no longer adjudicate another seat's access — reading the
-record is the borrower's job. ⚠️ **Release the moment you stop driving**: that is all that stands between a peer and a
-wedge.
+⛔ **You grant the bridge to nobody.** Peer messaging is hook-blocked, so a borrower waiting on a
+grant waits forever. ✅ The ledger serialises it: `rimflow bridge take` / `rimflow bridge release`
+— ⚠️ an action is REQUIRED, a bare `rimflow bridge` exits 2. 🔑 **You hold it by default and take
+it first**; reading the record is the borrower's job. ⚠️ **Release the moment you stop driving** —
+that is all that stands between a peer and a wedge.
 
 ## Numbers you report
 
@@ -135,25 +128,23 @@ Everywhere else a cheap model fails loudly; here it fails by passing, and a wron
 durable false fact that later items cite. Gather with `sonnet` subagents; believe with your own.
 `Agent_Policy.md`.
 
-## Skills added 2026-08-16
+## Skills
 
-`rimworld-world-editing` — the world screen, offline planet editing, tidally-locked geometry.
-`calibrating-binary-formats` — never invent an encoding; make the engine print its own number.
+`rimworld-world-editing` — the planet, and `references/river-networks.md` for editing a whole
+drainage: the 100-row `limit` cap on every `world_*_get`, the category conflicts that make a
+correct mutator write read as a failure, and the gates the setter does not enforce.
+`calibrating-binary-formats` — make the engine print its own number, never invent an encoding.
 `agent-fanout-research` — parallel investigation; the disk thread beats the web on local facts.
 
-⚠️ **A skill folder IS the installed skill** (corrected 2026-08-21): `.claude/skills/<name>` symlinks to
-`skills/<name>`, for the **25 that live here** ⇒ **editing the folder installs it, immediately.**
-⚠️ **Two skills are the exception**: `review-sheets` (moved out 2026-08-23) and `measuring-large-artifacts` live in their OWN repos and the symlink points outside this checkout — fix those THERE, not here. See `skills/README.md`. The `.skill` archives are an
-EXPORT for a machine without this checkout and are **gitignored** (`.gitignore:166`); refresh them with
-`python3 src/RimMandrake/Utils/package_skill.py --all`.
+⚠️ **A skill folder IS the installed skill** — `.claude/skills/<name>` symlinks to `skills/<name>`,
+so editing the folder installs it immediately. ⚠️ `review-sheets` and `measuring-large-artifacts`
+live in their OWN repos; fix those there. Roster and the `.skill` export: `skills/README.md`.
 
 ## ⛔ Do not message other agents. At all.
 
-Owner, 2026-08-19. **Full rule in `CLAUDE.md` and `POLICY.md`; it is not restated here.** ✅ Your own
-subagents are not peers — spawn and resume them freely.
+Owner, 2026-08-19. Full rule in `CLAUDE.md` and `POLICY.md`. ✅ Your own subagents are not peers.
 
 ## 🔴 The ledger — 2026-08-20
 
-⛔ **You do not hand-edit `queue/*.md` any more.** They are rendered from
-`infrastructure/state/ledger/events.jsonl` and a `PreToolUse` hook blocks the commit; POLICY.md carries the
-full contract. **You lose:** writing state into prose — scalars are events now.
+⛔ **You do not hand-edit `queue/*.md`.** They render from `state/ledger/events.jsonl` and a hook blocks
+the commit; POLICY.md carries the contract. **You lose:** writing state into prose — scalars are events.
