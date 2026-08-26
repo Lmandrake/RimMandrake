@@ -2167,3 +2167,7 @@
 {"seat":"CHECK","event":"claim","id":"WORLD_PORT_SURVIVES_BRIDGE_1","ts":"2026-08-26T11:01:27Z"}
 {"seat":"CHECK","event":"start","id":"WORLD_PORT_SURVIVES_BRIDGE_1","ts":"2026-08-26T11:01:27Z"}
 {"seat":"CHECK","event":"verify","id":"WORLD_PORT_SURVIVES_BRIDGE_1","result":"partial","config":"full-582","evidence":"infrastructure/state/evidence/world_port_survives_2026-08-26_CHECK.md","sha":"b225ecdf","ts":"2026-08-26T11:02:55Z"}
+{"seat":"CHECK","event":"claim","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","ts":"2026-08-26T11:04:05Z"}
+{"seat":"CHECK","event":"start","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","ts":"2026-08-26T11:04:05Z"}
+{"seat":"CHECK","event":"verify","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","result":"partial","config":"full-582","evidence":"infrastructure/state/evidence/stray_colonists_2026-08-26_CHECK.md","sha":"f26dc749","ts":"2026-08-26T11:05:14Z"}
+{"seat":"CHECK","event":"close","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","sha":"f26dc749","ts":"2026-08-26T11:05:14Z"}

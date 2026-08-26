@@ -1,3 +1,15 @@
+🔴 **CLOSED 2026-08-26. My own filing above was wrong in an important way: they were
+SUBSTITUTIONS, not extra pawns.** The arithmetic is exact - 20 `Jawa_Tribal_Scavenger` requested,
+16 on the map plus 4 `Colonist`; 2 Geonosians requested, 1 plus 1 `Colonist`. Nothing was added.
+
+**Not reproducible.** 19 further spawns with a full census before and after each -
+10 x count=1, 2 x count=6, 1 x count=2 - gave **0 substitutions**. Cause UNMEASURED and honestly
+so; no mechanism is claimed. What to capture if it recurs is in the evidence.
+
+Evidence: `infrastructure/state/evidence/stray_colonists_2026-08-26_CHECK.md`
+
+---
+
 # STRAY_COLONISTS_IN_JAWA_FACTIONS_1 — five pawns nobody asked for
 
 Observed live, 2026-08-26, seat CHECK, full 582-mod list, during C40.
