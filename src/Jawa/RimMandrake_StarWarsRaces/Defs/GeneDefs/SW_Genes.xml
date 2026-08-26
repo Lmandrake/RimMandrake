@@ -3885,6 +3885,19 @@
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooMirialan</iconPath>
     <displayOrderInCategory>795</displayOrderInCategory>
     <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+      <!-- 🔴 DISABLED 2026-08-26 by BUILD. This block was DISCARDING THE WHOLE GENE.
+           Player.log, four times, one per tattoo gene:
+             Could not find type named GeneTattooTagFilter.ModExtension_GeneTattooTagFilter
+           A modExtension naming a type no loaded assembly provides does not lose the
+           extension. RimWorld throws while parsing and drops the ENTIRE GeneDef, so
+           Mirialan, Pantoran, Togruta and Zabrak had no tattoo gene at all.
+           The mod providing that type is NOT INSTALLED: 1,286 installed mods were
+           indexed on 2026-08-26 and none is Gene Tattoo Tag Filter. It is not merely
+           inactive, so MayRequire cannot be written either. That needs the exact
+           packageId from its About.xml, and guessing one drops the def for a new reason.
+           TO RESTORE: install the mod, un-comment the block below, and add MayRequire
+           with its real packageId to the li. The filter data is kept verbatim so nothing
+           has to be re-authored.
     <modExtensions>
       <li Class="GeneTattooTagFilter.ModExtension_GeneTattooTagFilter">
         <faceFilter>
@@ -3895,6 +3908,7 @@
         </faceFilter>
       </li>
     </modExtensions>
+      -->
   </GeneDef>
   <GeneDef>
     <defName>RimMandrake_tattooGene_pantoran</defName>
@@ -3903,6 +3917,19 @@
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooPantoran</iconPath>
     <displayOrderInCategory>797</displayOrderInCategory>
     <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+      <!-- 🔴 DISABLED 2026-08-26 by BUILD. This block was DISCARDING THE WHOLE GENE.
+           Player.log, four times, one per tattoo gene:
+             Could not find type named GeneTattooTagFilter.ModExtension_GeneTattooTagFilter
+           A modExtension naming a type no loaded assembly provides does not lose the
+           extension. RimWorld throws while parsing and drops the ENTIRE GeneDef, so
+           Mirialan, Pantoran, Togruta and Zabrak had no tattoo gene at all.
+           The mod providing that type is NOT INSTALLED: 1,286 installed mods were
+           indexed on 2026-08-26 and none is Gene Tattoo Tag Filter. It is not merely
+           inactive, so MayRequire cannot be written either. That needs the exact
+           packageId from its About.xml, and guessing one drops the def for a new reason.
+           TO RESTORE: install the mod, un-comment the block below, and add MayRequire
+           with its real packageId to the li. The filter data is kept verbatim so nothing
+           has to be re-authored.
     <modExtensions>
       <li Class="GeneTattooTagFilter.ModExtension_GeneTattooTagFilter">
         <faceFilter>
@@ -3913,6 +3940,7 @@
         </faceFilter>
       </li>
     </modExtensions>
+      -->
   </GeneDef>
   <GeneDef>
     <defName>RimMandrake_tattooGene_togruta</defName>
@@ -3921,6 +3949,19 @@
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooTogruta</iconPath>
     <displayOrderInCategory>796</displayOrderInCategory>
     <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+      <!-- 🔴 DISABLED 2026-08-26 by BUILD. This block was DISCARDING THE WHOLE GENE.
+           Player.log, four times, one per tattoo gene:
+             Could not find type named GeneTattooTagFilter.ModExtension_GeneTattooTagFilter
+           A modExtension naming a type no loaded assembly provides does not lose the
+           extension. RimWorld throws while parsing and drops the ENTIRE GeneDef, so
+           Mirialan, Pantoran, Togruta and Zabrak had no tattoo gene at all.
+           The mod providing that type is NOT INSTALLED: 1,286 installed mods were
+           indexed on 2026-08-26 and none is Gene Tattoo Tag Filter. It is not merely
+           inactive, so MayRequire cannot be written either. That needs the exact
+           packageId from its About.xml, and guessing one drops the def for a new reason.
+           TO RESTORE: install the mod, un-comment the block below, and add MayRequire
+           with its real packageId to the li. The filter data is kept verbatim so nothing
+           has to be re-authored.
     <modExtensions>
       <li Class="GeneTattooTagFilter.ModExtension_GeneTattooTagFilter">
         <faceFilter>
@@ -3931,6 +3972,7 @@
         </faceFilter>
       </li>
     </modExtensions>
+      -->
   </GeneDef>
   <GeneDef>
     <defName>RimMandrake_tattooGene_zabrak</defName>
@@ -3939,6 +3981,19 @@
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooZabrak</iconPath>
     <displayOrderInCategory>798</displayOrderInCategory>
     <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+      <!-- 🔴 DISABLED 2026-08-26 by BUILD. This block was DISCARDING THE WHOLE GENE.
+           Player.log, four times, one per tattoo gene:
+             Could not find type named GeneTattooTagFilter.ModExtension_GeneTattooTagFilter
+           A modExtension naming a type no loaded assembly provides does not lose the
+           extension. RimWorld throws while parsing and drops the ENTIRE GeneDef, so
+           Mirialan, Pantoran, Togruta and Zabrak had no tattoo gene at all.
+           The mod providing that type is NOT INSTALLED: 1,286 installed mods were
+           indexed on 2026-08-26 and none is Gene Tattoo Tag Filter. It is not merely
+           inactive, so MayRequire cannot be written either. That needs the exact
+           packageId from its About.xml, and guessing one drops the def for a new reason.
+           TO RESTORE: install the mod, un-comment the block below, and add MayRequire
+           with its real packageId to the li. The filter data is kept verbatim so nothing
+           has to be re-authored.
     <modExtensions>
       <li Class="GeneTattooTagFilter.ModExtension_GeneTattooTagFilter">
         <bodyFilter>
@@ -3955,5 +4010,6 @@
         </faceFilter>
       </li>
     </modExtensions>
+      -->
   </GeneDef>
 </Defs>
