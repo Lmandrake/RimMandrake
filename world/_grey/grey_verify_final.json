@@ -1,0 +1,346 @@
+{
+ "Junkyard": {
+  "intended": 59,
+  "landed": 59,
+  "missing": []
+ },
+ "AncientRuins": {
+  "intended": 11,
+  "landed": 11,
+  "missing": []
+ },
+ "AncientWarehouse": {
+  "intended": 12,
+  "landed": 12,
+  "missing": []
+ },
+ "Stockpile": {
+  "intended": 44,
+  "landed": 44,
+  "missing": []
+ },
+ "VEE_MineralDevoid": {
+  "intended": 82,
+  "landed": 82,
+  "missing": []
+ },
+ "VEE_DeepOreDevoid": {
+  "intended": 82,
+  "landed": 82,
+  "missing": []
+ },
+ "VEE_RisingWaters": {
+  "intended": 49,
+  "landed": 49,
+  "missing": []
+ },
+ "Coast": {
+  "intended": 61,
+  "landed": 47,
+  "missing": [
+   727,
+   4045,
+   6658,
+   6779,
+   6781,
+   6782,
+   6787,
+   6897,
+   8904,
+   11641,
+   15009,
+   15010,
+   21830,
+   21864
+  ]
+ },
+ "Archipelago": {
+  "intended": 17,
+  "landed": 17,
+  "missing": []
+ },
+ "AnimalHabitat": {
+  "intended": 172,
+  "landed": 172,
+  "missing": []
+ },
+ "Fish_Increased": {
+  "intended": 194,
+  "landed": 194,
+  "missing": []
+ },
+ "AnimalLife_Increased": {
+  "intended": 8,
+  "landed": 8,
+  "missing": []
+ },
+ "RiverDelta": {
+  "intended": 3,
+  "landed": 2,
+  "missing": [
+   11503
+  ]
+ },
+ "VEE_AlluvialFan": {
+  "intended": 1,
+  "landed": 1,
+  "missing": []
+ },
+ "Iceberg": {
+  "intended": 15,
+  "landed": 15,
+  "missing": []
+ },
+ "IceDunes": {
+  "intended": 16,
+  "landed": 16,
+  "missing": []
+ },
+ "VEE_DeepSnow": {
+  "intended": 12,
+  "landed": 12,
+  "missing": []
+ },
+ "WindyMutator": {
+  "intended": 85,
+  "landed": 85,
+  "missing": []
+ },
+ "_audit": {
+  "marineMutators": "VEE_RisingWaters,Archipelago,Iceberg",
+  "offenderCount": 33,
+  "offenders": [
+   {
+    "tile": 727,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 167.0
+   },
+   {
+    "tile": 2249,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 2.0
+   },
+   {
+    "tile": 2910,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 3479,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AB_TarPits",
+    "waterCovered": false,
+    "elevation": 2.0
+   },
+   {
+    "tile": 3481,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 4045,
+    "mutator": "Archipelago",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 39.0
+   },
+   {
+    "tile": 6779,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 42.0
+   },
+   {
+    "tile": 6781,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 87.0
+   },
+   {
+    "tile": 6782,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 116.0
+   },
+   {
+    "tile": 6787,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 68.0
+   },
+   {
+    "tile": 6897,
+    "mutator": "Archipelago",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 47.0
+   },
+   {
+    "tile": 7238,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 7820,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 7824,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 8341,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 8904,
+    "mutator": "Archipelago",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 13.0
+   },
+   {
+    "tile": 9986,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 9991,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 11641,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 122.0
+   },
+   {
+    "tile": 11768,
+    "mutator": "VEE_RisingWaters",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 13203,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 9.0
+   },
+   {
+    "tile": 15007,
+    "mutator": "VEE_RisingWaters",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 109.0
+   },
+   {
+    "tile": 15009,
+    "mutator": "Archipelago",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 15010,
+    "mutator": "Archipelago",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 15327,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 15338,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 15343,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 15347,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 18435,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 2.0
+   },
+   {
+    "tile": 18448,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 18586,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 21830,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 40.0
+   },
+   {
+    "tile": 21864,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 21.0
+   }
+  ]
+ }
+}

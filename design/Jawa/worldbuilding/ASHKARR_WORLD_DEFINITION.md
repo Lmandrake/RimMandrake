@@ -1494,3 +1494,92 @@ the Twilight Sea) and **none on a tile this session wrote.** The 28
 `CoastalIsland`/`Archipelago` landmark tiles placed the same day were excluded from
 every candidate pool in every pass, not only the drowned-coast pass the brief called
 out by name.
+
+## 15. THE GREY SEA — passes 2, 4, 5 stamped, 2026-08-26
+
+The Grey Sea (465 tiles: 374 `Ocean` + 91 `SeaIce`, arc 70–108, the planet's shallowest
+sea and its industrial one — Junker seats The Claim Jump, The Slagfield, The Fuel Works)
+got three owner-approved mutator passes from `world/_grey/BRIEF.md`. **Passes 1
+(extending `VEE_SaltPlains`) and 3 (a brine-works economy) were declined by the owner
+and were not built — no `VEE_SaltPlains` was added anywhere.** Scripts and every report
+JSON live in `world/_grey/`. Counts below are LANDED, read back from
+`jawa/world_mutators_get` after `jawa/world_commit`, from the FINAL corrected state
+(`world/_grey/grey_verify_final.json`), not the first run's numbers.
+
+| pass | def landed | count |
+|---|---|---|
+| 2. The Junker Coast | `Junkyard` (low_shore, hilliness ≤ SmallHills, weighted toward the 3 seats) | 59 |
+| | `AncientRuins` | 11 |
+| | `AncientWarehouse` (biome AridShrubland/Desert only) | 12 |
+| | `Stockpile` (beyond the 7 pre-existing) | 44 |
+| | `VEE_MineralDevoid` / `VEE_DeepOreDevoid` (paired, beyond the 8 pre-existing) | 82 / 82 |
+| 4. The Wading Sea | `VEE_RisingWaters` (flat_shore, coastline 1–5) | 49 |
+| | `Coast` (beyond the 43 pre-existing) | 47 of 61 — 14 displaced by `Archipelago`, same coastline-shape category |
+| | `Archipelago` (coastline 2–5, no river, biome measured off the 11 tiles already live: AridShrubland/Desert/ZBiome_Badlands/Wasteland) | 17 |
+| | `AnimalHabitat` (d1–d2 shallows, gradient-weighted) | 172 |
+| | `Fish_Increased` (d1–d2 shallows ∪ pass-5 mouths) | 194 |
+| 5. The four mouths and the cold end | `RiverDelta` (8081, 16902 — **not** 11503, see below; 16898 excluded, `has_landmark`) | 2 of 3 |
+| | `VEE_AlluvialFan` (11503 only — measured: the only Flat tile among the 4 mouths, and no Flat ring neighbour exists for the other 3) | 1 |
+| | `AnimalLife_Increased` (mouths ∪ 5 adjacent water tiles) | 8 |
+| | `Iceberg` (iceedge tiles at or below 0 °C — 26 of the 52 iceedge tiles run above 0 °C per the ice margin's own −6.5…+5 °C span and are excluded by the temp gate) | 15 |
+| | `IceDunes` / `VEE_DeepSnow` (ice core, disjoint hash-parity halves) | 16 / 12 |
+| | `WindyMutator` (all ice tiles ∪ colder half — arc ≥ 90 — of the arid/desert ring) | 85 |
+
+`16898` is simultaneously a river mouth and one of the 23 `has_landmark` ring tiles. The
+brief's own pass-5 text names it as a `RiverDelta` target, but the HARD RULES ("never
+stack on a `has_landmark` tile") outrank the pass text when the two collide — mirroring
+the Scald/Twilight precedent. At `11503`, `RiverDelta` was written and then displaced by
+the more specific `VEE_AlluvialFan`, written after it in the same session — by family
+(river-mouth identity) the tile still carries the intended feature; by exact def it
+shows the fan, not the delta.
+
+### 🔴 A whole-planet diff caught this session's OWN collateral damage, live
+
+The first apply run's `VEE_RisingWaters` candidate pool (`flat_shore - has_landmark`,
+nothing else) did not exclude tiles already carrying a protected def, and silently
+displaced **12 `CoastalIsland` + 4 `Archipelago`** tiles the moment it was written — the
+exact failure class this task's brief named by name (the Twilight incident). The
+per-def verify step reported 100% landed for every intended def, exactly as it did the
+first time this mistake was made; only the mandated whole-planet before/after diff
+(`world/_grey/grey_displacement_diff.json`) caught it, by comparing every tile on the
+planet against `world/_grey/planet_mutators_before.json`, a snapshot taken before this
+session's first write.
+
+**Fixed live**: the intruding `VEE_RisingWaters` was removed and the original protected
+def re-added on all 16 tiles (verified by direct read-back — see
+`world/_grey/apply_grey_mutators.py`'s docstring). **Fixed at the source**:
+`world/_grey/plan_grey_mutators.py` now excludes any tile already carrying
+`CoastalIsland`, `Archipelago`, `Oasis`, `Bay` or `VEE_GravelBeach` from the
+`VEE_RisingWaters`, `Coast` and `Archipelago` candidate pools specifically — the three
+defs measured live to share that coastline-shape category. `Junkyard`, `AncientRuins`,
+`AncientWarehouse`, `Stockpile`, `VEE_MineralDevoid`, `VEE_DeepOreDevoid` and
+`WindyMutator` were measured to coexist peacefully with the protected defs on the same
+tiles (e.g. tile `9974` carries `Junkyard`+`Stockpile`+`VEE_MineralDevoid`+
+`VEE_DeepOreDevoid`+`AnimalLife_Increased` alongside `CoastalIsland` after the fix) and
+were NOT given the exclusion, so the plan's footprint is no more conservative than the
+evidence requires.
+
+**Final whole-planet diff** (`grey_displacement_diff.json`): **zero** losses of
+`CoastalIsland`, `Archipelago`, `Oasis`, `Bay` or `VEE_GravelBeach`, anywhere on the
+planet. **Zero** `VEE_SaltPlains` gained anywhere (the declined pass stayed declined).
+Remaining losses — `Coast` (10, displaced by `Archipelago`, same family, not protected),
+`River` (3, the intended mouth fix), `Peninsula` (3), `Mountain` (3), `Cliffs` (1) — are
+all same-tile category churn from this session's own writes, none of them a protected
+def, and each traced to the specific def that displaced it.
+
+### The audit's coastal check has a SeaIce blind spot, not the Twilight Sea's Lake one
+
+`jawa/world_mutators_audit` restricted to `VEE_RisingWaters,Archipelago,Iceberg`
+(the only three defs this plan actually coastline-gates) reports **`offenderCount: 33`**.
+Splitting the offender list by membership in this sea's own `ring`/`body` geometry: **15
+are pre-existing tiles elsewhere on the planet**, unrelated to this session (the same
+pattern the Twilight write-up measured — biomes and locations nowhere near this sea).
+**18 are Grey Sea ring tiles this session wrote**, and every one of them borders the sea
+**only through `SeaIce` tiles, never `Ocean`** (checked directly against
+`world_neighbors_sub7b.csv` and each neighbour's biome — e.g. tile `727`'s two water
+neighbours, `11646`/`11642`, are both `SeaIce`). `World.CoastDirectionAt` — what
+`SafeIsCoastal`/the audit's own coastal check calls — does not recognise a `SeaIce`
+neighbour as coastal, only `Ocean` (the Twilight write-up documented the identical blind
+spot for `Lake` neighbours on the Scald). These 18 tiles are genuine shore of the Grey
+Sea by real hex adjacency to its water body; they are invisible to this one narrow
+check, not misplaced. No auto-remove was run against any of the 33.

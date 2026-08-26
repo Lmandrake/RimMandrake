@@ -1,0 +1,567 @@
+{
+ "writes": [
+  {
+   "def": "Junkyard",
+   "note": "low_shore (hilliness<=SmallHills) minus has_landmark, weighted toward near_junk",
+   "intended": 59,
+   "success": true,
+   "added": 59,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "AncientRuins",
+   "note": "ring minus has_landmark minus Junkyard tiles (no AB_MechanoidIntrusion biome present)",
+   "intended": 11,
+   "success": true,
+   "added": 11,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "AncientWarehouse",
+   "note": "ring biome AridShrubland/Desert only, minus has_landmark/Junkyard/AncientRuins",
+   "intended": 12,
+   "success": true,
+   "added": 12,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "Stockpile",
+   "note": "low_shore minus has_landmark minus the 7 tiles that already had it, weighted toward near_junk",
+   "intended": 44,
+   "success": true,
+   "added": 44,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_MineralDevoid",
+   "note": "ring minus has_landmark minus the 8 tiles that already had it",
+   "intended": 82,
+   "success": true,
+   "added": 82,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_DeepOreDevoid",
+   "note": "identical hash gate to VEE_MineralDevoid so the pair stays co-located, as the existing 8 already are",
+   "intended": 82,
+   "success": true,
+   "added": 82,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_RisingWaters",
+   "note": "flat_shore (hilliness Flat, coastline 1-5) minus has_landmark",
+   "intended": 65,
+   "success": true,
+   "added": 65,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "Coast",
+   "note": "ring minus has_landmark minus the 43 tiles that already had it",
+   "intended": 74,
+   "success": true,
+   "added": 74,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "Archipelago",
+   "note": "ring coastline 2-5, river_count 0, biome measured off the 11 tiles already live (AridShrubland/Desert/ZBiome_Badlands/Wasteland only), minus VEE_RisingWaters selection",
+   "intended": 17,
+   "success": true,
+   "added": 17,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "AnimalHabitat",
+   "note": "body tiles at shore-distance 1-2, gradient-weighted (60% at d1, 35% at d2), minus existing holders",
+   "intended": 172,
+   "success": true,
+   "added": 172,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "Fish_Increased",
+   "note": "union of the d1-d2 gradient set and the mouth+fan set from pass 5",
+   "intended": 194,
+   "success": true,
+   "added": 191,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "RiverDelta",
+   "note": "the 4 mouths minus 16898 (has_landmark - HARD RULE overrides the brief's literal list)",
+   "intended": 3,
+   "success": true,
+   "added": 3,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "AnimalLife_Increased",
+   "note": "mouths (minus 16898) union the 5 water tiles adjacent to a mouth",
+   "intended": 8,
+   "success": true,
+   "added": 8,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_AlluvialFan",
+   "note": "measured: only tile 11503 is Flat among the 4 mouths and no Flat ring neighbour exists for the other 3",
+   "intended": 1,
+   "success": true,
+   "added": 1,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "Iceberg",
+   "note": "iceedge tiles at or below 0C only (26 of 52 iceedge tiles run above 0C and are excluded by the temp gate)",
+   "intended": 15,
+   "success": true,
+   "added": 15,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "IceDunes",
+   "note": "ice core (ice minus iceedge), even-hash-parity half, hilliness Flat confirmed on all 91 ice tiles",
+   "intended": 16,
+   "success": true,
+   "added": 16,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_DeepSnow",
+   "note": "ice core, odd-hash-parity half (disjoint from IceDunes by construction)",
+   "intended": 12,
+   "success": true,
+   "added": 12,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "WindyMutator",
+   "note": "all ice tiles union the colder half (arc>=90) of arid/desert ring tiles, minus existing holders",
+   "intended": 85,
+   "success": true,
+   "added": 85,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  }
+ ],
+ "verify": {
+  "Junkyard": {
+   "intended": 59,
+   "landed": 59,
+   "missing": [],
+   "rowsReturned": 59,
+   "requestErrors": []
+  },
+  "AncientRuins": {
+   "intended": 11,
+   "landed": 11,
+   "missing": [],
+   "rowsReturned": 11,
+   "requestErrors": []
+  },
+  "AncientWarehouse": {
+   "intended": 12,
+   "landed": 12,
+   "missing": [],
+   "rowsReturned": 12,
+   "requestErrors": []
+  },
+  "Stockpile": {
+   "intended": 44,
+   "landed": 44,
+   "missing": [],
+   "rowsReturned": 44,
+   "requestErrors": []
+  },
+  "VEE_MineralDevoid": {
+   "intended": 82,
+   "landed": 82,
+   "missing": [],
+   "rowsReturned": 82,
+   "requestErrors": []
+  },
+  "VEE_DeepOreDevoid": {
+   "intended": 82,
+   "landed": 82,
+   "missing": [],
+   "rowsReturned": 82,
+   "requestErrors": []
+  },
+  "VEE_RisingWaters": {
+   "intended": 65,
+   "landed": 65,
+   "missing": [],
+   "rowsReturned": 65,
+   "requestErrors": []
+  },
+  "Coast": {
+   "intended": 74,
+   "landed": 60,
+   "missing": [
+    727,
+    4045,
+    6658,
+    6779,
+    6781,
+    6782,
+    6787,
+    6897,
+    8904,
+    11641,
+    15009,
+    15010,
+    21830,
+    21864
+   ],
+   "rowsReturned": 74,
+   "requestErrors": []
+  },
+  "Archipelago": {
+   "intended": 17,
+   "landed": 17,
+   "missing": [],
+   "rowsReturned": 17,
+   "requestErrors": []
+  },
+  "AnimalHabitat": {
+   "intended": 172,
+   "landed": 172,
+   "missing": [],
+   "rowsReturned": 172,
+   "requestErrors": []
+  },
+  "Fish_Increased": {
+   "intended": 194,
+   "landed": 194,
+   "missing": [],
+   "rowsReturned": 194,
+   "requestErrors": []
+  },
+  "AnimalLife_Increased": {
+   "intended": 8,
+   "landed": 8,
+   "missing": [],
+   "rowsReturned": 8,
+   "requestErrors": []
+  },
+  "RiverDelta": {
+   "intended": 3,
+   "landed": 2,
+   "missing": [
+    11503
+   ],
+   "rowsReturned": 3,
+   "requestErrors": []
+  },
+  "VEE_AlluvialFan": {
+   "intended": 1,
+   "landed": 1,
+   "missing": [],
+   "rowsReturned": 1,
+   "requestErrors": []
+  },
+  "Iceberg": {
+   "intended": 15,
+   "landed": 15,
+   "missing": [],
+   "rowsReturned": 15,
+   "requestErrors": []
+  },
+  "IceDunes": {
+   "intended": 16,
+   "landed": 16,
+   "missing": [],
+   "rowsReturned": 16,
+   "requestErrors": []
+  },
+  "VEE_DeepSnow": {
+   "intended": 12,
+   "landed": 12,
+   "missing": [],
+   "rowsReturned": 12,
+   "requestErrors": []
+  },
+  "WindyMutator": {
+   "intended": 85,
+   "landed": 85,
+   "missing": [],
+   "rowsReturned": 85,
+   "requestErrors": []
+  }
+ },
+ "commit": true,
+ "audit": {
+  "marineMutators": "VEE_RisingWaters,Archipelago,Iceberg",
+  "offenderCount": 33,
+  "offenders": [
+   {
+    "tile": 727,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 167.0
+   },
+   {
+    "tile": 2249,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 2.0
+   },
+   {
+    "tile": 2910,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 3479,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AB_TarPits",
+    "waterCovered": false,
+    "elevation": 2.0
+   },
+   {
+    "tile": 3481,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 4045,
+    "mutator": "Archipelago",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 39.0
+   },
+   {
+    "tile": 6779,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 42.0
+   },
+   {
+    "tile": 6781,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 87.0
+   },
+   {
+    "tile": 6782,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 116.0
+   },
+   {
+    "tile": 6787,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 68.0
+   },
+   {
+    "tile": 6897,
+    "mutator": "Archipelago",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 47.0
+   },
+   {
+    "tile": 7238,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 7820,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 7824,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 8341,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 8904,
+    "mutator": "Archipelago",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 13.0
+   },
+   {
+    "tile": 9986,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 9991,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 11641,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 122.0
+   },
+   {
+    "tile": 11768,
+    "mutator": "VEE_RisingWaters",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 13203,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 9.0
+   },
+   {
+    "tile": 15007,
+    "mutator": "VEE_RisingWaters",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 109.0
+   },
+   {
+    "tile": 15009,
+    "mutator": "Archipelago",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 15010,
+    "mutator": "Archipelago",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 15327,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 15338,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 15343,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 15347,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 18435,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 2.0
+   },
+   {
+    "tile": 18448,
+    "mutator": "VEE_RisingWaters",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 18586,
+    "mutator": "VEE_RisingWaters",
+    "biome": "AridShrubland",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 21830,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 40.0
+   },
+   {
+    "tile": 21864,
+    "mutator": "Archipelago",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 21.0
+   }
+  ]
+ }
+}

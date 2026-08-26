@@ -1,0 +1,92 @@
+{
+ "protected_defs_checked": [
+  "CoastalIsland",
+  "Archipelago",
+  "Oasis",
+  "Bay",
+  "VEE_GravelBeach"
+ ],
+ "protected_losses": {
+  "CoastalIsland": 0,
+  "Archipelago": 0,
+  "Oasis": 0,
+  "Bay": 0,
+  "VEE_GravelBeach": 0
+ },
+ "VEE_SaltPlains_gained": 0,
+ "all_losses": {
+  "Coast": {
+   "count": 10,
+   "tiles": [
+    3222,
+    4035,
+    9963,
+    11494,
+    13223,
+    16886,
+    16909,
+    16922,
+    20700,
+    20705
+   ]
+  },
+  "Peninsula": {
+   "count": 3,
+   "tiles": [
+    6658,
+    8904,
+    20781
+   ]
+  },
+  "Mountain": {
+   "count": 3,
+   "tiles": [
+    727,
+    11641,
+    16909
+   ]
+  },
+  "River": {
+   "count": 3,
+   "tiles": [
+    8081,
+    11503,
+    16902
+   ]
+  },
+  "Cliffs": {
+   "count": 1,
+   "tiles": [
+    3222
+   ]
+  }
+ },
+ "all_gains": {
+  "Fish_Increased": 191,
+  "AnimalHabitat": 172,
+  "VEE_RisingWaters": 49,
+  "Coast": 47,
+  "AncientRuins": 11,
+  "VEE_DeepOreDevoid": 82,
+  "VEE_MineralDevoid": 82,
+  "WindyMutator": 85,
+  "Junkyard": 59,
+  "Archipelago": 17,
+  "Stockpile": 44,
+  "Iceberg": 15,
+  "VEE_DeepSnow": 12,
+  "AnimalLife_Increased": 8,
+  "IceDunes": 16,
+  "AncientWarehouse": 12,
+  "RiverDelta": 2,
+  "VEE_AlluvialFan": 1
+ },
+ "notes": {
+  "Coast": "10 losses - displaced by Archipelago (same coastline-shape family), written after Coast in apply order. Not a protected def. Family (coastal identity) still present on all 10 tiles via Archipelago.",
+  "River": "3 losses - the 3 mouths this pass wrote RiverDelta/VEE_AlluvialFan to (8081, 16902 got RiverDelta; 11503 got VEE_AlluvialFan displacing the RiverDelta this session had just written). This is the intended fix: BRIEF.md pass 5 explicitly wants the river-mouth family visible in place of the bare River mutator.",
+  "Peninsula": "3 losses (6658, 8904, 20781) - displaced by Archipelago, same terrain-shape category. Not protected, not this task scope to preserve.",
+  "Mountain": "3 losses (727, 11641, 16909) - displaced by Archipelago/AncientRuins. Not protected.",
+  "Cliffs": "1 loss (3222) - displaced by AncientWarehouse/Archipelago landing on the same tile. Not protected.",
+  "protected_incident": "VEE_RisingWaters initial candidate pool (flat_shore - has_landmark) did not exclude tiles already carrying a protected def and displaced 12 CoastalIsland + 4 Archipelago tiles live. Found via this whole-planet diff, fixed live (remove VEE_RisingWaters + re-add the original def on those 16 tiles), and fixed in plan_grey_mutators.py so a re-run reproduces the corrected pool directly. Zero protected losses in the FINAL state measured above."
+ }
+}
