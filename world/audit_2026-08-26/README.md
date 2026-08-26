@@ -224,3 +224,16 @@ tile — that map IS the test. Do not build a special harness for it.
 
 ⚠️ Also confirmed here: a save/load does NOT lose the edits. Tiles 0-2999 came back with
 Impassable 46 / Mountainous 310, and tile 18404 still carried `VEE_MoreSolarPower`.
+
+## 🔴 F4 IS CLOSED BY OWNER RULING — the Scald area is not to be touched
+
+Owner, 2026-08-26: *"Leave the scald area alone"*.
+
+⛔ **F4 (the Scald's ten-biome collar) is not a defect to fix. Do not repaint the Scald,
+its rings, the Scald Spine or Hollow Verge, and do not re-file it.** The audit's reasoning
+stands as written — a one-tile rainbow collar is what it is — but the decision is made and
+it is not a technical question. If a future sweep flags the Scald's biome mix, this line is
+the answer.
+
+✅ Still open and NOT covered by this ruling: F6 (the Rust Cathedral lozenge and the 42
+single-tile AridShrubland islands) and the orphan trunk river.
