@@ -1,0 +1,16 @@
+Config error in Jawa_Tribal_Elder: required apparel can't be worn together (Apparel_PlateArmor, guy762_Robes_jawa)
+Config error in Jawa_Tribal_Elder: required apparel can't be worn together (Apparel_TribalHeaddress, guy762_JawaHood)
+Config error in Jawa_Tribal_Scavenger: required apparel can't be worn together (Apparel_WarVeil, guy762_JawaHood)
+Config error in SignBillboard: impassable, player-buildable building that can be shot/seen over.
+Config error in SignCairn: impassable, player-buildable building that can be shot/seen over.
+Config error in SignNature: impassable, player-buildable building that can be shot/seen over.
+Config error in SignObelisk: impassable, player-buildable building that can be shot/seen over.
+Config error in SignPanel: impassable, player-buildable building that can be shot/seen over.
+Config error in SignPanelWood: impassable, player-buildable building that can be shot/seen over.
+Config error in SignRoadLED: impassable, player-buildable building that can be shot/seen over.
+Config error in SignSlab: impassable, player-buildable building that can be shot/seen over.
+Config error in SignWoodenMulti: impassable, player-buildable building that can be shot/seen over.
+Config error in TG_Husbandry: System.NullReferenceException: Object reference not set to an instance of an object
+Config error in TG_Husbandry: [TraderGen]  TG_Husbandry could not process config errors of the stock generator in position 5 due to an exception:
+Config error in Techprint_RR_lighting: description has trailing whitespace
+Config error in Techprint_guy762_ResearchKotOR_lightsabers: description has trailing whitespace
