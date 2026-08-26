@@ -13,6 +13,8 @@ is lifted from the VLE source and only resampled, so the atlas stays drop-in.
 Each painter returns (rgb, alpha) with alpha PER PIXEL, which Ludeon's icons do
 not use.  It is what lets a dust storm thin out where the dust is thin.
 """
+import zlib
+
 import numpy as np
 from PIL import Image, ImageFilter
 
@@ -40,6 +42,14 @@ def _erode(m, k):
     for _ in range(int(k)):
         e = e & np.roll(e, 1, 0) & np.roll(e, -1, 0) & np.roll(e, 1, 1) & np.roll(e, -1, 1)
     return e
+
+
+def _seed(name, i):
+    """zlib.crc32, NOT hash().  Python salts string hashing per process (PYTHONHASHSEED),
+    so hash((name, i)) hands back a different number every run -- which silently rerolled
+    every icon's four variants on each regeneration and threw away art that had already
+    been approved.  This is the whole reason the output is reproducible at all."""
+    return zlib.crc32(f"{name}/{i}".encode()) & 0xFFFFFFFF
 
 
 def _noise(shape, rng, scale, amp):
@@ -153,7 +163,7 @@ def paint(name, out_path):
     masks = _cell_masks(f"{VLE}/{name}.png")
     sheet = Image.new("RGBA", (CELL * 2, CELL * 2), (0, 0, 0, 0))
     for i, (mask, (x, y)) in enumerate(zip(masks, ((0, 0), (1, 0), (0, 1), (1, 1)))):
-        rng = np.random.default_rng(abs(hash((name, i))) % (2 ** 32))
+        rng = np.random.default_rng(_seed(name, i))
         rgb, a = PAINTERS[name](mask, rng)
         inner = _erode(mask, OUTLINE_PX * SS)
         a = np.where(inner, a, 205.0)                             # outline alpha
