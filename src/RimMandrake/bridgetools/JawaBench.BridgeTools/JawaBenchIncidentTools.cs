@@ -1,0 +1,925 @@
+// JawaBenchIncidentTools.cs - storyteller/incidents/quests, lords & raids, animals & training.
+//
+// BRIDGE_TOOLS_MEDIUM_BLOCK_1, Group I, out of
+// infrastructure/state/work/BRIDGE_TOOLS_MEDIUM_REMAINING.md.
+//
+// 198 tools already shipped before this file. Checked against the live roster
+// (`grep -rho '"jawa/[a-z_]*"' JawaBench.BridgeTools --include=*.cs`) before writing a
+// line - three of the nine listed rows are ALREADY COVERED and are skipped here:
+//   * "set master" (Pawn_PlayerSettings.Master) - jawa/set_player_settings already
+//     writes it, validated against the Obedience-trainable silent refusal.
+//   * jawa/fire_incident already fires an incident, but via IncidentDef.Worker.TryExecute
+//     directly - it does NOT go through Storyteller.TryFire, so it never touches
+//     StoryState.lastFireTicks or Storyteller.LastIncidentTick. jawa/storyteller_fire
+//     below is the genuinely different call, not a duplicate.
+//   * jawa/fire_quest already has an `accept` flag, but only for a quest IT JUST
+//     CREATED. Nothing on this bridge can accept or end an EXISTING quest - that gap
+//     is jawa/quest_lifecycle below.
+//
+// EVERY SIGNATURE BELOW WAS READ OUT OF 1.6 SOURCE VIA rimsage, NOT GUESSED:
+//   RimWorld/Storyteller.cs, RimWorld/FiringIncident.cs, RimWorld/StoryState.cs,
+//   RimWorld/IncidentParms.cs, RimWorld/Page_SelectStorytellerInGame.cs,
+//   RimWorld/Quest.cs, RimWorld/QuestState.cs, RimWorld/QuestEndOutcome.cs,
+//   RimWorld/WealthWatcher.cs, Verse/AI/Group/LordMaker.cs, Verse/AI/Group/Lord.cs,
+//   Verse/AI/Group/LordJob_DefendPoint.cs, RimWorld/LordJob_AssaultColony.cs,
+//   RimWorld/AggressiveAnimalIncidentUtility.cs, RimWorld/CompEggLayer.cs,
+//   RimWorld/CompHasGatherableBodyResource.cs.
+//
+// FOUR TRAPS THE SOURCE CONFIRMED, ALL HANDLED BELOW RATHER THAN DISCOVERED LATER:
+//   * Storyteller.TryFire only routes through StoryState.Notify_IncidentFired when
+//     fi.parms.forced is FALSE and fi.parms.target == the target whose StoryState is
+//     being checked. We never set `forced`, and DefaultParmsNow already stamps
+//     `target = map`, so the read-back is meaningful without extra plumbing.
+//   * Lord.AddPawnInternal LOGS AN ERROR AND SILENTLY DROPS THE PAWN when it already
+//     has a Lord ("Pawns can't be members of more than one lord at the same time") -
+//     LordMaker.MakeNewLord does not surface this at all, it just returns a Lord with
+//     fewer members than asked. Both lord-spawning tools below pre-filter on
+//     Pawn.GetLord() != null and report refused[], rather than trusting membership
+//     counts after the fact.
+//   * Quest.Accept(Pawn) and Quest.End(...) both check their own precondition
+//     internally (State == NotYetAccepted; !Historical) and SILENTLY NO-OP (Accept)
+//     or Log.Error-and-return (End) otherwise - jawa/quest_lifecycle checks first and
+//     refuses with the real state, rather than reporting a call that did nothing.
+//   * CompHasGatherableBodyResource.fullness and CompEggLayer.eggProgress are both
+//     PRIVATE/PROTECTED with no public setter - "forcing" either requires reflection,
+//     which is scoped to this file only (GmWritePrivateField below) exactly as
+//     JawaBenchSimTools.cs already does for WeatherDecider.ticksWhenRainAllowedAgain.
+//
+// GATING follows the rule stated in JawaBenchEventTools.cs and JawaBenchGroupTools.cs:
+// #if JAWA_GM_TOOLS is for tools that make THE WORLD ACT on the player, not merely
+// for tools that write a field. On that test:
+//   GATED:   jawa/storyteller_fire (fires a real incident), jawa/storyteller_swap
+//            (changes what the storyteller does with every future tick - the same
+//            bar jawa/difficulty_tune already sits behind), jawa/lord_defend_spawn
+//            and jawa/lord_assault_spawn (both create a live, autonomous combat lord).
+//   UNGATED: jawa/quest_lifecycle - matches jawa/fire_quest's own `accept` flag,
+//            which is ungated in this same codebase for the identical effect;
+//            jawa/wealth_recount - forces a recompute of numbers already public;
+//            jawa/manhunter_preview - pure read, the raid_preview/
+//            incident_parms_preview idiom applied to AggressiveAnimalIncidentUtility;
+//            jawa/animal_resource_force - an admin poke on a named pawn's own body
+//            resource, the same shape as jawa/gene_resource_poke (also ungated).
+//
+// THREAD AFFINITY: same rule as every other file here - everything that touches
+// game state is inside ctx.MainThread.InvokeAsync and nothing else is.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using RimBridgeServer.Sdk;
+using RimWorld;
+using Verse;
+using Verse.AI.Group;
+
+namespace JawaBench.BridgeTools
+{
+    public sealed partial class JawaBenchTerrainTools
+    {
+        // ---- shared helpers, private to THIS file only -----------------------
+
+        /// <summary>
+        /// Writes a private/protected instance field by reflection. Used only where
+        /// the engine has no public setter at all: CompHasGatherableBodyResource.fullness
+        /// and CompEggLayer.eggProgress. Scoped to this file, mirroring
+        /// JawaBenchSimTools.SimPrivateField's read-only counterpart.
+        /// </summary>
+        private static bool GmWritePrivateField(Type declaringType, object obj, string name, object value)
+        {
+            if (declaringType == null || obj == null) return false;
+            FieldInfo fi = declaringType.GetField(name, BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi == null) return false;
+            try { fi.SetValue(obj, value); return true; }
+            catch (Exception) { return false; }
+        }
+
+        private static object GmReadPrivateField(Type declaringType, object obj, string name)
+        {
+            if (declaringType == null || obj == null) return null;
+            FieldInfo fi = declaringType.GetField(name, BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi == null) return null;
+            try { return fi.GetValue(obj); }
+            catch (Exception) { return null; }
+        }
+
+        // ================================================================
+        //  Storyteller, incidents & quests
+        // ================================================================
+
+#if JAWA_GM_TOOLS
+        [Tool(
+            "jawa/storyteller_fire",
+            Description =
+                "*** ACTS ON THE LIVE COLONY - THIS SENDS A REAL INCIDENT *** " +
+                "Fire an incident through Storyteller.TryFire(new FiringIncident(def, null, parms)) - " +
+                "NOT the same call jawa/fire_incident makes. jawa/fire_incident calls " +
+                "IncidentDef.Worker.TryExecute(parms) directly, which fires the incident but never " +
+                "touches the storyteller's own bookkeeping. TryFire additionally calls " +
+                "parms.target.StoryState.Notify_IncidentFired(fi), which updates StoryState.lastFireTicks " +
+                "for this def and Storyteller.LastIncidentTick - the numbers later incident selection " +
+                "and 'time since last incident of this kind' logic actually read. Use this one when the " +
+                "incident needs to be believed by the storyteller's own memory, not just to have happened. " +
+                "dryRun defaults true.",
+            ResultDescription =
+                "success (TryFire's own return), resolved parms, and BOTH read-back fields: " +
+                "lastFireTickForThisDef (map.StoryState.lastFireTicks[def]) and lastIncidentTick " +
+                "(Storyteller.LastIncidentTick), before and after - the actual evidence TryFire ran, " +
+                "not an echo of the request.")]
+        public static async Task<object> StorytellerFire(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "IncidentDef defName, e.g. RaidEnemy, TraderCaravanArrival, ManhunterPack.")]
+            string incidentDef = null,
+            [ToolParameter(Description = "Threat points. <=0 uses the storyteller's current default.")]
+            float points = 0f,
+            [ToolParameter(Description = "Optional FactionDef for incidents that take one (raids).")]
+            string faction = null,
+            [ToolParameter(Description = "Resolve and report without firing. Default true - opt in to fire for real.")]
+            bool dryRun = true)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                if (string.IsNullOrWhiteSpace(incidentDef)) return Fail("Give 'incidentDef'.");
+
+                var idef = DefDatabase<IncidentDef>.GetNamedSilentFail(incidentDef.Trim());
+                if (idef == null) return Fail("No IncidentDef '" + incidentDef + "'.", DefSuggestions<IncidentDef>(incidentDef));
+
+                IncidentParms parms;
+                try { parms = StorytellerUtility.DefaultParmsNow(idef.category, map); }
+                catch (Exception e) { return Fail("DefaultParmsNow threw: " + e.GetType().Name + ": " + e.Message); }
+                if (points > 0f) parms.points = points;
+
+                if (!string.IsNullOrWhiteSpace(faction))
+                {
+                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
+                    if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
+                    var fac = Find.FactionManager.FirstFactionOfDef(fd);
+                    if (fac == null) return Fail("FactionDef '" + faction + "' exists but no such faction is in this world.");
+                    parms.faction = fac;
+                }
+
+                bool canFire;
+                try { canFire = idef.Worker.CanFireNow(parms); }
+                catch (Exception) { canFire = false; }
+
+                var resolved = new
+                {
+                    incident = idef.defName,
+                    category = idef.category != null ? idef.category.defName : null,
+                    points = parms.points,
+                    faction = parms.faction != null ? parms.faction.def.defName : "(worker chooses)",
+                };
+
+                if (dryRun)
+                    return (object)new
+                    {
+                        success = true, dryRun = true, resolved, canFireNow = canFire,
+                        note = "DRY RUN - nothing was sent. Pass dryRun=false to fire through Storyteller.TryFire for real.",
+                        ticksGame = TicksGameSafe(),
+                    };
+
+                int fireTickBefore; map.StoryState.lastFireTicks.TryGetValue(idef, out fireTickBefore);
+                int lastIncidentTickBefore = Find.Storyteller.LastIncidentTick;
+
+                var fi = new FiringIncident(idef, null, parms);
+                bool fired;
+                try { fired = Find.Storyteller.TryFire(fi); }
+                catch (Exception e) { return Fail("TryFire threw: " + e.GetType().Name + ": " + e.Message); }
+
+                int fireTickAfter; map.StoryState.lastFireTicks.TryGetValue(idef, out fireTickAfter);
+                int lastIncidentTickAfter = Find.Storyteller.LastIncidentTick;
+
+                return (object)new
+                {
+                    success = fired,
+                    dryRun = false,
+                    resolved,
+                    fired,
+                    canFireNow = canFire,
+                    lastFireTickForThisDef = new { before = fireTickBefore, after = fireTickAfter },
+                    lastIncidentTick = new { before = lastIncidentTickBefore, after = lastIncidentTickAfter },
+                    recordedInAdaptationState = fireTickAfter != fireTickBefore,
+                    note = fired
+                        ? (fireTickAfter != fireTickBefore
+                            ? "Fired AND recorded in StoryState.lastFireTicks - this is the difference from jawa/fire_incident."
+                            : "Fired, but lastFireTicks did NOT move. Notify_IncidentFired only skips this when parms.forced is true or parms.target does not match this map's StoryState - neither should happen here, so this would itself be worth reporting upstream.")
+                        : "TryFire returned false - CanFireNow or TryExecute refused these parms.",
+                    ticksGame = TicksGameSafe(),
+                };
+            }).ConfigureAwait(false);
+        }
+
+        [Tool(
+            "jawa/storyteller_swap",
+            Description =
+                "*** ACTS ON THE LIVE COLONY *** Change WHO IS RUNNING THE GAME: " +
+                "Current.Game.storyteller.def (the StorytellerDef - Cassandra/Phoebe/Randy/etc.) and/or " +
+                ".difficultyDef, exactly as Page_SelectStorytellerInGame does: assign the field, then call " +
+                "Notify_DefChanged() - which re-runs InitializeStorytellerComps() so the NEW storyteller's " +
+                "comps actually drive future incidents, not the old ones. Read-only until now; nothing " +
+                "else on this bridge can write either field. This is distinct from jawa/difficulty_tune, " +
+                "which edits fields ON the difficulty OBJECT (threatScale etc.) without changing which " +
+                "StorytellerDef or DifficultyDef is active. Give neither argument to just read the " +
+                "current values.",
+            ResultDescription =
+                "success, before/after {storytellerDef, difficultyDef}, and whether Notify_DefChanged " +
+                "was called (only when storytellerDef actually changed).")]
+        public static async Task<object> StorytellerSwap(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "StorytellerDef name, e.g. Cassandra, Phoebe, Randy. Omit to leave unchanged.")]
+            string storytellerDef = null,
+            [ToolParameter(Description = "DifficultyDef name, e.g. Rough, Merciless, Custom. Omit to leave unchanged.")]
+            string difficultyDef = null)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (Current.Game == null) return Fail("No game loaded.");
+                var st = Find.Storyteller;
+                if (st == null) return Fail("Find.Storyteller is null - is a game loaded?");
+
+                var before = new
+                {
+                    storytellerDef = st.def != null ? st.def.defName : null,
+                    difficultyDef = st.difficultyDef != null ? st.difficultyDef.defName : null,
+                };
+
+                bool defChanged = false;
+                if (!string.IsNullOrWhiteSpace(storytellerDef))
+                {
+                    var sd = DefDatabase<StorytellerDef>.GetNamedSilentFail(storytellerDef.Trim());
+                    if (sd == null) return Fail("No StorytellerDef '" + storytellerDef + "'.", DefSuggestions<StorytellerDef>(storytellerDef));
+                    if (st.def != sd) { st.def = sd; defChanged = true; }
+                }
+                if (!string.IsNullOrWhiteSpace(difficultyDef))
+                {
+                    var dd = DefDatabase<DifficultyDef>.GetNamedSilentFail(difficultyDef.Trim());
+                    if (dd == null) return Fail("No DifficultyDef '" + difficultyDef + "'.", DefSuggestions<DifficultyDef>(difficultyDef));
+                    st.difficultyDef = dd;
+                }
+
+                if (defChanged) st.Notify_DefChanged();
+
+                return (object)new
+                {
+                    success = true,
+                    before,
+                    after = new
+                    {
+                        storytellerDef = st.def != null ? st.def.defName : null,
+                        difficultyDef = st.difficultyDef != null ? st.difficultyDef.defName : null,
+                    },
+                    notifyDefChangedCalled = defChanged,
+                    note = defChanged
+                        ? "Notify_DefChanged() re-initialized storytellerComps for the new def."
+                        : (string.IsNullOrWhiteSpace(storytellerDef) && string.IsNullOrWhiteSpace(difficultyDef)
+                            ? "No arguments given - this was a read."
+                            : "storytellerDef unchanged (already this value, or only difficultyDef was given) - Notify_DefChanged was NOT called."),
+                    ticksGame = TicksGameSafe(),
+                };
+            }).ConfigureAwait(false);
+        }
+#endif // JAWA_GM_TOOLS
+
+        [Tool(
+            "jawa/quest_lifecycle",
+            Description =
+                "List every quest, or Accept()/End() an EXISTING one by id. jawa/fire_quest can accept " +
+                "a quest too, but only the one IT JUST CREATED in the same call - nothing else on this " +
+                "bridge can act on a quest that arrived naturally (float menu, storyteller, another mod). " +
+                "action='list' is read-only. action='accept' pre-checks State==NotYetAccepted itself, " +
+                "because Quest.Accept(Pawn) SILENTLY NO-OPS from any other state rather than erroring - " +
+                "reporting that as success would be exactly the silent-failure shape this bridge exists " +
+                "to catch. action='end' pre-checks !Historical for the identical reason: Quest.End() " +
+                "Log.Errors and returns on an already-ended or expired quest. This is UNGATED, matching " +
+                "jawa/fire_quest's own ungated accept for the identical effect.",
+            ResultDescription =
+                "success; for 'list': quests[] (id, name, state, points, requiresAccepter, historical); " +
+                "for 'accept'/'end': stateBefore/stateAfter READ BACK off the Quest, not assumed from " +
+                "the call succeeding.")]
+        public static async Task<object> QuestLifecycle(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'list' (default), 'accept' or 'end'.")]
+            string action = "list",
+            [ToolParameter(Description = "Quest id from 'list'. Required for accept/end.")]
+            int questId = -1,
+            [ToolParameter(Description = "Accepter pawn id or name. Empty picks a free colonist if the quest RequiresAccepter.")]
+            string accepterPawn = null,
+            [ToolParameter(Description = "For 'end': 'success' | 'fail' | 'unknown'. Default 'unknown'.")]
+            string outcome = "unknown",
+            [ToolParameter(Description = "For 'end': show the completion letter. Default true.")]
+            bool sendLetter = true,
+            [ToolParameter(Description = "For 'end': play the completion sound. Default true.")]
+            bool playSound = true)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (Current.Game == null) return Fail("No game loaded.");
+                var manager = Find.QuestManager;
+                if (manager == null) return Fail("No QuestManager - is a game actually loaded?");
+
+                Func<List<object>> rows = () => manager.QuestsListForReading.Select(q => (object)new
+                {
+                    id = q.id,
+                    name = q.name,
+                    state = q.State.ToString(),
+                    points = q.points,
+                    requiresAccepter = q.RequiresAccepter,
+                    historical = q.Historical,
+                }).ToList();
+
+                var act = (action ?? "list").Trim().ToLowerInvariant();
+                if (act == "list")
+                    return new { success = true, action = "list", count = manager.QuestsListForReading.Count, quests = rows(), ticksGame = TicksGameSafe() };
+
+                if (questId < 0) return Fail("Give 'questId'. Call action='list' first.", rows());
+                var q2 = manager.QuestsListForReading.FirstOrDefault(x => x.id == questId);
+                if (q2 == null) return Fail("No quest with id " + questId + ".", rows());
+
+                var stateBefore = q2.State;
+
+                if (act == "accept")
+                {
+                    if (stateBefore != QuestState.NotYetAccepted)
+                        return Fail("Quest " + q2.id + " \"" + q2.name + "\" is " + stateBefore +
+                                    ", not NotYetAccepted. Accept() silently no-ops from any other state - refusing rather than reporting a call that would do nothing.");
+
+                    Pawn by = null;
+                    if (!string.IsNullOrWhiteSpace(accepterPawn))
+                    {
+                        string perr; by = FindPawn(accepterPawn, out perr);
+                        if (by == null) return Fail(perr);
+                    }
+                    else if (q2.RequiresAccepter)
+                    {
+                        var map = Find.CurrentMap;
+                        by = map != null ? map.mapPawns.FreeColonists.FirstOrDefault() : null;
+                        if (by == null) return Fail("Quest " + q2.id + " RequiresAccepter and no accepterPawn was given, and no free colonist could be found on the current map.");
+                    }
+
+                    try { q2.Accept(by); }
+                    catch (Exception e) { return Fail("Accept threw: " + e.GetType().Name + ": " + e.Message); }
+
+                    var stateAfter = q2.State;
+                    return new
+                    {
+                        success = stateAfter == QuestState.Ongoing,
+                        action = "accept",
+                        questId = q2.id,
+                        questName = q2.name,
+                        accepter = by != null ? by.LabelShortCap : null,
+                        stateBefore = stateBefore.ToString(),
+                        stateAfter = stateAfter.ToString(),
+                        ticksGame = TicksGameSafe(),
+                    };
+                }
+
+                if (act == "end")
+                {
+                    if (q2.Historical)
+                        return Fail("Quest " + q2.id + " \"" + q2.name + "\" is already Historical (state " + stateBefore + "). " +
+                                    "Quest.End() Log.Errors and refuses on a Historical quest - refusing here instead of calling it.");
+
+                    QuestEndOutcome oc;
+                    var o = (outcome ?? "unknown").Trim().ToLowerInvariant();
+                    if (o == "success") oc = QuestEndOutcome.Success;
+                    else if (o == "fail" || o == "failed") oc = QuestEndOutcome.Fail;
+                    else if (o == "unknown") oc = QuestEndOutcome.Unknown;
+                    else return Fail("outcome must be 'success', 'fail' or 'unknown', got '" + outcome + "'.");
+
+                    try { q2.End(oc, sendLetter, playSound); }
+                    catch (Exception e) { return Fail("End threw: " + e.GetType().Name + ": " + e.Message); }
+
+                    var stateAfter = q2.State;
+                    return new
+                    {
+                        success = stateAfter != stateBefore && q2.Historical,
+                        action = "end",
+                        questId = q2.id,
+                        questName = q2.name,
+                        outcome = oc.ToString(),
+                        stateBefore = stateBefore.ToString(),
+                        stateAfter = stateAfter.ToString(),
+                        ticksGame = TicksGameSafe(),
+                    };
+                }
+
+                return Fail("action must be 'list', 'accept' or 'end'.");
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        [Tool(
+            "jawa/wealth_recount",
+            Description =
+                "Force WealthWatcher.ForceRecount(allowDuringInit) on the current map's wealth right now, " +
+                "instead of waiting for its own 5000-tick throttle (RecountIfNeeded). This is the exact " +
+                "number every threat budget is computed from (see jawa/weather_get's 'wealth' block, " +
+                "which reads the SAME properties but does not force a recompute). Read-only in effect - " +
+                "it recomputes existing wealth, it does not change what exists - so this is ungated.",
+            ResultDescription =
+                "success, before/after {total, items, buildings, floorsOnly, pawns, healthTotal}, and " +
+                "lastCountTick (private field, read by reflection) before/after so a caller can tell the " +
+                "recount actually ran rather than reusing a value the property getter already had.")]
+        public static async Task<object> WealthRecount(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Passed to ForceRecount - allow recounting during game init. Default false, matching the engine's own default.")]
+            bool allowDuringInit = false)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                var w = map.wealthWatcher;
+                if (w == null) return Fail("This map has no WealthWatcher.");
+
+                Func<object> snapshot = () => new
+                {
+                    total = w.WealthTotal,
+                    items = w.WealthItems,
+                    buildings = w.WealthBuildings,
+                    floorsOnly = w.WealthFloorsOnly,
+                    pawns = w.WealthPawns,
+                    healthTotal = w.HealthTotal,
+                };
+
+                var before = snapshot();
+                object lastCountTickBefore = GmReadPrivateField(typeof(WealthWatcher), w, "lastCountTick");
+
+                try { w.ForceRecount(allowDuringInit); }
+                catch (Exception e) { return Fail("ForceRecount threw: " + e.GetType().Name + ": " + e.Message); }
+
+                var after = snapshot();
+                object lastCountTickAfter = GmReadPrivateField(typeof(WealthWatcher), w, "lastCountTick");
+
+                return (object)new
+                {
+                    success = true,
+                    before,
+                    after,
+                    lastCountTick = new { before = lastCountTickBefore, after = lastCountTickAfter },
+                    recounted = !Equals(lastCountTickBefore, lastCountTickAfter),
+                    ticksGame = TicksGameSafe(),
+                };
+            }).ConfigureAwait(false);
+        }
+
+        // ================================================================
+        //  Lords, raids & AI groups
+        // ================================================================
+
+        /// <summary>
+        /// Shared by both lord-spawn tools: resolve pawns, refusing (not silently
+        /// dropping) any that are missing, off this map, or already owned by
+        /// another Lord - the exact case Lord.AddPawnInternal itself only logs.
+        /// </summary>
+        private static List<Pawn> ResolveLordCandidates(string pawns, Map map, out List<object> refused)
+        {
+            refused = new List<object>();
+            var found = new List<Pawn>();
+            if (string.IsNullOrWhiteSpace(pawns)) return found;
+            foreach (var raw in pawns.Split(new[] { ',', ';', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                var tok = raw.Trim();
+                if (tok.Length == 0) continue;
+                string perr;
+                var p = FindPawn(tok, out perr);
+                if (p == null) { refused.Add(new { pawn = tok, reason = "NotFound", message = perr }); continue; }
+                if (p.Map != map || !p.Spawned) { refused.Add(new { pawn = tok, reason = "NotOnThisMap", message = p.LabelShortCap + " is not spawned on the current map." }); continue; }
+                var existingLord = p.GetLord();
+                if (existingLord != null)
+                {
+                    refused.Add(new
+                    {
+                        pawn = tok,
+                        reason = "AlreadyInALord",
+                        message = p.LabelShortCap + " already belongs to a Lord (job " +
+                                  (existingLord.LordJob != null ? existingLord.LordJob.GetType().Name : "(null)") +
+                                  "). Lord.AddPawnInternal would Log.Error and silently drop it - refusing instead."
+                    });
+                    continue;
+                }
+                found.Add(p);
+            }
+            return found;
+        }
+
+#if JAWA_GM_TOOLS
+        [Tool(
+            "jawa/lord_defend_spawn",
+            Description =
+                "*** ACTS ON THE LIVE COLONY *** LordMaker.MakeNewLord(faction, new LordJob_DefendPoint(...), " +
+                "map, pawns) - make a group that lives, works and defends a radius around a point. " +
+                "⛔ THIS DELIBERATELY USES LordJob_DefendPoint, NEVER LordJob_DefendBase - the roster " +
+                "this tool was built from names DefendBase as a trap because it self-converts into a raid. " +
+                "🔴 A pawn already in a Lord is REFUSED, not silently dropped: Lord.AddPawnInternal only " +
+                "Log.Errors when a pawn belongs to two lords, and LordMaker never surfaces that, so every " +
+                "candidate is pre-checked with Pawn.GetLord() and reported in refused[] instead.",
+            ResultDescription =
+                "success, lordIndex, point, faction, memberCount (read off the new Lord's ownedPawns, " +
+                "not the requested count), and refused[] naming every pawn that was NOT added and why.")]
+        public static async Task<object> LordDefendSpawn(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated pawn ids/names to put in the new Lord. Required.")]
+            string pawns = null,
+            [ToolParameter(Description = "FactionDef for the Lord. Empty uses the first resolved pawn's own Faction.")]
+            string faction = null,
+            [ToolParameter(Description = "Defend point 'x,z'. Empty uses the centroid of the resolved pawns' positions.")]
+            string point = null,
+            [ToolParameter(Description = "How far members wander from the point while idle. Empty uses the engine default.")]
+            float wanderRadius = -1f,
+            [ToolParameter(Description = "How far members will chase a threat before returning. Empty uses the engine default.")]
+            float defendRadius = -1f,
+            [ToolParameter(Description = "Allow this Lord to be sent out with a caravan.")]
+            bool isCaravanSendable = false,
+            [ToolParameter(Description = "Add the flee-when-outmatched toil. Default true, matching the engine default.")]
+            bool addFleeToil = true)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+
+                List<object> refused;
+                var found = ResolveLordCandidates(pawns, map, out refused);
+                if (found.Count == 0) return Fail("No pawn resolved to put in the Lord. Nothing was created.", new { refused });
+
+                Faction fac = null;
+                if (!string.IsNullOrWhiteSpace(faction))
+                {
+                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
+                    if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
+                    fac = Find.FactionManager.FirstFactionOfDef(fd);
+                    if (fac == null) return Fail("FactionDef '" + faction + "' exists but no such faction is in this world.");
+                }
+                else
+                {
+                    fac = found[0].Faction;
+                    if (fac == null) return Fail("No 'faction' given and " + found[0].LabelShortCap + " has no Faction either. Give one explicitly.");
+                }
+
+                IntVec3 pt;
+                if (!string.IsNullOrWhiteSpace(point))
+                {
+                    string perr2;
+                    if (!TryParseCellLocal(point, out pt, out perr2)) return Fail(perr2);
+                }
+                else
+                {
+                    int sx = 0, sz = 0;
+                    foreach (var p in found) { sx += p.Position.x; sz += p.Position.z; }
+                    pt = new IntVec3(sx / found.Count, 0, sz / found.Count);
+                }
+                if (!pt.InBounds(map)) return Fail("Resolved point " + pt + " is out of bounds for this map.");
+
+                LordJob_DefendPoint job;
+                try
+                {
+                    job = new LordJob_DefendPoint(
+                        pt,
+                        wanderRadius >= 0f ? (float?)wanderRadius : null,
+                        defendRadius >= 0f ? (float?)defendRadius : null,
+                        isCaravanSendable,
+                        addFleeToil);
+                }
+                catch (Exception e) { return Fail("LordJob_DefendPoint threw: " + e.GetType().Name + ": " + e.Message); }
+
+                Lord lord;
+                try { lord = LordMaker.MakeNewLord(fac, job, map, found); }
+                catch (Exception e) { return Fail("MakeNewLord threw: " + e.GetType().Name + ": " + e.Message); }
+                if (lord == null) return Fail("MakeNewLord returned null.");
+
+                return (object)new
+                {
+                    success = true,
+                    lordIndex = map.lordManager.lords.IndexOf(lord),
+                    point = new { x = pt.x, z = pt.z },
+                    faction = fac.def.defName,
+                    requested = found.Count + refused.Count,
+                    memberCount = lord.ownedPawns.Count,
+                    members = lord.ownedPawns.Select(p => p.LabelShortCap).ToList(),
+                    refused,
+                    ticksGame = TicksGameSafe(),
+                };
+            }).ConfigureAwait(false);
+        }
+
+        [Tool(
+            "jawa/lord_assault_spawn",
+            Description =
+                "*** ACTS ON THE LIVE COLONY - THIS CREATES A REAL ATTACKING GROUP *** " +
+                "LordMaker.MakeNewLord(faction, new LordJob_AssaultColony(...), map, pawns) - a live group " +
+                "that attacks the colony, exactly the state graph a fired raid puts its own pawns into. " +
+                "Unlike jawa/fire_raid this does NOT generate any pawns - it takes pawns THAT ALREADY " +
+                "EXIST on the map (e.g. from jawa/spawn_batch) and turns them hostile-and-organized. " +
+                "🔴 A pawn already in a Lord is REFUSED, not silently dropped - same pre-check as " +
+                "jawa/lord_defend_spawn, for the identical Lord.AddPawnInternal trap.",
+            ResultDescription =
+                "success, lordIndex, faction, memberCount (off the new Lord's ownedPawns), the resolved " +
+                "assault flags, and refused[] naming every pawn NOT added and why.")]
+        public static async Task<object> LordAssaultSpawn(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated pawn ids/names to put in the new Lord. Required.")]
+            string pawns = null,
+            [ToolParameter(Description = "FactionDef for the assaulters. Empty uses the first resolved pawn's own Faction.")]
+            string faction = null,
+            [ToolParameter(Description = "Allow kidnapping a downed colonist. Default true.")]
+            bool canKidnap = true,
+            [ToolParameter(Description = "Allow the group to give up and leave after a while, or when they've done enough damage. Default true.")]
+            bool canTimeoutOrFlee = true,
+            [ToolParameter(Description = "Dig in through walls instead of pathing around.")]
+            bool sappers = false,
+            [ToolParameter(Description = "Use the smart avoid-grid for pathing around defenses.")]
+            bool useAvoidGridSmart = false,
+            [ToolParameter(Description = "Allow stealing high-value items instead of only fighting. Default true.")]
+            bool canSteal = true,
+            [ToolParameter(Description = "Breach through walls with explosives instead of sapping.")]
+            bool breachers = false,
+            [ToolParameter(Description = "Allow raiders to pick up better weapons dropped on the ground.")]
+            bool canPickUpOpportunisticWeapons = false)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+
+                List<object> refused;
+                var found = ResolveLordCandidates(pawns, map, out refused);
+                if (found.Count == 0) return Fail("No pawn resolved to put in the Lord. Nothing was created.", new { refused });
+
+                Faction fac = null;
+                if (!string.IsNullOrWhiteSpace(faction))
+                {
+                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
+                    if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
+                    fac = Find.FactionManager.FirstFactionOfDef(fd);
+                    if (fac == null) return Fail("FactionDef '" + faction + "' exists but no such faction is in this world.");
+                }
+                else
+                {
+                    fac = found[0].Faction;
+                    if (fac == null) return Fail("No 'faction' given and " + found[0].LabelShortCap + " has no Faction either. Give one explicitly.");
+                }
+
+                LordJob_AssaultColony job;
+                try
+                {
+                    job = new LordJob_AssaultColony(
+                        fac, canKidnap, canTimeoutOrFlee, sappers, useAvoidGridSmart, canSteal, breachers, canPickUpOpportunisticWeapons);
+                }
+                catch (Exception e) { return Fail("LordJob_AssaultColony threw: " + e.GetType().Name + ": " + e.Message); }
+
+                Lord lord;
+                try { lord = LordMaker.MakeNewLord(fac, job, map, found); }
+                catch (Exception e) { return Fail("MakeNewLord threw: " + e.GetType().Name + ": " + e.Message); }
+                if (lord == null) return Fail("MakeNewLord returned null.");
+
+                return (object)new
+                {
+                    success = true,
+                    lordIndex = map.lordManager.lords.IndexOf(lord),
+                    faction = fac.def.defName,
+                    requested = found.Count + refused.Count,
+                    memberCount = lord.ownedPawns.Count,
+                    members = lord.ownedPawns.Select(p => p.LabelShortCap).ToList(),
+                    flags = new { canKidnap, canTimeoutOrFlee, sappers, useAvoidGridSmart, canSteal, breachers, canPickUpOpportunisticWeapons },
+                    refused,
+                    ticksGame = TicksGameSafe(),
+                };
+            }).ConfigureAwait(false);
+        }
+#endif // JAWA_GM_TOOLS
+
+        private static bool TryParseCellLocal(string s, out IntVec3 cell, out string err)
+        {
+            cell = IntVec3.Invalid; err = null;
+            var parts = (s ?? "").Split(',');
+            int x, z;
+            if (parts.Length != 2 || !int.TryParse(parts[0].Trim(), out x) || !int.TryParse(parts[1].Trim(), out z))
+            { err = "point must be 'x,z'."; return false; }
+            cell = new IntVec3(x, 0, z);
+            return true;
+        }
+
+        // ================================================================
+        //  Animals & training
+        // ================================================================
+
+        [Tool(
+            "jawa/manhunter_preview",
+            Description =
+                "Resolve what a manhunter pack WOULD be, without spawning anything - " +
+                "AggressiveAnimalIncidentUtility.TryFindAggressiveAnimalKind(points, map) plus " +
+                "GetAnimalsCount(kind, points). This is the raid_preview/incident_parms_preview idiom " +
+                "applied to the ManhunterPack incident (workerClass IncidentWorker_AggressiveAnimals): " +
+                "jawa/fire_incident with incidentDef=ManhunterPack already fires the real thing, but " +
+                "reports only fired/canFireNow, never WHICH species or HOW MANY. Read-only.",
+            ResultDescription =
+                "success (the call itself always succeeds; the QUESTION can still have no answer), " +
+                "points, animalKindFound, animalKind, animalKindLabel, combatPower, count.")]
+        public static async Task<object> ManhunterPreview(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Threat points. <=0 uses the storyteller's current default for this map.")]
+            float points = 0f)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+
+                float pts = points > 0f ? points : StorytellerUtility.DefaultThreatPointsNow(map);
+
+                PawnKindDef kind = null;
+                bool found;
+                try { found = AggressiveAnimalIncidentUtility.TryFindAggressiveAnimalKind(pts, map, out kind); }
+                catch (Exception e) { return Fail("TryFindAggressiveAnimalKind threw: " + e.GetType().Name + ": " + e.Message); }
+
+                int? count = null;
+                if (found)
+                {
+                    try { count = AggressiveAnimalIncidentUtility.GetAnimalsCount(kind, pts); }
+                    catch (Exception e) { return Fail("GetAnimalsCount threw: " + e.GetType().Name + ": " + e.Message); }
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    points = pts,
+                    animalKindFound = found,
+                    animalKind = kind != null ? kind.defName : null,
+                    animalKindLabel = kind != null ? kind.label : null,
+                    combatPower = kind != null ? (float?)kind.combatPower : null,
+                    count,
+                    note = found
+                        ? "This is the SAME resolution IncidentWorker_AggressiveAnimals would use right now. Fire the real incident with jawa/fire_incident incidentDef=ManhunterPack."
+                        : "No aggressive-animal PawnKindDef qualifies at these points on this map's biome(s) - that is a real answer, not a bridge failure.",
+                    ticksGame = TicksGameSafe(),
+                };
+            }).ConfigureAwait(false);
+        }
+
+        [Tool(
+            "jawa/animal_resource_force",
+            Description =
+                "Force an animal's gatherable body resource to be ready NOW, instead of waiting on its " +
+                "CompTick timer. mode='egg' drives CompEggLayer: eggAction='produce' sets the PRIVATE " +
+                "eggProgress field to 1 by reflection (so CanLayNow is honestly true, avoiding the " +
+                "Log.Error CompEggLayer.ProduceEgg() throws when called while !Active/not ready) and then " +
+                "calls ProduceEgg(), placing the resulting egg Thing next to the animal; eggAction='fertilize' " +
+                "calls Fertilize(withMale) directly. mode='gatherable' targets whichever comp on the pawn " +
+                "derives from CompHasGatherableBodyResource (CompMilkable, CompShearable, ...) - its " +
+                "'fullness' field is PROTECTED with no public setter, so this sets it by reflection to " +
+                "targetFullness, then optionally calls the public Gathered(doer) to actually place the " +
+                "resource now, same as a real harvest interaction (including its AnimalGatherYield roll).",
+            ResultDescription =
+                "success, pawn, mode, and either eggProduced (thing, stackCount) / fertilized (withMale), " +
+                "or fullnessBefore/After plus gatheredThing when gatherNow was used.")]
+        public static async Task<object> AnimalResourceForce(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "The animal's pawn id, thingId or name.")]
+            string pawn = null,
+            [ToolParameter(Description = "'egg' or 'gatherable'.")]
+            string mode = "egg",
+            [ToolParameter(Description = "mode='egg' only: 'produce' (default) or 'fertilize'.")]
+            string eggAction = "produce",
+            [ToolParameter(Description = "mode='egg', eggAction='fertilize' only: the male pawn id/name. May be omitted.")]
+            string withMale = null,
+            [ToolParameter(Description = "mode='gatherable' only: fullness to force, 0..1. Default 1.0 (fully topped up).")]
+            float targetFullness = 1f,
+            [ToolParameter(Description = "mode='gatherable' only: also call Gathered(doer) to place the resource now.")]
+            bool gatherNow = false,
+            [ToolParameter(Description = "mode='gatherable', gatherNow=true only: pawn credited with gathering (affects the AnimalGatherYield roll). Empty picks a free colonist.")]
+            string doer = null)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (Current.Game == null) return Fail("No game loaded.");
+                string perr;
+                var p = FindPawn(pawn, out perr);
+                if (p == null) return Fail(perr ?? "No pawn.");
+
+                var m = (mode ?? "egg").Trim().ToLowerInvariant();
+
+                if (m == "egg")
+                {
+                    var comp = p.AllComps != null ? p.AllComps.OfType<CompEggLayer>().FirstOrDefault() : null;
+                    if (comp == null) return Fail(p.LabelShortCap + " has no CompEggLayer.");
+
+                    var a = (eggAction ?? "produce").Trim().ToLowerInvariant();
+                    if (a == "fertilize")
+                    {
+                        Pawn male = null;
+                        if (!string.IsNullOrWhiteSpace(withMale))
+                        {
+                            string merr; male = FindPawn(withMale, out merr);
+                            if (male == null) return Fail(merr);
+                        }
+                        try { comp.Fertilize(male); }
+                        catch (Exception e) { return Fail("Fertilize threw: " + e.GetType().Name + ": " + e.Message); }
+                        return new
+                        {
+                            success = true, pawn = p.LabelShortCap, mode = m, eggAction = "fertilize",
+                            withMale = male != null ? male.LabelShortCap : null,
+                            fullyFertilized = comp.FullyFertilized,
+                            ticksGame = TicksGameSafe(),
+                        };
+                    }
+                    if (a == "produce")
+                    {
+                        object eggProgressBefore = GmReadPrivateField(typeof(CompEggLayer), comp, "eggProgress");
+                        bool forced = GmWritePrivateField(typeof(CompEggLayer), comp, "eggProgress", 1f);
+                        if (!forced) return Fail("Could not set CompEggLayer.eggProgress by reflection - field layout may have changed.");
+
+                        Thing egg;
+                        try { egg = comp.ProduceEgg(); }
+                        catch (Exception e) { return Fail("ProduceEgg threw: " + e.GetType().Name + ": " + e.Message); }
+                        if (egg == null)
+                            return Fail(p.LabelShortCap + "'s eggCountRange rolled 0 - ProduceEgg() legitimately returned null this time. eggProgress was still forced to 1 and consumed.");
+
+                        bool placed = false;
+                        if (p.Spawned && p.Map != null)
+                        {
+                            try { placed = GenPlace.TryPlaceThing(egg, p.Position, p.Map, ThingPlaceMode.Near); }
+                            catch (Exception e) { return Fail("Placing the produced egg threw: " + e.GetType().Name + ": " + e.Message); }
+                        }
+
+                        return new
+                        {
+                            success = true, pawn = p.LabelShortCap, mode = m, eggAction = "produce",
+                            eggProgressBefore, eggProgressForcedTo = 1f,
+                            eggProduced = new { defName = egg.def != null ? egg.def.defName : null, stackCount = egg.stackCount },
+                            placed,
+                            note = placed ? null : (p.Spawned ? "TryPlaceThing failed to find a spot near " + p.LabelShortCap + "." : p.LabelShortCap + " is not spawned on a map - the egg Thing exists but was not placed anywhere."),
+                            ticksGame = TicksGameSafe(),
+                        };
+                    }
+                    return Fail("eggAction must be 'produce' or 'fertilize'.");
+                }
+
+                if (m == "gatherable")
+                {
+                    var comp = p.AllComps != null ? p.AllComps.OfType<CompHasGatherableBodyResource>().FirstOrDefault() : null;
+                    if (comp == null) return Fail(p.LabelShortCap + " has no CompHasGatherableBodyResource (no CompMilkable/CompShearable/etc.).");
+
+                    float clamped = targetFullness < 0f ? 0f : (targetFullness > 1f ? 1f : targetFullness);
+                    float fullnessBefore = comp.Fullness;
+                    bool forced = GmWritePrivateField(typeof(CompHasGatherableBodyResource), comp, "fullness", clamped);
+                    if (!forced) return Fail("Could not set CompHasGatherableBodyResource.fullness by reflection - field layout may have changed.");
+                    float fullnessAfterForce = comp.Fullness;
+
+                    object gatheredThing = null;
+                    if (gatherNow)
+                    {
+                        Pawn doerPawn = null;
+                        if (!string.IsNullOrWhiteSpace(doer))
+                        {
+                            string derr; doerPawn = FindPawn(doer, out derr);
+                            if (doerPawn == null) return Fail(derr);
+                        }
+                        else if (p.Map != null)
+                        {
+                            doerPawn = p.Map.mapPawns.FreeColonists.FirstOrDefault();
+                        }
+                        if (doerPawn == null) return Fail("gatherNow=true needs a 'doer' pawn (or a free colonist on " + p.LabelShortCap + "'s map) - Gathered(Pawn) is not null-safe.");
+
+                        try { comp.Gathered(doerPawn); }
+                        catch (Exception e) { return Fail("Gathered threw: " + e.GetType().Name + ": " + e.Message); }
+                        gatheredThing = new { doer = doerPawn.LabelShortCap, fullnessAfterGather = comp.Fullness };
+                    }
+
+                    return new
+                    {
+                        success = true,
+                        pawn = p.LabelShortCap,
+                        mode = m,
+                        compType = comp.GetType().Name,
+                        fullnessBefore,
+                        fullnessAfterForce,
+                        gatherNow,
+                        gathered = gatheredThing,
+                        ticksGame = TicksGameSafe(),
+                    };
+                }
+
+                return Fail("mode must be 'egg' or 'gatherable'.");
+            }).ConfigureAwait(false);
+        }
+    }
+}
