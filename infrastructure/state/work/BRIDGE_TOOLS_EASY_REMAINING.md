@@ -1,3 +1,18 @@
+# ✅ ALL 32 BUILT — 2026-08-26, commit `948c3399`. This file is now a record, not a worklist.
+
+| group | file | tools |
+|---|---|---|
+| E | `JawaBenchPawnKitTools.cs` | `grant_xp` `read_opinion` `grant_ability` `start_inspiration` `read_psychic_sensitivity` `clear_xenogenes` `gene_resource_poke` `lock_apparel` `inventory_transfer` `split_stack` |
+| F | `JawaBenchGroupTools.cs` | `lord_pawn_move` `lord_poke` `raid_shape_fire` `faction_goodwill_check` `faction_flags_set` `colony_found` `caravan_create` `settlement_attack` `ideo_set_primary` `ideo_role_assign` `ideo_development` |
+| G | `JawaBenchSystemTools.cs` | `thing_minify` `roof_collapse` `depth_grid_set` `anomaly_monolith_get` `anomaly_codex_discover` `dlc_status` `autosave_now` `savegame_mod_match` `mod_inventory` `stat_cache_bust` `prefs` |
+
+Declared `[Tool]` count **166 → 198**, no existing name lost, 0 warnings, 0 errors.
+⛔ **Built, not deployed** — the game holds the DLL. `NEXT_RELOAD.md` §25.
+⚠️ `jawa/grant_ability` overlaps `jawa/pawn_psychic action='grant'`, which also calls
+`GainAbility` but is scoped to psycasts. Built as the roster specified; noted, not a defect.
+
+---
+
 # BRIDGE_TOOLS_EASY_BLOCK_1 — the 32 still to build
 
 Derived from `design/Jawa/bridge/dll_capability_roster.html` and its `.decisions.json`.

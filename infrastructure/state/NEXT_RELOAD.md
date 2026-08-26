@@ -49,7 +49,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
 | 🔧 §22 FORTY-FOUR UNDEPLOYED BRIDGE TOOLS | ✅ **DEPLOYED 2026-08-26 06:36; REDEPLOYED at 166 tools ~07:0x** | ⏳ readings pending |
 | 🔬 §23 THE ROWS THAT UNBLOCK ON `jawa/pawn_stats` + `jawa/room_get` + `jawa/thing_stats` | 2026-08-26 | ⏳ PENDING — **run its census FIRST** |
-| 🔧 §25 TWO COMPANION FIXES BUILT, WAITING ON A DOWN WINDOW | — | ⏳ **DEPLOY FIRST** next time the game is down |
+| 🔧 §25 COMPANION: 32 NEW TOOLS + 3 FIXES BUILT, WAITING ON A DOWN WINDOW | — | ⏳ **DEPLOY FIRST** next time the game is down |
 | 🧥 §24 THE JAWA HOOD — fix deployed, needs one spawn to prove | ✅ **DEPLOYED 2026-08-26 06:5x** | ⏳ READING PENDING |
 
 🔴 **WHEN A LOAD IS SCORED: delete its block.**
@@ -329,6 +329,7 @@ python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --appl
 
 | tool | what changed | what to read after the next load |
 |---|---|---|
+| **32 NEW TOOLS** — `JawaBenchPawnKitTools.cs` (10) · `JawaBenchGroupTools.cs` (11) · `JawaBenchSystemTools.cs` (11) | the last of `BRIDGE_TOOLS_EASY_BLOCK_1`: skills/abilities/genes/inventory, lords + factions + caravans + ideo, and minify/roof-collapse/anomaly/save/prefs/diagnostics | the census must read **198**, not 166. ⚠️ 198 is the count of `[Tool]` ATTRIBUTES; `build.py`'s byte scan says 200 because `jawa/anomaly_` and `jawa/revoke` appear inside other tools' description prose |
 | `jawa/build_batch` | `placed` counted spawn ATTEMPTS; eight calls reported 81 placed with `failed: []` and the map held 78 (`BUILD_BATCH_OVERWRITES_SILENTLY_1`). It now returns **`survived`**, `lostToLaterOps` and **`displaced[]`** naming everything the batch destroyed and whether the batch itself had placed it. New `refuseIfDisplaces` makes it an error instead. | Rebuild the dwelling and assert `survived == requested`, not `placed == requested`. With the footprint fix in rimplace the correct answer is now **0 displaced** |
 | `jawa/pawn_gear` · `FindPawn` · `jawa/pawn_genes` | five rows of `BRIDGE_ARG_SHAPES_INCONSISTENT_1`: both pawn id forms accepted, pawn_gear declares itself a WRITE tool and names `jawa/pawn_get`, equipment/apparel rows carry `defName` beside `def`, and the gene verbs and head-re-roll ordering are documented | any pawn-addressing call with a `Thing_`-prefixed id must now resolve instead of returning an empty success |
 | `jawa/fire_raid` | echoed the faction you asked for even when the worker raided with another (`FIRE_RAID_ECHOES_REQUESTED_FACTION_1`). Now returns **`actual`** (the faction the worker used, written back into parms) and **`arrived[]`** counted off the map, and warns BEFORE firing that a non-hostile faction will be substituted | `jawa/fire_raid {faction: "Jawa_FreeDroidEnclaves", dryRun: false}` must now say *substituted* and name Blackstar Company in `actual`/`arrived` |
