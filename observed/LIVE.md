@@ -856,3 +856,10 @@ info card makes, never `def.statBases`; and **`jawa/room_get`** — `Room.Role`,
 `ComfyTemperatureMax`.** `ComfortableTemperatureMin/Max` do **not** exist — confirmed absent from a
 479-StatDef dump. Getting this wrong is how a stat read returns nothing and reads as "the pawn has
 no such stat".
+
+📌 **Four planet bundles import from a FILE; two do not.** `jawa/world_tile_import` (scalars incl.
+hilliness) · `world_links_import` (rivers/roads) · `world_settlements_import` · `world_features_import`
+all take a `path`. 🔴 **There is no `world_mutators_import` and no `world_landmarks_import`** —
+`world_mutators_set` and `world_landmarks_set` are per-batch (`tiles` + `def`), so the **13,569
+mutator tiles and 579 landmarks** can only be restored by replaying authoring scripts. ⚠️ And a
+replay is not identical: a landmark's `mutatorChances` rolls again when it is placed.

@@ -43,3 +43,43 @@ The trade is yours alone:
 reading.
 
 Evidence: `infrastructure/state/evidence/leader_titles_and_classic_mode_2026-08-26_CHECK.md`
+
+## What a rebuild would actually cost — measured, because the trade above is unfair without it
+
+I checked which parts of the planet can be carried onto a NEW world by a **file import**, and which
+would have to be re-authored by replaying scripts. This is the honest cost side of option 1.
+
+**Restorable from a file, in one call each:**
+
+| bundle | tool | takes |
+|---|---|---|
+| per-tile scalars — biome, elevation, temperature, rainfall, **hilliness**, swampiness, pollution | `jawa/world_tile_import` | `path`, `apply`, `expectTiles` |
+| rivers and roads | `jawa/world_links_import` | `path`, `apply`, `clearFirst` |
+| settlements | `jawa/world_settlements_import` | `path`, `apply`, `clearExisting` |
+| named regions / features | `jawa/world_features_import` | `path`, `apply`, `clearExisting` |
+
+A dry run of the tile import against the VIVIFIED bundle reports **21,872 rows, 21,872 applied,
+0 skipped**, and the export→validate path is lossless at 21,872/21,872 on RAW fields
+(`WORLD_PORT_SURVIVES_BRIDGE_1`).
+
+**🔴 NOT restorable from a file — there is no importer for either:**
+
+* **mutators** — **13,569 tiles carry them**. `jawa/world_mutators_set` takes `tiles` + `mutators`
+  per batch, not a path.
+* **landmarks** — **579 of them**. `jawa/world_landmarks_set` takes `def` + `tiles` per batch, not
+  a path.
+
+Both are reconstructible by re-running the authoring scripts against the CSV bundles — that is how
+they were placed in the first place, and `world/audit_2026-08-26/` holds the working ones. ⚠️ **But
+it would not come back identical.** A landmark's own `mutatorChances` roll fires when it is placed,
+and the 2026-08-26 pass measured those rolls dropping `MixedBiome`, `AnimalLife_Decreased`,
+`Stockpile`, `AnimalHabitat` and `WildPlants` onto tiles nobody chose. A replay rolls again.
+
+⇒ **Option 1 is not "regenerate and repaint".** It is: create the world in full Ideology mode, run
+four file imports, then re-run the mutator and landmark authoring and accept that the incidental
+texture differs. Everything deliberate survives; some of the accidental character does not.
+
+⛔ **And one thing I did NOT test:** the import half has never been run. §12.4 rule 3 forbids it with
+a map instantiated, and one is. Until it runs at a world screen with no map, "four file imports"
+is a plan, not a proven route. Its blocker is `BRIDGE_CANNOT_MAKE_A_WORLD_1` — the bridge cannot reach
+the world-creation page, so that step is your hands either way.
