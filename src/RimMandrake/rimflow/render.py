@@ -313,21 +313,11 @@ def queue_view(world, seat, events, target="v1", ctx=None):
             lambda i: ["thin:     %s" % (", ".join("no ## " + m for m in model._missing(i))
                                          or "spec, verify and criteria all present")])
 
-    L.append("# CLOSED RECENTLY — the last 10, newest first")
-    L.append("")
-    if shut:
-        L += ["⭐ Terminal, permanently. A failed run or a dropped item is not a hole "
-              "in the record — it IS the record. Follow-up work is a NEW item linked "
-              "with `caused_by`.", ""]
-        for it in shut:
-            L.append("- `%s` **%s** %s%s — %s"
-                     % (it.id, it.state,
-                        (closed_at.get(it.id) or "")[:10],
-                        (" at %s" % it.closed_sha) if it.closed_sha else "",
-                        it.title or ""))
-        L.append("")
-    else:
-        L += ["_none._", ""]
+    # ⛔ NO "CLOSED RECENTLY" SECTION. Owner's ruling 2026-08-26: "clear out any closed
+    # items still in your queue or other files... anything done is GONE." A queue is what
+    # is LEFT TO DO; a list of finished work at the bottom of it is read as work, and every
+    # seat pays to re-skim it. The record of what closed is the ledger, which is
+    # append-only and complete: `rimflow show <ID>` and `git log` both still answer it.
     return "\n".join(L).rstrip() + "\n"
 
 
