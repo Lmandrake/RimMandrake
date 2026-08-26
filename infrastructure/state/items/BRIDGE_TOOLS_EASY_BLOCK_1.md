@@ -28,6 +28,19 @@ Every roster row carries an **exact API anchor read from 1.6 source**. Use it. �
 guess a method or a field — `read the mechanism first` is what this roster exists to make
 cheap.
 
+## progress
+
+**42 of 74 shipped at `4a8324e1`** — JobTools 10 · SimTools 12 · ResearchTimeTools 11 ·
+NeedsTools 9. Build clean, no tool lost, zero name collisions. ⛔ NOT deployed: the game is
+UP and a loaded assembly cannot be overwritten (WinError 1224).
+
+**32 remain**, already split into three non-colliding workloads with their API anchors:
+`infrastructure/state/work/BRIDGE_TOOLS_EASY_REMAINING.md`.
+
+🔑 **`--gm` is not optional.** Without it `build.py` silently plans to drop 10 existing
+tools — `jawa/weather_set`, `jawa/game_condition`, `jawa/send_letter` and seven more — and
+the only way past that complaint is `--allow-tool-removal`, which would amputate them.
+
 ## verify
 
 The assembly builds clean, and `build.py` reports the new `[Tool]` count rising by the
