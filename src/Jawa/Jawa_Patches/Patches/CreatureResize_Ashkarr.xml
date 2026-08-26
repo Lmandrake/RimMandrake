@@ -213,9 +213,9 @@
              ⛔ THE THREE ARMOUR RATINGS ARE NOT DOUBLED and that is the whole point of this
              note. ArmorRating_Sharp is 0.85; at >= 1.00 the armour roll deflects EVERY sharp
              hit and the creature stops being a heavy hitter and starts being invulnerable to
-             bullets and blades. Blunt 0.75 and Heat 0.60 are held for the same reason. If he
-             wants genuine immunity that is a ruling to ask for out loud, not a multiplication
-             to perform quietly. -->
+             bullets and blades. Blunt 0.75 and Heat 0.60 are held for the same reason.
+             🔑 ASKED AND ANSWERED - owner, 2026-08-26: "No, don't double the armor."
+             0.85 / 0.75 / 0.60 are the intended values. Do not raise them. -->
         <!-- 🔴 Owner, 2026-08-24: "Yes, scale ALL its attributes along with bodysize."
              Straight x2 on every stat where doubling means what he means. The three that are
              NOT doubled are called out below with the reason, so the omission reads as a
