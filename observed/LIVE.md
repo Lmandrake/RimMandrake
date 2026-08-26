@@ -675,3 +675,45 @@ and `none` are for combat and staging tests, not for anything that reads what a 
 ⚠️ And `xenotypeChances` cannot settle this offline — the key is absent from all 1,736
 PawnKindDefs in the dump, so a dump answer is UNMEASURED. `useFactionXenotypes` IS present
 and is the field that tells you the faction decides.
+
+---
+
+## The `jawa/world_*` surface, measured while editing 21,872 tiles — CHECK, 2026-08-25
+
+🔴 **Every `world_*_get` caps at 100 rows.** `world_links_get`, `world_mutators_get`,
+`world_objects_get`, `world_landmarks_get`. Pass **`limit`**; `max` and `count` are
+silently ignored and the reply says `requested: 2000` while returning 100 — a capped read
+that looks like a partial success. A whole-planet harvest without it is 100 tiles.
+
+🔴 **`AddMutator` resolves CATEGORY conflicts, so a correct write reads as a failure.**
+`Headwater` / `RiverConfluence` / `RiverDelta` each displace plain `River`; `CaveLakes`
+displaces `Caves`. Measured: 149 `River` adds → 136 landed, and 73 river tiles read as
+"missing" it, of which 70 carried a more specific def instead. ✅ Verify by family, never
+by exact defName.
+
+🔴 **Mutator gates are NOT enforced by `world_mutators_set`.** They live in the live
+roster's `note` — `needs no river`, `requires coastline (1-6 coast sides)`,
+`landlocked (0 coast sides)`, `max/min hilliness`, `needs avg temp A-BC`, `biome-locked`.
+An illegal write lands and then misbehaves. ⚠️ A biome list ending in `...` is TRUNCATED
+and therefore UNMEASURED — it is not permission.
+
+⭐ **Sibling defs exist on both sides of the river gate**, so a gate violation is a swap,
+not a deletion: `ToxicLake`→`VEE_ContaminatedRiver`, `VEE_SulfuricLake`→`VEE_SulfuricRiver`,
+`Oasis`→`CaveLakes`, `VEE_RelictDelta` (needs a coastline)→`VEE_DryRiver` (landlocked).
+
+🔑 **`world_links_set` lays rivers MOUTH FIRST** (`OverlayRiver` sets
+`riverDist = max(riverDist, prev+1)`, and `max()` cannot be corrected downward).
+**Determine the mouth by `riverDist`, not elevation** — on a floodplain half a chain sits
+at 1 m; of 16 runs, 14 agreed and the 2 that disagreed differed by 1 m and 3 m.
+⚠️ `world_links_clear` with `tiles=a` alone strips EVERY link on that tile, including a
+junction's other branches; pass `to=b` to remove one segment.
+
+📌 **`./game`'s bridge probe could never see the game from WSL** and reported `LOADING`
+for a fully-up game all session — RimBridge binds Windows loopback and WSL2 is NAT-mode.
+Fixed in `src/RimMandrake/rimflow/probe.py` (`af6dc05f`): it now probes with `netstat.exe`
+and scrapes the port from `Player.log` instead of an env var no seat sets.
+
+📌 **Ash'karr's rivers after this session:** 318→333 edges, median chain sinuosity
+1.108 → 1.28, systems 16 → 11, landlocked 8 → 3, humps 21 → 25 (5 introduced, 99 m).
+Corridor mutator density d1 39% → 13% empty. Method and every trap:
+`skills/rimworld-world-editing/references/river-networks.md`.
