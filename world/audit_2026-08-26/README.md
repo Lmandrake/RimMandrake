@@ -237,3 +237,21 @@ the answer.
 
 ✅ Still open and NOT covered by this ruling: F6 (the Rust Cathedral lozenge and the 42
 single-tile AridShrubland islands) and the orphan trunk river.
+
+## Terraforming scar placed at 8.02N 124.34E, and the census behind "what else can we do"
+
+Owner asked for a second `TerraformingScar` beside the one at 6.73N 123.91E (tile 1641,
+"Icylion Scar"). Placed on **tile 17126** as the LANDMARK form, matching the reference
+exactly: read-back `landmark=TerraformingScar name='Witen Scar' mutators=['TerraformingScar']`,
+confirmed again after `world_commit`. The target was completely empty beforehand — no
+landmark, no mutators, no world objects — so nothing was displaced.
+
+🔑 **Why that one reshapes the ground: it has a dedicated worker class**,
+`RimWorld.TileMutatorWorker_TerraformingScar`. It has NO `extraGenSteps` and no
+`terrainPatchMakers`, so a data-field ranking scores it zero — the shaping is in code.
+`workers.txt` is the corrected census: **144 distinct worker classes** across the placeable
+mutators. 65 defs have no worker at all and only change stats or the tile's label;
+everything else does real work at map generation.
+
+⇒ **The right question is not "is it unused", it is "does it have a worker".** `genpower.txt`
+(the data-field ranking) is kept only as the wrong lens that made this visible.

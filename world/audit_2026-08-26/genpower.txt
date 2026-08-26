@@ -1,0 +1,84 @@
+Placeable mutators that actually RESHAPE a generated map, ranked
+def                                power  gen terr cond plant   USED first genSteps
+AncientQuarry                         15    5    0    0    0     30 L AncientMiningCharge,AncientExplosivesCrate
+VEE_BombardedSurface                   9    3    0    0    0      0   CratersLarge,CratersMedium
+VEE_FleshPits                          6    2    0    0    0     14 L VEE_FleshPits_Large,VEE_FleshPits_Small
+VEE_Cenotes                            6    2    0    0    0     52 L VEE_Cenotes_Large,VEE_Cenotes_Small
+Junkyard                               6    2    0    0    0    140   ScarlandsJunkClusters,ScarlandsJunkPrefabs
+Oasis                                  5    0    0    0    5    246 L 
+sw_SarlaccLair                         3    1    0    0    0      7   sw_SarlaccPit
+sw_DeadSarlaccCave                     3    1    0    0    0     11   sw_DeadSarlaccPit
+VEE_SulfuricRiver                      3    1    0    0    0      2 L VEE_SulfurVents
+VEE_SulfuricLake                       3    1    0    0    0    110 L VEE_SulfurVents
+VEE_Sinkholes                          3    1    0    0    0     60 L VEE_Sinkholes
+VEE_QuicksandDunes                     3    0    0    0    0     28 L 
+VEE_ObsidianChunks                     3    1    0    0    0      0   VEE_ObsidianChunks
+VEE_MechanoidShipChunks                3    1    0    0    0     79   VEE_MechanoidShipChunks
+VEE_JadeChunks                         3    1    0    0    0      0   VEE_JadeChunks
+VEE_DriftwoodShore                     3    1    0    0    0      0 L VEE_DriftwoodShore
+VEE_AnimaFlora                         3    1    0    0    0      0   VEE_AncientAnimaTree
+Dunes                                  3    0    0    0    0   1536 L 
+WindyMutator                           2    0    0    1    0    233   
+VEE_VolcanicRichSoil                   2    0    1    0    0      0   
+VEE_SkygazingSpot                      2    0    0    1    0      0   
+VEE_RottenStench                       2    0    0    1    0     44   
+VEE_RisingWaters                       2    0    0    1    0     90 L 
+VEE_RagingWind                         2    0    0    1    0      0   
+VEE_NoWind                             2    0    0    1    0      0   
+VEE_Mossy                              2    0    1    0    0      0   
+VEE_Moor                               2    0    1    0    0      0 L 
+VEE_Microfauna                         2    0    0    1    0      0   
+VEE_LushLavaFields                     2    0    1    0    0      0 L 
+VEE_GlacialMoraine                     2    0    1    0    0      0 L 
+VEE_GeomagneticStorm                   2    0    0    1    0      0   
+VEE_ColossalFauna                      2    0    0    1    0      0   
+Sandy                                  2    0    1    0    0      0   
+Muddy                                  2    0    1    0    0     11   
+Marshy                                 2    0    1    0    0    163   
+Fertile                                2    0    1    0    0      1   
+AB_MoldyEnvironment                    2    0    0    1    0     40   
+AB_GelatinousMemoryEcho                2    0    0    1    0      0   
+AB_ExtremeTemperatureFluctuations      2    0    0    1    0      0   
+AB_ExplodingAnimals                    2    0    0    1    0      0   
+AB_AmbientRadiation                    2    0    0    1    0    104   
+Wetland                                1    0    0    0    0      0 L 
+Valley                                 1    0    0    0    0     18 L 
+VEE_Volcano                            1    0    0    0    0      1 L 
+VEE_TropicalBeach                      1    0    0    0    0      0 L 
+VEE_ToxicCrater                        1    0    0    0    0      1 L 
+
+--- of those, NEVER placed on Ash'karr ---
+   VEE_BombardedSurface             power  9  genSteps 3  CratersLarge,CratersMedium
+   VEE_ObsidianChunks               power  3  genSteps 1  VEE_ObsidianChunks
+   VEE_JadeChunks                   power  3  genSteps 1  VEE_JadeChunks
+   VEE_DriftwoodShore               power  3  genSteps 1  [has landmark] VEE_DriftwoodShore
+   VEE_AnimaFlora                   power  3  genSteps 1  VEE_AncientAnimaTree
+   VEE_VolcanicRichSoil             power  2  genSteps 0  
+   VEE_SkygazingSpot                power  2  genSteps 0  
+   VEE_RagingWind                   power  2  genSteps 0  
+   VEE_NoWind                       power  2  genSteps 0  
+   VEE_Mossy                        power  2  genSteps 0  
+   VEE_Moor                         power  2  genSteps 0  [has landmark] 
+   VEE_Microfauna                   power  2  genSteps 0  
+   VEE_LushLavaFields               power  2  genSteps 0  [has landmark] 
+   VEE_GlacialMoraine               power  2  genSteps 0  [has landmark] 
+   VEE_GeomagneticStorm             power  2  genSteps 0  
+   VEE_ColossalFauna                power  2  genSteps 0  
+   Sandy                            power  2  genSteps 0  
+   AB_GelatinousMemoryEcho          power  2  genSteps 0  
+   AB_ExtremeTemperatureFluctuations power  2  genSteps 0  
+   AB_ExplodingAnimals              power  2  genSteps 0  
+   Wetland                          power  1  genSteps 0  [has landmark] 
+   VEE_TropicalBeach                power  1  genSteps 0  [has landmark] 
+   VEE_MangroveTerrain              power  1  genSteps 0  
+   VEE_LoneIslandWithMountain       power  1  genSteps 0  [has landmark] 
+   VEE_LoneIslandWithLake           power  1  genSteps 0  [has landmark] 
+   VEE_IceAndFire                   power  1  genSteps 0  [has landmark] 
+   VEE_DetachedIceberg              power  1  genSteps 0  [has landmark] 
+   VEE_CoralReef                    power  1  genSteps 0  [has landmark] 
+   VEE_ContaminatedCoast            power  1  genSteps 0  [has landmark] 
+   VEE_BasaltCape                   power  1  genSteps 0  [has landmark] 
+   VEE_AbandonedFarmland            power  1  genSteps 0  [has landmark] 
+   Cove                             power  1  genSteps 0  [has landmark] 
+   AB_MutagenicSprings              power  1  genSteps 0  [has landmark] 
+   AB_HealingSprings                power  1  genSteps 0  [has landmark] 

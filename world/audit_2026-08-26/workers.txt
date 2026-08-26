@@ -1,0 +1,185 @@
+TerraformingScar workerClass: RimWorld.TileMutatorWorker_TerraformingScar
+
+distinct worker classes among placeable mutators: 144
+
+(none)                                      65 defs   11758 placed   39 never placed
+TileMutatorWorker_WildPlants                18 defs    1419 placed   14 never placed
+TileMutatorWorker_PlantsWithCommonality     15 defs      88 placed   11 never placed
+TileMutatorWorker_ExtraAnimal               11 defs      62 placed    9 never placed
+TileMutatorWorker_IncreaseWeatherFrequency   9 defs     321 placed    4 never placed
+TileMutatorWorker_Patches                    8 defs     175 placed    5 never placed
+TileMutatorWorker_GenericPrefabSpawner       7 defs     129 placed    2 never placed
+TileMutatorWorker_RemoveSpecificFlora        6 defs       0 placed    6 never placed
+TileMutatorWorker_Coast                      5 defs     225 placed    2 never placed
+TileMutatorWorker_AncientStructure           5 defs     105 placed    0 never placed
+TileMutatorWorker_GenericKCSGSpawner         5 defs     169 placed    4 never placed
+TileMutatorWorker_Wetland                    2 defs       0 placed    2 never placed
+TileMutatorWorker_Peninsula                  2 defs       8 placed    1 never placed
+TileMutatorWorker_AnimaSoils                 2 defs       0 placed    2 never placed
+TileMutatorWorker_Mountain                   1 defs    1127 placed    0 never placed
+TileMutatorWorker_Caves                      1 defs    1611 placed    0 never placed
+TileMutatorWorker_River                      1 defs     165 placed    0 never placed
+TileMutatorWorker_UndergroundCave            1 defs      23 placed    0 never placed
+TileMutatorWorker_AncientRuins               1 defs     226 placed    0 never placed
+TileMutatorWorker_AncientRuins_Frozen        1 defs      18 placed    0 never placed
+TileMutatorWorker_AncientQuarry              1 defs      30 placed    0 never placed
+TileMutatorWorker_AncientSmokeVent           1 defs       0 placed    1 never placed
+TileMutatorWorker_AncientToxVent             1 defs       0 placed    1 never placed
+TileMutatorWorker_AncientHeatVent            1 defs     178 placed    0 never placed
+TileMutatorWorker_AbandonedColonyTribal      1 defs      18 placed    0 never placed
+TileMutatorWorker_AbandonedColonyOutlander   1 defs       4 placed    0 never placed
+TileMutatorWorker_Harbor                     1 defs       0 placed    1 never placed
+TileMutatorWorker_Stockpile                  1 defs      78 placed    0 never placed
+TileMutatorWorker_AncientUplink              1 defs      10 placed    0 never placed
+TileMutatorWorker_AnimalHabitat              1 defs     195 placed    0 never placed
+TileMutatorWorker_PlantGrove                 1 defs       0 placed    1 never placed
+TileMutatorWorker_MineralRich                1 defs     494 placed    0 never placed
+TileMutatorWorker_ArcheanTrees               1 defs       1 placed    0 never placed
+TileMutatorWorker_IncreasedPollution         1 defs       4 placed    0 never placed
+TileMutatorWorker_ObsidianDeposits           1 defs       0 placed    1 never placed
+TileMutatorWorker_Headwater                  1 defs      37 placed    0 never placed
+TileMutatorWorker_RiverConfluence            1 defs       0 placed    1 never placed
+TileMutatorWorker_RiverIsland                1 defs      33 placed    0 never placed
+TileMutatorWorker_RiverDelta                 1 defs      22 placed    0 never placed
+TileMutatorWorker_Lake                       1 defs       0 placed    1 never placed
+TileMutatorWorker_LakeWithIsland             1 defs       0 placed    1 never placed
+TileMutatorWorker_LakeWithIslands            1 defs       0 placed    1 never placed
+TileMutatorWorker_Pond                       1 defs      21 placed    0 never placed
+TileMutatorWorker_Oasis                      1 defs     246 placed    0 never placed
+TileMutatorWorker_DryLake                    1 defs      33 placed    0 never placed
+TileMutatorWorker_ToxicLake                  1 defs      39 placed    0 never placed
+TileMutatorWorker_HotSprings                 1 defs      12 placed    0 never placed
+TileMutatorWorker_Valley                     1 defs      18 placed    0 never placed
+TileMutatorWorker_Cavern                     1 defs      31 placed    0 never placed
+TileMutatorWorker_Chasm                      1 defs      46 placed    0 never placed
+TileMutatorWorker_Crevasse                   1 defs       0 placed    1 never placed
+TileMutatorWorker_Plateau                    1 defs       6 placed    0 never placed
+TileMutatorWorker_IceDunes                   1 defs      16 placed    0 never placed
+TileMutatorWorker_Cliffs                     1 defs     229 placed    0 never placed
+TileMutatorWorker_Hollow                     1 defs      23 placed    0 never placed
+TileMutatorWorker_Basin                      1 defs       1 placed    0 never placed
+TileMutatorWorker_TerraformingScar           1 defs      17 placed    0 never placed
+TileMutatorWorker_Lakeshore                  1 defs       0 placed    1 never placed
+TileMutatorWorker_Archipelago                1 defs      37 placed    0 never placed
+TileMutatorWorker_CoastalIsland              1 defs     129 placed    0 never placed
+TileMutatorWorker_Bay                        1 defs      17 placed    0 never placed
+TileMutatorWorker_Cove                       1 defs       0 placed    1 never placed
+TileMutatorWorker_CoastalAtoll               1 defs       5 placed    0 never placed
+TileMutatorWorker_Iceberg                    1 defs      20 placed    0 never placed
+TileMutatorWorker_Fjord                      1 defs       0 placed    1 never placed
+TileMutatorWorker_LavaLake                   1 defs       1 placed    0 never placed
+TileMutatorWorker_LavaCrater                 1 defs       1 placed    0 never placed
+TileMutatorWorker_LavaFlow                   1 defs       3 placed    0 never placed
+TileMutatorWorker_LavaCaves                  1 defs       0 placed    1 never placed
+TileMutatorWorker_IceCaves                   1 defs       0 placed    1 never placed
+TileMutatorWorker_CaveLakes                  1 defs      42 placed    0 never placed
+TileMutatorWorker_MixedBiome                 1 defs       8 placed    0 never placed
+TileMutatorWorker_Dunes                      1 defs    1536 placed    0 never placed
+TileMutatorWorker_InsectMegahive             1 defs      28 placed    0 never placed
+TileMutatorWorker_GenericSpawner             1 defs      26 placed    0 never placed
+TileMutatorWorker_AgariluxPrime              1 defs       2 placed    0 never placed
+TileMutatorWorker_OnlyGrass                  1 defs       0 placed    1 never placed
+TileMutatorWorker_AncientFreezingVent        1 defs       4 placed    0 never placed
+TileMutatorWorker_AncientGreyPallVent        1 defs      12 placed    0 never placed
+TileMutatorWorker_AncientBloodRainVent       1 defs       4 placed    0 never placed
+TileMutatorWorker_AncientDeathPallVent       1 defs       6 placed    0 never placed
+TileMutatorWorker_TarLakes                   1 defs      10 placed    0 never placed
+TileMutatorWorker_PropaneLakes               1 defs       0 placed    1 never placed
+TileMutatorWorker_MagmaticQuagmire           1 defs       6 placed    0 never placed
+TileMutatorWorker_TerrainSwapper             1 defs       0 placed    1 never placed
+TileMutatorWorker_HealingSprings             1 defs       0 placed    1 never placed
+TileMutatorWorker_MutagenicSprings           1 defs       0 placed    1 never placed
+TileMutatorWorker_QuicksandPits              1 defs       1 placed    0 never placed
+TileMutatorWorker_Predators                  1 defs       0 placed    1 never placed
+TileMutatorWorker_ReducedPredators           1 defs       0 placed    1 never placed
+TileMutatorWorker_Prey                       1 defs       0 placed    1 never placed
+TileMutatorWorker_ReducedPrey                1 defs       0 placed    1 never placed
+TileMutatorWorker_Aerie                      1 defs       0 placed    1 never placed
+TileMutatorWorker_MarineSanctuary            1 defs      15 placed    0 never placed
+TileMutatorWorker_Venomous                   1 defs       0 placed    1 never placed
+TileMutatorWorker_MineralDevoid              1 defs    1533 placed    0 never placed
+TileMutatorWorker_RemoveFertileSoils         1 defs      15 placed    0 never placed
+TileMutatorWorker_LargeRiverBanks_NoInherit   1 defs       0 placed    1 never placed
+TileMutatorWorker_AdvancedComponentDeposits   1 defs       0 placed    1 never placed
+TileMutatorWorker_DeepSnow                   1 defs      12 placed    0 never placed
+TileMutatorWorker_Crater                     1 defs      30 placed    0 never placed
+TileMutatorWorker_ResurgentCaldera           1 defs       0 placed    1 never placed
+TileMutatorWorker_CraterLake                 1 defs       0 placed    1 never placed
+TileMutatorWorker_ToxicCrater                1 defs       1 placed    0 never placed
+TileMutatorWorker_Volcano                    1 defs       1 placed    0 never placed
+TileMutatorWorker_CalmBasin                  1 defs       0 placed    1 never placed
+TileMutatorWorker_LoneIsland                 1 defs       3 placed    0 never placed
+TileMutatorWorker_DetachedIceberg            1 defs       0 placed    1 never placed
+TileMutatorWorker_IceAndFire                 1 defs       0 placed    1 never placed
+TileMutatorWorker_LoneIslandWithLake         1 defs       0 placed    1 never placed
+TileMutatorWorker_LoneIslandWithMountain     1 defs       0 placed    1 never placed
+TileMutatorWorker_CoralReef                  1 defs       0 placed    1 never placed
+TileMutatorWorker_SaltPlains                 1 defs     377 placed    0 never placed
+TileMutatorWorker_Ridge                      1 defs      24 placed    0 never placed
+TileMutatorWorker_JaggedRocks                1 defs       9 placed    0 never placed
+TileMutatorWorker_DryRiver                   1 defs     175 placed    0 never placed
+TileMutatorWorker_SerpentineCanyons          1 defs      42 placed    0 never placed
+TileMutatorWorker_DustBowl                   1 defs      40 placed    0 never placed
+TileMutatorWorker_SulfuricLake               1 defs     110 placed    0 never placed
+TileMutatorWorker_SulfuricRiver              1 defs       2 placed    0 never placed
+TileMutatorWorker_BurnedForest               1 defs       0 placed    1 never placed
+TileMutatorWorker_LargeRiverBanks            1 defs     158 placed    0 never placed
+TileMutatorWorker_ContaminatedReservoir      1 defs       0 placed    1 never placed
+TileMutatorWorker_ContaminatedRiver          1 defs       7 placed    0 never placed
+TileMutatorWorker_ContaminatedCoast          1 defs       0 placed    1 never placed
+TileMutatorWorker_QuicksandPits              1 defs      22 placed    0 never placed
+TileMutatorWorker_AlluvialFan                1 defs       7 placed    0 never placed
+TileMutatorWorker_RelictDelta                1 defs       8 placed    0 never placed
+TileMutatorWorker_StagnantRivulet            1 defs     100 placed    0 never placed
+TileMutatorWorker_JadeiteMountains           1 defs       0 placed    1 never placed
+TileMutatorWorker_StoneForest                1 defs       4 placed    0 never placed
+TileMutatorWorker_RedDesert                  1 defs      10 placed    0 never placed
+TileMutatorWorker_VolcanicSandDesert         1 defs       0 placed    1 never placed
+TileMutatorWorker_PermafrostBasin            1 defs       0 placed    1 never placed
+TileMutatorWorker_QuicksandDunes             1 defs      28 placed    0 never placed
+TileMutatorWorker_PebbleDunes                1 defs      38 placed    0 never placed
+TileMutatorWorker_LittoralDunes              1 defs       0 placed    1 never placed
+TileMutatorWorker_Fleshpits                  1 defs      14 placed    0 never placed
+TileMutatorWorker_IceSpires                  1 defs       0 placed    1 never placed
+TileMutatorWorker_GlacialMoraine             1 defs       0 placed    1 never placed
+TileMutatorWorker_TropicalBeach              1 defs       0 placed    1 never placed
+TileMutatorWorker_RemoveTrees                1 defs       8 placed    0 never placed
+TileMutatorWorker_PoisonousFlora             1 defs       0 placed    1 never placed
+TileMutatorWorker_PlentifulGrass             1 defs       0 placed    1 never placed
+
+=== the SHAPING workers (a worker that is not the plain base class) ===
+TileMutatorWorker_Patches              never-placed WITH a landmark: VEE_Moor, VEE_LushLavaFields
+TileMutatorWorker_GenericPrefabSpawner never-placed WITH a landmark: VEE_AbandonedFarmland
+TileMutatorWorker_RemoveSpecificFlora  never-placed WITH a landmark: VEE_LaurelForest
+TileMutatorWorker_Coast                never-placed WITH a landmark: VEE_DriftwoodShore
+TileMutatorWorker_Wetland              never-placed WITH a landmark: Wetland
+TileMutatorWorker_Peninsula            never-placed WITH a landmark: VEE_BasaltCape
+TileMutatorWorker_AncientSmokeVent     never-placed WITH a landmark: AncientSmokeVent
+TileMutatorWorker_AncientToxVent       never-placed WITH a landmark: AncientToxVent
+TileMutatorWorker_Harbor               never-placed WITH a landmark: Harbor
+TileMutatorWorker_Lake                 never-placed WITH a landmark: Lake
+TileMutatorWorker_LakeWithIsland       never-placed WITH a landmark: LakeWithIsland
+TileMutatorWorker_LakeWithIslands      never-placed WITH a landmark: LakeWithIslands
+TileMutatorWorker_Crevasse             never-placed WITH a landmark: Crevasse
+TileMutatorWorker_Cove                 never-placed WITH a landmark: Cove
+TileMutatorWorker_Fjord                never-placed WITH a landmark: Fjord
+TileMutatorWorker_PropaneLakes         never-placed WITH a landmark: AB_PropaneLakes
+TileMutatorWorker_HealingSprings       never-placed WITH a landmark: AB_HealingSprings
+TileMutatorWorker_MutagenicSprings     never-placed WITH a landmark: AB_MutagenicSprings
+TileMutatorWorker_ResurgentCaldera     never-placed WITH a landmark: VEE_ResurgentCaldera
+TileMutatorWorker_CraterLake           never-placed WITH a landmark: VEE_CraterLake
+TileMutatorWorker_CalmBasin            never-placed WITH a landmark: VEE_CalmBasin
+TileMutatorWorker_DetachedIceberg      never-placed WITH a landmark: VEE_DetachedIceberg
+TileMutatorWorker_IceAndFire           never-placed WITH a landmark: VEE_IceAndFire
+TileMutatorWorker_LoneIslandWithLake   never-placed WITH a landmark: VEE_LoneIslandWithLake
+TileMutatorWorker_LoneIslandWithMountain never-placed WITH a landmark: VEE_LoneIslandWithMountain
+TileMutatorWorker_CoralReef            never-placed WITH a landmark: VEE_CoralReef
+TileMutatorWorker_BurnedForest         never-placed WITH a landmark: VEE_BurnedForest
+TileMutatorWorker_ContaminatedReservoir never-placed WITH a landmark: VEE_ContaminatedReservoir
+TileMutatorWorker_ContaminatedCoast    never-placed WITH a landmark: VEE_ContaminatedCoast
+TileMutatorWorker_VolcanicSandDesert   never-placed WITH a landmark: VEE_VolcanicSandDesert
+TileMutatorWorker_PermafrostBasin      never-placed WITH a landmark: VEE_PermafrostBasin
+TileMutatorWorker_LittoralDunes        never-placed WITH a landmark: VEE_LittoralDunes
+TileMutatorWorker_IceSpires            never-placed WITH a landmark: VEE_IceSpires
+TileMutatorWorker_GlacialMoraine       never-placed WITH a landmark: VEE_GlacialMoraine
+TileMutatorWorker_TropicalBeach        never-placed WITH a landmark: VEE_TropicalBeach
