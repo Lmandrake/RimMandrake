@@ -53,9 +53,17 @@
          the Jawa as one of four cases where the silhouette IS the faction. Without these two
          lines a founder arrives in jeans, a t-shirt and a hay sunhat; measured 6 of 6 live on
          2026-08-22 (PLAYER_JAWA_WEARS_JEANS_1) on a kind in exactly this state.
-         🔑 `apparelRequired` is generated unconditionally - it ignores both `apparelTags` and
-         `apparelMoney` - so the robe and hood always land and `IndustrialBasic` only dresses
-         whatever slots they leave open.
+         🔑 `apparelRequired` ignores both `apparelTags` and `apparelMoney`, so no budget can
+         price the robe and hood out, and `IndustrialBasic` only dresses whatever slots they
+         leave open.
+         🔴 CORRECTED 2026-08-26 (JAWA_HOOD_NEVER_WORN_1): this used to say "generated
+         UNCONDITIONALLY... so the robe and hood ALWAYS land", and that sentence is why nobody
+         looked here while 0 of 16 Scavengers wore the hood. Money - yes. Unconditional - NO.
+         PawnApparelGenerator.GenerateWorkingPossibleApparelSetFor walks the required list IN
+         ORDER and skips any item that overlaps a body part already taken
+         (`!workingSet.PairOverlapsAnything(pa)`), and `apparelRequired` INHERITS AND APPENDS
+         with the parent's items FIRST - so Core's Apparel_WarVeil arrived ahead of the hood and
+         took the head slot. That is what `Inherit="False"` below is for.
          ⚠️ `apparelAllowHeadgearChance` MOVED FROM 0 TO 1 and that is deliberate: the hood is
          headgear, and leaving the roll at 0 is the obvious way to end up with a required hood
          that never appears. -->
