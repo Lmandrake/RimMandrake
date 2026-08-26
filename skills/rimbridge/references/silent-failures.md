@@ -243,3 +243,25 @@ a few real seconds. A speed that "was set" is not a game that is running.
 `{ticks: 600}` → `status completed, completedTicks 600`, and `ticksGame` 5696 → **6296**. It is one
 tick per Unity frame, so ~3 000 ticks is a few seconds of wall clock — budget for it, but it actually
 advances the simulation. Any test that needs time to pass should use it, not the speed control.
+
+## 🔴 `jawa/list_pawns` — `job` and `drafted` are ALWAYS null
+
+Measured 2026-08-26, six player-faction pawns, same map, same second:
+
+```
+jawa/list_pawns      Lana job=None  Haplo job=None  Shouta job=None  ... every pawn, every row
+rimworld/list_colonists   Lana job=LayDown   Haplo job=LayDown   Leblanc job=SocialRelax
+```
+
+The pawns were busy the whole time. The field exists on the row, reads `None`, and never populates —
+`drafted` behaves the same way.
+
+🔴 **This silently invalidates any behavioural test that watches what a pawn is DOING.** It cost a
+full 7,200-tick sowing run here: both subjects read `job=None` across eight steps and the honest-
+looking conclusion "neither pawn took a job" was an artefact of the field, not an observation. The
+tell was reading a subject I did **not** create — the pre-existing quicktest colonists read `None`
+too, which no theory about my spawns could explain.
+
+✅ **Use `rimworld/list_colonists` for a pawn's current job** — colonists only, but it is populated.
+`jawa/list_pawns` remains the right tool for the census it advertises (every pawn, all factions,
+which `list_colonists` cannot do); just never for `job`.

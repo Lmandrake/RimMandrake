@@ -901,3 +901,8 @@ xenotypes disagreed by 33 °C.
 `get_game_info` has no `paused` field; read `get_cell_info` → `state.paused` / `state.timeSpeed`.
 ✅ **`rimworld/step_game_ticks` advances the sim reliably** (600 ticks → clock 5696→6296) and is what
 any timed test should use.
+
+🔴 **`jawa/list_pawns`'s `job` and `drafted` are ALWAYS null** — measured on six pawns including ones
+I did not create, while `rimworld/list_colonists` reported `LayDown` / `SocialRelax` for the same
+pawns in the same second. Any behavioural test watching `list_pawns.job` sees nothing forever; it
+cost a 7,200-tick run here. Use `rimworld/list_colonists` for jobs (colonists only, but populated).
