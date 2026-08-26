@@ -453,7 +453,13 @@ for **all four** kinds — `Jawa_Colonist` · `Jawa_Tribal_Scavenger` · `Jawa_T
    Scavenger was robe 16/16, hood **0/16**; the Elder should have been losing its robe as well and
    has never been looked at.
 2. **No `Apparel_WarVeil`, no `Apparel_TribalHeaddress`, no `Apparel_PlateArmor`** on any of them.
-3. 🔑 **`Player.log` no longer carries these three lines** — this is the cheapest check and the one
+3. ✅ **DONE, 2026-08-26 by BUILD — this one is already settled and needs no game time.**
+   The same grep over both logs: **3 matches** in the 06:35 load, **0** in the current one, with
+   the before-reading as the positive control that the check fires at all. Evidence:
+   `infrastructure/state/evidence/jawa_hood_configerror_2026-08-26_BUILD.md`. ⛔ It settles only
+   that the DEFS no longer conflict — what a pawn actually wears is still criteria 1 and 2.
+   The original instruction, kept because it is how it was measured:
+   🔑 **`Player.log` no longer carries these three lines** — this is the cheapest check and the one
    that caught the bug in the first place:
 
 ```
