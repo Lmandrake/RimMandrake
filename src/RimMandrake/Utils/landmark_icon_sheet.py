@@ -24,7 +24,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.a
 WORKSHOP = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
 GAME = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld"
 BUNDLE = os.path.join(REPO, "observed/inventory/bundle_textures")
-REPAINT = os.path.join(REPO, "src/RimMandrake/AshkarrLandmarkArt/Textures/World/Landmarks")
+REPAINT = os.path.join(REPO, "src/RimMandrake/AshkarrLandmarkArt/Textures/World/Landmarks/Ashkarr")
 DEF_FILES = [
     f"{GAME}/Data/Odyssey/Defs/TileMutators/Landmarks.xml",
     f"{WORKSHOP}/1841354677/1.6/Mods/Odyssey/Defs/TileMutators/Landmarks.xml",
@@ -106,12 +106,16 @@ def measure(path):
             "coverage": 100 * m.mean(), "size": a.shape[0]}
 
 
-def build(out_png):
+def build(out_png, all_defs=False):
     defs, idx = landmark_defs(), texture_index()
     counts = Counter(r["landmark"] for r in
                      csv.DictReader(open(os.path.join(REPO, "world/ASHKARR_WORLDMAP_landmarks.csv"))))
+    order = list(counts.most_common())
+    if all_defs:
+        # every LandmarkDef the stack declares, not only the ones Ash'karr placed
+        order += [(d, 0) for d in sorted(defs) if d not in counts]
     rows = []
-    for d, n in counts.most_common():
+    for d, n in order:
         rp = f"{REPAINT}/{d}.png"
         if os.path.exists(rp):
             path, where = rp, "REPAINTED"
@@ -148,8 +152,9 @@ def build(out_png):
         fb = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 15)
     except OSError:
         f = fb = ImageFont.load_default()
-    d.text((pad, 8), f"Ash'karr landmark icons — {sum(counts.values())} placements, "
-                     f"{len(rows)} defs, shown at 128 px", font=fb, fill=(20, 20, 20))
+    d.text((pad, 8), f"Landmark icons — {len(rows)} defs, {sum(counts.values())} placements on "
+                     f"Ash'karr; a def showing 0 tiles exists in the stack but is unplaced. 128 px.",
+           font=fb, fill=(20, 20, 20))
     COL = {"FLAT STAMP": (168, 24, 24), "REPAINTED": (16, 110, 40),
            "line art, ok": (60, 60, 60), "painted, ok": (60, 60, 60), "icon not found": (150, 90, 0)}
     for i, (n, name, path, st, verdict) in enumerate(rows):
@@ -169,7 +174,8 @@ def build(out_png):
 
 if __name__ == "__main__":
     import sys
-    p, rows = build(sys.argv[1] if len(sys.argv) > 1 else "TRANSIENT_ashkarr_landmarks.png")
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    p, rows = build(args[0] if args else "TRANSIENT_ashkarr_landmarks.png", "--all" in sys.argv)
     flat = [r for r in rows if r[4] == "FLAT STAMP"]
     print(p)
     print(f"{len(flat)} flat stamps, {sum(r[0] for r in flat)} placements:",
