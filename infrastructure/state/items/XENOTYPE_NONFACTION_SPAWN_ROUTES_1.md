@@ -1,35 +1,42 @@
+# XENOTYPE_NONFACTION_SPAWN_ROUTES_1 — done 2026-08-26, seat CHECK
 
-## spec
-`XENOTYPE_ROSTER_PURE_SW_1` measured that **66 of 67 non-canon xenotypes cannot reach a player
-through a placed faction** — their factions all carry `startingCountAtWorldCreation: 0`. Only
-`Baseliner` is reachable, and it stays.
-
-🔴 **But `FactionDef.xenotypeSet` is not the only route into a colony, and the others were not
-checked.** A non-canon species arriving by one of these would defeat the owner's ruling while
-every faction-side measurement still reads clean:
-
-| route | what to check |
+| route | verdict |
 |---|---|
-| **wanderer joins / refugee chains** | what xenotype the generated pawn draws, and from which pool |
-| **quest-reward pawns** | `QuestNode_GeneratePawn` and the `Util_` sub-scripts — do they constrain xenotype at all? |
-| **sanguophage / Anomaly entities** | `Sanguophage` is a xenotype and arrives by its own events, not by a faction |
-| **gene extraction & xenogermination** | a player can BUILD a non-canon xenotype from genes; is that in scope of "cut"? |
-| **`PawnKindDef.xenotype`** on any kind a placed faction fields | a kind can name a xenotype the faction's `xenotypeSet` does not |
+| ⭐ `PawnKindDef`'s own `xenotypeSet` | **CHECKED — REAL, and it is ours.** 106 of our own kinds carry one. Proven live |
+| wanderer joins | **CHECKED** — `faction: null`, so `kind.xenotypeSet` is the only pool; `Villager` has none *today* |
+| refugee chains | **CHECKED** — `Ghoul` carries its own set, generated against `Faction.OfEntities` |
+| sanguophage | **CHECKED** — own set, `useFactionXenotypes: false`, hidden runtime faction |
+| quest-reward pawns | **CHECKED (mechanism)** — `QuestNode_GeneratePawn` never sets `ForcedXenotype`. ⚠️ the ~300-QuestScriptDef roster is UNMEASURED |
+| ideoligion memes (found, not in the original list) | **CHECKED** — route exists; **0 of 136** MemeDefs use it |
+| gene extraction / xenogermination | 🔴 **UNMEASURED** — see the evidence for what would measure it and why it needs a scope ruling first |
 
-⭐ **The last row is the cheapest and most likely.** Start there: for every PawnKindDef fielded
-by our twelve factions, read its `xenotype` field and check it against the Star Wars roster.
+## The answer in one line
 
-## verify
-Name each route CHECKED or UNMEASURED. 🔴 **Do not report a route as safe because you could not
-find a case** — absence of a found example is not absence of the route.
+`PawnGenerator.XenotypesAvailableFor` adds `kind.xenotypeSet` **unconditionally**, so a
+PawnKindDef with its own set does not care what any FactionDef says. **`XENOTYPE_ROSTER_PURE_SW_1`'s
+"66 of 67 cannot reach a player" measured the faction side only and is therefore not the whole
+answer** — this line is the correction, and it is written into that item too.
 
-## criteria
-- [ ] Each route is CHECKED or explicitly UNMEASURED with what would measure it.
-- [ ] Any route that can deliver a non-canon xenotype is filed with the defName it delivers.
+## 🔑 Roll vs gate — the distinction that decides how bad it is
 
-## Watch out
-⚠️ **`xenotypeChances` is dictionary-keyed — an `<li>` there discards the WHOLE FactionDef,
-silently.** If a fix is proposed for any faction's xenotype block, that is the trap.
-⛔ **Do not propose cutting XenotypeDefs.** `XENOTYPE_ROSTER_PURE_SW_1` ruled against it: they
-are referenced by GeneDefs, quests and PawnKindDefs, and cutting a referenced def yields
-`Could not resolve cross-reference` for zero gain, since they already cannot spawn.
+Twelve spawns each into `Jawa_IndigenousTribes`, xenotype read off the instance:
+
+```
+Jawa_Spawn_Hutt        RimMandrakeHutt 7  / MandrakeJawa 5
+Jawa_Spawn_Lasat       RimMandrakeLasat 4 / MandrakeJawa 8
+Jawa_Gamorrean_Guard   Jawa_Xeno_Gamorrean 12 / -          <- useFactionXenotypes: false
+```
+
+A weight-999 kind is a **coin flip** against the faction's own set. A kind with
+`useFactionXenotypes: false` is a **certainty**. ⇒ The six vanilla `Ancient*` kinds our
+`AncientsAreRakata.xml` patches to `RimMandrakeRakata` with `useFactionXenotypes: false` deliver
+Rakata **every time**, through vanilla's own Ancients faction.
+
+**Delivered defNames:** `RimMandrakeHutt`, `RimMandrakeLasat`, `Jawa_Xeno_Gamorrean`,
+`RimMandrakeRakata`.
+
+⛔ **No fix proposed here and no XenotypeDef cut** — `XENOTYPE_ROSTER_PURE_SW_1` ruled against
+cutting, and whether these arrivals are wanted at all is a scope call. Filed for DECIDE as
+`NONCANON_ARRIVES_BY_PAWNKIND_1`.
+
+Evidence: `infrastructure/state/evidence/xenotype_nonfaction_routes_2026-08-26_CHECK.md`

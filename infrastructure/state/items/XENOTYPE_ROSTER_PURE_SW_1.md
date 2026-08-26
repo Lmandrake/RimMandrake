@@ -1,3 +1,17 @@
+⚠️ **CORRECTED 2026-08-26 by `XENOTYPE_NONFACTION_SPAWN_ROUTES_1` — read this before the "66 of
+67 cannot reach a player" number below.** That measurement is right about the FACTION side and is
+not the whole answer. `PawnGenerator.XenotypesAvailableFor` (`Verse/PawnGenerator.cs:1747`) adds
+**`kind.xenotypeSet` unconditionally, regardless of faction**, and **106 of our own PawnKindDefs
+carry one**. Proven live, 12 spawns each into `Jawa_IndigenousTribes`, read off the instance:
+`Jawa_Spawn_Hutt` → RimMandrakeHutt 7 / MandrakeJawa 5; `Jawa_Gamorrean_Guard`
+(`useFactionXenotypes: false`) → Jawa_Xeno_Gamorrean **12 of 12**. The six vanilla `Ancient*`
+kinds our `AncientsAreRakata.xml` patches deliver `RimMandrakeRakata` every time.
+⇒ Non-canon species **can** reach a player without any faction fielding them. The ruling stands;
+the measurement behind "they already cannot spawn" does not.
+Evidence: `infrastructure/state/evidence/xenotype_nonfaction_routes_2026-08-26_CHECK.md`.
+
+---
+
 ## spec
 🔴 **OWNER'S RULING, filed 2026-08-23, `kind: ruling`:** *"The xenotype roster is PURE Star
 Wars; non-canon species are cut, not reflavored."*
