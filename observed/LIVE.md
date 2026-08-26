@@ -823,3 +823,13 @@ landed. `jawa/world_tile_import` takes `apply: false` for a dry run (`applied 21
 entries, 335 river tiles, 309 landlocked and ruled acceptable) · **0 null-faction settlements** of 96
 — the fault Scribe destroys on load with only a warning · 0 bad tile / on-water / on-impassable /
 stacked · 0 stale caches · 13,569 mutator tiles, 0 offenders · `world_lint` 22 findings.
+
+📌 **A `BiomeDef` in the def dump keeps everything under a `fields` object.** The top level carries
+only `defName defType defTypeFull fields label modName packageId shortHash`, so
+`d['wildPlants']` reads **absent** and a careless read reports `0`. Measured rosters:
+`Desert` 30 wildPlants @ density 0.45 · `HorrorWastes` 8 @ 0.50 (has `HorrorWeb`, no `Plant_Agave`)
+· `AB_MycoticJungle` 35 @ 0.20, entirely `AB_*` mycoid. No plant is shared between the three.
+
+📌 **Nothing on the bridge puts a map on a CHOSEN world tile.** `rimworld/start_debug_game` takes
+**no parameters at all**, so the biome is whatever it rolls. Any "look at biome X" item needs the
+owner settling a tile, or the 13-mod list where debug actions are affordable.
