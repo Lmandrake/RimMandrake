@@ -17,9 +17,8 @@ focused research probe; keep them assembly-free and dependency-light.
 
 `Savegame_mapview.py` · `Savegame_detailed_items.py` · `Savegame_ideoligions.py` ·
 `mapkit.py` · `map_agent.py` · `loop_run.py` · `map_loop_agent.py` · `Map_synth.py`
-— moved to git history (`infrastructure/disposing/` was DELETED 2026-08-26) and
-pending deletion. That quarantine is gone; the files are recoverable from git and must not be cited or run. Their **findings** are kept below under RETIRED headings; the
-commands that invoked them are gone on purpose.
+are deleted. Their **findings** are kept below under RETIRED headings; the commands
+that invoked them are gone on purpose.
 
 ---
 
@@ -33,9 +32,7 @@ runtime"*. Neither replaces the other — the value is in diffing them.
 
 ## Map improver — LLM-in-the-loop architecture  ⛔ RETIRED 2026-08-20
 
-**The tools are gone** (`mapkit.py`, `map_agent.py`, `loop_run.py`,
-`map_loop_agent.py`, `Map_synth.py` → git history (`infrastructure/disposing/` was DELETED 2026-08-26)).
-The design principle, the lesson and the measured worked example are kept because
+**The tools are gone.** The design principle, the lesson and the measured worked example are kept because
 they are findings; the module manual was dropped with the code.
 
 **The point:** creatively "improve" a player map's terrain — more realistic
@@ -73,10 +70,9 @@ outputs at `src/RimMandrake/mapsynth/coastal_mesa*_loop_*`.
 
 ---
 
-## Savegame_ideoligions.py — .rws ideoligion reader  ⛔ RETIRED 2026-08-20
+## Savegame_ideoligions.py — .rws ideoligion reader  ⛔ RETIRED
 
-Tool retired to git history (`infrastructure/disposing/` was DELETED 2026-08-26); **no successor** —
-nothing in the repo re-reads ideoligions out of a `.rws`. The save-format findings
+**Deleted, no successor** — nothing in the repo re-reads ideoligions out of a `.rws`. The save-format findings
 below stand.
 
 **Goal:** read every IDEOLIGION defined in a save and surface its full flavor —
@@ -119,10 +115,9 @@ full origin-myth descriptions captured verbatim.
 
 ---
 
-## Savegame_detailed_items.py — .rws item & flavor-text reader  ⛔ RETIRED 2026-08-20
+## Savegame_detailed_items.py — .rws item & flavor-text reader  ⛔ RETIRED
 
-Tool retired to git history (`infrastructure/disposing/` was DELETED 2026-08-26); **no successor** —
-nothing in the repo re-reads items or narrative text out of a `.rws`. The
+**Deleted, no successor** — nothing in the repo re-reads items or narrative text out of a `.rws`. The
 save-format findings below stand.
 
 **Goal:** read every ITEM currently in a savegame and surface the
@@ -157,10 +152,9 @@ items; 30 narrative blocks including the debt-scenario intro.
 
 ---
 
-## Savegame_mapview.py — .rws map preview  ⛔ RETIRED 2026-08-20
+## Savegame_mapview.py — .rws map preview  ⛔ RETIRED
 
-Tool retired to git history (`infrastructure/disposing/` was DELETED 2026-08-26). **Successor for the
-grid decode: `src/RimMandrake/Utils/rimbench/savemap.py`**, which reads *and*
+**Deleted. Successor for the grid decode: `src/RimMandrake/Utils/rimbench/savemap.py`**, which reads *and*
 writes `terrain`/`under`/`foundation`/`roof`/`snow` and takes its shortHash table
 from a def dump instead of guessing — it has no PNG renderer, so the *preview
 image* capability is retired with no successor. Doctrine:

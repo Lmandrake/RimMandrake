@@ -1,6 +1,5 @@
 # WORLDGEN_FACTION_CHECKLIST.md — the Configure Factions page, box by box
 
-> 📦 **ARCHIVE: deleted 2026-08-26 (owner: "kill the old archives"); the content is in git history.**
 > ~250 lines were moved there on 2026-08-23, byte-unchanged. **Nothing was deleted.** What
 > moved: the 2026-08-15 standing worldgen ruling (verbatim in `CLAUDE.md`), rulings R1 · R2 ·
 > R4 · R5, the 'what you are doing and why' preamble, **Sections 1, 2 and 3 — the 21
@@ -43,7 +42,6 @@ patch lands. **Screenshot whatever it does say.**
 
 
 > ⚠️ **R1, R2, R4 and R5 are cited by name in the rows below and now live in the archive** —
-> deleted 2026-08-26 (owner: "kill the old archives"); the content is in git history. R3 is immediately above.
 >
 > 🔴 **Two surviving KEEPs are among the 48 defs `OnlyOurFactions.xml` zeroes** —
 > `JDSCIS_CIS_Faction` and the quest-critical `guy762_KotORFaction_RogueDroids`. Their rows are

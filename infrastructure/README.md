@@ -32,6 +32,5 @@ opened, the `git mv` and the five `ln -sfn` must land in the same commit.
 
 - **Anything about the campaign** → `design/`.
 - **Findings about the game** → `observed/`.
-- Reports whose question has been answered are DELETED (DELETED 2026-08-26 — the `disposing/` quarantine is gone), and after a
   seven-day dwell they are deleted. **`infrastructure/output/` is for reports still being read**;
   a report nobody is reading is not "current system state", it is spent.

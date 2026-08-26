@@ -22,8 +22,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🏷️ §21 WORLD LABELS LIFTED — ✅ **DEPLOYED** 2026-08-24 07:3x | 2026-08-24 | ⏳ READING PENDING |
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
 
-🔴 **WHEN A LOAD IS SCORED:** move its block whole into
-**delete the block outright** once it has a result, and delete its index row. Run sheets for past loads are not kept: deleted 2026-08-26 (owner: "kill the old archives"); the content is in git history.
+🔴 **WHEN A LOAD IS SCORED: delete its block.**
 **Do not leave a scored block here with a ✅** — that is the same rot one step slower.
 
 ---

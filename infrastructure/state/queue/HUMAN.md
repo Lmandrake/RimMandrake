@@ -29,7 +29,6 @@ a trailer. **This file is for everything that is not shaped like an item.**
 
 ---
 
-> 📦 **35 settled sections were archived and then DELETED 2026-08-26 (owner: "kill the old archives"); git history holds them. Moved on
 > 2026-08-23**, on the owner's instruction. Everything answered, ruled, resolved or struck
 > out lives there verbatim — **this file now holds only what is still waiting on him.**
 > Nothing was deleted. A section moved only if its own heading said it was finished, or

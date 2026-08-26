@@ -641,7 +641,7 @@ find something have told you their entire theology in one word.
   wiring is quietly grieving a name nobody else uses.
 
 ⚠️ **Build note.** The rename must be in the STARTING SAVE, so it lands with the
-campaign start (`SCENARIO_SPEC.md`, B55) rather than as a later patch. Anything
+campaign start (`SCENARIO_SPEC.md`) rather than as a later patch. Anything
 that hard-codes a ship name in a def or a quest should use *The Utinni*; only
 Cradle-Mind dialogue uses *Kolyska*.
 

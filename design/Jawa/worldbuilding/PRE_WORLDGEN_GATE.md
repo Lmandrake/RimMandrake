@@ -60,22 +60,12 @@ on two quicktest worlds reports exactly three deities — `Palpatine`, `the With
 
 ## 2. What is genuinely still owed, and only this
 
-Three things, all small, all filed. **Nothing else in the faction or ideo layer blocks the
-click.**
+One thing, and it is the one that cannot be retrofitted. **Nothing else in the faction or
+ideo layer blocks the click.**
 
 | # | what | filed as | why it bakes |
 |---|---|---|---|
-| 1 | ~~Four ratified KEEP rows are missing from the Configure Factions screen~~ 🔴 **REWRITTEN by CHECK, 2026-08-22.** The described cause is FIXED: `OnlyOurFactions.xml` no longer touches `maxConfigurableAtWorldCreation` (its own header now forbids it) and zeroes `startingCountAtWorldCreation` instead; exactly one visible FactionDef in the game reads 0, and it is `OuterRim_RebelAlliance`. ⚠️ **But a larger defect is real and was never the patch's fault:** **seven of our eight authored `Jawa_*` factions read −1** because we never set the field and their abstract parents do not carry it, and the engine's query is `> 0`. Only `Jawa_Junkers` is configurable, by inheritance accident. ⇒ `AUTHORED_FACTIONS_OFF_THE_SCREEN_1`; evidence `observed/2026-08-22/configure_factions/` | `SLATE_KEEPS_CONFIGURABLE_1` → `AUTHORED_FACTIONS_OFF_THE_SCREEN_1` | ⭐ **still the checklist's trap, for a different reason** |
-| 2 | ~~**The Blackstar Company's vessel is dropped from the default worldgen list.** Biotech's `PirateWaster` declares `replacesFaction: Pirate`~~ ✅ **DISCHARGED — `PIRATE_VESSEL_RESTORED_1` closed at `42ad3ec`, and re-measured 2026-08-22.** `src/Jawa/Jawa_Patches/Patches/PirateWaster_Yield.xml` removes the field and zeroes the count, and the LIVE 578-mod dump confirms it: `PirateWaster` carries no `replacesFaction` at all. ⚠️ The shipped Biotech XML still declares it at `Data/Biotech/Defs/FactionDefs/Factions_Misc.xml:576` — **reading the vanilla file will make this look unfixed.** Read the dump. | `PIRATE_VESSEL_RESTORED_1` | the faction roster is fixed at creation |
-| 3 | **The Galactic Empire's leader is Royalty's high stellarch**, not Palpatine — `fixedLeaderKinds` unpatched | `IMPERIAL_RAID_ROSTER_1` | the leader pawn is generated at creation |
-| 4 | ~~**Eleven of the twelve NAMED factions have no `fixedName`**~~ 🔴 **RETIRED — measured live by CHECK, 2026-08-21: all TWELVE carry a `defFixedName` and all twelve wear it on a generated world** (`jawa/faction_name_get`; evidence `observed/2026-08-21/faction_names/`). `FACTION_FIXEDNAME_ELEVEN_1` has landed. ⚠️ What IS still random is **fifteen third-party mod factions** — `TradersGuild` → "Cosmic Nexus", `VFEP_Junkers` → "The Anti-Love Imps" and thirteen more — which is a scope call, not a gate item | `FACTION_FIXEDNAME_ELEVEN_1` | the faction's name is stored at creation |
-| 5 | **Thirteen faction world-markers, designed and accepted, not installed** — plus four `colorSpectrum` changes that ship with them | `FACTION_ICONS_BESPOKE_1` | the map is frozen with them on it |
-
-| 6 | 🔴 **Every authored leader title is invisible — the ideoligion overrides the def.** `jawa/faction_leader_get` reads `ideoOverrodeDefCount: 36` of 37. The Junkers' Scraplord is called **`Awoken Cheese`**; Blackstar's Captain is **`Ethical Thug`**. DECIDE ruled 2026-08-22 (`FACTION_SPEC.md`): **override all twelve on the IDEO**, in the same session as world creation, before the save | `LEADER_TITLES_ON_THE_IDEO_1` | ⭐ **an Ideo is generated once at world creation and cannot be retrofitted** |
-
-⚠️ **Items 1 and 2 are the same class of bug and it is worth naming:** a faction can be
-*silently absent* from the screen the owner ticks. Nothing logs it, and the checklist reads
-as if the row will be there.
+| 1 | 🔴 **Every authored leader title is invisible — the ideoligion overrides the def.** `jawa/faction_leader_get` reads `ideoOverrodeDefCount: 36` of 37. The Junkers' Scraplord is called **`Awoken Cheese`**; Blackstar's Captain is **`Ethical Thug`**. DECIDE ruled 2026-08-22 (`FACTION_SPEC.md`): **override all twelve on the IDEO**, in the same session as world creation, before the save | `LEADER_TITLES_ON_THE_IDEO_1` | ⭐ **an Ideo is generated once at world creation and cannot be retrofitted** |
 
 ⭐ **What is NOT on this list, deliberately.** `RAIN_DRY_THE_LOWLANDS_1`,
 `OCULAR_FOREST_SUMMITS_1` and `META_JSON_NAMES_DEAD_PIRATE_1` all edit the **paint**, which
@@ -102,7 +92,6 @@ defs, so the page opens as our twelve at one each. **4 keeps** remain (R5, 2026-
 which `JDSCIS_CIS_Faction` and `guy762_KotORFaction_RogueDroids` default to 0 and must be set
 by hand. ⚠️ **That XML no longer touches `maxConfigurableAtWorldCreation`** — a row is never
 deleted from `FactionGenerator.ConfigurableFactions`, only defaulted to zero.
-⇒ `SLATE_KEEPS_CONFIGURABLE_1` must land before the run, or the checklist is a trap.
 
 ---
 

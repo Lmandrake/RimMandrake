@@ -1,8 +1,6 @@
 # OWNER_DECISIONS.md — the single list of what is waiting on the owner
 
-> 📦 **Swept 2026-08-23 by REP, under this file's own rule.** Four settled ruling sections
-> and the two Open rows that declared themselves CLOSED moved to
-> the archive, deleted 2026-08-26 (owner: "kill the old archives"); the content is in git history. **185 lines → 109**, against a budget of
+> 📦 **Swept under this file's own rule: an answered row is deleted, not struck through.**
 > 120 whose stated rationale is that growth past it means the list is not being drained.
 > ⚠️ **Three rows are genuinely open — 8, 9 and 12** — and two of those are `[v2]`.
 

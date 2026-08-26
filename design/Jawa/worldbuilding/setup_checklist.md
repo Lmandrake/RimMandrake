@@ -112,7 +112,6 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 > nomad MemeDef in vanilla at all** — putting `Nomadic_Preferred` in `forcedMemes` would be
 > an unresolved cross-reference, and FactionDef has no `requiredPrecepts` field to put it in
 > either. It costs no meme slot because it occupies no meme slot.
-> 🔴 **What IS open is a deploy, not a decision:** `DEPLOY_SALVATION_RID_1`. The repo copy
 > is correct; the copy the game actually reads is not.
 
 - [~] ~~**Ideoligion:** "The Articles of Passage" / in-fiction "Keepers of the Second Hand".~~

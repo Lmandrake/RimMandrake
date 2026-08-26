@@ -866,8 +866,7 @@ There are two live Jawa xenotypes, both labelled "Jawa", both from our own
 is *all-male, homosexual, egg-laying, fast-growing and rapid-aging* — **that is
 split across both defs and complete in neither.**
 
-⇒ **This is `D23`'s job** (build our own xenotype set rather than cherrypicking),
-and it is now the clearest single argument for D23 existing. **Do not repoint the
+**Do not repoint the
 16 references until the merge is ruled** — pointing them at either def silently
 picks a half.
 

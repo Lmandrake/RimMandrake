@@ -246,7 +246,6 @@ Imperial trooper and a Blackstar hunter always arrive willing.
 
 - **Vanilla kinds are out of scope here.** `Mercenary_Sniper`, `Scavenger`, `Town_Guard`
   and the rest run at **32.5% bare** for a different reason — the weapon cut emptied their
-  tags. That is `ORPHANED_KINDS_AFTER_GUN_CUT_1` and it is still open.
 - **No rate is hereby blessed.** 11.2% is a measurement, not a target. After A is fixed and
   B is applied, whatever number falls out of the ten permitted factions is correct by
   construction.

@@ -82,7 +82,6 @@ shipped meme set is five, not two: **`AM_Structure_Scavenger` · `Trader` · `VM
 memes. ⚠️ **There is no Tunneler meme anywhere in the 578-mod capture** — it was never an
 available option, so "Nomad vs Tunneler" was a choice between one thing and nothing.
 🔑 `VME_Nomad` is on the **NPC tribes**; the player `.rid` carries four memes and is a
-separate open decision (`DEPLOY_SALVATION_RID_1`), because `VME_PermanentBases_Despised` has
 `enabledForNPCFactions: false` and so is free on an NPC faction and not on a player one.
 ⛔ That divergence is deliberate; do not "fix" it by editing the `.rid`.
 

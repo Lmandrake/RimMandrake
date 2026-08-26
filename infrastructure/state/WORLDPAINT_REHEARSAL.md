@@ -8,7 +8,6 @@
 
 # WORLDPAINT_REHEARSAL.md — paint the planet into a throwaway world, and LOOK at it
 
-> 📦 **ARCHIVE: deleted 2026-08-26 (owner: "kill the old archives"); the content is in git history.** ~215 lines were
 > moved there on 2026-08-23, byte-unchanged. **Nothing was deleted.** What moved: the superseded
 > adoption/`remaking` banners, §1–§3 (what the run proves, the two shut gates, the preconditions),
 > and §5, §6, §6b — the run sequence, the decision strings and the 25 ride-alongs.

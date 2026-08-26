@@ -17,12 +17,10 @@ Outputs land in `runs/`.
 | render | `render_single.py <name>` | One design, large, with ~3× fonts. |
 | render | `render_skeleton.py`, `render_build_sheet.py` | The #15 skeleton and build sheet drawn over a dimmed base hull. |
 
-## Retired 2026-08-20
+## Retired
 
 `ship_layout.py` · `verify_coverage.py` · `geom_check.py` · `render_ship.py` ·
-`render_ship2.py` — moved to
-git history (`infrastructure/disposing/` was DELETED 2026-08-26) and pending deletion. That quarantine is gone; the files are recoverable from git and must not be cited or run. The
-coverage numbers they produced are recorded in
+`render_ship2.py` are deleted. The coverage numbers they produced are recorded in
 `design/Jawa/worldbuilding/ship_deck_plan.md` and
 `src/RimMandrake/mapsynth/runs/designs_report.json`; the live coverage verifier is
 `ship_designs.py`, and the surviving renderers are `render_single.py`,

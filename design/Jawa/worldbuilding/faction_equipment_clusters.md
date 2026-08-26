@@ -125,7 +125,6 @@ weapons, which is a mod-build, not a patch.
 
 ### ⚠️ Finding 5 — nine authored kinds are fielded by nothing
 All four `Jawa_DeepDesert_*`, all four `Jawa_Blackstar_*`, and `Jawa_Empire_Leader` appear
-in no `FactionDef`'s `pawnGroupMakers`. Filed as `ORPHANED_ROLE_KINDS_UNFIELDED_1`.
 **A cluster assignment for those factions changes nothing until they are wired in.**
 
 ---
@@ -217,7 +216,6 @@ tier** — the near-one-shot disable of a machine, which he called *"the tactica
 mechanism itself is live and correct — `DamageWorker_IonBuildup` fires, and the mod's
 `KNOWN INERT` comment is stale — but its entire effect is a hediff, and a mechanoid cannot
 receive one. Evidence: `observed/2026-08-22/ion_buildup/`.
-Ruling needed: `ION_CAPTURES_PEOPLE_NOT_DROIDS_1` (DECIDE, needs owner).
 
 ## Axis B — cultural idiom (how they came to hold it)
 
@@ -290,7 +288,6 @@ protection on the planet, which contradicts the roster's intent that warcaskets 
 
 # PART 3 — what to build, in order
 
-1. **Wire the nine orphaned kinds in** (`ORPHANED_ROLE_KINDS_UNFIELDED_1`). Until then the
    Deep Desert and Blackstar rows above change nothing.
 2. **Repoint every "recon armour" and "cataphract" assignment.** Both are cut. The ladder is
    flak → marine → Warcasket/KotOR composite.
@@ -442,8 +439,6 @@ regardless, because no Trade Moot kind requests any of the four.
 adds `JawaIon_Damage` to Heavy, Specialist and Leader. Validated 3/3 matches, 0 errors.
 ⛔ The Grunt is excluded on arithmetic: `weaponMoney` 250–300 against a **420** blaster, and
 `PawnWeaponGenerator` filters by market value — the tag would have been a silent no-op.
-Follow-ups filed: `IONBLASTER_INTO_THE_GENERATOR_1` (the roster XML is generated; this patch
-is a stopgap) and `IONBUILDUP_ACCRUES_ON_FLESH_1` (nobody has ever watched the C# worker
 fire; its own source carries a `VERIFY IN-GAME` note).
 
 🔑 And per L16, not L4: *"Downed is not dead, and this is where most of our prisoners,

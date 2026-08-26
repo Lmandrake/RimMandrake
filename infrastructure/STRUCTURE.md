@@ -187,7 +187,6 @@ Payloads are gitignored; **the teardown is the work product.**
 | `infrastructure/REFRESH.md` | What to re-run after the mod list changes. |
 | `infrastructure/archive/` | Superseded narrative kept only for *why* — `context.md`. Never current state. |
 | `infrastructure/output/` | Reports **still being read** — audits, options papers, plans. Evidence, never doctrine. |
-| ~~`infrastructure/disposing/`~~ | **DELETED 2026-08-26.** The quarantine and everything in it are gone — owner: *"kill the old archives"*. A file believed dead is now DELETED, and git history is the undo. |
 
 ### The live-state spine — `infrastructure/state/`
 
@@ -201,7 +200,6 @@ this?* A rule is durable; a queue is meant to be consumed.
 | `infrastructure/state/OWNER_DECISIONS.md` | Every question only the owner can answer, and their rulings. |
 | `infrastructure/state/EXPECTED_FAILURES_next_load.md` | Expected-failure signatures, written **before** a load so triage is judgeable. |
 | `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` | The Configure Factions page, box by box, for world creation. |
-| ~~`infrastructure/state/archive/`~~ | **DELETED 2026-08-26**, with `state/preserved/` and the queue archives. Blocks trimmed out of a live state doc are DELETED now, not filed; git history holds them. |
 | `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
 | `infrastructure/state/TEST_PLAN.md` | How deployed material gets proved in-game. Written by a retired seat; still cited by `load_session.py`. |
 | `infrastructure/state/status/game.json` | The game-state stamp. ⚠️ `<SEAT>.json` and `say.py` are GONE (2026-08-22): nobody wrote them, the board showed week-old sentences as current. What a seat is doing is a `seat` event on the ledger — `rimflow seat`. |

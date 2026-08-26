@@ -24,10 +24,7 @@ full edit → build → deploy → launch → test cycle is about **one minute**
 
 ## The one item left in v1
 
-**W9 — the owner builds his real 21,872-tile world.** Three preconditions only he can
-supply: the full 578-mod list, his one-shot hand-tick pass at Configure Factions, and the
-`ScenarioDef` (V1 chain row 12 gates row 10). Everything on CHECK's side is built and
-calibrated.
+
 
 🔴 **The machine is on the 13-mod MINIMAL list** at his explicit instruction. Restore with
 `modlist_swap.py --restore --apply` before he plays.

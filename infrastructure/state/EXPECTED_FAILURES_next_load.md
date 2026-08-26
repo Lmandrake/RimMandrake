@@ -73,7 +73,6 @@ carry S8 forward.
 ---
 
 > 📦 **Blocks §1, §7 and §6 are CLOSED and now live in**
-> the archive, deleted 2026-08-26 (owner: "kill the old archives"); the content is in git history.**
 > This file keeps the standing rules, the index, and the OPEN block only.
 
 # §2 — NEXT LOAD: **NEW WORLD GENERATION**. ⬜ OPEN
@@ -244,7 +243,6 @@ player reaches the landing-site screen.
 **The list is `D:\Luke\dev\Rimworld\infrastructure\state\WORLDGEN_FACTION_CHECKLIST.md`**
 ⚠️ **Corrected 2026-08-23.** It used to read: 20 untick (§1 + §2), 6 keep (§4), plus
 `OuterRim_RebelAlliance` recorded present/absent (§5). **§1, §2 and §5 are now in
-the faction-checklist archive, deleted 2026-08-26 (owner: "kill the old archives"); the content is in git history** — the unticks are done
 in XML by `OnlyOurFactions.xml` and the page opens as our twelve at one each. Live: **4
 keeps** in §4, two of which (`JDSCIS_CIS_Faction`, `guy762_KotORFaction_RogueDroids`) default
 to 0 and must be set by hand, plus §4b's 13 rows.

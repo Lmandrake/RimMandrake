@@ -128,8 +128,7 @@ ratified (`8b98dfb`); nothing about it waits on anything. The same holds for
 
 ⚠️ **The one thing paint-is-free does NOT buy you: looking.** A scalar edit re-applies
 without a remake, but whether the planet still reads as a photograph of a real planet is a
-human looking at the render — see step 7, and `SCALD_RELIEF_RENDER_LOOK_1`, which is open
-precisely because the Scald dropped 1,441 m and nobody has looked at the relief since.
+human looking at the render — see step 6.
 
 ## 1. Load on the 578-mod stack *(578 as of 2026-08-21)*
 
@@ -147,37 +146,11 @@ What is left is **4 keeps** — two of them, `JDSCIS_CIS_Faction` and
 🔴 **Permanent at world creation. A faction absent here is absent from every player's game
 forever**, and the only remedy is regenerating, which discards everything after this step.
 
-⚠️ **Check `SLATE_KEEPS_CONFIGURABLE_1` has shipped before you trust the screen.**
-`JawaFactionSlate/Patches/OnlyOurFactions.xml` zeroes `maxConfigurableAtWorldCreation`,
-which does **not** cap a faction — it removes it from
-`FactionGenerator.ConfigurableFactions` entirely, so the row is not on the page and cannot
-be added back. Until that item lands, four checklist rows are missing from the screen the
-checklist is ticked on.
-
 ## 3. Generate, and save world-only
 
 No map. Confirm the file is **~5 MB, not ~20 MB**.
 
-## 4. ⏳ Create the `Pirate` faction by hand — *and check whether you still need to*
-
-```
-jawa/faction_create   defName=Pirate      # defaults to dryRun=true; read the plan, then dryRun=false
-jawa/faction_name_set action=clear        # it arrives with a generated name; clearing falls through to the def label
-```
-
-🔑 **Why worldgen skips it.** Biotech's `PirateWaster` declares `replacesFaction` at
-`Pirate`, so `Page_CreateWorldParams` strips `Pirate` from the default faction list. Without
-this step the four Blackstar settlements have no owner, and **stage 5 refuses all 72 rather
-than placing 68** — it is all-or-nothing by design.
-
-🔴 **THIS STEP HAS AN EXPIRY DATE. Delete it when `PIRATE_VESSEL_RESTORED_1` ships.** That
-item removes `replacesFaction` from `PirateWaster` and zeroes its inherited
-`requiredCountAtGameStart`, after which `Pirate` appears on the Configure Factions screen
-like any other faction and creating it by hand would be creating a duplicate.
-⇒ **Before running this step, check whether `Pirate` was on the screen at step 2. If it
-was, skip step 4 entirely.**
-
-## 5. Stamp the paint
+## 4. Stamp the paint
 
 ```
 python.exe src/RimMandrake/Utils/w9_run.py            # dry run — this IS the default
@@ -204,13 +177,12 @@ the biome repaint because the repaint is what strands them, and features go last
 instantiated and makes everything measured unattributable; `--despite-abort` proceeds
 through a failed load. **Neither belongs in a keeper run.**
 
-## 6. Rename the twelve dice-named factions
+## 5. Rename any dice-named factions
 
-They generate with random names. `jawa/faction_name_set`.
-⭐ Once `FACTION_FIXEDNAME_ELEVEN_1` ships, eleven of the twelve carry `fixedName` and this
-step shrinks to whatever is left.
+All twelve authored factions carry `defFixedName` and wear it. What still generates a
+random name is fifteen third-party mod factions. `jawa/faction_name_set`.
 
-## 7. Commit, lint, and **LOOK**
+## 6. Commit, lint, and **LOOK**
 
 ```
 jawa/world_commit          # ⛔ without this, nothing you changed is visible
