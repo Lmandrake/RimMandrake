@@ -117,6 +117,49 @@ dropped = [e for e in edges if not allow[e[0]] or not allow[e[1]]]
 
 ---
 
+## 5b. 🔴 `clearFirst:true` CLEARS BOTH KINDS. It destroyed 40 river edges.
+
+**Measured 2026-08-25, on the owner's live planet, and he saw it before the instruments did.**
+
+```
+world_links_clear  kind=road ...        # kind-scoped. safe.
+world_links_import ... clearFirst=true  # ⛔ NOT kind-scoped
+```
+
+`clearFirst` means *"clear existing links on every touched tile first"* — **every link, of
+every kind**, on every tile named in the CSV. A roads-only CSV touching 1,242 tiles therefore
+wiped every RIVER that crossed one of them: **325 → 285 edges, including 3 HugeRiver and 1
+LargeRiver.** Nothing failed, nothing warned, and `success: true` came back.
+
+✅ **The rule: never pass `clearFirst` with a single-kind CSV.** Either clear the one kind
+explicitly with `world_links_clear kind=<k>` and import with `clearFirst:false`, or put
+**both** kinds in the CSV.
+
+### ⚠️ And the damage COUNTS WRONG while it is happening
+
+Clearing touches one endpoint, so the neighbour keeps its half and the graph goes
+**asymmetric**. An edge set keyed by `(min,max)` then counts a dangling half as a whole edge
+and under-reports the loss — it said 9 lost when 40 were gone. 🔑 **Count `potentialRivers`
+ENTRIES, not deduplicated pairs**, and read `world_links_validate`'s `asymmetricCount`:
+
+| reading | entries | ÷2 = edges | pair-dict said |
+|---|---|---|---|
+| baseline | 650 | **325** | 325 ✅ |
+| after the roads write | 570 | **285** | 316 ❌ |
+| after restoring 23 edges | 650 | **325** | 325 ✅ |
+
+⭐ **Repair is cheap and exact.** `world_links_set kind=river path="a,b" def=X` rewrites BOTH
+endpoints, so one call repairs a dangling half as well as a missing edge. Order the writes
+**mouth first** — globally, by the downstream tile's `riverDist` ascending — because
+`OverlayRiver` does `riverDist = max(riverDist, previous + 1)` and `max()` can never be
+corrected downward. Done in that order on Ash'karr, **riverDist came back identical on all
+21,872 tiles**, so nothing had to be recomputed.
+
+🔑 **Keep the pre-write harvest.** `world/_roads/_links_raw.json` was the only thing that made
+an exact restore possible: it named every lost edge AND its def. Harvest before you write.
+
+---
+
 ## 6. Verify by reading the planet back, edge by edge
 
 `success: true` on `world_links_import` means the file parsed. It does not mean the planet

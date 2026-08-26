@@ -736,3 +736,13 @@ reached 71 → 75; steepest step 888 → 629 m. Classes are `StoneRoad` 455 / `D
 `DirtPath` 284 / `AncientAsphaltHighway` 37. Method and every trap:
 `skills/rimworld-world-editing/references/road-networks.md`. Rollback to the MST:
 `world/_roads/rollback_roads.csv`.
+
+🔴 **`world_links_import` with `clearFirst:true` is NOT kind-scoped — it clears rivers too.**
+Measured 2026-08-25: a roads-only CSV touching 1,242 tiles destroyed **40 river edges**
+(325 → 285, including 3 HugeRiver and 1 LargeRiver) with `success: true` and no warning.
+✅ Clear the one kind with `world_links_clear kind=road` and import with `clearFirst:false`,
+or put both kinds in the CSV. ⚠️ **Count `potentialRivers` ENTRIES, not deduplicated pairs** —
+a clear touches one endpoint, so the graph goes asymmetric and a `(min,max)` edge set counts a
+dangling half as a whole edge; it under-reported 40 losses as 9. Restored exactly from the
+pre-write harvest, mouth-first by `riverDist`: 325/325 edges, defs identical, riverDist
+identical on all 21,872 tiles.
