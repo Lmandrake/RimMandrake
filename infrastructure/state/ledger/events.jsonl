@@ -2217,3 +2217,9 @@
 {"seat":"BUILD","event":"claim","id":"ROOM_ROLE_AND_TEMP_HAVE_NO_TOOL_1","ts":"2026-08-26T15:33:12Z"}
 {"seat":"BUILD","event":"start","id":"ROOM_ROLE_AND_TEMP_HAVE_NO_TOOL_1","ts":"2026-08-26T15:33:12Z"}
 {"seat":"BUILD","event":"close","id":"ROOM_ROLE_AND_TEMP_HAVE_NO_TOOL_1","sha":"bd2a7f8a","ts":"2026-08-26T15:33:13Z"}
+{"seat":"BUILD","event":"claim","id":"TEMPLATE_RECT_PARAM_NOT_ACCEPTED_1","ts":"2026-08-26T15:37:56Z"}
+{"seat":"BUILD","event":"start","id":"TEMPLATE_RECT_PARAM_NOT_ACCEPTED_1","ts":"2026-08-26T15:37:56Z"}
+{"seat":"BUILD","event":"note","id":"TEMPLATE_RECT_PARAM_NOT_ACCEPTED_1","text":"Fixed at 4e76cfbc: compile_calls emits ops 'Def:x,z,w,h' for terrain and roof, chunked to the companion's own MaxOps/MaxCells. New rimplace/contract.py parses the 166 tools' parameter names out of the companion C# and rimplace selftest now contract-checks every compiled call, with a negative control. 26/26 pass; the dwelling compiles to 11 runnable calls.","ts":"2026-08-26T15:37:57Z"}
+{"seat":"BUILD","event":"close","id":"TEMPLATE_RECT_PARAM_NOT_ACCEPTED_1","sha":"4e76cfbc","ts":"2026-08-26T15:37:57Z"}
+{"seat":"CHECK","event":"file","id":"JAWA_CULTURES_LEAK_TO_STRANGERS_1","title":"Six unrelated ideoligions rolled our twelve CultureDefs and generated their own names","kind":"decision","target":"v1","caused_by":"ASHKARR_IDEOLOGY_MODE_CALL_1","for":"DECIDE","ts":"2026-08-26T15:37:57Z"}
+{"seat":"CHECK","event":"file","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","title":"jawa/build_batch refuses faction='player' while jawa/spawn_pawn accepts it - two tools, two grammars","kind":"bug","target":"v1","for":"BUILD","ts":"2026-08-26T15:37:57Z"}
