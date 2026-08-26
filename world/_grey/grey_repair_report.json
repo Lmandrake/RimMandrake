@@ -1,0 +1,32 @@
+{
+ "writes": [
+  {
+   "def": "CoastalIsland",
+   "intended": 12,
+   "success": true,
+   "added": 0,
+   "errors": []
+  },
+  {
+   "def": "Archipelago",
+   "intended": 4,
+   "success": true,
+   "added": 0,
+   "errors": []
+  }
+ ],
+ "verify": {
+  "CoastalIsland": {
+   "intended": 12,
+   "landed": 12,
+   "missing": [],
+   "still_carries_VEE_RisingWaters": []
+  },
+  "Archipelago": {
+   "intended": 4,
+   "landed": 4,
+   "missing": [],
+   "still_carries_VEE_RisingWaters": []
+  }
+ }
+}

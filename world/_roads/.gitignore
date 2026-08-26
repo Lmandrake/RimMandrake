@@ -23,3 +23,10 @@ _mutroster.json
 _v_*.json
 live_*.csv
 now_*.csv
+_muts_grey.json
+_muts_final.json
+_lm_final.json
+_offenders.json
+_scald_check.json
+_mines_verify.json
+_validity.json

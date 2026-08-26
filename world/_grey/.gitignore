@@ -1,0 +1,7 @@
+# Derived: re-harvestable from the live bridge. Provenance is committed, bulk is not.
+_planet_mutators_*.json
+planet_mutators_*.json
+_coast_sides.json
+ring_coast_sides.json
+_final_audit.json
+_displacement_diff.json
