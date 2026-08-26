@@ -717,3 +717,22 @@ and scrapes the port from `Player.log` instead of an env var no seat sets.
 1.108 → 1.28, systems 16 → 11, landlocked 8 → 3, humps 21 → 25 (5 introduced, 99 m).
 Corridor mutator density d1 39% → 13% empty. Method and every trap:
 `skills/rimworld-world-editing/references/river-networks.md`.
+
+🔴 **All five `RoadDef`s carry `movementCostMultiplier: 0.5` — identically** (read live
+2026-08-25: DirtPath/DirtRoad/StoneRoad/AncientAsphaltRoad/AncientAsphaltHighway, priority
+10/20/30/40/50). ⇒ **A road class costs the player nothing and can carry a story for free.**
+⚠️ `ancientOnly: true` on the two asphalts restricts *worldgen* from choosing them; it does
+NOT stop `world_links_set`/`_import` writing them, and they render — verified live.
+
+⚠️ **`BiomeDef.allowRoads` is absent from the offline def dump and can only be read live**
+(`world_links_get` returns it per tile). On Ash'karr **2,504 tiles refuse roads** —
+`AB_PropaneLakes` 818, Ocean 817, Lake 322, SeaIce 262, `AB_MechanoidIntrusion` 236,
+IceSheet 49. A link on one of those is STORED and DRAWN AS NOTHING, with no error.
+
+📌 **Ash'karr's roads after this session:** 891 → 1,247 edges over 1,242 tiles. Longest
+straight leg 18 → 9 tiles (mean 5.8 → 2.7); sinuosity median 1.106 → 1.168. Water landmarks
+on a road 15 → 45, shade 6 → 24, ruins 3 → 36; dead ends in open country 2 → 34; settlements
+reached 71 → 75; steepest step 888 → 629 m. Classes are `StoneRoad` 455 / `DirtRoad` 471 /
+`DirtPath` 284 / `AncientAsphaltHighway` 37. Method and every trap:
+`skills/rimworld-world-editing/references/road-networks.md`. Rollback to the MST:
+`world/_roads/rollback_roads.csv`.
