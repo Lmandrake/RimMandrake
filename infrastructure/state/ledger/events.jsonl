@@ -2138,3 +2138,12 @@
 {"seat":"CHECK","event":"verify","id":"CAMERA_CANNOT_AIM_AT_ANIMALS_1","result":"pass","config":"full-582","evidence":"infrastructure/state/evidence/ui_state_and_camera_2026-08-26_CHECK.md","sha":"67072a8a","ts":"2026-08-26T10:41:17Z"}
 {"seat":"CHECK","event":"close","id":"UI_STATE_MAP_READS_NULL_1","sha":"67072a8a","ts":"2026-08-26T10:41:17Z"}
 {"seat":"CHECK","event":"close","id":"CAMERA_CANNOT_AIM_AT_ANIMALS_1","sha":"67072a8a","ts":"2026-08-26T10:41:18Z"}
+{"seat":"CHECK","event":"claim","id":"LIVE_HALF_OF_LOAD_1","ts":"2026-08-26T10:42:46Z"}
+{"seat":"CHECK","event":"start","id":"LIVE_HALF_OF_LOAD_1","ts":"2026-08-26T10:42:46Z"}
+{"seat":"BUILD","event":"close","id":"PAWNKIND_AUDIT_TAGLESS_BLIND_1","sha":"7fc7e60f","ts":"2026-08-26T10:45:18Z"}
+{"seat":"BUILD","event":"close","id":"BUILDABLE_ENTRY_NUMBERS_COLLIDE_1","sha":"7fc7e60f","ts":"2026-08-26T10:45:18Z"}
+{"seat":"OWNER","event":"file","id":"LANDMARK_ICONS_REPAINTED_1","title":"48 repainted world landmark icons draw on the Ash'karr map","kind":"check","target":"v1","needs":"game-up","for":"CHECK","ownerSaid":"Fully deploy for next game load","ts":"2026-08-26T10:46:17Z"}
+{"seat":"CHECK","event":"verify","id":"LIVE_HALF_OF_LOAD_1","result":"partial","config":"full-582","evidence":"infrastructure/state/evidence/live_half_of_load_2026-08-26_CHECK.md","sha":"15994482","ts":"2026-08-26T10:47:26Z"}
+{"seat":"CHECK","event":"file","id":"PAWN_STAT_READ_HAS_NO_TOOL_1","title":"No bridge tool reads a pawn StatDef value - four temperature rows cannot be graded","kind":"task","target":"v1","caused_by":"LIVE_HALF_OF_LOAD_1","for":"BUILD","ts":"2026-08-26T10:47:26Z"}
+{"seat":"CHECK","event":"file","id":"JAWA_TEMP_RANGE_TWO_CRITERIA_1","title":"T2 and N1 state different PASS ranges for the same Jawa comfortable temperature","kind":"decision","target":"v1","caused_by":"LIVE_HALF_OF_LOAD_1","for":"DECIDE","ts":"2026-08-26T10:47:26Z"}
+{"seat":"OWNER","event":"drop","id":"LANDMARK_ICONS_REPAINTED_1","reason":"Owner: it already works, leave it unvalidated","ownerSaid":"We don't need the landmarks item","override":"OWNER may not `drop` LANDMARK_ICONS_REPAINTED_1 — it belongs to CHECK. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-08-26T10:47:28Z"}
