@@ -333,6 +333,34 @@ know** before you trust the case you don't.
 | 6b | `validate_patch.py`, lxml branch | **0 matches for EVERY** `text()` / `contains()` / `starts-with()` / `not()` / axis / union xpath | ✅ fixed `1c3a673f` (`rebase_for_root_element`, line 587, called at 1156). ⚠️ **Same bug class as row 6, second occurrence** |
 | 6c | `validate_patch.py --defs`, def created by ANOTHER MOD'S PATCH | **0 matches** on an xpath that is live and load-bearing | ⚠️ **KNOWN ONLY, and it is a third false-zero class** — see below |
 | 7 | `first_light` "no weaponTags" | counts a disarmed combat role as a civilian | ⚠️ **known only** |
+| 8 | `Utils/animal_inventory.py` biome/animal conflicts | **3**, while the game was dying on a 4th it cannot see — the true count is **27** | ✅ **superseded** by `Utils/biome_animal_conflicts.py`, which reads the CAPTURE |
+| 9 | `Utils/refresh.py` artefact staleness | **"never stamped → REBUILD"**, forever, on artefacts it had just correctly generated | ✅ **fixed** `797b034c` — writes the stamp atomically and READS IT BACK |
+
+🔴 **THE FOURTH FALSE ZERO, and it is the same lesson on the CENSUS side — BUILD, 2026-08-26.**
+Row 6c is about an xpath that reads 0 against a def a patch creates. Row 8 is a whole census with
+the same blind spot. `animal_inventory.py` cross-references biome→animal against animal→biome by
+reading every active mod's **Defs**, and reported **3** duplicate pairs while `Player.log` carried
+`ArgumentException: An item with the same key has already been added. Key: JRWTorosaurus` — a pair
+that is **not in any def file**. `More Vanilla Biomes` patches the animal's `wildBiomes`; our own
+`BiomeCast_Ashkarr.xml` patches the biome's `wildAnimals`. Neither side declares it.
+
+- **The true number, from the def dump capture (post-patch, from the running game): 27 pairs
+  across 12 biomes.** `Utils/biome_animal_conflicts.py`.
+- 🔑 **And the LOG undercounts too, structurally.** `BiomeDef.CommonalityOfAnimal` throws on the
+  first duplicate key **per biome** and stops, so the log can only ever name one key per biome —
+  it named 12. Fixing what the log names would have surfaced the other 15 one load at a time.
+- ⇒ **The rule, restated for censuses:** if a PatchOperation could CREATE the thing you are
+  counting, mod XML cannot answer and a number from it is UNMEASURED, not small. The capture is
+  the instrument. Same family as 6c; different tool, same false zero.
+
+🔴 **AN INSTRUMENT THAT COULD NOT READ BACK ITS OWN OUTPUT — BUILD, 2026-08-26.** Row 9.
+`refresh.py` is the tool that answers *"do I need a game load?"*. Its stamp writer left a leftover
+tail from a longer previous note in `GENERATED_FROM.json`, producing valid JSON followed by
+garbage; `read_stamp()` swallows `ValueError` and returns `None`; the artefact table then reads
+**"never stamped → REBUILD"** and the verdict says *"Offline artefacts are stale. Run --all"* —
+forever, for free, with no error, about artefacts it had just generated correctly. ⇒ **A tool that
+writes a file it will later read must read it back at write time and fail loudly if it cannot.**
+Fixed `797b034c`: temp file, `os.replace`, then a readback that raises.
 
 🔴 **THE THIRD FALSE ZERO: a def that exists only as another mod's PATCH OUTPUT — CHECK,
 2026-08-22.** `--defs` scans mods **on disk**. A def that no XML file declares, because a
