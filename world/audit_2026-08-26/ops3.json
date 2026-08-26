@@ -1,0 +1,1394 @@
+[
+{
+"p": "P1-cenotes",
+"kind": "lmk_remove",
+"tiles": [
+32,
+107,
+2358,
+3063,
+15951
+],
+"note": "cenotes on bare rock / tar / arid ground"
+},
+{
+"p": "P1-cenotes",
+"kind": "mut",
+"action": "remove",
+"d": "VEE_Cenotes",
+"tiles": [
+32,
+107,
+2358,
+3063,
+5816,
+7473,
+7475,
+7924,
+7925,
+13917,
+13918,
+13925,
+15951
+],
+"note": "a cenote is a flooded limestone sinkhole; it does not belong on crags or tar"
+},
+{
+"p": "P1-cenotes",
+"kind": "mut",
+"action": "add",
+"d": "VEE_Cenotes",
+"tiles": [
+46,
+7556,
+7557,
+7558,
+7560,
+13767,
+13768
+],
+"note": "karst chain in Sweatwood"
+},
+{
+"p": "P1-cenotes",
+"kind": "lmk",
+"d": "VEE_Cenotes",
+"candidates": [
+46,
+7556,
+7560,
+13767,
+13768
+],
+"want": 1,
+"note": "cenote field in Sweatwood"
+},
+{
+"p": "P1-cenotes",
+"kind": "mut",
+"action": "add",
+"d": "VEE_Cenotes",
+"tiles": [
+513,
+1439,
+5498,
+10358,
+10359,
+15915,
+15919
+],
+"note": "karst chain in Stepwood"
+},
+{
+"p": "P1-cenotes",
+"kind": "lmk",
+"d": "VEE_Cenotes",
+"candidates": [
+513,
+10358,
+15919,
+15915,
+1439
+],
+"want": 1,
+"note": "cenote field in Stepwood"
+},
+{
+"p": "P1-cenotes",
+"kind": "mut",
+"action": "add",
+"d": "VEE_Cenotes",
+"tiles": [
+398,
+2113,
+4811,
+5621,
+9671,
+10481,
+19958,
+19960,
+19961
+],
+"note": "karst chain in Hanging Wood"
+},
+{
+"p": "P1-cenotes",
+"kind": "lmk",
+"d": "VEE_Cenotes",
+"candidates": [
+398,
+19960,
+2113,
+19958,
+5621,
+10481
+],
+"want": 1,
+"note": "cenote field in Hanging Wood"
+},
+{
+"p": "P1-cenotes",
+"kind": "mut",
+"action": "add",
+"d": "VEE_Cenotes",
+"tiles": [
+328,
+4388,
+9248,
+9250,
+9251,
+9253,
+12489,
+12492
+],
+"note": "karst chain in Blindwood"
+},
+{
+"p": "P1-cenotes",
+"kind": "lmk",
+"d": "VEE_Cenotes",
+"candidates": [
+328,
+12489,
+12492,
+9250,
+9251,
+9253
+],
+"want": 1,
+"note": "cenote field in Blindwood"
+},
+{
+"p": "P1-cenotes",
+"kind": "mut",
+"action": "add",
+"d": "VEE_Cenotes",
+"tiles": [
+2312,
+5013,
+5016,
+9873,
+21154,
+21155
+],
+"note": "karst chain in Ashwood"
+},
+{
+"p": "P1-cenotes",
+"kind": "lmk",
+"d": "VEE_Cenotes",
+"candidates": [
+2312,
+9873,
+5013,
+21154
+],
+"want": 1,
+"note": "cenote field in Ashwood"
+},
+{
+"p": "P1-cenotes",
+"kind": "mut",
+"action": "add",
+"d": "VEE_Cenotes",
+"tiles": [
+365,
+1904,
+4613,
+9473,
+9475,
+18708
+],
+"note": "karst chain in Capwood"
+},
+{
+"p": "P1-cenotes",
+"kind": "lmk",
+"d": "VEE_Cenotes",
+"candidates": [
+365,
+9473,
+18708,
+1904
+],
+"want": 1,
+"note": "cenote field in Capwood"
+},
+{
+"p": "P1-cenotes",
+"kind": "mut",
+"action": "add",
+"d": "VEE_Cenotes",
+"tiles": [
+34,
+2624,
+7484,
+7486,
+7487,
+7489,
+13304
+],
+"note": "karst chain in Slough"
+},
+{
+"p": "P1-cenotes",
+"kind": "lmk",
+"d": "VEE_Cenotes",
+"candidates": [
+34,
+7486,
+7484,
+2624,
+13304
+],
+"want": 1,
+"note": "cenote field in Slough"
+},
+{
+"p": "P1-cenotes",
+"kind": "mut",
+"action": "add",
+"d": "VEE_Cenotes",
+"tiles": [
+162,
+3395,
+3396,
+8255,
+8256,
+17924,
+17930,
+17938,
+17939
+],
+"note": "karst chain in Frostcaps"
+},
+{
+"p": "P1-cenotes",
+"kind": "lmk",
+"d": "VEE_Cenotes",
+"candidates": [
+162,
+3395,
+8256,
+17930,
+3396,
+17938
+],
+"want": 1,
+"note": "cenote field in Frostcaps"
+},
+{
+"p": "P1-cenotes",
+"kind": "mut",
+"action": "add",
+"d": "VEE_Cenotes",
+"tiles": [
+1034,
+10249,
+13484,
+13485,
+13486
+],
+"note": "karst chain in Mould Marches"
+},
+{
+"p": "P1-cenotes",
+"kind": "lmk",
+"d": "VEE_Cenotes",
+"candidates": [
+13485,
+13484,
+1034
+],
+"want": 1,
+"note": "cenote field in Mould Marches"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+18,
+2528,
+2532,
+7388,
+7389,
+7390,
+7392,
+7393,
+12740
+],
+"note": "scar chain across Umbra"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+2532
+],
+"want": 1,
+"note": "the chain head in Umbra"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+112,
+3093,
+3096,
+7952,
+7953,
+7955,
+7956,
+7957,
+16137
+],
+"note": "scar chain across Umbra"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+7956
+],
+"want": 1,
+"note": "the chain head in Umbra"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+190,
+1940,
+3565,
+8425,
+18920,
+18925
+],
+"note": "scar chain across Umbra"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+4642
+],
+"want": 1,
+"note": "the chain head in Umbra"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+191,
+1949,
+3569,
+3571,
+8428,
+8429,
+8430,
+18974,
+18975
+],
+"note": "scar chain across Umbra"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+18974
+],
+"want": 1,
+"note": "the chain head in Umbra"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+59,
+2778,
+6135,
+7637,
+7638,
+14232,
+14233
+],
+"note": "scar chain across Ammonia Flats"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+7637
+],
+"want": 1,
+"note": "the chain head in Ammonia Flats"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+61,
+2791,
+6207,
+6208,
+7646,
+11068,
+14306,
+14307,
+14310
+],
+"note": "scar chain across Ammonia Flats"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+14306
+],
+"want": 1,
+"note": "the chain head in Ammonia Flats"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+118,
+297,
+1508,
+4206,
+7989,
+9062,
+9066,
+16328,
+16331
+],
+"note": "scar chain across Ammonia Flats"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+16331
+],
+"want": 1,
+"note": "the chain head in Ammonia Flats"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+119,
+3134,
+7994,
+7996,
+16364
+],
+"note": "scar chain across Ammonia Flats"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+16364
+],
+"want": 1,
+"note": "the chain head in Ammonia Flats"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+189,
+3558,
+7205,
+8418,
+12066,
+18909,
+18913,
+18915
+],
+"note": "scar chain across Deadstone"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+18909
+],
+"want": 1,
+"note": "the chain head in Deadstone"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+246,
+2277,
+4985,
+8756,
+8758,
+20942,
+20943,
+20944
+],
+"note": "scar chain across Deadstone"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+2277
+],
+"want": 1,
+"note": "the chain head in Deadstone"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+292,
+832,
+4172,
+9037,
+12272,
+12273,
+12277
+],
+"note": "scar chain across Deadstone"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+12273
+],
+"want": 1,
+"note": "the chain head in Deadstone"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+138,
+3253,
+4330,
+8112,
+17049,
+17079,
+17080
+],
+"note": "scar chain across Cinderdark"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+3253
+],
+"want": 1,
+"note": "the chain head in Cinderdark"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+318,
+9189,
+9190,
+9191,
+9192,
+9193,
+17051
+],
+"note": "scar chain across Cinderdark"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+9191
+],
+"want": 1,
+"note": "the chain head in Cinderdark"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+48,
+1090,
+2710,
+7570,
+7571,
+13808,
+13809,
+13822
+],
+"note": "scar chain across Ashen Wastes"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+13808
+],
+"want": 1,
+"note": "the chain head in Ashen Wastes"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+220,
+3741,
+5732,
+8600,
+8601,
+20018,
+20022,
+20023
+],
+"note": "scar chain across Ashen Wastes"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+49,
+1095,
+2715,
+7574,
+13851,
+13855,
+13874
+],
+"note": "scar chain across Scour"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+13874
+],
+"want": 1,
+"note": "the chain head in Scour"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+109,
+1459,
+3078,
+3079,
+7938,
+16035,
+16036
+],
+"note": "scar chain across Scour"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+16035
+],
+"want": 1,
+"note": "the chain head in Scour"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+47,
+2702,
+7562,
+7563,
+7564,
+13776,
+13777,
+13778,
+13779
+],
+"note": "scar chain across Sunreach"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+13779
+],
+"want": 1,
+"note": "the chain head in Sunreach"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+79,
+1274,
+2896,
+6824,
+7754,
+7755,
+7756,
+14924,
+14925
+],
+"note": "scar chain across Sunreach"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+2896
+],
+"want": 1,
+"note": "the chain head in Sunreach"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+212,
+2074,
+3694,
+5725,
+8555,
+19724,
+19725,
+19729,
+19736
+],
+"note": "scar chain across Sunreach"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+5725
+],
+"want": 1,
+"note": "the chain head in Sunreach"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+997,
+2617,
+5163,
+7476,
+13263,
+13264,
+13266
+],
+"note": "scar chain across Nightspill"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+13264
+],
+"want": 1,
+"note": "the chain head in Nightspill"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+42,
+1057,
+2676,
+7535,
+13622,
+13623,
+13626,
+13627
+],
+"note": "scar chain across Nightspill"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+13623
+],
+"want": 1,
+"note": "the chain head in Nightspill"
+},
+{
+"p": "P2-nightscars",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+249,
+2294,
+4998,
+8776,
+9855,
+21044,
+21045,
+21047
+],
+"note": "scar chain across Nightspill"
+},
+{
+"p": "P2-nightscars",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+21047
+],
+"want": 1,
+"note": "the chain head in Nightspill"
+},
+{
+"p": "P3-wither",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+827,
+2447,
+4167,
+12242,
+12247,
+12266,
+12267
+],
+"note": "a torn canyon line through Wither"
+},
+{
+"p": "P3-wither",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+830,
+4167
+],
+"want": 1,
+"note": "canyon mouth in Wither"
+},
+{
+"p": "P3-wither",
+"kind": "lmk",
+"d": "VEE_SerpentineCanyons",
+"candidates": [
+830,
+2449,
+2450,
+2451,
+7307,
+7308,
+12248,
+12251,
+12260,
+12261,
+12268
+],
+"want": 2,
+"note": "canyon system in Wither"
+},
+{
+"p": "P3-wither",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+213,
+2078,
+2079,
+3699,
+4776,
+8559,
+8563,
+19749,
+19751,
+19754,
+19756
+],
+"note": "a torn canyon line through The Verge"
+},
+{
+"p": "P3-wither",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+213,
+2078
+],
+"want": 1,
+"note": "canyon mouth in The Verge"
+},
+{
+"p": "P3-wither",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+214,
+19787,
+19788,
+19792
+],
+"note": "a torn canyon line through South Crags"
+},
+{
+"p": "P3-wither",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+2084,
+214
+],
+"want": 1,
+"note": "canyon mouth in South Crags"
+},
+{
+"p": "P3-wither",
+"kind": "mut",
+"action": "add",
+"d": "VEE_SerpentineCanyons",
+"tiles": [
+22,
+53,
+219,
+223,
+393
+],
+"note": "real canyons where the ground is high enough, South Crags"
+},
+{
+"p": "P3-wither",
+"kind": "lmk",
+"d": "VEE_SerpentineCanyons",
+"candidates": [
+22,
+53,
+214,
+219,
+223,
+393,
+394,
+396,
+535,
+579,
+581,
+582
+],
+"want": 2,
+"note": "canyon system in South Crags"
+},
+{
+"p": "P3-wither",
+"kind": "mut",
+"action": "add",
+"d": "Chasm",
+"tiles": [
+394,
+396,
+535
+],
+"note": "chasms in South Crags"
+},
+{
+"p": "P3-wither",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+554,
+1458,
+5745,
+10604,
+10607,
+16015,
+16030,
+16033
+],
+"note": "a torn canyon line through Scour"
+},
+{
+"p": "P3-wither",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+1455,
+16033
+],
+"want": 1,
+"note": "canyon mouth in Scour"
+},
+{
+"p": "P3-wither",
+"kind": "lmk",
+"d": "VEE_SerpentineCanyons",
+"candidates": [
+1455,
+5746,
+16013,
+16014
+],
+"want": 2,
+"note": "canyon system in Scour"
+},
+{
+"p": "P4-cathedral",
+"kind": "mut",
+"action": "add",
+"d": "AB_DerelictArchonexus",
+"tiles": [
+69
+],
+"note": "the core"
+},
+{
+"p": "P4-cathedral",
+"kind": "mut",
+"action": "add",
+"d": "AncientUplink",
+"tiles": [
+7696,
+7697,
+7698
+],
+"note": "uplinks around the core"
+},
+{
+"p": "P4-cathedral",
+"kind": "mut",
+"action": "add",
+"d": "VEE_MineableComponentSpacer",
+"tiles": [
+2834,
+2835,
+2836,
+2837,
+2838,
+2839,
+7694,
+7695,
+7699,
+14564,
+14570,
+14576,
+14583,
+14589,
+14595
+],
+"note": "the works: advanced components in the ground"
+},
+{
+"p": "P4-cathedral",
+"kind": "mut",
+"action": "add",
+"d": "AB_DerelictBioLab",
+"tiles": [
+3995,
+3996,
+3997,
+4001,
+5073
+],
+"note": "derelict bio labs"
+},
+{
+"p": "P4-cathedral",
+"kind": "mut",
+"action": "add",
+"d": "VEE_MechanoidShipChunks",
+"tiles": [
+262,
+442,
+443,
+660,
+676,
+677,
+678,
+679,
+983,
+1200,
+1214,
+1218,
+1219,
+1576,
+2010,
+2372
+],
+"note": "wreckage trailing out"
+},
+{
+"p": "P4-cathedral",
+"kind": "mut",
+"action": "add",
+"d": "VEE_DeadlifeVents",
+"tiles": [
+2373,
+2374,
+2375,
+2376,
+2377,
+2380
+],
+"note": "deadlife venting at the edge"
+},
+{
+"p": "P4-cathedral",
+"kind": "mut",
+"action": "add",
+"d": "VEE_ContaminatedReservoir",
+"tiles": [
+2381,
+3993,
+3994
+],
+"note": "poisoned water on the approach"
+},
+{
+"p": "P4-cathedral",
+"kind": "mut",
+"action": "add",
+"d": "TerraformingScar",
+"tiles": [
+442,
+660,
+677,
+983,
+1200,
+1214,
+1576,
+4001,
+5072,
+6381,
+6382,
+6386,
+6471,
+6478
+],
+"note": "scarred approach to the Cathedral"
+},
+{
+"p": "P4-cathedral",
+"kind": "lmk",
+"d": "VEE_ContaminatedReservoir",
+"candidates": [
+69,
+7697,
+7696,
+7698,
+7699,
+7695,
+7694,
+2837,
+14576,
+2836,
+14589,
+2838
+],
+"want": 2,
+"note": "Cathedral: VEE_ContaminatedReservoir"
+},
+{
+"p": "P4-cathedral",
+"kind": "lmk",
+"d": "TerraformingScar",
+"candidates": [
+69,
+7697,
+7696,
+7698,
+7699,
+7695,
+7694,
+2837,
+14576,
+2836,
+14589,
+2838,
+14595,
+2839,
+14570,
+2835,
+2834,
+14583
+],
+"want": 3,
+"note": "Cathedral: TerraformingScar"
+},
+{
+"p": "P5-buried",
+"kind": "mut",
+"action": "add",
+"d": "AB_DerelictKemeticTemple",
+"tiles": [
+24,
+35,
+38,
+44,
+103
+],
+"note": "AB_DerelictKemeticTemple in Dry Marches/Long Sand/Combs"
+},
+{
+"p": "P5-buried",
+"kind": "mut",
+"action": "add",
+"d": "AB_GiantFossils",
+"tiles": [
+6,
+7,
+24,
+25,
+29,
+44,
+63
+],
+"note": "AB_GiantFossils in Dune Sea/Long Sand/Kiln"
+},
+{
+"p": "P5-buried",
+"kind": "mut",
+"action": "add",
+"d": "AncientToxVent",
+"tiles": [
+8,
+30,
+66,
+76
+],
+"note": "AncientToxVent in Scorch/Cinders/Ashfall Range"
+},
+{
+"p": "P5-buried",
+"kind": "lmk",
+"d": "AncientToxVent",
+"candidates": [
+8,
+30,
+66,
+76
+],
+"want": 2,
+"note": "AncientToxVent as a named place"
+},
+{
+"p": "P5-buried",
+"kind": "mut",
+"action": "add",
+"d": "AncientSmokeVent",
+"tiles": [
+132,
+136
+],
+"note": "AncientSmokeVent in Scorch/Cinders/Fall Line"
+},
+{
+"p": "P5-buried",
+"kind": "lmk",
+"d": "AncientSmokeVent",
+"candidates": [
+30,
+66,
+132,
+136
+],
+"want": 2,
+"note": "AncientSmokeVent as a named place"
+},
+{
+"p": "P5-buried",
+"kind": "mut",
+"action": "add",
+"d": "VEE_MineableComponentSpacer",
+"tiles": [
+36,
+73,
+94,
+96,
+273,
+274
+],
+"note": "VEE_MineableComponentSpacer in The Abandoned Mines/Glass Reach"
+},
+{
+"p": "P5-buried",
+"kind": "mut",
+"action": "add",
+"d": "VEE_DeadlifeVents",
+"tiles": [
+48,
+138,
+216,
+220
+],
+"note": "VEE_DeadlifeVents in Ashen Wastes/Cinderdark"
+}
+]

@@ -255,3 +255,32 @@ everything else does real work at map generation.
 
 ⇒ **The right question is not "is it unused", it is "does it have a worker".** `genpower.txt`
 (the data-field ranking) is kept only as the wrong lens that made this visible.
+
+## Five creative passes — scars, cenote relocation, Wither canyons, the Cathedral interior
+
+`plan3.py` / `apply3.py` / `verify3.py`, `ops3.json`, and `wheretolook.txt` (coordinates).
+Live world saved as `ASHKARR_SCARRED_2026-08-26`. 386 mutator writes, 39 new landmarks,
+**0 failures**.
+
+| pass | what |
+|---|---|
+| P1 cenotes | 12 removed from bare crags, tar pits and arid ground — 4 of those were on `AridShrubland`, which the def's own BLACKLIST forbids, so they were illegal placements. 64 added as karst chains in nine wet, dark, under-used regions. |
+| P2 nightscars | 180 `TerraformingScar` laid as wandering CHAINS of adjacent tiles across Umbra, Ammonia Flats, Deadstone, Cinderdark, Ashen Wastes, Scour, Sunreach, Nightspill. |
+| P3 wither | A torn line through Wither, The Verge, South Crags and Scour, plus real `VEE_SerpentineCanyons` and `Chasm` wherever the ground is Mountainous enough to carry them. |
+| P4 cathedral | The 236-tile lozenge got an INTERIOR without repainting a single biome: an `AB_DerelictArchonexus` core, uplinks around it, component deposits and bio labs in the works ring, ship chunks trailing out, deadlife vents and contaminated reservoirs at the edge, and a scarred approach. |
+| P5 buried | Kemetic temples in Dry Marches/Long Sand, giant fossils in the Dune Sea, tox and smoke vents at Scorch and Cinders, component deposits in The Abandoned Mines. |
+
+🔑 **`TerraformingScar` is ILLEGAL on `HorrorWastes`**, which is Deadstone's core and the
+whole of Thornend — the nightside chains route around it. Also illegal on the crystal
+caverns, fungal forest, both ice biomes and the tropical swamp.
+
+🔴 **Of the buried things, only BioLab / ComponentSpacer / ContaminatedReservoir /
+DeadlifeVents / Uplink / ShipChunks / Archonexus are legal in the Rust Cathedral.**
+KemeticTemple, GiantFossils, AncientToxVent and AncientSmokeVent are legal on **0** of its
+236 tiles — `AB_MechanoidIntrusion` is not in their whitelists. They went where they fit.
+
+**Losses, whole-planet diff:** 12 `VEE_Cenotes` (all intended removals), 3 `Mountain`, 1
+`Caves` — the last four all tiles where `VEE_SerpentineCanyons` replaced a generic feature,
+which is the correct specialisation.
+⚠️ One of those went via **`overrideCategories`**, which the collision guard does not model
+— it only checks `categories`. A guard built on `categories` alone will miss an override.

@@ -1,0 +1,83 @@
+== 1. WHERE ARE THE CENOTES NOW ==
+  cenote mutator on 36 tiles, landmark on 26
+  mutator by region/biome:
+     Mould Marches      AB_MycoticJungle           5
+     Damp               AB_RockyCrags              4
+     Thornbelt          AridShrubland              4
+     Nightspill         AB_TarPits                 3
+     Stillwood          AB_MycoticJungle           3
+     Nightspill         AB_MycoticJungle           3
+     Capwood            AB_MycoticJungle           2
+     Ashwood            AB_MycoticJungle           2
+     South Crags        AB_MycoticJungle           2
+     Sporefields        BMT_FungalForest           1
+  landmark by region/biome:
+     Nightspill         AB_MycoticJungle           3
+     Stillwood          AB_MycoticJungle           3
+     Mould Marches      AB_MycoticJungle           3
+     Ashwood            AB_MycoticJungle           2
+     Capwood            AB_MycoticJungle           2
+     South Crags        AB_MycoticJungle           2
+     Damp               AB_RockyCrags              2
+     Dew Horn           ZBiome_Badlands            1
+     Sunreach           AB_MycoticJungle           1
+     Tallow Ground      AB_MycoticJungle           1
+
+== 2. TerraformingScar legality ==
+  biomes on Ash'karr NOT in the scar whitelist:
+     HorrorWastes                    1711 tiles   <-- scar ILLEGAL here
+     Ocean                            817 tiles   <-- scar ILLEGAL here
+     BMT_CrystalCaverns               578 tiles   <-- scar ILLEGAL here
+     BMT_FungalForest                 425 tiles   <-- scar ILLEGAL here
+     Lake                             322 tiles   <-- scar ILLEGAL here
+     SeaIce                           262 tiles   <-- scar ILLEGAL here
+     IceSheet                          49 tiles   <-- scar ILLEGAL here
+     COMIGO_GreaterSwamp_Tropical      43 tiles   <-- scar ILLEGAL here
+  nightside regions and how many tiles accept a scar:
+     Deadstone        2051 tiles  scar-legal & free:  350   biomes=HorrorWastes,BMT_CrystalCaverns
+     Umbra             802 tiles  scar-legal & free:  551   biomes=AB_PropaneLakes,AB_RockyCrags
+     Cinderdark        153 tiles  scar-legal & free:  146   biomes=Wasteland
+     Ashen Wastes      202 tiles  scar-legal & free:  196   biomes=Wasteland
+     Blindwood         145 tiles  scar-legal & free:  133   biomes=AB_MycoticJungle,BMT_FungalForest
+     Venom Wood         72 tiles  scar-legal & free:   71   biomes=PoisonForest
+     Capwood            75 tiles  scar-legal & free:   69   biomes=AB_MycoticJungle
+     Ammonia Flats     818 tiles  scar-legal & free:  703   biomes=AB_PropaneLakes,AB_RockyCrags
+     Sunreach          795 tiles  scar-legal & free:  769   biomes=Wasteland,Desert
+     Nightspill        853 tiles  scar-legal & free:  698   biomes=AB_MycoticJungle,AB_RockyCrags
+     Scour             234 tiles  scar-legal & free:  227   biomes=Wasteland,ZBiome_Badlands
+     Thornend           61 tiles  scar-legal & free:    0   biomes=HorrorWastes
+     Wither             72 tiles  scar-legal & free:   70   biomes=ZBiome_Badlands,AB_RockyCrags
+     The Verge         171 tiles  scar-legal & free:  166   biomes=AB_RockyCrags,Desert
+     Quiet Ground       43 tiles  scar-legal & free:   36   biomes=PoisonForest,AB_MycoticJungle
+
+== 3. Rust Cathedral: what can we bury there ==
+  236 tiles, biome=AB_MechanoidIntrusion, free of landmark: 233
+     AB_DerelictBioLab              legal on 236 of 236 Rust Cathedral tiles
+     AB_DerelictKemeticTemple       legal on   0 of 236 Rust Cathedral tiles
+     AB_GiantFossils                legal on   0 of 236 Rust Cathedral tiles
+     VEE_MineableComponentSpacer    legal on 236 of 236 Rust Cathedral tiles
+     AncientToxVent                 legal on   0 of 236 Rust Cathedral tiles
+     AncientSmokeVent               legal on   0 of 236 Rust Cathedral tiles
+     VEE_ContaminatedReservoir      legal on 236 of 236 Rust Cathedral tiles
+     VEE_DeadlifeVents              legal on 236 of 236 Rust Cathedral tiles
+     TerraformingScar               legal on 236 of 236 Rust Cathedral tiles
+     AncientUplink                  legal on 236 of 236 Rust Cathedral tiles
+     VEE_MechanoidShipChunks        legal on 236 of 236 Rust Cathedral tiles
+     AB_DerelictArchonexus          legal on 236 of 236 Rust Cathedral tiles
+
+== 4. BLAND VEGETATED REGIONS (candidates for cenotes) ==
+  region             tiles   veg   mut%  lmks
+  Sweatwood             93    93     1%     1
+  Stepwood              85    85     1%     1
+  Frostcaps            254   254     2%     4
+  Slough               148    73     5%     5
+  Hanging Wood         165   165     5%     8
+  Mould Marches        123   123     8%     6
+  Nightspill           853   500    15%    29
+  Tallow Ground        129    69    20%     3
+  Sunreach             795   127    29%    12
+  Sporefields          255   255    39%     3
+  Dew Belt             362    82    50%    17
+  Twilight Crags       384   167    51%    22
+  Gray Crags           577   112    55%    23
+  South Crags          433   249    64%    15
