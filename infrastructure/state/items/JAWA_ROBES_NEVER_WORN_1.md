@@ -1,3 +1,28 @@
+MEASURED AGAIN 2026-08-26 BY CHECK - THIS ITEM'S CRITERION IS STILL HALF UNMET, AND THE CAUSE IS KNOWN.
+
+This item closed on a verify that asked for `guy762_Robes_jawa` **and** `guy762_JawaHood` on every
+Jawa. Live, on the full 582-mod list: **16 of 16 Jawa_Tribal_Scavenger wear the ROBE, 0 of 16 wear
+the HOOD.** The robe half of the fix worked. The hood half never did.
+
+The cause is not this item's `apparelMoney` reasoning, which was right. `apparelRequired`
+**inherits and appends**, and the inherited items come FIRST:
+`Jawa_Tribal_Scavenger` effectively requires `[Apparel_WarVeil, guy762_Robes_jawa,
+guy762_JawaHood]` from `ParentName="TribalWarriorBase"`. `PawnApparelGenerator` takes each required
+item only when it does not overlap what is already worn, so the WarVeil (FullHead/Overhead) takes
+the slot and the hood (UpperHead+Mouth/Overhead) is silently skipped. The robe is a different layer
+and always lands.
+
+RimWorld has been logging it every load - `Config error in Jawa_Tribal_Scavenger: required apparel
+can't be worn together (Apparel_WarVeil, guy762_JawaHood)`.
+
+`Jawa_Tribal_Elder` is worse: `Apparel_PlateArmor` is inherited ahead of the robe, so that kind
+loses BOTH pieces.
+
+The run above stands; the remainder is a descendant, not a reopen: **JAWA_HOOD_NEVER_WORN_1**,
+which carries the mechanism, the slot table and the one-line fix (`apparelRequired Inherit="False"`).
+
+---
+
 ## spec
 
 🔴 **Every Jawa pawnkind requires the robe and hood, and not one Jawa wears them.**

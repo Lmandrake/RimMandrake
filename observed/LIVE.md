@@ -863,3 +863,14 @@ all take a `path`. 🔴 **There is no `world_mutators_import` and no `world_land
 `world_mutators_set` and `world_landmarks_set` are per-batch (`tiles` + `def`), so the **13,569
 mutator tiles and 579 landmarks** can only be restored by replaying authoring scripts. ⚠️ And a
 replay is not identical: a landmark's `mutatorChances` rolls again when it is placed.
+
+🔴 **`apparelRequired` is NOT unconditional — an inherited entry can silently eat a required one.**
+It **inherits and appends**, and the parent's items come **first**;
+`PawnApparelGenerator.cs:889` takes each one only when `!workingSet.PairOverlapsAnything(pa)`.
+Measured: `Jawa_Tribal_Scavenger` effectively requires `[Apparel_WarVeil, guy762_Robes_jawa,
+guy762_JawaHood]` from `ParentName="TribalWarriorBase"`, so the WarVeil (FullHead/Overhead) takes the
+slot and the hood (UpperHead+Mouth/Overhead) is skipped — **robe 16/16, hood 0/16 live.**
+`Jawa_Tribal_Elder` inherits `Apparel_PlateArmor` ahead of the robe and loses **both**.
+🔑 **RimWorld logs it every load** — `PawnKindDef.ConfigErrors` yields *"required apparel can't be
+worn together (X, Y)"*. Grep `Player.log` for it before theorising about apparel.
+⛔ A `PatchOperationRemove` cannot clear an inherited `<li>`; the fix is `Inherit="False"`.
