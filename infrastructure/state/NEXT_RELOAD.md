@@ -21,7 +21,8 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🎯 §20 RE-ROLL THE ROSTER — the 2026-08-24 harvest is the BEFORE | 2026-08-24 | ⏳ PENDING |
 | 🏷️ §21 WORLD LABELS LIFTED — ✅ **DEPLOYED** 2026-08-24 07:3x | 2026-08-24 | ⏳ READING PENDING |
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
-| 🔧 §22 FORTY-TWO UNDEPLOYED BRIDGE TOOLS — the DLL is 2 days behind source | — | ⏳ PENDING |
+| 🔧 §22 FORTY-**FOUR** UNDEPLOYED BRIDGE TOOLS — the DLL is 2 days behind source | — | ⏳ PENDING |
+| 🔬 §23 THE FOUR ROWS THAT UNBLOCK ON `jawa/pawn_stats` + `jawa/room_get` | — | ⏳ PENDING |
 
 🔴 **WHEN A LOAD IS SCORED: delete its block.**
 **Do not leave a scored block here with a ✅** — that is the same rot one step slower.
@@ -323,7 +324,15 @@ declared but NOT live: 42        live but not in source: 0
 deployed DLL:  2026-08-24 01:37     newest source: 2026-08-26 04:02
 ```
 
-The 42 are exactly the four files written on 2026-08-26 03:56–04:02 —
+⚠️ **UPDATED 2026-08-26 06:3x: it is now 44, not 42.** CHECK added `JawaBenchStatTools.cs` —
+**`jawa/pawn_stats`** and **`jawa/room_get`** — so the source declares **165** and the gap is 44.
+`build.py --gm` **succeeds, 0 warnings, 0 errors**, and reports **no tool removal**, so the two are
+purely additive. ⛔ Not deployed: the game is running and the OS holds the DLL memory-mapped.
+🔑 **They close two open blockers the moment they land** — `PAWN_STAT_READ_HAS_NO_TOOL_1` and
+`ROOM_ROLE_AND_TEMP_HAVE_NO_TOOL_1` — and with them `LIVE_HALF_OF_LOAD_1` rows T1/T2/N1/N2 and
+`TEMPLATE_ENGINE_ACCEPTANCE_1` criteria 1 and 2 become runnable. See §23.
+
+The 42 from BUILD are exactly the four files written on 2026-08-26 03:56–04:02 —
 `JawaBenchSimTools.cs` (12) · `JawaBenchResearchTimeTools.cs` (11) · `JawaBenchJobTools.cs` (10) ·
 `JawaBenchNeedsTools.cs` (9). 12+11+10+9 = 42, and 163 − 42 = 121. Nothing else is missing.
 
@@ -337,3 +346,46 @@ stands until someone reads its description; check it after the deploy before clo
 
 🔑 The DLL cannot be written while the game runs — the OS holds it memory-mapped. This is the
 whole reason the window matters. `python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --apply`
+
+
+## 🔬 §23 THE FOUR ROWS THAT BECOME RUNNABLE THE MOMENT `jawa/pawn_stats` LANDS
+
+Written 2026-08-26 by CHECK. Run these in the first live window after the deploy; each is one call.
+
+**T1 · T2 · N1 · N2 — `LIVE_HALF_OF_LOAD_1`.** Spawn one pawn per xenotype with
+`jawa/spawn_pawn … xenotype: <X>`, then:
+
+```
+jawa/pawn_stats {pawn: <id>, stats: "ComfyTemperatureMin,ComfyTemperatureMax"}
+```
+
+🔑 The defNames are **`ComfyTemperatureMin` / `ComfyTemperatureMax`** — *not* `Comfortable…`, which
+does not exist. Both confirmed present in the def dump; the wrong spelling is refused with
+suggestions rather than silently skipped.
+
+Expected, from the genes already read off the instances on 2026-08-26:
+
+| xenotype | temperature genes measured | so the stat should be |
+|---|---|---|
+| RimMandrakeUgnaught · Twilek · KelDor | *(none)* | the vanilla baseline, −40 … +45 |
+| MandrakeJawa | `MinTemp_SmallDecrease` + `MaxTemp_SmallIncrease` | one Small step each way |
+| RimMandrakeChiss | `MinTemp_LargeDecrease` + `MaxTemp_SmallDecrease` | large down, small down |
+| RimMandrakeWookiee | `Furskin` + `MinTemp_SmallDecrease` + `MaxTemp_SmallIncrease` | Furskin **stacked** — this is N2 |
+
+⛔ **Do not grade T2 before `JAWA_TEMP_RANGE_TWO_CRITERIA_1` is answered.** T2 says the Jawa should
+read ≈ −40…+65 and N1 says −50…+55 for the same stat on the same pawn. The genes say N1. An
+observer who picks the criterion after looking has not tested anything.
+
+**`TEMPLATE_ENGINE_ACCEPTANCE_1` criteria 1 and 2** — the dwelling is already built at
+`rect 170,170,18,10` on the current scratch map, but that map will not survive. Rebuild it
+(`rimplace calls dwelling --rect <x>,<z>,18,10 --rooms 3 --occupants 4`, ⚠️ translating `rect` →
+`ops` until `TEMPLATE_RECT_PARAM_NOT_ACCEPTED_1` is fixed), then:
+
+```
+jawa/room_get {rect: "170,170,18,10"}
+```
+
+* **Criterion 1** — expect three rooms whose `role` is `Bedroom`/`Barracks`, `DiningRoom`,
+  `Storeroom`. Anything else and the game does not agree it is a house.
+* **Criterion 2** — build the nursery variant on a hot tile, let time run, and read `temperature`
+  back. **Must be ≤ 32 °C.**

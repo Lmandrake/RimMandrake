@@ -844,3 +844,15 @@ Grep the source before concluding a capability is missing. Deploy block: `NEXT_R
 📌 **The companion's real size is 163 tools, not the "57" or "119–121" older docs carry.** Per file:
 World 33 · Terrain 32 · Pawn 18 · Map 16 · Event 13 · Sim 12 · ResearchTime 11 · Job 10 · Needs 9 ·
 Diagnostic 4 · Faction 3 · Vehicle 1 · Cache 1.
+
+📌 **Two new companion tools are written and BUILT but NOT deployed** (CHECK, 2026-08-26):
+**`jawa/pawn_stats`** — read a StatDef off a live pawn via `Thing.GetStatValue`, the same call the
+info card makes, never `def.statBases`; and **`jawa/room_get`** — `Room.Role`, temperature,
+`OpenRoofCount`, `ProperRoom` and the room stats at a cell or rect. `build.py --gm` succeeds with
+**0 warnings, 0 errors** and reports no tool removal. Source now declares **165**; the live gap is
+**44**. ⚠️ Neither exists in the running game until the next down-window deploy.
+
+📌 **Comfortable temperature is TWO stats and they are spelled `ComfyTemperatureMin` /
+`ComfyTemperatureMax`.** `ComfortableTemperatureMin/Max` do **not** exist — confirmed absent from a
+479-StatDef dump. Getting this wrong is how a stat read returns nothing and reads as "the pawn has
+no such stat".
