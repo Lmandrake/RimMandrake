@@ -2100,3 +2100,4 @@
 {"seat":"OWNER","event":"file","id":"KIMI_GATEWAY_FOR_BUILD_1","title":"Stand up LiteLLM->nvidia_nim so BUILD's window runs Kimi k3 with Sonnet 5 fallback","kind":"task","target":"v1","needs":"offline","for":"BUILD","ownerSaid":"Assign this bad boy to BUILD!","ts":"2026-08-25T07:22:57Z"}
 {"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-25T07:34:03Z"}
 {"seat":"CHECK","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-08-25T07:35:55Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T04:32:50Z"}
