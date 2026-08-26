@@ -511,8 +511,9 @@ Measured 2026-08-26, seat CHECK, **582 active mods**, one map, game paused.
 ```
 rimworld/search_debug_actions {"query": "generate map", "limit": 10}
   -> timed out after 30s
-  -> every subsequent bridge call then timed out for MINUTES
-  -> RimWorldWin64.exe alive throughout at ~7 GB
+  -> every subsequent bridge call then timed out for ~11 MINUTES (measured: 04:07:30 -> 04:18:0x,
+     four probe cycles at 45s each plus one 100s ping, all timing out, then a clean answer)
+  -> RimWorldWin64.exe alive throughout, growing 7.12 -> 7.21 GB while it walked
 ```
 
 🔑 **A `limit` on the RESULT does not limit the WORK.** The tool walks the whole dev-menu surface

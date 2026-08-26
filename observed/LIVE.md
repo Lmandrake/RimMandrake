@@ -833,3 +833,14 @@ only `defName defType defTypeFull fields label modName packageId shortHash`, so
 📌 **Nothing on the bridge puts a map on a CHOSEN world tile.** `rimworld/start_debug_game` takes
 **no parameters at all**, so the biome is whatever it rolls. Any "look at biome X" item needs the
 owner settling a tile, or the 13-mod list where debug actions are affordable.
+
+🔴 **The deployed companion is 42 tools behind its source, measured 2026-08-26.** Source declares
+**163** unique `jawa/` tool names; the live bridge reports **121**; declared-but-not-live **42**,
+live-but-not-in-source **0**. The 42 are exactly the four files written 2026-08-26 03:56–04:02 —
+Sim 12 · ResearchTime 11 · Job 10 · Needs 9 (12+11+10+9 = 42, and 163−42 = 121). Deployed DLL is
+dated 2026-08-24 01:37. ⇒ **`--list-tools` returning 121 is not evidence a tool was never written.**
+Grep the source before concluding a capability is missing. Deploy block: `NEXT_RELOAD.md` §22.
+
+📌 **The companion's real size is 163 tools, not the "57" or "119–121" older docs carry.** Per file:
+World 33 · Terrain 32 · Pawn 18 · Map 16 · Event 13 · Sim 12 · ResearchTime 11 · Job 10 · Needs 9 ·
+Diagnostic 4 · Faction 3 · Vehicle 1 · Cache 1.

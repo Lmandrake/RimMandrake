@@ -21,6 +21,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🎯 §20 RE-ROLL THE ROSTER — the 2026-08-24 harvest is the BEFORE | 2026-08-24 | ⏳ PENDING |
 | 🏷️ §21 WORLD LABELS LIFTED — ✅ **DEPLOYED** 2026-08-24 07:3x | 2026-08-24 | ⏳ READING PENDING |
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
+| 🔧 §22 FORTY-TWO UNDEPLOYED BRIDGE TOOLS — the DLL is 2 days behind source | — | ⏳ PENDING |
 
 🔴 **WHEN A LOAD IS SCORED: delete its block.**
 **Do not leave a scored block here with a ✅** — that is the same rot one step slower.
@@ -309,3 +310,30 @@ would give the identical look while leaving those five variants intact on disk, 
 Look at a bantha and an eopie. That is the whole test — no command, no capture. ⛔ **Do not score
 this by checking that the files are deployed.** They were deployed and identical for the whole of
 the previous session and still could not appear, which is exactly the failure this section records.
+
+
+## 🔧 §22 FORTY-TWO BRIDGE TOOLS ARE WRITTEN AND NOT DEPLOYED — measured 2026-08-26 by CHECK
+
+🔴 **Do the companion deploy FIRST in the next down window.** The arithmetic is exact:
+
+```
+source declares    163 unique jawa/ tool names   (grep '"jawa/…"' over JawaBench.BridgeTools/*.cs)
+live bridge reports 121 jawa tools
+declared but NOT live: 42        live but not in source: 0
+deployed DLL:  2026-08-24 01:37     newest source: 2026-08-26 04:02
+```
+
+The 42 are exactly the four files written on 2026-08-26 03:56–04:02 —
+`JawaBenchSimTools.cs` (12) · `JawaBenchResearchTimeTools.cs` (11) · `JawaBenchJobTools.cs` (10) ·
+`JawaBenchNeedsTools.cs` (9). 12+11+10+9 = 42, and 163 − 42 = 121. Nothing else is missing.
+
+⚠️ **Why this matters beyond the deploy:** a seat that runs `--list-tools` today sees 121 and will
+conclude these tools do not exist. Several are things items have already been blocked on —
+`jawa/pawn_thoughts`, `jawa/pawn_memory`, `jawa/cell_temperature`, `jawa/set_work_priority`,
+`jawa/animal_train`, `jawa/research_progress`, `jawa/time_set_ticks`, `jawa/paint_area`.
+
+⛔ **`jawa/cell_temperature` is NOT a room reader** — `ROOM_ROLE_AND_TEMP_HAVE_NO_TOOL_1` still
+stands until someone reads its description; check it after the deploy before closing that item.
+
+🔑 The DLL cannot be written while the game runs — the OS holds it memory-mapped. This is the
+whole reason the window matters. `python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --apply`
