@@ -40,6 +40,13 @@ namespace JawaBench.BridgeTools
             err = null;
             if (string.IsNullOrEmpty(id)) { err = "Give a pawn id, name or thingId."; return null; }
             id = id.Trim();
+            // 🔑 BOTH ID FORMS. jawa/list_pawns reports the bare 'Human45731' while some
+            // bridge tools hand back the prefixed 'Thing_Human45731', and a caller passing
+            // the wrong one used to get a clean zero-count success rather than an error
+            // (BRIDGE_ARG_SHAPES_INCONSISTENT_1 row 1). They name the same pawn, so accept
+            // either rather than making the caller know which tool produced the string.
+            if (id.StartsWith("Thing_", StringComparison.OrdinalIgnoreCase) && id.Length > 6)
+                id = id.Substring(6);
             var maps = Find.Maps ?? new List<Map>();
             var all = new List<Pawn>();
             foreach (var m in maps) all.AddRange(m.mapPawns.AllPawnsSpawned);
@@ -56,7 +63,9 @@ namespace JawaBench.BridgeTools
                  string.Equals(p.Name.ToStringFull, id, StringComparison.OrdinalIgnoreCase) ||
                  string.Equals(p.LabelShort, id, StringComparison.OrdinalIgnoreCase)));
             if (byName != null) return byName;
-            err = "No spawned pawn matching '" + id + "'. " + all.Count + " pawns are spawned.";
+            err = "No spawned pawn matching '" + id + "'. " + all.Count + " pawns are spawned. "
+                  + "Accepted: the bare thingID ('Human45731'), the same with a 'Thing_' prefix, "
+                  + "the numeric thingIDNumber, or the pawn's name. jawa/list_pawns reports the bare form.";
             return null;
         }
 
@@ -85,12 +94,16 @@ namespace JawaBench.BridgeTools
             var apparel = new List<object>();
             if (p.apparel != null)
                 foreach (var a in p.apparel.WornApparel)
-                    apparel.Add(new { def = a.def.defName, stuff = a.Stuff != null ? a.Stuff.defName : null, hp = a.HitPoints });
+                    // `defName` is an ALIAS of `def`, and it is here because reading
+                    // `.defName` off these rows returned null for twelve armed droids and
+                    // was written up as "the Free Droid Enclaves field unarmed droids"
+                    // (BRIDGE_ARG_SHAPES_INCONSISTENT_1 row 3). Both keys, same value.
+                    apparel.Add(new { def = a.def.defName, defName = a.def.defName, stuff = a.Stuff != null ? a.Stuff.defName : null, hp = a.HitPoints });
 
             var equipment = new List<object>();
             if (p.equipment != null)
                 foreach (var e in p.equipment.AllEquipmentListForReading)
-                    equipment.Add(new { def = e.def.defName, stuff = e.Stuff != null ? e.Stuff.defName : null, isPrimary = e == p.equipment.Primary });
+                    equipment.Add(new { def = e.def.defName, defName = e.def.defName, stuff = e.Stuff != null ? e.Stuff.defName : null, isPrimary = e == p.equipment.Primary });
 
             var hediffs = new List<object>();
             if (p.health != null && p.health.hediffSet != null)
@@ -593,7 +606,12 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/pawn_gear",
             Description =
-                "Give, wear or clear a pawn's EQUIPMENT, APPAREL and INVENTORY. " +
+                "🔴 THIS IS A WRITE TOOL. The READ is jawa/pawn_get, and jawa/thing_stats "
+                + "for what a held item actually does. Reading `.equipment` off THIS tool's "
+                + "refusal returns an empty list for every pawn, which reads exactly like "
+                + "'they are all bare-handed' - that is how the opposite of the truth was "
+                + "once written up (BRIDGE_ARG_SHAPES_INCONSISTENT_1 row 2). "
+                + "Give, wear or clear a pawn's EQUIPMENT, APPAREL and INVENTORY. " +
                 "action='equip' puts a weapon in the primary slot, 'wear' puts on apparel, " +
                 "'inventory' stuffs an item into the pack, 'clear' empties one or all three. " +
                 "🔴 EQUIP HANDLES THE PRIMARY-SLOT TRAP: RimWorld's AddEquipment logs an " +
@@ -632,7 +650,14 @@ namespace JawaBench.BridgeTools
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(def)) return Fail("Give a ThingDef.");
+                    if (string.IsNullOrEmpty(def))
+                        return Fail("Give a ThingDef in 'def' - this is a WRITE tool and there "
+                                    + "is nothing to " + A + ". If you wanted to READ this pawn's "
+                                    + "gear, call jawa/pawn_get (identity, apparel, equipment, "
+                                    + "hediffs, needs, skills, traits, xenotype) or jawa/thing_stats "
+                                    + "for what the held item does. ⛔ Do not read a list off this "
+                                    + "refusal: it has none, and an empty gear list reads exactly "
+                                    + "like a bare-handed pawn.");
                     var td = DefDatabase<ThingDef>.GetNamedSilentFail(def.Trim());
                     if (td == null) return Fail("No ThingDef '" + def + "'.", DefSuggestions<ThingDef>(def));
 
@@ -1106,9 +1131,16 @@ namespace JawaBench.BridgeTools
             "jawa/pawn_genes",
             Description =
                 "Add or remove genes, or set a whole xenotype. " +
-                "✅ AddGene/RemoveGene are FULLY SELF-REFRESHING via Notify_GenesChanged - " +
+                "🔴 THE ACTION VERBS ARE 'add' | 'remove' | 'xenotype' | 'list'. This text used " +
+                "to say AddGene/RemoveGene, which are the ENGINE method names and are refused " +
+                "by the binder (BRIDGE_ARG_SHAPES_INCONSISTENT_1 row 4). " +
+                "✅ Adding or removing is FULLY SELF-REFRESHING via Notify_GenesChanged - " +
                 "colours, body and head, needs, hediff cache, aptitudes, work types and " +
-                "graphics all update. xenogene=true adds it as a xenogene rather than an " +
+                "graphics all update. " +
+                "🔴 ORDER MATTERS, AND IT IS GENE FIRST, APPEARANCE SECOND. That refresh " +
+                "RE-ROLLS THE HEAD TYPE, so a head set before the gene is silently replaced " +
+                "(row 5). This is Notify_GenesChanged doing its job, not a bug to suppress. " +
+                "xenogene=true adds it as a xenogene rather than an " +
                 "endogene, which is what determines inheritance.",
             ResultDescription = "success, xenotype, endogenes[], xenogenes[].")]
         public static async Task<object> PawnGenes(

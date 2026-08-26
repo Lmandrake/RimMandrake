@@ -1,3 +1,25 @@
+## ✅ FIVE OF THE SEVEN ARE FIXED — 2026-08-26, seat BUILD, built clean and NOT yet deployed
+
+Written and compiled in the companion (`--gm`, 0 warnings, 0 errors, 166 tools, no removal).
+⛔ **The game is UP, so none of it is live**; the deploy rides `NEXT_RELOAD.md` §25.
+
+| # | tool | what changed |
+|---|---|---|
+| 1 | `FindPawn` (every `jawa/` tool that takes a pawn) | accepts **both id forms** — `Thing_Human45731` and `Human45731` — and its refusal now names every accepted form and says `jawa/list_pawns` reports the bare one |
+| 2 | `jawa/pawn_gear` | its description opens by saying **it is a WRITE tool** and names `jawa/pawn_get` as the read; a call with no `def` refuses with that same pointer and an explicit *do not read a list off this refusal* |
+| 3 | equipment + apparel rows | carry **`defName` as well as `def`**, same value, so reading `.defName` can no longer come back null for an armed pawn |
+| 4 | `jawa/pawn_genes` | description now names the real verbs `add`/`remove` instead of the engine's `AddGene`/`RemoveGene` |
+| 5 | `jawa/pawn_genes` | the head re-roll is **documented as ordering** — gene first, appearance second — rather than suppressed, exactly as this item asked |
+
+**Row 7 was already fixed** before this pass: `prove_world_cache_audit.py` calls the MCP method
+`tools/list` through `_request`, with the reason written above the line.
+
+⛔ **Row 6 is NOT ours and cannot be fixed here.** `rimworld/save_game` and
+`rimworld/load_game_ready` belong to RimBridgeServer, not to the JawaBench companion — we can
+document the trap but not change the guard. Treat `saveName` as required whatever the schema says.
+
+---
+
 ## spec
 
 **Seven places where the bridge's argument and result shapes disagree with each other or
