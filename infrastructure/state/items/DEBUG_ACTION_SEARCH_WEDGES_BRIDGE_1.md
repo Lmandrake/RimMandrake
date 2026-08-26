@@ -1,3 +1,25 @@
+## 🔴 THE UPSTREAM FIX IS NOT AVAILABLE TO US — checked 2026-08-26 by BUILD
+
+`rimworld/search_debug_actions` belongs to **RimBridgeServer** (`brrainz.rimbridgeserver`,
+workshop `3727949765`), and that mod **ships assemblies only** — `1.6/Assemblies/*.dll`, no
+`Source/` folder. So neither option this item asks for is ours to take: we cannot filter during
+the walk, we cannot add a refusal threshold, and we cannot even put the cost in the tool's own
+description. ⛔ **Do not file this against BUILD as a fix; it is not writable.**
+
+**What IS available, in order of cost:**
+1. ✅ **Done** — the trap is recorded in `skills/rimbridge/references/traps.md`, which is where a
+   seat about to call it will actually look.
+2. **A `jawa/` replacement that bounds the work** — enumerate the debug-action surface with the
+   query applied DURING the walk and a hard cap, so `limit` limits the work rather than the
+   output. This is the only real fix, it is ours to write, and it is not in the capability
+   roster, so it needs to be filed as its own item rather than smuggled into a block.
+3. Report it upstream.
+
+⚠️ **Until 2 exists, the rule is simply: do not call it on the full list.** One call cost this
+project several minutes of bridge time and ended a line of work.
+
+---
+
 # DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1 — a `limit` on the result does not limit the work
 
 Measured 2026-08-26, seat CHECK, live game, **582 active mods**, one map, paused at tick 1174.
