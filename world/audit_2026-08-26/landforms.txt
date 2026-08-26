@@ -1,0 +1,47 @@
+44 landform graphs shipped for 1.6
+
+landform               topology           common      hilliness ELIGIBLE TILES
+Peninsula              CoastThreeSides   1.0000        1.0-5.0      21872
+River                  Any               1.0000        1.0-6.0      21872
+RiverConfluence        Any               1.0000        1.0-6.0      21872
+RiverDelta             Any               1.0000        1.0-6.0      21872
+RiverIsland            Any               0.0335        1.0-6.0      21872
+RiverSource            Any               1.0000        1.0-6.0      21872
+RiverTerrain           ?                 0.0000            any      21872
+Canyon                 CliffValley       1.0000        1.0-5.0      20471
+Cliff                  CliffOneSide      1.0000        1.0-5.0      20471
+CliffAndCoast          CliffAndCoast     1.0000        1.0-5.0      20471
+CliffCorner            CliffTwoSides     1.0000        1.0-5.0      20471
+Island                 CoastAllSides     0.7039        1.0-5.0      20471
+Skerry                 CoastAllSides     0.2961        1.0-5.0      20471
+Cirque                 CliffThreeSides   1.0000        1.0-4.7      20415
+CoastalIsland          CoastThreeSides   0.5000        1.0-3.4      20299
+Tombolo                CoastThreeSides   0.5503        1.0-3.4      20299
+Lake                   Inland            0.0279        1.0-5.0      20159
+LakeWithIsland         Inland            0.0084        1.0-5.0      20159
+DryLake                Inland            0.0335        1.0-3.5      18619
+IceOasis               Inland            0.0475        1.0-3.5      18619
+Oasis                  Inland            0.0251        1.0-3.5      18619
+SwampHill              Inland            0.1006        1.0-3.5      18619
+Archipelago            CoastAllSides     0.4469        1.0-2.5      15090
+Caldera                Inland            0.0168        1.0-2.2      14824
+DesertPlateau          Inland            0.0335        1.0-2.5      14824
+Atoll                  CoastAllSides     0.3966        1.0-1.5       6999
+LoneMountain           Inland            0.0196        1.0-1.5       6767
+Glacier                Any               1.0000        2.8-5.0       5381
+Badlands               Inland            0.1006        1.0-3.5       4066
+Crater                 Inland            0.0503        3.4-5.0       1540
+Rift                   Inland            0.0810        3.5-5.0       1540
+Coast                  CoastOneSide      1.0000        1.0-5.0        418
+CoastCorner            CoastTwoSides     1.0000        1.0-5.0        418
+Landbridge             CoastLandbridge   1.0000        1.0-5.0        418
+Valley                 Inland            1.0000        3.7-4.8        277
+Cove                   CoastOneSide      0.2989        1.0-1.6        232
+CoveWithIsland         CoastOneSide      0.1201        1.0-1.6        232
+Fjord                  CoastOneSide      0.2961        2.5-5.0         46
+SecludedCove           CoastOneSide      0.3017        2.5-5.0         46
+CaveEntrance           CaveEntrance      1.0000        6.0-6.0          0   <-- never possible
+Gorge                  Any               1.0000        5.4-6.0          0   <-- never possible
+SecludedValley         CliffAllSides     0.1000        6.0-6.0          0   <-- never possible
+Sinkhole               CliffAllSides     0.1000        6.0-6.0          0   <-- never possible
+SurfaceCave            CaveTunnel        1.0000        6.0-6.0          0   <-- never possible

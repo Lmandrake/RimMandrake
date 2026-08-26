@@ -68,3 +68,50 @@ regardless. **This is a new entry in the silent-failure catalogue.**
 (category Mountain) displaced `Cliffs`; removing VEE_JaggedRocks left the tile with
 neither. Repaired by hand. Any add/remove probe on a categorised mutator is destructive —
 read the tile first and put back what you displaced.
+
+## Correction: the GL_* landforms are map-gen content, and they are NOT unused
+
+The blank-tile control (`blank_test.py`, `blank.json`) settles the write question. Six tiles
+that were genuinely empty — no mutator, landmark, settlement, road or river — across six
+biome/hilliness combinations, each given a fitting `GL_*` def AND a fitting normal control:
+
+```
+tile   biome            hilliness    def                 added  LANDED
+10140  ExtremeDesert    Flat         GL_DesertPlateau      1     NO
+10140  ExtremeDesert    Flat         VEE_PebbleDunes       1     YES
+47     Desert           Flat         GL_DryLake            1     NO
+47     Desert           Flat         DryLake               1     YES
+2      Desert           SmallHills   GL_Sinkhole           1     NO
+2      Desert           SmallHills   VEE_Sinkholes         1     YES
+77     ZBiome_Badlands  LargeHills   GL_Canyon             1     NO
+77     ZBiome_Badlands  LargeHills   Chasm                 1     YES
+297    AB_RockyCrags    Mountainous  GL_Caldera            1     NO
+297    AB_RockyCrags    Mountainous  Cavern                1     YES
+9      Wasteland        Flat         GL_Crater             1     NO
+9      Wasteland        Flat         VEE_DustBowl          1     YES
+```
+
+No category conflict was possible and nothing was logged. `Tile.AddMutator` has no early
+return, so the base game cannot be refusing it — `mutator.Worker?.OnAddedToTile` is the only
+remaining path, and every GL_* shares `GeologicalLandforms.TileMutatorWorker_Landform`.
+
+🔑 **And that is correct behaviour, not a bug.** Geological Landforms does not store
+landforms on the world tile at all. Its 44 landforms are NodeCanvas graphs in
+`<workshop>/2773943594/1.6/Landforms-v1/*.xml`, each carrying a `World Tile Requirements`
+node — Topology, Commonness, and ranges for hilliness / rainfall / temperature / elevation.
+GL evaluates those **when a map generates**, from the tile properties we author. The
+`GL_*` TileMutatorDefs are display shims GL owns; writing one is meaningless.
+
+⇒ **They are not "barely used". They are invisible on the world map and fire in play.**
+`landforms.txt` scores all 44 against Ash'karr's real tile distribution. The lever that
+changes which landforms occur is **hilliness, elevation and topology — not mutators.**
+Ash'karr is flat (8,394 Flat / 1,510 Mountainous / 56 Impassable), so the dramatic
+top-of-scale landforms are the rare ones: Valley needs 3.7-4.8 (277 tiles), Crater 3.4-5.0
+and Rift 3.5-5.0 (1,540 each). Caldera needs only 1.0-2.2 and Inland — 14,824 eligible
+tiles, commonness 0.0168.
+
+⚠️ The eligibility counts model Inland/Coast topology, hilliness, temperature and elevation.
+They do NOT model GL's computed cliff/cave topologies (CliffValley, CliffOneSide,
+CaveTunnel), so those rows are UPPER BOUNDS. The five scoring 0 require the very top of
+GL's hilliness scale (5.4-6.0) and two of them are cave topologies that are not surface
+tiles at all.
