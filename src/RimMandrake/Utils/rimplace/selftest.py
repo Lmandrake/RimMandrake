@@ -13,6 +13,7 @@ from pathlib import Path
 
 from .core import Palette, Rect
 from .luaenv import TemplateError, run_template
+from .contract import check_calls, tool_parameters
 from .plan import compile_calls, lint, render
 
 _HERE = Path(__file__).resolve().parent
@@ -218,6 +219,52 @@ def t_order():
     tools = [c["tool"] for c in compile_calls(p)]
     assert tools.index("jawa/set_terrain_batch") < tools.index("jawa/build_batch")
     assert tools.index("jawa/build_batch") < tools.index("jawa/set_roof_batch")
+
+
+@case("every compiled call uses parameters the companion actually declares")
+def t_contract():
+    """TEMPLATE_RECT_PARAM_NOT_ACCEPTED_1. 23/23 selftests passed while the
+    compiler emitted a `rect` parameter no tool has, because every test compared
+    the compiler against itself. This one compares it against the C#."""
+    tpl = _TEMPLATES / "dwelling.lua"
+    params = tool_parameters()
+    if params is None:
+        raise AssertionError(
+            "UNMEASURED: the companion source did not parse, so nothing was "
+            "contract-checked. Fix the parser rather than skipping the case.")
+    plans = [_run("function build(ctx) ctx:room('Bedroom',0,0,6,6) "
+                  "ctx:wall_rect(0,0,6,6) ctx:place('Wall',1,1,0,'Steel') end")]
+    if tpl.exists():
+        plans.append(run_template(tpl, Rect(0, 0, 18, 10),
+                                  {"faction": "Jawa_IndigenousTribes",
+                                   "rooms": 3, "occupants": 4}, _pal(), 1))
+    for pl in plans:
+        bad = check_calls(compile_calls(pl, dry_run=False), params)
+        assert not bad, "; ".join(bad)
+
+
+@case("NEGATIVE: an invented parameter IS caught by the contract check")
+def t_contract_fires():
+    params = tool_parameters()
+    assert params is not None, "contract unreadable"
+    bad = check_calls([{"tool": "jawa/set_terrain_batch",
+                        "params": {"rect": "1,1,2,2", "terrainDef": "Gravel"}}],
+                      params)
+    assert bad, "a `rect` parameter that no tool has was not caught"
+    assert "rect" in bad[0]
+
+
+@case("terrain and roof compile to the ops grammar the tools parse")
+def t_ops_grammar():
+    p = _run("function build(ctx) ctx:room('Bedroom',0,0,6,6) "
+             "ctx:wall_rect(0,0,6,6) end")
+    import re as _re
+    for tool in ("jawa/set_terrain_batch", "jawa/set_roof_batch"):
+        for c in [c for c in compile_calls(p, dry_run=False) if c["tool"] == tool]:
+            assert "ops" in c["params"], f"{tool} emitted {sorted(c['params'])}"
+            for op in c["params"]["ops"].split(";"):
+                assert _re.match(r"^[A-Za-z_][A-Za-z0-9_]*:-?\d+,-?\d+,\d+,\d+$", op), \
+                    f"{tool} op is not 'Def:x,z,w,h': {op!r}"
 
 
 # --------------------------------------------------------------------------- #

@@ -194,7 +194,37 @@ def lint(plan: BuildPlan, verified_defs: set[str] | None = None) -> list[Finding
 # --------------------------------------------------------------------------- #
 #  Compiling to bridge calls
 # --------------------------------------------------------------------------- #
+# 🔴 THESE ARE THE COMPANION'S OWN LIMITS, not chosen here. Read from
+# JawaBenchTerrainTools.cs: `private const int MaxOps = 4096;` and
+# `MaxCells = 70000`. A call over either is REFUSED whole, so the compiler must
+# split before the bridge does — a settlement's terrain is the case that hits it.
 MAX_OPS = 4096
+MAX_CELLS = 70000
+
+
+def _rect_cells(cells: dict) -> int:
+    """How many map cells the compiled rects will touch. Only used to keep a
+    single call under the companion's MaxCells."""
+    return len(cells)
+
+
+def _chunk_ops(ops: list[str], total_cells: int) -> list[list[str]]:
+    """Split an op list so no single call exceeds the companion's MaxOps, and,
+    when the rects are large, its MaxCells too.
+
+    ⚠️ The cell bound is approximated by the cell COUNT of the source grid, not
+    re-derived from each op — a plan is a house or a settlement, both far under
+    70,000, and an approximation that can only split EARLIER is safe in the one
+    direction that matters. If that ever stops being true the honest fix is to
+    sum w*h per op, not to raise the constant.
+    """
+    if not ops:
+        return []
+    per_call = MAX_OPS
+    if total_cells > MAX_CELLS:
+        # keep each call's share of the cells under the bound
+        per_call = max(1, int(len(ops) * MAX_CELLS / float(total_cells)))
+    return [ops[i:i + per_call] for i in range(0, len(ops), per_call)]
 
 
 def _rects_from_cells(cells: dict) -> list[tuple[str, list]]:
@@ -231,15 +261,24 @@ def compile_calls(plan: BuildPlan, faction: str | None = None,
 
     🔑 The grouping here is forced by the bridge, not chosen: `stuff` is a
     per-CALL parameter of jawa/build_batch, so one call paints one material.
+
+    🔴 EVERY tool here takes `ops`, and terrain/roof used to be emitted with a
+    `rect` parameter that NO tool has (TEMPLATE_RECT_PARAM_NOT_ACCEPTED_1).
+    4 of one dwelling's 13 compiled calls were unrunnable, taking all 112 terrain
+    and 180 roof cells with them; the bridge refused loudly, which is the only
+    reason it was not silent. The grammar is 'Def:x,z,w,h' joined by ';', read
+    from JawaBenchTerrainTools.cs, and it carries the def PER OP — so one call
+    can now paint several materials, which the old shape could not.
     """
     calls: list[dict] = []
 
     # terrain first: floors under things, and set_terrain does not care about
     # what is standing there, while build_batch's wipeExisting does.
-    for defName, rect in _rects_from_cells(plan.terrain):
+    for chunk in _chunk_ops([f"{d}:{x},{z},{w},{h}"
+                             for d, (x, z, w, h) in _rects_from_cells(plan.terrain)],
+                            _rect_cells(plan.terrain)):
         calls.append({"tool": "jawa/set_terrain_batch",
-                      "params": {"rect": ",".join(map(str, rect)),
-                                 "terrainDef": defName}})
+                      "params": {"ops": ";".join(chunk)}})
 
     # things, grouped by (def, stuff) because stuff is per-call
     groups: dict[tuple, list] = defaultdict(list)
@@ -258,10 +297,11 @@ def compile_calls(plan: BuildPlan, faction: str | None = None,
 
     # roofs last: walls create no roof, and roofing before the walls exist
     # gives an unsupported span
-    for defName, rect in _rects_from_cells(plan.roof):
+    for chunk in _chunk_ops([f"{d}:{x},{z},{w},{h}"
+                             for d, (x, z, w, h) in _rects_from_cells(plan.roof)],
+                            _rect_cells(plan.roof)):
         calls.append({"tool": "jawa/set_roof_batch",
-                      "params": {"rect": ",".join(map(str, rect)),
-                                 "roofDef": defName}})
+                      "params": {"ops": ";".join(chunk)}})
 
     calls.append({"tool": "jawa/map_commit",
                   "params": {"regions": True, "pathing": True,
