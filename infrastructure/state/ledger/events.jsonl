@@ -2253,3 +2253,6 @@
 {"seat":"BUILD","event":"file","id":"BIOME_CAST_COMMONALITIES_ZEROED_1","title":"181 of the planet's 744 hand-authored animal weights read 0 in the live game","kind":"defect","target":"v1","for":"BUILD","ts":"2026-08-26T16:28:36Z"}
 {"seat":"BUILD","event":"needs","id":"BIOME_CAST_COMMONALITIES_ZEROED_1","to":"offline","reason":"the mechanism is readable in the 1.6 source and the numbers are in the capture; no game time needed to settle step 1","ts":"2026-08-26T16:28:36Z"}
 {"seat":"CHECK","event":"file","id":"NO_TOOL_REPORTS_MAP_TILE_1","title":"No bridge tool reports which world tile the current map is on - you have to find the player Settlement","kind":"task","target":"v1","for":"BUILD","ts":"2026-08-26T16:29:36Z"}
+{"seat":"BUILD","event":"claim","id":"BRIDGE_TOOLS_MEDIUM_BLOCK_1","ts":"2026-08-26T16:30:31Z"}
+{"seat":"BUILD","event":"start","id":"BRIDGE_TOOLS_MEDIUM_BLOCK_1","ts":"2026-08-26T16:30:32Z"}
+{"seat":"BUILD","event":"close","id":"BRIDGE_TOOLS_MEDIUM_BLOCK_1","sha":"d4cad32d","ts":"2026-08-26T16:30:32Z"}
