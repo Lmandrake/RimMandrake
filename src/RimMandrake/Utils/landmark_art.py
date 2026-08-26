@@ -342,7 +342,12 @@ def t_masonry(mask, rng, P):
     if P.get("scorch"):
         ys, xs = np.nonzero(mask)
         d0 = np.hypot(gy - ys.mean(), gx - xs.mean())
-        k = np.clip(d0 / (span * 0.9), 0, 1)[..., None]
+        # normalise to the mark's OWN extent, and cap the blend: span is sqrt(area) and
+        # ran smaller than the true spread, so every pixel scored "centre" and the whole
+        # launch site rendered near-black instead of scorched at the middle
+        far = max(np.hypot(ys - ys.mean(), xs - xs.mean()).max(), 1.0)
+        k = np.clip(d0 / far, 0, 1)[..., None]
+        k = 1.0 - P.get("scorch_amt", 0.6) * (1.0 - k)
         rgb = rgb * k + np.array(P["scorch"], "float32") * (1 - k)
     lip = _dist_in(mask, N * 0.05) < N * 0.012
     rgb[lip] = np.array(P["lit"], "float32")
