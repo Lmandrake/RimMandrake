@@ -44,6 +44,57 @@ def section(out, title):
     out.append("## " + title)
 
 
+# PAWNKIND_AUDIT_TAGLESS_BLIND_1. `jawa/pawnkind_audit` (the companion tool)
+# already splits tagless kinds into a deliberate-civilian bucket and a
+# `taglessButLooksLikeAFighter` bucket -- a combat role (isFighter or
+# combatPower >= 40) that carries no weaponTags field at all, which is
+# indistinguishable from a civilian by tag count alone and is how three of
+# our own authored kinds (Jawa_Droid_Leader, Jawa_Droid_Specialist,
+# Jawa_TradeMoot_Specialist) hid in the civilian exclusion while broken.
+# 🔑 first_light.py used to just echo `pk["message"]` and list example rows
+# for cannotAfford/emptyTagPool only -- the tagless-fighter suspects were in
+# the payload (`counts.taglessButLooksLikeAFighter`, and the row list itself)
+# but never surfaced as their own line or their own named rows. This pulls
+# the section-building logic into a standalone function precisely so a
+# scratch test can feed it a fabricated pk payload without a live bridge.
+def format_pawnkind_section(pk):
+    """Given a jawa/pawnkind_audit response dict, return (lines, headline_bits)."""
+    lines = []
+    headline_bits = []
+    c = pk.get("counts") or {}
+    lines.append("- %s" % pk.get("message"))
+    lines.append("- weapon pairs in game: %s, distinct weapon tags: %s" %
+                 (pk.get("weaponPairsInGame"), pk.get("distinctWeaponTags")))
+
+    broken = c.get("emptyTagPool", 0) + c.get("cannotAfford", 0)
+    if broken:
+        headline_bits.append("%d kinds cannot arm" % broken)
+    for row in (pk.get("cannotAfford") or [])[:40]:
+        lines.append("  - `%s` money max %s, cheapest `%s` at %s -> raise max to %s" %
+                     (row.get("kind"), row.get("weaponMoneyMax"),
+                      row.get("cheapestEligible"), row.get("cheapestPrice"),
+                      row.get("raiseMaxTo")))
+    for row in (pk.get("emptyTagPool") or [])[:20]:
+        lines.append("  - `%s` tags %s match NO loaded weapon" % (row.get("kind"), row.get("tags")))
+
+    # ⛔ NOT folded into `broken` and NOT into the civilian exclusion either --
+    # it is its own reported line, per PAWNKIND_AUDIT_TAGLESS_BLIND_1's verify
+    # condition. A kind here is a SUSPECT, not a proven defect (a pure melee
+    # brawler can legitimately carry no ranged tags), so a human reads the
+    # named rows rather than the count alone driving a headline verdict.
+    tagless_fighters = c.get("taglessButLooksLikeAFighter", 0)
+    if tagless_fighters:
+        headline_bits.append("%d kinds intend to fight and carry no weaponTags at all" % tagless_fighters)
+        lines.append("- ⚠️ %d kinds intend to fight (isFighter or combatPower >= 40) and carry NO "
+                     "weaponTags at all -- a combat role that lost its tags, not a deliberate "
+                     "civilian:" % tagless_fighters)
+        for row in (pk.get("taglessButLooksLikeAFighter") or [])[:40]:
+            lines.append("  - `%s` isFighter=%s combatPower=%s" %
+                         (row.get("kind"), row.get("isFighter"), row.get("combatPower")))
+
+    return lines, headline_bits
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", default=os.path.join(REPO, "infrastructure", "output",
@@ -117,20 +168,9 @@ def main():
         section(out, "Pawn kinds that cannot arm themselves")
         try:
             pk = rb.call("jawa/pawnkind_audit", {"limit": 200})
-            c = pk.get("counts") or {}
-            out.append("- %s" % pk.get("message"))
-            out.append("- weapon pairs in game: %s, distinct weapon tags: %s" %
-                       (pk.get("weaponPairsInGame"), pk.get("distinctWeaponTags")))
-            broken = (c.get("noWeaponTags", 0) + c.get("emptyTagPool", 0) + c.get("cannotAfford", 0))
-            if broken:
-                headline.append("%d kinds cannot arm" % broken)
-            for row in (pk.get("cannotAfford") or [])[:40]:
-                out.append("  - `%s` money max %s, cheapest `%s` at %s -> raise max to %s" %
-                           (row.get("kind"), row.get("weaponMoneyMax"),
-                            row.get("cheapestEligible"), row.get("cheapestPrice"),
-                            row.get("raiseMaxTo")))
-            for row in (pk.get("emptyTagPool") or [])[:20]:
-                out.append("  - `%s` tags %s match NO loaded weapon" % (row.get("kind"), row.get("tags")))
+            lines, headline_bits = format_pawnkind_section(pk)
+            out.extend(lines)
+            headline.extend(headline_bits)
         except Exception as e:
             out.append("- audit failed: %s" % e)
 

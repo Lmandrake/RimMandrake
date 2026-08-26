@@ -305,6 +305,17 @@ we don't keep generating false negative results? This is very disturbing."*
 only some were fixed. This is the register; it is here rather than in seven ledger notes
 because a note is not on anyone's path.
 
+🔴 **RENUMBERED 2026-08-26 (`BUILDABLE_ENTRY_NUMBERS_COLLIDE_1`): numbers 9–15 were each
+reused for a second, unrelated entry.** The seven later entries that collided — the ones
+this section appended after the original 9–15 run — are now **25–31**. The original 9–15
+keep their numbers unchanged, because `CUT_TABLE_PAIRED_WRONG_1`, `CUT_DISARMED_VANILLA_KINDS_1`,
+`FIRE_ARCHERS_GET_BOWS_1` and `FIRE_ARCHER_SPEC_STILL_WRONG_1` already cite "9 and 10", and
+`GENIDEO_REVERTS_DEAD_KINDS_1` already cites "11" — all five citations already resolve to the
+kept originals, so none needed updating. If you have an old note citing "12", "13", "14" or
+"15" for a def-dump-poisoning, stale-capture-id, kill-list, or `<li>`-in-dictionary-field
+topic rather than the faction-name/weaponMoney/weapon_affordability/weapon_tag_audit topics
+listed under those numbers below, it means 28–31.
+
 🔑 **The shared shape, and it is worth naming once:** every one of these returns a NUMBER.
 None errors, none warns, none returns null. A wrong count reads exactly like a right one,
 so the failure is invisible unless you already suspect the instrument. ⇒ **When a count
@@ -503,7 +514,7 @@ capture instead — read-only SQL over the structured `defs` table of
 (788 MB, mtime 2026-08-21 16:10; there is no copy in the repo), with a
 known answer (`Human`) run first to validate the query shape.
 
-**9 — A gene's `disabledWorkTags` matches a work TAG, so checking a WorkGiver's `workType`
+**25 — A gene's `disabledWorkTags` matches a work TAG, so checking a WorkGiver's `workType`
 answers the wrong question.** Measured 2026-08-22 in the live def set (capture
 `2026-08-23T05-05-29Z`, 578 mods): vanilla's `Drill` WorkGiver is **not** `workType Mining`
 on this stack — it is `FSFDrilling`, retyped by **[FSF] Complex Jobs**. `Jawa_MiningDisabled`
@@ -512,14 +523,14 @@ carry the **`Mining` workTag**. ⇒ To answer "does this gene stop this job", re
 **WorkTypeDef's `workTags`**, never the WorkGiver's `workType`. ⚠️ And note the dependency:
 if [FSF] Complex Jobs is removed or drops that tag, the ban silently lapses with no error.
 
-**10 — Def-dump JSON records nest every field under `fields`, so a top-level read returns
+**26 — Def-dump JSON records nest every field under `fields`, so a top-level read returns
 `None` for everything and looks like a measured absence.** `e["disabledWorkTags"]` is `None`
 on all 3,846 GeneDefs; `e["fields"]["disabledWorkTags"]` is the real value. The keys that ARE
 top-level are only `defName defType defTypeFull fields label modName packageId shortHash`.
 ⇒ Any census that reads a def field must go through `fields`, and a script returning all-`None`
 across a whole type is the signature of this mistake, not of an empty field.
 
-**11 — The live def set answers "is it in the running game" WITHOUT a bridge call.** A capture
+**27 — The live def set answers "is it in the running game" WITHOUT a bridge call.** A capture
 under `DefDump/captures/<id>/` is post-load, post-patch, post-override — so it settles
 "did the patch apply", "did the def survive a dedup mod", "which xenotypes carry gene X"
 offline. ⚠️ It cannot answer anything about BEHAVIOUR (can this pawn do this job), and the
@@ -527,7 +538,7 @@ game appends parts of its own at load — a `ScenarioDef` reads 5 parts in the d
 XML authors 3, because Odyssey adds two `ScenPart_PlanetLayer`. Count authored parts in the
 file, not in the dump.
 
-**12 — `validate_patch.py` now REFUSES an `<li>` inside a dictionary-keyed field, and that
+**28 — `validate_patch.py` now REFUSES an `<li>` inside a dictionary-keyed field, and that
 class of bug is the most expensive one this project has hit.** A `List<Foo>` whose `Foo`
 declares `LoadDataFromXmlCustom` and reads the NODE NAME as a def reference takes
 `<SomeDefName>value</SomeDefName>`; an `<li>` there throws inside the loader and RimWorld
@@ -542,7 +553,7 @@ vanilla def files against the 578-mod capture (a field whose distinct child tag 
 🔑 **Run the validator on any generated XML before deploying it** — both generators that hit
 this shipped clean-looking files that passed every check we had.
 
-**13 — A def-dump capture can be POISONED BY THE BUG YOU ARE INVESTIGATING, and it then
+**29 — A def-dump capture can be POISONED BY THE BUG YOU ARE INVESTIGATING, and it then
 reports your fix as broken.** Validating the *repaired* `BiomeCast_Ashkarr.xml` against
 capture `2026-08-23T05-05-29Z` produced **36 errors** of the form *"'AB_MycoticJungle' does
 not exist in the LIVE game"* — true, and only because the OLD patch had deleted those 18
@@ -551,7 +562,7 @@ the `--live`/`--defnames` check is circular until a clean reload. **Read the xpa
 counts against the mod folders on disk instead** — those said 26 of 26 matched.
 
 
-**14 — An instrument can print a FRESH capture id over STALE data, and a modlist
+**30 — An instrument can print a FRESH capture id over STALE data, and a modlist
 fingerprint will never catch it.** `defs.sqlite` lives at the DefDump **root** and serves
 every capture, so it survives a new load untouched while the capture beside it moves on.
 `weapon_tag_audit.py` read its tags from a 2026-08-21 database and its header from the
@@ -563,7 +574,7 @@ both captures were the same 578 mods, and what changed between them was OUR OWN 
 capture's `manifest.capturedUtc`. `dump_projection.py` now does this and falls back to that
 capture's JSON with a one-line warning; the fast path returns after `measure build`.
 
-**15 — A kill list is INTENT; the capture is REALITY, and the capture is already post-cut.**
+**31 — A kill list is INTENT; the capture is REALITY, and the capture is already post-cut.**
 Cherry Picker does not delete a cut weapon, it strips `weaponTags` at load — so a genuinely
 cut weapon contributes no tag to a dump at all. Subtracting the kill list from dump-derived
 carriers therefore removes it TWICE, and any weapon deliberately restored (e.g. `Gun_Needle`,
