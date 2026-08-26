@@ -1317,6 +1317,9 @@ namespace JawaBench.BridgeTools
             "jawa/pawn_psychic",
             Description =
                 "Set psylink level, grant or remove abilities/psycasts, and set psyfocus. " +
+                "⚠ OVERLAPS jawa/grant_ability, which calls the same GainAbility for ANY AbilityDef. " +
+                "This tool is the psycast-shaped one and owns psylink and psyfocus; that one is the " +
+                "general grant. Neither is a superset of the other. " + +
                 "action='get' | 'psylink' | 'grant' | 'remove' | 'psyfocus'. " +
                 "🔴 THE 0->N QUIRK IS HANDLED FOR YOU: PawnUtility.ChangePsylinkLevel " +
                 "creates the PsychicAmplifier hediff on the FIRST call and returns without " +

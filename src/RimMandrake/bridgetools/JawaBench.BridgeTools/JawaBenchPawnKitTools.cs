@@ -202,6 +202,9 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/grant_ability",
             Description =
+                "⚠ OVERLAPS jawa/pawn_psychic action='grant', which calls the same GainAbility but " +
+                "is scoped to PSYCASTS and also handles psylink levels and psyfocus. Use that one for " +
+                "anything psycast-shaped; use this one for any other AbilityDef. Neither is a superset. " +
                 "Give a pawn an AbilityDef via Pawn_AbilityTracker.GainAbility - a permanent grant " +
                 "stored in abilities.abilities, distinct from abilities granted temporarily by " +
                 "hediffs, equipment, apparel, mutant status or an ideo role (those all show up in " +
