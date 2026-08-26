@@ -159,15 +159,15 @@
              Life stages keep their original proportions throughout: x1.843 then x2. -->
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>9.58</drawSize></value>
+          <value><drawSize>19.16</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>13.20</drawSize></value>
+          <value><drawSize>26.40</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>16.00</drawSize></value>
+          <value><drawSize>32.00</drawSize></value>
         </li>
         <!-- 🔴 bodySize AND healthScale, "fully", on his instruction. This file's standing rule
              is that drawSize and bodySize are NEVER merged - drawSize is the picture, bodySize
@@ -187,26 +187,35 @@
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseBodySize</xpath>
           <match Class="PatchOperationReplace">
             <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseBodySize</xpath>
-            <value><baseBodySize>16</baseBodySize></value>
+            <value><baseBodySize>32</baseBodySize></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race</xpath>
-            <value><baseBodySize>16</baseBodySize></value>
+            <value><baseBodySize>32</baseBodySize></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseHealthScale</xpath>
           <match Class="PatchOperationReplace">
             <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseHealthScale</xpath>
-            <value><baseHealthScale>20</baseHealthScale></value>
+            <value><baseHealthScale>40</baseHealthScale></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race</xpath>
-            <value><baseHealthScale>20</baseHealthScale></value>
+            <value><baseHealthScale>40</baseHealthScale></value>
           </nomatch>
         </li>
 
-        <!-- ================= EVERYTHING ELSE, x2 ================= -->
+        <!-- ================= EVERYTHING ELSE, x2 AGAIN ================= -->
+        <!-- 🔴 SECOND DOUBLING, owner 2026-08-26: "I would like to double its size again, as
+             well as its body, attack, and anything else that should travel along with those
+             numbers." Every number below is twice what the 2026-08-24 pass left.
+             ⛔ THE THREE ARMOUR RATINGS ARE NOT DOUBLED and that is the whole point of this
+             note. ArmorRating_Sharp is 0.85; at >= 1.00 the armour roll deflects EVERY sharp
+             hit and the creature stops being a heavy hitter and starts being invulnerable to
+             bullets and blades. Blunt 0.75 and Heat 0.60 are held for the same reason. If he
+             wants genuine immunity that is a ruling to ask for out loud, not a multiplication
+             to perform quietly. -->
         <!-- 🔴 Owner, 2026-08-24: "Yes, scale ALL its attributes along with bodysize."
              Straight x2 on every stat where doubling means what he means. The three that are
              NOT doubled are called out below with the reason, so the omission reads as a
@@ -215,15 +224,15 @@
         <!-- Yield and worth: twice the animal, twice what comes off it. -->
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/MeatAmount</xpath>
-          <value><MeatAmount>500</MeatAmount></value>
+          <value><MeatAmount>1000</MeatAmount></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/LeatherAmount</xpath>
-          <value><LeatherAmount>100</LeatherAmount></value>
+          <value><LeatherAmount>200</LeatherAmount></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/MarketValue</xpath>
-          <value><MarketValue>100000</MarketValue></value>
+          <value><MarketValue>200000</MarketValue></value>
         </li>
 
         <!-- 🔑 THE MELEE HALF - this is what "heaviest hitter" actually needed. bodySize does
@@ -233,31 +242,31 @@
              5 -> 10, and the surprise-attack stuns with them. -->
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="left dragonclaw"]/power</xpath>
-          <value><power>36</power></value>
+          <value><power>72</power></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="left dragonclaw"]/surpriseAttack/extraMeleeDamages/li[def="Stun"]/amount</xpath>
-          <value><amount>44</amount></value>
+          <value><amount>88</amount></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="right dragonclaw"]/power</xpath>
-          <value><power>36</power></value>
+          <value><power>72</power></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="right dragonclaw"]/surpriseAttack/extraMeleeDamages/li[def="Stun"]/amount</xpath>
-          <value><amount>44</amount></value>
+          <value><amount>88</amount></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="razorfangs"]/power</xpath>
-          <value><power>30</power></value>
+          <value><power>60</power></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="razorfangs"]/surpriseAttack/extraMeleeDamages/li[def="Stun"]/amount</xpath>
-          <value><amount>28</amount></value>
+          <value><amount>56</amount></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="devour"]/power</xpath>
-          <value><power>10</power></value>
+          <value><power>20</power></value>
         </li>
 
         <!-- ⚠️ ARMOUR IS RAISED HARD BUT DELIBERATELY NOT DOUBLED, AND THIS IS THE ONE THAT WOULD
