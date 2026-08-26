@@ -803,3 +803,13 @@ UNMEASURED from outside the game; `jawa/room_get` and `jawa/pawn_stats` are file
 
 📌 **The template engine works.** `rimplace dwelling` placed 112 terrain, 180 roof and 78 of 81
 things into a live map on 2026-08-26 — its first cells ever placed in a running game.
+
+🔴 **Ash'karr is in Ideology CLASSIC mode.** `jawa/ideo_of` → `ideosTotal: 1` (`Astropolitan`,
+`Classic_*` precepts, 95 non-player believers), and `<classicMode>True</classicMode>` is in every
+save back to 2026-08-24. ⇒ **The twelve authored ideoligions are not in the world**, and every
+faction's `effectiveTitle` is the single word `leader` — `IdeoFoundation.cs:697` hard-sets it and
+short-circuits before `CultureDef.leaderTitleMaker` is read. Chosen at world creation ONLY; no def,
+patch or bridge call retrofits it. Owner call: `ASHKARR_IDEOLOGY_MODE_CALL_1`.
+
+📌 **There is no ideo WRITER on the bridge** — `jawa/ideo_of` reads, `jawa/set_pawn_ideo` is
+pawn-level, and that is the whole of it across 246 tools.

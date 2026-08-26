@@ -1,3 +1,16 @@
+🔴 **RUN 2026-08-26: FAIL, and the table below is STALE.** Every faction now reads
+`effectiveTitle: "leader"` — `Awoken Cheese` / `Ethical Thug` were measured on a world that no
+longer exists. **Cause: Ash'karr is in Ideology CLASSIC mode** (`ideosTotal: 1`, `Astropolitan`,
+`<classicMode>True</classicMode>` in every save), so `IdeoFoundation.cs:697` hard-sets "leader"
+and short-circuits before the culture is read.
+🔑 **The mechanism this item asked me to find is already BUILT** — twelve `CultureDef`s with
+`leaderTitleMaker` in `src/Jawa/Jawa_Patches/Defs/CultureDefs/JawaLeaderTitles.xml`. It cannot
+fire in classic mode, and route 2 does not exist: there is no ideo writer among the 246 tools.
+⇒ Escalated to the owner as `ASHKARR_IDEOLOGY_MODE_CALL_1`.
+Evidence: `infrastructure/state/evidence/leader_titles_and_classic_mode_2026-08-26_CHECK.md`
+
+---
+
 ## ⚠️ DESIGN AND BUILD ARE BOTH DONE — only the live reading is owed, 2026-08-23
 
 **DECIDE verified BUILD's correction rather than taking it on trust**, and it holds:
