@@ -906,3 +906,31 @@ any timed test should use.
 I did not create, while `rimworld/list_colonists` reported `LayDown` / `SocialRelax` for the same
 pawns in the same second. Any behavioural test watching `list_pawns.job` sees nothing forever; it
 cost a 7,200-tick run here. Use `rimworld/list_colonists` for jobs (colonists only, but populated).
+
+## The 2026-08-26 live session — what the bridge can and cannot do
+
+🔑 **A live map's CLIMATE can be driven to anything through its world tile.**
+`jawa/world_tile_set {tiles, temperature}` + `jawa/world_commit` took a running map from
+**14.7 °C to −66.3 °C and back**, propagating into the weather within 1,000 ticks. Reversible, and
+far stronger than `jawa/game_condition` — a `ColdSnap` on a temperate map falls only **0.9 °C per
+1,000 ticks** and bottoms out near −10. ⚠️ **No tool reports the current map's tile**: find the
+`Settlement` whose faction is `PlayerColony` in `jawa/world_objects_get` (`NO_TOOL_REPORTS_MAP_TILE_1`).
+
+🔴 **A dead pawn stops resolving by id, and a FILTERED read of it looks like a clean negative.**
+`FindPawn` searches `mapPawns.AllPawnsSpawned`. Two stripped subjects read "no hypothermia" for
+eleven consecutive polls; they had frozen to death and were absent even from
+`list_pawns includeCorpses`. The tell is `pawn_get` returning `position: {}` and `xenotype: null`,
+not an empty hediff list. **Check the subject still exists before believing an empty filter.**
+
+📌 **`jawa/thing_stats` works and earns its keep.** 82 stats off an armed pawn's 3 things, and it
+reports `value` (INSTANCE) beside `defBase`. On a `Gun_BoltActionRifle` held by a Jawa:
+`MeleeWeapon_AverageDPS` **1.58 instance vs 4.5 def** — the Jawa's `MeleeDamage_Weak` gene, visible
+only because the tool shows both numbers.
+
+📌 **`rimplace`'s dwelling classifies as a house.** `jawa/room_get` on the built structure:
+`Barracks` (4 beds), `Storeroom`, and a third proper roofed room the game calls **`Kitchen`** because
+the template puts a `Campfire` in the planned dining room. Impressiveness 38–45.
+⚙️ **A door is a 1-cell room with `role: None` and `Space: 350`** — three of them here. Not failures.
+
+📌 **The shell holds.** Outdoor driven to 31 °C: no room went above 28.5, and the differential
+flipped sign at the crossover exactly as it should.
