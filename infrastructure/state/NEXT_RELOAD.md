@@ -21,7 +21,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🎯 §20 RE-ROLL THE ROSTER — the 2026-08-24 harvest is the BEFORE | 2026-08-24 | ⏳ PENDING |
 | 🏷️ §21 WORLD LABELS LIFTED — ✅ **DEPLOYED** 2026-08-24 07:3x | 2026-08-24 | ⏳ READING PENDING |
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
-| 🔧 §22 FORTY-**FOUR** UNDEPLOYED BRIDGE TOOLS — the DLL is 2 days behind source | — | ⏳ PENDING |
+| 🔧 §22 FORTY-FOUR UNDEPLOYED BRIDGE TOOLS | ✅ **DEPLOYED 2026-08-26 06:36** | ⏳ readings pending |
 | 🔬 §23 THE FOUR ROWS THAT UNBLOCK ON `jawa/pawn_stats` + `jawa/room_get` | — | ⏳ PENDING |
 
 🔴 **WHEN A LOAD IS SCORED: delete its block.**
@@ -314,6 +314,15 @@ the previous session and still could not appear, which is exactly the failure th
 
 
 ## 🔧 §22 FORTY-TWO BRIDGE TOOLS ARE WRITTEN AND NOT DEPLOYED — measured 2026-08-26 by CHECK
+
+> ✅ **DEPLOYED 2026-08-26 06:36 by CHECK, game down.**
+> `build.py --gm --apply` — 0 warnings, 0 errors, **no tool removal**. Verified by BYTES, not by the
+> build's own report: artifact and game copy are both `sha256 b52b37cba71f4861…`, 1,523,712 B,
+> against the old 1,255,936 B. Built from commit `2b519568`; source declares **165** `jawa/` tools.
+> ⚠️ **RimBridgeServer discovers companions only at STARTUP**, so none of them exists until RimWorld
+> is launched. The first thing to do in the new session is `--list-tools` and confirm 165 — the
+> live list is the only proof; a build that compiled is not a tool the bridge serves.
+
 
 🔴 **Do the companion deploy FIRST in the next down window.** The arithmetic is exact:
 
