@@ -1327,6 +1327,21 @@ gate reasoning and the traps hit; `world/_scald/scald_plan.json`,
 `scald_apply_report.json` and `scald_verify_report.json` are the frozen record of what
 was intended and what landed.
 
+**Gate check against source, after the fact.** A source-level audit of `ToxicLake`
+confirmed `biomeWhitelist: {Glowforest, Scarlands}` (not `Lake`) and, separately,
+`canSpawnOnRiver: false` as an explicit XML field, not an inference. `Tile.AddMutator`
+evidently does not enforce the biome whitelist at all — it is proven live on `Lake`
+tiles regardless — but `canSpawnOnRiver: false` is real and this pass already respected
+it: every `ToxicLake` tile above was chosen from `deep_no_river`, tiles carrying no
+`River`/`RiverDelta` mutator. `Marshy`'s whitelist was confirmed as exactly
+`{Grasslands, TemperateForest, Tundra}` (shorter than earlier guessed, not longer) —
+moot here since Marshy was never used. `VEE_AlluvialFan`/`VEE_MarineSanctuary`/
+`VEE_SulfuricLake`/`VEE_ToxicVents`/`VEE_SmokeVents` could not be located in any XML
+source reachable offline (a `VEE_`-prefixed def with no matching mod content on disk) —
+their gates stay UNMEASURED by source and are trusted only from the live behaviour
+recorded above (the `VEE_MarineSanctuary` probe, the zero-candidate `VEE_AlluvialFan`
+check).
+
 ---
 
 ## Stamping the bundle onto a live planet — measured 2026-08-23 by CHECK
