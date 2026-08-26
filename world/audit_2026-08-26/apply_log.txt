@@ -1,0 +1,5 @@
+APPLIED
+C-roads     ROAD  detours rerouted                 147
+commit -> {"success": true, "failedSteps": 0, "lazy": false, "warning": "Tile's own private caches (HillinessLabel, Min/MaxTemperature, Biomes) have no reset anywhere in RimWorld and survive this. Read raw fiel
+
+FAILURES 0

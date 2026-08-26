@@ -1,0 +1,7 @@
+== ROAD NETWORK: 1242 tiles in 7 components; sizes [1193, 18, 8, 7, 7, 5, 4]
+   settlements NOT on any road: 21
+     {'Jawa_GeonosianFoundryHive': 1, 'Jawa_FreeDroidEnclaves': 6, 'Jawa_DeepwaterCompact': 1, 'TribeCivil': 9, 'PlayerColony': 1, 'Jawa_WildsteamClan': 3}
+   settlements on a road but NOT on the main network: 0
+== RIVER NETWORK: 335 tiles in 11 components; sizes [118, 115, 38, 14, 10, 10, 8, 6, 6, 5, 5]
+   river systems: 11 ; that never reach a lake/ocean: 3 (sizes [118, 8, 5])
+   river tiles by region: Dune Sea 99, Scald Spine 73, Dew Belt 40, Dew Horn 26, Fever Wood 22, Ashfall Range 14, Hollow Verge 13, Anvil 12, Rust Cathedral 10, Scald 8

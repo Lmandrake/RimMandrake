@@ -1,0 +1,46 @@
+== BIOME PATCH STRUCTURE ==
+  biome                         blobs largest  singles edge ruggedness (border/perimeter of a disc)
+  Desert                           32    1827        4   5.52
+  ExtremeDesert                     8    2787        1   3.62
+  AB_RockyCrags                    24     628        0   6.85
+  AB_MycoticJungle                  6    1028        0   5.20
+  Wasteland                        29     611        6   2.40
+  HorrorWastes                      4    1622        0   5.80
+  ZBiome_Badlands                  59     228       19   2.57
+  AB_PropaneLakes                  32     345        8   3.91
+  Ocean                            17     427       11   3.33
+  AridShrubland                    85     126       42   2.64
+  BMT_CrystalCaverns                3     335        0   2.06
+  PoisonForest                     13     163        4   2.68
+  BMT_FungalForest                  9      89        0   1.88
+  Lake                              4     312        1   1.68
+  SeaIce                            3     168        0   4.48
+  AB_MechanoidIntrusion             1     236        0   1.63
+  BiomeCypreJungle                 17      91        1   3.75
+  ZBiome_DesertOasis               23      74        8   1.48
+  ZBiome_Grasslands                 9      85        0   3.80
+  AB_FeraliskInfestedJungle        31      20       10   3.36
+  AB_GelatinousSuperorganism        3      58        0   2.07
+  AB_MiasmicMangrove                8      30        1   2.32
+  Scarlands                         3      58        0   3.13
+  IceSheet                          9       8        0   2.18
+  COMIGO_GreaterSwamp_Tropical      3      22        1   3.28
+  AB_TarPits                        7      24        2   2.67
+  AB_PyroclasticConflagration       2      23        0   2.33
+  Volcano                           1      23        0   1.77
+  AB_OcularForest                   5       6        0   1.57
+  LavaField                         2       8        0   1.50
+
+== ROAD GEOMETRY: straight runs and sharp corners ==
+  road tiles by degree: {1: 74, 2: 1089, 3: 74, 4: 5}
+  through-tiles by turn angle (3 = dead straight, 1 = hairpin): {1: 28, 2: 765, 3: 296}
+  DEAD STRAIGHT: 296 / 1089 = 27% of through-tiles
+
+== THE SCALD RING: what hugs the crater lake ==
+  Scald tiles 312 ; first ring 79
+  ring biomes: ZBiome_Badlands 26, AB_FeraliskInfestedJungle 12, AB_OcularForest 10, ZBiome_DesertOasis 7, BiomeCypreJungle 7, Volcano 6, ZBiome_Grasslands 4, AB_PyroclasticConflagration 3, LavaField 3, Desert 1
+  second ring biomes: AB_FeraliskInfestedJungle 16, ZBiome_Badlands 11, AB_PyroclasticConflagration 10, Volcano 10, BiomeCypreJungle 9, ZBiome_DesertOasis 8, LavaField 6, AB_OcularForest 6
+
+== LANDMARK SPACING: clustered or sprinkled? ==
+  landmarks 579 ; with a landmark neighbour: 43 (7%)
+  random sprinkle of the same count would give 15% +/- 5%

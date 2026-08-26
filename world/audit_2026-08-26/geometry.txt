@@ -1,0 +1,134 @@
+== 1. BULLSEYE TEST: biome mix per 10-degree arc band ==
+   (a band dominated by 1-2 biomes across ALL bearings is a ring, not a landscape)
+  arc   0- 10  n=  156  top1  64.7%  AB_MechanoidIntrusion 65% | ExtremeDesert 29% | ZBiome_Grasslands 3%
+  arc  10- 20  n=  486  top1  37.4%  ExtremeDesert 37% | AB_MechanoidIntrusion 28% | Scarlands 11%
+  arc  20- 30  n=  788  top1  52.0%  ExtremeDesert 52% | ZBiome_Badlands 8% | Lake 8%
+  arc  30- 40  n= 1146  top1  64.5%  ExtremeDesert 64% | Lake 13% | BiomeCypreJungle 5%
+  arc  40- 50  n= 1312  top1  56.9%  ExtremeDesert 57% | Desert 15% | Lake 7%
+  arc  50- 60  n= 1582  top1  39.7%  ExtremeDesert 40% | Desert 34% | ZBiome_Badlands 11%
+  arc  60- 70  n= 1692  top1  41.5%  Desert 42% | ExtremeDesert 20% | ZBiome_Badlands 20%
+  arc  70- 80  n= 1834  top1  49.3%  Desert 49% | Ocean 15% | Wasteland 11%
+  arc  80- 90  n= 1832  top1  32.6%  Desert 33% | Wasteland 18% | Ocean 12%
+  arc  90-100  n= 2028  top1  39.8%  Desert 40% | Wasteland 13% | Ocean 11%
+  arc 100-110  n= 1822  top1  27.2%  AB_RockyCrags 27% | Desert 17% | AB_MycoticJungle 15%
+  arc 110-120  n= 1704  top1  31.3%  AB_MycoticJungle 31% | AB_RockyCrags 26% | Wasteland 15%
+  arc 120-130  n= 1558  top1  32.6%  AB_MycoticJungle 33% | HorrorWastes 25% | Wasteland 18%
+  arc 130-140  n= 1348  top1  68.0%  HorrorWastes 68% | AB_MycoticJungle 14% | PoisonForest 9%
+  arc 140-150  n= 1134  top1  34.1%  HorrorWastes 34% | AB_PropaneLakes 22% | BMT_CrystalCaverns 20%
+  arc 150-160  n=  804  top1  36.6%  AB_PropaneLakes 37% | AB_RockyCrags 33% | BMT_CrystalCaverns 31%
+  arc 160-170  n=  482  top1  40.5%  AB_RockyCrags 40% | AB_PropaneLakes 38% | BMT_CrystalCaverns 21%
+  arc 170-180  n=  164  top1  54.9%  AB_RockyCrags 55% | AB_PropaneLakes 45%
+
+== 2. MIRROR SYMMETRY: same arc band, east vs west hemisphere ==
+   (a real planet is not symmetric about its own noon meridian)
+  arc   0- 10  E=   82 W=   74  biome divergence 0.54  
+  arc  10- 20  E=  247 W=  239  biome divergence 0.49  
+  arc  20- 30  E=  398 W=  390  biome divergence 0.71  
+  arc  30- 40  E=  581 W=  565  biome divergence 0.67  
+  arc  40- 50  E=  664 W=  648  biome divergence 0.58  
+  arc  50- 60  E=  797 W=  785  biome divergence 0.51  
+  arc  60- 70  E=  853 W=  839  biome divergence 0.32  
+  arc  70- 80  E=  924 W=  910  biome divergence 0.26  SYMMETRIC (suspicious)
+  arc  80- 90  E=  922 W=  910  biome divergence 0.33  
+  arc  90-100  E= 1015 W= 1013  biome divergence 0.49  
+  arc 100-110  E=  913 W=  909  biome divergence 0.34  
+  arc 110-120  E=  853 W=  851  biome divergence 0.65  
+  arc 120-130  E=  781 W=  777  biome divergence 0.44  
+  arc 130-140  E=  676 W=  672  biome divergence 0.34  
+  arc 140-150  E=  568 W=  566  biome divergence 0.48  
+  arc 150-160  E=  403 W=  401  biome divergence 0.48  
+  arc 160-170  E=  242 W=  240  biome divergence 0.30  
+  arc 170-180  E=   82 W=   82  biome divergence 0.05  SYMMETRIC (suspicious)
+
+== 3. REGION RICHNESS: named regions with nothing in them ==
+  region                 tiles   mut%  lmks setts  road river  dominant biome
+  Scald                    312    71%     0     0     0     8  Lake 100%
+  Sporefields              255     0%     0     0     2     0  AB_MycoticJungle 67%
+  Knuckles                  78     3%     0     0     6     0  Desert 100%
+  Wither                    72    68%     0     0     0     0  ZBiome_Badlands 39%
+  Pyrelands                 63     5%     0     0     4     0  ZBiome_Grasslands 100%
+  Thornend                  61    15%     0     0     0     0  HorrorWastes 100%
+  Lantern Deeps             57     0%     0     0     0     0  BMT_CrystalCaverns 100%
+  Salt Gate                 16    62%     0     0     9     0  AB_MiasmicMangrove 100%
+  Rimewall                 338    27%     0     1     8     0  AB_RockyCrags 76%
+  Level                    141    31%     0     1    14     0  Desert 100%
+  Blight                   140    26%     0     1     2     0  Wasteland 96%
+  Pan                       79    37%     0     1     3     0  Wasteland 100%
+  Fanground                 70    34%     0     1     8     0  Desert 100%
+  Damp                     230    52%     1     0     0     0  AridShrubland 43%
+  Sweatwood                 93     1%     1     0     0     0  AB_MycoticJungle 53%
+  Venom Wood                72     1%     1     0     0     0  PoisonForest 100%
+  Notch                     56    20%     1     0     8     2  Desert 80%
+  Sunward Scrub            154    16%     1     1     2     0  Desert 95%
+  Stepwood                  85     1%     1     1     6     0  AB_MycoticJungle 89%
+  The Abandoned Mines       34   100%     1     1    17     2  AridShrubland 68%
+  Blindwood                145     1%     2     0     0     0  AB_MycoticJungle 93%
+  Pale Flats                60     7%     2     0     9     0  Desert 85%
+  Chalk Marches             57     9%     2     0     6     0  Desert 37%
+  Quiet Ground              43    12%     2     0     0     0  PoisonForest 77%
+  Hollow Verge              40    88%     2     1     1    13  AB_FeraliskInfestedJungle 40%
+  Ashen Wastes             202    20%     3     0     0     0  Wasteland 100%
+  Mould Marches            123     3%     3     0    13     0  AB_MycoticJungle 98%
+  Fever Wood                81   100%     3     0     8    22  COMIGO_GreaterSwamp_Tropical 53%
+  Coldstone                 57    58%     3     0    10     0  AB_RockyCrags 100%
+  Cracklands               227     4%     3     1    34     0  ZBiome_Badlands 93%
+  Tallow Ground            129    20%     3     1     1     0  AB_MycoticJungle 53%
+  Cinders                  112    33%     3     1    12     1  Wasteland 83%
+  Coldshelf                 68    19%     3     1     8     0  Desert 100%
+  Rust Cathedral           236    99%     3     4     0    10  AB_MechanoidIntrusion 100%
+  Scour                    234    24%     4     0     0     0  Wasteland 88%
+  The Verge                171    12%     4     0     0     0  AB_RockyCrags 60%
+  Grinding Floor            79     9%     4     0     3     0  Desert 67%
+  Ashwood                   69     6%     4     0     0     0  AB_MycoticJungle 100%
+  Frostcaps                254     2%     4     1    18     0  AB_MycoticJungle 88%
+  Slough                   148     5%     5     0    14     0  PoisonForest 49%
+  Glass Reach              172    19%     5     1    13     0  Desert 53%
+  Sinkground               276     8%     5     2    35     0  Desert 100%
+  Scorch                    90    17%     5     2    18     3  Scarlands 100%
+  Thornbelt                502    28%     5     4    47     0  Desert 78%
+  Fall Line                155    43%     6     0     9     0  ExtremeDesert 76%
+  Capwood                   75     8%     6     0     0     0  AB_MycoticJungle 100%
+  Cinderdark               153    18%     7     0     0     0  Wasteland 100%
+  Stillwood                142     5%     7     0    26     0  AB_MycoticJungle 65%
+  Twilight Sea             852    47%     7     1    13     1  Ocean 51%
+  Hanging Wood             165     5%     8     0    24     0  AB_MycoticJungle 72%
+  Combs                    360    44%     8     2    50     0  Desert 68%
+  Umbra                    802    37%     9     1     0     0  AB_PropaneLakes 36%
+  Long Sand                721    38%     9     5    96     4  Desert 64%
+  Sunreach                 795    29%    10     0     0     0  Wasteland 33%
+  Grey Sea                 617    53%    11     3    12     3  Ocean 62%
+  Scald Spine              174    98%    11     4    36    73  BiomeCypreJungle 33%
+  Fall Line Barrens        153    37%    13     1     9     0  ExtremeDesert 88%
+  Salt                     249    40%    13     4    46     0  Wasteland 57%
+  South Crags              433    23%    14     1    14     0  HorrorWastes 21%
+  Dew Belt                 362    47%    15     4    64    40  Desert 40%
+  Dry Marches              387    16%    17     2    11     0  Desert 77%
+  Glare                    879    39%    19     6    46     0  ExtremeDesert 71%
+  Deadstone               2051    28%    20     1    24     0  HorrorWastes 71%
+  Twilight Crags           384    50%    20     1    20     0  AB_RockyCrags 44%
+  Gray Crags               577    55%    22     0     8     0  AB_RockyCrags 31%
+  Ashfall Range            324    68%    23     6    47    14  ExtremeDesert 40%
+  Kiln                     878    34%    25     5    46     2  ExtremeDesert 48%
+  Anvil                    349    46%    27     1    52    12  ExtremeDesert 65%
+  Nightspill               853    14%    27     2    45     0  AB_MycoticJungle 43%
+  Ammonia Flats            818    24%    32     1    42     0  AB_PropaneLakes 46%
+  Dew Horn                 491    77%    45     5    96    26  ZBiome_Badlands 73%
+  Dune Sea                1692    64%    59    13    67    99  ExtremeDesert 68%
+
+== 4. EMPTY TILES ==
+  tiles with NO mutator, NO landmark, NO road, NO river, NO settlement: 13308 / 21872 = 60.8%
+  by biome: Desert 2959, AB_MycoticJungle 1731, ExtremeDesert 1366, Wasteland 1202, HorrorWastes 1176, AB_RockyCrags 1127, AB_PropaneLakes 602, Ocean 574
+
+== 5. THE 'NOTHING HERE' MUTATORS ==
+  total mutator instances: 13819 ; purely-subtractive: 3204 (23%)
+     1534 VEE_DeepOreDevoid
+     1533 VEE_MineralDevoid
+       92 Fish_Decreased
+       16 VEE_PlantLife_Decimated
+       15 VEE_Fertility_Reduced
+        8 VEE_NoTrees
+        6 AnimalLife_Decreased
+
+== 6. Fish_Increased on a 6.4%-water planet ==
+  tiles with a Fish_* mutator: 697 ; by biome: Lake 222, Ocean 202, BiomeCypreJungle 136, SeaIce 48, AB_MiasmicMangrove 30, AridShrubland 17, ZBiome_Grasslands 12, AB_OcularForest 6, AB_FeraliskInfestedJungle 6, Scarlands 3
+  of those, genuinely coastal by adjacency: 35 (5%)

@@ -1,0 +1,679 @@
+== BIOME (used 30 of 80 defs) ==
+    4205 19.23%  Desert
+    3179 14.53%  ExtremeDesert
+    2002  9.15%  AB_RockyCrags
+    1939  8.87%  AB_MycoticJungle
+    1713  7.83%  Wasteland
+    1711  7.82%  HorrorWastes
+    1120  5.12%  ZBiome_Badlands
+     818  3.74%  AB_PropaneLakes
+     817  3.74%  Ocean
+     662  3.03%  AridShrubland
+     578  2.64%  BMT_CrystalCaverns
+     542  2.48%  PoisonForest
+     425  1.94%  BMT_FungalForest
+     322  1.47%  Lake
+     262  1.20%  SeaIce
+     236  1.08%  AB_MechanoidIntrusion
+     227  1.04%  BiomeCypreJungle
+     223  1.02%  ZBiome_DesertOasis
+     223  1.02%  ZBiome_Grasslands
+     169  0.77%  AB_FeraliskInfestedJungle
+      96  0.44%  AB_GelatinousSuperorganism
+      93  0.43%  AB_MiasmicMangrove
+      90  0.41%  Scarlands
+      49  0.22%  IceSheet
+      43  0.20%  COMIGO_GreaterSwamp_Tropical
+      40  0.18%  AB_TarPits
+      31  0.14%  AB_PyroclasticConflagration
+      23  0.11%  Volcano
+      19  0.09%  AB_OcularForest
+      15  0.07%  LavaField
+
+== HILLINESS ==
+    8394  Flat
+    8097  SmallHills
+    3815  LargeHills
+    1510  Mountainous
+      56  Impassable
+
+== MUTATORS: used 128 distinct of 336 defs; 7874 tiles carry >=1 (36.0%) ==
+  total mutator instances: 13819
+    1611  Caves                                  caves
+    1536  Dunes                                  dunes
+    1534  VEE_DeepOreDevoid                      no deep ores
+    1533  VEE_MineralDevoid                      mineral devoid
+    1133  Mountain                               mountain
+     605  Fish_Increased                         increased fish
+     484  MineralRich                            mineral rich
+     326  VEE_SaltPlains                         salt plains
+     262  AnimalLife_Increased                   increased animal life
+     246  Oasis                                  oasis
+     233  WindyMutator                           windy
+     229  Cliffs                                 cliffs
+     210  AncientRuins                           ruins
+     188  AnimalHabitat                          animal habitat
+     178  AncientHeatVent                        ancient heat vent
+     169  AB_DerelictClusters                    derelict clusters
+     165  River                                  river
+     163  VEE_DeepOreRich                        deep ore rich
+     158  VEE_FloodPlains                        flood plains
+     153  Marshy                                 marshy
+     136  Junkyard                               junkyard
+     136  DryGround                              dry ground
+     129  CoastalIsland                          coastal island
+     110  VEE_SulfuricLake                       sulfuric lake
+     104  Coast                                  coast
+     104  AB_AmbientRadiation                    ambient radiation
+      92  Fish_Decreased                         decreased fish
+      91  VEE_ToxicVents                         toxic geysers
+      90  VEE_RisingWaters                       rising waters
+      88  VEE_StagnantRivulet                    stagnant rivulet
+      79  VEE_MechanoidShipChunks                mechanoid chunks
+      59  Stockpile                              stockpile
+      51  SunnyMutator                           sunny
+      51  VEE_DryRiver                           dry river
+      47  AncientWarehouse                       ancient warehouse
+      44  VEE_RottenStench                       rotten stench
+      41  CaveLakes                              cave pools
+      39  VEE_SerpentineCanyons                  serpentine canyons
+      39  ToxicLake                              toxic lake
+      38  VEE_PebbleDunes                        pebble dunes
+      37  Headwater                              headwater
+      37  Archipelago                            archipelago
+      36  VEE_Cenotes                            cenotes
+      33  SteamGeysers_Increased                 high geothermal activity
+      33  RiverIsland                            river island
+      31  VEE_IncreasedInfestations              increased infestations
+      31  VEE_GravelBeach                        gravel beach
+      31  AB_LocustPlagues                       locust plagues
+      31  Chasm                                  chasm
+      30  AncientQuarry                          ancient quarry
+      29  AB_FeraliskNest                        feralisk nest
+      28  VEE_QuicksandDunes                     quicksand dunes
+      28  InsectMegahive                         insect megahive
+      26  Cavern                                 cavern
+      26  AB_BumbledroneNests                    bumbledrone nests
+      24  DryLake                                dry lake
+      23  AncientGarrison                        ancient garrison
+      21  Pond                                   pond
+      20  Iceberg                                iceberg
+      19  VEE_RotstinkVents                      rotstink geysers
+      18  AncientChemfuelRefinery                ancient chemfuel refinery
+      18  AncientRuins_Frozen                    frozen ruins
+      18  AbandonedColonyTribal                  abandoned colony
+      18  Valley                                 valley
+      17  Bay                                    bay
+      16  VEE_DustBowl                           dust bowl
+      16  VEE_PlantLife_Decimated                decimated
+      16  VEE_DustStorms                         dust storms
+      16  VEE_MeteorCrater                       meteor crater
+      16  IceDunes                               ice dunes
+      16  RiverDelta                             delta
+      16  TerraformingScar                       terraforming scar
+      16  VEE_IncreasedDiseases                  increased diseases
+      15  VEE_Fertility_Reduced                  decreased soil fertility
+      15  VEE_MarineSanctuary                    marine sanctuary
+      14  VEE_FleshPits                          flesh pits
+      13  AB_MagmaVents                          magma vents
+      12  HotSprings                             hot springs
+      12  VEE_RockRidge                          rock ridge
+      12  VEE_DeepSnow                           solid snow
+      12  AB_AncientGreyPallVent                 gray pall vent
+      11  PlantLife_Increased                    increased plant life
+      11  Hollow                                 hollow
+      10  VEE_RedDesert                          red desert
+      10  VEE_RedDesertPlants                    red desert cacti
+      10  AB_TarLakes                            tar lakes
+      10  WildPlants                             wild plants
+      10  Muddy                                  muddy
+       9  AncientUplink                          ancient uplink
+       9  VEE_JaggedRocks                        jagged rocks
+       8  VEE_Sandstorms                         sandstorms
+       8  Peninsula                              peninsula
+       8  VEE_PlantLife_Overgrown                overgrown
+       8  VEE_NoTrees                            lack of trees
+       8  sw_DeadSarlaccCave                     a dead sarlacc
+       8  AB_GeothermalHotspots                  geothermal hotspots
+       7  VEE_ContaminatedRiver                  contaminated river
+       6  AnimalLife_Decreased                   decreased animal life
+       6  AB_MagmaticQuagmire                    magmatic quagmire
+       6  AB_AncientDeathPallVent                death pall vent
+       6  Plateau                                plateau
+       5  VEE_SmokeVents                         smoke geysers
+       5  CoastalAtoll                           coastal atoll
+       4  AbandonedColonyOutlander               abandoned colony
+       4  VEE_StoneForest                        stone forest
+       4  AB_AncientFreezingVent                 ancient freezing vent
+       4  WildDantooinePlants                    wild plants
+       4  AB_AncientBloodRainVent                blood rain vent
+       4  VEE_Cactus_Barrel                      barrel cacti
+       4  VEE_Cactus_Hedgehog                    hedgehog cacti
+       3  VEE_LoneIsland                         detached coastal island
+       3  LavaFlow                               lava flow
+       3  WildTattooinePlants                    wild plants
+       3  AncientInfestedSettlement              infested settlement
+       2  AB_AgariluxPrime_Mutator               agarilux prime sprout
+       2  sw_SarlaccLair                         sarlacc pit
+       2  WildGalacticPlants                     wild plants
+       2  AncientLaunchSite                      ancient launch site
+       2  VEE_AlluvialFan                        aluvial fan
+       2  VEE_SulfuricRiver                      sulfuric river
+       1  VEE_Volcano                            volcano
+       1  AB_QuicksandPits                       quicksand pits
+       1  Pollution_Increased                    increased pollution
+       1  AB_DerelictArchonexus                  derelict archonexus
+       1  Basin                                  basin
+       1  VEE_ToxicCrater                        toxic crater
+       1  LavaLake                               lava lake
+       1  LavaCrater                             lava lake
+
+== MUTATOR DEFS NEVER USED (208) ==
+   AB_BlizzariskNest                        blizzarisk nest              Alpha Biomes
+   AB_ButterflySwarms                       butterfly swarms             Alpha Biomes
+   AB_DerelictBioLab                        derelict biolab              Alpha Biomes
+   AB_DerelictKemeticTemple                 derelict kemetic temple      Alpha Biomes
+   AB_DerelictResort                        derelict resort              Alpha Biomes
+   AB_DessertTrees                          dessert trees                Alpha Biomes
+   AB_DigestiveSurface                      digestive surface            Alpha Biomes
+   AB_DiminutiveRegion                      diminutive region            Alpha Biomes
+   AB_DunealiskNest                         dunealisk nest               Alpha Biomes
+   AB_EdibleAirborneMicrofungi              edible airborne micro-fungi  Alpha Biomes
+   AB_ExplodingAnimals                      exploding animals            Alpha Biomes
+   AB_ExtremeTemperatureFluctuations        extreme temperature fluctuations Alpha Biomes
+   AB_FleshTrees                            flesh trees                  Alpha Biomes
+   AB_GelatinousMemoryEcho                  gelatinous memory echo       Alpha Biomes
+   AB_GiantFossils                          giant fossils                Alpha Biomes
+   AB_GoldenTrees                           golden cube trees            Alpha Biomes
+   AB_HealingSprings                        healing springs              Alpha Biomes
+   AB_LuminescentTrees                      luminescent trees            Alpha Biomes
+   AB_MoldyEnvironment                      moldy environment            Alpha Biomes
+   AB_MutagenicSprings                      mutagenic ocular springs     Alpha Biomes
+   AB_NarrowRegion                          narrow region                Alpha Biomes
+   AB_OcularTransformation                  ocular transformation        Alpha Biomes
+   AB_OversaturatedSoil                     oversaturated soil           Alpha Biomes
+   AB_PetalStorms                           petal storms                 Alpha Biomes
+   AB_PollinationFrenzy                     pollination frenzy           Alpha Biomes
+   AB_PropaneLakes                          propane lakes                Alpha Biomes
+   AB_QuiveringSurface                      quivering surface            Alpha Biomes
+   AB_ResidualOverclocking                  residual overclocking        Alpha Biomes
+   AB_SterileGround                         sterile ground               Alpha Biomes
+   AB_SymbioticNutrients                    symbiotic nutrients          Alpha Biomes
+   AB_TechnoTrees                           technological trees          Alpha Biomes
+   AB_WideRegion                            wide region                  Alpha Biomes
+   AncientSmokeVent                         ancient smoke vent           Odyssey
+   AncientToxVent                           ancient toxic vent           Odyssey
+   ArcheanTrees                             archean trees                Odyssey
+   Cove                                     bay                          Odyssey
+   Crevasse                                 crevasse                     Odyssey
+   DA_LeviathanNest                         leviathan nestbed            Dark Ages : Beasts and Monsters
+   DA_SnaptoadBreedingGrounds               snaptoad breeding grounds    Dark Ages : Beasts and Monsters
+   Fertile                                  fertile                      Odyssey
+   Fjord                                    fjord                        Odyssey
+   FoggyMutator                             foggy                        Odyssey
+   GL_Archipelago                           None                         Geological Landforms
+   GL_Atoll                                 None                         Geological Landforms
+   GL_Badlands                              None                         Geological Landforms
+   GL_BiomeTransitions                      None                         Biome Transitions
+   GL_Caldera                               None                         Geological Landforms
+   GL_Canyon                                None                         Geological Landforms
+   GL_CaveEntrance                          None                         Geological Landforms
+   GL_Cirque                                None                         Geological Landforms
+   GL_Cliff                                 None                         Geological Landforms
+   GL_CliffAndCoast                         None                         Geological Landforms
+   GL_CliffCorner                           None                         Geological Landforms
+   GL_Coast                                 None                         Geological Landforms
+   GL_CoastCorner                           None                         Geological Landforms
+   GL_CoastalIsland                         None                         Geological Landforms
+   GL_Cove                                  None                         Geological Landforms
+   GL_CoveWithIsland                        None                         Geological Landforms
+   GL_Crater                                None                         Geological Landforms
+   GL_DesertPlateau                         None                         Geological Landforms
+   GL_DryLake                               None                         Geological Landforms
+   GL_Fjord                                 None                         Geological Landforms
+   GL_Glacier                               None                         Geological Landforms
+   GL_Gorge                                 None                         Geological Landforms
+   GL_IceOasis                              None                         Geological Landforms
+   GL_Island                                None                         Geological Landforms
+   GL_Lake                                  None                         Geological Landforms
+   GL_LakeWithIsland                        None                         Geological Landforms
+   GL_Landbridge                            None                         Geological Landforms
+   GL_LoneMountain                          None                         Geological Landforms
+   GL_Oasis                                 None                         Geological Landforms
+   GL_Peninsula                             None                         Geological Landforms
+   GL_Rift                                  None                         Geological Landforms
+   GL_River                                 None                         Geological Landforms
+   GL_RiverConfluence                       None                         Geological Landforms
+   GL_RiverDelta                            None                         Geological Landforms
+   GL_RiverIsland                           None                         Geological Landforms
+   GL_RiverSource                           None                         Geological Landforms
+   GL_RiverTerrain                          None                         Geological Landforms
+   GL_SecludedCove                          None                         Geological Landforms
+   GL_SecludedValley                        None                         Geological Landforms
+   GL_Sinkhole                              None                         Geological Landforms
+   GL_Skerry                                None                         Geological Landforms
+   GL_SurfaceCave                           None                         Geological Landforms
+   GL_SwampHill                             None                         Geological Landforms
+   GL_Tombolo                               None                         Geological Landforms
+   GL_Valley                                None                         Geological Landforms
+   Harbor                                   harbor                       Odyssey
+   IceCaves                                 ice caves                    Odyssey
+   Lake                                     lake                         Odyssey
+   LakeWithIsland                           lake with island             Odyssey
+   LakeWithIslands                          lake with island             Odyssey
+   Lakeshore                                lakeshore                    Odyssey
+   LavaCaves                                lava caves                   Odyssey
+   MixedBiome                               mixed biome                  Odyssey
+   ObsidianDeposits                         obsidian deposits            Odyssey
+   PlantGrove                               plant grove                  Odyssey
+   PlantLife_Decreased                      decreased plant life         Odyssey
+   RiverConfluence                          river confluence             Odyssey
+   Sandy                                    sandy                        Odyssey
+   UndergroundCave                          underground cave             Core
+   VEE_AbandonedFarmland                    abandoned farmland           Vanilla Landmarks Expanded
+   VEE_AbundantPredators                    abundant predators           Vanilla Landmarks Expanded
+   VEE_AbundantPrey                         abundant prey                Vanilla Landmarks Expanded
+   VEE_AggressiveHerds                      aggressive herds             Vanilla Landmarks Expanded
+   VEE_Alphabeavers                         alphabeavers                 Vanilla Landmarks Expanded
+   VEE_AnimaFauna                           anima fauna                  Vanilla Landmarks Expanded
+   VEE_AnimaFlora                           anima flora                  Vanilla Landmarks Expanded
+   VEE_AnimaSoils                           anima soils                  Vanilla Landmarks Expanded
+   VEE_AnimaSoils_Coast                     anima soils                  Vanilla Landmarks Expanded
+   VEE_AuburnTree_Birches                   auburn birches               Vanilla Landmarks Expanded
+   VEE_AuburnTree_Maples                    auburn maples                Vanilla Landmarks Expanded
+   VEE_AuburnTree_Oaks                      auburn oaks                  Vanilla Landmarks Expanded
+   VEE_AuburnTree_Poplars                   auburn poplars               Vanilla Landmarks Expanded
+   VEE_BasaltCape                           basalt cape                  Vanilla Landmarks Expanded
+   VEE_Blooming_Buttercup                   blooming buttercups          Vanilla Landmarks Expanded
+   VEE_Blooming_ForgetMeNot                 blooming forget-me-nots      Vanilla Landmarks Expanded
+   VEE_Blooming_Knapweed                    blooming knapweed            Vanilla Landmarks Expanded
+   VEE_Blooming_Loosestrife                 blooming loosestrife         Vanilla Landmarks Expanded
+   VEE_BombardedSurface                     bombarded surface            Vanilla Landmarks Expanded
+   VEE_BurnedForest                         burned forest                Vanilla Landmarks Expanded
+   VEE_Cactus_Beavertail                    beavertail cacti             Vanilla Landmarks Expanded
+   VEE_Cactus_OrganPipe                     organ pipe cacti             Vanilla Landmarks Expanded
+   VEE_CalmBasin                            calm basin                   Vanilla Landmarks Expanded
+   VEE_ColossalFauna                        colossal fauna               Vanilla Landmarks Expanded
+   VEE_ContaminatedCoast                    contaminated coast           Vanilla Landmarks Expanded
+   VEE_ContaminatedReservoir                contaminated reservoir       Vanilla Landmarks Expanded
+   VEE_CoralReef                            coral reef                   Vanilla Landmarks Expanded
+   VEE_CraterLake                           crater lake                  Vanilla Landmarks Expanded
+   VEE_DeadlifeVents                        deadlife geysers             Vanilla Landmarks Expanded
+   VEE_DeepOrePoor                          deep ore poor                Vanilla Landmarks Expanded
+   VEE_DetachedIceberg                      detached iceberg             Vanilla Landmarks Expanded
+   VEE_DistressedWildlife                   distressed wildlife          Vanilla Landmarks Expanded
+   VEE_DomesticatedEscapees                 domesticated escapees        Vanilla Landmarks Expanded
+   VEE_DriftwoodShore                       driftwood                    Vanilla Landmarks Expanded
+   VEE_EasyToTraverse                       easy to traverse             Vanilla Landmarks Expanded
+   VEE_FeralKinship                         feral kinship                Vanilla Landmarks Expanded
+   VEE_FertileRains                         fertile rains                Vanilla Landmarks Expanded
+   VEE_FirewoodTrees                        firewood trees               Vanilla Landmarks Expanded
+   VEE_FrequentAuroras                      frequent auroras             Vanilla Landmarks Expanded
+   VEE_GeomagneticStorm                     geomagnetic storm            Vanilla Landmarks Expanded
+   VEE_GlacialMoraine                       glacial moraine              Vanilla Landmarks Expanded
+   VEE_HardToTraverse                       hard to traverse             Vanilla Landmarks Expanded
+   VEE_IceAndFire                           ice and fire                 Vanilla Landmarks Expanded
+   VEE_IceSpires                            ice spires                   Vanilla Landmarks Expanded
+   VEE_JadeChunks                           jadeite chunks               Vanilla Landmarks Expanded
+   VEE_JadeiteMountains                     jadeite mountains            Vanilla Landmarks Expanded
+   VEE_LargeRiverBanks                      large river banks            Vanilla Landmarks Expanded
+   VEE_LargerRegion                         larger region                Vanilla Landmarks Expanded
+   VEE_LaurelForest                         laurel forest                Vanilla Landmarks Expanded
+   VEE_LessSolarPower                       reduced solar exposure       Vanilla Landmarks Expanded
+   VEE_LittoralDunes                        littoral dunes               Vanilla Landmarks Expanded
+   VEE_LoneIslandWithLake                   central lake island          Vanilla Landmarks Expanded
+   VEE_LoneIslandWithMountain               resurgent island             Vanilla Landmarks Expanded
+   VEE_LushLavaFields                       lush lava fields             Vanilla Landmarks Expanded
+   VEE_MangroveTerrain                      coastal wetland              Vanilla Landmarks Expanded
+   VEE_MangroveTrees                        mangrove trees               Vanilla Landmarks Expanded
+   VEE_Megafauna                            abundant megafauna           Vanilla Landmarks Expanded
+   VEE_Microfauna                           microfauna                   Vanilla Landmarks Expanded
+   VEE_MigratoryHerds                       migratory herds              Vanilla Landmarks Expanded
+   VEE_MineableComponentSpacer              advanced component deposits  Vanilla Landmarks Expanded
+   VEE_Moor                                 moor                         Vanilla Landmarks Expanded
+   VEE_MoorFlora                            moor plants                  Vanilla Landmarks Expanded
+   VEE_MoreSolarPower                       increased solar exposure     Vanilla Landmarks Expanded
+   VEE_Mossy                                mossy                        Vanilla Landmarks Expanded
+   VEE_Mycelium                             mycelium                     Vanilla Landmarks Expanded
+   VEE_NaturalAerie                         natural aerie                Vanilla Landmarks Expanded
+   VEE_NoDiseases                           no diseases                  Vanilla Landmarks Expanded
+   VEE_NoWind                               no wind                      Vanilla Landmarks Expanded
+   VEE_NobleSteeds                          noble steeds                 Vanilla Landmarks Expanded
+   VEE_ObsidianChunks                       obsidian chunks              Vanilla Landmarks Expanded
+   VEE_PermafrostBasin                      permafrost basin             Vanilla Landmarks Expanded
+   VEE_PlentifulGrass                       plentiful grass              Vanilla Landmarks Expanded
+   VEE_PoisonousFlora                       poisonous flora              Vanilla Landmarks Expanded
+   VEE_QuicksandPits                        quicksand pits               Vanilla Landmarks Expanded
+   VEE_RagingWind                           raging winds                 Vanilla Landmarks Expanded
+   VEE_ReducedDiseases                      reduced diseases             Vanilla Landmarks Expanded
+   VEE_ReducedPredators                     reduced predators            Vanilla Landmarks Expanded
+   VEE_ReducedPrey                          reduced prey                 Vanilla Landmarks Expanded
+   VEE_RelictDelta                          relict delta                 Vanilla Landmarks Expanded
+   VEE_ResurgentCaldera                     resurgent caldera            Vanilla Landmarks Expanded
+   VEE_RodentPlagues                        rodent plagues               Vanilla Landmarks Expanded
+   VEE_Sinkholes                            sinkholes                    Vanilla Landmarks Expanded
+   VEE_SkygazingSpot                        skygazing spot               Vanilla Landmarks Expanded
+   VEE_SmallerRegion                        smaller region               Vanilla Landmarks Expanded
+   VEE_SteamGeysers_Decreased               no geothermal activity       Vanilla Landmarks Expanded
+   VEE_StrongerTides                        stronger tides               Vanilla Landmarks Expanded
+   VEE_TornadoAlley                         tornado alley                Vanilla Landmarks Expanded
+   VEE_TropicalBeach                        tropical beach               Vanilla Landmarks Expanded
+   VEE_TropicalBeachFlora                   tropical beach flora         Vanilla Landmarks Expanded
+   VEE_UndergroundGasDeposits               underground gas deposits     Vanilla Landmarks Expanded
+   VEE_VenomousEcosystem                    venomous ecosystem           Vanilla Landmarks Expanded
+   VEE_VolcanicRichSoil                     rich volcanic soil           Vanilla Landmarks Expanded
+   VEE_VolcanicSandDesert                   volcanic sand desert         Vanilla Landmarks Expanded
+   VEE_VolcanicSandDesertFlora              volcanic sand flora          Vanilla Landmarks Expanded
+   VEE_WanderingCompanions                  wandering companions         Vanilla Landmarks Expanded
+   VEE_WastelandFauna                       wasteland fauna              Vanilla Landmarks Expanded
+   VEE_WildRice                             wild rice                    Vanilla Landmarks Expanded
+   VEE_WildSucculents                       wild succulents              Vanilla Landmarks Expanded
+   VEE_WildWheat                            wild wheat                   Vanilla Landmarks Expanded
+   WetClimate                               wet climate                  Odyssey
+   Wetland                                  wetland                      Odyssey
+   WildAlderaanPlants                       wild plants                  Star Wars Animal Collection (Continued)
+   WildFelucianPlants                       wild plants                  Star Wars Animal Collection (Continued)
+   WildNabooPlants                          wild plants                  Star Wars Animal Collection (Continued)
+   WildRylothPlants                         wild plants                  Star Wars Animal Collection (Continued)
+   WildTropicalPlants                       wild plants                  Odyssey
+   ZMD_NoMutator                            none                         Map Designer
+
+== LANDMARKS: 579 placed, 51 distinct of 113 defs ==
+     36  Dunes                              dunes
+     32  Oasis                              oasis
+     30  Ruins                              ruins
+     27  Cliffs                             cliffs
+     24  DryLake                            dry lake
+     24  CoastalIsland                      coastal island
+     23  VEE_DryRiver                       dry river
+     21  Valley                             valley
+     20  VEE_SaltPlains                     salt plains
+     20  Cavern                             cavern
+     19  VEE_PebbleDunes                    pebble dunes
+     17  Archipelago                        archipelago
+     16  VEE_StagnantRivulet                stagnant rivulet
+     16  VEE_Cenotes                        cenotes
+     16  AncientGarrison                    ancient garrison
+     16  AncientWarehouse                   ancient warehouse
+     16  VEE_MeteorCrater                   meteor crater
+     15  VEE_DustBowl                       dust bowl
+     14  VEE_QuicksandDunes                 quicksand dunes
+     13  Bay                                bay
+     12  VEE_RockRidge                      rock ridge
+     12  VEE_GravelBeach                    gravel beach
+     11  Hollow                             hollow
+     10  VEE_SulfuricLake                   sulfuric lake
+     10  ToxicLake                          toxic lake
+     10  AncientChemfuelRefinery            ancient chemfuel refinery
+     10  TerraformingScar                   terraforming scar
+      9  AbandonedColonyTribal              abandoned colony
+      9  VEE_JaggedRocks                    jagged rocks
+      9  FrozenRuins                        frozen ruins
+      7  Chasm                              chasm
+      7  AB_TarLakes                        tar lakes
+      7  VEE_FleshPits                      flesh pits
+      6  AncientQuarry                      ancient quarry
+      6  VEE_SerpentineCanyons              serpentine canyons
+      4  VEE_StoneForest                    stone forest
+      4  sw_DeadSarlacc                     dead Sarlacc
+      3  AncientHeatVent                    ancient vent
+      3  AB_MagmaticQuagmire                magmatic quagmire
+      2  VEE_RedDesert                      red sand desert
+      2  Plateau                            plateau
+      2  HotSprings                         hot springs
+      1  VEE_ToxicCrater                    toxic crater lake
+      1  AbandonedColonyOutlander           abandoned colony
+      1  sw_Sarlacc                         sarlacc pit
+      1  AncientLaunchSite                  ancient launch site
+      1  LavaCrater                         lava lake
+      1  LavaLake                           lava lake
+      1  VEE_AlluvialFan                    alluvial fan
+      1  Basin                              basin
+      1  AB_QuicksandPits                   quicksand pits
+
+== LANDMARK DEFS NEVER USED (62) ==
+   AB_HealingSprings                      healing springs                Alpha Biomes
+   AB_MutagenicSprings                    mutagenic ocular springs       Alpha Biomes
+   AB_PropaneLakes                        propane lakes                  Alpha Biomes
+   AncientInfestedSettlement              infested settlement            Odyssey
+   AncientSmokeVent                       ancient vent                   Odyssey
+   AncientToxVent                         ancient vent                   Odyssey
+   CoastalAtoll                           coastal atoll                  Odyssey
+   Cove                                   bay                            Odyssey
+   Crevasse                               crevasse                       Odyssey
+   DA_SnaptoadSpawningPools               snaptoad spawning pools        Dark Ages : Beasts and Monsters
+   Fjord                                  fjord                          Odyssey
+   Harbor                                 harbor                         Odyssey
+   IceDunes                               ice dunes                      Odyssey
+   Iceberg                                iceberg                        Odyssey
+   Lake                                   lake                           Odyssey
+   LakeWithIsland                         lake                           Odyssey
+   LakeWithIslands                        lake                           Odyssey
+   LavaFlow                               lava flow                      Odyssey
+   Peninsula                              peninsula                      Odyssey
+   Pond                                   lake                           Odyssey
+   VEE_AbandonedFarmland                  abandoned farmlands            Vanilla Landmarks Expanded
+   VEE_AnimaCoast                         anima coast                    Vanilla Landmarks Expanded
+   VEE_AnimaForest                        anima forest                   Vanilla Landmarks Expanded
+   VEE_AuburnForest                       auburn forest                  Vanilla Landmarks Expanded
+   VEE_BasaltCape                         basalt cape                    Vanilla Landmarks Expanded
+   VEE_BloomingFields                     blooming fields                Vanilla Landmarks Expanded
+   VEE_BurnedForest                       burned forest                  Vanilla Landmarks Expanded
+   VEE_CactusFields                       cactus fields                  Vanilla Landmarks Expanded
+   VEE_CalmBasin                          calm basin                     Vanilla Landmarks Expanded
+   VEE_ContaminatedCoast                  contaminated coast             Vanilla Landmarks Expanded
+   VEE_ContaminatedReservoir              contaminated reservoir         Vanilla Landmarks Expanded
+   VEE_ContaminatedRiver                  contaminated river             Vanilla Landmarks Expanded
+   VEE_CoralReef                          coral reef                     Vanilla Landmarks Expanded
+   VEE_CradleOfLife                       cradle of life                 Vanilla Landmarks Expanded
+   VEE_CraterLake                         crater lake                    Vanilla Landmarks Expanded
+   VEE_DetachedIceberg                    detached iceberg               Vanilla Landmarks Expanded
+   VEE_DriftwoodShore                     driftwood shore                Vanilla Landmarks Expanded
+   VEE_FloodPlains                        flood plains                   Vanilla Landmarks Expanded
+   VEE_GlacialMoraine                     glacial moraine                Vanilla Landmarks Expanded
+   VEE_IceAndFire                         ice and fire                   Vanilla Landmarks Expanded
+   VEE_IceSpires                          ice spires                     Vanilla Landmarks Expanded
+   VEE_LaurelForest                       laurel forest                  Vanilla Landmarks Expanded
+   VEE_LittoralDunes                      littoral dunes                 Vanilla Landmarks Expanded
+   VEE_LoneIsland                         lone island                    Vanilla Landmarks Expanded
+   VEE_LoneIslandWithLake                 central lake island            Vanilla Landmarks Expanded
+   VEE_LoneIslandWithMountain             resurgent island               Vanilla Landmarks Expanded
+   VEE_LushLavaFields                     lush lava fields               Vanilla Landmarks Expanded
+   VEE_Mangrove                           mangrove                       Vanilla Landmarks Expanded
+   VEE_Moor                               moor                           Vanilla Landmarks Expanded
+   VEE_PermafrostBasin                    permafrost basin               Vanilla Landmarks Expanded
+   VEE_QuicksandPits                      quicksand pits                 Vanilla Landmarks Expanded
+   VEE_RelictDelta                        relict delta                   Vanilla Landmarks Expanded
+   VEE_ResurgentCaldera                   resurgent caldera              Vanilla Landmarks Expanded
+   VEE_RisingWaters                       rising waters                  Vanilla Landmarks Expanded
+   VEE_Sinkholes                          sinkholes                      Vanilla Landmarks Expanded
+   VEE_SulfuricRiver                      sulfuric river                 Vanilla Landmarks Expanded
+   VEE_TemperateGrasslands                temperate grasslands           Vanilla Landmarks Expanded
+   VEE_TropicalBeach                      tropical beach                 Vanilla Landmarks Expanded
+   VEE_VolcanicSandDesert                 volcanic sand desert           Vanilla Landmarks Expanded
+   VEE_Volcano                            volcano                        Vanilla Landmarks Expanded
+   VEE_WindBlownPlateau                   wind-blown plateau             Vanilla Landmarks Expanded
+   Wetland                                wetland                        Odyssey
+
+== ROADS / RIVERS ==
+ road link-ends: {'DirtRoad': 942, 'StoneRoad': 910, 'DirtPath': 568, 'AncientAsphaltHighway': 74}
+ river link-ends: {'River': 124, 'Creek': 340, 'LargeRiver': 86, 'HugeRiver': 102}
+ tiles with roads: 1242
+ tiles with rivers: 335
+ hiddenByBiome: 15
+ ALL RoadDefs: ['AncientAsphaltHighway', 'AncientAsphaltRoad', 'DirtPath', 'DirtRoad', 'StoneRoad']
+ ALL RiverDefs: ['Creek', 'HugeRiver', 'LargeRiver', 'River']
+
+== FEATURES (named regions): 72, of 36 FeatureDefs ==
+ featureDef use: {'WB_MapLabelFeature': 72}
+ NEVER-USED FeatureDefs: ['Archipelago', 'AridShrubland', 'BMT_FeatureDef_CrystalCaverns', 'BMT_FeatureDef_EarthenDepths', 'BMT_FeatureDef_FungalForest', 'Bay', 'BorealForest', 'ColdBog', 'Desert', 'GlacialPlain', 'Glowforest', 'Grasslands', 'IceSheet', 'Island', 'Lake', 'LavaField', 'MountainRange', 'Ocean', 'OceanBay', 'OuterOcean', 'Peninsula', 'Scarlands', 'Sea', 'TemperateForest', 'TemperateSwamp', 'TropicalRainforest', 'TropicalSwamp', 'Tundra', 'ZBiome_AlpineMeadow', 'ZBiome_Badlands', 'ZBiome_CloudForest', 'ZBiome_CoastalDunes', 'ZBiome_GlacialShield', 'ZBiome_Grasslands', 'ZBiome_Iceberg']
+   2051  Deadstone                WB_MapLabelFeature
+   1692  Dune Sea                 WB_MapLabelFeature
+    879  Glare                    WB_MapLabelFeature
+    878  Kiln                     WB_MapLabelFeature
+    853  Nightspill               WB_MapLabelFeature
+    852  Twilight Sea             WB_MapLabelFeature
+    818  Ammonia Flats            WB_MapLabelFeature
+    802  Umbra                    WB_MapLabelFeature
+    795  Sunreach                 WB_MapLabelFeature
+    721  Long Sand                WB_MapLabelFeature
+    617  Grey Sea                 WB_MapLabelFeature
+    577  Gray Crags               WB_MapLabelFeature
+    502  Thornbelt                WB_MapLabelFeature
+    491  Dew Horn                 WB_MapLabelFeature
+    433  South Crags              WB_MapLabelFeature
+    387  Dry Marches              WB_MapLabelFeature
+    384  Twilight Crags           WB_MapLabelFeature
+    362  Dew Belt                 WB_MapLabelFeature
+    360  Combs                    WB_MapLabelFeature
+    349  Anvil                    WB_MapLabelFeature
+    338  Rimewall                 WB_MapLabelFeature
+    324  Ashfall Range            WB_MapLabelFeature
+    312  Scald                    WB_MapLabelFeature
+    276  Sinkground               WB_MapLabelFeature
+    255  Sporefields              WB_MapLabelFeature
+    254  Frostcaps                WB_MapLabelFeature
+    249  Salt                     WB_MapLabelFeature
+    236  Rust Cathedral           WB_MapLabelFeature
+    234  Scour                    WB_MapLabelFeature
+    230  Damp                     WB_MapLabelFeature
+    227  Cracklands               WB_MapLabelFeature
+    202  Ashen Wastes             WB_MapLabelFeature
+    174  Scald Spine              WB_MapLabelFeature
+    172  Glass Reach              WB_MapLabelFeature
+    171  The Verge                WB_MapLabelFeature
+    165  Hanging Wood             WB_MapLabelFeature
+    155  Fall Line                WB_MapLabelFeature
+    154  Sunward Scrub            WB_MapLabelFeature
+    153  Fall Line Barrens        WB_MapLabelFeature
+    153  Cinderdark               WB_MapLabelFeature
+    148  Slough                   WB_MapLabelFeature
+    145  Blindwood                WB_MapLabelFeature
+    142  Stillwood                WB_MapLabelFeature
+    141  Level                    WB_MapLabelFeature
+    140  Blight                   WB_MapLabelFeature
+    129  Tallow Ground            WB_MapLabelFeature
+    123  Mould Marches            WB_MapLabelFeature
+    112  Cinders                  WB_MapLabelFeature
+     93  Sweatwood                WB_MapLabelFeature
+     90  Scorch                   WB_MapLabelFeature
+     85  Stepwood                 WB_MapLabelFeature
+     81  Fever Wood               WB_MapLabelFeature
+     79  Pan                      WB_MapLabelFeature
+     79  Grinding Floor           WB_MapLabelFeature
+     78  Knuckles                 WB_MapLabelFeature
+     75  Capwood                  WB_MapLabelFeature
+     72  Wither                   WB_MapLabelFeature
+     72  Venom Wood               WB_MapLabelFeature
+     70  Fanground                WB_MapLabelFeature
+     69  Ashwood                  WB_MapLabelFeature
+     68  Coldshelf                WB_MapLabelFeature
+     63  Pyrelands                WB_MapLabelFeature
+     61  Thornend                 WB_MapLabelFeature
+     60  Pale Flats               WB_MapLabelFeature
+     57  Coldstone                WB_MapLabelFeature
+     57  Lantern Deeps            WB_MapLabelFeature
+     57  Chalk Marches            WB_MapLabelFeature
+     56  Notch                    WB_MapLabelFeature
+     43  Quiet Ground             WB_MapLabelFeature
+     40  Hollow Verge             WB_MapLabelFeature
+     34  The Abandoned Mines      WB_MapLabelFeature
+     16  Salt Gate                WB_MapLabelFeature
+
+== SETTLEMENTS ==
+  Empire                       Sunspire                   tile 12828 
+  Empire                       Oxalate Watch              tile 4366  
+  Empire                       Ashgarrison                tile 135   
+  Jawa_AscendantHelix          Helix Landing              tile 11947 
+  Jawa_AscendantHelix          The Coil                   tile 5500  
+  Jawa_AscendantHelix          Quiet Lab                  tile 21037 
+  Jawa_AscendantHelix          Cold Archive               tile 17901 
+  Jawa_AscendantHelix          The Revision               tile 8200  
+  Jawa_AscendantHelix          Specimen Hall              tile 12082 
+  Jawa_AscendantHelix          The Fair Copy              tile 5912  
+  Jawa_DeepwaterCompact        Butora                     tile 17343 
+  Jawa_DeepwaterCompact        Anchor Deep                tile 780   
+  Jawa_DeepwaterCompact        Deepwater Hold             tile 9451  
+  Jawa_DeepwaterCompact        Boilquay                   tile 17209 
+  Jawa_DeepwaterCompact        Tidewatch                  tile 21765 
+  Jawa_DeepwaterCompact        Kettle Deep                tile 19371 
+  Jawa_FreeDroidEnclaves       No Master                  tile 19350 
+  Jawa_FreeDroidEnclaves       Unbound Exception          tile 21560 
+  Jawa_FreeDroidEnclaves       The Free Charge            tile 21547 
+  Jawa_FreeDroidEnclaves       Second Speaker             tile 5072  
+  Jawa_FreeDroidEnclaves       The Cracking Station       tile 20807 
+  Jawa_FreeDroidEnclaves       Coldfire                   tile 9077  
+  Jawa_FreeDroidEnclaves       Vent Nine                  tile 733   
+  Jawa_GeonosianFoundryHive    The Unfinished Work        tile 7722  
+  Jawa_GeonosianFoundryHive    Oxide Deep                 tile 20366 
+  Jawa_GeonosianFoundryHive    The Godmouth               tile 21576 
+  Jawa_GeonosianFoundryHive    Founder's Kiln             tile 675   
+  Jawa_GeonosianFoundryHive    Hollow Hive                tile 8497  
+  Jawa_HuttCartel              Gorga the Immense's Palace tile 3638  
+  Jawa_HuttCartel              Vexxa's Casino             tile 18061 
+  Jawa_HuttCartel              Hurgo the Vast's Palace    tile 7003  
+  Jawa_HuttCartel              Rulla the Deep's Palace    tile 15076 
+  Jawa_HuttCartel              Hurgo's Kennels            tile 21230 
+  Jawa_HuttCartel              Hurgo's Waystation         tile 11880 
+  Jawa_HuttCartel              Zeddo's Toll               tile 17006 
+  Jawa_HuttCartel              Bloatu's Market            tile 5105  
+  Jawa_HuttCartel              Norba's Vault              tile 1821  
+  Jawa_HuttCartel              Zeddo's Station            tile 9727  
+  Jawa_HuttCartel              Vexxa's Spicehouse         tile 2186  
+  Jawa_HuttCartel              Mokka the Unpaid's Palace  tile 19187 
+  Jawa_IndigenousTribes        The Ore Moot               tile 8082  
+  Jawa_IndigenousTribes        Seabarter                  tile 13409 
+  Jawa_Junkers                 The Fuel Works             tile 11779 
+  Jawa_Junkers                 Ammonia Landing            tile 2407  
+  Jawa_Junkers                 The Slagfield              tile 3226  
+  Jawa_Junkers                 The Claim Jump             tile 16898 
+  Jawa_WildsteamClan           Steamreach                 tile 12624 
+  Jawa_WildsteamClan           Rego                       tile 12469 
+  Jawa_WildsteamClan           Marrowmarsh                tile 21434 
+  Jawa_WildsteamClan           Sporefall                  tile 11927 
+  Jawa_WildsteamClan           Greenshadow                tile 17310 
+  Jawa_WildsteamClan           Distant Scream             tile 1174  
+  Jawa_WildsteamClan           Bitterleaf                 tile 6645  
+  Jawa_WildsteamClan           Oilpalm                    tile 4271  
+  Jawa_WildsteamClan           Warthorn                   tile 16641 
+  OutlanderCivil               Misty Isles                tile 20776 
+  OutlanderCivil               Rainshadow                 tile 2607  
+  OutlanderCivil               Longfurrow                 tile 19212 
+  OutlanderCivil               Greenline                  tile 18359 
+  OutlanderCivil               Brine Flats                tile 6664  
+  OutlanderCivil               Aquifer Station            tile 15051 
+  OutlanderCivil               Dryhold                    tile 6266  
+  OutlanderCivil               Reservoir 7                tile 6412  
+  OutlanderCivil               Salty Hills                tile 19642 
+  OutlanderCivil               Stillwater Farm            tile 655   
+  OutlanderCivil               The Vaporworks             tile 19525 
+  OutlanderCivil               Nightdew                   tile 1417  
+  OutlanderCivil               Cold Catch                 tile 12953 
+  OutlanderCivil               The Sumps                  tile 13000 
+  OutlanderCivil               Brinefield                 tile 815   
+  OutlanderCivil               Farrow                     tile 1752  
+  OutlanderCivil               The Pipeworks              tile 18274 
+  OutlanderCivil               Mistfoot                   tile 5816  
+  OutlanderCivil               Dripstone                  tile 10203 
+  OutlanderCivil               Whistledew                 tile 13150 
+  OutlanderCivil               Pumphouse                  tile 18166 
+  OutlanderCivil               Greenpatch                 tile 195   
+  OutlanderCivil               Cloudtrap                  tile 20332 
+  OutlanderCivil               Sweetwell                  tile 19945 
+  OutlanderCivil               Hollowdew                  tile 10658 
+  OutlanderCivil               Thornfurrow                tile 6690  
+  OutlanderCivil               Chalkwell                  tile 19680 
+  Pirate                       Blackstar Field            tile 18267 
+  Pirate                       Bloodmoney                 tile 13662 
+  Pirate                       Toll Rock                  tile 11494 
+  Pirate                       Hardpan Yard               tile 7497  
+  PlayerColony                 Colony                     tile 16869 
+  TribeCivil                   Duneward                   tile 5584  
+  TribeCivil                   Stone Moot                 tile 6302  
+  TribeCivil                   Redscarp                   tile 2849  
+  TribeCivil                   Razorsand                  tile 10104 
+  TribeCivil                   Barno                      tile 21443 
+  TribeCivil                   The Long Camp              tile 11153 
+  TribeCivil                   Ashfoot                    tile 16770 
+  TribeCivil                   Sufferband                 tile 13458 
+  TribeCivil                   The Blind Wells            tile 8866  

@@ -1,0 +1,141 @@
+== NEVER-USED MUTATORS, ranked by how many LIVE tiles legally accept them ==
+  (excludes 41 GL_* Geological-Landforms defs and ZMD_NoMutator: those are map-gen landforms, not world-tile mutators)
+   21872  VEE_WanderingCompanions              wandering companions           Vanilla Landmarks Expanded   any biome
+   21872  VEE_VolcanicRichSoil                 rich volcanic soil             Vanilla Landmarks Expanded   any biome
+   21872  VEE_UndergroundGasDeposits           underground gas deposits       Vanilla Landmarks Expanded   any biome
+   21872  VEE_TornadoAlley                     tornado alley                  Vanilla Landmarks Expanded   any biome
+   21872  VEE_SteamGeysers_Decreased           no geothermal activity         Vanilla Landmarks Expanded   any biome
+   21872  VEE_SmallerRegion                    smaller region                 Vanilla Landmarks Expanded   any biome
+   21872  VEE_SkygazingSpot                    skygazing spot                 Vanilla Landmarks Expanded   any biome
+   21872  VEE_ReducedDiseases                  reduced diseases               Vanilla Landmarks Expanded   any biome
+   21872  VEE_ObsidianChunks                   obsidian chunks                Vanilla Landmarks Expanded   any biome
+   21872  VEE_NoWind                           no wind                        Vanilla Landmarks Expanded   any biome
+   21872  VEE_NoDiseases                       no diseases                    Vanilla Landmarks Expanded   any biome
+   21872  VEE_MineableComponentSpacer          advanced component deposits    Vanilla Landmarks Expanded   any biome
+   21872  VEE_Microfauna                       microfauna                     Vanilla Landmarks Expanded   any biome
+   21872  VEE_LargerRegion                     larger region                  Vanilla Landmarks Expanded   any biome
+   21872  VEE_LargeRiverBanks                  large river banks              Vanilla Landmarks Expanded   any biome
+   21872  VEE_JadeiteMountains                 jadeite mountains              Vanilla Landmarks Expanded   any biome
+   21872  VEE_HardToTraverse                   hard to traverse               Vanilla Landmarks Expanded   any biome
+   21872  VEE_GeomagneticStorm                 geomagnetic storm              Vanilla Landmarks Expanded   any biome
+   21872  VEE_FeralKinship                     feral kinship                  Vanilla Landmarks Expanded   any biome
+   21872  VEE_EasyToTraverse                   easy to traverse               Vanilla Landmarks Expanded   any biome
+   21872  VEE_DistressedWildlife               distressed wildlife            Vanilla Landmarks Expanded   any biome
+   21872  VEE_ContaminatedReservoir            contaminated reservoir         Vanilla Landmarks Expanded   any biome [+landmark]
+   21872  VEE_ColossalFauna                    colossal fauna                 Vanilla Landmarks Expanded   any biome
+   21872  VEE_BombardedSurface                 bombarded surface              Vanilla Landmarks Expanded   any biome
+   21872  VEE_AggressiveHerds                  aggressive herds               Vanilla Landmarks Expanded   any biome
+   21872  UndergroundCave                      underground cave               Core                         any biome
+   21872  RiverConfluence                      river confluence               Odyssey                      any biome
+   21872  PlantLife_Decreased                  decreased plant life           Odyssey                      any biome
+   21872  LavaCaves                            lava caves                     Odyssey                      any biome
+   21872  Lakeshore                            lakeshore                      Odyssey                      any biome
+   21872  IceCaves                             ice caves                      Odyssey                      any biome
+   21872  AB_WideRegion                        wide region                    Alpha Biomes                 any biome
+   21872  AB_SterileGround                     sterile ground                 Alpha Biomes                 any biome
+   21872  AB_NarrowRegion                      narrow region                  Alpha Biomes                 any biome
+   21872  AB_ExplodingAnimals                  exploding animals              Alpha Biomes                 any biome
+   21872  AB_DiminutiveRegion                  diminutive region              Alpha Biomes                 any biome
+   21841  AB_ExtremeTemperatureFluctuations    extreme temperature fluctuations Alpha Biomes                 any biome
+   21610  VEE_RodentPlagues                    rodent plagues                 Vanilla Landmarks Expanded   any biome
+   21610  VEE_NobleSteeds                      noble steeds                   Vanilla Landmarks Expanded   any biome
+   21610  VEE_DomesticatedEscapees             domesticated escapees          Vanilla Landmarks Expanded   any biome
+   21561  VEE_Sinkholes                        sinkholes                      Vanilla Landmarks Expanded   any biome [+landmark]
+   21561  VEE_PoisonousFlora                   poisonous flora                Vanilla Landmarks Expanded   any biome
+   21561  VEE_DeepOrePoor                      deep ore poor                  Vanilla Landmarks Expanded   any biome
+   21561  VEE_DeadlifeVents                    deadlife geysers               Vanilla Landmarks Expanded   any biome
+   21210  VEE_Alphabeavers                     alphabeavers                   Vanilla Landmarks Expanded   any biome
+   20380  VEE_VenomousEcosystem                venomous ecosystem             Vanilla Landmarks Expanded   any biome
+   20380  VEE_ReducedPrey                      reduced prey                   Vanilla Landmarks Expanded   any biome
+   20380  VEE_ReducedPredators                 reduced predators              Vanilla Landmarks Expanded   any biome
+   20380  VEE_NaturalAerie                     natural aerie                  Vanilla Landmarks Expanded   any biome
+   20380  VEE_AbundantPrey                     abundant prey                  Vanilla Landmarks Expanded   any biome
+   20380  VEE_AbundantPredators                abundant predators             Vanilla Landmarks Expanded   any biome
+   20082  VEE_WildSucculents                   wild succulents                Vanilla Landmarks Expanded   any biome
+   19870  VEE_MoreSolarPower                   increased solar exposure       Vanilla Landmarks Expanded   any biome
+   19870  VEE_LessSolarPower                   reduced solar exposure         Vanilla Landmarks Expanded   any biome
+   19870  VEE_FrequentAuroras                  frequent auroras               Vanilla Landmarks Expanded   any biome
+   19297  Harbor                               harbor                         Odyssey                      any biome [+landmark]
+   18431  VEE_Megafauna                        abundant megafauna             Vanilla Landmarks Expanded   any biome
+   18382  VEE_Mycelium                         mycelium                       Vanilla Landmarks Expanded   any biome
+   17652  MixedBiome                           mixed biome                    Odyssey                      WL=AridShrubland,BorealForest,ColdBog
+   17164  VEE_WildWheat                        wild wheat                     Vanilla Landmarks Expanded   any biome
+   17164  VEE_WildRice                         wild rice                      Vanilla Landmarks Expanded   any biome
+   17164  AB_TechnoTrees                       technological trees            Alpha Biomes                 any biome
+   17164  AB_GoldenTrees                       golden cube trees              Alpha Biomes                 any biome
+   17164  AB_FleshTrees                        flesh trees                    Alpha Biomes                 any biome
+   17164  AB_DessertTrees                      dessert trees                  Alpha Biomes                 any biome
+   17145  AB_OcularTransformation              ocular transformation          Alpha Biomes                 any biome
+   16119  AncientToxVent                       ancient toxic vent             Odyssey                      WL=Scarlands,BorealForest,TemperateForest [+landmark]
+   16119  AncientSmokeVent                     ancient smoke vent             Odyssey                      WL=Scarlands,BorealForest,TemperateForest [+landmark]
+   15315  AB_LuminescentTrees                  luminescent trees              Alpha Biomes                 any biome
+   14177  VEE_MigratoryHerds                   migratory herds                Vanilla Landmarks Expanded   any biome
+   13002  VEE_FertileRains                     fertile rains                  Vanilla Landmarks Expanded   any biome
+    8689  VEE_RagingWind                       raging winds                   Vanilla Landmarks Expanded   WL=AridShrubland,Desert,ExtremeDesert
+    8394  AB_DerelictBioLab                    derelict biolab                Alpha Biomes                 any biome
+    8313  AB_GiantFossils                      giant fossils                  Alpha Biomes                 WL=AB_TarPits,AB_GallatrossGraveyard,Desert
+    8132  VEE_ResurgentCaldera                 resurgent caldera              Vanilla Landmarks Expanded   any biome [+landmark]
+    8132  VEE_CraterLake                       crater lake                    Vanilla Landmarks Expanded   any biome [+landmark]
+    8132  VEE_CalmBasin                        calm basin                     Vanilla Landmarks Expanded   any biome [+landmark]
+    8086  AB_DerelictKemeticTemple             derelict kemetic temple        Alpha Biomes                 WL=AB_TarPits,AB_GallatrossGraveyard,Desert
+    8046  VEE_QuicksandPits                    quicksand pits                 Vanilla Landmarks Expanded   WL=Desert,AridShrubland,ExtremeDesert [+landmark]
+    7384  VEE_VolcanicSandDesertFlora          volcanic sand flora            Vanilla Landmarks Expanded   WL=Desert,ExtremeDesert,BiomeGRimberlands
+    7384  VEE_VolcanicSandDesert               volcanic sand desert           Vanilla Landmarks Expanded   WL=Desert,ExtremeDesert,BiomeGRimberlands [+landmark]
+    7384  AB_DunealiskNest                     dunealisk nest                 Alpha Biomes                 WL=Desert,ExtremeDesert,AB_GallatrossGraveyard
+    4756  WetClimate                           wet climate                    Odyssey                      WL=BorealForest,ColdBog,IceSheet
+    4652  VEE_Cactus_OrganPipe                 organ pipe cacti               Vanilla Landmarks Expanded   WL=Desert,AridShrubland,BiomeAreeb
+    4652  VEE_Cactus_Beavertail                beavertail cacti               Vanilla Landmarks Expanded   WL=Desert,AridShrubland,BiomeAreeb
+    4544  ArcheanTrees                         archean trees                  Odyssey                      WL=AridShrubland,BorealForest,ColdBog
+    3571  LakeWithIslands                      lake with island               Odyssey                      WL=BorealForest,GlacialPlain,Glowforest [+landmark]
+    3571  LakeWithIsland                       lake with island               Odyssey                      WL=BorealForest,GlacialPlain,Glowforest [+landmark]
+    3571  Lake                                 lake                           Odyssey                      WL=BorealForest,GlacialPlain,Glowforest [+landmark]
+    2764  Fertile                              fertile                        Odyssey                      WL=BorealForest,ColdBog,Glowforest
+    2747  Wetland                              wetland                        Odyssey                      WL=BorealForest,ColdBog,Glowforest [+landmark]
+    2652  PlantGrove                           plant grove                    Odyssey                      WL=TemperateForest,TemperateSwamp,ColdBog
+    2493  WildTropicalPlants                   wild plants                    Odyssey                      WL=TropicalRainforest,TropicalSwamp,AB_MiasmicMangrove
+    2324  FoggyMutator                         foggy                          Odyssey                      WL=BorealForest,ColdBog,TemperateForest
+    1939  AB_MoldyEnvironment                  moldy environment              Alpha Biomes                 WL=AB_MycoticJungle,BiomeGRuby
+    1939  AB_EdibleAirborneMicrofungi          edible airborne micro-fungi    Alpha Biomes                 WL=Glowforest,AB_MycoticJungle,BiomeGRuby
+    1383  VEE_WastelandFauna                   wasteland fauna                Vanilla Landmarks Expanded   any biome
+    1129  AB_BlizzariskNest                    blizzarisk nest                Alpha Biomes                 WL=AB_PropaneLakes,SeaIce,IceSheet
+     933  Sandy                                sandy                          Odyssey                      WL=TropicalRainforest,TemperateForest,Tundra
+     342  VEE_StrongerTides                    stronger tides                 Vanilla Landmarks Expanded   any biome
+     336  AB_HealingSprings                    healing springs                Alpha Biomes                 WL=BorealForest,LavaField,TemperateForest [+landmark]
+     311  AB_PropaneLakes                      propane lakes                  Alpha Biomes                 WL=GlacialPlain,SeaIce,IceSheet [+landmark]
+     277  VEE_LoneIslandWithLake               central lake island            Vanilla Landmarks Expanded   WL=AridShrubland,BorealForest,ColdBog [+landmark]
+     277  VEE_DriftwoodShore                   driftwood                      Vanilla Landmarks Expanded   WL=AridShrubland,BorealForest,ColdBog [+landmark]
+     277  VEE_BasaltCape                       basalt cape                    Vanilla Landmarks Expanded   any biome [+landmark]
+     277  DA_LeviathanNest                     leviathan nestbed              Dark Ages : Beasts and Monsters WL=AridShrubland,BorealForest,ColdBog
+     277  Cove                                 bay                            Odyssey                      WL=AridShrubland,BorealForest,ColdBog [+landmark]
+     268  VEE_ContaminatedCoast                contaminated coast             Vanilla Landmarks Expanded   any biome [+landmark]
+     262  VEE_IceSpires                        ice spires                     Vanilla Landmarks Expanded   WL=SeaIce,IceSheet,BiomeGRimonade [+landmark]
+     257  VEE_MangroveTrees                    mangrove trees                 Vanilla Landmarks Expanded   any biome
+     236  AB_ResidualOverclocking              residual overclocking          Alpha Biomes                 WL=AB_MechanoidIntrusion
+     227  VEE_TropicalBeachFlora               tropical beach flora           Vanilla Landmarks Expanded   WL=TropicalRainforest,BiomeAreeb,BiomeCypreJungle
+     227  VEE_MoorFlora                        moor plants                    Vanilla Landmarks Expanded   WL=ColdBog,BiomeGRimethyst,BiomeGRuby
+     227  VEE_LaurelForest                     laurel forest                  Vanilla Landmarks Expanded   WL=TropicalRainforest,BiomeCypreJungle,BiomeGRimethyst [+landmark]
+     227  VEE_BurnedForest                     burned forest                  Vanilla Landmarks Expanded   WL=BorealForest,TemperateForest,TropicalRainforest [+landmark]
+     227  AB_ButterflySwarms                   butterfly swarms               Alpha Biomes                 WL=AB_IdyllicMeadows,BiomeArcticOasis,BiomeCypreJungle
+     203  VEE_LoneIslandWithMountain           resurgent island               Vanilla Landmarks Expanded   WL=AridShrubland,BorealForest,ColdBog [+landmark]
+     203  VEE_CoralReef                        coral reef                     Vanilla Landmarks Expanded   WL=AridShrubland,BorealForest,ColdBog [+landmark]
+     202  VEE_Mossy                            mossy                          Vanilla Landmarks Expanded   WL=TropicalRainforest,BiomeCypreJungle,BiomeGRimethyst
+     202  VEE_Blooming_Loosestrife             blooming loosestrife           Vanilla Landmarks Expanded   WL=TemperateForest,TemperateSwamp,Grasslands
+     202  VEE_Blooming_ForgetMeNot             blooming forget-me-nots        Vanilla Landmarks Expanded   WL=TemperateForest,TemperateSwamp,Grasslands
+     202  VEE_Blooming_Buttercup               blooming buttercups            Vanilla Landmarks Expanded   WL=TemperateForest,TemperateSwamp,Grasslands
+     117  VEE_RelictDelta                      relict delta                   Vanilla Landmarks Expanded   WL=Desert,ExtremeDesert,AridShrubland [+landmark]
+      96  AB_SymbioticNutrients                symbiotic nutrients            Alpha Biomes                 WL=AB_GelatinousSuperorganism
+      96  AB_QuiveringSurface                  quivering surface              Alpha Biomes                 WL=AB_GelatinousSuperorganism
+      96  AB_GelatinousMemoryEcho              gelatinous memory echo         Alpha Biomes                 WL=AB_GelatinousSuperorganism
+      96  AB_DigestiveSurface                  digestive surface              Alpha Biomes                 WL=AB_GelatinousSuperorganism
+      68  VEE_LittoralDunes                    littoral dunes                 Vanilla Landmarks Expanded   WL=ExtremeDesert,Desert,BiomeAreeb [+landmark]
+      45  AB_DerelictResort                    derelict resort                Alpha Biomes                 WL=AB_TarPits,AB_GallatrossGraveyard,Desert
+      41  VEE_IceAndFire                       ice and fire                   Vanilla Landmarks Expanded   WL=SeaIce,IceSheet,Tundra [+landmark]
+      41  VEE_DetachedIceberg                  detached iceberg               Vanilla Landmarks Expanded   WL=SeaIce,IceSheet,Tundra [+landmark]
+      38  ObsidianDeposits                     obsidian deposits              Odyssey                      WL=LavaField,Volcano,BiomeGRimphire
+      32  Fjord                                fjord                          Odyssey                      WL=AridShrubland,BorealForest,ColdBog [+landmark]
+      19  AB_MutagenicSprings                  mutagenic ocular springs       Alpha Biomes                 WL=AB_OcularForest,BiomeToxlands [+landmark]
+      15  VEE_LushLavaFields                   lush lava fields               Vanilla Landmarks Expanded   WL=LavaField,BiomeGRimworld,BiomeGrindland [+landmark]
+      15  VEE_FirewoodTrees                    firewood trees                 Vanilla Landmarks Expanded   WL=LavaField,BiomeGRimphire
+
+== NEVER-USED, ZERO legal tiles (26) ==
+  WildRylothPlants, WildNabooPlants, WildFelucianPlants, WildAlderaanPlants, VEE_TropicalBeach, VEE_PlentifulGrass, VEE_PermafrostBasin, VEE_Moor, VEE_MangroveTerrain, VEE_JadeChunks, VEE_GlacialMoraine, VEE_Blooming_Knapweed, VEE_AuburnTree_Poplars, VEE_AuburnTree_Oaks, VEE_AuburnTree_Maples, VEE_AuburnTree_Birches, VEE_AnimaSoils_Coast, VEE_AnimaSoils, VEE_AnimaFlora, VEE_AnimaFauna, VEE_AbandonedFarmland, DA_SnaptoadBreedingGrounds, Crevasse, AB_PollinationFrenzy, AB_PetalStorms, AB_OversaturatedSoil
