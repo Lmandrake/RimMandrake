@@ -2,7 +2,12 @@
 > immediately".** Every block whose only item IDs had already closed, dropped or been superseded
 > was removed; blocks naming still-live work were kept verbatim. **Nothing is lost — the full
 > previous text is the parent of commit `ec0b5a61` in git.** ⚠️ A block here is a DUPLICATE of a ledger
-> item; when the two disagree, the ledger is right. Live IDs kept in this file: `ANCIENT_SCATTERBOW_TAG_SEVER_1`, `C40`.
+> item; when the two disagree, the ledger is right. Live IDs kept in this file: `ANCIENT_SCATTERBOW_TAG_SEVER_1`.
+> ⚠️ **RE-AUDITED 2026-08-26 by CHECK against the ledger.** `C40` closed that day, so this line was
+> already stale. §5 BATCH B is **deleted** — all eight of its IDs (C37 C38 C39 C40 C41 C42
+> VEHICLE_IDENTITY_TEXT_PASS_1 VEHICLE_SPRITE_ARTEFACT_CLEANUP_1) are closed or dropped and none is
+> live. §20 keeps its block, but `ORDERS_DESIGNATORS_ENUMERATE_ZERO_1` inside it is closed.
+> ⚠️ `W3` `W4` `W5` appear nowhere in the ledger at all — pre-ledger legacy, unverifiable from here.
 
 ## 📇 INDEX — every block, and whether it is spent
 
@@ -12,12 +17,12 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | block | deployed | status |
 |---|---|---|
 | §4 BATCH A — three never-run pawn tools | — | ⏳ PENDING |
-| §5 BATCH B — open live items | — | ⏳ PENDING |
 | §6 BATCH C — the cheapest launch gate | — | ⏳ PENDING |
 | §10 INHABITED — baseline, gated on `[Inhabited] ready: 294` | — | ⏳ PENDING |
 | 🌱 BIOME FLORA + 🏷️ PLANT NAMES | 2026-08-23 | ⏳ PENDING |
 | 🌡️ TOLERANCES + 🏹 ANCIENT ARSENAL + 🦴 CAST SUBSTITUTIONS | 2026-08-23 (cast NOT yet) | ⏳ PENDING |
 | 🔧 §19 TWO DLLs WAITING ON THE DOWN WINDOW | ✅ **BOTH DEPLOYED 2026-08-24 01:3x** | ⏳ readings pending |
+| 🎨 §22-ART CREATURE ART ON THE ADULT PATHS — needs only eyes on it | 2026-08-24 | ⏳ PENDING |
 | 🎯 §20 RE-ROLL THE ROSTER — the 2026-08-24 harvest is the BEFORE | 2026-08-24 | ⏳ PENDING |
 | 🏷️ §21 WORLD LABELS LIFTED — ✅ **DEPLOYED** 2026-08-24 07:3x | 2026-08-24 | ⏳ READING PENDING |
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
@@ -49,82 +54,6 @@ Order is free after call #1. **Assert on read-back fields, never on `success`.**
 - **`set_pawn_xenotype`** clears xenogenes but **not** endogenes. `BTD_Jawa` is
   inheritable, so its genes land as endogenes and survive a later conversion —
   pass `clearEndogenes` deliberately or expect residue.
-
----
-
-## 5. ⭐ BATCH B — the open live items. None needs a world; a quicktest is enough.
-
-```
-rimworld/start_debug_game_ready       -> a fresh map in ~30 s
-```
-
-⚠️ That call **exceeds the 30 s timeout and succeeds anyway** — do not retry, or
-you get a second map. Reconnect and poll `list_pawns`.
-
-🔴 **Read the rows in order.** L0 is one screenshot and it decides whether a large
-body of art work closes or reopens; L1–L4 need `jawa/*` tools that only ship in
-§1.0 step 1. **Detail lives in the queue item named in each row — this table is the
-order and the call, not the whole plan.**
-
-| # | call | item | why it is worth a line |
-|---|---|---|---|
-| **L0** | `jawa/clear_ui`, then `jawa/spawn_pawn kindDef=Colonist faction=PlayerColony xenotype=RimMandrakeRodian`. **Look at its face. Screenshot it.** | CHECK **C37** | 🔴 **FIRST ACTION ON THE MAP.** Facial Animation's per-xenotype opt-out was rewritten (86 → 156 entries) but FA reads its config **only at startup**, so it has never once been active. **Snoot visible ⇒ the whole art failure closes.** Still a human face ⇒ FA was not the cause and the head-gene findings (10 species with no head-forcer, Rodian forced to a generic Outland reptile head) move back to the top. One pawn, one look. ⚠️ **`faction` is not optional** — omit it and the pawn spawns into the Empire, hostile |
-| **L0b** | Confirm the ideoligion **LOADS**, then check its **16 `AbilityDef`s resolve** | CHECK **C42** | ✅ Offline half DONE (`6c0f307`): `The Salvation.rid` 267 refs, 251 resolve, **zero dangling**, **101 precepts** (not the 82 previously written); `MandrakeJawa.xtp` 36/36. 🔴 **What is left is live-only and cannot be faked offline** — `AbilityDef.json` is one of 79 EMPTY def-type files in the dump, so "absent from the dump" says NOTHING about those 16. It bakes at world creation like the factions. ⇒ Settle before the faction/ideo row is called done |
-| L1 | `rimworld/spawn_thing def=SmallThruster x=45 z=131`, then `jawa/inspect_string` on it — read for `WarningThrusterInside`. ⚠️ **`jawa/spawn_thing` DOES NOT EXIST**; the prefix is vanilla `rimworld/`, or `jawa/spawn_batch` for more than one | BUILD | **Cheapest launch gate we own.** Outdoor-required ⇒ the exported hull needs its stern cut back, a whole deck re-lay. Substructure-free-only ⇒ nothing to change. One paused call decides a large piece of rework. Needs `jawa/inspect_string` (§1.0 step 1) |
-| L2 | `jawa/spawn_pawn kindDef=Jawa_Tribal_Scavenger` **×6**, then one Geonosian Foundry Hive pawn, then read a Jawa's gear | CHECK **C40** | Three deployed-but-unproven fixes in one spawn pass. **Six armed Jawa** (not civilians) · **a Geonosian that is not a baseliner** (empty `xenotypeChances` looks like a content gap, not a dropped node) · **a Jawa wearing `guy762_Robes_jawa` + `guy762_JawaHood`**. ⛔ The voice half is DEPRECATED (owner, 2026-08-16) — do not unpause to hear a line, do not grade it. 🔴 The gear defs live in a mod we KEPT — their presence in a dump proves nothing; **the pawn wearing them is the only evidence** |
-| L3 | Fire ONE Galactic Empire raid and screenshot it — 🔴 **procedure below the table, do not improvise it** | DECIDE | The biggest open design question DECIDE owns: **before we repair the antagonist, someone must see whether it reads as one.** ~5 min. Needs `jawa/set_faction_relation` (§1.0 step 1) if the Empire is not already hostile |
-| L4 | Spawn `KotORDroidGood_3C` **twice** — the 2nd must NRE | BUILD | 30 s, any map. The whole causal chain (`isOrganic=false` ⇒ no `Pawn_RelationsTracker` ⇒ HAR NRE on the 2nd same-def pawn) rests on this. **If the 2nd does not throw, the chain is wrong and the item re-opens.** An owner decision is queued behind it |
-| L5 | **Architect ▸ Vehicles** — read the five Tier-0 land blueprint labels. Then spawn `AV_OxCart`, `AV_Chariot`, `AV_CoveredCarriage`, `AV_WarChariot`; rotate each north/south/east — ⭐ **and look at the ART while you are there**: `VEHICLE_SPRITE_ARTEFACT_CLEANUP_1` (`922b9207`, `073e5399`) removed 24 floating black specks from the north/south facings and stopped the east trim eating the beasts' tails. **No detached black mark anywhere near an animal**, and on east the dewbacks, rontos and banthas end in a tail rather than a straight vertical cut. ⛔ The Chariot's single dewback is DELIBERATELY still short-tailed — its band cannot hold the full tail without shrinking the animal, and that was decided by looking; **Architect ▸ Props and Decor** for the `VFEPD_*` twins | CHECK **C39** only — ⛔ **C41 is NOT collectable this load** | 🔴 **CORRECTED 2026-08-22 — THE TEXT PASS SHIPPED AND THIS ROW SAID THE OPPOSITE.** `VEHICLE_IDENTITY_TEXT_PASS_1` landed at `88f9fe43`, deployed. This cell used to say the beast names DO NOT EXIST YET and that seeing `Ox cart`/`Chariot` was the expected result — following it now would file today's work as a failure. **Expect, verbatim:** `dewback chariot` · `dewback war chariot` · `ronto wagon` · `bantha cart` · `eopie sled`. ⚠️ Three of those names differ from the ones this row predicted — it guessed `dewback cart`, `bantha dray`, `dewback war cart`. **Read what is on screen, not what was predicted.** `Chariot` · `Ox cart` · `Covered Carriage` · `War chariot` · `Dog Sled` must appear **zero** times. ✅ **And the architect menu is now a REAL second check rather than the only one**: every vehicle is two defs, and the `_Blueprint` half was patched this time — it had been carrying "Dog Sled … over ice and through snow" in the build menu since 2026-08-15. 🔑 **A Vehicle Framework vehicle spawns as a PAWN** — `jawa/list_things` returns nothing at the cell, use `jawa/list_pawns`. 🔴 **The art reaches every def by texPath override whether or not a patch ran** — only the LABEL and the per-def COLOUR are evidence. The **architect menu is still worth reading**, but ⚠️ its old reason is dead: it said the blueprint was "a third def the sled pass never touched", and as of `88f9fe43` every `_Blueprint` IS patched. It is now a second independent confirmation, not the only one. ⛔ Do not check west (auto-mirrored from east) |
-
-#### 🌱 L6 — plant growth. **A SECOND MAP, and it is the point.** CHECK **C38**
-
-Do this last: it needs its own quicktest, and then **a second one on `PoisonForest`**.
-A biome branch cannot be tested by walking across the first map.
-
-1. **Startup log first** — `[JawaPlantGrowth] scaling <N> plant defs (default x4, tree x2.5), <M> exempt, 1 terminator biome(s) at x0.4.` 🔴 **This line is the only positive evidence the assembly ran.** Absent ⇒ the answer is *"not deployed / not in ModsConfig"*, **not** *"no effect"*, and nothing below it means anything.
-2. Map 1 (temperate/arid): spawn `Plant_Corn` and `Plant_TreeOak` side by side on fertile soil, read growth %, run one in-game day, read again. **The corn must be roughly 4× the oak's growth percentage** (~36% vs ~8%). Near 1× ⇒ the tree band is not firing.
-3. Same map: spawn `Plant_TreeAnima` — it must read ~4% after that day, **not** ~10%. That is the exemption.
-4. **Map 2, generated fresh on `PoisonForest`** (Advanced Biomes): same two plants, same day. 🔴 **The corn gains ~10%, LESS than map 1 and less than vanilla's ~8.8% would be an increase over.** Slower, not faster. **This is the check most likely to be skipped and the only one that proves the biome branch runs at all.**
-
-⚠️ A 0% reading is not evidence — the postfix returns early on `__result <= 0`
-(night, out of temperature band, unlit). **Read growth in daylight, in season.**
-⛔ Not in scope: wild-plant REPOPULATION. `wildPlantRegrowDays` is R-G4, it did not
-ship, and a burnt PoisonForest staying bare proves nothing about this patch.
-
-#### 🔴 L3's procedure — IL-confirmed. Follow it verbatim.
-
-**The faction you pass is not the faction that raids.**
-`IncidentWorker_RaidEnemy::TryResolveRaidFaction` keeps your faction **only if**
-non-null AND `FactionUtility::HostileTo(Faction.OfPlayer)` AND (`!deactivated` OR
-`parms.forced`). Otherwise `ldflda IncidentParms::faction` goes **by reference**
-into `PawnGroupMakerUtility::TryGetRandomFactionForCombatPawnGroupWeighted`,
-**which overwrites it.** ⇒ if ~~`OuterRim_GalacticEmpire`~~ **`Empire`** (⛔ the vessel
-changed 2026-08-20 — `infrastructure/state/OWNER_DECISIONS.md`) is not hostile, the raid
-fires, reports `success:true`, and you photograph **a different antagonist**.
-Nothing in the reply flags it.
-
-1. ~~`jawa/fire_incident incidentDef=RaidEnemy faction=OuterRim_GalacticEmpire dryRun=true`~~ ⛔ **DEAD 2026-08-20 — wrong vessel.** Use `jawa/fire_incident incidentDef=RaidEnemy faction=Empire dryRun=true` — **abort on `canFireNow:false`.** ⚠️ `Empire` is hostile only once `GalacticEmpire.xml`'s `permanentEnemy` Add has landed; a `canFireNow:false` here is more likely a deploy miss than an engine problem.
-2. Fire, then **read the `faction` field in the REPLY, not the one you sent.** The tool reports `parms.faction` *after* the worker ran; the read-back is the only evidence of which faction actually came.
-3. **Pass `points` explicitly.** `points<=0` takes the storyteller default — tens of points on a fresh quicktest, i.e. one trivial attacker, which cannot answer *"does the Empire read as an antagonist"*.
-
-📌 **Generalises: a parameter you pass is not a parameter that survives.** Engine
-workers take `IncidentParms` **by ref** and rewrite it. **Assert on the value read
-back, never the value sent.** Same shape as `jawa/set_terrain`, where the bridge
-**silently drops** an unknown parameter name — `def=` instead of `terrainDef=`
-paints nothing and reports no error.
-
-#### 👁️ EYES-ON, observation only — open the xenotype picker and LOOK
-
-Two `iconPath` warnings that **cannot** be settled offline: vanilla textures live
-in asset bundles, so a right path and a wrong one look identical from outside.
-
-| look at | path |
-|---|---|
-| xenotype **`Jawa_Xeno_Gamorrean`** | `UI/Icons/Xenotypes/Pigskin` |
-| gene **`Jawa_Head_Plain`** | `UI/Icons/Genes/Gene_Hair` |
-
-**A pink or blank square is the defect. Both drawing closes them permanently.**
-One screen, no map required.
 
 ---
 
@@ -249,7 +178,7 @@ inside the range. **The audit cannot see a roll, and a clean audit is not a pass
 ✅ **Free while you are there:** the Orders architect category enumerates **64** designators with
 `Open` present and actionable (measured 2026-08-24, with a map loaded). If a later load reports zero
 again, check whether a map exists before filing anything — the architect menu is map-scoped, and that
-is what `ORDERS_DESIGNATORS_ENUMERATE_ZERO_1` turned out to be.
+is what `ORDERS_DESIGNATORS_ENUMERATE_ZERO_1 (✅ CLOSED — do not re-run)` turned out to be.
 
 ---
 ## 🏷️ §21 — THE WORLD LABELS ARE LIFTED OFF THE PLANET
@@ -285,7 +214,7 @@ limb long before brute force would fix an unrelated cause. Find what is actually
 `Radius` — a mod's world layer is the first suspect.
 
 ---
-## 🎨 §22 — THE CREATURE ART IS ON THE ADULT PATHS NOW. Deployed; needs only eyes on it.
+## 🎨 §22-ART — THE CREATURE ART IS ON THE ADULT PATHS NOW. Deployed; needs only eyes on it.
 
 🔴 **Owner, 2026-08-24, from a screenshot:** *"I don't see new art for Eopie or Bantha."* He was
 right, and the cause was not the deploy.
