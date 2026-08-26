@@ -81,6 +81,12 @@ what the queue said on the day it was converted. Throwing it away would lose the
 majority of the argument in the queues, which is the part nobody can reconstruct.
 
 Stdlib only.
+
+⛔ SPENT — its sources are gone. This imported the hand-written queue files into
+the ledger once, in August 2026. `CHECK_CLOSED.md`, `DECIDE_ARCHIVE.md` and
+`state/preserved/` were deleted 2026-08-26 on the owner's instruction, so every path
+in QUEUE_FILES below now resolves to nothing and a run imports ZERO items while
+reporting success. Kept only as the record of how the ledger was seeded.
 """
 import argparse
 import copy

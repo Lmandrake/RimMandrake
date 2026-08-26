@@ -21,8 +21,7 @@ Outputs land in `runs/`.
 
 `ship_layout.py` · `verify_coverage.py` · `geom_check.py` · `render_ship.py` ·
 `render_ship2.py` — moved to
-`infrastructure/disposing/code_2026-08-20/` and pending deletion. Nothing in
-`disposing/` may be cited, run or copied from; treat them as absent. The
+git history (`infrastructure/disposing/` was DELETED 2026-08-26) and pending deletion. That quarantine is gone; the files are recoverable from git and must not be cited or run. The
 coverage numbers they produced are recorded in
 `design/Jawa/worldbuilding/ship_deck_plan.md` and
 `src/RimMandrake/mapsynth/runs/designs_report.json`; the live coverage verifier is

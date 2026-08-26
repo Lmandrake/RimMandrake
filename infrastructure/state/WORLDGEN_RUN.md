@@ -1,6 +1,6 @@
 # WORLDGEN_RUN.md — the one-shot run that closes v1 rows 2 and 7
 
-> 📦 **ARCHIVE: `infrastructure/state/archive/WORLDGEN_RUN_ARCHIVE.md`.** ~110 lines were moved
+> 📦 **ARCHIVE: deleted 2026-08-26 (owner: "kill the old archives"); the content is in git history.** ~110 lines were moved
 > there on 2026-08-23, byte-unchanged. **Nothing was deleted.** What moved: the three
 > overlapping 2026-08-22 adoption/`remaking` banners, the 2026-08-15 standing worldgen ruling
 > (verbatim in `CLAUDE.md`), the 'rehearse it first' pointer, the struck G1/G2 sea gates, §2.D

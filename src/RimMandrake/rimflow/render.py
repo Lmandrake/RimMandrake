@@ -554,7 +554,7 @@ def queue_item_ids(path):
 def queue_census(root=None):
     """-> (total_ids, {file: n}). Every file in queue/, archives included.
 
-    Archives count. An item that closed and moved to `CHECK_CLOSED.md` is still a
+    Archives count. An item that closed is still a
     row the ledger has to be able to reproduce before anything is allowed to
     overwrite the originals.
     """

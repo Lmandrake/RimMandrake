@@ -255,7 +255,7 @@ def i_factions(s, cfg):
     ruled it stays suppressed, and `Jawa_Patches\\Patches\\RebelAlliance_Suppress.xml`
     exists to do exactly that.
     ⚠️ Re-pointed 2026-08-23: Section 5 was moved out of the live checklist and now
-    lives in `infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md`,
+    lives in `git history (that archive was deleted 2026-08-26)`,
     block 'MOVED: lines 347-451'. Cite it by SECTION, never by line number. The
     ruling itself also survives on the live Section 4 Rebel Alliance row --
     "ABSENT is the DESIRED outcome ... do NOT revert the patch at the screen."
