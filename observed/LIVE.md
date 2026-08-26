@@ -813,3 +813,13 @@ patch or bridge call retrofits it. Owner call: `ASHKARR_IDEOLOGY_MODE_CALL_1`.
 
 📌 **There is no ideo WRITER on the bridge** — `jawa/ideo_of` reads, `jawa/set_pawn_ideo` is
 pawn-level, and that is the whole of it across 246 tools.
+
+📌 **The per-tile export/validate path is LOSSLESS and RAW.** `jawa/world_tile_validate` against an
+export taken minutes earlier: **21,872 / 21,872 matched, 0 mismatched**, `readRawFields: true` — it
+never touches `HillinessLabel` or the cached temperatures, so it cannot confirm a write that never
+landed. `jawa/world_tile_import` takes `apply: false` for a dry run (`applied 21872, skipped 0`).
+
+📌 **Ash'karr's integrity, 2026-08-26:** links 0 asymmetric / 0 non-adjacent (652 river + 2,798 road
+entries, 335 river tiles, 309 landlocked and ruled acceptable) · **0 null-faction settlements** of 96
+— the fault Scribe destroys on load with only a warning · 0 bad tile / on-water / on-impassable /
+stacked · 0 stale caches · 13,569 mutator tiles, 0 offenders · `world_lint` 22 findings.

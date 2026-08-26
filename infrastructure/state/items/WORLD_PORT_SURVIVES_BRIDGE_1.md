@@ -1,3 +1,21 @@
+🔴 **RUN 2026-08-26, PARTIAL.** The READ half is proven: `jawa/world_tile_validate` against a
+live export taken minutes earlier reads **21,872 / 21,872 matched, 0 mismatched**, on RAW fields.
+The live network and objects are sound - 0 asymmetric links, 0 non-adjacent, **0 null-faction
+settlements** of 96, 0 stale caches, 0 mutator offenders. The authored bundles differ only by the
+2026-08-26 hilliness pass (7,303 tiles, one class of diff) plus accumulating biome edits.
+
+⛔ **The WRITE half was NOT run, deliberately.** `ASHKARR_WORLD_DEFINITION.md` 12.4 rule 3 forbids
+the importer while a map is instantiated and `mapCount: 1`. It needs the world screen, which
+`BRIDGE_CANNOT_MAKE_A_WORLD_1` shows the bridge cannot reach - the owner's hands.
+
+⚠️ **A premise here is stale:** the bundles are EXPORTS of the live world
+(`ASHKARR_VIVIFIED_provenance.json`: *"live bridge harvest of Ash'karr"*), not an out-of-game
+source, so bundle-vs-live is partly circular. DECIDE owns whether an out-of-game source still exists.
+
+Evidence: `infrastructure/state/evidence/world_port_survives_2026-08-26_CHECK.md`
+
+---
+
 ## spec
 🔴 **A GATE THE OWNER NAMED AND NOTHING TRACKED.** Owner, 2026-08-22 10:57, to REP, giving the
 four-step sequence that `remaking` actually means:
