@@ -194,6 +194,10 @@ Ammonia Flats · Salt Gate (the deltas).
    ⚠️ Two independent reviews on 2026-08-22 flagged the map for contradicting this
    paragraph. They were reading a stale paragraph — which is exactly why it is corrected
    here rather than in a commit message nobody will find.
+   🔴 **CORRECTED 2026-08-25 BY LIVE MEASUREMENT:** this paragraph and the table above
+   both say **−30 m**; `jawa/world_tile_get` reads **−350 m on all 312 Scald tiles** on
+   the live planet. The map's elevation was NOT changed to match — this is a doc fix
+   only, recording what is actually loaded.
 3. **Rivers evaporate as they go.** Loss per tile is brutal in the deep waste and mild
    in the crater basin. Without this every stream that starts anywhere arrives
    somewhere and the map fills with rivers no climate could feed.
@@ -1254,6 +1258,74 @@ cleared by the people whose job was to clear it. **The Cartel employs them to th
   landmark with `extraGenSteps: sw_SarlaccPit`. 🔑 **v1 takes the mod's landmark**; the
   bespoke encounter is v2 and belongs in `design/V2_DREAMS.md`, not in a queue.
 
+### 13.5 🌋 THE SCALD'S MUTATOR LAYERS — written 2026-08-25, three authored passes
+
+The Scald was 312 identical `Lake` tiles carrying only 6 `River` and 2 `RiverDelta`
+mutators — nothing else. That emptiness was the defect; three owner-approved passes
+zoned it. Written live over the bridge with `jawa/world_mutators_set`, verified tile by
+tile with `jawa/world_mutators_get`, no RNG anywhere — every choice is
+`h(t) = (t * 2654435761) % 100` against the tile id, so the layout is reproducible from
+`world/_scald/scald_plan.json`, never rolled.
+
+**(2) The Boil — heat from below.** The Scald sits inside the planet's only volcanic
+province; this is what justifies it evaporating enormously and gives the Deepwater
+Compact's seats a reason to hold water nobody can drink.
+- `AB_GeothermalHotspots` on all **3** `AB_PyroclasticConflagration` rim tiles (the def
+  is biome-locked to that biome plus `BiomeGRimphire`, neither of which is water — so
+  it could only ever go on those 3, never on the lake itself).
+- `SteamGeysers_Increased` on all **30** lake tiles within 2 hexes of the volcanic rim.
+- `VEE_SulfuricLake` on **17** of those 30 nearvolc tiles that carry no river (a
+  deterministic ~half).
+- Volcanic rim land tiles (12 total: Volcano ×6, `AB_PyroclasticConflagration` ×3,
+  `LavaField` ×3) split `VEE_ToxicVents` (**7**) / `VEE_SmokeVents` (**5**).
+
+**(3) The Nine Mouths — make the inflows visible.** Nine rivers die in the Scald and
+none used to be visible arriving.
+- `RiverDelta` on all 9 mouth tiles (777, 2014, 7791, 11947, 15141, 15173, 17343, 19371,
+  19404) — this **displaced** the `River` mutator on each, which is the engine's own
+  category-conflict resolution (`AddMutator`), not a defect.
+- `Fish_Increased` + `AnimalLife_Increased` on the 9 mouth tiles and on the **13** lake
+  tiles immediately adjacent to a mouth (the fan reaching into the water) — the only
+  places life exists in this hypersaline basin.
+- `VEE_AlluvialFan` was **not used anywhere**: it gates on hilliness Flat plus a
+  coastline, and every one of the 9 mouth tiles measures hilliness 4–5 (measured live),
+  and no ring tile bordering a mouth measures Flat either. Zero eligible tiles, not an
+  oversight.
+
+**(4) The Brine Ladder — zone the water**, by shore distance (`dist` in
+`scald_geom.json`):
+- **Shallows** (dist 1–2, **132** tiles): `Fish_Increased`.
+- **Mid brine** (dist 3–4, **90** tiles): left bare on purpose — the gradient reads
+  better with a neutral middle than with a mutator on every tile.
+- **Dead heart** (dist 5+, **90** tiles, none of them mouth-fan tiles — the two sets
+  never overlapped): `Fish_Decreased` on all 90, plus a lethal ~third (**28** tiles,
+  none carrying a river) split `VEE_SulfuricLake` (**14**) / `ToxicLake` (**14**).
+
+`VEE_SulfuricLake` therefore carries **31** tiles total (17 from the Boil + 14 from the
+Dead Heart) — the two purposes share one def, one mutator family.
+
+**Tried and dropped: `VEE_MarineSanctuary`.** Its "coastline 1–5 coast sides" gate has
+no documented meaning for an inland lake — `World.CoastDirectionAt`, which
+`jawa/world_mutators_audit` uses to judge coastal mutators, answers **false** for every
+Scald tile because it detects adjacency to *ocean*, not to a lake's own shore. Written
+to 2 probe tiles (2941, 15200), committed, and audited with `marineMutators` including
+the def name: both came back as offenders and nothing else on the planet did (baseline
+`Coast` offenders were already 0), so the layer was rolled back (`action=remove`) rather
+than rolled out further. `jawa/world_mutators_audit` reports `offenderCount: 0` after.
+
+**Measured landed vs intended, read back from the live planet, 100% on every def:**
+`AB_GeothermalHotspots` 3/3 · `SteamGeysers_Increased` 30/30 · `VEE_SulfuricLake` 31/31 ·
+`ToxicLake` 14/14 · `VEE_ToxicVents` 7/7 · `VEE_SmokeVents` 5/5 · `RiverDelta` 9/9 ·
+`Fish_Increased` 141/141 (9 mouths + 132 shallow, the 13 fan tiles fall inside the
+shallow zone) · `AnimalLife_Increased` 22/22 (9 mouths + 13 fan) · `Fish_Decreased`
+90/90.
+
+Working scripts: `world/_scald/plan_scald_mutators.py` (the deterministic tile-list
+builder), `world/_scald/apply_scald_mutators.py` (the bridge writer), and
+`world/_scald/verify_scald_mutators.py` (the read-back diff). Their docstrings carry the
+gate reasoning and the traps hit; `world/_scald/scald_plan.json`,
+`scald_apply_report.json` and `scald_verify_report.json` are the frozen record of what
+was intended and what landed.
 
 ---
 

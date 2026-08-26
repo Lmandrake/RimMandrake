@@ -1,0 +1,76 @@
+{
+ "AB_GeothermalHotspots": {
+  "intended": 3,
+  "landed": 3,
+  "missing": [],
+  "rowsReturned": 3,
+  "requestErrors": []
+ },
+ "SteamGeysers_Increased": {
+  "intended": 30,
+  "landed": 30,
+  "missing": [],
+  "rowsReturned": 30,
+  "requestErrors": []
+ },
+ "VEE_SulfuricLake": {
+  "intended": 31,
+  "landed": 31,
+  "missing": [],
+  "rowsReturned": 31,
+  "requestErrors": []
+ },
+ "ToxicLake": {
+  "intended": 14,
+  "landed": 14,
+  "missing": [],
+  "rowsReturned": 14,
+  "requestErrors": []
+ },
+ "VEE_ToxicVents": {
+  "intended": 7,
+  "landed": 7,
+  "missing": [],
+  "rowsReturned": 7,
+  "requestErrors": []
+ },
+ "VEE_SmokeVents": {
+  "intended": 5,
+  "landed": 5,
+  "missing": [],
+  "rowsReturned": 5,
+  "requestErrors": []
+ },
+ "RiverDelta": {
+  "intended": 9,
+  "landed": 9,
+  "missing": [],
+  "rowsReturned": 9,
+  "requestErrors": []
+ },
+ "Fish_Increased": {
+  "intended": 141,
+  "landed": 141,
+  "missing": [],
+  "rowsReturned": 141,
+  "requestErrors": []
+ },
+ "AnimalLife_Increased": {
+  "intended": 22,
+  "landed": 22,
+  "missing": [],
+  "rowsReturned": 22,
+  "requestErrors": []
+ },
+ "Fish_Decreased": {
+  "intended": 90,
+  "landed": 90,
+  "missing": [],
+  "rowsReturned": 90,
+  "requestErrors": []
+ },
+ "_audit": {
+  "offenderCount": 0,
+  "offenders": []
+ }
+}

@@ -1,0 +1,224 @@
+{
+ "writes": [
+  {
+   "def": "AB_GeothermalHotspots",
+   "action": "add",
+   "note": "pyroclastic rim only - biome-locked gate enforced in the plan builder",
+   "intended": 3,
+   "success": true,
+   "added": 3,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "SteamGeysers_Increased",
+   "action": "add",
+   "note": "nearvolc lake tiles, ungated on Lake",
+   "intended": 30,
+   "success": true,
+   "added": 30,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_SulfuricLake",
+   "action": "add",
+   "note": "nearvolc no-river subset UNION dead-heart lethal subset (needs no river; excluded from river tiles anyway by construction)",
+   "intended": 31,
+   "success": true,
+   "added": 31,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "ToxicLake",
+   "action": "add",
+   "note": "dead-heart lethal subset, disjoint from the VEE_SulfuricLake dead-heart half",
+   "intended": 14,
+   "success": true,
+   "added": 14,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_ToxicVents",
+   "action": "add",
+   "note": "volcanic rim land tiles, hash-split half",
+   "intended": 7,
+   "success": true,
+   "added": 7,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_SmokeVents",
+   "action": "add",
+   "note": "volcanic rim land tiles, other half of the hash split",
+   "intended": 5,
+   "success": true,
+   "added": 5,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "RiverDelta",
+   "action": "add",
+   "note": "the 9 mouth tiles - EXPECTED to displace the River mutator there (category conflict)",
+   "intended": 9,
+   "success": true,
+   "added": 8,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "Fish_Increased",
+   "action": "add",
+   "note": "mouths + fan lake tiles + shallow zone (dist 1-2) - union, mouths are land tiles, rest are Lake",
+   "intended": 141,
+   "success": true,
+   "added": 134,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "AnimalLife_Increased",
+   "action": "add",
+   "note": "mouths + fan lake tiles only (not the whole shallow zone)",
+   "intended": 22,
+   "success": true,
+   "added": 22,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "Fish_Decreased",
+   "action": "add",
+   "note": "dead heart (dist 5+), mouth-fan tiles already excluded when the plan was built",
+   "intended": 90,
+   "success": true,
+   "added": 90,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  }
+ ],
+ "marine_probe": {
+  "tiles": [
+   15200,
+   2941
+  ],
+  "offenderCount": 2,
+  "offenders": [
+   {
+    "tile": 2941,
+    "mutator": "VEE_MarineSanctuary",
+    "biome": "Lake",
+    "waterCovered": true,
+    "elevation": -350.0
+   },
+   {
+    "tile": 15200,
+    "mutator": "VEE_MarineSanctuary",
+    "biome": "Lake",
+    "waterCovered": true,
+    "elevation": -350.0
+   }
+  ],
+  "resolution": "Removed VEE_MarineSanctuary from both probe tiles (2941, 15200) via action=remove + world_commit after the audit flagged them as non-coastal offenders. Layer dropped entirely per instructions (drop if it produces offenders). Final audit offenderCount 0."
+ },
+ "marine_rollout": {
+  "skipped": true,
+  "reason": "probe produced audit offenders"
+ },
+ "final_audit": {
+  "offenderCount": 2,
+  "offenders": [
+   {
+    "tile": 2941,
+    "mutator": "VEE_MarineSanctuary",
+    "biome": "Lake",
+    "waterCovered": true,
+    "elevation": -350.0
+   },
+   {
+    "tile": 15200,
+    "mutator": "VEE_MarineSanctuary",
+    "biome": "Lake",
+    "waterCovered": true,
+    "elevation": -350.0
+   }
+  ],
+  "tilesWithMutators": 7456,
+  "mutatorHistogram": {
+   "Caves": 1611,
+   "Dunes": 1536,
+   "VEE_DeepOreDevoid": 1452,
+   "VEE_MineralDevoid": 1451,
+   "Mountain": 1137,
+   "MineralRich": 484,
+   "Fish_Increased": 355,
+   "VEE_SaltPlains": 313,
+   "Oasis": 243,
+   "AnimalLife_Increased": 230,
+   "Cliffs": 230,
+   "AncientRuins": 193,
+   "AncientHeatVent": 178,
+   "AB_DerelictClusters": 169,
+   "River": 168,
+   "VEE_DeepOreRich": 163,
+   "VEE_FloodPlains": 158,
+   "Marshy": 153,
+   "DryGround": 136,
+   "CoastalIsland": 129,
+   "VEE_SulfuricLake": 110,
+   "AB_AmbientRadiation": 104,
+   "Fish_Decreased": 92,
+   "VEE_ToxicVents": 91,
+   "Coast": 88,
+   "VEE_StagnantRivulet": 88,
+   "VEE_MechanoidShipChunks": 79,
+   "Junkyard": 77,
+   "VEE_DryRiver": 51,
+   "VEE_RottenStench": 44,
+   "CaveLakes": 41,
+   "VEE_SerpentineCanyons": 39,
+   "ToxicLake": 39,
+   "VEE_PebbleDunes": 38,
+   "Headwater": 37,
+   "VEE_Cenotes": 36,
+   "SteamGeysers_Increased": 33,
+   "RiverIsland": 33,
+   "VEE_IncreasedInfestations": 31,
+   "AB_LocustPlagues": 31,
+   "Chasm": 31,
+   "AncientWarehouse": 30,
+   "AncientQuarry": 30,
+   "AB_FeraliskNest": 29,
+   "VEE_QuicksandDunes": 28,
+   "InsectMegahive": 28,
+   "Cavern": 26,
+   "SunnyMutator": 26,
+   "AB_BumbledroneNests": 26,
+   "DryLake": 24,
+   "AncientGarrison": 23,
+   "Archipelago": 22,
+   "Pond": 21,
+   "VEE_RotstinkVents": 19,
+   "AncientChemfuelRefinery": 18,
+   "AncientRuins_Frozen": 18,
+   "AbandonedColonyTribal": 18,
+   "Valley": 18,
+   "VEE_DustBowl": 16,
+   "VEE_PlantLife_Decimated": 16
+  }
+ }
+}
