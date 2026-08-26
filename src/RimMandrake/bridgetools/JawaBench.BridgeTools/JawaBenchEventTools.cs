@@ -372,6 +372,7 @@ namespace JawaBench.BridgeTools
                 string err; var map = MapOrNull(out err);
                 if (map == null) return Fail(err);
 
+                Faction requestedFaction = null;
                 IncidentParms parms;
                 try { parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, map); }
                 catch (Exception e) { return Fail("DefaultParmsNow threw: " + e.Message); }
@@ -386,6 +387,7 @@ namespace JawaBench.BridgeTools
                     var f = Find.FactionManager.FirstFactionOfDef(fd);
                     if (f == null) return Fail("FactionDef '" + faction + "' exists but no such faction is in this world.");
                     parms.faction = f;
+                    requestedFaction = f;
                 }
                 if (!string.IsNullOrEmpty(strategy))
                 {
@@ -410,6 +412,17 @@ namespace JawaBench.BridgeTools
                 // Same trap as raid_preview: CanFireNow and the strategy workers need a
                 // faction. Resolve one rather than reporting a misleading refusal.
                 var factionNotes = new List<string>();
+                // 🔴 THE REASON A NAMED FACTION GETS SWAPPED, said BEFORE the raid rather
+                // than discovered afterwards. IncidentWorker_RaidEnemy will not raid with a
+                // faction that is not hostile to the player: TryResolveRaidFaction picks a
+                // different one and the raid arrives under that flag.
+                // FIRE_RAID_ECHOES_REQUESTED_FACTION_1: asking for Jawa_FreeDroidEnclaves
+                // (neutral on this world) returned resolved.faction Jawa_FreeDroidEnclaves
+                // and five Blackstar Company pirates walked in.
+                if (requestedFaction != null && !friendly && !requestedFaction.HostileTo(Faction.OfPlayer))
+                    factionNotes.Add("⚠ " + requestedFaction.def.defName + " is NOT hostile to the player ("
+                                     + requestedFaction.PlayerRelationKind + "). IncidentWorker_RaidEnemy "
+                                     + "will substitute a hostile faction; read actual.faction, not resolved.faction.");
                 if (parms.faction == null && !friendly)
                 {
                     parms.faction = Find.FactionManager.AllFactionsVisible
@@ -421,6 +434,8 @@ namespace JawaBench.BridgeTools
                 }
 
                 var incident = friendly ? IncidentDefOf.RaidFriendly : IncidentDefOf.RaidEnemy;
+                // ⚠ `resolved` is THE REQUEST, after this tool's own parsing. It is not the
+                // outcome, and reading it as one is what this tool used to invite.
                 var resolved = new
                 {
                     incident = incident.defName,
@@ -437,18 +452,71 @@ namespace JawaBench.BridgeTools
                         success = true, dryRun = true, resolved,
                         canFireNow = incident.Worker.CanFireNow(parms),
                         factionNotes,
-                        note = "DRY RUN - nothing was sent. Pass dryRun=false to actually raid the colony.",
+                        note = "DRY RUN - nothing was sent. Pass dryRun=false to actually raid the colony. "
+                               + "⚠ A dry run CANNOT tell you which faction will actually raid: the "
+                               + "substitution happens inside TryExecute. Only a real run reports actual.",
                         ticksGame = TicksGameSafe(),
                     };
+
+                // Count the map's pawns per faction BEFORE, so what arrives can be
+                // measured rather than echoed. IncidentParms is a reference type and the
+                // worker writes its substituted faction back into parms.faction, so that
+                // field is the second, independent reading.
+                var before = new Dictionary<Faction, int>();
+                foreach (var p in map.mapPawns.AllPawnsSpawned)
+                    if (p.Faction != null)
+                        before[p.Faction] = (before.TryGetValue(p.Faction, out var bn) ? bn : 0) + 1;
 
                 bool executed;
                 try { executed = incident.Worker.TryExecute(parms); }
                 catch (Exception e) { return Fail("TryExecute threw: " + e.GetType().Name + ": " + e.Message); }
 
+                var after = new Dictionary<Faction, int>();
+                foreach (var p in map.mapPawns.AllPawnsSpawned)
+                    if (p.Faction != null)
+                        after[p.Faction] = (after.TryGetValue(p.Faction, out var an) ? an : 0) + 1;
+
+                var arrivals = new List<object>();
+                foreach (var kv in after)
+                {
+                    int was; before.TryGetValue(kv.Key, out was);
+                    if (kv.Value > was)
+                        arrivals.Add(new
+                        {
+                            faction = kv.Key.def.defName,
+                            name = kv.Key.Name,
+                            pawnsArrived = kv.Value - was,
+                            hostileToPlayer = kv.Key.HostileTo(Faction.OfPlayer)
+                        });
+                }
+
+                var usedFaction = parms.faction;
+                bool substituted = requestedFaction != null && usedFaction != null
+                                   && usedFaction != requestedFaction;
+
                 return (object)new
                 {
                     success = executed, dryRun = false, resolved, executed, factionNotes,
-                    note = executed ? "Raid fired." : "TryExecute returned false - the worker refused these parms.",
+                    // 🔑 THE OUTCOME, which `resolved` is not. `actual` is the faction the
+                    // worker ended up using (it writes back into parms); `arrived` is counted
+                    // off the map, so it is true even if the worker is patched by a mod.
+                    actual = new
+                    {
+                        faction = usedFaction != null ? usedFaction.def.defName : null,
+                        name = usedFaction != null ? usedFaction.Name : null,
+                        substituted,
+                        requested = requestedFaction != null ? requestedFaction.def.defName : null
+                    },
+                    arrived = arrivals,
+                    note = !executed
+                        ? "TryExecute returned false - the worker refused these parms."
+                        : (substituted
+                            ? "⚠ RAIDED WITH A DIFFERENT FACTION. Asked for "
+                              + requestedFaction.def.defName + ", the worker used "
+                              + usedFaction.def.defName + " - a non-hostile faction cannot raid. "
+                              + "This is correct engine behaviour; the defect was never reporting it."
+                            : "Raid fired. arrived[] is counted off the map; an arrival mode that "
+                              + "delays entry can legitimately show 0 pawns this instant."),
                     ticksGame = TicksGameSafe(),
                 };
             });

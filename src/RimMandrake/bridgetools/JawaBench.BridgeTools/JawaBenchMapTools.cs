@@ -651,8 +651,16 @@ namespace JawaBench.BridgeTools
                 "⚠️ HitPoints are set AFTER MakeThing on purpose - MakeThing calls PostMake " +
                 "which randomises them from startingHpRange, so writing them first is lost. " +
                 "⚠️ WALLS CREATE NO ROOF; roof separately with jawa/set_roof_batch. " +
+                "🔴 READ `survived`, NOT `placed`. placed counts spawns that succeeded; a LATER " +
+                "op whose multi-cell footprint covers an earlier one destroys it, and both " +
+                "report success. Everything destroyed is named in displaced[]. Pass " +
+                "refuseIfDisplaces to make that an error instead. " +
                 "Call jawa/map_commit after a batch.",
-            ResultDescription = "success, placed, failed[], and a read-back of each spawned thing.")]
+            ResultDescription =
+                "success, placed (spawns that SUCCEEDED), survived (still on the map when the "
+                + "batch ended - these differ when a later op destroys an earlier one), "
+                + "lostToLaterOps, failed[], displaced[] naming everything this batch destroyed "
+                + "and whether this batch had placed it, and a read-back of each spawned thing.")]
         public static async Task<object> BuildBatch(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -662,7 +670,8 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Awful|Poor|Normal|Good|Excellent|Masterwork|Legendary.")] string quality = null,
             [ToolParameter(Description = "Hit points. -1 leaves the PostMake roll.")] int hitPoints = -1,
             [ToolParameter(Description = "Wipe whatever occupies the cell first. Default true.")] bool wipeExisting = true,
-            [ToolParameter(Description = "Read back at most this many things. Default 8.")] int readBack = 8)
+            [ToolParameter(Description = "Read back at most this many things. Default 8.")] int readBack = 8,
+            [ToolParameter(Description = "REFUSE any op that would destroy something already standing, instead of wiping it. Off by default, because a door legitimately replaces the wall in its cell. Turn it on when a generator's output must not eat itself.")] bool refuseIfDisplaces = false)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -694,6 +703,14 @@ namespace JawaBench.BridgeTools
                 }
 
                 int placed = 0; var failures = new List<object>(); var spawnedThings = new List<Thing>();
+                // 🔴 WHAT THIS BATCH DESTROYS ON ITS WAY IN. BUILD_BATCH_OVERWRITES_SILENTLY_1:
+                // eight calls reported placed 81 with failed:[] everywhere and the map held 78.
+                // Three things had been destroyed by a LATER op whose multi-cell footprint
+                // covered them - a Table1x2c over a DiningChair, a Shelf over two earlier
+                // Shelfs - and BOTH the destroyer and the destroyed reported success.
+                // `placed` counts spawn ATTEMPTS. A caller diffing placed against requested,
+                // which is exactly what an acceptance criterion does, sees a perfect run.
+                var displaced = new List<object>();
 
                 foreach (var raw in ops.Split(new[] { ';', '\n' }, StringSplitOptions.RemoveEmptyEntries))
                 {
@@ -722,6 +739,48 @@ namespace JawaBench.BridgeTools
 
                     try
                     {
+                        // Look BEFORE the wipe: afterwards the thing is gone and there is
+                        // nothing left to name. SpawningWipes is the engine's own answer to
+                        // "would placing this destroy that", so this reports what actually
+                        // happens rather than a guess about footprints.
+                        var occupied = GenAdj.OccupiedRect(c, rot, td.size);
+                        var doomed = new List<Thing>();
+                        foreach (var cell in occupied)
+                        {
+                            if (!cell.InBounds(map)) continue;
+                            var here = map.thingGrid.ThingsListAtFast(cell);
+                            for (int i = 0; i < here.Count; i++)
+                            {
+                                var other = here[i];
+                                if (other == null || other.Destroyed) continue;
+                                if (other.def == td && other.Position == c) continue;
+                                if (GenSpawn.SpawningWipes(td, other.def) && !doomed.Contains(other))
+                                    doomed.Add(other);
+                            }
+                        }
+                        if (doomed.Count > 0 && refuseIfDisplaces)
+                        {
+                            failures.Add(new
+                            {
+                                op,
+                                why = "refuseIfDisplaces: placing this would destroy "
+                                      + doomed.Count + " existing thing(s): "
+                                      + string.Join(", ", doomed.Select(d => d.def.defName + "@" + d.Position.x + "," + d.Position.z).ToArray())
+                            });
+                            continue;
+                        }
+                        foreach (var d in doomed)
+                            displaced.Add(new
+                            {
+                                op,
+                                destroyed = d.def.defName,
+                                x = d.Position.x,
+                                z = d.Position.z,
+                                // The case that made this item: the thing destroyed was placed
+                                // by an EARLIER op of this same run, so `placed` counted it.
+                                placedByThisBatch = spawnedThings.Contains(d)
+                            });
+
                         if (wipeExisting) GenSpawn.WipeExistingThings(c, rot, td, map, DestroyMode.Vanish);
 
                         var t = ThingMaker.MakeThing(td, useStuff);
@@ -767,10 +826,29 @@ namespace JawaBench.BridgeTools
                     });
                 }
 
+                // Counted AFTER every op, because an op can destroy an earlier one.
+                int survived = 0;
+                foreach (var t in spawnedThings) if (t != null && !t.Destroyed) survived++;
+                int lostToLaterOps = placed - survived;
+
                 return (object)new
                 {
                     success = true,
-                    placed, failedCount = failures.Count, failed = failures,
+                    // 🔑 `placed` is the number of SPAWNS THAT SUCCEEDED, and it is not the
+                    // number of things on the map. `survived` is. They differ whenever a
+                    // later op's footprint covered an earlier one.
+                    placed,
+                    survived,
+                    lostToLaterOps,
+                    failedCount = failures.Count, failed = failures,
+                    displacedCount = displaced.Count,
+                    displaced,
+                    message = lostToLaterOps > 0
+                        ? placed + " spawned, " + survived + " SURVIVED - " + lostToLaterOps
+                          + " were destroyed by a later op in this same batch. See displaced[]."
+                        : (displaced.Count > 0
+                            ? placed + " placed; " + displaced.Count + " pre-existing thing(s) were wiped. See displaced[]."
+                            : placed + " placed."),
                     note = "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
                     things = back,
                     ticksGame = TicksGameSafe(),
