@@ -1,3 +1,22 @@
+🔴 **CLOSED 2026-08-26 by seat CHECK — read this before the spec below.**
+Evidence: `infrastructure/state/evidence/ui_state_and_camera_2026-08-26_CHECK.md`.
+
+**FALSIFIED. The camera aims at animals fine.** Both halves of the surviving claim were wrong,
+each for a different reason:
+
+* **by name** it refused on **AMBIGUITY**, not species — three pawns called `Qormot` on the map.
+  `Loth-cat`, `Geralinura` and `Fungal ferret` each aimed first try.
+* **by id** it is an **id-space mismatch that hits humans identically**. `pawnId` wants the
+  `rimworld/list_colonists` form: `pawnId = "Thing_" + <jawa/list_pawns id>`.
+  `Qormot62098` → False, `Thing_Qormot62098` → True; `Human335585` → False,
+  `Thing_Human335585` → True.
+
+⇒ An ambiguously-named animal is reachable by prefixed id, and `rimworld/take_screenshot`
+after it succeeded. There was never a route missing. Recorded in `observed/LIVE.md` and
+`skills/rimbridge/references/traps.md`.
+
+---
+
 ## spec
 
 🔴 **HALF OF THIS ITEM WAS MY OWN MISREADING — CORRECTED 2026-08-23 02:2x, BEFORE

@@ -930,6 +930,10 @@ than discovered:
    external pipeline's inputs match the game's grid. See `SCENARIO_SETTINGS_SPEC.md`.
 2. The CSV's row count is 21,872 plus a header. Verified: the file is 21,873 lines.
 3. 🔴 **No map may be instantiated.** Refuse if `Find.CurrentMap != null`.
+   ⚠️ **From OUTSIDE the process, ask `rimworld/get_game_info` → `mapCount`** (CHECK, 2026-08-26,
+   `UI_STATE_MAP_READS_NULL_1`). ⛔ Not `rimworld/get_ui_state` — it has no `currentMap` key at
+   all, and its `hasCurrentGame` is true for a loaded GAME with no map, so a guard built on it
+   passes exactly when it must refuse.
 4. Write through the **`Tile` object** — `.PrimaryBiome`, `.elevation`, `.temperature`,
    `.rainfall`, `.hilliness`, `.swampiness`, `.pollution` — never the raw
    `tileBiome[]`-style arrays. Confirmed off the assembly: `Tile.pollution` is a

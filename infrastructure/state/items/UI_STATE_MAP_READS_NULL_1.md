@@ -1,3 +1,15 @@
+🔴 **CLOSED 2026-08-26 by seat CHECK — read this before the spec below.**
+Evidence: `infrastructure/state/evidence/ui_state_and_camera_2026-08-26_CHECK.md`.
+
+`rimworld/get_ui_state` has **no `currentMap` key at all** in the current build — absent, not
+null — so the misreadable field the item was filed about no longer exists. The concern behind it
+stands and now has an answer: **`rimworld/get_game_info` → `mapCount`** is the instrument
+(`mapCount: 1` measured on a map carrying 72 pawns). ⛔ `get_ui_state.hasCurrentGame` is NOT a
+substitute — it is true for a loaded game with no map. §12.4 of `ASHKARR_WORLD_DEFINITION.md` has
+been corrected in place to name the right call.
+
+---
+
 > 🔴 **CORRECTED 2026-08-23 by the owner — read `PAINT_UNDER_MAP_DESTROYS_GAME_1` before
 > acting on anything below about painting under a live map.** His words: *"painting under
 > a player colony is actually fine to do... it just destroys the player colony. So you must

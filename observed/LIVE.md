@@ -776,3 +776,16 @@ proceeds**, so batched coastal landmarks invalidate each other. Place one at a t
 **11,948 → 13,655**; settlements 93 → 96; landmarks 579; rivers 325 edges (restored exactly
 after a `clearFirst` accident); features 72 incl. *The Abandoned Mines*. Scald water mutators
 8 → 318. Working scripts: `world/_roads/`, `world/_scald/`, `world/_twilight/`, `world/_grey/`.
+
+📌 **"Is a map live?" is `rimworld/get_game_info` → `mapCount`, NOT `rimworld/get_ui_state`.**
+Measured 2026-08-26: `get_ui_state` has **no `currentMap`, `maps` or `mapCount` key at all** —
+absent, not null — while `get_game_info` returned `mapCount: 1` on a map carrying 72 pawns.
+⚠️ `get_ui_state.hasCurrentGame` is true for a loaded GAME and says nothing about a MAP; it
+would pass on the world-map screen with nothing instantiated.
+
+📌 **`rimworld/jump_camera_to_pawn` aims at ANIMALS fine, and its `pawnId` is a different id
+space from `jawa/*`.** Prefix it: `pawnId = "Thing_" + jawa/list_pawns id`
+(`Qormot62098` → `Thing_Qormot62098` → success). Without the prefix it refuses **humans too**.
+By name it refuses only on AMBIGUITY — three pawns called `Qormot` on one map — and uniquely
+named animals aim first try. ⚠️ `rimworld/list_colonists` lists colonists ONLY (3 rows against
+72 pawns), which is why the id space looked closed to animals.

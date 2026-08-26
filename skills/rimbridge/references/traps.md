@@ -475,3 +475,31 @@ turned out to be three commits stale: `byField: {rainfall: 20113, elevation: 312
 — three fields, three hand edits, nothing else. **A regeneration disagrees everywhere; a
 stale world disagrees only on the edits.** Two "signatures of a bare regeneration" written
 into the spec both fired, and both were wrong about the cause.
+
+
+## `rimworld/jump_camera_to_pawn` — `pawnId` needs a `Thing_` prefix, and it is NOT animals
+
+Measured 2026-08-26, full 582-mod list, 72 pawns.
+
+`jawa/list_pawns` and `jawa/pawn_get` return `Human335585` / `Qormot62098`.
+`rimworld/jump_camera_to_pawn`'s `pawnId` wants the `rimworld/list_colonists` form:
+
+```
+pawnId=Qormot62098   -> False     pawnId=Thing_Qormot62098   -> True
+pawnId=Human335585   -> False     pawnId=Thing_Human335585   -> True
+```
+
+🔑 `pawnId = "Thing_" + <jawa id>`. Without it the call refuses **humans too**, so a failure
+here is never evidence about species.
+
+⚠️ **By `pawnName` it refuses on AMBIGUITY, not species.** Three pawns called `Qormot` on one
+map produced `"Ambiguous current-map pawn name"`; `Loth-cat`, `Geralinura` and `Fungal ferret`
+each aimed first try. ⛔ `rimworld/list_colonists` lists COLONISTS only (3 rows / 72 pawns) —
+an animal never appears there, which is what made the id space look closed to animals.
+
+## `rimworld/get_ui_state` has no `currentMap` — do not ask it whether a map exists
+
+Its whole top-level set is window/UI state plus `programState` and `hasCurrentGame`. There is
+no `currentMap`, `maps` or `mapCount` key — **absent, not null.** `hasCurrentGame` is true for a
+loaded GAME with no map instantiated, so a "is a map live" guard built on it passes exactly when
+it should refuse. 🔑 Use `rimworld/get_game_info` → `mapCount` (measured 1 on a 72-pawn map).

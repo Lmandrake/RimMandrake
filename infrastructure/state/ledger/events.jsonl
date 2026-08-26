@@ -2130,3 +2130,11 @@
 {"seat":"CHECK","event":"claim","id":"WORLDGEN_CITATIONS_REPOINT_CHECK_1","ts":"2026-08-26T10:37:56Z"}
 {"seat":"CHECK","event":"start","id":"WORLDGEN_CITATIONS_REPOINT_CHECK_1","ts":"2026-08-26T10:37:56Z"}
 {"seat":"CHECK","event":"close","id":"WORLDGEN_CITATIONS_REPOINT_CHECK_1","sha":"dd0880b6","ts":"2026-08-26T10:38:56Z"}
+{"seat":"CHECK","event":"claim","id":"UI_STATE_MAP_READS_NULL_1","ts":"2026-08-26T10:39:22Z"}
+{"seat":"CHECK","event":"start","id":"UI_STATE_MAP_READS_NULL_1","ts":"2026-08-26T10:39:22Z"}
+{"seat":"CHECK","event":"claim","id":"CAMERA_CANNOT_AIM_AT_ANIMALS_1","ts":"2026-08-26T10:39:22Z"}
+{"seat":"CHECK","event":"start","id":"CAMERA_CANNOT_AIM_AT_ANIMALS_1","ts":"2026-08-26T10:39:22Z"}
+{"seat":"CHECK","event":"verify","id":"UI_STATE_MAP_READS_NULL_1","result":"pass","config":"full-582","evidence":"infrastructure/state/evidence/ui_state_and_camera_2026-08-26_CHECK.md","sha":"67072a8a","ts":"2026-08-26T10:41:17Z"}
+{"seat":"CHECK","event":"verify","id":"CAMERA_CANNOT_AIM_AT_ANIMALS_1","result":"pass","config":"full-582","evidence":"infrastructure/state/evidence/ui_state_and_camera_2026-08-26_CHECK.md","sha":"67072a8a","ts":"2026-08-26T10:41:17Z"}
+{"seat":"CHECK","event":"close","id":"UI_STATE_MAP_READS_NULL_1","sha":"67072a8a","ts":"2026-08-26T10:41:17Z"}
+{"seat":"CHECK","event":"close","id":"CAMERA_CANNOT_AIM_AT_ANIMALS_1","sha":"67072a8a","ts":"2026-08-26T10:41:18Z"}
