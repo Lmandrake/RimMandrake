@@ -9,6 +9,27 @@
 > live. §20 keeps its block, but `ORDERS_DESIGNATORS_ENUMERATE_ZERO_1` inside it is closed.
 > ⚠️ `W3` `W4` `W5` appear nowhere in the ledger at all — pre-ledger legacy, unverifiable from here.
 
+## ▶️ THE FIRST FIVE MINUTES — 2026-08-26 load, in this order
+
+🔴 **Signatures were written BEFORE launch: `EXPECTED_FAILURES_next_load.md` §25.** Read them, do
+not invent new ones from the log.
+
+| # | do | why it is in this position |
+|---|---|---|
+| **0** | 🔴 **If Ash'karr is the world that loads and you intend the ideology trial: `vivify_world.py --live --out world\ASHKARR_PREREBUILD_2026-08-26` BEFORE touching the main menu.** | The `_final` bundle predates the hilliness pass and the Wither rebuild. Once you leave Ash'karr for New Colony, the chance to take a current one is gone until it is loaded again. ~1 min. `IDEOLOGY_REBUILD_TRIAL.md` Phase A |
+| **1** | `prove_stat_and_room.py --census` | 2 seconds, and **everything else depends on it**: 165 jawa tools or the 44-tool deploy did not land. Baseline 121 |
+| **2** | `harvest_log.py` | The whole log while it exists. Baselines in §25 D. ⚠️ It is destroyed at the NEXT launch |
+| **3** | Grep the log for `required apparel can't be worn together` | Baseline **3**. Expect **0**. The cheapest reading of the day and it decides §24 |
+| **4** | Spawn 8 each of the four Jawa kinds, read apparel back | §24. Absence of the errors is necessary, not sufficient — the pawn wearing the hood is the evidence |
+| **5** | `prove_stat_and_room.py` (full), then `--rect` if a dwelling is built | §23. Produces the temperature table the **owner asked to see before ruling** on T2 vs N1 |
+| **6** | Rebuild `defs.sqlite` from the fresh capture, then **delete `dump_request.txt`** | §25 C. The marker is not consumed and was already armed when I found it — that is how every load ends up paying 27 s and 1.2 GB |
+
+⚠️ **`refresh.py --offline` printed the same staleness after running** (inventory CSVs, contact
+sheets). Not a load blocker — its own verdict is "no game load needed" — but it did not do what it
+said, so treat those artefacts as still stale and chase it offline.
+
+---
+
 ## 📇 INDEX — every block, and whether it is spent
 
 ⚠️ **A block with no ✅ has not been scored. Add the row when you add the block, and mark it

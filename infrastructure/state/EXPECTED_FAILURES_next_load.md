@@ -1774,3 +1774,89 @@ regression. Both are fixed in `src/RimMandrake/Utils/check_world_reload.py` — 
 baseline with the reason attached, and P4 requires each mismatch to be a NAMED edit holding
 its expected biome, so an unexplained one still fails. ⚠️ `KNOWN_DELTA` must be appended to
 as the world is authored; a check nobody trusts is worse than no check.
+
+---
+
+# §25 THE 2026-08-26 LOAD — signatures written BEFORE launch, seat CHECK
+
+🔴 **Written before the game started, which is the only thing that makes them evidence.**
+A signature invented after reading the log is a story that fits.
+Baselines are from `infrastructure/state/logs/harvest_2026-08-26/Player.log.2026-08-26_full`
+(973,786 B, copied out before launch — the previous log is destroyed at startup).
+
+## What rides this load, and why it is attributable
+
+| change | kind | rides? |
+|---|---|---|
+| companion DLL — **44 new tools** (BUILD's 42 + CHECK's `pawn_stats`/`room_get`) | ONE assembly | yes, alone |
+| `Jawa_Patches` — `apparelRequired Inherit="False"` on 4 kinds | validated XML, named log strings | yes |
+| def dump armed (`dump_request.txt = all`) | capture only | free |
+
+⇒ **No attribution risk.** The assembly shows up as a tool count; the XML shows up as three log
+lines disappearing. Neither can be mistaken for the other. Nothing else is undeployed —
+`deploy_custom_mods.py` reports **everything in sync, 0 drift, 14 files held on purpose**.
+
+## A — the companion. Signature is a COUNT, not a line.
+
+⛔ **Do not use a `[JawaBench]` startup line as the signature.** The module initializer is LAZY —
+it waits for the first tool CALL, not assembly load. A missing line proves nothing and a present
+one proves only that something called a tool.
+
+```
+python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\prove_stat_and_room.py --census
+```
+
+| reading | meaning |
+|---|---|
+| **165 `jawa/` tools** | ✅ the deploy landed and every `[Tool]` registered. Baseline before: **121** |
+| 121 | the game loaded the OLD DLL — check the bytes, `sha256 b52b37cba71f4861…`, 1,523,712 B |
+| between 122 and 164 | some registered and some did not; the shortfall names which. **This is the interesting failure** — a duplicate name or a bad signature. Pre-checked offline: 165 attributes, 165 unique names, no duplicate method names, so this outcome is unexpected |
+| an exception naming `JawaBench` or `RimBridgeServer` at startup | the assembly failed to load at all |
+
+## B — the Jawa hood. Absence AND presence, because absence alone is not sufficient.
+
+**Expected-ABSENT** — all three of these were present, baseline **3 occurrences**:
+
+```
+Config error in Jawa_Tribal_Scavenger: required apparel can't be worn together (Apparel_WarVeil, guy762_JawaHood)
+Config error in Jawa_Tribal_Elder:     required apparel can't be worn together (Apparel_TribalHeaddress, guy762_JawaHood)
+Config error in Jawa_Tribal_Elder:     required apparel can't be worn together (Apparel_PlateArmor, guy762_Robes_jawa)
+```
+
+**Expected-PRESENT** — 8 spawns of each of `Jawa_Colonist` · `Jawa_Tribal_Scavenger` ·
+`Jawa_Tribal_Slinger` · `Jawa_Tribal_Elder`, read back with `jawa/pawn_get`:
+**`guy762_Robes_jawa` AND `guy762_JawaHood` on every pawn**, and **no** `Apparel_WarVeil`,
+`Apparel_TribalHeaddress` or `Apparel_PlateArmor`.
+
+🔑 **The distinction that must be on paper NOW, because it is the whole diagnosis:**
+
+| outcome | meaning |
+|---|---|
+| errors gone **and** hood worn | ✅ the overlap was the cause and `Inherit="False"` is the fix |
+| errors gone, **hood still absent** | 🔴 the overlap was only ONE cause. The remaining route is `allApparelPairs` — `guy762_JawaHood` may have no generatable pair at all (no stuff category, commonality 0), in which case the `apparelRequired` loop finds nothing to take and skips it silently. **Do not re-blame inheritance** |
+| errors still present | the def did not load — but the deploy is byte-verified, so suspect load order or another mod re-adding the parent's entry |
+| Elder now wears its ROBE | a bonus nobody had ever observed; it was losing the robe to inherited `Apparel_PlateArmor` |
+
+## C — the def dump. Armed, and the marker is NOT consumed.
+
+Baseline: last capture `2026-08-25T07-25-18Z`, `biomes=81`. `defs.sqlite` is older still —
+built from the **2026-08-23** capture at `mods=581`, which is why every measurement taken off it
+this week carried a *581 vs 582 live* caveat.
+
+* expected-present: `[RimDefDump] starting, mode=all, capture=<new stamp>` at startup, ~27 s.
+* after the load: a new folder under `DefDump/captures/`, and **`defs.sqlite` rebuilt from it** so
+  `measure` finally reports `mod_count=582`. That rebuild is offline and cheap.
+* 🔴 **Then DELETE `dump_request.txt`** or every future load pays ~27 s and ~1.2 GB again. It was
+  already armed when I got here, which is exactly that failure.
+
+## D — standing, harvest the whole log, not just the above
+
+```
+python.exe D:\Luke\dev\Rimworld\src\RimMandrake\Utils\harvest_log.py
+```
+
+Known baselines from the copied log, so a change is visible: **1,211** Cherry Picker removals ·
+**16** distinct config errors · **10** cross-reference failures · **3** XML errors ·
+`Loaded 49 landforms of which 0 are edited and 0 are custom`.
+⚙️ The 8 `BMT_*` and `VWE_Tool_Whip` cross-reference failures and the `TG_Husbandry` NRE are
+**third-party absent mods, already attributed** — not new, not ours, do not re-investigate.
