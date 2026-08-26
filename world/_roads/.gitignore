@@ -13,3 +13,13 @@ after_landmarks.csv
 after_settlements.csv
 *_meta.json
 *_provenance.json
+_muts_now.json
+_landmarks_now.json
+_links_now.json
+_final_links.json
+_final_tiles.json
+_verify*.json
+_mutroster.json
+_v_*.json
+live_*.csv
+now_*.csv
