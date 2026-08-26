@@ -359,7 +359,22 @@ whole reason the window matters. `python.exe D:\Luke\dev\Rimworld\src\RimMandrak
 
 ## 🔬 §23 THE FOUR ROWS THAT BECOME RUNNABLE THE MOMENT `jawa/pawn_stats` LANDS
 
-Written 2026-08-26 by CHECK. Run these in the first live window after the deploy; each is one call.
+Written 2026-08-26 by CHECK. **One command runs the whole block:**
+
+```
+python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\prove_stat_and_room.py
+python.exe ... prove_stat_and_room.py --census                 # stop after the tool census
+python.exe ... prove_stat_and_room.py --rect 170,170,18,10     # add the room checks
+```
+
+🔑 **Its first check is the only one that matters until it passes:** does the running game register
+165 `jawa/` tools, and are `jawa/pawn_stats` and `jawa/room_get` in the LIVE list. Companions are
+discovered at startup only, so a deployed DLL proves nothing until that census passes.
+Its second check is that `pawn_stats` **refuses** a bogus stat name and suggests the real one —
+run before any reading, because a tool that silently drops a stat returns an empty answer that
+reads exactly like "the pawn does not have it".
+
+The detail, if you want to run the calls by hand:
 
 **T1 · T2 · N1 · N2 — `LIVE_HALF_OF_LOAD_1`.** Spawn one pawn per xenotype with
 `jawa/spawn_pawn … xenotype: <X>`, then:
