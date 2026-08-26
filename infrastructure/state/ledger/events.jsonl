@@ -2147,3 +2147,5 @@
 {"seat":"CHECK","event":"file","id":"PAWN_STAT_READ_HAS_NO_TOOL_1","title":"No bridge tool reads a pawn StatDef value - four temperature rows cannot be graded","kind":"task","target":"v1","caused_by":"LIVE_HALF_OF_LOAD_1","for":"BUILD","ts":"2026-08-26T10:47:26Z"}
 {"seat":"CHECK","event":"file","id":"JAWA_TEMP_RANGE_TWO_CRITERIA_1","title":"T2 and N1 state different PASS ranges for the same Jawa comfortable temperature","kind":"decision","target":"v1","caused_by":"LIVE_HALF_OF_LOAD_1","for":"DECIDE","ts":"2026-08-26T10:47:26Z"}
 {"seat":"OWNER","event":"drop","id":"LANDMARK_ICONS_REPAINTED_1","reason":"Owner: it already works, leave it unvalidated","ownerSaid":"We don't need the landmarks item","override":"OWNER may not `drop` LANDMARK_ICONS_REPAINTED_1 — it belongs to CHECK. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-08-26T10:47:28Z"}
+{"seat":"CHECK","event":"claim","id":"TEMPLATE_ENGINE_ACCEPTANCE_1","ts":"2026-08-26T10:48:30Z"}
+{"seat":"CHECK","event":"start","id":"TEMPLATE_ENGINE_ACCEPTANCE_1","ts":"2026-08-26T10:48:30Z"}
