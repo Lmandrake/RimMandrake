@@ -48,6 +48,28 @@ needs no river · landlocked (0 coast sides) · requires coastline (1-6 coast si
 max/min hilliness <X> · needs avg temp A-BC · biome-locked: <list, often TRUNCATED with ...>
 ```
 
+### 🔴 VERIFY WHAT YOU DISPLACED, NOT ONLY WHAT YOU INTENDED
+
+**Measured 2026-08-26, and it is the failure mode a per-def verification cannot see.** A pass
+that checks each def against its OWN intent reports a clean 100% while silently destroying
+other people's work in the same category. On the Twilight Sea a coastal pass reported every
+def landed and had, in the same breath, wiped **26 `CoastalIsland` mutators** (21 overwritten
+by `VEE_RisingWaters`) and **2 `Oasis` tiles** the canon explicitly protects — none of which
+appeared in its own report, because it never asked.
+
+✅ **Diff the WHOLE planet's mutator set before and after, and look at the LOSSES.**
+
+```python
+lost = Counter(d for t in before for d in before[t] - after.get(t, set()))
+```
+
+Every loss then needs a sentence: *intended* (`RiverDelta` displacing `River` at a mouth,
+`VEE_DryRiver` replacing `VEE_FloodPlains`) or *collateral* (an island paved over by a tidal
+flat). ⚠️ Collateral is not automatically wrong — the category system is working — but it is a
+decision someone must actually make, and a specific instruction from the owner outranks a
+generic one. The islands were restored and `VEE_RisingWaters` relocated to flat shore with no
+coastal rival, keeping both.
+
 ⚠️ **A truncated biome list is UNMEASURED, not permission.** Where the note ends in `...`
 you cannot prove a biome is excluded — treat it as unknown and verify by read-back.
 
