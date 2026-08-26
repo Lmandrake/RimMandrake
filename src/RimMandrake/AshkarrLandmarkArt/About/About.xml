@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.ashkarrlandmarkart</packageId>
+  <name>Ash'karr Landmark Art</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Repaints the world-map landmark icons Ash'karr draws.
+
+Vanilla Landmarks Expanded ships its desert landmarks as a single opaque fill at
+128x128 - one colour, no outline - which reads as a coloured paper cutout on the
+globe. Ludeon's own Cliffs, Valley and Ruins are a translucent wash over a hard
+black rim, so the planet's terrain shows through and the outline carries the shape.
+
+This mod points 48 LandmarkDefs at repainted 1024x1024 icons in that house style.
+Every silhouette is lifted unchanged from the shipping art, so footprints and atlas
+geometry are identical and nothing about worldgen or tile behaviour changes - only
+the picture.
+
+The four oceanic landmarks (Bay, Peninsula, CoastalIsland, Archipelago) are left
+alone deliberately: they ship as pure white silhouettes so the engine can tint them
+the ocean's own colour, and repainting them would break that tint.
+
+Patch-only. Load it LAST.</description>
+  <loadAfter>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>VanillaExpanded.VExplorationE</li>
+    <li>sarg.alphabiomes</li>
+    <li>Mlie.StarWarsAnimalCollection</li>
+  </loadAfter>
+</ModMetaData>

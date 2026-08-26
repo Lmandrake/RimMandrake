@@ -14,7 +14,7 @@ import landmark_icon_sheet as L                                     # noqa: E402
 import landmark_art as A                                            # noqa: E402
 
 REPO = L.REPO
-NEW = os.path.join(REPO, "src/RimMandrake/AshkarrLandmarkArt/Textures/World/Landmarks")
+NEW = os.path.join(REPO, "src/RimMandrake/AshkarrLandmarkArt/Textures/World/Landmarks/Ashkarr")
 BG = os.path.join(REPO, "world/_landmark_terrain.png")
 
 
