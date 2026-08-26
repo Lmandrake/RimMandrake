@@ -197,3 +197,30 @@ real tile, which proves the mechanism. I have NOT seen the word "caldera" or "ca
 mountain tile's pane, because no bridge tool selects an arbitrary world tile — `world_view`
 centres the globe without selecting, and the pane keeps whatever was last clicked. Clicking
 one Gray Crags tile in game would close it in two seconds.
+
+## Closed: the landform system IS loaded; it just never shows on the world map
+
+Player.log, after a save/load of the edited world:
+
+```
+Geological Landforms loaded. Will load compatibility patches.
+[Geological Landforms v1.7.13.1] Found landform data in the following mods:
+                                 Geological Landforms, Biome Transitions
+[Geological Landforms v1.7.13.1] Loaded 49 landforms of which 0 are edited and 0 are custom.
+```
+
+⇒ 49 landforms registered and operational. The remaining question was only whether they
+surface on the globe. **They do not.** Two different Mountainous Gray Crags tiles — one
+before the owner's save/load, one after — both report `Features: Mountain` and nothing
+else, with a single icon in the "Features in this tile" panel. `Valley` has
+`Commonness 1.0` for hilliness 3.7-4.8 Inland and both tiles qualify, so if landforms
+displayed on the world tile at least one would have named it.
+
+🔑 **Landform assignment happens at MAP generation.** The world pane cannot prove or
+disprove it, a reload does not change that, and no amount of clicking will.
+
+⚙️ The sighting closes for free the next time anyone lands on a Crags or Ashfall Range
+tile — that map IS the test. Do not build a special harness for it.
+
+⚠️ Also confirmed here: a save/load does NOT lose the edits. Tiles 0-2999 came back with
+Impassable 46 / Mountainous 310, and tile 18404 still carried `VEE_MoreSolarPower`.
