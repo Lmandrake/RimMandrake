@@ -167,16 +167,13 @@ adjudication cannot. `Agent_Policy.md`.
 machine-wide. It loads under the same name; `skills/review-sheets` no longer exists, and a fix goes in ITS repo.
 `frozen-artifacts` — freezing a decision, and the restraint not to over-freeze.
 
-⚠️ **A skill folder IS the installed skill** (corrected 2026-08-21): `.claude/skills/<name>` symlinks to
-`skills/<name>`, for the **25 that live here** ⇒ **editing the folder installs it, immediately.**
-⚠️ **Two skills are the exception**: `review-sheets` (moved out 2026-08-23) and `measuring-large-artifacts` live in their OWN repos and the symlink points outside this checkout — fix those THERE, not here. See `skills/README.md`. The `.skill` archives are an EXPORT for
-a machine without this checkout and are **gitignored** (`.gitignore:166`); refresh with
-`python3 src/RimMandrake/Utils/package_skill.py --all`.
+⚠️ **A skill folder IS the installed skill** — `.claude/skills/<name>` symlinks to `skills/<name>`,
+so editing the folder installs it immediately. ⚠️ `review-sheets` and `measuring-large-artifacts`
+live in their OWN repos; fix those there. Roster and the `.skill` export: `skills/README.md`.
 
 ## ⛔ Do not message other agents. At all.
 
-Owner, 2026-08-19. **Full rule in `CLAUDE.md` and `POLICY.md`; it is not restated here.** ✅ Your own
-subagents are not peers — spawn and resume them freely.
+Owner, 2026-08-19. Full rule in `CLAUDE.md` and `POLICY.md`. ✅ Your own subagents are not peers.
 
 ## 🔴 The ledger — 2026-08-20
 

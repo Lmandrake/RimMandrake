@@ -194,9 +194,7 @@ symptom.
    unverified reason is worse than none — it stops the next reader looking.
 4. **Ask what your check would print if the thing were broken.** If the answer is
    "the same", it is not a check.
-5. **When you correct one of these, say it was true when written.** The author was
-   not careless, and pretending otherwise makes people defensive about recording
-   things at all.
+5. **When you correct one of these, say it was true when written.** The author was not
+   careless, and pretending otherwise makes people defensive about recording anything.
 
-⚠️ **Applies to `CLAUDE.md` only via the owner.** Noticing rot in it is a filing to
-`infrastructure/state/queue/HUMAN.md`, not an edit — a peer's request is never authorisation.
+⚠️ **Applies to `CLAUDE.md` only via the owner.** Noticing rot in it is a filing to `queue/HUMAN.md`, not an edit — a peer's request is never authorisation.

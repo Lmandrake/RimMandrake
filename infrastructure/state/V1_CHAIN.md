@@ -383,23 +383,18 @@ example.
 | pawns | `basicMemberKind` · `pawnGroupMakers` with `options` and weights — **owed by the 8 AUTHORED factions only; the 6 reskins inherit them (R14)** |
 | ideo | `fixedIdeo` + `ideoName` + `ideoDescription` + `forcedMemes` (+ `deityPresets` where the faith has deities) |
 | optional | `apparelStuffFilter` `backstoryFilters` `xenotypeSet` `raidCommonalityFromPointsCurve` `disallowedRaidStrategies` `styles` |
-
 ### 12 · Scenario — the hole
-No document. It is the first thing the player touches: starting pawns, starting
-gear, the ship, the landing.
+No document. The first thing the player touches: starting pawns, gear, ship, landing.
 
 ## Act 5 — the playable session
 
-The owner's gate, four parts, all four required:
+The owner's gate, four parts, all required:
 
 1. One in-game day with no red errors in the log.
 2. Pawns eat, sleep, haul and work — no stuck jobs, no pathing deadlock.
-3. The clan reads as Jawas on a desert world. ⚠️ **Taste. The owner's eyes are
-   the instrument — do not fake a call for it.**
+3. The clan reads as Jawas on a desert world. ⚠️ **Taste — the owner's eyes are the
+   instrument; do not fake a call for it.**
 4. One save / reload round trip without loss.
 
 Anything found in act 5 that is not one of these four is `[v2]`.
-
-## What this file supersedes
-
-`faction_stage3_buildable_spec.md` on the vessel column.
+## What this file supersedes — `faction_stage3_buildable_spec.md` on the vessel column.

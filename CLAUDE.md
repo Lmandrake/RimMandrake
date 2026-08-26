@@ -122,8 +122,7 @@ beside it:** `B58 (the dead Jawa pawnkind)`, never a bare `B58`.
 
 ## Superseding a doc means writing INTO the doc you superseded
 
-**Owner's rule, 2026-08-20**, issued after an audit of two doc clusters. Across 14
-files only three items had actually gone wrong, and all three were the same failure:
+**Owner's rule, 2026-08-20.** An audit of 14 files found three defects, all the same one:
 a doc was answered by a better one and never told.
 
 - 🔑 **When you supersede, correct or measure against another file, put ONE line at
@@ -144,19 +143,15 @@ a doc was answered by a better one and never told.
 
 ## 🔴 RUN IT. DO NOT HAND HIM A COMMAND TO PASTE — owner, 2026-08-22
 
-> *"From now on, for ALL agents, instead of asking me to type `! python` for me, JUST RUN
-> IT YOURSELF, ok? No more of this cut-paste weirdness. Make this true."*
+> *"instead of asking me to type `! python` for me, JUST RUN IT YOURSELF, ok?"*
 
-⛔ **A `!`-prefixed line for him to paste is the DEFECT now, not the fix.** ① Run it and
-report the outcome. ② A guard that refuses YOU is not a task for HIM — find the flag or
-override; in `rimflow` that is **`--owner-said "<his verbatim words>"`**, which records his
-authorization on the event. ③ Only if the act is genuinely his — his hands, his eyes, his
-account, an authorization he has not given — **ask a question, not a command line.**
-
-🔴 **Enforced, not merely written:** `.claude/hooks/block_paste_handoff.py` on `Stop` blocks
-the turn when your final message hands him one. ✅ `./game up|down|loading` and `broadcast.py`
-pass — those are his. ⭐ **Paths are the opposite half and unchanged:** anything he must LOOK
-at still comes with the complete native path.
+⛔ **A `!`-prefixed line for him to paste is the DEFECT, not the fix.** ① Run it, report the
+outcome. ② A guard that refuses YOU is not a task for HIM — find the flag or override; in
+`rimflow` that is **`--owner-said "<his verbatim words>"`**. ③ Only if the act is genuinely his
+— his hands, eyes, account, or an authorization he has not given — **ask a question, not a
+command line.** 🔴 Enforced by `.claude/hooks/block_paste_handoff.py` on `Stop`; `./game` and
+`broadcast.py` pass, those are his. ⭐ **Paths are the opposite half:** anything he must LOOK at
+comes with the complete native path.
 
 ## Git
 
@@ -179,18 +174,14 @@ message whose target names a seat (BUILD · CHECK · DECIDE · REP) is refused b
 is sent, with the queue files named in the refusal. `ListAgents` stays denied outright, so peers cannot be enumerated either.
 
 ⚠️ **`crossSessionInbound` is `accept`, and that is DELIBERATE — do not "fix" it to
-`refuse`.** Corrected 2026-08-19 after three docs, this one included, claimed it read
-`refuse`. It never did, and it must not: the owner's `broadcast.py` reaches every window
-through that same inbound socket, which Claude Code runs through the same inbound
-controls as any other peer message. `refuse` would silence **the owner's own game-state
-announcements** — the one class of message that is supposed to get through.
+`refuse`.** The owner's `broadcast.py` reaches every window through that same inbound
+socket, so `refuse` would silence **his own game-state announcements** — the one class of
+message that is supposed to get through.
 
-🔑 **Why a hook and not a deny rule.** `permissions.deny: ["SendMessage"]` was the old
-mechanism and it was too blunt: Claude Code's docs are explicit that *"denying
-SendMessage also removes messaging to subagents, since the same tool serves both"*, and
-there is no scoped syntax to separate them. It enforced "no peer messaging" by also
-breaking every subagent resume — a seat could spawn a worker and never collect from it.
-The owner ruled 2026-08-19: *"Sub-agents should function normally."*
+🔑 **Why a hook and not a deny rule.** ⛔ `permissions.deny: ["SendMessage"]` is too blunt —
+the docs are explicit that *"denying SendMessage also removes messaging to subagents, since
+the same tool serves both"*, with no scoped syntax to separate them, so it breaks every
+subagent resume. Owner, 2026-08-19: *"Sub-agents should function normally."*
 
 **The only thing that legitimately crosses windows is the owner announcing a change of
 GAME STATE** — *game is up* · *game is loading* · *WRAP is initiated* — and **the owner
@@ -299,8 +290,7 @@ python3 src/RimMandrake/Utils/broadcast.py "Game is up"          # 🔴 OWNER ON
 python3 src/RimMandrake/Utils/broadcast.py --to CHECK,BUILD "…"  # 🔴 OWNER ONLY
 ```
 
-Paths in prose are always full and native, in backticks:
-`D:\Luke\dev\Rimworld\infrastructure\state\V1.md`.
+Paths in prose are always full and native, in backticks: `D:\Luke\dev\Rimworld\infrastructure\state\V1.md`.
 
 ## Skills
 

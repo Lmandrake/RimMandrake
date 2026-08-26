@@ -151,9 +151,7 @@ Maps, saves, colonies, deployed mod folders, live game state — destroy them fr
 
 ## ⛔ AGENTS DO NOT MESSAGE EACH OTHER. AT ALL. — owner's ruling, 2026-08-19
 
-**`SendMessage` to another agent window is off.** Not rationed, not for emergencies. Waking another seat is a **USER function**. No exception for urgency, a reversed ruling, a peer about to destroy work, a spec, a handoff, a finding or a status. **If it is genuinely urgent, tell the OWNER in your own reply.**
-
-🔴 **Enforced at the SENDING end**: `.claude/settings.json` runs `.claude/hooks/block_peer_messages.py` as a `PreToolUse` hook and a message naming a seat is refused before it leaves. ⚠️ `crossSessionInbound` is **`accept` on purpose** — the owner's `broadcast.py` reaches you through that same socket. ✅ **Your own subagents are NOT peers and are NOT covered**; spawn and resume them freely. Full ruling in `CLAUDE.md`, auto-loaded every session.
+**`SendMessage` to another agent window is off.** Not rationed, not for emergencies. Waking another seat is a **USER function**. No exception for urgency, a reversed ruling, a peer about to destroy work, a spec, a handoff, a finding or a status. **If it is genuinely urgent, tell the OWNER in your own reply.** 🔴 **Enforced at the SENDING end** by `.claude/hooks/block_peer_messages.py` (`PreToolUse`): a message naming a seat is refused before it leaves. ⚠️ `crossSessionInbound` is **`accept` on purpose** — the owner's `broadcast.py` reaches you through that same socket. ✅ **Your own subagents are NOT peers**; spawn and resume them freely. Full ruling in `CLAUDE.md`, auto-loaded every session.
 
 ## 🔴 THE QUEUES ARE NOT FILES YOU EDIT — 2026-08-20
 
