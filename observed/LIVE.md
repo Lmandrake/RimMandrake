@@ -883,3 +883,15 @@ distinct biomes live, all surviving; Desert 4,205 · HorrorWastes 1,711 · AB_My
 not exist in this game. `Sanguophage` is not cut.
 ⚙️ The `BMT_*` and `VWE_Tool_Whip` cross-reference failures are **absent source mods, not our cuts** —
 tested against the removal set. The `TG_Husbandry` NRE is the same null `thingDef`.
+
+📌 **Post-load 2026-08-26, 582 mods, `[JawaBench] ready: 166 tools, build 70b3b117`.** All three new
+tools registered — `jawa/pawn_stats`, `jawa/room_get`, `jawa/thing_stats`.
+🔑 **Comfortable-temperature gene tiers, measured on STRIPPED pawns:** Small = ±10 · Large = −20 on
+min · `MaxTemp_SmallDecrease` = −4.5. Baseliner and every gene-free xenotype read exactly
+**−40…+45**; `MandrakeJawa` **−50…+55**; `RimMandrakeChiss` **−60…+40.5**; `RimMandrakeWookiee`
+**−60…+55** (Furskin stacks a further −10).
+⚠️ **Read these on a stripped pawn or you are measuring clothes** — dressed, the same three gene-free
+xenotypes disagreed by 33 °C.
+📌 **`mapCount: 1` does not mean drivable.** `start_debug_game_ready` returns while
+`programState` is `MapInitializing` and `currentMapId` is null, and `spawn_pawn` then refuses with
+"No current map". Poll `get_cell_info` → `state.currentMapId`.

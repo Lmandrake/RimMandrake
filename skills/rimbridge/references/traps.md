@@ -530,3 +530,53 @@ debug-action work belongs.
 timeout (`RimBridge(..., timeout=120)`), and check `tasklist.exe | grep -i rimworld` to confirm the
 process is alive rather than assuming a crash. The §4 warning that enumerating debug actions
 "destroyed a 568-mod game" is the same failure at a larger scale.
+
+## 🔴 `jawa/pawn_stats` — a stat that APPAREL moves must be read on a STRIPPED pawn
+
+Measured 2026-08-26 on the tool's first real use, and it very nearly shipped a wrong answer.
+
+`ComfyTemperatureMin` / `ComfyTemperatureMax` include worn apparel's insulation. Spawned pawns come
+dressed by the generator, so reading them compares **clothes**, not xenotypes:
+
+```
+dressed   Baseliner -56.32 ... 47.50    MandrakeJawa -77.32 ... 60.28
+          three xenotypes with NO temperature gene at all read -74.76, -55.92 and -88.80
+```
+
+🔑 **Three gene-free xenotypes disagreeing by 33 °C is the tell.** Strip first:
+
+```
+jawa/pawn_gear {pawn: <id>, action: "clear", clearWhat: "apparel"}
+```
+
+```
+stripped  Baseliner / Ugnaught / Twilek / KelDor   -40.00 ... 45.00   (identical, no gene)
+          MandrakeJawa    -50.00 ... 55.00   Small down + Small up
+          RimMandrakeChiss  -60.00 ... 40.50   Large down + MaxSmall down
+          RimMandrakeWookiee -60.00 ... 55.00   Furskin STACKS a further -10 on the min
+```
+
+⇒ Gene tiers, measured: **Small = ±10 · Large = −20 on min · `MaxTemp_SmallDecrease` = −4.5.**
+⚠️ The same discipline applies to any stat apparel, a weapon or a hediff can move. The tool reports
+the instance faithfully; the instance is just wearing something.
+
+## `[JawaBench] ready` is LAZY — a missing line is not a failed deploy
+
+The module initializer waits for the first `jawa/*` **tool call**, not assembly load, and
+`tools/list` does not trigger it. Measured 2026-08-26: `harvest_log.py` scored
+`RED  JawaBench ready  0  MISSING` at the main menu with a perfectly good 166-tool DLL, and the line
+appeared the instant `jawa/get_def` was called. ⇒ **Census the live tool list; never use that line as
+the deploy signature.**
+
+## `rimworld/start_debug_game_ready` returns before the map is DRIVABLE
+
+```
+start_debug_game_ready -> success true, "RimWorld map data is available"
+                          state: programState MapInitializing, currentMapId NULL
+get_game_info          -> mapCount 1                       <- and yet
+jawa/spawn_pawn        -> "No current map. Load a game first."
+```
+
+⚠️ **`mapCount: 1` answers "does a map exist", NOT "can I drive it".** `Find.CurrentMap` was still
+null. Poll `rimworld/get_cell_info` → `state.currentMapId` until it is non-null (a few seconds); that
+is the only reading that means the map will accept a write.
