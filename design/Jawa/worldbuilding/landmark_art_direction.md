@@ -259,7 +259,7 @@ A karst pinnacle field: tall isolated stone towers seen from directly above, so 
 
 **4 tiles on Ash'karr · treatment `maw`**
 
-The same gaping beaked maw, desiccated -- at the bottom of a grey husk of a pit, still with a dark black centre. Everything that was leathery is now papery and bleached; the teeth are dulled and snapped, the beak cracked grey, the funnel wall the colour of old bone with sand drifting into it. Only the black centre is unchanged. Words: desiccated, husked, bleached, brittle, hollow.
+The same gaping beaked maw, desiccated -- at the bottom of a grey husk of a pit, still with a dark black centre. Everything that was bone is now chalk: the needles bleached, thinned and mostly snapped off short, far fewer of them left standing, the barbs cracked pale grey and half buried in drifted sand. The funnel walls have slumped to the colour of old ash. Only the black hole is exactly as it was. Words: desiccated, snapped, bleached, brittle, hollow.
 
 ## AncientHeatVent
 
@@ -301,7 +301,7 @@ A frontier town left standing. Prefab roofs and sheet siding in faded paint colo
 
 **1 tiles on Ash'karr · treatment `maw`**
 
-A gaping beaked maw at the bottom of a deep pit of teeth, with a dark black centre. Read it from the outside in: drifted sand banked around the lip, then the funnel wall dropping away in warm leathery tan, then a ring of long inward-pointing teeth whose pale tips reach toward the middle over dark gullets between them, then the hard chitinous beak, then nothing at all -- a flat black hole with no gradient into it, because a throat is an absence and any falloff turns it back into a dent. Words: beaked, toothed, funnelled, patient, bottomless.
+A gaping beaked maw at the bottom of a deep pit of teeth, with a dark black centre. Take the reference literally: a bowl of pale wind-blown sand falling away into shadow, and set off-centre in the bottom of it a large irregular BLACK hole. Around that hole a dense crowd of thin bone-coloured needles leans inward -- a hundred of them, every one a different length, crowding thicker on one side than the other, the longest overhanging the edge so the hole is fringed rather than ringed. Three or four heavy curved brown barbs lie around the upper lip. Nothing evenly spaced, nothing the same size as its neighbour. Words: bristling, funnelled, beaked, patient, bottomless.
 
 ## AncientLaunchSite
 

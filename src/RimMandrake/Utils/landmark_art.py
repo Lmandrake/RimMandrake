@@ -20,7 +20,7 @@ import os
 import zlib
 
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image, ImageDraw, ImageFilter
 
 SS = 2
 CELL = 512                    # 1024x1024 per file, 2x2 atlas -- 4x Ludeon's density
@@ -457,59 +457,87 @@ def t_channel(mask, rng, P):
 
 
 def t_maw(mask, rng, P):
-    """A pit that is also a mouth.  Read from the outside in: a drifted collar of ground,
-    then the funnel wall falling away, then a ring of inward-pointing TEETH whose tips
-    reach toward the middle, then the beak, then black.
+    """A sarlacc pit, drawn from the reference stills rather than from geometry.
 
-    The teeth are what make it a maw rather than a crater, so they are cut as a radius
-    threshold that varies with angle -- long tips, wide gullets -- and not as a texture.
-    The centre is a hard black aperture with no gradient into it: a gullet is an absence,
-    and any falloff turns it back into a dent."""
+    What the films actually show is NOT a ring of teeth: it is a sand funnel with an
+    off-centre black hole at the bottom, a CROWD of thin needle spines of wildly
+    different lengths leaning inward over the hole -- unevenly distributed, denser on
+    one side, overhanging the edge -- and a few thick curved brown barbs lying around
+    the rim.  Evenly spaced wedges of equal size read as a cog or a ship's wheel, which
+    is what two earlier attempts produced.
+
+    So the spines are DRAWN, one polygon each, not thresholded out of a field.  That is
+    the only way to get a hundred individually irregular needles."""
     N = mask.shape[0]
     ys, xs = np.nonzero(mask)
+    R = max(np.sqrt(mask.sum() / np.pi), 8.0)
     cy, cx = ys.mean(), xs.mean()
     gy, gx = np.mgrid[0:N, 0:N].astype("float32")
-    th = np.arctan2(gy - cy, gx - cx)
-    R = max(np.sqrt(mask.sum() / np.pi), 4.0)
-    r = np.hypot(gy - cy, gx - cx) + _fbm((N, N), rng, N / 5.0, R * P.get("warp", 0.10))
-    t = np.clip(r / R, 0, 1.3)
 
+    # --- sand funnel: bright at the lip, falling away into shadow
+    r = np.hypot(gy - cy, gx - cx) + _fbm((N, N), rng, N / 5.0, R * P.get("warp", 0.09))
+    t = np.clip(r / R, 0, 1.25)
     rgb = _grad(np.clip(t / 1.15, 0, 1),
-                [(0.0, P["throat"]), (0.30, P["wall"]), (0.62, P["base"]),
-                 (0.86, P["lit"]), (1.0, P["collar"])])
-
-    # Teeth must be INDIVIDUAL: one cosine gives a cog wheel -- every tooth the same
-    # length, the same width, evenly spaced, and no dark gullet showing between them.
-    # Each tooth therefore gets its own length and width from a per-tooth table.
-    n = P.get("teeth", 9)
-    u = ((th + np.pi + rng.uniform(0, 6.283)) / (2 * np.pi) * n) % n
-    idx = np.floor(u).astype(int) % n
-    lens = rng.uniform(0.70, 1.32, n).astype("float32")
-    wids = rng.uniform(0.34, 0.72, n).astype("float32")
-    frac = u - np.floor(u)
-    prof = np.clip(1.0 - np.abs(frac - 0.5) * 2.0 / np.maximum(wids[idx], 1e-3), 0, 1)
-    prof = prof ** P.get("taper", 1.5)
-    tip = P.get("tip", 0.20) + P.get("reach", 0.34) * (1.0 - prof * lens[idx])
-    gum = P.get("gum", 0.66)
-    gap = (t < gum) & (t > P.get("beak_at", 0.30))
-    rgb[gap] = np.array(P.get("gullet_wall", P["throat"]), "float32")   # dark between teeth
-    # A tooth also has to taper IN RADIUS, or it is a spoke: widest where it leaves the
-    # gum, narrowing to a point at the tip.  Without this the ring reads as a ship's wheel.
-    q = np.clip((gum - t) / np.maximum(gum - tip, 1e-3), 0, 1)
-    tooth = (t < gum) & (t > tip) & (prof > q * P.get("point", 0.92) + 0.05)
-    rgb[tooth] = np.array(P["tooth"], "float32")
-    edge = tooth & ~_erode(tooth, max(1, int(N * 0.005)))
-    rgb[edge] = np.array(P.get("tooth_edge", P["wall"]), "float32")
-
-    # beak_at is a RADIUS; "beak" is the colour.  One key cannot be both, and the
-    # collision only shows up as a broadcast error at paint time.
-    beak = (t < P.get("beak_at", 0.30)) & (t > P.get("mouth", 0.17))
-    rgb[beak] = np.array(P["beak"], "float32")
-    black = t < P.get("mouth", 0.17) * (1.0 + 0.30 * np.sin(3 * th + rng.uniform(0, 6.283)))
-    rgb[black] = P.get("gullet", (6, 5, 5))
-
+                [(0.0, P["throat"]), (0.34, P["wall"]), (0.66, P["base"]),
+                 (0.88, P["lit"]), (1.0, P["collar"])])
     a = np.full(mask.shape, float(P.get("alpha", 216)), "float32")
-    a[black] = 252.0
+
+    ov = Image.new("RGBA", (N, N), (0, 0, 0, 0))
+    d = ImageDraw.Draw(ov)
+    mcy = cy + R * rng.uniform(-0.14, 0.14)
+    mcx = cx + R * rng.uniform(-0.14, 0.14)
+    Rm = R * P.get("mouth", 0.34)
+    ph = rng.uniform(0, 6.283, 4)
+
+    def maw_r(th):
+        # keep the amplitudes low: a hole is IRREGULAR, not spiky, and big harmonics
+        # turn it into a star that the spines then merge into
+        return Rm * (1.0 + 0.13 * np.sin(3 * th + ph[0]) + 0.07 * np.sin(5 * th + ph[1])
+                     + 0.04 * np.sin(8 * th + ph[2]))
+
+    th = np.linspace(0, 2 * np.pi, 160)
+    d.polygon([(mcx + maw_r(q) * np.cos(q), mcy + maw_r(q) * np.sin(q)) for q in th],
+              fill=tuple(P.get("gullet", (6, 5, 5))) + (255,))
+
+    # --- the spines.  Angular density is itself lumpy, so they crowd on one side.
+    lump = rng.uniform(0, 6.283)
+    for _ in range(P.get("spines", 130)):
+        q = rng.uniform(0, 2 * np.pi)
+        if rng.random() > 0.35 + 0.65 * (0.5 + 0.5 * np.cos(q - lump)):
+            continue
+        mr = maw_r(q)
+        # Set the TIP radius directly instead of subtracting a length.  Subtracting sent
+        # long spines all the way to the centre, and a hundred needles meeting at a point
+        # is a spider, not a maw: the hole has to stay open and black.
+        rt = mr * rng.uniform(P.get("tip_lo", 0.62), P.get("tip_hi", 1.00))
+        rb = rt + mr * rng.uniform(0.34, 1.05) * P.get("length", 1.0)
+        w = mr * rng.uniform(0.030, 0.085)
+        bend = rng.uniform(-0.20, 0.20)
+        bx, by = mcx + rb * np.cos(q), mcy + rb * np.sin(q)
+        tx, ty = mcx + rt * np.cos(q + bend), mcy + rt * np.sin(q + bend)
+        px, py = -np.sin(q), np.cos(q)
+        pale = P["tooth"] if rng.random() > 0.25 else P.get("tooth2", P["tooth"])
+        d.polygon([(bx + px * w, by + py * w), (bx - px * w, by - py * w), (tx, ty)],
+                  fill=tuple(pale) + (255,), outline=tuple(P.get("tooth_edge", P["wall"])) + (255,))
+
+    # --- a few heavy curved barbs lying around the lip
+    for _ in range(P.get("barbs", 4)):
+        q0 = rng.uniform(0, 2 * np.pi)
+        sweep = rng.uniform(0.5, 1.3) * (1 if rng.random() < 0.5 else -1)
+        rr = R * rng.uniform(0.62, 0.94)
+        qs = np.linspace(q0, q0 + sweep, 26)
+        wid = R * 0.075 * np.linspace(1.0, 0.18, 26)
+        outer = [(mcx + (rr + w2) * np.cos(q2), mcy + (rr + w2) * np.sin(q2))
+                 for q2, w2 in zip(qs, wid)]
+        inner = [(mcx + (rr - w2) * np.cos(q2), mcy + (rr - w2) * np.sin(q2))
+                 for q2, w2 in zip(qs, wid)][::-1]
+        d.polygon(outer + inner, fill=tuple(P["barb"]) + (255,),
+                  outline=tuple(P.get("barb_edge", P["wall"])) + (255,))
+
+    ova = np.asarray(ov, dtype="float32")
+    hit = ova[..., 3] > 128
+    rgb[hit] = ova[..., :3][hit]
+    a[hit] = float(P.get("alpha", 216)) + 24
     return rgb, a
 
 
@@ -880,28 +908,33 @@ SPECS = {
     sheen=(238, 176, 172), gullet=(48, 18, 26), folds=9, maw=0.34, alpha=216),
 
 "sw_Sarlacc": S("""A gaping beaked maw at the bottom of a deep pit of teeth, with a dark
-    black centre. Read it from the outside in: drifted sand banked around the lip, then the funnel
-    wall dropping away in warm leathery tan, then a ring of long inward-pointing teeth whose pale
-    tips reach toward the middle over dark gullets between them, then the hard chitinous beak, then
-    nothing at all -- a flat black hole with no gradient into it, because a throat is an absence
-    and any falloff turns it back into a dent. Words: beaked, toothed, funnelled, patient,
-    bottomless.""",
-    "maw", collar=(186, 160, 120), lit=(206, 180, 138), base=(150, 118, 84),
-    wall=(96, 72, 50), throat=(38, 28, 22), tooth=(226, 212, 184), tooth_edge=(92, 74, 56),
-    beak=(74, 56, 42), gullet=(6, 5, 5), gullet_wall=(52, 36, 26), teeth=11, taper=1.15, tip=0.20, reach=0.34,
-    gum=0.72, beak_at=0.32, mouth=0.27, warp=0.13, point=0.92, alpha=218),
+    black centre. Take the reference literally: a bowl of pale wind-blown sand falling away into
+    shadow, and set off-centre in the bottom of it a large irregular BLACK hole. Around that hole
+    a dense crowd of thin bone-coloured needles leans inward -- a hundred of them, every one a
+    different length, crowding thicker on one side than the other, the longest overhanging the
+    edge so the hole is fringed rather than ringed. Three or four heavy curved brown barbs lie
+    around the upper lip. Nothing evenly spaced, nothing the same size as its neighbour. Words:
+    bristling, funnelled, beaked, patient, bottomless.""",
+    "maw", collar=(196, 172, 132), lit=(214, 190, 148), base=(158, 128, 92),
+    wall=(88, 66, 46), throat=(30, 22, 18), tooth=(228, 216, 186), tooth2=(198, 180, 142),
+    tooth_edge=(92, 74, 54), barb=(96, 62, 40), barb_edge=(42, 28, 18),
+    gullet=(5, 4, 4), mouth=0.42, spines=120, length=1.0, tip_lo=0.74, tip_hi=1.04,
+    barbs=4, warp=0.09, alpha=218),
+
 "sw_DeadSarlacc": S("""The same gaping beaked maw, desiccated -- at the bottom of a grey husk
-    of a pit, still with a dark black centre. Everything that was leathery is now papery and
-    bleached; the teeth are dulled and snapped, the beak cracked grey, the funnel wall the colour
-    of old bone with sand drifting into it. Only the black centre is unchanged. Words: desiccated,
-    husked, bleached, brittle, hollow.""",
-    "maw", collar=(178, 172, 158), lit=(198, 192, 178), base=(160, 154, 140),
-    wall=(112, 108, 98), throat=(58, 55, 50), tooth=(220, 216, 206), tooth_edge=(120, 116, 106),
-    beak=(126, 122, 112), gullet=(8, 8, 8), gullet_wall=(86, 82, 74), teeth=11, taper=1.05, tip=0.24, reach=0.28,
-    gum=0.70, beak_at=0.32, mouth=0.27, warp=0.17, point=0.86, alpha=206),}
+    of a pit, still with a dark black centre. Everything that was bone is now chalk: the needles
+    bleached, thinned and mostly snapped off short, far fewer of them left standing, the barbs
+    cracked pale grey and half buried in drifted sand. The funnel walls have slumped to the
+    colour of old ash. Only the black hole is exactly as it was. Words: desiccated, snapped,
+    bleached, brittle, hollow.""",
+    "maw", collar=(190, 184, 170), lit=(206, 200, 186), base=(158, 152, 140),
+    wall=(104, 100, 92), throat=(52, 50, 46), tooth=(224, 220, 210), tooth2=(178, 174, 164),
+    tooth_edge=(112, 108, 100), barb=(140, 134, 124), barb_edge=(78, 74, 68),
+    gullet=(7, 7, 7), mouth=0.42, spines=46, length=0.55, tip_lo=0.84, tip_hi=1.06,
+    barbs=3, warp=0.13, alpha=206),
+}
 
 
-# ---------------------------------------------------------------- the painter
 
 def _source_cells(path, atlas):
     """Silhouettes from a shipping icon, at CELL*SS.  The mask is LIFTED, never
@@ -946,6 +979,11 @@ def paint(name, src_path, atlas, out_path):
     return out_path
 
 
+# 🔒 Signed off by the owner on 2026-08-25 and NOT to be regenerated.  These two were
+# approved from a specific roll of the RNG, and at the time the seed came from hash(),
+# which Python salts per process -- so "regenerate" meant "reroll and lose them".  The
+# seed is stable now, but the treatments have since been retuned, so a rerun would still
+# produce different art.  paint_all skips them; pass force=True only if the owner asks.
 # 🔒 Signed off by the owner on 2026-08-25 and NOT to be regenerated.  These two were
 # approved from a specific roll of the RNG, and at the time the seed came from hash(),
 # which Python salts per process -- so "regenerate" meant "reroll and lose them".  The
