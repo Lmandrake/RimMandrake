@@ -746,3 +746,33 @@ a clear touches one endpoint, so the graph goes asymmetric and a `(min,max)` edg
 dangling half as a whole edge; it under-reported 40 losses as 9. Restored exactly from the
 pre-write harvest, mouth-first by `riverDist`: 325/325 edges, defs identical, riverDist
 identical on all 21,872 tiles.
+
+## 2026-08-26 — the world-authoring session
+
+🔴 **`world_mutators_audit`'s `mutatorHistogram` OMITS DEFS — it is not a census.** It reported
+0 for `RiverDelta`, `AB_GeothermalHotspots` and `VEE_SmokeVents` while a direct
+`world_mutators_get` showed them on 9, 3 and 5 tiles. Use it for `offenderCount` only.
+⚠️ Its `marineChecked` scope is **`['Coast']` by default**; widening it on a guess flagged
+**313** unrelated placements and an agent auto-removed **50** before noticing. Default scope,
+and never bulk auto-remove.
+
+🔴 **`World.CoastDirectionAt` recognises `Ocean` and nothing else.** A tile whose every water
+neighbour is `SeaIce` — or `Lake` — is NOT coastal, so every coastline-gated def placed there
+is illegal and misbehaves silently. 11 such `Coast` markers were written and removed.
+
+🔴 **Settlements CAN be created from the bridge** — `jawa/world_objects_add`
+(`def`/`tile`/`faction`/`name`) after `jawa/tile_settleable`, then `world_commit`.
+⚠️ `world_objects_set` only MODIFIES, which makes it look impossible. **`faction` is required:
+a null-faction Settlement is DESTROYED on load** and `world_objects_validate` is the check.
+
+⚠️ **A LandmarkDef's `IsValidTile` can be unsatisfiable where the MUTATOR form is legal**
+(`VEE_DryRiver`: false on every tile probed as a landmark; fine as a mutator, 39 → 51).
+`AddLandmark` also reports `added` for invalid tiles, and judges validity **per tile as a batch
+proceeds**, so batched coastal landmarks invalidate each other. Place one at a time.
+
+📌 **Live bridge surface: 246 tools, 121 `jawa/*`, 33 `jawa/world_*`.**
+
+📌 **Ash'karr after this session:** roads 891 → 1,247 edges; planet mutator placements
+**11,948 → 13,655**; settlements 93 → 96; landmarks 579; rivers 325 edges (restored exactly
+after a `clearFirst` accident); features 72 incl. *The Abandoned Mines*. Scald water mutators
+8 → 318. Working scripts: `world/_roads/`, `world/_scald/`, `world/_twilight/`, `world/_grey/`.
