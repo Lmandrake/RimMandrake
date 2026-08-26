@@ -83,6 +83,47 @@ trusting any model name here; do not pin one from a doc.
 quality beyond one smoke question. It proves the family is *reachable and toolable*,
 which is exactly what kimi-k3 failed. It does not prove a nemotron can run a seat.
 
+### 🔴 Measured 2026-08-26 by REP — context and a real agentic loop
+
+Two things the availability probe could not reach. Harness:
+`src/RimMandrake/Utils/nemotron_agent_trial.py`; results `research/nemotron_agent_*.json`.
+
+**Context — `nvidia/nemotron-3-super-120b-a12b` retrieves at 616k prompt tokens.**
+Needle-in-haystack, needle at head / middle / tail, at 12k / 185k / **616k** measured
+`prompt_tokens`: **9 of 9 recovered.** ⚠️ It never errors on an over-long prompt, so
+*acceptance proves nothing* — the retrieval test is the only thing that distinguishes a
+long context from silent truncation. Two cells first returned 503 and both passed on the
+first retry, which is the 503-is-transient finding again.
+
+**Agentic loop — a real chain over this repo's def XML.** The model gets `grep_defs` and
+`read_def_file` and must find `JawaIon_Stun`, count its stages, and compute decay hours
+from `severityPerDay` (0.9 ÷ 1.2 = 0.75 day = **18 h**). Ground truth is
+`src/Jawa/JawaIonWeapons/Defs/HediffDefs_JawaIonStun.xml`.
+
+| Model | turns | wall | result |
+|---|---|---|---|
+| `nvidia/nemotron-3-super-120b-a12b` | 5 | 26 s | ✅ `JawaIon_Stun \| 4 \| 18`, format exact |
+| `nvidia/nemotron-3.5-lightning-30b-a3b` | 4 | 33 s | ✅ correct |
+| `nvidia/nemotron-3-ultra-550b-a55b` | 4 | 22 s | ✅ correct (one 500, retried) |
+| `nvidia/nemotron-3-nano-30b-a3b` | **10 (cap)** | 30 s | ⛔ **never answered** |
+
+🔑 **The discriminator is error RECOVERY, not tool-call syntax.** All four emit valid
+OpenAI-shaped calls with correct arguments — that is why `nemotron_probe.py` passed all
+four. nano-30b then dropped the `src/` prefix on turn 3 (`Jawa/JawaIonWeapons/…`), got a
+plain `(no such file: …)`, and **thrashed on `grep_defs` for seven turns — repeating one
+pattern verbatim — without ever retrying the read**, though its own turn-2 grep output
+held the correct full path. ⚠️ **A one-call probe cannot see this failure class.** Any
+model considered for a seat must be run through a multi-turn loop with a deliberate bad
+argument in it.
+
+⇒ **`nvidia/nemotron-3-super-120b-a12b` is the candidate**: 20/20 sustained, 616k
+retrieval, tools chained over four turns, correct arithmetic, ~1.2 s first token.
+⛔ **Still not REP's call to make** — see the `Agent_Policy.md` correction above.
+
+⚠️ **What remains unmeasured:** behaviour under Claude Code's actual system prompt and
+11-hook surface, `reasoning_content` with no Anthropic equivalent, and anything
+long-horizon. A 5-turn success is not a session.
+
 ## criteria
 
 - LiteLLM running on `localhost:4000`, version pinned and recorded, **not** 1.82.7/1.82.8.
