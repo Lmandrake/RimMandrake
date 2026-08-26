@@ -75,6 +75,11 @@ class Refusal:
     reason: str
     x: int | None = None
     z: int | None = None
+    # 🔑 A refusal is not always a WARN. "the palette has no entry for X" is a
+    # note; "this thing would be destroyed by the next one" is an ERROR, and
+    # lint must be able to tell them apart without matching on prose.
+    level: str = "WARN"
+    code: str = "generator-refusal"
 
 
 class BuildPlan:
@@ -104,8 +109,9 @@ class BuildPlan:
         self.rooms.append(r)
         return r
 
-    def refuse(self, what, reason, x=None, z=None):
-        self.refusals.append(Refusal(what, reason, x, z))
+    def refuse(self, what, reason, x=None, z=None,
+               level="WARN", code="generator-refusal"):
+        self.refusals.append(Refusal(what, reason, x, z, level, code))
 
     # -- query --------------------------------------------------------------
     def thing_at(self, x, z):

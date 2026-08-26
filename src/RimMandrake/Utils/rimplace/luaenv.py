@@ -52,6 +52,7 @@ class Ctx:
         self.rng = rng
         self.site = site
         self._room_seq = 0
+        self._sizes = None          # lazy: the ThingDef footprint index
 
     # ---- palette ----------------------------------------------------------
     def role(self, name):
@@ -79,6 +80,48 @@ class Ctx:
     def occupied(self, x, z):
         return self.plan.occupied(int(x), int(z))
 
+    # ---- footprints -------------------------------------------------------
+    def sizes(self):
+        """The ThingDef size index, loaded once. {} means UNMEASURED."""
+        if self._sizes is None:
+            try:
+                from .defsize import load as _load
+                self._sizes = _load()
+            except Exception:
+                self._sizes = {}
+        return self._sizes
+
+    def footprint_of(self, defName, x, z, rot=0):
+        """The cells a thing would occupy, or None if its size is unmeasured."""
+        from .defsize import footprint as _fp
+        return _fp(str(defName), int(x), int(z), int(rot or 0), self.sizes())
+
+    def _footprint_owner(self, cells, defName, origin):
+        """The already-placed thing whose own footprint covers any of `cells`.
+
+        Rebuilt per call rather than cached: door() removes the wall it
+        replaces, and a stale occupancy map would refuse the door. A plan holds
+        a few hundred things, so this is cheap and cannot drift.
+        """
+        sizes = self.sizes()
+        if not sizes:
+            return None
+        from .defsize import footprint as _fp
+        for t in self.plan.things:
+            # Only the IDENTICAL thing in the IDENTICAL cell is exempt - that is
+            # the shared-wall-column case place() already returns True for. Two
+            # shelves at different origins overlap exactly as much as a shelf
+            # and a table do, and the live map lost two shelves that way.
+            if t.defName == str(defName) and (t.x, t.z) == origin:
+                continue
+            own = _fp(t.defName, t.x, t.z, t.rot or 0, sizes)
+            if own is None:
+                continue
+            hit = cells & own
+            if hit:
+                return t, sorted(hit)[0]
+        return None
+
     # ---- emit -------------------------------------------------------------
     def place(self, defName, x, z, rot=0, stuff=None, role=None):
         x, z = int(x), int(z)
@@ -97,10 +140,89 @@ class Ctx:
         for ex in self.plan.thing_at(x, z):
             if ex.defName == str(defName):
                 return True
+
+        # 🔴 FOOTPRINT, not the origin cell. TEMPLATE_FOOTPRINT_IGNORES_SIZE_1:
+        # this used to check (x,z) alone, so a 1x2 Table1x2c placed at (176,171)
+        # left (176,172) looking free, a DiningChair went there, and
+        # jawa/build_batch wiped the chair while reporting BOTH as placed. Three
+        # of 81 things vanished that way and lint reported nothing.
+        cells = self.footprint_of(defName, x, z, rot)
+        if cells is None:
+            # Unmeasured size. Say so on the plan and place it as authored -
+            # refusing here would silently drop content because an INDEX is
+            # missing, which is a worse failure than the one being fixed.
+            self.plan.refuse(str(defName),
+                             "size UNMEASURED (not in the def size index); "
+                             "its footprint was not checked", x, z)
+        else:
+            clash = self._footprint_owner(cells, defName, (x, z))
+            if clash is not None:
+                other, cell = clash
+                osz = self.sizes().get(other.defName, [1, 1])
+                self.plan.refuse(
+                    str(defName),
+                    f"footprint overlaps {other.defName} "
+                    f"({osz[0]}x{osz[1]} at {other.x},{other.z}) at {cell}",
+                    x, z, level="ERROR", code="footprint-collision")
+                return False
+
         self.plan.add_thing(str(defName), x, z, int(rot or 0),
                             str(stuff) if stuff else None,
                             str(role) if role else None)
         return True
+
+    def width_of(self, name):
+        """Cells wide, resolving a ROLE or a defName. 1 when unmeasured.
+
+        Templates step by this. A run of 2-wide shelves laid on a 1-cell stride
+        eats itself, and that is not a thing a template can see without asking.
+        """
+        d = self.role(str(name)) or str(name)
+        s = self.sizes().get(d)
+        return int(s[0]) if s else 1
+
+    def height_of(self, name):
+        d = self.role(str(name)) or str(name)
+        s = self.sizes().get(d)
+        return int(s[1]) if s else 1
+
+    def can_place(self, name, x, z, rot=0):
+        """Would the WHOLE footprint fit here, inside the rect and clear of
+        everything already placed? Ask before laying anything multi-cell."""
+        d = self.role(str(name)) or str(name)
+        if d is None:
+            return False
+        x, z = int(x), int(z)
+        cells = self.footprint_of(d, x, z, rot)
+        if cells is None:
+            return self.rect.contains(x, z) and not self.occupied(x, z)
+        if not all(self.rect.contains(cx, cz) for cx, cz in cells):
+            return False
+        return self._footprint_owner(cells, d, (x, z)) is None
+
+    def place_role_fit(self, role, x, z, w, h, rot=0):
+        """Place a role at the first cell of the given rect where its whole
+        footprint fits. Returns true if it landed.
+
+        🔑 This is the difference between a plan that loses furniture and one
+        that says it could not fit it: a refusal is recorded either way, and the
+        caller can read the return value.
+        """
+        d = self.role(str(role))
+        if d is None:
+            self.plan.refuse(f"role:{role}", "no palette entry", int(x), int(z))
+            return False
+        x, z, w, h = int(x), int(z), int(w), int(h)
+        for zz in range(z, z + h):
+            for xx in range(x, x + w):
+                if self.can_place(d, xx, zz, rot):
+                    return self.place(d, xx, zz, rot,
+                                      self.role(str(role) + "_STUFF"), role)
+        self.plan.refuse(str(d),
+                         f"no cell in {w}x{h} at ({x},{z}) fits its "
+                         f"{self.width_of(d)}x{self.height_of(d)} footprint",
+                         x, z)
+        return False
 
     def place_role(self, role, x, z, rot=0):
         d = self.role(role)

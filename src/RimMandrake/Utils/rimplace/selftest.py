@@ -114,8 +114,22 @@ def t_seed_varies():
 # --------------------------------------------------------------------------- #
 @case("NEGATIVE: two different defs in one cell is an ERROR")
 def t_collision_fires():
+    """Two halves, because the guard MOVED and a test that only knew the old
+    half would have read as a regression.
+
+    ctx:place() now refuses the second thing outright (footprint-collision), so
+    a plan built through the template API never reaches lint carrying one. The
+    lint check still has to work for a plan built any other way - so this
+    asserts the refusal AND builds the bad plan directly to prove the linter
+    itself still fires."""
     p = _run("function build(ctx) ctx:place('Wall',1,1) ctx:place('Door',1,1) end")
-    assert [f for f in lint(p) if f.code == "cell-collision"], "collision not caught"
+    assert len(p.things) == 1, "the generator let a second def into an occupied cell"
+    assert [r for r in p.refusals if r.code == "footprint-collision"], \
+        "the generator did not refuse it"
+
+    p.add_thing("Door", 1, 1, 0, None, "DOOR")      # bypass the generator
+    assert [f for f in lint(p) if f.code == "cell-collision"], \
+        "the linter's own cell-collision check no longer fires"
 
 
 @case("NEGATIVE: an unsealed room is an ERROR")
@@ -265,6 +279,34 @@ def t_ops_grammar():
             for op in c["params"]["ops"].split(";"):
                 assert _re.match(r"^[A-Za-z_][A-Za-z0-9_]*:-?\d+,-?\d+,\d+,\d+$", op), \
                     f"{tool} op is not 'Def:x,z,w,h': {op!r}"
+
+
+@case("NEGATIVE: a multi-cell footprint overlapping another thing is an ERROR")
+def t_footprint_fires():
+    from .defsize import load as _sizes
+    if not _sizes():
+        raise AssertionError("no def size index; run rimplace.defsize --refresh")
+    # Table1x2c is 1x2: placed at (2,2) it also holds (2,3), so a chair there
+    # is destroyed by build_batch while BOTH report placed.
+    p = _run("function build(ctx) ctx:place('Table1x2c',2,2,0,'WoodLog') "
+             "ctx:place('DiningChair',2,3,0,'WoodLog') end")
+    f = [x for x in lint(p) if x.code == "footprint-collision"]
+    assert f, "a chair inside a 1x2 table was not caught"
+
+
+@case("a template can step by a def's real width, and 2-wide shelves do not overlap")
+def t_shelf_stride():
+    from .defsize import load as _sizes
+    sizes = _sizes()
+    if not sizes:
+        raise AssertionError("no def size index; run rimplace.defsize --refresh")
+    assert sizes.get("Shelf") == [2, 1], f"Shelf reads {sizes.get('Shelf')}"
+    p = _run("function build(ctx) local w = ctx:width_of('Shelf') "
+             "local x = 1 while x <= 6 do ctx:place('Shelf',x,1,0,'WoodLog') "
+             "x = x + w end end")
+    errs = [x for x in lint(p) if x.level == "ERROR"]
+    assert not errs, [str(e) for e in errs]
+    assert len(p.things) == 3, f"expected 3 shelves on a 2-cell stride, got {len(p.things)}"
 
 
 # --------------------------------------------------------------------------- #

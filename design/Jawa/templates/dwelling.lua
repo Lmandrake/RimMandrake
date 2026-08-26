@@ -121,16 +121,40 @@ function build(ctx)
       end
 
     elseif rrole == "DiningRoom" then
-      if ctx:has_role("TABLE") then ctx:place_role("TABLE", ix, iz) end
-      if ctx:has_role("CHAIR") then ctx:place_role("CHAIR", ix, iz + 1) end
+      -- FOOTPRINTS, not cells. A table is 1x2 and a stove 3x1 in the vanilla
+      -- palette, so the old layout put the chair INSIDE the table and the
+      -- stove through the wall: build_batch wiped both and reported them
+      -- placed (TEMPLATE_FOOTPRINT_IGNORES_SIZE_1). place_role_fit scans.
+      if ctx:has_role("TABLE") then ctx:place_role_fit("TABLE", ix, iz, iw, ih) end
+      if ctx:has_role("CHAIR") then ctx:place_role_fit("CHAIR", ix, iz, iw, ih) end
       if ctx:has_role("STOVE") then
-        ctx:place_role("STOVE", ix + iw - 1, iz + ih - 1)
+        -- from the far corner backwards, so the stove keeps its traditional
+        -- spot when it fits and slides inward when it does not
+        local placed = false
+        for zz = iz + ih - 1, iz, -1 do
+          for xx = ix + iw - 1, ix, -1 do
+            if ctx:can_place("STOVE", xx, zz) then
+              ctx:place_role("STOVE", xx, zz); placed = true; break
+            end
+          end
+          if placed then break end
+        end
+        if not placed then
+          ctx:refuse("STOVE", "no cell in the dining room fits its footprint")
+        end
       end
 
     else
       if ctx:has_role("STORAGE") then
-        for xx = ix, ix + math.min(iw, 3) - 1 do
-          ctx:place_role("STORAGE", xx, iz)
+        -- step by the shelf's own WIDTH. Three 2x1 shelves on a 1-cell stride
+        -- overlap, and the map kept only the last one.
+        local sw = ctx:width_of("STORAGE")
+        local xx = ix
+        while xx <= ix + math.min(iw, 3 * sw) - 1 do
+          if ctx:can_place("STORAGE", xx, iz) then
+            ctx:place_role("STORAGE", xx, iz)
+          end
+          xx = xx + sw
         end
       end
     end
@@ -138,11 +162,14 @@ function build(ctx)
     -- light LAST, into whatever cell is still free. Ordering matters: the
     -- linter caught the light claiming the stove's corner when it went first,
     -- and the light is the piece that can go anywhere.
+    -- ⚠️ can_place, not occupied(): occupied() answers for ONE cell, and the
+    -- stove that had already claimed this corner is 3 cells wide, so the light
+    -- read the corner as free and was placed inside it.
     if ctx:has_role("LIGHT") then
       local lit = false
       for zz = b.z + b.h - 2, b.z + 1, -1 do
         for xx = b.x + b.w - 2, b.x + 1, -1 do
-          if not ctx:occupied(xx, zz) then
+          if ctx:can_place("LIGHT", xx, zz) then
             ctx:place_role("LIGHT", xx, zz); lit = true; break
           end
         end
@@ -154,7 +181,7 @@ function build(ctx)
     -- decoration scales with wealth, and only if the palette has any
     if (p.wealth == "rich" or p.wealth == "comfortable") and ctx:has_role("DECOR") then
       local dx, dz = ix + iw - 1, iz
-      if not ctx:occupied(dx, dz) then ctx:place_role("DECOR", dx, dz) end
+      if ctx:can_place("DECOR", dx, dz) then ctx:place_role("DECOR", dx, dz) end
     end
   end
 

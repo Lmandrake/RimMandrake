@@ -108,6 +108,43 @@ def lint(plan: BuildPlan, verified_defs: set[str] | None = None) -> list[Finding
             out.append(Finding("ERROR", "cell-collision",
                                f"{len(ts)} things share a cell: {names}", x, z))
 
+    # 1b. FOOTPRINT collisions, for a plan that did not come from luaenv.
+    #     ctx:place() refuses these at generation time; this catches a plan
+    #     built or edited by anything else, and it is the check that was missing
+    #     when 3 of 81 things were destroyed on the map with lint reporting 0
+    #     findings (TEMPLATE_FOOTPRINT_IGNORES_SIZE_1).
+    try:
+        from .defsize import footprint as _fp, load as _sizes
+        sizes = _sizes()
+    except Exception:
+        sizes = {}
+    if sizes:
+        owner: dict = {}
+        unmeasured = set()
+        for t in plan.things:
+            cells = _fp(t.defName, t.x, t.z, t.rot or 0, sizes)
+            if cells is None:
+                unmeasured.add(t.defName)
+                continue
+            for c in sorted(cells):
+                prev = owner.get(c)
+                if prev is not None and (prev.defName, prev.x, prev.z) != (t.defName, t.x, t.z):
+                    out.append(Finding(
+                        "ERROR", "footprint-collision",
+                        f"{t.defName} ({sizes.get(t.defName)}) at ({t.x},{t.z}) "
+                        f"overlaps {prev.defName} at ({prev.x},{prev.z})",
+                        c[0], c[1]))
+                owner[c] = t
+        for d in sorted(unmeasured):
+            out.append(Finding("WARN", "size-unmeasured",
+                               f"'{d}' is not in the def size index, so its "
+                               f"footprint was NOT checked - this is UNMEASURED, "
+                               f"not 1x1"))
+    else:
+        out.append(Finding("WARN", "size-index-missing",
+                           "no def size index, so NO footprint was checked. "
+                           "Build it: python3 -m rimplace.defsize --refresh"))
+
     # 2. out of footprint
     if rect:
         for t in plan.things:
@@ -180,9 +217,12 @@ def lint(plan: BuildPlan, verified_defs: set[str] | None = None) -> list[Finding
                 out.append(Finding("ERROR", "def-unverified",
                                    f"'{d}' was not found in the def dump"))
 
-    # 8. the generator's own refusals are findings, not footnotes
+    # 8. the generator's own refusals are findings, not footnotes, and they
+    #    carry their OWN level - a footprint collision is an ERROR because the
+    #    thing really would have been destroyed (TEMPLATE_FOOTPRINT_IGNORES_SIZE_1).
     for r in plan.refusals:
-        out.append(Finding("WARN", "generator-refusal",
+        out.append(Finding(getattr(r, "level", "WARN"),
+                           getattr(r, "code", "generator-refusal"),
                            f"{r.what}: {r.reason}", r.x, r.z))
 
     # 9. a plan that builds nothing is a bug, not an empty house
