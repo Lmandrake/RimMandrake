@@ -9,7 +9,7 @@ absent — they ship as pure white silhouettes so the engine can tint them the o
 | tiles | landmark | treatment |
 |---:|---|---|
 | 36 | Dunes | ripples |
-| 32 | Oasis | pool |
+| 32 | Oasis | oasis |
 | 30 | Ruins | masonry |
 | 27 | Cliffs | strata |
 | 24 | DryLake | crust |
@@ -34,23 +34,23 @@ absent — they ship as pure white silhouettes so the engine can tint them the o
 | 10 | TerraformingScar | crater |
 | 9 | VEE_JaggedRocks | clasts |
 | 9 | FrozenRuins | masonry |
-| 9 | AbandonedColonyTribal | masonry |
-| 7 | Chasm | strata |
+| 9 | AbandonedColonyTribal | clasts |
+| 7 | Chasm | crater |
 | 7 | AB_TarLakes | pool |
 | 7 | VEE_FleshPits | organic |
 | 6 | AncientQuarry | strata |
 | 6 | VEE_SerpentineCanyons | channel |
 | 4 | VEE_StoneForest | clasts |
-| 4 | sw_DeadSarlacc | organic |
+| 4 | sw_DeadSarlacc | maw |
 | 3 | AncientHeatVent | masonry |
 | 3 | AB_MagmaticQuagmire | lava |
 | 2 | VEE_RedDesert | ripples |
 | 2 | Plateau | strata |
 | 2 | HotSprings | pool |
 | 1 | AbandonedColonyOutlander | masonry |
-| 1 | sw_Sarlacc | organic |
+| 1 | sw_Sarlacc | maw |
 | 1 | AncientLaunchSite | masonry |
-| 1 | LavaCrater | lava |
+| 1 | LavaCrater | crater |
 | 1 | LavaLake | lava |
 | 1 | VEE_AlluvialFan | channel |
 | 1 | Basin | pool |
@@ -65,9 +65,9 @@ A barchan dune field from orbit. Long low stoss slopes rising to a sharp lee bre
 
 ## Oasis
 
-**32 tiles on Ash'karr · treatment `pool`**
+**32 tiles on Ash'karr · treatment `oasis`**
 
-The one green thing for a hundred miles. Deep still water at the centre, a bright mineral shore ring, and a dense dark band of palm and reed crowding the margin. The contrast between the water and the desert around it is the entire read. Words: fed, shaded, precious, improbable.
+The one green thing for a hundred miles. Crisply defined vibrant blue water at the centre -- a hard shoreline, not a fade -- surrounded by a dense ring of green vegetation crowding right up to the edge, with bits of colour peeking through it like flowers. Outside that, a dry mineral fringe where the greenery gives up. Three distinct zones with clean boundaries; the improbability of it against the desert is the entire read. Words: fed, vivid, shaded, flowering, precious.
 
 ## Ruins
 
@@ -215,13 +215,13 @@ The same fallen concrete, taken by ice. Slabs glazed and rounded under old snowp
 
 ## AbandonedColonyTribal
 
-**9 tiles on Ash'karr · treatment `masonry`**
+**9 tiles on Ash'karr · treatment `clasts`**
 
 A settlement built from what was to hand. Thatch and timber roofs in warm organic browns, irregular rather than gridded, weathered pale on the weather side, already half returning to the ground. Words: woven, sun-bleached, humble, reclaimed.
 
 ## Chasm
 
-**7 tiles on Ash'karr · treatment `strata`**
+**7 tiles on Ash'karr · treatment `crater`**
 
 A rift with no visible bottom. Near-black in the throat, walls stepping up through cold greys in tight bedded bands, a thin bright lip where the light just reaches the rim. Words: bottomless, fractured, cold, vertiginous.
 
@@ -257,9 +257,9 @@ A karst pinnacle field: tall isolated stone towers seen from directly above, so 
 
 ## sw_DeadSarlacc
 
-**4 tiles on Ash'karr · treatment `organic`**
+**4 tiles on Ash'karr · treatment `maw`**
 
-The same creature, long dead. Hide gone grey and papery, folds collapsed inward, barbs snapped and bleached, sand filling the throat -- everything that was wet in the live one now dry. Words: desiccated, collapsed, bleached, hollow.
+The same gaping beaked maw, desiccated -- at the bottom of a grey husk of a pit, still with a dark black centre. Everything that was leathery is now papery and bleached; the teeth are dulled and snapped, the beak cracked grey, the funnel wall the colour of old bone with sand drifting into it. Only the black centre is unchanged. Words: desiccated, husked, bleached, brittle, hollow.
 
 ## AncientHeatVent
 
@@ -299,9 +299,9 @@ A frontier town left standing. Prefab roofs and sheet siding in faded paint colo
 
 ## sw_Sarlacc
 
-**1 tiles on Ash'karr · treatment `organic`**
+**1 tiles on Ash'karr · treatment `maw`**
 
-A living pit predator seen from above. A ring of inward-curving barbs around a beaked maw, folds of leathery hide radiating outward and sand drifted against them, the throat black and bottomless. Words: barbed, patient, cavernous, waiting.
+A gaping beaked maw at the bottom of a deep pit of teeth, with a dark black centre. Read it from the outside in: drifted sand banked around the lip, then the funnel wall dropping away in warm leathery tan, then a ring of long inward-pointing teeth whose pale tips reach toward the middle over dark gullets between them, then the hard chitinous beak, then nothing at all -- a flat black hole with no gradient into it, because a throat is an absence and any falloff turns it back into a dent. Words: beaked, toothed, funnelled, patient, bottomless.
 
 ## AncientLaunchSite
 
@@ -311,9 +311,9 @@ A pad built for one enormous departure. Vast flat blast-scoured concrete aprons,
 
 ## LavaCrater
 
-**1 tiles on Ash'karr · treatment `lava`**
+**1 tiles on Ash'karr · treatment `crater`**
 
-A vent that has cooled. Black chilled crust cracked over incandescent rock, the glow surviving only in thin branching veins and down in the throat. Words: quenched, fissured, glowing, sullen.
+A proper crater with lava in the bottom of it. The structure comes first and it is ROUND: a raised ring of ridged spoil outside, catching hard light on its outer slope, then a steep shadowed inner wall, and only then the lava -- a pool of black chilled crust cracked open over incandescent rock, contained well inside the rim rather than spilling to the outline. Words: ramparted, contained, glowing, sullen, circular.
 
 ## LavaLake
 
@@ -343,4 +343,4 @@ Discrete sink pits rather than a field: each one a slack cream-grey disc darkeni
 
 **1 tiles on Ash'karr · treatment `crater`**
 
-A crater that has gone wrong. Sickly yellow-green residue pooled in the floor and crusted up the inner wall, a bleached dead rim, and a faint bloom of contamination on the ground outside. Words: leached, acrid, stained, quarantined.
+A crater with something hideous lying in it. Ridged grey-tan walls like any impact rim, bleached dead where the fumes reach, and inside them a pool of brackish green liquid actively bubbling -- opaque, sickly, with paler rafts of scum breaking the surface and a rusty tidemark where the level has dropped. The rim should read as ROCK and the contents as LIQUID; the contrast between them is the whole icon. Words: leached, bubbling, acrid, quarantined, wrong.

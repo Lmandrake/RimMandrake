@@ -282,7 +282,17 @@ def t_crater(mask, rng, P):
     rgb = _grad(np.clip(t / 1.2, 0, 1),
                 [(0.0, P["dark"]), (0.42, P.get("floor", P["base"])),
                  (0.66, P["base"]), (0.80, P["lit"]), (1.0, P["dark"])])
-    return rgb, np.full(mask.shape, float(P.get("alpha", 202)), "float32")
+    a = np.full(mask.shape, float(P.get("alpha", 202)), "float32")
+    core = P.get("core")
+    if core:
+        # a crater is a rim AND what is lying in the bottom of it; painting the floor with
+        # a second treatment is the only way to get lava or standing water inside a wall
+        cm = mask & (t < core.get("r", 0.55))
+        if cm.sum() > 200:
+            crgb, ca = TREATMENTS[core["treat"]](cm, rng, core)
+            ca = np.broadcast_to(np.asarray(ca, "float32"), mask.shape)
+            rgb[cm], a[cm] = crgb[cm], ca[cm]
+    return rgb, a
 
 
 def t_strata(mask, rng, P):
@@ -446,10 +456,102 @@ def t_channel(mask, rng, P):
     return rgb, np.full(mask.shape, float(P.get("alpha", 200)), "float32")
 
 
+def t_maw(mask, rng, P):
+    """A pit that is also a mouth.  Read from the outside in: a drifted collar of ground,
+    then the funnel wall falling away, then a ring of inward-pointing TEETH whose tips
+    reach toward the middle, then the beak, then black.
+
+    The teeth are what make it a maw rather than a crater, so they are cut as a radius
+    threshold that varies with angle -- long tips, wide gullets -- and not as a texture.
+    The centre is a hard black aperture with no gradient into it: a gullet is an absence,
+    and any falloff turns it back into a dent."""
+    N = mask.shape[0]
+    ys, xs = np.nonzero(mask)
+    cy, cx = ys.mean(), xs.mean()
+    gy, gx = np.mgrid[0:N, 0:N].astype("float32")
+    th = np.arctan2(gy - cy, gx - cx)
+    R = max(np.sqrt(mask.sum() / np.pi), 4.0)
+    r = np.hypot(gy - cy, gx - cx) + _fbm((N, N), rng, N / 5.0, R * P.get("warp", 0.10))
+    t = np.clip(r / R, 0, 1.3)
+
+    rgb = _grad(np.clip(t / 1.15, 0, 1),
+                [(0.0, P["throat"]), (0.30, P["wall"]), (0.62, P["base"]),
+                 (0.86, P["lit"]), (1.0, P["collar"])])
+
+    # Teeth must be INDIVIDUAL: one cosine gives a cog wheel -- every tooth the same
+    # length, the same width, evenly spaced, and no dark gullet showing between them.
+    # Each tooth therefore gets its own length and width from a per-tooth table.
+    n = P.get("teeth", 9)
+    u = ((th + np.pi + rng.uniform(0, 6.283)) / (2 * np.pi) * n) % n
+    idx = np.floor(u).astype(int) % n
+    lens = rng.uniform(0.70, 1.32, n).astype("float32")
+    wids = rng.uniform(0.34, 0.72, n).astype("float32")
+    frac = u - np.floor(u)
+    prof = np.clip(1.0 - np.abs(frac - 0.5) * 2.0 / np.maximum(wids[idx], 1e-3), 0, 1)
+    prof = prof ** P.get("taper", 1.5)
+    tip = P.get("tip", 0.20) + P.get("reach", 0.34) * (1.0 - prof * lens[idx])
+    gum = P.get("gum", 0.66)
+    gap = (t < gum) & (t > P.get("beak_at", 0.30))
+    rgb[gap] = np.array(P.get("gullet_wall", P["throat"]), "float32")   # dark between teeth
+    # A tooth also has to taper IN RADIUS, or it is a spoke: widest where it leaves the
+    # gum, narrowing to a point at the tip.  Without this the ring reads as a ship's wheel.
+    q = np.clip((gum - t) / np.maximum(gum - tip, 1e-3), 0, 1)
+    tooth = (t < gum) & (t > tip) & (prof > q * P.get("point", 0.92) + 0.05)
+    rgb[tooth] = np.array(P["tooth"], "float32")
+    edge = tooth & ~_erode(tooth, max(1, int(N * 0.005)))
+    rgb[edge] = np.array(P.get("tooth_edge", P["wall"]), "float32")
+
+    # beak_at is a RADIUS; "beak" is the colour.  One key cannot be both, and the
+    # collision only shows up as a broadcast error at paint time.
+    beak = (t < P.get("beak_at", 0.30)) & (t > P.get("mouth", 0.17))
+    rgb[beak] = np.array(P["beak"], "float32")
+    black = t < P.get("mouth", 0.17) * (1.0 + 0.30 * np.sin(3 * th + rng.uniform(0, 6.283)))
+    rgb[black] = P.get("gullet", (6, 5, 5))
+
+    a = np.full(mask.shape, float(P.get("alpha", 216)), "float32")
+    a[black] = 252.0
+    return rgb, a
+
+
+def t_oasis(mask, rng, P):
+    """The one green thing for a hundred miles, and it must look like it.  Three CRISP
+    zones, not a gradient: vivid open water with a hard shoreline, a dense ring of
+    vegetation crowding that shore, and a dry mineral fringe outside it.  Flowers are
+    single saturated flecks scattered in the greenery -- few, small, and never regular."""
+    N = mask.shape[0]
+    R = max(np.sqrt(mask.sum() / np.pi), 4.0)
+    dep = np.clip(_dist_in(mask, R * 1.1) / (R * 1.1), 0, 1)
+    dep = np.clip(dep + _fbm((N, N), rng, N / 5.0, P.get("rough", 0.10)), 0, 1)
+
+    rgb = np.zeros(mask.shape + (3,), "float32")
+    rgb[:] = P["fringe"]
+    veg = dep > P.get("veg_at", 0.10)
+    rgb[veg] = P["veg"]
+    shade = veg & (_fbm((N, N), rng, N / 11.0, 1.0) > 0.48)
+    rgb[shade] = P.get("veg_dark", P["veg"])
+    water = dep > P.get("water_at", 0.40)
+    rgb[water] = P["water"]
+    deep = dep > P.get("deep_at", 0.62)
+    rgb[deep] = P["deep"]
+    shal = water & ~deep & (_fbm((N, N), rng, N / 14.0, 1.0) > 0.55)
+    rgb[shal] = P.get("shallow", P["water"])
+
+    band = veg & ~water
+    for col, dens in P.get("flowers", ()):
+        f = (rng.random(mask.shape) < dens) & band
+        f = np.asarray(Image.fromarray((f * 255).astype("uint8"))
+                       .filter(ImageFilter.MaxFilter(2 * int(0.0035 * N) + 1))) > 128
+        rgb[f] = col
+
+    a = np.full(mask.shape, float(P.get("alpha", 214)), "float32")
+    a[water] = float(P.get("alpha", 214)) + 24
+    return rgb, a
+
+
 TREATMENTS = {"crust": t_crust, "storm": t_storm, "ripples": t_ripples, "clasts": t_clasts,
               "pool": t_pool, "crater": t_crater, "strata": t_strata, "masonry": t_masonry,
               "organic": t_organic, "lava": t_lava, "ice": t_ice, "canopy": t_canopy,
-              "channel": t_channel}
+              "channel": t_channel, "maw": t_maw, "oasis": t_oasis}
 
 
 # ---------------------------------------------------------------- art direction
@@ -602,18 +704,26 @@ SPECS = {
     "crater", base=(140, 124, 104), lit=(210, 194, 166), dark=(62, 54, 46),
     floor=(108, 96, 82), warp=0.26, lobe=0.26, alpha=204),
 
-"LavaCrater": S("""A vent that has cooled. Black chilled crust cracked over incandescent rock,
-    the glow surviving only in thin branching veins and down in the throat. Words: quenched,
-    fissured, glowing, sullen.""",
-    "lava", base=(72, 56, 52), lit=(232, 122, 44), dark=(34, 28, 28),
-    glint=(255, 206, 108), vein_w=0.06, alpha=216),
-
-"VEE_ToxicCrater": S("""A crater that has gone wrong. Sickly yellow-green residue pooled in the
-    floor and crusted up the inner wall, a bleached dead rim, and a faint bloom of contamination
-    on the ground outside. Words: leached, acrid, stained, quarantined.""",
-    "crater", base=(126, 138, 82), lit=(186, 198, 132), dark=(52, 62, 38),
-    floor=(96, 118, 62), warp=0.24, lobe=0.24, alpha=206),
-
+"LavaCrater": S("""A proper crater with lava in the bottom of it. The structure comes first
+    and it is ROUND: a raised ring of ridged spoil outside, catching hard light on its outer
+    slope, then a steep shadowed inner wall, and only then the lava -- a pool of black chilled
+    crust cracked open over incandescent rock, contained well inside the rim rather than spilling
+    to the outline. Words: ramparted, contained, glowing, sullen, circular.""",
+    "crater", base=(122, 104, 92), lit=(196, 176, 152), dark=(58, 48, 42),
+    floor=(88, 72, 62), warp=0.04, lobe=0.05, alpha=212,
+    core={"treat": "lava", "r": 0.52, "base": (72, 56, 52), "lit": (238, 124, 44),
+          "dark": (30, 25, 24), "glint": (255, 214, 120), "vein_w": 0.085, "alpha": 230}),
+"VEE_ToxicCrater": S("""A crater with something hideous lying in it. Ridged grey-tan walls
+    like any impact rim, bleached dead where the fumes reach, and inside them a pool of brackish
+    green liquid actively bubbling -- opaque, sickly, with paler rafts of scum breaking the
+    surface and a rusty tidemark where the level has dropped. The rim should read as ROCK and the
+    contents as LIQUID; the contrast between them is the whole icon. Words: leached, bubbling,
+    acrid, quarantined, wrong.""",
+    "crater", base=(148, 140, 118), lit=(206, 198, 172), dark=(70, 66, 54),
+    floor=(120, 112, 92), warp=0.06, lobe=0.08, alpha=208,
+    core={"treat": "pool", "r": 0.74, "base": (92, 138, 52), "lit": (140, 182, 66),
+          "dark": (38, 78, 34), "shore": (150, 124, 58), "scum": 0.16,
+          "scum_col": (188, 220, 104), "rough": 0.30, "reach": 1.25, "alpha": 228}),
 "TerraformingScar": S("""Machine work, not weather. A spiral trench cut into the ground in
     regular passes, the spoil banked bright along one side of every pass and the cut itself in
     shadow -- the only landform on the planet with a repeating, deliberate rhythm. Words:
@@ -641,13 +751,16 @@ SPECS = {
     "channel", base=(172, 148, 112), lit=(218, 202, 172), dark=(104, 86, 64),
     thread=(88, 72, 54), braid=0.085, cut=2.6, alpha=196),
 
-"Oasis": S("""The one green thing for a hundred miles. Deep still water at the centre, a bright
-    mineral shore ring, and a dense dark band of palm and reed crowding the margin. The contrast
-    between the water and the desert around it is the entire read. Words: fed, shaded, precious,
-    improbable.""",
-    "pool", base=(56, 92, 108), lit=(112, 146, 96), dark=(30, 54, 70),
-    shore=(196, 178, 118), scum=0.30, scum_col=(74, 112, 66), scum_from=0.04, scum_to=0.34, alpha=214),
-
+"Oasis": S("""The one green thing for a hundred miles. Crisply defined vibrant blue water at
+    the centre -- a hard shoreline, not a fade -- surrounded by a dense ring of green vegetation
+    crowding right up to the edge, with bits of colour peeking through it like flowers. Outside
+    that, a dry mineral fringe where the greenery gives up. Three distinct zones with clean
+    boundaries; the improbability of it against the desert is the entire read. Words: fed, vivid,
+    shaded, flowering, precious.""",
+    "oasis", fringe=(196, 178, 122), veg=(78, 134, 62), veg_dark=(48, 98, 48),
+    water=(44, 134, 190), deep=(24, 88, 148), shallow=(96, 182, 214),
+    flowers=(((236, 96, 128), 0.00040), ((246, 214, 82), 0.00034), ((238, 146, 68), 0.00022)),
+    veg_at=0.08, water_at=0.42, deep_at=0.66, rough=0.09, alpha=214),
 "VEE_StagnantRivulet": S("""Water that has stopped moving and knows it. Flat olive-green,
     skinned over with algal scum in irregular rafts, no reflection, a dark saturated margin where
     the mud is always wet. Words: brackish, skinned, motionless, fetid.""",
@@ -766,18 +879,26 @@ SPECS = {
     "organic", base=(178, 92, 96), lit=(224, 148, 148), dark=(72, 30, 36),
     sheen=(238, 176, 172), gullet=(48, 18, 26), folds=9, maw=0.34, alpha=216),
 
-"sw_Sarlacc": S("""A living pit predator seen from above. A ring of inward-curving barbs around
-    a beaked maw, folds of leathery hide radiating outward and sand drifted against them, the
-    throat black and bottomless. Words: barbed, patient, cavernous, waiting.""",
-    "organic", base=(154, 122, 88), lit=(202, 176, 138), dark=(46, 34, 26),
-    sheen=(216, 194, 156), gullet=(14, 11, 10), folds=7, maw=0.30, alpha=218),
-
-"sw_DeadSarlacc": S("""The same creature, long dead. Hide gone grey and papery, folds collapsed
-    inward, barbs snapped and bleached, sand filling the throat -- everything that was wet in the
-    live one now dry. Words: desiccated, collapsed, bleached, hollow.""",
-    "organic", base=(160, 152, 136), lit=(206, 200, 186), dark=(84, 78, 70),
-    sheen=(220, 214, 200), gullet=(118, 110, 98), folds=7, maw=0.26, alpha=204),
-}
+"sw_Sarlacc": S("""A gaping beaked maw at the bottom of a deep pit of teeth, with a dark
+    black centre. Read it from the outside in: drifted sand banked around the lip, then the funnel
+    wall dropping away in warm leathery tan, then a ring of long inward-pointing teeth whose pale
+    tips reach toward the middle over dark gullets between them, then the hard chitinous beak, then
+    nothing at all -- a flat black hole with no gradient into it, because a throat is an absence
+    and any falloff turns it back into a dent. Words: beaked, toothed, funnelled, patient,
+    bottomless.""",
+    "maw", collar=(186, 160, 120), lit=(206, 180, 138), base=(150, 118, 84),
+    wall=(96, 72, 50), throat=(38, 28, 22), tooth=(226, 212, 184), tooth_edge=(92, 74, 56),
+    beak=(74, 56, 42), gullet=(6, 5, 5), gullet_wall=(52, 36, 26), teeth=11, taper=1.15, tip=0.20, reach=0.34,
+    gum=0.72, beak_at=0.32, mouth=0.27, warp=0.13, point=0.92, alpha=218),
+"sw_DeadSarlacc": S("""The same gaping beaked maw, desiccated -- at the bottom of a grey husk
+    of a pit, still with a dark black centre. Everything that was leathery is now papery and
+    bleached; the teeth are dulled and snapped, the beak cracked grey, the funnel wall the colour
+    of old bone with sand drifting into it. Only the black centre is unchanged. Words: desiccated,
+    husked, bleached, brittle, hollow.""",
+    "maw", collar=(178, 172, 158), lit=(198, 192, 178), base=(160, 154, 140),
+    wall=(112, 108, 98), throat=(58, 55, 50), tooth=(220, 216, 206), tooth_edge=(120, 116, 106),
+    beak=(126, 122, 112), gullet=(8, 8, 8), gullet_wall=(86, 82, 74), teeth=11, taper=1.05, tip=0.24, reach=0.28,
+    gum=0.70, beak_at=0.32, mouth=0.27, warp=0.17, point=0.86, alpha=206),}
 
 
 # ---------------------------------------------------------------- the painter
