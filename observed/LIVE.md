@@ -874,3 +874,12 @@ slot and the hood (UpperHead+Mouth/Overhead) is skipped — **robe 16/16, hood 0
 🔑 **RimWorld logs it every load** — `PawnKindDef.ConfigErrors` yields *"required apparel can't be
 worn together (X, Y)"*. Grep `Player.log` for it before theorising about apparel.
 ⛔ A `PatchOperationRemove` cannot clear an inherited `<li>`; the fix is `Inherit="False"`.
+
+📌 **The 2026-08-26 load is harvested to `infrastructure/state/logs/harvest_2026-08-26/`** before the
+log rotated — **1,211 Cherry Picker removals**, 16 config errors, 10 cross-reference failures, 3 XML
+errors. 🔑 **Cherry Picker cut 25 BiomeDefs and NONE of them is used by an Ash'karr tile** (30
+distinct biomes live, all surviving; Desert 4,205 · HorrorWastes 1,711 · AB_MycoticJungle 1,939).
+⚠️ **`PawnKindDef/Ghoul` IS cut** — so the vanilla refugee route for a kind-owned `xenotypeSet` does
+not exist in this game. `Sanguophage` is not cut.
+⚙️ The `BMT_*` and `VWE_Tool_Whip` cross-reference failures are **absent source mods, not our cuts** —
+tested against the removal set. The `TG_Husbandry` NRE is the same null `thingDef`.

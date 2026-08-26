@@ -68,3 +68,23 @@ the debug-action surface is affordable. ⛔ Not passed, not failed — not taken
 🔑 And the item's own warning still governs whatever is taken later: **642 of 669 plants stop at
 `minGrowthTemperature 0.0 °C` and half this planet is below that, so a correct roster can still read
 as bare ground. Bare is not a failure of this patch.**
+
+---
+
+## Addendum, 2026-08-26 with the game down — the three biomes are all alive, and well populated
+
+`BIOME_FLORA_LOOKS_RIGHT_1` picked three biomes; the log harvest raised the obvious question of
+whether any of them had been cut. **None had**, and each carries real ground:
+
+```
+Desert            4,205 tiles       HorrorWastes  1,711 tiles       AB_MycoticJungle  1,939 tiles
+```
+
+Cherry Picker removed **25 BiomeDefs** on this load (`cherrypicker_removals.txt`) — `BorealForest`,
+`Grasslands`, `Savanna`, `TemperateForest`, `Tundra`, `Wetland`, both `COMIGO_GreaterSwamp_*`, seven
+`ZBiome_*` and the rest. **Zero of the 25 is used by any of Ash'karr's 21,872 tiles.** The planet
+uses 30 distinct biomes and every one survives.
+
+⇒ The curation is doing exactly what it was meant to on a desert world, and nothing about the three
+target biomes is blocked by a cut. The only thing still owed on this item is a MAP in each — and
+that is blocked on there being no bridge route to put a map on a chosen tile.
