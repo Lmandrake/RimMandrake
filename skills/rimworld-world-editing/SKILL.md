@@ -131,6 +131,17 @@ it is now enforceable rather than merely warned about. Every writer here has a m
 `*_validate` that reads RAW FIELDS, and `jawa/world_stats`' biome histogram remains the
 independent second instrument. Use both.
 
+🔴 **Two more traps, measured 2026-08-25, that make a correct result look wrong and a
+wrong one look right:**
+* ⛔ **Every `world_*_get` returns at most 100 rows.** Pass `limit`; `max` and `count` are
+  silently ignored and report `requested: N` as though nothing were capped.
+* ⛔ **`AddMutator` resolves category conflicts**, so `Headwater`/`RiverConfluence`/
+  `RiverDelta` displace plain `River` and `CaveLakes` displaces `Caves`. Ask whether the
+  tile carries ANY def from the family, never whether it carries the exact one you wrote.
+* ⛔ **The setter does not enforce a mutator's own gates** (`needs no river`, `requires
+  coastline`, hilliness, biome). They live in the roster's `note`, and an illegal write
+  lands and then misbehaves. Full treatment: `references/river-networks.md`.
+
 ### The four traps that replaced the wall
 
 1. **Nothing is visible until `jawa/world_commit` runs.** RimWorld has no per-tile visual
@@ -208,6 +219,7 @@ This file is the map. The parts that earned their own page:
 | `references/generating-a-world.md` | a world is about to be GENERATED — the settings no offline edit can undo, the measured tile-count anchors, why Worldbuilder overwrites My Little Planet's Scale slider and the one-line fix, and how to verify a generated world entirely from its `.rws` |
 | `references/savegame-editing.md` | you are about to READ the planet in a `.rws` — the array layouts, what each field means, and the calibrated scalar encodings with the technique that produced them. ⛔ Its WRITE half is tombstoned: savegame writing was deleted 2026-08-19 |
 | `references/debug-surface.md` | you need a debug action — the 139 in-game actions vs the NRE at the world screen, and why a mod setting read at INITIALISATION silently does nothing |
+| `references/river-networks.md` | you are editing RIVERS, or anything beside one — the 100-row `limit` cap on every `world_*_get`, the category conflicts that make a correct write read as a failed one, the mutator gates the setter does not enforce, the five graph diagnostics that find real damage, and why meandering a river put 828 m of uphill water into it |
 | `references/tidally-locked.md` | the planet is tidally locked — the substellar point, where the terminator actually is in lat/lon, the liveable ring, and how to select the planet type |
 | `references/curation-and-looks.md` | curating what appears on the planet (WHITELIST posture, the frozen element list) or making it look right (which beautification mods, and which are hard-incompatible) |
 
