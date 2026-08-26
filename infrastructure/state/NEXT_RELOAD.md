@@ -26,8 +26,8 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🎯 §20 RE-ROLL THE ROSTER — the 2026-08-24 harvest is the BEFORE | 2026-08-24 | ⏳ PENDING |
 | 🏷️ §21 WORLD LABELS LIFTED — ✅ **DEPLOYED** 2026-08-24 07:3x | 2026-08-24 | ⏳ READING PENDING |
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
-| 🔧 §22 FORTY-FOUR UNDEPLOYED BRIDGE TOOLS | ✅ **DEPLOYED 2026-08-26 06:36** | ⏳ readings pending |
-| 🔬 §23 THE FOUR ROWS THAT UNBLOCK ON `jawa/pawn_stats` + `jawa/room_get` | — | ⏳ PENDING |
+| 🔧 §22 FORTY-FOUR UNDEPLOYED BRIDGE TOOLS | ✅ **DEPLOYED 2026-08-26 06:36; REDEPLOYED at 166 tools ~07:0x** | ⏳ readings pending |
+| 🔬 §23 THE ROWS THAT UNBLOCK ON `jawa/pawn_stats` + `jawa/room_get` + `jawa/thing_stats` | 2026-08-26 | ⏳ PENDING — **run its census FIRST** |
 | 🧥 §24 THE JAWA HOOD — fix deployed, needs one spawn to prove | ✅ **DEPLOYED 2026-08-26 06:5x** | ⏳ READING PENDING |
 
 🔴 **WHEN A LOAD IS SCORED: delete its block.**
@@ -294,6 +294,35 @@ stands until someone reads its description; check it after the deploy before clo
 whole reason the window matters. `python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --apply`
 
 
+## 🎯 THE DECISION STRINGS FOR THIS LOAD — written 2026-08-26 07:0x by BUILD, BEFORE the launch
+
+⚠️ **Written before the log exists, which is the only time a decision string counts.** A signature
+invented after reading the log is a story that fits.
+
+| # | expect to SEE, verbatim | baseline (last load, 06:35) | what each outcome means |
+|---|---|---|---|
+| 1 | `[JawaBench] ready: 166 tools, build 70b3b1173918` | `ready: 121 tools, build c88df17ff577` | **166** = the whole companion landed, `jawa/thing_stats` included. **165** = the last deploy of this window did not take — the build stamp will say so. **121** = the game loaded a DLL from before 2026-08-26 entirely. Any other number: do NOT guess which tools are missing, run the census in §23 |
+| 2 | `[JawaBench] context: modSet 582/…` | `modSet 581/fc658bb0` | 582 is the live list with `mandrake.ashkarrlandmarkart`. **581 means the game loaded the older list**, and every §22/§23 reading is against the wrong stack |
+| 3 | `defDump ARMED` on that same context line | `defDump ARMED` | the capture will be written to `DefDump/captures/<id>/`. ⛔ The marker is NOT consumed — delete `dump_request.txt` afterwards or every future load pays ~27 s and ~1.2 GB |
+| 4 | `[RimBridge] STARTUP_TIMING phase=bridge-start.total` | present | the bridge came up at all. **Absent = there is no bridge**, and every bridge-gated item in the queue stays where it is |
+
+🔑 **Expected-PRESENT strings, not absences.** Every one of the four is a line that must BE there.
+A clean log proves nothing here: the companion failing to load is silent in exactly the way a
+successful additive load is.
+
+🔴 **The one thing to run first, before any reading:**
+```
+python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\prove_stat_and_room.py --census
+```
+It must print **166** and name `jawa/pawn_stats`, `jawa/room_get` and `jawa/thing_stats`. Everything
+in §22 and §23 is meaningless until it does — a deployed DLL registers nothing until startup.
+
+⚠️ **The pre-load `Player.log` is already saved** at
+`D:\Luke\dev\Rimworld\infrastructure\state\logs\Player.2026-08-26_0635.pre-load.log`
+(973,786 B). The live one is overwritten at launch; that copy is the only evidence of the
+06:35 session left.
+
+---
 ## 🔬 §23 THE FOUR ROWS THAT BECOME RUNNABLE THE MOMENT `jawa/pawn_stats` LANDS
 
 Written 2026-08-26 by CHECK. **One command runs the whole block:**

@@ -296,9 +296,26 @@ def write_stamp(fp, note=""):
                "version": fp["version"]}
     if note:
         payload["note"] = note
-    with io.open(STAMP, "w", encoding="utf-8") as fh:
+
+    # 🔴 WRITE VIA A TEMP FILE, THEN READ IT BACK. Measured 2026-08-26: a plain
+    # "w" over this path on the DrvFs mount left the TAIL of a longer previous
+    # stamp behind, so the file held valid JSON followed by garbage:
+    #     ...list at 582"\n}\nmandrake.ashkarrlandmarkart"\n}
+    # read_stamp() swallows ValueError and returns None, the artefact table then
+    # reads "never stamped -> REBUILD", and the tool that exists to answer
+    # "do I need a game load?" answers YES forever, for free, with no error.
+    # An instrument that cannot write its own answer must SAY SO, not degrade
+    # into a permanent rebuild.
+    tmp = STAMP + ".tmp"
+    with io.open(tmp, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, indent=2)
         fh.write("\n")
+    os.replace(tmp, STAMP)
+    if read_stamp() is None:
+        raise IOError(
+            "wrote %s and could not read it back as JSON. The artefacts were "
+            "generated but are NOT stamped, so every later staleness check will "
+            "read REBUILD. Fix the file before trusting this tool." % STAMP)
 
 
 def dump_fingerprint(dump=D_DUMP):
