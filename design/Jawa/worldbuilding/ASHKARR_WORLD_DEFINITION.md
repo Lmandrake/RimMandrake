@@ -612,6 +612,11 @@ deliberate stretch of the biome, not an oversight.
   possible because they are immune to both it and the heat — the fact that makes the
   Cathedral theirs and nobody else's.
 - 🛣️ **Only *No Master* kept a road**, redirected onto its new tile in five hops.
+  ⚠️ **CORRECTED 2026-08-25 by CHECK, measured live: it never reached the settlement and it
+  never can.** Tile 19350 is `AB_MechanoidIntrusion`, whose biome sets **`allowRoads=false`**,
+  so a link written there is stored and drawn as nothing. The road ends at **6486**, one tile
+  short in the jungle, and that railhead is the maximum achievable — not a regression to fix.
+  The same fact is why the Cathedral can have no road web even if someone wanted one.
   ⛔ **The other five are deliberately unroaded** and the Cathedral has no road web: a
   place organics cannot survive should not be paved for their caravans. Say so if that is
   wrong — reconnecting them is five short paths.
@@ -636,11 +641,81 @@ order gives wrong distances. Rivers reaching no sea: **9 → 8**.
 
 ## 8. Roads
 
-A **minimum spanning tree** between the holdings plus **shortcuts** wherever the tree
-detour exceeds 1.9× direct — a pure MST makes caravans cross the planet to reach a
-neighbour. Cost rises with altitude, across the green, into the dark (arc > 96) and
-across the Anvil, so nothing rules a straight line through any of them.
-⛔ No rectangular roads, no ruler-straight diagonals.
+🔴 **REWRITTEN 2026-08-25 by CHECK, against the live planet.** The MST below is what
+LAID the roads; it is no longer what they are. Owner: *"I would like them to be less 'laser
+like.' Have them meander a bit, following easier terrain, especially seeking shade
+opportunities or near water sources... it's ok to have other branches that wander off to
+nowhere and simply end."* The old paragraph's ⛔ *"no ruler-straight diagonals"* had never
+been achieved: **33% of runs measured sinuosity exactly 1.000** — an MST on a sphere IS a set
+of great-circle segments.
+
+**How they are laid now.** The MST still fixes the TOPOLOGY — every junction and every
+settlement endpoint is unchanged — and each run between two fixed anchors is re-routed over a
+comfort field (broken ground · cooler ground · vegetation · water within reach but not the
+channel itself), with a hard per-step ascent cap and detours priced in tiles walked **plus**
+metres climbed.
+
+| measured | before | after |
+|---|---|---|
+| edges / tiles | 891 / 878 | **1247 / 1242** |
+| longest straight leg | mean 5.8, max 18 | **mean 2.7, max 9** |
+| sinuosity median / p90 | 1.106 / 1.203 | **1.168 / 1.421** |
+| water · shade · ruin landmarks ON a road | 15 · 6 · 3 | **45 · 24 · 36** |
+| dead ends in open country | 2 | **34** |
+| steepest single step | 888 m | **629 m** (12 edges over 300 m, was 24) |
+| settlements reached | 71 | **75** |
+
+🔑 **THE PENALTY IS ON HOLDING A BEARING, NOT ON TURNING.** A hex path from A to B spends
+the same number of steps whether it runs eight tiles of one direction then five of another or
+interleaves the two — the length is identical and only the LOOK differs. A turn penalty buys
+the laser; a *straight* penalty buys the organic line for no extra distance at all. That one
+inversion is what moved the map; four sweeps of the comfort weight before it returned
+byte-identical routes.
+
+⛔ **In barren country there is nothing to steer by, and that is not a bug.** The six
+neighbours of a Long Sand tile carry comfort 0.12–0.14 and a median elevation step of 2–6 m,
+so a comfort weight there scales every candidate equally. Those roads bend because they go
+**via things** — 119 waypoints inserted, 45 of them oases — and where there is no thing to go
+via they stay straight, which is what a night trail should be.
+
+### The palette: heat is the story — owner, 2026-08-25
+
+All five RoadDefs carry `movementCostMultiplier: 0.5` **identically** (read live off the
+defs), so the class costs the player nothing and says everything. 🔑 **The class is MEASURED
+off the finished route, never chosen for it** — a road is a day road because it FOUND shade
+and water, so the story cannot disagree with the map.
+
+| def | reads as | rule | edges |
+|---|---|---|---|
+| `StoneRoad` | **day road** — shaded, watered or simply cool; walkable in the light | mean comfort ≥ 0.40 or mean tmax ≤ 20 °C | 455 |
+| `DirtRoad` | **dusk road** — passable, but you will suffer. the ordinary caravan net | everything else | 471 |
+| `DirtPath` | **night trail** — crossed only in the dark; nothing grows, nothing shades you | comfort < 0.16 **and** tmax ≥ 45 °C | 284 |
+| `AncientAsphaltHighway` | **the Ashfall Road** — laid by people who did not care about shade, which is why it is dead | authored, not classified | 37 |
+
+⭐ **The Ashfall Road.** AncientLaunchSite (4000, Scorch) → AncientQuarry (14470, the Anvil)
+→ AncientGarrison (20514, the Kiln): 63 tiles of dead-straight asphalt across 71 °C ground,
+routed with the comfort weight at ZERO and the straight penalty OFF. It connects nothing alive
+and is **disconnected from the living network entirely** — five separate components. Where the
+sand has it, it is gone: a tile is buried when it sits more than 5 m below the mean of its
+neighbours, because sand accumulates in hollows and is scoured off rises. 37 of 62 edges
+survive, in fragments of 4 to 25 tiles.
+
+⛔ **Two settlements cannot be reached and must not be forced.** *Deepwater Hold* (9451)
+stands on a **7-tile island** — measured, its passable component holds 7 tiles and does not
+contain the mainland. *Hollow Hive* (8497) sits behind a **1,013 m rim** whose only land
+approach is a single step of more than 300 m. Both are terrain facts, not routing failures.
+
+⛔ **Never lay a road that cannot be drawn.** `SurfaceTile.Roads` is a biome-FILTERED view, so
+a link on a tile whose biome sets `allowRoads=false` is stored and renders nothing — the map
+then shows a road stopping in mid-air for no reason a player can see. The inherited network had
+one: two `StoneRoad` edges into *The Cracking Station*, a Free Droid seat standing in
+`AB_PropaneLakes`. Pruned; the road now stops short of it, visibly.
+
+**The working scripts are `world/_roads/`** — `field.py` (the comfort field), `route.py` (the
+cost model and its three measured mistakes), `waypoint.py` (why a track bends), `compose.py`
+(class, spurs, strays, the highway), `finalise.py` (integrity + the undrawable-edge prune),
+`report.py` (the before/after table above). `roads_import.csv` is what was written;
+`rollback_roads.csv` restores the MST.
 
 ## 9. 🔑 Where the map contents live
 
