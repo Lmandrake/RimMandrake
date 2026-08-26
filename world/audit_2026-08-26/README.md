@@ -115,3 +115,50 @@ They do NOT model GL's computed cliff/cave topologies (CliffValley, CliffOneSide
 CaveTunnel), so those rows are UPPER BOUNDS. The five scoring 0 require the very top of
 GL's hilliness scale (5.4-6.0) and two of them are cave topologies that are not surface
 tiles at all.
+
+## The hilliness pass — making the named ranges actually mountainous
+
+`hills.py` (derive + preview), `hills_apply.py` (write), `hills_verify.py` (prove).
+`BEFORE_HILLS_tiles.csv` is the tile table immediately before it; `hills_plan.json` is the
+exact per-tile plan. Live world saved as `ASHKARR_MOUNTAINS_2026-08-26`.
+
+**The defect.** Hilliness was barely tied to the terrain under it — `corr 0.445` with
+elevation, `0.555` with local relief — and the classes did not separate: Mountainous
+averaged 779 m against SmallHills' 544 m, while some *Flat* tiles sat at 1,690 m. A named
+range read as mountainous on only a third to a half of its tiles.
+
+**The rule.** Hilliness is derived from `0.50 x local relief + 0.30 x neighbourhood
+roughness + 0.20 x absolute elevation`, ranked planet-wide and cut at target shares, plus an
+explicit authored bonus for the eleven regions NAMED for mountains — because a pure
+relief rule *demoted* Fall Line and Ashfall Range and left Rimewall and Frostcaps with no
+mountain at all. Intent beats noise; that trade costs some correlation (0.775 -> 0.657) and
+is deliberate.
+
+```
+              before   after            named range      Mtn      Impassable
+Flat            8394    9304            Ashfall Range  177->225     0->75
+SmallHills      8097    6037            Scald Spine     96-> 98    39->62
+LargeHills      3808    3785            Dew Horn       256->334     0->120
+Mountainous     1517    2391            Gray Crags     171->380     0->65
+Impassable        56     355            South Crags     38->341     0->8
+                                        Twilight Crags 104->299     0->25
+7,315 tiles changed                     Rimewall         0-> 28     0->0
+                                        Frostcaps        0-> 29     0->0
+```
+
+**Guards that were enforced, not assumed.** 1,973 tiles are capped at Flat by their own
+content (1,536 of them `Dunes`, which protects the Dune Sea for free); settlement and road
+tiles are capped at Mountainous so nothing becomes Impassable under a caravan route. All
+355 Impassable tiles landed inside named ranges.
+
+**Verification.** Full re-export: live distribution matches the plan exactly, 0 tiles missed,
+0 unplanned changes; 40 sampled tiles read back RAW (never `HillinessLabel`, which is
+privately cached and would have confirmed writes that never landed). Passable-land
+connectivity checked before and after — `NEWLY cut off by this pass: none`; the two
+settlements off the main landmass (Deepwater Hold, Bitterleaf) were already so.
+`tile_settleable` refuses all 96 settlement tiles only with "already have a base there",
+never for terrain. `world_lint` unchanged at 22 findings.
+
+**What it unlocks.** Geological Landforms gates its dramatic landforms on hilliness:
+Crater and Rift need 3.4-5.0, Valley needs 3.7-4.8. Eligible tiles go 1,573 -> 2,746 and
+1,517 -> 2,391. Caldera (1.0-2.2, Inland) was always available on ~14,800 tiles.
