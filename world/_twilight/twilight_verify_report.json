@@ -1,0 +1,172 @@
+{
+ "Iceberg": {
+  "intended": 5,
+  "landed": 5,
+  "missing": [],
+  "rowsReturned": 5,
+  "requestErrors": []
+ },
+ "Fish_Increased": {
+  "intended": 59,
+  "landed": 59,
+  "missing": [],
+  "rowsReturned": 59,
+  "requestErrors": []
+ },
+ "AnimalLife_Increased": {
+  "intended": 24,
+  "landed": 24,
+  "missing": [],
+  "rowsReturned": 24,
+  "requestErrors": []
+ },
+ "VEE_GravelBeach": {
+  "intended": 20,
+  "landed": 20,
+  "missing": [],
+  "rowsReturned": 20,
+  "requestErrors": []
+ },
+ "VEE_SaltPlains": {
+  "intended": 29,
+  "landed": 29,
+  "missing": [],
+  "rowsReturned": 29,
+  "requestErrors": []
+ },
+ "DryGround": {
+  "intended": 0,
+  "landed": 0,
+  "missing": []
+ },
+ "Oasis": {
+  "intended": 3,
+  "landed": 3,
+  "missing": [],
+  "rowsReturned": 3,
+  "requestErrors": []
+ },
+ "SunnyMutator": {
+  "intended": 44,
+  "landed": 26,
+  "missing": [
+   1300,
+   4571,
+   6984,
+   8371,
+   10163,
+   11828,
+   11830,
+   11845,
+   13379,
+   13409,
+   15051,
+   15064,
+   15076,
+   15082,
+   17209,
+   18461,
+   18520,
+   18614
+  ],
+  "rowsReturned": 44,
+  "requestErrors": []
+ },
+ "IceDunes": {
+  "intended": 0,
+  "landed": 0,
+  "missing": []
+ },
+ "VEE_DeepSnow": {
+  "intended": 0,
+  "landed": 0,
+  "missing": []
+ },
+ "WindyMutator": {
+  "intended": 139,
+  "landed": 139,
+  "missing": [],
+  "rowsReturned": 139,
+  "requestErrors": []
+ },
+ "VEE_RisingWaters": {
+  "intended": 51,
+  "landed": 41,
+  "missing": [
+   4571,
+   8371,
+   9417,
+   11830,
+   13379,
+   13409,
+   18519,
+   18520,
+   18561,
+   18623
+  ],
+  "rowsReturned": 51,
+  "requestErrors": []
+ },
+ "VEE_RelictDelta": {
+  "intended": 0,
+  "landed": 0,
+  "missing": []
+ },
+ "CoastalAtoll": {
+  "intended": 9,
+  "landed": 8,
+  "missing": [
+   13411
+  ],
+  "rowsReturned": 9,
+  "requestErrors": []
+ },
+ "VEE_LoneIsland": {
+  "intended": 5,
+  "landed": 5,
+  "missing": [],
+  "rowsReturned": 5,
+  "requestErrors": []
+ },
+ "VEE_MarineSanctuary": {
+  "intended": 15,
+  "landed": 15,
+  "missing": [],
+  "rowsReturned": 15,
+  "requestErrors": []
+ },
+ "AncientRuins": {
+  "intended": 6,
+  "landed": 6,
+  "missing": [],
+  "rowsReturned": 6,
+  "requestErrors": []
+ },
+ "AncientWarehouse": {
+  "intended": 5,
+  "landed": 5,
+  "missing": [],
+  "rowsReturned": 5,
+  "requestErrors": []
+ },
+ "Bay": {
+  "intended": 4,
+  "landed": 4,
+  "missing": [],
+  "rowsReturned": 4,
+  "requestErrors": []
+ },
+ "_fog_probe_cleanup": {
+  "probe_tiles": [
+   18500,
+   900
+  ],
+  "still_carrying_FoggyMutator": []
+ },
+ "_audit": {
+  "marineMutators": "Iceberg,VEE_GravelBeach,VEE_RisingWaters,CoastalAtoll,VEE_LoneIsland,Bay",
+  "offenderCount": 13,
+  "offenders_mine": [],
+  "offenders_preexisting_elsewhere_on_planet": 13
+ }
+}

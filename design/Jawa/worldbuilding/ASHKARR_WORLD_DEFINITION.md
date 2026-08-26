@@ -1405,3 +1405,92 @@ check), and all three `AB_*` icons are present. Ludeon-expansion landmarks ship 
 
 ⇒ Two ways out, both cheap: **drop the 5 landmarks**, or **draw the two textures**
 (`generating-rimworld-sprites`). Nothing about the stamp needs redoing either way.
+
+## 14. THE TWILIGHT SEA — five mutator passes stamped, 2026-08-26
+
+The Twilight Sea (604 tiles: 436 `Ocean` + 168 `SeaIce`, arc 63→120, the only place on
+Ash'karr where a ship crosses from day into night) got five owner-approved mutator
+passes over the live bridge, from `world/_twilight/BRIEF.md`. Scripts, plan and both
+report JSONs live in `world/_twilight/`. **Measured counts below are LANDED, read back
+from `jawa/world_mutators_get` after `jawa/world_commit` — not the `added` count the
+setter reports, which is not proof of anything (see project doctrine).**
+
+| pass | defs landed | count |
+|---|---|---|
+| 1. The ice margin | `Iceberg` (iceedge tiles, temp −100…0 °C, coast_count 3-5) | 5 |
+| | `Fish_Increased` (39 open-water edge tiles ∪ pass-5 shipping lane) | 59 |
+| | `AnimalLife_Increased` (39 open-water edge tiles) | 24 |
+| | `VEE_GravelBeach` (ice grounding ashore, coast_count 1-6) | 20 |
+| 2. Day/night shore | `VEE_SaltPlains` (dayside ring, arid biomes, no river) | 29 |
+| | `Oasis` (dayside ring, temp 20-60 °C) | 3 |
+| | `SunnyMutator` (dayside ring) | 26 of 44 intended — 18 displaced by `WindyMutator`, same "Weather" category, see below |
+| | `WindyMutator` (nightside ring ∪ SeaIce band ∪ dayside arid shore — see pass 3) | 139 |
+| | `DryGround`, `IceDunes`, `VEE_DeepSnow` | **0 — measured empty, not a bug** |
+| 4. Drowned coast | `VEE_RisingWaters` (flat ring, coast_count 1-5) | 41 of 51 — 10 displaced by `CoastalAtoll`, same category |
+| | `CoastalAtoll` (former-seabed ring) | 8 of 9 — 1 displaced by `Bay` |
+| | `VEE_LoneIsland` (former-seabed ring) | 5 |
+| | `VEE_RelictDelta` | **0 — measured empty**, see below |
+| 5. Shipping lane | `VEE_MarineSanctuary` (Ocean near Boilquay/Deepwater Hold) | 15 |
+| | `AncientRuins` / `AncientWarehouse` ("islands" = former-seabed ring) | 6 / 5 |
+| | `Bay` (ring near Blackstar Field/Hardpan Yard) | 4 |
+
+**Pass 3, the sea fog, was REFUSED as specified in the brief.** `FoggyMutator`'s full,
+untruncated `biomeWhitelist` — read directly from
+`Defs/Odyssey/TileMutators/TileMutators_Modifiers.xml`, not the live roster's truncated
+note — is `BorealForest, ColdBog, TemperateForest, TemperateSwamp, TropicalRainforest,
+TropicalSwamp, Grasslands, Glowforest, Scarlands`. **`Ocean` is not in it.** The live
+2-tile probe the brief demanded (tiles 18500, 900) reported `success: true` with no
+errors regardless — that is NOT evidence, because `Tile.AddMutator` (what
+`jawa/world_mutators_set` calls) never calls `TileMutatorDef.IsValidTile` at all; the
+write cannot fail on a gate that is never checked. FoggyMutator was removed from both
+probe tiles immediately after the probe. Pass 3 shipped as the brief's own specified
+fallback: `WindyMutator` on the SeaIce band and the dayside arid shores, folded into
+pass 2's `WindyMutator` write above rather than a separate pass.
+
+**Category conflicts (`SunnyMutator`↔`WindyMutator`, `VEE_RisingWaters`↔`CoastalAtoll`↔
+`Bay`) are the system working, exactly as the brief warned — not a defect.**
+`Tile.AddMutator` displaces an earlier same-category mutator when the new one's priority
+ties or wins, so writing several coastal/weather flavours to overlapping tiles in one
+session means the LAST family member written is the one that survives on each shared
+tile; every displaced tile still carries a sibling from the same family. Confirmed by
+direct read-back (e.g. tile 4571 carries `CoastalAtoll` where `VEE_RisingWaters` was
+displaced; tile 13411 carries `Bay` where `CoastalAtoll` was displaced).
+
+**Two gates read empty on measurement, not by mistake:**
+- `DryGround` / `IceDunes` / `VEE_DeepSnow` need biome `Scarlands`/`BorealForest`/
+  `Tundra`/`SeaIce`/`IceSheet`. Ash'karr's nightside ring — measured over all 122
+  tiles — is `AridShrubland`/`AB_RockyCrags`/`AB_MycoticJungle`/`Desert`/
+  `ZBiome_Badlands`/`AB_TarPits`/`PoisonForest`. The planet's biome assignment is
+  coarser than its per-tile temperature field: the night shore is 26 °C colder but was
+  never painted a cold biome, so these three defs have no legal home there at all.
+- `VEE_RelictDelta` needs `Desert`/`ExtremeDesert`/`AridShrubland`/`Grasslands`/
+  `TemperateForest` and Flat hilliness. Every ring tile within 3 hops of the sea's one
+  real river mouth (18267, Blackstar Field) is `AB_MiasmicMangrove` or `Wasteland` —
+  neither qualifies, so "a dry channel reaching the sea" has no eligible tile near the
+  only place a channel could plausibly reach.
+
+🔴 **`jawa/world_mutators_audit` scans the WHOLE PLANET, not the sea you're working on**
+— there is no tile-range parameter. The first live run of `apply_twilight_mutators.py`
+put `VEE_SaltPlains` into the audit's `marineMutators` list (it is not actually
+coastal-gated — its live-roster note is about NOT touching Ocean, the opposite of a
+marine check) and flagged 313 pre-existing, unrelated inland `VEE_SaltPlains`
+placements across the rest of the planet as "offenders"; the auto-remove loop deleted
+48 of them plus 2 pre-existing lake-adjacent `VEE_GravelBeach` tiles elsewhere (the
+audit's coastal check only recognises `Ocean` neighbours, never `Lake`). All 50 were
+identified from the run's own report and restored live before any further work
+continued — see `world/_twilight/twilight_apply_report.json`'s `final_audit_INCIDENT`
+block for the full tile list and `world/_twilight/apply_twilight_mutators.py`'s header
+for the mechanism. **Never pass a def to `marineMutators` without confirming its OWN
+gate actually is a coastSidesRange, and always intersect any reported offender against
+your own written tiles before removing anything** — a whole-planet audit is a loaded
+gun on a repo four seats share.
+
+**Final state, measured:** `jawa/world_mutators_audit` with `marineMutators` restricted
+to the six genuinely coastal-gated defs used here (`Iceberg,VEE_GravelBeach,
+VEE_RisingWaters,CoastalAtoll,VEE_LoneIsland,Bay`) and `limit=500` reports
+`offenderCount: 13`, **all 13 pre-existing elsewhere on the planet** (biomes like
+`Volcano`, `AB_PyroclasticConflagration`, `AB_FeraliskInfestedJungle` — nowhere near
+the Twilight Sea) and **none on a tile this session wrote.** The 28
+`CoastalIsland`/`Archipelago` landmark tiles placed the same day were excluded from
+every candidate pool in every pass, not only the drowned-coast pass the brief called
+out by name.

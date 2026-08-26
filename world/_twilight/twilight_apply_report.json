@@ -1,0 +1,369 @@
+{
+ "fog_probe": {
+  "tiles": [
+   18500,
+   900
+  ],
+  "setter_success": true,
+  "setter_errors": [],
+  "readback": {
+   "18500": [
+    "FoggyMutator"
+   ],
+   "900": [
+    "FoggyMutator",
+    "CoastalIsland"
+   ]
+  },
+  "verdict": "REJECTED -- Ocean is not in FoggyMutator biomeWhitelist (BorealForest,ColdBog,TemperateForest,TemperateSwamp,TropicalRainforest,TropicalSwamp,Grasslands,Glowforest,Scarlands), read from Defs/Odyssey/TileMutators/TileMutators_Modifiers.xml. The setter reporting success is expected and not evidence -- Tile.AddMutator never validates biomeWhitelist. Removing FoggyMutator from both probe tiles now; pass 3 ships as WindyMutator (already in the WindyMutator write below)."
+ },
+ "writes": [
+  {
+   "def": "Iceberg",
+   "action": "add",
+   "note": "iceedge tiles, temp -100..0C, biome SeaIce, no river, coast_count 3-5 (engine-exact)",
+   "intended": 5,
+   "success": true,
+   "added": 5,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "Fish_Increased",
+   "action": "add",
+   "note": "UNION of the 39 open-water edge tiles (pass 1) and the shipping-lane fisheries (pass 5, near Boilquay/Deepwater Hold) -- one def, written once for both passes",
+   "intended": 59,
+   "success": true,
+   "added": 59,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "AnimalLife_Increased",
+   "action": "add",
+   "note": "the 39 open-water edge tiles (ice margin only, pass 1), ungated, minus Fish_Decreased tiles",
+   "intended": 24,
+   "success": true,
+   "added": 24,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_GravelBeach",
+   "action": "add",
+   "note": "ice tiles at shore distance 1 with a real Ocean/Lake neighbour (coast_count 1-6)",
+   "intended": 20,
+   "success": true,
+   "added": 20,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_SaltPlains",
+   "action": "add",
+   "note": "dayside ring, biome Desert/ExtremeDesert/Tundra/AridShrubland/Grasslands, no river",
+   "intended": 29,
+   "success": true,
+   "added": 15,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "DryGround",
+   "note": "MEASURED EMPTY: biome Scarlands/BorealForest/Tundra absent from every ring tile",
+   "intended": 0,
+   "skipped": true
+  },
+  {
+   "def": "Oasis",
+   "action": "add",
+   "note": "dayside ring, biome Desert/ExtremeDesert/Savanna, temp 20-60C, no river",
+   "intended": 3,
+   "success": true,
+   "added": 3,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "SunnyMutator",
+   "action": "add",
+   "note": "dayside ring, ungated",
+   "intended": 44,
+   "success": true,
+   "added": 44,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "IceDunes",
+   "note": "MEASURED EMPTY: biome SeaIce/IceSheet absent from every nightside ring tile",
+   "intended": 0,
+   "skipped": true
+  },
+  {
+   "def": "VEE_DeepSnow",
+   "note": "MEASURED EMPTY: biome IceSheet/SeaIce/Tundra absent from every nightside ring tile",
+   "intended": 0,
+   "skipped": true
+  },
+  {
+   "def": "WindyMutator",
+   "action": "add",
+   "note": "nightside ring (Arid/Desert biome) UNION SeaIce band UNION dayside arid shores (the pass-3 fallback, folded in here -- see fog probe above)",
+   "intended": 139,
+   "success": true,
+   "added": 138,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_RisingWaters",
+   "action": "add",
+   "note": "flat ring tiles, coast_count 1-5",
+   "intended": 51,
+   "success": true,
+   "added": 51,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_RelictDelta",
+   "note": "MEASURED EMPTY: every ring tile within 3 hops of the one river mouth (18267) is AB_MiasmicMangrove/Wasteland, neither in the biome whitelist",
+   "intended": 0,
+   "skipped": true
+  },
+  {
+   "def": "CoastalAtoll",
+   "action": "add",
+   "note": "former-seabed ring tiles, hilliness<=SmallHills, no river, coast_count 3-5",
+   "intended": 9,
+   "success": true,
+   "added": 9,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_LoneIsland",
+   "action": "add",
+   "note": "former-seabed ring tiles not already CoastalAtoll, coast_count 3-5",
+   "intended": 5,
+   "success": true,
+   "added": 5,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "VEE_MarineSanctuary",
+   "action": "add",
+   "note": "Ocean tiles near Boilquay/Deepwater Hold, coast_count 1-5",
+   "intended": 15,
+   "success": true,
+   "added": 15,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "AncientRuins",
+   "action": "add",
+   "note": "former-seabed ring tiles (\"islands\"), ungated except AB_MechanoidIntrusion",
+   "intended": 6,
+   "success": true,
+   "added": 6,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "AncientWarehouse",
+   "action": "add",
+   "note": "former-seabed ring tiles not already AncientRuins, biome-locked subset",
+   "intended": 5,
+   "success": true,
+   "added": 5,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  },
+  {
+   "def": "Bay",
+   "action": "add",
+   "note": "ring tiles near Blackstar Field/Hardpan Yard, biome-locked, coast_count 1-5",
+   "intended": 4,
+   "success": true,
+   "added": 4,
+   "removed": 0,
+   "unknownDefs": [],
+   "errors": []
+  }
+ ],
+ "final_audit": {
+  "marineMutators": "Iceberg,VEE_GravelBeach,VEE_RisingWaters,CoastalAtoll,VEE_LoneIsland,Bay",
+  "offenderCount": 13,
+  "offenders_all_preexisting_not_mine": true,
+  "offenders": [
+   {
+    "tile": 446,
+    "mutator": "VEE_GravelBeach",
+    "biome": "Wasteland",
+    "waterCovered": false,
+    "elevation": 18.0
+   },
+   {
+    "tile": 2616,
+    "mutator": "VEE_GravelBeach",
+    "biome": "AB_TarPits",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 3635,
+    "mutator": "Bay",
+    "biome": "AB_FeraliskInfestedJungle",
+    "waterCovered": false,
+    "elevation": 96.0
+   },
+   {
+    "tile": 3655,
+    "mutator": "Bay",
+    "biome": "AB_PyroclasticConflagration",
+    "waterCovered": false,
+    "elevation": 1176.0
+   },
+   {
+    "tile": 4730,
+    "mutator": "Bay",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 840.0
+   },
+   {
+    "tile": 7069,
+    "mutator": "Bay",
+    "biome": "AB_FeraliskInfestedJungle",
+    "waterCovered": false,
+    "elevation": 144.0
+   },
+   {
+    "tile": 7100,
+    "mutator": "VEE_GravelBeach",
+    "biome": "Volcano",
+    "waterCovered": false,
+    "elevation": 300.0
+   },
+   {
+    "tile": 7791,
+    "mutator": "Bay",
+    "biome": "AB_OcularForest",
+    "waterCovered": false,
+    "elevation": 892.0
+   },
+   {
+    "tile": 10344,
+    "mutator": "VEE_GravelBeach",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 56.0
+   },
+   {
+    "tile": 11778,
+    "mutator": "VEE_GravelBeach",
+    "biome": "ZBiome_Badlands",
+    "waterCovered": false,
+    "elevation": 1.0
+   },
+   {
+    "tile": 12822,
+    "mutator": "Bay",
+    "biome": "Desert",
+    "waterCovered": false,
+    "elevation": 1030.0
+   },
+   {
+    "tile": 15173,
+    "mutator": "Bay",
+    "biome": "BiomeCypreJungle",
+    "waterCovered": false,
+    "elevation": 97.0
+   },
+   {
+    "tile": 17531,
+    "mutator": "VEE_GravelBeach",
+    "biome": "AB_MycoticJungle",
+    "waterCovered": false,
+    "elevation": 13.0
+   }
+  ],
+  "removed_offenders": []
+ },
+ "final_audit_INCIDENT": {
+  "note": "The first final_audit call included VEE_SaltPlains (and, more mildly, VEE_GravelBeach) in marineMutators. world_mutators_audit scans the WHOLE PLANET, not just the tiles this session wrote, and VEE_SaltPlains is not actually a coastal-gated def in the live roster note used for BRIEF.md (its gate is inland biome + no-river; the roster text \"landlocked (0 coast sides required)\" is about NOT touching Ocean, the opposite of a marine check). Including it flagged 313 pre-existing planet-wide VEE_SaltPlains placements (ordinary inland desert salt flats, none of them Twilight Sea tiles, none written this session) as \"offenders\", and the apply script's auto-remove loop deleted 48 of them plus 2 pre-existing VEE_GravelBeach tiles near a Lake elsewhere on the planet (CoastDirectionAt only recognises Ocean neighbours, not Lake, so a legitimate lake-adjacent gravel beach reads as non-coastal). All 50 were identified from this report's removed_offenders list and RESTORED via a direct jawa/world_mutators_set add + world_commit + world_mutators_get read-back confirming all 50 present again, before any further work continued. The final_audit block below is the CORRECTED re-run: marineMutators restricted to Iceberg,VEE_GravelBeach,VEE_RisingWaters,CoastalAtoll,VEE_LoneIsland,Bay (all genuinely coastal-gated land/ice defs used in this plan), limit raised to 500 so nothing is hidden, and every offender cross-checked against this session's own written tile lists before any removal. offenderCount 13, ALL 13 pre-existing elsewhere on the planet (biomes like AB_PyroclasticConflagration, Volcano, AB_FeraliskInfestedJungle -- nowhere near the Twilight Sea), NONE on a tile this session wrote. Nothing further removed.",
+  "restored_tiles": {
+   "VEE_SaltPlains": [
+    31,
+    110,
+    177,
+    291,
+    415,
+    450,
+    451,
+    456,
+    566,
+    650,
+    708,
+    761,
+    804,
+    827,
+    986,
+    996,
+    1246,
+    1247,
+    1344,
+    1345,
+    1446,
+    1460,
+    1462,
+    1466,
+    1842,
+    1856,
+    1857,
+    1863,
+    1864,
+    1865,
+    1867,
+    1889,
+    1891,
+    1978,
+    2181,
+    2224,
+    2225,
+    2235,
+    2409,
+    2415,
+    2577,
+    2578,
+    2961,
+    2964,
+    2965,
+    3080,
+    3083,
+    3087
+   ],
+   "VEE_GravelBeach": [
+    446,
+    2616
+   ]
+  }
+ }
+}
