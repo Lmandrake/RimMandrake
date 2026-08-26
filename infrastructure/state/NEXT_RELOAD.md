@@ -345,6 +345,21 @@ python3 src/RimMandrake/Utils/biome_animal_conflicts.py     expect: 0 pairs
 A non-zero there is a pair this pass could not reach, NOT a patch that failed.
 Item: `BIOME_DUPLICATES_STILL_LIVE_1`.
 
+🔑 **AND THE THIRD READING, which is the one that shows what the crash actually COST.**
+`CommonalityOfAnimal` assigns its cache dictionary *before* filling it, so the throw leaves it
+partially built and non-null — and every animal the loop never reached returns **0f** for the rest
+of the session. `AllWildAnimals` only yields kinds above 0, so those animals are not in the
+biome's list at all. Measured against this capture: of the **744** animal weights
+`BiomeCast_Ashkarr.xml` writes across 26 biomes, **563 survive and 181 read 0** — about a quarter
+of the hand-authored planet cast, silently not spawning.
+
+```
+python3 -c "..."   # or just re-run the numbers in items/BIOME_CAST_COMMONALITIES_ZEROED_1.md
+expect after the fix:   744 of 744 non-zero   (was 563)
+```
+⛔ **If the duplicate pairs go to 0 and the zeros do not, the diagnosis is wrong** and
+`BIOME_CAST_COMMONALITIES_ZEROED_1` is a real second defect. Written before the look, on purpose.
+
 ### 2. Four tattoo genes discarded whole — DEFS DISCARDED 6, baseline 2
 
 `SW_Genes.xml` carried a `modExtension` naming `GeneTattooTagFilter.ModExtension_GeneTattooTagFilter`,

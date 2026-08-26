@@ -2256,3 +2256,4 @@
 {"seat":"BUILD","event":"claim","id":"BRIDGE_TOOLS_MEDIUM_BLOCK_1","ts":"2026-08-26T16:30:31Z"}
 {"seat":"BUILD","event":"start","id":"BRIDGE_TOOLS_MEDIUM_BLOCK_1","ts":"2026-08-26T16:30:32Z"}
 {"seat":"BUILD","event":"close","id":"BRIDGE_TOOLS_MEDIUM_BLOCK_1","sha":"d4cad32d","ts":"2026-08-26T16:30:32Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T16:31:05Z"}
