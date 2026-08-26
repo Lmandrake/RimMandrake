@@ -284,3 +284,40 @@ KemeticTemple, GiantFossils, AncientToxVent and AncientSmokeVent are legal on **
 which is the correct specialisation.
 ⚠️ One of those went via **`overrideCategories`**, which the collision guard does not model
 — it only checks `categories`. A guard built on `categories` alone will miss an override.
+
+## The Wither canyon, stripped and rebuilt in canyon vocabulary
+
+Owner, 2026-08-26, from tile 830 (60.86S 93.94E): *"adding a Terraforming Scar to a place
+with Mountainous (or in this case also a Chasm) does not work very well"* — scar art
+fighting chasm art on one hex. He asked for the whole canyon structure stripped and
+repopulated from defs that speak to canyon or chasm.
+
+**The structure** is the connected high-relief band inside Wither: 48 tiles
+(37 LargeHills + 11 Mountainous), found as the graph component containing tile 830 plus
+Wither's second high run. `wither_plan.json` holds the exact list.
+
+🔴 **Every canyon and chasm def requires Mountainous or above, and they are ALL category
+`Mountain`, so a tile can hold exactly one.** `VEE_SerpentineCanyons`, `Chasm`, `Cavern`
+and `Hollow` all gate at `minHilliness: Mountainous`; `VEE_RockRidge`, `VEE_JaggedRocks`
+and `VEE_StoneForest` gate the opposite way at `maxHilliness: Flat`, so they are useless
+here. ⇒ To speak canyon at all the whole spine had to be raised to Mountainous. That is
+also what a canyon system should be, so it was done deliberately rather than worked around.
+
+**Done:** 4 landmarks removed, all mutators CLEARED off the 48, the 3 remaining
+TerraformingScars pulled off the rest of Wither, spine raised to Mountainous, then one
+canyon def per tile walked along the spine for variety — SerpentineCanyons 18, Chasm 12,
+Cavern 12, Hollow 6 — plus non-conflicting texture: `VEE_Sinkholes` 16 (no category),
+`MineralRich` 12 (exposed strata), `CaveLakes` 7 (kept off the Cavern tiles, which already
+own the `Caves` category). 10 landmarks along it.
+
+**Verified:** all 48 read Mountainous; **exactly one canyon def per tile, 0 exceptions**;
+no TerraformingScar, Mountain, Cliffs, VEE_SaltPlains, DryGround or VEE_RotstinkVents left.
+Tile 830 is now `Chasm` + `MineralRich` with nothing drawn over it.
+
+⚠️ The landmarks' own `mutatorChances` rolled 6 `MixedBiome`, 2 `AnimalLife_Decreased`,
+1 `Stockpile`, 1 `AnimalHabitat`, 1 `WildPlants` onto the spine. Unavoidable when placing a
+landmark, and harmless — but it means "cleared" is only true until the landmarks go on.
+
+⚙️ Two black hexes sit in the spine. They are present in the screenshot taken BEFORE this
+rebuild, so they are not caused by it, and nothing in the tile data shows a missing texture.
+Unexplained, benign, not chased.
