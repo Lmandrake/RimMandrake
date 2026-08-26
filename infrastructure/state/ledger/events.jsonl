@@ -2101,3 +2101,5 @@
 {"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-25T07:34:03Z"}
 {"seat":"CHECK","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-08-25T07:35:55Z"}
 {"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T04:32:50Z"}
+{"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-26T04:50:27Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T07:40:52Z"}
