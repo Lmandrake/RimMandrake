@@ -1,3 +1,13 @@
+> 🔴 **SUPERSEDED IN PART, later the same day (2026-08-26), by BUILD.** The census below reads
+> **163**; it is now **198**. The 32 remaining EASY capabilities shipped at `948c3399`
+> (`JawaBenchPawnKitTools.cs` 10 · `JawaBenchGroupTools.cs` 11 · `JawaBenchSystemTools.cs` 11),
+> plus `jawa/thing_stats` at `70b3b117`. ⛔ **Every "not built" verdict below is therefore
+> suspect** — check the live list before acting on one:
+> `grep -rho '"jawa/[a-z_]*"' src/RimMandrake/bridgetools/JawaBench.BridgeTools --include=*.cs | sort -u`
+> The still-open block is MEDIUM: `infrastructure/state/work/BRIDGE_TOOLS_MEDIUM_REMAINING.md`.
+> The method in this file — walk the roster against the SOURCE, never the roster's own
+> annotations — is exactly right and is why the stale flags were caught at all.
+
 # Roster vs. built — the 2026-08-26 walk
 
 Walks every candidate row in `design/Jawa/bridge/BRIDGE_CAPABILITY_ROSTER.md` (103
