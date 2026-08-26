@@ -61,3 +61,62 @@ engine's own numbers on every staple crop. The measurable, useful version is:
 
 Whether *"will not sow"* was the design intent — i.e. whether the aptitude should be a hard work
 disable instead — is a scope call and is filed, not decided here.
+
+---
+
+# The behavioural half — what I could and could not attribute
+
+## ✅ A Baseliner in the same colony sows. Caught in the act.
+
+`jawa/ordered_job` Sow, then the clock stepped by hand:
+
+```
++ 700 ticks   job=CutPlant   cell=[]
++1400 ticks   job=Sow        cell=['Plant_Rice', 'Mote_ProgressBar']
+```
+
+The progress mote is the sow in progress. Unambiguous, and it is the control J4 asks for.
+
+## ⛔ The Jawa half is NOT attributable, and here is exactly why
+
+**With all four other colonists DRAFTED** — a drafted pawn takes no work, so the Jawa was the only
+pair of hands on the map that could sow — the Jawa was ordered to sow a virgin `Soil` cell inside
+the growing zone and **did not, across 7,000 ticks**:
+
+```
+order -> accepted=True  after=Wait
++500 Wait · +1000 Wait_Wander · +2000 GotoWander · +4000 GoForWalk · +6000 GotoWander   cell=[] throughout
+```
+
+🔴 **That is NOT evidence the Jawa cannot sow, because the tool cannot issue a working Sow.**
+Read from source: `Verse/AI/Job.cs:63` declares `public ThingDef plantDefToSow`, and
+`JobDriver_PlantSow.cs:27` opens with
+
+```csharp
+.FailOn(() => !job.plantDefToSow.CanNowPlantAt(base.TargetLocA, base.Map))
+```
+
+`jawa/ordered_job`'s whole parameter set is
+`count · jobDef · jobTag · pawnId · queue · targetAId/X/Z · targetBId/X/Z · timeoutSeconds · waitTicks`
+— **there is no way to set `plantDefToSow`.** A null there is dereferenced in the driver's first
+toil, so the job is accepted and dies immediately. Which is precisely what the tool reported:
+`accepted: true`, `nowRunningRequested: false`, `afterJobDef: Wait`, `ticksElapsed: 0`.
+⇒ The Baseliner's `Sow` above was its **own AI-chosen** job off the growing zone, not my order.
+
+Filed as `ORDERED_JOB_CANNOT_SOW_1`.
+
+## Three more traps this cost, all real
+
+1. **`ordered_job`'s `waitTicks` does nothing on a PAUSED game** — `ticksElapsed: 0` after asking for
+   4,000. The job is enqueued and no ticks pass. Step the clock yourself.
+2. **Sand has fertility 0.** The first target cell was `Sand`; nothing could ever have grown there,
+   and the tool's honest `accepted / not running` split is what exposed it.
+3. **A wild plant is a false positive.** My first Jawa run broke on `if things:` and
+   `Plant_YellowTallGrass` had grown in the cell. Check for the crop **by name**.
+
+## Where J4 stands
+
+**Mechanism: settled.** Rice is `sowMinSkill 0`, the Jawa's effective Plants is 0, `disabled: false`
+⇒ the engine permits it, and the item's *"a Jawa will not sow"* has no support.
+**Behaviour: still owed** — it needs a route that can set `plantDefToSow`, i.e. leaving the Jawa to
+pick the job itself with every other colonist unable to, and enough ticks for it to get round to it.

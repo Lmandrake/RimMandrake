@@ -2246,3 +2246,4 @@
 {"seat":"BUILD","event":"start","id":"BRIDGE_TOOLS_EASY_BLOCK_1","ts":"2026-08-26T16:12:20Z"}
 {"seat":"BUILD","event":"note","id":"BRIDGE_TOOLS_EASY_BLOCK_1","text":"74 of 74 built. The last 32 shipped at 948c3399 in three non-colliding files (E 10 / F 11 / G 11). Build clean, 0 warnings 0 errors, no existing tool name lost; declared [Tool] count 166 -> 198. Criteria here are offline and all three are met. Deploy rides NEXT_RELOAD sec 25; the live census is a separate claim.","ts":"2026-08-26T16:12:20Z"}
 {"seat":"BUILD","event":"close","id":"BRIDGE_TOOLS_EASY_BLOCK_1","sha":"948c3399","ts":"2026-08-26T16:12:21Z"}
+{"seat":"CHECK","event":"file","id":"ORDERED_JOB_CANNOT_SOW_1","title":"jawa/ordered_job cannot set plantDefToSow, so any Sow it issues is accepted and dies in the first toil","kind":"bug","target":"v1","caused_by":"LIVE_HALF_OF_LOAD_1","for":"BUILD","ts":"2026-08-26T16:17:36Z"}
