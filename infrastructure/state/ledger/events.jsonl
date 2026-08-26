@@ -2106,3 +2106,24 @@
 {"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T08:47:07Z"}
 {"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-26T08:50:45Z"}
 {"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T08:54:11Z"}
+{"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-26T09:00:07Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T09:01:23Z"}
+{"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-26T09:08:59Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T09:13:14Z"}
+{"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-26T09:16:20Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T09:18:12Z"}
+{"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-26T09:21:21Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T09:22:29Z"}
+{"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-26T09:28:12Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T09:31:05Z"}
+{"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-26T09:34:24Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T09:39:29Z"}
+{"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-26T09:53:37Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T09:55:54Z"}
+{"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-26T10:10:09Z"}
+{"seat":"CHECK","event":"start","id":"C40","ts":"2026-08-26T10:30:35Z"}
+{"seat":"CHECK","event":"verify","id":"C40","result":"pass","config":"full-582","evidence":"infrastructure/state/evidence/C40_jawa_fixes_2026-08-26_CHECK.md","sha":"05f4d177","ts":"2026-08-26T10:36:45Z"}
+{"seat":"CHECK","event":"close","id":"C40","sha":"05f4d177","ts":"2026-08-26T10:36:49Z"}
+{"seat":"CHECK","event":"file","id":"JAWA_HOOD_NEVER_WORN_1","title":"Jawa spawn in guy762_Robes_jawa but never guy762_JawaHood - 0 of 16 live","kind":"bug","target":"v1","caused_by":"C40","for":"BUILD","ts":"2026-08-26T10:36:49Z"}
+{"seat":"CHECK","event":"file","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","title":"Colonist/Baseliner pawns appear in Jawa factions during spawn runs - observed, not explained","kind":"bug","target":"v1","caused_by":"C40","for":"CHECK","ts":"2026-08-26T10:37:03Z"}
+{"seat":"CHECK","event":"needs","id":"STRAY_COLONISTS_IN_JAWA_FACTIONS_1","to":"bridge","ts":"2026-08-26T10:37:20Z"}
