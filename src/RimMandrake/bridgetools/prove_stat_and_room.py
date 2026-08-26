@@ -41,7 +41,13 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
 import rimbridge_client as rc
 
-EXPECT_TOOLS = 166          # source-declared at deploy time, 2026-08-26 BUILD (+jawa/thing_stats)
+# 🔑 198 = the [Tool] names DECLARED IN SOURCE, counted by attribute, not by
+# scanning the DLL for strings: build.py's tool_surface reads 200 because two
+# tool names are MENTIONED in other tools' description prose ('jawa/anomaly_',
+# 'jawa/revoke'). The live census counts what REGISTERED, so 198 is the number.
+# ⚠️ This expects the 2026-08-26 down-window deploy (NEXT_RELOAD sec 25). Against a
+# game still running the older DLL this reads 166 and says so, which is correct.
+EXPECT_TOOLS = 198
 NEW = ("jawa/pawn_stats", "jawa/room_get", "jawa/thing_stats")
 
 # The genes measured off live instances on 2026-08-26. The stat must move in the
