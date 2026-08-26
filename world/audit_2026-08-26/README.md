@@ -321,3 +321,38 @@ landmark, and harmless — but it means "cleared" is only true until the landmar
 ⚙️ Two black hexes sit in the spine. They are present in the screenshot taken BEFORE this
 rebuild, so they are not caused by it, and nothing in the tile data shows a missing texture.
 Unexplained, benign, not chased.
+
+## 🔴 You cannot lower a chasm floor with world elevation — and you would not want to
+
+Owner asked whether taking a tile's elevation down turns it into ocean. It does, and the
+consequences are larger than the biome flip.
+
+```csharp
+// Planet/SurfaceTile.cs:28
+public override bool WaterCovered => elevation <= 0f;
+
+// GenStep_RocksFromGrid.cs:48
+public override void Generate(Map map, GenStepParams parms) {
+    if (map.TileInfo.WaterCovered) { return; }      // no rock, no rock roof, no mineable lumps
+```
+
+1. **`elevation <= 0` IS water.** `BiomeWorker_Ocean` returns true only for WaterCovered,
+   `WorldDrawLayer_Roads` stops drawing roads across it, and `WorldDrawLayer_Terrain:211`
+   draws a coastline wherever elevation crosses zero.
+2. **A sub-zero tile generates NO ROCK AT ALL.** `GenStep_RocksFromGrid.Generate` returns
+   on the first line, taking rock, rock roofs and `GenStep_ScatterLumpsMineable` with it.
+   `GenStep_RockChunks` bails the same way. ⇒ A "deepened" canyon would lose the walls that
+   make it a canyon.
+3. **It cannot even persist.** `SurfaceLayer.cs:98` stores
+   `WaterCovered ? elevation : Mathf.Max(elevation, 1f)` — a land tile's elevation is
+   clamped to at least 1 m on save, so there is no such thing as a below-sea-level land tile.
+
+🔑 **But the chasm floor is not the world tile's elevation in the first place.**
+`TileMutatorWorker_Chasm.GeneratePostElevationFertility` writes `MapGenerator.Elevation` —
+the MAP grid — setting cells above `ChasmThreshold 0.5` to the noise value. The chasm is the
+**gap between raised rock**: you get depth by raising walls, not by lowering a floor. World
+elevation only decides land-vs-water and therefore whether any rock exists to raise.
+
+⇒ The lever for a more dramatic chasm is **hilliness**, which feeds
+`GenStep_ElevationFertility` — already maxed to Mountainous across all 48 Wither spine
+tiles. Taking the spine below zero would make it shallower, not deeper, and drown it.
