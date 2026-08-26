@@ -1,0 +1,161 @@
+{
+  "base_url": "https://integrate.api.nvidia.com/v1/chat/completions",
+  "burst": 20,
+  "candidates": 9,
+  "results": [
+    {
+      "model": "mistralai/mistral-nemotron",
+      "tools": {
+        "status": 0,
+        "tool_calls": null,
+        "detail": "TimeoutError",
+        "latency_s": 90.17
+      },
+      "verdict": "UNAVAILABLE"
+    },
+    {
+      "model": "nvidia/llama-3.1-nemotron-70b-instruct",
+      "tools": {
+        "status": 404,
+        "tool_calls": null,
+        "detail": "Function '9b96341b-9791-4db9-a00d-4e43aa192a39': Not found for account 'WYu0KrXbF2Lx_F47pp2Q2QN418MKeFVACvf_C-5Fw9M'",
+        "latency_s": 0.14
+      },
+      "verdict": "UNAVAILABLE"
+    },
+    {
+      "model": "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+      "tools": {
+        "status": 404,
+        "tool_calls": null,
+        "detail": "Function '84bf12ff-edbd-4435-baea-0fa6a7453d2e': Not found for account 'WYu0KrXbF2Lx_F47pp2Q2QN418MKeFVACvf_C-5Fw9M'",
+        "latency_s": 0.15
+      },
+      "verdict": "UNAVAILABLE"
+    },
+    {
+      "model": "nvidia/nemotron-3-nano-30b-a3b",
+      "tools": {
+        "status": 200,
+        "finish_reason": "tool_calls",
+        "tool_calls": 1,
+        "args_correct": true,
+        "reasoning_field": true,
+        "latency_s": 1.06
+      },
+      "competence": {
+        "status": 200,
+        "answer": "ThingDef",
+        "correct": true,
+        "empty_content_thinking_model": false,
+        "latency_s": 1.23
+      },
+      "burst": {
+        "n": 20,
+        "http_200": 20,
+        "http_429": 0,
+        "http_other": 0,
+        "first_429_at_call": null
+      },
+      "verdict": "USABLE"
+    },
+    {
+      "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "tools": {
+        "status": 200,
+        "finish_reason": "tool_calls",
+        "tool_calls": 1,
+        "args_correct": true,
+        "reasoning_field": true,
+        "latency_s": 2.57
+      },
+      "competence": {
+        "status": 200,
+        "answer": "ThingDef",
+        "correct": true,
+        "empty_content_thinking_model": false,
+        "latency_s": 3.14
+      },
+      "burst": {
+        "n": 20,
+        "http_200": 14,
+        "http_429": 0,
+        "http_other": 6,
+        "first_429_at_call": null
+      },
+      "verdict": "USABLE"
+    },
+    {
+      "model": "nvidia/nemotron-3-super-120b-a12b",
+      "tools": {
+        "status": 200,
+        "finish_reason": "tool_calls",
+        "tool_calls": 1,
+        "args_correct": true,
+        "reasoning_field": true,
+        "latency_s": 1.2
+      },
+      "competence": {
+        "status": 200,
+        "answer": "ThingDef",
+        "correct": true,
+        "empty_content_thinking_model": false,
+        "latency_s": 2.0
+      },
+      "burst": {
+        "n": 20,
+        "http_200": 20,
+        "http_429": 0,
+        "http_other": 0,
+        "first_429_at_call": null
+      },
+      "verdict": "USABLE"
+    },
+    {
+      "model": "nvidia/nemotron-3-ultra-550b-a55b",
+      "tools": {
+        "status": 500,
+        "tool_calls": null,
+        "detail": "{'error': {'message': 'Internal server error', 'type': 'Internal Server Error', 'code': 500}}",
+        "latency_s": 0.43
+      },
+      "verdict": "UNAVAILABLE"
+    },
+    {
+      "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "tools": {
+        "status": 200,
+        "finish_reason": "tool_calls",
+        "tool_calls": 1,
+        "args_correct": true,
+        "reasoning_field": true,
+        "latency_s": 8.68
+      },
+      "competence": {
+        "status": 200,
+        "answer": "ThingDef",
+        "correct": true,
+        "empty_content_thinking_model": false,
+        "latency_s": 25.06
+      },
+      "burst": {
+        "n": 20,
+        "http_200": 18,
+        "http_429": 0,
+        "http_other": 2,
+        "first_429_at_call": null
+      },
+      "verdict": "USABLE"
+    },
+    {
+      "model": "nvidia/nemotron-nano-3-30b-a3b",
+      "tools": {
+        "status": 404,
+        "tool_calls": null,
+        "detail": "{'error': {'message': 'Model not found', 'type': 'Not Found', 'code': 404}}",
+        "latency_s": 0.23
+      },
+      "verdict": "UNAVAILABLE"
+    }
+  ]
+}

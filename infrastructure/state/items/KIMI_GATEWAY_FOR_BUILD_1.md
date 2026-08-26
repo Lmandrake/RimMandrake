@@ -47,6 +47,42 @@ per turn plus subagents; at the measured rate the window would stall on nearly e
 call. **Kimi is primary with Sonnet 5 as fallback**, so a 429 degrades the turn instead
 of stopping the seat.
 
+### 🔴 Measured 2026-08-26 by REP — the nemotron family does NOT hit the kimi wall
+
+`src/RimMandrake/Utils/nemotron_probe.py`, results `research/nemotron_probe.json`.
+Same account, same key, same 20-rapid-call shape that returned **200×5 / 429×15** on
+`moonshotai/kimi-k3` the night before.
+
+| Model | tool calls | 20 rapid | competence | latency |
+|---|---|---|---|---|
+| `nvidia/nemotron-3-super-120b-a12b` | ✅ args correct | **200×20** | ✅ | 1.2 s |
+| `nvidia/nemotron-3-nano-30b-a3b` | ✅ args correct | **200×20** | ✅ | 1.1 s |
+| `nvidia/nemotron-3.5-lightning-30b-a3b` | ✅ args correct | **200×20** | ✅ | 8.7 s, 25 s thinking |
+| `nvidia/nemotron-3-ultra-550b-a55b` | — | 200×4 / 503×1 | — | 2.5–20.7 s |
+| `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` | ✅ args correct | 200×14 / **503×6** | ✅ | 2.6 s |
+
+🔑 **Not one 429 in 80 burst calls.** Every nemotron failure was **503
+`ResourceExhausted` / `Service temporarily overloaded`** — shared capacity, not a
+per-model quota. ⚠️ **That distinction is the whole finding:** a 503 is transient and a
+client retries out of it; kimi-k3's 429 was a wall with no `retry-after` that retrying
+made worse. **A nemotron seat degrades; a kimi seat stalls.**
+
+⇒ **The "Kimi primary, Sonnet 5 fallback" design above was shaped by the 429 wall and
+should be re-decided.** `nvidia/nemotron-3-super-120b-a12b` carries sustained traffic,
+calls tools with correct arguments, and answers a RimWorld def question correctly at
+1.2 s. ⛔ **REP is not making that call** — it is DECIDE's, and it also needs the
+`Agent_Policy.md` correction this item already flags.
+
+⚠️ **The catalog decays and our docs will rot with it.** 83 models listed 2026-08-26
+against **102** on 2026-08-25. Four nemotrons that answered 200 that night —
+`nvidia-nemotron-nano-9b-v2`, `llama-3.3-nemotron-super-49b-v1` and `-v1.5`,
+`nemotron-nano-12b-v2-vl` — **are no longer listed at all.** Re-run the probe before
+trusting any model name here; do not pin one from a doc.
+
+⚠️ **What this did NOT measure:** context window, long-horizon agentic behaviour, or
+quality beyond one smoke question. It proves the family is *reachable and toolable*,
+which is exactly what kimi-k3 failed. It does not prove a nemotron can run a seat.
+
 ## criteria
 
 - LiteLLM running on `localhost:4000`, version pinned and recorded, **not** 1.82.7/1.82.8.
