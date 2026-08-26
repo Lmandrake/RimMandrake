@@ -200,3 +200,21 @@ and **no stats**; `rimworld/select_pawn` is colonist-only and `Dialog_InfoCard` 
 parameterless constructor, so the UI route is shut too.
 🔑 A question about `Room.Role`, room temperature or `ComfortableTemperatureRange` is
 **UNMEASURED** today — not "probably fine".
+
+## `jawa/fire_raid` — `resolved.faction` is the REQUEST, not what raided
+
+Measured 2026-08-26, 582 mods.
+
+```
+{faction: "Jawa_FreeDroidEnclaves"}  -> resolved.faction "Jawa_FreeDroidEnclaves", success true
+                                     -> 5 x Jawa_Blackstar_Grunt arrived, faction "Blackstar Company"
+{faction: "Mechanoid"}               -> Totharth Mechhive arrived        (matches)
+```
+
+`IncidentWorker_RaidEnemy` refuses a faction that is not hostile to the player and picks its own —
+correct engine behaviour. The Free Droid Enclaves are **Neutral** on this world
+(`jawa/faction_relations_get`: 10 hostile / 14 neutral / 0 ally over 25 factions). 🔴 **The tool
+echoes the request either way and never says it was overridden.**
+
+⇒ **Census the ARRIVALS.** `jawa/list_pawns` before and after, diff the ids, group by `factionName`.
+A raid test that reads `resolved` has not verified which faction raided.

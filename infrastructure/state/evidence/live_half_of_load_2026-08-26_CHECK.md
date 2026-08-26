@@ -113,3 +113,91 @@ without settling this first — I did not substitute my own criterion, per POLIC
 
 J4 · J5 (need a growing zone and two pawns) · G3 · T3 · T5 (need specific biomes) · J7 · J8 ·
 N5 · K6/K7 (need raids) · H4 · H5 · H6 (need `Page_SelectStartingSite`, and the game is past it).
+
+---
+
+# Run 2, same session — four more rows, all PASS
+
+Game still `game_loaded`, one map, **paused throughout** (`paused: true` read back before and after
+every hostile spawn, per the skill's §4b rule).
+
+## J8 — vanilla mechanoids have NO relations: **PASS**
+
+`jawa/pawn_relations … action: list` on every mechanoid reachable, spawned and raided:
+
+```
+Mech_Scyther   relations 0      Mech_Pikeman     relations 0
+Mech_Lancer    relations 0      AM_Daggersnout   relations 0  (x2)
+```
+
+⇒ No centipede has a social tab. The guard is right.
+
+## J7 — a raid arrives with no NRE naming `Pawn_RelationsTracker`: **PASS**
+
+`jawa/fire_raid {faction: Mechanoid, points: 500, spawnCenter: '5,240', dryRun: false}` — 4 raiders
+arrived (`Mech_Pikeman`, `AM_Daggersnout` ×2, `Mech_Militor`, all *Totharth Mechhive*).
+`Player.log` diffed from its exact byte offset before the call: **zero new lines matching
+`exception|error|NullReference|RelationsTracker`.** Clean.
+
+⚠️ **Scope honesty: this is a MECHANOID raid, not the droid raid J7 names.** `Jawa_FreeDroidEnclaves`
+is **Neutral** to the player on this world (read from `jawa/faction_relations_get`: 10 hostile,
+14 neutral, and the Enclaves are neutral), so `RaidEnemy` cannot use it. Making them hostile to
+test would edit the owner's authored faction relations, which I will not do. The mechanoid raid
+exercises the same `Pawn_RelationsTracker` path on relation-less pawns, which is what the NRE was
+about — but if J7 must be the Enclaves specifically, it is still owed.
+
+## 🔴 And a finding: `jawa/fire_raid`'s `resolved.faction` echoes the REQUEST, not what raided
+
+```
+request faction Jawa_FreeDroidEnclaves (Neutral)
+  -> resolved.faction "Jawa_FreeDroidEnclaves", success true
+  -> what actually arrived: 5 x Jawa_Blackstar_Grunt, faction "Blackstar Company" (Pirate)
+
+request faction Mechanoid (Hostile)
+  -> resolved.faction "Mechanoid"
+  -> what actually arrived: Totharth Mechhive        <- matches
+```
+
+`IncidentWorker_RaidEnemy` rejects a non-hostile faction and picks its own; the tool reports the
+faction you asked for either way and never says it was overridden. ⇒ **A raid test that names a
+faction and reads `resolved` has not verified which faction raided.** Filed as
+`FIRE_RAID_ECHOES_REQUESTED_FACTION_1`; census the ARRIVALS instead.
+
+## K6/K7 — a Blackstar Leader spawns holding a KotOR weapon, not bare: **PASS**
+
+```
+Jawa_Blackstar_Leader  guy762_ionrifle_baragwin  + guy762_LgtBattleArmor, guy762_HelmetMilitary_OldRepublic
+Jawa_Blackstar_Leader  guy762_bpistol_onasi      + guy762_LgtBattleArmor, guy762_HelmetLgtBattle_TSL
+Jawa_Blackstar_Leader  guy762_bpistol_onasi      + guy762_LgtBattleArmor, guy762_HelmetMilitary
+Jawa_Blackstar_Leader  guy762_bpistol_onasi      + guy762_LgtBattleArmor, guy762_HelmetMilitary
+Jawa_Blackstar_Heavy   guy762_lgtrepeater_carbine+ guy762_MandoArmor_battle, guy762_MandoHelmet_supercom
+Jawa_Blackstar_Heavy   guy762_lgtrepeater_carbine+ guy762_MandoArmor_battle, guy762_MandoHelmet_supercom
+```
+
+**6 of 6 armed**, all with KotOR weapons and KotOR/Mandalorian armour. Never bare.
+⚙️ Observation, not a failure: 3 of 4 leaders rolled the same `guy762_bpistol_onasi`. The pool is
+real but narrow at the leader tier.
+
+## N5 — the Ancient Arsenal boss draws from a real pool: **PASS**, and the `<nomatch>` half works
+
+Six bosses, **six different weapons, zero repeats**:
+
+```
+AncientSoldierBoss    JDSA_E-60R_Missile_Launcher      AncientSoldierBossN  Gun_EmpLauncher
+AncientSoldierBoss    JDSA_Westar-35_Blaster_Pistol    AncientSoldierBossN  JDSA_DC-15S_Blaster_Rifle
+AncientSoldierBoss    AM_StarfireTurret
+AncientSoldierBoss    Gun_HellsphereCannon
+```
+
+The item flagged the `<nomatch>` branch as "the untested half" because two of three offline warnings
+were `<match>` branches with 0 nodes. It fires and it produces a genuinely varied pool.
+
+⚙️ **All six read xenotype `RimMandrakeRakata`** — the deterministic `useFactionXenotypes: false`
+route measured under `XENOTYPE_NONFACTION_SPAWN_ROUTES_1`, now confirmed on the boss kinds too.
+⚙️ Every boss wears only `Apparel_Pants`. A Hellsphere Cannon in pants. The weapon pool is rich and
+the apparel pool at this tier is not — reported, not graded.
+
+## Map state after run 2
+
+9 hostiles standing paused on a scratch debug map (5 Blackstar, 4 Totharth Mechhive) plus the
+dwelling built for `TEMPLATE_ENGINE_ACCEPTANCE_1` and ~40 spawned Jawa. Nothing here is kept.
