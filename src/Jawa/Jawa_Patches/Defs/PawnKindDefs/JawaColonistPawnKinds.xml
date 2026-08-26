@@ -59,7 +59,7 @@
          ⚠️ `apparelAllowHeadgearChance` MOVED FROM 0 TO 1 and that is deliberate: the hood is
          headgear, and leaving the roll at 0 is the obvious way to end up with a required hood
          that never appears. -->
-    <apparelRequired>
+    <apparelRequired Inherit="False">
       <li>guy762_Robes_jawa</li>
       <li>guy762_JawaHood</li>
     </apparelRequired>
@@ -72,6 +72,17 @@
          apparelRequired BEFORE the money loop and independently of it, so they land at
          any budget; 0 only silences the pass that was adding tribal ponchos, kilts and
          war veils on top. Verified against the 1.6 source, not assumed.
+         ⚠️ CORRECTED 2026-08-26 by CHECK - "independently of it" is right about MONEY and
+         wrong about everything else, and that sentence cost a fortnight. The loop takes
+         each required item only when `!workingSet.PairOverlapsAnything(pa)`, so a required
+         item whose BODY-PART GROUP is already taken is silently skipped. apparelRequired
+         also INHERITS AND APPENDS, parent items FIRST: TribalWarriorBase contributed
+         Apparel_WarVeil (FullHead/Overhead) and it ate guy762_JawaHood (UpperHead+Mouth/
+         Overhead) on every single spawn - robe 16/16, hood 0/16, measured live. TribalChiefBase
+         contributed Apparel_PlateArmor and the Elder lost its ROBE too. RimWorld logged all
+         three as `required apparel can't be worn together` on every load.
+         ⇒ Inherit="False" on all four, which is just the owner's "robes+hoods ONLY" said in
+         XML. ⛔ A PatchOperationRemove cannot reach an inherited <li>.
          ⚠️ Spawn kit only. A Jawa can still craft, buy and wear anything in play. -->
     <apparelMoney>0</apparelMoney>
     <backstoryCryptosleepCommonality>1</backstoryCryptosleepCommonality>
@@ -107,7 +118,7 @@
         <MandrakeJawa>1.0</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
-      <apparelRequired>
+      <apparelRequired Inherit="False">
       <li>guy762_Robes_jawa</li>
       <li>guy762_JawaHood</li>
     </apparelRequired>
@@ -119,6 +130,17 @@
          apparelRequired BEFORE the money loop and independently of it, so they land at
          any budget; 0 only silences the pass that was adding tribal ponchos, kilts and
          war veils on top. Verified against the 1.6 source, not assumed.
+         ⚠️ CORRECTED 2026-08-26 by CHECK - "independently of it" is right about MONEY and
+         wrong about everything else, and that sentence cost a fortnight. The loop takes
+         each required item only when `!workingSet.PairOverlapsAnything(pa)`, so a required
+         item whose BODY-PART GROUP is already taken is silently skipped. apparelRequired
+         also INHERITS AND APPENDS, parent items FIRST: TribalWarriorBase contributed
+         Apparel_WarVeil (FullHead/Overhead) and it ate guy762_JawaHood (UpperHead+Mouth/
+         Overhead) on every single spawn - robe 16/16, hood 0/16, measured live. TribalChiefBase
+         contributed Apparel_PlateArmor and the Elder lost its ROBE too. RimWorld logged all
+         three as `required apparel can't be worn together` on every load.
+         ⇒ Inherit="False" on all four, which is just the owner's "robes+hoods ONLY" said in
+         XML. ⛔ A PatchOperationRemove cannot reach an inherited <li>.
          ⚠️ Spawn kit only. A Jawa can still craft, buy and wear anything in play. -->
     <apparelMoney>0</apparelMoney>
     <apparelTags>
@@ -152,7 +174,7 @@
         <MandrakeJawa>1.0</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
-      <apparelRequired>
+      <apparelRequired Inherit="False">
       <li>guy762_Robes_jawa</li>
       <li>guy762_JawaHood</li>
     </apparelRequired>
@@ -164,6 +186,17 @@
          apparelRequired BEFORE the money loop and independently of it, so they land at
          any budget; 0 only silences the pass that was adding tribal ponchos, kilts and
          war veils on top. Verified against the 1.6 source, not assumed.
+         ⚠️ CORRECTED 2026-08-26 by CHECK - "independently of it" is right about MONEY and
+         wrong about everything else, and that sentence cost a fortnight. The loop takes
+         each required item only when `!workingSet.PairOverlapsAnything(pa)`, so a required
+         item whose BODY-PART GROUP is already taken is silently skipped. apparelRequired
+         also INHERITS AND APPENDS, parent items FIRST: TribalWarriorBase contributed
+         Apparel_WarVeil (FullHead/Overhead) and it ate guy762_JawaHood (UpperHead+Mouth/
+         Overhead) on every single spawn - robe 16/16, hood 0/16, measured live. TribalChiefBase
+         contributed Apparel_PlateArmor and the Elder lost its ROBE too. RimWorld logged all
+         three as `required apparel can't be worn together` on every load.
+         ⇒ Inherit="False" on all four, which is just the owner's "robes+hoods ONLY" said in
+         XML. ⛔ A PatchOperationRemove cannot reach an inherited <li>.
          ⚠️ Spawn kit only. A Jawa can still craft, buy and wear anything in play. -->
     <apparelMoney>0</apparelMoney>
     <apparelTags>
@@ -208,7 +241,7 @@
         <MandrakeJawa>1.0</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
-      <apparelRequired>
+      <apparelRequired Inherit="False">
       <li>guy762_Robes_jawa</li>
       <li>guy762_JawaHood</li>
     </apparelRequired>
@@ -220,6 +253,17 @@
          apparelRequired BEFORE the money loop and independently of it, so they land at
          any budget; 0 only silences the pass that was adding tribal ponchos, kilts and
          war veils on top. Verified against the 1.6 source, not assumed.
+         ⚠️ CORRECTED 2026-08-26 by CHECK - "independently of it" is right about MONEY and
+         wrong about everything else, and that sentence cost a fortnight. The loop takes
+         each required item only when `!workingSet.PairOverlapsAnything(pa)`, so a required
+         item whose BODY-PART GROUP is already taken is silently skipped. apparelRequired
+         also INHERITS AND APPENDS, parent items FIRST: TribalWarriorBase contributed
+         Apparel_WarVeil (FullHead/Overhead) and it ate guy762_JawaHood (UpperHead+Mouth/
+         Overhead) on every single spawn - robe 16/16, hood 0/16, measured live. TribalChiefBase
+         contributed Apparel_PlateArmor and the Elder lost its ROBE too. RimWorld logged all
+         three as `required apparel can't be worn together` on every load.
+         ⇒ Inherit="False" on all four, which is just the owner's "robes+hoods ONLY" said in
+         XML. ⛔ A PatchOperationRemove cannot reach an inherited <li>.
          ⚠️ Spawn kit only. A Jawa can still craft, buy and wear anything in play. -->
     <apparelMoney>0</apparelMoney>
     <apparelTags>

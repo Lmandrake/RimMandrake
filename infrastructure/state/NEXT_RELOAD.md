@@ -28,6 +28,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
 | 🔧 §22 FORTY-FOUR UNDEPLOYED BRIDGE TOOLS | ✅ **DEPLOYED 2026-08-26 06:36** | ⏳ readings pending |
 | 🔬 §23 THE FOUR ROWS THAT UNBLOCK ON `jawa/pawn_stats` + `jawa/room_get` | — | ⏳ PENDING |
+| 🧥 §24 THE JAWA HOOD — fix deployed, needs one spawn to prove | ✅ **DEPLOYED 2026-08-26 06:5x** | ⏳ READING PENDING |
 
 🔴 **WHEN A LOAD IS SCORED: delete its block.**
 **Do not leave a scored block here with a ✅** — that is the same rot one step slower.
@@ -350,3 +351,45 @@ jawa/room_get {rect: "170,170,18,10"}
   `Storeroom`. Anything else and the game does not agree it is a house.
 * **Criterion 2** — build the nursery variant on a hot tile, let time run, and read `temperature`
   back. **Must be ≤ 32 °C.**
+
+
+## 🧥 §24 THE JAWA HOOD — the fix is deployed; one spawn proves it
+
+Owner authorised CHECK to make the edit, 2026-08-26. `apparelRequired` now carries
+**`Inherit="False"` on all four Jawa kinds** in
+`src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaColonistPawnKinds.xml`, deployed and **verified by
+bytes** (repo and game copy both `sha256 6c6fcbd7544379817d5f`, four pinned blocks in the game copy).
+
+**Why all four and not the two that were broken.** Only `Jawa_Tribal_Scavenger` (via
+`TribalWarriorBase` → `Apparel_WarVeil`) and `Jawa_Tribal_Elder` (via `TribalChiefBase` →
+`Apparel_TribalHeaddress` + `Apparel_PlateArmor`) were losing pieces. `Jawa_Colonist` and
+`Jawa_Tribal_Slinger` were clean **by accident of what their parents happen to carry today**.
+`Inherit="False"` is simply the owner's *"Jawa wear robes+hoods ONLY"* said in XML, so it belongs on
+all four and it hardens the clean two against a mod update that adds one.
+
+### The reading — one call, and three things must all be true
+
+```
+jawa/spawn_pawn {kindDef: <kind>, x: .., z: .., faction: Jawa_IndigenousTribes, count: 8}
+jawa/pawn_get   {pawn: <each id>}      # apparel, read off the pawn
+```
+
+for **all four** kinds — `Jawa_Colonist` · `Jawa_Tribal_Scavenger` · `Jawa_Tribal_Slinger` ·
+`Jawa_Tribal_Elder`.
+
+1. **`guy762_Robes_jawa` AND `guy762_JawaHood` on every pawn of every kind.** Before the fix:
+   Scavenger was robe 16/16, hood **0/16**; the Elder should have been losing its robe as well and
+   has never been looked at.
+2. **No `Apparel_WarVeil`, no `Apparel_TribalHeaddress`, no `Apparel_PlateArmor`** on any of them.
+3. 🔑 **`Player.log` no longer carries these three lines** — this is the cheapest check and the one
+   that caught the bug in the first place:
+
+```
+Config error in Jawa_Tribal_Scavenger: required apparel can't be worn together (Apparel_WarVeil, guy762_JawaHood)
+Config error in Jawa_Tribal_Elder:     required apparel can't be worn together (Apparel_TribalHeaddress, guy762_JawaHood)
+Config error in Jawa_Tribal_Elder:     required apparel can't be worn together (Apparel_PlateArmor, guy762_Robes_jawa)
+```
+
+⚠️ **Presence of the defs in a dump proves nothing** — both mods were always active. The pawn
+wearing it is the only evidence.
+⚠️ **A def change needs a RESTART**, not a save reload. The deploy tool says so itself.
