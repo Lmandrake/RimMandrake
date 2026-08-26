@@ -49,6 +49,7 @@ the moment you score it** — an unmarked block is how this file rotted twice.
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
 | 🔧 §22 FORTY-FOUR UNDEPLOYED BRIDGE TOOLS | ✅ **DEPLOYED 2026-08-26 06:36; REDEPLOYED at 166 tools ~07:0x** | ⏳ readings pending |
 | 🔬 §23 THE ROWS THAT UNBLOCK ON `jawa/pawn_stats` + `jawa/room_get` + `jawa/thing_stats` | 2026-08-26 | ⏳ PENDING — **run its census FIRST** |
+| 🔧 §25 TWO COMPANION FIXES BUILT, WAITING ON A DOWN WINDOW | — | ⏳ **DEPLOY FIRST** next time the game is down |
 | 🧥 §24 THE JAWA HOOD — fix deployed, needs one spawn to prove | ✅ **DEPLOYED 2026-08-26 06:5x** | ⏳ READING PENDING |
 
 🔴 **WHEN A LOAD IS SCORED: delete its block.**
@@ -315,6 +316,26 @@ stands until someone reads its description; check it after the deploy before clo
 whole reason the window matters. `python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --apply`
 
 
+## 🔧 §25 TWO COMPANION FIXES ARE BUILT AND WAITING ON THE NEXT DOWN WINDOW
+
+Written and compiled 2026-08-26 by BUILD at `97403eec`, **0 warnings, 0 errors, no tool
+removal** — artifact and game copy both carry 166 tool names, so nothing is lost by deploying.
+⛔ **Not deployed: the game is UP and the OS holds the DLL memory-mapped.**
+
+```
+python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --apply
+```
+🔴 `--gm` or the deploy strips every player-acting tool.
+
+| tool | what changed | what to read after the next load |
+|---|---|---|
+| `jawa/build_batch` | `placed` counted spawn ATTEMPTS; eight calls reported 81 placed with `failed: []` and the map held 78 (`BUILD_BATCH_OVERWRITES_SILENTLY_1`). It now returns **`survived`**, `lostToLaterOps` and **`displaced[]`** naming everything the batch destroyed and whether the batch itself had placed it. New `refuseIfDisplaces` makes it an error instead. | Rebuild the dwelling and assert `survived == requested`, not `placed == requested`. With the footprint fix in rimplace the correct answer is now **0 displaced** |
+| `jawa/fire_raid` | echoed the faction you asked for even when the worker raided with another (`FIRE_RAID_ECHOES_REQUESTED_FACTION_1`). Now returns **`actual`** (the faction the worker used, written back into parms) and **`arrived[]`** counted off the map, and warns BEFORE firing that a non-hostile faction will be substituted | `jawa/fire_raid {faction: "Jawa_FreeDroidEnclaves", dryRun: false}` must now say *substituted* and name Blackstar Company in `actual`/`arrived` |
+
+⚠️ **`resolved` still exists and still means THE REQUEST.** It was not renamed — other callers read
+it — but both its own comment and the ResultDescription now say so, and `actual` is the outcome.
+
+---
 ## 🎯 THE DECISION STRINGS FOR THIS LOAD — written 2026-08-26 07:0x by BUILD, BEFORE the launch
 
 ⚠️ **Written before the log exists, which is the only time a decision string counts.** A signature
