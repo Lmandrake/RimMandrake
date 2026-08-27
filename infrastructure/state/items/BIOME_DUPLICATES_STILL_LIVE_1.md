@@ -89,3 +89,65 @@ biomes; the only intended change is that its DE-DUP section should now emit ~27 
 the handful a disk-only scan finds. **A change to the cast rosters themselves is not intended** —
 if the diff shows one, stop and say so. `git checkout --` restores it; the committed copy is the
 authored planet.
+
+---
+
+## ✅ THE GENERATOR GUARD HAS NOW RUN — 2026-08-26 19:15, BUILD. Commit `46a3cfa7`.
+
+It took **8 minutes** (the disk walk over the workshop mods on a `/mnt/d` mount), and it
+did exactly what the "to finish it" block above asked for.
+
+```
+animal-side: +6814 pair(s) only the capture could see (2026-08-26T14-20-04Z)
+wrote design/Jawa/fauna/BiomeCast_Ashkarr.xml: 26 biomes, 746 records, 56 duplicate pair(s) de-duped
+⚠️ 2 cast entries SKIPPED - not PawnKindDefs: Desert/SWPotF_RaceDef_ysalamir, PoisonForest/GiantAnt_Race
+```
+
+**29 → 56 de-dup pairs**, which is exactly the disk-only 29 plus the capture-only 27. The
+guard works.
+
+### The invariant the block above demanded, measured rather than eyeballed
+
+> *"A change to the cast rosters themselves is not intended — if the diff shows one, stop
+> and say so."*
+
+Parsed both copies into `{biome: {animal: commonality}}` and compared:
+
+```
+biomes old/new           26 / 26
+records old/new         744 / 744
+biome set differs        none
+biomes with a cast change   0
+```
+
+**Zero.** The only change in the file is the de-dup section. Nothing to stop for. (The
+generator's own "746 records" is its pre-skip count; the two unresolvable entries were
+skipped before this run too, which is why 744 is unchanged.)
+
+### 🔴 Nothing new to deploy — and the reason is a trap worth more than the run
+
+All 56 pairs are **already covered** by the shipped `AnimalBiomeDuplicates_Fix.xml` (34)
++ `AnimalBiomeDuplicates_Generated.xml` (27) = 61. But **five shipped pairs are NOT in
+the 56**:
+
+```
+AridShrubland x Armadillo · Desert x Armadillo · Scarlands x AA_CrystallineCaracal
+TropicalSwamp x Titan     · ZBiome_DesertOasis x TYR_KangarooRat
+```
+
+🔑 **They are absent because our own removal already worked.** The capture is taken after
+every PatchOperation, so **a pair we have already fixed is invisible in it — the fix hides
+its own evidence.**
+
+⛔ **So the de-dup section this generator emits is a FLOOR, not a roster.** Had anyone
+shipped it *as* the de-dup file, those five removals would have been dropped and the five
+pairs would return on the next load with nothing in any log naming them. The shipped set
+must stay the **union of every pair ever found**. Written into
+`design/Jawa/fauna/gen_cast_patch.py`'s docstring and into the comment it emits, so the
+next person to run it reads it before the diff.
+
+### What is still owed, and it is unchanged
+
+The `## verify` block above, on the **next load's log** — `harvest_log.py` DEAD MODS back
+to 0, zero `same key has already been added`, then `biome_animal_conflicts.py` = 0 pairs
+against the new capture. That is `needs: harvest`; no bridge, no clicking.
