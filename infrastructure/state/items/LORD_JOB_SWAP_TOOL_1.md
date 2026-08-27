@@ -62,26 +62,14 @@ Evidence: `infrastructure/state/evidence/BRIDGE_TOOLS_BATCH_2026-08-27.txt`.
   So the easy construction gives a graph that builds, error-checks clean, and behaves like
   a different job. That is the trap this refusal exists for.
 
-## Validation plan — run it in the deploy window
+## Prove it
 ```
-ITEM     jawa/lord_set_job — hand a landed raid a new state machine
-SEE      One raid Lord's jobAfter reading LordJob_ExitMapBest where jobBefore read
-         LordJob_AssaultColony, and every pawn's dutyAfter differing from dutyBefore
-ROUTE    Minimal list. Start a quicktest map, fire a raid, then:
-           jawa/lord_pawn_move {action:"list"}            -> pick the raid's lordIndex
-           jawa/lord_set_job {lordIndex:N, loadID:<its loadID>,
-                              lordJob:"LordJob_ExitMapBest"}
-PREDICT  success true, dutiesChanged == pawnCount, toilAfter naming a LordToil_ExitMap
-CLOSE    One swap that changes duties, AND one deliberate refusal — pass
-         lordJob:"LordJob_AssaultColony" with no args and confirm it REFUSES with the
-         signature list rather than silently building the faction-null version
-RIDE     batch — companion DLL, rides the same game-down window as bridge_arg_report
-LIES     🔴 dutiesChanged == 0 is NOT proof of failure: a toil may legitimately re-issue
-         the same duty def, which is why the result carries dutiesUnchangedNote. Read
-         toilAfter and jobAfter to settle it.
-         🔴 And a deployed DLL registers NOTHING until the game restarts, so "tool not
-         found" after a load that predates the deploy is not a failure of the tool.
+jawa/lord_pawn_move {action:"list"}                        -> pick a raid's lordIndex
+jawa/lord_set_job {lordIndex:N, loadID:<its loadID>, lordJob:"LordJob_ExitMapBest"}
 ```
+**Expect** `dutiesChanged == pawnCount` and `toilAfter` naming a `LordToil_ExitMap`.
+Then once with `lordJob:"LordJob_AssaultColony"` and no args — it must REFUSE with the
+signature list, not build the faction-null version.
 
 ## Watch out
 - ⚠️ **`lordIndex` is positional and shifts** as groups form and die. Pass `loadID` too —

@@ -50,26 +50,14 @@ by an earlier op of the same run, so `placed` had already counted it.
 description: a door legitimately replaces the wall in its cell, so refusing by default would
 break ordinary layouts. Turn it on when a generator's output must not eat itself.
 
-## Validation plan — run it in the deploy window
+## Prove it
 ```
-ITEM     jawa/build_batch - survived, and displaced[]
-SEE      One call whose placed and survived DISAGREE, with displaced[] naming the op that
-         ate the earlier building and placedByThisBatch true on it
-ROUTE    Quicktest map. Reproduce the measured case deliberately:
-           jawa/build_batch {ops: "DiningChair:10,10;Table1x2c:10,10"}
-         then the refusal path:
-           jawa/build_batch {ops: "DiningChair:12,10;Table1x2c:12,10",
-                             refuseIfDisplaces: true}
-PREDICT  first call  -> placed 2, survived 1, lostToLaterOps 1,
-                        displaced[0].destroyed "DiningChair", placedByThisBatch true
-         second call -> the Table1x2c op lands in failed[] with a "refuseIfDisplaces" why,
-                        and the chair is still standing
-CLOSE    One disagreement caught AND one refusal. Not a survey of every wipe pairing.
-RIDE     batch - companion DLL, same game-down window as the other three
-LIES     🔴 placed == survived proves nothing on a batch whose footprints never overlap.
-         The proof REQUIRES an overlapping pair; a clean run is not evidence.
-         🔴 And a deployed DLL registers nothing until the game restarts.
+jawa/build_batch {ops:"DiningChair:10,10;Table1x2c:10,10"}
+jawa/build_batch {ops:"DiningChair:12,10;Table1x2c:12,10", refuseIfDisplaces:true}
 ```
+**Expect** first: `placed 2, survived 1, lostToLaterOps 1`, `displaced[0].destroyed
+"DiningChair"` with `placedByThisBatch: true`. Second: the table op in `failed[]`, chair
+still standing.
 
 ## Watch out
 - ⚠️ **`displaced[]` also fires for pre-existing buildings**, not only for things this batch

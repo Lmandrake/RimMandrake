@@ -387,9 +387,14 @@ one, and theirs will not carry your prediction.
 failed` line" is an absence, and §7 ranks absences last. Name the thing on
 screen: the animal on the wildlife tab, `MoveSpeed` at 4.6 in the stat readout.
 
-The seven-line handover shape (`ITEM`/`SEE`/`ROUTE`/`PREDICT`/`CLOSE`/`RIDE`/
-`LIES`), a worked example, and the four false passes that have cost real cycles
-here are in **`references/validation-plan.md`**. Read it when you are writing the
+🔴 **Size the plan to what the check costs — owner, 2026-08-26.** A bridge call or a
+22-second minimal load owes **three lines**: the call, the expected reading, and how a
+pass could be false. The seven-field shape (`ITEM`/`SEE`/`ROUTE`/`PREDICT`/`CLOSE`/
+`RIDE`/`LIES`) is for a check riding an expensive cold load, and is not a template to
+fill in. ⛔ `RIDE` is not a per-item field at all — which window the work rides is one
+fact about the release and lives in `NEXT_RELOAD.md`. The gate, a worked example, and
+the four false passes that have cost real cycles here are in
+**`references/validation-plan.md`**. Read it when you are writing the
 plan, and when a check came back clean and you want to know how it could have
 lied to you.
 

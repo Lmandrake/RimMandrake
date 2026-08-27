@@ -5,12 +5,46 @@ anything you cannot check yourself. `§` numbers below point into `SKILL.md`.
 
 ---
 
+## 🔴 SIZE THE PLAN TO WHAT THE CHECK COSTS — owner, 2026-08-26
+
+*"I think we're generating busy-work unnecessarily."* He is right, and it was
+measured the day he said it: four handovers in one session carried **784 words** of
+plan for four bridge calls that prove in about a minute each. Trimmed to the three
+things a person holding the game cannot reconstruct, they came to **187**. Nothing
+was lost.
+
+**The seven labelled fields below are for a check that rides an EXPENSIVE COLD
+LOAD.** They are not a template to fill in. Most handovers are not that:
+
+| what the check costs | what you owe |
+|---|---|
+| a bridge call, or a 22-second minimal load | **three lines** — the call, the expected reading, how a pass could be false |
+| a full cold load on the big list | the seven fields, because that look is expensive and unrepeatable |
+
+⛔ **`RIDE` is not a per-item field.** "Batch or solo", and which window the work
+rides, is ONE fact about the release — it lives once in
+`infrastructure/state/NEXT_RELOAD.md`. Restating it per item is the busy-work: it
+appeared five times in one session, worded five different ways, saying the same thing.
+
+⛔ **Do not write `ITEM` and `SEE` as separate fields from the heading and the
+prediction.** They restate them. If the heading names the tool and the prediction
+names the reading, both are noise.
+
+✅ **What survives at every size, because only the author knows it:** the exact call,
+the prediction as a number or string, and **how the check LIES.** If you write only
+one thing, write the last.
+
 ## Why it ships in the same commit
 
 Anything you author and cannot check yourself — a def, a patch, an assembly —
-ends with a validation plan **in the same commit**. Not on request: a cold load
-costs 23–30 minutes (§2), and without a plan the person holding the game invents
-one, and theirs will not carry your prediction.
+ends with a validation plan **in the same commit**. Not on request: without one the
+person holding the game invents a check, and theirs will not carry your prediction.
+
+⚠️ **The old justification here said "a cold load costs 23–30 minutes" and that is
+what oversized this document.** It is still true of the full list and it is NOT the
+common case: `rimworld-load-round` measures a 13-mod minimal list at **22 seconds**,
+and a companion tool proves in about a minute. Price the plan against the load it
+will actually ride.
 
 🔴 **Name a positive observation, never "no error".** "No `Patch operation …
 failed` line" is an absence, and §7 ranks absences last. Name the thing on

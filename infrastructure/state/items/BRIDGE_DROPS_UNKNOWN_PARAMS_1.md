@@ -161,27 +161,14 @@ Game · MainThread`. **No raw-argument dictionary exists on either.** A `[Tool]`
 cannot inspect its own unknown keys. That route is closed; the Harmony patch is the only
 one.
 
-## Validation plan — run it in the deploy window
+## Prove it
 ```
-ITEM     jawa/bridge_arg_report — the arguments the bridge threw away
-SEE      One record naming a real tool, its bogus key, and the keys it does accept
-ROUTE    Minimal list, quicktest map. First a jawa/ call of any kind (the initializer
-         is lazy - this one installs the patch and is itself unobserved). Then:
-           jawa/new_allowed_area {name: "probe"}     <- WRONG key; the param is 'label'
-           jawa/bridge_arg_report {}
-PREDICT  installed true, installError null, callsWithDroppedArgs >= 1, and a record
-         whose droppedParameters is ["name"] with 'label' among accepted
-CLOSE    One dropped key caught, AND the strict path exercised once: set strict, repeat
-         the bad call, confirm it now ERRORS instead of returning a cheerful success
-RIDE     batch — same game-down window as lord_set_job
-LIES     🔴 installed=false and an empty records[] READ IDENTICALLY. The result carries
-         blindWarning for exactly this; check `installed` BEFORE concluding anything from
-         zero records.
-         🔴 The FIRST jawa/ call of a session is bound before the patch exists, so its
-         dropped args are invisible. Do not make the probe call the first call.
-         ⚠️ A record's absence proves nothing about keys that
-         NormalizeInvocationArguments rewrote or folded upstream of BindArguments.
+<any jawa/ call first — the initializer is lazy and this one installs the patch>
+jawa/new_allowed_area {name: "probe"}          # WRONG key; the parameter is 'label'
+jawa/bridge_arg_report {}
 ```
+**Expect** `installed: true` and a record whose `droppedParameters` is `["name"]` with
+`label` among `accepted`. Then `action:"strict"`, repeat the bad call, and it must ERROR.
 
 ## Watch out
 - 🔴 **The target is a third-party PRIVATE method with no compatibility promise.** An

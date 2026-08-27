@@ -86,29 +86,14 @@ was followed by minutes of every other call queueing behind it.
   dependencies failed to load is ordinary in a 582-mod stack, and one would otherwise kill
   the entire walk.
 
-## Validation plan — run it in the deploy window
+## Prove it
 ```
-ITEM     jawa/debug_actions - the dev-menu surface, bounded
-SEE      A matches[] answer for "generate map" that returns in well under a second, on the
-         SAME mod list where the host tool timed out at 30s
-ROUTE    Full 582 list if one is loaded, else the minimal list (the minimal list does not
-         reproduce the original failure and cannot be the proof):
-           jawa/debug_actions {query: "generate map", limit: 10}
-           jawa/debug_actions {}                       <- no query: expect truncation
-           jawa/debug_actions {resumeFromType: <the value returned>}
-PREDICT  elapsedMs well under budgetMs on the query call; the no-query call comes back
-         truncated=true with stopReason "budget" or "limit" and a non-null resumeFromType;
-         yieldersSkipped > 0 on any full-ish walk
-CLOSE    One bounded query AND one deliberate truncation that resumes correctly. NOT a
-         complete census of the dev menu - this tool cannot produce one and says so.
-RIDE     batch - companion DLL, same game-down window as lord_set_job and bridge_arg_report
-LIES     🔴 A LOW elapsedMs on the MINIMAL list proves nothing: the defect only appears at
-         scale. Only the big list is evidence.
-         🔴 matches[] is a FLOOR whenever truncated is true, and it truncates BY DESIGN.
-         Reading a truncated answer as a complete list is how this instrument would lie.
-         🔴 It will never list an action a yielder produces. A "missing" dev action is
-         expected, not a bug - check yieldersSkipped before concluding anything.
+jawa/debug_actions {query:"generate map", limit:10}
+jawa/debug_actions {}                                  # no query: expect truncation
+jawa/debug_actions {resumeFromType: <the value returned>}
 ```
+**Expect** `elapsedMs` well under `budgetMs` on the query; the bare call `truncated: true`
+with a non-null `resumeFromType`; `yieldersSkipped > 0`.
 
 ## Watch out
 - ⚠️ **This does not fix the host's tool.** `rimworld/search_debug_actions` is still there
