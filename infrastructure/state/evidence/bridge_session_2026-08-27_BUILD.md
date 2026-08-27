@@ -154,3 +154,21 @@ rate agrees: 5 bare in 70 is **7.1%**, against that harvest's 21 in 285 = **7.4%
 ⚠️ **Strongly supported, not proven.** Confirming it means re-reading that harvest's raw rows
 for a `kindDef` that differs from the one requested; if it did not record the actual kind, the
 question is closed by this run instead and cannot be closed by that data at all.
+
+---
+
+## ⚠️ A side effect of the cleanup that I did not anticipate, and the correction
+
+Destroying spawned pawns to keep the map clean **tanked their factions' goodwill**. A final
+state check found five authored factions at `hostile: true, goodwill: -75` against a measured
+baseline of neutral / 0 — caused by my own tidying, not by any test.
+
+**Restored:** all eight authored factions plus `Empire` and `OutlanderCivil` set back to
+`Neutral / 0` on both sides and read back individually. Map: 1 colonist. Game: PAUSED.
+Nothing saved.
+
+⚠️ `Jawa_IndigenousTribes`' pre-session goodwill was **never measured** — only the seven were
+censused at the start — so it was restored to 0 by assumption rather than to a recorded value.
+🔑 **Census every faction you might touch BEFORE the first write, not just the ones under
+test.** Killing a faction's pawns is a relation change, and the cheapest instrument that would
+have caught it is the one read that was skipped.
