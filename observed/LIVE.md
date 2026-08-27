@@ -934,3 +934,32 @@ the template puts a `Campfire` in the planned dining room. Impressiveness 38–4
 
 📌 **The shell holds.** Outdoor driven to 31 °C: no room went above 28.5, and the differential
 flipped sign at the crossover exactly as it should.
+
+## Live facts, 2026-08-27 — the gravship deck pass
+
+- 🔴 **A debug tool has a per-GAME-SESSION budget.** `Actions\T: Set Color` stopped
+  firing after ~380 invocations and no fresh process cleared it. Plan no job of
+  thousands of debug-tool calls.
+- 🔴 **A stale `Verse.FloatMenu` blocks every debug tool after it, silently.**
+  `rimworld/get_context_menu_options` cannot see that window — detect via
+  `get_ui_layout`, surface type `Verse.FloatMenu`.
+- 🔴 **`DebugToolsGeneral.SetColor` reads `UI.MouseCell()`**, not a parameter, and
+  colours EVERY thing in the cell.
+- ⭐ **A building's colour can come from its STUFF instead**: `MA_MegaBone` warm grey,
+  `DinoChitin` rich brown, `Bioferrite` dark plum, `KOTOR_AlloyBronzium` brass. One
+  `jawa/build_batch` per material, permanent, no dev tool. Rebuilding wipes co-located
+  conduits.
+- ⭐ **1.6 keeps a COLOUR per terrain cell** — `jawa/set_terrain_layer layer='color'`,
+  any of 181 ColorDefs, one rect per call. It MULTIPLIES (only darkens) and cannot be
+  cleared. Live output is more saturated than a plain-multiply model predicts.
+- 🔴 **`SetFoundation` refuses a cell carrying an UNDER layer, and painting a floor
+  writes one.** Order is strip → foundation → terrain → things. A natural top terrain
+  cannot be removed at all (`CanRemoveTopLayerAt` false); lay `MetalTile`, then
+  `removeTop`, which pops the natural terrain back and nulls `under`.
+- 🔴 **A zone cannot carry text.** `jawa/map_zones createZone` ignores the label and
+  auto-names `Stockpile zone 1`. `jawa/send_letter {label,text,x,z,letterDef}` is the
+  only route to readable prose in-game, and it carries a camera target.
+- ⚠️ **`jawa/list_things` truncates at `limit`** — read `countMatched`, not
+  `len(things)`, or a truncation reads as absence.
+- 📌 **Aurebesh word decals exist**: 36 `OuterRim_AurebeshWord*`, 2×1, `Standable`,
+  `altitudeLayer Floor` — in-world floor signage that pawns walk over.
