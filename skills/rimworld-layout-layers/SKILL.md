@@ -65,10 +65,22 @@ this project has repeatedly invented plausible mechanisms and been wrong.
 
 The four things worth carrying in your head:
 
-- **`PowerConnectionMaker.ConnectMaxDist = 6`.** A consumer does *not* need a
-  conduit in its own cell — it links to a transmitter within 6 cells. But
-  *transmitters* chain only by **cardinal adjacency**. That asymmetry is what
-  makes two nets sit four cells apart and never merge.
+- 🔴 **Power has TWO joining rules and mixing them up is the single most
+  expensive mistake here.** A **connector** (`CompPowerTrader`/`CompPowerBattery`
+  that does not transmit — Cooler, Battery) links to the nearest transmitter
+  within `PowerConnectionMaker.ConnectMaxDist = 6`, via a plain
+  `CellRect.ExpandedBy(6)` with **no line-of-sight test**, so it reaches through
+  a wall. A **transmitter** (`transmitsPower=true`) chains **only by cardinal
+  cell adjacency** — no radius at all.
+  ⚠️ **`SolarGenerator` ships `transmitsPower: true`.** It is a *transmitter*.
+  Giving it the 6-cell reach is wrong, and was measured wrong twice: a generator
+  three cells from a conduit run sat alone at 1700 W while the coolers read 0 W.
+- 🔴 **A cooler cools the cell BEHIND it.** `Building_Cooler.TickRare` cools
+  `Position + IntVec3.South.RotatedBy(Rotation)` and exhausts to
+  `Position + IntVec3.North.RotatedBy(Rotation)`. So **rot 0 in a north wall
+  puts cold inside**; rot 2 there points the cold side at the open air. A
+  backwards cooler still reports `Current power use: Low` and looks alive —
+  `operatingAtHighPower` is false because it is cooling the outdoors.
 - **`RoofCollapseUtility.RoofMaxSupportDistance = 6.9f`**, radial, flood-filled
   through roofed cells, and support is *any edifice with `holdsRoof`* — not
   specifically a wall.
@@ -78,6 +90,30 @@ The four things worth carrying in your head:
 - **A door is its own 1-cell Room**, `properRoom: false`, role `None`, because
   its region type is `Portal` and `Portal` never merges. Seeing 1-cell `None`
   rooms in a read-back is correct, not a bug.
+
+## This is a CHECK, not a gate
+
+🔴 **Owner's ruling, 2026-08-26: none of this may become a hook or a block.**
+Painting an incomplete building is a legitimate goal — a ruin, a half-built
+settlement, a shell someone will finish by hand. A linter that refuses to place
+an unpowered cooler makes those impossible.
+
+So the deliverable is **a report you can read and ignore**. The questions it
+answers are the ones a person actually asks:
+
+```
+Is this device powered?
+Is this generator powering anything?
+Are there breaks in the power lines?
+Which rooms are sealed, and which are open to the sky?
+Is this room reachable, or walled off?
+Is the floor bare or covered?
+Is any roof cell unsupported?
+```
+
+Each is a **query with an answer**, not a verdict. Report the disconnected
+device, the generator feeding nothing, the gap in the run — then build it
+anyway if that is what was asked for.
 
 ## How to assess a layout
 
@@ -202,6 +238,22 @@ Current power use: Low               <- actually running
 `defName, limit, rect, thingIds`; passing `x`/`z` is refused by the client, but
 a tool that did accept unknown keys would discard them and answer on defaults.
 
+## 🔴 Emit transmitters BEFORE connectors
+
+`compile_calls` groups build ops by `(defName, stuff)`, which orders them
+**alphabetically**: `Battery, Cooler, Door, EggBox, PowerConduit, SolarGenerator, Wall`.
+So every connector is spawned before the conduit bus exists.
+
+**Measured 2026-08-26:** coolers painted in that order read `Grid excess: 0 W`
+even after the bus was energised and the game ticked. Destroying and
+re-placing the same two coolers — nothing else changed — made them read
+`1700 W` immediately.
+
+⇒ **A connector binds to a transmitter at spawn, and a transmitter appearing
+later does not retroactively claim it.** Any compiler that emits a power or
+pipe layer must order transmitters first, or re-place the connectors after.
+This is a real ordering defect in `compile_calls`, not a quirk of the bridge.
+
 ## Traps that cost real time here
 
 - 🪤 **`jawa/destroy_batch` defaults to `categories: "Plant"`.** Pass a `defs`
@@ -216,9 +268,41 @@ a tool that did accept unknown keys would discard them and answer on defaults.
 - 🪤 **Solar generators produce exactly 0 W at night**
   (`CompPowerPlantSolar`, lerped on `CurSkyGlow`). A power test run at 21:30
   measures nothing. Check the clock: `ticksAbs % 60000 / 2500` is the hour.
+- 🪤 **Destroying a building marks its roof for collapse, and rebuilding under
+  it does not cancel that.** The collapse fires on the next *tick*. So a
+  `set_roof_batch` run while paused reports `Roofed 0 cell(s) — already correct`
+  against the doomed old roof, and the room is wide open the moment time runs.
+  Measured: 64 of 64 cells unroofed, `usesOutdoorTemperature: true`, and a
+  "sealed" nursery that tracked outdoor temperature to the decimal.
+  🔑 **Always read `room_get.openRoofCount` after the first tick**, never the
+  roof writer's own count.
 - 🪤 **A heat wave is the cheap way to make a hot tile**, and temperature
-  results must be read at *equilibrium*, not while outdoor temperature is still
-  climbing — the room lags it by minutes.
+  results must be read at *equilibrium*. **Two in-game hours (~5,000 ticks) is
+  enough** — owner, 2026-08-26. Longer runs buy nothing and start throwing quest
+  dialogs at whoever is watching the screen. Start the run from steady state:
+  a room still shedding heat from an earlier fault reports a "worst" reading
+  that is history, not design.
+
+## The template that passes
+
+`design/Jawa/templates/nursery.lua` is the worked answer, and it is worth
+reading before authoring any powered structure. Measured live 2026-08-26 on a
+6x6 sealed shell with two coolers, an exterior conduit bus, a solar generator
+sitting cardinally on that bus, and a battery inside reaching out as a
+connector:
+
+```
+outdoor 56.3 C   ->   room 21.7 C        worst 22.8 C vs a 32 C threshold
+```
+
+⭐ **The whole cycle — edit the Lua, lint, compile, paint, soak, read back —
+cost no game load at all.** That is the actual promise of a template engine,
+and it holds: four wrong designs were found and fixed against a running game in
+one sitting.
+
+⚠️ It passed only after the ordering defect above was worked around by hand.
+Until `compile_calls` emits transmitters first, a painted template still needs
+its connectors re-placed once the bus is live.
 
 ## Reference files
 

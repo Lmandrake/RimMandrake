@@ -11,7 +11,6 @@
     "PLACEHOLDER so the engine can be exercised end to end; they are DECIDE's or the",
     "owner's to approve or replace. Do not cite this file as canon."
   ],
-
   "default": {
     "WALL": "Wall",
     "WALL_STUFF": "BlocksSandstone",
@@ -32,9 +31,9 @@
     "DECOR": "SculptureSmall",
     "DECOR_STUFF": "BlocksSandstone",
     "SANDBAG": "Sandbags",
-    "ROOF": "RoofConstructed"
+    "ROOF": "RoofConstructed",
+    "CONDUIT": "PowerConduit"
   },
-
   "tech:Neolithic": {
     "WALL_STUFF": "BlocksSandstone",
     "DOOR": "Door",
@@ -46,7 +45,6 @@
     "STOVE": "Campfire",
     "STORAGE": "Shelf"
   },
-
   "tech:Industrial": {
     "LIGHT": "StandingLamp",
     "STOVE": "ElectricStove",
@@ -56,7 +54,6 @@
     "GENERATOR": "SolarGenerator",
     "FLOOR": "TileSandstone"
   },
-
   "tech:Spacer": {
     "WALL_STUFF": "Steel",
     "DOOR": "Autodoor",
@@ -66,7 +63,6 @@
     "COOLER": "Cooler",
     "BATTERY": "Battery"
   },
-
   "tech:Ultra": {
     "WALL_STUFF": "Steel",
     "DOOR": "Autodoor",
@@ -75,11 +71,17 @@
     "LIGHT": "StandingLamp",
     "TURRET": "Turret_MiniTurret"
   },
-
-  "wealth:destitute": { "FLOOR": "Gravel", "DECOR": null },
-  "wealth:poor":      { "FLOOR": "Gravel" },
-  "wealth:rich":      { "FLOOR": "TileSandstone", "DECOR": "SculptureSmall" },
-
+  "wealth:destitute": {
+    "FLOOR": "Gravel",
+    "DECOR": null
+  },
+  "wealth:poor": {
+    "FLOOR": "Gravel"
+  },
+  "wealth:rich": {
+    "FLOOR": "TileSandstone",
+    "DECOR": "SculptureSmall"
+  },
   "faction:Jawa_IndigenousTribes": {
     "_comment": "Trade Moot. Canon: subterranean, sandcrawler circuits, and the COLD NURSERY (jawa_society 4.3a). Materials invented.",
     "WALL_STUFF": "BlocksSandstone",
@@ -88,7 +90,6 @@
     "LIGHT": "TorchLamp",
     "NEST": "EggBox"
   },
-
   "faction:Jawa_Junkers": {
     "_comment": "Canon: warrens in wreck fields; 'they manufacture nothing'. Materials invented.",
     "WALL_STUFF": "Steel",
@@ -96,21 +97,18 @@
     "BED": "Bedroll",
     "LIGHT": "TorchLamp"
   },
-
   "faction:Jawa_DeepwaterCompact": {
     "_comment": "Canon: layered walls, sandbags, turrets, cistern halls. Materials invented.",
     "WALL_STUFF": "Steel",
     "FLOOR": "SterileTile",
     "LIGHT": "StandingLamp"
   },
-
   "faction:Jawa_WildsteamClan": {
     "_comment": "Canon: OPEN, tree-integrated, unwalled; the only faction that plants. Wood is plausible for THEM specifically.",
     "WALL_STUFF": "WoodLog",
     "FLOOR": "WoodPlankFloor",
     "BED_STUFF": "WoodLog"
   },
-
   "faction:Jawa_FreeDroidEnclaves": {
     "_comment": "Canon: charging hall, NO food stores, NO beds. The template must honour that.",
     "WALL_STUFF": "Steel",
@@ -120,7 +118,6 @@
     "STOVE": null,
     "LIGHT": "StandingLamp"
   },
-
   "faction:Empire": {
     "_comment": "Canon: fortified, sterile cleared ring, 'we do not adapt to this world, we exclude it'.",
     "WALL_STUFF": "Steel",
@@ -128,7 +125,6 @@
     "FLOOR": "SterileTile",
     "TURRET": "Turret_MiniTurret"
   },
-
   "faction:TribeCivil": {
     "_comment": "Deep Desert Tribes. Canon: stone huts and caves, traps not turrets, and their answer to fire is to have NO permanent structure.",
     "WALL_STUFF": "BlocksSandstone",
@@ -137,7 +133,6 @@
     "LIGHT": "TorchLamp",
     "STOVE": "Campfire"
   },
-
   "faction:OutlanderCivil": {
     "_comment": "Homestead Defense League. Canon: hand-made, vaporator arrays, SANDBAGS not walls, no spacer chrome.",
     "WALL_STUFF": "WoodLog",
