@@ -706,8 +706,12 @@ future tool that claims to have measured it has invented it.
 **25 — A biome animal at `commonality: 0` is REGISTERED AND UNSPAWNABLE, and a mod puts it
 there on purpose.** `BiomeDef.AllWildAnimals` only yields kinds whose commonality is `> 0f`,
 so a zeroed animal is not in the biome's animal list at all — the def is present, the patch
-applied, the entry exists, and nothing reports it. ⇒ **Fauna-replacement mods suppress vanilla
-animals by REPLACING the value with 0 rather than removing the entry.** Proven on
+applied, the entry exists, and nothing reports it. ⇒ **CHERRY PICKER does this — it suppresses a def the
+owner cut by REPLACING the biome value with 0 rather than removing the entry**, and the cut list
+is the owner's own `Config/Mod_3521312241_Mod_CherryPicker.xml`, 1,342 entries.
+🔴 **Its cuts are INVISIBLE to the def dump: the cut animals are still PRESENT as ThingDef and
+PawnKindDef in the capture.** Validated over the population — 167 of 168 always-off animals are
+on that list, and 0 of 414 always-alive animals are. Proven on
 `TemperateForest`, which this project never patches: Core declares 36 animals and 9 read 0 in
 the capture while the other 27 keep their vanilla values. ⛔ **Two explanations are DEAD and
 must not be proposed a third time** — it is not `BiomeDef.CommonalityOfAnimal`'s duplicate-key

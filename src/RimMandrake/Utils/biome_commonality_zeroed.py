@@ -23,16 +23,24 @@ proposed for these zeros on 2026-08-26 and both are wrong:
     `biomeAnimals` block. These zeros are in `defs/BiomeDef.json`, under
     `fields.wildAnimals[].commonality`, from plain reflection over the field.
 
-✅ **A mod REPLACES the value with 0 rather than removing the entry.** Proven on a
-vanilla biome this project never patches: Core declares 36 animals for
-`TemperateForest`, and 9 of them - Badger, Bluebird, Crow, Gazelle, Mink,
-Porcupine, Sparrow, Swan, Tortoise - read 0 in the capture while the other 27 keep
-their vanilla values exactly. That is a fauna-replacement mod suppressing vanilla
-animals in favour of its own, and it happens with or without us.
+✅ **IT IS CHERRY PICKER, AND IT IS THE OWNER'S OWN CUT LIST.** Answered 2026-08-26.
+`Config/Mod_3521312241_Mod_CherryPicker.xml` holds 1,342 owner-selected cuts, and
+Cherry Picker suppresses a cut animal by REPLACING its biome commonality with 0
+rather than removing the entry.
 
-🔑 **So a zero here is usually INTENDED by some mod, and the defect is ours:** our
-cast roster writes those animals at 1.0 expecting them to spawn. Use this to find
-what to design around, not to "fix" the zeros.
+Validated over the population, not on a sample:
+
+    always-off animals (all 67 biomes)   168   in the cut list  167  (99.4%)
+    always-alive animals                 414   in the cut list    0   (0.0%)
+
+⛔ **Its cuts are INVISIBLE to the def dump** - every cut animal is still PRESENT as
+both ThingDef and PawnKindDef in the capture. That is why every earlier theory
+reached for the engine: the defs were all there, so the value looked corrupted. It
+was not corrupted; it was switched off on purpose.
+
+🔑 **So a zero here is INTENDED, and the defect is ours:** our cast roster writes
+those animals at 1.0 expecting them to spawn. Use this to find what to design
+around, not to "fix" the zeros. `gen_cast_patch.py` now refuses to cast one.
 
 USAGE
     python3 src/RimMandrake/Utils/biome_commonality_zeroed.py

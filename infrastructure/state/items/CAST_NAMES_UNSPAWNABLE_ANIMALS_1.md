@@ -1,3 +1,29 @@
+# ✅ THE CAUSE IS ANSWERED: the owner cut them himself, with Cherry Picker.
+
+Updated 2026-08-26 21:0x by BUILD. **This is no longer "a mod switched them off" — it is that
+our roster cast animals the owner had already removed from the game.**
+
+`Config/Mod_3521312241_Mod_CherryPicker.xml` is his own selection: **1,342 cuts.** Over the
+whole population, **167 of the 168 always-off animals are on it, and 0 of the 414 always-alive
+animals are.** Cherry Picker suppresses a cut animal by setting its biome commonality to 0 and
+leaving the entry in place — and ⛔ **its cuts are invisible to the def dump**, so every animal
+is still PRESENT as ThingDef and PawnKindDef.
+
+## What this changes about the decision below
+
+- ⛔ **"Un-suppress them" is off the table entirely.** These are the owner's deliberate cuts;
+  re-enabling one contradicts him, not a mod.
+- ✅ **The question narrows to one thing: what replaces each slot.** The lore filter is already
+  applied — he cut Badger, Bluebird, Cat, YorkshireTerrier and 1,338 others on purpose.
+- ⚠️ **The losses that still need answering are the deliberate Star Wars picks** —
+  `AA_CrystallineCaracal`, `Dinopithecus`, `JRWTorosaurus`, `Titanoboa`, `MA_Capryak`. If he cut
+  those, the cast was designed against a roster he had already narrowed, and the biomes need
+  refilling from what survives. `ZBiome_Badlands` is 13 of 29 down; `Wasteland` 9 of 30.
+- ✅ **The generator can no longer do this silently.** `gen_cast_patch.py` reads the cut list,
+  comments the entry out, names it, and prints the per-biome loss.
+
+---
+
 # CAST_NAMES_UNSPAWNABLE_ANIMALS_1 — a quarter of the authored animal cast cannot appear
 
 Measured 2026-08-26 by BUILD against capture `2026-08-26T14-20-04Z` (582 mods, post-patch).

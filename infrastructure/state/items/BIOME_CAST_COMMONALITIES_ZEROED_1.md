@@ -1,3 +1,58 @@
+# ✅ ANSWERED, 2026-08-26 21:0x, BUILD. **It is Cherry Picker, and it is the OWNER'S OWN cut list.**
+
+⚠️ **This corrects a line I wrote an hour earlier in this same file.** I recorded *"Not Cherry
+Picker — CONFIRMED"* on a subagent's report that its removal block contained none of these.
+**That report read the wrong slice of the log.** The negative was mine to publish and mine to
+withdraw.
+
+## The evidence, read by me, not delegated
+
+`Config/Mod_3521312241_Mod_CherryPicker.xml` — **the owner's own saved selection, 1,342
+entries.** Every one of the nine `TemperateForest` zeros is on it, and none of the controls is:
+
+```
+CUT   Gazelle · Tortoise · Badger · Porcupine · Bluebird · Crow · Mink · Sparrow · Swan
+CUT   Tiger · Fox_Fennec · PrairieDog · MonitorLizard          (the AridShrubland zeros)
+—     Deer · Rat · Squirrel · Hare · Wolverine · Quail · Cougar · Megavole   (all keep their values)
+```
+
+**Validated across the population, not on a sample:**
+
+```
+always-off animals (all 67 biomes)   168    in the cut list   167   (99.4%)
+always-alive animals                 414    in the cut list     0   (0.0%)
+```
+
+**Zero false positives.** The single exception is `CorellianHound`, zeroed in nine biomes this
+project does not write — someone else's registration at 0, not a second cause here.
+
+## 🔑 The mechanism, and why every def-presence check missed it
+
+⛔ **Cherry Picker's cuts are INVISIBLE TO THE DEF DUMP.** All nine animals are still
+**PRESENT** in the capture as both `ThingDef` and `PawnKindDef` — I checked. What changes is the
+biome record's `commonality`, which becomes **0**, and `BiomeDef.AllWildAnimals` only yields
+kinds above `0f`. So the animal is registered, present, patched, and can never be chosen.
+
+⇒ That is why every theory reached for the engine: the defs were all there, so the value looked
+corrupted. It was not corrupted. It was **switched off on purpose, by the owner**.
+
+⚠️ A subagent asserted the mechanism is "the backing def is deleted, so the record resolves to
+0". **That is wrong** — the defs are present. The zeroing is Cherry Picker's own act on the
+record, consistent with its assembly referencing `BiomeAnimalRecord`, `wildAnimals` and
+`commonality`.
+
+## What follows
+
+- ✅ **The generator now refuses to cast a cut animal** (`design/Jawa/fauna/gen_cast_patch.py`):
+  it comments the entry out, names it, and prints the per-biome loss. Functionally identical —
+  the live commonality is 0 either way — but the loss is now visible in the artifact instead of
+  hiding in it. ⛔ It emits everything as before, loudly, when the settings file cannot be read;
+  a missing file must never read as "nothing is cut".
+- ➡️ **The content half is `CAST_NAMES_UNSPAWNABLE_ANIMALS_1`.** It is no longer "a mod switched
+  them off" — **it is that we cast animals the owner had already cut.**
+
+---
+
 
 ## 🔴 SETTLED: it is not the dump and it is not our patch. A VANILLA biome we never touch does it too.
 
