@@ -251,8 +251,23 @@ re-placing the same two coolers — nothing else changed — made them read
 
 ⇒ **A connector binds to a transmitter at spawn, and a transmitter appearing
 later does not retroactively claim it.** Any compiler that emits a power or
-pipe layer must order transmitters first, or re-place the connectors after.
-This is a real ordering defect in `compile_calls`, not a quirk of the bridge.
+pipe layer must order transmitters first.
+
+✅ **Fixed in `compile_calls` 2026-08-26.** `rimplace/netinfo.py` reads
+`transmitsPower` out of each ThingDef's json in the def dump — and the
+PipeSystem/Rimefeller pipe comps too — and the build groups sort transmitters
+ahead of connectors. 🔑 It is **read, never guessed**: if the dump is
+unreadable it returns `None`, the compiler keeps its old order and writes a
+warning onto the plan, rather than inventing an ordering nobody measured.
+
+🪤 **`Battery` is `transmitsPower: true`** — a transmitter, not a connector.
+So is `SolarGenerator`. Only the machines (Cooler and friends) get the 6-cell
+reach. Guessing this from what a thing *does* gets it wrong; read the def.
+
+🪤 **The dump nests every ThingDef field under `fields`** — `comps` is not a
+top-level key. Reading it from the root returns `None` silently, which reads as
+"nothing transmits": a clean wrong answer, and exactly the failure this
+project's instrument register exists to catch.
 
 ## Traps that cost real time here
 
@@ -300,9 +315,11 @@ cost no game load at all.** That is the actual promise of a template engine,
 and it holds: four wrong designs were found and fixed against a running game in
 one sitting.
 
-⚠️ It passed only after the ordering defect above was worked around by hand.
-Until `compile_calls` emits transmitters first, a painted template still needs
-its connectors re-placed once the bus is live.
+⭐ **Re-run end to end after the compiler fix: it passes with no manual step.**
+Painted onto a cleared site, every powered thing came up on one 1700 W net
+straight from the paint, and the room held **25.1 C worst against 38.8 C
+outdoor**. Five wrong designs were found and corrected against a running game
+in one sitting, at a cost of zero game loads.
 
 ## Reference files
 

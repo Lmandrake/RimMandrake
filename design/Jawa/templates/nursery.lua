@@ -86,8 +86,10 @@ function build(ctx)
   -- TRANSMITTER and proximity would buy it nothing.
   ctx:place_role("GENERATOR", gen_x, bus_z)
 
-  -- The battery is a CONNECTOR, so it may sit inside and reach out.
-  ctx:place_role("BATTERY", x + RW - 3, z + RH - 4)
+  -- ⚠️ The Battery is ALSO a TRANSMITTER (transmitsPower true in its
+  -- CompProperties_Power - checked in the def dump, not assumed), so proximity
+  -- buys it nothing either. It goes cardinally onto the bus, outside.
+  ctx:place_role("BATTERY", x + 3, bus_z + 1)
 
   -- ⚠️ The generator must stay UNROOFED - CompPowerPlantSolar scales output by
   -- RoofedPowerOutputFactor, and ctx:room() roofs only the shell interior, so
@@ -105,9 +107,9 @@ function build(ctx)
   -- dwelling put an ElectricStove (Building_WorkTable_HeatPush) in the room the
   -- nursery opened off, so the only way in was through the hottest room.
 
-  ctx:note("cold nursery: " .. COOLERS .. " cooler(s) at rot 0, powered from an "
-    .. "an EXTERIOR conduit bus. The generator is a TRANSMITTER and sits "
-    .. "cardinally on the bus; the coolers and battery are CONNECTORS and "
-    .. "reach it within ConnectMaxDist 6, through the wall. ⚠️ TEMPLATE "
+  ctx:note("cold nursery: " .. COOLERS .. " cooler(s) at rot 0, powered from "
+    .. "an EXTERIOR conduit bus. Generator and battery are TRANSMITTERS and "
+    .. "sit cardinally ON the bus; the coolers are CONNECTORS and reach it "
+    .. "within ConnectMaxDist 6, through the wall. ⚠️ TEMPLATE "
     .. "CANNOT PROVE the room holds <=32C - that needs a live reading.")
 end

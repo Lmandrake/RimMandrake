@@ -10,6 +10,8 @@ from __future__ import annotations
 import json
 from collections import defaultdict
 
+from . import netinfo
+
 from .core import BuildPlan, Rect
 
 # --------------------------------------------------------------------------- #
@@ -324,7 +326,29 @@ def compile_calls(plan: BuildPlan, faction: str | None = None,
     groups: dict[tuple, list] = defaultdict(list)
     for t in plan.things:
         groups[(t.defName, t.stuff)].append(t)
-    for (defName, stuff), ts in sorted(groups.items(), key=lambda kv: str(kv[0])):
+    # 🔴 TRANSMITTERS BEFORE CONNECTORS, or the power layer is dead on arrival.
+    # A connector (Cooler, most machines) binds to the nearest transmitter
+    # within ConnectMaxDist=6 AT SPAWN; a transmitter appearing afterwards does
+    # not retroactively claim it. Alphabetical grouping put Battery and Cooler
+    # ahead of PowerConduit, so every cooler bound to nothing and read
+    # `Grid excess: 0 W` even after the bus was live and the game had ticked.
+    # Measured 2026-08-26; re-placing the same coolers afterwards fixed them.
+    tx = netinfo.transmitters({d for d, _ in groups})
+    if tx is None:
+        # UNMEASURED: the def dump is unreadable, so we do NOT invent an order.
+        # Previous behaviour, plus a note on the plan so nobody reads the
+        # resulting layout as power-verified.
+        tx = set()
+        plan.notes.append("⚠️ def dump unreadable: build order NOT sorted "
+                          "transmitters-first, so any power or pipe network in "
+                          "this plan may spawn unbound. Re-place connectors "
+                          "after the bus, or re-run with the dump present.")
+
+    def _rank(kv):
+        defName = kv[0][0]
+        return (0 if defName in tx else 1, str(kv[0]))
+
+    for (defName, stuff), ts in sorted(groups.items(), key=_rank):
         ops = [f"{defName}:{t.x},{t.z}" + (f",{t.rot}" if t.rot else "")
                for t in ts]
         for i in range(0, len(ops), MAX_OPS):
