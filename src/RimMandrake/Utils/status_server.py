@@ -711,8 +711,8 @@ def snapshot():
         "rows": rows,
         "overall": {"done": don, "total": tot,
                     "pct": round(100.0 * don / tot) if tot else 0},
-        # Blockers and velocity ride in the matrix now — derive_matrix.py counts
-        # them off the items themselves. The hand-kept blockers.json that used to
+        # Blockers and velocity ride in the matrix now, counted off the items
+        # themselves. The hand-kept blockers.json that used to
         # sit here had drifted to 12 against 7 real blocked items.
         "blockers": m.get("blockers", {"classes": [], "on_human": 0}),
         # ⭐ The number the owner asked for first: how many things are NOT done.

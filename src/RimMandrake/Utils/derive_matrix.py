@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""derive_matrix.py — build status_matrix.json from the queues. Nobody hand-maintains it.
+"""derive_matrix.py — build status_matrix.json from the HAND-WRITTEN queues.
+
+🔴 HALF SUPERSEDED, AND THE HALVES MATTER.
+  * `main()` against the GENERATED queues REFUSES — it parses the old hand-written
+    shape and would report 0 done / 0 blocked. The board comes from
+    `rimflow/render.py` -> `infrastructure/state/derived/board.json`.
+  * `main() --legacy` still serves the hand-written archives.
+  * ⛔ `state_of()`, `WORD`, `EMOJI` and `CLOSES_RE` are a LIVE DEPENDENCY —
+    `rimflow/importer.py` loads this file with importlib at runtime. Do not delete it.
 
     python3 src/RimMandrake/Utils/derive_matrix.py
 

@@ -6,7 +6,7 @@ WHY
 Measured 2026-08-14: 124 item IDs had ever existed, 51 were still filed, and
 `state: done` had been written three times in the whole project history. Items
 did not get closed, they got deleted or renumbered, so the board's numerator
-could never rise while its denominator shrank. `derive_matrix.py` now counts
+could never rise while its denominator shrank. Closed work is now counted
 closed work from a `Closes: <ID>` trailer instead — read back out of the closing
 commit's parent, where the item still exists.
 
@@ -45,9 +45,10 @@ import subprocess
 import sys
 
 QUEUE = "infrastructure/state/queue/"
-# ⚠️ The character class MUST match `derive_matrix.py`'s CLOSES_RE, which is what
-# actually counts closures. It did not: this file said `[A-Z][A-Z0-9-]*` while the
-# board said `[A-Za-z][A-Za-z0-9._-]*`, so from the 2026-08-20 rename to
+# ⚠️ The character class MUST match `rimflow/model.py`'s ID_RE, which is the ONE
+# place the ID grammar is written down, and `derive_matrix.py`'s CLOSES_RE, which
+# still counts closures for the hand-written archives. It did not: this file said
+# `[A-Z][A-Z0-9-]*` while they said `[A-Za-z][A-Za-z0-9._-]*`, so from the rename to
 # THREE_DESCRIPTIVE_WORDS_# every ID stopped matching here — `INHABITED_DISPLACED_
 # POOL_1` has a word character on both sides of each `_`, so the trailing `\b`
 # never fired and the heading was not seen as removed at all. The hook went

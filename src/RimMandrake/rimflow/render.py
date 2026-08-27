@@ -203,11 +203,10 @@ def summary(iid, items_dir=None):
 # THE QUEUE VIEW
 # ---------------------------------------------------------------------------
 def _item_line(it, extra=None):
-    """One item, one heading plus scalars — in the field shape derive_matrix parses.
+    """One item, one heading plus scalars.
 
-    🔑 `## <ID> <title>` with `row:` and `state:` underneath is not nostalgia: it is
-    the exact grammar `Utils/derive_matrix.py` already reads, so the day these files
-    become real, the old board keeps working without a change.
+    🔑 `## <ID> <title>` with `row:` and `state:` underneath. The ID grammar itself is
+    `model.ID_RE` and lives only there — do not restate it here or in a doctrine file.
     """
     out = ["## %s %s" % (it.id, it.title or "")]
     out.append("state:    %s%s" % (it.state, "  (BLOCKED)" if it.blocked else ""))
@@ -240,7 +239,7 @@ def queue_view(world, seat, events, target="v1", ctx=None):
     waiting = sorted(
         (i for i in mine
          if i.state == "ready" and i.id not in ranked_ids and i.id not in blocked_ids
-         and not priority.satisfiable(i, world, ctx)),
+         and not priority.satisfiable(i, world, ctx, seat)),
         key=lambda i: (i.created_at or "", i.id))
     offtarget = sorted(
         (i for i in mine
@@ -279,7 +278,7 @@ def queue_view(world, seat, events, target="v1", ctx=None):
               "BLOCKED below before concluding there is no work.", ""]
 
     def section(title, items, note, extra=None):
-        # 🔑 `# `, not `## `. `derive_matrix.parse()` reads the first token after
+        # 🔑 `# `, not `## `. Any parser of this file reads the first token after
         # `## ` as an item ID, so a section header at h2 would file itself as an
         # item called NEXT or BLOCKED. Sections are h1; only items are h2.
         L.append("# %s" % title)
@@ -302,8 +301,9 @@ def queue_view(world, seat, events, target="v1", ctx=None):
                                            if i.blocked_on else "")])
     section("WAITING ON A WINDOW — nothing is wrong", waiting,
             "🔑 These are ready and unblocked; their `needs` is simply not "
-            "satisfiable while the game is %s. They will offer themselves when it "
-            "changes." % world.game,
+            "satisfiable while the game is %s. ⚠️ A `bridge` row does NOT reopen on "
+            "its own — it reopens when the seat holding the bridge releases it."
+            % world.game,
             lambda i: ["waiting:  needs `%s`, game is %s" % (i.needs, world.game)])
     section("NOT THIS TARGET", offtarget,
             "Ready, but aimed at another version. A planning decision, not a defect.")
@@ -327,9 +327,8 @@ def queue_view(world, seat, events, target="v1", ctx=None):
 def _rownames():
     """Row labels from V1.md, so the board and the burn-down cannot disagree.
 
-    Re-implemented from `derive_matrix.rownames()` rather than imported: rimflow is
-    stdlib-only and must not take a dependency on a Utils script that reads the
-    queues it is replacing.
+    Read here rather than imported: rimflow is stdlib-only and takes no dependency
+    on a Utils script that reads the queues it replaces.
     """
     out = {}
     try:
@@ -388,7 +387,7 @@ def board(world, events, target="v1", ctx=None):
         for col in COLS:
             its = [i for i in grid.get(key, {}).get(col, [])
                    if i.state not in ("dropped", "superseded")]
-            # `closed` vs `done`: derive_matrix split these because its numerator came
+            # `closed` vs `done`: these are split because the numerator came
             # from git trailers and its denominator from the queue files. Here every
             # close carries a sha in the ledger, so all of them are `closed` and
             # `done` is structurally zero. The renderer sums both segments, so the

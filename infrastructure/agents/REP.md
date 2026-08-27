@@ -221,7 +221,7 @@ python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 queues untouched, reporting only a diff table that reads like success — a lapse freezes every seat's view. Publishing is
 REP's and must not be forgotten. ✅ `HUMAN.md` is never touched: `VIEW_SEATS` is the four agent seats.
 
-⚠️ **`derive_matrix.py` is superseded for the rendered queues and REFUSES to run against them**, rather than reporting zero.
+⚠️ **`derive_matrix.py`'s CLI is superseded for the rendered queues and REFUSES to run against them**, rather than reporting zero. ⛔ It is NOT dead: `--legacy` still serves the hand-written archives, and `rimflow/importer.py` imports its `state_of`/`WORD`/`EMOJI` at runtime.
 Pass `--legacy` only for the archives, which are still hand-written.
 
 **Still yours and still manual:** `MODE`, and the owner's briefings. ⚠️ Prose written TO the owner has no home in the ledger;

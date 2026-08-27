@@ -108,7 +108,11 @@ REPO = model.ROOT
 CLOSED_LEDGER = os.path.join(model.STATE, "closed_ledger.json")
 
 # 🔑 REUSED, NOT REIMPLEMENTED. derive_matrix.py's state_of()/WORD/EMOJI are the
-# measured vocabulary of what seats have actually written. Loading the file directly
+# measured vocabulary of what seats have actually written.
+# ⚠️ derive_matrix is HALF SUPERSEDED and the halves matter: its `main()` refuses to
+# run against the generated queues (it parses the old hand-written shape and would
+# report 0 done / 0 blocked), while `--legacy` still serves the hand-written
+# archives. THESE THREE NAMES ARE A LIVE DEPENDENCY. Do not delete the file. Loading the file directly
 # avoids needing Utils to be an importable package, and it is stdlib.
 _dm_path = os.path.join(ROOT, "src", "RimMandrake", "Utils", "derive_matrix.py")
 _spec = importlib.util.spec_from_file_location("_derive_matrix", _dm_path)
