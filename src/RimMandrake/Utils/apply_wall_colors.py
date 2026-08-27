@@ -48,10 +48,17 @@ def find_button(rb, want):
             continue
         els = s.get("elements") or []
         for i, e in enumerate(els):
-            if e.get("label") == want:
-                for j in range(i + 1, min(i + 3, len(els))):
-                    if els[j].get("kind") == "button":
-                        return els[j].get("targetId")
+            if e.get("label") != want:
+                continue
+            # ⚠️ A FloatMenu opened near the TOP of the screen lays out upward, and the
+            # button then precedes its label instead of following it. Looking only
+            # forward missed 13 of 772 walls, all on the ship's northern edge.
+            for j in range(i + 1, min(i + 3, len(els))):
+                if els[j].get("kind") == "button":
+                    return els[j].get("targetId")
+            for j in range(max(0, i - 2), i):
+                if els[j].get("kind") == "button":
+                    return els[j].get("targetId")
     return None
 
 
@@ -80,6 +87,9 @@ def main():
     done = collections.Counter()
     misses = []
     with RimBridge(host, port, token, timeout=900.0) as rb:
+        # the dev tool reads UI.MouseCell(), so the cell must be ON SCREEN
+        rb.call("rimworld/set_camera_zoom", {"rootSize": 42})
+        rb.call("rimworld/jump_camera_to_cell", {"x": 125, "z": 125})
         for n, (x, z, col) in enumerate(jobs):
             rb.call("rimworld/execute_debug_action", {"path": TOOL, "x": x, "z": z})
             tid = find_button(rb, col)
