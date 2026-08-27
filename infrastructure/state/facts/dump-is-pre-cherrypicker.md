@@ -30,6 +30,15 @@ that read as a memory failure and was actually an instrument failure.
 state; a cut that worked is ABSENT."* Never measured, reasoned from how Cherry Picker works.
 Corrected in place 2026-08-23 with the old text quoted so it is not re-derived.
 
+## ✅ FIXED for the two contact sheets, 2026-08-27 — `DUMP_DERIVED_SHEETS_SHOW_CUT_1`
+
+`src/RimMandrake/Utils/cherrypicker.py` is now the ONE reader of the kill list; both
+`thing_contact_sheet.py` and `animal_contact_sheet.py` filter by default and print
+`Cuts.provenance(suppressed)`. ⚠️ **The numbers below are the 2026-08-23 reading and the list
+has grown since: 1,342 defs as of 2026-08-27.** Read the list, never a count written down.
+⛔ Six other scripts still parse the settings file with their own regex — move each onto the
+module when you touch it. The full record is `infrastructure/state/items/DUMP_DERIVED_SHEETS_SHOW_CUT_1.md`.
+
 ## The fix
 **Filter every dump-derived roster against the kill list before showing it to a human**, and say
 in the artifact how many rows were suppressed. The kill list is at

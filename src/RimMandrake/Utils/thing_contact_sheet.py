@@ -123,6 +123,7 @@ from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from def_inventory import build, txt, D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA  # noqa: E402
+import cherrypicker  # noqa: E402
 
 # Everything below the planning layer is the animal tool's, unchanged. Importing
 # rather than copying is deliberate: these functions are the ones that carry the
@@ -492,6 +493,14 @@ def run_category(ds, category, tex_index, dir_index, a, bundle_index=None):
     os.makedirs(out_dir, exist_ok=True)
 
     rows = collect_rows(ds, category)
+    # 🔴 THE DEF DUMP IS PRE-CHERRY-PICKER: a cut that WORKED is still in it, so an
+    # unfiltered sheet shows the owner things the running game does not have. He
+    # reviewed one and said "I had really thought I had already removed all of these
+    # terrestrial animals somewhere already" — he had; the sheet was wrong, not his
+    # memory. `DUMP_DERIVED_SHEETS_SHOW_CUT_1`, facts/dump-is-pre-cherrypicker.md.
+    cut_rows = []
+    if a.cuts is not None:
+        rows, cut_rows = a.cuts.filter(rows, key=lambda r: ("ThingDef", r["defName"]))
     if a.limit:
         rows = rows[:a.limit]
     placed, missing = plan_cells(rows, tex_index, dir_index, bundle_index)
@@ -546,6 +555,11 @@ def run_category(ds, category, tex_index, dir_index, a, bundle_index=None):
     blank = (len(missing) / float(len(rows))) if rows else 0.0
 
     print("\n== %s ==" % category)
+    # ⭐ A SHEET THAT SILENTLY SHOWS FEWER THINGS IS THE SAME FAILURE WEARING THE
+    # OTHER HAT — the owner cannot tell "this mod ships nothing" from "I cut it all".
+    print("  %s" % (a.cuts.provenance(len(cut_rows)) if a.cuts is not None
+                    else "cut list: NOT APPLIED (--include-cut) — this sheet shows "
+                         "defs the running game does not have"))
     print("  defs: %d   placed: %d over %d pages   missing: %d (%.1f%% blank)"
           % (len(rows), len(index_rows), len(page_files), len(missing),
              blank * 100.0))
@@ -557,7 +571,7 @@ def run_category(ds, category, tex_index, dir_index, a, bundle_index=None):
           % (size / 1048576.0, t_render, os.path.abspath(out_dir)))
     return {"category": category, "defs": len(rows), "placed": len(index_rows),
             "pages": len(page_files), "missing": len(missing), "blank": blank,
-            "bytes": size, "dir": out_dir}
+            "bytes": size, "dir": out_dir, "cut": len(cut_rows)}
 
 
 def main(argv=None):
@@ -583,6 +597,14 @@ def main(argv=None):
     ap.add_argument("--no-trim", action="store_true",
                     help="do NOT crop to the alpha bbox (keeps relative scale)")
     ap.add_argument("--max-upscale", type=float, default=2.0)
+    ap.add_argument("--include-cut", action="store_true",
+                    help="show defs Cherry Picker removes. ⛔ Never for a sheet the "
+                         "owner will make a keep/cut call on — the dump is captured "
+                         "BEFORE the removals, so unfiltered it shows things the "
+                         "running game does not have")
+    ap.add_argument("--cut-source", choices=("auto", "live", "ratified", "log"),
+                    default="auto", help="where the kill list comes from; `log` is "
+                                         "runtime truth, the rest are intent")
     ap.add_argument("--limit", type=int, default=0, help="stop after N defs (smoke test)")
     ap.add_argument("--no-image", action="store_true", help="CSVs only")
     ap.add_argument("--bundles", default=DEFAULT_BUNDLE_DIR,
@@ -593,6 +615,14 @@ def main(argv=None):
 
     t0 = time.perf_counter()
     os.makedirs(a.out, exist_ok=True)
+
+    # ⚠️ Loaded here and not per-category so a missing kill list fails ONCE, loudly,
+    # before any rendering — never as six quiet empty filters.
+    a.cuts = None
+    if not a.include_cut:
+        a.cuts = (cherrypicker.from_log() if a.cut_source == "log"
+                  else cherrypicker.load(a.cut_source))
+        print(a.cuts.provenance())
 
     ds = build(a.config, a.workshop, a.local, a.data, types=WANT_TYPES, quiet=True)
     print("load set: version %s, %d active mods -> %d content folders, %d ThingDefs"
@@ -614,12 +644,12 @@ def main(argv=None):
     stats = [run_category(ds, c, tex_index, dir_index, a, bundle_index)
              for c in cats]
 
-    print("\n%-11s %7s %7s %6s %8s %8s %8s"
-          % ("category", "defs", "placed", "pages", "missing", "blank%", "MB"))
+    print("\n%-11s %7s %7s %7s %6s %8s %8s %8s"
+          % ("category", "defs", "cut", "placed", "pages", "missing", "blank%", "MB"))
     for s in stats:
-        print("%-11s %7d %7d %6d %8d %7.1f%% %8.1f"
-              % (s["category"], s["defs"], s["placed"], s["pages"], s["missing"],
-                 s["blank"] * 100.0, s["bytes"] / 1048576.0))
+        print("%-11s %7d %7d %7d %6d %8d %7.1f%% %8.1f"
+              % (s["category"], s["defs"], s["cut"], s["placed"], s["pages"],
+                 s["missing"], s["blank"] * 100.0, s["bytes"] / 1048576.0))
     print("total %.1f MB   %.1fs" % (sum(s["bytes"] for s in stats) / 1048576.0,
                                      time.perf_counter() - t0))
     return 0

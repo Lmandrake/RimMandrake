@@ -159,6 +159,7 @@ from collections import defaultdict
 # which mod folders are live).
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from def_inventory import build, txt, D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA  # noqa: E402
+import cherrypicker  # noqa: E402
 
 VERSION = "1.0"
 
@@ -1094,6 +1095,13 @@ def main(argv=None):
     ap.add_argument("--max-upscale", type=float, default=2.0)
     ap.add_argument("--include-missing", action="store_true",
                     help="draw placeholder cells for animals with no sprite")
+    ap.add_argument("--include-cut", action="store_true",
+                    help="show animals Cherry Picker removes. ⛔ Never for a sheet the "
+                         "owner will make a keep/cut call on — animals.csv is built "
+                         "from a dump captured BEFORE the removals")
+    ap.add_argument("--cut-source", choices=("auto", "live", "ratified", "log"),
+                    default="auto", help="where the kill list comes from; `log` is "
+                                         "runtime truth, the rest are intent")
     ap.add_argument("--limit", type=int, default=0, help="stop after N csv rows (smoke test)")
     ap.add_argument("--no-image", action="store_true", help="CSVs only, write no PNGs")
     ap.add_argument("--bundles", default=DEFAULT_BUNDLE_DIR,
@@ -1108,6 +1116,21 @@ def main(argv=None):
     if not os.path.isfile(a.csv):
         sys.exit("no animals.csv at %s (run animal_inventory.py first)" % a.csv)
     rows = read_animals_csv(a.csv)
+    # 🔴 THE DEF DUMP — AND SO animals.csv — IS PRE-CHERRY-PICKER. A cut that WORKED
+    # is still in it. This is the sheet the owner reviewed when he said "I had really
+    # thought I had already removed all of these terrestrial animals somewhere
+    # already": he had, and 1,162 of his cuts were on the page anyway. He spent a
+    # review pass judging animals the game no longer has.
+    # `DUMP_DERIVED_SHEETS_SHOW_CUT_1`, facts/dump-is-pre-cherrypicker.md.
+    cuts = cut_rows = None
+    if not a.include_cut:
+        cuts = (cherrypicker.from_log() if a.cut_source == "log"
+                else cherrypicker.load(a.cut_source))
+        rows, cut_rows = cuts.filter(rows, key=lambda r: ("ThingDef", r.get("defName")))
+        print(cuts.provenance(len(cut_rows)))
+    else:
+        print("cut list: NOT APPLIED (--include-cut) — this sheet shows animals the "
+              "running game does not have")
     if a.limit:
         rows = rows[:a.limit]
 
