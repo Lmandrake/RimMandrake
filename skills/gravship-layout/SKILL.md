@@ -215,7 +215,42 @@ hand-written XML into that folder is enough to make it selectable: no mod, no
 **So the round trip is: author → drop in `Config/GravshipExport` → start a new
 game with a gravship-arrival scenario → the ship appears on the choose page.**
 
+### ⭐ SUPERSEDED 2026-08-27 — a layout CAN be stamped onto a live map today
+
+**`src/RimMandrake/Utils/print_gravship.py` does it, and it never touches
+`ShipSketchBuilder`.** Foundation, floors and buildings are three batch calls the
+bridge already has, so the Sketch route below stays unwritten and stops being the
+blocker. Measured on a cleared 250×250 map: `The_Helpful_Transport` — 4,034
+foundation cells, 4,034 floors, 1,571 things — went down in ~15 calls and
+verified **1,571 of 1,571 by cell-by-cell read-back**, every building
+`PlayerColony`.
+
+```
+python.exe src/RimMandrake/Utils/print_gravship.py <layout.xml> --center 125,125 --apply
+```
+
+🔴 **The gate nobody predicts: `SetFoundation` is refused on any cell that has an
+UNDER layer**, per cell, as *"cell has under-terrain; strip the floor first"* —
+and a natural top terrain **cannot be removed at all**, because
+`CanRemoveTopLayerAt` reads `Removable` and natural soil is not. The way through
+is two calls: paint a **removable** floor (`MetalTile`) over the footprint, then
+`jawa/set_terrain_layer layer='removeTop'`. `SetTerrain` pushes the natural
+terrain down into `under`; `RemoveTopLayer` pops it back up and **nulls
+`under`** — and only then is the cell eligible. Order is
+**strip → foundation → terrain → things, largest footprint first.**
+
+⚠️ **The export contains NO `GravEngine`** — verified zero in both of ours. The
+mod's importer places it from `gravEngineX/Z`, and so does the script.
+⚠️ **Map litter rides along**: `The_Helpful_Transport` carries 2 `SteamGeyser`
+and 1 `VHGE_GasGeyser` swept in from the original map. The script skips them.
+🔑 **The FOUR GATES below are untouched by any of this.** A printed ship is
+geometry: the engine reads `Gravship range: 0` and every thruster reads
+*"Not connected to grav engine"* until it is powered, fuelled and inspected.
+
 ### The mid-game import button does not exist yet, and it is ours to build
+
+⚠️ **Overtaken by the section above — read that first.** This route was never
+built and no longer needs to be.
 
 `Importer/ShipSketchBuilder.cs:14` is a **`public static class`** and `:24`
 exposes **`public static Sketch BuildFromLayout(ShipLayoutDefV2 layout)`**
