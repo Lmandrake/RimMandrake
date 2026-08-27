@@ -1,0 +1,164 @@
+{
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "axis": "haystack",
+  "ceiling": 120000,
+  "first_fail": 50000,
+  "rows": [
+    {
+      "size": 8000,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_Empire_Heavy",
+      "expect": [
+        "129"
+      ],
+      "got": "129",
+      "prompt_tokens": 2564,
+      "completion_tokens": 527
+    },
+    {
+      "size": 8000,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_Empire_Grunt",
+      "expect": [
+        "87"
+      ],
+      "got": "87",
+      "prompt_tokens": 2565,
+      "completion_tokens": 519
+    },
+    {
+      "size": 8000,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_Empire_Specialist",
+      "expect": [
+        "119"
+      ],
+      "got": "119",
+      "prompt_tokens": 2565,
+      "completion_tokens": 619
+    },
+    {
+      "size": 20000,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_Hutt_Specialist",
+      "expect": [
+        "108"
+      ],
+      "got": "108",
+      "prompt_tokens": 6547,
+      "completion_tokens": 218
+    },
+    {
+      "size": 20000,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_Hutt_Specialist",
+      "expect": [
+        "108"
+      ],
+      "got": "108",
+      "prompt_tokens": 6547,
+      "completion_tokens": 219
+    },
+    {
+      "size": 20000,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_Empire_Specialist",
+      "expect": [
+        "119"
+      ],
+      "got": "119",
+      "prompt_tokens": 6547,
+      "completion_tokens": 209
+    },
+    {
+      "size": 50000,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_Empire_Leader",
+      "expect": [
+        "211"
+      ],
+      "got": "211",
+      "prompt_tokens": 16290,
+      "completion_tokens": 160
+    },
+    {
+      "size": 50000,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_Homestead_Leader",
+      "expect": [
+        "116"
+      ],
+      "got": "116",
+      "prompt_tokens": 16291,
+      "completion_tokens": 844
+    },
+    {
+      "size": 50000,
+      "rep": 2,
+      "ok": false,
+      "why": "no ANSWER line",
+      "label": "Jawa_Droid_Leader",
+      "expect": [
+        "176"
+      ],
+      "got": "",
+      "prompt_tokens": 16290,
+      "completion_tokens": 389
+    },
+    {
+      "size": 120000,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_DeepDesert_Leader",
+      "expect": [
+        "96"
+      ],
+      "got": "96",
+      "prompt_tokens": 38920,
+      "completion_tokens": 211
+    },
+    {
+      "size": 120000,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_Helix_Specialist",
+      "expect": [
+        "164"
+      ],
+      "got": "164",
+      "prompt_tokens": 38920,
+      "completion_tokens": 955
+    },
+    {
+      "size": 120000,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "Jawa_Empire_Specialist",
+      "expect": [
+        "119"
+      ],
+      "got": "119",
+      "prompt_tokens": 38919,
+      "completion_tokens": 205
+    }
+  ]
+}

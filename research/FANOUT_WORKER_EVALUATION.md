@@ -99,3 +99,55 @@ identifiers follow grenade naming conventions.
 🔑 **The rule that falls out of all of the above: fan out to generate CANDIDATES, never
 CONCLUSIONS.** Every worker prompt carries an explicit abstention clause, and states no
 fact the worker is meant to discover.
+
+## 🔴 How BIG a job? Measured 2026-08-26, after the owner reframed the question
+
+*"Perhaps we should be attempting to determine the max job size these lesser agents can
+handle, rather than watching them fail at something big."* — owner. He is right, and the
+answer is not the axis anyone would pick. Harness:
+`src/RimMandrake/Utils/nemotron_ceiling.py` (`--axis haystack|questions|enumerate`).
+
+**Three synthetic axes swept on `nemotron-3.5-lightning-30b-a3b`. None of them bound:**
+
+| axis | largest size tested | score |
+|---|---|---|
+| one needle in a growing haystack | 120 000 chars | 3/3 |
+| independent questions in one call | 8 | 3/3 |
+| items that must ALL be examined (a count) | 32 | 4/4 |
+
+19–20 of 20 at the top of every axis, and the isolated failures were **non-monotonic** —
+a larger size passing after a smaller one failed. ⛔ That is noise, not a ceiling, and the
+harness now refuses to report a number from a non-monotonic sweep.
+
+### What actually binds: completion tokens spent reasoning
+
+One real 400-line repo file — `GalacticEmpire.xml`, a trivial **7 833 input tokens** —
+defeated it completely:
+
+    WITH comments      ptok=7833  ctok=8192  ->  0 of 3 reached an answer
+    comments STRIPPED  ptok=2963  ctok~7800  ->  2 of 3 answered correctly
+
+**Every failure stopped at exactly the 8 192 completion cap.** The model narrates its way
+through every candidate element and runs out of budget mid-thought; **63% of that file is
+commentary**, and the commentary is what it spends the budget on. Raw evidence:
+`research/nemotron_distractor_density_2026-08-26.txt`.
+
+⇒ 🔑 **Size a cheap worker's job by how much it will NARRATE, not by how much you send.**
+Stripping comments before dispatch is free and is the highest-leverage change available.
+A task that classifies EVERY element costs far more output than one that finds ONE thing,
+at identical input length. ⚠️ **A reply that stopped exactly at the cap is a truncation,
+not an answer** — and it arrives looking like a careful analysis that simply has no
+conclusion. Check `completion_tokens` on every return.
+
+### And cite-check the evidence even when the verdict is right
+Two runs, identical prompt, identical input, `temperature: 0`: `121, 131, 144` and
+`121, 129, 142`. Ground truth is the first. The VERDICT was right both times; the
+**line numbers were not** — and the line numbers are the part that gets pasted into a doc.
+
+### Two instrument defects this sweep produced, both already fixed
+Recorded because both are the house failure mode — an instrument answering confidently:
+* An answer shape written as `<1> | <2>` was **echoed back literally** instead of filled
+  in, scoring a correct model as a failure. Never hand a model angle-bracket placeholders.
+* A size for which **no jobs could be built** printed as `0/0`, indistinguishable from
+  "tested and scored zero". It now prints `UNMEASURED` and says why.
+

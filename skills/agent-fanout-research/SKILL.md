@@ -145,3 +145,41 @@ Three rules carry over, and they matter more with a cheap worker than a strong o
 models delisted in between. Re-check liveness before pinning any model name into
 tooling; never take one from a doc.
 
+## 7. Sizing a cheap worker's job — the ceiling is OUTPUT, not input
+
+Measured 2026-08-26 on `nemotron-3.5-lightning-30b-a3b`, after the owner reframed the
+question from *"does it fail at something big"* to *"how big a job can it take"*. Three
+synthetic axes were swept and **none of them bound**:
+
+| axis | result |
+|---|---|
+| one needle in a growing haystack | clean to **120 000 chars** |
+| independent questions in one call | clean to **8** |
+| items that must ALL be examined (a count) | clean to **32** |
+
+Near the top of every axis it scored 19–20 of 20. ⛔ **Do not read a "ceiling" off a
+sweep that is not monotonic** — a larger size passing after a smaller one failed means
+you measured noise. Guard for it; `nemotron_ceiling.py` refuses to report one.
+
+🔴 **What actually binds is COMPLETION tokens spent reasoning.** The same model, given
+one real 400-line repo XML file — a trivial **7 833 input tokens** — answered **0 of 3**,
+every attempt stopping at exactly the 8 192-token completion cap with its answer never
+reached. It narrates its way through every candidate element and runs out of budget
+mid-thought. Strip the file's comments (63% of it was commentary) and the same question
+on the same file answers **2 of 3**.
+
+⇒ **Size a cheap worker's job by how much it will NARRATE, not by how much you send.**
+- **Strip prose, comments and near-miss text before handing a file to a cheap worker.**
+  It is the single highest-leverage thing you can do, and it is free.
+- A task that requires *classifying every element* costs far more output than one that
+  requires *finding one thing*. Same file, same length, completely different job.
+- Raise `max_tokens` generously, then check `completion_tokens` on every return. ⚠️ A
+  reply that stopped exactly at the cap is a TRUNCATION, not an answer — and it arrives
+  looking like a thoughtful analysis with no conclusion.
+
+⚠️ **Cite-check every line number, even when the verdict is right.** Two runs of the
+identical prompt, identical input, `temperature: 0`, returned `121, 131, 144` and
+`121, 129, 142`. The first is correct; the second is wrong twice, by two lines. The
+worker's VERDICT was right both times. **Its EVIDENCE was not**, and evidence is the
+part you were going to paste into a doc.
+

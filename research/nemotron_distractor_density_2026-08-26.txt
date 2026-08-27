@@ -1,0 +1,7 @@
+ground truth: a Replace on pawnGroupMakers EXISTS (3 of them); 63% of the real file is commentary
+  WITH comments #1         ptok=  7833 ctok= 8192 -> NO ANSWER LINE (buried in reasoning)
+  WITH comments #2         ptok=  7833 ctok= 8192 -> NO ANSWER LINE (buried in reasoning)
+  WITH comments #3         ptok=  7833 ctok= 8192 -> NO ANSWER LINE (buried in reasoning)
+  comments STRIPPED #1     ptok=  2963 ctok= 7295 -> ANSWER: 121, 131, 144
+  comments STRIPPED #2     ptok=  2963 ctok= 8192 -> NO ANSWER LINE (buried in reasoning)
+  comments STRIPPED #3     ptok=  2963 ctok= 8044 -> ANSWER: 121, 129, 142

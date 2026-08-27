@@ -1,0 +1,197 @@
+{
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "axis": "questions",
+  "ceiling": 8,
+  "first_fail": 1,
+  "rows": [
+    {
+      "size": 1,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "1 defs",
+      "expect": [
+        "211"
+      ],
+      "got": "211",
+      "prompt_tokens": 6554,
+      "completion_tokens": 2471
+    },
+    {
+      "size": 1,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "1 defs",
+      "expect": [
+        "90"
+      ],
+      "got": "90",
+      "prompt_tokens": 6554,
+      "completion_tokens": 1038
+    },
+    {
+      "size": 1,
+      "rep": 2,
+      "ok": false,
+      "why": "wrong",
+      "label": "1 defs",
+      "expect": [
+        "90"
+      ],
+      "got": "<1>\". This is likely a prompt template where `<1>` is the position for the answer. In many",
+      "prompt_tokens": 6554,
+      "completion_tokens": 791
+    },
+    {
+      "size": 2,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "2 defs",
+      "expect": [
+        "129",
+        "87"
+      ],
+      "got": "129 | 87",
+      "prompt_tokens": 6569,
+      "completion_tokens": 512
+    },
+    {
+      "size": 2,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "2 defs",
+      "expect": [
+        "49",
+        "119"
+      ],
+      "got": "49 | 119",
+      "prompt_tokens": 6571,
+      "completion_tokens": 1080
+    },
+    {
+      "size": 2,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "2 defs",
+      "expect": [
+        "119",
+        "108"
+      ],
+      "got": "119 | 108",
+      "prompt_tokens": 6570,
+      "completion_tokens": 596
+    },
+    {
+      "size": 4,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "4 defs",
+      "expect": [
+        "55",
+        "119",
+        "49",
+        "90"
+      ],
+      "got": "55 | 119 | 49 | 90",
+      "prompt_tokens": 6600,
+      "completion_tokens": 892
+    },
+    {
+      "size": 4,
+      "rep": 1,
+      "ok": false,
+      "why": "wrong",
+      "label": "4 defs",
+      "expect": [
+        "932",
+        "119",
+        "211",
+        "108"
+      ],
+      "got": "932 | 108 | 211 | 108",
+      "prompt_tokens": 6598,
+      "completion_tokens": 1193
+    },
+    {
+      "size": 4,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "4 defs",
+      "expect": [
+        "211",
+        "119",
+        "932",
+        "87"
+      ],
+      "got": "211 | 119 | 932 | 87",
+      "prompt_tokens": 6598,
+      "completion_tokens": 1220
+    },
+    {
+      "size": 8,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "8 defs",
+      "expect": [
+        "932",
+        "55",
+        "87",
+        "129",
+        "211",
+        "90",
+        "49",
+        "119"
+      ],
+      "got": "932 | 55 | 87 | 129 | 211 | 90 | 49 | 119",
+      "prompt_tokens": 6657,
+      "completion_tokens": 1418
+    },
+    {
+      "size": 8,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "8 defs",
+      "expect": [
+        "932",
+        "55",
+        "49",
+        "108",
+        "87",
+        "129",
+        "211",
+        "119"
+      ],
+      "got": "932 | 55 | 49 | 108 | 87 | 129 | 211 | 119",
+      "prompt_tokens": 6658,
+      "completion_tokens": 1216
+    },
+    {
+      "size": 8,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "8 defs",
+      "expect": [
+        "211",
+        "87",
+        "90",
+        "49",
+        "119",
+        "55",
+        "932",
+        "108"
+      ],
+      "got": "211 | 87 | 90 | 49 | 119 | 55 | 932 | 108",
+      "prompt_tokens": 6658,
+      "completion_tokens": 1918
+    }
+  ]
+}

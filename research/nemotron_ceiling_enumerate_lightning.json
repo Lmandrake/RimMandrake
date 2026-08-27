@@ -1,0 +1,268 @@
+{
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "axis": "enumerate",
+  "ceiling": 32,
+  "first_fail": 8,
+  "rows": [
+    {
+      "size": 4,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "4 entries",
+      "expect": [
+        "2"
+      ],
+      "got": "2",
+      "prompt_tokens": 239,
+      "completion_tokens": 777
+    },
+    {
+      "size": 4,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "4 entries",
+      "expect": [
+        "2"
+      ],
+      "got": "2",
+      "prompt_tokens": 239,
+      "completion_tokens": 521
+    },
+    {
+      "size": 4,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "4 entries",
+      "expect": [
+        "2"
+      ],
+      "got": "2",
+      "prompt_tokens": 239,
+      "completion_tokens": 707
+    },
+    {
+      "size": 4,
+      "rep": 3,
+      "ok": true,
+      "why": "ok",
+      "label": "4 entries",
+      "expect": [
+        "2"
+      ],
+      "got": "2",
+      "prompt_tokens": 239,
+      "completion_tokens": 692
+    },
+    {
+      "size": 8,
+      "rep": 0,
+      "ok": false,
+      "why": "wrong",
+      "label": "8 entries",
+      "expect": [
+        "3"
+      ],
+      "got": "3` as the last line, ensuring no text after it. I can just output `ANSWER: 3` on its own l",
+      "prompt_tokens": 387,
+      "completion_tokens": 8192
+    },
+    {
+      "size": 8,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "8 entries",
+      "expect": [
+        "3"
+      ],
+      "got": "3",
+      "prompt_tokens": 387,
+      "completion_tokens": 934
+    },
+    {
+      "size": 8,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "8 entries",
+      "expect": [
+        "3"
+      ],
+      "got": "3",
+      "prompt_tokens": 387,
+      "completion_tokens": 620
+    },
+    {
+      "size": 8,
+      "rep": 3,
+      "ok": true,
+      "why": "ok",
+      "label": "8 entries",
+      "expect": [
+        "3"
+      ],
+      "got": "3",
+      "prompt_tokens": 387,
+      "completion_tokens": 680
+    },
+    {
+      "size": 16,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "16 entries",
+      "expect": [
+        "4"
+      ],
+      "got": "4",
+      "prompt_tokens": 695,
+      "completion_tokens": 1801
+    },
+    {
+      "size": 16,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "16 entries",
+      "expect": [
+        "4"
+      ],
+      "got": "4",
+      "prompt_tokens": 695,
+      "completion_tokens": 1135
+    },
+    {
+      "size": 16,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "16 entries",
+      "expect": [
+        "4"
+      ],
+      "got": "4",
+      "prompt_tokens": 695,
+      "completion_tokens": 1031
+    },
+    {
+      "size": 16,
+      "rep": 3,
+      "ok": true,
+      "why": "ok",
+      "label": "16 entries",
+      "expect": [
+        "4"
+      ],
+      "got": "4",
+      "prompt_tokens": 695,
+      "completion_tokens": 1134
+    },
+    {
+      "size": 24,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "24 entries",
+      "expect": [
+        "7"
+      ],
+      "got": "7",
+      "prompt_tokens": 1000,
+      "completion_tokens": 1521
+    },
+    {
+      "size": 24,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "24 entries",
+      "expect": [
+        "7"
+      ],
+      "got": "7",
+      "prompt_tokens": 1000,
+      "completion_tokens": 989
+    },
+    {
+      "size": 24,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "24 entries",
+      "expect": [
+        "7"
+      ],
+      "got": "7",
+      "prompt_tokens": 1000,
+      "completion_tokens": 2725
+    },
+    {
+      "size": 24,
+      "rep": 3,
+      "ok": true,
+      "why": "ok",
+      "label": "24 entries",
+      "expect": [
+        "7"
+      ],
+      "got": "7",
+      "prompt_tokens": 1000,
+      "completion_tokens": 1578
+    },
+    {
+      "size": 32,
+      "rep": 0,
+      "ok": true,
+      "why": "ok",
+      "label": "32 entries",
+      "expect": [
+        "9"
+      ],
+      "got": "9",
+      "prompt_tokens": 1308,
+      "completion_tokens": 1442
+    },
+    {
+      "size": 32,
+      "rep": 1,
+      "ok": true,
+      "why": "ok",
+      "label": "32 entries",
+      "expect": [
+        "9"
+      ],
+      "got": "9",
+      "prompt_tokens": 1308,
+      "completion_tokens": 2292
+    },
+    {
+      "size": 32,
+      "rep": 2,
+      "ok": true,
+      "why": "ok",
+      "label": "32 entries",
+      "expect": [
+        "9"
+      ],
+      "got": "9",
+      "prompt_tokens": 1308,
+      "completion_tokens": 1954
+    },
+    {
+      "size": 32,
+      "rep": 3,
+      "ok": true,
+      "why": "ok",
+      "label": "32 entries",
+      "expect": [
+        "9"
+      ],
+      "got": "9",
+      "prompt_tokens": 1308,
+      "completion_tokens": 1644
+    }
+  ]
+}
