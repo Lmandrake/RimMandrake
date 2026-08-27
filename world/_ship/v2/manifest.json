@@ -1,0 +1,343 @@
+{
+ "treatments": [
+  {
+   "slug": "bare_metal",
+   "title": "Bare Metal (control)",
+   "blurb": "No colour tool at all - the same blistered layout in the tiles' own colours. Everything below is measured against this, and it is a real option: the ship is already dark and oxidised without spending a single ColorDef.",
+   "file": "bare_metal.png",
+   "details": [
+    {
+     "name": "pod",
+     "file": "bare_metal_d_pod.png"
+    },
+    {
+     "name": "stern",
+     "file": "bare_metal_d_stern.png"
+    },
+    {
+     "name": "north",
+     "file": "bare_metal_d_north.png"
+    }
+   ],
+   "colors": [
+    [
+     null,
+     4806
+    ]
+   ]
+  },
+  {
+   "slug": "oxide_bloom",
+   "title": "Oxide Bloom",
+   "blurb": "One rate of corrosion over the whole hull, in six browns, with no edges anywhere. The ship is uniformly ancient - nothing points at anything.",
+   "file": "oxide_bloom.png",
+   "details": [
+    {
+     "name": "pod",
+     "file": "oxide_bloom_d_pod.png"
+    },
+    {
+     "name": "stern",
+     "file": "oxide_bloom_d_stern.png"
+    },
+    {
+     "name": "north",
+     "file": "oxide_bloom_d_north.png"
+    }
+   ],
+   "colors": [
+    [
+     "Structure_Limestone",
+     1967
+    ],
+    [
+     "Structure_GrayLight",
+     1330
+    ],
+    [
+     "Structure_Mustard",
+     452
+    ],
+    [
+     "Structure_BrownDark",
+     436
+    ],
+    [
+     "guy762_StructureColor_BespinBeige",
+     285
+    ],
+    [
+     "guy762_StructureColor_CinnagarIron",
+     284
+    ],
+    [
+     "ReddishBrown",
+     47
+    ],
+    [
+     "Structure_BrownWood",
+     5
+    ]
+   ]
+  },
+  {
+   "slug": "bleed_down",
+   "title": "Bleed Down",
+   "blurb": "Weathering with a direction: streaks run along the flight axis and pool dark at the stern, where the thrusters are. The hull remembers which way it flew.",
+   "file": "bleed_down.png",
+   "details": [
+    {
+     "name": "pod",
+     "file": "bleed_down_d_pod.png"
+    },
+    {
+     "name": "stern",
+     "file": "bleed_down_d_stern.png"
+    },
+    {
+     "name": "north",
+     "file": "bleed_down_d_north.png"
+    }
+   ],
+   "colors": [
+    [
+     "Structure_GrayLight",
+     1787
+    ],
+    [
+     "Structure_Limestone",
+     1025
+    ],
+    [
+     "guy762_StructureColor_BespinBeige",
+     856
+    ],
+    [
+     "Structure_Mustard",
+     366
+    ],
+    [
+     "ReddishBrown",
+     219
+    ],
+    [
+     "Structure_UmberBurnt",
+     182
+    ],
+    [
+     "Structure_BrownDark",
+     157
+    ],
+    [
+     "guy762_StructureColor_CinnagarIron",
+     93
+    ],
+    [
+     "guy762_StructureColor_HK47Rust",
+     65
+    ],
+    [
+     "Structure_Auburn",
+     56
+    ]
+   ]
+  },
+  {
+   "slug": "corrosion_halo",
+   "title": "Corrosion Halo",
+   "blurb": "Rust as a wound. Hottest orange right at the lip of every blister, cooling through brown to cold grey where the plating is still sound. The holes are what you look at.",
+   "file": "corrosion_halo.png",
+   "details": [
+    {
+     "name": "pod",
+     "file": "corrosion_halo_d_pod.png"
+    },
+    {
+     "name": "stern",
+     "file": "corrosion_halo_d_stern.png"
+    },
+    {
+     "name": "north",
+     "file": "corrosion_halo_d_north.png"
+    }
+   ],
+   "colors": [
+    [
+     "guy762_StructureColor_HK47Rust",
+     1001
+    ],
+    [
+     "guy762_StructureColor_BespinBeige",
+     821
+    ],
+    [
+     "Structure_White",
+     609
+    ],
+    [
+     "Structure_Mustard",
+     606
+    ],
+    [
+     "Structure_Limestone",
+     501
+    ],
+    [
+     "Structure_GrayLight",
+     440
+    ],
+    [
+     "guy762_StructureColor_212thOrange",
+     199
+    ],
+    [
+     "Structure_Orange",
+     139
+    ],
+    [
+     "guy762_StructureColor_ImpArmySlate",
+     129
+    ],
+    [
+     "Structure_Auburn",
+     108
+    ],
+    [
+     "Structure_Granite",
+     100
+    ],
+    [
+     "Structure_UmberBurnt",
+     74
+    ],
+    [
+     "Structure_Marble",
+     58
+    ],
+    [
+     "Structure_GreyDark",
+     21
+    ]
+   ]
+  },
+  {
+   "slug": "two_tone",
+   "title": "Two Tone",
+   "blurb": "Graphic rather than noisy: a deep umber ring over a cold grey undercarriage, with hot rust only in the two cells around each hole. Reads at map zoom.",
+   "file": "two_tone.png",
+   "details": [
+    {
+     "name": "pod",
+     "file": "two_tone_d_pod.png"
+    },
+    {
+     "name": "stern",
+     "file": "two_tone_d_stern.png"
+    },
+    {
+     "name": "north",
+     "file": "two_tone_d_north.png"
+    }
+   ],
+   "colors": [
+    [
+     "Structure_Mustard",
+     1398
+    ],
+    [
+     "Structure_Orange",
+     899
+    ],
+    [
+     "Structure_Limestone",
+     717
+    ],
+    [
+     "guy762_StructureColor_HK47Rust",
+     639
+    ],
+    [
+     "guy762_StructureColor_212thOrange",
+     245
+    ],
+    [
+     "guy762_StructureColor_CinnagarIron",
+     239
+    ],
+    [
+     "guy762_StructureColor_BespinBeige",
+     205
+    ],
+    [
+     "guy762_StructureColor_ImpArmySlate",
+     168
+    ],
+    [
+     "Structure_White",
+     108
+    ],
+    [
+     "Structure_GrayLight",
+     68
+    ],
+    [
+     "Structure_UmberBurnt",
+     56
+    ],
+    [
+     "Structure_BrownDark",
+     27
+    ],
+    [
+     "Structure_Marble",
+     27
+    ],
+    [
+     "Structure_Granite",
+     10
+    ]
+   ]
+  }
+ ],
+ "tiles": {
+  "AG_RustedTile": 1272,
+  "guy762_FloorTiles_XGrate_iron": 546,
+  "HOLE": 140,
+  "guy762_FloorTiles_DivotedTile_rust": 197,
+  "guy762_FloorTiles_DoomgiverFoorMetal_dark": 1780,
+  "UCScaffoldTile": 99
+ },
+ "blisters": {
+  "blobs": 37,
+  "grate": 546,
+  "holes": 140,
+  "biggest": [
+   118,
+   117,
+   94,
+   86,
+   48,
+   41,
+   36,
+   21
+  ]
+ },
+ "thrusters": [
+  [
+   6,
+   90
+  ],
+  [
+   6,
+   91
+  ],
+  [
+   6,
+   93
+  ],
+  [
+   6,
+   94
+  ]
+ ]
+}
