@@ -68,6 +68,7 @@ def main():
     ap.add_argument("--plan", required=True)
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--limit", type=int, default=0, help="stop after N walls (a smoke test)")
+    ap.add_argument("--offset", type=int, default=0, help="skip the first N walls")
     args = ap.parse_args()
 
     plan = json.load(open(args.plan))
@@ -76,6 +77,11 @@ def main():
         for x, z in cells:
             jobs.append((x, z, col))
     jobs.sort(key=lambda j: (j[1], j[0]))
+    # ⚠️ Something in the session degrades after roughly 380 walls and every menu
+    # after that misses - measured at exactly 384/772 on three separate runs, with
+    # the failures starting mid-list rather than alternating. A fresh PROCESS clears
+    # it, so drive this in chunks: --offset 0 300, 300 300, 600 300.
+    jobs = jobs[args.offset:]
     if args.limit:
         jobs = jobs[:args.limit]
     print("%d walls, %d colours, ~%d bridge calls"
@@ -96,16 +102,16 @@ def main():
         # retry a miss once after clearing. `get_context_menu_options` cannot see
         # this window at all - it is a Verse.FloatMenu, not a debug context menu -
         # so detection has to go through get_ui_layout.
+        # 🔴 The menu MUST be closed before the click, or the menu still standing is
+        # the PREVIOUS cell's - and clicking it paints the wrong wall while
+        # reporting success. So: assert closed, open, assert open, click.
         rb.call("jawa/clear_ui", {"all": True})
         for n, (x, z, col) in enumerate(jobs):
-            tid = None
-            for attempt in (0, 1):
-                rb.call("rimworld/execute_debug_action", {"path": TOOL, "x": x, "z": z})
-                menu = float_menu(rb)
-                if menu:
-                    tid = button_for(menu, col)
-                    break
+            if float_menu(rb):                       # stale from the last wall
                 rb.call("jawa/clear_ui", {"all": True})
+            rb.call("rimworld/execute_debug_action", {"path": TOOL, "x": x, "z": z})
+            menu = float_menu(rb)
+            tid = button_for(menu, col) if menu else None
             if not tid:
                 misses.append((x, z, col))
                 rb.call("jawa/clear_ui", {"all": True})
