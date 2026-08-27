@@ -2272,3 +2272,18 @@
 {"seat":"BUILD","event":"verify","id":"ION_MACHINE_TIER_MISSING_1","result":"partial","config":"offline, repo + game copy, 582-mod deploy","evidence":"observed/verify/2026-08-26_ion_machine_tier_offline.md","sha":"9b6bfbde","ts":"2026-08-27T02:10:27Z"}
 {"seat":"BUILD","event":"file","id":"ION_TIERS_MEASURED_LIVE_1","title":"Measure all three ion tiers live: mech, droid, and the flesh baseline that must not move","kind":"check","target":"v1","needs":"bridge","caused_by":"ION_MACHINE_TIER_MISSING_1","for":"CHECK","ts":"2026-08-27T02:11:00Z"}
 {"seat":"BUILD","event":"supersede","id":"ION_MACHINE_TIER_MISSING_1","by":"ION_TIERS_MEASURED_LIVE_1","ts":"2026-08-27T02:11:09Z"}
+{"seat":"BUILD","event":"claim","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","ts":"2026-08-27T02:17:43Z"}
+{"seat":"BUILD","event":"start","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","ts":"2026-08-27T02:17:43Z"}
+{"seat":"BUILD","event":"verify","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","result":"partial","config":"offline build, dotnet Release --gm, 234 tool literals","evidence":"src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapInfoTools.cs","sha":"59f18041","ts":"2026-08-27T02:17:43Z"}
+{"seat":"BUILD","event":"claim","id":"ORDERED_JOB_CANNOT_SOW_1","ts":"2026-08-27T02:17:43Z"}
+{"seat":"BUILD","event":"start","id":"ORDERED_JOB_CANNOT_SOW_1","ts":"2026-08-27T02:17:44Z"}
+{"seat":"BUILD","event":"verify","id":"ORDERED_JOB_CANNOT_SOW_1","result":"partial","config":"offline build, dotnet Release --gm, 234 tool literals","evidence":"src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapInfoTools.cs","sha":"59f18041","ts":"2026-08-27T02:17:44Z"}
+{"seat":"BUILD","event":"claim","id":"NO_TOOL_REPORTS_MAP_TILE_1","ts":"2026-08-27T02:17:44Z"}
+{"seat":"BUILD","event":"start","id":"NO_TOOL_REPORTS_MAP_TILE_1","ts":"2026-08-27T02:17:44Z"}
+{"seat":"BUILD","event":"verify","id":"NO_TOOL_REPORTS_MAP_TILE_1","result":"partial","config":"offline build, dotnet Release --gm, 234 tool literals","evidence":"src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapInfoTools.cs","sha":"59f18041","ts":"2026-08-27T02:17:44Z"}
+{"seat":"BUILD","event":"needs","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","to":"deploy","ts":"2026-08-27T02:17:49Z"}
+{"seat":"BUILD","event":"note","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","text":"Built and committed at 59f18041, NOT deployed: the game is up and the OS holds the companion DLL. Deploys with the next down window via bridgetools/build.py --gm --apply, alongside the 42 tools already waiting in NEXT_RELOAD.md §22.","ts":"2026-08-27T02:17:49Z"}
+{"seat":"BUILD","event":"needs","id":"ORDERED_JOB_CANNOT_SOW_1","to":"deploy","ts":"2026-08-27T02:17:50Z"}
+{"seat":"BUILD","event":"note","id":"ORDERED_JOB_CANNOT_SOW_1","text":"Built and committed at 59f18041, NOT deployed: the game is up and the OS holds the companion DLL. Deploys with the next down window via bridgetools/build.py --gm --apply, alongside the 42 tools already waiting in NEXT_RELOAD.md §22.","ts":"2026-08-27T02:17:50Z"}
+{"seat":"BUILD","event":"needs","id":"NO_TOOL_REPORTS_MAP_TILE_1","to":"deploy","ts":"2026-08-27T02:17:50Z"}
+{"seat":"BUILD","event":"note","id":"NO_TOOL_REPORTS_MAP_TILE_1","text":"Built and committed at 59f18041, NOT deployed: the game is up and the OS holds the companion DLL. Deploys with the next down window via bridgetools/build.py --gm --apply, alongside the 42 tools already waiting in NEXT_RELOAD.md §22.","ts":"2026-08-27T02:17:50Z"}
