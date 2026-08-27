@@ -48,7 +48,8 @@ def main():
 
     cut = AC.cherry_picker_cuts()
     rejected = AC.art_rejections()
-    if cut is None or rejected is None:
+    earth = AC.earth_fauna()
+    if cut is None or rejected is None or earth is None:
         sys.exit("REFUSING: an exclusion source could not be read. Filling slots without "
                  "it would cast back the very creatures this repairs.")
     # 🔴 MEASURED, not assumed. CorellianHound is the ONE animal that reads commonality 0
@@ -57,7 +58,7 @@ def main():
     # known-dead entry into the roster on purpose. ⚠️ Re-check it against a later capture:
     # if it ever reads non-zero anywhere, delete this line.
     MEASURED_DEAD = {'CorellianHound'}
-    ineligible = cut | rejected | MEASURED_DEAD
+    ineligible = cut | rejected | earth | MEASURED_DEAD
 
     A, W, fit, tiles = AC.load()
     DENS = AC.biome_density()

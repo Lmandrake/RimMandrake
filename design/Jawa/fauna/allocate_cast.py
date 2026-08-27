@@ -112,6 +112,30 @@ def art_rejections():
     return out
 
 
+def earth_fauna():
+    """defNames the owner has ruled off this planet, or None if the list is unreadable.
+
+    ⛔ Every entry is validated against the live PawnKindDef roster on load. A name that
+    does not resolve is a SILENT NO-OP - it excludes nothing and reads as if it did - so
+    it is named out loud rather than skipped.
+    """
+    f = f'{FA}/EARTH_FAUNA_EXCLUDED.txt'
+    if not os.path.isfile(f):
+        return None
+    names = [l.strip() for l in open(f, encoding='utf-8')
+             if l.strip() and not l.lstrip().startswith('#')]
+    from dumppath import defs_dir
+    pk = json.load(open(defs_dir() + '/PawnKindDef.json', encoding='utf-8'))
+    pk = pk if isinstance(pk, list) else pk.get('defs')
+    kinds = {x['defName'] for x in pk if isinstance(x, dict)}
+    bad = [n for n in names if n not in kinds]
+    if bad:
+        print(f"⚠️ EARTH_FAUNA_EXCLUDED.txt names {len(bad)} defName(s) that do not exist "
+              f"and therefore exclude NOTHING: {', '.join(sorted(bad))}")
+    print(f"Earth fauna: {len(names) - len(bad)} creature(s) ruled off the planet")
+    return set(names)
+
+
 def band(b):
     b = float(b or 0)
     return ('tiny' if b < 0.3 else 'small' if b < 0.8 else 'med' if b < 1.6
@@ -172,6 +196,7 @@ def main():
 
     CUT = cherry_picker_cuts()
     REJECTED = art_rejections()
+    EARTH = earth_fauna()
     if CUT is None:
         sys.exit("REFUSING: Cherry Picker's config could not be read, so every animal the "
                  "owner cut would be cast back in - registered, unspawnable and silent.\n"
@@ -179,7 +204,12 @@ def main():
     if REJECTED is None:
         sys.exit("REFUSING: creature_art_decisions.json could not be read, so the 10 "
                  "creatures the owner threw out by eye would go straight back into the cast.")
-    INELIGIBLE = CUT | REJECTED
+    if EARTH is None:
+        sys.exit("REFUSING: design/Jawa/fauna/EARTH_FAUNA_EXCLUDED.txt is missing, so every "
+                 "terrestrial Earth animal the owner has ruled off this planet would be cast "
+                 "back onto it. That rule lived nowhere but in his head until 2026-08-26; do "
+                 "not let it go back there.")
+    INELIGIBLE = CUT | REJECTED | EARTH
 
     A, W, fit, tiles = load()
     DENS = biome_density()

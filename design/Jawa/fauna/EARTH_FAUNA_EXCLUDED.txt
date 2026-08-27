@@ -1,0 +1,112 @@
+# EARTH_FAUNA_EXCLUDED.txt — creatures that must never be cast on Ash'karr
+#
+# 🔴 THE RULE, and until 2026-08-26 it was written down NOWHERE.
+# The owner has said many times that he does not want terrestrial Earth animals on this
+# planet. The only trace of it anywhere in this repo was three notes he typed inside his
+# own art review — "Terrestrial, not wanted" (Gorilla), "terrestrial, not wanted"
+# (Capybara), "Too terrestrial, shouldn't be here" (Enhydriodon). No doc carried it, no
+# script enforced it, and the fauna allocator had never heard of it. That is why raccoons,
+# ducks and turkeys are on his planet.
+#
+# ⇒ THIS FILE IS THE RULE AS DATA. One defName per line. The allocator and refill_cast.py
+# both read it and drop the creature from the candidate pool entirely.
+#
+# ⚠️ SEEDED BY BUILD, NOT BY THE OWNER. The list below is every real-world Earth species
+# the cast currently draws from Core/Odyssey, plus the three he named himself. It is a
+# starting point he should cut into, not a ruling. RimWorld-native science-fiction
+# creatures are DELIBERATELY ABSENT — thrumbo, muffalo, boomalope, warg, megaspider,
+# megascarab, megasloth, spelopede and the Anomaly entities belong on this world.
+#
+# ⛔ A creature the owner has cut in Cherry Picker does NOT need to be here; that is read
+# separately and directly from his config. This file is for creatures still live in the
+# game that simply must not be CAST.
+
+# --- livestock and farm animals ---
+Cow
+Sheep
+Goat
+Chicken
+Duck
+Goose
+Turkey
+Donkey
+Horse
+Pig
+Alpaca
+Yak
+Bison
+Dromedary
+Elephant
+Rhinoceros
+
+# --- pets and small mammals ---
+Cat
+Husky
+LabradorRetriever
+YorkshireTerrier
+GuineaPig
+Chinchilla
+Hare
+Snowhare
+Squirrel
+Rat
+Raccoon
+PrairieDog
+Alphabeaver
+Mink
+Otter
+Porcupine
+Badger
+Wolverine
+
+# --- deer, bovids and other grazers ---
+Deer
+Elk
+Caribou
+Gazelle
+Ibex
+Muskox
+Moose
+Capybara
+
+# --- predators ---
+Bear_Grizzly
+Bear_Polar
+Cougar
+Lynx
+Panther
+Tiger
+Fox_Red
+Fox_Arctic
+Fox_Fennec
+Wolf_Timber
+Wolf_Arctic
+Gorilla
+Monkey
+
+# --- birds, reptiles, amphibians ---
+Quail
+Sparrow
+Bluebird
+Crow
+Swan
+Heron
+Flamingo
+Macaw
+Cassowary
+Emu
+Ostrich
+Vulture
+Tortoise
+SeaTurtle
+Iguana
+MonitorLizard
+Alligator
+Cobra
+Bullfrog
+WildBoar
+Panda
+Walrus
+SeaLion
+Seal
+Penguin
