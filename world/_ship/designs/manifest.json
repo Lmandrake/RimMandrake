@@ -1,0 +1,174 @@
+{
+ "palette": {
+  "CONNECT": {
+   "def": "AG_RustedTile",
+   "label": "rusted biotech lab tile"
+  },
+  "PLATE": {
+   "def": "guy762_FloorTiles_DoomgiverFoorMetal_dark",
+   "label": "metal plating (iron)"
+  },
+  "GRATE_I": {
+   "def": "guy762_FloorTiles_XGrate_iron",
+   "label": "crossed grate (iron)"
+  },
+  "GRATE_Y": {
+   "def": "guy762_FloorTiles_XGrate_yellow",
+   "label": "crossed grate (worn yellow)"
+  },
+  "SCAFF": {
+   "def": "UCScaffoldTile",
+   "label": "scaffold tile"
+  },
+  "HULL": {
+   "def": "VQE_AncientHullTile",
+   "label": "ancient hull tile"
+  },
+  "DIVOT": {
+   "def": "guy762_FloorTiles_DivotedTile_rust",
+   "label": "divoted tile (rust)"
+  }
+ },
+ "designs": [
+  {
+   "slug": "service_rings",
+   "title": "Service Rings",
+   "blurb": "Rust is the connective tissue and it reaches everywhere. Every heavy machine stands on an iron-plate island edged in iron grate; the landing pads are plate with a worn-yellow lip. Reads as one system somebody maintained bay by bay for a very long time.",
+   "file": "service_rings.png",
+   "details": [
+    {
+     "name": "engine bay",
+     "file": "service_rings_detail_engine.png"
+    },
+    {
+     "name": "north machine deck",
+     "file": "service_rings_detail_north.png"
+    },
+    {
+     "name": "leg + landing pad",
+     "file": "service_rings_detail_leg.png"
+    }
+   ],
+   "cells": {
+    "AG_RustedTile": 2325,
+    "guy762_FloorTiles_DoomgiverFoorMetal_dark": 1301,
+    "guy762_FloorTiles_XGrate_iron": 169,
+    "guy762_FloorTiles_XGrate_yellow": 122,
+    "UCScaffoldTile": 117
+   },
+   "labels": {
+    "AG_RustedTile": "rusted biotech lab tile",
+    "guy762_FloorTiles_DoomgiverFoorMetal_dark": "metal plating (iron)",
+    "guy762_FloorTiles_XGrate_iron": "crossed grate (iron)",
+    "guy762_FloorTiles_XGrate_yellow": "crossed grate (worn yellow)",
+    "UCScaffoldTile": "scaffold tile"
+   }
+  },
+  {
+   "slug": "hazard_lanes",
+   "title": "Hazard Lanes",
+   "blurb": "The same bays, plus worn-yellow grate lanes running the full spine and both legs, and yellow at every leg mouth and pad lip. Reads as a working plant whose crew had marked routes and somewhere to be.",
+   "file": "hazard_lanes.png",
+   "details": [
+    {
+     "name": "engine bay",
+     "file": "hazard_lanes_detail_engine.png"
+    },
+    {
+     "name": "north machine deck",
+     "file": "hazard_lanes_detail_north.png"
+    },
+    {
+     "name": "leg + landing pad",
+     "file": "hazard_lanes_detail_leg.png"
+    }
+   ],
+   "cells": {
+    "AG_RustedTile": 2045,
+    "guy762_FloorTiles_DoomgiverFoorMetal_dark": 1250,
+    "guy762_FloorTiles_XGrate_yellow": 453,
+    "guy762_FloorTiles_XGrate_iron": 169,
+    "UCScaffoldTile": 117
+   },
+   "labels": {
+    "AG_RustedTile": "rusted biotech lab tile",
+    "guy762_FloorTiles_DoomgiverFoorMetal_dark": "metal plating (iron)",
+    "guy762_FloorTiles_XGrate_yellow": "crossed grate (worn yellow)",
+    "guy762_FloorTiles_XGrate_iron": "crossed grate (iron)",
+    "UCScaffoldTile": "scaffold tile"
+   }
+  },
+  {
+   "slug": "cargo_decks",
+   "title": "Cargo Decks",
+   "blurb": "Big blocks instead of islands: the whole lower ship - legs and pads - is dock plating, and the spine is divoted rust, the one thing used nowhere else. Reads as a hauler whose spine was the important part.",
+   "file": "cargo_decks.png",
+   "details": [
+    {
+     "name": "engine bay",
+     "file": "cargo_decks_detail_engine.png"
+    },
+    {
+     "name": "north machine deck",
+     "file": "cargo_decks_detail_north.png"
+    },
+    {
+     "name": "leg + landing pad",
+     "file": "cargo_decks_detail_leg.png"
+    }
+   ],
+   "cells": {
+    "guy762_FloorTiles_DoomgiverFoorMetal_dark": 1948,
+    "AG_RustedTile": 1386,
+    "guy762_FloorTiles_XGrate_yellow": 209,
+    "guy762_FloorTiles_DivotedTile_rust": 205,
+    "guy762_FloorTiles_XGrate_iron": 169,
+    "UCScaffoldTile": 117
+   },
+   "labels": {
+    "AG_RustedTile": "rusted biotech lab tile",
+    "guy762_FloorTiles_DoomgiverFoorMetal_dark": "metal plating (iron)",
+    "guy762_FloorTiles_DivotedTile_rust": "divoted tile (rust)",
+    "guy762_FloorTiles_XGrate_iron": "crossed grate (iron)",
+    "guy762_FloorTiles_XGrate_yellow": "crossed grate (worn yellow)",
+    "UCScaffoldTile": "scaffold tile"
+   }
+  },
+  {
+   "slug": "stratified_hull",
+   "title": "Stratified Hull",
+   "blurb": "Rust worn through to bare ancient hull in patches across the ring and spine; the legs are hull and never had rust. Reads as older than its own fittings - the rust is a later layer over something that outlasted it.",
+   "file": "stratified_hull.png",
+   "details": [
+    {
+     "name": "engine bay",
+     "file": "stratified_hull_detail_engine.png"
+    },
+    {
+     "name": "north machine deck",
+     "file": "stratified_hull_detail_north.png"
+    },
+    {
+     "name": "leg + landing pad",
+     "file": "stratified_hull_detail_leg.png"
+    }
+   ],
+   "cells": {
+    "guy762_FloorTiles_DoomgiverFoorMetal_dark": 1301,
+    "AG_RustedTile": 1207,
+    "VQE_AncientHullTile": 1031,
+    "guy762_FloorTiles_XGrate_yellow": 209,
+    "guy762_FloorTiles_XGrate_iron": 169,
+    "UCScaffoldTile": 117
+   },
+   "labels": {
+    "AG_RustedTile": "rusted biotech lab tile",
+    "guy762_FloorTiles_DoomgiverFoorMetal_dark": "metal plating (iron)",
+    "guy762_FloorTiles_XGrate_iron": "crossed grate (iron)",
+    "VQE_AncientHullTile": "ancient hull tile",
+    "guy762_FloorTiles_XGrate_yellow": "crossed grate (worn yellow)",
+    "UCScaffoldTile": "scaffold tile"
+   }
+  }
+ ]
+}

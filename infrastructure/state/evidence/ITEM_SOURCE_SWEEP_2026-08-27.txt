@@ -1,0 +1,52 @@
+Source sweep of 10 BUILD items, 2026-08-27. Subagent (sonnet) read each item then the
+source it concerns; three DONE verdicts spot-checked by BUILD before this was recorded.
+
+DONE-IN-SOURCE (6) — the work exists; only a live look remains
+  BRIDGE_READ_VEHICLE_COMPONENTS_1  JawaBenchVehicleTools.cs:112  jawa/vehicle_components
+  STAT_ON_INSTANCE_TOOL_1           JawaBenchStatTools.cs:365     jawa/thing_stats
+  EMPIRE_GRUNT_SPAWNS_BARE_1        JawaFactionRoster.xml:50-56   weaponMoney 950~1150,
+                                    ORImperialLight (sidearm-only) removed
+  JAWA_SCENARIO_PARTS_1             Scenario_Utinni.xml + Jawa_MiningDisabled.xml +
+                                    DrillTurret_ShootingJob.xml — all three present
+  BLACKSTAR_NAME_MUST_NOT_LEAK_1    BlackstarCompany.xml — see spot-check below
+  EMPIRE_BLACKSTAR_ALWAYS_WILLING_1 JawaFactionRoster.xml — see spot-check below
+
+PARTIAL (2)
+  THOROUGH_RETAG_WEAPONS_ARMOUR_1  weapon half CLOSED (WeaponTags_Renormalise.xml, 164
+                                   ops). ARMOUR half open: 8 of 446 kinds have no
+                                   surviving carrier for any apparelTag. No apparel
+                                   equivalent of the weapon patch exists.
+  ROLE_KINDS_ARMED_5_OF_5_1        literal criterion met (no kind reads 0/5), but 16 of
+                                   49 kinds still roll bare SOMETIMES — 21/285 pawns,
+                                   7.4%. Two causes, see below.
+
+NOT-DONE (2)   GRAVSHIP_LAUNCH_TRAVEL_1 · VOID_AWAKENING_SCRIPTING_1
+               Searched the companion for GenerateGravship / TravelTo / ArriveNewMap /
+               TryGetPathFuelCost / VoidAwakening — zero hits. No tool exists.
+
+--- BUILD's spot-checks, because a sweep verdict is evidence, not a finding ----------
+1. BLACKSTAR_NAME_MUST_NOT_LEAK_1. `grep -c fixedName BlackstarCompany.xml` -> 4, which
+   CONTRADICTED the agent's "no longer adds fixedName at all". Opened them: lines 172,
+   234, 239, 244 are ALL INSIDE XML COMMENTS explaining why it was removed. No operation
+   writes fixedName. ✅ The verdict holds; the count did not disprove it.
+   The mechanism is now 26 factionNameMaker writes — one per pirate sibling — which,
+   unlike fixedName, does not inherit through PirateBandBase.
+2. EMPIRE_BLACKSTAR_ALWAYS_WILLING_1. `requiredWorkTags` appears exactly 8 times, on
+   exactly Jawa_Empire_{Grunt,Heavy,Specialist,Leader} and
+   Jawa_Blackstar_{Grunt,Heavy,Specialist,Leader}. ✅ Exact match to the ask.
+3. JAWA_SCENARIO_PARTS_1. All three named files exist on disk. ✅
+
+--- 🔴 the finding that matters most --------------------------------------------------
+SIX of ten items read as OPEN and are DONE IN SOURCE. Combined with build_batch earlier
+today, that is SEVEN in one session. The common cause is not carelessness: every one of
+them closes on a LIVE look, the deployed DLL is ~15 hours and 670 KB of IL behind source,
+and loads are rare — so the live measurement keeps re-confirming the OLD behaviour and the
+item keeps reading open. ⇒ Where an item's criteria are source-checkable, checking source
+closes it; routing it through a load is what makes it look open for days.
+
+--- ⛔ one gap that must NOT be "fixed" -----------------------------------------------
+ROLE_KINDS_ARMED_5_OF_5_1's first cause is the violence-disabling backstory route, closed
+only for the 8 Empire/Blackstar kinds. Extending REQUIRE_VIOLENT to the other kinds would
+REVERSE A RULING: DECIDE, 2026-08-22, held that a pacifist pawn is acceptable from ten of
+the twelve factions and called narrowing it a regression. The other cause — a weaponMoney
+roll shortfall, 8 of 21 bare pawns — is a generator fix and is fair game.

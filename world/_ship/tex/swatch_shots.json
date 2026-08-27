@@ -1,0 +1,42 @@
+{
+ "CONNECT": {
+  "def": "AG_RustedTile",
+  "cx": 14,
+  "cz": 204
+ },
+ "PLATE": {
+  "def": "guy762_FloorTiles_DoomgiverFoorMetal_dark",
+  "cx": 22,
+  "cz": 204
+ },
+ "GRATE_I": {
+  "def": "guy762_FloorTiles_XGrate_iron",
+  "cx": 30,
+  "cz": 204
+ },
+ "GRATE_Y": {
+  "def": "guy762_FloorTiles_XGrate_yellow",
+  "cx": 38,
+  "cz": 204
+ },
+ "SCAFF": {
+  "def": "UCScaffoldTile",
+  "cx": 46,
+  "cz": 204
+ },
+ "HULL": {
+  "def": "VQE_AncientHullTile",
+  "cx": 54,
+  "cz": 204
+ },
+ "DIVOT": {
+  "def": "guy762_FloorTiles_DivotedTile_rust",
+  "cx": 62,
+  "cz": 204
+ },
+ "MECH": {
+  "def": "GR_RustedMechTile",
+  "cx": 70,
+  "cz": 204
+ }
+}

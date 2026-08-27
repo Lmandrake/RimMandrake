@@ -1,0 +1,26 @@
+{
+ "SCAFF_none": {
+  "def": "UCScaffoldTile",
+  "color": null
+ },
+ "SCAFF_grayLight": {
+  "def": "UCScaffoldTile",
+  "color": "Structure_GrayLight"
+ },
+ "SCAFF_blueIce": {
+  "def": "UCScaffoldTile",
+  "color": "Structure_BlueIce"
+ },
+ "SCAFF_marble": {
+  "def": "UCScaffoldTile",
+  "color": "Structure_Marble"
+ },
+ "SCAFF_granite": {
+  "def": "UCScaffoldTile",
+  "color": "Structure_Granite"
+ },
+ "HULL_ref": {
+  "def": "VQE_AncientHullTile",
+  "color": null
+ }
+}
