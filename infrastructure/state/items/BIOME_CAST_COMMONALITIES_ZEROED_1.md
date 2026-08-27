@@ -1,3 +1,86 @@
+# 🔴 THE DIAGNOSIS BELOW IS WRONG. Measured 2026-08-26 19:5x by BUILD, from the capture and the 1.6 source.
+
+**The falsifiable prediction this item wrote down has been settled early, and it fails.**
+That is the prediction doing its job — read it, then read this.
+
+## What the diagnosis claimed, and the one check that kills it
+
+It claimed the 181 zeros are `BiomeDef.CommonalityOfAnimal`'s half-built cache returning
+`0f`, published by `DefDumper.cs:526`.
+
+⛔ **`DefDumper.cs:526` does not write the field the 181 were measured in.** That line
+writes the `biomeAnimals` block of `animals.json`. The 181 zeros are in
+`defs/BiomeDef.json`, under `fields.wildAnimals[].commonality` — the **record's own
+field**, produced by plain reflection over `List<BiomeAnimalRecord>`.
+
+⛔ **And `CommonalityOfAnimal` never writes back into a record.** Read from
+`RimWorld/BiomeDef.cs`, lines 340-360: it only ever *reads* `wildAnimals[i].commonality`
+into its dictionary. No path in it can zero the record.
+
+⇒ The broken cache cannot be the cause, so *"remove the 27 duplicate pairs and the next
+capture must show 744 of 744 non-zero"* would have failed, and the failure would have been
+blamed on the de-dup patch.
+
+## What is actually true, measured
+
+`AridShrubland`, our patch writes 29 entries, every one non-zero. The capture holds
+exactly those 29 — none added, none dropped — and **16 read `commonality: 0`** in the
+record. Same XML shape, same comment placement, same indentation for the zeros and the
+non-zeros; nothing in our file distinguishes them.
+
+🔑 **The zeroing is a property of the ANIMAL, not of the biome or of our patch.** Across
+all 67 biomes in the capture that carry a `wildAnimals` list:
+
+```
+distinct animals                                   736
+zeroed in EVERY biome they appear in               168
+MIXED - zero in one biome, non-zero in another     154
+
+Tiger         zero in  7 biomes, non-zero in 0
+Gazelle       zero in 12,                     0
+Fox_Fennec    zero in 12,                     0
+PrairieDog    zero in  6,                     0
+MonitorLizard zero in  4,                     0
+Megavole / Cougar / Urusai / Torton      our values intact
+```
+
+⚠️ The mixed count also **contradicts this item's own claim** that *"not one animal is
+zeroed in one biome and fine in another"* — that was true only within the 26 biomes we
+patch, and it does not generalise.
+
+### Ruled out, each by a check rather than by argument
+
+- **Not the cache** — the record is not written by `CommonalityOfAnimal` (source).
+- **Not our XML** — the zeros and the non-zeros are byte-identical in shape; the deployed
+  game copy was read, not the repo copy.
+- **Not "the value moved to the animal side"** — `race.wildBiomes[AridShrubland]` is
+  absent for all 16 zeros *and* all 13 non-zeros in the capture.
+- **Not a parse failure on our comments** — the comment sits after the closing tag, so
+  `xmlRoot.FirstChild` is the text node; and it is identical on the entries that read fine.
+
+## What is NOT yet known, and must not be guessed
+
+**Which mod zeroes them.** The shape — vanilla Earth fauna (Tiger, Gazelle, fennec fox,
+prairie dog, monitor lizard) zeroed in *every* biome — reads like a deliberate suppression
+of Earth animals on a Star Wars planet, which would make a large share of the 181
+**intended** rather than a defect. ⛔ **That is a hypothesis and nothing more.** A search of
+the 1,254-mod workshop tree is running; until it names a file and a line, nobody should act
+on it.
+
+## What changes for the reader right now
+
+- ⛔ **Do not treat "744 of 744 non-zero in the next capture" as this item's pass condition.**
+- ✅ **The next capture answers it directly anyway**, because `DUMPER_SWALLOWS_CACHE_THROW_1`
+  is fixed (`85e3ced2`): every `biomeAnimals` row now carries **`commonalityDeclared`**
+  (the record) beside **`commonalityEngine`** (the computed answer), and
+  `commonalityEngineError` when the engine throws. A zero that is the record's own value
+  and a zero that is a dead cache stop looking alike.
+- ✅ `BIOME_DUPLICATES_STILL_LIVE_1` is unaffected. The duplicate crash is real, its fix is
+  deployed, and its own log-based verify stands. These were never one item; treating them
+  as one is what produced the wrong diagnosis.
+
+---
+
 ## ✅ DIAGNOSED, 2026-08-26, from the source — SAME BUG as `BIOME_DUPLICATES_STILL_LIVE_1`
 
 Not a second defect. **These 181 zeros are the blast radius of the duplicate-animal crash**, and
