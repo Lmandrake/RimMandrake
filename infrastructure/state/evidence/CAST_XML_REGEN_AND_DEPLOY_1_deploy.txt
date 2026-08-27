@@ -1,0 +1,12 @@
+deploy_custom_mods.py --mod Jawa_Patches --apply    2026-08-27
+    ~  Patches/BiomeCast_Ashkarr.xml
+    -> VERIFIED in sync
+Deployed 1 file(s).
+
+md5sum, repo vs game copy:
+fdb78659d233bada1903e845eb7a5e1c  src/Jawa/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml
+fdb78659d233bada1903e845eb7a5e1c  /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml
+
+Contents (from the committed generator run at c325daad):
+    28 operations, 801 animal entries, 0 removals, no <li>
+    28 of 28 Ash'karr biomes covered; 0 entries cut by Cherry Picker
