@@ -335,6 +335,21 @@ know** before you trust the case you don't.
 | 7 | `first_light` "no weaponTags" | counts a disarmed combat role as a civilian | ⚠️ **known only** |
 | 8 | `Utils/animal_inventory.py` biome/animal conflicts | **3**, while the game was dying on a 4th it cannot see — the true count is **27** | ✅ **superseded** by `Utils/biome_animal_conflicts.py`, which reads the CAPTURE |
 | 9 | `Utils/refresh.py` artefact staleness | **"never stamped → REBUILD"**, forever, on artefacts it had just correctly generated | ✅ **fixed** `797b034c` — writes the stamp atomically and READS IT BACK |
+| 10 | `Utils/weapon_affordability.py` "will this kind arm" | **always arms 48 · unmeasured 0**, computed from `gen_pawnkind_roster.py`'s `R` table while the game ran `KIT` — 9 budgets and 1 tag list stale since 2026-08-23, and 16 of 49 kinds were rolling bare live under that clean bill | ✅ **fixed** `da9ca271` — reads the EMITTED XML, reports `R` drift without computing from it, and prints the headroom margin |
+
+⭐ **ROW 10 IS A NEW FAILURE CLASS AND WORTH NAMING — BUILD, 2026-08-27.** Rows 1-9 are instruments
+that measured the RIGHT artifact and got the wrong number. Row 10 measured the WRONG ARTIFACT
+correctly. `gen_pawnkind_roster.py` holds two tables - `KIT` is emitted verbatim, `R` supplies
+defName/label and, it turns out, `combatPower` - and the audit read `R`. Every number it printed
+was arithmetically right about a file the game does not load.
+🔑 **The tell was available and nobody looked for it:** the tool's own output named budgets
+(`Empire_Grunt 650~780`) that a two-line diff against the deployed XML showed as `950~1150`.
+⚠️ **So the check is not "is the number right" but "is this the file that deploys".** An
+instrument that reads a generator instead of its output cannot be validated against a known
+answer, because it is answering a different question than the one being asked.
+⚠️ **And the drift was not inert:** `combatPower` is DERIVED from `weaponMoney` by the owner's
+ruling, so seven kinds shipped a raid cost computed from the stale budget - Helix Specialist 164
+where the rule gives 224. A shadow field that feeds one live output is not a shadow.
 
 🔴 **THE FOURTH FALSE ZERO, and it is the same lesson on the CENSUS side — BUILD, 2026-08-26.**
 Row 6c is about an xpath that reads 0 against a def a patch creates. Row 8 is a whole census with
