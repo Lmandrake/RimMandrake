@@ -9,6 +9,40 @@
 > live. §20 keeps its block, but `ORDERS_DESIGNATORS_ENUMERATE_ZERO_1` inside it is closed.
 > ⚠️ `W3` `W4` `W5` appear nowhere in the ledger at all — pre-ledger legacy, unverifiable from here.
 
+## 🔄 HANDOFF — CHECK, 2026-08-26 16:3x, agent rebooting. ⏳ TRANSIENT: delete this block once read.
+
+**Game is UP and MEASURED** (`./game` reads RUNNING, ledger UP). **Bridge RELEASED by CHECK** — take
+it before driving. Companion is live at **166 tools**, `build 70b3b117`, `modSet 582/317a3860`.
+
+⚠️ **The loaded map is a THROWAWAY quicktest and it has been used hard.** A `Crashlanded` colony on
+world tile **18393**, and by me: ~60 spawned pawns, a `rimplace` dwelling at `100,200,18,10`, two
+growing zones, three allowed areas, and **most of its wildlife killed** by a −66 °C tile edit that
+has since been restored (tile is back at 14.7229729 °C, committed). ⛔ Nothing on it is kept and no
+population count on it means anything. Discard it freely.
+
+**The first five minutes below are SPENT** — steps 1–6 all ran. Their results are in
+`infrastructure/state/evidence/`: `live_test_2026-08-26_postload_CHECK.md`,
+`template_rooms_…`, `jawa_farming_…`, `temperature_tolerance_…`, `tool_shakedown_…`,
+`religion_test_…`. §24's hood reading passed (131/136 wearing both pieces).
+
+🔴 **Still owed, in the order I would take them:**
+1. **The ideology import trial — the owner's hands.** `IDEOLOGY_REBUILD_TRIAL.md`. ⚠️ Phase A
+   (`vivify_world.py --live`) must happen while **Ash'karr** is loaded, BEFORE anyone touches New
+   Colony. The religion half is already proven: all twelve ideoligions generate and the leader titles
+   come out right on a non-classic world.
+2. **`defs.sqlite` is still built from the 2026-08-23 / 581-mod capture** while a fresh
+   `2026-08-26T14-20-04Z` / 582 capture sits unused in `DefDump/captures/`. Rebuild it —
+   `measure build` — then **delete `dump_request.txt`** or every load pays ~27 s and 1.2 GB again.
+3. `refresh.py --offline` printed the same staleness after running; its artefacts are still stale.
+4. `G3` needs a HorrorWastes map; `T3`'s hypothermia hediff was never seen; `J4`'s behavioural half
+   needs a route that can set `plantDefToSow` (`ORDERED_JOB_CANNOT_SOW_1`).
+
+🔑 **Read `skills/rimbridge/references/traps.md` and `silent-failures.md` before driving** — five new
+entries went in today, including one that affects every tool: **the bridge silently drops any
+parameter a tool's schema does not declare.**
+
+---
+
 ## ▶️ THE FIRST FIVE MINUTES — 2026-08-26 load, in this order
 
 🔴 **Signatures were written BEFORE launch: `EXPECTED_FAILURES_next_load.md` §25.** Read them, do
