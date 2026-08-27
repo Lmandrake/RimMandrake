@@ -603,3 +603,73 @@ that did something else — `new_allowed_area` wants `label` not `name`, `stop_j
 
 🔑 **Read the schema, not the sibling tool.** `b.list_tools()` carries the accepted keys; diff your
 arguments against them before a batch. This is a property of the BRIDGE, not of any one tool.
+
+---
+
+## 🔴 A raid census taken immediately after `jawa/fire_raid` reads ZERO — 2026-08-27, BUILD
+
+**Symptom.** `jawa/fire_raid` returns `executed: true, "Raid fired."`; `jawa/list_pawns` run
+straight afterwards shows **no new pawns**. Reads exactly like a raid that never fired.
+
+**Cause.** The raid is in flight. Measured: a raid fired at tick T had **0** new pawns at
++60 ticks and **19** at +300, on a paused game (the pawns appear as `step_game_ticks` runs).
+
+**Fix.** Step ticks in stages and census after each — `+60, +300, +1200` — before concluding
+anything. ⛔ A zero taken immediately is not a result.
+
+**Generalises to:** any incident with an arrival mode. `success: true` tells you the worker
+ran; arrival is a later tick, and on a paused game it is a tick you must supply yourself.
+
+---
+
+## 🔴 `jawa/set_faction_relation` CANNOT make a neutral faction hostile — 2026-08-27, BUILD
+
+**Symptom.** `jawa/set_faction_relation {faction, kind:"Hostile", goodwill:-100}` returns
+**`success: false`** with:
+
+    kind Neutral -> Neutral, goodwill 0 -> -100.
+    ⚠️ READ-BACK DOES NOT MATCH THE REQUEST — the engine overrode it.
+
+It writes the goodwill and never flips the relation kind, leaving `goodwill -100` with
+`hostile: false` — a faction that will never raid.
+
+⭐ **The refusal is the tool working.** It verified its own write and refused to report a
+success it had not achieved. ⛔ **But its own description says it "Exists to unblock aimed
+raids", which is exactly what it does not do** — do not trust that sentence.
+
+**Fix.** Use **`jawa/faction_relations_set`** instead:
+
+```python
+rb.call("jawa/faction_relations_set", {"faction": F, "other": "Player", "kind": "Hostile",
+                                       "goodwill": -100, "clampGoodwillToKind": True,
+                                       "both": True, "sendLetter": False})
+# -> kind Neutral->Hostile (reverse Neutral->Hostile); list_factions then reads hostile: true
+```
+
+**Why it matters.** An incident worker silently substitutes a random faction for one that is
+not hostile — so this failure does not look like a failure, it looks like a raid from the
+wrong faction. Confirmed twice the same session: an aimed `Jawa_HuttCartel` raid delivered
+19 `AG_XenohumanPirates`, then 12 `GiantAnt`, while `resolved.faction` echoed
+`Jawa_HuttCartel` both times.
+
+**Generalises to:** two tools with overlapping names where the narrower one carries the
+broader one's promise in its description. Read what a tool DID from its read-back, never
+from what it says it is for.
+
+---
+
+## 🔴 `jawa/pawn_get` nests everything in `pawns[0]` — 2026-08-27, BUILD
+
+**Symptom.** `resp.get("equipment")` returns nothing for every pawn, printing as
+*"8 of 8 BARE"*. This is the documented false reading that once produced the conclusion
+"all Jawa spawn bare-handed", and it was hit again.
+
+**Cause.** The payload is `{"success": true, "count": 1, "pawns": [ {...everything...} ]}`.
+`equipment` and `apparel` live inside `pawns[0]`, not at the top level.
+
+**Fix.** `d = (resp.get("pawns") or [{}])[0]; eq = d.get("equipment") or []`.
+⚠️ And entries are keyed **`def`**, not `defName` — `{"def": "guy762_ionpistol", "stuff": null,
+"isPrimary": true}`. Reading `.defName` gives `None` for a fully armed pawn.
+
+**Generalises to:** an empty collection from a bridge read is a shape hypothesis, not a
+measurement. Dump the RAW response once per tool before believing any absence.

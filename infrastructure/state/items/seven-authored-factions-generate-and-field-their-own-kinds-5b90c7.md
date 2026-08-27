@@ -32,3 +32,37 @@ and baseliners generate in five factions. None of them stops this check.
 **Imported from `queue/CHECK.md`. Its `state:` read, verbatim:**
 
 ready
+
+---
+
+## ⏳ LIVE HALF RUN 2026-08-27, BUILD — two criteria of three MET, the third BLOCKED
+
+582 mods, paused scratch map, bridge intact (291 tools / 166 `jawa/`).
+Evidence: `infrastructure/state/evidence/bridge_session_2026-08-27_BUILD.md`.
+
+✅ **All seven appear and generate settlements.** `jawa/list_factions`:
+Hutt 4 · Junkers 4 · FreeDroid 2 · Deepwater 2 · Helix 2 · Wildsteam 1 · Geonosian 1.
+
+✅ **Not one vanilla kind in any combat group.** Every `Combat` pawnGroupMaker across all
+eight authored factions fields only our own kinds, and every kind named resolves — read from
+`FactionDef.pawnGroupMakers` in the capture, which is post-inheritance and post-PatchOperation,
+so it is the resolved truth rather than our XML. **The failure this item told me to watch for
+is absent.** The only foreign entries are `carriers` (pack animals) and the Free Droid
+Enclaves' protocol-droid trader and KX guard.
+
+✅ **The kinds spawn correctly.** All four Hutt kinds, in-faction: **7 of 8 armed and clothed**,
+species mix Klatoonian · Nikto · Aqualish · Gamorrean · Falleen · Hutt. The one bare pawn is a
+vanilla `Colonist` the tool substituted — see `SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1`.
+
+🔴 **BLOCKED: "its raids arrive as ITS OWN pawn kinds" is UNPROVEN and may be a real defect.**
+An aimed raid on a genuinely hostile `Jawa_HuttCartel` — `canStageAttacks: true`, strategy and
+arrival pinned, 2000 points, ~4,900 ticks stepped — delivered **zero pawns**, twice, while the
+same map raided fine for other factions. Filed as `AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1`.
+⇒ **Do not read this item as passed.** Group makers being correct is necessary and not
+sufficient; nothing has yet observed one of these factions actually raid.
+
+⚠️ **Two traps caught here that void earlier evidence of this kind.** `jawa/fire_raid` echoes
+the faction you requested while substituting another — an aimed Hutt raid delivered 19
+`AG_XenohumanPirates` — so any past reading of `resolved.faction` proves nothing. And a census
+taken immediately after firing reads 0 for a raid merely in flight. Both are now in
+`skills/rimbridge/references/traps.md`.
