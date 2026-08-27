@@ -661,12 +661,18 @@ namespace JawaBench.BridgeTools
                 "non-interruptible, its driver refuses, or the pawn is on fire - and that " +
                 "refusal is reported, not swallowed. A TRUE return only means the job was " +
                 "ENQUEUED; this waits waitTicks game ticks and reads curJob back " +
-                "afterward, same discipline as jawa/order_pawn.",
+                "afterward, same discipline as jawa/order_pawn. " +
+                "🔑 Sow / Replant / PlantSeed REQUIRE plantDef - their driver dereferences " +
+                "Job.plantDefToSow in its first toil, and this tool refuses rather than " +
+                "letting the engine fail there silently.",
             ResultDescription =
                 "accepted (TryTakeOrderedJob's own bool) and interruptibleBefore, plus " +
                 "beforeJobDef/afterJobDef read back after the wait and " +
                 "nowRunningRequested (afterJobDef == the JobDef you asked for). success " +
-                "requires both accepted and nowRunningRequested.")]
+                "requires both accepted and nowRunningRequested. Also plantDefToSow (what " +
+                "was actually set on the Job) and pausedDuringWait - 🔑 when that is true " +
+                "NO ticks passed, ticksElapsed is 0 by definition, and the read-back proves " +
+                "NOTHING about whether the job would run.")]
         public static async Task<object> OrderedJob(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -689,6 +695,11 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Job.count, for jobs that carry a stack count.")]
             int? count = null,
             [ToolParameter(Description =
+                "ThingDef of the plant, for Sow / Replant / PlantSeed. Sets Job.plantDefToSow. "
+                + "REQUIRED for those three - their driver dereferences the field in its FIRST toil, "
+                + "so without it the job is accepted and dies before doing anything.")]
+            string plantDef = null,
+            [ToolParameter(Description =
                 "JobTag: Misc, Idle, Homework, MechDefend, ... Defaults to Misc.")]
             string jobTag = "Misc",
             [ToolParameter(Description = "requestQueueing - queue after the current job instead of interrupting.",
@@ -710,6 +721,7 @@ namespace JawaBench.BridgeTools
             var interruptibleBefore = false;
             string beforeJobDef = null;
             string jdefName = null;
+            string plantDefName = null;
 
             var setup = await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -736,10 +748,39 @@ namespace JawaBench.BridgeTools
                 var b = ResolveTarget(map, targetBId, targetBX, targetBZ, out errB);
                 if (b == null && errB != null) return Fail(errB);
 
+                // ORDERED_JOB_CANNOT_SOW_1, measured live 2026-08-26 and read from 1.6
+                // source, not inferred. JobDriver_PlantSow's FIRST toil is
+                //     .FailOn(() => PlantUtility.AdjacentSowBlocker(job.plantDefToSow, ...) != null)
+                //     .FailOn(() => !job.plantDefToSow.CanNowPlantAt(...))
+                // and nothing in this tool's parameter set ever set the field. So every
+                // Sow it issued came back accepted:true / nowRunningRequested:false and
+                // died in its first toil. Replant (WorkGiver_Replant.cs:69) and PlantSeed
+                // (WorkGiver_PlantSeed.cs:59) read the same field.
+                //
+                // Refuse AT THE TOOL and name the field, rather than letting the engine
+                // fail silently in a toil - that is the whole failure class this bridge
+                // exists to expose.
+                var needsPlant = jd.defName == "Sow" || jd.defName == "Replant" || jd.defName == "PlantSeed";
+                ThingDef plantThing = null;
+                if (!string.IsNullOrWhiteSpace(plantDef))
+                {
+                    plantThing = DefDatabase<ThingDef>.GetNamedSilentFail(plantDef.Trim());
+                    if (plantThing == null)
+                        return Fail($"No ThingDef '{plantDef}' for plantDef.", DefSuggestions<ThingDef>(plantDef));
+                    if (plantThing.plant == null)
+                        return Fail($"ThingDef '{plantThing.defName}' is not a plant - it has no plant properties, "
+                                  + "so Job.plantDefToSow would be meaningless.");
+                }
+                if (needsPlant && plantThing == null)
+                    return Fail($"JobDef '{jd.defName}' requires plantDef: its driver reads "
+                              + "Job.plantDefToSow in its FIRST toil and would fail there silently. "
+                              + "Pass a plant ThingDef, e.g. Plant_Potato.");
+
                 var job = a.HasValue
                     ? (b.HasValue ? JobMaker.MakeJob(jd, a.Value, b.Value) : JobMaker.MakeJob(jd, a.Value))
                     : JobMaker.MakeJob(jd);
                 if (count.HasValue) job.count = count.Value;
+                if (plantThing != null) { job.plantDefToSow = plantThing; plantDefName = plantThing.defName; }
 
                 interruptibleBefore = pawn.jobs.IsCurrentJobPlayerInterruptible();
                 beforeJobDef = pawn.jobs.curJob?.def?.defName;
@@ -751,6 +792,14 @@ namespace JawaBench.BridgeTools
                 return null;
             }, cancellationToken).ConfigureAwait(false);
             if (setup != null) return setup;
+
+            // ORDERED_JOB_CANNOT_SOW_1, related half: waitTicks does NOTHING while the game
+            // is PAUSED - ticksElapsed comes back 0 however long you ask for, because no
+            // ticks pass. Reported below as pausedDuringWait rather than left to look like
+            // a job that failed to start.
+            var pausedDuringWait = await ctx.MainThread.InvokeAsync(
+                () => Find.TickManager != null && Find.TickManager.Paused, cancellationToken)
+                .ConfigureAwait(false);
 
             var ticksNow = startTicks;
             var elapsedMs = 0;
@@ -780,7 +829,12 @@ namespace JawaBench.BridgeTools
                 else if (!nowRunningRequested)
                     note = $"Job was accepted (enqueued) but curJob after {waitTicks} tick(s) is " +
                            $"'{afterJobDef ?? "(none)"}', not '{jdefName}' - it may have finished, " +
-                           "failed immediately, or be queued rather than current.";
+                           "failed immediately, or be queued rather than current." +
+                           (pausedDuringWait
+                               ? " ⚠️ THE GAME WAS PAUSED for this wait, so NO ticks passed and this "
+                                 + "reading proves nothing about whether the job would run. Unpause, or "
+                                 + "step ticks, and ask again."
+                               : "");
 
                 return new
                 {
@@ -792,6 +846,8 @@ namespace JawaBench.BridgeTools
                     afterJobDef,
                     nowRunningRequested,
                     ticksElapsed = ticksNow - startTicks,
+                    pausedDuringWait,
+                    plantDefToSow = plantDefName,
                     queueLength = pawn.jobs?.jobQueue?.Count ?? 0,
                     note,
                 };

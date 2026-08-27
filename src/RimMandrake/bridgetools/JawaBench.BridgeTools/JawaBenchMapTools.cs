@@ -666,7 +666,7 @@ namespace JawaBench.BridgeTools
             CancellationToken cancellationToken,
             [ToolParameter(Description = "'ThingDef:x,z[,rot]' ops separated by ';'.")] string ops = null,
             [ToolParameter(Description = "Stuff ThingDef, e.g. WoodLog, Steel, Granite.")] string stuff = null,
-            [ToolParameter(Description = "Faction defName to own the buildings. Empty = no faction.")] string faction = null,
+            [ToolParameter(Description = "Who owns the buildings. A FactionDef defName, OR the aliases 'player' / 'hostile' / 'none' that jawa/spawn_pawn takes. Empty = no faction.")] string faction = null,
             [ToolParameter(Description = "Awful|Poor|Normal|Good|Excellent|Masterwork|Legendary.")] string quality = null,
             [ToolParameter(Description = "Hit points. -1 leaves the PostMake roll.")] int hitPoints = -1,
             [ToolParameter(Description = "Wipe whatever occupies the cell first. Default true.")] bool wipeExisting = true,
@@ -686,13 +686,17 @@ namespace JawaBench.BridgeTools
                     if (stuffDef == null) return Fail("No stuff ThingDef '" + stuff + "'.", DefSuggestions<ThingDef>(stuff));
                 }
 
+                // BUILD_BATCH_FACTION_REJECTS_PLAYER_1. This used to go straight to
+                // DefDatabase<FactionDef>, so faction="player" - which jawa/spawn_pawn
+                // documents and accepts - came back "No FactionDef 'player'." and lost
+                // a batch of 8 calls on 2026-08-26. The two tools now share one grammar.
                 Faction fac = null;
                 if (!string.IsNullOrEmpty(faction))
                 {
-                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
-                    if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
-                    fac = Find.FactionManager.FirstFactionOfDef(fd);
-                    if (fac == null) return Fail("FactionDef '" + faction + "' exists but no such faction was generated in this world.");
+                    string ferr;
+                    fac = ResolveFactionAliasOrDef(faction, out ferr);
+                    if (fac == null && ferr != null)
+                        return Fail(ferr, DefSuggestions<FactionDef>(faction));
                 }
 
                 QualityCategory q = QualityCategory.Normal; bool setQ = false;
