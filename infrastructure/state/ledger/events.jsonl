@@ -2379,3 +2379,5 @@
 {"seat":"REP","event":"file","id":"CUT_LIST_ONE_READER_1","title":"Move the remaining six kill-list parsers onto cherrypicker.py, and label what measure counts","kind":"task","target":"v1","needs":"offline","caused_by":"DUMP_DERIVED_SHEETS_SHOW_CUT_1","for":"BUILD","ts":"2026-08-27T15:21:07Z"}
 {"seat":"REP","event":"claim","id":"DUMP_DERIVED_SHEETS_SHOW_CUT_1","ts":"2026-08-27T15:21:31Z"}
 {"seat":"REP","event":"close","id":"DUMP_DERIVED_SHEETS_SHOW_CUT_1","sha":"cc493032","ts":"2026-08-27T15:21:31Z"}
+{"seat":"BUILD","event":"verify","id":"BIOME_DUPLICATES_STILL_LIVE_1","result":"fail","config":"full-582","evidence":"infrastructure/state/items/BIOME_DUPLICATES_STILL_LIVE_1.md","sha":"11ab478c100f8734f81a4e66a028e2248d3000a1","ts":"2026-08-27T15:59:13Z"}
+{"seat":"BUILD","event":"file","id":"SIX_FACTIONS_NEVER_RAID_1","title":"Six of the seven authored factions produced no raid in 18 firings","kind":"bug","target":"v1","needs":"bridge","caused_by":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","for":"BUILD","ts":"2026-08-27T16:00:10Z"}
