@@ -100,9 +100,13 @@ FLOOR_LIGHT = [None, "Structure_Cream", "Structure_White",
 # yellow-brown are the point - just not the saturated end. Mustard, Orange,
 # 212thOrange, HK47Rust and Auburn stay out; every grey is gone too, so the whole
 # hull is warm and only the VALUE and the hue-lean change across it.
-FLOOR_BROWN = ["Structure_Cream", "guy762_StructureColor_BespinBeige",
-               "Structure_Limestone", "Structure_BrownLight",
-               "Structure_Sandstone", "Structure_BrownDirt", "ReddishBrown"]
+# ⚠️ Third pass. The first browns ran 158-195 and the whole ship washed out to the
+# colour of the desert it sits on - a brown ship on tan ground has no contrast
+# unless it is DARKER than the ground (which reads ~107,86,57 at full bright). So
+# the ramp moved down into the 90-130 band and only the far end stays pale.
+FLOOR_BROWN = ["Structure_Sandstone", "Structure_BrownSubtle", "Structure_BrownWood",
+               "guy762_StructureColor_CinnagarIron", "Structure_BrownDark",
+               "Structure_UmberBurnt", "ReddishBrown"]
 WALL_BROWN_HOT = ["Structure_BrownSubtle", "Structure_BrownWood",
                   "Structure_BrownDirt", "Structure_BrownDark",
                   "Structure_UmberBurnt", "ReddishBrown"]

@@ -69,3 +69,41 @@ conduits included.
 ⚠️ **The live result is hotter than the render.** The offline renders model the colour
 grid as a plain multiply over the tile; in game the oranges come out markedly more
 saturated. Treat the renders as composition studies, not colour proofs.
+
+## The AFK pass, 2026-08-27 night
+
+Four saves, each a decision point, in
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves`:
+
+| save | what it holds |
+|---|---|
+| `HT_A_floors` | Corrosion Halo in browns, 140 holes, thrusters west. The restore point. |
+| `HT_B_signage` | + 14 Aurebesh word decals naming what each bay used to be |
+| `HT_C_pads` | + both feet opened into landing pads |
+| `HT_D_graves` | + REFINERY, KITCHEN and ARMORY gutted to ruins, and 8 design-note letters |
+
+### 🔴 Three mechanisms measured the hard way
+
+1. **`T: Set Color` has a per-GAME-SESSION budget of roughly 380 invocations.**
+   759 painted on the first run, then 384, 384, and 250+134+0 across FRESH PROCESSES —
+   so it is the game that degrades and no reconnect clears it. After that every menu
+   misses and `execute_debug_action` still answers success. ⇒ **Colour a hull with
+   MATERIAL instead**: `GravshipHull` takes any Metallic stuff and stuff carries
+   colour. `MA_MegaBone` where the plating is sound, `DinoChitin` where it corrodes.
+   One call, permanent, survives a reload. `apply_wall_stuff.py`.
+2. **A stale `Verse.FloatMenu` blocks every debug tool after it, silently** — and
+   `get_context_menu_options` cannot see that window, because a FloatMenu is not a
+   debug context menu. Detection has to go through `get_ui_layout`.
+3. **A ZONE CANNOT CARRY TEXT.** `jawa/map_zones createZone` ignores the label it is
+   given and auto-names `Stockpile zone 1`. The map-label idea is dead. What does
+   carry readable text WITH a camera target is `jawa/send_letter` — click the letter
+   and the camera jumps to what the note is about. That is where the design notes went.
+
+### ⚠️ Two things to redo in daylight
+
+* **`jawa/list_things` truncated at `limit`** and I read the empty result as "the
+  decals never placed". They had. Read `countMatched`, not `len(things)` — and filter
+  by `defName` when hunting for one kind.
+* **The ruins in the gutted bays are hash-placed and collide.** `placed: 12 of 12` is
+  spawn attempts, not survivors; several wiped each other. The bays read as ruins, but
+  the specific props are not the ones intended.

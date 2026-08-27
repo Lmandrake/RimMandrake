@@ -46,6 +46,7 @@ from rimbridge_client import RimBridge, resolve_endpoint     # noqa: E402
 SAVES = ("C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\"
          "RimWorld by Ludeon Studios\\Saves")
 WORD = "OuterRim_AurebeshWord%s"
+SIZES = json.load(open(os.path.join(HERE, "..", "..", "..", "observed", "def_sizes.json")))
 
 # bay -> (centre x, centre z, the word for what it used to be, why)
 BAYS = [
@@ -79,12 +80,30 @@ RUINS = ["AncientCraneBase", "AncientCraneColumn", "AncientDestroyedConsoleLarge
 FEET = [("west", 109, 121, 60, 71), ("east", 132, 141, 60, 71)]
 
 NOTES = [
-    (125, 196, "NOTE: rust connects, plate = industry, grate = plating GONE"),
-    (100, 190, "NOTE: 37 blisters from noise, not placed by hand"),
-    (150, 190, "NOTE: 8 biggest ate through the substrate - you see ground"),
-    (95, 62, "NOTE: feet were rooms, now pads - the ship LANDS"),
-    (150, 62, "NOTE: Aurebesh names what each bay used to be"),
-    (90, 148, "NOTE: thrusters moved west - she flies RIGHT"),
+    (126, 176, "NOTE: The palette. Rusted biotech tile is the connective tissue and reaches "
+               "everywhere. Iron plating means heavy industry. Crossed grate iron means the "
+               "deck plating is GONE - it is damage, not trim. Divoted rust is held back for "
+               "the spine and used nowhere else."),
+    (104, 180, "NOTE: 37 blisters, grown from a seeded noise field rather than placed by hand, "
+               "so they read as corrosion instead of decoration. 546 cells of missing plating."),
+    (157, 92, "NOTE: The eight biggest blisters ate through the SUBSTRATE too - foundation "
+              "stripped, 140 cells. You are looking at the ground through the ship. The pod is "
+              "the worst of them and its stalk is cut."),
+    (117, 65, "NOTE: Both feet were sealed square rooms. They are landing pads now - side and "
+              "bottom walls cut back to corner stubs, grate apron, a real shuttle pad and four "
+              "beacons. The ship LANDS rather than sits."),
+    (146, 182, "NOTE: Every bay carries an Aurebesh word for what it USED to be. SMELTING, "
+               "REFINERY, MEDICAL, KITCHEN, FARMING, ARMORY, CONTROL, REACTOR, COMMAND, CARGO, "
+               "ENGINEER, STORAGE, LANDING. That is the floor telling you the ship's history."),
+    (91, 150, "NOTE: The thrusters were on the EAST flank venting east - she was built to fly "
+              "left. They are on the west wall line now, facing east, and the wall they left is "
+              "back. She flies right."),
+    (107, 181, "NOTE: REFINERY, KITCHEN and ARMORY have been gutted - machines destroyed, "
+               "replaced with ruins, slag and machine-bits. The Aurebesh word STAYS. A sign "
+               "outliving its factory is the whole story of this ship."),
+    (127, 154, "NOTE: Hull colour is MATERIAL, not paint - MegaBone where the plating is sound, "
+               "DinoChitin where it is corroding. The dev Set Color tool runs out after ~380 "
+               "calls per session; material never does and survives a reload."),
 ]
 
 
@@ -94,7 +113,7 @@ def clear_menu(rb):
         rb.call("jawa/clear_ui", {"all": True})
 
 
-def free_cells(rb, x, z, w, need=2, radius=7):
+def free_cells(rb, x, z, w, need=2, radius=11):
     """Find `need` horizontally adjacent, empty, decked cells near (x,z)."""
     r = rb.call("jawa/get_terrain_layers",
                 {"rect": "%d,%d,%d,%d" % (x - radius, z - radius, radius * 2 + 1, radius * 2 + 1),
@@ -103,11 +122,23 @@ def free_cells(rb, x, z, w, need=2, radius=7):
     t = rb.call("jawa/list_things",
                 {"rect": "%d,%d,%d,%d" % (x - radius - 2, z - radius - 2,
                                           radius * 2 + 5, radius * 2 + 5), "limit": 900})
+    # ⚠️ First pass dilated every thing by +-2 and placed 4 of 14 - a bay is dense
+    # and almost nothing survived. A word decal is Standable at altitudeLayer Floor,
+    # so it only needs a cell free of a BLOCKING edifice; conduits and pipes under it
+    # are fine, and the multi-cell machines are what actually matter.
+    SKIP = {"PowerConduit", "HiddenConduit", "VGE_AstrofuelPipe"}
     taken = set()
     for th in (t.get("things") or []):
-        for dx in range(-2, 3):
-            for dz in range(-2, 3):
-                taken.add((th["x"] + dx, th["y"] if False else th["z"] + dz))
+        if th["def"] in SKIP:
+            continue
+        # exact footprint from def_sizes, centred as GenAdj does it - guessing a
+        # radius instead placed 4 of 14, then 6 of 14.
+        fw, fh = SIZES.get(th["def"], [1, 1])[:2]
+        if (th.get("rot") or 0) % 2:
+            fw, fh = fh, fw
+        for dx in range(fw):
+            for dz in range(fh):
+                taken.add((th["x"] - (fw - 1) // 2 + dx, th["z"] - (fh - 1) // 2 + dz))
     best = None
     for (cx, cz) in decked:
         run = [(cx + i, cz) for i in range(need)]
@@ -198,27 +229,29 @@ def phase_gut(rb):
 
 
 def phase_notes(rb):
+    """🔴 A ZONE CANNOT CARRY TEXT. `createZone` ignores the label it is given and
+    auto-names "Stockpile zone 1", so the map-label idea is dead. What DOES carry
+    readable text, with a camera target attached, is the letter stack: click one
+    and the camera jumps to what the note is about."""
     made = 0
     for (x, z, text) in NOTES:
-        r = rb.call("jawa/map_zones", {"action": "createZone", "zone": text,
-                                       "kind": "growing"})
-        if not r.get("success"):
-            r = rb.call("jawa/map_zones", {"action": "createZone", "zone": text})
-        p = rb.call("jawa/map_zones", {"action": "paintZone", "zone": text,
-                                       "ops": "%d,%d,2,2" % (x, z)})
-        if p.get("success"):
+        title, _, body = text.partition(": ")
+        r = rb.call("jawa/send_letter",
+                    {"label": body[:44], "text": body, "x": x, "z": z,
+                     "letterDef": "NeutralEvent"})
+        if r.get("success"):
             made += 1
         else:
-            print("   note failed:", text[:40], (p.get("message") or "")[:50])
-    print("notes: %d zone labels placed" % made)
+            print("   letter failed:", (r.get("message") or "")[:70])
+    print("notes: %d letters sent, each with a camera target" % made)
 
 
 def do_save(rb, name):
-    before = {f: os.path.getmtime(os.path.join(SAVES.replace("C:\\", "/mnt/c/").replace("\\", "/"), f))
-              for f in os.listdir(SAVES.replace("C:\\", "/mnt/c/").replace("\\", "/"))}
+    # ⚠️ this runs under WINDOWS python, so the Windows path is the right one.
+    d = SAVES
+    before = {f: os.path.getmtime(os.path.join(d, f)) for f in os.listdir(d)}
     rb.call("rimworld/save_game", {"saveName": name})
-    time.sleep(2)
-    d = SAVES.replace("C:\\", "/mnt/c/").replace("\\", "/")
+    time.sleep(3)
     after = {f: os.path.getmtime(os.path.join(d, f)) for f in os.listdir(d)}
     changed = [f for f in after if before.get(f) != after[f]]
     print("  save_game touched: %s" % changed)
