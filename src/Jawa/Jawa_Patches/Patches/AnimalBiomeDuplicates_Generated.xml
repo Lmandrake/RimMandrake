@@ -248,4 +248,237 @@
       <xpath>/Defs/ThingDef[defName="JRWWonambi"]/race/wildBiomes/ZBiome_Grasslands</xpath>
     </match>
   </Operation>
+
+
+  <!-- ==================================================================
+       UNION PASS 2026-08-27 - 25 pairs the previous de-dup did not cover
+       ==================================================================
+       🔴 WHY THESE EXIST. `BiomeCast_Ashkarr.xml` was regenerated at c325daad
+       (2026-08-26 21:02) from 26 biomes / 744 rows to 28 biomes / 801 rows. The
+       shipped de-dup union was computed against the OLD cast, so every (biome,
+       animal) pair the new rows introduced is uncovered. The game throws on them:
+       12 distinct `An item with the same key has already been added` keys in the
+       2026-08-27 load, in ChooseWildAnimalSpawns' static constructor.
+
+       🔑 DERIVED FROM SOURCE, NOT FROM A CAPTURE, and that is deliberate. A pair
+       our own removal already cured is INVISIBLE in a post-patch capture - the fix
+       hides its own evidence - so the capture can only ever produce a floor. These
+       are computed as: (a row in our shipped cast XML) INTERSECT (that animal's
+       `race.wildBiomes` naming that biome). 46 such pairs; 21 were already covered
+       by the two shipped files; these are the other 25.
+
+       ✅ VALIDATED: the same computation reproduces 8 of the 12 keys the live log
+       names. The other 4 - JRWTorosaurus, JRWWonambi, Procoptodon, Purussaurus -
+       are pairs another mod's PatchOperation creates, which no capture-side or
+       source-side read of ours can see, and which the shipped files already cover.
+
+       ⛔ APPEND ONLY. The shipped de-dup must stay the UNION of every pair ever
+       found. Never regenerate this file from a single reading.
+       ⚠️ 🔴 THE 2026-08-27 LOAD STILL THREW ON PAIRS THAT ARE ALREADY COVERED HERE
+       (AA_ArcticLion, AA_Feralisk and six more). So removing the animal side is
+       NECESSARY AND NOT PROVEN SUFFICIENT, and this block may not close it. It
+       cannot be settled without a def dump taken AFTER the 20:59 cast deploy -
+       the newest capture is 2026-08-26T14-20-04Z and predates it.
+  -->
+
+  <!-- U1. AA_Junglelisk x AB_FeraliskInfestedJungle   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Junglelisk"]/race/wildBiomes/AB_FeraliskInfestedJungle</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Junglelisk"]/race/wildBiomes/AB_FeraliskInfestedJungle</xpath>
+    </match>
+  </Operation>
+
+  <!-- U2. AA_Drainer x AB_GelatinousSuperorganism   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Drainer"]/race/wildBiomes/AB_GelatinousSuperorganism</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Drainer"]/race/wildBiomes/AB_GelatinousSuperorganism</xpath>
+    </match>
+  </Operation>
+
+  <!-- U3. AA_CrystalMit x AB_PropaneLakes   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_CrystalMit"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_CrystalMit"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    </match>
+  </Operation>
+
+  <!-- U4. AA_DuskProwler x AB_RockyCrags   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_DuskProwler"]/race/wildBiomes/AB_RockyCrags</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_DuskProwler"]/race/wildBiomes/AB_RockyCrags</xpath>
+    </match>
+  </Operation>
+
+  <!-- U5. AA_NightAve x AB_RockyCrags   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_NightAve"]/race/wildBiomes/AB_RockyCrags</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_NightAve"]/race/wildBiomes/AB_RockyCrags</xpath>
+    </match>
+  </Operation>
+
+  <!-- U6. AA_NightRam x AB_RockyCrags   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_NightRam"]/race/wildBiomes/AB_RockyCrags</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_NightRam"]/race/wildBiomes/AB_RockyCrags</xpath>
+    </match>
+  </Operation>
+
+  <!-- U7. AA_Nightling x AB_RockyCrags   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Nightling"]/race/wildBiomes/AB_RockyCrags</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Nightling"]/race/wildBiomes/AB_RockyCrags</xpath>
+    </match>
+  </Operation>
+
+  <!-- U8. AA_ShadowCharger x AB_RockyCrags   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_ShadowCharger"]/race/wildBiomes/AB_RockyCrags</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_ShadowCharger"]/race/wildBiomes/AB_RockyCrags</xpath>
+    </match>
+  </Operation>
+
+  <!-- U9. AA_Thunderox x AB_RockyCrags   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Thunderox"]/race/wildBiomes/AB_RockyCrags</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Thunderox"]/race/wildBiomes/AB_RockyCrags</xpath>
+    </match>
+  </Operation>
+
+  <!-- U10. AA_Bumbledrone x AB_TarPits   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Bumbledrone"]/race/wildBiomes/AB_TarPits</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Bumbledrone"]/race/wildBiomes/AB_TarPits</xpath>
+    </match>
+  </Operation>
+
+  <!-- U11. AA_Aerofleet x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Aerofleet"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Aerofleet"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
+  <!-- U12. AA_SandLion x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_SandLion"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_SandLion"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
+  <!-- U13. AA_Wildpawn x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Wildpawn"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Wildpawn"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
+  <!-- U14. GiantToad x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GiantToad"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="GiantToad"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
+  <!-- U15. JRWBagaceratops x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="JRWBagaceratops"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="JRWBagaceratops"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
+  <!-- U16. JRWQantassaurus x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="JRWQantassaurus"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="JRWQantassaurus"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
+  <!-- U17. MA_Sivatherium x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MA_Sivatherium"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="MA_Sivatherium"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
+  <!-- U18. Orray x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Orray"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Orray"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
+  <!-- U19. Pufferpig x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Pufferpig"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Pufferpig"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
+  <!-- U20. AA_MatureFleshbeast x Desert   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_MatureFleshbeast"]/race/wildBiomes/Desert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_MatureFleshbeast"]/race/wildBiomes/Desert</xpath>
+    </match>
+  </Operation>
+
+  <!-- U21. AA_Blizzarisk x IceSheet   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Blizzarisk"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Blizzarisk"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+
+  <!-- U22. Leaftail x IceSheet   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Leaftail"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Leaftail"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
+
+  <!-- U23. AA_LuciferBug x ZBiome_Badlands   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_LuciferBug"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_LuciferBug"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    </match>
+  </Operation>
+
+  <!-- U24. AA_PedigreedRaptor x ZBiome_Badlands   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_PedigreedRaptor"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_PedigreedRaptor"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    </match>
+  </Operation>
+
+  <!-- U25. JRWEuoplocephalus x ZBiome_Badlands   (from the 2026-08-27 cast, uncovered) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="JRWEuoplocephalus"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="JRWEuoplocephalus"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    </match>
+  </Operation>
+
 </Patch>

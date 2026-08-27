@@ -151,3 +151,82 @@ next person to run it reads it before the diff.
 The `## verify` block above, on the **next load's log** — `harvest_log.py` DEAD MODS back
 to 0, zero `same key has already been added`, then `biome_animal_conflicts.py` = 0 pairs
 against the new capture. That is `needs: harvest`; no bridge, no clicking.
+
+---
+
+## 🔴 STILL LIVE ON THE 2026-08-27 LOAD — and the cause is the cast regeneration
+
+**The `## verify` block above FAILS.** Scored from the log of the running game, which is the
+channel that block asked for:
+
+    grep -c "same key has already been added"   ->  12     (criterion: 0)
+    distinct keys: Purussaurus · Procoptodon · JRWWonambi · JRWTorosaurus · AA_RipperHound
+                   AA_Metallovore · AA_FissionMouse · AA_Feralisk · AA_CrescendoAnole
+                   AA_BedBug · AA_ArcticLion · AA_AcanthamoebaGiganteaSmall
+    `Error in static constructor of ChooseWildAnimalSpawns.Main` still present.
+
+✅ **Both de-dup files ARE deployed and byte-identical to the repo** — checked, not assumed.
+✅ **Load order is NOT the cause** — Jawa Patches is **573**, well after More Vanilla Biomes
+(232) and Alpha Animals (422), so our removals run last. I checked this because it was my first
+hypothesis and it is wrong.
+
+## 🔑 The cause: the cast grew after the de-dup union was computed
+`BiomeCast_Ashkarr.xml` was regenerated at **`c325daad`, 2026-08-26 21:02** — from 26 biomes /
+744 rows to **28 biomes / 801 rows, 0 removals** — and deployed at 20:59. The shipped de-dup
+union was computed against the **old** cast. Every (biome, animal) pair the new rows introduced
+is uncovered.
+
+**Measured from source rather than from a capture, deliberately.** A pair our own removal has
+already cured is invisible in a post-patch capture — the fix hides its own evidence — so a
+capture can only ever yield a floor. Computing (a row in our shipped cast XML) ∩ (that animal's
+`race.wildBiomes` naming that biome):
+
+    46 collisions across 16 biomes
+    21 already covered by the two shipped files
+    25 NOT covered  <- appended to AnimalBiomeDuplicates_Generated.xml, union style
+
+✅ **The method validates:** it independently reproduces **8 of the 12** keys the live log
+names. The other four — `JRWTorosaurus`, `JRWWonambi`, `Procoptodon`, `Purussaurus` — are pairs
+another mod's `PatchOperationAdd` creates, which neither side of this computation can see.
+
+## ⚠️ THIS IS NOT PROVEN TO CLOSE IT, AND MY FIRST DIAGNOSIS WAS UNSOUND
+
+🔴 **I reported "the shipped removals do not work" and then withdrew it. Read why before
+repeating either.**
+
+The evidence looked damning: `AA_ArcticLion` still declares `AB_PropaneLakes` in the capture,
+`AA_Feralisk` still declares `AB_MiasmicMangrove`, `JRWTorosaurus` still declares
+`ZBiome_Badlands` — and a correctly-formed, validated removal for each is shipped
+(`AnimalBiomeDuplicates_Generated.xml:84`). Load order is not the excuse: Jawa Patches is
+**573**, Alpha Animals **422**, More Vanilla Biomes **232**, and nothing after 573 touches
+biomes. The adding patch even uses the **identical named-child form** our xpath expects
+(`<AB_PropaneLakes>0.1</AB_PropaneLakes>` into `/race/wildBiomes`), so a shape mismatch is out.
+
+⛔ **But the capture cannot testify about the fix.** `AnimalBiomeDuplicates_Generated.xml` was
+written **2026-08-26 09:04**; the capture is **2026-08-26T14:20**. A capture is written by a
+running game, and **defs parse only at startup** — if that process launched before 09:04 (the
+run sheet records a load at 06:36 that day) it never loaded the file, and every "still declares
+it" reading above is a reading of a game with no fix in it. **I did not establish the launch
+time, so I cannot say which.**
+
+⚠️ **And a second self-inflicted error nearly shipped as a finding.** An earlier pass here
+reported `JRWTorosaurus` as *already fixed* — because it tested `isinstance(wildBiomes, dict)`
+when `wildBiomes` is a **list** of `AnimalBiomeRecord`. The type check failed and returned a
+clean `False`, which reads exactly like "the entry is gone". 🔑 **Print the value, not a
+predicate over it**, the first time you touch an unfamiliar field.
+
+## What IS established
+1. The 2026-08-27 load throws **12** duplicate-key errors. The `## verify` criterion FAILS.
+2. Both de-dup files are deployed and byte-identical to the repo.
+3. `BiomeCast_Ashkarr.xml` was regenerated at `c325daad` (26 biomes/744 rows → **28/801**,
+   0 removals) and deployed **2026-08-26 20:59** — after the capture and after the de-dup union
+   was computed. New cast rows create pairs the union was never asked about.
+4. Source-side, 46 collisions exist, 21 already covered, **25 were not**; those 25 are appended
+   here, union style, and validate **0 errors / 0 warnings**. Several report "0 nodes on disk",
+   which is expected for a pair another mod's patch creates.
+
+## ⛔ What settles it, and nothing short of this will
+**A def dump taken from a process launched AFTER 2026-08-26 20:59.** The newest is
+`2026-08-26T14-20-04Z`. Until then, "still declares it" cannot be told from "never loaded the
+fix", and a clean log on the next load cannot be told from luck. The dumper is one of the two
+assemblies in `DOWN_WINDOW_ASSEMBLY_DEPLOY_1`.
