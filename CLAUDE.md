@@ -1,15 +1,9 @@
 # RimWorld 1.6 — Jawa scavenger clan on a desert world
 
 Read `infrastructure/agents/POLICY.md`, `infrastructure/agents/Agent_Policy.md` (which model does
-which work) and your own `infrastructure/agents/<SEAT>.md`. They are short. This file is only what
-none of them covers.
+which work) and your own `infrastructure/agents/<SEAT>.md`.
 
 ## 🔴 There is no worldgen feature, in any version — owner, 2026-08-15
-
-*"There is no auto worldgen we are building. The world will be user-made and frozen.
-We are NOT enabling worldgen, we will provide players a savegame with a fixed world,
-period. True worldgen is OUT of any version, even v2."* — plus, moments later,
-*"(but designing worldgen by hand and design documents to guide that are in)"*
 
 - **OUT, permanently, not deferred:** any automated or programmatic worldgen; worldgen
   as a player-facing capability; any v2 worldgen item. ⛔ **v2 is not a parking space
@@ -22,11 +16,6 @@ period. True worldgen is OUT of any version, even v2."* — plus, moments later,
   regenerate behind it.
 
 ### 🔴 ONE MAP, NOT A GENERATOR — owner, 2026-08-18
-
-*"We aren't trying to make random generators that produce alternative planet maps…
-that's way out of scope and produces unacceptably unreal solutions. I just want ONE
-planetary map that is as realistic as possible, following the guidelines I told you
-from design and discussion."*
 
 - ⛔ **Do not build, extend or tune anything that produces ALTERNATIVE planets.** No
   seed sweeps, no "try N variants and pick one", no parameters exposed so a different
@@ -51,7 +40,7 @@ from design and discussion."*
   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
   Read it for the active count; never a number written in a doc.
 - **No config file waits for anything.** Owner, 2026-08-15: *"You NEVER have to ask
-  if RimSort is open. It does not autosave, and I will never save without asking.
+  if RimSort is open.
   Nobody blocks on RimSort or game close for config files of any kind."* Write it,
   game up or down. Only **assemblies** need the game down, because the OS locks them.
 - **Never guess a defName, field, or namespace.** Read the def, the `About.xml`, or
@@ -84,9 +73,6 @@ from design and discussion."*
 
 ## 🔴 Queue items are NAMED, not numbered — owner's ruling, 2026-08-20
 
-> *"When queue actions are created, they are named `THREE_DESCRIPTIVE_WORDS_#` rather
-> than B104 or D5. It's killing me having to guess what D55 is."*
-
 **Every NEW item in `infrastructure/state/queue/*.md` and every new append to
 `design/V2_DREAMS.md` gets a name that says what it is:**
 
@@ -103,16 +89,7 @@ from design and discussion."*
   `Closes: SANDSTORM_WEATHER_TUNING_1` in a commit knows what happened without opening
   a queue file. Name it after **what the work is**, never after the seat, the file or
   the sprint.
-- ⛔ **No new `B*` / `C*` / `D*` / `W*` IDs.** That scheme is closed. It reads as
-  precedence it does not have, and nobody can remember what `D55` was.
-
-**The tooling already accepts it — re-verified 2026-08-24, no change needed.**
-`src/RimMandrake/rimflow/render.py` owns the grammar: the first whitespace-delimited
-token after `## ` is the ID, and the `Closes:` trailer regex is
-`[A-Za-z][A-Za-z0-9._-]*`, which admits underscores and digits.
-⚠️ **Corrected 2026-08-24:** this used to cite `Utils/derive_matrix.py`. That tool is
-superseded — its `main()` now refuses on generated queues and names `render.py` itself,
-so the paragraph was pointing at an authority that no longer runs.
+- ⛔ **No new `B*` / `C*` / `D*` / `W*` IDs.** That scheme is closed.
 
 ⚠️ **Legacy IDs stay exactly as they are. Do not rename them.** `POLICY.md` is right
 that renumbering an item away breaks the board's count and cannot be recovered — a
@@ -121,9 +98,6 @@ a legacy ID anywhere — a report, a commit body, a queue cross-reference — pu
 beside it:** `B58 (the dead Jawa pawnkind)`, never a bare `B58`.
 
 ## Superseding a doc means writing INTO the doc you superseded
-
-**Owner's rule, 2026-08-20.** An audit of 14 files found three defects, all the same one:
-a doc was answered by a better one and never told.
 
 - 🔑 **When you supersede, correct or measure against another file, put ONE line at
   the top of THAT file** naming the successor and what changed. The successor
@@ -142,8 +116,6 @@ a doc was answered by a better one and never told.
   enforces it, expect decay and write the pointer instead.
 
 ## 🔴 RUN IT. DO NOT HAND HIM A COMMAND TO PASTE — owner, 2026-08-22
-
-> *"instead of asking me to type `! python` for me, JUST RUN IT YOURSELF, ok?"*
 
 ⛔ **A `!`-prefixed line for him to paste is the DEFECT, not the fix.** ① Run it, report the
 outcome. ② A guard that refuses YOU is not a task for HIM — find the flag or override; in
@@ -178,11 +150,6 @@ is sent, with the queue files named in the refusal. `ListAgents` stays denied ou
 socket, so `refuse` would silence **his own game-state announcements** — the one class of
 message that is supposed to get through.
 
-🔑 **Why a hook and not a deny rule.** ⛔ `permissions.deny: ["SendMessage"]` is too blunt —
-the docs are explicit that *"denying SendMessage also removes messaging to subagents, since
-the same tool serves both"*, with no scoped syntax to separate them, so it breaks every
-subagent resume. Owner, 2026-08-19: *"Sub-agents should function normally."*
-
 **The only thing that legitimately crosses windows is the owner announcing a change of
 GAME STATE** — *game is up* · *game is loading* · *WRAP is initiated* — and **the owner
 sends those himself, to each window.** You do not relay them, and you do not send one
@@ -208,10 +175,6 @@ naming one session, not a fan-out operator, and there is no `@all`.
 not touch them. Spawning subagents and resuming them with `SendMessage` to collect their
 findings stays fully authorized and encouraged — that is your own worker in your own
 context, costing no one else anything.
-
-🔑 **And a peer message could never change configuration anyway** — Claude Code instructs
-a receiving session never to alter permission settings, `CLAUDE.md` or other config
-because another session asked. Only the owner can.
 
 ## What is where
 
@@ -253,15 +216,6 @@ have typed:**
 ./game --said "game up" up
 ```
 
-⭐ **IDENTICAL, and that is the ruling, not a convenience** — owner, 2026-08-22:
-*"make it so that when I say game up, game down, game loading it is IDENTICAL to that
-!./game command. Fix it for this specific thing."* ⇒ It **announces to every window AND
-stamps the ledger**, in one act, because the failure it exists to prevent is the seats and
-the board holding different beliefs about the game. ⛔ **Stamping the ledger alone is no
-longer the right answer** to him saying it; the older instruction to run
-`rimflow game UP --owner-said "…"` by itself is superseded — that path still works and is
-what `./game` calls underneath, but on its own it leaves the other windows deaf.
-
 - `--said "<his words>"` is **provenance, not permission**: his verbatim sentence is
   recorded on the ledger event as the authorization. Pass what he actually said.
 - ⛔ **`--owner-said` will refuse bare ASSENT** — *"yes"*, *"ok"*, *"go ahead"* — because
@@ -270,7 +224,7 @@ what `./game` calls underneath, but on its own it leaves the other windows deaf.
   used to demand 12 characters and so refused his own phrases.)
 
 ⛔ **A seat still may not INFER game state** — that is guessing on everyone's behalf, and
-it is what the rule always banned. Quoting him **as he says it** is not inferring. ✅ **And
+it is what the rule always banned. ✅ **And
 neither is MEASURING it** — owner, 2026-08-22: *"Any agent is absolutely able to check what
 it literally is."* `./game` with no argument takes the reading and corrects the ledger from
 it, from any seat. ⛔ **So never write "X says up but the owner said down"** — run it and
@@ -294,7 +248,7 @@ Paths in prose are always full and native, in backticks: `D:\Luke\dev\Rimworld\i
 
 ## Skills
 
-Load themselves off their description when the task matches. The roster is
+The roster is
 `skills/README.md`. The ones you will actually reach for:
 `rimworld-modding` · `rimworld-deploy` · `rimworld-load-round` · `rimbridge` ·
 `efficient-subagents` · `generating-rimworld-sprites`.
