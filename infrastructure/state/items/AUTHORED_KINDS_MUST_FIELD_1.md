@@ -136,3 +136,15 @@ A raid requested from `Jawa_FreeDroidEnclaves` arrived as **22 `Jawa_Hutt_*` paw
 other authored faction back to Neutral before each firing, then read the spawned pawns' own
 faction — never `resolved.faction`, which echoes the request. And retry: `fire_raid` is
 intermittent (`AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1`), so one empty result is not a negative.
+
+### What `Empire`'s "3 of 6" actually is — not vanilla, and probably wanted
+Its three combat groups are: two fielding **only** `Jawa_Empire_Grunt/Heavy/Specialist`
+(weights 5 / 2 / 1.5), and a third fielding `OuterRim_ImpRangeTrooper`,
+`OuterRim_ImpDeathTrooper`, `OuterRim_ImpISBAgent` (2 / 1.5 / 1).
+
+✅ **Those three are Outer Rim imperial kinds, not Royalty's.** No vanilla Royalty kind appears
+in any Empire combat group, so the "no vanilla kinds in a combat group" bar is met. Range
+troopers and death troopers beside our stormtroopers reads as the Empire, not as a leak.
+⚠️ Recorded because a future audit counting "kinds that are not ours" will flag it as 3 foreign
+entries and it is not a defect. If the campaign ever wants the Empire to field *only* authored
+kinds, that is a scope call and nobody has made it.
