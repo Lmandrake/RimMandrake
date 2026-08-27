@@ -2259,3 +2259,6 @@
 {"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-26T16:31:05Z"}
 {"seat":"BUILD","event":"file","id":"DUMPER_SWALLOWS_CACHE_THROW_1","title":"The def dumper publishes the engine's cached answer and swallows the exception behind it","kind":"defect","target":"v1","for":"BUILD","ts":"2026-08-26T16:32:58Z"}
 {"seat":"BUILD","event":"needs","id":"DUMPER_SWALLOWS_CACHE_THROW_1","to":"deploy","reason":"RimDefDump is an assembly; the OS locks it while the game runs","ts":"2026-08-26T16:32:58Z"}
+{"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-27T01:53:50Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-27T01:54:17Z"}
+{"seat":"OWNER","event":"drop","id":"PAINT_UNDER_MAP_DESTROYS_GAME_1","reason":"DISPROVEN. Painting under a live colony destroys that colony and nothing else; a new colony can be made and the game continues. Owner has done it repeatedly since. The 2026-08-21 single-session observation is struck.","ownerSaid":"OWNER ruling: we have disproven this item multiple times. Strike immediately as disproven. NO REGRET. Simply destroy it.","override":"OWNER may not `drop` PAINT_UNDER_MAP_DESTROYS_GAME_1 — it belongs to CHECK. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-08-27T01:55:43Z"}

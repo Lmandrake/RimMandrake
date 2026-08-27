@@ -26,9 +26,10 @@ WHAT IS KNOWN, measured:
 - ⚠️ The owner's world-creation page nevertheless came up without the parameters.
 
 So either the scan order is not what we believe, or the game will not re-read the preset for
-a SECOND world created inside one session, or the broken session state
-(`PAINT_UNDER_MAP_DESTROYS_GAME_1`) took the preset loader with it. **All three are
-untested.** ⛔ Do not write any of them down as the cause.
+a SECOND world created inside one session. **Both are untested.** ⛔ Do not write either down as
+the cause. ⚠️ **The third hypothesis — "the broken session took the preset loader with it" — is
+GONE**: the session was not broken. Painting under a colony destroys that colony only (owner,
+2026-08-26) and `PAINT_UNDER_MAP_DESTROYS_GAME_1` is struck as disproven.
 
 ## verify
 On the next launch, BEFORE generating anything: reach the world-creation page and read

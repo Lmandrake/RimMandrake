@@ -42,7 +42,8 @@ caller uses to decide "no map exists yet" — and several things in this repo do
 
 - `ASHKARR_WORLD_DEFINITION.md` §12.4 requires the planet importer to **refuse if
   `Find.CurrentMap != null`**, because painting a planet underneath an instantiated map
-  is what destroyed the save twice (`PAINT_UNDER_MAP_DESTROYS_GAME_1`). A guard that
+  destroys that colony (owner, 2026-08-26 — the colony, not the game;
+  `PAINT_UNDER_MAP_DESTROYS_GAME_1` is struck as disproven). A guard that
   asks the bridge instead of the engine would read `None` here and **proceed against a
   live map** — the precise thing the guard exists to prevent.
 - Any wait-for-map loop of the shape `while st['currentMap'] is None` never exits, even

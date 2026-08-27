@@ -209,12 +209,11 @@ def main():
                    "That is agreed and expected - the paint moves the ground out from under a "
                    "map already generated from it, and RimWorld cannot reconcile the two. Make "
                    "a new colony and carry on.\n"
-                   "  ⚠️ A 2026-08-21 session also reported the game refusing to make a new "
-                   "colony afterwards and the UI losing its icons. **The owner disputes that** "
-                   "(2026-08-23, verbatim: \"painting under a player colony is actually fine to "
-                   "do... it just destroys the player colony\"), it has never been reproduced, "
-                   "and PAINT_UNDER_MAP_DESTROYS_GAME_1 now records it as a hypothesis awaiting "
-                   "a test the owner has offered to run. Do not quote it as settled.\n"
+                   "  ✅ A COLONY is the whole cost. Owner, 2026-08-26: \"What it can do is "
+                   "destroy the player colony, it doesn't destroy the game. Just the colony.\" "
+                   "The 2026-08-21 report of a game refusing to make a new colony and a UI "
+                   "losing its icons is STRUCK as disproven, and the item that carried it is "
+                   "dropped. Do not quote it.\n"
                    "  The paint itself was faithful - seven tiles read back exact."
                  % gi.get("mapCount"))
             return 5

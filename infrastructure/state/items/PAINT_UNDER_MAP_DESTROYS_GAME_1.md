@@ -1,3 +1,16 @@
+🔴 **STRUCK AS DISPROVEN — OWNER, 2026-08-26.** Verbatim: *"we have disproven this item
+multiple times. Strike immediately as disproven. NO REGRET. Simply destroy it."*
+
+⇒ **Painting under a live colony destroys THAT COLONY and nothing else.** Make a new one and
+the game continues. The 2026-08-21 session — "could not make a new colony", "UI buttons lost
+icons" — is struck: one unreproduced observation, contradicted repeatedly since.
+
+⛔ **Nothing may cite this item as evidence for anything.** The item is dropped in the ledger.
+✅ **The `--despite-map` guard and `w9_run.py`'s `mapCount > 0` refusal STAY** — the colony loss is
+real and a guard that costs a colony is cheap. Their message is about the COLONY, not the game.
+
+---
+
 ## spec
 
 🔴 **OWNER'S CORRECTION, 2026-08-23, and it demotes this item's headline — verbatim:**

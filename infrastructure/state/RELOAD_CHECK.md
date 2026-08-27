@@ -58,9 +58,10 @@ Both are one bridge call each to re-push after loading.
    then `jawa/world_commit`.
 7. Owner **saves over `WORLDMAP_gen`**, and only then lands if he wants to.
 
-⛔ **Do NOT paint under a map, ever again.** `PAINT_UNDER_MAP_DESTROYS_GAME_1` records what
-that cost on 2026-08-21: the colony, the ability to make a new one, the UI's button icons,
-and the planet-scale preset on a world remade in that session.
+⚠️ **Painting under a map destroys THAT COLONY — not the game.** Owner, 2026-08-26: *"What it
+can do is destroy the player colony, it doesn't destroy the game. Just the colony."* Make a new
+colony and carry on. The 2026-08-21 extras — could not make a new colony, UI lost its icons —
+are **STRUCK as disproven** and `PAINT_UNDER_MAP_DESTROYS_GAME_1` is dropped. Do not cite it.
 
 ## Housekeeping done before this launch
 

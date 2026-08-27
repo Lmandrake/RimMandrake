@@ -112,8 +112,11 @@ unverified legality.
   ⚠️ Everything measured AFTER the paint in that session is unattributable — a half-broken
   game answers the bridge normally. The log harvest and the def dump were taken BEFORE it
   and stand.
-  ⇒ `Find.CurrentMap == null` throughout, and `w9_run.py` now refuses on `mapCount > 0`.
-  `PAINT_UNDER_MAP_DESTROYS_GAME_1`.
+  🔴 **STRUCK 2026-08-26 by the owner.** Painting under a colony destroys **that colony** and
+  nothing else — *"it doesn't destroy the game. Just the colony."* The UI-icon and
+  cannot-make-a-new-colony claims above are disproven and
+  `PAINT_UNDER_MAP_DESTROYS_GAME_1` is dropped. `w9_run.py` still refuses on `mapCount > 0`
+  because losing a colony unasked is worth a guard.
 - ⛔ **Do not treat this world as the campaign start.** It has no scenario embedded and its
   faction roster is the slate's 13, not the checklist's. Saving it and keeping it would
   quietly become the shipped world with two gates skipped.

@@ -48,7 +48,8 @@ A count that merely matches is not the criterion — the same total can hide a s
 🪤 **A successful bridge call is not a successful write.** ~40 engine calls report success and
 change nothing; that is the single most expensive failure mode on this bridge. Read back through
 a DIFFERENT tool than the one that wrote, and never accept the writer's own echo as proof.
-🪤 **Do not paint under a live colony** — `PAINT_UNDER_MAP_DESTROYS_GAME_1` measured that it
-destroys game state. This proof runs before a map exists, at the world screen.
+🪤 **Painting under a live colony destroys THAT COLONY**, not the game — owner, 2026-08-26; make a
+new one and carry on. (`PAINT_UNDER_MAP_DESTROYS_GAME_1` is struck as disproven; do not cite it.)
+This proof runs before a map exists anyway, at the world screen.
 🪤 The three planet-shaped items already in the queue measure the OLD paint. This one does not
 depend on any of them, and their numbers are not evidence here.
