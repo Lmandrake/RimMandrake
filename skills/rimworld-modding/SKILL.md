@@ -376,27 +376,19 @@ constructor rules cause a disproportionate share of "mod does nothing" reports:
 
 ---
 
-## Validation plan — what you owe whoever holds the game
+## Handing over something you cannot check yourself
 
-Anything you author and cannot check yourself — a def, a patch, an assembly —
-ends with a validation plan **in the same commit**. Not on request: a cold load
-costs 23–30 minutes (§2), and without a plan the person holding the game invents
-one, and theirs will not carry your prediction.
+🔴 **First ask whether it needs the game at all.** The default is source — the def, the
+patch, the C#, the capture, `measure`, an `md5sum`. If you cannot say in one line what
+source cannot tell you, verify it yourself and close the item.
 
-🔴 **Name a positive observation, never "no error".** "No `Patch operation …
-failed` line" is an absence, and §7 ranks absences last. Name the thing on
-screen: the animal on the wildlife tab, `MoveSpeed` at 4.6 in the stat readout.
+A live check owes three lines: **the call**, **the expected reading**, and **how a pass
+could be false**. Name a positive observation, never "no error" — an absence is the
+cheapest thing to produce by accident.
 
-🔴 **Size the plan to what the check costs — owner, 2026-08-26.** A bridge call or a
-22-second minimal load owes **three lines**: the call, the expected reading, and how a
-pass could be false. The seven-field shape (`ITEM`/`SEE`/`ROUTE`/`PREDICT`/`CLOSE`/
-`RIDE`/`LIES`) is for a check riding an expensive cold load, and is not a template to
-fill in. ⛔ `RIDE` is not a per-item field at all — which window the work rides is one
-fact about the release and lives in `NEXT_RELOAD.md`. The gate, a worked example, and
-the four false passes that have cost real cycles here are in
-**`references/validation-plan.md`**. Read it when you are writing the
-plan, and when a check came back clean and you want to know how it could have
-lied to you.
+🔑 Whoever proves it **closes** it — no hand-back — then greps
+`infrastructure/state/items/` for what else it settled.
+**`references/validation-plan.md`** has the rule and the four false passes.
 
 ---
 

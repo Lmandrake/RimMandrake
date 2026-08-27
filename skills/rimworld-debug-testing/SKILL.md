@@ -261,15 +261,16 @@ quicktest could have closed does not deserve a 25-minute slot.
 
 ## 7. 🔴 The validation plan — what this skill produces
 
-Everything above answers *what a result is worth*. **The validation plan is how you
-hand that judgement to somebody else** — it is this skill's deliverable, and this
-skill is its home.
+Everything above answers *what a result is worth*.
 
-📄 **The canonical format, with worked false-pass examples:**
-`/mnt/d/Luke/dev/Rimworld/skills/rimworld-debug-testing/references/validation_plan_format.md`
-**Copy it verbatim into any skill that produces something the game must render,
-run or resolve** — skills package as independent zips, so a cross-skill pointer
-does not ship.
+🔴 **A live run must be proven needed.** The default is source. If you cannot say in one
+line what source cannot tell you, verify it there and close the item. Live is for what the
+engine does that you cannot compute, and what an eye must judge.
+
+A live check owes three lines: the call, the expected reading, and how a pass could be
+false. 🔑 Whoever proves it **closes** it — no hand-back — then greps
+`infrastructure/state/items/` for what else it settled.
+The rule and the false passes: `skills/rimworld-modding/references/validation-plan.md`.
 
 The six fields, one line each, so you know whether you need to open it:
 
@@ -283,16 +284,12 @@ The six fields, one line each, so you know whether you need to open it:
 | **false pass** | how *this* check lies — the field everyone skips |
 
 ```
-ITEM     <what is being validated>
-SEE      <the positive observation>
-ROUTE    <exact call / defName / click path>
-PREDICT  <number or string, before the look>
-CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
-RIDE     batch | solo (<why, if solo>)
+PROVE    <exact call / defName / click path>
+EXPECT   <number or string, written before the look>
 LIES     <how this check produces a false pass>
 ```
 
-Seven lines. If it does not fit, the item is really two items.
+Three lines. If it does not fit, the item is really two items.
 
 ⚙️ **Write it before you run §6's list, not after.** Half the items that look like
 they need a cold load turn out, once the observable and route are written down, to

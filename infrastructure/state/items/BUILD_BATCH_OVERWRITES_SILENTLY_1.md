@@ -23,47 +23,24 @@ Evidence: `infrastructure/state/evidence/template_engine_acceptance_2026-08-26_C
 
 ---
 
-# ✅ ALREADY FIXED IN SOURCE — re-read at HEAD 2026-08-27, seat BUILD. ⛔ NOT DEPLOYED.
+## Already fixed in source
 
-**This item reads as open and is not.** The fix went in after it was filed and is sitting
-in the undeployed build — the game copy's tool surface reads **166** against the build's
-**238** — which is exactly why the live measurement still showed the defect.
-Evidence: `infrastructure/state/evidence/BUILD_BATCH_OVERWRITES_SILENTLY_1.txt`.
+`jawa/build_batch` in `JawaBenchMapTools.cs` returns `survived` (counted after every op),
+`lostToLaterOps`, and `displaced[]` with `placedByThisBatch`. `refuseIfDisplaces` opts into
+refusal. It predicts the wipe with `GenSpawn.SpawningWipes` before spawning, which is what makes
+the refusal possible and lets `displaced[]` name the op responsible.
 
-`jawa/build_batch` in `JawaBenchMapTools.cs` now returns:
-
-| field | meaning |
-|---|---|
-| `placed` | spawns that succeeded — **not** the number of things on the map |
-| `survived` | counted after every op (`!t.Destroyed`) — this is the honest number |
-| `lostToLaterOps` | `placed - survived` |
-| `displaced[]` | everything this batch destroyed, each with `placedByThisBatch` |
-| `refuseIfDisplaces` | opt-in refusal instead of wiping |
-
-🔑 **It predicts the destruction rather than noticing it afterwards** —
-`GenSpawn.SpawningWipes(td, other.def)` builds a `doomed` list *before* the spawn, which is
-what makes `refuseIfDisplaces` possible at all and what lets `displaced[]` name the op that
-did it. `placedByThisBatch` is precisely the measured case: the destroyed thing was placed
-by an earlier op of the same run, so `placed` had already counted it.
-
-⚠️ **`refuseIfDisplaces` defaults OFF on purpose**, and the reason is in the parameter's own
-description: a door legitimately replaces the wall in its cell, so refusing by default would
-break ordinary layouts. Turn it on when a generator's output must not eat itself.
+Undeployed, which is why the live measurement still showed the defect.
 
 ## Prove it
 ```
 jawa/build_batch {ops:"DiningChair:10,10;Table1x2c:10,10"}
 jawa/build_batch {ops:"DiningChair:12,10;Table1x2c:12,10", refuseIfDisplaces:true}
 ```
-**Expect** first: `placed 2, survived 1, lostToLaterOps 1`, `displaced[0].destroyed
-"DiningChair"` with `placedByThisBatch: true`. Second: the table op in `failed[]`, chair
-still standing.
+Expect `placed 2, survived 1, lostToLaterOps 1`, `displaced[0].placedByThisBatch: true`; then
+the table op in `failed[]` with the chair standing.
 
-## Watch out
-- ⚠️ **`displaced[]` also fires for pre-existing buildings**, not only for things this batch
-  placed — that is what `placedByThisBatch: false` means. A non-empty `displaced[]` with
-  `lostToLaterOps: 0` is a *correct* wipe of scenery, not a defect.
-- 🔑 **The advice in `skills/rimbridge/references/silent-failures.md` is now over-strict.**
-  It says a cell-by-cell read-back is the only honest success signal. Once this deploys,
-  `survived` is that signal. ⛔ Do not delete the read-back advice until the tool has been
-  proven live — the note there should be updated by whoever runs the proof, not now.
+🔴 A batch with no overlapping footprints proves nothing.
+⚠️ `displaced[]` also fires for pre-existing scenery — `placedByThisBatch: false` is correct.
+🔑 `silent-failures.md` still says a cell-by-cell read-back is the only honest signal. Update it
+once this is proven live, not before.

@@ -482,16 +482,12 @@ The way this particular check lies. Every check has one, and it is the field
 people skip.
 
 ```
-ITEM     <what is being validated>
-SEE      <the positive observation>
-ROUTE    <exact call / defName / click path>
-PREDICT  <number or string, before the look>
-CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
-RIDE     batch | solo (<why, if solo>)
+PROVE    <exact call / defName / click path>
+EXPECT   <number or string, written before the look>
 LIES     <how this check produces a false pass>
 ```
 
-Seven lines. If it does not fit, the item is really two items.
+Three lines. If it does not fit, the item is really two items.
 
 ### How sprite checks lie
 
@@ -530,12 +526,8 @@ Five earned ones — full cases as per the trap file:
 ### Worked example
 
 ```
-ITEM     Jawa wrecked smelter, south facing — WreckedSmelter_south.png
-SEE      a torn notch out of the upper-left housing, open ground visible through it
-ROUTE    spawn JawaWreckedSmelter on clear ground, rotate to south, default zoom
-PREDICT  the notch reads as ~15% of sprite width at 104 px; outline still fills one 1x1 tile
-CLOSE    one screenshot at default zoom showing the notch — NOT chasing: rust hue, E/W facings
-RIDE     batch
+PROVE    spawn JawaWreckedSmelter on clear ground, rotate to south, default zoom
+EXPECT   a torn notch out of the upper-left housing, open ground visible through it · the notch reads as ~15% of sprite width at 104 px; outline still fills one 1x1 tile
 LIES     bare-path fallback — a failed _south deploy draws WreckedSmelter.png and looks fine
 ```
 

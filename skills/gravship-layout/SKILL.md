@@ -431,32 +431,19 @@ The way this particular check lies. Four measured here:
 ### The shape to hand over
 
 ```
-ITEM     <what is being validated>
-SEE      <the positive observation>
-ROUTE    <exact call / defName / click path>
-PREDICT  <number or string, before the look>
-CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
-RIDE     batch | solo (<why, if solo>)
+PROVE    <exact call / defName / click path>
+EXPECT   <number or string, written before the look>
 LIES     <how this check produces a false pass>
 ```
 
-Seven lines. If it does not fit, the item is really two items.
+Three lines. If it does not fit, the item is really two items.
 
 Worked, for a hand-authored sled's first import:
 
 ```
-ITEM     JawaTestSled.xml — thruster clearance and engine connection, first import
-SEE      Both SmallThrusters show a plain inspect panel with NO red "will be
-         blocked by gravship substructure" warning
-ROUTE    Drop JawaTestSled.xml in Config\GravshipExport -> new game, gravship-
-         arrival scenario -> choose page -> pick "Jawa test sled" -> click_cell
-         each thruster, then the GravEngine
-PREDICT  0 blocked warnings; engine panel reads "Connected substructure: 49 / 4500"
-CLOSE    Both thrusters clean and the engine reports 49 — NOT chasing whether the
-         exclusion run must also be OUTDOOR (invariants §9 q1)
-RIDE     batch — enters at world creation, rides with any other choose-page check
-LIES     validate() returns [] for this file: it checks foundation and engine
-         coords, never the 1x5 exclusion rectangle. A clean validator is not a check.
+PROVE    Drop JawaTestSled.xml in Config\GravshipExport -> new game, gravship- arrival scenario -> choose page -> pick "Jawa test sled" -> click_cell each thruster, then the GravEngine
+EXPECT   Both SmallThrusters show a plain inspect panel with NO red "will be blocked by gravship substructure" warning · 0 blocked warnings; engine panel reads "Connected substructure: 49 / 4500"
+LIES     validate() returns [] for this file: it checks foundation and engine coords, never the 1x5 exclusion rectangle. A clean validator is not a check.
 ```
 
 ## Why the file beats the build

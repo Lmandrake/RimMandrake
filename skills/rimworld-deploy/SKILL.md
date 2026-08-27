@@ -212,18 +212,14 @@ three def changes beside it.
 **6. What a FALSE PASS looks like** — the way this particular check lies.
 
 ```
-ITEM     <what is being validated>
-SEE      <the positive observation>
-ROUTE    <exact call / defName / click path>
-PREDICT  <number or string, before the look>
-CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
-RIDE     batch | solo (<why, if solo>)
+PROVE    <exact call / defName / click path>
+EXPECT   <number or string, written before the look>
 LIES     <how this check produces a false pass>
 ```
 
-Seven lines. If it does not fit, the item is really two items. Canonical format and
-the general false-pass catalogue:
-`/mnt/d/Luke/dev/Rimworld/skills/rimworld-debug-testing/references/validation_plan_format.md`.
+Three lines: the call, the expected reading, and how a pass could be false. 🔴 And first
+ask whether it needs the game at all — the default is source. Rule and false-pass catalogue:
+`skills/rimworld-modding/references/validation-plan.md`.
 
 ### The four ways a DEPLOY produces a false pass
 
@@ -256,12 +252,8 @@ A Harmony patch shipped as a new DLL for `Jawa_Patches`, deployed in the shutdow
 window:
 
 ```
-ITEM     Jawa_Patches assembly 0.4.2 — melee cooldown patch
-SEE      A Jawa with a vibroblade attacks twice in the time a vanilla knife pawn attacks once
-ROUTE    Spawn Jawa + MeleeWeapon_Vibroblade, spawn a muffalo, draft and attack; watch the combat log
-PREDICT  Cooldown 1.4s (was 2.6s); Player.log prints "[Jawa_Patches] 3 patches applied"
-CLOSE    One combat-log reading at the predicted cooldown — NOT chasing DPS across quality tiers or other melee defs
-RIDE     solo (new assembly — batching it destroys attribution if the load comes up wrong)
+PROVE    Spawn Jawa + MeleeWeapon_Vibroblade, spawn a muffalo, draft and attack; watch the combat log
+EXPECT   A Jawa with a vibroblade attacks twice in the time a vanilla knife pawn attacks once · Cooldown 1.4s (was 2.6s); Player.log prints "[Jawa_Patches] 3 patches applied"
 LIES     Game copy may be the PREVIOUS build if RimWorld was running at deploy (WinError 1224); md5 both DLLs before the load. Absent Harmony line = patch never applied, not "nothing to report".
 ```
 

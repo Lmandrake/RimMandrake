@@ -29,53 +29,24 @@ Then live: swap a raid Lord's job and read back that every pawn's `duty` comes f
 
 ---
 
-# ✅ WRITTEN AND COMPILED 2026-08-27, seat BUILD. ⛔ NOT DEPLOYED — the game is up.
+## Built, not deployed
 
-`jawa/lord_set_job`, in
-`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLordJobTools.cs`.
-Gated behind `JAWA_GM_TOOLS` on `lord_poke`'s test. Build `--gm`: **0 warnings, 0 errors**;
-built tool surface 237, `jawa/lord_set_job` present, none lost.
-Evidence: `infrastructure/state/evidence/BRIDGE_TOOLS_BATCH_2026-08-27.txt`.
+`jawa/lord_set_job` — `JawaBenchLordJobTools.cs`. Gated behind `JAWA_GM_TOOLS`.
+Build `--gm`: 0 warnings, 0 errors. Evidence: `evidence/BRIDGE_TOOLS_BATCH_2026-08-27.txt`.
 
-## Against this item's criteria
-- **Both calls in one tool; a partial application is reported.** `SetJob` then
-  `GotoToil(Graph.StartingToil)`. Three separate failure points after `SetJob` succeeds —
-  `Graph.StartingToil` throwing, a graph with no starting toil, and `GotoToil` throwing —
-  each return `partiallyApplied: true` with the sentence *"the Lord is in the NEW graph
-  with pawns still carrying duties from the OLD one"*, never a bare failure.
-- **Read-back names the Lord, its pawns and the toil.** `lordIndex`, `lordLoadID`,
-  `faction`, `pawnCount`, `jobBefore`/`jobAfter`, `toilBefore`/`toilAfter`,
-  `graphToilCount`, and per-pawn `dutyBefore`/`dutyAfter` with `dutiesChanged`.
-- **Refuses a zero-pawn Lord** (LordManager removes an empty Lord on its own tick, so a
-  job set there is discarded) **and a LordJob whose graph does not build** — `CreateGraph`
-  and `graph.ErrorCheck` both run inside `SetJob`, so that failure lands before anything
-  is disturbed and the refusal says the Lord still holds its old job.
-
-## 🔑 Two decisions a reviewer should see, not infer
-- **Constructor args bind BY NAME**, and a name matching no parameter is **refused with
-  the accepted names listed** — never dropped. Supported conversions: string, bool, int,
-  float, enum, `Faction` (screen name or FactionDef), `IntVec3` (bounds-checked), `Map`,
-  any `Def`. Anything else is refused **by type name**.
-- **It will not fall back to a parameterless constructor.** `LordJob_AssaultColony` has
-  one, for Scribe loading, and it leaves `assaulterFaction` null — read `CreateGraph` and
-  every flee, kidnap and steal transition is inside `if (assaulterFaction != null && ...)`.
-  So the easy construction gives a graph that builds, error-checks clean, and behaves like
-  a different job. That is the trap this refusal exists for.
+Does `SetJob` **and** `GotoToil` — `SetJob` alone leaves the group in the new graph obeying the
+old graph's duties. Three post-`SetJob` failure points each return `partiallyApplied: true`.
+Binds constructor args by name; refuses an unknown arg, a zero-pawn Lord, and a graph that will
+not build. Will not fall back to a parameterless ctor: `LordJob_AssaultColony`'s leaves
+`assaulterFaction` null and every flee/kidnap/steal transition is behind a null check on it.
 
 ## Prove it
 ```
-jawa/lord_pawn_move {action:"list"}                        -> pick a raid's lordIndex
+jawa/lord_pawn_move {action:"list"}
 jawa/lord_set_job {lordIndex:N, loadID:<its loadID>, lordJob:"LordJob_ExitMapBest"}
 ```
-**Expect** `dutiesChanged == pawnCount` and `toilAfter` naming a `LordToil_ExitMap`.
-Then once with `lordJob:"LordJob_AssaultColony"` and no args — it must REFUSE with the
-signature list, not build the faction-null version.
+Expect `dutiesChanged == pawnCount`, `toilAfter` a `LordToil_ExitMap`. Then
+`lordJob:"LordJob_AssaultColony"` with no args must REFUSE with the signature list.
 
-## Watch out
-- ⚠️ **`lordIndex` is positional and shifts** as groups form and die. Pass `loadID` too —
-  it is checked and the call is refused on a mismatch. This is the only identity assertion
-  available; a Lord has no defName.
-- ⚠️ **Modded LordJobs work** (`GenTypes.GetTypeInAnyAssembly`), and their constructors
-  have no compatibility promise at all. The signature list in a refusal is the instrument.
-- 🔴 **Gated.** A build without `--gm` does not contain this tool, and its absence from a
-  tool list means the gate, not a failed deploy.
+⚠️ `dutiesChanged == 0` is not failure — a toil may re-issue the same duty def; read `toilAfter`.
+⚠️ `lordIndex` shifts as groups die; pass `loadID`, which is checked.

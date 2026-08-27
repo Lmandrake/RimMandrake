@@ -232,6 +232,21 @@ git push
 
 ⛔ **Do not reinstate it in a softer form** — not as a warning that blocks, not as a `needs` value, not as a hook, not as a rule in a seat file. ✅ **`spec`, `verify` and `criteria` remain good practice** and the sections still exist; write them when you have something to say. They are never a precondition for doing the work.
 
+### A live-game check must be PROVEN NEEDED
+
+**The default is source.** Before writing `needs: bridge` or `needs: game-up`, answer in one
+line: *what can source not tell me here?* If you cannot, verify it yourself now and close it.
+
+✅ Legitimately live: what the **engine** does that you cannot compute, and what a **human eye**
+must judge. ⛔ Never "to be thorough", "to be safe", or because the artifact matters.
+✅ The owner may delete any live check. Record what became unverified in a line; do not argue.
+
+### Whoever proves it, closes it
+
+⛔ No hand-back to the seat that authored it — that round trip proves nothing twice.
+✅ Close it, then `grep -rl "<defName or tool or ID>" infrastructure/state/items/` and close
+whatever else it settled. A source sweep found seven open items already done.
+
 ### `blocked` and `needs` are DIFFERENT AXES — do not collapse them
 
 | | means | who unsticks it |

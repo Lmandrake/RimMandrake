@@ -35,7 +35,7 @@ not a caveat.
 
 ---
 
-# ⛔ NOT BUILT 2026-08-27, seat BUILD — and the reason is a measurement, not reluctance
+## Not built
 
 Three other tools in this block were written and compiled today. This one was researched to
 the point of writing and then deliberately stopped. **The research is below so the next

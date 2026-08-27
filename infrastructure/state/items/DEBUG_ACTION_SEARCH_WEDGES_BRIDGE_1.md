@@ -50,55 +50,25 @@ Recorded in `skills/rimbridge/references/traps.md`.
 
 ---
 
-# ✅ OPTION 2 IS WRITTEN AND COMPILED, 2026-08-27, seat BUILD. ⛔ NOT DEPLOYED.
+## Built, not deployed
 
-`jawa/debug_actions`, in
-`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDebugActionTools.cs`.
-Ungated — **it executes nothing**; it is a catalogue, not a trigger. Build `--gm`:
-**0 warnings, 0 errors**, surface 238, no phantoms, none lost.
-Evidence: `infrastructure/state/evidence/BRIDGE_TOOLS_BATCH_2026-08-27.txt`.
+`jawa/debug_actions` — `JawaBenchDebugActionTools.cs`. Ungated; it executes nothing.
 
-## 🔑 Where the cost actually is — and this item did not have it yet
-Read out of `LudeonTK/DebugTabMenu_Actions.cs` `InitActions`. **Two costs, and only one is
-the one everybody assumes:**
-
-1. It walks `GenTypes.AllTypes` calling `GetMethods(Static|Public|NonPublic)` on each.
-2. ⛔ **The expensive one.** For every method carrying `[DebugActionYielder]` it **calls
-   it** — `methodInfo.Invoke(null, null)` — and enumerates the result. A yielder is
-   arbitrary mod code, and they commonly walk a whole `DefDatabase` to build their list.
-
-⇒ **"Listing the menu" secretly RUNS several hundred mod-authored enumerations on the main
-thread.** That is why a `limit` on the result bounds neither cost, and why the 30 s timeout
-was followed by minutes of every other call queueing behind it.
-
-## How this one cannot wedge the bridge
-- The **query filters during the walk**, so it bounds the work, not just the output.
-- A **wall-clock budget**, clamped to 100–10000 ms, checked before every type. It stops
-  mid-scan and returns `truncated`, `stopReason` and `resumeFromType`, so a full sweep is
-  paid for in bounded instalments. A tool that cannot exceed its budget cannot wedge.
-- ⛔ **It never invokes a yielder**, and returns `yieldersSkipped` — the blind spot is a
-  stated number, not a silent gap.
-- It deliberately does **not** hop the main thread. It touches no Map, Pawn or Thing —
-  only reflection over loaded types and the same `ProgramState`/`ModsConfig` statics
-  `DebugActionAttribute.IsAllowedInCurrentGameState` reads. Putting this walk on the main
-  thread is what turns a slow call into a wedge.
-- Per-type `try`/`catch` counts `typesFailed` instead of aborting: a type whose
-  dependencies failed to load is ordinary in a 582-mod stack, and one would otherwise kill
-  the entire walk.
+`LudeonTK/DebugTabMenu_Actions.InitActions` walks every loaded type **and invokes every
+`[DebugActionYielder]`** — arbitrary mod code, commonly walking a whole `DefDatabase`. So
+listing the menu runs hundreds of mod enumerations on the main thread, and a `limit` on the
+result bounds neither cost. This one filters during the walk, carries a wall-clock budget
+clamped to 100–10000 ms, returns `truncated` + `resumeFromType`, and never invokes a yielder —
+reporting `yieldersSkipped`.
 
 ## Prove it
 ```
 jawa/debug_actions {query:"generate map", limit:10}
-jawa/debug_actions {}                                  # no query: expect truncation
-jawa/debug_actions {resumeFromType: <the value returned>}
+jawa/debug_actions {}
+jawa/debug_actions {resumeFromType: <returned>}
 ```
-**Expect** `elapsedMs` well under `budgetMs` on the query; the bare call `truncated: true`
-with a non-null `resumeFromType`; `yieldersSkipped > 0`.
+Expect `elapsedMs` well under `budgetMs`; the bare call `truncated: true`; `yieldersSkipped > 0`.
 
-## Watch out
-- ⚠️ **This does not fix the host's tool.** `rimworld/search_debug_actions` is still there
-  and still wedges. The rule in `skills/rimbridge/references/traps.md` stands: **do not
-  call it on the full list.** This is an alternative, not a repair.
-- ⚠️ **It cannot execute an action**, by design. The catalogue gives `declaringType` and
-  `method` so a caller knows exactly what they would be invoking; invoking it is a separate
-  decision and a separate tool.
+🔴 Needs the FULL mod list — the defect only appears at scale.
+🔴 `matches[]` is a floor whenever truncated, and it truncates by design.
+⚠️ The host's tool still wedges; this is an alternative, not a repair.

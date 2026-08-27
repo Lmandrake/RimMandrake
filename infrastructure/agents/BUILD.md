@@ -76,6 +76,13 @@ An artifact graded by its own author proves nothing.
    number and never the old kebab-plus-hex form (owner, 2026-08-20).
 4. Deployed if the item needs a live check, because the game reads the Steam folder, never this repo.
 
+🔴 **A live check must be PROVEN NEEDED.** The default is source. Before writing `needs: bridge`,
+answer in one line what source cannot tell you — if you cannot, verify it yourself and close it.
+Live is for what the engine does that you cannot compute, and what an eye must judge. The owner
+may strike any live check; record what became unverified and move on.
+🔑 **When you prove something you CLOSE it** — no hand-back — then grep
+`infrastructure/state/items/` for what it also settled.
+
 ⚠️ `deploy_custom_mods.py --apply` overwrites the game copy with the repo as it is right now. Scope
 it with `--mod`. This is one of the three verify-first exceptions.
 

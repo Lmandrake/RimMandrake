@@ -112,16 +112,12 @@ The way this particular check lies. Every check has one, and it is the field
 people skip.
 
 ```
-ITEM     <what is being validated>
-SEE      <the positive observation>
-ROUTE    <exact call / defName / click path>
-PREDICT  <number or string, before the look>
-CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
-RIDE     batch | solo (<why, if solo>)
+PROVE    <exact call / defName / click path>
+EXPECT   <number or string, written before the look>
 LIES     <how this check produces a false pass>
 ```
 
-Seven lines. If it does not fit, the item is really two items.
+Three lines. If it does not fit, the item is really two items.
 
 ### How edit checks lie
 
@@ -143,12 +139,8 @@ Seven lines. If it does not fit, the item is really two items.
 ### Worked example
 
 ```
-ITEM     machine_rusted.png — corrosion pass over machine.png
-SEE      orange-brown pitting on the upper hull plates; the panel seams still read as straight lines
-ROUTE    open machine.png and machine_rusted.png side by side at 1:1
-PREDICT  mean colour shifts warm by 10–25 per channel; bbox and coverage within 2% of the original
-CLOSE    one side-by-side look agreeing the rust is surface, not silhouette — NOT chasing: exact hue
-RIDE     batch
+PROVE    open machine.png and machine_rusted.png side by side at 1:1
+EXPECT   orange-brown pitting on the upper hull plates; the panel seams still read as straight lines · mean colour shifts warm by 10–25 per channel; bbox and coverage within 2% of the original
 LIES     a plausible re-render passes on eyeballing; only compare_images.py catches a moved subject
 ```
 

@@ -175,16 +175,12 @@ The way this particular check lies. Every check has one, and it is the field
 people skip.
 
 ```
-ITEM     <what is being validated>
-SEE      <the positive observation>
-ROUTE    <exact call / defName / click path>
-PREDICT  <number or string, before the look>
-CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
-RIDE     batch | solo (<why, if solo>)
+PROVE    <exact call / defName / click path>
+EXPECT   <number or string, written before the look>
 LIES     <how this check produces a false pass>
 ```
 
-Seven lines. If it does not fit, the item is really two items.
+Three lines. If it does not fit, the item is really two items.
 
 ### How generated-image checks lie
 
@@ -207,12 +203,8 @@ Seven lines. If it does not fit, the item is really two items.
 ### Worked example
 
 ```
-ITEM     astrolabe.png — brass astrolabe icon on transparent background
-SEE      full brass ring and crossbars over the checkerboard, no green rim, no chewed edge
-ROUTE    python skills/generating-images/scripts/preview_alpha.py --input astrolabe.png --out _check.png
-PREDICT  coverage 25–40% of canvas; all four corners fully transparent; no pixels at alpha 1–31
-CLOSE    one look at _check.png with a clean rim — NOT chasing: engraving detail, exact brass hue
-RIDE     batch
+PROVE    python skills/generating-images/scripts/preview_alpha.py --input astrolabe.png --out _check.png
+EXPECT   full brass ring and crossbars over the checkerboard, no green rim, no chewed edge · coverage 25–40% of canvas; all four corners fully transparent; no pixels at alpha 1–31
 LIES     the raw PNG hides everything — an opaque black background looks identical to real alpha
 ```
 

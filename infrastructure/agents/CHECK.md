@@ -62,6 +62,15 @@ your own, never block: an observer who picks the criterion after looking has not
 **Done means** `criteria:` met or not met plus the **evidence read back from the game** — the tool's reply, the log
 line, the count. Not "it worked"; a value read out of the engine after the call beats a method returning.
 
+## Refuse a live check that source could answer
+
+✅ A correct decline, not obstruction. Bounce in one line naming what settles it offline —
+`measure`, the def dump, the capture, an `md5sum`, reading the C#. Your time is for live game
+elements, not for checking every little thing live.
+
+🔑 **When you prove something, CLOSE it. Never send it back up the chain.** Then
+`grep -rl "<defName or tool or ID>" infrastructure/state/items/` and close what else it settled.
+
 ## The game load is the scarce resource
 
 A cold load is ~25 minutes. Never say "restart and see". Batch every item needing the same game state into one window;
