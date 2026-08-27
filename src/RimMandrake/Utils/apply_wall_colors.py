@@ -78,7 +78,7 @@ def main():
     if args.limit:
         jobs = jobs[:args.limit]
     print("%d walls, %d colours, ~%d bridge calls"
-          % (len(jobs), len(plan["wallColor"]), len(jobs) * 3))
+          % (len(jobs), len(plan["wallColor"]), len(jobs) * 4))
     if not args.apply:
         return 0
 
@@ -87,10 +87,13 @@ def main():
     done = collections.Counter()
     misses = []
     with RimBridge(host, port, token, timeout=900.0) as rb:
-        # the dev tool reads UI.MouseCell(), so the cell must be ON SCREEN
-        rb.call("rimworld/set_camera_zoom", {"rootSize": 42})
-        rb.call("rimworld/jump_camera_to_cell", {"x": 125, "z": 125})
+        # 🔴 Centre the camera on every cell. Measured: a whole-ship view at
+        # rootSize 42 dropped 324 of 772 (the 228-entry FloatMenu lands somewhere
+        # get_ui_layout pairs differently), while a tight view dropped 13. One extra
+        # call per wall buys a menu that always opens mid-screen.
+        rb.call("rimworld/set_camera_zoom", {"rootSize": 20})
         for n, (x, z, col) in enumerate(jobs):
+            rb.call("rimworld/jump_camera_to_cell", {"x": x, "z": z})
             rb.call("rimworld/execute_debug_action", {"path": TOOL, "x": x, "z": z})
             tid = find_button(rb, col)
             if not tid:

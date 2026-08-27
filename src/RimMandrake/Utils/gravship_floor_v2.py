@@ -91,6 +91,24 @@ FLOOR_LIGHT = [None, "Structure_Cream", "Structure_White",
                "guy762_StructureColor_BespinBeige", "Structure_GrayLight",
                "Structure_Limestone", "Structure_Mustard",
                "guy762_StructureColor_HK47Rust", "Structure_Orange"]
+
+# ⭐ Owner, 2026-08-27: "tone down those wild oranges and yellows into shades of
+# brown". Mustard, Orange, 212thOrange, HK47Rust and Auburn are OUT of the chosen
+# scheme entirely. ReddishBrown is now the hottest thing on the ship. The ramps
+# still run pale -> warm so the halo gradient survives; only the top end moved.
+# ⭐ Refined the same day: KEEP the differing shades - orange-brown and
+# yellow-brown are the point - just not the saturated end. Mustard, Orange,
+# 212thOrange, HK47Rust and Auburn stay out; every grey is gone too, so the whole
+# hull is warm and only the VALUE and the hue-lean change across it.
+FLOOR_BROWN = ["Structure_Cream", "guy762_StructureColor_BespinBeige",
+               "Structure_Limestone", "Structure_BrownLight",
+               "Structure_Sandstone", "Structure_BrownDirt", "ReddishBrown"]
+WALL_BROWN_HOT = ["Structure_BrownSubtle", "Structure_BrownWood",
+                  "Structure_BrownDirt", "Structure_BrownDark",
+                  "Structure_UmberBurnt", "ReddishBrown"]
+WALL_BROWN_COLD = ["guy762_StructureColor_BespinBeige", "Structure_Limestone",
+                   "Structure_Sandstone", "guy762_StructureColor_CinnagarIron",
+                   "Structure_BrownFaded"]
 WALL_RUST = ["Structure_BrownSubtle", "Structure_BrownWood", "guy762_StructureColor_CinnagarIron",
              "Structure_BrownDark", "ReddishBrown", "Structure_UmberBurnt",
              "guy762_StructureColor_HK47Rust", "Structure_Auburn",
@@ -339,14 +357,14 @@ def treat_corrosion_halo(ship, ctx):
     for c in ship.deck:
         x, z = c
         near = max(0.0, 1.0 - dist[z, x] / 10.0)
-        floor[c] = _pick(FLOOR_LIGHT[1:], 0.15 + 0.8 * (0.75 * near + 0.25 * f[z, x]))
+        floor[c] = _pick(FLOOR_BROWN, 0.10 + 0.85 * (0.75 * near + 0.25 * f[z, x]))
     for c in ship.walls:
         x, z = c
         near = max(0.0, 1.0 - dist[z, x] / 10.0)
         if near < 0.2:
-            wall[c] = _pick(WALL_COLD, f[z, x])
+            wall[c] = _pick(WALL_BROWN_COLD, f[z, x])
         else:
-            wall[c] = _pick(WALL_RUST[3:], 0.1 + 0.85 * near)
+            wall[c] = _pick(WALL_BROWN_HOT, 0.1 + 0.85 * near)
     return floor, wall
 
 
@@ -387,8 +405,9 @@ TREATMENTS = [
      "Weathering with a direction: streaks run along the flight axis and pool dark at the "
      "stern, where the thrusters are. The hull remembers which way it flew.", treat_bleed_down),
     ("corrosion_halo", "Corrosion Halo",
-     "Rust as a wound. Hottest orange right at the lip of every blister, cooling through "
-     "brown to cold grey where the plating is still sound. The holes are what you look at.",
+     "Rust as a wound - in browns only. Deepest reddish-brown at the lip of every blister, "
+     "cooling through sandstone to warm pale where the plating is still sound. The holes are "
+     "what you look at.",
      treat_corrosion_halo),
     ("two_tone", "Two Tone",
      "Graphic rather than noisy: a deep umber ring over a cold grey undercarriage, with hot "
