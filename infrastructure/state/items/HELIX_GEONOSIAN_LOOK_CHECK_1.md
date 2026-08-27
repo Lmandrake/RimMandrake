@@ -40,3 +40,19 @@ Jawa_Geonosian_Grunt  Jawa_Geonosian_Heavy  Jawa_Geonosian_Specialist  Jawa_Geon
 - 🔑 The item this closes, `AUTHORED_FACTIONS_WEAR_ANYTHING_1`, listed 22 unconstrained
   kinds. **That table was stale by three days.** All 68 authored kinds now carry live tags;
   do not re-derive from the old table.
+
+## fingerprint correction — CHECK, 2026-08-27
+🔴 **The md5 in the spec above (`1cd8faf9…`) is STALE.** The live file is
+`65c636e20c9ebe444e8d1fc6d0c8609f`, in the repo and the game copy alike (still
+byte-identical to each other, so the deploy is intact).
+
+`038a2efe` re-generated the roster after this item was written. It changed **7 lines,
+all `combatPower`** — Helix Specialist 164→224, Helix Grunt 87→101, Helix Heavy 98→140
+among them. **The premise of this item survives:** `PrestigeCombatGear` still appears
+0 times in the file, and every `apparelTags` block and `apparelMoney` range is
+unchanged. Verify by look as written.
+
+🔑 **One correction to the Watch out:** Geonosians are not down to a single tag. Every
+Geonosian kind carries `ORChitinArmour` **and `KotORClothing_civilian_prole`**, so an
+unaffordable chitin set leaves them clothed, not naked. Current ranges, measured:
+Grunt 60~72 · Heavy 80~96 · Specialist 100~120 · Leader 200~240.

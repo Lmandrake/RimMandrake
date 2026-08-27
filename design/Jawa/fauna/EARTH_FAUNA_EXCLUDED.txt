@@ -1,3 +1,13 @@
+# 🔴 KNOWN GAP, found by CHECK 2026-08-27 — RETEXTURES OF BANNED ANIMALS ARE NOT BANNED.
+# This list is Core/Odyssey defNames. Mods reskin those same Earth species under their own
+# defName and the allocator lets them straight through. Currently cast on the planet:
+#   GRimTortoise (BiomeCypreJungle, LavaField)   — twin of Tortoise, banned below
+#   GRimCobra (AB_FeraliskInfestedJungle, AB_MiasmicMangrove) — twin of Cobra, banned below
+#   GRimMonitorLizard (AB_MiasmicMangrove)       — twin of MonitorLizard, banned below
+#   GRimBullfrog (SeaIce)                        — twin of Bullfrog, banned below
+#   Wolf_Great (AB_MycoticJungle)                — Odyssey greatwolf, never listed at all
+# Adding a name here does nothing on its own: the cast must be re-generated after.
+#
 # EARTH_FAUNA_EXCLUDED.txt — creatures that must never be cast on Ash'karr
 #
 # 🔴 THE RULE, and until 2026-08-26 it was written down NOWHERE.
