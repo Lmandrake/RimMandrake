@@ -112,3 +112,36 @@ Contradiction is the normal, valuable case — it is why you ran four and not on
 * **Synthesise yourself.** Do not hand four returns to a fifth agent to merge — the
   contradiction handling in §4 needs the parent's own knowledge of what the question was
   for.
+
+## 6. Cheap external models as the worker pool
+
+Fan-out workers do not have to be full-price agents. Measured 2026-08-26 against
+NVIDIA's free endpoint: read-only census and retrieval work is exactly what the cheap
+models are good at — 5/5 on a five-part chained repo task, needle retrieval at 616k
+prompt tokens, correct tool-call arguments, no quota wall. **Everything that failed
+them was WRITING**, which a fan-out worker never does. Ranking, liveness and the
+harnesses: `research/FANOUT_WORKER_EVALUATION.md`.
+
+Three rules carry over, and they matter more with a cheap worker than a strong one:
+
+* 🔴 **Never state a fact in the prompt that the worker is supposed to find.** Every
+  model tested accepted a false premise embedded in the ask and computed cheerfully
+  from it, ignoring the text in front of it. ⚠️ **This is the fan-out-specific
+  failure and it does not average out:** a wrong assumption in the SHARED prompt makes
+  every worker wrong *the same way*, and correlated error comes back looking exactly
+  like consensus. The parent's framing is the single point of failure.
+* ✅ **Put an explicit abstention clause in every worker prompt.** *"If the text does
+  not contain the answer, reply exactly: NOT IN THE PROVIDED TEXT."* Measured, same
+  battery, same items: fabrications fell from 3-of-7 to 0-or-1-of-7. It is the
+  cheapest safety available. ⛔ But do not then grade the run on that instrument — an
+  escape hatch makes every model look near-perfect and hides which ones fabricate.
+* 🔑 **Fan out for CANDIDATES, never CONCLUSIONS.** A worker that invents a plausible
+  entity, with plausible detail, for a name that does not exist is the failure that
+  poisons a synthesis, because the parent cannot tell it from a finding. Two of the
+  models tested did exactly that. Anything that lands in a doc as a number gets
+  confirmed by the parent.
+
+⚠️ **The catalog decays.** 102 invocable models one day, 83 the next, with four probed
+models delisted in between. Re-check liveness before pinning any model name into
+tooling; never take one from a doc.
+

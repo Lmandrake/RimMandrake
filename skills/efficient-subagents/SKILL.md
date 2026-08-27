@@ -73,6 +73,52 @@ line numbers. A parent can merge three agents' rows if every row is
 If a result is big, have the agent write it to a file and return the path plus
 the verdict.
 
+## Trusting what comes back
+
+🔴 **Grade the ANSWER. Never the exit code, the status field, or the fact that
+something arrived.** A weak or cheap delegate does not fail loudly — it fails
+*fluently*. Measured 2026-08-26 across three cheap models on identical tasks:
+
+- One ran ten turns of real tool calls, lost the prompt, and replied *"I need to see
+  the actual questions you'd like answered."* — clean exit, valid JSON, zero of five
+  parts answered.
+- One completed a task that was **already done**, rewrote tuned constants it had no
+  reason to touch, and reported *"2 entries rewritten"* — a sentence indistinguishable
+  from success.
+
+⇒ Before you delegate, write down the ground truth you will check the return against.
+An exact-format answer line you grade field by field beats any amount of prose. If you
+cannot state what a correct return looks like, the ask is not scoped yet.
+
+### The checklist passes what the diff catches
+
+🔴 **A criteria checklist can only find losses in the dimensions it names.** In the
+run above, a 14-check structural grader — built from the task's own criteria and
+stop signs, and *calibrated to score the known-good answer 14/14 first* — passed the
+regression **14/14**. Structure intact, semantics destroyed. Only `git diff` found it.
+
+- **If a delegate wrote anything, read the diff.** Not the summary, not the checklist.
+- Tuned constants, balance numbers, weights and prose are exactly what a structural
+  check cannot see — and exactly what a confident delegate flattens.
+- Calibrate any grader on a known-correct input **before** it judges anything. A grader
+  that fails the right answer is not measuring what you think.
+
+### Two failure modes to design the prompt against
+
+1. 🔑 **"Is this already done?" must be answered before you delegate, not by the
+   delegate.** Hand over a stale ticket and a weak worker re-does finished work —
+   and re-doing is how it gets damaged. Check the target's current state yourself;
+   it is one grep, and it is the parent's job.
+2. 🔑 **An example's CONSTANTS are not part of its shape.** "Copy the pattern that
+   file already ships" is read by a weak model as "copy that file's numbers". If you
+   point at an exemplar, say explicitly which parts are the pattern and which are
+   that instance's own values.
+
+**Cheap external models are viable for read-only fan-out and not for authorship** —
+everything that failed above was *writing*. The measured pool, its ranking, and the
+abstention clause that removes most fabrication are in
+`research/FANOUT_WORKER_EVALUATION.md`.
+
 ## Limits that actually exist
 
 - **20 concurrent** subagents per session, then `Concurrent subagent limit
