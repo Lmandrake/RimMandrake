@@ -26,6 +26,16 @@ always-alive animals                 414    in the cut list     0   (0.0%)
 **Zero false positives.** The single exception is `CorellianHound`, zeroed in nine biomes this
 project does not write — someone else's registration at 0, not a second cause here.
 
+### Scoped to the 26 biomes this item is actually about: **181 of 181, and 157 of 157**
+
+```
+our 26 biomes, zeroed entries        181    Cherry Picker cuts   181   (100.0%)
+distinct always-off animals          157    on the owner's list  157   (100.0%)
+unexplained                            0
+```
+
+**Nothing is left over.** Every zero this item was opened about is the owner's own cut.
+
 ## 🔑 The mechanism, and why every def-presence check missed it
 
 ⛔ **Cherry Picker's cuts are INVISIBLE TO THE DEF DUMP.** All nine animals are still
