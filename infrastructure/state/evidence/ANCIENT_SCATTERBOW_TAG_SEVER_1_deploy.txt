@@ -1,0 +1,21 @@
+ANCIENT_SCATTERBOW_TAG_SEVER_1 — verify step 1 of 2, 2026-08-27.
+
+DEPLOY: PASS. AncientArsenal_Ashkarr.xml is byte-identical in the game copy.
+  $ python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod Jawa_Patches
+    (plan listed ONLY Patches/BiomeCast_Ashkarr.xml as drifting)
+  $ md5sum repo game
+    b19c3889fed4e49b996e2b8af7dde8b0  src/Jawa/Jawa_Patches/Patches/AncientArsenal_Ashkarr.xml
+    b19c3889fed4e49b996e2b8af7dde8b0  <game>/Mods/Jawa_Patches/Patches/AncientArsenal_Ashkarr.xml
+
+  The deployed copy carries the sever, read back at line 51-56:
+    PatchOperationConditional  xpath .../MA_CapryakScatterbow/weaponTags
+      match PatchOperationAttributeSet  attribute Inherit  value False
+
+CAPTURE: UNMEASURED — not run, and cannot be. Defs parse only at startup and the
+sever acts at inheritance-resolution time, so nothing about this is observable until
+the next cold load produces a capture whose modCount matches ModsConfig.xml. The
+criteria (Gun absent, NeolithicRangedAdvanced present, no red error) are all in that
+half. ⛔ This is a check that could not run, not a check that passed.
+
+Nothing here was re-deployed: the sever was already in the game copy before this
+session's --apply, which wrote one file and it was not this one.

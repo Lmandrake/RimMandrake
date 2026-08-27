@@ -2326,3 +2326,5 @@
 {"seat":"BUILD","event":"start","id":"STALE_ITEM_HEADER_CORRECTIONS_1","ts":"2026-08-27T04:07:07Z"}
 {"seat":"BUILD","event":"verify","id":"STALE_ITEM_HEADER_CORRECTIONS_1","result":"pass","config":"offline, HEAD","evidence":"infrastructure/state/evidence/STALE_ITEM_HEADER_CORRECTIONS_1.txt","sha":"8660ae4e","ts":"2026-08-27T04:07:07Z"}
 {"seat":"BUILD","event":"close","id":"STALE_ITEM_HEADER_CORRECTIONS_1","sha":"8660ae4e","ts":"2026-08-27T04:07:13Z"}
+{"seat":"BUILD","event":"verify","id":"ANCIENT_SCATTERBOW_TAG_SEVER_1","result":"partial","config":"deploy half only, game copy","evidence":"infrastructure/state/evidence/ANCIENT_SCATTERBOW_TAG_SEVER_1_deploy.txt","sha":"a838f804","ts":"2026-08-27T04:08:01Z"}
+{"seat":"BUILD","event":"note","id":"ANCIENT_SCATTERBOW_TAG_SEVER_1","text":"Deploy half is DONE and byte-identical - do not re-deploy. Only the post-load capture remains: Gun absent, NeolithicRangedAdvanced present, no red error naming the file. Purely awaiting harvest.","ts":"2026-08-27T04:08:01Z"}
