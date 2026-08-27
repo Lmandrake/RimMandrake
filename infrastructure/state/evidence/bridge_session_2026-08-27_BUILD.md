@@ -105,3 +105,52 @@ because only one `PirateBandBase` faction existed. This world carries **four**: 
 Every non-player pawn destroyed; `Jawa_HuttCartel` returned to `kind Neutral, goodwill 0`
 (its measured baseline) on both sides; map back to 1 colonist; game left PAUSED.
 ⛔ Nothing was saved.
+
+---
+
+# The bare-hands cohort, settled — 150 spawns, 2026-08-27
+
+Two runs, both live, both censusing **requested kind vs kind read back** — which no previous
+harvest did, and which is the whole reason this was unexplained.
+
+## Run A — 16 kinds × 5, the kinds `roll_arm_harvest_2026-08-24.md` names as bare-rolling
+
+    80 spawned : 76 of our own kinds, 4 SUBSTITUTED to a vanilla kind
+    bare among our own kinds        7
+    bare among the substituted      4      <- 4 of 4. Every substituted pawn was bare.
+
+Substitution hit only `Jawa_Empire_Heavy`, `Jawa_Empire_Specialist`, `Jawa_Hutt_Grunt` and
+`Jawa_Hutt_Leader` — 1 pawn each — and the tool reported `Spawned 5/5` of the requested kind
+every time.
+
+## Run B — 7 kinds × 10, every bare pawn's backstory resolved
+
+    70 spawned : 70 of our own kinds, 0 substituted
+    bare among our own kinds        5
+      of which a violence-disabling backstory   5
+      of which UNEXPLAINED                      0
+
+The pacifist set is the **59** `BackstoryDef`s carrying `Violent` in `workDisables`, measured
+from the capture rather than hand-listed.
+
+## 🔑 The conclusion, and it removes a defect nobody could find
+
+**Every one of the 11 bare pawns across 150 spawns is explained by exactly two causes:**
+
+| cause | evidence |
+|---|---|
+| a violence-disabling backstory | 5 of 5 bare-among-ours in run B |
+| the kind was silently substituted for a vanilla one | 4 of 4 substituted pawns in run A |
+
+⇒ **There is no third cause, and in particular there is no `weaponMoney` defect.**
+`weapon_affordability.py`, corrected the same day to read the emitted XML instead of the
+generator's stale shadow table, reports **always arms 49 · sometimes 0 · never 0 · unmeasured
+0**. The live evidence now agrees with it.
+
+⭐ **This retires the "8 combat-capable bare pawns" of 2026-08-24.** That harvest recorded the
+**requested** kind, so a substituted vanilla `Colonist` — bare, and carrying whatever backstory
+a Colonist rolls — was counted as one of our kinds arriving bare with no pacifist excuse. The
+rate agrees: 5 bare in 70 is **7.1%**, against that harvest's 21 in 285 = **7.4%**.
+⚠️ **Strongly supported, not proven.** Confirming it means re-reading that harvest's raw rows
+for a `kindDef` that differs from the one requested; if it did not record the actual kind, the
+question is closed by this run instead and cannot be closed by that data at all.

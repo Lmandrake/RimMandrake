@@ -33,3 +33,36 @@ is what a substituted vanilla kind looks like.
 - [ ] The kind read back matches the kind requested, or the tool reports the substitution.
 - [ ] The bare-hands cohort in `roll_arm_harvest` is re-scored with requested-vs-actual kind
       recorded per pawn.
+
+---
+
+## ✅ MEASURED 2026-08-27, 150 spawns — the hypothesis above is CONFIRMED as a cause, and it is not the only one
+
+**Run A — 16 kinds × 5.** 80 spawned: 76 ours, **4 substituted**, and **4 of the 4
+substituted pawns were bare**. Substitution appeared only on `Jawa_Empire_Heavy`,
+`Jawa_Empire_Specialist`, `Jawa_Hutt_Grunt`, `Jawa_Hutt_Leader`, one pawn each, with
+`Spawned 5/5 <requested kind>` reported every time.
+
+**Run B — 7 kinds × 10.** 70 spawned, 0 substituted, 5 bare, and **all 5 carry a
+violence-disabling backstory. Zero unexplained.**
+
+🔑 **Together these close the bare-hands question: two causes, no third.** A pacifist
+backstory, or a substituted vanilla kind. ⛔ **There is no `weaponMoney` defect** — the
+corrected `weapon_affordability.py` reports `always arms 49 · sometimes 0 · never 0 ·
+unmeasured 0`, and the live evidence now agrees with it rather than contradicting it.
+
+⭐ **This retires the "8 combat-capable bare pawns" of `roll_arm_harvest_2026-08-24.md`.**
+That harvest recorded the **requested** kind, so a substituted vanilla `Colonist` was counted
+as one of our kinds arriving bare with no pacifist excuse. Rates agree: 5 in 70 = **7.1%**
+against 21 in 285 = **7.4%**.
+
+⚠️ **Substitution rate here is 4 of 80 = 5%, and the sample is small.** What is NOT measured:
+why those four kinds and not the others, whether the rate differs at raid generation rather
+than direct spawn, and whether the substitution is `spawn_pawn`'s or the engine's
+`PawnGenerator` falling back. **The last of those is the one worth knowing** — if it is the
+engine, it affects raids too and no bridge fix touches it.
+
+## criteria
+- [x] The kind read back is compared against the kind requested — done, twice.
+- [ ] The substitution is attributed to `jawa/spawn_pawn` or to `PawnGenerator`.
+- [ ] The tool reports the substitution instead of counting it as the requested kind.

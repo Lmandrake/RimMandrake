@@ -43,3 +43,21 @@ read the emitted XML instead of the generator's stale shadow table, reports **al
 sometimes 0 · never 0 · unmeasured 0**. The band is not the cause; the leading remaining candidate
 is that the tool's prices are unstuffed `MarketValue` while the engine compares
 `ThingStuffPair.Price`, and 11 kinds pass on under 25% headroom.
+
+---
+
+## ⭐ STRENGTHENED 2026-08-27 by live measurement — this guard is now the LARGER half of the fix
+
+150 spawns, seat BUILD. Evidence: `infrastructure/state/evidence/bridge_session_2026-08-27_BUILD.md`.
+
+Of 70 pawns spawned across 7 roster kinds, **5 arrived bare and all 5 carry a
+violence-disabling backstory — zero unexplained.** The pacifist set is the 59 `BackstoryDef`s
+carrying `Violent` in `workDisables`, measured from the capture.
+
+⇒ The item this was split from assumed the backstory guard closed *at most* 13 of 21 bare
+pawns, with 8 left to a `weaponMoney` defect. **That defect does not exist** — the other cause
+is `SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1`. ⇒ **Ruling on which factions the guard covers now
+decides most of the bare-hands problem, not part of it.**
+
+⛔ **Still not BUILD's to widen.** The 2026-08-22 ruling stands until DECIDE moves it; this
+note raises the stakes of the question, it does not answer it.
