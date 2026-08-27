@@ -40,6 +40,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from game_paths import DEF_DUMP, MODS_CONFIG          # noqa: E402
+# 🔑 The family heuristic is the WEAPON audit's, imported rather than restated. Two
+# copies of a grouping rule drift, and a tag family is the same vocabulary question
+# on either side - `RebelApparel` splits exactly as `WarcasketBasic` does.
+from weapon_tag_audit import _family                   # noqa: E402
 import xml.etree.ElementTree as ET                    # noqa: E402
 
 DUMP = Path(DEF_DUMP)
@@ -91,6 +95,9 @@ def main() -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--verbose", action="store_true",
                     help="list every kind that asks for apparel by tag, not only the failures")
+    ap.add_argument("--siblings", action="store_true",
+                    help="for each failing kind, print the SURVIVING tags in the same "
+                         "family - the shortlist a human chooses from")
     ap.add_argument("--anyway", action="store_true",
                     help="report even though the dump does not match the live mod list")
     a = ap.parse_args()
@@ -136,6 +143,26 @@ def main() -> int:
     print("🔴 kinds whose EVERY apparelTag has no surviving carrier: %d" % len(naked))
     for dn, want in sorted(naked):
         print("   %-34s %s" % (dn, want))
+        if not a.siblings:
+            continue
+        # 🔑 SAME RULING AS THE WEAPON SIDE: a dead tag dies out of a FAMILY, and the
+        # family is the decision. ⚠️ And the same refusal to pick - an apparel sibling
+        # is usually a TIER or a ROLE, so `AM_Boss` -> `AM_Fashion` is not a repair, it
+        # is a different faction look. Read the counts, then choose.
+        # ⚠️ ONE DIFFERENCE FROM WEAPONS, AND IT MATTERS: a kind here is not naked, so
+        # "no surviving sibling" is not a call to reach for a vanilla ladder. Leaving it
+        # to the generic pool is a legitimate answer on the armour side.
+        for w in want:
+            fam = _family(w)
+            sibs = sorted((t, len(v)) for t, v in tags.items()
+                          if t != w and _family(t) == fam and v)
+            if sibs:
+                print("      %-26s family %-14s survivors: %s"
+                      % ("\u21b3 " + w, fam,
+                         ", ".join("%s(%d)" % (t, n) for t, n in sibs[:6])))
+            else:
+                print("      %-26s family %-14s NO SURVIVING SIBLING"
+                      % ("\u21b3 " + w, fam))
     print("\n⚠️  kinds that lost SOME tags but keep at least one: %d" % len(thin))
     if a.verbose:
         for dn, lost, alive in sorted(thin):
