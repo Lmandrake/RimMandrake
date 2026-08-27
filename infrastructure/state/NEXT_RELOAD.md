@@ -608,16 +608,22 @@ TOOLS"*. That refusal is correct — do not reach for `--allow-tool-removal`.
 🔑 **Check the output for the word `deployed`.** A piped `grep` hides the running-game refusal,
 and you then test stale code and conclude the new tool "was not found".
 
-**What is waiting** — built clean at `88b5b7b5`, 0 warnings, 0 errors, surface 237, phantoms
+**What is waiting** — built clean at `887d4a3d`, 0 warnings, 0 errors, surface 238, phantoms
 none. Evidence: `infrastructure/state/evidence/BRIDGE_TOOLS_BATCH_2026-08-27.txt`.
 
 | tool | item | validation plan |
 |---|---|---|
 | `jawa/lord_set_job` | `LORD_JOB_SWAP_TOOL_1` | on the item |
 | `jawa/bridge_arg_report` | `BRIDGE_DROPS_UNKNOWN_PARAMS_1` | on the item |
+| `jawa/debug_actions` | `DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1` | on the item |
+
+🔑 **`jawa/debug_actions` wants the FULL 582-mod list to prove anything.** It replaces a
+host tool that times out at 30 s and blocks every other caller *at scale*; the minimal list
+does not reproduce that, so a fast reading there is not evidence. The other two prove fine
+on the minimal list.
 
 ⚠️ **The deployed copy is far behind the source.** The game copy's tool surface reads **166**
-against the build's **237**. Everything written since 2026-08-26 is undeployed, not just these
+against the build's **238**. Everything written since 2026-08-26 is undeployed, not just these
 two — so this window pays for more than the two items above.
 
 ⚠️ **A deployed DLL registers NOTHING until the game restarts.** RimBridgeServer discovers
