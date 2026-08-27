@@ -80,6 +80,14 @@
          also the exact version we will be hosted by, so a version skew between
          compile-time and run-time SDK is impossible by construction. -->
     <RimBridgeSdkDir Condition="'$(RimBridgeSdkDir)' == ''">C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3727949765\1.6\Assemblies</RimBridgeSdkDir>
+    <!-- 0Harmony, for JawaBenchArgGuard ONLY (BRIDGE_DROPS_UNKNOWN_PARAMS_1). It comes
+         from the Harmony mod (brrainz.harmony, workshop 3103565406/2009463077), whose
+         "Current" folder is the version-agnostic one the mod itself resolves to.
+         🔑 Private=false like every other reference here, and for the same reason: at
+         runtime RimBridgeServer has ALREADY loaded 0Harmony (it applies its own patch
+         classes), so shipping a second copy would give the process two HarmonyLib
+         types and a patch registered against "ours" would not be the one that runs. -->
+    <HarmonyDir Condition="'$(HarmonyDir)' == ''">C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies</HarmonyDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -95,6 +103,10 @@
       <HintPath>$(RimWorldManagedDir)\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -107,6 +119,8 @@
            Text="Assembly-CSharp.dll not found at $(RimWorldManagedDir). Pass /p:RimWorldDir=... " />
     <Error Condition="!Exists('$(RimBridgeSdkDir)\RimBridgeServer.Sdk.dll')"
            Text="RimBridgeServer.Sdk.dll not found at $(RimBridgeSdkDir). Is RimBridgeServer subscribed? Pass /p:RimBridgeSdkDir=... " />
+    <Error Condition="!Exists('$(HarmonyDir)\0Harmony.dll')"
+           Text="0Harmony.dll not found at $(HarmonyDir). Is the Harmony mod subscribed? Pass /p:HarmonyDir=... " />
   </Target>
 
 </Project>

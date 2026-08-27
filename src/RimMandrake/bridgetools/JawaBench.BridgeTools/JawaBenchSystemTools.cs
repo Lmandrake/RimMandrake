@@ -472,7 +472,7 @@ namespace JawaBench.BridgeTools
             "jawa/dlc_status",
             Description =
                 "Read ModsConfig's five expansion-active flags in one call - Royalty, Ideology, " +
-                "Biotech, Anomaly, Odyssey. THIS IS THE GUARD every Anomaly tool (jawa/anomaly_*) and " +
+                "Biotech, Anomaly, Odyssey. THIS IS THE GUARD every Anomaly tool in the anomaly_ family and " +
                 "the sand half of jawa/depth_grid_set need before you call them: those refuse by name " +
                 "when the matching flag is false rather than silently doing nothing, and this tool is " +
                 "how you check first instead of finding out from a refusal.",

@@ -1,0 +1,74 @@
+Companion build batch, 2026-08-27, seat BUILD. WRITTEN AND COMPILED — NOT DEPLOYED.
+The game is UP and the OS locks the DLL, so this rides the next game-down window.
+
+    python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm
+    Build succeeded.  0 Warning(s)  0 Error(s)
+    OK: bundle ships only JawaBench.BridgeTools.dll     (Private=false held on 0Harmony)
+
+tool surface of the BUILT dll: 237, phantoms: []      (was 238 with one phantom, below)
+    PRESENT jawa/lord_set_job
+    PRESENT jawa/bridge_arg_report
+    LOST    (none)
+
+--- 1. jawa/lord_set_job  — LORD_JOB_SWAP_TOOL_1 -----------------------------
+src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLordJobTools.cs
+Gated behind JAWA_GM_TOOLS, on lord_poke's test: what happens next is the target
+StateGraph's decision, not the caller's.
+
+Signatures read from 1.6 source, not guessed:
+    Lord.SetJob(LordJob, bool loading = false)   Verse/AI/Group/Lord.cs:290
+    Lord.GotoToil(LordToil)                      Verse/AI/Group/Lord.cs:547
+    StateGraph.StartingToil                      Verse/AI/Group/StateGraph.cs:15
+
+🔑 Why both calls are one operation, from the source: SetJob replaces curJob, nulls
+curLordToil and builds a new graph — and touches NO pawn's duty. GotoToil is what runs
+Init() and UpdateAllDuties(). SetJob alone leaves the group in the new graph obeying
+duties from the old one, with nothing in the log.
+
+🔴 Why a parameterless constructor is not a safe default, measured in the source:
+LordJob_AssaultColony has one (for Scribe loading) that leaves assaulterFaction null.
+Reading CreateGraph, every flee / kidnap / steal transition is inside
+`if (assaulterFaction != null && ...)`. So the easy construction yields a graph that
+BUILDS, ERROR-CHECKS CLEAN and behaves like a different job. The tool binds ctor args
+BY NAME, refuses a ctor it cannot satisfy with every signature listed, and refuses to
+fall back to the parameterless one when richer ones exist and no args were given.
+
+⛔ An argument naming no parameter is REFUSED by name, never dropped — this file will
+not reproduce the very defect item 2 below is filed against.
+
+--- 2. jawa/bridge_arg_report  — BRIDGE_DROPS_UNKNOWN_PARAMS_1 ---------------
+src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchArgGuard.cs
+Harmony prefix on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments
+(private static, RVA 0x3fb28), installed from JawaBenchInit.Announce().
+
+Covers ALL tools on the bridge, not only this companion's, because it sits in the
+shared binder. REPORT-ONLY by default; 'strict' is opt-in, deliberately — refusing in
+a shared binder would change behaviour for every caller at once.
+
+csproj: 0Harmony referenced from the Harmony mod's Current\Assemblies with
+Private=false, and a CheckReferences Error added so a missing 0Harmony fails loudly
+instead of emitting type-not-found noise. The bundle check confirms no second copy
+ships — a second HarmonyLib in-process would mean our patch is not the one that runs.
+
+Three limits written into the tool's own result rather than left to be discovered:
+  * installed=false and zero records read IDENTICALLY, so the result carries an
+    explicit blindWarning. The target is a third-party private method with no
+    compatibility promise; Install() asserts it resolved and logs loudly if not.
+  * The module initializer is lazy (JAWABENCH_INIT_LINE_IS_LAZY_1), so the FIRST
+    tool call of a session is bound before the patch exists. Its dropped args are
+    invisible; every call after it is covered.
+  * It sees only what reaches BindArguments — anything
+    ReflectedCapabilityBinding.NormalizeInvocationArguments rewrote upstream is gone.
+
+--- 3. phantom tool name removed --------------------------------------------
+JawaBenchSystemTools.cs:475 said "every Anomaly tool (jawa/anomaly_*)" in PROSE.
+build.py scans the assembly for jawa/ literals, so that produced a phantom tool named
+`jawa/anomaly_` in the surface — skill rule 9. ⚠️ It mattered: build.py refuses a
+deploy that "WOULD REMOVE TOOLS", and a phantom makes that guard lie in both
+directions. Reworded; surface 238 -> 237, phantoms [] .
+
+--- what is NOT proven ------------------------------------------------------
+🔴 NONE OF THIS IS PROVEN LIVE. A clean build proves it compiles and that the names
+are in the artifact. It proves nothing about behaviour, and `success: true` would not
+either. Both tools need the deploy window and a proof run. Validation plans are on
+the items.

@@ -108,6 +108,23 @@ namespace JawaBench.BridgeTools
 
                 Log.Message("[JawaBench] ready: " + tools + " tools, build " + build);
 
+                // 🔑 BRIDGE_DROPS_UNKNOWN_PARAMS_1. Install the Harmony prefix that makes
+                // the host bridge's silently dropped tool arguments visible. This is the
+                // right place BECAUSE this initializer is lazy: it fires on the first
+                // jawa/ tool invocation, by which point RimBridgeServer and 0Harmony are
+                // certainly loaded. ⚠️ The cost is that the very first call of a session
+                // is bound before the patch exists - stated in the report tool's own
+                // result rather than left for someone to discover.
+                // ⛔ Install() never throws; it records its own failure and says so in
+                // the log, because a guard that failed silently would be the same class
+                // of defect it was written to abolish.
+                try { JawaBenchArgGuard.Install(); }
+                catch (Exception ge)
+                {
+                    try { Log.Warning("[JawaBench] argument guard install threw: " + ge.Message); }
+                    catch { }
+                }
+
                 // ⭐ A SECOND LINE, AND IT IS THE ONE THAT PAYS LATER. Owner's ask,
                 // 2026-08-23: print state that makes a log debuggable months from now,
                 // not just proof that the assembly loaded.
