@@ -45,3 +45,81 @@ line costs nothing and would have saved four separate losses today.
 
 🔑 **Read the schema, not the sibling tool.** `b.list_tools()` gives the accepted keys per tool; diff
 your arguments against them before issuing a batch. Recorded in `rimbridge/references/traps.md`.
+
+---
+
+# 🔑 THE FIX IS AVAILABLE TO US, AND THE TARGET IS NAMED — measured 2026-08-27, BUILD
+
+Method: `dnfile` + `dncil` parsing the ECMA-335 `#~` / `#Strings` heaps and disassembling
+the method body. **A real TypeDef/MethodDef/Field census, not a `strings` scan** — so its
+negatives are worth something, subject to the caveat at the bottom.
+
+## The assemblies
+```
+<workshop>/294100/3727949765/1.6/Assemblies/RimBridgeServer.dll                       1,305,600
+<workshop>/294100/3727949765/1.6/Assemblies/RimBridgeServer.Core.dll                    252,928
+<workshop>/294100/3727949765/1.6/Assemblies/RimBridgeServer.Sdk.dll                      33,280
+<workshop>/294100/3727949765/1.6/Assemblies/RimBridgeServer.Contracts.dll                22,528
+<workshop>/294100/3727949765/1.6/Assemblies/RimBridgeServer.Extensions.Abstractions.dll    5,632
+```
+
+## 🔴 The root cause, from the IL — it is a PULL LOOP, not a scan
+```
+RimBridgeServer.AnnotatedExtensionCapabilityProvider
+private static object[] BindArguments(
+    MethodInfo method,
+    IReadOnlyDictionary<string, object> arguments,
+    RimBridgeServer.Sdk.IRimBridgeContext sdkContext,
+    CancellationToken cancellationToken)                              RVA 0x3fb28
+```
+It iterates **`method.GetParameters()`** and, for each parameter that is not
+`IRimBridgeContext` or `CancellationToken`, calls `arguments.TryGetValue(param.Name, out v)`
+then `ConvertArgument(v, param.ParameterType)`. ⇒ **It never enumerates `arguments`.** A key
+with no matching parameter is never read, never counted, never reported. The 90-instruction
+body contains **no count or length comparison** between the two — CONFIRMED absent, not merely
+unmeasured.
+
+Call path: `InvokeMethodAsync(toolClass, method, arguments, sdkContext, ct)` → `InvokeAsync(…)`
+→ `BindArguments`. Upstream, `RimBridgeServer.ReflectedCapabilityBinding.NormalizeInvocationArguments(object)`
+(public static) turns the raw JSON payload into the dictionary — kebab-case, `JObject`/`JArray`
+and legacy shapes — before `BindArguments` sees it.
+
+## ⛔ THE CHEAP FIX DOES NOT EXIST — do not go looking for it
+`ctx` is `RimBridgeServer.Sdk.IRimBridgeContext`; the only implementation is
+`RimBridgeServer.RimBridgeContext`. A full field/property census of both types returns
+**exactly** `OperationId · CapabilityId · Tools · Game · MainThread` (concrete class carries
+only those five `k__BackingField`s). **No member holds the raw argument dictionary**, so a
+JawaBench tool cannot self-check its own unknown keys. That route is closed.
+
+## ✅ The route that IS open
+A Harmony prefix or postfix on `BindArguments` — the one place where the full raw
+`arguments` dictionary and the declared `method.GetParameters()` are both in scope:
+```csharp
+var unknown = arguments.Keys.Except(method.GetParameters().Select(p => p.Name)).ToList();
+```
+Then either throw, or stash `unknown` in a `[ThreadStatic]`/`AsyncLocal` that JawaBench's own
+tools read and surface as `droppedParameters[]`. `BindArguments` is **private static**, which
+`AccessTools.Method` handles — it simply is not reachable as a public API.
+
+## What is still unmeasured
+- Whether `ConvertArgument` or `NormalizeInvocationArguments` throw or log on some malformed
+  shapes — only their signatures were pulled, not their bodies. UNMEASURED.
+- Whether RimBridgeServer has a **settings-menu** strict-mode toggle — not checked; this was
+  a binary-only investigation.
+- The name census found no type or member containing `Strict`, `Unknown`, `Unrecognized`,
+  `ExtraParam` or `DroppedParam` as a parameter-handling concept. ⚠️ **That is a strong
+  negative but not a complete one** — it cannot rule out such logic living inside a method
+  body under an unrelated name.
+
+## Watch out for whoever writes this
+- ⚠️ **The patch target is a THIRD-PARTY PRIVATE METHOD.** It carries no compatibility
+  promise; a RimBridgeServer update can rename or inline it and the patch then silently stops
+  applying. Make the Harmony patch **assert its target resolved** and log loudly if not —
+  a Harmony patch that fails to find its method is exactly the silent no-op this item exists
+  to abolish.
+- 🔑 **This changes behaviour for ALL 291 live tools, not just ours**, because it sits in the
+  shared binder. Refusing outright would break any caller that has been passing a stray key
+  and getting away with it. **Prefer reporting `droppedParameters[]` first**, look at what a
+  session actually surfaces, and only then decide whether to refuse.
+- 🔴 **Deploying it needs the game DOWN** — assemblies are locked by the OS while RimWorld
+  runs. It rides a shutdown window, unlike every XML fix in this queue.

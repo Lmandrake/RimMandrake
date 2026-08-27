@@ -723,3 +723,21 @@ with `src/RimMandrake/Utils/biome_commonality_zeroed.py`**, which reads the reco
 744 authored entries are switched off, 157 distinct animals ALWAYS off in the 26 biomes we
 author, 168 always off across all 67. **A roster that names one of them is designing around an
 animal that cannot appear.**
+
+**33 — The bridge's unknown-parameter drop is FIXABLE, and the only route is a Harmony patch
+on a third-party PRIVATE method.** Measured 2026-08-27 by parsing RimBridgeServer's CLI
+metadata and disassembling the method body (`dnfile`/`dncil`, a real TypeDef/MethodDef census,
+not a `strings` scan). `RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments`
+(private static, `RimBridgeServer.dll` RVA `0x3fb28`) iterates `method.GetParameters()` and
+calls `arguments.TryGetValue(param.Name, …)` — **it never enumerates `arguments`**, and its
+90-instruction body contains no count comparison between the two. So a JSON key that matches no
+declared `[ToolParameter]` is never read and never reported, for **all 291 live tools**.
+⛔ **The cheap route is CLOSED and does not need re-checking:** `IRimBridgeContext` and its sole
+implementation `RimBridgeServer.RimBridgeContext` expose exactly `OperationId · CapabilityId ·
+Tools · Game · MainThread` and no raw-argument dictionary, so a JawaBench tool cannot self-check
+its own unknown keys. ✅ `BindArguments` is the one place the raw dictionary and the declared
+parameter names are both in scope; `AccessTools.Method` reaches a private static fine.
+⚠️ **It carries no compatibility promise** — an upstream rename makes the patch a silent no-op,
+which is the very defect being fixed, so the patch must assert its target resolved and say so
+loudly if it did not. 🔴 **And it rides a game-DOWN window**, because the OS locks assemblies.
+Full evidence: `infrastructure/state/items/BRIDGE_DROPS_UNKNOWN_PARAMS_1.md`.
