@@ -20,6 +20,13 @@ model_list:
       api_key: os.environ/NVIDIA_API_KEY
       api_base: https://integrate.api.nvidia.com/v1
 
+  # the negative control: this one thrashed in the synthetic loop
+  - model_name: nemotron-nano
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3-nano-30b-a3b
+      api_key: os.environ/NVIDIA_API_KEY
+      api_base: https://integrate.api.nvidia.com/v1
+
   # deliberately dead primary, used only to PROVE the fallback fires
   - model_name: nemotron-faultinject
     litellm_params:

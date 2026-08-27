@@ -175,6 +175,40 @@ answered anyway, and the response's `model` field read
 ✅ **`unset ANTHROPIC_BASE_URL` returns the window to normal — verified, not assumed.**
 A window with the three vars unset answered as `claude-opus-5[1m]`.
 
+### 🔴 Measured 2026-08-26 by REP — LONG-HORIZON, through Claude Code itself
+
+The synthetic 5-turn loop could not answer this; the gateway makes the real test
+possible. Task: a five-part chain — grep for a defName, read a **120 KB** file, count
+four defs inside it, sum their `combatPower`, cross to a **different mod** for a hediff
+decay, then divide. Ground truth
+`src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml | 4 | 546 | 18 | 30.3`.
+Run through a real headless Claude Code window, in this repo, hooks live.
+
+| model | turns | wall | score | result |
+|---|---|---|---|---|
+| `nemotron-3-super-120b-a12b` | 16 | **90 s** | **5/5** | format exact, 656k cumulative input tokens |
+| `nemotron-3.5-lightning-30b-a3b` | 8 | 205 s | **5/5** | correct, showed its arithmetic |
+| `nemotron-3-nano-30b-a3b` | 10 | 64 s | ⛔ **0/5** | see below |
+
+🔑 **nano-30b failed in a DIFFERENT way than the synthetic loop, and the new failure is
+the more dangerous one.** In the bare loop it thrashed on one grep. Here, after ten turns
+of real tool use, it **lost the prompt entirely** and replied *"I need to see the actual
+questions you'd like answered. Could you please provide the list of questions?"* —
+`is_error: false`, exit 0, a fluent and completely empty answer. ⚠️ **Under Claude Code's
+full system prompt the small model's instruction retention collapses**, and it collapses
+into a *polite request*, not an error. Nothing downstream would flag that as a failure.
+
+⇒ **super-120b is the pick and lightning-30b is the viable second.** Fewer turns is not
+better: lightning used half the turns and **2.3× the wall clock**.
+
+⚠️ **Still unmeasured:** anything genuinely long-horizon (this is 16 turns, not a
+session), a long `thinking`-block echo against the `"signature": null` above, writes and
+edits (both runs were `--disallowedTools Write,Edit,NotebookEdit` deliberately), and
+behaviour when a hook REFUSES a call — none of these runs tripped one.
+
+⚠️ **The criteria below say "all 11 hooks". There are 14** (`.claude/settings.json`,
+counted 2026-08-26). Do not re-derive the number from that line.
+
 ## criteria
 
 - LiteLLM running on `localhost:4000`, version pinned and recorded, **not** 1.82.7/1.82.8.
