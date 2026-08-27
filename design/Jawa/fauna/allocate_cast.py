@@ -12,7 +12,7 @@ Owner's brief, 2026-08-22:
 
 ⛔ Deterministic. No RNG. Same inputs -> same cast, so a re-run after a tweak is a diff.
 """
-import csv, json, math, os, sys, collections
+import argparse, csv, json, math, os, sys, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from dumppath import animals as animals_path
 
@@ -40,6 +40,77 @@ RARE_SCALED = {'SUPER': (0.008, 0.20), 'huge': (0.05, 0.35)}   # (floor, ceiling
 NO_PLANT_DENSITY = 0.02          # at or below this, treat the biome as having no forage
 MAX_CARNIVORE_SHARE = 0.40       # of the whole cast
 ANOMALY_BIOMES = {'HorrorWastes', 'AB_GelatinousSuperorganism', 'AB_OcularForest', 'Scarlands'}
+
+# ==========================================================================
+#  WHO IS INELIGIBLE, AND WHY IT IS NOT A JUDGEMENT CALL
+# ==========================================================================
+# Two sets of the OWNER'S OWN decisions used to be invisible to this allocator,
+# and both of them silently cost slots.
+#
+#  1. CHERRY PICKER CUTS. He removes a def in Cherry Picker; the def stays in the
+#     database and its biome `commonality` becomes 0. `AllWildAnimals` only yields
+#     kinds above 0f, so the animal is registered and UNSPAWNABLE. Measured
+#     2026-08-26: 181 of the 744 entries this file cast were cut animals - 157
+#     distinct creatures, 100% of them on his list. A quarter of the planet's cast
+#     could not appear, and nothing reported it.
+#
+#  2. HIS ART REJECTIONS. `creature_art_decisions.json` is frozen and his own
+#     (savedBy creature_art_review.html). The 10 rows in state `replace` are
+#     creatures he threw out by eye. Re-running this allocator without reading them
+#     would put every one of them straight back and delete the 12 substituted rows
+#     that replaced them - the file has no other record of that work.
+#
+# ⛔ BOTH LOADERS RETURN None, NEVER AN EMPTY SET, WHEN THEY CANNOT READ THE SOURCE.
+# An empty set means "nobody is excluded" and would quietly restore exactly the
+# creatures these exist to keep out. None makes the caller refuse.
+
+CHERRY_PICKER_CFG = [
+    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
+    "/Config/Mod_3521312241_Mod_CherryPicker.xml",
+    r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios"
+    r"\Config\Mod_3521312241_Mod_CherryPicker.xml",
+]
+
+
+def cherry_picker_cuts():
+    """PawnKindDef names the owner has cut, or None if the config is unreadable."""
+    import xml.etree.ElementTree as ET
+    from dumppath import defs_dir
+    path = next((c for c in CHERRY_PICKER_CFG if os.path.isfile(c)), None)
+    if path is None:
+        return None
+    try:
+        keys = [li.text.strip() for li in ET.parse(path).getroot().iter('li') if li.text]
+    except Exception:
+        return None
+    cut = {k.split('/', 1)[1] for k in keys if '/' in k}
+    # He cuts ThingDefs; wildAnimals takes PawnKindDefs. Map through the race.
+    kinds = set()
+    pk = json.load(open(defs_dir() + '/PawnKindDef.json', encoding='utf-8'))
+    pk = pk if isinstance(pk, list) else pk.get('defs')
+    for x in pk:
+        if not isinstance(x, dict):
+            continue
+        if x['defName'] in cut or ((x.get('fields') or {}).get('race')) in cut:
+            kinds.add(x['defName'])
+    print(f"Cherry Picker: {len(keys)} cut entries -> {len(kinds)} ineligible pawn kinds")
+    return kinds
+
+
+def art_rejections():
+    """Creatures the owner marked `replace` in his frozen art review, or None."""
+    f = f'{FA}/creature_art_decisions.json'
+    if not os.path.isfile(f):
+        return None
+    try:
+        d = json.load(open(f, encoding='utf-8'))
+    except Exception:
+        return None
+    out = {k for k, v in (d.get('decisions') or {}).items()
+           if (v or {}).get('state') == 'replace'}
+    print(f"art review: {len(out)} creature(s) the owner rejected by eye")
+    return out
+
 
 def band(b):
     b = float(b or 0)
@@ -91,6 +162,25 @@ def commonality_for(biome, bnd, DENS):
     return round(max(lo, min(hi, c * (DENSITY_REF / d))), 4)
 
 def main():
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument('--out', default=None,
+                    help='write here instead of cast_assignment.csv (for a dry diff)')
+    ap.add_argument('--i-know-this-overwrites-the-owners-substitutions', action='store_true',
+                    dest='overwrite',
+                    help='required to rewrite cast_assignment.csv in place')
+    args = ap.parse_args()
+
+    CUT = cherry_picker_cuts()
+    REJECTED = art_rejections()
+    if CUT is None:
+        sys.exit("REFUSING: Cherry Picker's config could not be read, so every animal the "
+                 "owner cut would be cast back in - registered, unspawnable and silent.\n"
+                 "Looked for Config/Mod_3521312241_Mod_CherryPicker.xml.")
+    if REJECTED is None:
+        sys.exit("REFUSING: creature_art_decisions.json could not be read, so the 10 "
+                 "creatures the owner threw out by eye would go straight back into the cast.")
+    INELIGIBLE = CUT | REJECTED
+
     A, W, fit, tiles = load()
     DENS = biome_density()
     PDENS = biome_plant_density()
@@ -113,6 +203,7 @@ def main():
             st = (A.get(dn, {}).get('stats') or {})
             lo, hi = st.get('ComfyTemperatureMin'), st.get('ComfyTemperatureMax')
             if lo is None or hi is None or not (lo <= cold and hi >= hot): continue
+            if dn in INELIGIBLE:                              continue
             if dn not in fit[b]:                              continue
             pool.append(dn)
 
@@ -161,7 +252,17 @@ def main():
         cast[b] = chosen
 
     # ---- write the assignment ----
-    out = f'{FA}/cast_assignment.csv'
+    # 🔴 THE FILE HOLDS WORK THIS SCRIPT CANNOT REBUILD FROM NOTHING. 12 rows carry a
+    # `substituted` status written by hand after the owner's art review. They ARE
+    # reproducible now that `replace` is read above - but only because it is read, so
+    # the overwrite still has to be asked for out loud.
+    out = args.out or f'{FA}/cast_assignment.csv'
+    if args.out is None and not args.overwrite:
+        sys.exit(
+            f"REFUSING: {out} carries 12 hand-substituted rows and this script rewrites "
+            f"the whole file.\n"
+            f"  --out <path>   write elsewhere and diff it first (do this)\n"
+            f"  --i-know-this-overwrites-the-owners-substitutions   replace it in place")
     with open(out, 'w', newline='', encoding='utf-8') as fh:
         w = csv.writer(fh)
         w.writerow(['biome', 'defName', 'label', 'mod', 'band', 'bodySize', 'commonality',
