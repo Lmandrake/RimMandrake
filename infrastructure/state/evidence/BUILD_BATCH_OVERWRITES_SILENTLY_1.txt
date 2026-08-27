@@ -1,0 +1,40 @@
+BUILD_BATCH_OVERWRITES_SILENTLY_1 — re-read at HEAD, 2026-08-27, seat BUILD.
+
+🔑 THE FIX IS ALREADY IN SOURCE. The item reads as open; it is not. It was implemented
+after the item was filed and is sitting in the undeployed build (game copy tool surface
+166 vs build 238), which is why the live measurement still showed the defect.
+
+src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapTools.cs, jawa/build_batch.
+
+WHAT THE ITEM ASKED FOR                          WHAT THE CODE DOES
+---------------------------------------------    ------------------------------------
+"refuse the op (default) or report it in a        BOTH. displaced[] always; the refusal
+ displaced[] array naming what was destroyed"     is opt-in via refuseIfDisplaces.
+
+"placed counts spawn attempts, not survivors"     `survived` is counted AFTER every op
+                                                  (`!t.Destroyed`), with `lostToLaterOps`
+                                                  = placed - survived as its own field.
+
+The mechanism, and it is the right one — it PREDICTS the destruction rather than noticing
+it afterwards:
+
+    if (GenSpawn.SpawningWipes(td, other.def) && !doomed.Contains(other))
+        doomed.Add(other);
+    ...
+    displaced.Add(new { op, destroyed = d.def.defName, x, z,
+                        placedByThisBatch = spawnedThings.Contains(d) });
+
+`placedByThisBatch` is the exact case the item measured: the destroyed thing was placed by
+an EARLIER op of the same run, so `placed` had already counted it.
+
+refuseIfDisplaces defaults OFF, with the reason in the parameter's own description: a door
+legitimately replaces the wall in its cell, so refusing by default would break ordinary
+layouts. Turn it on when a generator's output must not eat itself.
+
+The Description now leads with `🔴 READ survived, NOT placed`, and the message field says
+so in words whenever lostToLaterOps > 0.
+
+BUILD --gm at this commit: 0 warnings, 0 errors, surface 238, no phantoms.
+
+⛔ NOT DEPLOYED. The game is up and the OS locks the DLL. Rides NEXT_RELOAD.md with the
+other three companion tools.

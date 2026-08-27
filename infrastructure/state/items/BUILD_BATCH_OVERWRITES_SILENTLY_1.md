@@ -20,3 +20,62 @@ displaces an existing building the tool should either refuse the op (default) or
 `skills/rimbridge/references/silent-failures.md` (appended).
 
 Evidence: `infrastructure/state/evidence/template_engine_acceptance_2026-08-26_CHECK.md`
+
+---
+
+# ✅ ALREADY FIXED IN SOURCE — re-read at HEAD 2026-08-27, seat BUILD. ⛔ NOT DEPLOYED.
+
+**This item reads as open and is not.** The fix went in after it was filed and is sitting
+in the undeployed build — the game copy's tool surface reads **166** against the build's
+**238** — which is exactly why the live measurement still showed the defect.
+Evidence: `infrastructure/state/evidence/BUILD_BATCH_OVERWRITES_SILENTLY_1.txt`.
+
+`jawa/build_batch` in `JawaBenchMapTools.cs` now returns:
+
+| field | meaning |
+|---|---|
+| `placed` | spawns that succeeded — **not** the number of things on the map |
+| `survived` | counted after every op (`!t.Destroyed`) — this is the honest number |
+| `lostToLaterOps` | `placed - survived` |
+| `displaced[]` | everything this batch destroyed, each with `placedByThisBatch` |
+| `refuseIfDisplaces` | opt-in refusal instead of wiping |
+
+🔑 **It predicts the destruction rather than noticing it afterwards** —
+`GenSpawn.SpawningWipes(td, other.def)` builds a `doomed` list *before* the spawn, which is
+what makes `refuseIfDisplaces` possible at all and what lets `displaced[]` name the op that
+did it. `placedByThisBatch` is precisely the measured case: the destroyed thing was placed
+by an earlier op of the same run, so `placed` had already counted it.
+
+⚠️ **`refuseIfDisplaces` defaults OFF on purpose**, and the reason is in the parameter's own
+description: a door legitimately replaces the wall in its cell, so refusing by default would
+break ordinary layouts. Turn it on when a generator's output must not eat itself.
+
+## Validation plan — run it in the deploy window
+```
+ITEM     jawa/build_batch - survived, and displaced[]
+SEE      One call whose placed and survived DISAGREE, with displaced[] naming the op that
+         ate the earlier building and placedByThisBatch true on it
+ROUTE    Quicktest map. Reproduce the measured case deliberately:
+           jawa/build_batch {ops: "DiningChair:10,10;Table1x2c:10,10"}
+         then the refusal path:
+           jawa/build_batch {ops: "DiningChair:12,10;Table1x2c:12,10",
+                             refuseIfDisplaces: true}
+PREDICT  first call  -> placed 2, survived 1, lostToLaterOps 1,
+                        displaced[0].destroyed "DiningChair", placedByThisBatch true
+         second call -> the Table1x2c op lands in failed[] with a "refuseIfDisplaces" why,
+                        and the chair is still standing
+CLOSE    One disagreement caught AND one refusal. Not a survey of every wipe pairing.
+RIDE     batch - companion DLL, same game-down window as the other three
+LIES     🔴 placed == survived proves nothing on a batch whose footprints never overlap.
+         The proof REQUIRES an overlapping pair; a clean run is not evidence.
+         🔴 And a deployed DLL registers nothing until the game restarts.
+```
+
+## Watch out
+- ⚠️ **`displaced[]` also fires for pre-existing buildings**, not only for things this batch
+  placed — that is what `placedByThisBatch: false` means. A non-empty `displaced[]` with
+  `lostToLaterOps: 0` is a *correct* wipe of scenery, not a defect.
+- 🔑 **The advice in `skills/rimbridge/references/silent-failures.md` is now over-strict.**
+  It says a cell-by-cell read-back is the only honest success signal. Once this deploys,
+  `survived` is that signal. ⛔ Do not delete the read-back advice until the tool has been
+  proven live — the note there should be updated by whoever runs the proof, not now.
