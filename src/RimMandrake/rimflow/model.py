@@ -114,6 +114,13 @@ NEEDS = ("offline", "deploy", "game-up", "bridge", "harvest", "owner")
 # runs live items only. In DOWN the game is gone and everyone is offline.
 GAME_STATES = ("DOWN", "DEPLOYING", "LOADING", "UP", "GOING_DOWN")
 
+# The item-ID grammar, and the ONLY place it is written down. It admits the
+# THREE_DESCRIPTIVE_WORDS_# form (underscores, digits) and the legacy B58 / D5 form,
+# which is why legacy items still close under their own number.
+# 🔑 It is also the `Closes:` trailer grammar: `importer.py` walks those trailers out of
+# git, and a name this regex rejects is a trailer nothing will ever match.
+# ⛔ Do not restate this in a doctrine file. POLICY.md and CLAUDE.md both once named a
+# tool that no longer runs, and the prose kept saying it for days after the code moved.
 ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9._-]*$")
 # A run is the ONE exception to "no opaque IDs", and it is never seen alone.
 RUN_RE = re.compile(r"^(?P<item>[A-Za-z][A-Za-z0-9._-]*)/run-(?P<n>\d+)@(?P<config>[\w.-]+)$")

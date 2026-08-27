@@ -348,7 +348,7 @@ def _rowkey(it):
 
 
 def _velocity(close_days, remaining):
-    """Closes per day, straight off the `close` events. Same shape as derive_matrix.
+    """Closes per day, straight off the `close` events.
 
     ⚠️ `eta_days` is a trend line, not a date: it assumes today's rate and a fixed
     scope, and v1's scope has already moved once.
