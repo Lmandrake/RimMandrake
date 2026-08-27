@@ -41,24 +41,25 @@ from rimbridge_client import RimBridge, resolve_endpoint     # noqa: E402
 TOOL = "Actions" + chr(92) + "T: Set Color"
 
 
-def find_button(rb, want):
+def float_menu(rb):
     ui = rb.call("rimworld/get_ui_layout", {})
     for s in ui.get("surfaces", []):
-        if s.get("type") != "Verse.FloatMenu":
+        if s.get("type") == "Verse.FloatMenu":
+            return s
+    return None
+
+
+def button_for(menu, want):
+    els = menu.get("elements") or []
+    for i, e in enumerate(els):
+        if e.get("label") != want:
             continue
-        els = s.get("elements") or []
-        for i, e in enumerate(els):
-            if e.get("label") != want:
-                continue
-            # ⚠️ A FloatMenu opened near the TOP of the screen lays out upward, and the
-            # button then precedes its label instead of following it. Looking only
-            # forward missed 13 of 772 walls, all on the ship's northern edge.
-            for j in range(i + 1, min(i + 3, len(els))):
-                if els[j].get("kind") == "button":
-                    return els[j].get("targetId")
-            for j in range(max(0, i - 2), i):
-                if els[j].get("kind") == "button":
-                    return els[j].get("targetId")
+        for j in range(i + 1, min(i + 3, len(els))):
+            if els[j].get("kind") == "button":
+                return els[j].get("targetId")
+        for j in range(max(0, i - 2), i):
+            if els[j].get("kind") == "button":
+                return els[j].get("targetId")
     return None
 
 
@@ -78,7 +79,7 @@ def main():
     if args.limit:
         jobs = jobs[:args.limit]
     print("%d walls, %d colours, ~%d bridge calls"
-          % (len(jobs), len(plan["wallColor"]), len(jobs) * 4))
+          % (len(jobs), len(plan["wallColor"]), len(jobs) * 3))
     if not args.apply:
         return 0
 
@@ -87,15 +88,24 @@ def main():
     done = collections.Counter()
     misses = []
     with RimBridge(host, port, token, timeout=900.0) as rb:
-        # 🔴 Centre the camera on every cell. Measured: a whole-ship view at
-        # rootSize 42 dropped 324 of 772 (the 228-entry FloatMenu lands somewhere
-        # get_ui_layout pairs differently), while a tight view dropped 13. One extra
-        # call per wall buys a menu that always opens mid-screen.
-        rb.call("rimworld/set_camera_zoom", {"rootSize": 20})
+        # 🔴 A STALE FloatMenu BLOCKS EVERYTHING AFTER IT, SILENTLY. One wall whose
+        # menu is left open absorbs input for every wall that follows, and
+        # `execute_debug_action` answers success the whole way down. That single
+        # cascade is what produced 759, then 448, then 0 of 772 across three runs
+        # that differed in nothing that mattered. So: clear any stale menu, and
+        # retry a miss once after clearing. `get_context_menu_options` cannot see
+        # this window at all - it is a Verse.FloatMenu, not a debug context menu -
+        # so detection has to go through get_ui_layout.
+        rb.call("jawa/clear_ui", {"all": True})
         for n, (x, z, col) in enumerate(jobs):
-            rb.call("rimworld/jump_camera_to_cell", {"x": x, "z": z})
-            rb.call("rimworld/execute_debug_action", {"path": TOOL, "x": x, "z": z})
-            tid = find_button(rb, col)
+            tid = None
+            for attempt in (0, 1):
+                rb.call("rimworld/execute_debug_action", {"path": TOOL, "x": x, "z": z})
+                menu = float_menu(rb)
+                if menu:
+                    tid = button_for(menu, col)
+                    break
+                rb.call("jawa/clear_ui", {"all": True})
             if not tid:
                 misses.append((x, z, col))
                 rb.call("jawa/clear_ui", {"all": True})
