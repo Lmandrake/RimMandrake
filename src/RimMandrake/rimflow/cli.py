@@ -344,6 +344,12 @@ def cmd_next(args, seat):
     # the three start-of-turn commands had never worked. The question it was asking is
     # cheap to answer here, and answering it here means one fewer command in the turn.
     print("(game %s, bridge %s)" % (w.game, w.bridge_holder or "free"))
+    # 🔑 A bridge item is now offered while the lock is FREE, so the offer has to say
+    # how to take it. Without this the seat is handed live work and no way to start it,
+    # which is the same stranding in a friendlier costume.
+    if it.needs == "bridge" and not w.bridge_holder:
+        print("⚠️  this item needs the bridge and nobody holds it — take it first:")
+        print("      rimflow bridge take        (and `rimflow bridge release` after)")
     print("%s   %s" % (it.id, _scalars(it)))
     print(it.title or "(no title)")
     if it.caused_by:
@@ -916,6 +922,10 @@ def cmd_seat(args, seat):
 def cmd_bridge(args, seat):
     _, w = load()
     state = {"take": "taken", "release": "released"}[args.action]
+    # ⚠️ No holder guard here, deliberately. `model.py` already refuses the `bridge`
+    # verb from any seat but CHECK, for take AND release, so a second seat can never
+    # hold it and the double-take race does not exist. A guard for an unreachable case
+    # is a guard nobody can test.
     _emit({"seat": seat, "event": "bridge", "state": state}, w, quiet=True)
     print("bridge %s by %s" % (state, seat))
     return 0

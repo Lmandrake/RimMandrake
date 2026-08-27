@@ -461,6 +461,87 @@ def t_an_unknown_needs_is_offered_not_hidden():
         "it was offered but nothing recorded that the value is meaningless")
 
 
+# ---------------------------------------------------------------------------
+# BRIDGE_GATE_HARDCODES_CHECK_1 — the gate used to hardcode CHECK, so with the
+# bridge FREE (the normal state) every `needs: bridge` item was invisible to every
+# seat, its own owner included, and `why` said the window "will reopen" when it
+# never does on its own.
+
+def _bridge_world(owner, game="UP", holder=None):
+    evs = [ev(seat="OWNER", event="game", state=game)]
+    evs += _ready("BRIDGE_GATED_ITEM_1", needs="bridge", for_=owner)
+    if holder:
+        evs.append(ev(seat=holder, event="bridge", state="taken"))
+    return model.replay(evs, strict=True)
+
+
+def t_a_free_bridge_offers_the_item_to_check():
+    """🔴 THE DEFECT ITSELF. Game UP, nobody holding the lock — the normal state — and
+    CHECK was offered nothing, with no command anywhere mentioning its own item."""
+    w = _bridge_world("CHECK")
+    assert [i.id for i in priority.rank(w, "CHECK")] == ["BRIDGE_GATED_ITEM_1"], (
+        "CHECK was not offered its own bridge item while the bridge was FREE")
+
+
+def t_a_bridge_item_owned_elsewhere_is_not_offered_but_IS_explained():
+    """⚠️ Bridge items DO get owned by other seats — the item that exposed this defect
+    was one. POLICY.md line 91 means such a seat can never take the lock, so offering it
+    would trade a silent withholding for a visible dead end. It must be told to hand the
+    item over, not told to wait."""
+    w = _bridge_world("BUILD")
+    assert priority.rank(w, "BUILD") == [], (
+        "BUILD was offered a bridge item it can never take the lock for")
+    said = " ".join(priority.why_not(w, "BUILD", "BRIDGE_GATED_ITEM_1"))
+    assert "can never take the lock" in said, said
+    assert "rimflow reassign BRIDGE_GATED_ITEM_1 --to CHECK" in said, (
+        "it explained the dead end without naming the way out: %s" % said)
+
+
+def t_a_held_bridge_still_excludes_every_other_seat():
+    """⚠️ The gate is also the mutual exclusion. Opening it must not let four seats
+    drive one game — POLICY.md line 91."""
+    w = _bridge_world("BUILD", holder="CHECK")
+    assert priority.rank(w, "BUILD") == [], (
+        "BUILD was offered bridge work while CHECK was driving the game")
+    w2 = _bridge_world("CHECK", holder="CHECK")
+    assert [i.id for i in priority.rank(w2, "CHECK")] == ["BRIDGE_GATED_ITEM_1"], (
+        "the seat HOLDING the bridge was not offered its own bridge item")
+
+
+def t_a_bridge_item_is_still_shut_out_while_the_game_is_down():
+    w = _bridge_world("CHECK", game="DOWN")
+    assert priority.rank(w, "CHECK") == [], (
+        "a bridge item was offered with the game DOWN, where the bridge cannot answer")
+
+
+def t_why_never_promises_a_held_bridge_will_reopen_itself():
+    """🔑 The message that stranded the item for days. A lock held by another seat is a
+    thing to DO — someone must release it — not a window that reopens on its own.
+    ⚠️ Only reachable for CHECK, since no other seat is offered bridge work at all."""
+    evs = [ev(seat="OWNER", event="game", state="UP")]
+    evs += _ready("BRIDGE_GATED_ITEM_1", needs="bridge", for_="CHECK")
+    evs.append(ev(seat="CHECK", event="bridge", state="taken"))
+    w = model.replay(evs, strict=True)
+    w.bridge_holder = "DECIDE"          # a lock held by someone who is not the asker
+    said = " ".join(priority.why_not(w, "CHECK", "BRIDGE_GATED_ITEM_1"))
+    assert "will NOT reopen" in said and "DECIDE" in said, said
+    assert "rimflow bridge release" in said, (
+        "it said what was wrong without saying who can fix it: %s" % said)
+    # ⚠️ but with the game DOWN the stock wording is TRUE and must be left alone
+    down = " ".join(priority.why_not(_bridge_world("CHECK", game="DOWN"),
+                                     "CHECK", "BRIDGE_GATED_ITEM_1"))
+    assert "will reopen" in down, (
+        "a game-DOWN window DOES reopen by itself; that message was not the defect: %s"
+        % down)
+
+
+def t_satisfiable_without_a_seat_still_answers():
+    """⚠️ Two-arg callers predate this change and must keep working."""
+    w = _bridge_world("CHECK")
+    assert priority.satisfiable(w.items["BRIDGE_GATED_ITEM_1"], w), (
+        "the old two-argument call broke when `seat` was threaded through")
+
+
 def t_this_deployment_does_not_jump_straight_to_ready():
     """⭐ Urgency does not skip the CLAIM. It never was about the prose.
 

@@ -41,6 +41,12 @@ from . import model
 # the moment there is least time left to do it.
 LIVE = ("UP", "GOING_DOWN")
 
+# 🔴 The only seat that may HOLD the bridge — POLICY.md line 91, enforced in
+# model.py's `bridge` verb. It lives here too because offering a bridge item to a seat
+# that cannot take the lock is offering work it cannot start, which is the same
+# stranding the gate fix exists to remove, just further along.
+BRIDGE_SEAT = "CHECK"
+
 # Unrecognised `needs` values seen this process, so `next` can report them instead of
 # swallowing the items that carry them. See `satisfiable`.
 UNKNOWN_NEEDS = set()
@@ -49,15 +55,37 @@ BY_GAME = {
     "offline":  lambda g, ctx: True,
     "deploy":   lambda g, ctx: g == "DEPLOYING",
     "game-up":  lambda g, ctx: g in LIVE,
-    "bridge":   lambda g, ctx: g in LIVE and ctx.get("bridge_holder") == "CHECK",
+    # 🔴 Corrected 2026-08-26 (BRIDGE_GATE_HARDCODES_CHECK_1). This used to read
+    #     ctx.get("bridge_holder") == "CHECK"
+    # which offered a `needs: bridge` item ONLY while CHECK was actively holding the
+    # lock. With the bridge free — the normal state — every bridge item on the board was
+    # invisible to every seat INCLUDING CHECK, and `why` told them the window "will
+    # reopen", which it never does on its own. That is the silently-unofferable failure
+    # this file's own comment below calls the worst thing it can produce.
+    # ✅ Offerable when the game is live, the asking seat is one that MAY hold the
+    # bridge, and the lock is free or already its own. The offer carries
+    # `rimflow bridge take`.
+    # ⚠️ The seat test is NOT redundant. Bridge items do get owned by other seats in
+    # practice — the item that exposed this defect was one — and POLICY.md line 92 says
+    # they borrow by filing for CHECK. Offering BUILD a bridge item it can never take
+    # would trade a silent withholding for a visible dead end. `why_not` names the
+    # reassignment instead.
+    "bridge":   lambda g, ctx: (g in LIVE
+                                and ctx.get("seat") in (None, BRIDGE_SEAT)
+                                and ctx.get("bridge_holder") in (None, ctx.get("seat"))),
     "harvest":  lambda g, ctx: bool(ctx.get("harvest_pending")),
     "owner":    lambda g, ctx: ctx.get("mode") != "afk",
 }
 
 
-def satisfiable(item, world, ctx=None):
+def satisfiable(item, world, ctx=None, seat=None):
+    """⚠️ `seat` is optional so old two-arg callers keep working, but WITHOUT it a
+    `needs: bridge` item is only satisfiable while the lock is free. Pass it from any
+    caller that knows who is asking, or the queue file and `next` will disagree."""
     ctx = dict(ctx or {})
     ctx.setdefault("bridge_holder", world.bridge_holder)
+    if seat is not None:
+        ctx.setdefault("seat", seat)
     fn = BY_GAME.get(item.needs)
     if fn is None:
         # 🔴 FAIL OPEN, and say so — corrected 2026-08-22. This used to `return False`
@@ -96,7 +124,7 @@ def rank(world, seat, target="v1", ctx=None):
             continue
         if target and it.target not in (None, target):
             continue
-        if not satisfiable(it, world, ctx):
+        if not satisfiable(it, world, ctx, seat):
             continue
         out.append(it)
     out.sort(key=lambda i: (not i.this_deployment, _row_key(i),
@@ -140,8 +168,28 @@ def why_not(world, seat, iid, target="v1", ctx=None):
     if target and it.target not in (None, target):
         out.append("targeted at %s, and the active version is %s. That is a planning "
                    "decision, not a defect." % (it.target, target))
-    if not satisfiable(it, world, ctx):
-        out.append("needs `%s`, and the game is %s. ⚠️ This is NOT blocked — nothing "
-                   "is wrong, the window is simply closed and will reopen."
-                   % (it.needs, world.game))
+    if not satisfiable(it, world, ctx, seat):
+        # 🔑 Never say "will reopen" about a window that only reopens if a HUMAN acts.
+        # A bridge held by another seat, or free and untaken, is a thing to DO, not a
+        # thing to wait for, and saying otherwise is what stranded this item for days.
+        holder = (ctx or {}).get("bridge_holder", world.bridge_holder)
+        if it.needs == "bridge" and seat != BRIDGE_SEAT:
+            out.append("needs `bridge`, and the bridge is %s's — POLICY.md line 91, "
+                       "one driver at a time. %s can never take the lock, so this item "
+                       "cannot be worked here however the game is doing. Hand it over: "
+                       "`rimflow reassign %s --to %s`."
+                       % (BRIDGE_SEAT, seat, iid, BRIDGE_SEAT))
+        elif it.needs == "bridge" and world.game in LIVE and holder and holder != seat:
+            out.append("needs `bridge`, and %s is holding it. This is NOT blocked and it "
+                       "will NOT reopen on its own — it reopens when %s runs "
+                       "`rimflow bridge release`." % (holder, holder))
+        # ⚠️ Deliberately NOT special-cased: `needs: bridge` while the game is DOWN.
+        # There the stock wording is TRUE — the window really does reopen on its own,
+        # when the game next comes up. Only a LIVE game with the lock unavailable is
+        # the case that never reopens by itself. Rewriting the game-DOWN message too
+        # was an over-reach and selftest_cli caught it.
+        else:
+            out.append("needs `%s`, and the game is %s. ⚠️ This is NOT blocked — nothing "
+                       "is wrong, the window is simply closed and will reopen."
+                       % (it.needs, world.game))
     return out or ["It IS being offered. Check `rimflow next --seat %s`." % seat]

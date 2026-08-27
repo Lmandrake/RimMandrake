@@ -125,6 +125,23 @@ def t_next_on_an_empty_ledger_still_explains_itself():
     assert "game DOWN" in out, "the game state is half of why anything is offered: %s" % out
 
 
+def t_a_free_bridge_offer_says_how_to_take_it():
+    """⭐ A bridge item is now offered while the lock is FREE, so the offer must say how
+    to start it. Handing a seat live work with no way to begin is the same stranding."""
+    fresh()
+    ok("game", "UP", "--owner-said", "game up", seat="OWNER")
+    ok("file", "BRIDGE_OFFER_HINT_1", "--for", "CHECK", "--title", "drive the bridge",
+       "--needs", "bridge")
+    open(os.path.join(TMP, "items", "BRIDGE_OFFER_HINT_1.md"), "w").write(
+        "## spec\nx\n## verify\ny\n## criteria\nz\n")
+    ok("claim", "BRIDGE_OFFER_HINT_1", seat="CHECK")
+    out = ok("next", "--seat", "CHECK", seat="CHECK")
+    assert "BRIDGE_OFFER_HINT_1" in out, (
+        "a bridge item was withheld with the bridge FREE — the original defect: %s" % out)
+    assert "rimflow bridge take" in out, (
+        "offered bridge work without saying how to take the lock: %s" % out)
+
+
 def t_file_claim_start_close():
     fresh()
     out = ok("file", "DESERT_STORM_TUNING_1", "--for", "BUILD",
