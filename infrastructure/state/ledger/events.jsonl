@@ -2360,3 +2360,4 @@
 {"seat":"BUILD","event":"note","id":"ROLE_KINDS_ARMED_5_OF_5_1","text":"SOURCE SWEEP 2026-08-27: literal criterion met, but 16 of 49 kinds still roll bare sometimes (21/285, 7.4%). TWO causes and they are NOT both fixable: the violence-disabling backstory route is closed only for the 8 Empire/Blackstar kinds, and extending REQUIRE_VIOLENT further would REVERSE DECIDE's 2026-08-22 ruling that a pacifist pawn is acceptable from ten of twelve factions. The weaponMoney roll shortfall (8 of 21) is a generator fix and is fair game.","ts":"2026-08-27T04:48:24Z"}
 {"seat":"REP","event":"claim","id":"BRIDGE_GATE_HARDCODES_CHECK_1","ts":"2026-08-27T05:49:43Z"}
 {"seat":"REP","event":"start","id":"BRIDGE_GATE_HARDCODES_CHECK_1","ts":"2026-08-27T05:49:44Z"}
+{"seat":"REP","event":"close","id":"BRIDGE_GATE_HARDCODES_CHECK_1","sha":"18c75d1c","ts":"2026-08-27T06:04:50Z"}
