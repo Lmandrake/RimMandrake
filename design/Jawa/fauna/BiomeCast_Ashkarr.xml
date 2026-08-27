@@ -1053,10 +1053,96 @@
        half-built cache it leaves behind silently zeroes every
        animal that would have registered after it - for the rest
        of the session, with no further error.
-       29 pair(s) this run. A FLOOR: a third-party patch that
-       ADDS a wildBiomes entry is invisible to a base-XML scan.
+       56 pair(s) this run. Sourced from the mod XML on disk
+       AND from the newest def dump capture, because a collision a
+       PatchOperation creates exists in no def file at all - which is
+       how 27 of them shipped on 2026-08-26 against a disk-only scan.
        ============================================================ -->
 
+  <Operation Class="PatchOperationConditional">   <!-- AA_CrescendoAnole x AB_FeraliskInfestedJungle -->
+    <xpath>/Defs/ThingDef[defName="AA_CrescendoAnole"]/race/wildBiomes/AB_FeraliskInfestedJungle</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_CrescendoAnole"]/race/wildBiomes/AB_FeraliskInfestedJungle</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Purussaurus x AB_GelatinousSuperorganism -->
+    <xpath>/Defs/ThingDef[defName="Purussaurus"]/race/wildBiomes/AB_GelatinousSuperorganism</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Purussaurus"]/race/wildBiomes/AB_GelatinousSuperorganism</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_AcanthamoebaGiganteaSmall x AB_MechanoidIntrusion -->
+    <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaSmall"]/race/wildBiomes/AB_MechanoidIntrusion</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaSmall"]/race/wildBiomes/AB_MechanoidIntrusion</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Slurrypede x AB_MechanoidIntrusion -->
+    <xpath>/Defs/ThingDef[defName="AA_Slurrypede"]/race/wildBiomes/AB_MechanoidIntrusion</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Slurrypede"]/race/wildBiomes/AB_MechanoidIntrusion</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Feralisk x AB_MiasmicMangrove -->
+    <xpath>/Defs/ThingDef[defName="AA_Feralisk"]/race/wildBiomes/AB_MiasmicMangrove</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Feralisk"]/race/wildBiomes/AB_MiasmicMangrove</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Swarmling x AB_MiasmicMangrove -->
+    <xpath>/Defs/ThingDef[defName="AA_Swarmling"]/race/wildBiomes/AB_MiasmicMangrove</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Swarmling"]/race/wildBiomes/AB_MiasmicMangrove</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_ArcticLion x AB_PropaneLakes -->
+    <xpath>/Defs/ThingDef[defName="AA_ArcticLion"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_ArcticLion"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Blizzarisk x AB_PropaneLakes -->
+    <xpath>/Defs/ThingDef[defName="AA_Blizzarisk"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Blizzarisk"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Darkbeast x AB_PropaneLakes -->
+    <xpath>/Defs/ThingDef[defName="AA_Darkbeast"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Darkbeast"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_FrostboundBehemoth x AB_PropaneLakes -->
+    <xpath>/Defs/ThingDef[defName="AA_FrostboundBehemoth"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_FrostboundBehemoth"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Frostling x AB_PropaneLakes -->
+    <xpath>/Defs/ThingDef[defName="AA_Frostling"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Frostling"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Frostmite x AB_PropaneLakes -->
+    <xpath>/Defs/ThingDef[defName="AA_Frostmite"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Frostmite"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Metallovore x AB_PyroclasticConflagration -->
+    <xpath>/Defs/ThingDef[defName="AA_Metallovore"]/race/wildBiomes/AB_PyroclasticConflagration</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Metallovore"]/race/wildBiomes/AB_PyroclasticConflagration</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Procoptodon x AB_TarPits -->
+    <xpath>/Defs/ThingDef[defName="Procoptodon"]/race/wildBiomes/AB_TarPits</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Procoptodon"]/race/wildBiomes/AB_TarPits</xpath>
+    </match>
+  </Operation>
   <Operation Class="PatchOperationConditional">   <!-- Diprotodon x AridShrubland -->
     <xpath>/Defs/ThingDef[defName="Diprotodon"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
@@ -1219,6 +1305,18 @@
       <xpath>/Defs/ThingDef[defName="Neebray"]/race/wildBiomes/IceSheet</xpath>
     </match>
   </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_BedBug x PoisonForest -->
+    <xpath>/Defs/ThingDef[defName="AA_BedBug"]/race/wildBiomes/PoisonForest</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_BedBug"]/race/wildBiomes/PoisonForest</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_PebbleMit x PoisonForest -->
+    <xpath>/Defs/ThingDef[defName="AA_PebbleMit"]/race/wildBiomes/PoisonForest</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_PebbleMit"]/race/wildBiomes/PoisonForest</xpath>
+    </match>
+  </Operation>
   <Operation Class="PatchOperationConditional">   <!-- Bardelot x SeaIce -->
     <xpath>/Defs/ThingDef[defName="Bardelot"]/race/wildBiomes/SeaIce</xpath>
     <match Class="PatchOperationRemove">
@@ -1229,6 +1327,72 @@
     <xpath>/Defs/ThingDef[defName="Penguin"]/race/wildBiomes/SeaIce</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Penguin"]/race/wildBiomes/SeaIce</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_RipperHound x Volcano -->
+    <xpath>/Defs/ThingDef[defName="AA_RipperHound"]/race/wildBiomes/Volcano</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_RipperHound"]/race/wildBiomes/Volcano</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Bumbledrone x ZBiome_Badlands -->
+    <xpath>/Defs/ThingDef[defName="AA_Bumbledrone"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Bumbledrone"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_BumbledroneHierophant x ZBiome_Badlands -->
+    <xpath>/Defs/ThingDef[defName="AA_BumbledroneHierophant"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_BumbledroneHierophant"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_PhoenixOwlcat x ZBiome_Badlands -->
+    <xpath>/Defs/ThingDef[defName="AA_PhoenixOwlcat"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_PhoenixOwlcat"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Dinopithecus x ZBiome_Badlands -->
+    <xpath>/Defs/ThingDef[defName="Dinopithecus"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Dinopithecus"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- JRWTorosaurus x ZBiome_Badlands -->
+    <xpath>/Defs/ThingDef[defName="JRWTorosaurus"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="JRWTorosaurus"]/race/wildBiomes/ZBiome_Badlands</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_FissionMouse x ZBiome_DesertOasis -->
+    <xpath>/Defs/ThingDef[defName="AA_FissionMouse"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_FissionMouse"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Razorjack x ZBiome_DesertOasis -->
+    <xpath>/Defs/ThingDef[defName="AA_Razorjack"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Razorjack"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Barbslinger x ZBiome_Grasslands -->
+    <xpath>/Defs/ThingDef[defName="AA_Barbslinger"]/race/wildBiomes/ZBiome_Grasslands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Barbslinger"]/race/wildBiomes/ZBiome_Grasslands</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_DesertAve x ZBiome_Grasslands -->
+    <xpath>/Defs/ThingDef[defName="AA_DesertAve"]/race/wildBiomes/ZBiome_Grasslands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_DesertAve"]/race/wildBiomes/ZBiome_Grasslands</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- JRWWonambi x ZBiome_Grasslands -->
+    <xpath>/Defs/ThingDef[defName="JRWWonambi"]/race/wildBiomes/ZBiome_Grasslands</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="JRWWonambi"]/race/wildBiomes/ZBiome_Grasslands</xpath>
     </match>
   </Operation>
 

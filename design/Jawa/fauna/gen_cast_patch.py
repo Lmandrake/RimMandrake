@@ -96,6 +96,25 @@ def _animal_side_biomes():
     So this now reads BOTH: the disk walk (which sees mods whose XML declares it)
     and the newest capture (which sees the post-patch truth, including entries no
     file declares). The union is the answer; either alone is a floor.
+
+    🔴 THE CAPTURE HALF IS SELF-ERASING, AND THIS IS THE TRAP THAT WILL BITE NEXT.
+    Measured 2026-08-26: this run found 56 pairs, against the 61 already shipped by
+    AnimalBiomeDuplicates_Fix.xml + AnimalBiomeDuplicates_Generated.xml. All 56 were
+    in the shipped set - but FIVE shipped pairs were NOT in the 56:
+
+        AridShrubland x Armadillo · Desert x Armadillo · Scarlands x AA_CrystallineCaracal
+        TropicalSwamp x Titan     · ZBiome_DesertOasis x TYR_KangarooRat
+
+    They are missing because OUR OWN REMOVAL ALREADY WORKED. The capture is taken
+    after every PatchOperation, so a pair we have already fixed is invisible in it -
+    the fix hides its own evidence.
+
+    ⇒ ⛔ NEVER let this section REPLACE the shipped de-dup files. It is a floor, not a
+    roster: regenerating over them would drop those five removals and the five pairs
+    would come straight back on the next load, with nothing in any log naming them.
+    ✅ The shipped de-dup must always be the UNION of every pair ever found. That is
+    why src/Jawa/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml carries the CAST SECTION
+    ONLY, and the de-dup lives in its own accumulating files.
     """
     import re
     roots = ['/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100',
@@ -316,6 +335,15 @@ def main():
         parts.append('       AND from the newest def dump capture, because a collision a')
         parts.append('       PatchOperation creates exists in no def file at all - which is')
         parts.append('       how 27 of them shipped on 2026-08-26 against a disk-only scan.')
+        parts.append('')
+        parts.append('       🔴 THIS LIST IS A FLOOR, NOT A ROSTER. The capture is taken AFTER')
+        parts.append('       every PatchOperation, so a pair our own removal ALREADY FIXED is')
+        parts.append('       invisible here - the fix hides its own evidence. Measured')
+        parts.append('       2026-08-26: 56 found, 61 shipped, and the 5 absent ones were all')
+        parts.append('       already-working removals. ⛔ Never let this section REPLACE the')
+        parts.append('       shipped de-dup files; the shipped set must be the UNION of every')
+        parts.append('       pair ever found. That is why the deployed cast patch carries the')
+        parts.append('       CAST SECTION ONLY.')
         parts.append('       ============================================================ -->')
         parts.append('')
         for b, a in dups:
