@@ -702,3 +702,18 @@ return something a caller can test the same way.
 per-tile `riverDist`, and stores no flow scalar anywhere. ⇒ A harvest from the live game
 can never MEASURE it; it is CARRIED from the authored bundle by construction, and a
 future tool that claims to have measured it has invented it.
+
+**25 — A biome animal at `commonality: 0` is REGISTERED AND UNSPAWNABLE, and a mod puts it
+there on purpose.** `BiomeDef.AllWildAnimals` only yields kinds whose commonality is `> 0f`,
+so a zeroed animal is not in the biome's animal list at all — the def is present, the patch
+applied, the entry exists, and nothing reports it. ⇒ **Fauna-replacement mods suppress vanilla
+animals by REPLACING the value with 0 rather than removing the entry.** Proven on
+`TemperateForest`, which this project never patches: Core declares 36 animals and 9 read 0 in
+the capture while the other 27 keep their vanilla values. ⛔ **Two explanations are DEAD and
+must not be proposed a third time** — it is not `BiomeDef.CommonalityOfAnimal`'s duplicate-key
+cache (that method only ever READS a record) and it is not a dumper defect (these zeros are in
+`defs/BiomeDef.json`'s record field, not the computed value in `animals.json`). 🔑 **Measure it
+with `src/RimMandrake/Utils/biome_commonality_zeroed.py`**, which reads the record: 181 of our
+744 authored entries are switched off, 157 distinct animals ALWAYS off in the 26 biomes we
+author, 168 always off across all 67. **A roster that names one of them is designing around an
+animal that cannot appear.**
