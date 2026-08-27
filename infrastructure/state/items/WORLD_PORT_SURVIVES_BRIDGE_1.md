@@ -1,3 +1,20 @@
+🔴 **CLOSED BY THE OWNER, 2026-08-26 — at his bar, not on a full pass.** Verbatim:
+*"Owner decision: Close World Port."*
+
+⛔ **Do not reopen it.** But so nobody later reads this as a clean sweep, exactly what it did
+and did not measure:
+
+| half | result |
+|---|---|
+| **READ** — does the bridge report the live world faithfully | ✅ **MEASURED.** 21,872 / 21,872 tiles matched, 0 mismatched; 0 asymmetric links, 0 non-adjacent, 0 null-faction settlements of 96, 0 stale caches |
+| **WRITE** — does an authored map survive being carried IN | ⛔ **NEVER RUN.** It needs the world screen with no map, which the bridge cannot reach. Closed unrun, by decision |
+
+⚠️ The read half is also partly circular: the bundles compared against are EXPORTS of the live
+world, not an out-of-game source. It proves the bridge reads what it wrote, which is worth
+having and is not the same claim as the item's title.
+
+---
+
 🔴 **RUN 2026-08-26, PARTIAL.** The READ half is proven: `jawa/world_tile_validate` against a
 live export taken minutes earlier reads **21,872 / 21,872 matched, 0 mismatched**, on RAW fields.
 The live network and objects are sound - 0 asymmetric links, 0 non-adjacent, **0 null-faction
