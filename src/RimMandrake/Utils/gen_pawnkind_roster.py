@@ -309,6 +309,19 @@ R = [
 # ⚠️ `apparelRequired` is generated regardless of this filter and regardless of
 # `apparelMoney` - that is why the Grunt's stormtrooper plate has always landed on 4 of 4.
 # These tags govern the OTHER slots, which is where the rebel camo was coming from.
+# 🔴 `PrestigeCombatGear` REMOVED from all four Ascendant Helix kinds, 2026-08-27, BUILD.
+# It is the one apparel tag in this file whose pool contains NO Star Wars content at all.
+# Measured against the live 582-mod capture, all 22 carriers:
+#     AG_Forsaken* (7, Alpha Genes)  ·  AM_*Mechlord/MechBreaker/MechCommander* (6, Alpha
+#     Mechs)  ·  BMT_Apparel_Armor*phractPrestige (5, Biomes! Caverns beetle chitin)  ·
+#     VQE_Crypto* (4, Vanilla Quests Cryptoforge)
+# ⇒ It dressed an Arkanian ultratech faction in beetle chitin and Forsaken cloaks. This is
+# `faction_equipment_clusters.md` R4, which measured it on 2026-08-22 and was never acted on.
+# ✅ No kind is stranded: every Helix kind keeps `KotORArmor_mid` (20 carriers) and/or
+# `KotORArmor_heavy` (16), which is the "merc composite, top tier" the design asked for.
+# 🔑 The rule this enforces is the design's own: pick a tag by WHAT CARRIES IT, never by
+# what its name sounds like.
+
 APPAREL_TAGS = {
     "Junkers": ["WarcasketAll"],
     "Empire":  ["ImperialApparel", "ImperialArmy", "ImperialOfficer"],
@@ -1958,7 +1971,6 @@ KIT = {
     </weaponTags>
     <minApparelQuality>Excellent</minApparelQuality>
       <apparelTags>
-      <li>PrestigeCombatGear</li>
       <li>KotORArmor_mid</li>
     </apparelTags>
       <!-- Arkanian geneticists: glitterworld medicine and lab stock, never street drugs -->
@@ -2010,7 +2022,6 @@ KIT = {
     </weaponTags>
     <minApparelQuality>Excellent</minApparelQuality>
       <apparelTags>
-      <li>PrestigeCombatGear</li>
       <li>KotORArmor_mid</li>
     </apparelTags>
       <!-- Arkanian geneticists: glitterworld medicine and lab stock, never street drugs -->
@@ -2062,7 +2073,6 @@ KIT = {
     </weaponTags>
     <minApparelQuality>Excellent</minApparelQuality>
       <apparelTags>
-      <li>PrestigeCombatGear</li>
       <li>KotORArmor_heavy</li>
       <li>KotORArmor_mid</li>
     </apparelTags>
@@ -2115,7 +2125,6 @@ KIT = {
     </weaponTags>
     <itemQuality>Masterwork</itemQuality>
       <apparelTags>
-      <li>PrestigeCombatGear</li>
       <li>KotORArmor_heavy</li>
     </apparelTags>
       <!-- Arkanian geneticists: glitterworld medicine and lab stock, never street drugs -->

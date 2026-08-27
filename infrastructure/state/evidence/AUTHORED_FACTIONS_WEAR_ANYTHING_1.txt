@@ -1,0 +1,58 @@
+AUTHORED_FACTIONS_WEAR_ANYTHING_1 — re-measured 2026-08-27 against the LIVE capture
+(582 mods, 2026-08-26T14:20:04Z, matched to ModsConfig.xml by apparel_tag_audit.py).
+
+🔴 THE ITEM'S 22-KIND TABLE IS STALE. It was measured against capture 2026-08-23T07-12-04Z.
+Re-run today over all 68 authored Jawa_ kinds:
+
+    authored Jawa_ kinds in the live dump: 68
+    UNCONSTRAINED or carrying a dead tag: 0
+
+Every one of the 22 kinds the item names now carries apparelTags whose every tag has
+surviving carriers. Full per-kind table: observed/apparel/authored_kinds_state.txt
+
+--- the one defect that survived, and was fixed today -----------------------------
+All four Ascendant Helix kinds carried `PrestigeCombatGear`. It has 22 carriers and
+NOT ONE is Star Wars — measured, the whole pool:
+
+    AG_ForsakenCloak · AG_ForsakenCloak_Child · AG_ForsakenMarineArmor ·
+    AG_ForsakenMarineHelmet · AG_ForsakenMarineHelmetPsy · AG_Forsaken_Hood ·
+    AG_Forsaken_Hood_Child                                    (Alpha Genes, 7)
+    AM_Apparel_ArmorHelmetMechlordHelmet_Prestige · AM_Apparel_MechlordSuit_Prestige ·
+    AM_MechCommanderHelm_Prestige · AM_PrestigeMechBreakerArmor ·
+    AM_PrestigeMechBreakerHelm · AM_PrestigeMechCommanderSuit  (Alpha Mechs, 6)
+    BMT_Apparel_ArmorBeetlephractPrestige · BMT_Apparel_ArmorChitinphractPrestige ·
+    BMT_Apparel_ArmorHelmetBeetlephractPrestige ·
+    BMT_Apparel_ArmorHelmetChitinphractPrestige ·
+    BMT_Apparel_ArmorHelmetSpidrephractPrestige         (Biomes! Caverns chitin, 5)
+    VQE_Apparel_CryptoHeavyHelmet · VQE_Apparel_CryptoLightHelmet · VQE_CryptoArmor ·
+    VQE_CryptoHeavyArmor                                  (Vanilla Quests Crypto, 4)
+
+This is faction_equipment_clusters.md R4, filed 2026-08-22 and never acted on.
+
+FIX: removed from all four Helix kinds in src/RimMandrake/Utils/gen_pawnkind_roster.py
+(KIT blocks), regenerated, backed up and diffed first:
+
+    defs old/new: 49 / 49
+    diff: exactly four deletions, all `<li>PrestigeCombatGear</li>`, nothing else
+
+No kind stranded — surviving pools after the removal:
+    Jawa_Helix_Grunt        KotORArmor_mid   20
+    Jawa_Helix_Heavy        KotORArmor_mid   20
+    Jawa_Helix_Specialist   KotORArmor_heavy 16 · KotORArmor_mid 20
+    Jawa_Helix_Leader       KotORArmor_heavy 16
+
+validate_patch.py: OK - 0 errors, 0 warnings
+  (info: no --defs, so ParentName and Class checks were SKIPPED — UNMEASURED, not passed)
+deploy: ~ Defs/PawnKindDefs/JawaFactionRoster.xml -> VERIFIED in sync
+md5 repo == game: 1cd8faf90b9c44439ea0211e98599525
+
+--- what is NOT measured ------------------------------------------------------
+⚠️ AFFORDABILITY IS UNMEASURED, for every faction here. The dump carries no MarketValue
+for these apparel defs — the Outer Rim and KotOR pieces declare none and the engine
+computes value from the recipe, the same property the generator's header already records
+for Outer Rim weapons. A pool the pawn cannot afford leaves it wearing LESS than an
+unconstrained pool would, silently.
+🔴 The kind to watch is Geonosian: apparelMoney 60~200 against `ORChitinArmour`, whose
+three carriers inherit `OuterRim_MediumArmorFabricatedBase` — medium fabricated armour.
+If a live spawn shows Geonosians in less than they used to wear, that is the cause, and
+it is a MONEY question, not a tag question.

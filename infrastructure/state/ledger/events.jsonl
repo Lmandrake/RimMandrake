@@ -2328,3 +2328,6 @@
 {"seat":"BUILD","event":"close","id":"STALE_ITEM_HEADER_CORRECTIONS_1","sha":"8660ae4e","ts":"2026-08-27T04:07:13Z"}
 {"seat":"BUILD","event":"verify","id":"ANCIENT_SCATTERBOW_TAG_SEVER_1","result":"partial","config":"deploy half only, game copy","evidence":"infrastructure/state/evidence/ANCIENT_SCATTERBOW_TAG_SEVER_1_deploy.txt","sha":"a838f804","ts":"2026-08-27T04:08:01Z"}
 {"seat":"BUILD","event":"note","id":"ANCIENT_SCATTERBOW_TAG_SEVER_1","text":"Deploy half is DONE and byte-identical - do not re-deploy. Only the post-load capture remains: Gun absent, NeolithicRangedAdvanced present, no red error naming the file. Purely awaiting harvest.","ts":"2026-08-27T04:08:01Z"}
+{"seat":"BUILD","event":"verify","id":"AUTHORED_FACTIONS_WEAR_ANYTHING_1","result":"pass","config":"582-mod capture 2026-08-26T14:20:04Z + deploy","evidence":"infrastructure/state/evidence/AUTHORED_FACTIONS_WEAR_ANYTHING_1.txt","sha":"90686e9b","ts":"2026-08-27T04:18:25Z"}
+{"seat":"BUILD","event":"close","id":"AUTHORED_FACTIONS_WEAR_ANYTHING_1","sha":"90686e9b","ts":"2026-08-27T04:18:30Z"}
+{"seat":"BUILD","event":"file","id":"HELIX_GEONOSIAN_LOOK_CHECK_1","title":"Next load: the Helix and the Geonosians must LOOK like themselves","kind":"check","target":"v1","needs":"bridge","caused_by":"AUTHORED_FACTIONS_WEAR_ANYTHING_1","for":"CHECK","ts":"2026-08-27T04:18:30Z"}
