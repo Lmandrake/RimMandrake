@@ -2371,3 +2371,5 @@
 {"seat":"BUILD","event":"file","id":"SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1","title":"jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist","kind":"bug","target":"v1","needs":"bridge","for":"BUILD","ts":"2026-08-27T14:54:56Z"}
 {"seat":"BUILD","event":"verify","id":"JAWA_HOOD_NEVER_WORN_1","result":"pass","config":"full-582","evidence":"infrastructure/state/items/JAWA_HOOD_NEVER_WORN_1.md","sha":"10f6a1b01f94d5ad67404a9c40762410c8abe2bc","ts":"2026-08-27T15:02:30Z"}
 {"seat":"BUILD","event":"close","id":"JAWA_HOOD_NEVER_WORN_1","sha":"10f6a1b0","ts":"2026-08-27T15:02:34Z"}
+{"seat":"BUILD","event":"verify","id":"EMPIRE_BLACKSTAR_ALWAYS_WILLING_1","result":"pass","config":"full-582","evidence":"infrastructure/state/items/EMPIRE_BLACKSTAR_ALWAYS_WILLING_1.md","sha":"35d494e0d8f0798ededfbeea58f87cb4b4f43b0c","ts":"2026-08-27T15:09:39Z"}
+{"seat":"BUILD","event":"close","id":"EMPIRE_BLACKSTAR_ALWAYS_WILLING_1","sha":"35d494e0","ts":"2026-08-27T15:09:39Z"}

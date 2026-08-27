@@ -52,3 +52,42 @@ under a different faction's name.
 ⚠️ **It is not NECESSARY, so a backstory filter alone will not close the bare-pawn problem:** the
 other **8 of 21** bare pawns can do violence and rolled bare anyway. That is the `weaponMoney` roll —
 a separate defect with a separate fix. Evidence: `facts/roll_arm_harvest_2026-08-24.md` §2.
+
+---
+
+## ✅ PROVEN LIVE 2026-08-27, BUILD — 0 of 142, against a 7.5% control
+
+582 mods. The guard (`requiredWorkTags: Violent`, shipped `92679d9b`) is live on all eight
+kinds — read off the capture. Pacifist set = the **59** `BackstoryDef`s carrying `Violent` in
+`workDisables`, measured, not hand-listed. Backstories resolved per pawn off `jawa/pawn_get`.
+
+```
+GUARDED (Empire + Blackstar)
+  Jawa_Empire_Grunt          n=16  pacifist=0  bare=0     Jawa_Blackstar_Grunt       n=15  pacifist=0  bare=0
+  Jawa_Empire_Heavy          n=19  pacifist=0  bare=0     Jawa_Blackstar_Heavy       n=20  pacifist=0  bare=0
+  Jawa_Empire_Leader         n=16  pacifist=0  bare=0     Jawa_Blackstar_Leader      n=20  pacifist=0  bare=0
+  Jawa_Empire_Specialist     n=16  pacifist=0  bare=0     Jawa_Blackstar_Specialist  n=20  pacifist=0  bare=0
+  TOTAL n=142  pacifist 0 (0.0%)  bare 0
+
+CONTROL (four unguarded families)
+  Jawa_Hutt_Grunt      n=20 pacifist=3 bare=3      Jawa_Wildsteam_Grunt  n=20 pacifist=1 bare=1
+  Jawa_Droid_Heavy     n=20 pacifist=1 bare=1      Jawa_TradeMoot_Grunt  n=20 pacifist=1 bare=1
+  TOTAL n=80  pacifist 6 (7.5%)  bare 6
+```
+
+✅ **Criterion 1 MET** — 0 violence-disabling backstories across 142 guarded rolls, well past
+the 20-per-kind the item asked for.
+✅ **Criterion 2 MET — the fix did not over-apply.** The unguarded families sit at **7.5%**
+against the 2026-08-21 baseline of 13/180 = **7.2%**. DECIDE's wanted texture is intact.
+
+⭐ **And the guard removes bare-handedness outright: 0 bare in 142.** In the control,
+**pacifist count equals bare count in every single kind** — 3/3, 1/1, 1/1, 1/1. A
+violence-disabling backstory is not merely correlated with a bare pawn here; across six
+independent cases it accounts for every one.
+
+⚠️ **One thing this measures that the item did not ask about.** 18 of 160 guarded spawns came
+back as a **substituted vanilla kind** (11%), against **0 of 80** in the control. Both guarded
+families default to a VANILLA faction — `Empire` and `Pirate` — while all four control kinds
+sit in factions we authored. That is a lead for
+`SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1`, not a finding here, and it does not touch this
+item's criteria: the substituted pawns were excluded from every count above.

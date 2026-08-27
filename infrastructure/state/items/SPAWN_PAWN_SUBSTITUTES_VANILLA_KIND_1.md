@@ -66,3 +66,28 @@ engine, it affects raids too and no bridge fix touches it.
 - [x] The kind read back is compared against the kind requested — done, twice.
 - [ ] The substitution is attributed to `jawa/spawn_pawn` or to `PawnGenerator`.
 - [ ] The tool reports the substitution instead of counting it as the requested kind.
+
+---
+
+## 🔑 SHARPENED 2026-08-27 — substitution tracks the FACTION, not the kind
+
+A 240-pawn run split cleanly along one line:
+
+    kinds whose defaultFactionDef is a VANILLA faction (Empire, Pirate)   18 of 160   11%
+    kinds sitting in factions we authored                                  0 of  80    0%
+
+The guarded set was `Jawa_Empire_*` (`defaultFactionDef: Empire`, vanilla Royalty) and
+`Jawa_Blackstar_*` (`defaultFactionDef: Pirate`). The control was `Jawa_Hutt_Grunt`,
+`Jawa_Droid_Heavy`, `Jawa_Wildsteam_Grunt`, `Jawa_TradeMoot_Grunt` — all in authored factions,
+**zero substitutions**.
+
+⇒ **The next test is one call:** spawn `Jawa_Empire_Grunt` into an AUTHORED faction and see
+whether substitution disappears. If it does, this is a faction-side pawn-generation fallback
+and not a `jawa/spawn_pawn` defect at all — which also means it would reach raids, where no
+bridge fix could touch it.
+
+⚠️ **Confounded, and say so.** The two groups differ in more than faction: the guarded eight
+also carry `requiredWorkTags: Violent`, which is a generation constraint that can itself force
+a re-roll. **A constraint that cannot be satisfied is at least as good an explanation as the
+faction**, and this run cannot separate them. Test the two independently before believing
+either.
