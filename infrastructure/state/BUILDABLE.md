@@ -758,9 +758,17 @@ produce a complete census of the dev menu and says so; a truncated answer is a F
 ⚠️ The host's tool is unfixable by us (assemblies only, no `Source/`), so the rule stands:
 **do not call it on the full list.**
 
-**35 — The DEPLOYED companion DLL runs far behind the source, and only a byte census says
-so.** Measured 2026-08-27: the game copy's tool surface reads **166** against the build's
-**238**. Everything written since the 2026-08-26 deploy is compiled and committed but not
+**35 — The DEPLOYED companion DLL runs far behind the source.** Measured 2026-08-27: the
+game copy's tool surface reads **166** against the build's **238**. ⚠️ **That pair of
+numbers comes from a byte scan, so it is corroborated rather than trusted** — three
+independent readings agree that the gap is real and large:
+| reading | game copy | current build |
+|---|---|---|
+| `tool_surface()` byte scan | 166 | 238 |
+| file size | 1,548,288 B | 2,217,984 B (**+43%**) |
+| build commit stamped in the assembly | `70b3b117` | today's HEAD |
+🔑 **Size and commit are the ones to lean on**; the scan supplies the shape of the gap, not
+its exact magnitude. Everything written since the 2026-08-26 deploy is compiled and committed but not
 live, because the OS locks a loaded assembly and every deploy waits for a game-down window.
 🔑 **A tool missing from `--list-tools` is therefore ambiguous by default** — undeployed,
 gated out of the build, or genuinely absent — and the cheap disambiguation is
