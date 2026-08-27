@@ -69,6 +69,13 @@ said, so treat those artefacts as still stale and chase it offline.
 ⚠️ **A block with no ✅ has not been scored. Add the row when you add the block, and mark it
 the moment you score it** — an unmarked block is how this file rotted twice.
 
+✅ **NO LONGER ONLY DISCIPLINE, as of `RUN_SHEET_STALE_BLOCK_CHECK_1`, 2026-08-27.** `rimflow next`
+now reads this table on every call and warns on stderr about any row whose `deployed` date
+precedes the last `game UP` event and is still ⏳ — it either was scored and nobody moved
+it, or rode a load and nobody looked. `_stale_run_sheet()` in `src/RimMandrake/rimflow/cli.py`.
+⚠️ **A row with no date in `deployed` is invisible to it** — the check cannot tell a block that
+never shipped from one nobody dated, so date the cell or the row is only discipline again.
+
 | block | deployed | status |
 |---|---|---|
 | §4 BATCH A — three never-run pawn tools | — | ⏳ PENDING |
