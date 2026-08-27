@@ -1,3 +1,48 @@
+
+## 🔴 SETTLED: it is not the dump and it is not our patch. A VANILLA biome we never touch does it too.
+
+Measured 2026-08-26 20:0x, and this is the check that ends the argument.
+
+`TemperateForest` is a vanilla biome. **This project does not patch it.** Core's own
+`Data/Core/Defs/BiomeDefs/Biomes_Temperate.xml` declares 36 animals, every one non-zero.
+In the same capture:
+
+```
+Badger    0.2 -> 0     Mink       0.1 -> 0
+Bluebird  0.5 -> 0     Porcupine  0.2 -> 0
+Crow      0.5 -> 0     Sparrow    0.5 -> 0
+Gazelle   0.3 -> 0     Swan       0.1 -> 0
+                       Tortoise   0.3 -> 0
+```
+
+**9 of 36 zeroed; the other 27 keep their vanilla values exactly.**
+
+⇒ **A mod REPLACES the value with 0 rather than removing the entry.** That is how a fauna
+replacement mod suppresses vanilla animals in favour of its own, and it happens whether or
+not our patch ever touched the biome.
+
+### Two explanations are now dead, and one of them was mine to kill
+
+- ⛔ **Not the dumper and not the cache.** A subagent sweep returned the cache story a second
+  time; it is wrong for the same reason it was wrong above — these zeros are in the RECORD, in
+  `defs/BiomeDef.json`, and `CommonalityOfAnimal` cannot write there. It is also wrong on its
+  own terms here: no cache is involved in reading a vanilla biome's declared XML.
+- ⛔ **Not Cherry Picker.** ✅ That negative is worth keeping and is CONFIRMED: Cherry Picker
+  is active, and its logged removal block — 1,212 entries — contains none of Tiger, Gazelle,
+  Fox_Fennec, PrairieDog or MonitorLizard.
+
+### What this changes for the planet
+
+🔑 **A large share of the 181 is probably INTENDED and not ours to fix.** Suppressing Earth
+fauna is what these mods exist to do, and it is what a Star Wars desert world wants. ⛔ But
+our own cast patch writes those animals at 1.0 expecting them to spawn, and they do not — so
+the roster is designing around animals that were switched off underneath it. **That is the
+real defect, and it is a CONTENT question, not a tooling one.**
+
+⚠️ **Still open: WHICH mod.** A second search is running against the vanilla-biome evidence.
+⛔ Until it names a file and an operation, nobody re-weights the cast — the answer decides
+whether the fix is "pick different animals" or "un-suppress these".
+
 # 🔴 THE DIAGNOSIS BELOW IS WRONG. Measured 2026-08-26 19:5x by BUILD, from the capture and the 1.6 source.
 
 **The falsifiable prediction this item wrote down has been settled early, and it fails.**
