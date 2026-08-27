@@ -1,0 +1,45 @@
+landform           topology         common   cave nodes  set site  non-default gates
+RiverSource        Any               1.000   0.00   142    t    t  Elevation -1e+03-5e+03; MapSize 0-0
+RiverIsland        Any               0.034   0.00   132    t    t  Elevation -1e+03-5e+03; MapSize 0-0; River 0.502-1
+RiverConfluence    Any               1.000   0.00   131    t    t  Elevation -1e+03-5e+03; MapSize 0-0
+RiverTerrain       ?                 0.000   0.00   129    ?    ?  
+RiverDelta         Any               1.000   0.00   127    t    t  Elevation -1e+03-5e+03; MapSize 0-0
+River              Any               1.000   0.00   115    t    t  Elevation -1e+03-5e+03; MapSize 0-0
+SurfaceCave        CaveTunnel        1.000   1.00    78    f    f  Elevation -1e+03-5e+03; Hilliness 6-6; MapSize 250-1e+03
+Sinkhole           CliffAllSides     0.100   1.00    75    f    f  DepthInCaveSystem 0-0; Hilliness 6-6; MapSize 112-1e+03; River 0-0; Road 0-0
+SecludedValley     CliffAllSides     0.100   1.00    70    f    f  DepthInCaveSystem 0-0; Hilliness 6-6; MapSize 112-1e+03; River 0-0; Road 0-0
+CaveEntrance       CaveEntrance      1.000   1.00    48    f    f  Elevation -1e+03-5e+03; Hilliness 6-6; MapSize 50-1e+03
+SecludedCove       CoastOneSide      0.302   0.25    47    f    f  Hilliness 2.5-5; MapSize 120-1e+03; River 0-0.497; Road 0-0
+Glacier            Any               1.000   0.20    45    t    t  AvgTemperature -34.5-14.9; Elevation -1e+03-5e+03; Hilliness 2.83-5; MapSize 120-1e+03
+CoastalIsland      CoastThreeSides   0.500   0.00    43    t    f  Elevation -1e+03-5e+03; Hilliness 1-3.4; MapSize 117-1e+03; River 0-0.696
+LakeWithIsland     Inland            0.008   0.00    43    f    f  AvgTemperature -19.8-100; Hilliness 1-5; MapSize 98.3-1e+03; Rainfall 706-5e+03; River 0-0.703
+Tombolo            CoastThreeSides   0.550   0.00    43    f    f  Elevation -1e+03-5e+03; Hilliness 1-3.4; MapSize 117-1e+03; River 0-0.497; Road 0-0
+Oasis              Inland            0.025   0.00    42    t    f  AvgTemperature 0-100; Hilliness 1-3.5; MapSize 50-1e+03; Rainfall 0-508; River 0-0
+Crater             Inland            0.050   0.85    39    f    f  Hilliness 3.4-5; MapSize 117-1e+03; River 0-0.697; Road 0-0
+IceOasis           Inland            0.047   0.00    39    t    t  AvgTemperature -60.5--20.3; Hilliness 1-3.5; MapSize 50-1e+03; River 0-0
+Skerry             CoastAllSides     0.296   0.20    39    f    f  Hilliness 1-5; MapSize 50-1e+03; River 0-0; Road 0-0
+CliffAndCoast      CliffAndCoast     1.000   0.25    36    t    t  Hilliness 1-5; MapSize 50-1e+03
+DesertPlateau      Inland            0.034   0.00    36    t    t  AvgTemperature 2.26-100; Hilliness 1-2.5; MapSize 50-1e+03; Rainfall 0-508
+Cirque             CliffThreeSides   1.000   0.00    34    f    f  Hilliness 1-4.67; MapSize 117-1e+03; River 0-0.697; Road 0-0
+Atoll              CoastAllSides     0.397   0.00    33    f    f  Hilliness 1-1.45; MapSize 117-1e+03; River 0-0; Road 0-0
+Landbridge         CoastLandbridge   1.000   0.00    33    t    t  Elevation -1e+03-5e+03; Hilliness 1-5; MapSize 50-1e+03
+CoveWithIsland     CoastOneSide      0.120   0.00    32    f    f  Hilliness 1-1.6; MapSize 120-1e+03; River 0-0.503
+Fjord              CoastOneSide      0.296   0.25    32    f    f  Hilliness 2.5-5; MapSize 120-1e+03; River 0-0.499; Road 0-0
+Caldera            Inland            0.017   0.00    31    f    f  Hilliness 1-2.24; MapSize 117-1e+03; River 0-0.697
+Island             CoastAllSides     0.704   0.00    31    f    f  Hilliness 1-5; MapSize 50-1e+03; River 0-0; Road 0-0
+Peninsula          CoastThreeSides   1.000   0.00    31    t    t  Elevation -1e+03-5e+03; Hilliness 1-5; MapSize 50-1e+03
+Lake               Inland            0.028   0.00    30    f    f  AvgTemperature -19.8-100; Hilliness 1-5; MapSize 50-1e+03; Rainfall 523-5e+03; River 0-0.697
+SwampHill          Inland            0.101   0.00    26    f    f  AvgTemperature -9.6-24.9; Hilliness 1-3.49; MapSize 50-1e+03; Rainfall 282-5e+03; River 0-0.5; Swampiness 0.548-1
+Archipelago        CoastAllSides     0.447   0.00    25    f    f  Hilliness 1-2.55; MapSize 117-1e+03; River 0-0; Road 0-0
+CoastCorner        CoastTwoSides     1.000   0.00    25    t    t  Elevation -1e+03-5e+03; Hilliness 1-5; MapSize 50-1e+03
+Cove               CoastOneSide      0.299   0.00    25    f    f  Hilliness 1-1.6; MapSize 92.9-1e+03; River 0-0.502
+CliffCorner        CliffTwoSides     1.000   0.50    22    t    t  Hilliness 1-5; MapSize 50-1e+03
+Coast              CoastOneSide      1.000   0.00    21    t    t  Elevation -1e+03-5e+03; Hilliness 1-5; MapSize 50-1e+03
+Badlands           Inland            0.101   0.00    20    t    t  AvgTemperature 2.26-100; Elevation 746-5e+03; Hilliness 1-3.5; MapSize 50-1e+03; Rainfall 0-1.21e+03
+Valley             Inland            1.000   0.50    19    t    t  Elevation -1e+03-389; Hilliness 3.69-4.8; MapSize 98.3-1e+03; River 0.251-1; Road 0.0514-1
+Cliff              CliffOneSide      1.000   0.50    18    t    t  Hilliness 1-5; MapSize 50-1e+03
+Canyon             CliffValley       1.000   0.70    16    f    f  Hilliness 1-5; MapSize 50-1e+03; River 0-0; Road 0-0
+Rift               Inland            0.081   0.85    16    f    f  Hilliness 3.5-5; MapSize 50-1e+03; River 0-0; Road 0-0
+DryLake            Inland            0.034   0.00    15    t    t  AvgTemperature -19.8-100; Hilliness 1-3.5; MapSize 50-1e+03; Rainfall 0-438; River 0-0
+LoneMountain       Inland            0.020   0.50    14    f    f  Hilliness 1-1.5; MapSize 50-1e+03
+Gorge              Any               1.000   0.50     8    f    f  DepthInCaveSystem 0-0; Hilliness 5.4-6; MapSize 50-1e+03
