@@ -462,6 +462,35 @@ ZBiome_Grasslands,GR_Needlechicken,needlechicken,Vanilla Genetics Expanded,tiny,
 ZBiome_Grasslands,VAEWaste_Hydra,hydra,Vanilla Animals Expanded — Waste Animals,small,0.3499999940395355,0.7,0.866,0.134,0.559,dormant,wildlife,0
 ZBiome_Grasslands,AA_Plasmorph,plasmorph,Alpha Animals,med,1,0.4,0.9799,0.0201,0.742,ours,wildlife,0
 ZBiome_Grasslands,GR_Boombeetle,boombeetle,Vanilla Genetics Expanded,med,1.5,0.4,0.8773,0.1227,0.738,dormant,wildlife,0
+BiomeCypreJungle,Gizka,gizka,Star Wars Animal Collection (Continued),tiny,0.18000000715255737,1.0,0.8457,0.1543,0.555,ours,wildlife,0
+BiomeCypreJungle,AA_Needleroll,needleroll,Alpha Animals,tiny,0.15000000596046448,1.0,0.8036,0.1964,0.429,ours,wildlife,0
+BiomeCypreJungle,BMT_SonarRabbit,sonar rabbit,Biomes! Caverns,tiny,0.20000000298023224,1.0,0.4522,0.5478,0.405,ours,wildlife,0
+BiomeCypreJungle,VFEI2_Swarmling,swarmlings,Vanilla Factions Expanded - Insectoids 2,tiny,0.20000000298023224,1.0,0.8805,0.1195,0.605,dormant,wildlife,0
+BiomeCypreJungle,AA_FireWasp,fire wasp,Alpha Animals,small,0.7900000214576721,0.7,0.8979,0.1021,0.736,ours,wildlife,0
+BiomeCypreJungle,AA_Needlepost,needlepost,Alpha Animals,small,0.7900000214576721,0.7,0.8741,0.1259,0.47,ours,wildlife,0
+BiomeCypreJungle,Clodhopper,clodhopper,Star Wars Animal Collection (Continued),small,0.5,0.7,0.8473,0.1527,0.572,ours,wildlife,0
+BiomeCypreJungle,Shiro,shiro,Star Wars Animal Collection (Continued),small,0.5,0.7,0.8448,0.1552,0.729,ours,wildlife,0
+BiomeCypreJungle,AM_Dryad_Spitter,spitter dryad,Alpha Memes,small,0.6499999761581421,0.7,0.7278,0.2722,0.583,dormant,wildlife,0
+BiomeCypreJungle,ShiroTrap,shiro-trap,Star Wars Animal Collection (Continued),small,0.75,0.7,0.8263,0.1737,0.735,ours,wildlife,0
+BiomeCypreJungle,Worrt,worrt,Star Wars Animal Collection (Continued),small,0.6000000238418579,0.7,0.8105,0.1895,0.585,ours,wildlife,0
+BiomeCypreJungle,GRimTortoise,Colorful tortoise,GRiNDTerra Biomes,small,0.5,0.7,0.7999,0.2001,0.704,foreign,wildlife,0
+BiomeCypreJungle,BMT_LandOctopus,terrestrial octopus,Biomes! Core,med,0.800000011920929,0.4,0.9074,0.0926,0.57,dormant,wildlife,0
+BiomeCypreJungle,AA_Razorjack,razorjack,Alpha Animals,med,1,0.4,0.919,0.081,0.575,ours,wildlife,0
+BiomeCypreJungle,AA_BloodShrimp,blood shrimp,Alpha Animals,med,1,0.4,0.9029,0.0971,0.658,ours,wildlife,0
+BiomeCypreJungle,Klorslug,k'lor'slug,Star Wars Animal Collection (Continued),med,1.5,0.4,0.8977,0.1023,0.737,ours,wildlife,0
+BiomeCypreJungle,Kinrath,kinrath,Star Wars Animal Collection (Continued),med,1.2000000476837158,0.4,0.8799,0.1201,0.705,ours,wildlife,0
+BiomeCypreJungle,GR_Boomcat,boomcat,Vanilla Genetics Expanded,med,1.5,0.4,0.7703,0.2297,0.438,dormant,wildlife,0
+BiomeCypreJungle,AA_DesertAve,desert ave,Alpha Animals,med,1,0.4,0.8532,0.1468,0.425,ours,wildlife,0
+BiomeCypreJungle,BMT_Diggerpede,diggerpede,Biomes! Caverns,med,1.5,0.4,0.7277,0.2723,0.687,dormant,wildlife,0
+BiomeCypreJungle,Hssiss,hssiss,Star Wars Animal Collection (Continued),large,2.75,0.18,0.8227,0.1773,0.794,ours,wildlife,0
+BiomeCypreJungle,Jamel,Jamel,Star Wars Animal Collection (Continued),large,1.899999976158142,0.18,0.7251,0.2749,0.447,ours,wildlife,0
+BiomeCypreJungle,Dalgo,dalgo,Star Wars Animal Collection (Continued),large,2.5,0.18,0.6888,0.3112,0.672,ours,wildlife,0
+BiomeCypreJungle,Hawkbat,hawk-bat,Star Wars Animal Collection (Continued),large,2,0.18,0.6417,0.3583,0.65,ours,wildlife,0
+BiomeCypreJungle,Gutkurr,gutkurr,Star Wars Animal Collection (Continued),large,2,0.18,0.6102,0.3898,0.78,ours,wildlife,0
+BiomeCypreJungle,Lylek,lylek,Star Wars Animal Collection (Continued),huge,5,0.05,0.9251,0.0749,1.0,ours,wildlife,0
+BiomeCypreJungle,Dragonsnake,Dragonsnake,Star Wars Animal Collection (Continued),huge,4,0.05,0.9064,0.0936,0.792,foreign,wildlife,0
+BiomeCypreJungle,Dianoga,dianoga,Star Wars Animal Collection (Continued),huge,4,0.05,0.8523,0.1477,0.74,ours,wildlife,0
+BiomeCypreJungle,Beldon,beldon,Star Wars Animal Collection (Continued),SUPER,6,0.008,0.5356,0.4644,0.65,ours,wildlife,0
 AB_FeraliskInfestedJungle,GRimCobra,Colorful cobra,GRiNDTerra Biomes,tiny,0.25,1.0,0.8141,0.1859,0.556,foreign,wildlife,0
 AB_FeraliskInfestedJungle,Kreetle,kreetle,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.7322,0.2678,0.605,ours,wildlife,0
 AB_FeraliskInfestedJungle,TYR_HotfootRat,hotfoot rat,Little Critters,tiny,0.20000000298023224,1.0,0.6729,0.3271,0.405,ours,wildlife,0
@@ -603,6 +632,35 @@ AB_TarPits,Boomalope,boomalope,Core,large,2,0.18,0.9146,0.0854,0.45,ours,wildlif
 AB_TarPits,AA_Bobeene,bobeene,Alpha Animals,large,2.0999999046325684,0.18,0.905,0.095,0.452,foreign,wildlife,0
 AB_TarPits,Blurrg,blurrg,Star Wars Animal Collection (Continued),large,2.5,0.18,0.8661,0.1339,0.613,ours,wildlife,0
 AB_TarPits,AlphaThrumbo,alpha thrumbo,Odyssey,huge,5,0.05,0.8744,0.1256,0.783,dormant,wildlife,0
+COMIGO_GreaterSwamp_Tropical,AA_InfectedAerofleet,infected aerofleet,Alpha Animals,tiny,0.20000000298023224,1.0,0.7384,0.2616,0.405,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,HermitCrab,hermit crab,Odyssey,tiny,0.20000000298023224,1.0,0.8874,0.1126,0.688,dormant,wildlife,0
+COMIGO_GreaterSwamp_Tropical,BMT_SandLeaper,sand leaper,Biomes! Caverns,tiny,0.20000000298023224,1.0,0.8834,0.1166,0.455,dormant,wildlife,0
+COMIGO_GreaterSwamp_Tropical,GR_Chickenlope,chickenlope,Vanilla Genetics Expanded,tiny,0.18000000715255737,1.0,0.8571,0.1429,0.405,dormant,wildlife,0
+COMIGO_GreaterSwamp_Tropical,Urusai,urusai,Star Wars Animal Collection (Continued),small,0.75,0.7,0.8772,0.1228,0.619,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,BMT_Glowtail,glowtail,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.7566,0.2434,0.548,dormant,wildlife,0
+COMIGO_GreaterSwamp_Tropical,Yobshrimp,yobshrimp,Star Wars Animal Collection (Continued),small,0.4000000059604645,0.7,0.7984,0.2016,0.593,foreign,wildlife,0
+COMIGO_GreaterSwamp_Tropical,BMT_FungalWeevil,fungal weevil,Biomes! Caverns,small,0.5,0.7,0.7788,0.2212,0.613,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,BMT_GlowSlug,glowslug,Biomes! Caverns,small,0.4000000059604645,0.7,0.7736,0.2264,0.48,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,LongtailGorg,longtail gorg,Star Wars Animal Collection (Continued),small,0.6000000238418579,0.7,0.7517,0.2483,0.565,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,VFEI2_Megathrips,megathrips,Vanilla Factions Expanded - Insectoids 2,small,0.3499999940395355,0.7,0.6474,0.3526,0.742,dormant,wildlife,0
+COMIGO_GreaterSwamp_Tropical,Nuna,nuna,Star Wars Animal Collection (Continued),small,0.6000000238418579,0.7,0.7411,0.2589,0.415,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,Grank,Grank,Star Wars Animal Collection (Continued),med,0.8500000238418579,0.4,0.9042,0.0958,0.621,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,BMT_Basilisk,basilisk,Biomes! Caverns,med,1.5,0.4,0.7769,0.2231,0.588,dormant,wildlife,0
+COMIGO_GreaterSwamp_Tropical,AA_Erin,erin,Alpha Animals,med,1,0.4,0.8525,0.1475,0.575,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,ColossusToad,colossus toad,Odyssey,med,0.800000011920929,0.4,0.8454,0.1546,0.52,foreign,wildlife,0
+COMIGO_GreaterSwamp_Tropical,AA_Feralisk,feralisk,Alpha Animals,med,1,0.4,0.8426,0.1574,0.825,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,BMT_CaveCricket,cave cricket,Biomes! Caverns,med,0.800000011920929,0.4,0.8423,0.1577,0.687,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,RG_Rimclaw,rimclaw,ReGrowth 2,med,1,0.4,0.8299,0.1701,0.767,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,GR_Mancat,mancat,Vanilla Genetics Expanded,med,1.5,0.4,0.7285,0.2715,0.588,dormant,wildlife,0
+COMIGO_GreaterSwamp_Tropical,Nexu,nexu,Star Wars Animal Collection (Continued),large,2.5,0.18,0.6747,0.3253,0.646,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,Mawvorr,mawvorr,Star Wars Animal Collection (Continued),large,2.5,0.18,0.593,0.407,0.673,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,Gelagrub,gelagrub,Star Wars Animal Collection (Continued),large,2.4000000953674316,0.18,0.5708,0.4292,0.51,foreign,wildlife,0
+COMIGO_GreaterSwamp_Tropical,Jimvu,jimvu,Star Wars Animal Collection (Continued),large,2,0.18,0.543,0.457,0.45,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,BMT_Crystalope,crystalope,Biomes! Caverns,large,2,0.18,0.5026,0.4974,0.45,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,Varactyl,varactyl,Star Wars Animal Collection (Continued),huge,3,0.0548,0.8417,0.1583,0.475,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,BMT_AcidSlug,acid slug,Biomes! Caverns,huge,4,0.0548,0.693,0.307,0.883,dormant,wildlife,0
+COMIGO_GreaterSwamp_Tropical,Reek,reek,Star Wars Animal Collection (Continued),huge,3,0.0548,0.7789,0.2211,0.625,ours,wildlife,0
+COMIGO_GreaterSwamp_Tropical,AA_Behemoth,Behemoth,Alpha Animals,SUPER,32,0.0094,0.8126,0.1874,0.867,dormant,wildlife,0
 IceSheet,BMT_Megaroach,megaroach,Biomes! Polluted Lands,tiny,0.20000000298023224,1.0,0.5462,0.4538,0.605,dormant,wildlife,0
 IceSheet,Neebray,neebray,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.5328,0.4672,0.605,ours,wildlife,0
 IceSheet,GraniteSlug,granite slug,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.492,0.508,0.605,ours,wildlife,0

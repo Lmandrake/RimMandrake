@@ -1089,6 +1089,38 @@
    "file": "Ice.png",
    "rule": "bare",
    "note": "added 2026-08-22 for the new SeaIce biome; the 67-terrain pass never needed it"
+  },
+  "Terrain/Surfaces/CypreJungleSoil": {
+   "rgb": [
+    74,
+    62,
+    52
+   ],
+   "hsv": [
+    26.7,
+    0.288,
+    0.288
+   ],
+   "source": "loose",
+   "hex": "#4a3e34",
+   "file": "CypreJungleSoil.png",
+   "rule": "bare"
+  },
+  "Terrain/Surfaces/LightGrass": {
+   "rgb": [
+    114,
+    97,
+    37
+   ],
+   "hsv": [
+    47.1,
+    0.679,
+    0.446
+   ],
+   "source": "loose",
+   "hex": "#726125",
+   "file": "LightGrass.png",
+   "rule": "bare"
   }
  },
  "biomes": {

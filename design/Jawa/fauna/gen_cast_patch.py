@@ -15,6 +15,39 @@ from dumppath import defs_dir, captures_newest_first
 FA = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(FA, 'BiomeCast_Ashkarr.xml')
 
+def _cherry_picker_cuts():
+    """defNames the owner has cut with Cherry Picker, or None if UNREADABLE.
+
+    ⛔ Returns None - never an empty set - when the settings file cannot be read.
+    An empty set would silently mean "nothing is cut" and the generator would go
+    back to emitting dead entries with no sign anything was skipped.
+    """
+    import xml.etree.ElementTree as ET
+    cand = [
+        "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
+        "/Config/Mod_3521312241_Mod_CherryPicker.xml",
+        r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios"
+        r"\Config\Mod_3521312241_Mod_CherryPicker.xml",
+    ]
+    for path in cand:
+        if not os.path.isfile(path):
+            continue
+        try:
+            root = ET.parse(path).getroot()
+        except Exception as exc:
+            print(f"⚠️ Cherry Picker settings unreadable ({exc}); cut animals will be "
+                  f"emitted as live entries and will silently never spawn.")
+            return None
+        keys = [li.text.strip() for li in root.iter('li') if li.text]
+        out = {k.split('/', 1)[1] for k in keys if '/' in k}
+        print(f"Cherry Picker: {len(keys)} cut entries read from {os.path.basename(path)}")
+        return out
+    print("⚠️ Cherry Picker settings NOT FOUND. Any animal the owner has cut will be "
+          "emitted as a live entry and will silently never spawn - the generator "
+          "cannot tell. Looked for Config/Mod_3521312241_Mod_CherryPicker.xml.")
+    return None
+
+
 def _vanilla_biomes():
     """defNames of every BiomeDef Core or a DLC DEFINES, read from the game's Data tree.
 
@@ -219,6 +252,26 @@ def main():
     # define there needs no MayRequire, whoever touched it afterwards.
     VANILLA = _vanilla_biomes()
 
+    # 🔴 WHAT THE OWNER ALREADY CUT. Measured 2026-08-26 and it explains 167 of the
+    # 168 animals that read commonality 0 in the live game.
+    #
+    # Cherry Picker (owlchemist.cherrypicker) removes a def by the OWNER'S OWN
+    # selection, saved in Config/Mod_3521312241_Mod_CherryPicker.xml - 1,342 entries
+    # here. ⚠️ Its cuts are INVISIBLE TO THE DEF DUMP: all nine of the animals it cut
+    # out of TemperateForest are still PRESENT as ThingDef and PawnKindDef in the
+    # capture. What changes is the biome record's commonality, which becomes 0 - and
+    # `BiomeDef.AllWildAnimals` only yields kinds above 0, so the animal can never be
+    # chosen.
+    #
+    # Validated across the whole population, not on a sample: 167 of 168 always-off
+    # animals are in this list, and 0 of 414 always-alive animals are. The single
+    # exception, CorellianHound, is zeroed only in biomes this file does not write.
+    #
+    # ⇒ Casting one of these writes an entry that CANNOT SPAWN, and nothing reports
+    # it. They are commented out below rather than emitted, which is functionally
+    # identical - the live commonality is 0 either way - and makes the loss visible.
+    CUT = _cherry_picker_cuts()
+
     # wildAnimals takes a PawnKindDef. Read the roster so a ThingDef-only name is
     # caught here rather than as a cross-reference error on the next cold load.
     PAWNKINDS = set()
@@ -234,6 +287,7 @@ def main():
         sys.exit('no PawnKindDef.json in any capture - refusing to emit a cast that '
                  'cannot be checked against the pawnkind roster')
     skipped = []
+    cut_rows = []
 
     rows = list(csv.DictReader(open(os.path.join(FA, 'cast_assignment.csv'), encoding='utf-8')))
     byb = collections.defaultdict(list)
@@ -278,6 +332,13 @@ def main():
         parts.append('        <wildAnimals>')
         for r in sorted(byb[b], key=lambda r: (-float(r['commonality']), r['defName'])):
             note = f"{r['band']}, {r['status']}"
+            if CUT is not None and r['defName'] in CUT:
+                # Cut by the owner. Emitting it would write an entry the engine
+                # resolves to commonality 0 - registered and unspawnable.
+                cut_rows.append((b, r['defName']))
+                parts.append(f'          <!-- CUT {r["defName"]} - {r["label"]}:'
+                             f' removed by Cherry Picker, would read commonality 0 -->')
+                continue
             if r['defName'] not in PAWNKINDS:
                 # wildAnimals resolves a PawnKindDef. A ThingDef name here is a
                 # dangling cross-reference, not a fallback. Named, never dropped
@@ -363,6 +424,41 @@ def main():
     nomay = [b for b in byb if not PKG.get(b)]
     if nomay:
         print(f"⚠️ no packageId resolved for: {nomay} - BUILD must confirm the MayRequire")
+    # 🔴 COVERAGE, REPORTED EVERY RUN. BiomeCypreJungle (191 tiles) and
+    # COMIGO_GreaterSwamp_Tropical (60) sat on Ash'karr with NO cast at all until
+    # 2026-08-26, so both kept their mod-default rosters - ten Earth animals each,
+    # raccoon included - while every count in this pipeline read as healthy. A biome
+    # this file does not write is a biome somebody else's defaults own.
+    try:
+        import csv as _csv, collections as _c
+        _t = _c.Counter(r['biome'] for r in _csv.DictReader(
+            open(os.path.join(ROOT, 'world', 'ASHKARR_WORLDMAP_tiles.csv'), encoding='utf-8')))
+        _ash = {b: n for b, n in _t.items() if b not in ('Ocean', 'Lake')}
+        _missing = {b: n for b, n in _ash.items() if b not in byb}
+        if _missing:
+            print(f"\n🔴 {len(_missing)} Ash'karr biome(s) get NO cast from this file and keep "
+                  f"whatever their mod ships:")
+            for b, n in sorted(_missing.items(), key=lambda kv: -kv[1]):
+                print(f"     {b:34s} {n:5d} tiles")
+            print("   ⇒ Run refill_cast.py; it fills a missing biome's whole pyramid.")
+        else:
+            print(f"\n✅ coverage: all {len(_ash)} Ash'karr biomes are cast by this file.")
+    except Exception as _e:
+        print(f"⚠️ UNMEASURED: could not check Ash'karr biome coverage ({_e}). A biome with "
+              f"no cast would be invisible in this run.")
+
+    if cut_rows:
+        by_animal = {}
+        for b, d in cut_rows:
+            by_animal.setdefault(d, []).append(b)
+        print(f"\n🔴 {len(cut_rows)} cast entries CUT BY CHERRY PICKER across "
+              f"{len(by_animal)} animal(s) - the owner removed these, so an emitted "
+              f"entry would read commonality 0 and never spawn:")
+        for d in sorted(by_animal):
+            print(f"     {d:34s} {', '.join(sorted(by_animal[d]))}")
+        print("   ⇒ Those biomes are now that many animals lighter. Replacing them is a "
+              "CONTENT call: CAST_NAMES_UNSPAWNABLE_ANIMALS_1.")
+
     if skipped:
         print(f"⚠️ {len(skipped)} cast entries SKIPPED - not PawnKindDefs, so wildAnimals "
               f"could not resolve them:")

@@ -69,16 +69,35 @@ def main():
     for r in rows:
         by_biome[r['biome']].append(r)
 
+    # 🔴 A BIOME MISSING FROM THE CAST IS 29 VACATED SLOTS, NOT A BIOME THAT DOES NOT EXIST.
+    # Measured 2026-08-26: BiomeCypreJungle (191 tiles) and COMIGO_GreaterSwamp_Tropical
+    # (60) are on Ash'karr and were in NO cast at all, so both kept their mod-default
+    # rosters - ten Earth animals each, raccoon included. The pipeline skipped them from
+    # its very first stage (they were absent from biome_terrain.csv, so biome_fit.py never
+    # scored them, so the allocator had an empty pool) and reported it as a footnote under
+    # "biomes short of a full pyramid" that nobody read.
+    # ⛔ The planet is fixed and the animals adapt to it - owner, 2026-08-26. An Ash'karr
+    # biome with no cast is a hole to fill, never a reason to change the map.
+    for b in tiles:
+        if b not in by_biome:
+            by_biome[b] = []
+            print(f"🔴 {b} is on Ash'karr ({len(tiles[b])} tiles) and had NO cast at all - "
+                  f"filling all {sum(n for _, n in AC.SLOTS)} slots")
+
     # Reuse pressure is measured from the SURVIVORS, so a refill does not fight rows
     # that are about to be removed.
     keep = {b: [r for r in rs if r['defName'] not in ineligible] for b, rs in by_biome.items()}
+    keep.update({b: [] for b in by_biome if b not in keep})
     used = collections.Counter(r['defName'] for rs in keep.values() for r in rs)
     dropped = {b: [r for r in rs if r['defName'] in ineligible] for b, rs in by_biome.items()}
+    dropped.update({b: [] for b in by_biome if b not in dropped})
 
     out_rows, filled, unfilled = [], [], []
     for b in sorted(by_biome, key=lambda x: -len(tiles.get(x, []))):
         out_rows.extend(keep[b])
         need = collections.Counter(r['band'] for r in dropped[b])
+        if not keep[b] and not dropped[b]:
+            need = collections.Counter({bnd: n for bnd, n in AC.SLOTS})   # whole biome missing
         if not need:
             continue
 
