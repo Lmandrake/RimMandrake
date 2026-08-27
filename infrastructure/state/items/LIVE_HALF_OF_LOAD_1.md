@@ -1,3 +1,13 @@
+🔴 **CLOSED BY THE OWNER, 2026-08-26 — PROVEN, and no descendants.** Verbatim:
+*"we have already proven LIVE HALF OF LOAD. Close that item immediately, no further items
+generated from it."*
+
+⛔ **Do not re-open this, re-run its rows, or file anything out of it.** The 26 live readings
+below (T1–T2, N1–N3, J4–J6, P2–P5) are settled at the owner's bar. Nothing here is an
+outstanding question any more.
+
+---
+
 ## spec
 The 2026-08-23 15:35 load is harvested OFFLINE and every offline signature in §10–§17 of
 `infrastructure/state/EXPECTED_FAILURES_next_load.md` is answered — see the
