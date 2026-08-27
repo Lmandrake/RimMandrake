@@ -80,3 +80,30 @@ gone from `Player.log`. ⚠️ Presence of the defs in a dump proves nothing; bo
 always were.
 
 Evidence: `infrastructure/state/evidence/C40_jawa_fixes_2026-08-26_CHECK.md`
+
+---
+
+## ✅ PROVEN LIVE 2026-08-27, BUILD — 32 of 32, and the Elder prediction was WRONG
+
+582 mods. The fix (`apparelRequired Inherit="False"`, `854bee3d`) is live in this process —
+confirmed independently before testing: `Player.log` holds **0** occurrences of
+`required apparel can't be worn together`, the line the game had been printing every load.
+
+`jawa/spawn_pawn` 8 per kind, apparel read back off `pawn_get`:
+
+    Jawa_Tribal_Scavenger   n=8  robe 8  hood 8  BOTH 8   blockers none
+    Jawa_Tribal_Elder       n=8  robe 8  hood 8  BOTH 8   blockers none
+    Jawa_Colonist           n=8  robe 8  hood 8  BOTH 8   blockers none
+    Jawa_Tribal_Slinger     n=8  robe 8  hood 8  BOTH 8   blockers none
+
+**32 of 32 wear both `guy762_Robes_jawa` and `guy762_JawaHood`**, against 0 of 16 wearing the
+hood before. Not one pawn drew `Apparel_WarVeil`, `Apparel_TribalHeaddress` or
+`Apparel_PlateArmor` — the three inherited items that were winning the slots.
+
+⛔ **The item's untested prediction is REFUTED.** It predicted *"an Elder spawns in plate and a
+headdress with neither Jawa piece"*. The Elder is 8/8 on both pieces and drew neither blocker:
+`Inherit="False"` severed the parent list for the Elder exactly as it did for the Scavenger.
+
+⚠️ **What this does NOT prove.** These are direct `jawa/spawn_pawn` spawns, not raid- or
+settlement-generated pawns. The apparel path is the same `PawnApparelGenerator`, so the result
+should carry, but nothing here observed a Jawa arriving from a group maker.
