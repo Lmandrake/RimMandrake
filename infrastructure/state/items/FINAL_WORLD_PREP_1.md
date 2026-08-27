@@ -29,7 +29,6 @@ begin until they are done.
 |---|---|---|---|
 | 1 | The 21,872-tile paint is imported and the owner has LOOKED at his planet — `W9` | CHECK | `doing` |
 | 2 | The Scald counts as water — `THE_SCALD_LOST_ITS_WATER_1`, 312 tiles short | CHECK | `proposed` |
-| 3 | Painting under a live colony is understood — `PAINT_UNDER_MAP_DESTROYS_GAME_1` | CHECK | `proposed` |
 | 4 | `jawa/world_stats`' biome histogram matches the tiles CSV, on the save that will ship | CHECK | not filed |
 | 5 | The keeper save is backed up into `world/` — it is gitignored by `*.rws` and needs `git add -f` | any | see procedure step 8 |
 | 6 | The twelve dice-named factions are renamed | CHECK | procedure step 6 |
@@ -38,10 +37,9 @@ begin until they are done.
 shipping save is an unpainted regeneration, every hour spent on the campaign start is spent
 on the wrong planet, and nothing announces it — the world loads fine and looks like a world.
 
-⛔ **Do not "prepare" by editing a save.** `PAINT_UNDER_MAP_DESTROYS_GAME_1` records that
-painting under a live colony destroyed the game state, measured. The order is: finish the
-world FIRST, land SECOND, build the start THIRD. B55 is the third step and it was reached
-out of order.
+⛔ **Do not "prepare" by editing a save.** The order is: finish the world FIRST, land SECOND,
+build the start THIRD — a colony built before the world is finished is a colony thrown away.
+B55 is the third step and it was reached out of order.
 
 ✅ **What B55 already has, and none of it is wasted** — verified 2026-08-21 and reproducible:
 - `Gravship_v1.xml`, 1,992,426 bytes

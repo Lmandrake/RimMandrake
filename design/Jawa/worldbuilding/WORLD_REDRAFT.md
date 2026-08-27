@@ -1,11 +1,3 @@
-> 🔴 **CORRECTED 2026-08-23 by the owner — read `PAINT_UNDER_MAP_DESTROYS_GAME_1` before
-> acting on anything below about painting under a live map.** His words: *"painting under
-> a player colony is actually fine to do... it just destroys the player colony. So you must
-> create a new one... let's please not record that we cannot paint into an existing game."*
-> ⇒ Losing the COLONY is real and expected. "The game becomes unstable / cannot make a new
-> colony / the UI breaks" is ONE unreproduced session and he believes it is false. ⛔ Do not
-> cite this file as evidence that painting into an existing game is impossible.
-
 <!-- status: live -->
 # Rebuilding the keeper world, by hand
 

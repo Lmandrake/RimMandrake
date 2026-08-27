@@ -1,11 +1,3 @@
-> 🔴 **CORRECTED 2026-08-23 by the owner — read `PAINT_UNDER_MAP_DESTROYS_GAME_1` before
-> acting on anything below about painting under a live map.** His words: *"painting under
-> a player colony is actually fine to do... it just destroys the player colony. So you must
-> create a new one... let's please not record that we cannot paint into an existing game."*
-> ⇒ Losing the COLONY is real and expected. "The game becomes unstable / cannot make a new
-> colony / the UI breaks" is ONE unreproduced session and he believes it is false. ⛔ Do not
-> cite this file as evidence that painting into an existing game is impossible.
-
 # WORLDPAINT_REHEARSAL.md — paint the planet into a throwaway world, and LOOK at it
 
 > moved there on 2026-08-23, byte-unchanged. **Nothing was deleted.** What moved: the superseded
@@ -112,11 +104,8 @@ unverified legality.
   ⚠️ Everything measured AFTER the paint in that session is unattributable — a half-broken
   game answers the bridge normally. The log harvest and the def dump were taken BEFORE it
   and stand.
-  🔴 **STRUCK 2026-08-26 by the owner.** Painting under a colony destroys **that colony** and
-  nothing else — *"it doesn't destroy the game. Just the colony."* The UI-icon and
-  cannot-make-a-new-colony claims above are disproven and
-  `PAINT_UNDER_MAP_DESTROYS_GAME_1` is dropped. `w9_run.py` still refuses on `mapCount > 0`
-  because losing a colony unasked is worth a guard.
+  ⚠️ **Painting under a colony destroys that colony and nothing else.** `w9_run.py` refuses on
+  `mapCount > 0` so a colony is never lost unasked; `--despite-map` proceeds.
 - ⛔ **Do not treat this world as the campaign start.** It has no scenario embedded and its
   faction roster is the slate's 13, not the checklist's. Saving it and keeping it would
   quietly become the shipped world with two gates skipped.

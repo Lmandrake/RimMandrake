@@ -1,16 +1,8 @@
-> 🔴 **CORRECTED 2026-08-23 by the owner — read `PAINT_UNDER_MAP_DESTROYS_GAME_1` before
-> acting on anything below about painting under a live map.** His words: *"painting under
-> a player colony is actually fine to do... it just destroys the player colony. So you must
-> create a new one... let's please not record that we cannot paint into an existing game."*
-> ⇒ Losing the COLONY is real and expected. "The game becomes unstable / cannot make a new
-> colony / the UI breaks" is ONE unreproduced session and he believes it is false. ⛔ Do not
-> cite this file as evidence that painting into an existing game is impossible.
-
 > 🧹 **PRUNED 2026-08-24 01:4x on the owner's order — "clean out all stale NEXT_RELOAD files
 > immediately".** Every block whose only item IDs had already closed, dropped or been superseded
 > was removed; blocks naming still-live work were kept verbatim. **Nothing is lost — the full
 > previous text is the parent of commit `ec0b5a61` in git.** ⚠️ A block here is a DUPLICATE of a ledger
-> item; when the two disagree, the ledger is right. Live IDs kept in this file: `PAINT_UNDER_MAP_DESTROYS_GAME_1`.
+> item; when the two disagree, the ledger is right.
 
 # RELOAD_CHECK.md — load the painted world, and settle three things at once
 
@@ -58,10 +50,7 @@ Both are one bridge call each to re-push after loading.
    then `jawa/world_commit`.
 7. Owner **saves over `WORLDMAP_gen`**, and only then lands if he wants to.
 
-⚠️ **Painting under a map destroys THAT COLONY — not the game.** Owner, 2026-08-26: *"What it
-can do is destroy the player colony, it doesn't destroy the game. Just the colony."* Make a new
-colony and carry on. The 2026-08-21 extras — could not make a new colony, UI lost its icons —
-are **STRUCK as disproven** and `PAINT_UNDER_MAP_DESTROYS_GAME_1` is dropped. Do not cite it.
+⚠️ **Painting under a map destroys THAT COLONY — not the game.** Make a new colony and carry on.
 
 ## Housekeeping done before this launch
 

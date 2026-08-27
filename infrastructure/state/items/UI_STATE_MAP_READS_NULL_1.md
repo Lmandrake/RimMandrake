@@ -10,14 +10,6 @@ been corrected in place to name the right call.
 
 ---
 
-> 🔴 **CORRECTED 2026-08-23 by the owner — read `PAINT_UNDER_MAP_DESTROYS_GAME_1` before
-> acting on anything below about painting under a live map.** His words: *"painting under
-> a player colony is actually fine to do... it just destroys the player colony. So you must
-> create a new one... let's please not record that we cannot paint into an existing game."*
-> ⇒ Losing the COLONY is real and expected. "The game becomes unstable / cannot make a new
-> colony / the UI breaks" is ONE unreproduced session and he believes it is false. ⛔ Do not
-> cite this file as evidence that painting into an existing game is impossible.
-
 ## spec
 
 `rimworld/get_ui_state` reports **`currentMap: None` on a map that plainly exists.**
@@ -42,8 +34,7 @@ caller uses to decide "no map exists yet" — and several things in this repo do
 
 - `ASHKARR_WORLD_DEFINITION.md` §12.4 requires the planet importer to **refuse if
   `Find.CurrentMap != null`**, because painting a planet underneath an instantiated map
-  destroys that colony (owner, 2026-08-26 — the colony, not the game;
-  `PAINT_UNDER_MAP_DESTROYS_GAME_1` is struck as disproven). A guard that
+  destroys that colony. A guard that
   asks the bridge instead of the engine would read `None` here and **proceed against a
   live map** — the precise thing the guard exists to prevent.
 - Any wait-for-map loop of the shape `while st['currentMap'] is None` never exits, even

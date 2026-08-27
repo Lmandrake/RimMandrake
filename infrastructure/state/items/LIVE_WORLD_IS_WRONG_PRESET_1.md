@@ -31,10 +31,8 @@ rimworld/get_ui_state    programState "Playing"   hasCurrentGame true
 rimworld/get_game_info   mapCount 1               ticksGame 1
 ```
 
-**A map exists.** Repainting under a live map destroys **that colony** and nothing else — owner,
-2026-08-26: *"it doesn't destroy the game. Just the colony."* (`PAINT_UNDER_MAP_DESTROYS_GAME_1`
-is struck as disproven; do not cite it.) `w9_run.py` still refuses unless `--despite-map`, because
-a guard that costs a colony is cheap — but the cost is a colony, not a session.
+**A map exists.** Repainting under a live map destroys **that colony** and nothing else.
+`w9_run.py` refuses unless `--despite-map`, so a colony is never lost unasked.
 
 🔑 `ticksGame: 1` with `mapCount: 1` says this is a **freshly started game**, almost certainly
 a scratch colony rather than the paint target. That is fine and nothing here is a defect in
