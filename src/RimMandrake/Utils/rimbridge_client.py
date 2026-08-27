@@ -138,6 +138,21 @@ class RimBridgeError(RuntimeError):
     """A GABP-level failure: bad handshake, transport break, or tool error."""
 
 
+class UnknownParameterError(RimBridgeError):
+    """A tool was called with an argument key its schema does not declare.
+
+    BRIDGE_DROPS_UNKNOWN_PARAMS_1, proven live 2026-08-26: the bridge DISCARDS a
+    key it does not know, silently, and runs the tool on its defaults.
+
+        jawa/new_allowed_area {label: "CHECK_correct"}           -> label "CHECK_correct"
+        jawa/new_allowed_area {name:  "CHECK_wrong", banana: 42} -> label "Area 3"   success:true
+        jawa/time_clock       {zzz: "nonsense"}                  -> full correct payload
+
+    ⛔ The server is not ours and cannot be changed. This is the CLIENT-side guard,
+    and it turns each of those into a loud local failure before a byte is sent.
+    """
+
+
 # --------------------------------------------------------------------------
 # token discovery
 # --------------------------------------------------------------------------
@@ -213,6 +228,10 @@ class RimBridge:
         self.client_name = client_name
         self.sock = None
         self.buf = b""
+        # tool name -> set of declared argument keys. Populated lazily on the first
+        # guarded call; None until then, and a tool absent from it is UNCHECKED,
+        # never "has no parameters". See _declared_params.
+        self._param_index = None
         self.welcome = None
         self.events = []          # unsolicited event envelopes seen while reading
 
@@ -361,8 +380,83 @@ class RimBridge:
         result = self._request("tools/list") or {}
         return result.get("tools", [])
 
-    def call(self, tool, params=None):
-        """tools/call. NOTHING here stops you calling a destructive tool."""
+    # --- the unknown-parameter guard --------------------------------------
+    #
+    # The descriptor key holding a tool's schema is not something this client can
+    # know offline, and guessing one and finding nothing would make the guard pass
+    # everything - the exact failure it exists to prevent. So it tries the
+    # candidates in order and, when none of them yields keys, says UNCHECKED out
+    # loud rather than returning a clean answer.
+    _SCHEMA_KEYS = ("inputSchema", "input_schema", "parameters", "schema", "arguments")
+
+    @staticmethod
+    def _declared_params(descriptor):
+        """The argument keys a tool descriptor declares, or None if UNMEASURABLE.
+
+        ⛔ Returns None - NOT an empty set - when no schema can be found. An empty
+        set would read as "this tool takes no arguments" and reject every correct
+        call; None means "this client could not look", and the caller warns.
+        """
+        if not isinstance(descriptor, dict):
+            return None
+        for key in RimBridge._SCHEMA_KEYS:
+            node = descriptor.get(key)
+            if isinstance(node, dict):
+                props = node.get("properties")
+                if isinstance(props, dict) and props:
+                    return set(props.keys())
+                if node and "properties" not in node and all(isinstance(k, str) for k in node):
+                    # a bare {name: spec} map rather than a JSON-Schema object
+                    return set(node.keys())
+        return None
+
+    def _param_map(self):
+        if self._param_index is None:
+            index = {}
+            for d in self.list_tools():
+                name = d.get("name") if isinstance(d, dict) else None
+                if name:
+                    index[name] = self._declared_params(d)
+            self._param_index = index
+        return self._param_index
+
+    def check_params(self, tool, params):
+        """Raise UnknownParameterError for any key the tool does not declare.
+
+        Returns a one-line reason string when the check could NOT be made, and None
+        when it passed. A caller that ignores the return value still gets the raise.
+        """
+        if not params:
+            return None
+        try:
+            declared = self._param_map().get(tool, "missing")
+        except Exception as exc:                      # a tools/list failure must not
+            return "UNCHECKED: tools/list failed (%s)" % exc   # break the call itself
+        if declared == "missing":
+            return "UNCHECKED: %s is not in tools/list" % tool
+        if declared is None:
+            return "UNCHECKED: no readable schema on %s" % tool
+        unknown = sorted(k for k in params if k not in declared)
+        if unknown:
+            raise UnknownParameterError(
+                "%s does not declare %s. The bridge would DISCARD %s silently and run "
+                "on its defaults, returning success. Declared: %s"
+                % (tool, ", ".join(unknown),
+                   "them" if len(unknown) > 1 else "it",
+                   ", ".join(sorted(declared)) or "(none)"))
+        return None
+
+    def call(self, tool, params=None, check=True):
+        """tools/call. NOTHING here stops you calling a destructive tool.
+
+        🔑 It DOES stop you calling one with a misspelled argument: `check` runs the
+        unknown-parameter guard first (BRIDGE_DROPS_UNKNOWN_PARAMS_1). Pass
+        check=False only when you mean to send a key the schema does not declare.
+        """
+        if check:
+            unchecked = self.check_params(tool, params)
+            if unchecked:
+                print("[rimbridge_client] %s -> %s" % (tool, unchecked), file=sys.stderr)
         return self._request("tools/call", {"name": tool, "arguments": params or {}})
 
     def looks_read_only(self, tool):
