@@ -66,3 +66,26 @@ Next load, on the log alone — no bridge needed:
 - [ ] `harvest_log.py` DEFS DISCARDED explained separately — 4 of the 6 are
       `GeneTattooTagFilter.ModExtension_GeneTattooTagFilter` from `SW_Genes.xml`, which is a
       DIFFERENT defect and needs its own item.
+
+## ⏳ THE GENERATOR GUARD IS WRITTEN AND HAS NEVER RUN — 2026-08-26, BUILD
+
+`design/Jawa/fauna/gen_cast_patch.py` now unions its disk walk with the newest def dump capture,
+so a `wildBiomes` entry that only a PatchOperation creates can no longer hide from its de-dup pass.
+Its docstring's claim that *"the def dump cannot help, because it does not serialise wildBiomes at
+all"* is corrected in place — a capture does carry `ThingDef.fields.race.wildBiomes`, measured.
+
+⛔ **UNPROVEN.** The regeneration was started and killed before it finished (the disk walk over
+1,254 workshop mods takes minutes), so the guard has never produced output.
+`src/Jawa/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml` is **untouched** — 26 operations, byte-identical
+to `1631b4d4`, confirmed after the kill.
+
+**To finish it:**
+```
+python3 design/Jawa/fauna/gen_cast_patch.py          # minutes; rewrites the cast patch
+git diff src/Jawa/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml
+```
+🔑 **Read that diff before shipping it.** The generator REPLACES the wildAnimals roster of 26
+biomes; the only intended change is that its DE-DUP section should now emit ~27 removals instead of
+the handful a disk-only scan finds. **A change to the cast rosters themselves is not intended** —
+if the diff shows one, stop and say so. `git checkout --` restores it; the committed copy is the
+authored planet.

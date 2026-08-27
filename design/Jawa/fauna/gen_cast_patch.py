@@ -84,11 +84,18 @@ def _animal_side_biomes():
     This generator caused exactly that on 2026-08-22 by picking purely on the biome
     side. 30 pairs, measured 2026-08-23.
 
-    ⚠️ THIS IS A FLOOR, not a total. It reads base XML, so a third-party
-    PatchOperation that ADDS a wildBiomes entry is invisible here - and the def dump
-    cannot help, because it does not serialise wildBiomes at all (a
-    Dictionary<BiomeDef,float>, dropped like wildPlants). Score the remainder from a
-    load's Player.log.
+    🔴 CORRECTED 2026-08-26. This used to say the def dump "cannot help, because it
+    does not serialise wildBiomes at all". IT DOES: a capture carries
+    ThingDef.fields.race.wildBiomes, measured against
+    captures/2026-08-26T14-20-04Z. That wrong sentence is why the disk-only scan
+    shipped as sufficient, and it cost 27 live collisions - 22 Alpha Animals, 3
+    Megafauna, 2 Jurassic Rimworld - every one of them created by a PatchOperation
+    and therefore invisible to the walk below. Choose Wild Animal Spawns died at
+    startup and 181 of 744 cast weights read 0.
+
+    So this now reads BOTH: the disk walk (which sees mods whose XML declares it)
+    and the newest capture (which sees the post-patch truth, including entries no
+    file declares). The union is the answer; either alone is a floor.
     """
     import re
     roots = ['/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100',
@@ -126,6 +133,39 @@ def _animal_side_biomes():
                         continue
                     for b in re.findall(r'<([A-Za-z0-9_]+)>[^<]*</\1>', w.group(1)):
                         out[b].add(d.group(1))
+
+    # ---- and the post-patch half, from the newest capture --------------------
+    # A collision a PatchOperation creates exists in no def file. The capture is
+    # taken from the running game after every patch has applied, so it is the only
+    # offline source that can see one.
+    for cap in captures_newest_first():
+        f = os.path.join(cap, 'defs', 'ThingDef.json')
+        if not os.path.isfile(f):
+            continue
+        try:
+            td = json.load(open(f, encoding='utf-8'))
+        except (OSError, ValueError):
+            continue
+        td = td if isinstance(td, list) else td.get('defs') or []
+        added = 0
+        for t in td:
+            if not isinstance(t, dict):
+                continue
+            race = (t.get('fields') or {}).get('race')
+            if not isinstance(race, dict):
+                continue
+            wbio = race.get('wildBiomes')
+            if not wbio:
+                continue
+            biomes = wbio.keys() if isinstance(wbio, dict) else [
+                x.get('biome') for x in wbio if isinstance(x, dict)]
+            for b in biomes:
+                if b and t.get('defName') and t['defName'] not in out[b]:
+                    out[b].add(t['defName'])
+                    added += 1
+        print(f"   animal-side: +{added} pair(s) only the capture could see "
+              f"({os.path.basename(cap)})")
+        break          # newest capture only; older ones describe a different mod set
     return out
 
 
@@ -272,8 +312,10 @@ def main():
         parts.append('       half-built cache it leaves behind silently zeroes every')
         parts.append('       animal that would have registered after it - for the rest')
         parts.append('       of the session, with no further error.')
-        parts.append(f'       {len(dups)} pair(s) this run. A FLOOR: a third-party patch that')
-        parts.append('       ADDS a wildBiomes entry is invisible to a base-XML scan.')
+        parts.append(f'       {len(dups)} pair(s) this run. Sourced from the mod XML on disk')
+        parts.append('       AND from the newest def dump capture, because a collision a')
+        parts.append('       PatchOperation creates exists in no def file at all - which is')
+        parts.append('       how 27 of them shipped on 2026-08-26 against a disk-only scan.')
         parts.append('       ============================================================ -->')
         parts.append('')
         for b, a in dups:
