@@ -124,6 +124,57 @@ retrieval, tools chained over four turns, correct arithmetic, ~1.2 s first token
 11-hook surface, `reasoning_content` with no Anthropic equivalent, and anything
 long-horizon. A 5-turn success is not a session.
 
+### 🔴 Measured 2026-08-26 by REP — THE GATEWAY IS BUILT AND A CLAUDE CODE WINDOW RAN ON IT
+
+The thing every previous pass called unmeasured. LiteLLM **1.98.0** in a venv at
+`/home/mandrake/.local/venvs/litellm` (system pip refuses under PEP 668 — the venv is
+not optional). Config, runnable and committed:
+`src/RimMandrake/Utils/litellm_nemotron.yaml`.
+
+    set -a; source ~/.config/secrets/nvidia.env; set +a
+    export NVIDIA_NIM_API_KEY="$NVIDIA_API_KEY"
+    /home/mandrake/.local/venvs/litellm/bin/litellm \
+        --config src/RimMandrake/Utils/litellm_nemotron.yaml --port 4000
+
+**The Anthropic surface works, including the two things expected to break it.**
+`/v1/messages` returns Anthropic-shaped JSON; `reasoning_content` arrives as a
+`{"type":"thinking"}` block; a tool returns a real `tool_use` block with
+`stop_reason: "tool_use"`. ⚠️ The thinking block carries **`"signature": null`** — it
+did not break these runs, but nothing has yet exercised a long thinking-block echo.
+
+**A headless Claude Code window completed real repo tasks through it**, inside this
+repo, with the session hooks live (the `SessionStart` seat-identity injection fires and
+the model still functions):
+
+| task | result |
+|---|---|
+| 2 files + read `b.txt` (scratch dir) | ✅ correct |
+| count FactionDef files + read `Jawa_HuttCartel` `leaderTitle` | ✅ `8 Lord` — both correct |
+
+⚠️ **Claude Code does not recognise the model name** and warns it will assume a 200k
+window: `[claude-code:unrecognized_model]`. Pass **`CLAUDE_CODE_MAX_CONTEXT_TOKENS=600000`**
+(REP measured 616k retrieval on this model) or the 616k finding is thrown away by the
+client, not the server. ⚠️ Also set `ANTHROPIC_API_KEY=` explicitly; without it the
+claude.ai OAuth login takes precedence and the window never reaches the gateway.
+
+**Quality tell, minor but real:** asked what `b.txt` contained, the model reported
+``1\tbeta`` — it copied the **Read tool's line-number prefix** into the answer as file
+content. Correct enough to pass, wrong enough to notice.
+
+🔴 **ONE CRITERION BELOW IS NOT BUILDABLE ON THIS MACHINE, and it is not a to-do.**
+"LiteLLM `fallbacks` configured so a 429 retries on **Sonnet 5**" requires an
+`ANTHROPIC_API_KEY`. There is none — `~/.config/secrets/` holds `nvidia.env` and nothing
+else, and this machine's Claude auth is the **claude.ai OAuth login, which LiteLLM
+cannot proxy**. ⇒ The fallback is configured **within the NVIDIA family**
+(`nemotron` → `nemotron-lightning`), which is what the *measured* failure mode — 503
+shared-capacity, transient — actually needs; Kimi's 429 quota wall left with Kimi.
+**Proven, not assumed:** a `nemotron-faultinject` entry pointing at a nonexistent model
+answered anyway, and the response's `model` field read
+`nvidia_nim/nvidia/nemotron-3.5-lightning-30b-a3b`.
+
+✅ **`unset ANTHROPIC_BASE_URL` returns the window to normal — verified, not assumed.**
+A window with the three vars unset answered as `claude-opus-5[1m]`.
+
 ## criteria
 
 - LiteLLM running on `localhost:4000`, version pinned and recorded, **not** 1.82.7/1.82.8.

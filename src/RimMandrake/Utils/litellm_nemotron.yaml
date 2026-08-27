@@ -1,0 +1,42 @@
+# LiteLLM gateway: presents NVIDIA-hosted nemotron on an Anthropic-shaped endpoint
+# so a Claude Code window can be pointed at it. KIMI_GATEWAY_FOR_BUILD_1.
+#
+# Run:  source ~/.config/secrets/nvidia.env
+#       /home/mandrake/.local/venvs/litellm/bin/litellm \
+#           --config src/RimMandrake/Utils/litellm_nemotron.yaml --port 4000
+# Point a window at it:
+#       ANTHROPIC_BASE_URL=http://localhost:4000  ANTHROPIC_AUTH_TOKEN=sk-jawa-local
+#       ANTHROPIC_MODEL=nemotron
+# litellm 1.98.0 measured 2026-08-26. Never 1.82.7 / 1.82.8.
+model_list:
+  - model_name: nemotron
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3-super-120b-a12b
+      api_key: os.environ/NVIDIA_API_KEY
+      api_base: https://integrate.api.nvidia.com/v1
+  - model_name: nemotron-lightning
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3.5-lightning-30b-a3b
+      api_key: os.environ/NVIDIA_API_KEY
+      api_base: https://integrate.api.nvidia.com/v1
+
+  # deliberately dead primary, used only to PROVE the fallback fires
+  - model_name: nemotron-faultinject
+    litellm_params:
+      model: nvidia_nim/nvidia/does-not-exist-000b
+      api_key: os.environ/NVIDIA_API_KEY
+      api_base: https://integrate.api.nvidia.com/v1
+
+litellm_settings:
+  drop_params: true
+  num_retries: 2
+  # 🔴 The Sonnet-5 fallback in KIMI_GATEWAY_FOR_BUILD_1's criteria is NOT buildable
+  # on this machine: the claude.ai login is OAuth and LiteLLM needs an
+  # ANTHROPIC_API_KEY, which does not exist here. Falling back within the NVIDIA
+  # family instead, which is what the MEASURED failure mode (503 capacity) needs.
+  fallbacks:
+    - nemotron: ["nemotron-lightning"]
+    - nemotron-faultinject: ["nemotron-lightning"]
+
+general_settings:
+  master_key: sk-jawa-local
