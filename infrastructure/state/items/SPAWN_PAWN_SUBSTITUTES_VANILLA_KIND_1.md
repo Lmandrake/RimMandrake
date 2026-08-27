@@ -91,3 +91,38 @@ also carry `requiredWorkTags: Violent`, which is a generation constraint that ca
 a re-roll. **A constraint that cannot be satisfied is at least as good an explanation as the
 faction**, and this run cannot separate them. Test the two independently before believing
 either.
+
+---
+
+## ✅ CONFOUND RESOLVED 2026-08-27 — it is the FACTION, and `requiredWorkTags` has no effect
+
+A 2×2, 20 pawns per cell, same session:
+
+| | vanilla faction (`Empire`) | authored faction (`Jawa_HuttCartel`) |
+|---|---|---|
+| **guarded kind** `Jawa_Empire_Grunt` | **3 of 20 substituted (15%)** | **0 of 20 (0%)** |
+| **unguarded kind** `Jawa_Hutt_Grunt` | **3 of 20 substituted (15%)** | **0 of 20 (0%)** |
+
+**The rows are identical and the columns are not.** `requiredWorkTags: Violent` changes
+nothing; the faction changes everything. Spawning any of our kinds into a VANILLA faction
+substitutes ~15% of them for a vanilla kind; into a faction we authored, never.
+
+## 🔴 Why this is a live gameplay defect, not a bridge curiosity
+`Jawa_Empire_*` declare `defaultFactionDef: Empire` and `Jawa_Blackstar_*` declare
+`defaultFactionDef: Pirate` — **both vanilla**. Every substituted pawn measured this session
+was bare-handed. ⇒ Roughly one in seven Empire and Blackstar pawns arrives as a vanilla kind
+carrying nothing, and the shipped `requiredWorkTags` guard cannot prevent it.
+
+🔑 **And this is almost certainly the same defect `AUTHORED_KINDS_MUST_FIELD_1` exists to fix.**
+That item wires orphaned role kinds into `TribeCivil`, `Pirate` and `Empire` combat groups.
+Our authored factions list our kinds in their `pawnGroupMakers`; vanilla `Empire` and `Pirate`
+do not. **Untested prediction:** wiring the Empire and Blackstar kinds into those two factions'
+combat groups takes the substitution rate to 0, exactly as it already is for every authored
+faction. ⚠️ Prediction, not a measurement — the mechanism (a faction-side fallback to
+`basicMemberKind` for a kind the faction does not field) has not been read out of the C#.
+
+## criteria
+- [x] Kind read back compared against kind requested.
+- [x] Attributed: the faction, not the kind and not `requiredWorkTags`.
+- [ ] The mechanism confirmed in `PawnGenerator`/faction fallback source, not inferred.
+- [ ] Substitution at 0 for Empire and Blackstar kinds in normal play.
