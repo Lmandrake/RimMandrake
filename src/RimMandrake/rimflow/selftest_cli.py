@@ -567,6 +567,24 @@ def t_a_run_sheet_with_nothing_stale_says_nothing():
     assert "RUN-SHEET" not in err, "it fixed itself and the check kept talking: %r" % err
 
 
+def t_the_bench_scan_is_refused_to_a_seat_that_could_game_it():
+    """⛔ `next --bench` IS REP'S AND THE OWNER'S, AND THAT IS NOT SENIORITY.
+
+    It is the one rimflow output that scores actions seats CHOOSE rather than facts about
+    the world, so it is the only one that can be gamed — and the specific pressure is
+    harmful: penalise upstream reassignment and a seat learns to absorb mis-scoped work
+    rather than hand it back, which is worse and invisible. `facts/distress_signals.md`.
+    ⭐ The refusal must carry that REASON, not just the word no.
+    """
+    fresh()
+    err = refused(("next", "--bench"), "distress_signals.md",
+                  "BUILD must not be handed a score to optimise", seat="BUILD")
+    assert "gamed" in err.lower(), (
+        "the refusal has to say WHY, or the next seat reads it as rank: %s" % err)
+    ok("next", "--bench", seat="REP")
+    ok("next", "--bench", seat="OWNER")
+
+
 def t_the_real_ledger_was_never_touched():
     """🔴 The whole point of RIMFLOW_LEDGER. If this fails, everything above lied."""
     import importlib

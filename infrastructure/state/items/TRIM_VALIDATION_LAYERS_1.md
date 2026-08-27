@@ -69,6 +69,14 @@ move on **while he sat there**. That is the defect BENCH exists to kill.
   just spoke into. Silent on an ordinary prompt.
 - `doc_budget.py` — POLICY 320 → 420, with the reason and the debt named in a comment.
 
+## 🔴 STILL NEEDS HIM — points 1–4, and they are DOCTRINE, verified open 2026-08-27
+
+Measured against the tree, not remembered: `POLICY.md` carries no lies/tells-the-truth
+split (1), `rimflow file` carries no CHECK-only-takes-game-work guard (2), 21 of BUILD's
+26 open items still need the game rather than living on a run sheet (3), and (4) was never
+started. **Point 5 is the only one that shipped, and it shipped because it was a query,
+not a rule.** Do not start 1–4 off this file — he asked to plan them.
+
 ## Still open — the rest of the plan, in the order agreed
 
 1. **Verify what lies; trust what tells the truth.** Delete the self-verify step outright.
@@ -80,8 +88,16 @@ move on **while he sat there**. That is the defect BENCH exists to kill.
 3. **Load-dependent work leaves the queue** and becomes one run sheet per load window.
 4. **One page per seat**, and 🔑 **a new obligation must name the one it replaces** — the
    rule that stops a fourth occurrence.
-5. **`rimflow next --bench`** — triage as a query, not a fifth agent: thrashing items
-   (2+ reassignments), self-contained ones, and the ones that need him. NOT BUILT YET.
+5. ✅ **`rimflow next --bench` — BUILT 2026-08-27.** Triage as a query: per-seat counts,
+   RIPE, IN TROUBLE and NEEDS HIM, in one call. ⛔ Refused to BUILD/CHECK, and the refusal
+   says why — it scores actions seats CHOOSE, so it is the only rimflow output that can be
+   gamed, and penalising upstream reassignment teaches a seat to absorb mis-scoped work
+   rather than hand it back. ⚠️ **Its spec above was SUPERSEDED by measurement six hours
+   after it was written:** "thrashing = 2+ reassignments" is refuted — reassignment COUNT
+   is misleading (its top hit had **11 reassignments and closed in 1.0 h**), and DIRECTION
+   is the whole signal (upstream 10.5 h / 26.9% closed against 1.5 h / 72.9%). It
+   implements `facts/distress_signals.md`'s coarse index instead, with the per-kind p90
+   computed at run time because that file forbids hard-coding it.
 
 ⚠️ **Rejected, with the reason on file: a fifth "Manager" seat.** It cannot tell any seat
 what it took (messaging is off and hook-blocked), it only helps while he is in its window

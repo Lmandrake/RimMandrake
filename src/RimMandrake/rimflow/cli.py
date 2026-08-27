@@ -393,7 +393,214 @@ def _ctx(args):
 # ---------------------------------------------------------------------------
 # next — the command that matters
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# `next --bench` — TRIAGE AS A QUERY, not a fifth agent.
+#
+# 🔴 THE FIFTH "MANAGER" SEAT WAS REJECTED AND THE REASON IS ON FILE
+# (`TRIM_VALIDATION_LAYERS_1`): it could not tell any seat what it took — messaging is
+# off and hook-blocked — it only helped while the owner sat in its window, which is what
+# BENCH already covers, and it was a fifth doctrine set to keep in sync. The valuable
+# half was always the query. This is the query.
+#
+# ⚠️ SUPERSEDES ITS OWN SPEC. That item asked for "thrashing items (2+ reassignments)".
+# Six hours later `facts/distress_signals.md` MEASURED that population and refuted the
+# framing: reassignment COUNT is misleading — its top hit had **11 reassignments and
+# closed in 1.0 h** — while DIRECTION is the whole signal. Upstream-reassigned items live
+# 10.5 h against 1.5 h and close 26.9% against 72.9%. So this implements the measured
+# coarse index, not the count.
+#
+# ⛔ REP AND THE OWNER ONLY, and that is not seniority. Every other thing rimflow prints
+# measures the world; this one measures actions seats CHOOSE, so it is the one number
+# that can be gamed — and penalising upstream reassignment would teach a seat to absorb
+# mis-scoped work rather than hand it back, which is worse and invisible. A seat gets the
+# underlying fact ("claimed 33 h, no commit"); it never gets a score to optimise.
+
+BENCH_SEATS = ("REP", "OWNER")
+
+# Upstream = a seat saying "this is not what I thought it was". Downstream is the
+# conveyor working (0.55× — protective), so only these pairs count.
+_UPSTREAM = {("CHECK", "BUILD"), ("CHECK", "DECIDE"), ("BUILD", "DECIDE")}
+
+
+def _p90_by_kind(w, evs):
+    """-> {kind: p90 hours} computed from items that CLOSED, at run time.
+
+    🔑 `distress_signals.md` is explicit that these must NOT be hard-coded: they vary 7×
+    across kinds (a ruling at 20 h is in trouble; a check at 40 h is normal) and
+    hard-coding "guarantees they are wrong within a fortnight".
+    """
+    from collections import defaultdict
+    lives = defaultdict(list)
+    for it in w.items.values():
+        if it.state != "done" or not it.created_at or not it.history:
+            continue
+        last = evs[it.history[-1]].get("ts")
+        if not last:
+            continue
+        h = (_epoch(last) - _epoch(it.created_at)) / 3600.0
+        if h >= 0:
+            lives[it.kind or "task"].append(h)
+    out = {}
+    for kind, xs in lives.items():
+        xs.sort()
+        out[kind] = xs[min(len(xs) - 1, int(round(0.9 * (len(xs) - 1))))]
+    return out
+
+
+def _epoch(ts):
+    import calendar, time
+    try:
+        return calendar.timegm(time.strptime(ts[:19], "%Y-%m-%dT%H:%M:%S"))
+    except (ValueError, TypeError):
+        return 0.0
+
+
+def _distress(it, evs, p90, now):
+    """-> (score, [reasons]) on the measured coarse index. ≥3 is the believe-it line."""
+    score, why = 0, []
+
+    if it.blocked:
+        age = (now - _epoch(_last_ts(it, evs, "block"))) / 3600.0
+        if age > 24:
+            score += 3
+            why.append("blocked %.0f h, unresolved" % age)
+        else:
+            score += 1
+            why.append("blocked")
+
+    if it.needs == "owner":
+        score += 2
+        why.append("needs the owner (4.26×)")
+    elif it.needs in ("game-up", "bridge", "harvest", "deploy"):
+        score += 1
+        why.append("needs %s" % it.needs)
+
+    up = 0
+    prev = None
+    for i in it.history:
+        ev = evs[i]
+        if ev.get("verb") == "reassign" or ev.get("event") == "reassign":
+            to_ = ev.get("to") or ev.get("for")
+            # ⚠️ `reassign` records no `from` — 0 of 73, and the fact file names this as
+            # the one line that would sharpen the whole index. Until it does, direction
+            # is INFERRED from the previous owner, and an item whose first event is a
+            # reassign has no previous owner to infer from.
+            if prev and (prev, to_) in _UPSTREAM:
+                up += 1
+            prev = to_ or prev
+        elif ev.get("for") or ev.get("seat"):
+            prev = ev.get("for") or prev
+    if up:
+        score += 2 * up
+        why.append("%d upstream reassign%s (2.28×)" % (up, "" if up == 1 else "es"))
+
+    if it.created_at:
+        age = (now - _epoch(it.created_at)) / 3600.0
+        line = p90.get(it.kind or "task")
+        if line and age > line:
+            score += 2
+            why.append("%.0f h old, p90 for a %s is %.0f h" % (age, it.kind or "task", line))
+
+    notes = commits = 0
+    for i in it.history:
+        ev = evs[i]
+        if ev.get("event") == "note" or ev.get("verb") == "note":
+            notes += 1
+        if ev.get("sha"):
+            notes, commits = 0, commits + 1
+    if notes >= 2:
+        score += 2
+        why.append("%d notes since the last commit — talk without work (3.20×)" % notes)
+
+    if it.state == "doing":
+        claimed = _last_ts(it, evs, "claim", "start")
+        if claimed and not commits:
+            age = (now - _epoch(claimed)) / 3600.0
+            if age > 24:
+                score += 2
+                why.append("claimed %.0f h ago, no commit since" % age)
+
+    if any(evs[i].get("ownerSaid") or evs[i].get("override") for i in it.history):
+        score += 1
+        why.append("the owner had to intervene")
+
+    return score, why
+
+
+def _last_ts(it, evs, *verbs):
+    for i in reversed(it.history):
+        ev = evs[i]
+        if (ev.get("verb") in verbs) or (ev.get("event") in verbs):
+            return ev.get("ts")
+    return it.created_at
+
+
+def cmd_bench(args, seat):
+    """The BENCH scan as a query. Both halves, always — he should never have to
+    remember which phrase gets which."""
+    if seat not in BENCH_SEATS:
+        die("`next --bench` is REP's and the owner's, and that is not seniority.\n"
+            "  It scores actions SEATS CHOOSE, so it is the one metric that can be\n"
+            "  gamed — penalising upstream reassignment would teach a seat to absorb\n"
+            "  mis-scoped work rather than hand it back. You get the underlying fact\n"
+            "  (`rimflow why <ID>`), never the score. facts/distress_signals.md.")
+    evs, w = load()
+    import time
+    now = time.time()
+    p90 = _p90_by_kind(w, evs)
+    open_ = [i for i in w.open_items() if not args.target or i.target == args.target]
+
+    print("(game %s, bridge %s)  %d open" % (w.game, w.bridge_holder or "free", len(open_)))
+
+    per = {}
+    for it in open_:
+        per.setdefault(it.owner or "unassigned", []).append(it)
+    print("")
+    for who in sorted(per):
+        rows = per[who]
+        game = sum(1 for i in rows if i.needs in ("game-up", "bridge", "harvest", "deploy"))
+        him = sum(1 for i in rows if i.needs == "owner")
+        print("%-11s %2d open   %2d need the game   %2d need him"
+              % (who, len(rows), game, him))
+
+    ripe = [i for i in open_
+            if not i.blocked and i.needs == "offline" and i.state in ("proposed", "ready")]
+    print("\nRIPE — unblocked, offline, would move the moment someone took it: %d" % len(ripe))
+    for it in ripe[:10]:
+        print("  %-44s %-9s %s" % (it.id[:44], it.owner or "unassigned", (it.title or "")[:60]))
+    if len(ripe) > 10:
+        print("  ... +%d more" % (len(ripe) - 10))
+
+    scored = []
+    for it in open_:
+        sc, why = _distress(it, evs, p90, now)
+        if sc >= 3:
+            scored.append((sc, it, why))
+    scored.sort(key=lambda r: -r[0])
+    # ⛔ Never more than five, ranked. A longer list is a dump, and a dump is what the
+    # briefing exists instead of.
+    print("\nIN TROUBLE — coarse index ≥3 (31% recall, 42.9% precision, 5.22× lift).")
+    print("🔑 When it fires, believe it. When it does not, that is NOT safety.")
+    for sc, it, why in scored[:5]:
+        print("  [%d] %-40s %s" % (sc, it.id[:40], (it.title or "")[:52]))
+        print("      %s" % "; ".join(why))
+    if not scored:
+        print("  nothing scores ≥3.")
+
+    needs_him = [i for i in open_ if i.needs == "owner"]
+    print("\nNEEDS HIM — %d" % len(needs_him))
+    for it in needs_him[:8]:
+        print("  %-44s %s" % (it.id[:44], (it.title or "")[:60]))
+    if len(needs_him) > 8:
+        print("  ... +%d more" % (len(needs_him) - 8))
+    print("\n⚠️  Every item above gets TWO clauses when you relay it — DO: and DON'T:.")
+    print("    The DON'T clause is the half that decides, and the half easy to leave out.")
+    return 0
+
+
 def cmd_next(args, seat):
+    if getattr(args, "bench", False):
+        return cmd_bench(args, seat)
     warn = _stale_board()
     if warn:
         sys.stderr.write(warn)
@@ -1220,7 +1427,10 @@ def build_parser():
         s.set_defaults(fn=fn)
         return s
 
-    add("next", "the one item to work now", cmd_next)
+    s = add("next", "the one item to work now", cmd_next)
+    s.add_argument("--bench", action="store_true",
+                   help="REP/OWNER only: the whole board triaged — per-seat "
+                        "counts, RIPE, IN TROUBLE, and what needs him")
 
     s = add("show", "everything the ledger says about one item", cmd_show)
     s.add_argument("id")
