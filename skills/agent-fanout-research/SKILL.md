@@ -183,3 +183,40 @@ identical prompt, identical input, `temperature: 0`, returned `121, 131, 144` an
 worker's VERDICT was right both times. **Its EVIDENCE was not**, and evidence is the
 part you were going to paste into a doc.
 
+## 8. What a real cheap-worker sweep actually returns
+
+Measured 2026-08-26, 60 real mod XML files, one question with grep ground truth (3 true
+positives). Dispatcher `src/RimMandrake/Utils/nemotron_fanout.py`, 8 workers, 12.7 min,
+free. Before the §7 sizing rule the same sweep returned **0 hits and 12 truncations**.
+After it:
+
+    true positives   2 of 3          false positives   0
+    false negatives  1               true negatives   57 of 57
+    truncated        0
+
+🔑 **57 of 57 true negatives and zero fabrications — but it missed a real hit.** That is
+the shape to expect and the shape to exploit: **use a cheap fan-out to NARROW a corpus,
+never to prove absence.** An abstention means *this worker did not find it*, which is not
+the same fact as *it is not there*, and only one of those is safe to write down.
+
+### Three ways the harness scored a right answer wrong
+
+Every one produced a clean, plausible number. None was caught by reading output — only by
+having ground truth in hand first.
+
+* ⛔ **A truncated reply scored as an abstention.** "Ran out of budget mid-thought" and
+  "looked and found nothing" are opposite facts; conflating them turns an unfinished
+  sweep into a clean bill of health. Compare `completion_tokens` against your cap on
+  every row and label truncation as its own outcome.
+* ⛔ **A negative VERDICT scored as a HIT.** Asked a yes/no, the model filled the answer
+  shape with *"No Replace targets pawnGroupMakers"* rather than using the abstention
+  token. Correct answer, counted as a find. Accept a negative verdict as a negative.
+* ⚠️ **Stripping comments invalidates every line number.** The gain in §7 is real, but
+  `EVIDENCE: 155:` now refers to the stripped body, not the file on disk. **Re-locate by
+  the quoted text, never by the number** — and say so in the output, because the person
+  pasting a citation into a doc will not be the person who stripped the file.
+
+⭐ **The rule underneath all three: calibrate the harness on an answer you already know
+before you trust one you do not.** A grader that has never been shown a right answer has
+not been tested — it has only been run.
+
