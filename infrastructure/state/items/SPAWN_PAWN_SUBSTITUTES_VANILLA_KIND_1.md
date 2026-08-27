@@ -126,3 +126,32 @@ faction. ⚠️ Prediction, not a measurement — the mechanism (a faction-side 
 - [x] Attributed: the faction, not the kind and not `requiredWorkTags`.
 - [ ] The mechanism confirmed in `PawnGenerator`/faction fallback source, not inferred.
 - [ ] Substitution at 0 for Empire and Blackstar kinds in normal play.
+
+---
+
+## ⚠️ CORRECTION 2026-08-27 — "into an authored faction, never" is TOO STRONG
+
+The 2×2 above read `0 of 20` for `Jawa_Hutt_Grunt` → `Jawa_HuttCartel` and I wrote **never**.
+My own earlier run in the same session contradicts it: run A measured
+`Jawa_Hutt_Grunt` → `Jawa_HuttCartel` at **1 of 5**, and `Jawa_Hutt_Leader` → `Jawa_HuttCartel`
+at **1 of 5**. Two of the four substitutions in that run were inside an AUTHORED faction.
+
+**Pooling every measurement of that one combination this session:**
+
+    Jawa_Hutt_Grunt -> Jawa_HuttCartel    1 substituted of 45   ~2%
+    any our-kind    -> Empire / Pirate    ~15%
+
+⇒ **The direction of the effect survives and the absolute claim does not.** A vanilla faction
+substitutes roughly an order of magnitude more often than an authored one; an authored one is
+not immune. ⛔ Do not build on "never".
+
+🔑 **And the mechanism is NOT "the faction does not list the kind", which was my prediction.**
+Measured from the capture: `Empire`, `Pirate` and `TribeCivil` **all** carry our kinds in their
+combat `pawnGroupMakers` — `Jawa_Empire_Grunt/Heavy/Specialist`, `Jawa_Blackstar_*`,
+`Jawa_DeepDesert_*` respectively, each with its leader in `fixedLeaderKinds`. They are wired
+and they still substitute at 15%. ⇒ `AUTHORED_KINDS_MUST_FIELD_1`'s wiring is **live-loaded and
+correct**, and it is not the fix for this.
+
+**What a real measurement needs:** ≥60 spawns per cell (5 and 20 are far too few for a ~2–15%
+rate), and the substituted kind recorded rather than just counted — the one substitute inspected
+all session was a vanilla `Colonist`.
