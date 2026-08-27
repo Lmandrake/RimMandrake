@@ -218,3 +218,59 @@ false positives (`DP_ArtilleryPirate`, `DP_RocketPirate`). See `7f005f7c` for th
 defects that produced the 12.
 
 ✅ **Still real and unchanged: the ARMOUR half** — 8 of 446 kinds. That is the live work here.
+
+---
+
+## ✅ THE ARMOUR HALF IS BUILT AND DEPLOYED; (A)(B)(C) MEASURE DISCHARGED — BUILD, 2026-08-27
+
+All against capture `2026-08-26T14-20-04Z`, **582 mods, matching `ModsConfig.xml`** (the tools
+refuse otherwise). Commits `da9ca271` · `038a2efe` · `760694ff`.
+
+### The armour half — 8 dead kinds, 5 repaired, 3 deliberately not
+
+`src/Jawa/Jawa_Patches/Patches/ApparelTags_DeadTagRepair.xml`, deployed to the game copy.
+`validate_patch.py --defs --live`: **0 errors, 0 warnings, and every one of the 5 xpaths reports
+1 match** — matches, not merely well-formed, which is the check this file's own history says to
+insist on. Evidence: `infrastructure/state/evidence/apparel_dead_tag_repair_2026-08-27.txt`.
+
+| kind | asked for | now also asks | why |
+|---|---|---|---|
+| `AncientSoldierBoss` · `AncientSoldierBossN` · `AncientMallGuards` · `AncientSlaughter` | `AM_Boss` `AM_Bossbelt` `AM_Fashion` `AM_Slaughter`, 0 carriers | `AncientSoldier`'s live six-tag ladder | **CUT.** All 6 carriers are in the owner's kill list — confirmed dump-side (present, tags empty = neuter signature) AND disk-side (`BossArmor.xml` declares them). The cut stands; the ladder refills |
+| `OuterRim_ImperialTrader` | `ORImperialLight`, 0 apparel carriers | `ImperialApparel` (21) | **NOT a cut.** `ORImperialLight` is a WEAPON tag. The mod has asked for clothes by a gun's name in 1.4, 1.5 and 1.6 |
+
+⛔ **`OuterRim_RebelJumpTrooper` · `RebelOfficer` · `RebelTrader` left alone deliberately** —
+`RebelApparel` is the same upstream gap, but **no FactionDef, patch or pawnGroupMaker in `src/`
+names any of the three**. Always ask who asks. One line each if a Rebel faction is ever authored.
+
+⭐ **And six of OURS are measured CLEAN, which is also not work.** The `RimMandrake_*Tribal` kinds
+carry a dead `Medieval` apparel tag inherited from `RimMandrake_TribalPawnKind` — dead because
+Medieval Overhaul is not in this list. **All six keep `Neolithic`**, so all six dress. A dead tag
+beside a live one contributes no candidates and costs nothing. ⛔ Do not clean it up.
+
+### (A)(B)(C) re-measured, and none of them is a backlog
+
+- **(A) rationalise tags so every kind can select** — `weapon_tag_audit.py`: **2** kinds with every
+  weapon tag empty, and both are this item's own declared false positives (`DP_ArtilleryPirate`,
+  `DP_RocketPirate`, which carry `*NoEquipTag` + `weaponMoney 99999`). **No work owed.**
+- **(B) "all bows no matter what they're called are considered bows"** — ✅ **already true, measured
+  by `techLevel` rather than by name.** All **9 of 9** Neolithic/Medieval RANGED weapons carry a
+  vanilla neolithic ranged tag. **47 of 52** melee do, and the 5 that do not are `WoodLog`,
+  `ThrumboHorn`, `BMT_MushroomLog`, `FungusBeer` and `TarisianAle` — improvised objects, not
+  weapons. **No work owed.**
+  🪤 **A NAME-SUBSTRING PASS SAYS 13 ARE MISSING AND EVERY ONE IS A FALSE POSITIVE.** Matching
+  "bow"/"sling"/"throw" catches slug**throw**er, bull**sling**er, flame**throw**er and five
+  `guy762_bowcaster*` — a Wookiee energy crossbow at `techLevel Spacer`, correctly tagged
+  `AssaultRifle`. This is the same trap this file already records one instance of. **Classify by
+  `techLevel` + `weaponClasses`, never by label.**
+- **(C) blasters circulate as the vanilla replacement** — **36** Industrial/Spacer guns carry no
+  vanilla role tag, unchanged, and the owner ruled all 36 measured-and-correct on 2026-08-23:
+  every one carries a purpose-built modded tag and is RESERVED, not orphaned.
+  ⚠️ **A hand-listed vanilla vocabulary gets this wrong.** A 19-tag hand list scored the same
+  population at 119 un-tagged. The 60-tag vocabulary must be MEASURED off Core/DLC XML — which is
+  what `weapon_tag_audit.py` does and what any re-derivation must also do.
+
+### What is still owed
+Only the next load, on the log and a fresh capture — **no bridge, no clicking**:
+- the four Ancient kinds and `OuterRim_ImperialTrader` resolve a non-empty `apparelTags` pool;
+- no new red error naming `ApparelTags_DeadTagRepair`;
+- re-run `apparel_tag_audit.py` with `siblings`: the 8 becomes **3** (the Rebel kinds).
