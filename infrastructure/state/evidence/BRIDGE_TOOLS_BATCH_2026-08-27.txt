@@ -5,9 +5,10 @@ The game is UP and the OS locks the DLL, so this rides the next game-down window
     Build succeeded.  0 Warning(s)  0 Error(s)
     OK: bundle ships only JawaBench.BridgeTools.dll     (Private=false held on 0Harmony)
 
-tool surface of the BUILT dll: 237, phantoms: []      (was 238 with one phantom, below)
+tool surface of the BUILT dll: 238, phantoms: []      (a pre-existing phantom removed, below)
     PRESENT jawa/lord_set_job
     PRESENT jawa/bridge_arg_report
+    PRESENT jawa/debug_actions
     LOST    (none)
 
 --- 1. jawa/lord_set_job  — LORD_JOB_SWAP_TOOL_1 -----------------------------
@@ -60,7 +61,33 @@ Three limits written into the tool's own result rather than left to be discovere
   * It sees only what reaches BindArguments — anything
     ReflectedCapabilityBinding.NormalizeInvocationArguments rewrote upstream is gone.
 
---- 3. phantom tool name removed --------------------------------------------
+--- 3. jawa/debug_actions  - DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1 -------------
+src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDebugActionTools.cs
+Ungated: it EXECUTES NOTHING. It is a catalogue, not a trigger.
+
+The item names this as option 2 and "the only real fix available to us" - the host's
+rimworld/search_debug_actions is RimBridgeServer's and ships assemblies only.
+
+Where the cost actually is, read out of LudeonTK/DebugTabMenu_Actions.cs InitActions -
+TWO costs, and only one is obvious:
+  1. it walks GenTypes.AllTypes calling GetMethods(Static|Public|NonPublic) on each;
+  2. for every [DebugActionYielder] method it CALLS IT - methodInfo.Invoke(null, null) -
+     and enumerates the result. A yielder is arbitrary mod code that commonly walks a
+     whole DefDatabase. So "listing the menu" secretly RUNS several hundred mod-authored
+     enumerations on the main thread.
+=> A limit on the RESULT bounds neither. That is precisely the measured defect: on 582
+mods the host tool timed out at 30s and blocked every other caller for minutes.
+
+This tool: filters on the query DURING the walk; carries a wall-clock budget clamped to
+100..10000 ms and stops mid-scan when it expires; returns truncated + resumeFromType so a
+big sweep is paid for in bounded instalments. A tool that cannot exceed its budget cannot
+wedge the bridge, which is the entire point.
+It NEVER invokes a yielder, and reports yieldersSkipped - so the blind spot is a stated
+number, not a silent gap. A truncated answer carries completenessWarning and is a FLOOR.
+Per-type try/catch counts typesFailed rather than aborting: a type whose dependencies
+failed to load is normal in a 582-mod stack and one would otherwise kill the whole walk.
+
+--- 4. phantom tool name removed --------------------------------------------
 JawaBenchSystemTools.cs:475 said "every Anomaly tool (jawa/anomaly_*)" in PROSE.
 build.py scans the assembly for jawa/ literals, so that produced a phantom tool named
 `jawa/anomaly_` in the surface — skill rule 9. ⚠️ It mattered: build.py refuses a
