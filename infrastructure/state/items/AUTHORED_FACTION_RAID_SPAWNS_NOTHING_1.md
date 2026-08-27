@@ -48,3 +48,46 @@ faction hostile. Use `jawa/faction_relations_set`.
       kinds — read off the spawned pawns, never off `resolved.faction`.
 - [ ] Or the reason it cannot is named, and `jawa/fire_raid` stops reporting `executed: true`
       for a raid that produced nothing.
+
+---
+
+## 🔴 RETARGETED 2026-08-27, same day — "cannot raid" was WRONG. It is INTERMITTENT.
+
+**`Jawa_HuttCartel` raids, and it raids with its own kinds.** Four successful raids measured
+after the item above was written:
+
+| how fired | arrived | kinds |
+|---|---|---|
+| worker-chosen (I asked for `Pirate`, it substituted Hutt) | **16** | Leader 10 · Specialist 2 · Grunt 2 · Heavy 2 |
+| aimed, 5000 pts | **55** | Grunt 32 · Heavy 18 · Specialist 5 |
+| aimed, 2000 pts | **40** | Grunt 25 · Heavy 9 · Specialist 6 |
+| aimed, 12000 pts | **21** | Grunt 14 · Heavy 5 · Specialist 2 |
+
+⭐ **Zero vanilla kinds in any of the four.** Every pawn is a `Jawa_Hutt_*`.
+
+⛔ **So the conclusion in the section above is retracted.** The three zeros were real and
+reproducible calls, but they are not "this faction cannot raid" — the identical call
+(`Jawa_HuttCartel`, 2000 points) produced **0** twice and **40** later the same session.
+
+## What the defect actually is
+`jawa/fire_raid` **intermittently returns `executed: true, "Raid fired."` and delivers
+nothing**, non-monotonically in points: 2000→0, 5000→55, 12000→0, then 2000→40, 12000→21.
+Measured 3 zeros against 4 successes on one faction with one tool.
+
+⛔ **Ruled out:** hostility · the pawn kinds · the group makers · worker choice of strategy and
+arrival · points · **and the tick budget** — every successful raid landed its first pawn by
+**~300 ticks**, and the zeros were still zero at 2400 and at 12000 ticks.
+
+🔑 **The surviving hypothesis is a per-firing precondition inside `IncidentWorker_RaidEnemy`**
+that `jawa/fire_raid` does not check and reports success regardless — the same family as
+`FIRE_RAID_ECHOES_REQUESTED_FACTION_1`. A cooldown or an already-pending-raid guard would fit
+the alternation. **Not read out of the C#; do that before building anything.**
+
+⚠️ **Consequence for anyone testing raids:** a single `fire_raid` returning nothing proves
+nothing. **Retry at least three times before recording a negative.**
+
+## criteria
+- [x] A raid aimed at an authored Jawa faction delivers pawns, and they are that faction's own
+      kinds — Hutt, four times, zero vanilla kinds.
+- [ ] `jawa/fire_raid` stops reporting `executed: true` for a firing that produced nothing.
+- [ ] The precondition it fails to check is named from the engine source.

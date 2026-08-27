@@ -102,3 +102,37 @@ doing this first may make the flamebow question moot for Deep Desert, but neithe
 substitutes for the other.
 ⚠️ Whether Blackstar generates at all is `BLACKSTAR_IN_DEFAULT_LIST_1` (CHECK, doing).
 That one IS baked at worldgen; this one is not.
+
+---
+
+## ✅ THE WIRING IS LIVE-LOADED — measured 2026-08-27, BUILD
+
+Read from `FactionDef.pawnGroupMakers` in capture `2026-08-26T14-20-04Z`, which is taken from
+the running game **after** every PatchOperation, so this is the resolved truth rather than our
+XML re-read back to us:
+
+    Empire      combat options 6   ours: Jawa_Empire_Grunt · Jawa_Empire_Heavy · Jawa_Empire_Specialist
+                                   fixedLeaderKinds: [Jawa_Empire_Leader]
+    Pirate      combat options 3   ours: Jawa_Blackstar_Grunt · Jawa_Blackstar_Heavy · Jawa_Blackstar_Specialist
+                                   fixedLeaderKinds: [Jawa_Blackstar_Leader]
+    TribeCivil  combat options 3   ours: Jawa_DeepDesert_Grunt · Jawa_DeepDesert_Heavy · Jawa_DeepDesert_Specialist
+                                   fixedLeaderKinds: [Jawa_DeepDesert_Leader]
+
+⭐ **All three routes resolved, including the two that could have failed silently** — the
+`TribeCivil` whole-list declaration (a `Replace` there would have matched zero nodes) and the
+six `Replace`s into `Pirate`'s own groups. The leader-by-`fixedLeaderKinds` route resolved too.
+
+⚠️ **`Pirate` and `TribeCivil` now field ONLY our kinds in combat (3 of 3).** `Empire` fields 3
+of 6 — the other three are Royalty's own. Whether vanilla Empire kinds should still appear
+beside ours is a scope question this item never asked; it is **not** flagged as a defect here.
+
+## What is still owed, and why today's attempt did not deliver it
+The live half — raids from these three factions read by pawn NAME — is **not** closed. The
+attempt failed on experimental design, not on the game: `jawa/fire_raid`'s `faction` parameter
+does not steer the raid, so with several factions hostile at once the worker picks among them.
+A raid requested from `Jawa_FreeDroidEnclaves` arrived as **22 `Jawa_Hutt_*` pawns**.
+
+🔑 **The correct design, for whoever runs it:** set **exactly one** faction hostile and every
+other authored faction back to Neutral before each firing, then read the spawned pawns' own
+faction — never `resolved.faction`, which echoes the request. And retry: `fire_raid` is
+intermittent (`AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1`), so one empty result is not a negative.
