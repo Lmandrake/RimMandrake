@@ -90,9 +90,9 @@ never shipped from one nobody dated, so date the cell or the row is only discipl
 | 🌍 §21 THE WORLD ROUND TRIP — `check_world_reload.py`, 6 predictions | 2026-08-24 | ⏳ PENDING |
 | 🔧 §22 FORTY-FOUR UNDEPLOYED BRIDGE TOOLS | ✅ **DEPLOYED 2026-08-26 06:36; REDEPLOYED at 166 tools ~07:0x** | ⏳ readings pending |
 | 🔬 §23 THE ROWS THAT UNBLOCK ON `jawa/pawn_stats` + `jawa/room_get` + `jawa/thing_stats` | 2026-08-26 | ⏳ PENDING — **run its census FIRST** |
-| 🐛 §26 DUPLICATE ANIMALS + FOUR DISCARDED GENES — deployed, scored from the LOG alone | 2026-08-26 | ⏳ PENDING |
+| 🐛 §26 DUPLICATE ANIMALS + FOUR DISCARDED GENES — deployed, scored from the LOG alone | 2026-08-26 | 🔴 **SCORED 2026-08-27 — FAIL, 12 duplicate keys still thrown; see BIOME_DUPLICATES_STILL_LIVE_1** |
 | 🔧 §25 COMPANION: 32 NEW TOOLS + 3 FIXES BUILT, WAITING ON A DOWN WINDOW | — | ⏳ **DEPLOY FIRST** next time the game is down |
-| 🧥 §24 THE JAWA HOOD — fix deployed, needs one spawn to prove | ✅ **DEPLOYED 2026-08-26 06:5x** | ⏳ READING PENDING |
+| 🧥 §24 THE JAWA HOOD — fix deployed, needs one spawn to prove | ✅ **DEPLOYED 2026-08-26 06:5x** | ✅ **SCORED 2026-08-27 — PASS, 32/32 wear robe+hood; item CLOSED** |
 
 🔴 **WHEN A LOAD IS SCORED: delete its block.**
 **Do not leave a scored block here with a ✅** — that is the same rot one step slower.
