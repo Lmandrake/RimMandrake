@@ -123,3 +123,76 @@ tools read and surface as `droppedParameters[]`. `BindArguments` is **private st
   session actually surfaces, and only then decide whether to refuse.
 - 🔴 **Deploying it needs the game DOWN** — assemblies are locked by the OS while RimWorld
   runs. It rides a shutdown window, unlike every XML fix in this queue.
+
+---
+
+# ✅ WRITTEN AND COMPILED 2026-08-27, seat BUILD. ⛔ NOT DEPLOYED — the game is up.
+
+`jawa/bridge_arg_report` + the Harmony prefix, in
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchArgGuard.cs`.
+Installed from `JawaBenchInit.Announce()`. Build `--gm`: **0 warnings, 0 errors**;
+surface 237, tool present, none lost; the bundle still ships only our own DLL, so
+`Private=false` held on the new 0Harmony reference.
+Evidence: `infrastructure/state/evidence/BRIDGE_TOOLS_BATCH_2026-08-27.txt`.
+
+## What it does, against this item's "What to change"
+The item asked to **refuse an unknown key, or return it in a `droppedParameters[]`**.
+It does the second by default and the first on request:
+
+| action | effect |
+|---|---|
+| `report` (default) | `records[]` of `method` · `droppedParameters` · `accepted` · `ticksGame`, plus `callsObserved` and `callsWithDroppedArgs` |
+| `clear` | empties the record |
+| `strict` | an unknown argument **throws** from then on |
+| `lenient` | back to recording |
+
+It also writes a `Log.Warning` naming the method, the dropped keys and the accepted
+names, so the evidence survives in `Player.log` even if nobody calls the report tool.
+
+🔑 **Report-only is the deliberate default, not timidity.** The patch sits in the
+**shared** binder, so it covers all ~291 tools — and refusing would change behaviour for
+every caller at once, including ones that have been passing a stray key and getting away
+with it. Look at what a session actually surfaces first, then decide.
+
+## ⛔ Do not re-investigate the cheap route
+A full field/property census of `IRimBridgeContext` and its sole implementation
+`RimBridgeServer.RimBridgeContext` returns exactly `OperationId · CapabilityId · Tools ·
+Game · MainThread`. **No raw-argument dictionary exists on either.** A `[Tool]` method
+cannot inspect its own unknown keys. That route is closed; the Harmony patch is the only
+one.
+
+## Validation plan — run it in the deploy window
+```
+ITEM     jawa/bridge_arg_report — the arguments the bridge threw away
+SEE      One record naming a real tool, its bogus key, and the keys it does accept
+ROUTE    Minimal list, quicktest map. First a jawa/ call of any kind (the initializer
+         is lazy - this one installs the patch and is itself unobserved). Then:
+           jawa/new_allowed_area {name: "probe"}     <- WRONG key; the param is 'label'
+           jawa/bridge_arg_report {}
+PREDICT  installed true, installError null, callsWithDroppedArgs >= 1, and a record
+         whose droppedParameters is ["name"] with 'label' among accepted
+CLOSE    One dropped key caught, AND the strict path exercised once: set strict, repeat
+         the bad call, confirm it now ERRORS instead of returning a cheerful success
+RIDE     batch — same game-down window as lord_set_job
+LIES     🔴 installed=false and an empty records[] READ IDENTICALLY. The result carries
+         blindWarning for exactly this; check `installed` BEFORE concluding anything from
+         zero records.
+         🔴 The FIRST jawa/ call of a session is bound before the patch exists, so its
+         dropped args are invisible. Do not make the probe call the first call.
+         ⚠️ A record's absence proves nothing about keys that
+         NormalizeInvocationArguments rewrote or folded upstream of BindArguments.
+```
+
+## Watch out
+- 🔴 **The target is a third-party PRIVATE method with no compatibility promise.** An
+  upstream rename makes the patch a silent no-op, which is the very defect this fixes —
+  so `Install()` asserts the target resolved, logs loudly when it did not, and the report
+  tool reports `installed`/`installError` as first-class fields. **Read `installed` first,
+  always.**
+- ⚠️ **Strict mode is global.** It makes every tool on the bridge throw, this companion's
+  and everyone else's. It is refused outright when the guard is not installed rather than
+  quietly doing nothing.
+- ⚠️ **The report tool deliberately does NOT hop the main thread.** It touches no game
+  object, and an instrument for diagnosing a wedged bridge must not itself require an
+  unwedged main thread.
+- 🔴 **Deploying needs the game DOWN** — the OS locks the DLL. It is the only thing left.

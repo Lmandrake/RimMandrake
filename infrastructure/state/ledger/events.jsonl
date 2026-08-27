@@ -2332,3 +2332,9 @@
 {"seat":"BUILD","event":"close","id":"AUTHORED_FACTIONS_WEAR_ANYTHING_1","sha":"90686e9b","ts":"2026-08-27T04:18:30Z"}
 {"seat":"BUILD","event":"file","id":"HELIX_GEONOSIAN_LOOK_CHECK_1","title":"Next load: the Helix and the Geonosians must LOOK like themselves","kind":"check","target":"v1","needs":"bridge","caused_by":"AUTHORED_FACTIONS_WEAR_ANYTHING_1","for":"CHECK","ts":"2026-08-27T04:18:30Z"}
 {"seat":"BUILD","event":"note","id":"BRIDGE_DROPS_UNKNOWN_PARAMS_1","text":"Target named: Harmony on private static RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - the only place raw arguments and declared parameters are both in scope. IL confirms it pulls from method.GetParameters() and never enumerates arguments. ctx exposes no raw dict (OperationId/CapabilityId/Tools/Game/MainThread only), so the cheap self-check route is closed. Needs a game-down window to deploy.","ts":"2026-08-27T04:19:36Z"}
+{"seat":"BUILD","event":"claim","id":"LORD_JOB_SWAP_TOOL_1","ts":"2026-08-27T04:30:17Z"}
+{"seat":"BUILD","event":"start","id":"LORD_JOB_SWAP_TOOL_1","ts":"2026-08-27T04:30:18Z"}
+{"seat":"BUILD","event":"verify","id":"LORD_JOB_SWAP_TOOL_1","result":"partial","config":"offline build --gm","evidence":"infrastructure/state/evidence/BRIDGE_TOOLS_BATCH_2026-08-27.txt","sha":"88b5b7b5","ts":"2026-08-27T04:30:18Z"}
+{"seat":"BUILD","event":"claim","id":"BRIDGE_DROPS_UNKNOWN_PARAMS_1","ts":"2026-08-27T04:30:47Z"}
+{"seat":"BUILD","event":"start","id":"BRIDGE_DROPS_UNKNOWN_PARAMS_1","ts":"2026-08-27T04:30:47Z"}
+{"seat":"BUILD","event":"verify","id":"BRIDGE_DROPS_UNKNOWN_PARAMS_1","result":"partial","config":"offline build --gm","evidence":"infrastructure/state/evidence/BRIDGE_TOOLS_BATCH_2026-08-27.txt","sha":"88b5b7b5","ts":"2026-08-27T04:30:47Z"}

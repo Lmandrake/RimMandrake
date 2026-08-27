@@ -589,3 +589,43 @@ Config error in Jawa_Tribal_Elder:     required apparel can't be worn together (
 ⚠️ **Presence of the defs in a dump proves nothing** — both mods were always active. The pawn
 wearing it is the only evidence.
 ⚠️ **A def change needs a RESTART**, not a save reload. The deploy tool says so itself.
+
+---
+
+## 🔴 GAME-DOWN WINDOW OWED — one companion DLL deploy, added 2026-08-27 by BUILD
+
+⛔ **This one is NOT an XML deploy and cannot ride a live game.** The OS locks a loaded
+assembly, so it must happen while RimWorld is closed. **Do it FIRST in the window**, before
+anything that needs the game back up.
+
+```
+taskkill.exe /F /IM RimWorldWin64.exe
+python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --apply
+```
+🔑 **`--gm` is required, not optional.** Without it `fire_incident`, `send_letter` and the new
+`lord_set_job` are compiled OUT, and `build.py` then refuses with *"THIS DEPLOY WOULD REMOVE
+TOOLS"*. That refusal is correct — do not reach for `--allow-tool-removal`.
+🔑 **Check the output for the word `deployed`.** A piped `grep` hides the running-game refusal,
+and you then test stale code and conclude the new tool "was not found".
+
+**What is waiting** — built clean at `88b5b7b5`, 0 warnings, 0 errors, surface 237, phantoms
+none. Evidence: `infrastructure/state/evidence/BRIDGE_TOOLS_BATCH_2026-08-27.txt`.
+
+| tool | item | validation plan |
+|---|---|---|
+| `jawa/lord_set_job` | `LORD_JOB_SWAP_TOOL_1` | on the item |
+| `jawa/bridge_arg_report` | `BRIDGE_DROPS_UNKNOWN_PARAMS_1` | on the item |
+
+⚠️ **The deployed copy is far behind the source.** The game copy's tool surface reads **166**
+against the build's **237**. Everything written since 2026-08-26 is undeployed, not just these
+two — so this window pays for more than the two items above.
+
+⚠️ **A deployed DLL registers NOTHING until the game restarts.** RimBridgeServer discovers
+companions at startup only. So the sequence is kill → build --apply → launch → prove, and a
+"tool not found" from a session that predates the deploy is not a failure of the tool.
+
+⚠️ **New this build: the companion now references `0Harmony`** and installs one Harmony prefix
+on a RimBridgeServer private method. If the bridge misbehaves after this deploy in a way that
+has nothing to do with the two new tools, that patch is the first thing to suspect — check
+`Player.log` for `[JawaBench] argument guard` (it announces both success and failure) and call
+`jawa/bridge_arg_report` and read `installed`.
