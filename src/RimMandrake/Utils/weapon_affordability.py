@@ -65,6 +65,8 @@ sys.path.insert(0, HERE)
 from game_paths import DEF_DUMP  # noqa: E402
 import dump_projection  # noqa: E402
 ROSTER_GEN = os.path.join(HERE, "gen_pawnkind_roster.py")
+ROSTER_XML = os.path.join(
+    ROOT, "src", "Jawa", "Jawa_Patches", "Defs", "PawnKindDefs", "JawaFactionRoster.xml")
 
 _DUMPS = [
     os.path.join(DEF_DUMP, "defs"),
@@ -198,13 +200,77 @@ def load_weapons(dump):
 
 
 def load_roster():
-    """Read the R table out of the generator, which is its source of truth."""
-    src = open(ROSTER_GEN, "r", encoding="utf-8").read()
-    m = re.search(r"^R = \[$(.*?)^\]$", src, re.S | re.M)
-    if not m:
-        die("could not find the `R = [` table in " + ROSTER_GEN)
-    rows = eval("[" + m.group(1) + "]", {"__builtins__": {}}, {})   # a literal table
+    """Read weaponMoney and weaponTags off the EMITTED XML - the file that deploys.
+
+    🔴 THIS USED TO READ THE GENERATOR'S `R` TABLE AND THAT WAS WRONG, measured
+    2026-08-27. `gen_pawnkind_roster.py` has TWO tables and only one of them is
+    emitted: `KIT` carries "everything from <weaponMoney> onward, verbatim" and is
+    what lands in the XML, while `R` supplies only defName/label/combatPower. `R`'s
+    `wm` and `weaponTags` fields are a SHADOW - nothing reads them into the game -
+    and they had drifted on 9 of 48 kinds' budgets and 1 kind's tags, including the
+    documented `Jawa_Empire_Grunt` fix (950~1150 with `ORImperialLight` dropped,
+    which `R` still recorded as 650~780 with the tag present).
+
+    ⇒ This tool reported `always arms 48 · unmeasured 0` off numbers the game had
+    not used since 2026-08-23. It was not wrong about what it read; it was reading
+    an artifact the game never loads.
+
+    🔑 The emitted XML is the right source for three reasons: it is what deploys, it
+    declares min AND max explicitly so no `wm * 1.2` has to be inferred, and it
+    cannot drift from itself. `drift_vs_shadow()` still reads `R` - only to report
+    that the shadow has rotted, never to compute an answer from it.
+    """
+    import xml.etree.ElementTree as ET
+    if not os.path.isfile(ROSTER_XML):
+        die("no emitted roster at " + ROSTER_XML)
+    rows = []
+    for d in ET.parse(ROSTER_XML).getroot():
+        dn = d.findtext("defName")
+        if not dn or not dn.startswith("Jawa_"):
+            continue
+        wm = d.findtext("weaponMoney")
+        wt = d.find("weaponTags")
+        tags = [li.text for li in wt] if wt is not None else []
+        if not wm or "~" not in wm:
+            continue
+        lo, hi = (float(x) for x in wm.split("~", 1))
+        rows.append((dn, d.findtext("label") or dn, lo, hi, tags))
+    if not rows:
+        die("parsed no Jawa_ kinds out of " + ROSTER_XML)
     return rows
+
+
+def drift_vs_shadow(rows):
+    """Report where the generator's dead `R` table disagrees with what is emitted.
+
+    ⚠️ This computes NOTHING. It exists because a stale shadow table is exactly how
+    this tool came to publish a clean bill about the wrong numbers, and because the
+    next reader will otherwise trust `R` the same way. A drift line is a note, not a
+    failure: `R`'s wm/weaponTags are unused, so drift costs nothing until somebody
+    reads them - which is precisely what happened.
+    """
+    try:
+        src = open(ROSTER_GEN, "r", encoding="utf-8").read()
+        m = re.search(r"^R = \[$(.*?)^\]$", src, re.S | re.M)
+        if not m:
+            return ["could not find the `R = [` table - shadow check skipped"]
+        shadow = eval("[" + m.group(1) + "]", {"__builtins__": {}}, {})
+    except Exception as e:                                        # noqa: BLE001
+        return ["shadow check UNMEASURED (%s)" % e]
+    live = {dn: (lo, hi, tags) for dn, _lab, lo, hi, tags in rows}
+    out = []
+    for fac, role, _label, wm, _am, _q, tags, _req in shadow:
+        dn = "Jawa_%s_%s" % (fac, role)
+        if dn not in live:
+            out.append("%-28s in R, absent from the emitted XML" % dn)
+            continue
+        lo, hi, ltags = live[dn]
+        if abs(float(wm) - lo) > 0.5 or abs(float(wm) * 1.2 - hi) > 0.5:
+            out.append("%-28s money  R %g~%g   emitted %g~%g"
+                       % (dn, float(wm), float(wm) * 1.2, lo, hi))
+        if sorted(tags) != sorted(ltags):
+            out.append("%-28s tags   R %s   emitted %s" % (dn, tags, ltags))
+    return out
 
 
 def main():
@@ -219,14 +285,20 @@ def main():
     by_tag = load_weapons(dump)
     rows = load_roster()
     print("weapon tags known: %d, from %s" % (len(by_tag), dump))
-    print("pawn kinds in the roster: %d\n" % len(rows))
+    print("pawn kinds in the roster: %d, read from the EMITTED XML\n" % len(rows))
+    drift = drift_vs_shadow(rows)
+    if drift:
+        print("\u26a0\ufe0f  the generator's dead `R` shadow table disagrees with what is "
+              "emitted, on %d point(s).\n   Nothing here is computed from `R` - this is a "
+              "note so the next reader does not trust it:" % len(drift))
+        for line in drift:
+            print("   " + line)
+        print()
 
     always, sometimes, never, notags, unmeasured = [], [], [], [], []
 
     for row in rows:
-        faction, role, label, wm, am, quality, tags, apparel = row
-        defname = "Jawa_%s_%s" % (faction, role)
-        lo, hi = float(wm), float(wm) * 1.2          # the generator emits wm ~ wm*1.2
+        defname, label, lo, hi, tags = row
 
         if not tags:
             notags.append((defname, label))
@@ -282,6 +354,26 @@ def main():
              lambda i: "%-30s %-26s money %g~%g   cheapest %s at %g%s"
                        % (i[0], i[1], i[2], i[3], i[5], i[4],
                           ("   (+%d unpriced)" % i[6]) if i[6] else ""))
+
+    # 🔴 THIN HEADROOM IS THE ONLY SIGNAL LEFT, AND THIS TOOL WAS THROWING IT AWAY.
+    # A kind passes "always arms" on `lo >= cheapest`, but this file's own header says
+    # the prices here are a FLOOR: the engine compares `ThingStuffPair.Price`, which
+    # carries the stuff cost, while these are unstuffed `MarketValue`. So a PASS with
+    # a 1% margin is not the same answer as a PASS with a 900% one, and printing both
+    # as "always arms" is what let 16 kinds roll bare live under a clean bill.
+    # ⚠️ THIS IS AN ASSOCIATION, NOT A PROVEN MECHANISM. It is offered as the shortlist
+    # to look at first, never as the cause. The measured cause of 13 of 21 bare pawns
+    # is a violence-disabling backstory, which has nothing to do with money.
+    thin = []
+    for defname, label, lo, hi, cheapest, cheapest_name, _unp in always:
+        margin = (lo - cheapest) / cheapest if cheapest else float("inf")
+        if margin < 0.25:
+            thin.append((defname, label, lo, cheapest, cheapest_name, margin))
+    thin.sort(key=lambda x: x[5])
+    show("\u26a0\ufe0f THIN HEADROOM - passes, but by less than 25% over the cheapest "
+         "UNSTUFFED price", thin,
+         lambda i: "%-30s %-26s min %g vs %s at %g   margin %+.1f%%"
+                   % (i[0], i[1], i[2], i[4], i[3], i[5] * 100))
 
     bad = len(never) + len(sometimes) + len(notags)
     print("always arms %d · sometimes %d · never %d · no tags %d · unmeasured %d"

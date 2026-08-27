@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+<!--
+    ApparelTags_DeadTagRepair.xml                              Jawa_Patches
+    ============================================================================
+    The ARMOUR half of THOROUGH_RETAG_WEAPONS_ARMOUR_1, and the sibling of
+    `WeaponTags_Renormalise.xml`. Same ruling, same shape, different vocabulary:
+
+        the cut stands; the ladders refill.
+
+    🔴 WHY, MEASURED — capture 2026-08-26T14:20:04Z, 582 mods, matching ModsConfig.
+    `apparel_tag_audit.py` with `siblings` reports **8 of 485** pawn kinds whose EVERY
+    `apparelTags` entry has zero surviving carriers. Five of the eight matter to
+    this campaign and are repaired below; three do not and are named at the bottom
+    with the reason they were left alone.
+
+    ⚠️ SEVERITY IS NOT THE WEAPON SEVERITY, and must not borrow it. A kind with no
+    live apparel tag is NOT naked - `apparelRequired` and the generic pool still
+    dress it. The symptom is a faction losing its LOOK, not a pawn losing its
+    clothes. Nothing here is an arming fix.
+
+    ⭐ WHY THESE TAGS DIED, AND WHY WE DO NOT UN-CUT THEM
+    ====================================================
+    Measured two independent ways, and they agree.
+      DUMP SIDE: all ten `Ancient urban ruins` apparel defs are PRESENT in the
+        capture with `tags` EMPTY. Present-on-disk plus stripped-in-dump is the
+        Cherry Picker NEUTER signature.
+      DISK SIDE: `Defs/ThingDefs/Apparel/BossArmor.xml` declares the four tags on
+        exactly six defs - `AM_Boss` on `AM_CompFlakSuit`, `AM_FullyEnclosedHelmet`
+        and `AM_NightVisionHelmet`; `AM_Bossbelt` on `AM_ClosedOxygenCylinder`;
+        `AM_Fashion` on `AM_CataphractHelmetFashion`; `AM_Slaughter` on
+        `AM_CataphractHelmetSlaughter`. All SIX are in the owner's Cherry Picker
+        kill list. 6 of 6.
+    ⇒ The owner cut that armour deliberately.
+    ⇒ ⛔ NOBODY UNDOES THE CUT. We point the kinds at tags that still have
+    carriers, exactly as the weapon side does.
+
+    🔑 THE DEAD TAGS ARE KEPT, NOT REPLACED. Every operation here is an ADD. A tag
+    with no carriers contributes no candidates, so keeping it is free - and if the
+    owner ever un-cuts the boss armour, the boss picks its own armour back up with
+    no further edit. Replacing would throw that away for no gain.
+
+    🪤 THE INHERITED-LIST TRAP, AND IT BITES ONE DEF HERE
+    ====================================================
+    `AncientSoldierBossN` declares NO `apparelTags` of its own - it reads
+    `['AM_Boss','AM_Bossbelt']` in the dump because it inherits them from the
+    abstract `AMBossBase`. An xpath at `PawnKindDef[defName="AncientSoldierBossN"]
+    /apparelTags` therefore MATCHES NOTHING, and a patch that matches nothing logs
+    nothing. It is patched at the ABSTRACT instead.
+    ✅ Checked: `AMBossBase` is inherited by exactly ONE def (PawnKinds_Boss.xml:80,
+    which is AncientSoldierBossN), so patching the parent touches nothing else.
+    ⚠️ `AncientSoldierBoss` is a DIFFERENT def and declares its own list - it does
+    not inherit from `AMBossBase`, so it needs its own operation. Two near-identical
+    defNames, two different mechanisms; do not merge these operations.
+-->
+
+  <!-- ========================================================================
+       ANCIENT URBAN RUINS - the four Rakata boss kinds
+       ========================================================================
+       🔑 THE LADDER IS NOT INVENTED. It is the one `AncientSoldier` already uses
+       and which still resolves: IndustrialBasic(20) IndustrialAdvanced(8)
+       IndustrialMilitaryBasic(7) IndustrialMilitaryAdvanced(4) SpacerMilitary(5)
+       BeltDefensePop(5) - carrier counts measured in the same capture.
+       ⭐ Giving the bosses their own foot soldiers' ladder is the point: these are
+       the Rakata (`AncientsAreRakata.xml`), and a faction reads as one faction
+       when its ranks draw from one wardrobe.
+       ⚠️ NOT A PROMOTION. All four carry `apparelMoney 25000~30000`, far above
+       anything on this ladder, so the budget was never the constraint - the empty
+       pool was. They will simply take the best of what is there, which is what a
+       boss with an unlimited purse should do.
+       ⛔ Do NOT reach for a higher ladder to "match the budget". There is no live
+       tier above SpacerMilitary in this stack that is not somebody's reserved
+       quest gear.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Ancient urban ruins</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/PawnKindDef[defName="AncientSoldierBoss"]/apparelTags</xpath>
+          <value>
+            <li>IndustrialBasic</li>
+            <li>IndustrialAdvanced</li>
+            <li>IndustrialMilitaryBasic</li>
+            <li>IndustrialMilitaryAdvanced</li>
+            <li>SpacerMilitary</li>
+            <li>BeltDefensePop</li>
+          </value>
+        </li>
+
+        <!-- AncientSoldierBossN, reached through its abstract. See the trap above. -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/PawnKindDef[@Name="AMBossBase"]/apparelTags</xpath>
+          <value>
+            <li>IndustrialBasic</li>
+            <li>IndustrialAdvanced</li>
+            <li>IndustrialMilitaryBasic</li>
+            <li>IndustrialMilitaryAdvanced</li>
+            <li>SpacerMilitary</li>
+            <li>BeltDefensePop</li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/PawnKindDef[defName="AncientMallGuards"]/apparelTags</xpath>
+          <value>
+            <li>IndustrialBasic</li>
+            <li>IndustrialAdvanced</li>
+            <li>IndustrialMilitaryBasic</li>
+            <li>IndustrialMilitaryAdvanced</li>
+            <li>SpacerMilitary</li>
+            <li>BeltDefensePop</li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/PawnKindDef[defName="AncientSlaughter"]/apparelTags</xpath>
+          <value>
+            <li>IndustrialBasic</li>
+            <li>IndustrialAdvanced</li>
+            <li>IndustrialMilitaryBasic</li>
+            <li>IndustrialMilitaryAdvanced</li>
+            <li>SpacerMilitary</li>
+            <li>BeltDefensePop</li>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ========================================================================
+       OUTER RIM - GALACTIC EMPIRE - the imperial trader
+       ========================================================================
+       🔴 THIS ONE IS NOT A CUT. IT IS THE MOD NAMING A TAG FROM THE WRONG
+       VOCABULARY. `OuterRim_ImperialTrader` declares, in its own 1.4/1.5/1.6 XML:
+
+           <apparelTags><li>ORImperialLight</li></apparelTags>
+
+       `ORImperialLight` is a WEAPON tag. Measured: 4 weapon carriers, 0 apparel
+       carriers, and there is no `OR`-prefixed APPAREL tag anywhere in the 582-mod
+       capture - the imperial apparel vocabulary is unprefixed (`ImperialApparel` 21,
+       `ImperialOfficer` 6, `ImperialArmy` 5, `ImperialStormtrooper` 3, ...).
+       So this kind has asked for clothes by a gun's name in every version the mod
+       has shipped, and has always dressed from the generic pool.
+       ✅ NOT A CUT, confirmed against the kill list: no apparel ThingDef anywhere
+       declares `ORImperialLight`, so there was never a carrier for Cherry Picker
+       to take. This is an upstream mod gap and it predates this campaign.
+       ⚠️ It is the second of exactly two such defects in the whole stack; the other
+       is `RBM_MinotaurMarauder` naming `MinoTribeDecent`, which is not ours and is
+       left alone.
+
+       🔑 `ImperialApparel` and NOT `ImperialOfficer`. A trader is not an officer -
+       `OuterRim_ImperialOfficer` already holds `ImperialOfficer`+`ORThermalDetBelt`,
+       and handing the trader the officer wardrobe would dress a merchant as brass.
+       `ImperialApparel` is the broad imperial pool and the correct tier.
+       ⛔ Do not "tidy up" by removing `ORImperialLight`. Leaving it is what keeps
+       the mod's own bug visible to the next audit.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Outer Rim - Galactic Empire</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/PawnKindDef[defName="OuterRim_ImperialTrader"]/apparelTags</xpath>
+      <value>
+        <li>ImperialApparel</li>
+      </value>
+    </match>
+  </Operation>
+
+<!--
+    ========================================================================
+    THE THREE LEFT ALONE, AND WHY - so nobody re-derives them as a backlog
+    ========================================================================
+    `OuterRim_RebelJumpTrooper` · `OuterRim_RebelOfficer` · `OuterRim_RebelTrader`
+    all ask for `RebelApparel`, which - like `ORImperialLight` above - no apparel
+    ThingDef in the mod has EVER declared, in 1.4, 1.5 or 1.6. Another upstream gap,
+    not a cut. Its family survives
+    (`RebelOfficer` 3, `RebelJetpack` 1, and `RebelFleetTrooper` 2 /
+    `RebelForestCamo` 4 nearby). They are repairable in one line each.
+
+    ⛔ THEY ARE NOT REPAIRED BECAUSE NOBODY ASKS FOR THEM. No FactionDef, patch or
+    pawnGroupMaker anywhere in `src/` names any of the three - grepped, zero hits.
+    The Rebellion is not a faction in this campaign. Always ask who asks: a dead
+    tag on a kind that never spawns costs nothing, and fixing it is churn.
+    ✅ If a Rebel faction is ever authored, this is a one-line change per kind and
+    the sibling counts above are the shortlist.
+
+    ⭐ AND SIX OF OURS ARE MEASURED CLEAN, WHICH IS ALSO NOT WORK
+    ============================================================
+    `RimMandrake_ArkanianTribal`, `_GeonosianTribal`, `_JawaTribal`, `_NiktoTribal`,
+    `_QuarrenTribal`, `_WookieeTribal` each carry a DEAD `Medieval` apparel tag,
+    inherited from the abstract `RimMandrake_TribalPawnKind` in
+    `SW_RescuedKinds.xml` (which is GENERATED - do not hand-edit it). The whole
+    `Medieval*` apparel family is dead because Medieval Overhaul is not in this mod
+    list; zero `DankPyon_`/`MO_`/medieval-named apparel defs exist in the capture.
+    ⇒ ALL SIX KEEP `Neolithic`, which is live, so all six dress correctly. A dead
+    tag beside a live one contributes no candidates and costs nothing.
+    ⛔ DO NOT "clean this up". Deleting `Medieval` changes no pawn and would have to
+    be done in the generator; leaving it means the six pick up medieval clothing for
+    free if that mod is ever added.
+-->
+
+</Patch>
