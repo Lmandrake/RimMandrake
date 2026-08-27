@@ -47,10 +47,11 @@ deploy: ~ Defs/PawnKindDefs/JawaFactionRoster.xml -> VERIFIED in sync
 md5 repo == game: 1cd8faf90b9c44439ea0211e98599525
 
 --- what is NOT measured ------------------------------------------------------
-⚠️ AFFORDABILITY IS UNMEASURED, for every faction here. The dump carries no MarketValue
-for these apparel defs — the Outer Rim and KotOR pieces declare none and the engine
-computes value from the recipe, the same property the generator's header already records
-for Outer Rim weapons. A pool the pawn cannot afford leaves it wearing LESS than an
+⚠️ AFFORDABILITY IS UNMEASURED, for every faction here. CORRECTED 2026-08-27: the reason
+is NOT that these defs declare no MarketValue. The def dump does not capture `statBases`
+AT ALL - vanilla `Steel` reads None through the same accessor, and a scan of the whole
+capture finds zero ThingDefs carrying it. It is a dump coverage gap, not a property of
+the defs, and no price is readable offline from this capture for anything. A pool the pawn cannot afford leaves it wearing LESS than an
 unconstrained pool would, silently.
 🔴 The kind to watch is Geonosian: apparelMoney 60~200 against `ORChitinArmour`, whose
 three carriers inherit `OuterRim_MediumArmorFabricatedBase` — medium fabricated armour.
