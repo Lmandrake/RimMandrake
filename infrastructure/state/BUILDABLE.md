@@ -741,3 +741,41 @@ parameter names are both in scope; `AccessTools.Method` reaches a private static
 which is the very defect being fixed, so the patch must assert its target resolved and say so
 loudly if it did not. 🔴 **And it rides a game-DOWN window**, because the OS locks assemblies.
 Full evidence: `infrastructure/state/items/BRIDGE_DROPS_UNKNOWN_PARAMS_1.md`.
+
+**34 — "Listing the dev menu" SECRETLY RUNS several hundred mod-authored enumerations, and
+that is why it wedges the bridge.** Read out of `LudeonTK/DebugTabMenu_Actions.cs`
+`InitActions`, 2026-08-27. Everyone assumes the cost is the walk over `GenTypes.AllTypes`.
+It is not the main one: for **every** method carrying `[DebugActionYielder]` the builder
+calls it — `methodInfo.Invoke(null, null)` — and enumerates the result, and a yielder is
+arbitrary mod code that commonly walks a whole `DefDatabase`. ⇒ **A `limit` applied to the
+RESULT bounds neither cost**, which is exactly why
+`rimworld/search_debug_actions {"query":"generate map","limit":10}` timed out at 30 s on
+582 mods and left every other caller queued for minutes. ✅ `jawa/debug_actions` is the
+bounded replacement: it filters during the walk, carries a wall-clock budget clamped to
+100–10000 ms, returns `truncated` + `resumeFromType`, and **never invokes a yielder** —
+reporting `yieldersSkipped` so the blind spot is a number rather than a gap. ⛔ It cannot
+produce a complete census of the dev menu and says so; a truncated answer is a FLOOR.
+⚠️ The host's tool is unfixable by us (assemblies only, no `Source/`), so the rule stands:
+**do not call it on the full list.**
+
+**35 — The DEPLOYED companion DLL runs far behind the source, and only a byte census says
+so.** Measured 2026-08-27: the game copy's tool surface reads **166** against the build's
+**238**. Everything written since the 2026-08-26 deploy is compiled and committed but not
+live, because the OS locks a loaded assembly and every deploy waits for a game-down window.
+🔑 **A tool missing from `--list-tools` is therefore ambiguous by default** — undeployed,
+gated out of the build, or genuinely absent — and the cheap disambiguation is
+`build.py`'s own `tool_surface()` over both DLLs:
+```
+python.exe -c "import sys;sys.path.insert(0,r'D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools');import build;
+n=build.tool_surface(open(r'...artifacts\BridgeTools\JawaBench\JawaBench.BridgeTools.dll','rb').read());
+o=build.tool_surface(open(r'C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll','rb').read());
+print(len(n),len(o),sorted(n-o))"
+```
+⚠️ **It is a BYTE SCAN and its ADDED list is not trustworthy** — encoding differences make
+tools that have shipped for weeks appear "added". What it is good for is the direction the
+project actually cares about: `LOST` being empty, and a name being **present**. A byte scan
+proves presence, never absence. ⛔ And a phantom breaks it in both directions: a `jawa/`
+literal written in PROSE inside a tool description becomes a fake tool name, which makes
+`build.py`'s "THIS DEPLOY WOULD REMOVE TOOLS" guard lie. One such phantom (`jawa/anomaly_`)
+was found and removed on 2026-08-27; check `[x for x in surface if x.endswith('_')]` after
+any description edit.
