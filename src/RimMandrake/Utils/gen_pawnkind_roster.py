@@ -207,7 +207,7 @@ FACTIONS = {
 # (faction, role, label, weaponMoney, apparelMoney, quality, [weaponTags], [apparelRequired])
 # quality: ("force",) | ("max", Q) | ("min", Q) | ("item", Q) | None
 R = [
- ("Empire","Grunt","stormtrooper",650,500,("force",),["ORImperialStandard","ORImperialLight"],["OuterRim_StormtrooperCuirass","OuterRim_StormtrooperHelmet"]),
+ ("Empire","Grunt","stormtrooper",950,500,("force",),["ORImperialStandard"],["OuterRim_StormtrooperCuirass","OuterRim_StormtrooperHelmet"]),
  ("Empire","Heavy","heavy trooper",1000,700,("force",),["ORImperialHeavy","ORHeavyWeapon"],["OuterRim_ImperialArmyCuirass","OuterRim_ImperialArmyHelmet","OuterRim_ImperialArmyPauldrons"]),
  ("Empire","Specialist","Imperial officer",900,700,("force",),["ORPistol","ORImperialLight"],["OuterRim_ImperialOfficerUniform","OuterRim_ImperialOfficerCap"]),
  ("Empire","Leader","Emperor Palpatine",1600,1200,("item","Excellent"),["ORImperialSniper","ORPistol"],["OuterRim_ImperialOfficerUniform_Black","OuterRim_ImperialOfficerCap_Black"]),
@@ -215,7 +215,7 @@ R = [
  ("Hutt","Grunt","Cartel enforcer",200,250,None,["KotORRanged_weak","SWKotORWeaponCategoryTag_pistol"],[]),
  ("Hutt","Heavy","Cartel bodyguard",550,400,None,["KotORRanged_mid","SWKotORWeaponCategoryTag_heavyranged"],[]),
  ("Hutt","Specialist","Cartel factor",800,600,None,["KotORRanged_mid","SWKotORWeaponCategoryTag_pistol"],[]),
- ("Hutt","Leader","Lord Gorga the Immense",13000,2000,("item","Masterwork"),["KotORRanged_legendary","KotORRanged_rare"],[]),
+ ("Hutt","Leader","Lord Gorga the Immense",12000,2000,("item","Masterwork"),["KotORRanged_legendary","KotORRanged_rare"],[]),
 
  ("Homestead","Grunt","homestead militia",130,180,("max","Good"),["SimpleGun","KotORRanged_weak"],[]),
  ("Homestead","Heavy","well-guard",300,250,("max","Good"),["AssaultRifle","KotORRanged_mid"],[]),
@@ -233,9 +233,9 @@ R = [
  ("Droid","Leader","First Speaker R-41 Rell",1800,400,("item","Excellent"),["ORDroidWeapon"],[]),
 
  ("Wildsteam","Grunt","Wildsteam hunter",1300,150,("min","Good"),["KotORBowcaster"],[]),
- ("Wildsteam","Heavy","pod-warden",900,200,("min","Good"),["KotORBowcaster","SWKotORWeaponCategoryTag_heavyranged"],[]),
+ ("Wildsteam","Heavy","pod-warden",1700,200,("min","Good"),["KotORBowcaster","SWKotORWeaponCategoryTag_heavyranged"],[]),
  ("Wildsteam","Specialist","beast-handler",620,250,("min","Good"),["ORMeleeSharp","ORVibroweapon"],[]),
- ("Wildsteam","Leader","Elder Rroowaak",2100,400,("min","Excellent"),["KotORBowcaster"],[]),
+ ("Wildsteam","Leader","Elder Rroowaak",1600,400,("min","Excellent"),["KotORBowcaster"],[]),
 
  ("Deepwater","Grunt","shore guard",300,400,("min","Good"),["KotORRanged_mid","SWKotORWeaponCategoryTag_rifle"],[]),
  ("Deepwater","Heavy","pressure trooper",600,550,("min","Good"),["SWKotORWeaponCategoryTag_heavyranged","KotORRanged_strong"],[]),
@@ -247,9 +247,9 @@ R = [
  ("Geonosian","Specialist","hive overseer",1000,100,None,["KotORRanged_sonic","KotORRanged_rare"],[]),
  ("Geonosian","Leader","Archduke Korrik the Shaper",1500,200,("item","Excellent"),["KotORRanged_sonic","KotORRanged_legendary"],[]),
 
- ("Helix","Grunt","retrieval agent",600,700,("min","Excellent"),["SWKotORWeaponCategoryTag_pistol","KotORRanged_strong"],[]),
- ("Helix","Heavy","brute-stock labourer",1100,900,("min","Excellent"),["SWKotORWeaponCategoryTag_heavyranged","KotORRanged_strong"],[]),
- ("Helix","Specialist","Helix curator",1400,1100,("min","Excellent"),["KotORRanged_rare","ORSniper"],[]),
+ ("Helix","Grunt","retrieval agent",1400,700,("min","Excellent"),["SWKotORWeaponCategoryTag_pistol","KotORRanged_strong"],[]),
+ ("Helix","Heavy","brute-stock labourer",2000,900,("min","Excellent"),["SWKotORWeaponCategoryTag_heavyranged","KotORRanged_strong"],[]),
+ ("Helix","Specialist","Helix curator",2600,1100,("min","Excellent"),["KotORRanged_rare","ORSniper"],[]),
  ("Helix","Leader","Director Ko Saiyan",12500,1800,("item","Masterwork"),["KotORRanged_legendary","KotORRanged_rare"],[]),
 
  ("Blackstar","Grunt","hired gun",400,350,None,["SWKotORWeaponCategoryTag_rifle","SimpleGun"],[]),

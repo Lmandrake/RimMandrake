@@ -44,7 +44,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>stormtrooper</label>
     <race>Human</race>
     <defaultFactionDef>Empire</defaultFactionDef>
-    <combatPower>87</combatPower>
+    <combatPower>101</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
     <weaponMoney>950~1150</weaponMoney>
@@ -407,7 +407,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Lord Gorga the Immense</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_HuttCartel</defaultFactionDef>
-    <combatPower>932</combatPower>
+    <combatPower>873</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
     <weaponMoney>12000~15600</weaponMoney>
@@ -1206,7 +1206,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>pod-warden</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
-    <combatPower>98</combatPower>
+    <combatPower>140</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
     <weaponMoney>1700~2000</weaponMoney>
@@ -1330,7 +1330,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Elder Rroowaak</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
-    <combatPower>193</combatPower>
+    <combatPower>164</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
     <weaponMoney>1600~1920</weaponMoney>
@@ -1851,7 +1851,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>retrieval agent</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
-    <combatPower>94</combatPower>
+    <combatPower>130</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
     <weaponMoney>1400~1700</weaponMoney>
@@ -1912,7 +1912,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>brute-stock labourer</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
-    <combatPower>145</combatPower>
+    <combatPower>192</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
     <weaponMoney>2000~2400</weaponMoney>
@@ -1973,7 +1973,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Helix curator</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
-    <combatPower>164</combatPower>
+    <combatPower>224</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
     <weaponMoney>2600~3100</weaponMoney>
