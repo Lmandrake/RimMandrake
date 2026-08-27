@@ -320,8 +320,7 @@ namespace RimDefDump
                 w.Prop("mode", mode);
                 w.Prop("capturedUtc", CapturedUtc);
 
-                try { w.Prop("gameVersion", VersionControl.CurrentVersionStringWithRev); }
-                catch { }
+                PropOrError(w, "gameVersion", () => VersionControl.CurrentVersionStringWithRev);
 
                 w.Name("timingsMs");
                 w.StartObject();
@@ -347,7 +346,7 @@ namespace RimDefDump
                     w.Prop("loadOrder", i + 1);
                     w.Prop("name", DefReflector.SafeString(m.Name));
                     w.Prop("packageId", m.PackageId);
-                    try { w.Prop("rootDir", m.RootDir); } catch { }
+                    PropOrError(w, "rootDir", () => m.RootDir);
                     w.EndObject();
                 }
                 w.EndArray();
@@ -427,6 +426,10 @@ namespace RimDefDump
                 {
                     ThingDef td = things[i];
                     RaceProperties race = null;
+                    // ✅ These two stay bare on purpose: they are CONTROL FLOW, not published
+                    // values. A null race skips the def entirely and the def's absence from
+                    // animals.json is itself the signal; nothing downstream can mistake a
+                    // throw here for a measurement.
                     try { race = td.race; } catch { }
                     if (race == null) continue; // same filter as the offline tool
 
@@ -447,13 +450,18 @@ namespace RimDefDump
                     w.Prop("shortHash", (long)td.shortHash);
                     w.Prop("thingClass", td.thingClass != null ? td.thingClass.FullName : null);
 
+                    // modContentPack feeds two PUBLISHED keys, so a throw here would read
+                    // downstream as "this def belongs to no mod" - which is a claim, not a gap.
                     ModContentPack pack = null;
-                    try { pack = td.modContentPack; } catch { }
+                    string packError = null;
+                    try { pack = td.modContentPack; }
+                    catch (Exception ex) { packError = ex.GetType().Name + ": " + ex.Message; }
                     w.Prop("modName", pack != null ? DefReflector.SafeString(pack.Name) : null);
                     w.Prop("packageId", pack != null ? pack.PackageId : null);
+                    if (packError != null) w.Prop("modContentPackError", packError);
 
-                    try { w.Prop("isAnimal", race.Animal); } catch { }
-                    try { w.Prop("intelligence", race.intelligence.ToString()); } catch { }
+                    PropOrError(w, "isAnimal", () => race.Animal);
+                    PropOrError(w, "intelligence", () => race.intelligence.ToString());
 
                     // Resolved stat values. THIS is what the offline scan
                     // fundamentally cannot produce: statBases holds only what a
@@ -463,8 +471,8 @@ namespace RimDefDump
                     w.StartObject();
                     for (int s = 0; s < stats.Count; s++)
                     {
-                        try { w.Prop(statNames[s], td.GetStatValueAbstract(stats[s])); }
-                        catch { }
+                        int si = s;   // the lambda must not close over the loop variable
+                        PropOrError(w, statNames[si], () => (double)td.GetStatValueAbstract(stats[si]));
                     }
                     w.EndObject();
 
@@ -483,12 +491,15 @@ namespace RimDefDump
                         w.StartObject();
                         w.Prop("defName", pk.defName);
                         w.Prop("shortHash", (long)pk.shortHash);
-                        try { w.Prop("combatPower", pk.combatPower); } catch { }
-                        try { w.Prop("ecoSystemWeight", pk.ecoSystemWeight); } catch { }
-                        try { w.Prop("canArriveManhunter", pk.canArriveManhunter); } catch { }
+                        PropOrError(w, "combatPower", () => (double)pk.combatPower);
+                        PropOrError(w, "ecoSystemWeight", () => (double)pk.ecoSystemWeight);
+                        PropOrError(w, "canArriveManhunter", () => pk.canArriveManhunter);
                         ModContentPack kpack = null;
-                        try { kpack = pk.modContentPack; } catch { }
+                        string kpackError = null;
+                        try { kpack = pk.modContentPack; }
+                        catch (Exception ex) { kpackError = ex.GetType().Name + ": " + ex.Message; }
                         w.Prop("modName", kpack != null ? DefReflector.SafeString(kpack.Name) : null);
+                        if (kpackError != null) w.Prop("modContentPackError", kpackError);
                         w.EndObject();
                     }
                     w.EndArray();
@@ -515,6 +526,10 @@ namespace RimDefDump
                         Log.Warning("[RimDefDump] biome " + b.defName + " AllWildAnimals threw: " + ex.Message);
                         continue;
                     }
+                    // The record's own field, so a reader can tell what the DEF SAYS from
+                    // what the ENGINE ANSWERS. See the block comment below.
+                    Dictionary<PawnKindDef, float> declared = DeclaredWildAnimals(b);
+
                     foreach (PawnKindDef pk in kinds)
                     {
                         if (pk == null) continue;
@@ -523,7 +538,38 @@ namespace RimDefDump
                         w.Prop("biome", b.defName);
                         w.Prop("pawnKind", pk.defName);
                         w.Prop("race", pk.race != null ? pk.race.defName : null);
-                        try { w.Prop("commonality", b.CommonalityOfAnimal(pk)); } catch { }
+
+                        // === DUMPER_SWALLOWS_CACHE_THROW_1 ===========================
+                        // This used to be one line:
+                        //     try { w.Prop("commonality", b.CommonalityOfAnimal(pk)); } catch { }
+                        // Two defects, and together they cost an investigation on 2026-08-26.
+                        //
+                        //  1. It published the ENGINE'S computed answer under the name a
+                        //     reader takes for the DEF'S FIELD. Those are different things
+                        //     whenever the cache is not intact.
+                        //  2. The bare `catch { }` hid the throw. CommonalityOfAnimal assigns
+                        //     cachedAnimalCommonalities BEFORE filling it, so a duplicate-key
+                        //     ArgumentException leaves it partial and non-null and every later
+                        //     call returns a perfectly plausible 0f - forever, with no error.
+                        //
+                        // So: publish BOTH, under names that cannot be confused, and write the
+                        // exception TYPE into the row when one is thrown. ⛔ A field that could
+                        // not be read must never look like a field that read zero.
+                        float declaredValue;
+                        if (declared != null && declared.TryGetValue(pk, out declaredValue))
+                            w.Prop("commonalityDeclared", declaredValue);
+                        else
+                            w.Prop("commonalityDeclared", (string)null); // not in wildAnimals: it reached this biome via race.wildBiomes
+
+                        try
+                        {
+                            w.Prop("commonalityEngine", b.CommonalityOfAnimal(pk));
+                        }
+                        catch (Exception ex)
+                        {
+                            w.Prop("commonalityEngine", (string)null);
+                            w.Prop("commonalityEngineError", ex.GetType().Name + ": " + ex.Message);
+                        }
                         w.EndObject();
                     }
                 }
@@ -543,6 +589,71 @@ namespace RimDefDump
                             + " biomes=" + biomes.Count
                             + " biomeAnimalPairs=" + nPairs);
             }
+        }
+
+        // ------------------------------------------------------------------
+        // DUMPER_SWALLOWS_CACHE_THROW_1. ⛔ NEVER `try { w.Prop(...) } catch { }` on a
+        // value this dump publishes. A property that THREW and a property that read a
+        // legitimate 0 / false / null come out of a bare catch looking identical - the
+        // first silently omits the key, and every downstream reader treats a missing key
+        // as "not applicable". These write the exception TYPE into a sibling `<name>Error`
+        // key instead, so an unreadable field can never be mistaken for a measured one.
+        private static void PropOrError(JsonWriter w, string name, Func<string> read)
+        {
+            try { w.Prop(name, read()); }
+            catch (Exception ex) { w.Prop(name, (string)null); w.Prop(name + "Error", ex.GetType().Name + ": " + ex.Message); }
+        }
+
+        private static void PropOrError(JsonWriter w, string name, Func<bool> read)
+        {
+            try { w.Prop(name, read()); }
+            catch (Exception ex) { w.Prop(name, (string)null); w.Prop(name + "Error", ex.GetType().Name + ": " + ex.Message); }
+        }
+
+        private static void PropOrError(JsonWriter w, string name, Func<double> read)
+        {
+            try { w.Prop(name, read()); }
+            catch (Exception ex) { w.Prop(name, (string)null); w.Prop(name + "Error", ex.GetType().Name + ": " + ex.Message); }
+        }
+
+        // ------------------------------------------------------------------
+        // BiomeDef.wildAnimals is PRIVATE in 1.6, so the DECLARED value can only be
+        // read by reflection. DUMPER_SWALLOWS_CACHE_THROW_1: publishing only the
+        // engine's computed answer is what made 181 zeroes look like a content defect
+        // when they were something else entirely.
+        //
+        // ⛔ Returns null - NOT an empty dictionary - when the field cannot be found.
+        // An empty dictionary would make every animal report commonalityDeclared:null,
+        // which reads as "declared nowhere" rather than "the dumper could not look".
+        // Same rule as UNMEASURED-vs-0 everywhere else in this project.
+        private static FieldInfo wildAnimalsField;
+        private static bool wildAnimalsFieldResolved;
+
+        private static Dictionary<PawnKindDef, float> DeclaredWildAnimals(BiomeDef b)
+        {
+            if (!wildAnimalsFieldResolved)
+            {
+                wildAnimalsFieldResolved = true;
+                wildAnimalsField = typeof(BiomeDef).GetField(
+                    "wildAnimals", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                if (wildAnimalsField == null)
+                    Log.Warning("[RimDefDump] BiomeDef.wildAnimals not found by reflection - "
+                                + "commonalityDeclared will be null for every row. The field was "
+                                + "renamed or made public; fix DeclaredWildAnimals().");
+            }
+            if (wildAnimalsField == null) return null;
+
+            var list = wildAnimalsField.GetValue(b) as IList;
+            if (list == null) return null;
+
+            var outMap = new Dictionary<PawnKindDef, float>();
+            for (int i = 0; i < list.Count; i++)
+            {
+                var rec = list[i] as BiomeAnimalRecord;
+                if (rec == null || rec.animal == null) continue;   // a dangling cross-ref leaves animal null
+                outMap[rec.animal] = rec.commonality;              // indexer, not Add: a duplicate must not throw HERE
+            }
+            return outMap;
         }
 
         // ------------------------------------------------------------------
