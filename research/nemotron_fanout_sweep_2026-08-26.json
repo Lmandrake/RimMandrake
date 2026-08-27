@@ -1,0 +1,612 @@
+{
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "question": "Does this file contain a PatchOperationReplace whose xpath targets pawnGroupMakers? Only a Replace counts, not an Add. If so give the line number of that xpath.",
+  "glob": "src/Jawa/Jawa_Patches/Patches/*.xml",
+  "wall_s": 759.7,
+  "counts": {
+    "ABSTAIN": 57,
+    "HIT": 3
+  },
+  "rows": [
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/AncientArsenal_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1624,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/AncientsAreRakata.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1691,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/AnimalBiomeDuplicates_Fix.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 534,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/AnimalBiomeDuplicates_Generated.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1049,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/AnimalDessicatedTexPaths_Fix.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 2143,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/AnimalTolerances_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 780,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/AshStorms_Pyrelands.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1188,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/BTDGravshipQuest_GrammarFix.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 4455,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/BiomeAnimalDanglingRefs_Fix.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1512,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1185,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/BiomeFlora_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 926,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml",
+      "http": 200,
+      "raw": "VERDICT: Contains PatchOperationReplace with pawnGroupMakers xpath\nEVIDENCE: 155: /Defs/FactionDef[defName=\"Pirate\"]/pawnGroupMakers/li[kindDef=\"Combat\"][commonality=\"100\"]/options",
+      "completion_tokens": 4743,
+      "truncated": false,
+      "verdict_kind": "HIT",
+      "verdict": "Contains PatchOperationReplace with pawnGroupMakers xpath",
+      "evidence": "155: /Defs/FactionDef[defName=\"Pirate\"]/pawnGroupMakers/li[kindDef=\"Combat\"][commonality=\"100\"]/options"
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/BodySizeIsReal.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1273,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/BuzzerApostrophe_Fix.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1719,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/CreatureNames_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1301,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/CreatureResize_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 3009,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1263,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/DrillTurret_ShootingJob.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 2101,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/DroidFemaleTexture_Fix.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 749,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/EggLayersLayEggs.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1105,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/Fleshbeast_TrispikeCull.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 944,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/ForceGremlin_NoHair.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 2427,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/ForgottenArsenal.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 2580,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml",
+      "http": 200,
+      "raw": "VERDICT: Contains PatchOperationReplace targeting pawnGroupMakers\nEVIDENCE: 121: /Defs/FactionDef[defName=\"Empire\"]/pawnGroupMakers/li[kindDef=\"Combat\"][commonality=\"100\"]/options",
+      "completion_tokens": 4647,
+      "truncated": false,
+      "verdict_kind": "HIT",
+      "verdict": "Contains PatchOperationReplace targeting pawnGroupMakers",
+      "evidence": "121: /Defs/FactionDef[defName=\"Empire\"]/pawnGroupMakers/li[kindDef=\"Combat\"][commonality=\"100\"]/options"
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/GiantWeaponWielders_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1125,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/GrimTerraTexPaths_Fix.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1477,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/HeadSetForFA_Revive.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 925,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/HomesteadDefenseLeague.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 2444,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/HumanTemperatureBand_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 941,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/HuttEyes_RestoreRenderNodes.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 944,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/Ikee_Rename.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 2915,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/Ikee_Tuning.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 3862,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/IonStunMote_Blue.xml",
+      "http": 200,
+      "raw": "VERDICT: No Replace targets pawnGroupMakers\nEVIDENCE: 6: <xpath>/Defs/ThingDef[defName=\"Mote_Stun\"]/graphicData/color</xpath>",
+      "completion_tokens": 4554,
+      "truncated": false,
+      "verdict_kind": "HIT",
+      "verdict": "No Replace targets pawnGroupMakers",
+      "evidence": "6: <xpath>/Defs/ThingDef[defName=\"Mote_Stun\"]/graphicData/color</xpath>"
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/JawaAppearance_Tuning.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1827,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/JawaCombatViability_Tuning.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1012,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/JawaGroundHulk_Register.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 971,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/JawaResource_Scrapfields.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1030,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/JawaTerrain_DuneSeas.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1583,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/JawaTerrain_HorrorWastes.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 949,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/JawaTerrain_SaltPans.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 690,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/JawaWorld_BiomeMix.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1485,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/JawaWorld_Name.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 885,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/JawaXenotype_Repoint.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1900,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/MechanoidIntrusion_AllowRivers.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 3739,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/PetNames_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1288,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/PirateWaster_Yield.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1135,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/PlanetLayer_BackgroundWater.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 687,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/PlantNames_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1313,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/PlantTolerances_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1330,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/PodCarIsLandspeeder.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 733,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/RebelAlliance_Suppress.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 763,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/SWCPZoomerIcon_Fix.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 855,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/SWDesertWeather_Attach.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1049,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/SpeciesStartingGear_Tuning.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1214,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/VanillaFaction_Xenotypes.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1181,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/VehicleBeastLabels.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 1237,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/VehicleBeastSound_Fix.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 2022,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/WeaponTags_Renormalise.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 948,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/WorldMapReadability_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 2004,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    },
+    {
+      "path": "src/Jawa/Jawa_Patches/Patches/XenotypeTolerances_Ashkarr.xml",
+      "http": 200,
+      "raw": "NOT IN THE PROVIDED TEXT",
+      "completion_tokens": 3461,
+      "truncated": false,
+      "verdict_kind": "ABSTAIN",
+      "verdict": "",
+      "evidence": ""
+    }
+  ]
+}

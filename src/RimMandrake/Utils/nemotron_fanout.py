@@ -24,6 +24,11 @@ import urllib.error, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 BASE = "https://integrate.api.nvidia.com/v1/chat/completions"
+# 🔴 Measured 2026-08-26: the binding limit on a cheap worker is COMPLETION tokens spent
+# reasoning, never input size. One 400-line repo file at 7.8k INPUT tokens scored 0/3,
+# every attempt stopping dead on the completion cap. Give it room, then check whether it
+# used all of it - a reply that stopped exactly at the cap is a truncation, not an answer.
+MAX_OUT = 8192
 ABSTAIN = "NOT IN THE PROVIDED TEXT"
 
 # 🔑 A question that TELLS the worker a fact makes every worker wrong the same way.
@@ -72,11 +77,13 @@ def post(body, key, timeout=180):
 def ask(path, body, question, model, key, retries=4):
     msg = PROMPT.format(path=path, body=body, question=question, abstain=ABSTAIN)
     for attempt in range(retries):
-        st, d = post({"model": model, "max_tokens": 4096, "temperature": 0,
+        st, d = post({"model": model, "max_tokens": MAX_OUT, "temperature": 0,
                       "messages": [{"role": "user", "content": msg}]}, key)
         if st == 200:
             txt = ((d.get("choices") or [{}])[0].get("message") or {}).get("content") or ""
-            return {"path": path, "http": 200, "raw": txt.strip()}
+            ct = (d.get("usage") or {}).get("completion_tokens")
+            return {"path": path, "http": 200, "raw": txt.strip(),
+                    "completion_tokens": ct, "truncated": ct is not None and ct >= MAX_OUT}
         # 🔴 503 is shared-capacity and transient. 429 is a per-model quota wall and
         # retrying it makes it worse - stop and report, so the caller can see a stall.
         if st == 429:
@@ -103,6 +110,14 @@ def classify(raw):
         return "ERROR", "", ""
     tail = "\n".join(lines[-6:])          # the answer block, never the reasoning
     v = re.search(r"VERDICT:\s*(.+)", tail)
+    # 🔴 A model that answers the question in the NEGATIVE fills in the VERDICT shape
+    # rather than using the abstention token - "VERDICT: No Replace targets
+    # pawnGroupMakers" is a correct NO, and scoring it a HIT manufactures a false
+    # positive out of a right answer. Measured 2026-08-26: 1 of 60 rows, and it was
+    # the only "fabrication" in the sweep.
+    if v and re.match(r"\s*(no\b|none\b|does not|doesn't|no such|not present|absent)",
+                      v.group(1), re.I):
+        return "NEGATIVE", v.group(1).strip()[:120], ""
     e = re.search(r"EVIDENCE:\s*(.+)", tail)
     if v:
         return "HIT", v.group(1).strip()[:120], (e.group(1).strip()[:120] if e else "")
@@ -123,6 +138,10 @@ def main():
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--max-chars", type=int, default=40000)
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--keep-comments", action="store_true",
+                    help="do NOT strip XML/# comments. Default strips them: 63%% of a "
+                         "real patch file is commentary, and commentary is what the "
+                         "worker burns its completion budget narrating.")
     ap.add_argument("--out", default="")
     a = ap.parse_args()
 
@@ -146,10 +165,18 @@ def main():
     def one(p):
         with open(p, encoding="utf-8", errors="replace") as f:
             body = f.read(a.max_chars)
+        if not a.keep_comments:
+            body = re.sub(r"<!--.*?-->", "", body, flags=re.S)
+            body = re.sub(r"\n\s*\n+", "\n", body)
         # 1-indexed line numbers so EVIDENCE is checkable against the real file
         body = "\n".join(f"{i+1}: {l}" for i, l in enumerate(body.splitlines()))
         r = ask(p, body, a.question, a.model, key)
         r["verdict_kind"], r["verdict"], r["evidence"] = classify(r["raw"])
+        # 🔴 A truncated reply must NEVER be scored as an abstention. "It ran out of
+        # budget mid-thought" and "it looked and found nothing" are opposite facts, and
+        # conflating them turns an unfinished sweep into a clean bill of health.
+        if r.get("truncated") and r["verdict_kind"] != "HIT":
+            r["verdict_kind"] = "TRUNCATED"
         print(f"  {r['verdict_kind']:9} {p}", flush=True)
         return r
 
@@ -169,6 +196,11 @@ def main():
     if a.out:
         print(f"  wrote {a.out}")
     print("  ⚠️  These are CANDIDATES. Confirm every row before it lands in a doc.")
+    if not a.keep_comments:
+        print("  ⚠️  Comments were STRIPPED, so every EVIDENCE line number is relative to "
+              "the stripped body and will NOT match the file on disk. Re-locate by the "
+              "quoted text, never by the number. --keep-comments preserves the numbers "
+              "and costs you the accuracy they were bought with.")
 
 
 if __name__ == "__main__":

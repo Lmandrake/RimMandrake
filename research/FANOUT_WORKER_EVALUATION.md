@@ -151,3 +151,39 @@ Recorded because both are the house failure mode — an instrument answering con
 * A size for which **no jobs could be built** printed as `0/0`, indistinguishable from
   "tested and scored zero". It now prints `UNMEASURED` and says why.
 
+## ✅ The loop closed: the same sweep, with the sizing rule applied
+
+The 60-file sweep that scored **0 hits** before the sizing rule was re-run with comments
+stripped and the completion cap raised. Dispatcher:
+`src/RimMandrake/Utils/nemotron_fanout.py`. Raw:
+`research/nemotron_fanout_sweep_2026-08-26.json`.
+
+Question: *does this file contain a `PatchOperationReplace` whose xpath targets
+`pawnGroupMakers`?* Ground truth by grep: **3 of 60**.
+
+| | before | after |
+|---|---|---|
+| true positives | 0 | **2 of 3** |
+| false positives | 0 | **0** |
+| false negatives | 3 | 1 (`HomesteadDefenseLeague.xml`, 1 Replace, abstained) |
+| truncated / malformed | 12 | **0** |
+| correct abstentions | 48 | **57 of 57** |
+
+⇒ **57 of 57 true negatives and zero fabrications across 60 real files.** That is the
+property fan-out actually needs — it will not invent work for you — bought at the cost of
+a recall miss. 🔑 **Use it to NARROW a corpus, never to prove absence.** 12.7 min wall on
+8 workers, free.
+
+### Two more instrument defects, both mine, both caught by ground truth
+* ⛔ **A negative VERDICT was scored as a HIT.** The model answered *"VERDICT: No Replace
+  targets pawnGroupMakers"* — a correct NO, filled into the answer shape instead of using
+  the abstention token — and the classifier called it a find. That was the sweep's only
+  "fabrication", and it was the instrument's. `classify()` now returns `NEGATIVE`.
+* ⚠️ **Stripping comments destroys line-number provenance.** Every `EVIDENCE` line number
+  is relative to the *stripped* body and will not match the file on disk. Re-locate by the
+  quoted text, never by the number. The dispatcher now says so on every run.
+
+🔑 **The pattern across every instrument built today:** each one was calibrated against an
+answer already known, and each one was wrong the first time in a way that produced a
+clean, plausible number. Not one was caught by reading its output.
+
