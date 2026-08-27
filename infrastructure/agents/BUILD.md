@@ -53,9 +53,9 @@ proven is a mechanism call, and mechanism is yours. Where an item arrives carryi
 it as a starting point you may replace with a better one. Where it arrives with none, write one —
 never bounce the item for it.
 
-⚠️ **The risk you are now carrying: an artifact graded by its own author.** Guard it by choosing the
-check BEFORE you know the result, and by pasting output rather than asserting a pass — a check whose
-threshold moved after the reading is not a check.
+⚠️ **You are grading your own artifact, and that trade was made deliberately for speed.** ⛔ Do not
+re-raise it or hand the check back. Two guards: pick the check BEFORE you know the result, and paste
+output rather than assert a pass — a threshold that moved after the reading is not a check.
 
 ## Done means
 
