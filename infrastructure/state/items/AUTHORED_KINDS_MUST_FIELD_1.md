@@ -1,3 +1,55 @@
+# ✅ THE XML IS SHIPPED. This item is AWAITING BRIDGE VERIFICATION, not ready work.
+
+**Correction written 2026-08-27 by BUILD, from `STALE_ITEM_HEADER_CORRECTIONS_1`. Read
+these three before touching anything — the spec below them is the pre-implementation
+brief and is stale in exactly these three places.**
+
+### 1. IMPLEMENTED — do not re-implement
+All three wirings shipped and are deployed. Both patch files carry this item's ID in their
+own section headers; `grep -l AUTHORED_KINDS_MUST_FIELD_1 src/Jawa/Jawa_Patches/Patches/*.xml`
+finds them.
+
+| kind | route | file |
+|---|---|---|
+| `Jawa_DeepDesert_*` | whole `pawnGroupMakers` list declared on the child | `src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml` |
+| `Jawa_Blackstar_*` | six `Replace`s into `Pirate`'s own combat groups | `src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml` |
+| `Jawa_Empire_Leader` | `fixedLeaderKinds`, not a group — a leader is generated once per faction, never rolled into a raid | `src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml` line 147 |
+
+**What is left is the live half only:** spawn raids from `TribeCivil`, `Pirate` and
+`Empire` and read the pawn NAMES.
+
+### 2. 🔴 The ⛔ against `Inherit="False"` below was OVERRULED, on evidence
+It is kept in place because the record is immutable, but **it is not the instruction.**
+`TribeCivil` inherits all twelve groups from the abstract `TribeBase`; PatchOperations run
+**before** inheritance resolves, so a `Replace` on the child matches **zero nodes and logs
+nothing** (verified with lxml against shipped Core XML, 2026-08-22:
+`/Defs/FactionDef[defName="TribeCivil"]/pawnGroupMakers` → 0 nodes). Patching `TribeBase`
+by `@Name` would hit TribeRough, TribeSavage and every modded descendant across 578 mods.
+
+⇒ The route taken declares the whole list on the child **and re-declares the eight
+non-combat groups byte-for-byte out of Core's `Factions_Misc.xml`**, copied
+programmatically, not retyped. That answers the objection the ⛔ was actually making —
+that Trader, Peaceful and Settlement would be dropped. They are not dropped; they are
+present and vanilla. 🔑 **Read the comment at `DeepDesertTribes.xml` line 132 before
+forming a view.** `Pirate` writes its own six groups, which is why Blackstar could take
+the `Replace` route and Deep Desert could not.
+
+### 3. The combat weights are TUNED PER GROUP — they are NOT `GalacticEmpire.xml`'s numbers
+The spec below says to copy the pattern Empire ships. **The pattern, not the numbers.**
+Each group's option weights are tuned to that group's tactical character.
+
+🔴 **Measured, not hypothetical.** A cheap-model BUILD trial (`KIMI_GATEWAY_FOR_BUILD_1`,
+2026-08-26) was handed this item cold in a throwaway worktree. It did not notice the work
+was done, copied Empire's *numbers*, and flattened Deep Desert's `10 / 5 / 6` and
+Blackstar's `10 / 5 / 3` to Empire's `5 / 2 / 1.5` — then reported it as completed work.
+**A 14-check structural grader passed that regression 14 of 14.** XML parsed, no
+`Inherit="False"` regression, no vanilla kinds in a combat group, non-combat groups
+untouched, both rosters still fielded. Only `git diff` found the loss.
+Grader: `src/RimMandrake/Utils/grade_authored_kinds_trial.py` ·
+diff: `research/nemotron_build_trial_2026-08-26.diff`.
+
+---
+
 ## spec
 🔴 **DECIDE ruled 2026-08-22: wire the nine orphaned role kinds into their factions.**
 Full ruling — `design/Jawa/worldbuilding/pawnkind_roster.md`, *"Every authored kind must be

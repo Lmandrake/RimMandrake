@@ -1,0 +1,27 @@
+STALE_ITEM_HEADER_CORRECTIONS_1 — each of the three corrections checked against the
+shipped XML before it was written, 2026-08-27.
+
+1. IMPLEMENTED
+   $ grep -l "AUTHORED_KINDS_MUST_FIELD_1" src/Jawa/Jawa_Patches/Patches/*.xml
+     BlackstarCompany.xml
+     DeepDesertTribes.xml
+     WeaponTags_Renormalise.xml
+   $ grep -n "fixedLeaderKinds" src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml
+     147:  <xpath>/Defs/FactionDef[defName="Empire"]/fixedLeaderKinds</xpath>
+     (line 41 of the file's own header: 'fixedLeaderKinds WRITTEN (line 90) -> Replace, not Add')
+
+2. Inherit="False" OVERRULED
+   DeepDesertTribes.xml lines 132-150 carry the reasoning and the lxml measurement:
+     /Defs/FactionDef[defName="TribeCivil"]/pawnGroupMakers -> 0 nodes
+   and state the eight non-combat groups were copied programmatically out of Core's
+   Factions_Misc.xml, which answers the objection the stop sign was making.
+
+3. Weights tuned per group
+   BlackstarCompany.xml patches six SEPARATE Pirate combat groups by commonality
+   (100, 30, 20, 15, 10, 2.5), each with its own tactical character stated in a
+   comment. DeepDesertTribes.xml declares its own group commonalities (100, 60, 60,
+   5, 30). Neither is GalacticEmpire.xml's numbers.
+
+Result: all three claims stand. Header prepended to
+infrastructure/state/items/AUTHORED_KINDS_MUST_FIELD_1.md; a rimflow note records the
+awaiting-verification status on the ledger. No XML touched — verified by git status.

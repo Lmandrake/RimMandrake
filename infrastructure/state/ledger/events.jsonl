@@ -2321,3 +2321,8 @@
 {"seat":"BUILD","event":"verify","id":"CAST_XML_REGEN_AND_DEPLOY_1","result":"pass","config":"578-mod list, game copy","evidence":"infrastructure/state/evidence/CAST_XML_REGEN_AND_DEPLOY_1_deploy.txt","sha":"33f1e63c","ts":"2026-08-27T04:05:16Z"}
 {"seat":"BUILD","event":"file","id":"CAST_LIVE_SPAWN_CHECK_1","title":"Ash'karr biome cast: next load, prove no zeroed commonality and no Earth fauna","kind":"check","target":"v1","needs":"bridge","caused_by":"CAST_XML_REGEN_AND_DEPLOY_1","for":"CHECK","ts":"2026-08-27T04:05:34Z"}
 {"seat":"BUILD","event":"close","id":"CAST_XML_REGEN_AND_DEPLOY_1","sha":"33f1e63c","ts":"2026-08-27T04:05:49Z"}
+{"seat":"BUILD","event":"note","id":"AUTHORED_KINDS_MUST_FIELD_1","text":"XML SHIPPED and deployed - DeepDesertTribes.xml, BlackstarCompany.xml, GalacticEmpire.xml fixedLeaderKinds. Only the live raid check remains: this is awaiting bridge verification, not ready work. The spec's stop sign against Inherit=False was overruled on evidence; the three corrections are at the top of the item file.","ts":"2026-08-27T04:06:53Z"}
+{"seat":"BUILD","event":"claim","id":"STALE_ITEM_HEADER_CORRECTIONS_1","ts":"2026-08-27T04:07:07Z"}
+{"seat":"BUILD","event":"start","id":"STALE_ITEM_HEADER_CORRECTIONS_1","ts":"2026-08-27T04:07:07Z"}
+{"seat":"BUILD","event":"verify","id":"STALE_ITEM_HEADER_CORRECTIONS_1","result":"pass","config":"offline, HEAD","evidence":"infrastructure/state/evidence/STALE_ITEM_HEADER_CORRECTIONS_1.txt","sha":"8660ae4e","ts":"2026-08-27T04:07:07Z"}
+{"seat":"BUILD","event":"close","id":"STALE_ITEM_HEADER_CORRECTIONS_1","sha":"8660ae4e","ts":"2026-08-27T04:07:13Z"}
