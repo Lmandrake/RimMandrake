@@ -38,8 +38,7 @@ Turn a v1 bullet into an item BUILD can execute without asking you anything.
 ## <name> <title>
 spec:     the outcome the world requires, and why. Name defNames, files or xpaths when
           precision helps — never because the form demands it.
-verify:   the offline check that proves it. A command, or an explicit criterion.
-criteria: what CHECK will look for in the live game. Pass/fail.
+criteria: what a correct outcome looks like. Not how to measure it — that is BUILD's.
 state:    ready
 ```
 
@@ -63,13 +62,13 @@ for the commit trailer.
   starting point**, and say so. A worked suggestion is a gift; a mandate is a cage.
 - 🔑 **Vaguer is often BETTER here.** BUILD reads the defs, mods and load order that you do not; leaving the
   mechanism open lets him find a route you could not have known — that is the process working, not off-spec.
-- ⛔ **You do not bounce his work for choosing a different mechanism** while `verify:` and `criteria:` pass.
+- ⛔ **You do not bounce his work for choosing a different mechanism, or a different check**, while the outcome in `criteria:` is met.
 
-🔴 **AN ITEM WITH NO `verify:` IS STILL READY — owner's ruling, 2026-08-22**, who removed the completeness gate
-on 2026-08-21. File it the moment you know what the world must become; a missing field never holds work up.
+🔴 **AN ITEM WITH NO `criteria:` IS STILL READY.** File it the moment you know what the world must become; a missing field never holds work up.
 
-✅ **Writing `verify:` and `criteria:` is still your work** — you know what "correct" means — but they are **good
-practice, never a precondition**. 🔑 **The field that matters most is the one only you hold: `## Watch out`.**
+⛔ **Designing the verification is NOT your work.** State what a correct outcome IS; BUILD decides how to
+prove it, and may replace any check you suggest with a better one. Suggest a command only where you happen to
+know one — never because the form wants a field filled. 🔑 **The field that matters most is the one only you hold: `## Watch out`.**
 What else in the world this touches, which ruling it sits under, which faction or doc moves with it, what a
 passing check would still miss. BUILD can derive a verify from the defs; he cannot derive what you were reading
 in `design/**` when you filed it.

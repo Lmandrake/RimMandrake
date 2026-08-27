@@ -40,16 +40,22 @@ decides what enters it. ⛔ She may not `--apply`, touch the game copy, or edit 
 2026-08-22.** DECIDE states the outcome the world requires; naming the mechanism is optional and
 often deliberately left open *"so that BUILD has a wider berth to consider."* ✅ **Where one IS
 named, treat it as an example or a starting point, not a mandate** — you may implement it another
-way, and you do not need permission, as long as `verify:` and `criteria:` still pass.
+way, and you do not need permission, as long as the outcome in `criteria:` is met.
 
-⛔ **You do not bounce an item for a missing `spec:`, `verify:` or `criteria:`** — an
+⛔ **You do not bounce an item for a missing `spec:` or `criteria:`** — an
 incomplete item cannot enter `ready`, `rimflow next` names what is thin, and you claim it as it
 stands. ✅ **What you owe instead is the thing only YOU know:** a `## Watch out` — what else reads
 this def, what load order affects it, what a passing verify would still miss. ⚠️ And where you had to
 guess a spec, **write down what you assumed**; that is what the next seat cannot reconstruct.
 
-🔑 **Running the check is yours; authoring the pass condition is not.** You RUN every check and paste
-its output; you do not invent the `verify:` criterion for your own item — that arrives with the item.
+🔑 **The verification is YOURS to design.** DECIDE states the outcome the world requires; how it is
+proven is a mechanism call, and mechanism is yours. Where an item arrives carrying a `verify:`, treat
+it as a starting point you may replace with a better one. Where it arrives with none, write one —
+never bounce the item for it.
+
+⚠️ **The risk you are now carrying: an artifact graded by its own author.** Guard it by choosing the
+check BEFORE you know the result, and by pasting output rather than asserting a pass — a check whose
+threshold moved after the reading is not a check.
 
 ## Done means
 
