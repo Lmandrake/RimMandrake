@@ -703,12 +703,14 @@ per-tile `riverDist`, and stores no flow scalar anywhere. ⇒ A harvest from the
 can never MEASURE it; it is CARRIED from the authored bundle by construction, and a
 future tool that claims to have measured it has invented it.
 
-**25 — A biome animal at `commonality: 0` is REGISTERED AND UNSPAWNABLE, and a mod puts it
-there on purpose.** `BiomeDef.AllWildAnimals` only yields kinds whose commonality is `> 0f`,
-so a zeroed animal is not in the biome's animal list at all — the def is present, the patch
-applied, the entry exists, and nothing reports it. ⇒ **CHERRY PICKER does this — it suppresses a def the
-owner cut by REPLACING the biome value with 0 rather than removing the entry**, and the cut list
-is the owner's own `Config/Mod_3521312241_Mod_CherryPicker.xml`, 1,342 entries.
+**32 — A biome animal at `commonality: 0` is REGISTERED AND UNSPAWNABLE, and it is the OWNER
+who put it there.** The animal twin of **31**, and the same mechanism: Cherry Picker does not
+delete what it cuts, it strips the registration.
+`BiomeDef.AllWildAnimals` only yields kinds whose commonality is `> 0f`, so a zeroed animal is not in the biome's animal list at all — the def is present, the patch applied, the entry
+exists, and nothing reports it. ⇒ **Cherry Picker suppresses a cut animal by REPLACING the
+biome value with 0**, exactly as it empties `weaponTags` for a cut weapon (**31**). The list is
+the owner's own `Config/Mod_3521312241_Mod_CherryPicker.xml`, 1,342 entries — ⚠️ INTENT, so
+pair it with the log's removal block (**21**) when the question is what actually happened.
 🔴 **Its cuts are INVISIBLE to the def dump: the cut animals are still PRESENT as ThingDef and
 PawnKindDef in the capture.** Validated over the population — 167 of 168 always-off animals are
 on that list, and 0 of 414 always-alive animals are. Proven on
