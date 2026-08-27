@@ -1,3 +1,40 @@
+# ✅ REGENERATED AND COMMITTED at `c325daad`. Only the DEPLOY is left.
+
+**Updated 2026-08-26, end of session.** Steps 1-4 below are DONE. Do not re-run the generator.
+
+```
+src/Jawa/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml
+   28 operations · 801 animal entries · 0 removals · no <li> anywhere
+   28 of 28 Ash'karr biomes covered
+   all 28 biomes exist in the running game        (checked against the capture)
+   all 578 distinct animals resolve as PawnKindDefs (same)
+   0 entries cut by Cherry Picker
+   3 cast rows skipped as not-PawnKindDefs, named in the generator output:
+       Desert/SWPotF_RaceDef_ysalamir · ExtremeDesert/SWPotF_RaceDef_ysalamir · PoisonForest/GiantAnt_Race
+```
+
+## The one command left
+
+```
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod Jawa_Patches --apply
+```
+
+✅ XML deploys with the game UP; only assemblies are locked. Then `md5sum` the repo copy
+against the game copy.
+
+⚠️ **A full `validate_patch.py --live --defs` run over the 1,254-mod workshop tree was still
+running when the session ended** — it takes many minutes on this mount. It is a belt-and-braces
+xpath-hit check; the two questions that matter (do the biomes exist, do the animals resolve)
+were answered directly against the capture and both passed. Re-run it if you want the third
+opinion:
+```
+python3 skills/rimworld-modding/scripts/validate_patch.py \
+  src/Jawa/Jawa_Patches/Patches/BiomeCast_Ashkarr.xml --live <capture> \
+  --defs "<game>/Data" --defs "<game>/Mods" --defs "<workshop>/294100"
+```
+
+---
+
 # CAST_XML_REGEN_AND_DEPLOY_1 — finish the fauna repair: regenerate the patch and deploy it
 
 ⏳ **HANDOFF, 2026-08-26 ~22:0x, BUILD, session ending.** Everything upstream is committed and
