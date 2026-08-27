@@ -1,0 +1,20 @@
+
+validate_patch.py - 1 XML file(s): 1 <Patch>, 0 <Defs>
+  SCANNED     Patches/: operation shape, guards, value shape, live xpath hit counts
+              Defs/:    XML parse, comment bodies, missing/duplicate defName, ParentName
+                        resolution, Class attributes, texPath existence and case
+  NOT SCANNED field names, field types, value ranges, C# class members, and any node
+              a PatchOperation creates at load time. This is not a def linter.
+
+  info    xpath engine: lxml 6.0.2.0 - full XPath 1.0, the same class of engine RimWorld itself uses, so text(), contains(), starts-with(), not() and boolean predicates are CHECKED.
+  info    load set: 582 active mods, 582 found on disk, target version 1.6 -> 8,747 def files
+live dump: 68691 defNames across 452 def types, RimWorld 1.6.4871 rev591, 582 mods
+
+=== src/Jawa/Jawa_Patches/Patches/ApparelTags_DeadTagRepair.xml ===
+  info    Operation[1] > match > operations/li[1] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[1] > match > operations/li[2] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[1] > match > operations/li[3] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[1] > match > operations/li[4] (PatchOperationAdd): 1 match(es)  in Ancient urban ruins: PawnKinds_Boss.xml(1)
+  info    Operation[2] > match (PatchOperationAdd): 1 match(es)  in Outer Rim - Galactic Empire: PawnKinds_Stormtroopers.xml(1)
+
+OK - 0 errors, 0 warning(s)
