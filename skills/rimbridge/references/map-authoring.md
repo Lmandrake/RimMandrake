@@ -294,3 +294,68 @@ placeability**, not a pathfinder, so the route is placeable end-to-end by constr
 conduit net breaks at every diagonal — it looks connected and is not.
 🔴 **Maps are not square.** One quicktest was 100×400. `map_commit` reports `mapSize`.
 ✅ **Atomic** — the whole route is validated before anything is placed.
+
+---
+
+# The terrain LAYERS, in the order they must be written — measured 2026-08-27
+
+Laying a whole ship's deck turned up an ordering rule that is invisible until it
+bites, and it is the opposite of intuition.
+
+```
+strip UNDER  ->  foundation  ->  terrain  ->  things
+```
+
+🔴 **`SetFoundation` is refused on any cell carrying an UNDER layer** — reported per
+cell as *"cell has under-terrain; strip the floor first"* — **and painting a floor
+WRITES one.** So a deck painted before its foundation can never receive one.
+
+🔴 **A NATURAL top terrain cannot be removed at all**: `CanRemoveTopLayerAt` reads
+`TerrainDef.Removable`, and soil is not removable. Refusal reads *"CanRemoveTopLayerAt
+false"*. The way through is two calls:
+
+```
+set_terrain_batch  MetalTile   <rect>      # a REMOVABLE floor; SetTerrain pushes the
+set_terrain_layer  removeTop   <rect>      # natural terrain into `under`, then
+                                           # RemoveTopLayer pops it back and NULLS under
+```
+
+⇒ **Cutting a HOLE through a finished deck is the same trick backwards**: `removeTop`
+first (which nulls `under`), then `set_substructure_batch action=remove`. Do the holes
+BEFORE painting the floors, or the paint writes `under` again on the cells you were
+about to strip.
+
+## Terrain defs that are not top-layer terrain, and fail silently on `top`
+
+| def | actually lives in | what `top` does |
+|---|---|---|
+| `VGE_DamagedSubstructure`, `BrokenSubstructure` | the FOUNDATION layer | reports `cellsChanged`, leaves the cell as it was |
+| `GU_MetalFloor2` | the UNDER layer | vanishes on a floored cell; looks fine on bare ground |
+
+🔑 And a foundation is **invisible under a floor**, so a damaged-substructure def only
+reads on cells with no floor at all.
+
+## ⭐ The 1.6 per-cell COLOUR grid
+
+`jawa/set_terrain_layer layer='color'` with any `ColorDef`. 3,894 cells, 0 refused.
+`TerrainGrid.ColorAt` is read by `SectionLayer_Terrain` and handed to `GetMaterial`.
+
+* 🔴 **It MULTIPLIES, so it can only darken.** Pick the lightest tile you might want
+  and tint down from it; nothing takes a dark tile back up.
+* 🔴 **It cannot be CLEARED.** The tool demands a ColorDef and `SetTerrainColor(c, null)`
+  is unreachable, so the nearest thing to an eraser is
+  `guy762_StructureColor_T3M4Silver` (235,255,255), a 92% multiply.
+* ⚠️ **One rect per call** — no batch form. A ship deck is ~1,250 calls, about a minute.
+* ⚠️ **The live result is more saturated than a plain-multiply model predicts.** Renders
+  built that way are composition studies, not colour proofs.
+* 🔑 **Value, not hue, is what separates a build from its ground.** A brown ship on tan
+  desert disappeared twice before the ramp moved down into the 90-130 band.
+
+## Rendering a map offline that looks like the game
+
+`SectionLayer_Terrain.Regenerate` sets verts, colors and tris and **no UVs**, so the
+terrain shader samples in WORLD space and the on-screen repeat belongs to the shader,
+not to the 1024×1024 file. ⇒ **Do not render from the source PNG** — cut swatches from
+a live capture instead. Measured by autocorrelation: every palette terrain repeats on
+a 1-cell lattice with a 4-cell super-period, so a 4-cell swatch tiles seamlessly.
+Worked example: `src/RimMandrake/Utils/gravship_floor_v2.py`.

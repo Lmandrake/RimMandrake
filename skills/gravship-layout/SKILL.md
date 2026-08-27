@@ -247,6 +247,34 @@ and 1 `VHGE_GasGeyser` swept in from the original map. The script skips them.
 geometry: the engine reads `Gravship range: 0` and every thruster reads
 *"Not connected to grav engine"* until it is powered, fuelled and inspected.
 
+### Dressing a printed ship — floors, signage, damage
+
+`print_gravship.py` puts the geometry down. Three more tools carry it from geometry
+to something that reads as a thousand-year-old ship, and they are all offline-first:
+
+| tool | does |
+|---|---|
+| `src/RimMandrake/Utils/gravship_floor_v2.py` | assigns a TerrainDef and a ColorDef to every deck cell from a seeded noise field, renders the result offline using swatches cut from live captures, and `--emit-plan` writes the whole scheme in MAP coordinates |
+| `src/RimMandrake/Utils/apply_floor_plan.py` | lays that plan on the live map — holes, floors, per-cell colour |
+| `src/RimMandrake/Utils/apply_wall_stuff.py` | colours the HULL with material rather than paint |
+| `src/RimMandrake/Utils/ship_dress.py` | Aurebesh word signage, landing pads, gutted bays, design notes as letters |
+
+🔑 **Three rules that came out of doing it**, each measured and each expensive:
+
+* **Cut the holes BEFORE painting the floors.** Painting writes an `under` layer and
+  that is exactly what the foundation operations refuse. Full ordering in
+  `skills/rimbridge/references/map-authoring.md`.
+* **Colour the hull with STUFF, not paint.** The dev `T: Set Color` tool runs out at
+  roughly 380 invocations per GAME session and no reconnect clears it. `GravshipHull`
+  takes any Metallic stuff and stuff carries colour, so one `jawa/build_batch` per
+  material does permanently what 2,300 dev-tool calls could not. ⚠️ Rebuilding a wall
+  cell wipes the conduits sharing it — re-place them from the layout, which is the
+  authority for where they were.
+* **The floor is the ship's autobiography, so label it.** Outer Rim ships 36 Aurebesh
+  word decals — 2×1, `Standable`, `altitudeLayer Floor`, so they lie on the deck and
+  pawns walk over them. Naming each bay for what it USED to be, and leaving the sign
+  standing after the bay is gutted, says more about the ship than any amount of rust.
+
 ### The mid-game import button does not exist yet, and it is ours to build
 
 ⚠️ **Overtaken by the section above — read that first.** This route was never

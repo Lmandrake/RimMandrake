@@ -265,3 +265,70 @@ too, which no theory about my spawns could explain.
 ✅ **Use `rimworld/list_colonists` for a pawn's current job** — colonists only, but it is populated.
 `jawa/list_pawns` remains the right tool for the census it advertises (every pawn, all factions,
 which `list_colonists` cannot do); just never for `job`.
+
+## 🔴 A stale `Verse.FloatMenu` blocks every debug tool after it — and reports success
+
+Measured 2026-08-27 over five runs of the same 772-wall job that painted 759, then
+448, then 0, then 384, then 384. **The runs differed in nothing that mattered.** One
+wall whose colour menu was left open absorbs input for every wall after it, and
+`execute_debug_action` answers `success: true` the whole way down.
+
+⛔ **`rimworld/get_context_menu_options` cannot see this window.** A `Verse.FloatMenu`
+is not a "debug context menu" — the call answers *"No debug context menu is
+available."* whether the menu is open or absent, so it reads as "the tool never
+fired" in both cases. **Detect it through `rimworld/get_ui_layout` and look for a
+surface of type `Verse.FloatMenu`.**
+
+```python
+def float_menu(rb):
+    for s in rb.call("rimworld/get_ui_layout", {}).get("surfaces", []):
+        if s.get("type") == "Verse.FloatMenu": return s
+```
+
+🔑 **Assert CLOSED before you open, not just open before you click.** A menu still
+standing is the PREVIOUS target's, and clicking it applies the change to the wrong
+thing while reporting success.
+
+⇒ **Generalises to every UI-driven loop on this bridge.** When an automation that
+worked starts missing partway through and never recovers, suspect a leftover modal
+before you suspect the tool, the camera or the target.
+
+## 🔴 A debug tool has a per-GAME-SESSION budget. ~380 for `T: Set Color`
+
+Same session, same job, driven three ways: 250 + 134 + 0 across **three fresh
+PROCESSES**. Reconnecting does not clear it; only the game does. After the budget the
+menu never opens again and `active` still reads `true` on the node.
+
+⇒ **Never plan a job of thousands of debug-tool invocations.** Find the non-debug
+route first, and if there is none, budget the count and verify by looking.
+
+## 🔴 `DebugToolsGeneral.SetColor` reads `UI.MouseCell()`, not a parameter
+
+`Verse/DebugToolsGeneral.cs:549`. The x/z you pass `execute_debug_action` only places
+the virtual mouse; the tool then colours **every Thing in that cell**, conduits
+included. Two consequences: a cell must be reachable by the mouse, and you cannot
+point this at a cell holding something you care about.
+
+✅ **The way round paint entirely: colour with STUFF.** `GravshipHull` takes any
+Metallic stuff and stuff carries colour — `MA_MegaBone` reads warm grey, `DinoChitin`
+rich brown, `Bioferrite` dark plum, `KOTOR_AlloyBronzium` brass. One `jawa/build_batch`
+per material, permanent, survives a reload, no dev tool. ⚠️ Rebuilding a cell WIPES
+what shares it, so re-place the conduits from the layout afterwards.
+
+## 🔴 A ZONE CANNOT CARRY TEXT — `createZone` ignores the label you give it
+
+`jawa/map_zones {action:createZone, zone:"MY NOTE"}` returns `created: "Stockpile
+zone 1"`. The label parameter is only read by `paintZone`/`deleteZone`, to FIND an
+existing zone. So the "name a zone to write on the map" idea does not work.
+
+✅ **What does carry readable text with a camera target is `jawa/send_letter`** —
+`{label, text, x, z, letterDef}`. Click the letter and the camera jumps to what the
+note is about. That is the only route to durable prose inside the game.
+⚠️ It declares `x`/`z`, **not** `targetX`/`targetZ`.
+
+## ⚠️ `jawa/list_things` truncates at `limit`, and the truncation reads as absence
+
+Asked for a 4,034-cell rect with `limit: 1500` on a ship holding ~2,340 things, got
+rows that did not include the decals I had just placed — and I concluded the placement
+had silently failed. It had not; `get_cell_info` showed them. **Read `countMatched`,
+never `len(things)`, and filter by `defName` when hunting for one kind.**
