@@ -1,0 +1,111 @@
+{
+ "patch": {
+  "A1": "guy762_FloorTiles_DivotedTile_rust",
+  "A2": "AM_Tile_Scavenger",
+  "A3": "GR_PavedTile",
+  "A4": "GR_RustedMechTile",
+  "B1": "AG_RustedTile",
+  "B2": "UCScaffoldTile",
+  "B3": "guy762_FloorTiles_ImpBaseTile",
+  "B4": "guy762_FloorTiles_XGrate_yellow",
+  "C1": "OuterRim_BoltedFloor_Steel",
+  "C2": "guy762_FloorTiles_DoomgiverFoorMetal_dark",
+  "C3": "guy762_FloorTiles_XGrate_iron",
+  "C4": "guy762_FloorTiles_DivotedTile_iron",
+  "D2": "VQE_AncientHullTile",
+  "D3": "Plates_Spikecore",
+  "D4": "MUS_SpaceBase_MetalFlooring"
+ },
+ "shots": {
+  "A1": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_A1.png",
+   94,
+   169,
+   166
+  ],
+  "A2": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_A2.png",
+   111,
+   183,
+   157
+  ],
+  "A3": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_A3.png",
+   141,
+   183,
+   150
+  ],
+  "A4": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_A4.png",
+   160,
+   169,
+   166
+  ],
+  "B1": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_B1.png",
+   91,
+   137,
+   160
+  ],
+  "B2": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_B2.png",
+   122,
+   151,
+   41
+  ],
+  "B3": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_B3.png",
+   127,
+   151,
+   80
+  ],
+  "B4": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_B4.png",
+   161,
+   148,
+   127
+  ],
+  "C1": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_C1.png",
+   98,
+   119,
+   91
+  ],
+  "C2": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_C2.png",
+   119,
+   111,
+   169
+  ],
+  "C3": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_C3.png",
+   132,
+   111,
+   169
+  ],
+  "C4": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_C4.png",
+   152,
+   119,
+   117
+  ],
+  "D2": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_D2.png",
+   115,
+   65,
+   169
+  ],
+  "D3": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_D3.png",
+   137,
+   65,
+   169
+  ],
+  "D4": [
+   "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patch_D4.png",
+   155,
+   86,
+   105
+  ]
+ }
+}
