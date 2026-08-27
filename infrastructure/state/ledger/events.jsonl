@@ -2303,3 +2303,4 @@
 {"seat":"BUILD","event":"start","id":"BRIDGE_TOOLS_HARD_BLOCK_1","ts":"2026-08-27T02:32:10Z"}
 {"seat":"BUILD","event":"close","id":"BRIDGE_TOOLS_HARD_BLOCK_1","sha":"PENDING","ts":"2026-08-27T02:32:11Z"}
 {"seat":"BUILD","event":"file","id":"CAST_NAMES_UNSPAWNABLE_ANIMALS_1","title":"157 animals in the authored cast are registered and can never spawn","kind":"task","target":"v1","needs":"offline","caused_by":"BIOME_CAST_COMMONALITIES_ZEROED_1","for":"DECIDE","ts":"2026-08-27T02:43:33Z"}
+{"seat":"BUILD","event":"file","id":"DOWN_WINDOW_ASSEMBLY_DEPLOY_1","title":"Deploy the companion and the def dumper in the next down window","kind":"task","target":"v1","needs":"deploy","for":"BUILD","ts":"2026-08-27T02:44:45Z"}
