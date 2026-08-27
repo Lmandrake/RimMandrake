@@ -43,3 +43,29 @@ swatch tiles seamlessly and looks exactly like the game.
 over scaffold tile reads `73 66 68` against ancient hull's `71 71 71`. But it is a
 MULTIPLY — every ColorDef darkens and none can lighten, so pick the lightest tile you
 might want and tint down from it.
+
+## Corrosion Halo, laid on the live ship — 2026-08-27
+
+Chosen by the owner. `plan_corrosion_halo.json` is the whole scheme in MAP coordinates,
+emitted by `gravship_floor_v2.py --emit-plan`, applied by
+`src/RimMandrake/Utils/apply_floor_plan.py` and `apply_wall_colors.py`.
+
+🔑 **The one thing that decides the order:** `SetFoundation`-adjacent operations refuse a
+cell carrying an UNDER layer, and painting a floor WRITES one. So holes are cut first —
+`removeTop` pops the natural terrain back up and nulls `under`, then the foundation
+strips — and only then are the floors painted.
+
+🔴 **There is no bridge tool for building colour, and the dev tool reads the MOUSE.**
+`Verse/DebugToolsGeneral.cs:549` takes its cell from `UI.MouseCell()`, not from a
+parameter, and rebuilds its FloatMenu every time — so the button's targetId can never be
+cached. Three calls per wall: execute (which places the virtual mouse), read the menu,
+click. ~2,300 calls for this hull. ⚠️ `SetColor_All` colours **every** thing in the cell,
+conduits included.
+
+⚠️ **`layer='color'` cannot CLEAR a colour** — the tool requires a ColorDef and
+`SetTerrainColor(c, null)` is unreachable. The nearest thing to an eraser is
+`guy762_StructureColor_T3M4Silver` (235,255,255), a 92% multiply.
+
+⚠️ **The live result is hotter than the render.** The offline renders model the colour
+grid as a plain multiply over the tile; in game the oranges come out markedly more
+saturated. Treat the renders as composition studies, not colour proofs.

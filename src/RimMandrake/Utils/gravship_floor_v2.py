@@ -468,6 +468,9 @@ def main():
     ap.add_argument("--cover", type=float, default=0.17)
     ap.add_argument("--ppc", type=float, default=9.0)
     ap.add_argument("--detail-ppc", type=float, default=26.0)
+    ap.add_argument("--emit-plan", metavar="SLUG",
+                    help="write <out>/plan_<SLUG>.json in MAP coordinates instead of only rendering")
+    ap.add_argument("--offset", default="82,58", help="layout->map offset 'x,z'")
     args = ap.parse_args()
 
     os.makedirs(args.out, exist_ok=True)
@@ -539,6 +542,41 @@ def main():
                          "file": "%s.png" % slug, "details": dets,
                          "colors": used.most_common()})
         print("%-16s colours: %s" % (slug, ", ".join("%s(%d)" % kv for kv in used.most_common(6))))
+
+    if args.emit_plan:
+        ox, oz = [int(v) for v in args.offset.split(",")]
+        fn = dict((sl, f) for sl, _, _, f in TREATMENTS)[args.emit_plan]
+        ftint, wtint = fn(ship, ctx)
+        def M(c):
+            return [c[0] + ox, c[1] + oz]
+        floors = collections.defaultdict(list)
+        for c, k in assign.items():
+            if k != "HOLE":
+                floors[PALETTE[k][0]].append(M(c))
+        fcol = collections.defaultdict(list)
+        for c, col in ftint.items():
+            if assign.get(c) != "HOLE" and col:
+                fcol[col].append(M(c))
+        wcol = collections.defaultdict(list)
+        for c, col in wtint.items():
+            if col:
+                wcol[col].append(M(c))
+        plan = {
+            "treatment": args.emit_plan, "offset": [ox, oz],
+            "holes": [M(c) for c in sorted(holes)],
+            "floors": {k: v for k, v in floors.items()},
+            "floorColor": {k: v for k, v in fcol.items()},
+            "wallColor": {k: v for k, v in wcol.items()},
+            "thrusters": {"remove_east": [M(c) for c in sorted(
+                              (x, z) for (x, z) in [(85, 90), (85, 91), (85, 93), (85, 94)])],
+                          "add_west": [M(c) for c in sorted(ship.thrusters)]},
+            "counts": {"holes": len(holes), "walls": len(ship.walls),
+                       "deck": len(ship.deck)},
+        }
+        with open(os.path.join(args.out, "plan_%s.json" % args.emit_plan), "w") as f:
+            json.dump(plan, f)
+        print("plan: %d hole cells, %d floor defs, %d floor colours, %d wall colours"
+              % (len(plan["holes"]), len(floors), len(fcol), len(wcol)))
 
     tiles = collections.Counter(assign.values())
     json.dump({"treatments": manifest,
