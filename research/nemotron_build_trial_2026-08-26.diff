@@ -1,0 +1,34 @@
+diff --git a/src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml b/src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml
+index dc3264a3..9504d5bb 100644
+--- a/src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml
++++ b/src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml
+@@ -353,9 +353,9 @@
+           <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="100"]/options</xpath>
+           <value>
+             <options>
+-                    <Jawa_Blackstar_Grunt>10</Jawa_Blackstar_Grunt>
+-                    <Jawa_Blackstar_Heavy>5</Jawa_Blackstar_Heavy>
+-                    <Jawa_Blackstar_Specialist>3</Jawa_Blackstar_Specialist>
++                    <Jawa_Blackstar_Grunt>5</Jawa_Blackstar_Grunt>
++                    <Jawa_Blackstar_Heavy>2</Jawa_Blackstar_Heavy>
++                    <Jawa_Blackstar_Specialist>1.5</Jawa_Blackstar_Specialist>
+             </options>
+           </value>
+         </li>
+diff --git a/src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml b/src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml
+index de5deb2c..5fee3d8d 100644
+--- a/src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml
++++ b/src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml
+@@ -169,9 +169,9 @@
+                 <kindDef>Combat</kindDef>
+                 <commonality>100</commonality>
+                 <options>
+-                    <Jawa_DeepDesert_Grunt>10</Jawa_DeepDesert_Grunt>
+-                    <Jawa_DeepDesert_Heavy>5</Jawa_DeepDesert_Heavy>
+-                    <Jawa_DeepDesert_Specialist>6</Jawa_DeepDesert_Specialist>
++                    <Jawa_DeepDesert_Grunt>5</Jawa_DeepDesert_Grunt>
++                    <Jawa_DeepDesert_Heavy>2</Jawa_DeepDesert_Heavy>
++                    <Jawa_DeepDesert_Specialist>1.5</Jawa_DeepDesert_Specialist>
+                 </options>
+               </li>
+               <li>

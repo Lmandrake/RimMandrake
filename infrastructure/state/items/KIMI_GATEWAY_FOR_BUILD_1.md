@@ -209,6 +209,49 @@ behaviour when a hook REFUSES a call — none of these runs tripped one.
 ⚠️ **The criteria below say "all 11 hooks". There are 14** (`.claude/settings.json`,
 counted 2026-08-26). Do not re-derive the number from that line.
 
+### 🔴 Measured 2026-08-26 by REP — THE WRITE TRIAL. super-120b silently regressed working code
+
+The decisive test: hand nemotron a real, ready BUILD item — `AUTHORED_KINDS_MUST_FIELD_1`
+— with **Write and Edit enabled**, in a throwaway `git worktree` so the repo could not be
+harmed. Grader: `src/RimMandrake/Utils/grade_authored_kinds_trial.py`, 14 checks drawn from
+the item's own criteria and its three stop signs, **calibrated to score the shipped
+implementation 14/14 before it judged anything**.
+
+**What it did.** 20 turns, **11.5 minutes**, then reported:
+*"DeepDesertTribes.xml, BlackstarCompany.xml - 2 pawnGroupMakers entries rewritten"*.
+
+**What actually happened.** The item was **already implemented at HEAD** — both files carry
+`AUTHORED_KINDS_MUST_FIELD_1` in their own section headers. Nemotron did not notice. Told to
+"copy the pattern GalacticEmpire.xml already ships", it copied the **numbers** too, and
+overwrote the deliberately-tuned combat weights with Empire's:
+
+    Jawa_DeepDesert_Grunt  10 -> 5     Jawa_Blackstar_Grunt  10 -> 5
+    Jawa_DeepDesert_Heavy   5 -> 2     Jawa_Blackstar_Heavy   5 -> 2
+    Jawa_DeepDesert_Spec    6 -> 1.5   Jawa_Blackstar_Spec    3 -> 1.5
+
+Twelve lines, no structural damage, every weight a documented tactical choice
+("each group's own tactical character"), all of it flattened to one faction's balance.
+Diff: `research/nemotron_build_trial_2026-08-26.diff`.
+
+🔴 **AND THE GRADER PASSED IT 14/14.** The XML parses, no `Inherit="False"` regression,
+no vanilla kinds in a combat group, non-combat groups untouched, both rosters still
+fielded. **Every structural criterion held while the balance was quietly destroyed.**
+⚠️ This is [[verify-what-you-displaced]] in a new costume: a per-criterion check reports
+100% and the loss is invisible because nothing it measures went down. Only `git diff`
+found it.
+
+⇒ **Track B verdict: not fit to run BUILD.** It cannot tell "implement this" from
+"this is already implemented", it treats an example's constants as part of its shape, and
+it reports the regression as completed work in a sentence that reads exactly like success.
+⚠️ A cheap model behind a gateway needs a **diff gate**, not a criteria checklist —
+and something must answer "was this already done" before the model is ever handed the ticket.
+
+### 🔑 Queue finding, incidental but real
+`AUTHORED_KINDS_MUST_FIELD_1` sits in `BUILD.md` as **state: ready** with its XML fully
+written. Its own `verify` needs the bridge (spawn raids from three factions). ⇒ It is
+**implemented, awaiting in-game verification** — not ready work. Any seat that picks it up
+cold does what nemotron did. That is REP's to route, not to close.
+
 ## criteria
 
 - LiteLLM running on `localhost:4000`, version pinned and recorded, **not** 1.82.7/1.82.8.
