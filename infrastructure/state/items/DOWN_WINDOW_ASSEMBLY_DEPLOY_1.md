@@ -43,3 +43,21 @@ not found".
 - [ ] Both assemblies byte-identical to the repo afterwards.
 - [ ] `jawa/map_info` answers, and returns a tile id.
 - [ ] No `[Tool]` name lost — `build.py` refuses on removal and that refusal is not overridden.
+
+## ✅ PRE-FLIGHTED 2026-08-27, BUILD — the down window is one command, not a debug session
+
+`python.exe src/RimMandrake/bridgetools/build.py --gm` run offline with the game UP (a build is
+not a deploy): **compiles clean, 5.2 s**, bundle ships only `JawaBench.BridgeTools.dll`
+(2,217,984 B), GM tools present. No `[Tool]` removed, so `build.py`'s removal guard does not fire.
+
+```
+game copy : 70b3b1173918        <- unchanged, as this item recorded
+this build: 845925abb370
+state     : differs -- built from a DIFFERENT COMMIT (expected after any commit)
+```
+
+🔑 **`differs` here is the commit stamp, not a code change** — `build.py` says so itself and the
+build is deterministic per commit. Nothing new is owed before the window; run the four commands
+above as written.
+⚠️ **Run it under `python.exe`, not WSL `python3`.** `build.py` refuses under WSL and says why:
+`dotnet.exe` cannot accept a `/mnt/...` project path.
