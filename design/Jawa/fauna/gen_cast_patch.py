@@ -431,8 +431,9 @@ def main():
     # this file does not write is a biome somebody else's defaults own.
     try:
         import csv as _csv, collections as _c
+        _root = os.path.normpath(os.path.join(FA, '..', '..', '..'))
         _t = _c.Counter(r['biome'] for r in _csv.DictReader(
-            open(os.path.join(ROOT, 'world', 'ASHKARR_WORLDMAP_tiles.csv'), encoding='utf-8')))
+            open(os.path.join(_root, 'world', 'ASHKARR_WORLDMAP_tiles.csv'), encoding='utf-8')))
         _ash = {b: n for b, n in _t.items() if b not in ('Ocean', 'Lake')}
         _missing = {b: n for b, n in _ash.items() if b not in byb}
         if _missing:

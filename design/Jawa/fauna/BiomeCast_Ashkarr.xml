@@ -10,6 +10,246 @@
        Each biome's wildAnimals is REPLACED. The shipped lists hold ~1024 records
        almost all at commonality 0. -->
 
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <GR_Catalope>1.0</GR_Catalope> <!-- catalope - tiny, dormant -->
+          <GR_Chickenlope>1.0</GR_Chickenlope> <!-- chickenlope - tiny, dormant -->
+          <GR_Needlechicken>1.0</GR_Needlechicken> <!-- needlechicken - tiny, dormant -->
+          <GR_Squirralope>1.0</GR_Squirralope> <!-- squirralope - tiny, dormant -->
+          <AA_BumbledroneQueen>0.7</AA_BumbledroneQueen> <!-- bumbledrone queen - small, dormant -->
+          <AA_OcularJelly>0.7</AA_OcularJelly> <!-- ocular jelly - small, ours -->
+          <BMT_Jellypot>0.7</BMT_Jellypot> <!-- jellypot - small, dormant -->
+          <BMT_PustuleHornetSpawned>0.7</BMT_PustuleHornetSpawned> <!-- pustule hornet - small, dormant -->
+          <BMT_Stoneback>0.7</BMT_Stoneback> <!-- stoneback - small, dormant -->
+          <Bogwing>0.7</Bogwing> <!-- bogwing - small, ours -->
+          <Meganeura>0.7</Meganeura> <!-- meganeura - small, ours -->
+          <!-- SKIPPED SWPotF_RaceDef_ysalamir - ysalamir: not a PawnKindDef; wildAnimals cannot resolve it -->
+          <BMT_Diggerpede>0.4</BMT_Diggerpede> <!-- diggerpede - med, dormant -->
+          <GR_Boombeetle>0.4</GR_Boombeetle> <!-- boombeetle - med, dormant -->
+          <GR_Boomcat>0.4</GR_Boomcat> <!-- boomcat - med, dormant -->
+          <GR_Boomsnake>0.4</GR_Boomsnake> <!-- boomsnake - med, dormant -->
+          <GR_Boomsquirrel>0.4</GR_Boomsquirrel> <!-- boomsquirrel - med, dormant -->
+          <JOE_Cephalope>0.4</JOE_Cephalope> <!-- cephalope - med, ours -->
+          <Toxalope>0.4</Toxalope> <!-- toxalope - med, dormant -->
+          <VQEA_Splicetoot>0.4</VQEA_Splicetoot> <!-- splicetoot - med, dormant -->
+          <Dinornis>0.315</Dinornis> <!-- dinornis - huge, ours -->
+          <GR_FleshGrowth>0.315</GR_FleshGrowth> <!-- flesh growth - huge, dormant -->
+          <Megasloth>0.315</Megasloth> <!-- megasloth - huge, ours -->
+          <BMT_CactusCrab>0.18</BMT_CactusCrab> <!-- cactus crab - large, dormant -->
+          <GR_Boomabear>0.18</GR_Boomabear> <!-- boomabear - large, dormant -->
+          <GR_Boomffalo>0.18</GR_Boomffalo> <!-- boomffalo - large, dormant -->
+          <GR_Manwolf>0.18</GR_Manwolf> <!-- manwolf - large, dormant -->
+          <GR_ParagonBoomalope>0.18</GR_ParagonBoomalope> <!-- boomalope paragon - large, dormant -->
+          <AA_MatureFleshbeast>0.054</AA_MatureFleshbeast> <!-- mature fleshbeast - SUPER, ours -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <HermitCrab>1.0</HermitCrab> <!-- hermit crab - tiny, dormant -->
+          <Scurrier>1.0</Scurrier> <!-- scurrier - tiny, ours -->
+          <Tooke>1.0</Tooke> <!-- tooke - tiny, ours -->
+          <VFEI2_Boomtick>1.0</VFEI2_Boomtick> <!-- boomtick - tiny, dormant -->
+          <BMT_BloodropMoth>0.7</BMT_BloodropMoth> <!-- bloodrop moth - small, ours -->
+          <BMT_Glowtail>0.7</BMT_Glowtail> <!-- glowtail - small, dormant -->
+          <Locust>0.7</Locust> <!-- locust - small, dormant -->
+          <!-- SKIPPED SWPotF_RaceDef_ysalamir - ysalamir: not a PawnKindDef; wildAnimals cannot resolve it -->
+          <Sketto>0.7</Sketto> <!-- sketto - small, ours -->
+          <Stintaril>0.7</Stintaril> <!-- stintaril - small, foreign -->
+          <StoneCrab>0.7</StoneCrab> <!-- stone crab - small, dormant -->
+          <VFEI2_Megathrips>0.7</VFEI2_Megathrips> <!-- megathrips - small, dormant -->
+          <BMT_ColonyPustuleHornetQueen>0.4</BMT_ColonyPustuleHornetQueen> <!-- pustule queen - med, dormant -->
+          <BMT_PustuleHornetQueen>0.4</BMT_PustuleHornetQueen> <!-- pustule queen - med, dormant -->
+          <Cannok>0.4</Cannok> <!-- cannok - med, ours -->
+          <GR_Manscarab>0.4</GR_Manscarab> <!-- manscarab - med, dormant -->
+          <VFEI2_Fuelmite>0.4</VFEI2_Fuelmite> <!-- fuelmite - med, dormant -->
+          <VFEI2_Hellbeetle>0.4</VFEI2_Hellbeetle> <!-- hellbeetle - med, dormant -->
+          <VFEI2_Macrofly>0.4</VFEI2_Macrofly> <!-- macrofly - med, dormant -->
+          <VFEI2_Megawasp>0.4</VFEI2_Megawasp> <!-- megawasp - med, dormant -->
+          <Falumpaset>0.35</Falumpaset> <!-- falumpaset - huge, ours -->
+          <KwazelMaw>0.35</KwazelMaw> <!-- kwazel maw - huge, ours -->
+          <VFEI2_Queen>0.35</VFEI2_Queen> <!-- insectoid princess - huge, dormant -->
+          <WarWyrm>0.2</WarWyrm> <!-- war wyrm - SUPER, foreign -->
+          <AA_Dunealisk>0.18</AA_Dunealisk> <!-- dunealisk - large, ours -->
+          <Devourers>0.18</Devourers> <!-- devourer - large, ours -->
+          <GR_ParagonInsectoid>0.18</GR_ParagonInsectoid> <!-- insectoid paragon - large, dormant -->
+          <VFEI2_Acidspitter>0.18</VFEI2_Acidspitter> <!-- acidspitter - large, dormant -->
+          <VFEI2_Gigalocust>0.18</VFEI2_Gigalocust> <!-- gigalocust - large, dormant -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
+    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <BMT_Megakrill>1.0</BMT_Megakrill> <!-- megakrill - tiny, dormant -->
+          <BMT_Varmot>1.0</BMT_Varmot> <!-- varmot - tiny, dormant -->
+          <GR_Rabbitchicken>1.0</GR_Rabbitchicken> <!-- rabbitchicken - tiny, dormant -->
+          <Leaftail>1.0</Leaftail> <!-- leaf-tail - tiny, ours -->
+          <AA_FissionMouseSecond>0.7</AA_FissionMouseSecond> <!-- fission mouse, second generation - small, dormant -->
+          <AA_FissionMouseThird>0.7</AA_FissionMouseThird> <!-- fission mouse, third generation - small, dormant -->
+          <AA_Murkling>0.7</AA_Murkling> <!-- murkling - small, ours -->
+          <AM_UnshackledDryad>0.7</AM_UnshackledDryad> <!-- unshackled dryad - small, dormant -->
+          <BMT_ChemSnail>0.7</BMT_ChemSnail> <!-- chem snail - small, ours -->
+          <BMT_MutagenicNorphea>0.7</BMT_MutagenicNorphea> <!-- mutagenic norphea - small, dormant -->
+          <GR_Doedicoon>0.7</GR_Doedicoon> <!-- doedicoon - small, dormant -->
+          <WasteRat>0.7</WasteRat> <!-- waste rat - small, dormant -->
+          <BMT_SilverSheep>0.4</BMT_SilverSheep> <!-- silver sheep - med, dormant -->
+          <BMT_Snowstalker>0.4</BMT_Snowstalker> <!-- snowstalker - med, dormant -->
+          <FeralNerf>0.4</FeralNerf> <!-- feral nerf - med, ours -->
+          <GR_Thrumborat>0.4</GR_Thrumborat> <!-- thrumborat - med, dormant -->
+          <SW_Electricgryllotalpa>0.4</SW_Electricgryllotalpa> <!-- Electricgryllotalpa - med, dormant -->
+          <Strill>0.4</Strill> <!-- strill - med, ours -->
+          <VQE_IceCrawler>0.4</VQE_IceCrawler> <!-- ice crawler - med, dormant -->
+          <Wolf_Great>0.4</Wolf_Great> <!-- greatwolf - med, foreign -->
+          <BMT_BeardedYak>0.18</BMT_BeardedYak> <!-- bearded yak - large, dormant -->
+          <Bursa>0.18</Bursa> <!-- bursa - large, ours -->
+          <DA_BeardedTroll>0.18</DA_BeardedTroll> <!-- bearded troll - large, foreign -->
+          <GR_ParagonMuffalo>0.18</GR_ParagonMuffalo> <!-- muffalo paragon - large, dormant -->
+          <Grazer>0.18</Grazer> <!-- grazer - large, dormant -->
+          <GR_Thrumbalope>0.0663</GR_Thrumbalope> <!-- thrumbalope - huge, dormant -->
+          <GR_Thrumbochicken>0.0663</GR_Thrumbochicken> <!-- thrumbochicken - huge, dormant -->
+          <HiveQueen>0.0663</HiveQueen> <!-- hive queen - huge, dormant -->
+          <AA_Gallatross>0.0114</AA_Gallatross> <!-- gallatross - SUPER, dormant -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.horrors">
+    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <AA_Skyeel>1.0</AA_Skyeel> <!-- arcturan sky eel - tiny, dormant -->
+          <GR_Spidersnake>1.0</GR_Spidersnake> <!-- spidersnake - tiny, dormant -->
+          <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
+          <Neebray>1.0</Neebray> <!-- neebray - tiny, ours -->
+          <AA_AuroraSylph>0.7</AA_AuroraSylph> <!-- Aurora sylph - small, ours -->
+          <AA_CrystalMit>0.7</AA_CrystalMit> <!-- crystalmit - small, ours -->
+          <AA_GreenGoo>0.7</AA_GreenGoo> <!-- green goo - small, ours -->
+          <AA_MegaLouse>0.7</AA_MegaLouse> <!-- megalouse - small, ours -->
+          <AA_PebbleMit>0.7</AA_PebbleMit> <!-- pebblemit - small, ours -->
+          <GR_Chickenlizard>0.7</GR_Chickenlizard> <!-- chickenlizard - small, dormant -->
+          <Mynock>0.7</Mynock> <!-- mynock - small, ours -->
+          <WasteRat>0.7</WasteRat> <!-- waste rat - small, dormant -->
+          <AA_FungalHusk>0.4</AA_FungalHusk> <!-- fungal husk - med, dormant -->
+          <BMT_CrystalFairyMole>0.4</BMT_CrystalFairyMole> <!-- crystal fairy mole - med, ours -->
+          <GR_Bearalope>0.4</GR_Bearalope> <!-- bearalope - med, dormant -->
+          <GR_Bearffalo>0.4</GR_Bearffalo> <!-- bearffalo - med, dormant -->
+          <GR_Boomsnake>0.4</GR_Boomsnake> <!-- boomsnake - med, dormant -->
+          <GR_Molebear>0.4</GR_Molebear> <!-- molebear - med, dormant -->
+          <GR_Muffalorat>0.4</GR_Muffalorat> <!-- muffalorat - med, dormant -->
+          <GR_Snakecat>0.4</GR_Snakecat> <!-- snakecat - med, dormant -->
+          <BMT_FrostweaverSpider>0.18</BMT_FrostweaverSpider> <!-- frostweaver - large, dormant -->
+          <FeralGrazer>0.18</FeralGrazer> <!-- feral grazer - large, ours -->
+          <MA_Deermoss>0.18</MA_Deermoss> <!-- deermoss - large, foreign -->
+          <Maalraas>0.18</Maalraas> <!-- maalraas - large, ours -->
+          <Muffalo>0.18</Muffalo> <!-- muffalo - large, ours -->
+          <AA_BoulderMit>0.05</AA_BoulderMit> <!-- bouldermit - huge, ours -->
+          <DA_NorthernDrog>0.05</DA_NorthernDrog> <!-- northern drog - huge, foreign -->
+          <MA_Worhin>0.05</MA_Worhin> <!-- worhin - huge, ours -->
+          <AA_EngorgedTentacularAberration>0.008</AA_EngorgedTentacularAberration> <!-- engorged tentacular aberration - SUPER, dormant -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes">
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
+          <SW_Electrictick>1.0</SW_Electrictick> <!-- Electrictick - tiny, dormant -->
+          <VFEI2_BlackSwarmling>1.0</VFEI2_BlackSwarmling> <!-- black swarmlings - tiny, dormant -->
+          <VFEI2_Swarmling>1.0</VFEI2_Swarmling> <!-- swarmlings - tiny, dormant -->
+          <AA_EmpressButterfly>0.7</AA_EmpressButterfly> <!-- Empress butterfly - small, foreign -->
+          <AA_Skiphound>0.7</AA_Skiphound> <!-- skiphound - small, substituted -->
+          <AM_Dryad_Tumorous>0.7</AM_Dryad_Tumorous> <!-- tumorous dryad - small, dormant -->
+          <BMT_BloodletterPetrel>0.7</BMT_BloodletterPetrel> <!-- bloodletter petrel - small, dormant -->
+          <BMT_FleeceSpider>0.7</BMT_FleeceSpider> <!-- fleece spider - small, dormant -->
+          <Borcatu>0.7</Borcatu> <!-- Borcatu - small, ours -->
+          <GR_Beetlefleet>0.7</GR_Beetlefleet> <!-- beetlefleet - small, dormant -->
+          <GR_ParagonRat>0.7</GR_ParagonRat> <!-- rodent paragon - small, dormant -->
+          <AA_Terramorph>0.4</AA_Terramorph> <!-- terramorph - med, ours -->
+          <BMT_Maligoat>0.4</BMT_Maligoat> <!-- maligoat - med, dormant -->
+          <DA_DwarvenMuffton>0.4</DA_DwarvenMuffton> <!-- dwarven muffton - med, foreign -->
+          <DA_RedhornedLarpah>0.4</DA_RedhornedLarpah> <!-- red-horned larpah - med, ours -->
+          <GR_Bearalope>0.4</GR_Bearalope> <!-- bearalope - med, dormant -->
+          <GR_Molebear>0.4</GR_Molebear> <!-- molebear - med, dormant -->
+          <GR_Spidercat>0.4</GR_Spidercat> <!-- spidercat - med, dormant -->
+          <GR_Wolfscarab>0.4</GR_Wolfscarab> <!-- wolfscarab - med, dormant -->
+          <Aiwha>0.35</Aiwha> <!-- aiwha - huge, foreign -->
+          <GR_Bearhorse>0.35</GR_Bearhorse> <!-- bearhorse - huge, dormant -->
+          <GR_Bearscarab>0.35</GR_Bearscarab> <!-- bearscarab - huge, dormant -->
+          <AA_Atispec>0.2</AA_Atispec> <!-- atispec - SUPER, dormant -->
+          <AA_ColossalAerofleet>0.18</AA_ColossalAerofleet> <!-- colossal aerofleet - large, dormant -->
+          <DA_Barog>0.18</DA_Barog> <!-- barogoth - large, foreign -->
+          <GR_Bearcat>0.18</GR_Bearcat> <!-- bearcat - large, dormant -->
+          <GR_Spiderhorse>0.18</GR_Spiderhorse> <!-- spiderhorse - large, dormant -->
+          <GR_Thrumbocat>0.18</GR_Thrumbocat> <!-- thrumbocat - large, dormant -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
+    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <AA_Skyeel>1.0</AA_Skyeel> <!-- arcturan sky eel - tiny, dormant -->
+          <BMT_Megakrill>1.0</BMT_Megakrill> <!-- megakrill - tiny, dormant -->
+          <GR_Spidersnake>1.0</GR_Spidersnake> <!-- spidersnake - tiny, dormant -->
+          <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
+          <AA_BedBug>0.7</AA_BedBug> <!-- bedbug - small, ours -->
+          <AA_CrystalMit>0.7</AA_CrystalMit> <!-- crystalmit - small, ours -->
+          <AA_Frostmite>0.7</AA_Frostmite> <!-- frostmite - small, ours -->
+          <AA_GreenGoo>0.7</AA_GreenGoo> <!-- green goo - small, ours -->
+          <AA_RedGoo>0.7</AA_RedGoo> <!-- red goo - small, ours -->
+          <BMT_FreezerFrog>0.7</BMT_FreezerFrog> <!-- freezer frog - small, dormant -->
+          <GR_ParagonIguana>0.7</GR_ParagonIguana> <!-- reptile paragon - small, dormant -->
+          <Mynock>0.7</Mynock> <!-- mynock - small, ours -->
+          <AA_Darkbeast>0.4</AA_Darkbeast> <!-- darkbeast - med, ours -->
+          <AA_FrostAve>0.4</AA_FrostAve> <!-- frost ave - med, foreign -->
+          <AA_Frostling>0.4</AA_Frostling> <!-- frostling - med, ours -->
+          <AA_WindBeast>0.4</AA_WindBeast> <!-- windbeast - med, ours -->
+          <GR_Muffalorat>0.4</GR_Muffalorat> <!-- muffalorat - med, dormant -->
+          <Krykna>0.4</Krykna> <!-- krykna - med, ours -->
+          <Rabbuck>0.4</Rabbuck> <!-- rabbuck - med, foreign -->
+          <VQE_Megamidge>0.4</VQE_Megamidge> <!-- megamidge - med, dormant -->
+          <AA_FrostboundBehemoth>0.252</AA_FrostboundBehemoth> <!-- frostbound behemoth - huge, ours -->
+          <BMT_HoarfrostMastodon>0.252</BMT_HoarfrostMastodon> <!-- hoarfrost mastodon - huge, dormant -->
+          <GR_ParagonThrumbo>0.252</GR_ParagonThrumbo> <!-- colossal paragon - huge, dormant -->
+          <AA_ArcticLion>0.18</AA_ArcticLion> <!-- arctic lion - large, ours -->
+          <AA_Blizzarisk>0.18</AA_Blizzarisk> <!-- blizzarisk - large, ours -->
+          <DA_SnowTaraal>0.18</DA_SnowTaraal> <!-- snow taraal - large, foreign -->
+          <Jakobeast>0.18</Jakobeast> <!-- jakobeast - large, ours -->
+          <Ling_Cockroach>0.18</Ling_Cockroach> <!-- Giant Cockroach - large, ours -->
+          <GR_Paraceramuffalo>0.0432</GR_Paraceramuffalo> <!-- paraceramuffalo - SUPER, dormant -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
     <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
@@ -28,19 +268,19 @@
           <BMT_PustuleHornet>0.7</BMT_PustuleHornet> <!-- pustule hornet - small, dormant -->
           <GR_Chickenlizard>0.7</GR_Chickenlizard> <!-- chickenlizard - small, dormant -->
           <GR_ParagonIguana>0.7</GR_ParagonIguana> <!-- reptile paragon - small, dormant -->
+          <AA_DuskProwler>0.4</AA_DuskProwler> <!-- dusk prowler - med, ours -->
           <AA_FungalHusk>0.4</AA_FungalHusk> <!-- fungal husk - med, dormant -->
+          <AA_NightAve>0.4</AA_NightAve> <!-- night ave - med, ours -->
+          <AA_Nightling>0.4</AA_Nightling> <!-- nightling - med, ours -->
           <BMT_Swarmcaller>0.4</BMT_Swarmcaller> <!-- swarmcaller - med, dormant -->
           <GR_Muffalopede>0.4</GR_Muffalopede> <!-- muffalopede - med, dormant -->
           <GR_Muffalorat>0.4</GR_Muffalorat> <!-- muffalorat - med, dormant -->
           <GR_Snakecat>0.4</GR_Snakecat> <!-- snakecat - med, dormant -->
-          <GR_Wolffalo>0.4</GR_Wolffalo> <!-- wolffalo - med, dormant -->
-          <GR_Wolfsnake>0.4</GR_Wolfsnake> <!-- wolfsnake - med, dormant -->
-          <GR_WoolyWolf>0.4</GR_WoolyWolf> <!-- wooly Wolf - med, dormant -->
-          <AA_FrostLynx>0.18</AA_FrostLynx> <!-- frost lynx - large, dormant -->
+          <AA_NightRam>0.18</AA_NightRam> <!-- nightram - large, ours -->
           <AA_Ravager>0.18</AA_Ravager> <!-- ravager - large, ours -->
-          <GR_Muffalocat>0.18</GR_Muffalocat> <!-- muffalocat - large, dormant -->
-          <Moose>0.18</Moose> <!-- moose - large, dormant -->
-          <Muskox>0.18</Muskox> <!-- muskox - large, dormant -->
+          <AA_ShadowCharger>0.18</AA_ShadowCharger> <!-- shadow charger - large, ours -->
+          <AA_Thunderox>0.18</AA_Thunderox> <!-- thunderox - large, ours -->
+          <BMT_BarbedPangolin>0.18</BMT_BarbedPangolin> <!-- barbed pangolin - large, dormant -->
           <GR_Elasmobearium>0.07</GR_Elasmobearium> <!-- elasmobearium - huge, dormant -->
           <GR_Thrumbospider>0.07</GR_Thrumbospider> <!-- thrumbospider - huge, dormant -->
           <MA_PlastemmothAlpha>0.07</MA_PlastemmothAlpha> <!-- Plastemmoth alpha - huge, dormant -->
@@ -50,161 +290,121 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <GR_Catalope>1.0</GR_Catalope> <!-- catalope - tiny, dormant -->
-          <GR_Chickenlope>1.0</GR_Chickenlope> <!-- chickenlope - tiny, dormant -->
-          <GR_Needlechicken>1.0</GR_Needlechicken> <!-- needlechicken - tiny, dormant -->
-          <GR_Squirralope>1.0</GR_Squirralope> <!-- squirralope - tiny, dormant -->
-          <AA_BumbledroneQueen>0.7</AA_BumbledroneQueen> <!-- bumbledrone queen - small, dormant -->
-          <BMT_Jellypot>0.7</BMT_Jellypot> <!-- jellypot - small, dormant -->
-          <BMT_PustuleHornetSpawned>0.7</BMT_PustuleHornetSpawned> <!-- pustule hornet - small, dormant -->
-          <BMT_Stoneback>0.7</BMT_Stoneback> <!-- stoneback - small, dormant -->
-          <GR_Boomachicken>0.7</GR_Boomachicken> <!-- boomachicken - small, dormant -->
-          <GR_Turkeyman>0.7</GR_Turkeyman> <!-- turkeyman - small, dormant -->
-          <!-- SKIPPED SWPotF_RaceDef_ysalamir - ysalamir: not a PawnKindDef; wildAnimals cannot resolve it -->
-          <SeaTurtle>0.7</SeaTurtle> <!-- sea turtle - small, dormant -->
-          <BMT_Diggerpede>0.4</BMT_Diggerpede> <!-- diggerpede - med, dormant -->
-          <GR_Boombeetle>0.4</GR_Boombeetle> <!-- boombeetle - med, dormant -->
-          <GR_Boomcat>0.4</GR_Boomcat> <!-- boomcat - med, dormant -->
-          <GR_Boomsnake>0.4</GR_Boomsnake> <!-- boomsnake - med, dormant -->
-          <GR_Boomsquirrel>0.4</GR_Boomsquirrel> <!-- boomsquirrel - med, dormant -->
-          <GR_Boomwolf>0.4</GR_Boomwolf> <!-- boomwolf - med, dormant -->
-          <GR_Wolfbeaver>0.4</GR_Wolfbeaver> <!-- wolfbeaver - med, dormant -->
-          <VQEA_Splicetoot>0.4</VQEA_Splicetoot> <!-- splicetoot - med, dormant -->
-          <Andrewsarchus>0.315</Andrewsarchus> <!-- andrewsarchus - huge, dormant -->
-          <JRWBrachiosaurus>0.315</JRWBrachiosaurus> <!-- Brachiosaurus - huge, dormant -->
-          <Josephoartigasia>0.315</Josephoartigasia> <!-- josephoartigasia - huge, dormant -->
-          <BMT_CactusCrab>0.18</BMT_CactusCrab> <!-- cactus crab - large, dormant -->
-          <GR_Boomabear>0.18</GR_Boomabear> <!-- boomabear - large, dormant -->
-          <GR_Boomffalo>0.18</GR_Boomffalo> <!-- boomffalo - large, dormant -->
-          <GR_Boomhorse>0.18</GR_Boomhorse> <!-- boomhorse - large, dormant -->
-          <GR_Manwolf>0.18</GR_Manwolf> <!-- manwolf - large, dormant -->
-          <Gigantophis>0.054</Gigantophis> <!-- gigantophis - SUPER, dormant -->
+          <AA_LuciferBug>1.0</AA_LuciferBug> <!-- luciferbug - tiny, ours -->
+          <AA_SmallButterfly>1.0</AA_SmallButterfly> <!-- small butterflies - tiny, dormant -->
+          <BMT_SandLeaper>1.0</BMT_SandLeaper> <!-- sand leaper - tiny, dormant -->
+          <FancyRat>1.0</FancyRat> <!-- fancy rat - tiny, ours -->
+          <AA_Bumbledrone>0.7</AA_Bumbledrone> <!-- bumbledrone - small, ours -->
+          <AA_BumbledroneHierophant>0.7</AA_BumbledroneHierophant> <!-- bumbledrone hierophant - small, ours -->
+          <AA_FissionMouseSecond>0.7</AA_FissionMouseSecond> <!-- fission mouse, second generation - small, dormant -->
+          <AA_FissionMouseThird>0.7</AA_FissionMouseThird> <!-- fission mouse, third generation - small, dormant -->
+          <AA_PedigreedRaptor>0.7</AA_PedigreedRaptor> <!-- pedigreed raptor - small, ours -->
+          <BMT_ChemSnail>0.7</BMT_ChemSnail> <!-- chem snail - small, ours -->
+          <BMT_MutagenicNorphea>0.7</BMT_MutagenicNorphea> <!-- mutagenic norphea - small, dormant -->
+          <DZY_RNGChicken>0.7</DZY_RNGChicken> <!-- chaos chicken - small, dormant -->
+          <AA_Agaripawn>0.4</AA_Agaripawn> <!-- agaripawn - med, ours -->
+          <CanCell>0.4</CanCell> <!-- can-cell - med, ours -->
+          <Eopie>0.4</Eopie> <!-- eopie - med, ours -->
+          <GR_Bearmole>0.4</GR_Bearmole> <!-- bearmole - med, dormant -->
+          <GR_Chickenhorse>0.4</GR_Chickenhorse> <!-- chickenhorse - med, dormant -->
+          <GR_Mancat>0.4</GR_Mancat> <!-- mancat - med, dormant -->
+          <Gornt>0.4</Gornt> <!-- gornt - med, dormant -->
+          <Warg>0.4</Warg> <!-- warg - med, ours -->
+          <GR_Groundffalo>0.21</GR_Groundffalo> <!-- groundffalo - huge, dormant -->
+          <JRWEuoplocephalus>0.21</JRWEuoplocephalus> <!-- Euoplocephalus - huge, ours -->
+          <VQEA_Splicefiend>0.21</VQEA_Splicefiend> <!-- splicefiend - huge, dormant -->
+          <BMT_BovineBeetle>0.18</BMT_BovineBeetle> <!-- bovine beetle - large, ours -->
+          <GR_Hurseman>0.18</GR_Hurseman> <!-- hurseman - large, dormant -->
+          <GR_Manffalo>0.18</GR_Manffalo> <!-- manffalo - large, dormant -->
+          <Hrumph>0.18</Hrumph> <!-- hrumph - large, ours -->
+          <VQEA_Spliceling>0.18</VQEA_Spliceling> <!-- spliceling - large, dormant -->
+          <Behemoth>0.036</Behemoth> <!-- behemoth - SUPER, ours -->
         </wildAnimals>
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <HermitCrab>1.0</HermitCrab> <!-- hermit crab - tiny, dormant -->
-          <Scurrier>1.0</Scurrier> <!-- scurrier - tiny, ours -->
-          <Tooke>1.0</Tooke> <!-- tooke - tiny, ours -->
-          <VFEI2_Boomtick>1.0</VFEI2_Boomtick> <!-- boomtick - tiny, dormant -->
-          <BMT_BloodropMoth>0.7</BMT_BloodropMoth> <!-- bloodrop moth - small, ours -->
-          <BMT_Glowtail>0.7</BMT_Glowtail> <!-- glowtail - small, dormant -->
-          <BiomesIslands_Flamingo>0.7</BiomesIslands_Flamingo> <!-- rose flamingo - small, dormant -->
-          <Locust>0.7</Locust> <!-- locust - small, dormant -->
-          <Sketto>0.7</Sketto> <!-- sketto - small, ours -->
-          <Stintaril>0.7</Stintaril> <!-- stintaril - small, foreign -->
-          <StoneCrab>0.7</StoneCrab> <!-- stone crab - small, dormant -->
-          <VFEI2_Megathrips>0.7</VFEI2_Megathrips> <!-- megathrips - small, dormant -->
-          <BMT_ColonyPustuleHornetQueen>0.4</BMT_ColonyPustuleHornetQueen> <!-- pustule queen - med, dormant -->
-          <BMT_PustuleHornetQueen>0.4</BMT_PustuleHornetQueen> <!-- pustule queen - med, dormant -->
-          <Cannok>0.4</Cannok> <!-- cannok - med, ours -->
-          <GR_Manscarab>0.4</GR_Manscarab> <!-- manscarab - med, dormant -->
-          <VFEI2_Fuelmite>0.4</VFEI2_Fuelmite> <!-- fuelmite - med, dormant -->
-          <VFEI2_Hellbeetle>0.4</VFEI2_Hellbeetle> <!-- hellbeetle - med, dormant -->
-          <VFEI2_Macrofly>0.4</VFEI2_Macrofly> <!-- macrofly - med, dormant -->
-          <VFEI2_Megawasp>0.4</VFEI2_Megawasp> <!-- megawasp - med, dormant -->
-          <Falumpaset>0.35</Falumpaset> <!-- falumpaset - huge, ours -->
-          <JRWGigantophis>0.35</JRWGigantophis> <!-- gigantophis - huge, dormant -->
-          <KwazelMaw>0.35</KwazelMaw> <!-- kwazel maw - huge, ours -->
-          <WarWyrm>0.2</WarWyrm> <!-- war wyrm - SUPER, foreign -->
-          <AA_Dunealisk>0.18</AA_Dunealisk> <!-- dunealisk - large, ours -->
-          <Devourers>0.18</Devourers> <!-- devourer - large, ours -->
-          <GR_ParagonInsectoid>0.18</GR_ParagonInsectoid> <!-- insectoid paragon - large, dormant -->
-          <VFEI2_Acidspitter>0.18</VFEI2_Acidspitter> <!-- acidspitter - large, dormant -->
-          <VFEI2_Gigalocust>0.18</VFEI2_Gigalocust> <!-- gigalocust - large, dormant -->
+          <AA_Aerofleet>1.0</AA_Aerofleet> <!-- aerofleet - tiny, ours -->
+          <BMT_GoetoTadpole>1.0</BMT_GoetoTadpole> <!-- goeto tadpole - tiny, dormant -->
+          <GR_Fleshling>1.0</GR_Fleshling> <!-- fleshling - tiny, dormant -->
+          <JRWProtovermes>1.0</JRWProtovermes> <!-- Protovermes - tiny, dormant -->
+          <BMT_FungalFerret>0.7</BMT_FungalFerret> <!-- fungal ferret - small, ours -->
+          <BMT_FungalWeevil>0.7</BMT_FungalWeevil> <!-- fungal weevil - small, ours -->
+          <BMT_ImperialToad>0.7</BMT_ImperialToad> <!-- imperial toad - small, dormant -->
+          <BMT_MossBeetle>0.7</BMT_MossBeetle> <!-- moss beetle - small, ours -->
+          <Igitz>0.7</Igitz> <!-- igitz - small, foreign -->
+          <Pufferpig>0.7</Pufferpig> <!-- Pufferpig - small, foreign -->
+          <Terrorworm>0.7</Terrorworm> <!-- terrorworm - small, foreign -->
+          <Urusai>0.7</Urusai> <!-- urusai - small, ours -->
+          <AA_Wildpawn>0.4</AA_Wildpawn> <!-- wildpawn - med, ours -->
+          <BMT_TruffleMole>0.4</BMT_TruffleMole> <!-- truffle mole - med, ours -->
+          <JRWCaihong>0.4</JRWCaihong> <!-- Caihong - med, ours -->
+          <JRWDiplocaulus>0.4</JRWDiplocaulus> <!-- Diplocaulus - med, foreign -->
+          <JRWMeganeura>0.4</JRWMeganeura> <!-- Meganeura - med, foreign -->
+          <JRWQantassaurus>0.4</JRWQantassaurus> <!-- Qantassaurus - med, ours -->
+          <Megavole>0.4</Megavole> <!-- megavole - med, foreign -->
+          <PaintedSpat>0.4</PaintedSpat> <!-- painted spat - med, substituted -->
+          <AA_SandLion>0.18</AA_SandLion> <!-- sand lion - large, ours -->
+          <GiantToad>0.18</GiantToad> <!-- giant toad - large, ours -->
+          <JRWBagaceratops>0.18</JRWBagaceratops> <!-- Bagaceratops - large, ours -->
+          <Orray>0.18</Orray> <!-- orray - large, ours -->
+          <VAEWaste_Megatardi>0.18</VAEWaste_Megatardi> <!-- megatardi - large, dormant -->
+          <GR_AberrantFleshbeast>0.07</GR_AberrantFleshbeast> <!-- aberrant fleshbeast - huge, dormant -->
+          <GR_Lizardochs>0.07</GR_Lizardochs> <!-- lizardochs - huge, dormant -->
+          <MA_Sivatherium>0.07</MA_Sivatherium> <!-- sivatherium - huge, ours -->
+          <Torton>0.012</Torton> <!-- torton - SUPER, ours -->
         </wildAnimals>
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">
+    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <GR_Chickenffalo>1.0</GR_Chickenffalo> <!-- chickenffalo - tiny, dormant -->
-          <Leaftail>1.0</Leaftail> <!-- leaf-tail - tiny, ours -->
-          <Snowhare>1.0</Snowhare> <!-- snowhare - tiny, ours -->
-          <Squirrel>1.0</Squirrel> <!-- squirrel - tiny, ours -->
-          <AM_UnshackledDryad>0.7</AM_UnshackledDryad> <!-- unshackled dryad - small, dormant -->
-          <Alphabeaver>0.7</Alphabeaver> <!-- alphabeaver - small, dormant -->
-          <Badger>0.7</Badger> <!-- badger - small, dormant -->
-          <DA_ArcticOwlcat>0.7</DA_ArcticOwlcat> <!-- arctic owlcat - small, dormant -->
-          <GR_Catffalo>0.7</GR_Catffalo> <!-- catffalo - small, dormant -->
-          <GR_Doedicoon>0.7</GR_Doedicoon> <!-- doedicoon - small, dormant -->
-          <VAEWaste_Toxafox>0.7</VAEWaste_Toxafox> <!-- toxafox - small, dormant -->
-          <WasteRat>0.7</WasteRat> <!-- waste rat - small, dormant -->
-          <BMT_SilverSheep>0.4</BMT_SilverSheep> <!-- silver sheep - med, dormant -->
-          <BMT_Snowstalker>0.4</BMT_Snowstalker> <!-- snowstalker - med, dormant -->
-          <BMT_WasteHound>0.4</BMT_WasteHound> <!-- waste hound - med, dormant -->
-          <Cat_Scimitar>0.4</Cat_Scimitar> <!-- scimitar cat - med, dormant -->
-          <GR_Thrumborat>0.4</GR_Thrumborat> <!-- thrumborat - med, dormant -->
-          <SW_Electricgryllotalpa>0.4</SW_Electricgryllotalpa> <!-- Electricgryllotalpa - med, dormant -->
-          <Strill>0.4</Strill> <!-- strill - med, ours -->
+          <AA_Skyeel>1.0</AA_Skyeel> <!-- arcturan sky eel - tiny, dormant -->
+          <BMT_Megakrill>1.0</BMT_Megakrill> <!-- megakrill - tiny, dormant -->
+          <GR_Spidersnake>1.0</GR_Spidersnake> <!-- spidersnake - tiny, dormant -->
+          <Neebray>1.0</Neebray> <!-- neebray - tiny, ours -->
+          <AA_AuroraSylph>0.7</AA_AuroraSylph> <!-- Aurora sylph - small, ours -->
+          <AA_Frostmite>0.7</AA_Frostmite> <!-- frostmite - small, ours -->
+          <AA_MegaLouse>0.7</AA_MegaLouse> <!-- megalouse - small, ours -->
+          <AA_RedGoo>0.7</AA_RedGoo> <!-- red goo - small, ours -->
+          <BMT_FreezerFrog>0.7</BMT_FreezerFrog> <!-- freezer frog - small, dormant -->
+          <BMT_Megaphorid>0.7</BMT_Megaphorid> <!-- megaphorid - small, dormant -->
+          <GR_Chickenlizard>0.7</GR_Chickenlizard> <!-- chickenlizard - small, dormant -->
+          <GR_ParagonIguana>0.7</GR_ParagonIguana> <!-- reptile paragon - small, dormant -->
+          <AA_Darkbeast>0.4</AA_Darkbeast> <!-- darkbeast - med, ours -->
+          <AA_FrostAve>0.4</AA_FrostAve> <!-- frost ave - med, foreign -->
+          <AA_Frostling>0.4</AA_Frostling> <!-- frostling - med, ours -->
+          <AA_WindBeast>0.4</AA_WindBeast> <!-- windbeast - med, ours -->
+          <Krykna>0.4</Krykna> <!-- krykna - med, ours -->
+          <Rabbuck>0.4</Rabbuck> <!-- rabbuck - med, foreign -->
           <VQE_IceCrawler>0.4</VQE_IceCrawler> <!-- ice crawler - med, dormant -->
-          <AA_Genix>0.18</AA_Genix> <!-- genix - large, dormant -->
-          <BMT_BeardedYak>0.18</BMT_BeardedYak> <!-- bearded yak - large, dormant -->
-          <GR_ParagonMuffalo>0.18</GR_ParagonMuffalo> <!-- muffalo paragon - large, dormant -->
-          <Grazer>0.18</Grazer> <!-- grazer - large, dormant -->
-          <Smilodon>0.18</Smilodon> <!-- smilodon - large, dormant -->
-          <GR_Thrumbalope>0.0663</GR_Thrumbalope> <!-- thrumbalope - huge, dormant -->
-          <HiveQueen>0.0663</HiveQueen> <!-- hive queen - huge, dormant -->
-          <ShortfacedBear>0.0663</ShortfacedBear> <!-- Short-faced bear - huge, dormant -->
-          <AA_Gallatross>0.0114</AA_Gallatross> <!-- gallatross - SUPER, dormant -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes">
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
-          <SW_Electrictick>1.0</SW_Electrictick> <!-- Electrictick - tiny, dormant -->
-          <VFEI2_BlackSwarmling>1.0</VFEI2_BlackSwarmling> <!-- black swarmlings - tiny, dormant -->
-          <VFEI2_Swarmling>1.0</VFEI2_Swarmling> <!-- swarmlings - tiny, dormant -->
-          <AA_Skiphound>0.7</AA_Skiphound> <!-- skiphound - small, substituted -->
-          <AM_Dryad_Tumorous>0.7</AM_Dryad_Tumorous> <!-- tumorous dryad - small, dormant -->
-          <BMT_BloodletterPetrel>0.7</BMT_BloodletterPetrel> <!-- bloodletter petrel - small, dormant -->
-          <BMT_FleeceSpider>0.7</BMT_FleeceSpider> <!-- fleece spider - small, dormant -->
-          <Borcatu>0.7</Borcatu> <!-- Borcatu - small, ours -->
-          <DA_ForestOwlcat>0.7</DA_ForestOwlcat> <!-- forest owlcat - small, dormant -->
-          <GR_Beetlefleet>0.7</GR_Beetlefleet> <!-- beetlefleet - small, dormant -->
-          <GR_ParagonRat>0.7</GR_ParagonRat> <!-- rodent paragon - small, dormant -->
-          <GR_Bearalope>0.4</GR_Bearalope> <!-- bearalope - med, dormant -->
-          <GR_Bearwolf>0.4</GR_Bearwolf> <!-- bearwolf - med, dormant -->
-          <GR_Beaverwolf>0.4</GR_Beaverwolf> <!-- beaverwolf - med, dormant -->
-          <GR_Lizardman>0.4</GR_Lizardman> <!-- lizardman - med, dormant -->
-          <GR_Molebear>0.4</GR_Molebear> <!-- molebear - med, dormant -->
-          <GR_Spidercat>0.4</GR_Spidercat> <!-- spidercat - med, dormant -->
-          <GR_Wolfscarab>0.4</GR_Wolfscarab> <!-- wolfscarab - med, dormant -->
-          <SeaLion>0.4</SeaLion> <!-- sea lion - med, dormant -->
-          <Daeodon>0.35</Daeodon> <!-- daeodon - huge, dormant -->
-          <GR_Bearscarab>0.35</GR_Bearscarab> <!-- bearscarab - huge, dormant -->
-          <MA_Dunbear>0.35</MA_Dunbear> <!-- dunbear - huge, dormant -->
-          <AA_Atispec>0.2</AA_Atispec> <!-- atispec - SUPER, dormant -->
-          <GR_Bearcat>0.18</GR_Bearcat> <!-- bearcat - large, dormant -->
-          <GR_ParagonBear>0.18</GR_ParagonBear> <!-- ursine paragon - large, dormant -->
-          <GR_Spiderhorse>0.18</GR_Spiderhorse> <!-- spiderhorse - large, dormant -->
-          <GR_Thrumbocat>0.18</GR_Thrumbocat> <!-- thrumbocat - large, dormant -->
-          <Walrus>0.18</Walrus> <!-- walrus - large, dormant -->
+          <VQE_Megamidge>0.4</VQE_Megamidge> <!-- megamidge - med, dormant -->
+          <AA_Ravager>0.18</AA_Ravager> <!-- ravager - large, ours -->
+          <AA_RedSpore>0.18</AA_RedSpore> <!-- red spore - large, ours -->
+          <AA_Slurrypede>0.18</AA_Slurrypede> <!-- slurrypede - large, ours -->
+          <GR_Muffalope>0.18</GR_Muffalope> <!-- muffalope - large, dormant -->
+          <Jakobeast>0.18</Jakobeast> <!-- jakobeast - large, ours -->
+          <Blixus>0.0504</Blixus> <!-- blixus - huge, ours -->
+          <Gomphotaria>0.0504</Gomphotaria> <!-- gomphotaria - huge, foreign -->
+          <MA_Aminox>0.0504</MA_Aminox> <!-- aminox - huge, foreign -->
+          <GR_Thrumffalo>0.0086</GR_Thrumffalo> <!-- thrumffalo - SUPER, dormant -->
         </wildAnimals>
       </value>
     </match>
@@ -217,194 +417,34 @@
       <value>
         <wildAnimals>
           <AA_InfectedAerofleet>1.0</AA_InfectedAerofleet> <!-- infected aerofleet - tiny, ours -->
-          <IronScruff_Jellybird>1.0</IronScruff_Jellybird> <!-- jellybird - tiny, dormant -->
           <Neebray>1.0</Neebray> <!-- neebray - tiny, ours -->
+          <PoisonButterfly>1.0</PoisonButterfly> <!-- butterfly - tiny, ours -->
           <TYR_Lemming>1.0</TYR_Lemming> <!-- lemming - tiny, ours -->
           <AA_AuroraSylph>0.7</AA_AuroraSylph> <!-- Aurora sylph - small, ours -->
           <AA_BedBug>0.7</AA_BedBug> <!-- bedbug - small, ours -->
-          <AA_DevilSheep>0.7</AA_DevilSheep> <!-- devil sheep - small, dormant -->
           <AA_PebbleMit>0.7</AA_PebbleMit> <!-- pebblemit - small, ours -->
           <AM_Dryad_Corruptor>0.7</AM_Dryad_Corruptor> <!-- corruptor dryad - small, dormant -->
           <AM_Dryad_Ocular>0.7</AM_Dryad_Ocular> <!-- ocular dryad - small, dormant -->
-          <Mink>0.7</Mink> <!-- mink - small, dormant -->
-          <Wolverine>0.7</Wolverine> <!-- wolverine - small, ours -->
+          <AM_Dryad_Tumorous>0.7</AM_Dryad_Tumorous> <!-- tumorous dryad - small, dormant -->
+          <GR_Beetlefleet>0.7</GR_Beetlefleet> <!-- beetlefleet - small, dormant -->
+          <GR_ParagonRat>0.7</GR_ParagonRat> <!-- rodent paragon - small, dormant -->
           <AA_BlackSpider>0.4</AA_BlackSpider> <!-- blackspider - med, dormant -->
           <AA_GiantCrownedSilkie>0.4</AA_GiantCrownedSilkie> <!-- giant crowned silkie - med, ours -->
           <AA_GreyCoatedMouflon>0.4</AA_GreyCoatedMouflon> <!-- Grey-Coated Mouflon - med, ours -->
+          <BMT_CaveLemming>0.4</BMT_CaveLemming> <!-- cave lemming - med, dormant -->
           <BMT_DarkAxolotl>0.4</BMT_DarkAxolotl> <!-- dark axolotl - med, dormant -->
           <BMT_FenridStoat>0.4</BMT_FenridStoat> <!-- fenrid stoat - med, dormant -->
           <BMT_Screecher>0.4</BMT_Screecher> <!-- screecher - med, dormant -->
-          <GR_ParagonWolf>0.4</GR_ParagonWolf> <!-- canine paragon - med, dormant -->
-          <Wolf_Timber>0.4</Wolf_Timber> <!-- timber wolf - med, ours -->
+          <Visceral>0.4</Visceral> <!-- visceral - med, foreign -->
           <DA_ImperialRedhound>0.18</DA_ImperialRedhound> <!-- imperial redhound - large, dormant -->
           <GR_Ratffalo>0.18</GR_Ratffalo> <!-- ratffalo - large, dormant -->
           <!-- SKIPPED GiantAnt_Race - giant ant: not a PawnKindDef; wildAnimals cannot resolve it -->
           <MA_Raptorkhan>0.18</MA_Raptorkhan> <!-- raptorkhan - large, ours -->
           <SW_Grenadierworm>0.18</SW_Grenadierworm> <!-- Grenadierworm - large, dormant -->
-          <MA_Furpotamus>0.1575</MA_Furpotamus> <!-- furpotamus - huge, dormant -->
-          <RG_WoollyStegosaurus>0.1575</RG_WoollyStegosaurus> <!-- woolly stegosaurus - huge, dormant -->
+          <DA_LeviathanCrab>0.1575</DA_LeviathanCrab> <!-- leviathan - huge, dormant -->
+          <Narglatch>0.1575</Narglatch> <!-- narglatch - huge, ours -->
           <VFEI2_BlackEmpress>0.1575</VFEI2_BlackEmpress> <!-- black empress - huge, dormant -->
           <AA_Behemoth>0.027</AA_Behemoth> <!-- Behemoth - SUPER, dormant -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <AA_Skyeel>1.0</AA_Skyeel> <!-- arcturan sky eel - tiny, dormant -->
-          <GR_Spidersnake>1.0</GR_Spidersnake> <!-- spidersnake - tiny, dormant -->
-          <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
-          <IronScruff_Jellybird>1.0</IronScruff_Jellybird> <!-- jellybird - tiny, dormant -->
-          <AA_BedBug>0.7</AA_BedBug> <!-- bedbug - small, ours -->
-          <AA_Frostmite>0.7</AA_Frostmite> <!-- frostmite - small, ours -->
-          <AA_GreenGoo>0.7</AA_GreenGoo> <!-- green goo - small, ours -->
-          <AA_RedGoo>0.7</AA_RedGoo> <!-- red goo - small, ours -->
-          <BMT_FreezerFrog>0.7</BMT_FreezerFrog> <!-- freezer frog - small, dormant -->
-          <GR_ParagonIguana>0.7</GR_ParagonIguana> <!-- reptile paragon - small, dormant -->
-          <IronScruff_Flatworm>0.7</IronScruff_Flatworm> <!-- flatworm hound - small, dormant -->
-          <Mynock>0.7</Mynock> <!-- mynock - small, ours -->
-          <AA_Darkbeast>0.4</AA_Darkbeast> <!-- darkbeast - med, ours -->
-          <AA_FrostAve>0.4</AA_FrostAve> <!-- frost ave - med, foreign -->
-          <AA_Frostling>0.4</AA_Frostling> <!-- frostling - med, ours -->
-          <AA_WindBeast>0.4</AA_WindBeast> <!-- windbeast - med, ours -->
-          <IronScruff_Hydrazoa>0.4</IronScruff_Hydrazoa> <!-- hydrazoa - med, dormant -->
-          <Krykna>0.4</Krykna> <!-- krykna - med, ours -->
-          <Rabbuck>0.4</Rabbuck> <!-- rabbuck - med, foreign -->
-          <VQE_Megamidge>0.4</VQE_Megamidge> <!-- megamidge - med, dormant -->
-          <AA_FrostboundBehemoth>0.252</AA_FrostboundBehemoth> <!-- frostbound behemoth - huge, ours -->
-          <BMT_HoarfrostMastodon>0.252</BMT_HoarfrostMastodon> <!-- hoarfrost mastodon - huge, dormant -->
-          <GR_ParagonThrumbo>0.252</GR_ParagonThrumbo> <!-- colossal paragon - huge, dormant -->
-          <AA_ArcticLion>0.18</AA_ArcticLion> <!-- arctic lion - large, ours -->
-          <AA_Blizzarisk>0.18</AA_Blizzarisk> <!-- blizzarisk - large, ours -->
-          <GR_Muffalochicken>0.18</GR_Muffalochicken> <!-- muffalochicken - large, dormant -->
-          <IronScruff_Tardigrade>0.18</IronScruff_Tardigrade> <!-- giant tardigrade - large, dormant -->
-          <MA_Manehound>0.18</MA_Manehound> <!-- manehound - large, dormant -->
-          <GR_Paraceramuffalo>0.0432</GR_Paraceramuffalo> <!-- paraceramuffalo - SUPER, dormant -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <AA_PhoenixOwlcat>1.0</AA_PhoenixOwlcat> <!-- phoenix owlcat - tiny, dormant -->
-          <BMT_SandLeaper>1.0</BMT_SandLeaper> <!-- sand leaper - tiny, dormant -->
-          <DA_SilverMole>1.0</DA_SilverMole> <!-- silver mole - tiny, dormant -->
-          <TYR_Mouse>1.0</TYR_Mouse> <!-- mouse - tiny, dormant -->
-          <AA_Bumbledrone>0.7</AA_Bumbledrone> <!-- bumbledrone - small, ours -->
-          <AA_BumbledroneHierophant>0.7</AA_BumbledroneHierophant> <!-- bumbledrone hierophant - small, ours -->
-          <AA_FissionMouseSecond>0.7</AA_FissionMouseSecond> <!-- fission mouse, second generation - small, dormant -->
-          <AA_FissionMouseThird>0.7</AA_FissionMouseThird> <!-- fission mouse, third generation - small, dormant -->
-          <BMT_ChemSnail>0.7</BMT_ChemSnail> <!-- chem snail - small, ours -->
-          <BMT_MutagenicNorphea>0.7</BMT_MutagenicNorphea> <!-- mutagenic norphea - small, dormant -->
-          <GR_ParagonChicken>0.7</GR_ParagonChicken> <!-- avian paragon - small, dormant -->
-          <Sheep>0.7</Sheep> <!-- sheep - small, dormant -->
-          <Alpaca>0.4</Alpaca> <!-- alpaca - med, ours -->
-          <Eopie>0.4</Eopie> <!-- eopie - med, ours -->
-          <GR_Bearmole>0.4</GR_Bearmole> <!-- bearmole - med, dormant -->
-          <GR_Mancat>0.4</GR_Mancat> <!-- mancat - med, dormant -->
-          <GR_Molehorse>0.4</GR_Molehorse> <!-- molehorse - med, dormant -->
-          <Gornt>0.4</Gornt> <!-- gornt - med, dormant -->
-          <PoisonDeer>0.4</PoisonDeer> <!-- deer - med, dormant -->
-          <VAEWaste_Wastedeer>0.4</VAEWaste_Wastedeer> <!-- wastedeer - med, dormant -->
-          <JRWTorosaurus>0.21</JRWTorosaurus> <!-- Torosaurus - huge, dormant -->
-          <MA_Capryak>0.21</MA_Capryak> <!-- Capryak - huge, dormant -->
-          <VQEA_Splicefiend>0.21</VQEA_Splicefiend> <!-- splicefiend - huge, dormant -->
-          <Dinopithecus>0.18</Dinopithecus> <!-- dinopithecus - large, dormant -->
-          <GR_Manffalo>0.18</GR_Manffalo> <!-- manffalo - large, dormant -->
-          <GR_ParagonHumanoid>0.18</GR_ParagonHumanoid> <!-- humanoid paragon - large, dormant -->
-          <RG_Hemolope>0.18</RG_Hemolope> <!-- hemolope - large, dormant -->
-          <VQEA_Spliceling>0.18</VQEA_Spliceling> <!-- spliceling - large, dormant -->
-          <Titanoboa>0.036</Titanoboa> <!-- titanoboa - SUPER, dormant -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <BMT_GoetoTadpole>1.0</BMT_GoetoTadpole> <!-- goeto tadpole - tiny, dormant -->
-          <GR_Catman>1.0</GR_Catman> <!-- catman - tiny, dormant -->
-          <GR_Fleshling>1.0</GR_Fleshling> <!-- fleshling - tiny, dormant -->
-          <PrairieDog>1.0</PrairieDog> <!-- prairie dog - tiny, dormant -->
-          <BMT_FungalFerret>0.7</BMT_FungalFerret> <!-- fungal ferret - small, ours -->
-          <BMT_FungalWeevil>0.7</BMT_FungalWeevil> <!-- fungal weevil - small, ours -->
-          <BMT_ImperialToad>0.7</BMT_ImperialToad> <!-- imperial toad - small, dormant -->
-          <Fox_Fennec>0.7</Fox_Fennec> <!-- fennec fox - small, ours -->
-          <GR_Mansquirrel>0.7</GR_Mansquirrel> <!-- mansquirrel - small, dormant -->
-          <Gazelle>0.7</Gazelle> <!-- gazelle - small, dormant -->
-          <MonitorLizard>0.7</MonitorLizard> <!-- monitor lizard - small, dormant -->
-          <Urusai>0.7</Urusai> <!-- urusai - small, ours -->
-          <BMT_TruffleMole>0.4</BMT_TruffleMole> <!-- truffle mole - med, ours -->
-          <Cougar>0.4</Cougar> <!-- cougar - med, ours -->
-          <GR_Bearchicken>0.4</GR_Bearchicken> <!-- bearchicken - med, dormant -->
-          <GR_Booman>0.4</GR_Booman> <!-- booman - med, dormant -->
-          <JRWCyclosphaeroma>0.4</JRWCyclosphaeroma> <!-- Cyclosphaeroma - med, dormant -->
-          <Megavole>0.4</Megavole> <!-- megavole - med, foreign -->
-          <PaintedSpat>0.4</PaintedSpat> <!-- painted spat - med, substituted -->
-          <Tiger>0.4</Tiger> <!-- tiger - med, dormant -->
-          <Castoroides>0.18</Castoroides> <!-- castoroides - large, dormant -->
-          <GR_Cathorse>0.18</GR_Cathorse> <!-- cathorse - large, dormant -->
-          <MA_Direhorse>0.18</MA_Direhorse> <!-- direhorse - large, dormant -->
-          <MA_Harpeagle>0.18</MA_Harpeagle> <!-- harpeagle - large, dormant -->
-          <VAEWaste_Megatardi>0.18</VAEWaste_Megatardi> <!-- megatardi - large, dormant -->
-          <Diprotodon>0.07</Diprotodon> <!-- diprotodon - huge, dormant -->
-          <GR_Lizardochs>0.07</GR_Lizardochs> <!-- lizardochs - huge, dormant -->
-          <Quinkana>0.07</Quinkana> <!-- quinkana - huge, dormant -->
-          <Torton>0.012</Torton> <!-- torton - SUPER, ours -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.horrors">
-    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <AA_Skyeel>1.0</AA_Skyeel> <!-- arcturan sky eel - tiny, dormant -->
-          <GR_Spidersnake>1.0</GR_Spidersnake> <!-- spidersnake - tiny, dormant -->
-          <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
-          <Neebray>1.0</Neebray> <!-- neebray - tiny, ours -->
-          <AA_AuroraSylph>0.7</AA_AuroraSylph> <!-- Aurora sylph - small, ours -->
-          <AA_CrystalMit>0.7</AA_CrystalMit> <!-- crystalmit - small, ours -->
-          <AA_DevilSheep>0.7</AA_DevilSheep> <!-- devil sheep - small, dormant -->
-          <AA_GreenGoo>0.7</AA_GreenGoo> <!-- green goo - small, ours -->
-          <AA_MegaLouse>0.7</AA_MegaLouse> <!-- megalouse - small, ours -->
-          <AA_PebbleMit>0.7</AA_PebbleMit> <!-- pebblemit - small, ours -->
-          <GR_Chickenlizard>0.7</GR_Chickenlizard> <!-- chickenlizard - small, dormant -->
-          <Mynock>0.7</Mynock> <!-- mynock - small, ours -->
-          <AA_FungalHusk>0.4</AA_FungalHusk> <!-- fungal husk - med, dormant -->
-          <GR_Boomsnake>0.4</GR_Boomsnake> <!-- boomsnake - med, dormant -->
-          <GR_Lizardman>0.4</GR_Lizardman> <!-- lizardman - med, dormant -->
-          <GR_Muffalorat>0.4</GR_Muffalorat> <!-- muffalorat - med, dormant -->
-          <GR_Snakecat>0.4</GR_Snakecat> <!-- snakecat - med, dormant -->
-          <GR_Wolfsnake>0.4</GR_Wolfsnake> <!-- wolfsnake - med, dormant -->
-          <GR_WoolyWolf>0.4</GR_WoolyWolf> <!-- wooly Wolf - med, dormant -->
-          <Metalhorror>0.4</Metalhorror> <!-- metalhorror - med, dormant -->
-          <BMT_FrostweaverSpider>0.18</BMT_FrostweaverSpider> <!-- frostweaver - large, dormant -->
-          <GR_Muffalobear>0.18</GR_Muffalobear> <!-- muffalobear - large, dormant -->
-          <GR_Muffalowolf>0.18</GR_Muffalowolf> <!-- muffalowolf - large, dormant -->
-          <Maalraas>0.18</Maalraas> <!-- maalraas - large, ours -->
-          <Palaeeudyptes>0.18</Palaeeudyptes> <!-- palaeeudyptes - large, dormant -->
-          <AA_BoulderMit>0.05</AA_BoulderMit> <!-- bouldermit - huge, ours -->
-          <MA_Duskhorn>0.05</MA_Duskhorn> <!-- duskhorn - huge, dormant -->
-          <WoollyMammoth>0.05</WoollyMammoth> <!-- woolly mammoth - huge, dormant -->
-          <AA_EngorgedTentacularAberration>0.008</AA_EngorgedTentacularAberration> <!-- engorged tentacular aberration - SUPER, dormant -->
         </wildAnimals>
       </value>
     </match>
@@ -421,29 +461,29 @@
           <GR_Rabbitchicken>1.0</GR_Rabbitchicken> <!-- rabbitchicken - tiny, dormant -->
           <PoisonButterfly>1.0</PoisonButterfly> <!-- butterfly - tiny, ours -->
           <AA_BlackScarab>0.7</AA_BlackScarab> <!-- black scarab - small, dormant -->
+          <AM_Dryad_Corruptor>0.7</AM_Dryad_Corruptor> <!-- corruptor dryad - small, dormant -->
+          <AM_Dryad_Ocular>0.7</AM_Dryad_Ocular> <!-- ocular dryad - small, dormant -->
           <AM_Dryad_Unstable>0.7</AM_Dryad_Unstable> <!-- unstable dryad - small, dormant -->
+          <BMT_FleeceSpider>0.7</BMT_FleeceSpider> <!-- fleece spider - small, dormant -->
           <BMT_MossyFennec>0.7</BMT_MossyFennec> <!-- mossy fennec - small, ours -->
-          <Fox_Red>0.7</Fox_Red> <!-- red fox - small, ours -->
-          <GR_Chickenwolf>0.7</GR_Chickenwolf> <!-- chickenwolf - small, dormant -->
-          <LabradorRetriever>0.7</LabradorRetriever> <!-- labrador retriever - small, dormant -->
-          <Otter>0.7</Otter> <!-- otter - small, dormant -->
-          <Porcupine>0.7</Porcupine> <!-- porcupine - small, dormant -->
+          <Borcatu>0.7</Borcatu> <!-- Borcatu - small, ours -->
+          <GR_Doedicoon>0.7</GR_Doedicoon> <!-- doedicoon - small, dormant -->
           <AA_OcularNightling>0.4</AA_OcularNightling> <!-- ocular nightling - med, dormant -->
           <BMT_CaveLemming>0.4</BMT_CaveLemming> <!-- cave lemming - med, dormant -->
-          <Caribou>0.4</Caribou> <!-- caribou - med, foreign -->
+          <BMT_FenridStoat>0.4</BMT_FenridStoat> <!-- fenrid stoat - med, dormant -->
           <GR_Bearffalo>0.4</GR_Bearffalo> <!-- bearffalo - med, dormant -->
-          <GR_Wolfalope>0.4</GR_Wolfalope> <!-- wolfalope - med, dormant -->
-          <GR_Wolfbear>0.4</GR_Wolfbear> <!-- wolfbear - med, dormant -->
+          <GR_Boomsquirrel>0.4</GR_Boomsquirrel> <!-- boomsquirrel - med, dormant -->
           <Kybuck>0.4</Kybuck> <!-- kybuck - med, ours -->
           <MA_Gnaut>0.4</MA_Gnaut> <!-- gnaut - med, foreign -->
+          <VQEA_Splicetoot>0.4</VQEA_Splicetoot> <!-- splicetoot - med, dormant -->
           <DA_Taraal>0.18</DA_Taraal> <!-- taraal - large, foreign -->
           <GR_BearBug>0.18</GR_BearBug> <!-- bear bug - large, dormant -->
-          <MA_Simbakub>0.18</MA_Simbakub> <!-- Simbakub - large, dormant -->
-          <MA_SimbakubAlpha>0.18</MA_SimbakubAlpha> <!-- Simbakub Alpha - large, dormant -->
-          <VAEWaste_Wasteffalo>0.18</VAEWaste_Wasteffalo> <!-- wasteffalo - large, dormant -->
-          <JRWAntarctopelta>0.05</JRWAntarctopelta> <!-- Antarctopelta - huge, dormant -->
-          <JRWCeratosaurus>0.05</JRWCeratosaurus> <!-- Ceratosaurus - huge, substituted -->
-          <VAEWaste_Toxbear>0.05</VAEWaste_Toxbear> <!-- toxbear - huge, dormant -->
+          <Shaak>0.18</Shaak> <!-- shaak - large, ours -->
+          <TeeMuss>0.18</TeeMuss> <!-- tee muss - large, ours -->
+          <VRE_CompanionDryad>0.18</VRE_CompanionDryad> <!-- companion dryad - large, dormant -->
+          <DA_Crestel>0.05</DA_Crestel> <!-- crestel - huge, foreign -->
+          <Elasmotherium>0.05</Elasmotherium> <!-- elasmotherium - huge, foreign -->
+          <Platybelodon>0.05</Platybelodon> <!-- platybelodon - huge, ours -->
           <AA_AnimaColossus>0.008</AA_AnimaColossus> <!-- anima colossus - SUPER, ours -->
         </wildAnimals>
       </value>
@@ -484,7 +524,47 @@
           <AA_SandProwler>0.18</AA_SandProwler> <!-- sand prowler - large, ours -->
           <AA_Slurrypede>0.18</AA_Slurrypede> <!-- slurrypede - large, ours -->
           <BMT_SmolderstingScorpion>0.18</BMT_SmolderstingScorpion> <!-- smoldersting scorpion - large, foreign -->
-          <VAEWaste_Toxlion>0.18</VAEWaste_Toxlion> <!-- toxlion - large, dormant -->
+          <PekoPeko>0.18</PekoPeko> <!-- Peko-peko - large, ours -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <BMT_Batbird>1.0</BMT_Batbird> <!-- batbird - tiny, dormant -->
+          <BMT_BrownBat>1.0</BMT_BrownBat> <!-- brown bat - tiny, dormant -->
+          <BMT_Polluwog>1.0</BMT_Polluwog> <!-- polluwog - tiny, dormant -->
+          <GR_Chickenlope>1.0</GR_Chickenlope> <!-- chickenlope - tiny, dormant -->
+          <AA_BumbledroneQueen>0.7</AA_BumbledroneQueen> <!-- bumbledrone queen - small, dormant -->
+          <AA_FissionMouse>0.7</AA_FissionMouse> <!-- fission mouse - small, substituted -->
+          <BMT_GastroToad>0.7</BMT_GastroToad> <!-- gastro toad - small, dormant -->
+          <BMT_ImperialToad>0.7</BMT_ImperialToad> <!-- imperial toad - small, dormant -->
+          <BMT_Jellypot>0.7</BMT_Jellypot> <!-- jellypot - small, dormant -->
+          <BMT_Stoneback>0.7</BMT_Stoneback> <!-- stoneback - small, dormant -->
+          <BMT_TaintedTurtle>0.7</BMT_TaintedTurtle> <!-- tainted turtle - small, dormant -->
+          <Ollopom>0.7</Ollopom> <!-- ollopom - small, foreign -->
+          <AA_BloodShrimp>0.4</AA_BloodShrimp> <!-- blood shrimp - med, ours -->
+          <AA_Plasmorph>0.4</AA_Plasmorph> <!-- plasmorph - med, ours -->
+          <AA_Razorjack>0.4</AA_Razorjack> <!-- razorjack - med, ours -->
+          <BMT_CaveCricket>0.4</BMT_CaveCricket> <!-- cave cricket - med, ours -->
+          <BMT_TripleSnapper>0.4</BMT_TripleSnapper> <!-- triple snapper - med, dormant -->
+          <ColossusToad>0.4</ColossusToad> <!-- colossus toad - med, foreign -->
+          <GR_Manscarab>0.4</GR_Manscarab> <!-- manscarab - med, dormant -->
+          <Kinrath>0.4</Kinrath> <!-- kinrath - med, ours -->
+          <BMT_FungalMantis>0.18</BMT_FungalMantis> <!-- fungal mimic mantis - large, ours -->
+          <BMT_MutatingTumorfishAdult>0.18</BMT_MutatingTumorfishAdult> <!-- mutating tumorfish - large, dormant -->
+          <Boma>0.18</Boma> <!-- boma - large, ours -->
+          <Fanback>0.18</Fanback> <!-- fanback - large, ours -->
+          <MA_Narkospider>0.18</MA_Narkospider> <!-- narkospider - large, dormant -->
+          <Dactillion>0.084</Dactillion> <!-- dactillion - huge, ours -->
+          <EnergySpider>0.084</EnergySpider> <!-- energy spider - huge, ours -->
+          <MA_Hellboar>0.084</MA_Hellboar> <!-- Hellboar - huge, ours -->
+          <Rancor>0.0144</Rancor> <!-- Rancor - SUPER, ours -->
         </wildAnimals>
       </value>
     </match>
@@ -496,7 +576,7 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <Cobra>1.0</Cobra> <!-- cobra - tiny, dormant -->
+          <GR_Needlechicken>1.0</GR_Needlechicken> <!-- needlechicken - tiny, dormant -->
           <Gizka>1.0</Gizka> <!-- gizka - tiny, ours -->
           <HermitCrab>1.0</HermitCrab> <!-- hermit crab - tiny, dormant -->
           <Megascarab>1.0</Megascarab> <!-- megascarab - tiny, ours -->
@@ -505,16 +585,16 @@
           <Clodhopper>0.7</Clodhopper> <!-- clodhopper - small, ours -->
           <DA_Phrak>0.7</DA_Phrak> <!-- phrak - small, foreign -->
           <FrilledGorg>0.7</FrilledGorg> <!-- frilled gorg - small, ours -->
-          <Iguana>0.7</Iguana> <!-- iguana - small, ours -->
           <Nuna>0.7</Nuna> <!-- nuna - small, ours -->
+          <VAEWaste_Hydra>0.7</VAEWaste_Hydra> <!-- hydra - small, dormant -->
           <Yobshrimp>0.7</Yobshrimp> <!-- yobshrimp - small, foreign -->
           <AA_DesertAve>0.4</AA_DesertAve> <!-- desert ave - med, ours -->
           <AA_Junglelisk>0.4</AA_Junglelisk> <!-- junglelisk - med, ours -->
-          <Alligator>0.4</Alligator> <!-- alligator - med, dormant -->
+          <AA_Plasmorph>0.4</AA_Plasmorph> <!-- plasmorph - med, ours -->
           <BMT_MutatingTumorfishSpawn>0.4</BMT_MutatingTumorfishSpawn> <!-- mutating tumorfish spawn - med, dormant -->
+          <GR_Boombeetle>0.4</GR_Boombeetle> <!-- boombeetle - med, dormant -->
           <GR_Chickenspider>0.4</GR_Chickenspider> <!-- chickenspider - med, dormant -->
           <Grank>0.4</Grank> <!-- Grank - med, ours -->
-          <JRWWonambi>0.4</JRWWonambi> <!-- wonambi - med, dormant -->
           <Klorslug>0.4</Klorslug> <!-- k'lor'slug - med, ours -->
           <AA_Barbslinger>0.18</AA_Barbslinger> <!-- barbslinger - large, ours -->
           <BMT_Maguana>0.18</BMT_Maguana> <!-- maguana - large, foreign -->
@@ -530,81 +610,41 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="grimterra.biomesmod">
+    <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <BMT_Batbird>1.0</BMT_Batbird> <!-- batbird - tiny, dormant -->
-          <BMT_BrownBat>1.0</BMT_BrownBat> <!-- brown bat - tiny, dormant -->
-          <BMT_Polluwog>1.0</BMT_Polluwog> <!-- polluwog - tiny, dormant -->
-          <TYR_KangarooRat>1.0</TYR_KangarooRat> <!-- kangaroo rat - tiny, dormant -->
-          <AA_FissionMouse>0.7</AA_FissionMouse> <!-- fission mouse - small, substituted -->
-          <BMT_GastroToad>0.7</BMT_GastroToad> <!-- gastro toad - small, dormant -->
-          <BMT_TaintedTurtle>0.7</BMT_TaintedTurtle> <!-- tainted turtle - small, dormant -->
-          <Cassowary>0.7</Cassowary> <!-- cassowary - small, dormant -->
-          <Emu>0.7</Emu> <!-- emu - small, dormant -->
-          <Macaw>0.7</Macaw> <!-- macaw - small, dormant -->
-          <Ollopom>0.7</Ollopom> <!-- ollopom - small, foreign -->
-          <Tortoise>0.7</Tortoise> <!-- tortoise - small, dormant -->
+          <AA_Needleroll>1.0</AA_Needleroll> <!-- needleroll - tiny, ours -->
+          <BMT_SonarRabbit>1.0</BMT_SonarRabbit> <!-- sonar rabbit - tiny, ours -->
+          <Gizka>1.0</Gizka> <!-- gizka - tiny, ours -->
+          <VFEI2_Swarmling>1.0</VFEI2_Swarmling> <!-- swarmlings - tiny, dormant -->
+          <AA_FireWasp>0.7</AA_FireWasp> <!-- fire wasp - small, ours -->
+          <AA_Needlepost>0.7</AA_Needlepost> <!-- needlepost - small, ours -->
+          <AM_Dryad_Spitter>0.7</AM_Dryad_Spitter> <!-- spitter dryad - small, dormant -->
+          <Clodhopper>0.7</Clodhopper> <!-- clodhopper - small, ours -->
+          <GRimTortoise>0.7</GRimTortoise> <!-- Colorful tortoise - small, foreign -->
+          <Shiro>0.7</Shiro> <!-- shiro - small, ours -->
+          <ShiroTrap>0.7</ShiroTrap> <!-- shiro-trap - small, ours -->
+          <Worrt>0.7</Worrt> <!-- worrt - small, ours -->
           <AA_BloodShrimp>0.4</AA_BloodShrimp> <!-- blood shrimp - med, ours -->
-          <AA_Plasmorph>0.4</AA_Plasmorph> <!-- plasmorph - med, ours -->
+          <AA_DesertAve>0.4</AA_DesertAve> <!-- desert ave - med, ours -->
           <AA_Razorjack>0.4</AA_Razorjack> <!-- razorjack - med, ours -->
-          <BMT_CaveCricket>0.4</BMT_CaveCricket> <!-- cave cricket - med, ours -->
-          <BMT_TripleSnapper>0.4</BMT_TripleSnapper> <!-- triple snapper - med, dormant -->
-          <ColossusToad>0.4</ColossusToad> <!-- colossus toad - med, foreign -->
+          <BMT_Diggerpede>0.4</BMT_Diggerpede> <!-- diggerpede - med, dormant -->
+          <BMT_LandOctopus>0.4</BMT_LandOctopus> <!-- terrestrial octopus - med, dormant -->
+          <GR_Boomcat>0.4</GR_Boomcat> <!-- boomcat - med, dormant -->
           <Kinrath>0.4</Kinrath> <!-- kinrath - med, ours -->
-          <Panda>0.4</Panda> <!-- panda - med, dormant -->
-          <BMT_MutatingTumorfishAdult>0.18</BMT_MutatingTumorfishAdult> <!-- mutating tumorfish - large, dormant -->
-          <Boma>0.18</Boma> <!-- boma - large, ours -->
-          <Dromedary>0.18</Dromedary> <!-- dromedary - large, ours -->
-          <Fanback>0.18</Fanback> <!-- fanback - large, ours -->
-          <MA_Narkospider>0.18</MA_Narkospider> <!-- narkospider - large, dormant -->
-          <Dactillion>0.084</Dactillion> <!-- dactillion - huge, ours -->
-          <EnergySpider>0.084</EnergySpider> <!-- energy spider - huge, ours -->
-          <MA_Hellboar>0.084</MA_Hellboar> <!-- Hellboar - huge, ours -->
-          <Rancor>0.0144</Rancor> <!-- Rancor - SUPER, ours -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <AA_Skyeel>1.0</AA_Skyeel> <!-- arcturan sky eel - tiny, dormant -->
-          <GR_Spidersnake>1.0</GR_Spidersnake> <!-- spidersnake - tiny, dormant -->
-          <IronScruff_Jellybird>1.0</IronScruff_Jellybird> <!-- jellybird - tiny, dormant -->
-          <Neebray>1.0</Neebray> <!-- neebray - tiny, ours -->
-          <AA_AuroraSylph>0.7</AA_AuroraSylph> <!-- Aurora sylph - small, ours -->
-          <AA_Frostmite>0.7</AA_Frostmite> <!-- frostmite - small, ours -->
-          <AA_MegaLouse>0.7</AA_MegaLouse> <!-- megalouse - small, ours -->
-          <AA_RedGoo>0.7</AA_RedGoo> <!-- red goo - small, ours -->
-          <BMT_FreezerFrog>0.7</BMT_FreezerFrog> <!-- freezer frog - small, dormant -->
-          <GR_Chickenlizard>0.7</GR_Chickenlizard> <!-- chickenlizard - small, dormant -->
-          <GR_ParagonIguana>0.7</GR_ParagonIguana> <!-- reptile paragon - small, dormant -->
-          <IronScruff_Flatworm>0.7</IronScruff_Flatworm> <!-- flatworm hound - small, dormant -->
-          <AA_FrostAve>0.4</AA_FrostAve> <!-- frost ave - med, foreign -->
-          <AA_Frostling>0.4</AA_Frostling> <!-- frostling - med, ours -->
-          <AA_WindBeast>0.4</AA_WindBeast> <!-- windbeast - med, ours -->
-          <IronScruff_Hydrazoa>0.4</IronScruff_Hydrazoa> <!-- hydrazoa - med, dormant -->
-          <Krykna>0.4</Krykna> <!-- krykna - med, ours -->
-          <Rabbuck>0.4</Rabbuck> <!-- rabbuck - med, foreign -->
-          <VQE_IceCrawler>0.4</VQE_IceCrawler> <!-- ice crawler - med, dormant -->
-          <VQE_Megamidge>0.4</VQE_Megamidge> <!-- megamidge - med, dormant -->
-          <AA_FrostLynx>0.18</AA_FrostLynx> <!-- frost lynx - large, dormant -->
-          <AA_RedSpore>0.18</AA_RedSpore> <!-- red spore - large, ours -->
-          <GR_Muffalope>0.18</GR_Muffalope> <!-- muffalope - large, dormant -->
-          <GR_Muffalowolf>0.18</GR_Muffalowolf> <!-- muffalowolf - large, dormant -->
-          <Jakobeast>0.18</Jakobeast> <!-- jakobeast - large, ours -->
-          <Gomphotaria>0.0504</Gomphotaria> <!-- gomphotaria - huge, foreign -->
-          <MA_Aminox>0.0504</MA_Aminox> <!-- aminox - huge, foreign -->
-          <MA_Plastemmoth>0.0504</MA_Plastemmoth> <!-- Plastemmoth - huge, dormant -->
-          <GR_Thrumffalo>0.0086</GR_Thrumffalo> <!-- thrumffalo - SUPER, dormant -->
+          <Klorslug>0.4</Klorslug> <!-- k'lor'slug - med, ours -->
+          <Dalgo>0.18</Dalgo> <!-- dalgo - large, ours -->
+          <Gutkurr>0.18</Gutkurr> <!-- gutkurr - large, ours -->
+          <Hawkbat>0.18</Hawkbat> <!-- hawk-bat - large, ours -->
+          <Hssiss>0.18</Hssiss> <!-- hssiss - large, ours -->
+          <Jamel>0.18</Jamel> <!-- Jamel - large, ours -->
+          <Dianoga>0.05</Dianoga> <!-- dianoga - huge, ours -->
+          <Dragonsnake>0.05</Dragonsnake> <!-- Dragonsnake - huge, foreign -->
+          <Lylek>0.05</Lylek> <!-- lylek - huge, ours -->
+          <Beldon>0.008</Beldon> <!-- beldon - SUPER, ours -->
         </wildAnimals>
       </value>
     </match>
@@ -617,34 +657,34 @@
       <value>
         <wildAnimals>
           <GR_Chickenrabbit>1.0</GR_Chickenrabbit> <!-- chickenrabbit - tiny, dormant -->
-          <RG_KiwiBird>1.0</RG_KiwiBird> <!-- kiwi - tiny, dormant -->
+          <GRimPinkbird>1.0</GRimPinkbird> <!-- pinkbird - tiny, foreign -->
+          <GRimQuail>1.0</GRimQuail> <!-- Colorful quail - tiny, foreign -->
           <Scuttlebug>1.0</Scuttlebug> <!-- Space Worm - tiny, dormant -->
-          <Sparrow>1.0</Sparrow> <!-- sparrow - tiny, dormant -->
+          <AA_CrescendoAnole>0.7</AA_CrescendoAnole> <!-- crescendo anole - small, ours -->
+          <AA_Drainer>0.7</AA_Drainer> <!-- drainer - small, ours -->
           <BMT_Mole>0.7</BMT_Mole> <!-- mole - small, dormant -->
           <DA_IroncasketBeetle>0.7</DA_IroncasketBeetle> <!-- ironcasket beetle - small, dormant -->
           <Fingerspike>0.7</Fingerspike> <!-- fingerspike - small, dormant -->
-          <GR_Catrabbit>0.7</GR_Catrabbit> <!-- catrabbit - small, dormant -->
-          <GR_Catwolf>0.7</GR_Catwolf> <!-- catwolf - small, dormant -->
-          <GR_Chickenbear>0.7</GR_Chickenbear> <!-- chickenbear - small, dormant -->
           <GR_Manbear>0.7</GR_Manbear> <!-- manbear - small, dormant -->
-          <YorkshireTerrier>0.7</YorkshireTerrier> <!-- yorkshire terrier - small, dormant -->
+          <Gullipud>0.7</Gullipud> <!-- gullipud - small, foreign -->
+          <Snoruuk>0.7</Snoruuk> <!-- snoruuk - small, ours -->
           <AA_DecayDrake>0.4</AA_DecayDrake> <!-- decay drake - med, substituted -->
-          <AlligatorMan>0.4</AlligatorMan> <!-- alligator man - med, dormant -->
-          <JRWCoelophysis>0.4</JRWCoelophysis> <!-- Coelophysis - med, dormant -->
-          <JRWHypsilophodon>0.4</JRWHypsilophodon> <!-- Hypsilophodon - med, dormant -->
-          <JRWZephyrosaurus>0.4</JRWZephyrosaurus> <!-- Zephyrosaurus - med, dormant -->
+          <AA_Mime>0.4</AA_Mime> <!-- mime - med, dormant -->
+          <JRWDilophosaurus>0.4</JRWDilophosaurus> <!-- Dilophosaurus - med, foreign -->
+          <JRWGeralinura>0.4</JRWGeralinura> <!-- Geralinura - med, ours -->
           <Noctol>0.4</Noctol> <!-- noctol - med, dormant -->
           <Sightstealer>0.4</Sightstealer> <!-- sightstealer - med, dormant -->
           <Toughspike>0.4</Toughspike> <!-- toughspike - med, dormant -->
+          <Worm>0.4</Worm> <!-- worm - med, foreign -->
           <AA_ChameleonYak>0.18</AA_ChameleonYak> <!-- chameleon yak - large, ours -->
+          <AA_TarGuzzler>0.18</AA_TarGuzzler> <!-- tar guzzler - large, ours -->
+          <BMT_CrystalBeetle>0.18</BMT_CrystalBeetle> <!-- crystalback beetle - large, ours -->
           <Chimera>0.18</Chimera> <!-- chimera - large, dormant -->
-          <JRWAgilisaurus>0.18</JRWAgilisaurus> <!-- Agilisaurus - large, dormant -->
-          <JRWKileskus>0.18</JRWKileskus> <!-- Kileskus - large, dormant -->
-          <JRWRhamphorhynchus>0.18</JRWRhamphorhynchus> <!-- Rhamphorhynchus - large, dormant -->
-          <JRWDimetrodon>0.063</JRWDimetrodon> <!-- Dimetrodon - huge, dormant -->
-          <JRWEstemmenosuchus>0.063</JRWEstemmenosuchus> <!-- Estemmenosuchus - huge, dormant -->
-          <JRWOuranosaurus>0.063</JRWOuranosaurus> <!-- Ouranosaurus - huge, dormant -->
-          <Purussaurus>0.0108</Purussaurus> <!-- purussaurus - SUPER, dormant -->
+          <JRWPteranodon>0.18</JRWPteranodon> <!-- Pteranodon - large, ours -->
+          <Devourer>0.063</Devourer> <!-- devourer - huge, dormant -->
+          <JRWArthropleura>0.063</JRWArthropleura> <!-- Arthropleura - huge, ours -->
+          <Toraton>0.063</Toraton> <!-- toraton - huge, ours -->
+          <Harvester>0.0108</Harvester> <!-- harvester - SUPER, dormant -->
         </wildAnimals>
       </value>
     </match>
@@ -669,13 +709,13 @@
           <BMT_PustuleHornetSpawned>0.7</BMT_PustuleHornetSpawned> <!-- pustule hornet - small, dormant -->
           <Woolamander>0.7</Woolamander> <!-- woolamander - small, ours -->
           <AA_AcanthamoebaGiganteaLarge>0.4</AA_AcanthamoebaGiganteaLarge> <!-- acanthamoeba gigantea, large - med, dormant -->
-          <AA_CrystallineCaracal>0.4</AA_CrystallineCaracal> <!-- crystalline caracal - med, dormant -->
           <BMT_FireSalamander>0.4</BMT_FireSalamander> <!-- fire salamander - med, foreign -->
           <BMT_Swarmcaller>0.4</BMT_Swarmcaller> <!-- swarmcaller - med, dormant -->
+          <GR_Chickenspider>0.4</GR_Chickenspider> <!-- chickenspider - med, dormant -->
           <GRimLavaSnail>0.4</GRimLavaSnail> <!-- Colorful lava snail - med, foreign -->
-          <Metalhorror>0.4</Metalhorror> <!-- metalhorror - med, dormant -->
           <Rycrit>0.4</Rycrit> <!-- rycrit - med, ours -->
           <SW_Electricfish>0.4</SW_Electricfish> <!-- Electricfish - med, dormant -->
+          <SW_Electricgryllotalpa>0.4</SW_Electricgryllotalpa> <!-- Electricgryllotalpa - med, dormant -->
           <AA_Mantrap>0.18</AA_Mantrap> <!-- mantrap - large, ours -->
           <AA_SandSquid>0.18</AA_SandSquid> <!-- sand squid - large, ours -->
           <AA_SpinedGow>0.18</AA_SpinedGow> <!-- spined gow - large, ours -->
@@ -697,34 +737,74 @@
       <value>
         <wildAnimals>
           <AA_Locusts>1.0</AA_Locusts> <!-- locusts - tiny, dormant -->
-          <Hare>1.0</Hare> <!-- hare - tiny, ours -->
-          <RG_Rabbit>1.0</RG_Rabbit> <!-- rabbit - tiny, dormant -->
+          <GR_Catchicken>1.0</GR_Catchicken> <!-- catchicken - tiny, dormant -->
+          <PoisonRat>1.0</PoisonRat> <!-- poison rat - tiny, ours -->
           <TYR_MousePoison>1.0</TYR_MousePoison> <!-- poison mouse - tiny, ours -->
+          <AA_Bumbledrone>0.7</AA_Bumbledrone> <!-- bumbledrone - small, ours -->
+          <AA_BumbledroneHierophant>0.7</AA_BumbledroneHierophant> <!-- bumbledrone hierophant - small, ours -->
+          <AA_ShockGoat>0.7</AA_ShockGoat> <!-- shock goat - small, ours -->
           <Blarth>0.7</Blarth> <!-- blarth - small, foreign -->
-          <Chicken>0.7</Chicken> <!-- chicken - small, dormant -->
           <GR_AnimusHare>0.7</GR_AnimusHare> <!-- animus hare - small, dormant -->
-          <GR_Chickencat>0.7</GR_Chickencat> <!-- chickencat - small, dormant -->
-          <GR_Wolfchicken>0.7</GR_Wolfchicken> <!-- wolfchicken - small, dormant -->
-          <Goose>0.7</Goose> <!-- goose - small, dormant -->
           <Lothcat>0.7</Lothcat> <!-- loth-cat - small, ours -->
+          <Sketto>0.7</Sketto> <!-- sketto - small, ours -->
           <Voorpak>0.7</Voorpak> <!-- voorpak - small, ours -->
-          <BMT_GlarralPenguin>0.4</BMT_GlarralPenguin> <!-- glarral penguin - med, dormant -->
-          <BogHound>0.4</BogHound> <!-- bog hound - med, dormant -->
-          <ERN_Chocobo>0.4</ERN_Chocobo> <!-- chocobo - med, dormant -->
+          <AA_MeadowAve>0.4</AA_MeadowAve> <!-- meadow ave - med, ours -->
+          <AA_RoyalAve>0.4</AA_RoyalAve> <!-- royal ave - med, ours -->
           <GR_Muffaloman>0.4</GR_Muffaloman> <!-- muffaloman - med, dormant -->
-          <Ostrich>0.4</Ostrich> <!-- ostrich - med, dormant -->
+          <JRWMacrelcana>0.4</JRWMacrelcana> <!-- Macrelcana - med, foreign -->
+          <Pulmonoscorpius>0.4</Pulmonoscorpius> <!-- pulmonoscorpius - med, ours -->
           <Tauntaun>0.4</Tauntaun> <!-- tauntaun - med, foreign -->
           <VFEI2_RoyalMegascarab>0.4</VFEI2_RoyalMegascarab> <!-- royal megascarab - med, dormant -->
-          <Wolf_Arctic>0.4</Wolf_Arctic> <!-- arctic wolf - med, ours -->
+          <Zarander>0.4</Zarander> <!-- zarander - med, foreign -->
+          <AA_Bobeene>0.18</AA_Bobeene> <!-- bobeene - large, foreign -->
           <AA_Radyak>0.18</AA_Radyak> <!-- radyak - large, ours -->
-          <GR_ParagonFeline>0.18</GR_ParagonFeline> <!-- feline paragon - large, dormant -->
-          <GR_Thrumwolf>0.18</GR_Thrumwolf> <!-- thrumwolf - large, dormant -->
+          <Blurrg>0.18</Blurrg> <!-- blurrg - large, ours -->
+          <Boomalope>0.18</Boomalope> <!-- boomalope - large, ours -->
           <Nerf>0.18</Nerf> <!-- nerf - large, ours -->
-          <RG_Neutrolope>0.18</RG_Neutrolope> <!-- neutrolope - large, dormant -->
-          <Procoptodon>0.05</Procoptodon> <!-- procoptodon - huge, dormant -->
+          <AlphaThrumbo>0.05</AlphaThrumbo> <!-- alpha thrumbo - huge, dormant -->
           <VFEI2_Gigamite>0.05</VFEI2_Gigamite> <!-- gigamite - huge, dormant -->
           <VQEA_Splicehulk>0.05</VQEA_Splicehulk> <!-- splicehulk - huge, dormant -->
           <GR_Thrumbear>0.008</GR_Thrumbear> <!-- thrumbear - SUPER, dormant -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps">
+    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <AA_InfectedAerofleet>1.0</AA_InfectedAerofleet> <!-- infected aerofleet - tiny, ours -->
+          <BMT_SandLeaper>1.0</BMT_SandLeaper> <!-- sand leaper - tiny, dormant -->
+          <GR_Chickenlope>1.0</GR_Chickenlope> <!-- chickenlope - tiny, dormant -->
+          <HermitCrab>1.0</HermitCrab> <!-- hermit crab - tiny, dormant -->
+          <BMT_FungalWeevil>0.7</BMT_FungalWeevil> <!-- fungal weevil - small, ours -->
+          <BMT_GlowSlug>0.7</BMT_GlowSlug> <!-- glowslug - small, ours -->
+          <BMT_Glowtail>0.7</BMT_Glowtail> <!-- glowtail - small, dormant -->
+          <LongtailGorg>0.7</LongtailGorg> <!-- longtail gorg - small, ours -->
+          <Nuna>0.7</Nuna> <!-- nuna - small, ours -->
+          <Urusai>0.7</Urusai> <!-- urusai - small, ours -->
+          <VFEI2_Megathrips>0.7</VFEI2_Megathrips> <!-- megathrips - small, dormant -->
+          <Yobshrimp>0.7</Yobshrimp> <!-- yobshrimp - small, foreign -->
+          <AA_Erin>0.4</AA_Erin> <!-- erin - med, ours -->
+          <AA_Feralisk>0.4</AA_Feralisk> <!-- feralisk - med, ours -->
+          <BMT_Basilisk>0.4</BMT_Basilisk> <!-- basilisk - med, dormant -->
+          <BMT_CaveCricket>0.4</BMT_CaveCricket> <!-- cave cricket - med, ours -->
+          <ColossusToad>0.4</ColossusToad> <!-- colossus toad - med, foreign -->
+          <GR_Mancat>0.4</GR_Mancat> <!-- mancat - med, dormant -->
+          <Grank>0.4</Grank> <!-- Grank - med, ours -->
+          <RG_Rimclaw>0.4</RG_Rimclaw> <!-- rimclaw - med, ours -->
+          <BMT_Crystalope>0.18</BMT_Crystalope> <!-- crystalope - large, ours -->
+          <Gelagrub>0.18</Gelagrub> <!-- gelagrub - large, foreign -->
+          <Jimvu>0.18</Jimvu> <!-- jimvu - large, ours -->
+          <Mawvorr>0.18</Mawvorr> <!-- mawvorr - large, ours -->
+          <Nexu>0.18</Nexu> <!-- nexu - large, ours -->
+          <BMT_AcidSlug>0.0548</BMT_AcidSlug> <!-- acid slug - huge, dormant -->
+          <Reek>0.0548</Reek> <!-- reek - huge, ours -->
+          <Varactyl>0.0548</Varactyl> <!-- varactyl - huge, ours -->
+          <AA_Behemoth>0.0094</AA_Behemoth> <!-- Behemoth - SUPER, dormant -->
         </wildAnimals>
       </value>
     </match>
@@ -736,15 +816,15 @@
       <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <DA_SilverMole>1.0</DA_SilverMole> <!-- silver mole - tiny, dormant -->
-          <GuineaPig>1.0</GuineaPig> <!-- guinea pig - tiny, ours -->
+          <AA_Eyeling>1.0</AA_Eyeling> <!-- ikee - tiny, ours -->
+          <GR_Squirralope>1.0</GR_Squirralope> <!-- squirralope - tiny, dormant -->
           <Megascarab>1.0</Megascarab> <!-- megascarab - tiny, ours -->
           <Tooke>1.0</Tooke> <!-- tooke - tiny, ours -->
           <AA_BlackScarab>0.7</AA_BlackScarab> <!-- black scarab - small, dormant -->
           <BMT_FacetMoth>0.7</BMT_FacetMoth> <!-- facet moth - small, ours -->
           <BMT_SmogMoth>0.7</BMT_SmogMoth> <!-- smog moth - small, dormant -->
           <BMT_SmogMothLarvae>0.7</BMT_SmogMothLarvae> <!-- smog caterpillar - small, substituted -->
-          <Chinchilla>0.7</Chinchilla> <!-- chinchilla - small, ours -->
+          <BMT_TaintedTurtle>0.7</BMT_TaintedTurtle> <!-- tainted turtle - small, dormant -->
           <DA_Phrak>0.7</DA_Phrak> <!-- phrak - small, foreign -->
           <Shyrack>0.7</Shyrack> <!-- shyrack - small, ours -->
           <Tach>0.7</Tach> <!-- tach - small, ours -->
@@ -781,24 +861,24 @@
           <BMT_SandLeaper>1.0</BMT_SandLeaper> <!-- sand leaper - tiny, dormant -->
           <BMT_SonarRabbit>1.0</BMT_SonarRabbit> <!-- sonar rabbit - tiny, ours -->
           <BMT_GlowSlug>0.7</BMT_GlowSlug> <!-- glowslug - small, ours -->
+          <BMT_Mole>0.7</BMT_Mole> <!-- mole - small, dormant -->
           <BMT_ShimmershellSnail>0.7</BMT_ShimmershellSnail> <!-- shimmershell snail - small, ours -->
           <BMT_ToxSheep>0.7</BMT_ToxSheep> <!-- tox-wool sheep - small, dormant -->
           <Iriaz>0.7</Iriaz> <!-- iriaz - small, ours -->
           <KowakianMonkeyLizard>0.7</KowakianMonkeyLizard> <!-- kowakian monkey-lizard - small, ours -->
-          <Monkey>0.7</Monkey> <!-- monkey - small, ours -->
           <Pikobis>0.7</Pikobis> <!-- pikobis - small, ours -->
           <Scavrat>0.7</Scavrat> <!-- Scavrats - small, ours -->
+          <AA_BlackSpelopede>0.4</AA_BlackSpelopede> <!-- black spelopede - med, dormant -->
           <AA_RipperHound>0.4</AA_RipperHound> <!-- ripper hound - med, ours -->
           <AA_Thunderbeast>0.4</AA_Thunderbeast> <!-- thunderbeast - med, ours -->
+          <BMT_DarkAxolotl>0.4</BMT_DarkAxolotl> <!-- dark axolotl - med, dormant -->
           <BMT_LandOctopus>0.4</BMT_LandOctopus> <!-- terrestrial octopus - med, dormant -->
           <BMT_Xyrion>0.4</BMT_Xyrion> <!-- xyrion - med, ours -->
-          <Donkey>0.4</Donkey> <!-- donkey - med, ours -->
           <ERN_Amaro>0.4</ERN_Amaro> <!-- amaro - med, ours -->
           <Kaadu>0.4</Kaadu> <!-- kaadu - med, ours -->
-          <Panther>0.4</Panther> <!-- panther - med, ours -->
+          <Skalder>0.35</Skalder> <!-- skalder - huge, ours -->
           <Tukata>0.35</Tukata> <!-- tuk'ata - huge, ours -->
           <Uvak>0.35</Uvak> <!-- uvak - huge, ours -->
-          <VAEWaste_Pestigator>0.35</VAEWaste_Pestigator> <!-- pestigator - huge, dormant -->
           <AA_IronhuskBeetle>0.18</AA_IronhuskBeetle> <!-- ironhusk beetle - large, substituted -->
           <BMT_GiantSnail>0.18</BMT_GiantSnail> <!-- giant snail - large, ours -->
           <BMT_Megabat>0.18</BMT_Megabat> <!-- megabat - large, dormant -->
@@ -819,31 +899,31 @@
           <BMT_BrownBat>1.0</BMT_BrownBat> <!-- brown bat - tiny, dormant -->
           <BMT_GlowBat>1.0</BMT_GlowBat> <!-- bioluminescent bat - tiny, ours -->
           <BMT_GoetoTadpole>1.0</BMT_GoetoTadpole> <!-- goeto tadpole - tiny, dormant -->
-          <TYR_KangarooRat>1.0</TYR_KangarooRat> <!-- kangaroo rat - tiny, dormant -->
+          <GR_Fleshling>1.0</GR_Fleshling> <!-- fleshling - tiny, dormant -->
           <AM_Dryad_Spitter>0.7</AM_Dryad_Spitter> <!-- spitter dryad - small, dormant -->
           <BMT_BloodletterPetrel>0.7</BMT_BloodletterPetrel> <!-- bloodletter petrel - small, dormant -->
+          <BMT_GastroToad>0.7</BMT_GastroToad> <!-- gastro toad - small, dormant -->
           <BMT_GoetoToad>0.7</BMT_GoetoToad> <!-- goeto toad - small, ours -->
-          <Emu>0.7</Emu> <!-- emu - small, dormant -->
+          <BMT_ToxSheep>0.7</BMT_ToxSheep> <!-- tox-wool sheep - small, dormant -->
           <GRimTortoise>0.7</GRimTortoise> <!-- Colorful tortoise - small, foreign -->
           <Mott>0.7</Mott> <!-- mott - small, ours -->
           <Squall>0.7</Squall> <!-- squall - small, ours -->
-          <Tortoise>0.7</Tortoise> <!-- tortoise - small, dormant -->
           <AA_Animalisk>0.4</AA_Animalisk> <!-- animalisk - med, dormant -->
           <AA_RaptorShrimp>0.4</AA_RaptorShrimp> <!-- raptor shrimp - med, substituted -->
           <BMT_TripleSnapper>0.4</BMT_TripleSnapper> <!-- triple snapper - med, dormant -->
           <GR_Spidercat>0.4</GR_Spidercat> <!-- spidercat - med, dormant -->
           <GR_Wolfscarab>0.4</GR_Wolfscarab> <!-- wolfscarab - med, dormant -->
+          <Kybuck>0.4</Kybuck> <!-- kybuck - med, ours -->
           <Massiff>0.4</Massiff> <!-- massiff - med, ours -->
-          <Tiger>0.4</Tiger> <!-- tiger - med, dormant -->
           <VAEWaste_Toxiguana>0.4</VAEWaste_Toxiguana> <!-- toxiguana - med, dormant -->
           <AA_NightMule>0.18</AA_NightMule> <!-- nightmule - large, ours -->
+          <BMT_CrystalMantis>0.18</BMT_CrystalMantis> <!-- crystal mimic mantis - large, ours -->
           <BMT_GiantSlug>0.18</BMT_GiantSlug> <!-- giant slug - large, ours -->
           <BMT_Megapleura>0.18</BMT_Megapleura> <!-- megapleura - large, ours -->
-          <Bison>0.18</Bison> <!-- bison - large, ours -->
           <DA_Snaptoad>0.18</DA_Snaptoad> <!-- giant snaptoad - large, foreign -->
           <AA_MammothWorm>0.0573</AA_MammothWorm> <!-- mammoth worm - huge, ours -->
           <Dewback>0.0573</Dewback> <!-- dewback - huge, ours -->
-          <GR_Muffalohorse>0.0573</GR_Muffalohorse> <!-- muffalohorse - huge, dormant -->
+          <Katarn>0.0573</Katarn> <!-- katarn - huge, ours -->
           <Taozin>0.0098</Taozin> <!-- taozin - SUPER, ours -->
         </wildAnimals>
       </value>
@@ -856,31 +936,31 @@
       <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <Bluebird>1.0</Bluebird> <!-- bluebird - tiny, dormant -->
+          <BMT_Batbird>1.0</BMT_Batbird> <!-- batbird - tiny, dormant -->
           <Boomrat>1.0</Boomrat> <!-- boomrat - tiny, ours -->
-          <Bullfrog>1.0</Bullfrog> <!-- bullfrog - tiny, foreign -->
           <JOE_Landopus>1.0</JOE_Landopus> <!-- landopus - tiny, foreign -->
+          <Scuttlebug>1.0</Scuttlebug> <!-- Space Worm - tiny, dormant -->
           <AA_AngelMoth>0.7</AA_AngelMoth> <!-- angel moth - small, ours -->
           <AA_ShockGoat>0.7</AA_ShockGoat> <!-- shock goat - small, ours -->
+          <BMT_FungalFerret>0.7</BMT_FungalFerret> <!-- fungal ferret - small, ours -->
           <Convor>0.7</Convor> <!-- convor - small, ours -->
-          <Flamingo>0.7</Flamingo> <!-- flamingo - small, dormant -->
+          <Fingerspike>0.7</Fingerspike> <!-- fingerspike - small, dormant -->
           <GR_Manalope>0.7</GR_Manalope> <!-- manalope - small, dormant -->
-          <Heron>0.7</Heron> <!-- heron - small, dormant -->
           <Rikknit>0.7</Rikknit> <!-- rikknit - small, foreign -->
-          <Turkey>0.7</Turkey> <!-- turkey - small, ours -->
+          <StoneCrab>0.7</StoneCrab> <!-- stone crab - small, dormant -->
           <Bordok>0.4</Bordok> <!-- bordok - med, ours -->
           <FrogDog>0.4</FrogDog> <!-- frog dog - med, ours -->
           <JRWArchaeopteryx>0.4</JRWArchaeopteryx> <!-- Archaeopteryx - med, ours -->
+          <JRWEuphoberia>0.4</JRWEuphoberia> <!-- Euphoberia - med, ours -->
           <JRWHynerpeton>0.4</JRWHynerpeton> <!-- Hynerpeton - med, foreign -->
-          <JRWMicroceratus>0.4</JRWMicroceratus> <!-- Microceratus - med, dormant -->
-          <MandrillMan>0.4</MandrillMan> <!-- mandrill man - med, dormant -->
-          <Trispike>0.4</Trispike> <!-- trispike - med, dormant -->
-          <VAEWaste_Wasteboar>0.4</VAEWaste_Wasteboar> <!-- wasteboar - med, dormant -->
+          <JRWPlatyhystrix>0.4</JRWPlatyhystrix> <!-- Platyhystrix - med, foreign -->
+          <JRWPulmonoscorpius>0.4</JRWPulmonoscorpius> <!-- Pulmonoscorpius - med, foreign -->
+          <Yippa>0.4</Yippa> <!-- yippa - med, foreign -->
+          <AA_Gigantelope>0.18</AA_Gigantelope> <!-- gigantelope - large, ours -->
           <GR_Boomalisk>0.18</GR_Boomalisk> <!-- boomalisk - large, dormant -->
           <Gorehulk>0.18</Gorehulk> <!-- gorehulk - large, dormant -->
-          <JRWDryosaurus>0.18</JRWDryosaurus> <!-- Dryosaurus - large, dormant -->
           <JRWGeosternbergia>0.18</JRWGeosternbergia> <!-- Geosternbergia - large, ours -->
-          <MutantCow>0.18</MutantCow> <!-- cow - large, dormant -->
+          <Jerbal>0.18</Jerbal> <!-- jerbal - large, ours -->
           <Bulbfreak>0.05</Bulbfreak> <!-- bulbfreak - huge, dormant -->
           <Dreadmeld>0.05</Dreadmeld> <!-- dreadmeld - huge, dormant -->
           <GR_FleshMonstrosity>0.05</GR_FleshMonstrosity> <!-- flesh monstrosity - huge, dormant -->
@@ -897,22 +977,22 @@
       <value>
         <wildAnimals>
           <GR_Catchicken>1.0</GR_Catchicken> <!-- catchicken - tiny, dormant -->
+          <GRimBullfrog>1.0</GRimBullfrog> <!-- Colorful bullfrog - tiny, foreign -->
           <PoisonRat>1.0</PoisonRat> <!-- poison rat - tiny, ours -->
           <Porg>1.0</Porg> <!-- porg - tiny, ours -->
-          <Rat>1.0</Rat> <!-- brown rat - tiny, ours -->
           <AA_AnimusVox>0.7</AA_AnimusVox> <!-- animus vox - small, ours -->
+          <AM_UnshackledDryad>0.7</AM_UnshackledDryad> <!-- unshackled dryad - small, dormant -->
           <Bardelot>0.7</Bardelot> <!-- bardelot - small, foreign -->
-          <Cat>0.7</Cat> <!-- cat - small, dormant -->
-          <Fox_Arctic>0.7</Fox_Arctic> <!-- arctic fox - small, ours -->
-          <GR_Dogman>0.7</GR_Dogman> <!-- dogman - small, dormant -->
-          <Lynx>0.7</Lynx> <!-- lynx - small, ours -->
-          <Penguin>0.7</Penguin> <!-- penguin - small, dormant -->
+          <Blarth>0.7</Blarth> <!-- blarth - small, foreign -->
+          <Locust>0.7</Locust> <!-- locust - small, dormant -->
+          <TetnissCrab>0.7</TetnissCrab> <!-- tet'niss crab - small, foreign -->
+          <Voorpak>0.7</Voorpak> <!-- voorpak - small, ours -->
           <Vulptex>0.7</Vulptex> <!-- vulptex - small, ours -->
           <BMT_Rimebeak>0.4</BMT_Rimebeak> <!-- rimebeak - med, dormant -->
           <GR_Bearman>0.4</GR_Bearman> <!-- bearman - med, dormant -->
           <GR_Moleman>0.4</GR_Moleman> <!-- moleman - med, dormant -->
-          <Husky>0.4</Husky> <!-- husky - med, dormant -->
-          <Seal>0.4</Seal> <!-- seal - med, dormant -->
+          <JRWBeelzebufo>0.4</JRWBeelzebufo> <!-- Beelzebufo - med, foreign -->
+          <Qormot>0.4</Qormot> <!-- qormot - med, ours -->
           <VFEI2_Durapod>0.4</VFEI2_Durapod> <!-- durapod - med, dormant -->
           <VFEI2_RoyalSpelopede>0.4</VFEI2_RoyalSpelopede> <!-- royal spelopede - med, dormant -->
           <VFEI2_Venomite>0.4</VFEI2_Venomite> <!-- venomite - med, dormant -->
@@ -920,7 +1000,7 @@
           <VFEI2_Empress>0.35</VFEI2_Empress> <!-- empress - huge, dormant -->
           <VFEI2_Silverfish>0.35</VFEI2_Silverfish> <!-- silverfish - huge, dormant -->
           <Tibidee>0.2</Tibidee> <!-- tibidee - SUPER, ours -->
-          <GR_Chickenlodon>0.18</GR_Chickenlodon> <!-- chickenlodon - large, dormant -->
+          <BMT_Maxolotl>0.18</BMT_Maxolotl> <!-- maxolotl - large, ours -->
           <VFEI2_Megapede>0.18</VFEI2_Megapede> <!-- megapede - large, dormant -->
           <VFEI2_RoyalMegaspider>0.18</VFEI2_RoyalMegaspider> <!-- royal megaspider - large, dormant -->
           <VFEI2_Tankroach>0.18</VFEI2_Tankroach> <!-- tankroach - large, dormant -->
@@ -935,7 +1015,7 @@
       <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <Cobra>1.0</Cobra> <!-- cobra - tiny, dormant -->
+          <GR_Catalope>1.0</GR_Catalope> <!-- catalope - tiny, dormant -->
           <GRimCobra>1.0</GRimCobra> <!-- Colorful cobra - tiny, foreign -->
           <Kreetle>1.0</Kreetle> <!-- kreetle - tiny, ours -->
           <TYR_HotfootRat>1.0</TYR_HotfootRat> <!-- hotfoot rat - tiny, ours -->
@@ -949,16 +1029,16 @@
           <WompRat>0.7</WompRat> <!-- womp rat - small, ours -->
           <AA_Animalisk>0.4</AA_Animalisk> <!-- animalisk - med, dormant -->
           <AA_Erin>0.4</AA_Erin> <!-- erin - med, ours -->
+          <AA_Junglelisk>0.4</AA_Junglelisk> <!-- junglelisk - med, ours -->
           <BMT_MucklurkerCatfish>0.4</BMT_MucklurkerCatfish> <!-- mucklurker catfish - med, dormant -->
           <BMT_MutatingTumorfishFry>0.4</BMT_MutatingTumorfishFry> <!-- mutating tumorfish fry - med, dormant -->
-          <JRWYurlunggur>0.4</JRWYurlunggur> <!-- yurlunggur - med, dormant -->
           <LavaSnail>0.4</LavaSnail> <!-- lava snail - med, ours -->
           <Massiff>0.4</Massiff> <!-- massiff - med, ours -->
           <VAEWaste_Toxiguana>0.4</VAEWaste_Toxiguana> <!-- toxiguana - med, dormant -->
+          <BMT_JewelBeetle>0.18</BMT_JewelBeetle> <!-- jewel beetle - large, dormant -->
           <DA_Pilgrim>0.18</DA_Pilgrim> <!-- pilgrim - large, ours -->
           <GR_Crocorse>0.18</GR_Crocorse> <!-- crocorse - large, dormant -->
           <MA_Sporemole>0.18</MA_Sporemole> <!-- Sporemole - large, foreign -->
-          <VAEWaste_Toxscorpion>0.18</VAEWaste_Toxscorpion> <!-- toxscorpion - large, dormant -->
           <GR_Muffalokomodo>0.05</GR_Muffalokomodo> <!-- muffalokomodo - huge, dormant -->
           <GR_Thrumbolizard>0.05</GR_Thrumbolizard> <!-- thrumbolizard - huge, dormant -->
           <Ronto>0.008</Ronto> <!-- ronto - SUPER, ours -->
@@ -982,16 +1062,16 @@
           <BMT_Gembug>0.7</BMT_Gembug> <!-- gembug - small, ours -->
           <GRimMonitorLizard>0.7</GRimMonitorLizard> <!-- Colorful monitor lizard - small, foreign -->
           <GRimStoneCrab>0.7</GRimStoneCrab> <!-- Colorful stone crab - small, foreign -->
-          <MonitorLizard>0.7</MonitorLizard> <!-- monitor lizard - small, dormant -->
           <Shiro>0.7</Shiro> <!-- shiro - small, ours -->
           <Whisperbird>0.7</Whisperbird> <!-- whisperbird - small, ours -->
+          <WompRat>0.7</WompRat> <!-- womp rat - small, ours -->
           <AA_Feralisk>0.4</AA_Feralisk> <!-- feralisk - med, ours -->
           <AA_Thermadon>0.4</AA_Thermadon> <!-- thermadon - med, ours -->
           <Anooba>0.4</Anooba> <!-- anooba - med, ours -->
           <BMT_AaroxisDendoria>0.4</BMT_AaroxisDendoria> <!-- aaroxis dendoria - med, ours -->
           <DA_Karabal>0.4</DA_Karabal> <!-- karabal - med, ours -->
-          <JRWDinilysia>0.4</JRWDinilysia> <!-- dinilysia - med, dormant -->
           <JRWProtosolpuga>0.4</JRWProtosolpuga> <!-- Protosolpuga - med, substituted -->
+          <LavaSnail>0.4</LavaSnail> <!-- lava snail - med, ours -->
           <Runyip>0.4</Runyip> <!-- runyip - med, ours -->
           <AA_RoughPlatedMonitor>0.18</AA_RoughPlatedMonitor> <!-- rough-plated monitor - large, ours -->
           <AG_OcularSlinger>0.18</AG_OcularSlinger> <!-- ocular slinger - large, dormant -->
@@ -1013,30 +1093,30 @@
         <wildAnimals>
           <BMT_Megaroach>1.0</BMT_Megaroach> <!-- megaroach - tiny, dormant -->
           <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
-          <IronScruff_Jellybird>1.0</IronScruff_Jellybird> <!-- jellybird - tiny, dormant -->
+          <Leaftail>1.0</Leaftail> <!-- leaf-tail - tiny, ours -->
           <Neebray>1.0</Neebray> <!-- neebray - tiny, ours -->
           <AA_Frostmite>0.7</AA_Frostmite> <!-- frostmite - small, ours -->
+          <AM_UnshackledDryad>0.7</AM_UnshackledDryad> <!-- unshackled dryad - small, dormant -->
           <BMT_ColonyPustuleHornet>0.7</BMT_ColonyPustuleHornet> <!-- pustule hornet - small, dormant -->
           <BMT_FamineLocust>0.7</BMT_FamineLocust> <!-- famine locust - small, dormant -->
           <BMT_PustuleHornet>0.7</BMT_PustuleHornet> <!-- pustule hornet - small, dormant -->
           <BMT_PustuleHornetSpawned>0.7</BMT_PustuleHornetSpawned> <!-- pustule hornet - small, dormant -->
-          <DA_ArcticOwlcat>0.7</DA_ArcticOwlcat> <!-- arctic owlcat - small, dormant -->
-          <IronScruff_Flatworm>0.7</IronScruff_Flatworm> <!-- flatworm hound - small, dormant -->
           <Mynock>0.7</Mynock> <!-- mynock - small, ours -->
+          <WasteRat>0.7</WasteRat> <!-- waste rat - small, dormant -->
           <AA_Frostling>0.4</AA_Frostling> <!-- frostling - med, ours -->
           <BMT_ColonyPustuleHornetQueen>0.4</BMT_ColonyPustuleHornetQueen> <!-- pustule queen - med, dormant -->
           <BMT_PustuleHornetQueen>0.4</BMT_PustuleHornetQueen> <!-- pustule queen - med, dormant -->
+          <BMT_Snowstalker>0.4</BMT_Snowstalker> <!-- snowstalker - med, dormant -->
           <BMT_Swarmcaller>0.4</BMT_Swarmcaller> <!-- swarmcaller - med, dormant -->
-          <IronScruff_Hydrazoa>0.4</IronScruff_Hydrazoa> <!-- hydrazoa - med, dormant -->
           <Krykna>0.4</Krykna> <!-- krykna - med, ours -->
           <VQE_IceCrawler>0.4</VQE_IceCrawler> <!-- ice crawler - med, dormant -->
           <VQE_Megamidge>0.4</VQE_Megamidge> <!-- megamidge - med, dormant -->
           <BMT_Thrumbungus>0.35</BMT_Thrumbungus> <!-- thrumbungus - huge, dormant -->
           <AA_ArcticLion>0.18</AA_ArcticLion> <!-- arctic lion - large, ours -->
+          <AA_Blizzarisk>0.18</AA_Blizzarisk> <!-- blizzarisk - large, ours -->
+          <BMT_FrostweaverSpider>0.18</BMT_FrostweaverSpider> <!-- frostweaver - large, dormant -->
           <DA_SnowTaraal>0.18</DA_SnowTaraal> <!-- snow taraal - large, foreign -->
-          <GR_Chickenlodon>0.18</GR_Chickenlodon> <!-- chickenlodon - large, dormant -->
           <Ling_Cockroach>0.18</Ling_Cockroach> <!-- Giant Cockroach - large, ours -->
-          <MA_Manehound>0.18</MA_Manehound> <!-- manehound - large, dormant -->
         </wildAnimals>
       </value>
     </match>
@@ -1053,10 +1133,19 @@
        half-built cache it leaves behind silently zeroes every
        animal that would have registered after it - for the rest
        of the session, with no further error.
-       56 pair(s) this run. Sourced from the mod XML on disk
+       67 pair(s) this run. Sourced from the mod XML on disk
        AND from the newest def dump capture, because a collision a
        PatchOperation creates exists in no def file at all - which is
        how 27 of them shipped on 2026-08-26 against a disk-only scan.
+
+       🔴 THIS LIST IS A FLOOR, NOT A ROSTER. The capture is taken AFTER
+       every PatchOperation, so a pair our own removal ALREADY FIXED is
+       invisible here - the fix hides its own evidence. Measured
+       2026-08-26: 56 found, 61 shipped, and the 5 absent ones were all
+       already-working removals. ⛔ Never let this section REPLACE the
+       shipped de-dup files; the shipped set must be the UNION of every
+       pair ever found. That is why the deployed cast patch carries the
+       CAST SECTION ONLY.
        ============================================================ -->
 
   <Operation Class="PatchOperationConditional">   <!-- AA_CrescendoAnole x AB_FeraliskInfestedJungle -->
@@ -1065,10 +1154,16 @@
       <xpath>/Defs/ThingDef[defName="AA_CrescendoAnole"]/race/wildBiomes/AB_FeraliskInfestedJungle</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- Purussaurus x AB_GelatinousSuperorganism -->
-    <xpath>/Defs/ThingDef[defName="Purussaurus"]/race/wildBiomes/AB_GelatinousSuperorganism</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Junglelisk x AB_FeraliskInfestedJungle -->
+    <xpath>/Defs/ThingDef[defName="AA_Junglelisk"]/race/wildBiomes/AB_FeraliskInfestedJungle</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Purussaurus"]/race/wildBiomes/AB_GelatinousSuperorganism</xpath>
+      <xpath>/Defs/ThingDef[defName="AA_Junglelisk"]/race/wildBiomes/AB_FeraliskInfestedJungle</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Drainer x AB_GelatinousSuperorganism -->
+    <xpath>/Defs/ThingDef[defName="AA_Drainer"]/race/wildBiomes/AB_GelatinousSuperorganism</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Drainer"]/race/wildBiomes/AB_GelatinousSuperorganism</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- AA_AcanthamoebaGiganteaSmall x AB_MechanoidIntrusion -->
@@ -1107,6 +1202,12 @@
       <xpath>/Defs/ThingDef[defName="AA_Blizzarisk"]/race/wildBiomes/AB_PropaneLakes</xpath>
     </match>
   </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_CrystalMit x AB_PropaneLakes -->
+    <xpath>/Defs/ThingDef[defName="AA_CrystalMit"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_CrystalMit"]/race/wildBiomes/AB_PropaneLakes</xpath>
+    </match>
+  </Operation>
   <Operation Class="PatchOperationConditional">   <!-- AA_Darkbeast x AB_PropaneLakes -->
     <xpath>/Defs/ThingDef[defName="AA_Darkbeast"]/race/wildBiomes/AB_PropaneLakes</xpath>
     <match Class="PatchOperationRemove">
@@ -1137,28 +1238,94 @@
       <xpath>/Defs/ThingDef[defName="AA_Metallovore"]/race/wildBiomes/AB_PyroclasticConflagration</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- Procoptodon x AB_TarPits -->
-    <xpath>/Defs/ThingDef[defName="Procoptodon"]/race/wildBiomes/AB_TarPits</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- AA_DuskProwler x AB_RockyCrags -->
+    <xpath>/Defs/ThingDef[defName="AA_DuskProwler"]/race/wildBiomes/AB_RockyCrags</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Procoptodon"]/race/wildBiomes/AB_TarPits</xpath>
+      <xpath>/Defs/ThingDef[defName="AA_DuskProwler"]/race/wildBiomes/AB_RockyCrags</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- Diprotodon x AridShrubland -->
-    <xpath>/Defs/ThingDef[defName="Diprotodon"]/race/wildBiomes/AridShrubland</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- AA_NightAve x AB_RockyCrags -->
+    <xpath>/Defs/ThingDef[defName="AA_NightAve"]/race/wildBiomes/AB_RockyCrags</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Diprotodon"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="AA_NightAve"]/race/wildBiomes/AB_RockyCrags</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- MA_Direhorse x AridShrubland -->
-    <xpath>/Defs/ThingDef[defName="MA_Direhorse"]/race/wildBiomes/AridShrubland</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- AA_NightRam x AB_RockyCrags -->
+    <xpath>/Defs/ThingDef[defName="AA_NightRam"]/race/wildBiomes/AB_RockyCrags</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="MA_Direhorse"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="AA_NightRam"]/race/wildBiomes/AB_RockyCrags</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- MA_Harpeagle x AridShrubland -->
-    <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/race/wildBiomes/AridShrubland</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Nightling x AB_RockyCrags -->
+    <xpath>/Defs/ThingDef[defName="AA_Nightling"]/race/wildBiomes/AB_RockyCrags</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="AA_Nightling"]/race/wildBiomes/AB_RockyCrags</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_ShadowCharger x AB_RockyCrags -->
+    <xpath>/Defs/ThingDef[defName="AA_ShadowCharger"]/race/wildBiomes/AB_RockyCrags</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_ShadowCharger"]/race/wildBiomes/AB_RockyCrags</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Thunderox x AB_RockyCrags -->
+    <xpath>/Defs/ThingDef[defName="AA_Thunderox"]/race/wildBiomes/AB_RockyCrags</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Thunderox"]/race/wildBiomes/AB_RockyCrags</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Bumbledrone x AB_TarPits -->
+    <xpath>/Defs/ThingDef[defName="AA_Bumbledrone"]/race/wildBiomes/AB_TarPits</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Bumbledrone"]/race/wildBiomes/AB_TarPits</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Aerofleet x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="AA_Aerofleet"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Aerofleet"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_SandLion x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="AA_SandLion"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_SandLion"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Wildpawn x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="AA_Wildpawn"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Wildpawn"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- GiantToad x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="GiantToad"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="GiantToad"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- JRWBagaceratops x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="JRWBagaceratops"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="JRWBagaceratops"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- JRWQantassaurus x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="JRWQantassaurus"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="JRWQantassaurus"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- MA_Sivatherium x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="MA_Sivatherium"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="MA_Sivatherium"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- Orray x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="Orray"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Orray"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- PaintedSpat x AridShrubland -->
@@ -1167,10 +1334,10 @@
       <xpath>/Defs/ThingDef[defName="PaintedSpat"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- Quinkana x AridShrubland -->
-    <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/AridShrubland</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- Pufferpig x AridShrubland -->
+    <xpath>/Defs/ThingDef[defName="Pufferpig"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/AridShrubland</xpath>
+      <xpath>/Defs/ThingDef[defName="Pufferpig"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- Torton x AridShrubland -->
@@ -1185,10 +1352,10 @@
       <xpath>/Defs/ThingDef[defName="Urusai"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- Gigantophis x Desert -->
-    <xpath>/Defs/ThingDef[defName="Gigantophis"]/race/wildBiomes/Desert</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- AA_MatureFleshbeast x Desert -->
+    <xpath>/Defs/ThingDef[defName="AA_MatureFleshbeast"]/race/wildBiomes/Desert</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Gigantophis"]/race/wildBiomes/Desert</xpath>
+      <xpath>/Defs/ThingDef[defName="AA_MatureFleshbeast"]/race/wildBiomes/Desert</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- AA_Dunealisk x ExtremeDesert -->
@@ -1257,16 +1424,16 @@
       <xpath>/Defs/ThingDef[defName="AA_ArcticLion"]/race/wildBiomes/IceSheet</xpath>
     </match>
   </Operation>
+  <Operation Class="PatchOperationConditional">   <!-- AA_Blizzarisk x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="AA_Blizzarisk"]/race/wildBiomes/IceSheet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="AA_Blizzarisk"]/race/wildBiomes/IceSheet</xpath>
+    </match>
+  </Operation>
   <Operation Class="PatchOperationConditional">   <!-- AA_Frostmite x IceSheet -->
     <xpath>/Defs/ThingDef[defName="AA_Frostmite"]/race/wildBiomes/IceSheet</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="AA_Frostmite"]/race/wildBiomes/IceSheet</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- DA_ArcticOwlcat x IceSheet -->
-    <xpath>/Defs/ThingDef[defName="DA_ArcticOwlcat"]/race/wildBiomes/IceSheet</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="DA_ArcticOwlcat"]/race/wildBiomes/IceSheet</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- DA_SnowTaraal x IceSheet -->
@@ -1287,10 +1454,10 @@
       <xpath>/Defs/ThingDef[defName="Krykna"]/race/wildBiomes/IceSheet</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- MA_Manehound x IceSheet -->
-    <xpath>/Defs/ThingDef[defName="MA_Manehound"]/race/wildBiomes/IceSheet</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- Leaftail x IceSheet -->
+    <xpath>/Defs/ThingDef[defName="Leaftail"]/race/wildBiomes/IceSheet</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="MA_Manehound"]/race/wildBiomes/IceSheet</xpath>
+      <xpath>/Defs/ThingDef[defName="Leaftail"]/race/wildBiomes/IceSheet</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- Mynock x IceSheet -->
@@ -1323,12 +1490,6 @@
       <xpath>/Defs/ThingDef[defName="Bardelot"]/race/wildBiomes/SeaIce</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- Penguin x SeaIce -->
-    <xpath>/Defs/ThingDef[defName="Penguin"]/race/wildBiomes/SeaIce</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Penguin"]/race/wildBiomes/SeaIce</xpath>
-    </match>
-  </Operation>
   <Operation Class="PatchOperationConditional">   <!-- AA_RipperHound x Volcano -->
     <xpath>/Defs/ThingDef[defName="AA_RipperHound"]/race/wildBiomes/Volcano</xpath>
     <match Class="PatchOperationRemove">
@@ -1347,22 +1508,22 @@
       <xpath>/Defs/ThingDef[defName="AA_BumbledroneHierophant"]/race/wildBiomes/ZBiome_Badlands</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- AA_PhoenixOwlcat x ZBiome_Badlands -->
-    <xpath>/Defs/ThingDef[defName="AA_PhoenixOwlcat"]/race/wildBiomes/ZBiome_Badlands</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- AA_LuciferBug x ZBiome_Badlands -->
+    <xpath>/Defs/ThingDef[defName="AA_LuciferBug"]/race/wildBiomes/ZBiome_Badlands</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="AA_PhoenixOwlcat"]/race/wildBiomes/ZBiome_Badlands</xpath>
+      <xpath>/Defs/ThingDef[defName="AA_LuciferBug"]/race/wildBiomes/ZBiome_Badlands</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- Dinopithecus x ZBiome_Badlands -->
-    <xpath>/Defs/ThingDef[defName="Dinopithecus"]/race/wildBiomes/ZBiome_Badlands</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- AA_PedigreedRaptor x ZBiome_Badlands -->
+    <xpath>/Defs/ThingDef[defName="AA_PedigreedRaptor"]/race/wildBiomes/ZBiome_Badlands</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Dinopithecus"]/race/wildBiomes/ZBiome_Badlands</xpath>
+      <xpath>/Defs/ThingDef[defName="AA_PedigreedRaptor"]/race/wildBiomes/ZBiome_Badlands</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- JRWTorosaurus x ZBiome_Badlands -->
-    <xpath>/Defs/ThingDef[defName="JRWTorosaurus"]/race/wildBiomes/ZBiome_Badlands</xpath>
+  <Operation Class="PatchOperationConditional">   <!-- JRWEuoplocephalus x ZBiome_Badlands -->
+    <xpath>/Defs/ThingDef[defName="JRWEuoplocephalus"]/race/wildBiomes/ZBiome_Badlands</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="JRWTorosaurus"]/race/wildBiomes/ZBiome_Badlands</xpath>
+      <xpath>/Defs/ThingDef[defName="JRWEuoplocephalus"]/race/wildBiomes/ZBiome_Badlands</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- AA_FissionMouse x ZBiome_DesertOasis -->
@@ -1387,12 +1548,6 @@
     <xpath>/Defs/ThingDef[defName="AA_DesertAve"]/race/wildBiomes/ZBiome_Grasslands</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="AA_DesertAve"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- JRWWonambi x ZBiome_Grasslands -->
-    <xpath>/Defs/ThingDef[defName="JRWWonambi"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="JRWWonambi"]/race/wildBiomes/ZBiome_Grasslands</xpath>
     </match>
   </Operation>
 
