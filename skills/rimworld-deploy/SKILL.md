@@ -260,3 +260,21 @@ LIES     Game copy may be the PREVIOUS build if RimWorld was running at deploy (
 ⚠️ **Write it in the same commit as the deploy.** The alternative is that whoever
 holds the game invents a check, and theirs will not carry your prediction — which
 is the field that turns a look into evidence.
+
+## The deployed companion DLL runs behind source, and a missing tool is ambiguous
+
+A companion assembly deploys only in a game-down window, so the game copy drifts behind the
+repo for as long as the game stays up. Measured once at **166 tool names deployed against
+238 built** — 670 KB of IL, everything written that day.
+
+⇒ **A tool missing from `--list-tools` proves nothing on its own:** undeployed, gated out of
+the build, or genuinely absent all read identically. Disambiguate with `build.py`'s own
+`tool_surface()` over both DLLs.
+
+⚠️ **That is a BYTE SCAN.** Its "added" list is untrustworthy — encoding differences make
+tools that shipped weeks ago look new. Trust it for `LOST` being empty and for a name being
+PRESENT; corroborate a gap with file size and the build commit stamped in the assembly.
+
+⛔ **A `jawa/` literal written in PROSE inside a tool description becomes a phantom tool
+name**, which makes `build.py`'s "THIS DEPLOY WOULD REMOVE TOOLS" guard lie in both
+directions. After any description edit: `[x for x in surface if x.endswith('_')]`.

@@ -158,3 +158,29 @@ abstention clause that removes most fabrication are in
 
 **After:** one agent, or one `grep -c` — and if the answer matters, the parent
 reads the one line.
+
+## Two blind arms, and cut only where they agree
+
+When the question is *"which of these lines can we lose?"* — or any judgement where a single
+agent's confidence is the failure mode — run two assessments that **cannot see each other**
+and act only on the intersection.
+
+**Split the input mechanically first.** `Utils/doc_claims.py` numbers every claim before
+either arm runs. 🔑 If each arm re-reads the prose it grades a different thing, and their
+agreement means nothing. Mechanical extraction is what makes the intersection meaningful.
+
+| arm | sees | judges |
+|---|---|---|
+| **empirical** | the claim list | invents N realistic tasks blind, marks each claim LOAD_BEARING / USED_REDUNDANT / NEVER |
+| **theory** | the claim list only — never the scenarios | marginal necessity given the other claims, with named codes: IMPLIED · DUPLICATE · PROVENANCE · MOTIVATION · UNFALSIFIABLE · SCOPE_DRIFT |
+
+Measured over 380 claims in three files: **112 dead (~29%)**, and both arms independently
+named the same structural fault in all three.
+
+⚠️ **Each arm has a known blind spot, and that is the point.** The empirical arm's NEVER
+bucket is only as good as its invented scenarios and systematically misses hard boundaries
+nobody approaches — 24 claims it never exercised survived on the theory arm's objection
+alone, including one stopping a real misrecording. The theory arm, alone, would have cut
+lines that a real task needs.
+
+⛔ **Never cut on one arm.** ✅ And override both when you have a reason — say which, and why.

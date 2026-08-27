@@ -203,3 +203,34 @@ The translator now refuses both shapes and falls through to lxml. But the durabl
 is in the patch, not the checker: **name a list entry by a value it carries, never by
 its position.** `li[kindDef="Combat"][commonality="100"]` cannot drift when a mod
 inserts a group ahead of yours, and both engines agree on it.
+
+## The def dump captures no `statBases` — so no price is readable offline
+
+Measured 2026-08-26. **Zero ThingDefs in the capture carry `statBases`.** Vanilla `Steel`
+reads `None` through the same accessor as any modded apparel.
+
+⛔ **A `None` here means NOT CAPTURED, never "this def declares no MarketValue."** That
+misreading was made twice in one hour and written into an evidence file before it was caught.
+
+⇒ No affordability or price question — `weaponMoney`, `apparelMoney`, "can this kind afford
+that armour" — can be settled from this dump. Use the mod XML `costList`, a live
+`jawa/thing_stats`, or widen the dump.
+
+⚠️ `Utils/weapon_affordability.py` is not a counter-example: it reads statBases as a LIST of
+`{stat, value}` dicts through its own `_stat()` helper and takes a separate index argument.
+Do not assume a flat dict, and do not assume it reads the same artifact.
+
+## Listing the dev menu RUNS mod code, which is why it wedges
+
+`LudeonTK/DebugTabMenu_Actions.InitActions` walks every loaded type **and invokes every
+`[DebugActionYielder]`** — `methodInfo.Invoke(null, null)` — then enumerates the result. A
+yielder is arbitrary mod code that commonly walks a whole `DefDatabase`.
+
+⇒ **A `limit` on the RESULT bounds neither cost.** On 582 mods
+`rimworld/search_debug_actions {"query":"generate map","limit":10}` timed out at 30 s and
+left every other bridge caller queued for minutes. The host tool is assemblies-only and
+cannot be fixed by us: **do not call it on the full list.**
+
+✅ `jawa/debug_actions` is the bounded replacement — filters during the walk, wall-clock
+budget, `resumeFromType`, and never invokes a yielder (reporting `yieldersSkipped`, so the
+blind spot is a number rather than a gap).
