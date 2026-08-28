@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T15:45:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-08-28T15:46:46Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -133,16 +133,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## ANCIENT_SCATTERBOW_TAG_SEVER_1 Deploy the scatterbow Inherit=False sever and prove Gun is gone from the next capture
-state:    proposed
-row:      unassigned
-needs:    harvest
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  src/Jawa/JawaPatches/Patches/AncientArsenalAshkarr.xml operation 1 was rewritten by DECIDE at 347b841e.
-prose:    infrastructure/state/items/ANCIENT_SCATTERBOW_TAG_SEVER_1.md
 
 ## NONCANON_ARRIVES_BY_PAWNKIND_1 106 of our PawnKindDefs bypass every faction xenotype gate - is that wanted, and is gene extraction in scope
 state:    proposed
