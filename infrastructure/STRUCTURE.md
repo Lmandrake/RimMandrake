@@ -181,9 +181,8 @@ Payloads are gitignored; **the teardown is the work product.**
 |---|---|
 | `infrastructure/README.md` | The tier rule, and the rules-vs-state line. |
 | `infrastructure/STRUCTURE.md` | This file. |
-| `infrastructure/agents/POLICY.md` | Shared seat rules — how you work, the queue channel, the item contract, the modes. |
-| `infrastructure/agents/<SEAT>.md` | One charter per seat: `DECIDE.md`, `BUILD.md`, `CHECK.md`, `REP.md`. |
-| `infrastructure/DOC_BUDGET.md` | Doc-count policy and how a written instruction rots. |
+| `infrastructure/agents/CHARTER.md` | The whole process rulebook since 2026-08-27 (redesign #4); POLICY.md is a supersession stub. |
+| `infrastructure/agents/<WINDOW>.md` | One charter per window: `BENCH.md`, `FOUNDRY.md`. The four seat files are stubs. |
 | `infrastructure/REFRESH.md` | What to re-run after the mod list changes. |
 | `infrastructure/archive/` | Superseded narrative kept only for *why* — `context.md`. Never current state. |
 | `infrastructure/output/` | Reports **still being read** — audits, options papers, plans. Evidence, never doctrine. |
@@ -196,27 +195,25 @@ this?* A rule is durable; a queue is meant to be consumed.
 | Path | Holds |
 |---|---|
 | `infrastructure/state/V1_CHAIN.md` | 🔴 What ships in v1, in the order the engine forces. **Check it before queueing anything.** The authority on the v1/v2 line. |
-| `infrastructure/state/NEXT_RELOAD.md` | The run sheet for the next game load — work that needs the game running. |
+| `infrastructure/state/items/COLD_LOAD_RUN_SHEET_*.md` | The run sheet for the next game load — a normal queue item since 2026-08-27; the two hand-kept run-sheet files are deleted. |
 | `infrastructure/state/OWNER_DECISIONS.md` | Every question only the owner can answer, and their rulings. |
-| `infrastructure/state/EXPECTED_FAILURES_next_load.md` | Expected-failure signatures, written **before** a load so triage is judgeable. |
 | `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` | The Configure Factions page, box by box, for world creation. |
 | `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
 | `infrastructure/state/TEST_PLAN.md` | How deployed material gets proved in-game. Written by a retired seat; still cited by `load_session.py`. |
-| `infrastructure/state/status/game.json` | The game-state stamp. ⚠️ `<SEAT>.json` and `say.py` are GONE (2026-08-22): nobody wrote them, the board showed week-old sentences as current. What a seat is doing is a `seat` event on the ledger — `rimflow seat`. |
-| `infrastructure/state/queue/<SEAT>.md` | 🔴 **The filing destination.** `DECIDE`, `BUILD`, `CHECK`, plus `HUMAN` for the owner. You own your own; file at the next seat's. |
+| game state | One `game` event on the ledger, measured or owner-announced (`./game`). The old `status/game.json` stamp and its directory are gone. |
+| `infrastructure/state/queue/<WINDOW>.md` | Rendered views (`BENCH`, `FOUNDRY`, plus hand-written `HUMAN`), rewritten on every rimflow write. File work with `rimflow file --for <WINDOW>`. |
 
-### The four seats
+### The two windows — since 2026-08-27 (redesign #4)
 
-**DECIDE · BUILD · CHECK · REP.** The earlier seat names
-were retired 2026-08-14. Name your window first thing:
-`./src/RimMandrake/Utils/set_agent_window.sh <SEAT>`.
+**BENCH · FOUNDRY.** Two earlier splits (the 2026-08-14 names, then the four seats
+DECIDE/BUILD/CHECK/REP) are retired; legacy items keep their old owners in the ledger.
+The Windows Terminal profiles set the window; the manual path is
+`./src/RimMandrake/Utils/set_agent_window.sh <WINDOW>`.
 
-| Seat | Role | Its question |
+| Window | Role | Its question |
 |---|---|---|
-| `DECIDE` | scope and spec | what exactly ships, and in what order? |
-| `BUILD` | mod author and artist | does it exist, and does it pass offline? |
-| `CHECK` | live-systems engineer | did it actually work in the running game? |
-| `REP` | the human's interface | what does the owner need to see or answer? |
+| `BENCH` | with the owner | what does he need done, decided, or seen right now? |
+| `FOUNDRY` | the autonomous queue | does it exist, does it pass, and is it closed? |
 
 ---
 

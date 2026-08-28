@@ -1,16 +1,13 @@
 # LOAD_PROCEDURE.md — what is true on EVERY game load
 
-> 🔑 **The half of the old run sheet that does NOT change per load**, split out of
-> `NEXT_RELOAD.md` on 2026-08-23 (`RUN_SHEET_PER_LOAD_BLOCKS_1`). Mixing standing procedure
-> with one load's payload is what made that file rot: the payload went stale and nobody would
-> delete it, because the procedure around it was still live.
+> 🔑 **The half of the old run sheet that does NOT change per load.** The per-load half
+> (`NEXT_RELOAD.md` + `EXPECTED_FAILURES_next_load.md`) was deleted 2026-08-27: one
+> load's payload is now a normal queue item, `COLD_LOAD_RUN_SHEET_*`
+> (`infrastructure/state/items/`), closed when the load is scored. Historical citations
+> of "NEXT_RELOAD §4–§6/§10" resolve in git at the parent of commit `4ee416b2`.
 >
-> ⭐ **Numbers are ONE sequence across TWO files and are deliberately not renumbered** — other
-> docs cite "§5 of NEXT_RELOAD" and "§3–§6". **§1 §2 §3 §7 §8 §9 are here**; **§4 §5 §6 §10 and
-> the deployed-and-unproven blocks are in `NEXT_RELOAD.md`.**
->
-> ⛔ **Nothing here is about a particular load.** A defName, a queue item ID, a grep string or a
-> baseline number belongs in `NEXT_RELOAD.md`, not here.
+> ⛔ **Nothing here is about a particular load.** A defName, a queue item ID, a grep
+> string or a baseline number belongs on the run-sheet item, not here.
 
 ---
 ## 1. 🔻 WHILE THE GAME IS DOWN — the only window for a deploy

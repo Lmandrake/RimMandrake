@@ -226,7 +226,8 @@ VERBS = {
     # split-brain `./game` exists to prevent. Caught 2026-08-25 on a real `down`.
     "game":      {"who": ("OWNER",), "req": ("state",),
                   "opt": ("measured", "evidence", "text", "ranBy")},
-    "admin":     {"who": ("OWNER",), "req": ("reason",), "opt": ("patch",)},
+    # `admin` (an OWNER-only audited correction) was removed 2026-08-27: defined
+    # 2026-08-20, fired zero times ever. Git holds it if the need materialises.
 }
 
 # Events that do not name an item. Everything else must carry an `id`.

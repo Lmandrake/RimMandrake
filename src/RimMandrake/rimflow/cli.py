@@ -1201,15 +1201,6 @@ def cmd_game(args, seat):
     return 0
 
 
-def cmd_admin(args, seat):
-    _, w = load()
-    _emit({"seat": seat, "event": "admin", "id": args.id, "reason": args.reason,
-           "patch": args.patch}, w, quiet=True)
-    print("admin correction recorded against %s. It is in the log forever, which is "
-          "the point." % args.id)
-    return 0
-
-
 # ---------------------------------------------------------------------------
 # artifact — the one door for a new game artifact
 # ---------------------------------------------------------------------------
@@ -1497,11 +1488,6 @@ def build_parser():
     s.add_argument("--note", default=None,
                    help="one line of context for this state change, e.g. what "
                         "the load is for or why it went down")
-
-    s = add("admin", "OWNER only — an audited correction", cmd_admin)
-    s.add_argument("id")
-    s.add_argument("--reason", required=True)
-    s.add_argument("--patch", help="JSON of what should have been recorded")
 
     s = add("sweep", "list stale TRANSIENT_* files. LISTS ONLY", cmd_sweep)
     s.add_argument("--transient", action="store_true")
