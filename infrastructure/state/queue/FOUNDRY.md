@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:29:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:30:53Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## BRIDGE_READ_VEHICLE_COMPONENTS_1 BRIDGE_READ_VEHICLE_COMPONENTS_1
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Filed as a title only, out of the finding VEHICLEHEALTHTABUNREACHABLE1 (tooling,
-prose:    infrastructure/state/items/BRIDGE_READ_VEHICLE_COMPONENTS_1.md
 
 ## THOROUGH_RETAG_WEAPONS_ARMOUR_1 The thorough weapon and armour retag: the advice, the measured state, and the dump it is blocked on
 state:    ready
@@ -97,7 +88,16 @@ prose:    infrastructure/state/items/LORD_JOB_SWAP_TOOL_1.md
 
 # IN PROGRESS
 
-_none._
+Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
+
+## BRIDGE_READ_VEHICLE_COMPONENTS_1 BRIDGE_READ_VEHICLE_COMPONENTS_1
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  Filed as a title only, out of the finding VEHICLEHEALTHTABUNREACHABLE1 (tooling,
+prose:    infrastructure/state/items/BRIDGE_READ_VEHICLE_COMPONENTS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -274,26 +274,6 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  GravshipUtility.GenerateGravship → TravelTo → ArriveNewMap / AbandonMap.
 prose:    infrastructure/state/items/GRAVSHIP_LAUNCH_TRAVEL_1.md
-
-## VOID_AWAKENING_SCRIPTING_1 Void awakening: a quest chain, not a state change, and a half-start cannot be finished
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v2
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  VoidAwakeningUtility plus the QuestScriptDefOf roots.
-prose:    infrastructure/state/items/VOID_AWAKENING_SCRIPTING_1.md
-
-## CLEAR_WORLD_LEAVES_BRIDGE_BLIND_1 ClearAllMapsAndWorld must install a new Game in the same call or refuse
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v2
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  MemoryUtility.ClearAllMapsAndWorld().
-prose:    infrastructure/state/items/CLEAR_WORLD_LEAVES_BRIDGE_BLIND_1.md
 
 ## DOWN_WINDOW_ASSEMBLY_DEPLOY_1 Deploy the companion and the def dumper in the next down window
 state:    proposed
