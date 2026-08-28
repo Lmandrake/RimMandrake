@@ -354,6 +354,21 @@ def main():
 
     title = title.splitlines()[0][:MAX_TITLE]
 
+    # Owner's ask, 2026-08-28: the conversation name should say WHICH ITEM the
+    # seat is on. Derived from the ledger's queue render via statusline.py's
+    # parser (single source), refreshed every prompt. Fails open like the rest.
+    m = re.search(r"AGENT ([A-Z]+)", title)
+    if m:
+        try:
+            sys.path.insert(0, os.path.join(
+                os.environ.get("CLAUDE_PROJECT_DIR", "."), "src", "RimMandrake", "Utils"))
+            from statusline import current_item
+            item = current_item(m.group(1), max_title=48)
+            if item:
+                title = ("%s ▶ %s" % (title, item[0]))[:MAX_TITLE]
+        except Exception:
+            pass
+
     out = {
         "hookEventName": event,
         "sessionTitle": title,

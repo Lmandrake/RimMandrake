@@ -46,6 +46,42 @@ BIG, SMALL = 1_000_000, 200_000
 BAR = 14
 
 
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
+
+
+def current_item(seat, max_title=44):
+    """The item this seat is working RIGHT NOW, from the rendered queue view.
+
+    Derived, never announced: `rimflow start` re-renders the queue on write, so
+    the first `## <ID> <title>` heading under `# IN PROGRESS` is the live answer.
+    Returns (id, short_title) or None. Owner's ask, 2026-08-28: the scrolling
+    transcript never names the item; the status line should.
+    """
+    if not seat:
+        return None
+    path = os.path.join(REPO, "infrastructure", "state", "queue", "%s.md" % seat)
+    try:
+        with open(path, encoding="utf-8", errors="ignore") as fh:
+            text = fh.read(200_000)
+    except OSError:
+        return None
+    in_section = False
+    for line in text.splitlines():
+        if line.startswith("# "):
+            in_section = line.strip() == "# IN PROGRESS"
+            continue
+        if in_section and line.startswith("## "):
+            body = line[3:].strip()
+            item_id, _, title = body.partition(" ")
+            title = title.strip()
+            if title == item_id or not title:
+                title = ""
+            if len(title) > max_title:
+                title = title[:max_title - 1].rstrip() + "…"
+            return item_id, title
+    return None
+
+
 def window_for(model_id, display=""):
     s = ("%s %s" % (model_id or "", display or "")).lower()
     return BIG if ("1m" in s or "[1m]" in s) else SMALL
@@ -130,6 +166,10 @@ def main():
     parts = []
     if seat:
         parts.append("\033[1m%s\033[0m" % seat)
+        item = current_item(seat)
+        if item:
+            parts.append("\033[36m▶ %s\033[0m\033[2m%s\033[0m" % (
+                item[0], " · " + item[1] if item[1] else ""))
     if pct is None:
         parts.append("%s  \033[2mcontext —\033[0m" % name)
     else:
