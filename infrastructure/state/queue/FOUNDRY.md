@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:30:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:31:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -264,16 +264,6 @@ kind:     check
 thin:     spec, verify and criteria all present
 summary:  D1 (owner, 2026-08-08) requires three distinct tiers from one weapon:
 prose:    infrastructure/state/items/ION_TIERS_MEASURED_LIVE_1.md
-
-## GRAVSHIP_LAUNCH_TRAVEL_1 Gravship launch and travel: four calls that destroy one map and create another
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v2
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  GravshipUtility.GenerateGravship → TravelTo → ArriveNewMap / AbandonMap.
-prose:    infrastructure/state/items/GRAVSHIP_LAUNCH_TRAVEL_1.md
 
 ## DOWN_WINDOW_ASSEMBLY_DEPLOY_1 Deploy the companion and the def dumper in the next down window
 state:    proposed

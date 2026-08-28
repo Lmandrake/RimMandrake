@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:30:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:31:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -16,7 +16,16 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 
 # IN PROGRESS
 
-_none._
+Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
+
+## GRAVSHIP_LAUNCH_TRAVEL_1 Gravship launch and travel: four calls that destroy one map and create another
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  GravshipUtility.GenerateGravship → TravelTo → ArriveNewMap / AbandonMap.
+prose:    infrastructure/state/items/GRAVSHIP_LAUNCH_TRAVEL_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
