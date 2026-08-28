@@ -220,7 +220,7 @@ game with a gravship-arrival scenario → the ship appears on the choose page.**
 **`src/RimMandrake/Utils/print_gravship.py` does it, and it never touches
 `ShipSketchBuilder`.** Foundation, floors and buildings are three batch calls the
 bridge already has, so the Sketch route below stays unwritten and stops being the
-blocker. Measured on a cleared 250×250 map: `The_Helpful_Transport` — 4,034
+blocker. Measured on a cleared 250×250 map: `Gravship_Cradle` — 4,034
 foundation cells, 4,034 floors, 1,571 things — went down in ~15 calls and
 verified **1,571 of 1,571 by cell-by-cell read-back**, every building
 `PlayerColony`.
@@ -241,7 +241,7 @@ terrain down into `under`; `RemoveTopLayer` pops it back up and **nulls
 
 ⚠️ **The export contains NO `GravEngine`** — verified zero in both of ours. The
 mod's importer places it from `gravEngineX/Z`, and so does the script.
-⚠️ **Map litter rides along**: `The_Helpful_Transport` carries 2 `SteamGeyser`
+⚠️ **Map litter rides along**: `Gravship_Cradle` carries 2 `SteamGeyser`
 and 1 `VHGE_GasGeyser` swept in from the original map. The script skips them.
 🔑 **The FOUR GATES below are untouched by any of this.** A printed ship is
 geometry: the engine reads `Gravship range: 0` and every thruster reads

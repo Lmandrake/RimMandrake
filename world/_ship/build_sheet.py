@@ -97,7 +97,7 @@ tint_html = "".join(
     '<li><img src="%s" alt="%s"><p class="tn">%s</p><p class="tv">%s</p><p class="tc">%s</p></li>'
     % (uri("tint_%s.png" % k), name, name, rgb, note) for k, name, rgb, note in TINTS)
 
-HTML = """<title>Helpful Transport Decks</title>
+HTML = """<title>Gravship Cradle Decks</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -224,8 +224,8 @@ footer p{margin:0 0 4px}
 
 <div class="wrap">
 <header class="top">
-  <p class="kicker">Floor plan review &nbsp;·&nbsp; The Helpful Transport &nbsp;·&nbsp; 2026-08-27</p>
-  <h1>Helpful Transport<em>Deck floors</em></h1>
+  <p class="kicker">Floor plan review &nbsp;·&nbsp; The Gravship Cradle &nbsp;·&nbsp; 2026-08-27</p>
+  <h1>Gravship Cradle<em>Deck floors</em></h1>
   <p class="standfirst">Four ways to lay the same 4,034 cells. Every tile below is a real
   TerrainDef painted in the live game and photographed &mdash; the colour, the tiling and the
   shading are the game&rsquo;s, not a mock-up. Pick one and it goes down on the ship.</p>

@@ -1,4 +1,4 @@
-# The Helpful Transport — deck floor trials, 2026-08-27
+# The Gravship Cradle — deck floor trials, 2026-08-27
 
 Painted live through the bridge onto the printed ship (map rect `83,59 86x133`).
 

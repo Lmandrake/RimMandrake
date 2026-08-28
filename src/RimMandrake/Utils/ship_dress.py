@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ship_dress.py - dress The Helpful Transport: Aurebesh signage, landing pads,
+ship_dress.py - dress the Gravship Cradle: Aurebesh signage, landing pads,
 gutted factory bays, and in-map design notes. Run under WINDOWS python.
 
 VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
