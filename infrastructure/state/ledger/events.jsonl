@@ -2460,3 +2460,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"CUT_LIST_ONE_READER_1","ts":"2026-08-28T08:08:42Z"}
 {"seat":"FOUNDRY","event":"start","id":"CUT_LIST_ONE_READER_1","ts":"2026-08-28T08:08:43Z"}
 {"seat":"BENCH","event":"file","id":"GRAVSHIP_SHRINE_FOLLOWUPS_1","title":"Shrine round follow-ups: vault roof, stele text, casket, factory twins, toll shack","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-08-28T08:17:28Z"}
+{"seat":"BENCH","event":"seat","state":"busy","note":"owner AFK; offline-only, bridge is FOUNDRY's","ts":"2026-08-28T08:17:41Z"}
+{"seat":"BENCH","event":"claim","id":"CAST_NAMES_UNSPAWNABLE_ANIMALS_1","ts":"2026-08-28T08:17:49Z"}
+{"seat":"BENCH","event":"start","id":"CAST_NAMES_UNSPAWNABLE_ANIMALS_1","ts":"2026-08-28T08:17:49Z"}
+{"seat":"BENCH","event":"seat","state":"idle","reason":"owner said finish-then-stop; item closed","ts":"2026-08-28T08:21:18Z"}
+{"seat":"BENCH","event":"close","id":"CAST_NAMES_UNSPAWNABLE_ANIMALS_1","sha":"b1bbd51f","ts":"2026-08-28T08:21:45Z"}

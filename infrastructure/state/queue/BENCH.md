@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:17:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:21:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -33,16 +33,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## CAST_NAMES_UNSPAWNABLE_ANIMALS_1 157 animals in the authored cast are registered and can never spawn
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  A quarter of Ash'karr's hand-authored animal cast is registered in its biomes and can
-prose:    infrastructure/state/items/CAST_NAMES_UNSPAWNABLE_ANIMALS_1.md
 
 ## GALACTIC_EMPIRE_NAME_COLLIDES_1 Two factions are both named Galactic Empire; one of them must be renamed
 state:    proposed
