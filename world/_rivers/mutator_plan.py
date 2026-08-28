@@ -9,6 +9,20 @@ RiverConfluence, RiverDelta — and almost none of them were in use.
 biome-lock the tile fails is NOT written: AddMutator fires the def's Worker, and the
 generator's whitelist is not a guard on the setter, so an illegal write lands and then
 misbehaves.
+
+🔴 NOT RE-RUNNABLE SINCE 2026-08-27. This script's OLD-side input, `world/_now/`, was
+deleted in a clean-up: a reference check grepped for the literal `world/_now/` and the
+path here is built by concatenation (`W + "_now/..."`), so the match never fired. The
+directory was untracked, so git cannot restore it and the planet has since moved on —
+an export today returns the NEW state, not the OLD one.
+
+⛔ Do NOT "fix" this by pointing OLD at `_organic/` or any other surviving bundle. They
+are different exports from different days; substituting one would produce a DIFFERENT
+diff while looking like this one.
+
+✅ What survives and is still true: the plans this produced, `world/_rivers/*.json`
+(2026-08-25), and the `_final/` bundle. The open item WORLD_MUTATOR_LANDMARK_IMPORTERS_1
+depends only on `_final/`, which is intact.
 """
 import sys, csv, collections, json
 sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/world/_rivers")

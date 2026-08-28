@@ -2,6 +2,20 @@
 
 ⛔ Not a generator. It reads the corridors that are already right and reports the rule
 they follow; the repair is applied only to tiles whose distance-to-river actually moved.
+
+🔴 NOT RE-RUNNABLE SINCE 2026-08-27. This script's OLD-side input, `world/_now/`, was
+deleted in a clean-up: a reference check grepped for the literal `world/_now/` and the
+path here is built by concatenation (`W + "_now/..."`), so the match never fired. The
+directory was untracked, so git cannot restore it and the planet has since moved on —
+an export today returns the NEW state, not the OLD one.
+
+⛔ Do NOT "fix" this by pointing OLD at `_organic/` or any other surviving bundle. They
+are different exports from different days; substituting one would produce a DIFFERENT
+diff while looking like this one.
+
+✅ What survives and is still true: the plans this produced, `world/_rivers/*.json`
+(2026-08-25), and the `_final/` bundle. The open item WORLD_MUTATOR_LANDMARK_IMPORTERS_1
+depends only on `_final/`, which is intact.
 """
 import csv, json, math, collections, os
 
