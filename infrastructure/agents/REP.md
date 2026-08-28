@@ -52,7 +52,7 @@ publisher. Its filename is a leftover: the script re-execs itself by path, so re
 `pgrep -f queue_publisher.sh` matches ITSELF and answers UP while the loop is dead. Use a bracket grep:
 
 ```
-ps -eo pid,etime,args | grep -E '[b]oard_loop\.sh'    || echo "queue publisher DOWN"
+ps -eo pid,etime,args | grep -E '[q]ueue_publisher\.sh' || echo "queue publisher DOWN"
 ```
 
 ⚠️ **The real check is the output, not the process**: `queue/*.md` mtimes older than ~2 min mean the loop is dead,
