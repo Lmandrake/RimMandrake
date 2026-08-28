@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:42:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:45:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## STAT_ON_INSTANCE_TOOL_1 The bridge cannot evaluate a StatDef on a spawned instance
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  The bridge can read a def's fields and a thing's inspect text, but it cannot ask the
-prose:    infrastructure/state/items/STAT_ON_INSTANCE_TOOL_1.md
 
 ## TEMPLATE_ENGINE_ACCEPTANCE_1 The template engine has never placed a cell in a live game; §10's four acceptance checks
 state:    ready
