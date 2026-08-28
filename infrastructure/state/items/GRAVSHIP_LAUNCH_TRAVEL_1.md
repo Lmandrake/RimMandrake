@@ -64,3 +64,35 @@ compiled clean, all four verified present in the built DLL by `build.tool_surfac
       interactive fix.
 
 Deploy rides DOWN_WINDOW_ASSEMBLY_DEPLOY_1 (game held up all night by FOUNDRY).
+
+---
+
+# PROVEN LIVE 2026-08-28 by BENCH — closed
+
+Run on the campaign ship from the owner-sanctioned scratch save (`BENCH_pre_gravship_proof.rws`,
+verified on disk before anything moved; reloaded after). All numbers MEASURED live.
+
+- **Refusal path**: empty-tank quicktest ship refused with exact reasons ("cost 650 > aboard 0",
+  "distance 130 > 0", "cannot land on Ocean") — fuel short REFUSES, never strands. ✅
+- **dryRun default true**: verified twice — state read back unchanged after the call. ✅
+- **Launch**: `jawa/gravship_launch` tile 18393 → 45035: fuel cost 25 reported and consumed,
+  origin map abandoned (originMapWillBeDestroyed reported true beforehand), world travel ran,
+  **new map generated at tile 45035** with the landing marker at (49,80) — arrival read back. ✅
+- **Halfway states**: every one named and observed via `jawa/gravship_status` — cutscene,
+  travelling (engines=0, ship off-map), landing-confirmation-pending with marker coordinates. ✅
+
+## The one dark corner, filed as follow-up
+`jawa/gravship_land` executed `marker.BeginLanding` correctly, but **vanilla's landing render
+chain (camera-pan + GPU capture callbacks) wedged before `PlaceGravship`** — cutscene stuck,
+ship in closure limbo, marker consumed; window focus did not unstick it. Recovery: reload the
+save (proved). → GRAVSHIP_LANDING_DIRECT_PLACE_1.
+
+## Collateral findings, separately filed
+- The campaign ship's PilotConsole had been **silently destroyed during the 2026-08-27 shrine
+  dressing** (build_batch later-op-destroys, on a PRE-EXISTING building) — found by
+  `gravship_status` ('Controls' missing), repaired via god-mode designator (links properly),
+  saved as `BENCH_console_fixed.rws`. The owner picks which save is canon.
+- Facility links form ONCE at facility spawn and never retry; a thruster Blocked at spawn
+  never links. And on the 582-mod list, tool-built thrusters (build_batch AND designator,
+  both defs, clear zones) link but never turn ACTIVE (range stays 0) while the campaign's
+  hand-built thrusters work → THRUSTER_INSTABUILD_NEVER_ACTIVE_1.

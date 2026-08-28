@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T16:13:45Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-28T17:04:07Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -262,3 +262,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/NURSERY_FOOTPRINT_OFF_BY_ONE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NURSERY_FOOTPRINT_OFF_BY_ONE_1.md
+
+## THRUSTER_INSTABUILD_NEVER_ACTIVE_1 Tool-built thrusters link but never contribute range on the full list
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## criteria
+summary:  THRUSTERINSTABUILDNEVERACTIVE1 — tool-built thrusters link but never contribute range
+prose:    infrastructure/state/items/THRUSTER_INSTABUILD_NEVER_ACTIVE_1.md
