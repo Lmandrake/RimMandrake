@@ -2592,3 +2592,4 @@
 {"seat":"BENCH","event":"bridge","state":"taken","ts":"2026-08-28T16:23:29Z"}
 {"seat":"BENCH","event":"file","id":"GRAVSHIP_LANDING_DIRECT_PLACE_1","title":"Land a gravship without the cutscene machinery (skipCutscene route)","kind":"build","target":"v1","needs":"offline","for":"BENCH","ts":"2026-08-28T17:04:06Z"}
 {"seat":"BENCH","event":"file","id":"THRUSTER_INSTABUILD_NEVER_ACTIVE_1","title":"Tool-built thrusters link but never contribute range on the full list","kind":"bug","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-08-28T17:04:07Z"}
+{"seat":"BENCH","event":"close","id":"GRAVSHIP_LAUNCH_TRAVEL_1","sha":"138ee26a","ts":"2026-08-28T17:04:09Z"}
