@@ -110,12 +110,12 @@
           <WasteRat>0.7</WasteRat> <!-- waste rat - small, dormant -->
           <BMT_SilverSheep>0.4</BMT_SilverSheep> <!-- silver sheep - med, dormant -->
           <BMT_Snowstalker>0.4</BMT_Snowstalker> <!-- snowstalker - med, dormant -->
+          <BMT_Swarmcaller>0.4</BMT_Swarmcaller> <!-- swarmcaller - med, dormant -->
           <FeralNerf>0.4</FeralNerf> <!-- feral nerf - med, ours -->
           <GR_Thrumborat>0.4</GR_Thrumborat> <!-- thrumborat - med, dormant -->
           <SW_Electricgryllotalpa>0.4</SW_Electricgryllotalpa> <!-- Electricgryllotalpa - med, dormant -->
           <Strill>0.4</Strill> <!-- strill - med, ours -->
           <VQE_IceCrawler>0.4</VQE_IceCrawler> <!-- ice crawler - med, dormant -->
-          <Wolf_Great>0.4</Wolf_Great> <!-- greatwolf - med, foreign -->
           <BMT_BeardedYak>0.18</BMT_BeardedYak> <!-- bearded yak - large, dormant -->
           <Bursa>0.18</Bursa> <!-- bursa - large, ours -->
           <DA_BeardedTroll>0.18</DA_BeardedTroll> <!-- bearded troll - large, foreign -->
@@ -624,9 +624,9 @@
           <AA_Needlepost>0.7</AA_Needlepost> <!-- needlepost - small, ours -->
           <AM_Dryad_Spitter>0.7</AM_Dryad_Spitter> <!-- spitter dryad - small, dormant -->
           <Clodhopper>0.7</Clodhopper> <!-- clodhopper - small, ours -->
-          <GRimTortoise>0.7</GRimTortoise> <!-- Colorful tortoise - small, foreign -->
           <Shiro>0.7</Shiro> <!-- shiro - small, ours -->
           <ShiroTrap>0.7</ShiroTrap> <!-- shiro-trap - small, ours -->
+          <Whisperbird>0.7</Whisperbird> <!-- whisperbird - small, ours -->
           <Worrt>0.7</Worrt> <!-- worrt - small, ours -->
           <AA_BloodShrimp>0.4</AA_BloodShrimp> <!-- blood shrimp - med, ours -->
           <AA_DesertAve>0.4</AA_DesertAve> <!-- desert ave - med, ours -->
@@ -905,7 +905,7 @@
           <BMT_GastroToad>0.7</BMT_GastroToad> <!-- gastro toad - small, dormant -->
           <BMT_GoetoToad>0.7</BMT_GoetoToad> <!-- goeto toad - small, ours -->
           <BMT_ToxSheep>0.7</BMT_ToxSheep> <!-- tox-wool sheep - small, dormant -->
-          <GRimTortoise>0.7</GRimTortoise> <!-- Colorful tortoise - small, foreign -->
+          <Iriaz>0.7</Iriaz> <!-- iriaz - small, ours -->
           <Mott>0.7</Mott> <!-- mott - small, ours -->
           <Squall>0.7</Squall> <!-- squall - small, ours -->
           <AA_Animalisk>0.4</AA_Animalisk> <!-- animalisk - med, dormant -->
@@ -976,8 +976,8 @@
       <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
+          <AA_SmallButterfly>1.0</AA_SmallButterfly> <!-- small butterflies - tiny, dormant -->
           <GR_Catchicken>1.0</GR_Catchicken> <!-- catchicken - tiny, dormant -->
-          <GRimBullfrog>1.0</GRimBullfrog> <!-- Colorful bullfrog - tiny, foreign -->
           <PoisonRat>1.0</PoisonRat> <!-- poison rat - tiny, ours -->
           <Porg>1.0</Porg> <!-- porg - tiny, ours -->
           <AA_AnimusVox>0.7</AA_AnimusVox> <!-- animus vox - small, ours -->
@@ -1015,8 +1015,8 @@
       <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
+          <BMT_BrownBat>1.0</BMT_BrownBat> <!-- brown bat - tiny, dormant -->
           <GR_Catalope>1.0</GR_Catalope> <!-- catalope - tiny, dormant -->
-          <GRimCobra>1.0</GRimCobra> <!-- Colorful cobra - tiny, foreign -->
           <Kreetle>1.0</Kreetle> <!-- kreetle - tiny, ours -->
           <TYR_HotfootRat>1.0</TYR_HotfootRat> <!-- hotfoot rat - tiny, ours -->
           <AA_CrescendoAnole>0.7</AA_CrescendoAnole> <!-- crescendo anole - small, ours -->
@@ -1053,14 +1053,14 @@
       <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <GRimCobra>1.0</GRimCobra> <!-- Colorful cobra - tiny, foreign -->
+          <BMT_GlowBat>1.0</BMT_GlowBat> <!-- bioluminescent bat - tiny, ours -->
           <Kreetle>1.0</Kreetle> <!-- kreetle - tiny, ours -->
           <VFEI2_BlackSwarmling>1.0</VFEI2_BlackSwarmling> <!-- black swarmlings - tiny, dormant -->
           <VFEI2_Swarmling>1.0</VFEI2_Swarmling> <!-- swarmlings - tiny, dormant -->
+          <AA_FireWasp>0.7</AA_FireWasp> <!-- fire wasp - small, ours -->
           <AA_Swarmling>0.7</AA_Swarmling> <!-- swarmling - small, substituted -->
           <BMT_CrestedDragon>0.7</BMT_CrestedDragon> <!-- crested dragon - small, dormant -->
           <BMT_Gembug>0.7</BMT_Gembug> <!-- gembug - small, ours -->
-          <GRimMonitorLizard>0.7</GRimMonitorLizard> <!-- Colorful monitor lizard - small, foreign -->
           <GRimStoneCrab>0.7</GRimStoneCrab> <!-- Colorful stone crab - small, foreign -->
           <Shiro>0.7</Shiro> <!-- shiro - small, ours -->
           <Whisperbird>0.7</Whisperbird> <!-- whisperbird - small, ours -->

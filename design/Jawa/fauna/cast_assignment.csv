@@ -82,7 +82,7 @@ AB_MycoticJungle,AA_FissionMouseThird,"fission mouse, third generation",Alpha An
 AB_MycoticJungle,BMT_MutagenicNorphea,mutagenic norphea,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.9154,0.0846,0.458,dormant,wildlife,0
 AB_MycoticJungle,BMT_ChemSnail,chem snail,Biomes! Caverns,small,0.4000000059604645,0.7,0.9305,0.0695,0.41,ours,wildlife,0
 AB_MycoticJungle,FeralNerf,feral nerf,Star Wars Animal Collection (Continued),med,1,0.4,0.908,0.092,0.425,ours,wildlife,0
-AB_MycoticJungle,Wolf_Great,greatwolf,Odyssey,med,1.5,0.4,0.8937,0.1063,0.588,foreign,wildlife,0
+AB_MycoticJungle,BMT_Swarmcaller,swarmcaller,Biomes! Polluted Lands,med,1,0.4,0.8866,0.1134,0.625,dormant,wildlife,0
 AB_MycoticJungle,Bursa,bursa,Star Wars Animal Collection (Continued),large,2.5,0.18,0.882,0.118,0.663,ours,wildlife,0
 AB_MycoticJungle,DA_BeardedTroll,bearded troll,Dark Ages : Beasts and Monsters,large,2,0.18,0.8684,0.1316,0.6,foreign,wildlife,0
 AB_MycoticJungle,GR_Thrumbochicken,thrumbochicken,Vanilla Genetics Expanded,huge,3,0.0663,0.8682,0.1318,0.792,dormant,wildlife,0
@@ -366,7 +366,7 @@ SeaIce,GR_Thrumdraeodon,thrumdraeodon,Vanilla Genetics Expanded,huge,4.5,0.35,0.
 SeaIce,VFEI2_Empress,empress,Vanilla Factions Expanded - Insectoids 2,huge,4,0.35,0.9281,0.0719,0.862,dormant,wildlife,0
 SeaIce,VFEI2_Silverfish,silverfish,Vanilla Factions Expanded - Insectoids 2,huge,5,0.35,0.907,0.093,1.0,dormant,wildlife,0
 SeaIce,Tibidee,tibidee,Star Wars Animal Collection (Continued),SUPER,12,0.2,0.8919,0.1081,1.0,ours,wildlife,0
-SeaIce,GRimBullfrog,Colorful bullfrog,GRiNDTerra Biomes,tiny,0.20000000298023224,1.0,0.2456,0.7544,0.505,foreign,wildlife,0
+SeaIce,AA_SmallButterfly,small butterflies,Alpha Animals,tiny,0.009999999776482582,1.0,0.4394,0.5606,0.55,dormant,wildlife,0
 SeaIce,TetnissCrab,tet'niss crab,Star Wars Animal Collection (Continued),small,0.5,0.7,0.496,0.504,0.596,foreign,wildlife,0
 SeaIce,Locust,locust,Odyssey,small,0.6000000238418579,0.7,0.8048,0.1952,0.615,dormant,wildlife,0
 SeaIce,Voorpak,voorpak,Star Wars Animal Collection (Continued),small,0.3499999940395355,0.7,0.8506,0.1494,0.559,ours,wildlife,0
@@ -473,7 +473,7 @@ BiomeCypreJungle,Shiro,shiro,Star Wars Animal Collection (Continued),small,0.5,0
 BiomeCypreJungle,AM_Dryad_Spitter,spitter dryad,Alpha Memes,small,0.6499999761581421,0.7,0.7278,0.2722,0.583,dormant,wildlife,0
 BiomeCypreJungle,ShiroTrap,shiro-trap,Star Wars Animal Collection (Continued),small,0.75,0.7,0.8263,0.1737,0.735,ours,wildlife,0
 BiomeCypreJungle,Worrt,worrt,Star Wars Animal Collection (Continued),small,0.6000000238418579,0.7,0.8105,0.1895,0.585,ours,wildlife,0
-BiomeCypreJungle,GRimTortoise,Colorful tortoise,GRiNDTerra Biomes,small,0.5,0.7,0.7999,0.2001,0.704,foreign,wildlife,0
+BiomeCypreJungle,Whisperbird,whisperbird,Star Wars Animal Collection (Continued),small,0.4000000059604645,0.7,0.6977,0.3023,0.56,ours,wildlife,0
 BiomeCypreJungle,BMT_LandOctopus,terrestrial octopus,Biomes! Core,med,0.800000011920929,0.4,0.9074,0.0926,0.57,dormant,wildlife,0
 BiomeCypreJungle,AA_Razorjack,razorjack,Alpha Animals,med,1,0.4,0.919,0.081,0.575,ours,wildlife,0
 BiomeCypreJungle,AA_BloodShrimp,blood shrimp,Alpha Animals,med,1,0.4,0.9029,0.0971,0.658,ours,wildlife,0
@@ -491,7 +491,7 @@ BiomeCypreJungle,Lylek,lylek,Star Wars Animal Collection (Continued),huge,5,0.05
 BiomeCypreJungle,Dragonsnake,Dragonsnake,Star Wars Animal Collection (Continued),huge,4,0.05,0.9064,0.0936,0.792,foreign,wildlife,0
 BiomeCypreJungle,Dianoga,dianoga,Star Wars Animal Collection (Continued),huge,4,0.05,0.8523,0.1477,0.74,ours,wildlife,0
 BiomeCypreJungle,Beldon,beldon,Star Wars Animal Collection (Continued),SUPER,6,0.008,0.5356,0.4644,0.65,ours,wildlife,0
-AB_FeraliskInfestedJungle,GRimCobra,Colorful cobra,GRiNDTerra Biomes,tiny,0.25,1.0,0.8141,0.1859,0.556,foreign,wildlife,0
+AB_FeraliskInfestedJungle,BMT_BrownBat,brown bat,Biomes! Caverns,tiny,0.25,1.0,0.7769,0.2231,0.556,dormant,wildlife,0
 AB_FeraliskInfestedJungle,Kreetle,kreetle,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.7322,0.2678,0.605,ours,wildlife,0
 AB_FeraliskInfestedJungle,TYR_HotfootRat,hotfoot rat,Little Critters,tiny,0.20000000298023224,1.0,0.6729,0.3271,0.405,ours,wildlife,0
 AB_FeraliskInfestedJungle,BMT_CrestedDragon,crested dragon,Biomes! Caverns,small,0.699999988079071,0.7,0.9318,0.0682,0.567,dormant,wildlife,0
@@ -548,13 +548,13 @@ AB_GelatinousSuperorganism,Toraton,toraton,Beasts of the Rim (Continued),huge,3,
 AB_GelatinousSuperorganism,JRWArthropleura,Arthropleura,Jurassic Rimworld - Dinosaurs Only (Continued),huge,4.5,0.063,0.8709,0.1291,0.65,ours,wildlife,0
 AB_GelatinousSuperorganism,Harvester,harvester,Horrors (Continued),SUPER,13.199999809265137,0.0108,0.6794,0.3206,0.858,dormant,wildlife,0
 AB_MiasmicMangrove,VFEI2_BlackSwarmling,black swarmlings,Alpha Animals,tiny,0.20000000298023224,1.0,0.7445,0.2555,0.605,dormant,wildlife,0
-AB_MiasmicMangrove,GRimCobra,Colorful cobra,GRiNDTerra Biomes,tiny,0.25,1.0,0.8337,0.1663,0.556,foreign,wildlife,0
+AB_MiasmicMangrove,BMT_GlowBat,bioluminescent bat,Biomes! Caverns,tiny,0.25,1.0,0.7234,0.2766,0.406,ours,wildlife,0
 AB_MiasmicMangrove,VFEI2_Swarmling,swarmlings,Vanilla Factions Expanded - Insectoids 2,tiny,0.20000000298023224,1.0,0.7181,0.2819,0.605,dormant,wildlife,0
 AB_MiasmicMangrove,Kreetle,kreetle,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.741,0.259,0.605,ours,wildlife,0
 AB_MiasmicMangrove,Shiro,shiro,Star Wars Animal Collection (Continued),small,0.5,0.7,0.6859,0.3141,0.729,ours,wildlife,0
 AB_MiasmicMangrove,AA_Swarmling,swarmling,Alpha Animals,small,0.30000001192092896,0.7,0.7924,0.2076,0.738,substituted,"substituted 2026-08-23 — the owner ruled the previous occupant out in his own art review (creature_art_decisions.json, frozen). Band and biome unchanged.",0
 AB_MiasmicMangrove,GRimStoneCrab,Colorful stone crab,GRiNDTerra Biomes,small,0.30000001192092896,0.7,0.649,0.351,0.691,foreign,wildlife,0
-AB_MiasmicMangrove,GRimMonitorLizard,Colorful monitor lizard,GRiNDTerra Biomes,small,0.6000000238418579,0.7,0.5285,0.4715,0.605,foreign,wildlife,0
+AB_MiasmicMangrove,AA_FireWasp,fire wasp,Alpha Animals,small,0.7900000214576721,0.7,0.8201,0.1799,0.736,ours,wildlife,0
 AB_MiasmicMangrove,Whisperbird,whisperbird,Star Wars Animal Collection (Continued),small,0.4000000059604645,0.7,0.5005,0.4995,0.56,ours,wildlife,0
 AB_MiasmicMangrove,BMT_Gembug,gembug,Biomes! Caverns,small,0.33500000834465027,0.7,0.2958,0.7042,0.558,ours,wildlife,0
 AB_MiasmicMangrove,BMT_CrestedDragon,crested dragon,Biomes! Caverns,small,0.699999988079071,0.7,0.9328,0.0672,0.567,dormant,wildlife,0
@@ -750,7 +750,7 @@ LavaField,BMT_GlowBat,bioluminescent bat,Biomes! Caverns,tiny,0.25,1.0,0.7433,0.
 LavaField,BMT_GoetoTadpole,goeto tadpole,Biomes! Caverns,tiny,0.10000000149011612,1.0,0.5718,0.4282,0.403,dormant,wildlife,0
 LavaField,AM_Dryad_Spitter,spitter dryad,Alpha Memes,small,0.6499999761581421,0.7,0.5232,0.4768,0.583,dormant,wildlife,0
 LavaField,BMT_GoetoToad,goeto toad,Biomes! Caverns,small,0.30000001192092896,0.7,0.5718,0.4282,0.558,ours,wildlife,0
-LavaField,GRimTortoise,Colorful tortoise,GRiNDTerra Biomes,small,0.5,0.7,0.5443,0.4557,0.704,foreign,wildlife,0
+LavaField,Iriaz,iriaz,Star Wars Animal Collection (Continued),small,0.699999988079071,0.7,0.6387,0.3613,0.417,ours,wildlife,0
 LavaField,Mott,mott,Star Wars Animal Collection (Continued),small,0.75,0.7,0.5265,0.4735,0.419,ours,wildlife,0
 LavaField,Squall,squall,Star Wars Animal Collection (Continued),small,0.30000001192092896,0.7,0.5077,0.4923,0.408,ours,wildlife,0
 LavaField,BMT_BloodletterPetrel,bloodletter petrel,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.9184,0.0816,0.548,dormant,wildlife,0
