@@ -225,7 +225,8 @@ bash.**
   does not exist in the dump at all. A false negative that reads exactly like a real one.*
 - ⚠️ **`GameConditionDef.temperatureOffset` reads `-10` for ALL 89 defs in the dump.**
   That is a dump default, not a per-def value. Do not use those numbers for anything.
-- 🔑 **A long-running server is a cached copy of the code.** The board on `:8787` had
+- 🔑 **A long-running server is a cached copy of the code.** ⭐ The board was removed
+  2026-08-27; the lesson is not about the board and still binds. It had
   been up five days and predated the `/board` route, so every module request fell through
   to the HTML page and the browser imported markup as JavaScript. **Every check that day
   had spun up a fresh instance on a spare port and passed.** Verify against the process

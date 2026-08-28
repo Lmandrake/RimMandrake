@@ -219,7 +219,6 @@ these files *committed and swept*. The 32 root files moved into `Transient/` on
 ## Tools
 
 ```
-python3 src/RimMandrake/Utils/status_server.py     the board -> http://localhost:8787
 python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>    dry run; --apply writes
 python3 src/RimMandrake/Utils/refresh.py           rebuild the offline def dump
 measure count <DefType>       one line; never a bare number  (skill: see below)

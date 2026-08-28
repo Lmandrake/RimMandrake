@@ -4,7 +4,8 @@
 🔴 HALF SUPERSEDED, AND THE HALVES MATTER.
   * `main()` against the GENERATED queues REFUSES — it parses the old hand-written
     shape and would report 0 done / 0 blocked. The board comes from
-    `rimflow/render.py` -> `infrastructure/state/derived/board.json`.
+    `rimflow/render.py` -> `infrastructure/state/queue/*.md`.
+    ⭐ board.json and the status board it fed were removed 2026-08-27.
   * `main() --legacy` still serves the hand-written archives.
   * ⛔ `state_of()`, `WORD`, `EMOJI` and `CLOSES_RE` are a LIVE DEPENDENCY —
     `rimflow/importer.py` loads this file with importlib at runtime. Do not delete it.
@@ -322,9 +323,9 @@ def main():
             "views:\n    %s\n"
             "It parses the old hand-written shape and would report 0 done / 0 blocked "
             "against them — a number that looks like an answer and is not.\n"
-            "The board now comes from the ledger:\n"
+            "The queue views now come from the ledger:\n"
             "    python3 src/RimMandrake/rimflow/render.py   -> "
-            "infrastructure/state/derived/board.json\n"
+            "infrastructure/state/queue/*.md\n"
             "Pass --legacy to run anyway (for the archives, which are still "
             "hand-written).\n" % ", ".join(gen))
         if "--legacy" not in sys.argv:

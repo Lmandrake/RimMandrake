@@ -62,7 +62,6 @@ def fresh():
     render.QUEUE = os.path.join(TMP, "queue")
     render.DERIVED = os.path.join(TMP, "derived")
     render.PREVIEW = os.path.join(render.DERIVED, "queue_preview")
-    render.BOARD = os.path.join(render.DERIVED, "board.json")
     render.item_index(refresh=True)
 
 
@@ -249,64 +248,24 @@ def t_reindex_verify_sees_a_hand_edit():
     """A generated file somebody edited must be VISIBLE, not silently re-flattened."""
     file_item("STABLE_ITEM_HERE_1", row=1)
     render.render(quiet=True)
-    with open(render.BOARD, "a", encoding="utf-8") as fh:
+    with open(os.path.join(render.PREVIEW, "BUILD.md"), "a", encoding="utf-8") as fh:
         fh.write("\n<- somebody hand-edited this\n")
     rc, out = quiet(lambda: render.reindex(verify=True))
-    assert rc == 1 and "DIFFERS  board.json" in out, out
+    assert rc == 1 and "DIFFERS" in out and "BUILD.md" in out, out
 
 
 def t_render_is_deterministic():
     """No wall clock anywhere, or `--verify` is theatre."""
     file_item("DETERMINISTIC_ITEM_1", row=1)
     render.render(quiet=True)
-    a = open(render.BOARD, "rb").read(), view().encode()
+    a = view()
     render.render(quiet=True)
-    b = open(render.BOARD, "rb").read(), view().encode()
+    b = view()
     assert a == b, "two renders of one ledger differed — something reads the clock"
-    assert '"as_of": "2026-' in a[0].decode(), (
-        "as_of must be the ledger's last event, not now()")
+    assert "2026-" in a, "as_of must be the ledger's last event, not now()"
 
 
 # ---- the board -----------------------------------------------------------
-def t_board_reports_state_blockers_velocity_and_seats():
-    file_item("CLOSED_TODAY_ITEM_1", row=1)
-    emit(seat="BUILD", event="start", id="CLOSED_TODAY_ITEM_1")
-    emit(seat="BUILD", event="close", id="CLOSED_TODAY_ITEM_1", sha="deadbee",
-         ts="2026-08-19T10:00:00Z")
-    file_item("BLOCKED_ON_A_HUMAN_1", row=2)
-    emit(seat="BUILD", event="block", id="BLOCKED_ON_A_HUMAN_1",
-         reason="needs a human answer")
-    file_item("BUSY_RIGHT_NOW_ITEM_1", row=3)
-    emit(seat="BUILD", event="start", id="BUSY_RIGHT_NOW_ITEM_1")
-    emit(seat="BUILD", event="seat", state="busy", item="BUSY_RIGHT_NOW_ITEM_1")
-    emit(seat="CHECK", event="bridge", state="taken")
-    emit(seat="OWNER", event="game", state="UP")
-    render.render(quiet=True)
-    b = json.load(open(render.BOARD, encoding="utf-8"))
-    assert b["game"] == "UP" and b["bridge_holder"] == "CHECK", b["game"]
-    assert b["velocity"]["closed"] == 1 and b["velocity"]["days"][0]["d"] == "2026-08-19"
-    assert b["blockers"]["on_human"] == 1, b["blockers"]
-    assert b["blocked"][0]["reason"] == "needs a human answer", b["blocked"]
-    seat = b["seats"]["BUILD"]
-    assert seat["doing"] == ["BUSY_RIGHT_NOW_ITEM_1"], seat
-    assert seat["says"]["state"] == "busy", seat
-    assert seat["counts"]["done"] == 1, seat
-
-
-def t_board_keeps_status_matrix_shape():
-    """`status_server.py` reads rows[].cells[COL].{done,total,state,mix}. Keep it."""
-    file_item("SHAPE_CHECK_ITEM_1", row=1)
-    render.render(quiet=True)
-    b = json.load(open(render.BOARD, encoding="utf-8"))
-    row = [r for r in b["rows"] if r["name"].startswith("1")]
-    assert row, [r["name"] for r in b["rows"]]
-    cell = row[0]["cells"]["BUILD"]
-    assert set(cell) == {"done", "total", "state", "mix"}, cell
-    assert set(cell["mix"]) == {"closed", "done", "doing", "blocked", "ready"}, cell
-    assert set(b["velocity"]) >= {"days", "per_day", "closed", "eta_days"}
-    assert set(b["blockers"]) == {"on_human", "classes"}
-
-
 def t_replay_refusals_are_surfaced_not_swallowed():
     file_item("GOOD_ITEM_HERE_1", row=1)
     # A refusal that is ALREADY in an append-only file: CHECK may not set game state.
@@ -314,8 +273,9 @@ def t_replay_refusals_are_surfaced_not_swallowed():
         fh.write(json.dumps({"ts": "2026-08-20T00:00:00Z", "seat": "CHECK",
                              "event": "game", "state": "UP"}) + "\n")
     render.render(quiet=True)
-    b = json.load(open(render.BOARD, encoding="utf-8"))
-    assert len(b["errors"]) == 1 and "OWNER" in b["errors"][0]["message"], b["errors"]
+    world, _ = render.build()
+    # world.errors is (index, event, message) — the dict shape was the board's doing.
+    assert len(world.errors) == 1 and "OWNER" in world.errors[0][2], world.errors
 
 
 def t_diff_summary_names_what_only_the_queue_has():
@@ -346,13 +306,13 @@ if __name__ == "__main__":
     shutil.rmtree(TMP, ignore_errors=True)
     os.makedirs(TMP, exist_ok=True)
     real = (model.EVENTS, model.ITEMS, render.QUEUE, render.DERIVED,
-            render.PREVIEW, render.BOARD)
+            render.PREVIEW)
     try:
         for name, fn in CASES:
             case(name, fn)
     finally:
         (model.EVENTS, model.ITEMS, render.QUEUE, render.DERIVED,
-         render.PREVIEW, render.BOARD) = real
+         render.PREVIEW) = real
         shutil.rmtree(TMP, ignore_errors=True)
     print("\n%d/%d passed" % (len(PASS), len(PASS) + len(FAIL)))
     sys.exit(1 if FAIL else 0)

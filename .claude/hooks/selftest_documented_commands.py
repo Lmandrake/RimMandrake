@@ -58,7 +58,6 @@ CMD_RE = re.compile(
 NEVER_RUN = ("broadcast.py",        # writes the peer socket — owner's tool
              "deploy_custom_mods.py",
              "modlist_swap.py",
-             "status_server.py",    # binds a port and blocks
              "first_light.py",      # drives the live bridge
              "w9_run.py",           # drives the live bridge
              "refresh.py",          # long, and writes derived artefacts

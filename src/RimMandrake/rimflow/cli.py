@@ -285,7 +285,7 @@ def _mode_file():
     return None
 
 
-def _stale_board():
+def _stale_queues():
     """-> a warning if `queue/*.md` have gone stale, else "".
 
     🔴 THE PUBLISHER IS BOUNDED AT 8 HOURS AND DIES SILENTLY, ON PURPOSE — and the cost
@@ -293,8 +293,8 @@ def _stale_board():
     frozen for 9 hours, so a seat waking would have read a view predating an entire day
     of rulings. It had already happened once before, for 2h17m, with a seat watching.
 
-    ⚠️ `rimflow` itself reads the LEDGER, so `next` is always current — but the board and
-    every `queue/*.md` reader is not, and nothing else notices. This is the one command
+    ⚠️ `rimflow` itself reads the LEDGER, so `next` is always current — but every
+    `queue/*.md` reader is not, and nothing else notices. This is the one command
     every seat runs first, so the warning belongs here.
     """
     import time
@@ -305,10 +305,10 @@ def _stale_board():
         return ""
     if age < 5:
         return ""
-    return ("⚠️  THE BOARD IS %d MINUTES STALE — `queue/*.md` and http://localhost:8787 "
-            "are\n    showing a view that old. What you read below is CURRENT (it comes "
-            "from the\n    ledger); the published board is not. The publisher is bounded "
-            "at 8h and dies\n    quietly. Restart it — REP's job, anyone's command:\n"
+    return ("⚠️  THE QUEUE VIEWS ARE %d MINUTES STALE — `queue/*.md` is showing a view "
+            "that\n    old. What you read below is CURRENT (it comes from the ledger); the "
+            "published\n    views are not. The publisher is bounded at 8h and dies quietly. "
+            "Restart it —\n    REP's job, anyone's command:\n"
             "      setsid nohup ./src/RimMandrake/Utils/board_loop.sh "
             ">/dev/null 2>&1 </dev/null &\n" % age)
 
@@ -322,7 +322,7 @@ def _stale_run_sheet():
     precedes the last `game UP` and is still ⏳ either was scored and nobody moved it, or
     rode a load and nobody looked. Both are worth saying, and neither announces itself.
 
-    ⚠️ Deliberately a WARNING on stderr next to `_stale_board`, not a hook. A `warn_*`
+    ⚠️ Deliberately a WARNING on stderr next to `_stale_queues`, not a hook. A `warn_*`
     PreToolUse hook prints to the OWNER's terminal on exit 1 and never reaches the agent
     (measured 2026-08-23), which is how a budget overrun went a whole session unnoticed.
     `next` is the command every seat runs first, so it is where a seat will see this.
@@ -601,7 +601,7 @@ def cmd_bench(args, seat):
 def cmd_next(args, seat):
     if getattr(args, "bench", False):
         return cmd_bench(args, seat)
-    warn = _stale_board()
+    warn = _stale_queues()
     if warn:
         sys.stderr.write(warn)
     warn = _stale_run_sheet()
@@ -1607,7 +1607,7 @@ def build_parser():
                    help="register it, write the report, file the item")
     s.add_argument("--full", action="store_true", help="print the whole report")
 
-    s = add("render", "rebuild queue/*.md and board.json (owned by render.py)",
+    s = add("render", "rebuild queue/*.md (owned by render.py)",
             _delegate("render"))
     s.add_argument("rest", nargs=argparse.REMAINDER,
                    help="passed straight through to render.py")

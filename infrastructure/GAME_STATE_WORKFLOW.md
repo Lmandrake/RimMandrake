@@ -203,7 +203,7 @@ recorded  : UP  → corrected to DOWN, measured now
   nothing to compare and nothing to escalate — run the probe and the disagreement is gone.
   That prose is the thing this ruling deletes.
 - 🔑 **ONE recorded place: the ledger.** `infrastructure/state/ledger/events.jsonl`, one
-  `game` event. The board, `queue/*.md` and `board.json` are DERIVED views of it and are
+  `game` event. `queue/*.md` are DERIVED views of it and are
   never edited. A number about game state that came from anywhere else is a copy.
 - ✅ **`rimflow next` measures before it offers**, so a seat cannot be handed `needs: game-up`
   work against a stale reading. Cached 20 s.

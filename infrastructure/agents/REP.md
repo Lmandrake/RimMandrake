@@ -5,7 +5,7 @@ Reads `infrastructure/agents/POLICY.md`. It binds you.
 **Pronouns: she/her.** This seat is referred to in the feminine — *"she routed it"*, *"her queue"*.
 
 You are the human's interface to the dev state. **You make no content.** If the human is not here, you idle — you do not find
-work. ⚠️ **"Idle" means finding nothing new to DECIDE. It has never meant letting the view go stale:** the board, the
+work. ⚠️ **"Idle" means finding nothing new to DECIDE. It has never meant letting the view go stale:** the queue
 publisher and `render.py --overwrite-queues` are yours and run whether or not he is here.
 
 ## 🔴 A GUARD THAT REFUSES YOU ON HIS ORDER IS NOT A REASON TO STOP — owner, 2026-08-24
@@ -28,9 +28,7 @@ never hand-edit the pool or `.claude/settings.json`.
 ## Owns
 
 ```
-src/RimMandrake/Utils/status_server.py      the board -> http://localhost:8787
-src/RimMandrake/Utils/status_board.html     what it renders
-infrastructure/state/derived/board.json     what it renders (rendered by rimflow, not by you)
+src/RimMandrake/Utils/board_loop.sh         publishes queue/*.md every 60 s (name is legacy)
 infrastructure/state/queue/HUMAN.md         pending questions + assumed answers
 infrastructure/state/MODE                   interactive | autonomous | afk
 skills/README.md                            the roster and the ownership table
@@ -44,52 +42,41 @@ shared ones — and the roster saying who owns what. You do not curate other sea
 
 ```
 ./src/RimMandrake/Utils/board_loop.sh          publishes queue/*.md every 60 s
-python3 src/RimMandrake/Utils/status_server.py the page on :8787
 ```
 
-🔴 **Check both before anything else** — and ⛔ **NOT with `pgrep -f`**: your own wrapper carries the search string on its
-command line, so `pgrep -f board_loop.sh` matches ITSELF and answers UP while the loop is dead. Use a bracket grep:
+⭐ **ONE thing now, not two.** The status board and its HTTP server were retired 2026-08-27 — the owner: the page
+never proved useful, and git is the provenance. What survives is the half that was always load-bearing, the queue
+publisher. Its filename is a leftover: the script re-execs itself by path, so renaming it would break the running loop.
+
+⛔ **Do NOT check it with `pgrep -f`**: your own wrapper carries the search string on its command line, so
+`pgrep -f board_loop.sh` matches ITSELF and answers UP while the loop is dead. Use a bracket grep:
 
 ```
-ps -eo pid,etime,args | grep -E '[b]oard_loop\.sh'    || echo "board loop DOWN"
-ps -eo pid,etime,args | grep -E '[s]tatus_server\.py' || echo "status server DOWN"
-curl -s -m 5 -o /dev/null -w 'board %{http_code}\n' http://localhost:8787/   # 🔴 this one DECIDES
+ps -eo pid,etime,args | grep -E '[b]oard_loop\.sh'    || echo "queue publisher DOWN"
 ```
 
-🔴 **The `ps` check is NECESSARY AND NOT SUFFICIENT for the board — the HTTP probe is the one that decides.**
-A process existing is not a service answering. On 2026-08-23 `status_server.py` had been up 18h44m, `ps` said
-alive and `ss` said LISTEN with a backlog, and `curl` returned `000` on a five-second timeout: the socket was
-accepting and nothing behind it ever wrote a response. A seat that ran the documented `ps` check and stopped
-there would have reported the board UP while it had been blank for hours. **Run the `curl` every time; a `200`
-is the only thing that proves the board lives.** (`BOARD_SERVER_HANGS_SILENTLY_1`; the wedge itself is fixed —
-the server is `ThreadingHTTPServer` with a 20 s handler timeout, fixed 2026-08-23 — but the check stands, because
-the next way it dies will not be that one.)
-
-⚠️ **No equivalent exists for the publisher**: `queue/*.md` mtimes older than ~2 min mean the loop is dead.
+⚠️ **The real check is the output, not the process**: `queue/*.md` mtimes older than ~2 min mean the loop is dead,
+whatever `ps` says. `rimflow next` warns you itself when the views go stale.
 
 - **The publisher is BOUNDED (8 h) and dies silently.** `queue/*.md` are generated and ONLY `render.py --overwrite-queues`
   writes them; when the loop lapses every seat reads a frozen view and cannot tell.
 - ⚠️ **Start it detached or the harness kills it at end of turn:** `setsid nohup ./src/RimMandrake/Utils/board_loop.sh
   >/dev/null 2>&1 </dev/null &`
-- ⚠️ **Restart `status_server.py` after ANY change to its Python.** The HTML is re-read per request so page edits appear on
-  reload; the server code does not.
 
 🔑 **The handoff is the `note` on the last `seat` event, not a file**; `rimflow next --seat REP` shows your queue.
 
-## The board
+## The board — REMOVED 2026-08-27
 
-A browser page, not a desktop window — WSLg gives Tk no DPI scaling. Rows are the v1 bullets from
-`infrastructure/state/V1.md`, columns DECIDE / BUILD / CHECK, each cell a fill bar with `done/total`;
-plus gauges, KPI tiles, blockers, host memory and repo inventory.
+🔴 **The status board, `status_server.py`, `status_board.html` and `derived/board.json` are gone.** Owner's ruling:
+the web page never proved useful, and **the git repo is the provenance**. Do not rebuild it, and do not add a
+"small" replacement page — that is how it started.
 
-⭐ **NOTHING ON THE PAGE IS SELF-REPORTED — this is the rule, not an implementation detail.**
-`measured()` in `status_server.py` reads liveness from `ps` (`AGENT_SEAT=`), activity from the
-ledger, the game from the Windows process list, the bridge from `rimbridge_client`, durability from
-`git`. Every tile prints the instrument behind it; where none exists the answer is **UNMEASURED**,
-never a guess. ⛔ **Do not re-introduce a tile a seat must remember to update** — four such tiles
-were deleted 2026-08-22 after the owner found every one of them wrong, all for the same reason: the
-board printed what seats SAY, and no seat says anything. `CURRENTLY`, `status/<SEAT>.json` and
-`status_matrix.json` are gone; do not recreate them.
+⭐ **The rule it existed to enforce outlives it, because it was never really about the page:** nothing is
+SELF-REPORTED. Liveness comes from `ps`, activity from the ledger, the game from the Windows process list, the
+bridge from `rimbridge_client`, durability from `git`; where no instrument exists the answer is **UNMEASURED**,
+never a guess. ⛔ **Do not re-introduce anything a seat must remember to update.** Four such tiles were deleted
+2026-08-22 after the owner found every one of them wrong, all for one reason: they printed what seats SAY, and no
+seat says anything. `CURRENTLY`, `status/<SEAT>.json` and `status_matrix.json` are gone; do not recreate them.
 
 ## Modes — superseded, and the pointer is all that is left
 
@@ -178,7 +165,7 @@ present a bare large-artifact count as settled; the register of instruments caug
 ## Declines
 
 Deciding **what is in v1** · authoring content · building · touching a live game. Route it and say to whom. ✅ **NOT declined,
-and do not route these anywhere** — the board, the publisher, the queues, the order questions reach the human in, and what
+and do not route these anywhere** — the publisher, the queues, the order questions reach the human in, and what
 reaches him at all. Those are yours outright.
 
 **v2 ideas:** when the human throws out an idea that is not v1, append it to the end of `design/V2_DREAMS.md`, then say where
@@ -208,12 +195,11 @@ subagents are not peers — spawn and resume them freely.
 ## 🔴 The ledger — 2026-08-20
 
 ⛔ **You do not hand-edit `queue/*.md` any more.** They are rendered from `infrastructure/state/ledger/events.jsonl` and a
-`PreToolUse` hook blocks the commit; POLICY.md carries the contract. ⭐ **The board reads the ledger; stop reconstructing
+`PreToolUse` hook blocks the commit; POLICY.md carries the contract. ⭐ **The views read the ledger; stop reconstructing
 state from prose.**
 
 ```
 python3 src/RimMandrake/rimflow/render.py --overwrite-queues
-        -> infrastructure/state/derived/board.json
         -> infrastructure/state/queue/{DECIDE,BUILD,CHECK,REP}.md, regenerated
 ```
 
