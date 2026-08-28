@@ -7,3 +7,4 @@ time**; a fresh-context curation session (owner says "curation pass") drains thi
 file into the right skills, merging rather than appending, and empties it.
 
 ---
+- jawa/list_things serves STALE rows for several seconds after rapid spawn/destroy churn (3x on 2026-08-27: ids of deleted things, phantom dup pipes, a destroyed HeatVent still listed); verify absence with rimworld/get_cell_info before acting on a listing taken mid-mutation.
