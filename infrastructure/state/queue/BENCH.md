@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:54:43Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-08-28T14:58:20Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -21,7 +21,7 @@ Started, and therefore not offered again. `rimflow close` or `rimflow block` mov
 ## GRAVSHIP_LAUNCH_TRAVEL_1 Gravship launch and travel: four calls that destroy one map and create another
 state:    doing
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 summary:  GravshipUtility.GenerateGravship → TravelTo → ArriveNewMap / AbandonMap.

@@ -2517,3 +2517,15 @@
 {"seat":"FOUNDRY","event":"verify","id":"TEMPLATE_ENGINE_ACCEPTANCE_1","result":"partial","config":"full-582","evidence":"first live placement, dwelling+nursery, both fully diffed against BuildPlan -- see item note; criterion 1 partial (Kitchen vs DiningRoom divergence, filed as DININGROOM_READS_AS_KITCHEN_1), criteria 2/3/4 pass","sha":"851ff833","ts":"2026-08-28T08:54:19Z"}
 {"seat":"FOUNDRY","event":"close","id":"TEMPLATE_ENGINE_ACCEPTANCE_1","sha":"851ff833","ts":"2026-08-28T08:54:34Z"}
 {"seat":"BENCH","event":"seat","state":"idle","reason":"owner said goodnight","ts":"2026-08-28T08:54:43Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-28T08:54:49Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-28T08:59:47Z"}
+{"seat":"FOUNDRY","event":"start","id":"DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1","ts":"2026-08-28T08:59:47Z"}
+{"seat":"FOUNDRY","event":"block","id":"DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1","reason":"jawa/debug_actions is built and compiled but not deployed (not in the live 166-tool list) -- needs a game-down window to deploy the companion DLL, not something to trigger for one item mid-AFK-session","ts":"2026-08-28T08:59:58Z"}
+{"seat":"FOUNDRY","event":"block","id":"BRIDGE_DROPS_UNKNOWN_PARAMS_1","reason":"jawa/bridge_arg_report (Harmony patch) built but not deployed -- same game-down blocker as DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1","ts":"2026-08-28T09:00:14Z"}
+{"seat":"FOUNDRY","event":"block","id":"LORD_JOB_SWAP_TOOL_1","reason":"jawa/lord_set_job built but not deployed -- same game-down blocker","ts":"2026-08-28T09:00:25Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-28T14:56:54Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"Yes, take it down now. Make sure to deploy what you can when it's down.","ts":"2026-08-28T14:56:54Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Yes, take it down now. Make sure to deploy what you can when it's down.","ts":"2026-08-28T14:57:17Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down","ts":"2026-08-28T14:57:29Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-08-28T14:57:36Z"}
+{"seat":"BENCH","event":"needs","id":"GRAVSHIP_LAUNCH_TRAVEL_1","to":"bridge","reason":"deployed in the 2026-08-28 down window (game copy verified 244 tools incl. all four gravship); remaining: prove_gravship.py on a scratch quicktest next game-up","ts":"2026-08-28T14:58:20Z"}
