@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T15:49:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T16:08:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -193,16 +193,6 @@ kind:     bug
 thin:     no ## spec, no ## verify
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
-
-## RETEXTURED_EARTH_FAUNA_BANNED_1 Ban the mod retextures of banned Earth animals and re-run the cast
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  design/Jawa/fauna/EARTHFAUNAEXCLUDED.txt is the owner's no-Earth-animals rule as
-prose:    infrastructure/state/items/RETEXTURED_EARTH_FAUNA_BANNED_1.md
 
 ## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
 state:    proposed
