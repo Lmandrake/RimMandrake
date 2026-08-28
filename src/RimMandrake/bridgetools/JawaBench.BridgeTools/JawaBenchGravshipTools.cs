@@ -310,20 +310,23 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/gravship_land",
             Description =
-                "Confirm the pending gravship landing - what the player's confirm button does: " +
-                "marker.BeginLanding, landing cutscene, ship placed. Refuses when no landing is " +
-                "waiting (jawa/gravship_status names the state). By default lands exactly where the " +
-                "arrival placed the marker, which the game already validated; pass x/z (and rot " +
-                "0-3) to move the marker first - bounds-checked only, terrain validity is the " +
-                "caller's risk. Placement is ASYNCHRONOUS: ~10s landing cutscene, then the ship " +
-                "and its pawns exist on the new map.",
-            ResultDescription = "success, landedAt{x,z,rot,mapId}, moved, nextState.")]
+                "Confirm the pending gravship landing. DEFAULT (skipCutscene=true): place the ship " +
+                "SYNCHRONOUSLY, reproducing PlaceGravship + LandingEnded without the render chain - " +
+                "measured 2026-08-28, the vanilla capture/cutscene chain WEDGES under automation " +
+                "before the ship is placed, and only a save reload recovers. skipCutscene=false " +
+                "runs the vanilla marker.BeginLanding cutscene instead (foreground play only). " +
+                "Refuses when no landing is waiting (jawa/gravship_status names the state). Lands " +
+                "at the marker's position; pass x/z (and rot 0-3) to move it first - bounds-checked " +
+                "only. Deviation from vanilla: the game is left PAUSED, not set to Normal speed. " +
+                "The negative-landing-outcome roll from launch quality still applies.",
+            ResultDescription = "success, landedAt{x,z,rot,mapId}, moved, placed, spawnedThings, nextState.")]
         public static async Task<object> GravshipLand(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Optional new marker x; requires z too.")] int x = -1,
             [ToolParameter(Description = "Optional new marker z; requires x too.")] int z = -1,
-            [ToolParameter(Description = "Optional rotation 0..3 (N/E/S/W).")] int rot = -1)
+            [ToolParameter(Description = "Optional rotation 0..3 (N/E/S/W).")] int rot = -1,
+            [ToolParameter(Description = "Place directly without the vanilla cutscene (DEFAULT TRUE; the cutscene wedges under automation).")] bool skipCutscene = true)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -360,13 +363,81 @@ namespace JawaBench.BridgeTools
                     moved = true;
                 }
                 var at = new { x = marker.Position.x, z = marker.Position.z, rot = marker.GravshipRotation.AsInt, mapId = markerMap.uniqueID };
-                marker.BeginLanding(Find.GravshipController);
+
+                if (!skipCutscene)
+                {
+                    marker.BeginLanding(Find.GravshipController);
+                    return (object)new
+                    {
+                        success = true,
+                        landedAt = at,
+                        moved,
+                        placed = false,
+                        nextState = "vanilla landing cutscene (can wedge under automation); verify with jawa/gravship_status",
+                        ticksGame = TicksGameSafe(),
+                    };
+                }
+
+                // Direct placement: PlaceGravship + LandingEnded, minus the render chain.
+                // Every call verified against 1.6 source (WorldComponent_GravshipController).
+                var gravship = marker.gravship;
+                if (gravship == null) return Fail("Marker holds no gravship.");
+                var landPos = marker.Position;
+                var landCells = new HashSet<IntVec3>(marker.GravshipCells.Select(c => c + landPos));
+                WorldComponent_GravshipController.DestroyTreesAroundSubstructure(markerMap, landCells);
+                marker.Destroy();
+                try
+                {
+                    var fld = typeof(WorldComponent_GravshipController).GetField("landingMarker",
+                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    fld?.SetValue(Find.GravshipController, null);
+                }
+                catch (Exception ex) { Log.Warning("[JawaBench] gravship_land: could not clear landingMarker: " + ex.Message); }
+
+                List<Thing> spawnedThings;
+                GravshipPlacementUtility.PlaceGravshipInMap(gravship, landPos, markerMap, out spawnedThings);
+                GravshipPlacementUtility.ApplyTemperatureVacuumFromBase(gravship, landPos, markerMap);
+                markerMap.listerFilthInHomeArea.RebuildAll();
+                markerMap.resourceCounter.UpdateResourceCounts();
+                markerMap.wealthWatcher.ForceRecount(allowDuringInit: true);
+                markerMap.powerNetManager.UpdatePowerNetsAndConnections_First();
+                try
+                {
+                    var m = typeof(GravshipPlacementUtility).GetMethod("PostSwapMap",
+                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                    m?.Invoke(null, new object[] { gravship, spawnedThings });
+                }
+                catch (Exception ex) { Log.Warning("[JawaBench] gravship_land: PostSwapMap: " + ex.Message); }
+
+                var placedEngine = gravship.Engine;
+                string outcome = null;
+                if (placedEngine?.launchInfo != null && placedEngine.launchInfo.doNegativeOutcome)
+                {
+                    var def = DefDatabase<LandingOutcomeDef>.AllDefsListForReading
+                        .RandomElementByWeight(d => d.weight);
+                    def.Worker.ApplyOutcome(gravship);
+                    outcome = def.defName;
+                }
+                Current.Game.Gravship = null;
+                Find.Scenario.PostGravshipLanded(markerMap);
+                try
+                {
+                    markerMap.mapDrawer.RegenerateLayerNow(typeof(SectionLayer_GravshipMask));
+                    markerMap.mapDrawer.RegenerateLayerNow(typeof(SectionLayer_GravshipHull));
+                    markerMap.mapDrawer.RegenerateLayerNow(typeof(SectionLayer_SubstructureProps));
+                }
+                catch (Exception ex) { Log.Warning("[JawaBench] gravship_land: mask regen: " + ex.Message); }
+
                 return (object)new
                 {
                     success = true,
                     landedAt = at,
                     moved,
-                    nextState = "landing cutscene, then the ship exists on the map; verify with jawa/gravship_status and rimworld/list_colonists",
+                    placed = placedEngine != null && placedEngine.Spawned,
+                    engineId = placedEngine?.ThingID,
+                    spawnedThings = spawnedThings?.Count ?? 0,
+                    negativeOutcome = outcome,
+                    nextState = "ship placed synchronously; verify with jawa/gravship_status and rimworld/list_colonists",
                     ticksGame = TicksGameSafe(),
                 };
             });

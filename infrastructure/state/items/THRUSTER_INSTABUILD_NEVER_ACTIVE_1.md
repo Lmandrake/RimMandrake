@@ -11,3 +11,8 @@ Suspect a mod patch (VGE re-categorizes thrusters into Platform and may patch ac
 Same build sequence on the 13-mod minimal list (modlist_swap): if range appears, bisect the
 mod; if not, the vanilla condition analysis in GRAVSHIP_LAUNCH_TRAVEL_1's session missed
 something — instrument CompGravshipThruster.CanBeActive with a companion read tool.
+
+## Note 2026-08-28 (BENCH): VEF patches this exact machinery
+`vendor/mod_sources/VanillaExpandedFramework-main/Source/VEF/Buildings/Harmony/` transpiles
+`CompAffectedByFacilities.PotentialThingsToLinkTo` / `CanPotentiallyLinkTo` (facility
+"equivalence") and patches `GravshipUtility.PreLaunchConfirmation`. Start the bisect there.

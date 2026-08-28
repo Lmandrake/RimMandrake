@@ -2593,3 +2593,6 @@
 {"seat":"BENCH","event":"file","id":"GRAVSHIP_LANDING_DIRECT_PLACE_1","title":"Land a gravship without the cutscene machinery (skipCutscene route)","kind":"build","target":"v1","needs":"offline","for":"BENCH","ts":"2026-08-28T17:04:06Z"}
 {"seat":"BENCH","event":"file","id":"THRUSTER_INSTABUILD_NEVER_ACTIVE_1","title":"Tool-built thrusters link but never contribute range on the full list","kind":"bug","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-08-28T17:04:07Z"}
 {"seat":"BENCH","event":"close","id":"GRAVSHIP_LAUNCH_TRAVEL_1","sha":"138ee26a","ts":"2026-08-28T17:04:09Z"}
+{"seat":"BENCH","event":"claim","id":"GRAVSHIP_LANDING_DIRECT_PLACE_1","ts":"2026-08-28T17:05:48Z"}
+{"seat":"BENCH","event":"start","id":"GRAVSHIP_LANDING_DIRECT_PLACE_1","ts":"2026-08-28T17:05:49Z"}
+{"seat":"BENCH","event":"needs","id":"GRAVSHIP_LANDING_DIRECT_PLACE_1","to":"deploy","reason":"built and compiled; DLL locked until next down window","ts":"2026-08-28T17:07:29Z"}
