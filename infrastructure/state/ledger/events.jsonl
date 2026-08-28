@@ -2447,3 +2447,5 @@
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-08-28T07:00:52Z"}
 {"seat":"BENCH","event":"reassign","id":"COLD_LOAD_RUN_SHEET_1","to":"BENCH","reason":"amending the sheet: paint tool built, surface 239","ts":"2026-08-28T07:10:49Z"}
 {"seat":"BENCH","event":"reassign","id":"COLD_LOAD_RUN_SHEET_1","to":"FOUNDRY","reason":"amended: paint tool + repaint row","ts":"2026-08-28T07:12:42Z"}
+{"seat":"BENCH","event":"reassign","id":"COLD_LOAD_RUN_SHEET_1","to":"BENCH","reason":"run sheets are bench work — executed with the owner at the load","ts":"2026-08-28T07:32:07Z"}
+{"seat":"BENCH","event":"file","id":"PLACER_IDENTITY_REPLAY_1","title":"Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-08-28T07:32:28Z"}

@@ -241,7 +241,7 @@ def is_generated(path):
         return False
 
 
-def my_seat(root):
+def my_seat(root, sid=None):
     """-> the seat this window is, or None. ⚠️ None means DO NOT ENFORCE ownership.
 
     Guessing a seat here would block the wrong person's legitimate commit, and a hook
@@ -253,7 +253,8 @@ def my_seat(root):
     is frozen at launch. Found 2026-08-28 when this hook refused BENCH's own item to
     BENCH, because the window's env still said the seat it was launched as.
     """
-    sid = os.environ.get("CLAUDE_SESSION_ID") or os.environ.get("CLAUDE_CODE_SESSION_ID")
+    sid = (sid or os.environ.get("CLAUDE_SESSION_ID")
+           or os.environ.get("CLAUDE_CODE_SESSION_ID"))
     if sid:
         try:
             with open(os.path.join(root, ".claude", "session_roles", sid),
@@ -353,7 +354,7 @@ def main():
         # The write is the moment the work is created, so it is the moment to refuse.
         if ITEMS in fp and fp.endswith(".md"):
             root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
-            seat = my_seat(root)
+            seat = my_seat(root, ev.get("session_id"))
             iid = os.path.basename(fp)[:-3]
             holder = owners(root).get(iid) if seat else None
             if (holder and seat and holder != seat and seat != "OWNER"
@@ -406,7 +407,7 @@ def main():
                 % p)
 
     # ---- 3. you may file for any seat; you may change only what you own -----
-    seat = my_seat(root)
+    seat = my_seat(root, ev.get("session_id"))
     if seat:
         own = owners(root)
         may_finish = owners(root, "unclaimed_filers")
