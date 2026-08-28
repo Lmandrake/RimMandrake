@@ -7,30 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:31:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:40:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## THOROUGH_RETAG_WEAPONS_ARMOUR_1 The thorough weapon and armour retag: the advice, the measured state, and the dump it is blocked on
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  🔴 OWNER, 2026-08-22: "We need a THOROUGH retag of all the weapons and armor to ensure
-prose:    infrastructure/state/items/THOROUGH_RETAG_WEAPONS_ARMOUR_1.md
-
-## BLACKSTAR_NAME_MUST_NOT_LEAK_1 Blackstar Company must name exactly one faction; the fixedName leaks down PirateBandBase
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  🔴 DECIDE ruled 2026-08-22: "Blackstar Company" names ONE mercenary outfit. It must
-prose:    infrastructure/state/items/BLACKSTAR_NAME_MUST_NOT_LEAK_1.md
 
 ## AUTHORED_KINDS_MUST_FIELD_1 Wire the nine orphaned role kinds into TribeCivil, Pirate and Empire - combat groups only
 state:    ready
@@ -103,6 +85,16 @@ kind:     check
 blocked:  2 of 3 criteria met; the raid criterion is blocked on SIX_FACTIONS_NEVER_RAID_1 - six of seven produced nothing in 18 firings (on SIX_FACTIONS_NEVER_RAID_1)
 summary:  Carries the live half of B45 · B46 · B47 · B48 · B49 · B50 · B51 — Hutt
 prose:    infrastructure/state/items/seven-authored-factions-generate-and-field-their-own-kinds-5b90c7.md
+
+## THOROUGH_RETAG_WEAPONS_ARMOUR_1 The thorough weapon and armour retag: the advice, the measured state, and the dump it is blocked on
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+blocked:  remaining check needs the NEXT cold load's Player.log + fresh capture; a restart is the owner's call (game-state-is-one-command-now), not FOUNDRY's to trigger for one item
+summary:  🔴 OWNER, 2026-08-22: "We need a THOROUGH retag of all the weapons and armor to ensure
+prose:    infrastructure/state/items/THOROUGH_RETAG_WEAPONS_ARMOUR_1.md
 
 ## WORLD_MUTATOR_LANDMARK_IMPORTERS_1 No file importer for mutators or landmarks - 13,569 tiles and 579 landmarks can only be replayed by script
 state:    proposed  (BLOCKED)
