@@ -2388,3 +2388,55 @@
 {"seat":"CHECK","event":"bridge","state":"taken","ts":"2026-08-28T02:04:23Z"}
 {"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-28T02:06:19Z"}
 {"seat":"REP","event":"seat","state":"idle","note":"REP queue is EMPTY (3 closed 2026-08-27). Shipped: rimflow next warns on run-sheet blocks that rode a load unscored (7 do); rimflow next --bench, the triage query, REP/OWNER only; cherrypicker.py, one reader for the 1342-def kill list, both contact sheets now filter (341 animals / 174 weapons were being shown to him after he cut them). DOCTRINE, owner in the room: BUILD produces NOTHING for CHECK automatically - regular human play is the default validation, and the only thing earning a live check is a MECHANISM new or changed that has never once been observed running. Landed in POLICY/BUILD/CHECK (all three at 150/150) plus a prompt on rimflow file --for CHECK. TRIM_VALIDATION_LAYERS_1 still open: only point 3 (load work leaves the queue for run sheets) remains, HELD until the new stale-block check has caught one real load - do not start it before that. Board 200, publisher live, both survive a reboot.","ts":"2026-08-28T03:00:48Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"CHECK","ownerSaid":"Game is up and ready for you","ts":"2026-08-28T04:27:52Z"}
+{"seat":"BENCH","event":"reassign","id":"ANCIENT_SCATTERBOW_TAG_SEVER_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:44:52Z"}
+{"seat":"BENCH","event":"reassign","id":"AUTHORED_KINDS_MUST_FIELD_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:44:59Z"}
+{"seat":"BENCH","event":"reassign","id":"AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:17Z"}
+{"seat":"BENCH","event":"reassign","id":"BIOME_DUPLICATES_STILL_LIVE_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:17Z"}
+{"seat":"BENCH","event":"reassign","id":"BLACKSTAR_NAME_MUST_NOT_LEAK_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:17Z"}
+{"seat":"BENCH","event":"reassign","id":"BRIDGE_ARG_SHAPES_INCONSISTENT_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:17Z"}
+{"seat":"BENCH","event":"reassign","id":"BRIDGE_DROPS_UNKNOWN_PARAMS_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:17Z"}
+{"seat":"BENCH","event":"reassign","id":"BRIDGE_READ_VEHICLE_COMPONENTS_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:17Z"}
+{"seat":"BENCH","event":"reassign","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:17Z"}
+{"seat":"BENCH","event":"reassign","id":"BUILD_BATCH_OVERWRITES_SILENTLY_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:18Z"}
+{"seat":"BENCH","event":"reassign","id":"CLEAR_WORLD_LEAVES_BRIDGE_BLIND_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:18Z"}
+{"seat":"BENCH","event":"reassign","id":"CUT_LIST_ONE_READER_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:18Z"}
+{"seat":"BENCH","event":"reassign","id":"DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:18Z"}
+{"seat":"BENCH","event":"reassign","id":"DOWN_WINDOW_ASSEMBLY_DEPLOY_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:18Z"}
+{"seat":"BENCH","event":"reassign","id":"DUMPER_SWALLOWS_CACHE_THROW_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:18Z"}
+{"seat":"BENCH","event":"reassign","id":"DUMP_PRODUCER_DATED_CAPTURES_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:18Z"}
+{"seat":"BENCH","event":"reassign","id":"FIRE_RAID_ECHOES_REQUESTED_FACTION_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:19Z"}
+{"seat":"BENCH","event":"reassign","id":"GRAVSHIP_LAUNCH_TRAVEL_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:19Z"}
+{"seat":"BENCH","event":"reassign","id":"JAWA_SCENARIO_PARTS_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:19Z"}
+{"seat":"BENCH","event":"reassign","id":"LORD_JOB_SWAP_TOOL_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:19Z"}
+{"seat":"BENCH","event":"reassign","id":"NO_TOOL_REPORTS_MAP_TILE_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:19Z"}
+{"seat":"BENCH","event":"reassign","id":"ORDERED_JOB_CANNOT_SOW_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:19Z"}
+{"seat":"BENCH","event":"reassign","id":"RETEXTURED_EARTH_FAUNA_BANNED_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:19Z"}
+{"seat":"BENCH","event":"reassign","id":"ROLE_KINDS_ARMED_5_OF_5_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:20Z"}
+{"seat":"BENCH","event":"reassign","id":"SIX_FACTIONS_NEVER_RAID_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:20Z"}
+{"seat":"BENCH","event":"reassign","id":"SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:20Z"}
+{"seat":"BENCH","event":"reassign","id":"STAT_ON_INSTANCE_TOOL_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:20Z"}
+{"seat":"BENCH","event":"reassign","id":"THOROUGH_RETAG_WEAPONS_ARMOUR_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:20Z"}
+{"seat":"BENCH","event":"reassign","id":"VOID_AWAKENING_SCRIPTING_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:20Z"}
+{"seat":"BENCH","event":"reassign","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:20Z"}
+{"seat":"BENCH","event":"reassign","id":"NONCANON_ARRIVES_BY_PAWNKIND_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:21Z"}
+{"seat":"BENCH","event":"reassign","id":"PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:21Z"}
+{"seat":"BENCH","event":"reassign","id":"JAWA_CULTURES_LEAK_TO_STRANGERS_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:21Z"}
+{"seat":"BENCH","event":"reassign","id":"CAST_LIVE_SPAWN_CHECK_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:21Z"}
+{"seat":"BENCH","event":"reassign","id":"ION_TIERS_MEASURED_LIVE_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:21Z"}
+{"seat":"BENCH","event":"reassign","id":"TEMPLATE_ENGINE_ACCEPTANCE_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:21Z"}
+{"seat":"BENCH","event":"reassign","id":"WORLD_MUTATOR_LANDMARK_IMPORTERS_1","to":"FOUNDRY","reason":"redesign #4 fold","ts":"2026-08-28T05:45:21Z"}
+{"seat":"BENCH","event":"reassign","id":"CAST_NAMES_UNSPAWNABLE_ANIMALS_1","to":"BENCH","reason":"redesign #4 fold","ts":"2026-08-28T05:45:22Z"}
+{"seat":"BENCH","event":"reassign","id":"GALACTIC_EMPIRE_NAME_COLLIDES_1","to":"BENCH","reason":"redesign #4 fold","ts":"2026-08-28T05:45:22Z"}
+{"seat":"BENCH","event":"reassign","id":"GAME_RESET_SCOPE_ANSWER_1","to":"BENCH","reason":"redesign #4 fold","ts":"2026-08-28T05:45:22Z"}
+{"seat":"BENCH","event":"reassign","id":"BIOME_FLORA_LOOKS_RIGHT_1","to":"BENCH","reason":"redesign #4 fold","ts":"2026-08-28T05:45:22Z"}
+{"seat":"BENCH","event":"reassign","id":"HELIX_GEONOSIAN_LOOK_CHECK_1","to":"BENCH","reason":"redesign #4 fold","ts":"2026-08-28T05:45:22Z"}
+{"seat":"BENCH","event":"reassign","id":"dll-capability-roster-and-cull-a41c02","to":"BENCH","reason":"redesign #4 fold","ts":"2026-08-28T05:45:22Z"}
+{"seat":"BENCH","event":"reassign","id":"TRIM_VALIDATION_LAYERS_1","to":"BENCH","reason":"redesign #4 fold","ts":"2026-08-28T05:45:22Z"}
+{"seat":"BENCH","event":"drop","id":"GAME_RESET_SCOPE_ANSWER_1","reason":"stale-drop: already answered — rimworld-debug-testing skill establishes throwaway bridge quicktest colonies (start_debug_game_ready, ~5s) as standard practice","ts":"2026-08-28T05:45:32Z"}
+{"seat":"BENCH","event":"drop","id":"BIOME_FLORA_LOOKS_RIGHT_1","reason":"stale-drop: superseded by REGULAR_HUMAN_PLAY ruling 2026-08-27 — a LOOKS-right check is the owner playing, not a filed item","ts":"2026-08-28T05:45:32Z"}
+{"seat":"BENCH","event":"drop","id":"HELIX_GEONOSIAN_LOOK_CHECK_1","reason":"stale-drop: superseded by REGULAR_HUMAN_PLAY ruling 2026-08-27 — a LOOK-like check is the owner playing, not a filed item","ts":"2026-08-28T05:45:32Z"}
+{"seat":"BENCH","event":"drop","id":"dll-capability-roster-and-cull-a41c02","reason":"stale-drop: no capability-roster artifact found in BUILDABLE.md or bridgetools/; 244-tool roster proven 2026-08-21 — re-file with a live target if real","ts":"2026-08-28T05:45:32Z"}
+{"seat":"BENCH","event":"close","id":"TRIM_VALIDATION_LAYERS_1","sha":"5c3e1a9e","ts":"2026-08-28T05:45:33Z"}
+{"seat":"BENCH","event":"reassign","id":"KIMI_GATEWAY_FOR_BUILD_1","to":"BENCH","reason":"redesign #4 fold","ts":"2026-08-28T05:45:41Z"}
+{"seat":"BENCH","event":"drop","id":"KIMI_GATEWAY_FOR_BUILD_1","reason":"stale-drop: superseded by redesign #4 model policy — external free workers are candidate-narrowing only, no further harness investment","ts":"2026-08-28T05:45:41Z"}
