@@ -88,7 +88,9 @@ LEDGER = os.path.join(STATE, "ledger")
 EVENTS = os.path.join(LEDGER, "events.jsonl")
 ITEMS = os.path.join(STATE, "items")
 
-SEATS = ("DECIDE", "BUILD", "CHECK", "REP", "OWNER")
+# BENCH and FOUNDRY are the live windows (redesign #4, 2026-08-27). The four retired
+# seats stay listed so the ledger's history replays and legacy items keep their owners.
+SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP")
 
 # Item lifecycle. `proposed` means "filed, not yet taken". 🔴 It is NO LONGER a
 # completeness gate — the owner removed that on 2026-08-21 (see `start`). An item may be
@@ -188,7 +190,7 @@ VERBS = {
     # 🔑 `drop`, `block` and `admin` KEEP theirs: there the reason is the ONLY record of
     # the decision, and the Tribal Furniture reversal was lost precisely because it lived
     # in a drop reason nobody propagated. Those are load-bearing; these three are not.
-    "retarget":  {"who": ("DECIDE", "owner"), "req": ("to",), "opt": ("from", "reason")},
+    "retarget":  {"who": ("BENCH", "DECIDE", "owner"), "req": ("to",), "opt": ("from", "reason")},
     # 🔴 `needs` had NO setter until 2026-08-21, and that broke the axis POLICY.md added
     # precisely so "waiting for the game" stops looking like "ready". Only `file` and
     # `spawn` accepted it, so every migrated item rendered at the filing default: 38 of
@@ -197,8 +199,8 @@ VERBS = {
     # ⚠️ It is `("DECIDE", "owner")` like `retarget`, not owner-only: a mis-stamped
     # `needs` is exactly the kind of thing a seat notices about ANOTHER seat's item, and
     # the item's owner may be the one seat that cannot see the problem.
-    "needs":     {"who": ("DECIDE", "owner"), "req": ("to",), "opt": ("reason",)},
-    "reassign":  {"who": ("DECIDE",), "req": ("to",), "opt": ("reason",)},
+    "needs":     {"who": ("BENCH", "DECIDE", "owner"), "req": ("to",), "opt": ("reason",)},
+    "reassign":  {"who": ("BENCH", "DECIDE"), "req": ("to",), "opt": ("reason",)},
     "close":     {"who": "owner", "req": ("sha",), "opt": ()},
     "drop":      {"who": "owner", "req": ("reason",), "opt": ()},
     "supersede": {"who": "owner", "req": ("by",), "opt": ("reason",)},
@@ -208,7 +210,9 @@ VERBS = {
     # It was missing from this table, so the documented command errored out — a rule
     # nobody could follow. Found 2026-08-20 by the first seat that tried to follow it.
     "seat":      {"who": "self",  "req": ("state",), "opt": ("reason", "item", "note")},
-    "bridge":    {"who": ("CHECK",), "req": ("state",), "opt": ()},
+    # Either live window may drive; one at a time is enforced by cmd_bridge's holder
+    # guard (redesign #4, 2026-08-27 — CHECK's monopoly retired with the seat).
+    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK"), "req": ("state",), "opt": ()},
     # 🔑 `text` is what --note lands in, and it was MISSING here until
     # 2026-08-23: cmd_game has always set ev["text"], so every `rimflow game
     # --note` and every `./game up "note"` raised SchemaError instead. The flag
@@ -579,8 +583,9 @@ def _who_refusal(ev, item):
     if seat in who:
         return None
     if verb == "bridge":
-        return ("only CHECK takes the bridge. This is not a formality: two seats "
-                "driving one live game produce results neither can attribute.")
+        return ("only a live window (BENCH, FOUNDRY) takes the bridge, one at a time. "
+                "This is not a formality: two seats driving one live game produce "
+                "results neither can attribute.")
     if verb == "game":
         # \U0001f534 OWNER, 2026-08-22: the MEASUREMENT wins, silently. A seat that RAN
         # the probe is not guessing on anyone's behalf - it looked. Those events carry

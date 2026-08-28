@@ -118,11 +118,14 @@ def fresh():
 def t_next_on_an_empty_ledger_still_explains_itself():
     """⭐ 'Nothing to do' is the answer that sends a seat back to hand-reading queues."""
     fresh()
-    out = ok("next", "--seat", "BUILD")
-    assert "nothing offered for BUILD" in out, out
+    out = ok("next", "--seat", "FOUNDRY", seat="FOUNDRY")
+    assert "nothing offered for FOUNDRY" in out, out
     assert "owns no open items" in out, (
         "an empty result must say WHY in one line, or the seat goes hunting: %s" % out)
-    assert "game DOWN" in out, "the game state is half of why anything is offered: %s" % out
+    # ⚠️ `next` MEASURES the live machine (probe wins, silently), so this test cannot
+    # pin WHICH state — it ran green for days only while the real game happened to be
+    # down. What it owes: the state is printed at all.
+    assert "(game " in out, "the game state is half of why anything is offered: %s" % out
 
 
 def t_a_free_bridge_offer_says_how_to_take_it():
@@ -282,9 +285,9 @@ def t_why_separates_a_closed_window_from_a_defect():
     assert "window is simply closed" in out, out
 
 
-def t_bridge_is_refused_for_a_non_check_seat():
+def t_bridge_is_refused_for_a_non_window_seat():
     fresh()
-    refused(("bridge", "take"), "only CHECK takes the bridge",
+    refused(("bridge", "take"), "only a live window",
             "BUILD took the bridge", seat="BUILD")
     refused(("bridge", "take"), "neither can attribute",
             "the reason the rule exists was dropped from the message", seat="BUILD")
@@ -390,13 +393,13 @@ def t_blocked_is_reported_and_the_item_is_withheld():
     assert body(ok("next", "--seat", "BUILD")).startswith("WAITING_ON_OWNER_1")
 
 
-def t_reassign_is_decide_only():
+def t_reassign_is_bench_only():
     fresh()
-    ok("file", "REASSIGNABLE_ITEM_1", "--for", "BUILD", "--title", "t")
-    refused(("reassign", "REASSIGNABLE_ITEM_1", "--to", "CHECK", "--reason", "x"),
-            "only DECIDE", "BUILD reassigned its own item", seat="BUILD")
-    assert "reassign" in ok("reassign", "REASSIGNABLE_ITEM_1", "--to", "CHECK",
-                            "--reason", "x", seat="DECIDE")
+    ok("file", "REASSIGNABLE_ITEM_1", "--for", "FOUNDRY", "--title", "t")
+    refused(("reassign", "REASSIGNABLE_ITEM_1", "--to", "BENCH", "--reason", "x"),
+            "only BENCH", "FOUNDRY reassigned its own item", seat="FOUNDRY")
+    assert "reassign" in ok("reassign", "REASSIGNABLE_ITEM_1", "--to", "FOUNDRY",
+                            "--reason", "x", seat="BENCH")
 
 
 # ---- the OWNER is never refused by a seat rule -----------------------------
@@ -578,10 +581,10 @@ def t_the_bench_scan_is_refused_to_a_seat_that_could_game_it():
     """
     fresh()
     err = refused(("next", "--bench"), "distress_signals.md",
-                  "BUILD must not be handed a score to optimise", seat="BUILD")
+                  "FOUNDRY must not be handed a score to optimise", seat="FOUNDRY")
     assert "gamed" in err.lower(), (
         "the refusal has to say WHY, or the next seat reads it as rank: %s" % err)
-    ok("next", "--bench", seat="REP")
+    ok("next", "--bench", seat="BENCH")
     ok("next", "--bench", seat="OWNER")
 
 

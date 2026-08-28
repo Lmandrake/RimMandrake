@@ -227,10 +227,10 @@ def t_seat_idle_takes_the_handoff_note():
     assert w.seats["BUILD"]["state"] == "idle"
 
 
-def t_only_check_takes_bridge():
+def t_only_a_live_window_takes_bridge():
     refuses(lambda: model.replay([ev(seat="BUILD", event="bridge", state="taken")],
                                  strict=True),
-            "only check", "BUILD took the bridge")
+            "only a live window", "BUILD took the bridge")
     w = model.replay([ev(seat="CHECK", event="bridge", state="taken")], strict=True)
     assert w.bridge_holder == "CHECK"
 
@@ -492,8 +492,8 @@ def t_a_bridge_item_owned_elsewhere_is_not_offered_but_IS_explained():
     assert priority.rank(w, "BUILD") == [], (
         "BUILD was offered a bridge item it can never take the lock for")
     said = " ".join(priority.why_not(w, "BUILD", "BRIDGE_GATED_ITEM_1"))
-    assert "can never take the lock" in said, said
-    assert "rimflow reassign BRIDGE_GATED_ITEM_1 --to CHECK" in said, (
+    assert "cannot hold the lock" in said, said
+    assert "rimflow reassign BRIDGE_GATED_ITEM_1 --to FOUNDRY" in said, (
         "it explained the dead end without naming the way out: %s" % said)
 
 

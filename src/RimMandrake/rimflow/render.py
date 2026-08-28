@@ -82,7 +82,7 @@ PREVIEW = os.path.join(DERIVED, "queue_preview")
 # `rimflow next --seat OWNER`; they are simply not rendered over his prose.
 # ⛔ Do not add OWNER back here. If a rendered view of owner items is ever wanted, give
 # it its own filename — never HUMAN.md.
-VIEW_SEATS = ("DECIDE", "BUILD", "CHECK", "REP")
+VIEW_SEATS = ("BENCH", "FOUNDRY")
 FILENAME = {}
 
 # The three seats that carry work items. Kept after the board's removal because

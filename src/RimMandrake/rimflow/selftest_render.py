@@ -77,8 +77,8 @@ def prose(iid, spec="build the thing.", extra=""):
     render.item_index(refresh=True)
 
 
-def file_item(iid, for_="BUILD", row=None, needs=None, title="t", with_prose=True):
-    d = {"seat": "DECIDE", "event": "file", "id": iid, "title": title, "kind": "task"}
+def file_item(iid, for_="FOUNDRY", row=None, needs=None, title="t", with_prose=True):
+    d = {"seat": "BENCH", "event": "file", "id": iid, "title": title, "kind": "task"}
     d["for"] = for_
     if row is not None:
         d["row"] = str(row)
@@ -90,7 +90,7 @@ def file_item(iid, for_="BUILD", row=None, needs=None, title="t", with_prose=Tru
     emit(seat=for_, event="claim", id=iid)
 
 
-def view(seat="BUILD"):
+def view(seat="FOUNDRY"):
     return open(os.path.join(render.PREVIEW, "%s.md" % seat), encoding="utf-8").read()
 
 
@@ -126,7 +126,7 @@ def t_order_is_priority_rank_not_a_copy_of_it():
     file_item("NO_ROW_AT_ALL_1")             # unrowed sorts LAST, not first
     render.render(quiet=True)
     world, _ = render.build()
-    want = [i.id for i in priority.rank(world, "BUILD")]
+    want = [i.id for i in priority.rank(world, "FOUNDRY")]
     got = headings(view(), "NEXT")
     assert want == got, (
         "the file and `rimflow next` disagree.\n  rank(): %s\n  file  : %s" % (want, got))
@@ -140,10 +140,10 @@ def t_this_deployment_wins_the_tie():
     # every non-ITEMLESS verb, and _apply refuses an id that was never filed — so a
     # spawn off a bare FINDING name, which is what the plan's §4 example does, cannot
     # be emitted at all. Reported to BUILD, not fixed here.
-    emit(seat="CHECK", event="spawn",
-         **{"from": "ORDINARY_ROW_ONE_1", "for": "BUILD",
+    emit(seat="FOUNDRY", event="spawn",
+         **{"from": "ORDINARY_ROW_ONE_1", "for": "FOUNDRY",
             "name": "URGENT_LIVE_WINDOW_1", "this_deployment": True})
-    emit(seat="BUILD", event="claim", id="URGENT_LIVE_WINDOW_1")
+    emit(seat="FOUNDRY", event="claim", id="URGENT_LIVE_WINDOW_1")
     render.render(quiet=True)
     got = headings(view(), "NEXT")
     assert got[0] == "URGENT_LIVE_WINDOW_1", (
@@ -152,7 +152,7 @@ def t_this_deployment_wins_the_tie():
 
 def t_blocked_item_appears_with_its_reason():
     file_item("WAITING_ON_PILLOW_1", row=2)
-    emit(seat="BUILD", event="block", id="WAITING_ON_PILLOW_1",
+    emit(seat="FOUNDRY", event="block", id="WAITING_ON_PILLOW_1",
          reason="Pillow is not installed", on="INSTALL_PILLOW_FIRST_1")
     file_item("INSTALL_PILLOW_FIRST_1", row=3)
     render.render(quiet=True)
@@ -203,7 +203,7 @@ def t_generated_marker_and_regen_command():
 # ---- the refusal ---------------------------------------------------------
 def t_overwrite_refuses_against_an_empty_ledger():
     """The guard that stands between one command and 827 KB of hand-written prose."""
-    real = os.path.join(render.QUEUE, "BUILD.md")
+    real = os.path.join(render.QUEUE, "FOUNDRY.md")
     with open(real, "w", encoding="utf-8") as fh:
         fh.write("## HAND_WRITTEN_ITEM_1 t\nstate: ready\n\n"
                  "## ANOTHER_HAND_ITEM_1 t\nstate: ready\n\n"
@@ -220,7 +220,7 @@ def t_overwrite_refuses_against_an_empty_ledger():
 
 
 def t_overwrite_allowed_once_the_ledger_is_at_least_as_full():
-    real = os.path.join(render.QUEUE, "BUILD.md")
+    real = os.path.join(render.QUEUE, "FOUNDRY.md")
     with open(real, "w", encoding="utf-8") as fh:
         fh.write("## ONE_HAND_ITEM_1 t\nstate: ready\n")
     file_item("ONE_HAND_ITEM_1", row=1)
@@ -235,7 +235,7 @@ def t_overwrite_allowed_once_the_ledger_is_at_least_as_full():
 def t_reindex_verify_is_identical_after_a_clean_render():
     file_item("STABLE_ITEM_HERE_1", row=1)
     file_item("SECOND_STABLE_ITEM_1", row=2)
-    emit(seat="BUILD", event="block", id="SECOND_STABLE_ITEM_1", reason="waiting")
+    emit(seat="FOUNDRY", event="block", id="SECOND_STABLE_ITEM_1", reason="waiting")
     render.render(quiet=True)
     rc, out = quiet(lambda: render.reindex(verify=True))
     assert rc == 0, out
@@ -248,10 +248,10 @@ def t_reindex_verify_sees_a_hand_edit():
     """A generated file somebody edited must be VISIBLE, not silently re-flattened."""
     file_item("STABLE_ITEM_HERE_1", row=1)
     render.render(quiet=True)
-    with open(os.path.join(render.PREVIEW, "BUILD.md"), "a", encoding="utf-8") as fh:
+    with open(os.path.join(render.PREVIEW, "FOUNDRY.md"), "a", encoding="utf-8") as fh:
         fh.write("\n<- somebody hand-edited this\n")
     rc, out = quiet(lambda: render.reindex(verify=True))
-    assert rc == 1 and "DIFFERS" in out and "BUILD.md" in out, out
+    assert rc == 1 and "DIFFERS" in out and "FOUNDRY.md" in out, out
 
 
 def t_render_is_deterministic():
@@ -270,7 +270,7 @@ def t_replay_refusals_are_surfaced_not_swallowed():
     file_item("GOOD_ITEM_HERE_1", row=1)
     # A refusal that is ALREADY in an append-only file: CHECK may not set game state.
     with open(model.EVENTS, "a", encoding="utf-8") as fh:
-        fh.write(json.dumps({"ts": "2026-08-20T00:00:00Z", "seat": "CHECK",
+        fh.write(json.dumps({"ts": "2026-08-20T00:00:00Z", "seat": "FOUNDRY",
                              "event": "game", "state": "UP"}) + "\n")
     render.render(quiet=True)
     world, _ = render.build()
@@ -279,22 +279,22 @@ def t_replay_refusals_are_surfaced_not_swallowed():
 
 
 def t_diff_summary_names_what_only_the_queue_has():
-    with open(os.path.join(render.QUEUE, "BUILD.md"), "w", encoding="utf-8") as fh:
+    with open(os.path.join(render.QUEUE, "FOUNDRY.md"), "w", encoding="utf-8") as fh:
         fh.write("## ONLY_IN_THE_QUEUE_1 t\nstate: ready\n")
     file_item("ONLY_IN_THE_LEDGER_1", row=1)
     s = render.render(quiet=True)
-    d = [x for x in s["diffs"] if x["seat"] == "BUILD"][0]
+    d = [x for x in s["diffs"] if x["seat"] == "FOUNDRY"][0]
     assert d["in_queue_only"] == ["ONLY_IN_THE_QUEUE_1"], d
     assert d["in_ledger_only"] == ["ONLY_IN_THE_LEDGER_1"], d
 
 
 def t_prose_headings_are_not_counted_as_items():
     """`## 🔴 OWNER RULINGS…` is a section, not an item, and must not gate the guard."""
-    with open(os.path.join(render.QUEUE, "BUILD.md"), "w", encoding="utf-8") as fh:
+    with open(os.path.join(render.QUEUE, "FOUNDRY.md"), "w", encoding="utf-8") as fh:
         fh.write("## 🔴 OWNER RULINGS, 2026-08-19 — the queue triage\nprose\n\n"
                  "## REAL_ITEM_HERE_1 t\nstate: ready\n")
     total, per = render.queue_census(render.QUEUE)
-    assert total == 1 and per["BUILD.md"] == 1, (total, per)
+    assert total == 1 and per["FOUNDRY.md"] == 1, (total, per)
 
 
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]

@@ -415,7 +415,7 @@ def _ctx(args):
 # mis-scoped work rather than hand it back, which is worse and invisible. A seat gets the
 # underlying fact ("claimed 33 h, no commit"); it never gets a score to optimise.
 
-BENCH_SEATS = ("REP", "OWNER")
+BENCH_SEATS = ("BENCH", "OWNER")
 
 # Upstream = a seat saying "this is not what I thought it was". Downstream is the
 # conveyor working (0.55× — protective), so only these pairs count.
@@ -539,7 +539,7 @@ def cmd_bench(args, seat):
     """The BENCH scan as a query. Both halves, always — he should never have to
     remember which phrase gets which."""
     if seat not in BENCH_SEATS:
-        die("`next --bench` is REP's and the owner's, and that is not seniority.\n"
+        die("`next --bench` is BENCH's and the owner's, and that is not seniority.\n"
             "  It scores actions SEATS CHOOSE, so it is the one metric that can be\n"
             "  gamed — penalising upstream reassignment would teach a seat to absorb\n"
             "  mis-scoped work rather than hand it back. You get the underlying fact\n"
@@ -720,7 +720,7 @@ def _offer_claimable(items, seat):
             print("      ## %-9s %s" % (m, {
                 "spec": "(nobody said what the world must become)",
                 "verify": "(nobody said how to prove it)",
-                "criteria": "(nobody said what CHECK looks for)"}[m]))
+                "criteria": "(nobody said what a correct outcome looks like)"}[m]))
         print("   The filer may know something you do not. Ask, or decide it yourself")
         print("   and write down what you chose.")
     if len(items) > 1:
@@ -971,14 +971,13 @@ def cmd_file(args, seat):
     # DROPPED the proposal to enforce this in `file`, because the item it belongs to exists
     # to REDUCE gates. A refusal here would also be wrong on the merits — the exception is
     # real and only the filer can tell whether it applies.
-    if args.for_ == "CHECK" and seat != "CHECK":
+    if args.needs in ("bridge", "game-up"):
         print("")
-        print("🔴 CHECK receives nothing automatically — his default is the owner PLAYING.")
-        print("   Answer in one line, in the item: which NEW or significantly changed")
-        print("   mechanism has never once been observed running?")
-        print("   ⚠️ The MECHANISM, not this instance — a 49th pawnkind built like the")
-        print("      other 48 has been observed. A roster, a cherrypicked item, a stat, a")
-        print("      texPath, what a patch matched: offline, and you close it yourself.")
+        print("🔴 A live check is owed only to a mechanism never once observed running —")
+        print("   the owner playing is the default validation. Answer in one line, in the")
+        print("   item: which NEW mechanism has never been seen? ⚠️ The MECHANISM, not this")
+        print("   instance — a 49th pawnkind built like the other 48 has been observed. A")
+        print("   roster, a stat, a texPath, what a patch matched: offline, close it yourself.")
     if not args.needs:
         print("⚠️  needs is `offline` by default — a claim that nothing external is "
               "required.")
@@ -1220,10 +1219,13 @@ def cmd_seat(args, seat):
 def cmd_bridge(args, seat):
     _, w = load()
     state = {"take": "taken", "release": "released"}[args.action]
-    # ⚠️ No holder guard here, deliberately. `model.py` already refuses the `bridge`
-    # verb from any seat but CHECK, for take AND release, so a second seat can never
-    # hold it and the double-take race does not exist. A guard for an unreachable case
-    # is a guard nobody can test.
+    # One driver at a time. Since redesign #4 (2026-08-27) either live window may
+    # drive, so the serialization lives here: a take while another seat holds the
+    # lock is refused with the route out, never queued.
+    if args.action == "take" and w.bridge_holder not in (None, seat):
+        die("bridge is held by %s — one driver at a time; it frees when they run "
+            "`rimflow bridge release`, and a wedged bridge is stuck, not crashed."
+            % w.bridge_holder)
     _emit({"seat": seat, "event": "bridge", "state": state}, w, quiet=True)
     print("bridge %s by %s" % (state, seat))
     return 0
@@ -1430,8 +1432,8 @@ def build_parser():
                     "`rimflow next --seat <SEAT>` is the only command you need to "
                     "start work.")
     common = argparse.ArgumentParser(add_help=False)
-    common.add_argument("--seat", help="DECIDE|BUILD|CHECK|REP|OWNER. Beaten by "
-                                       "RIMFLOW_SEAT; refused if it cannot be resolved.")
+    common.add_argument("--seat", help="BENCH|FOUNDRY|OWNER (legacy seats replay only). "
+                                       "Beaten by RIMFLOW_SEAT; refused if unresolvable.")
     common.add_argument("--target", default="v1",
                         help="active version the priority engine filters on (v1)")
     common.add_argument("--mode", help="afk suppresses items whose needs is `owner`")
@@ -1542,7 +1544,7 @@ def build_parser():
     s.add_argument("to", help="v1|v2")
     s.add_argument("--reason")   # optional since 2026-08-22 — nothing reads it
 
-    s = add("reassign", "hand an item to another seat (DECIDE, or OWNER overriding)",
+    s = add("reassign", "hand an item to the other window (BENCH, or OWNER overriding)",
             _simple("reassign", (("to", "to"), ("reason", "reason"))))
     s.add_argument("id")
     s.add_argument("--to", required=True)
@@ -1571,7 +1573,7 @@ def build_parser():
     # of the ledger and resumes without re-deriving anything.
     s.add_argument("--note", help="one line: where you stopped. THIS is the handoff.")
 
-    s = add("bridge", "CHECK only — two seats driving one game is unattributable",
+    s = add("bridge", "one driver at a time — two windows driving one game is unattributable",
             cmd_bridge)
     s.add_argument("action", choices=("take", "release"))
 

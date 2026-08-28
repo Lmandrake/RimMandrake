@@ -41,11 +41,11 @@ from . import model
 # the moment there is least time left to do it.
 LIVE = ("UP", "GOING_DOWN")
 
-# 🔴 The only seat that may HOLD the bridge — POLICY.md line 91, enforced in
-# model.py's `bridge` verb. It lives here too because offering a bridge item to a seat
-# that cannot take the lock is offering work it cannot start, which is the same
-# stranding the gate fix exists to remove, just further along.
-BRIDGE_SEAT = "CHECK"
+# The seats that may HOLD the bridge — since redesign #4 (2026-08-27) either live
+# window; CHECK stays for ledger history. One-driver-at-a-time is cmd_bridge's holder
+# guard. Listed here because offering a bridge item to a seat that cannot take the
+# lock is offering work it cannot start.
+BRIDGE_SEATS = ("BENCH", "FOUNDRY", "CHECK")
 
 # Unrecognised `needs` values seen this process, so `next` can report them instead of
 # swallowing the items that carry them. See `satisfiable`.
@@ -71,7 +71,7 @@ BY_GAME = {
     # would trade a silent withholding for a visible dead end. `why_not` names the
     # reassignment instead.
     "bridge":   lambda g, ctx: (g in LIVE
-                                and ctx.get("seat") in (None, BRIDGE_SEAT)
+                                and ctx.get("seat") in (None,) + BRIDGE_SEATS
                                 and ctx.get("bridge_holder") in (None, ctx.get("seat"))),
     "harvest":  lambda g, ctx: bool(ctx.get("harvest_pending")),
     "owner":    lambda g, ctx: ctx.get("mode") != "afk",
@@ -173,12 +173,11 @@ def why_not(world, seat, iid, target="v1", ctx=None):
         # A bridge held by another seat, or free and untaken, is a thing to DO, not a
         # thing to wait for, and saying otherwise is what stranded this item for days.
         holder = (ctx or {}).get("bridge_holder", world.bridge_holder)
-        if it.needs == "bridge" and seat != BRIDGE_SEAT:
-            out.append("needs `bridge`, and the bridge is %s's — POLICY.md line 91, "
-                       "one driver at a time. %s can never take the lock, so this item "
-                       "cannot be worked here however the game is doing. Hand it over: "
-                       "`rimflow reassign %s --to %s`."
-                       % (BRIDGE_SEAT, seat, iid, BRIDGE_SEAT))
+        if it.needs == "bridge" and seat not in BRIDGE_SEATS:
+            out.append("needs `bridge`, and %s cannot hold the lock — one driver at a "
+                       "time (CHARTER.md). Hand it to a live window: "
+                       "`rimflow reassign %s --to FOUNDRY`."
+                       % (seat, iid))
         elif it.needs == "bridge" and world.game in LIVE and holder and holder != seat:
             out.append("needs `bridge`, and %s is holding it. This is NOT blocked and it "
                        "will NOT reopen on its own — it reopens when %s runs "
