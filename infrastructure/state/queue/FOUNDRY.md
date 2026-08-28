@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:21:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:23:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -106,16 +106,7 @@ prose:    infrastructure/state/items/LORD_JOB_SWAP_TOOL_1.md
 
 # IN PROGRESS
 
-Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## CUT_LIST_ONE_READER_1 Move the remaining six kill-list parsers onto cherrypicker.py, and label what measure counts
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  DUMPDERIVEDSHEETSSHOWCUT1 built src/RimMandrake/Utils/cherrypicker.py and moved the two
-prose:    infrastructure/state/items/CUT_LIST_ONE_READER_1.md
+_none._
 
 # BLOCKED — something is WRONG and someone must act
 
