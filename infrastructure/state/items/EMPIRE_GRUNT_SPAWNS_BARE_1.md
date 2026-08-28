@@ -91,3 +91,29 @@ bare-handed": 16 of 49 roster kinds roll bare, and the worst is `Jawa_Homestead_
 (A single earlier probe spawn of Empire_Grunt did come up bare — which is the point: this is a ROLL,
 and one sample cannot tell a broken kind from an unlucky one.)
 ⇒ Retarget or supersede this item; the real shape is in `facts/roll_arm_harvest_2026-08-24.md` §1–2.
+
+---
+
+## ✅ SETTLED 2026-08-27, BUILD — the premise is dead and the real cause is elsewhere
+
+`Jawa_Empire_Grunt` measured live across two runs today: **0 bare of 16**, and **0 bare of 16**
+again in the guarded cohort (`EMPIRE_BLACKSTAR_ALWAYS_WILLING_1`, 142 pawns, 0 bare across all
+eight Empire and Blackstar kinds).
+
+⇒ **It is not "the only kind still spawning bare-handed", and it is not spawning bare at all.**
+The `requiredWorkTags: Violent` guard shipped at `92679d9b` removed the one cause that applied
+to it.
+
+🔑 **The whole bare-hands cohort is now explained and this item's framing was wrong.** 150
+spawns censusing requested-vs-actual kind resolved every bare pawn into exactly two causes —
+a violence-disabling backstory, or a silently substituted vanilla kind
+(`SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1`). **There is no `weaponMoney` defect**: the corrected
+`weapon_affordability.py` reports `always arms 49 · sometimes 0 · never 0 · unmeasured 0`.
+
+⭐ **The trap this item existed to keep closed stayed closed and was right.** `weaponMoney.min`
+was never the answer. ⚠️ The 2026-08-23 correction inside it — that the *ceiling* was the defect,
+every `ORImperialStandard` rifle costing 906 against a 780 ceiling — was correct and is what the
+`950~1150` fix addressed.
+
+⛔ **Do not re-open on a single bare Empire pawn.** One sample cannot tell a broken kind from an
+unlucky roll; that mistake is what produced this item's headline.

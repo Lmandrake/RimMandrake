@@ -9,39 +9,50 @@
 > live. §20 keeps its block, but `ORDERS_DESIGNATORS_ENUMERATE_ZERO_1` inside it is closed.
 > ⚠️ `W3` `W4` `W5` appear nowhere in the ledger at all — pre-ledger legacy, unverifiable from here.
 
-## 🔄 HANDOFF — CHECK, 2026-08-26 16:3x, agent rebooting. ⏳ TRANSIENT: delete this block once read.
+## 🔄 HANDOFF — BUILD, 2026-08-27, agent rebooting. ⏳ TRANSIENT: delete this block once read.
 
-**Game is UP and MEASURED** (`./game` reads RUNNING, ledger UP). **Bridge RELEASED by CHECK** — take
-it before driving. Companion is live at **166 tools**, `build 70b3b117`, `modSet 582/317a3860`.
+**The bridge is RELEASED.** No background job of mine is running. Repo is clean and pushed.
 
-⚠️ **The loaded map is a THROWAWAY quicktest and it has been used hard.** A `Crashlanded` colony on
-world tile **18393**, and by me: ~60 spawned pawns, a `rimplace` dwelling at `100,200,18,10`, two
-growing zones, three allowed areas, and **most of its wildlife killed** by a −66 °C tile edit that
-has since been restored (tile is back at 14.7229729 °C, committed). ⛔ Nothing on it is kept and no
-population count on it means anything. Discard it freely.
+### 🔴 Read these three before touching the game
+1. **`Player.log` is DEAD as an error channel in the running process.** It hit
+   `Reached max messages limit. Stopping logging to avoid spam.`; `jawa/drain_log` returns 0
+   lines. Every error from today's tests is lost. ⇒ **The next cold load is worth a lot** — it
+   restores the log AND lets the def dumper produce a capture newer than the cast deploy.
+2. **The newest def dump is `2026-08-26T14-20-04Z` and it is STALE for biome work** —
+   `BiomeCast_Ashkarr.xml` was redeployed 2026-08-26 20:59, after it. Two items cannot be
+   settled until a dump exists from a process launched after that time.
+3. **The map is dirty on purpose and the owner said to reload rather than clean it** (2026-08-27).
+   Leftover: ~7 `Jawa_Colonist` in PlayerColony, and authored-faction goodwill churned by
+   killing test pawns. Nothing was saved. **Reload; do not spend a session tidying.**
 
-**The first five minutes below are SPENT** — steps 1–6 all ran. Their results are in
-`infrastructure/state/evidence/`: `live_test_2026-08-26_postload_CHECK.md`,
-`template_rooms_…`, `jawa_farming_…`, `temperature_tolerance_…`, `tool_shakedown_…`,
-`religion_test_…`. §24's hood reading passed (131/136 wearing both pieces).
+### ✅ Closed today, do NOT re-open
+`JAWA_HOOD_NEVER_WORN_1` (32/32 wear robe+hood) · `EMPIRE_BLACKSTAR_ALWAYS_WILLING_1`
+(0 pacifists in 142, control 7.5% vs 7.2% baseline) · `EMPIRE_GRUNT_SPAWNS_BARE_1`
+(0 bare of 16, twice; premise dead).
 
-🔴 **Still owed, in the order I would take them:**
-1. **The ideology import trial — the owner's hands.** `IDEOLOGY_REBUILD_TRIAL.md`. ⚠️ Phase A
-   (`vivify_world.py --live`) must happen while **Ash'karr** is loaded, BEFORE anyone touches New
-   Colony. The religion half is already proven: all twelve ideoligions generate and the leader titles
-   come out right on a non-classic world.
-2. **`defs.sqlite` is still built from the 2026-08-23 / 581-mod capture** while a fresh
-   `2026-08-26T14-20-04Z` / 582 capture sits unused in `DefDump/captures/`. Rebuild it —
-   `measure build` — then **delete `dump_request.txt`** or every load pays ~27 s and 1.2 GB again.
-3. `refresh.py --offline` printed the same staleness after running; its artefacts are still stale.
-4. `G3` needs a HorrorWastes map; `T3`'s hypothermia hediff was never seen; `J4`'s behavioural half
-   needs a route that can set `plantDefToSow` (`ORDERED_JOB_CANNOT_SOW_1`).
+⭐ **The bare-hands cohort is SOLVED.** 150 spawns censusing requested-vs-actual kind: every bare
+pawn is either a violence-disabling backstory or a substituted vanilla kind. **There is no
+`weaponMoney` defect** — do not tune another budget looking for one.
 
-🔑 **Read `skills/rimbridge/references/traps.md` and `silent-failures.md` before driving** — five new
-entries went in today, including one that affects every tool: **the bridge silently drops any
-parameter a tool's schema does not declare.**
+### 🔴 The live work, in the order I would take it
+| item | what it needs |
+|---|---|
+| `SIX_FACTIONS_NEVER_RAID_1` | **the biggest open defect.** Only the Hutt has ever raided; six produced nothing in 18 firings. The settlement-count lead is already refuted inside the item |
+| `AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1` | `fire_raid` intermittently reports `executed` and delivers nothing. **Retry 3× before recording any raid negative** |
+| `BIOME_DUPLICATES_STILL_LIVE_1` | FAILS this load, 12 keys. 25 new removals deployed. **Needs a post-20:59 dump; my first diagnosis is retracted inside the item — read the retraction** |
+| `DOWN_WINDOW_ASSEMBLY_DEPLOY_1` | pre-flighted 2026-08-27: companion builds clean, nothing new owed, four commands as written. Unblocks the dumper that items 3 and 1 both want |
 
----
+### ⚠️ Three bridge traps that will cost you a session if you have not read them
+All in `skills/rimbridge/references/traps.md`, added today:
+- **`jawa/fire_raid` echoes the faction you requested while substituting another.** A Hutt
+  request delivered 19 `AG_XenohumanPirates`. Read the spawned pawns' faction, never
+  `resolved.faction`.
+- **A raid census taken immediately after firing reads ZERO** — arrival is a later tick. Step
+  ticks in stages.
+- **`jawa/pawn_get` nests everything in `pawns[0]`** and equipment is keyed `def`, not `defName`.
+  Reading the top level prints as "every pawn bare", which is the documented false reading.
+🔑 And **`jawa/set_faction_relation` cannot make a neutral faction hostile** — it writes goodwill
+and never flips the kind. Use `jawa/faction_relations_set`.
 
 ## ▶️ THE FIRST FIVE MINUTES — 2026-08-26 load, in this order
 
