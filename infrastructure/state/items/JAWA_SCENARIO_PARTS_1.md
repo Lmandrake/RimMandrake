@@ -155,6 +155,10 @@ names a defName that resolves" — is struck with the rule itself.**
   ✅ **The clause as it should read:** `Jawa_UtinniStart` carries exactly three AUTHORED parts —
   `ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes`, `ScenPart_PlayerPawnsArriveMethod`,
   `ScenPart_GameStartDialog` — and **no `ScenPart_DisableIncident`**.
+  ⚠️ **Amended 2026-08-28 by FOUNDRY at close: FOUR authored parts.** A
+  `ScenPart_StartingAnimal` (the Ikee, `AA_Eyeling` ×1, bond chance 1.0) was added on the
+  owner's 2026-08-23 ruling — recorded in the def file itself. Still no
+  `ScenPart_DisableIncident`; expect 6 in a dump (4 authored + 2 engine `ScenPart_PlanetLayer`).
   ⚠️ **The live def set reports FIVE, and that is not a defect.** Measured in capture
   `2026-08-23T05-05-29Z`: the game appends two `ScenPart_PlanetLayer` parts to the scenario at
   load (Odyssey's planet layers). They are engine-added, they are in no XML of ours, and a

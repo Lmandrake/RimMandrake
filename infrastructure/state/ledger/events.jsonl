@@ -2450,3 +2450,9 @@
 {"seat":"BENCH","event":"reassign","id":"COLD_LOAD_RUN_SHEET_1","to":"BENCH","reason":"run sheets are bench work — executed with the owner at the load","ts":"2026-08-28T07:32:07Z"}
 {"seat":"BENCH","event":"file","id":"PLACER_IDENTITY_REPLAY_1","title":"Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-08-28T07:32:28Z"}
 {"seat":"BENCH","event":"seat","state":"idle","reason":"context-exhausted","note":"Redesign #4 fully live: CHARTER/BENCH/FOUNDRY, render-on-write, ~16k lines kruft deleted. Built awaiting the down-window deploy: companion surface 240 (paint_building + export_things), RimDefDump paintable flags. Next: deploy round per COLD_LOAD_RUN_SHEET_1 (BENCH-owned) — exporter round trip FIRST, then hull repaint. Fable_Review/ holds the redesign record.","ts":"2026-08-28T07:46:57Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-28T07:48:54Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-28T07:48:59Z"}
+{"seat":"FOUNDRY","event":"start","id":"JAWA_SCENARIO_PARTS_1","ts":"2026-08-28T07:48:59Z"}
+{"seat":"FOUNDRY","event":"file","id":"IKEE_WILDNESS_PATCH_DEAD_1","title":"Ikee_Tuning.xml wildness patch targets a field 1.6 does not have; two live def errors","kind":"defect","target":"v1","needs":"offline","caused_by":"JAWA_SCENARIO_PARTS_1","for":"FOUNDRY","ts":"2026-08-28T07:56:36Z"}
+{"seat":"FOUNDRY","event":"close","id":"JAWA_SCENARIO_PARTS_1","sha":"4c13b0e6","ts":"2026-08-28T07:57:03Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-28T07:57:11Z"}
