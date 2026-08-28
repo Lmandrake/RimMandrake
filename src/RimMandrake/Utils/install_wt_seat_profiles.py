@@ -119,13 +119,14 @@ LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
 # REP's amber — the owner's choice, so the colours he knows survive the rename.
 #
 # The model is per-seat and rides the commandline (owner, 2026-08-28: "Do it").
-# Agent_Policy.md's ladder says Sonnet default for both seats, escalation per
-# item — so the profile starts there. The `--model` FLAG outranks every settings
+# Per Agent_Policy.md's ladder and each seat's own file: BENCH runs FABLE
+# (design judgment with the owner — BENCH.md names it), FOUNDRY defaults to
+# Sonnet and self-escalates per item. The `--model` FLAG outranks every settings
 # file including a /model saved default, which is the point: opening the tab is
 # the whole startup, and a seat never inherits whatever model the last session
 # left behind. In-session /model still switches live when an item needs more.
 SEATS = {
-    "BENCH":   ("#7BC96F", "sonnet", "green — with the owner, permanent bench"),
+    "BENCH":   ("#7BC96F", "claude-fable-5", "green — with the owner, permanent bench"),
     "FOUNDRY": ("#E5A03C", "sonnet", "amber — the autonomous queue window"),
 }
 
