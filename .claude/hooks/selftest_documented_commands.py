@@ -61,7 +61,7 @@ NEVER_RUN = ("broadcast.py",        # writes the peer socket — owner's tool
              "first_light.py",      # drives the live bridge
              "w9_run.py",           # drives the live bridge
              "refresh.py",          # long, and writes derived artefacts
-             "board_loop.sh")       # no arg parsing: `--help` runs the publish loop
+             "queue_publisher.sh")       # no arg parsing: `--help` runs the publish loop
                                     # and re-execs itself. Measured 2026-08-24: it hit
                                     # the 60 s timeout and reported as a doc failure.
 

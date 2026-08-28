@@ -28,7 +28,7 @@ never hand-edit the pool or `.claude/settings.json`.
 ## Owns
 
 ```
-src/RimMandrake/Utils/board_loop.sh         publishes queue/*.md every 60 s (name is legacy)
+src/RimMandrake/Utils/queue_publisher.sh    publishes queue/*.md every 60 s
 infrastructure/state/queue/HUMAN.md         pending questions + assumed answers
 infrastructure/state/MODE                   interactive | autonomous | afk
 skills/README.md                            the roster and the ownership table
@@ -41,7 +41,7 @@ shared ones — and the roster saying who owns what. You do not curate other sea
 ## 🔄 On waking: two things run outside any session, and nothing else will tell you
 
 ```
-./src/RimMandrake/Utils/board_loop.sh          publishes queue/*.md every 60 s
+./src/RimMandrake/Utils/queue_publisher.sh          publishes queue/*.md every 60 s
 ```
 
 ⭐ **ONE thing now, not two.** The status board and its HTTP server were retired 2026-08-27 — the owner: the page
@@ -49,7 +49,7 @@ never proved useful, and git is the provenance. What survives is the half that w
 publisher. Its filename is a leftover: the script re-execs itself by path, so renaming it would break the running loop.
 
 ⛔ **Do NOT check it with `pgrep -f`**: your own wrapper carries the search string on its command line, so
-`pgrep -f board_loop.sh` matches ITSELF and answers UP while the loop is dead. Use a bracket grep:
+`pgrep -f queue_publisher.sh` matches ITSELF and answers UP while the loop is dead. Use a bracket grep:
 
 ```
 ps -eo pid,etime,args | grep -E '[b]oard_loop\.sh'    || echo "queue publisher DOWN"
@@ -60,7 +60,7 @@ whatever `ps` says. `rimflow next` warns you itself when the views go stale.
 
 - **The publisher is BOUNDED (8 h) and dies silently.** `queue/*.md` are generated and ONLY `render.py --overwrite-queues`
   writes them; when the loop lapses every seat reads a frozen view and cannot tell.
-- ⚠️ **Start it detached or the harness kills it at end of turn:** `setsid nohup ./src/RimMandrake/Utils/board_loop.sh
+- ⚠️ **Start it detached or the harness kills it at end of turn:** `setsid nohup ./src/RimMandrake/Utils/queue_publisher.sh
   >/dev/null 2>&1 </dev/null &`
 
 🔑 **The handoff is the `note` on the last `seat` event, not a file**; `rimflow next --seat REP` shows your queue.

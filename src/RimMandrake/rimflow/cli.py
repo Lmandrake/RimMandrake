@@ -309,7 +309,7 @@ def _stale_queues():
             "that\n    old. What you read below is CURRENT (it comes from the ledger); the "
             "published\n    views are not. The publisher is bounded at 8h and dies quietly. "
             "Restart it —\n    REP's job, anyone's command:\n"
-            "      setsid nohup ./src/RimMandrake/Utils/board_loop.sh "
+            "      setsid nohup ./src/RimMandrake/Utils/queue_publisher.sh "
             ">/dev/null 2>&1 </dev/null &\n" % age)
 
 

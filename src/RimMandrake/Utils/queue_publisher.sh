@@ -1,14 +1,13 @@
 #!/bin/sh
-# board_loop.sh — the queue publisher. Keeps every seat's queue view current.
+# queue_publisher.sh — keeps every seat's queue view current.
 #
-# ⭐ 2026-08-27: the status board and its HTTP server are GONE (owner: the web page
-# never proved useful; git is the provenance). What is left is the half that was
-# always load-bearing — regenerating queue/*.md. The name is now a misnomer kept
-# deliberately: this script re-execs ITSELF by path, so renaming it would break
-# the running loop at its next window.
+# ⭐ 2026-08-27: was `queue_publisher.sh`. The status board and its HTTP server were
+# removed (owner: the web page never proved useful; git is the provenance), leaving
+# the half that was always load-bearing — regenerating queue/*.md — under a name
+# that finally says so.
 #
-#     setsid nohup ./src/RimMandrake/Utils/board_loop.sh >/dev/null 2>&1 </dev/null &
-#     BOARD_LOOP_HOURS=4 ./src/RimMandrake/Utils/board_loop.sh &     # window length only
+#     setsid nohup ./src/RimMandrake/Utils/queue_publisher.sh >/dev/null 2>&1 </dev/null &
+#     QUEUE_PUBLISHER_HOURS=4 ./src/RimMandrake/Utils/queue_publisher.sh &     # window length only
 #
 # 🔴 WHY THIS EXISTS. `queue/*.md` are GENERATED and only `render.py --overwrite-queues`
 # publishes them. Nothing else runs it. On 2026-08-21 they sat frozen for 2h17m while
@@ -22,12 +21,12 @@
 # costing a frozen view.
 #
 # ⛔ HOW TO STOP IT, since it no longer stops on its own:
-#     touch infrastructure/state/derived/board_loop.stop
+#     touch infrastructure/state/derived/queue_publisher.stop
 # It exits within 60 s and clears the flag. `kill <pid>` also works; the stop-file
 # exists so a seat that cannot find the pid is not stuck.
 #
 # ✅ HOW TO TELL IT IS ALIVE, without pgrep (which matches its own wrapper):
-#     infrastructure/state/derived/board_loop.heartbeat   — rewritten every cycle
+#     infrastructure/state/derived/queue_publisher.heartbeat   — rewritten every cycle
 # Older than ~2 min means dead. `queue/*.md` mtimes say the same thing.
 #
 # ⏱️ 60 s is the cadence render.py documents: ~400 ms, 0.67% of one core.
@@ -35,11 +34,11 @@
 # ⚠️ RUN IT DETACHED, or the harness kills it when the turn ends. A plain background
 # `&` does NOT survive — measured 2026-08-21, twice.
 cd "$(dirname "$0")/../../.." || exit 1
-LOG=infrastructure/state/derived/board_loop.log
-BEAT=infrastructure/state/derived/board_loop.heartbeat
-STOP=infrastructure/state/derived/board_loop.stop
+LOG=infrastructure/state/derived/queue_publisher.log
+BEAT=infrastructure/state/derived/queue_publisher.heartbeat
+STOP=infrastructure/state/derived/queue_publisher.stop
 mkdir -p infrastructure/state/derived
-HOURS=${BOARD_LOOP_HOURS:-8}
+HOURS=${QUEUE_PUBLISHER_HOURS:-8}
 END=$(( $(date +%s) + HOURS * 3600 ))
 echo "$(date -Is) queue publisher start (${HOURS}h window, renews, pid $$)" >> "$LOG"
 while [ "$(date +%s)" -lt "$END" ]; do
