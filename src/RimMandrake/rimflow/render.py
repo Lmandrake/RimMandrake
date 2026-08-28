@@ -419,7 +419,8 @@ def render(events_path=None, out_dir=None, overwrite_queues=False, target="v1",
             "could put them back.\n"
             "    ledger : %d item(s)  (%s)\n"
             "    queues : %d item(s)  %s\n"
-            "Run the importer first, then re-run with --overwrite-queues."
+            "The ledger looks truncated — restore it from git before rendering; "
+            "the one-way importer that once filled it was retired 2026-08-27."
             % (len(world.items), q_total, q_total - len(world.items),
                len(world.items), events_path or model.EVENTS, q_total,
                ", ".join("%s=%d" % (k, v) for k, v in sorted(q_per.items()))))
