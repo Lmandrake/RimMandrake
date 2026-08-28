@@ -112,14 +112,21 @@ DISTRO = "Ubuntu"
 # other three never notice. Full evidence: observed/2026-08-14_wsl_oom.md.
 # Arguments pass through untouched, so `--name` still does its job below.
 LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
-          "--dangerously-skip-permissions --name 'AGENT {seat}'")
+          "--dangerously-skip-permissions --name 'AGENT {seat}' --model {model}")
 
 # Hue-distinct and legible on Campbell's near-black background.
 # Redesign #4 (2026-08-27): two windows. BENCH keeps BUILD's green, FOUNDRY keeps
 # REP's amber — the owner's choice, so the colours he knows survive the rename.
+#
+# The model is per-seat and rides the commandline (owner, 2026-08-28: "Do it").
+# Agent_Policy.md's ladder says Sonnet default for both seats, escalation per
+# item — so the profile starts there. The `--model` FLAG outranks every settings
+# file including a /model saved default, which is the point: opening the tab is
+# the whole startup, and a seat never inherits whatever model the last session
+# left behind. In-session /model still switches live when an item needs more.
 SEATS = {
-    "BENCH":   ("#7BC96F", "green — with the owner, permanent bench"),
-    "FOUNDRY": ("#E5A03C", "amber — the autonomous queue window"),
+    "BENCH":   ("#7BC96F", "sonnet", "green — with the owner, permanent bench"),
+    "FOUNDRY": ("#E5A03C", "sonnet", "amber — the autonomous queue window"),
 }
 
 # Profiles from the retired four-seat fleet, removed on --apply.
@@ -146,7 +153,7 @@ def seat_guid(seat):
 
 
 def build(seat):
-    colour, _ = SEATS[seat]
+    colour, model, _ = SEATS[seat]
     scheme = dict(CAMPBELL, name=f"Seat {seat}", foreground=colour,
                   cursorColor=colour)
     # A LOGIN shell, so the owner's PATH applies and `claude` resolves exactly as
@@ -156,7 +163,7 @@ def build(seat):
     # Claude Code is NOT exec'd into: when the owner quits it the tab drops to a
     # login shell that still carries AGENT_SEAT, rather than closing the window.
     inner = (f"cd {REPO_WSL} && export AGENT_SEAT={seat} && "
-             f"{LAUNCH.format(seat=seat)}; exec $SHELL -l")
+             f"{LAUNCH.format(seat=seat, model=model)}; exec $SHELL -l")
     profile = {
         "guid": seat_guid(seat),
         "name": f"AGENT {seat}",
@@ -242,8 +249,8 @@ def main():
     print(f"{'APPLY' if args.apply else 'PLAN'}: {added} profile(s) to add, "
           f"{updated} to update, {removed} retired profile(s) to remove, "
           f"{len(SEATS)} scheme(s) synced")
-    for seat, (colour, why) in SEATS.items():
-        print(f"  AGENT {seat:<8} {colour}  tab+text  {why}")
+    for seat, (colour, model, why) in SEATS.items():
+        print(f"  AGENT {seat:<8} {colour}  model {model:<7} tab+text  {why}")
     if args.font_size:
         print(f"  font size: {args.font_size:g} pt -> profiles.defaults, so EVERY "
               f"window, not just the seats")
