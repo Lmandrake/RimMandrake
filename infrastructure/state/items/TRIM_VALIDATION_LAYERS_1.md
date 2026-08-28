@@ -69,13 +69,50 @@ move on **while he sat there**. That is the defect BENCH exists to kill.
   just spoke into. Silent on an ordinary prompt.
 - `doc_budget.py` — POLICY 320 → 420, with the reason and the debt named in a comment.
 
-## 🔴 STILL NEEDS HIM — points 1–4, and they are DOCTRINE, verified open 2026-08-27
+## What shipped 2026-08-27 — planned with the owner, points 1 and 4
 
-Measured against the tree, not remembered: `POLICY.md` carries no lies/tells-the-truth
-split (1), `rimflow file` carries no CHECK-only-takes-game-work guard (2), 21 of BUILD's
-26 open items still need the game rather than living on a run sheet (3), and (4) was never
-started. **Point 5 is the only one that shipped, and it shipped because it was a query,
-not a rule.** Do not start 1–4 off this file — he asked to plan them.
+**① VERIFY WHAT LIES; TRUST WHAT TELLS THE TRUTH.** A table in `POLICY.md > How you work`, split by
+one question — *can this report success and be wrong?* **LIES:** a patch matching nothing, a bridge
+setter answering `success: true`, a count off a large artifact, a texPath, a spawn that substitutes,
+anything the game must LOAD. **TELLS THE TRUTH:** a file written, a def edited, a rename, a doc, a
+queue view, a commit — ⛔ **no second pass, by anyone.** 🔑 The left column's check belongs to the
+seat that GENERATED it, in the same turn; it is not a handoff. ⚠️ Verify-FIRST is a different axis
+(irreversibility) and is still only the three: `--apply`, force-push, `ModsConfig.xml`.
+
+- Propagated into `CHECK.md` — *"YOU HUNT. YOU DO NOT RE-READ"*, carrying the measurement that
+  decided it: a real defect in **11 of 27** items verifying BUILD's fresh output against **16 of 26**
+  hunting alone — and into `BUILD.md`, where 🔑 **the check being yours does not make it obligatory.**
+- ⭐ **Found while propagating:** `BUILD.md`'s "Done means" step 3 still ordered the item *appended to
+  `queue/CHECK.md`* — a generated view since 2026-08-20, with a hook that refuses the edit. The step
+  was uncompletable and nobody had noticed. Now `rimflow file --for CHECK`, and only for live work.
+
+**④ A NEW OBLIGATION NAMES THE ONE IT REPLACES.** New section in `POLICY.md`. ✅ *"It replaces
+nothing"* is permitted — say it, and say why the page is worth being longer. ⚠️ **A budget may cost
+WORDS and never KNOWLEDGE:** a rule that still earns its keep moves to `facts/`, which is unbudgeted.
+🔑 **Applied to itself in the same commit** — POLICY 394→413/420, and CHECK.md and BUILD.md were both
+brought back INTO budget (159→150, 145→150) by deleting what the new rules replaced. The `game.json`
+rule was stated twice in `CHECK.md`; the no-reopen rule three times.
+
+## ② DROPPED 2026-08-27, overtaken by events — not deferred
+
+**"CHECK takes only work that needs the game running, enforced in `rimflow file`."** The case for it
+was **42 of 100** items sitting with CHECK that never needed the game. Re-measured: **CHECK holds 7
+open, 5 of which need the game.** A guard for two items is ceremony. ⇒ ①'s *"CHECK hunts, does not
+re-read"* is the same fix without a gate, and gates are what this item exists to reduce.
+
+## ③ HELD 2026-08-27 — the run sheet must survive one load first
+
+**"Load-dependent work leaves the queue and becomes one run sheet per load window."** It is the
+biggest number left — **21 of BUILD's 26 open items need the game** — and it is the one that could go
+backwards. 🔴 **Measured the same morning: 7 blocks rode the 2026-08-26 load unscored, and
+`NEXT_RELOAD.md` has rotted twice before.** Moving 21 tracked ledger items into a file that
+demonstrably drops work trades a visible queue for an invisible one. `RUN_SHEET_STALE_BLOCK_CHECK_1`
+now warns on exactly that rot ⇒ **revisit once it has caught one real load cycle**, not before.
+
+## 🔴 STILL NEEDS HIM — what is left, verified open 2026-08-27
+
+Only **③** remains, and it is held on a condition, not on him. What he still owes this item is the
+call on ③ once the stale-block check has caught a load — nothing else here is waiting on a person.
 
 ## Still open — the rest of the plan, in the order agreed
 

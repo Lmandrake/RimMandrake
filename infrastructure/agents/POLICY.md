@@ -53,11 +53,22 @@ that is not coming: if he has gone quiet mid-BENCH, finish what is in your hands
 
   Do it.
 - **"Just do X" → do X.** No pre-check, no post-verify, no report beyond one line.
-- Do not pre-verify → act → post-verify. **The return value is the verification.**
+- Do not pre-verify → act → post-verify. **The return value is the verification — where the return value tells the truth.**
 - Assume you know what you are doing until proven otherwise.
 - Terse.  No preamble, no restating the request, no summary beyond one line and a hash.
 - Blockers use exactly this shape: `Blocker (<brief>): choices are (x, y, z).`
-- **The three exceptions — verify first, these only:** `deploy_custom_mods.py --apply` · force-push · any write into `ModsConfig.xml`.
+
+### 🔴 VERIFY WHAT LIES; TRUST WHAT TELLS THE TRUTH — owner, 2026-08-23 (`TRIM_VALIDATION_LAYERS_1`)
+
+**The question is never "is this important". It is "CAN THIS REPORT SUCCESS AND BE WRONG?"**
+
+| the return **LIES** → check it, and say how you checked | the return **TELLS THE TRUTH** → ⛔ no second pass, by anyone |
+|---|---|
+| a patch (one matching nothing reports success) · a bridge setter answering `success: true` · a count off a large artifact · a texPath that binds nothing · a spawn tool that substitutes silently · **anything the game must LOAD** | a file written · a def edited · a rename · a doc · a queue view · a commit · a render you looked at |
+
+- 🔑 **The left column's check belongs to the SEAT THAT GENERATED IT**, in the same turn. It is not a handoff and it is not CHECK's.
+- ⛔ **A second seat re-reading right-column work is the traffic this ruling deletes.** Measured 2026-08-23: CHECK found a real defect in **11 of 27** items when verifying BUILD's fresh work, against **16 of 26** when hunting on its own. ⇒ **CHECK hunts. It does not re-read.**
+- ⚠️ **Verify FIRST — irreversibility, a different axis from lying, and still only these three:** `deploy_custom_mods.py --apply` · force-push · any write into `ModsConfig.xml`.
 
 🔴 **A bare number about a large artifact is a smell — owner, 2026-08-21.** A count off the def dump, a `.rws`, a `.dll`, a world CSV or `Player.log` comes from the `measuring-large-artifacts` skill and reads back as **`MEASURED` / `UNMEASURED` / `REFUSED`**, never a naked integer.
 ```
@@ -85,6 +96,14 @@ Closes: QUEUE_IDS_BECOME_NAMES_1
 ⛔ **No new `B*` / `C*` / `D*` / `W*` IDs; the `kebab-case-plus-hex` form is retired.** ⚠️ **Legacy IDs are never renamed** — renumbering breaks the board's history irrecoverably, and a legacy item closes under its number (`Closes: B58`). ✅ **Cite one with its title attached** — `B58 (the dead Jawa pawnkind)`, never a bare `B58`.
 
 **An item leaves a queue exactly two ways: closed with a trailer, or `state: dropped` with one line saying why.** Deleting, renumbering or retitling it away breaks the count unrecoverably.
+
+## 🔴 A NEW OBLIGATION NAMES THE ONE IT REPLACES — owner, 2026-08-23
+
+**Measured before the rule: 47 written obligations, 13 firing on every item whatever its size; 13–19k tokens of mandatory reading per seat wake, 83–96% of it doctrine.** That is what grows when every ruling is additive and none is subtractive.
+
+⇒ **Adding a rule — here or on any seat page — names the rule it replaces, in the same commit.** ✅ *"It replaces nothing"* is a permitted answer; say it, and say why the page is worth being longer. ✅ **Deleting a rule needs nobody's permission.**
+
+⚠️ **A budget may cost WORDS and must never cost KNOWLEDGE.** `doc_budget.py` counts lines; a rule that still earns its keep moves to `infrastructure/state/facts/`, which is unbudgeted. ⛔ Shrinking a page by dropping what it knew is the failure this rule creates if you let it.
 
 ## 🔴 The bridge is CHECK's. One driver at a time. — owner, 2026-08-15
 

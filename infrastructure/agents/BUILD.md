@@ -42,11 +42,10 @@ often deliberately left open *"so that BUILD has a wider berth to consider."* �
 named, treat it as an example or a starting point, not a mandate** — you may implement it another
 way, and you do not need permission, as long as the outcome in `criteria:` is met.
 
-⛔ **You do not bounce an item for a missing `spec:` or `criteria:`** — an
-incomplete item cannot enter `ready`, `rimflow next` names what is thin, and you claim it as it
-stands. ✅ **What you owe instead is the thing only YOU know:** a `## Watch out` — what else reads
-this def, what load order affects it, what a passing verify would still miss. ⚠️ And where you had to
-guess a spec, **write down what you assumed**; that is what the next seat cannot reconstruct.
+⛔ **You do not bounce an item for a missing `spec:` or `criteria:`** — you claim it as it stands. ✅ **What you owe
+instead is the thing only YOU know:** a `## Watch out` — what else reads this def, what load order affects it, what a
+passing verify would still miss. ⚠️ And where you guessed a spec, **write what you assumed**; that is what the next
+seat cannot reconstruct.
 
 🔑 **The verification is YOURS to design.** DECIDE states the outcome the world requires; how it is
 proven is a mechanism call, and mechanism is yours. Where an item arrives carrying a `verify:`, treat
@@ -57,14 +56,21 @@ never bounce the item for it.
 re-raise it or hand the check back. Two guards: pick the check BEFORE you know the result, and paste
 output rather than assert a pass — a threshold that moved after the reading is not a check.
 
+🔴 **AND MOST OF IT NEEDS NO CHECK AT ALL — owner, 2026-08-23 (`TRIM_VALIDATION_LAYERS_1`).** The
+question is *"can this report success and be wrong?"* ⛔ **A file written, a def edited, a rename, a
+doc: the return value IS the verification — write nothing, hand on nothing.** ✅ Verify, in your own
+turn, only what LIES: a patch (one matching nothing reports success), a bridge setter answering
+`success: true`, a count off a large artifact, a texPath, anything the game must LOAD. POLICY's table
+is the list, and 🔑 **the check being yours does not make it obligatory.**
+
 ## Done means
 
 1. The artifact exists in `src/`.
 2. `verify:` passes, and you paste its output — not your assertion that it passed.
-3. The item is appended to `queue/CHECK.md` with its `## <name>` and `criteria:` carried through
-   unchanged, and the closing commit's `Closes:` trailer repeats that name verbatim. Any item you file
-   yourself is named `THREE_DESCRIPTIVE_WORDS_#` — three UPPER_SNAKE words plus a number, never a bare
-   number and never the old kebab-plus-hex form (owner, 2026-08-20).
+3. ⛔ **Nothing is "appended to `queue/CHECK.md`"** — that file is a GENERATED view and the hook refuses
+   the edit. Work for CHECK is `rimflow file --for CHECK …`, ✅ **and only for what a live game can
+   settle** — never to have him re-read what you already proved. Any item you file is named
+   `THREE_DESCRIPTIVE_WORDS_#` (owner, 2026-08-20), and the closing commit's `Closes:` repeats it verbatim.
 4. Deployed if the item needs a live check, because the game reads the Steam folder, never this repo.
 
 🔴 **A live check must be PROVEN NEEDED.** The default is source. Before writing `needs: bridge`,
@@ -110,10 +116,9 @@ Bounce with one line.
 
 ## Model
 
-**Sonnet 5** for any item carrying `## verify` + `## criteria` — the criteria are the catcher, so
-failure is loud. 🔴 **Opus 5** for live bridge writes and anything touching the frozen world: ~40
-bridge calls report success and change nothing, and there is no regenerate behind the planet.
-`Agent_Policy.md`.
+**Sonnet 5** for any item carrying `## verify` + `## criteria` — the criteria are the catcher, so failure is loud.
+🔴 **Opus 5** for live bridge writes and anything touching the frozen world: ~40 bridge calls report success and change
+nothing, and there is no regenerate behind the planet. `Agent_Policy.md`.
 
 ## Skills
 
