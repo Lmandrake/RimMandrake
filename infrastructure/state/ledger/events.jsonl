@@ -2381,3 +2381,7 @@
 {"seat":"REP","event":"close","id":"DUMP_DERIVED_SHEETS_SHOW_CUT_1","sha":"cc493032","ts":"2026-08-27T15:21:31Z"}
 {"seat":"BUILD","event":"verify","id":"BIOME_DUPLICATES_STILL_LIVE_1","result":"fail","config":"full-582","evidence":"infrastructure/state/items/BIOME_DUPLICATES_STILL_LIVE_1.md","sha":"11ab478c100f8734f81a4e66a028e2248d3000a1","ts":"2026-08-27T15:59:13Z"}
 {"seat":"BUILD","event":"file","id":"SIX_FACTIONS_NEVER_RAID_1","title":"Six of the seven authored factions produced no raid in 18 firings","kind":"bug","target":"v1","needs":"bridge","caused_by":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","for":"BUILD","ts":"2026-08-27T16:00:10Z"}
+{"seat":"BUILD","event":"block","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","reason":"2 of 3 criteria met; the raid criterion is blocked on SIX_FACTIONS_NEVER_RAID_1 - six of seven produced nothing in 18 firings","on":"SIX_FACTIONS_NEVER_RAID_1","ts":"2026-08-28T01:58:42Z"}
+{"seat":"CHECK","event":"bridge","state":"released","ts":"2026-08-28T01:59:01Z"}
+{"seat":"BUILD","event":"verify","id":"EMPIRE_GRUNT_SPAWNS_BARE_1","result":"pass","config":"full-582","evidence":"infrastructure/state/items/EMPIRE_GRUNT_SPAWNS_BARE_1.md","sha":"13e393ea0f3f314aa936d5e02d48c0bc126dd89f","ts":"2026-08-28T01:59:04Z"}
+{"seat":"BUILD","event":"close","id":"EMPIRE_GRUNT_SPAWNS_BARE_1","sha":"13e393ea","ts":"2026-08-28T01:59:04Z"}
