@@ -516,60 +516,6 @@ def t_runs_as_a_module_too():
     assert b"nothing offered" in out, out
 
 
-def _sheet(rows):
-    """Write a throwaway NEXT_RELOAD index holding exactly `rows` and return its path."""
-    path = os.path.join(TMP, "NEXT_RELOAD.md")
-    with open(path, "w", encoding="utf-8") as fh:
-        fh.write("| block | deployed | status |\n|---|---|---|\n")
-        for block, deployed, status in rows:
-            fh.write("| %s | %s | %s |\n" % (block, deployed, status))
-    return path
-
-
-def t_a_run_sheet_block_that_rode_a_load_unscored_is_named():
-    """🔴 THE INDEX IN `NEXT_RELOAD.md` IS KEPT BY DISCIPLINE, AND DISCIPLINE DECAYS.
-
-    A block deployed BEFORE the last `game UP` and still ⏳ was either scored with nobody
-    moving it, or rode a load with nobody looking. `next` is the command every seat runs
-    first, so it is where the rot has to become readable. ⚠️ It warns on stderr and must
-    NOT change the exit code — a stale run sheet is not a reason to refuse work.
-    """
-    fresh()
-    with open(os.path.join(TMP, "events.jsonl"), "w", encoding="utf-8") as fh:
-        fh.write('{"seat": "OWNER", "event": "game", "state": "UP", '
-                 '"ts": "2026-08-26T14:44:01Z"}\n')
-    sheet = _sheet([
-        ("RODE THE LOAD", "2026-08-23", "⏳ PENDING"),      # before the load, still ⏳
-        ("SINCE THE LOAD", "2026-08-27", "⏳ PENDING"),     # after it — not yet its turn
-        ("NEVER DEPLOYED", "—", "⏳ PENDING"),              # no date, cannot have ridden
-        ("ALREADY SCORED", "2026-08-23", "✅ scored"),      # scored, so quiet
-    ])
-    e = env("BUILD", RIMFLOW_RUN_SHEET=sheet)
-    rc, out, err = run("next", "--seat", "BUILD", env=e)
-    assert rc == 0, "a stale run sheet must warn, never refuse: rc=%d %s" % (rc, err)
-    assert "RODE A LOAD UNSCORED" in err, "the warning never reached stderr: %r" % err
-    assert "RODE THE LOAD" in err, err
-    assert "1 RUN-SHEET BLOCK " in err, (
-        "exactly one row qualifies; the other three are each a way to be a false "
-        "positive: %s" % err)
-    for quiet in ("SINCE THE LOAD", "NEVER DEPLOYED", "ALREADY SCORED"):
-        assert quiet not in err, "%s must not be reported stale: %s" % (quiet, err)
-
-
-def t_a_run_sheet_with_nothing_stale_says_nothing():
-    """⭐ A CHECK THAT CANNOT GO QUIET IS NOISE, and noise is how the last two indexes
-    died. Score the row and the warning must disappear entirely, not soften."""
-    fresh()
-    with open(os.path.join(TMP, "events.jsonl"), "w", encoding="utf-8") as fh:
-        fh.write('{"seat": "OWNER", "event": "game", "state": "UP", '
-                 '"ts": "2026-08-26T14:44:01Z"}\n')
-    sheet = _sheet([("RODE THE LOAD", "2026-08-23", "✅ scored 2026-08-26")])
-    rc, out, err = run("next", "--seat", "BUILD",
-                       env=env("BUILD", RIMFLOW_RUN_SHEET=sheet))
-    assert rc == 0, err
-    assert "RUN-SHEET" not in err, "it fixed itself and the check kept talking: %r" % err
-
-
 def t_the_bench_scan_is_refused_to_a_seat_that_could_game_it():
     """⛔ `next --bench` IS REP'S AND THE OWNER'S, AND THAT IS NOT SENIORITY.
 

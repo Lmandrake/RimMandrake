@@ -34,7 +34,7 @@ size of.
    the directories, or split by question — not by file count.
 4. **One wide read-only sweep beats three overlapping ones.** Overlap is paid
    twice and reconciled by you.
-5. **Never let a subagent write to shared state** (git, `NEXT_RELOAD.md`, queue
+5. **Never let a subagent write to shared state** (git, the ledger, queue
    files, deploys). It cannot see the other seats. It returns findings; the parent
    writes.
 

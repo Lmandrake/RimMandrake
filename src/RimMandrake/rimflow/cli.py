@@ -299,105 +299,6 @@ def _mode_file():
     return None
 
 
-def _stale_queues():
-    """-> a warning if `queue/*.md` have gone stale, else "".
-
-    🔴 THE PUBLISHER IS BOUNDED AT 8 HOURS AND DIES SILENTLY, ON PURPOSE — and the cost
-    lands the next morning. Measured 2026-08-22: it stopped at 00:21 and the queues sat
-    frozen for 9 hours, so a seat waking would have read a view predating an entire day
-    of rulings. It had already happened once before, for 2h17m, with a seat watching.
-
-    ⚠️ `rimflow` itself reads the LEDGER, so `next` is always current — but every
-    `queue/*.md` reader is not, and nothing else notices. This is the one command
-    every seat runs first, so the warning belongs here.
-    """
-    import time
-    q = os.path.join(model.ROOT, "infrastructure", "state", "queue", "BUILD.md")
-    try:
-        age = (time.time() - os.path.getmtime(q)) / 60.0
-    except OSError:
-        return ""
-    if age < 5:
-        return ""
-    return ("⚠️  THE QUEUE VIEWS ARE %d MINUTES STALE — `queue/*.md` is showing a view "
-            "that\n    old. What you read below is CURRENT (it comes from the ledger); the "
-            "published\n    views are not. The publisher is bounded at 8h and dies quietly. "
-            "Restart it —\n    REP's job, anyone's command:\n"
-            "      setsid nohup ./src/RimMandrake/Utils/queue_publisher.sh "
-            ">/dev/null 2>&1 </dev/null &\n" % age)
-
-
-def _stale_run_sheet():
-    """-> a warning for ⏳ run-sheet blocks that already rode a load, else "".
-
-    🔴 `NEXT_RELOAD.md` KEEPS ITS OWN INDEX BY DISCIPLINE, AND CLAUDE.md SAYS DISCIPLINE
-    DECAYS. It had already rotted twice before the index existed; the index does not stop
-    that, it only makes the rot READABLE. So read it: any block whose `deployed` date
-    precedes the last `game UP` and is still ⏳ either was scored and nobody moved it, or
-    rode a load and nobody looked. Both are worth saying, and neither announces itself.
-
-    ⚠️ Deliberately a WARNING on stderr next to `_stale_queues`, not a hook. A `warn_*`
-    PreToolUse hook prints to the OWNER's terminal on exit 1 and never reaches the agent
-    (measured 2026-08-23), which is how a budget overrun went a whole session unnoticed.
-    `next` is the command every seat runs first, so it is where a seat will see this.
-    """
-    sheet = (os.environ.get("RIMFLOW_RUN_SHEET")
-             or os.path.join(model.STATE, "NEXT_RELOAD.md"))
-    try:
-        with open(sheet, encoding="utf-8") as fh:
-            lines = fh.readlines()
-    except OSError:
-        return ""
-
-    last_up = ""
-    try:
-        with open(model.EVENTS, encoding="utf-8") as fh:
-            for line in fh:
-                if '"game"' not in line:
-                    continue
-                try:
-                    e = json.loads(line)
-                except ValueError:
-                    continue
-                if e.get("event") == "game" and e.get("state") == "UP" and e.get("ts"):
-                    last_up = max(last_up, e["ts"])
-    except OSError:
-        return ""
-    if not last_up:
-        return ""
-    up_day = last_up[:10]
-
-    date = re.compile(r"\d{4}-\d{2}-\d{2}")
-    stale = []
-    for line in lines:
-        if not line.startswith("|"):
-            continue
-        cells = [c.strip() for c in line.strip().strip("|").split("|")]
-        if len(cells) < 3:
-            continue
-        block, deployed, status = cells[0], cells[1], cells[2]
-        if "⏳" not in status:
-            continue
-        days = date.findall(deployed)
-        if not days:
-            continue
-        if max(days) < up_day:
-            stale.append((block, max(days)))
-    if not stale:
-        return ""
-
-    out = ["⚠️  %d RUN-SHEET BLOCK%s RODE A LOAD UNSCORED — the last `game UP` was %s and"
-           % (len(stale), "" if len(stale) == 1 else "S", up_day),
-           "    these are still ⏳ in the index of infrastructure/state/NEXT_RELOAD.md:"]
-    for block, day in stale[:6]:
-        out.append("      %s  deployed %s" % (block[:64], day))
-    if len(stale) > 6:
-        out.append("      ... +%d more" % (len(stale) - 6))
-    out.append("    Either it was scored and nobody moved it, or it rode a load and nobody")
-    out.append("    looked. Score it or archive the block; do not leave a ✅ sitting here.")
-    return "\n".join(out) + "\n"
-
-
 def _ctx(args):
     return {"mode": (getattr(args, "mode", None) or os.environ.get("RIMFLOW_MODE")
                      or _mode_file()),
@@ -615,12 +516,6 @@ def cmd_bench(args, seat):
 def cmd_next(args, seat):
     if getattr(args, "bench", False):
         return cmd_bench(args, seat)
-    warn = _stale_queues()
-    if warn:
-        sys.stderr.write(warn)
-    warn = _stale_run_sheet()
-    if warn:
-        sys.stderr.write(warn)
     _, w = load()
     # 🔴 MEASURE BEFORE OFFERING. `next` decides what a seat may work on, and half of
     # that decision is the game state — so it reads it from the machine, not from what

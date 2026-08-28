@@ -2441,3 +2441,6 @@
 {"seat":"BENCH","event":"reassign","id":"KIMI_GATEWAY_FOR_BUILD_1","to":"BENCH","reason":"redesign #4 fold","ts":"2026-08-28T05:45:41Z"}
 {"seat":"BENCH","event":"drop","id":"KIMI_GATEWAY_FOR_BUILD_1","reason":"stale-drop: superseded by redesign #4 model policy — external free workers are candidate-narrowing only, no further harness investment","ts":"2026-08-28T05:45:41Z"}
 {"seat":"BENCH","event":"file","id":"BLIND_SCAN_RELATIVE_PATHS_1","title":"block_blind_scan misses relative paths: selftest a_relative_path_is_resolved_against_the_shell_cwd fails (grep of defs/ThingDef.json allowed)","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-08-28T05:47:47Z"}
+{"seat":"BENCH","event":"note","id":"BLIND_SCAN_RELATIVE_PATHS_1","text":"render-on-write smoke test","ts":"2026-08-28T06:09:13Z"}
+{"seat":"BENCH","event":"note","id":"BLIND_SCAN_RELATIVE_PATHS_1","text":"render-on-write smoke test 2","ts":"2026-08-28T06:09:27Z"}
+{"seat":"BENCH","event":"file","id":"COLD_LOAD_RUN_SHEET_1","title":"One batched cold load scores every pending reading; replaces NEXT_RELOAD.md and EXPECTED_FAILURES_next_load.md","kind":"task","target":"v1","needs":"game-up","for":"FOUNDRY","ts":"2026-08-28T06:34:54Z"}

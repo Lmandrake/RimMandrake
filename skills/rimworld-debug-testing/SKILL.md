@@ -1,6 +1,6 @@
 ---
 name: rimworld-debug-testing
-description: Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the bridge, deciding what a quicktest can and cannot prove, and knowing when disk evidence (def dumps, XML on disk) is not evidence about the running game at all. Use whenever a test needs "a map", whenever someone says they are blocked waiting for a world or a colony, before queueing anything into NEXT_RELOAD.md, when choosing between a bridge test and a game restart, when a def-derived claim needs checking against runtime, or when a result must be attributed to the campaign versus scratch.
+description: Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the bridge, deciding what a quicktest can and cannot prove, and knowing when disk evidence (def dumps, XML on disk) is not evidence about the running game at all. Use whenever a test needs "a map", whenever someone says they are blocked waiting for a world or a colony, before adding anything to the cold-load run-sheet item (COLD_LOAD_RUN_SHEET_*), when choosing between a bridge test and a game restart, when a def-derived claim needs checking against runtime, or when a result must be attributed to the campaign versus scratch.
 ---
 
 # Debug testing: never wait for a map you can make
@@ -256,7 +256,7 @@ Ask in this order and stop at the first yes.
    cold load. **A mod-list change is the one thing a quicktest cannot fake**, and
    it only lands on a restart.
 
-**Before you put anything in `NEXT_RELOAD.md`, run this list.** An item that a
+**Before you put anything on the cold-load run-sheet item, run this list.** An item that a
 quicktest could have closed does not deserve a 25-minute slot.
 
 ## 7. 🔴 The validation plan — what this skill produces
