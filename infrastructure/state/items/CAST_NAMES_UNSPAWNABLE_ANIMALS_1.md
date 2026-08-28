@@ -94,3 +94,22 @@ touched gains one.
   the animals are off either way — but it decides whether "un-suppress it" is ever an option.
 - ⚠️ `biome_commonality_zeroed.py --animal` without `--ours` shows 322 animals carrying a zero
   across all 67 biomes, 168 always off. **Most of those are not ours and are not a defect.**
+
+---
+
+# CLOSED 2026-08-28 by BENCH — already done; verified offline
+
+The decision this item waited on was made and executed on 2026-08-27:
+- `b02c2fcd` refilled the 181 dead slots WITHOUT re-casting (refill_cast.py, patch-not-reallocate).
+- `1e7cf0ec` / `72b602fc` put the art rejections and the no-Earth-animals rule into the generator as data.
+- `0d7f5001` gave the two cast-less biomes their casts.
+
+Verified today, offline:
+- `refill_cast.py` dry-run against the LIVE Cherry Picker settings: 804 rows carried, **vacated 0** — no current row names a cut, art-rejected, or Earth creature. MEASURED.
+- Deployed `BiomeCast_Ashkarr.xml` is byte-identical to the repo copy (`cmp`). MEASURED.
+- The headline "157 always off" reads the 2026-08-26 capture, which predates the fix — the fingerprint rule, not a live defect.
+
+Criteria: replaced-or-accepted ✅ (refill + exclusion data) · no biome thinner ✅ (804 rows carried, zero vacated) · no un-suppression ✅ (refill only ever fills; the cut list is an input).
+
+**Live proof is NOT this item's**: `CAST_LIVE_SPAWN_CHECK_1` owns the post-deploy capture check.
+Incidental repair: restored `design/Jawa/fauna/dumppath.py`, deleted by kruft pass `9960d4bf` while still imported by `biome_commonality_zeroed.py` and `refill_cast.py`.
