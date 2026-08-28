@@ -117,3 +117,8 @@ confirm, not BUILD's to assume, because the wording is deliberately absolute.
    queueing call — that is a success that outruns the work.
 3. Keep this item's criteria exactly as written. They are right; only the implementation
    route in the spec is wrong.
+
+---
+
+# CLOSED 2026-08-28 on the owner's word: "close item (3) and (2). Not interested."
+Dropped, not deferred. Re-raisable as a fresh item only on a new owner ruling.

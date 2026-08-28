@@ -22,3 +22,8 @@ hundred ticks, not immediately.
 - [ ] Refuses without Anomaly, naming it.
 - [ ] Refuses a second awakening.
 - [ ] The description says the effect is a quest chain and that an immediate read-back proves nothing.
+
+---
+
+# CLOSED 2026-08-28 on the owner's word: "close item (3) and (2). Not interested."
+Dropped, not deferred. Re-raisable as a fresh item only on a new owner ruling.
