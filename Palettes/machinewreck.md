@@ -5,10 +5,10 @@ here and nobody came back*. Slag and chunks for the small litter, dead machines 
 the silhouettes, and the ground treatments that stop wreckage sitting on clean soil.
 
 ⚠️ **These are CANDIDATES, not a curated set.** Every def below is present in the
-current build and checked — but nobody has *looked* at the sprites side by side yet,
-and a wreck palette lives or dies on whether the pieces read as one accident rather
-than a props cupboard. Assume roughly a third of this will be cut on sight. The
-contact sheet is owed.
+current build and checked, and every one has now been *looked at* —
+`Palettes/machinewreck_contact.png`, 33 of 33 real sprites, no missing textures.
+See "What the sheet showed" below. The taste calls are still the owner's; only the
+broken art has been acted on.
 
 ## How a wreck palette differs from a floor palette
 
@@ -43,9 +43,13 @@ role  BURNT            VEE_BurntForestSoil    @mod=Vanilla Landmarks Expanded | 
 thing SLAG_STEEL       ChunkSlagSteel         @mod=Core | steel slag chunk - the default litter
 thing SLAG_MECH        ChunkMechanoidSlag     @mod=Core | mechanoid slag chunk
 thing SLAG_SCATTER     AB_SlagRubble          @mod=Alpha Biomes | scattered slag, thinner than a chunk
-thing SLAG_PLASTEEL    KotORChunk_plasteel    @mod=Star Wars KotOR Resources and Materials | plasteel slag chunk
-thing SLAG_DURASTEEL   KotORChunk_durasteel   @mod=Star Wars KotOR Resources and Materials | durasteel slag chunk
-thing SLAG_BRONZIUM    KotORChunk_bronzium    @mod=Star Wars KotOR Resources and Materials | bronzium slag chunk
+# 🔴 OFF - not a taste call. All three declare texPath `raw_resources/slag_blank`,
+# one shared file, and on the contact sheet it is a blank white shape: placeholder
+# art the mod never finished. Three "different materials" that are one blank sprite.
+# Re-enable only if that texture is replaced.
+# thing SLAG_PLASTEEL    KotORChunk_plasteel    @mod=Star Wars KotOR Resources and Materials | plasteel slag chunk
+# thing SLAG_DURASTEEL   KotORChunk_durasteel   @mod=Star Wars KotOR Resources and Materials | durasteel slag chunk
+# thing SLAG_BRONZIUM    KotORChunk_bronzium    @mod=Star Wars KotOR Resources and Materials | bronzium slag chunk
 thing RUBBLE_BUILDING  Filth_RubbleBuilding   @mod=Core | building rubble (filth layer, sits under things)
 thing RUBBLE_ROCK      Filth_RubbleRock       @mod=Core | rock rubble (filth layer)
 thing ROCKS_COLLAPSED  CollapsedRocks         @mod=Core | collapsed rocks - blocks movement, reads as a cave-in
@@ -86,6 +90,31 @@ rule Colours come from flooring_rusted. This palette deliberately declares none 
 # -------------------------------------------------------------------- used
 used Nothing yet. First consumer will be the ruined Gravship Cradle's surroundings.
 ```
+
+## What the sheet showed
+
+`D:\Luke\dev\Rimworld\Palettes\machinewreck_contact.png` — 33 cells, grouped by
+the sections in the block above, captioned with defName and supplying mod.
+
+**Acted on — a fact, not taste.** `KotORChunk_plasteel`, `_durasteel` and `_bronzium`
+all declare `texPath: raw_resources/slag_blank`. One file, three defs, and the sprite
+is a blank white shape. They are commented out in the block above with the reason
+attached, not deleted.
+
+**Flagged for the owner — my read, overrule freely:**
+
+| | |
+|---|---|
+| `AncientBox_SteelSlag`, `AncientPallet_SteelSlag` | **teal painted crates.** They read as intact containers someone left behind, not as scrap. Wrong colour story for a rusted desert site — they would need restuffing or cutting |
+| `CerebrexCore_Destroyed` | pale green, organic, unmistakably **archotech**. That is a different palette; it does not belong in an industrial accident |
+| `BrokenAsphalt` vs `WastelandAsphalt` | near-identical grey-brown speckle. Keeping both buys nothing |
+| `AB_SlagRubble` | tiny scattered specks; nearly invisible at map zoom. Texture only, never structure |
+| `AG_AncientLamp` | dark gourd silhouette that reads organic rather than mechanical |
+
+**Reads well, no action:** the six mechanoid pieces are visually one family — pale
+bone-white shells that clearly came off the same machine — which is exactly the
+"one cause per heap" rule paying off. `BrokenGravEngine` is the best centrepiece on
+the sheet.
 
 ## Owed before this is trustworthy
 
