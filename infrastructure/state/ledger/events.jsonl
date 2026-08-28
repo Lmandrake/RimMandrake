@@ -2440,3 +2440,4 @@
 {"seat":"BENCH","event":"close","id":"TRIM_VALIDATION_LAYERS_1","sha":"5c3e1a9e","ts":"2026-08-28T05:45:33Z"}
 {"seat":"BENCH","event":"reassign","id":"KIMI_GATEWAY_FOR_BUILD_1","to":"BENCH","reason":"redesign #4 fold","ts":"2026-08-28T05:45:41Z"}
 {"seat":"BENCH","event":"drop","id":"KIMI_GATEWAY_FOR_BUILD_1","reason":"stale-drop: superseded by redesign #4 model policy — external free workers are candidate-narrowing only, no further harness investment","ts":"2026-08-28T05:45:41Z"}
+{"seat":"BENCH","event":"file","id":"BLIND_SCAN_RELATIVE_PATHS_1","title":"block_blind_scan misses relative paths: selftest a_relative_path_is_resolved_against_the_shell_cwd fails (grep of defs/ThingDef.json allowed)","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-08-28T05:47:47Z"}
