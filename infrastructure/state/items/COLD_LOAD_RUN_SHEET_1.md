@@ -17,7 +17,8 @@ python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --appl
 ```
 - `--gm` mandatory; a refusal about tool removal means you dropped it — never
   `--allow-tool-removal`. Check the output for the word `deployed`.
-- Built clean at `887d4a3d`: surface **238**, 0 warnings. The game copy is at 166 —
+- Built clean 2026-08-28: surface **239** (adds `jawa/paint_building` — vanilla
+  Building.ChangePaint over cells/rect), 0 warnings. The game copy is at 166 —
   everything since 2026-08-26 is undeployed, so this window pays for all of it.
 - New this build: a Harmony prefix on RimBridgeServer (`jawa/bridge_arg_report`);
   if the bridge misbehaves post-deploy, grep `[JawaBench] argument guard` first.
@@ -72,6 +73,7 @@ the log is a story that fits)
 | DUMP_PRODUCER_DATED_CAPTURES_1 | a dump taken after a Cherry Picker cut must NOT still show the cut defs (baseline: 1210/1342 still present) |
 | TEMPLATE_ENGINE_ACCEPTANCE_1 | criteria 1–2: `room_get` reads Bedroom/DiningRoom/Storeroom roles; nursery ≤ 32 °C on a hot tile |
 | CAST_LIVE_SPAWN_CHECK_1 · ION_TIERS_MEASURED_LIVE_1 | as filed, need the fresh dump first |
+| hull repaint (owner's call, 2026-08-28) | census first (`repaint_hull.py --census "83,59,86,133"`), then optionally rebuild the hull in an honest material and `repaint_hull.py --plan … --apply` — real vanilla paint, not megabone. Once verified live, `apply_wall_colors.py` and `apply_wall_stuff.py` are superseded and deletable |
 
 Look-at (owner's eyes, no command): adult bantha/eopie carry the new art (juvenile-only
 was the bug — deployed files proved nothing); world labels sit clear of the limb

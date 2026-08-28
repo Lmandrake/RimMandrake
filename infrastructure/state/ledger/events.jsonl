@@ -2444,3 +2444,6 @@
 {"seat":"BENCH","event":"note","id":"BLIND_SCAN_RELATIVE_PATHS_1","text":"render-on-write smoke test","ts":"2026-08-28T06:09:13Z"}
 {"seat":"BENCH","event":"note","id":"BLIND_SCAN_RELATIVE_PATHS_1","text":"render-on-write smoke test 2","ts":"2026-08-28T06:09:27Z"}
 {"seat":"BENCH","event":"file","id":"COLD_LOAD_RUN_SHEET_1","title":"One batched cold load scores every pending reading; replaces NEXT_RELOAD.md and EXPECTED_FAILURES_next_load.md","kind":"task","target":"v1","needs":"game-up","for":"FOUNDRY","ts":"2026-08-28T06:34:54Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-08-28T07:00:52Z"}
+{"seat":"BENCH","event":"reassign","id":"COLD_LOAD_RUN_SHEET_1","to":"BENCH","reason":"amending the sheet: paint tool built, surface 239","ts":"2026-08-28T07:10:49Z"}
+{"seat":"BENCH","event":"reassign","id":"COLD_LOAD_RUN_SHEET_1","to":"FOUNDRY","reason":"amended: paint tool + repaint row","ts":"2026-08-28T07:12:42Z"}
