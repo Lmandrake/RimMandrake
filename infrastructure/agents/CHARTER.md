@@ -101,5 +101,5 @@ ladder: `Agent_Policy.md`. Subagents: spawn freely, always with `model` (haiku
 enumerate · sonnet interpret · opus/fable only when the return is acted on
 unverified); a subagent's return is evidence, never a finding, and no subagent writes
 shared state. Windows never message each other — the queue and the owner are the only
-channels; your own subagents are not peers. Queue views publish by script
-(`queue_publisher.sh`), not by a window.
+channels; your own subagents are not peers. Queue views render on every `rimflow`
+write — no loop, no publisher, no staleness.

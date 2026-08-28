@@ -1,13 +1,12 @@
 <#
-launch_fleet.ps1 — open the two agent windows, each Windows Terminal window placed,
-plus the queue publisher loop.
+launch_fleet.ps1 — open the two agent windows, each Windows Terminal window placed.
 
     LEFT   AGENT BENCH   (green — with the owner)
     RIGHT  AGENT FOUNDRY (amber — the autonomous queue)
 
 Redesign #4, 2026-08-27: the four-seat fleet (DECIDE/CHECK/BUILD/REP quadrants) is
-retired. The queue publisher replaces REP's on-wake duty; the status board was
-removed 2026-08-27 and is not launched.
+retired, the status board stays removed, and the queue publisher loop is gone too —
+rimflow renders the queue views on every write, so nothing needs a background loop.
 
 WHY THE WINDOWS ARE MOVED RATHER THAN SIZED AT LAUNCH
 =====================================================
@@ -50,8 +49,7 @@ param(
     [string[]]$Seats = @('FOUNDRY', 'BENCH'),
     [int]$TimeoutSec = 30,
     [switch]$Test,
-    [switch]$CloseTest,
-    [switch]$NoPublisher
+    [switch]$CloseTest
 )
 
 $ErrorActionPreference = 'Stop'
@@ -183,15 +181,6 @@ foreach ($seat in $Seats) {
     $b = [Fleet]::Border($h)
     [void][Fleet]::MoveWindow($h, $r[0] - $b.L, $r[1] - $b.T,
                                   $r[2] + $b.L + $b.R, $r[3] + $b.T + $b.B, $true)
-}
-
-# The queue publisher: the script that replaced REP's on-wake duty. Detached,
-# bounded (8 h), regenerates queue/*.md every 60 s. -NoPublisher skips it.
-if (-not $NoPublisher) {
-    Start-Process -FilePath 'wsl.exe' -ArgumentList @(
-        '-d', 'Ubuntu', '--', 'bash', '-lc',
-        '"cd /mnt/d/Luke/dev/Rimworld && setsid nohup ./src/RimMandrake/Utils/queue_publisher.sh >/dev/null 2>&1 </dev/null &"'
-    ) -WindowStyle Hidden | Out-Null
 }
 
 # Leave the focus where the owner starts: BENCH, the window that works with him.

@@ -179,6 +179,20 @@ def _emit(ev, world=None, quiet=False):
     if not quiet:
         print("%s %s%s" % (ev["event"], ev.get("id", ""),
                            "" if ev.get("id") else "(" + str(ev.get("state", "")) + ")"))
+    # Render-on-write (owner, 2026-08-27): every mutation rewrites the queue views in
+    # the same command, so a view can never be staler than the ledger. This replaced
+    # the 60 s queue_publisher.sh loop and everything that existed to detect its
+    # death. ~160 ms per event; best-effort — a render failure must never eat the
+    # append that already happened, so it warns and moves on.
+    try:
+        try:
+            from . import render as _render
+        except ImportError:
+            from rimflow import render as _render       # script invocation
+        _render.render(overwrite_queues=True, quiet=True)
+    except Exception as e:                                    # noqa: BLE001
+        sys.stderr.write("⚠️  queue views not re-rendered (%s) — run "
+                         "render.py --overwrite-queues by hand\n" % e)
     return ev
 
 

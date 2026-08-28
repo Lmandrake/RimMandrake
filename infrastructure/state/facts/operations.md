@@ -27,11 +27,10 @@ Unbudgeted, like everything in `facts/`.
   `rimbridge_client.resolve_endpoint()` + a real `session/hello` (scrapes host, port
   AND per-launch token from `Player.log`; empty token = "too early to say", never
   "down").
-- **The queue publisher check**: `pgrep -f queue_publisher.sh` matches your own
-  wrapper — use `ps -eo pid,etime,args | grep -E '[q]ueue_publisher\.sh'`, and the
-  real check is `queue/*.md` mtimes (>~2 min old = loop dead, whatever `ps` says).
-  It is bounded (8 h), dies silently, and must start detached:
-  `setsid nohup ./src/RimMandrake/Utils/queue_publisher.sh >/dev/null 2>&1 </dev/null &`
+- **Queue views render on write** (owner, 2026-08-27): every `rimflow` mutation
+  rewrites `queue/*.md` in the same command (`cli.py _emit`), so a view is never
+  staler than the ledger. The 60 s `queue_publisher.sh` loop is retired with its
+  whole staleness apparatus; `render.py --overwrite-queues` remains the manual form.
 - **`strings -a -el` on an assembly is not a census** — it found 16 of 115 companion
   tool names; it proves a name PRESENT, never absent.
 - **The trap file is cited exactly one way**: `as per the trap file` — no numeric
