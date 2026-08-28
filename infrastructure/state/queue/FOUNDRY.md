@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:31:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:31:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -88,16 +88,7 @@ prose:    infrastructure/state/items/LORD_JOB_SWAP_TOOL_1.md
 
 # IN PROGRESS
 
-Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## BRIDGE_READ_VEHICLE_COMPONENTS_1 BRIDGE_READ_VEHICLE_COMPONENTS_1
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Filed as a title only, out of the finding VEHICLEHEALTHTABUNREACHABLE1 (tooling,
-prose:    infrastructure/state/items/BRIDGE_READ_VEHICLE_COMPONENTS_1.md
+_none._
 
 # BLOCKED — something is WRONG and someone must act
 
