@@ -30,29 +30,18 @@ from __future__ import annotations
 import argparse, csv, json, os, sqlite3, sys, datetime as dt
 from collections import defaultdict
 
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import cherrypicker                                            # noqa: E402
+
 DB = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
       "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
-CP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-      "RimWorld by Ludeon Studios/Config/Mod_3521312241_Mod_CherryPicker.xml")
 
 # 🔑 What counts as the floor. NOT "everything at techLevel Neolithic" - that set
 # includes 30 tusks, horns and survival tools that are weapons only because the engine
 # says a tusk can be swung. The floor is a weapon a pawn KIND could be handed.
 EXCLUDE_SUBSTR = ("Tusk", "Horn", "Fangs", "Tooth", "Spike", "SurvivalTools_",
                   "WoodLog", "CrystalWood", "BoneItem")
-
-
-def load_cut() -> set[str]:
-    """Every `ThingDef/<name>` line in the live Cherry Picker config."""
-    cut = set()
-    if not os.path.exists(CP):
-        return cut
-    with open(CP, encoding="utf-8", errors="replace") as fh:
-        for line in fh:
-            line = line.strip()
-            if line.startswith("<li>ThingDef/") and line.endswith("</li>"):
-                cut.add(line[len("<li>ThingDef/"):-len("</li>")])
-    return cut
 
 
 def market_value(fields: dict):
@@ -68,9 +57,9 @@ def market_value(fields: dict):
     return None
 
 
-def collect():
+def collect(cuts):
     con = sqlite3.connect(f"file:{DB}?mode=ro", uri=True)
-    cut = load_cut()
+    cut = cuts.by_type.get("ThingDef", frozenset())
     rows, tagmap = [], defaultdict(list)
     for (j,) in con.execute("SELECT json FROM defs WHERE def_type='ThingDef'"):
         d = json.loads(j)
@@ -102,7 +91,7 @@ def collect():
             "stuff": "|".join(f.get("stuffCategories") or []),
         })
     rows.sort(key=lambda r: (r["cut"], r["melee"], r["defName"]))
-    return rows, tagmap, cut
+    return rows, tagmap
 
 
 def main() -> int:
@@ -112,13 +101,19 @@ def main() -> int:
     if not os.path.exists(DB):
         print(f"UNMEASURED no defs.sqlite at {DB} - run `measure build`")
         return 2
-    rows, tagmap, cut = collect()
+    try:
+        cuts = cherrypicker.load()
+    except IOError as exc:
+        print(f"UNMEASURED: {exc}")
+        return 2
+    rows, tagmap = collect(cuts)
 
     cap = sqlite3.connect(f"file:{DB}?mode=ro", uri=True).execute(
         "SELECT value FROM provenance WHERE key='captured_utc'").fetchone()
     cap = cap[0] if cap else "?"
-    cp_m = dt.datetime.utcfromtimestamp(os.path.getmtime(CP)).isoformat() + "Z" if os.path.exists(CP) else "?"
+    cp_m = (dt.datetime.utcfromtimestamp(cuts.mtime).isoformat() + "Z") if cuts.mtime else "?"
     stale = cp_m > cap
+    print(cuts.provenance())
     print(f"dump captured {cap} | cherrypicker mtime {cp_m}"
           + ("   🔴 CONFIG IS NEWER - tag state for anything cut or un-cut since is STALE" if stale else ""))
     live = [r for r in rows if not r["cut"]]

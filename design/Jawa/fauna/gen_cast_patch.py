@@ -22,30 +22,17 @@ def _cherry_picker_cuts():
     An empty set would silently mean "nothing is cut" and the generator would go
     back to emitting dead entries with no sign anything was skipped.
     """
-    import xml.etree.ElementTree as ET
-    cand = [
-        "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
-        "/Config/Mod_3521312241_Mod_CherryPicker.xml",
-        r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios"
-        r"\Config\Mod_3521312241_Mod_CherryPicker.xml",
-    ]
-    for path in cand:
-        if not os.path.isfile(path):
-            continue
-        try:
-            root = ET.parse(path).getroot()
-        except Exception as exc:
-            print(f"⚠️ Cherry Picker settings unreadable ({exc}); cut animals will be "
-                  f"emitted as live entries and will silently never spawn.")
-            return None
-        keys = [li.text.strip() for li in root.iter('li') if li.text]
-        out = {k.split('/', 1)[1] for k in keys if '/' in k}
-        print(f"Cherry Picker: {len(keys)} cut entries read from {os.path.basename(path)}")
-        return out
-    print("⚠️ Cherry Picker settings NOT FOUND. Any animal the owner has cut will be "
-          "emitted as a live entry and will silently never spawn - the generator "
-          "cannot tell. Looked for Config/Mod_3521312241_Mod_CherryPicker.xml.")
-    return None
+    ROOT = os.path.dirname(os.path.dirname(os.path.dirname(FA)))
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+    import cherrypicker
+    try:
+        cuts = cherrypicker.load()
+    except IOError as exc:
+        print(f"⚠️ Cherry Picker settings unreadable ({exc}); cut animals will be "
+              f"emitted as live entries and will silently never spawn.")
+        return None
+    print(cuts.provenance())
+    return cuts.names
 
 
 def _vanilla_biomes():
@@ -256,8 +243,10 @@ def main():
     # 168 animals that read commonality 0 in the live game.
     #
     # Cherry Picker (owlchemist.cherrypicker) removes a def by the OWNER'S OWN
-    # selection, saved in Config/Mod_3521312241_Mod_CherryPicker.xml - 1,342 entries
-    # here. ⚠️ Its cuts are INVISIBLE TO THE DEF DUMP: all nine of the animals it cut
+    # selection, saved in Config/Mod_3521312241_Mod_CherryPicker.xml - the count
+    # grows every review pass, so `cherrypicker.load().provenance()` above prints
+    # the CURRENT one rather than a number that goes stale in this comment.
+    # ⚠️ Its cuts are INVISIBLE TO THE DEF DUMP: all nine of the animals it cut
     # out of TemperateForest are still PRESENT as ThingDef and PawnKindDef in the
     # capture. What changes is the biome record's commonality, which becomes 0 - and
     # `BiomeDef.AllWildAnimals` only yields kinds above 0, so the animal can never be

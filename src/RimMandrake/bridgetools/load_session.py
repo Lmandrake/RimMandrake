@@ -355,6 +355,7 @@ def i_cherry_picker(s, cfg):
     list` means EVERY removal was lost, not the one that broke. Worth a call on
     its own because nothing else surfaces it.
     """
+    cherry_drift(s)
     r = s.call("jawa/drain_log", limit=200, contains="Cherry Picker")
     msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
     fatal = [m for m in msgs if "Error processing master def list" in m]
@@ -763,6 +764,29 @@ CHERRY = [
     ("D", "IncidentDef", "WarpedObelisk_Duplicator"),
     ("D", "IncidentDef", "WarpedObelisk_Abductor"),
 ]
+
+
+def cherry_drift(s):
+    """Is CHERRY (the hand-picked spot list above) still on the LIVE cut list?
+
+    CHERRY was filed 2026-08-14 and is not derived from the settings file, so it
+    goes stale the moment the owner adds or removes a cut. `cherrypicker.py` is
+    the single reader built to answer "what's cut now" -- ask it, rather than
+    this file growing its own second parser of the settings XML.
+    """
+    import cherrypicker
+    try:
+        cuts = cherrypicker.load()
+    except IOError as e:
+        record("A6y", "CHERRY spot list vs live cut list", ERROR, str(e)[:120])
+        return
+    drifted = [(dtype, name) for grp, dtype, name in CHERRY
+               if grp in ("A", "B", "C") and not cuts.cut(dtype, name)]
+    record("A6y", "CHERRY spot list vs live cut list",
+           PASS if not drifted else NEEDS_EYES,
+           cuts.provenance() + (" -- no drift" if not drifted else
+           " -- %d no longer on the live list: %s" % (
+               len(drifted), ", ".join("%s/%s" % dn for dn in drifted))))
 
 
 def cherry_keys(s, cfg):

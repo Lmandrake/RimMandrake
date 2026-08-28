@@ -49,6 +49,7 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import game_paths as GP                                   # noqa: E402
+import cherrypicker                                        # noqa: E402
 
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 CONFIG = os.path.join(GP.LOCALLOW, "Config")
@@ -209,11 +210,14 @@ def main():
             "their own static constructors" % i)
 
     # ---- 5. Cherry Picker keys -----------------------------------------
-    cp = os.path.join(CONFIG, "Mod_3521312241_Mod_CherryPicker.xml")
+    # `cherrypicker.raw_keys()` is the single reader of <li> text; kept separate
+    # from `cherrypicker.load()` because a malformed key (no "/") must FAIL this
+    # check, not vanish the way load()'s stricter Type/Name regex would drop it.
+    cp = cherrypicker.SETTINGS
     if os.path.isfile(cp):
         try:
-            root = ET.parse(cp).getroot()
-            keys = [(e.text or "").strip() for e in root.iter("li")]
+            ET.parse(cp)                       # well-formedness gate only
+            keys = cherrypicker.raw_keys(cp)
             import cherrypick_build
             problems = cherrypick_build.check(keys)
             add(FAIL if problems else OK, "every Cherry Picker key is valid",

@@ -24,9 +24,11 @@ proposed for these zeros on 2026-08-26 and both are wrong:
     `fields.wildAnimals[].commonality`, from plain reflection over the field.
 
 ✅ **IT IS CHERRY PICKER, AND IT IS THE OWNER'S OWN CUT LIST.** Answered 2026-08-26.
-`Config/Mod_3521312241_Mod_CherryPicker.xml` holds 1,342 owner-selected cuts, and
-Cherry Picker suppresses a cut animal by REPLACING its biome commonality with 0
-rather than removing the entry.
+`Config/Mod_3521312241_Mod_CherryPicker.xml` holds the owner's cuts — see
+`cherrypicker.load().provenance()` below for the CURRENT count, which grows every
+review pass and would go stale as a number fixed in this docstring. Cherry Picker
+suppresses a cut animal by REPLACING its biome commonality with 0 rather than
+removing the entry.
 
 Validated over the population, not on a sample:
 
@@ -62,6 +64,7 @@ REPO = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
 CAST_PATCH = os.path.join(REPO, "src", "Jawa", "Jawa_Patches", "Patches", "BiomeCast_Ashkarr.xml")
 
 sys.path.insert(0, os.path.join(REPO, "design", "Jawa", "fauna"))
+import cherrypicker                                            # noqa: E402 — same dir
 
 
 def newest_capture():
@@ -129,6 +132,13 @@ def main(argv=None):
     print("capture: %s" % capture)
     print("biomes with a wildAnimals list: %d   (our cast patch writes %d)"
           % (len(live), len(mine)))
+    try:
+        cuts = cherrypicker.load()
+        print(cuts.provenance())
+    except IOError as exc:
+        print("⚠️ cherrypicker: %s — always-off animals cannot be cross-checked "
+              "against the live cut list" % exc)
+        cuts = None
 
     zero_in = collections.Counter()
     live_in = collections.Counter()
@@ -149,6 +159,12 @@ def main(argv=None):
         always = sum(1 for a in zero_in if not live_in[a])
         print("\n%d animal(s) carry a zero; %d are ALWAYS OFF in this scope."
               % (len(zero_in), always))
+        if cuts is not None:
+            off = [a for a in zero_in if not live_in[a]]
+            explained = sum(1 for a in off if cuts.cut_name(a))
+            print("%d of %d ALWAYS OFF names are on the live cut list; "
+                  "%d zeroed for a different reason." % (explained, len(off),
+                                                          len(off) - explained))
         return 0
 
     total_z = total_n = 0

@@ -64,26 +64,17 @@ ANOMALY_BIOMES = {'HorrorWastes', 'AB_GelatinousSuperorganism', 'AB_OcularForest
 # An empty set means "nobody is excluded" and would quietly restore exactly the
 # creatures these exist to keep out. None makes the caller refuse.
 
-CHERRY_PICKER_CFG = [
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
-    "/Config/Mod_3521312241_Mod_CherryPicker.xml",
-    r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios"
-    r"\Config\Mod_3521312241_Mod_CherryPicker.xml",
-]
-
-
 def cherry_picker_cuts():
-    """PawnKindDef names the owner has cut, or None if the config is unreadable."""
-    import xml.etree.ElementTree as ET
+    """PawnKindDef names the owner has cut, or None if the settings file is unreadable."""
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+    import cherrypicker
     from dumppath import defs_dir
-    path = next((c for c in CHERRY_PICKER_CFG if os.path.isfile(c)), None)
-    if path is None:
-        return None
     try:
-        keys = [li.text.strip() for li in ET.parse(path).getroot().iter('li') if li.text]
-    except Exception:
+        cuts = cherrypicker.load()
+    except IOError as exc:
+        print(f"⚠️ {exc}")
         return None
-    cut = {k.split('/', 1)[1] for k in keys if '/' in k}
+    cut = cuts.names
     # He cuts ThingDefs; wildAnimals takes PawnKindDefs. Map through the race.
     kinds = set()
     pk = json.load(open(defs_dir() + '/PawnKindDef.json', encoding='utf-8'))
@@ -93,7 +84,8 @@ def cherry_picker_cuts():
             continue
         if x['defName'] in cut or ((x.get('fields') or {}).get('race')) in cut:
             kinds.add(x['defName'])
-    print(f"Cherry Picker: {len(keys)} cut entries -> {len(kinds)} ineligible pawn kinds")
+    print(cuts.provenance())
+    print(f"-> {len(kinds)} ineligible pawn kinds")
     return kinds
 
 

@@ -76,6 +76,20 @@ RATIFIED = os.path.join(REPO, "deployed", "config", "v1_freeze",
 _KEY = re.compile(r"<li>\s*([^<>/\s]+)\s*/\s*([^<>\s]+?)\s*</li>")
 # Cherry Picker's own report lines: "	 - ThingDef/Cat," one per removal.
 _LOG = re.compile(r"^\s*-\s*([A-Za-z]+)/([^,\s]+),?\s*$")
+_LI = re.compile(r"<li>\s*(.*?)\s*</li>", re.S)
+
+
+def raw_keys(path=SETTINGS):
+    """-> every `<li>...</li>` inner text, verbatim, INCLUDING malformed ones.
+
+    For a validator (`cherrypick_build.check()`) that must catch a key with no
+    "/" rather than lose it — `_KEY` above requires the slash to match at all,
+    so a malformed key is invisible to `load()` by design. Use this instead of
+    a second XML/regex reader when the question is "what does this file say",
+    not "what is cut".
+    """
+    with open(path, encoding="utf-8") as fh:
+        return _LI.findall(fh.read())
 
 
 class Cuts(object):
