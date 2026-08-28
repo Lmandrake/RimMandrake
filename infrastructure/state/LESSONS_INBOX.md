@@ -14,3 +14,4 @@ file into the right skills, merging rather than appending, and empties it.
 - zsh does NOT word-split unquoted $VAR (a $CLI reassign loop failed 30/30 silently under >/dev/null); use explicit commands or arrays in loops — seen once, cost one redo
 - queue_lint counts a reassign as a claim, so reassigning an item you filed burns your filer-exemption; a hook that can't see WHO is editing needs the payload session_id, not env — fixed 2026-08-28, generalises to any identity-checking hook
 - a known-answer calibration (rimplace contract) rots silently when the source legitimately grows a parameter; adding a companion tool param means updating the calibration in the same commit — cost one day of UNMEASURED contract checks
+- jawa/clear_ui does not close MainTabWindow_Menu (it is not a debug window): check get_ui_layout surfaces and close with rimworld/close_window before screenshots (2026-08-28).

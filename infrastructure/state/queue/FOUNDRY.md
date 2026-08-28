@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T07:57:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:17:28Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -106,7 +106,16 @@ prose:    infrastructure/state/items/LORD_JOB_SWAP_TOOL_1.md
 
 # IN PROGRESS
 
-_none._
+Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
+
+## CUT_LIST_ONE_READER_1 Move the remaining six kill-list parsers onto cherrypicker.py, and label what measure counts
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  DUMPDERIVEDSHEETSSHOWCUT1 built src/RimMandrake/Utils/cherrypicker.py and moved the two
+prose:    infrastructure/state/items/CUT_LIST_ONE_READER_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -363,16 +372,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  design/Jawa/fauna/EARTHFAUNAEXCLUDED.txt is the owner's no-Earth-animals rule as
 prose:    infrastructure/state/items/RETEXTURED_EARTH_FAUNA_BANNED_1.md
-
-## CUT_LIST_ONE_READER_1 Move the remaining six kill-list parsers onto cherrypicker.py, and label what measure counts
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  DUMPDERIVEDSHEETSSHOWCUT1 built src/RimMandrake/Utils/cherrypicker.py and moved the two
-prose:    infrastructure/state/items/CUT_LIST_ONE_READER_1.md
 
 ## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
 state:    proposed

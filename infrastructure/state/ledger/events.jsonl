@@ -2456,3 +2456,7 @@
 {"seat":"FOUNDRY","event":"file","id":"IKEE_WILDNESS_PATCH_DEAD_1","title":"Ikee_Tuning.xml wildness patch targets a field 1.6 does not have; two live def errors","kind":"defect","target":"v1","needs":"offline","caused_by":"JAWA_SCENARIO_PARTS_1","for":"FOUNDRY","ts":"2026-08-28T07:56:36Z"}
 {"seat":"FOUNDRY","event":"close","id":"JAWA_SCENARIO_PARTS_1","sha":"4c13b0e6","ts":"2026-08-28T07:57:03Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-28T07:57:11Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-28T08:07:49Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CUT_LIST_ONE_READER_1","ts":"2026-08-28T08:08:42Z"}
+{"seat":"FOUNDRY","event":"start","id":"CUT_LIST_ONE_READER_1","ts":"2026-08-28T08:08:43Z"}
+{"seat":"BENCH","event":"file","id":"GRAVSHIP_SHRINE_FOLLOWUPS_1","title":"Shrine round follow-ups: vault roof, stele text, casket, factory twins, toll shack","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-08-28T08:17:28Z"}
