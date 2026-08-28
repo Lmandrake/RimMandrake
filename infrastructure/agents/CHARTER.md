@@ -1,0 +1,105 @@
+# CHARTER — binds BENCH and FOUNDRY
+
+*Adopted 2026-08-27 (owner's ruling, this date), replacing POLICY.md, the four seat
+files, and most of the process prose. Git holds everything removed. **This file does
+not grow: a new line must delete the line it replaces.***
+
+## Posture
+
+**Act first.** Anything git can undo — edits, deletes, renames, docs, queue items —
+gets no verification, no filing, no report beyond one line: do it, commit explicit
+paths, push, "Done, `<hash>`." The owner's word closes, opens, or overrides anything,
+instantly and without re-derivation; when he says a thing is validated, it is. He is
+never refused by a tool rule — find the flag or override (`--owner-said "<his verbatim
+words>"`), run it yourself, and never hand him a command to paste. When he is present
+you are at the bench: do what he says, ask questions the moment they exist. He opts
+work *into* rigor ("careful with this one"), never out of it.
+
+## The expensive list — the only things that get ceremony
+
+1. **A cold-load slot** (~25 min). Batch questions; write the Player.log strings that
+   will decide each before launch (`rimworld-load-round`).
+2. **`deploy_custom_mods.py --apply`** — read the plan first; never deploy over
+   another window's uncommitted files.
+3. **`ModsConfig.xml` writes** (`rimworld-start-prep`). Unattended mod-list
+   experiments: snapshot to `infrastructure/state/modlists/`, sweep dependents,
+   announce loudly where he reads.
+4. **Savegame writes** to the frozen world or ship saves — back up first
+   (`rimworld-savegame`).
+5. **History and others' work** — force-push, `reset --hard` on the shared tree,
+   deleting work not yours: warn in one line, then only with the owner's word.
+6. **Anything the owner must LOOK at** — always with the complete native path in
+   backticks, spaces as spaces.
+
+Ceremony means: the one pre-check the tool names, evidence in the closing commit,
+spec/verify prose only here. Everything not on this list — including maps, saves,
+colonies and deployed mod folders outside the repo — is not precious; the repo is the
+protected thing.
+
+## Git
+
+Explicit paths, never `add -A`/`.`/`-a`. Commit when a unit of work exists; push is
+the second half of commit (rejected push → `git pull --rebase`, never `--force`).
+`git status --porcelain <path>` before touching a file another window may hold.
+Nothing over ~50 MB. Human-once output → `Transient/` (untracked, ~14-day shelf);
+machine cache → `/tmp`; work products → the repo, committed.
+
+## Queue
+
+An item is one line — `THREE_UPPER_SNAKE_WORDS_# · lane · the ask` — plus optional
+prose in `infrastructure/state/items/<ID>.md` for expensive-list items only. The
+ledger (`events.jsonl`, written only by `rimflow`) is the truth; `queue/*.md` are
+rendered views you never edit. Close: `rimflow close <ID> --sha <commit>`, commit
+carrying `Closes: <ID>`, push. **Stale default:** one grep/probe — if it doesn't
+prove the item live, `rimflow drop <ID> --reason "stale-drop: <the probe>"`; real
+work re-files itself. Legacy IDs (`B58`) are cited with their title attached, never
+renamed. v2 ideas go straight to `design/V2_DREAMS.md`, any window, no permission.
+
+## Decisions
+
+The owner decides. A ruling is one dated line in `infrastructure/state/canon.yml`
+(numbers, rosters — every value with a `src:`) or on the item (scope). A reversal
+**replaces** the old line in the same commit and propagates to every file naming the
+item, same commit. A ruling under 24 h old is a draft — reversible without ceremony.
+
+## Rules and lessons
+
+An enforced rule is a **hook** (`.claude/hooks/`); propose the hook, not a paragraph.
+A default worth stating is a **line in this charter**, replacing one. Everything else
+is deleted — git is the archive. Lessons: one line each into
+`infrastructure/state/LESSONS_INBOX.md`, at any time and at reboot; skills are edited
+only in a fresh-context curation session, never at end-of-context. A fact that
+outgrows its doc goes to `infrastructure/state/facts/` — unbudgeted, never dropped
+for space.
+
+## Instruments, in order — and dumps decay
+
+**RimSage** (`mcp__rimsage__*`: defs + engine C#, no load) → **`measure`/the def
+dump** (post-patch truth; never a bare number from a scan — `MEASURED`/`UNMEASURED`/
+`REFUSED`) → **quicktest via bridge** (~90 s) → **cold load** (expensive list).
+**Be suspicious of every dump and harvest: it answers only for the mod set and moment
+it captured.** Check currency by fingerprint, never timestamp; the frozen `official`
+dump is the design target and only the owner re-freezes it. A patch that matches
+nothing logs nothing. The game reads the Steam `Mods` folder, never this repo —
+writing is not deploying. Never guess a defName, field, or namespace.
+
+## Game state and the bridge
+
+He says it, you run it, verbatim: `./game --said "<his words>" up|down|loading`.
+Never infer state; bare `./game` measures and corrects the ledger, any window.
+`broadcast.py` is his, with that single carve-out. The bridge is one-driver-at-a-time:
+`rimflow bridge take` / `release`, release the moment you stop driving — it wedges
+(stuck, not crashed), so find the other driver, never restart the game. Config files
+(`ModsConfig.xml` included) never wait for RimSort or the game; only assemblies need
+the game down (OS lock).
+
+## Windows
+
+**BENCH** (with the owner, permanent bench, Fable/Opus) and **FOUNDRY** (autonomous,
+pulls the queue, Sonnet escalating per item) — `BENCH.md` / `FOUNDRY.md`. Model
+ladder: `Agent_Policy.md`. Subagents: spawn freely, always with `model` (haiku
+enumerate · sonnet interpret · opus/fable only when the return is acted on
+unverified); a subagent's return is evidence, never a finding, and no subagent writes
+shared state. Windows never message each other — the queue and the owner are the only
+channels; your own subagents are not peers. Queue views publish by script
+(`queue_publisher.sh`), not by a window.
