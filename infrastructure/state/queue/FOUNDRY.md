@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:45:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:54:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## TEMPLATE_ENGINE_ACCEPTANCE_1 The template engine has never placed a cell in a live game; §10's four acceptance checks
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     check
-summary:  The Lua structure template engine (src/RimMandrake/Utils/rimplace/, spec
-prose:    infrastructure/state/items/TEMPLATE_ENGINE_ACCEPTANCE_1.md
 
 ## DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1 rimworld/search_debug_actions walks the whole dev menu before filtering and wedges the bridge on 582 mods
 state:    ready
@@ -339,3 +330,23 @@ kind:     fix
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAWN_WEAPON_GEN_TAG_POOL_READ_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAWN_WEAPON_GEN_TAG_POOL_READ_1.md
+
+## DININGROOM_READS_AS_KITCHEN_1 rimplace's DiningRoom prediction reads as Kitchen live once a stove is in the room
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DININGROOM_READS_AS_KITCHEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DININGROOM_READS_AS_KITCHEN_1.md
+
+## NURSERY_FOOTPRINT_OFF_BY_ONE_1 nursery.lua's declared 16x9 minimum footprint is 1 cell short of its own Battery placement
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NURSERY_FOOTPRINT_OFF_BY_ONE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NURSERY_FOOTPRINT_OFF_BY_ONE_1.md

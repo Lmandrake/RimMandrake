@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:45:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:54:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -62,3 +62,13 @@ kind:     task
 thin:     no ## verify, no ## criteria
 summary:  One batched cold load scores everything below, then this item closes and a fresh one
 prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_1.md
+
+## EMPIRE_PURSUIT_SCENPART_INSTALL_1 Install endless Empire pursuit ScenPart into the campaign, with the owner
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Install ScenPartRuthlessPursuingMechanoids targeting Empire (the reskinned
+prose:    infrastructure/state/items/EMPIRE_PURSUIT_SCENPART_INSTALL_1.md

@@ -19,9 +19,13 @@ to configure anything.
 | **`RuthlessPursuingMechanoids`** (label "ruthless faction pursuit") | `ScenPart_RuthlessPursuingMechanoids` | ✅ **this one** — one named faction pursues; the faction is a field |
 | `RuthlessOmniPursuit` | `ScenPart_RuthlessOmniPursuit` | ⛔ forces pursuit by EVERY normal faction; not our fiction |
 
-**Faction: `OuterRim_GalacticEmpire`** — the Star Wars Galactic Empire, the one
-the fiction means and the one that fields our authored Empire kinds
-(`GALACTIC_EMPIRE_NAME_COLLIDES_1` records vanilla `Empire` as the interloper).
+**Faction: `Empire`** — vanilla Royalty's faction, which IS our Galactic Empire,
+reskinned (owner, 2026-08-28: "Our Star Wars empire IS the re-skinned Empire").
+That is also why the authored `Empire_*` kinds field under it, and it keeps the
+Royalty permit/title machinery in the campaign. ⚠️ This supersedes this note's
+first draft and cuts against `GALACTIC_EMPIRE_NAME_COLLIDES_1`'s recommendation
+to treat `OuterRim_GalacticEmpire` as the fiction's Empire — his word is noted on
+that item; the name-collision ruling itself is still his to make.
 
 ## How it behaves (from source, not the README)
 
@@ -45,7 +49,7 @@ this block states everything we care about explicitly:
 ```xml
 <li Class="RuthlessPursuingMechanoids.ScenPart_RuthlessPursuingMechanoids">
   <def>RuthlessPursuingMechanoids</def>
-  <pursuitFactionDef>OuterRim_GalacticEmpire</pursuitFactionDef>
+  <pursuitFactionDef>Empire</pursuitFactionDef>
   <pursuitFactionPermanentEnemy>true</pursuitFactionPermanentEnemy>
   <startHostile>true</startHostile>
   <canDoNormalRaid>false</canDoNormalRaid>
