@@ -93,6 +93,27 @@ WORDS and never KNOWLEDGE:** a rule that still earns its keep moves to `facts/`,
 brought back INTO budget (159→150, 145→150) by deleting what the new rules replaced. The `game.json`
 rule was stated twice in `CHECK.md`; the no-reopen rule three times.
 
+## 🔴 TIGHTENED THE SAME DAY, BY THE OWNER — human play is the default
+
+> *"Modify such that BUILD does NOT automatically produce anything for CHECK. Only if it is not
+> possible to validate function without the game… Regular human play is the default validation."*
+
+⭐ **This goes further than ① and supersedes the rule ① had left standing.** *"A live check must be
+PROVEN NEEDED"* set the default to SOURCE and still let a check be argued for; the default is now
+**the owner playing the game**, and BUILD routes nothing on completion at all.
+
+✅ **The single test: a mechanism NEW or significantly changed that has never once been observed
+running.** ⚠️ **The MECHANISM, not the instance** — a 49th pawnkind built like the other 48 has been
+observed; a comp nobody has ever seen fire has not. ⛔ **Offline, and closed by whoever holds it:** a
+faction roster · a cherrypicked item · a def edit · a stat · a texPath · what a patch matched.
+
+**Landed in all four places a seat would read it:** `POLICY.md` (the section replaced outright),
+`BUILD.md` ("Done means" step 3 and the live-check rule), `CHECK.md` (his intake now says his queue
+is the never-observed mechanism plus his own hunting), and a prompt on `rimflow file --for CHECK`
+naming the test. ⚠️ **A PROMPT, NOT A GATE** — deliberately, because ② below dropped the proposal to
+enforce routing in `file`, and because only the filer can tell whether the exception applies.
+🔑 All three seat pages were brought back to exactly 150/150 to pay for it.
+
 ## ② DROPPED 2026-08-27, overtaken by events — not deferred
 
 **"CHECK takes only work that needs the game running, enforced in `rimflow file`."** The case for it

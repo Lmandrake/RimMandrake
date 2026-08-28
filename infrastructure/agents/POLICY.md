@@ -235,14 +235,17 @@ git push
 
 ⛔ **Do not reinstate it in a softer form** — not as a warning that blocks, not as a `needs` value, not as a hook, not as a rule in a seat file. ✅ **`spec`, `verify` and `criteria` remain good practice** and the sections still exist; write them when you have something to say.
 
-### A live-game check must be PROVEN NEEDED
+### 🔴 REGULAR HUMAN PLAY IS THE DEFAULT VALIDATION — owner, 2026-08-27
 
-**The default is source.** Before writing `needs: bridge` or `needs: game-up`, answer in one
-line: *what can source not tell me here?* If you cannot, verify it yourself now and close it.
+**Replaces *"a live-game check must be PROVEN NEEDED"*, which set the default to SOURCE and still let a check be argued for. The default is now the owner playing the game.**
 
-✅ Legitimately live: what the **engine** does that you cannot compute, and what a **human eye**
-must judge. ⛔ Never "to be thorough", "to be safe", or because the artifact matters.
-✅ The owner may delete any live check. Record what became unverified in a line; do not argue.
+⛔ **BUILD PRODUCES NOTHING FOR CHECK AUTOMATICALLY.** Not on finishing an item, not on deploying, not "so someone looks at it", not because the artifact matters.
+
+✅ **The one thing that earns a live check: functionality NEW or significantly changed that has never once been observed running.** ⚠️ **That is about the MECHANISM, not this instance** — a 49th pawnkind built like the other 48 has been observed; a comp nobody has ever seen fire has not.
+
+⛔ **Offline-decidable, so decided offline — these are examples, not the list:** a faction roster · a cherrypicked item · a def edit · a stat · a texPath · what a patch matched. If source can answer it, source answers it and the item closes.
+
+✅ The owner may delete any live check. Record what became unverified in one line; do not argue.
 
 ### Whoever proves it, closes it
 

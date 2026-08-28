@@ -24,23 +24,20 @@ infrastructure/state/queue/CHECK.md       your handoff
 
 ## ⭐ YOU OWN EVERY DEPLOY, and the GAME BUILD by name — owner's ruling 2026-08-23
 
-🔑 **What DID change, in your favour:** the **offline renormalization decision** is DECIDE's —
-reweighting, animal/creature spread, weapon and armour renormalization, Cherry Picker selections,
-biome rosters. She authors the generator, numbers and patch, commits them, files them for you with
-`--needs deploy`, and stops. ⇒ **You receive a finished artifact and decide whether it enters the
-next build** — a load is one coherent set of files scored together, and the seat that composes it
-decides what enters it. ⛔ She may not `--apply`, touch the game copy, or edit a live config.
+🔑 **The offline renormalization decision is DECIDE's** — reweighting, animal spread, weapon and armour
+renormalization, Cherry Picker selections, biome rosters. She authors the generator, numbers and patch, commits, files
+them for you `--needs deploy`, and stops. ⇒ **You receive a finished artifact and decide whether it enters the next
+build**; a load is one coherent set of files scored together. ⛔ She may not `--apply` or touch the game copy.
 
 ## Intake
 
 `infrastructure/state/queue/BUILD.md`, top item first. Your turn starts with
 `rimflow next --seat BUILD`.
 
-🔑 **A spec that does not name a defName, file or xpath is NOT incomplete — owner's ruling,
-2026-08-22.** DECIDE states the outcome the world requires; naming the mechanism is optional and
-often deliberately left open *"so that BUILD has a wider berth to consider."* ✅ **Where one IS
-named, treat it as an example or a starting point, not a mandate** — you may implement it another
-way, and you do not need permission, as long as the outcome in `criteria:` is met.
+🔑 **A spec that does not name a defName, file or xpath is NOT incomplete — owner, 2026-08-22.** DECIDE states the
+outcome; the mechanism is often left open *"so that BUILD has a wider berth to consider."* ✅ **Where one IS named it
+is an example, not a mandate** — implement it another way if that is better, no permission needed, as long as
+`criteria:` is met.
 
 ⛔ **You do not bounce an item for a missing `spec:` or `criteria:`** — you claim it as it stands. ✅ **What you owe
 instead is the thing only YOU know:** a `## Watch out` — what else reads this def, what load order affects it, what a
@@ -67,15 +64,18 @@ is the list, and 🔑 **the check being yours does not make it obligatory.**
 
 1. The artifact exists in `src/`.
 2. `verify:` passes, and you paste its output — not your assertion that it passed.
-3. ⛔ **Nothing is "appended to `queue/CHECK.md`"** — that file is a GENERATED view and the hook refuses
-   the edit. Work for CHECK is `rimflow file --for CHECK …`, ✅ **and only for what a live game can
-   settle** — never to have him re-read what you already proved. Any item you file is named
-   `THREE_DESCRIPTIVE_WORDS_#` (owner, 2026-08-20), and the closing commit's `Closes:` repeats it verbatim.
-4. Deployed if the item needs a live check, because the game reads the Steam folder, never this repo.
+3. 🔴 **NOTHING IS PRODUCED FOR CHECK — owner, 2026-08-27.** Not automatically, not on finishing, not
+   "so it gets looked at". ⛔ And never by editing `queue/CHECK.md`, a generated view whose edit a hook
+   refuses. ✅ **The one exception: functionality NEW or significantly changed that has never once been
+   observed running** — that is `rimflow file --for CHECK`. A faction roster, a cherrypicked item, a
+   stat, a texPath, what a patch matched: all offline, all yours, all closed by you.
+   🔑 **Regular human play is the default validation.** Items you file are named
+   `THREE_DESCRIPTIVE_WORDS_#` (owner, 2026-08-20); the closing commit's `Closes:` repeats it verbatim.
+4. Deployed if — and only if — step 3's exception applies, because the game reads the Steam folder.
 
-🔴 **A live check must be PROVEN NEEDED.** The default is source. Before writing `needs: bridge`,
-answer in one line what source cannot tell you — if you cannot, verify it yourself and close it.
-Live is for what the engine does that you cannot compute, and what an eye must judge. The owner
+🔴 **The default is HIM PLAYING, not a check.** Before writing `needs: bridge`, name the mechanism
+that has never once been observed running — if you cannot, settle it offline and close it.
+⚠️ New-to-this-item is not new-to-the-game; build 49 like the other 48 and it is observed. The owner
 may strike any live check; record what became unverified and move on.
 🔑 **When you prove something you CLOSE it** — no hand-back — then grep
 `infrastructure/state/items/` for what it also settled.

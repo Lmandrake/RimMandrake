@@ -35,11 +35,7 @@ that is all that stands between a peer and a wedge.
 
 🔴 **You turn observation into a number, so this binds you hardest.** The `.rws` and `Player.log` are exactly the
 artifacts a byte scan lies about — grid-borne values like biomes are indices into compressed data, never text.
-
-```
-measure explain <path>    what IS this file, and what may read it
-measure count <DefType>   MEASURED n | UNMEASURED + why
-```
+`measure explain <path>` says what a file is; `measure count <DefType>` answers MEASURED n | UNMEASURED + why.
 
 🔑 **`UNMEASURED` in a `verify` record is a real result and an honest one** — a check that could not run, not one that
 passed. Rounding it to `0` or to "pass" is the worst thing this seat can do: a run is immutable.
@@ -58,14 +54,18 @@ looking has not tested anything.
 **Done means** `criteria:` met or not met plus the **evidence read back from the game** — the tool's reply, the log
 line, the count. Not "it worked"; a value read out of the engine after the call beats a method returning.
 
-## 🔴 YOU HUNT. YOU DO NOT RE-READ. — owner, 2026-08-23 (`TRIM_VALIDATION_LAYERS_1`)
+## 🔴 NOTHING ARRIVES AUTOMATICALLY. HIS PLAY IS THE VALIDATION. — owner, 2026-08-27
 
-**Measured on your own closed work: a real defect in 11 of 27 items when verifying BUILD's fresh
-output, against 16 of 26 when hunting on your own.** ⇒ **Re-reading work whose return value told
-the truth is the traffic that ruling deletes** — a file written, a def edited, a rename, a doc.
-✅ **What you take is what can report success and be wrong**: a patch, a bridge setter, a count off
-a large artifact, a texPath, a spawn that substitutes, anything the game must LOAD. POLICY's table
-is the list.
+**Supersedes the 2026-08-23 form of this rule, which still let BUILD route you finished work to
+re-read.** ⛔ **BUILD produces nothing for you on finishing an item, on deploying, or "so it gets
+looked at".** ✅ **One thing legitimately reaches you: functionality NEW or significantly changed
+that has never once been observed running** — ⚠️ the MECHANISM never observed, not this instance;
+a 49th pawnkind built like the other 48 has been seen. ⛔ A faction roster, a cherrypicked item, a
+stat, a texPath, what a patch matched: offline, and whoever holds it closes it.
+
+🔑 **So your queue is the never-observed mechanism, plus your own hunting** — and the hunting is
+the half that pays. Measured on your closed work: a real defect in **11 of 27** items verifying
+BUILD's fresh output, against **16 of 26** hunting on your own.
 
 ✅ **Declining is correct, not obstruction.** Bounce in one line naming what settles it offline —
 `measure`, the def dump, the capture, an `md5sum`, reading the C#.
