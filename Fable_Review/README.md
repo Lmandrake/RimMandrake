@@ -1,5 +1,11 @@
 # Fable Review — 2026-08-27
 
+> ⭐ **ADOPTED the same day, with the owner's amendments:** the windows are named
+> **BENCH** and **FOUNDRY** (not Pair/Factory); doc budgets retired entirely;
+> stale-drop confirmed as the default; CLAUDE.md rewritten in the same pass. The
+> live rules are `infrastructure/agents/CHARTER.md`, `BENCH.md`, `FOUNDRY.md` —
+> the `rewrites/` drafts here are the historical proposal, superseded by those.
+
 A full-project review of the four-seat multi-agent collaboration, performed by Fable 5
 at the owner's request. Evidence was gathered by seven parallel read-only agents
 (governance, queues/rimflow, skills, git history, design/lore, source/tooling,
