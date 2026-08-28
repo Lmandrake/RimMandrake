@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:40:29Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-28T08:40:47Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## AUTHORED_KINDS_MUST_FIELD_1 Wire the nine orphaned role kinds into TribeCivil, Pirate and Empire - combat groups only
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  🔴 DECIDE ruled 2026-08-22: wire the nine orphaned role kinds into their factions.
-prose:    infrastructure/state/items/AUTHORED_KINDS_MUST_FIELD_1.md
 
 ## STAT_ON_INSTANCE_TOOL_1 The bridge cannot evaluate a StatDef on a spawned instance
 state:    ready
@@ -70,7 +61,16 @@ prose:    infrastructure/state/items/LORD_JOB_SWAP_TOOL_1.md
 
 # IN PROGRESS
 
-_none._
+Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
+
+## AUTHORED_KINDS_MUST_FIELD_1 Wire the nine orphaned role kinds into TribeCivil, Pirate and Empire - combat groups only
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  🔴 DECIDE ruled 2026-08-22: wire the nine orphaned role kinds into their factions.
+prose:    infrastructure/state/items/AUTHORED_KINDS_MUST_FIELD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

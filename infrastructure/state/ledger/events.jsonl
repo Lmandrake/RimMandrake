@@ -2495,3 +2495,6 @@
 {"seat":"FOUNDRY","event":"verify","id":"BLACKSTAR_NAME_MUST_NOT_LEAK_1","result":"pass","config":"full-582","evidence":"src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml (fixedName removed, per-family namers); RimSage merged PirateWaster (own label); sqlite dump FactionDef scan for label/fixedName containing blackstar/empire/galactic across all 582-mod FactionDefs","sha":"e15a2d6b","ts":"2026-08-28T08:40:04Z"}
 {"seat":"FOUNDRY","event":"close","id":"BLACKSTAR_NAME_MUST_NOT_LEAK_1","sha":"e15a2d6b","ts":"2026-08-28T08:40:14Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-28T08:40:29Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-28T08:40:41Z"}
+{"seat":"FOUNDRY","event":"start","id":"AUTHORED_KINDS_MUST_FIELD_1","ts":"2026-08-28T08:40:41Z"}
+{"seat":"BENCH","event":"needs","id":"GRAVSHIP_LAUNCH_TRAVEL_1","to":"deploy","reason":"built and surface-verified; blocked on the down-window deploy, then live proof","ts":"2026-08-28T08:40:47Z"}
