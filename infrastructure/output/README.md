@@ -57,10 +57,10 @@ See `disposing\README.md`.
 
 - **Not gitignored.** These are small text files and worth having in the tree
   while the question is live — unlike `disposing\`'s payloads.
-- **`Utils\doc_budget.py` per-class budgets do not reach here.** The patterns are
+- **Doc budgets (retired 2026-08-27) never reached here.** The patterns are
   rooted at the repo top, so a report stops counting against a class the moment
   it lands. A report's length is its content, not accumulation.
-- **Counted in the `doc_budget.py` repo total, deliberately.** These files are
+- **Counted in repo size, deliberately.** These files are
   live in the tree and any seat may read them, so their lines are real weight.
   This is the opposite of `disposing\`, whose doctrine is "treat as absent" and
   which therefore should *not* count — an open question flagged in

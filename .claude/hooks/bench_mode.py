@@ -18,7 +18,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-POLICY = ROOT / "infrastructure" / "agents" / "POLICY.md"
+CHARTER = ROOT / "infrastructure" / "agents" / "CHARTER.md"
 
 # He does not type a command. These are the ways he actually says it.
 # ⚠️ Widened 2026-08-23 after a real miss: he wrote "I want to go into Bench now" and
@@ -37,12 +37,12 @@ DEPART = re.compile(
 
 
 def bench_page() -> str:
-    """The BENCH section of POLICY.md, verbatim. Empty string if it is gone."""
+    """The Posture section of CHARTER.md, verbatim. Empty string if it is gone."""
     try:
-        text = POLICY.read_text(encoding="utf-8")
+        text = CHARTER.read_text(encoding="utf-8")
     except OSError:
         return ""
-    start = text.find("## 🔴 BENCH")
+    start = text.find("## Posture")
     if start < 0:
         return ""
     nxt = text.find("\n## ", start + 1)
@@ -62,11 +62,11 @@ def main() -> int:
     if ARRIVE.search(prompt):
         page = bench_page()
         if page:
-            print("🪑 HE IS AT THE BENCH. This rulebook is in force for this window, NOW — "
-                  "it replaces the process in POLICY.md until he leaves.\n\n" + page)
+            print("🪑 HE IS AT THE BENCH. Do what he says, at once; ask questions the "
+                  "moment they exist. The charter's Posture section, in force NOW:\n\n" + page)
         else:
-            print("🪑 HE IS AT THE BENCH, but the BENCH page is missing from "
-                  "infrastructure/agents/POLICY.md — say so in one line.")
+            print("🪑 HE IS AT THE BENCH, but the Posture section is missing from "
+                  "infrastructure/agents/CHARTER.md — say so in one line.")
     return 0
 
 

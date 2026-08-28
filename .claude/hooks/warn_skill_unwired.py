@@ -16,7 +16,7 @@ inside a session — the skill simply never appears.
 WARN, NOT GATE
 ==============
 Exit 1, never 2. Authoring the skill is the work; wiring is one command, and refusing
-the write would cost more than the defect. Same contract as `warn_doc_budget.py` and
+the write would cost more than the defect. Same contract as
 `warn_unclosed_queue_item.py`: red on stderr, then the command runs anyway.
 
 Stdlib only, fail-open in code — a hook that crashes must never cost a write.

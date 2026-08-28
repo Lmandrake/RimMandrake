@@ -2,7 +2,7 @@
 
 🔴 **NOTHING LEARNED IS EVER DROPPED FOR SPACE.** Owner, 2026-08-23.
 
-⭐ **UNBUDGETED, permanently and on purpose.** `doc_budget.py` exempts it. Append freely —
+⭐ **UNBUDGETED, permanently and on purpose.** The doc-budget system was retired 2026-08-27; this directory was always exempt. Append freely —
 the overflow destination must never itself be full.
 
 > **Cutting a learned FACT is never on the cut-list. Only its NARRATION is.** If a fact will

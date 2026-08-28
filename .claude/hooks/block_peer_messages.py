@@ -68,7 +68,9 @@ import sys
 # The agent windows in this repo. A message aimed at one of these is the thing
 # the ruling forbids.
 SEATS = {
-    "build", "check", "decide", "rep", "human", "all",
+    "bench", "foundry",                       # the live windows, 2026-08-27
+    "build", "check", "decide", "rep",        # retired seats — still refused
+    "human", "all",
 }
 
 # The handle the Agent tool returns for a subagent this session spawned.
