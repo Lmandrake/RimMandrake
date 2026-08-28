@@ -19,13 +19,16 @@ GRAMMAR - one statement per line, `#` starts a comment.
 
     color NAME  R,G,B                  @mod=<Mod>  | human description
     role  ROLE  <TerrainDef|->         @mod=<Mod>  | human description
+    thing ROLE  <ThingDef>             @mod=<Mod>  | human description
     ramp  NAME  A > B > C                          | human description
     stuff ROLE  key=<ThingDef> ...     @mod=<Mod>  | human description
     param NAME  VALUE                              | human description
     rule  <a hard constraint, in words>
     used  <which ramps a real build took, and where>
 
-`-` as a role's def means "no floor here" (a hole). `@mod=` is the mod that
+`role` names a floor, `thing` names an object - a palette may be either or both
+(machinewreck is things, flooring_rusted is floors). `-` as a role's def means "no
+floor here" (a hole). `@mod=` is the mod that
 SUPPLIES the def; --check reads the def dump and reports a name that has moved
 mods or vanished, which is how a palette fails silently when a mod leaves.
 """
@@ -78,6 +81,7 @@ class Palette(object):
         self.path = path
         self.colors = {}        # ColorDef -> (r, g, b);  None -> (255,255,255)
         self.roles = {}         # ROLE -> TerrainDef or None
+        self.things = {}        # ROLE -> ThingDef (wreckage, junk, debris)
         self.ramps = {}         # ramp name -> [ColorDef or None, ...]
         self.stuff = {}         # ROLE -> {key: ThingDef}
         self.params = {}        # name -> string
@@ -128,6 +132,11 @@ class Palette(object):
         elif verb == "role":
             name = tok[0]
             self.roles[name] = None if tok[1] == "-" else tok[1]
+        elif verb == "thing":
+            # A palette of OBJECTS rather than floors - wreckage, junk, debris.
+            # Same shape as `role`, but --check expects a ThingDef.
+            name = tok[0]
+            self.things[name] = tok[1]
         elif verb == "ramp":
             name = tok[0]
             seq = [s.strip() for s in " ".join(tok[1:]).split(">")]
@@ -161,7 +170,7 @@ class Palette(object):
 
     @staticmethod
     def _defs_of(verb, tok):
-        if verb == "role":
+        if verb in ("role", "thing"):
             return [tok[1]] if tok[1] != "-" else []
         if verb == "color":
             return [tok[0]]
@@ -206,8 +215,9 @@ class Palette(object):
         return out
 
     def __repr__(self):
-        return "<Palette %s: %d colours, %d roles, %d ramps>" % (
-            self.name, len(self.colors), len(self.roles), len(self.ramps))
+        return "<Palette %s: %d colours, %d roles, %d things, %d ramps>" % (
+            self.name, len(self.colors), len(self.roles), len(self.things),
+            len(self.ramps))
 
 
 # ------------------------------------------------------------------- checking
@@ -220,6 +230,10 @@ def check(p, dump=DEFAULT_DUMP):
     for name in self_defs(p):
         want[name] = None
     con = sqlite3.connect(dump)
+    # ⚠️ ONE defName can carry SEVERAL def types - GravshipHull and ChunkSlagSteel
+    # are each a SymbolDef *and* a ThingDef. Keeping only the first row makes the
+    # type check answer about whichever the dump happened to return first, so
+    # collect every row and let any one of them satisfy the expectation.
     got = {}
     names = list(want)
     for i in range(0, len(names), 400):
@@ -227,7 +241,7 @@ def check(p, dump=DEFAULT_DUMP):
         q = ("select def_name, def_type, mod_name from defs where def_name in (%s)"
              % ",".join("?" * len(chunk)))
         for dn, dt, mn in con.execute(q, chunk):
-            got.setdefault(dn, (dt, mn))
+            got.setdefault(dn, []).append((dt, mn))
     con.close()
 
     expect_type = {}
@@ -236,6 +250,8 @@ def check(p, dump=DEFAULT_DUMP):
     for r, d in p.roles.items():
         if d:
             expect_type[d] = "TerrainDef"
+    for r, d in p.things.items():
+        expect_type[d] = "ThingDef"
     for r, kv in p.stuff.items():
         for d in kv.values():
             expect_type[d] = "ThingDef"
@@ -245,21 +261,24 @@ def check(p, dump=DEFAULT_DUMP):
         if name not in got:
             problems.append("MISSING  %-45s no such def in the dump" % name)
             continue
-        dtype, mod = got[name]
+        rows = got[name]
         exp = expect_type.get(name)
-        if exp and dtype != exp:
+        if exp and not any(dt == exp for dt, _ in rows):
             problems.append("WRONGTYPE %-44s is %s, palette uses it as %s"
-                            % (name, dtype, exp))
+                            % (name, "/".join(sorted(set(dt for dt, _ in rows))), exp))
+            continue
         declared = p.mods.get(name)
-        if declared and mod and declared != mod:
-            problems.append("MOVED    %-45s dump says %r, palette says %r"
-                            % (name, mod, declared))
+        mods = set(mn for dt, mn in rows if mn and (not exp or dt == exp))
+        if declared and mods and declared not in mods:
+            problems.append("MOVED    %-45s dump says %s, palette says %r"
+                            % (name, "/".join(sorted(repr(m) for m in mods)), declared))
     return problems
 
 
 def self_defs(p):
     out = set(p.colors)
     out |= set(d for d in p.roles.values() if d)
+    out |= set(p.things.values())
     for kv in p.stuff.values():
         out |= set(kv.values())
     return out
@@ -281,6 +300,8 @@ def main():
     print("%s  %s" % (p.path, p))
     for r in sorted(p.roles):
         print("  role  %-10s %s" % (r, p.roles[r] or "- (hole)"))
+    for r in sorted(p.things):
+        print("  thing %-10s %s" % (r, p.things[r]))
     for r in sorted(p.ramps):
         print("  ramp  %-16s %s" % (r, " > ".join(str(c) for c in p.ramps[r])))
     for r in sorted(p.stuff):
