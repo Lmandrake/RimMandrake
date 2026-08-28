@@ -2467,3 +2467,6 @@
 {"seat":"BENCH","event":"close","id":"CAST_NAMES_UNSPAWNABLE_ANIMALS_1","sha":"b1bbd51f","ts":"2026-08-28T08:21:45Z"}
 {"seat":"FOUNDRY","event":"close","id":"CUT_LIST_ONE_READER_1","sha":"PENDING","ts":"2026-08-28T08:22:38Z"}
 {"seat":"FOUNDRY","event":"close","id":"CUT_LIST_ONE_READER_1","sha":"bdd7e682","ts":"2026-08-28T08:23:05Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-28T08:23:19Z"}
+{"seat":"FOUNDRY","event":"start","id":"ROLE_KINDS_ARMED_5_OF_5_1","ts":"2026-08-28T08:23:23Z"}
+{"seat":"OWNER","event":"close","id":"GRAVSHIP_SHRINE_FOLLOWUPS_1","sha":"e5a8cf9a","ownerSaid":"Close the shrine follow-ups please","override":"OWNER may not `close` GRAVSHIP_SHRINE_FOLLOWUPS_1 — it belongs to BENCH. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-08-28T08:25:10Z"}

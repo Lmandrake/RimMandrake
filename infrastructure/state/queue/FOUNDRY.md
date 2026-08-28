@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:23:05Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-28T08:25:10Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## ROLE_KINDS_ARMED_5_OF_5_1 All 48 roster kinds spawn holding something
-state:    ready
-row:      world-5
-needs:    bridge
-target:   v1
-kind:     check
-summary:  Nine of the 48 could spawn bare. Fixed in the generator table and redeployed.
-prose:    infrastructure/state/items/ROLE_KINDS_ARMED_5_OF_5_1.md
 
 ## BRIDGE_READ_VEHICLE_COMPONENTS_1 BRIDGE_READ_VEHICLE_COMPONENTS_1
 state:    ready
@@ -106,7 +97,16 @@ prose:    infrastructure/state/items/LORD_JOB_SWAP_TOOL_1.md
 
 # IN PROGRESS
 
-_none._
+Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
+
+## ROLE_KINDS_ARMED_5_OF_5_1 All 48 roster kinds spawn holding something
+state:    doing
+row:      world-5
+needs:    bridge
+target:   v1
+kind:     check
+summary:  Nine of the 48 could spawn bare. Fixed in the generator table and redeployed.
+prose:    infrastructure/state/items/ROLE_KINDS_ARMED_5_OF_5_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
