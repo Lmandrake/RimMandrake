@@ -155,6 +155,9 @@ src/RimMandrake/mapsynth/runs/
 # 278 MB .git. Git never forgets a committed blob, so the ONLY fix is to not add
 # them — see observed/README.md. They stay on disk; they are just untracked.
 *.rws
+# Owner-designated exceptions, 2026-08-27: "These are special files." Both ~20 MB.
+!world/WORLDMAP_V1_original.rws
+!world/gravship_scratch.rws
 research/**/*.pdf
 vendor/salvage/**/*.dll
 # Bulk census/dump output and raw load triage: derived, transient, and large.
