@@ -1,0 +1,419 @@
+{
+ "jawa/time_clock": {
+  "verdict": "WORKS",
+  "args": {},
+  "note": "",
+  "message": "",
+  "keys": [
+   "curTimeSpeed",
+   "hasSettledNewColony",
+   "paused",
+   "settleTick",
+   "startingYear",
+   "ticksAbs",
+   "ticksSinceSettle"
+  ],
+  "sample": "{\"ticksAbs\": 381500, \"ticksSinceSettle\": 66500, \"startingYear\": 5500, \"settleTick\": 0, \"hasSettledNewColony\": false, \"curTimeSpeed\": \"Paused\", \"paused\": true}"
+ },
+ "jawa/time_perf": {
+  "verdict": "WORKS",
+  "args": {},
+  "note": "",
+  "message": "",
+  "keys": [
+   "curTimeSpeed",
+   "meanTickTime",
+   "tickRateMultiplier",
+   "ticksThisFrame"
+  ],
+  "sample": "{\"meanTickTime\": 0.0, \"ticksThisFrame\": 0, \"tickRateMultiplier\": 0.0, \"curTimeSpeed\": \"Paused\"}"
+ },
+ "jawa/time_date_at": {
+  "verdict": "WORKS",
+  "args": {
+   "ticks": 100000
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "absTicksUsed",
+   "dateFullString",
+   "latitude",
+   "longitude",
+   "quadrum",
+   "season",
+   "source"
+  ],
+  "sample": "{\"absTicksUsed\": 381500, \"latitude\": 34.19177, \"longitude\": -4.937283, \"dateFullString\": \"7th of Aprimay, 5500\", \"quadrum\": \"Aprimay\", \"season\": \"Spring\", \"source\": \"current map\"}"
+ },
+ "jawa/research_availability": {
+  "verdict": "REFUSES",
+  "args": {},
+  "note": "",
+  "message": "Give a ResearchProjectDef defName.",
+  "keys": [
+   "details"
+  ],
+  "sample": "{\"details\": null}"
+ },
+ "jawa/cell_temperature": {
+  "verdict": "WORKS",
+  "args": {
+   "cell": "103,205"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "cell",
+   "note",
+   "ok",
+   "outdoorTemp",
+   "seasonalTemp",
+   "temperature"
+  ],
+  "sample": "{\"cell\": {\"x\": 103, \"z\": 205}, \"ok\": true, \"temperature\": 23.4986858, \"outdoorTemp\": 14.1358109, \"seasonalTemp\": 17.0348663, \"note\": null}"
+ },
+ "jawa/incident_parms_preview": {
+  "verdict": "WORKS",
+  "args": {
+   "incident": "RaidEnemy"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "category",
+   "categoryDefs",
+   "currentThreatPoints",
+   "defaultParms",
+   "incidentDef",
+   "note"
+  ],
+  "sample": "{\"category\": \"ThreatBig\", \"incidentDef\": null, \"defaultParms\": {\"points\": 50.3027, \"faction\": null, \"raidStrategy\": null, \"raidArrivalMode\": null, \"podOpenDelay\": 140, \"forced\": false}, \"currentThreatPoints\": 50.3027, \"note\": \"target is always the current map, matching every other GM tool here. faction/raidStrategy/raidArrivalMode read null here for the same reason jawa/raid_preview flags them nul"
+ },
+ "jawa/pawn_thoughts": {
+  "verdict": "WORKS",
+  "args": {
+   "pawn": "Human607"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "curMoodLevel",
+   "thoughtCount",
+   "thoughts",
+   "totalMoodOffset"
+  ],
+  "sample": "{\"totalMoodOffset\": 29.0, \"curMoodLevel\": 0.61, \"thoughtCount\": 17, \"thoughts\": [{\"def\": \"NewColonyOptimism\", \"label\": \"Initial optimism\", \"moodOffset\": 10.0, \"isSocial\": false, \"otherPawn\": null, \"stage\": 0}, {\"def\": \"SleepDisturbed\", \"label\": \"Disturbed sleep\", \"moodOffset\": -1.0, \"isSocial\": false, \"otherPawn\": null, \"stage\": 0}, {\"def\": \"SleepDisturbed\", \"label\": \"Disturbed sleep\", \"moodOffset"
+ },
+ "jawa/pawn_break_thresholds": {
+  "verdict": "WORKS",
+  "args": {
+   "pawn": "Human607"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "blocked",
+   "curMood",
+   "extremeIsImminent",
+   "majorIsImminent",
+   "marginToExtreme",
+   "marginToMajor",
+   "marginToMinor",
+   "minorIsImminent",
+   "thresholdExtreme",
+   "thresholdMajor",
+   "thresholdMinor"
+  ],
+  "sample": "{\"curMood\": 0.61, \"thresholdMinor\": 0.35, \"thresholdMajor\": 0.2, \"thresholdExtreme\": 0.05, \"marginToMinor\": 0.26000002, \"marginToMajor\": 0.410000026, \"marginToExtreme\": 0.56, \"minorIsImminent\": false, \"majorIsImminent\": false, \"extremeIsImminent\": false, \"blocked\": false}"
+ },
+ "jawa/pawn_stats": {
+  "verdict": "WORKS",
+  "args": {
+   "pawn": "Human607",
+   "stats": "MoveSpeed"
+  },
+  "note": "",
+  "message": "1 stat(s) read off Haplo (Colonist).",
+  "keys": [
+   "count",
+   "pawn",
+   "readTheInstance",
+   "refused",
+   "stats"
+  ],
+  "sample": "{\"pawn\": {\"id\": \"Human607\", \"name\": \"Haplo\", \"kindDef\": \"Colonist\", \"xenotype\": \"Baseliner\", \"faction\": \"PlayerColony\"}, \"count\": 1, \"stats\": [{\"defName\": \"MoveSpeed\", \"label\": \"move speed\", \"value\": 2.92683959, \"valueString\": \"2.93 c/s\", \"category\": \"BasicsPawn\", \"shownByGame\": true}], \"refused\": [], \"readTheInstance\": true}"
+ },
+ "jawa/room_get": {
+  "verdict": "WORKS",
+  "args": {
+   "x": 103,
+   "z": 205
+  },
+  "note": "",
+  "message": "1 distinct room(s) over 1 cell(s).",
+  "keys": [
+   "cellsProbed",
+   "outdoorsSkipped",
+   "recomputedNotCached",
+   "rooms",
+   "roomsFound"
+  ],
+  "sample": "{\"cellsProbed\": 1, \"roomsFound\": 1, \"outdoorsSkipped\": 0, \"rooms\": [{\"id\": 254, \"role\": \"Barracks\", \"roleLabel\": \"barracks\", \"cellCount\": 32, \"temperature\": 23.4986858, \"openRoofCount\": 0, \"properRoom\": true, \"psychologicallyOutdoors\": false, \"isOutdoors\": false, \"usesOutdoorTemperature\": false, \"sampleCell\": {\"x\": 103, \"z\": 205}, \"stats\": {\"Impressiveness\": 41.76917, \"Beauty\": 1.0, \"Space\": 36.69"
+ },
+ "jawa/map_zones": {
+  "verdict": "WORKS",
+  "args": {
+   "action": "listZones"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "action",
+   "zones"
+  ],
+  "sample": "{\"action\": \"listZones\", \"zones\": [{\"label\": \"Growing zone 1\", \"type\": \"Zone_Growing\", \"cells\": 76}, {\"label\": \"Growing zone 2\", \"type\": \"Zone_Growing\", \"cells\": 76}]}"
+ },
+ "jawa/pawn_refresh_needs": {
+  "verdict": "WORKS",
+  "args": {
+   "pawn": "Human607"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "added",
+   "after",
+   "before",
+   "removed"
+  ],
+  "sample": "{\"before\": [\"Mood\", \"Food\", \"Rest\", \"Hygiene\", \"Joy\", \"Beauty\", \"Comfort\", \"Outdoors\", \"DrugDesire\", \"RoomSize\", \"AM_TeaNeed\", \"Asimov_EnergyNeed\", \"Bladder\", \"DBHThirst\", \"RomanceOnTheRim_Need_Romance\", \"PrisonLabor_Motivation\", \"PrisonLabor_Treatment\", \"VME_Desserts\", \"VME_Anonymity\", \"VME_Corruption\", \"SEX_Intimacy\"], \"after\": [\"Mood\", \"Food\", \"Rest\", \"Hygiene\", \"Joy\", \"Beauty\", \"Comfort\", \"Out"
+ },
+ "jawa/pawn_dirty_situational": {
+  "verdict": "WORKS",
+  "args": {
+   "pawn": "Human607"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "totalMoodOffsetAfterDirty"
+  ],
+  "sample": "{\"totalMoodOffsetAfterDirty\": 29.0}"
+ },
+ "jawa/pawn_memory": {
+  "verdict": "WORKS",
+  "args": {
+   "pawn": "Human607",
+   "action": "add",
+   "thought": "AteFineMeal"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "action",
+   "changed",
+   "memories",
+   "memoryCountAfter",
+   "memoryCountBefore",
+   "otherPawn",
+   "thought"
+  ],
+  "sample": "{\"action\": \"add\", \"thought\": \"AteFineMeal\", \"otherPawn\": null, \"memoryCountBefore\": 17, \"memoryCountAfter\": 18, \"changed\": true, \"memories\": [{\"def\": \"CrashedTogether\", \"otherPawn\": \"Lana\", \"age\": 66450}, {\"def\": \"CrashedTogether\", \"otherPawn\": \"Shouta\", \"age\": 66450}, {\"def\": \"NewColonyOptimism\", \"otherPawn\": null, \"age\": 66450}, {\"def\": \"Chitchat\", \"otherPawn\": \"Shouta\", \"age\": 6300}, {\"def\": \"C"
+ },
+ "jawa/set_draft": {
+  "verdict": "WORKS",
+  "args": {
+   "pawnId": "Human607",
+   "drafted": false
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "drafted",
+   "fireAtWill"
+  ],
+  "sample": "{\"drafted\": false, \"fireAtWill\": true}"
+ },
+ "jawa/stop_job": {
+  "verdict": "WORKS",
+  "args": {
+   "pawnId": "Human607",
+   "action": "StopAll"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "afterJob",
+   "afterQueueLength",
+   "beforeJob",
+   "beforeQueueLength",
+   "changed",
+   "mode"
+  ],
+  "sample": "{\"mode\": \"endcurrent\", \"beforeJob\": \"Ingest\", \"afterJob\": \"Ingest\", \"beforeQueueLength\": 0, \"afterQueueLength\": 0, \"changed\": false}"
+ },
+ "jawa/set_player_settings": {
+  "verdict": "WORKS",
+  "args": {
+   "pawnId": "Human607",
+   "medicalCare": "NormalOrWorse"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "area",
+   "hostilityResponse",
+   "master",
+   "medCare",
+   "notes"
+  ],
+  "sample": "{\"area\": null, \"master\": null, \"medCare\": \"Best\", \"hostilityResponse\": \"Flee\", \"notes\": []}"
+ },
+ "jawa/timetable": {
+  "verdict": "WORKS",
+  "args": {
+   "pawnId": "Human607",
+   "hour": 3,
+   "assignment": "Work"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "assignment",
+   "hour",
+   "ignoredInPractice",
+   "isColonist",
+   "isPrisoner",
+   "note",
+   "readBackAllHours"
+  ],
+  "sample": "{\"hour\": 3, \"assignment\": \"Work\", \"isColonist\": true, \"isPrisoner\": false, \"ignoredInPractice\": false, \"note\": null, \"readBackAllHours\": [\"Sleep\", \"Sleep\", \"Sleep\", \"Work\", \"Sleep\", \"Sleep\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Anything\", \"Sleep\", \"Sleep\"]"
+ },
+ "jawa/new_allowed_area": {
+  "verdict": "WORKS",
+  "args": {
+   "name": "CHECK_shakedown"
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "allowedAreaCountNow",
+   "id",
+   "label"
+  ],
+  "sample": "{\"id\": 14, \"label\": \"Area 2\", \"allowedAreaCountNow\": 2}"
+ },
+ "jawa/paint_area": {
+  "verdict": "REFUSES",
+  "args": {
+   "area": "home",
+   "action": "add",
+   "rect": "200,20,4,4"
+  },
+  "note": "",
+  "message": "ops is required, e.g. '10,20,5,5;30,30,2,2'.",
+  "keys": [
+   "details"
+  ],
+  "sample": "{\"details\": null}"
+ },
+ "jawa/time_pin_normal_speed": {
+  "verdict": "WORKS",
+  "args": {},
+  "note": "",
+  "message": "",
+  "keys": [
+   "forcedNormalSpeedAfter",
+   "ticksGameAtCall"
+  ],
+  "sample": "{\"forcedNormalSpeedAfter\": false, \"ticksGameAtCall\": 66500}"
+ },
+ "jawa/weather_roll_next": {
+  "verdict": "WORKS",
+  "args": {},
+  "note": "",
+  "message": "",
+  "keys": [
+   "after",
+   "before",
+   "lockedTo",
+   "note"
+  ],
+  "sample": "{\"before\": {\"weather\": \"Clear\", \"curWeatherAge\": 56499}, \"after\": {\"weather\": \"Clear\", \"curWeatherAge\": 0}, \"lockedTo\": null, \"note\": \"No weather lock active - the roll used the map's normal commonality weights.\"}"
+ },
+ "jawa/rain_suppress": {
+  "verdict": "WORKS",
+  "args": {
+   "ticks": 600
+  },
+  "note": "",
+  "message": "",
+  "keys": [
+   "after",
+   "before",
+   "note",
+   "ticksRemaining"
+  ],
+  "sample": "{\"before\": 0, \"after\": 67100, \"ticksRemaining\": 600, \"note\": \"'after' is read back from the private field WeatherDecider.ticksWhenRainAllowedAgain by reflection - there is no public getter for it in 1.6 source. Rain already falling is unaffected; this only stops rain from being ROLLED again.\"}"
+ },
+ "jawa/sky_glow_set": {
+  "verdict": "REFUSES",
+  "args": {
+   "glow": 0.8
+  },
+  "note": "",
+  "message": "Give skyGlow and/or targetBrightness.",
+  "keys": [
+   "details"
+  ],
+  "sample": "{\"details\": null}"
+ },
+ "jawa/difficulty_tune": {
+  "verdict": "WORKS",
+  "args": {},
+  "note": "",
+  "message": "",
+  "keys": [
+   "after",
+   "before",
+   "difficultyDef"
+  ],
+  "sample": "{\"before\": {\"threatScale\": 1.0, \"allowBigThreats\": true, \"adaptationEffectFactor\": 0.9, \"colonistMoodOffset\": 0.0, \"tradePriceFactorLoss\": 0.0}, \"after\": {\"threatScale\": 1.0, \"allowBigThreats\": true, \"adaptationEffectFactor\": 0.9, \"colonistMoodOffset\": 0.0, \"tradePriceFactorLoss\": 0.0}, \"difficultyDef\": \"Rough\"}"
+ },
+ "jawa/research_progress": {
+  "verdict": "REFUSES",
+  "args": {},
+  "note": "",
+  "message": "Give a ResearchProjectDef defName.",
+  "keys": [
+   "details"
+  ],
+  "sample": "{\"details\": null}"
+ },
+ "jawa/incident_schedule": {
+  "verdict": "REFUSES",
+  "args": {
+   "incident": "VisitorGroup",
+   "delayTicks": 60000
+  },
+  "note": "",
+  "message": "incidentDef is required.",
+  "keys": [
+   "details"
+  ],
+  "sample": "{\"details\": null}"
+ },
+ "jawa/signal_send": {
+  "verdict": "REFUSES",
+  "args": {
+   "signal": "CHECK_shakedown_signal"
+  },
+  "note": "",
+  "message": "tag is required.",
+  "keys": [
+   "details"
+  ],
+  "sample": "{\"details\": null}"
+ }
+}

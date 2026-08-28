@@ -1,0 +1,1 @@
+BIOME_FLORA_LOOKS_RIGHT_1 left in `doing` deliberately: criteria 1 (live) and 3 (magenta) are not taken.

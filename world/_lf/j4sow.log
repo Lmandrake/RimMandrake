@@ -1,0 +1,7 @@
+target cell: (118, 191, 'Sand')
+
+--- JAWA (Human58017)
+   ordered_job Sow at 118,191 -> {"success": false, "accepted": true, "interruptibleBefore": true, "beforeJobDef": "Wait_Wander", "requestedJobDef": "Sow", "afterJobDef": "Wait", "nowRunningRequested": false, "ticksElapsed": 0, "queueLength": 0, "note": "Job was accepted (enqueued) but curJob after 2500 tick(s) is 'Wait', not 'Sow'
+   cell after: terrain=Sand things=[]
+
+--- BASELINER (Human58021)

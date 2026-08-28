@@ -1,0 +1,26 @@
+drafting 4 other colonists so only the Jawa can work:
+   Haplo          draft -> True 
+   Lana           draft -> True 
+   Leblanc        draft -> True 
+   Shouta         draft -> True 
+
+virgin target 124,192 terrain=Soil things=[]
+order -> accepted=True after=Wait
+  +  500 job=Wait                 cell=[]
+  + 1000 job=Wait_Wander          cell=[]
+  + 1500 job=Wait_MaintainPosture cell=[]
+  + 2000 job=GotoWander           cell=[]
+  + 2500 job=GotoWander           cell=[]
+  + 3000 job=Wait_Wander          cell=[]
+  + 3500 job=Wait_Wander          cell=[]
+  + 4000 job=GoForWalk            cell=[]
+  + 4500 job=GotoWander           cell=[]
+  + 5000 job=Wait_MaintainPosture cell=[]
+  + 5500 job=GotoWander           cell=[]
+  + 6000 job=GotoWander           cell=[]
+  + 6500 job=Wait_Wander          cell=[]
+  + 7000 job=GotoWander           cell=[]
+  >>> no rice after 7000 ticks with only the Jawa able to work.
+
+undrafting:
+   done

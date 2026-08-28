@@ -1,0 +1,51 @@
+[
+ {
+  "x": "Baseliner",
+  "lo": -40.0,
+  "hi": 45.0,
+  "genes": "none - THE REFERENCE POINT",
+  "left": []
+ },
+ {
+  "x": "RimMandrakeUgnaught",
+  "lo": -40.0,
+  "hi": 45.0,
+  "genes": "none",
+  "left": []
+ },
+ {
+  "x": "RimMandrakeTwilek",
+  "lo": -40.0,
+  "hi": 45.0,
+  "genes": "none",
+  "left": []
+ },
+ {
+  "x": "RimMandrakeKelDor",
+  "lo": -40.0,
+  "hi": 45.0,
+  "genes": "none",
+  "left": []
+ },
+ {
+  "x": "MandrakeJawa",
+  "lo": -50.0,
+  "hi": 55.0,
+  "genes": "MinTemp_SmallDecrease + MaxTemp_SmallIncrease",
+  "left": []
+ },
+ {
+  "x": "RimMandrakeChiss",
+  "lo": -60.0,
+  "hi": 40.5,
+  "genes": "MinTemp_LargeDecrease + MaxTemp_SmallDecrease",
+  "left": []
+ },
+ {
+  "x": "RimMandrakeWookiee",
+  "lo": -60.0,
+  "hi": 55.0,
+  "genes": "Furskin + MinTemp_SmallDecrease + MaxTemp_SmallIncrease",
+  "left": []
+ }
+]

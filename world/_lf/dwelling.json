@@ -1,0 +1,19 @@
+  13 bridge call(s), 81 build op(s)
+      8 x jawa/build_batch
+      1 x jawa/map_commit
+      1 x jawa/set_roof_batch
+      3 x jawa/set_terrain_batch
+
+  jawa/set_terrain_batch     {"rect": "171,171,4,8", "terrainDef": "Gravel"}
+  jawa/set_terrain_batch     {"rect": "176,171,4,8", "terrainDef": "Gravel"}
+  jawa/set_terrain_batch     {"rect": "181,171,6,8", "terrainDef": "Gravel"}
+  jawa/build_batch           {"ops": "Bedroll:171,171;Bedroll:173,171;Bedroll:171,173;Bedroll:173,173", "stuff": "WoodLog", "faction": "Jawa_IndigenousTribes"}
+  jawa/build_batch           {"ops": "DiningChair:176,172", "stuff": "WoodLog", "faction": "Jawa_IndigenousTribes"}
+  jawa/build_batch           {"ops": "Door:173,170;Door:175,175;Door:180,175", "stuff": "WoodLog", "faction": "Jawa_IndigenousTribes"}
+  jawa/build_batch           {"ops": "ElectricStove:179,178", "faction": "Jawa_IndigenousTribes"}
+  jawa/build_batch           {"ops": "Shelf:181,171;Shelf:182,171;Shelf:183,171", "stuff": "WoodLog", "faction": "Jawa_IndigenousTribes"}
+  jawa/build_batch           {"ops": "Table1x2c:176,171", "stuff": "WoodLog", "faction": "Jawa_IndigenousTribes"}
+  jawa/build_batch           {"ops": "TorchLamp:174,178;TorchLamp:178,178;TorchLamp:186,178", "faction": "Jawa_IndigenousTribes"}
+  jawa/build_batch           {"ops": "Wall:170,170;Wall:171,170;Wall:172,170;Wall:174,170;Wall:175,170;Wall:170,171;Wall:175,171;Wall:170,172;Wall:175,172;Wall:170,173;Wall:175,17…
+  jawa/set_roof_batch        {"rect": "170,170,18,10", "roofDef": "RoofConstructed"}
+  jawa/map_commit            {"regions": true, "pathing": true, "power": true, "redraw": true}

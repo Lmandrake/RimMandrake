@@ -1,0 +1,2174 @@
+{
+  "meta": {
+    "template": "dwelling",
+    "template_sha256": "5df156114085d42b",
+    "seed": 7,
+    "generator": "lua-prototype/0.1",
+    "footprint": [
+      100,
+      200,
+      18,
+      10
+    ],
+    "faction": "player",
+    "rooms": 3,
+    "occupants": 4,
+    "wealth": null,
+    "techLevel": null,
+    "defended": null,
+    "condition": null,
+    "climate": null,
+    "temperature_c": null
+  },
+  "things": [
+    {
+      "defName": "Wall",
+      "x": 100,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 101,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 102,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 104,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 105,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 100,
+      "z": 201,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 105,
+      "z": 201,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 100,
+      "z": 202,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 105,
+      "z": 202,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 100,
+      "z": 203,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 105,
+      "z": 203,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 100,
+      "z": 204,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 105,
+      "z": 204,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 100,
+      "z": 205,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 100,
+      "z": 206,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 105,
+      "z": 206,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 100,
+      "z": 207,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 105,
+      "z": 207,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 100,
+      "z": 208,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 105,
+      "z": 208,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 100,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 101,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 102,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 103,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 104,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 105,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 106,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 107,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 108,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 109,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 110,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 110,
+      "z": 201,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 110,
+      "z": 202,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 110,
+      "z": 203,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 110,
+      "z": 204,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 110,
+      "z": 206,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 110,
+      "z": 207,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 110,
+      "z": 208,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 106,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 107,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 108,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 109,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 110,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 111,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 112,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 113,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 114,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 115,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 116,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 117,
+      "z": 200,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 117,
+      "z": 201,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 117,
+      "z": 202,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 117,
+      "z": 203,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 117,
+      "z": 204,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 117,
+      "z": 205,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 117,
+      "z": 206,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 117,
+      "z": 207,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 117,
+      "z": 208,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 111,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 112,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 113,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 114,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 115,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 116,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 117,
+      "z": 209,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Door",
+      "x": 103,
+      "z": 200,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "DOOR"
+    },
+    {
+      "defName": "Door",
+      "x": 105,
+      "z": 205,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "DOOR"
+    },
+    {
+      "defName": "Door",
+      "x": 110,
+      "z": 205,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "DOOR"
+    },
+    {
+      "defName": "Bed",
+      "x": 101,
+      "z": 201,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "BED"
+    },
+    {
+      "defName": "Bed",
+      "x": 103,
+      "z": 201,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "BED"
+    },
+    {
+      "defName": "Bed",
+      "x": 101,
+      "z": 203,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "BED"
+    },
+    {
+      "defName": "Bed",
+      "x": 103,
+      "z": 203,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "BED"
+    },
+    {
+      "defName": "TorchLamp",
+      "x": 104,
+      "z": 208,
+      "rot": 0,
+      "stuff": null,
+      "role": "LIGHT"
+    },
+    {
+      "defName": "Table1x2c",
+      "x": 106,
+      "z": 201,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "TABLE"
+    },
+    {
+      "defName": "DiningChair",
+      "x": 106,
+      "z": 202,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "CHAIR"
+    },
+    {
+      "defName": "Campfire",
+      "x": 109,
+      "z": 208,
+      "rot": 0,
+      "stuff": null,
+      "role": "STOVE"
+    },
+    {
+      "defName": "TorchLamp",
+      "x": 108,
+      "z": 208,
+      "rot": 0,
+      "stuff": null,
+      "role": "LIGHT"
+    },
+    {
+      "defName": "Shelf",
+      "x": 111,
+      "z": 201,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "STORAGE"
+    },
+    {
+      "defName": "Shelf",
+      "x": 112,
+      "z": 201,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "STORAGE"
+    },
+    {
+      "defName": "Shelf",
+      "x": 113,
+      "z": 201,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "STORAGE"
+    },
+    {
+      "defName": "TorchLamp",
+      "x": 116,
+      "z": 208,
+      "rot": 0,
+      "stuff": null,
+      "role": "LIGHT"
+    }
+  ],
+  "terrain": [
+    {
+      "x": 101,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 101,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 101,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 101,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 101,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 101,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 101,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 101,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 102,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 102,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 102,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 102,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 102,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 102,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 102,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 102,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 103,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 103,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 103,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 103,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 103,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 103,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 103,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 103,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 104,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 104,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 104,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 104,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 104,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 104,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 104,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 104,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 106,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 106,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 106,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 106,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 106,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 106,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 106,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 106,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 107,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 107,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 107,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 107,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 107,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 107,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 107,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 107,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 108,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 108,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 108,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 108,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 108,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 108,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 108,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 108,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 109,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 109,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 109,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 109,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 109,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 109,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 109,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 109,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 111,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 111,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 111,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 111,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 111,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 111,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 111,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 111,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 112,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 112,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 112,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 112,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 112,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 112,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 112,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 112,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 113,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 113,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 113,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 113,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 113,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 113,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 113,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 113,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 114,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 114,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 114,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 114,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 114,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 114,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 114,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 114,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 115,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 115,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 115,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 115,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 115,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 115,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 115,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 115,
+      "z": 208,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 116,
+      "z": 201,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 116,
+      "z": 202,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 116,
+      "z": 203,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 116,
+      "z": 204,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 116,
+      "z": 205,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 116,
+      "z": 206,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 116,
+      "z": 207,
+      "def": "TileSandstone"
+    },
+    {
+      "x": 116,
+      "z": 208,
+      "def": "TileSandstone"
+    }
+  ],
+  "roof": [
+    {
+      "x": 100,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 100,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 100,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 100,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 100,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 100,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 100,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 100,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 100,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 100,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 101,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 101,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 101,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 101,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 101,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 101,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 101,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 101,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 101,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 101,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 102,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 102,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 102,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 102,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 102,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 102,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 102,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 102,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 102,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 102,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 103,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 103,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 103,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 103,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 103,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 103,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 103,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 103,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 103,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 103,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 104,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 104,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 104,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 104,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 104,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 104,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 104,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 104,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 104,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 104,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 105,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 105,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 105,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 105,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 105,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 105,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 105,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 105,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 105,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 105,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 106,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 106,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 106,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 106,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 106,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 106,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 106,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 106,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 106,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 106,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 107,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 107,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 107,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 107,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 107,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 107,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 107,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 107,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 107,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 107,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 108,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 108,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 108,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 108,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 108,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 108,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 108,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 108,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 108,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 108,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 109,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 109,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 109,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 109,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 109,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 109,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 109,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 109,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 109,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 109,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 110,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 110,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 110,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 110,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 110,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 110,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 110,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 110,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 110,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 110,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 111,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 111,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 111,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 111,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 111,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 111,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 111,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 111,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 111,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 111,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 112,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 112,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 112,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 112,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 112,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 112,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 112,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 112,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 112,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 112,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 113,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 113,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 113,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 113,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 113,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 113,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 113,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 113,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 113,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 113,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 114,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 114,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 114,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 114,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 114,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 114,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 114,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 114,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 114,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 114,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 115,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 115,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 115,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 115,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 115,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 115,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 115,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 115,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 115,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 115,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 116,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 116,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 116,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 116,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 116,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 116,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 116,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 116,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 116,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 116,
+      "z": 209,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 117,
+      "z": 200,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 117,
+      "z": 201,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 117,
+      "z": 202,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 117,
+      "z": 203,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 117,
+      "z": 204,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 117,
+      "z": 205,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 117,
+      "z": 206,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 117,
+      "z": 207,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 117,
+      "z": 208,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 117,
+      "z": 209,
+      "def": "RoofConstructed"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "r1",
+      "role": "Barracks",
+      "rect": [
+        100,
+        200,
+        6,
+        10
+      ],
+      "doors": []
+    },
+    {
+      "id": "r2",
+      "role": "DiningRoom",
+      "rect": [
+        105,
+        200,
+        6,
+        10
+      ],
+      "doors": []
+    },
+    {
+      "id": "r3",
+      "role": "Storeroom",
+      "rect": [
+        110,
+        200,
+        8,
+        10
+      ],
+      "doors": []
+    }
+  ],
+  "notes": [],
+  "refusals": []
+}

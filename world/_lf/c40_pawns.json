@@ -1,0 +1,1719 @@
+[
+ {
+  "thingId": "Human335585",
+  "thingIdNumber": 335585,
+  "name": "Merlin Davidson",
+  "nameShort": "Davidson",
+  "title": "vengeful hunter",
+  "kindDef": "Jawa_Tribal_Scavenger",
+  "faction": "Jawa_IndigenousTribes",
+  "factionName": "Jawa Trade Moot",
+  "gender": "Male",
+  "ageBiologicalYears": 25,
+  "ageChronologicalYears": 25,
+  "developmentalStage": "Adult",
+  "xenotype": "MandrakeJawa",
+  "ideo": "Astropolitan",
+  "childhood": "BuddingArtist44",
+  "adulthood": "VengefulHunter32",
+  "headType": "Male_AverageWide",
+  "bodyType": "Male",
+  "hair": "Bald",
+  "beard": "NoBeard",
+  "position": {
+   "x": 120,
+   "z": 120
+  },
+  "traits": [
+   {
+    "def": "DislikesWomen",
+    "degree": 0,
+    "label": "Misogynist",
+    "forced": false
+   },
+   {
+    "def": "RT_Persuasive",
+    "degree": 0,
+    "label": "Persuasive",
+    "forced": false
+   },
+   {
+    "def": "VTE_FunLoving",
+    "degree": 0,
+    "label": "Fun-loving",
+    "forced": false
+   },
+   {
+    "def": "Bisexual",
+    "degree": 0,
+    "label": "Bisexual",
+    "forced": false
+   },
+   {
+    "def": "Wimp",
+    "degree": 0,
+    "label": "Wimp",
+    "forced": false
+   },
+   {
+    "def": "Isekai_Rank_D",
+    "degree": 0,
+    "label": "Rank D",
+    "forced": true
+   },
+   {
+    "def": "Isekai_Mighty",
+    "degree": 0,
+    "label": "Mighty",
+    "forced": true
+   }
+  ],
+  "skills": [
+   {
+    "skill": "Shooting",
+    "levelRaw": 8,
+    "levelEffective": 8,
+    "passion": "5",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Melee",
+    "levelRaw": 10,
+    "levelEffective": 10,
+    "passion": "Minor",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Construction",
+    "levelRaw": 4,
+    "levelEffective": 8,
+    "passion": "Minor",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Mining",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": true
+   },
+   {
+    "skill": "Cooking",
+    "levelRaw": 3,
+    "levelEffective": 3,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Plants",
+    "levelRaw": 1,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Animals",
+    "levelRaw": 2,
+    "levelEffective": 2,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Crafting",
+    "levelRaw": 2,
+    "levelEffective": 6,
+    "passion": "Minor",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Artistic",
+    "levelRaw": 6,
+    "levelEffective": 6,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Medicine",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Social",
+    "levelRaw": 3,
+    "levelEffective": 7,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Intellectual",
+    "levelRaw": 2,
+    "levelEffective": 2,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   }
+  ],
+  "apparel": [
+   {
+    "def": "guy762_Robes_jawa",
+    "stuff": null,
+    "hp": 165
+   },
+   {
+    "def": "Apparel_WarVeil",
+    "stuff": "Cloth",
+    "hp": 60
+   }
+  ],
+  "equipment": [
+   {
+    "def": "SkalderTusk",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  "hediffs": [
+   {
+    "def": "SEX_Penis",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   },
+   {
+    "def": "SEX_Ovipositor",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   }
+  ],
+  "needs": [
+   {
+    "need": "Mood",
+    "level": 0.5,
+    "pct": 0.5
+   },
+   {
+    "need": "Food",
+    "level": 0.8,
+    "pct": 0.8
+   },
+   {
+    "need": "Rest",
+    "level": 0.9784423,
+    "pct": 0.9784423
+   },
+   {
+    "need": "Asimov_EnergyNeed",
+    "level": 1.0,
+    "pct": 1.0
+   }
+  ]
+ },
+ {
+  "thingId": "Human949",
+  "thingIdNumber": 949,
+  "name": "Kazuya 'Zippy' Sexton",
+  "nameShort": "Zippy",
+  "title": "Mattress tester",
+  "kindDef": "Colonist",
+  "faction": "Jawa_IndigenousTribes",
+  "factionName": "Jawa Trade Moot",
+  "gender": "Male",
+  "ageBiologicalYears": 52,
+  "ageChronologicalYears": 104,
+  "developmentalStage": "Adult",
+  "xenotype": "Baseliner",
+  "ideo": "Astropolitan",
+  "childhood": "WarRefugee51",
+  "adulthood": "VBE_MattressTester",
+  "headType": "Male_NarrowNormal",
+  "bodyType": "Male",
+  "hair": "Bravo",
+  "beard": "NoBeard",
+  "position": {
+   "x": 124,
+   "z": 119
+  },
+  "traits": [
+   {
+    "def": "QuickSleeper",
+    "degree": 0,
+    "label": "Quick sleeper",
+    "forced": false
+   },
+   {
+    "def": "RT_Valiant",
+    "degree": 0,
+    "label": "Valiant",
+    "forced": false
+   },
+   {
+    "def": "Bisexual",
+    "degree": 0,
+    "label": "Bisexual",
+    "forced": false
+   },
+   {
+    "def": "Isekai_Rank_B",
+    "degree": 0,
+    "label": "<color=#66B3FF>Rank B</color>",
+    "forced": true
+   }
+  ],
+  "skills": [
+   {
+    "skill": "Shooting",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": true
+   },
+   {
+    "skill": "Melee",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": true
+   },
+   {
+    "skill": "Construction",
+    "levelRaw": 2,
+    "levelEffective": 2,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Mining",
+    "levelRaw": 1,
+    "levelEffective": 1,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Cooking",
+    "levelRaw": 9,
+    "levelEffective": 9,
+    "passion": "Minor",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Plants",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Animals",
+    "levelRaw": 5,
+    "levelEffective": 5,
+    "passion": "Major",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Crafting",
+    "levelRaw": 4,
+    "levelEffective": 4,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Artistic",
+    "levelRaw": 5,
+    "levelEffective": 5,
+    "passion": "41",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Medicine",
+    "levelRaw": 5,
+    "levelEffective": 5,
+    "passion": "5",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Social",
+    "levelRaw": 4,
+    "levelEffective": 4,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Intellectual",
+    "levelRaw": 5,
+    "levelEffective": 5,
+    "passion": "Major",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   }
+  ],
+  "apparel": [
+   {
+    "def": "VAE_Apparel_Tunic",
+    "stuff": "BiomesCore_CrabShell",
+    "hp": 130
+   },
+   {
+    "def": "Apparel_Pants",
+    "stuff": "KOTOR_FabricArmorweave",
+    "hp": 150
+   },
+   {
+    "def": "VAE_Footwear_Shoes",
+    "stuff": "Leather_Light",
+    "hp": 130
+   },
+   {
+    "def": "VAE_Handwear_Gloves",
+    "stuff": "OuterRim_Durafiber",
+    "hp": 100
+   }
+  ],
+  "equipment": [],
+  "hediffs": [
+   {
+    "def": "AS_MoodyPassion",
+    "part": null,
+    "severity": 1.0
+   },
+   {
+    "def": "SEX_Penis",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   },
+   {
+    "def": "SEX_Womb",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   }
+  ],
+  "needs": [
+   {
+    "need": "Mood",
+    "level": 0.5,
+    "pct": 0.5
+   },
+   {
+    "need": "Food",
+    "level": 0.8,
+    "pct": 0.8
+   },
+   {
+    "need": "Rest",
+    "level": 0.919485,
+    "pct": 0.919485
+   },
+   {
+    "need": "Asimov_EnergyNeed",
+    "level": 1.0,
+    "pct": 1.0
+   }
+  ]
+ },
+ {
+  "thingId": "Human335595",
+  "thingIdNumber": 335595,
+  "name": "Flare Shift",
+  "nameShort": "Shift",
+  "title": "excavator",
+  "kindDef": "Jawa_Tribal_Scavenger",
+  "faction": "Jawa_IndigenousTribes",
+  "factionName": "Jawa Trade Moot",
+  "gender": "Male",
+  "ageBiologicalYears": 29,
+  "ageChronologicalYears": 29,
+  "developmentalStage": "Adult",
+  "xenotype": "MandrakeJawa",
+  "ideo": "Astropolitan",
+  "childhood": "VBE_TombMaker",
+  "adulthood": "Excavator55",
+  "headType": "Male_AverageWide",
+  "bodyType": "Male",
+  "hair": "Bald",
+  "beard": "NoBeard",
+  "position": {
+   "x": 121,
+   "z": 121
+  },
+  "traits": [
+   {
+    "def": "RT_Coordinated",
+    "degree": 0,
+    "label": "Coordinated",
+    "forced": false
+   },
+   {
+    "def": "RT_Gifted",
+    "degree": 0,
+    "label": "Gifted",
+    "forced": false
+   },
+   {
+    "def": "Gay",
+    "degree": 0,
+    "label": "Gay",
+    "forced": false
+   },
+   {
+    "def": "Wimp",
+    "degree": 0,
+    "label": "Wimp",
+    "forced": false
+   },
+   {
+    "def": "Isekai_Rank_D",
+    "degree": 0,
+    "label": "Rank D",
+    "forced": true
+   }
+  ],
+  "skills": [
+   {
+    "skill": "Shooting",
+    "levelRaw": 7,
+    "levelEffective": 7,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Melee",
+    "levelRaw": 8,
+    "levelEffective": 8,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Construction",
+    "levelRaw": 11,
+    "levelEffective": 15,
+    "passion": "Major",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Mining",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": true
+   },
+   {
+    "skill": "Cooking",
+    "levelRaw": 7,
+    "levelEffective": 7,
+    "passion": "5",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Plants",
+    "levelRaw": 8,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Animals",
+    "levelRaw": 7,
+    "levelEffective": 7,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Crafting",
+    "levelRaw": 7,
+    "levelEffective": 11,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Artistic",
+    "levelRaw": 8,
+    "levelEffective": 8,
+    "passion": "39",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Medicine",
+    "levelRaw": 7,
+    "levelEffective": 7,
+    "passion": "50",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Social",
+    "levelRaw": 5,
+    "levelEffective": 9,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Intellectual",
+    "levelRaw": 8,
+    "levelEffective": 8,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   }
+  ],
+  "apparel": [
+   {
+    "def": "guy762_Robes_jawa",
+    "stuff": null,
+    "hp": 137
+   },
+   {
+    "def": "Apparel_WarVeil",
+    "stuff": "Cloth",
+    "hp": 78
+   }
+  ],
+  "equipment": [
+   {
+    "def": "GS_Gaffi",
+    "stuff": "KOTOR_AlloyDurasteel",
+    "isPrimary": true
+   }
+  ],
+  "hediffs": [
+   {
+    "def": "AS_CompetitivePassion",
+    "part": null,
+    "severity": 1.0
+   },
+   {
+    "def": "AS_NomadicPassion",
+    "part": null,
+    "severity": 1.0
+   },
+   {
+    "def": "SEX_Penis",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   },
+   {
+    "def": "SEX_Ovipositor",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   }
+  ],
+  "needs": [
+   {
+    "need": "Mood",
+    "level": 0.5,
+    "pct": 0.5
+   },
+   {
+    "need": "Food",
+    "level": 0.8,
+    "pct": 0.8
+   },
+   {
+    "need": "Rest",
+    "level": 0.969577,
+    "pct": 0.969577
+   },
+   {
+    "need": "Asimov_EnergyNeed",
+    "level": 1.0,
+    "pct": 1.0
+   }
+  ]
+ },
+ {
+  "thingId": "Human335601",
+  "thingIdNumber": 335601,
+  "name": "Shary Gay",
+  "nameShort": "Shary",
+  "title": "vengeful hunter",
+  "kindDef": "Jawa_Tribal_Scavenger",
+  "faction": "Jawa_IndigenousTribes",
+  "factionName": "Jawa Trade Moot",
+  "gender": "Male",
+  "ageBiologicalYears": 34,
+  "ageChronologicalYears": 34,
+  "developmentalStage": "Adult",
+  "xenotype": "MandrakeJawa",
+  "ideo": "Astropolitan",
+  "childhood": "Herder19",
+  "adulthood": "VengefulHunter32",
+  "headType": "Male_NarrowNormal",
+  "bodyType": "Male",
+  "hair": "Bald",
+  "beard": "NoBeard",
+  "position": {
+   "x": 117,
+   "z": 117
+  },
+  "traits": [
+   {
+    "def": "VTE_HeatInclined",
+    "degree": 0,
+    "label": "Heat inclined",
+    "forced": false
+   },
+   {
+    "def": "Gay",
+    "degree": 0,
+    "label": "Gay",
+    "forced": false
+   },
+   {
+    "def": "Wimp",
+    "degree": 0,
+    "label": "Wimp",
+    "forced": false
+   },
+   {
+    "def": "Isekai_Rank_C",
+    "degree": 0,
+    "label": "<color=#66E666>Rank C</color>",
+    "forced": true
+   }
+  ],
+  "skills": [
+   {
+    "skill": "Shooting",
+    "levelRaw": 7,
+    "levelEffective": 7,
+    "passion": "3",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Melee",
+    "levelRaw": 11,
+    "levelEffective": 11,
+    "passion": "4",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Construction",
+    "levelRaw": 2,
+    "levelEffective": 6,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Mining",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "52",
+    "xpSinceLastLevel": 0.0,
+    "disabled": true
+   },
+   {
+    "skill": "Cooking",
+    "levelRaw": 4,
+    "levelEffective": 4,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Plants",
+    "levelRaw": 3,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Animals",
+    "levelRaw": 7,
+    "levelEffective": 7,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Crafting",
+    "levelRaw": 4,
+    "levelEffective": 8,
+    "passion": "Major",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Artistic",
+    "levelRaw": 2,
+    "levelEffective": 2,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Medicine",
+    "levelRaw": 2,
+    "levelEffective": 2,
+    "passion": "25",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Social",
+    "levelRaw": 1,
+    "levelEffective": 5,
+    "passion": "48",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Intellectual",
+    "levelRaw": 3,
+    "levelEffective": 3,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   }
+  ],
+  "apparel": [
+   {
+    "def": "guy762_Robes_jawa",
+    "stuff": null,
+    "hp": 168
+   },
+   {
+    "def": "Apparel_WarVeil",
+    "stuff": "Cloth",
+    "hp": 65
+   }
+  ],
+  "equipment": [
+   {
+    "def": "BMT_CrystalMantisClaw",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  "hediffs": [
+   {
+    "def": "AS_TraumaticPassion",
+    "part": null,
+    "severity": 0.1
+   },
+   {
+    "def": "AS_RainyDayPassion",
+    "part": null,
+    "severity": 1.0
+   },
+   {
+    "def": "Stab",
+    "part": "Shoulder",
+    "severity": 2.6
+   },
+   {
+    "def": "SEX_Penis",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   },
+   {
+    "def": "SEX_Ovipositor",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   }
+  ],
+  "needs": [
+   {
+    "need": "Mood",
+    "level": 0.5,
+    "pct": 0.5
+   },
+   {
+    "need": "Food",
+    "level": 0.8,
+    "pct": 0.8
+   },
+   {
+    "need": "Rest",
+    "level": 0.919131458,
+    "pct": 0.919131458
+   },
+   {
+    "need": "Asimov_EnergyNeed",
+    "level": 1.0,
+    "pct": 1.0
+   }
+  ]
+ },
+ {
+  "thingId": "Human932",
+  "thingIdNumber": 932,
+  "name": "Emily 'Coyote' Luckhardt",
+  "nameShort": "Coyote",
+  "title": "militia soldier",
+  "kindDef": "Colonist",
+  "faction": "Jawa_IndigenousTribes",
+  "factionName": "Jawa Trade Moot",
+  "gender": "Female",
+  "ageBiologicalYears": 38,
+  "ageChronologicalYears": 79,
+  "developmentalStage": "Adult",
+  "xenotype": "Baseliner",
+  "ideo": "Astropolitan",
+  "childhood": "RebelChild8",
+  "adulthood": "MilitiaSoldier79",
+  "headType": "Female_NarrowWide",
+  "bodyType": "Female",
+  "hair": "Pigtails",
+  "beard": "NoBeard",
+  "position": {
+   "x": 116,
+   "z": 122
+  },
+  "traits": [
+   {
+    "def": "goodplants",
+    "degree": 0,
+    "label": "Botanist",
+    "forced": false
+   },
+   {
+    "def": "Straight",
+    "degree": 0,
+    "label": "Straight",
+    "forced": false
+   },
+   {
+    "def": "Isekai_BattleManiac",
+    "degree": 0,
+    "label": "<color=#66E666>Battle maniac</color>",
+    "forced": true
+   },
+   {
+    "def": "Isekai_Rank_D",
+    "degree": 0,
+    "label": "Rank D",
+    "forced": true
+   }
+  ],
+  "skills": [
+   {
+    "skill": "Shooting",
+    "levelRaw": 1,
+    "levelEffective": 1,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Melee",
+    "levelRaw": 9,
+    "levelEffective": 9,
+    "passion": "13",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Construction",
+    "levelRaw": 7,
+    "levelEffective": 7,
+    "passion": "5",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Mining",
+    "levelRaw": 4,
+    "levelEffective": 4,
+    "passion": "Minor",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Cooking",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "3",
+    "xpSinceLastLevel": 0.0,
+    "disabled": true
+   },
+   {
+    "skill": "Plants",
+    "levelRaw": 11,
+    "levelEffective": 11,
+    "passion": "35",
+    "xpSinceLastLevel": -1.2,
+    "disabled": false
+   },
+   {
+    "skill": "Animals",
+    "levelRaw": 7,
+    "levelEffective": 7,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Crafting",
+    "levelRaw": 7,
+    "levelEffective": 7,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Artistic",
+    "levelRaw": 9,
+    "levelEffective": 9,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Medicine",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "52",
+    "xpSinceLastLevel": 0.0,
+    "disabled": true
+   },
+   {
+    "skill": "Social",
+    "levelRaw": 10,
+    "levelEffective": 10,
+    "passion": "35",
+    "xpSinceLastLevel": -0.6,
+    "disabled": false
+   },
+   {
+    "skill": "Intellectual",
+    "levelRaw": 3,
+    "levelEffective": 3,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   }
+  ],
+  "apparel": [
+   {
+    "def": "Apparel_Pants",
+    "stuff": "GigantelopeWool",
+    "hp": 100
+   },
+   {
+    "def": "Apparel_BasicShirt",
+    "stuff": "Cloth",
+    "hp": 100
+   },
+   {
+    "def": "VAE_Footwear_Shoes",
+    "stuff": "Leather_Mammavian",
+    "hp": 130
+   },
+   {
+    "def": "VAE_Handwear_Gloves",
+    "stuff": "BMT_CrimsonSilk",
+    "hp": 130
+   }
+  ],
+  "equipment": [],
+  "hediffs": [
+   {
+    "def": "AS_TraumaticPassion",
+    "part": null,
+    "severity": 0.1
+   },
+   {
+    "def": "AS_IdeologicalPassion_Hediff",
+    "part": null,
+    "severity": 1.0
+   },
+   {
+    "def": "SEX_Womb",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   }
+  ],
+  "needs": [
+   {
+    "need": "Mood",
+    "level": 0.5,
+    "pct": 0.5
+   },
+   {
+    "need": "Food",
+    "level": 0.8,
+    "pct": 0.8
+   },
+   {
+    "need": "Rest",
+    "level": 0.9416046,
+    "pct": 0.9416046
+   },
+   {
+    "need": "Asimov_EnergyNeed",
+    "level": 1.0,
+    "pct": 1.0
+   }
+  ]
+ },
+ {
+  "thingId": "Human953",
+  "thingIdNumber": 953,
+  "name": "Alyssa 'Sparkles' Orchard",
+  "nameShort": "Sparkles",
+  "title": "coreworld jeweler",
+  "kindDef": "Colonist",
+  "faction": "Jawa_IndigenousTribes",
+  "factionName": "Jawa Trade Moot",
+  "gender": "Female",
+  "ageBiologicalYears": 44,
+  "ageChronologicalYears": 110,
+  "developmentalStage": "Adult",
+  "xenotype": "Baseliner",
+  "ideo": "Astropolitan",
+  "childhood": "CoreworldStudent50",
+  "adulthood": "CoreworldJeweler19",
+  "headType": "Female_NarrowPointy",
+  "bodyType": "Female",
+  "hair": "Anne",
+  "beard": "NoBeard",
+  "position": {
+   "x": 118,
+   "z": 123
+  },
+  "traits": [
+   {
+    "def": "RT_ColdIntolerant",
+    "degree": 0,
+    "label": "Cold intolerant",
+    "forced": false
+   },
+   {
+    "def": "Bisexual",
+    "degree": 0,
+    "label": "Bisexual",
+    "forced": false
+   },
+   {
+    "def": "Isekai_Rank_D",
+    "degree": 0,
+    "label": "Rank D",
+    "forced": true
+   },
+   {
+    "def": "Isekai_PredatorInstinct",
+    "degree": 0,
+    "label": "<color=#66E666>Predator's instinct</color>",
+    "forced": true
+   }
+  ],
+  "skills": [
+   {
+    "skill": "Shooting",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Melee",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Construction",
+    "levelRaw": 8,
+    "levelEffective": 8,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Mining",
+    "levelRaw": 2,
+    "levelEffective": 2,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Cooking",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": true
+   },
+   {
+    "skill": "Plants",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": true
+   },
+   {
+    "skill": "Animals",
+    "levelRaw": 5,
+    "levelEffective": 5,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Crafting",
+    "levelRaw": 16,
+    "levelEffective": 16,
+    "passion": "4",
+    "xpSinceLastLevel": -14.0,
+    "disabled": false
+   },
+   {
+    "skill": "Artistic",
+    "levelRaw": 12,
+    "levelEffective": 12,
+    "passion": "38",
+    "xpSinceLastLevel": -2.0,
+    "disabled": false
+   },
+   {
+    "skill": "Medicine",
+    "levelRaw": 2,
+    "levelEffective": 2,
+    "passion": "4",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Social",
+    "levelRaw": 3,
+    "levelEffective": 3,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Intellectual",
+    "levelRaw": 1,
+    "levelEffective": 1,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   }
+  ],
+  "apparel": [
+   {
+    "def": "VAE_Apparel_Tunic",
+    "stuff": "Leather_Jerbal",
+    "hp": 130
+   },
+   {
+    "def": "Apparel_Pants",
+    "stuff": "Leather_Jerbal",
+    "hp": 130
+   },
+   {
+    "def": "VAE_Footwear_Shoes",
+    "stuff": "Leather_ReptoFur",
+    "hp": 130
+   },
+   {
+    "def": "VAE_Handwear_Gloves",
+    "stuff": "Cloth",
+    "hp": 100
+   },
+   {
+    "def": "Apparel_Parka",
+    "stuff": "WoolSheep",
+    "hp": 180
+   }
+  ],
+  "equipment": [],
+  "hediffs": [
+   {
+    "def": "AS_ForbiddenPassion",
+    "part": null,
+    "severity": 1.0
+   },
+   {
+    "def": "SEX_Womb",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   }
+  ],
+  "needs": [
+   {
+    "need": "Mood",
+    "level": 0.5,
+    "pct": 0.5
+   },
+   {
+    "need": "Food",
+    "level": 0.8,
+    "pct": 0.8
+   },
+   {
+    "need": "Rest",
+    "level": 0.981402934,
+    "pct": 0.981402934
+   },
+   {
+    "need": "Asimov_EnergyNeed",
+    "level": 1.0,
+    "pct": 1.0
+   }
+  ]
+ },
+ {
+  "thingId": "Human966",
+  "thingIdNumber": 966,
+  "name": "Lilith Luxemburg",
+  "nameShort": "Luxemburg",
+  "title": "exiled researcher",
+  "kindDef": "Colonist",
+  "faction": "Jawa_GeonosianFoundryHive",
+  "factionName": "Geonosian Foundry Hive",
+  "gender": "Female",
+  "ageBiologicalYears": 30,
+  "ageChronologicalYears": 114,
+  "developmentalStage": "Adult",
+  "xenotype": "Baseliner",
+  "ideo": "Astropolitan",
+  "childhood": "HighBaroness37",
+  "adulthood": "ExiledResearcher44",
+  "headType": "Female_AverageWide",
+  "bodyType": "Female",
+  "hair": "Frozen",
+  "beard": "NoBeard",
+  "position": {
+   "x": 135,
+   "z": 120
+  },
+  "traits": [
+   {
+    "def": "Isekai_SlowGrind",
+    "degree": 0,
+    "label": "<color=#66E666>Slow grind</color>",
+    "forced": false
+   },
+   {
+    "def": "Isekai_Brilliant",
+    "degree": 0,
+    "label": "Brilliant",
+    "forced": false
+   },
+   {
+    "def": "Bisexual",
+    "degree": 0,
+    "label": "Bisexual",
+    "forced": false
+   },
+   {
+    "def": "Isekai_Rank_C",
+    "degree": 0,
+    "label": "<color=#66E666>Rank C</color>",
+    "forced": true
+   },
+   {
+    "def": "Isekai_CursedLuck",
+    "degree": 0,
+    "label": "<color=#E65959>Cursed luck</color>",
+    "forced": true
+   }
+  ],
+  "skills": [
+   {
+    "skill": "Shooting",
+    "levelRaw": 3,
+    "levelEffective": 3,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Melee",
+    "levelRaw": 2,
+    "levelEffective": 2,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Construction",
+    "levelRaw": 4,
+    "levelEffective": 4,
+    "passion": "3",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Mining",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Cooking",
+    "levelRaw": 4,
+    "levelEffective": 4,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Plants",
+    "levelRaw": 4,
+    "levelEffective": 4,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Animals",
+    "levelRaw": 3,
+    "levelEffective": 3,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Crafting",
+    "levelRaw": 7,
+    "levelEffective": 7,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Artistic",
+    "levelRaw": 5,
+    "levelEffective": 5,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Medicine",
+    "levelRaw": 9,
+    "levelEffective": 9,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Social",
+    "levelRaw": 9,
+    "levelEffective": 9,
+    "passion": "Minor",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Intellectual",
+    "levelRaw": 11,
+    "levelEffective": 11,
+    "passion": "Minor",
+    "xpSinceLastLevel": -1.2,
+    "disabled": false
+   }
+  ],
+  "apparel": [
+   {
+    "def": "Apparel_Pants",
+    "stuff": "BMT_Pinnipedskin",
+    "hp": 130
+   },
+   {
+    "def": "Apparel_BasicShirt",
+    "stuff": "Cloth",
+    "hp": 100
+   },
+   {
+    "def": "VAE_Footwear_Boots",
+    "stuff": "Leather_Light",
+    "hp": 130
+   },
+   {
+    "def": "Apparel_Parka",
+    "stuff": "AG_Ultima",
+    "hp": 250
+   }
+  ],
+  "equipment": [],
+  "hediffs": [
+   {
+    "def": "SEX_Womb",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   }
+  ],
+  "needs": [
+   {
+    "need": "Mood",
+    "level": 0.5,
+    "pct": 0.5
+   },
+   {
+    "need": "Food",
+    "level": 0.8,
+    "pct": 0.8
+   },
+   {
+    "need": "Rest",
+    "level": 0.918793559,
+    "pct": 0.918793559
+   },
+   {
+    "need": "Asimov_EnergyNeed",
+    "level": 1.0,
+    "pct": 1.0
+   }
+  ]
+ },
+ {
+  "thingId": "Human335620",
+  "thingIdNumber": 335620,
+  "name": "Grigory Gates",
+  "nameShort": "Gates",
+  "title": "Plague doctor",
+  "kindDef": "Jawa_Geonosian_Grunt",
+  "faction": "Jawa_GeonosianFoundryHive",
+  "factionName": "Geonosian Foundry Hive",
+  "gender": "Male",
+  "ageBiologicalYears": 32,
+  "ageChronologicalYears": 32,
+  "developmentalStage": "Adult",
+  "xenotype": "RimMandrakeGeonosianVariants",
+  "ideo": "Astropolitan",
+  "childhood": "MusicalKid86",
+  "adulthood": "SH_MED_PlagueDoctor",
+  "headType": "RimMandrake_Geonosian_Normal",
+  "bodyType": "Thin",
+  "hair": "Bald",
+  "beard": "NoBeard",
+  "position": {
+   "x": 133,
+   "z": 120
+  },
+  "traits": [
+   {
+    "def": "VTE_AnimalLover",
+    "degree": 0,
+    "label": "Animal lover",
+    "forced": false
+   },
+   {
+    "def": "NightOwl",
+    "degree": 0,
+    "label": "Night owl",
+    "forced": false
+   },
+   {
+    "def": "VTE_Anxious",
+    "degree": 0,
+    "label": "Anxious",
+    "forced": false
+   },
+   {
+    "def": "Straight",
+    "degree": 0,
+    "label": "Straight",
+    "forced": false
+   },
+   {
+    "def": "Wimp",
+    "degree": 0,
+    "label": "Wimp",
+    "forced": false
+   },
+   {
+    "def": "Isekai_Rank_F",
+    "degree": 0,
+    "label": "<color=#999999>Rank F</color>",
+    "forced": true
+   }
+  ],
+  "skills": [
+   {
+    "skill": "Shooting",
+    "levelRaw": 2,
+    "levelEffective": 2,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Melee",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Construction",
+    "levelRaw": 2,
+    "levelEffective": 10,
+    "passion": "41",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Mining",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Cooking",
+    "levelRaw": 9,
+    "levelEffective": 9,
+    "passion": "Minor",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Plants",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Animals",
+    "levelRaw": 0,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Crafting",
+    "levelRaw": 1,
+    "levelEffective": 9,
+    "passion": "3",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Artistic",
+    "levelRaw": 6,
+    "levelEffective": 6,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Medicine",
+    "levelRaw": 5,
+    "levelEffective": 5,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Social",
+    "levelRaw": 2,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   },
+   {
+    "skill": "Intellectual",
+    "levelRaw": 6,
+    "levelEffective": 0,
+    "passion": "None",
+    "xpSinceLastLevel": 0.0,
+    "disabled": false
+   }
+  ],
+  "apparel": [
+   {
+    "def": "guy762_JediCloak_light",
+    "stuff": null,
+    "hp": 100
+   }
+  ],
+  "equipment": [
+   {
+    "def": "guy762_sonrifle",
+    "stuff": null,
+    "isPrimary": true
+   }
+  ],
+  "hediffs": [
+   {
+    "def": "AS_MoodyPassion",
+    "part": null,
+    "severity": 1.0
+   },
+   {
+    "def": "Scratch",
+    "part": "Leg",
+    "severity": 3.0
+   },
+   {
+    "def": "SEX_Penis",
+    "part": "SEX_Reproduction",
+    "severity": 0.5
+   }
+  ],
+  "needs": [
+   {
+    "need": "Mood",
+    "level": 0.5,
+    "pct": 0.5
+   },
+   {
+    "need": "Food",
+    "level": 0.8,
+    "pct": 0.8
+   },
+   {
+    "need": "Rest",
+    "level": 0.9681577,
+    "pct": 0.9681577
+   },
+   {
+    "need": "Asimov_EnergyNeed",
+    "level": 1.0,
+    "pct": 1.0
+   }
+  ]
+ }
+]

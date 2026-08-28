@@ -1,0 +1,10 @@
+JAWA       Human58300 stripped, comfy -50.0 .. 55.0
+BASELINER  Human640 stripped, comfy -40.0 .. 45.0
+
+cold snap -> {"success": true, "action": "start", "scope": "map", "notes": ["registered ColdSnap for 15000 ticks"], "endsNextTick": false, "gam
+  + 1000  outdoor=13.2   JAWA=-   BASELINER=-
+  + 2000  outdoor=12.3   JAWA=-   BASELINER=-
+  + 3000  outdoor=11.4   JAWA=-   BASELINER=-
+  + 4000  outdoor=10.5   JAWA=-   BASELINER=-
+  + 5000  outdoor=9.6   JAWA=-   BASELINER=-
+  + 6000  outdoor=8.7   JAWA=-   BASELINER=-

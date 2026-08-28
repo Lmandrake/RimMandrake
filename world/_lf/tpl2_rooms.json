@@ -1,0 +1,38 @@
+{
+ "plan": [
+  {
+   "id": "r1",
+   "role": "Barracks",
+   "rect": [
+    100,
+    200,
+    6,
+    10
+   ],
+   "doors": []
+  },
+  {
+   "id": "r2",
+   "role": "DiningRoom",
+   "rect": [
+    105,
+    200,
+    6,
+    10
+   ],
+   "doors": []
+  },
+  {
+   "id": "r3",
+   "role": "Storeroom",
+   "rect": [
+    110,
+    200,
+    8,
+    10
+   ],
+   "doors": []
+  }
+ ],
+ "rooms": []
+}

@@ -1,0 +1,18 @@
+pawns: {'JAWA': 'Human58017', 'BASELINER': 'Human58021'}
+clear the ground -> Destroyed 14 thing(s) across 80 cell(s).
+createZone -> True {"success": true, "action": "createZone", "created": "Growing zone 2", "cells": 76, "cellsRequested": 80, "refusedCount": 4, "refusedCells": [], "note
+set_crop  -> True {"success": true, "requested": "Plant_Rice", "readBack": "Plant_Rice", "kind": "Zone_Growing", "identity": "Growing zone 2", "canAcceptSowNow": true}
+  JAWA       Growing       -> True 
+  JAWA       PlantCutting  -> True 
+  BASELINER  Growing       -> True 
+  BASELINER  PlantCutting  -> True 
+
+  step 1  JAWA=None  BASELINER=None
+  step 2  JAWA=None  BASELINER=None
+  step 3  JAWA=None  BASELINER=None
+  step 4  JAWA=None  BASELINER=None
+  step 5  JAWA=None  BASELINER=None
+  step 6  JAWA=None  BASELINER=None
+  step 7  JAWA=None  BASELINER=None
+  step 8  JAWA=None  BASELINER=None
+

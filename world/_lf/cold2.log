@@ -1,0 +1,20 @@
+tile before -> {"success": true, "count": 1, "requested": 1, "truncated": 0, "tilesCount": 119904, "errors": [], "tiles": [{"tile": 18393, "biome": "ZBiome_Grasslands", "elevation": 353.162445, "hilliness": "SmallHills", "hillinessInt": 2, "temperature": 14.7229729, "rainfal
+set -60     -> {"success": true, "written": 1, "requested": 1, "errors": [], "note": "Nothing is visible until jawa/world_commit runs.", "tiles": [{"tile": 18393, "biome": "ZBiome_Grasslands", "elevation": 353.162445, "hilliness": "SmallHills", "hillinessInt": 2, "temperatur
+commit      -> True
+subjects: {'JAWA': 'Human58390', 'BASELINER': 'Human58394'}
+  + 1000  out=-66.3 seasonal=-57.5   JAWA=-   BASELINER=-
+  + 2000  out=-65.2 seasonal=-57.4   JAWA=-   BASELINER=-
+  + 3000  out=-62.8 seasonal=-57.4   JAWA=-   BASELINER=-
+  + 4000  out=-60.6 seasonal=-57.4   JAWA=-   BASELINER=-
+  + 5000  out=-58.3 seasonal=-57.4   JAWA=-   BASELINER=-
+  + 6000  out=-56.0 seasonal=-57.3   JAWA=-   BASELINER=-
+  + 7000  out=-54.0 seasonal=-57.3   JAWA=-   BASELINER=-
+  + 8000  out=-51.9 seasonal=-57.3   JAWA=-   BASELINER=-
+  + 9000  out=-50.7 seasonal=-57.3   JAWA=-   BASELINER=-
+  +10000  out=-50.4 seasonal=-57.2   JAWA=-   BASELINER=-
+  +11000  out=-50.3 seasonal=-57.2   JAWA=-   BASELINER=-
+  +12000  out=-50.2 seasonal=-57.2   JAWA=-   BASELINER=-
+  +13000  out=-50.2 seasonal=-57.1   JAWA=-   BASELINER=-
+  +14000  out=-50.3 seasonal=-57.1   JAWA=-   BASELINER=-
+  +15000  out=24.3 seasonal=17.6   JAWA=-   BASELINER=-
+  +16000  out=24.1 seasonal=17.7   JAWA=-   BASELINER=-

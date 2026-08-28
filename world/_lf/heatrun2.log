@@ -1,0 +1,3 @@
+cond -> {"success": true, "action": "start", "scope": "map", "notes": ["replaced an already-active instance", "registered HeatWave for 400000 ticks"], "endsNe
+t=9296 step=completed outdoor=20.9 indoor=23.9 rooms=[('Barracks', 23.9), ('Kitchen', 28.4), ('Storeroom', 23.5)]
+t=12296 step=completed outdoor=27.4 indoor=26.4 rooms=[('Barracks', 26.4), ('Kitchen', 28.3), ('Storeroom', 25.1)]

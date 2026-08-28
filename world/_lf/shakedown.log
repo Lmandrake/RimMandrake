@@ -1,0 +1,36 @@
+subject pawn: Human607 of 5 colonists
+
+=== READ-ONLY PASS ===
+  time_clock                       WORKS    {"ticksAbs": 381500, "ticksSinceSettle": 66500, "startingYear": 5500, "settleTick": 0, "hasSettl
+  time_perf                        WORKS    {"meanTickTime": 0.0, "ticksThisFrame": 0, "tickRateMultiplier": 0.0, "curTimeSpeed": "Paused"}
+  time_date_at                     WORKS    {"absTicksUsed": 381500, "latitude": 34.19177, "longitude": -4.937283, "dateFullString": "7th of
+  research_availability            REFUSES  Give a ResearchProjectDef defName.
+  cell_temperature                 WORKS    {"cell": {"x": 103, "z": 205}, "ok": true, "temperature": 23.4986858, "outdoorTemp": 14.1358109,
+  incident_parms_preview           WORKS    {"category": "ThreatBig", "incidentDef": null, "defaultParms": {"points": 50.3027, "faction": nu
+  pawn_thoughts                    WORKS    {"totalMoodOffset": 29.0, "curMoodLevel": 0.61, "thoughtCount": 17, "thoughts": [{"def": "NewCol
+  pawn_break_thresholds            WORKS    {"curMood": 0.61, "thresholdMinor": 0.35, "thresholdMajor": 0.2, "thresholdExtreme": 0.05, "marg
+  pawn_stats                       WORKS    1 stat(s) read off Haplo (Colonist).
+  room_get                         WORKS    1 distinct room(s) over 1 cell(s).
+  map_zones                        WORKS    {"action": "listZones", "zones": [{"label": "Growing zone 1", "type": "Zone_Growing", "cells": 7
+
+=== WRITE PASS (scratch map) ===
+  pawn_refresh_needs               WORKS    {"before": ["Mood", "Food", "Rest", "Hygiene", "Joy", "Beauty", "Comfort", "Outdoors", "DrugDesi
+  pawn_dirty_situational           WORKS    {"totalMoodOffsetAfterDirty": 29.0}
+  pawn_memory                      WORKS    {"action": "add", "thought": "AteFineMeal", "otherPawn": null, "memoryCountBefore": 17, "memoryC
+  set_draft                        WORKS    {"drafted": true, "fireAtWill": true}
+  set_draft                        WORKS    {"drafted": false, "fireAtWill": true}
+  stop_job                         WORKS    {"mode": "endcurrent", "beforeJob": "Ingest", "afterJob": "Ingest", "beforeQueueLength": 0, "aft
+  set_player_settings              WORKS    {"area": null, "master": null, "medCare": "Best", "hostilityResponse": "Flee", "notes": []}
+  timetable                        WORKS    {"hour": 3, "assignment": "Work", "isColonist": true, "isPrisoner": false, "ignoredInPractice": 
+  new_allowed_area                 WORKS    {"id": 14, "label": "Area 2", "allowedAreaCountNow": 2}
+  paint_area                       REFUSES  ops is required, e.g. '10,20,5,5;30,30,2,2'.
+  time_pin_normal_speed            WORKS    {"forcedNormalSpeedAfter": false, "ticksGameAtCall": 66500}
+  weather_roll_next                WORKS    {"before": {"weather": "Clear", "curWeatherAge": 56499}, "after": {"weather": "Clear", "curWeath
+  rain_suppress                    WORKS    {"before": 0, "after": 67100, "ticksRemaining": 600, "note": "'after' is read back from the priv
+  sky_glow_set                     REFUSES  Give skyGlow and/or targetBrightness.
+  difficulty_tune                  WORKS    {"before": {"threatScale": 1.0, "allowBigThreats": true, "adaptationEffectFactor": 0.9, "colonis
+  research_progress                REFUSES  Give a ResearchProjectDef defName.
+  incident_schedule                REFUSES  incidentDef is required.
+  signal_send                      REFUSES  tag is required.
+
+VERDICTS: {'WORKS': 22, 'REFUSES': 6}

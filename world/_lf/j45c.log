@@ -1,0 +1,23 @@
+JAWA = Kiko McKenzie Human58017
+   need Rest  -> True 
+   need Food  -> True 
+   need Joy   -> True 
+BASELINER = Freddie Leblanc Human58021
+   need Rest  -> True 
+   need Food  -> True 
+   need Joy   -> True 
+
+  step 1  JAWA=LayDown   BASELINER=LayDown
+  step 2  JAWA=LayDown   BASELINER=LayDown
+  step 3  JAWA=SocialRelax   BASELINER=LayDown
+  step 4  JAWA=SocialRelax   BASELINER=LayDown
+  step 5  JAWA=SocialRelax   BASELINER=LayDown
+  step 6  JAWA=GoSwimming   BASELINER=LayDown
+  step 7  JAWA=washAtCell   BASELINER=Skygaze
+  step 8  JAWA=Wait_Wander   BASELINER=DBHDrinkFromGround
+  step 9  JAWA=Wait_Wander   BASELINER=Wait_Wander
+  step 10 JAWA=Wait_Wander   BASELINER=Wait_MaintainPosture
+
+  JAWA       jobs seen: {'LayDown': 2, 'SocialRelax': 3, 'GoSwimming': 1, 'washAtCell': 1, 'Wait_Wander': 3}
+  BASELINER  jobs seen: {'LayDown': 6, 'Skygaze': 1, 'DBHDrinkFromGround': 1, 'Wait_Wander': 1, 'Wait_MaintainPosture': 1}
+  things in the growing zone: {'LavaFlowBasalt': 33, 'Plant_Rice': 14}

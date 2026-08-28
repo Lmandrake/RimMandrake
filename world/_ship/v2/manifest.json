@@ -145,7 +145,7 @@
   {
    "slug": "corrosion_halo",
    "title": "Corrosion Halo",
-   "blurb": "Rust as a wound. Hottest orange right at the lip of every blister, cooling through brown to cold grey where the plating is still sound. The holes are what you look at.",
+   "blurb": "Rust as a wound - in browns only. Deepest reddish-brown at the lip of every blister, cooling through sandstone to warm pale where the plating is still sound. The holes are what you look at.",
    "file": "corrosion_halo.png",
    "details": [
     {
@@ -163,60 +163,44 @@
    ],
    "colors": [
     [
-     "guy762_StructureColor_HK47Rust",
-     1001
-    ],
-    [
-     "guy762_StructureColor_BespinBeige",
-     821
-    ],
-    [
-     "Structure_White",
-     609
-    ],
-    [
-     "Structure_Mustard",
-     606
-    ],
-    [
-     "Structure_Limestone",
-     501
-    ],
-    [
-     "Structure_GrayLight",
-     440
-    ],
-    [
-     "guy762_StructureColor_212thOrange",
-     199
-    ],
-    [
-     "Structure_Orange",
-     139
-    ],
-    [
-     "guy762_StructureColor_ImpArmySlate",
-     129
-    ],
-    [
-     "Structure_Auburn",
-     108
-    ],
-    [
-     "Structure_Granite",
-     100
+     "Structure_BrownSubtle",
+     1255
     ],
     [
      "Structure_UmberBurnt",
+     1048
+    ],
+    [
+     "Structure_BrownDark",
+     718
+    ],
+    [
+     "guy762_StructureColor_CinnagarIron",
+     572
+    ],
+    [
+     "Structure_BrownWood",
+     441
+    ],
+    [
+     "ReddishBrown",
+     426
+    ],
+    [
+     "Structure_Sandstone",
+     165
+    ],
+    [
+     "Structure_Limestone",
+     105
+    ],
+    [
+     "Structure_BrownDirt",
      74
     ],
     [
-     "Structure_Marble",
-     58
-    ],
-    [
-     "Structure_GreyDark",
-     21
+     "guy762_StructureColor_BespinBeige",
+     2
     ]
    ]
   },

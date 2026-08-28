@@ -1,0 +1,58 @@
+{
+ "RimMandrakeUgnaught": {
+  "readBackXeno": "RimMandrakeUgnaught",
+  "n": 22,
+  "temp": [],
+  "plants": [
+   "AptitudePoor_Plants"
+  ]
+ },
+ "RimMandrakeTwilek": {
+  "readBackXeno": "RimMandrakeTwilek",
+  "n": 33,
+  "temp": [],
+  "plants": []
+ },
+ "RimMandrakeKelDor": {
+  "readBackXeno": "RimMandrakeKelDor",
+  "n": 20,
+  "temp": [],
+  "plants": []
+ },
+ "MandrakeJawa": {
+  "readBackXeno": "MandrakeJawa",
+  "n": 40,
+  "temp": [
+   "MaxTemp_SmallIncrease",
+   "MinTemp_SmallDecrease"
+  ],
+  "plants": [
+   "AptitudeTerrible_Plants"
+  ]
+ },
+ "RimMandrakeChiss": {
+  "readBackXeno": "RimMandrakeChiss",
+  "n": 15,
+  "temp": [
+   "MaxTemp_SmallDecrease",
+   "MinTemp_LargeDecrease"
+  ],
+  "plants": []
+ },
+ "RimMandrakeWookiee": {
+  "readBackXeno": "RimMandrakeWookiee",
+  "n": 29,
+  "temp": [
+   "Furskin",
+   "MaxTemp_SmallIncrease",
+   "MinTemp_SmallDecrease"
+  ],
+  "plants": []
+ },
+ "Baseliner": {
+  "readBackXeno": "Baseliner",
+  "n": 3,
+  "temp": [],
+  "plants": []
+ }
+}

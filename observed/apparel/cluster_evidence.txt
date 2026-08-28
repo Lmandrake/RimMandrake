@@ -1,0 +1,216 @@
+
+### PrestigeCombatGear  (22)
+    AG_ForsakenCloak
+    AG_ForsakenCloak_Child
+    AG_ForsakenMarineArmor
+    AG_ForsakenMarineHelmet
+    AG_ForsakenMarineHelmetPsy
+    AG_Forsaken_Hood
+    AG_Forsaken_Hood_Child
+    AM_Apparel_ArmorHelmetMechlordHelmet_Prestige
+    AM_Apparel_MechlordSuit_Prestige
+    AM_MechCommanderHelm_Prestige
+    AM_PrestigeMechBreakerArmor
+    AM_PrestigeMechBreakerHelm
+    AM_PrestigeMechCommanderSuit
+    BMT_Apparel_ArmorBeetlephractPrestige
+    BMT_Apparel_ArmorChitinphractPrestige
+    BMT_Apparel_ArmorHelmetBeetlephractPrestige
+    BMT_Apparel_ArmorHelmetChitinphractPrestige
+    BMT_Apparel_ArmorHelmetSpidrephractPrestige
+    VQE_Apparel_CryptoHeavyHelmet
+    VQE_Apparel_CryptoLightHelmet
+    VQE_CryptoArmor
+    VQE_CryptoHeavyArmor
+
+### KotORArmor_heavy  (16)
+    guy762_HelmetHeavyBattle
+    guy762_HelmetHeavyBattle_powered
+    guy762_HelmetHeavyBattle_repcom
+    guy762_HvyArmor
+    guy762_HvyArmor_durasteel
+    guy762_HvyArmor_echani
+    guy762_HvyArmor_flex
+    guy762_HvyArmor_gamorrean
+    guy762_HvyArmor_matrix
+    guy762_HvyArmor_repcom
+    guy762_MidBattleArmor
+    guy762_MidBattleArmor_cinnagar
+    guy762_MidBattleArmor_corellian
+    guy762_MidBattleArmor_mando
+    guy762_MidBattleArmor_powered
+    guy762_MidBattleArmor_verpine
+
+### KotORArmor_mid  (20)
+    guy762_HelmetLgtBattle
+    guy762_HelmetLgtBattle_TSL
+    guy762_HelmetLgtBattle_baragwin
+    guy762_HelmetMilitary
+    guy762_HelmetMilitary_OldRepublic
+    guy762_HelmetMilitary_Pilot
+    guy762_HelmetMilitary_militia
+    guy762_HelmetMilitary_rebel
+    guy762_LgtBattleArmor
+    guy762_LgtBattleArmor_TSL
+    guy762_LgtBattleArmor_bronzium
+    guy762_LgtBattleArmor_electromesh
+    guy762_LgtBattleArmor_krath
+    guy762_LgtBattleArmor_power
+    guy762_MilSuit
+    guy762_MilSuit_bastion
+    guy762_MilSuit_cinnagar
+    guy762_MilSuit_echani
+    guy762_MilSuit_militia
+    guy762_MilSuit_verpine
+
+### Royal  (20)
+    Apparel_Beret
+    Apparel_Cape
+    Apparel_Coronet
+    Apparel_Crown
+    Apparel_CrownStellic
+    Apparel_RobeRoyal
+    Apparel_ShirtRuffle
+    Apparel_VestRoyal
+    Jewelry_Bracelet
+    Jewelry_Earring
+    Jewelry_EltexBracelet
+    Jewelry_EltexEarring
+    Jewelry_EltexRing
+    Jewelry_Necklace
+    Jewelry_PsychicNecklace
+    Jewelry_Ring
+    RBApparel_Tailcoat
+    VAE_Apparel_Trousers
+    VAE_Footwear_Boots
+    VAE_Footwear_Shoes
+
+### SaV_apparel_huttgoon  (5)
+    guy762_Hat_gamorrean
+    guy762_Headband_bandana
+    guy762_Headband_nerualband
+    guy762_HelmetCombat_hutt
+    guy762_HvySuit_hutt
+
+### KotORDroidArmorT1  (6)
+    guy762_DroidArmorLte
+    guy762_DroidArmorLte_composite
+    guy762_DroidArmorLte_czerka
+    guy762_DroidArmorLte_desh
+    guy762_DroidArmorLte_env
+    guy762_DroidArmorLte_impact
+
+### KotORDroidArmorT2  (6)
+    guy762_DroidArmorMid
+    guy762_DroidArmorMid_composite
+    guy762_DroidArmorMid_czerka
+    guy762_DroidArmorMid_desh
+    guy762_DroidArmorMid_env
+    guy762_DroidArmorMid_impact
+
+### KotORDroidArmorT3  (6)
+    guy762_DroidArmorHvy
+    guy762_DroidArmorHvy_composite
+    guy762_DroidArmorHvy_czerka
+    guy762_DroidArmorHvy_desh
+    guy762_DroidArmorHvy_env
+    guy762_DroidArmorHvy_impact
+
+### DroidArmor  (3)
+    OuterRim_DroidArmorHeavy
+    OuterRim_DroidArmorLight
+    OuterRim_DroidArmorModule
+
+### Neolithic  (12)
+    Apparel_BabyTribal
+    Apparel_KidParka
+    Apparel_KidTribal
+    Apparel_Parka
+    ROMB_Apparel_SkullMask
+    Sihv_Apparel_BoneArmor
+    VAE_Apparel_PeltCoat
+    VAE_Apparel_TribalKilt
+    VAE_Apparel_TribalPoncho
+    VFET_Apparel_TribalHeavy
+    VFET_Apparel_TribalLight
+    VFET_Apparel_TribalWar
+
+### ORBoneArmour  (3)
+    OuterRim_BoneCuirass
+    OuterRim_BoneHelmet
+    OuterRim_BonePauldrons
+
+### ORChitinArmour  (3)
+    OuterRim_ChitinCuirass
+    OuterRim_ChitinHelmet
+    OuterRim_ChitinPauldrons
+
+### EVA  (25)
+    guy762_Bodysuit
+    guy762_DroidArmorHvy
+    guy762_DroidArmorHvy_composite
+    guy762_DroidArmorHvy_czerka
+    guy762_DroidArmorHvy_desh
+    guy762_DroidArmorHvy_diatium
+    guy762_DroidArmorHvy_env
+    guy762_DroidArmorHvy_impact
+    guy762_DroidArmorLte
+    guy762_DroidArmorLte_agrinium
+    guy762_DroidArmorLte_composite
+    guy762_DroidArmorLte_czerka
+    guy762_DroidArmorLte_desh
+    guy762_DroidArmorLte_env
+    guy762_DroidArmorLte_impact
+    guy762_DroidArmorMid
+    guy762_DroidArmorMid_composite
+    guy762_DroidArmorMid_czerka
+    guy762_DroidArmorMid_desh
+    guy762_DroidArmorMid_env
+    guy762_DroidArmorMid_impact
+    guy762_DroidArmorMid_quadranium
+    guy762_LgtBattleArmor_power
+    guy762_MidBattleArmor_corellian
+    guy762_MidBattleArmor_powered
+
+### Vacsuit  (3)
+    Apparel_Vacsuit
+    Apparel_VacsuitChildren
+    Apparel_VacsuitHelmet
+
+### KotORHeadband_gasmask  (1)
+    guy762_Headband_breathmask
+
+### KotORHeadband_AdvGasmask  (2)
+    guy762_Headband_breathmask
+    guy762_Headband_rebreathermask
+
+### SaV_apparel_lightmerc  (11)
+    guy762_CombatSuit
+    guy762_CombatSuit_cinnagar
+    guy762_CombatSuit_echani
+    guy762_CombatSuit_onderon
+    guy762_CombatSuit_zabrak
+    guy762_HelmetCombat
+    guy762_HvySuit
+    guy762_HvySuit_baragwin
+    guy762_HvySuit_bonadan
+    guy762_HvySuit_fiber
+    guy762_HvySuit_mod
+
+### SaV_apparel_midmerc  (3)
+    guy762_MilSuit
+    guy762_MilSuit_cinnagar
+    guy762_MilSuit_echani
+
+### SaV_outfit_merc  (11)
+    guy762_HelmetLgtBattle
+    guy762_LgtBattleArmor
+    guy762_LgtBattleArmor_TSL
+    guy762_LgtBattleArmor_bronzium
+    guy762_LgtBattleArmor_power
+    guy762_MidBattleArmor
+    guy762_MidBattleArmor_cinnagar
+    guy762_MidBattleArmor_corellian
+    guy762_MidBattleArmor_mando
+    guy762_MidBattleArmor_powered
+    guy762_MidBattleArmor_verpine

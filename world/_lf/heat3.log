@@ -1,0 +1,14 @@
+restart short -> {"success": true, "action": "start", "scope": "map", "notes": ["registered HeatWave for 12000 ticks"], "endsNextTick": false, "gamePaused": true, "listCaveat": null, "act
+t=15000 outdoor=23.8 indoor=25.5 rooms=[('Barracks', 25.5), ('Kitchen', 28.0), ('Storeroom', 25.8)]
+t=16200 outdoor=26.3 indoor=26.4 rooms=[('Barracks', 26.4), ('Kitchen', 28.6), ('Storeroom', 26.3)]
+t=17400 outdoor=28.7 indoor=27.1 rooms=[('Barracks', 27.1), ('Kitchen', 28.3), ('Storeroom', 27.0)]
+t=18600 outdoor=31.0 indoor=28.1 rooms=[('Barracks', 28.1), ('Kitchen', 28.5), ('Storeroom', 27.5)]
+t=19800 outdoor=30.7 indoor=29.1 rooms=[('Barracks', 29.1), ('Kitchen', 28.9), ('Storeroom', 28.0)]
+t=21000 outdoor=29.4 indoor=29.4 rooms=[('Barracks', 29.4), ('Kitchen', 29.2), ('Storeroom', 28.4)]
+t=22200 outdoor=28.1 indoor=29.2 rooms=[('Barracks', 29.2), ('Kitchen', 29.2), ('Storeroom', 28.6)]
+t=23400 outdoor=26.6 indoor=28.9 rooms=[('Barracks', 28.9), ('Kitchen', 29.1), ('Storeroom', 28.6)]
+t=24600 outdoor=25.0 indoor=28.3 rooms=[('Barracks', 28.3), ('Kitchen', 28.8), ('Storeroom', 28.4)]
+t=25800 outdoor=24.6 indoor=27.4 rooms=[('Barracks', 27.4), ('Kitchen', 28.1), ('Storeroom', 28.0)]
+t=27000 outdoor=24.5 indoor=27.1 rooms=[('Barracks', 27.1), ('Kitchen', 28.5), ('Storeroom', 27.6)]
+t=28200 outdoor=24.3 indoor=27.1 rooms=[('Barracks', 27.1), ('Kitchen', 28.2), ('Storeroom', 27.2)]
+done

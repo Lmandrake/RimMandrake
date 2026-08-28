@@ -1,0 +1,2275 @@
+[
+ {
+  "name": "jawa/biome_art_audit",
+  "description": "For every biome PRESENT on this planet, report its world texture path and whether that texture actually resolved. A BiomeDef whose texture is missing renders MAGENTA on the globe and logs nothing useful, so the only way to find it today is to look at the planet and squint. Resolution is tested with ContentFinder, which is the same loader the def uses, and the material's own main texture is checked",
+  "params": [
+   "onlyInUse"
+  ]
+ },
+ {
+  "name": "jawa/biome_probe",
+  "description": "Ask a biome what it will ACTUALLY spawn — the resolved wild-animal and wild-plant sets with their commonalities, read off the runtime caches rather than off XML. Built for removal audits: `find` answers 'is this animal still in these biomes' across every biome in one call, which is the check that distinguishes a removal that took from a removal that silently no-opped. 🔴 No other tool here can see ",
+  "params": [
+   "animals",
+   "biomes",
+   "find",
+   "limit",
+   "plants",
+   "topN"
+  ]
+ },
+ {
+  "name": "jawa/build_batch",
+  "description": "Place finished buildings instantly - the god-mode path Designator_Build takes: ThingMaker.MakeThing(def, stuff) then GenSpawn.Spawn. ops format 'ThingDef:x,z[,rot]' separated by ';', e.g. 'Wall:10,20,0;Wall:11,20;Door:12,20,1'. rot is 0=N 1=E 2=S 3=W or a name. stuff, faction, quality and hitPoints apply to every op in the call. ⚠️ HitPoints are set AFTER MakeThing on purpose - MakeThing calls Pos",
+  "params": [
+   "faction",
+   "hitPoints",
+   "ops",
+   "quality",
+   "readBack",
+   "stuff",
+   "wipeExisting"
+  ]
+ },
+ {
+  "name": "jawa/build_check",
+  "description": "Pre-flight a building placement WITHOUT placing it. Returns the engine's own AcceptanceReport from GenConstruct.CanPlaceBlueprintAt plus GenSpawn.CanSpawnAt, so you get the real reason ('needs even ground', 'would block interaction spot') instead of discovering it as a failed spawn. Read-only.",
+  "params": [
+   "def",
+   "godMode",
+   "limit",
+   "rect",
+   "rot",
+   "stuff"
+  ]
+ },
+ {
+  "name": "jawa/clear_ui",
+  "description": "Close RimWorld's dev windows and drop the current selection, so a screenshot shows the MAP instead of the debug log. The Debug log window covers the centre of the screen — exactly where jump_camera_to_cell puts the subject — and 'Auto-open on error' reopens it constantly under a modded load. Call this immediately before every take_screenshot; it is cheap, it touches no game state, and without it a",
+  "params": [
+   "all",
+   "clearSelection",
+   "devWindows"
+  ]
+ },
+ {
+  "name": "jawa/connect_cells",
+  "description": "Route and lay a connected line of things (power conduit, wall, floor) from one cell to another, so that after the call they really are connected. Copies vanilla's own conduit router: a 4-connected flood fill over PLACEABILITY, not a pathfinder, so the route is placeable end-to-end by construction and conduit never breaks at a diagonal. mode='strict' refuses if anything is in the way and names the ",
+  "params": [
+   "dryRun",
+   "faction",
+   "from",
+   "mode",
+   "stuff",
+   "thing",
+   "to"
+  ]
+ },
+ {
+  "name": "jawa/damage",
+  "description": "Apply graduated damage to ANY thing or pawn, including hostiles. Closes the gap that made the debug menu's own 'Apply damage...' useless: that path is inert, and RimBridgeServer.ResolvePawn accepts player-controlled colonists only, so hostiles could not be targeted at all. This calls Thing.TakeDamage directly. Target by thingId, or by x/z to hit everything in a cell.",
+  "params": [
+   "allowColonists",
+   "amount",
+   "armorPenetration",
+   "bodyPart",
+   "damageDef",
+   "thingId",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "jawa/designate_batch",
+  "description": "Add or remove Designations directly - Mine, Deconstruct, HarvestPlant, CutPlant, Haul, SmoothWall, SmoothFloor, Plan, Hunt, Tame, Slaughter, Flick, Strip and the rest - with no cursor and no drag tool. action='add' | 'remove' | 'query'. Cell designations take a rect; thing designations resolve against whatever occupies each cell. ⚠️ AddDesignation logs a red error on double-add, so this queries fi",
+  "params": [
+   "action",
+   "designation",
+   "limit",
+   "onThings",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/destroy_batch",
+  "description": "Destroy things in MANY cells in one call, filtered by category. The bridge has no working direct destruction primitive: 'Clear area (rect)' is a drag tool and silently does nothing. Until now the only way to clear ground was to lay a floor over it, which leaves a floor. Categories: Plant, Item, Filth, Building, All. PAWNS ARE NEVER DESTROYED by this tool, whatever the filter says -- killing a colo",
+  "params": [
+   "categories",
+   "category",
+   "rects"
+  ]
+ },
+ {
+  "name": "jawa/drain_log",
+  "description": "Return the game's recent log messages, newest last. The bridge's per-call `effects.logs` cannot see anything logged during step_game_ticks, so a warning caused by a tick is invisible without this. Filter to errors only to find red text without diffing Player.log by hand.",
+  "params": [
+   "contains",
+   "errorsOnly",
+   "limit"
+  ]
+ },
+ {
+  "name": "jawa/faction_create",
+  "description": "Create a faction that worldgen never made, and add it to the world. This is the only route for a faction that is ABSENT from an existing world: requiredCountAtGameStart is read at world generation and nowhere else, and the only load-time top-up is a hardcoded list of five vanilla factions, so a missing faction cannot arrive by patching a def. WHY ONE GOES MISSING, which is worth checking before cr",
+  "params": [
+   "allowDuplicate",
+   "allowHidden",
+   "defName",
+   "dryRun"
+  ]
+ },
+ {
+  "name": "jawa/faction_leader_get",
+  "description": "Report each faction's leader title and current leader. 🔑 Faction.LeaderTitle is NOT simply def.leaderTitle - it prefers the faction's primary ideoligion's leaderTitleMale/Female and only falls back to the def. So a campaign that authored a title on the FactionDef can be silently overridden by a generated ideoligion, and the def keeps reading correct offline. This reports the effective title, the d",
+  "params": [
+   "factions",
+   "includeHidden"
+  ]
+ },
+ {
+  "name": "jawa/faction_name_get",
+  "description": "Read what each faction is ACTUALLY called against what its def says it should be called. Answers the one question no UI shows side by side: is this faction wearing its authored name, or one the name generator picked at world creation? A faction whose stored name differs from its AUTHORED name - fixedName where the def has one, label otherwise - is wearing a generated name, and on a world meant to ",
+  "params": [
+   "includeHidden",
+   "limit"
+  ]
+ },
+ {
+  "name": "jawa/faction_name_set",
+  "description": "Repair or set a faction's name on a world that already exists. This is the ONLY way to fix a faction wearing a generated name, because Faction.Name returns the STORED name and a def patch cannot reach it. DEFAULTS TO dryRun=true - it reports what it would do and writes nothing until dryRun is passed false. PREFER action=clear: it nulls the stored name so the faction inherits its def label, which i",
+  "params": [
+   "action",
+   "defNames",
+   "dryRun",
+   "names",
+   "onlyGenerated",
+   "protectPlayer"
+  ]
+ },
+ {
+  "name": "jawa/faction_relations_get",
+  "description": "Read the FACTION-TO-FACTION relation matrix - every pair, not just pairs with the player. No args returns the whole matrix; `faction` alone returns that faction's row; `faction`+`other` returns the single cell. Pass 'Player' for the player colony. Relations are stored per faction, TWO records per pair, so every pair is reported in BOTH directions and any disagreement between them is called out - t",
+  "params": [
+   "faction",
+   "includeDefeated",
+   "includeHidden",
+   "includeNeutral",
+   "other"
+  ]
+ },
+ {
+  "name": "jawa/faction_relations_set",
+  "description": "Set the relation between ANY two factions - pass 'Player' for the player colony. Writes both stored records by default, because the engine itself keeps them in lockstep and a one-sided write is a corrupt state, not a feature. Picks the write path off the pair: SetRelationDirect when either side lacks goodwill (mechanoids, insects, permanent enemies - it REFUSES when both sides have goodwill), othe",
+  "params": [
+   "both",
+   "clampGoodwillToKind",
+   "dryRun",
+   "faction",
+   "goodwill",
+   "kind",
+   "other",
+   "sendLetter"
+  ]
+ },
+ {
+  "name": "jawa/fire_incident",
+  "description": "Fire a storyteller incident — a raid, a trader, a solar flare, an infestation. This is the GM half of the primitive set: everything else on this bridge changes something the caller named, whereas an incident makes the WORLD act on the player. Use dryRun to ask whether it CAN fire without firing it.",
+  "params": [
+   "dryRun",
+   "faction",
+   "incidentDef",
+   "points"
+  ]
+ },
+ {
+  "name": "jawa/fire_quest",
+  "description": "Generate an authored quest and make it available, bypassing the item/float-menu route entirely. Takes a QuestScriptDef defName plus threat points. Optionally accepts it too, which is what turns an offer into a site on the world map. Use dryRun to resolve and cost the quest without creating it.",
+  "params": [
+   "accept",
+   "dryRun",
+   "points",
+   "questDef"
+  ]
+ },
+ {
+  "name": "jawa/fire_raid",
+  "description": "*** ACTS ON THE LIVE COLONY - THIS SENDS A REAL RAID *** Fire a raid with FULL parameter control. IncidentWorker_RaidEnemy only auto-resolves faction, strategy and arrival mode when they are null, so anything set here wins over the storyteller. Use jawa/raid_preview first to see which strategies CanUseWith your parms. ⚠️ points is required and must be > 0 or the worker logs an error.",
+  "params": [
+   "arrivalMode",
+   "dryRun",
+   "faction",
+   "friendly",
+   "points",
+   "spawnCenter",
+   "strategy"
+  ]
+ },
+ {
+  "name": "jawa/game_condition",
+  "description": "*** ACTS ON THE LIVE COLONY *** Start or end a GameCondition - eclipse, solar flare, toxic fallout, heat wave, cold snap, aurora, psychic drone and the rest. action='start' | 'end'. ⚠️ There is no EndNow(); ending sets Duration = TicksPassed so it expires next tick. ⛔ `Planetkiller` is HARD-BLOCKED - it ends the game and that is never a bridge operation.",
+  "params": [
+   "action",
+   "condition",
+   "durationTicks",
+   "permanent",
+   "worldWide"
+  ]
+ },
+ {
+  "name": "jawa/get_def",
+  "description": "Read a def as the game RESOLVED it — after XML patches and after parent inheritance. This is not the same as the offline def dump, which does not serialise statBases or description and has produced wrong conclusions twice (a warcasket appearing to have no armour values, and an empty description reading as a failed patch). Returns statBases, comps with their class names, and the mod that actually s",
+  "params": [
+   "defName",
+   "defType"
+  ]
+ },
+ {
+  "name": "jawa/get_defs",
+  "description": "Read MANY defs of ANY types in one call, and pull named fields off them reflectively. Supersedes calling jawa/get_def in a loop. Two reasons it exists: a batch audit (say, confirming a mod-removal list) is one call instead of twenty-two, and — more importantly — `fields` means a new question can be answered WITHOUT a new companion build. That matters because a companion can only be deployed while ",
+  "params": [
+   "defs",
+   "fields",
+   "limit"
+  ]
+ },
+ {
+  "name": "jawa/get_roof_batch",
+  "description": "Read the roof of MANY cells in one call, answering in the SAME ops grammar jawa/set_roof_batch accepts -- so a capture replays straight back as a restore, with no translation step. Unroofed cells come back as 'None', which set_roof_batch understands, so an exact revert includes removing roofs that were not there before. rects format: 'x,z,w,h' separated by ';'.",
+  "params": [
+   "rects"
+  ]
+ },
+ {
+  "name": "jawa/get_terrain_batch",
+  "description": "Read the terrain of MANY cells in a single call, and return it in the SAME ops grammar jawa/set_terrain_batch accepts. This is the capture half of reversible map authoring: capture a region, paint over it, then feed the returned ops string straight back to jawa/set_terrain_batch to restore it exactly. rects format: 'x,z,w,h' separated by ';' (a leading 'Name:' is accepted and ignored, so a set_ter",
+  "params": [
+   "layer",
+   "rects"
+  ]
+ },
+ {
+  "name": "jawa/get_terrain_layers",
+  "description": "Read ALL FIVE terrain layers plus the colour at map cells: top, under, FOUNDATION (where substructure lives), TEMP (Odyssey ice/mud) and the base terrain, plus whether the cell counts as substructure. The existing jawa/get_terrain_batch only ever reads the TOP layer, so it cannot see a floor laid over substructure. Read-only.",
+  "params": [
+   "limit",
+   "onlyFoundation",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/ideo_of",
+  "description": "Read the ideoligions the running game actually generated — memes, structure, deity, precepts, roles, venerated animals — and count how many pawns believe each one. An Ideo is a RUNTIME object, not a Def, so no amount of def reading can reach it and an authored ideoligion is otherwise unverifiable. The believer counts answer a separate question the design has been assuming rather than measuring: wh",
+  "params": [
+   "believers",
+   "ideo",
+   "limit",
+   "precepts"
+  ]
+ },
+ {
+  "name": "jawa/inspect_string",
+  "description": "Read the inspect-pane text the game writes for a thing — the same sentences a player sees when they click it. This is how you find out whether something is WORKING as opposed to merely present: 'Blocked by', 'Needs power', 'Broken down', 'will be blocked due to being indoors'. Nothing else on this bridge exposes comp state at all — get_cell_info reports a className and stops. Takes thingIds, or a ",
+  "params": [
+   "defName",
+   "limit",
+   "rect",
+   "thingIds"
+  ]
+ },
+ {
+  "name": "jawa/list_factions",
+  "description": "List every faction in the current world with its hostility to the player and how many SETTLEMENTS it owns on the planet. Nothing else on the bridge can answer this: list_colonists is player-only, list_pawns sees only the current map, and settlements are world objects that never stand on a map. This is the call that decides whether a faction-suppression patch actually applied, without scrolling a U",
+  "params": [
+   "defName",
+   "includeHidden",
+   "limit"
+  ]
+ },
+ {
+  "name": "jawa/list_pawns",
+  "description": "List EVERY pawn on the map — all factions, hostiles, animals, mechanoids, the lot. This closes a real blind spot: rimworld/list_colonists returns only player colonists, get_cell_info does not report pawns at all, and RimBridgeServer.ResolvePawn refuses anything that is not a player colonist. Before this tool the only way to observe a hostile was a screenshot or parsing a saved game. Optionally fil",
+  "params": [
+   "faction",
+   "includeCorpses",
+   "includeHealth",
+   "limit",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/list_things",
+  "description": "Find things on the map and return their ThingIDs — buildings, items, plants, corpses, anything that is not a pawn. This is how you get the id that jawa/damage, jawa/order_pawn and jawa/destroy_batch need, without clicking the object in game. Filter by defName (exact, or a comma-separated list), by rect, or by ThingRequestGroup. Nothing else on the bridge can answer 'is it there, and where exactly'",
+  "params": [
+   "defName",
+   "group",
+   "includePawns",
+   "limit",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/map_commit",
+  "description": "Make bulk MAP edits consistent and visible - the map-side twin of jawa/world_commit. Call ONCE after a batch of terrain, substructure, building or grid writes, never per write. Runs, in order: regionAndRoomUpdater.RebuildAllRegionsAndRooms (which also resets the temperature/vacuum cache); pathing.RecalculateAllPerceivedPathCosts; reachability.ClearCache; powerNetManager.UpdatePowerNetsAndConnectio",
+  "params": [
+   "full",
+   "pathing",
+   "power",
+   "redraw",
+   "regions"
+  ]
+ },
+ {
+  "name": "jawa/map_explosion",
+  "description": "*** ACTS ON THE LIVE MAP *** Detonate an explosion of any type at a cell. damType is a DamageDef: Bomb · BombSuper · Thump · Flame · Burn · AcidBurn · Vaporize · EMP · Stun · Smoke · ToxGas · DeadlifeDust · Extinguish and more. damage<0 uses the def's own defaultDamage. Optional gas cloud, fire chance, falloff, neighbour spill and per-cell spawns (filth, chunks, firefoam). ⚠️ radius is CLAMPED to ",
+  "params": [
+   "center",
+   "chanceToStartFire",
+   "damType",
+   "damage",
+   "damageFalloff",
+   "gas",
+   "listTypes",
+   "radius",
+   "screenShake",
+   "spawnChance",
+   "spawnThing",
+   "spillToNeighbors"
+  ]
+ },
+ {
+  "name": "jawa/map_fire",
+  "description": "*** ACTS ON THE LIVE MAP *** Start or extinguish fire. action='start' seeds fires over a rect (each cell is gated by RimWorld's own ChanceToStartFireIn, so wet or non-flammable cells legitimately refuse and the result reports how many took); 'extinguish' destroys every Fire in the rect. ⚠️ Fire SPREAD cannot be forced - Fire.TrySpread is protected. A fireSize above 1.0 makes spread far likelier, w",
+  "params": [
+   "action",
+   "fireSize",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/map_skyfaller",
+  "description": "*** ACTS ON THE LIVE MAP *** Drop a skyfaller - meteorite, drop pod, shuttle - at a cell. Default is a mineral meteorite with generated contents. ⚠️ A skyfaller def given the wrong kind of inner thing destroys it with a Log.Error, so innerThing is validated against the def first.",
+  "params": [
+   "cell",
+   "count",
+   "innerThing",
+   "skyfaller"
+  ]
+ },
+ {
+  "name": "jawa/map_zones",
+  "description": "Create, paint or delete STOCKPILE and GROWING zones, and paint the player AREAS (home, no-roof, build-roof, allowed). action='listZones' | 'createZone' | 'paintZone' | 'deleteZone' | 'listAreas' | 'paintArea'. ⚠️ Bulk AddCell needs CheckContiguous() afterwards or a zone can end up internally inconsistent - this tool calls it. 📌 The 1.6 name is Area_SnowOrSandClear, renamed from Area_SnowClear.",
+  "params": [
+   "action",
+   "area",
+   "plant",
+   "rect",
+   "value",
+   "zone",
+   "zoneType"
+  ]
+ },
+ {
+  "name": "jawa/order_pawn",
+  "description": "Order named pawns to WALK to a map cell, then wait for game ticks and report where they actually ended up. This is the primitive the bridge was missing: rimworld/right_click_cell dispatches a synthetic click and produces no move order at all (measured 2026-08-13: pawn sat still through 2,400 ticks with the target on screen). This issues the real thing — JobMaker.MakeJob(Goto, cell) through Pawn_Jo",
+  "params": [
+   "draft",
+   "pathEndMode",
+   "pawnId",
+   "targetId",
+   "timeoutSeconds",
+   "undraftAfter",
+   "unpause",
+   "waitTicks",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "jawa/pawn_gear",
+  "description": "Give, wear or clear a pawn's EQUIPMENT, APPAREL and INVENTORY. action='equip' puts a weapon in the primary slot, 'wear' puts on apparel, 'inventory' stuffs an item into the pack, 'clear' empties one or all three. 🔴 EQUIP HANDLES THE PRIMARY-SLOT TRAP: RimWorld's AddEquipment logs an error and silently does nothing when a primary already exists, so this calls MakeRoomFor first and reports what it d",
+  "params": [
+   "action",
+   "clearWhat",
+   "count",
+   "def",
+   "pawn",
+   "quality",
+   "stuff"
+  ]
+ },
+ {
+  "name": "jawa/pawn_genes",
+  "description": "Add or remove genes, or set a whole xenotype. ✅ AddGene/RemoveGene are FULLY SELF-REFRESHING via Notify_GenesChanged - colours, body and head, needs, hediff cache, aptitudes, work types and graphics all update. xenogene=true adds it as a xenogene rather than an endogene, which is what determines inheritance.",
+  "params": [
+   "action",
+   "gene",
+   "pawn",
+   "xenogene",
+   "xenotype"
+  ]
+ },
+ {
+  "name": "jawa/pawn_get",
+  "description": "Deep read of one or more spawned pawns: identity, faction, ideoligion, xenotype, age, backstories, traits, every skill, appearance, worn apparel, equipment, hediffs and needs. ⭐ Skills report BOTH `levelRaw` (GetLevel(false), what was actually written) and `levelEffective` (the getter, which ADDS APTITUDES). Validate against levelRaw - the two differ and the difference has fooled people.",
+  "params": [
+   "limit",
+   "pawn"
+  ]
+ },
+ {
+  "name": "jawa/pawn_health",
+  "description": "Add or remove a hediff, install a bionic, or restore a body part. action='add' | 'remove' | 'bionic' | 'restore'. ⭐ 'bionic' needs NO RecipeDef and no surgeon: it does RestorePart(part) then AddHediff(def, part), which is exactly what Recipe_InstallArtificialBodyPart does with a null billDoer. 🔴 'restore' is DESTRUCTIVE AND RECURSIVE - RestorePart walks into child parts, wipes their hediffs, and d",
+  "params": [
+   "action",
+   "bodyPart",
+   "confirmDestructive",
+   "hediff",
+   "pawn",
+   "severity"
+  ]
+ },
+ {
+  "name": "jawa/pawn_mental",
+  "description": "Force or end a mental state. action='list' | 'start' | 'end'. ⚠️ TryStartMentalState returns FALSE SILENTLY on about six conditions (already in that state, asleep without forceWake, mutant that prevents breaks, the worker refusing) - this tool surfaces that bool instead of reporting success regardless. 🔴 SOME STATES NEVER RECOVER ON THEIR OWN: BerserkPermanent and ManhunterPermanent set minTicksBe",
+  "params": [
+   "action",
+   "forceWake",
+   "forced",
+   "limit",
+   "otherPawn",
+   "pawn",
+   "state"
+  ]
+ },
+ {
+  "name": "jawa/pawn_need",
+  "description": "Set a pawn's need level (food, rest, joy, comfort, beauty, outdoors...) or give it a memory thought. action='need' writes CurLevel 0-1; action='thought' calls TryGainMemory. ⚠️ Social thoughts REQUIRE an otherPawn - without one they are dropped silently, so this refuses instead.",
+  "params": [
+   "action",
+   "level",
+   "need",
+   "otherPawn",
+   "pawn",
+   "thought"
+  ]
+ },
+ {
+  "name": "jawa/pawn_pregnancy",
+  "description": "Start, advance or end a pregnancy. action='get' | 'start' | 'progress' | 'end'. 🔑 GESTATION PROGRESS *IS* THE HEDIFF SEVERITY - there is no separate field. Setting it to 1 makes labour begin on the next tick. 'start' mirrors JobDriver_Lovin: MakeHediff(PregnantHuman) + SetParents with an inherited gene set + AddHediff. ⚠️ PregnancyUtility.GetInheritedGeneSet can FAIL when the combined genes blow t",
+  "params": [
+   "action",
+   "father",
+   "pawn",
+   "progress",
+   "quiet"
+  ]
+ },
+ {
+  "name": "jawa/pawn_psychic",
+  "description": "Set psylink level, grant or remove abilities/psycasts, and set psyfocus. action='get' | 'psylink' | 'grant' | 'remove' | 'psyfocus'. 🔴 THE 0->N QUIRK IS HANDLED FOR YOU: PawnUtility.ChangePsylinkLevel creates the PsychicAmplifier hediff on the FIRST call and returns without ever reading the offset, so a single call can only ever reach level 1. This tool ensures the hediff exists, then sets the exa",
+  "params": [
+   "ability",
+   "action",
+   "clearEntropy",
+   "level",
+   "pawn",
+   "psycastsOnly",
+   "psyfocus"
+  ]
+ },
+ {
+  "name": "jawa/pawn_relations",
+  "description": "Add, remove or list DIRECT relations between two pawns, and read opinion. ⚠️ RimWorld REFUSES `implied` relations - Kin, Cousin, Grand*, Great*, Uncle/Nephew and friends are COMPUTED from the family graph, not stored - so this reports that clearly instead of letting it look like a failed write. ✅ Reflexive relations auto-mirror onto the other pawn.",
+  "params": [
+   "action",
+   "force",
+   "otherPawn",
+   "pawn",
+   "relation"
+  ]
+ },
+ {
+  "name": "jawa/pawn_romance",
+  "description": "Do the FULL social transaction, not just the relation flip. action='romance' makes two pawns lovers and shares a bed; 'marry' runs MarriageCeremonyUtility.Married - which ex-spouses everyone, removes Fiance, adds the newly-married thoughts BOTH ways, renames after marriage and shares a bed; 'breakup' mirrors InteractionWorker_Breakup so the BrokeUpWithMe thought actually lands; 'memory' adds a Tho",
+  "params": [
+   "action",
+   "otherPawn",
+   "pawn",
+   "thought"
+  ]
+ },
+ {
+  "name": "jawa/pawn_traits",
+  "description": "Add, remove or list a pawn's traits. 🔴 RimWorld's GainTrait does NOT check conflicts and TraitSet has NO trait cap, so this tool checks TraitDef.ConflictsWith and BackstoryDef.DisallowsTrait itself and REFUSES by default. Pass force=true to stack a conflicting trait deliberately. ✅ Gain/RemoveTrait are self-refreshing - work types, skill disables, aptitudes, situational thoughts, granted abilities",
+  "params": [
+   "action",
+   "degree",
+   "force",
+   "pawn",
+   "trait"
+  ]
+ },
+ {
+  "name": "jawa/pawnkind_audit",
+  "description": "Find every PawnKindDef that CANNOT arm itself, and say which of the three reasons it is. Uses the engine's own weapon-pair table and the engine's own eligibility test, so it cannot drift from what generation actually does. Reasons: `noWeaponTags` (the kind lists none - it will never carry anything), `emptyTagPool` (tags are listed but no weapon in the loaded game carries one), `cannotAfford` (weap",
+  "params": [
+   "filter",
+   "includeHealthy",
+   "limit"
+  ]
+ },
+ {
+  "name": "jawa/prefab_capture",
+  "description": "Capture a rectangle of the live map - its things and optionally its terrain - into a named prefab held for this session. Build a scene by hand once, capture it, then stamp it anywhere with jawa/prefab_place. copyAllThings=false captures only buildings and natural features; true also takes loose items, filth and pawnless clutter. ⚠️ Captures are SESSION-ONLY - they are not written to DefDatabase an",
+  "params": [
+   "copyAllThings",
+   "copyTerrain",
+   "name",
+   "overwrite",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/prefab_list",
+  "description": "List the prefabs available to jawa/prefab_place: this session's captures plus every shipped PrefabDef. Read-only.",
+  "params": [
+   "limit"
+  ]
+ },
+ {
+  "name": "jawa/prefab_place",
+  "description": "Stamp a captured prefab (or any shipped PrefabDef) onto the map at a position and rotation. Checks PrefabUtility.CanSpawnPrefab first and refuses with a reason rather than half-placing. faction assigns ownership of everything spawned. blueprint=true places BLUEPRINTS instead of finished things, so colonists build it themselves. Call jawa/map_commit after.",
+  "params": [
+   "blueprint",
+   "checkOnly",
+   "faction",
+   "name",
+   "pos",
+   "readBack",
+   "rot"
+  ]
+ },
+ {
+  "name": "jawa/raid_preview",
+  "description": "Resolve what a raid WOULD be without firing it: the storyteller's default parameters, the hostile factions available, and every RaidStrategyDef and PawnsArrivalModeDef that `CanUseWith` accepts for those parms. Read-only. Use before jawa/fire_raid so the parameters are chosen, not guessed.",
+  "params": [
+   "points"
+  ]
+ },
+ {
+  "name": "jawa/refresh_rect",
+  "description": "Dirty the map mesh over a rect WITHOUT painting anything. The map mesh is cached in 17x17 sections, so a write that skips its refresh leaves the section stale — correct in the grid, unpainted on screen. This is the tool that makes deferred refresh possible: paint many rects with refresh=false, then dirty the whole region once.",
+  "params": [
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/ritual_start",
+  "description": "*** ACTS ON THE LIVE COLONY *** Start an Ideology ritual by precept name - Funeral, Festival, Trial, Conversion, GladiatorDuel, ScarificationCeremony, LeaderSpeech and the rest. 🔑 A FUNERAL IS A RITUAL, NOT A GATHERING - but it is NOT Ideology-only: FuneralBase is <classic>true</classic>, so Funeral, FuneralNoCorpse and the Classic_ parties are present even with Ideology uninstalled. The gate is w",
+  "params": [
+   "organizer",
+   "ritual",
+   "targetThingId"
+  ]
+ },
+ {
+  "name": "jawa/send_letter",
+  "description": "Send a letter to the player — the notification pane, with an optional camera jump target. The other half of GM authoring: an incident makes something happen, a letter is how the player is TOLD. Also the only way for an agent to narrate into the game rather than into a chat window.",
+  "params": [
+   "label",
+   "letterDef",
+   "text",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "jawa/set_deep_resource",
+  "description": "Write the BURIED resource grid - what a deep drill finds. Takes a ThingDef and a count per cell over a rect. This is how a map is given an ore body that was never generated. Reading is free; writing is how you author what a site is worth mining.",
+  "params": [
+   "count",
+   "def",
+   "readBack",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/set_faction_relation",
+  "description": "Set a faction's relation to the PLAYER — hostile, neutral or ally — and optionally its goodwill number. Exists to unblock aimed raids: an incident worker will silently substitute a random faction for one that is not hostile, so testing 'does THIS faction read as an antagonist' is impossible until the faction can be made hostile on demand. Suppresses the hostility letter by default so a test does n",
+  "params": [
+   "dryRun",
+   "faction",
+   "goodwill",
+   "kind",
+   "sendLetter"
+  ]
+ },
+ {
+  "name": "jawa/set_fog",
+  "description": "Reveal or re-hide map cells. action='unfog' clears fog over a rect, 'unfogAll' clears the whole map, 'refog' hides a rect again, and 'floodUnfog' reveals the contiguous room/area containing a cell the way walking into it would. Revealing is usually a prerequisite for photographing anything the colony has not visited.",
+  "params": [
+   "action",
+   "cell",
+   "rect",
+   "sendLetters"
+  ]
+ },
+ {
+  "name": "jawa/set_gas",
+  "description": "Add or clear gas on map cells - tox, smoke, rot stink, deadlife dust. action='add' | 'clear'. Density is 0-255 per cell. Gas is what makes a room read as poisoned or burning without setting anything on fire.",
+  "params": [
+   "action",
+   "density",
+   "gasType",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/set_pawn_age",
+  "description": "Set a pawn's biological and/or chronological age in YEARS. 🔴 Uses ageTracker.DebugSetAge, NOT the raw AgeBiologicalTicks setter - DebugSetAge fires each BirthdayBiological along the way, which is what applies life-stage hediffs and growth moments. The raw setter skips all of that and leaves a pawn in a state nothing produced. ⚠️ BODY TYPE IS NOT AUTO-CORRECTED. The result reports whether the body ",
+  "params": [
+   "allowBackwards",
+   "biologicalYears",
+   "chronologicalYears",
+   "pawn"
+  ]
+ },
+ {
+  "name": "jawa/set_pawn_appearance",
+  "description": "Set head type, body type, hair, beard, hair colour and skin colour. 🔴 None of these dirty the renderer on their own, so this tool calls Drawer.renderer.SetAllGraphicsDirty() afterwards - without it the pawn keeps drawing its old face for the rest of the session. ⚠️ Nothing in RimWorld guards these: an off-gender head type, a gene-requiring head, or an adult body on a child all 'work'. Child body i",
+  "params": [
+   "beard",
+   "bodyType",
+   "hair",
+   "hairColor",
+   "headType",
+   "pawn",
+   "skinColor"
+  ]
+ },
+ {
+  "name": "jawa/set_pawn_backstory",
+  "description": "Set a pawn's childhood and/or adulthood BackstoryDef. 🔴 The setters refresh NOTHING on their own - they only null a cache - so this tool also runs Notify_DisabledWorkTypesChanged, skills.Notify_SkillDisablesChanged, skills.DirtyAptitudes and MeditationFocusTypeAvailabilityCache.ClearFor. The game's OWN debug tool does only the last of those, which is why a hand-edited backstory leaves a pawn with ",
+  "params": [
+   "adulthood",
+   "childhood",
+   "pawn"
+  ]
+ },
+ {
+  "name": "jawa/set_pawn_faction",
+  "description": "Change a pawn's faction, or recruit a prisoner/guest into the colony. ✅ Pawn.SetFaction is SELF-REFRESHING and does a great deal for you: lord Notify_PawnLost, jobs.StopAll, drafter, guest status, mapPawns re/de-registration, needs, relations, the colonist bar, surgery bills and ChangeKind. ⭐ Use recruit=true for prisoner/guest -> player: RecruitUtility.Recruit also unlocks apparel and replaces ro",
+  "params": [
+   "faction",
+   "pawn",
+   "recruit"
+  ]
+ },
+ {
+  "name": "jawa/set_pawn_identity",
+  "description": "Set a pawn's NAME and TITLE. Name parts are get-only properties, so a whole new NameTriple is built - give first/nick/last, or `single` for a single-name pawn. ⚠️ `title` is the ONLY free-text field a pawn has. There are no notes in RimWorld 1.6 - no note field on Pawn or any tracker - so this is where a one-line annotation must go if you want one to persist.",
+  "params": [
+   "first",
+   "last",
+   "nick",
+   "pawn",
+   "single",
+   "title"
+  ]
+ },
+ {
+  "name": "jawa/set_pawn_ideo",
+  "description": "Set a pawn's ideoligion, adjust certainty, or assign an ideo role. action='set' | 'certainty' | 'role' | 'list'. ⚠️ SetIdeo is NOT a quiet field write: it RANDOMISES certainty, unclaims ideo-forbidden beds, may strip spouse and bond relations, and can send a letter. It also no-ops on babies. ⚠️ Certainty's setter is PRIVATE - this uses OffsetCertainty.",
+  "params": [
+   "action",
+   "certaintyOffset",
+   "ideo",
+   "pawn",
+   "role"
+  ]
+ },
+ {
+  "name": "jawa/set_pawn_rotation",
+  "description": "Turn spawned pawns to face a chosen direction and FREEZE them there, so an art, apparel or xenotype audit can photograph a named side. A bare rotation write does not survive: Pawn_RotationTracker.UpdateRotation re-faces every pawn each tick from its job, its path and its drafted state -- a DRAFTED pawn is slammed to South every tick. This sets Thing.debugRotLocked, the same mechanism the vanilla d",
+  "params": [
+   "dir",
+   "lockRotation",
+   "pawnId"
+  ]
+ },
+ {
+  "name": "jawa/set_pawn_skill",
+  "description": "Set a pawn's skill level, passion and xp. 🔴 READ-BACK WARNING: SkillRecord.Level's GETTER adds aptitudes, so it can differ from what you wrote. This tool reports BOTH `levelRaw` (GetLevel(false), the written value) and `levelEffective`. Validate against levelRaw. ⚠️ Setting Level does not reset xpSinceLastLevel, so a pawn can insta-level afterwards - pass resetXp=true (the default) to zero it.",
+  "params": [
+   "level",
+   "passion",
+   "pawn",
+   "resetXp",
+   "skill"
+  ]
+ },
+ {
+  "name": "jawa/set_pawn_style",
+  "description": "Set a spawned pawn's APPEARANCE directly -- hair, hair colour, beard, face and body tattoo, head type, body type, fur and skin colour -- so a styled look can be staged for a screenshot without generating pawns until one comes out right. Every field is optional; only the ones you pass are touched. All defNames are resolved BEFORE anything is written, so a typo changes nothing instead of half-applyi",
+  "params": [
+   "beard",
+   "bodyTattoo",
+   "bodyType",
+   "faceTattoo",
+   "fur",
+   "hair",
+   "hairColor",
+   "headType",
+   "pawnId",
+   "skinColor"
+  ]
+ },
+ {
+  "name": "jawa/set_pawn_xenotype",
+  "description": "Convert already-spawned pawns to a XenotypeDef in place, so a xenotype's art, genes and apparel fit can be audited without regenerating pawns until one rolls right. This is exactly what the vanilla dev 'Set xenotype' action does -- DebugToolsPawns.SetXenotype's per-def closure is pawn.genes?.SetXenotype(def) and nothing else -- so the appearance refresh comes for free: SetXenotype adds the xenotyp",
+  "params": [
+   "clearEndogenes",
+   "pawnId",
+   "xenotype"
+  ]
+ },
+ {
+  "name": "jawa/set_plants",
+  "description": "Explicit vegetation control: plant, clear, or re-grow plants over rects. Placing a plant through an ordinary spawn gives you a sprout at growth 0 — this sets the growth stage too, which is the difference between a seedling and a tree. ops format 'PlantDef:x,z,w,h' separated by ';'. Use plantDef 'CLEAR' (or clearOnly) to remove vegetation without planting anything.",
+  "params": [
+   "clearFirst",
+   "density",
+   "growth",
+   "ops",
+   "seed"
+  ]
+ },
+ {
+  "name": "jawa/set_roof_batch",
+  "description": "Set or REMOVE the roof over many rects in one call. The bridge has no roof capability at all -- rimworld/list_areas exposes the roof AREA (the build-roof designation zone), which is a different thing from map.roofGrid, and RimWorld's own roof tools are drag tools the bridge cannot drive. Roofs are not cosmetic: a cavern without RoofRockThick is an open pit, and roofs govern light, temperature, wea",
+  "params": [
+   "ops",
+   "refresh",
+   "roofDef"
+  ]
+ },
+ {
+  "name": "jawa/set_substructure_batch",
+  "description": "Lay or strip SUBSTRUCTURE over a rect. Substructure is not a grid - it is a foundation-layer TerrainDef (TerrainDefOf.Substructure) in TerrainGrid.foundationGrid, and it is what gravship buildings require. action='set' lays it, action='remove' strips the foundation layer. ⚠️ SetFoundation errors if the cell already has UNDER-terrain, so cells with a floor over natural ground are reported as refuse",
+  "params": [
+   "action",
+   "doLeavings",
+   "readBack",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/set_terrain",
+  "description": "Paint natural terrain (sand, gravel, soil, water, rock) or floors onto map cells. Closes the one gap live map authoring had: RimWorld's own 'Set terrain (rect)' debug action is drag-based and silently does nothing over the bridge. Supports a single cell or a rectangle.",
+  "params": [
+   "height",
+   "layer",
+   "refresh",
+   "terrainDef",
+   "width",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "jawa/set_terrain_batch",
+  "description": "Paint MANY terrain rectangles in a single call. Use this for anything a generator produces; use jawa/set_terrain only for one-off single rects. ops format: 'Terrain:x,z,w,h' separated by ';' or newlines, e.g. 'Sand:10,20,3,4;Gravel:14,20,2,2'. w and h default to 1 and may be omitted ('Sand:10,20'). An op may omit the terrain ('10,20,3,4') to use the terrainDef parameter as the default.",
+  "params": [
+   "layer",
+   "ops",
+   "refresh",
+   "terrainDef"
+  ]
+ },
+ {
+  "name": "jawa/set_terrain_layer",
+  "description": "Write the UNDER, TEMP or COLOUR terrain layer over a rect - the layers the original jawa/set_terrain cannot reach. layer='under' sets terrain beneath a floor; layer='temp' sets Odyssey temporary terrain (the def must have temporary=true) and optionally queues its expiry tick; layer='color' recolours the floor with a ColorDef. layer='removeTop' strips one layer off the stack (floor -> under -> foun",
+  "params": [
+   "def",
+   "doLeavings",
+   "expireInTicks",
+   "layer",
+   "readBack",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/set_weather_buildup",
+  "description": "Pile or clear SNOW and (Odyssey) SAND depth on map cells - the two grids are twins. kind='snow' or 'sand'; mode='set' writes an absolute depth 0-1, 'add' offsets it, 'radial' piles it in a circle the way weather does. Sand is Odyssey-only and the gate is REPORTED, not thrown.",
+  "params": [
+   "center",
+   "depth",
+   "kind",
+   "mode",
+   "radius",
+   "readBack",
+   "rect"
+  ]
+ },
+ {
+  "name": "jawa/social_cancel",
+  "description": "Clear a stuck gathering or ritual lord. 🔴 THIS IS NOT OPTIONAL HOUSEKEEPING. Voluntarily-joinable lords have ShouldExistWithoutPawns => true, so a party or ritual that nobody joined is NOT culled - it sits on the map until its timer expires, blocking new gatherings (AllowStartNewGatherings). List first, then remove by index.",
+  "params": [
+   "action",
+   "all",
+   "index"
+  ]
+ },
+ {
+  "name": "jawa/social_gathering_start",
+  "description": "*** ACTS ON THE LIVE COLONY *** Throw a party or a concert. force=true (default) calls GatheringWorker.TryExecute directly, which is what vanilla's own debug action does and bypasses hour-of-day, danger rating, the 4-colonist minimum, bleeding, the drafted ratio and the guest count. force=false honours all of them and reports which one refused. 🔴 WHAT FORCE CANNOT BYPASS: an eligible organizer mus",
+  "params": [
+   "force",
+   "gathering",
+   "organizer"
+  ]
+ },
+ {
+  "name": "jawa/social_list",
+  "description": "List what social events this game can run: every GatheringDef with whether it CAN execute right now and which gate is failing, plus every ritual precept on the player ideoligion with its CanStartRitualNow reason. Read-only, and the fastest way to find out why a party will not start.",
+  "params": []
+ },
+ {
+  "name": "jawa/social_marry",
+  "description": "*** ACTS ON THE LIVE COLONY *** Marry two pawns, with or without a ceremony. ceremony=true starts the real wedding gathering; false marries them instantly via MarriageCeremonyUtility.Married. 🔴 A `Fiance` DIRECT RELATION IS MANDATORY for the ceremony, and the second pawn argument is IGNORED by RimWorld - GatheringWorker_MarriageCeremony re-derives the partner from the organizer's Fiance relation. ",
+  "params": [
+   "ceremony",
+   "otherPawn",
+   "pawn"
+  ]
+ },
+ {
+  "name": "jawa/spawn_batch",
+  "description": "Spawn MANY things in a single call. Once terrain painting became one hop, object spawning became the bottleneck: a crater is 1 terrain call and ~100 rimworld/spawn_thing calls at ~16.7 ms each. ops format: 'Def:x,z,count' separated by ';', count optional (default 1), e.g. 'Filth_Ash:10,20;ChunkSlagSteel:12,22'. Filth is routed through FilthMaker (which respects whether the terrain accepts it) and ",
+  "params": [
+   "defName",
+   "ops",
+   "rot",
+   "stuff"
+  ]
+ },
+ {
+  "name": "jawa/spawn_pawn",
+  "description": "Spawn a pawn of a chosen kind, IN A CHOSEN FACTION, at a chosen cell. The debug menu's Spawn Pawn always spawns player-side, which is how a hostile test ends up standing next to the colony. Faction accepts a FactionDef defName, 'player', 'hostile' (any faction hostile to the player), or 'none' for a wild/faction-less pawn. Pass xenotype to pin the pawn to a XenotypeDef instead of letting the kind ",
+  "params": [
+   "count",
+   "faction",
+   "kindDef",
+   "x",
+   "xenotype",
+   "z"
+  ]
+ },
+ {
+  "name": "jawa/texture_audit",
+  "description": "Sweep ThingDef graphics for texPaths that resolve to NO texture in the running game, including per-lifeStage paths, which is where the typos hide. Asks ContentFinder directly, so it answers the question the GAME asks - a shell `ls` cannot, because Windows is case-insensitive and RimWorld is not. Reports the owning mod so the fix can be aimed.",
+  "params": [
+   "filter",
+   "limit",
+   "maxPaths",
+   "mod"
+  ]
+ },
+ {
+  "name": "jawa/tile_cache_audit",
+  "description": "Compare a tile's RAW fields against the CACHED values the UI actually reads, and report every disagreement. 🔴 Tile caches `hillinessLabelCached`, `cachedMinTemp` and `cachedMaxTemp` lazily and RimWorld has no reset method for any of them - they clear only on reload. So after a repaint the raw field can be correct while the game still behaves as the old value, and every other read tool reports the ",
+  "params": [
+   "limit",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/tile_settleable",
+  "description": "Ask the ENGINE'S OWN gate whether a tile can be settled, and report the engine's own reason string when it cannot. Calls TileFinder.IsValidTileForNewSettlement with a StringBuilder, so this cannot drift from what the landing page actually does. With no tiles named it sweeps the whole planet and returns counts per reason instead of rows. 🔑 THE REASON THIS EXISTS: a repaint can make a large slice of",
+  "params": [
+   "examplesPerReason",
+   "forGravship",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/vehicle_components",
+  "description": "Read a Vehicle Framework vehicle's COMPONENT health - the data behind its in-game health tab. A vehicle is a Pawn, but its damage is NOT in health.hediffSet, so jawa/pawn_health reports a vehicle as undamaged no matter how wrecked it is. This walks statHandler.components by reflection, so the companion still loads when Vehicle Framework is absent. READ ONLY - it changes nothing. Give a pawn id, th",
+  "params": [
+   "damagedOnly",
+   "pawn"
+  ]
+ },
+ {
+  "name": "jawa/weather_get",
+  "description": "Read the weather and every active game condition, plus what the storyteller currently believes the colony is worth. Read-only and safe on a live game. ⭐ `threatPoints` and the wealth breakdown are not exposed anywhere else - they are what the storyteller actually uses to size the next raid.",
+  "params": [
+   "listDefs"
+  ]
+ },
+ {
+  "name": "jawa/weather_set",
+  "description": "*** ACTS ON THE LIVE COLONY *** Change the weather. 🔴 A plain transition does NOT hold - WeatherDecider rerolls once curWeatherAge passes curWeatherDuration. Pass lock=true to register a permanent GameCondition_ForceWeather instead, which is the ONLY durable weather control in the game. unlock=true removes that condition again.",
+  "params": [
+   "lockWeather",
+   "unlock",
+   "weather"
+  ]
+ },
+ {
+  "name": "jawa/world_cache_audit",
+  "description": "Count the tiles whose PRIVATE CACHES disagree with a freshly recomputed value. Tile caches hillinessLabelCached, cachedMinTemp, cachedMaxTemp and tmpHasSecondaryBiome lazily and NOTHING IN RIMWORLD EVER INVALIDATES THEM, so after any repaint the raw fields are right, every raw-field validator passes, and the UI still uses the old value - which is what makes repainted mountains stay unclickable. TH",
+  "params": [
+   "includeTemps",
+   "limit",
+   "populate",
+   "range",
+   "tempEpsilon",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/world_commit",
+  "description": "Make pending world-tile edits VISIBLE and consistent. Regenerates the world draw layers and clears the non-visual caches that otherwise keep answering with the pre-edit planet. Call this ONCE after a batch of writes, never per write - each call regenerates whole meshes. Runs, in order: WorldDrawLayer_Terrain, _Hills, _Landmarks, _Roads, _Rivers RegenerateNow; FastTileFinder.DirtyCache (else site/s",
+  "params": [
+   "clearCaches",
+   "lazy",
+   "recalcPaths",
+   "redraw"
+  ]
+ },
+ {
+  "name": "jawa/world_features_get",
+  "description": "List the planet's named regions (WorldFeature) - the text drawn across the globe. Reports uniqueID, def, name, drawCenter, drawAngle, maxDrawSizeInTiles and the tile COUNT of each. Tile membership lives on Tile.feature, so the counts are computed in ONE pass over the grid rather than per-feature (WorldFeature.Tiles is a full-grid scan and would be O(n*features)).",
+  "params": [
+   "limit",
+   "sampleTiles"
+  ]
+ },
+ {
+  "name": "jawa/world_features_import",
+  "description": "Create the authored named regions from the `region` column of the tiles CSV and assign every tile to its region. Blank region cells are left unnamed on purpose - an unnamed tile is a design choice, not a gap. Existing features are cleared first by default so the roster matches the file exactly rather than accumulating. Dry run by default.",
+  "params": [
+   "apply",
+   "clearExisting",
+   "expectTiles",
+   "featureDef",
+   "path"
+  ]
+ },
+ {
+  "name": "jawa/world_features_set",
+  "description": "Create, rename, reposition or delete a named region, and assign tiles to it. Membership is written to Tile.feature on each named tile. drawAngle rotates the label - vanilla never sets it, so this is control the base game does not expose. drawCenter is a world-space Vector3; pass centerOnTile to have it computed from a tile instead. Sets Find.WorldFeatures.textsCreated=false so the label text is re",
+  "params": [
+   "action",
+   "centerOnTile",
+   "def",
+   "drawAngle",
+   "featureId",
+   "maxDrawSizeInTiles",
+   "name",
+   "range",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/world_info_get",
+  "description": "Read Find.World.info: planet name, seed, coverage, overall rainfall / temperature / population, landmark density, initial map size, pollution and the FactionDef list the world was generated with. Also reports which fields do NOT survive a save/load.",
+  "params": []
+ },
+ {
+  "name": "jawa/world_info_set",
+  "description": "Rename the planet or change its recorded generation parameters. 🔴 overallPopulation and landmarkDensity are NOT SCRIBED by WorldInfo.ExposeData - they revert on the next load - so this tool REFUSES them unless allowNonPersistent=true, and flags them in the result when it does write them. Changing seedString or planetCoverage does NOT regenerate anything; it only edits the label the save carries.",
+  "params": [
+   "allowNonPersistent",
+   "landmarkDensity",
+   "name",
+   "overallPopulation",
+   "pollution",
+   "seedString"
+  ]
+ },
+ {
+  "name": "jawa/world_landmarks_get",
+  "description": "List the landmarks on the planet (Find.World.landmarks). 113 LandmarkDefs ship with Odyssey. Reports each landmark's tile, def, generated name and whether it is a combo landmark. 🔴 Landmarks are ODYSSEY-GATED: without Odyssey active Tile.Landmark is always null and this returns an empty set, which is not the same as a world with no landmarks - the odysseyActive flag tells you which you have.",
+  "params": [
+   "def",
+   "limit"
+  ]
+ },
+ {
+  "name": "jawa/world_landmarks_set",
+  "description": "Add or remove a landmark on a world tile via WorldLandmarks.AddLandmark / RemoveLandmark. ⚠️ AddLandmark ALSO rolls the def's mutatorChances and comboLandmarkMutators onto the tile, so this is a mutator write as well - the read-back shows both. ⚠️ It no-ops entirely without Odyssey. 🔴 LandmarkDef.IsValidTile refuses a tile that already holds a SETTLEMENT, an existing landmark, an impassable biome ",
+  "params": [
+   "action",
+   "checkValid",
+   "def",
+   "forced",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/world_layers",
+  "description": "Enumerate the planet's layers (1.6 reworked the planet into PlanetLayers: Surface, Orbit, Orbit2). Reports each layer's id, def, tile count, radius, view angle, subdivisions and whether it is the root surface. Use this to confirm which world is loaded before writing to it - in particular that the surface tile count is what an import expects (21872 on a My Little Planet subcount-7 world). Read-only",
+  "params": []
+ },
+ {
+  "name": "jawa/world_links_clear",
+  "description": "REMOVE river or road links - capability RimWorld itself does not have. WorldGrid.OverlayRiver/OverlayRoad refuse a null def (Log.ErrorOnce 'Attempted to remove road with overlayRoad; not supported'), so removal means editing SurfaceTile.potentialRivers / potentialRoads directly, and on BOTH endpoints or the link survives from the other side. Clears every link on the named tiles, or only the segmen",
+  "params": [
+   "kind",
+   "range",
+   "readBack",
+   "tiles",
+   "to"
+  ]
+ },
+ {
+  "name": "jawa/world_links_get",
+  "description": "Read river and road links on world tiles. Reports BOTH the raw potentialRoads/potentialRivers lists AND the biome-filtered Roads/Rivers views the player actually sees, plus a hiddenByBiome flag when they disagree - a biome with allowRivers=false hides links without deleting them, which looks exactly like a missing river. Also reports riverDist.",
+  "params": [
+   "limit",
+   "onlyLinked",
+   "range",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/world_links_import",
+  "description": "Import rivers and roads from a CSV file with columns kind,a,b,def (kind is 'river' or 'road'; a and b are adjacent tile ids). Rivers are laid before roads, and rivers are applied IN FILE ORDER so the file must already be mouth-first. Dry run by default; pass apply=true. Optionally clears existing links on the touched tiles first. Does not redraw; call jawa/world_commit after.",
+  "params": [
+   "apply",
+   "clearFirst",
+   "expectTiles",
+   "path"
+  ]
+ },
+ {
+  "name": "jawa/world_links_set",
+  "description": "Lay a river or road between adjacent tiles using RimWorld's own WorldGrid.OverlayRiver / OverlayRoad, which write BOTH endpoints and maintain riverDist. Takes a path of tile ids: '14,7367,7368' lays a link along each consecutive pair. RIVERS MUST BE LAID MOUTH FIRST, THEN UPSTREAM - OverlayRiver sets riverDist = max(riverDist, previous+1), so the wrong order gives wrong distances. NOTE Overlay* si",
+  "params": [
+   "def",
+   "kind",
+   "path",
+   "readBack"
+  ]
+ },
+ {
+  "name": "jawa/world_links_validate",
+  "description": "Check the integrity of the live river/road network. Reports: links whose mirror entry is MISSING on the far endpoint (asymmetric, the classic corruption), links to non-adjacent tiles, links HIDDEN by their tile's biome (allowRoads/allowRivers false), and river mouths - river tiles with no water-covered neighbour. Optionally compares against a links CSV.",
+  "params": [
+   "limit",
+   "path"
+  ]
+ },
+ {
+  "name": "jawa/world_lint",
+  "description": "Sweep the live planet for things that read as WRONG rather than things that failed to run - the owner's sanity pass. Checks: marine mutators on tiles that are not coastal by real adjacency; water biome on raised land and land biome on submerged tiles; single-tile islands; river systems that reach no sea (judged by their largest river def, because low-accumulation rivers are ALLOWED to die inland);",
+  "params": [
+   "limit",
+   "lushBiomes",
+   "marineMutators",
+   "trunkRivers"
+  ]
+ },
+ {
+  "name": "jawa/world_mutators_audit",
+  "description": "Sweep the whole planet for mutators that contradict the terrain under them - the defect class that survives a repaint. Reports tiles carrying a named marine/coastal mutator that are NOT coastal by real adjacency (World.CoastDirectionAt), and optionally how deep inland they sit. This is how 'Coast on a tile 2,000 tiles from any sea' is found. Read-only.",
+  "params": [
+   "histogram",
+   "limit",
+   "marineMutators"
+  ]
+ },
+ {
+  "name": "jawa/world_mutators_get",
+  "description": "Read the TileMutatorDefs and the Landmark on world tiles. Mutators are what give a tile its caves, coast, cliffs, mixed biome and so on - 336 defs ship. Also reports whether the tile is genuinely coastal by real adjacency (World.CoastDirectionAt), which is how a stale Coast mutator is spotted.",
+  "params": [
+   "limit",
+   "onlyWithMutators",
+   "range",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/world_mutators_set",
+  "description": "Add or remove TileMutatorDefs on world tiles. Uses Tile.AddMutator / RemoveMutator, never the raw list - AddMutator resolves category conflicts, sorts by genOrder and fires the def's Worker.OnAddedToTile, which is where the actual effect lives. Writing mutatorsNullable directly would skip all of that. Use action='clear' to strip every mutator from the named tiles. Does not redraw; call jawa/world_",
+  "params": [
+   "action",
+   "mutators",
+   "range",
+   "readBack",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/world_neighbors",
+  "description": "Dump RimWorld's OWN neighbour ordering for every world tile to a CSV: one row per tile, the neighbour tile IDs in the exact order WorldGrid returns them. This is the key that lets an offline editor AUTHOR rivers and roads instead of only deleting them, because their save format stores a link as an index into this ordering.",
+  "params": [
+   "path"
+  ]
+ },
+ {
+  "name": "jawa/world_objects_add",
+  "description": "CREATE a new world object - a settlement, site or camp - rather than re-siting one that already exists. Two steps, and the second is easy to forget: WorldObjectMaker.MakeWorldObject sets def/ID/creationGameTicks and calls PostMake, then Find.WorldObjects.Add PLACES it. 🔴 A Settlement whose faction is NULL is DESTROYED on load with only a warning, so a factionless settlement is refused outright. 📌 ",
+  "params": [
+   "def",
+   "faction",
+   "name",
+   "tile"
+  ]
+ },
+ {
+  "name": "jawa/world_objects_get",
+  "description": "List the world objects on the planet - settlements, sites, caravans and the rest. Reports id, def, tile, faction and (for settlements) the name and whether the player named it. Filter by def, by faction, or by tile. Use onlyMissingFaction=true to find the ones that will be DESTROYED on the next load: a Settlement with a null faction does not survive Scribe.",
+  "params": [
+   "def",
+   "faction",
+   "limit",
+   "onlyMissingFaction",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/world_objects_remove",
+  "description": "Remove a world object by its id. Uses WorldObject.Destroy() where the object supports it so the reference graph is cleaned up, rather than yanking it out of the holder list. Read-back confirms it is gone.",
+  "params": [
+   "ids"
+  ]
+ },
+ {
+  "name": "jawa/world_objects_set",
+  "description": "Re-site, re-faction or rename EXISTING world objects, addressed by their object id. This is the OVERWRITE route §12 rules for our 72 holdings: move what vanilla already placed rather than deleting and remaking it, so ids and the reference graph stay intact. Any field left null is untouched. Setting a faction that does not exist is refused rather than nulling it.",
+  "params": [
+   "faction",
+   "ids",
+   "name",
+   "tile"
+  ]
+ },
+ {
+  "name": "jawa/world_objects_validate",
+  "description": "Check every world object for the faults that only show up after a save/load: a NULL faction (a Settlement with one is destroyed by Scribe with a warning), an invalid or out-of-range tile, two settlements stacked on one tile, and settlements sitting on impassable or water-covered terrain. Read-only. Run this BEFORE the owner saves, because afterwards the objects are simply gone.",
+  "params": [
+   "limit"
+  ]
+ },
+ {
+  "name": "jawa/world_settlements_import",
+  "description": "Place the authored settlement roster from a CSV with columns faction_def,name,tile (extra columns are ignored). Resolves EVERY row's faction to a live faction first and refuses the whole import if any row cannot be resolved, because a Settlement with a null faction is destroyed on load with only a warning. Dry run by default.",
+  "params": [
+   "apply",
+   "clearExisting",
+   "expectTiles",
+   "path"
+  ]
+ },
+ {
+  "name": "jawa/world_stats",
+  "description": "Measure the generated PLANET: how much of it is water, how that water is distributed into separate bodies, and what the land is made of. Built for one question — the owner's world spec asks for roughly a quarter ocean in three oddly-shaped bodies, and the generator gives 43-55% in scattered blobs. Ocean is an elevation rule at worldgen step 0 and no setting moves it, so the only way to steer it is",
+  "params": [
+   "limit",
+   "minBodySize"
+  ]
+ },
+ {
+  "name": "jawa/world_tile_export",
+  "description": "Dump a per-tile table of the whole SURFACE layer to a file — index, latitude, longitude, biome, elevation, temperature, rainfall, hilliness, swampiness and pollution. Those are EXACTLY the fields a tile write can set, so the default export round-trips losslessly through world_tile_import with no flag to remember. This is the key that makes OFFLINE savegame world editing geographic: the .rws stores",
+  "params": [
+   "extended",
+   "format",
+   "path"
+  ]
+ },
+ {
+  "name": "jawa/world_tile_get",
+  "description": "Read the RAW per-tile scalars for one or more world tiles: biome, elevation, hilliness, temperature, rainfall, swampiness, pollution, riverDist, feature, plus road/river/mutator counts. Accepts a comma-separated id list and/or a 'from-to' range. READS RAW FIELDS ON PURPOSE - Tile.HillinessLabel, MinTemperature, MaxTemperature and Biomes are lazily cached with no reset anywhere in RimWorld, so they",
+  "params": [
+   "limit",
+   "range",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/world_tile_import",
+  "description": "Import per-tile scalars into the live world from a CSV FILE ON DISK. Reads column names from the header, so it accepts any CSV with a 'tile' column plus any of: biome, elev_m/elevation, temp_c/temperature, rain_mm/rainfall, hilliness (0-5 or a name), swampiness, pollution. Unknown columns are ignored. Takes a PATH rather than an ops string because 21,872 tiles will not fit the companion's 4096-op ",
+  "params": [
+   "apply",
+   "expectTiles",
+   "maxRows",
+   "path",
+   "sampleRows"
+  ]
+ },
+ {
+  "name": "jawa/world_tile_set",
+  "description": "Write per-tile scalars over a list and/or range of world tiles. Any field left null is untouched. Fields: biome (BiomeDef defName), elevation, hilliness (Flat|SmallHills|LargeHills|Mountainous|Impassable, or 0-5), temperature, rainfall, swampiness, pollution. DOES NOT REDRAW: RimWorld has no per-tile visual invalidation except pollution, so call jawa/world_commit once after a batch. Doing it per w",
+  "params": [
+   "biome",
+   "elevation",
+   "hilliness",
+   "pollution",
+   "rainfall",
+   "range",
+   "readBack",
+   "swampiness",
+   "temperature",
+   "tiles"
+  ]
+ },
+ {
+  "name": "jawa/world_tile_validate",
+  "description": "Compare the LIVE world against a CSV and report every tile that differs. Reads RAW tile fields, never the cached properties (HillinessLabel, Min/MaxTemperature, Biomes are lazily cached with no reset anywhere in RimWorld and would confirm writes that never landed). Use after jawa/world_tile_import to prove the import actually took.",
+  "params": [
+   "limit",
+   "maxRows",
+   "path",
+   "tolerance"
+  ]
+ },
+ {
+  "name": "jawa/world_view",
+  "description": "Switch the camera between the colony map and the PLANET, and optionally centre the globe on a tile. This is the only bridge route to the world map from a running game - RimWorld's own world button is immediate-mode and is not a clickable target. Use before jawa/world_commit screenshots. Close any open dialog first: a modal blanks the screenshot to pure black.",
+  "params": [
+   "altitude",
+   "centerTile",
+   "northUp",
+   "show"
+  ]
+ },
+ {
+  "name": "rimbridge/compile_lua",
+  "description": "Compile the supported lowered Lua subset, not general-purpose Lua, into the JSON script model without executing capability calls; use this first for new script shapes",
+  "params": [
+   "luaSource",
+   "parameters"
+  ]
+ },
+ {
+  "name": "rimbridge/compile_lua_file",
+  "description": "Load a .lua file and compile it as the same lowered Lua subset used by rimbridge/run_lua without executing capability calls",
+  "params": [
+   "parameters",
+   "scriptPath"
+  ]
+ },
+ {
+  "name": "rimbridge/get_bridge_status",
+  "description": "Get the current bridge and RimWorld state snapshot without mutating game state",
+  "params": []
+ },
+ {
+  "name": "rimbridge/get_capability",
+  "description": "Get one registered bridge capability descriptor by capability id or alias",
+  "params": [
+   "capabilityIdOrAlias"
+  ]
+ },
+ {
+  "name": "rimbridge/get_lua_reference",
+  "description": "Get a machine-readable authoring reference for the lowered rimbridge/run_lua subset, including quick-start rules, common pitfalls, params binding, compile errors, limits, and examples",
+  "params": []
+ },
+ {
+  "name": "rimbridge/get_operation",
+  "description": "Get the latest retained journal snapshot for a specific operation id, including any bounded retained result payload",
+  "params": [
+   "operationId"
+  ]
+ },
+ {
+  "name": "rimbridge/get_script_reference",
+  "description": "Get a machine-readable authoring reference for rimbridge/run_script, including statement types, expressions, conditions, limits, and examples",
+  "params": []
+ },
+ {
+  "name": "rimbridge/list_capabilities",
+  "description": "List registered bridge capabilities so an agent can discover the live bridge surface instead of relying on hardcoded tool knowledge",
+  "params": [
+   "category",
+   "includeParameters",
+   "limit",
+   "providerId",
+   "query",
+   "source"
+  ]
+ },
+ {
+  "name": "rimbridge/list_logs",
+  "description": "List recent captured RimWorld and bridge log entries from the in-memory log journal, including operation correlation when available",
+  "params": [
+   "afterSequence",
+   "capabilityId",
+   "limit",
+   "minimumLevel",
+   "operationId",
+   "rootOperationId"
+  ]
+ },
+ {
+  "name": "rimbridge/list_operation_events",
+  "description": "List recent bridge operation lifecycle events from the in-memory event journal",
+  "params": [
+   "afterSequence",
+   "eventType",
+   "includeDiagnostics",
+   "limit",
+   "operationId"
+  ]
+ },
+ {
+  "name": "rimbridge/list_operations",
+  "description": "List recent bridge operations from the in-memory operation journal, optionally expanding retained result payloads",
+  "params": [
+   "includeResults",
+   "limit"
+  ]
+ },
+ {
+  "name": "rimbridge/ping",
+  "description": "Connectivity test. Returns 'pong'.",
+  "params": []
+ },
+ {
+  "name": "rimbridge/run_lua",
+  "description": "Compile a small lowered Lua subset, not general-purpose Lua, into the shared script runner and execute it through the normal capability registry; start with rimbridge/get_lua_reference or rimbridge/compile_lua",
+  "params": [
+   "includeStepResults",
+   "luaSource",
+   "parameters"
+  ]
+ },
+ {
+  "name": "rimbridge/run_lua_file",
+  "description": "Load a .lua file, treat it as the same lowered Lua subset used by rimbridge/run_lua, and execute it through the shared script runner",
+  "params": [
+   "includeStepResults",
+   "parameters",
+   "scriptPath"
+  ]
+ },
+ {
+  "name": "rimbridge/run_script",
+  "description": "Execute a JSON script containing ordered capability calls and generic control statements; call rimbridge/get_script_reference for the machine-readable language reference",
+  "params": [
+   "includeStepResults",
+   "scriptJson"
+  ]
+ },
+ {
+  "name": "rimbridge/wait_for_game_loaded",
+  "description": "Wait until RimWorld reaches the requested loaded-game readiness level",
+  "params": [
+   "pauseIfNeeded",
+   "pollIntervalMs",
+   "readiness",
+   "targetReadiness",
+   "timeoutMs",
+   "waitForVisualReady"
+  ]
+ },
+ {
+  "name": "rimbridge/wait_for_long_event_idle",
+  "description": "Wait until RimWorld reports no long events in progress",
+  "params": [
+   "pollIntervalMs",
+   "timeoutMs"
+  ]
+ },
+ {
+  "name": "rimbridge/wait_for_operation",
+  "description": "Wait for an operation in the journal to reach a terminal status",
+  "params": [
+   "operationId",
+   "pollIntervalMs",
+   "timeoutMs"
+  ]
+ },
+ {
+  "name": "rimworld/activate_alert",
+  "description": "Activate one alert by alert id returned from rimworld/list_alerts, mirroring a normal left-click on the alert readout",
+  "params": [
+   "alertId"
+  ]
+ },
+ {
+  "name": "rimworld/apply_architect_designator",
+  "description": "Apply an Architect designator to one cell or a rectangle, with optional dry-run validation",
+  "params": [
+   "designatorId",
+   "dryRun",
+   "height",
+   "keepSelected",
+   "width",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/clear_area",
+  "description": "Clear all cells from a mutable area such as a custom allowed area",
+  "params": [
+   "areaId"
+  ]
+ },
+ {
+  "name": "rimworld/clear_hover_target",
+  "description": "Clear the current virtual cursor/hover target so screenshots, mouseover-driven UI, and map clicks return to the real cursor state",
+  "params": []
+ },
+ {
+  "name": "rimworld/clear_selection",
+  "description": "Clear the current map selection",
+  "params": []
+ },
+ {
+  "name": "rimworld/click_cell",
+  "description": "Dispatch a live map click at a current-map cell without requiring OS focus, using left, right, or middle mouse button and reporting before/after selection",
+  "params": [
+   "button",
+   "holdDurationMs",
+   "modifiers",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/click_screen_target",
+  "description": "Semantically click a known actionable target id returned by rimworld/get_screen_targets without requiring OS focus",
+  "params": [
+   "targetId"
+  ]
+ },
+ {
+  "name": "rimworld/click_ui_target",
+  "description": "Activate an actionable UI control target returned by rimworld/get_ui_layout on the next real draw frame",
+  "params": [
+   "targetId",
+   "timeoutMs"
+  ]
+ },
+ {
+  "name": "rimworld/close_context_menu",
+  "description": "Close the currently opened debug context menu",
+  "params": []
+ },
+ {
+  "name": "rimworld/close_main_tab",
+  "description": "Close the currently open RimWorld main tab, optionally asserting which tab is open first",
+  "params": [
+   "mainTabId"
+  ]
+ },
+ {
+  "name": "rimworld/close_window",
+  "description": "Close an open RimWorld window by type name or, if omitted, the topmost window",
+  "params": [
+   "windowType"
+  ]
+ },
+ {
+  "name": "rimworld/create_allowed_area",
+  "description": "Create a new allowed area and optionally make it the selected allowed-area target",
+  "params": [
+   "label",
+   "select"
+  ]
+ },
+ {
+  "name": "rimworld/delete_area",
+  "description": "Delete a mutable area such as a custom allowed area",
+  "params": [
+   "areaId"
+  ]
+ },
+ {
+  "name": "rimworld/delete_zone",
+  "description": "Delete an existing zone by id",
+  "params": [
+   "zoneId"
+  ]
+ },
+ {
+  "name": "rimworld/deselect_pawn",
+  "description": "Deselect a single selected pawn by name or stable pawn id",
+  "params": [
+   "pawnId",
+   "pawnName"
+  ]
+ },
+ {
+  "name": "rimworld/dismiss_letter",
+  "description": "Dismiss a specific dismissible letter by native letter id, mirroring a normal right-click on the letter stack entry",
+  "params": [
+   "letterId"
+  ]
+ },
+ {
+  "name": "rimworld/dpa_cleanup",
+  "description": "Request Dubs Performance Analyzer cleanup after a profiling run",
+  "params": []
+ },
+ {
+  "name": "rimworld/dpa_patch_methods",
+  "description": "Patch explicit methods or a built-in preset into Dubs Performance Analyzer for repeatable Tick or Update profiling",
+  "params": [
+   "category",
+   "initialize",
+   "inputMode",
+   "preset",
+   "previewLimit",
+   "resetAfterPatch",
+   "targets"
+  ]
+ },
+ {
+  "name": "rimworld/dpa_reset",
+  "description": "Reset Dubs Performance Analyzer profiler buffers without changing the active patch set",
+  "params": []
+ },
+ {
+  "name": "rimworld/dpa_snapshot",
+  "description": "Snapshot current Dubs Performance Analyzer profiler rows sorted by average, max, total, calls, calls per entry, or label",
+  "params": [
+   "limit",
+   "sortBy"
+  ]
+ },
+ {
+  "name": "rimworld/dpa_status",
+  "description": "Read Dubs Performance Analyzer availability and bridge integration state without mutating DPA",
+  "params": [
+   "includePresets"
+  ]
+ },
+ {
+  "name": "rimworld/dpa_stop",
+  "description": "Stop Dubs Performance Analyzer profiling and reset its UI state without running cleanup",
+  "params": []
+ },
+ {
+  "name": "rimworld/drag_cell",
+  "description": "Dispatch a literal live map mouse drag from one current-map cell to another without requiring OS focus, publishing mouse position plus held/down/up button state so vanilla and modded input handlers see the gesture. Left drag can select, right drag can drive drafted formation targets, and middle drag can pan the camera.",
+  "params": [
+   "button",
+   "fromX",
+   "fromZ",
+   "holdDurationMs",
+   "modifiers",
+   "toX",
+   "toZ"
+  ]
+ },
+ {
+  "name": "rimworld/execute_context_menu_option",
+  "description": "Execute a context menu option by index or label",
+  "params": [
+   "label",
+   "optionIndex"
+  ]
+ },
+ {
+  "name": "rimworld/execute_debug_action",
+  "description": "Execute a supported RimWorld debug action leaf by stable path, including ToolMap actions targeted by cell or current-map thing",
+  "params": [
+   "path",
+   "pawnId",
+   "pawnName",
+   "thingId",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/execute_gizmo",
+  "description": "Execute one grouped gizmo for the current selection by gizmo id returned from rimworld/list_selected_gizmos",
+  "params": [
+   "gizmoId"
+  ]
+ },
+ {
+  "name": "rimworld/find_random_cell_near",
+  "description": "Use RimWorld's expanding-radius random cell search to find a nearby cell or footprint that satisfies generic map criteria",
+  "params": [
+   "designatorId",
+   "footprintAnchor",
+   "height",
+   "maxSearchRadius",
+   "reachablePawnId",
+   "reachablePawnName",
+   "requireNoImpassableThings",
+   "requireNotFogged",
+   "requireStandable",
+   "requireWalkable",
+   "startingSearchRadius",
+   "width",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/flood_fill_cells",
+  "description": "Analyze a contiguous area from one root cell using RimWorld's generic cell flood-fill algorithm and the same reusable footprint criteria as find_random_cell_near",
+  "params": [
+   "designatorId",
+   "footprintAnchor",
+   "height",
+   "maxCellsToProcess",
+   "maxReturnedCells",
+   "minimumCellCount",
+   "reachablePawnId",
+   "reachablePawnName",
+   "requireNoImpassableThings",
+   "requireNotFogged",
+   "requireStandable",
+   "requireWalkable",
+   "width",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/frame_cell_rect",
+  "description": "Frame a requested map-cell rectangle plus optional margin cells at the current camera zoom, or at an explicit root size when provided",
+  "params": [
+   "height",
+   "paddingCells",
+   "rootSize",
+   "width",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/frame_pawns",
+  "description": "Frame a comma-separated list of pawns by name and/or stable pawn id so they fit in view",
+  "params": [
+   "pawnIdsCsv",
+   "pawnNamesCsv"
+  ]
+ },
+ {
+  "name": "rimworld/get_camera_state",
+  "description": "Get the current map camera position, zoom, configured size range, extension opt-in state, and visible rect",
+  "params": []
+ },
+ {
+  "name": "rimworld/get_cell_info",
+  "description": "Inspect one map cell, including things, blueprints, frames, designations, zones, and areas",
+  "params": [
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/get_cells_info",
+  "description": "Inspect every map cell in a rectangle up to 1024 cells, including things, blueprints, frames, designations, zones, and areas",
+  "params": [
+   "height",
+   "width",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/get_context_menu_options",
+  "description": "Get the currently opened debug context menu options",
+  "params": []
+ },
+ {
+  "name": "rimworld/get_debug_action",
+  "description": "Get metadata for one RimWorld debug action path and, optionally, its immediate children",
+  "params": [
+   "includeChildren",
+   "includeHiddenChildren",
+   "path"
+  ]
+ },
+ {
+  "name": "rimworld/get_designator_state",
+  "description": "Get the current Architect/designator selection state, including god mode and the selected designator",
+  "params": []
+ },
+ {
+  "name": "rimworld/get_game_info",
+  "description": "Get basic information about the current RimWorld game",
+  "params": []
+ },
+ {
+  "name": "rimworld/get_map_target_info",
+  "description": "Resolve a current-map pawn or thing to its map position and occupied cell rectangle",
+  "params": [
+   "pawnId",
+   "pawnName",
+   "thingId"
+  ]
+ },
+ {
+  "name": "rimworld/get_mod_configuration_status",
+  "description": "Read semantic mod-configuration status for the current active load order, including warnings, ordering issues, and whether a restart is required to match the loaded session",
+  "params": []
+ },
+ {
+  "name": "rimworld/get_mod_settings",
+  "description": "Read one loaded mod's semantic ModSettings object by stable mod id, package id, settings category, or handle type name",
+  "params": [
+   "maxCollectionEntries",
+   "maxDepth",
+   "modId"
+  ]
+ },
+ {
+  "name": "rimworld/get_screen_targets",
+  "description": "Get current screen-space targets such as open windows and active context-menu geometry",
+  "params": []
+ },
+ {
+  "name": "rimworld/get_selected_pawn_inventory_state",
+  "description": "Read the selected pawn's carried thing and inventory contents, including Pick Up And Haul tracked items when available",
+  "params": []
+ },
+ {
+  "name": "rimworld/get_selection_semantics",
+  "description": "Get structured details for the current selection, including inspect strings, inspect-tab types, and the current selection fingerprint",
+  "params": []
+ },
+ {
+  "name": "rimworld/get_ui_layout",
+  "description": "Capture a generic structured layout snapshot of the current dialogs, windows, main tabs, dynamic inspect tab strip, or selected gizmo grid, including actionable controls, crop-ready screen rects, and scroll-view metadata",
+  "params": [
+   "surfaceId",
+   "timeoutMs"
+  ]
+ },
+ {
+  "name": "rimworld/get_ui_state",
+  "description": "Get the current RimWorld window stack and input state for background-safe UI automation",
+  "params": []
+ },
+ {
+  "name": "rimworld/go_to_main_menu",
+  "description": "Return to the RimWorld main menu entry scene, or no-op if already there",
+  "params": []
+ },
+ {
+  "name": "rimworld/jump_camera_to_cell",
+  "description": "Jump the camera to a map cell",
+  "params": [
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/jump_camera_to_pawn",
+  "description": "Jump the camera to a pawn by name or stable pawn id",
+  "params": [
+   "pawnId",
+   "pawnName"
+  ]
+ },
+ {
+  "name": "rimworld/list_alerts",
+  "description": "List active RimWorld alerts with structured culprit targets and alert-snapshot-scoped alert ids",
+  "params": [
+   "limit"
+  ]
+ },
+ {
+  "name": "rimworld/list_architect_categories",
+  "description": "List RimWorld Architect categories using stable category ids",
+  "params": [
+   "includeEmpty",
+   "includeHidden"
+  ]
+ },
+ {
+  "name": "rimworld/list_architect_designators",
+  "description": "List Architect designators for one category, flattening dropdown widgets into actionable child designators",
+  "params": [
+   "categoryId",
+   "includeHidden"
+  ]
+ },
+ {
+  "name": "rimworld/list_areas",
+  "description": "List current-map areas such as home, roof, snow-clear, and allowed areas",
+  "params": [
+   "includeAssignableOnly",
+   "includeEmpty"
+  ]
+ },
+ {
+  "name": "rimworld/list_colonists",
+  "description": "List player-controlled colonists available for selection and drafting, including stable pawn ids",
+  "params": [
+   "currentMapOnly"
+  ]
+ },
+ {
+  "name": "rimworld/list_debug_action_children",
+  "description": "List direct children of a RimWorld debug action path",
+  "params": [
+   "includeHidden",
+   "path"
+  ]
+ },
+ {
+  "name": "rimworld/list_debug_action_roots",
+  "description": "List top-level RimWorld debug action roots using stable internal debug-action paths",
+  "params": [
+   "includeHidden"
+  ]
+ },
+ {
+  "name": "rimworld/list_inspect_tabs",
+  "description": "List the current selection's dynamic RimWorld inspect tabs such as Health, Needs, Gear, and mod-provided tabs with stable selection-scoped inspect-tab ids",
+  "params": [
+   "includeHidden"
+  ]
+ },
+ {
+  "name": "rimworld/list_languages",
+  "description": "List installed RimWorld languages, including a recommended ASCII-safe switch query for each language and the currently active language",
+  "params": []
+ },
+ {
+  "name": "rimworld/list_letters",
+  "description": "List current letter-stack entries with native letter ids, semantic letter content, and structured look-target metadata",
+  "params": [
+   "limit"
+  ]
+ },
+ {
+  "name": "rimworld/list_main_tabs",
+  "description": "List RimWorld main tabs such as Work, Assign, Research, and mod-provided tabs with stable main-tab target ids",
+  "params": [
+   "includeHidden"
+  ]
+ },
+ {
+  "name": "rimworld/list_messages",
+  "description": "List live RimWorld messages with native message ids and structured look-target metadata",
+  "params": [
+   "limit"
+  ]
+ },
+ {
+  "name": "rimworld/list_mod_settings_surfaces",
+  "description": "List loaded mod handles that expose a settings dialog, a persistent ModSettings state object, or both",
+  "params": [
+   "includeWithoutSettings"
+  ]
+ },
+ {
+  "name": "rimworld/list_mods",
+  "description": "List installed RimWorld mods, whether each one is enabled in the current configuration, and whether it matches the currently loaded session",
+  "params": [
+   "includeInactive"
+  ]
+ },
+ {
+  "name": "rimworld/list_saves",
+  "description": "List saved RimWorld games with mod-compatibility details and optionally return only saves whose recorded mods are all currently active",
+  "params": [
+   "compatibleOnly"
+  ]
+ },
+ {
+  "name": "rimworld/list_selected_gizmos",
+  "description": "List the current selection's actionable grouped gizmos using deterministic selection-scoped gizmo ids",
+  "params": []
+ },
+ {
+  "name": "rimworld/list_zones",
+  "description": "List current-map zones such as stockpiles and growing zones",
+  "params": [
+   "includeEmpty",
+   "includeHidden"
+  ]
+ },
+ {
+  "name": "rimworld/load_game",
+  "description": "Load a named RimWorld save after verifying every recorded mod is active unless ignoreModCompatibility is true",
+  "params": [
+   "ignoreModCompatibility",
+   "saveName"
+  ]
+ },
+ {
+  "name": "rimworld/load_game_ready",
+  "description": "Load a named RimWorld save after verifying every recorded mod is active unless ignoreModCompatibility is true, then wait until the requested readiness level",
+  "params": [
+   "ignoreModCompatibility",
+   "pauseIfNeeded",
+   "pollIntervalMs",
+   "readiness",
+   "saveName",
+   "targetReadiness",
+   "timeoutMs",
+   "waitForVisualReady"
+  ]
+ },
+ {
+  "name": "rimworld/move_camera",
+  "description": "Move the camera by a cell offset",
+  "params": [
+   "deltaX",
+   "deltaZ"
+  ]
+ },
+ {
+  "name": "rimworld/open_context_menu",
+  "description": "Dispatch a live map click at a target pawn or cell and capture the resulting context menu when one remains open",
+  "params": [
+   "button",
+   "holdDurationMs",
+   "mode",
+   "modifiers",
+   "targetPawnId",
+   "targetPawnName",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/open_inspect_tab",
+  "description": "Open one current RimWorld inspect tab by inspect-tab id, translated label, label key, tutor tag, or .NET type name",
+  "params": [
+   "inspectTabId"
+  ]
+ },
+ {
+  "name": "rimworld/open_letter",
+  "description": "Open a specific letter by native letter id, mirroring a normal left-click on the letter stack entry",
+  "params": [
+   "letterId"
+  ]
+ },
+ {
+  "name": "rimworld/open_main_tab",
+  "description": "Open one RimWorld main tab by stable target id, defName, label, or tab window type",
+  "params": [
+   "mainTabId"
+  ]
+ },
+ {
+  "name": "rimworld/open_mod_settings",
+  "description": "Open RimWorld's native Dialog_ModSettings window for one loaded mod without foreground-dependent input",
+  "params": [
+   "modId",
+   "replaceExisting"
+  ]
+ },
+ {
+  "name": "rimworld/open_window_by_type",
+  "description": "Open a RimWorld window by short or full .NET type name when the window exposes a public parameterless constructor",
+  "params": [
+   "replaceExisting",
+   "windowType"
+  ]
+ },
+ {
+  "name": "rimworld/pause_game",
+  "description": "Pause or unpause the game",
+  "params": [
+   "pause"
+  ]
+ },
+ {
+  "name": "rimworld/play_for",
+  "description": "Unpause the current game at a requested time speed for a bounded real-time duration, then pause it again; speed 4 (Ultrafast) is boosted by default, and forced-normal-speed slowdown can optionally be suppressed during the run",
+  "params": [
+   "durationMs",
+   "forceRequestedSpeed",
+   "pollIntervalMs",
+   "speed"
+  ]
+ },
+ {
+  "name": "rimworld/play_until_letter",
+  "description": "Unpause the current game at a requested time speed until a new right-side letter appears, then pause and return the new letter payload; speed 4 (Ultrafast) is boosted by default, and forced-normal-speed slowdown can optionally be suppressed during the run",
+  "params": [
+   "forceRequestedSpeed",
+   "includeExistingLetters",
+   "pollIntervalMs",
+   "speed",
+   "timeoutMs"
+  ]
+ },
+ {
+  "name": "rimworld/press_accept",
+  "description": "Send semantic accept input to the active RimWorld window stack without requiring OS focus",
+  "params": []
+ },
+ {
+  "name": "rimworld/press_cancel",
+  "description": "Send semantic cancel input to the active RimWorld window stack without requiring OS focus",
+  "params": []
+ },
+ {
+  "name": "rimworld/reload_mod_settings",
+  "description": "Reload a loaded mod's ModSettings object from disk, discarding unsaved in-memory changes",
+  "params": [
+   "maxCollectionEntries",
+   "maxDepth",
+   "modId"
+  ]
+ },
+ {
+  "name": "rimworld/reorder_mod",
+  "description": "Move one currently enabled mod to a new zero-based active load-order index, optionally persisting the updated ModsConfig.xml immediately",
+  "params": [
+   "modId",
+   "save",
+   "targetIndex"
+  ]
+ },
+ {
+  "name": "rimworld/right_click_cell",
+  "description": "Dispatch a live map click interaction for the current pawn selection so vanilla and modded handlers see the same input path as a real click",
+  "params": [
+   "button",
+   "holdDurationMs",
+   "modifiers",
+   "targetPawnId",
+   "targetPawnName",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/save_game",
+  "description": "Save the current game to a named save",
+  "params": [
+   "saveName"
+  ]
+ },
+ {
+  "name": "rimworld/screenshot_cell_rect",
+  "description": "Center a requested map-cell rectangle plus optional margin cells at the current camera zoom, capture it, crop to the cell bounds, and restore the prior camera immediately after by default",
+  "params": [
+   "doNotResetCamera",
+   "fileName",
+   "height",
+   "includeTargets",
+   "paddingCells",
+   "rootSize",
+   "suppressMessage",
+   "width",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/scroll_ui_target",
+  "description": "Scroll a scroll_view ui-element target returned by rimworld/get_ui_layout on the next real draw frame",
+  "params": [
+   "deltaX",
+   "deltaY",
+   "targetId",
+   "targetX",
+   "targetY",
+   "timeoutMs"
+  ]
+ },
+ {
+  "name": "rimworld/search_debug_actions",
+  "description": "Search the full RimWorld debug-action tree globally by path, label, category, and source metadata so callers do not need to walk one subtree at a time",
+  "params": [
+   "includeHidden",
+   "limit",
+   "query",
+   "requiredTargetKind",
+   "supportedOnly"
+  ]
+ },
+ {
+  "name": "rimworld/select_allowed_area",
+  "description": "Select an allowed area by id for area-designator flows, or clear the selection when areaId is omitted",
+  "params": [
+   "areaId"
+  ]
+ },
+ {
+  "name": "rimworld/select_architect_designator",
+  "description": "Select an Architect designator by stable id without relying on foreground UI interaction",
+  "params": [
+   "designatorId"
+  ]
+ },
+ {
+  "name": "rimworld/select_pawn",
+  "description": "Select a single colonist by name or stable pawn id",
+  "params": [
+   "append",
+   "pawnId",
+   "pawnName"
+  ]
+ },
+ {
+  "name": "rimworld/set_camera_zoom",
+  "description": "Set the current camera root size directly",
+  "params": [
+   "rootSize"
+  ]
+ },
+ {
+  "name": "rimworld/set_camera_zoom_extension",
+  "description": "Enable or disable RimBridgeServer's session-only extended camera zoom range; disabled by default",
+  "params": [
+   "enabled"
+  ]
+ },
+ {
+  "name": "rimworld/set_colonist_job_logging",
+  "description": "Deterministically enable or disable job-tracker logging for one current-map colonist and return a log cursor plus recommended rimbridge/list_logs arguments for consuming future job lines",
+  "params": [
+   "enabled",
+   "pawnId",
+   "pawnName"
+  ]
+ },
+ {
+  "name": "rimworld/set_debug_setting",
+  "description": "Set a RimWorld debug setting toggle by stable path to a deterministic on/off state",
+  "params": [
+   "enabled",
+   "path"
+  ]
+ },
+ {
+  "name": "rimworld/set_draft",
+  "description": "Draft or undraft a colonist by name or stable pawn id",
+  "params": [
+   "drafted",
+   "pawnId",
+   "pawnName"
+  ]
+ },
+ {
+  "name": "rimworld/set_god_mode",
+  "description": "Enable or disable RimWorld god mode deterministically",
+  "params": [
+   "enabled"
+  ]
+ },
+ {
+  "name": "rimworld/set_hover_target",
+  "description": "Set a bounded virtual cursor/hover target for UI review and screenshots, using a ui-element or screen target id, explicit screen coordinates, or a current-map cell, pawn, or thing",
+  "params": [
+   "anchor",
+   "durationMs",
+   "offsetX",
+   "offsetY",
+   "pawnId",
+   "pawnName",
+   "screenX",
+   "screenY",
+   "settleMs",
+   "targetId",
+   "thingId",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/set_mod_enabled",
+  "description": "Enable or disable one installed mod by stable mod id, package id, name, or folder name, optionally persisting the updated ModsConfig.xml immediately",
+  "params": [
+   "allowDisableCore",
+   "enabled",
+   "modId",
+   "save"
+  ]
+ },
+ {
+  "name": "rimworld/set_time_speed",
+  "description": "Set RimWorld's current time speed directly; RimBridgeServer enables the boost for speed 4 (Ultrafast) at startup, and this tool can change that state",
+  "params": [
+   "speed",
+   "ultraSpeedBoost"
+  ]
+ },
+ {
+  "name": "rimworld/set_zone_target",
+  "description": "Set or clear the explicit existing-zone target on a zone-add designator",
+  "params": [
+   "designatorId",
+   "zoneId"
+  ]
+ },
+ {
+  "name": "rimworld/spawn_thing",
+  "description": "Spawn a thing on the current map at a target cell",
+  "params": [
+   "defName",
+   "stackCount",
+   "x",
+   "z"
+  ]
+ },
+ {
+  "name": "rimworld/start_debug_game",
+  "description": "Start RimWorld's built-in quick test colony from the main menu while honoring RimWorld's Pause on load preference",
+  "params": []
+ },
+ {
+  "name": "rimworld/start_debug_game_ready",
+  "description": "Start RimWorld's built-in quick test colony from the main menu, honor RimWorld's Pause on load preference, and wait for the requested readiness level",
+  "params": [
+   "pauseIfNeeded",
+   "pollIntervalMs",
+   "readiness",
+   "targetReadiness",
+   "timeoutMs",
+   "waitForVisualReady"
+  ]
+ },
+ {
+  "name": "rimworld/step_game_ticks",
+  "description": "Advance the paused game by an exact number of ticks, one tick per Unity update frame, mirroring RimWorld's Dev_TickOnce path while preserving render-frame boundaries",
+  "params": [
+   "pauseFirst",
+   "playSound",
+   "pollIntervalMs",
+   "ticks",
+   "timeoutMs"
+  ]
+ },
+ {
+  "name": "rimworld/switch_language",
+  "description": "Switch RimWorld to an installed language by the recommendedQuery from rimworld/list_languages or another exact language name match, mirroring the main-menu language picker and saving prefs",
+  "params": [
+   "language"
+  ]
+ },
+ {
+  "name": "rimworld/take_screenshot",
+  "description": "Take an in-game screenshot and optionally crop it to a screen target, UI surface, UI element, or scroll-view region",
+  "params": [
+   "clipPadding",
+   "clipTargetId",
+   "fileName",
+   "includeTargets",
+   "suppressMessage"
+  ]
+ },
+ {
+  "name": "rimworld/update_mod_settings",
+  "description": "Apply one or more field-path updates to a loaded mod's ModSettings object, with optional immediate persistence through Mod.WriteSettings()",
+  "params": [
+   "maxCollectionEntries",
+   "maxDepth",
+   "modId",
+   "values",
+   "write"
+  ]
+ },
+ {
+  "name": "rimworld/zoom_camera",
+  "description": "Adjust the current camera zoom/root size",
+  "params": [
+   "delta"
+  ]
+ }
+]

@@ -1,0 +1,11 @@
+
+--- JAWA at 119,192 terrain=Soil empty=True
+   order -> accepted=True after=Wait
+   + 700 ticks  job=Wait_Wander          cell=['Plant_YellowTallGrass']
+   SOWN by JAWA
+
+--- BASELINER at 121,192 terrain=Soil empty=True
+   order -> accepted=True after=Wait
+   + 700 ticks  job=CutPlant             cell=[]
+   +1400 ticks  job=Sow                  cell=['Plant_Rice', 'Mote_ProgressBar']
+   SOWN by BASELINER

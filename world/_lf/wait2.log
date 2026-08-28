@@ -1,0 +1,5 @@
+     0s start
+    45s busy: timed out after 45s waiting for the bridge; RimWorld may be 
+   110s busy: timed out after 45s waiting for the bridge; RimWorld may be 
+   175s busy: timed out after 45s waiting for the bridge; RimWorld may be 
+   195s BRIDGE BACK: {"status": "game_loaded", "ticksGame": 1174, "mapCount": 1, "selectedPawns": ["Tauntaun"]}

@@ -1,0 +1,726 @@
+[
+ {
+  "tool": "jawa/set_terrain_batch",
+  "params": {
+   "ops": "Gravel:171,171,4,8"
+  },
+  "reply": {
+   "success": true,
+   "message": "Applied 1/1 op(s): 32 cell(s) changed, 0 already correct.",
+   "layer": "top",
+   "opsRequested": 1,
+   "opsApplied": 1,
+   "cellsRequested": 32,
+   "cellsChanged": 32,
+   "cellsAlreadyCorrect": 0,
+   "cellsOutOfBounds": 0,
+   "cellsFailedVerify": 0,
+   "refreshed": true,
+   "cellsRefreshed": 32,
+   "errors": [],
+   "samples": [
+    {
+     "x": 171,
+     "z": 171,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 171,
+     "z": 172,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 171,
+     "z": 173,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 171,
+     "z": 174,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 171,
+     "z": 175,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 171,
+     "z": 176,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 171,
+     "z": 177,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 171,
+     "z": 178,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    }
+   ],
+   "mapSize": {
+    "x": 250,
+    "z": 250
+   },
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/set_terrain_batch",
+  "params": {
+   "ops": "Gravel:176,171,4,8"
+  },
+  "reply": {
+   "success": true,
+   "message": "Applied 1/1 op(s): 32 cell(s) changed, 0 already correct.",
+   "layer": "top",
+   "opsRequested": 1,
+   "opsApplied": 1,
+   "cellsRequested": 32,
+   "cellsChanged": 32,
+   "cellsAlreadyCorrect": 0,
+   "cellsOutOfBounds": 0,
+   "cellsFailedVerify": 0,
+   "refreshed": true,
+   "cellsRefreshed": 32,
+   "errors": [],
+   "samples": [
+    {
+     "x": 176,
+     "z": 171,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 176,
+     "z": 172,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 176,
+     "z": 173,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 176,
+     "z": 174,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 176,
+     "z": 175,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 176,
+     "z": 176,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 176,
+     "z": 177,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 176,
+     "z": 178,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    }
+   ],
+   "mapSize": {
+    "x": 250,
+    "z": 250
+   },
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/set_terrain_batch",
+  "params": {
+   "ops": "Gravel:181,171,6,8"
+  },
+  "reply": {
+   "success": true,
+   "message": "Applied 1/1 op(s): 48 cell(s) changed, 0 already correct.",
+   "layer": "top",
+   "opsRequested": 1,
+   "opsApplied": 1,
+   "cellsRequested": 48,
+   "cellsChanged": 48,
+   "cellsAlreadyCorrect": 0,
+   "cellsOutOfBounds": 0,
+   "cellsFailedVerify": 0,
+   "refreshed": true,
+   "cellsRefreshed": 48,
+   "errors": [],
+   "samples": [
+    {
+     "x": 181,
+     "z": 171,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 181,
+     "z": 172,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 181,
+     "z": 173,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 181,
+     "z": 174,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 181,
+     "z": 175,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 181,
+     "z": 176,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 181,
+     "z": 177,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    },
+    {
+     "x": 181,
+     "z": 178,
+     "before": "NewAridSoil",
+     "after": "Gravel",
+     "applied": true
+    }
+   ],
+   "mapSize": {
+    "x": 250,
+    "z": 250
+   },
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/build_batch",
+  "params": {
+   "ops": "Bedroll:171,171;Bedroll:173,171;Bedroll:171,173;Bedroll:173,173",
+   "stuff": "WoodLog",
+   "faction": "Jawa_IndigenousTribes"
+  },
+  "reply": {
+   "success": true,
+   "placed": 4,
+   "failedCount": 0,
+   "failed": [],
+   "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+   "things": [
+    {
+     "def": "Bedroll",
+     "stuff": "WoodLog",
+     "x": 171,
+     "z": 171,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 49,
+     "maxHitPoints": 49,
+     "quality": "Normal"
+    },
+    {
+     "def": "Bedroll",
+     "stuff": "WoodLog",
+     "x": 173,
+     "z": 171,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 49,
+     "maxHitPoints": 49,
+     "quality": "Normal"
+    },
+    {
+     "def": "Bedroll",
+     "stuff": "WoodLog",
+     "x": 171,
+     "z": 173,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 49,
+     "maxHitPoints": 49,
+     "quality": "Normal"
+    },
+    {
+     "def": "Bedroll",
+     "stuff": "WoodLog",
+     "x": 173,
+     "z": 173,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 49,
+     "maxHitPoints": 49,
+     "quality": "Normal"
+    }
+   ],
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/build_batch",
+  "params": {
+   "ops": "Campfire:179,178",
+   "faction": "Jawa_IndigenousTribes"
+  },
+  "reply": {
+   "success": true,
+   "placed": 1,
+   "failedCount": 0,
+   "failed": [],
+   "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+   "things": [
+    {
+     "def": "Campfire",
+     "stuff": null,
+     "x": 179,
+     "z": 178,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 80,
+     "maxHitPoints": 80,
+     "quality": null
+    }
+   ],
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/build_batch",
+  "params": {
+   "ops": "DiningChair:176,172",
+   "stuff": "WoodLog",
+   "faction": "Jawa_IndigenousTribes"
+  },
+  "reply": {
+   "success": true,
+   "placed": 1,
+   "failedCount": 0,
+   "failed": [],
+   "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+   "things": [
+    {
+     "def": "DiningChair",
+     "stuff": "WoodLog",
+     "x": 176,
+     "z": 172,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 65,
+     "maxHitPoints": 65,
+     "quality": "Normal"
+    }
+   ],
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/build_batch",
+  "params": {
+   "ops": "Door:173,170;Door:175,175;Door:180,175",
+   "stuff": "WoodLog",
+   "faction": "Jawa_IndigenousTribes"
+  },
+  "reply": {
+   "success": true,
+   "placed": 3,
+   "failedCount": 0,
+   "failed": [],
+   "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+   "things": [
+    {
+     "def": "Door",
+     "stuff": "WoodLog",
+     "x": 173,
+     "z": 170,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 104,
+     "maxHitPoints": 104,
+     "quality": null
+    },
+    {
+     "def": "Door",
+     "stuff": "WoodLog",
+     "x": 175,
+     "z": 175,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 104,
+     "maxHitPoints": 104,
+     "quality": null
+    },
+    {
+     "def": "Door",
+     "stuff": "WoodLog",
+     "x": 180,
+     "z": 175,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 104,
+     "maxHitPoints": 104,
+     "quality": null
+    }
+   ],
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/build_batch",
+  "params": {
+   "ops": "Shelf:181,171;Shelf:182,171;Shelf:183,171",
+   "stuff": "WoodLog",
+   "faction": "Jawa_IndigenousTribes"
+  },
+  "reply": {
+   "success": true,
+   "placed": 3,
+   "failedCount": 0,
+   "failed": [],
+   "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+   "things": [
+    {
+     "def": "Shelf",
+     "stuff": "WoodLog",
+     "x": 181,
+     "z": 171,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 65,
+     "maxHitPoints": 65,
+     "quality": null
+    },
+    {
+     "def": "Shelf",
+     "stuff": "WoodLog",
+     "x": 182,
+     "z": 171,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 65,
+     "maxHitPoints": 65,
+     "quality": null
+    },
+    {
+     "def": "Shelf",
+     "stuff": "WoodLog",
+     "x": 183,
+     "z": 171,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 65,
+     "maxHitPoints": 65,
+     "quality": null
+    }
+   ],
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/build_batch",
+  "params": {
+   "ops": "Table1x2c:176,171",
+   "stuff": "WoodLog",
+   "faction": "Jawa_IndigenousTribes"
+  },
+  "reply": {
+   "success": true,
+   "placed": 1,
+   "failedCount": 0,
+   "failed": [],
+   "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+   "things": [
+    {
+     "def": "Table1x2c",
+     "stuff": "WoodLog",
+     "x": 176,
+     "z": 171,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 49,
+     "maxHitPoints": 49,
+     "quality": "Normal"
+    }
+   ],
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/build_batch",
+  "params": {
+   "ops": "TorchLamp:174,178;TorchLamp:178,178;TorchLamp:186,178",
+   "faction": "Jawa_IndigenousTribes"
+  },
+  "reply": {
+   "success": true,
+   "placed": 3,
+   "failedCount": 0,
+   "failed": [],
+   "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+   "things": [
+    {
+     "def": "TorchLamp",
+     "stuff": null,
+     "x": 174,
+     "z": 178,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 75,
+     "maxHitPoints": 75,
+     "quality": null
+    },
+    {
+     "def": "TorchLamp",
+     "stuff": null,
+     "x": 178,
+     "z": 178,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 75,
+     "maxHitPoints": 75,
+     "quality": null
+    },
+    {
+     "def": "TorchLamp",
+     "stuff": null,
+     "x": 186,
+     "z": 178,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 75,
+     "maxHitPoints": 75,
+     "quality": null
+    }
+   ],
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/build_batch",
+  "params": {
+   "ops": "Wall:170,170;Wall:171,170;Wall:172,170;Wall:174,170;Wall:175,170;Wall:170,171;Wall:175,171;Wall:170,172;Wall:175,172;Wall:170,173;Wall:175,173;Wall:170,174;Wall:175,174;Wall:170,175;Wall:170,176;Wall:175,176;Wall:170,177;Wall:175,177;Wall:170,178;Wall:175,178;Wall:170,179;Wall:171,179;Wall:172,179;Wall:173,179;Wall:174,179;Wall:175,179;Wall:176,170;Wall:177,170;Wall:178,170;Wall:179,170;Wall:180,170;Wall:180,171;Wall:180,172;Wall:180,173;Wall:180,174;Wall:180,176;Wall:180,177;Wall:180,178;Wall:176,179;Wall:177,179;Wall:178,179;Wall:179,179;Wall:180,179;Wall:181,170;Wall:182,170;Wall:183,170;Wall:184,170;Wall:185,170;Wall:186,170;Wall:187,170;Wall:187,171;Wall:187,172;Wall:187,173;Wall:187,174;Wall:187,175;Wall:187,176;Wall:187,177;Wall:187,178;Wall:181,179;Wall:182,179;Wall:183,179;Wall:184,179;Wall:185,179;Wall:186,179;Wall:187,179",
+   "stuff": "BlocksSandstone",
+   "faction": "Jawa_IndigenousTribes"
+  },
+  "reply": {
+   "success": true,
+   "placed": 65,
+   "failedCount": 0,
+   "failed": [],
+   "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+   "things": [
+    {
+     "def": "Wall",
+     "stuff": "BlocksSandstone",
+     "x": 170,
+     "z": 170,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 420,
+     "maxHitPoints": 420,
+     "quality": null
+    },
+    {
+     "def": "Wall",
+     "stuff": "BlocksSandstone",
+     "x": 171,
+     "z": 170,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 420,
+     "maxHitPoints": 420,
+     "quality": null
+    },
+    {
+     "def": "Wall",
+     "stuff": "BlocksSandstone",
+     "x": 172,
+     "z": 170,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 420,
+     "maxHitPoints": 420,
+     "quality": null
+    },
+    {
+     "def": "Wall",
+     "stuff": "BlocksSandstone",
+     "x": 174,
+     "z": 170,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 420,
+     "maxHitPoints": 420,
+     "quality": null
+    },
+    {
+     "def": "Wall",
+     "stuff": "BlocksSandstone",
+     "x": 175,
+     "z": 170,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 420,
+     "maxHitPoints": 420,
+     "quality": null
+    },
+    {
+     "def": "Wall",
+     "stuff": "BlocksSandstone",
+     "x": 170,
+     "z": 171,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 420,
+     "maxHitPoints": 420,
+     "quality": null
+    },
+    {
+     "def": "Wall",
+     "stuff": "BlocksSandstone",
+     "x": 175,
+     "z": 171,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 420,
+     "maxHitPoints": 420,
+     "quality": null
+    },
+    {
+     "def": "Wall",
+     "stuff": "BlocksSandstone",
+     "x": 170,
+     "z": 172,
+     "rot": 0,
+     "faction": "Jawa_IndigenousTribes",
+     "hitPoints": 420,
+     "maxHitPoints": 420,
+     "quality": null
+    }
+   ],
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/set_roof_batch",
+  "params": {
+   "ops": "RoofConstructed:170,170,18,10"
+  },
+  "reply": {
+   "success": true,
+   "message": "Roofed 180 cell(s) across 1 op(s).",
+   "opsRequested": 1,
+   "cellsChanged": 180,
+   "cellsFailedVerify": 0,
+   "cellsOutOfBounds": 0,
+   "perDef": {
+    "RoofConstructed": 180
+   },
+   "errors": [],
+   "ticksGame": 1174
+  }
+ },
+ {
+  "tool": "jawa/map_commit",
+  "params": {
+   "regions": true,
+   "pathing": true,
+   "power": true,
+   "redraw": true
+  },
+  "reply": {
+   "success": true,
+   "failedSteps": 0,
+   "map": 0,
+   "mapSize": {
+    "x": 250,
+    "z": 250,
+    "area": 62500
+   },
+   "note": "Thing.SpawnSetup already handles listers, thingGrid, edificeGrid, coverGrid, linkGrid, glowGrid, fertility, snow/sand, temperature, gas, zones and per-cell mesh dirtying. This covers the rest.",
+   "steps": [
+    {
+     "step": "regionAndRoomUpdater.Enabled = true",
+     "status": "ok"
+    },
+    {
+     "step": "RebuildAllRegionsAndRooms",
+     "status": "ok"
+    },
+    {
+     "step": "pathing.RecalculateAllPerceivedPathCosts",
+     "status": "ok"
+    },
+    {
+     "step": "reachability.ClearCache",
+     "status": "ok"
+    },
+    {
+     "step": "powerNetManager.UpdatePowerNetsAndConnections_First",
+     "status": "ok"
+    },
+    {
+     "step": "mapDrawer.WholeMapChanged",
+     "status": "ok"
+    }
+   ],
+   "ticksGame": 1174
+  }
+ }
+]

@@ -1,0 +1,51 @@
+AncientMallGuards                tags=['AM_Fashion'] req=['Apparel_FlakPants'] money={'$type': 'FloatRange', 'min': 25000, 'max': 30000}
+AncientSlaughter                 tags=['AM_Slaughter'] req=['Apparel_FlakVest', 'Apparel_FlakPants'] money={'$type': 'FloatRange', 'min': 25000, 'max': 30000}
+AncientSoldierBoss               tags=['AM_Boss', 'AM_Bossbelt'] req=['Apparel_Pants'] money={'$type': 'FloatRange', 'min': 25000, 'max': 30000}
+AncientSoldierBossN              tags=['AM_Boss', 'AM_Bossbelt'] req=['Apparel_Pants'] money={'$type': 'FloatRange', 'min': 25000, 'max': 30000}
+OuterRim_ImperialTrader          tags=['ORImperialLight'] req=['OuterRim_ImperialOfficerUniform_Black', 'OuterRim_ImperialOfficerCap_Black', 'OuterRim_Belt_TemperatureRegulator'] money={'$type': 'FloatRange', 'min': 1300, 'max': 2000}
+OuterRim_RebelJumpTrooper        tags=['RebelApparel'] req=['OuterRim_RebelForestFatigues', 'OuterRim_RebelForestPoncho', 'OuterRim_RebelForestHelmet', 'OuterRim_RebelJetpack'] money={'$type': 'FloatRange', 'min': 1300, 'max': 2000}
+OuterRim_RebelOfficer            tags=['RebelApparel'] req=['OuterRim_RebelOfficerUniform', 'OuterRim_RebelOfficerCap'] money={'$type': 'FloatRange', 'min': 1300, 'max': 2000}
+OuterRim_RebelTrader             tags=['RebelApparel'] req=['OuterRim_RebelOfficerUniform', 'OuterRim_RebelOfficerCap'] money={'$type': 'FloatRange', 'min': 1300, 'max': 2000}
+
+--- supply tags containing 'Ancient' ---
+     1  AncientAstrosuit
+--- supply tags containing 'Rebel' ---
+     4  NewRepublic_RebelAgent_hats
+     2  NewRepublic_RebelBackpackMix
+     2  NewRepublic_RebelSniperOnSkin
+     2  NewRepublic_RebelTrooperOnSkin
+     2  NewRepublic_rebeltrooper
+     2  RebelFleetTrooper
+     4  RebelForestCamo
+     1  RebelJetpack
+     3  RebelOfficer
+     1  SWCPSpecificApparelItem_AltRebelCamoClothing
+     1  SWCPSpecificApparelItem_GCWRebelBackpack
+     1  SWCPSpecificApparelItem_GCWRebelHeavyBackpack
+     1  SWCPSpecificApparelItem_KotOROnderonRebelHat
+     1  SWCPSpecificApparelItem_RebelCamoClothing
+     1  SWCPSpecificApparelItem_RebelEngineerHat
+     1  SWCPSpecificApparelItem_RebelFlightSuitBox
+     1  SWKotORSpecificApparelItem_RebelMilitaryHelmet
+--- supply tags containing 'ORImperial' ---
+--- supply tags containing 'Imperial' ---
+     2  ImperialAgent
+    21  ImperialApparel
+     5  ImperialArmy
+     2  ImperialArmyFatigues
+     3  ImperialCadet
+     3  ImperialDeathTrooper
+     1  ImperialGunner
+     1  ImperialJetpack
+     1  ImperialJumpsuit
+     6  ImperialOfficer
+     3  ImperialRangeTrooper
+     3  ImperialScout
+     3  ImperialSnowtrooper
+     2  ImperialSpecialist
+     3  ImperialStormtrooper
+     1  ImperialStormtrooperEnlisted
+     2  ImperialStormtrooperOfficer
+     1  ImperialStormtrooperSergeant
+     2  ImperialStormtrooperSpecialist
+     1  SWCPSpecificApparelItem_ImperialWorkerHelmet

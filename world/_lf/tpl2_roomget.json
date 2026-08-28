@@ -1,0 +1,149 @@
+{
+ "success": true,
+ "message": "6 distinct room(s) over 180 cell(s).",
+ "cellsProbed": 180,
+ "roomsFound": 6,
+ "outdoorsSkipped": 0,
+ "rooms": [
+  {
+   "id": 254,
+   "role": "Barracks",
+   "roleLabel": "barracks",
+   "cellCount": 32,
+   "temperature": 11.1372318,
+   "openRoofCount": 0,
+   "properRoom": true,
+   "psychologicallyOutdoors": false,
+   "isOutdoors": false,
+   "usesOutdoorTemperature": false,
+   "sampleCell": {
+    "x": 101,
+    "z": 201
+   },
+   "stats": {
+    "Impressiveness": 44.8160439,
+    "Beauty": 1.0,
+    "Space": 36.6999969,
+    "Cleanliness": 0.0,
+    "Wealth": 747.9118
+   }
+  },
+  {
+   "id": 253,
+   "role": "None",
+   "roleLabel": "none",
+   "cellCount": 1,
+   "temperature": 11.1372318,
+   "openRoofCount": 0,
+   "properRoom": false,
+   "psychologicallyOutdoors": false,
+   "isOutdoors": false,
+   "usesOutdoorTemperature": false,
+   "sampleCell": {
+    "x": 103,
+    "z": 200
+   },
+   "stats": {
+    "Impressiveness": 0.0,
+    "Beauty": 0.0,
+    "Space": 350.0,
+    "Cleanliness": 0.0,
+    "Wealth": 0.0
+   }
+  },
+  {
+   "id": 257,
+   "role": "None",
+   "roleLabel": "none",
+   "cellCount": 1,
+   "temperature": 11.1372318,
+   "openRoofCount": 0,
+   "properRoom": false,
+   "psychologicallyOutdoors": false,
+   "isOutdoors": false,
+   "usesOutdoorTemperature": false,
+   "sampleCell": {
+    "x": 105,
+    "z": 205
+   },
+   "stats": {
+    "Impressiveness": 0.0,
+    "Beauty": 0.0,
+    "Space": 350.0,
+    "Cleanliness": 0.0,
+    "Wealth": 0.0
+   }
+  },
+  {
+   "id": 255,
+   "role": "Kitchen",
+   "roleLabel": "kitchen",
+   "cellCount": 32,
+   "temperature": 11.1372318,
+   "openRoofCount": 0,
+   "properRoom": true,
+   "psychologicallyOutdoors": false,
+   "isOutdoors": false,
+   "usesOutdoorTemperature": false,
+   "sampleCell": {
+    "x": 106,
+    "z": 201
+   },
+   "stats": {
+    "Impressiveness": 43.11848,
+    "Beauty": 0.8888889,
+    "Space": 41.2,
+    "Cleanliness": 0.0,
+    "Wealth": 584.0579
+   }
+  },
+  {
+   "id": 258,
+   "role": "None",
+   "roleLabel": "none",
+   "cellCount": 1,
+   "temperature": 11.1372318,
+   "openRoofCount": 0,
+   "properRoom": false,
+   "psychologicallyOutdoors": false,
+   "isOutdoors": false,
+   "usesOutdoorTemperature": false,
+   "sampleCell": {
+    "x": 110,
+    "z": 205
+   },
+   "stats": {
+    "Impressiveness": 0.0,
+    "Beauty": 0.0,
+    "Space": 350.0,
+    "Cleanliness": 0.0,
+    "Wealth": 0.0
+   }
+  },
+  {
+   "id": 256,
+   "role": "Storeroom",
+   "roleLabel": "storeroom",
+   "cellCount": 48,
+   "temperature": 11.1372318,
+   "openRoofCount": 0,
+   "properRoom": true,
+   "psychologicallyOutdoors": false,
+   "isOutdoors": false,
+   "usesOutdoorTemperature": false,
+   "sampleCell": {
+    "x": 111,
+    "z": 201
+   },
+   "stats": {
+    "Impressiveness": 38.15149,
+    "Beauty": 0.5625,
+    "Space": 62.7000237,
+    "Cleanliness": -0.7291667,
+    "Wealth": 819.7565
+   }
+  }
+ ],
+ "recomputedNotCached": true,
+ "ticksGame": 1
+}

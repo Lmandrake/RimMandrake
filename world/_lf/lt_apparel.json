@@ -1,0 +1,46 @@
+{
+ "Jawa_Colonist": {
+  "n": 8,
+  "robe": 6,
+  "hood": 6,
+  "intruders": {},
+  "sample": [
+   "guy762_Robes_jawa",
+   "guy762_JawaHood"
+  ]
+ },
+ "Jawa_Tribal_Scavenger": {
+  "n": 8,
+  "robe": 7,
+  "hood": 7,
+  "intruders": {},
+  "sample": [
+   "Apparel_BasicShirt",
+   "Apparel_Pants",
+   "VAE_Footwear_Shoes",
+   "VAE_Handwear_Gloves"
+  ]
+ },
+ "Jawa_Tribal_Slinger": {
+  "n": 8,
+  "robe": 6,
+  "hood": 6,
+  "intruders": {},
+  "sample": [
+   "VAE_Apparel_Tunic",
+   "Apparel_Pants",
+   "VAE_Footwear_Boots",
+   "VAE_Handwear_Gloves"
+  ]
+ },
+ "Jawa_Tribal_Elder": {
+  "n": 8,
+  "robe": 8,
+  "hood": 8,
+  "intruders": {},
+  "sample": [
+   "guy762_Robes_jawa",
+   "guy762_JawaHood"
+  ]
+ }
+}

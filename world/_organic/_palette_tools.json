@@ -1,0 +1,139 @@
+[
+ {
+  "name": "jawa/world_landmarks_get",
+  "desc": "List the landmarks on the planet (Find.World.landmarks). 113 LandmarkDefs ship with Odyssey. Reports each landmark's tile, def, generated name and whether it is a combo landmark. \ud83d\udd34 Landmarks are ODYSSEY-GATED: without Od",
+  "schema": {
+   "type": "object",
+   "properties": {
+    "def": {
+     "type": "string",
+     "description": "Only landmarks of this LandmarkDef."
+    },
+    "limit": {
+     "type": "integer",
+     "description": "Max rows. Default 100.",
+     "default": 100
+    }
+   },
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "jawa/world_landmarks_set",
+  "desc": "Add or remove a landmark on a world tile via WorldLandmarks.AddLandmark / RemoveLandmark. \u26a0\ufe0f AddLandmark ALSO rolls the def's mutatorChances and comboLandmarkMutators onto the tile, so this is a mutator write as well - t",
+  "schema": {
+   "type": "object",
+   "properties": {
+    "action": {
+     "type": "string",
+     "description": "'add' or 'remove'.",
+     "default": "add"
+    },
+    "def": {
+     "type": "string",
+     "description": "LandmarkDef name. Required for 'add'."
+    },
+    "tiles": {
+     "type": "string",
+     "description": "Comma-separated tile ids."
+    },
+    "forced": {
+     "type": "boolean",
+     "description": "Bypass LandmarkDef validity (AddLandmark 'forced').",
+     "default": false
+    },
+    "checkValid": {
+     "type": "boolean",
+     "description": "Report IsValidTile for each tile before acting.",
+     "default": true
+    }
+   },
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "jawa/world_mutators_audit",
+  "desc": "Sweep the whole planet for mutators that contradict the terrain under them - the defect class that survives a repaint. Reports tiles carrying a named marine/coastal mutator that are NOT coastal by real adjacency (World.C",
+  "schema": {
+   "type": "object",
+   "properties": {
+    "marineMutators": {
+     "type": "string",
+     "description": "Comma-separated mutator defNames that imply water adjacency. Default 'Coast'.",
+     "default": "Coast"
+    },
+    "limit": {
+     "type": "integer",
+     "description": "Max offender rows. Default 30.",
+     "default": 30
+    },
+    "histogram": {
+     "type": "boolean",
+     "description": "Also return the full mutator histogram. Default true.",
+     "default": true
+    }
+   },
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "jawa/world_mutators_set",
+  "desc": "Add or remove TileMutatorDefs on world tiles. Uses Tile.AddMutator / RemoveMutator, never the raw list - AddMutator resolves category conflicts, sorts by genOrder and fires the def's Worker.OnAddedToTile, which is where ",
+  "schema": {
+   "type": "object",
+   "properties": {
+    "action": {
+     "type": "string",
+     "description": "'add', 'remove' or 'clear'.",
+     "default": "add"
+    },
+    "mutators": {
+     "type": "string",
+     "description": "Comma-separated TileMutatorDef names. Ignored for 'clear'."
+    },
+    "tiles": {
+     "type": "string",
+     "description": "Comma-separated tile ids."
+    },
+    "range": {
+     "type": "string",
+     "description": "Inclusive range 'from-to'."
+    },
+    "readBack": {
+     "type": "integer",
+     "description": "Read back at most this many tiles. Default 8.",
+     "default": 8
+    }
+   },
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "jawa/world_mutators_get",
+  "desc": "Read the TileMutatorDefs and the Landmark on world tiles. Mutators are what give a tile its caves, coast, cliffs, mixed biome and so on - 336 defs ship. Also reports whether the tile is genuinely coastal by real adjacenc",
+  "schema": {
+   "type": "object",
+   "properties": {
+    "tiles": {
+     "type": "string",
+     "description": "Comma-separated tile ids."
+    },
+    "range": {
+     "type": "string",
+     "description": "Inclusive range 'from-to'."
+    },
+    "onlyWithMutators": {
+     "type": "boolean",
+     "description": "Only tiles carrying at least one mutator.",
+     "default": false
+    },
+    "limit": {
+     "type": "integer",
+     "description": "Max rows. Default 100.",
+     "default": 100
+    }
+   },
+   "additionalProperties": false
+  }
+ }
+]

@@ -1,0 +1,2174 @@
+{
+  "meta": {
+    "template": "dwelling",
+    "template_sha256": "5df156114085d42b",
+    "seed": 1,
+    "generator": "lua-prototype/0.1",
+    "footprint": [
+      170,
+      170,
+      18,
+      10
+    ],
+    "faction": "Jawa_IndigenousTribes",
+    "rooms": 3,
+    "occupants": 4,
+    "wealth": null,
+    "techLevel": null,
+    "defended": null,
+    "condition": null,
+    "climate": null,
+    "temperature_c": null
+  },
+  "things": [
+    {
+      "defName": "Wall",
+      "x": 170,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 171,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 172,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 174,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 175,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 170,
+      "z": 171,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 175,
+      "z": 171,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 170,
+      "z": 172,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 175,
+      "z": 172,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 170,
+      "z": 173,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 175,
+      "z": 173,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 170,
+      "z": 174,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 175,
+      "z": 174,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 170,
+      "z": 175,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 170,
+      "z": 176,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 175,
+      "z": 176,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 170,
+      "z": 177,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 175,
+      "z": 177,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 170,
+      "z": 178,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 175,
+      "z": 178,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 170,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 171,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 172,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 173,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 174,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 175,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 176,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 177,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 178,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 179,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 180,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 180,
+      "z": 171,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 180,
+      "z": 172,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 180,
+      "z": 173,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 180,
+      "z": 174,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 180,
+      "z": 176,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 180,
+      "z": 177,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 180,
+      "z": 178,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 176,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 177,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 178,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 179,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 180,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 181,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 182,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 183,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 184,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 185,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 186,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 187,
+      "z": 170,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 187,
+      "z": 171,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 187,
+      "z": 172,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 187,
+      "z": 173,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 187,
+      "z": 174,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 187,
+      "z": 175,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 187,
+      "z": 176,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 187,
+      "z": 177,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 187,
+      "z": 178,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 181,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 182,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 183,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 184,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 185,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 186,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Wall",
+      "x": 187,
+      "z": 179,
+      "rot": 0,
+      "stuff": "BlocksSandstone",
+      "role": "WALL"
+    },
+    {
+      "defName": "Door",
+      "x": 173,
+      "z": 170,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "DOOR"
+    },
+    {
+      "defName": "Door",
+      "x": 175,
+      "z": 175,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "DOOR"
+    },
+    {
+      "defName": "Door",
+      "x": 180,
+      "z": 175,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "DOOR"
+    },
+    {
+      "defName": "Bedroll",
+      "x": 171,
+      "z": 171,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "BED"
+    },
+    {
+      "defName": "Bedroll",
+      "x": 173,
+      "z": 171,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "BED"
+    },
+    {
+      "defName": "Bedroll",
+      "x": 171,
+      "z": 173,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "BED"
+    },
+    {
+      "defName": "Bedroll",
+      "x": 173,
+      "z": 173,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "BED"
+    },
+    {
+      "defName": "TorchLamp",
+      "x": 174,
+      "z": 178,
+      "rot": 0,
+      "stuff": null,
+      "role": "LIGHT"
+    },
+    {
+      "defName": "Table1x2c",
+      "x": 176,
+      "z": 171,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "TABLE"
+    },
+    {
+      "defName": "DiningChair",
+      "x": 176,
+      "z": 172,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "CHAIR"
+    },
+    {
+      "defName": "Campfire",
+      "x": 179,
+      "z": 178,
+      "rot": 0,
+      "stuff": null,
+      "role": "STOVE"
+    },
+    {
+      "defName": "TorchLamp",
+      "x": 178,
+      "z": 178,
+      "rot": 0,
+      "stuff": null,
+      "role": "LIGHT"
+    },
+    {
+      "defName": "Shelf",
+      "x": 181,
+      "z": 171,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "STORAGE"
+    },
+    {
+      "defName": "Shelf",
+      "x": 182,
+      "z": 171,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "STORAGE"
+    },
+    {
+      "defName": "Shelf",
+      "x": 183,
+      "z": 171,
+      "rot": 0,
+      "stuff": "WoodLog",
+      "role": "STORAGE"
+    },
+    {
+      "defName": "TorchLamp",
+      "x": 186,
+      "z": 178,
+      "rot": 0,
+      "stuff": null,
+      "role": "LIGHT"
+    }
+  ],
+  "terrain": [
+    {
+      "x": 171,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 171,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 171,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 171,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 171,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 171,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 171,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 171,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 172,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 172,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 172,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 172,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 172,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 172,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 172,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 172,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 173,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 173,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 173,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 173,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 173,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 173,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 173,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 173,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 174,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 174,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 174,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 174,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 174,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 174,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 174,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 174,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 176,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 176,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 176,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 176,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 176,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 176,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 176,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 176,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 177,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 177,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 177,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 177,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 177,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 177,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 177,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 177,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 178,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 178,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 178,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 178,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 178,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 178,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 178,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 178,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 179,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 179,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 179,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 179,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 179,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 179,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 179,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 179,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 181,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 181,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 181,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 181,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 181,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 181,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 181,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 181,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 182,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 182,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 182,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 182,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 182,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 182,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 182,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 182,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 183,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 183,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 183,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 183,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 183,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 183,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 183,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 183,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 184,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 184,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 184,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 184,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 184,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 184,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 184,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 184,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 185,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 185,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 185,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 185,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 185,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 185,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 185,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 185,
+      "z": 178,
+      "def": "Gravel"
+    },
+    {
+      "x": 186,
+      "z": 171,
+      "def": "Gravel"
+    },
+    {
+      "x": 186,
+      "z": 172,
+      "def": "Gravel"
+    },
+    {
+      "x": 186,
+      "z": 173,
+      "def": "Gravel"
+    },
+    {
+      "x": 186,
+      "z": 174,
+      "def": "Gravel"
+    },
+    {
+      "x": 186,
+      "z": 175,
+      "def": "Gravel"
+    },
+    {
+      "x": 186,
+      "z": 176,
+      "def": "Gravel"
+    },
+    {
+      "x": 186,
+      "z": 177,
+      "def": "Gravel"
+    },
+    {
+      "x": 186,
+      "z": 178,
+      "def": "Gravel"
+    }
+  ],
+  "roof": [
+    {
+      "x": 170,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 170,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 170,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 170,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 170,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 170,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 170,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 170,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 170,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 170,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 171,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 171,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 171,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 171,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 171,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 171,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 171,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 171,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 171,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 171,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 172,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 172,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 172,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 172,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 172,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 172,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 172,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 172,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 172,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 172,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 173,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 173,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 173,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 173,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 173,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 173,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 173,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 173,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 173,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 173,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 174,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 174,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 174,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 174,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 174,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 174,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 174,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 174,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 174,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 174,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 175,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 175,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 175,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 175,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 175,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 175,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 175,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 175,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 175,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 175,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 176,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 176,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 176,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 176,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 176,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 176,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 176,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 176,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 176,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 176,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 177,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 177,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 177,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 177,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 177,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 177,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 177,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 177,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 177,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 177,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 178,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 178,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 178,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 178,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 178,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 178,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 178,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 178,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 178,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 178,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 179,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 179,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 179,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 179,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 179,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 179,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 179,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 179,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 179,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 179,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 180,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 180,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 180,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 180,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 180,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 180,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 180,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 180,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 180,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 180,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 181,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 181,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 181,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 181,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 181,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 181,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 181,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 181,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 181,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 181,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 182,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 182,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 182,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 182,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 182,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 182,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 182,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 182,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 182,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 182,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 183,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 183,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 183,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 183,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 183,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 183,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 183,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 183,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 183,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 183,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 184,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 184,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 184,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 184,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 184,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 184,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 184,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 184,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 184,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 184,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 185,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 185,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 185,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 185,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 185,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 185,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 185,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 185,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 185,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 185,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 186,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 186,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 186,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 186,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 186,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 186,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 186,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 186,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 186,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 186,
+      "z": 179,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 187,
+      "z": 170,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 187,
+      "z": 171,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 187,
+      "z": 172,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 187,
+      "z": 173,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 187,
+      "z": 174,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 187,
+      "z": 175,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 187,
+      "z": 176,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 187,
+      "z": 177,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 187,
+      "z": 178,
+      "def": "RoofConstructed"
+    },
+    {
+      "x": 187,
+      "z": 179,
+      "def": "RoofConstructed"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "r1",
+      "role": "Barracks",
+      "rect": [
+        170,
+        170,
+        6,
+        10
+      ],
+      "doors": []
+    },
+    {
+      "id": "r2",
+      "role": "DiningRoom",
+      "rect": [
+        175,
+        170,
+        6,
+        10
+      ],
+      "doors": []
+    },
+    {
+      "id": "r3",
+      "role": "Storeroom",
+      "rect": [
+        180,
+        170,
+        8,
+        10
+      ],
+      "doors": []
+    }
+  ],
+  "notes": [],
+  "refusals": []
+}

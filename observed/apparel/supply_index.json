@@ -1,0 +1,3665 @@
+{
+"BeltDefense": [
+"Apparel_GravBelt",
+"Apparel_ShieldBelt",
+"VAEA_Apparel_RangedShieldBelt",
+"VAEA_Apparel_RessurectorBelt"
+],
+"IndustrialBasic": [
+"Apparel_BabyOnesie",
+"Apparel_BabyShadecone",
+"Apparel_BabyTuque",
+"Apparel_BasicShirt",
+"Apparel_CowboyHat",
+"Apparel_KidPants",
+"Apparel_KidParka",
+"Apparel_KidRomper",
+"Apparel_KidShirt",
+"Apparel_Pants",
+"Apparel_Parka",
+"Apparel_Tuque",
+"AppleHeadgear",
+"DV_Apparel_HaySunhat",
+"DV_Handwear_KnuckleDusters",
+"DV_Headgear_AvaloiGlasses",
+"VAE_Apparel_Tunic",
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes",
+"VAE_Handwear_Gloves"
+],
+"Western": [
+"Apparel_CowboyHat",
+"DV_Apparel_HaySunhat"
+],
+"BS_MedievalBasicWeather": [
+"Apparel_Parka",
+"Apparel_Tuque"
+],
+"IndustrialMilitaryBasic": [
+"Apparel_FlakPants",
+"Apparel_FlakVest",
+"Apparel_KidHelmet",
+"Apparel_SimpleHelmet",
+"VAEA_Apparel_ExplosiveBelt",
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"BS_MedievalBasic": [
+"Apparel_BasicShirt",
+"Apparel_BasicShirt",
+"Apparel_KidParka",
+"Apparel_Pants",
+"Apparel_Pants",
+"Apparel_Parka",
+"Apparel_SimpleHelmet"
+],
+"IndustrialMilitaryAdvanced": [
+"Apparel_AdvancedHelmet",
+"VAEA_Apparel_MiniTurretPack",
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"BestowerHood": [
+"Apparel_HatHood"
+],
+"BeltDefensePop": [
+"Apparel_FirefoampopPack",
+"Apparel_PackBroadshield",
+"Apparel_SmokepopBelt",
+"VAEA_Apparel_RangedShieldBelt",
+"VAEA_Apparel_RessurectorBelt"
+],
+"Neolithic": [
+"Apparel_BabyTribal",
+"Apparel_KidParka",
+"Apparel_KidTribal",
+"Apparel_Parka",
+"ROMB_Apparel_SkullMask",
+"Sihv_Apparel_BoneArmor",
+"VAE_Apparel_PeltCoat",
+"VAE_Apparel_TribalKilt",
+"VAE_Apparel_TribalPoncho",
+"VFET_Apparel_TribalHeavy",
+"VFET_Apparel_TribalLight",
+"VFET_Apparel_TribalWar"
+],
+"BS_Jackets": [
+"Apparel_Duster",
+"Apparel_KidParka",
+"Apparel_Parka"
+],
+"IndustrialAdvanced": [
+"Apparel_Duster",
+"Apparel_FlakJacket",
+"Apparel_Jacket",
+"RBApparel_Tailcoat",
+"VAE_Apparel_Jumpsuit",
+"VAE_Apparel_Trousers",
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"MedievalMilitary": [
+"Apparel_PlateArmor",
+"BMT_Apparel_ChitinBeetleHelmet",
+"BMT_Apparel_ChitinHeavyArmor",
+"BMT_Apparel_ChitinLightArmor",
+"BMT_Apparel_ChitinMediumArmor",
+"BMT_Apparel_ChitinSpiderHelmet"
+],
+"Cape": [
+"Apparel_Cape"
+],
+"Royal": [
+"Apparel_Beret",
+"Apparel_Cape",
+"Apparel_Coronet",
+"Apparel_Crown",
+"Apparel_CrownStellic",
+"Apparel_RobeRoyal",
+"Apparel_ShirtRuffle",
+"Apparel_VestRoyal",
+"Jewelry_Bracelet",
+"Jewelry_Earring",
+"Jewelry_EltexBracelet",
+"Jewelry_EltexEarring",
+"Jewelry_EltexRing",
+"Jewelry_Necklace",
+"Jewelry_PsychicNecklace",
+"Jewelry_Ring",
+"RBApparel_Tailcoat",
+"VAE_Apparel_Trousers",
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"RoyalTier2": [
+"Apparel_Beret",
+"Apparel_Cape",
+"Apparel_ShirtRuffle",
+"Jewelry_Bracelet",
+"Jewelry_EltexBracelet",
+"RBApparel_Tailcoat",
+"VAE_Apparel_Trousers",
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"RoyalTier5": [
+"Apparel_Cape",
+"Apparel_Coronet",
+"Apparel_VestRoyal",
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"Psychic": [
+"Apparel_EltexSkullcap",
+"Apparel_PsyfocusHelmet",
+"Apparel_PsyfocusRobe",
+"Apparel_PsyfocusShirt",
+"Apparel_PsyfocusVest",
+"Jewelry_EltexBracelet",
+"Jewelry_EltexEarring",
+"Jewelry_EltexRing",
+"Jewelry_PsychicNecklace"
+],
+"RoyalTier6": [
+"Apparel_Crown",
+"Apparel_RobeRoyal",
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"RoyalRobe": [
+"Apparel_RobeRoyal"
+],
+"BS_RoyalAndIdeologyHats": [
+"Apparel_Crown",
+"Apparel_CrownStellic"
+],
+"RoyalTier7": [
+"AM_MechBreakerArmor",
+"AM_MechBreakerHelm",
+"AM_MechCommanderHelm",
+"AM_MechCommanderSuit",
+"Apparel_CrownStellic",
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"RoyalTier3": [
+"Apparel_Beret",
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"Gunlink": [
+"Apparel_Gunlink"
+],
+"Horaxian": [
+"Apparel_CultistMask"
+],
+"HoraxianCeremonial": [
+"Apparel_CeremonialCultistMask"
+],
+"SpacerMilitary": [
+"Apparel_Vacsuit",
+"Apparel_VacsuitChildren",
+"Apparel_VacsuitHelmet",
+"BMT_HermeticArmor",
+"BMT_HermeticHelmet"
+],
+"Vacsuit": [
+"Apparel_Vacsuit",
+"Apparel_VacsuitChildren",
+"Apparel_VacsuitHelmet"
+],
+"Mechlord": [
+"AM_Apparel_ArmorHelmetMechlordHelmet_Prestige",
+"AM_Apparel_MechlordSuit_Prestige",
+"AM_MechBreakerArmor",
+"AM_MechBreakerHelm",
+"AM_MechCommanderHelm",
+"AM_MechCommanderHelm_Prestige",
+"AM_MechCommanderSuit",
+"AM_PrestigeMechBreakerArmor",
+"AM_PrestigeMechBreakerHelm",
+"AM_PrestigeMechCommanderSuit"
+],
+"MedicalKit": [
+"MedicalKit",
+"MedicineBag",
+"UltraMedKit"
+],
+"RepairKit": [
+"DubsRepairKit"
+],
+"Horrors": [
+"Horror_BrainSlug",
+"Horror_Overgrowth",
+"Horror_Pants",
+"Horror_Undergrowth"
+],
+"Horrors_Mastermind": [
+"Horror_Exoskeleton",
+"Horror_MastermindHat"
+],
+"Jewelry": [
+"Jewelry_Bracelet",
+"Jewelry_Earring",
+"Jewelry_EltexBracelet",
+"Jewelry_EltexEarring",
+"Jewelry_EltexRing",
+"Jewelry_Necklace",
+"Jewelry_PsychicNecklace",
+"Jewelry_Ring"
+],
+"Outlander": [
+"Apparel_SOU_Bandana",
+"Apparel_SOU_Coif",
+"Apparel_SOU_Coverall",
+"Apparel_SOU_RagDress",
+"Apparel_SOU_RagDressB",
+"AppleHeadgear",
+"LargeBackpackNaturalMC",
+"SmallBackpackNaturalMC"
+],
+"ResearchKit": [
+"RR_FieldResearchKitHiTech",
+"RR_FieldResearchKitMultiAnalyzer",
+"RR_FieldResearchKitRemote",
+"RR_FieldResearchKitSimple"
+],
+"Tribal": [
+"Apparel_SOU_Bandana",
+"Apparel_SOU_Coif",
+"Apparel_SOU_RagDress",
+"Apparel_SOU_RagDressB"
+],
+"Spacer": [
+"Apparel_SOU_SpTight",
+"Apparel_SOU_SpWorkerHelmet"
+],
+"Workforce": [
+"Apparel_SOU_Coverall",
+"Apparel_SOU_SpTight"
+],
+"Tribalwear": [
+"AppleHeadgear"
+],
+"RoyalTier4": [
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"IndustrialMilitary": [
+"VAE_Footwear_Boots",
+"VAE_Footwear_Shoes"
+],
+"VAEA_Utility_Industrial": [
+"VAEA_Apparel_AmmoPack",
+"VAEA_Apparel_ExplosiveBelt",
+"VAEA_Apparel_MedicBag",
+"VAEA_Apparel_MiniTurretPack",
+"VAEA_Apparel_RangedShieldBelt",
+"VAEA_Apparel_ToolBelt"
+],
+"VAEA_AmmoPack": [
+"VAEA_Apparel_AmmoPack"
+],
+"VAEA_Utility_Spacer": [
+"VAEA_Apparel_RangedShieldBelt"
+],
+"BeltRangedShield": [
+"VAEA_Apparel_RangedShieldBelt",
+"VAEA_Apparel_RessurectorBelt"
+],
+"VAEA_Utility_Ultra": [
+"VAEA_Apparel_RessurectorBelt"
+],
+"CryptoLight": [
+"VQE_Apparel_CryptoLightHelmet",
+"VQE_CryptoArmor"
+],
+"PrestigeCombatGear": [
+"AG_ForsakenCloak",
+"AG_ForsakenCloak_Child",
+"AG_ForsakenMarineArmor",
+"AG_ForsakenMarineHelmet",
+"AG_ForsakenMarineHelmetPsy",
+"AG_Forsaken_Hood",
+"AG_Forsaken_Hood_Child",
+"AM_Apparel_ArmorHelmetMechlordHelmet_Prestige",
+"AM_Apparel_MechlordSuit_Prestige",
+"AM_MechCommanderHelm_Prestige",
+"AM_PrestigeMechBreakerArmor",
+"AM_PrestigeMechBreakerHelm",
+"AM_PrestigeMechCommanderSuit",
+"BMT_Apparel_ArmorBeetlephractPrestige",
+"BMT_Apparel_ArmorChitinphractPrestige",
+"BMT_Apparel_ArmorHelmetBeetlephractPrestige",
+"BMT_Apparel_ArmorHelmetChitinphractPrestige",
+"BMT_Apparel_ArmorHelmetSpidrephractPrestige",
+"VQE_Apparel_CryptoHeavyHelmet",
+"VQE_Apparel_CryptoLightHelmet",
+"VQE_CryptoArmor",
+"VQE_CryptoHeavyArmor"
+],
+"CryptoHeavy": [
+"VQE_Apparel_CryptoHeavyHelmet",
+"VQE_CryptoHeavyArmor"
+],
+"Archon": [
+"VREA_Apparel_Archoplate"
+],
+"AncientAstrosuit": [
+"VRE_AncientAstrosuit"
+],
+"Utility": [
+"Apparel_DigiPal"
+],
+"Forsaken": [
+"AG_ForsakenCloak",
+"AG_ForsakenCloak_Child",
+"AG_ForsakenMarineArmor",
+"AG_ForsakenMarineHelmet",
+"AG_ForsakenMarineHelmetPsy",
+"AG_Forsaken_Hood",
+"AG_Forsaken_Hood_Child"
+],
+"Warcasket": [
+"VFEP_WarcasketHelmet_Warcasket",
+"VFEP_WarcasketShoulders_Warcasket",
+"VFEP_Warcasket_Warcasket",
+"WarcasketHelmet_Centurion",
+"WarcasketHelmet_GuardianX",
+"WarcasketHelmet_Sentinel",
+"WarcasketHelmet_Tyrant",
+"WarcasketShoulders_Centurion",
+"WarcasketShoulders_GuardianX",
+"WarcasketShoulders_Sentinel",
+"WarcasketShoulders_Tyrant",
+"Warcasket_Centurion",
+"Warcasket_GuardianX",
+"Warcasket_Sentinel",
+"Warcasket_Tyrant"
+],
+"WarcasketVeteran": [
+"VFEP_WarcasketHelmet_Brute",
+"VFEP_WarcasketHelmet_Controller",
+"VFEP_WarcasketHelmet_Guardian",
+"VFEP_WarcasketHelmet_Marine",
+"VFEP_WarcasketHelmet_Recon",
+"VFEP_WarcasketHelmet_Sarcophagus",
+"VFEP_WarcasketHelmet_Siegebreaker",
+"VFEP_WarcasketHelmet_Warcasket",
+"VFEP_WarcasketShoulders_Brute",
+"VFEP_WarcasketShoulders_Controller",
+"VFEP_WarcasketShoulders_Guardian",
+"VFEP_WarcasketShoulders_Marine",
+"VFEP_WarcasketShoulders_Recon",
+"VFEP_WarcasketShoulders_Sarcophagus",
+"VFEP_WarcasketShoulders_Siegebreaker",
+"VFEP_WarcasketShoulders_Warcasket",
+"VFEP_Warcasket_Brute",
+"VFEP_Warcasket_Controller",
+"VFEP_Warcasket_Guardian",
+"VFEP_Warcasket_Helmet_MechController",
+"VFEP_Warcasket_Marine",
+"VFEP_Warcasket_MechController",
+"VFEP_Warcasket_Recon",
+"VFEP_Warcasket_Sarcophagus",
+"VFEP_Warcasket_Shoulders_MechController",
+"VFEP_Warcasket_Siegebreaker",
+"VFEP_Warcasket_Warcasket",
+"WarcasketHelmet_Centurion",
+"WarcasketHelmet_GuardianX",
+"WarcasketHelmet_Sentinel",
+"WarcasketHelmet_Tyrant",
+"WarcasketShoulders_Centurion",
+"WarcasketShoulders_GuardianX",
+"WarcasketShoulders_Sentinel",
+"WarcasketShoulders_Tyrant",
+"Warcasket_Centurion",
+"Warcasket_GuardianX",
+"Warcasket_Sentinel",
+"Warcasket_Tyrant"
+],
+"WarcasketAll": [
+"VFEP_WarcasketHelmet_Aerial",
+"VFEP_WarcasketHelmet_Barrage",
+"VFEP_WarcasketHelmet_Cataphract",
+"VFEP_WarcasketHelmet_Controller",
+"VFEP_WarcasketHelmet_Guardian",
+"VFEP_WarcasketHelmet_Hazard",
+"VFEP_WarcasketHelmet_Marine",
+"VFEP_WarcasketHelmet_Recon",
+"VFEP_WarcasketHelmet_Sarcophagus",
+"VFEP_WarcasketHelmet_Shock",
+"VFEP_WarcasketHelmet_Siegebreaker",
+"VFEP_WarcasketHelmet_Warcasket",
+"VFEP_WarcasketShoulders_Aerial",
+"VFEP_WarcasketShoulders_Barrage",
+"VFEP_WarcasketShoulders_Cataphract",
+"VFEP_WarcasketShoulders_Controller",
+"VFEP_WarcasketShoulders_Guardian",
+"VFEP_WarcasketShoulders_Hazard",
+"VFEP_WarcasketShoulders_Marine",
+"VFEP_WarcasketShoulders_Recon",
+"VFEP_WarcasketShoulders_Sarcophagus",
+"VFEP_WarcasketShoulders_Shock",
+"VFEP_WarcasketShoulders_Siegebreaker",
+"VFEP_WarcasketShoulders_Warcasket",
+"VFEP_Warcasket_Aerial",
+"VFEP_Warcasket_Barrage",
+"VFEP_Warcasket_Cataphract",
+"VFEP_Warcasket_Controller",
+"VFEP_Warcasket_Guardian",
+"VFEP_Warcasket_Hazard",
+"VFEP_Warcasket_Helmet_MechController",
+"VFEP_Warcasket_Marine",
+"VFEP_Warcasket_MechController",
+"VFEP_Warcasket_Recon",
+"VFEP_Warcasket_Sarcophagus",
+"VFEP_Warcasket_Shock",
+"VFEP_Warcasket_Shoulders_MechController",
+"VFEP_Warcasket_Siegebreaker",
+"VFEP_Warcasket_Warcasket",
+"WarcasketHelmet_Centurion",
+"WarcasketHelmet_GuardianX",
+"WarcasketHelmet_Sentinel",
+"WarcasketHelmet_Tyrant",
+"WarcasketShoulders_Centurion",
+"WarcasketShoulders_GuardianX",
+"WarcasketShoulders_Sentinel",
+"WarcasketShoulders_Tyrant",
+"Warcasket_Centurion",
+"Warcasket_GuardianX",
+"Warcasket_Sentinel",
+"Warcasket_Tyrant"
+],
+"WarcasketHeavy": [
+"VFEP_WarcasketHelmet_Cataphract",
+"VFEP_WarcasketShoulders_Cataphract",
+"VFEP_Warcasket_Cataphract"
+],
+"WarcasketCata": [
+"VFEP_WarcasketHelmet_Cataphract",
+"VFEP_WarcasketShoulders_Cataphract",
+"VFEP_Warcasket_Cataphract"
+],
+"WarcasketHussar": [
+"VFEP_WarcasketHelmet_Aerial",
+"VFEP_WarcasketHelmet_Shock",
+"VFEP_WarcasketShoulders_Aerial",
+"VFEP_WarcasketShoulders_Shock",
+"VFEP_Warcasket_Aerial",
+"VFEP_Warcasket_Shock"
+],
+"WarcasketSpecialised": [
+"VFEP_WarcasketHelmet_Barrage",
+"VFEP_WarcasketHelmet_Hazard",
+"VFEP_WarcasketShoulders_Barrage",
+"VFEP_WarcasketShoulders_Hazard",
+"VFEP_Warcasket_Barrage",
+"VFEP_Warcasket_Hazard"
+],
+"WarcasketSuperHeavy": [
+"VFEP_WarcasketHelmet_Barrage",
+"VFEP_WarcasketShoulders_Barrage",
+"VFEP_Warcasket_Barrage"
+],
+"WarcasketFlamer": [
+"VFEP_WarcasketHelmet_Hazard",
+"VFEP_WarcasketShoulders_Hazard",
+"VFEP_Warcasket_Hazard"
+],
+"WarcasketMelee": [
+"VFEP_WarcasketHelmet_Brute",
+"VFEP_WarcasketShoulders_Brute",
+"VFEP_Warcasket_Brute"
+],
+"HypertechBelt": [
+"OuterRim_Belt_InertialInhibitor",
+"OuterRim_Belt_NerveAmplifier",
+"OuterRim_Belt_SoundDampener",
+"OuterRim_Belt_StealthFieldGen",
+"OuterRim_Belt_TemperatureRegulator",
+"OuterRim_Belt_ToxShield"
+],
+"ToxShield": [
+"OuterRim_Belt_ToxShield"
+],
+"StealthFieldGen": [
+"OuterRim_Belt_StealthFieldGen"
+],
+"ORBodysuit": [
+"OuterRim_Bodysuit"
+],
+"ORBoneArmour": [
+"OuterRim_BoneCuirass",
+"OuterRim_BoneHelmet",
+"OuterRim_BonePauldrons"
+],
+"ORClassyApparel": [
+"OuterRim_CasualClothing"
+],
+"ORBasicApparel": [
+"OuterRim_CasualClothing",
+"OuterRim_Cloak",
+"OuterRim_DesertHood",
+"OuterRim_HermitTunic",
+"OuterRim_Hood",
+"OuterRim_Poncho"
+],
+"ORChitinArmour": [
+"OuterRim_ChitinCuirass",
+"OuterRim_ChitinHelmet",
+"OuterRim_ChitinPauldrons"
+],
+"ORHermit": [
+"OuterRim_Cloak",
+"OuterRim_DesertHood",
+"OuterRim_HermitTunic",
+"OuterRim_Hood"
+],
+"ORJawa": [
+"OuterRim_Cloak",
+"OuterRim_DesertGarb",
+"OuterRim_DesertHood",
+"OuterRim_Hood"
+],
+"ORTusken": [
+"OuterRim_Cloak",
+"OuterRim_DesertGarb",
+"OuterRim_TuskenHeadgear"
+],
+"ORForceUser": [
+"OuterRim_Cloak",
+"OuterRim_Hood"
+],
+"ORCompositeArmour": [
+"OuterRim_CompositeCuirass",
+"OuterRim_CompositeHelmet",
+"OuterRim_CompositePauldrons"
+],
+"Jetpack": [
+"OuterRim_ImperialJetpack",
+"OuterRim_IndustrialJetpack",
+"OuterRim_JT12Jetpack",
+"OuterRim_MakeshiftJetpack",
+"OuterRim_RebelJetpack"
+],
+"RepublicJetpack": [
+"OuterRim_JT12Jetpack"
+],
+"MandalorianJetpack": [
+"OuterRim_IndustrialJetpack",
+"OuterRim_JT12Jetpack"
+],
+"CivilianJetpack": [
+"OuterRim_IndustrialJetpack",
+"OuterRim_MakeshiftJetpack"
+],
+"BountyJetpack": [
+"OuterRim_IndustrialJetpack",
+"OuterRim_MakeshiftJetpack"
+],
+"ORPaddedArmour": [
+"OuterRim_PaddedCuirass",
+"OuterRim_PaddedHelmet",
+"OuterRim_PaddedPauldrons"
+],
+"ORScrapper": [
+"OuterRim_ScrapperHelmet",
+"OuterRim_ScrapperWorksuit"
+],
+"StimBelt": [
+"OuterRim_Belt_AdrenalAmplifier",
+"OuterRim_Belt_BloodCoagulator",
+"OuterRim_Belt_CardioRegulator"
+],
+"AdrenalAmplifier": [
+"OuterRim_Belt_AdrenalAmplifier"
+],
+"BloodCoagulator": [
+"OuterRim_Belt_BloodCoagulator"
+],
+"CardioRegulator": [
+"OuterRim_Belt_CardioRegulator"
+],
+"SoundDampener": [
+"OuterRim_Belt_SoundDampener"
+],
+"TemperatureRegulator": [
+"OuterRim_Belt_TemperatureRegulator"
+],
+"NerveAmplifier": [
+"OuterRim_Belt_NerveAmplifier"
+],
+"InertialInhibitor": [
+"OuterRim_Belt_InertialInhibitor"
+],
+"HypertechVambrace": [
+"OuterRim_Vambrace_Cryoban",
+"OuterRim_Vambrace_FlameProjector",
+"OuterRim_Vambrace_KnockoutDart",
+"OuterRim_Vambrace_Whipcord"
+],
+"VambraceOffensive": [
+"OuterRim_Vambrace_Cryoban",
+"OuterRim_Vambrace_FlameProjector",
+"OuterRim_Vambrace_KnockoutDart",
+"OuterRim_Vambrace_Whipcord"
+],
+"ORCryoBanGrenadeBelt": [
+"OuterRim_CryoBanGrenadeBelt"
+],
+"ORFragGrenadeBelt": [
+"OuterRim_FragGrenadeBelt"
+],
+"ORIonGrenadeBelt": [
+"OuterRim_IonGrenadeBelt"
+],
+"ORThermalDetBelt": [
+"OuterRim_PlasmaGrenadeBelt",
+"OuterRim_SonicGrenadeBelt",
+"OuterRim_ThermalDetonatorBelt"
+],
+"ORStunGrenadeBelt": [
+"OuterRim_StunGrenadeBelt"
+],
+"Barbarian": [
+"BS_BarbarianArmor"
+],
+"DroidArmor": [
+"OuterRim_DroidArmorHeavy",
+"OuterRim_DroidArmorLight",
+"OuterRim_DroidArmorModule"
+],
+"DroidDeflectorShield": [
+"OuterRim_DroidDeflectorShield"
+],
+"DroidJetpack": [
+"OuterRim_DroidPropulsionJets"
+],
+"ImperialArmy": [
+"OuterRim_ImperialArmyCap",
+"OuterRim_ImperialArmyCuirass",
+"OuterRim_ImperialArmyHelmet",
+"OuterRim_ImperialArmyPauldrons",
+"OuterRim_ImperialArmyUniform"
+],
+"ImperialArmyFatigues": [
+"OuterRim_ImperialArmyCap",
+"OuterRim_ImperialArmyUniform"
+],
+"ImperialCadet": [
+"OuterRim_ImperialCadetHelmet",
+"OuterRim_ImperialCadetHelmetAlt",
+"OuterRim_ImperialCadetUniform"
+],
+"ImperialApparel": [
+"OuterRim_DeathTrooperCuirass",
+"OuterRim_DeathTrooperHelmet",
+"OuterRim_DeathTrooperPauldrons",
+"OuterRim_ISBAgentCuirass",
+"OuterRim_ISBAgentHelmet",
+"OuterRim_ImperialGunnerHelmet",
+"OuterRim_ImperialJumpsuit",
+"OuterRim_RangeTrooperCuirass",
+"OuterRim_RangeTrooperHelmet",
+"OuterRim_RangeTrooperPauldrons",
+"OuterRim_ScoutTrooperCuirass",
+"OuterRim_ScoutTrooperHelmet",
+"OuterRim_ScoutTrooperPauldrons",
+"OuterRim_SnowtrooperCuirass",
+"OuterRim_SnowtrooperHelmet",
+"OuterRim_SnowtrooperPauldrons",
+"OuterRim_StormtrooperCuirass",
+"OuterRim_StormtrooperCuirass_Specialist",
+"OuterRim_StormtrooperHelmet",
+"OuterRim_StormtrooperHelmet_Specialist",
+"OuterRim_StormtrooperPauldrons"
+],
+"ImperialDeathTrooper": [
+"OuterRim_DeathTrooperCuirass",
+"OuterRim_DeathTrooperHelmet",
+"OuterRim_DeathTrooperPauldrons"
+],
+"ImperialGunner": [
+"OuterRim_ImperialGunnerHelmet"
+],
+"ImperialAgent": [
+"OuterRim_ISBAgentCuirass",
+"OuterRim_ISBAgentHelmet"
+],
+"ImperialJetpack": [
+"OuterRim_ImperialJetpack"
+],
+"ImperialJumpsuit": [
+"OuterRim_ImperialJumpsuit"
+],
+"ImperialOfficer": [
+"OuterRim_ImperialOfficerCap",
+"OuterRim_ImperialOfficerCap_Black",
+"OuterRim_ImperialOfficerCap_White",
+"OuterRim_ImperialOfficerUniform",
+"OuterRim_ImperialOfficerUniform_Black",
+"OuterRim_ImperialOfficerUniform_White"
+],
+"ImperialRangeTrooper": [
+"OuterRim_RangeTrooperCuirass",
+"OuterRim_RangeTrooperHelmet",
+"OuterRim_RangeTrooperPauldrons"
+],
+"ImperialScout": [
+"OuterRim_ScoutTrooperCuirass",
+"OuterRim_ScoutTrooperHelmet",
+"OuterRim_ScoutTrooperPauldrons"
+],
+"ImperialSnowtrooper": [
+"OuterRim_SnowtrooperCuirass",
+"OuterRim_SnowtrooperHelmet",
+"OuterRim_SnowtrooperPauldrons"
+],
+"ImperialStormtrooper": [
+"OuterRim_StormtrooperCuirass",
+"OuterRim_StormtrooperHelmet",
+"OuterRim_StormtrooperPauldrons"
+],
+"ImperialSpecialist": [
+"OuterRim_StormtrooperCuirass_Specialist",
+"OuterRim_StormtrooperHelmet_Specialist"
+],
+"RepublicCloneApparel": [
+"OuterRim_StormtrooperKama"
+],
+"CloneTrooperIIBlank": [
+"OuterRim_StormtrooperKama"
+],
+"ImperialStormtrooperEnlisted": [
+"OuterRim_StormtrooperPauldrons_Enlisted"
+],
+"ImperialStormtrooperSergeant": [
+"OuterRim_StormtrooperPauldrons_Sergeant"
+],
+"ImperialStormtrooperSpecialist": [
+"OuterRim_StormtrooperPauldrons_Artillery",
+"OuterRim_StormtrooperPauldrons_Commander"
+],
+"ImperialStormtrooperOfficer": [
+"OuterRim_StormtrooperPauldrons_Commander",
+"OuterRim_StormtrooperPauldrons_Officer"
+],
+"RebelOfficer": [
+"OuterRim_RebelOfficerCap",
+"OuterRim_RebelOfficerJacket",
+"OuterRim_RebelOfficerUniform"
+],
+"RebelFleetTrooper": [
+"OuterRim_RebelFleetTrooperHelmet",
+"OuterRim_RebelFleetTrooperUniform"
+],
+"RebelForestCamo": [
+"OuterRim_RebelForestFatigues",
+"OuterRim_RebelForestHelmet",
+"OuterRim_RebelForestJacket",
+"OuterRim_RebelForestPoncho"
+],
+"RebelJetpack": [
+"OuterRim_RebelJetpack"
+],
+"Lasso": [
+"AM_LassoCloth"
+],
+"EVA": [
+"guy762_Bodysuit",
+"guy762_DroidArmorHvy",
+"guy762_DroidArmorHvy_composite",
+"guy762_DroidArmorHvy_czerka",
+"guy762_DroidArmorHvy_desh",
+"guy762_DroidArmorHvy_diatium",
+"guy762_DroidArmorHvy_env",
+"guy762_DroidArmorHvy_impact",
+"guy762_DroidArmorLte",
+"guy762_DroidArmorLte_agrinium",
+"guy762_DroidArmorLte_composite",
+"guy762_DroidArmorLte_czerka",
+"guy762_DroidArmorLte_desh",
+"guy762_DroidArmorLte_env",
+"guy762_DroidArmorLte_impact",
+"guy762_DroidArmorMid",
+"guy762_DroidArmorMid_composite",
+"guy762_DroidArmorMid_czerka",
+"guy762_DroidArmorMid_desh",
+"guy762_DroidArmorMid_env",
+"guy762_DroidArmorMid_impact",
+"guy762_DroidArmorMid_quadranium",
+"guy762_LgtBattleArmor_power",
+"guy762_MidBattleArmor_corellian",
+"guy762_MidBattleArmor_powered"
+],
+"KotORDroidArmorT3": [
+"guy762_DroidArmorHvy",
+"guy762_DroidArmorHvy_composite",
+"guy762_DroidArmorHvy_czerka",
+"guy762_DroidArmorHvy_desh",
+"guy762_DroidArmorHvy_env",
+"guy762_DroidArmorHvy_impact"
+],
+"KotORDroidArmorT3_stuffable": [
+"guy762_DroidArmorHvy"
+],
+"SWCPSpecificDroidArmor_StuffableHeavy": [
+"guy762_DroidArmorHvy"
+],
+"SWCPDroidApparelRestrictionTag_HeavyArmor": [
+"guy762_DroidArmorHvy",
+"guy762_DroidArmorHvy_composite",
+"guy762_DroidArmorHvy_czerka",
+"guy762_DroidArmorHvy_desh",
+"guy762_DroidArmorHvy_diatium",
+"guy762_DroidArmorHvy_env",
+"guy762_DroidArmorHvy_impact"
+],
+"KotORDroidArmorT3_weak": [
+"guy762_DroidArmorHvy_desh",
+"guy762_DroidArmorHvy_env"
+],
+"KotORDroidArmorT3_miningdroid": [
+"guy762_DroidArmorHvy_env",
+"guy762_DroidArmorHvy_impact"
+],
+"SWCPSpecificDroidArmor_EnvironmentHeavy": [
+"guy762_DroidArmorHvy_env"
+],
+"SWCPSpecificDroidArmor_DeshHeavy": [
+"guy762_DroidArmorHvy_desh"
+],
+"KotORDroidArmorT3_mid": [
+"guy762_DroidArmorHvy_czerka",
+"guy762_DroidArmorHvy_impact"
+],
+"KotORDroidArmorT3_czerka": [
+"guy762_DroidArmorHvy_czerka"
+],
+"SWCPSpecificDroidArmor_CzerkaHeavy": [
+"guy762_DroidArmorHvy_czerka"
+],
+"SWCPSpecificDroidArmor_ImpactHeavy": [
+"guy762_DroidArmorHvy_impact"
+],
+"KotORDroidArmorT3_strong": [
+"guy762_DroidArmorHvy_composite",
+"guy762_DroidArmorHvy_diatium"
+],
+"SWCPSpecificDroidArmor_CompositeHeavy": [
+"guy762_DroidArmorHvy_composite"
+],
+"SWCPSpecificDroidArmor_DiatiumHeavy": [
+"guy762_DroidArmorHvy_diatium"
+],
+"KotORDroidArmorT1": [
+"guy762_DroidArmorLte",
+"guy762_DroidArmorLte_composite",
+"guy762_DroidArmorLte_czerka",
+"guy762_DroidArmorLte_desh",
+"guy762_DroidArmorLte_env",
+"guy762_DroidArmorLte_impact"
+],
+"KotORDroidArmorT1_stuffable": [
+"guy762_DroidArmorLte"
+],
+"SWCPSpecificDroidArmor_StuffableLight": [
+"guy762_DroidArmorLte"
+],
+"SWCPDroidApparelRestrictionTag_LightArmor": [
+"guy762_DroidArmorLte",
+"guy762_DroidArmorLte_agrinium",
+"guy762_DroidArmorLte_composite",
+"guy762_DroidArmorLte_czerka",
+"guy762_DroidArmorLte_desh",
+"guy762_DroidArmorLte_env",
+"guy762_DroidArmorLte_impact"
+],
+"KotORDroidArmorT1_weak": [
+"guy762_DroidArmorLte_desh",
+"guy762_DroidArmorLte_env"
+],
+"KotORDroidArmorT1_miningdroid": [
+"guy762_DroidArmorLte_env",
+"guy762_DroidArmorLte_impact"
+],
+"SWCPSpecificDroidArmor_EnvironmentLight": [
+"guy762_DroidArmorLte_env"
+],
+"KotORDroidArmorT1_gladiator": [
+"guy762_DroidArmorLte_composite",
+"guy762_DroidArmorLte_desh",
+"guy762_DroidArmorLte_impact"
+],
+"SWCPSpecificDroidArmor_DeshLight": [
+"guy762_DroidArmorLte_desh"
+],
+"KotORDroidArmorT1_mid": [
+"guy762_DroidArmorLte_czerka",
+"guy762_DroidArmorLte_impact"
+],
+"KotORDroidArmorT1_czerka": [
+"guy762_DroidArmorLte_czerka"
+],
+"SWCPSpecificDroidArmor_CzerkaLight": [
+"guy762_DroidArmorLte_czerka"
+],
+"SWCPSpecificDroidArmor_ImpactLight": [
+"guy762_DroidArmorLte_impact"
+],
+"KotORDroidArmorT1_strong": [
+"guy762_DroidArmorLte_agrinium",
+"guy762_DroidArmorLte_composite"
+],
+"SWCPSpecificDroidArmor_CompositeLight": [
+"guy762_DroidArmorLte_composite"
+],
+"SWCPSpecificDroidArmor_AgriniumLight": [
+"guy762_DroidArmorLte_agrinium"
+],
+"KotORDroidArmorT2": [
+"guy762_DroidArmorMid",
+"guy762_DroidArmorMid_composite",
+"guy762_DroidArmorMid_czerka",
+"guy762_DroidArmorMid_desh",
+"guy762_DroidArmorMid_env",
+"guy762_DroidArmorMid_impact"
+],
+"KotORDroidArmorT2_stuffable": [
+"guy762_DroidArmorMid"
+],
+"SWCPSpecificDroidArmor_StuffableMedium": [
+"guy762_DroidArmorMid"
+],
+"SWCPDroidApparelRestrictionTag_MediumArmor": [
+"guy762_DroidArmorMid",
+"guy762_DroidArmorMid_composite",
+"guy762_DroidArmorMid_czerka",
+"guy762_DroidArmorMid_desh",
+"guy762_DroidArmorMid_env",
+"guy762_DroidArmorMid_impact",
+"guy762_DroidArmorMid_quadranium"
+],
+"KotORDroidArmorT2_weak": [
+"guy762_DroidArmorMid_desh",
+"guy762_DroidArmorMid_env"
+],
+"KotORDroidArmorT2_miningdroid": [
+"guy762_DroidArmorMid_env",
+"guy762_DroidArmorMid_impact"
+],
+"SWCPSpecificDroidArmor_EnvironmentMedium": [
+"guy762_DroidArmorMid_env"
+],
+"KotORDroidArmorT2_gladiator": [
+"guy762_DroidArmorMid_composite",
+"guy762_DroidArmorMid_desh",
+"guy762_DroidArmorMid_impact"
+],
+"SWCPSpecificDroidArmor_DeshMedium": [
+"guy762_DroidArmorMid_desh"
+],
+"KotORDroidArmorT2_mid": [
+"guy762_DroidArmorMid_czerka",
+"guy762_DroidArmorMid_impact"
+],
+"KotORDroidArmorT2_czerka": [
+"guy762_DroidArmorMid_czerka"
+],
+"SWCPSpecificDroidArmor_CzerkaMedium": [
+"guy762_DroidArmorMid_czerka"
+],
+"SWCPSpecificDroidArmor_ImpactMedium": [
+"guy762_DroidArmorMid_impact"
+],
+"KotORDroidArmorT2_strong": [
+"guy762_DroidArmorMid_composite",
+"guy762_DroidArmorMid_quadranium"
+],
+"SWCPSpecificDroidArmor_CompositeMedium": [
+"guy762_DroidArmorMid_composite"
+],
+"SWCPSpecificDroidArmor_QuadraniumMedium": [
+"guy762_DroidArmorMid_quadranium"
+],
+"KotORDroidStealth": [
+"guy762_DroidStealthDevice"
+],
+"SWKotORSpecificDroidGadget_2minDroidStealthDevice": [
+"guy762_DroidStealthDevice"
+],
+"SWCPDroidApparelRestrictionTag_DroidCloakingDevice": [
+"guy762_DroidStealthDevice"
+],
+"KotORDroidWeapon_weak": [
+"guy762_DroidGadget_laser",
+"guy762_DroidGadget_shock",
+"guy762_DroidWeapon_holdout",
+"guy762_DroidWeapon_pulse"
+],
+"KotORDroidWeapon_utilitydroid": [
+"guy762_DroidGadget_laser",
+"guy762_DroidGadget_shock",
+"guy762_DroidWeapon_holdout"
+],
+"SWKotORSpecificDroidWeapon_LaserCutter": [
+"guy762_DroidGadget_laser"
+],
+"SWCPDroidApparelRestrictionTag_GadgetWeaponSlot": [
+"guy762_DroidGadget_firefoam",
+"guy762_DroidGadget_kolto",
+"guy762_DroidGadget_laser",
+"guy762_DroidGadget_shock"
+],
+"SWKotORSpecificDroidWeapon_ShockArm": [
+"guy762_DroidGadget_shock"
+],
+"KotORDroidGadget_firefighter": [
+"guy762_DroidGadget_firefoam"
+],
+"KotORDroidGadget_repairdroid": [
+"guy762_DroidGadget_firefoam"
+],
+"SWKotORSpecificDroidWeapon_Firefoam": [
+"guy762_DroidGadget_firefoam"
+],
+"KotORDroidGadget_medic": [
+"guy762_DroidGadget_kolto"
+],
+"SWKotORSpecificDroidWeapon_KoltoSpray": [
+"guy762_DroidGadget_kolto"
+],
+"KotORDroidWeapon_light_any": [
+"guy762_DroidWeapon_holdout",
+"guy762_DroidWeapon_plasma",
+"guy762_DroidWeapon_pulse",
+"guy762_DroidWeapon_railgun",
+"guy762_DroidWeapon_sonic",
+"guy762_DroidWeapon_trishot"
+],
+"KotORDroidWeapon_holdout": [
+"guy762_DroidWeapon_holdout"
+],
+"KotORDroidWeapon_battledroid": [
+"guy762_DroidWeapon_holdout",
+"guy762_DroidWeapon_pulse",
+"guy762_DroidWeapon_trishot"
+],
+"SWKotORSpecificDroidWeapon_HoldoutBlaster": [
+"guy762_DroidWeapon_holdout"
+],
+"SWCPDroidApparelRestrictionTag_StandardWeaponSlot": [
+"guy762_DroidWeapon_holdout",
+"guy762_DroidWeapon_plasma",
+"guy762_DroidWeapon_pulse",
+"guy762_DroidWeapon_railgun",
+"guy762_DroidWeapon_sonic",
+"guy762_DroidWeapon_trishot"
+],
+"KotORDroidWeapon_mid": [
+"guy762_DroidWeapon_sonic",
+"guy762_DroidWeapon_stunbeam",
+"guy762_DroidWeapon_stundart",
+"guy762_DroidWeapon_toxdart",
+"guy762_DroidWeapon_trishot"
+],
+"KotORDroidWeapon_wardroid": [
+"guy762_DroidWeapon_microrocket",
+"guy762_DroidWeapon_plasma",
+"guy762_DroidWeapon_seekerrocket",
+"guy762_DroidWeapon_sonic",
+"guy762_DroidWeapon_trishot"
+],
+"SWKotORSpecificDroidWeapon_TriShot": [
+"guy762_DroidWeapon_trishot"
+],
+"KotORDroidWeapon_krath": [
+"guy762_DroidWeapon_plasma",
+"guy762_DroidWeapon_pulse"
+],
+"SWKotORSpecificDroidWeapon_PulseRepeater": [
+"guy762_DroidWeapon_pulse"
+],
+"SWKotORSpecificDroidWeapon_SonicBlaster": [
+"guy762_DroidWeapon_sonic"
+],
+"KotORDroidWeapon_strong": [
+"guy762_DroidWeapon_ion",
+"guy762_DroidWeapon_microrocket",
+"guy762_DroidWeapon_plasma",
+"guy762_DroidWeapon_railgun",
+"guy762_DroidWeapon_seekerrocket",
+"guy762_DroidWeapon_toxbeam"
+],
+"SWKotORSpecificDroidWeapon_PlasmaRepeater": [
+"guy762_DroidWeapon_plasma"
+],
+"KotORDroidWeapon_asndroid": [
+"guy762_DroidWeapon_railgun",
+"guy762_DroidWeapon_seekerrocket",
+"guy762_DroidWeapon_stunbeam",
+"guy762_DroidWeapon_stundart",
+"guy762_DroidWeapon_toxbeam",
+"guy762_DroidWeapon_toxdart"
+],
+"SWKotORSpecificDroidWeapon_Railgun": [
+"guy762_DroidWeapon_railgun"
+],
+"KotORDroidWeapon_hvy_any": [
+"guy762_DroidWeapon_flamethrower",
+"guy762_DroidWeapon_ion",
+"guy762_DroidWeapon_microrocket",
+"guy762_DroidWeapon_seekerrocket",
+"guy762_DroidWeapon_stunbeam",
+"guy762_DroidWeapon_toxbeam"
+],
+"KotORDroidWeapon_explosive": [
+"guy762_DroidWeapon_microrocket",
+"guy762_DroidWeapon_seekerrocket"
+],
+"SWKotORSpecificDroidWeapon_SeekerMissile": [
+"guy762_DroidWeapon_seekerrocket"
+],
+"SWCPDroidApparelRestrictionTag_HeavyWeaponSlot": [
+"guy762_DroidWeapon_flamethrower",
+"guy762_DroidWeapon_ion",
+"guy762_DroidWeapon_microrocket",
+"guy762_DroidWeapon_seekerrocket",
+"guy762_DroidWeapon_stunbeam",
+"guy762_DroidWeapon_toxbeam"
+],
+"SWKotORSpecificDroidWeapon_MicroRocket": [
+"guy762_DroidWeapon_microrocket"
+],
+"KotORDroidWeapon_nonlethal": [
+"guy762_DroidWeapon_stunbeam"
+],
+"SWKotORSpecificDroidWeapon_StunBeam": [
+"guy762_DroidWeapon_stunbeam"
+],
+"KotORDroidWeapon_flamethrower": [
+"guy762_DroidWeapon_flamethrower"
+],
+"SWKotORSpecificDroidWeapon_Flamethrower": [
+"guy762_DroidWeapon_flamethrower"
+],
+"KotORDroidWeapon_ion": [
+"guy762_DroidWeapon_ion"
+],
+"SWKotORSpecificDroidWeapon_IonBeam": [
+"guy762_DroidWeapon_ion"
+],
+"SWKotORSpecificDroidWeapon_RadiationBeam": [
+"guy762_DroidWeapon_toxbeam"
+],
+"KotORLgtCannon_miningdroid": [
+"guy762_LgtCannon_mininglaser",
+"guy762_LgtCannon_sonic"
+],
+"SWKotORSpecificDroidWeapon_MiningLaserCannon": [
+"guy762_LgtCannon_mininglaser"
+],
+"SWCPDroidApparelRestrictionTag_LightCannonSlot": [
+"guy762_LgtCannon_blaster",
+"guy762_LgtCannon_hvyrep",
+"guy762_LgtCannon_massdriver",
+"guy762_LgtCannon_mininglaser",
+"guy762_LgtCannon_pulse",
+"guy762_LgtCannon_railgun"
+],
+"KotORLgtCannon_repeater": [
+"guy762_LgtCannon_hvyrep",
+"guy762_LgtCannon_pulse"
+],
+"SWKotORSpecificDroidWeapon_HeavyRepeaterCannon": [
+"guy762_LgtCannon_hvyrep"
+],
+"KotORLgtCannon_artillery": [
+"guy762_LgtCannon_blaster"
+],
+"SWKotORSpecificDroidWeapon_BlasterCannon": [
+"guy762_LgtCannon_blaster"
+],
+"SWKotORSpecificDroidWeapon_PulseCannon": [
+"guy762_LgtCannon_pulse"
+],
+"KotORLgtCannon_strong": [
+"guy762_LgtCannon_m_buster",
+"guy762_LgtCannon_m_highex",
+"guy762_LgtCannon_m_ion",
+"guy762_LgtCannon_m_plasma",
+"guy762_LgtCannon_massdriver"
+],
+"SWKotORSpecificDroidWeapon_MassDriverCannon": [
+"guy762_LgtCannon_massdriver"
+],
+"KotORLgtCannon_sniper": [
+"guy762_LgtCannon_railgun"
+],
+"SWKotORSpecificDroidWeapon_RailgunCannon": [
+"guy762_LgtCannon_railgun"
+],
+"KotORLgtCannon_firefighter": [
+"guy762_LgtCannon_firefoam"
+],
+"SWKotORSpecificDroidWeapon_FirefoamCannon": [
+"guy762_LgtCannon_firefoam"
+],
+"SWCPDroidApparelRestrictionTag_HeavyCannonSlot": [
+"guy762_LgtCannon_disruptor",
+"guy762_LgtCannon_firefoam",
+"guy762_LgtCannon_flamethrower",
+"guy762_LgtCannon_ion",
+"guy762_LgtCannon_m_buster",
+"guy762_LgtCannon_m_highex",
+"guy762_LgtCannon_m_ion",
+"guy762_LgtCannon_m_plasma",
+"guy762_LgtCannon_sonic"
+],
+"SWKotORSpecificDroidWeapon_SonicCannon": [
+"guy762_LgtCannon_sonic"
+],
+"KotORLgtCannon_flame": [
+"guy762_LgtCannon_flamethrower"
+],
+"SWKotORSpecificDroidWeapon_FlameCannon": [
+"guy762_LgtCannon_flamethrower"
+],
+"KotORLgtCannon_ion": [
+"guy762_LgtCannon_ion"
+],
+"SWKotORSpecificDroidWeapon_IonCannon": [
+"guy762_LgtCannon_ion"
+],
+"KotORLgtCannon_disruptor": [
+"guy762_LgtCannon_disruptor"
+],
+"SWKotORSpecificDroidWeapon_DisruptorCannon": [
+"guy762_LgtCannon_disruptor"
+],
+"KotORLgtCannon_antipersonnel": [
+"guy762_LgtCannon_m_highex",
+"guy762_LgtCannon_m_plasma"
+],
+"SWKotORSpecificDroidWeapon_HXMissileCannon": [
+"guy762_LgtCannon_m_highex"
+],
+"SWKotORSpecificDroidWeapon_PlasmaMissileCannon": [
+"guy762_LgtCannon_m_plasma"
+],
+"KotORLgtCannon_antiarmor": [
+"guy762_LgtCannon_m_buster",
+"guy762_LgtCannon_m_ion"
+],
+"SWKotORSpecificDroidWeapon_IonMissileCannon": [
+"guy762_LgtCannon_m_ion"
+],
+"SWKotORSpecificDroidWeapon_BusterMissileCannon": [
+"guy762_LgtCannon_m_buster"
+],
+"KotORDroidUpgrade_combat": [
+"guy762_DroidHardware_agility",
+"guy762_DroidHardware_durability",
+"guy762_DroidHardware_motivator",
+"guy762_DroidHardware_parabolic",
+"guy762_DroidHardware_systems",
+"guy762_DroidSensor_EMPresist",
+"guy762_DroidSensor_battle",
+"guy762_DroidSensor_fighting",
+"guy762_DroidSensor_motion",
+"guy762_DroidSensor_perception",
+"guy762_DroidSensor_surveillance",
+"guy762_DroidSensor_warfare",
+"guy762_DroidSoftware_anatomy",
+"guy762_DroidSoftware_demo"
+],
+"SWCPSpecificDroidTech_Plus1Accuracy2AwarenessSensor": [
+"guy762_DroidSensor_motion"
+],
+"SWCPDroidApparelRestrictionTag_SensorTechSlot": [
+"guy762_DroidSensor_EMPresist",
+"guy762_DroidSensor_battle",
+"guy762_DroidSensor_fighting",
+"guy762_DroidSensor_memory",
+"guy762_DroidSensor_microoptics",
+"guy762_DroidSensor_motion",
+"guy762_DroidSensor_perception",
+"guy762_DroidSensor_repair",
+"guy762_DroidSensor_surveillance"
+],
+"SWCPSpecificDroidTech_Plus1Dodge3AwarenessSensor": [
+"guy762_DroidSensor_surveillance"
+],
+"SWCPSpecificDroidTech_Plus2Accuracy2DefenseSensor": [
+"guy762_DroidSensor_fighting"
+],
+"KotORDroidUpgrade_tech": [
+"guy762_DroidHardware_remote",
+"guy762_DroidHardware_scav",
+"guy762_DroidSensor_memory",
+"guy762_DroidSensor_microoptics",
+"guy762_DroidSensor_repair",
+"guy762_DroidSoftware_computer",
+"guy762_DroidSoftware_demo",
+"guy762_DroidSoftware_exchange",
+"guy762_DroidSoftware_lockout",
+"guy762_DroidSoftware_repair",
+"guy762_DroidSoftware_security"
+],
+"KotORDroidUpgrade_repair": [
+"guy762_DroidHardware_scav",
+"guy762_DroidSensor_repair",
+"guy762_DroidSoftware_repair"
+],
+"SWCPSpecificDroidTech_Plus4RepairSensor": [
+"guy762_DroidSensor_repair"
+],
+"KotORDroidUpgrade_computers": [
+"guy762_DroidHardware_remote",
+"guy762_DroidSensor_memory",
+"guy762_DroidSoftware_computer",
+"guy762_DroidSoftware_exchange",
+"guy762_DroidSoftware_lockout",
+"guy762_DroidSoftware_security"
+],
+"SWCPSpecificDroidTech_Plus5Research2LearningSensor": [
+"guy762_DroidSensor_memory"
+],
+"SWCPSpecificDroidTech_EMPResistanceSensor": [
+"guy762_DroidSensor_EMPresist"
+],
+"SWCPSpecificDroidTech_Plus3Accuracy2Dexterity2AwarenessSensor": [
+"guy762_DroidSensor_battle"
+],
+"SWCPSpecificDroidTech_Plus5AwarenessSensor": [
+"guy762_DroidSensor_microoptics"
+],
+"SWCPSpecificDroidTech_Plus2Accuracy8AwarenessSensor": [
+"guy762_DroidSensor_perception"
+],
+"SWCPSpecificDroidTech_Plus3Accuracy2Agility2DefenseSensor": [
+"guy762_DroidSensor_warfare"
+],
+"SWCPDroidApparelRestrictionTag_DroidWarfareUpgrade": [
+"guy762_DroidSensor_warfare"
+],
+"SWCPSpecificDroidTech_Plus2ResearchSoftware": [
+"guy762_DroidSoftware_computer"
+],
+"SWCPDroidApparelRestrictionTag_SoftwareTechSlot": [
+"guy762_DroidSoftware_anatomy",
+"guy762_DroidSoftware_computer",
+"guy762_DroidSoftware_demo",
+"guy762_DroidSoftware_exchange",
+"guy762_DroidSoftware_lockout",
+"guy762_DroidSoftware_repair",
+"guy762_DroidSoftware_security"
+],
+"KotORDroidUpgrade_hacking": [
+"guy762_DroidSoftware_exchange",
+"guy762_DroidSoftware_lockout",
+"guy762_DroidSoftware_security"
+],
+"SWCPSpecificDroidTech_Plus2HackingSoftware": [
+"guy762_DroidSoftware_security"
+],
+"SWCPSpecificDroidTech_Plus3HackingResearchSoftware": [
+"guy762_DroidSoftware_lockout"
+],
+"SWCPSpecificDroidTech_Plus4RepairSoftware": [
+"guy762_DroidSoftware_repair"
+],
+"SWCPSpecificDroidTech_Plus4AwarenessSoftware": [
+"guy762_DroidSoftware_demo"
+],
+"KotORDroidUpgrade_hk": [
+"guy762_DroidSensor_hk",
+"guy762_DroidSoftware_anatomy"
+],
+"SWCPSpecificDroidTech_Plus3AccuracySoftware": [
+"guy762_DroidSoftware_anatomy"
+],
+"SWCPSpecificDroidTech_Plus2Defense1AgilityHardware": [
+"guy762_DroidHardware_motivator"
+],
+"SWCPDroidApparelRestrictionTag_HardwareTechSlot": [
+"guy762_DroidHardware_agility",
+"guy762_DroidHardware_durability",
+"guy762_DroidHardware_motivator",
+"guy762_DroidHardware_parabolic",
+"guy762_DroidHardware_remote",
+"guy762_DroidHardware_systems"
+],
+"SWCPSpecificDroidTech_Plus1DefenseHardware": [
+"guy762_DroidHardware_durability"
+],
+"SWCPSpecificDroidTech_Plus3AgilityHardware": [
+"guy762_DroidHardware_agility"
+],
+"SWCPSpecificDroidTech_Plus3Agility3DexterityHardware": [
+"guy762_DroidHardware_parabolic"
+],
+"SWCPSpecificDroidTech_Plus2Defense4AgilityHardware": [
+"guy762_DroidHardware_systems"
+],
+"SWCPSpecificDroidTech_Plus10HackingHardware": [
+"guy762_DroidHardware_remote"
+],
+"SWCPSpecificDroidTech_ScavengerRepairHardware": [
+"guy762_DroidHardware_scav"
+],
+"SWCPDroidApparelRestrictionTag_DroidScavUpgrade": [
+"guy762_DroidHardware_scav"
+],
+"KotORBelt_medicbelt": [
+"guy762_MedicBelt"
+],
+"SWMedicBelt": [
+"guy762_MedicBelt"
+],
+"SWCPSpecificGadgetItem_MedicBelt": [
+"guy762_MedicBelt"
+],
+"KotORAccessory_debug": [
+"_guy762_DevTool_BodyHider",
+"_guy762_DevTool_HeadHider"
+],
+"SWCPSpecificApparelItem_SovereignTuskenMask": [
+"GS_SandP_Hood"
+],
+"SWCPSpecificApparelItem_SovereignTuskenBodyWraps": [
+"GS_SandP_Body"
+],
+"KotORAccessory_any": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_chewiebandolier",
+"guy762_Accessory_poncho",
+"guy762_Accessory_ponchoCamo",
+"guy762_Accessory_suspendersA",
+"guy762_Accessory_suspendersB",
+"guy762_Accessory_suspendersC",
+"guy762_Accessory_travelerbag",
+"guy762_Backpack_heavy",
+"guy762_Backpack_light"
+],
+"KotORAccessory_light": [
+"guy762_Accessory_suspendersA",
+"guy762_Accessory_travelerbag"
+],
+"KotORAccessory_engi": [
+"guy762_Accessory_suspendersA",
+"guy762_Accessory_suspendersB"
+],
+"KotORAccessory_trooper": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_chewiebandolier",
+"guy762_Accessory_suspendersA",
+"guy762_Backpack_heavy",
+"guy762_Backpack_light"
+],
+"KotORAccessory_trooper_strapsonly": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_chewiebandolier",
+"guy762_Accessory_suspendersA"
+],
+"KotORAccessory_trooper_withponcho": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_chewiebandolier",
+"guy762_Accessory_poncho",
+"guy762_Accessory_suspendersA"
+],
+"KotORAccessory_trooper_poncho_knife": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_chewiebandolier",
+"guy762_Accessory_knifebandolier",
+"guy762_Accessory_poncho",
+"guy762_Accessory_suspendersA"
+],
+"SWWarlordsAccessory_scumtrooper_poncho": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_poncho",
+"guy762_Accessory_suspendersA",
+"guy762_Accessory_travelerbag"
+],
+"SWWarlordsAccessory_scumtrooper": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_suspendersA",
+"guy762_Accessory_travelerbag"
+],
+"SWWarlordsAccessory_trooper": [
+"guy762_Accessory_suspendersA"
+],
+"SaV_wookiee": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_chewiebandolier",
+"guy762_Accessory_suspendersA",
+"guy762_Accessory_suspendersB",
+"guy762_Accessory_suspendersC",
+"guy762_Accessory_travelerbag"
+],
+"SWCPSpecificApparelItem_SimpleSuspenders": [
+"guy762_Accessory_suspendersA"
+],
+"SWCPDroidApparelRestrictionTag_TorsoAccessory": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_chewiebandolier",
+"guy762_Accessory_knifebandolier",
+"guy762_Accessory_poncho",
+"guy762_Accessory_ponchoCamo",
+"guy762_Accessory_suspendersA",
+"guy762_Accessory_suspendersB",
+"guy762_Accessory_suspendersC",
+"guy762_Accessory_travelerbag"
+],
+"KotORAccessory_specops": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_suspendersB"
+],
+"SWCPSpecificApparelItem_EngineerSuspenders": [
+"guy762_Accessory_suspendersB"
+],
+"KotORAccessory_heavy": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_chewiebandolier",
+"guy762_Accessory_suspendersC"
+],
+"KotORAccessory_trader": [
+"guy762_Accessory_suspendersC"
+],
+"SWCPSpecificApparelItem_HeavySuspenders": [
+"guy762_Accessory_suspendersC"
+],
+"KotORAccessory_outlaw": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_chewiebandolier",
+"guy762_Accessory_poncho"
+],
+"KotORAccessory_bandolier": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_chewiebandolier"
+],
+"KotORAccessory_lightdiagonalonly": [
+"guy762_Accessory_bandolierA",
+"guy762_Accessory_travelerbag"
+],
+"SWCPSpecificApparelItem_DoubleBandolier": [
+"guy762_Accessory_bandolierA"
+],
+"SWCPSpecificApparelItem_ChewbaccaBandolier": [
+"guy762_Accessory_chewiebandolier"
+],
+"KotORAccessory_civilian": [
+"guy762_Accessory_poncho",
+"guy762_Accessory_travelerbag",
+"guy762_Backpack_light"
+],
+"KotORAccessory_richcivilian": [
+"guy762_Accessory_travelerbag"
+],
+"SWCPSpecificApparelItem_TravelerBag": [
+"guy762_Accessory_travelerbag"
+],
+"SWWarlordsAccessory_onlyponcho": [
+"guy762_Accessory_poncho"
+],
+"KotORClothing_civilian_hooded": [
+"guy762_Accessory_poncho",
+"guy762_Clothing_scumII",
+"guy762_JediCloak_light",
+"guy762_JediHood_light",
+"guy762_Robes_tusken",
+"guy762_Robes_zuckuss"
+],
+"SWCPAccessory_CloakOrPlainPoncho": [
+"guy762_Accessory_poncho",
+"guy762_JediCloak_light"
+],
+"SWCPSpecificApparelItem_PlainPoncho": [
+"guy762_Accessory_poncho"
+],
+"KotORAccessory_camoponcho": [
+"guy762_Accessory_ponchoCamo"
+],
+"SWCPSpecificApparelItem_CamoPoncho": [
+"guy762_Accessory_ponchoCamo"
+],
+"KotORAccessory_backpack": [
+"guy762_Backpack_heavy",
+"guy762_Backpack_light"
+],
+"KotORAccessory_smallbackpack": [
+"guy762_Backpack_light"
+],
+"SWCPSpecificApparelItem_KotORSmallBackpack": [
+"guy762_Backpack_light"
+],
+"SWCPDroidApparelRestrictionTag_Backpacks": [
+"guy762_Backpack_GCWRebel",
+"guy762_Backpack_GCWRebelHeavy",
+"guy762_Backpack_heavy",
+"guy762_Backpack_light",
+"guy762_Backpack_scorch"
+],
+"KotORAccessory_scorchbackpack": [
+"guy762_Backpack_scorch"
+],
+"SWCPSpecificApparelItem_KotORScorchBackpack": [
+"guy762_Backpack_scorch"
+],
+"KotORAccessory_bigbackpack": [
+"guy762_Backpack_heavy"
+],
+"SWCPSpecificApparelItem_KotORBigBackpack": [
+"guy762_Backpack_heavy"
+],
+"NewRepublic_RebelBackpackMix": [
+"guy762_Backpack_GCWRebel",
+"guy762_Backpack_GCWRebelHeavy"
+],
+"SWCPSpecificApparelItem_GCWRebelBackpack": [
+"guy762_Backpack_GCWRebel"
+],
+"SWCPSpecificApparelItem_GCWRebelHeavyBackpack": [
+"guy762_Backpack_GCWRebelHeavy"
+],
+"KotORClothing_any": [
+"guy762_Clothing_civilian",
+"guy762_Clothing_cosmopolitan",
+"guy762_Clothing_light",
+"guy762_Clothing_scum",
+"guy762_Clothing_scumII",
+"guy762_Clothing_scumIII",
+"guy762_Clothing_smuggler",
+"guy762_Clothing_trendy"
+],
+"SaV_apparel_thug": [
+"guy762_Clothing_scum",
+"guy762_Clothing_scumII",
+"guy762_Clothing_scumIII",
+"guy762_Clothing_smuggler"
+],
+"SWCPSpecificApparelItem_TwoToneRusticClothing": [
+"guy762_Clothing_scum"
+],
+"KotORClothing_civilian_villager": [
+"guy762_Clothing_scumII",
+"guy762_Robes_jawa",
+"guy762_Robes_onderon",
+"guy762_Robes_tusken",
+"guy762_Robes_zuckuss"
+],
+"SithRem_apparel_undersuit": [
+"guy762_Bodysuit_Dyeable",
+"guy762_Clothing_scumII"
+],
+"PartisanAlliance_trooperOnSkin": [
+"guy762_Clothing_scumII"
+],
+"PartisanAlliance_sniperOnSkin": [
+"guy762_Clothing_scumII",
+"guy762_Clothing_scumIII"
+],
+"SWCPSpecificApparelItem_RusticClothing": [
+"guy762_Clothing_scumII"
+],
+"SWCPSpecificApparelItem_BlackPantsTwoToneRusticClothing": [
+"guy762_Clothing_scumIII"
+],
+"KotORClothing_civilian_mid": [
+"guy762_Clothing_civilian",
+"guy762_Clothing_light",
+"guy762_Jacket_scout"
+],
+"KotORClothing_smuggler": [
+"guy762_Clothing_civilian",
+"guy762_Clothing_smuggler",
+"guy762_Jacket_scoundrel",
+"guy762_Jacket_scout"
+],
+"SWCPSpecificApparelItem_PlainClothing": [
+"guy762_Clothing_civilian"
+],
+"NewRepublic_alderaanguard": [
+"guy762_Clothing_rebel"
+],
+"SWCPSpecificApparelItem_TwoTonePlainClothing": [
+"guy762_Clothing_rebel"
+],
+"KotORClothing_civilian_punk": [
+"guy762_Clothing_light",
+"guy762_Clothing_smuggler",
+"guy762_Jacket_scoundrel",
+"guy762_Jacket_scout"
+],
+"SaV_apparel_crimelord": [
+"guy762_Clothing_smuggler",
+"guy762_Headband_regalvisor",
+"guy762_HvySuit_zabrak",
+"guy762_MilSuit_verpine"
+],
+"SWCPSpecificApparelItem_SmugglerClothing": [
+"guy762_Clothing_smuggler"
+],
+"KotORClothing_civilian_bougie": [
+"guy762_Clothing_cosmopolitan",
+"guy762_Clothing_trendy",
+"guy762_Jacket_mission"
+],
+"SaV_apparel_roguetrader": [
+"guy762_Clothing_trendy",
+"guy762_CombatSuit_cinnagar",
+"guy762_CombatSuit_echani",
+"guy762_CombatSuit_zabrak",
+"guy762_Headband_regalvisor",
+"guy762_HvySuit",
+"guy762_HvySuit_fiber",
+"guy762_HvySuit_zabrak",
+"guy762_MilSuit",
+"guy762_MilSuit_cinnagar",
+"guy762_MilSuit_echani"
+],
+"KotORRoyaltyTag_drip": [
+"guy762_Clothing_trendy",
+"guy762_Jacket_scoundrel"
+],
+"SWCPSpecificApparelItem_TrendyClothing": [
+"guy762_Clothing_trendy"
+],
+"SWCPSpecificApparelItem_CosmopolitanClothing": [
+"guy762_Clothing_cosmopolitan"
+],
+"SWCPSpecificApparelItem_LightClothing": [
+"guy762_Clothing_light"
+],
+"NewRepublic_RebelSniperOnSkin": [
+"guy762_Clothing_RebelCamo",
+"guy762_GenericUniform_fatigues"
+],
+"SWCPSpecificApparelItem_RebelCamoClothing": [
+"guy762_Clothing_RebelCamo"
+],
+"NewRepublic_RebelTrooperOnSkin": [
+"guy762_Clothing_RebelCamoII",
+"guy762_GenericUniform_fatigues"
+],
+"SWCPSpecificApparelItem_AltRebelCamoClothing": [
+"guy762_Clothing_RebelCamoII"
+],
+"RemnantEmpire_armytrooper": [
+"guy762_GenericUniform_fatigues"
+],
+"SWCPSpecificApparelItem_GenericUniform": [
+"guy762_GenericUniform_fatigues"
+],
+"KotORClothing_undersuit": [
+"guy762_Bodysuit_Dyeable",
+"guy762_Bodysuit_striped"
+],
+"KotORClothing_civilian_prole": [
+"guy762_Bodysuit_Dyeable",
+"guy762_Bodysuit_striped",
+"guy762_Jacket_scout",
+"guy762_JediCloak_light"
+],
+"SWCPSpecificApparelItem_DyeableFatigues": [
+"guy762_Bodysuit_Dyeable"
+],
+"SWCPSpecificApparelItem_StripedFatigues": [
+"guy762_Bodysuit_striped"
+],
+"KotORArmor_undersuit": [
+"guy762_Bodysuit"
+],
+"MNC_outfit_mid": [
+"guy762_Bodysuit",
+"guy762_MandoArmor_battle"
+],
+"MNC_outfit_heavy": [
+"guy762_Bodysuit",
+"guy762_MandoArmor_assault"
+],
+"SWCPSpecificApparelItem_VacSealedBodysuit": [
+"guy762_Bodysuit"
+],
+"SWCPSpecificApparelItem_KotORScoundrelJacket": [
+"guy762_Jacket_scoundrel"
+],
+"SaV_apparel_mission": [
+"guy762_Jacket_mission"
+],
+"SWCPSpecificApparelItem_TrendyVest": [
+"guy762_Jacket_mission"
+],
+"NewRepublic_rebeltrooper": [
+"guy762_Jacket_scout",
+"guy762_RebelFlakCap"
+],
+"SWCPSpecificApparelItem_ScoutVest": [
+"guy762_Jacket_scout"
+],
+"SaV_outfit_gamorrean": [
+"guy762_Clothing_gamorrean",
+"guy762_Hat_gamorrean",
+"guy762_HvyArmor_gamorrean"
+],
+"SaV_apparel_huttgoon": [
+"guy762_Hat_gamorrean",
+"guy762_Headband_bandana",
+"guy762_Headband_nerualband",
+"guy762_HelmetCombat_hutt",
+"guy762_HvySuit_hutt"
+],
+"SaV_apparel_leatherhood": [
+"guy762_Hat_gamorrean"
+],
+"SWCPSpecificApparelItem_GamorreanHood": [
+"guy762_Hat_gamorrean"
+],
+"SWCPSpecificApparelItem_GamorreanLeathers": [
+"guy762_Clothing_gamorrean"
+],
+"SaV_apparel_gand": [
+"guy762_Robes_gand"
+],
+"SaV_apparel_kaleesh": [
+"guy762_Robes_gand"
+],
+"SWCPSpecificApparelItem_GandRobes": [
+"guy762_Robes_gand"
+],
+"SaV_apparel_jawa": [
+"guy762_JawaHood",
+"guy762_Robes_jawa"
+],
+"SWCPSpecificApparelItem_KotORJawaHood": [
+"guy762_JawaHood"
+],
+"NewRepublic_pilot": [
+"guy762_RebelPilot_suitbox"
+],
+"SWCPSpecificApparelItem_RebelFlightSuitBox": [
+"guy762_RebelPilot_suitbox"
+],
+"KotORClothing_pilot": [
+"guy762_FlightArmor",
+"guy762_FlightVest"
+],
+"SWCPSpecificApparelItem_FlightVest": [
+"guy762_FlightVest"
+],
+"SWCPSpecificApparelItem_KotORFlightArmor": [
+"guy762_FlightArmor"
+],
+"SE_apparel_ensign": [
+"guy762_SithUniform_ensign",
+"guy762_UniformCap"
+],
+"SE_apparel_engi": [
+"guy762_UniformCap"
+],
+"KotORRoyaltyTag_ORprivI": [
+"guy762_RepHat_officer",
+"guy762_UniformCap"
+],
+"KotORRoyaltyTag_ORprivII": [
+"guy762_RepHat_officer",
+"guy762_UniformCap"
+],
+"SWCPSpecificApparelItem_KotORSithUniformHat": [
+"guy762_UniformCap"
+],
+"NewRepublic_engineer": [
+"guy762_RebelEngiCap",
+"guy762_UniformCap_rebel"
+],
+"NewRepublic_RebelAgent_hats": [
+"guy762_RebelEngiCap",
+"guy762_RebelFlakCap",
+"guy762_RebelFlakCap_goggles",
+"guy762_UniformCap_rebel"
+],
+"SWCPSpecificApparelItem_GenericUniformHat": [
+"guy762_UniformCap_rebel"
+],
+"NewRepublic_sharpshooterhat": [
+"guy762_RebelFlakCap"
+],
+"PartisanAlliance_trooperheadwear": [
+"guy762_Headwrap_masked",
+"guy762_Headwrap_open",
+"guy762_RebelFlakCap"
+],
+"SWCPSpecificApparelItem_FlakHat": [
+"guy762_RebelFlakCap"
+],
+"NewRepublic_tankpilot": [
+"guy762_RebelFlakCap_goggles"
+],
+"SWCPSpecificApparelItem_GogglesFlakHat": [
+"guy762_RebelFlakCap_goggles"
+],
+"SWCPSpecificApparelItem_RebelEngineerHat": [
+"guy762_RebelEngiCap"
+],
+"PReb_apparel_cop": [
+"guy762_Hat_onderon"
+],
+"PReb_apparel_maskedhats": [
+"guy762_Hat_onderon",
+"guy762_HelmetMilitary_rebel"
+],
+"SWCPSpecificApparelItem_KotOROnderonRebelHat": [
+"guy762_Hat_onderon"
+],
+"KotORHeadband_bandana": [
+"guy762_Headband_bandana"
+],
+"SWCPSpecificApparelItem_Bandana": [
+"guy762_Headband_bandana"
+],
+"SaV_apparel_headwrapmix": [
+"guy762_Headwrap_masked",
+"guy762_Headwrap_open"
+],
+"SWCPSpecificApparelItem_OpenHeadwrap": [
+"guy762_Headwrap_open"
+],
+"SWCPSpecificApparelItem_MaskedHeadwrap": [
+"guy762_Headwrap_masked"
+],
+"RemnantEmpire_impworker": [
+"guy762_ImpWorkerHelmet"
+],
+"SWCPSpecificApparelItem_ImperialWorkerHelmet": [
+"guy762_ImpWorkerHelmet"
+],
+"KotORClothing_simplecloak": [
+"guy762_JediCloak_light"
+],
+"OR_jedi": [
+"guy762_JediCloak_light",
+"guy762_JediHood_light",
+"guy762_JediTunic_formal",
+"guy762_JediTunic_light",
+"guy762_JediTunic_lightOld",
+"guy762_JediTunic_simple",
+"guy762_JediTunic_trad"
+],
+"OR_jedicloak_light": [
+"guy762_JediCloak_light",
+"guy762_JediHood_light"
+],
+"SWCPSpecificApparelItem_SimpleCloak": [
+"guy762_JediCloak_light"
+],
+"SWCPSpecificApparelItem_SimpleHood": [
+"guy762_JediHood_light"
+],
+"SE_sithapprentice": [
+"guy762_SithHood_masked",
+"guy762_SithTunic_apprentice"
+],
+"SWCPSpecificApparelItem_MaskedHood": [
+"guy762_SithHood_masked"
+],
+"SWCPSpecificApparelItem_KotORJawaRobes": [
+"guy762_Robes_jawa"
+],
+"SaV_apparel_tusken": [
+"guy762_Robes_tusken",
+"guy762_TuskenMask"
+],
+"SWCPSpecificApparelItem_TuskenRobes": [
+"guy762_Robes_tusken"
+],
+"SWCPSpecificApparelItem_ZuckussRobes": [
+"guy762_Robes_zuckuss"
+],
+"SWCPSpecificApparelItem_KotOROnderonRobes": [
+"guy762_Robes_onderon"
+],
+"KotOREquipment_jedi": [
+"guy762_armband",
+"guy762_belt_jalshey",
+"guy762_belt_jalsheyadv",
+"guy762_belt_nerveamp",
+"guy762_glove_jalshey",
+"guy762_glove_zeisonsha"
+],
+"KotORHeroAccessories_visas": [
+"guy762_armband",
+"guy762_belt_adrenalstim",
+"guy762_belt_jalsheyadv",
+"guy762_energyshield_mandoHvy",
+"guy762_glove_infiltrator",
+"guy762_glove_sith",
+"guy762_stealthbelt_eriadu"
+],
+"KotORHeroAccessories_sion": [
+"guy762_armband",
+"guy762_belt_gnsstrength",
+"guy762_glove_dominator",
+"guy762_glove_sith"
+],
+"KotORHeroAccessories_bastila": [
+"guy762_armband",
+"guy762_belt_aratechcr",
+"guy762_belt_jalsheyadv",
+"guy762_belt_nerveamp",
+"guy762_belt_qeldroma",
+"guy762_energyshield_mandoHvy",
+"guy762_glove_defense",
+"guy762_glove_jalshey",
+"guy762_glove_zeisonsha"
+],
+"SWCPSpecificGadgetItem_JediArmband": [
+"guy762_armband"
+],
+"KotOREquipment_moncal": [
+"guy762_armband_moncal"
+],
+"SWCPSpecificGadgetItem_MonCalamariArmband": [
+"guy762_armband_moncal"
+],
+"SWCPSpecificGadgetItem_CortosisArmband": [
+"guy762_armband_cortosis"
+],
+"KotORAccessory_knifebandolier": [
+"guy762_Accessory_knifebandolier"
+],
+"SaV_apparel_nagai": [
+"guy762_Accessory_knifebandolier",
+"guy762_CombatSuit_electromesh",
+"guy762_LgtBattleArmor_electromesh",
+"guy762_glove_nagai"
+],
+"SWCPSpecificApparelItem_ThrowingKnifeBandolier": [
+"guy762_Accessory_knifebandolier"
+],
+"KotORBelt_utility": [
+"guy762_belt_czerka",
+"guy762_belt_exchange",
+"guy762_belt_mining",
+"guy762_belt_power"
+],
+"KotOREquipment_basic": [
+"guy762_belt_adrenaline",
+"guy762_belt_cardio",
+"guy762_belt_dex",
+"guy762_belt_mining",
+"guy762_belt_power",
+"guy762_belt_strength",
+"guy762_glove_defense",
+"guy762_glove_insulated",
+"guy762_glove_survival"
+],
+"SWCPSpecificGadgetItem_SafetyBelt": [
+"guy762_belt_mining"
+],
+"SWCPSpecificGadgetItem_PowerBelt": [
+"guy762_belt_power"
+],
+"KotOREquipment_tech": [
+"guy762_belt_czerka",
+"guy762_glove_automation",
+"guy762_glove_infiltrator"
+],
+"KotOREquipment_czerkatech": [
+"guy762_belt_czerka",
+"guy762_glove_survival"
+],
+"KotORUtility_engi": [
+"guy762_Headband_interface",
+"guy762_belt_czerka",
+"guy762_glove_automation",
+"guy762_glove_automation_adv"
+],
+"KotORUtility_engi_novisor": [
+"guy762_belt_czerka",
+"guy762_glove_automation",
+"guy762_glove_automation_adv"
+],
+"SWCPSpecificGadgetItem_CzerkaUtilityBelt": [
+"guy762_belt_czerka"
+],
+"KotORBelt_attribute": [
+"guy762_belt_cnsstrength",
+"guy762_belt_dex",
+"guy762_belt_strength"
+],
+"KotOREquipment_sith": [
+"guy762_belt_adrenaline",
+"guy762_belt_adrenalstim",
+"guy762_belt_cnsstrength",
+"guy762_belt_dex",
+"guy762_belt_strength",
+"guy762_glove_eriadu",
+"guy762_glove_sith"
+],
+"SWCPSpecificGadgetItem_STRBelt": [
+"guy762_belt_strength"
+],
+"KotOREquipment_officer": [
+"guy762_belt_adrenalstim",
+"guy762_belt_cardio",
+"guy762_belt_dex",
+"guy762_belt_nerveamp",
+"guy762_glove_defense",
+"guy762_glove_karakan"
+],
+"SWCPSpecificGadgetItem_DEXBelt": [
+"guy762_belt_dex"
+],
+"KotORBelt_capacity": [
+"guy762_belt_adrenaline",
+"guy762_belt_adrenalstim",
+"guy762_belt_cardio"
+],
+"SWCPSpecificGadgetItem_DEXCapacityBelt": [
+"guy762_belt_adrenaline"
+],
+"KotORHeroAccessories_canderousMerc": [
+"guy762_Headband_demovisor",
+"guy762_Headband_verpine",
+"guy762_belt_aratechcr",
+"guy762_belt_cardio",
+"guy762_energyshield_mandoHvy",
+"guy762_energyshield_verpine",
+"guy762_glove_accuracy",
+"guy762_glove_bothan",
+"guy762_glove_defense",
+"guy762_glove_gamorrean",
+"guy762_grenadebelt_plasma",
+"guy762_grenadebelt_sonic",
+"guy762_grenadebelt_thermaldet"
+],
+"SWCPSpecificGadgetItem_CONCapacityBelt": [
+"guy762_belt_cardio"
+],
+"KotOREquipment_adv": [
+"guy762_belt_adrenalstim",
+"guy762_belt_cnsstrength",
+"guy762_glove_accuracy",
+"guy762_glove_detonator",
+"guy762_glove_eriadu",
+"guy762_glove_gamorrean",
+"guy762_glove_karakan",
+"guy762_glove_sith"
+],
+"SWCPSpecificGadgetItem_STRCapacityBelt": [
+"guy762_belt_cnsstrength"
+],
+"KotORHeroAccessories_handmaiden": [
+"guy762_belt_adrenalstim",
+"guy762_belt_gnsstrength",
+"guy762_energyshield_echaniHvy",
+"guy762_glove_dominator"
+],
+"KotORHeroAccessories_juhani": [
+"guy762_belt_adrenalstim",
+"guy762_belt_aratechcr",
+"guy762_belt_gnsstrength",
+"guy762_energyshield_echaniHvy",
+"guy762_energyshield_mandoHvy",
+"guy762_glove_defense",
+"guy762_glove_dominator",
+"guy762_glove_nagai",
+"guy762_glove_zeisonsha",
+"guy762_stealthbelt_eriadu"
+],
+"SWCPSpecificGadgetItem_AdvDEXCapacityBelt": [
+"guy762_belt_adrenalstim"
+],
+"KotORBelt_rare": [
+"guy762_belt_jalsheyadv",
+"guy762_belt_nerveamp"
+],
+"SWCPSpecificGadgetItem_NerveAmplifierBelt": [
+"guy762_belt_nerveamp"
+],
+"KotORBelt_legendary": [
+"guy762_belt_aratechcr",
+"guy762_belt_calrissian",
+"guy762_belt_gnsstrength",
+"guy762_belt_qeldroma"
+],
+"KotOREquipment_rare": [
+"guy762_belt_aratechcr",
+"guy762_belt_gnsstrength",
+"guy762_glove_dominator",
+"guy762_glove_nagai"
+],
+"KotORHeroAccessories_canderous": [
+"guy762_armband_wristgun",
+"guy762_belt_aratechcr",
+"guy762_belt_gnsstrength",
+"guy762_energyshield_mandoHvy",
+"guy762_glove_bothan",
+"guy762_glove_dominator",
+"guy762_glove_gamorrean"
+],
+"KotORHeroAccessories_yuthura": [
+"guy762_belt_aratechcr",
+"guy762_belt_gnsstrength",
+"guy762_energyshield_sith",
+"guy762_glove_dominator",
+"guy762_glove_sith"
+],
+"KotORHeroAccessories_zaalbar": [
+"guy762_belt_aratechcr",
+"guy762_belt_gnsstrength",
+"guy762_energyshield_hapan",
+"guy762_energyshield_verpine",
+"guy762_glove_dominator",
+"guy762_grenadebelt_plasma",
+"guy762_grenadebelt_sonic",
+"guy762_grenadebelt_thermaldet"
+],
+"KotORHeroAccessories_hanharr": [
+"guy762_armband_wristgun",
+"guy762_belt_gnsstrength",
+"guy762_energyshield_mandoHvy",
+"guy762_glove_dominator",
+"guy762_grenadebelt_plasma",
+"guy762_grenadebelt_poison",
+"guy762_grenadebelt_stun",
+"guy762_stealthbelt_genoharadan"
+],
+"SWCPSpecificGadgetItem_AdvSTRBelt": [
+"guy762_belt_gnsstrength"
+],
+"SWCPSpecificGadgetItem_AdvCONCapacityBelt": [
+"guy762_belt_aratechcr"
+],
+"KotORBelt_force": [
+"guy762_belt_jalshey"
+],
+"SWCPSpecificGadgetItem_JalSheyBelt": [
+"guy762_belt_jalshey"
+],
+"KotORHeroAccessories_exile": [
+"guy762_belt_jalsheyadv",
+"guy762_belt_qeldroma",
+"guy762_glove_jalshey",
+"guy762_glove_stabilizer",
+"guy762_glove_zeisonsha"
+],
+"SWCPSpecificGadgetItem_AdvJalSheyBelt": [
+"guy762_belt_jalsheyadv"
+],
+"KotORGloves_basic": [
+"guy762_glove_insulated",
+"guy762_glove_karakan",
+"guy762_glove_survival"
+],
+"SWCPSpecificGadgetItem_InsulatedGloves": [
+"guy762_glove_insulated"
+],
+"KotORGloves_combat": [
+"guy762_glove_accuracy",
+"guy762_glove_defense",
+"guy762_glove_eriadu",
+"guy762_glove_gamorrean",
+"guy762_glove_karakan",
+"guy762_glove_nagai",
+"guy762_glove_survival"
+],
+"SWCPSpecificGadgetItem_KarakanGloves": [
+"guy762_glove_karakan"
+],
+"KotORGloves_gamorrean": [
+"guy762_glove_gamorrean"
+],
+"SWCPSpecificGadgetItem_GamorreanGloves": [
+"guy762_glove_gamorrean"
+],
+"SWCPSpecificGadgetItem_AccuracyGloves": [
+"guy762_glove_accuracy"
+],
+"SWCPSpecificGadgetItem_NagaiGloves": [
+"guy762_glove_nagai"
+],
+"SWCPSpecificGadgetItem_EriaduSTRGloves": [
+"guy762_glove_eriadu"
+],
+"KotORGloves_sith": [
+"guy762_glove_sith"
+],
+"SWCPSpecificGadgetItem_SithSTRGloves": [
+"guy762_glove_sith"
+],
+"KotORGloves_force": [
+"guy762_glove_jalshey",
+"guy762_glove_zeisonsha"
+],
+"SWCPSpecificGadgetItem_JalSheyGloves": [
+"guy762_glove_jalshey"
+],
+"SWCPSpecificGadgetItem_ZeisonShaGloves": [
+"guy762_glove_zeisonsha"
+],
+"KotORUtility_medic": [
+"guy762_Headband_medical",
+"guy762_glove_stabilizer"
+],
+"KotORUtility_StabilizerGauntlets": [
+"guy762_glove_stabilizer"
+],
+"SWCPSpecificGadgetItem_MedicGloves": [
+"guy762_glove_stabilizer"
+],
+"KotORGloves_tech": [
+"guy762_glove_automation",
+"guy762_glove_detonator",
+"guy762_glove_exchange",
+"guy762_glove_infiltrator"
+],
+"KotORHeroAccessories_mission": [
+"guy762_belt_calrissian",
+"guy762_energyshield_hapan",
+"guy762_energyshield_verpine",
+"guy762_glove_exchange",
+"guy762_glove_infiltrator",
+"guy762_glove_survival",
+"guy762_stealthbelt_eriadu",
+"guy762_stealthbelt_genoharadan"
+],
+"SWCPSpecificGadgetItem_InfiltratorGloves": [
+"guy762_glove_infiltrator"
+],
+"SWCPSpecificGadgetItem_DetonatorGloves": [
+"guy762_glove_detonator"
+],
+"SWCPSpecificGadgetItem_EngineerGloves": [
+"guy762_glove_automation"
+],
+"KotORGloves_rare": [
+"guy762_glove_automation_adv",
+"guy762_glove_bothan",
+"guy762_glove_dominator",
+"guy762_glove_programmer"
+],
+"SWCPSpecificGadgetItem_ProgrammerGloves": [
+"guy762_glove_programmer"
+],
+"SWCPSpecificGadgetItem_DominatorSTRGloves": [
+"guy762_glove_dominator"
+],
+"SWCPSpecificGadgetItem_AdvEngineerGloves": [
+"guy762_glove_automation_adv"
+],
+"KotORGloves_bothan": [
+"guy762_glove_bothan"
+],
+"SWCPSpecificGadgetItem_BothanGloves": [
+"guy762_glove_bothan"
+],
+"MNC_jetpack_light": [
+"guy762_Jetpack_light"
+],
+"SWCPSpecificApparelItem_SabineJetpack": [
+"guy762_Jetpack_light"
+],
+"SaV_jetpack": [
+"guy762_Jetpack_heavy"
+],
+"SWCPSpecificApparelItem_DashRendarJetpack": [
+"guy762_Jetpack_heavy"
+],
+"SE_apparel_malak": [
+"guy762_MalakCape",
+"guy762_MalakTunic"
+],
+"KotORRoyaltyTag_DSCharacterApparel": [
+"guy762_ExarKunArmor",
+"guy762_KreiaRobes_DarthTraya",
+"guy762_MalakCape",
+"guy762_MalakTunic",
+"guy762_MalgusArmor",
+"guy762_NihilusCloak",
+"guy762_NihilusMask",
+"guy762_NihilusRobes",
+"guy762_RevanCloak",
+"guy762_RevanMask",
+"guy762_RevanRobes",
+"guy762_SionTunic",
+"guy762_VisasHood",
+"guy762_VisasRobes"
+],
+"KotORRoyaltyTag_AnyCharacterApparel": [
+"guy762_BastilaTunic",
+"guy762_ExarKunArmor",
+"guy762_JoleeTunic",
+"guy762_JuhaniTunic",
+"guy762_KreiaRobes_DarthTraya",
+"guy762_MalakCape",
+"guy762_MalakTunic",
+"guy762_MalgusArmor",
+"guy762_NihilusCloak",
+"guy762_NihilusMask",
+"guy762_NihilusRobes",
+"guy762_RevanCloak",
+"guy762_RevanMask",
+"guy762_RevanRobes",
+"guy762_SionTunic",
+"guy762_StarForgeCloak",
+"guy762_StarForgeMask",
+"guy762_StarForgeRobes",
+"guy762_VisasHood",
+"guy762_VisasRobes"
+],
+"SE_apparel_revan": [
+"guy762_RevanCloak",
+"guy762_RevanMask",
+"guy762_RevanRobes"
+],
+"SE_apparel_nihilus": [
+"guy762_NihilusCloak",
+"guy762_NihilusMask",
+"guy762_NihilusRobes"
+],
+"OR_apparel_revan": [
+"guy762_StarForgeCloak",
+"guy762_StarForgeMask",
+"guy762_StarForgeRobes"
+],
+"KotORRoyaltyTag_LSCharacterApparel": [
+"guy762_BastilaTunic",
+"guy762_JoleeTunic",
+"guy762_JuhaniTunic",
+"guy762_StarForgeCloak",
+"guy762_StarForgeMask",
+"guy762_StarForgeRobes",
+"guy762_VisasHood",
+"guy762_VisasRobes"
+],
+"SE_apparel_sion": [
+"guy762_SionTunic"
+],
+"SE_apparel_traya": [
+"guy762_KreiaRobes_DarthTraya"
+],
+"SE_apparel_exarkun": [
+"guy762_ExarKunArmor"
+],
+"SE_apparel_malgus": [
+"guy762_MalgusArmor",
+"guy762_MalgusHood",
+"guy762_MalgusMask"
+],
+"KotORArmor_light": [
+"guy762_CombatSuit",
+"guy762_CombatSuit_cinnagar",
+"guy762_CombatSuit_echani",
+"guy762_CombatSuit_electromesh",
+"guy762_CombatSuit_onderon",
+"guy762_CombatSuit_zabrak",
+"guy762_HelmetCombat",
+"guy762_HelmetCombat_cinnagar",
+"guy762_HelmetCombat_hutt",
+"guy762_HvySuit",
+"guy762_HvySuit_baragwin",
+"guy762_HvySuit_bonadan",
+"guy762_HvySuit_fiber",
+"guy762_HvySuit_hutt",
+"guy762_HvySuit_mod",
+"guy762_HvySuit_zabrak"
+],
+"KotORArmor_combatsuit": [
+"guy762_CombatSuit"
+],
+"SaV_apparel_lightmerc": [
+"guy762_CombatSuit",
+"guy762_CombatSuit_cinnagar",
+"guy762_CombatSuit_echani",
+"guy762_CombatSuit_onderon",
+"guy762_CombatSuit_zabrak",
+"guy762_HelmetCombat",
+"guy762_HvySuit",
+"guy762_HvySuit_baragwin",
+"guy762_HvySuit_bonadan",
+"guy762_HvySuit_fiber",
+"guy762_HvySuit_mod"
+],
+"SithRem_apparel_raider": [
+"guy762_CombatSuit"
+],
+"SWKotORSpecificApparelItem_CombatSuit": [
+"guy762_CombatSuit"
+],
+"SWKotORSpecificApparelItem_ZabrakCombatSuit": [
+"guy762_CombatSuit_zabrak"
+],
+"SaV_echani_light": [
+"guy762_CombatSuit_echani"
+],
+"PM_apparel_jediexile": [
+"guy762_CombatSuit_echani",
+"guy762_CombatSuit_onderon",
+"guy762_HvySuit_fiber",
+"guy762_HvySuit_zabrak",
+"guy762_MilSuit_echani",
+"guy762_MilSuit_militia"
+],
+"SWKotORSpecificApparelItem_EchaniCombatSuit": [
+"guy762_CombatSuit_echani"
+],
+"SaV_apparel_darkjedi": [
+"guy762_CombatSuit_cinnagar",
+"guy762_HvySuit_mod",
+"guy762_MilSuit_cinnagar"
+],
+"SaV_apparel_bountyhunterlight": [
+"guy762_CombatSuit_cinnagar",
+"guy762_CombatSuit_onderon",
+"guy762_HvySuit_fiber",
+"guy762_HvySuit_mod"
+],
+"SaV_apparel_exchange": [
+"guy762_CombatSuit_cinnagar",
+"guy762_HvySuit_mod"
+],
+"EXC_apparel_CapoOrVigo": [
+"guy762_CombatSuit_cinnagar",
+"guy762_CombatSuit_electromesh",
+"guy762_HvySuit_zabrak",
+"guy762_Jacket_exchange",
+"guy762_MilSuit_cinnagar",
+"guy762_MilSuit_verpine"
+],
+"SWKotORSpecificApparelItem_CinnagarCombatSuit": [
+"guy762_CombatSuit_cinnagar"
+],
+"SaV_onderon": [
+"guy762_CombatSuit_onderon"
+],
+"KotORRoyaltyTag_AnyHighTier": [
+"guy762_CombatSuit_electromesh",
+"guy762_CombatSuit_onderon",
+"guy762_HvyArmor_durasteel",
+"guy762_HvyArmor_echani",
+"guy762_HvyArmor_flex",
+"guy762_HvyArmor_matrix",
+"guy762_HvySuit_baragwin",
+"guy762_HvySuit_zabrak",
+"guy762_LgtBattleArmor_electromesh",
+"guy762_LgtBattleArmor_krath",
+"guy762_MidBattleArmor_corellian",
+"guy762_MidBattleArmor_verpine",
+"guy762_MilSuit_bastion",
+"guy762_MilSuit_verpine"
+],
+"SWKotORSpecificApparelItem_OnderonCombatSuit": [
+"guy762_CombatSuit_onderon"
+],
+"SWKotORSpecificApparelItem_ElectromeshCombatSuit": [
+"guy762_CombatSuit_electromesh"
+],
+"KotORArmor_heavy": [
+"guy762_HelmetHeavyBattle",
+"guy762_HelmetHeavyBattle_powered",
+"guy762_HelmetHeavyBattle_repcom",
+"guy762_HvyArmor",
+"guy762_HvyArmor_durasteel",
+"guy762_HvyArmor_echani",
+"guy762_HvyArmor_flex",
+"guy762_HvyArmor_gamorrean",
+"guy762_HvyArmor_matrix",
+"guy762_HvyArmor_repcom",
+"guy762_MidBattleArmor",
+"guy762_MidBattleArmor_cinnagar",
+"guy762_MidBattleArmor_corellian",
+"guy762_MidBattleArmor_mando",
+"guy762_MidBattleArmor_powered",
+"guy762_MidBattleArmor_verpine"
+],
+"SaV_outfit_commando": [
+"guy762_HvyArmor"
+],
+"SaV_outfit_elite": [
+"guy762_HvyArmor",
+"guy762_HvyArmor_durasteel",
+"guy762_HvyArmor_flex",
+"guy762_HvyArmor_matrix",
+"guy762_MandoArmor_battle"
+],
+"SWKotORSpecificApparelItem_HeavyBattleArmor": [
+"guy762_HvyArmor"
+],
+"SaV_outfit_echani": [
+"guy762_HvyArmor_echani"
+],
+"SWKotORSpecificApparelItem_EchaniHeavyBattleArmor": [
+"guy762_HvyArmor_echani"
+],
+"SaV_apparel_bountyhunterstrong": [
+"guy762_HelmetHeavyBattle_powered",
+"guy762_HvyArmor_durasteel",
+"guy762_HvyArmor_flex",
+"guy762_LgtBattleArmor_krath",
+"guy762_MidBattleArmor_powered"
+],
+"SWKotORSpecificApparelItem_DurasteelHeavyBattleArmor": [
+"guy762_HvyArmor_durasteel"
+],
+"SWKotORSpecificApparelItem_FlexHeavyBattleArmor": [
+"guy762_HvyArmor_flex"
+],
+"SaV_apparel_starbountyhunter": [
+"guy762_HvyArmor_matrix",
+"guy762_MandoArmor_assault",
+"guy762_MidBattleArmor_corellian",
+"guy762_MidBattleArmor_verpine"
+],
+"SWKotORSpecificApparelItem_MatrixHeavyBattleArmor": [
+"guy762_HvyArmor_matrix"
+],
+"PReb_apparel_trooper": [
+"guy762_HvySuit",
+"guy762_MilSuit"
+],
+"SWKotORSpecificApparelItem_HeavyCombatSuit": [
+"guy762_HvySuit"
+],
+"SWKotORSpecificApparelItem_EriaduHeavyCombatSuit": [
+"guy762_HvySuit_mod"
+],
+"SWKotORSpecificApparelItem_BonadanHeavyCombatSuit": [
+"guy762_HvySuit_bonadan"
+],
+"SWKotORSpecificApparelItem_FiberHeavyCombatSuit": [
+"guy762_HvySuit_fiber"
+],
+"SWKotORSpecificApparelItem_ZabrakHeavyCombatSuit": [
+"guy762_HvySuit_zabrak"
+],
+"SaV_apparel_chiss": [
+"guy762_HelmetLgtBattle_baragwin",
+"guy762_HvySuit_baragwin",
+"guy762_MilSuit_bastion"
+],
+"SWKotORSpecificApparelItem_BaragwinHeavyCombatSuit": [
+"guy762_HvySuit_baragwin"
+],
+"KotORArmor_mid": [
+"guy762_HelmetLgtBattle",
+"guy762_HelmetLgtBattle_TSL",
+"guy762_HelmetLgtBattle_baragwin",
+"guy762_HelmetMilitary",
+"guy762_HelmetMilitary_OldRepublic",
+"guy762_HelmetMilitary_Pilot",
+"guy762_HelmetMilitary_militia",
+"guy762_HelmetMilitary_rebel",
+"guy762_LgtBattleArmor",
+"guy762_LgtBattleArmor_TSL",
+"guy762_LgtBattleArmor_bronzium",
+"guy762_LgtBattleArmor_electromesh",
+"guy762_LgtBattleArmor_krath",
+"guy762_LgtBattleArmor_power",
+"guy762_MilSuit",
+"guy762_MilSuit_bastion",
+"guy762_MilSuit_cinnagar",
+"guy762_MilSuit_echani",
+"guy762_MilSuit_militia",
+"guy762_MilSuit_verpine"
+],
+"SaV_outfit_merc": [
+"guy762_HelmetLgtBattle",
+"guy762_LgtBattleArmor",
+"guy762_LgtBattleArmor_TSL",
+"guy762_LgtBattleArmor_bronzium",
+"guy762_LgtBattleArmor_power",
+"guy762_MidBattleArmor",
+"guy762_MidBattleArmor_cinnagar",
+"guy762_MidBattleArmor_corellian",
+"guy762_MidBattleArmor_mando",
+"guy762_MidBattleArmor_powered",
+"guy762_MidBattleArmor_verpine"
+],
+"SaV_apparel_bountyhuntermid": [
+"guy762_HelmetMilitary",
+"guy762_LgtBattleArmor_bronzium",
+"guy762_LgtBattleArmor_power",
+"guy762_MidBattleArmor_cinnagar",
+"guy762_MidBattleArmor_powered"
+],
+"SaV_apparel_gangboss": [
+"guy762_LgtBattleArmor_bronzium",
+"guy762_LgtBattleArmor_krath",
+"guy762_MidBattleArmor_cinnagar",
+"guy762_MidBattleArmor_corellian"
+],
+"SWKotORSpecificApparelItem_BronziumLightBattleArmor": [
+"guy762_LgtBattleArmor_bronzium"
+],
+"SWKotORSpecificApparelItem_PoweredLightBattleArmor": [
+"guy762_LgtBattleArmor_power"
+],
+"KRA_trooper": [
+"guy762_LgtBattleArmor_krath"
+],
+"SWKotORSpecificApparelItem_KrathLightBattleArmor": [
+"guy762_LgtBattleArmor_krath"
+],
+"SWKotORSpecificApparelItem_ElectromeshLightBattleArmor": [
+"guy762_LgtBattleArmor_electromesh"
+],
+"SWKotORSpecificApparelItem_BattleArmor": [
+"guy762_MidBattleArmor"
+],
+"SWKotORSpecificApparelItem_PoweredBattleArmor": [
+"guy762_MidBattleArmor_powered"
+],
+"SWKotORSpecificApparelItem_CinnagarBattleArmor": [
+"guy762_MidBattleArmor_cinnagar"
+],
+"SWKotORSpecificApparelItem_CorellianBattleArmor": [
+"guy762_MidBattleArmor_corellian"
+],
+"SWKotORSpecificApparelItem_VerpineBattleArmor": [
+"guy762_MidBattleArmor_verpine"
+],
+"SaV_apparel_midmerc": [
+"guy762_MilSuit",
+"guy762_MilSuit_cinnagar",
+"guy762_MilSuit_echani"
+],
+"SWKotORSpecificApparelItem_MilitarySuit": [
+"guy762_MilSuit"
+],
+"PM_trooperarmor": [
+"guy762_MilSuit_militia"
+],
+"SWKotORSpecificApparelItem_MilitiaMilitarySuit": [
+"guy762_MilSuit_militia"
+],
+"SaV_echani_mid": [
+"guy762_MilSuit_echani"
+],
+"SWKotORSpecificApparelItem_EchaniMilitarySuit": [
+"guy762_MilSuit_echani"
+],
+"SWKotORSpecificApparelItem_CinnagarMilitarySuit": [
+"guy762_MilSuit_cinnagar"
+],
+"SWKotORSpecificApparelItem_VerpineMilitarySuit": [
+"guy762_MilSuit_verpine"
+],
+"SWKotORSpecificApparelItem_BastionMilitarySuit": [
+"guy762_MilSuit_bastion"
+],
+"czkera_slave": [
+"guy762_Bodysuit_czerka"
+],
+"SWKotORSpecificApparelItem_CzerkaBodysuit": [
+"guy762_Bodysuit_czerka"
+],
+"czerka_worker": [
+"guy762_Clothing_czerka"
+],
+"SWKotORSpecificApparelItem_CzerkaEmployeeClothes": [
+"guy762_Clothing_czerka"
+],
+"czerka_officer": [
+"guy762_Clothing_czerkaofficer"
+],
+"SWKotORSpecificApparelItem_CzerkaOfficerClothes": [
+"guy762_Clothing_czerkaofficer"
+],
+"SWKotORSpecificApparelItem_CzerkaLightBattleHelmet": [
+"guy762_HelmetLgtBattle_TSL"
+],
+"CZC_enforcer": [
+"guy762_LgtBattleArmor_TSL"
+],
+"SWKotORSpecificApparelItem_CzerkaLightBattleArmor": [
+"guy762_LgtBattleArmor_TSL"
+],
+"OR_jeditunic_light": [
+"guy762_JediTunic_light"
+],
+"KotORRoyaltyTag_AnyJediTunic": [
+"guy762_JediTunic_formal",
+"guy762_JediTunic_light",
+"guy762_JediTunic_simple",
+"guy762_JediTunic_trad"
+],
+"SWKotORSpecificApparelItem_LightJediTunic": [
+"guy762_JediTunic_light"
+],
+"OR_jeditunic_simple": [
+"guy762_JediTunic_simple"
+],
+"SWKotORSpecificApparelItem_SimpleJediTunic": [
+"guy762_JediTunic_simple"
+],
+"OR_jeditunic_formal": [
+"guy762_JediTunic_formal"
+],
+"SWKotORSpecificApparelItem_FormalJediTunic": [
+"guy762_JediTunic_formal"
+],
+"OR_jeditunic_trad": [
+"guy762_JediTunic_trad"
+],
+"SWKotORSpecificApparelItem_TraditionalJediTunic": [
+"guy762_JediTunic_trad"
+],
+"SWKotORSpecificApparelItem_OldJediTunic": [
+"guy762_JediTunic_lightOld"
+],
+"MNCFactionArmor": [
+"guy762_MNCHelmet",
+"guy762_MandoArmor_assault",
+"guy762_MandoArmor_battle",
+"guy762_MandoArmor_supercom"
+],
+"MNC_hood": [
+"guy762_MNCHelmet"
+],
+"MNC_helmet_hood": [
+"guy762_MNCHelmet",
+"guy762_MandoHelmet_supercom"
+],
+"SWKotORSpecificApparelItem_MandoNeoCrusaderHood": [
+"guy762_MNCHelmet"
+],
+"KotORRoyaltyTag_AnyMandoArmor": [
+"guy762_MandoArmor_assault",
+"guy762_MandoArmor_battle",
+"guy762_MandoArmor_supercom",
+"guy762_MidBattleArmor_mando"
+],
+"SWKotORSpecificApparelItem_MandoReconArmor": [
+"guy762_MidBattleArmor_mando"
+],
+"SWKotORSpecificApparelItem_MandoBattleArmor": [
+"guy762_MandoArmor_battle"
+],
+"SWKotORSpecificApparelItem_MandoAssaultArmor": [
+"guy762_MandoArmor_assault"
+],
+"MNC_outfit_supercom": [
+"guy762_MandoArmor_supercom",
+"guy762_MandoHelmet_supercom"
+],
+"MNC_outfit_mandalore": [
+"guy762_MandoArmor_supercom",
+"guy762_MandoHelmet_supercom"
+],
+"SWKotORSpecificApparelItem_MandoSupercommandoArmor": [
+"guy762_MandoArmor_supercom"
+],
+"SWKotORSpecificApparelItem_MandoSupercommandoHelmet": [
+"guy762_MandoHelmet_supercom"
+],
+"OR_apparel_officer": [
+"guy762_RepHat_officer",
+"guy762_RepUniform_officer"
+],
+"OR_apparel_helmet_cap": [
+"guy762_RepHat_officer",
+"guy762_RepHelmet_fleet"
+],
+"KotORRoyaltyTag_RepublicOfficerCap": [
+"guy762_RepHat_officer"
+],
+"SWKotORSpecificApparelItem_OldRepublicOfficerHat": [
+"guy762_RepHat_officer"
+],
+"OR_apparel_ensign": [
+"guy762_RepUniform_ensign"
+],
+"KotORRoyaltyTag_BasicRepublicOutfit": [
+"guy762_HvyArmor_repcom",
+"guy762_RepArmor_trooper",
+"guy762_RepUniform_ensign"
+],
+"KotORRoyaltyTag_RepublicUniform": [
+"guy762_RepUniform_ensign",
+"guy762_RepUniform_officer"
+],
+"SWKotORSpecificApparelItem_OldRepublicEnsignUniform": [
+"guy762_RepUniform_ensign"
+],
+"KotORRoyaltyTag_RepublicOfficerUniform": [
+"guy762_RepUniform_officer"
+],
+"SWKotORSpecificApparelItem_OldRepublicOfficerUniform": [
+"guy762_RepUniform_officer"
+],
+"PM_apparel_cop": [
+"guy762_RepArmor_TSF",
+"guy762_RepHelmet_TSF"
+],
+"SWKotORSpecificApparelItem_TSFOldRepublicTrooperArmor": [
+"guy762_RepArmor_TSF"
+],
+"SWKotORSpecificApparelItem_TSFOldRepublicTrooperHelmet": [
+"guy762_RepHelmet_TSF"
+],
+"OR_apparel_trooper": [
+"guy762_RepArmor_trooper",
+"guy762_RepHelmet_fleet"
+],
+"KotORRoyaltyTag_AnyRepublicArmor": [
+"guy762_HelmetHeavyBattle_repcom",
+"guy762_HvyArmor_repcom",
+"guy762_RepArmor_trooper",
+"guy762_RepHelmet_fleet"
+],
+"SWKotORSpecificApparelItem_OldRepublicTrooperArmor": [
+"guy762_RepArmor_trooper"
+],
+"SWKotORSpecificApparelItem_OldRepublicTrooperHelmet": [
+"guy762_RepHelmet_fleet"
+],
+"KotORRoyaltyTag_RepComArmor": [
+"guy762_HelmetHeavyBattle_repcom",
+"guy762_HvyArmor_repcom"
+],
+"SWKotORSpecificApparelItem_OldRepublicCommandoHelmet": [
+"guy762_HelmetHeavyBattle_repcom"
+],
+"SWKotORSpecificApparelItem_OldRepublicCommandoArmor": [
+"guy762_HvyArmor_repcom"
+],
+"SWKotORSpecificApparelItem_HuttCombatHelmet": [
+"guy762_HelmetCombat_hutt"
+],
+"SWKotORSpecificApparelItem_HuttHeavyCombatSuit": [
+"guy762_HvySuit_hutt"
+],
+"SWKotORSpecificApparelItem_GamorreanHeavyBattleArmor": [
+"guy762_HvyArmor_gamorrean"
+],
+"SWKotORSpecificApparelItem_KotORTuskenMask": [
+"guy762_TuskenMask"
+],
+"KotORClothing_exchange": [
+"guy762_Jacket_exchange"
+],
+"KotORRoyaltyTag_ExchangeJacket": [
+"guy762_Jacket_exchange"
+],
+"SWKotORSpecificApparelItem_ExchangeJacket": [
+"guy762_Jacket_exchange"
+],
+"SWKotORSpecificApparelItem_SithApprenticeTunic": [
+"guy762_SithTunic_apprentice"
+],
+"SE_sithassassin": [
+"guy762_SithMask_assassin",
+"guy762_SithTunic_assassin"
+],
+"SWKotORSpecificApparelItem_SithAssassinTunic": [
+"guy762_SithTunic_assassin"
+],
+"SWKotORSpecificApparelItem_SithAssassinMask": [
+"guy762_SithMask_assassin"
+],
+"SE_sithwarrior": [
+"guy762_SithMask_warrior",
+"guy762_SithTunic_warrior"
+],
+"SWKotORSpecificApparelItem_SithWarriorTunic": [
+"guy762_SithTunic_warrior"
+],
+"SE_sithmask": [
+"guy762_SithMask_warrior"
+],
+"SWKotORSpecificApparelItem_SithWarriorMask": [
+"guy762_SithMask_warrior"
+],
+"SE_sithmarauder": [
+"guy762_SithArmor_colormarauder",
+"guy762_SithArmor_marauder",
+"guy762_SithMask_colormarauder",
+"guy762_SithMask_marauder"
+],
+"SWKotORSpecificApparelItem_SilverSithMarauderArmor": [
+"guy762_SithArmor_marauder"
+],
+"SWKotORSpecificApparelItem_SilverSithMarauderNeck": [
+"guy762_SithMask_marauder"
+],
+"SWKotORSpecificApparelItem_ColorableSithMarauderArmor": [
+"guy762_SithArmor_colormarauder"
+],
+"SWKotORSpecificApparelItem_ColorableSithMarauderNeck": [
+"guy762_SithMask_colormarauder"
+],
+"SWKotORSpecificApparelItem_SithEnsignUniform": [
+"guy762_SithUniform_ensign"
+],
+"SE_apparel_officer": [
+"guy762_SithHat_officer",
+"guy762_SithUniform_officer"
+],
+"SWKotORSpecificApparelItem_SithOfficerHat": [
+"guy762_SithHat_officer"
+],
+"SWKotORSpecificApparelItem_SithOfficerUniform": [
+"guy762_SithUniform_officer"
+],
+"SE_apparel_trooper": [
+"guy762_SithArmor_trooper",
+"guy762_SithHelmet_colortrooper",
+"guy762_SithHelmet_trooper"
+],
+"SWKotORSpecificApparelItem_SilverSithTrooperArmor": [
+"guy762_SithArmor_trooper"
+],
+"SWKotORSpecificApparelItem_SilverSithTrooperHelmet": [
+"guy762_SithHelmet_trooper"
+],
+"SE_apparel_elitetrooper": [
+"guy762_SithArmor_colortrooper"
+],
+"SWKotORSpecificApparelItem_ColorableSithTrooperArmor": [
+"guy762_SithArmor_colortrooper"
+],
+"SWKotORSpecificApparelItem_ColorableSithTrooperHelmet": [
+"guy762_SithHelmet_colortrooper"
+],
+"SE_apparel_shocktrooper": [
+"guy762_SithArmor_commando",
+"guy762_SithHelmet_commando"
+],
+"SWKotORSpecificApparelItem_SilverSithCommandoArmor": [
+"guy762_SithArmor_commando"
+],
+"SWKotORSpecificApparelItem_SilverSithCommandoHelmet": [
+"guy762_SithHelmet_commando"
+],
+"SE_apparel_commando": [
+"guy762_SithArmor_colorcommando",
+"guy762_SithHelmet_colorcommando"
+],
+"SWKotORSpecificApparelItem_ColorableSithCommandoArmor": [
+"guy762_SithArmor_colorcommando"
+],
+"SWKotORSpecificApparelItem_ColorableSithCommandoHelmet": [
+"guy762_SithHelmet_colorcommando"
+],
+"PReb_apparel_trooperhelmet": [
+"guy762_HelmetCombat",
+"guy762_HelmetMilitary",
+"guy762_HelmetMilitary_rebel"
+],
+"SWKotORSpecificApparelItem_CombatHelmet": [
+"guy762_HelmetCombat"
+],
+"SaV_apparel_huttgoon_adv": [
+"guy762_Headband_verpine",
+"guy762_HelmetCombat_cinnagar"
+],
+"SWKotORSpecificApparelItem_CinnagarCombatHelmet": [
+"guy762_HelmetCombat_cinnagar"
+],
+"PM_apparel_helmet": [
+"guy762_HelmetMilitary",
+"guy762_HelmetMilitary_militia"
+],
+"KotORApparel_pilothelmet": [
+"guy762_HelmetMilitary",
+"guy762_HelmetMilitary_Pilot"
+],
+"PReb_apparel_heavyhelmet": [
+"guy762_HelmetMilitary"
+],
+"SWKotORSpecificApparelItem_MilitaryHelmet": [
+"guy762_HelmetMilitary"
+],
+"SWKotORSpecificApparelItem_MilitiaMilitaryHelmet": [
+"guy762_HelmetMilitary_militia"
+],
+"SWKotORSpecificApparelItem_RebelMilitaryHelmet": [
+"guy762_HelmetMilitary_rebel"
+],
+"SWKotORSpecificApparelItem_VintageMilitaryHelmet": [
+"guy762_HelmetMilitary_OldRepublic"
+],
+"OR_apparel_pilot": [
+"guy762_HelmetMilitary_Pilot"
+],
+"SWKotORSpecificApparelItem_PilotMilitaryHelmet": [
+"guy762_HelmetMilitary_Pilot"
+],
+"SWKotORSpecificApparelItem_LightBattleHelmet": [
+"guy762_HelmetLgtBattle"
+],
+"SaV_apparel_excassassin": [
+"guy762_HelmetLgtBattle_baragwin"
+],
+"SWKotORSpecificApparelItem_BaragwinLightBattleHelmet": [
+"guy762_HelmetLgtBattle_baragwin"
+],
+"SWKotORSpecificApparelItem_HeavyBattleHelmet": [
+"guy762_HelmetHeavyBattle"
+],
+"SWKotORSpecificApparelItem_PoweredHeavyBattleHelmet": [
+"guy762_HelmetHeavyBattle_powered"
+],
+"OR_apparel_visas": [
+"guy762_VisasHood",
+"guy762_VisasRobes"
+],
+"SWKotORSpecificApparelItem_VisasHood": [
+"guy762_VisasHood"
+],
+"SWKotORSpecificApparelItem_VisasRobes": [
+"guy762_VisasRobes"
+],
+"OR_apparel_jolee": [
+"guy762_JoleeTunic"
+],
+"SWKotORSpecificApparelItem_JoleeTunic": [
+"guy762_JoleeTunic"
+],
+"OR_apparel_bastila": [
+"guy762_BastilaTunic"
+],
+"SWKotORSpecificApparelItem_BastilaTunic": [
+"guy762_BastilaTunic"
+],
+"OR_apparel_juhani": [
+"guy762_JuhaniTunic"
+],
+"SWKotORSpecificApparelItem_JuhaniTunic": [
+"guy762_JuhaniTunic"
+],
+"SaV_ExchangeGadget": [
+"guy762_Headband_exchange",
+"guy762_belt_exchange",
+"guy762_glove_exchange",
+"guy762_stealthbelt_exchange"
+],
+"SWKotORSpecificGadgetItem_ExchangeUtilityBelt": [
+"guy762_belt_exchange"
+],
+"SWKotORSpecificGadgetItem_CalrissianUtilityBelt": [
+"guy762_belt_calrissian"
+],
+"SWKotORSpecificGadgetItem_QelDromaBelt": [
+"guy762_belt_qeldroma"
+],
+"SWKotORSpecificGadgetItem_TarisGloves": [
+"guy762_glove_survival"
+],
+"KotORGloves_czerka": [
+"guy762_glove_defense"
+],
+"SWKotORSpecificGadgetItem_CzerkaDefenseGloves": [
+"guy762_glove_defense"
+],
+"SWKotORSpecificGadgetItem_ExchangeGloves": [
+"guy762_glove_exchange"
+],
+"KotORUtility_weakgrenade": [
+"guy762_grenadebelt_frag",
+"guy762_grenadebelt_sonic"
+],
+"SWCPSpecificGadgetItem_FragGrenadeBelt": [
+"guy762_grenadebelt_frag"
+],
+"SWCPDroidApparelRestrictionTag_GrenadeDetpackBelts": [
+"guy762_grenadebelt_frag",
+"guy762_grenadebelt_ion",
+"guy762_grenadebelt_plasma",
+"guy762_grenadebelt_poison",
+"guy762_grenadebelt_sonic",
+"guy762_grenadebelt_stun",
+"guy762_grenadebelt_thermaldet"
+],
+"KotORUtility_utilitygrenade": [
+"guy762_grenadebelt_ion",
+"guy762_grenadebelt_sonic",
+"guy762_grenadebelt_stun"
+],
+"SWCPSpecificGadgetItem_IonGrenadeBelt": [
+"guy762_grenadebelt_ion"
+],
+"SWCPSpecificGadgetItem_StunGrenadeBelt": [
+"guy762_grenadebelt_stun"
+],
+"KotORUtility_stronggrenade": [
+"guy762_grenadebelt_plasma",
+"guy762_grenadebelt_poison",
+"guy762_grenadebelt_thermaldet"
+],
+"SWCPSpecificGadgetItem_PoisonGrenadeBelt": [
+"guy762_grenadebelt_poison"
+],
+"SWCPSpecificGadgetItem_PlasmaGrenadeBelt": [
+"guy762_grenadebelt_plasma"
+],
+"KotORUtility_sapper": [
+"guy762_grenadebelt_sonic",
+"guy762_grenadebelt_thermaldet"
+],
+"OR_equipment_saboteur": [
+"guy762_grenadebelt_sonic",
+"guy762_stealthbelt_aratech"
+],
+"SWCPSpecificGadgetItem_SonicGrenadeBelt": [
+"guy762_grenadebelt_sonic"
+],
+"SWCPSpecificGadgetItem_ThermalDetonatorBelt": [
+"guy762_grenadebelt_thermaldet"
+],
+"KotORHeadband_combat": [
+"guy762_Headband_exchange",
+"guy762_Headband_lightscan",
+"guy762_Headband_nerualband",
+"guy762_Headband_verpine"
+],
+"KotORHeadband_fieldofficer": [
+"guy762_Headband_breathmask",
+"guy762_Headband_nerualband",
+"guy762_Headband_verpine"
+],
+"SWKotORSpecificGadgetItem_VerpineHeadband": [
+"guy762_Headband_verpine"
+],
+"KotORHeadband_melee": [
+"guy762_Headband_exchange",
+"guy762_Headband_nerualband"
+],
+"KotORHeadband_jedi": [
+"guy762_Headband_nerualband",
+"guy762_Headband_regalvisor"
+],
+"KotORHeadband_neuralband": [
+"guy762_Headband_nerualband"
+],
+"SWKotORSpecificGadgetItem_NeuralBand": [
+"guy762_Headband_nerualband"
+],
+"KotORHeadband_goggles": [
+"guy762_Headband_bothan",
+"guy762_Headband_lightscan"
+],
+"SWKotORSpecificGadgetItem_LightScanGoggles": [
+"guy762_Headband_lightscan"
+],
+"KotORHeadband_tech": [
+"guy762_Headband_bothan",
+"guy762_Headband_demovisor",
+"guy762_Headband_interface"
+],
+"KotORHeadband_sapper": [
+"guy762_Headband_bothan",
+"guy762_Headband_demovisor"
+],
+"SWKotORSpecificGadgetItem_BothanGoggles": [
+"guy762_Headband_bothan"
+],
+"SWKotORSpecificGadgetItem_DemolitionsVisor": [
+"guy762_Headband_demovisor"
+],
+"KotORHeadband_exchange": [
+"guy762_Headband_exchange"
+],
+"KotORRoyaltyTag_ExchangeShades": [
+"guy762_Headband_exchange"
+],
+"SWKotORSpecificGadgetItem_ExchangeVisor": [
+"guy762_Headband_exchange"
+],
+"SWKotORSpecificGadgetItem_MedicalVisor": [
+"guy762_Headband_medical"
+],
+"KotORHeadband_regalvisor": [
+"guy762_Headband_regalvisor"
+],
+"KotORRoyaltyTag_RegalVisor": [
+"guy762_Headband_regalvisor"
+],
+"SWKotORSpecificGadgetItem_RegalVisor": [
+"guy762_Headband_regalvisor"
+],
+"SWKotORSpecificGadgetItem_InterfaceVisor": [
+"guy762_Headband_interface"
+],
+"KotORHeadband_utility": [
+"guy762_Headband_breathmask",
+"guy762_Headband_rebreathermask"
+],
+"KotORHeadband_gasmask": [
+"guy762_Headband_breathmask"
+],
+"KotORHeadband_AdvGasmask": [
+"guy762_Headband_breathmask",
+"guy762_Headband_rebreathermask"
+],
+"SWKotORSpecificGadgetItem_BreathMask": [
+"guy762_Headband_breathmask"
+],
+"SWKotORSpecificGadgetItem_RebreatherMask": [
+"guy762_Headband_rebreathermask"
+],
+"MNC_jetpack_mid": [
+"guy762_Jetpack_missile"
+],
+"SWKotORSpecificGadgetItem_MissileJetpack": [
+"guy762_Jetpack_missile"
+],
+"KotORWristgun": [
+"guy762_armband_wristgun"
+],
+"KotORHeroAccessories_mira": [
+"guy762_armband_wristgun"
+],
+"SWKotORSpecificGadgetItem_ModularWristgun": [
+"guy762_armband_wristgun"
+],
+"SWKotORSpecificDroidWeapon_StunNeedler": [
+"guy762_DroidWeapon_stundart"
+],
+"SWKotORSpecificDroidWeapon_ToxicNeedler": [
+"guy762_DroidWeapon_toxdart"
+],
+"KotORShield_basic": [
+"guy762_energyshield"
+],
+"KotORShield_weak": [
+"guy762_energyshield",
+"guy762_energyshield_thermal"
+],
+"SWKotORSpecificGadgetItem_BasicEnergyShield": [
+"guy762_energyshield"
+],
+"SWKotORSpecificGadgetItem_ThermalShield": [
+"guy762_energyshield_thermal"
+],
+"KotORShield_sith": [
+"guy762_energyshield_sith"
+],
+"SWKotORSpecificGadgetItem_SithEnergyShield": [
+"guy762_energyshield_sith"
+],
+"KotORShield_mid": [
+"guy762_energyshield_arkanian",
+"guy762_energyshield_echaniLte",
+"guy762_energyshield_mandoLte"
+],
+"SWKotORSpecificGadgetItem_ArkanianEnergyShield": [
+"guy762_energyshield_arkanian"
+],
+"KotORShield_echani": [
+"guy762_energyshield_echaniHvy",
+"guy762_energyshield_echaniLte"
+],
+"SWKotORSpecificGadgetItem_WeakEchaniEnergyShield": [
+"guy762_energyshield_echaniLte"
+],
+"KotORShield_strong": [
+"guy762_energyshield_echaniHvy",
+"guy762_energyshield_mandoHvy",
+"guy762_energyshield_verpine"
+],
+"SWKotORSpecificGadgetItem_StrongEchaniEnergyShield": [
+"guy762_energyshield_echaniHvy"
+],
+"SWKotORSpecificGadgetItem_VerpineEnergyShield": [
+"guy762_energyshield_verpine"
+],
+"KotORShield_mando": [
+"guy762_energyshield_mandoHvy",
+"guy762_energyshield_mandoLte"
+],
+"SWKotORSpecificGadgetItem_WeakMandoMeleeShield": [
+"guy762_energyshield_mandoLte"
+],
+"SWKotORSpecificGadgetItem_StrongMandoMeleeShield": [
+"guy762_energyshield_mandoHvy"
+],
+"KotORShield_hapan": [
+"guy762_energyshield_hapan"
+],
+"SWKotORSpecificGadgetItem_GreeHyperShield": [
+"guy762_energyshield_hapan"
+],
+"KotORStealthBelt_basic": [
+"guy762_stealthbelt",
+"guy762_stealthbelt_aratech"
+],
+"SWKotORSpecificGadgetItem_StealthBelt": [
+"guy762_stealthbelt"
+],
+"SWKotORSpecificGadgetItem_60SecStealthBelt": [
+"guy762_stealthbelt_aratech"
+],
+"KotORStealthBelt_adv": [
+"guy762_stealthbelt_eriadu",
+"guy762_stealthbelt_exchange"
+],
+"SWKotORSpecificGadgetItem_Exchange2MinStealthBelt": [
+"guy762_stealthbelt_exchange"
+],
+"SWKotORSpecificGadgetItem_3MinStealthBelt": [
+"guy762_stealthbelt_eriadu"
+],
+"KotORStealthBelt_rare": [
+"guy762_stealthbelt_genoharadan"
+],
+"SaV_genoharadan": [
+"guy762_stealthbelt_genoharadan"
+],
+"SWKotORSpecificGadgetItem_GenoHaradan4MinStealthBelt": [
+"guy762_stealthbelt_genoharadan"
+],
+"SWCPSpecificDroidTech_HK47Sensor": [
+"guy762_DroidSensor_hk"
+],
+"SWCPDroidApparelRestrictionTag_HK47Only": [
+"guy762_DroidSensor_hk"
+],
+"KotORDroidUpgrade_goto": [
+"guy762_DroidSensor_goto"
+],
+"SWCPSpecificDroidTech_G0T0Sensor": [
+"guy762_DroidSensor_goto"
+],
+"SWCPDroidApparelRestrictionTag_G0T0Only": [
+"guy762_DroidSensor_goto"
+],
+"KotORDroidShield_t1": [
+"guy762_DroidShield_basicI",
+"guy762_DroidShield_envI",
+"guy762_DroidShield_melee"
+],
+"KotORDroidShield_weak": [
+"guy762_DroidShield_basicI",
+"guy762_DroidShield_envI"
+],
+"SWKotORSpecificDroidGadget_MarkIEnergyShield": [
+"guy762_DroidShield_basicI"
+],
+"SWCPDroidApparelRestrictionTag_ShieldSlot": [
+"guy762_DroidShield_arkanian",
+"guy762_DroidShield_baragwin",
+"guy762_DroidShield_basicI",
+"guy762_DroidShield_basicII",
+"guy762_DroidShield_basicIII",
+"guy762_DroidShield_defI",
+"guy762_DroidShield_defII",
+"guy762_DroidShield_echani",
+"guy762_DroidShield_envI",
+"guy762_DroidShield_envII",
+"guy762_DroidShield_ion",
+"guy762_DroidShield_melee",
+"guy762_DroidShield_renewable",
+"guy762_DroidShield_verpine"
+],
+"SWKotORSpecificDroidGadget_MarkIEnvironmentShield": [
+"guy762_DroidShield_envI"
+],
+"KotORDroidShield_melee": [
+"guy762_DroidShield_melee"
+],
+"SaV_DroidShield_gladiator": [
+"guy762_DroidShield_defI",
+"guy762_DroidShield_melee"
+],
+"SWKotORSpecificDroidGadget_MeleeShield": [
+"guy762_DroidShield_melee"
+],
+"KotORDroidShield_t2": [
+"guy762_DroidShield_arkanian",
+"guy762_DroidShield_basicII",
+"guy762_DroidShield_defI",
+"guy762_DroidShield_echani",
+"guy762_DroidShield_envII"
+],
+"KotORDroidShield_mid": [
+"guy762_DroidShield_arkanian",
+"guy762_DroidShield_basicII",
+"guy762_DroidShield_envII"
+],
+"SWKotORSpecificDroidGadget_MarkIIEnergyShield": [
+"guy762_DroidShield_basicII"
+],
+"SWKotORSpecificDroidGadget_MarkIIEnvironmentShield": [
+"guy762_DroidShield_envII"
+],
+"KotORDroidShield_deflector": [
+"guy762_DroidShield_defI"
+],
+"SWKotORSpecificDroidGadget_DeflectorShield": [
+"guy762_DroidShield_defI"
+],
+"KotORDroidShield_t3": [
+"guy762_DroidShield_baragwin",
+"guy762_DroidShield_basicIII",
+"guy762_DroidShield_defII",
+"guy762_DroidShield_ion",
+"guy762_DroidShield_verpine"
+],
+"KotORDroidShield_strong": [
+"guy762_DroidShield_basicIII",
+"guy762_DroidShield_echani"
+],
+"SWKotORSpecificDroidGadget_MarkIIIEnergyShield": [
+"guy762_DroidShield_basicIII"
+],
+"KotORDroidShield_advdeflector": [
+"guy762_DroidShield_defII"
+],
+"SWKotORSpecificDroidGadget_AdvDeflectorShield": [
+"guy762_DroidShield_defII"
+],
+"KotORDroidShield_rare": [
+"guy762_DroidShield_baragwin",
+"guy762_DroidShield_ion",
+"guy762_DroidShield_verpine"
+],
+"SWKotORSpecificDroidGadget_IonShield": [
+"guy762_DroidShield_ion"
+],
+"SWKotORSpecificDroidGadget_BaragwinEnergyShield": [
+"guy762_DroidShield_baragwin"
+],
+"KotORDroidUpgrade_T3M4": [
+"guy762_DroidHardware_regen",
+"guy762_DroidShield_renewable"
+],
+"SWKotORSpecificDroidGadget_T3M4RenewableShield": [
+"guy762_DroidShield_renewable"
+],
+"SWCPDroidApparelRestrictionTag_T3M4Only": [
+"guy762_DroidHardware_regen",
+"guy762_DroidShield_renewable"
+],
+"SWKotORSpecificDroidGadget_ArkanianEnergyShield": [
+"guy762_DroidShield_arkanian"
+],
+"SWKotORSpecificDroidGadget_EchaniEnergyShield": [
+"guy762_DroidShield_echani"
+],
+"SWKotORSpecificDroidGadget_VerpineEnergyShield": [
+"guy762_DroidShield_verpine"
+],
+"SWKotORSpecificDroidTech_ExchangePlus6Hacking3ResearchSoftware": [
+"guy762_DroidSoftware_exchange"
+],
+"SWKotORSpecificDroidTech_T3M4RepairHardware": [
+"guy762_DroidHardware_regen"
+],
+"KotORHvyShield_weak": [
+"guy762_HvyShield_basic",
+"guy762_HvyShield_env"
+],
+"SWKotORSpecificDroidGadget_BasicEnergyHeavyShield": [
+"guy762_HvyShield_basic"
+],
+"SWCPDroidApparelRestrictionTag_HeavyShieldSlot": [
+"guy762_HvyShield_balmorran",
+"guy762_HvyShield_baragwin",
+"guy762_HvyShield_basic",
+"guy762_HvyShield_debris",
+"guy762_HvyShield_deflector",
+"guy762_HvyShield_echani",
+"guy762_HvyShield_env",
+"guy762_HvyShield_ion",
+"guy762_HvyShield_starforge",
+"guy762_HvyShield_thermal"
+],
+"KotORDroidShield_miningdroid": [
+"guy762_HvyShield_thermal"
+],
+"SWKotORSpecificDroidGadget_ThermalHeavyShield": [
+"guy762_HvyShield_thermal"
+],
+"SWKotORSpecificDroidGadget_EnvironmentalHeavyShield": [
+"guy762_HvyShield_env"
+],
+"KotORHvyShield_civilian": [
+"guy762_HvyShield_debris"
+],
+"KotORHvyShield_melee": [
+"guy762_HvyShield_debris"
+],
+"SWKotORSpecificDroidGadget_MeleeHeavyShield": [
+"guy762_HvyShield_debris"
+],
+"KotORHvyShield_mid": [
+"guy762_HvyShield_baragwin",
+"guy762_HvyShield_echani"
+],
+"SWKotORSpecificDroidGadget_EchaniEnergyHeavyShield": [
+"guy762_HvyShield_echani"
+],
+"SWKotORSpecificDroidGadget_BaragwinHeavyShield": [
+"guy762_HvyShield_baragwin"
+],
+"KotORHvyShield_strong": [
+"guy762_HvyShield_ion"
+],
+"SWKotORSpecificDroidGadget_IonHeavyShield": [
+"guy762_HvyShield_ion"
+],
+"KotORHvyShield_deflector": [
+"guy762_HvyShield_deflector"
+],
+"SWKotORSpecificDroidGadget_DeflectorHeavyShield": [
+"guy762_HvyShield_deflector"
+],
+"KotORDroidShield_balmorran": [
+"guy762_HvyShield_balmorran"
+],
+"SWKotORSpecificDroidGadget_BalmorranHeavyShield": [
+"guy762_HvyShield_balmorran"
+],
+"SE_starforgedroid": [
+"guy762_HvyShield_starforge"
+],
+"SWKotORSpecificDroidGadget_StarForgeHeavyShield": [
+"guy762_HvyShield_starforge"
+],
+"RBHunter": [
+"RBApparel_Tailcoat"
+]
+}

@@ -1,0 +1,48 @@
+{
+ "live export taken today (CONTROL)": {
+  "rows": 21872,
+  "matched": 21872,
+  "mismatched": 0,
+  "matchPct": 100.0,
+  "byField": {},
+  "tolerance": 0.5,
+  "readRawFields": true
+ },
+ "_final bundle 2026-08-25 08:25": {
+  "rows": 21872,
+  "matched": 14472,
+  "mismatched": 7400,
+  "matchPct": 66.17,
+  "byField": {
+   "hilliness": 7303,
+   "biome": 140
+  },
+  "tolerance": 0.5,
+  "readRawFields": true
+ },
+ "VIVIFIED bundle 2026-08-24": {
+  "rows": 21872,
+  "matched": 14364,
+  "mismatched": 7508,
+  "matchPct": 65.67,
+  "byField": {
+   "hilliness": 7303,
+   "biome": 278
+  },
+  "tolerance": 0.5,
+  "readRawFields": true
+ },
+ "DRAFT bundle 2026-08-24": {
+  "rows": 21872,
+  "matched": 14362,
+  "mismatched": 7510,
+  "matchPct": 65.66,
+  "byField": {
+   "hilliness": 7305,
+   "biome": 284,
+   "elevation": 6
+  },
+  "tolerance": 0.5,
+  "readRawFields": true
+ }
+}

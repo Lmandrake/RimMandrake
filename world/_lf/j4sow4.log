@@ -1,0 +1,4 @@
+JAWA target 119,192 terrain=Soil things=['Human', 'Mote_Sow']
+order -> accepted=True after=Wait
+  +  700  job=Ingest                 cell=['Human', 'Plant_Rice']
+  >>> Plant_Rice PRESENT - the Jawa sowed it (Sow job seen: False)

@@ -1,0 +1,10 @@
+lay fertile soil -> Applied 1/1 op(s): 24 cell(s) changed, 0 already correct.
+clear   -> Destroyed 0 thing(s) across 24 cell(s).
+crop    -> {"success": true, "requested": "Plant_Rice", "readBack": "Plant_Rice", "kind": "Zone_Growing", "identity": "Growing zone 2", "canAcceptSowNow": true}
+
+--- JAWA at 119,192 terrain=Soil
+   {"success": false, "accepted": true, "interruptibleBefore": true, "beforeJobDef": "Wait", "requestedJobDef": "Sow", "afterJobDef": "Wait", "nowRunningRequested": false, "ticksElapsed": 0, "queueLength": 0}
+   note: Job was accepted (enqueued) but curJob after 4000 tick(s) is 'Wait', not 'Sow' - it may have finished, failed immediately, or be queued rather than current.
+   CELL AFTER: []
+
+--- BASELINER at 121,192 terrain=Soil
