@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T15:47:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T15:49:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -163,16 +163,6 @@ kind:     check
 thin:     spec, verify and criteria all present
 summary:  D1 (owner, 2026-08-08) requires three distinct tiers from one weapon:
 prose:    infrastructure/state/items/ION_TIERS_MEASURED_LIVE_1.md
-
-## CAST_LIVE_SPAWN_CHECK_1 Ash'karr biome cast: next load, prove no zeroed commonality and no Earth fauna
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     check
-thin:     spec, verify and criteria all present
-summary:  BiomeCastAshkarr.xml was deployed 2026-08-27 to the game copy, byte-identical
-prose:    infrastructure/state/items/CAST_LIVE_SPAWN_CHECK_1.md
 
 ## PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1 The no-pacifist guard covers Empire and Blackstar; the rolls landed on eight factions
 state:    proposed
