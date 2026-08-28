@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T14:58:20Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-08-28T15:43:38Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -16,16 +16,7 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 
 # IN PROGRESS
 
-Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1 rimworld/search_debug_actions walks the whole dev menu before filtering and wedges the bridge on 582 mods
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  🔴 THE UPSTREAM FIX IS NOT AVAILABLE TO US — checked 2026-08-26 by BUILD
-prose:    infrastructure/state/items/DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1.md
+_none._
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -51,16 +42,6 @@ blocked:  remaining check needs the NEXT cold load's Player.log + fresh capture;
 summary:  🔴 OWNER, 2026-08-22: "We need a THOROUGH retag of all the weapons and armor to ensure
 prose:    infrastructure/state/items/THOROUGH_RETAG_WEAPONS_ARMOUR_1.md
 
-## DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1 rimworld/search_debug_actions walks the whole dev menu before filtering and wedges the bridge on 582 mods
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  jawa/debug_actions is built and compiled but not deployed (not in the live 166-tool list) -- needs a game-down window to deploy the companion DLL, not something to trigger for one item mid-AFK-session
-summary:  🔴 THE UPSTREAM FIX IS NOT AVAILABLE TO US — checked 2026-08-26 by BUILD
-prose:    infrastructure/state/items/DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1.md
-
 ## WORLD_MUTATOR_LANDMARK_IMPORTERS_1 No file importer for mutators or landmarks - 13,569 tiles and 579 landmarks can only be replayed by script
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -71,29 +52,9 @@ blocked:  Only worth building if the owner chooses the rebuild in ASHKARR_IDEOLO
 summary:  WORLDMUTATORLANDMARKIMPORTERS1 — the two bundles that cannot be carried by a file
 prose:    infrastructure/state/items/WORLD_MUTATOR_LANDMARK_IMPORTERS_1.md
 
-## BRIDGE_DROPS_UNKNOWN_PARAMS_1 The bridge silently discards any parameter not in a tool's schema - a typo'd argument is invisible
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  jawa/bridge_arg_report (Harmony patch) built but not deployed -- same game-down blocker as DEBUG_ACTION_SEARCH_WEDGES_BRIDGE_1
-summary:  BRIDGEDROPSUNKNOWNPARAMS1 — a typo'd argument is invisible
-prose:    infrastructure/state/items/BRIDGE_DROPS_UNKNOWN_PARAMS_1.md
-
-## LORD_JOB_SWAP_TOOL_1 Swap a Lord's job mid-flight: SetJob and GotoToil are one operation
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-blocked:  jawa/lord_set_job built but not deployed -- same game-down blocker
-summary:  Lord.SetJob(LordJob newJob, bool loading) then Lord.GotoToil(lord.Graph.StartingToil).
-prose:    infrastructure/state/items/LORD_JOB_SWAP_TOOL_1.md
-
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## DUMP_PRODUCER_DATED_CAPTURES_1 DefDumper writes captures/<id>/ and prunes to the newest three
 state:    ready
@@ -101,7 +62,7 @@ row:      unassigned
 needs:    harvest
 target:   v1
 kind:     task
-waiting:  needs `harvest`, game is DOWN
+waiting:  needs `harvest`, game is UP
 summary:  The producer half of DUMPSTORAGELAYOUTRULING1. Owner, 2026-08-21 13:24:
 prose:    infrastructure/state/items/DUMP_PRODUCER_DATED_CAPTURES_1.md
 
@@ -111,7 +72,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
 prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
 
@@ -121,7 +82,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
 prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
 
@@ -131,7 +92,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
 prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
 
@@ -141,7 +102,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
 prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
 
@@ -151,7 +112,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     task
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
 prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
 
@@ -161,7 +122,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     defect
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
 prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
 
@@ -232,16 +193,6 @@ kind:     check
 thin:     spec, verify and criteria all present
 summary:  D1 (owner, 2026-08-08) requires three distinct tiers from one weapon:
 prose:    infrastructure/state/items/ION_TIERS_MEASURED_LIVE_1.md
-
-## DOWN_WINDOW_ASSEMBLY_DEPLOY_1 Deploy the companion and the def dumper in the next down window
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  DOWNWINDOWASSEMBLYDEPLOY1 — two assemblies are built, committed and cannot deploy while the game runs
-prose:    infrastructure/state/items/DOWN_WINDOW_ASSEMBLY_DEPLOY_1.md
 
 ## CAST_LIVE_SPAWN_CHECK_1 Ash'karr biome cast: next load, prove no zeroed commonality and no Earth fauna
 state:    proposed
