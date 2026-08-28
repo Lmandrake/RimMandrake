@@ -159,6 +159,21 @@ namespace RimDefDump
         /// </summary>
         private static void WriteClassification(JsonWriter w, Def def)
         {
+            // TerrainDef gets one flag: can the FLOOR take the vanilla paint
+            // system (TerrainDef.isPaintable). Added 2026-08-28 for offline
+            // template generation - the general reflector drops this field, and
+            // paintability inherits through ParentName chains, so only the
+            // post-inheritance dump can answer it.
+            var terr = def as TerrainDef;
+            if (terr != null)
+            {
+                w.Name("is");
+                w.StartObject();
+                Flag(w, "paintable", delegate { return terr.isPaintable; });
+                w.EndObject();
+                return;
+            }
+
             var td = def as ThingDef;
             if (td == null) return;
 
@@ -174,6 +189,11 @@ namespace RimDefDump
             Flag(w, "ingestible", delegate { return td.IsIngestible; });
             Flag(w, "corpse", delegate { return td.IsCorpse; });
             Flag(w, "buildingArtificial", delegate { return td.IsBuildingArtificial; });
+            // Vanilla paint (Building.ChangePaint): def.building.paintable, which
+            // inherits - GravshipHull is paintable only via Wall's ParentName, so
+            // raw XML scans answer this WRONG. Added 2026-08-28 for offline
+            // template generation and rimplace's paint lint.
+            Flag(w, "paintable", delegate { return td.building != null && td.building.paintable; });
             Flag(w, "plant", delegate { return td.IsPlant; });
             Flag(w, "frame", delegate { return td.IsFrame; });
             Flag(w, "blueprint", delegate { return td.IsBlueprint; });

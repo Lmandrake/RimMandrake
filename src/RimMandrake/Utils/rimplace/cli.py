@@ -86,6 +86,48 @@ def _verified_defs(plan) -> set[str] | None:
         con.close()
 
 
+def _paint_violations(plan):
+    """-> (violations, unmeasured_reason). Every painted thing and every coloured
+    floor must sit on a def the game will actually paint (def.building.paintable /
+    TerrainDef.isPaintable) — jawa/paint_building refuses these live, but a
+    generated template should fail OFFLINE, before it costs a game round.
+
+    🔑 The flag ships in the dump only from the 2026-08-28 RimDefDump build on.
+    A dump with no 'paintable' key at all is OLDER than the flag, and the honest
+    answer is UNMEASURED, never a pass and never a spray of false violations."""
+    painted = {t.defName for t in plan.things if t.paint}
+    floored = {plan.terrain[c] for c in plan.floor_color if c in plan.terrain}
+    if not painted and not floored:
+        return [], None
+    if not DUMP_SQLITE.exists():
+        return [], "dump unreadable"
+    con = sqlite3.connect(f"file:{DUMP_SQLITE}?mode=ro", uri=True)
+    try:
+        n = con.execute(
+            "SELECT COUNT(*) FROM def_flags WHERE key='paintable'").fetchone()[0]
+        if n == 0:
+            return [], ("this capture predates the paintable flag "
+                        "(RimDefDump 2026-08-28) — redeploy the dumper and reload")
+        want = sorted(painted | floored)
+        qs = ",".join("?" * len(want))
+        ok = {r[0] for r in con.execute(
+            "SELECT DISTINCT d.def_name FROM defs d "
+            "JOIN def_flags f ON f.def_id = d.id "
+            f"WHERE f.key='paintable' AND f.value='true' AND d.def_name IN ({qs})",
+            tuple(want))}
+        out = []
+        for d in sorted(painted - ok):
+            out.append(f"'{d}' is painted but the game will not paint it "
+                       "(building.paintable is false or absent)")
+        for d in sorted(floored - ok):
+            out.append(f"floor '{d}' is coloured but TerrainDef.isPaintable is false")
+        return out, None
+    except sqlite3.Error:
+        return [], "dump unreadable"
+    finally:
+        con.close()
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="rimplace", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -154,7 +196,14 @@ def main(argv=None):
               f"{len(want) - len(missing)} found, {len(missing)} MISSING")
         for d in missing:
             print(f"    MISSING  {d}")
-        return 1 if missing else 0
+        viols, unmeasured = _paint_violations(plan)
+        if unmeasured:
+            print(f"  PAINT: UNMEASURED — {unmeasured}. Not a pass.")
+        for v in viols:
+            print(f"    UNPAINTABLE  {v}")
+        if viols:
+            print(f"  {len(viols)} paint target(s) the game will refuse.")
+        return 1 if (missing or viols) else (2 if unmeasured else 0)
     return 0
 
 

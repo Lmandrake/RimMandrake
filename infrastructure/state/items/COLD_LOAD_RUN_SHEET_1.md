@@ -23,6 +23,11 @@ python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --appl
   undeployed, so this window pays for all of it.
 - New this build: a Harmony prefix on RimBridgeServer (`jawa/bridge_arg_report`);
   if the bridge misbehaves post-deploy, grep `[JawaBench] argument guard` first.
+- Same window: `deploy_custom_mods.py --mod RimDefDump --apply` — the 2026-08-28
+  build adds `paintable` flags (buildings AND floors) to the dump, which is what
+  makes offline template generation able to know what the game will paint.
+  After the load's fresh capture + `refresh.py`, `rimplace verify` stops
+  answering PAINT: UNMEASURED.
 - XML deploys need no window; do them any time.
 
 ## 1 — decision strings, written BEFORE launch (a signature invented after reading
