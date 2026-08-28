@@ -38,87 +38,25 @@ from gravship_layout import Layout                       # noqa: E402
 CONDUIT = {"PowerConduit", "HiddenConduit", "VGE_AstrofuelPipe"}
 LITTER = {"SteamGeyser", "VHGE_GasGeyser"}
 
-PALETTE = {
-    "CONNECT": ("AG_RustedTile",                             "rusted biotech lab tile"),
-    "PLATE":   ("guy762_FloorTiles_DoomgiverFoorMetal_dark", "metal plating (iron)"),
-    "GRATE_I": ("guy762_FloorTiles_XGrate_iron",             "crossed grate (iron)"),
-    "SCAFF":   ("UCScaffoldTile",                            "scaffold tile"),
-    "DIVOT":   ("guy762_FloorTiles_DivotedTile_rust",        "divoted tile (rust)"),
-    "HULL":    ("VQE_AncientHullTile",                       "ancient hull tile"),
-    "GROUND":  (None,                                        "the map floor, seen through a hole"),
-}
+# 🔑 The material palette is no longer declared here. It lives in
+# `Palettes/flooring_rusted.md`, which carries the floors, every ColorDef with the
+# RGB the game multiplies by, the ramps, the stuff substitutions and - the part
+# that took a session to learn - the rules about value that decide whether any of
+# it reads on screen. Check it against the live def set with:
+#     python3 src/RimMandrake/Utils/palette.py flooring_rusted --check
+from palette import Palette                                  # noqa: E402
 
-# Every ColorDef the treatments may use, with the RGB the game multiplies by.
-COLORS = {
-    "Structure_BrownFaded":  (86, 76, 57),
-    "Structure_BrownSubtle": (101, 88, 67),
-    "Structure_BrownDark":   (90, 69, 38),
-    "Structure_BrownDirt":   (119, 91, 50),
-    "Structure_UmberBurnt":  (90, 58, 32),
-    "Structure_BrownWood":   (108, 78, 55),
-    "ReddishBrown":          (132, 83, 47),
-    "Structure_RedSubtle":   (132, 84, 72),
-    "Structure_Auburn":      (138, 51, 36),
-    "Structure_Burgundy":    (91, 41, 45),
-    "Structure_Sandstone":   (126, 104, 94),
-    "Structure_Granite":     (105, 95, 97),
-    "Structure_GreyDark":    (81, 81, 81),
-    "Structure_Slate":       (70, 70, 70),
-    "Structure_Marble":      (132, 135, 132),
-    "Structure_GrayLight":   (166, 166, 166),
-    "Structure_BrownLight":  (131, 110, 78),
-    "Structure_Limestone":   (158, 153, 135),
-    "Structure_Cream":       (195, 192, 176),
-    "Structure_White":       (184, 184, 184),
-    "Structure_Mustard":     (163, 131, 49),
-    "Structure_Orange":      (167, 96, 39),
-    "guy762_StructureColor_212thOrange": (170, 70, 0),
-    "guy762_StructureColor_BespinBeige": (175, 150, 120),
-    "guy762_StructureColor_ImpArmySlate": (110, 120, 115),
-    "guy762_StructureColor_HK47Rust":    (200, 100, 50),
-    "guy762_StructureColor_CinnagarIron": (90, 70, 50),
-    None: (255, 255, 255),
-}
+PAL = Palette.load("flooring_rusted")
 
-# 🔴 The colour grid MULTIPLIES, so a tint can only darken. AG_RustedTile and the
-# iron plating already render near (60,60,58); anything below ~140 crushes them to
-# mud. FLOOR ramps therefore stay light and let hue do the work. WALLS start at
-# ~(152) light grey and have the headroom, which is why they carry the theme.
-# ⚠️ Kept at >=155 deliberately. The crossed grate renders (35,29,22) against the
-# plating's (57,53,49); crush the plating with a 0.5 multiply and the blisters stop
-# reading at all. Hue, not value, is what a floor tint may spend here.
-FLOOR_LIGHT = [None, "Structure_Cream", "Structure_White",
-               "guy762_StructureColor_BespinBeige", "Structure_GrayLight",
-               "Structure_Limestone", "Structure_Mustard",
-               "guy762_StructureColor_HK47Rust", "Structure_Orange"]
+PALETTE = dict((r, (PAL.roles[r], PAL.desc.get(r, ""))) for r in PAL.roles)
+COLORS = PAL.color_table()
 
-# ⭐ Owner, 2026-08-27: "tone down those wild oranges and yellows into shades of
-# brown". Mustard, Orange, 212thOrange, HK47Rust and Auburn are OUT of the chosen
-# scheme entirely. ReddishBrown is now the hottest thing on the ship. The ramps
-# still run pale -> warm so the halo gradient survives; only the top end moved.
-# ⭐ Refined the same day: KEEP the differing shades - orange-brown and
-# yellow-brown are the point - just not the saturated end. Mustard, Orange,
-# 212thOrange, HK47Rust and Auburn stay out; every grey is gone too, so the whole
-# hull is warm and only the VALUE and the hue-lean change across it.
-# ⚠️ Third pass. The first browns ran 158-195 and the whole ship washed out to the
-# colour of the desert it sits on - a brown ship on tan ground has no contrast
-# unless it is DARKER than the ground (which reads ~107,86,57 at full bright). So
-# the ramp moved down into the 90-130 band and only the far end stays pale.
-FLOOR_BROWN = ["Structure_Sandstone", "Structure_BrownSubtle", "Structure_BrownWood",
-               "guy762_StructureColor_CinnagarIron", "Structure_BrownDark",
-               "Structure_UmberBurnt", "ReddishBrown"]
-WALL_BROWN_HOT = ["Structure_BrownSubtle", "Structure_BrownWood",
-                  "Structure_BrownDirt", "Structure_BrownDark",
-                  "Structure_UmberBurnt", "ReddishBrown"]
-WALL_BROWN_COLD = ["guy762_StructureColor_BespinBeige", "Structure_Limestone",
-                   "Structure_Sandstone", "guy762_StructureColor_CinnagarIron",
-                   "Structure_BrownFaded"]
-WALL_RUST = ["Structure_BrownSubtle", "Structure_BrownWood", "guy762_StructureColor_CinnagarIron",
-             "Structure_BrownDark", "ReddishBrown", "Structure_UmberBurnt",
-             "guy762_StructureColor_HK47Rust", "Structure_Auburn",
-             "guy762_StructureColor_212thOrange"]
-WALL_COLD = ["Structure_GrayLight", "Structure_Marble", "guy762_StructureColor_ImpArmySlate",
-             "Structure_Granite", "Structure_GreyDark", "Structure_Slate"]
+FLOOR_LIGHT     = PAL.ramp("floor_light")
+FLOOR_BROWN     = PAL.ramp("floor_brown")
+WALL_BROWN_HOT  = PAL.ramp("wall_brown_hot")
+WALL_BROWN_COLD = PAL.ramp("wall_brown_cold")
+WALL_RUST       = PAL.ramp("wall_rust")
+WALL_COLD       = PAL.ramp("wall_cold")
 
 
 # ------------------------------------------------------------------- noise
