@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T08:25:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T08:29:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -97,16 +97,7 @@ prose:    infrastructure/state/items/LORD_JOB_SWAP_TOOL_1.md
 
 # IN PROGRESS
 
-Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## ROLE_KINDS_ARMED_5_OF_5_1 All 48 roster kinds spawn holding something
-state:    doing
-row:      world-5
-needs:    bridge
-target:   v1
-kind:     check
-summary:  Nine of the 48 could spawn bare. Fixed in the generator table and redeployed.
-prose:    infrastructure/state/items/ROLE_KINDS_ARMED_5_OF_5_1.md
+_none._
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -403,3 +394,13 @@ kind:     defect
 thin:     spec, verify and criteria all present
 summary:  Two live def errors in this session's Player.log (lines ~790 and ~1041), both tracing to
 prose:    infrastructure/state/items/IKEE_WILDNESS_PATCH_DEAD_1.md
+
+## PAWN_WEAPON_GEN_TAG_POOL_READ_1 PAWN_WEAPON_GEN_TAG_POOL_READ_1
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PAWN_WEAPON_GEN_TAG_POOL_READ_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWN_WEAPON_GEN_TAG_POOL_READ_1.md
