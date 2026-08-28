@@ -46,3 +46,12 @@ decision (needs `owner`) or a bridge pass any seat can run once the bridge frees
 substructure `set` silently skips under-terrain cells; wall demolition drops
 full-material leavings (wealth injection); `jawa/clear_ui` does not close
 `MainTabWindow_Menu` — check `get_ui_layout` surfaces and `rimworld/close_window` it.
+
+---
+
+# CLOSED 2026-08-28 by BENCH on the owner's word ("Close the shrine follow-ups please")
+
+The held decisions are settled by the close, in the direction the map already is:
+vault stays unroofed · stele stays uninscribed · casket stays empty · no factory
+twins, toll shack, or droid sentries. The shrine round ships as built. Anything
+here is re-raisable as a fresh item if he ever wants it.
