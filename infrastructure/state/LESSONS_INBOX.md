@@ -7,4 +7,5 @@ time**; a fresh-context curation session (owner says "curation pass") drains thi
 file into the right skills, merging rather than appending, and empties it.
 
 ---
-- jawa/list_things serves STALE rows for several seconds after rapid spawn/destroy churn (3x on 2026-08-27: ids of deleted things, phantom dup pipes, a destroyed HeatVent still listed); verify absence with rimworld/get_cell_info before acting on a listing taken mid-mutation.
+- RETRACTED-and-corrected (2026-08-27, same session): the 'jawa/list_things serves stale rows' lesson was my own read bug - rimworld/get_cell_info nests its payload under 'cell', so r.get('things') reads None and 'empty' was never measured. Read r['cell']['things'].
+- destroy_batch and jawa/damage both report success on hitPoints:-1 buildings (e.g. AncientHeatVent) and change NOTHING; the working route is execute_debug_action 'Actions\T: Destroy' with x/z, then verify via get_cell_info's cell.things.
