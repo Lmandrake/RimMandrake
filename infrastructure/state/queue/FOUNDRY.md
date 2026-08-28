@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T15:43:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T15:45:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -133,16 +133,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BRIDGE_ARG_SHAPES_INCONSISTENT_1 Seven bridge arg shapes disagree; four return a confident wrong answer
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     fix
-thin:     spec, verify and criteria all present
-summary:  Seven places where the bridge's argument and result shapes disagree with each other or
-prose:    infrastructure/state/items/BRIDGE_ARG_SHAPES_INCONSISTENT_1.md
 
 ## ANCIENT_SCATTERBOW_TAG_SEVER_1 Deploy the scatterbow Inherit=False sever and prove Gun is gone from the next capture
 state:    proposed
