@@ -27,3 +27,40 @@ read back the new map's tile with `jawa/map_info`.
 - [ ] Fuel checked and reported before launch; short fuel refuses.
 - [ ] `dryRun` defaults true.
 - [ ] The halfway state is named in the result.
+
+---
+
+# BUILT 2026-08-28 by BENCH — awaiting the down-window deploy, then the live proof
+
+Owner promoted to v1 and handed to BENCH ("let's see if you can do it").
+
+**Four tools written into `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGravshipTools.cs`,
+compiled clean, all four verified present in the built DLL by `build.tool_surface`
+(surface 240 → 244, MEASURED):**
+
+- `jawa/gravship_status` (read) — engines, fuel, cooldown, missing components, and the
+  three in-flight states: cutscene / travelling / **landing-marker pending** — the named
+  halfway state the spec demanded.
+- `jawa/gravship_launch_check` (read) — every vanilla gate reproduced argument-for-argument
+  from `CompPilotConsole.StartChoosingDestination_NewTemp` + `Building_GravEngine.CanLaunch`
+  (fuel path at the engine's own `FuelUseageFactor`, layer-adjusted range, signal jammer,
+  same-tile GravAnchor rule, `IsValidTileForNewSettlement(forGravship:true)`).
+- `jawa/gravship_launch` (GM-gated) — **dryRun defaults TRUE**; refuses on any gate; sets
+  `LaunchInfo` like the vanilla dev gizmo (a null launchInfo NREs at landing);
+  `ConsumeFuel` then `InitiateTakeoff`, exactly the confirmed-launch closure. Reports
+  `originMapWillBeDestroyed` and the async state chain.
+- `jawa/gravship_land` (GM-gated) — resolves the stranded-at-marker state via
+  `marker.BeginLanding`; optional move is bounds-checked and flagged caller's-risk.
+
+## criteria
+- [x] Fuel checked and reported before launch; short fuel refuses — in both check and launch.
+- [x] `dryRun` defaults true.
+- [x] The halfway state is named in the result (`nextState`) and readable (`gravship_status`).
+- [ ] LIVE: `prove_gravship.py` on a scratch quicktest (next window; the script authors a
+      minimal ship, exercises the refusal path, launches, catches the marker state, lands,
+      and asserts the new map's tile == target). Def names in it verified against the dump
+      (`SmallThruster`, `ChemfuelTank`, `PilotConsole`, `GravEngine`); the set-fuel debug
+      action walk and `jawa/world_neighbors` arg shape are best-effort and may need one
+      interactive fix.
+
+Deploy rides DOWN_WINDOW_ASSEMBLY_DEPLOY_1 (game held up all night by FOUNDRY).
