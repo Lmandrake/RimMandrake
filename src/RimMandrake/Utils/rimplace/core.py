@@ -59,6 +59,11 @@ class Thing:
     rot: int = 0
     stuff: str | None = None
     role: str | None = None          # provenance: which palette role produced this
+    paint: str | None = None         # vanilla PaintColorDef (owner, 2026-08-28)
+    extra: dict | None = None        # identity-grade payload from a live EXPORT only:
+                                     # quality/hitPoints/stackCount/faction/contents/
+                                     # bills/storage. Authoring code never sets this;
+                                     # the placer replays what it can and reports the rest.
 
 
 @dataclass
@@ -89,20 +94,30 @@ class BuildPlan:
         self.meta = meta
         self.things: list[Thing] = []
         self.terrain: dict[tuple[int, int], str] = {}
+        self.foundation: dict[tuple[int, int], str] = {}    # 1.6 third grid (Substructure)
         self.roof: dict[tuple[int, int], str] = {}
+        self.floor_color: dict[tuple[int, int], str] = {}   # cell -> ColorDef
         self.rooms: list[Room] = []
         self.notes: list[str] = []
         self.refusals: list[Refusal] = []
 
     # -- emit ---------------------------------------------------------------
-    def add_thing(self, defName, x, z, rot=0, stuff=None, role=None):
-        self.things.append(Thing(defName, int(x), int(z), int(rot), stuff, role))
+    def add_thing(self, defName, x, z, rot=0, stuff=None, role=None,
+                  paint=None, extra=None):
+        self.things.append(Thing(defName, int(x), int(z), int(rot), stuff, role,
+                                 paint, extra))
 
     def set_terrain(self, x, z, defName):
         self.terrain[(int(x), int(z))] = defName
 
     def set_roof(self, x, z, defName):
         self.roof[(int(x), int(z))] = defName
+
+    def set_floor_color(self, x, z, defName):
+        self.floor_color[(int(x), int(z))] = defName
+
+    def set_foundation(self, x, z, defName):
+        self.foundation[(int(x), int(z))] = defName
 
     def add_room(self, rid, role, rect: Rect):
         r = Room(rid, role, rect)
@@ -126,7 +141,9 @@ class BuildPlan:
             "meta": self.meta,
             "things": [asdict(t) for t in self.things],
             "terrain": [{"x": x, "z": z, "def": d} for (x, z), d in sorted(self.terrain.items())],
+            "foundation": [{"x": x, "z": z, "def": d} for (x, z), d in sorted(self.foundation.items())],
             "roof": [{"x": x, "z": z, "def": d} for (x, z), d in sorted(self.roof.items())],
+            "floorColor": [{"x": x, "z": z, "def": d} for (x, z), d in sorted(self.floor_color.items())],
             "rooms": [{"id": r.id, "role": r.role, "rect": r.rect.as_list(),
                        "doors": [list(d) for d in r.doors]} for r in self.rooms],
             "notes": self.notes,
@@ -140,8 +157,11 @@ class BuildPlan:
         """Every defName this plan will ask the game for. The verifier's input."""
         out = {t.defName for t in self.things}
         out |= {t.stuff for t in self.things if t.stuff}
+        out |= {t.paint for t in self.things if t.paint}     # ColorDefs are defs too
         out |= set(self.terrain.values())
+        out |= set(self.foundation.values())
         out |= set(self.roof.values())
+        out |= set(self.floor_color.values())
         return {d for d in out if d}
 
 

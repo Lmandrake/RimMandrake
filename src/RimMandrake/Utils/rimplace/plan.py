@@ -314,7 +314,16 @@ def compile_calls(plan: BuildPlan, faction: str | None = None,
     """
     calls: list[dict] = []
 
-    # terrain first: floors under things, and set_terrain does not care about
+    # foundation first (gravship Substructure - the 1.6 third grid), then floors:
+    # a floor laid on missing substructure is refused by the engine, so the
+    # foundation must exist before the terrain pass runs.
+    for chunk in _chunk_ops([f"{d}:{x},{z},{w},{h}"
+                             for d, (x, z, w, h) in _rects_from_cells(plan.foundation)],
+                            _rect_cells(plan.foundation)):
+        calls.append({"tool": "jawa/set_terrain_batch",
+                      "params": {"ops": ";".join(chunk), "layer": "foundation"}})
+
+    # terrain next: floors under things, and set_terrain does not care about
     # what is standing there, while build_batch's wipeExisting does.
     for chunk in _chunk_ops([f"{d}:{x},{z},{w},{h}"
                              for d, (x, z, w, h) in _rects_from_cells(plan.terrain)],
@@ -366,6 +375,29 @@ def compile_calls(plan: BuildPlan, faction: str | None = None,
                             _rect_cells(plan.roof)):
         calls.append({"tool": "jawa/set_roof_batch",
                       "params": {"ops": ";".join(chunk)}})
+
+    # paint AFTER the things exist (owner, 2026-08-28). Building paint is the
+    # vanilla PaintColorDef via jawa/paint_building — grouped by colour, cells
+    # form, chunked. Floor colour goes through jawa/set_terrain_layer, which is
+    # rect-only, so cells are folded into horizontal runs per colour.
+    by_color: dict[str, list] = defaultdict(list)
+    for t in plan.things:
+        if t.paint:
+            by_color[t.paint].append((t.x, t.z))
+    for color, cells in sorted(by_color.items()):
+        cells = sorted(set(cells))
+        for i in range(0, len(cells), 300):
+            calls.append({"tool": "jawa/paint_building",
+                          "params": {"cells": ";".join(f"{x},{z}" for x, z in cells[i:i + 300]),
+                                     "colorDef": color}})
+    fc_by_color: dict[str, dict] = defaultdict(dict)
+    for (x, z), color in plan.floor_color.items():
+        fc_by_color[color][(x, z)] = color
+    for color, cellmap in sorted(fc_by_color.items()):
+        for _, (x, z, w, h) in _rects_from_cells(cellmap):
+            calls.append({"tool": "jawa/set_terrain_layer",
+                          "params": {"layer": "color", "rect": f"{x},{z},{w},{h}",
+                                     "def": color}})
 
     calls.append({"tool": "jawa/map_commit",
                   "params": {"regions": True, "pathing": True,

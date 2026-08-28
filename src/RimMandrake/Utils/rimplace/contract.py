@@ -128,8 +128,13 @@ def tool_parameters(source_dir: Path | None = None) -> dict[str, set[str]] | Non
     # than quietly returning a short list that passes everything.
     known = {
         "jawa/set_terrain_batch": {"ops", "terrainDef", "layer", "refresh"},
+        # ⚠️ This set must track the SOURCE. `refuseIfDisplaces` was added to
+        # build_batch on 2026-08-27 (BUILD_BATCH_OVERWRITES_SILENTLY_1) and this
+        # calibration then failed silently for a day - every contract check read
+        # UNMEASURED, which the selftest correctly refused to score as a pass.
         "jawa/build_batch": {"ops", "stuff", "faction", "quality",
-                             "hitPoints", "wipeExisting", "readBack"},
+                             "hitPoints", "wipeExisting", "readBack",
+                             "refuseIfDisplaces"},
     }
     for tool, expect in known.items():
         if found.get(tool) != expect:

@@ -249,6 +249,36 @@ class Ctx:
                 n += 1
         return n
 
+    def paint(self, x, z, colorDef):
+        """Vanilla building paint (Building.ChangePaint) on the thing at x,z.
+        Per-cell and explicit by the owner's ruling, 2026-08-28 — no palette
+        involvement. Painting an empty cell is a refusal, not a silent no-op."""
+        x, z = int(x), int(z)
+        if not colorDef:
+            self.plan.refuse("paint", "nil colorDef", x, z)
+            return False
+        here = self.plan.thing_at(x, z)
+        if not here:
+            self.plan.refuse("paint", "nothing at this cell to paint", x, z)
+            return False
+        for t in here:
+            t.paint = str(colorDef)
+        return True
+
+    def floor_color(self, x, z, colorDef):
+        """Floor colour (the 1.6 terrain colour grid). Colouring a cell this
+        plan lays no floor on is a refusal — the colour would land on whatever
+        the map happens to hold."""
+        x, z = int(x), int(z)
+        if not colorDef:
+            self.plan.refuse("floor_color", "nil colorDef", x, z)
+            return False
+        if (x, z) not in self.plan.terrain:
+            self.plan.refuse("floor_color", "no floor laid at this cell in this plan", x, z)
+            return False
+        self.plan.set_floor_color(x, z, str(colorDef))
+        return True
+
     def roof(self, x, z, defName=None):
         self.plan.set_roof(x, z, str(defName or "RoofConstructed"))
         return True
