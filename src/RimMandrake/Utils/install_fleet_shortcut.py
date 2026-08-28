@@ -2,10 +2,9 @@
 """install_fleet_shortcut.py — one double-click opens the whole fleet, tiled.
 
 Writes a Desktop shortcut that runs `launch_fleet.ps1`, which opens one Windows
-Terminal window per seat and places each in its quadrant:
+Terminal window per agent and places them side by side:
 
-    UL  AGENT DECIDE        UR  AGENT CHECK
-    LL  AGENT BUILD         LR  AGENT REP
+    LEFT  AGENT BENCH        RIGHT  AGENT FOUNDRY
 
 All launch behaviour lives in the .ps1 — the profiles it names are the ones
 `install_wt_seat_profiles.py` writes, which already carry the colour, tab title,
@@ -83,7 +82,7 @@ def main():
         # opens is four terminals, and the icon is how it is found on a busy
         # Desktop.
         "$s.IconLocation = '%s,0';"
-        "$s.Description = 'Open all four RimWorld agent seats, tiled';"
+        "$s.Description = 'Open the two RimWorld agent windows, tiled';"
         "$s.Save()"
     ) % (lnk, PS, arguments.replace("'", "''"), REPO_WIN, WT)
 

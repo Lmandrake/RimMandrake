@@ -82,16 +82,14 @@ set -euo pipefail
 # and the Windows Terminal profile are the same identity seen twice.
 seat_colour() {
     case "$1" in
-        DECIDE) printf '#C08CE0' ;;   # violet — scope and spec
-        BUILD)  printf '#7BC96F' ;;   # green  — artifacts and offline verification
-        CHECK)  printf '#4EC9E0' ;;   # cyan   — the live game and the bridge
-        REP)    printf '#E5A03C' ;;   # amber  — the human's interface
+        BENCH)   printf '#7BC96F' ;;   # green — with the owner, permanent bench
+        FOUNDRY) printf '#E5A03C' ;;   # amber — the autonomous queue window
     esac
 }
-SEATS="DECIDE BUILD CHECK REP"
+SEATS="BENCH FOUNDRY"
 
 usage() {
-    echo "usage: $0 {DECIDE|BUILD|CHECK|REP} [detail]" >&2
+    echo "usage: $0 {BENCH|FOUNDRY} [detail]" >&2
     echo "       $0 --preview | --reset-colour" >&2
     echo "  identities: infrastructure/agents/<SEAT>.md   shared rules: infrastructure/agents/POLICY.md" >&2
 }
@@ -136,7 +134,7 @@ ROLE="${1:-}"
 DETAIL="${2:-}"
 
 case "$ROLE" in
-    DECIDE|BUILD|CHECK|REP) ;;
+    BENCH|FOUNDRY) ;;
     *)
         usage; exit 2 ;;
 esac

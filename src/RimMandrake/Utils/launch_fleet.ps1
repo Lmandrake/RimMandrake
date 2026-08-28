@@ -1,12 +1,13 @@
 <#
-launch_fleet.ps1 — open the four agent seats, each Windows Terminal window placed,
-plus the status board.
+launch_fleet.ps1 — open the two agent windows, each Windows Terminal window placed,
+plus the queue publisher loop.
 
-    UL  AGENT DECIDE        UR  AGENT CHECK
-    LL  AGENT BUILD         LR  AGENT REP
+    LEFT   AGENT BENCH   (green — with the owner)
+    RIGHT  AGENT FOUNDRY (amber — the autonomous queue)
 
-Work flows UL -> LL -> UR (decide, build, check) and REP sits with the human.
-The status board is a floating tkinter window, launched last so it lands on top.
+Redesign #4, 2026-08-27: the four-seat fleet (DECIDE/CHECK/BUILD/REP quadrants) is
+retired. The queue publisher replaces REP's on-wake duty; the status board was
+removed 2026-08-27 and is not launched.
 
 WHY THE WINDOWS ARE MOVED RATHER THAN SIZED AT LAUNCH
 =====================================================
@@ -35,7 +36,7 @@ USAGE
 =====
     powershell -NoProfile -ExecutionPolicy Bypass -File launch_fleet.ps1
     ... -Gap 8               # pixels between tiles (default 0, flush)
-    ... -Seats DECIDE,BUILD  # open a subset, in the same places
+    ... -Seats BENCH         # open a subset, in the same places
     ... -Test                # same four windows, running `cmd` instead of a seat,
                              # so the layout can be tuned without starting four
                              # Claude sessions. They are titled `AGENT X [test]`.
@@ -46,11 +47,11 @@ Normally invoked by the Desktop shortcut written by install_fleet_shortcut.py.
 #>
 param(
     [int]$Gap = 0,
-    [string[]]$Seats = @('DECIDE', 'CHECK', 'BUILD', 'REP'),
+    [string[]]$Seats = @('FOUNDRY', 'BENCH'),
     [int]$TimeoutSec = 30,
     [switch]$Test,
     [switch]$CloseTest,
-    [switch]$NoBoard
+    [switch]$NoPublisher
 )
 
 $ErrorActionPreference = 'Stop'
@@ -127,14 +128,13 @@ $work = New-Object Fleet+RECT
 $X = $work.L; $Y = $work.T
 $W = $work.R - $work.L; $H = $work.B - $work.T
 
-$halfW = [int](($W - $Gap) / 2); $halfH = [int](($H - $Gap) / 2)
-$rightX = $X + $W - $halfW;      $lowerY = $Y + $H - $halfH
+$halfW = [int](($W - $Gap) / 2)
+$rightX = $X + $W - $halfW
 
+# Two full-height halves: BENCH left (where the owner works), FOUNDRY right.
 $place = [ordered]@{
-    DECIDE = @($X,      $Y,      $halfW, $halfH)
-    CHECK  = @($rightX, $Y,      $halfW, $halfH)
-    BUILD  = @($X,      $lowerY, $halfW, $halfH)
-    REP    = @($rightX, $lowerY, $halfW, $halfH)
+    BENCH   = @($X,      $Y, $halfW, $H)
+    FOUNDRY = @($rightX, $Y, $halfW, $H)
 }
 
 $wt = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
@@ -185,17 +185,17 @@ foreach ($seat in $Seats) {
                                   $r[2] + $b.L + $b.R, $r[3] + $b.T + $b.B, $true)
 }
 
-# The board: REP owns it, so it opens with the fleet. Launched after the seats
-# so it lands on top of them. -NoBoard skips it.
-if (-not $NoBoard) {
+# The queue publisher: the script that replaced REP's on-wake duty. Detached,
+# bounded (8 h), regenerates queue/*.md every 60 s. -NoPublisher skips it.
+if (-not $NoPublisher) {
     Start-Process -FilePath 'wsl.exe' -ArgumentList @(
         '-d', 'Ubuntu', '--', 'bash', '-lc',
-        '"exec python3 src/RimMandrake/Utils/status_server.py"'
+        '"cd /mnt/d/Luke/dev/Rimworld && setsid nohup ./src/RimMandrake/Utils/queue_publisher.sh >/dev/null 2>&1 </dev/null &"'
     ) -WindowStyle Hidden | Out-Null
 }
 
-# Leave the focus where the owner starts: REP, the seat that talks to them.
-$focus = if ($Seats -contains 'REP') { 'REP' } else { $Seats[-1] }
+# Leave the focus where the owner starts: BENCH, the window that works with him.
+$focus = if ($Seats -contains 'BENCH') { 'BENCH' } else { $Seats[-1] }
 $last = if ($Test) { "AGENT $focus [test]" } else { "AGENT $focus" }
 $f = [Fleet]::WindowsTitled($last)
 if ($f) { [void][Fleet]::SetForegroundWindow(@($f)[0]) }

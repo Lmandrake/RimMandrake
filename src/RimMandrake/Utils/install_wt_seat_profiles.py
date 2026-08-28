@@ -21,7 +21,7 @@ Profiles do all of it, before the shell even starts.
 
 WHAT IT WRITES
 ==============
-Four profiles named `AGENT DECIDE` … `AGENT REP`, each with
+One profile per window — `AGENT BENCH`, `AGENT FOUNDRY` — each with
 
   * a colour scheme cloned from Campbell with the seat's foreground,
   * `tabColor`, so the tab strip is colour-coded,
@@ -115,12 +115,15 @@ LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
           "--dangerously-skip-permissions --name 'AGENT {seat}'")
 
 # Hue-distinct and legible on Campbell's near-black background.
+# Redesign #4 (2026-08-27): two windows. BENCH keeps BUILD's green, FOUNDRY keeps
+# REP's amber — the owner's choice, so the colours he knows survive the rename.
 SEATS = {
-    "DECIDE": ("#C08CE0", "violet — scope and spec"),
-    "BUILD":  ("#7BC96F", "green  — artifacts and offline verification"),
-    "CHECK":  ("#4EC9E0", "cyan   — the live game and the bridge"),
-    "REP":    ("#E5A03C", "amber  — the human's interface"),
+    "BENCH":   ("#7BC96F", "green — with the owner, permanent bench"),
+    "FOUNDRY": ("#E5A03C", "amber — the autonomous queue window"),
 }
+
+# Profiles from the retired four-seat fleet, removed on --apply.
+RETIRED = ("DECIDE", "BUILD", "CHECK", "REP")
 
 # Campbell, Windows Terminal's default scheme. Only `foreground` and
 # `cursorColor` differ per seat; everything else is left identical so ordinary
@@ -217,6 +220,16 @@ def main():
         else:
             schemes[j] = scheme
 
+    # The retired four-seat profiles and schemes are removed, matched by their
+    # stable guids / scheme names so a hand-made profile is never touched.
+    removed = 0
+    for seat in RETIRED:
+        g = seat_guid(seat)
+        n0 = len(plist)
+        plist[:] = [p for p in plist if p.get("guid") != g]
+        removed += n0 - len(plist)
+        schemes[:] = [s for s in schemes if s.get("name") != f"Seat {seat}"]
+
     # Font size goes in profiles.defaults, NOT in the seat profiles. The owner's
     # complaint is that windows start too big generally, and defaults is the one
     # place that fixes every profile at once — including the Ubuntu and
@@ -227,7 +240,8 @@ def main():
         font["size"] = args.font_size
 
     print(f"{'APPLY' if args.apply else 'PLAN'}: {added} profile(s) to add, "
-          f"{updated} to update, {len(SEATS)} scheme(s) synced")
+          f"{updated} to update, {removed} retired profile(s) to remove, "
+          f"{len(SEATS)} scheme(s) synced")
     for seat, (colour, why) in SEATS.items():
         print(f"  AGENT {seat:<8} {colour}  tab+text  {why}")
     if args.font_size:
