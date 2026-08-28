@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-28T15:46:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-28T15:47:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -153,16 +153,6 @@ kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  JAWACULTURESLEAKTOSTRANGERS1 — our authored cultures are in the general pool
 prose:    infrastructure/state/items/JAWA_CULTURES_LEAK_TO_STRANGERS_1.md
-
-## BIOME_DUPLICATES_STILL_LIVE_1 The duplicate-animal crash survived its own close; 27 pairs found, not the 12 the log names
-state:    proposed
-row:      unassigned
-needs:    harvest
-target:   v1
-kind:     defect
-thin:     no ## spec
-summary:  BIOMEDUPLICATESSTILLLIVE1 — the duplicate-animal crash survived its own close
-prose:    infrastructure/state/items/BIOME_DUPLICATES_STILL_LIVE_1.md
 
 ## ION_TIERS_MEASURED_LIVE_1 Measure all three ion tiers live: mech, droid, and the flesh baseline that must not move
 state:    proposed
