@@ -95,18 +95,6 @@ if [ -f "$SLICE_SRC" ] && ! cmp -s "$SLICE_SRC" "$SLICE_DST" 2>/dev/null; then
   cp "$SLICE_SRC" "$SLICE_DST" && systemctl --user daemon-reload 2>/dev/null
 fi
 
-# Start the forensic sampler if it is not already up. It is a singleton by its
-# own flock, so all five seats can fire this and exactly one survives.
-#
-# ⚠️ Deliberately started BEFORE the exec, so it stays in /init.scope rather than
-# inside this seat's cgroup. If it lived in the scope, a seat hitting MemoryMax
-# would take the sampler with it — losing precisely the last few samples that
-# explain what happened. The instrument must outlive the thing it measures.
-WATCHER=/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/resource_watch.sh
-if [ -x "$WATCHER" ]; then
-  setsid nohup "$WATCHER" 15 >/dev/null 2>&1 < /dev/null &
-fi
-
 # --slice puts every seat under ONE parent with its own ceiling, so there are two
 # limits, not one: MemoryMax below stops a single runaway at 10G, and the slice's
 # 24G stops all five together. Without the slice the per-seat bound proves only

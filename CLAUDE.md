@@ -184,7 +184,37 @@ design/                 campaign specs (Utinni)      DECIDE owns
 skills/                 tooling + how-to           the seat that USES it owns it
                                                    broadly shared -> REP
 infrastructure/state/   queues, V1.md, facts/        see POLICY.md
+Transient/              output to LOOK AT, then bin    untracked, ~14 days
 ```
+
+## 🔴 Transient output goes in `Transient/`. Machine cache goes in `/tmp`. — owner, 2026-08-27
+
+Three destinations, and the test is **who reads it**:
+
+| who reads it | where it goes |
+|---|---|
+| **a human, once** — a contact sheet, a render, a review page, a diff image, a one-off census, draft analysis | ⭐ **`Transient/`** — untracked, ~14 day shelf life |
+| **a program** — samples, logs, temp files, working directories, anything written to be parsed later | ⛔ **`/tmp`**, never the repo |
+| **anyone, later** — a work product, a decision, evidence a tracked document cites | the repo, committed, beside what it belongs to |
+
+- 🔴 **`Transient/` is gitignored and nothing in it survives a fresh clone.** Only
+  `Transient/README.md` is tracked, because the rule has to outlive what it governs.
+  ⛔ **Never put the only copy of anything there**, and never point a committed
+  document at a file inside it — the moment something cites an artifact as evidence,
+  that artifact has stopped being transient and must move beside the citing document.
+- ⛔ **Do not write machine cache into the repo at all.** A sampler writing a CSV into
+  `observed/` ran for 13 days in two copies before anyone noticed, because a
+  gitignored directory is invisible until someone trips over it. `/tmp` is emptied by
+  the OS, which is the behaviour that was wanted.
+- **Shelf life is a contract, not a promise to tidy.** Anything in `Transient/` may be
+  deleted by anyone at any time without being read.
+  `python3 src/RimMandrake/rimflow/cli.py sweep --transient` lists by age.
+  ⚠️ It LISTS. It never deletes — a heuristic deciding which of someone's working
+  files are stale is a heuristic destroying work.
+
+⭐ **Supersedes the earlier `TRANSIENT_<name>.md`-at-the-root convention**, which had
+these files *committed and swept*. The 32 root files moved into `Transient/` on
+2026-08-27 and were untracked; git history still holds every one of them.
 
 ## Tools
 

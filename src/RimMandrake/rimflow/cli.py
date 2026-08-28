@@ -1337,15 +1337,25 @@ def cmd_sweep(args, seat):
         die("`sweep` needs --transient. It is the only sweep there is.")
     import time
     names = set()
+    # Transient/ is where transient output lives as of 2026-08-27. The directory is
+    # gitignored, so `git ls-files` can no longer find any of it — walk the disk.
+    # README.md is the convention itself and is never swept.
+    tdir = os.path.join(model.ROOT, "Transient")
+    if os.path.isdir(tdir):
+        for n in os.listdir(tdir):
+            if n != "README.md" and not n.startswith("."):
+                names.add(os.path.join("Transient", n))
+    # Legacy: root-level TRANSIENT_* from before the move. Kept so a stray one is
+    # still reported rather than becoming invisible.
     for line in git("ls-files", "TRANSIENT_*").splitlines():
         names.add(line)
     for n in os.listdir(model.ROOT):
         if n.startswith("TRANSIENT_"):
             names.add(n)
     if not names:
-        print("no TRANSIENT_* files.")
+        print("no transient files.")
         return 0
-    print("%d TRANSIENT_* file(s). ⚠️ THIS LISTS ONLY — nothing here is deleted, ever."
+    print("%d transient file(s). ⚠️ THIS LISTS ONLY — nothing here is deleted, ever."
           % len(names))
     rows = []
     for n in sorted(names):

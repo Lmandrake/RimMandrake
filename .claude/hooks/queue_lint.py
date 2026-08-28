@@ -36,7 +36,8 @@ WHAT IT BLOCKS
 3. **Editing `items/<ID>.md` for an item another seat owns.** Filing work FOR another
    seat is normal and encouraged; changing their work is not, and four seats share one
    working tree so it is easy to do by accident.
-4. **A new root-level `.md` that is not `TRANSIENT_*`.** The repo root is shared and
+4. **A new root-level `.md` that is not `TRANSIENT_*`.** New scratch belongs in
+   `Transient/` (owner, 2026-08-27); the root prefix is legacy. The repo root is shared and
    already carries 342 markdown files; the naming rule is what keeps scratch findable
    and sweepable.
 
@@ -437,11 +438,10 @@ def main():
         return deny(
             "Blocked: %s is a new markdown file at the repo root and is not named "
             "TRANSIENT_*.\n\n"
-            "The root already carries 342 markdown files. The naming rule is what "
-            "keeps scratch findable and sweepable — `rimflow sweep --transient` lists "
-            "stale ones, and a file outside the convention is invisible to it "
-            "forever.\n\n"
-            "  scratch, analysis, a one-off report  ->  TRANSIENT_%s\n"
+            "Owner's ruling 2026-08-27: transient output lives in `Transient/`, "
+            "untracked, ~14 day shelf life. The root-level TRANSIENT_ prefix is "
+            "legacy — still accepted, no longer where new scratch goes.\n\n"
+            "  scratch, analysis, a one-off report  ->  Transient/%s\n"
             "  a design document                    ->  design/…\n"
             "  project state                        ->  infrastructure/state/…" % (p, p))
 
