@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T05:41:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T07:33:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -241,3 +241,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAWN_WEAPON_POOL_JOIN_TOOL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAWN_WEAPON_POOL_JOIN_TOOL_1.md
+
+## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     investigate
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WILD_ANIMALS_PADDED_LISTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md

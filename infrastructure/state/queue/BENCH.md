@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T06:51:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T07:33:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -26,15 +26,6 @@ prose:    infrastructure/state/items/EMPIRE_PURSUIT_SCENPART_INSTALL_1.md
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## COLD_LOAD_RUN_SHEET_1 One batched cold load scores every pending reading; replaces NEXT_RELOAD.md and EXPECTED_FAILURES_next_load.md
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  One batched cold load scores everything below, then this item closes and a fresh one
-prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_1.md
 
 ## GRAVSHIP_LANDING_DIRECT_PLACE_1 Land a gravship without the cutscene machinery (skipCutscene route)
 state:    doing
@@ -68,5 +59,15 @@ needs:    owner
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PAWN_FLAVOR_STARWARS_1.md yet — write one when you have something to say)
+summary:  PAWNFLAVORSTARWARS1 — backstories, childhoods and traits, in-fiction
 prose:    infrastructure/state/items/PAWN_FLAVOR_STARWARS_1.md
+
+## COLD_LOAD_RUN_SHEET_2 Next window run sheet: scenario-tool deploy, pursuit install, ship round trip
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/COLD_LOAD_RUN_SHEET_2.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_2.md
