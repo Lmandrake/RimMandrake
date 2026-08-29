@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T19:33:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T19:34:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -90,6 +90,15 @@ kind:     investigate
 summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
 prose:    infrastructure/state/items/OTHER_STUN_WEAPONS_SURVEY_1.md
 
+## BRIDGE_LORDS_AND_GAPS_TOOLS_1 10 new bridge tools: lord_destroy/set_point/travel_to, pawns_patrol_route, set_pawn_gender, set_pollution, battery_set, wipe_cell, get_gravship_substructure, forecast_incidents
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+summary:  Close 10 genuine gaps against design/Jawa/bridge/BRIDGECAPABILITYROSTER.md and its
+prose:    infrastructure/state/items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -163,6 +172,16 @@ kind:     bug
 blocked:  fix committed and built clean; deploy blocked, game holds the DLL locked. Deploy at next down-window: deploy_custom_mods.py --mod JawaIonWeapons --apply
 summary:  Every flesh target — a rat and a 32×-human-bodySize Alpha Animals Behemoth alike — currently
 prose:    infrastructure/state/items/ION_STUN_IGNORES_BODY_SIZE_1.md
+
+## BRIDGE_LORDS_AND_GAPS_TOOLS_1 10 new bridge tools: lord_destroy/set_point/travel_to, pawns_patrol_route, set_pawn_gender, set_pollution, battery_set, wipe_cell, get_gravship_substructure, forecast_incidents
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+blocked:  built and deployed clean this game-down window (10 tools, 0 errors/warnings); unproven live - every mechanism needs the next game-up window to prove, see items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md Verify
+summary:  Close 10 genuine gaps against design/Jawa/bridge/BRIDGECAPABILITYROSTER.md and its
+prose:    infrastructure/state/items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
