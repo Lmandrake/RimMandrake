@@ -1,0 +1,651 @@
+{
+ "sheet": "pawn_flavor_register",
+ "posture": "design-review; default KEEP - a row left undecided ships as designed",
+ "prefill": true,
+ "rows": {
+  "Jawa_CisternHatched": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_TollWharfChild": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_WaterWarden": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_PurificationEngineer": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_CompactFactor": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_AcademyCadet": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_GarrisonBrat": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_Stormtrooper": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_RequisitionsOfficer": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_ImperialDeserter": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_PalaceRaised": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_DebtBorn": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_Majordomo": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_CollectionEnforcer": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_SpiceRunner": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_HatchedToTheLine": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_WingedBrood": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_FoundryArtisan": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_SiegeCaller": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_JediHuntVeteran": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_DesignBorn": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_VatDecanted": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_GeneCurator": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_RetrievalAgent": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_EscapedAsset": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_RaisedOnRetainer": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_BountyPostedYoung": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_NamedHunter": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_ContractBroker": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_DisgracedHunter": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_FarmFostered": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_RaiderOrphaned": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_MoistureBaron": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_HomesteadMatron": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_WastesHermit": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_SunSwornChild": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_KraytWatcher": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_WaterRaider": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_BanthaBonded": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_SunDebtCantor": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_SandcrawlerBorn": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_TinkererChild": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_BazaarHaggler": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_SalvageMaster": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_MootSpeaker": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_SpringSworn": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_DroughtMarked": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_WebTender": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_SeedCarrier": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_FreeholdWarrior": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_CasketCradled": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_ScrapSifter": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_CasketWright": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_CasketDenied": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_WallOfMeat": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_WaterDiscipline": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_SandStoic": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_Numbered": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_Laconic": {
+   "d": "keep",
+   "n": ""
+  },
+  "Jawa_PodracerReflexes": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_cutting__slave_arc_Ransomable": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_cutting__slave_arc_Rescue_Worthy": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_cutting__slave_arc_Unbending___Broken__APPROVED_": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_cutting__slave_arc_Collared_Expertise": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Scavenger_s_Eye": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Jury_Rigger": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Void_Touched": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Debt_to_the_Hutts": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Carries_a_Secret": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Last_of_the_Crew": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Clan_Born": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Master_and_Apprentice": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Sworn_Rival": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Dune_Raised": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Vault_Born": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Droid_Whisperer": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Stormtrooper_Washout": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_War_Echoed": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Shield_Line_Veteran": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Force_ladder__Latent___Awakened___Trained": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Force_Null": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Cross_faction_seed_families_Sold_Young": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Homestead_Defense_League_Vaporator_Apprentice": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Homestead_Defense_League_Militia_Sergeant": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Homestead_Defense_League_vanilla_pool__patient_stubborn_quietly_brave_": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Wildsteam_Clan_Canopy_Cradled": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Wildsteam_Clan_Beast_Sung": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Wildsteam_Clan_The_Small_Elder__HOMAGE_": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Wildsteam_Clan_Web_Minded": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Wildsteam_Clan_Green_Grief": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Wildsteam_Clan_Rooted": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Wildsteam_Clan_Life_Debt": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_the_Junkers_Casket_Bound": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_the_Junkers_Casket_Dreamer": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_the_Junkers_Casket_Haunted": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Galactic_Empire_Core_Worlds_Evacuee": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Galactic_Empire_Propaganda_Auditor": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Galactic_Empire_Inquisitorial_Washout": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Galactic_Empire_Order_Bound": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Galactic_Empire_Rank_Minded": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Hutt_Cartel_Toll_Gate_Child": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Hutt_Cartel_Cistern_Auditor": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Hutt_Cartel_Freed_Proxy": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Hutt_Cartel_Transactional": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Hutt_Cartel_Appetite___Cold_Blooded": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deep_Desert_Tribes_Water_Priest_s_Ward": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deep_Desert_Tribes_Adopted_Outsider": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deep_Desert_Tribes_Water_Pious": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deep_Desert_Tribes_Vengeful___Stoic_pool": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Geonosian_Foundry_Hive_Queen_s_Attendant": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Geonosian_Foundry_Hive_Hive_Tuned": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Geonosian_Foundry_Hive_Tireless___Chitin_Proud": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Ascendant_Helix_Catalogue_Orphan": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Ascendant_Helix_Bioweapon_Warden": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Ascendant_Helix_Perfected": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Ascendant_Helix_Catalogued": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Ascendant_Helix_Draft_Hater": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Blackstar_Company_Named_Hunter_raid_spike___truce_event": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Blackstar_Company_The_Code": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Blackstar_Company_Gear_Proud": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Jawa_Trade_Moot_Offworlder_s_Shadow": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Jawa_Trade_Moot_Salvage_Sifter": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Jawa_Trade_Moot_Utinni_Prospector": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Jawa_Trade_Moot_Crawler_Mechanic": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Jawa_Trade_Moot_Droidwright_of_the_Moot": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Jawa_Trade_Moot_Utinni_": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Jawa_Trade_Moot_Kin_Web": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Jawa_Trade_Moot_Chatter_Trade": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deepwater_Compact_Drought_Witness": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deepwater_Compact_Balance_Arbiter": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deepwater_Compact_Reservoir_Cartographer": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deepwater_Compact_Amphibian_Blooded": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deepwater_Compact_Neutral_to_the_Bone": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deepwater_Compact_Monopolist": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Deepwater_Compact_Still_Water_Patience": {
+   "d": "keep",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__Factory_Fresh": {
+   "d": "parked",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__Battlefield_Salvage": {
+   "d": "parked",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__Artisan_Hand_Build": {
+   "d": "parked",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__Frankenframe": {
+   "d": "parked",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__Cursed_Line": {
+   "d": "parked",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__Three_Centuries_of_Protocol": {
+   "d": "parked",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__Memory_Wiped_xN": {
+   "d": "parked",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__War_Surplus": {
+   "d": "parked",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__Restraining_Bolt_Decades": {
+   "d": "parked",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__Companion_Imprinted": {
+   "d": "parked",
+   "n": ""
+  },
+  "design_Droids__PARKED__DROID_SYSTEM_EMBRACE_1__Corrupted_Core": {
+   "d": "parked",
+   "n": ""
+  },
+  "Isekai_Protagonist": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Antagonist": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Reincarnated": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Regressor": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_SummonedHero": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Rank_F": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Rank_E": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Rank_D": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Rank_C": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Rank_B": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Rank_A": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Rank_S": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Rank_SS": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Rank_SSS": {
+   "d": "keep",
+   "n": ""
+  },
+  "Isekai_Rank_Nation": {
+   "d": "keep",
+   "n": ""
+  }
+ }
+}

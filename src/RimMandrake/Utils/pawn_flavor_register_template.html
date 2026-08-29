@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pawn Flavor Register</title>
+<style>
+:root{--bg:#0c0e11;--panel:#14161a;--panel2:#0f1216;--line:#2a2f37;--fg:#e8e6e3;--dim:#9aa3ad;
+      --acc:#ffb454;--blue:#cfe3ff;--good:#7fd18a;--warn:#e6b455;--bad:#e07b7b;--ship:#8fb8ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:13px/1.45 system-ui,sans-serif}
+header{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:12px;padding:10px 22px}
+h1{font-size:16px;margin:0;color:var(--acc)}
+.sub{color:var(--dim);font-size:12px}
+#fold{margin-left:auto;cursor:pointer;background:var(--panel2);border:1px solid var(--line);color:var(--fg);border-radius:5px;padding:5px 12px;font:inherit}
+body.folded #brief{display:none}
+#brief{padding:0 22px 10px;max-width:1200px}
+.panel{background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:10px 14px;margin:8px 0;font-size:12.5px}
+.panel b{color:var(--acc)}
+.panel .inv{color:var(--warn)}
+.pathbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--panel2);
+         border:1px solid var(--line);border-radius:5px;padding:9px 12px;margin:8px 0;font-size:12px}
+.pathbar code{color:var(--blue);font-family:ui-monospace,monospace}
+.pathbar button,.bar button{cursor:pointer;background:#1d2733;border:1px solid #2f4358;color:var(--blue);border-radius:4px;padding:4px 10px;font:inherit}
+#summary table{border-collapse:collapse;font-size:12px;margin-top:6px}
+#summary th,#summary td{border:1px solid var(--line);padding:3px 9px;text-align:right}
+#summary th{color:var(--dim);font-weight:600}
+#summary td:first-child,#summary th:first-child{text-align:left}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 22px;background:var(--panel);font-size:12px}
+.bar select,.bar input[type=text]{background:var(--panel2);border:1px solid var(--line);color:var(--fg);border-radius:4px;padding:4px 8px;font:inherit}
+.bar input[type=text]{width:220px}
+#savestate{margin-left:auto;color:var(--dim)}
+#savestate.linked{color:var(--good)}
+#savestate.unlinked{color:var(--warn)}
+.gh{position:sticky;z-index:10;background:#10141a;border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);padding:6px 22px;font-size:12px;font-weight:600;color:var(--acc)}
+.gh.nostick{position:static}
+.gh select{margin-left:10px;background:var(--panel2);border:1px solid var(--line);color:var(--dim);border-radius:4px;padding:1px 4px;font:inherit;font-size:11px}
+.row{display:flex;gap:10px;align-items:flex-start;padding:7px 22px;border-bottom:1px solid #1a1e24}
+.row.touched{background:#12161d}
+.rname{width:230px;flex:none;font-weight:600}
+.rname .homage{color:var(--warn);font-weight:400;font-size:11px}
+.chip{display:inline-block;border-radius:3px;padding:0 6px;font-size:10.5px;margin-right:4px;border:1px solid var(--line);color:var(--dim)}
+.chip.childhood{color:#a8d5ff;border-color:#2c4a66}.chip.adulthood{color:#ffd9a8;border-color:#66512c}
+.chip.trait{color:#c9f0b8;border-color:#3d6630}.chip.mechanic{color:#f0b8e2;border-color:#663056}.chip.backstory{color:#d5d0a8;border-color:#66602c}
+.st{display:inline-block;border-radius:3px;padding:0 6px;font-size:10.5px;margin-left:4px}
+.st.shipped-xml{background:#173052;color:var(--ship)}
+.st.designed-xml{background:#20331d;color:var(--good)}
+.st.designed-csharp{background:#39301a;color:var(--warn)}
+.st.parked{background:#2c2330;color:#caa8d5}
+.st.reflavored-live{background:#16333a;color:#9adfe0}
+.contested{color:var(--bad);font-size:11px;margin-left:5px}
+.does{flex:1;color:var(--dim)}
+.does .d1{color:var(--fg)}
+.rctl{width:400px;flex:none;display:flex;gap:6px}
+.rctl select{background:var(--panel2);border:1px solid var(--line);color:var(--fg);border-radius:4px;padding:3px 6px;font:inherit}
+.rctl select.keep{border-color:#3d6630}.rctl select.cut{border-color:#663030}
+.rctl select.rework{border-color:#66512c}.rctl select.ship-next{border-color:#2c4a66}
+.rctl input{flex:1;background:#191d14;border:1px solid #4a4a33;color:#f0e9c8;border-radius:4px;padding:3px 8px;font:inherit}
+.rctl input::placeholder{color:#7a7a5e}
+footer{padding:20px 22px;color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <h1>Pawn Flavor Register</h1>
+    <span class="sub" id="counts"></span>
+    <button id="fold">▾ brief</button>
+  </div>
+  <div id="brief">
+    <div class="panel">
+      <b>The brief.</b> Every piece of pawn-flavor content for the campaign — shipped backstories and
+      traits, designed-but-unbuilt items, the reflavored ISEKAI leveling traits, and the parked droid
+      set — one row each, grouped by faction. <b>Everything is pre-filled KEEP: you only disagree.</b>
+      Decisions: <b>keep</b> (stays as designed) · <b>rework</b> (right idea, wrong shape — say what in
+      the note) · <b>cut</b> (out of the campaign) · <b>ship-next</b> (promote into the next XML batch)
+      · <b>parked</b> (droids: waits on DROID_SYSTEM_EMBRACE_1).
+      <br><b>Criterion:</b> rows are pre-decided for <i>coherence with the design doc</i> — that ranks
+      fit, not what is fun for you. Overrule freely; your notes are worth more than your agreements.
+      <br><b>Posture:</b> default is KEEP — a row you never touch ships as designed. Nothing is
+      stripped by silence.
+    </div>
+    <div class="panel"><b class="inv">Rules I invented (overturn in one line):</b>
+      ① v1 shipped exactly 2 childhoods + 3 adulthoods per faction — a uniform clip, never ruled.
+      ② Only ISEKAI's 15 loud-fiction traits were reflavored; its 32 genre-neutral RPG traits
+      (Iron Will, Glass Cannon…) stay as shipped.
+      ③ The rank ladder's fiction is <i>Bounty Hunters' Guild threat ratings</i> — my frame.
+      ④ Two wrong-fiction backstories (RBM_Roamer, SH_MED_MedievalAlchemist) were spared the cut
+      because one campaign pawn each carries them.
+    </div>
+    <div class="pathbar">
+      <b>Save decisions to</b>
+      <code id="p1">__DEC_NATIVE__</code>
+      <button data-copy="p1">copy path</button>
+      <span>the picker cannot be given a folder — paste this into its filename box</span>
+    </div>
+    <div class="pathbar">
+      <b>This sheet</b>
+      <code id="p2">__HTML_NATIVE__</code>
+      <button data-copy="p2">copy path</button>
+    </div>
+    <div class="panel" id="summary"></div>
+  </div>
+  <div class="bar">
+    <select id="f_faction"><option value="">all factions</option></select>
+    <select id="f_layer"><option value="">all layers</option>
+      <option>childhood</option><option>adulthood</option><option>backstory</option><option>trait</option><option>mechanic</option></select>
+    <select id="f_status"><option value="">all statuses</option>
+      <option value="shipped-xml">shipped (XML live)</option>
+      <option value="designed-xml">designed — XML-able</option>
+      <option value="designed-csharp">designed — needs C#</option>
+      <option value="reflavored-live">reflavored (live)</option>
+      <option value="parked">parked</option></select>
+    <select id="f_dec"><option value="">all decisions</option>
+      <option>keep</option><option>rework</option><option>cut</option>
+      <option>ship-next</option><option>parked</option></select>
+    <label><input type="checkbox" id="f_contested"> contested only</label>
+    <label><input type="checkbox" id="f_touched"> my overrides only</label>
+    <input type="text" id="f_q" placeholder="search name + effect…">
+    <button id="linkbtn">link decisions file</button>
+    <button id="exportbtn">copy JSON</button>
+    <span id="savestate" class="unlinked">not linked — using browser storage only</span>
+  </div>
+</header>
+<div id="list"></div>
+<footer>
+  A row's decision and note auto-save on every change (debounced ~1s) to the linked file, with a
+  localStorage mirror. Firefox has no File System Access API — there the copy-JSON button is the
+  real save; paste it over the decisions file yourself.
+</footer>
+<script>
+const DATA = /*__DATA__*/[];
+const PREFILL = /*__PREFILL__*/{};
+const el = id => document.getElementById(id);
+
+/* ---------- state: per-row merge — a touched row is the human's, forever ---------- */
+let state = {};            // id -> {d, n, t?}   t = ms timestamp of the human's touch
+let extraKeys = {};        // unknown top-level keys from the decisions file, carried verbatim
+let fileHandle = null, lastWrite = null, dirty = false;
+
+function mergedRow(id){
+  const s = state[id];
+  if (s && s.t) return s;                       // the human touched it: theirs
+  return Object.assign({}, PREFILL[id] || {d:'keep', n:''});
+}
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem('pfr_state');
+    if (raw) state = JSON.parse(raw);
+  }catch(e){}
+}
+function ingestFilePayload(txt){
+  const j = JSON.parse(txt);
+  const rows = j.rows || {};
+  extraKeys = {};
+  for (const k of Object.keys(j)) if (!['rows','sheet','posture','prefill','savedAt','decidedBy'].includes(k)) extraKeys[k] = j[k];
+  let touched = 0, taken = 0;
+  for (const [id, r] of Object.entries(rows)){
+    if (r && r.t){ state[id] = r; touched++; } else taken++;
+  }
+  banner(`Loaded decisions file: kept your ${touched} touched rows; ${taken} rows follow the prefill.`);
+}
+function payload(){
+  const rows = {};
+  for (const it of DATA) rows[it.id] = mergedRow(it.id);
+  return Object.assign({}, extraKeys, {
+    sheet: 'pawn_flavor_register',
+    posture: 'design-review; default KEEP - a row left undecided ships as designed',
+    savedAt: new Date().toISOString(),
+    decidedBy: 'owner-sheet',
+    rows
+  });
+}
+function touchedCount(obj){ let n=0; for (const r of Object.values(obj)) if (r && r.t) n++; return n; }
+
+/* ---------- persistence: FSA + IndexedDB handle, debounced writes, guards ---------- */
+const idb = () => new Promise((res, rej) => {
+  const rq = indexedDB.open('pfr', 1);
+  rq.onupgradeneeded = () => rq.result.createObjectStore('kv');
+  rq.onsuccess = () => res(rq.result); rq.onerror = () => rej(rq.error);
+});
+async function kvSet(k, v){ const db = await idb(); return new Promise((res,rej)=>{ const tx=db.transaction('kv','readwrite'); tx.objectStore('kv').put(v,k); tx.oncomplete=res; tx.onerror=()=>rej(tx.error); }); }
+async function kvGet(k){ const db = await idb(); return new Promise((res,rej)=>{ const tx=db.transaction('kv'); const rq=tx.objectStore('kv').get(k); rq.onsuccess=()=>res(rq.result); rq.onerror=()=>rej(rq.error); }); }
+
+async function linkFile(){
+  if (!window.showSaveFilePicker){ banner('No File System Access API in this browser — use copy JSON.'); return; }
+  try{
+    fileHandle = await showSaveFilePicker({suggestedName:'pawn_flavor_register.decisions.json',
+      types:[{description:'JSON', accept:{'application/json':['.json']}}]});
+    await kvSet('handle', fileHandle);
+    try{ const f = await fileHandle.getFile(); const txt = await f.text(); if (txt.trim()) ingestFilePayload(txt); }catch(e){}
+    dirty = true; scheduleWrite(); render();
+  }catch(e){ /* user cancelled */ }
+}
+async function adoptHandle(h){
+  fileHandle = h;
+  try{ const txt = await (await h.getFile()).text(); if (txt.trim()) ingestFilePayload(txt); }catch(e){}
+  saveState(); render();
+}
+async function reconnect(withGesture){
+  try{
+    const h = await kvGet('handle');
+    if (!h) return false;
+    let perm = await h.queryPermission({mode:'readwrite'});
+    if (perm !== 'granted' && withGesture)
+      perm = await h.requestPermission({mode:'readwrite'});
+    if (perm === 'granted'){ await adoptHandle(h); return true; }
+    if (!withGesture){
+      const s = el('savestate'); s.className = 'unlinked';
+      s.textContent = 'file link remembered — click "link decisions file" once to reconnect';
+    }
+  }catch(e){}
+  return false;
+}
+let writeTimer = null;
+function scheduleWrite(){
+  dirty = true;
+  try{ localStorage.setItem('pfr_state', JSON.stringify(state)); }catch(e){}
+  clearTimeout(writeTimer); writeTimer = setTimeout(writeFile, 1000);
+  saveState();
+}
+async function writeFile(){
+  if (!fileHandle) return;
+  const p = payload();
+  /* truncation guard: never let a transient bug empty the human's file */
+  try{
+    const onDisk = JSON.parse(await (await fileHandle.getFile()).text());
+    const before = touchedCount(onDisk.rows || {});
+    const now = touchedCount(p.rows);
+    if (before > 5 && now < before * 0.5){
+      banner(`REFUSING to write: file holds ${before} touched rows, memory only ${now}. Reload the page.`);
+      return;
+    }
+  }catch(e){}
+  const w = await fileHandle.createWritable();
+  await w.write(JSON.stringify(p, null, 1)); await w.close();
+  lastWrite = new Date(); dirty = false; saveState();
+}
+function saveState(){
+  const s = el('savestate');
+  if (fileHandle){ s.className = 'linked';
+    s.textContent = `linked ✓ ${dirty ? '(writing…)' : lastWrite ? 'last write ' + lastWrite.toLocaleTimeString() : ''}`; }
+  else { s.className = 'unlinked'; s.textContent = 'not linked — using browser storage only'; }
+}
+el('linkbtn').onclick = async () => {
+  if (!fileHandle && await reconnect(true)) return;   // user gesture: stored handle first
+  linkFile();
+};
+el('exportbtn').onclick = async function(){
+  const txt = JSON.stringify(payload(), null, 1);
+  try{ await navigator.clipboard.writeText(txt); this.textContent = 'copied ✓'; }
+  catch(e){ const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); this.textContent = 'select+copy'; }
+  setTimeout(() => this.textContent = 'copy JSON', 1400);
+};
+
+/* ---------- chrome: fold + copy + sticky measurement ---------- */
+function setFold(f){
+  document.body.classList.toggle('folded', f);
+  el('fold').textContent = f ? '▸ brief' : '▾ brief';
+  try{ localStorage.setItem('pfr_folded', f ? '1' : ''); }catch(e){}
+  measure();
+}
+el('fold').onclick = () => setFold(!document.body.classList.contains('folded'));
+for (const b of document.querySelectorAll('[data-copy]')) b.onclick = async () => {
+  const node = el(b.dataset.copy);
+  try{ await navigator.clipboard.writeText(node.textContent);
+       const t=b.textContent; b.textContent='copied ✓'; setTimeout(()=>b.textContent=t,1200); }
+  catch(e){ const r=document.createRange(); r.selectNode(node);
+            getSelection().removeAllRanges(); getSelection().addRange(r); b.textContent='press Ctrl+C'; }
+};
+function measure(){
+  const h = document.querySelector('header').offsetHeight;
+  for (const g of document.querySelectorAll('.gh')) g.style.top = h + 'px';
+}
+addEventListener('resize', measure);
+
+/* ---------- summary (per-faction counts) ---------- */
+function summarize(){
+  const facs = [...new Set(DATA.map(r => r.faction))];
+  const cols = ['childhood','adulthood','backstory','trait','mechanic'];
+  let h = '<b>Initial summary — items per faction</b> (shipped ⁄ designed; p=parked, r=reflavored)<table><tr><th>faction</th>';
+  for (const c of cols) h += `<th>${c}s</th>`;
+  h += '<th>total</th></tr>';
+  for (const f of facs){
+    const rs = DATA.filter(r => r.faction === f);
+    h += `<tr><td>${f}</td>`;
+    for (const c of cols){
+      const s = rs.filter(r => r.layer === c && r.status === 'shipped-xml').length;
+      const d = rs.filter(r => r.layer === c && (r.status === 'designed-xml' || r.status === 'designed-csharp')).length;
+      const p = rs.filter(r => r.layer === c && r.status === 'parked').length;
+      const v = rs.filter(r => r.layer === c && r.status === 'reflavored-live').length;
+      let cell = (s || d) ? `${s} ⁄ ${d}` : '';
+      if (p) cell += (cell ? ' ' : '') + p + 'p';
+      if (v) cell += (cell ? ' ' : '') + v + 'r';
+      h += `<td>${cell || '·'}</td>`;
+    }
+    h += `<td>${rs.length}</td></tr>`;
+  }
+  h += `<tr><th>all</th><th colspan="4"></th><th>${DATA.length}</th></tr></table>`;
+  el('summary').innerHTML = h;
+}
+
+/* ---------- render ---------- */
+const FACTION_ORDER = [...new Set(DATA.map(r => r.faction))];
+for (const f of FACTION_ORDER){ const o = document.createElement('option'); o.textContent = f; el('f_faction').appendChild(o); }
+
+function card(it){
+  const m = mergedRow(it.id);
+  const homage = it.name.includes('HOMAGE') || it.name.includes('APPROVED');
+  return `<div class="row${m.t ? ' touched' : ''}" data-id="${it.id}">
+    <div class="rname">${it.name}
+      ${it.contested ? '<span class="contested">⚑ contested</span>' : ''}
+      <br><span class="chip ${it.layer}">${it.layer}</span><span class="st ${it.status}">${it.status}</span></div>
+    <div class="does"><span class="d1">${it.does}</span>${it.desc ? '<br>' + it.desc : ''}</div>
+    <div class="rctl">
+      <select class="dec ${m.d}">
+        ${['keep','rework','cut','ship-next','parked'].map(o => `<option${o === m.d ? ' selected' : ''}>${o}</option>`).join('')}
+      </select>
+      <input class="note" placeholder="disagree here — your note outranks the row" value="${(m.n || '').replace(/"/g,'&quot;')}">
+    </div>
+  </div>`;
+}
+function render(){
+  const ff = el('f_faction').value, fl = el('f_layer').value, fs = el('f_status').value,
+        fd = el('f_dec').value, fc = el('f_contested').checked, ft = el('f_touched').checked,
+        q = el('f_q').value.toLowerCase();
+  const shown = DATA.filter(it => {
+    const m = mergedRow(it.id);
+    if (ff && it.faction !== ff) return false;
+    if (fl && it.layer !== fl) return false;
+    if (fs && it.status !== fs) return false;
+    if (fd && m.d !== fd) return false;
+    if (fc && !it.contested) return false;
+    if (ft && !m.t) return false;
+    if (q && !(it.name + ' ' + it.does).toLowerCase().includes(q)) return false;
+    return true;
+  });
+  const groups = new Map();
+  for (const it of shown){ if (!groups.has(it.faction)) groups.set(it.faction, []); groups.get(it.faction).push(it); }
+  let html = '';
+  for (const [name, items] of groups){
+    const bulk = items.length > 3
+      ? ` <select class="gbulk" data-g="${name.replace(/"/g,'&quot;')}">
+           <option value="">set shown…</option>
+           ${['keep','rework','cut','ship-next','parked'].map(o => `<option>${o}</option>`).join('')}
+         </select>`
+      : '';
+    html += `<div class="gh${items.length <= 3 ? ' nostick' : ''}">${name} · ${items.length}${bulk}</div>`;
+    html += items.map(card).join('');
+  }
+  el('list').innerHTML = html || '<footer>nothing matches the filters</footer>';
+  const tally = {keep:0, rework:0, cut:0, 'ship-next':0, parked:0};
+  let touched = 0;
+  for (const it of DATA){ const m = mergedRow(it.id); tally[m.d] = (tally[m.d]||0)+1; if (m.t) touched++; }
+  el('counts').textContent =
+    `${DATA.length} items · keep ${tally.keep} · rework ${tally.rework} · cut ${tally.cut}` +
+    ` · ship-next ${tally['ship-next']} · parked ${tally.parked} · your overrides ${touched}`;
+  for (const sel of el('list').querySelectorAll('.gbulk')){
+    sel.onchange = e => {
+      if (!e.target.value) return;
+      const g = e.target.dataset.g;
+      for (const it of shown) if (it.faction === g){
+        const cur = mergedRow(it.id);
+        state[it.id] = {d: e.target.value, n: cur.n || '', t: Date.now()};
+      }
+      scheduleWrite(); render();
+    };
+  }
+  for (const rowEl of el('list').querySelectorAll('.row')){
+    const id = rowEl.dataset.id;
+    rowEl.querySelector('.dec').onchange = e => {
+      const cur = mergedRow(id);
+      state[id] = {d: e.target.value, n: cur.n || '', t: Date.now()};
+      scheduleWrite(); render();
+    };
+    const note = rowEl.querySelector('.note');
+    note.oninput = e => {
+      const cur = mergedRow(id);
+      state[id] = {d: cur.d, n: e.target.value, t: Date.now()};
+      rowEl.classList.add('touched');
+      scheduleWrite();      /* no re-render mid-typing */
+    };
+  }
+  measure();
+}
+let bannerTimer;
+function banner(msg){
+  el('counts').textContent = msg;
+  clearTimeout(bannerTimer); bannerTimer = setTimeout(render, 4000);
+}
+for (const id of ['f_faction','f_layer','f_status','f_dec','f_contested','f_touched'])
+  el(id).onchange = render;
+el('f_q').oninput = render;
+
+/* ---------- boot ---------- */
+loadLocal();
+summarize();
+try{ setFold(localStorage.getItem('pfr_folded') === '1'); }catch(e){ setFold(false); }
+render(); saveState();
+reconnect();   /* silently relink if the browser still grants it; else the button is there */
+</script>
+</body>
+</html>
