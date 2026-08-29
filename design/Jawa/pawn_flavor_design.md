@@ -256,3 +256,15 @@ backstory reveal, skill-return event, aim-vs-moving. The full droid system
 4. Remaining six factions to full three-layer depth.
 5. Slave-arc pieces in v1 core vs later (Collared Expertise is the C#-hungriest).
 6. Phase 2 (lore prose pass) starts only after the owner calls phase 1 wide enough.
+
+## SHIPPED v1 content (2026-08-29, `Jawa_PawnFlavor`, commit fb86639a)
+
+50 BackstoryDefs (2 childhoods + 3 adulthoods × 10 factions) and 5 TraitDefs
+(Jawa_WaterDiscipline, Jawa_SandStoic, Jawa_Numbered, Jawa_Laconic,
+Jawa_PodracerReflexes), wired via one filter per faction (JawaBSC_*). Deployed,
+active at load position 581; first-load verification lives in
+COLD_LOAD_RUN_SHEET_2. Everything XML could express shipped; every mechanic
+needing C# remains designed-not-built — the authoritative deferred list is in
+the mod's About.xml (rebellion walk hook, proximity/mood traits, schedule and
+opinion traits, conditional combat bonuses, hidden reveals, Blackstar truce).
+Droid backstories deliberately absent (parked with DROID_SYSTEM_EMBRACE_1).
