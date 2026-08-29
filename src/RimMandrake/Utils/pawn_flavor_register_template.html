@@ -50,6 +50,7 @@ body.folded #brief{display:none}
 .st.designed-csharp{background:#39301a;color:var(--warn)}
 .st.parked{background:#2c2330;color:#caa8d5}
 .st.reflavored-live{background:#16333a;color:#9adfe0}
+.st.pool-pick{background:#2e2a1a;color:#d9cf9a}
 .contested{color:var(--bad);font-size:11px;margin-left:5px}
 .does{flex:1;color:var(--dim)}
 .does .d1{color:var(--fg)}
@@ -71,7 +72,7 @@ footer{padding:20px 22px;color:var(--dim);font-size:12px}
   </div>
   <div id="brief">
     <div class="panel">
-      <b>The brief.</b> Every piece of pawn-flavor content for the campaign — shipped backstories and
+      <b>The brief.</b> Round 6 volume mandate is in: every faction carries ≥5 childhoods (one COMMON default), ≥10 adulthoods (one COMMON), and a ≥15-trait pool (existing-mod picks marked <i>pool-pick</i> + the faction's own designed traits). Most round-6 entries cite the Inhabited cast character that inspired them. Every piece of pawn-flavor content for the campaign — shipped backstories and
       traits, designed-but-unbuilt items, the reflavored ISEKAI leveling traits, and the parked droid
       set — one row each, grouped by faction. <b>Everything is pre-filled KEEP: you only disagree.</b>
       Decisions: <b>keep</b> (stays as designed) · <b>rework</b> (right idea, wrong shape — say what in
@@ -112,7 +113,8 @@ footer{padding:20px 22px;color:var(--dim);font-size:12px}
       <option value="designed-xml">designed — XML-able</option>
       <option value="designed-csharp">designed — needs C#</option>
       <option value="reflavored-live">reflavored (live)</option>
-      <option value="parked">parked</option></select>
+      <option value="parked">parked</option>
+      <option value="pool-pick">trait pool pick (existing mod trait)</option></select>
     <select id="f_dec"><option value="">all decisions</option>
       <option>keep</option><option>rework</option><option>cut</option>
       <option>ship-next</option><option>parked</option></select>
@@ -280,7 +282,7 @@ addEventListener('resize', measure);
 function summarize(){
   const facs = [...new Set(DATA.map(r => r.faction))];
   const cols = ['childhood','adulthood','backstory','trait','mechanic'];
-  let h = '<b>Initial summary — items per faction</b> (shipped ⁄ designed; p=parked, r=reflavored)<table><tr><th>faction</th>';
+  let h = '<b>Initial summary — items per faction</b> (shipped ⁄ designed; p=parked, r=reflavored, pp=pool picks from existing mods)<table><tr><th>faction</th>';
   for (const c of cols) h += `<th>${c}s</th>`;
   h += '<th>total</th></tr>';
   for (const f of facs){
@@ -291,9 +293,11 @@ function summarize(){
       const d = rs.filter(r => r.layer === c && (r.status === 'designed-xml' || r.status === 'designed-csharp')).length;
       const p = rs.filter(r => r.layer === c && r.status === 'parked').length;
       const v = rs.filter(r => r.layer === c && r.status === 'reflavored-live').length;
+      const pp = rs.filter(r => r.layer === c && r.status === 'pool-pick').length;
       let cell = (s || d) ? `${s} ⁄ ${d}` : '';
       if (p) cell += (cell ? ' ' : '') + p + 'p';
       if (v) cell += (cell ? ' ' : '') + v + 'r';
+      if (pp) cell += (cell ? ' ' : '') + pp + 'pp';
       h += `<td>${cell || '·'}</td>`;
     }
     h += `<td>${rs.length}</td></tr>`;

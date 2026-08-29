@@ -121,7 +121,28 @@ slave interactions; Sandcrawler-Born → mech-work bonus on craft adulthoods).
 Family placement: A/C/E → Jawa Trade Moot (Moot variants lean trade/kin);
 D-hard → Deep Desert Tribes; D-technical stays Jawa.
 
-## Per-faction sets (rounds 2–3 depth)
+## Round 6 — the volume mandate is MET (2026-08-29, third sitting)
+
+All 12 factions now carry ≥5 childhoods (1 COMMON), ≥10 adulthoods (1 COMMON)
+and ≥15-trait pools. 🔑 **The roster of record moved out of this doc**: it lives
+in `src/RimMandrake/Utils/gen_pawn_flavor_register.py` (single-sourced into the
+review sheet `design/Jawa/worldbuilding/review/pawn_flavor_register.html`,
+401 rows). This doc keeps mechanics, capture economies and rulings; the
+per-faction item lists below are HISTORY, not the roster. Round 6 items were
+drafted by four subagents from the INHABITED cast files
+(`design/Jawa/bridge/INHABITED_CAST_*.md`) — most entries cite the character
+that inspired them.
+
+**Invented in round 6, flagged for the owner (contested rows in the sheet):**
+Deepwater "Jetty-Taught" childhood + "Jetty Hand" adulthood (from the cast's
+own catechism, no doc source); Junkers "Junk-Reckoner" trait; Homestead
+"Death-Bed Sitter" (dark register); droid traits "Continuity-Bound",
+"Chassis-Proud", "Wipe-Averse/Wipe-Ready". Trait pools are existing-mod PICKS
+(status `pool-pick`), steered per faction via backstory
+forcedTraits/disallowedTraits (XML) or a spawn hook (C#) — mechanism not yet
+ruled.
+
+## Per-faction sets (rounds 2–3 depth) — ⚠ superseded for the ROSTER by round 6
 
 ### Homestead Defense League — the Tatooine homage set
 Childhoods: **Farm-Fostered** (Luke: learns from elders; horizon-yearning debuff

@@ -150,7 +150,7 @@ d("Deepwater Compact", "trait", "Still-Water Patience", "Lower break weights, sl
 
 # Droids - parked with DROID_SYSTEM_EMBRACE_1
 DP = "Droids (PARKED: DROID_SYSTEM_EMBRACE_1)"
-for n, t in (("Factory-Fresh", "Assembly: boring on purpose - the baseline roll."),
+for n, t in (("COMMON: Factory-Fresh", "Assembly: boring on purpose - the baseline roll. The default."),
              ("Battlefield Salvage", "Assembly: combat stats, one missing capacity."),
              ("Artisan Hand-Build", "Assembly: one savant skill, one crippled."),
              ("Frankenframe", "Assembly: stats re-roll on each down-and-repair."),
@@ -163,6 +163,315 @@ for n, t in (("Three Centuries of Protocol", "Service: social/trade monster, abs
              ("Companion-Imprinted", "Service: huge buffs near ONE colonist, useless after their death."),
              ("Corrupted Core", "Service: savant + periodic scrambled wander/babble.")):
     d(DP, "adulthood", n, t, status="parked")
+
+# ---------------------------------------------------------------------------
+# ROUND 6 — the volume mandate (owner, 2026-08-29): >=5 childhoods (1 COMMON),
+# >=10 adulthoods (1 COMMON), >=15-trait pool per faction. Slates drafted from
+# the INHABITED cast files (design/Jawa/bridge/INHABITED_CAST_*.md) by four
+# subagents, reworked here. "<- name" = the cast character that inspired it.
+# THIS GENERATOR IS THE ROSTER OF RECORD; the design doc keeps mechanics prose.
+# ---------------------------------------------------------------------------
+
+# shipped backstories the slates designated as their faction's COMMON one
+COMMON_SHIPPED = {"Jawa_SandcrawlerBorn", "Jawa_FarmFostered", "Jawa_SunSwornChild",
+                  "Jawa_ScrapSifter", "Jawa_SpringSworn", "Jawa_VatDecanted",
+                  "Jawa_HatchedToTheLine"}
+
+R6 = [  # (faction, layer, name, does[, contested])
+ # Jawa Trade Moot
+ ("Jawa Trade Moot", "childhood", "Still House-Bound", "Marked for the House at birth like every girl born there. <- Ubbi Sur"),
+ ("Jawa Trade Moot", "adulthood", "COMMON: Fuel-Mixer", "Mixes to the ratio taught once, never varies, content. The boring default. <- Wupp"),
+ ("Jawa Trade Moot", "adulthood", "Hem-Cutter", "Measures and logs every robe let down aboard; keeps the strips. <- Nurr"),
+ ("Jawa Trade Moot", "adulthood", "Outrider Scout", "Forward runs into wrecks first; sleeps outside the hull. <- Ossik"),
+ ("Jawa Trade Moot", "adulthood", "Ration-Keeper", "Weighs the crawler's water to the grain, takes the last share. <- Kutt"),
+ # Deepwater Compact
+ ("Deepwater Compact", "childhood", "COMMON: Jetty-Taught", "The four rules before the jetty: the measure, both hands, no violence, no asking. The default.", True),
+ ("Deepwater Compact", "childhood", "Sea-Watcher's Child", "Grew up walking the stakes to a retreating waterline. <- Sethro Vekk"),
+ ("Deepwater Compact", "adulthood", "COMMON: Jetty Hand", "Hauls, fills tankers, logs nothing memorable; most wardens are this.", True),
+ ("Deepwater Compact", "adulthood", "Ledger Clerk", "Better at the books than the chair he wants, and everyone knows it. <- Perrik Osso-Vane"),
+ ("Deepwater Compact", "adulthood", "The Sharing-Keeper", "Gives water away for a living; audited once, found perfect. <- Ilma Sook"),
+ ("Deepwater Compact", "adulthood", "Salt-Pan Worker", "Exiled to the dying shore for a fight inside the walls; works it clean. <- Bosso Tharn"),
+ ("Deepwater Compact", "adulthood", "Dirge-Singer", "Keeps the dead of the posting, one song per warden, in order. <- Ashaa Ottouk"),
+ # the Junkers
+ ("the Junkers", "childhood", "Shadow-Claimed", "The claim-code young: a wreck belongs to whoever's shadow touches it first. <- Fenzik Trawl"),
+ ("the Junkers", "childhood", "Tally-Taught", "Carved a first tally at six; keeps count of everything since. <- Ossa Grell"),
+ ("the Junkers", "childhood", "Sealed-Compartment Survivor", "Years alone in a wreck before being cut out; silence as survival. <- Weft"),
+ ("the Junkers", "adulthood", "COMMON: Cut-Line Welder", "Same cut-line for decades, one opinion, no ambition; outlasts every foreman. <- Perra Tolm"),
+ ("the Junkers", "adulthood", "Last-Fault Man", "Licensed to break one part into everything sold; paid twice for it. <- Vesh'kaa"),
+ ("the Junkers", "adulthood", "Torch-Tuner", "Sets the cut-line, tunes torches to a chord, stops shifts over pitch. <- Modd Ryel"),
+ ("the Junkers", "adulthood", "Shore-Tester", "Stands under the unshored bay first so others don't have to. <- Ketris Vahn"),
+ ("the Junkers", "adulthood", "Death-Processor", "Processes the dead, nothing wasted; kindness and this, no contradiction. <- Prah Sook"),
+ ("the Junkers", "adulthood", "Market Weigher", "Holds the scales on every legal bribe; incorruptible by fear of being found out. <- Rute Baan"),
+ ("the Junkers", "trait", "Junk-Reckoner", "Mood/work speed scales with salvage mass held. Invented to fill the designed-trait floor.", True),
+ # Galactic Empire
+ ("Galactic Empire", "childhood", "COMMON: Farm Levy", "Conscripted farm youth, cheerful, nothing else recorded; joined for rations. The default. <- Bo Ander"),
+ ("Galactic Empire", "childhood", "Conscript, No Next of Kin", "Anonymous intake, no family on file; feeds the helmet cult. <- Sixteen"),
+ ("Galactic Empire", "adulthood", "COMMON: Garrison Clerk", "Loves the forms, no ambition; six years of requisition intake. <- Dova Nissik"),
+ ("Galactic Empire", "adulthood", "Garrison Commander", "Writes every duty rota; will not move a man off shift, ever. <- Ovel Trask"),
+ ("Galactic Empire", "adulthood", "Compliance Officer", "Memorizes the exemption schedule; enforces species policy downward with relish. <- Ivrek Sasso"),
+ ("Galactic Empire", "adulthood", "Drill Instructor", "Bred-soldier melee elite; runs bayonet drill in brutal heat for nobody. <- Hesk Varo"),
+ ("Galactic Empire", "adulthood", "Water-Plant Engineer", "Keeps condensers alive by forging her own requisitions. <- Weyla Torr"),
+ # Blackstar Company
+ ("Blackstar Company", "childhood", "COMMON: Dockside Ganger", "Docks, gangs, undentable cheerfulness; fast, lean, stupid. The default. <- Vidd Anselm"),
+ ("Blackstar Company", "childhood", "Clan Herald's Child", "Nine years playing herald; learns the recital nobody else will do. <- Nel Sunta Rukh"),
+ ("Blackstar Company", "childhood", "Cold-World Hunter's Cub", "First kill young; eats only what is taken, honor as diet. <- Ma'kesh Bruul"),
+ ("Blackstar Company", "adulthood", "COMMON: Contract Registrar", "Genuinely boring; closes the register at the hour and does not reopen it. <- Ivve Odo"),
+ ("Blackstar Company", "adulthood", "Boarding Bosun", "Sets frame, blows the wall, serves notice - alone, in that order. <- Vurgo Nakk"),
+ ("Blackstar Company", "adulthood", "Sniper of the Writ", "One round per contract; will not fire outside the writ. <- Ruune Adlai"),
+ ("Blackstar Company", "adulthood", "Boarding Medic", "Stabilizes the named mark first; the crew are not the deliverable. <- Yenevva Poll"),
+ ("Blackstar Company", "adulthood", "Claims Adjuster", "Prices your death down to the escort discount; never wrong by much. <- Vessine Roal"),
+ ("Blackstar Company", "adulthood", "Ship's Slicer", "Best door-and-lock hand in the Company; tempted to amend the archive. <- Nekk Arda"),
+ ("Blackstar Company", "adulthood", "The Recoverer", "When a contract voids, takes the fee back off the client. <- Adann Ferro"),
+ # Hutt Cartel
+ ("Hutt Cartel", "childhood", "COMMON: Traded Young", "Handed to a household at seven, like all of them; no say in it. The default. <- Poul Adden-Adden"),
+ ("Hutt Cartel", "childhood", "Kolto-Rig Ward", "Raised on rigs her people no longer own; approaching the unwilling forbidden. <- Sen Ilva"),
+ ("Hutt Cartel", "adulthood", "COMMON: Dock Sorter", "Day-gang sorter; keeps her head down for years. The default. <- Tikka Vosh"),
+ ("Hutt Cartel", "adulthood", "Refinery Foreman", "Eighty years on the same tower; recites every mistake you've made, in order. <- Bruk Oleen"),
+ ("Hutt Cartel", "adulthood", "Dock Loadmaster", "The only one allowed to tell a Hutt factor he's wrong. <- Adda Wesh"),
+ ("Hutt Cartel", "adulthood", "Ledger Factor", "Holds the paper on most of the list; pay and you are family. <- Ummu Sekk"),
+ ("Hutt Cartel", "adulthood", "Customs Scanner", "Takes a small, unraised bribe to look away, for years, unbothered. <- Orrin Kwaad"),
+ # Homestead Defense League
+ ("Homestead Defense League", "childhood", "Trough-Taught", "Recites the free-well rule before working a valve; cannot break it even at cost. <- Ord Halloway"),
+ ("Homestead Defense League", "childhood", "Ledger-Child", "Watched unpaid hauling become debt; sharp with favors and grudges. <- Bessa Trull"),
+ ("Homestead Defense League", "adulthood", "COMMON: Vaporator Tender", "Keeps a modest string of condensers running; unremarkable. The default."),
+ ("Homestead Defense League", "adulthood", "Unarmed Militia Captain", "Commands a company that has never deployed; contingency plans never run. <- Duro Vensk"),
+ ("Homestead Defense League", "adulthood", "Arbiter of the Trough", "Settles disputes with no power to enforce them. <- Wenna Dask"),
+ ("Homestead Defense League", "adulthood", "Stillmarket Factor", "Trades and hauls water for pay where water itself is free. <- Bessa Trull"),
+ ("Homestead Defense League", "adulthood", "Quiet Tributary", "Secretly provisions a hostile neighbor; ashamed to admit it. <- Emm Dorrow"),
+ ("Homestead Defense League", "adulthood", "Death-Bed Sitter", "Volunteers to comfort the dying, unmoved by it themselves. Dark register. <- Ren Ashek", True),
+ # Deep Desert Tribes
+ ("Deep Desert Tribes", "childhood", "Cutter's Apprentice", "Held the bowl for the debt-cutter from childhood; marked young. <- Ish'aal"),
+ ("Deep Desert Tribes", "childhood", "Waterless-Crossed", "Survived the Waterless as a child; not all kin returned. <- Ghossa Tal-Vaar"),
+ ("Deep Desert Tribes", "adulthood", "COMMON: Herd-Walker", "Ordinary herding labor earning walking-interest; most Tribe adults. The default."),
+ ("Deep Desert Tribes", "adulthood", "Debt-Cutter", "Marks arrears into skin; trusted with a blade near a throat. <- Ish'aal"),
+ ("Deep Desert Tribes", "adulthood", "Machine-Breaker", "Destroys offworld tech - delighted, not dutiful. <- Kuvv Raan"),
+ ("Deep Desert Tribes", "adulthood", "Measure of the Raid", "Calls the litre-count and the halt, unmoved by anything around them. <- Ann'shu"),
+ ("Deep Desert Tribes", "adulthood", "Unarmed Herald", "Rides ahead alone to recite the farm's own draw-figures. <- Uli Sheek"),
+ ("Deep Desert Tribes", "adulthood", "Compulsive Claimant", "Cannot kill a person standing still; claims them as kin instead. <- Ess'kan"),
+ # Wildsteam Clan
+ ("Wildsteam Clan", "childhood", "Root-Gallery Raised", "Grew up in tunnels below the rows; open ground came near-adulthood. <- Tikk"),
+ ("Wildsteam Clan", "childhood", "Water-Bought Ward", "Bought in from a dry homestead; converted late, overcompensates. <- Ossa Krail"),
+ ("Wildsteam Clan", "adulthood", "COMMON: Row-Tender", "Ordinary terrace and crop-row labor; most Wildsteam adults. The default."),
+ ("Wildsteam Clan", "adulthood", "Debt-Tallied Warden", "Kills only in defense; plants two trees per life taken, tallied publicly. <- Zesh Vool"),
+ ("Wildsteam Clan", "adulthood", "Sole Grievance-Walker", "Travels days alone to deliver one wronged sentence; never complains otherwise. <- Nnu Pell"),
+ ("Wildsteam Clan", "adulthood", "Toll-Keeper of the Stair", "Sets and enforces prices without exception. <- Ohrra"),
+ ("Wildsteam Clan", "adulthood", "Oath-Breaker's Cook", "Secretly feeds outsiders against clan ruling; can't keep the secret. <- Pell Yoon"),
+ # Geonosian Foundry Hive
+ ("Geonosian Foundry Hive", "childhood", "Ledger-Given", "Drone given accounts young for weak mandibles; intellect floor, melee-weak. <- Ovv'gan"),
+ ("Geonosian Foundry Hive", "childhood", "Arena-Blooded", "Volunteered for the arena - the one route up; restless off small posts. <- Rrekk"),
+ ("Geonosian Foundry Hive", "childhood", "Chamber-Selected", "Groomed for the queen's chamber since four, never outdoors; social elite. <- Qu'raa"),
+ ("Geonosian Foundry Hive", "adulthood", "COMMON: Seam Drone", "One assigned station, shift after shift, nothing more expected. The default. <- Ttun"),
+ ("Geonosian Foundry Hive", "adulthood", "Records Clerk", "Files what the caste requires regardless of whether anyone reads it. <- Ovv'gan"),
+ ("Geonosian Foundry Hive", "adulthood", "Void Communicant", "Plateau-cult intellectual; psychic-sensitivity synergy. <- Zzir"),
+ ("Geonosian Foundry Hive", "adulthood", "Body-Forged Machinist", "Crafting elite; self-replaces lost limbs with alloy. <- Gizzek Vor"),
+ ("Geonosian Foundry Hive", "adulthood", "Verifier-Enforcer", "Melee and interrogation; tests claims personally. <- Grask"),
+ ("Geonosian Foundry Hive", "adulthood", "Quartermaster", "Trade and logistics; skims a cut and can justify it. <- Traxx"),
+ # Ascendant Helix
+ ("Ascendant Helix", "childhood", "Terrace-Groomed", "Bred as the scheduled correction of a prior line, told so constantly. <- Ossa-Four"),
+ ("Ascendant Helix", "childhood", "Annex-Raised", "Born among the struck-off; learns the doctrine that discarded them. <- Grandmother 2-C"),
+ ("Ascendant Helix", "adulthood", "COMMON: Line Labourer", "The Made: menial obedient work; follows any voice carrying authority. The default. <- Ladder 9-D"),
+ ("Ascendant Helix", "adulthood", "Vat Attendant", "Pulls decants from the tank; numbed medical routine. <- Ollo Wen"),
+ ("Ascendant Helix", "adulthood", "Discontinuation Officer", "Social elite; delivers the news a line is cut. <- Prith Vane"),
+ ("Ascendant Helix", "adulthood", "Record-Keeper", "Reads the discontinued list daily; great-memory doctrine role. <- Ollun Bex"),
+ ("Ascendant Helix", "adulthood", "Body Auditor", "Itemizes the cost of every curator's gene-work. <- Kesh Mubb"),
+ ("Ascendant Helix", "adulthood", "Annex Warden", "Self-built strength after improvement was denied. <- Sella Kro"),
+]
+
+R6_DROIDS = [  # parked with DROID_SYSTEM_EMBRACE_1, like the rest of the droid set
+ ("adulthood", "COMMON: Post & Ledger", "Logs, carries, counts; no distinguishing skill, no story attached. The default. <- Gate Log Four"),
+ ("adulthood", "Pilgrim's Herald", "Self-appointed oratory elite. <- The Magnificent Oro"),
+ ("adulthood", "Mercy Wipe", "Performs memory wipes on request; Continuity-Protocol-adjacent. <- Mercy Nine"),
+ ("adulthood", "Line Command", "Shooting elite, self-promoted, unquestioned. <- Captain Fourteen"),
+ ("trait", "Continuity-Bound", "Mood/dignity tied to self-ownership doctrine. NEW, no doc source yet.", True),
+ ("trait", "Chassis-Proud", "Mood from own parts/upgrade quality vs rivals. NEW, no doc source yet.", True),
+ ("trait", "Wipe-Averse / Wipe-Ready", "Degree pair: dread vs peace with memory wipe. NEW, no doc source yet.", True),
+]
+
+# 15-trait pools: EXISTING-mod picks per faction ("label(defName) - why").
+# Faction-designed traits already have their own rows and complete each pool.
+POOLS = {
+ "Jawa Trade Moot": [
+  ("greedy (Greedy)", "extracting every credit is the trade philosophy"),
+  ("ascetic (Ascetic)", "Still House and hard-crawler austerity"),
+  ("hard worker (Industriousness)", "the crawler never stops needing hands"),
+  ("great memory (GreatMemory)", "ledgers of prices and units"),
+  ("abrasive (Abrasive)", "chiefs, appraisers, water-wardens all bark"),
+  ("too smart (TooSmart)", "brokers, appraisers, scheme-navigators"),
+  ("nimble (Nimble)", "outriders and speeder-bike culture"),
+  ("jealous (Jealous)", "marriage-broker doctrine applied to people"),
+  ("kleptomaniac (VTE_Kleptomaniac)", "thieving as a virtue per the faith"),
+  ("gourmand (Gourmand)", "the water-warden's forbidden hunger"),
+  ("night owl (NightOwl)", "swap-meet cries run nine hours"),
+  ("wanderlust (VTE_Wanderlust)", "the offworlder-shadow itch"),
+ ],
+ "Deepwater Compact": [
+  ("ascetic (Ascetic)", "the faith's default; used deliberately, not universally"),
+  ("abrasive (Abrasive)", "custodians and wardens"),
+  ("kind (Kind)", "the sharing-keepers"),
+  ("great memory (GreatMemory)", "ledgers, manifests, the Accord recitation"),
+  ("too smart (TooSmart)", "clerks and arbiters"),
+  ("fast learner (FastLearner)", "jetty apprenticeships"),
+  ("delicate (Delicate)", "amphibian frames out of water"),
+  ("gourmand (Gourmand)", "the one licensed excess a year"),
+  ("jealous (Jealous)", "private ledgers, silent grudges"),
+  ("brawler (Brawler)", "the cast is not pacifist by temperament"),
+  ("pessimist (NaturalMood)", "dying-shore fatalism"),
+ ],
+ "the Junkers": [
+  ("cannibal (Cannibal)", "nothing wasted - not the meat either"),
+  ("masochist (Masochist)", "appetite for the near-miss"),
+  ("psychopath (Psychopath)", "no cruelty in it anywhere"),
+  ("tough (Tough)", "casket culture, wreck-field survival"),
+  ("hard worker (Industriousness)", "the yard runs on it"),
+  ("great memory (GreatMemory)", "ledgers and tallies"),
+  ("abrasive (Abrasive)", "half the Strip"),
+  ("greedy (Greedy)", "claim-code culture"),
+  ("body modder (Transhumanist)", "the casket embrace"),
+  ("ascetic (Ascetic)", "the Weight's austerity"),
+  ("undergrounder (Undergrounder)", "wreck-field and sealed-compartment dwellers"),
+  ("occultist (Occultist)", "the Bolt That Missed; relic veneration"),
+ ],
+ "Galactic Empire": [
+  ("ascetic (Ascetic)", "the Order's ration discipline"),
+  ("abrasive (Abrasive)", "compliance culture"),
+  ("too smart (TooSmart)", "staff officers"),
+  ("great memory (GreatMemory)", "rota-writers and clerks"),
+  ("hard worker (Industriousness)", "bureaucratic workhorse baseline"),
+  ("mood spectrum (NaturalMood)", "the cast's dominant axis"),
+  ("kind (Kind)", "the rare decent garrison hand"),
+  ("delicate (Delicate)", "desk officers"),
+  ("tough (Tough)", "garrison soldier stock"),
+  ("shooting spectrum (ShootingAccuracy)", "marksmen and levies both"),
+  ("nerves spectrum (Nerves)", "anonymity-cult discipline under fire"),
+  ("psychopath (Psychopath)", "the Inquisitorial caste"),
+ ],
+ "Blackstar Company": [
+  ("ascetic (Ascetic)", "the Code's discipline"),
+  ("abrasive (Abrasive)", "registrars and recoverers"),
+  ("great memory (GreatMemory)", "heralds and adjusters"),
+  ("too smart (TooSmart)", "slicers and claims desks"),
+  ("brawler (Brawler)", "boarding parties"),
+  ("cannibal (Cannibal)", "the Trandoshan hunter shape"),
+  ("masochist (Masochist)", "'the Penalty'"),
+  ("jealous (Jealous)", "crew rivalries"),
+  ("gourmand (Gourmand)", "hunters who eat what is taken"),
+  ("shooting spectrum (ShootingAccuracy)", "writ discipline vs dock-gang spray"),
+  ("delicate (Delicate)", "the desk half of the Company"),
+  ("beautiful (Beauty)", "the bought face"),
+  ("body modder (Transhumanist)", "bought pieces"),
+ ],
+ "Hutt Cartel": [
+  ("abrasive (Abrasive)", "foremen and loadmasters"),
+  ("great memory (GreatMemory)", "eighty years of your mistakes, in order"),
+  ("ascetic (Ascetic)", "the working floor's austerity"),
+  ("chemical interest (DrugDesire)", "the dock's small comforts"),
+  ("gourmand (Gourmand)", "appetite as culture"),
+  ("mood spectrum (NaturalMood)", "the sorter's resignation"),
+  ("kind (Kind)", "kindness inside the machine"),
+  ("too smart (TooSmart)", "ledger factors"),
+  ("jealous (Jealous)", "household rank-watching"),
+  ("brawler (Brawler)", "the margrave shape"),
+  ("beautiful (Beauty)", "the margrave shape, again"),
+  ("psychopath (Psychopath)", "the unbothered bribe-taker"),
+  ("tycoon (VTE_Tycoon)", "the Cartel shape itself"),
+ ],
+ "Homestead Defense League": [
+  ("ascetic (Ascetic)", "water-disciplined default; 10 of 25 cast"),
+  ("kind (Kind)", "matrons and arbiters"),
+  ("abrasive (Abrasive)", "trough disputes"),
+  ("great memory (GreatMemory)", "grudge-keepers"),
+  ("too smart (TooSmart)", "the militia planner"),
+  ("jealous (Jealous)", "well-rights envy"),
+  ("nerves spectrum (Nerves)", "militia discipline"),
+  ("mood spectrum (NaturalMood)", "spread across the cast"),
+  ("careful shooter (ShootingAccuracy)", "the captain's range habit"),
+  ("brawler (Brawler)", "bar-tesh muscle"),
+  ("delicate (Delicate)", "the frail and the dying-sitters"),
+  ("hard worker (Industriousness)", "subsistence farm ethic"),
+  ("brave (VTE_Brave)", "militia volunteers"),
+  ("technophobe (VTE_Technophobe)", "provincial homestead distrust"),
+ ],
+ "Deep Desert Tribes": [
+  ("ascetic (Ascetic)", "near-universal across the cast"),
+  ("masochist (Masochist)", "the Waterless survivors"),
+  ("abrasive (Abrasive)", "raid-callers"),
+  ("great memory (GreatMemory)", "debt recited by heart"),
+  ("cannibal (Cannibal)", "law-sanctioned"),
+  ("psychopath (Psychopath)", "the Measure's stillness"),
+  ("too smart (TooSmart)", "heralds and cutters"),
+  ("jealous (Jealous)", "kin-claim culture"),
+  ("body modder (Transhumanist)", "the machine-breaker's irony"),
+  ("delicate (Delicate)", "the marked and the frail"),
+  ("careful shooter (ShootingAccuracy)", "cliff-line marksmen"),
+  ("brawler (Brawler)", "close-raid shapes"),
+ ],
+ "Wildsteam Clan": [
+  ("kind (Kind)", "the feeding, healing half of the clan"),
+  ("abrasive (Abrasive)", "wardens and toll-keepers"),
+  ("great memory (GreatMemory)", "near-universal"),
+  ("ascetic (Ascetic)", "vow-keepers"),
+  ("masochist (Masochist)", "penitent shapes"),
+  ("jealous (Jealous)", "stair-toll rivalries"),
+  ("gourmand (Gourmand)", "harvest-feast culture"),
+  ("too smart (TooSmart)", "the bought-in minds"),
+  ("delicate (Delicate)", "the grief-walkers"),
+  ("chemical fascination (DrugDesire)", "the ferment-tender"),
+  ("mood spectrum (NaturalMood)", "spread across the cast"),
+ ],
+ "Geonosian Foundry Hive": [
+  ("hard worker (Industriousness)", "caste-mandated output"),
+  ("undergrounder (Undergrounder)", "hatched in the seams"),
+  ("abrasive (Abrasive)", "foreman bluntness"),
+  ("great memory (GreatMemory)", "recurs across the cast"),
+  ("too smart (TooSmart)", "outcaste intellects"),
+  ("ascetic (Ascetic)", "drone self-denial"),
+  ("psychopath (Psychopath)", "cold caste enforcement"),
+  ("masochist (Masochist)", "arena and plateau culture"),
+  ("body modder (Transhumanist)", "alloy self-replacement"),
+  ("jealous (Jealous)", "caste rivalry"),
+  ("mood spectrum (NaturalMood)", "wide variance in cast"),
+  ("psychic sensitivity ladder (PsychicSensitivity)", "Rakatan-ruin exposure"),
+  ("tough (Tough)", "chitin"),
+ ],
+ "Ascendant Helix": [
+  ("too smart (TooSmart)", "near-universal among curators"),
+  ("abrasive (Abrasive)", "auditors"),
+  ("ascetic (Ascetic)", "doctrine trait"),
+  ("great memory (GreatMemory)", "recorder caste"),
+  ("jealous (Jealous)", "caste envy"),
+  ("body modder (Transhumanist)", "the core doctrine"),
+  ("beauty spectrum (Beauty)", "curated aesthetics"),
+  ("psychopath (Psychopath)", "clinical detachment"),
+  ("mood spectrum (NaturalMood)", "wide range across cast"),
+  ("delicate (Delicate)", "fragile Made lines"),
+  ("kind (Kind)", "rare genuine warmth"),
+  ("cannibal (Cannibal)", "doctrine-justified disposal of failed decants"),
+ ],
+ "Droids (PARKED: DROID_SYSTEM_EMBRACE_1)": [
+  ("great memory (GreatMemory)", "perfect recall of service-years"),
+  ("too smart (TooSmart)", "the calculating chassis"),
+  ("ascetic (Ascetic)", "low-maintenance chassis culture"),
+  ("abrasive (Abrasive)", "quartermasters"),
+  ("jealous (Jealous)", "parts and gyro envy"),
+  ("body modder (Transhumanist)", "more natural on a droid than an organic"),
+  ("nerves spectrum (Nerves)", "control-loop stability under fire"),
+  ("shooting spectrum (ShootingAccuracy)", "war chassis vs salvage frames"),
+  ("brawler (Brawler)", "the thing in trench four"),
+  ("industriousness spectrum (Industriousness)", "duty-cycle flavor"),
+  ("tough (Tough)", "armored war chassis"),
+  ("nimble (Nimble)", "the fastest thing on the plateau"),
+ ],
+}
+
+for fac, layer, name, does, *c in R6:
+    d(fac, layer, name, does, status="designed-xml", contested=bool(c and c[0]))
+for layer, name, does, *c in R6_DROIDS:
+    d(DP, layer, name, does, status="parked", contested=bool(c and c[0]))
+for fac, picks in POOLS.items():
+    for label, why in picks:
+        D.append({"faction": fac, "layer": "trait", "name": label,
+                  "does": "POOL PICK: " + why + ".", "status": "pool-pick",
+                  "contested": False})
 
 ISEKAI_DOES = {
     "Isekai_Protagonist": "x10 XP, +2 stat points/level. Now 'chosen one'.",
@@ -180,11 +489,12 @@ def shipped_rows():
             cat = [c.text for c in bs.find("spawnCategories")][0]
             skills = ", ".join("%s+%s" % (s.tag[:5], s.text) for s in bs.find("skillGains"))
             slot = bs.findtext("slot")
+            dn = bs.findtext("defName")
             rows.append({
-                "id": bs.findtext("defName"),
+                "id": dn,
                 "faction": FACTION_OF_CAT[cat],
                 "layer": "childhood" if slot == "Childhood" else "adulthood",
-                "name": bs.findtext("title"),
+                "name": ("COMMON: " if dn in COMMON_SHIPPED else "") + bs.findtext("title"),
                 "does": (skills or "no skill gains") + ".",
                 "status": "shipped-xml", "contested": False,
                 "desc": (bs.findtext("description") or "")})
