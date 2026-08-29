@@ -53,6 +53,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using RimBridgeServer.Sdk;
@@ -500,6 +501,72 @@ namespace JawaBench.BridgeTools
                            "Verify with a read of something you just changed in XML, not this result alone.",
                     ticksGame = TicksGameSafe()
                 };
+            }).ConfigureAwait(false);
+        }
+
+        // ================================================================
+        //  DebugSettings - the whole "Settings" debug-menu column in one tool
+        // ================================================================
+
+        [Tool(
+            "jawa/debug_settings",
+            Description =
+                "Read or write any field on Verse.DebugSettings by name - the ~45 public " +
+                "static bool flags behind the debug menu's whole 'Settings' column " +
+                "(noAnimals, unlimitedPower, instantRecruit, pathThroughWalls, godMode, " +
+                "fastResearch, fastLearning, fastEcology, fastCrafting, fastCaravans, " +
+                "fastMapUnpollution, alwaysDoLovin, alwaysSocialFight, enableDamage, " +
+                "enablePlayerDamage, enableRandomMentalStates, enableStoryteller, " +
+                "enableRandomDiseases, and more - action='list' reports every field and its " +
+                "current value). One generic reflective tool rather than 45 individual ones, " +
+                "since every field is the same shape (public static bool) and self-documenting " +
+                "by name. ⚠️ godMode overlaps core RimBridge's own rimworld/set_god_mode - " +
+                "either works, they write the same field.",
+            ResultDescription =
+                "list: success, fields[] (name, value). set: success, field, valueBefore, valueAfter.")]
+        public static async Task<object> DebugSettingsTool(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'list' (default) or 'set'.")]
+            string action = "list",
+            [ToolParameter(Description = "set: field name, e.g. 'noAnimals', 'fastCrafting'.")]
+            string field = null,
+            [ToolParameter(Description = "set: true or false.")]
+            bool value = false)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var t = typeof(DebugSettings);
+                var flags = BindingFlags.Public | BindingFlags.Static;
+
+                string a = (action ?? "list").Trim().ToLowerInvariant();
+                if (a == "list")
+                {
+                    var rows = t.GetFields(flags)
+                        .Where(f => f.FieldType == typeof(bool))
+                        .Select(f => new { name = f.Name, value = (bool)f.GetValue(null) })
+                        .OrderBy(r => r.name)
+                        .ToList();
+                    return new { success = true, action = "list", count = rows.Count, fields = rows, ticksGame = TicksGameSafe() };
+                }
+
+                if (a == "set")
+                {
+                    if (string.IsNullOrWhiteSpace(field)) return Fail("Give 'field', e.g. 'noAnimals'.");
+                    var fi = t.GetField(field.Trim(), flags);
+                    if (fi == null || fi.FieldType != typeof(bool))
+                        return Fail("No public static bool field '" + field + "' on DebugSettings.",
+                            new { fields = t.GetFields(flags).Where(f => f.FieldType == typeof(bool)).Select(f => f.Name).OrderBy(n => n).ToList() });
+
+                    bool before = (bool)fi.GetValue(null);
+                    try { fi.SetValue(null, value); }
+                    catch (Exception e) { return Fail("SetValue threw " + e.GetType().Name + ": " + e.Message); }
+
+                    return new { success = true, field = fi.Name, valueBefore = before, valueAfter = (bool)fi.GetValue(null), ticksGame = TicksGameSafe() };
+                }
+
+                return Fail("action must be 'list' or 'set'.");
             }).ConfigureAwait(false);
         }
     }
