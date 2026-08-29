@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T22:57:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T23:02:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -153,6 +153,15 @@ kind:     build
 summary:  New file JawaBenchDebugGems1.cs (7 tools):
 prose:    infrastructure/state/items/BRIDGE_DEBUGACTION_SWEEP_GEMS_1.md
 
+## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
+prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -297,6 +306,16 @@ blocked:  built clean, not deployed - game up, BENCH holds bridge
 summary:  New file JawaBenchDebugGems1.cs (7 tools):
 prose:    infrastructure/state/items/BRIDGE_DEBUGACTION_SWEEP_GEMS_1.md
 
+## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+blocked:  built clean, not deployed - game up, BENCH holds bridge
+summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
+prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
@@ -406,7 +425,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BUG_TURRET_ART_REDO_1.md yet — write one when you have something to say)
+summary:  BUGTURRETARTREDO1 — redraw the cartoonish bug turrets
 prose:    infrastructure/state/items/BUG_TURRET_ART_REDO_1.md
 
 ## STARTING_SHIP_ANTICRAFT_1 Place a disconnected VGE_AnticraftCaster on the starting gravship as a showpiece / v1 challenge
@@ -416,5 +435,5 @@ needs:    deploy
 target:   v1
 kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/STARTING_SHIP_ANTICRAFT_1.md yet — write one when you have something to say)
+summary:  STARTINGSHIPANTICRAFT1 — the disconnected anticraft caster on the starting ship
 prose:    infrastructure/state/items/STARTING_SHIP_ANTICRAFT_1.md
