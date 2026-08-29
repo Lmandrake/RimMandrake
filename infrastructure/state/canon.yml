@@ -797,6 +797,21 @@ needs_ruling:
 # ===========================================================================
 ruled:
 
+  SALVAGERS_FOLD_JUNKERS:
+    question: "Do VFE-Pirates' Salvagers keep fielding warcaskets beside Jawa_Junkers?"
+    ruled_by: OWNER
+    ruled_on: 2026-08-29
+    ruling: >
+      Fold Salvagers into Junkers. One casket faction: Salvagers' presence on the
+      frozen world re-points at `Jawa_Junkers`; warcaskets stay Junker-exclusive by
+      construction. Execution rides PAWN_FLAVOR_STARWARS_1's cut pass (frozen-world
+      settlement edits are expensive-list: back up the save first).
+    evidence: >
+      VFEP_Salvager_Warcasket kinds existed under the separate `Salvagers` FactionDef
+      on the frozen world beside Jawa_Junkers (pawn_flavor_design.md, 2026-08-29 census
+      session). Owner picked "Fold Salvagers into Junkers" from the three options at
+      the bench, 2026-08-29.
+
   PIRATE_DEFNAME_DRIFT_1:
     question: "Is the pirate faction `Pirate` or `AM_EnemyPirate`?"
     ruled_by: DECIDE

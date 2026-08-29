@@ -12,6 +12,24 @@ is phase 1 in progress. Names below are placeholders unless marked homage.
 
 ## Rulings so far (owner, 2026-08-29)
 
+- **Wrong-fiction cuts RULED (owner, 2026-08-29, second sitting)**: cut Minotaur
+  (37), Medieval (27), VQE Ancients (27), VRE Archon (52) — PURE-SW style, Cherry
+  Picker + the moderation skill's post-cut checks. **ISEKAI (47) is PENDED, not
+  spared**: owner verbatim — *"Cut all except ISEKAI... can we put ours in for
+  its? I assume it wires up its leveling system into what it's got somehow?
+  Investigate."* ⇒ investigate whether the RPG-leveling framework can drive OUR
+  Star Wars traits/backstories in place of its shipped 47; cut or rewire on the
+  answer.
+- **"etc." scope RULED: ALL of it** — ThoughtDef labels, MentalBreakDef flavor,
+  xenotype titles are all IN this item. Multi-session prose arc accepted.
+- **Salvagers FOLD INTO Junkers (owner, 2026-08-29)** — one casket faction.
+  VFE-Pirates' `Salvagers` world presence re-points at `Jawa_Junkers`; casket
+  identity stays Junker-exclusive by construction. Canon entry:
+  `infrastructure/state/canon.yml > ruled > SALVAGERS_FOLD_JUNKERS`.
+- **Work order RULED**: cuts first, then deepen the thin factions, then the
+  phase-2 prose pass — "for everything", i.e. the full etc. scope rides the same
+  three-step order.
+
 - **Rebellion walk APPROVED**: Unbending→Broken as trait degrees flipped by a
   Harmony hook on vanilla's existing slave-rebellion resolution. ⛔ No fourth
   resistance meter, no new bar, no new UI — the trait degree IS the state.
@@ -249,13 +267,14 @@ backstory reveal, skill-return event, aim-vs-moving. The full droid system
 (bolts/spikes/wipes as verbs) is v2-scale C#.
 
 ## Open questions
-1. Salvagers vs Junkers casket exclusivity (see rulings).
-2. Wrong-fiction cuts: rule the Isekai/Minotaur/Medieval/VQE/Archon sets.
-3. "etc." scope: ThoughtDef labels, MentalBreakDef flavor, xenotype titles —
-   in or out of this item.
-4. Remaining six factions to full three-layer depth.
+1. ~~Salvagers vs Junkers~~ RULED: fold Salvagers into Junkers (see rulings).
+2. ~~Wrong-fiction cuts~~ RULED: cut Minotaur/Medieval/VQE/Archon now; ISEKAI
+   pends the leveling-rewire investigation (see rulings).
+3. ~~"etc." scope~~ RULED: all of it is in (see rulings).
+4. Remaining six factions to full three-layer depth — NEXT after the cuts.
 5. Slave-arc pieces in v1 core vs later (Collared Expertise is the C#-hungriest).
-6. Phase 2 (lore prose pass) starts only after the owner calls phase 1 wide enough.
+6. Phase 2 (lore prose pass) — runs THIRD, after cuts and faction depth, over
+   everything including ThoughtDef/MentalBreakDef/xenotype-title flavor.
 
 ## SHIPPED v1 content (2026-08-29, `Jawa_PawnFlavor`, commit fb86639a)
 
