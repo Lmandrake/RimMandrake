@@ -216,6 +216,17 @@ namespace JawaIonWeapons
                 return;
             }
 
+            // Same body-size^2 ruling as the flesh tier (ION_STUN_IGNORES_BODY_SIZE_1,
+            // owner 2026-08-29) applied here too: a superheavy mech is BodySize-huge
+            // and should not drop as fast as a battle droid. StunHandler turns this
+            // amount into ticks (amount * 30) before EMPResistance, so scaling the
+            // amount itself scales the resulting stun duration the same way.
+            float bodySize = pawn.BodySize;
+            if (bodySize > 0f)
+            {
+                amount /= bodySize * bodySize;
+            }
+
             DamageInfo emp = new DamageInfo(
                 DamageDefOf.EMP,
                 amount,
