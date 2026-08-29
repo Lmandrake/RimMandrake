@@ -56,9 +56,38 @@ second HarmonyLib contact point in the companion; `JawaBenchArgGuard.cs`'s own d
 says Harmony contact is deliberately isolated to one file, so this is a real design decision
 for whoever builds it, not a quick add).
 
+---
+
+## The missing tool now exists in source — UNBUILT, UNDEPLOYED, UNPROVEN
+
+Owner ruling 2026-08-29: build it, as a second isolated Harmony contact point (not routed
+through `JawaBenchArgGuard.cs`). `jawa/harmony_patches` is written in
+`JawaBenchHarmonyInspect.cs` — takes a type name, returns every Prefix/Postfix/Transpiler/
+Finalizer patching it via `HarmonyLib.Harmony.GetAllPatchedMethods()` +
+`GetPatchInfo(method)`, with each patch's owner id and its patch method's declaring
+assembly (usually names the mod).
+
+⚠️ **Written from the Lib.Harmony 2.3.6 XML doc (net472), not compiled.** `build.py`
+hard-exits under WSL by design — this needs a Windows-side build to prove it even
+compiles, let alone runs. Static-vs-instance on `Harmony.GetAllPatchedMethods()` /
+`GetPatchInfo()` is asserted from the public Harmony API and the extracted XML doc,
+**not verified against the actual DLL bytes** — flag if the build disagrees.
+
+## Prove it, once deployed
+```
+jawa/harmony_patches {typeName: "BiomeDef"}
+jawa/harmony_patches {typeName: "BiomeDef", methodName: "CommonalityOfAnimal"}
+```
+Expect a `postfixes[]` or `transpilers[]` entry whose `patchAssembly` names something
+NOT in the 89-file vendored subset already exhausted — that assembly is the answer to
+this item's criterion below. `methodCount: 0` on `BiomeDef` with no `methodName` filter
+would mean the padder acts through a DIFFERENT type (e.g. a `DefGenerator` or
+`ResolveReferences` transpiler) — worth trying if the direct query comes back empty.
+
 ## criteria
 - [ ] **The padding assembly named with the method that does it** — NOT MET. Needs live Harmony
       patch inspection (see above); offline search of the vendored source subset exhausted.
+      Tool to do this now exists in source; needs build + deploy + a live call to close.
 - [ ] Owner ruling on exclusivity (145 non-cast animals in Desert) and on the 10 excluded
       Anomaly entity records — **owner's call, not FOUNDRY's**, per the item's own framing.
 - [ ] `biome_animal_conflicts.py`'s b-side (`race.wildBiomes`) validity — not re-checked this

@@ -71,10 +71,15 @@ using Verse;
 namespace JawaBench.BridgeTools
 {
     /// <summary>
-    /// All Harmony contact is isolated in this one type on purpose. Nothing else in
-    /// the assembly references HarmonyLib, so if 0Harmony were somehow absent the JIT
-    /// only fails when Install() is actually called - inside a try/catch - rather than
+    /// Harmony contact point #1 of 2 in this companion, isolated on purpose: no Harmony
+    /// type appears in a static field initializer or class-level static ctor here, only
+    /// inside Install() and its Prefix, both guarded by try/catch - so if 0Harmony were
+    /// somehow absent the JIT only fails when Install() is actually called, rather than
     /// taking the whole companion's type load with it.
+    /// WILD_ANIMALS_PADDED_LISTS_1 added contact point #2, JawaBenchHarmonyInspect.cs,
+    /// under the identical discipline (lazy, try/catch-wrapped, no eager static touch) -
+    /// "isolated to one file" now means each file that touches HarmonyLib is
+    /// independently isolated, not that a second one may never exist.
     /// </summary>
     internal static class JawaBenchArgGuard
     {

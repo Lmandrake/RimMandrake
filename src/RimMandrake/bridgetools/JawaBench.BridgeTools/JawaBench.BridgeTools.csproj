@@ -80,9 +80,11 @@
          also the exact version we will be hosted by, so a version skew between
          compile-time and run-time SDK is impossible by construction. -->
     <RimBridgeSdkDir Condition="'$(RimBridgeSdkDir)' == ''">C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3727949765\1.6\Assemblies</RimBridgeSdkDir>
-    <!-- 0Harmony, for JawaBenchArgGuard ONLY (BRIDGE_DROPS_UNKNOWN_PARAMS_1). It comes
-         from the Harmony mod (brrainz.harmony, workshop 3103565406/2009463077), whose
-         "Current" folder is the version-agnostic one the mod itself resolves to.
+    <!-- 0Harmony, for JawaBenchArgGuard.cs (BRIDGE_DROPS_UNKNOWN_PARAMS_1) and
+         JawaBenchHarmonyInspect.cs (WILD_ANIMALS_PADDED_LISTS_1) - the two isolated
+         Harmony contact points. It comes from the Harmony mod (brrainz.harmony,
+         workshop 3103565406/2009463077), whose "Current" folder is the
+         version-agnostic one the mod itself resolves to.
          🔑 Private=false like every other reference here, and for the same reason: at
          runtime RimBridgeServer has ALREADY loaded 0Harmony (it applies its own patch
          classes), so shipping a second copy would give the process two HarmonyLib
