@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:16:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T01:16:58Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -185,7 +185,7 @@ prose:    infrastructure/state/items/ION_TIERS_MEASURED_LIVE_1.md
 ## PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1 The no-pacifist guard covers Empire and Blackstar; the rolls landed on eight factions
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 thin:     no ## verify, no ## criteria
