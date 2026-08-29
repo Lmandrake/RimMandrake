@@ -45,10 +45,15 @@ implied rather than reading them off our patched list. **Not confirmed — hypot
 
 ## verify
 Needs either (a) a live Harmony patch inventory naming what runs on `FactionDef`/`Faction`
-post-load (the same capability gap `WILD_ANIMALS_PADDED_LISTS_1` needs — no bridge tool exists
-for this yet, and building one needs a game-down deploy window), or (b) a bisect: swap to the
-13-mod minimal list plus Jawa_Patches plus Outer Rim only, re-check
-`permanentEnemyToEveryoneExcept`, then add back mod groups until it reappears.
+post-load, or (b) a bisect: swap to the 13-mod minimal list plus Jawa_Patches plus Outer Rim
+only, re-check `permanentEnemyToEveryoneExcept`, then add back mod groups until it reappears.
+
+**(a) is no longer blocked on a missing tool, 2026-08-29.** `jawa/harmony_patches` — built for
+`WILD_ANIMALS_PADDED_LISTS_1`, same capability gap this item names — is written, compiled
+clean (`833dd0d8`), UNDEPLOYED. Once deployed: `jawa/harmony_patches {typeName: "FactionDef"}`
+(and try `Faction` too — the framework hypothesis above suggests a per-instance write, which
+could patch either the def-loading path or a runtime `Faction` method). Still needs a
+game-down deploy window; still genuinely blocked on that, not on tooling.
 
 ## criteria
 - [ ] The interloping mechanism named — narrowed to "likely a C# compatibility framework, not
