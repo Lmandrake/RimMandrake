@@ -35,19 +35,27 @@ USAGE
 SAFETY: read-only except for spawning pawns, which needs a map. Nothing is
 destroyed and the game is never unpaused.
 """
-import sys, json, io, argparse, collections
+import sys, os, json, io, argparse, collections
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
 import rimbridge_client as rc
 
-# 🔑 233 = the [Tool] names DECLARED IN SOURCE, counted by attribute, not by
-# scanning the DLL for strings: build.py's tool_surface reads 200 because two
-# tool names are MENTIONED in other tools' description prose ('jawa/anomaly_',
-# 'jawa/revoke'). The live census counts what REGISTERED, so 198 is the number.
-# ⚠️ This expects the 2026-08-26 down-window deploy (NEXT_RELOAD sec 25). Against a
-# game still running the older DLL this reads 166 and says so, which is correct.
-EXPECT_TOOLS = 233
+# The expectation is MEASURED from the deployed DLL, never quoted: a literal here
+# rotted twice (166, 233). build.py's tool_surface is an upper bound — a tool name
+# quoted in another tool's description prose counts once — so names in PHANTOMS
+# (prose-only, verified absent as [Tool] in source) are subtracted before comparing.
+PHANTOMS = {"jawa/revoke", "jawa/anomaly_"}
+
+
+def expect_tools():
+    sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools")
+    import build
+    dll = r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll"
+    if not os.path.exists(dll):
+        dll = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll"
+    surface = set(build.tool_surface(open(dll, "rb").read()))
+    return {n for n in surface if n.startswith("jawa/")} - PHANTOMS
 NEW = ("jawa/pawn_stats", "jawa/room_get", "jawa/thing_stats")
 
 # The genes measured off live instances on 2026-08-26. The stat must move in the
@@ -94,12 +102,15 @@ def main(argv=None):
     # ---- 1. census -------------------------------------------------------
     print("\n1. CENSUS - what the RUNNING GAME registered")
     names = sorted(x.get("name") for x in b.list_tools())
-    jawa = [n for n in names if n.startswith("jawa/")]
-    note(len(jawa) == EXPECT_TOOLS,
+    jawa = set(n for n in names if n.startswith("jawa/"))
+    expected = expect_tools()
+    missing, extra = expected - jawa, jawa - expected
+    note(not missing and not extra,
          "jawa/ tools registered",
-         "%d (expected %d)%s" % (len(jawa), EXPECT_TOOLS,
-                                 "" if len(jawa) == EXPECT_TOOLS
-                                 else "  <- the DLL in the game is not the one that was deployed"))
+         "%d (deployed DLL declares %d)%s" % (len(jawa), len(expected),
+                                 "" if not missing and not extra
+                                 else "  missing=%s extra=%s <- the DLL in the game is not the one that was deployed"
+                                      % (sorted(missing), sorted(extra))))
     for n in NEW:
         note(n in names, "registered: " + n,
              "" if n in names else "absent from the LIVE list - it does not exist yet")
