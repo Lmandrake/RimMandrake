@@ -84,7 +84,14 @@ exactly.
    source is licensed for modification with credit, so this is a small C# fork:
    a biome-keyed delay multiplier table on the ScenPart. Filed as
    EMPIRE_PURSUIT_SURVEY_SHADOW_1; ship the global 5–8d config meanwhile.
-3. **`canDoNormalRaid`** stays **false** (default; not raised by the owner).
+3. ~~**`canDoNormalRaid`** stays **false** (default; not raised by the owner).~~
+   ⛔ **SUPERSEDED — owner ruled `true` at the bench, 2026-08-28** (recorded in
+   `EMPIRE_PURSUIT_SCENPART_INSTALL_1`): pursuit waves PLUS ordinary storyteller
+   Empire raids; the Empire is both metronome and storyteller threat. The XML
+   block above still shows `false` — use `true`. ⚠️ Runtime install goes through
+   `jawa/scenario_part_add` (2026-08-29), whose `fields` use the C# FIELD names,
+   not these scribe keys — `FirstRaidDelayHours` capital F, etc.; the exact call
+   is in the item.
 
 ## Verification once set
 
