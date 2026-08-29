@@ -39,7 +39,7 @@ own weapon's curve.
 | `Stun`, `NerveStun`, `EMP` | Core | `dinfo.Amount * 30` ticks, no resist stat by default | ❌ none (vanilla baseline gap) |
 | `MechBandShockwave` | Biotech | same StunHandler path, mechanoid-only ability | ❌ none, but scoped to mechs already carrying hand-tuned `EMPResistance` |
 | `guy762_RangedDamage_sonic` (actual sonic pistol/rifle damage) | Star Wars KotOR Weapons and Armor | `additionalHediffs` → `guy762_SonicDisorient`, `severityPerDamageDealt: 0.01` | ⚠️ **field exists, set `False`** — a 1-line patch away from vanilla's linear scaling |
-| `guy762_RangedDamage_KOstun` | KotOR Resources and Materials | vanilla `DamageWorker_Stun` (no resist stat) **+** `additionalHediffs` → `PsychicShock` (the vanilla Anomaly hediff), `severityFixed: 10` | ⚠️ **field exists, set `False`**, and the stun-tick half has no scaling route at all without a custom `stunResistStat` |
+| `guy762_RangedDamage_KOstun` | KotOR Resources and Materials | vanilla `DamageWorker_Stun` **+** `additionalHediffs` → `PsychicShock` (the vanilla Anomaly hediff), `severityFixed: 10` | ⚠️ **field exists, set `False`** on the hediff half (now fixed, squared — see below). ~~stun-tick half has no scaling route~~ **CORRECTED: the stun-tick half is FUNCTIONALLY INERT against a pawn, not merely unscaled** — see the fourth pass below |
 | `guy762_GrenadeDamage_stun` | same | pure vanilla `DamageWorker_Stun`, no `additionalHediffs` | ❌ none, no XML toggle available — would need a new `stunResistStat` |
 | `guy762_RangedDamage_ion` / `_ExplosiveDamage_ion` / `_GrenadeDamage_ion` / `_MeleeDamage_ion` / `_InternalDamage_ion` | same | **closed-source** `guy762_IonizationABF.DamageWorker_Ionize` — no bundled `.cs`, no decompiler available in this environment | live-tested: dealt a normal `Burn` injury (severity = raw damage) to a `Rat`, no buildup/stun hediff appeared. Reads as an ordinary damage type for FLESH targets, not a stun mechanism at all — Star Wars ion weapons are canonically anti-droid/anti-shield, so this may simply not apply to organics and is out of scope for THIS bug. Not tested against a droid/mechanoid this pass. |
 | `OuterRim_Ion` | Outer Rim - Core | `causeStun: true`, `harmsHealth: false`, closed-source `TabulaRasa.DamageWorker_AdvExt` | live-tested at amount 20: zero visible effect on `AA_Behemoth` (bodySize 32, not stunned, not downed) — inconclusive on the SMALL end, a freshly-spawned `Rat` died across the two-hit test sequence and I did not isolate whether this call or the earlier one killed it. Needs a clean, single-hit retest to characterize. |
@@ -153,6 +153,67 @@ game-down window**: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod J
 no `additionalHediffs` at all — no XML lever exists, would need a new `stunResistStat`) and the
 whole `guy762_*_ion` family (this survey's own live test found these are NOT a flesh-stun
 mechanism). `OuterRim_Ion` remains unresolved, see its row above.
+
+## 2026-08-29 (FOUNDRY, fourth pass) — the requested Harmony patch would target DEAD CODE
+
+Owner: "Fully implement the patch please, make sure it's good." Investigated before writing a
+line of C#, per this project's own "read the mechanism, don't guess" rule — and it changed the
+answer.
+
+**`guy762_RangedDamage_KOstun`'s "stun" cannot fire against a Pawn at all, by TWO independent,
+stacking reasons, both read from source:**
+
+1. **`causeStun` is `false`.** Read straight off `guy762.MM.KotORCore`'s own
+   `Defs/DamageDefs/SpecialDamages.xml`: the def (`ParentName="StunBase"`) declares `defName`,
+   `label`, `workerClass`, `externalViolence`, `deathMessage`, `defaultDamage`,
+   `explosionCellFleck`, `soundExplosion`, `combatLogRules`, `additionalHediffs` — **no
+   `<causeStun>` anywhere**, and vanilla's own `StunBase` (`Damages_Stun.xml:4-7`) only sets
+   `harmsHealth`/`makesBlood`, not `causeStun`. `Verse/DamageDef.cs:43`:
+   `public bool causeStun;` — an uninitialized C# `bool` defaults to `false`. Compare vanilla's
+   own `Stun` DamageDef, same parent, which explicitly adds `<causeStun>true</causeStun>` itself
+   — `guy762_RangedDamage_KOstun` never did.
+2. **Even if it were `true`, a hardcoded whitelist blocks it anyway.**
+   `RimWorld/StunHandler.cs:211-254`, `CanBeStunnedByDamage`:
+   ```csharp
+   private bool CanBeStunnedByDamage(DamageDef def)
+   {
+       if (!def.causeStun) return false;
+       ...
+       if (parent is Pawn pawn)
+       {
+           ...
+           if (def == DamageDefOf.Stun) return true;
+           if (def == DamageDefOf.EMP && !pawn.RaceProps.IsFlesh) return true;
+           if (ModsConfig.BiotechActive && def == DamageDefOf.MechBandShockwave && pawn.RaceProps.IsMechanoid) return true;
+           if (def == DamageDefOf.NerveStun && !pawn.RaceProps.IsMechanoid) return true;
+           return false;   // <- every other DamageDef, against a Pawn, ends here
+       }
+       ...
+   }
+   ```
+   Against a `Pawn` (our whole rat-vs-behemoth concern), this is a CLOSED four-def whitelist —
+   `Stun`, `EMP`, `MechBandShockwave`, `NerveStun` only. **No modded DamageDef can ever reach
+   `StunFor()` against a pawn through this path**, `causeStun` notwithstanding. `Notify_
+   DamageApplied` (the method with the duration formula `OTHER_STUN_WEAPONS_SURVEY_1`'s earlier
+   passes named) checks `CanBeStunnedByDamage` on its very first line and returns before ever
+   reaching that formula.
+
+**⇒ There is nothing to patch.** A Harmony patch on `StunHandler.Notify_DamageApplied` would be
+correctly-written code that never executes for this DamageDef against a pawn — same class of
+non-finding as `OuterRim_IonBuildup` earlier in this same survey ("confirmed functionally
+inert"). `DamageWorker_Stun.Apply()` (`Verse/DamageWorker_Stun.cs`) only sets
+`damageResult.stunned = true` as a RESULT FLAG — it does not itself call `StunFor`, so setting
+`workerClass` to a "stun" class without also setting `causeStun` (which the mod never did)
+produces a weapon that LOOKS like a stun weapon by name and flavor text but has no actual stun
+effect on a pawn at all. The `additionalHediffs` → `PsychicShock` severity path (now squared, see
+above) is this weapon's ENTIRE real effect on a pawn's stun-adjacent state — it was already the
+complete fix, not half of one.
+
+**Not investigated:** whether `causeStun=false` + this hardcoded whitelist is itself worth a
+separate item (a general "modded stun weapons cannot cause vanilla StunHandler stun against a
+pawn at all, only against non-Pawn things" finding, independent of body-size scaling) — flagging
+it here rather than filing it, since it's a different bug class from what this survey was asked
+to answer.
 
 ## verify
 Once `JawaIonWeapons.dll` deploys: spawn a Rat (bodySize 0.2) and an `AA_Behemoth` (bodySize
