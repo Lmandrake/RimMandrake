@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T12:55:59Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-08-29T14:16:53Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -27,13 +27,31 @@ kind:     build
 summary:  A companion route that lands WITHOUT the render chain: reproduce the "PreparingForLanding"
 prose:    infrastructure/state/items/GRAVSHIP_LANDING_DIRECT_PLACE_1.md
 
+## PAWN_FLAVOR_STARWARS_1 Assess and rework backstories, childhoods and traits for Star Wars fidelity, with the owner
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  PAWNFLAVORSTARWARS1 — backstories, childhoods and traits, in-fiction
+prose:    infrastructure/state/items/PAWN_FLAVOR_STARWARS_1.md
+
+## DROID_SYSTEM_EMBRACE_1 Droid system: census shipped mechanics, owner curates embrace/extend/cut, then design the spine
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DROID_SYSTEM_EMBRACE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_SYSTEM_EMBRACE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## EMPIRE_PURSUIT_SCENPART_INSTALL_1 Install endless Empire pursuit ScenPart into the campaign, with the owner
 state:    ready
@@ -41,7 +59,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     build
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is UP
 summary:  Install ScenPartRuthlessPursuingMechanoids targeting Empire (the reskinned
 prose:    infrastructure/state/items/EMPIRE_PURSUIT_SCENPART_INSTALL_1.md
 
@@ -52,16 +70,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## PAWN_FLAVOR_STARWARS_1 Assess and rework backstories, childhoods and traits for Star Wars fidelity, with the owner
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  PAWNFLAVORSTARWARS1 — backstories, childhoods and traits, in-fiction
-prose:    infrastructure/state/items/PAWN_FLAVOR_STARWARS_1.md
 
 ## COLD_LOAD_RUN_SHEET_2 Next window run sheet: scenario-tool deploy, pursuit install, ship round trip
 state:    proposed

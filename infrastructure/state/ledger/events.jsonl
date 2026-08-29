@@ -2704,3 +2704,31 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-08-29T12:54:55Z"}
 {"seat":"OWNER","event":"file","id":"OFFICIAL_DUMP_REFREEZE_1","title":"Capture a 584-mod official dump at the next full cold load, then owner re-freezes","kind":"task","target":"v1","needs":"harvest","spec":"dump_request.txt is already armed (contents: all). After the next FULL-list cold load: verify the new capture under DefDump/captures/ carries 584 mods incl. mlie.showmeyourhands and meathax.showmeyourtools, then run: python3 src/RimMandrake/Utils/refresh.py --freeze --by owner (dry-run first without --by). Owner authorized 2026-08-29.","for":"FOUNDRY","ownerSaid":"we need to re-freeze the official mod list again, and likely regenerate your official dump files","ts":"2026-08-29T12:55:59Z"}
 {"seat":"BENCH","event":"file","id":"FLAT_MANIFEST_READER_SWEEP_1","title":"Sweep tools still reading flat DefDump/manifest.json (layout moved to captures/<id>/ 2026-08-22)","kind":"task","target":"v1","needs":"offline","spec":"sync_mod_state.py silently fell back to stale Version.txt rev590 because the flat manifest is gone (fixed 801bd127, pattern: newest captures/*/manifest.json by mtime). grep hit ~10 more candidate readers under src/ and skills/ - artifact.py, apparel_tag_audit.py, animal_live_diff.py, cast_to_xml.py, check_refs.py, def_inventory.py, check_load.py, def_diff.py, extract_bundle_textures.py, dump_projection.py. For each: does it resolve the manifest itself or via a helper, and does it fail loud or silently degrade? Fix silent ones; prefer one shared resolver.","for":"FOUNDRY","ts":"2026-08-29T12:56:58Z"}
+{"seat":"BENCH","event":"claim","id":"PAWN_FLAVOR_STARWARS_1","ts":"2026-08-29T13:03:49Z"}
+{"seat":"BENCH","event":"start","id":"PAWN_FLAVOR_STARWARS_1","ts":"2026-08-29T13:03:50Z"}
+{"seat":"FOUNDRY","event":"needs","id":"PLACER_IDENTITY_REPLAY_1","to":"bridge","ts":"2026-08-29T13:05:28Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PAWN_WEAPON_POOL_JOIN_TOOL_1","ts":"2026-08-29T13:05:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"PAWN_WEAPON_POOL_JOIN_TOOL_1","ts":"2026-08-29T13:05:46Z"}
+{"seat":"FOUNDRY","event":"close","id":"PAWN_WEAPON_POOL_JOIN_TOOL_1","sha":"e26c6f8567a0b8f051d46bbee92b9dad1fba4cae","ts":"2026-08-29T13:12:08Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FLAT_MANIFEST_READER_SWEEP_1","ts":"2026-08-29T13:12:23Z"}
+{"seat":"FOUNDRY","event":"start","id":"FLAT_MANIFEST_READER_SWEEP_1","ts":"2026-08-29T13:12:23Z"}
+{"seat":"FOUNDRY","event":"close","id":"FLAT_MANIFEST_READER_SWEEP_1","sha":"e24625bbecc5cee253767f1b9da61a4b164e24b6","ts":"2026-08-29T13:15:04Z"}
+{"seat":"FOUNDRY","event":"needs","id":"WILD_ANIMALS_PADDED_LISTS_1","to":"bridge","ts":"2026-08-29T13:19:05Z"}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-08-29T13:19:08Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"Game is up again with an updated modlist that has been freshly harvested. This is the new frozen modlist.","ts":"2026-08-29T13:45:59Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-08-29T13:46:07Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-29T13:46:45Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-29T13:46:58Z"}
+{"seat":"FOUNDRY","event":"claim","id":"OFFICIAL_DUMP_REFREEZE_1","ts":"2026-08-29T13:47:34Z"}
+{"seat":"FOUNDRY","event":"start","id":"OFFICIAL_DUMP_REFREEZE_1","ts":"2026-08-29T13:47:34Z"}
+{"seat":"FOUNDRY","event":"close","id":"OFFICIAL_DUMP_REFREEZE_1","sha":"df4bacd14e011e324183df13a053800acde9fa9e","ts":"2026-08-29T13:50:49Z"}
+{"seat":"FOUNDRY","event":"file","id":"ARMOUR_PATCH_GENERATOR_SKIPPED_1","title":"gen_armour_patch.py was never called by refresh.py --patches, only gen_armoury_patch.py was","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-08-29T14:10:21Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ARMOUR_PATCH_GENERATOR_SKIPPED_1","ts":"2026-08-29T14:10:24Z"}
+{"seat":"FOUNDRY","event":"start","id":"ARMOUR_PATCH_GENERATOR_SKIPPED_1","ts":"2026-08-29T14:10:25Z"}
+{"seat":"FOUNDRY","event":"close","id":"ARMOUR_PATCH_GENERATOR_SKIPPED_1","sha":"1a7943a22ab6f25389ee2ef4c0668b96f46ae326","ts":"2026-08-29T14:10:45Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-29T14:12:57Z"}
+{"seat":"FOUNDRY","event":"claim","id":"THRUSTER_INSTABUILD_NEVER_ACTIVE_1","ts":"2026-08-29T14:13:10Z"}
+{"seat":"FOUNDRY","event":"start","id":"THRUSTER_INSTABUILD_NEVER_ACTIVE_1","ts":"2026-08-29T14:13:10Z"}
+{"seat":"OWNER","event":"file","id":"DROID_SYSTEM_EMBRACE_1","title":"Droid system: census shipped mechanics, owner curates embrace/extend/cut, then design the spine","kind":"task","target":"v1","needs":"offline","spec":"Phase 0: functional census of every droid VERB the accepted frameworks ship (capture, restraining bolt, data spike, memory wipe, repair, rebuild-from-corpse, explode, power, assembly, upgrades) across Droid Depot, KotOR Droids+Resources, JDS TSDA, ABF Synstructs. Ground truth: design/Jawa/droid_ruling.md (three-family capture ruling CLOSED 2026-08-13) + frozen OFFICIAL-2026-08-29 dump. Deliverable: review sheet the owner curates. Phase 1+: design doc for the spine; Assembly x Service-Record backstory set (design/Jawa/pawn_flavor_design.md) becomes its flavor layer.","for":"BENCH","ownerSaid":"I'd love to just expand out and take in all the droid complexity right now. Perhaps its time to really wrap our arms around what exists in the mods we've accepted already, then build it up, embrace it, and robustify it right now","ts":"2026-08-29T14:16:53Z"}
+{"seat":"BENCH","event":"claim","id":"DROID_SYSTEM_EMBRACE_1","ts":"2026-08-29T14:16:53Z"}
+{"seat":"BENCH","event":"start","id":"DROID_SYSTEM_EMBRACE_1","ts":"2026-08-29T14:16:53Z"}
