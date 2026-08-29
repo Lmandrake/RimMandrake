@@ -52,25 +52,84 @@ never on empty, so an empty-but-non-null result sails through as `TryExecuteWork
 TRUE with nothing generated. Not confirmed by reading `SpawnThreats`/the strategy worker's own
 source this session — that is the next read, not the group maker or budget.
 
-## verify
-🔴 **The empty-but-non-null `SpawnThreats` hypothesis is REFUTED, read from source, not
-guessed.** `RaidStrategyWorker.SpawnThreats` (base, `Source/RimWorld/RaidStrategyWorker.cs:118`)
-only enters its pawn-generating branch `if (parms.pawnKind != null)` — for a normal group raid
+## The empty-but-non-null `SpawnThreats` hypothesis is REFUTED, read from source
+`RaidStrategyWorker.SpawnThreats` (base, `Source/RimWorld/RaidStrategyWorker.cs:118`) only
+enters its pawn-generating branch `if (parms.pawnKind != null)` — for a normal group raid
 `pawnKind` is null, so it falls straight through to `return null;`. `ImmediateAttack` has no
 override (only `SiegeMechanoid` does). So the base returns **null**, not empty, and
 `TryGenerateRaidInfo`'s `if (pawns == null)` fallback to `PawnGroupMakerUtility.GeneratePawns`
-DOES fire correctly. The empty result is therefore inside `PawnGroupKindWorker_Normal
-.GeneratePawns` (or whichever `PawnGroupKindDef "Combat"`'s `.Worker` resolves to) itself — NOT
-read this session. That class's actual pawn-selection loop (likely `ChooseKindsToGenerate` or
-similarly named) is the next and final read to close this item.
-Also worth checking: `[Isekai Raid] Hostile group incoming!` printed in `Player.log` on every
-attempt (execute or not) — an unrelated mod hooking the same incident type; probably just
-flavor text, not confirmed harmless, not chased further this session.
+DOES fire correctly, reaching `PawnGroupKindWorker_Normal.GeneratePawns`
+(`Source/RimWorld/PawnGroupKindWorker_Normal.cs:48-98`) — read in full this session.
+
+## Traced the ENTIRE selection chain inside GeneratePawns; every gate individually cleared
+`GeneratePawns` calls `PawnGroupMakerUtility.ChoosePawnGenOptionsByPoints(parms.points,
+groupMaker.options, parms)`; an empty result there (zero chosen, no log anywhere in this path)
+is the only way `outPawns` stays empty with no error — matches everything observed (no
+"Cannot generate pawns for..." in the log). That function's per-option gate,
+`GetOptions` → `CanUseOption` → `PawnGenOptionValid`, was read end to end and each individual
+check ruled out for Jawa_Empire_Grunt/Heavy/Specialist:
+- **Cost**: `combatPower` 101/129/119 vs 500 points — not the ceiling by any plausible curve.
+- **Xenotype availability**: `PawnGenerator.XenotypesAvailableFor` (Biotech is active, gating
+  this whole branch) ALWAYS returns at least `{Baseliner: 1.0}` as a fallback when explicit
+  chances don't sum to 1 — structurally cannot return empty. Ruled out.
+- **`generateFightersOnly`**: all three kinds have `isFighter: true` (confirmed off the dump).
+- **Strategy filter** (`CanUsePawnGenOption`, base `RaidStrategyWorker`, since `ImmediateAttack`
+  has no override): only rejects Animal-race kinds before a Humanlike is chosen — Empire's
+  troopers are Humanlike, trivially passes.
+- **`maxPerGroup`**, **bossgroup reservation**, **CreepJoinerFormKindDef**: no plausible reason
+  to apply to a freshly-generated Empire trooper.
+
+**Not fully closed**: `MaxPawnCost`'s two curve/formula inputs —
+`faction.def.maxPawnCostPerTotalPointsCurve` (present, 4 `CurvePoint`s, but the dumper stubs
+`CurvePoint`'s x/y values so they were NOT read numerically this session) and
+`raidStrategy.Worker.MinMaxAllowedPawnGenOptionCost` (base `RaidStrategyWorker`, not read) — if
+either caps the affordable-per-pawn cost below ~101, every option in `GetOptions` fails
+`num > maxOptionCost` silently and `ChoosePawnGenOptionsByPoints` returns nothing, exactly
+matching every observation. **This is the single remaining candidate** after eliminating
+everything else in the chain.
+Also noted, not chased: `[Isekai Raid] Hostile group incoming!` prints in `Player.log` on every
+attempt (execute or not) — an unrelated mod hooking the same incident type; probably flavor
+text, not confirmed harmless.
+
+## 🔴 ROOT CAUSE FOUND AND CONFIRMED LIVE — closing
+
+`Data/Royalty/Defs/FactionDefs/Faction_Empire.xml:121-128` (vanilla, UNPATCHED by
+`GalacticEmpire.xml` — not in scope of any Jawa patch):
+```xml
+<maxPawnCostPerTotalPointsCurve>
+  <points>
+    <li>(500, 100)</li>   <!-- Can always use relatively strong pawns... -->
+    <li>(1000, 150)</li>
+    <li>(2000, 250)</li>
+    <li>(2001, 10000)</li>
+  </points>
+</maxPawnCostPerTotalPointsCurve>
+```
+At `points<=500` the per-pawn cost ceiling is **100**. `Jawa_Empire_Grunt.combatPower = 101` —
+**one point over** — and Heavy (129) / Specialist (119) are further over. Every option in
+`CanUseOption`'s `num > maxOptionCost` check (`Source/RimWorld/PawnGroupMakerUtility.cs:172`)
+therefore fails for every candidate, `GetOptions` returns empty, `ChoosePawnGenOptionsByPoints`
+chooses nothing, and the raid silently generates zero pawns — exactly matching all 7-8 failed
+attempts, all fired at 500 points. This is points-dependent, not Empire-broken: **at 1000+
+points the ceiling rises to 150**, comfortably covering all three kinds.
+
+**Verified live, `points=1200`**: `executed: true`, arrived **6 Jawa_Empire_Grunt · 2
+Jawa_Empire_Heavy · 1 Jawa_Empire_Specialist**. `jawa/pawn_get` on one: apparel
+`OuterRim_StormtrooperCuirass` + `OuterRim_StormtrooperHelmet`, equipment
+`OuterRim_E11BlasterRifle` — exactly the reskin's intended gear, not cataphracts. This closes
+`EMPIRE_RAID_QUICKTEST_1`'s remaining two criteria as well.
+
+**Not a bug to fix** — this is vanilla Empire's own designed floor ("empire doesn't really have
+weak ones"), and Jawa_Empire_Grunt sitting at 101 vs the 100 ceiling is presumably intentional
+or a 1-point coincidence, not something this item's scope covers. Worth a one-line note to
+whoever tunes `combatPower` values: **raids under 500 points can never field an Empire trooper
+at all**, so any low-points Empire test (quicktest or early-game) must use `points>=1000` or
+it will read as a total failure that isn't one.
 
 ## criteria
-- [ ] Confirmed: pawnGroupMakers/options/combatPower are NOT the cause (done — well-formed,
-      trivially affordable).
-- [ ] Read `SpawnThreats` / the auto-resolved strategy worker to find where an empty pawn list
-      can originate and still report `executed: true`.
-- [ ] A raid delivers Empire's own kinds (Jawa_Empire_*) at least once, reproducibly — not yet
-      achieved in 8 attempts across two firing modes.
+- [x] pawnGroupMakers/options/combatPower/xenotype-availability/isFighter/strategy-filter are
+      NOT the cause — each read from source and individually cleared.
+- [x] Root cause named from source: `maxPawnCostPerTotalPointsCurve`'s 100-cap at ≤500 points
+      vs Jawa_Empire_Grunt's combatPower 101.
+- [x] A raid delivers Empire's own kinds reproducibly — confirmed live at 1200 points, correct
+      apparel and weapon.

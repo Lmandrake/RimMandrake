@@ -82,17 +82,25 @@ most likely, per the mechanism already mapped in `AUTHORED_FACTION_RAID_SPAWNS_N
 5 `PawnGroupMaker`s are present on Empire (not an empty list — `jawa/get_defs` reflection
 only stubs complex types, so their internal options were NOT inspected here).
 
-**Untestable while Bug 2 stands:** raider kinds/apparel, and the reply-faction/no-substitution
-check — no Empire pawns ever spawned to inspect.
+## 🔴 Bug 2 SOLVED (`EMPIRE_RAID_NEVER_GENERATES_1`, same session, after this was written):
+not a bug at all — vanilla `Faction_Empire.xml`'s `maxPawnCostPerTotalPointsCurve` caps
+per-pawn cost at 100 for any raid ≤500 points, and `Jawa_Empire_Grunt.combatPower` is 101, one
+point over. **Empire cannot field a single trooper below 500 points; every attempt this session
+used exactly 500.** At `points=1200`: raid fired, **6 Jawa_Empire_Grunt · 2 Jawa_Empire_Heavy ·
+1 Jawa_Empire_Specialist** arrived, wearing `OuterRim_StormtrooperCuirass` +
+`OuterRim_StormtrooperHelmet`, carrying `OuterRim_E11BlasterRifle` — not cataphracts. Both
+remaining criteria below are now confirmed.
 
 ## criteria
 - [x] `OuterRim_GalacticEmpire` in no faction list.
 - [x] Faction leader Jawa_Empire_Leader, title Emperor.
 - [x] Faction ideo "The Rising Order"; faction name "Galactic Empire".
-- [ ] Raiders in OuterRim stormtrooper armor, not cataphracts — BLOCKED by Bug 2, no raid ever
-      produced pawns to inspect.
-- [ ] Reply-faction / no-substitution check — BLOCKED, same reason.
-- [ ] **New, not in the original ask**: name which mod re-adds `PlayerColony`/`PlayerTribe` to
-      Empire's `permanentEnemyToEveryoneExcept` (Bug 1), and read `PawnGroupMakerUtility
-      .GeneratePawns`'s actual empty-pool reason for Empire specifically (Bug 2) — both are
-      `needs: bridge` follow-ups, not solo offline reads.
+- [x] Raiders in OuterRim stormtrooper armor, not cataphracts — confirmed live at
+      `points=1200` (`EMPIRE_RAID_NEVER_GENERATES_1`): the 500-point ceiling, not a real defect.
+- [x] Reply-faction / no-substitution: `actual.faction: Empire, substituted: false` on every
+      fire this session, including the 1200-point success.
+- [x] Bug 2 (raid never generating) — root-caused and closed, see above and
+      `EMPIRE_RAID_NEVER_GENERATES_1`.
+- [ ] Bug 1 remains open: `EMPIRE_WHITELIST_OVERRIDDEN_1` — Empire still reads Neutral to the
+      player by default (the interloping mod/patch not yet named). This item's own spec ("no
+      set_faction_relation step needed") does not hold until that closes.
