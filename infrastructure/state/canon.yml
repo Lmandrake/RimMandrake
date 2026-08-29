@@ -1008,6 +1008,31 @@ empire:
     Owner, 2026-08-20: "OuterRim_GalacticEmpire is no longer in the game, we patch
     Empire." src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml patches
     FactionDef[defName="Empire"] and nothing else.
+  # 🔴 RE-RATIFIED ONCE AND FOR ALL — owner, 2026-08-28, closing the content census
+  # deferred at commit 5b991b79: "Make a bunch of queue items to do the full Empire
+  # reskin, and simply don't include the outerrim galactic empire. Once and for all,
+  # ruled." ⛔ This question does not reopen on evidence.
+  outerrim_faction_excluded: true
+  outerrim_faction_excluded_src: >
+    Cut is ENACTED, not merely ruled — measured 2026-08-28:
+    cherrypicker.py --is-cut FactionDef/OuterRim_GalacticEmpire reads `present` in
+    BOTH the live settings (Mod_3521312241_Mod_CherryPicker.xml, 2026-08-23) and the
+    ratified repo copy (deployed/config/v1_freeze/). The 2026-08-28 census of the
+    mod's 1.6 tree found NOTHING unique dies with the faction: no quests, no
+    incidents, no royalty content, no C# keyed to the defName. Its 17 NPC pawnkinds
+    are orphaned by design (the raid roster is ours — GalacticEmpire.xml), the 3
+    faction-pinned TraderKindDefs and the reward ThingSetMaker patch are DELIBERATELY
+    not retargeted (the Empire is a permanent enemy: it never trades with the player
+    and never gives quests, so both are dead surface), and the Rising Order ideo plus
+    trooper apparel/weapons/trainings survive as defs.
+  outerrim_mod_stays_active: true
+  outerrim_mod_stays_src: >
+    ⛔ The MOD Neronix17.OuterRim.GalacticEmpire is NOT removed — only its NPC
+    FactionDef is cut. GalacticEmpire.xml's raid groups force OuterRim armor
+    (apparelRequired on OuterRim_Stormtrooper*) and field the three OuterRim
+    specialists in the rare raid under MayRequire. Removing the mod silently
+    strips the whole Imperial look. Owner, 2026-08-28: "We would take over the
+    xenotypes, the armor, the equipment."
   tech_level: Ultra
   tech_level_src: >
     Read from the shipped def, 2026-08-21:
@@ -1055,9 +1080,9 @@ empire:
         shape.
   leader_kind: Jawa_Empire_Leader
   leader_kind_src: >
-    🔴 SPECCED, NOT YET SHIPPED — 2026-08-21. faction_world_spec.md:115 makes the leader
-    Emperor Palpatine and src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml:92
-    authors `Jawa_Empire_Leader` with that label, but `grep -rn fixedLeaderKinds src/`
-    returns EMPTY, so the def still ships Royalty's `Empire_Royal_Stellarch`.
-    EMPIRE_GAP_AUDIT.md §4 gap 4. ⚠️ This one bakes: the leader pawn is generated at
-    world creation.
+    ✅ SHIPPED — re-measured 2026-08-28: GalacticEmpire.xml:146-152 Replaces
+    `fixedLeaderKinds` with `Jawa_Empire_Leader` (Emperor Palpatine, authored at
+    JawaFactionRoster.xml:92). The 2026-08-21 line here read "NOT YET SHIPPED,
+    grep fixedLeaderKinds returns EMPTY" — true then, dead now; the patch landed
+    with IMPERIAL_RAID_ROSTER_1. ⚠️ Still bakes at world creation: a world made
+    before the patch keeps the Stellarch. Proof in game is EMPIRE_RAID_QUICKTEST_1.

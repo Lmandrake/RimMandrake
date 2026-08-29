@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T00:59:03Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-08-29T01:01:55Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -35,6 +35,15 @@ target:   v1
 kind:     defect
 summary:  Two live def errors in this session's Player.log (lines ~790 and ~1041), both tracing to
 prose:    infrastructure/state/items/IKEE_WILDNESS_PATCH_DEAD_1.md
+
+## NURSERY_FOOTPRINT_OFF_BY_ONE_1 nursery.lua's declared 16x9 minimum footprint is 1 cell short of its own Battery placement
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/NURSERY_FOOTPRINT_OFF_BY_ONE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NURSERY_FOOTPRINT_OFF_BY_ONE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -72,7 +81,7 @@ prose:    infrastructure/state/items/WORLD_MUTATOR_LANDMARK_IMPORTERS_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## DUMP_PRODUCER_DATED_CAPTURES_1 DefDumper writes captures/<id>/ and prunes to the newest three
 state:    ready
@@ -80,7 +89,7 @@ row:      unassigned
 needs:    harvest
 target:   v1
 kind:     task
-waiting:  needs `harvest`, game is LOADING
+waiting:  needs `harvest`, game is DOWN
 summary:  The producer half of DUMPSTORAGELAYOUTRULING1. Owner, 2026-08-21 13:24:
 prose:    infrastructure/state/items/DUMP_PRODUCER_DATED_CAPTURES_1.md
 
@@ -90,7 +99,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is DOWN
 summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
 prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
 
@@ -100,7 +109,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is DOWN
 summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
 prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
 
@@ -110,7 +119,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is DOWN
 summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
 prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
 
@@ -120,7 +129,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is DOWN
 summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
 prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
 
@@ -130,7 +139,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     task
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is DOWN
 summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
 prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
 
@@ -140,7 +149,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     defect
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is DOWN
 summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
 prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
 
@@ -252,16 +261,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DININGROOM_READS_AS_KITCHEN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DININGROOM_READS_AS_KITCHEN_1.md
 
-## NURSERY_FOOTPRINT_OFF_BY_ONE_1 nursery.lua's declared 16x9 minimum footprint is 1 cell short of its own Battery placement
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NURSERY_FOOTPRINT_OFF_BY_ONE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NURSERY_FOOTPRINT_OFF_BY_ONE_1.md
-
 ## THRUSTER_INSTABUILD_NEVER_ACTIVE_1 Tool-built thrusters link but never contribute range on the full list
 state:    proposed
 row:      unassigned
@@ -271,3 +270,23 @@ kind:     bug
 thin:     no ## spec, no ## criteria
 summary:  THRUSTERINSTABUILDNEVERACTIVE1 — tool-built thrusters link but never contribute range
 prose:    infrastructure/state/items/THRUSTER_INSTABUILD_NEVER_ACTIVE_1.md
+
+## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Quicktest (~90 s map, bridge) proof of the shipped Empire reskin, against vanilla
+prose:    infrastructure/state/items/EMPIRE_RAID_QUICKTEST_1.md
+
+## EMPIRE_TROOPER_TRAINING_1 Jawa_Empire_Grunt/Heavy/Specialist carry no training hediffs (grep Training = 0 in JawaFactionRoster.xml); apply the OuterRim_StormtrooperTraining line via the same mechanism OuterRim_ImpStormtrooper uses — read that def for the field, never guess it
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/EMPIRE_TROOPER_TRAINING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/EMPIRE_TROOPER_TRAINING_1.md

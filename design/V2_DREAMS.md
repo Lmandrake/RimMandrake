@@ -169,10 +169,8 @@ spec:     The three Star Wars packs are a STACK, not alternatives: BTD REMIX def
 verify:   `validate_patch.py --defs`; the xpath matches the intended xenotypes.
 criteria: no wanderer arrives as a non-campaign Twi'lek xenotype.
 
-## B32 Read the shipped `OuterRim_GalacticEmpire` FactionDef
-spec:     `src/Jawa/Jawa_Patches/About/About.xml:36` records that the shipped def has `permanentEnemy false` while the faction dossier says permanent enemy YES — that single field plausibly explains `goodwill 0` AND `canFireNow:false`. Already checked: the live faction list (`hostile:false`, `goodwill:0`, name "the Galactic Empire") and the About.xml note. NOT checked: the shipped `FactionDef` itself — a workshop-tree grep timed out at 120 s twice, so scope it.
-verify:   quote `permanentEnemy` and the hostility fields from the shipped `FactionDef` file, with path and line.
-criteria: EMPTY
+## ~~B32 Read the shipped `OuterRim_GalacticEmpire` FactionDef~~
+⛔ VOID 2026-08-28 — the faction is excluded once and for all (owner ruling, canon.yml `empire.outerrim_faction_excluded`; Cherry Picker cut present in live + ratified lists), so its shipped fields explain nothing about the live game. The 2026-08-28 census read the def anyway: no royalty content, no quests/incidents/C# keyed to it; the goodwill question died with the faction — vanilla `Empire` carries hostility via GalacticEmpire.xml's `permanentEnemyToEveryoneExcept`.
 
 ## B33 Malformed closing tag in an active workshop mod loses two precepts
 spec:     `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2896845138\Defs\Precepts.xml` line 210 reads `<defName>GarryFlowers_Slave_Relation_Vanilla<defName>` — no slash. The live dump shows `GarryFlowers_Slave_Relations` carrying 2 positions where the XML defines 4; `_Equality` and `_Vanilla` are lost with no error. Checked clean: nothing in the religions spec or the Unearned spec depends on them, and the campaign's slave-romance love-gate uses `GarryFlowers_Slave_attendance`, which is unaffected.
@@ -188,8 +186,9 @@ criteria: on a desert quicktest, `jawa/list_things` for `ChunkSlagSteel` on a 25
 
 **CHECK** — deferred observations and measurements, drained from `infrastructure/state/queue/CHECK.md`
 
-## C2 L3 — the Galactic Empire raid, and read the faction back
-spec:     Chain: game DOWN -> deploy BUILD B1 (`--gm`, 30 tools) -> up -> `jawa/set_faction_relation` make `OuterRim_GalacticEmpire` hostile -> `jawa/fire_incident incidentDef=RaidEnemy faction=OuterRim_GalacticEmpire dryRun=true` (abort on `canFireNow:false`) -> fire for real -> screenshot. PASS `points` EXPLICITLY: `points<=0` takes the storyteller default, which on a fresh quicktest is tens of points — one trivial attacker cannot answer whether the Empire reads as an antagonist.
+## ~~C2 L3 — the Galactic Empire raid, and read the faction back~~
+⛔ SUPERSEDED 2026-08-28 by `EMPIRE_RAID_QUICKTEST_1` — this spec drives the raid through `OuterRim_GalacticEmpire`, which is excluded once and for all (canon.yml `empire.outerrim_faction_excluded`). The antagonist is vanilla `Empire`, already hostile by def (no `set_faction_relation` step needed). The successor keeps this item's two hard-won criteria verbatim: pass `points` explicitly, and read the `faction` field in the REPLY, never the one you sent.
+spec:     ~~Chain: game DOWN -> deploy BUILD B1 (`--gm`, 30 tools) -> up -> `jawa/set_faction_relation` make `OuterRim_GalacticEmpire` hostile -> `jawa/fire_incident incidentDef=RaidEnemy faction=OuterRim_GalacticEmpire dryRun=true` (abort on `canFireNow:false`) -> fire for real -> screenshot. PASS `points` EXPLICITLY: `points<=0` takes the storyteller default, which on a fresh quicktest is tens of points — one trivial attacker cannot answer whether the Empire reads as an antagonist.~~
 verify:   EMPTY
 criteria: read the `faction` field in the REPLY, never the one you sent — `IncidentWorker_RaidEnemy::TryResolveRaidFaction` keeps the passed faction only if non-null AND `HostileTo(Faction.OfPlayer)` AND (`!deactivated` OR `parms.forced`); otherwise IL_0059 passes `ldflda IncidentParms::faction` BY REFERENCE into `TryGetRandomFactionForCombatPawnGroupWeighted`, which overwrites it with a random weighted faction and still reports `success:true`. The tool reports `parms.faction` after the worker ran (`JawaBenchTerrainTools.cs:3588`). Then: does the antagonist read as the antagonist on screen.
 
