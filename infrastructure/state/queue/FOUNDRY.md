@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T19:34:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T19:52:04Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -186,16 +186,6 @@ prose:    infrastructure/state/items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## DUMP_PRODUCER_DATED_CAPTURES_1 DefDumper writes captures/<id>/ and prunes to the newest three
-state:    ready
-row:      unassigned
-needs:    harvest
-target:   v1
-kind:     task
-waiting:  needs `harvest`, game is DOWN
-summary:  The producer half of DUMPSTORAGELAYOUTRULING1. Owner, 2026-08-21 13:24:
-prose:    infrastructure/state/items/DUMP_PRODUCER_DATED_CAPTURES_1.md
 
 ## BUILD_BATCH_OVERWRITES_SILENTLY_1 jawa/build_batch reports placed for an op that destroys an existing building in the same run
 state:    ready
