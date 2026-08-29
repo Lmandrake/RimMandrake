@@ -752,23 +752,6 @@
    "contested": true
   },
   {
-   "defName": "DeadColumnMod",
-   "label": "Deadlife column",
-   "mod": "Utility Columns",
-   "size": "1x1",
-   "group": "Small Emplacements \u2014 keep and rework",
-   "stats": "DeadlifeDust ? dmg \u00b7 blast r0.1 \u00b7 range 3.9 \u00b7 burst 3",
-   "desc": "An advanced column for base defense. Upon detecting an enemy in any direction, it will raise nearby human and animal corpses as shamblers. The shamblers will only attack your enemies.",
-   "prefill": {
-    "tech": "Deadlife dust column",
-    "effect": "DeadlifeDust ? dmg \u00b7 blast r0.1 \u00b7 range 3.9 \u00b7 burst 3",
-    "user": "The Assailant's flesh (anomaly)",
-    "state": "undecided"
-   },
-   "prefillNote": "deliberately open \u2014 anomaly verb on a buildable column",
-   "contested": false
-  },
-  {
    "defName": "DetColumnMod",
    "label": "cluster column",
    "mod": "Utility Columns",
@@ -1515,6 +1498,23 @@
    },
    "prefillNote": "INVENTED: gene-ray joke piece, wrong fiction",
    "contested": true
+  },
+  {
+   "defName": "DeadColumnMod",
+   "label": "Deadlife column",
+   "mod": "Utility Columns",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: mod rulings and register",
+   "stats": "DeadlifeDust ? dmg \u00b7 blast r0.1 \u00b7 range 3.9 \u00b7 burst 3",
+   "desc": "An advanced column for base defense. Upon detecting an enemy in any direction, it will raise nearby human and animal corpses as shamblers. The shamblers will only attack your enemies.",
+   "prefill": {
+    "tech": "Deadlife dust column",
+    "effect": "DeadlifeDust ? dmg \u00b7 blast r0.1 \u00b7 range 3.9 \u00b7 burst 3",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT (owner, 2026-08-29): no deadlife references, period",
+   "contested": false
   },
   {
    "defName": "FT_Turret_Mortar",

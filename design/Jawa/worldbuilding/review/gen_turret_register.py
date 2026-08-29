@@ -96,7 +96,7 @@ PLAN_1X1 = {
  "FlameColumnMod":             ("Small Emplacements — keep and rework", "flame column", "Common / multiple", "keep", "INVENTED: this covers the flamer need the large list lacks"),
  "EMPColumnMod":               ("Small Emplacements — keep and rework", "stun pulse (ion-adjacent)", "Jawa clans (player)", "rework", "INVENTED: EMP pulse reads as Jawa ion doctrine"),
  "DetColumnMod":               ("Small Emplacements — keep and rework", "cluster charge column", "Common / multiple", "undecided", "deliberately open — mine-field verb, who gets it?"),
- "DeadColumnMod":              ("Small Emplacements — keep and rework", "Deadlife dust column", "The Assailant's flesh (anomaly)", "undecided", "deliberately open — anomaly verb on a buildable column"),
+ "DeadColumnMod":              ("Small Emplacements — CUT: mod rulings and register", "Deadlife dust column", "Nobody (cut)", "cut", "CUT (owner, 2026-08-29): no deadlife references, period"),
  "AB_Turret_Propane":          ("Small Emplacements — keep and rework", "propane burner", "Junkers", "rework", "INVENTED: jury-rigged fire = junker chemistry"),
  "VFEI2_Thornspitter":         ("Small Emplacements — keep and rework", "thorn spitter (propose sonic rework)", "Geonosian Foundry Hive", "rework", "INVENTED: as the large living turrets — hive tech is sonic"),
  "AA_FoamBelcher":             ("Small Emplacements — keep and rework", "living foam gland", "The Assailant's flesh (anomaly)", "undecided", "living containment — flesh or hive?"),
