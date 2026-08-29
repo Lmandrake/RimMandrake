@@ -80,6 +80,16 @@ strings, written BEFORE the launch:
 - The two save-carried exclusions (`RBM_Roamer`, `SH_MED_MedievalAlchemist`)
   must NOT appear in the removal list.
 
+## ISEKAI reflavor first load (added 2026-08-29, BENCH)
+IsekaiTraits_StarWarsReflavor.xml deployed (validate_patch: 30 ops, 1 match
+each). Decision strings:
+- PASS: next def dump (post-patch) reads TraitDef `Isekai_Protagonist` degree
+  label as `chosen one` and `Isekai_Rank_F` as `guild rating F`
+  (`measure record`); no `Patch operation ... failed` naming
+  IsekaiTraits_StarWarsReflavor in Player.log.
+- Remember: a patch that matches nothing logs nothing — the dump read is the
+  positive check, the log only catches structural failure.
+
 ## SALVAGERS_FOLD_JUNKERS — campaign load check (added 2026-08-29, BENCH)
 WORLDMAP_V1_original.rws edited: Salvagers ("The Comet Party") scribed
 `defeated=True` (backup `.pre_salvager_fold_2026-08-29.rws`). On the next

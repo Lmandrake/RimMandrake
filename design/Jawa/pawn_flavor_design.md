@@ -318,6 +318,16 @@ Star Wars) keeps all machinery working** — that is the "put ours in for its"
 route, plus optional grant-items for our `Jawa_` traits. No backstories shipped;
 no backstory machinery to worry about. Recommendation: reflavor-in-place.
 
+**EXECUTED 2026-08-29 (owner's yes at the bench):**
+`Jawa_Patches/Patches/IsekaiTraits_StarWarsReflavor.xml`, deployed. Five
+origins → Chosen One / Dark Side Ascendant / Force Echo / Foresight-Touched /
+Outlander; the 10-rank ladder → Bounty Hunters' Guild threat ratings (letters
+kept), Rank Nation → sector-class threat. Mechanics bullets and
+conflictingTraits untouched; the 32 genre-neutral traits left as shipped.
+First-load check on COLD_LOAD_RUN_SHEET_2. Still open (owner's call, later):
+grant-items handing out `Jawa_` traits through its generic
+`CompProperties_UseEffectIsekaiTrait`.
+
 ## SHIPPED v1 content (2026-08-29, `Jawa_PawnFlavor`, commit fb86639a)
 
 50 BackstoryDefs (2 childhoods + 3 adulthoods × 10 factions) and 5 TraitDefs
