@@ -673,3 +673,18 @@ from what it says it is for.
 
 **Generalises to:** an empty collection from a bridge read is a shape hypothesis, not a
 measurement. Dump the RAW response once per tool before believing any absence.
+
+### 🔑 A Dialog_NodeTree can absorb ALL input while ignoring its OWN buttons
+BENCH, 2026-08-29, live with the owner. A faction comms offer (Dialog_NodeTree) sat
+focused with `anyWindowAbsorbingAllInput: true` but `currentWindowGetsInput: false` —
+so every map click died AND the owner's real mouse clicks on the dialog's own
+Accept/Reject were ignored. The debug log drawn on top was a red herring; closing it
+changed nothing. The route out, no restart: `rimworld/get_ui_state` (shows those two
+flags and the window stack), `rimworld/get_ui_layout` (every button with a `targetId`
+and its label — it read the whole offer text too), then
+`rimworld/click_ui_target {"targetId": ...}` — which activated 'Reject' cleanly even
+though the window was ignoring the mouse. Verify on `get_ui_state` afterwards:
+`anyWindowAbsorbingAllInput` back to false is the independent read.
+**Generalises to:** "the game ignores my clicks" is a WINDOW-STACK read, not a restart.
+get_ui_state first; click_ui_target goes through the UI event system, not the mouse,
+so it works where the physical cursor cannot.
