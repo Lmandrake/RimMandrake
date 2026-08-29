@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:03:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T01:18:21Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -62,23 +62,3 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  Install ScenPartRuthlessPursuingMechanoids targeting Empire (the reskinned
 prose:    infrastructure/state/items/EMPIRE_PURSUIT_SCENPART_INSTALL_1.md
-
-## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Ruthless Faction Pursuit has one global raidDelayHours. Fork the bundled source
-prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
-
-## QUEUE_GITHUB_MIRROR_1 Pilot: rimflow post-write mirror of queue items to GitHub issues on Lmandrake/RimMaster (named ID as issue title, lane as label) — events.jsonl STAYS the truth, GitHub is visualizer only; prereqs: gh CLI install + auth (owner), confirm repo private
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/QUEUE_GITHUB_MIRROR_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/QUEUE_GITHUB_MIRROR_1.md

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:16:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T01:18:21Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,6 +35,15 @@ target:   v1
 kind:     defect
 summary:  Two live def errors in this session's Player.log (lines ~790 and ~1041), both tracing to
 prose:    infrastructure/state/items/IKEE_WILDNESS_PATCH_DEAD_1.md
+
+## EMPIRE_TROOPER_TRAINING_1 Jawa_Empire_Grunt/Heavy/Specialist carry no training hediffs (grep Training = 0 in JawaFactionRoster.xml); apply the OuterRim_StormtrooperTraining line via the same mechanism OuterRim_ImpStormtrooper uses — read that def for the field, never guess it
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  JawaEmpireGrunt/Heavy/Specialist (JawaFactionRoster.xml:43/96/144) carry no
+prose:    infrastructure/state/items/EMPIRE_TROOPER_TRAINING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -252,16 +261,6 @@ thin:     spec, verify and criteria all present
 summary:  Quicktest (~90 s map, bridge) proof of the shipped Empire reskin, against vanilla
 prose:    infrastructure/state/items/EMPIRE_RAID_QUICKTEST_1.md
 
-## EMPIRE_TROOPER_TRAINING_1 Jawa_Empire_Grunt/Heavy/Specialist carry no training hediffs (grep Training = 0 in JawaFactionRoster.xml); apply the OuterRim_StormtrooperTraining line via the same mechanism OuterRim_ImpStormtrooper uses — read that def for the field, never guess it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  JawaEmpireGrunt/Heavy/Specialist (JawaFactionRoster.xml:43/96/144) carry no
-prose:    infrastructure/state/items/EMPIRE_TROOPER_TRAINING_1.md
-
 ## PAWN_WEAPON_POOL_JOIN_TOOL_1 Join weaponTags against roster IsRangedWeapon/generateAllowChance for the 23 bare-producing kinds
 state:    proposed
 row:      unassigned
@@ -271,3 +270,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAWN_WEAPON_POOL_JOIN_TOOL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAWN_WEAPON_POOL_JOIN_TOOL_1.md
+
+## GM_GATE_INCIDENT_SCHEDULE_1 jawa/incident_schedule (SimTools) queues incidents against the player but sits OUTSIDE #if JAWA_GM_TOOLS, contradicting the EventTools doctrine line 'everything that acts on the player is behind the gate' — audit SimTools' storyteller section for other un-gated actors and wrap them; found 2026-08-28 while fixing the gate guard's false positive
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GM_GATE_INCIDENT_SCHEDULE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GM_GATE_INCIDENT_SCHEDULE_1.md

@@ -162,9 +162,25 @@ def verify_gm_gate(dll, gm):
     being wrong in the other direction means shipping a raid tool believing it
     was gated.
     """
+    # EXACT length-prefixed matches only, 2026-08-28. A bare substring search
+    # false-positives on other tools' Description strings that MENTION the GM
+    # pair ("Unlike jawa/fire_incident this does not fire anything now...") --
+    # those mentions ship in every build and blocked every default deploy.
+    # Both metadata heaps length-prefix their entries: a BLOB-heap SerString
+    # (attribute arg) is <byte len><utf-8>, a #US literal is <byte len*2+1>
+    # <utf-16-le>. A name embedded inside a longer description has printable
+    # text where the length byte must be, so the prefixed form matches ONLY a
+    # standalone occurrence -- the [Tool] name itself.
+    # Calibrated on 2026-08-28 against a known answer in BOTH directions:
+    # gm build -> 1 prefixed hit per tool; default build -> 0, while bare
+    # substring hits were 1 in each (the mentions). Names >127 bytes would need
+    # multi-byte packed lengths; ours are 16-18 bytes, asserted below.
     blob = open(dll, "rb").read()
+    for t in GM_TOOLS:
+        assert len(t.encode("utf-8")) * 2 + 1 < 0x80, "packed-length assumption broken"
     present = [t for t in GM_TOOLS
-               if t.encode("utf-16-le") in blob or t.encode("utf-8") in blob]
+               if bytes([len(t.encode("utf-8"))]) + t.encode("utf-8") in blob
+               or bytes([len(t) * 2 + 1]) + t.encode("utf-16-le") in blob]
 
     if gm:
         # ASCII only: the Windows console is cp1252 here and an em dash prints

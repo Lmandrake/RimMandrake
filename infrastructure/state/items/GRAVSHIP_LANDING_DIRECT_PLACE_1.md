@@ -29,3 +29,14 @@ THRUSTER_INSTABUILD_NEVER_ACTIVE_1 — or a campaign-save flight like tonight's)
 ## criteria
 - [ ] Deployed; a full launch -> arrive -> land completes with no reload and the engine +
       pawns verified on the new map.
+
+## DEPLOYED 2026-08-28 (BENCH), game-down window
+`build.py --gm --apply` clean. Two guard notes from the deploy:
+- The gate guard was refusing EVERY default build on a false positive — other
+  tools' Description strings mention "jawa/fire_incident". Fixed with exact
+  length-prefixed matching, calibrated both directions (gm build -> 1 hit,
+  default -> 0). The guard still refuses a real leak.
+- Deployed --gm to keep the existing live surface (the game copy already
+  carried the GM pair; EMPIRE_RAID_QUICKTEST_1 needs jawa/fire_incident).
+Remaining: the live launch -> arrive -> land proof (needs game-up + bridge),
+via prove_gravship.py (menu-guard + gizmo-fuel revisions committed 24b15280).
