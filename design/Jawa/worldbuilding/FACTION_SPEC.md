@@ -210,6 +210,14 @@ groups       Technical caravan · Recovery team · Enclave defence ·
 
 ### 6 · Wildsteam Clan — AUTHORED `Jawa_WildsteamClan`
 
+⚠️ **The name misleads — owner's clarification, 2026-08-29.** "Wildsteam" is the
+mist off the cool upland springs, NOT steam technology. These are the xenotypes
+that cannot hack the planet's heat or aridity, clustered around what little water
+and vegetation exists. They revere life that weaves into complex relationships
+and ecosystems enabling survival where it otherwise could not — never boilers,
+never machines. Any content reading them as a steam/tech cult is wrong; one
+BENCH brainstorm already made that mistake off the name alone.
+
 ```
 label        Wildsteam Clan
 description  A forest people on the wrong planet, hard-sited to the few cool

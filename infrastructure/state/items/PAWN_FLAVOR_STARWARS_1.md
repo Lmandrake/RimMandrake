@@ -55,3 +55,8 @@ background noise versus which gets reworked into Star Wars fiction. Filed
 
 No `## spec`/`## verify`/`## criteria` yet, deliberately — those come out of
 the BENCH conversation with the owner, not before it.
+
+## Working design doc (BENCH, 2026-08-29)
+The living phase-1 brainstorm, owner rulings included:
+`design/Jawa/pawn_flavor_design.md`. Wildsteam canon clarified in
+`design/Jawa/worldbuilding/FACTION_SPEC.md` §6 the same day.
