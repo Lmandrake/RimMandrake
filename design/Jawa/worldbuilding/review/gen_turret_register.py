@@ -59,7 +59,7 @@ PLAN = {
  "Turret_AutoInferno":        ("Forsaken Sentinels — mech pattern", "mech incendiary launcher", "Forgotten Arsenal (mech)", "keep", "the closest thing to a flame turret on the large list"),
  "Turret_AutoMortar":         ("Forsaken Sentinels — mech pattern", "mech mortar", "Forgotten Arsenal (mech)", "keep", "art not extracted offline (vanilla bundle); exists in game"),
  # ── Settler iron ───────────────────────────────────────────────────────────
- "Turret_Autocannon":         ("Settler Iron — planetary ballistics", "autocannon", "Common / multiple", "keep", "Homestead/Junkers/Hutt garrison staple"),
+ "Turret_Autocannon":         ("Settler Iron — planetary ballistics", "autocannon (Earth-like rapid kinetic)", "Nobody (cut)", "cut", "CUT by the refined bullets rule: rapid Earth-like kinetic; big slow slug-throwers (sniper, mortars, gauss/mass drivers) stay"),
  "Turret_Sniper":             ("Settler Iron — planetary ballistics", "uranium slug rifle", "Homestead Defense League", "keep", ""),
  "Turret_Mortar":             ("Settler Iron — planetary ballistics", "shell mortar (manned)", "Common / multiple", "keep", "player-facing core siege — keep universal"),
  "Turret_RocketswarmLauncher":("Settler Iron — planetary ballistics", "one-shot rocket swarm", "Junkers", "keep", "junker-flavored: a welded rack of rockets"),
@@ -179,6 +179,7 @@ register = {
     "rulingSource": "owner at the bench, 2026-08-29",
     "rules": [
         "BULLETS RULE (owner, verbatim): 'eliminate any 1x1 turrets that obviously use bullets except for sniper turrets' — applied data-driven: projectile damageDef == Bullet -> cut; no 1x1 on the roster is a sniper, so the exception matched nothing (noted, not silently dropped)",
+        "REFINED (owner, 2026-08-29, later): remove obviously Earth-like bullet versions at every size — big, slow slug-throwers are fine (the sniper rationale; mortars, gauss gun, mass driver stay; the E-Web stays because it is a Star Wars repeating blaster despite the MG name)",
     ],
     "alreadyCut": ["all VFE Props & Decor props", "all VFE Pirates", "all Fortifications-Industrial",
                    "VFE-Security except ChargeRailgun/Ballista/TeslaBlaster/(Flame? open)",

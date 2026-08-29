@@ -3,7 +3,8 @@
  "postureMeaning": "ALL turret sizes now in scope. A turret def not on this sheet, or on it with state=cut, is to be cut when we normalize.",
  "rulingSource": "owner at the bench, 2026-08-29",
  "rules": [
-  "BULLETS RULE (owner, verbatim): 'eliminate any 1x1 turrets that obviously use bullets except for sniper turrets' \u2014 applied data-driven: projectile damageDef == Bullet -> cut; no 1x1 on the roster is a sniper, so the exception matched nothing (noted, not silently dropped)"
+  "BULLETS RULE (owner, verbatim): 'eliminate any 1x1 turrets that obviously use bullets except for sniper turrets' \u2014 applied data-driven: projectile damageDef == Bullet -> cut; no 1x1 on the roster is a sniper, so the exception matched nothing (noted, not silently dropped)",
+  "REFINED (owner, 2026-08-29, later): remove obviously Earth-like bullet versions at every size \u2014 big, slow slug-throwers are fine (the sniper rationale; mortars, gauss gun, mass driver stay; the E-Web stays because it is a Star Wars repeating blaster despite the MG name)"
  ],
  "alreadyCut": [
   "all VFE Props & Decor props",
@@ -470,12 +471,12 @@
    "stats": "Bullet 200 dmg \u00b7 range 32.9 \u00b7 burst 3",
    "desc": "A heavy automatic turret. Its large-caliber shells do heavy damage over significant ranges, but its barrel must be refurbished after use. It cannot fire at close-up targets, and may explode when damaged.",
    "prefill": {
-    "tech": "autocannon",
+    "tech": "autocannon (Earth-like rapid kinetic)",
     "effect": "Bullet 200 dmg \u00b7 range 32.9 \u00b7 burst 3",
-    "user": "Common / multiple",
-    "state": "keep"
+    "user": "Nobody (cut)",
+    "state": "cut"
    },
-   "prefillNote": "Homestead/Junkers/Hutt garrison staple",
+   "prefillNote": "CUT by the refined bullets rule: rapid Earth-like kinetic; big slow slug-throwers (sniper, mortars, gauss/mass drivers) stay",
    "contested": false
   },
   {
