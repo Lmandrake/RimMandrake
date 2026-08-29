@@ -98,6 +98,23 @@ each). Decision strings:
 - Remember: a patch that matches nothing logs nothing — the dump read is the
   positive check, the log only catches structural failure.
 
+## EMPIRE_PURSUIT_SURVEY_SHADOW_1 — fork swap first load (added 2026-08-29, BENCH)
+Owner asked for it at the bench. `mandrake.empirepursuit` (survey-shadow fork)
+deployed and swapped into upstream's exact ModsConfig slot (295;
+matathias.ruthlessmechanoids OUT; snapshot
+`infrastructure/state/modlists/ModsConfig_2026-08-29_pre_empirepursuit_swap.xml`;
+saves re-synced to the new 585). Decision strings:
+- FAIL: `ReflectionTypeLoadException` or `Could not resolve type` naming
+  RuthlessPursuingMechanoids; or the campaign load raising a scenario/ScenPart
+  error (`Could not load reference` on the scribed pursuit part) — the fork
+  keeps upstream's defName+class precisely so the save resolves.
+- PASS positive: campaign loads clean AND (bridge, game-up) the item's own
+  verify — scratch game, tiny delays: normal-biome map on the fast clock, an
+  `AB_RockyCrags` (Forsaken Crags) map on the ~4x clock, read from the part's
+  scribed mapRaidTimers in a save.
+- ⚠ RimSort is possibly open: its view is now stale — hit Refresh, don't Save
+  over this.
+
 ## SALVAGERS_FOLD_JUNKERS — campaign load check (added 2026-08-29, BENCH)
 WORLDMAP_V1_original.rws edited: Salvagers ("The Comet Party") scribed
 `defeated=True` (backup `.pre_salvager_fold_2026-08-29.rws`). On the next

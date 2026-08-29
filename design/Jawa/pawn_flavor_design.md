@@ -123,6 +123,11 @@ D-hard → Deep Desert Tribes; D-technical stays Jawa.
 
 ## Round 6 — the volume mandate is MET (2026-08-29, third sitting)
 
+**Owner, 2026-08-29, on the 401-row register: "I'm going to go with them as is
+for now. No further review for now."** ⇒ the round-6 roster is accepted AS-IS,
+including the seven contested-flagged inventions; the review sheet stays open
+for later passes but nothing waits on it. Build proceeds on this roster.
+
 All 12 factions now carry ≥5 childhoods (1 COMMON), ≥10 adulthoods (1 COMMON)
 and ≥15-trait pools. 🔑 **The roster of record moved out of this doc**: it lives
 in `src/RimMandrake/Utils/gen_pawn_flavor_register.py` (single-sourced into the
