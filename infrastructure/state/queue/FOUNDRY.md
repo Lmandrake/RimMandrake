@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T22:19:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T22:57:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -398,3 +398,23 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  The real problem the fake tag was trying to solve is still open, per the mod's own
 prose:    infrastructure/state/items/JAWA_FACTION_SLATE_LOAD_ORDER_1.md
+
+## BUG_TURRET_ART_REDO_1 Redraw VFEI2 Vilelobber/Thornworm/Thornspitter turret art to match the hive register
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BUG_TURRET_ART_REDO_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BUG_TURRET_ART_REDO_1.md
+
+## STARTING_SHIP_ANTICRAFT_1 Place a disconnected VGE_AnticraftCaster on the starting gravship as a showpiece / v1 challenge
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STARTING_SHIP_ANTICRAFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STARTING_SHIP_ANTICRAFT_1.md

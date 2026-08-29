@@ -1191,3 +1191,16 @@ turrets:
     - VGE_HeavyChargeAnnihilator
     - VGE_JavelinPod
     - VGE_MassDriver
+weapons:
+  ion_doctrine_ruled: true
+  ion_doctrine_src: >
+    Owner at the bench, 2026-08-29, verbatim intent: emplaced ion cannon
+    installations belong to the EMPIRE — ion is "normally used to take out
+    spaceships and vehicles". "The Jawa invented and maximize the personal,
+    carryable versions... their innovation was making makeshift personal
+    versions of something normally used to take out spaceships and vehicles,
+    and using it to disable and steal droids and stun people." So: ion
+    EMPLACEMENTS = Imperial anti-ship tech; ion PERSONAL ARMS = the Jawa
+    innovation and identity (JawaIonWeapons). Both ion turrets on the canon
+    roster are assigned to the Galactic Empire on this basis
+    (turret_register.json).

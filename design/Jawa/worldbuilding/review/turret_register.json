@@ -528,6 +528,29 @@
    "form": "Thermal (blaster)"
   },
   {
+   "defName": "OuterRim_HeavyIonCannon",
+   "label": "heavy ion cannon",
+   "mod": "Outer Rim - Core",
+   "size": "3x3",
+   "group": "Imperial Emplacements \u2014 turbolaser doctrine",
+   "stats": "OuterRim_BlasterIon 20 dmg \u00b7 range 80 \u00b7 burst 2",
+   "desc": "A large automatic blaster turret, fires ion bolts which are extremely effective against electronics. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "heavy ion cannon (anti-ship)",
+    "effect": "OuterRim_BlasterIon 20 dmg \u00b7 range 80 \u00b7 burst 2",
+    "user": "Galactic Empire",
+    "state": "keep"
+   },
+   "prefillNote": "RULED (owner, 2026-08-29): installations are the EMPIRE's \u2014 the Jawa invented the makeshift PERSONAL versions of ship-killer ion tech, to disable and steal droids and stun people. The Moot has no installations.",
+   "contested": false,
+   "canon": true,
+   "scaling": "Ionic \u00b7 anchor: wrist blaster (ion) 5dmg \u00d7 9\u00b2=81 \u2192 TARGET 405 \u00b7 current 20 (under)",
+   "scaleTarget": 405,
+   "scaleAnchor": "OuterRim_DroidWeapon_WristBlasterIon",
+   "scaleMult": 81,
+   "form": "Ionic"
+  },
+  {
    "defName": "OuterRim_HeavyLaserCannon",
    "label": "heavy laser cannon",
    "mod": "Outer Rim - Core",
@@ -597,29 +620,6 @@
    "form": "OuterRim_ProtonBomb"
   },
   {
-   "defName": "OuterRim_HeavyIonCannon",
-   "label": "heavy ion cannon",
-   "mod": "Outer Rim - Core",
-   "size": "3x3",
-   "group": "Jawa Ion \u2014 capture, not kill",
-   "stats": "OuterRim_BlasterIon 20 dmg \u00b7 range 80 \u00b7 burst 2",
-   "desc": "A large automatic blaster turret, fires ion bolts which are extremely effective against electronics. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
-   "prefill": {
-    "tech": "heavy ion cannon",
-    "effect": "OuterRim_BlasterIon 20 dmg \u00b7 range 80 \u00b7 burst 2",
-    "user": "Jawa Trade Moot",
-    "state": "rework"
-   },
-   "prefillNote": "INVENTED+CONTESTED: ion is the JAWA mechanic (JawaIonWeapons) \u2014 proposed as the Moot's one great emplacement rather than Imperial stock",
-   "contested": true,
-   "canon": true,
-   "scaling": "Ionic \u00b7 anchor: wrist blaster (ion) 5dmg \u00d7 9\u00b2=81 \u2192 TARGET 405 \u00b7 current 20 (under)",
-   "scaleTarget": 405,
-   "scaleAnchor": "OuterRim_DroidWeapon_WristBlasterIon",
-   "scaleMult": 81,
-   "form": "Ionic"
-  },
-  {
    "defName": "VGE_AnticraftCaster",
    "label": "anticraft caster",
    "mod": "Vanilla Gravship Expanded - Chapter 1",
@@ -633,7 +633,7 @@
     "user": "Gravship (the Utinni)",
     "state": "keep"
    },
-   "prefillNote": "",
+   "prefillNote": "RULED (owner): exceptional \u2014 keep; ALSO goes on the STARTING ship, disconnected, as a bizarre showpiece and part of the initial v1 challenge (item STARTING_SHIP_ANTICRAFT_1).",
    "contested": false,
    "canon": true,
    "scaling": "Thermal (beam) \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
@@ -986,11 +986,11 @@
    "prefill": {
     "tech": "matter atomiser",
     "effect": "Burn 86 dmg \u00b7 range 34",
-    "user": "Hutt Cartel",
+    "user": "Junkers",
     "state": "rework"
    },
-   "prefillNote": "INVENTED: exotic executive toys read as Hutt purchases",
-   "contested": true,
+   "prefillNote": "RULED (owner, 2026-08-29): all four Dedicated Turrets go to the JUNKERS \u2014 the makeshift look.",
+   "contested": false,
    "canon": true,
    "scaling": "Thermal (beam) \u00b7 anchor: salvaged laser sniper rifle 39dmg \u00d7 4\u00b2=16 \u2192 TARGET 624 \u00b7 current 86 (under)",
    "scaleTarget": 624,
@@ -1012,8 +1012,8 @@
     "user": "Junkers",
     "state": "rework"
    },
-   "prefillNote": "INVENTED: industrial waste weapon \u2014 junker chemistry",
-   "contested": true,
+   "prefillNote": "RULED (owner): Junkers, makeshift look.",
+   "contested": false,
    "canon": true,
    "scaling": "Ionic \u00b7 anchor: Slavemaster Stun Carbine 25dmg \u00d7 4\u00b2=16 \u2192 TARGET 400 \u00b7 current 0 (under)",
    "scaleTarget": 400,
@@ -1032,11 +1032,11 @@
    "prefill": {
     "tech": "vaporiser",
     "effect": "Burn 86 dmg \u00b7 range 30 \u00b7 burst 180",
-    "user": "Hutt Cartel",
+    "user": "Junkers",
     "state": "rework"
    },
-   "prefillNote": "INVENTED: as Atomiser",
-   "contested": true,
+   "prefillNote": "RULED (owner): Junkers, makeshift look.",
+   "contested": false,
    "canon": true,
    "scaling": "Thermal (beam) \u00b7 anchor: salvaged laser sniper rifle 39dmg \u00d7 4\u00b2=16 \u2192 TARGET 624 \u00b7 current 86 (under)",
    "scaleTarget": 624,
@@ -1058,8 +1058,8 @@
     "user": "Junkers",
     "state": "rework"
    },
-   "prefillNote": "INVENTED: scrap-lightning",
-   "contested": true,
+   "prefillNote": "RULED (owner): Junkers, makeshift look.",
+   "contested": false,
    "canon": true,
    "scaling": "Thermal (beam) \u00b7 anchor: salvaged laser sniper rifle 39dmg \u00d7 4\u00b2=16 \u2192 TARGET 624 \u00b7 current 97 (under)",
    "scaleTarget": 624,
@@ -1081,7 +1081,7 @@
     "user": "Ascendant Helix",
     "state": "keep"
    },
-   "prefillNote": "few-and-excellent ultratech \u2014 Helix doctrine",
+   "prefillNote": "RULED (owner, 2026-08-29): Helix.",
    "contested": false,
    "canon": true,
    "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 4\u00b2=16 \u2192 TARGET 960 \u00b7 current 187 (under)",
@@ -1101,11 +1101,11 @@
    "prefill": {
     "tech": "tesla arc",
     "effect": "Smoke 10 dmg \u00b7 range 32.9",
-    "user": "Junkers",
-    "state": "rework"
+    "user": "Ascendant Helix",
+    "state": "keep"
    },
-   "prefillNote": "INVENTED: jury-rigged arc thrower; alt: Deepwater (conductive water defense)",
-   "contested": true,
+   "prefillNote": "RULED (owner, 2026-08-29): tesla blaster and charge railgun read as HELIX.",
+   "contested": false,
    "canon": true,
    "scaling": "Ionic (arc) \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
    "form": "Ionic (arc)"
@@ -1144,8 +1144,8 @@
     "user": "Geonosian Foundry Hive",
     "state": "rework"
    },
-   "prefillNote": "INVENTED: as Vilelobber",
-   "contested": true,
+   "prefillNote": "RULED (owner): ART REDO required \u2014 too cartoonish. Item BUG_TURRET_ART_REDO_1.",
+   "contested": false,
    "canon": true,
    "scaling": "Living/bio \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
    "form": "Living/bio"
@@ -1164,7 +1164,7 @@
     "user": "Geonosian Foundry Hive",
     "state": "rework"
    },
-   "prefillNote": "INVENTED: hive tech is SONIC \u2014 re-projectile to sonic to match KotORRanged_sonic identity",
+   "prefillNote": "RULED (owner, 2026-08-29): ART REDO required \u2014 too cartoonish. Sonic re-projectile still proposed (INVENTED). Item BUG_TURRET_ART_REDO_1.",
    "contested": true,
    "canon": true,
    "scaling": "Living/bio \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
@@ -1314,12 +1314,12 @@
    "stats": "OuterRim_BlasterIon 10 dmg \u00b7 range 29.9 \u00b7 burst 2",
    "desc": "A large automatic blaster turret, fires ion bolts which are extremely effective against electronics. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
    "prefill": {
-    "tech": "light ion cannon",
+    "tech": "light ion cannon (anti-vehicle)",
     "effect": "OuterRim_BlasterIon 10 dmg \u00b7 range 29.9 \u00b7 burst 2",
-    "user": "Jawa Trade Moot",
+    "user": "Galactic Empire",
     "state": "keep"
    },
-   "prefillNote": "ion = capture-not-kill, the Jawa identity",
+   "prefillNote": "RULED (owner, 2026-08-29): emplaced ion is Imperial; Jawa ion is personal and carryable, by their own innovation.",
    "contested": false,
    "canon": true,
    "scaling": "Ionic \u00b7 anchor: wrist blaster (ion) 5dmg \u00d7 1\u00b2=1 \u2192 TARGET 5 \u00b7 current 10 (OVER)",
@@ -1454,8 +1454,8 @@
     "user": "Geonosian Foundry Hive",
     "state": "rework"
    },
-   "prefillNote": "INVENTED: as the large living turrets \u2014 hive tech is sonic",
-   "contested": true,
+   "prefillNote": "RULED (owner): ART REDO required \u2014 too cartoonish. Item BUG_TURRET_ART_REDO_1.",
+   "contested": false,
    "canon": true,
    "scaling": "Living/bio \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
    "form": "Living/bio"

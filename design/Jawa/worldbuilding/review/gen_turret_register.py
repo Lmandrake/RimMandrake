@@ -46,12 +46,12 @@ PLAN = {
  "OuterRim_ProtonArtillery":  ("Imperial Emplacements — turbolaser doctrine", "proton siege artillery", "Galactic Empire", "keep", "r500 map-wide siege piece"),
  "RN2SWGun_EWeb_MG":          ("Imperial Emplacements — turbolaser doctrine", "E-Web repeating blaster", "Galactic Empire", "keep", "INVENTED: E-Web is the iconic Imperial field gun — assigned Empire, not settlers"),
  # ── Jawa ion ───────────────────────────────────────────────────────────────
- "OuterRim_HeavyIonCannon":   ("Jawa Ion — capture, not kill", "heavy ion cannon", "Jawa Trade Moot", "rework", "INVENTED+CONTESTED: ion is the JAWA mechanic (JawaIonWeapons) — proposed as the Moot's one great emplacement rather than Imperial stock"),
+ "OuterRim_HeavyIonCannon":   ("Imperial Emplacements — turbolaser doctrine", "heavy ion cannon (anti-ship)", "Galactic Empire", "keep", "RULED (owner, 2026-08-29): installations are the EMPIRE's — the Jawa invented the makeshift PERSONAL versions of ship-killer ion tech, to disable and steal droids and stun people. The Moot has no installations."),
  # ── Gravship ───────────────────────────────────────────────────────────────
  "VGE_PointDefenseTurret":    ("Gravship Hardpoints — the Utinni's guns", "point-defense battery", "Gravship (the Utinni)", "keep", ""),
  "VGE_GaussGun":              ("Gravship Hardpoints — the Utinni's guns", "gauss slug", "Gravship (the Utinni)", "keep", ""),
  "VGE_JavelinPod":            ("Gravship Hardpoints — the Utinni's guns", "missile pod", "Gravship (the Utinni)", "keep", ""),
- "VGE_AnticraftCaster":       ("Gravship Hardpoints — the Utinni's guns", "anticraft caster", "Gravship (the Utinni)", "keep", ""),
+ "VGE_AnticraftCaster":       ("Gravship Hardpoints — the Utinni's guns", "anticraft caster", "Gravship (the Utinni)", "keep", "RULED (owner): exceptional — keep; ALSO goes on the STARTING ship, disconnected, as a bizarre showpiece and part of the initial v1 challenge (item STARTING_SHIP_ANTICRAFT_1)."),
  "VGE_MassDriver":            ("Gravship Hardpoints — the Utinni's guns", "mass driver", "Gravship (the Utinni)", "keep", "could equally read Rakatan — the Utinni IS Rakatan-built; overlap is canon-friendly"),
  "VGE_HeavyChargeAnnihilator":("Gravship Hardpoints — the Utinni's guns", "heavy charge annihilator", "Gravship (the Utinni)", "keep", ""),
  # ── Forsaken sentinels ─────────────────────────────────────────────────────
@@ -67,15 +67,15 @@ PLAN = {
  "VFES_Turret_Ballista":      ("Settler Iron — planetary ballistics", "ballista (primitive)", "Deep Desert Tribes", "keep", "the one primitive emplacement — Tusken siege"),
  "DrillTurret":               ("Settler Iron — planetary ballistics", "mining drill (tool, not weapon)", "Jawa clans (player)", "keep", "owner-ruled IN: utility, definitely belongs"),
  # ── Exotic energy ──────────────────────────────────────────────────────────
- "Turret_Atomiser":           ("Exotic Energy — bought and jury-rigged", "matter atomiser", "Hutt Cartel", "rework", "INVENTED: exotic executive toys read as Hutt purchases"),
- "Turret_Vaporiser":          ("Exotic Energy — bought and jury-rigged", "vaporiser", "Hutt Cartel", "rework", "INVENTED: as Atomiser"),
- "Turret_Sludger":            ("Exotic Energy — bought and jury-rigged", "sludge thrower", "Junkers", "rework", "INVENTED: industrial waste weapon — junker chemistry"),
- "Turret_Zapper":             ("Exotic Energy — bought and jury-rigged", "arc zapper", "Junkers", "rework", "INVENTED: scrap-lightning"),
- "VFES_Turret_ChargeRailgun": ("Exotic Energy — bought and jury-rigged", "charge railgun", "Ascendant Helix", "keep", "few-and-excellent ultratech — Helix doctrine"),
- "VFES_Turret_TeslaBlaster":  ("Exotic Energy — bought and jury-rigged", "tesla arc", "Junkers", "rework", "INVENTED: jury-rigged arc thrower; alt: Deepwater (conductive water defense)"),
+ "Turret_Atomiser":           ("Exotic Energy — bought and jury-rigged", "matter atomiser", "Junkers", "rework", "RULED (owner, 2026-08-29): all four Dedicated Turrets go to the JUNKERS — the makeshift look."),
+ "Turret_Vaporiser":          ("Exotic Energy — bought and jury-rigged", "vaporiser", "Junkers", "rework", "RULED (owner): Junkers, makeshift look."),
+ "Turret_Sludger":            ("Exotic Energy — bought and jury-rigged", "sludge thrower", "Junkers", "rework", "RULED (owner): Junkers, makeshift look."),
+ "Turret_Zapper":             ("Exotic Energy — bought and jury-rigged", "arc zapper", "Junkers", "rework", "RULED (owner): Junkers, makeshift look."),
+ "VFES_Turret_ChargeRailgun": ("Exotic Energy — bought and jury-rigged", "charge railgun", "Ascendant Helix", "keep", "RULED (owner, 2026-08-29): Helix."),
+ "VFES_Turret_TeslaBlaster":  ("Exotic Energy — bought and jury-rigged", "tesla arc", "Ascendant Helix", "keep", "RULED (owner, 2026-08-29): tesla blaster and charge railgun read as HELIX."),
  # ── Living turrets ─────────────────────────────────────────────────────────
- "VFEI2_Vilelobber":          ("Living Turrets — hive and flesh", "bio-lobber (propose sonic rework)", "Geonosian Foundry Hive", "rework", "INVENTED: hive tech is SONIC — re-projectile to sonic to match KotORRanged_sonic identity"),
- "VFEI2_Thornworm":           ("Living Turrets — hive and flesh", "thorn spitter (propose sonic rework)", "Geonosian Foundry Hive", "rework", "INVENTED: as Vilelobber"),
+ "VFEI2_Vilelobber":          ("Living Turrets — hive and flesh", "bio-lobber (propose sonic rework)", "Geonosian Foundry Hive", "rework", "RULED (owner, 2026-08-29): ART REDO required — too cartoonish. Sonic re-projectile still proposed (INVENTED). Item BUG_TURRET_ART_REDO_1."),
+ "VFEI2_Thornworm":           ("Living Turrets — hive and flesh", "thorn spitter (propose sonic rework)", "Geonosian Foundry Hive", "rework", "RULED (owner): ART REDO required — too cartoonish. Item BUG_TURRET_ART_REDO_1."),
  "AA_BlackDefiler":           ("Living Turrets — hive and flesh", "flesh spewer", "The Assailant's flesh (anomaly)", "rework", "INVENTED: the bioweapon's own emplacement — poison forest / mycotic jungle set-dressing"),
 }
 
@@ -98,9 +98,9 @@ PLAN_1X1 = {
  "DetColumnMod":               ("Small Emplacements — keep and rework", "cluster charge column", "Common / multiple", "undecided", "deliberately open — mine-field verb, who gets it?"),
  "DeadColumnMod":              ("Small Emplacements — CUT: mod rulings and register", "Deadlife dust column", "Nobody (cut)", "cut", "CUT (owner, 2026-08-29): no deadlife references, period"),
  "AB_Turret_Propane":          ("Small Emplacements — keep and rework", "propane burner", "Junkers", "rework", "INVENTED: jury-rigged fire = junker chemistry"),
- "VFEI2_Thornspitter":         ("Small Emplacements — keep and rework", "thorn spitter (propose sonic rework)", "Geonosian Foundry Hive", "rework", "INVENTED: as the large living turrets — hive tech is sonic"),
+ "VFEI2_Thornspitter":         ("Small Emplacements — keep and rework", "thorn spitter (propose sonic rework)", "Geonosian Foundry Hive", "rework", "RULED (owner): ART REDO required — too cartoonish. Item BUG_TURRET_ART_REDO_1."),
  "AA_FoamBelcher":             ("Small Emplacements — keep and rework", "living foam gland", "The Assailant's flesh (anomaly)", "undecided", "living containment — flesh or hive?"),
- "OuterRim_LightIonCannon":    ("Small Emplacements — keep and rework", "light ion cannon", "Jawa Trade Moot", "keep", "ion = capture-not-kill, the Jawa identity"),
+ "OuterRim_LightIonCannon":    ("Small Emplacements — keep and rework", "light ion cannon (anti-vehicle)", "Galactic Empire", "keep", "RULED (owner, 2026-08-29): emplaced ion is Imperial; Jawa ion is personal and carryable, by their own innovation."),
  "OuterRim_LightLaserCannon_Coruscant": ("Small Emplacements — keep and rework", "light blaster cannon", "Common / multiple", "keep", ""),
  "OuterRim_LightLaserCannon_Corellia":  ("Small Emplacements — keep and rework", "light blaster cannon", "Common / multiple", "keep", ""),
  "OuterRim_LightLaserCannon_Tatooine":  ("Small Emplacements — keep and rework", "light blaster cannon", "Homestead Defense League", "keep", "INVENTED: the Tatooine pattern belongs on moisture-farm walls"),
