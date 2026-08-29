@@ -192,5 +192,213 @@ namespace JawaBench.BridgeTools
                 storage,
             };
         }
+
+        // ================================================================
+        //  jawa/set_quality, jawa/container_fill - the REPLAY half of the
+        //  identity-grade export above. PLACER_IDENTITY_REPLAY_1, 2026-08-29:
+        //  bills and storage settings already had setter tools when this was
+        //  filed (jawa/bill_add, jawa/configure_bill, jawa/storage_settings,
+        //  all added 2026-08-26, two days before the item) - only quality on
+        //  an ALREADY-PLACED thing (build_batch's quality param is batch-wide,
+        //  not per-thing) and container CONTENTS had no writer at all.
+        // ================================================================
+
+        [Tool(
+            "jawa/set_quality",
+            Description =
+                "Set CompQuality on ANY already-existing thing by id - the per-thing replay " +
+                "counterpart to jawa/build_batch's quality parameter, which only applies uniformly " +
+                "to a whole batch at spawn time. Use this to give an individual placed thing (or a " +
+                "container's held item, addressed the same way jawa/export_things reports it) the " +
+                "quality an exported identity row recorded. A thing with no CompQuality (most " +
+                "non-crafted things) is refused by name, not silently ignored.",
+            ResultDescription =
+                "success, thing{id, defName}, quality{was, asked, now} read back off CompQuality " +
+                "after the write.")]
+        public static async Task<object> SetQuality(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "ThingID of the target - jawa/list_things / jawa/export_things address things this way.")]
+            string thing = null,
+            [ToolParameter(Description = "Awful|Poor|Normal|Good|Excellent|Masterwork|Legendary.")]
+            string quality = null)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (Current.Game == null) return Fail("No game loaded.");
+
+                string terr;
+                var t = FindLiveThingById(thing, out terr);
+                if (t == null) return Fail(terr);
+
+                var cq = t.TryGetComp<CompQuality>();
+                if (cq == null)
+                    return Fail(t.def.defName + " (" + t.ThingID + ") has no CompQuality - it cannot carry a quality.");
+
+                if (string.IsNullOrWhiteSpace(quality)) return Fail("Give 'quality'.");
+                QualityCategory q;
+                try { q = (QualityCategory)Enum.Parse(typeof(QualityCategory), quality.Trim(), true); }
+                catch { return Fail("Bad quality '" + quality + "'. Awful|Poor|Normal|Good|Excellent|Masterwork|Legendary."); }
+
+                var was = cq.Quality;
+                cq.SetQuality(q, ArtGenerationContext.Outsider);
+
+                return new
+                {
+                    success = true,
+                    thing = new { id = t.ThingID, defName = t.def.defName },
+                    quality = new { was = was.ToString(), asked = q.ToString(), now = cq.Quality.ToString() },
+                    ticksGame = TicksGameSafe()
+                };
+            }).ConfigureAwait(false);
+        }
+
+        [Tool(
+            "jawa/container_fill",
+            Description =
+                "Insert freshly-made items into ANY thing that implements IThingHolder (a crate, a " +
+                "fuel tank, a hopper - any container jawa/export_things's `contents` field can read) " +
+                "- the setter half of that export field, which had no writer until now. Each item is " +
+                "made fresh via ThingMaker.MakeThing(def, stuff) (never taken from elsewhere on the " +
+                "map) then added straight into the holder's ThingOwner via TryAdd - it does NOT spawn " +
+                "on the map first, so this is not jawa/build_batch. " +
+                "items grammar: 'ThingDef[:stuff[:quality[:count]]];...' - trailing fields may be " +
+                "left empty ('Steel::Excellent:20') to skip one and still set a later one. count " +
+                "above the def's stackLimit is CLAMPED and reported, never silently dropped.",
+            ResultDescription =
+                "success, target{id, defName}, cleared (count of things destroyed if clear=true), " +
+                "added[] per entry (def, stuff, quality, requestedCount, addedCount, " +
+                "clampedToStackLimit), failed[] naming any entry that did not parse or was refused, " +
+                "contentsAfter read back off the holder the same shape as jawa/export_things.")]
+        public static async Task<object> ContainerFill(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "ThingID of the holder (a spawned container-like thing).")]
+            string thing = null,
+            [ToolParameter(Description = "'ThingDef[:stuff[:quality[:count]]];...' entries.")]
+            string items = null,
+            [ToolParameter(Description = "ClearAndDestroyContents() first. Default false.")]
+            bool clear = false)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (Current.Game == null) return Fail("No game loaded.");
+
+                string terr;
+                var t = FindLiveThingById(thing, out terr);
+                if (t == null) return Fail(terr);
+
+                var holder = t as IThingHolder;
+                if (holder == null || t is Pawn)
+                    return Fail(t.def.defName + " (" + t.ThingID + ") does not implement IThingHolder - it cannot hold contained things.");
+
+                var owned = holder.GetDirectlyHeldThings();
+                if (owned == null)
+                    return Fail(t.def.defName + " (" + t.ThingID + ") returned no ThingOwner from GetDirectlyHeldThings().");
+
+                int clearedCount = 0;
+                if (clear)
+                {
+                    clearedCount = owned.Count;
+                    owned.ClearAndDestroyContents();
+                }
+
+                var added = new List<object>();
+                var failed = new List<object>();
+
+                if (!string.IsNullOrWhiteSpace(items))
+                {
+                    foreach (var raw in items.Split(new[] { ';', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        var entry = raw.Trim(); if (entry.Length == 0) continue;
+                        var parts = entry.Split(':');
+                        var dn = parts[0].Trim();
+                        var td = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
+                        if (td == null) { failed.Add(new { entry, why = "no ThingDef '" + dn + "'", suggestions = DefSuggestions<ThingDef>(dn) }); continue; }
+
+                        ThingDef stuffDef = null;
+                        if (parts.Length > 1 && !string.IsNullOrWhiteSpace(parts[1]))
+                        {
+                            stuffDef = DefDatabase<ThingDef>.GetNamedSilentFail(parts[1].Trim());
+                            if (stuffDef == null) { failed.Add(new { entry, why = "no stuff ThingDef '" + parts[1].Trim() + "'" }); continue; }
+                        }
+                        else if (td.MadeFromStuff) stuffDef = GenStuff.DefaultStuffFor(td);
+                        if (!td.MadeFromStuff) stuffDef = null;
+
+                        QualityCategory q = QualityCategory.Normal; bool setQ = false;
+                        if (parts.Length > 2 && !string.IsNullOrWhiteSpace(parts[2]))
+                        {
+                            try { q = (QualityCategory)Enum.Parse(typeof(QualityCategory), parts[2].Trim(), true); setQ = true; }
+                            catch { failed.Add(new { entry, why = "bad quality '" + parts[2].Trim() + "'" }); continue; }
+                        }
+
+                        int count = 1;
+                        if (parts.Length > 3 && !string.IsNullOrWhiteSpace(parts[3]))
+                        {
+                            if (!int.TryParse(parts[3].Trim(), out count) || count <= 0)
+                            { failed.Add(new { entry, why = "bad count '" + parts[3].Trim() + "'" }); continue; }
+                        }
+
+                        Thing made;
+                        try { made = ThingMaker.MakeThing(td, stuffDef); }
+                        catch (Exception e) { failed.Add(new { entry, why = "MakeThing threw: " + e.Message }); continue; }
+
+                        if (setQ)
+                        {
+                            var cq = made.TryGetComp<CompQuality>();
+                            if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider);
+                        }
+
+                        int cap = Math.Max(1, td.stackLimit);
+                        int requested = count;
+                        made.stackCount = Math.Min(count, cap);
+
+                        bool ok = owned.TryAdd(made, true);
+                        if (!ok)
+                        {
+                            failed.Add(new { entry, why = "ThingOwner.TryAdd refused it (not acceptable, or over capacity)." });
+                            continue;
+                        }
+
+                        var mq = made.TryGetComp<CompQuality>();
+                        added.Add(new
+                        {
+                            def = td.defName,
+                            stuff = stuffDef == null ? null : stuffDef.defName,
+                            quality = mq == null ? null : mq.Quality.ToString(),
+                            requestedCount = requested,
+                            addedCount = made.stackCount,
+                            clampedToStackLimit = requested > cap
+                        });
+                    }
+                }
+
+                var contentsAfter = new List<object>();
+                foreach (var h in owned)
+                {
+                    var hq = h.TryGetComp<CompQuality>();
+                    contentsAfter.Add(new
+                    {
+                        def = h.def.defName,
+                        stuff = h.Stuff == null ? null : h.Stuff.defName,
+                        count = h.stackCount,
+                        quality = hq == null ? null : hq.Quality.ToString(),
+                    });
+                }
+
+                return new
+                {
+                    success = true,
+                    target = new { id = t.ThingID, defName = t.def.defName },
+                    cleared = clearedCount,
+                    added,
+                    failed,
+                    contentsAfter,
+                    ticksGame = TicksGameSafe()
+                };
+            }).ConfigureAwait(false);
+        }
     }
 }
