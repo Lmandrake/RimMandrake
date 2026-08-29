@@ -1,0 +1,202 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Droid Verb Curation</title>
+<style>
+body{margin:0;background:#0c0e11;color:#e8e6e3;font:13px/1.5 system-ui,sans-serif}
+header{position:sticky;top:0;z-index:20;background:#14161a;border-bottom:1px solid #2a2f37}
+.hrow{display:flex;align-items:center;gap:12px;padding:10px 22px}
+h1{font-size:16px;margin:0;color:#ffb454}
+.sub{color:#9aa3ad;font-size:12px}
+#fold{margin-left:auto;cursor:pointer;background:#0f1216;border:1px solid #2a2f37;color:#e8e6e3;border-radius:5px;padding:5px 12px;font:inherit}
+body.folded #brief{display:none}
+#brief{padding:0 22px 10px;max-width:1100px}
+#brief p{margin:6px 0;color:#c9cdd3}
+#brief .rulebox{background:#1d1720;border:1px solid #4a2f4a;border-radius:5px;padding:8px 12px;margin:8px 0}
+#brief .rulebox b{color:#e0a0e0}
+.pathbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#0f1216;border:1px solid #2a2f37;border-radius:5px;padding:9px 12px;margin:8px 0;font-size:12px}
+.pathbar code{color:#cfe3ff;font-family:ui-monospace,monospace}
+.pathbar button,#link,#exportBtn{cursor:pointer;background:#1d2733;border:1px solid #2f4358;color:#cfe3ff;border-radius:4px;padding:4px 10px;font:inherit}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 22px;background:#111419}
+.bar select,.bar input[type=text]{background:#0f1216;border:1px solid #2a2f37;color:#e8e6e3;border-radius:4px;padding:4px 8px;font:inherit}
+.bar .cnt{font-size:12px;color:#9aa3ad}
+#saveState{font-size:12px;color:#9aa3ad}
+#saveState.ok{color:#7ec97e}#saveState.warn{color:#e0b050}
+.gh{position:sticky;z-index:10;background:#10141a;border-top:1px solid #2a2f37;border-bottom:1px solid #2a2f37;padding:6px 22px;font-size:12px;font-weight:600;color:#ffb454}
+.gh.nostick{position:static}
+.card{display:grid;grid-template-columns:190px 1fr 340px;gap:10px;padding:10px 22px;border-bottom:1px solid #1b2027}
+.card:hover{background:#101318}
+.nm b{display:block;color:#fff}
+.nm .defs{font-size:11px;color:#6f7a86;font-family:ui-monospace,monospace;word-break:break-all}
+.fx .eff{color:#dfe4ea}
+.fx .how{font-size:12px;color:#8a94a0;margin-top:2px}
+.tag{display:inline-block;font-size:10px;border-radius:3px;padding:1px 6px;margin-right:5px;vertical-align:1px}
+.tC{background:#173321;color:#7ec97e}.tU{background:#332a17;color:#e0b050}.tI{background:#2c1a2e;color:#e0a0e0}.tX{background:#331b1b;color:#e07070}
+.dc{display:flex;flex-direction:column;gap:6px}
+.dc .btns{display:flex;gap:5px}
+.dc button{flex:1;cursor:pointer;border-radius:4px;border:1px solid #2a2f37;background:#0f1216;color:#9aa3ad;padding:5px 0;font:inherit;font-size:12px}
+.dc button.on-embrace{background:#173321;border-color:#2f6b42;color:#8fe0a0}
+.dc button.on-extend{background:#16283a;border-color:#2f5680;color:#8fc2f0}
+.dc button.on-cut{background:#331b1b;border-color:#7a3535;color:#f09090}
+.dc button.on-undecided{background:#2a2a20;border-color:#6b6b40;color:#e0e090}
+.dc textarea{background:#141a14;border:1px dashed #3a5a3a;color:#d8f0d8;border-radius:4px;padding:5px 8px;font:inherit;font-size:12px;min-height:34px;resize:vertical}
+.dc textarea::placeholder{color:#5a7a5a}
+.contested{border-left:3px solid #e0a0e0}
+</style></head><body>
+<header>
+  <div class="hrow"><h1>Droid Verb Curation — DROID_SYSTEM_EMBRACE_1</h1><span class="sub" id="counts"></span><button id="fold">▾ brief</button></div>
+  <div id="brief">
+    <p><b>The brief:</b> phase 0 of the droid arc. Every mechanic ("verb") the accepted droid mods ship, one row each, censused from the mod XML 2026-08-29 against frozen dump OFFICIAL-2026-08-29. Full evidence: <code>design\Jawa\droid_census_2026-08-29.md</code>.</p>
+    <p><b>Your decision per row:</b> <b style="color:#8fe0a0">EMBRACE</b> = keep as shipped, design on top of it · <b style="color:#8fc2f0">EXTEND</b> = keep AND build/fix/port it (our work lands here) · <b style="color:#f09090">CUT</b> = suppress it from the campaign · <b style="color:#e0e090">UNDECIDED</b> = not yet ruled.</p>
+    <p><b>Posture: default UNDECIDED, and nothing auto-cuts.</b> This sheet feeds the phase-2 spine design doc; an undecided row simply stays unruled. Rows tagged <span class="tag tC">CONFIRMED</span> were read from a def; <span class="tag tU">UNCERTAIN</span> is inference; <span class="tag tI">PROPOSAL</span> is a verb I invented — it exists nowhere and needs your ruling to become real.</p>
+    <p><b>Pre-fill criterion, in one line:</b> does the verb serve the Jawa capture/salvage/trade fantasy and the pawn-flavor designs? Shipped-and-working → embrace; our brainstorm builds on it → extend; fights the fantasy → cut. <b>That ranks mechanical fit, not lore worth — overrule freely, and write WHY in the note; your notes are worth more than your agreements.</b></p>
+    <div class="rulebox"><b>Rules I invented (rule on these, they are not findings):</b> the four PROPOSAL rows in "Cross-framework gaps" — authoring a data spike, porting the restraining bolt to KotOR/ABF droids, reconciling the two memory systems, and naming one primary capture pipeline. Also: I pre-filled the JDS scenario as CUT purely because we author our own campaign start.</div>
+    <div class="pathbar"><b>Save decisions to</b><code id="p1">D:\Luke\dev\Rimworld\design\Jawa\droid_verbs_decisions.json</code><button data-copy="p1">copy path</button><span>the picker cannot be given a folder — paste this into its filename box</span></div>
+    <div class="pathbar"><b>This sheet</b><code id="p2">D:\Luke\dev\Rimworld\design\Jawa\droid_verbs_sheet.html</code><button data-copy="p2">copy path</button></div>
+  </div>
+  <div class="bar">
+    <select id="fGroup"><option value="">all groups</option></select>
+    <select id="fDec"><option value="">all decisions</option><option>embrace</option><option>extend</option><option>cut</option><option>undecided</option></select>
+    <select id="fStat"><option value="">all statuses</option><option>CONFIRMED</option><option>UNCERTAIN</option><option>PROPOSAL</option></select>
+    <label style="font-size:12px"><input type="checkbox" id="fCont"> contested only</label>
+    <input type="text" id="fText" placeholder="search name / effect / defs">
+    <button id="link">link decisions file</button><button id="exportBtn">copy JSON</button>
+    <span id="saveState">not linked — using browser storage only</span>
+  </div>
+</header>
+<div id="list"></div>
+<script>
+const GROUPS = {
+ abf:"ABF / Synstructs — the framework under every KotOR droid",
+ kotor:"KotOR content — 44 kinds, 32 backstories, riding ABF",
+ asimov:"Asimov — the framework under Droid Depot",
+ jds:"JDS Separatists — vanilla-mechanoid reskin (never captured alive, by ruling)",
+ gaps:"Cross-framework gaps — PROPOSALS, invented by the agent"};
+const ROWS = [
+ {id:"abf_capture",g:"abf",n:"Down-and-capture like a human",e:"Droids fall downed and get captured like people, not destroyed like mechanoids.",h:"race parent ABF_Thing_Synstruct_HumanlikeBase",d:"ABF_Thing_Synstruct_HumanlikeBase",s:"CONFIRMED",p:"embrace"},
+ {id:"abf_reprogram",g:"abf",n:"Reprogram-as-recruit",e:"Captured wild droid converts to a colony drone; resistance works like recruitment.",h:"pawnState Reprogrammable + playerReprogrammableDronePawnKindDef, initialResistanceRange",d:"ABF_ArtificialPawnKindExtension",s:"CONFIRMED",p:"embrace"},
+ {id:"abf_formatting",g:"abf",n:"Personality formatting tiers",e:"Live conversion: mindless drone ↔ programmable ↔ full sapient ↔ blank slate.",h:"Format*/RemoveFormatting recipes, ArtificialBeings.Recipe_Make*",d:"FormatDrone FormatReprogrammable FormatSapient",s:"CONFIRMED",p:"extend",note:"Maps directly onto our Memory-Wiped ×N and Vat-Decanted designs."},
+ {id:"abf_format_murder",g:"abf",n:"Deformatting a sapient = murder",e:"Wiping a sapient droid is flagged as killing someone. Lore gold, shipped.",h:"explicit flag on RemoveFormatting",d:"RemoveFormatting",s:"CONFIRMED",p:"embrace"},
+ {id:"abf_directives",g:"abf",n:"Directive perk system",e:"18 drone perks on a complexity budget (8 work / 9 combat / 1 social).",h:"custom def type ArtificialBeings.DirectiveDef, complexityCost",d:"Directives_Work/Combat/Social.xml",s:"CONFIRMED",p:"extend",note:"Author Star-Wars-flavored directives; the slot system already exists."},
+ {id:"abf_energy_need",g:"abf",n:"Energy & component needs",e:"Custom need bars replace food and rest.",h:"ABF_Need_Synstruct_Energy / _Components",d:"Need_SynstructEnergy",s:"CONFIRMED",p:"embrace"},
+ {id:"abf_charging",g:"abf",n:"Charging infrastructure",e:"Room-wide charger, assignable dock-pod bunk, and a wall socket to plug into.",h:"Beamcoil / Enervoir / Powerjack comps",d:"ABF_Thing_Synstruct_Beamcoil …_Enervoir …_Powerjack",s:"CONFIRMED",p:"embrace"},
+ {id:"abf_topoff",g:"abf",n:"Manual top-off surgeries",e:"A doctor injects chemfuel or supplies components by hand, no infrastructure needed.",h:"Recipe_SurgicallyFulfillArtificialNeed",d:"InjectChemfuel SupplyComponents",s:"CONFIRMED",p:"embrace"},
+ {id:"abf_overclock",g:"abf",n:"Overclock (reversible)",e:"Surgery trades stat gains against wear; undoable.",h:"Recipe_InstallImplant / RemoveHediff",d:"Overclock UndoOverclocking",s:"CONFIRMED",p:"embrace"},
+ {id:"abf_partswap",g:"abf",n:"Part swap & restore",e:"Swap or restore droid body parts via PartPack items.",h:"Recipe_RemoveAndRestoreBodyPart / Recipe_RestorePart",d:"RemoveBodyPart RestoreBodyPart",s:"CONFIRMED",p:"embrace"},
+ {id:"abf_cradle",g:"abf",n:"Blank-body assembly (Cradle)",e:"Build a brand-new blank droid body from scratch — 16,500 work.",h:"recipeMaker on generator base",d:"ABF_Thing_Synstruct_Cradle",s:"CONFIRMED",p:"embrace"},
+ {id:"abf_hack",g:"abf",n:"Anti-droid hack abilities",e:"Ranged ability forces an enemy droid berserk or disables it.",h:"AbilityDefs with GiveMentalState/GiveHediff comps",d:"ABF_Ability_Synstruct_Directive_Berserker _Interference",s:"CONFIRMED",p:"extend",note:"Natural home for Jawa ion/spike flavor."},
+ {id:"abf_states",g:"abf",n:"Repairable machine states",e:"Death and downed are replaced by inert-but-repairable states.",h:"HediffDefs Terminated/Incapacitated/Disabled",d:"ABF_Hediff_Artificial_*",s:"CONFIRMED",p:"embrace"},
+ {id:"kotor_kinds",g:"kotor",n:"44 droid kinds + 2 heroes",e:"24 player kinds (incl. HK-47, T3-M4) and 20 hostile/wild rogue kinds.",h:"PawnKinds_PlayerDroids.xml / PawnKinds_RogueDroids.xml",d:"KotORDroidColonist_* KotORDroidGood/Bad_*",s:"CONFIRMED",p:"embrace"},
+ {id:"kotor_backstories",g:"kotor",n:"32 droid backstories with ready-made slots",e:"19 model-specific childhoods + 13 service adulthoods, per-model spawn categories.",h:"spawnCategories guy762BSC_Droid_<model> and _all",d:"BackstoryDefs_DroidAdulthoods.xml + AlienRace_*.xml",s:"CONFIRMED",p:"extend",note:"Our Assembly × Service-Record set extends these exact categories."},
+ {id:"kotor_modules",g:"kotor",n:"Upgrade modules as apparel slots",e:"Droid-only slots: hardware, software, sensor, gadget, weapon, shield.",h:"apparel in dedicated bodyPartGroups, race-restricted",d:"guy762_DroidSoftware_* etc.",s:"CONFIRMED",p:"extend",note:"The module economy is very Jawa — author more modules."},
+ {id:"kotor_repairkits",g:"kotor",n:"Repair kits (eaten like meds)",e:"Droid ingests a kit for burst self-healing; adv/con tiers.",h:"IngestionOutcomeDoer_GiveHediff, naturalHealingFactor 1000–10000%",d:"guy762_repairkit(/_adv/_con)",s:"CONFIRMED",p:"embrace"},
+ {id:"kotor_shieldre",g:"kotor",n:"Shield recharge bench recipes",e:"Depleted wearable shield generators recharge at a bench.",h:"KotORRecipe_DroidShieldRecharge_*",d:"guy762_DroidShield_*",s:"CONFIRMED",p:"embrace"},
+ {id:"kotor_generators",g:"kotor",n:"Bench droid assembly",e:"16 craftable 'uninitialized droid' kits that spawn a finished colonist droid.",h:"CompProperties_PawnSpawner on MakeableBase things",d:"guy762_DroidGenerator_*",s:"CONFIRMED",p:"embrace"},
+ {id:"kotor_explosive",g:"kotor",n:"Exactly two droids detonate on death",e:"KX-12 assassin probe (known) and the Gonk building-variant (NEW finding).",h:"DeathActionWorker_BigExplosion",d:"guy762_DroidRace_KX12APD, Building_GonkDroids",s:"CONFIRMED",p:"embrace",note:"Ruling knew only the KX-12; Gonk is new. Consistent with the 2026-08-13 ruling."},
+ {id:"kotor_salvage",g:"kotor",n:"Corpse salvage only — no rebuild",e:"KotOR corpses scrap to steel/plasteel/components; nothing reassembles them.",h:"butcherProducts only",d:"race base defs",s:"CONFIRMED",p:"extend",c:1,note:"Gap: Droid Depot's reactivation kit is the missing rebuild verb — port or accept?"},
+ {id:"kotor_immune",g:"kotor",n:"Stun/poison/frostbite immunity",e:"Droids ignore stun, poison and frostbite damage types.",h:"damageMultipliers ×0 on race base",d:"guy762_KotORDroidBase",s:"CONFIRMED",p:"embrace"},
+ {id:"kotor_battery",g:"kotor",n:"Batteries as food",e:"Droids eat battery cells to fill their energy need — reuses the hunger job loop.",h:"FoodMeals-tagged items + race food restriction",d:"guy762_DroidBattery(/_adv)",s:"CONFIRMED",p:"embrace"},
+ {id:"asimov_bolt",g:"asimov",n:"Restraining bolt",e:"Mutes the droid, slows hands, locks slave suppression, suppresses trait breaks.",h:"install/remove surgeries; hediff isViolation (slavery-like)",d:"OuterRim_RestraintBolt OuterRim_AttachRestraintBolt",s:"CONFIRMED",p:"extend",c:1,note:"The owner's named verb, live today — Asimov droids only. Port to ABF is a PROPOSAL row below."},
+ {id:"asimov_boltfield",g:"asimov",n:"Field bolt clamp",e:"A pawn carries a bolt to a downed droid and clamps it — 600-tick job, no surgery.",h:"JobDriver_RestrainDroid adds the hediff directly",d:"OuterRim_RestrainDroid",s:"CONFIRMED",p:"embrace"},
+ {id:"asimov_wipe",g:"asimov",n:"Memory wipe (factory reset)",e:"Zeroes skills, restores factory settings, clears traits AND relations, faction → player.",h:"OuterRimDroids.Recipe_WipeDroid surgery",d:"OuterRim_WipeDroidMind",s:"CONFIRMED",p:"extend",c:1,note:"Overlaps ABF formatting — reconciliation is a PROPOSAL row below."},
+ {id:"asimov_capture",g:"asimov",n:"Reprogram capture job",e:"600-tick job flips a downed/prisoner droid to your faction.",h:"JobDriver_ReprogramDroid → SetFaction(player); triggering JobDef not located",d:"JobDriver_ReprogramDroid",s:"UNCERTAIN",p:"embrace",note:"This — not a 'data spike' — is Droid Depot's capture verb; ruling doc corrected 2026-08-29. How it's invoked is unverified."},
+ {id:"asimov_reactivate",g:"asimov",n:"Reactivation kit (corpse rebuild)",e:"Kit revives droid corpses via resurrection, improvises missing limbs; needs intact brain.",h:"usable item + JobDriver_ReactivateDroid, TryResurrect",d:"OuterRim_DroidReactivationKit",s:"CONFIRMED",p:"extend",note:"The rebuild verb KotOR lacks — the Jawa fantasy in one item."},
+ {id:"asimov_disks",g:"asimov",n:"Skill data-disks",e:"Consumable disk grants the droid +1 level in one skill.",h:"CompUsable + CompUseEffect_ChangeSkillLevel, droid-gated",d:"OuterRim_UseSkillDatadisk",s:"CONFIRMED",p:"embrace",note:"Loot/trade gold for the Jawa economy."},
+ {id:"asimov_shielding",g:"asimov",n:"Shielding implants",e:"Surgery-installed modules: flat damage reduction tiers + EMP shielding.",h:"Recipe_InstallImplant family; removable, item returns",d:"OuterRim_DroidDamageShielding_* _EMP",s:"CONFIRMED",p:"embrace"},
+ {id:"asimov_factory",g:"asimov",n:"Droid factory building",e:"Powered auto-crafter consumes materials and spawns new droids — 19 recipes.",h:"Asimov.Building_AutoCrafter + AutomatonRecipeDef + fill WorkGiver",d:"OuterRim_DroidFactory",s:"CONFIRMED",p:"embrace"},
+ {id:"asimov_disassemble",g:"asimov",n:"Disassembly",e:"Butcher droid corpses for parts, or shut down a live droid for materials (a violation).",h:"butcher recipe + TabulaRasa.Recipe_Disassemble",d:"OuterRim_ButcherCorpseDroid OuterRim_ShutDownDroid",s:"CONFIRMED",p:"embrace"},
+ {id:"asimov_traits",g:"asimov",n:"Droid personality traits & breaks",e:"10 droid traits plus two droid-only mental breaks (Rebellious, Loose Screws).",h:"TraitDefs + MentalStateDefs with droid workers",d:"OuterRim_Rebellious OuterRim_LooseScrews +8",s:"CONFIRMED",p:"extend",note:"Merge with the pawn-flavor droid trait designs rather than authoring parallel ones."},
+ {id:"asimov_healer",g:"asimov",n:"Droid healer aura",e:"Comp periodically heals nearby same-faction droids — but never seen attached to a thing.",h:"Comp_DroidHealer : ThingComp",d:"CompProperties_DroidHealer",s:"UNCERTAIN",p:"undecided",note:"Left undecided ON PURPOSE: may be dead code or attached somewhere unsearched."},
+ {id:"asimov_nopower",g:"asimov",n:"No power need at all",e:"Asimov droids never recharge or refuel — while ABF droids eat batteries. Two metabolisms.",h:"no need/fuel comp found anywhere",d:"—",s:"CONFIRMED",p:"undecided",c:1,note:"Left undecided ON PURPOSE: harmonize the metabolisms or accept the inconsistency?"},
+ {id:"asimov_softdeps",g:"asimov",n:"Undeclared soft dependencies",e:"GNK droid rides a VEF comp; TabulaRasa classes used — neither declared. Silent no-op risk.",h:"CompProperties_Electrified (VEF), TabulaRasa.* — absent from modDependencies",d:"guy762…GNK / TabulaRasa.Recipe_Disassemble",s:"CONFIRMED",p:"extend",note:"Robustify: verify presence in our 584 list and pin with a load rule if load-bearing."},
+ {id:"jds_forcekill",g:"jds",n:"Never captured alive",e:"JDS droids force-kill instead of downing — ruled a FEATURE 2026-08-13.",h:"race.fleshType Mechanoid → deathOnDownedChance 1.0",d:"JDSSWCIS_Droids base",s:"CONFIRMED",p:"embrace"},
+ {id:"jds_biotech",g:"jds",n:"Biotech-gated production",e:"All 17 assembly + 2 resurrection recipes exist ONLY when Biotech is active (it is).",h:"PatchOperationFindMod [Biotech] wraps the whole layer",d:"JDSCIS_*_Recipe JDSCIS_ResurrectDroid_*",s:"CONFIRMED",p:"embrace",note:"NEW finding: without Biotech the faction would be raiders-only. We ship Biotech; noting the cliff."},
+ {id:"jds_wrecks",g:"jds",n:"Wreck resurrection",e:"1 droid corpse + 150 steel rebuilds a working droid at a mech gestator.",h:"BaseMechanoidResurrectionRecipe children",d:"JDSCIS_ResurrectDroid_Light/_Heavy",s:"CONFIRMED",p:"embrace",note:"The Jawa corpse-salvage fantasy, already shipped."},
+ {id:"jds_misc",g:"jds",n:"Dormancy, mech control, Droideka shields",e:"Wake-on-damage dormancy, mechanitor overseer loop, personal shields — all vanilla comps.",h:"CanBeDormant / OverseerSubject / CompProperties_Shield",d:"JDSCIS_Droideka_* etc.",s:"CONFIRMED",p:"embrace"},
+ {id:"jds_scenario",g:"jds",n:"TSDA Commander scenario",e:"Alternate droid-commander game start shipped by the mod — irrelevant to our fixed campaign.",h:"ScenarioDef with StartingMech parts",d:"TSDA_Commander",s:"CONFIRMED",p:"cut",c:1,note:"Pre-filled CUT only because we author our own start; ignoring it is equally cheap."},
+ {id:"gap_dataspike",g:"gaps",n:"PROPOSAL: author a data spike",e:"The verb exists in NO accepted mod — the old ruling's word was a misnomer. Author it?",h:"would be new C# in our companion or a mod patch",d:"—",s:"PROPOSAL",p:"undecided",c:1,note:"Owner named it among the v2 hooks. If authored: what does it DO that reprogram/bolt/wipe don't?"},
+ {id:"gap_boltport",g:"gaps",n:"PROPOSAL: port restraining bolt to KotOR/ABF droids",e:"Bolt is Asimov-only today; the capture-target droids can't be bolted.",h:"hediff is mostly framework-agnostic; install recipes need ABF recipeUsers",d:"—",s:"PROPOSAL",p:"undecided",c:1},
+ {id:"gap_memories",g:"gaps",n:"PROPOSAL: reconcile the two memory systems",e:"Asimov memory-wipe and ABF formatting both erase minds, differently, on different droids.",h:"spine ruling: one canonical wipe verb, or two flavors kept apart",d:"—",s:"PROPOSAL",p:"undecided",c:1},
+ {id:"gap_capture",g:"gaps",n:"PROPOSAL: name ONE primary capture pipeline",e:"Three pipelines ship: ABF reprogram-as-recruit, Asimov capture job, JDS none (by ruling).",h:"spine doc decision; flavor and UI follow it",d:"—",s:"PROPOSAL",p:"undecided",c:1}
+];
+const PREFILL_SRC="prefill-2026-08-29";
+let state={posture:"decision-matrix; undecided = unruled; nothing auto-cuts",criterion:"mechanical fit to the Jawa capture/salvage/trade fantasy — not lore worth",source:PREFILL_SRC,rows:{}},extraKeys={},fileHandle=null,saveTimer=null;
+const el=i=>document.getElementById(i);
+const FOLDKEY='droid_sheet_folded',LSKEY='droid_verbs_decisions';
+function setFold(f){document.body.classList.toggle('folded',f);el('fold').textContent=f?'▸ brief':'▾ brief';try{localStorage.setItem(FOLDKEY,f?'1':'')}catch(e){};measure()}
+el('fold').onclick=()=>setFold(!document.body.classList.contains('folded'));
+for(const b of document.querySelectorAll('[data-copy]'))b.onclick=async()=>{const n=el(b.dataset.copy);try{await navigator.clipboard.writeText(n.textContent);const t=b.textContent;b.textContent='copied ✓';setTimeout(()=>b.textContent=t,1200)}catch(e){const r=document.createRange();r.selectNode(n);getSelection().removeAllRanges();getSelection().addRange(r);b.textContent='press Ctrl+C'}};
+function measure(){const h=document.querySelector('header').offsetHeight;for(const g of document.querySelectorAll('.gh'))g.style.top=h+'px'}
+addEventListener('resize',measure);
+// per-row merge: a touched row is left alone; every untouched row takes the prefill
+function mergePrefill(loaded){
+  let kept=0,filled=0;
+  for(const r of ROWS){
+    const ex=loaded&&loaded.rows&&loaded.rows[r.id];
+    if(ex&&ex.touched){state.rows[r.id]=ex;kept++}
+    else{state.rows[r.id]={d:r.p,n:(ex&&ex.n)||"",touched:false};filled++}
+  }
+  if(loaded){for(const k of Object.keys(loaded))if(!["rows","posture","criterion","source","savedAt","decidedRows"].includes(k))extraKeys[k]=loaded[k];}
+  return {kept,filled};
+}
+function decidedCount(){return Object.values(state.rows).filter(r=>r.touched).length}
+function serialize(){
+  const out=Object.assign({},extraKeys,{posture:state.posture,criterion:state.criterion,source:"owner-sheet",savedAt:new Date().toISOString(),decidedRows:decidedCount(),rows:state.rows});
+  return JSON.stringify(out,null,1);
+}
+async function writeFile(){
+  if(!fileHandle)return;
+  if(decidedCount()===0&&Object.keys(state.rows).length<ROWS.length){setSave('refusing suspicious empty write','warn');return}
+  try{const w=await fileHandle.createWritable();await w.write(serialize());await w.close();setSave('saved to file '+new Date().toLocaleTimeString(),'ok')}
+  catch(e){setSave('file write failed — using browser storage','warn')}
+}
+function setSave(t,c){const s=el('saveState');s.textContent=t;s.className=c||''}
+function save(){try{localStorage.setItem(LSKEY,serialize())}catch(e){};clearTimeout(saveTimer);saveTimer=setTimeout(writeFile,1000)}
+async function relink(){
+  try{
+    const h=await showSaveFilePicker({suggestedName:'droid_verbs_decisions.json',types:[{accept:{'application/json':['.json']}}]});
+    fileHandle=h;try{const db=indexedDB.open('droid_sheet',1);db.onupgradeneeded=()=>db.result.createObjectStore('h');db.onsuccess=()=>{const tx=db.result.transaction('h','readwrite');tx.objectStore('h').put(h,'handle')}}catch(e){}
+    await writeFile();
+  }catch(e){if(!window.showSaveFilePicker)setSave('File System API absent (Firefox?) — use copy JSON','warn')}
+}
+el('link').onclick=relink;
+el('exportBtn').onclick=async()=>{try{await navigator.clipboard.writeText(serialize());setSave('JSON copied '+new Date().toLocaleTimeString(),'ok')}catch(e){setSave('clipboard refused — link the file instead','warn')}};
+(function tryRestoreHandle(){try{const db=indexedDB.open('droid_sheet',1);db.onupgradeneeded=()=>db.result.createObjectStore('h');db.onsuccess=async()=>{try{const tx=db.result.transaction('h');const rq=tx.objectStore('h').get('handle');rq.onsuccess=async()=>{const h=rq.result;if(h){const p=await h.queryPermission({mode:'readwrite'});if(p==='granted'){fileHandle=h;setSave('file relinked','ok')}else setSave('click "link decisions file" to re-grant access','warn')}}}catch(e){}}}catch(e){}})();
+function card(r){
+  const st=state.rows[r.id];
+  const tag=r.s==='CONFIRMED'?'tC':r.s==='UNCERTAIN'?'tU':'tI';
+  return `<div class="card${r.c?' contested':''}" data-id="${r.id}">
+    <div class="nm"><b>${r.n}</b>${r.c?'<span class="tag tX">contested</span>':''}<span class="tag ${tag}">${r.s}</span><div class="defs">${r.d}</div></div>
+    <div class="fx"><div class="eff">${r.e}</div><div class="how">${r.h}${r.note?' · <i>'+r.note+'</i>':''}</div></div>
+    <div class="dc"><div class="btns">${['embrace','extend','cut','undecided'].map(d=>`<button data-d="${d}" class="${st.d===d?'on-'+d:''}">${d}</button>`).join('')}</div>
+    <textarea placeholder="your note — worth more than your agreement" data-n="1">${st.n||''}</textarea></div></div>`;
+}
+function render(){
+  const fg=el('fGroup').value,fd=el('fDec').value,fs=el('fStat').value,fc=el('fCont').checked,ft=el('fText').value.toLowerCase();
+  const shown=ROWS.filter(r=>(!fg||r.g===fg)&&(!fd||state.rows[r.id].d===fd)&&(!fs||r.s===fs)&&(!fc||r.c)&&(!ft||(r.n+' '+r.e+' '+r.d).toLowerCase().includes(ft)));
+  const groups=new Map();
+  for(const it of shown){if(!groups.has(it.g))groups.set(it.g,[]);groups.get(it.g).push(it)}
+  let html='';
+  for(const[g,items]of groups){html+=`<div class="gh${items.length<=3?' nostick':''}">${GROUPS[g]} · ${items.length}</div>`;html+=items.map(card).join('')}
+  el('list').innerHTML=html;measure();counts();
+}
+function counts(){
+  const c={embrace:0,extend:0,cut:0,undecided:0};for(const r of ROWS)c[state.rows[r.id].d]++;
+  el('counts').textContent=`${ROWS.length} verbs · embrace ${c.embrace} · extend ${c.extend} · cut ${c.cut} · undecided ${c.undecided} · you touched ${decidedCount()}`;
+}
+el('list').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-d]');if(!b)return;
+  const id=e.target.closest('.card').dataset.id;
+  state.rows[id].d=b.dataset.d;state.rows[id].touched=true;save();render();
+});
+el('list').addEventListener('input',e=>{
+  if(!e.target.matches('textarea[data-n]'))return;
+  const id=e.target.closest('.card').dataset.id;
+  state.rows[id].n=e.target.value;state.rows[id].touched=true;save();counts();
+});
+for(const id of['fGroup','fDec','fStat','fCont','fText'])el(id).addEventListener(id==='fText'?'input':'change',render);
+for(const[k,v]of Object.entries(GROUPS)){const o=document.createElement('option');o.value=k;o.textContent=v.split(' — ')[0];el('fGroup').appendChild(o)}
+let loaded=null;try{loaded=JSON.parse(localStorage.getItem(LSKEY))}catch(e){}
+const m=mergePrefill(loaded);
+try{setFold(localStorage.getItem(FOLDKEY)==='1')}catch(e){setFold(false)}
+render();
+setSave(m.kept?`restored ${m.kept} of your decisions, pre-filled ${m.filled}`:`pre-filled all ${m.filled} rows — link the decisions file to make saves real`, m.kept?'ok':'warn');
+</script></body></html>

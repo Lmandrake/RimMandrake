@@ -22,7 +22,7 @@ work — but the *choices* are made now.
 |---|---|---|
 | **JDS Separatist** (`M3.Continued.JangoDsoul.StarWars.TSDA`) | ❌ neither — **force-killed on downing** | ✅ **CORRECT AS-IS. This is a feature, not a defect.** |
 | **KotOR** (`guy762.KotORDroids`) | ✅ both | ✅ **THE capture target. Must NOT detonate on ion.** |
-| **Outer Rim Droid Depot** (`Neronix17.OuterRim.DroidDepot`) | ✅ both | unchanged by this ruling; still capturable via data spike |
+| **Outer Rim Droid Depot** (`Neronix17.OuterRim.DroidDepot`) | ✅ both | unchanged by this ruling; capturable via its **reprogram job** — ⚠️ corrected 2026-08-29: "data spike" was a misnomer; no data-spike mechanic exists in any accepted mod (census: `design/Jawa/droid_census_2026-08-29.md`). The real verb is `JobDriver_ReprogramDroid` (600 ticks on a downed/prisoner droid). "Data spike" survives only as a candidate verb we might author (`DROID_SYSTEM_EMBRACE_1`) |
 
 ### JDS droids are never taken alive — and that is the point
 

@@ -1,0 +1,232 @@
+{
+ "posture": "decision-matrix; undecided = unruled; nothing auto-cuts",
+ "criterion": "mechanical fit to the Jawa capture/salvage/trade fantasy - not lore worth",
+ "source": "prefill-2026-08-29",
+ "rows": {
+  "abf_capture": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "abf_reprogram": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "abf_formatting": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "abf_format_murder": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "abf_directives": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "abf_energy_need": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "abf_charging": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "abf_topoff": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "abf_overclock": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "abf_partswap": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "abf_cradle": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "abf_hack": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "abf_states": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "kotor_kinds": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "kotor_backstories": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "kotor_modules": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "kotor_repairkits": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "kotor_shieldre": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "kotor_generators": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "kotor_explosive": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "kotor_salvage": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "kotor_immune": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "kotor_battery": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "asimov_bolt": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "asimov_boltfield": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "asimov_wipe": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "asimov_capture": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "asimov_reactivate": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "asimov_disks": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "asimov_shielding": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "asimov_factory": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "asimov_disassemble": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "asimov_traits": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "asimov_healer": {
+   "d": "undecided",
+   "n": "",
+   "touched": false
+  },
+  "asimov_nopower": {
+   "d": "undecided",
+   "n": "",
+   "touched": false
+  },
+  "asimov_softdeps": {
+   "d": "extend",
+   "n": "",
+   "touched": false
+  },
+  "jds_forcekill": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "jds_biotech": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "jds_wrecks": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "jds_misc": {
+   "d": "embrace",
+   "n": "",
+   "touched": false
+  },
+  "jds_scenario": {
+   "d": "cut",
+   "n": "",
+   "touched": false
+  },
+  "gap_dataspike": {
+   "d": "undecided",
+   "n": "",
+   "touched": false
+  },
+  "gap_boltport": {
+   "d": "undecided",
+   "n": "",
+   "touched": false
+  },
+  "gap_memories": {
+   "d": "undecided",
+   "n": "",
+   "touched": false
+  },
+  "gap_capture": {
+   "d": "undecided",
+   "n": "",
+   "touched": false
+  }
+ }
+}
