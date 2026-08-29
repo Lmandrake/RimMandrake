@@ -807,10 +807,19 @@ ruled:
       construction. Execution rides PAWN_FLAVOR_STARWARS_1's cut pass (frozen-world
       settlement edits are expensive-list: back up the save first).
     evidence: >
-      VFEP_Salvager_Warcasket kinds existed under the separate `Salvagers` FactionDef
-      on the frozen world beside Jawa_Junkers (pawn_flavor_design.md, 2026-08-29 census
-      session). Owner picked "Fold Salvagers into Junkers" from the three options at
-      the bench, 2026-08-29.
+      `Salvagers` is ODYSSEY's FactionDef (ludeon.rimworld.odyssey) — the earlier
+      "VFE-Pirates' Salvagers" attribution was wrong; VFEP injects the
+      `VFEP_Salvager_Warcasket` kind into its pawnGroupMakers (read from dump
+      d1be0632). Owner picked "Fold Salvagers into Junkers" at the bench, 2026-08-29.
+    executed: >
+      2026-08-29 (BENCH): the frozen world's Salvagers instance ("The Comet Party",
+      loadID 24) held ZERO settlements — nothing to re-point. Folded by scribing
+      `<defeated>True</defeated>` into its faction block in WORLDMAP_V1_original.rws
+      (32-char edit; backup WORLDMAP_V1_original.pre_salvager_fold_2026-08-29.rws).
+      All 26 Faction_24 refs survive (24 relation rows, 1 per-faction dict key, 1
+      world pawn Human62211) — the object persists, so nothing dangles; a defeated
+      faction raids, trades and appears nowhere. Proof at next campaign load rides
+      COLD_LOAD_RUN_SHEET_2.
 
   PIRATE_DEFNAME_DRIFT_1:
     question: "Is the pirate faction `Pirate` or `AM_EnemyPirate`?"

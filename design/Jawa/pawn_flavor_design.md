@@ -44,10 +44,12 @@ is phase 1 in progress. Names below are placeholders unless marked homage.
   wait on a spine — plain BackstoryDefs fit KotOR's shipped spawn categories;
   whether to author them in v1 is this item's own scoping call. Full ruling:
   `infrastructure/state/queue/items/DROID_SYSTEM_EMBRACE_1.md`.
-- **Warcasket flag, unresolved**: VFE-Pirates' `Salvagers` faction exists on the
-  frozen world alongside `Jawa_Junkers` and also fields warcasket kinds
-  (`VFEP_Salvager_Warcasket`). If caskets are the Junkers' signature, Salvagers
-  need re-relating/retheming — owner has not ruled.
+- **Warcasket flag RULED and EXECUTED (owner, 2026-08-29): fold Salvagers into
+  Junkers.** Correction: `Salvagers` is ODYSSEY's faction (VFEP injects its
+  `VFEP_Salvager_Warcasket` kind), not VFE-Pirates'. On the frozen world it held
+  zero settlements — the fold is `<defeated>True</defeated>` scribed into its
+  block ("The Comet Party", loadID 24) in WORLDMAP_V1_original.rws, backup
+  `.pre_salvager_fold_2026-08-29.rws`. Caskets are Junker-exclusive in play.
 
 ## Census (2026-08-29, 582-mod dump `d1be0632`)
 

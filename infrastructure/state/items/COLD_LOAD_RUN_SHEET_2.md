@@ -79,3 +79,9 @@ strings, written BEFORE the launch:
   emptied on purpose; engine falls back benignly — verified in source).
 - The two save-carried exclusions (`RBM_Roamer`, `SH_MED_MedievalAlchemist`)
   must NOT appear in the removal list.
+
+## SALVAGERS_FOLD_JUNKERS — campaign load check (added 2026-08-29, BENCH)
+WORLDMAP_V1_original.rws edited: Salvagers ("The Comet Party") scribed
+`defeated=True` (backup `.pre_salvager_fold_2026-08-29.rws`). On the next
+CAMPAIGN load: no Scribe error naming `Faction_24` or `Salvagers`; The Comet
+Party absent from the faction/comms UI (or listed defeated); Junkers unchanged.
