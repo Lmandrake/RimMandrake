@@ -58,7 +58,7 @@ for whoever builds it, not a quick add).
 
 ---
 
-## The missing tool now exists in source — UNBUILT, UNDEPLOYED, UNPROVEN
+## The missing tool now exists in source — BUILT, UNDEPLOYED, UNPROVEN LIVE
 
 Owner ruling 2026-08-29: build it, as a second isolated Harmony contact point (not routed
 through `JawaBenchArgGuard.cs`). `jawa/harmony_patches` is written in
@@ -67,11 +67,22 @@ Finalizer patching it via `HarmonyLib.Harmony.GetAllPatchedMethods()` +
 `GetPatchInfo(method)`, with each patch's owner id and its patch method's declaring
 assembly (usually names the mod).
 
-⚠️ **Written from the Lib.Harmony 2.3.6 XML doc (net472), not compiled.** `build.py`
-hard-exits under WSL by design — this needs a Windows-side build to prove it even
-compiles, let alone runs. Static-vs-instance on `Harmony.GetAllPatchedMethods()` /
-`GetPatchInfo()` is asserted from the public Harmony API and the extracted XML doc,
-**not verified against the actual DLL bytes** — flag if the build disagrees.
+✅ **Compiled clean under `python.exe build.py` (Windows-side, run from WSL bash — not a real
+barrier, owner-said)**: 0 errors, 0 warnings, DLL contains the tool. First attempt failed —
+`HarmonyLib.Patches.Prefixes/Postfixes/Transpilers/Finalizers` are `ReadOnlyCollection<Patch>`
+at runtime despite the XML doc's "array of Patch" prose, fixed in `833dd0d8`. So the
+static-vs-instance guess on `GetAllPatchedMethods()`/`GetPatchInfo()` was right; the array-vs-
+collection guess was not — exactly the reason nothing here was ever claimed proven before a
+real compiler ran it.
+
+🔴 **NOT DEPLOYED, on purpose.** `build.py`'s own plan shows the LIVE game copy already carries
+27 tools this checkout's build does not (`jawa/lord_assault_spawn`, `jawa/weather_set`,
+`jawa/animal_bond`, `jawa/ritual_start`, others) — someone has a newer companion deployed
+locally that isn't merged to `main`. Deploying this build would remove those 27 tools. That
+drift is a separate question for whoever owns them, not FOUNDRY's to resolve by forcing
+`--allow-tool-removal`. **Whoever deploys next must reconcile that list first**, or build
+`--gm` and expect the SAME removal list minus the 2 GM tools — the other 25 are not explained
+by `--gm` alone.
 
 ## Prove it, once deployed
 ```
