@@ -2932,3 +2932,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"VEHICLE_ION_TIER_1","ts":"2026-08-29T23:56:48Z"}
 {"seat":"FOUNDRY","event":"start","id":"VEHICLE_ION_TIER_1","ts":"2026-08-29T23:56:48Z"}
 {"seat":"FOUNDRY","event":"block","id":"VEHICLE_ION_TIER_1","reason":"built and deployed (game DOWN); live-verify against a real vehicle owed at next game-up, a mechanism never once observed running","ts":"2026-08-29T23:57:37Z"}
+{"seat":"FOUNDRY","event":"needs","id":"DROID_SYSTEM_BUILD_1","to":"owner","reason":"parked until the owner reopens, per its own filing note - mistagged, causing it to leak through --mode afk suppression","ts":"2026-08-29T23:58:53Z"}
