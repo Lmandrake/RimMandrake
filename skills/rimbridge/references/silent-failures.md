@@ -184,8 +184,14 @@ footprint covered them — a `Table1x2c` (1×2) over a `DiningChair`, and a thir
 two before it. 🔴 **Both the destroying op and the destroyed op reported success.**
 
 ⇒ Diffing `placed` against `requested` — the obvious check, and the one a build-verification pass
-will reach for — sees a perfect run. **The only honest success signal is a cell-by-cell read-back
-with `rimworld/get_cells_info` after `jawa/map_commit`.**
+will reach for — sees a perfect run.
+
+✅ **FIXED and proven live 2026-08-29** (companion build 752662e511f4): the tool now returns
+`survived` (counted after every op), `lostToLaterOps`, and `displaced[]` naming what each op
+destroyed with `placedByThisBatch`; `refuseIfDisplaces: true` moves the offending op to
+`failed[]` before it spawns. **Assert on `survived == requested`, never `placed`.** A cell-by-cell
+read-back with `rimworld/get_cells_info` after `jawa/map_commit` remains the belt-and-braces
+check when the batch matters.
 
 ⚠️ Also: `jawa/set_terrain_batch` and `jawa/set_roof_batch` take **`ops`** (`'<Def>:x,z,w,h'`
 joined by `;`), NOT a `rect` parameter. Passing `rect` fails loudly — `success: false`,
