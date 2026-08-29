@@ -1,6 +1,11 @@
 <!-- status: live — phase 0 of DROID_SYSTEM_EMBRACE_1 -->
 # Droid verb census — what the accepted mods actually ship (2026-08-29)
 
+> 🔴 **Ruling, owner, 2026-08-29 (recorded in `DROID_SYSTEM_EMBRACE_1`): spec
+> then PARK.** In v1 all three frameworks run AS SHIPPED, side by side,
+> unrationalized — the owner plays them to learn them. The "spine question"
+> below is analysis for the parked spec, not an instruction to choose one now.
+
 Three parallel subagent sweeps of the mod XML on disk, against frozen dump
 `OFFICIAL-2026-08-29` (584). Every row was read from a def unless marked
 UNCERTAIN. Curation surface: `droid_verbs_sheet.html` → `droid_verbs_decisions.json`.

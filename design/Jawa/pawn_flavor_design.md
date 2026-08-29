@@ -21,6 +21,11 @@ is phase 1 in progress. Names below are placeholders unless marked homage.
 - **Droids may become their own v2 system** — the assembly×service-record space
   plus restraining bolts, data spikes, memory wipes as mechanics. Keep the droid
   set growing here but design it detachable.
+- **Droid system: spec then PARK (owner, later 2026-08-29).** V1 plays all three
+  shipped frameworks raw, unrationalized. The droid flavor layer here does NOT
+  wait on a spine — plain BackstoryDefs fit KotOR's shipped spawn categories;
+  whether to author them in v1 is this item's own scoping call. Full ruling:
+  `infrastructure/state/queue/items/DROID_SYSTEM_EMBRACE_1.md`.
 - **Warcasket flag, unresolved**: VFE-Pirates' `Salvagers` faction exists on the
   frozen world alongside `Jawa_Junkers` and also fields warcasket kinds
   (`VFEP_Salvager_Warcasket`). If caskets are the Junkers' signature, Salvagers
