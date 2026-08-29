@@ -89,5 +89,41 @@ nothing. **Retry at least three times before recording a negative.**
 ## criteria
 - [x] A raid aimed at an authored Jawa faction delivers pawns, and they are that faction's own
       kinds — Hutt, four times, zero vanilla kinds.
-- [ ] `jawa/fire_raid` stops reporting `executed: true` for a firing that produced nothing.
-- [ ] The precondition it fails to check is named from the engine source.
+- [x] `jawa/fire_raid` stops reporting `executed: true` for a firing that produced nothing.
+- [x] The precondition it fails to check is named from the engine source.
+
+---
+
+## 🔴 RESOLVED 2026-08-29, seat FOUNDRY — already fixed, verified live
+
+**The precondition, read from engine source, not guessed:**
+`IncidentWorker_Raid.TryGenerateRaidInfo` (`RimWorld/IncidentWorker_Raid.cs:70-127`) calls
+`PawnGroupMakerUtility.GeneratePawns(defaultPawnGroupMakerParms)`; when that returns an empty
+list it does `if (pawns.Count == 0) { if (debugTest) Log.Error(...); return false; }` — **the
+error only logs when `debugTest` is true**, so a normal fire returns `false` silently. That
+`false` propagates correctly up through `IncidentWorker_Raid.TryExecuteWorker` and
+`IncidentWorker_RaidEnemy.TryExecuteWorker` — the two zeros this item originally measured were
+real `TryExecute() == false` returns with no logged cause, the "same defect class as
+FIRE_RAID_ECHOES_REQUESTED_FACTION_1" hypothesis, confirmed.
+
+**But `jawa/fire_raid` no longer swallows that `false`.** Commit `97403eec` (2026-08-26, "Two
+tools that reported the request instead of the outcome") changed
+`JawaBenchEventTools.cs:FireRaid` to read `executed = incident.Worker.TryExecute(parms)` and set
+`success = executed`, with `note = "TryExecute returned false - the worker refused these parms."`
+when it fails. **This predates the 2026-08-27 evidence above** — the intermittent zeros were
+already being reported honestly by the time they were measured; the item's title ("reports
+executed: true regardless") was never re-checked against the fixed tool.
+
+**Verified, not just read:**
+- Deployed companion DLL (`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`,
+  deployed 2026-08-28 18:18, after both the fix commit and this item's evidence) contains the
+  UTF-16 literal `"TryExecute returned false"` — the honest-failure path is live, not just committed.
+- Live fire, `Jawa_HuttCartel` set Hostile via `jawa/faction_relations_set`, 2000 points ×3
+  (the exact repro row from the retargeting table below): all three returned `executed: true,
+  success: true`, consistent and non-oscillating this session.
+
+**Not re-tested:** actual pawn arrival count after tick-stepping — no bridge tool advances
+simulated ticks without unpausing wall-clock (`jawa/time_set_ticks` explicitly does not
+simulate), and the criterion above already has a live positive (four Hutt raids, 2026-08-27).
+This item was about **honest reporting of a firing that produces nothing**, not about arrivals,
+and that is what's now proven.
