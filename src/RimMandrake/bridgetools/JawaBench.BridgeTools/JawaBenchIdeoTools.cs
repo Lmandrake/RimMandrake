@@ -42,6 +42,7 @@
 // Thread affinity, same rule as every other file here: everything touching game state is
 // inside ctx.MainThread.InvokeAsync and nothing else is.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -213,6 +214,147 @@ namespace JawaBench.BridgeTools
                     preceptCount = ideo.PreceptsListForReading?.Count ?? 0,
                     classicMode = ideo.classicMode,
                     believerCount = believers,
+                    ticksGame = TicksGameSafe()
+                };
+            }).ConfigureAwait(false);
+        }
+
+        // =====================================================================
+        // jawa/pawn_ideo_reassign
+        // =====================================================================
+        // jawa/faction_ideo_set only changes a FACTION's primaryIdeo - existing believers,
+        // already generated under the old ideo, keep it. This is the follow-up: reassign
+        // every pawn currently belonging to a faction onto that faction's CURRENT primaryIdeo.
+        //
+        // Pawn_IdeoTracker.SetIdeo (RimWorld/Pawn_IdeoTracker.cs:183-242) handles every side
+        // effect itself - believer-count recache, a HistoryEvent, certainty reset, forbidden
+        // bed/bond cleanup, a letter if a bond is broken. Nothing else needs calling. It also
+        // silently no-ops on a baby pawn or a same-ideo call (checked via before/after, not by
+        // guessing the DevelopmentalStage gate independently) - reported here as a skip, not a
+        // success. Mirrors the shape vanilla's own DebugActionsIdeo.SetIdeo() and
+        // BackCompatibilityConverter_1_2 use for exactly this kind of bulk reassignment.
+        [Tool(
+            "jawa/pawn_ideo_reassign",
+            Description =
+                "Reassigns every pawn belonging to a faction onto that faction's CURRENT " +
+                "primaryIdeo, via Pawn_IdeoTracker.SetIdeo - the same call the game's own debug " +
+                "tools use, which handles every side effect itself (believer-count recache, " +
+                "certainty reset, forbidden bed/bond cleanup) with nothing else to call " +
+                "manually. The follow-up to jawa/faction_ideo_set, which only changes the " +
+                "FACTION's primaryIdeo and leaves existing believers on their old ideo. " +
+                "⚠️ Processes ALIVE AND DEAD pawns across every map, caravan and world-pawn " +
+                "list (PawnsFinder.All_AliveOrDead filtered by Faction) - not just the current " +
+                "map. A pawn with no ideo tracker (Ideology inactive, or a non-ideo-bearing " +
+                "race) is reported, not silently skipped.",
+            ResultDescription =
+                "success, factionDefName, targetIdeoName, targetIdeoId, pawnsMatched, " +
+                "reassigned, skippedSameIdeo, skippedNoChange (SetIdeo ran but the ideo did " +
+                "not change - e.g. a baby), noIdeoTracker, truncated (true if pawnsMatched > " +
+                "limit), results[] of {pawnId, name, before, after, outcome}.")]
+        public static async Task<object> PawnIdeoReassign(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "FactionDef defName. Every pawn currently belonging to this faction is " +
+                "reassigned to the faction's CURRENT primaryIdeo (see jawa/faction_ideo_get).")]
+            string factionDefName,
+            [ToolParameter(Description =
+                "Must be true. Confirms this changes potentially many pawns' Ideo at once, " +
+                "which this tool cannot undo.")]
+            bool confirmReplace = false,
+            [ToolParameter(Description =
+                "Cap on pawns actually processed in one call, so a very large faction cannot " +
+                "silently take a long time. pawnsMatched reports the true total either way.",
+                DefaultValue = 200)]
+            int limit = 200)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (string.IsNullOrWhiteSpace(factionDefName))
+                return Fail("factionDefName is required.");
+            if (!confirmReplace)
+                return Fail("confirmReplace must be true - this reassigns potentially many " +
+                            "pawns' Ideo, which this tool cannot undo.");
+            if (limit <= 0)
+                return Fail("limit must be > 0.");
+
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                var fd = DefDatabase<FactionDef>.GetNamedSilentFail(factionDefName.Trim());
+                if (fd == null)
+                    return Fail("No FactionDef '" + factionDefName + "'.",
+                        DefSuggestions<FactionDef>(factionDefName));
+
+                var faction = Find.FactionManager?.FirstFactionOfDef(fd);
+                if (faction == null)
+                    return Fail("FactionDef '" + factionDefName + "' exists but no such " +
+                                "faction was generated in this world.");
+
+                var targetIdeo = faction.ideos?.PrimaryIdeo;
+                if (targetIdeo == null)
+                    return Fail("Faction '" + faction.Name + "' has no primaryIdeo to " +
+                                "reassign onto - run jawa/faction_ideo_set first, or Ideology " +
+                                "is inactive.");
+
+                var matched = PawnsFinder.All_AliveOrDead
+                    .Where(p => p.Faction == faction)
+                    .ToList();
+
+                int reassigned = 0, skippedSame = 0, skippedNoChange = 0, noTracker = 0;
+                var results = new List<object>();
+                foreach (var pawn in matched.Take(limit))
+                {
+                    if (pawn.ideo == null)
+                    {
+                        noTracker++;
+                        results.Add(new
+                        {
+                            pawnId = pawn.thingIDNumber, name = pawn.LabelShortCap,
+                            before = (string)null, after = (string)null,
+                            outcome = "no_ideo_tracker"
+                        });
+                        continue;
+                    }
+
+                    var before = pawn.ideo.Ideo;
+                    if (before == targetIdeo)
+                    {
+                        skippedSame++;
+                        results.Add(new
+                        {
+                            pawnId = pawn.thingIDNumber, name = pawn.LabelShortCap,
+                            before = before?.name, after = before?.name,
+                            outcome = "skipped_same_ideo"
+                        });
+                        continue;
+                    }
+
+                    pawn.ideo.SetIdeo(targetIdeo);
+                    var after = pawn.ideo.Ideo;
+                    string outcome;
+                    if (after == targetIdeo) { reassigned++; outcome = "reassigned"; }
+                    else { skippedNoChange++; outcome = "skipped_no_change"; }
+
+                    results.Add(new
+                    {
+                        pawnId = pawn.thingIDNumber, name = pawn.LabelShortCap,
+                        before = before?.name, after = after?.name, outcome
+                    });
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    factionDefName,
+                    targetIdeoName = targetIdeo.name,
+                    targetIdeoId = targetIdeo.id,
+                    pawnsMatched = matched.Count,
+                    reassigned,
+                    skippedSameIdeo = skippedSame,
+                    skippedNoChange,
+                    noIdeoTracker = noTracker,
+                    truncated = matched.Count > limit,
+                    results,
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);
