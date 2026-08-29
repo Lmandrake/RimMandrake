@@ -1,6 +1,6 @@
-<?xml version="1.0" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <ModsConfigData>
-  <version>1.6.4871 rev590</version>
+  <version>1.6.4871 rev591</version>
   <activeMods>
     <li>zetrith.prepatcher</li>
     <li>brrainz.harmony</li>
@@ -583,7 +583,7 @@
     <li>mandrake.jawaikee</li>
     <li>mandrake.jawaionweapons</li>
     <li>mandrake.jawa.patches</li>
-    <li>guy762.kotordroids</li>
+    <li>mandrake.jawapawnflavor</li><li>guy762.kotordroids</li>
     <li>btd.gbp.shippack.kotor.vge</li>
     <li>mandrake.rimdefdump</li>
   </activeMods>

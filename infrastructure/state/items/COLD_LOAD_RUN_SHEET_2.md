@@ -47,3 +47,18 @@ Adult bantha/eopie carry the new art; world labels clear of the limb (W5 exactly
 substitutions); 23 creatures visibly smaller, Zakkeg/Thrumbungus bigger; the Ikee reads as
 a creepy eye with slime trail + nuzzle + mood pair. Plus NEW: the test dwelling stands at
 rect 25,25,18,10 on the current map (disposable).
+
+## PAWN_FLAVOR_STARWARS_1 — Jawa_PawnFlavor first load (added 2026-08-29, BENCH)
+Deployed and active at position 581 (after mandrake.jawa.patches). Decision
+strings for the next full-list load, written BEFORE the launch:
+- FAIL if Player.log contains `Config error in Jawa_` or
+  `Could not resolve cross-reference` naming any `Jawa_` or `JawaBSC_` id, or
+  `Could not find parent node` after our mod loads.
+- PASS positive observation (not mere silence): the post-load def dump contains
+  BackstoryDef `Jawa_FarmFostered` and TraitDef `Jawa_WaterDiscipline`
+  (`measure count BackstoryDef` should read 1225+50=1275 against a 585 capture),
+  AND one spawned pawn of Homestead Defense League or Deep Desert Tribes shows a
+  Jawa_* backstory title in its Bio tab (bridge: spawn via faction pawnkind,
+  screenshot the card). Filter merge means roughly 1-in-3 pawns draw our
+  category — check several pawns before calling absence.
+- Also due at next game-DOWN: sync_mod_state (saves record 584, list is 585).
