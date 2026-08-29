@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:04:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T01:13:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -232,16 +232,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PLACER_IDENTITY_REPLAY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PLACER_IDENTITY_REPLAY_1.md
 
-## PAWN_WEAPON_GEN_TAG_POOL_READ_1 PAWN_WEAPON_GEN_TAG_POOL_READ_1
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PAWN_WEAPON_GEN_TAG_POOL_READ_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWN_WEAPON_GEN_TAG_POOL_READ_1.md
-
 ## THRUSTER_INSTABUILD_NEVER_ACTIVE_1 Tool-built thrusters link but never contribute range on the full list
 state:    proposed
 row:      unassigned
@@ -271,3 +261,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  JawaEmpireGrunt/Heavy/Specialist (JawaFactionRoster.xml:43/96/144) carry no
 prose:    infrastructure/state/items/EMPIRE_TROOPER_TRAINING_1.md
+
+## PAWN_WEAPON_POOL_JOIN_TOOL_1 Join weaponTags against roster IsRangedWeapon/generateAllowChance for the 23 bare-producing kinds
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PAWN_WEAPON_POOL_JOIN_TOOL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWN_WEAPON_POOL_JOIN_TOOL_1.md
