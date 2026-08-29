@@ -173,8 +173,61 @@ for dn, (grp, tech, user, state, note) in PLAN.items():
     })
 rows.sort(key=lambda r: (GROUP_ORDER.index(r["group"]), r["size"], r["defName"]))
 
+# ---------------------------------------------------------------- CANON + SCALING
+# Owner, 2026-08-29 (verbatim intent): the turrets left standing on the review array
+# "need to be all made into the list of our official turrets and recorded as canon...
+# a turret's damage is (# squares)^2 x (largest similar personal weapon)."
+CANON = set(json.load(open("/mnt/d/Luke/dev/Rimworld/Transient/canon_roster.json")))
+ANCHORS = json.load(open("/mnt/d/Luke/dev/Rimworld/Transient/weapon_anchors.json"))
+FALLBACK = {"OuterRim_Turbolaser": "OuterRim_Blaster", "OuterRim_ProtonBomb": "Bomb",
+            "HugeGravBlastShockwave": "GravBlastShockwave"}
+FORM = {"Bullet": "Kinetic", "RangedStab": "Kinetic", "OuterRim_Blaster": "Thermal (blaster)",
+        "OuterRim_Turbolaser": "Thermal (blaster)", "Burn": "Thermal (beam)", "Flame": "Thermal (flame)",
+        "BeamBypassShields": "Thermal (beam)", "VGE_AnticraftBeamBypassShields": "Thermal (beam)",
+        "OuterRim_BlasterIon": "Ionic", "Stun": "Ionic", "EMP": "Ionic",
+        "GravBlastShockwave": "Gravitic", "HugeGravBlastShockwave": "Gravitic",
+        "Bomb": "Explosive", "Smoke": "Ionic (arc)", "Stab": "Living/bio",
+        "VFEI2_AcidSpit": "Living/bio", "AA_BlackHiveBolt": "Living/bio", "Extinguish": "Utility"}
+UTILITY = {"DrillTurret", "VFES_Turret_Searchlight", "Turret_FoamTurret", "AA_FoamBelcher"}
+for r in rows:
+    t = T.get(r["defName"]) or T1.get(r["defName"]) or {}
+    a, b = (r["size"].split("x") + ["1"])[:2]
+    cells = int(a) * int(b)
+    mult = cells * cells
+    dd = t.get("damageDef")
+    cur = t.get("damage")
+    r["canon"] = r["defName"] in CANON
+    if r["canon"] and r["prefill"]["state"] == "cut":
+        r["prefill"]["state"] = "keep"
+        r["prefillNote"] = ("⚑ AUTO-RESOLVED by the canon ruling: this row was prefilled CUT but "
+                           "SURVIVED the owner's array review, so it is IN — overrule here if that "
+                           "was an oversight. Prior note: " + r["prefillNote"])
+        r["contested"] = True
+    elif not r["canon"] and r["prefill"]["state"] != "cut":
+        r["prefill"]["state"] = "cut"
+        r["prefillNote"] = (r["prefillNote"] + " · " if r["prefillNote"] else "") + "removed at the array review 2026-08-29"
+    form = FORM.get(dd, dd or "?")
+    if r["defName"] in UTILITY or dd in (None, "Extinguish", "None"):
+        r["scaling"] = "utility / no damage doctrine — exempt"
+    else:
+        anch = ANCHORS.get(dd) or ANCHORS.get(FALLBACK.get(dd, ""), None)
+        if anch:
+            target = anch[1] * mult
+            fb = "" if ANCHORS.get(dd) else " (family fallback)"
+            verdict = "OVER" if (cur or 0) > target else ("under" if (cur or 0) < target else "on target")
+            r["scaling"] = (f"{form} · anchor: {anch[0]} {anch[1]}dmg{fb} × {cells}²={mult} → TARGET {target} · "
+                            f"current {cur} ({verdict})")
+            r["scaleTarget"] = target; r["scaleAnchor"] = anch[2]; r["scaleMult"] = mult
+        else:
+            r["scaling"] = f"{form} · UNANCHORED — no personal analog exists; scale by fiat"
+    r["form"] = form
+
 register = {
     "posture": "whitelist",
+    "canonRoster": sorted(CANON),
+    "canonMeaning": "MEASURED off the live array after the owner's cuts, 2026-08-29: these defs ARE the official turrets of the campaign. Everything else dies at normalization.",
+    "damageDoctrine": "owner, verbatim: \"a turret's damage is (# squares)^2 x (largest similar personal weapon)\" — anchors MEASURED from the 585 capture (personal weapons only, turret guns excluded), forms per setting_physics.md",
+    "anchors": ANCHORS,
     "postureMeaning": "ALL turret sizes now in scope. A turret def not on this sheet, or on it with state=cut, is to be cut when we normalize.",
     "rulingSource": "owner at the bench, 2026-08-29",
     "rules": [
@@ -256,6 +309,7 @@ body.folded #brief{display:none}
   <b>The three decisions per row:</b> ① what technology/damage it projects · ② how powerful / what effect · ③ who uses it. Prefilled; overrule freely — the notes you write are worth more than the agreements.</div>
   <div class="panel warn"><b>Rules the agent INVENTED (rows tinted, filter: contested):</b> ① gravitic weapons (GravTech) = Rakatan relic tech · ② the heavy ion cannon goes to the Jawa Trade Moot (ion = capture-not-kill is the Jawa identity), not the Empire · ③ E-Web assigned Imperial · ④ insect living turrets re-projectiled to SONIC to match Geonosian identity · ⑤ black defiler = the Assailant's flesh (anomaly set-dressing). None of these were asked for — each is one click to overturn.<br>
   <b>Open questions:</b> which def is your "auto turret" cut (auto CHARGE turret flagged undecided)? · does VFES_Turret_Flame (1×1 flamer, found alive) become a 4th VFE-Security keep? </div>
+  <div class="panel" style="border-color:#4a7c59"><b>◈ CANON ROSTER + DAMAGE DOCTRINE (owner, 2026-08-29):</b> the turrets that survived the live array review ARE the official turrets of the campaign — marked ◈ CANON below, recorded in turret_register.json and canon.yml. <b>Damage doctrine, verbatim: "a turret's damage is (# squares)² × (largest similar personal weapon)"</b> — so 2×2 = 16×, 3×3 = 81×, 5×5 = 625×, 7×7 = 2401× its family's biggest personal arm. Each row shows its ⚖ scaling line: form of harm (per setting_physics.md), the MEASURED anchor weapon, the multiplier, the TARGET damage, and the current value. Headlines: the turbolasers currently sit ABOVE their blaster-anchor targets; the gravitic pieces carry tiny damage numbers because their power is the shockwave mechanic, so their targets need fiat; living turrets have no personal analog. Rows prefilled CUT that survived your review are flagged ⚑ AUTO-RESOLVED — overrule if any was an oversight (the archotech charge turret is the one to look at).</div>
   <div class="panel"><b>Criterion:</b> grouped by projected TECHNOLOGY FAMILY, matched to the faction armory survey (ion=Jawa, blaster=Empire, sonic=Geonosian, mech=Arsenal, slugthrower=Homestead). This ranks coherence with existing assignments — not worth, and not your vision. Stats lines are MEASURED from the live 585 capture 2026-08-29T20-07-29Z.</div>
   <div class="pathbar"><b>Save decisions to</b> <code id="p1">%DEC%</code><button data-copy="p1">copy path</button>
    <span>the picker cannot be given a folder — copy this into its filename box</span></div>
@@ -348,8 +402,9 @@ function card(r){
   const d=dec[r.defName];
   return `<div class="card ${r.contested?'contested':''} ${d.touched?'touched':''}" data-def="${r.defName}">
    <div>${r.img}<div class="meta">${r.size} · ${r.mod}</div></div>
-   <div><div class="t">${r.label} <span class="meta">(${r.defName})</span></div>
+   <div><div class="t">${r.canon?'<span style="color:#7c6">◈ CANON</span> ':''}${r.label} <span class="meta">(${r.defName})</span></div>
      <div class="stats">${r.stats}</div>
+     ${r.scaling?`<div class="stats" style="color:#e0c98f">⚖ ${r.scaling}</div>`:''}
      <div class="desc">${r.desc}</div>
      ${r.prefillNote?`<div class="pn">◆ ${r.prefillNote}</div>`:''}</div>
    <div class="dec">

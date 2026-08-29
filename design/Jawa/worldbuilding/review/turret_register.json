@@ -1,5 +1,242 @@
 {
  "posture": "whitelist",
+ "canonRoster": [
+  "AA_BlackDefiler",
+  "AA_FoamBelcher",
+  "AB_Turret_Propane",
+  "BigLaserCannon",
+  "DP_Automortar",
+  "DetColumnMod",
+  "DrillTurret",
+  "EMPColumnMod",
+  "FlameColumnMod",
+  "GTbc_GravRailArtillery",
+  "GTbc_GravliteDefenseTurret",
+  "GTbc_HugeGravBlaster",
+  "GTbc_TheSingularityCannon",
+  "OuterRim_AnaxesTurret",
+  "OuterRim_HeavyImperialTurbolaser",
+  "OuterRim_HeavyIonCannon",
+  "OuterRim_HeavyLaserCannon",
+  "OuterRim_HeavyTurbolaser",
+  "OuterRim_LightIonCannon",
+  "OuterRim_LightLaserCannon_Corellia",
+  "OuterRim_LightLaserCannon_Coruscant",
+  "OuterRim_LightLaserCannon_Tatooine",
+  "OuterRim_MediumLaserCannon",
+  "OuterRim_PTowerTurret",
+  "OuterRim_ProtonArtillery",
+  "OuterRim_ProtonMortar",
+  "OuterRim_Turbolaser",
+  "RN2SWGun_EWeb_MG",
+  "Turret_Atomiser",
+  "Turret_AutoChargeBlaster",
+  "Turret_AutoChargeBlaster_OP",
+  "Turret_AutoInferno",
+  "Turret_AutoMortar",
+  "Turret_BeamRepeater",
+  "Turret_FoamTurret",
+  "Turret_GravBlaster",
+  "Turret_RocketswarmLauncher",
+  "Turret_Sludger",
+  "Turret_Sniper",
+  "Turret_Vaporiser",
+  "Turret_Zapper",
+  "VFEI2_Thornspitter",
+  "VFEI2_Thornworm",
+  "VFEI2_Vilelobber",
+  "VFES_Complex_GraserCannon",
+  "VFES_Complex_HeavyIncineratorComplex",
+  "VFES_Turret_Ballista",
+  "VFES_Turret_ChargeRailgun",
+  "VFES_Turret_Flame",
+  "VFES_Turret_Searchlight",
+  "VFES_Turret_TeslaBlaster",
+  "VGE_AnticraftCaster",
+  "VGE_GaussGun",
+  "VGE_HeavyChargeAnnihilator",
+  "VGE_JavelinPod",
+  "VGE_MassDriver"
+ ],
+ "canonMeaning": "MEASURED off the live array after the owner's cuts, 2026-08-29: these defs ARE the official turrets of the campaign. Everything else dies at normalization.",
+ "damageDoctrine": "owner, verbatim: \"a turret's damage is (# squares)^2 x (largest similar personal weapon)\" \u2014 anchors MEASURED from the 585 capture (personal weapons only, turret guns excluded), forms per setting_physics.md",
+ "anchors": {
+  "Bullet": [
+   "Infinity Gun",
+   60,
+   "DP_InfinityGun"
+  ],
+  "Arrow": [
+   "heavy crossbow",
+   22,
+   "VFEM_Bow_HeavyCrossbow"
+  ],
+  "RangedStab": [
+   "Huge Javelin",
+   50,
+   "BS_JotunJavelin"
+  ],
+  "ArrowHighVelocity": [
+   "unique compond bow",
+   17,
+   "VWE_Bow_Compound_Unique"
+  ],
+  "Thump": [
+   "thump cannon",
+   9,
+   "Gun_ThumpCannon"
+  ],
+  "BulletToxic": [
+   "toxic needle gun",
+   25,
+   "Gun_ToxicNeedle"
+  ],
+  "Nerve": [
+   "nerve spiker",
+   11,
+   "NerveSpiker"
+  ],
+  "BeamBypassShields": [
+   "unique beam repeater",
+   64,
+   "Gun_BeamRepeater_Unique"
+  ],
+  "Blaster_Damage": [
+   "E-60R Missile Launcher",
+   100,
+   "JDSA_E-60R_Missile_Launcher"
+  ],
+  "AB_ParalysingSting": [
+   "dribbling cap poison dart",
+   10,
+   "AB_WeaponPoisonDart"
+  ],
+  "AM_AcidSpit": [
+   "acid spewer",
+   25,
+   "AM_Gun_AcidSpewer"
+  ],
+  "EMP": [
+   "chain tesla gun",
+   20,
+   "AM_TeslaGun"
+  ],
+  "Bomb": [
+   "anti-armor rocket launcher",
+   140,
+   "Gun_AntiArmor_Rocket"
+  ],
+  "Flame": [
+   "Plasma Projector",
+   33,
+   "guy762_brifle_plasma"
+  ],
+  "Frostbite": [
+   "cryogenic gun",
+   2,
+   "AM_CryogenicGun"
+  ],
+  "AM_SiegeBlunt": [
+   "demolisher charges",
+   20,
+   "AM_DemolisherChargeBase"
+  ],
+  "Stun": [
+   "Slavemaster Stun Carbine",
+   25,
+   "guy762_carbine_stun"
+  ],
+  "IW_IonBullet": [
+   "heavy ion lance",
+   17,
+   "IW_Gun_HeavyIonLance"
+  ],
+  "Blunt": [
+   "long metal pipe",
+   18,
+   "Melee_MetalPipeLong"
+  ],
+  "Mageia_Hot": [
+   "taurail gun",
+   16,
+   "RBM_TaurailGun"
+  ],
+  "GravBlastShockwave": [
+   "grav blaster",
+   3,
+   "GravBlaster"
+  ],
+  "Burn": [
+   "salvaged laser sniper rifle",
+   39,
+   "VWEL_Gun_SalvagedLaserSniperRifle"
+  ],
+  "Cut": [
+   "forsaken bow",
+   12,
+   "AG_ForsakenBow"
+  ],
+  "ScratchToxic": [
+   "Thrumbungus mushroom",
+   8,
+   "BMT_ThrumbungusShroom"
+  ],
+  "BS_IndictedDamage": [
+   "shrink ray",
+   10,
+   "BMad_ShrinkRay"
+  ],
+  "OuterRim_Blaster": [
+   "blaster cannon",
+   69,
+   "OuterRim_DroidWeapon_BlasterCannon"
+  ],
+  "OuterRim_Ion": [
+   "heavy ion rifle",
+   9,
+   "OuterRim_HeavyIonRifle"
+  ],
+  "OuterRim_BlasterIon": [
+   "wrist blaster (ion)",
+   5,
+   "OuterRim_DroidWeapon_WristBlasterIon"
+  ],
+  "guy762_RangedDamage_energy": [
+   "Bowcaster",
+   36,
+   "guy762_bowcaster"
+  ],
+  "guy762_RangedDamage_disruptor": [
+   "disruptor Pistol",
+   8,
+   "guy762_dispistol"
+  ],
+  "guy762_RangedDamage_ion": [
+   "Jawa Ion Striker",
+   8,
+   "guy762_holdout_jawa"
+  ],
+  "guy762_RangedDamage_electrical": [
+   "Systech Static Blaster",
+   6,
+   "guy762_ionpistol_static"
+  ],
+  "guy762_GrenadeDamage_frag": [
+   "rocket rifle",
+   20,
+   "guy762_rocketrifle"
+  ],
+  "guy762_RangedDamage_sonic": [
+   "sonic pistol",
+   8,
+   "guy762_sonpistol"
+  ],
+  "JawaIon_Damage": [
+   "Jawa ion blaster",
+   8,
+   "JawaIon_Blaster"
+  ]
+ },
  "postureMeaning": "ALL turret sizes now in scope. A turret def not on this sheet, or on it with state=cut, is to be cut when we normalize.",
  "rulingSource": "owner at the bench, 2026-08-29",
  "rules": [
@@ -35,7 +272,10 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: gravitics = Rakatan",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "?"
   },
   {
    "defName": "Turret_GravBlaster",
@@ -52,7 +292,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: gravitics = Rakatan",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Gravitic \u00b7 anchor: grav blaster 3dmg \u00d7 4\u00b2=16 \u2192 TARGET 48 \u00b7 current 7 (under)",
+   "scaleTarget": 48,
+   "scaleAnchor": "GravBlaster",
+   "scaleMult": 16,
+   "form": "Gravitic"
   },
   {
    "defName": "BigLaserCannon",
@@ -69,7 +315,10 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: 'big laser' reads as relic-grade; needs Rakatan reskin + label",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "?"
   },
   {
    "defName": "GTbc_HugeGravBlaster",
@@ -86,7 +335,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: gravitics = Rakatan",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Gravitic \u00b7 anchor: grav blaster 3dmg (family fallback) \u00d7 9\u00b2=81 \u2192 TARGET 243 \u00b7 current 4 (under)",
+   "scaleTarget": 243,
+   "scaleAnchor": "GravBlaster",
+   "scaleMult": 81,
+   "form": "Gravitic"
   },
   {
    "defName": "GTbc_GravRailArtillery",
@@ -103,7 +358,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: gravitics = Rakatan",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Explosive \u00b7 anchor: anti-armor rocket launcher 140dmg \u00d7 25\u00b2=625 \u2192 TARGET 87500 \u00b7 current 280 (under)",
+   "scaleTarget": 87500,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 625,
+   "form": "Explosive"
   },
   {
    "defName": "GTbc_TheSingularityCannon",
@@ -120,7 +381,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: gravitics = terraformer tech; the vault superweapon",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Explosive \u00b7 anchor: anti-armor rocket launcher 140dmg \u00d7 49\u00b2=2401 \u2192 TARGET 336140 \u00b7 current 308 (under)",
+   "scaleTarget": 336140,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 2401,
+   "form": "Explosive"
   },
   {
    "defName": "OuterRim_MediumLaserCannon",
@@ -137,7 +404,13 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Thermal (blaster) \u00b7 anchor: blaster cannon 69dmg \u00d7 4\u00b2=16 \u2192 TARGET 1104 \u00b7 current 200 (under)",
+   "scaleTarget": 1104,
+   "scaleAnchor": "OuterRim_DroidWeapon_BlasterCannon",
+   "scaleMult": 16,
+   "form": "Thermal (blaster)"
   },
   {
    "defName": "OuterRim_ProtonMortar",
@@ -154,7 +427,13 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "OuterRim_ProtonBomb \u00b7 anchor: anti-armor rocket launcher 140dmg (family fallback) \u00d7 4\u00b2=16 \u2192 TARGET 2240 \u00b7 current -1 (under)",
+   "scaleTarget": 2240,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 16,
+   "form": "OuterRim_ProtonBomb"
   },
   {
    "defName": "OuterRim_Turbolaser",
@@ -171,7 +450,13 @@
     "state": "keep"
    },
    "prefillNote": "2000 dmg bolt \u2014 fortress killer, verify vs pawn balance",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Thermal (blaster) \u00b7 anchor: blaster cannon 69dmg \u00d7 4\u00b2=16 \u2192 TARGET 1104 \u00b7 current 2000 (OVER)",
+   "scaleTarget": 1104,
+   "scaleAnchor": "OuterRim_DroidWeapon_BlasterCannon",
+   "scaleMult": 16,
+   "form": "Thermal (blaster)"
   },
   {
    "defName": "RN2SWGun_EWeb_MG",
@@ -188,7 +473,13 @@
     "state": "keep"
    },
    "prefillNote": "INVENTED: E-Web is the iconic Imperial field gun \u2014 assigned Empire, not settlers",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 4\u00b2=16 \u2192 TARGET 960 \u00b7 current 14 (under)",
+   "scaleTarget": 960,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 16,
+   "form": "Kinetic"
   },
   {
    "defName": "OuterRim_AnaxesTurret",
@@ -205,7 +496,13 @@
     "state": "keep"
    },
    "prefillNote": "art is Republic-era; fine as older garrison stock",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Thermal (blaster) \u00b7 anchor: blaster cannon 69dmg \u00d7 9\u00b2=81 \u2192 TARGET 5589 \u00b7 current 200 (under)",
+   "scaleTarget": 5589,
+   "scaleAnchor": "OuterRim_DroidWeapon_BlasterCannon",
+   "scaleMult": 81,
+   "form": "Thermal (blaster)"
   },
   {
    "defName": "OuterRim_HeavyImperialTurbolaser",
@@ -222,7 +519,13 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Thermal (blaster) \u00b7 anchor: blaster cannon 69dmg (family fallback) \u00d7 9\u00b2=81 \u2192 TARGET 5589 \u00b7 current 2000 (under)",
+   "scaleTarget": 5589,
+   "scaleAnchor": "OuterRim_DroidWeapon_BlasterCannon",
+   "scaleMult": 81,
+   "form": "Thermal (blaster)"
   },
   {
    "defName": "OuterRim_HeavyLaserCannon",
@@ -239,7 +542,13 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Thermal (blaster) \u00b7 anchor: blaster cannon 69dmg \u00d7 9\u00b2=81 \u2192 TARGET 5589 \u00b7 current 200 (under)",
+   "scaleTarget": 5589,
+   "scaleAnchor": "OuterRim_DroidWeapon_BlasterCannon",
+   "scaleMult": 81,
+   "form": "Thermal (blaster)"
   },
   {
    "defName": "OuterRim_HeavyTurbolaser",
@@ -256,7 +565,13 @@
     "state": "rework"
    },
    "prefillNote": "same stats as Imperial twin; art says Separatist \u2014 cut as duplicate, or reskin",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Thermal (blaster) \u00b7 anchor: blaster cannon 69dmg (family fallback) \u00d7 9\u00b2=81 \u2192 TARGET 5589 \u00b7 current 2000 (under)",
+   "scaleTarget": 5589,
+   "scaleAnchor": "OuterRim_DroidWeapon_BlasterCannon",
+   "scaleMult": 81,
+   "form": "Thermal (blaster)"
   },
   {
    "defName": "OuterRim_ProtonArtillery",
@@ -273,7 +588,13 @@
     "state": "keep"
    },
    "prefillNote": "r500 map-wide siege piece",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "OuterRim_ProtonBomb \u00b7 anchor: anti-armor rocket launcher 140dmg (family fallback) \u00d7 9\u00b2=81 \u2192 TARGET 11340 \u00b7 current -1 (under)",
+   "scaleTarget": 11340,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 81,
+   "form": "OuterRim_ProtonBomb"
   },
   {
    "defName": "OuterRim_HeavyIonCannon",
@@ -290,7 +611,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED+CONTESTED: ion is the JAWA mechanic (JawaIonWeapons) \u2014 proposed as the Moot's one great emplacement rather than Imperial stock",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Ionic \u00b7 anchor: wrist blaster (ion) 5dmg \u00d7 9\u00b2=81 \u2192 TARGET 405 \u00b7 current 20 (under)",
+   "scaleTarget": 405,
+   "scaleAnchor": "OuterRim_DroidWeapon_WristBlasterIon",
+   "scaleMult": 81,
+   "form": "Ionic"
   },
   {
    "defName": "VGE_AnticraftCaster",
@@ -307,7 +634,10 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Thermal (beam) \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
+   "form": "Thermal (beam)"
   },
   {
    "defName": "VGE_GaussGun",
@@ -324,7 +654,13 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Explosive \u00b7 anchor: anti-armor rocket launcher 140dmg \u00d7 9\u00b2=81 \u2192 TARGET 11340 \u00b7 current 161 (under)",
+   "scaleTarget": 11340,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 81,
+   "form": "Explosive"
   },
   {
    "defName": "VGE_HeavyChargeAnnihilator",
@@ -341,7 +677,13 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 9\u00b2=81 \u2192 TARGET 4860 \u00b7 current 15 (under)",
+   "scaleTarget": 4860,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 81,
+   "form": "Kinetic"
   },
   {
    "defName": "VGE_JavelinPod",
@@ -358,7 +700,13 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Explosive \u00b7 anchor: anti-armor rocket launcher 140dmg \u00d7 9\u00b2=81 \u2192 TARGET 11340 \u00b7 current 118 (under)",
+   "scaleTarget": 11340,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 81,
+   "form": "Explosive"
   },
   {
    "defName": "VGE_PointDefenseTurret",
@@ -372,10 +720,13 @@
     "tech": "point-defense battery",
     "effect": "? ? dmg \u00b7 range 14.9",
     "user": "Gravship (the Utinni)",
-    "state": "keep"
+    "state": "cut"
    },
-   "prefillNote": "",
-   "contested": false
+   "prefillNote": "removed at the array review 2026-08-29",
+   "contested": false,
+   "canon": false,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "?"
   },
   {
    "defName": "VGE_MassDriver",
@@ -392,7 +743,13 @@
     "state": "keep"
    },
    "prefillNote": "could equally read Rakatan \u2014 the Utinni IS Rakatan-built; overlap is canon-friendly",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Explosive \u00b7 anchor: anti-armor rocket launcher 140dmg \u00d7 25\u00b2=625 \u2192 TARGET 87500 \u00b7 current 50 (under)",
+   "scaleTarget": 87500,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 625,
+   "form": "Explosive"
   },
   {
    "defName": "Turret_AutoChargeBlaster",
@@ -409,7 +766,13 @@
     "state": "undecided"
    },
    "prefillNote": "CONTESTED: is this your 'auto turret' cut? If kept, it is Arsenal-only",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 4\u00b2=16 \u2192 TARGET 960 \u00b7 current 15 (under)",
+   "scaleTarget": 960,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 16,
+   "form": "Kinetic"
   },
   {
    "defName": "Turret_AutoInferno",
@@ -426,7 +789,13 @@
     "state": "keep"
    },
    "prefillNote": "the closest thing to a flame turret on the large list",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Thermal (flame) \u00b7 anchor: Plasma Projector 33dmg \u00d7 4\u00b2=16 \u2192 TARGET 528 \u00b7 current -1 (under)",
+   "scaleTarget": 528,
+   "scaleAnchor": "guy762_brifle_plasma",
+   "scaleMult": 16,
+   "form": "Thermal (flame)"
   },
   {
    "defName": "Turret_AutoMortar",
@@ -443,7 +812,13 @@
     "state": "keep"
    },
    "prefillNote": "art not extracted offline (vanilla bundle); exists in game",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Explosive \u00b7 anchor: anti-armor rocket launcher 140dmg \u00d7 4\u00b2=16 \u2192 TARGET 2240 \u00b7 current -1 (under)",
+   "scaleTarget": 2240,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 16,
+   "form": "Explosive"
   },
   {
    "defName": "DP_Automortar",
@@ -460,7 +835,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: bought automation fits Hutt money; else cut as duplicate of auto-mortar",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Explosive \u00b7 anchor: anti-armor rocket launcher 140dmg \u00d7 4\u00b2=16 \u2192 TARGET 2240 \u00b7 current -1 (under)",
+   "scaleTarget": 2240,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 16,
+   "form": "Explosive"
   },
   {
    "defName": "Turret_Autocannon",
@@ -477,7 +858,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the refined bullets rule: rapid Earth-like kinetic; big slow slug-throwers (sniper, mortars, gauss/mass drivers) stay",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 4\u00b2=16 \u2192 TARGET 960 \u00b7 current 200 (under)",
+   "scaleTarget": 960,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 16,
+   "form": "Kinetic"
   },
   {
    "defName": "Turret_Mortar",
@@ -491,10 +878,13 @@
     "tech": "shell mortar (manned)",
     "effect": "? ? dmg \u00b7 range 500",
     "user": "Common / multiple",
-    "state": "keep"
+    "state": "cut"
    },
-   "prefillNote": "player-facing core siege \u2014 keep universal",
-   "contested": false
+   "prefillNote": "player-facing core siege \u2014 keep universal \u00b7 removed at the array review 2026-08-29",
+   "contested": false,
+   "canon": false,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "?"
   },
   {
    "defName": "Turret_RocketswarmLauncher",
@@ -511,7 +901,13 @@
     "state": "keep"
    },
    "prefillNote": "junker-flavored: a welded rack of rockets",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Explosive \u00b7 anchor: anti-armor rocket launcher 140dmg \u00d7 4\u00b2=16 \u2192 TARGET 2240 \u00b7 current 24 (under)",
+   "scaleTarget": 2240,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 16,
+   "form": "Explosive"
   },
   {
    "defName": "Turret_Sniper",
@@ -528,7 +924,13 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 4\u00b2=16 \u2192 TARGET 960 \u00b7 current 200 (under)",
+   "scaleTarget": 960,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 16,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Turret_Ballista",
@@ -545,7 +947,13 @@
     "state": "keep"
    },
    "prefillNote": "the one primitive emplacement \u2014 Tusken siege",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Kinetic \u00b7 anchor: Huge Javelin 50dmg \u00d7 4\u00b2=16 \u2192 TARGET 800 \u00b7 current 278 (under)",
+   "scaleTarget": 800,
+   "scaleAnchor": "BS_JotunJavelin",
+   "scaleMult": 16,
+   "form": "Kinetic"
   },
   {
    "defName": "DrillTurret",
@@ -562,7 +970,10 @@
     "state": "keep"
    },
    "prefillNote": "owner-ruled IN: utility, definitely belongs",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "?"
   },
   {
    "defName": "Turret_Atomiser",
@@ -579,7 +990,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: exotic executive toys read as Hutt purchases",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Thermal (beam) \u00b7 anchor: salvaged laser sniper rifle 39dmg \u00d7 4\u00b2=16 \u2192 TARGET 624 \u00b7 current 86 (under)",
+   "scaleTarget": 624,
+   "scaleAnchor": "VWEL_Gun_SalvagedLaserSniperRifle",
+   "scaleMult": 16,
+   "form": "Thermal (beam)"
   },
   {
    "defName": "Turret_Sludger",
@@ -596,7 +1013,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: industrial waste weapon \u2014 junker chemistry",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Ionic \u00b7 anchor: Slavemaster Stun Carbine 25dmg \u00d7 4\u00b2=16 \u2192 TARGET 400 \u00b7 current 0 (under)",
+   "scaleTarget": 400,
+   "scaleAnchor": "guy762_carbine_stun",
+   "scaleMult": 16,
+   "form": "Ionic"
   },
   {
    "defName": "Turret_Vaporiser",
@@ -613,7 +1036,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: as Atomiser",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Thermal (beam) \u00b7 anchor: salvaged laser sniper rifle 39dmg \u00d7 4\u00b2=16 \u2192 TARGET 624 \u00b7 current 86 (under)",
+   "scaleTarget": 624,
+   "scaleAnchor": "VWEL_Gun_SalvagedLaserSniperRifle",
+   "scaleMult": 16,
+   "form": "Thermal (beam)"
   },
   {
    "defName": "Turret_Zapper",
@@ -630,7 +1059,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: scrap-lightning",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Thermal (beam) \u00b7 anchor: salvaged laser sniper rifle 39dmg \u00d7 4\u00b2=16 \u2192 TARGET 624 \u00b7 current 97 (under)",
+   "scaleTarget": 624,
+   "scaleAnchor": "VWEL_Gun_SalvagedLaserSniperRifle",
+   "scaleMult": 16,
+   "form": "Thermal (beam)"
   },
   {
    "defName": "VFES_Turret_ChargeRailgun",
@@ -647,7 +1082,13 @@
     "state": "keep"
    },
    "prefillNote": "few-and-excellent ultratech \u2014 Helix doctrine",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 4\u00b2=16 \u2192 TARGET 960 \u00b7 current 187 (under)",
+   "scaleTarget": 960,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 16,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Turret_TeslaBlaster",
@@ -664,7 +1105,10 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: jury-rigged arc thrower; alt: Deepwater (conductive water defense)",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Ionic (arc) \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
+   "form": "Ionic (arc)"
   },
   {
    "defName": "AA_BlackDefiler",
@@ -681,7 +1125,10 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: the bioweapon's own emplacement \u2014 poison forest / mycotic jungle set-dressing",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Living/bio \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
+   "form": "Living/bio"
   },
   {
    "defName": "VFEI2_Thornworm",
@@ -698,7 +1145,10 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: as Vilelobber",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Living/bio \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
+   "form": "Living/bio"
   },
   {
    "defName": "VFEI2_Vilelobber",
@@ -715,7 +1165,10 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: hive tech is SONIC \u2014 re-projectile to sonic to match KotORRanged_sonic identity",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Living/bio \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
+   "form": "Living/bio"
   },
   {
    "defName": "AA_FoamBelcher",
@@ -732,7 +1185,10 @@
     "state": "undecided"
    },
    "prefillNote": "living containment \u2014 flesh or hive?",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "Utility"
   },
   {
    "defName": "AB_Turret_Propane",
@@ -749,7 +1205,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: jury-rigged fire = junker chemistry",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Thermal (flame) \u00b7 anchor: Plasma Projector 33dmg \u00d7 1\u00b2=1 \u2192 TARGET 33 \u00b7 current 2 (under)",
+   "scaleTarget": 33,
+   "scaleAnchor": "guy762_brifle_plasma",
+   "scaleMult": 1,
+   "form": "Thermal (flame)"
   },
   {
    "defName": "DetColumnMod",
@@ -766,7 +1228,13 @@
     "state": "undecided"
    },
    "prefillNote": "deliberately open \u2014 mine-field verb, who gets it?",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Explosive \u00b7 anchor: anti-armor rocket launcher 140dmg \u00d7 1\u00b2=1 \u2192 TARGET 140 \u00b7 current 250 (OVER)",
+   "scaleTarget": 140,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 1,
+   "form": "Explosive"
   },
   {
    "defName": "EMPColumnMod",
@@ -783,7 +1251,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: EMP pulse reads as Jawa ion doctrine",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Ionic \u00b7 anchor: Slavemaster Stun Carbine 25dmg \u00d7 1\u00b2=1 \u2192 TARGET 25 \u00b7 current 30 (OVER)",
+   "scaleTarget": 25,
+   "scaleAnchor": "guy762_carbine_stun",
+   "scaleMult": 1,
+   "form": "Ionic"
   },
   {
    "defName": "FlameColumnMod",
@@ -800,7 +1274,13 @@
     "state": "keep"
    },
    "prefillNote": "INVENTED: this covers the flamer need the large list lacks",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Thermal (flame) \u00b7 anchor: Plasma Projector 33dmg \u00d7 1\u00b2=1 \u2192 TARGET 33 \u00b7 current 120 (OVER)",
+   "scaleTarget": 33,
+   "scaleAnchor": "guy762_brifle_plasma",
+   "scaleMult": 1,
+   "form": "Thermal (flame)"
   },
   {
    "defName": "HMC_Wall_FireShotgun_Turret",
@@ -814,10 +1294,16 @@
     "tech": "Burn",
     "effect": "Burn 102 dmg \u00b7 range 14.9 \u00b7 burst 2",
     "user": "Common / multiple",
-    "state": "undecided"
+    "state": "cut"
    },
-   "prefillNote": "no rule matched \u2014 deliberately open",
-   "contested": false
+   "prefillNote": "no rule matched \u2014 deliberately open \u00b7 removed at the array review 2026-08-29",
+   "contested": false,
+   "canon": false,
+   "scaling": "Thermal (beam) \u00b7 anchor: salvaged laser sniper rifle 39dmg \u00d7 1\u00b2=1 \u2192 TARGET 39 \u00b7 current 102 (OVER)",
+   "scaleTarget": 39,
+   "scaleAnchor": "VWEL_Gun_SalvagedLaserSniperRifle",
+   "scaleMult": 1,
+   "form": "Thermal (beam)"
   },
   {
    "defName": "OuterRim_LightIonCannon",
@@ -834,7 +1320,13 @@
     "state": "keep"
    },
    "prefillNote": "ion = capture-not-kill, the Jawa identity",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Ionic \u00b7 anchor: wrist blaster (ion) 5dmg \u00d7 1\u00b2=1 \u2192 TARGET 5 \u00b7 current 10 (OVER)",
+   "scaleTarget": 5,
+   "scaleAnchor": "OuterRim_DroidWeapon_WristBlasterIon",
+   "scaleMult": 1,
+   "form": "Ionic"
   },
   {
    "defName": "OuterRim_LightLaserCannon_Corellia",
@@ -851,7 +1343,13 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Thermal (blaster) \u00b7 anchor: blaster cannon 69dmg \u00d7 1\u00b2=1 \u2192 TARGET 69 \u00b7 current 200 (OVER)",
+   "scaleTarget": 69,
+   "scaleAnchor": "OuterRim_DroidWeapon_BlasterCannon",
+   "scaleMult": 1,
+   "form": "Thermal (blaster)"
   },
   {
    "defName": "OuterRim_LightLaserCannon_Coruscant",
@@ -868,7 +1366,13 @@
     "state": "keep"
    },
    "prefillNote": "",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "Thermal (blaster) \u00b7 anchor: blaster cannon 69dmg \u00d7 1\u00b2=1 \u2192 TARGET 69 \u00b7 current 200 (OVER)",
+   "scaleTarget": 69,
+   "scaleAnchor": "OuterRim_DroidWeapon_BlasterCannon",
+   "scaleMult": 1,
+   "form": "Thermal (blaster)"
   },
   {
    "defName": "OuterRim_LightLaserCannon_Tatooine",
@@ -885,7 +1389,13 @@
     "state": "keep"
    },
    "prefillNote": "INVENTED: the Tatooine pattern belongs on moisture-farm walls",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Thermal (blaster) \u00b7 anchor: blaster cannon 69dmg \u00d7 1\u00b2=1 \u2192 TARGET 69 \u00b7 current 200 (OVER)",
+   "scaleTarget": 69,
+   "scaleAnchor": "OuterRim_DroidWeapon_BlasterCannon",
+   "scaleMult": 1,
+   "form": "Thermal (blaster)"
   },
   {
    "defName": "OuterRim_PTowerTurret",
@@ -902,7 +1412,13 @@
     "state": "keep"
    },
    "prefillNote": "INVENTED: cheap old Rebel-surplus dish \u2014 settler iron",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Thermal (blaster) \u00b7 anchor: blaster cannon 69dmg \u00d7 1\u00b2=1 \u2192 TARGET 69 \u00b7 current 200 (OVER)",
+   "scaleTarget": 69,
+   "scaleAnchor": "OuterRim_DroidWeapon_BlasterCannon",
+   "scaleMult": 1,
+   "form": "Thermal (blaster)"
   },
   {
    "defName": "Turret_FoamTurret",
@@ -919,7 +1435,10 @@
     "state": "keep"
    },
    "prefillNote": "utility, not a weapon \u2014 containment",
-   "contested": false
+   "contested": false,
+   "canon": true,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "Utility"
   },
   {
    "defName": "VFEI2_Thornspitter",
@@ -936,7 +1455,10 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: as the large living turrets \u2014 hive tech is sonic",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Living/bio \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
+   "form": "Living/bio"
   },
   {
    "defName": "VFES_Turret_Flame",
@@ -953,7 +1475,13 @@
     "state": "undecided"
    },
    "prefillNote": "OPEN: dies with the VFE-Security ruling unless named a 4th keep",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Thermal (flame) \u00b7 anchor: Plasma Projector 33dmg \u00d7 1\u00b2=1 \u2192 TARGET 33 \u00b7 current 12 (under)",
+   "scaleTarget": 33,
+   "scaleAnchor": "guy762_brifle_plasma",
+   "scaleMult": 1,
+   "form": "Thermal (flame)"
   },
   {
    "defName": "Turret_AncientArmoredTurret",
@@ -967,10 +1495,16 @@
     "tech": "ancient defender",
     "effect": "Bullet 86 dmg \u00b7 range 36.9 \u00b7 burst 3",
     "user": "Cradle / Rakatan ruins",
-    "state": "rework"
+    "state": "cut"
    },
-   "prefillNote": "INVENTED: 'ancient' emplacements read Rakatan after the reskin",
-   "contested": true
+   "prefillNote": "INVENTED: 'ancient' emplacements read Rakatan after the reskin \u00b7 removed at the array review 2026-08-29",
+   "contested": true,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 86 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "Turret_BeamRepeater",
@@ -987,7 +1521,13 @@
     "state": "rework"
    },
    "prefillNote": "INVENTED: gravtech = Rakatan premise",
-   "contested": true
+   "contested": true,
+   "canon": true,
+   "scaling": "Thermal (beam) \u00b7 anchor: unique beam repeater 64dmg \u00d7 1\u00b2=1 \u2192 TARGET 64 \u00b7 current 64 (on target)",
+   "scaleTarget": 64,
+   "scaleAnchor": "Gun_BeamRepeater_Unique",
+   "scaleMult": 1,
+   "form": "Thermal (beam)"
   },
   {
    "defName": "VQE_AncientShieldedTurret",
@@ -1001,10 +1541,16 @@
     "tech": "ancient shielded turret",
     "effect": "Bullet 86 dmg \u00b7 range 28.9 \u00b7 burst 2",
     "user": "Forsaken vaults",
-    "state": "rework"
+    "state": "cut"
    },
-   "prefillNote": "INVENTED: as ancient defender",
-   "contested": true
+   "prefillNote": "INVENTED: as ancient defender \u00b7 removed at the array review 2026-08-29",
+   "contested": true,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 86 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "HMC_Wall_Emp_Turret",
@@ -1018,10 +1564,16 @@
     "tech": "wall EMP pulse",
     "effect": "EMP 60 dmg \u00b7 blast r6.9 \u00b7 range 37.9",
     "user": "Jawa clans (player)",
-    "state": "undecided"
+    "state": "cut"
    },
-   "prefillNote": "EMP fits ion doctrine; the wall-mount CLASS needs a ruling \u00b7 \u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall.",
-   "contested": false
+   "prefillNote": "EMP fits ion doctrine; the wall-mount CLASS needs a ruling \u00b7 \u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall. \u00b7 removed at the array review 2026-08-29",
+   "contested": false,
+   "canon": false,
+   "scaling": "Ionic \u00b7 anchor: chain tesla gun 20dmg \u00d7 1\u00b2=1 \u2192 TARGET 20 \u00b7 current 60 (OVER)",
+   "scaleTarget": 20,
+   "scaleAnchor": "AM_TeslaGun",
+   "scaleMult": 1,
+   "form": "Ionic"
   },
   {
    "defName": "HMC_Wall_Emp_Turret_Ship",
@@ -1035,10 +1587,16 @@
     "tech": "naval wall EMP pulse",
     "effect": "EMP 60 dmg \u00b7 blast r6.9 \u00b7 range 39.9",
     "user": "Gravship (the Utinni)",
-    "state": "undecided"
+    "state": "cut"
    },
-   "prefillNote": "as wall EMP \u00b7 \u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall.",
-   "contested": false
+   "prefillNote": "as wall EMP \u00b7 \u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall. \u00b7 removed at the array review 2026-08-29",
+   "contested": false,
+   "canon": false,
+   "scaling": "Ionic \u00b7 anchor: chain tesla gun 20dmg \u00d7 1\u00b2=1 \u2192 TARGET 20 \u00b7 current 60 (OVER)",
+   "scaleTarget": 20,
+   "scaleAnchor": "AM_TeslaGun",
+   "scaleMult": 1,
+   "form": "Ionic"
   },
   {
    "defName": "HMC_Wall_Foam_Turret",
@@ -1052,10 +1610,13 @@
     "tech": "wall foam sprayer",
     "effect": "Extinguish 9999 dmg \u00b7 range 19.9 \u00b7 burst 40",
     "user": "Common / multiple",
-    "state": "undecided"
+    "state": "cut"
    },
-   "prefillNote": "\u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall.",
-   "contested": false
+   "prefillNote": "\u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall. \u00b7 removed at the array review 2026-08-29",
+   "contested": false,
+   "canon": false,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "Utility"
   },
   {
    "defName": "HMC_Wall_Rocket_Turret",
@@ -1069,10 +1630,16 @@
     "tech": "wall rocket rack",
     "effect": "Bomb 161 dmg \u00b7 blast r3.9 \u00b7 range 44.9",
     "user": "Junkers",
-    "state": "undecided"
+    "state": "cut"
    },
-   "prefillNote": "rockets, not bullets \u2014 survives the rule, needs the class ruling \u00b7 \u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall.",
-   "contested": false
+   "prefillNote": "rockets, not bullets \u2014 survives the rule, needs the class ruling \u00b7 \u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall. \u00b7 removed at the array review 2026-08-29",
+   "contested": false,
+   "canon": false,
+   "scaling": "Explosive \u00b7 anchor: anti-armor rocket launcher 140dmg \u00d7 1\u00b2=1 \u2192 TARGET 140 \u00b7 current 161 (OVER)",
+   "scaleTarget": 140,
+   "scaleAnchor": "Gun_AntiArmor_Rocket",
+   "scaleMult": 1,
+   "form": "Explosive"
   },
   {
    "defName": "BreadMoAM_Turret_ShotgunTurret",
@@ -1089,7 +1656,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 102 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "BreadMoAM_Turret_ShotgunTurretN",
@@ -1106,7 +1679,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 102 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "DP_MinigunTurret",
@@ -1123,7 +1702,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 10 (under)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "FT_AutoCannon",
@@ -1140,7 +1725,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 200 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "FT_Maxim4M",
@@ -1157,7 +1748,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 12 (under)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "FT_RecoillessGun",
@@ -1174,7 +1771,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 187 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "HMC_Wall_LightMachinegun_Turret",
@@ -1191,7 +1794,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 91 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "HMC_Wall_MachineCannon_Turret_Ship",
@@ -1208,7 +1817,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 187 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "HMC_Wall_Minigun_Turret",
@@ -1225,7 +1840,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 86 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "HMC_Wall_Minigun_Turret_Ship",
@@ -1242,7 +1863,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 86 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "ShipWallMountMiniTurret",
@@ -1259,7 +1886,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 12 (under)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "Turret_AutoMiniTurret",
@@ -1276,7 +1909,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 86 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "Turret_MiniTurret",
@@ -1293,7 +1932,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 12 (under)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "Turret_TacticalTurret",
@@ -1310,7 +1955,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 86 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Complex_Charge",
@@ -1327,7 +1978,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 94 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Complex_Hmg",
@@ -1344,7 +2001,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 200 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Complex_Minigun",
@@ -1361,7 +2024,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 12 (under)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Turret_ArmoredTurret",
@@ -1378,7 +2047,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 12 (under)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Turret_ChargeTurret",
@@ -1395,7 +2070,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 91 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Turret_Concealed",
@@ -1412,7 +2093,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 200 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Turret_MilitaryTurret",
@@ -1429,7 +2116,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 12 (under)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Turret_ShotgunTurret",
@@ -1446,7 +2139,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 18 (under)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "VulcanTurret",
@@ -1463,7 +2162,13 @@
     "state": "cut"
    },
    "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 94 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "BMAD_GrowthTurret",
@@ -1480,7 +2185,13 @@
     "state": "cut"
    },
    "prefillNote": "INVENTED: as shrink ray",
-   "contested": true
+   "contested": true,
+   "canon": false,
+   "scaling": "BS_IndictedDamage \u00b7 anchor: shrink ray 10dmg \u00d7 1\u00b2=1 \u2192 TARGET 10 \u00b7 current 10 (on target)",
+   "scaleTarget": 10,
+   "scaleAnchor": "BMad_ShrinkRay",
+   "scaleMult": 1,
+   "form": "BS_IndictedDamage"
   },
   {
    "defName": "BMAD_ShrinkTurret",
@@ -1497,7 +2208,13 @@
     "state": "cut"
    },
    "prefillNote": "INVENTED: gene-ray joke piece, wrong fiction",
-   "contested": true
+   "contested": true,
+   "canon": false,
+   "scaling": "BS_IndictedDamage \u00b7 anchor: shrink ray 10dmg \u00d7 1\u00b2=1 \u2192 TARGET 10 \u00b7 current 10 (on target)",
+   "scaleTarget": 10,
+   "scaleAnchor": "BMad_ShrinkRay",
+   "scaleMult": 1,
+   "form": "BS_IndictedDamage"
   },
   {
    "defName": "DeadColumnMod",
@@ -1514,7 +2231,10 @@
     "state": "cut"
    },
    "prefillNote": "CUT (owner, 2026-08-29): no deadlife references, period",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "DeadlifeDust \u00b7 UNANCHORED \u2014 no personal analog exists; scale by fiat",
+   "form": "DeadlifeDust"
   },
   {
    "defName": "FT_Turret_Mortar",
@@ -1531,7 +2251,10 @@
     "state": "cut"
    },
    "prefillNote": "dies with the Fortifications-Industrial ruling",
-   "contested": false
+   "contested": false,
+   "canon": false,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "?"
   },
   {
    "defName": "Turret_AutoChargeBlaster_OP",
@@ -1545,10 +2268,16 @@
     "tech": "archotech charge turret",
     "effect": "Bullet 187 dmg \u00b7 range 400 \u00b7 burst 10",
     "user": "Nobody (cut)",
-    "state": "cut"
+    "state": "keep"
    },
-   "prefillNote": "INVENTED: archotech OP one-off, wrong register",
-   "contested": true
+   "prefillNote": "\u2691 AUTO-RESOLVED by the canon ruling: this row was prefilled CUT but SURVIVED the owner's array review, so it is IN \u2014 overrule here if that was an oversight. Prior note: INVENTED: archotech OP one-off, wrong register",
+   "contested": true,
+   "canon": true,
+   "scaling": "Kinetic \u00b7 anchor: Infinity Gun 60dmg \u00d7 1\u00b2=1 \u2192 TARGET 60 \u00b7 current 187 (OVER)",
+   "scaleTarget": 60,
+   "scaleAnchor": "DP_InfinityGun",
+   "scaleMult": 1,
+   "form": "Kinetic"
   },
   {
    "defName": "VFES_Complex_GraserCannon",
@@ -1562,10 +2291,13 @@
     "tech": "(VFE-Security)",
     "effect": "? ? dmg \u00b7 range 29.9 \u00b7 burst 8",
     "user": "Nobody (cut)",
-    "state": "cut"
+    "state": "keep"
    },
-   "prefillNote": "dies with the VFE-Security ruling (only railgun/ballista/tesla + the open flamer survive)",
-   "contested": false
+   "prefillNote": "\u2691 AUTO-RESOLVED by the canon ruling: this row was prefilled CUT but SURVIVED the owner's array review, so it is IN \u2014 overrule here if that was an oversight. Prior note: dies with the VFE-Security ruling (only railgun/ballista/tesla + the open flamer survive)",
+   "contested": true,
+   "canon": true,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "?"
   },
   {
    "defName": "VFES_Complex_HeavyIncineratorComplex",
@@ -1579,10 +2311,13 @@
     "tech": "(VFE-Security)",
     "effect": "? ? dmg \u00b7 range 11.9",
     "user": "Nobody (cut)",
-    "state": "cut"
+    "state": "keep"
    },
-   "prefillNote": "dies with the VFE-Security ruling (only railgun/ballista/tesla + the open flamer survive)",
-   "contested": false
+   "prefillNote": "\u2691 AUTO-RESOLVED by the canon ruling: this row was prefilled CUT but SURVIVED the owner's array review, so it is IN \u2014 overrule here if that was an oversight. Prior note: dies with the VFE-Security ruling (only railgun/ballista/tesla + the open flamer survive)",
+   "contested": true,
+   "canon": true,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "?"
   },
   {
    "defName": "VFES_Turret_Searchlight",
@@ -1596,10 +2331,13 @@
     "tech": "(VFE-Security)",
     "effect": "? ? dmg \u00b7 range 24.9",
     "user": "Nobody (cut)",
-    "state": "cut"
+    "state": "keep"
    },
-   "prefillNote": "dies with the VFE-Security ruling (only railgun/ballista/tesla + the open flamer survive)",
-   "contested": false
+   "prefillNote": "\u2691 AUTO-RESOLVED by the canon ruling: this row was prefilled CUT but SURVIVED the owner's array review, so it is IN \u2014 overrule here if that was an oversight. Prior note: dies with the VFE-Security ruling (only railgun/ballista/tesla + the open flamer survive)",
+   "contested": true,
+   "canon": true,
+   "scaling": "utility / no damage doctrine \u2014 exempt",
+   "form": "?"
   }
  ]
 }

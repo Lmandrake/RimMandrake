@@ -1110,3 +1110,84 @@ empire:
     grep fixedLeaderKinds returns EMPTY" — true then, dead now; the patch landed
     with IMPERIAL_RAID_ROSTER_1. ⚠️ Still bakes at world creation: a world made
     before the patch keeps the Stellarch. Proof in game is EMPIRE_RAID_QUICKTEST_1.
+
+# ─────────────────────────────────────────────────────────────────────────────
+turrets:
+  official_roster_ruled: true
+  official_roster_src: >
+    Owner at the bench, 2026-08-29, after three live cut passes over the full
+    spawned array (bullets rule, refined Earth-like rule, deadlife purge, and
+    seven named cuts): "the remaining ones... THOSE need to be all made into
+    the list of our official turrets and recorded as canon." The roster below
+    is MEASURED off the live array (save-parse of test map), not transcribed.
+    Sheet + prefills + scaling analysis: design/Jawa/worldbuilding/review/
+    turret_register.{html,json}; decisions land in
+    turret_register.decisions.json. Everything not on this roster dies at
+    normalization (Cherry Picker), wall-mount class question included unless
+    reopened.
+  damage_doctrine: "(squares)^2 x largest similar personal weapon"
+  damage_doctrine_src: >
+    Owner, 2026-08-29, verbatim: "a turret's damage is (# squares)^2 x (largest
+    similar personal weapon). So a 2x2 laser turret should be 16 times as
+    powerful as the largest most similar technology personal weapon." Scale is
+    meant to be awesome: 3x3 = 81x, 5x5 = 625x, 7x7 = 2401x. Forms of harm per
+    design/Jawa/worldbuilding/setting_physics.md; measured per-family anchors
+    recorded in turret_register.json (anchors key). Living turrets and gravitic
+    shockwave pieces have no honest anchor - scaled by fiat when normalized.
+  official_roster:
+    - AA_BlackDefiler
+    - AA_FoamBelcher
+    - AB_Turret_Propane
+    - BigLaserCannon
+    - DP_Automortar
+    - DetColumnMod
+    - DrillTurret
+    - EMPColumnMod
+    - FlameColumnMod
+    - GTbc_GravRailArtillery
+    - GTbc_GravliteDefenseTurret
+    - GTbc_HugeGravBlaster
+    - GTbc_TheSingularityCannon
+    - OuterRim_AnaxesTurret
+    - OuterRim_HeavyImperialTurbolaser
+    - OuterRim_HeavyIonCannon
+    - OuterRim_HeavyLaserCannon
+    - OuterRim_HeavyTurbolaser
+    - OuterRim_LightIonCannon
+    - OuterRim_LightLaserCannon_Corellia
+    - OuterRim_LightLaserCannon_Coruscant
+    - OuterRim_LightLaserCannon_Tatooine
+    - OuterRim_MediumLaserCannon
+    - OuterRim_PTowerTurret
+    - OuterRim_ProtonArtillery
+    - OuterRim_ProtonMortar
+    - OuterRim_Turbolaser
+    - RN2SWGun_EWeb_MG
+    - Turret_Atomiser
+    - Turret_AutoChargeBlaster
+    - Turret_AutoChargeBlaster_OP
+    - Turret_AutoInferno
+    - Turret_AutoMortar
+    - Turret_BeamRepeater
+    - Turret_FoamTurret
+    - Turret_GravBlaster
+    - Turret_RocketswarmLauncher
+    - Turret_Sludger
+    - Turret_Sniper
+    - Turret_Vaporiser
+    - Turret_Zapper
+    - VFEI2_Thornspitter
+    - VFEI2_Thornworm
+    - VFEI2_Vilelobber
+    - VFES_Complex_GraserCannon
+    - VFES_Complex_HeavyIncineratorComplex
+    - VFES_Turret_Ballista
+    - VFES_Turret_ChargeRailgun
+    - VFES_Turret_Flame
+    - VFES_Turret_Searchlight
+    - VFES_Turret_TeslaBlaster
+    - VGE_AnticraftCaster
+    - VGE_GaussGun
+    - VGE_HeavyChargeAnnihilator
+    - VGE_JavelinPod
+    - VGE_MassDriver
