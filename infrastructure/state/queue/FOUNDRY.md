@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T23:14:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T23:23:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -62,6 +62,15 @@ target:   v1
 kind:     task
 summary:  Quicktest (~90 s map, bridge) proof of the shipped Empire reskin, against vanilla
 prose:    infrastructure/state/items/EMPIRE_RAID_QUICKTEST_1.md
+
+## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     investigate
+summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
+prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
 
 ## EMPIRE_WHITELIST_OVERRIDDEN_1 Empire permanentEnemyToEveryoneExcept still contains PlayerColony/PlayerTribe despite GalacticEmpire.xml's Replace
 state:    doing  (BLOCKED)
@@ -215,6 +224,16 @@ kind:     task
 blocked:  6/7 criteria confirmed, incl. live raid at points=1200 with correct kinds+apparel. Sole remainder is EMPIRE_WHITELIST_OVERRIDDEN_1 (Empire not naturally hostile).
 summary:  Quicktest (~90 s map, bridge) proof of the shipped Empire reskin, against vanilla
 prose:    infrastructure/state/items/EMPIRE_RAID_QUICKTEST_1.md
+
+## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     investigate
+blocked:  game DOWN, tool call needs a live game; deferred to next UP
+summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
+prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
 
 ## EMPIRE_WHITELIST_OVERRIDDEN_1 Empire permanentEnemyToEveryoneExcept still contains PlayerColony/PlayerTribe despite GalacticEmpire.xml's Replace
 state:    doing  (BLOCKED)
@@ -388,16 +407,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     investigate
-thin:     no ## spec, no ## verify
-summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
-prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
-
 ## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
 state:    proposed
 row:      unassigned
@@ -407,16 +416,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_SYSTEM_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
-
-## JAWA_FACTION_SLATE_LOAD_ORDER_1 JawaFactionSlate needs a real forceLoadAfter list - loadBottom (fake field) removed, half the slate can still leak onto Configure Factions
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  The real problem the fake tag was trying to solve is still open, per the mod's own
-prose:    infrastructure/state/items/JAWA_FACTION_SLATE_LOAD_ORDER_1.md
 
 ## BUG_TURRET_ART_REDO_1 Redraw VFEI2 Vilelobber/Thornworm/Thornspitter turret art to match the hive register
 state:    proposed

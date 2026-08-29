@@ -34,7 +34,22 @@ Factions page shows only the intended slate, no matter today's exact mod order.
 
 ## criteria
 - [x] Fake `<loadBottom>` field removed, deployed - the every-load XML error stops.
-- [ ] `forceLoadAfter` list built from the real defName-to-mod mapping, not guessed.
-- [ ] Verified stable across a RimSort re-sort, not just today's order.
+- [x] `forceLoadAfter` list built from the real defName-to-mod mapping, not guessed.
+      Built 2026-08-29 (game DOWN) from the 2026-08-29T20-07-29Z def dump's per-def
+      `modName`/`packageId` attribution — 45 of the 48 patched FactionDefs resolved
+      to 24 unique non-core packageIds (`ludeon.rimworld*` omitted: Core/DLC load
+      before any Workshop/local mod unconditionally, can never be the late arrival).
+      3 targets (`CAEvilSacrilegHunters`, `CAFriendlyMechanoid`,
+      `guy762_KotORFaction_Civilians`) resolve against nothing under the CURRENT mod
+      versions — checked on disk: Caravan Adventures' 1.6 FactionDefs.xml no longer
+      ships the first two (present only in its 1.2-1.5 folders); guy762 KotOR's
+      `_FactionsBase` folder holding the third is never referenced by that mod's own
+      `v1.6` `LoadFolders.xml`. Permanently-unmatched `PatchOperationConditional`
+      targets, not a load-order bug — harmless by this mod's own no-`<nomatch>`
+      design. `About/About.xml` deployed, `deploy_custom_mods.py --mod
+      JawaFactionSlate --apply` verified in sync.
+- [ ] Verified stable across a RimSort re-sort, not just today's order. Needs the
+      next cold load — the owner playing is the default validation per CHARTER; not
+      forcing a dedicated restart to prove it.
 
 --- history ---
