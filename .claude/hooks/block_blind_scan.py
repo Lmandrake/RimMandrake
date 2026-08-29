@@ -166,9 +166,13 @@ def _paths_in(args, tool, cwd):
             continue
         cand = t
         if cwd and not os.path.isabs(cand):
-            joined = os.path.join(cwd, cand)
-            if os.path.exists(joined):
-                cand = joined
+            # ⚠️ NOT gated on os.path.exists(joined): classify() is pure
+            # pattern matching (fnmatch), so existence buys nothing and
+            # actively defeats resolution whenever the artifact's layout has
+            # moved since a fixture/pattern was written, or the mount is
+            # slow/absent - the exact case that let a relative-path scan
+            # through (BLIND_SCAN_RELATIVE_PATHS_1).
+            cand = os.path.join(cwd, cand)
         if artifacts.looks_like_path(cand) or artifacts.looks_like_path(t):
             art = artifacts.classify(cand) or artifacts.classify(t)
             if art is not None:

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:13:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T01:15:55Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -212,16 +212,6 @@ thin:     no ## spec, no ## verify
 summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
-## BLIND_SCAN_RELATIVE_PATHS_1 block_blind_scan misses relative paths: selftest a_relative_path_is_resolved_against_the_shell_cwd fails (grep of defs/ThingDef.json allowed)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BLIND_SCAN_RELATIVE_PATHS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BLIND_SCAN_RELATIVE_PATHS_1.md
-
 ## PLACER_IDENTITY_REPLAY_1 Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them
 state:    proposed
 row:      unassigned
@@ -241,6 +231,16 @@ kind:     bug
 thin:     no ## spec, no ## criteria
 summary:  THRUSTERINSTABUILDNEVERACTIVE1 — tool-built thrusters link but never contribute range
 prose:    infrastructure/state/items/THRUSTER_INSTABUILD_NEVER_ACTIVE_1.md
+
+## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Ruthless Faction Pursuit has one global raidDelayHours. Fork the bundled source
+prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
 
 ## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
 state:    proposed
