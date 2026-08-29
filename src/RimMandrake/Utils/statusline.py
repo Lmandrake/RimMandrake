@@ -163,13 +163,11 @@ def main():
     if pct is None and used is not None and win:
         pct = 100.0 * used / win
 
+    # Context sits immediately after the seat name — owner's ask, 2026-08-29:
+    # the queue-item title was pushing it off to the right.
     parts = []
     if seat:
         parts.append("\033[1m%s\033[0m" % seat)
-        item = current_item(seat)
-        if item:
-            parts.append("\033[36m▶ %s\033[0m\033[2m%s\033[0m" % (
-                item[0], " · " + item[1] if item[1] else ""))
     if pct is None:
         parts.append("%s  \033[2mcontext —\033[0m" % name)
     else:
@@ -181,6 +179,11 @@ def main():
             "%s/%s" % (human(used), human(win)) if used is not None
             else "%d%%" % round(pct),
             left))
+    if seat:
+        item = current_item(seat)
+        if item:
+            parts.append("\033[36m▶ %s\033[0m\033[2m%s\033[0m" % (
+                item[0], " · " + item[1] if item[1] else ""))
     cost = (ev.get("cost") or {}).get("total_cost_usd")
     if isinstance(cost, (int, float)) and cost > 0:
         parts.append("\033[2m$%.2f\033[0m" % cost)
