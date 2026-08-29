@@ -255,12 +255,58 @@ Traits: **The Code** (professional-pride mood after clean victories),
 **Laconic**, **Gear-Proud** (mood from equipped weapon quality — feeds the Jawa
 economy loop).
 
+### Jawa Trade Moot — the kin set (round 5, 2026-08-29)
+THE PLAYER'S OWN PEOPLE (shares The Salvation; FACTION_SPEC R19). Capture
+economy: taking Moot pawns is a taboo the colony itself feels — same-ideo
+guests convert trivially but enslaving them is the one act the fiction says
+kin do not forgive; the Moot ransoms generously and REMEMBERS, both
+directions. Shipped five claimed by this set: **Sandcrawler-Born** and
+**Tinkerer's Child** (childhoods), **Bazaar Haggler**, **Salvage Master**,
+**Moot Speaker** (adulthoods).
+Extension childhoods: **Offworlder's Shadow** (creche translator for spacer
+crews: social/intellect, wanderlust thought); **Salvage-Sifter** (E-family
+cruder: mining/hauling floors, hoarder mood).
+Extension adulthoods: **Utinni Prospector** (mining/ruins savant, greed-spike
+break weight); **Crawler Mechanic** (construction/craft elite, breakdown
+affinity); **Droidwright of the Moot** (droid affinity — the droid-system
+bridge, pairs with DROID_SYSTEM_EMBRACE_1).
+Traits: **Utinni!** (mood buff on acquiring new things — C#, the signature);
+**Kin-Web** (opinion bonus across Moot/Jawa pawns — C#); **Chatter-Trade**
+(trade-price statOffsets — plain XML, shippable now).
+
+### Deepwater Compact — armed neutrality (round 5, 2026-08-29)
+FACTION_SPEC §7: amphibian water monopolists, secular (the Balance), sell to
+EVERYONE including the Empire; `raidsForbidden` — wardens dehydrate off-water
+and both of you know it. Capture economy: the Compact pays ransom promptly in
+silver and water contracts — reliable, capped, unsentimental; an enslaved
+warden is INFRASTRUCTURE-HUNGRY (needs water access to stay sane — the
+signature trait below), and while you hold one the Compact's caravans stop
+carrying water to YOUR beacon (fiction v1); freeing one buys the Balance's
+quiet favor.
+Childhoods: **Cistern-Hatched** (swimming before walking: construction/
+medicine floors, heat-wave break weight); **Toll-Wharf Child** (every bucket
+metered: social+melee floors, gift-giving mood penalty); **Drought-Witness**
+(saw a reservoir fail: water discipline, hoards water, resists heat breaks).
+Adulthoods: **Water Warden** (defense elite at home/near water, penalty
+raiding out — Freehold Warrior's mechanic, C# conditional); **Purification
+Engineer** (construction/intellect elite, hygiene-mod synergy);
+**Balance Arbiter** (secular judge: social elite, conversion-resistant both
+ways); **Reservoir Cartographer** (caravan speed, scout); **Compact Factor**
+(trade elite, no mood from selling to anyone's enemy).
+Traits: **Amphibian-Blooded** (mood/health scales with water access — C#,
+signature; a slave you must plumb for); **Neutral to the Bone** (damped
+opinion swings, conversion resistance); **Monopolist** (sell-price bonus,
+gift-giving mood hit); **Still-Water Patience** (lower break weights, slower
+work).
+
 ### The capture-economy matrix (design spine, completed)
 Empire no-ransom/Broken-prone · Hutts everything-for-sale · Tribes conversion ·
 Geonosians hive-mass logistics · Helix hunted assets/containment · Blackstar
 swaps and the truce token · Homestead morally-ugly excellence · Wildsteam
-landscape-for-them + liberation raids · Junkers fear/eagerness. **Free Droid
-Enclaves / Forgotten Arsenal** feed the droid set (next: the deep droid pass).
+landscape-for-them + liberation raids · Junkers fear/eagerness · **Moot
+kin-taboo + generous remembering ransom · Deepwater prompt capped ransom +
+plumb-for-them slaves** (round 5). **Free Droid Enclaves / Forgotten Arsenal**
+feed the droid set (next: the deep droid pass).
 
 ## Implementation ceilings (informational, not yet ruled)
 Most stat/mood/thought content is stock XML. Light-C# tier: rebellion-walk hook,
@@ -273,7 +319,10 @@ backstory reveal, skill-return event, aim-vs-moving. The full droid system
 2. ~~Wrong-fiction cuts~~ RULED: cut Minotaur/Medieval/VQE/Archon now; ISEKAI
    pends the leveling-rewire investigation (see rulings).
 3. ~~"etc." scope~~ RULED: all of it is in (see rulings).
-4. Remaining six factions to full three-layer depth — NEXT after the cuts.
+4. ~~Remaining six factions~~ RESOLVED 2026-08-29: "six" was stale (written
+   before round 4). Round 5 added the real remainder — Jawa Trade Moot and
+   Deepwater Compact are now at full depth; Free Droid Enclaves stays parked
+   with DROID_SYSTEM_EMBRACE_1; the Forgotten Arsenal has no human pawns.
 5. Slave-arc pieces in v1 core vs later (Collared Expertise is the C#-hungriest).
 6. Phase 2 (lore prose pass) — runs THIRD, after cuts and faction depth, over
    everything including ThoughtDef/MentalBreakDef/xenotype-title flavor.

@@ -21,5 +21,5 @@ WIRING MECHANISM (verified against 1.6 source, PawnBioAndNameGenerator.cs): a fa
 
 KNOWN LEAK, accepted: patching Pirate patches the abstract PirateBandBase, so JawaBSC_Blackstar reaches the five zeroed pirate-sibling factions (they never spawn; see FACTION_SPEC Blackstar containment) and would reach Jawa_Junkers — except Jawa_Junkers receives its own declared filter list here, which overrides the inherited one.
 
-DEFERRED (need C#, listed in pawn_flavor_design.md): rebellion walk hook, proximity/mood traits (Casket-Dreamer/Haunted, Rooted, Green-Grief, Water-Pious), schedule and opinion traits (Order-Bound, Rank-Minded), conditional combat bonuses, hidden-backstory reveals, the Blackstar truce event.</description>
+DEFERRED (need C#, listed in pawn_flavor_design.md): rebellion walk hook, proximity/mood traits (Casket-Dreamer/Haunted, Rooted, Green-Grief, Water-Pious), schedule and opinion traits (Order-Bound, Rank-Minded), conditional combat bonuses, hidden-backstory reveals, the Blackstar truce event; round-5 Deepwater/Moot pieces (Amphibian-Blooded water-access mood, Water Warden home-water conditional, Utinni! acquisition mood, Kin-Web opinion web).</description>
 </ModMetaData>

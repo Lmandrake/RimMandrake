@@ -17,7 +17,8 @@
            parent's categories plus ours):
            OutlanderFactionBase supplies Outlander+Offworld to:
              OutlanderCivil, Jawa_HuttCartel, Jawa_WildsteamClan,
-             Jawa_GeonosianFoundryHive, Jawa_AscendantHelix
+             Jawa_GeonosianFoundryHive, Jawa_AscendantHelix,
+             Jawa_DeepwaterCompact (round 5, 2026-08-29)
            TribeBase supplies Tribal to: TribeCivil
            PirateBandBase supplies Pirate to: Jawa_Junkers (whose declared
              list here also SHEDS the Blackstar leak from the Pirate patch)
@@ -161,6 +162,32 @@
         <li>
           <categories>
             <li>JawaBSC_Wildsteam</li>
+          </categories>
+        </li>
+      </backstoryFilters>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Jawa_DeepwaterCompact"]/backstoryFilters</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Jawa_DeepwaterCompact"]</xpath>
+      <value>
+        <backstoryFilters>
+        <li>
+          <categories>
+            <li>Outlander</li>
+          </categories>
+        </li>
+        <li>
+          <categories>
+            <li>Offworld</li>
+          </categories>
+        </li>
+        <li>
+          <categories>
+            <li>JawaBSC_Deepwater</li>
           </categories>
         </li>
       </backstoryFilters>

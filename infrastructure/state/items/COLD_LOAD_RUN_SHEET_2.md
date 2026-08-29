@@ -56,7 +56,10 @@ strings for the next full-list load, written BEFORE the launch:
   `Could not find parent node` after our mod loads.
 - PASS positive observation (not mere silence): the post-load def dump contains
   BackstoryDef `Jawa_FarmFostered` and TraitDef `Jawa_WaterDiscipline`
-  (`measure count BackstoryDef` should read 1225+50=1275 against a 585 capture),
+  (`measure count BackstoryDef` should read 1225+50+5=1280 against a 585
+  capture — round 5 added 5 Deepwater backstories 2026-08-29:
+  `Jawa_CisternHatched` present, and Jawa_DeepwaterCompact's merged
+  backstoryFilters carry `JawaBSC_Deepwater`),
   AND one spawned pawn of Homestead Defense League or Deep Desert Tribes shows a
   Jawa_* backstory title in its Bio tab (bridge: spawn via faction pawnkind,
   screenshot the card). Filter merge means roughly 1-in-3 pawns draw our
