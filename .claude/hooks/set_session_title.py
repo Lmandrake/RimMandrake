@@ -353,6 +353,8 @@ def main():
         record_role(sid, title)                   # best effort; title stands either way
 
     title = title.splitlines()[0][:MAX_TITLE]
+    role_title = title             # pre-item-suffix: seat_of() needs "AGENT <SEAT>" as
+                                    # the last token, which the item suffix below breaks
 
     # Owner's ask, 2026-08-28: the conversation name should say WHICH ITEM the
     # seat is on. Derived from the ledger's queue render via statusline.py's
@@ -381,8 +383,8 @@ def main():
     # is the slow part of this hook and every later prompt would pay for it.
     identity = delta = locks = None
     if not already_injected(sid):
-        identity = read_identity(title, sid)
-        delta = read_delta(title)
+        identity = read_identity(role_title, sid)
+        delta = read_delta(role_title)
         locks = read_locks()
 
     if (identity or delta or locks) and claim_injection(sid):
@@ -402,7 +404,7 @@ def main():
                 "rules and file queue items with no channel to tell you. Headings "
                 "only; open anything that bears on what you are about to do. This "
                 "delta has now been marked as read; `python3 src/RimMandrake/Utils/whats_new.py "
-                f"--seat {seat_of(title)} --again` replays it.\n\n"
+                f"--seat {seat_of(role_title)} --again` replays it.\n\n"
                 "```\n" + delta + "\n```"
             )
         if locks:
