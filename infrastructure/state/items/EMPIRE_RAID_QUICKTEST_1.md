@@ -33,3 +33,66 @@ have never been observed on a world generated after the patch landed.
 - The raid groups sit inside `PatchOperationFindMod "Outer Rim - Galactic Empire"`:
   on the minimal modlist without that mod, the whole group patch is a silent no-op
   and vanilla kinds spawn. Run this on a list that includes the OuterRim mod.
+
+## 2026-08-29 (FOUNDRY): 4/6 criteria confirmed at the def level; TWO real bugs found blocking
+## the other 2 — neither is a quicktest artifact, both confirmed with an A/B control
+
+**Confirmed clean, read straight off the LIVE loaded def via `jawa/get_defs` (584-mod set,
+`OFFICIAL-2026-08-29`):**
+- `fixedName: 'Galactic Empire'` ✅
+- `leaderTitle: 'Emperor'`, `fixedLeaderKinds: ['Jawa_Empire_Leader']` ✅
+- `fixedIdeo: True`, `ideoName: 'The Rising Order'` ✅
+- `OuterRim_GalacticEmpire` absent from every faction on the world (`jawa/faction_relations_get`,
+  25 factions listed, checked by name) ✅
+
+**Bug 1 — `permanentEnemyToEveryoneExcept` is NOT what `GalacticEmpire.xml` writes.**
+The item's premise ("vanilla Empire is already hostile... player factions deliberately
+absent") does not hold. `jawa/get_defs FactionDef/Empire permanentEnemyToEveryoneExcept`
+returns **24 entries including `PlayerColony` and `PlayerTribe`** — exactly the two entries
+our patch's own comment says are "DELIBERATELY DROPPED... that single omission is what keeps
+the Empire permanently hostile to the player." `validate_patch.py --live` confirms EVERY
+operation in `GalacticEmpire.xml`, including this exact `PatchOperationReplace`, reports
+`1 match(es)` against `Royalty: Faction_Empire.xml` — our patch's xpath is not the problem.
+Something else — a compatibility patch from another mod, loading after `mandrake.jawa.patches`
+(ModsConfig line 585) — re-adds `PlayerColony`/`PlayerTribe` plus a long list of other mods'
+player-faction defNames (`BS_PlayerColonyXenoPlus`, `VFEI2_PlayerOutpost`, `AM_PlayerColony`,
+`OuterRim_EmpirePlayerFaction`, …), consistent with a generic "except every player-faction-type
+mod" compatibility patch that doesn't know this campaign wants Empire hostile.
+**Not identified which mod** — `permanentEnemyToEveryoneExcept` is patched by 30+ mods in the
+Workshop folder (grep across all 1256 mods), most targeting other factions; narrowing to the
+one hitting Empire specifically needs a dedicated pass, not done here.
+**Consequence, read straight off `FactionUtility.HostileTo`**: it is `RelationWith(other).kind
+== Hostile`, nothing else — `permanentEnemyToEveryoneExcept` only feeds
+`Faction.TryMakeInitialRelationsWith`'s `GetInitialGoodwill` at the moment a relation is first
+created (`Source/RimWorld/Faction.cs:388-424`). With PlayerColony in the except-list, initial
+goodwill is 0, kind Neutral — confirmed live: `jawa/faction_relations_get` shows Empire↔
+PlayerColony `kind: Neutral, goodwill: 0, permanentEnemy: false, canChangeGoodwill: true`.
+
+**Bug 2 — even forced Hostile, Empire's own raid generation fails every time; Pirate does not
+(A/B control, same map, same call).** After `jawa/faction_relations_set faction=Empire
+kind=Hostile` (workaround for Bug 1, confirmed `raid_preview` now lists Empire hostile,
+`canStageAttacks: true`): `jawa/fire_raid faction=Empire points=500` returned
+**`executed: false` on 4 consecutive tries** ("TryExecute returned false - the worker refused
+these parms" — the honest-failure path from `AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1`, not a
+false positive). The SAME call against `Pirate` on the SAME map **executed: true** first try —
+ruling out both a map-level limitation (quicktest maps are small; this could have been
+`TryResolveRaidSpawnCenter` failing) and hostility as the cause. This is Empire-specific,
+inside `TryGenerateRaidInfo`'s pawn-generation path (`PawnGroupMakerUtility.GeneratePawns`
+most likely, per the mechanism already mapped in `AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1`).
+5 `PawnGroupMaker`s are present on Empire (not an empty list — `jawa/get_defs` reflection
+only stubs complex types, so their internal options were NOT inspected here).
+
+**Untestable while Bug 2 stands:** raider kinds/apparel, and the reply-faction/no-substitution
+check — no Empire pawns ever spawned to inspect.
+
+## criteria
+- [x] `OuterRim_GalacticEmpire` in no faction list.
+- [x] Faction leader Jawa_Empire_Leader, title Emperor.
+- [x] Faction ideo "The Rising Order"; faction name "Galactic Empire".
+- [ ] Raiders in OuterRim stormtrooper armor, not cataphracts — BLOCKED by Bug 2, no raid ever
+      produced pawns to inspect.
+- [ ] Reply-faction / no-substitution check — BLOCKED, same reason.
+- [ ] **New, not in the original ask**: name which mod re-adds `PlayerColony`/`PlayerTribe` to
+      Empire's `permanentEnemyToEveryoneExcept` (Bug 1), and read `PawnGroupMakerUtility
+      .GeneratePawns`'s actual empty-pool reason for Empire specifically (Bug 2) — both are
+      `needs: bridge` follow-ups, not solo offline reads.
