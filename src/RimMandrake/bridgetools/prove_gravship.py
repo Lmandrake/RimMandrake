@@ -57,6 +57,12 @@ def need(cond, msg):
 
 
 # -- 0. scratch map ----------------------------------------------------------
+# start_debug_game_ready only works FROM THE MAIN MENU; on a loaded game it
+# no-ops and the "quicktest" is silently the campaign. Go to the menu first.
+if call("rimworld/get_game_info").get("status") == "game_loaded":
+    mm = call("rimworld/go_to_main_menu")
+    print("went to main menu:", mm.get("success", mm))
+    time.sleep(5)
 call("rimworld/start_debug_game_ready", timeoutMs=280000,
      readiness="mapData", pauseIfNeeded=True)
 for _ in range(120):
@@ -83,19 +89,25 @@ for op, stuff in (
     need(r.get("success") and not r.get("failed"), f"built {op.split(':')[0]}")
 call("jawa/map_commit", full=True)
 
-# Fuel the tank: find the set-fuel debug action by walking, never constructing.
-tank = call("jawa/list_things", defName="ChemfuelTank", limit=5)
-tid = tank["things"][0]["id"]
-# (walk Actions for 'fuel' leaves; apply to the tank; leave a loud print either way)
-roots = call("rimworld/list_debug_action_roots").get("roots", [])
-print("debug roots:", roots[:5], "... find the set-fuel leaf interactively if this step fails")
+# Fuel the tank. There is NO refuel debug action on this modlist (measured:
+# the only 'fuel' leaf under Actions is a vehicle lister). The route is the
+# god-mode fill GIZMO: select the tank, list its gizmos, execute the fill one.
+call("rimworld/set_god_mode", enabled=True)
+call("rimworld/click_cell", x=X + 14, z=Z + 10)
+giz = call("rimworld/list_selected_gizmos")
 filled = False
-for child in call("rimworld/list_debug_action_children", path="Actions").get("children", []):
-    if "fuel" in child.get("path", "").lower() and "max" in child.get("path", "").lower():
-        fr = call("rimworld/execute_debug_action", path=child["path"], thingId=tid)
+for g in giz.get("gizmos", []):
+    label = (g.get("label") or "") + " " + (g.get("description") or "")
+    if "fuel" in label.lower() or "fill" in label.lower():
+        fr = call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
         filled = bool(fr.get("success"))
+        print("executed gizmo:", g.get("label"), "->", filled)
         break
-print("tank filled:", filled, "(if False: fill by god-mode button and re-run from here)")
+if not filled:
+    print("gizmos seen:", [g.get("label") for g in giz.get("gizmos", [])])
+call("rimworld/set_god_mode", enabled=False)
+call("rimworld/clear_selection")
+print("tank filled:", filled)
 
 call("rimworld/step_game_ticks", ticks=600)   # let comps register
 
@@ -105,15 +117,31 @@ need(far.get("success") and far.get("wouldLaunch") is False and far.get("reasons
      "refusal path: far/invalid tile refuses with reasons: %s" % far.get("reasons"))
 
 # -- 3. find a near valid tile ----------------------------------------------
+# jawa/world_neighbors is a whole-world CSV dumper (its `path` is an output
+# file). Dump once, read the origin row, expand two rings of neighbours.
 origin = call("jawa/gravship_status")["engines"][0]["tile"]
+import os as _os
+csv_path = _os.path.join(_os.environ.get("TEMP", r"C:\Windows\Temp"), "qt_neighbors.csv")
+call("jawa/world_neighbors", path=csv_path)
+nbr = {}
+with open(csv_path) as fh:
+    for line in fh:
+        parts = line.strip().split(",")
+        if parts and parts[0].isdigit():
+            nbr[int(parts[0])] = [int(p) for p in parts[1:] if p.strip().lstrip("-").isdigit()]
+ring = list(nbr.get(origin, []))
+ring += [t2 for t in ring for t2 in nbr.get(t, [])]
 target = None
-for cand in call("jawa/world_neighbors", tile=origin).get("neighbors", []):
-    t = cand if isinstance(cand, int) else cand.get("tile")
+for t in dict.fromkeys(ring):
+    if t == origin or t < 0:
+        continue
     chk = call("jawa/gravship_launch_check", targetTile=t)
     if chk.get("wouldLaunch"):
         target = t
         print("target tile:", t, "cost", chk.get("fuelCost"), "dist", chk.get("distance"))
         break
+    else:
+        print("  tile", t, "refused:", chk.get("reasons"))
 need(target is not None, "found a launchable neighbour tile")
 
 # -- 4. dryRun moves nothing -------------------------------------------------
