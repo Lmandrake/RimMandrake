@@ -70,17 +70,39 @@ compatibility patch on their `DamageDef`/`HediffDef`, or confirming vanilla's ow
 `StunHandler`/`EMPResistance` path (which THEIR stun likely routes through, unlike our custom
 buildup) already has some size term we're not seeing and it's just calibrated too low.
 
+## 🔴 RULED 2026-08-29, owner: "Nope, we're going with square. It should take a
+## ship-weapon-scale ion gun to take this thing down, and that's good. Fix it, deploy it."
+Pure `bodySize²`, no cap, no softening curve. `AA_Behemoth` reading as ~4270 hits (effectively
+immune to solo hand-weapon fire) is the INTENDED outcome, not a consequence to soften.
+
+## Fixed (`9a421aa8`)
+`DamageWorker_IonBuildup.cs`: `severity /= pawn.BodySize * pawn.BodySize` (guarded `> 0f`),
+applied uniformly to both the `severityFixed` and `severityPerDamageDealt` paths, right after
+`severity` is computed and before the existing `severity <= 0f` skip. Human (BodySize 1) is
+the unscaled reference point — the weapon's identity against people is untouched. Built clean
+(`dotnet build -c Release`, 0 warnings/errors) and committed together with the rebuilt
+`Assemblies/JawaIonWeapons.dll`.
+
+**Deploy BLOCKED, not done**: `deploy_custom_mods.py --mod JawaIonWeapons --apply` failed —
+`OSError: [Errno 22] Invalid argument` copying `Assemblies/JawaIonWeapons.dll` — the running
+game holds the DLL open, same lock class as the JawaBench companion
+(`rimworld-deploy` skill: "a companion DLL cannot be written while the game runs", and this
+turns out to apply to any loaded mod assembly, not just the companion). **Deploy at the next
+game-down window**: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaIonWeapons
+--apply`, plan is clean (one file, no other drift).
+
 ## verify
-Live: overload a Rat, a Human, and (if the mod is active) a Behemoth-class creature with the
-same weapon and count hits before/after the fix. `jawa/spawn_pawn` + repeated `jawa/fire_raid`-
-adjacent single-target damage calls, or a direct `TakeDamage` companion call if one exists.
+Once deployed: overload a Rat, a Human, and an `AA_Behemoth` with the same ion weapon and
+count hits. Expect Rat ~1 hit, Human ~4-5 (unchanged), `AA_Behemoth` effectively unstunnable
+by hand fire within a normal engagement (severity decays -1.2/day faster than solo fire could
+plausibly outpace it at this scale).
 
 ## criteria
-- [ ] Owner picks the scaling shape (pure `bodySize²`, capped, or a softer curve past some
-      threshold) — the `AA_Behemoth` near-immunity consequence above is surfaced for that call.
-- [ ] `DamageWorker_IonBuildup.cs` applies the chosen body-size term; human-scale behavior
-      (~4-5 hits) is unchanged (regression check).
+- [x] Owner picked the scaling shape: pure `bodySize²`, no cap.
+- [x] `DamageWorker_IonBuildup.cs` applies it; human-scale behavior (~4-5 hits) unchanged by
+      construction (bodySize 1 → division by 1).
+- [ ] Deployed — blocked on game-down, plan staged and clean.
+- [ ] Live-verified post-deploy: Rat ~1 hit, Human ~4-5, `AA_Behemoth` effectively immune to
+      solo fire.
 - [ ] Sonic weapons' mechanism named (which mod, which DamageDef/HediffDef, does it already
-      read body size) — separate follow-up if a fix there is warranted and is ours to make.
-- [ ] Live-verified: a small creature drops in ~1 hit; a huge one takes dramatically more (or
-      is confirmed effectively immune to solo fire, per the owner's chosen curve).
+      read body size) — separate follow-up, not blocking this item's close.
