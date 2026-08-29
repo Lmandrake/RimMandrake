@@ -1,0 +1,44 @@
+/* Ported unchanged from Ruthless Faction Pursuit (workshop 3621784437) by Matathias, GPLv3.
+ * See ../../LICENSE.txt and About.xml for the fork's credit and scope. */
+using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Verse;
+
+namespace RuthlessPursuingMechanoids
+{
+    public static class DebugUtility
+    {
+        public static void DebugLog(string msg, LogMessageType messageType = LogMessageType.Message)
+        {
+            string output = "[Ruthless Faction Pursuit] " + msg;
+            if (messageType == LogMessageType.Message)
+            {
+                if (RFPSettings.printDebug)
+                {
+                    Log.Message(output);
+                }
+            }
+            else if (messageType == LogMessageType.Warning)
+            {
+                Log.Warning(output);
+            }
+            else if (messageType == LogMessageType.Error)
+            {
+                Log.Error(output);
+            }
+        }
+    }
+
+    public static class CommonUtil
+    {
+        public static bool ValidFactionDef(FactionDef fac)
+        {
+            /* Exclude PColony for Empire compatibility */
+            return fac.displayInFactionSelection && !fac.isPlayer && fac.canStageAttacks && fac.defName != "PColony";
+        }
+    }
+}

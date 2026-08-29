@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T05:06:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T05:19:44Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -36,6 +36,15 @@ kind:     defect
 summary:  Two live def errors in this session's Player.log (lines ~790 and ~1041), both tracing to
 prose:    infrastructure/state/items/IKEE_WILDNESS_PATCH_DEAD_1.md
 
+## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Ruthless Faction Pursuit has one global raidDelayHours. Fork the bundled source
+prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -60,6 +69,16 @@ blocked:  remaining check needs the NEXT cold load's Player.log + fresh capture;
 summary:  🔴 OWNER, 2026-08-22: "We need a THOROUGH retag of all the weapons and armor to ensure
 prose:    infrastructure/state/items/THOROUGH_RETAG_WEAPONS_ARMOUR_1.md
 
+## NONCANON_ARRIVES_BY_PAWNKIND_1 106 of our PawnKindDefs bypass every faction xenotype gate - is that wanted, and is gene extraction in scope
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     decision
+blocked:  scope call only the owner can make (post-redesign#4, DECIDE seat superseded); needs ruling on roster-vs-arrivals, Ancient Rakata intent, gene-extraction scope
+summary:  NONCANONARRIVESBYPAWNKIND1 — a scope call, not a defect
+prose:    infrastructure/state/items/NONCANON_ARRIVES_BY_PAWNKIND_1.md
+
 ## WORLD_MUTATOR_LANDMARK_IMPORTERS_1 No file importer for mutators or landmarks - 13,569 tiles and 579 landmarks can only be replayed by script
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -79,6 +98,16 @@ kind:     decision
 blocked:  no fix needed today - the measured leak was quicktest noise; the real question is entirely gated on ASHKARR_IDEOLOGY_MODE_CALL_1 (classic vs full ideology mode, owner's call, world-creation-time only) (on ASHKARR_IDEOLOGY_MODE_CALL_1)
 summary:  JAWACULTURESLEAKTOSTRANGERS1 — our authored cultures are in the general pool
 prose:    infrastructure/state/items/JAWA_CULTURES_LEAK_TO_STRANGERS_1.md
+
+## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  offline half done (fork+build clean, see progress note); verify needs bridge live-check, waiting on game-up (same gate as EMPIRE_PURSUIT_SCENPART_INSTALL_1)
+summary:  Ruthless Faction Pursuit has one global raidDelayHours. Fork the bundled source
+prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -162,16 +191,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## NONCANON_ARRIVES_BY_PAWNKIND_1 106 of our PawnKindDefs bypass every faction xenotype gate - is that wanted, and is gene extraction in scope
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  NONCANONARRIVESBYPAWNKIND1 — a scope call, not a defect
-prose:    infrastructure/state/items/NONCANON_ARRIVES_BY_PAWNKIND_1.md
-
 ## ION_TIERS_MEASURED_LIVE_1 Measure all three ion tiers live: mech, droid, and the flesh baseline that must not move
 state:    proposed
 row:      unassigned
@@ -221,16 +240,6 @@ kind:     bug
 thin:     no ## spec, no ## criteria
 summary:  THRUSTERINSTABUILDNEVERACTIVE1 — tool-built thrusters link but never contribute range
 prose:    infrastructure/state/items/THRUSTER_INSTABUILD_NEVER_ACTIVE_1.md
-
-## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Ruthless Faction Pursuit has one global raidDelayHours. Fork the bundled source
-prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
 
 ## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
 state:    proposed

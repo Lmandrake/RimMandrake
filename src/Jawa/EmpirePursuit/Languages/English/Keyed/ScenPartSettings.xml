@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <rpmFactionPicker>Endless Pursuit Faction:</rpmFactionPicker>
+  <rpmRaidTypePicker>Pursuit Raid Type:</rpmRaidTypePicker>
+  <rpmPermanentEnemyTip>Faction Always Hostile</rpmPermanentEnemyTip>
+  <rpmPermanentEnemy>Perma-Hostile Faction</rpmPermanentEnemy>
+  <rpmStartHostile>Starts Hostile</rpmStartHostile>
+  <rpmTimeInHours>All values are in hours</rpmTimeInHours>
+  <rpmFirstRaidMeanDelay>Initial Raid Delay</rpmFirstRaidMeanDelay>
+  <rpmFirstRaidMeanDelayVariance>Initial Raid Variance</rpmFirstRaidMeanDelayVariance>
+  <rpmRaidMeanDelay>Raid Mean Delay</rpmRaidMeanDelay>
+  <rpmRaidMeanDelayVariance>Raid Delay Variance</rpmRaidMeanDelayVariance>
+  <rpmWarningDisabled>Disable Warning Alert</rpmWarningDisabled>
+  <rpmWarningMeanDelay>Warning Alert Mean</rpmWarningMeanDelay>
+  <rpmWarningMeanDelayVariance>Warning Variance</rpmWarningMeanDelayVariance>
+  <rpmSecondWaveHours>Second Wave Delay</rpmSecondWaveHours>
+  <rpmDisableEndless>Disable Endless Waves</rpmDisableEndless>
+  <rpmEndlessWaveHours>Endless Waves Delay</rpmEndlessWaveHours>
+  <rpmNormalRaid>Normal Raid Candidate</rpmNormalRaid>
+  
+  <rpmDefaultRaidMulti>Default Raid Values</rpmDefaultRaidMulti>
+  <rpmInitialRaidMulti>Initial Raid Mult</rpmInitialRaidMulti>
+  <rpmInitialRaidFloor>Initial Raid Floor</rpmInitialRaidFloor>
+  <rpmSecondRaidMulti>Second Raid Mult</rpmSecondRaidMulti>
+  <rpmSecondRaidFloor>Second Raid Floor</rpmSecondRaidFloor>
+  <rpmEndlessRaidMulti>Endless Raid Mult</rpmEndlessRaidMulti>
+  <rpmEndlessRaidFloor>Endless Raid Floor</rpmEndlessRaidFloor>
+  
+  <rpmPermanentEnemies>Perma-Hostile Factions</rpmPermanentEnemies>
+  <rpmStartHostiles>Start Hostile</rpmStartHostiles>
+  
+  <printDebug>Print Debug Messages</printDebug>
+  <maxAlerts>Maximum Number of Alerts to Show for Omni Pursuit</maxAlerts>
+</LanguageData>

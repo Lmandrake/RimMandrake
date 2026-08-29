@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <LetterLabelMechanoidThreatRuthless>Incoming mechanoids</LetterLabelMechanoidThreatRuthless>
+  <LetterTextMechanoidThreatRuthless>The mechhive's scanning process is close to determining your location. When it locates you, it will send a massive mechanoid force to kill you.\n\nGather your supplies, then flee the map by any means you have.\n\nThey will arrive in {0}.</LetterTextMechanoidThreatRuthless>
+  <LetterLabelRuthlessFaction>Incoming {0}</LetterLabelRuthlessFaction>
+  <LetterTextRuthlessFaction>The {0} faction is close to determining your location. When they locate you, they will send a massive force to kill you.\n\nGather your supplies, then flee the map by any means you have.\n\nThey will arrive in {1}.</LetterTextRuthlessFaction>
+  
+  <LetterLabelRuthlessFactionImminent>{0} Ambush!</LetterLabelRuthlessFactionImminent>
+  <LetterTextRuthlessFactionImminent>The {0} faction got the drop on you! They know your location, and a massive force will arrive imminently to kill you!\n\nGather your supplies and flee the map as soon as you can.</LetterTextRuthlessFactionImminent>
+  
+  <LetterLabelRuthlessFactionDefeated>{0} Pursuit Ceasing</LetterLabelRuthlessFactionDefeated>
+  <LetterTextRuthlessFactionDefeated>The {0} faction has been defeated! As a result, their Ruthless Pursuit of you will now cease.\n\nYou can rest easy, knowing they will never bother you again.</LetterTextRuthlessFactionDefeated>
+  
+  <LetterLabelRuthlessPursuitStopped>{0} Pursuit Paused</LetterLabelRuthlessPursuitStopped>
+  <LetterTextRuthlessPursuitStopped>Due to improved relations, the {0} faction will no longer send raids to pursue your colony. You can rest easy.\n\nHowever, while the {0} faction may forgive, they will never forget. If relations ever return to hostile, they will resume their Ruthless Pursuit.</LetterTextRuthlessPursuitStopped>
+  
+  <LetterLabelRuthlessPursuitResumed>{0} Pursuit Resumed</LetterLabelRuthlessPursuitResumed>
+  <LetterTextRuthlessPursuitResumed>Due to degraded relations, the {0} faction is resuming their Ruthless Pursuit of your colonies!</LetterTextRuthlessPursuitResumed>
+</LanguageData>

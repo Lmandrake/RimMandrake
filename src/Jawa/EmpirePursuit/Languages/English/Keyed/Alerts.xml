@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <AlertPursuitThreat>{0} threat</AlertPursuitThreat>
+  <AlertPursuitThreatDesc>The {0} faction is attempting to determine your location. They will send massive raids when they locate you.\n\nFlee the map before they arrive!</AlertPursuitThreatDesc>
+  <AlertPursuitThreatCritical>Incoming {0}</AlertPursuitThreatCritical>
+  <AlertPursuitThreatCriticalDesc>The {0} faction has discovered your location. They will send multiple waves of hostiles.\n\nFlee the map before they arrive!</AlertPursuitThreatCriticalDesc>
+  
+  <rpmMessagePermaEnemyFactionRelationsReset>Faction {0} is set to be permamently hostile. Reseting relations to -100.</rpmMessagePermaEnemyFactionRelationsReset>
+  
+  <OmniUnseenAlert>{0} Additional Incoming Factions</OmniUnseenAlert>
+  <OmniUnseenAlertDesc>An additional {0} factions are hunting down your location.\n\nFlee the map before they arrive!</OmniUnseenAlertDesc>
+  
+</LanguageData>

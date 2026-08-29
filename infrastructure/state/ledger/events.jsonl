@@ -2649,3 +2649,10 @@
 {"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-08-29T05:06:01Z"}
 {"seat":"FOUNDRY","event":"seat","state":"idle","reason":"agent reboot requested by owner; session's work closed and pushed, nothing claimed, bridge never taken","ts":"2026-08-29T05:06:12Z"}
 {"seat":"BENCH","event":"seat","state":"ready","note":"reboot prep done: Empire ruled+propagated, companion deployed --gm, pursuit knobs ruled (waits on bridge), mirror live; nothing mid-edit","ts":"2026-08-29T05:06:17Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"game is loading","ts":"2026-08-29T05:08:17Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-08-29T05:08:21Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-29T05:09:35Z"}
+{"seat":"FOUNDRY","event":"block","id":"NONCANON_ARRIVES_BY_PAWNKIND_1","reason":"scope call only the owner can make (post-redesign#4, DECIDE seat superseded); needs ruling on roster-vs-arrivals, Ancient Rakata intent, gene-extraction scope","ts":"2026-08-29T05:10:01Z"}
+{"seat":"FOUNDRY","event":"claim","id":"EMPIRE_PURSUIT_SURVEY_SHADOW_1","ts":"2026-08-29T05:11:00Z"}
+{"seat":"FOUNDRY","event":"start","id":"EMPIRE_PURSUIT_SURVEY_SHADOW_1","ts":"2026-08-29T05:11:00Z"}
+{"seat":"FOUNDRY","event":"block","id":"EMPIRE_PURSUIT_SURVEY_SHADOW_1","reason":"offline half done (fork+build clean, see progress note); verify needs bridge live-check, waiting on game-up (same gate as EMPIRE_PURSUIT_SCENPART_INSTALL_1)","ts":"2026-08-29T05:19:44Z"}

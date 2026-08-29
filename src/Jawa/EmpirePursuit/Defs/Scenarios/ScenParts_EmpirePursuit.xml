@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Same namespace, defName and scenPartClass as upstream's RuthlessPursuingMechanoids.xml,
+       deliberately, for save/scenario compatibility — see About.xml for why this REPLACES
+       the original mod rather than running alongside it. -->
+  <ScenPartDef Class="RuthlessPursuingMechanoids.ScenPartDef_RuthlessPursuit">
+    <defName>RuthlessPursuingMechanoids</defName>
+    <label>ruthless faction pursuit</label>
+    <category>Misc</category>
+    <scenPartClass>RuthlessPursuingMechanoids.ScenPart_RuthlessPursuingMechanoids</scenPartClass>
+    <!-- Owner-editable survey-shadow list (EMPIRE_PURSUIT_SURVEY_SHADOW_1): a settled map on
+         one of these biomes gets its raid (and warning) delay multiplied instead of the
+         global raidDelayHours. Add more biomes here freely; no code change needed. -->
+    <surveyShadowMultiplier>4</surveyShadowMultiplier>
+    <surveyShadowBiomes>
+      <li>AB_RockyCrags</li> <!-- Alpha Biomes: "Forsaken Crags" -->
+    </surveyShadowBiomes>
+  </ScenPartDef>
+</Defs>
