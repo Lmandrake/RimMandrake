@@ -145,17 +145,97 @@ scrambled wander/babble state).
 v2 hooks the owner named: restraining bolts, data spikes, memory wipes as active
 mechanics, not just history.
 
-### Seeds awaiting this depth (round 2 sketches stand)
-**Galactic Empire**: Academy-Drilled, Officer Caste (refuses ManualDumb even
-enslaved), capped trooper stock. **Hutt Cartel**: Debt-Collector, Spice-Runner
-(latent addiction), Majordomo (peak ransom). **Deep Desert Tribes**: hard-desert
-D-family. **Geonosian Foundry Hive**: caste childhoods — drone / artisan (needs
-3+ hive-kin or mood spiral); slaves in pairs or not at all. **Ascendant Helix**:
-Helix-Marked (gene gift + flaw), Vat-Certain (no inspirations, no breaks);
-G-family enemies could live here. **Blackstar Company**: Pressed Crew (the
-anti-slave: recruitment discount if freed), Void-Scarred Gunner. **Free Droid
-Enclaves / Forgotten Arsenal**: feed the droid set; Arsenal captures =
-salvage-and-reprogram gameplay.
+### Galactic Empire — the procedural occupier (round 4)
+Capture economy: permanent enemy → no goodwill, NO ransom; the Empire retrieves
+or erases, never buys. Pure slave-or-recruit pipeline.
+Childhoods: **Academy Cadet** (combat floors raised, passions rare, disciplined
+sleep); **Garrison Brat** (social bonus with any faction's pawns, low recruitment
+resistance — never belonged, just lived there); **Core-Worlds Evacuee** (fast
+learner; "displaced" debuff fading with time in one owned bedroom).
+Adulthoods: **Stormtrooper** (mass line: formation bonus, helmeted anonymity —
+low grief for comrades, small social penalty; spawns closer to Broken);
+**Imperial Deserter** (from B-family; Empire "rescue" is a death squad);
+**Requisitions Officer** (inventory savant, mood from colony cleanliness);
+**Propaganda Auditor** (conversion elite, others' opinion of them decays);
+**Inquisitorial Washout** (rare: failed Force-adept, haunted breaks, hidden
+ladder potential with dark-flavored berserk breaks).
+Traits: **Order-Bound** (mood tied to kept schedule), **Rank-Minded** (opinion
+bonus to higher-skilled pawns), **Numbered** (bonds slowly, insult-immune).
+
+### Hutt Cartel — everything is for sale (round 4)
+Capture economy: the ransom anchor — the Cartel ALWAYS pays for its own; no
+liberation raids, business is business.
+Childhoods: **Palace-Raised** (social/art, spoiled: permanent expectation floor);
+**Debt-Born** (+work speed, windfalls barely register); **Toll-Gate Child**
+(trade savant, gift-giving mood penalty).
+Adulthoods: **Majordomo** (peak ransom); **Collection Enforcer** (melee + warden
+aura: slaves suppress faster nearby); **Spice-Runner** (fast, latent addiction
+under stress); **Cistern Auditor** (colony spoilage reduced); **Freed Proxy**
+(social elite, Cartel opinion floor permanently low).
+Traits: **Transactional** (favor/slight opinion swings doubled), **Appetite**,
+**Cold-Blooded**.
+
+### Deep Desert Tribes — the conversion arc (round 4)
+Capture economy: convertible via adoption (canon); until converted their faith
+attacks your infrastructure.
+Childhoods: **Sun-Sworn Child** (hard D-family: sandstorm immunity, roofed
+penalty); **Krayt-Watcher** (animals+shooting, dodge vs beasts);
+**Water-Priest's Ward** (mood HIT while colony runs vaporators — sacrilege as
+mechanic; conversion clears it).
+Adulthoods: **Water-Raider** (fast, high carry, combat bonus decaying in-fight —
+strike and vanish); **Bantha-Bonded** (bonded pack animal, caravan speed);
+**Sun-Debt Cantor** (conversion priest, heat-immune); **Adopted Outsider** (any
+species, fast learner, low resistance).
+Traits: **Water-Pious**, **Vengeful**, **Stoic**.
+
+### Geonosian Foundry Hive — the hive economy (round 4)
+Capture economy: no trade, no ransom, no rescue — losses unacknowledged;
+captives are forever IF you sustain hive-mass.
+Childhoods: **Hatched to the Line** (drone: tireless, low rest, crafting floor,
+mood spiral below 3 hive-kin); **Winged Brood** (aristocrat: social/intellect,
+move bonus, disdain toward drones).
+Adulthoods: **Foundry Artisan** (crafting savant, droid-repair synergy — v2
+droid-system hook); **Siege-Caller** (construction+mortars); **Jedi-Hunt
+Veteran** (damage bonus vs psychically sensitive, slight psychic deafness);
+**Queen's Attendant** (rare: counts as multiple hive-kin for others — makes
+drone-keeping viable).
+Traits: **Hive-Tuned** (mood averages toward nearby Geonosians — C#),
+**Tireless**, **Chitin-Proud**.
+
+### Ascendant Helix — two populations, one cult (round 4)
+Capture economy: retrieval and containment; their Made they destroy rather than
+free. Two pawn streams: Curators and the manufactured underclass (the Made).
+Childhoods: **Design-Born** (curator: excellence + one random "editing scar");
+**Vat-Decanted** (the Made: no memories — fastest learning in game, zero
+starting passions, mood buff per passion gained later); **Catalogue Orphan**
+(discarded line: random genes, flagged "recall item").
+Adulthoods: **Gene-Curator** (medical/research elite, no mood from prisoner
+surgery); **Retrieval Agent** (capture specialist); **Escaped Asset** (strong,
+HUNTED — Helix retrievals target them alive; recruiting = accepting the raids);
+**Bioweapon Warden** (toxin/disease immune, unsettling).
+Traits: **Perfected** (global bonus + sterile), **Catalogued**
+(suppression-friendly), **Draft-Hater** (opinion penalty toward baseliners).
+
+### Blackstar Company — the Code (round 4)
+Capture economy: no money ransom — honored EXCHANGES (prisoner swaps); few
+entries, all vivid (canon: "one dangerous person with a name").
+Childhoods: **Raised on Retainer** (weapons early; mood hit when colony attacks
+traders/caravans); **Bounty Posted Young** (fast, light sleeper, ambush-hard).
+Adulthoods: **Named Hunter** (elite combat; holding them SPIKES Blackstar raids,
+freeing them fires a one-time truce event — the only lever on a permanent enemy,
+via the Code; C#, worth it); **Contract Broker** (negotiation elite, colony
+ransom bonus); **Disgraced Hunter** (full skills, on the kill-list, self-loathing
+breaks converting to loyalty after N defenses — Last-of-the-Crew shape).
+Traits: **The Code** (professional-pride mood after clean victories),
+**Laconic**, **Gear-Proud** (mood from equipped weapon quality — feeds the Jawa
+economy loop).
+
+### The capture-economy matrix (design spine, completed)
+Empire no-ransom/Broken-prone · Hutts everything-for-sale · Tribes conversion ·
+Geonosians hive-mass logistics · Helix hunted assets/containment · Blackstar
+swaps and the truce token · Homestead morally-ugly excellence · Wildsteam
+landscape-for-them + liberation raids · Junkers fear/eagerness. **Free Droid
+Enclaves / Forgotten Arsenal** feed the droid set (next: the deep droid pass).
 
 ## Implementation ceilings (informational, not yet ruled)
 Most stat/mood/thought content is stock XML. Light-C# tier: rebellion-walk hook,
