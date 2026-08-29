@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T19:55:21Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-08-29T20:02:24Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -99,6 +99,15 @@ kind:     build
 summary:  Close 10 genuine gaps against design/Jawa/bridge/BRIDGECAPABILITYROSTER.md and its
 prose:    infrastructure/state/items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md
 
+## BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 11 more bridge tools: scatter_at/run_genstep/run_basegen_symbol/fix_floating_roofs, spawn_mech_cluster, incident_queue_clear, set_game_speed, letter_list/letter_send_delayed, av_effect, set_thing_props
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
+prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -183,9 +192,19 @@ blocked:  built and deployed clean this game-down window (10 tools, 0 errors/war
 summary:  Close 10 genuine gaps against design/Jawa/bridge/BRIDGECAPABILITYROSTER.md and its
 prose:    infrastructure/state/items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md
 
+## BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 11 more bridge tools: scatter_at/run_genstep/run_basegen_symbol/fix_floating_roofs, spawn_mech_cluster, incident_queue_clear, set_game_speed, letter_list/letter_send_delayed, av_effect, set_thing_props
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+blocked:  built clean this game-loading window, not yet deployed - game must be closed first, then proven live
+summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
+prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BUILD_BATCH_OVERWRITES_SILENTLY_1 jawa/build_batch reports placed for an op that destroys an existing building in the same run
 state:    ready
@@ -193,7 +212,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
 prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
 
@@ -203,7 +222,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
 prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
 
@@ -213,7 +232,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
 prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
 
@@ -223,7 +242,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
 prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
 
@@ -233,7 +252,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
 prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
 
@@ -243,7 +262,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     defect
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
 prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
 

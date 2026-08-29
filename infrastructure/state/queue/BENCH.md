@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T19:55:21Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-08-29T20:02:24Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -58,6 +58,6 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TURRET_ROSTER_CURATION_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## verify
+summary:  TURRETROSTERCURATION1 — every turret, spawned and judged with the owner
 prose:    infrastructure/state/items/TURRET_ROSTER_CURATION_1.md
