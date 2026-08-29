@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T12:56:58Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-08-29T16:15:05Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -39,11 +39,20 @@ prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 ## PLACER_IDENTITY_REPLAY_1 Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
-summary:  (no items/PLACER_IDENTITY_REPLAY_1.md yet — write one when you have something to say)
+summary:  PLACERIDENTITYREPLAY1 — the setter half of the identity-grade export
 prose:    infrastructure/state/items/PLACER_IDENTITY_REPLAY_1.md
+
+## THRUSTER_INSTABUILD_NEVER_ACTIVE_1 Tool-built thrusters link but never contribute range on the full list
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  THRUSTERINSTABUILDNEVERACTIVE1 — tool-built thrusters link but never contribute range
+prose:    infrastructure/state/items/THRUSTER_INSTABUILD_NEVER_ACTIVE_1.md
 
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
@@ -53,6 +62,24 @@ target:   v1
 kind:     build
 summary:  Ruthless Faction Pursuit has one global raidDelayHours. Fork the bundled source
 prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
+
+## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  Quicktest (~90 s map, bridge) proof of the shipped Empire reskin, against vanilla
+prose:    infrastructure/state/items/EMPIRE_RAID_QUICKTEST_1.md
+
+## EMPIRE_WHITELIST_OVERRIDDEN_1 Empire permanentEnemyToEveryoneExcept still contains PlayerColony/PlayerTribe despite GalacticEmpire.xml's Replace
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  GalacticEmpire.xml's PatchOperationReplace on
+prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -118,6 +145,16 @@ blocked:  needs bridge; BENCH holds it (owner confirmed live, 2026-08-29) — my
 summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
+## THRUSTER_INSTABUILD_NEVER_ACTIVE_1 Tool-built thrusters link but never contribute range on the full list
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+blocked:  mechanism fully mapped and committed (4f9bb163); live repro on this quicktest map kept getting contaminated by terrain/substructure setup mistakes before a clean confirm. Needs a careful retry on flat/non-mountain terrain, small tick steps only.
+summary:  THRUSTERINSTABUILDNEVERACTIVE1 — tool-built thrusters link but never contribute range
+prose:    infrastructure/state/items/THRUSTER_INSTABUILD_NEVER_ACTIVE_1.md
+
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -128,9 +165,29 @@ blocked:  offline half done (fork+build clean, see progress note); verify needs 
 summary:  Ruthless Faction Pursuit has one global raidDelayHours. Fork the bundled source
 prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
 
+## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+blocked:  6/7 criteria confirmed, incl. live raid at points=1200 with correct kinds+apparel. Sole remainder is EMPIRE_WHITELIST_OVERRIDDEN_1 (Empire not naturally hostile).
+summary:  Quicktest (~90 s map, bridge) proof of the shipped Empire reskin, against vanilla
+prose:    infrastructure/state/items/EMPIRE_RAID_QUICKTEST_1.md
+
+## EMPIRE_WHITELIST_OVERRIDDEN_1 Empire permanentEnemyToEveryoneExcept still contains PlayerColony/PlayerTribe despite GalacticEmpire.xml's Replace
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+blocked:  69 XML candidates cleared, points at a C# compat framework not an XML conflict. Needs a Harmony patch inventory (no bridge tool yet, needs game-down deploy) or a mod-list bisect.
+summary:  GalacticEmpire.xml's PatchOperationReplace on
+prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## DUMP_PRODUCER_DATED_CAPTURES_1 DefDumper writes captures/<id>/ and prunes to the newest three
 state:    ready
@@ -138,7 +195,7 @@ row:      unassigned
 needs:    harvest
 target:   v1
 kind:     task
-waiting:  needs `harvest`, game is DOWN
+waiting:  needs `harvest`, game is UP
 summary:  The producer half of DUMPSTORAGELAYOUTRULING1. Owner, 2026-08-21 13:24:
 prose:    infrastructure/state/items/DUMP_PRODUCER_DATED_CAPTURES_1.md
 
@@ -148,7 +205,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
 prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
 
@@ -158,7 +215,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
 prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
 
@@ -168,7 +225,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
 prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
 
@@ -178,7 +235,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
 prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
 
@@ -188,7 +245,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     task
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
 prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
 
@@ -198,7 +255,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     defect
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
 prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
 
@@ -210,62 +267,22 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## THRUSTER_INSTABUILD_NEVER_ACTIVE_1 Tool-built thrusters link but never contribute range on the full list
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## criteria
-summary:  THRUSTERINSTABUILDNEVERACTIVE1 — tool-built thrusters link but never contribute range
-prose:    infrastructure/state/items/THRUSTER_INSTABUILD_NEVER_ACTIVE_1.md
-
-## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Quicktest (~90 s map, bridge) proof of the shipped Empire reskin, against vanilla
-prose:    infrastructure/state/items/EMPIRE_RAID_QUICKTEST_1.md
-
-## PAWN_WEAPON_POOL_JOIN_TOOL_1 Join weaponTags against roster IsRangedWeapon/generateAllowChance for the 23 bare-producing kinds
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PAWN_WEAPON_POOL_JOIN_TOOL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWN_WEAPON_POOL_JOIN_TOOL_1.md
-
 ## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     investigate
-thin:     spec, verify and criteria all present
-summary:  Every one of the 81 biomes with a wildAnimals list holds EXACTLY 1024 records in the
+thin:     no ## spec, no ## verify
+summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
 prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
 
-## OFFICIAL_DUMP_REFREEZE_1 Capture a 584-mod official dump at the next full cold load, then owner re-freezes
+## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
 state:    proposed
 row:      unassigned
-needs:    harvest
+needs:    owner
 target:   v1
-kind:     task
+kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/OFFICIAL_DUMP_REFREEZE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/OFFICIAL_DUMP_REFREEZE_1.md
-
-## FLAT_MANIFEST_READER_SWEEP_1 Sweep tools still reading flat DefDump/manifest.json (layout moved to captures/<id>/ 2026-08-22)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FLAT_MANIFEST_READER_SWEEP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLAT_MANIFEST_READER_SWEEP_1.md
+summary:  (no items/DROID_SYSTEM_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md

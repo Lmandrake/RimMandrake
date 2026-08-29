@@ -1,72 +1,74 @@
 {
  "posture": "decision-matrix; undecided = unruled; nothing auto-cuts",
- "criterion": "mechanical fit to the Jawa capture/salvage/trade fantasy - not lore worth",
- "source": "prefill-2026-08-29",
+ "criterion": "mechanical fit to the Jawa capture/salvage/trade fantasy \u2014 not lore worth",
+ "source": "owner-sheet",
+ "savedAt": "2026-08-29T16:12:31.678Z",
+ "decidedRows": 39,
  "rows": {
   "abf_capture": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "Severe damage should make them explode (just as people's bodies also get decimated), and then they should EXPLODE. But they should also have three other outcomes: damaged until death (parts are damaged, no longer functional, \"corpse/spare parts\" type), disabled (equivalent to human coma, they are switched off and won't wake up without reboot/power restore), or stunned/downed/captured (identical to human passing out, they are temporarily downed but will restore of their own accord after a time, and may be captured while downed), and stunned (very briefly transiently incapacitated, may or may not even fall over, restore immediately and continue context)",
+   "touched": true
   },
   "abf_reprogram": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "A wild drone is just a drone working for itself, it's \"own faction.\" Some may be looking for a master and will gladly join if offered, right away. Other free droids may flee/resist. They would require reprogramming, either through recruitment process, or immediately through hacking.",
+   "touched": true
   },
   "abf_formatting": {
    "d": "extend",
-   "n": "",
-   "touched": false
+   "n": "Worth deep thinking here. Mindless drone should be only capable of low-level activities but also require no rest, recreation, break chance, morale checks... that's NOT the default droid setting, this should be a reduced state due to damage, hacking, or a deeply restrictive restraining bolt. Programmable opens up many more complex skills especially dealing with other droids and machines, and includes self-defense/combat, repair, plant tending, etc. Sapient brings the entire roster of possibilities including mental breaks and morale, but also exceptional skill functions, savants, idiosyncracies (good and bad), friendships & bonding (even with other droids who are not sapient), and rebellion if mistreated (not given enough maintenance/recreation time). I don't understand blank slate here, need to look at the mod source.",
+   "touched": true
   },
   "abf_format_murder": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "SOME factions embrace deformatting (junkers, geneticists, empire). Most consider it unethical but not murder equivalent and necessary in some cases similar to lobotomization in human illness. A few consider it fully murder (neutral droid factions, moisture farmers)",
+   "touched": true
   },
   "abf_directives": {
    "d": "extend",
-   "n": "",
-   "touched": false
+   "n": "It would be exceptional to have three sources for droid behavior: BORN trait tendencies (similar to the childhood/background), behavior resulting from what's installed on the droid (different parts bring different attitudes, tendencies, orientations... especially when they've been damaged), and experience (they acrete both bonuses and penalties via idiosyncracies). All three should be powerful and recognizable. ",
+   "touched": true
   },
   "abf_energy_need": {
    "d": "embrace",
-   "n": "",
-   "touched": false
+   "n": "Absolutely. Maintenance was clearly a thing (oil baths, cleaning similar to hot spring), power (didn't seem a really big regular deal, not as much as food, but it happened), but then it seemed like socialization/recreation was needed for the sapient ones to some degree. Rest cycles might still make sense, but that could be equated to self-repair cycles instead (what sleep really is anyway).",
+   "touched": true
   },
   "abf_charging": {
    "d": "embrace",
-   "n": "",
-   "touched": false
+   "n": "Great options. They should have beautiful graphics too showing sparking, occasional minor lightning... it's a LOT of power. Room-wide charging should be a nimbus of gently pulsing luminosity.",
+   "touched": true
   },
   "abf_topoff": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "A doctor or a craftman should be able to do this, but it's only to restore/reboot a switched off droid.",
+   "touched": true
   },
   "abf_overclock": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "undecided",
+   "n": "I really don't like using surgery/doctors to do this. It should be a crafting skill, but ignoring that, I don't even understand this one.",
+   "touched": true
   },
   "abf_partswap": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "I think it's amazing to be able to get excited that one of the eight arms of a spider bot survived battle, so you're going to stick it onto one of your cargo haulers... and it's personality changes a bit, as well as its abilities. So cool.",
+   "touched": true
   },
   "abf_cradle": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "Yes, we should mod this out. But the Jawa won't really need to do this much. So many droid parts, might as well lego them together rather than become a droid factory. Mod enables, scenario down prioritizes, but we should include it.",
+   "touched": true
   },
   "abf_hack": {
-   "d": "extend",
-   "n": "",
-   "touched": false
+   "d": "cut",
+   "n": "Star wars really doesn't have precision electronic warfare. So it would make sense to have some large device (radar-dish-looking) that could BLAST out a massive disabling pulse, but a data spike is delivered via a port. I think we should assume star wars droids are extremely hardened against outside signals.",
+   "touched": true
   },
   "abf_states": {
    "d": "embrace",
-   "n": "",
-   "touched": false
+   "n": "I already ruled on this one. Droids should have five states: functional (with or without damage). transiently stunned (light lightning/ion discharging for a few seconds, may not even fall down, then continue). downed/off (systems undamaged but disabled, will not self-reboot, requires outside assistance... just an object now, like a coma patient). Damaged/unable-to-boot (effectively \"dead\" and requires repair to be able to turn on again, many parts may be reusable). Severely damaged = detonation (only a few reusable parts remain).",
+   "touched": true
   },
   "kotor_kinds": {
    "d": "embrace",
@@ -80,13 +82,13 @@
   },
   "kotor_modules": {
    "d": "extend",
-   "n": "",
-   "touched": false
+   "n": "I love this so much. We should absolutely embrace this, but I'm sure it requires some rationalization/normalization to make it really robust and sensible. ",
+   "touched": true
   },
   "kotor_repairkits": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "cut",
+   "n": "This is dumb and defeats the point of a droid repair shop. Star wars doesn't have self-healing, self-assemling stuff like this.",
+   "touched": true
   },
   "kotor_shieldre": {
    "d": "embrace",
@@ -94,34 +96,34 @@
    "touched": false
   },
   "kotor_generators": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "Nice idea, but rather than make a whole new combo item it would be better if we could just assemble them out of the same parts we repair/install on them in the first place. So the \"head\" might be what follows a droid around and brings life-experience, and a fresh head changes much.",
+   "touched": true
   },
   "kotor_explosive": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "Gonk makes sense. Probe makes sense. Most combat droids do too: don't want to provide your enemy with droid parts to easily rebuild their army afterwards. Other droids should only explode upon catastrophic damage. Bonus if their explosion is proporsional to the current power stored in their batteries. Then you could even have suicide droids made mostly of batteries and shields.",
+   "touched": true
   },
   "kotor_salvage": {
-   "d": "extend",
-   "n": "",
-   "touched": false
+   "d": "cut",
+   "n": "Hate it. I'd really like there to always be parts. Except for the \"mechanoids\" of the Forgotten Arsenal, because they are a totally different self-replicating tech (ancients) and are utterly incompatible with modern tech.",
+   "touched": true
   },
   "kotor_immune": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "Some stun (ion) should work on them extremely well. But yes, poison, frostbite, and heat up to ~300C does nothing. ",
+   "touched": true
   },
   "kotor_battery": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "cut",
+   "n": "No. They recharge, not eat.",
+   "touched": true
   },
   "asimov_bolt": {
    "d": "extend",
-   "n": "",
-   "touched": false
+   "n": "This is a big deal to the game. Should be seen as slavery by the free droid nation, isn't really protected by the ethics of others much. Should absolutely quell rebellion, force obedience, prevents socialization and social skills, and radiates a debuff because they're depressing to be around. Also builds up a resentment in sapient droids that remains when removed, leading to instant rebellion once removed. Droids remove them from each other during rebellion if they have the appendages. May be damaged in battle and thus freed that way too. A deeply resentful droid may even just turn plain hostile in a violent mental break. also disables all idiosyncratic benefits from experience or birth. ",
+   "touched": true
   },
   "asimov_boltfield": {
    "d": "embrace",
@@ -130,38 +132,38 @@
   },
   "asimov_wipe": {
    "d": "extend",
-   "n": "",
-   "touched": false
+   "n": "Doesn't clear traits: randomizes them. Clears idiosyncracies, relations, social, and makes faction=player. ",
+   "touched": true
   },
   "asimov_capture": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "cut",
+   "n": "Need to use a Data Spike manually, up close, as an object. Data spikes should be consumables, but they should be faction-oriented: a data spike for Hutt-owned droids, Imperial droids, etc. They contain the passwords and formatting routines to allow you access and reprogramming. Can be obtained by destructively consuming a damaged droid head from that faction.",
+   "touched": true
   },
   "asimov_reactivate": {
    "d": "extend",
-   "n": "",
-   "touched": false
+   "n": "No. They must be rebuilt back in a repair shop, or at least reactivated there.",
+   "touched": true
   },
   "asimov_disks": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "cut",
+   "n": "Nope. Experience is experience, woven into their embodied software (star wars doesn't have the concept of abstracted software, it's all embodied)",
+   "touched": true
   },
   "asimov_shielding": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "Not surgery, but yes, tons of install modules.",
+   "touched": true
   },
   "asimov_factory": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "Not an \"auto factory.\" There should be repair benches and even module construction and reassumbly harnesses.",
+   "touched": true
   },
   "asimov_disassemble": {
    "d": "embrace",
-   "n": "",
-   "touched": false
+   "n": "Absolutely",
+   "touched": true
   },
   "asimov_traits": {
    "d": "extend",
@@ -169,39 +171,39 @@
    "touched": false
   },
   "asimov_healer": {
-   "d": "undecided",
-   "n": "",
-   "touched": false
+   "d": "cut",
+   "n": "Dumb. Everything in Star Wars should feel like bringing it in to the shop, not magical tech",
+   "touched": true
   },
   "asimov_nopower": {
    "d": "undecided",
-   "n": "",
-   "touched": false
+   "n": "Power charging should be minimal but necessary. HEAVY users like combat droids are once/day, while protocol droids can go for up to a month. They typically recharge much more often just to top off though.",
+   "touched": true
   },
   "asimov_softdeps": {
-   "d": "extend",
+   "d": "cut",
    "n": "",
-   "touched": false
+   "touched": true
   },
   "jds_forcekill": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "We decided it was a feature because we had to. It would be nice to have the choice. But a combat droid refusing to be taken alive is also ok. But if we're going to redo everything into one frame, no, they should work by the same logic and either blow up because their shields collapse or because they have a module designed to do just that.",
+   "touched": true
   },
   "jds_biotech": {
    "d": "embrace",
-   "n": "",
-   "touched": false
+   "n": "I'm only building for us, and we have all the DLC's. So who cares?",
+   "touched": true
   },
   "jds_wrecks": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "Should be about taking parts off, repairing the parts, putting them back on rather than a gestator. ",
+   "touched": true
   },
   "jds_misc": {
-   "d": "embrace",
-   "n": "",
-   "touched": false
+   "d": "cut",
+   "n": "No mechanitor. Shields should be made into a module with significant risk of detonation on collapse but otherwise a LOT of power. ",
+   "touched": true
   },
   "jds_scenario": {
    "d": "cut",
@@ -209,24 +211,28 @@
    "touched": false
   },
   "gap_dataspike": {
-   "d": "undecided",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "Yup. See above, we need this too.",
+   "touched": true
   },
   "gap_boltport": {
-   "d": "undecided",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "I think we're going to build our own mod bringing everything together.",
+   "touched": true
   },
   "gap_memories": {
-   "d": "undecided",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "Own mod. ",
+   "touched": true
   },
   "gap_capture": {
-   "d": "undecided",
-   "n": "",
-   "touched": false
+   "d": "extend",
+   "n": "We need to make our own mod",
+   "touched": true
   }
- }
+ },
+ "frozen": true,
+ "frozenOn": "2026-08-29",
+ "frozenBy": "owner",
+ "frozenMeaning": "The owner's 39 decisions and 38 notes are the source of truth feeding droid_system_spec.md. Do not regenerate the prefill over this file; the sheet itself remains safe (it merges per-row and carries these keys)."
 }
