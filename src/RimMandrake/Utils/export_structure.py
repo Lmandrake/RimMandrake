@@ -111,11 +111,16 @@ def main():
                     plan.set_floor_color(cx, cz, c["color"])
 
         # -- roof ----------------------------------------------------------
-        r = unwrap(rb.call("jawa/get_roof_batch", {"rect": args.rect,
-                                                   "limit": w * h}))
-        for c in (r.get("cells") or r.get("roofs") or []):
-            if c.get("roof") or c.get("def"):
-                plan.set_roof(c.get("x"), c.get("z"), c.get("roof") or c.get("def"))
+        # ops is run-length: "RoofDef:x,z,w,h;..." with literal "None" for unroofed
+        r = unwrap(rb.call("jawa/get_roof_batch", {"rects": args.rect}))
+        for op in (r.get("ops") or "").split(";"):
+            if not op or op.startswith("None:"):
+                continue
+            roof, coords = op.split(":", 1)
+            rx, rz, rw, rh = (int(v) for v in coords.split(","))
+            for cz in range(rz, rz + rh):
+                for cx in range(rx, rx + rw):
+                    plan.set_roof(cx, cz, roof)
 
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as fh:
