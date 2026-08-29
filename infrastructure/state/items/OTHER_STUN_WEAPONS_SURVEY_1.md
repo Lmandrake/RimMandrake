@@ -120,9 +120,13 @@ does not) is still an open, unverified question.
       free linear toggle vs. an authored squared stat vs. leave as-is) — nothing patched here.
 - [ ] `OuterRim_Ion` (the still-separate, still-unresolved entry) — its live test remains
       inconclusive, not redone this pass.
-- [ ] **New capability gap surfaced**: no way to read a Vehicle Framework `VehiclePawn`'s
-      damage/health/component state through the bridge. Needed before "does X work against
-      vehicles" can ever be answered for anything, ion or otherwise — a real companion-tool
-      candidate for the next build window, not attempted here.
+- [x] ~~New capability gap surfaced~~ **NOT a gap — corrected offline, 2026-08-29.** This
+      survey's vehicle test used `jawa/list_pawns`/`jawa/pawn_get`/`jawa/thing_stats`/
+      `jawa/inspect_string`, none of which reach `VehiclePawn`'s own component system — but
+      `jawa/vehicle_components` was BUILT AND DEPLOYED a week earlier (2026-08-22, `9e79e3d2`,
+      see `BRIDGE_READ_VEHICLE_COMPONENTS_1.md`), reading `VehicleStatHandler.components[]`
+      via reflection (each with label, `Health`/`MaxHealth`/`HealthPercent`/`Efficiency`).
+      The vehicle question below is answerable with the RIGHT tool, no new build needed —
+      just re-run against `VVE_Bulldog_PawnKind` with `jawa/vehicle_components` instead.
 - [ ] If pursued: `guy762_*_ion` family checked against an actual droid/mechanoid target, since
       live evidence suggests it may not be a flesh-stun mechanism at all.
