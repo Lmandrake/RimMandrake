@@ -2829,3 +2829,4 @@
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-08-29T19:10:44Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-29T19:11:00Z"}
 {"seat":"BENCH","event":"note","id":"COLD_LOAD_RUN_SHEET_2","text":"Sheet §4 frozen-capture line was stale: OFFICIAL-2026-08-29 (13-30-02Z, 584) already frozen by owner; owner confirmed the newer freeze stands. Line struck.","ts":"2026-08-29T19:15:06Z"}
+{"seat":"FOUNDRY","event":"note","id":"CORRECT_ASHKARR_IDEOLOGY_1","text":"Owner answered open criterion #3 (95 existing believer pawns): new pawns only — Faction.primaryIdeo changes via ChooseOrGenerateIdeo, existing pawns keep their current Ideo untouched, no Pawn_IdeoTracker reassignment pass. Scope now closed for the build.","ts":"2026-08-29T19:18:31Z"}

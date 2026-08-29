@@ -56,12 +56,13 @@ calls `ChooseOrGenerateIdeo` today. Owner confirms this is landed when:
    factions on the real world.
 
 ## Criteria
-- [ ] Owner reads this and rules: pursue the live route, still prefer world recreation for some
-      other reason, or park entirely.
+- [x] Owner reads this and rules: pursue the live route, still prefer world recreation for some
+      other reason, or park entirely. — RULED 2026-08-29T18:25:12Z: no world recreation, patch
+      the live world's faction ideoligions via `ChooseOrGenerateIdeo`, build and run now.
 - [ ] If pursued: a bridge tool built and proven on scratch before touching Ash'karr.
-- [ ] Open, unresolved even if the mechanism works: whether the 95 existing believers' pawns
-      (currently on vanilla `Astropolitan`) need separate `Pawn_IdeoTracker` reassignment, or
-      only new pawns generate under the new ideo going forward — not investigated this pass.
+- [x] The 95 existing believers' pawns (currently on vanilla `Astropolitan`): owner ruled
+      new pawns only — `Faction.primaryIdeo` changes going forward via `ChooseOrGenerateIdeo`;
+      no `Pawn_IdeoTracker` reassignment pass on the existing 95.
 
 ## Watch out
 `ASHKARR_IDEOLOGY_MODE_CALL_1`'s cost-of-recreation analysis (the file-import table, the
