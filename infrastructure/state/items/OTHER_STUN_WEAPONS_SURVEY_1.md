@@ -62,13 +62,67 @@ or prefix to touch — meaningfully more work than the two cheap wins above, and
 family specifically, may not even be the right target (doesn't look like a flesh-stun weapon
 at all, live-tested).
 
+## 2026-08-29 (FOUNDRY, second pass) — found the actual ion TURRETS, live-tested them, and
+## tried vehicles
+
+Owner: "Yes, we need a live test of these turrets. We need to get a handle on Ion damage in
+this game, big time. Did we ever test them against vehicles either?"
+
+### The turrets exist, and fire a THIRD ion DamageDef this survey hadn't found yet
+`OuterRim_LightIonCannon` (1×1) and `OuterRim_HeavyIonCannon` (3×3, power-required) are real
+placeable buildings (`Frame_`/`Blueprint_` variants confirm it), `TabulaRasa
+.Building_TurretGunSmart`, firing `OuterRim_Gun_LightIonCannon`/`_HeavyIonCannon` at 10/20
+damage. Their projectile's damage type is **`OuterRim_BlasterIon`** — NOT `OuterRim_Ion` (the
+one this survey originally checked, which turns out to be a different, presumably hand-weapon
+def). `OuterRim_BlasterIon`: `harmsHealth: True`, `Verse.DamageWorker_AddInjury` (a REAL damage
+weapon, not a capture tool), `additionalHediffs` → `OuterRim_IonBuildup`,
+`severityFixed: 0.5`, `victimSeverityScalingByInvBodySize: False`.
+
+### `OuterRim_IonBuildup` is CONFIRMED FUNCTIONALLY INERT, live-tested to severity 23
+Spawned an `Elephant` (bodySize 4), hit it 46 times with `OuterRim_BlasterIon` at `amount=1`
+(minimal raw injury, so it survives) via `jawa/damage`. `OuterRim_IonBuildup` severity climbed
+to **23.0** (46 × 0.5, exactly matching `severityFixed` — confirms zero body-size scaling, as
+the XML already said). At severity 23: `dead: False, downed: False, stunned: False`, no
+capacity change. **The `HediffDef` has no `stages` at all** (`maxSeverity` is effectively
+float-max, just a 12.5-day cosmetic decay timer) — so this correction supersedes this survey's
+earlier guess that it might be a stun mechanism: **it is not.** The turrets and any
+`OuterRim_BlasterIon` weapon are, functionally, ordinary damage weapons (their "Burn" injuries
+already scale the normal RimWorld way — armor and raw HP, not this survey's concern) with a
+purely cosmetic ion-tagged marker hediff. **The body-size question this survey exists to answer
+does not apply to `OuterRim_BlasterIon` in practice — there is no incapacitation effect to
+scale.** (`OuterRim_Ion`, the ORIGINAL entry in the table above, is a genuinely separate def —
+still unresolved, see its row.)
+
+### Vehicles: genuinely could not be answered — a tooling gap, not a finding
+Spawned `VVE_Bulldog_PawnKind` (Vehicle Framework via Vanilla Vehicles Expanded, `fleshType:
+MetalVehicle`, `isFlesh: False`, `isMechanoid: False`, `bodySize: 4.5`). Hit it with
+`JawaIon_Damage`, then 5× `OuterRim_BlasterIon` at 20 (100 total), then a **control shot of
+plain vanilla `Bullet` at 50** — every single one reported `success: true` and **every single
+one left `dead/downed/stunned` unchanged** on `jawa/list_pawns`, including the plain-bullet
+control. Since even ordinary bullet damage shows no visible state change, **this is not evidence
+that ion (or anything) fails against vehicles** — it means `jawa/list_pawns`/`jawa/pawn_get`/
+`jawa/thing_stats` cannot observe a `VehiclePawn`'s damage/health state at all (Vehicle
+Framework almost certainly tracks health via its own component system, not
+`Pawn_HealthTracker`, and `jawa/inspect_string` on the vehicle showed only `"Age 1 (0),
+Bulldog"` — no health/component readout either). **"Did we ever test them against vehicles" —
+no, and this attempt could not answer it either.** Whether our own weapon's flesh-tier code
+even reaches a vehicle (it requires `pawn.health != null`, `ApplyMachineTier`'s EMP-reissue
+does not) is still an open, unverified question.
+
 ## criteria
 - [x] Every `causeStun`/Stun-worker/Ion/Sonic-worker DamageDef in the 584-mod set enumerated
       and characterized.
 - [x] Our own weapon's second gap (machine/droid tier) found and fixed in the same pass.
-- [ ] Owner picks which third-party defs are worth a patch, and to what standard (vanilla's
-      free linear toggle vs. a authored squared stat vs. leave as-is) — nothing patched here.
-- [ ] `OuterRim_Ion`'s live test redone cleanly (fresh pawns, one hit each) — this pass's result
-      is inconclusive on the small end.
+- [x] The actual ion TURRETS found, live-tested, and their real DamageDef (`OuterRim_BlasterIon`,
+      distinct from `OuterRim_Ion`) characterized — confirmed functionally inert as a stun
+      mechanism, not something needing a body-size fix.
+- [ ] Owner picks which third-party defs are still worth a patch, and to what standard (vanilla's
+      free linear toggle vs. an authored squared stat vs. leave as-is) — nothing patched here.
+- [ ] `OuterRim_Ion` (the still-separate, still-unresolved entry) — its live test remains
+      inconclusive, not redone this pass.
+- [ ] **New capability gap surfaced**: no way to read a Vehicle Framework `VehiclePawn`'s
+      damage/health/component state through the bridge. Needed before "does X work against
+      vehicles" can ever be answered for anything, ion or otherwise — a real companion-tool
+      candidate for the next build window, not attempted here.
 - [ ] If pursued: `guy762_*_ion` family checked against an actual droid/mechanoid target, since
       live evidence suggests it may not be a flesh-stun mechanism at all.
