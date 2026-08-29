@@ -96,3 +96,9 @@ step ticks · `pawn_get` nests under `pawns[0]`, equipment keyed `def` · a depl
 registers NOTHING until the game restarts · `set_faction_relation` cannot flip
 hostility — use `faction_relations_set` · T2 temperature is ungraded until
 JAWA_TEMP_RANGE_TWO_CRITERIA is answered (criterion picked after looking tests nothing).
+
+- 2026-08-28 (BENCH): companion redeployed --gm while down (f35ab2bb). At the
+  NEXT game start (any list that loads RimBridgeServer): tool surface must show
+  jawa/gravship_land WITH skipCutscene param, and fire_incident/send_letter
+  present. The JawaBench init line is LAZY — it prints on first tool CALL, not
+  assembly load, so probe with a call, don't grep the log for startup.
