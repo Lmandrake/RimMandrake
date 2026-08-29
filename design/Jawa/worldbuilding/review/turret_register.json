@@ -1,7 +1,10 @@
 {
  "posture": "whitelist",
- "postureMeaning": "These are the ONLY large (>1x1) turrets allowed in the game. Any turret def not on this sheet is to be cut when we normalize. 1x1 turrets are OUT OF SCOPE here and owe their own pass.",
+ "postureMeaning": "ALL turret sizes now in scope. A turret def not on this sheet, or on it with state=cut, is to be cut when we normalize.",
  "rulingSource": "owner at the bench, 2026-08-29",
+ "rules": [
+  "BULLETS RULE (owner, verbatim): 'eliminate any 1x1 turrets that obviously use bullets except for sniper turrets' \u2014 applied data-driven: projectile damageDef == Bullet -> cut; no 1x1 on the roster is a sniper, so the exception matched nothing (noted, not silently dropped)"
+ ],
  "alreadyCut": [
   "all VFE Props & Decor props",
   "all VFE Pirates",
@@ -13,7 +16,7 @@
  "openQuestions": [
   "Which def is the owner's 'auto turret' cut? (Turret_AutoChargeBlaster flagged undecided)",
   "VFES_Turret_Flame (1x1 flamer) \u2014 4th VFE-Security keep, or dies with the mod cut?",
-  "1x1 turret roster (mini-turret, flamer, precision, foam, wall guns) \u2014 separate pass owed"
+  "Wall-mounted turret CLASS (HMC walls, ship wall mounts) \u2014 keep the category at all?"
  ],
  "turrets": [
   {
@@ -712,6 +715,890 @@
    },
    "prefillNote": "INVENTED: hive tech is SONIC \u2014 re-projectile to sonic to match KotORRanged_sonic identity",
    "contested": true
+  },
+  {
+   "defName": "AA_FoamBelcher",
+   "label": "foam belcher",
+   "mod": "Alpha Animals",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "Extinguish 9999 dmg \u00b7 range 15.9 \u00b7 burst 41",
+   "desc": "An organic, firefoam pod produced by giant insects. When it senses fire, the pod sprays a fire-retardant foam in a cone. Contrary to basic foam pods it won't be destroyed after some time, but needs to be built on the cre",
+   "prefill": {
+    "tech": "living foam gland",
+    "effect": "Extinguish 9999 dmg \u00b7 range 15.9 \u00b7 burst 41",
+    "user": "The Assailant's flesh (anomaly)",
+    "state": "undecided"
+   },
+   "prefillNote": "living containment \u2014 flesh or hive?",
+   "contested": false
+  },
+  {
+   "defName": "AB_Turret_Propane",
+   "label": "propane turret",
+   "mod": "Alpha Biomes",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "Flame 2 dmg \u00b7 range 10.9",
+   "desc": "A portable flamethrower turret fueled with propane. May explode when damaged. Its dumb AI brain can't be directly controlled, so beware of friendly fire.",
+   "prefill": {
+    "tech": "propane burner",
+    "effect": "Flame 2 dmg \u00b7 range 10.9",
+    "user": "Junkers",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: jury-rigged fire = junker chemistry",
+   "contested": true
+  },
+  {
+   "defName": "DeadColumnMod",
+   "label": "Deadlife column",
+   "mod": "Utility Columns",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "DeadlifeDust ? dmg \u00b7 blast r0.1 \u00b7 range 3.9 \u00b7 burst 3",
+   "desc": "An advanced column for base defense. Upon detecting an enemy in any direction, it will raise nearby human and animal corpses as shamblers. The shamblers will only attack your enemies.",
+   "prefill": {
+    "tech": "Deadlife dust column",
+    "effect": "DeadlifeDust ? dmg \u00b7 blast r0.1 \u00b7 range 3.9 \u00b7 burst 3",
+    "user": "The Assailant's flesh (anomaly)",
+    "state": "undecided"
+   },
+   "prefillNote": "deliberately open \u2014 anomaly verb on a buildable column",
+   "contested": false
+  },
+  {
+   "defName": "DetColumnMod",
+   "label": "cluster column",
+   "mod": "Utility Columns",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "Bomb 250 dmg \u00b7 blast r3.9 \u00b7 range 3.9",
+   "desc": "A column for base defense. Upon detecting an enemy in any direction, it will detonate a highly explosive cluster charge into the same direction. Can be reloaded.",
+   "prefill": {
+    "tech": "cluster charge column",
+    "effect": "Bomb 250 dmg \u00b7 blast r3.9 \u00b7 range 3.9",
+    "user": "Common / multiple",
+    "state": "undecided"
+   },
+   "prefillNote": "deliberately open \u2014 mine-field verb, who gets it?",
+   "contested": false
+  },
+  {
+   "defName": "EMPColumnMod",
+   "label": "stun pulse column",
+   "mod": "Utility Columns",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "Stun 30 dmg \u00b7 blast r4.9 \u00b7 range 3.9",
+   "desc": "An advanced column for base defense. Upon detecting an enemy in any direction, it will emits a strong stun pulse into the same direction. Enemies within range are stunned for 15 seconds. Can be reloaded.",
+   "prefill": {
+    "tech": "stun pulse (ion-adjacent)",
+    "effect": "Stun 30 dmg \u00b7 blast r4.9 \u00b7 range 3.9",
+    "user": "Jawa clans (player)",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: EMP pulse reads as Jawa ion doctrine",
+   "contested": true
+  },
+  {
+   "defName": "FlameColumnMod",
+   "label": "flame column",
+   "mod": "Utility Columns",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "Flame 120 dmg \u00b7 blast r3.9 \u00b7 range 3.9",
+   "desc": "A column for base defense. Upon detecting an enemy in any direction, it will detonate an incendiary bomb charge into the same direction. Can be reloaded.",
+   "prefill": {
+    "tech": "flame column",
+    "effect": "Flame 120 dmg \u00b7 blast r3.9 \u00b7 range 3.9",
+    "user": "Common / multiple",
+    "state": "keep"
+   },
+   "prefillNote": "INVENTED: this covers the flamer need the large list lacks",
+   "contested": true
+  },
+  {
+   "defName": "HMC_Wall_FireShotgun_Turret",
+   "label": "Wall Shotgun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "Burn 102 dmg \u00b7 range 14.9 \u00b7 burst 2",
+   "desc": "The heavy shotgun turret built on the wall is immune to EMP attacks, and its two barrels simultaneously fire flame shotgun shells.",
+   "prefill": {
+    "tech": "Burn",
+    "effect": "Burn 102 dmg \u00b7 range 14.9 \u00b7 burst 2",
+    "user": "Common / multiple",
+    "state": "undecided"
+   },
+   "prefillNote": "no rule matched \u2014 deliberately open",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_LightIonCannon",
+   "label": "light ion cannon",
+   "mod": "Outer Rim - Core",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "OuterRim_BlasterIon 10 dmg \u00b7 range 29.9 \u00b7 burst 2",
+   "desc": "A large automatic blaster turret, fires ion bolts which are extremely effective against electronics. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "light ion cannon",
+    "effect": "OuterRim_BlasterIon 10 dmg \u00b7 range 29.9 \u00b7 burst 2",
+    "user": "Jawa Trade Moot",
+    "state": "keep"
+   },
+   "prefillNote": "ion = capture-not-kill, the Jawa identity",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_LightLaserCannon_Corellia",
+   "label": "light laser cannon (corellia)",
+   "mod": "Outer Rim - Core",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "OuterRim_Blaster 200 dmg \u00b7 range 29.9 \u00b7 burst 4",
+   "desc": "A large automatic blaster turret. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "light blaster cannon",
+    "effect": "OuterRim_Blaster 200 dmg \u00b7 range 29.9 \u00b7 burst 4",
+    "user": "Common / multiple",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_LightLaserCannon_Coruscant",
+   "label": "light laser cannon (coruscant)",
+   "mod": "Outer Rim - Core",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "OuterRim_Blaster 200 dmg \u00b7 range 29.9 \u00b7 burst 4",
+   "desc": "A large automatic blaster turret. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "light blaster cannon",
+    "effect": "OuterRim_Blaster 200 dmg \u00b7 range 29.9 \u00b7 burst 4",
+    "user": "Common / multiple",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_LightLaserCannon_Tatooine",
+   "label": "light laser cannon (tatooine)",
+   "mod": "Outer Rim - Core",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "OuterRim_Blaster 200 dmg \u00b7 range 29.9 \u00b7 burst 4",
+   "desc": "A large automatic blaster turret. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "light blaster cannon",
+    "effect": "OuterRim_Blaster 200 dmg \u00b7 range 29.9 \u00b7 burst 4",
+    "user": "Homestead Defense League",
+    "state": "keep"
+   },
+   "prefillNote": "INVENTED: the Tatooine pattern belongs on moisture-farm walls",
+   "contested": true
+  },
+  {
+   "defName": "OuterRim_PTowerTurret",
+   "label": "p-tower turret",
+   "mod": "Outer Rim - Core",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "OuterRim_Blaster 200 dmg \u00b7 range 32.9",
+   "desc": "A large automatic blaster turret. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "P-Tower dish (old anti-armor)",
+    "effect": "OuterRim_Blaster 200 dmg \u00b7 range 32.9",
+    "user": "Homestead Defense League",
+    "state": "keep"
+   },
+   "prefillNote": "INVENTED: cheap old Rebel-surplus dish \u2014 settler iron",
+   "contested": true
+  },
+  {
+   "defName": "Turret_FoamTurret",
+   "label": "foam turret",
+   "mod": "Core",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "Extinguish 9999 dmg \u00b7 range 19.9 \u00b7 burst 41",
+   "desc": "An activatable turret for extinguishing fires. The turret stands idle until someone approaches and activates it, after which it will automatically spray large amounts of firefoam on any flames in sight.",
+   "prefill": {
+    "tech": "containment foam",
+    "effect": "Extinguish 9999 dmg \u00b7 range 19.9 \u00b7 burst 41",
+    "user": "Common / multiple",
+    "state": "keep"
+   },
+   "prefillNote": "utility, not a weapon \u2014 containment",
+   "contested": false
+  },
+  {
+   "defName": "VFEI2_Thornspitter",
+   "label": "thornspitter",
+   "mod": "Vanilla Factions Expanded - Insectoids 2",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "Stab 86 dmg \u00b7 range 16.9",
+   "desc": "A tiny mound serving as the entrance to an expansive deephive cluster below ground, topped by the emergence of a thornspitter insectoid. This creature is capable of ejecting inaccurate chitin thorns at enemies close-by, ",
+   "prefill": {
+    "tech": "thorn spitter (propose sonic rework)",
+    "effect": "Stab 86 dmg \u00b7 range 16.9",
+    "user": "Geonosian Foundry Hive",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: as the large living turrets \u2014 hive tech is sonic",
+   "contested": true
+  },
+  {
+   "defName": "VFES_Turret_Flame",
+   "label": "flamer turret",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 keep and rework",
+   "stats": "Flame 12 dmg \u00b7 range 16.9",
+   "desc": "A portable flamethrower turret, capable of spewing a cone of flame that engulfs enemies and terrain. May explode when damaged. Its dumb AI brain can't be directly controlled, so beware of friendly fire.",
+   "prefill": {
+    "tech": "flamer turret",
+    "effect": "Flame 12 dmg \u00b7 range 16.9",
+    "user": "Common / multiple",
+    "state": "undecided"
+   },
+   "prefillNote": "OPEN: dies with the VFE-Security ruling unless named a 4th keep",
+   "contested": true
+  },
+  {
+   "defName": "Turret_AncientArmoredTurret",
+   "label": "ancient defender turret",
+   "mod": "Odyssey",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 ancient relics",
+   "stats": "Bullet 86 dmg \u00b7 range 36.9 \u00b7 burst 3",
+   "desc": "An armored security turret containing a long-lasting battery.",
+   "prefill": {
+    "tech": "ancient defender",
+    "effect": "Bullet 86 dmg \u00b7 range 36.9 \u00b7 burst 3",
+    "user": "Cradle / Rakatan ruins",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: 'ancient' emplacements read Rakatan after the reskin",
+   "contested": true
+  },
+  {
+   "defName": "Turret_BeamRepeater",
+   "label": "beam repeater turret",
+   "mod": "GravTech",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 ancient relics",
+   "stats": "BeamBypassShields 64 dmg \u00b7 range 24.9 \u00b7 burst 30",
+   "desc": "A medium-powered turret with a beam repeater. Don't need refill.",
+   "prefill": {
+    "tech": "beam repeater (shield-bypass)",
+    "effect": "BeamBypassShields 64 dmg \u00b7 range 24.9 \u00b7 burst 30",
+    "user": "Cradle / Rakatan ruins",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: gravtech = Rakatan premise",
+   "contested": true
+  },
+  {
+   "defName": "VQE_AncientShieldedTurret",
+   "label": "ancient shielded turret",
+   "mod": "Vanilla Quests Expanded - Cryptoforge",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 ancient relics",
+   "stats": "Bullet 86 dmg \u00b7 range 28.9 \u00b7 burst 2",
+   "desc": "A portable automatic turret with a ballistic shield in front of it. Requires steel to refurbish its barrel after heavy use. May explode when damaged. Its dumb AI brain can't be directly controlled, so beware of friendly ",
+   "prefill": {
+    "tech": "ancient shielded turret",
+    "effect": "Bullet 86 dmg \u00b7 range 28.9 \u00b7 burst 2",
+    "user": "Forsaken vaults",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: as ancient defender",
+   "contested": true
+  },
+  {
+   "defName": "HMC_Wall_Emp_Turret",
+   "label": "Wall Emp Turret",
+   "mod": "[HMC]Wall Furniture",
+   "size": "1x1",
+   "group": "Wall-mounted \u2014 class undecided",
+   "stats": "EMP 60 dmg \u00b7 blast r6.9 \u00b7 range 37.9",
+   "desc": "The complex turret, when firing EMP shells, requires a large amount of electricity to charge the shells.",
+   "prefill": {
+    "tech": "wall EMP pulse",
+    "effect": "EMP 60 dmg \u00b7 blast r6.9 \u00b7 range 37.9",
+    "user": "Jawa clans (player)",
+    "state": "undecided"
+   },
+   "prefillNote": "EMP fits ion doctrine; the wall-mount CLASS needs a ruling \u00b7 \u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall.",
+   "contested": false
+  },
+  {
+   "defName": "HMC_Wall_Emp_Turret_Ship",
+   "label": "Naval Wall Emp Turret",
+   "mod": "[HMC]Wall Furniture",
+   "size": "1x1",
+   "group": "Wall-mounted \u2014 class undecided",
+   "stats": "EMP 60 dmg \u00b7 blast r6.9 \u00b7 range 39.9",
+   "desc": "The naval version of Wall Emp Turret, equipped with armor, has a higher ammunition capacity.",
+   "prefill": {
+    "tech": "naval wall EMP pulse",
+    "effect": "EMP 60 dmg \u00b7 blast r6.9 \u00b7 range 39.9",
+    "user": "Gravship (the Utinni)",
+    "state": "undecided"
+   },
+   "prefillNote": "as wall EMP \u00b7 \u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall.",
+   "contested": false
+  },
+  {
+   "defName": "HMC_Wall_Foam_Turret",
+   "label": "Farmland Guardian",
+   "mod": "[HMC]Wall Furniture",
+   "size": "1x1",
+   "group": "Wall-mounted \u2014 class undecided",
+   "stats": "Extinguish 9999 dmg \u00b7 range 19.9 \u00b7 burst 40",
+   "desc": "Foam fire extinguishers equipped with solar lamps do not require activation and automatically provide sunlight and fire extinguishing services to plants within the range. They generate electricity using solar panels and ",
+   "prefill": {
+    "tech": "wall foam sprayer",
+    "effect": "Extinguish 9999 dmg \u00b7 range 19.9 \u00b7 burst 40",
+    "user": "Common / multiple",
+    "state": "undecided"
+   },
+   "prefillNote": "\u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall.",
+   "contested": false
+  },
+  {
+   "defName": "HMC_Wall_Rocket_Turret",
+   "label": "Wall Rocket Turret",
+   "mod": "[HMC]Wall Furniture",
+   "size": "1x1",
+   "group": "Wall-mounted \u2014 class undecided",
+   "stats": "Bomb 161 dmg \u00b7 blast r3.9 \u00b7 range 44.9",
+   "desc": "A simple yet dangerous turret, capable of firing powerful rockets, but with only nine rockets and prone to explosion.",
+   "prefill": {
+    "tech": "wall rocket rack",
+    "effect": "Bomb 161 dmg \u00b7 blast r3.9 \u00b7 range 44.9",
+    "user": "Junkers",
+    "state": "undecided"
+   },
+   "prefillNote": "rockets, not bullets \u2014 survives the rule, needs the class ruling \u00b7 \u26a0\ufe0f wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 \u2014 the render-killing NRE); only judge them on a wall.",
+   "contested": false
+  },
+  {
+   "defName": "BreadMoAM_Turret_ShotgunTurret",
+   "label": "ancient mini shotgun turret",
+   "mod": "Ancient mining industry",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 102 dmg \u00b7 range 17.9",
+   "desc": "An ancient compact mini shotgun turret. Requires steel to refurbish its barrel after heavy use. May explode when damaged. Its dumb AI brain can't be directly controlled, so beware of friendly fire.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 102 dmg \u00b7 range 17.9",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "BreadMoAM_Turret_ShotgunTurretN",
+   "label": "mini shotgun turret",
+   "mod": "Ancient mining industry",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 102 dmg \u00b7 range 17.9",
+   "desc": "An ancient compact mini shotgun turret. Requires steel to refurbish its barrel after heavy use. May explode when damaged. Its dumb AI brain can't be directly controlled, so beware of friendly fire.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 102 dmg \u00b7 range 17.9",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "DP_MinigunTurret",
+   "label": "Minigun Turret",
+   "mod": "Dungeon Pack (Continued)",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 10 dmg \u00b7 range 30.9 \u00b7 burst 25",
+   "desc": "A factional turret mounted with an automated minigun. Not intended for player use.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 10 dmg \u00b7 range 30.9 \u00b7 burst 25",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "FT_AutoCannon",
+   "label": "autocannon",
+   "mod": "Fortifications - Industrial",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 200 dmg \u00b7 range 34.9 \u00b7 burst 5",
+   "desc": "A single barrel autocannon mounted on a tripod. Needs to be manned in order to fire. Requires steel to refurbish its barrels after heavy use.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 200 dmg \u00b7 range 34.9 \u00b7 burst 5",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "FT_Maxim4M",
+   "label": "quad machine gun",
+   "mod": "Fortifications - Industrial",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 12 dmg \u00b7 range 30.9 \u00b7 burst 20",
+   "desc": "A tripod-mounted quad machine gun operated by a pawn. Provides sustained firepower and requires steel to refurbish its barrels after heavy use.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 12 dmg \u00b7 range 30.9 \u00b7 burst 20",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "FT_RecoillessGun",
+   "label": "recoilless gun",
+   "mod": "Fortifications - Industrial",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 187 dmg \u00b7 range 39.9",
+   "desc": "A recoilless gun mounted on a tripod. Mainly used for hardened targets such as vehicles and armored mechs. Needs to be manned in order to fire. Requires reinforced barrels to refurbish its barrel after heavy use.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 187 dmg \u00b7 range 39.9",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "HMC_Wall_LightMachinegun_Turret",
+   "label": "Wall Light Machinegun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 91 dmg \u00b7 range 32.9 \u00b7 burst 3",
+   "desc": "The light machine gun turret with a slow rate of fire but a large ammunition capacity is very suitable for continuous firing. It is equipped with an explosion suppression system and will not explode when destroyed.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 91 dmg \u00b7 range 32.9 \u00b7 burst 3",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "HMC_Wall_MachineCannon_Turret_Ship",
+   "label": "Naval Wall Machine Cannon Turret",
+   "mod": "[HMC]Wall Furniture",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 187 dmg \u00b7 range 39.9 \u00b7 burst 4",
+   "desc": "The medium-caliber automatic artillery, installed on the side of the ship, is fed by a 4-round magazine and has tremendous power.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 187 dmg \u00b7 range 39.9 \u00b7 burst 4",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "HMC_Wall_Minigun_Turret",
+   "label": "Wall Minigun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 86 dmg \u00b7 range 34.9 \u00b7 burst 20",
+   "desc": "High-rate-of-fire multi-barrel machine guns need a period of time to cool down after firing and will not explode when destroyed.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 86 dmg \u00b7 range 34.9 \u00b7 burst 20",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "HMC_Wall_Minigun_Turret_Ship",
+   "label": "Naval Wall Minigun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 86 dmg \u00b7 range 37.9 \u00b7 burst 15",
+   "desc": "The naval version of Wall Minigun Turret has a lower rate of fire but cools faster and is equipped with armor.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 86 dmg \u00b7 range 37.9 \u00b7 burst 15",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "ShipWallMountMiniTurret",
+   "label": "mount mini turret",
+   "mod": "[kyzy] Ship Wall Enhanced",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 12 dmg \u00b7 range 28.9 \u00b7 burst 2",
+   "desc": "A mountable auto mini gun,  ideal for use on ship hulls.\n\nIt work pretty much same as the regular mini turret.\n\nAs a mountable device, it can be attached to most of wall structures or cabins if neccessary. But certain bu",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 12 dmg \u00b7 range 28.9 \u00b7 burst 2",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "Turret_AutoMiniTurret",
+   "label": "mini-slugger turret",
+   "mod": "Core",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 86 dmg \u00b7 range 45.9",
+   "desc": "A self-powered defense turret mounted with a weak but long-ranged slug-thrower. May explode when damaged.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 86 dmg \u00b7 range 45.9",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "Turret_MiniTurret",
+   "label": "mini-turret",
+   "mod": "Core",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 12 dmg \u00b7 range 28.9 \u00b7 burst 2",
+   "desc": "A portable automatic turret. Requires steel to refurbish its barrel after heavy use. May explode when damaged. Its dumb AI brain can't be directly controlled, so beware of friendly fire.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 12 dmg \u00b7 range 28.9 \u00b7 burst 2",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "Turret_TacticalTurret",
+   "label": "tactical turret",
+   "mod": "Anomaly",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 86 dmg \u00b7 range 19.9 \u00b7 burst 2",
+   "desc": "A short-range turret. It will stop functioning once its battery runs out. If damaged sufficiently, it may explode.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 86 dmg \u00b7 range 19.9 \u00b7 burst 2",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Complex_Charge",
+   "label": "charge complex",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 94 dmg \u00b7 range 29.9 \u00b7 burst 12",
+   "desc": "A heavy, pulse-charged rapid-fire blaster mounted on a barricade to grant cover. Needs to be manned in order to fire. Requires plasteel to refurbish its barrel after heavy use.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 94 dmg \u00b7 range 29.9 \u00b7 burst 12",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Complex_Hmg",
+   "label": "HMG complex",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 200 dmg \u00b7 range 32.9 \u00b7 burst 8",
+   "desc": "A heavy machine gun mounted on sandbags to grant cover. Needs to be manned in order to fire. Requires steel to refurbish its barrel after heavy use.",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 200 dmg \u00b7 range 32.9 \u00b7 burst 8",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Complex_Minigun",
+   "label": "minigun complex",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 12 dmg \u00b7 range 30.9 \u00b7 burst 12",
+   "desc": "A multi-barrel machine gun mounted on sandbags to grant cover and provide stability. Where most self-loading guns are powered by the energy from the gunpowder, the minigun uses an electric motor to rapidly cycle cartridg",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 12 dmg \u00b7 range 30.9 \u00b7 burst 12",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Turret_ArmoredTurret",
+   "label": "armored turret",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 12 dmg \u00b7 range 28.9 \u00b7 burst 2",
+   "desc": "An armored, portable automatic turret. Requires steel to refurbish its barrel after heavy use. Extra armor plating allows the turret to provide some cover, makes it more resistant to enemy fire and prevents explosion in ",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 12 dmg \u00b7 range 28.9 \u00b7 burst 2",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Turret_ChargeTurret",
+   "label": "charge turret",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 91 dmg \u00b7 range 24.9 \u00b7 burst 4",
+   "desc": "A portable automatic charged-shot turret. Pulse-charge technology charges each shot with unstable energy as it leaves the barrel. Requires plasteel to refurbish its barrel after heavy use. May explode when damaged. Its d",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 91 dmg \u00b7 range 24.9 \u00b7 burst 4",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Turret_Concealed",
+   "label": "concealed turret",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 200 dmg \u00b7 range 26.9 \u00b7 burst 3",
+   "desc": "A compact automatic turret equipped with retractable armor plating and a submersion mechanism. It is capable of submerging into the ground, becoming impossible to target. Requires steel to refurbish its barrel after heav",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 200 dmg \u00b7 range 26.9 \u00b7 burst 3",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Turret_MilitaryTurret",
+   "label": "military turret",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 12 dmg \u00b7 range 33.5 \u00b7 burst 3",
+   "desc": "A refined turret with military-grade stabilization, targeting routines, and hardened casing. Requires steel to refurbish its barrel after heavy use. May explode when damaged. Its dumb AI brain can't be directly controlle",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 12 dmg \u00b7 range 33.5 \u00b7 burst 3",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Turret_ShotgunTurret",
+   "label": "shotgun turret",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 18 dmg \u00b7 range 15.9",
+   "desc": "A compact automatic turret fitted with a semi-automatic shotgun. Requires steel to refurbish its barrel after heavy use. May explode when damaged. Its dumb AI brain can't be directly controlled, so beware of friendly fir",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 18 dmg \u00b7 range 15.9",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "VulcanTurret",
+   "label": "vulcan turret",
+   "mod": "MiningCo. Spaceship (Continued)",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: bullets rule",
+   "stats": "Bullet 94 dmg \u00b7 range 25.9 \u00b7 burst 4",
+   "desc": "An advanced gun mounted on MiningCo. military spaceships to protect squads during their deployment. Local tribes fear it as they believe it to be a tool forged by the Fire god himself. Mercenaries... well, the lucky ones",
+   "prefill": {
+    "tech": "slugthrower (bullets)",
+    "effect": "Bullet 94 dmg \u00b7 range 25.9 \u00b7 burst 4",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)",
+   "contested": false
+  },
+  {
+   "defName": "BMAD_GrowthTurret",
+   "label": "growth-ray mini-turret",
+   "mod": "Big and Small - Genes & More",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: mod rulings and register",
+   "stats": "BS_IndictedDamage 10 dmg \u00b7 range 24.9",
+   "desc": "A portable automatic turret with a growth-ray attached.",
+   "prefill": {
+    "tech": "growth ray",
+    "effect": "BS_IndictedDamage 10 dmg \u00b7 range 24.9",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "INVENTED: as shrink ray",
+   "contested": true
+  },
+  {
+   "defName": "BMAD_ShrinkTurret",
+   "label": "shrink-ray mini-turret",
+   "mod": "Big and Small - Genes & More",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: mod rulings and register",
+   "stats": "BS_IndictedDamage 10 dmg \u00b7 range 24.9",
+   "desc": "A portable automatic turret with a shrink-ray attached.",
+   "prefill": {
+    "tech": "shrink ray",
+    "effect": "BS_IndictedDamage 10 dmg \u00b7 range 24.9",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "INVENTED: gene-ray joke piece, wrong fiction",
+   "contested": true
+  },
+  {
+   "defName": "FT_Turret_Mortar",
+   "label": "infantry mortar",
+   "mod": "Fortifications - Industrial",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: mod rulings and register",
+   "stats": "? ? dmg \u00b7 range 100",
+   "desc": "A compact and lightweight field mortar for indirect fire. It has a shorter range compared to larger caliber equivalents, but has increased rate of fire and portability.",
+   "prefill": {
+    "tech": "(Fortifications)",
+    "effect": "? ? dmg \u00b7 range 100",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "dies with the Fortifications-Industrial ruling",
+   "contested": false
+  },
+  {
+   "defName": "Turret_AutoChargeBlaster_OP",
+   "label": "Archotech charge turret",
+   "mod": "Archotech Blaster Turret",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: mod rulings and register",
+   "stats": "Bullet 187 dmg \u00b7 range 400 \u00b7 burst 10",
+   "desc": "An archotech blaster turret using archites clouds that destroy what they touch on a molecular level. Directly written into your dreams from the insane mind of a demented archotech, this turret is capable of unleashing de",
+   "prefill": {
+    "tech": "archotech charge turret",
+    "effect": "Bullet 187 dmg \u00b7 range 400 \u00b7 burst 10",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "INVENTED: archotech OP one-off, wrong register",
+   "contested": true
+  },
+  {
+   "defName": "VFES_Complex_GraserCannon",
+   "label": "graser cannon complex",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: mod rulings and register",
+   "stats": "? ? dmg \u00b7 range 29.9 \u00b7 burst 8",
+   "desc": "A devastating gamma ray laser mounted on a barricade to grant cover. It fires a sweeping beam capable of piercing armor and igniting targets. Needs to be manned in order to fire. Requires plasteel to refurbish its emitte",
+   "prefill": {
+    "tech": "(VFE-Security)",
+    "effect": "? ? dmg \u00b7 range 29.9 \u00b7 burst 8",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "dies with the VFE-Security ruling (only railgun/ballista/tesla + the open flamer survive)",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Complex_HeavyIncineratorComplex",
+   "label": "heavy incinerator complex",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: mod rulings and register",
+   "stats": "? ? dmg \u00b7 range 11.9",
+   "desc": "A heavy incinerator mounted on a barricade to grant cover. Needs to be manned in order to fire. It is equipped with a powerful mega-burner that requires bioferrite to reload.",
+   "prefill": {
+    "tech": "(VFE-Security)",
+    "effect": "? ? dmg \u00b7 range 11.9",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "dies with the VFE-Security ruling (only railgun/ballista/tesla + the open flamer survive)",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Turret_Searchlight",
+   "label": "searchlight",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "1x1",
+   "group": "Small Emplacements \u2014 CUT: mod rulings and register",
+   "stats": "? ? dmg \u00b7 range 24.9",
+   "desc": "An apparatus combining an extremely luminous lamp and a mirrored parabolic reflector, useful for lighting up and dazzling targets.",
+   "prefill": {
+    "tech": "(VFE-Security)",
+    "effect": "? ? dmg \u00b7 range 24.9",
+    "user": "Nobody (cut)",
+    "state": "cut"
+   },
+   "prefillNote": "dies with the VFE-Security ruling (only railgun/ballista/tesla + the open flamer survive)",
+   "contested": false
   }
  ]
 }

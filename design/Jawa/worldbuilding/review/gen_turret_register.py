@@ -82,9 +82,79 @@ PLAN = {
 GROUP_ORDER = ["Rakatan Relics — light of the Builders", "Imperial Emplacements — turbolaser doctrine",
                "Jawa Ion — capture, not kill", "Gravship Hardpoints — the Utinni's guns",
                "Forsaken Sentinels — mech pattern", "Settler Iron — planetary ballistics",
-               "Exotic Energy — bought and jury-rigged", "Living Turrets — hive and flesh"]
+               "Exotic Energy — bought and jury-rigged", "Living Turrets — hive and flesh",
+               "Small Emplacements — keep and rework", "Small Emplacements — ancient relics",
+               "Wall-mounted — class undecided", "Small Emplacements — CUT: bullets rule",
+               "Small Emplacements — CUT: mod rulings and register"]
+
+# ---- 1x1 layer (owner 2026-08-29: "eliminate any 1x1 turrets that obviously use
+# bullets except for sniper turrets"). Baseline is DATA-DRIVEN: projectile
+# damageDef == Bullet -> cut, unless the label says sniper. Explicit overrides below.
+VFES_KEEP_1 = {"VFES_Turret_Flame"}   # pending the 4th-keep ruling; all other VFES 1x1s die with the mod ruling
+PLAN_1X1 = {
+ "Turret_FoamTurret":          ("Small Emplacements — keep and rework", "containment foam", "Common / multiple", "keep", "utility, not a weapon — containment"),
+ "FlameColumnMod":             ("Small Emplacements — keep and rework", "flame column", "Common / multiple", "keep", "INVENTED: this covers the flamer need the large list lacks"),
+ "EMPColumnMod":               ("Small Emplacements — keep and rework", "stun pulse (ion-adjacent)", "Jawa clans (player)", "rework", "INVENTED: EMP pulse reads as Jawa ion doctrine"),
+ "DetColumnMod":               ("Small Emplacements — keep and rework", "cluster charge column", "Common / multiple", "undecided", "deliberately open — mine-field verb, who gets it?"),
+ "DeadColumnMod":              ("Small Emplacements — keep and rework", "Deadlife dust column", "The Assailant's flesh (anomaly)", "undecided", "deliberately open — anomaly verb on a buildable column"),
+ "AB_Turret_Propane":          ("Small Emplacements — keep and rework", "propane burner", "Junkers", "rework", "INVENTED: jury-rigged fire = junker chemistry"),
+ "VFEI2_Thornspitter":         ("Small Emplacements — keep and rework", "thorn spitter (propose sonic rework)", "Geonosian Foundry Hive", "rework", "INVENTED: as the large living turrets — hive tech is sonic"),
+ "AA_FoamBelcher":             ("Small Emplacements — keep and rework", "living foam gland", "The Assailant's flesh (anomaly)", "undecided", "living containment — flesh or hive?"),
+ "OuterRim_LightIonCannon":    ("Small Emplacements — keep and rework", "light ion cannon", "Jawa Trade Moot", "keep", "ion = capture-not-kill, the Jawa identity"),
+ "OuterRim_LightLaserCannon_Coruscant": ("Small Emplacements — keep and rework", "light blaster cannon", "Common / multiple", "keep", ""),
+ "OuterRim_LightLaserCannon_Corellia":  ("Small Emplacements — keep and rework", "light blaster cannon", "Common / multiple", "keep", ""),
+ "OuterRim_LightLaserCannon_Tatooine":  ("Small Emplacements — keep and rework", "light blaster cannon", "Homestead Defense League", "keep", "INVENTED: the Tatooine pattern belongs on moisture-farm walls"),
+ "OuterRim_PTowerTurret":      ("Small Emplacements — keep and rework", "P-Tower dish (old anti-armor)", "Homestead Defense League", "keep", "INVENTED: cheap old Rebel-surplus dish — settler iron"),
+ "VFES_Turret_Flame":          ("Small Emplacements — keep and rework", "flamer turret", "Common / multiple", "undecided", "OPEN: dies with the VFE-Security ruling unless named a 4th keep"),
+ "Turret_AncientArmoredTurret":("Small Emplacements — ancient relics", "ancient defender", "Cradle / Rakatan ruins", "rework", "INVENTED: 'ancient' emplacements read Rakatan after the reskin"),
+ "VQE_AncientShieldedTurret":  ("Small Emplacements — ancient relics", "ancient shielded turret", "Forsaken vaults", "rework", "INVENTED: as ancient defender"),
+ "Turret_BeamRepeater":        ("Small Emplacements — ancient relics", "beam repeater (shield-bypass)", "Cradle / Rakatan ruins", "rework", "INVENTED: gravtech = Rakatan premise"),
+ "Turret_AutoChargeBlaster_OP":("Small Emplacements — CUT: mod rulings and register", "archotech charge turret", "Nobody (cut)", "cut", "INVENTED: archotech OP one-off, wrong register"),
+ "BMAD_ShrinkTurret":          ("Small Emplacements — CUT: mod rulings and register", "shrink ray", "Nobody (cut)", "cut", "INVENTED: gene-ray joke piece, wrong fiction"),
+ "BMAD_GrowthTurret":          ("Small Emplacements — CUT: mod rulings and register", "growth ray", "Nobody (cut)", "cut", "INVENTED: as shrink ray"),
+ "HMC_Wall_Emp_Turret":        ("Wall-mounted — class undecided", "wall EMP pulse", "Jawa clans (player)", "undecided", "EMP fits ion doctrine; the wall-mount CLASS needs a ruling"),
+ "HMC_Wall_Emp_Turret_Ship":   ("Wall-mounted — class undecided", "naval wall EMP pulse", "Gravship (the Utinni)", "undecided", "as wall EMP"),
+ "HMC_Wall_Foam_Turret":       ("Wall-mounted — class undecided", "wall foam sprayer", "Common / multiple", "undecided", ""),
+ "HMC_Wall_Rocket_Turret":     ("Wall-mounted — class undecided", "wall rocket rack", "Junkers", "undecided", "rockets, not bullets — survives the rule, needs the class ruling"),
+}
+WALL_WARNING = "⚠️ wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 — the render-killing NRE); only judge them on a wall."
 
 rows = []
+small = json.load(open("/mnt/d/Luke/dev/Rimworld/Transient/turret_1x1.json"))
+T1 = {t["defName"]: t for t in small}
+for t in small:
+    dn = t["defName"]
+    dmg = t.get("damage"); dd = t.get("damageDef") or "?"
+    eff = "%s %s dmg" % (dd, dmg if dmg not in (None, -1) else "?")
+    if t.get("explosionRadius"): eff += " · blast r%.1f" % t["explosionRadius"]
+    eff += " · range %s" % t.get("range")
+    if t.get("burst") and (t["burst"] or 0) > 1: eff += " · burst %d" % t["burst"]
+    label = str(t.get("label") or "")
+    is_sniper = "sniper" in label.lower() or "sniper" in dn.lower()
+    if dn in PLAN_1X1:
+        grp, tech, user, state, note = PLAN_1X1[dn]
+        if dn.startswith("HMC_Wall") or dn == "ShipWallMountMiniTurret":
+            note = (note + " · " if note else "") + WALL_WARNING
+    elif dd == "Bullet" and not is_sniper:
+        grp, tech, user, state = "Small Emplacements — CUT: bullets rule", "slugthrower (bullets)", "Nobody (cut)", "cut"
+        note = "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)"
+    elif t["mod"] == "Vanilla Furniture Expanded - Security" and dn not in VFES_KEEP_1:
+        grp, tech, user, state = "Small Emplacements — CUT: mod rulings and register", "(VFE-Security)", "Nobody (cut)", "cut"
+        note = "dies with the VFE-Security ruling (only railgun/ballista/tesla + the open flamer survive)"
+    elif t["mod"] == "Fortifications - Industrial":
+        grp, tech, user, state = "Small Emplacements — CUT: mod rulings and register", "(Fortifications)", "Nobody (cut)", "cut"
+        note = "dies with the Fortifications-Industrial ruling"
+    else:
+        grp, tech, user, state = "Small Emplacements — keep and rework", dd, "Common / multiple", "undecided"
+        note = "no rule matched — deliberately open"
+    rows.append({
+        "defName": dn, "label": label, "mod": t["mod"], "size": "1x1",
+        "group": grp, "stats": eff, "desc": t.get("desc") or "",
+        "prefill": {"tech": tech, "effect": eff, "user": user, "state": state},
+        "prefillNote": note,
+        "contested": ("CONTESTED" in note) or ("INVENTED" in note) or ("OPEN" in note),
+    })
+
 for dn, (grp, tech, user, state, note) in PLAN.items():
     t = T.get(dn)
     if not t:
@@ -105,15 +175,18 @@ rows.sort(key=lambda r: (GROUP_ORDER.index(r["group"]), r["size"], r["defName"])
 
 register = {
     "posture": "whitelist",
-    "postureMeaning": "These are the ONLY large (>1x1) turrets allowed in the game. Any turret def not on this sheet is to be cut when we normalize. 1x1 turrets are OUT OF SCOPE here and owe their own pass.",
+    "postureMeaning": "ALL turret sizes now in scope. A turret def not on this sheet, or on it with state=cut, is to be cut when we normalize.",
     "rulingSource": "owner at the bench, 2026-08-29",
+    "rules": [
+        "BULLETS RULE (owner, verbatim): 'eliminate any 1x1 turrets that obviously use bullets except for sniper turrets' — applied data-driven: projectile damageDef == Bullet -> cut; no 1x1 on the roster is a sniper, so the exception matched nothing (noted, not silently dropped)",
+    ],
     "alreadyCut": ["all VFE Props & Decor props", "all VFE Pirates", "all Fortifications-Industrial",
                    "VFE-Security except ChargeRailgun/Ballista/TeslaBlaster/(Flame? open)",
                    "BreadMoAM_Turret_LargeShotgun", "VQE_AncientSpacerAutocannon"],
     "openQuestions": [
         "Which def is the owner's 'auto turret' cut? (Turret_AutoChargeBlaster flagged undecided)",
         "VFES_Turret_Flame (1x1 flamer) — 4th VFE-Security keep, or dies with the mod cut?",
-        "1x1 turret roster (mini-turret, flamer, precision, foam, wall guns) — separate pass owed",
+        "Wall-mounted turret CLASS (HMC walls, ship wall mounts) — keep the category at all?",
     ],
     "turrets": rows,
 }
@@ -123,7 +196,7 @@ json.dump(register, open(os.path.join(HERE, "turret_register.json"), "w"), inden
 def esc(s): return html.escape(str(s), quote=True)
 cards = []
 for r in rows:
-    t = T[r["defName"]]
+    t = T.get(r["defName"]) or T1.get(r["defName"]) or {}
     img = ('<img src="data:image/png;base64,%s" alt="">' % t["thumb"]) if t.get("thumb") else '<div class="noart">art in game bundle<br>not extracted</div>'
     cards.append({**r, "img": img})
 
@@ -178,7 +251,7 @@ body.folded #brief{display:none}
   <button id="linkbtn">link decisions file</button><button id="exportbtn">copy JSON</button>
   <button id="fold">▾ brief</button></div>
  <div id="brief">
-  <div class="panel"><b>The ruling this records</b> (owner, 2026-08-29): these ~40 large turrets are the ONLY &gt;1×1 turrets allowed in the game — <b>posture: WHITELIST; anything not on this sheet gets cut at normalization</b>. Cut already: VFE Props, VFE Pirates, Fortifications-Industrial, VFE-Security (except charge railgun / ballista / tesla blaster), the large shotgun, the ancient spacer autocannon. MiningCo drill turret stays (owner: a tool, not a weapon). 1×1 turrets are OUT OF SCOPE — they owe their own pass.<br>
+  <div class="panel"><b>The ruling this records</b> (owner, 2026-08-29): <b>posture: WHITELIST, ALL turret sizes — anything not on this sheet, or marked cut, gets cut at normalization</b>. Cut already: VFE Props, VFE Pirates, Fortifications-Industrial, VFE-Security (except charge railgun / ballista / tesla blaster), the large shotgun, the ancient spacer autocannon. MiningCo drill turret stays (owner: a tool, not a weapon). <b>BULLETS RULE</b> (owner, verbatim): 1×1 turrets that obviously use bullets are cut, sniper turrets excepted — applied as projectile damageDef == Bullet; no 1×1 on the roster is a sniper, so the exception matched nothing.<br>
   <b>The three decisions per row:</b> ① what technology/damage it projects · ② how powerful / what effect · ③ who uses it. Prefilled; overrule freely — the notes you write are worth more than the agreements.</div>
   <div class="panel warn"><b>Rules the agent INVENTED (rows tinted, filter: contested):</b> ① gravitic weapons (GravTech) = Rakatan relic tech · ② the heavy ion cannon goes to the Jawa Trade Moot (ion = capture-not-kill is the Jawa identity), not the Empire · ③ E-Web assigned Imperial · ④ insect living turrets re-projectiled to SONIC to match Geonosian identity · ⑤ black defiler = the Assailant's flesh (anomaly set-dressing). None of these were asked for — each is one click to overturn.<br>
   <b>Open questions:</b> which def is your "auto turret" cut (auto CHARGE turret flagged undecided)? · does VFES_Turret_Flame (1×1 flamer, found alive) become a 4th VFE-Security keep? </div>
