@@ -111,6 +111,11 @@ match each). Both deployed. Decision strings, written BEFORE the launch:
   9 mod-private categories' noise stays expected).
 - forcedTraits ride: ShootingAccuracy(1), TooSmart, Nerves(±), Tough, GreatMemory,
   NaturalMood(-1), BodyPurist — all verified in capture 13-30-02Z + RimSage degrees.
+- ALSO (owner yes, 2026-08-29): both VQE kinds forced `RimMandrakeRakata` 1.0 +
+  useFactionXenotypes false (same R-A4 shape as AncientsAreRakata). PASS: dump
+  reads exactly ONE xenotypeChances entry on VQE_Patient and VQE_Experiment;
+  bridge-spawn one VQE_Patient — Rakatan head/gaunt body, not baseline (the VQE
+  C# then adds archite genes on top: expected, it IS the flesh-shaped fiction).
 
 ## ISEKAI reflavor first load (added 2026-08-29, BENCH)
 IsekaiTraits_StarWarsReflavor.xml deployed (validate_patch: 30 ops, 1 match
