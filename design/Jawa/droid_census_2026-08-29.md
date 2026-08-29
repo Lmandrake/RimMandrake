@@ -88,3 +88,30 @@ Dormancy, mechanitor control, Droideka shields — all vanilla comps. Ships a
 spike exists in any accepted mod** — the verb is the reprogram job above. The
 ruling doc now carries the correction; "data spike" survives only as a candidate
 verb WE might author (owner named it for v2).
+
+## The dream texts, and what they add beyond the census (2026-08-29)
+
+The owner's deep-dive lives in `research/Jawa/Star_Wars_RimWorld_Mod_Concepts.md`
+— §2 "Droidbrain" (droids as a distinct agent kind: model psychology, emergent
+personality, the restraining bolt as a mechanic with social consequences, unruly
+combat droids) and §3 "Droid Repair, Customization, and Economy" (the Repair
+Shop Simulator, jury-rigging, astromech-machine attachment, power/mouse droid
+logistics, physical comedy). Read them before phase 2; §28's standalone-mod
+shortlist keeps Droidbrain, not the shop, as the flagship.
+
+Mapping against this census:
+- **Already shipped**: directives (ABF), personality tiers/formatting (ABF),
+  droid quirk traits + droid mental breaks (Asimov), the mechanical bolt
+  (Asimov), repair/rebuild verbs (both), model archetypes (44+19 kinds).
+- **Convergent with pawn_flavor_design.md**: chassis stereotype + individual
+  drift = Assembly × Service-Record; "broken agri droid is a wiped assassin" =
+  Carries-a-Secret + the Memory-Wiped skill-return event.
+- **Exists nowhere, would be authored**: personality DRIFT as a function of
+  time-since-wipe; the bolt's CONSEQUENCE layer (resentment, Free Droid Enclave
+  hostility, liberation events) — its goodwill-cap spec is already written at
+  `worldbuilding/restraining_bolt_technical.md` and was gated "[v2] — lands with
+  the Free Droid Enclaves FactionDef", **a gate that has since dissolved: the
+  faction is authored and present on the frozen world** (checked in
+  WORLDMAP_V1_original.rws today); the shop's CUSTOMER layer (visitors bringing
+  broken droids, diagnosis jobs, reputation gating) — quest/incident authoring;
+  unruly-combat-droid behaviors; astromech-machine familiarity.
