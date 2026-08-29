@@ -1,0 +1,152 @@
+{
+ "ASHKARR_IDEOLOGY_MODE_CALL_1": {
+  "fp": "41c35d7d83fb",
+  "number": 1,
+  "open": true
+ },
+ "AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1": {
+  "fp": "babad75f563f",
+  "number": 2,
+  "open": true
+ },
+ "BLIND_SCAN_RELATIVE_PATHS_1": {
+  "fp": "05d1dc4cba63",
+  "number": 3,
+  "open": true
+ },
+ "BUILD_BATCH_FACTION_REJECTS_PLAYER_1": {
+  "fp": "6279d50addd9",
+  "number": 4,
+  "open": true
+ },
+ "BUILD_BATCH_OVERWRITES_SILENTLY_1": {
+  "fp": "0e8106c5376c",
+  "number": 5,
+  "open": true
+ },
+ "COLD_LOAD_RUN_SHEET_1": {
+  "fp": "d7f7bc350d9f",
+  "number": 6,
+  "open": true
+ },
+ "DUMPER_SWALLOWS_CACHE_THROW_1": {
+  "fp": "1353c2ddbc78",
+  "number": 7,
+  "open": true
+ },
+ "DUMP_PRODUCER_DATED_CAPTURES_1": {
+  "fp": "3b01fca3dfdf",
+  "number": 8,
+  "open": true
+ },
+ "EMPIRE_PURSUIT_SCENPART_INSTALL_1": {
+  "fp": "57e7df7b7a2b",
+  "number": 9,
+  "open": true
+ },
+ "EMPIRE_PURSUIT_SURVEY_SHADOW_1": {
+  "fp": "c7a4d2d5bd30",
+  "number": 10,
+  "open": true
+ },
+ "EMPIRE_RAID_QUICKTEST_1": {
+  "fp": "74450049ad70",
+  "number": 11,
+  "open": true
+ },
+ "EMPIRE_TROOPER_TRAINING_1": {
+  "fp": "cad2c501400f",
+  "number": 12,
+  "open": true
+ },
+ "FIRE_RAID_ECHOES_REQUESTED_FACTION_1": {
+  "fp": "d938e7dd3374",
+  "number": 13,
+  "open": true
+ },
+ "GRAVSHIP_LANDING_DIRECT_PLACE_1": {
+  "fp": "622394243402",
+  "number": 14,
+  "open": true
+ },
+ "IKEE_WILDNESS_PATCH_DEAD_1": {
+  "fp": "5466da6afdd6",
+  "number": 15,
+  "open": true
+ },
+ "ION_TIERS_MEASURED_LIVE_1": {
+  "fp": "26a52cff2d41",
+  "number": 16,
+  "open": true
+ },
+ "JAWA_CULTURES_LEAK_TO_STRANGERS_1": {
+  "fp": "2897c114fa8c",
+  "number": 17,
+  "open": true
+ },
+ "NONCANON_ARRIVES_BY_PAWNKIND_1": {
+  "fp": "1d350994721a",
+  "number": 18,
+  "open": true
+ },
+ "NO_TOOL_REPORTS_MAP_TILE_1": {
+  "fp": "6e9158e503af",
+  "number": 19,
+  "open": true
+ },
+ "ORDERED_JOB_CANNOT_SOW_1": {
+  "fp": "3e3e68bf1ad0",
+  "number": 20,
+  "open": true
+ },
+ "PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1": {
+  "fp": "53dae20df01d",
+  "number": 21,
+  "open": true
+ },
+ "PAWN_WEAPON_GEN_TAG_POOL_READ_1": {
+  "fp": "57e3e04e0bbd",
+  "number": 22,
+  "open": true
+ },
+ "PLACER_IDENTITY_REPLAY_1": {
+  "fp": "a8c067ee3d7a",
+  "number": 23,
+  "open": true
+ },
+ "QUEUE_GITHUB_MIRROR_1": {
+  "fp": "6b68129a6279",
+  "number": 24,
+  "open": true
+ },
+ "SIX_FACTIONS_NEVER_RAID_1": {
+  "fp": "2359ebd179ff",
+  "number": 25,
+  "open": true
+ },
+ "SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1": {
+  "fp": "e1a3bb35a40f",
+  "number": 26,
+  "open": true
+ },
+ "THOROUGH_RETAG_WEAPONS_ARMOUR_1": {
+  "fp": "2a036eec4df8",
+  "number": 27,
+  "open": true
+ },
+ "THRUSTER_INSTABUILD_NEVER_ACTIVE_1": {
+  "fp": "9c57f58c82fe",
+  "number": 28,
+  "open": true
+ },
+ "WORLD_MUTATOR_LANDMARK_IMPORTERS_1": {
+  "fp": "8ad5f1cceca6",
+  "number": 29,
+  "open": true
+ },
+ "seven-authored-factions-generate-and-field-their-own-kinds-5b90c7": {
+  "fp": "80bb108fa0e6",
+  "number": 30,
+  "open": true
+ }
+}

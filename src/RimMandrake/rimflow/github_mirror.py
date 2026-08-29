@@ -37,6 +37,7 @@ MAP_PATH = os.path.join(model.LEDGER, "github_mirror_map.json")
 LABELS = {  # label -> (color, description)
     "seat:BENCH":    ("1d76db", "rimflow: owned by the BENCH window"),
     "seat:FOUNDRY":  ("5319e7", "rimflow: owned by the FOUNDRY window"),
+    "seat:OWNER":    ("f9d0c4", "rimflow: held by the owner"),
     "needs:offline": ("0e8a16", "workable with the game down"),
     "needs:deploy":  ("fbca04", "needs a deploy slot"),
     "needs:game-up": ("d93f0b", "needs the game running"),
@@ -73,7 +74,9 @@ def fingerprint(want):
 
 def gh(args, apply_, plan):
     if apply_:
-        subprocess.run(["gh"] + args, check=True, capture_output=True, text=True)
+        r = subprocess.run(["gh"] + args, capture_output=True, text=True)
+        if r.returncode != 0:
+            sys.exit("gh %s\nFAILED: %s" % (" ".join(args), r.stderr.strip()))
     plan.append("gh " + " ".join(args))
 
 
@@ -110,9 +113,10 @@ def main():
             for lb in want["labels"]:
                 create += ["--label", lb]
             if args.apply:
-                out = subprocess.run(["gh"] + create, check=True,
-                                     capture_output=True, text=True).stdout
-                number = int(out.strip().rsplit("/", 1)[-1])
+                r = subprocess.run(["gh"] + create, capture_output=True, text=True)
+                if r.returncode != 0:
+                    sys.exit("gh %s\nFAILED: %s" % (" ".join(create), r.stderr.strip()))
+                number = int(r.stdout.strip().rsplit("/", 1)[-1])
             else:
                 number = None
             plan.append("gh " + " ".join(create[:6]) + " …")
