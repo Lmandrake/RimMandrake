@@ -43,7 +43,20 @@ LEDGER = (
     '"title":"t","kind":"task","for":"CHECK"}\n'
     '{"ts":"t","seat":"BUILD","event":"file","id":"FILED_THEN_CLAIMED_1",'
     '"title":"t","kind":"task","for":"CHECK"}\n'
-    '{"ts":"t","seat":"CHECK","event":"claim","id":"FILED_THEN_CLAIMED_1"}\n')
+    '{"ts":"t","seat":"CHECK","event":"claim","id":"FILED_THEN_CLAIMED_1"}\n'
+    # The owner ruled on this one out loud; rimflow recorded his words on the event.
+    # Its LATEST event carries ownerSaid, so any seat may write its file.
+    '{"ts":"t","seat":"DECIDE","event":"file","id":"RULED_BY_OWNER_1",'
+    '"title":"t","kind":"task","for":"CHECK"}\n'
+    '{"ts":"t","seat":"CHECK","event":"claim","id":"RULED_BY_OWNER_1"}\n'
+    '{"ts":"t","seat":"OWNER","event":"close","id":"RULED_BY_OWNER_1",'
+    '"ownerSaid":"This item is closed. Done."}\n'
+    # Same ruling, but a later ordinary event re-locked it.
+    '{"ts":"t","seat":"DECIDE","event":"file","id":"RULED_THEN_MOVED_1",'
+    '"title":"t","kind":"task","for":"CHECK"}\n'
+    '{"ts":"t","seat":"OWNER","event":"close","id":"RULED_THEN_MOVED_1",'
+    '"ownerSaid":"This item is closed. Done."}\n'
+    '{"ts":"t","seat":"CHECK","event":"claim","id":"RULED_THEN_MOVED_1"}\n')
 
 BASE = {
     "infrastructure/state/queue/BUILD.md": GEN,
@@ -53,6 +66,8 @@ BASE = {
     "infrastructure/state/items/THEIRS_ITEM_HERE_1.md": "## spec\nx\n",
     "infrastructure/state/items/FILED_BY_ME_1.md": "## spec\nold\n",
     "infrastructure/state/items/FILED_THEN_CLAIMED_1.md": "## spec\nold\n",
+    "infrastructure/state/items/RULED_BY_OWNER_1.md": "## spec\nold\n",
+    "infrastructure/state/items/RULED_THEN_MOVED_1.md": "## spec\nold\n",
     "TRANSIENT_notes.md": "scratch\n",
     "README.md": "# repo\n",
 }
@@ -247,6 +262,19 @@ CASES = [
      {}, "git commit TRANSIENT_new.md -m x", "BUILD", ["TRANSIENT_new.md"]),
     ("ALLOW an already-tracked root file", ALLOW, None,
      {"README.md": "# repo edited\n"}, "git commit README.md -m x", "BUILD", None),
+
+    # ---- 3b. an owner ruling unlocks the ruled item ------------------------
+    # 🔑 Added 2026-08-29: the hook refused a write TWICE after the owner had ruled
+    # ("I don't care who owns it. Done."). An item whose latest ledger event carries
+    # ownerSaid is writable by any seat; the next ordinary event re-locks it.
+    ("ALLOW writing another seat's item after an OWNER ruling", ALLOW, None,
+     {}, I + "/RULED_BY_OWNER_1.md", "BUILD", None, "Edit"),
+    ("ALLOW committing another seat's item after an OWNER ruling", ALLOW, None,
+     {I + "/RULED_BY_OWNER_1.md": "## spec\nruled\n"},
+     "git commit %s/RULED_BY_OWNER_1.md -m x" % I, "BUILD", None),
+    ("DENY  the same item once a later ordinary event re-locks it", DENY,
+     "belongs to",
+     {}, I + "/RULED_THEN_MOVED_1.md", "BUILD", None, "Edit"),
 
     # ---- not our business --------------------------------------------------
     ("ALLOW a normal src commit", ALLOW, None,

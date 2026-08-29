@@ -84,8 +84,36 @@ not 500) and re-read — narrow whether the asymmetry is transient or persistent
 anything else nearby.
 
 ## criteria
-- [ ] Confirm whether the engine/thruster link asymmetry is transient (resolves on its own
+- [x] Confirm whether the engine/thruster link asymmetry is transient (resolves on its own
       within a handful of ticks) or persistent (needs VEF's facility-equivalence patch fixed
       or worked around).
-- [ ] If persistent: read `VanillaExpandedFramework`'s `CanPotentiallyLinkTo`/
+- [x] If persistent: read `VanillaExpandedFramework`'s `CanPotentiallyLinkTo`/
       `PotentialThingsToLinkTo` transpiler against this exact call chain and name the line.
+
+## CLOSED 2026-08-29 at 0f04c84e — owner's ruling, resolution proven live (BENCH)
+
+Persistent, not transient — and not VEF facility-equivalence. Three stacked causes; each
+cured live on a scratch quicktest until the thruster went ACTIVE (inspect clean, console
+"Gravship range: 10", launch_check refusing on fuel/range instead of range 0), then flew
+a full launch -> land cycle (GRAVSHIP_LANDING_DIRECT_PLACE_1):
+
+1. **The exclusion zone rotates to the side OPPOSITE the facing** —
+   `CompProperties_GravshipThruster.GetExclusionZone`: cells = pos + (i,0,j)·rot +
+   offset(0,0,-5)·rot. Rot South puts the 1x5 zone NORTH of pos, across the pad a
+   south-edge thruster stands on -> "Blocked by substructure", forever. Correct: rot 0
+   (north-facing, exhaust south), zone strip off-pad, cleared of substructure and things.
+2. **VGE gates activity on the astrofuel net** —
+   `VanillaGravshipExpanded/Source/HarmonyPatches/CompGravshipThruster_CanBeActive_Patch.cs`
+   postfixes `CanBeActive` false while `CompResourceThruster.HasFuel` is false; an
+   unpiped thruster is its own empty one-building net, and vanilla's inspect string
+   misreports the state as "Not connected to grav engine". ChemfuelTank IS VGE's
+   astrofuel storage (250, `1.6/Patches/VanillaChemfuelTanks.xml`); connect with
+   `VGE_AstrofuelPipe`, fill via the exact "DEBUG: Fill" gizmo (a loose 'fill' match
+   executes "Allow manual refill", fills nothing, returns success).
+3. **Substructure writes silently refused on floor terrain** — AncientConcrete ruins left
+   75/400 pad cells without foundation; parts standing in the hole read "Not connected
+   to grav engine". Verify isSubstructure via `jawa/get_terrain_layers`, repaint holes
+   to Soil, re-set.
+
+"missingComponents cleared" stays as FOUNDRY mapped it: link-existence only, never
+activity. All three fixes are baked into `src/RimMandrake/bridgetools/prove_gravship.py`.

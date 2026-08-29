@@ -169,7 +169,11 @@ ITEM_OWNED_MSG = (
     "\U0001f511 Write the WHOLE correction into `## Spec`. %(holder)s should be able to "
     "apply it\nwithout reconstructing anything you already worked out.\n\n"
     "\u26a0\ufe0f  Genuinely urgent, or %(holder)s is wrong on the merits? Say so in\n"
-    "infrastructure/state/queue/HUMAN.md \u2014 any seat may write that one."
+    "infrastructure/state/queue/HUMAN.md \u2014 any seat may write that one.\n\n"
+    "\U0001f511 The OWNER has ruled on this item out loud? Record his ruling and the "
+    "file unlocks\nfor any seat until the item's next ordinary event:\n\n"
+    "     python3 src/RimMandrake/rimflow/cli.py <verb> %(iid)s \\\n"
+    "       --owner-said \"<his words, VERBATIM>\"\n"
 )
 
 
@@ -278,9 +282,19 @@ def owners(root, want=None):
     refusing the filer's later corrections to it made the instruction impossible to
     follow — the first commit only worked because `git diff` does not list untracked
     files. A claim is the handover; before it there is nothing to protect.
+
+    `want="owner_unlocked"` returns the set of items whose MOST RECENT event carries
+    `ownerSaid` — the owner has ruled on the item out loud and rimflow recorded his
+    verbatim words. 🔑 The charter says a tool rule never refuses the owner; on
+    2026-08-29 this hook did exactly that, twice, AFTER his ruling ("This item is
+    closed successfully. I don't care who owns it. Done."), because the ruling could
+    reach the ledger but not the item file. An owner-ruled item is writable by any
+    seat; the next ordinary event on the item re-locks it, so the unlock is exactly
+    as fresh as the ruling.
     """
     out = {}
     filed_by, claimed = {}, set()
+    unlocked = set()
     path = os.path.join(root, LEDGER)
     try:
         with open(path, encoding="utf-8") as fh:
@@ -292,6 +306,13 @@ def owners(root, want=None):
                     ev = json.loads(line)
                 except ValueError:
                     return {}            # torn ledger: say nothing rather than guess
+                iid = ev.get("id") or (ev.get("name") if ev.get("event") == "spawn"
+                                       else None)
+                if iid:
+                    if ev.get("ownerSaid"):
+                        unlocked.add(iid)
+                    else:
+                        unlocked.discard(iid)   # next ordinary event re-locks
                 if ev.get("event") == "file" and ev.get("id"):
                     out[ev["id"]] = ev.get("for")
                     filed_by[ev["id"]] = ev.get("seat")
@@ -304,9 +325,11 @@ def owners(root, want=None):
                 elif ev.get("event") in ("claim", "start") and ev.get("id"):
                     claimed.add(ev["id"])
     except OSError:
-        return {}
+        return {} if want != "owner_unlocked" else set()
     if want == "unclaimed_filers":
         return {k: v for k, v in filed_by.items() if v and k not in claimed}
+    if want == "owner_unlocked":
+        return unlocked
     return out
 
 
@@ -358,7 +381,8 @@ def main():
             iid = os.path.basename(fp)[:-3]
             holder = owners(root).get(iid) if seat else None
             if (holder and seat and holder != seat and seat != "OWNER"
-                    and owners(root, "unclaimed_filers").get(iid) != seat):
+                    and owners(root, "unclaimed_filers").get(iid) != seat
+                    and iid not in owners(root, "owner_unlocked")):
                 bits = [b for b in iid.split("_") if not b.isdigit()][:2]
                 return deny(ITEM_OWNED_MSG % {
                     "iid": iid, "holder": holder,
@@ -424,6 +448,8 @@ def main():
             if holder and holder != seat and seat != "OWNER":
                 if may_finish.get(iid) == seat:
                     continue             # you filed it and nobody has claimed it yet
+                if iid in owners(root, "owner_unlocked"):
+                    continue             # the owner ruled on it; his word unlocks it
                 bad.append((iid, holder))
         if bad:
             return deny(
