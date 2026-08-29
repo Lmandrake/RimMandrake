@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T20:37:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T21:21:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -369,3 +369,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_SYSTEM_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
+
+## JAWA_FACTION_SLATE_LOAD_ORDER_1 JawaFactionSlate needs a real forceLoadAfter list - loadBottom (fake field) removed, half the slate can still leak onto Configure Factions
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  The real problem the fake tag was trying to solve is still open, per the mod's own
+prose:    infrastructure/state/items/JAWA_FACTION_SLATE_LOAD_ORDER_1.md
