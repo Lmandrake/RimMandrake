@@ -17,6 +17,12 @@ python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --appl
   mods, verified; backups alongside as *.bak-sync_mod_state.
 - ✅ defDump RE-ARMED (dump_request.txt = all): the PAWN_FLAVOR and ISEKAI
   checks below need a fresh 585 capture from this load.
+- ✅ RE-RUN 2026-08-29 (third sitting, game DOWN after the owner's session): game
+  DLL copy was stale (55cd2e4971dd); rebuilt and redeployed at 8186a298939e — now
+  carries the kcsg_place/vge_spawn bridge commits. deploy_custom_mods in sync
+  (0 files, 14 held); sync_mod_state agrees (1.6.4871 rev591 / 585); dump still
+  armed `all`. ⚠️ FOUNDRY's JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1 may still be in
+  this build — the launch ready-line gate decides.
 
 ## 1 — decision strings at launch
 | # | expect | means if wrong |
