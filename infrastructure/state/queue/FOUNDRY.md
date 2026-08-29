@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T12:55:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T12:56:58Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -259,3 +259,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/OFFICIAL_DUMP_REFREEZE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/OFFICIAL_DUMP_REFREEZE_1.md
+
+## FLAT_MANIFEST_READER_SWEEP_1 Sweep tools still reading flat DefDump/manifest.json (layout moved to captures/<id>/ 2026-08-22)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLAT_MANIFEST_READER_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLAT_MANIFEST_READER_SWEEP_1.md
