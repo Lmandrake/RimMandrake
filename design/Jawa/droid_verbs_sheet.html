@@ -142,10 +142,31 @@ function serialize(){
   const out=Object.assign({},extraKeys,{posture:state.posture,criterion:state.criterion,source:"owner-sheet",savedAt:new Date().toISOString(),decidedRows:decidedCount(),rows:state.rows});
   return JSON.stringify(out,null,1);
 }
+let lastKnownDecided=0;
+async function absorbFile(){
+  // Read the ON-DISK file before ever writing it: merge its touched rows per-row
+  // (file wins over prefill, loses to nothing), and carry its unknown top-level
+  // keys through verbatim — never assume this page is the file's only author.
+  if(!fileHandle)return 0;
+  try{
+    const txt=await(await fileHandle.getFile()).text();
+    if(!txt.trim())return 0;
+    const disk=JSON.parse(txt);
+    let absorbed=0;
+    if(disk.rows)for(const[id,r]of Object.entries(disk.rows)){
+      if(r&&r.touched&&state.rows[id]&&!state.rows[id].touched){state.rows[id]=r;absorbed++}
+    }
+    for(const k of Object.keys(disk))if(!["rows","posture","criterion","source","savedAt","decidedRows"].includes(k))extraKeys[k]=disk[k];
+    lastKnownDecided=Math.max(lastKnownDecided,(disk.decidedRows|0));
+    return absorbed;
+  }catch(e){setSave('could not read existing file — NOT writing over it','warn');throw e}
+}
 async function writeFile(){
   if(!fileHandle)return;
-  if(decidedCount()===0&&Object.keys(state.rows).length<ROWS.length){setSave('refusing suspicious empty write','warn');return}
-  try{const w=await fileHandle.createWritable();await w.write(serialize());await w.close();setSave('saved to file '+new Date().toLocaleTimeString(),'ok')}
+  // Truncation guard that can actually fire: never write fewer touched rows
+  // than the file itself last recorded — a transient bug must not empty his work.
+  if(decidedCount()<lastKnownDecided){setSave(`REFUSING write: memory has ${decidedCount()} decisions, file recorded ${lastKnownDecided}`,'warn');return}
+  try{const w=await fileHandle.createWritable();await w.write(serialize());await w.close();lastKnownDecided=decidedCount();setSave('saved to file '+new Date().toLocaleTimeString(),'ok')}
   catch(e){setSave('file write failed — using browser storage','warn')}
 }
 function setSave(t,c){const s=el('saveState');s.textContent=t;s.className=c||''}
@@ -154,12 +175,15 @@ async function relink(){
   try{
     const h=await showSaveFilePicker({suggestedName:'droid_verbs_decisions.json',types:[{accept:{'application/json':['.json']}}]});
     fileHandle=h;try{const db=indexedDB.open('droid_sheet',1);db.onupgradeneeded=()=>db.result.createObjectStore('h');db.onsuccess=()=>{const tx=db.result.transaction('h','readwrite');tx.objectStore('h').put(h,'handle')}}catch(e){}
-    await writeFile();
+    let absorbed=0;
+    try{absorbed=await absorbFile()}catch(e){return}   // unreadable file: refuse to overwrite it
+    await writeFile();render();
+    if(absorbed)setSave(`merged ${absorbed} decision(s) from the file, saved ${new Date().toLocaleTimeString()}`,'ok');
   }catch(e){if(!window.showSaveFilePicker)setSave('File System API absent (Firefox?) — use copy JSON','warn')}
 }
 el('link').onclick=relink;
 el('exportBtn').onclick=async()=>{try{await navigator.clipboard.writeText(serialize());setSave('JSON copied '+new Date().toLocaleTimeString(),'ok')}catch(e){setSave('clipboard refused — link the file instead','warn')}};
-(function tryRestoreHandle(){try{const db=indexedDB.open('droid_sheet',1);db.onupgradeneeded=()=>db.result.createObjectStore('h');db.onsuccess=async()=>{try{const tx=db.result.transaction('h');const rq=tx.objectStore('h').get('handle');rq.onsuccess=async()=>{const h=rq.result;if(h){const p=await h.queryPermission({mode:'readwrite'});if(p==='granted'){fileHandle=h;setSave('file relinked','ok')}else setSave('click "link decisions file" to re-grant access','warn')}}}catch(e){}}}catch(e){}})();
+(function tryRestoreHandle(){try{const db=indexedDB.open('droid_sheet',1);db.onupgradeneeded=()=>db.result.createObjectStore('h');db.onsuccess=async()=>{try{const tx=db.result.transaction('h');const rq=tx.objectStore('h').get('handle');rq.onsuccess=async()=>{const h=rq.result;if(h){const p=await h.queryPermission({mode:'readwrite'});if(p==='granted'){fileHandle=h;try{const a=await absorbFile();render();setSave(a?`file relinked, merged ${a} decision(s) from it`:'file relinked','ok')}catch(e){}}else setSave('click "link decisions file" to re-grant access','warn')}}}catch(e){}}}catch(e){}})();
 function card(r){
   const st=state.rows[r.id];
   const tag=r.s==='CONFIRMED'?'tC':r.s==='UNCERTAIN'?'tU':'tI';
