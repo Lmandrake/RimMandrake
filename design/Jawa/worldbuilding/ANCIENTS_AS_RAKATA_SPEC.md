@@ -50,6 +50,30 @@ down from the asteroids, they built the works the Geonosians now worship, and th
 *Utinni*. Then **something attacked them with self-replicating flesh and nearly finished
 them**, and what survives is in the caskets.
 
+### 🔴 RULED — the dark half, owner 2026-08-29 (at the bench)
+
+> *"The Rakata were the victims, absolutely... but they were themselves destructive,
+> self-destroying, dark force wielding megastructure-building tyrants bent on conquest
+> and domination. Until they met something so awful that it, in turn, ate them alive...
+> and that assailant remains as yet unknown. Our goal isn't to make the assailant a
+> sympathetic character, but rather to make it seem all the more disturbing and demonic
+> that it was able to do anything back to the Rakata. But leading the player to first
+> sympathize with the Rakata and then reverse the revelation should lead to good drama,
+> especially since that is the technology of the player's own vessel."*
+
+⇒ **BOTH halves are true and neither cancels the other.** Victims: unchanged, ruled twice.
+Tyrants: now also ruled — dark-force-wielding conquerors, and their fall is MORE
+disturbing for it, because whatever ate them was worse. The Assailant stays unnamed and
+must never become sympathetic.
+⇒ **The player arc is a designed reversal:** sympathy first (the sleeper backstories in
+`Jawa_PawnFlavor` — hardened survivors, scarred children of a lost war — ARE the sympathy
+layer, deliberately), revelation second (the flesh dungeon,
+`ASSAILANT_FLESH_DUNGEON_1`, is where the tyranny surfaces). The knife's twist: the
+*Utinni* — the player's own vessel — is tyrant technology.
+⚠️ **Register guard for authored text:** pre-reveal content (backstories, labels,
+early-game flavor) stays in the sympathetic register; the tyranny is revealed content,
+not ambient tone. Do not leak it into a bio or a tooltip.
+
 ### 🔴 RULED — who EMERGES from the caskets, owner 2026-08-29 (at the bench)
 
 > *"The lost souls emerging from these caskets aren't from before the Fall... it

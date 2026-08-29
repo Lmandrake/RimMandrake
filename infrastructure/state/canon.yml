@@ -1204,3 +1204,22 @@ weapons:
     innovation and identity (JawaIonWeapons). Both ion turrets on the canon
     roster are assigned to the Galactic Empire on this basis
     (turret_register.json).
+rakata:
+  victims_and_tyrants_ruled: true
+  victims_and_tyrants_src: >
+    Owner, 2026-08-29, verbatim: "The Rakata were the victims, absolutely...
+    but they were themselves destructive, self-destroying, dark force wielding
+    megastructure-building tyrants bent on conquest and domination. Until they
+    met something so awful that it, in turn, ate them alive... and that
+    assailant remains as yet unknown. Our goal isn't to make the assailant a
+    sympathetic character, but rather to make it seem all the more disturbing
+    and demonic that it was able to do anything back to the Rakata. But leading
+    the player to first sympathize with the Rakata and then reverse the
+    revelation should lead to good drama, especially since that is the
+    technology of the player's own vessel." Both halves stand: victims
+    (2026-08-20, unchanged) AND tyrants (this ruling). Assailant unnamed,
+    never sympathetic. The reversal is a designed player arc: sympathy via the
+    sleeper backstories, revelation via ASSAILANT_FLESH_DUNGEON_1; the Utinni
+    is tyrant technology. Register guard: tyranny is revealed content - never
+    ambient in pre-reveal bios/tooltips. Full text:
+    design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md "the dark half".

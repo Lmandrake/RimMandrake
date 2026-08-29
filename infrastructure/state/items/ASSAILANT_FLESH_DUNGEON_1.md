@@ -7,17 +7,16 @@ be revealed."
 A BENCH design sitting, not a build. Sibling of [[VAULT_DUNGEON_CONCEPT_1]]
 (the two dungeon families: Rakatan vaults vs Assailant flesh).
 
-## ⚠️ The lore question this carries — raise it FIRST
-`ANCIENTS_AS_RAKATA_SPEC.md` rules (owner-corrected, 2026-08-20): the Rakata
-are the VICTIMS — "they didn't release the bioweapons themselves" — and the
-Assailant stays unnamed. This item's charge says the flesh dungeon may reveal
-"the terrible behavior and history of the Rakata." That is either:
-1. a REVEAL LAYER — the victims were not innocent (what did the Rakata do to
-   provoke or precede the attack?), deepening the fiction without touching the
-   who-released-the-bioweapon ruling; or
-2. a revision of the victim ruling itself.
-Do not build toward either until the owner says which. Option 1 is compatible
-with everything ruled; option 2 supersedes a correction he made emphatically.
+## ✅ The lore question — RULED same day (owner, 2026-08-29)
+Option 1, confirmed and sharpened: the Rakata stay the VICTIMS, **and** were
+"destructive, self-destroying, dark force wielding megastructure-building
+tyrants bent on conquest and domination." The Assailant stays unknown and must
+never be sympathetic — its horror is that it could do this even to the Rakata.
+**This dungeon is the reversal beat**: the player sympathizes with the sleepers
+first (the Jawa_PawnFlavor bios are the sympathy layer), then the dungeon
+reveals the tyranny — aboard-their-own-Rakatan-vessel drama by design. Full
+verbatim ruling: ANCIENTS_AS_RAKATA_SPEC.md "the dark half". Register guard:
+the tyranny is REVEALED content — keep it out of pre-reveal bios and tooltips.
 
 ## Raw material already in canon
 - The weapon still runs in the biomes: poison forest, mycotic jungle, the
