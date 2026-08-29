@@ -39,6 +39,22 @@
         <li Class="PatchOperationRemove">
           <xpath>Defs/PawnKindDef[defName="VQE_Experiment"]/forcedTraits</xpath>
         </li>
+        <!-- Childhood slot: VQE's own override filters ONLY adulthood, so
+             childhoods drew from the global pool - measured live 2026-08-29,
+             5/9 spawned patients carried donor-mod childhoods (one a droid's).
+             Constrain both slots to the Rakata category. -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="VQE_Patient"]/backstoryFiltersOverride</xpath>
+          <value>
+            <backstoryFiltersOverride>
+              <li>
+                <categories>
+                  <li>VQE_AncientPatient</li>
+                </categories>
+              </li>
+            </backstoryFiltersOverride>
+          </value>
+        </li>
         <!-- The patients LOOK Rakatan too (owner, 2026-08-29). Same shape as
              AncientsAreRakata.xml, per ANCIENTS_AS_RAKATA_SPEC.md R-A3/R-A4:
              dictionary-keyed (never <li> - that discards the whole def),

@@ -2868,3 +2868,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"BRIDGE_UIROOT_WINDOW_TOOLS_1","ts":"2026-08-29T20:33:43Z"}
 {"seat":"FOUNDRY","event":"start","id":"BRIDGE_UIROOT_WINDOW_TOOLS_1","ts":"2026-08-29T20:33:43Z"}
 {"seat":"FOUNDRY","event":"block","id":"BRIDGE_UIROOT_WINDOW_TOOLS_1","reason":"built clean, not deployed - game up, BENCH holds bridge","ts":"2026-08-29T20:34:02Z"}
+{"seat":"FOUNDRY","event":"file","id":"BRIDGE_STORY_ALERT_TALE_TOOLS_1","title":"5 more gems: alerts_list (resolves roster UNCERTAIN), tale_list/tale_record (free-text-on-pawn answer), story_stats, faction_goodwill_situations","kind":"build","target":"v1","needs":"deploy","for":"FOUNDRY","ts":"2026-08-29T20:36:51Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRIDGE_STORY_ALERT_TALE_TOOLS_1","ts":"2026-08-29T20:36:51Z"}
+{"seat":"FOUNDRY","event":"start","id":"BRIDGE_STORY_ALERT_TALE_TOOLS_1","ts":"2026-08-29T20:36:52Z"}
+{"seat":"BENCH","event":"note","id":"COLD_LOAD_RUN_SHEET_2","text":"LIVE PROOF this load (22 dev-spawned VQE pawns, save-parsed): xenotype force 22/22 Rakata; adulthood pool 8/9 patients; Experiment fixed pair 7/13 (6 leaked via vanilla solid-bio path - same leak as stock VQE, accepted); forced traits all riding. NEW next-load string: spawned VQE_Patient childhood must be Rakata (siege-born/vault pupil/builder's child) - childhood filter added to VQEPatients_AreRakata.xml, validated+deployed. Cross-cutting oddity: Greedy on 22/22 spawns, source unknown, not ours.","ts":"2026-08-29T20:37:10Z"}

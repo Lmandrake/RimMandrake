@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T20:34:02Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T20:37:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -134,6 +134,15 @@ target:   v1
 kind:     build
 summary:  New file JawaBenchUIRootTools.cs (2 tools, ungated):
 prose:    infrastructure/state/items/BRIDGE_UIROOT_WINDOW_TOOLS_1.md
+
+## BRIDGE_STORY_ALERT_TALE_TOOLS_1 5 more gems: alerts_list (resolves roster UNCERTAIN), tale_list/tale_record (free-text-on-pawn answer), story_stats, faction_goodwill_situations
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  New file JawaBenchStoryTools.cs (5 tools, all ungated):
+prose:    infrastructure/state/items/BRIDGE_STORY_ALERT_TALE_TOOLS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
