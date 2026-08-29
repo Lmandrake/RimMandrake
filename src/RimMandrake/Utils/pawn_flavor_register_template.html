@@ -282,23 +282,24 @@ addEventListener('resize', measure);
 function summarize(){
   const facs = [...new Set(DATA.map(r => r.faction))];
   const cols = ['childhood','adulthood','backstory','trait','mechanic'];
-  let h = '<b>Initial summary — items per faction</b> (shipped ⁄ designed; p=parked, r=reflavored, pp=pool picks from existing mods)<table><tr><th>faction</th>';
+  let h = '<b>Initial summary — items per faction</b> — bold is the TOTAL per layer; the mandate is 5 childhoods / 10 adulthoods / 15 traits per faction<table><tr><th>faction</th>';
   for (const c of cols) h += `<th>${c}s</th>`;
   h += '<th>total</th></tr>';
   for (const f of facs){
     const rs = DATA.filter(r => r.faction === f);
     h += `<tr><td>${f}</td>`;
     for (const c of cols){
-      const s = rs.filter(r => r.layer === c && r.status === 'shipped-xml').length;
-      const d = rs.filter(r => r.layer === c && (r.status === 'designed-xml' || r.status === 'designed-csharp')).length;
-      const p = rs.filter(r => r.layer === c && r.status === 'parked').length;
-      const v = rs.filter(r => r.layer === c && r.status === 'reflavored-live').length;
-      const pp = rs.filter(r => r.layer === c && r.status === 'pool-pick').length;
-      let cell = (s || d) ? `${s} ⁄ ${d}` : '';
-      if (p) cell += (cell ? ' ' : '') + p + 'p';
-      if (v) cell += (cell ? ' ' : '') + v + 'r';
-      if (pp) cell += (cell ? ' ' : '') + pp + 'pp';
-      h += `<td>${cell || '·'}</td>`;
+      const n = x => rs.filter(r => r.layer === c && x(r.status)).length;
+      const s = n(x => x === 'shipped-xml'), d = n(x => x.startsWith('designed')),
+            p = n(x => x === 'parked'), v = n(x => x === 'reflavored-live'),
+            pp = n(x => x === 'pool-pick');
+      const total = s + d + p + v + pp;
+      if (!total){ h += '<td>·</td>'; continue; }
+      const bits = [];
+      if (s) bits.push(s + ' shipped'); if (d) bits.push(d + ' designed');
+      if (pp) bits.push(pp + ' picks'); if (p) bits.push(p + ' parked');
+      if (v) bits.push(v + ' reflavored');
+      h += `<td><b>${total}</b> <span style="color:var(--dim)">(${bits.join(' + ')})</span></td>`;
     }
     h += `<td>${rs.length}</td></tr>`;
   }
