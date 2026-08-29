@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T05:19:44Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-08-29T05:23:17Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -26,15 +26,6 @@ target:   v1
 kind:     bug
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
-
-## IKEE_WILDNESS_PATCH_DEAD_1 Ikee_Tuning.xml wildness patch targets a field 1.6 does not have; two live def errors
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  Two live def errors in this session's Player.log (lines ~790 and ~1041), both tracing to
-prose:    infrastructure/state/items/IKEE_WILDNESS_PATCH_DEAD_1.md
 
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
@@ -111,7 +102,7 @@ prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## DUMP_PRODUCER_DATED_CAPTURES_1 DefDumper writes captures/<id>/ and prunes to the newest three
 state:    ready
@@ -119,7 +110,7 @@ row:      unassigned
 needs:    harvest
 target:   v1
 kind:     task
-waiting:  needs `harvest`, game is LOADING
+waiting:  needs `harvest`, game is UP
 summary:  The producer half of DUMPSTORAGELAYOUTRULING1. Owner, 2026-08-21 13:24:
 prose:    infrastructure/state/items/DUMP_PRODUCER_DATED_CAPTURES_1.md
 
@@ -129,7 +120,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
 prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
 
@@ -139,7 +130,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
 prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
 
@@ -149,7 +140,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
 prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
 
@@ -159,7 +150,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
 prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
 
@@ -169,7 +160,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     task
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
 prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
 
@@ -179,7 +170,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     defect
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
 prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
 
