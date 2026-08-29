@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T21:21:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T21:48:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -144,6 +144,15 @@ kind:     build
 summary:  New file JawaBenchStoryTools.cs (5 tools, all ungated):
 prose:    infrastructure/state/items/BRIDGE_STORY_ALERT_TALE_TOOLS_1.md
 
+## BRIDGE_DEBUGACTION_SWEEP_GEMS_1 First DebugAction sweep harvest: clear_area, spawn_fill_area, make_empty_room, destroy_bulk, explosion_at, ideo_ritual_obligation_remove, hot_reload_defs
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  New file JawaBenchDebugGems1.cs (7 tools):
+prose:    infrastructure/state/items/BRIDGE_DEBUGACTION_SWEEP_GEMS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -277,6 +286,16 @@ kind:     build
 blocked:  built clean, not deployed - game up, BENCH holds bridge
 summary:  New file JawaBenchStoryTools.cs (5 tools, all ungated):
 prose:    infrastructure/state/items/BRIDGE_STORY_ALERT_TALE_TOOLS_1.md
+
+## BRIDGE_DEBUGACTION_SWEEP_GEMS_1 First DebugAction sweep harvest: clear_area, spawn_fill_area, make_empty_room, destroy_bulk, explosion_at, ideo_ritual_obligation_remove, hot_reload_defs
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+blocked:  built clean, not deployed - game up, BENCH holds bridge
+summary:  New file JawaBenchDebugGems1.cs (7 tools):
+prose:    infrastructure/state/items/BRIDGE_DEBUGACTION_SWEEP_GEMS_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
