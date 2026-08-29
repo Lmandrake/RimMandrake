@@ -2863,3 +2863,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"BRIDGE_PIPE_NET_INFO_1","ts":"2026-08-29T20:23:49Z"}
 {"seat":"FOUNDRY","event":"start","id":"BRIDGE_PIPE_NET_INFO_1","ts":"2026-08-29T20:23:49Z"}
 {"seat":"OWNER","event":"block","id":"BRIDGE_PIPE_NET_INFO_1","reason":"built clean, not deployed - game up, BENCH holds bridge","ownerSaid":"All three, generic reflection","override":"OWNER may not `block` BRIDGE_PIPE_NET_INFO_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-08-29T20:24:10Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","ts":"2026-08-29T20:28:05Z"}
+{"seat":"FOUNDRY","event":"file","id":"BRIDGE_UIROOT_WINDOW_TOOLS_1","title":"jawa/window_list_close + jawa/screenshot_mode - the UIRoot row had real capabilities after all","kind":"build","target":"v1","needs":"deploy","for":"FOUNDRY","ts":"2026-08-29T20:33:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRIDGE_UIROOT_WINDOW_TOOLS_1","ts":"2026-08-29T20:33:43Z"}
+{"seat":"FOUNDRY","event":"start","id":"BRIDGE_UIROOT_WINDOW_TOOLS_1","ts":"2026-08-29T20:33:43Z"}
+{"seat":"FOUNDRY","event":"block","id":"BRIDGE_UIROOT_WINDOW_TOOLS_1","reason":"built clean, not deployed - game up, BENCH holds bridge","ts":"2026-08-29T20:34:02Z"}
