@@ -39,3 +39,14 @@ since that is knowable before firing.
 `factionName`. That is what caught this.
 
 Evidence: `infrastructure/state/evidence/live_half_of_load_2026-08-26_CHECK.md` (run 2)
+
+---
+
+## Already fixed in source
+
+`jawa/fire_raid` in `JawaBenchEventTools.cs` warns BEFORE firing when `requestedFaction` is not
+hostile to the player, and the result carries `requested`/`actual`/`substituted` so a caller diffing
+the reply — not just the arrivals — now sees the substitution.
+
+Undeployed, which is why the live measurement still showed the defect. Needs a game-down window to
+deploy and re-run the two calls above to prove `substituted: true` on the Enclaves case.

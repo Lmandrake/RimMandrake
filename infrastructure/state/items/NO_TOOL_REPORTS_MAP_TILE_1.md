@@ -31,3 +31,22 @@ all, and the tile becomes genuinely unreachable.
 ⭐ Better still, a `jawa/map_info` that returns tile, biome, size, seasonal temperature and the
 world-tile row in one call, since every one of those questions currently needs a different tool and
 two of them need the tile first.
+
+---
+
+## Already fixed in source
+
+`jawa/map_info` exists in `JawaBenchMapInfoTools.cs` — the ⭐ option, not just the minimal add. Returns
+`tile`, `mapId`, size, `tileInfo{biome,hilliness,elevation,rainfall,swampiness,temperature,pollution,
+waterCovered}`, `mapBiome`/`mapBiomeLabel` (flags divergence from the tile's PrimaryBiome after a live
+`world_tile_set`), `outdoorTempNow`, lat/long, season, and `mapParent` (null on an unsettled scratch
+map, called out explicitly rather than silently).
+
+Undeployed, which is why the live measurement still showed the gap.
+
+## Prove it
+```
+jawa/map_info {}
+```
+Expect a `tile` field with the world tile id, matching whatever `jawa/world_objects_get`'s
+PlayerColony-settlement workaround would have returned.

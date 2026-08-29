@@ -43,3 +43,22 @@ PAUSED — `ticksElapsed` comes back `0` however long you ask for, because no ti
 internally or say so in the refusal.
 
 Found while trying to grade `LIVE_HALF_OF_LOAD_1` J4.
+
+---
+
+## Already fixed in source
+
+`jawa/ordered_job` in `JawaBenchJobTools.cs` takes an optional `plantDef`, sets
+`Job.plantDefToSow`, and refuses a `Sow`/`Replant`/`PlantSeed` with none given, naming the field.
+The related `waitTicks`-while-paused issue is also handled: the tool reads `Find.TickManager.Paused`
+and reports it back as `pausedDuringWait`, so a `ticksElapsed: 0` can no longer be misread as "the
+job did nothing" when it was really "no ticks ran".
+
+Undeployed, which is why the live measurement still showed the defect.
+
+## Prove it
+```
+jawa/ordered_job {pawnId: <jawa>, jobDef: "Sow", targetAX: 124, targetAZ: 192, plantDef: "Plant_Potato"}
+```
+Expect `accepted: true`, then `nowRunningRequested: true` / `afterJobDef: "Sow"` (game unpaused);
+and `jawa/ordered_job {..., jobDef:"Sow"}` with no `plantDef` to refuse at the tool, not the toil.

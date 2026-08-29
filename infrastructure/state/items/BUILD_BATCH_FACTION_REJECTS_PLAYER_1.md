@@ -19,3 +19,22 @@ coming from `jawa/room_get` or `set_terrain_batch`'s `rect` gets *"rects is requ
 loudly, which is right; the inconsistency is the cost.
 
 Found while running `TEMPLATE_ENGINE_ACCEPTANCE_1` criteria 1 and 2.
+
+---
+
+## Already fixed in source
+
+`ResolveFactionAliasOrDef` in `JawaBenchMapInfoTools.cs` is now the ONE faction grammar for the
+companion — `player` / `hostile` / `none` aliases plus a FactionDef defName, with a refusal message
+that names both grammars. `jawa/build_batch` in `JawaBenchMapTools.cs` calls it.
+
+The `destroy_batch` `rects`-vs-`rect` naming difference is unchanged — the item only asked that the
+inconsistency be visible, not that the parameter be renamed.
+
+Undeployed, which is why the live measurement still showed the defect.
+
+## Prove it
+```
+jawa/build_batch {ops:"DiningChair:20,20", faction:"player"}
+```
+Expect `placed 1`, no `"No FactionDef 'player'"` refusal.
