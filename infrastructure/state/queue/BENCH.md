@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T16:15:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T16:15:19Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -44,15 +44,6 @@ target:   v1
 kind:     task
 summary:  PAWNFLAVORSTARWARS1 — backstories, childhoods and traits, in-fiction
 prose:    infrastructure/state/items/PAWN_FLAVOR_STARWARS_1.md
-
-## DROID_SYSTEM_EMBRACE_1 Droid system: census shipped mechanics, owner curates embrace/extend/cut, then design the spine
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/DROID_SYSTEM_EMBRACE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_SYSTEM_EMBRACE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
