@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BugTurretRetexture_GeonosianHive.xml       Jawa_Patches - new file 2026-08-29
+  ============================================================================
+
+  Owner, 2026-08-29 (verbatim): "Gotta redo the art on those cartoonish bug
+  turrets." VFEI2_Vilelobber, VFEI2_Thornworm and VFEI2_Thornspitter are all
+  ruled into the Geonosian Foundry Hive faction's art register
+  (design/Jawa/art/FACTION_ART_SPEC.md ~line 297: "chitinous, brutal,
+  trophy-laden ... a hive mouth or a caste mark. Rust.") - the donor mod's flat
+  cel-shaded blob-with-nub-limbs art reads as too cartoonish for that register.
+
+  ⚠️ VFEI2_Vilelobber and VFEI2_Thornworm SHARED ONE texPath in the donor mod
+  (Things/Building/InsectoidTurrets/InsectoidTurret_Base) despite being
+  different creatures with different stats/projectiles - they rendered
+  IDENTICAL in game. Each now gets its OWN unique file; the collision is gone,
+  not just recoloured.
+
+  New art, one per defName, painted to the Geonosian Foundry Hive brief:
+  rusted iron plate fused with chitin, riveted bone/skull trophies at the rim,
+  a dark hive-mouth aperture at centre. Differentiated per the owner's brief
+  (design/Jawa/worldbuilding/faction_equipment_clusters.md,
+  design/Jawa/worldbuilding/Alien_Bestiary.md - fabrication-hive, not
+  nature-hive):
+    Vilelobber   (2x2) - acid sacs and corrosive yellow-green ichor dripping
+                         from the maw (it spits acid).
+    Thornworm    (2x2) - a crown of bone-white chitin thorn spikes around a
+                         dark segmented worm-ring maw (it ejects thorns), no
+                         acid - the visual differentiator from Vilelobber.
+    Thornspitter (1x1) - the same thorn family, deliberately smaller and
+                         cruder: one rusted collar ring, four thorns, no
+                         trophies - reads as the small/tiny sibling mound.
+
+  Canvas kept at the donor's own size (256x256 / 256x256 / 128x128 =
+  128px-per-cell-occupancy for 2x2/2x2/1x1, per the generating-rimworld-sprites
+  skill's ruling) - no upscale needed, the donor was already at-spec.
+  graphicClass on all three is Verse.Graphic_Single (confirmed against the
+  2026-08-29T20-07-29Z def dump) - one texture per def, no facing suffixes.
+
+  Structural template: GrimTerraTexPaths_Fix.xml (this mod's other
+  texPath-repair patch). Differs from that file in ONE way: GrimTerra's ops
+  predicate on the CHILD VALUE (bodyGraphicData[texPath="..."]/texPath)
+  because they are picking one <li> out of several in a lifeStages list. These
+  three ThingDefs have exactly one graphicData/texPath node each - no list, no
+  ambiguity - so a plain PatchOperationReplace on
+  Defs/ThingDef[defName="..."]/graphicData/texPath is sufficient and was
+  verified to resolve against the live def dump before writing this file.
+
+  Scope: ART ONLY. Damage, projectiles and the "sonic re-projectile" idea on
+  Vilelobber's turret_register.json row are untouched - that is a separate,
+  still-open (contested: true) mechanical decision, not this patch's job.
+
+  ⛔ DO NOT EDIT THE WORKSHOP FOLDER. Steam overwrites it on the next update.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Factions Expanded - Insectoids 2</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="VFEI2_Vilelobber"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/InsectoidTurrets/Jawa_Vilelobber_Base</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="VFEI2_Thornworm"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/InsectoidTurrets/Jawa_Thornworm_Base</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="VFEI2_Thornspitter"]/graphicData/texPath</xpath>
+          <value><texPath>Things/Building/InsectoidTurrets/Jawa_ThornspitterSmall_Base</texPath></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

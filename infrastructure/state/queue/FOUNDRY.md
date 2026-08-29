@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T23:40:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T23:50:28Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -161,15 +161,6 @@ target:   v1
 kind:     build
 summary:  New file JawaBenchDebugGems1.cs (7 tools):
 prose:    infrastructure/state/items/BRIDGE_DEBUGACTION_SWEEP_GEMS_1.md
-
-## BUG_TURRET_ART_REDO_1 Redraw VFEI2 Vilelobber/Thornworm/Thornspitter turret art to match the hive register
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  BUGTURRETARTREDO1 — redraw the cartoonish bug turrets
-prose:    infrastructure/state/items/BUG_TURRET_ART_REDO_1.md
 
 ## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
 state:    doing  (BLOCKED)
