@@ -1,0 +1,148 @@
+#!/usr/bin/env python3
+"""github_mirror.py — one-way mirror of rimflow queue items to GitHub issues.
+
+QUEUE_GITHUB_MIRROR_1 pilot. ⭐ events.jsonl STAYS the truth; GitHub is a
+VISUALIZER. Nothing here ever writes the ledger, and nothing in the ledger
+ever reads GitHub. Deleting every mirrored issue loses nothing.
+
+Scope, deliberately small:
+  - OPEN items (proposed/ready/doing) are mirrored as open issues.
+  - An item that goes terminal (done/dropped/superseded) after being mirrored
+    gets its issue closed. Historical items never mirrored stay unmirrored —
+    a pilot does not need 2,600 events of backfill.
+  - Labels: seat:<owner>, needs:<needs>, state:blocked when blocked.
+  - Issue title = the item ID; the full one-line ask goes in the body (GitHub
+    truncates titles well below our titles' length, and the ID is the name
+    the owner ruled queue items carry).
+
+The mirror map (which item is which issue number, and what we last pushed)
+lives beside the ledger and is committed — it is provenance, not cache.
+
+Default is DRY RUN: prints the plan, touches nothing. --apply executes via
+the `gh` CLI, which must be installed and authenticated (`gh auth login`).
+"""
+
+import argparse
+import hashlib
+import json
+import os
+import subprocess
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from rimflow import model
+
+REPO = "Lmandrake/RimMaster"
+MAP_PATH = os.path.join(model.LEDGER, "github_mirror_map.json")
+LABELS = {  # label -> (color, description)
+    "seat:BENCH":    ("1d76db", "rimflow: owned by the BENCH window"),
+    "seat:FOUNDRY":  ("5319e7", "rimflow: owned by the FOUNDRY window"),
+    "needs:offline": ("0e8a16", "workable with the game down"),
+    "needs:deploy":  ("fbca04", "needs a deploy slot"),
+    "needs:game-up": ("d93f0b", "needs the game running"),
+    "needs:bridge":  ("e99695", "needs the bridge"),
+    "needs:harvest": ("c2e0c6", "needs a log harvest"),
+    "needs:owner":   ("b60205", "needs the owner"),
+    "state:blocked": ("000000", "rimflow says blocked"),
+}
+
+
+def desired_state(item):
+    """What the issue for this item should look like."""
+    labels = ["seat:%s" % (item.owner or "FOUNDRY"), "needs:%s" % item.needs]
+    if item.blocked:
+        labels.append("state:blocked")
+    body = (item.title or "(no title)") + \
+        "\n\n---\n`rimflow` item `%s` — the ledger is the truth; this issue is a mirror. " \
+        "Close/claim/drop through `rimflow`, never here." % item.id
+    if item.closed_sha:
+        body += "\nClosed at `%s`." % item.closed_sha
+    if item.superseded_by:
+        body += "\nSuperseded by `%s`." % item.superseded_by
+    return {
+        "title": item.id,
+        "body": body,
+        "labels": sorted(labels),
+        "open": item.open,
+    }
+
+
+def fingerprint(want):
+    return hashlib.sha1(json.dumps(want, sort_keys=True).encode()).hexdigest()[:12]
+
+
+def gh(args, apply_, plan):
+    if apply_:
+        subprocess.run(["gh"] + args, check=True, capture_output=True, text=True)
+    plan.append("gh " + " ".join(args))
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--apply", action="store_true",
+                    help="execute via gh (default: dry run, print the plan)")
+    ap.add_argument("--ensure-labels", action="store_true",
+                    help="also create the label set on the repo")
+    args = ap.parse_args()
+
+    world = model.replay()
+    mmap = {}
+    if os.path.exists(MAP_PATH):
+        with open(MAP_PATH) as f:
+            mmap = json.load(f)
+
+    plan = []
+    if args.ensure_labels:
+        for name, (color, desc) in LABELS.items():
+            gh(["label", "create", name, "-R", REPO, "--color", color,
+                "--description", desc, "--force"], args.apply, plan)
+
+    for item in sorted(world.items.values(), key=lambda i: i.id):
+        want = desired_state(item)
+        fp = fingerprint(want)
+        have = mmap.get(item.id)
+
+        if have is None:
+            if not item.open:
+                continue            # never mirrored, already terminal: skip
+            create = ["issue", "create", "-R", REPO, "--title", want["title"],
+                      "--body", want["body"]]
+            for lb in want["labels"]:
+                create += ["--label", lb]
+            if args.apply:
+                out = subprocess.run(["gh"] + create, check=True,
+                                     capture_output=True, text=True).stdout
+                number = int(out.strip().rsplit("/", 1)[-1])
+            else:
+                number = None
+            plan.append("gh " + " ".join(create[:6]) + " …")
+            mmap[item.id] = {"number": number, "fp": fp, "open": True}
+            continue
+
+        if have.get("fp") == fp:
+            continue                # nothing changed since last push
+
+        num = str(have["number"])
+        if not want["open"] and have.get("open"):
+            gh(["issue", "close", num, "-R", REPO,
+                "--comment", "rimflow: item went terminal."], args.apply, plan)
+        elif want["open"]:
+            edit = ["issue", "edit", num, "-R", REPO, "--body", want["body"]]
+            for lb in want["labels"]:
+                edit += ["--add-label", lb]
+            gh(edit, args.apply, plan)
+        have.update({"fp": fp, "open": want["open"]})
+
+    if args.apply:
+        with open(MAP_PATH, "w") as f:
+            json.dump(mmap, f, indent=1, sort_keys=True)
+
+    mode = "APPLIED" if args.apply else "DRY RUN — nothing touched"
+    print("%s: %d action(s), %d open item(s) in ledger, map holds %d"
+          % (mode, len(plan), len(world.open_items()), len(mmap)))
+    for line in plan:
+        print("  " + line)
+
+
+if __name__ == "__main__":
+    main()
