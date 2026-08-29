@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T20:23:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T20:24:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -171,6 +171,15 @@ kind:     bug
 summary:  jawa/billadd was declared TWICE — two independently-written tools, same alias:
 prose:    infrastructure/state/items/JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1.md
 
+## BRIDGE_PIPE_NET_INFO_1 jawa/pipe_net_info: VEF verified, Rimefeller/DBH generic reflection dump, per owner ruling
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+summary:  jawa/pipenetinfo (new file JawaBenchPipeTools.cs, ungated, read-only):
+prose:    infrastructure/state/items/BRIDGE_PIPE_NET_INFO_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -274,6 +283,16 @@ kind:     bug
 blocked:  fixed in source, builds clean; NOT deployed - game is up, BENCH holds bridge, DLL cannot be written while RimWorld runs. Deploy next down-window.
 summary:  jawa/billadd was declared TWICE — two independently-written tools, same alias:
 prose:    infrastructure/state/items/JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1.md
+
+## BRIDGE_PIPE_NET_INFO_1 jawa/pipe_net_info: VEF verified, Rimefeller/DBH generic reflection dump, per owner ruling
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+blocked:  built clean, not deployed - game up, BENCH holds bridge
+summary:  jawa/pipenetinfo (new file JawaBenchPipeTools.cs, ungated, read-only):
+prose:    infrastructure/state/items/BRIDGE_PIPE_NET_INFO_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
