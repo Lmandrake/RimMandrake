@@ -34,13 +34,20 @@ local function split_bays(x, z, w, h, n, min_w)
   return bays
 end
 
-local function room_role_for(i, n, p)
+-- ⚠️ bay 2 places BOTH a table and a stove. Live, RimWorld picks a room's role
+-- by the HIGHEST-scoring RoomRoleWorker, and RoomRoleWorker_Kitchen scores 28
+-- per production building that makes food versus RoomRoleWorker_DiningRoom's
+-- 12 per eat-surface (measured in the 1.6 C# source) - one stove always
+-- outscores one table, 28 > 12. So a bay that gets a stove reads as Kitchen
+-- live no matter what label this template puts on it; predict that, not
+-- "DiningRoom" (DININGROOM_READS_AS_KITCHEN_1).
+local function room_role_for(i, n, p, ctx)
   if p.faction == "Jawa_FreeDroidEnclaves" then
     return ({ "ChargingHall", "Fabrication", "Storeroom" })[i] or "Room"
   end
   if n == 1 then return "Barracks" end
   if i == 1 then return (p.occupants and p.occupants > 1) and "Barracks" or "Bedroom" end
-  if i == 2 then return "DiningRoom" end
+  if i == 2 then return (ctx and ctx:has_role("STOVE")) and "Kitchen" or "DiningRoom" end
   return "Storeroom"
 end
 
@@ -68,7 +75,7 @@ function build(ctx)
 
   -- ---- shell -------------------------------------------------------------
   for i, b in ipairs(bays) do
-    local rrole = room_role_for(i, n, p)
+    local rrole = room_role_for(i, n, p, ctx)
     ctx:room(rrole, b.x, b.z, b.w, b.h, true)
     if not unwalled then
       ctx:wall_rect(b.x, b.z, b.w, b.h)
@@ -95,7 +102,7 @@ function build(ctx)
   for i, b in ipairs(bays) do
     local ix, iz = b.x + 1, b.z + 1
     local iw, ih = b.w - 2, b.h - 2
-    local rrole = room_role_for(i, n, p)
+    local rrole = room_role_for(i, n, p, ctx)
 
     if rrole == "Bedroom" or rrole == "Barracks" then
       -- CANON BRANCH: the Free Droid Enclaves have no beds at all.
@@ -120,7 +127,7 @@ function build(ctx)
         note("faction has no BED in its palette - sleeping room left empty")
       end
 
-    elseif rrole == "DiningRoom" then
+    elseif rrole == "DiningRoom" or rrole == "Kitchen" then
       -- FOOTPRINTS, not cells. A table is 1x2 and a stove 3x1 in the vanilla
       -- palette, so the old layout put the chair INSIDE the table and the
       -- stove through the wall: build_batch wiped both and reported them

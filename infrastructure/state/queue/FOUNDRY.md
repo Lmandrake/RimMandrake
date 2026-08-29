@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:03:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T01:04:50Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,15 +35,6 @@ target:   v1
 kind:     defect
 summary:  Two live def errors in this session's Player.log (lines ~790 and ~1041), both tracing to
 prose:    infrastructure/state/items/IKEE_WILDNESS_PATCH_DEAD_1.md
-
-## DININGROOM_READS_AS_KITCHEN_1 rimplace's DiningRoom prediction reads as Kitchen live once a stove is in the room
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  (no items/DININGROOM_READS_AS_KITCHEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DININGROOM_READS_AS_KITCHEN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
