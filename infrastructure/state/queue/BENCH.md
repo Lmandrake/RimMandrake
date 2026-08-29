@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T05:01:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T05:04:06Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -56,7 +56,7 @@ prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_1.md
 ## EMPIRE_PURSUIT_SCENPART_INSTALL_1 Install endless Empire pursuit ScenPart into the campaign, with the owner
 state:    proposed
 row:      unassigned
-needs:    owner
+needs:    bridge
 target:   v1
 kind:     build
 thin:     spec, verify and criteria all present

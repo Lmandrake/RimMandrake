@@ -40,7 +40,7 @@
   "open": true
  },
  "EMPIRE_PURSUIT_SCENPART_INSTALL_1": {
-  "fp": "57e7df7b7a2b",
+  "fp": "991ca49030c5",
   "number": 9,
   "open": true
  },
@@ -55,9 +55,9 @@
   "open": true
  },
  "EMPIRE_TROOPER_TRAINING_1": {
-  "fp": "cad2c501400f",
+  "fp": "c0b4efd19f90",
   "number": 12,
-  "open": true
+  "open": false
  },
  "FIRE_RAID_ECHOES_REQUESTED_FACTION_1": {
   "fp": "d938e7dd3374",
@@ -65,9 +65,9 @@
   "open": true
  },
  "GM_GATE_INCIDENT_SCHEDULE_1": {
-  "fp": "f66f9c28dcdc",
+  "fp": "bb0163ebb3ee",
   "number": 31,
-  "open": true
+  "open": false
  },
  "GRAVSHIP_LANDING_DIRECT_PLACE_1": {
   "fp": "622394243402",
