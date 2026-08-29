@@ -276,6 +276,46 @@ backstory reveal, skill-return event, aim-vs-moving. The full droid system
 6. Phase 2 (lore prose pass) — runs THIRD, after cuts and faction depth, over
    everything including ThoughtDef/MentalBreakDef/xenotype-title flavor.
 
+## CUT PASS EXECUTED (2026-08-29, second sitting — verification owed at next load)
+
+143 Cherry Picker entries written (config 1342 -> 1485 keys, backup
+`Mod_CherryPicker.xml.bak-20260829-pawnflavor`): 141 BackstoryDefs from
+tug.minotaur (36), shavius.medieval.flavour (26), vanillaquestsexpanded.ancients
+(27), vanillaracesexpanded.archon (52) + 2 TraitDefs (RBM_Herculean_Trait,
+VQE_IdealPatient). **Excluded on campaign-save evidence**: `RBM_Roamer` and
+`SH_MED_MedievalAlchemist` — one pawn each in WORLDMAP_V1_original.rws carries
+them; swap those in the save when SW replacements exist, then cut them too.
+
+Post-cut analysis (dump d1be0632, engine source read):
+- General pools cleaned: Offworld -12, Outlander -12, Raider -11, Pirate -2,
+  Cult -2, GTGTC approvals -5..7 each; all keep hundreds of survivors.
+- 10 mod-private categories go to ZERO (Minotaur x4, Medieval x2, Classical,
+  VQE x2, Archon). Consumers: the cut mods' own kinds/factions (not in the
+  frozen world's cast) + `VRESaurids_TownGuard_Saurid` (MinotaurOutlander) and
+  VQE quest patients. Engine behavior on an empty category is CONFIRMED benign:
+  `PawnBioAndNameGenerator.FillBackstorySlotShuffled` logs one error and picks a
+  random backstory — no crash. VQE Ancients quest patients will carry random
+  backstories; if that noise offends, the follow-up is cutting VQE quest content
+  itself (not ruled — raise with the owner).
+- ⚠️ BackstoryDef is an UNPRECEDENTED def type in this config (no prior entries).
+  Cherry Picker support is proven only by the next load's
+  `[Cherry Picker] ... defs were removed:` lines — that check rides
+  COLD_LOAD_RUN_SHEET_2. If unsupported, fallback is spawnCategories-neutering
+  patches.
+
+## ISEKAI investigation (2026-08-29, answered — awaiting the owner's word)
+
+Its 47 traits are vanilla-class TraitDefs (no Class=, no modExtensions), but
+every leveling hook — XP multipliers, stat/star bonuses, NPC trait rolling,
+rank grants (`Isekai_Rank_<X>` literal name pattern), color-coding — is
+hardcoded to those 47 defNames in its C# (`IsekaiTraitHelper.cs`,
+`PawnStatGenerator.cs`). Its grant-items resolve `traitDefName` GENERICALLY, so
+they can hand out foreign traits too. ⇒ **Cutting the 47 breaks the mod;
+reflavoring them in place (keep defNames, patch labels/descs/degree text to
+Star Wars) keeps all machinery working** — that is the "put ours in for its"
+route, plus optional grant-items for our `Jawa_` traits. No backstories shipped;
+no backstory machinery to worry about. Recommendation: reflavor-in-place.
+
 ## SHIPPED v1 content (2026-08-29, `Jawa_PawnFlavor`, commit fb86639a)
 
 50 BackstoryDefs (2 childhoods + 3 adulthoods × 10 factions) and 5 TraitDefs

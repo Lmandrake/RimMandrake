@@ -62,3 +62,20 @@ strings for the next full-list load, written BEFORE the launch:
   screenshot the card). Filter merge means roughly 1-in-3 pawns draw our
   category — check several pawns before calling absence.
 - Also due at next game-DOWN: sync_mod_state (saves record 584, list is 585).
+
+## PAWN_FLAVOR cut pass — Cherry Picker verification (added 2026-08-29, BENCH)
+143 new keys written to Mod_CherryPicker.xml (1342 -> 1485; backup
+`.bak-20260829-pawnflavor`): 141 BackstoryDefs (Minotaur/Medieval/VQE-Ancients/
+Archon) + TraitDef/RBM_Herculean_Trait + TraitDef/VQE_IdealPatient. Decision
+strings, written BEFORE the launch:
+- PASS: `[Cherry Picker]` removal list in Player.log contains
+  `- BackstoryDef/RBM_Akabeko,` (sentinel for the whole class) and the two
+  TraitDef lines. ⚠️ BackstoryDef is UNPRECEDENTED in this config — if the log
+  shows the ThingDef cuts but NO BackstoryDef lines, Cherry Picker does not
+  process that def type: revert nothing, file the spawnCategories-neutering
+  patch fallback instead.
+- EXPECTED noise, not failure: up to one `No shuffled ... Choosing random`
+  error per VQE-quest patient or stray consumer pawn (10 mod-private categories
+  emptied on purpose; engine falls back benignly — verified in source).
+- The two save-carried exclusions (`RBM_Roamer`, `SH_MED_MedievalAlchemist`)
+  must NOT appear in the removal list.
