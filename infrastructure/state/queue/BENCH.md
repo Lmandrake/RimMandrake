@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T19:52:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T19:55:21Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -50,4 +50,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## TURRET_ROSTER_CURATION_1 Spawn every turret live with the owner; decide keep/cut, role and placement for each
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TURRET_ROSTER_CURATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TURRET_ROSTER_CURATION_1.md
