@@ -26,3 +26,4 @@ file into the right skills, merging rather than appending, and empties it.
 - tool_surface's phantom names (a tool name quoted in another tool's description) make any ==-count census fail forever: subtract a named PHANTOMS set, never widen the tolerance. (BENCH 2026-08-29)
 - Dialog_NodeTree can absorb all input while ignoring its own buttons; get_ui_state/get_ui_layout/click_ui_target unsticks it without a restart (rimbridge traps.md, 2026-08-29)
 - A tool reading the flat DefDump/manifest.json silently degrades to stale Version.txt since the captures/ migration; sync_mod_state.py nearly stamped rev590 over rev591 saves (fixed 801bd127; sweep filed FLAT_MANIFEST_READER_SWEEP_1)
+- Loading a skill is not following it: shipped a review sheet violating s5 of review-sheets (writer never read the file) despite invoking the skill first; audit the page against the skill's own checklist before handing it over (fixed in sheet commit)
