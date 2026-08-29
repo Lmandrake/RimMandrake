@@ -62,17 +62,19 @@ def need(cond, msg):
 # -- 0. scratch map ----------------------------------------------------------
 # start_debug_game_ready only works FROM THE MAIN MENU; on a loaded game it
 # no-ops and the "quicktest" is silently the campaign. Go to the menu first.
-if call("rimworld/get_game_info").get("status") == "game_loaded":
-    mm = call("rimworld/go_to_main_menu")
-    print("went to main menu:", mm.get("success", mm))
-    time.sleep(5)
-call("rimworld/start_debug_game_ready", timeoutMs=280000,
-     readiness="mapData", pauseIfNeeded=True)
-for _ in range(120):
-    if call("rimworld/get_ui_state").get("programState") == "Playing":
-        break
-    time.sleep(1)
+def fresh_quicktest():
+    if call("rimworld/get_game_info").get("status") == "game_loaded":
+        mm = call("rimworld/go_to_main_menu")
+        print("went to main menu:", mm.get("success", mm))
+        time.sleep(5)
+    call("rimworld/start_debug_game_ready", timeoutMs=280000,
+         readiness="mapData", pauseIfNeeded=True)
+    for _ in range(120):
+        if call("rimworld/get_ui_state").get("programState") == "Playing":
+            break
+        time.sleep(1)
 
+fresh_quicktest()
 st = call("jawa/gravship_status")
 need(st.get("success") is True, "gravship_status answers")
 need(st.get("engineCount") == 0, "quicktest map has no engine (fresh baseline)")
@@ -86,30 +88,62 @@ need(st.get("engineCount") == 0, "quicktest map has no engine (fresh baseline)")
 # exhaust hanging off-pad, zone force-cleared, ticks stepped, and the verdict
 # read off jawa/inspect_string - never inferred.
 def probe_site(X, Z):
-    for sx in (0, 10, 19):
-        for sz in (-7, 0, 10, 19):
-            ci = call("rimworld/get_cell_info", x=X + sx, z=Z + sz).get("cell") or {}
-            if ci.get("roofDefName") or not ci.get("walkable", False):
-                return False
-            if "water" in (ci.get("terrainDefName") or "").lower():
-                return False
-    return True
+    """The whole work rect must be roof-free (no mountain, no collapse risk when
+    clearing) and hold no water/impassable-liquid terrain. Rock walls and chunks
+    are THINGS, invisible to terrain reads - the roof-free guarantee makes them
+    safe to bulldoze wholesale below."""
+    rect = f"{X-1},{Z-8},22,29"
+    roofs = call("jawa/get_roof_batch", rects=rect)
+    if not roofs.get("success") or any(r != "None" for r in roofs.get("roofs", [])):
+        return False
+    terr = call("jawa/get_terrain_batch", rects=rect)
+    return bool(terr.get("success")) and not any(
+        w in t.lower() for t in terr.get("terrains", [])
+        for w in ("water", "marsh", "lava", "mud", "bridge"))
 
-site = next(((X, Z) for X, Z in
-             ((30, 40), (60, 40), (110, 60), (160, 90), (40, 110), (90, 130))
-             if probe_site(X, Z)), None)
-need(site is not None, "found a flat, roofless, walkable 20x20 site")
+def scan_for_site():
+    return next(((X, Z) for Z in range(40, 211, 24) for X in range(30, 211, 24)
+                 if probe_site(X, Z)), None)
+
+site = scan_for_site()
+for _ in range(2):                      # an all-mountain map: reroll, ~90 s each
+    if site:
+        break
+    print("no roof-free site on this map; rerolling the quicktest")
+    fresh_quicktest()
+    site = scan_for_site()
+need(site is not None, "found a roof-free, dry 20x20 site (grid scan)")
 X, Z = site
 print("site:", site)
 
-# Clear the work rect plus the 8-row south margin the exhaust needs.
-call("jawa/destroy_batch", rects=f"{X-1},{Z-8},22,29", categories="Plant,Item,Filth")
+# Bulldoze the work rect plus the 8-row south margin the exhaust needs.
+# Building is included deliberately: stray mineables blockWind and the rect is
+# proven roof-free, so there is nothing above to collapse.
+call("jawa/destroy_batch", rects=f"{X-1},{Z-8},22,29",
+     categories="Plant,Item,Filth,Building")
 call("jawa/set_substructure_batch", action="set", rect=f"{X},{Z},20,20", doLeavings=False)
+# Substructure is REFUSED, silently, on floor terrain (AncientConcrete ruins on
+# quicktest maps - 75/400 cells on 2026-08-29). Parts standing in a hole read
+# "Not connected to grav engine". Verify coverage; repaint holes to Soil, retry.
+holes = []
+for _ in range(2):
+    tl = call("jawa/get_terrain_layers", rect=f"{X},{Z},20,20", limit=400)
+    holes = [c for c in tl.get("cells", []) if not c.get("isSubstructure")]
+    if not holes:
+        break
+    print("substructure holes:", len(holes), "- repainting to Soil, retrying")
+    call("jawa/set_terrain_batch",
+         ops=";".join(f"Soil:{c['x']},{c['z']},1,1" for c in holes))
+    call("jawa/set_substructure_batch", action="set", rect=f"{X},{Z},20,20", doLeavings=False)
+need(not holes, "substructure covers the full pad (400/400)")
 for op in (
     f"GravEngine:{X+10},{Z+10}",
     f"PilotConsole:{X+5},{Z+10}",
     f"ChemfuelTank:{X+14},{Z+10}",
-    f"SmallThruster:{X+10},{Z+1},2",   # south edge, exhaust pointing off-pad
+    # Rot 0 (north-FACING): GetExclusionZone puts the 1x5 zone and the exhaust
+    # on the OPPOSITE side of the rotation (offset (0,0,-5) rotates with rot),
+    # i.e. south of pos - off-pad. Rot 2 was measured blocked by the pad itself.
+    f"SmallThruster:{X+10},{Z+1},0",
 ):
     r = call("jawa/build_batch", ops=op, faction="PlayerColony")
     need(r.get("success") and not r.get("failed"), f"built {op.split(':')[0]}")
@@ -128,25 +162,55 @@ call("jawa/destroy_batch", rects=zone, categories="All")
 call("jawa/map_commit", full=True)
 print("exhaust zone cleared:", zone)
 
-# Fuel the tank. There is NO refuel debug action on this modlist (measured:
-# the only 'fuel' leaf under Actions is a vehicle lister). The route is the
-# god-mode fill GIZMO: select the tank, list its gizmos, execute the fill one.
+# Fuel, VGE-style (measured 2026-08-29): on this modlist ChemfuelTank is VGE's
+# astrofuel storage (PipeSystem.CompProperties_ResourceStorage, net
+# VGE_AstrofuelNet, capacity 250) and SmallThruster is a net CONSUMER whose
+# CanBeActive is postfixed false while its net has no fuel
+# (CompGravshipThruster_CanBeActive_Patch + CompResourceThruster.HasFuel).
+# So: pipe the tank to the thruster, then god-mode-fill the tank. A tank and
+# thruster with no pipe between them are two separate one-building nets.
+def cells_of(defname, x0, z0, r=3):
+    out = []
+    for cx in range(x0 - r, x0 + r + 1):
+        for cz in range(z0 - r, z0 + r + 1):
+            things = (call("rimworld/get_cell_info", x=cx, z=cz).get("cell") or {}).get("things", [])
+            if any(t.get("defName") == defname for t in things):
+                out.append((cx, cz))
+    return out
+
+tank_cells = set(cells_of("ChemfuelTank", X + 14, Z + 10))
+thr_cells = set(cells_of("SmallThruster", tx, Z + 1))
+need(tank_cells and thr_cells, "tank and thruster footprints read back")
+pipe_cells = []
+for pz in range(Z + 2, Z + 10):            # vertical run beside the tank column
+    pipe_cells.append((X + 14, pz))
+for px in range(X + 11, X + 14):           # horizontal run toward the thruster
+    pipe_cells.append((px, Z + 2))
+pipe_cells.append((tx, Z + 3))             # cardinal-adjacent to the thruster
+pipe_cells = [c for c in pipe_cells if c not in tank_cells | thr_cells]
+ops = ";".join(f"VGE_AstrofuelPipe:{cx},{cz}" for cx, cz in dict.fromkeys(pipe_cells))
+r = call("jawa/build_batch", ops=ops, faction="PlayerColony")
+need(r.get("success") and not r.get("failed"), "astrofuel pipe run built (%d cells)" % len(pipe_cells))
+call("jawa/map_commit", full=True)
+call("rimworld/step_game_ticks", ticks=60)  # let the pipe net regenerate
+
 call("rimworld/set_god_mode", enabled=True)
-call("rimworld/click_cell", x=X + 14, z=Z + 10)
+call("rimworld/click_cell", x=min(tank_cells)[0], z=min(tank_cells)[1])
 giz = call("rimworld/list_selected_gizmos")
+labels = [(g.get("label") or "") for g in giz.get("gizmos", [])]
+print("tank gizmos:", labels)
+# Exact prefix: a loose 'fill' match executed 'Allow manual refill' instead
+# (measured 2026-08-29) and left the tank empty with success: true.
 filled = False
 for g in giz.get("gizmos", []):
-    label = (g.get("label") or "") + " " + (g.get("description") or "")
-    if "fuel" in label.lower() or "fill" in label.lower():
+    if (g.get("label") or "").startswith("DEBUG: Fill"):
         fr = call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
         filled = bool(fr.get("success"))
         print("executed gizmo:", g.get("label"), "->", filled)
         break
-if not filled:
-    print("gizmos seen:", [g.get("label") for g in giz.get("gizmos", [])])
 call("rimworld/set_god_mode", enabled=False)
 call("rimworld/clear_selection")
-print("tank filled:", filled)
+need(filled, "tank filled via god-mode fill gizmo")
 
 call("rimworld/step_game_ticks", ticks=600)   # let comps register (rare tick = 250)
 

@@ -27,8 +27,17 @@ launch+land run in prove_gravship.py (which needs its authoring preamble revisit
 THRUSTER_INSTABUILD_NEVER_ACTIVE_1 — or a campaign-save flight like tonight's).
 
 ## criteria
-- [ ] Deployed; a full launch -> arrive -> land completes with no reload and the engine +
+- [x] Deployed; a full launch -> arrive -> land completes with no reload and the engine +
       pawns verified on the new map.
+
+## PROVEN LIVE 2026-08-29 (BENCH), scratch quicktest, 582-mod list
+Full cycle with no reload: authored ship (pad + engine + console + tank + thruster +
+astrofuel pipes), 3/3 colonists walked aboard, dryRun moved nothing, launch -> takeoff
+cutscene -> travel -> landingConfirmationPending -> `jawa/gravship_land` (skipCutscene
+default) placed the ship SYNCHRONOUSLY at (81,92) on the new map: tile == target
+(111827), all four parts + 12 pipes + 3 colonists verified present. The vanilla wedge
+never engaged. Getting the ship FLYABLE surfaced three stacked authoring traps, closed
+into THRUSTER_INSTABUILD_NEVER_ACTIVE_1 and baked into prove_gravship.py.
 
 ## DEPLOYED 2026-08-28 (BENCH), game-down window
 `build.py --gm --apply` clean. Two guard notes from the deploy:
