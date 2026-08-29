@@ -3,15 +3,20 @@ The next batched window scores everything below, then this closes and a fresh sh
 filed. Predecessor COLD_LOAD_RUN_SHEET_1 was scored 2026-08-29 (see its notes); detail
 for any named item lives in items/<ID>.md.
 
-## 0 — game DOWN, before anything else
+## 0 — game DOWN, before anything else ✅ DONE 2026-08-29 (BENCH, second sitting)
 ```
 taskkill.exe /F /IM RimWorldWin64.exe
 python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --apply
 ```
-- Deploys jawa/scenario_part_add + scenario_parts_get (d53bac44). Expected surface **246**
-  (measure with tool_surface minus the jawa/revoke phantom; never quote).
-- NO defDump arming needed unless a capture is wanted: dump_request.txt was deleted
-  2026-08-29 after harvest, as designed.
+- ✅ Deployed at 81610f55: carries the scenario tools AND everything since
+  (gravship skipCutscene, GM pair). Surface MEASURED 254 upper bound via
+  tool_surface (was "expected 246" when only the scenario pair was pending —
+  drift is later commits, not a leak; the launch ready-line derives its own
+  gate from EXPECTED_TOOLS).
+- ✅ sync_mod_state --apply: 7 files, every record now 1.6.4871 rev591 / 585
+  mods, verified; backups alongside as *.bak-sync_mod_state.
+- ✅ defDump RE-ARMED (dump_request.txt = all): the PAWN_FLAVOR and ISEKAI
+  checks below need a fresh 585 capture from this load.
 
 ## 1 — decision strings at launch
 | # | expect | means if wrong |
