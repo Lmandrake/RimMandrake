@@ -115,8 +115,8 @@ namespace JawaBench.BridgeTools
                 try { info = HarmonyLib.Harmony.GetPatchInfo(m); }
                 catch (Exception ex) { patchInfoError = ex.GetType().Name + ": " + ex.Message; }
 
-                List<object> Rows(HarmonyLib.Patch[] arr) =>
-                    (arr ?? Array.Empty<HarmonyLib.Patch>()).Select(p => (object)new
+                List<object> Rows(IEnumerable<HarmonyLib.Patch> arr) =>
+                    (arr ?? Enumerable.Empty<HarmonyLib.Patch>()).Select(p => (object)new
                     {
                         owner = p.owner,
                         priority = p.priority,
