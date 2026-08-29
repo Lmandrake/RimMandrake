@@ -2921,3 +2921,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"STARTING_SHIP_ANTICRAFT_1","ts":"2026-08-29T23:27:09Z"}
 {"seat":"FOUNDRY","event":"start","id":"STARTING_SHIP_ANTICRAFT_1","ts":"2026-08-29T23:27:09Z"}
 {"seat":"FOUNDRY","event":"close","id":"STARTING_SHIP_ANTICRAFT_1","sha":"9e85751a","ts":"2026-08-29T23:29:31Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SWCP_CHARACTERS_DECOMPILE_1","ts":"2026-08-29T23:32:14Z"}
+{"seat":"FOUNDRY","event":"start","id":"SWCP_CHARACTERS_DECOMPILE_1","ts":"2026-08-29T23:32:14Z"}
+{"seat":"FOUNDRY","event":"claim","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","ts":"2026-08-29T23:32:25Z"}
+{"seat":"FOUNDRY","event":"start","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","ts":"2026-08-29T23:32:25Z"}
+{"seat":"FOUNDRY","event":"close","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","sha":"98bcbe37","ts":"2026-08-29T23:38:21Z"}

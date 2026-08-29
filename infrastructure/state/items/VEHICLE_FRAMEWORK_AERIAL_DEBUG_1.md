@@ -30,9 +30,39 @@ Builds clean, signatures read from vendored source (already present at
 proven live against a real aerial vehicle / airdrop on the live mod list.
 
 ## criteria
-- [ ] `DebugLandAerialVehicle` and the airdrop spawn path read in full.
-- [ ] Built via reflection, matching the established no-hard-reference pattern.
-- [ ] Builds clean, no duplicate alias.
-- [ ] Deployed and proven live.
+- [x] `DebugLandAerialVehicle` and the airdrop spawn path read in full. **Correction to
+      this item's own filing note**: `DebugLandAerialVehicle` is `public static`, not
+      private — the private member is the debug action's dispatcher
+      (`DebugGroundAllAerialVehicles`), which calls it. Full read, both routes:
+      - Grounding = two passes. (1) `VehicleWorldObjectsHolder.AerialVehicles`, each
+        landed via `Patch_Debug.DebugLandAerialVehicle` — finds nearest player
+        settlement, a landing cell, builds a `VehicleSkyfaller_Arriving`, spawns it,
+        destroys the world object. (2) `Find.Maps` for spawned `VehicleSkyfaller`
+        things (mid-arrival/departure animation already on a map) — release the
+        launch protocol, clear `inFlight`, spawn the vehicle in place, optionally
+        `SetTimedDeployment()` per `VehicleMod.settings.main.deployOnLanding`, destroy
+        the skyfaller.
+      - Airdrop = `AirdropSkyfallerMaker.MakeAirdrop(AirdropDef, List<Thing>|Thing, in
+        AirdropProperties)`, two call shapes: a package (Medicine + 3x
+        MealSurvivalPack + Penoxycyline, `packIntoContainer: true`) or a paratrooper
+        (one existing free colonist, no container).
+- [x] Built via reflection, matching the established no-hard-reference pattern. New
+      file `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVehicleAerialTools.cs`.
+      `DebugLandAerialVehicle` and both `MakeAirdrop` overloads are INVOKED DIRECTLY by
+      reflection rather than reimplemented (they're public static, callable even
+      though `Patch_Debug` itself is an internal class — reflection resolves by the
+      member's own accessibility). Two new tools: `jawa/vehicle_ground_aerial`,
+      `jawa/vehicle_spawn_airdrop`.
+- [x] Builds clean, no duplicate alias. `python.exe build.py --gm` — 0 warnings, 0
+      errors. Both new tool names grepped against every existing `[Tool("jawa/...")]`
+      string in the DLL's source tree first — no collision.
+- [ ] Deployed and proven live. Deployed 2026-08-29 (game DOWN) via
+      `python.exe build.py --gm --apply` — bundle ships only
+      `JawaBench.BridgeTools.dll`, GM pair (`fire_incident`/`send_letter`) preserved
+      per the standing note from `WILD_ANIMALS_PADDED_LISTS_1`'s history. **"Proven
+      live against a real aerial vehicle / airdrop" needs the game up** — RimBridgeServer
+      only discovers companions at startup, so this does nothing until the next
+      restart. Owed on the next game-up window: fire `jawa/vehicle_spawn_airdrop`
+      (both kinds) and, if a vehicle can be gotten airborne, `jawa/vehicle_ground_aerial`.
 
 --- history ---

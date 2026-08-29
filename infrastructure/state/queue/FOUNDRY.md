@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T23:29:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T23:38:21Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -179,6 +179,15 @@ target:   v1
 kind:     build
 summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
 prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
+
+## SWCP_CHARACTERS_DECOMPILE_1 Decompile SWCP:Characters DLL to build character/pawnkind bridge tools - owner-approved 2026-08-29
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Locate the mod's assembly in the live Mods folder (grep ModsConfig.FULL.LATEST.xml
+prose:    infrastructure/state/items/SWCP_CHARACTERS_DECOMPILE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -425,23 +434,3 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_SYSTEM_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
-
-## SWCP_CHARACTERS_DECOMPILE_1 Decompile SWCP:Characters DLL to build character/pawnkind bridge tools - owner-approved 2026-08-29
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Locate the mod's assembly in the live Mods folder (grep ModsConfig.FULL.LATEST.xml
-prose:    infrastructure/state/items/SWCP_CHARACTERS_DECOMPILE_1.md
-
-## VEHICLE_FRAMEWORK_AERIAL_DEBUG_1 Research VF's Ground All Aerial Vehicles / Spawn Airdrop (unread private landing logic) - owner-approved 2026-08-29
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Read DebugLandAerialVehicle's full body (referenced but not opened this
-prose:    infrastructure/state/items/VEHICLE_FRAMEWORK_AERIAL_DEBUG_1.md
