@@ -44,8 +44,12 @@ python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --appl
   carries OFFICIAL-2026-08-29 (capture 2026-08-29T13-30-02Z, 584 mods, by owner),
   superseding the lost 2026-08-21 entry. Owner confirmed 2026-08-29: newer one is
   right.
-- 'Galactic Empire' names TWO factions on the live world (vanilla Empire reskin +
-  OuterRim_GalacticEmpire) — BLACKSTAR_NAME_MUST_NOT_LEAK_1 criteria fail on the Empire half.
+- ~~'Galactic Empire' names TWO factions~~ NOT OPEN — ruled 2026-08-28 (canon.yml
+  `empire.outerrim_faction_excluded`, does not reopen): OuterRim FactionDef cut in
+  Cherry Picker (verified `present` in live settings 2026-08-29), mod stays active.
+  The double reading was BENCH_console_fixed.rws, initiated pre-cut — residual only.
+  WORLDMAP_V1_original.rws verified clean 2026-08-29 (0 hits both copies, literal
+  scan w/ control; vanilla Empire present).
 - WILD_ANIMALS_PADDED_LISTS_1: cast biomes are not exclusive (145 non-cast animals at >0 in
   Desert); 10 Anomaly-entity cast entries can never wild-spawn.
 
