@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="DamageWorker_IonBuildup.cs" />
     <Compile Include="IonDamageDef.cs" />
+    <Compile Include="StatPart_InverseBodySize.cs" />
   </ItemGroup>
 
   <ItemGroup>

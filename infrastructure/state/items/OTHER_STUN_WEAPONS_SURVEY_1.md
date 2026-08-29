@@ -109,6 +109,58 @@ no, and this attempt could not answer it either.** Whether our own weapon's fles
 even reaches a vehicle (it requires `pawn.health != null`, `ApplyMachineTier`'s EMP-reissue
 does not) is still an open, unverified question.
 
+## 2026-08-29 (FOUNDRY, third pass) — RULED and FIXED: squared standard, not the free linear toggle
+
+Owner: "Build it to match our squared standard."
+
+**Mechanism, read from `Verse/Pawn_HealthTracker.cs` (`PostApplyDamage`), not guessed:**
+```csharp
+if (victimSeverityScalingByInvBodySize) num *= 1f / pawn.BodySize;
+if (victimSeverityScaling != null)      num *= pawn.GetStatValue(victimSeverityScaling);
+```
+Both apply to the same `additionalHediffs` `<li>` in sequence — vanilla's own free toggle IS the
+first multiplier. Composing a SECOND `1/BodySize` through `victimSeverityScaling` (a `StatDef`
+reference) gets `(1/BodySize)²` from pure XML, no Harmony, no new `DamageWorker`.
+
+**Built:**
+- `JawaIonWeapons/Source/StatPart_InverseBodySize.cs` — a hidden `StatDef`
+  (`Jawa_InverseBodySize`, `alwaysHide: true`) whose value IS `1/pawn.BodySize`, via a
+  `StatPart.TransformValue` override (same pattern as vanilla's own `StatPart_Terror`).
+  `JawaIonWeapons.csproj` updated; **built clean, 0 warnings/errors**
+  (`dotnet.exe build ... JawaIonWeapons.csproj -c Release`, Windows-side from WSL bash — not a
+  real barrier, owner-said).
+- `JawaIonWeapons/Defs/StatDefs_JawaIon.xml` — the `Jawa_InverseBodySize` `StatDef`.
+- `Jawa_Patches/Patches/ThirdPartyStunBodySize_Squared.xml` — `PatchOperationAdd`s
+  `victimSeverityScalingByInvBodySize: true` + `victimSeverityScaling: Jawa_InverseBodySize`
+  onto `guy762_RangedDamage_KOstun` and `guy762_RangedDamage_sonic`'s existing
+  `additionalHediffs` `li` (neither declared either field before — confirmed by reading
+  `guy762.MM.KotORCore`'s own `SpecialDamages.xml`/`BlasterDamages.xml`, workshop
+  `3254370945`, not the def dump). `MayRequire="guy762.MM.KotORCore"` — a no-op if that mod
+  is inactive. `validate_patch.py` against the live 585-mod set: **both operations 1 match(es),
+  0 errors, 0 warnings.**
+- Human (`BodySize 1`) unaffected by construction: `1/1 = 1`, `(1/1)² = 1`, identical to today —
+  same invariant the owner's `ION_STUN_IGNORES_BODY_SIZE_1` ruling protected for our own weapon.
+
+**Deployed:** `Jawa_Patches/Patches/ThirdPartyStunBodySize_Squared.xml` — copied to the live mod
+folder (XML, no lock). **`JawaIonWeapons.dll` deploy BLOCKED**, same lock class as
+`ION_STUN_IGNORES_BODY_SIZE_1`: the running game holds the DLL open
+(`deploy_custom_mods.py --mod JawaIonWeapons --apply` → `OSError: [Errno 22] Invalid argument`).
+`Defs/StatDefs_JawaIon.xml` DID copy before the DLL failure. **Deploy the DLL at the next
+game-down window**: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaIonWeapons
+--apply`, plan is clean (one file left).
+
+**NOT patched, deliberately:** `guy762_GrenadeDamage_stun` (pure vanilla `DamageWorker_Stun`,
+no `additionalHediffs` at all — no XML lever exists, would need a new `stunResistStat`) and the
+whole `guy762_*_ion` family (this survey's own live test found these are NOT a flesh-stun
+mechanism). `OuterRim_Ion` remains unresolved, see its row above.
+
+## verify
+Once `JawaIonWeapons.dll` deploys: spawn a Rat (bodySize 0.2) and an `AA_Behemoth` (bodySize
+32), hit each with the same KotOR sonic or K-O stun weapon via `jawa/damage`, read the
+resulting hediff's severity back. Expect the Rat's `guy762_SonicDisorient`/`PsychicShock`
+severity roughly `25×`/`1024×` a Human's for the same damage dealt (squared, not linear) —
+same shape as `ION_STUN_IGNORES_BODY_SIZE_1`'s own verify table.
+
 ## criteria
 - [x] Every `causeStun`/Stun-worker/Ion/Sonic-worker DamageDef in the 584-mod set enumerated
       and characterized.
@@ -116,8 +168,9 @@ does not) is still an open, unverified question.
 - [x] The actual ion TURRETS found, live-tested, and their real DamageDef (`OuterRim_BlasterIon`,
       distinct from `OuterRim_Ion`) characterized — confirmed functionally inert as a stun
       mechanism, not something needing a body-size fix.
-- [ ] Owner picks which third-party defs are still worth a patch, and to what standard (vanilla's
-      free linear toggle vs. an authored squared stat vs. leave as-is) — nothing patched here.
+- [x] Owner ruled: squared standard, not vanilla's free linear toggle. Built and validated
+      offline (compile clean, `validate_patch.py` clean); DLL deploy blocked on game-down,
+      XML deployed. Live severity read-back still owed — see verify above.
 - [ ] `OuterRim_Ion` (the still-separate, still-unresolved entry) — its live test remains
       inconclusive, not redone this pass.
 - [x] ~~New capability gap surfaced~~ **NOT a gap — corrected offline, 2026-08-29.** This

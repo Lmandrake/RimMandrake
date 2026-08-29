@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Hidden calculation-only stat: its value IS 1/BodySize. Exists so a third-party
+       DamageDefAdditionalHediff can compose squared body-size scaling from pure XML -
+       see StatPart_InverseBodySize.cs and Jawa_Patches/Patches/ThirdPartyStunBodySize_Squared.xml. -->
+  <StatDef>
+    <defName>Jawa_InverseBodySize</defName>
+    <label>inverse body size (internal)</label>
+    <alwaysHide>true</alwaysHide>
+    <minValue>0</minValue>
+    <defaultBaseValue>1.0</defaultBaseValue>
+    <parts>
+      <li Class="JawaIonWeapons.StatPart_InverseBodySize" />
+    </parts>
+  </StatDef>
+
+</Defs>
