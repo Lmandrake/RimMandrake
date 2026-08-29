@@ -386,8 +386,8 @@ Post-cut analysis (dump d1be0632, engine source read):
   VQE quest patients. Engine behavior on an empty category is CONFIRMED benign:
   `PawnBioAndNameGenerator.FillBackstorySlotShuffled` logs one error and picks a
   random backstory — no crash. VQE Ancients quest patients will carry random
-  backstories; if that noise offends, the follow-up is cutting VQE quest content
-  itself (not ruled — raise with the owner).
+  backstories. RULED (owner, 2026-08-29, at the bench): ACCEPTABLE NOISE — no
+  deeper cut, no neutering patch; the empty pools stand as-is.
 - ⚠️ BackstoryDef is an UNPRECEDENTED def type in this config (no prior entries).
   Cherry Picker support is proven only by the next load's
   `[Cherry Picker] ... defs were removed:` lines — that check rides

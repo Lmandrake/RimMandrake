@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T19:18:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T19:20:52Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -48,7 +48,7 @@ prose:    infrastructure/state/items/PLACER_IDENTITY_REPLAY_1.md
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     build
 summary:  Ruthless Faction Pursuit has one global raidDelayHours. Fork the bundled source
@@ -127,7 +127,7 @@ prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     build
 blocked:  offline half done (fork+build clean, see progress note); verify needs bridge live-check, waiting on game-up (same gate as EMPIRE_PURSUIT_SCENPART_INSTALL_1)
