@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T17:03:57Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-29T17:39:01Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -17,15 +17,6 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## GRAVSHIP_LANDING_DIRECT_PLACE_1 Land a gravship without the cutscene machinery (skipCutscene route)
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-summary:  A companion route that lands WITHOUT the render chain: reproduce the "PreparingForLanding"
-prose:    infrastructure/state/items/GRAVSHIP_LANDING_DIRECT_PLACE_1.md
 
 ## PAWN_FLAVOR_STARWARS_1 Assess and rework backstories, childhoods and traits for Star Wars fidelity, with the owner
 state:    doing

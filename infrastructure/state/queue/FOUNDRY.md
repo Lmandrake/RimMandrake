@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T17:03:57Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-29T17:39:01Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -44,15 +44,6 @@ target:   v1
 kind:     task
 summary:  PLACERIDENTITYREPLAY1 — the setter half of the identity-grade export
 prose:    infrastructure/state/items/PLACER_IDENTITY_REPLAY_1.md
-
-## THRUSTER_INSTABUILD_NEVER_ACTIVE_1 Tool-built thrusters link but never contribute range on the full list
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  THRUSTERINSTABUILDNEVERACTIVE1 — tool-built thrusters link but never contribute range
-prose:    infrastructure/state/items/THRUSTER_INSTABUILD_NEVER_ACTIVE_1.md
 
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
@@ -162,16 +153,6 @@ kind:     bug
 blocked:  needs bridge; BENCH holds it (owner confirmed live, 2026-08-29) — my prior fire_raid work on the sibling item collided with BENCH's session, not touching the bridge again until it's free
 summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
-
-## THRUSTER_INSTABUILD_NEVER_ACTIVE_1 Tool-built thrusters link but never contribute range on the full list
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-blocked:  mechanism fully mapped and committed (4f9bb163); live repro on this quicktest map kept getting contaminated by terrain/substructure setup mistakes before a clean confirm. Needs a careful retry on flat/non-mountain terrain, small tick steps only.
-summary:  THRUSTERINSTABUILDNEVERACTIVE1 — tool-built thrusters link but never contribute range
-prose:    infrastructure/state/items/THRUSTER_INSTABUILD_NEVER_ACTIVE_1.md
 
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
