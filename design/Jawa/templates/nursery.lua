@@ -25,8 +25,10 @@ function build(ctx)
   -- The shell. Small on purpose: a cooler's depression is per-room-volume, and
   -- the measured failure was a 48-cell room one cooler could not hold.
   local RW, RH = 8, 8
-  if W < RW + 8 or H < RH + 1 then
-    ctx:refuse("nursery", "needs at least " .. (RW + 8) .. "x" .. (RH + 1) .. " of footprint")
+  -- +2 on H, not +1: the bus sits one row past the shell (bus_z = z+RH) and the
+  -- Battery sits one row past THAT (bus_z+1) - two rows beyond the shell, not one.
+  if W < RW + 8 or H < RH + 2 then
+    ctx:refuse("nursery", "needs at least " .. (RW + 8) .. "x" .. (RH + 2) .. " of footprint")
     return
   end
 

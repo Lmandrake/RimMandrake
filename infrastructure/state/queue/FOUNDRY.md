@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:01:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T01:02:34Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,15 +35,6 @@ target:   v1
 kind:     defect
 summary:  Two live def errors in this session's Player.log (lines ~790 and ~1041), both tracing to
 prose:    infrastructure/state/items/IKEE_WILDNESS_PATCH_DEAD_1.md
-
-## NURSERY_FOOTPRINT_OFF_BY_ONE_1 nursery.lua's declared 16x9 minimum footprint is 1 cell short of its own Battery placement
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/NURSERY_FOOTPRINT_OFF_BY_ONE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NURSERY_FOOTPRINT_OFF_BY_ONE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -287,6 +278,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/EMPIRE_TROOPER_TRAINING_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  JawaEmpireGrunt/Heavy/Specialist (JawaFactionRoster.xml:43/96/144) carry no
 prose:    infrastructure/state/items/EMPIRE_TROOPER_TRAINING_1.md

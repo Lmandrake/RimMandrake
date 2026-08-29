@@ -2616,3 +2616,4 @@
 {"seat":"BENCH","event":"file","id":"QUEUE_GITHUB_MIRROR_1","title":"Pilot: rimflow post-write mirror of queue items to GitHub issues on Lmandrake/RimMaster (named ID as issue title, lane as label) — events.jsonl STAYS the truth, GitHub is visualizer only; prereqs: gh CLI install + auth (owner), confirm repo private","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-08-29T01:01:30Z"}
 {"seat":"FOUNDRY","event":"claim","id":"NURSERY_FOOTPRINT_OFF_BY_ONE_1","ts":"2026-08-29T01:01:55Z"}
 {"seat":"FOUNDRY","event":"start","id":"NURSERY_FOOTPRINT_OFF_BY_ONE_1","ts":"2026-08-29T01:01:55Z"}
+{"seat":"FOUNDRY","event":"close","id":"NURSERY_FOOTPRINT_OFF_BY_ONE_1","sha":"6123a1ec","ts":"2026-08-29T01:02:34Z"}
