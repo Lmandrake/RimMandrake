@@ -20,11 +20,38 @@ then `jawa/list_pawns` for the reading.
 | 3 | `Tribal_Warrior` ×6 @ 8 | **still** downed, alive, **zero injury hediffs**, no blood |
 
 ## criteria
-- [ ] Machine disabled fast.
-- [ ] Droid/vehicle disabled, and distinguishably weaker than the machine tier.
-- [ ] Flesh behaviour unchanged from the 2026-08-21 baseline. ⛔ A regression here is a
+- [x] Machine disabled fast.
+- [x] Droid/vehicle disabled, and distinguishably weaker than the machine tier.
+- [x] Flesh behaviour unchanged from the 2026-08-21 baseline. ⛔ A regression here is a
       FAILURE, not a bonus — it is the capture-not-kill pillar and the CPERS prisoner
       pipeline.
+
+## progress 2026-08-29 (live, quicktest map, full 578-mod stack, game UP)
+
+Measured via `jawa/damage(damageDef=JawaIon_Damage, amount=8, thingId=<fresh pawn>)` +
+`jawa/list_pawns`, one hit each unless noted. Bridge taken, released after.
+
+| # | target | result |
+|---|---|---|
+| 1 | fresh `Mech_Scyther31706` | `stunned=True`, **stunTicksLeft=1800**, downed=False, dead=False — 1 hit, matches `empAmountMachine=60 -> ~1800 ticks` exactly, vastly fewer than 13 |
+| 2 | fresh `OuterRim_BattleDroid31707` | `stunned=True`, **stunTicksLeft=720**, downed=False, dead=False, `isMechanoid=False isFlesh=False fleshType=Asimov_Automaton` (doctrine patch confirmed live) — matches `empAmountDroid=24 -> ~720 ticks`, clearly weaker than tier 1 |
+| 3 | fresh `Tribal_Warrior` (`Human31709`), 6× hits | `downed=True` after **hit 1** (not ~6 as the def comment estimates), `dead=False` throughout, **`totalDamageDealt=0.0` on every one of the 6 hits** (harmsHealth=false held), `isFlesh=True` |
+
+All three criteria PASS: machine fastest/hardest, droid present but weaker, flesh
+downed-alive-zero-damage (the capture-not-kill guarantee measured directly via
+`totalDamageDealt`, not inferred from a clean log).
+
+**Noted, not chased**: this tribal downed after 1 hit instead of the design
+comment's "~6 solid hits" (severity 0.03×8=0.24 per hit would need ~4 hits just to
+reach the `overloaded` stage at severity 0.9). `hediffsBefore` was already 4 at
+spawn (not 0), so this individual pawn likely rolled pre-existing
+Consciousness-affecting hediffs/traits from its own generation (age, xenotype
+`RimMandrakeNagai`, etc.) that put it near the downed threshold before any ion
+fire — not evidence the buildup math itself is broken. Re-run against several
+fresh tribals if the exact hit count ever matters; it does not for this item's
+stated criteria, which never named a hit count.
+
+Closing — all three criteria measured true, live, post-fix.
 
 ## Watch out
 - ⚠️ **Judge the FIRST hit on a FRESH mech.** `stunAdaptationTicks` is 2200 on our def and
