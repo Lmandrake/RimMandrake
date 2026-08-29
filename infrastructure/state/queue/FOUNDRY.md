@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T23:23:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T23:29:31Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -161,6 +161,15 @@ target:   v1
 kind:     build
 summary:  New file JawaBenchDebugGems1.cs (7 tools):
 prose:    infrastructure/state/items/BRIDGE_DEBUGACTION_SWEEP_GEMS_1.md
+
+## BUG_TURRET_ART_REDO_1 Redraw VFEI2 Vilelobber/Thornworm/Thornspitter turret art to match the hive register
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  BUGTURRETARTREDO1 — redraw the cartoonish bug turrets
+prose:    infrastructure/state/items/BUG_TURRET_ART_REDO_1.md
 
 ## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
 state:    doing  (BLOCKED)
@@ -416,26 +425,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_SYSTEM_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
-
-## BUG_TURRET_ART_REDO_1 Redraw VFEI2 Vilelobber/Thornworm/Thornspitter turret art to match the hive register
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  BUGTURRETARTREDO1 — redraw the cartoonish bug turrets
-prose:    infrastructure/state/items/BUG_TURRET_ART_REDO_1.md
-
-## STARTING_SHIP_ANTICRAFT_1 Place a disconnected VGE_AnticraftCaster on the starting gravship as a showpiece / v1 challenge
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  STARTINGSHIPANTICRAFT1 — the disconnected anticraft caster on the starting ship
-prose:    infrastructure/state/items/STARTING_SHIP_ANTICRAFT_1.md
 
 ## SWCP_CHARACTERS_DECOMPILE_1 Decompile SWCP:Characters DLL to build character/pawnkind bridge tools - owner-approved 2026-08-29
 state:    proposed
