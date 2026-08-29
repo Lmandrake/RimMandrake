@@ -75,16 +75,18 @@ static-vs-instance guess on `GetAllPatchedMethods()`/`GetPatchInfo()` was right;
 collection guess was not — exactly the reason nothing here was ever claimed proven before a
 real compiler ran it.
 
-🔴 **NOT DEPLOYED, on purpose.** `build.py`'s own plan shows the LIVE game copy already carries
-27 tools this checkout's build does not (`jawa/lord_assault_spawn`, `jawa/weather_set`,
-`jawa/animal_bond`, `jawa/ritual_start`, others) — someone has a newer companion deployed
-locally that isn't merged to `main`. Deploying this build would remove those 27 tools. That
-drift is a separate question for whoever owns them, not FOUNDRY's to resolve by forcing
-`--allow-tool-removal`. **Whoever deploys next must reconcile that list first**, or build
-`--gm` and expect the SAME removal list minus the 2 GM tools — the other 25 are not explained
-by `--gm` alone.
+🔴 **NOT DEPLOYED, on purpose — resolved, not mysterious.** A plan-only (no `--gm`) build
+flagged 27 tools the live game copy has and this build doesn't (`jawa/lord_assault_spawn`,
+`jawa/weather_set`, `jawa/animal_bond`, `jawa/ritual_start`, others). Checked and closed: all
+27 are `#if JAWA_GM_TOOLS`-gated in committed source (verified by grep), and BENCH's own
+ledger note at `2026-08-29T05:06:17Z` records deploying `--gm` from commit `a36db094` earlier
+the same day. **Nothing is lost, no rogue build — just a flag.** Deploy this with
+`python.exe build.py --gm --apply` (game closed) to keep the GM pair live alongside the new
+tool; a bare `--apply` would legitimately drop them, same as any non-`--gm` build always has.
 
 ## Prove it, once deployed
+`python.exe src/RimMandrake/bridgetools/prove_harmony_patches.py` — selftest already green
+(`python3 ... --selftest`, no game needed). Or by hand:
 ```
 jawa/harmony_patches {typeName: "BiomeDef"}
 jawa/harmony_patches {typeName: "BiomeDef", methodName: "CommonalityOfAnimal"}
