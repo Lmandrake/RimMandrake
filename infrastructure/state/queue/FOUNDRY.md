@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T05:23:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T05:41:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -181,16 +181,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## ION_TIERS_MEASURED_LIVE_1 Measure all three ion tiers live: mech, droid, and the flesh baseline that must not move
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     check
-thin:     spec, verify and criteria all present
-summary:  D1 (owner, 2026-08-08) requires three distinct tiers from one weapon:
-prose:    infrastructure/state/items/ION_TIERS_MEASURED_LIVE_1.md
 
 ## AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1 A hostile Jawa_HuttCartel raid reports fired and delivers zero pawns
 state:    proposed

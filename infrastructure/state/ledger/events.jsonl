@@ -2658,3 +2658,10 @@
 {"seat":"FOUNDRY","event":"block","id":"EMPIRE_PURSUIT_SURVEY_SHADOW_1","reason":"offline half done (fork+build clean, see progress note); verify needs bridge live-check, waiting on game-up (same gate as EMPIRE_PURSUIT_SCENPART_INSTALL_1)","ts":"2026-08-29T05:19:44Z"}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-08-29T05:20:32Z"}
 {"seat":"FOUNDRY","event":"close","id":"IKEE_WILDNESS_PATCH_DEAD_1","sha":"94fa20d7","ts":"2026-08-29T05:23:17Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"game is up","ts":"2026-08-29T05:33:42Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-08-29T05:33:45Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ION_TIERS_MEASURED_LIVE_1","ts":"2026-08-29T05:35:03Z"}
+{"seat":"FOUNDRY","event":"start","id":"ION_TIERS_MEASURED_LIVE_1","ts":"2026-08-29T05:35:03Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-29T05:35:03Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-29T05:40:48Z"}
+{"seat":"FOUNDRY","event":"close","id":"ION_TIERS_MEASURED_LIVE_1","sha":"f23c2016","ts":"2026-08-29T05:41:14Z"}
