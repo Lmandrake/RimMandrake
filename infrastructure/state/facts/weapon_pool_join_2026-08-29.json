@@ -1,0 +1,626 @@
+{
+  "Jawa_Hutt_Heavy": {
+    "label": "Cartel bodyguard",
+    "weaponMoney": [
+      550.0,
+      660.0
+    ],
+    "tags": [
+      "KotORRanged_mid",
+      "SWKotORWeaponCategoryTag_heavyranged"
+    ],
+    "poolSize": 28,
+    "withinBudget": 6,
+    "unpriced": 0,
+    "rangedInPool": 6,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_brifle",
+      "guy762_carbine",
+      "guy762_hvypistol",
+      "guy762_lgtrepeater_carbine",
+      "guy762_slugrifle"
+    ]
+  },
+  "Jawa_Hutt_Grunt": {
+    "label": "Cartel enforcer",
+    "weaponMoney": [
+      200.0,
+      240.0
+    ],
+    "tags": [
+      "KotORRanged_weak",
+      "SWKotORWeaponCategoryTag_pistol"
+    ],
+    "poolSize": 32,
+    "withinBudget": 6,
+    "unpriced": 0,
+    "rangedInPool": 6,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_bpistol",
+      "guy762_dispistol",
+      "guy762_holdout",
+      "guy762_ionpistol",
+      "guy762_sonpistol"
+    ]
+  },
+  "Jawa_Hutt_Specialist": {
+    "label": "Cartel factor",
+    "weaponMoney": [
+      800.0,
+      960.0
+    ],
+    "tags": [
+      "KotORRanged_mid",
+      "SWKotORWeaponCategoryTag_pistol"
+    ],
+    "poolSize": 37,
+    "withinBudget": 13,
+    "unpriced": 0,
+    "rangedInPool": 13,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_brifle",
+      "guy762_brifle_dmr",
+      "guy762_carbine",
+      "guy762_hvypistol",
+      "guy762_lgtrepeater"
+    ]
+  },
+  "Jawa_Helix_Leader": {
+    "label": "Director Ko Saiyan",
+    "weaponMoney": [
+      12500.0,
+      15000.0
+    ],
+    "tags": [
+      "KotORRanged_legendary",
+      "KotORRanged_rare"
+    ],
+    "poolSize": 24,
+    "withinBudget": 3,
+    "unpriced": 0,
+    "rangedInPool": 3,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_bpistol_onasi",
+      "guy762_ionrifle_baragwin",
+      "guy762_ionpistol_aratech"
+    ]
+  },
+  "Jawa_Wildsteam_Leader": {
+    "label": "Elder Rroowaak",
+    "weaponMoney": [
+      1600.0,
+      1920.0
+    ],
+    "tags": [
+      "KotORBowcaster"
+    ],
+    "poolSize": 3,
+    "withinBudget": 1,
+    "unpriced": 0,
+    "rangedInPool": 1,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": true,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_bowcaster"
+    ]
+  },
+  "Jawa_Empire_Leader": {
+    "label": "Emperor Palpatine",
+    "weaponMoney": [
+      1600.0,
+      1920.0
+    ],
+    "tags": [
+      "ORImperialSniper",
+      "ORPistol"
+    ],
+    "poolSize": 9,
+    "withinBudget": 9,
+    "unpriced": 0,
+    "rangedInPool": 9,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "OuterRim_DLT19XTargetingBlaster",
+      "OuterRim_A180Blaster",
+      "OuterRim_BARMST12Scattergun",
+      "OuterRim_DE10Blaster",
+      "OuterRim_DG29Blaster"
+    ]
+  },
+  "Jawa_Geonosian_Grunt": {
+    "label": "Geonosian drone",
+    "weaponMoney": [
+      400.0,
+      480.0
+    ],
+    "tags": [
+      "KotORRanged_sonic"
+    ],
+    "poolSize": 8,
+    "withinBudget": 3,
+    "unpriced": 0,
+    "rangedInPool": 3,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_sonpistol",
+      "guy762_sonrifle",
+      "guy762_sonrifle_carbine"
+    ]
+  },
+  "Jawa_Homestead_Leader": {
+    "label": "High Marshal Taren Voss",
+    "weaponMoney": [
+      700.0,
+      840.0
+    ],
+    "tags": [
+      "ORPistol",
+      "SWKotORWeaponCategoryTag_pistol"
+    ],
+    "poolSize": 31,
+    "withinBudget": 13,
+    "unpriced": 0,
+    "rangedInPool": 13,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "OuterRim_A180Blaster",
+      "OuterRim_BARMST12Scattergun",
+      "OuterRim_DE10Blaster",
+      "OuterRim_DG29Blaster",
+      "OuterRim_DH17Pistol"
+    ]
+  },
+  "Jawa_Deepwater_Leader": {
+    "label": "High Warden Neris Cal",
+    "weaponMoney": [
+      1400.0,
+      1680.0
+    ],
+    "tags": [
+      "ORMeleeSharp",
+      "KotORRanged_rare"
+    ],
+    "poolSize": 19,
+    "withinBudget": 6,
+    "unpriced": 0,
+    "rangedInPool": 0,
+    "meleeInPool": 6,
+    "rangedOnly": false,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [
+      "OuterRim_VibroAxe",
+      "OuterRim_VibroBlade",
+      "OuterRim_VibroCleaver",
+      "OuterRim_VibroDagger",
+      "OuterRim_VibroDoubleBlade"
+    ],
+    "rangedSample": []
+  },
+  "Jawa_Empire_Specialist": {
+    "label": "Imperial officer",
+    "weaponMoney": [
+      900.0,
+      1080.0
+    ],
+    "tags": [
+      "ORPistol",
+      "ORImperialLight"
+    ],
+    "poolSize": 8,
+    "withinBudget": 8,
+    "unpriced": 0,
+    "rangedInPool": 8,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "OuterRim_A180Blaster",
+      "OuterRim_BARMST12Scattergun",
+      "OuterRim_DE10Blaster",
+      "OuterRim_DG29Blaster",
+      "OuterRim_DH17Pistol"
+    ]
+  },
+  "Jawa_Junkers_Grunt": {
+    "label": "Junker scrapper",
+    "weaponMoney": [
+      60.0,
+      72.0
+    ],
+    "tags": [
+      "ORMeleeBlunt",
+      "NeolithicMeleeBasic"
+    ],
+    "poolSize": 33,
+    "withinBudget": 6,
+    "unpriced": 0,
+    "rangedInPool": 0,
+    "meleeInPool": 6,
+    "rangedOnly": false,
+    "thinPool": false,
+    "lowGenerateAllowChance": [
+      {
+        "def": "BMT_ResourceBlueCrystal",
+        "chance": 0.0
+      }
+    ],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [
+      "BMT_ResourceBlueCrystal",
+      "BMT_Toxwood",
+      "MeleeWeapon_Knife",
+      "RR_Weapon_Torch",
+      "VFET_Chunk"
+    ],
+    "rangedSample": []
+  },
+  "Jawa_Deepwater_Specialist": {
+    "label": "Quarren shipwright",
+    "weaponMoney": [
+      750.0,
+      900.0
+    ],
+    "tags": [
+      "ORVibroweapon",
+      "ORMeleeSharp"
+    ],
+    "poolSize": 6,
+    "withinBudget": 6,
+    "unpriced": 0,
+    "rangedInPool": 0,
+    "meleeInPool": 6,
+    "rangedOnly": false,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [
+      "OuterRim_VibroAxe",
+      "OuterRim_VibroBlade",
+      "OuterRim_VibroCleaver",
+      "OuterRim_VibroDagger",
+      "OuterRim_VibroDoubleBlade"
+    ],
+    "rangedSample": []
+  },
+  "Jawa_DeepDesert_Heavy": {
+    "label": "Tusken brute",
+    "weaponMoney": [
+      200.0,
+      240.0
+    ],
+    "tags": [
+      "ORMeleeBlunt",
+      "NeolithicMeleeAdvanced"
+    ],
+    "poolSize": 24,
+    "withinBudget": 8,
+    "unpriced": 0,
+    "rangedInPool": 0,
+    "meleeInPool": 8,
+    "rangedOnly": false,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [
+      "OuterRim_GaderffiiStick",
+      "BMT_CaveSpiderHead",
+      "BMT_RoyalRhinoHorn",
+      "MA_AminoxHorn",
+      "MA_ClawSaber"
+    ],
+    "rangedSample": []
+  },
+  "Jawa_DeepDesert_Specialist": {
+    "label": "Tusken marksman",
+    "weaponMoney": [
+      2000.0,
+      2400.0
+    ],
+    "tags": [
+      "SaV_tusken"
+    ],
+    "poolSize": 2,
+    "withinBudget": 2,
+    "unpriced": 0,
+    "rangedInPool": 2,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": true,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_slugrifle_SovTusken",
+      "guy762_slugrifle_tusken"
+    ]
+  },
+  "Jawa_Wildsteam_Specialist": {
+    "label": "beast-handler",
+    "weaponMoney": [
+      620.0,
+      744.0
+    ],
+    "tags": [
+      "ORMeleeSharp",
+      "ORVibroweapon"
+    ],
+    "poolSize": 6,
+    "withinBudget": 6,
+    "unpriced": 0,
+    "rangedInPool": 0,
+    "meleeInPool": 6,
+    "rangedOnly": false,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [
+      "OuterRim_VibroAxe",
+      "OuterRim_VibroBlade",
+      "OuterRim_VibroCleaver",
+      "OuterRim_VibroDagger",
+      "OuterRim_VibroDoubleBlade"
+    ],
+    "rangedSample": []
+  },
+  "Jawa_Helix_Heavy": {
+    "label": "brute-stock labourer",
+    "weaponMoney": [
+      2000.0,
+      2400.0
+    ],
+    "tags": [
+      "SWKotORWeaponCategoryTag_heavyranged",
+      "KotORRanged_strong"
+    ],
+    "poolSize": 22,
+    "withinBudget": 8,
+    "unpriced": 0,
+    "rangedInPool": 8,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_hvyrepeater",
+      "guy762_lgtrepeater",
+      "guy762_lgtrepeater_carbine",
+      "guy762_lgtrepeater_medium",
+      "guy762_bowcaster"
+    ]
+  },
+  "Jawa_TradeMoot_Heavy": {
+    "label": "crawler guard",
+    "weaponMoney": [
+      450.0,
+      540.0
+    ],
+    "tags": [
+      "KotORRanged_ion",
+      "Jawa_IonWeapon",
+      "JawaIon_Damage",
+      "KotORRanged_weak"
+    ],
+    "poolSize": 23,
+    "withinBudget": 10,
+    "unpriced": 0,
+    "rangedInPool": 10,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_ionpistol",
+      "guy762_ionrifle_carbine",
+      "JawaIon_Blaster",
+      "guy762_bpistol",
+      "guy762_dispistol"
+    ]
+  },
+  "Jawa_Homestead_DesertRanger": {
+    "label": "dune ranger",
+    "weaponMoney": [
+      200.0,
+      260.0
+    ],
+    "tags": [
+      "SimpleGun",
+      "KotORRanged_mid"
+    ],
+    "poolSize": 64,
+    "withinBudget": 1,
+    "unpriced": 0,
+    "rangedInPool": 1,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": true,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_slugrifle"
+    ]
+  },
+  "Jawa_Empire_Heavy": {
+    "label": "heavy trooper",
+    "weaponMoney": [
+      1000.0,
+      1200.0
+    ],
+    "tags": [
+      "ORImperialHeavy",
+      "ORHeavyWeapon"
+    ],
+    "poolSize": 6,
+    "withinBudget": 4,
+    "unpriced": 0,
+    "rangedInPool": 4,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "OuterRim_DLT19HeavyBlasterRifle",
+      "OuterRim_E22BlasterRifle",
+      "OuterRim_T21RepeatingBlaster",
+      "OuterRim_TL50HeavyRepeaterBlaster"
+    ]
+  },
+  "Jawa_Geonosian_Specialist": {
+    "label": "hive overseer",
+    "weaponMoney": [
+      1000.0,
+      1200.0
+    ],
+    "tags": [
+      "KotORRanged_sonic",
+      "KotORRanged_rare"
+    ],
+    "poolSize": 21,
+    "withinBudget": 4,
+    "unpriced": 0,
+    "rangedInPool": 4,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_sonpistol",
+      "guy762_sonrifle",
+      "guy762_sonrifle_bothan",
+      "guy762_sonrifle_carbine"
+    ]
+  },
+  "Jawa_Geonosian_Heavy": {
+    "label": "soldier drone",
+    "weaponMoney": [
+      800.0,
+      960.0
+    ],
+    "tags": [
+      "KotORRanged_sonic",
+      "SWKotORWeaponCategoryTag_heavyranged"
+    ],
+    "poolSize": 21,
+    "withinBudget": 5,
+    "unpriced": 0,
+    "rangedInPool": 5,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "guy762_sonpistol",
+      "guy762_sonrifle",
+      "guy762_sonrifle_carbine",
+      "guy762_lgtrepeater",
+      "guy762_lgtrepeater_carbine"
+    ]
+  },
+  "Jawa_Empire_Grunt": {
+    "label": "stormtrooper",
+    "weaponMoney": [
+      950.0,
+      1150.0
+    ],
+    "tags": [
+      "ORImperialStandard"
+    ],
+    "poolSize": 3,
+    "withinBudget": 3,
+    "unpriced": 0,
+    "rangedInPool": 3,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": false,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "OuterRim_DLT20ABlaster",
+      "OuterRim_E11BlasterRifle",
+      "OuterRim_E22BlasterRifle"
+    ]
+  },
+  "Jawa_Homestead_Specialist": {
+    "label": "water warden",
+    "weaponMoney": [
+      450.0,
+      540.0
+    ],
+    "tags": [
+      "SniperRifle",
+      "ORSniper"
+    ],
+    "poolSize": 13,
+    "withinBudget": 1,
+    "unpriced": 0,
+    "rangedInPool": 1,
+    "meleeInPool": 0,
+    "rangedOnly": true,
+    "thinPool": true,
+    "lowGenerateAllowChance": [],
+    "thinPoolWithLowChance": false,
+    "meleeSample": [],
+    "rangedSample": [
+      "OuterRim_CyclerRifle"
+    ]
+  }
+}
