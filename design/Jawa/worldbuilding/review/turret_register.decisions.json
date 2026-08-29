@@ -1,0 +1,751 @@
+{
+ "posture": "whitelist",
+ "sheetSavedAt": "2026-08-29T22:52:51.279Z",
+ "decidedCount": 32,
+ "decisions": {
+  "GTbc_GravliteDefenseTurret": {
+   "tech": "gravitic bolt, light",
+   "effect": "? ? dmg · range 31.9",
+   "user": "Cradle / Rakatan ruins",
+   "state": "rework",
+   "note": "",
+   "touched": false
+  },
+  "Turret_GravBlaster": {
+   "tech": "gravitic bolt, light",
+   "effect": "GravBlastShockwave 7 dmg · blast r7.5 · range 51.9",
+   "user": "Cradle / Rakatan ruins",
+   "state": "rework",
+   "note": "",
+   "touched": false
+  },
+  "BigLaserCannon": {
+   "tech": "ancient beam laser",
+   "effect": "? ? dmg · range 50",
+   "user": "Cradle / Rakatan ruins",
+   "state": "rework",
+   "note": "",
+   "touched": false
+  },
+  "GTbc_HugeGravBlaster": {
+   "tech": "gravitic bolt, heavy",
+   "effect": "HugeGravBlastShockwave 4 dmg · blast r12.5 · range 99999 · burst 6",
+   "user": "Cradle / Rakatan ruins",
+   "state": "rework",
+   "note": "",
+   "touched": false
+  },
+  "GTbc_GravRailArtillery": {
+   "tech": "gravitic rail siege",
+   "effect": "Bomb 280 dmg · blast r8.9 · range 99999",
+   "user": "Forsaken vaults",
+   "state": "rework",
+   "note": "",
+   "touched": false
+  },
+  "GTbc_TheSingularityCannon": {
+   "tech": "gravitic singularity",
+   "effect": "Bomb 308 dmg · blast r6.9 · range 99999",
+   "user": "Forsaken vaults",
+   "state": "rework",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_MediumLaserCannon": {
+   "tech": "blaster cannon",
+   "effect": "OuterRim_Blaster 200 dmg · range 39.9 · burst 6",
+   "user": "Galactic Empire",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_ProtonMortar": {
+   "tech": "proton shell mortar",
+   "effect": "OuterRim_ProtonBomb ? dmg · blast r5.9 · range 52.9",
+   "user": "Deepwater Compact",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "OuterRim_Turbolaser": {
+   "tech": "turbolaser",
+   "effect": "OuterRim_Blaster 2000 dmg · range 39.9 · burst 2",
+   "user": "Galactic Empire",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "RN2SWGun_EWeb_MG": {
+   "tech": "E-Web repeating blaster",
+   "effect": "Bullet 14 dmg · range 40 · burst 3",
+   "user": "Galactic Empire",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_AnaxesTurret": {
+   "tech": "turbolaser (Republic-era tower)",
+   "effect": "OuterRim_Blaster 200 dmg · range 32.9 · burst 4",
+   "user": "Galactic Empire",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_HeavyImperialTurbolaser": {
+   "tech": "heavy turbolaser",
+   "effect": "OuterRim_Turbolaser 2000 dmg · blast r1.9 · range 54.9 · burst 2",
+   "user": "Galactic Empire",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_HeavyLaserCannon": {
+   "tech": "heavy blaster cannon",
+   "effect": "OuterRim_Blaster 200 dmg · range 51.9 · burst 6",
+   "user": "Galactic Empire",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_HeavyTurbolaser": {
+   "tech": "heavy turbolaser (Separatist head art)",
+   "effect": "OuterRim_Turbolaser 2000 dmg · blast r1.9 · range 54.9 · burst 2",
+   "user": "Galactic Empire",
+   "state": "rework",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_ProtonArtillery": {
+   "tech": "proton siege artillery",
+   "effect": "OuterRim_ProtonBomb ? dmg · blast r7.9 · range 500",
+   "user": "Galactic Empire",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_HeavyIonCannon": {
+   "tech": "heavy ion cannon",
+   "effect": "OuterRim_BlasterIon 20 dmg · range 80 · burst 2",
+   "user": "Galactic Empire",
+   "state": "rework",
+   "note": "",
+   "touched": true
+  },
+  "VGE_AnticraftCaster": {
+   "tech": "anticraft caster",
+   "effect": "VGE_AnticraftBeamBypassShields 86 dmg · range 9999 · burst 20",
+   "user": "Gravship (the Utinni)",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "VGE_GaussGun": {
+   "tech": "gauss slug",
+   "effect": "Bomb 161 dmg · blast r3.9 · range 99999",
+   "user": "Junkers",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "VGE_HeavyChargeAnnihilator": {
+   "tech": "heavy charge annihilator",
+   "effect": "Bullet 15 dmg · range 36 · burst 36",
+   "user": "Cradle / Rakatan ruins",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "VGE_JavelinPod": {
+   "tech": "missile pod",
+   "effect": "Bomb 118 dmg · blast r2.9 · range 99999 · burst 6",
+   "user": "Junkers",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "VGE_PointDefenseTurret": {
+   "tech": "point-defense battery",
+   "effect": "? ? dmg · range 14.9",
+   "user": "Gravship (the Utinni)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "VGE_MassDriver": {
+   "tech": "mass driver",
+   "effect": "Bomb 50 dmg · blast r4.9 · range 500 · burst 3",
+   "user": "Galactic Empire",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "Turret_AutoChargeBlaster": {
+   "tech": "mech charge blaster",
+   "effect": "Bullet 15 dmg · range 45.9 · burst 9",
+   "user": "Forgotten Arsenal (mech)",
+   "state": "undecided",
+   "note": "",
+   "touched": false
+  },
+  "Turret_AutoInferno": {
+   "tech": "mech incendiary launcher",
+   "effect": "Flame ? dmg · blast r2.4 · range 45.9",
+   "user": "Forgotten Arsenal (mech)",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "Turret_AutoMortar": {
+   "tech": "mech mortar",
+   "effect": "Bomb ? dmg · blast r2.9 · range 500",
+   "user": "Forgotten Arsenal (mech)",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "DP_Automortar": {
+   "tech": "automated mortar",
+   "effect": "Bomb ? dmg · blast r3.0 · range 56",
+   "user": "Hutt Cartel",
+   "state": "rework",
+   "note": "",
+   "touched": true
+  },
+  "Turret_Autocannon": {
+   "tech": "autocannon (Earth-like rapid kinetic)",
+   "effect": "Bullet 200 dmg · range 32.9 · burst 3",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "Turret_Mortar": {
+   "tech": "shell mortar (manned)",
+   "effect": "? ? dmg · range 500",
+   "user": "Common / multiple",
+   "state": "cut",
+   "note": "",
+   "touched": true
+  },
+  "Turret_RocketswarmLauncher": {
+   "tech": "one-shot rocket swarm",
+   "effect": "Bomb 24 dmg · blast r2.9 · range 29.9 · burst 12",
+   "user": "Junkers",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "Turret_Sniper": {
+   "tech": "uranium slug rifle",
+   "effect": "Bullet 200 dmg · range 45.9",
+   "user": "Homestead Defense League",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Turret_Ballista": {
+   "tech": "ballista (primitive)",
+   "effect": "RangedStab 278 dmg · blast r1.9 · range 85.5",
+   "user": "Deep Desert Tribes",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "DrillTurret": {
+   "tech": "mining drill (tool, not weapon)",
+   "effect": "? ? dmg · range 0",
+   "user": "Junkers",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "Turret_Atomiser": {
+   "tech": "matter atomiser",
+   "effect": "Burn 86 dmg · range 34",
+   "user": "Junkers",
+   "state": "rework",
+   "note": "",
+   "touched": true
+  },
+  "Turret_Sludger": {
+   "tech": "sludge thrower",
+   "effect": "Stun 0 dmg · range 26",
+   "user": "Junkers",
+   "state": "rework",
+   "note": "",
+   "touched": false
+  },
+  "Turret_Vaporiser": {
+   "tech": "vaporiser",
+   "effect": "Burn 86 dmg · range 30 · burst 180",
+   "user": "Junkers",
+   "state": "rework",
+   "note": "",
+   "touched": true
+  },
+  "Turret_Zapper": {
+   "tech": "arc zapper",
+   "effect": "Burn 97 dmg · range 24",
+   "user": "Junkers",
+   "state": "rework",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Turret_ChargeRailgun": {
+   "tech": "charge railgun",
+   "effect": "Bullet 187 dmg · range 45.9 · burst 3",
+   "user": "Ascendant Helix",
+   "state": "rework",
+   "note": "Give it something better than mere bullets.",
+   "touched": true
+  },
+  "VFES_Turret_TeslaBlaster": {
+   "tech": "tesla arc",
+   "effect": "Smoke 10 dmg · range 32.9",
+   "user": "Ascendant Helix",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "AA_BlackDefiler": {
+   "tech": "flesh spewer",
+   "effect": "AA_BlackHiveBolt 107 dmg · blast r3.9 · range 28.9",
+   "user": "Geonosian Foundry Hive",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "VFEI2_Thornworm": {
+   "tech": "thorn spitter (propose sonic rework)",
+   "effect": "Stab 86 dmg · range 28.9 · burst 3",
+   "user": "Geonosian Foundry Hive",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "VFEI2_Vilelobber": {
+   "tech": "bio-lobber (propose sonic rework)",
+   "effect": "VFEI2_AcidSpit 86 dmg · blast r3.9 · range 500",
+   "user": "Geonosian Foundry Hive",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "AA_FoamBelcher": {
+   "tech": "living foam gland",
+   "effect": "Extinguish 9999 dmg · range 15.9 · burst 41",
+   "user": "The Assailant's flesh (anomaly)",
+   "state": "undecided",
+   "note": "Begs for some remaining Assailant bio fortress dungeon later in the game.",
+   "touched": true
+  },
+  "AB_Turret_Propane": {
+   "tech": "propane burner",
+   "effect": "Flame 2 dmg · range 10.9",
+   "user": "Junkers",
+   "state": "rework",
+   "note": "BIG flamer.",
+   "touched": true
+  },
+  "DetColumnMod": {
+   "tech": "cluster charge column",
+   "effect": "Bomb 250 dmg · blast r3.9 · range 3.9",
+   "user": "Jawa Trade Moot",
+   "state": "keep",
+   "note": "Used as traps, defenses of vehicle entrances, and frequently backfiring on the owners. ",
+   "touched": true
+  },
+  "EMPColumnMod": {
+   "tech": "stun pulse (ion-adjacent)",
+   "effect": "Stun 30 dmg · blast r4.9 · range 3.9",
+   "user": "Jawa Trade Moot",
+   "state": "rework",
+   "note": "Used as traps, defenses of vehicle entrances, and frequently backfiring on the owners. Rework to ion effect.",
+   "touched": true
+  },
+  "FlameColumnMod": {
+   "tech": "flame column",
+   "effect": "Flame 120 dmg · blast r3.9 · range 3.9",
+   "user": "Jawa Trade Moot",
+   "state": "keep",
+   "note": "Used as traps, defenses of vehicle entrances, and frequently backfiring on the owners.",
+   "touched": true
+  },
+  "HMC_Wall_FireShotgun_Turret": {
+   "tech": "Burn",
+   "effect": "Burn 102 dmg · range 14.9 · burst 2",
+   "user": "Common / multiple",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_LightIonCannon": {
+   "tech": "light ion cannon",
+   "effect": "OuterRim_BlasterIon 10 dmg · range 29.9 · burst 2",
+   "user": "Galactic Empire",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "OuterRim_LightLaserCannon_Corellia": {
+   "tech": "light blaster cannon",
+   "effect": "OuterRim_Blaster 200 dmg · range 29.9 · burst 4",
+   "user": "Common / multiple",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_LightLaserCannon_Coruscant": {
+   "tech": "light blaster cannon",
+   "effect": "OuterRim_Blaster 200 dmg · range 29.9 · burst 4",
+   "user": "Common / multiple",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "OuterRim_LightLaserCannon_Tatooine": {
+   "tech": "light blaster cannon",
+   "effect": "OuterRim_Blaster 200 dmg · range 29.9 · burst 4",
+   "user": "Common / multiple",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "OuterRim_PTowerTurret": {
+   "tech": "P-Tower dish (old anti-armor)",
+   "effect": "OuterRim_Blaster 200 dmg · range 32.9",
+   "user": "Common / multiple",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "Turret_FoamTurret": {
+   "tech": "containment foam",
+   "effect": "Extinguish 9999 dmg · range 19.9 · burst 41",
+   "user": "Common / multiple",
+   "state": "keep",
+   "note": "",
+   "touched": false
+  },
+  "VFEI2_Thornspitter": {
+   "tech": "thorn spitter (propose sonic rework)",
+   "effect": "Stab 86 dmg · range 16.9",
+   "user": "Geonosian Foundry Hive",
+   "state": "rework",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Turret_Flame": {
+   "tech": "flamer turret",
+   "effect": "Flame 12 dmg · range 16.9",
+   "user": "Wildsteam Clan",
+   "state": "undecided",
+   "note": "",
+   "touched": true
+  },
+  "Turret_AncientArmoredTurret": {
+   "tech": "ancient defender",
+   "effect": "Bullet 86 dmg · range 36.9 · burst 3",
+   "user": "Cradle / Rakatan ruins",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "Turret_BeamRepeater": {
+   "tech": "beam repeater (shield-bypass)",
+   "effect": "BeamBypassShields 64 dmg · range 24.9 · burst 30",
+   "user": "Hutt Cartel",
+   "state": "rework",
+   "note": "",
+   "touched": true
+  },
+  "VQE_AncientShieldedTurret": {
+   "tech": "ancient shielded turret",
+   "effect": "Bullet 86 dmg · range 28.9 · burst 2",
+   "user": "Forsaken vaults",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "HMC_Wall_Emp_Turret": {
+   "tech": "wall EMP pulse",
+   "effect": "EMP 60 dmg · blast r6.9 · range 37.9",
+   "user": "Jawa clans (player)",
+   "state": "keep",
+   "note": "Won't be available at first, need to research out way up to incorporating Jawa know-how with shipboard systems (upgrade tier 1)",
+   "touched": true
+  },
+  "HMC_Wall_Emp_Turret_Ship": {
+   "tech": "naval wall EMP pulse",
+   "effect": "EMP 60 dmg · blast r6.9 · range 39.9",
+   "user": "Gravship (the Utinni)",
+   "state": "keep",
+   "note": "Won't be available at first, need to research out way up to incorporating Jawa know-how with shipboard systems (upgrade tier 2)",
+   "touched": true
+  },
+  "HMC_Wall_Foam_Turret": {
+   "tech": "wall foam sprayer",
+   "effect": "Extinguish 9999 dmg · range 19.9 · burst 40",
+   "user": "Common / multiple",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "HMC_Wall_Rocket_Turret": {
+   "tech": "wall rocket rack",
+   "effect": "Bomb 161 dmg · blast r3.9 · range 44.9",
+   "user": "Junkers",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "BreadMoAM_Turret_ShotgunTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 102 dmg · range 17.9",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "BreadMoAM_Turret_ShotgunTurretN": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 102 dmg · range 17.9",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "DP_MinigunTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 10 dmg · range 30.9 · burst 25",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "FT_AutoCannon": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 200 dmg · range 34.9 · burst 5",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "FT_Maxim4M": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 12 dmg · range 30.9 · burst 20",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "FT_RecoillessGun": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 187 dmg · range 39.9",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "HMC_Wall_LightMachinegun_Turret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 91 dmg · range 32.9 · burst 3",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "HMC_Wall_MachineCannon_Turret_Ship": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 187 dmg · range 39.9 · burst 4",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "HMC_Wall_Minigun_Turret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 86 dmg · range 34.9 · burst 20",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "HMC_Wall_Minigun_Turret_Ship": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 86 dmg · range 37.9 · burst 15",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "ShipWallMountMiniTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 12 dmg · range 28.9 · burst 2",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "Turret_AutoMiniTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 86 dmg · range 45.9",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "Turret_MiniTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 12 dmg · range 28.9 · burst 2",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "Turret_TacticalTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 86 dmg · range 19.9 · burst 2",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Complex_Charge": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 94 dmg · range 29.9 · burst 12",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Complex_Hmg": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 200 dmg · range 32.9 · burst 8",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Complex_Minigun": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 12 dmg · range 30.9 · burst 12",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Turret_ArmoredTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 12 dmg · range 28.9 · burst 2",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Turret_ChargeTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 91 dmg · range 24.9 · burst 4",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Turret_Concealed": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 200 dmg · range 26.9 · burst 3",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Turret_MilitaryTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 12 dmg · range 33.5 · burst 3",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "VFES_Turret_ShotgunTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 18 dmg · range 15.9",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "VulcanTurret": {
+   "tech": "slugthrower (bullets)",
+   "effect": "Bullet 94 dmg · range 25.9 · burst 4",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "BMAD_GrowthTurret": {
+   "tech": "growth ray",
+   "effect": "BS_IndictedDamage 10 dmg · range 24.9",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "BMAD_ShrinkTurret": {
+   "tech": "shrink ray",
+   "effect": "BS_IndictedDamage 10 dmg · range 24.9",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "DeadColumnMod": {
+   "tech": "Deadlife dust column",
+   "effect": "DeadlifeDust ? dmg · blast r0.1 · range 3.9 · burst 3",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "FT_Turret_Mortar": {
+   "tech": "(Fortifications)",
+   "effect": "? ? dmg · range 100",
+   "user": "Nobody (cut)",
+   "state": "cut",
+   "note": "",
+   "touched": false
+  },
+  "Turret_AutoChargeBlaster_OP": {
+   "tech": "archotech charge turret",
+   "effect": "Bullet 187 dmg · range 400 · burst 10",
+   "user": "Free Droid Enclaves",
+   "state": "keep",
+   "note": "Reclaimed tech by the Free Droids they've rediscovered in the great Machine ruints they dwell in. Something's... down there. Talking to them.",
+   "touched": true
+  },
+  "VFES_Complex_GraserCannon": {
+   "tech": "(VFE-Security)",
+   "effect": "? ? dmg · range 29.9 · burst 8",
+   "user": "Hutt Cartel",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "VFES_Complex_HeavyIncineratorComplex": {
+   "tech": "(VFE-Security)",
+   "effect": "? ? dmg · range 11.9",
+   "user": "Hutt Cartel",
+   "state": "keep",
+   "note": "",
+   "touched": true
+  },
+  "VFES_Turret_Searchlight": {
+   "tech": "(VFE-Security)",
+   "effect": "? ? dmg · range 24.9",
+   "user": "Common / multiple",
+   "state": "keep",
+   "note": "Neat \"non weapon\" that can be added to rural outposts ",
+   "touched": true
+  }
+ }
+}
