@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  IsekaiTraits_StarWarsReflavor.xml       Jawa_Patches · authored 2026-08-29
+  ============================================================================
+
+  PAWN_FLAVOR_STARWARS_1, owner's ruling: ISEKAI RPG LEVELING stays for its
+  leveling machinery, its fiction goes. CUTTING its 47 TraitDefs would break
+  the mod - every hook (XP multipliers, stat/star bonuses, NPC trait rolling,
+  rank grants, color-coding) is hardcoded to the literal Isekai_* defNames in
+  IsekaiTraitHelper.cs / PawnStatGenerator.cs. So: keep every defName, replace
+  the FICTION - the 5 isekai-origin traits and all 10 rank traits. The other
+  32 traits (Iron Will, Glass Cannon, ...) are genre-neutral RPG idiom and
+  stay untouched.
+
+  Reframe: ranks become Bounty Hunters' Guild threat ratings (the letter is
+  kept so the ladder stays legible); Rank Nation becomes a sector-class
+  threat. Origins become Force fiction: Chosen One, Dark Side Ascendant,
+  Force Echo, Foresight-Touched, Outlander.
+
+  Mechanics bullet lines are preserved VERBATIM (including the mod's own UI
+  terms "constellation" and "star points"); only cannot-have lists swap in the
+  new labels - the underlying conflictingTraits reference defNames and are
+  untouched. Source read 2026-08-29 from workshop 3657580708
+  Defs/TraitDefs/IsekaiTraits.xml + RankTraits.xml (single-degree traits;
+  label/description live on degreeDatas/li).
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>ISEKAI RPG LEVELING</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- ===================== the five origins ===================== -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Protagonist"]/degreeDatas/li/label</xpath>
+          <value><label>chosen one</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Protagonist"]/degreeDatas/li/description</xpath>
+          <value><description>The Force has chosen this one. Prophecy walks a step ahead of them, the galaxy bends toward their story, and they grow faster than anyone else alive.\n\n• x10 XP multiplier\n• +2 bonus stat points per level\n• Cannot have: Dark Side Ascendant, Foresight-Touched, Outlander</description></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Antagonist"]/degreeDatas/li/label</xpath>
+          <value><label>dark side ascendant</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Antagonist"]/degreeDatas/li/description</xpath>
+          <value><description>This one has given themselves to the dark side. Power comes easily through fear and conflict, but their presence chills a room like a breath on the back of the neck.\n\n• x8 XP multiplier\n• +25% melee damage\n• +10% move speed\n• -25% social impact\n• -25 opinion from all other pawns\n• Cannot have: Chosen One, Outlander</description></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Reincarnated"]/degreeDatas/li/label</xpath>
+          <value><label>force echo</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Reincarnated"]/degreeDatas/li/description</xpath>
+          <value><description>A soul the Force has carried into a second life with the old life's memories intact. The body starts over; the pattern of their becoming does not.\n\n• Resets level to 1 and all stats to base (New Game+)\n• x5 XP multiplier\n• +10 bonus star points\n• +1 star point every 3 levels instead of 5\n• Constellation tree progress preserved\n• Cannot have: Chosen One, Dark Side Ascendant, Hollow Core</description></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Regressor"]/degreeDatas/li/label</xpath>
+          <value><label>foresight-touched</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Regressor"]/degreeDatas/li/description</xpath>
+          <value><description>The Force showed this one a future they have already lived. They walk back through their own days carrying fragments of what comes next, and can remake their path at will.\n\n• x4 XP multiplier\n• Free constellation respec (always)\n• Cannot have: Chosen One</description></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_SummonedHero"]/degreeDatas/li/label</xpath>
+          <value><label>outlander</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_SummonedHero"]/degreeDatas/li/description</xpath>
+          <value><description>Pulled across the stars to a war that was never theirs, this outlander rises fast and stands unshaken - but home is a point of light they cannot find in the night sky.\n\n• x3 XP multiplier\n• +1 bonus stat point per level\n• Highly resistant to mental breaks\n• +25% social impact\n• -8 mood (displaced from home)\n• Cannot have: Chosen One, Dark Side Ascendant</description></value>
+        </li>
+
+        <!-- ============ the rank ladder: Guild threat ratings ============ -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_F"]/degreeDatas/li/label</xpath>
+          <value><label>guild rating F</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_F"]/degreeDatas/li/description</xpath>
+          <value><description>The Bounty Hunters' Guild file on this one is a single line: no threat, no price. Spacers look past them at the cantina bar, and no board on the Rim carries their name.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_E"]/degreeDatas/li/label</xpath>
+          <value><label>guild rating E</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_E"]/degreeDatas/li/description</xpath>
+          <value><description>Rated E by the Guild - barely worth the flimsi the file is printed on. A name that gets checked once and forgotten.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_D"]/degreeDatas/li/label</xpath>
+          <value><label>guild rating D</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_D"]/degreeDatas/li/description</xpath>
+          <value><description>A D-rated Guild file: unremarkable, unpriced, undistinguished. One more face in a spaceport crowd.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_C"]/degreeDatas/li/label</xpath>
+          <value><label>guild rating C</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_C"]/degreeDatas/li/description</xpath>
+          <value><description>Rated C - competent enough that the Guild keeps the file current. Local muscle knows the name; offworlders don't.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_B"]/degreeDatas/li/label</xpath>
+          <value><label>guild rating B</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_B"]/degreeDatas/li/description</xpath>
+          <value><description>A B-rated file, flagged for caution. Veteran hunters read it twice, and smart crews charge extra when this name is on the manifest.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_A"]/degreeDatas/li/label</xpath>
+          <value><label>guild rating A</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_A"]/degreeDatas/li/description</xpath>
+          <value><description>Rated A - elite. Hunters speak the name carefully, sector command wants weekly updates, and the file carries a standing advisory: do not engage alone.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_S"]/degreeDatas/li/label</xpath>
+          <value><label>guild rating S</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_S"]/degreeDatas/li/description</xpath>
+          <value><description>An S-rated file, sealed above sector level. The name is spoken with reverence in cantinas and with dread in war rooms; a room goes quiet when they walk in.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_SS"]/degreeDatas/li/label</xpath>
+          <value><label>guild rating SS</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_SS"]/degreeDatas/li/description</xpath>
+          <value><description>Rated SS - the Guild prices them like a warship, not a person. Sector governors bid for their loyalty and hedge against their anger.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_SSS"]/degreeDatas/li/label</xpath>
+          <value><label>guild rating SSS</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_SSS"]/degreeDatas/li/description</xpath>
+          <value><description>SSS - the apex classification, issued a handful of times in Guild history. Moffs would trade fleets to own this one, and their movements redraw the sector maps.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_Nation"]/degreeDatas/li/label</xpath>
+          <value><label>sector-class threat</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Rank_Nation"]/degreeDatas/li/description</xpath>
+          <value><description>No longer measured against people. The ISB weighs this one against armies, treaties are drafted with them in mind, and every guild on the Rim keeps a standing file on where they were last seen.</description></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+</Patch>
