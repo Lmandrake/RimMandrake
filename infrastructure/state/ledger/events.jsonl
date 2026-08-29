@@ -2892,3 +2892,4 @@
 {"seat":"FOUNDRY","event":"start","id":"BRIDGE_KCSG_VGE_TOOLS_1","ts":"2026-08-29T23:01:59Z"}
 {"seat":"FOUNDRY","event":"block","id":"BRIDGE_KCSG_VGE_TOOLS_1","reason":"built clean, not deployed - game up, BENCH holds bridge","ts":"2026-08-29T23:02:38Z"}
 {"seat":"OWNER","event":"note","id":"ASSAILANT_FLESH_DUNGEON_1","text":"Lore flag RESOLVED same day: victims AND tyrants both true; assailant unnamed and never sympathetic; the dungeon is the designed reversal beat. canon.yml rakata.victims_and_tyrants + spec 'the dark half' carry it.","ownerSaid":"The Rakata were the victims, absolutely... but they were themselves destructive, self-destroying, dark force wielding megastructure-building tyrants","ts":"2026-08-29T23:12:21Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-08-29T23:12:33Z"}
