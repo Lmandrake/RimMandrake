@@ -503,6 +503,22 @@ KIT = {
     <apparelTags>
       <li>ImperialStormtrooper</li>
     </apparelTags>
+    <!-- EMPIRE_TROOPER_TRAINING_1. Same mechanism OuterRim_ImpStormtrooper uses
+         (Defs/PawnKindDefs/PawnKinds_Stormtroopers.xml, workshop 2919248699,
+         both OuterRim core and GalacticEmpire active in this mod list so the
+         class resolves). severityRange matches the base trooper, not a
+         specialty tier. -->
+    <modExtensions>
+      <li Class="TabulaRasa.DefModExt_PawnKindExtended">
+        <additionalHediffs>
+          <li>
+            <hediff>OuterRim_StormtrooperTraining</hediff>
+            <severityRange>0.1~0.48</severityRange>
+          </li>
+        </additionalHediffs>
+        <randomAdditionalHediff>false</randomAdditionalHediff>
+      </li>
+    </modExtensions>
     <forceNormalGearQuality>true</forceNormalGearQuality>
       <!-- issued kit only. An imperial trooper carries what the quartermaster gave him -->
     <inventoryOptions>
@@ -547,6 +563,19 @@ KIT = {
     <apparelTags>
       <li>ImperialArmy</li>
     </apparelTags>
+    <!-- EMPIRE_TROOPER_TRAINING_1. severityRange matches OuterRim's specialty
+         troopers (arty/jump/incinerator), the closest analog to a heavy. -->
+    <modExtensions>
+      <li Class="TabulaRasa.DefModExt_PawnKindExtended">
+        <additionalHediffs>
+          <li>
+            <hediff>OuterRim_StormtrooperTraining</hediff>
+            <severityRange>0.2~0.68</severityRange>
+          </li>
+        </additionalHediffs>
+        <randomAdditionalHediff>false</randomAdditionalHediff>
+      </li>
+    </modExtensions>
     <forceNormalGearQuality>true</forceNormalGearQuality>
       <!-- issued kit only. An imperial trooper carries what the quartermaster gave him -->
     <inventoryOptions>
@@ -583,6 +612,19 @@ KIT = {
     <apparelTags>
       <li>ImperialOfficer</li>
     </apparelTags>
+    <!-- EMPIRE_TROOPER_TRAINING_1. severityRange matches OuterRim's own
+         OuterRim_ImperialOfficer, the direct analog for this kind's label. -->
+    <modExtensions>
+      <li Class="TabulaRasa.DefModExt_PawnKindExtended">
+        <additionalHediffs>
+          <li>
+            <hediff>OuterRim_StormtrooperTraining</hediff>
+            <severityRange>0.3~0.45</severityRange>
+          </li>
+        </additionalHediffs>
+        <randomAdditionalHediff>false</randomAdditionalHediff>
+      </li>
+    </modExtensions>
     <forceNormalGearQuality>true</forceNormalGearQuality>
       <!-- issued kit only. An imperial trooper carries what the quartermaster gave him -->
     <inventoryOptions>
