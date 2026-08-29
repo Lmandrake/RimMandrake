@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:21:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T01:24:50Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -261,13 +261,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAWN_WEAPON_POOL_JOIN_TOOL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAWN_WEAPON_POOL_JOIN_TOOL_1.md
-
-## GM_GATE_INCIDENT_SCHEDULE_1 jawa/incident_schedule (SimTools) queues incidents against the player but sits OUTSIDE #if JAWA_GM_TOOLS, contradicting the EventTools doctrine line 'everything that acts on the player is behind the gate' — audit SimTools' storyteller section for other un-gated actors and wrap them; found 2026-08-28 while fixing the gate guard's false positive
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GM_GATE_INCIDENT_SCHEDULE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GM_GATE_INCIDENT_SCHEDULE_1.md

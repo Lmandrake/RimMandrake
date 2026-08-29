@@ -2639,3 +2639,6 @@
 {"seat":"BENCH","event":"file","id":"GM_GATE_INCIDENT_SCHEDULE_1","title":"jawa/incident_schedule (SimTools) queues incidents against the player but sits OUTSIDE #if JAWA_GM_TOOLS, contradicting the EventTools doctrine line 'everything that acts on the player is behind the gate' — audit SimTools' storyteller section for other un-gated actors and wrap them; found 2026-08-28 while fixing the gate guard's false positive","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-08-29T01:18:21Z"}
 {"seat":"FOUNDRY","event":"note","id":"EMPIRE_RAID_QUICKTEST_1","text":"Also check: EMPIRE_TROOPER_TRAINING_1's modExtensions (OuterRim_StormtrooperTraining hediff) are now authored on Jawa_Empire_Grunt/Heavy/Specialist - confirm the hediff shows in each kind's health tab on this same quicktest, piggybacking per that item's own criteria.","ts":"2026-08-29T01:21:45Z"}
 {"seat":"FOUNDRY","event":"close","id":"EMPIRE_TROOPER_TRAINING_1","sha":"8b7e639b","ts":"2026-08-29T01:21:45Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GM_GATE_INCIDENT_SCHEDULE_1","ts":"2026-08-29T01:24:32Z"}
+{"seat":"FOUNDRY","event":"start","id":"GM_GATE_INCIDENT_SCHEDULE_1","ts":"2026-08-29T01:24:32Z"}
+{"seat":"FOUNDRY","event":"close","id":"GM_GATE_INCIDENT_SCHEDULE_1","sha":"f47c3984","ts":"2026-08-29T01:24:50Z"}
