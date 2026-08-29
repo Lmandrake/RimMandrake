@@ -318,322 +318,293 @@
             <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!--
-          🔴 EVERYTHING BELOW DEPENDS ON A DIFFERENT MOD FROM THE ONE THIS BLOCK IS
-          GUARDED ON, and until 2026-08-22 nothing said so.
-
-          Above this line the targets are `Force_LightsaberBase` and
-          `Force_ImbuedBlade`, whose `<tools>` the LIGHTSABER mod ships itself —
-          those are correctly covered by the outer guard.
-
-          Below it the targets are the CONCRETE sabers, and they carry no `<tools>`
-          of their own. Their `hilt/tip/edge` tools are added at load by
-          `Star Wars KotOR Weapons and Armor`
-          (`1.6/AdditionalMods/_TheForceLightsabers/Patches/Patch_KotORLightsaberBalancing.xml`),
-          which is why the label is `tip` and not the base's `point`, and why the
-          capacities read `guy762_ToolCapacity_SaberStab` / `_SaberSlash`.
-
-          ⚠️ Load order makes it work and nothing enforces it: KotOR Weapons is 569,
-          this mod is 570. Remove KotOR Weapons and the lightsaber mod stays active,
-          so the outer guard still passes and all 24 conditionals below silently
-          no-op — the exact failure this repo keeps re-learning.
-
-          ⛔ NOT one FindMod listing both mods: `<mods>` is an OR and this needs an AND.
-        -->
-        <li Class="PatchOperationFindMod">
-          <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-          <match Class="PatchOperationSequence">
-            <operations>
-            <!-- Force_Lightsaber_Custom / hilt AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Custom / tip AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Custom / edge AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Dual / hilt AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Dual / tip AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Dual / edge AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Inquisitor / hilt AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Inquisitor / tip AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Inquisitor / edge AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Curved / hilt AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Curved / tip AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Curved / edge AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Shoto / hilt AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Shoto / tip AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Shoto / edge AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Crossguard / hilt AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="hilt"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="hilt"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="hilt"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Crossguard / tip AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="tip"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="tip"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="tip"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Lightsaber_Crossguard / edge AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Darksaber / hilt AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Darksaber / tip AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Darksaber / edge AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Broadsaber / hilt AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="hilt"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Broadsaber / tip AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="tip"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="tip"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="tip"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            <!-- Force_Broadsaber / edge AP -> 0.00 -->
-            <li Class="PatchOperationConditional">
-              <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]/armorPenetration</xpath>
-              <match Class="PatchOperationReplace">
-                <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]/armorPenetration</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </match>
-              <nomatch Class="PatchOperationAdd">
-                <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]</xpath>
-                <value><armorPenetration>0.00</armorPenetration></value>
-              </nomatch>
-            </li>
-            </operations>
+        <!-- Force_Lightsaber_Custom / hilt AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Custom / tip AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Custom / edge AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Dual / hilt AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Dual / tip AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Dual / edge AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Inquisitor / hilt AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Inquisitor / tip AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Inquisitor / edge AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Curved / hilt AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Curved / tip AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Curved / edge AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Shoto / hilt AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Shoto / tip AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Shoto / edge AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Crossguard / hilt AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="hilt"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Crossguard / tip AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="tip"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Lightsaber_Crossguard / edge AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Darksaber / hilt AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Darksaber / tip AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Darksaber / edge AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Broadsaber / hilt AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Broadsaber / tip AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="tip"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- Force_Broadsaber / edge AP -> 0.00 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
+          </nomatch>
         </li>
       </operations>
     </match>
@@ -1568,398 +1539,6 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Bullet_ChargeSniperRifle"]/projectile/armorPenetrationBase</xpath>
           <value><armorPenetrationBase>0.85</armorPenetrationBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>[AB] Xenotype: Yautja</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- ABYautja_Melee_WarClub / handle AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_WarClub / club AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="club"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="club"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="club"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_WarClub / club blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="club blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="club blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="club blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorAxe / handle AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorAxe"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorAxe"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorAxe"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorAxe / blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorAxe"]/tools/li[label="blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorAxe"]/tools/li[label="blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorAxe"]/tools/li[label="blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorSword / handle AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorSword / blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorSword / point AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_ElderSword / handle AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_ElderSword / blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_ElderSword / point AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorKatana / handle AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorKatana / blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorKatana / point AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_CeremonialDagger / handle AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_CeremonialDagger / blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_CeremonialDagger / point AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_HandScythe / blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_HandScythe / point AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_BladedMaul / point AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_BladedMaul / blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_BladedMaul / handle AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorScythe / point AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorScythe / blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorScythe / handle blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="handle blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="handle blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="handle blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorWarAxe / edge AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorWarAxe"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorWarAxe"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorWarAxe"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_PredatorWarAxe / blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorWarAxe"]/tools/li[label="blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorWarAxe"]/tools/li[label="blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorWarAxe"]/tools/li[label="blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_Glaive / point AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_Glaive / blade AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="blade"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="blade"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="blade"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_Flail / point AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_Flail / flail AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="flail"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="flail"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="flail"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- ABYautja_Melee_Flail / handle AP -> 0.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>0.60</armorPenetration></value>
-          </nomatch>
         </li>
       </operations>
     </match>

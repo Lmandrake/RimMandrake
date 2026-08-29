@@ -1849,14 +1849,14 @@
             </value>
           </nomatch>
         </li>
-        <!-- Leather_Light : baseline hide -->
+        <!-- Leather_Light : baseline hide; naturally armoured -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="Leather_Light"]/stuffProps/statFactors</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="Leather_Light"]/stuffProps/statFactors</xpath>
             <value>
             <statFactors>
-              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Sharp>1.40</ArmorRating_Sharp>
               <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
               <ArmorRating_Heat>0.40</ArmorRating_Heat>
               <Beauty>1.05</Beauty>
@@ -1868,7 +1868,7 @@
             <xpath>/Defs/ThingDef[defName="Leather_Light"]/stuffProps</xpath>
             <value>
             <statFactors>
-              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Sharp>1.40</ArmorRating_Sharp>
               <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
               <ArmorRating_Heat>0.40</ArmorRating_Heat>
               <Beauty>1.05</Beauty>
@@ -2503,98 +2503,6 @@
               <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
               <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
               <ArmorRating_Heat>0.40</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Grimstone : Beasts</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- Grimstone_Leather_Griffar : large beast; naturally armoured -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="Grimstone_Leather_Griffar"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="Grimstone_Leather_Griffar"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.50</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.42</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="Grimstone_Leather_Griffar"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.50</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.42</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </li>
-        <!-- Grimstone_Leather_Belloceros : large beast -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="Grimstone_Leather_Belloceros"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="Grimstone_Leather_Belloceros"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.30</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.42</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="Grimstone_Leather_Belloceros"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.30</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.42</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </li>
-        <!-- Grimstone_Leather_Grimshadow : heat-adapted: ablative hide, resists energy (L11); naturally armoured -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="Grimstone_Leather_Grimshadow"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="Grimstone_Leather_Grimshadow"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.35</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.05</ArmorRating_Blunt>
-              <ArmorRating_Heat>1.30</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="Grimstone_Leather_Grimshadow"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.35</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.05</ArmorRating_Blunt>
-              <ArmorRating_Heat>1.30</ArmorRating_Heat>
               <Beauty>1.05</Beauty>
               <Comfort>1.00</Comfort>
             </statFactors>
@@ -3550,42 +3458,6 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Skunks</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- Leather_Skunk : baseline hide -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="Leather_Skunk"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="Leather_Skunk"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.40</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.15</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="Leather_Skunk"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.40</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.15</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Star Wars Animal Collection (Continued)</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -4442,98 +4314,6 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Vanilla Animals Expanded</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- AEXP_Leather_Wildebeest : large beast -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AEXP_Leather_Wildebeest"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AEXP_Leather_Wildebeest"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.30</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.42</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AEXP_Leather_Wildebeest"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.30</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.42</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </li>
-        <!-- AEXP_Leather_Platypus : baseline hide -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AEXP_Leather_Platypus"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AEXP_Leather_Platypus"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.40</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.15</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AEXP_Leather_Platypus"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.40</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.15</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </li>
-        <!-- AEXP_Leather_Lion : heat-adapted: ablative hide, resists energy (L11) -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AEXP_Leather_Lion"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AEXP_Leather_Lion"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.15</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.05</ArmorRating_Blunt>
-              <ArmorRating_Heat>1.30</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AEXP_Leather_Lion"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.15</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.05</ArmorRating_Blunt>
-              <ArmorRating_Heat>1.30</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Vanilla Animals Expanded — Waste Animals</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -4654,42 +4434,6 @@
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="GR_HybridScales"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.40</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.15</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>[AB] Xenotype: Yautja</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- ABYautja_Leather : baseline hide -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Leather"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Leather"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.40</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.15</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="ABYautja_Leather"]/stuffProps</xpath>
             <value>
             <statFactors>
               <ArmorRating_Sharp>1.20</ArmorRating_Sharp>

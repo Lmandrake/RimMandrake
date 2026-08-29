@@ -885,8 +885,16 @@ def do_offline(fp, note=""):
 
 def do_patches():
     src = os.path.join(ARMOURY, "Source")
+    # 🔴 gen_armour_patch.py (defence: leather/penetration/ratings/damage
+    # categories) is a SEPARATE generator from gen_armoury_patch.py (weapons)
+    # and was never called here — found 2026-08-29 when a re-freeze exposed
+    # 160 validate errors in Armour_Leather.xml/Armour_Penetration.xml, stale
+    # since 2026-08-13 while every other patch family got rebuilt on every
+    # --patches run. Both must run for "armoury patch" to mean what it says.
+    ok = run([sys.executable, os.path.join(src, "gen_armour_patch.py")],
+             "armour patch (defence)")
     ok = run([sys.executable, os.path.join(src, "gen_armoury_patch.py")],
-             "armoury patch")
+             "armoury patch (weapons)") and ok
     ok = run([sys.executable, os.path.join(src, "gen_torpedo_speed.py")],
              "torpedo speed") and ok
 
