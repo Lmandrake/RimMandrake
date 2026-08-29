@@ -1,4 +1,4 @@
-# BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 — 11 more bridge tools, owner said "keep building" while the game loads
+# BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 — 12 more bridge tools, owner said "keep building" while the game loads
 
 Filed 2026-08-29, FOUNDRY. Sibling to `BRIDGE_LORDS_AND_GAPS_TOOLS_1` (the first 10).
 Written and BUILT during the game's own LOADING window — deploy needs the game closed,
@@ -28,6 +28,10 @@ New file `JawaBenchStorytellerTools2.cs` (7 tools):
   `CameraShaker.DoShake`, `FleckMaker.ThrowMetaIcon`.
 - `jawa/set_thing_props` (ungated) — retroactive quality/HP/faction/style on an
   ALREADY-SPAWNED thing; `build_batch`/`spawn_batch` only ever set these at spawn time.
+- `jawa/pawn_set_guest_status` (ungated, same tier as `set_pawn_faction`) —
+  `Pawn_GuestTracker.SetGuestStatus(Faction, GuestStatus)`, the last unbuilt row in the
+  roster's §0. Self-contained — the engine call already runs every notify/refresh, none
+  of the usual pawn-edit refresh traps apply.
 
 ## Verify
 
@@ -43,8 +47,9 @@ down-window, then prove each live (none of the 11 has ever been observed running
 ## Criteria
 - [x] 11 tools written, every signature read from 1.6 source via rimsage — including the
       one wrong guess (`genStepClass`) the compiler itself caught and forced a correction on.
-- [x] Builds clean (0 errors, 0 warnings) second pass.
-- [x] No name collision with the existing 263 (253 + the first 10) — 274 confirmed.
+- [x] Builds clean (0 errors, 0 warnings), third pass (11, then +1 for
+      `pawn_set_guest_status`, the roster's last open §0 row, added same sitting).
+- [x] No name collision with the existing 263 (253 + the first 10) — 275 confirmed.
 - [ ] Deployed. Needs the game down.
 - [ ] Each of the 11 proven live. Needs bridge/game-up after deploy.
 

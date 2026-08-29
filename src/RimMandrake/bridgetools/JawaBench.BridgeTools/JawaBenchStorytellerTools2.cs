@@ -1,7 +1,8 @@
-// JawaBenchStorytellerTools2.cs - seven more gaps: a mech cluster threat, the
+// JawaBenchStorytellerTools2.cs - eight more gaps: a mech cluster threat, the
 // incident queue's clear half, an arbitrary persistent game speed, the
 // letter-stack read (+ its gated delayed-send twin), one bundled
-// audio/visual-feedback tool, and retroactive props on an already-spawned thing.
+// audio/visual-feedback tool, retroactive props on an already-spawned thing,
+// and guest/prisoner/slave status - the last unbuilt row in §0 of the roster.
 //
 // EVERY SIGNATURE BELOW WAS READ OUT OF 1.6 SOURCE VIA rimsage, NOT GUESSED:
 //   RimWorld/MechClusterGenerator.cs   GenerateClusterSketch(points, map, startDormant, forceNoConditionCauser)
@@ -23,6 +24,12 @@
 //   Verse/Thing.cs                     HitPoints - public virtual settable property
 //   RimWorld/CompQuality.cs            SetQuality(QualityCategory, ArtGenerationContext?)
 //   RimWorld/CompStyleable.cs          styleDef - public field
+//   RimWorld/Pawn_GuestTracker.cs      SetGuestStatus(Faction newHost, GuestStatus) - a
+//                                      self-contained method: it already calls every
+//                                      notify/refresh (DisabledWorkTypesChanged,
+//                                      AddAndRemoveDynamicComponents, ownership/ideo/
+//                                      mechanitor notifies, reachability cache clear) -
+//                                      none of the pawn-editing refresh traps apply here.
 //
 // GATING follows the rule stated in JawaBenchEventTools.cs/GroupTools.cs/
 // IncidentTools.cs: #if JAWA_GM_TOOLS is for tools that make THE WORLD ACT on
@@ -476,6 +483,78 @@ namespace JawaBench.BridgeTools
                     maxHitPoints = t.def.useHitPoints ? (int?)t.MaxHitPoints : null,
                     factionAfter = t.Faction != null ? t.Faction.Name : null,
                     styleDefAfter = sAfter != null && sAfter.styleDef != null ? sAfter.styleDef.defName : null,
+                    ticksGame = TicksGameSafe()
+                };
+            }).ConfigureAwait(false);
+        }
+
+        // ================================================================
+        //  Guest / prisoner / slave status
+        // ================================================================
+
+        [Tool(
+            "jawa/pawn_set_guest_status",
+            Description =
+                "Set a pawn's guest/prisoner/slave status - Pawn_GuestTracker.SetGuestStatus" +
+                "(newHost, guestStatus). Self-contained: the engine method already runs every " +
+                "notify/refresh this needs (disabled work types, dynamic components, " +
+                "ownership/ideo/mechanitor notifies, reachability cache, attack-targets cache) " +
+                "- none of the usual pawn-editing refresh traps apply here, unlike " +
+                "jawa/set_pawn_backstory or jawa/set_pawn_appearance. Refuses (Log.Error inside " +
+                "the engine call, surfaced here rather than swallowed) if guestStatus=Guest and " +
+                "the pawn's own faction is hostile to newHost, or newHost equals the pawn's own " +
+                "faction.",
+            ResultDescription =
+                "success, pawn, hostFactionBefore/After, guestStatusBefore/After, " +
+                "resistanceAfter and willAfter (Prisoner only, freshly rolled by the engine call).")]
+        public static async Task<object> PawnSetGuestStatus(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id, thingId or name. Required.")]
+            string pawn = null,
+            [ToolParameter(Description = "'Guest', 'Prisoner' or 'Slave'. Required.")]
+            string guestStatus = null,
+            [ToolParameter(Description = "Host FactionDef defName. Omit/'null'/'none' for no host (only valid for Guest).")]
+            string hostFaction = null)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                if (p.guest == null) return Fail(p.LabelShortCap + " has no Pawn_GuestTracker (guest is null) - not a humanlike pawn?");
+
+                GuestStatus gs;
+                if (string.IsNullOrWhiteSpace(guestStatus) || !Enum.TryParse(guestStatus.Trim(), true, out gs))
+                    return Fail("'" + guestStatus + "' is not a GuestStatus. Accepted: " + string.Join(", ", Enum.GetNames(typeof(GuestStatus))));
+
+                Faction newHost = null;
+                if (!string.IsNullOrWhiteSpace(hostFaction) &&
+                    !string.Equals(hostFaction.Trim(), "null", StringComparison.OrdinalIgnoreCase) &&
+                    !string.Equals(hostFaction.Trim(), "none", StringComparison.OrdinalIgnoreCase))
+                {
+                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(hostFaction.Trim());
+                    if (fd == null) return Fail("No FactionDef '" + hostFaction + "'.", DefSuggestions<FactionDef>(hostFaction));
+                    newHost = Find.FactionManager.FirstFactionOfDef(fd);
+                    if (newHost == null) return Fail("FactionDef '" + hostFaction + "' exists but no such faction is in this world.");
+                }
+
+                var hostBefore = p.guest.HostFaction;
+                var statusBefore = p.guest.GuestStatus;
+
+                try { p.guest.SetGuestStatus(newHost, gs); }
+                catch (Exception e) { return Fail("SetGuestStatus threw " + e.GetType().Name + ": " + e.Message); }
+
+                return new
+                {
+                    success = true,
+                    pawn = p.LabelShortCap,
+                    hostFactionBefore = hostBefore != null ? hostBefore.Name : null,
+                    hostFactionAfter = p.guest.HostFaction != null ? p.guest.HostFaction.Name : null,
+                    guestStatusBefore = statusBefore.ToString(),
+                    guestStatusAfter = p.guest.GuestStatus.ToString(),
+                    resistanceAfter = gs == GuestStatus.Prisoner ? (float?)p.guest.resistance : null,
+                    willAfter = gs == GuestStatus.Prisoner ? (float?)p.guest.will : null,
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);
