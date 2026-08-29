@@ -702,3 +702,24 @@ tools only. Unknown whether the same call misreads when the companion is up.
 `get_cell_info` alone. **Generalises to:** any read tool whose "empty" answer carries an
 impossible sibling field (terrain None) is answering the wrong question — check a field that
 CANNOT be empty before believing one that can.
+
+## 🔴 Whole-map Set-terrain-(rect) cascaded into a per-frame NRE storm and render corruption (2026-08-29)
+
+**What worked first:** rect debug tools ARE drivable stock: `execute_debug_action` on the
+rect leaf arms the tool, then TWO `click_cell` calls (corner, corner) apply it — click-click,
+not a drag; the tool stays armed for further pairs. Proven on a 10x10 (screenshot-verified).
+**What then failed:** painting the full 250x250 map (10 bands x 2 passes, first with
+VFEArch_Grass — a CONSTRUCTED lawn floor that renders error-red painted raw) alongside
+destroy-non-colonists/clear-fog produced an every-frame `Root level exception in Update():
+NullReferenceException` (one ref, repeated forever), map-wide magenta/blue material
+corruption, and an unusable session. A 10x10 pass is NOT evidence for 62,500 cells x
+thousands of plant destructions on a 585-mod stack.
+**Also:** the debug LOG window auto-opens on the first error and then ABSORBS `click_cell`
+clicks (the dispatcher clicks center-screen after jumping the camera), so follow-up rect
+corners silently do nothing while the tool reads "First corner...". `rimworld/close_window`
+(stock) closes it — but by then the storm may already be running.
+**Fix:** terrain at scale is `jawa/set_terrain_batch`'s job; keep rect debug tools to small
+patches; pick NATURAL terrain defs (GrasslandSoil), never constructed floors; check
+`get_ui_state` for an open EditWindow_Log before any click_cell sequence.
+**Generalises to:** any stock click-driven tool — a window that auto-opens on error eats
+every later click, so the first error silently invalidates the rest of the batch.
