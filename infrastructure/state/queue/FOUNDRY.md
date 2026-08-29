@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:15:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T01:16:33Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -69,6 +69,16 @@ kind:     task
 blocked:  Only worth building if the owner chooses the rebuild in ASHKARR_IDEOLOGY_MODE_CALL_1. Filed so the cost of that choice is visible when he makes it, not so a seat starts on it.
 summary:  WORLDMUTATORLANDMARKIMPORTERS1 — the two bundles that cannot be carried by a file
 prose:    infrastructure/state/items/WORLD_MUTATOR_LANDMARK_IMPORTERS_1.md
+
+## JAWA_CULTURES_LEAK_TO_STRANGERS_1 Six unrelated ideoligions rolled our twelve CultureDefs and generated their own names
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     decision
+blocked:  no fix needed today - the measured leak was quicktest noise; the real question is entirely gated on ASHKARR_IDEOLOGY_MODE_CALL_1 (classic vs full ideology mode, owner's call, world-creation-time only) (on ASHKARR_IDEOLOGY_MODE_CALL_1)
+summary:  JAWACULTURESLEAKTOSTRANGERS1 — our authored cultures are in the general pool
+prose:    infrastructure/state/items/JAWA_CULTURES_LEAK_TO_STRANGERS_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -161,16 +171,6 @@ kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  NONCANONARRIVESBYPAWNKIND1 — a scope call, not a defect
 prose:    infrastructure/state/items/NONCANON_ARRIVES_BY_PAWNKIND_1.md
-
-## JAWA_CULTURES_LEAK_TO_STRANGERS_1 Six unrelated ideoligions rolled our twelve CultureDefs and generated their own names
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  JAWACULTURESLEAKTOSTRANGERS1 — our authored cultures are in the general pool
-prose:    infrastructure/state/items/JAWA_CULTURES_LEAK_TO_STRANGERS_1.md
 
 ## ION_TIERS_MEASURED_LIVE_1 Measure all three ion tiers live: mech, droid, and the flesh baseline that must not move
 state:    proposed

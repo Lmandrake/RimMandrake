@@ -2632,3 +2632,4 @@
 {"seat":"BENCH","event":"close","id":"QUEUE_GITHUB_MIRROR_1","sha":"b1c8f39a","ts":"2026-08-29T01:14:32Z"}
 {"seat":"BENCH","event":"reassign","id":"EMPIRE_PURSUIT_SURVEY_SHADOW_1","to":"FOUNDRY","ts":"2026-08-29T01:15:00Z"}
 {"seat":"FOUNDRY","event":"close","id":"BLIND_SCAN_RELATIVE_PATHS_1","sha":"24b15280","ts":"2026-08-29T01:15:55Z"}
+{"seat":"FOUNDRY","event":"block","id":"JAWA_CULTURES_LEAK_TO_STRANGERS_1","reason":"no fix needed today - the measured leak was quicktest noise; the real question is entirely gated on ASHKARR_IDEOLOGY_MODE_CALL_1 (classic vs full ideology mode, owner's call, world-creation-time only)","on":"ASHKARR_IDEOLOGY_MODE_CALL_1","ts":"2026-08-29T01:16:33Z"}
