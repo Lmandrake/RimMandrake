@@ -33,3 +33,15 @@ with a tiny `firstRaidDelayHours` proves waves actually fire.
 - [ ] The part exists in the campaign save with the owner's chosen values.
 - [ ] Pursuit faction is `Empire` (the reskinned vanilla def), not OuterRim_GalacticEmpire.
 - [ ] A raid wave proven to fire on a scratch game before the campaign relies on it.
+
+## RULED 2026-08-28, at the bench — all three knobs + the route
+- Route: **runtime insert** via bridge/C# into `Find.Scenario.parts`, then a save
+  proves it scribed. (Savegame-edit and freeze-time routes not chosen; when the
+  world freezes, the part rides the freeze scenario as a matter of course.)
+- `firstRaidDelayHours`: **immediate** — the pursuit clock starts at install.
+- Cadence: already ruled 2026-08-28 morning — **5-8 days global, 156±36h**.
+- `canDoNormalRaid`: **true** — pursuit waves PLUS ordinary storyteller Empire
+  raids; the Empire is both metronome and storyteller threat.
+Blocked only on the game being up with the bridge free; owner input is complete.
+Also ruled same sitting: CereanManeFix / KotORBandolierNorthFix /
+PhytokinBarkHeadFix stay DISABLED in ModsConfig.

@@ -2642,3 +2642,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"GM_GATE_INCIDENT_SCHEDULE_1","ts":"2026-08-29T01:24:32Z"}
 {"seat":"FOUNDRY","event":"start","id":"GM_GATE_INCIDENT_SCHEDULE_1","ts":"2026-08-29T01:24:32Z"}
 {"seat":"FOUNDRY","event":"close","id":"GM_GATE_INCIDENT_SCHEDULE_1","sha":"f47c3984","ts":"2026-08-29T01:24:50Z"}
+{"seat":"OWNER","event":"note","id":"PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1","text":"Owner ruled 2026-08-29: widen requiredWorkTags Violent to all 12 factions' combat kinds, reversing the 2026-08-22 Empire/Blackstar-only scope now that the 2026-08-27 harvest showed 5/5 bare pawns across the other ten carried a violence-disabling backstory with zero unexplained. Implementing in gen_pawnkind_roster.py's REQUIRE_VIOLENT set.","ownerSaid":"Widen it to all 12 factions","ts":"2026-08-29T05:01:28Z"}
