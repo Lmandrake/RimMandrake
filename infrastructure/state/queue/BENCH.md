@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T16:55:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T17:03:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -17,15 +17,6 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## EMPIRE_PURSUIT_SCENPART_INSTALL_1 Install endless Empire pursuit ScenPart into the campaign, with the owner
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  Install ScenPartRuthlessPursuingMechanoids targeting Empire (the reskinned
-prose:    infrastructure/state/items/EMPIRE_PURSUIT_SCENPART_INSTALL_1.md
 
 ## GRAVSHIP_LANDING_DIRECT_PLACE_1 Land a gravship without the cutscene machinery (skipCutscene route)
 state:    doing
