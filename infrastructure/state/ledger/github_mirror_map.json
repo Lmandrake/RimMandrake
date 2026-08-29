@@ -1,13 +1,13 @@
 {
  "ASHKARR_IDEOLOGY_MODE_CALL_1": {
-  "fp": "41c35d7d83fb",
+  "fp": "1a94346f13f7",
   "number": 1,
-  "open": true
+  "open": false
  },
  "AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1": {
-  "fp": "babad75f563f",
+  "fp": "82cdde9e300a",
   "number": 2,
-  "open": true
+  "open": false
  },
  "BLIND_SCAN_RELATIVE_PATHS_1": {
   "fp": "6e12a59130b0",
@@ -15,22 +15,37 @@
   "open": false
  },
  "BUILD_BATCH_FACTION_REJECTS_PLAYER_1": {
-  "fp": "6279d50addd9",
+  "fp": "bfa61700d640",
   "number": 4,
   "open": true
  },
  "BUILD_BATCH_OVERWRITES_SILENTLY_1": {
-  "fp": "0e8106c5376c",
+  "fp": "b250ec5b01ba",
   "number": 5,
   "open": true
  },
  "COLD_LOAD_RUN_SHEET_1": {
-  "fp": "d7f7bc350d9f",
+  "fp": "5776e2b34513",
   "number": 6,
+  "open": false
+ },
+ "COLD_LOAD_RUN_SHEET_2": {
+  "fp": "c88924f6364d",
+  "number": 33,
+  "open": true
+ },
+ "CORRECT_ASHKARR_IDEOLOGY_1": {
+  "fp": "33ddc396eb10",
+  "number": 34,
+  "open": true
+ },
+ "DROID_SYSTEM_BUILD_1": {
+  "fp": "b3590298e043",
+  "number": 35,
   "open": true
  },
  "DUMPER_SWALLOWS_CACHE_THROW_1": {
-  "fp": "1353c2ddbc78",
+  "fp": "2572b2235fbe",
   "number": 7,
   "open": true
  },
@@ -40,17 +55,17 @@
   "open": true
  },
  "EMPIRE_PURSUIT_SCENPART_INSTALL_1": {
-  "fp": "991ca49030c5",
+  "fp": "5975c32b7bd8",
   "number": 9,
-  "open": true
+  "open": false
  },
  "EMPIRE_PURSUIT_SURVEY_SHADOW_1": {
-  "fp": "b74d55dc892b",
+  "fp": "e8e8a3d5d6b1",
   "number": 10,
   "open": true
  },
  "EMPIRE_RAID_QUICKTEST_1": {
-  "fp": "74450049ad70",
+  "fp": "5f11c1e15be4",
   "number": 11,
   "open": true
  },
@@ -59,8 +74,13 @@
   "number": 12,
   "open": false
  },
+ "EMPIRE_WHITELIST_OVERRIDDEN_1": {
+  "fp": "69e046c8af9c",
+  "number": 36,
+  "open": true
+ },
  "FIRE_RAID_ECHOES_REQUESTED_FACTION_1": {
-  "fp": "d938e7dd3374",
+  "fp": "c6d75faba08f",
   "number": 13,
   "open": true
  },
@@ -70,43 +90,58 @@
   "open": false
  },
  "GRAVSHIP_LANDING_DIRECT_PLACE_1": {
-  "fp": "622394243402",
+  "fp": "2390f0a137e9",
   "number": 14,
-  "open": true
+  "open": false
  },
  "IKEE_WILDNESS_PATCH_DEAD_1": {
-  "fp": "5466da6afdd6",
+  "fp": "c148c204adfb",
   "number": 15,
+  "open": false
+ },
+ "ION_STUN_IGNORES_BODY_SIZE_1": {
+  "fp": "6ed98c2bd27f",
+  "number": 37,
   "open": true
  },
  "ION_TIERS_MEASURED_LIVE_1": {
-  "fp": "26a52cff2d41",
+  "fp": "01a70ff1b063",
   "number": 16,
-  "open": true
+  "open": false
  },
  "JAWA_CULTURES_LEAK_TO_STRANGERS_1": {
-  "fp": "d5679bc87048",
+  "fp": "5830a3a554ab",
   "number": 17,
-  "open": true
+  "open": false
  },
  "NONCANON_ARRIVES_BY_PAWNKIND_1": {
-  "fp": "1d350994721a",
+  "fp": "978e1ecd905e",
   "number": 18,
-  "open": true
+  "open": false
  },
  "NO_TOOL_REPORTS_MAP_TILE_1": {
-  "fp": "6e9158e503af",
+  "fp": "2a5faf1b0539",
   "number": 19,
   "open": true
  },
  "ORDERED_JOB_CANNOT_SOW_1": {
-  "fp": "3e3e68bf1ad0",
+  "fp": "baaddce7fcb3",
   "number": 20,
   "open": true
  },
+ "OTHER_STUN_WEAPONS_SURVEY_1": {
+  "fp": "694512606156",
+  "number": 38,
+  "open": true
+ },
  "PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1": {
-  "fp": "fb5ae55d5eba",
+  "fp": "793d0549a401",
   "number": 21,
+  "open": false
+ },
+ "PAWN_FLAVOR_STARWARS_1": {
+  "fp": "24a4879ca0bd",
+  "number": 39,
   "open": true
  },
  "PAWN_WEAPON_GEN_TAG_POOL_READ_1": {
@@ -115,12 +150,12 @@
   "open": false
  },
  "PAWN_WEAPON_POOL_JOIN_TOOL_1": {
-  "fp": "4a7d8f8974e8",
+  "fp": "1d316981590f",
   "number": 32,
-  "open": true
+  "open": false
  },
  "PLACER_IDENTITY_REPLAY_1": {
-  "fp": "a8c067ee3d7a",
+  "fp": "04ad7a442e40",
   "number": 23,
   "open": true
  },
@@ -130,7 +165,7 @@
   "open": false
  },
  "SIX_FACTIONS_NEVER_RAID_1": {
-  "fp": "2359ebd179ff",
+  "fp": "d8ee35d5c4d2",
   "number": 25,
   "open": true
  },
@@ -145,14 +180,19 @@
   "open": true
  },
  "THRUSTER_INSTABUILD_NEVER_ACTIVE_1": {
-  "fp": "9c57f58c82fe",
+  "fp": "14615c43b248",
   "number": 28,
+  "open": false
+ },
+ "WILD_ANIMALS_PADDED_LISTS_1": {
+  "fp": "7811f822fb1b",
+  "number": 40,
   "open": true
  },
  "WORLD_MUTATOR_LANDMARK_IMPORTERS_1": {
-  "fp": "8ad5f1cceca6",
+  "fp": "4f985fe057cb",
   "number": 29,
-  "open": true
+  "open": false
  },
  "seven-authored-factions-generate-and-field-their-own-kinds-5b90c7": {
   "fp": "80bb108fa0e6",
