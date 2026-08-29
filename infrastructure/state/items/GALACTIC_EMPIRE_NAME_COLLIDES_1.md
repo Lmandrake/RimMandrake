@@ -35,3 +35,22 @@ states). Named here only so the next reader does not re-derive it as a third def
 - [ ] Exactly one faction in a generated world reads `Galactic Empire`.
 - [ ] The faction that keeps the name is the one the campaign's fiction means, recorded with
       the reason.
+
+## RESOLVED 2026-08-28 — BENCH, on the owner's ruling
+The lore call this item waited for is ruled, once and for all (canon.yml
+`empire.outerrim_faction_excluded`): **vanilla `Empire` keeps the name**;
+`OuterRim_GalacticEmpire` is not renamed but EXCLUDED — its FactionDef is cut in
+Cherry Picker (present in live + ratified lists, measured 2026-08-28), so no
+generated world can field a second "Galactic Empire". No rename patch is needed;
+the owner's ruling reverses this item's own recommendation, deliberately — the
+Royalty permit/title machinery is the point of keeping vanilla `Empire` as vessel.
+
+- [x] Exactly one faction reads `Galactic Empire` — in any world generated after
+      the 2026-08-23 cut. In-game proof rides EMPIRE_RAID_QUICKTEST_1.
+- [x] The keeper is recorded with the reason: canon.yml `empire.*`, 2026-08-28.
+
+⚠️ RESIDUAL, measured today: `BENCH_console_fixed.rws` (the working save) was
+initiated BEFORE the cut and carries BOTH factions named "Galactic Empire"
+(`<def>OuterRim_GalacticEmpire</def>` present). Harmless for bench testing; ⛔ it
+can never become the freeze — the freeze is a NEW game initiation (canon planet
+sequence step 3: factions correct at initiation), at which this dissolves.

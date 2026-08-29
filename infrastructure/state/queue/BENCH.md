@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:01:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T01:03:59Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -42,16 +42,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## GALACTIC_EMPIRE_NAME_COLLIDES_1 Two factions are both named Galactic Empire; one of them must be renamed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify
-summary:  GALACTICEMPIRENAMECOLLIDES1 — two factions, one name, and a player sees both
-prose:    infrastructure/state/items/GALACTIC_EMPIRE_NAME_COLLIDES_1.md
 
 ## COLD_LOAD_RUN_SHEET_1 One batched cold load scores every pending reading; replaces NEXT_RELOAD.md and EXPECTED_FAILURES_next_load.md
 state:    proposed

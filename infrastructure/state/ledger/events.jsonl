@@ -2617,3 +2617,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"NURSERY_FOOTPRINT_OFF_BY_ONE_1","ts":"2026-08-29T01:01:55Z"}
 {"seat":"FOUNDRY","event":"start","id":"NURSERY_FOOTPRINT_OFF_BY_ONE_1","ts":"2026-08-29T01:01:55Z"}
 {"seat":"FOUNDRY","event":"close","id":"NURSERY_FOOTPRINT_OFF_BY_ONE_1","sha":"6123a1ec","ts":"2026-08-29T01:02:34Z"}
+{"seat":"BENCH","event":"claim","id":"GALACTIC_EMPIRE_NAME_COLLIDES_1","ts":"2026-08-29T01:03:17Z"}
+{"seat":"BENCH","event":"start","id":"GALACTIC_EMPIRE_NAME_COLLIDES_1","ts":"2026-08-29T01:03:17Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DININGROOM_READS_AS_KITCHEN_1","ts":"2026-08-29T01:03:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"DININGROOM_READS_AS_KITCHEN_1","ts":"2026-08-29T01:03:47Z"}
+{"seat":"BENCH","event":"close","id":"GALACTIC_EMPIRE_NAME_COLLIDES_1","sha":"6123a1ec","ts":"2026-08-29T01:03:59Z"}
