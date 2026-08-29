@@ -101,7 +101,7 @@ plausibly outpace it at this scale).
 - [x] Owner picked the scaling shape: pure `bodySize²`, no cap.
 - [x] `DamageWorker_IonBuildup.cs` applies it; human-scale behavior (~4-5 hits) unchanged by
       construction (bodySize 1 → division by 1).
-- [ ] Deployed — blocked on game-down, plan staged and clean.
+- [x] Deployed 2026-08-29T18:54:14Z (`deploy_custom_mods.py --mod JawaIonWeapons --apply`).
 - [ ] Live-verified post-deploy: Rat ~1 hit, Human ~4-5, `AA_Behemoth` effectively immune to
       solo fire.
 - [ ] Sonic weapons' mechanism named (which mod, which DamageDef/HediffDef, does it already
