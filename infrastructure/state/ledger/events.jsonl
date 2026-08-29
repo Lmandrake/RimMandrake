@@ -2848,3 +2848,10 @@
 {"seat":"FOUNDRY","event":"claim","id":"BRIDGE_GEN_AND_STORYTELLER_TOOLS_1","ts":"2026-08-29T20:02:04Z"}
 {"seat":"FOUNDRY","event":"start","id":"BRIDGE_GEN_AND_STORYTELLER_TOOLS_1","ts":"2026-08-29T20:02:05Z"}
 {"seat":"FOUNDRY","event":"block","id":"BRIDGE_GEN_AND_STORYTELLER_TOOLS_1","reason":"built clean this game-loading window, not yet deployed - game must be closed first, then proven live","ts":"2026-08-29T20:02:24Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"the game is up and on the current worldmap","ts":"2026-08-29T20:14:38Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"Game is up","ts":"2026-08-29T20:14:42Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","ts":"2026-08-29T20:15:19Z"}
+{"seat":"FOUNDRY","event":"file","id":"JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1","title":"Every jawa/ bridge tool is dark right now - duplicate jawa/bill_add alias crashed the WHOLE provider registration","kind":"bug","target":"v1","needs":"deploy","for":"FOUNDRY","ts":"2026-08-29T20:17:57Z"}
+{"seat":"FOUNDRY","event":"claim","id":"JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1","ts":"2026-08-29T20:17:57Z"}
+{"seat":"FOUNDRY","event":"start","id":"JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1","ts":"2026-08-29T20:17:58Z"}
+{"seat":"FOUNDRY","event":"block","id":"JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1","reason":"fixed in source, builds clean; NOT deployed - game is up, BENCH holds bridge, DLL cannot be written while RimWorld runs. Deploy next down-window.","ts":"2026-08-29T20:18:29Z"}

@@ -39,8 +39,15 @@ namespace JawaBench.BridgeTools
     public sealed partial class JawaBenchTerrainTools
     {
         [Tool(
-            "jawa/bill_add",
+            "jawa/bill_add_legacy",
             Description =
+                "🔴 RENAMED from 'jawa/bill_add' 2026-08-29 - that name collided with a second, " +
+                "independently-written bill_add in JawaBenchZoneTools.cs (built 2026-08-26, " +
+                "paired with jawa/configure_bill and the one PLACER_IDENTITY_REPLAY_1 documents " +
+                "using), and RimBridge's capability registry refuses the WHOLE provider on a " +
+                "duplicate alias - every jawa/ tool was dark until this was found and split. " +
+                "Prefer jawa/bill_add; this sibling is kept only in case something relied on " +
+                "its specific RecipeDef.MakeNewBill() code path. " +
                 "Adds a production Bill for a RecipeDef to a workbench/billable thing - the " +
                 "capability this bridge had zero coverage of (BillStack returned zero hits in " +
                 "a full API grep). Uses RecipeDef.MakeNewBill(), the same call the game's own " +
