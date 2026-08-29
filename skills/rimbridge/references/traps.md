@@ -688,3 +688,17 @@ though the window was ignoring the mouse. Verify on `get_ui_state` afterwards:
 **Generalises to:** "the game ignores my clicks" is a WINDOW-STACK read, not a restart.
 get_ui_state first; click_ui_target goes through the UI event system, not the mouse,
 so it works where the physical cursor cannot.
+
+## get_cell_info returns empty things + terrain None while the thing verifiably exists (2026-08-29)
+
+**Symptom:** after 74 successful `rimworld/spawn_thing` calls (real thingIds), `get_cell_info`
+on the exact spawn centers read `things: []` and `terrain: None` on every cell sampled — 0/10.
+**Truth:** `get_map_target_info {thingId}` found the same things at those cells (Map_0, correct
+cellRect); a debug-action destroy then acted on one, proving liveness. `terrain: None` is the
+tell — no real cell lacks terrain, so the reader answered about nothing, not about an empty cell.
+**Context:** full 585 stack, JawaBench companion unregistered (bill_add alias collision), stock
+tools only. Unknown whether the same call misreads when the companion is up.
+**Fix:** verify spawns with `get_map_target_info {thingId}` (or a save parse), never
+`get_cell_info` alone. **Generalises to:** any read tool whose "empty" answer carries an
+impossible sibling field (terrain None) is answering the wrong question — check a field that
+CANNOT be empty before believing one that can.
