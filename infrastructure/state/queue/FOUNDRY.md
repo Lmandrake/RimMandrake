@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T17:39:01Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-08-29T19:11:00Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -75,16 +75,16 @@ prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
 ## ION_STUN_IGNORES_BODY_SIZE_1 Ion (and likely sonic) stun/overload severity has no body-size term - a 32x-human Behemoth drops as fast as a person
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     bug
 summary:  Every flesh target — a rat and a 32×-human-bodySize Alpha Animals Behemoth alike — currently
 prose:    infrastructure/state/items/ION_STUN_IGNORES_BODY_SIZE_1.md
 
 ## OTHER_STUN_WEAPONS_SURVEY_1 Survey of every other stun-capable damage type: which have body-size scaling, which don't
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
-needs:    owner
+needs:    bridge
 target:   v1
 kind:     investigate
 summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
@@ -113,36 +113,6 @@ kind:     task
 blocked:  remaining check needs the NEXT cold load's Player.log + fresh capture; a restart is the owner's call (game-state-is-one-command-now), not FOUNDRY's to trigger for one item
 summary:  🔴 OWNER, 2026-08-22: "We need a THOROUGH retag of all the weapons and armor to ensure
 prose:    infrastructure/state/items/THOROUGH_RETAG_WEAPONS_ARMOUR_1.md
-
-## NONCANON_ARRIVES_BY_PAWNKIND_1 106 of our PawnKindDefs bypass every faction xenotype gate - is that wanted, and is gene extraction in scope
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     decision
-blocked:  scope call only the owner can make (post-redesign#4, DECIDE seat superseded); needs ruling on roster-vs-arrivals, Ancient Rakata intent, gene-extraction scope
-summary:  NONCANONARRIVESBYPAWNKIND1 — a scope call, not a defect
-prose:    infrastructure/state/items/NONCANON_ARRIVES_BY_PAWNKIND_1.md
-
-## WORLD_MUTATOR_LANDMARK_IMPORTERS_1 No file importer for mutators or landmarks - 13,569 tiles and 579 landmarks can only be replayed by script
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Only worth building if the owner chooses the rebuild in ASHKARR_IDEOLOGY_MODE_CALL_1. Filed so the cost of that choice is visible when he makes it, not so a seat starts on it.
-summary:  WORLDMUTATORLANDMARKIMPORTERS1 — the two bundles that cannot be carried by a file
-prose:    infrastructure/state/items/WORLD_MUTATOR_LANDMARK_IMPORTERS_1.md
-
-## JAWA_CULTURES_LEAK_TO_STRANGERS_1 Six unrelated ideoligions rolled our twelve CultureDefs and generated their own names
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     decision
-blocked:  no fix needed today - the measured leak was quicktest noise; the real question is entirely gated on ASHKARR_IDEOLOGY_MODE_CALL_1 (classic vs full ideology mode, owner's call, world-creation-time only) (on ASHKARR_IDEOLOGY_MODE_CALL_1)
-summary:  JAWACULTURESLEAKTOSTRANGERS1 — our authored cultures are in the general pool
-prose:    infrastructure/state/items/JAWA_CULTURES_LEAK_TO_STRANGERS_1.md
 
 ## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
 state:    doing  (BLOCKED)
@@ -187,26 +157,16 @@ prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
 ## ION_STUN_IGNORES_BODY_SIZE_1 Ion (and likely sonic) stun/overload severity has no body-size term - a 32x-human Behemoth drops as fast as a person
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     bug
 blocked:  fix committed and built clean; deploy blocked, game holds the DLL locked. Deploy at next down-window: deploy_custom_mods.py --mod JawaIonWeapons --apply
 summary:  Every flesh target — a rat and a 32×-human-bodySize Alpha Animals Behemoth alike — currently
 prose:    infrastructure/state/items/ION_STUN_IGNORES_BODY_SIZE_1.md
 
-## OTHER_STUN_WEAPONS_SURVEY_1 Survey of every other stun-capable damage type: which have body-size scaling, which don't
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     investigate
-blocked:  survey complete, findings and recommendations written; awaiting owner call on which third-party defs to patch and to what standard
-summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
-prose:    infrastructure/state/items/OTHER_STUN_WEAPONS_SURVEY_1.md
-
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## DUMP_PRODUCER_DATED_CAPTURES_1 DefDumper writes captures/<id>/ and prunes to the newest three
 state:    ready
@@ -214,67 +174,67 @@ row:      unassigned
 needs:    harvest
 target:   v1
 kind:     task
-waiting:  needs `harvest`, game is UP
+waiting:  needs `harvest`, game is DOWN
 summary:  The producer half of DUMPSTORAGELAYOUTRULING1. Owner, 2026-08-21 13:24:
 prose:    infrastructure/state/items/DUMP_PRODUCER_DATED_CAPTURES_1.md
 
 ## BUILD_BATCH_OVERWRITES_SILENTLY_1 jawa/build_batch reports placed for an op that destroys an existing building in the same run
 state:    ready
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `bridge`, game is DOWN
 summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
 prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
 
 ## FIRE_RAID_ECHOES_REQUESTED_FACTION_1 jawa/fire_raid reports the faction you asked for even when the worker raids with a different one
 state:    ready
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `bridge`, game is DOWN
 summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
 prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
 
 ## BUILD_BATCH_FACTION_REJECTS_PLAYER_1 jawa/build_batch refuses faction='player' while jawa/spawn_pawn accepts it - two tools, two grammars
 state:    ready
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `bridge`, game is DOWN
 summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
 prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
 
 ## ORDERED_JOB_CANNOT_SOW_1 jawa/ordered_job cannot set plantDefToSow, so any Sow it issues is accepted and dies in the first toil
 state:    ready
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `bridge`, game is DOWN
 summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
 prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
 
 ## NO_TOOL_REPORTS_MAP_TILE_1 No bridge tool reports which world tile the current map is on - you have to find the player Settlement
 state:    ready
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `deploy`, game is UP
+waiting:  needs `bridge`, game is DOWN
 summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
 prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
 
 ## DUMPER_SWALLOWS_CACHE_THROW_1 The def dumper publishes the engine's cached answer and swallows the exception behind it
 state:    ready
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     defect
-waiting:  needs `deploy`, game is UP
+waiting:  needs `bridge`, game is DOWN
 summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
 prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
 

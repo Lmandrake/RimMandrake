@@ -1,7 +1,8 @@
 {
  "sheet": "pawn_flavor_register",
  "posture": "design-review; default KEEP - a row left undecided ships as designed",
- "prefill": true,
+ "savedAt": "2026-08-29T18:47:22.162Z",
+ "decidedBy": "owner-sheet",
  "rows": {
   "Jawa_CisternHatched": {
    "d": "keep",

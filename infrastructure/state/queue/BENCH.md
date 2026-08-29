@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T17:39:01Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-08-29T19:11:00Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -27,6 +27,15 @@ kind:     task
 summary:  PAWNFLAVORSTARWARS1 — backstories, childhoods and traits, in-fiction
 prose:    infrastructure/state/items/PAWN_FLAVOR_STARWARS_1.md
 
+## COLD_LOAD_RUN_SHEET_2 Next window run sheet: scenario-tool deploy, pursuit install, ship round trip
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  The next batched window scores everything below, then this closes and a fresh sheet is
+prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_2.md
+
 # BLOCKED — something is WRONG and someone must act
 
 _none._
@@ -41,14 +50,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## COLD_LOAD_RUN_SHEET_2 Next window run sheet: scenario-tool deploy, pursuit install, ship round trip
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  The next batched window scores everything below, then this closes and a fresh sheet is
-prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_2.md
+_none._

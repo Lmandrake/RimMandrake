@@ -2826,3 +2826,5 @@
 {"seat":"OWNER","event":"close","id":"NONCANON_ARRIVES_BY_PAWNKIND_1","sha":"7166b269","ownerSaid":"About arrivals too / Yes, intended / Out of scope","override":"OWNER may not `close` NONCANON_ARRIVES_BY_PAWNKIND_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-08-29T19:05:12Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-29T19:08:51Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","note":"reboot prep done: companion deployed --gm (harmony_patches, faction_ideo_set/get, pawn_ideo_reassign, bill_add/list/remove + 6 earlier fixes), JawaIonWeapons.dll + Jawa_Patches XML deployed, RimDefDump in sync; ideology live-patch tools built and staged, waiting on Ash'karr load; NONCANON_ARRIVES ruled+closed clean; bridge released; mirror synced (0 drift); nothing mid-edit","ts":"2026-08-29T19:08:58Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-08-29T19:10:44Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-29T19:11:00Z"}
