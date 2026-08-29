@@ -1,0 +1,717 @@
+{
+ "posture": "whitelist",
+ "postureMeaning": "These are the ONLY large (>1x1) turrets allowed in the game. Any turret def not on this sheet is to be cut when we normalize. 1x1 turrets are OUT OF SCOPE here and owe their own pass.",
+ "rulingSource": "owner at the bench, 2026-08-29",
+ "alreadyCut": [
+  "all VFE Props & Decor props",
+  "all VFE Pirates",
+  "all Fortifications-Industrial",
+  "VFE-Security except ChargeRailgun/Ballista/TeslaBlaster/(Flame? open)",
+  "BreadMoAM_Turret_LargeShotgun",
+  "VQE_AncientSpacerAutocannon"
+ ],
+ "openQuestions": [
+  "Which def is the owner's 'auto turret' cut? (Turret_AutoChargeBlaster flagged undecided)",
+  "VFES_Turret_Flame (1x1 flamer) \u2014 4th VFE-Security keep, or dies with the mod cut?",
+  "1x1 turret roster (mini-turret, flamer, precision, foam, wall guns) \u2014 separate pass owed"
+ ],
+ "turrets": [
+  {
+   "defName": "GTbc_GravliteDefenseTurret",
+   "label": "gravlite defense turret",
+   "mod": "GravTech - Big cannons",
+   "size": "2x2",
+   "group": "Rakatan Relics \u2014 light of the Builders",
+   "stats": "? ? dmg \u00b7 range 31.9",
+   "desc": "A scaled-down defensive turret firing charged fragments of gravlite panels. It intercepts asteroids, explosive projectiles and incoming drop pods within its protective radius, but cannot engage ground targets. Intercepti",
+   "prefill": {
+    "tech": "gravitic bolt, light",
+    "effect": "? ? dmg \u00b7 range 31.9",
+    "user": "Cradle / Rakatan ruins",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: gravitics = Rakatan",
+   "contested": true
+  },
+  {
+   "defName": "Turret_GravBlaster",
+   "label": "grav blaster turret",
+   "mod": "GravTech",
+   "size": "2x2",
+   "group": "Rakatan Relics \u2014 light of the Builders",
+   "stats": "GravBlastShockwave 7 dmg \u00b7 blast r7.5 \u00b7 range 51.9",
+   "desc": "A high-powered turret with a grav blaster. It cannot sense targets at close ranges. Refilling with gravlite panels.",
+   "prefill": {
+    "tech": "gravitic bolt, light",
+    "effect": "GravBlastShockwave 7 dmg \u00b7 blast r7.5 \u00b7 range 51.9",
+    "user": "Cradle / Rakatan ruins",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: gravitics = Rakatan",
+   "contested": true
+  },
+  {
+   "defName": "BigLaserCannon",
+   "label": "Laser Cannon",
+   "mod": "Laser Cannon",
+   "size": "3x3",
+   "group": "Rakatan Relics \u2014 light of the Builders",
+   "stats": "? ? dmg \u00b7 range 50",
+   "desc": "Medium range laser cannon, designed to blast armored targets and intercept small lobbed projectiles, uses a long pivot join that allows the turret to be fitted above a rooftop.",
+   "prefill": {
+    "tech": "ancient beam laser",
+    "effect": "? ? dmg \u00b7 range 50",
+    "user": "Cradle / Rakatan ruins",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: 'big laser' reads as relic-grade; needs Rakatan reskin + label",
+   "contested": true
+  },
+  {
+   "defName": "GTbc_HugeGravBlaster",
+   "label": "huge grav blaster",
+   "mod": "GravTech - Big cannons",
+   "size": "3x3",
+   "group": "Rakatan Relics \u2014 light of the Builders",
+   "stats": "HugeGravBlastShockwave 4 dmg \u00b7 blast r12.5 \u00b7 range 99999 \u00b7 burst 6",
+   "desc": "The gravship's version of the grav blaster. More powerful blasts of this weapon can cause local ruptures in space. It cannot shoot from the ground into space. Requires a linked targeting terminal with an operator to func",
+   "prefill": {
+    "tech": "gravitic bolt, heavy",
+    "effect": "HugeGravBlastShockwave 4 dmg \u00b7 blast r12.5 \u00b7 range 99999 \u00b7 burst 6",
+    "user": "Cradle / Rakatan ruins",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: gravitics = Rakatan",
+   "contested": true
+  },
+  {
+   "defName": "GTbc_GravRailArtillery",
+   "label": "grav rail artillery",
+   "mod": "GravTech - Big cannons",
+   "size": "5x5",
+   "group": "Rakatan Relics \u2014 light of the Builders",
+   "stats": "Bomb 280 dmg \u00b7 blast r8.9 \u00b7 range 99999",
+   "desc": "A medium-sized gravity artillery cannon that launches gravitonium slugs over a long distance. It can also fire from the ground at objects in orbit. Requires a linked targeting terminal with an operator to function.",
+   "prefill": {
+    "tech": "gravitic rail siege",
+    "effect": "Bomb 280 dmg \u00b7 blast r8.9 \u00b7 range 99999",
+    "user": "Forsaken vaults",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: gravitics = Rakatan",
+   "contested": true
+  },
+  {
+   "defName": "GTbc_TheSingularityCannon",
+   "label": "The Singularity Cannon",
+   "mod": "GravTech - Big cannons",
+   "size": "7x7",
+   "group": "Rakatan Relics \u2014 light of the Builders",
+   "stats": "Bomb 308 dmg \u00b7 blast r6.9 \u00b7 range 99999",
+   "desc": "A huge mechanism for charging and launching Black Hole shell. Consumes a lot of power while aiming. Due to design features of the shell, it cannot shoot from the ground. Requires a linked targeting terminal with an opera",
+   "prefill": {
+    "tech": "gravitic singularity",
+    "effect": "Bomb 308 dmg \u00b7 blast r6.9 \u00b7 range 99999",
+    "user": "Forsaken vaults",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: gravitics = terraformer tech; the vault superweapon",
+   "contested": true
+  },
+  {
+   "defName": "OuterRim_MediumLaserCannon",
+   "label": "medium laser cannon",
+   "mod": "Outer Rim - Core",
+   "size": "2x2",
+   "group": "Imperial Emplacements \u2014 turbolaser doctrine",
+   "stats": "OuterRim_Blaster 200 dmg \u00b7 range 39.9 \u00b7 burst 6",
+   "desc": "A large automatic blaster turret. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "blaster cannon",
+    "effect": "OuterRim_Blaster 200 dmg \u00b7 range 39.9 \u00b7 burst 6",
+    "user": "Galactic Empire",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_ProtonMortar",
+   "label": "proton mortar",
+   "mod": "Outer Rim - Core",
+   "size": "2x2",
+   "group": "Imperial Emplacements \u2014 turbolaser doctrine",
+   "stats": "OuterRim_ProtonBomb ? dmg \u00b7 blast r5.9 \u00b7 range 52.9",
+   "desc": "A large automatic mortar turret. Fires individual proton shells. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "proton shell mortar",
+    "effect": "OuterRim_ProtonBomb ? dmg \u00b7 blast r5.9 \u00b7 range 52.9",
+    "user": "Galactic Empire",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_Turbolaser",
+   "label": "turbolaser",
+   "mod": "Outer Rim - Core",
+   "size": "2x2",
+   "group": "Imperial Emplacements \u2014 turbolaser doctrine",
+   "stats": "OuterRim_Blaster 2000 dmg \u00b7 range 39.9 \u00b7 burst 2",
+   "desc": "A large automatic blaster turret. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "turbolaser",
+    "effect": "OuterRim_Blaster 2000 dmg \u00b7 range 39.9 \u00b7 burst 2",
+    "user": "Galactic Empire",
+    "state": "keep"
+   },
+   "prefillNote": "2000 dmg bolt \u2014 fortress killer, verify vs pawn balance",
+   "contested": false
+  },
+  {
+   "defName": "RN2SWGun_EWeb_MG",
+   "label": "EWebMG",
+   "mod": "E-Web Heavy Repeating Blaster",
+   "size": "2x2",
+   "group": "Imperial Emplacements \u2014 turbolaser doctrine",
+   "stats": "Bullet 14 dmg \u00b7 range 40 \u00b7 burst 3",
+   "desc": "The E-Web was a heavy repeating blaster manufactured by BlasTech Industries. It was one of the most powerful repeating blasters in the Imperial arsenal.",
+   "prefill": {
+    "tech": "E-Web repeating blaster",
+    "effect": "Bullet 14 dmg \u00b7 range 40 \u00b7 burst 3",
+    "user": "Galactic Empire",
+    "state": "keep"
+   },
+   "prefillNote": "INVENTED: E-Web is the iconic Imperial field gun \u2014 assigned Empire, not settlers",
+   "contested": true
+  },
+  {
+   "defName": "OuterRim_AnaxesTurret",
+   "label": "anaxes-class turbolaser",
+   "mod": "Outer Rim - Core",
+   "size": "3x3",
+   "group": "Imperial Emplacements \u2014 turbolaser doctrine",
+   "stats": "OuterRim_Blaster 200 dmg \u00b7 range 32.9 \u00b7 burst 4",
+   "desc": "A large automatic blaster turret. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "turbolaser (Republic-era tower)",
+    "effect": "OuterRim_Blaster 200 dmg \u00b7 range 32.9 \u00b7 burst 4",
+    "user": "Galactic Empire",
+    "state": "keep"
+   },
+   "prefillNote": "art is Republic-era; fine as older garrison stock",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_HeavyImperialTurbolaser",
+   "label": "heavy imperial turbolaser",
+   "mod": "Outer Rim - Core",
+   "size": "3x3",
+   "group": "Imperial Emplacements \u2014 turbolaser doctrine",
+   "stats": "OuterRim_Turbolaser 2000 dmg \u00b7 blast r1.9 \u00b7 range 54.9 \u00b7 burst 2",
+   "desc": "A large automatic blaster turret. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "heavy turbolaser",
+    "effect": "OuterRim_Turbolaser 2000 dmg \u00b7 blast r1.9 \u00b7 range 54.9 \u00b7 burst 2",
+    "user": "Galactic Empire",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_HeavyLaserCannon",
+   "label": "heavy laser cannon",
+   "mod": "Outer Rim - Core",
+   "size": "3x3",
+   "group": "Imperial Emplacements \u2014 turbolaser doctrine",
+   "stats": "OuterRim_Blaster 200 dmg \u00b7 range 51.9 \u00b7 burst 6",
+   "desc": "A large automatic blaster turret. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "heavy blaster cannon",
+    "effect": "OuterRim_Blaster 200 dmg \u00b7 range 51.9 \u00b7 burst 6",
+    "user": "Galactic Empire",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_HeavyTurbolaser",
+   "label": "heavy turbolaser",
+   "mod": "Outer Rim - Core",
+   "size": "3x3",
+   "group": "Imperial Emplacements \u2014 turbolaser doctrine",
+   "stats": "OuterRim_Turbolaser 2000 dmg \u00b7 blast r1.9 \u00b7 range 54.9 \u00b7 burst 2",
+   "desc": "A large automatic blaster turret. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "heavy turbolaser (Separatist head art)",
+    "effect": "OuterRim_Turbolaser 2000 dmg \u00b7 blast r1.9 \u00b7 range 54.9 \u00b7 burst 2",
+    "user": "Galactic Empire",
+    "state": "rework"
+   },
+   "prefillNote": "same stats as Imperial twin; art says Separatist \u2014 cut as duplicate, or reskin",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_ProtonArtillery",
+   "label": "proton artillery",
+   "mod": "Outer Rim - Core",
+   "size": "3x3",
+   "group": "Imperial Emplacements \u2014 turbolaser doctrine",
+   "stats": "OuterRim_ProtonBomb ? dmg \u00b7 blast r7.9 \u00b7 range 500",
+   "desc": "A large automatic mortar turret. Fires individual proton shells. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "proton siege artillery",
+    "effect": "OuterRim_ProtonBomb ? dmg \u00b7 blast r7.9 \u00b7 range 500",
+    "user": "Galactic Empire",
+    "state": "keep"
+   },
+   "prefillNote": "r500 map-wide siege piece",
+   "contested": false
+  },
+  {
+   "defName": "OuterRim_HeavyIonCannon",
+   "label": "heavy ion cannon",
+   "mod": "Outer Rim - Core",
+   "size": "3x3",
+   "group": "Jawa Ion \u2014 capture, not kill",
+   "stats": "OuterRim_BlasterIon 20 dmg \u00b7 range 80 \u00b7 burst 2",
+   "desc": "A large automatic blaster turret, fires ion bolts which are extremely effective against electronics. It runs on Tibanna and must be kept fueled. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "heavy ion cannon",
+    "effect": "OuterRim_BlasterIon 20 dmg \u00b7 range 80 \u00b7 burst 2",
+    "user": "Jawa Trade Moot",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED+CONTESTED: ion is the JAWA mechanic (JawaIonWeapons) \u2014 proposed as the Moot's one great emplacement rather than Imperial stock",
+   "contested": true
+  },
+  {
+   "defName": "VGE_AnticraftCaster",
+   "label": "anticraft caster",
+   "mod": "Vanilla Gravship Expanded - Chapter 1",
+   "size": "3x3",
+   "group": "Gravship Hardpoints \u2014 the Utinni's guns",
+   "stats": "VGE_AnticraftBeamBypassShields 86 dmg \u00b7 range 9999 \u00b7 burst 20",
+   "desc": "A medium gravship-mounted energy weapon that fires short, razor-sharp bursts of cutting beam with surgical precision. Built to punch holes through critical systems, the caster trades sustained suppression for rapid, accu",
+   "prefill": {
+    "tech": "anticraft caster",
+    "effect": "VGE_AnticraftBeamBypassShields 86 dmg \u00b7 range 9999 \u00b7 burst 20",
+    "user": "Gravship (the Utinni)",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "VGE_GaussGun",
+   "label": "gauss gun",
+   "mod": "Vanilla Gravship Expanded - Chapter 1",
+   "size": "3x3",
+   "group": "Gravship Hardpoints \u2014 the Utinni's guns",
+   "stats": "Bomb 161 dmg \u00b7 blast r3.9 \u00b7 range 99999",
+   "desc": "A small, single-barrel electromagnetic cannon that launches dense uranium slugs at extreme velocities. Designed for both local bombardments and medium-range engagements, it can also target other gravships in orbit. Requi",
+   "prefill": {
+    "tech": "gauss slug",
+    "effect": "Bomb 161 dmg \u00b7 blast r3.9 \u00b7 range 99999",
+    "user": "Gravship (the Utinni)",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "VGE_HeavyChargeAnnihilator",
+   "label": "heavy charge annihilator",
+   "mod": "Vanilla Gravship Expanded - Chapter 1",
+   "size": "3x3",
+   "group": "Gravship Hardpoints \u2014 the Utinni's guns",
+   "stats": "Bullet 15 dmg \u00b7 range 36 \u00b7 burst 36",
+   "desc": "A heavy pulse-charged weapon, designed for sustained suppressive fire in defense of mechanoid orbital platforms. Its upgraded capacitors and cooling systems allow it to unleash longer, more devastating bursts than standa",
+   "prefill": {
+    "tech": "heavy charge annihilator",
+    "effect": "Bullet 15 dmg \u00b7 range 36 \u00b7 burst 36",
+    "user": "Gravship (the Utinni)",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "VGE_JavelinPod",
+   "label": "javelin pod",
+   "mod": "Vanilla Gravship Expanded - Chapter 1",
+   "size": "3x3",
+   "group": "Gravship Hardpoints \u2014 the Utinni's guns",
+   "stats": "Bomb 118 dmg \u00b7 blast r2.9 \u00b7 range 99999 \u00b7 burst 6",
+   "desc": "A compact multi-tube missile platform that launches a volley of six guided astrofuel javelins. Meant for fast, hard-hitting strikes against exposed gravships and unarmored surface forces. Requires a linked targeting term",
+   "prefill": {
+    "tech": "missile pod",
+    "effect": "Bomb 118 dmg \u00b7 blast r2.9 \u00b7 range 99999 \u00b7 burst 6",
+    "user": "Gravship (the Utinni)",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "VGE_PointDefenseTurret",
+   "label": "point defense turret",
+   "mod": "Vanilla Gravship Expanded - Chapter 1",
+   "size": "3x3",
+   "group": "Gravship Hardpoints \u2014 the Utinni's guns",
+   "stats": "? ? dmg \u00b7 range 14.9",
+   "desc": "A specialized defensive turret built exclusively for gravships. It intercepts explosive projectiles and incoming drop pods within its protective radius, but cannot engage ground targets. Interception chance scales with t",
+   "prefill": {
+    "tech": "point-defense battery",
+    "effect": "? ? dmg \u00b7 range 14.9",
+    "user": "Gravship (the Utinni)",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "VGE_MassDriver",
+   "label": "mass driver",
+   "mod": "Vanilla Gravship Expanded - Chapter 1",
+   "size": "5x5",
+   "group": "Gravship Hardpoints \u2014 the Utinni's guns",
+   "stats": "Bomb 50 dmg \u00b7 blast r4.9 \u00b7 range 500 \u00b7 burst 3",
+   "desc": "A triple-barrel electromagnetic artillery system built into mechanoid defense platforms. It fires dense slugs at incredible velocities, tearing through both armored gravships in orbit and ground targets with equal ease. ",
+   "prefill": {
+    "tech": "mass driver",
+    "effect": "Bomb 50 dmg \u00b7 blast r4.9 \u00b7 range 500 \u00b7 burst 3",
+    "user": "Gravship (the Utinni)",
+    "state": "keep"
+   },
+   "prefillNote": "could equally read Rakatan \u2014 the Utinni IS Rakatan-built; overlap is canon-friendly",
+   "contested": false
+  },
+  {
+   "defName": "Turret_AutoChargeBlaster",
+   "label": "auto charge turret",
+   "mod": "Core",
+   "size": "2x2",
+   "group": "Forsaken Sentinels \u2014 mech pattern",
+   "stats": "Bullet 15 dmg \u00b7 range 45.9 \u00b7 burst 9",
+   "desc": "A self-powered turret mounted with a charge blaster. It cannot sense targets at very short ranges.",
+   "prefill": {
+    "tech": "mech charge blaster",
+    "effect": "Bullet 15 dmg \u00b7 range 45.9 \u00b7 burst 9",
+    "user": "Forgotten Arsenal (mech)",
+    "state": "undecided"
+   },
+   "prefillNote": "CONTESTED: is this your 'auto turret' cut? If kept, it is Arsenal-only",
+   "contested": true
+  },
+  {
+   "defName": "Turret_AutoInferno",
+   "label": "auto inferno turret",
+   "mod": "Core",
+   "size": "2x2",
+   "group": "Forsaken Sentinels \u2014 mech pattern",
+   "stats": "Flame ? dmg \u00b7 blast r2.4 \u00b7 range 45.9",
+   "desc": "A self-powered turret mounted with an inferno cannon. It cannot sense targets at very short ranges.",
+   "prefill": {
+    "tech": "mech incendiary launcher",
+    "effect": "Flame ? dmg \u00b7 blast r2.4 \u00b7 range 45.9",
+    "user": "Forgotten Arsenal (mech)",
+    "state": "keep"
+   },
+   "prefillNote": "the closest thing to a flame turret on the large list",
+   "contested": false
+  },
+  {
+   "defName": "Turret_AutoMortar",
+   "label": "auto mortar",
+   "mod": "Core",
+   "size": "2x2",
+   "group": "Forsaken Sentinels \u2014 mech pattern",
+   "stats": "Bomb ? dmg \u00b7 blast r2.9 \u00b7 range 500",
+   "desc": "A self-powered, self-loading, automatic mortar. It can hit targets at any distance, over walls, but is quite inaccurate.",
+   "prefill": {
+    "tech": "mech mortar",
+    "effect": "Bomb ? dmg \u00b7 blast r2.9 \u00b7 range 500",
+    "user": "Forgotten Arsenal (mech)",
+    "state": "keep"
+   },
+   "prefillNote": "art not extracted offline (vanilla bundle); exists in game",
+   "contested": false
+  },
+  {
+   "defName": "DP_Automortar",
+   "label": "Automortar",
+   "mod": "Dungeon Pack (Continued)",
+   "size": "2x2",
+   "group": "Settler Iron \u2014 planetary ballistics",
+   "stats": "Bomb ? dmg \u00b7 blast r3.0 \u00b7 range 56",
+   "desc": "An automatic mortar. Not intended for player use.",
+   "prefill": {
+    "tech": "automated mortar",
+    "effect": "Bomb ? dmg \u00b7 blast r3.0 \u00b7 range 56",
+    "user": "Hutt Cartel",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: bought automation fits Hutt money; else cut as duplicate of auto-mortar",
+   "contested": true
+  },
+  {
+   "defName": "Turret_Autocannon",
+   "label": "autocannon turret",
+   "mod": "Core",
+   "size": "2x2",
+   "group": "Settler Iron \u2014 planetary ballistics",
+   "stats": "Bullet 200 dmg \u00b7 range 32.9 \u00b7 burst 3",
+   "desc": "A heavy automatic turret. Its large-caliber shells do heavy damage over significant ranges, but its barrel must be refurbished after use. It cannot fire at close-up targets, and may explode when damaged.",
+   "prefill": {
+    "tech": "autocannon",
+    "effect": "Bullet 200 dmg \u00b7 range 32.9 \u00b7 burst 3",
+    "user": "Common / multiple",
+    "state": "keep"
+   },
+   "prefillNote": "Homestead/Junkers/Hutt garrison staple",
+   "contested": false
+  },
+  {
+   "defName": "Turret_Mortar",
+   "label": "mortar",
+   "mod": "Core",
+   "size": "2x2",
+   "group": "Settler Iron \u2014 planetary ballistics",
+   "stats": "? ? dmg \u00b7 range 500",
+   "desc": "A manned mortar that launches all kinds of shells. While it can inflict devastating damage, the mortar's inherent inaccuracy makes it more useful for attacking large fortifications than groups of enemies in the field.",
+   "prefill": {
+    "tech": "shell mortar (manned)",
+    "effect": "? ? dmg \u00b7 range 500",
+    "user": "Common / multiple",
+    "state": "keep"
+   },
+   "prefillNote": "player-facing core siege \u2014 keep universal",
+   "contested": false
+  },
+  {
+   "defName": "Turret_RocketswarmLauncher",
+   "label": "rocketswarm launcher",
+   "mod": "Core",
+   "size": "2x2",
+   "group": "Settler Iron \u2014 planetary ballistics",
+   "stats": "Bomb 24 dmg \u00b7 blast r2.9 \u00b7 range 29.9 \u00b7 burst 12",
+   "desc": "An emergency-defense launcher that fires a single barrage of rockets covering a large area. The turret does not fire until someone activates it. It is very effective against large groups of weaker combatants, but less ef",
+   "prefill": {
+    "tech": "one-shot rocket swarm",
+    "effect": "Bomb 24 dmg \u00b7 blast r2.9 \u00b7 range 29.9 \u00b7 burst 12",
+    "user": "Junkers",
+    "state": "keep"
+   },
+   "prefillNote": "junker-flavored: a welded rack of rockets",
+   "contested": false
+  },
+  {
+   "defName": "Turret_Sniper",
+   "label": "uranium slug turret",
+   "mod": "Core",
+   "size": "2x2",
+   "group": "Settler Iron \u2014 planetary ballistics",
+   "stats": "Bullet 200 dmg \u00b7 range 45.9",
+   "desc": "An armor-piercing turret. Its ultra-dense uranium shells can punch through heavy armor, but it requires new uranium slugs to be loaded after use. It's more accurate at longer ranges, and can't fire at all close up. May e",
+   "prefill": {
+    "tech": "uranium slug rifle",
+    "effect": "Bullet 200 dmg \u00b7 range 45.9",
+    "user": "Homestead Defense League",
+    "state": "keep"
+   },
+   "prefillNote": "",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Turret_Ballista",
+   "label": "ballista",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "2x2",
+   "group": "Settler Iron \u2014 planetary ballistics",
+   "stats": "RangedStab 278 dmg \u00b7 blast r1.9 \u00b7 range 85.5",
+   "desc": "An ancient military siege engine in the form of a crossbow mounted on a wooden construct. Bolts fired from this machine explode into splinters on impact. Needs to be manned in order to fire.",
+   "prefill": {
+    "tech": "ballista (primitive)",
+    "effect": "RangedStab 278 dmg \u00b7 blast r1.9 \u00b7 range 85.5",
+    "user": "Deep Desert Tribes",
+    "state": "keep"
+   },
+   "prefillNote": "the one primitive emplacement \u2014 Tusken siege",
+   "contested": false
+  },
+  {
+   "defName": "DrillTurret",
+   "label": "drill turret",
+   "mod": "MiningCo. DrillTurret (Continued)",
+   "size": "3x3",
+   "group": "Settler Iron \u2014 planetary ballistics",
+   "stats": "? ? dmg \u00b7 range 0",
+   "desc": "An advanced automated turret. Can slowly drill nearby ores and designated rocks in automated mode. Drilling efficiency can be greatly improved by operating it.",
+   "prefill": {
+    "tech": "mining drill (tool, not weapon)",
+    "effect": "? ? dmg \u00b7 range 0",
+    "user": "Jawa clans (player)",
+    "state": "keep"
+   },
+   "prefillNote": "owner-ruled IN: utility, definitely belongs",
+   "contested": false
+  },
+  {
+   "defName": "Turret_Atomiser",
+   "label": "Atomiser Turret",
+   "mod": "Dedicated Turrets",
+   "size": "2x2",
+   "group": "Exotic Energy \u2014 bought and jury-rigged",
+   "stats": "Burn 86 dmg \u00b7 range 34",
+   "desc": "A sustained heat-beam turret that focuses on one target at a time. Its beam keeps firing while locked on, with damage pulses arriving faster the longer the same target stays exposed.",
+   "prefill": {
+    "tech": "matter atomiser",
+    "effect": "Burn 86 dmg \u00b7 range 34",
+    "user": "Hutt Cartel",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: exotic executive toys read as Hutt purchases",
+   "contested": true
+  },
+  {
+   "defName": "Turret_Sludger",
+   "label": "Sludger Turret",
+   "mod": "Dedicated Turrets",
+   "size": "2x2",
+   "group": "Exotic Energy \u2014 bought and jury-rigged",
+   "stats": "Stun 0 dmg \u00b7 range 26",
+   "desc": "A support turret that sprays sticky chemical sludge through a cone. The sludge deals no direct impact damage, but strongly slows targets and disrupts their accuracy for an extended time.",
+   "prefill": {
+    "tech": "sludge thrower",
+    "effect": "Stun 0 dmg \u00b7 range 26",
+    "user": "Junkers",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: industrial waste weapon \u2014 junker chemistry",
+   "contested": true
+  },
+  {
+   "defName": "Turret_Vaporiser",
+   "label": "Vaporiser Turret",
+   "mod": "Dedicated Turrets",
+   "size": "2x2",
+   "group": "Exotic Energy \u2014 bought and jury-rigged",
+   "stats": "Burn 86 dmg \u00b7 range 30 \u00b7 burst 180",
+   "desc": "Projects a continuous thermal ray through a straight line, searing every target caught in its path.",
+   "prefill": {
+    "tech": "vaporiser",
+    "effect": "Burn 86 dmg \u00b7 range 30 \u00b7 burst 180",
+    "user": "Hutt Cartel",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: as Atomiser",
+   "contested": true
+  },
+  {
+   "defName": "Turret_Zapper",
+   "label": "Zapper Turret",
+   "mod": "Dedicated Turrets",
+   "size": "2x2",
+   "group": "Exotic Energy \u2014 bought and jury-rigged",
+   "stats": "Burn 97 dmg \u00b7 range 24",
+   "desc": "Discharges crackling arcs of electricity that always jump between nearby enemies and can briefly stun them. Less lethal than heavy turrets, but excellent for crowd control.",
+   "prefill": {
+    "tech": "arc zapper",
+    "effect": "Burn 97 dmg \u00b7 range 24",
+    "user": "Junkers",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: scrap-lightning",
+   "contested": true
+  },
+  {
+   "defName": "VFES_Turret_ChargeRailgun",
+   "label": "charge railgun",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "2x2",
+   "group": "Exotic Energy \u2014 bought and jury-rigged",
+   "stats": "Bullet 187 dmg \u00b7 range 45.9 \u00b7 burst 3",
+   "desc": "A cutting-edge, pulse-charged, rail-assisted weapon system that fires a short burst of high-velocity projectiles, energized with unstable plasma as they leave the rail. The resulting shots pierce armor and bodies alike, ",
+   "prefill": {
+    "tech": "charge railgun",
+    "effect": "Bullet 187 dmg \u00b7 range 45.9 \u00b7 burst 3",
+    "user": "Ascendant Helix",
+    "state": "keep"
+   },
+   "prefillNote": "few-and-excellent ultratech \u2014 Helix doctrine",
+   "contested": false
+  },
+  {
+   "defName": "VFES_Turret_TeslaBlaster",
+   "label": "tesla blaster",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "size": "2x2",
+   "group": "Exotic Energy \u2014 bought and jury-rigged",
+   "stats": "Smoke 10 dmg \u00b7 range 32.9",
+   "desc": "A cutting-edge utility turret designed to counter the mechanoid advances. Four capacitors are charged to release a bolt of electricity. Upon impact, the power surge stuns affected mechanoid, before seeking to jump to ano",
+   "prefill": {
+    "tech": "tesla arc",
+    "effect": "Smoke 10 dmg \u00b7 range 32.9",
+    "user": "Junkers",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: jury-rigged arc thrower; alt: Deepwater (conductive water defense)",
+   "contested": true
+  },
+  {
+   "defName": "AA_BlackDefiler",
+   "label": "black defiler",
+   "mod": "Alpha Animals",
+   "size": "2x2",
+   "group": "Living Turrets \u2014 hive and flesh",
+   "stats": "AA_BlackHiveBolt 107 dmg \u00b7 blast r3.9 \u00b7 range 28.9",
+   "desc": "A small mound serving as the entrance to an expansive deephive cluster below ground, topped by the emergence of a black defiler insectoid. This creature is capable of vomiting huge amounts of vile spit towards nearby ene",
+   "prefill": {
+    "tech": "flesh spewer",
+    "effect": "AA_BlackHiveBolt 107 dmg \u00b7 blast r3.9 \u00b7 range 28.9",
+    "user": "The Assailant's flesh (anomaly)",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: the bioweapon's own emplacement \u2014 poison forest / mycotic jungle set-dressing",
+   "contested": true
+  },
+  {
+   "defName": "VFEI2_Thornworm",
+   "label": "thornworm",
+   "mod": "Vanilla Factions Expanded - Insectoids 2",
+   "size": "2x2",
+   "group": "Living Turrets \u2014 hive and flesh",
+   "stats": "Stab 86 dmg \u00b7 range 28.9 \u00b7 burst 3",
+   "desc": "A small mound serving as the entrance to an expansive deephive cluster below ground, topped by the emergence of a thornworm insectoid. This creature is capable of ejecting rapidly-growing chitin thorns at enemies nearby,",
+   "prefill": {
+    "tech": "thorn spitter (propose sonic rework)",
+    "effect": "Stab 86 dmg \u00b7 range 28.9 \u00b7 burst 3",
+    "user": "Geonosian Foundry Hive",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: as Vilelobber",
+   "contested": true
+  },
+  {
+   "defName": "VFEI2_Vilelobber",
+   "label": "vilelobber",
+   "mod": "Vanilla Factions Expanded - Insectoids 2",
+   "size": "2x2",
+   "group": "Living Turrets \u2014 hive and flesh",
+   "stats": "VFEI2_AcidSpit 86 dmg \u00b7 blast r3.9 \u00b7 range 500",
+   "desc": "A small mound serving as the entrance to an expansive deephive cluster below ground, topped by the emergence of a vilelobber insectoid. This creature is adept at spitting large, corrosive acid blobs over considerable dis",
+   "prefill": {
+    "tech": "bio-lobber (propose sonic rework)",
+    "effect": "VFEI2_AcidSpit 86 dmg \u00b7 blast r3.9 \u00b7 range 500",
+    "user": "Geonosian Foundry Hive",
+    "state": "rework"
+   },
+   "prefillNote": "INVENTED: hive tech is SONIC \u2014 re-projectile to sonic to match KotORRanged_sonic identity",
+   "contested": true
+  }
+ ]
+}
