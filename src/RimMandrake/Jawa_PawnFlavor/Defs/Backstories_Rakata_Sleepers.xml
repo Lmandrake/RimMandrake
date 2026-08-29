@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ===== Rakata war-generation sleepers =====
+       Owner's lore ruling 2026-08-29 (ANCIENTS_AS_RAKATA_SPEC.md, "who EMERGES"):
+       the casket sleepers are the grown children of the last great Rakata — a
+       generation spent losing to the unnamed flesh-weapon assailant. Hardened,
+       scarred, violently anti-genemod, superb researchers, excellent weapon
+       skills. These fill the two VQE-Ancients categories emptied by the
+       2026-08-29 cut pass: VQE_AncientPatient (shuffled pool the quest patients
+       draw adulthoods from) and VQE_Experiment (the two fixed-by-name solids,
+       repointed by VQEPatients_AreRakata.xml in Jawa_Patches).
+       Register: "Rakata" is the endonym — correct in a sleeper's own bio.
+       Titles stay descriptive so the tooltip does not leak the discovery. -->
+
+  <!-- ===== Childhoods — raised inside a losing war ===== -->
+
+  <BackstoryDef>
+    <defName>Jawa_RakataSiegeChild</defName>
+    <identifier>Jawa_RakataSiegeChild</identifier>
+    <slot>Childhood</slot>
+    <title>siege-born</title>
+    <titleShort>siege-born</titleShort>
+    <description>[PAWN_nameDef] was born inside a shrinking perimeter and never once saw it grow. [PAWN_pronoun] learned to strip a beam rifle before learning to read, because among the last Rakata every child was ammunition for a war their parents were already losing.</description>
+    <skillGains>
+      <Shooting>5</Shooting>
+      <Melee>2</Melee>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <ShootingAccuracy>1</ShootingAccuracy>
+    </forcedTraits>
+    <spawnCategories>
+      <li>VQE_AncientPatient</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_RakataVaultSchooled</defName>
+    <identifier>Jawa_RakataVaultSchooled</identifier>
+    <slot>Childhood</slot>
+    <title>vault-schooled</title>
+    <titleShort>vault pupil</titleShort>
+    <description>[PAWN_nameDef] grew up in the deep archives while the surface burned, taught by the finest minds of a dying people. The Rakata knew they were losing, so they poured everything they had ever learned into their children — the only vessels certain to outlast the war.</description>
+    <skillGains>
+      <Intellectual>6</Intellectual>
+      <Medicine>2</Medicine>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <TooSmart>0</TooSmart>
+    </forcedTraits>
+    <spawnCategories>
+      <li>VQE_AncientPatient</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_RakataLastGeneration</defName>
+    <identifier>Jawa_RakataLastGeneration</identifier>
+    <slot>Childhood</slot>
+    <title>child of the builders</title>
+    <titleShort>builder's child</titleShort>
+    <description>[PAWN_nameDef]'s parents raised worlds — terraformers of the great Rakata age, who brought the metal down from the sky. [PAWN_nameDef] inherited their hands and their stubbornness, but grew up watching everything they built be eaten, and hardened instead of breaking.</description>
+    <skillGains>
+      <Construction>4</Construction>
+      <Shooting>3</Shooting>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Nerves>1</Nerves>
+    </forcedTraits>
+    <spawnCategories>
+      <li>VQE_AncientPatient</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- ===== Adulthoods — the last war, and the long sleep ===== -->
+
+  <BackstoryDef>
+    <defName>Jawa_RakataLineBreaker</defName>
+    <identifier>Jawa_RakataLineBreaker</identifier>
+    <slot>Adulthood</slot>
+    <title>line-breaker</title>
+    <titleShort>line-breaker</titleShort>
+    <description>[PAWN_nameDef] held the collapsing lines against a thing that wore the dead as armor. [PAWN_pronoun] fought with weapons that frightened even the Rakata who forged them, and won every battle that mattered to nobody, because the war was already lost.</description>
+    <skillGains>
+      <Shooting>8</Shooting>
+      <Melee>4</Melee>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <spawnCategories>
+      <li>VQE_AncientPatient</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_RakataPlagueWarden</defName>
+    <identifier>Jawa_RakataPlagueWarden</identifier>
+    <slot>Adulthood</slot>
+    <title>quarantine warden</title>
+    <titleShort>warden</titleShort>
+    <description>[PAWN_nameDef] burned the outbreaks — settlements, harvests, friends — anywhere the enemy's flesh took root. [PAWN_pronoun] saved millions and remembers none of them, only the faces at the cordon line. [PAWN_pronoun] still wakes reaching for the igniter.</description>
+    <skillGains>
+      <Shooting>6</Shooting>
+      <Medicine>4</Medicine>
+      <Intellectual>2</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Nerves>-1</Nerves>
+    </forcedTraits>
+    <spawnCategories>
+      <li>VQE_AncientPatient</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_RakataWeaponsAuthor</defName>
+    <identifier>Jawa_RakataWeaponsAuthor</identifier>
+    <slot>Adulthood</slot>
+    <title>weapons author</title>
+    <titleShort>armorer</titleShort>
+    <description>[PAWN_nameDef] designed the arsenal of a desperate people — weapons meant to kill something that would not stay dead. Every design was a line [PAWN_pronoun] swore never to cross, crossed. Only one line held: [PAWN_pronoun] never once shaped flesh, and never will.</description>
+    <skillGains>
+      <Intellectual>8</Intellectual>
+      <Crafting>4</Crafting>
+      <Shooting>3</Shooting>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <GreatMemory>0</GreatMemory>
+    </forcedTraits>
+    <spawnCategories>
+      <li>VQE_AncientPatient</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_RakataTerraformEngineer</defName>
+    <identifier>Jawa_RakataTerraformEngineer</identifier>
+    <slot>Adulthood</slot>
+    <title>world-keeper</title>
+    <titleShort>world-keeper</titleShort>
+    <description>[PAWN_nameDef] kept the great works alive while the war ate them — rerouting water tables around battlefields, holding the climate engines together with salvage and refusal. The world the Jawa scavenge is [PAWN_possessive] unfinished repair job, abandoned mid-shift.</description>
+    <skillGains>
+      <Construction>7</Construction>
+      <Intellectual>5</Intellectual>
+      <Plants>2</Plants>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>VQE_AncientPatient</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_RakataCasketVolunteer</defName>
+    <identifier>Jawa_RakataCasketVolunteer</identifier>
+    <slot>Adulthood</slot>
+    <title>long-sleep volunteer</title>
+    <titleShort>sleeper</titleShort>
+    <description>[PAWN_nameDef] stepped into the casket believing the war could still be won by whoever woke [PAWN_objective]. Every hour since waking is an inventory of everything the Rakata made, ruined; everyone [PAWN_pronoun] knew, gone longer than their graves. [PAWN_pronoun] survives it, because surviving is the one thing left to be superb at.</description>
+    <skillGains>
+      <Intellectual>5</Intellectual>
+      <Shooting>4</Shooting>
+      <Melee>2</Melee>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <NaturalMood>-1</NaturalMood>
+    </forcedTraits>
+    <spawnCategories>
+      <li>VQE_AncientPatient</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- ===== The two fixed-by-name solids for the VQE_Experiment kind =====
+       VQE's C# still hands these pawns archite genes; in our fiction that is
+       exactly what they are — Rakata the assailant TOOK and flesh-shaped, the
+       living reason the survivors hate genetic modification. -->
+
+  <BackstoryDef>
+    <defName>Jawa_RakataTakenChild</defName>
+    <identifier>Jawa_RakataTakenChild</identifier>
+    <slot>Childhood</slot>
+    <title>taken young</title>
+    <titleShort>taken</titleShort>
+    <description>[PAWN_nameDef] was carried off a burning Rakata evacuation column before the age of ten. What did the carrying was not describable, and where it took [PAWN_objective] had no name. [PAWN_pronoun] came back years later, alive, changed, and unable to say which of those facts is worse.</description>
+    <skillGains>
+      <Melee>3</Melee>
+      <Social>-2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Nerves>-2</Nerves>
+    </forcedTraits>
+    <spawnCategories>
+      <li>VQE_Experiment</li>
+    </spawnCategories>
+    <shuffleable>False</shuffleable>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_RakataFleshShaped</defName>
+    <identifier>Jawa_RakataFleshShaped</identifier>
+    <slot>Adulthood</slot>
+    <title>flesh-shaped</title>
+    <titleShort>flesh-shaped</titleShort>
+    <description>The enemy rewrote [PAWN_nameDef] strand by strand, testing what a Rakata could be made into. [PAWN_pronoun] escaped, or was discarded — the records disagree and [PAWN_pronoun] does not. What was done to [PAWN_objective] works flawlessly, and [PAWN_pronoun] would burn every gene-forge in the galaxy to be wrong about that.</description>
+    <skillGains>
+      <Medicine>5</Medicine>
+      <Intellectual>4</Intellectual>
+      <Melee>2</Melee>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <BodyPurist>0</BodyPurist>
+    </forcedTraits>
+    <spawnCategories>
+      <li>VQE_Experiment</li>
+    </spawnCategories>
+    <shuffleable>False</shuffleable>
+  </BackstoryDef>
+
+</Defs>

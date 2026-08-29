@@ -94,6 +94,24 @@ strings, written BEFORE the launch:
 - The two save-carried exclusions (`RBM_Roamer`, `SH_MED_MedievalAlchemist`)
   must NOT appear in the removal list.
 
+## RAKATA sleeper backstories first load (added 2026-08-29, BENCH — supersedes the
+## "expected VQE noise" line above: the pools are now FILLED, so that noise is a FAIL)
+`Jawa_PawnFlavor/Defs/Backstories_Rakata_Sleepers.xml` (10 defs into the two VQE
+categories) + `Jawa_Patches/Patches/VQEPatients_AreRakata.xml` (repoints
+VQE_Experiment's fixed backstories off three CUT defs; validate_patch 3 ops / 1
+match each). Both deployed. Decision strings, written BEFORE the launch:
+- PASS positive: post-load def dump contains BackstoryDef `Jawa_RakataLineBreaker`
+  and `Jawa_RakataFleshShaped`; dump's VQE_Experiment kind reads
+  fixedChildBackstories=Jawa_RakataTakenChild, fixedAdultBackstories=
+  Jawa_RakataFleshShaped, and NO forcedTraits node.
+- FAIL: `Could not resolve cross-reference` naming `VQE_KidnappedChild`,
+  `VQE_IdealPatient` or any `Jawa_Rakata*`; or `No shuffled backstory ...
+  VQE_AncientPatient` (that pool must no longer be empty — this REVERSES the
+  "EXPECTED noise" line in the cut-pass section for the VQE categories; the other
+  9 mod-private categories' noise stays expected).
+- forcedTraits ride: ShootingAccuracy(1), TooSmart, Nerves(±), Tough, GreatMemory,
+  NaturalMood(-1), BodyPurist — all verified in capture 13-30-02Z + RimSage degrees.
+
 ## ISEKAI reflavor first load (added 2026-08-29, BENCH)
 IsekaiTraits_StarWarsReflavor.xml deployed (validate_patch: 30 ops, 1 match
 each). Decision strings:

@@ -385,9 +385,14 @@ Post-cut analysis (dump d1be0632, engine source read):
   frozen world's cast) + `VRESaurids_TownGuard_Saurid` (MinotaurOutlander) and
   VQE quest patients. Engine behavior on an empty category is CONFIRMED benign:
   `PawnBioAndNameGenerator.FillBackstorySlotShuffled` logs one error and picks a
-  random backstory — no crash. VQE Ancients quest patients will carry random
-  backstories. RULED (owner, 2026-08-29, at the bench): ACCEPTABLE NOISE — no
-  deeper cut, no neutering patch; the empty pools stand as-is.
+  random backstory — no crash. ~~RULED acceptable noise~~ SUPERSEDED by the owner
+  the same hour, with a better fix: FILL the emptied VQE pools with Rakata
+  war-generation backstories (`Backstories_Rakata_Sleepers.xml`, 10 defs — lore:
+  ANCIENTS_AS_RAKATA_SPEC.md "who EMERGES", owner 2026-08-29). Also found and
+  fixed: VQE_Experiment referenced two cut backstories and a cut TraitDef BY NAME
+  (fixedChild/AdultBackstories + forcedTraits) — a latent cross-ref error the
+  empty-pool analysis missed; `Jawa_Patches/Patches/VQEPatients_AreRakata.xml`
+  repoints them (validate_patch: 3 ops, 1 match each). Both deployed 2026-08-29.
 - ⚠️ BackstoryDef is an UNPRECEDENTED def type in this config (no prior entries).
   Cherry Picker support is proven only by the next load's
   `[Cherry Picker] ... defs were removed:` lines — that check rides

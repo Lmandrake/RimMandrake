@@ -50,6 +50,27 @@ down from the asteroids, they built the works the Geonosians now worship, and th
 *Utinni*. Then **something attacked them with self-replicating flesh and nearly finished
 them**, and what survives is in the caskets.
 
+### 🔴 RULED — who EMERGES from the caskets, owner 2026-08-29 (at the bench)
+
+> *"The lost souls emerging from these caskets aren't from before the Fall... it
+> wasn't instantaneous. Nearly a generation was spent fighting and losing against
+> them. So these individuals are usually the grown children of the last great
+> Rakata, engaged in a horrific losing war that, upon awakening, they see has
+> utterly devastated everything they made here. They are hardened, emotionally
+> scarred, laced with PTSD-like challenges, and utterly, violently against genetic
+> modification and technology. They are also fierce survivors and extremely
+> intelligent, superb researchers. ... They should have excellent weapon skills
+> and frightening weaponry."*
+
+⇒ The sleepers are the WAR GENERATION, not the builders: children of the last
+great Rakata who spent their whole adult lives losing to the unnamed assailant.
+The fall took ~a generation. Their revulsion at genetic modification (and the
+technology that births such things) is trauma from the flesh-weapon — which also
+squares the VQE quest patients carrying archite genes: those are Rakata the enemy
+TOOK and flesh-shaped, and they are the reason the survivors hate it. Authored
+expression: `Jawa_PawnFlavor` Rakata backstories (weapon skills + Intellectual
+high, scars in the text), see `pawn_flavor_design.md`.
+
 ### 🔴 RULED — the names, owner 2026-08-20
 
 > *"**Rakata** is the ancient's name for themselves. Modern people on this planet just call
