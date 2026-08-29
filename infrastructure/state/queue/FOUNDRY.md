@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T23:50:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T23:57:37Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -170,6 +170,15 @@ target:   v1
 kind:     build
 summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
 prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
+
+## VEHICLE_ION_TIER_1 Ion weapon has zero effect on Vehicle Framework vehicles
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
+prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -334,6 +343,16 @@ kind:     build
 blocked:  built clean, not deployed - game up, BENCH holds bridge
 summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
 prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
+
+## VEHICLE_ION_TIER_1 Ion weapon has zero effect on Vehicle Framework vehicles
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+blocked:  built and deployed (game DOWN); live-verify against a real vehicle owed at next game-up, a mechanism never once observed running
+summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
+prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 

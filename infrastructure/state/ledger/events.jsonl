@@ -2928,3 +2928,7 @@
 {"seat":"FOUNDRY","event":"close","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","sha":"98bcbe37","ts":"2026-08-29T23:38:21Z"}
 {"seat":"FOUNDRY","event":"close","id":"SWCP_CHARACTERS_DECOMPILE_1","sha":"50bbbb97","ts":"2026-08-29T23:40:45Z"}
 {"seat":"FOUNDRY","event":"close","id":"BUG_TURRET_ART_REDO_1","sha":"90e4289d","ts":"2026-08-29T23:50:28Z"}
+{"seat":"FOUNDRY","event":"file","id":"VEHICLE_ION_TIER_1","title":"Ion weapon has zero effect on Vehicle Framework vehicles","kind":"bug","target":"v1","needs":"bridge","caused_by":"ION_STUN_IGNORES_BODY_SIZE_1","for":"FOUNDRY","ts":"2026-08-29T23:56:48Z"}
+{"seat":"FOUNDRY","event":"claim","id":"VEHICLE_ION_TIER_1","ts":"2026-08-29T23:56:48Z"}
+{"seat":"FOUNDRY","event":"start","id":"VEHICLE_ION_TIER_1","ts":"2026-08-29T23:56:48Z"}
+{"seat":"FOUNDRY","event":"block","id":"VEHICLE_ION_TIER_1","reason":"built and deployed (game DOWN); live-verify against a real vehicle owed at next game-up, a mechanism never once observed running","ts":"2026-08-29T23:57:37Z"}

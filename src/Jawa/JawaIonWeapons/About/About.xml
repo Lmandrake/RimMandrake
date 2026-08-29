@@ -16,7 +16,9 @@ A single signature weapon — the Jawa Ion Blaster — plus its own ion damage t
 
 The weapon's own gun art is bundled here (Textures/JawaIon/Weapon_JawaIonBlaster.png). For the fired look and sound it reuses Outer Rim - Core's ion bolt sprite and blaster audio, so Core is a required dependency (Core in turn pulls Vanilla Expanded Framework and Tabula Rasa).
 
-The JawaIon_Stun hediff doubles as the "stun -> down" mechanic the capture pipeline (CPERS: Arrest Here) needs.</description>
+The JawaIon_Stun hediff doubles as the "stun -> down" mechanic the capture pipeline (CPERS: Arrest Here) needs.
+
+VEHICLE_ION_TIER_1 (2026-08-29): a second assembly, Assemblies/JawaIonVehicleTier.dll, gives the weapon a real effect against Vehicle Framework vehicles — droid-tier EMP amount, scaled LINEARLY by the vehicle's footprint area (an estimate of its volume relative to a droid's own 1x1) rather than the flesh tier's body-size-squared curve. Soft dependency: it self-disables with a log warning if Vehicle Framework is not loaded, same as the base weapon works without it.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
@@ -31,5 +33,7 @@ The JawaIon_Stun hediff doubles as the "stun -> down" mechanic the capture pipel
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Neronix17.OuterRim.Core</li>
+    <li>brrainz.harmony</li>
+    <li>SmashPhil.VehicleFramework</li>
   </loadAfter>
 </ModMetaData>
