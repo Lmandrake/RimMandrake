@@ -47,6 +47,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>101</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>950~1150</weaponMoney>
     <apparelMoney>900~1100</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -58,7 +59,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>OuterRim_StormtrooperCuirass</li>
       <li>OuterRim_StormtrooperHelmet</li>
     </apparelRequired>
-    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialStormtrooper</li>
     </apparelTags>
@@ -116,6 +116,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>129</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1000~1200</weaponMoney>
     <apparelMoney>1100~1300</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -129,7 +130,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>OuterRim_ImperialArmyHelmet</li>
       <li>OuterRim_ImperialArmyPauldrons</li>
     </apparelRequired>
-    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialArmy</li>
     </apparelTags>
@@ -177,6 +177,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>119</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>900~1080</weaponMoney>
     <apparelMoney>1000~1200</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -189,7 +190,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>OuterRim_ImperialOfficerUniform</li>
       <li>OuterRim_ImperialOfficerCap</li>
     </apparelRequired>
-    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialOfficer</li>
     </apparelTags>
@@ -235,6 +235,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>211</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1600~1920</weaponMoney>
     <apparelMoney>2000~2400</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -247,7 +248,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>OuterRim_ImperialOfficerUniform_Black</li>
       <li>OuterRim_ImperialOfficerCap_Black</li>
     </apparelRequired>
-    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialOfficer</li>
     </apparelTags>
@@ -280,6 +280,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>55</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>200~240</weaponMoney>
     <apparelMoney>250~300</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -336,6 +337,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>90</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>550~660</weaponMoney>
     <apparelMoney>400~480</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -392,6 +394,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>108</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>800~960</weaponMoney>
     <apparelMoney>600~720</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -452,6 +455,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>873</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>12000~15600</weaponMoney>
     <apparelMoney>2000~2400</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -511,6 +515,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>49</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>130~156</weaponMoney>
     <apparelMoney>180~216</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -570,6 +575,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>69</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>300~360</weaponMoney>
     <apparelMoney>250~300</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -629,6 +635,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>76</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>450~540</weaponMoney>
     <apparelMoney>300~360</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -688,6 +695,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>116</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>700~840</weaponMoney>
     <apparelMoney>500~600</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -747,6 +755,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>46</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>150~180</weaponMoney>
     <apparelMoney>100~120</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -805,6 +814,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>59</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>200~240</weaponMoney>
     <apparelMoney>150~180</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -865,6 +875,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>148</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>2000~2400</weaponMoney>
     <apparelMoney>200~240</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -921,6 +932,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>96</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>500~600</weaponMoney>
     <apparelMoney>350~420</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -978,6 +990,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>90</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>false</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1100~1320</weaponMoney>
     <apparelMoney>180~216</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -1029,6 +1042,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>124</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>false</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1400~1680</weaponMoney>
     <apparelMoney>200~240</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -1081,6 +1095,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>108</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>false</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1200~1440</weaponMoney>
     <apparelMoney>180~216</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -1132,6 +1147,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>176</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>false</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1800~2160</weaponMoney>
     <apparelMoney>600~720</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -1189,6 +1205,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>101</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1300~1560</weaponMoney>
     <apparelMoney>150~180</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -1251,6 +1268,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>140</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1700~2000</weaponMoney>
     <apparelMoney>200~240</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -1313,6 +1331,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>82</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>620~744</weaponMoney>
     <apparelMoney>250~300</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -1375,6 +1394,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>164</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1600~1920</weaponMoney>
     <apparelMoney>400~480</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -1436,6 +1456,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>67</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>300~360</weaponMoney>
     <apparelMoney>400~480</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -1496,6 +1517,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>100</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>600~720</weaponMoney>
     <apparelMoney>550~660</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -1556,6 +1578,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>108</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>750~900</weaponMoney>
     <apparelMoney>650~780</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -1616,6 +1639,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>193</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1400~1680</weaponMoney>
     <apparelMoney>1100~1320</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -1676,6 +1700,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>56</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>400~480</weaponMoney>
     <apparelMoney>60~72</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -1730,6 +1755,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>86</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>800~960</weaponMoney>
     <apparelMoney>80~96</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -1785,6 +1811,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>94</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1000~1200</weaponMoney>
     <apparelMoney>100~120</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -1840,6 +1867,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>146</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1500~1800</weaponMoney>
     <apparelMoney>200~240</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -1896,6 +1924,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>130</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>1400~1700</weaponMoney>
     <apparelMoney>700~840</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -1957,6 +1986,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>192</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>2000~2400</weaponMoney>
     <apparelMoney>900~1080</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -2018,6 +2048,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>224</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>2600~3100</weaponMoney>
     <apparelMoney>1100~1320</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -2083,6 +2114,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>890</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>12500~15000</weaponMoney>
     <apparelMoney>1800~2160</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -2146,6 +2178,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>69</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>400~480</weaponMoney>
     <apparelMoney>350~420</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -2154,7 +2187,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>SWKotORWeaponCategoryTag_rifle</li>
       <li>SimpleGun</li>
     </weaponTags>
-    <requiredWorkTags>Violent</requiredWorkTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
       <li>KotORArmor_mid</li>
@@ -2203,6 +2235,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>103</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>700~840</weaponMoney>
     <apparelMoney>500~600</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -2215,7 +2248,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>guy762_MandoArmor_battle</li>
       <li>guy762_MandoHelmet_supercom</li>
     </apparelRequired>
-    <requiredWorkTags>Violent</requiredWorkTags>
       <!-- professional mercenaries: combat drugs, real medicine, and paid in silver -->
     <inventoryOptions>
       <skipChance>0.35</skipChance>
@@ -2259,6 +2291,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>718</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>12800~16500</weaponMoney>
     <apparelMoney>800~960</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -2267,7 +2300,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORSniper</li>
       <li>KotORRanged_rare</li>
     </weaponTags>
-    <requiredWorkTags>Violent</requiredWorkTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
       <li>KotORArmor_mid</li>
@@ -2316,6 +2348,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>997</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>14600~26000</weaponMoney>
     <apparelMoney>1500~1800</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -2324,7 +2357,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>KotORRanged_legendary</li>
       <li>ORPistol</li>
     </weaponTags>
-    <requiredWorkTags>Violent</requiredWorkTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
       <li>MNCFactionArmor</li>
@@ -2375,6 +2407,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>51</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>250~300</weaponMoney>
     <apparelMoney>100~120</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -2442,6 +2475,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>71</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>450~540</weaponMoney>
     <apparelMoney>130~156</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -2510,6 +2544,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>92</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>900~1080</weaponMoney>
     <apparelMoney>160~192</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -2577,6 +2612,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>113</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>900~1080</weaponMoney>
     <apparelMoney>250~300</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -2646,6 +2682,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>56</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>60~72</weaponMoney>
     <apparelMoney>250~300</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
@@ -2706,6 +2743,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>84</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>140~168</weaponMoney>
     <apparelMoney>600~720</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -2766,6 +2804,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>94</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>200~240</weaponMoney>
     <apparelMoney>700~850</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -2824,6 +2863,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <combatPower>149</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
     <weaponMoney>350~420</weaponMoney>
     <apparelMoney>1000~1200</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -2921,6 +2961,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>SimpleGun</li>
       <li>KotORRanged_mid</li>
     </weaponTags>
+    <!-- PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1, owner ruling 2026-08-29: all 12
+         factions. Hand-added here since this kind is EXTRAS, not the R table
+         emit() loop applies it to. -->
+    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelRequired>
       <li>Apparel_Duster</li>
       <li>Apparel_Headwrap</li>

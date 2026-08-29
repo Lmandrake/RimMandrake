@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T01:24:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T05:05:13Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -181,16 +181,6 @@ kind:     check
 thin:     spec, verify and criteria all present
 summary:  D1 (owner, 2026-08-08) requires three distinct tiers from one weapon:
 prose:    infrastructure/state/items/ION_TIERS_MEASURED_LIVE_1.md
-
-## PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1 The no-pacifist guard covers Empire and Blackstar; the rolls landed on eight factions
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  🔴 This is a SCOPE question and it is DECIDE's, which is why it is filed rather than built.
-prose:    infrastructure/state/items/PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1.md
 
 ## AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1 A hostile Jawa_HuttCartel raid reports fired and delivers zero pawns
 state:    proposed

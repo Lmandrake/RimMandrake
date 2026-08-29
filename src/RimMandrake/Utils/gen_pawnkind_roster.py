@@ -115,6 +115,10 @@ EXTRAS = """\
       <li>SimpleGun</li>
       <li>KotORRanged_mid</li>
     </weaponTags>
+    <!-- PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1, owner ruling 2026-08-29: all 12
+         factions. Hand-added here since this kind is EXTRAS, not the R table
+         emit() loop applies it to. -->
+    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelRequired>
       <li>Apparel_Duster</li>
       <li>Apparel_Headwrap</li>
@@ -327,11 +331,20 @@ APPAREL_TAGS = {
     "Empire":  ["ImperialApparel", "ImperialArmy", "ImperialOfficer"],
 }
 
-# 🔴 EMPIRE_BLACKSTAR_ALWAYS_WILLING_1. DECIDE ruled 2026-08-22 that a pacifist pawn is
-# acceptable from ten of the twelve factions and unacceptable from these two: the Empire is
-# a supply chain and Blackstar is a contract house, and neither sends someone who will not
-# fight. ⛔ The other ten keep their pacifist rolls - DECIDE called that wanted texture and
-# narrowing it a regression.
+# 🔴 EMPIRE_BLACKSTAR_ALWAYS_WILLING_1 / PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1.
+# SUPERSEDED 2026-08-29 — the 2026-08-22 ruling below narrowed this to Empire and
+# Blackstar; the owner reversed that 2026-08-29 after the 2026-08-27 harvest showed
+# 5/5 bare pawns across the OTHER ten carrying a violence-disabling backstory, zero
+# unexplained — the guard now covers all 12 factions' combat kinds (emitted
+# unconditionally in `emit()` for every R-table kind, plus the hand-added
+# `Jawa_Homestead_DesertRanger` EXTRAS entry). Left below for the reasoning that
+# is still true — why `requiredWorkTags` is the right mechanism at all — not for
+# the ten-of-twelve scope, which no longer holds.
+#
+# 2026-08-22 (SCOPE NO LONGER TRUE, mechanism reasoning below still is): DECIDE
+# ruled a pacifist pawn acceptable from ten of the twelve factions and
+# unacceptable from these two: the Empire is a supply chain and Blackstar is a
+# contract house, and neither sends someone who will not fight.
 #
 # 🔑 `requiredWorkTags` is the VANILLA mechanism and not an invention: 143 kinds in the live
 # 578-mod set already carry it, including Core's own `AncientSoldier`, `Tribal_Archer` and
@@ -343,8 +356,6 @@ APPAREL_TAGS = {
 # passes `mustBeCapableOfViolence: true`, so a pawn arriving in a RAID was already covered;
 # what was not covered is every other route these kinds reach the map by - a dev spawn, a
 # quest, a settlement roster, an inhabited map - and that is where the 5-in-20 was measured.
-REQUIRE_VIOLENT = {"Empire", "Blackstar"}
-
 RESIST = {"Grunt": (8, 14), "Heavy": (12, 18), "Specialist": (14, 22), "Leader": (20, 30)}
 WILL   = {"Grunt": (1, 3),  "Heavy": (2, 4),   "Specialist": (2, 5),   "Leader": (4, 7)}
 
@@ -499,7 +510,6 @@ KIT = {
       <li>OuterRim_StormtrooperCuirass</li>
       <li>OuterRim_StormtrooperHelmet</li>
     </apparelRequired>
-    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialStormtrooper</li>
     </apparelTags>
@@ -559,7 +569,6 @@ KIT = {
       <li>OuterRim_ImperialArmyHelmet</li>
       <li>OuterRim_ImperialArmyPauldrons</li>
     </apparelRequired>
-    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialArmy</li>
     </apparelTags>
@@ -608,7 +617,6 @@ KIT = {
       <li>OuterRim_ImperialOfficerUniform</li>
       <li>OuterRim_ImperialOfficerCap</li>
     </apparelRequired>
-    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialOfficer</li>
     </apparelTags>
@@ -655,7 +663,6 @@ KIT = {
       <li>OuterRim_ImperialOfficerUniform_Black</li>
       <li>OuterRim_ImperialOfficerCap_Black</li>
     </apparelRequired>
-    <requiredWorkTags>Violent</requiredWorkTags>
     <apparelTags>
       <li>ImperialOfficer</li>
     </apparelTags>
@@ -2218,7 +2225,6 @@ KIT = {
       <li>SWKotORWeaponCategoryTag_rifle</li>
       <li>SimpleGun</li>
     </weaponTags>
-    <requiredWorkTags>Violent</requiredWorkTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
       <li>KotORArmor_mid</li>
@@ -2269,7 +2275,6 @@ KIT = {
       <li>guy762_MandoArmor_battle</li>
       <li>guy762_MandoHelmet_supercom</li>
     </apparelRequired>
-    <requiredWorkTags>Violent</requiredWorkTags>
       <!-- professional mercenaries: combat drugs, real medicine, and paid in silver -->
     <inventoryOptions>
       <skipChance>0.35</skipChance>
@@ -2311,7 +2316,6 @@ KIT = {
       <li>ORSniper</li>
       <li>KotORRanged_rare</li>
     </weaponTags>
-    <requiredWorkTags>Violent</requiredWorkTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
       <li>KotORArmor_mid</li>
@@ -2358,7 +2362,6 @@ KIT = {
       <li>KotORRanged_legendary</li>
       <li>ORPistol</li>
     </weaponTags>
-    <requiredWorkTags>Violent</requiredWorkTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
       <li>MNCFactionArmor</li>
@@ -2897,6 +2900,14 @@ def emit():
               # species mix wearing that faction's gear, so species never appear in a
               # kind's name and a faction's look is edited in one place.
               "    <useFactionXenotypes>%s</useFactionXenotypes>" % ("true" if race == "Human" else "false")]
+        # PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1, owner ruling 2026-08-29: widen to
+        # all 12 factions (was Empire/Blackstar only, 2026-08-22). Every kind here
+        # is isFighter (wt is never empty in R), so this is unconditional - computed
+        # once, not duplicated into 48 KIT strings. The two factions that carried it
+        # as curated text (Empire, Blackstar) had that line removed from their KIT
+        # blocks so there is exactly one requiredWorkTags node per kind, not two.
+        if wt:
+            L.append("    <requiredWorkTags>Violent</requiredWorkTags>")
         # 🔑 Everything from <weaponMoney> on is CURATED, not computed. See KIT above.
         # The generator used to derive these from its R table and that derivation is
         # what silently reverted the equipment layer, so it is gone rather than kept
