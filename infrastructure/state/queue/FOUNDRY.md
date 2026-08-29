@@ -7,66 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T23:12:33Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-29T23:14:32Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## BUILD_BATCH_OVERWRITES_SILENTLY_1 jawa/build_batch reports placed for an op that destroys an existing building in the same run
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
-prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
-
-## FIRE_RAID_ECHOES_REQUESTED_FACTION_1 jawa/fire_raid reports the faction you asked for even when the worker raids with a different one
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
-prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
-
-## BUILD_BATCH_FACTION_REJECTS_PLAYER_1 jawa/build_batch refuses faction='player' while jawa/spawn_pawn accepts it - two tools, two grammars
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
-prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
-
-## ORDERED_JOB_CANNOT_SOW_1 jawa/ordered_job cannot set plantDefToSow, so any Sow it issues is accepted and dies in the first toil
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
-prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
-
-## NO_TOOL_REPORTS_MAP_TILE_1 No bridge tool reports which world tile the current map is on - you have to find the player Settlement
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
-prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
-
-## DUMPER_SWALLOWS_CACHE_THROW_1 The def dumper publishes the engine's cached answer and swallows the exception behind it
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     defect
-summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
-prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -156,7 +102,7 @@ prose:    infrastructure/state/items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md
 ## BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 11 more bridge tools: scatter_at/run_genstep/run_basegen_symbol/fix_floating_roofs, spawn_mech_cluster, incident_queue_clear, set_game_speed, letter_list/letter_send_delayed, av_effect, set_thing_props
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
@@ -165,7 +111,7 @@ prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
 ## JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1 Every jawa/ bridge tool is dark right now - duplicate jawa/bill_add alias crashed the WHOLE provider registration
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     bug
 summary:  jawa/billadd was declared TWICE — two independently-written tools, same alias:
@@ -174,7 +120,7 @@ prose:    infrastructure/state/items/JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1.md
 ## BRIDGE_PIPE_NET_INFO_1 jawa/pipe_net_info: VEF verified, Rimefeller/DBH generic reflection dump, per owner ruling
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 summary:  jawa/pipenetinfo (new file JawaBenchPipeTools.cs, ungated, read-only):
@@ -183,7 +129,7 @@ prose:    infrastructure/state/items/BRIDGE_PIPE_NET_INFO_1.md
 ## BRIDGE_UIROOT_WINDOW_TOOLS_1 jawa/window_list_close + jawa/screenshot_mode - the UIRoot row had real capabilities after all
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 summary:  New file JawaBenchUIRootTools.cs (2 tools, ungated):
@@ -192,7 +138,7 @@ prose:    infrastructure/state/items/BRIDGE_UIROOT_WINDOW_TOOLS_1.md
 ## BRIDGE_STORY_ALERT_TALE_TOOLS_1 5 more gems: alerts_list (resolves roster UNCERTAIN), tale_list/tale_record (free-text-on-pawn answer), story_stats, faction_goodwill_situations
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 summary:  New file JawaBenchStoryTools.cs (5 tools, all ungated):
@@ -201,7 +147,7 @@ prose:    infrastructure/state/items/BRIDGE_STORY_ALERT_TALE_TOOLS_1.md
 ## BRIDGE_DEBUGACTION_SWEEP_GEMS_1 First DebugAction sweep harvest: clear_area, spawn_fill_area, make_empty_room, destroy_bulk, explosion_at, ideo_ritual_obligation_remove, hot_reload_defs
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 summary:  New file JawaBenchDebugGems1.cs (7 tools):
@@ -210,7 +156,7 @@ prose:    infrastructure/state/items/BRIDGE_DEBUGACTION_SWEEP_GEMS_1.md
 ## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
@@ -303,7 +249,7 @@ prose:    infrastructure/state/items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md
 ## BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 11 more bridge tools: scatter_at/run_genstep/run_basegen_symbol/fix_floating_roofs, spawn_mech_cluster, incident_queue_clear, set_game_speed, letter_list/letter_send_delayed, av_effect, set_thing_props
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 blocked:  built clean this game-loading window, not yet deployed - game must be closed first, then proven live
@@ -313,7 +259,7 @@ prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
 ## JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1 Every jawa/ bridge tool is dark right now - duplicate jawa/bill_add alias crashed the WHOLE provider registration
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     bug
 blocked:  fixed in source, builds clean; NOT deployed - game is up, BENCH holds bridge, DLL cannot be written while RimWorld runs. Deploy next down-window.
@@ -323,7 +269,7 @@ prose:    infrastructure/state/items/JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1.md
 ## BRIDGE_PIPE_NET_INFO_1 jawa/pipe_net_info: VEF verified, Rimefeller/DBH generic reflection dump, per owner ruling
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 blocked:  built clean, not deployed - game up, BENCH holds bridge
@@ -333,7 +279,7 @@ prose:    infrastructure/state/items/BRIDGE_PIPE_NET_INFO_1.md
 ## BRIDGE_UIROOT_WINDOW_TOOLS_1 jawa/window_list_close + jawa/screenshot_mode - the UIRoot row had real capabilities after all
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 blocked:  built clean, not deployed - game up, BENCH holds bridge
@@ -343,7 +289,7 @@ prose:    infrastructure/state/items/BRIDGE_UIROOT_WINDOW_TOOLS_1.md
 ## BRIDGE_STORY_ALERT_TALE_TOOLS_1 5 more gems: alerts_list (resolves roster UNCERTAIN), tale_list/tale_record (free-text-on-pawn answer), story_stats, faction_goodwill_situations
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 blocked:  built clean, not deployed - game up, BENCH holds bridge
@@ -353,7 +299,7 @@ prose:    infrastructure/state/items/BRIDGE_STORY_ALERT_TALE_TOOLS_1.md
 ## BRIDGE_DEBUGACTION_SWEEP_GEMS_1 First DebugAction sweep harvest: clear_area, spawn_fill_area, make_empty_room, destroy_bulk, explosion_at, ideo_ritual_obligation_remove, hot_reload_defs
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 blocked:  built clean, not deployed - game up, BENCH holds bridge
@@ -363,7 +309,7 @@ prose:    infrastructure/state/items/BRIDGE_DEBUGACTION_SWEEP_GEMS_1.md
 ## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    deploy
+needs:    bridge
 target:   v1
 kind:     build
 blocked:  built clean, not deployed - game up, BENCH holds bridge
@@ -372,7 +318,67 @@ prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## BUILD_BATCH_OVERWRITES_SILENTLY_1 jawa/build_batch reports placed for an op that destroys an existing building in the same run
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+waiting:  needs `bridge`, game is DOWN
+summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
+prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
+
+## FIRE_RAID_ECHOES_REQUESTED_FACTION_1 jawa/fire_raid reports the faction you asked for even when the worker raids with a different one
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+waiting:  needs `bridge`, game is DOWN
+summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
+prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
+
+## BUILD_BATCH_FACTION_REJECTS_PLAYER_1 jawa/build_batch refuses faction='player' while jawa/spawn_pawn accepts it - two tools, two grammars
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+waiting:  needs `bridge`, game is DOWN
+summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
+prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
+
+## ORDERED_JOB_CANNOT_SOW_1 jawa/ordered_job cannot set plantDefToSow, so any Sow it issues is accepted and dies in the first toil
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+waiting:  needs `bridge`, game is DOWN
+summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
+prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
+
+## NO_TOOL_REPORTS_MAP_TILE_1 No bridge tool reports which world tile the current map is on - you have to find the player Settlement
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is DOWN
+summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
+prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
+
+## DUMPER_SWALLOWS_CACHE_THROW_1 The def dumper publishes the engine's cached answer and swallows the exception behind it
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     defect
+waiting:  needs `bridge`, game is DOWN
+summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
+prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
 
 # NOT THIS TARGET
 
@@ -431,3 +437,23 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  STARTINGSHIPANTICRAFT1 — the disconnected anticraft caster on the starting ship
 prose:    infrastructure/state/items/STARTING_SHIP_ANTICRAFT_1.md
+
+## SWCP_CHARACTERS_DECOMPILE_1 Decompile SWCP:Characters DLL to build character/pawnkind bridge tools - owner-approved 2026-08-29
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Locate the mod's assembly in the live Mods folder (grep ModsConfig.FULL.LATEST.xml
+prose:    infrastructure/state/items/SWCP_CHARACTERS_DECOMPILE_1.md
+
+## VEHICLE_FRAMEWORK_AERIAL_DEBUG_1 Research VF's Ground All Aerial Vehicles / Spawn Airdrop (unread private landing logic) - owner-approved 2026-08-29
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1. Read DebugLandAerialVehicle's full body (referenced but not opened this
+prose:    infrastructure/state/items/VEHICLE_FRAMEWORK_AERIAL_DEBUG_1.md
