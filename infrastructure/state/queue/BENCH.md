@@ -7,25 +7,25 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T16:32:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T16:55:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+
+# IN PROGRESS
+
+Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
 
 ## EMPIRE_PURSUIT_SCENPART_INSTALL_1 Install endless Empire pursuit ScenPart into the campaign, with the owner
-state:    ready
+state:    doing
 row:      unassigned
 needs:    bridge
 target:   v1
 kind:     build
 summary:  Install ScenPartRuthlessPursuingMechanoids targeting Empire (the reskinned
 prose:    infrastructure/state/items/EMPIRE_PURSUIT_SCENPART_INSTALL_1.md
-
-# IN PROGRESS
-
-Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
 
 ## GRAVSHIP_LANDING_DIRECT_PLACE_1 Land a gravship without the cutscene machinery (skipCutscene route)
 state:    doing
@@ -70,13 +70,3 @@ kind:     task
 thin:     no ## verify, no ## criteria
 summary:  The next batched window scores everything below, then this closes and a fresh sheet is
 prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_2.md
-
-## EMPIRE_PURSUIT_SCRATCH_PROOF_1 Scratch proof of the pursuit scenario part: install clean, timer fires exact, raid delivery hit known intermittency
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Install RuthlessPursuingMechanoids.ScenPartRuthlessPursuingMechanoids via
-prose:    infrastructure/state/items/EMPIRE_PURSUIT_SCRATCH_PROOF_1.md

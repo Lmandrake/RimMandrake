@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T16:15:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-29T16:55:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -80,6 +80,24 @@ target:   v1
 kind:     bug
 summary:  GalacticEmpire.xml's PatchOperationReplace on
 prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
+
+## ION_STUN_IGNORES_BODY_SIZE_1 Ion (and likely sonic) stun/overload severity has no body-size term - a 32x-human Behemoth drops as fast as a person
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+summary:  Every flesh target — a rat and a 32×-human-bodySize Alpha Animals Behemoth alike — currently
+prose:    infrastructure/state/items/ION_STUN_IGNORES_BODY_SIZE_1.md
+
+## OTHER_STUN_WEAPONS_SURVEY_1 Survey of every other stun-capable damage type: which have body-size scaling, which don't
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     investigate
+summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
+prose:    infrastructure/state/items/OTHER_STUN_WEAPONS_SURVEY_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -184,6 +202,26 @@ kind:     bug
 blocked:  69 XML candidates cleared, points at a C# compat framework not an XML conflict. Needs a Harmony patch inventory (no bridge tool yet, needs game-down deploy) or a mod-list bisect.
 summary:  GalacticEmpire.xml's PatchOperationReplace on
 prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
+
+## ION_STUN_IGNORES_BODY_SIZE_1 Ion (and likely sonic) stun/overload severity has no body-size term - a 32x-human Behemoth drops as fast as a person
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+blocked:  fix committed and built clean; deploy blocked, game holds the DLL locked. Deploy at next down-window: deploy_custom_mods.py --mod JawaIonWeapons --apply
+summary:  Every flesh target — a rat and a 32×-human-bodySize Alpha Animals Behemoth alike — currently
+prose:    infrastructure/state/items/ION_STUN_IGNORES_BODY_SIZE_1.md
+
+## OTHER_STUN_WEAPONS_SURVEY_1 Survey of every other stun-capable damage type: which have body-size scaling, which don't
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     investigate
+blocked:  survey complete, findings and recommendations written; awaiting owner call on which third-party defs to patch and to what standard
+summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
+prose:    infrastructure/state/items/OTHER_STUN_WEAPONS_SURVEY_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 

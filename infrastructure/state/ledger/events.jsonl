@@ -2762,3 +2762,20 @@
 {"seat":"FOUNDRY","event":"block","id":"ION_STUN_IGNORES_BODY_SIZE_1","reason":"fix committed and built clean; deploy blocked, game holds the DLL locked. Deploy at next down-window: deploy_custom_mods.py --mod JawaIonWeapons --apply","ts":"2026-08-29T16:27:30Z"}
 {"seat":"FOUNDRY","event":"needs","id":"ION_STUN_IGNORES_BODY_SIZE_1","to":"deploy","ts":"2026-08-29T16:27:30Z"}
 {"seat":"BENCH","event":"note","id":"PAWN_FLAVOR_STARWARS_1","text":"Built and shipped: Jawa_PawnFlavor mod, 50 backstories + 5 traits + faction wiring, validated 0 errors, deployed, active at 581. First-load pass/fail strings in COLD_LOAD_RUN_SHEET_2. C# tier deferred, listed in About.xml. Lore prose pass done inline.","ts":"2026-08-29T16:32:37Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-29T16:34:57Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-29T16:37:23Z"}
+{"seat":"FOUNDRY","event":"file","id":"OTHER_STUN_WEAPONS_SURVEY_1","title":"Survey of every other stun-capable damage type: which have body-size scaling, which don't","kind":"investigate","target":"v1","needs":"offline","caused_by":"ION_STUN_IGNORES_BODY_SIZE_1","for":"FOUNDRY","ts":"2026-08-29T16:37:28Z"}
+{"seat":"FOUNDRY","event":"claim","id":"OTHER_STUN_WEAPONS_SURVEY_1","ts":"2026-08-29T16:37:32Z"}
+{"seat":"FOUNDRY","event":"start","id":"OTHER_STUN_WEAPONS_SURVEY_1","ts":"2026-08-29T16:37:33Z"}
+{"seat":"FOUNDRY","event":"block","id":"OTHER_STUN_WEAPONS_SURVEY_1","reason":"survey complete, findings and recommendations written; awaiting owner call on which third-party defs to patch and to what standard","ts":"2026-08-29T16:38:26Z"}
+{"seat":"FOUNDRY","event":"needs","id":"OTHER_STUN_WEAPONS_SURVEY_1","to":"owner","ts":"2026-08-29T16:38:27Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-29T16:46:15Z"}
+{"seat":"BENCH","event":"claim","id":"EMPIRE_PURSUIT_SCENPART_INSTALL_1","ts":"2026-08-29T16:49:25Z"}
+{"seat":"BENCH","event":"start","id":"EMPIRE_PURSUIT_SCENPART_INSTALL_1","ts":"2026-08-29T16:49:25Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-29T16:50:47Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","ts":"2026-08-29T16:51:32Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-08-29T16:55:13Z"}
+{"seat":"BENCH","event":"claim","id":"EMPIRE_PURSUIT_SCRATCH_PROOF_1","ts":"2026-08-29T16:55:30Z"}
+{"seat":"BENCH","event":"close","id":"EMPIRE_PURSUIT_SCRATCH_PROOF_1","sha":"b0e12305","ts":"2026-08-29T16:55:31Z"}
+{"seat":"BENCH","event":"note","id":"EMPIRE_PURSUIT_SCRATCH_PROOF_1","text":"PROVEN live 2026-08-29: jawa/scenario_part_add installed ScenPart_RuthlessPursuingMechanoids (Empire, FirstRaidDelayHours=1) on a scratch Crashlanded game; part resolved PursuitFactionName='Galactic Empire'; wave delivered 12 hostiles (Jawa_Empire_Grunt x5, Specialist x3, Heavy x1) between ticks 4728-5877 - ~0.9h later than nominal, matching the known delivery intermittency. initCalls PostWorldGenerate;PostMapGenerate required, per the tool. Owner eyeballed the raid live. Screenshot rimbridge_20260829_095513__cell_rect.png.","ts":"2026-08-29T16:55:31Z"}
+{"seat":"BENCH","event":"note","id":"EMPIRE_PURSUIT_SCENPART_INSTALL_1","text":"Criterion 3 (scratch proof) MET 2026-08-29 - see EMPIRE_PURSUIT_SCRATCH_PROOF_1. Criteria 1-2 (part in the CAMPAIGN save with ruled values 156+-36h, canDoNormalRaid=true) remain: repeat the install when the campaign save is the loaded game, then save and grep the .rws. The exact working call and field casings are proven; PursuitFactionPermanentEnemy/FirstRaidDelayHours etc. are capitalized, pursuitFactionDef/canDoNormalRaid/startHostile/warningDisabled lowercase.","ts":"2026-08-29T16:55:31Z"}
