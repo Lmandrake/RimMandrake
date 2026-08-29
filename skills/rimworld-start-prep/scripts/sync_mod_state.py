@@ -125,14 +125,23 @@ def read_version():
     it. So: prefer the runtime source, fall back to the install file only when no
     runtime source exists, and never silently pick the lower one."""
     runtime = None
-    manifest = os.path.join(LOCALLOW, "DefDump/manifest.json")
-    if os.path.exists(manifest):
+    # The producer migrated flat DefDump/manifest.json into
+    # DefDump/captures/<id>/manifest.json on 2026-08-22; check both, newest wins.
+    candidates = [os.path.join(LOCALLOW, "DefDump/manifest.json")]
+    capdir = os.path.join(LOCALLOW, "DefDump/captures")
+    if os.path.isdir(capdir):
+        candidates += [os.path.join(capdir, d, "manifest.json")
+                       for d in os.listdir(capdir)]
+    candidates = [p for p in candidates if os.path.exists(p)]
+    for manifest in sorted(candidates, key=os.path.getmtime, reverse=True):
         try:
             import json
             runtime = (json.load(io.open(manifest, encoding="utf-8-sig"))
                        .get("gameVersion") or "").strip() or None
         except Exception:
             runtime = None
+        if runtime:
+            break
 
     install = None
     if os.path.exists(VERSION_TXT):

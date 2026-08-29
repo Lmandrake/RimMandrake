@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T07:33:55Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-29T12:55:59Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## EMPIRE_PURSUIT_SCENPART_INSTALL_1 Install endless Empire pursuit ScenPart into the campaign, with the owner
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  Install ScenPartRuthlessPursuingMechanoids targeting Empire (the reskinned
-prose:    infrastructure/state/items/EMPIRE_PURSUIT_SCENPART_INSTALL_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -42,7 +33,17 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## EMPIRE_PURSUIT_SCENPART_INSTALL_1 Install endless Empire pursuit ScenPart into the campaign, with the owner
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+waiting:  needs `bridge`, game is DOWN
+summary:  Install ScenPartRuthlessPursuingMechanoids targeting Empire (the reskinned
+prose:    infrastructure/state/items/EMPIRE_PURSUIT_SCENPART_INSTALL_1.md
 
 # NOT THIS TARGET
 
@@ -68,6 +69,6 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/COLD_LOAD_RUN_SHEET_2.md yet — write one when you have something to say)
+thin:     no ## verify, no ## criteria
+summary:  The next batched window scores everything below, then this closes and a fresh sheet is
 prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_2.md

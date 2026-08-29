@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T07:33:55Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-29T12:55:59Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -26,6 +26,24 @@ target:   v1
 kind:     bug
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
+
+## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
+prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
+
+## PLACER_IDENTITY_REPLAY_1 Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/PLACER_IDENTITY_REPLAY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PLACER_IDENTITY_REPLAY_1.md
 
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
@@ -90,6 +108,16 @@ blocked:  no fix needed today - the measured leak was quicktest noise; the real 
 summary:  JAWACULTURESLEAKTOSTRANGERS1 — our authored cultures are in the general pool
 prose:    infrastructure/state/items/JAWA_CULTURES_LEAK_TO_STRANGERS_1.md
 
+## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+blocked:  needs bridge; BENCH holds it (owner confirmed live, 2026-08-29) — my prior fire_raid work on the sibling item collided with BENCH's session, not touching the bridge again until it's free
+summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
+prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
+
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -102,7 +130,7 @@ prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## DUMP_PRODUCER_DATED_CAPTURES_1 DefDumper writes captures/<id>/ and prunes to the newest three
 state:    ready
@@ -110,7 +138,7 @@ row:      unassigned
 needs:    harvest
 target:   v1
 kind:     task
-waiting:  needs `harvest`, game is UP
+waiting:  needs `harvest`, game is DOWN
 summary:  The producer half of DUMPSTORAGELAYOUTRULING1. Owner, 2026-08-21 13:24:
 prose:    infrastructure/state/items/DUMP_PRODUCER_DATED_CAPTURES_1.md
 
@@ -120,7 +148,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
 prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
 
@@ -130,7 +158,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
 prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
 
@@ -140,7 +168,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
 prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
 
@@ -150,7 +178,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
 prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
 
@@ -160,7 +188,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     task
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
 prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
 
@@ -170,7 +198,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     defect
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
 prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
 
@@ -181,36 +209,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1 A hostile Jawa_HuttCartel raid reports fired and delivers zero pawns
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify
-summary:  AUTHOREDFACTIONRAIDSPAWNSNOTHING1 — the raid fires and nobody comes
-prose:    infrastructure/state/items/AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1.md
-
-## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify
-summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
-prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
-
-## PLACER_IDENTITY_REPLAY_1 Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PLACER_IDENTITY_REPLAY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PLACER_IDENTITY_REPLAY_1.md
 
 ## THRUSTER_INSTABUILD_NEVER_ACTIVE_1 Tool-built thrusters link but never contribute range on the full list
 state:    proposed
@@ -248,6 +246,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     investigate
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WILD_ANIMALS_PADDED_LISTS_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Every one of the 81 biomes with a wildAnimals list holds EXACTLY 1024 records in the
 prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
+
+## OFFICIAL_DUMP_REFREEZE_1 Capture a 584-mod official dump at the next full cold load, then owner re-freezes
+state:    proposed
+row:      unassigned
+needs:    harvest
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/OFFICIAL_DUMP_REFREEZE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/OFFICIAL_DUMP_REFREEZE_1.md

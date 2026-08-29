@@ -32,7 +32,26 @@ his list since the timestamp above.
 
 ---
 
-## 🔴 CURRENT MOD SET — the worldmap/terrain texture swap, 2026-08-20
+## 🔴 CURRENT MOD SET — two aesthetic mods added, 2026-08-29
+
+**The owner added two aesthetic mods via RimSort and re-sorted** (BENCH, at his
+instruction). `ModsConfig.FULL.LATEST.xml` holds the result and is byte-identical
+to the live `ModsConfig.xml` (md5 `3c40801c`). The predecessor is preserved at
+`ModsConfig.FULL.20260826_070210.xml`.
+
+| out (0) | in (2) |
+|---|---|
+| | `mlie.showmeyourhands` |
+| | `meathax.showmeyourtools` |
+
+The re-sort moved 407 relative positions but broke no ordering we depend on: every
+`mandrake.*` mod still loads after its declared targets (`mandrake.msedroidfix`
+before Droid Depot is deliberate — its own About.xml documents why loose-file art
+needs no load order), and `mandrake.rimdefdump` is still dead last. The official
+dump re-freeze against this list waits on the next full cold load
+(`OFFICIAL_DUMP_REFREEZE_1`).
+
+## 🔴 Superseded — the worldmap/terrain texture swap, 2026-08-20
 
 **The owner changed the worldmap and terrain texture mods.** `ModsConfig.FULL.LATEST.xml`
 holds the result and is **byte-identical to the live `ModsConfig.xml`** (md5 `5cb68571`,
