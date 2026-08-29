@@ -115,6 +115,19 @@ namespace JawaIonWeapons
                     ? entry.severityFixed
                     : entry.severityPerDamageDealt * dinfo.Amount;
 
+                // Owner ruling 2026-08-29 (ION_STUN_IGNORES_BODY_SIZE_1): the overload
+                // barrier scales with the SQUARE of the target's body size. A Human
+                // (BodySize 1) is the unscaled reference point -- the weapon's identity
+                // against people is untouched. A rat (BodySize ~0.2) drops in one hit.
+                // A 32x-bodySize creature (AA_Behemoth) needs 1024x the severity --
+                // deliberately: "It should take a ship-weapon-scale ion gun to take
+                // this thing down, and that's good." No cap, no softening curve.
+                float bodySize = pawn.BodySize;
+                if (bodySize > 0f)
+                {
+                    severity /= bodySize * bodySize;
+                }
+
                 if (severity <= 0f)
                 {
                     continue;
