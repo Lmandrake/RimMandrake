@@ -2665,3 +2665,7 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-29T05:35:03Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-29T05:40:48Z"}
 {"seat":"FOUNDRY","event":"close","id":"ION_TIERS_MEASURED_LIVE_1","sha":"f23c2016","ts":"2026-08-29T05:41:14Z"}
+{"seat":"BENCH","event":"claim","id":"COLD_LOAD_RUN_SHEET_1","ts":"2026-08-29T06:50:11Z"}
+{"seat":"BENCH","event":"start","id":"COLD_LOAD_RUN_SHEET_1","ts":"2026-08-29T06:50:11Z"}
+{"seat":"BENCH","event":"claim","id":"EMPIRE_PURSUIT_SCENPART_INSTALL_1","ts":"2026-08-29T06:50:12Z"}
+{"seat":"FOUNDRY","event":"file","id":"PAWN_FLAVOR_STARWARS_1","title":"Assess and rework backstories, childhoods and traits for Star Wars fidelity, with the owner","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-08-29T06:51:55Z"}
