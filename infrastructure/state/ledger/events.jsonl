@@ -2596,3 +2596,6 @@
 {"seat":"BENCH","event":"claim","id":"GRAVSHIP_LANDING_DIRECT_PLACE_1","ts":"2026-08-28T17:05:48Z"}
 {"seat":"BENCH","event":"start","id":"GRAVSHIP_LANDING_DIRECT_PLACE_1","ts":"2026-08-28T17:05:49Z"}
 {"seat":"BENCH","event":"needs","id":"GRAVSHIP_LANDING_DIRECT_PLACE_1","to":"deploy","reason":"built and compiled; DLL locked until next down window","ts":"2026-08-28T17:07:29Z"}
+{"seat":"BENCH","event":"seat","state":"idle","reason":"queue exhausted: remaining items owner- or deploy-gated","ts":"2026-08-28T17:07:34Z"}
+{"seat":"BENCH","event":"file","id":"EMPIRE_PURSUIT_SURVEY_SHADOW_1","title":"Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days","kind":"build","target":"v1","needs":"offline","for":"BENCH","ts":"2026-08-29T00:32:23Z"}
+{"seat":"OWNER","event":"note","id":"GRAVSHIP_LAUNCH_TRAVEL_1","text":"Owner 2026-08-28: BENCH_console_fixed.rws is the campaign's canon save (working, linked pilot console; ship launch-capable). BENCH_pre_gravship_proof.rws and gravship_scratch.rws are superseded fallbacks.","ownerSaid":"BENCH_console_fixed (Recommended)","ts":"2026-08-29T00:32:24Z"}

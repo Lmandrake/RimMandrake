@@ -54,13 +54,13 @@ this block states everything we care about explicitly:
   <startHostile>true</startHostile>
   <canDoNormalRaid>false</canDoNormalRaid>
   <pursuitRaidType>RandomDrop</pursuitRaidType>
-  <firstRaidDelayHours>636</firstRaidDelayHours>          <!-- 26.5 d; see knob #1 -->
-  <firstRaidDelayVarianceHours>204</firstRaidDelayVarianceHours>
-  <raidDelayHours>636</raidDelayHours>                    <!-- 18–35 d per map -->
-  <raidDelayVarianceHours>204</raidDelayVarianceHours>
+  <firstRaidDelayHours>156</firstRaidDelayHours>          <!-- 5-8 d, owner 2026-08-28 -->
+  <firstRaidDelayVarianceHours>36</firstRaidDelayVarianceHours>
+  <raidDelayHours>156</raidDelayHours>                    <!-- 5-8 d per map ("keep 'em running") -->
+  <raidDelayVarianceHours>36</raidDelayVarianceHours>
   <warningDisabled>false</warningDisabled>
-  <warningDelayHours>276</warningDelayHours>              <!-- warn ~11.5 d ahead -->
-  <warningDelayVarianceHours>24</warningDelayVarianceHours>
+  <warningDelayHours>48</warningDelayHours>               <!-- ~2 d warning -->
+  <warningDelayVarianceHours>12</warningDelayVarianceHours>
   <secondWaveHours>12</secondWaveHours>
   <disableEndlessWaves>false</disableEndlessWaves>
   <EndlessWavesHours>3</EndlessWavesHours>                <!-- scribe key really is capitalised -->
@@ -70,16 +70,21 @@ this block states everything we care about explicitly:
 ⚠️ `EndlessWavesHours` is scribed with a capital E, unlike every sibling — copy it
 exactly.
 
-## Knobs held for the owner
+## Knobs RULED by the owner, 2026-08-28
 
-1. **When pursuit begins.** The timer starts at game start, not at the persona-
-   matrix event. If the fiction wants the Empire to come only after the schism,
-   either accept 18–35 quiet days as "the Empire noticing", raise
-   `firstRaidDelayHours`, or (v2 thought) flip `disabled` from a quest signal.
-2. **Pressure curve.** Vanilla 18–35 days/map is gentle nomadism. Tightening
-   `raidDelayHours` to ~276±84 (8–15 days) makes flight the dominant loop.
-3. **`canDoNormalRaid`** — false keeps Imperial pressure purely the pursuit
-   drumbeat; true doubles them into ordinary raids too.
+1. **Cadence: ~5–8 days, everywhere the Empire can see.** Owner: "I had thought
+   around every 5-8 days, keep 'em running" / "Matching the initial fast
+   timeline... it takes them that long to 'relocate' the ship on the dayside."
+   ⇒ `firstRaidDelayHours` **156 ± 36** and `raidDelayHours` **156 ± 36**
+   (5.0–8.0 days). Warning lead shortened to fit: `warningDelayHours` **48 ± 12**.
+2. **Poorly-surveyed refuges are the counterplay.** Owner: areas like the
+   Forsaken Crags ("and possibly some others, and even in distant v2 maybe on
+   the ocean floor for a sealed ship") should be more like **20–30 days**.
+   ⛔ The mod has ONE global cadence — no per-biome modulation. The bundled
+   source is licensed for modification with credit, so this is a small C# fork:
+   a biome-keyed delay multiplier table on the ScenPart. Filed as
+   EMPIRE_PURSUIT_SURVEY_SHADOW_1; ship the global 5–8d config meanwhile.
+3. **`canDoNormalRaid`** stays **false** (default; not raised by the owner).
 
 ## Verification once set
 
