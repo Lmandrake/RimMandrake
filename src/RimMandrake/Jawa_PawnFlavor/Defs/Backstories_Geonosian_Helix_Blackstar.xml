@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ===== Geonosian Foundry Hive - JawaBSC_Geonosian =====
+       Hatched into caste; the Hive does not acknowledge losses. -->
+
+  <BackstoryDef>
+    <defName>Jawa_HatchedToTheLine</defName>
+    <identifier>Jawa_HatchedToTheLine</identifier>
+    <slot>Childhood</slot>
+    <title>hatched to the line</title>
+    <titleShort>line-hatched</titleShort>
+    <description>[PAWN_nameDef] emerged from the brood-warrens already assigned: this foundry, this shift, this bench. There was no question in it, and therefore no unhappiness — the line was warm, the work was endless, and the hive's hum was the only lullaby [PAWN_pronoun] ever needed.</description>
+    <skillGains>
+      <Crafting>4</Crafting>
+      <Mining>2</Mining>
+      <Social>-2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Geonosian</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_WingedBrood</defName>
+    <identifier>Jawa_WingedBrood</identifier>
+    <slot>Childhood</slot>
+    <title>winged brood</title>
+    <titleShort>winged</titleShort>
+    <description>[PAWN_nameDef] hatched with wings, and so hatched above. [PAWN_pronoun] was schooled in lineage, rhetoric and the administration of drones, and taught precisely one moral principle: the hive ascends when its betters are obeyed. [PAWN_pronoun] has opinions about people who work with their hands.</description>
+    <skillGains>
+      <Social>3</Social>
+      <Intellectual>3</Intellectual>
+    </skillGains>
+    <workDisables>ManualDumb</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Geonosian</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_FoundryArtisan</defName>
+    <identifier>Jawa_FoundryArtisan</identifier>
+    <slot>Adulthood</slot>
+    <title>foundry artisan</title>
+    <titleShort>artisan</titleShort>
+    <description>In the great works under the rock, [PAWN_nameDef] built machines for the hive's clients — droids by the thousand, weapons by the shipload, questions by no one. [PAWN_possessive] hands hold tolerances most factories cannot, and [PAWN_pronoun] judges every made thing by one standard: would the queen's inspectors pass it.</description>
+    <skillGains>
+      <Crafting>7</Crafting>
+      <Intellectual>2</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Geonosian</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_SiegeCaller</defName>
+    <identifier>Jawa_SiegeCaller</identifier>
+    <slot>Adulthood</slot>
+    <title>siege-caller</title>
+    <titleShort>caller</titleShort>
+    <description>The hive is the only power on this world that can sustain a siege in deep desert, and [PAWN_nameDef] is why. [PAWN_pronoun] surveyed the ground, raised the works, ranged the throwers and kept the water ledger balanced while the enemy's ran dry. Patience, to [PAWN_objective], is a weapon system.</description>
+    <skillGains>
+      <Construction>6</Construction>
+      <Shooting>3</Shooting>
+      <Intellectual>2</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Geonosian</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_JediHuntVeteran</defName>
+    <identifier>Jawa_JediHuntVeteran</identifier>
+    <slot>Adulthood</slot>
+    <title>hunt-detachment veteran</title>
+    <titleShort>hunter</titleShort>
+    <description>[PAWN_nameDef] served in the detachments the hive fields against sorcerers — the robed kind, who move wrong and cut through drones like paper. [PAWN_pronoun] learned to fight what cannot be predicted: swarm it, tire it, give it too many targets. [PAWN_pronoun] does not speak of the ones that got away, or of how many did.</description>
+    <skillGains>
+      <Shooting>5</Shooting>
+      <Melee>3</Melee>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_SandStoic>0</Jawa_SandStoic>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Geonosian</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- ===== Ascendant Helix - JawaBSC_Helix =====
+       Two populations, one cult: Curators, and the Made they despise. -->
+
+  <BackstoryDef>
+    <defName>Jawa_DesignBorn</defName>
+    <identifier>Jawa_DesignBorn</identifier>
+    <slot>Childhood</slot>
+    <title>design-born</title>
+    <titleShort>designed</titleShort>
+    <description>[PAWN_nameDef] was composed before [PAWN_pronoun] was conceived — every allele argued over by a committee of curators pursuing the species as a project. [PAWN_pronoun] grew up gifted, graceful and gently reminded, daily, that [PAWN_pronoun] was a draft. Somewhere in the catalogue there is already a better version.</description>
+    <skillGains>
+      <Intellectual>4</Intellectual>
+      <Social>2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Helix</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_VatDecanted</defName>
+    <identifier>Jawa_VatDecanted</identifier>
+    <slot>Childhood</slot>
+    <title>vat-decanted</title>
+    <titleShort>decanted</titleShort>
+    <description>[PAWN_nameDef] has no childhood to speak of — [PAWN_pronoun] was decanted grown, printed with just enough procedure to be useful, and put to work the same week. Everything most people absorb over twenty years, [PAWN_pronoun] is learning now, fast, out of order, and with a strange late-come wonder at all of it.</description>
+    <skillGains>
+      <Crafting>2</Crafting>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <QuickSleeper>0</QuickSleeper>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Helix</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_GeneCurator</defName>
+    <identifier>Jawa_GeneCurator</identifier>
+    <slot>Adulthood</slot>
+    <title>gene-curator</title>
+    <titleShort>curator</titleShort>
+    <description>[PAWN_nameDef] tended the Helix's living collection: sequencing, splicing, culling. [PAWN_pronoun] is a superb physician with one professional peculiarity — patients are specimens, and a procedure that would make another surgeon flinch is, to [PAWN_objective], simply Tuesday. The body is a rough draft. [PAWN_pronoun] edits.</description>
+    <skillGains>
+      <Medicine>7</Medicine>
+      <Intellectual>4</Intellectual>
+      <Social>-2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Helix</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_RetrievalAgent</defName>
+    <identifier>Jawa_RetrievalAgent</identifier>
+    <slot>Adulthood</slot>
+    <title>retrieval agent</title>
+    <titleShort>retriever</titleShort>
+    <description>The Helix does not raid; it retrieves. [PAWN_nameDef] was the instrument — crossing borders quietly, finding the escaped asset or the stolen sequence, and bringing it home intact, because damaged goods reflect poorly on the handler. [PAWN_pronoun] prefers a target taken breathing and a job nobody ever hears about.</description>
+    <skillGains>
+      <Melee>5</Melee>
+      <Shooting>3</Shooting>
+      <Medicine>2</Medicine>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Helix</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_EscapedAsset</defName>
+    <identifier>Jawa_EscapedAsset</identifier>
+    <slot>Adulthood</slot>
+    <title>escaped asset</title>
+    <titleShort>escapee</titleShort>
+    <description>[PAWN_nameDef] was made by the Helix, owned by the Helix, and one night simply left — the first decision that was ever entirely [PAWN_possessive]. The catalogue lists [PAWN_objective] as a recall item, and retrieval teams do not stop. Whoever shelters [PAWN_objective] should know: [PAWN_pronoun] is excellent, and [PAWN_pronoun] is expensive to keep.</description>
+    <skillGains>
+      <Melee>3</Melee>
+      <Crafting>3</Crafting>
+      <Medicine>2</Medicine>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Helix</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- ===== Blackstar Company - JawaBSC_Blackstar =====
+       One outfit, the Code. Few and vivid. NOTE: this category rides the
+       PirateBandBase patch and so also reaches the five zeroed pirate siblings -
+       accepted, they never spawn (FACTION_SPEC containment). -->
+
+  <BackstoryDef>
+    <defName>Jawa_RaisedOnRetainer</defName>
+    <identifier>Jawa_RaisedOnRetainer</identifier>
+    <slot>Childhood</slot>
+    <title>raised on retainer</title>
+    <titleShort>retainer</titleShort>
+    <description>[PAWN_nameDef]'s parent hunted people for money, and raised [PAWN_objective] between contracts on shipboard rations and rules. The rules were the point: no contract on children, no shot at a surrendered target, a debt honored is a debt dead. [PAWN_pronoun] could strip a rifle before [PAWN_pronoun] could write.</description>
+    <skillGains>
+      <Shooting>4</Shooting>
+      <Melee>1</Melee>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_Laconic>0</Jawa_Laconic>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Blackstar</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_BountyPostedYoung</defName>
+    <identifier>Jawa_BountyPostedYoung</identifier>
+    <slot>Childhood</slot>
+    <title>bounty-posted young</title>
+    <titleShort>hunted</titleShort>
+    <description>[PAWN_nameDef] was worth money dead before [PAWN_pronoun] was worth anything alive — wrong family, wrong witness, wrong world. Childhood was a sequence of exits: half-slept nights, memorized alleys, the talent of being unremarkable. [PAWN_pronoun] still sits facing the door. [PAWN_pronoun] always will.</description>
+    <skillGains>
+      <Melee>2</Melee>
+      <Social>2</Social>
+      <Cooking>1</Cooking>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Nimble>0</Nimble>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Blackstar</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_NamedHunter</defName>
+    <identifier>Jawa_NamedHunter</identifier>
+    <slot>Adulthood</slot>
+    <title>named hunter</title>
+    <titleShort>hunter</titleShort>
+    <description>In the Company, most wear the armor; a few ARE the armor. [PAWN_nameDef]'s name closes cantinas by itself. [PAWN_pronoun] takes contracts, not sides; finishes what [PAWN_pronoun] signs; and extends exactly one courtesy to those who best [PAWN_objective] fairly — which is how you are still alive to read this.</description>
+    <skillGains>
+      <Shooting>6</Shooting>
+      <Melee>4</Melee>
+      <Social>-1</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Blackstar</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_ContractBroker</defName>
+    <identifier>Jawa_ContractBroker</identifier>
+    <slot>Adulthood</slot>
+    <title>contract broker</title>
+    <titleShort>broker</titleShort>
+    <description>Every hunt begins as paper, and [PAWN_nameDef] wrote the paper. [PAWN_pronoun] priced targets, verified clients, held the escrow and arbitrated the disputes — the quiet law of a lawless trade. [PAWN_pronoun] can read what a person will do from what they try not to say, and prices accordingly.</description>
+    <skillGains>
+      <Social>6</Social>
+      <Intellectual>3</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Blackstar</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_DisgracedHunter</defName>
+    <identifier>Jawa_DisgracedHunter</identifier>
+    <slot>Adulthood</slot>
+    <title>disgraced hunter</title>
+    <titleShort>disgraced</titleShort>
+    <description>[PAWN_nameDef] broke the Code — which clause, [PAWN_pronoun] will not say — and the Company posted [PAWN_possessive] own name to the boards. The skills remain; the standing is ash. [PAWN_pronoun] works twice as clean now, as if the next job done right might finally outweigh the one done wrong. It won't. [PAWN_pronoun] does it anyway.</description>
+    <skillGains>
+      <Shooting>5</Shooting>
+      <Melee>3</Melee>
+      <Social>-2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_Laconic>0</Jawa_Laconic>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Blackstar</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+</Defs>

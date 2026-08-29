@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ===== Homestead Defense League - JawaBSC_Homestead ===== -->
+
+  <BackstoryDef>
+    <defName>Jawa_FarmFostered</defName>
+    <identifier>Jawa_FarmFostered</identifier>
+    <slot>Childhood</slot>
+    <title>farm-fostered</title>
+    <titleShort>fostered</titleShort>
+    <description>[PAWN_nameDef] was raised on a moisture farm by an aunt and uncle who were not [PAWN_possessive] parents, and who never fully explained why. [PAWN_pronoun] did chores at dawn, argued about going to the academy, and spent every dusk staring at the horizon as if it owed [PAWN_objective] something.</description>
+    <skillGains>
+      <Plants>3</Plants>
+      <Crafting>2</Crafting>
+      <Shooting>1</Shooting>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Homestead</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_RaiderOrphaned</defName>
+    <identifier>Jawa_RaiderOrphaned</identifier>
+    <slot>Childhood</slot>
+    <title>raider-orphaned</title>
+    <titleShort>orphan</titleShort>
+    <description>Sand people came at night and by morning [PAWN_nameDef] had no family and one working rifle. The homesteads raised [PAWN_objective] in shifts after that, and every household taught the same two lessons: how to shoot, and how to keep watch while others sleep.</description>
+    <skillGains>
+      <Shooting>3</Shooting>
+      <Melee>2</Melee>
+      <Social>-1</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_SandStoic>0</Jawa_SandStoic>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Homestead</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_MoistureBaron</defName>
+    <identifier>Jawa_MoistureBaron</identifier>
+    <slot>Adulthood</slot>
+    <title>moisture baron</title>
+    <titleShort>baron</titleShort>
+    <description>[PAWN_nameDef] ran a homestead of thirty vaporators and defended every one of them from raiders, cartels and drought. [PAWN_pronoun] believes in early mornings, honest ledgers and minding one's own business, and has said no to stronger people than you.</description>
+    <skillGains>
+      <Plants>6</Plants>
+      <Animals>3</Animals>
+      <Construction>2</Construction>
+      <Social>-2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Homestead</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_HomesteadMatron</defName>
+    <identifier>Jawa_HomesteadMatron</identifier>
+    <slot>Adulthood</slot>
+    <title>homestead matron</title>
+    <titleShort>matron</titleShort>
+    <description>Every farm within a day's ride knew [PAWN_nameDef]'s table. [PAWN_pronoun] fed harvest crews, set broken arms, kept the peace between quarrelling households, and asked the questions nobody else dared ask over dinner. A homestead is walls and water; [PAWN_pronoun] was what made it a home.</description>
+    <skillGains>
+      <Cooking>5</Cooking>
+      <Medicine>4</Medicine>
+      <Social>3</Social>
+    </skillGains>
+    <workDisables>Violent</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Homestead</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_WastesHermit</defName>
+    <identifier>Jawa_WastesHermit</identifier>
+    <slot>Adulthood</slot>
+    <title>hermit of the wastes</title>
+    <titleShort>hermit</titleShort>
+    <description>The homesteaders called [PAWN_nameDef] a crazy old wizard and left [PAWN_objective] alone, which suited everyone. [PAWN_pronoun] lived past the dune sea, appeared when krayt dragons or raiders threatened the farms, and vanished again before anyone could ask where [PAWN_pronoun] learned to fight like that — or what [PAWN_pronoun] was watching over, all those years.</description>
+    <skillGains>
+      <Melee>5</Melee>
+      <Medicine>4</Medicine>
+      <Social>3</Social>
+      <Intellectual>2</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Homestead</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- ===== Deep Desert Tribes - JawaBSC_Tribes ===== -->
+
+  <BackstoryDef>
+    <defName>Jawa_SunSwornChild</defName>
+    <identifier>Jawa_SunSwornChild</identifier>
+    <slot>Childhood</slot>
+    <title>sun-sworn child</title>
+    <titleShort>sun-sworn</titleShort>
+    <description>[PAWN_nameDef] was carried through [PAWN_possessive] first sandstorm strapped to a parent's back, and given to the Sun-Debt rites as soon as [PAWN_pronoun] could walk. The deep desert is not something [PAWN_pronoun] survives. It is something [PAWN_pronoun] belongs to.</description>
+    <skillGains>
+      <Melee>2</Melee>
+      <Animals>2</Animals>
+      <Plants>1</Plants>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_WaterDiscipline>0</Jawa_WaterDiscipline>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Tribes</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_KraytWatcher</defName>
+    <identifier>Jawa_KraytWatcher</identifier>
+    <slot>Childhood</slot>
+    <title>krayt-watcher</title>
+    <titleShort>watcher</titleShort>
+    <description>Before [PAWN_nameDef] was old enough to carry a weapon, [PAWN_pronoun] was old enough to sit on a canyon rim and watch for the great beasts. [PAWN_pronoun] learned how sand moves when something is under it, and how much of courage is simply not running.</description>
+    <skillGains>
+      <Animals>3</Animals>
+      <Shooting>2</Shooting>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Tribes</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_WaterRaider</defName>
+    <identifier>Jawa_WaterRaider</identifier>
+    <slot>Adulthood</slot>
+    <title>water-raider</title>
+    <titleShort>raider</titleShort>
+    <description>[PAWN_nameDef] rode with the fast bands that strike the settlements' cisterns and are gone before the dust settles. To outsiders it is theft. To the tribes it is repayment — the Sun-Debt collected from those who cage sacred water in machines. [PAWN_pronoun] carries more than [PAWN_possessive] share and never strikes the same place twice.</description>
+    <skillGains>
+      <Melee>5</Melee>
+      <Shooting>2</Shooting>
+      <Social>-2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Tribes</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_BanthaBonded</defName>
+    <identifier>Jawa_BanthaBonded</identifier>
+    <slot>Adulthood</slot>
+    <title>beast-bonded nomad</title>
+    <titleShort>nomad</titleShort>
+    <description>[PAWN_nameDef] was paired with a herd-beast in the old way: one animal, one rider, one life shared between them. [PAWN_pronoun] knows the deep desert's safe crossings the way settled people know their own hallways, and treats animals with a courtesy [PAWN_pronoun] does not always extend to people.</description>
+    <skillGains>
+      <Animals>6</Animals>
+      <Plants>2</Plants>
+      <Melee>2</Melee>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Tribes</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_SunDebtCantor</defName>
+    <identifier>Jawa_SunDebtCantor</identifier>
+    <slot>Adulthood</slot>
+    <title>sun-debt cantor</title>
+    <titleShort>cantor</titleShort>
+    <description>[PAWN_nameDef] keeps the tribe's oldest ledger: what the sun gives, what the living owe, and what must never be done to water. [PAWN_pronoun] sings the rites at wells and burials, speaks for the tribe at parley, and has argued more than one war chief out of a battle — and into a better one.</description>
+    <skillGains>
+      <Social>6</Social>
+      <Intellectual>3</Intellectual>
+      <Medicine>2</Medicine>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_SandStoic>0</Jawa_SandStoic>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Tribes</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+</Defs>

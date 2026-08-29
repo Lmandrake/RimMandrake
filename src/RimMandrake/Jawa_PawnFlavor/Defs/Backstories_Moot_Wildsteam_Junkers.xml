@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ===== Jawa Trade Moot - JawaBSC_Moot ===== -->
+
+  <BackstoryDef>
+    <defName>Jawa_SandcrawlerBorn</defName>
+    <identifier>Jawa_SandcrawlerBorn</identifier>
+    <slot>Childhood</slot>
+    <title>sandcrawler-born</title>
+    <titleShort>crawler-born</titleShort>
+    <description>[PAWN_nameDef] was born between the third and fourth deck of a moving fortress and teethed on a hydrospanner. Home was engine-warmth, kin in every hammock, and the endless sorting of salvage into treasure and slag. [PAWN_pronoun] can sleep through any machine noise and through no silence at all.</description>
+    <skillGains>
+      <Crafting>3</Crafting>
+      <Mining>2</Mining>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Moot</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_TinkererChild</defName>
+    <identifier>Jawa_TinkererChild</identifier>
+    <slot>Childhood</slot>
+    <title>tinkerer's child</title>
+    <titleShort>tinkerer</titleShort>
+    <description>Other children were given toys. [PAWN_nameDef] was given broken things and a promise: fix it and it is yours. By ten [PAWN_pronoun] owned a small kingdom of resurrected machines, and one prized wreck [PAWN_pronoun] never managed to wake — carried from camp to camp, just in case.</description>
+    <skillGains>
+      <Crafting>4</Crafting>
+      <Intellectual>1</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Moot</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_BazaarHaggler</defName>
+    <identifier>Jawa_BazaarHaggler</identifier>
+    <slot>Adulthood</slot>
+    <title>bazaar haggler</title>
+    <titleShort>haggler</titleShort>
+    <description>[PAWN_nameDef] worked the sand bazaars where everything is for sale twice and warranty is a word for tourists. [PAWN_pronoun] can price a droid by the sound of its servos and a customer by the way they hold their credits, and considers a deal where only one side is happy to be sloppy work.</description>
+    <skillGains>
+      <Social>6</Social>
+      <Crafting>2</Crafting>
+      <Intellectual>1</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Moot</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_SalvageMaster</defName>
+    <identifier>Jawa_SalvageMaster</identifier>
+    <slot>Adulthood</slot>
+    <title>salvage master</title>
+    <titleShort>salvager</titleShort>
+    <description>Where others see a wreck, [PAWN_nameDef] sees an inventory. [PAWN_pronoun] led recovery crews onto crashed freighters, dead war machines and buried ruins, and lives by the scavenger's creed: nothing is garbage, some things are merely patient.</description>
+    <skillGains>
+      <Crafting>5</Crafting>
+      <Mining>3</Mining>
+      <Construction>2</Construction>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Moot</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_MootSpeaker</defName>
+    <identifier>Jawa_MootSpeaker</identifier>
+    <slot>Adulthood</slot>
+    <title>moot speaker</title>
+    <titleShort>speaker</titleShort>
+    <description>When the clans gather to divide territory, settle feuds and set the season's prices, someone must hold the floor. [PAWN_nameDef] held it for years — part judge, part auctioneer, part storyteller — and learned that a fair split everyone grumbles about is the only kind that lasts.</description>
+    <skillGains>
+      <Social>5</Social>
+      <Intellectual>3</Intellectual>
+    </skillGains>
+    <workDisables>Violent</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Moot</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- ===== Wildsteam Clan - JawaBSC_Wildsteam =====
+       Life-web covenant people, NOT a steam cult - see FACTION_SPEC.md section 6. -->
+
+  <BackstoryDef>
+    <defName>Jawa_SpringSworn</defName>
+    <identifier>Jawa_SpringSworn</identifier>
+    <slot>Childhood</slot>
+    <title>spring-sworn</title>
+    <titleShort>spring-sworn</titleShort>
+    <description>[PAWN_nameDef] was raised at the covenant pools, where the mist off the cool springs is the closest this planet comes to mercy. [PAWN_pronoun] was taught to name every living thing in the freehold and what each owes the others — and that a person is just one more strand in that weave, no more and no less.</description>
+    <skillGains>
+      <Plants>3</Plants>
+      <Animals>2</Animals>
+      <Medicine>1</Medicine>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Wildsteam</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_DroughtMarked</defName>
+    <identifier>Jawa_DroughtMarked</identifier>
+    <slot>Childhood</slot>
+    <title>drought-marked</title>
+    <titleShort>marked</titleShort>
+    <description>The year the spring failed, [PAWN_nameDef] watched the green die in order: first the tender things, then the tough ones, then the animals that ate them. The clan survived on stored water and harder arithmetic. [PAWN_pronoun] wastes nothing now, and never quite trusts a full cistern.</description>
+    <skillGains>
+      <Plants>2</Plants>
+      <Cooking>2</Cooking>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_WaterDiscipline>0</Jawa_WaterDiscipline>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Wildsteam</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_WebTender</defName>
+    <identifier>Jawa_WebTender</identifier>
+    <slot>Adulthood</slot>
+    <title>web-tender</title>
+    <titleShort>tender</titleShort>
+    <description>[PAWN_nameDef] kept the Green Oath: heal what can be healed, plant what was taken, and kill nothing that has kin. [PAWN_pronoun] knows soil, root-rot, grafting and the diseases of every creature the freeholds shelter — and will bind a stranger's wounds with the same hands that refuse to hold a hunter's rifle.</description>
+    <skillGains>
+      <Plants>6</Plants>
+      <Medicine>4</Medicine>
+    </skillGains>
+    <workDisables>Hunting</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Wildsteam</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_SeedCarrier</defName>
+    <identifier>Jawa_SeedCarrier</identifier>
+    <slot>Adulthood</slot>
+    <title>seed-carrier</title>
+    <titleShort>carrier</titleShort>
+    <description>[PAWN_nameDef] walked between the freeholds with a satchel of seeds and cuttings, planting shade and forage along every route [PAWN_pronoun] traveled. Some of those trees are older than the settlements they now cool. [PAWN_pronoun] measures a life by what grows behind it.</description>
+    <skillGains>
+      <Plants>5</Plants>
+      <Social>2</Social>
+      <Animals>2</Animals>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Wildsteam</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_FreeholdWarrior</defName>
+    <identifier>Jawa_FreeholdWarrior</identifier>
+    <slot>Adulthood</slot>
+    <title>freehold warrior</title>
+    <titleShort>warrior</titleShort>
+    <description>The clans do not march to war; they make war out of coming to them. [PAWN_nameDef] fought from tree-line and irrigation ditch, defending ground [PAWN_pronoun] had personally planted, and was devastating there — and half a person anywhere else. Ask [PAWN_objective] to raid across open sand and you will learn the difference.</description>
+    <skillGains>
+      <Melee>6</Melee>
+      <Plants>2</Plants>
+      <Shooting>1</Shooting>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Wildsteam</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- ===== The Junkers - JawaBSC_Junkers =====
+       Everything orbits the warcasket. -->
+
+  <BackstoryDef>
+    <defName>Jawa_CasketCradled</defName>
+    <identifier>Jawa_CasketCradled</identifier>
+    <slot>Childhood</slot>
+    <title>casket-cradled</title>
+    <titleShort>cradled</titleShort>
+    <description>[PAWN_nameDef] grew up in a yard where the honored elders were two meters of welded plate with a person somewhere inside. [PAWN_pronoun] carried their oil, learned their muffled voices, and never once found them frightening. Everyone [PAWN_pronoun] loved most had already given their body to the iron.</description>
+    <skillGains>
+      <Crafting>3</Crafting>
+      <Social>1</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Junkers</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_ScrapSifter</defName>
+    <identifier>Jawa_ScrapSifter</identifier>
+    <slot>Childhood</slot>
+    <title>scrap-sifter</title>
+    <titleShort>sifter</titleShort>
+    <description>[PAWN_nameDef] worked the junk mountains barefoot, sorting fast for the crew boss and faster for [PAWN_possessive] own pockets. [PAWN_pronoun] learned metal by taste of the air around it, and learned early that everything valuable is heavy, sharp, or already claimed by someone bigger.</description>
+    <skillGains>
+      <Mining>3</Mining>
+      <Crafting>2</Crafting>
+      <Social>-1</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Junkers</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_CasketWright</defName>
+    <identifier>Jawa_CasketWright</identifier>
+    <slot>Adulthood</slot>
+    <title>casket-wright</title>
+    <titleShort>wright</titleShort>
+    <description>[PAWN_nameDef] built and maintained the clan's warcaskets — cutting failed flesh away from steel, welding new armor over old scars, hearing confession through a speaker grille while elbow-deep in someone's life support. Nothing about a body surprises or upsets [PAWN_objective] anymore. Nothing at all.</description>
+    <skillGains>
+      <Crafting>6</Crafting>
+      <Medicine>3</Medicine>
+      <Construction>2</Construction>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Junkers</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_CasketDenied</defName>
+    <identifier>Jawa_CasketDenied</identifier>
+    <slot>Adulthood</slot>
+    <title>casket-denied</title>
+    <titleShort>denied</titleShort>
+    <description>[PAWN_nameDef] volunteered for the iron and the wrights refused [PAWN_objective] — wrong blood, wrong nerves, wrong luck. [PAWN_pronoun] has worked twice as hard as everyone since, as if enough labor could re-open the question. It could not, and [PAWN_pronoun] knows it, and [PAWN_pronoun] keeps working anyway.</description>
+    <skillGains>
+      <Crafting>4</Crafting>
+      <Mining>3</Mining>
+      <Melee>2</Melee>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Junkers</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_WallOfMeat</defName>
+    <identifier>Jawa_WallOfMeat</identifier>
+    <slot>Adulthood</slot>
+    <title>wall-of-meat veteran</title>
+    <titleShort>veteran</titleShort>
+    <description>Junker doctrine is simple: the caskets anchor the line and the unarmored hold the gaps between them. [PAWN_nameDef] held a gap. Several times. [PAWN_pronoun] fights best shoulder-to-shoulder with something enormous, and has the survivor's habit of counting exits in every room.</description>
+    <skillGains>
+      <Melee>5</Melee>
+      <Shooting>3</Shooting>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Junkers</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+</Defs>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Jawa Pawn Flavor — faction backstories and traits</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.jawapawnflavor</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>mandrake.jawa.patches</li>
+  </loadAfter>
+  <description>Faction-keyed backstories, childhoods and traits for the Ash'karr campaign — every faction answers "why raid them, why enslave theirs, why free them" differently.
+
+Fifty BackstoryDefs across ten factions (2 childhoods + 3 adulthoods each), five TraitDefs, and one patch file wiring a backstory category filter into each faction.
+
+DESIGN SOURCE: design/Jawa/pawn_flavor_design.md (the nine faction sets, rounds 1-4, owner-directed). Droid backstories are deliberately absent — parked with the droid system (DROID_SYSTEM_EMBRACE_1 ruling, 2026-08-29).
+
+WIRING MECHANISM (verified against 1.6 source, PawnBioAndNameGenerator.cs): a faction's backstoryFilters and its pawnkinds' filters merge at generation; each filter is picked by commonality, then a backstory from its categories. Our patch adds one filter per faction naming category JawaBSC_&lt;Faction&gt;. Three target defs declare filters raw (Empire, Pirate, Jawa_IndigenousTribes) and get an added &lt;li&gt;; the other seven inherit filters from abstract parents, and because a child-declared list OVERRIDES the parent's, their patch adds a full backstoryFilters element restating the parent's categories (Outlander/Offworld, Tribal, or Pirate) plus ours.
+
+KNOWN LEAK, accepted: patching Pirate patches the abstract PirateBandBase, so JawaBSC_Blackstar reaches the five zeroed pirate-sibling factions (they never spawn; see FACTION_SPEC Blackstar containment) and would reach Jawa_Junkers — except Jawa_Junkers receives its own declared filter list here, which overrides the inherited one.
+
+DEFERRED (need C#, listed in pawn_flavor_design.md): rebellion walk hook, proximity/mood traits (Casket-Dreamer/Haunted, Rooted, Green-Grief, Water-Pious), schedule and opinion traits (Order-Bound, Rank-Minded), conditional combat bonuses, hidden-backstory reveals, the Blackstar truce event.</description>
+</ModMetaData>

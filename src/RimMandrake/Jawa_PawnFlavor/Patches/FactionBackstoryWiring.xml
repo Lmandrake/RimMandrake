@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!-- ======================================================================
+       Wire one JawaBSC_* backstory category filter into each faction.
+
+       GROUND TRUTH (read from raw XML on disk, 2026-08-29):
+         Own raw backstoryFilters: Empire (ImperialCommon, Royalty
+           Factions_Empire), Pirate (Pirate, Core Factions_Misc.xml:510 -
+           the def is ALSO abstract root Name=PirateBandBase, so this patch
+           leaks JawaBSC_Blackstar to the five zeroed pirate siblings -
+           accepted, they never spawn), Jawa_IndigenousTribes (Tribal,
+           src/Jawa/Jawa_Patches Defs/FactionDefs).
+         Inherit filters from an abstract parent (patches run before
+           inheritance, so these defs have NO raw node, and a declared list
+           OVERRIDES the parent's - each nomatch therefore restates the
+           parent's categories plus ours):
+           OutlanderFactionBase supplies Outlander+Offworld to:
+             OutlanderCivil, Jawa_HuttCartel, Jawa_WildsteamClan,
+             Jawa_GeonosianFoundryHive, Jawa_AscendantHelix
+           TribeBase supplies Tribal to: TribeCivil
+           PirateBandBase supplies Pirate to: Jawa_Junkers (whose declared
+             list here also SHEDS the Blackstar leak from the Pirate patch)
+       ====================================================================== -->
+
+  <!-- === factions whose raw def declares backstoryFilters: add one li === -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Empire"]/backstoryFilters</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Empire"]/backstoryFilters</xpath>
+      <value>
+        <li>
+          <categories>
+            <li>JawaBSC_Empire</li>
+          </categories>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Pirate"]/backstoryFilters</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Pirate"]/backstoryFilters</xpath>
+      <value>
+        <li>
+          <categories>
+            <li>JawaBSC_Blackstar</li>
+          </categories>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Jawa_IndigenousTribes"]/backstoryFilters</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Jawa_IndigenousTribes"]/backstoryFilters</xpath>
+      <value>
+        <li>
+          <categories>
+            <li>JawaBSC_Moot</li>
+          </categories>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- === factions inheriting filters: declare parent categories + ours === -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="OutlanderCivil"]/backstoryFilters</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
+      <value>
+        <backstoryFilters>
+          <li>
+            <categories>
+              <li>Outlander</li>
+            </categories>
+          </li>
+          <li>
+            <categories>
+              <li>Offworld</li>
+            </categories>
+          </li>
+          <li>
+            <categories>
+              <li>JawaBSC_Homestead</li>
+            </categories>
+          </li>
+        </backstoryFilters>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="TribeCivil"]/backstoryFilters</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
+      <value>
+        <backstoryFilters>
+          <li>
+            <categories>
+              <li>Tribal</li>
+            </categories>
+          </li>
+          <li>
+            <categories>
+              <li>JawaBSC_Tribes</li>
+            </categories>
+          </li>
+        </backstoryFilters>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Jawa_HuttCartel"]/backstoryFilters</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Jawa_HuttCartel"]</xpath>
+      <value>
+        <backstoryFilters>
+          <li>
+            <categories>
+              <li>Outlander</li>
+            </categories>
+          </li>
+          <li>
+            <categories>
+              <li>Offworld</li>
+            </categories>
+          </li>
+          <li>
+            <categories>
+              <li>JawaBSC_Hutt</li>
+            </categories>
+          </li>
+        </backstoryFilters>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Jawa_WildsteamClan"]/backstoryFilters</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Jawa_WildsteamClan"]</xpath>
+      <value>
+        <backstoryFilters>
+        <li>
+          <categories>
+            <li>Outlander</li>
+          </categories>
+        </li>
+        <li>
+          <categories>
+            <li>Offworld</li>
+          </categories>
+        </li>
+        <li>
+          <categories>
+            <li>JawaBSC_Wildsteam</li>
+          </categories>
+        </li>
+      </backstoryFilters>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Jawa_GeonosianFoundryHive"]/backstoryFilters</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Jawa_GeonosianFoundryHive"]</xpath>
+      <value>
+        <backstoryFilters>
+        <li>
+          <categories>
+            <li>Outlander</li>
+          </categories>
+        </li>
+        <li>
+          <categories>
+            <li>Offworld</li>
+          </categories>
+        </li>
+        <li>
+          <categories>
+            <li>JawaBSC_Geonosian</li>
+          </categories>
+        </li>
+      </backstoryFilters>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Jawa_AscendantHelix"]/backstoryFilters</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Jawa_AscendantHelix"]</xpath>
+      <value>
+        <backstoryFilters>
+        <li>
+          <categories>
+            <li>Outlander</li>
+          </categories>
+        </li>
+        <li>
+          <categories>
+            <li>Offworld</li>
+          </categories>
+        </li>
+        <li>
+          <categories>
+            <li>JawaBSC_Helix</li>
+          </categories>
+        </li>
+      </backstoryFilters>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Jawa_Junkers"]/backstoryFilters</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Jawa_Junkers"]</xpath>
+      <value>
+        <backstoryFilters>
+          <li>
+            <categories>
+              <li>Pirate</li>
+            </categories>
+          </li>
+          <li>
+            <categories>
+              <li>JawaBSC_Junkers</li>
+            </categories>
+          </li>
+        </backstoryFilters>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>

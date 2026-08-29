@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ===== Galactic Empire - JawaBSC_Empire =====
+       The procedural occupier. Captives are the pipeline; the Empire never ransoms. -->
+
+  <BackstoryDef>
+    <defName>Jawa_AcademyCadet</defName>
+    <identifier>Jawa_AcademyCadet</identifier>
+    <slot>Childhood</slot>
+    <title>academy cadet</title>
+    <titleShort>cadet</titleShort>
+    <description>[PAWN_nameDef] entered the academy at eight and was inventoried, uniformed, scheduled and drilled until the rough edges — curiosity, mostly — were sanded off. [PAWN_pronoun] can still fold a bunk to regulation in the dark, and part of [PAWN_objective] still finds sirens restful.</description>
+    <skillGains>
+      <Shooting>3</Shooting>
+      <Melee>2</Melee>
+      <Intellectual>1</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_Numbered>0</Jawa_Numbered>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Empire</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_GarrisonBrat</defName>
+    <identifier>Jawa_GarrisonBrat</identifier>
+    <slot>Childhood</slot>
+    <title>garrison brat</title>
+    <titleShort>brat</titleShort>
+    <description>[PAWN_nameDef] followed a parent's postings from garrison to garrison — a new world every two years, a new language in the market, the same grey walls inside. [PAWN_pronoun] belonged to the Empire the way luggage belongs to a ship: carried everywhere, at home nowhere, and easier to leave behind than anyone expected.</description>
+    <skillGains>
+      <Social>3</Social>
+      <Intellectual>2</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Empire</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_Stormtrooper</defName>
+    <identifier>Jawa_Stormtrooper</identifier>
+    <slot>Adulthood</slot>
+    <title>stormtrooper</title>
+    <titleShort>trooper</titleShort>
+    <description>[PAWN_nameDef] served in white armor under a designation, one of ten thousand identical silhouettes. [PAWN_pronoun] holds formation under fire, follows orders without editorializing, and grieves dead comrades briefly and in private — the armor teaches you that the person beside you is replaceable, and so are you.</description>
+    <skillGains>
+      <Shooting>4</Shooting>
+      <Melee>3</Melee>
+      <Social>-2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Empire</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_RequisitionsOfficer</defName>
+    <identifier>Jawa_RequisitionsOfficer</identifier>
+    <slot>Adulthood</slot>
+    <title>requisitions officer</title>
+    <titleShort>quartermaster</titleShort>
+    <description>Armies run on forms, and [PAWN_nameDef] was the person the forms feared. [PAWN_pronoun] can inventory a warehouse by walking through it, find the theft in a clean-looking ledger, and requisition anything from anywhere given three signatures and a little patience. Disorder offends [PAWN_objective] professionally.</description>
+    <skillGains>
+      <Intellectual>5</Intellectual>
+      <Social>3</Social>
+      <Crafting>1</Crafting>
+    </skillGains>
+    <workDisables>Violent</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Empire</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_ImperialDeserter</defName>
+    <identifier>Jawa_ImperialDeserter</identifier>
+    <slot>Adulthood</slot>
+    <title>imperial deserter</title>
+    <titleShort>deserter</titleShort>
+    <description>One order, somewhere, was finally too much, and [PAWN_nameDef] walked away from the Empire with a stolen rifle and a death mark. [PAWN_pronoun] knows Imperial doctrine from the inside — the patrol patterns, the codes, the paperwork — and knows exactly what the retrieval squad will do if it ever finds [PAWN_objective]. It will not be a rescue.</description>
+    <skillGains>
+      <Shooting>5</Shooting>
+      <Intellectual>2</Intellectual>
+      <Medicine>1</Medicine>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Empire</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- ===== Hutt Cartel - JawaBSC_Hutt =====
+       Everything is for sale; the Cartel always pays for its own. -->
+
+  <BackstoryDef>
+    <defName>Jawa_PalaceRaised</defName>
+    <identifier>Jawa_PalaceRaised</identifier>
+    <slot>Childhood</slot>
+    <title>palace-raised</title>
+    <titleShort>palace-raised</titleShort>
+    <description>[PAWN_nameDef] grew up in an oasis palace where the fountains ran while the city outside queued for ration-water. [PAWN_pronoun] learned music, poison etiquette, and which guests rank above which — and acquired a permanent, quiet conviction that comfort is simply how things ought to be.</description>
+    <skillGains>
+      <Social>3</Social>
+      <Artistic>2</Artistic>
+    </skillGains>
+    <workDisables>ManualDumb</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Hutt</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_DebtBorn</defName>
+    <identifier>Jawa_DebtBorn</identifier>
+    <slot>Childhood</slot>
+    <title>debt-born</title>
+    <titleShort>debt-born</titleShort>
+    <description>[PAWN_nameDef] was collateral before [PAWN_pronoun] could talk: born into a family ledger the Cartel never lets reach zero. Every meal was an entry, every kindness had interest. [PAWN_pronoun] works like the debt is still open — because somewhere, in some book, it is.</description>
+    <skillGains>
+      <Crafting>2</Crafting>
+      <Mining>2</Mining>
+      <Cooking>1</Cooking>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Hutt</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_Majordomo</defName>
+    <identifier>Jawa_Majordomo</identifier>
+    <slot>Adulthood</slot>
+    <title>majordomo</title>
+    <titleShort>majordomo</titleShort>
+    <description>[PAWN_nameDef] stood at a Hutt's right hand and translated appetite into administration. [PAWN_pronoun] ran the palace, priced the favors, soothed the offended and scheduled the disappearances, all in perfect courtesy. People who understand what [PAWN_pronoun] knows tend to pay very well to have [PAWN_objective] back.</description>
+    <skillGains>
+      <Social>7</Social>
+      <Intellectual>3</Intellectual>
+    </skillGains>
+    <workDisables>ManualDumb</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Hutt</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_CollectionEnforcer</defName>
+    <identifier>Jawa_CollectionEnforcer</identifier>
+    <slot>Adulthood</slot>
+    <title>collection enforcer</title>
+    <titleShort>enforcer</titleShort>
+    <description>[PAWN_nameDef] collected what the Cartel was owed, and the Cartel is always owed. Mostly [PAWN_pronoun] never had to touch anyone — standing quietly in a doorway does remarkable things to a debtor's memory. When standing quietly was not enough, [PAWN_pronoun] was competent at the other thing too.</description>
+    <skillGains>
+      <Melee>5</Melee>
+      <Social>3</Social>
+    </skillGains>
+    <workDisables>Caring</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Hutt</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_SpiceRunner</defName>
+    <identifier>Jawa_SpiceRunner</identifier>
+    <slot>Adulthood</slot>
+    <title>spice-runner</title>
+    <titleShort>runner</titleShort>
+    <description>[PAWN_nameDef] flew the routes that do not appear on charts, with cargo nobody declared, on schedules set by people nobody refuses. [PAWN_pronoun] is superb under pressure and allergic to questions — and there are nights, still, when the old cargo whispers that one taste would settle [PAWN_possessive] nerves right down.</description>
+    <skillGains>
+      <Shooting>3</Shooting>
+      <Crafting>3</Crafting>
+      <Social>2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_Hutt</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+</Defs>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Every stat name below appears in Core/Defs/TraitDefs (verified 2026-08-29);
+       hungerRateFactor and socialFightChanceFactor are TraitDegreeData fields, ditto.
+       Traits with commonality 0 exist only through a backstory's forcedTraits. -->
+
+  <TraitDef>
+    <defName>Jawa_WaterDiscipline</defName>
+    <commonality>0.5</commonality>
+    <degreeDatas>
+      <li>
+        <label>water-disciplined</label>
+        <description>{PAWN_nameDef} was raised where every swallow of water is counted and every calorie has an owner. {PAWN_pronoun} needs less than other people, sleeps lightly and efficiently, and finds waste quietly offensive.</description>
+        <hungerRateFactor>0.8</hungerRateFactor>
+        <statOffsets>
+          <RestRateMultiplier>0.15</RestRateMultiplier>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>Jawa_SandStoic</defName>
+    <commonality>0.4</commonality>
+    <degreeDatas>
+      <li>
+        <label>sand-stoic</label>
+        <description>The deep desert does not reward complaint. {PAWN_nameDef} treats pain as weather: noted, endured, and never discussed. It takes a great deal to make {PAWN_objective} stop walking, and more to make {PAWN_objective} break.</description>
+        <statOffsets>
+          <PainShockThreshold>0.15</PainShockThreshold>
+          <MentalBreakThreshold>-0.03</MentalBreakThreshold>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>Jawa_Numbered</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>numbered</label>
+        <description>{PAWN_nameDef} grew up as a designation, not a name. Insults slide off someone who was never quite a person to their superiors, and {PAWN_pronoun} almost never starts a fight — but warmth comes slowly, when it comes at all.</description>
+        <socialFightChanceFactor>0.25</socialFightChanceFactor>
+        <statOffsets>
+          <MentalBreakThreshold>-0.02</MentalBreakThreshold>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>Jawa_Laconic</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>laconic</label>
+        <description>{PAWN_nameDef} says what needs saying and not one word more. People who work by a code find most conversation to be noise, and most provocation to be somebody else's problem.</description>
+        <socialFightChanceFactor>0.1</socialFightChanceFactor>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>Jawa_PodracerReflexes</defName>
+    <commonality>0.2</commonality>
+    <degreeDatas>
+      <li>
+        <label>racer's reflexes</label>
+        <description>{PAWN_nameDef} has the reaction time of someone who has taken a repulsor sled through a canyon at speeds that should be fatal. {PAWN_pronoun} moves and dodges like a rumor — and has never once been accused of patience at a firing line.</description>
+        <statOffsets>
+          <MoveSpeed>0.55</MoveSpeed>
+          <MeleeDodgeChance>4</MeleeDodgeChance>
+          <ShootingAccuracyPawn>-3</ShootingAccuracyPawn>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+</Defs>
