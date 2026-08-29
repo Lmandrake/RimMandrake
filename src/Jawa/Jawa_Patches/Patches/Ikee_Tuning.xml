@@ -136,19 +136,20 @@
              3. VERY EASY TO TRAIN - both halves
              ================================================================== -->
         <!-- how hard it is to TAME and to keep tame. 0.2 -> 0.02, easier than a cat.
-             🔑 CONDITIONAL, not a bare Replace: this node is NOT authored in
-             Races_Eyeling.xml - it is inherited from AnimalThingBase or written by
-             another mod's patch - so a Replace matches 0 nodes on disk and would be
-             a silent no-op depending on load order. Replace it if present, add it if not. -->
+             ⚠️ wildness is a StatDef (RimWorld.StatDefOf.Wildness), read via
+             GetStatValueAbstract - it lives in statBases as <Wildness>, never
+             under <race>. A value written into <race>/wildness is an unknown
+             field the loader silently discards (measured: AA_Eyeling shipped
+             statBases already declares Wildness 0.2, per Races_Eyeling.xml). -->
         <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/wildness</xpath>
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases/Wildness</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/wildness</xpath>
-            <value><wildness>0.02</wildness></value>
+            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases/Wildness</xpath>
+            <value><Wildness>0.02</Wildness></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race</xpath>
-            <value><wildness>0.02</wildness></value>
+            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases</xpath>
+            <value><Wildness>0.02</Wildness></value>
           </nomatch>
         </li>
         <li Class="PatchOperationReplace">

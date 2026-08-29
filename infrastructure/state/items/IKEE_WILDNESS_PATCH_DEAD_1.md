@@ -26,3 +26,25 @@ check whether AA declares it in statBases (Replace) or inherits it (Add).
 ## criteria
 The Ikee tames/stays tame as the tuning intended (wildness 0.02 in the running game), and
 the def loads with no errors.
+
+## progress 2026-08-29
+(1) FIXED and deployed: the wildness conditional now tests/writes
+`statBases/Wildness` (Replace-if-present, Add-if-not, same shape as the proven Mass
+block). Confirmed via `read_csharp_symbol RaceProperties` that `wildness` is not a
+field on that class at all — `petness`, `nuzzleMtbHours`, `manhunterOnDamageChance`
+all ARE genuine `float` RaceProperties fields, so only the wildness node was
+misplaced. `validate_patch.py --defs` (Data + Workshop + Mods, 582 active mods):
+0 errors, 3 pre-existing unrelated warnings (inner-xpath-differs-from-test on the
+three add-if-missing conditionals — intentional, not new).
+
+(2) NOT FOUND. Audited every Jawa_Patches operation touching AA_Eyeling
+(Ikee_Tuning.xml, Ikee_Rename.xml, AnimalTolerances_Ashkarr.xml,
+BiomeCast_Ashkarr.xml) against the live `RaceProperties`/`PawnKindDef` field list —
+no operation of ours writes a float into a field that is genuinely `int`. Read both
+shipped copies of `Races_Eyeling.xml` (Alpha Animals proper, workshop 1541721856,
+and Alpha Memes' compat copy, workshop 2661356814 — same defName, same field types,
+differ only in an `AM_`/`AA_` label prefix). No literal `0.3` anywhere near
+AA_Eyeling in any of our patches. The original Player.log that carried this error
+has since rotated (session ended 2026-08-28), so the exact field name is no longer
+recoverable from static analysis — **needs a fresh Player.log capture on the next
+cold load** to actually name the field. Left `## criteria` item 2 open pending that.

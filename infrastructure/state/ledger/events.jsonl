@@ -2603,3 +2603,10 @@
 {"seat":"BENCH","event":"note","id":"GALACTIC_EMPIRE_NAME_COLLIDES_1","text":"STATE AT SHUTDOWN 2026-08-28: owner deferred the rename pending a content comparison ('did we keep everything of merit... educate me on the trade'). A subagent census of OuterRim_GalacticEmpire (mod folder, faction pawn kinds, gear gating, what reskins vanilla Empire, unique refs) was launched but its report was not received before shutdown - re-run the census next session; the prompt shape is in the session log. Rename options on the table: Imperial Remnant / Outer Rim Garrison / hide the faction.","ts":"2026-08-29T00:38:20Z"}
 {"seat":"BENCH","event":"seat","state":"idle","reason":"owner shutdown; state recorded","ts":"2026-08-29T00:38:21Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-08-29T00:38:21Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"wake bench. Game is down","ts":"2026-08-29T00:46:20Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-08-29T00:46:23Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Wake foundry. Game is down","ts":"2026-08-29T00:47:29Z"}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-08-29T00:50:50Z"}
+{"seat":"FOUNDRY","event":"claim","id":"IKEE_WILDNESS_PATCH_DEAD_1","ts":"2026-08-29T00:51:45Z"}
+{"seat":"FOUNDRY","event":"start","id":"IKEE_WILDNESS_PATCH_DEAD_1","ts":"2026-08-29T00:51:46Z"}
+{"seat":"FOUNDRY","event":"note","id":"IKEE_WILDNESS_PATCH_DEAD_1","text":"Fixed wildness->statBases (root-caused via RaceProperties source, deployed, validate_patch clean). Error 2 (Parsed 0.3 as int) not attributable to any Jawa_Patches op after full audit; old Player.log rotated - needs a fresh capture next cold load to name the field. Item stays doing.","ts":"2026-08-29T00:59:03Z"}
