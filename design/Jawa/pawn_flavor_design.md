@@ -361,7 +361,9 @@ backstory reveal, skill-return event, aim-vs-moving. The full droid system
    before round 4). Round 5 added the real remainder — Jawa Trade Moot and
    Deepwater Compact are now at full depth; Free Droid Enclaves stays parked
    with DROID_SYSTEM_EMBRACE_1; the Forgotten Arsenal has no human pawns.
-5. Slave-arc pieces in v1 core vs later (Collared Expertise is the C#-hungriest).
+5. ~~Slave-arc pieces in v1 vs later~~ RULED (owner, 2026-08-29, at the bench):
+   Collared Expertise PARKS TO V2. V1 ships the slave arc's XML-only pieces
+   (already in); its C# waits and nothing blocks the campaign start.
 6. Phase 2 (lore prose pass) — runs THIRD, after cuts and faction depth, over
    everything including ThoughtDef/MentalBreakDef/xenotype-title flavor.
 
