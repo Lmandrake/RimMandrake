@@ -723,3 +723,19 @@ patches; pick NATURAL terrain defs (GrasslandSoil), never constructed floors; ch
 `get_ui_state` for an open EditWindow_Log before any click_cell sequence.
 **Generalises to:** any stock click-driven tool — a window that auto-opens on error eats
 every later click, so the first error silently invalidates the rest of the batch.
+
+## CORRECTION on the 2026-08-29 render-death: it is the WALL-MOUNT/shielded turret spawns, and it happened twice identically
+
+Both sessions (worldmap, then gravship_scratch) died with the SAME per-frame NRE
+(`[Ref 36A0E3C1]` PowerConnectionMaker.TryConnectToAnyPowerNet <- PowerNetManager <-
+Map.MapUpdate), and in BOTH logs the storm begins immediately after the last stuffable
+1x1's MakeThing line — i.e. among the spawns that log nothing: VQE_AncientShieldedTurret
++ the 10 wall-mounted turrets (HMC_Wall_*, ShipWallMountMiniTurret) spawned free-standing.
+`MakeThing ... stuff=null, assigning default` is BENIGN (fired for the large batch that
+rendered fine). Once the exception is on the map, every frame aborts before the map
+drawer runs — the "wildly colorful"/blue screen is UNRENDERED frames, not texture
+corruption — and it persists until the save is reloaded, because the broken power comp
+is still spawned. Fog-clear and terrain-paint were exonerated by the second incident.
+**Rule:** never bridge-spawn wall-mounted or shield-comp turrets onto open ground;
+exclude `HMC_Wall_*`, `ShipWallMountMiniTurret`, `VQE_AncientShieldedTurret` from any
+free-standing lineup, or give walls first.
