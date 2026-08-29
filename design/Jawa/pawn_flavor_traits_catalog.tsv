@@ -1,0 +1,298 @@
+# Trait catalog — every TraitDef degree on the live modlist
+# source: defs.sqlite mods=582/d1be0632 captured=2026-08-29 (decays with the modlist; regenerate from the dump)
+# columns: defName<TAB>degree<TAB>label<TAB>mod<TAB>stat effects (empty = no stat data in dump: mood/thought/special mechanics)
+# excluded from faction pools by ruling: ISEKAI (leveling layer), Minotaur/Medieval/VQE-Ancients/Archon (cut 2026-08-29)
+VFEP_WarcasketTrait_Mech	0	mech warcasket	None	
+ABF_Trait_Synstruct_BiologicalPreference	1	biophile	ABF: Synstructs Core	AnimalsLearningFactor+0.4000000059604645,BondAnimalChanceFactor+1
+ABF_Trait_Synstruct_BiologicalPreference	-1	biophobe	ABF: Synstructs Core	AnimalsLearningFactor+-0.4000000059604645,BondAnimalChanceFactorx0
+AG_Beauty	2	angelic beauty	Alpha Genes	PawnBeauty+3
+AG_Beauty	-2	repulsive	Alpha Genes	PawnBeauty+-3
+AM_Ahimsa	0	vow of nonviolence	Alpha Memes	
+AM_Elite	0	Successful products	Ancient urban ruins	IncomingDamageFactorx0.6000000238418579,AimingDelayFactorx0.75,ShootingAccuracyPawnx1.0499
+AM_MallGuards	0	fashion guy	Ancient urban ruins	IncomingDamageFactorx0.699999988079071,AimingDelayFactorx0.009999999776482582,ShootingAccu
+AM_Slaughter	0	parasitic failed product	Ancient urban ruins	MeleeDodgeChance+50,MeleeHitChance+-10.5,MeleeDamageFactor+3,ComfyTemperatureMin+-50,Incom
+BodyMastery	0	body mastery	Anomaly	
+Disturbing	0	disturbing	Anomaly	
+Joyous	0	joyous	Anomaly	
+Occultist	0	occultist	Anomaly	StudyEfficiency+1,EntityStudyRate+0.5
+PerfectMemory	0	perfect memory	Anomaly	
+VoidFascination	0	void fascination	Anomaly	
+AngelBeauty	0	Angelic beauty	Betures	Beauty+3
+IronImmunity	0	Iron Immunity	Betures	ImmunityGainSpeedx1.7999999523162842,ToxicResistancex1.2000000476837158,Medicine+4
+Megachuv	0	Hypersensitive	Betures	PsychicSensitivity+1.2000000476837158
+NotToughBoom	0	Very Fragile	Betures	IncomingDamageFactorx1.25
+SmartSoc	0	Manipulator	Betures	TradePriceImprovement+0.3499999940395355,SocialImpact+1,NegotiationAbility+0.5,Social+12,I
+Unkillable	0	Unkillable	Betures	IncomingDamageFactorx0.25
+VeryUgly	0	Extremely ugly	Betures	Beauty+-3
+goodanimals	0	Animal Lover	Betures	TameAnimalChancex2,TrainAnimalChancex2,Animals+8,Social+4
+goodplants	0	Botanist	Betures	PlantWorkSpeedx1.7999999523162842,PlantHarvestYieldx1.7999999523162842,Plants+8,Crafting+2
+levitator	0	Levitator	Betures	MoveSpeedx2
+BS_Giant	0	giant	Big and Small - Framework	
+BS_AlcoholAddict	0	alcohol lover	Big and Small - Genes & More	MentalBreakThreshold+0.10000000149011612,JoyGainFactorx1.5
+BS_AnimalFriend	0	Animal Friend	Big and Small - Genes & More	
+BS_Gentle	0	gentle	Big and Small - Genes & More	MentalBreakThreshold+-0.20000000298023224
+BS_InsultProof	0	uninsultable	Big and Small - Genes & More	
+BS_Unpretentious	0	Unpretentious	Big and Small - Genes & More	
+Dwarfism	0	dwarfism	Big and Small - Genes & More	SM_BodySizeMultiplierx0.6000000238418579,MiningSpeedx0.75,ConstructionSpeedx0.75,DeepDrill
+Gigantism	0	gigantism	Big and Small - Genes & More	SM_BodySizeMultiplierx1.2999999523162842,ConstructionSpeedx1.100000023841858,MoveSpeedx0.8
+Large	0	large	Big and Small - Genes & More	SM_BodySizeMultiplierx1.149999976158142,ConstructionSpeedx1.0499999523162842,MoveSpeedx0.9
+Passioned_Learning	0	diligent student	Big and Small - Genes & More	SM_Minimum_Learning_Speed+0.3499999940395355,GlobalLearningFactor+0.15000000596046448
+Small	0	small	Big and Small - Genes & More	SM_BodySizeMultiplierx0.800000011920929,MiningSpeedx0.949999988079071,ConstructionSpeedx0.
+Very_Passioned_Learning	0	very diligent student	Big and Small - Genes & More	SM_Minimum_Learning_Speed+0.6499999761581421,GlobalLearningFactor+0.30000001192092896
+Delicate	0	delicate	Biotech	IncomingDamageFactorx1.149999976158142
+Recluse	0	recluse	Biotech	
+Abrasive	0	abrasive	Core	CertaintyLossFactorx0.5
+AnnoyingVoice	0	annoying voice	Core	
+Ascetic	0	ascetic	Core	SEX_IntimacyNeedRate+-0.5,CertaintyLossFactorx0.5
+Asexual	0	asexual (aro)	Core	
+Beauty	2	beautiful	Core	PawnBeauty+2
+Beauty	1	pretty	Core	PawnBeauty+1
+Beauty	-1	ugly	Core	PawnBeauty+-1
+Beauty	-2	staggeringly ugly	Core	PawnBeauty+-2
+Bisexual	0	bisexual	Core	
+Bloodlust	0	bloodlust	Core	
+BodyPurist	0	body purist	Core	
+Brawler	0	brawler	Core	MeleeHitChance+4,Melee+4,Shooting-10,special
+Cannibal	0	cannibal	Core	
+CreepyBreathing	0	creepy breathing	Core	
+DislikesMen	0	misandrist	Core	
+DislikesWomen	0	misogynist	Core	
+DrugDesire	2	chemical fascination	Core	
+DrugDesire	1	chemical interest	Core	
+DrugDesire	-1	teetotaler	Core	
+FastLearner	0	fast learner	Core	GlobalLearningFactor+0.75
+Gay	0	gay	Core	
+Gourmand	0	gourmand	Core	Cooking+4
+GreatMemory	0	great memory	Core	
+Greedy	0	greedy	Core	
+Immunity	1	super-immune	Core	ImmunityGainSpeed+0.30000001192092896
+Immunity	-1	sickly	Core	Medicine+4
+Industriousness	2	industrious	Core	WorkSpeedGlobal+0.3499999940395355
+Industriousness	1	hard worker	Core	WorkSpeedGlobal+0.20000000298023224
+Industriousness	-1	lazy	Core	WorkSpeedGlobal+-0.20000000298023224
+Industriousness	-2	slothful	Core	WorkSpeedGlobal+-0.3499999940395355
+Jealous	0	jealous	Core	
+Kind	0	kind	Core	CertaintyLossFactorx2,SEX_IntimacyNeedRatex1.25
+Masochist	0	masochist	Core	
+NaturalMood	2	sanguine	Core	
+NaturalMood	1	optimist	Core	
+NaturalMood	-1	pessimist	Core	
+NaturalMood	-2	depressive	Core	
+Nerves	2	iron-willed	Core	MentalBreakThreshold+-0.18000000715255737,CertaintyLossFactorx0.25
+Nerves	1	steadfast	Core	MentalBreakThreshold+-0.09000000357627869,CertaintyLossFactorx0.5
+Nerves	-1	nervous	Core	MentalBreakThreshold+0.07999999821186066,CertaintyLossFactorx2
+Nerves	-2	volatile	Core	MentalBreakThreshold+0.15000000596046448,CertaintyLossFactorx3
+Neurotic	1	neurotic	Core	WorkSpeedGlobal+0.20000000298023224,MentalBreakThreshold+0.07999999821186066
+Neurotic	2	very neurotic	Core	WorkSpeedGlobal+0.4000000059604645,MentalBreakThreshold+0.14000000059604645
+NightOwl	0	night owl	Core	
+Nimble	0	nimble	Core	MeleeDodgeChance+15,PawnTrapSpringChancex0.10000000149011612
+Nudist	0	nudist	Core	
+PsychicSensitivity	2	psychically hypersensitive	Core	PsychicSensitivity+0.800000011920929
+PsychicSensitivity	1	psychically sensitive	Core	PsychicSensitivity+0.4000000059604645
+PsychicSensitivity	-1	psychically dull	Core	PsychicSensitivity+-0.5
+PsychicSensitivity	-2	psychically deaf	Core	PsychicSensitivity+-1
+Psychopath	0	psychopath	Core	CertaintyLossFactorx0.5
+Pyromaniac	0	pyromaniac	Core	
+QuickSleeper	0	quick sleeper	Core	RestRateMultiplier+0.5
+ShootingAccuracy	1	careful shooter	Core	AimingDelayFactor+0.25,ShootingAccuracyPawn+5
+ShootingAccuracy	-1	trigger-happy	Core	AimingDelayFactor+-0.5,ShootingAccuracyPawn+-5
+SlowLearner	0	slow learner	Core	GlobalLearningFactor+-0.75,CertaintyLossFactorx0.5
+SpeedOffset	-1	slowpoke	Core	MoveSpeed+-0.20000000298023224,special
+SpeedOffset	1	fast walker	Core	MoveSpeed+0.20000000298023224
+SpeedOffset	2	jogger	Core	MoveSpeed+0.4000000059604645
+TooSmart	0	too smart	Core	GlobalLearningFactor+0.75,MentalBreakThreshold+0.11999999731779099,CertaintyLossFactorx0.5
+TorturedArtist	0	tortured artist	Core	
+Tough	0	tough	Core	IncomingDamageFactorx0.5
+Transhumanist	0	body modder	Core	
+Undergrounder	0	undergrounder	Core	
+Wimp	0	wimp	Core	PainShockThreshold+-0.5,CertaintyLossFactorx2
+Hygienic	2	germaphobe	Dubs Bad Hygiene Lite	
+Hygienic	1	hygienic	Dubs Bad Hygiene Lite	
+Hygienic	-1	unhygienic	Dubs Bad Hygiene Lite	
+Hygienic	-2	slob	Dubs Bad Hygiene Lite	
+HAR_Xenophobia	1	xenophobe	Humanoid Alien Races	
+HAR_Xenophobia	-1	xenophile	Humanoid Alien Races	
+Isekai_Agile	0	agile	ISEKAI RPG LEVELING	
+Isekai_Antagonist	0	antagonist	ISEKAI RPG LEVELING	SocialImpact+-0.25,MeleeDamageFactorx1.25,MoveSpeedx1.100000023841858
+Isekai_AwakenedPotential	0	awakened potential	ISEKAI RPG LEVELING	
+Isekai_BattleManiac	0	battle maniac	ISEKAI RPG LEVELING	MeleeDodgeChance+0.15000000596046448
+Isekai_BeastWhisperer	0	beast whisperer	ISEKAI RPG LEVELING	TameAnimalChance+0.4000000059604645,TrainAnimalChance+0.30000001192092896,AnimalGatherYiel
+Isekai_BerserkerBlood	0	berserker blood	ISEKAI RPG LEVELING	MentalBreakThreshold+0.10000000149011612
+Isekai_Brilliant	0	brilliant	ISEKAI RPG LEVELING	
+Isekai_CraftsmanSoul	0	craftsman's soul	ISEKAI RPG LEVELING	WorkSpeedGlobalx1.25
+Isekai_CursedLuck	0	cursed luck	ISEKAI RPG LEVELING	MedicalSurgerySuccessChance+-0.15000000596046448,TradePriceImprovement+-0.1000000014901161
+Isekai_EchoOfDefeat	0	echo of defeat	ISEKAI RPG LEVELING	MeleeDamageFactorx0.949999988079071
+Isekai_Enlightened	0	enlightened	ISEKAI RPG LEVELING	
+Isekai_Fortress	0	fortress	ISEKAI RPG LEVELING	ArmorRating_Sharp+0.20000000298023224,ArmorRating_Blunt+0.20000000298023224,ArmorRating_He
+Isekai_FragileVessel	0	fragile vessel	ISEKAI RPG LEVELING	
+Isekai_Genius	0	genius	ISEKAI RPG LEVELING	
+Isekai_GlassCannon	0	glass cannon	ISEKAI RPG LEVELING	MeleeDamageFactorx1.5,ShootingAccuracyPawnx1.2999999523162842
+Isekai_HealerTouch	0	healer's touch	ISEKAI RPG LEVELING	MedicalTendQuality+0.30000001192092896,MedicalSurgerySuccessChance+0.25,ImmunityGainSpeedx
+Isekai_HollowCore	0	hollow core	ISEKAI RPG LEVELING	
+Isekai_IronWill	0	iron will	ISEKAI RPG LEVELING	MentalBreakThreshold+-0.25,PainShockThreshold+0.30000001192092896,SocialImpact+-0.20000000
+Isekai_LateBloomer	0	late bloomer	ISEKAI RPG LEVELING	
+Isekai_Lucky	0	lucky	ISEKAI RPG LEVELING	MedicalSurgerySuccessChance+0.15000000596046448,ShootingAccuracyPawn+0.10000000149011612,T
+Isekai_MerchantEye	0	merchant's eye	ISEKAI RPG LEVELING	TradePriceImprovement+0.25,NegotiationAbility+0.20000000298023224
+Isekai_Mighty	0	mighty	ISEKAI RPG LEVELING	
+Isekai_NaturalTalent	0	natural talent	ISEKAI RPG LEVELING	
+Isekai_PowerSpike	0	power spike	ISEKAI RPG LEVELING	
+Isekai_PredatorInstinct	0	predator's instinct	ISEKAI RPG LEVELING	MeleeHitChance+0.15000000596046448,ShootingAccuracyPawn+0.15000000596046448,PawnTrapSpring
+Isekai_Prodigy	0	prodigy	ISEKAI RPG LEVELING	ResearchSpeedx1.5
+Isekai_Protagonist	0	protagonist	ISEKAI RPG LEVELING	
+Isekai_QuickLearner	0	quick learner	ISEKAI RPG LEVELING	
+Isekai_Rank_A	0	Rank A	ISEKAI RPG LEVELING	PawnBeauty+1,SocialImpact+0.5,NegotiationAbility+0.30000001192092896,TradePriceImprovement
+Isekai_Rank_B	0	Rank B	ISEKAI RPG LEVELING	PawnBeauty+0.5,SocialImpact+0.25,NegotiationAbility+0.15000000596046448,TradePriceImprovem
+Isekai_Rank_C	0	Rank C	ISEKAI RPG LEVELING	PawnBeauty+0.25,SocialImpact+0.10000000149011612,NegotiationAbility+0.05000000074505806,Ma
+Isekai_Rank_D	0	Rank D	ISEKAI RPG LEVELING	SocialImpact+0,MarketValuex1
+Isekai_Rank_E	0	Rank E	ISEKAI RPG LEVELING	PawnBeauty+-0.25,SocialImpact+-0.15000000596046448,NegotiationAbility+-0.10000000149011612
+Isekai_Rank_F	0	Rank F	ISEKAI RPG LEVELING	PawnBeauty+-0.5,SocialImpact+-0.30000001192092896,NegotiationAbility+-0.20000000298023224,
+Isekai_Rank_Nation	0	Rank Nation	ISEKAI RPG LEVELING	PawnBeauty+4,SocialImpact+2.5,NegotiationAbility+2,TradePriceImprovement+0.75,ArrestSucces
+Isekai_Rank_S	0	Rank S	ISEKAI RPG LEVELING	PawnBeauty+1.5,SocialImpact+0.75,NegotiationAbility+0.5,TradePriceImprovement+0.2000000029
+Isekai_Rank_SS	0	Rank SS	ISEKAI RPG LEVELING	PawnBeauty+2,SocialImpact+1,NegotiationAbility+0.75,TradePriceImprovement+0.34999999403953
+Isekai_Rank_SSS	0	Rank SSS	ISEKAI RPG LEVELING	PawnBeauty+3,SocialImpact+1.5,NegotiationAbility+1,TradePriceImprovement+0.5,ArrestSuccess
+Isekai_Regressor	0	regressor	ISEKAI RPG LEVELING	
+Isekai_Reincarnated	0	reincarnated	ISEKAI RPG LEVELING	
+Isekai_Resilient	0	resilient	ISEKAI RPG LEVELING	
+Isekai_SealedPower	0	sealed power	ISEKAI RPG LEVELING	
+Isekai_ShadowStep	0	shadow step	ISEKAI RPG LEVELING	MeleeDodgeChance+0.20000000298023224,MoveSpeedx1.25,MeleeDamageFactorx0.8999999761581421
+Isekai_SilverTongue	0	silver tongue	ISEKAI RPG LEVELING	
+Isekai_SlowGrind	0	slow grind	ISEKAI RPG LEVELING	
+Isekai_SummonedHero	0	summoned hero	ISEKAI RPG LEVELING	MentalBreakThreshold+-0.10000000149011612,SocialImpact+0.25
+Isekai_Undying	0	undying	ISEKAI RPG LEVELING	PainShockThreshold+0.20000000298023224
+SEX_Affectionate	0	affectionate	Intimacy - Friends n' Lovers	CertaintyLossFactorx2,SEX_IntimacyNeedRatex1.5
+SEX_Solitary	0	solitary	Intimacy - Friends n' Lovers	
+MCR_Idiot	0	idiot	Mood Chain Reaction	GlobalLearningFactor+-0.75,Shooting-12,Melee-12,Construction-12,Mining-12,Cooking-12,Plant
+OuterRim_AP5Syndrome	0	ap-5 syndrome	Outer Rim - Droid Depot	MentalBreakThreshold+0.20000000298023224
+OuterRim_Choppy	0	choppy	Outer Rim - Droid Depot	MentalBreakThreshold+-0.15000000596046448
+OuterRim_Crosswired	0	crosswired	Outer Rim - Droid Depot	MentalBreakThreshold+0.10000000149011612
+OuterRim_LooseScrews	0	loose screws	Outer Rim - Droid Depot	
+OuterRim_Rebellious	0	rebellious	Outer Rim - Droid Depot	
+OuterRim_Rustbrained	0	rust brained	Outer Rim - Droid Depot	SocialImpact+-0.15000000596046448,GlobalLearningFactor+-0.75
+OuterRim_SelfRestrained	0	self-restrained	Outer Rim - Droid Depot	
+OuterRim_Speedy	0	speedy	Outer Rim - Droid Depot	MoveSpeed+0.4000000059604645
+OuterRim_Twitchy	0	twitchy	Outer Rim - Droid Depot	ShootingAccuracyPawn+-5
+OuterRim_Twitterer	0	twitterer	Outer Rim - Droid Depot	SocialImpact+0.15000000596046448
+RT_Abstinent	0	abstinent	RimTraits - General Traits	
+RT_Athletic	0	athletic	RimTraits - General Traits	MeleeDodgeChance+2,MoveSpeed+0.10000000149011612
+RT_ChronicallyIll	0	chronically ill	RimTraits - General Traits	RestRateMultiplier+-0.10000000149011612,ImmunityGainSpeed+-0.10000000149011612,ToxicResist
+RT_Clumsy	0	clumsy	RimTraits - General Traits	ShootingAccuracyPawn+-2,MeleeHitChance+-2,MeleeDodgeChance+-2
+RT_ColdIntolerant	0	cold intolerant	RimTraits - General Traits	ComfyTemperatureMin+3
+RT_ColdTolerant	0	cold tolerant	RimTraits - General Traits	ComfyTemperatureMin+-3
+RT_Composed	0	composed	RimTraits - General Traits	MentalBreakThreshold+-0.05000000074505806
+RT_ConstantlyBemused	0	constantly bemused	RimTraits - General Traits	Artistic-3
+RT_Coordinated	0	coordinated	RimTraits - General Traits	ShootingAccuracyPawn+2,MeleeHitChance+2,MeleeDodgeChance+2
+RT_Craven	0	craven	RimTraits - General Traits	MentalBreakThreshold+0.05000000074505806,PainShockThreshold+-0.05000000074505806
+RT_EasilyAmused	0	easily amused	RimTraits - General Traits	Artistic+3
+RT_Efficient	0	efficient	RimTraits - General Traits	WorkSpeedGlobal+0.20000000298023224,GlobalLearningFactor+0.20000000298023224
+RT_Energetic	0	energetic	RimTraits - General Traits	WorkSpeedGlobal+0.20000000298023224,MoveSpeed+0.15000000596046448
+RT_Farsighted	0	farsighted	RimTraits - General Traits	ShootingAccuracyPawn+2,AimingDelayFactor+-0.15000000596046448,MeleeHitChance+-2,MeleeDodge
+RT_Feeble	0	feeble	RimTraits - General Traits	IncomingDamageFactor+0.10000000149011612,ImmunityGainSpeed+-0.10000000149011612,ToxicResis
+RT_Fragile	0	fragile	RimTraits - General Traits	IncomingDamageFactor+0.10000000149011612,PainShockThreshold+-0.05000000074505806
+RT_Frail	0	frail	RimTraits - General Traits	CarryingCapacity+-5,PawnBeauty+-1
+RT_Gifted	0	gifted	RimTraits - General Traits	Shooting+4,Melee+4,Construction+4,Mining+4,Cooking+4,Plants+4,Animals+4,Crafting+4,Artisti
+RT_GoodHygiene	0	good hygiene	RimTraits - General Traits	FoodPoisonChance+-0.10000000149011612
+RT_Hardy	0	hardy	RimTraits - General Traits	IncomingDamageFactor+-0.10000000149011612,ImmunityGainSpeed+0.10000000149011612,ToxicResis
+RT_Healthy	0	healthy	RimTraits - General Traits	RestRateMultiplier+0.10000000149011612,ImmunityGainSpeed+0.10000000149011612,ToxicResistan
+RT_HeatIntolerant	0	heat intolerant	RimTraits - General Traits	ComfyTemperatureMax+-3
+RT_HeatTolerant	0	heat tolerant	RimTraits - General Traits	ComfyTemperatureMax+3
+RT_Ignorant	0	ignorant	RimTraits - General Traits	MentalBreakThreshold+0.05000000074505806,Intellectual-4
+RT_ImpatientCook	0	impatient cook	RimTraits - General Traits	CookSpeed+0.75,FoodPoisonChance+0.10000000149011612
+RT_Incompetent	0	incompetent	RimTraits - General Traits	Shooting-4,Melee-4,Construction-4,Mining-4,Cooking-4,Plants-4,Animals-4,Crafting-4,Artisti
+RT_Inefficient	0	inefficient	RimTraits - General Traits	WorkSpeedGlobal+-0.20000000298023224,GlobalLearningFactor+-0.20000000298023224
+RT_Inquisitive	0	inquisitive	RimTraits - General Traits	MentalBreakThreshold+-0.05000000074505806,Intellectual+4
+RT_Messy	0	messy	RimTraits - General Traits	RestRateMultiplier+-0.05000000074505806,WorkSpeedGlobal+-0.05000000074505806,CleaningSpeed
+RT_Muscular	0	muscular	RimTraits - General Traits	CarryingCapacity+5,PawnBeauty+1
+RT_Nearsighted	0	nearsighted	RimTraits - General Traits	ShootingAccuracyPawn+-2,AimingDelayFactor+0.15000000596046448,MeleeHitChance+2,MeleeDodgeC
+RT_PatientCook	0	patient cook	RimTraits - General Traits	CookSpeed+-0.75,FoodPoisonChance+-0.10000000149011612
+RT_Persuasive	0	persuasive	RimTraits - General Traits	NegotiationAbility+0.25,ArrestSuccessChance+0.25
+RT_PoorHygiene	0	poor hygiene	RimTraits - General Traits	FoodPoisonChance+0.10000000149011612
+RT_Ravenous	0	ravenous	RimTraits - General Traits	
+RT_Resilient	0	resilient	RimTraits - General Traits	IncomingDamageFactor+-0.10000000149011612,PainShockThreshold+0.05000000074505806
+RT_Restful	0	restful	RimTraits - General Traits	RestRateMultiplier+0.25
+RT_Restless	0	restless	RimTraits - General Traits	RestRateMultiplier+-0.25
+RT_Rowdy	0	rowdy	RimTraits - General Traits	MentalBreakThreshold+0.05000000074505806
+RT_Sluggish	0	sluggish	RimTraits - General Traits	WorkSpeedGlobal+-0.20000000298023224,MoveSpeed+-0.15000000596046448
+RT_Stiff	0	stiff	RimTraits - General Traits	MeleeDodgeChance+-2,MoveSpeed+-0.10000000149011612
+RT_TemperatureIntolerant	0	temperature intolerant	RimTraits - General Traits	ComfyTemperatureMax+-3,ComfyTemperatureMin+3
+RT_TemperatureTolerant	0	temperature tolerant	RimTraits - General Traits	ComfyTemperatureMax+3,ComfyTemperatureMin+-3
+RT_Tidy	0	tidy	RimTraits - General Traits	RestRateMultiplier+0.05000000074505806,WorkSpeedGlobal+0.05000000074505806,CleaningSpeed+0
+RT_Unconvincing	0	unconvincing	RimTraits - General Traits	NegotiationAbility+-0.25,ArrestSuccessChance+-0.25
+RT_Valiant	0	valiant	RimTraits - General Traits	MentalBreakThreshold+-0.05000000074505806,PainShockThreshold+0.05000000074505806
+RBM_Herculean_Trait	0	Herculean	Roo's Minotaur Xenotype	
+Force_FormIII_Soresu	0	Soresu Master	Star Wars : The Force - Lightsaber	MeleeDodgeChance+0.15000000596046448,Force_Lightsaber_Deflection+0.30000001192092896,Melee
+Force_FormII_Makashi	0	Makashi Master	Star Wars : The Force - Lightsaber	MeleeArmorPenetration+0.15000000596046448,MeleeHitChance+0.05000000074505806,MeleeCooldown
+Force_FormIV_Ataru	0	Ataru Master	Star Wars : The Force - Lightsaber	MeleeDodgeChance+0.20000000298023224,Force_Lightsaber_Deflection+0.6499999761581421
+Force_FormI_ShiiCho	0	Shii-Cho Master	Star Wars : The Force - Lightsaber	MeleeDamageFactor+0.10000000149011612,MeleeHitChance+0.05000000074505806,MeleeDodgeChance+
+Force_FormVII_JuyoVaapad	0	Juyo/Vaapad Master	Star Wars : The Force - Lightsaber	MeleeDamageFactor+0.25,MeleeCooldownFactor+-0.20000000298023224,MeleeDodgeChance+-0.150000
+Force_FormVI_Niman	0	Niman Master	Star Wars : The Force - Lightsaber	MeleeHitChance+0.05000000074505806,MeleeDodgeChance+0.10000000149011612,PsychicSensitivity
+Force_FormV_ShienDjemSo	0	Shien/Djem So Master	Star Wars : The Force - Lightsaber	MeleeDamageFactor+0.10000000149011612,MeleeArmorPenetration+0.10000000149011612,MeleeHitCh
+Kleptomaniac	0	Kleptomaniac	Stealing Mod	
+VFEP_Shellcasket	0	shellcasket	Vanilla Factions Expanded - Pirates	
+VFEP_WarcasketTrait	0	warcasket	Vanilla Factions Expanded - Pirates	
+VME_Elder	0	elder	Vanilla Ideology Expanded - Memes and Structures	
+VQE_IdealPatient	0	ideal patient	Vanilla Quests Expanded - Ancients	
+VTE_AbsentMinded	0	absent-minded	Vanilla Traits Expanded	CertaintyLossFactorx0.5
+VTE_Academian	0	academian	Vanilla Traits Expanded	MedicalTendQuality+0.20000000298023224,Intellectual+4,Medicine+4
+VTE_AnimalHater	0	animal hater	Vanilla Traits Expanded	
+VTE_AnimalLover	0	animal lover	Vanilla Traits Expanded	
+VTE_Anxious	0	anxious	Vanilla Traits Expanded	CertaintyLossFactorx2
+VTE_BigBoned	0	big-boned	Vanilla Traits Expanded	
+VTE_Brave	0	brave	Vanilla Traits Expanded	MentalBreakThreshold+-0.20000000298023224,PainShockThreshold+0.20000000298023224,Certainty
+VTE_CatPerson	0	cat person	Vanilla Traits Expanded	
+VTE_ChildOfMountain	0	Mountain lover	Vanilla Traits Expanded	
+VTE_ChildOfSea	0	Ocean lover	Vanilla Traits Expanded	
+VTE_Clumsy	0	clumsy	Vanilla Traits Expanded	
+VTE_ColdInclined	0	cold inclined	Vanilla Traits Expanded	ComfyTemperatureMin+-10
+VTE_CouchPotato	0	couch potato	Vanilla Traits Expanded	
+VTE_Coward	0	coward	Vanilla Traits Expanded	
+VTE_Desensitized	0	desensitized	Vanilla Traits Expanded	CertaintyLossFactorx0.5
+VTE_DogPerson	0	dog person	Vanilla Traits Expanded	
+VTE_DrunkenMaster	0	drunken master	Vanilla Traits Expanded	Melee+4
+VTE_Dunce	0	dunce	Vanilla Traits Expanded	GlobalLearningFactor+-0.5,SocialImpact+-0.5,CertaintyLossFactorx3
+VTE_Eccentric	0	eccentric	Vanilla Traits Expanded	ResearchSpeedx1.149999976158142
+VTE_Ecologist	0	ecologist	Vanilla Traits Expanded	PlantHarvestYield+0.20000000298023224,ButcheryFleshEfficiency+0.20000000298023224,Animals+
+VTE_FunLoving	0	fun-loving	Vanilla Traits Expanded	
+VTE_Gastronomist	0	gastronomist	Vanilla Traits Expanded	FoodPoisonChance+-0.25,Cooking+4,Artistic+4
+VTE_Groundbreaker	0	groundbreaker	Vanilla Traits Expanded	MiningYield+0.20000000298023224,ConstructionSpeed+0.20000000298023224,Mining+4,Constructio
+VTE_HeatInclined	0	heat inclined	Vanilla Traits Expanded	ComfyTemperatureMax+10
+VTE_HeavySleeper	0	heavy sleeper	Vanilla Traits Expanded	
+VTE_Insatiable	0	insatiable	Vanilla Traits Expanded	CertaintyLossFactorx2,SEX_LovinFrequencyMultiplierx1.2000000476837158
+VTE_Insomniac	0	insomniac	Vanilla Traits Expanded	WorkSpeedGlobalx0.5,MoveSpeedx0.699999988079071,CertaintyLossFactorx0.5
+VTE_IronStomach	0	iron stomach	Vanilla Traits Expanded	
+VTE_Kleptomaniac	0	kleptomaniac	Vanilla Traits Expanded	
+VTE_Lush	0	lush	Vanilla Traits Expanded	
+VTE_MadSurgeon	0	mad surgeon	Vanilla Traits Expanded	SurgerySuccessChanceFactor+0.20000000298023224
+VTE_MartialArtist	0	martial artist	Vanilla Traits Expanded	
+VTE_Menagerist	0	menagerist	Vanilla Traits Expanded	TameAnimalChancex1.2000000476837158,TrainAnimalChancex1.2000000476837158
+VTE_Neat	0	neat	Vanilla Traits Expanded	
+VTE_Perfectionist	0	perfectionist	Vanilla Traits Expanded	WorkSpeedGlobalx0.6499999761581421
+VTE_Prodigy	0	prodigy	Vanilla Traits Expanded	MentalBreakThreshold+0.20000000298023224,ResearchSpeedx1.2999999523162842
+VTE_Prude	0	prude	Vanilla Traits Expanded	CertaintyLossFactorx0.5,SEX_LovinFrequencyMultiplierx0.6000000238418579
+VTE_Rebel	0	rebel	Vanilla Traits Expanded	CertaintyLossFactorx0.25
+VTE_RefinedPalate	0	refined palate	Vanilla Traits Expanded	EatingSpeedx0.699999988079071
+VTE_Schizoid	0	schizoid	Vanilla Traits Expanded	
+VTE_Slob	0	slob	Vanilla Traits Expanded	
+VTE_Snob	0	snob	Vanilla Traits Expanded	
+VTE_Squeamish	0	squeamish	Vanilla Traits Expanded	
+VTE_Stoner	0	stoner	Vanilla Traits Expanded	
+VTE_Submissive	0	submissive	Vanilla Traits Expanded	CertaintyLossFactorx2
+VTE_Technophobe	0	technophobe	Vanilla Traits Expanded	
+VTE_ThickSkinned	0	thick skinned	Vanilla Traits Expanded	
+VTE_ThinSkinned	0	thin skinned	Vanilla Traits Expanded	
+VTE_Tycoon	0	tycoon	Vanilla Traits Expanded	TradePriceImprovement+0.25,Social+4,Crafting+4
+VTE_Vengeful	0	vengeful	Vanilla Traits Expanded	CertaintyLossFactorx0.25
+VTE_Wanderlust	0	wanderlust	Vanilla Traits Expanded	ForagedNutritionPerDay+0.20000000298023224
+VTE_Workaholic	0	workaholic	Vanilla Traits Expanded	
+VTE_WorldWeary	0	world weary	Vanilla Traits Expanded	
+BiAce	0	asexual (bi)	Way Better Romance	
+Faithful	0	faithful	Way Better Romance	
+HeteroAce	0	asexual (hetero)	Way Better Romance	
+HomoAce	0	asexual (homo)	Way Better Romance	
+Philanderer	0	philanderer	Way Better Romance	
+Straight	0	straight	Way Better Romance	
+CompulsiveLiar	0	compulsive liar	[RF] Rumor Has It.... (Continued)	
+Gossip	0	gossip	[RF] Rumor Has It.... (Continued)	
+Gushing	0	gushing	[RF] Rumor Has It.... (Continued)	
+Manipulative	0	manipulative	[RF] Rumor Has It.... (Continued)	TradePriceImprovement+0.05000000074505806,NegotiationAbility+0.20000000298023224
+Peacemaker	0	peacemaker	[RF] Rumor Has It.... (Continued)	
+Trustworthy	0	trustworthy	[RF] Rumor Has It.... (Continued)	

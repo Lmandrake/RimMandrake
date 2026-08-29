@@ -12,6 +12,18 @@ is phase 1 in progress. Names below are placeholders unless marked homage.
 
 ## Rulings so far (owner, 2026-08-29)
 
+- **VOLUME MANDATE (owner, 2026-08-29, third sitting, verbatim intent):** per
+  faction, AT LEAST **5 unique childhoods** (one the "common" one), **10
+  adulthoods** (one common/boring), and **15 traits to select from** — the trait
+  pools mined from vanilla + the trait-expansion mods (VTE 53, RimTraits 46,
+  Core 43, …) and down-selected per faction's definition, racial mix and
+  ideoligion. Terminology settled: "backstory" is the engine's one def type;
+  childhood/adulthood are its two slots. ISEKAI's 47 traits are leveling
+  content for everyone and do NOT satisfy the faction pools.
+  Mechanism note (not yet ruled): traits are not faction-scoped natively —
+  steering rides BackstoryDef forcedTraits/disallowedTraits (plain XML) or a
+  spawn hook (C#); the 15-per-faction pool is design-level selection first.
+
 - **Wrong-fiction cuts RULED (owner, 2026-08-29, second sitting)**: cut Minotaur
   (37), Medieval (27), VQE Ancients (27), VRE Archon (52) — PURE-SW style, Cherry
   Picker + the moderation skill's post-cut checks. **ISEKAI (47) is PENDED, not
