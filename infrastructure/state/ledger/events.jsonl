@@ -2828,3 +2828,4 @@
 {"seat":"FOUNDRY","event":"seat","state":"ready","note":"reboot prep done: companion deployed --gm (harmony_patches, faction_ideo_set/get, pawn_ideo_reassign, bill_add/list/remove + 6 earlier fixes), JawaIonWeapons.dll + Jawa_Patches XML deployed, RimDefDump in sync; ideology live-patch tools built and staged, waiting on Ash'karr load; NONCANON_ARRIVES ruled+closed clean; bridge released; mirror synced (0 drift); nothing mid-edit","ts":"2026-08-29T19:08:58Z"}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-08-29T19:10:44Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-29T19:11:00Z"}
+{"seat":"BENCH","event":"note","id":"COLD_LOAD_RUN_SHEET_2","text":"Sheet §4 frozen-capture line was stale: OFFICIAL-2026-08-29 (13-30-02Z, 584) already frozen by owner; owner confirmed the newer freeze stands. Line struck.","ts":"2026-08-29T19:15:06Z"}

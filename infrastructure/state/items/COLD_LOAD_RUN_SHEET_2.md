@@ -40,8 +40,10 @@ python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --appl
 | hull repaint | ONLY after the round trip: repaint_hull.py --census, --plan world/_ship/v2/plan_corrosion_halo.json --apply, RE-EXPORT, confirm paint carries; then apply_wall_colors.py/apply_wall_stuff.py are superseded and deletable |
 
 ## 4 — owner decisions surfaced 2026-08-29, still open
-- Frozen OFFICIAL capture 2026-08-21T22-44-59Z is GONE from disk; re-freeze
-  2026-08-29T05-18-06Z or restore from a backup nobody could find.
+- ~~Frozen OFFICIAL capture gone~~ RESOLVED before this line was read: registry
+  carries OFFICIAL-2026-08-29 (capture 2026-08-29T13-30-02Z, 584 mods, by owner),
+  superseding the lost 2026-08-21 entry. Owner confirmed 2026-08-29: newer one is
+  right.
 - 'Galactic Empire' names TWO factions on the live world (vanilla Empire reskin +
   OuterRim_GalacticEmpire) — BLACKSTAR_NAME_MUST_NOT_LEAK_1 criteria fail on the Empire half.
 - WILD_ANIMALS_PADDED_LISTS_1: cast biomes are not exclusive (145 non-cast animals at >0 in
