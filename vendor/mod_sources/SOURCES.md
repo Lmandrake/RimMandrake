@@ -637,6 +637,20 @@ and `design/Jawa/mods/required_mods.md` refer to them by defName, not by file.
 - **upstream: unknown** — no URL in any `About.xml`, `.csproj`, `.sln`, `README` or NuGet file.
 - **referenced by repo files:** 0 — none
 
+### `SWCP_Core_decompiled` · `SWCPEnlist_decompiled` · `SWCP_Currencies_decompiled` · `SWCP_RimframeGrineerDoors_decompiled` · `SWCP_Shuttles_decompiled`
+
+- **not a fetched zip — decompiled, 2026-08-29** for `SWCP_CHARACTERS_DECOMPILE_1`.
+  `ilspycmd` 9.0.0.7889 against each DLL in
+  `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3254370945\1.6\Assemblies\`.
+- **mod:** Star Wars KotOR Resources and Materials · **packageId:** `guy762.MM.KotORCore`
+- **upstream:** none known (Workshop-only, DLL-shipped, no source repo found)
+- **regenerate:** `ilspycmd.exe -p -o <out dir> <dll path>` — see
+  `research/RimMandrake/reference/rimworld_decompiled_source.md` for the pattern.
+- **referenced by repo files:** `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSwcpCharacterTools.cs`
+  (reads `SWCP_Core_decompiled` only — the character/role-registry system lives
+  there; the other four were decompiled and grepped only to confirm it is NOT
+  in any of them).
+
 ### `VanillaEventsExpanded_src`
 
 - **size / files:** 530.0 KB (542,747 bytes) · 144 files

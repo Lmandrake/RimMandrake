@@ -2926,3 +2926,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","ts":"2026-08-29T23:32:25Z"}
 {"seat":"FOUNDRY","event":"start","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","ts":"2026-08-29T23:32:25Z"}
 {"seat":"FOUNDRY","event":"close","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","sha":"98bcbe37","ts":"2026-08-29T23:38:21Z"}
+{"seat":"FOUNDRY","event":"close","id":"SWCP_CHARACTERS_DECOMPILE_1","sha":"50bbbb97","ts":"2026-08-29T23:40:45Z"}
