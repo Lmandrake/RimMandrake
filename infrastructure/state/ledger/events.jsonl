@@ -2939,3 +2939,6 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Game is going up","ts":"2026-08-30T01:27:07Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-08-30T01:28:05Z"}
 {"seat":"OWNER","event":"needs","id":"DROID_SYSTEM_BUILD_1","to":"owner","reason":"reopened by the owner 2026-08-29; buildable spec written (droid_system_build_spec.md); waiting on the four §8 rulings, then phase 0 is FOUNDRY-buildable","ownerSaid":"We've fallen in love with the full droid item and would like you to fully work it out into a buildable spec","ts":"2026-08-30T01:32:48Z"}
+{"seat":"FOUNDRY","event":"file","id":"BEHEMOTH_ART_UPRES_1","title":"Star Wars Behemoth art is low-res (256px) vs AA_Behemoth's 512px, needs redraw","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-08-30T01:34:37Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BEHEMOTH_ART_UPRES_1","ts":"2026-08-30T01:35:05Z"}
+{"seat":"FOUNDRY","event":"start","id":"BEHEMOTH_ART_UPRES_1","ts":"2026-08-30T01:35:06Z"}
