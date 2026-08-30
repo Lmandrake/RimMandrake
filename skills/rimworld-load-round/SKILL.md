@@ -259,3 +259,42 @@ Decision strings written with baselines (§2) · nothing in the batch making ano
 item unattributable (§3) · `refresh.py` run (§5) · anything needing the shutdown
 window handled and CHECK told (§6) · the old `Player.log` copied out (§6) ·
 everything **deployed**, not merely written (`skills/rimworld-deploy/SKILL.md`).
+
+## 10. 🔴 Launch through Steam, never the bare `.exe` — bypassing it intermittently corrupts assembly loading
+
+Measured 2026-08-30. A cold load launched normally (through Steam) worked cleanly
+on a 19-mod minimal list: bridge up, 301 companion tools, full mod content loaded.
+Immediately after, closing that process (`Stop-Process -Force` on `RimWorldWin64`)
+and relaunching by starting `RimWorldWin64.exe` directly —
+`Start-Process -FilePath '...\RimWorldWin64.exe'` — produced RimWorld's own
+**"Recovered from incompatible or corrupted mods errors"** dialog on the very
+next launch, **three times in a row**, with the identical unchanged mod list and
+unchanged mod DLLs. The actual exception (`Player.log`, `RebindAllDefOfs` →
+`GenTypes.AllTypesWithAttribute`): `System.TypeLoadException: Could not resolve
+type with token ... from typeref (expected class 'HarmonyLib.HarmonyPatch' in
+assembly '0Harmony, Version=2.4.1.0...')` — a Harmony-assembly-version
+resolution failure during the full-type reflection pass, not a content/def
+problem. RimWorld's own recovery caught it and reset `ModsConfig.xml` to
+Core-only (6 mods) each time.
+
+**Isolated properly, not guessed:** reverted the two content files that had
+changed between the working and failing launches (`git stash`), redeployed,
+relaunched via the bare `.exe` again — **same crash**, byte-identical content
+that had worked minutes earlier. This ruled out the content/def changes
+entirely. The one variable that actually differed: the working launch went
+through Steam; every failing relaunch used the bare executable.
+
+**Fix, confirmed:** launch via Steam instead —
+`Start-Process -FilePath '...\Steam\steam.exe' -ArgumentList '-applaunch','294100'`.
+Immediate clean load: bridge up, 19 mods held, 301 tools, first try.
+
+⇒ **Bypassing Steam's own launch path — even though the same `.exe` file runs
+either way — skips whatever Steam does to mount/validate Workshop content
+(`steamapps/workshop/content/294100/*`) before handing off to the game.** A
+raw `.exe` launch can silently pick up a stale, partially-synced, or
+inconsistently-cached copy of a Workshop mod's bundled `0Harmony.dll`,
+producing exactly this class of intermittent assembly-version collision.
+**Always launch (or relaunch, including a driver-initiated restart for a
+def/content change) via `steam.exe -applaunch 294100`, never the bare
+`RimWorldWin64.exe` path**, even though the latter looks like the more direct
+and reliable route.
