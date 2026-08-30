@@ -105,6 +105,59 @@
     </degreeDatas>
   </TraitDef>
 
+  <!-- ===== PAWN_FLAVOR_ROUND9_FUEL_1 (2026-08-30) — Junkers fuel economy ===== -->
+
+  <!-- Shore-Rat's forced trait — toxin resistance is a real vanilla stat
+       (ToxicResistance, verified via RimSage before use), not a stub. -->
+  <TraitDef>
+    <defName>Jawa_ShoreHardened</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>shore-hardened</label>
+        <description>{PAWN_nameDef} spent childhood breathing whatever the tide brought in. {PAWN_possessive} body learned to shrug off what would sicken someone raised clean.</description>
+        <statOffsets>
+          <ToxicResistance>0.3</ToxicResistance>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- 🔴 TODO / light-C# tier, per the item's own instruction: "mood buff at
+       high colony fuel stores" and "rage break when stills idle" are both
+       dynamic (need a StatPart/MentalBreak hook reading live colony fuel
+       stockpile / workbench idle state) - not faked with an always-on
+       number. File the hook as its own C# item when picked up. -->
+  <TraitDef>
+    <defName>Jawa_StillTemper</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>still-temper</label>
+        <description>{PAWN_nameDef} is easiest to live with when the stills are running and the fuel stores are full — and worst when a still stands cold with nothing to crack. {PAWN_pronoun} has never fully forgiven an empty tank.</description>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- Pipe-Tapper's forced trait — cold resistance is a real vanilla stat
+       (ComfyTemperatureMin), not a stub. The FDE-opinion-penalty half of the
+       design ("opinion penalty from FDE droids who know what tappers are")
+       IS a stub: it needs a relational ThoughtDef/opinion hook keyed to the
+       OTHER pawn's kind, which no TraitDegreeData field expresses. -->
+  <TraitDef>
+    <defName>Jawa_LineTapper</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>line-tapper</label>
+        <description>{PAWN_nameDef} walked the Free Droid Enclaves' fuel lines in every weather the terminator has, tapping what the Junkers needed. {PAWN_pronoun} tolerates cold most people cannot — and the droids that keep the count remember every tap.</description>
+        <statOffsets>
+          <ComfyTemperatureMin>-8</ComfyTemperatureMin>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
   <TraitDef>
     <defName>Jawa_PodracerReflexes</defName>
     <commonality>0.2</commonality>

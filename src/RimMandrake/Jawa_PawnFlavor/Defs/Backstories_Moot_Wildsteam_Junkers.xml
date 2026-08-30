@@ -278,4 +278,70 @@
     </spawnCategories>
   </BackstoryDef>
 
+  <!-- ===== Junkers — the fuel economy (round 9, ruled 2026-08-30) =====
+       canon.yml junkers: a fuel-first bad-water nation. "The casket remains
+       the crown; fuel is the floor everyone stands on." Same spawnCategory
+       (JawaBSC_Junkers) as the block above, already wired to Jawa_Junkers -
+       no new wiring needed. Forced traits: Traits_JawaPawnFlavor.xml. -->
+
+  <BackstoryDef>
+    <defName>Jawa_ShoreRat</defName>
+    <identifier>Jawa_ShoreRat</identifier>
+    <slot>Childhood</slot>
+    <title>shore-rat</title>
+    <titleShort>shore-rat</titleShort>
+    <description>[PAWN_nameDef] grew up skimming the terminator seas for anything that hadn't rotted yet — fuel slick, drowned scrap, the occasional body. [PAWN_pronoun] learned early that the tide gives less than it takes, and never expected much from anything since.</description>
+    <skillGains>
+      <Crafting>2</Crafting>
+      <Animals>1</Animals>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_ShoreHardened>0</Jawa_ShoreHardened>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Junkers</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_StillMaster</defName>
+    <identifier>Jawa_StillMaster</identifier>
+    <slot>Adulthood</slot>
+    <title>still-master</title>
+    <titleShort>still-master</titleShort>
+    <description>[PAWN_nameDef] runs a distillation stack that turns the terminator sea's rot into fuel a caravan can burn. [PAWN_pronoun] can smell a bad batch from across the room and has never once let a still stand cold while there was slick left to crack.</description>
+    <skillGains>
+      <Crafting>6</Crafting>
+      <Intellectual>2</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_StillTemper>0</Jawa_StillTemper>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Junkers</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_PipeTapper</defName>
+    <identifier>Jawa_PipeTapper</identifier>
+    <slot>Adulthood</slot>
+    <title>pipe-tapper</title>
+    <titleShort>tapper</titleShort>
+    <description>[PAWN_nameDef] walked the Free Droid Enclaves' fuel lines end to end, tapping what the Junkers needed and patching what [PAWN_pronoun] tapped so nobody downstream noticed the loss. The FDE droids that keep count are not fooled, and they do not forget a tapper's face.</description>
+    <skillGains>
+      <Construction>5</Construction>
+      <Mining>4</Mining>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_LineTapper>0</Jawa_LineTapper>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Junkers</li>
+    </spawnCategories>
+  </BackstoryDef>
+
 </Defs>
