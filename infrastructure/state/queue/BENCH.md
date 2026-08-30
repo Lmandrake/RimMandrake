@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T20:33:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T20:35:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## FABLE_HANDOFF_SPRINT_1 Fable handoff sprint: engine build spec, Narrator corpus, canonization pass, visibility+sacred-sites+research-principles specs, C# risk spikes, OPUS5_HANDOFF guide
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/FABLE_HANDOFF_SPRINT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FABLE_HANDOFF_SPRINT_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
