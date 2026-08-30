@@ -100,3 +100,11 @@ un-hostile only at 0) — desecration is survivable, repentance is expensive.
 The ship is a Forsaken **initiator** — one of the vessels that started this
 world (`06_the_ship.md`). Every ruin is her people's; a woken sleeper who sees
 her sees an initiator with the wrong crew aboard.
+
+## The woken [owner 2026-08-30]
+
+A woken Rakata sleeper is the tyranny made present: no gratitude toward their
+rescuers, Jawa are lesser beings to them — and they recognize the Utinni as
+their own colonizer vessel and challenge its possession ("And hey... isn't
+that a colonizer ship you're riding in?! What are you doing with that?").
+Waking the war generation opens a claim-conflict over the ship itself.
