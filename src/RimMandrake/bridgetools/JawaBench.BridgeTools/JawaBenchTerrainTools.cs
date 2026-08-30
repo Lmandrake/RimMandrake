@@ -4520,6 +4520,45 @@ namespace JawaBench.BridgeTools
                     outp[f.Name] = items;
                 }
             }
+            // 🔴 A NAMED field that is PRIVATE is still a real field, and used to
+            // come back as "(no such field)" -- which reads as "this def has no
+            // such thing" and is how a correct, shipped XML patch nearly got
+            // reported as a no-op. TraitDef.commonality is the case that found
+            // this: `private float commonality = 1f;` (RimWorld/TraitDef.cs), set
+            // by the XML loader like any other field, invisible to a Public-only
+            // reflection pass. Vanilla `Nimble` answered "(no such field)" too,
+            // which is what made the reading look authoritative.
+            //
+            // Only searched when the caller NAMED the field -- an unfiltered dump
+            // stays public-only, because private state is noise unless asked for.
+            // GetFields does not return a base type's privates, so walk the chain.
+            if (want != null && want.Count > 0)
+            {
+                var npFlags = System.Reflection.BindingFlags.NonPublic
+                            | System.Reflection.BindingFlags.Instance
+                            | System.Reflection.BindingFlags.DeclaredOnly;
+                foreach (var w in want)
+                {
+                    if (outp.ContainsKey(w)) continue;
+                    for (var ty = o.GetType(); ty != null && ty != typeof(object); ty = ty.BaseType)
+                    {
+                        var pf = ty.GetField(w, npFlags);
+                        if (pf == null) continue;
+                        object pv;
+                        try { pv = pf.GetValue(o); } catch { break; }
+                        if (pv == null) { outp[w] = null; break; }
+                        if (pv is Def pd) { outp[w] = pd.defName; break; }
+                        var pt = pv.GetType();
+                        if (pt.IsPrimitive || pv is string || pt.IsEnum || pv is decimal)
+                            outp[w] = pt.IsEnum ? pv.ToString() : pv;
+                        else
+                            outp[w] = "(non-public field '" + w + "' on " + ty.Name
+                                    + "; type " + pt.Name + " not serialised)";
+                        break;
+                    }
+                }
+            }
+
             // A field ASKED FOR and not found must say so, or a typo in the
             // request is indistinguishable from a field that is genuinely null
             // -- the same silent-success shape as a dropped parameter.

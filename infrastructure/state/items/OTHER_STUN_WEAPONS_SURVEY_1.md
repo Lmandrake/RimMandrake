@@ -244,3 +244,31 @@ same shape as `ION_STUN_IGNORES_BODY_SIZE_1`'s own verify table.
       just re-run against `VVE_Bulldog_PawnKind` with `jawa/vehicle_components` instead.
 - [ ] If pursued: `guy762_*_ion` family checked against an actual droid/mechanoid target, since
       live evidence suggests it may not be a flesh-stun mechanism at all.
+
+## 2026-08-30 (FOUNDRY, fifth pass) — the DLL deploy blocker is GONE; the live read-back is not
+
+**The third pass's one blocker is resolved.** That pass recorded
+`JawaIonWeapons.dll` deploy BLOCKED on the running game holding the file open. It has since
+deployed and is **live in the current build**: `deploy_custom_mods.py --mod JawaIonWeapons`
+reports the mod in sync apart from `JawaIonVehicleTier.dll` (a different item), and all three
+artifacts this item shipped sit in the game copy with mtimes **before** the running process
+started (11:23:36):
+
+    …/Mods/JawaIonWeapons/Defs/StatDefs_JawaIon.xml            Aug 29 11:07
+    …/Mods/Jawa_Patches/Patches/ThirdPartyStunBodySize_Squared.xml   Aug 29 11:07
+    …/Mods/JawaIonWeapons/Assemblies/JawaIonWeapons.dll        Aug 29 19:11
+
+⇒ `Jawa_InverseBodySize` and the squared patch on `guy762_RangedDamage_KOstun` /
+`guy762_RangedDamage_sonic` are loaded. **Nothing more is owed offline on the (a) half —
+only the measurement.**
+
+### Both remaining verify steps are live-only, and the game is wedged
+(a) the Rat-vs-`AA_Behemoth` severity read-back and (b) the `jawa/vehicle_components` retest
+against `VVE_Bulldog_PawnKind` both need a map. None could be run: RimWorld (pid 33580) is
+stuck on a **"Loading world." long event that never completes** — `mapCount 0`, `ticksGame`
+frozen at 9252 for ~35 minutes, `go_to_main_menu` answers with its own NRE, and
+`Root_Play.UIRootUpdate` throws every frame on a null `Find.WorldGrid`. Three
+`start_debug_game_ready` calls and one `load_game` all failed; the first two aborted inside
+`BetterRomance.SettingsUtilities.ChildAge` during **starting-pawn** generation, before
+anything was spawned. The bridge stayed healthy throughout (~15 ms responses) — dead game,
+not dead bridge. Needs an owner restart.

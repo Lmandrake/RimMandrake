@@ -45,3 +45,20 @@ always spawns.
 ⚠️ Compiled clean and deployed (`--gm --apply`, game was down) but **never called against a
 live game** — first real invocation should read its own result carefully, same as any new
 tool's first live call.
+
+## 2026-08-30 (FOUNDRY) — live round-trip still not run; the game is wedged
+
+The one open criterion is the live round-trip (`export_things` → `build_batch` +
+`set_quality` + `container_fill` + `bill_add` + `storage_settings` → `export_things` → diff),
+and it needs a map. RimWorld (pid 33580) is stuck on a **"Loading world." long event that
+never completes**: `mapCount 0`, `ticksGame` frozen at 9252 for ~35 minutes,
+`go_to_main_menu` answers with its own NRE, `Root_Play.UIRootUpdate` throws every frame on a
+null `Find.WorldGrid`. Three `start_debug_game_ready` calls and one `load_game` all failed —
+the first two aborted inside `BetterRomance.SettingsUtilities.ChildAge` during **starting-pawn**
+generation, before anything had been spawned. The bridge answered normally throughout, so this
+is a dead game rather than a dead bridge, and it needs an owner restart.
+
+⚠️ `jawa/set_quality` and `jawa/container_fill` are still in the state this item's own
+"Watch out" section warns about: **compiled and deployed but never once called against a live
+game.** Their first real invocation is still ahead, and it should read its own result carefully
+rather than trusting `success: true`.

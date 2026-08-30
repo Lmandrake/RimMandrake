@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T20:44:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T20:48:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -37,7 +37,7 @@ summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to r
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
 ## PLACER_IDENTITY_REPLAY_1 Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    bridge
 target:   v1
@@ -91,7 +91,7 @@ summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR su
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
 
 ## OTHER_STUN_WEAPONS_SURVEY_1 Survey of every other stun-capable damage type: which have body-size scaling, which don't
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    bridge
 target:   v1
@@ -145,12 +145,12 @@ summary:  (no items/WEAPONS_ABSORPTION_WAVE_1.md yet — write one when you have
 prose:    infrastructure/state/items/WEAPONS_ABSORPTION_WAVE_1.md
 
 ## ISEKAI_GRANT_EXCLUSION_1 Exclude Jawa_ traits from ISEKAI grant-item pools
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-summary:  (no items/ISEKAI_GRANT_EXCLUSION_1.md yet — write one when you have something to say)
+summary:  ISEKAIGRANTEXCLUSION1 — keep the Star-Wars identity traits off the random-roll path
 prose:    infrastructure/state/items/ISEKAI_GRANT_EXCLUSION_1.md
 
 ## DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 Ion buildup crossing threshold downs via vanilla JawaIon_Stun capMods only -- never adds the DW_PoweredDown hediff the state machine is built around
@@ -260,6 +260,16 @@ blocked:  needs bridge; BENCH holds it (owner confirmed live, 2026-08-29) — my
 summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
+## PLACER_IDENTITY_REPLAY_1 Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+blocked:  Live round-trip is the only open criterion and needs a map; game wedged on a never-completing 'Loading world.' long event (mapCount 0, ticksGame frozen, go_to_main_menu NREs). Bridge healthy. jawa/set_quality and jawa/container_fill remain deployed-but-never-called. Needs an owner restart.
+summary:  PLACERIDENTITYREPLAY1 — the setter half of the identity-grade export
+prose:    infrastructure/state/items/PLACER_IDENTITY_REPLAY_1.md
+
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -299,6 +309,16 @@ kind:     bug
 blocked:  69 XML candidates cleared, points at a C# compat framework not an XML conflict. Needs a Harmony patch inventory (no bridge tool yet, needs game-down deploy) or a mod-list bisect.
 summary:  GalacticEmpire.xml's PatchOperationReplace on
 prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
+
+## OTHER_STUN_WEAPONS_SURVEY_1 Survey of every other stun-capable damage type: which have body-size scaling, which don't
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     investigate
+blocked:  DLL deploy blocker resolved: JawaIonWeapons.dll + StatDefs_JawaIon.xml + ThirdPartyStunBodySize_Squared.xml all in the game copy with mtimes before the 11:23 launch, deploy plan in sync, so the squared fix IS loaded. Both remaining verify steps (Rat vs AA_Behemoth severity read-back; jawa/vehicle_components against VVE_Bulldog_PawnKind) are live-only and the game is wedged on a never-completing 'Loading world.' long event. Needs an owner restart.
+summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
+prose:    infrastructure/state/items/OTHER_STUN_WEAPONS_SURVEY_1.md
 
 ## BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 11 more bridge tools: scatter_at/run_genstep/run_basegen_symbol/fix_floating_roofs, spawn_mech_cluster, incident_queue_clear, set_game_speed, letter_list/letter_send_delayed, av_effect, set_thing_props
 state:    doing  (BLOCKED)
@@ -349,6 +369,16 @@ kind:     task
 blocked:  sequenced with Droidworks phase 3 (droid_system_build_spec.md line 186) — parked behind DROID_SYSTEM_BUILD_1 which needs owner to reopen
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
+
+## ISEKAI_GRANT_EXCLUSION_1 Exclude Jawa_ traits from ISEKAI grant-item pools
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  XML fix deployed and loaded (patch written 10:22, game launched 11:23; Jawa_Patches in sync). Live verify blocked: game wedged on a never-completing 'Loading world.' long event. Also fixed jawa/get_defs, which reported TraitDef.commonality as '(no such field)' for the Isekai traits AND vanilla Nimble because the field is private -- that nearly got a correct shipped patch reported as a no-op. Once the companion redeploys, the commonality half of the verify needs no map at all.
+summary:  ISEKAIGRANTEXCLUSION1 — keep the Star-Wars identity traits off the random-roll path
+prose:    infrastructure/state/items/ISEKAI_GRANT_EXCLUSION_1.md
 
 ## DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 isOrganic:false + Humanlike intelligence NREs on pawn generation for any faction with an ideo -- pawn.relations is never allocated (PawnComponentsUtility gates it on IsFlesh), pre-existing on OuterRim_BattleDroid too
 state:    doing  (BLOCKED)
