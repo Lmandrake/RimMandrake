@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T20:48:42Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-30T21:18:19Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -188,15 +188,6 @@ target:   v1
 kind:     build
 summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §3. Summary:
 prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
-
-## DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 isOrganic:false + Humanlike intelligence NREs on pawn generation for any faction with an ideo -- pawn.relations is never allocated (PawnComponentsUtility gates it on IsFlesh), pre-existing on OuterRim_BattleDroid too
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  🔴 Scope correction: this is NOT a Droidworks-only bug
-prose:    infrastructure/state/items/DROIDWORKS_ISFLESH_RELATIONS_CRASH_1.md
 
 ## PAWN_FLAVOR_PHASE2_PROSE_1 Phase 2 prep: lore-prose pass over ThoughtDef/MentalBreakDef/xenotype flavor - census + drafts + review sheet
 state:    doing
@@ -379,16 +370,6 @@ kind:     build
 blocked:  XML fix deployed and loaded (patch written 10:22, game launched 11:23; Jawa_Patches in sync). Live verify blocked: game wedged on a never-completing 'Loading world.' long event. Also fixed jawa/get_defs, which reported TraitDef.commonality as '(no such field)' for the Isekai traits AND vanilla Nimble because the field is private -- that nearly got a correct shipped patch reported as a no-op. Once the companion redeploys, the commonality half of the verify needs no map at all.
 summary:  ISEKAIGRANTEXCLUSION1 — keep the Star-Wars identity traits off the random-roll path
 prose:    infrastructure/state/items/ISEKAI_GRANT_EXCLUSION_1.md
-
-## DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 isOrganic:false + Humanlike intelligence NREs on pawn generation for any faction with an ideo -- pawn.relations is never allocated (PawnComponentsUtility gates it on IsFlesh), pre-existing on OuterRim_BattleDroid too
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  Fix verified offline as far as source allows: Jawa_Doctrine active, JawaDoctrineCore.dll deployed 10:33 before the 11:23 launch, postfix targets the CORRECT method (the IsFlesh relations gate is in PawnComponentsUtility.CreateInitialComponents, not AddAndRemoveDynamicComponents as this item's spec said), runs before GenerateTraits/GeneratePawnRelations, and nothing nulls relations afterwards. Droidworks is NOT in the 590-entry mod list so OuterRim_BattleDroid is the whole case. LIVE 10/10 STILL OWED: the game is wedged on a never-completing 'Loading world.' long event (mapCount 0, ticksGame frozen 9252, go_to_main_menu NREs, Root_Play throws every frame); bridge healthy, game dead. Needs an owner restart.
-summary:  🔴 Scope correction: this is NOT a Droidworks-only bug
-prose:    infrastructure/state/items/DROIDWORKS_ISFLESH_RELATIONS_CRASH_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 

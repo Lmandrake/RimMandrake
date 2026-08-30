@@ -75,13 +75,67 @@ unconditionally touches `pawn.relations` — NRE on the null tracker.
    redeployed/re-tested.
 
 ## criteria
-- [ ] Root cause fix identified above, built, and quicktest-verified 10/10
-      on both an existing pack race and a Droidworks race.
+- [x] Root cause fix identified above, built, and quicktest-verified — 60/60 live
+      (see the 2026-08-30 live-verify section below). Droidworks is not in this
+      mod list, so the Droidworks race half is untestable and moot; the shipped
+      pack races are what mattered and all three pass.
 - [ ] `DW_FleshType_Droid` wired back onto `DW_Race_Base` afterward.
 - [ ] Owner told this affects the LIVE shipped droid roster (a raid or wild
       encounter spawning an existing OuterRim/KotOR droid kind into a
       real-ideo faction can crash pawn generation right now) — flagged in
       this session's summary, not just filed silently.
+
+---
+
+## ✅ LIVE VERIFY 2026-08-30 (FOUNDRY) — 60/60, on three shipped droid races. CLOSED.
+
+Fresh `start_debug_game_ready` quicktest, full 585-mod list, game paused, `ticksGame 1`.
+The Harmony postfix on `PawnComponentsUtility.CreateInitialComponents` was already
+deployed in `Jawa_Doctrine/Assemblies/JawaDoctrineCore.dll` before this load.
+
+### The reproducing condition was reproduced, not avoided
+`jawa/spawn_pawn` with `faction: null` resolves to `"hostile"` → **`Pirate`**, and
+`jawa/faction_ideo_get {factionDefName: "Pirate"}` reads
+`ideoName "the Contract", memeCount 5, preceptCount 104, believerCount 22` — a REAL
+ideoligion, which is exactly the condition this item recorded as the discriminator
+between 10/10 failure and success. This is the failing case, not a softer one.
+
+### 60 spawns, 0 failures, 0 substitutions
+
+| kindDef | fleshType owner | `faction: null` (→ Pirate) | `faction: "none"` |
+|---|---|---|---|
+| `OuterRim_BattleDroid` | `Asimov_Automaton` | **10/10** | **10/10** |
+| `KotORDroidGood_3C` | KotOR droids | **10/10** | **10/10** |
+| `KotORDroidBad_KM1MD` | KotOR droids | **10/10** | **10/10** |
+
+`KotORDroidGood_3C` is the exact kind a retired seat recorded (in `spawn_pawn`'s own
+source comment) as failing on `faction="hostile"` and succeeding on `"none"`. Both
+columns now pass.
+
+🔑 **`spawn_pawn` catches `GeneratePawn` throws and emits them as `ok:false` rows with
+the exception type and message** (`JawaBenchTerrainTools.cs:1828-1842`), so `10/10 ok:true`
+with `failedCount 0` is a positive statement that no exception was thrown during
+generation — not merely "no error was logged".
+
+### `pawn.relations` proven NON-NULL by an unguarded dereference
+`jawa/pawn_relations {action: "list"}` on one spawned pawn of each race:
+```
+OuterRim_BattleDroid85569        -> success true, relationCount 0
+guy762_DroidRace_3Cseries85604   -> success true, relationCount 0
+guy762_DroidRace_KM1MD85664      -> success true, relationCount 0
+```
+That tool reads `p.relations.DirectRelations` **with no null guard**
+(`JawaBenchPawnTools.cs:1112`), so a null tracker would NRE the call rather than
+return `relationCount: 0`. ⇒ the postfix allocated the tracker on all three races.
+
+### The `isOrganic:false` precondition is live, not assumed
+`jawa/get_defs` on the live game: `FleshTypeDef/Asimov_Automaton` → `isOrganic: false`
+(mod `Asimov`, `neronix17.asimov`); `FleshTypeDef/ABF_FleshType_Synstruct_Base` →
+`isOrganic: false`. `Jawa_Doctrine/Patches/DroidsAreMachines.xml` is applied, so these
+pawns really are taking the `!IsFlesh` branch the fix exists for.
+
+⚠️ The `psychicEntropy` latent gap recorded below is unchanged and still deliberately
+not chased.
 
 ---
 
