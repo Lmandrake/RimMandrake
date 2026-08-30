@@ -76,15 +76,53 @@ Also exercised for real a second time over `172,62,8,8`
 `jawa/list_things` over the same 4x4 returned **16 things, every one `Steel`** —
 one per cell, exactly the unconditional per-cell `GenSpawn.Spawn` it claims.
 
-### Not yet run
-- `jawa/make_empty_room`, `jawa/destroy_bulk` (dryRun), `jawa/ideo_ritual_obligation_remove`
-  — safe, simply not reached before the pass was suspended.
-- 🔴 **held deliberately, needs an owner heads-up before firing:**
-  - `jawa/explosion_at` — visually dramatic on a screen he is watching.
-  - `jawa/hot_reload_defs` — reloads every active mod's XML on a **585-mod** live
-    game as a queued long event. If it stalls or throws it costs a ~25-minute cold
-    load of a game other seats are using. Worth doing, worth doing deliberately and
-    announced — not slipped into a verification sweep.
+### ✅ `jawa/make_empty_room` — PASS
+`{rect: "210,210,7,7", wallDef: Wall, stuffDef: Steel}` on a rect cleared first →
+`cellsWalled: 24, cellsFloored: 49, doorAt: {212,210}`. Independent read-backs:
+- `jawa/list_things` over the rect → **24 things: 23 `Wall` + 1 `Door`** — a 7x7
+  perimeter is exactly 24 cells, one of which became the door. Arithmetic matches.
+- `rimworld/get_cell_info` on interior cell 213,213 → `terrainDefName:
+  "WoodPlankFloor"`, `roofDefName: "RoofConstructed"` — the floor and roof it
+  claimed are really there, and the configurable defs took.
+
+### ✅ `jawa/destroy_bulk` — PASS, both halves
+All three filters discriminate correctly on a 41-pawn map:
+`factionlessAnimals` → wild only (`VAEWaste_Hydra`, `Raccoon`, `Yobshrimp`…);
+`playerAnimals` → the one tamed `BMT_FacetMothLarvae`; `nonColonists` → the
+superset. **Pawn count 41 after all three dryRuns — unchanged**, so the rail holds.
+Then real: `{filter: playerAnimals, dryRun: false}` → `matchedCount: 1`, destroyed
+`BMT_FacetMothLarvae10093` ("York"); independent re-count **41 → 40**.
+
+### ✅ `jawa/ideo_ritual_obligation_remove` — PASS, full round trip
+`list` resolves real runtime `Precept_Ritual`s and refuses a non-ritual precept by
+name (`IdeoRitualSeat` → *"matches no ritual precept on ideo 'Green Army'"*).
+Obligations start empty on a fresh map, so the `remove` half was exercised by
+manufacturing one with the ADD sibling on the **player's own** ideo (id 44,
+"Boccin Equality" — the only ideo with colonist believers; ADD is a documented
+no-op on NPC ideos, and it correctly reported `success: false` on all four tried
+there rather than pretending):
+```
+ideo_ritual_obligation {ideo:44, ritual:AM_FuneralNoCorpse}  -> success true
+  list   -> [{obligationId: 55, ticksUntilExpiration: 540000, stillValid: true}]
+  remove {obligationId: 55} -> obligationCountBefore 1, obligationCountAfter 0
+  list   -> 0 obligations
+```
+
+### ✅ `jawa/explosion_at` — PASS (fired on the owner's explicit go-ahead)
+Map corner `15,15`, radius 5, `Bomb`, `chanceToStartFire: 0` — ~150 cells from the
+colony, nothing of ours in range, game paused throughout.
+```
+-> success, damAmount: 50   (correctly defaulted from Bomb.defaultDamage; none passed)
+immediately after: an `Explosion` Thing exists, 0 things destroyed  <- paused mid-flight
+step_game_ticks 120  (resolves it WITHOUT unpausing, per bridge skill 4b)
+-> 24 things DESTROYED in radius: Plant_Thornvine x10, Plant_YellowTallGrass x5,
+   Plant_YellowGrass x2, Plant_TallGrass x2, Plant_Alocasia, GRimPurpleGrass,
+   GRimTreeDead, Plant_Dandelion.  The Explosion Thing consumed itself.
+`get_cell_info` 15,15 -> paused: true the whole time.
+```
+🔑 Worth recording: **a paused explosion looks like a no-op.** The call succeeds,
+an `Explosion` Thing appears, and nothing is damaged until ticks run. Reading the
+result at that moment would have filed this tool as broken.
 
 ## criteria
 - [x] Root cause of the original miss identified and documented, not just patched.
