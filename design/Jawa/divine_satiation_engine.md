@@ -1038,3 +1038,22 @@ dismantling engine components while he fronts.
 CURSES: S Heavy Feet (speed down, wanderlust) · M The Rooted Ache (mood sag
 worsening each launchless day) · L Despair's Whisper (break thresholds
 collapse until something FLIES).
+
+### ⑦ Zizzik the Spark-Maker — SHIPPED 2026-08-30 (inverted; the banked wake)
+DEEDS + (feeding keeps wakes small): breakdowns left to happen · mental
+breaks running their course · betrayals/escapes witnessed · deliberate
+offerings (a working thing sacrificed).
+DEEDS − (starving BANKS the wake): perfect uptime · every break suppressed ·
+flawless ordered days. (Deliberate war with Ohm's and Rekko's pieties.)
+BOONS: S Creative Sparks (inspiration chance up) · M Betrayer's Gift (enemy
+raids suffer the malfunctions) · L The Grand Short-Circuit (a hostile
+installation catastrophically malfunctions — turned on its owners).
+DEMANDS: S one breakdown left unfixed per reign-day · M a burnt offering
+(destroy one working thing) · L honor the wake (no break suppressed all
+reign).
+TABOOS: S instantly repairing everything · M arresting/drafting pawns out of
+breaks during his reign · L REIGN-BREAKER a perfectly ordered day during HIS
+reign.
+CURSES (the wake, sized by slumber length): S Spark Bites (breakdown flurry) ·
+M The Betrayal (an ally turns: fights epidemic, animal manhunts, droid
+glitch) · L THE WAKING (the banked cascade at once).
