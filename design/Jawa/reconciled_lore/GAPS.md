@@ -85,9 +85,14 @@ names what turns on the answer. Ordered by how much downstream work waits.
     grant items** — identity traits arrive only through backstories and play.
     Build item filed (ISEKAI_GRANT_EXCLUSION_1).
 
-18. Stale Setdown machinery: `ashkarr_paint.py` HOME_LATLON abort-guard and
-    the populate/repair landmark placement still act on the struck start
-    [flagged in canon start_struck]; ripping them out needs a ruling.
+18. ✅ RULED (owner, 2026-08-30, verbatim principle): "World map terrain
+    painting does destroy the map on it... when we [have a live game] the
+    guard will be vital. It's just ignorant about our state right now. This
+    should be a question it has to ask right before it writes over a savegame
+    tilemap location, each time." → The static HOME_LATLON anchor dies; the
+    guard becomes a per-write, state-aware confirmation. Item:
+    PAINT_GUARD_ASK_EACH_TIME_1.
+
 19. `jawa_society.md` §4.2b ThoughtDef proposals are keyed to `OuterRim_Jawa`
     — substitute `MandrakeJawa` at build (known staleness, recorded there).
 20. **Droidworks assumptions 1–19** await the owner's pass:
